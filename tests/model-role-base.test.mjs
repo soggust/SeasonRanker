@@ -55,9 +55,10 @@ test('snaps: a 1-snap game counts for its one snap, not a game; the expected sha
   const row = { pid: 'w', pos: 'WR', season: 2026, date: at(10), opp: 'o' };
   const p = m.project(row);
   const q = pool.project(row);
-  // (sr 1: his last game's share, the 2%; sr 0: his season's)
-  assert.ok(Math.abs(p.share - 0.02) < 1e-9);
-  assert.ok(Math.abs(q.share - (0.6 * 4 + 0.02) / 5) < 1e-9);
+  // (the one-snap game a game cut short (project.mjs typicalShares): out of the share expected, whatever sr; his
+  // usual 60%)
+  assert.ok(Math.abs(p.share - 0.6) < 1e-9, String(p.share));
+  assert.ok(Math.abs(q.share - 0.6) < 1e-9, String(q.share));
   // (the rate a full game near 50 (the pool's prior pulls it), not dragged down by the one-snap 0)
   assert.ok(q.rate / q.share > 45, `${q.rate / q.share}`);
 });

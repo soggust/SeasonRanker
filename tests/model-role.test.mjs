@@ -259,3 +259,11 @@ test("priceProps: an absent regular with his own prop on the board isn't missing
   assert.equal(by.u.guard.skip, true);
   assert.match(by.u.guard.why, /a regular at his position out.*; no price/);
 });
+
+test('typicalShares: a game cut short (under half his median) left out of the share expected tonight; two in a row a role cut, kept', async () => {
+  const { typicalShares } = await import('../libs/ranker/scripts/model/project.mjs');
+  assert.deepEqual(typicalShares([0.95, 0.97, 0.119]), [0.95, 0.97]);
+  assert.deepEqual(typicalShares([0.9, 0.2, 0.15]), [0.9, 0.2, 0.15]);
+  assert.deepEqual(typicalShares([0.3, 0.35, 0.8]), [0.3, 0.35, 0.8]);
+  assert.deepEqual(typicalShares([0.7, 0.1]), [0.7, 0.1]);
+});

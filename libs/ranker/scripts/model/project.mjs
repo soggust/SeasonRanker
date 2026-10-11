@@ -237,7 +237,10 @@ export function makeModel(stat, params, env) {
       // would drop his latest game, the role grown in it unseen, and last season's share would stand in for a
       // season unread: the per-game rate then, as with no counts at all)
       const covered = cur.n === 0 || (cur.lastSh && cur.shn >= cur.n - 1);
-      const exp = !covered ? null : cur.shares.length ? (1 - sr) * avg(cur.shares) + sr * cur.shares[cur.shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
+      // (a game far under his usual share (under half his median: he left it hurt, say) left out of what's
+      // expected tonight, unless his last two were both: a role cut, not a game cut short)
+      const shares = typicalShares(cur.shares);
+      const exp = !covered ? null : shares.length ? (1 - sr) * avg(shares) + sr * shares[shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
       // (his own per-snap prior on 5 full games' worth of counted snaps or more, else made up to 5 with the
       // position's (a long run whose few counted games would be a noisy prior))
       const longSh = prev.sh + 0.5 * older.sh;
@@ -675,3 +678,16 @@ function check(list, params) {
   };
 }
 
+// A season's snap shares with a game cut short left out: one under half the median of the others (he left it
+// hurt, or was eased back), unless his last two games were both that low (a role cut). Fewer than 3 games: as
+// they are
+export function typicalShares(shares) {
+  if (!Array.isArray(shares) || shares.length < 3) return shares ?? [];
+  const sorted = [...shares].sort((x, y) => x - y);
+  const med = sorted[Math.floor(sorted.length / 2)];
+  const low = (x) => x < 0.5 * med;
+  const n = shares.length;
+  if (low(shares[n - 1]) && low(shares[n - 2])) return shares;
+  const kept = shares.filter((x) => !low(x));
+  return kept.length ? kept : shares;
+}
