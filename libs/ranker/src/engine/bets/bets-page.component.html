@@ -4,8 +4,9 @@
 <div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'">
   <!-- (the bets to place, the user's open bets (when they have some), or, an admin's, the code-only model desk's
        play-money betting, its record and its changes to itself; one at a time) -->
-  @if (desk() || hasOpen() || hasClosed()) {
-    <nav class="bets-views" aria-label="View">
+  <!-- (the views, when there's more than one, and the info button: the page's About, an admin's with the Algorithm) -->
+  <nav class="bets-views" [class.info-only]="!(desk() || hasOpen() || hasClosed())" aria-label="View">
+    @if (desk() || hasOpen() || hasClosed()) {
       <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">Place Bets</button>
       @if (hasOpen()) {
         <button type="button" [class.active]="view === 'open'" [attr.aria-current]="view === 'open' ? 'page' : null" (click)="view = 'open'">Open Bets</button>
@@ -16,7 +17,13 @@
       @if (desk()) {
         <button type="button" [class.active]="view === 'desk'" [attr.aria-current]="view === 'desk' ? 'page' : null" (click)="view = 'desk'">Algorithm</button>
       }
-    </nav>
+    }
+    <button type="button" class="bets-info" aria-label="About Bets" title="About Bets" (click)="aboutOpen = true">
+      <mat-icon aria-hidden="true" fontIcon="info"></mat-icon>
+    </button>
+  </nav>
+  @if (aboutOpen) {
+    <bets-about [desk]="desk()" (closed)="aboutOpen = false"></bets-about>
   }
   @if (view === 'desk') {
     <model-desk></model-desk>

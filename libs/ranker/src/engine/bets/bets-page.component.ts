@@ -291,6 +291,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the model desk, the Algorithm: an admin's, and on the dev server)
   readonly desk = (): boolean => canUse('experimental');
   readonly canUse = canUse;
+  // (the page's About: its header's info button; an admin's has the Algorithm too)
+  aboutOpen = false;
   private readonly wallet = inject(WalletService);
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
   readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;

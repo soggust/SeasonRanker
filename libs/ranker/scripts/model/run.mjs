@@ -1733,6 +1733,8 @@ function saveState(r) {
     trust,
     evScale: EV_SCALE,
     gameCap: GAME_CAP,
+    // (the model's latest major change, leagues.mjs: the trust is fit only on bets since; the Bets About shows it)
+    epoch: MODEL_EPOCH,
     // (the margins' shape, margins.mjs: kept or not, what it did for the held-out finals, its weights)
     margins: r.margins ? { ties: r.margins.ties, ot: r.margins.ot, kept: r.margins.kept, gain: r.margins.gain, n: r.margins.n, w: r.margins.w } : (state.margins ?? null),
     context: r.context,

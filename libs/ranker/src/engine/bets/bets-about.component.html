@@ -1,0 +1,286 @@
+<!-- The Bets page's About: the shared frame, its sections for everyone, and an admin's Algorithm and Live Model -->
+<about-frame heading="About Bets" [sections]="sections" (closed)="closed.emit()" #frame>
+  @switch (frame.active) {
+    @case ('page') {
+      <h3>Play money, real numbers</h3>
+      <p>
+        The Bets page is a sportsbook for fun. Every account gets a <b>1,000-unit wallet</b> of play money to bet with:
+        no real money goes in or comes out, ever. The lines and prices are the real ones from DraftKings, and the
+        picks come from our betting bot, a model that prices every game and prop on its own.
+      </p>
+      <h4>Best Bets or a game</h4>
+      <ul>
+        <li><b>Best Bets</b> (the dropdown's first choice) is the bot's best picks across every sport, the biggest edge first.</li>
+        <li><b>Choose a game</b> from the dropdown to see that game's whole betting board. Games the bot has no pick on are listed at the bottom, lines only, so you can still bet them.</li>
+        <li>The <b>chips</b> on the right filter by type of bet: spreads, totals, moneylines and props.</li>
+        <li><b>Click a pick</b> to open its reasoning: the bot's chance, the market's, and how its score adds up.</li>
+      </ul>
+    }
+    @case ('board') {
+      <h3>The betting board</h3>
+      <p>
+        A game's board has every market the bot priced: the spread, the total, the moneyline and the player props.
+        Each price shows the bot's <b>Kelly score</b> and its <b>band</b>. The bot's own picks are highlighted, but
+        they're only suggestions: you can bet anything on the board.
+      </p>
+      <h4>The bands</h4>
+      <ul class="bands">
+        @for (b of bands; track b.tier) {
+          <li>
+            <span class="band-chip" [class]="'band-chip ' + b.tier">{{ b.name }}</span>
+            <span><b>{{ b.rule }}.</b> {{ b.text }}</span>
+          </li>
+        }
+      </ul>
+      <p class="muted">The cuts above are read from the bot's own settings, so they always match the board.</p>
+    }
+    @case ('kelly') {
+      <h3>What the Kelly score means</h3>
+      <p>
+        The Kelly score is the bot's edge at the price, scaled by what the bet pays. A bet the bot gives a 55% chance
+        at even money scores higher than the same 55% at -150, because the first pays more for the same chance.
+        It's the share of a bankroll the Kelly formula would stake: 2% means "bet 2% of your bankroll".
+      </p>
+      <h4>Where the bot's chance comes from</h4>
+      <p>
+        The bot starts from the <b>market's fair price</b> (the book's odds with its margin taken out), then moves
+        toward its own number by how much it has <b>earned the right to disagree</b>:
+      </p>
+      <div class="callout">The bot's chance = the market's fair chance + trust × (the model's chance − the market's)</div>
+      <p>
+        Trust is earned per market and per prop type, from how the bot's past bets did against the closing line and
+        the results. A market where the bot hasn't proven itself stays close to the market's price, so its scores stay
+        small. A score at zero or under means no edge at that price: PASS.
+      </p>
+    }
+    @case ('bets') {
+      <h3>Your bets and your wallet</h3>
+      <ul>
+        <li><b>Place Bets</b> is the board. Add a price to the slip, choose a stake and place it.</li>
+        <li><b>Open Bets</b> lists the bets still to be decided, with a live results column while the games are on: the score, or a prop's count against its line.</li>
+        <li><b>Closed Bets</b> lists the decided ones: won, lost or pushed, and what each paid.</li>
+        <li>The <b>Bankroll</b> line under the dropdown shows what's on hand and what's out; it opens your wallet. Bets settle automatically after the games.</li>
+      </ul>
+      <div class="callout">It's all play money. If the wallet runs dry, you can reset it and start over.</div>
+    }
+    @case ('writeups') {
+      <h3>The write-ups</h3>
+      <ul>
+        <li>Every pick has a <b>plain write-up</b>: the case for it in a few lines, built straight from the bot's numbers, and the most likely way it loses.</li>
+        <li><b>LOVE</b> and <b>LOCK</b> picks also get an <b>analysis written by Claude</b>, an AI model. It's grounded in the bot's own numbers (its projection, the line, the matchup, injuries and weather), and it's checked before it's shown, so it can't invent facts the bot didn't have.</li>
+        <li>On NFL games, a pick our AI analyst also likes is marked <b>Algorithm + Analyst</b> and ranks a little higher.</li>
+      </ul>
+    }
+    @case ('pipeline') {
+      <h3>The algorithm</h3>
+      <p class="muted">Admins only. The bettor runs every hour on GitHub (libs/ranker/scripts/model/run.mjs).</p>
+
+      <h4>Data</h4>
+      <ul>
+        <li><b>ESPN</b>: schedules, scores, rosters, injuries, depth charts and box scores.</li>
+        <li><b>nflverse</b>: NFL play-by-play, snap counts and player logs.</li>
+        <li><b>NHL StatsAPI</b> and <b>MLB StatsAPI</b>: their player logs, lineups, goalies and probable starters.</li>
+        <li><b>The Odds API</b>: <b>DraftKings</b> (the book the bot bets and the board shows) and <b>Pinnacle</b> (the sharp reference for fair prices and closing-line value).</li>
+        <li><b>Open-Meteo</b>: kickoff weather for outdoor games (wind, cold, rain and snow).</li>
+      </ul>
+
+      <h4>The game model</h4>
+      <p>
+        Every team has a rating, replayed game by game in date order and fit on held-out games: home field, how fast
+        ratings move, how they revert between seasons. Context terms adjust each game's margin or total (rest, travel
+        and the rest; the Live Model lists each one, kept only if held-out games are better with it). Margins are
+        priced on a fitted distribution with the sport's key numbers (the NFL's 3s and 7s), so a spread's chance
+        knows that -3 and -3.5 are very different bets.
+      </p>
+
+      <h4>The props projection</h4>
+      <ul>
+        <li><b>Rate</b>: his average this season, pulled toward a <b>prior</b> (last season, or players like him) by a fitted number of games, with his last five weighted in.</li>
+        <li><b>Role-aware</b> (NFL): a quarterback by his starts, a back or pass-catcher by his snap share as expected tonight.</li>
+        <li><b>Opponent</b>: what the defense allows his position, and his role (WR1, RB1, starters and bench).</li>
+        <li><b>Funnel and pace</b>: whether a defense pushes teams to pass or run, and how many plays its opponents run.</li>
+        <li><b>Vacated work</b>: teammates out leave work behind; his cut of it lifts him, a starter back takes it away.</li>
+        <li><b>Game script</b>: the game model's expected score; a blowout or a shootout moves volume.</li>
+        <li><b>Context</b>: wind, cold, rain or snow, a backup QB, back-to-backs, the power play, the other goalie or starter, the plate umpire.</li>
+        <li>The spread around the projection is a fitted negative binomial, so the chance of clearing any line is priced, not guessed.</li>
+      </ul>
+
+      <h4>Guards</h4>
+      <ul>
+        <li><b>Gap / CHECK</b>: a market where the model is too far from the book isn't bet. It's kept as a CHECK for the owner to look into.</li>
+        <li><b>Role</b>: a player whose role just changed, in the direction that hurts the bet, is CHECKed, not bet.</li>
+        <li><b>Skew</b>: a side whose only edge is the spread's own skew (an under with the projection above the line, an over below it) is skipped.</li>
+        <li><b>Timing and news</b>: bets are placed only inside each sport's window before the start, and re-priced when news breaks.</li>
+        <li><b>Injuries</b>: out, doubtful and IR players are read from the injury report; their work is handed to teammates (vacated work), and a game's open bets are re-priced on news.</li>
+        <li><b>Caps</b>: one prop per player per game, 1 unit on an untested prop type (3 once tested), and 5 units per game across all its markets.</li>
+      </ul>
+
+      <h4>Staking</h4>
+      <p>
+        Stakes come from the Kelly fraction: 0.5 units at no edge, rising to 3 units at the desk's edge scale, in
+        half-unit steps (a heavy favorite's stake held to what its edge in chance would stake at -110). The chance
+        already includes the trust, so an unproven market bets small. The model's lean tapers as it nears each
+        market's gap limit (12 points on spreads and totals, 15 on moneylines and props); past it, a CHECK.
+      </p>
+
+      <h4>Trust and CLV</h4>
+      <p>
+        Trust (0 to 1) is fit per market and prop type on graded bets and <b>closing-line value</b>: did the price
+        move toward the bot after it bet? Beating the close is the surest sign of a real edge. Before enough bets are
+        graded, a type starts at its starting trust; the backtest replays past games with today's model to fit the
+        game lines.
+      </p>
+
+      <h4>The model epoch</h4>
+      <p>
+        Every major change to how the bot projects or prices bumps the <b>model epoch</b>. Trust is then fit only on
+        bets placed since (plus the backtest, which replays history with the current model), so a new model earns its
+        trust on its own record. Older bets stay on the record; they just don't count toward trust. UI-only changes
+        don't bump it.
+      </p>
+
+      <h4>Self-checks</h4>
+      <ul>
+        <li><b>The weekly self-check</b> grades the bot against itself: calibration, closing-line value, each guard's hit rate, and flags what needs a look.</li>
+        <li><b>CHECK self-evaluation</b>: every CHECK is graded as if it had been bet, by cause. A cause that keeps winning is a blind spot to fix; one that keeps losing is a guard earning its keep. The advice is never applied automatically.</li>
+        <li><b>Owner notes</b>: a note on a CHECK or an open bet is read by the bettor on its next run.</li>
+      </ul>
+    }
+    @case ('model') {
+      <h3>The live model</h3>
+      <p class="muted">Each sport's model as its last run left it (data/model/state.json). Click a sport, then a part, to open it.</p>
+      @if (loading) {
+        <p class="muted">Loading…</p>
+      } @else if (!sports.length) {
+        <p class="muted">No model state found.</p>
+      }
+      @for (s of sports; track s.sport) {
+        <div class="fold" [class.open]="shown(s.sport)">
+          <button type="button" class="fold-head sport" [attr.aria-expanded]="shown(s.sport)" (click)="toggle(s.sport)">
+            <mat-icon class="fold-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>
+            <b>{{ s.sport.toUpperCase() }}</b>
+            @if (s.updated) {
+              <span class="muted">updated {{ s.updated | date: 'MMM d, h:mm a' }}</span>
+            }
+          </button>
+          @if (shown(s.sport)) {
+            <div class="fold-body">
+              <p>
+                <b>Model epoch:</b> {{ epochOf(s) | date: 'MMM d, y, h:mm a' }}@if (!s.epoch) {<span class="muted"> (from the bettor's settings; this state predates the field)</span>}.
+                Trust is fit only on bets placed since.
+              </p>
+
+              <!-- (the game lines' context terms) -->
+              <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':context', title: 'Game context terms (' + s.context.length + ')' }"></ng-container>
+              @if (shown(s.sport + ':context')) {
+                @if (s.context.length) {
+                  <div class="table-wrap">
+                    <table>
+                      <thead><tr><th>Term</th><th>On</th><th>Size</th><th>Held-out gain</th></tr></thead>
+                      <tbody>
+                        @for (t of s.context; track t.key) {
+                          <tr [class.out]="!t.kept">
+                            <td>{{ t.label }}</td>
+                            <td>{{ t.on }}</td>
+                            <td>{{ t.sizeText }}</td>
+                            <td [class.up]="(t.gain ?? 0) > 0 && t.kept" [class.down]="(t.gain ?? 0) < 0">{{ t.gainText }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                } @else {
+                  <p class="muted">None.</p>
+                }
+              }
+
+              <!-- (the prop types and their fitted terms) -->
+              <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':props', title: 'Prop types (' + s.props.length + ')' }"></ng-container>
+              @if (shown(s.sport + ':props')) {
+                @for (t of s.props; track t.key) {
+                  <div class="prop">
+                    <div class="prop-head"><b>{{ t.label }}</b> <span class="muted">{{ t.rows | number }} rows · trust {{ t.trust }}</span></div>
+                    @if (t.base) {
+                      <div class="muted">{{ t.base }}</div>
+                    }
+                    @if (t.terms.length) {
+                      <div class="table-wrap">
+                        <table>
+                          <tbody>
+                            @for (r of t.terms; track r.name) {
+                              <tr [class.out]="!r.kept">
+                                <td>{{ r.name }}</td>
+                                <td>{{ r.value }}</td>
+                                <td [class.up]="r.up" [class.down]="r.down">{{ r.gain }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                  </div>
+                } @empty {
+                  <p class="muted">No props.</p>
+                }
+              }
+
+              <!-- (the trust, a market or prop type a row) -->
+              <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':trust', title: 'Trust (' + s.trust.length + ')' }"></ng-container>
+              @if (shown(s.sport + ':trust')) {
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Market</th><th>Trust</th><th>Bets</th><th></th></tr></thead>
+                    <tbody>
+                      @for (t of s.trust; track t.key) {
+                        <tr>
+                          <td>{{ t.label }}</td>
+                          <td>{{ t.trust }}</td>
+                          <td>{{ t.n }}</td>
+                          <td class="muted">{{ t.fitted ? 'fitted' : 'starting' }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+
+              <!-- (the CHECKs: how many, and their graded record by cause) -->
+              @if (s.checks; as c) {
+                <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':checks', title: 'CHECKs (' + c.n + ', ' + c.open + ' open)' }"></ng-container>
+                @if (shown(s.sport + ':checks')) {
+                  @if (c.rows.length) {
+                    <p class="muted">{{ c.graded }} graded as if bet, a unit each, by cause.</p>
+                    <div class="table-wrap">
+                      <table>
+                        <thead><tr><th>Cause</th><th>Record</th><th>Hit rate</th><th>Profit</th></tr></thead>
+                        <tbody>
+                          @for (r of c.rows; track r.key) {
+                            <tr>
+                              <td>{{ r.label }}</td>
+                              <td>{{ r.record }}</td>
+                              <td>{{ r.hit }}</td>
+                              <td [class.up]="r.up" [class.down]="!r.up">{{ r.profit }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  } @else {
+                    <p class="muted">None graded yet.</p>
+                  }
+                }
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  }
+</about-frame>
+
+<!-- (a part's fold: its chevron and title) -->
+<ng-template #part let-key="key" let-title="title">
+  <button type="button" class="fold-head" [class.open]="shown(key)" [attr.aria-expanded]="shown(key)" (click)="toggle(key)">
+    <mat-icon class="fold-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>{{ title }}
+  </button>
+</ng-template>

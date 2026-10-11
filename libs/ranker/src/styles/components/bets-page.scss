@@ -983,7 +983,10 @@ $arm-length: 175px;
   align-self: center;
   display: flex;
   flex: none;
+  flex-wrap: wrap;
   gap: 8px;
+  justify-content: center;
+  max-width: 100%;
   margin-bottom: 14px;
 
   // (felt pills; the open one ringed in the page's gold)
@@ -1011,6 +1014,25 @@ $arm-length: 175px;
       outline: 2px solid var(--scoreboard-led);
       outline-offset: 2px;
     }
+  }
+
+  // (the info button: a round felt chip, the page's About)
+  .bets-info {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    padding: 0;
+    height: 30px;
+    width: 30px;
+
+    .mat-icon {
+      @include v.icon-size(18px);
+    }
+  }
+
+  // (no views to switch: the info button alone, at the right)
+  &.info-only {
+    align-self: flex-end;
   }
 }
 

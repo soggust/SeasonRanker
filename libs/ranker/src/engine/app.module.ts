@@ -28,6 +28,7 @@ import { AboutComponent } from '@sport/about/about.component';
 import { AboutFrameComponent } from './about/about-frame.component';
 import { PositionService } from './position.service';
 import { BetsPageComponent } from './bets/bets-page.component';
+import { BetsAboutComponent } from './bets/bets-about.component';
 import { ModelDeskComponent } from './bets/model-desk.component';
 import { DeskNoteComponent } from './bets/desk-note.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
@@ -52,6 +53,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
     AboutComponent,
     AboutFrameComponent,
     BetsPageComponent,
+    BetsAboutComponent,
     ModelDeskComponent,
     DeskNoteComponent,
     ...ACCOUNT_COMPONENTS,
