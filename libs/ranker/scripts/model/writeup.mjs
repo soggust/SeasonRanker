@@ -930,7 +930,9 @@ export function validate(text, sheet, numbers = null, { reason = text } = {}) {
   const g = sheet.game ?? {};
   const ctx = pr.ctx ?? {};
   if (/injur|hurt|ruled out|sidelined|day-to-day/i.test(bare) && !has(pr.out) && !has(pr.questionable)) problems.push('injury talk without an injury on the sheet');
-  if (/wind|rain|snow|cold|weather|forecast/i.test(bare) && !has(g.weather) && !['wind', 'precip', 'snow', 'cold'].some((k) => has(ctx[k]))) problems.push('weather talk without weather on the sheet');
+  // (weather words as weather: not a cold streak or a player's shooting gone cold, a hockey or basketball turn of
+  // phrase)
+  if (/(wind|winds|windy|rain|rainy|snow|snowy|weather|forecast)|cold (weather|temperatures?|game|night)|d+s*°/i.test(bare) && !has(g.weather) && !['wind', 'precip', 'snow', 'cold'].some((k) => has(ctx[k]))) problems.push('weather talk without weather on the sheet');
   if (/\brest|back-to-back|travel|fatigue|tired/i.test(bare) && !has(g.rest) && !has(g.b2b) && !has(pr.restDays) && !has(ctx.b2b)) problems.push('rest talk without rest on the sheet');
   // 4. banned outright
   if (BANNED.test(bare)) problems.push(`banned: ${bare.match(BANNED)[0]}`);
