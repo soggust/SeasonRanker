@@ -86,7 +86,8 @@
               @let d = decided().get(b.id);
               <tr [class.desk-grouped]="many">
                 <th>@if (!many) {<img class="desk-league" [src]="leagueLogo(b.sport)" [alt]="b.sport.toUpperCase()" />}</th>
-                <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container>}</td>
+                <!-- (a game's one bet: its game as a game row's, its time or score under its teams) -->
+                <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container></span>}</td>
                 <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
                 <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
                 <td>{{ oddsText(b.odds) }}</td>
@@ -204,7 +205,7 @@
                 @for (b of g.bets; track b.id) {
                   <tr [class.desk-grouped]="many">
                     <th>@if (!many && !sg.header) {<img class="desk-league" [src]="leagueLogo(b.sport)" [alt]="b.sport.toUpperCase()" />}</th>
-                    <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b }"></ng-container>}</td>
+                    <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b }"></ng-container></span>}</td>
                     <td class="w-date">@if (!many) {{{ b.start | date: 'MMM d' }}}</td>
                     <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
                     <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
