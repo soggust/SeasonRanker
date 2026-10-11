@@ -103,7 +103,8 @@ export function coreObservations(body) {
 
 // The bettor's own bets on the game as observations (its side, its price when it bet, and the last it saw;
 // a prop's other side at the price beside it (otherOdds), so a bet against the bot's prop is checked too; a
-// CHECK's (checks.mjs, which the page shows too) the same way)
+// CHECK's (checks.mjs, which the page shows too) the same way, and each price it stood at before (earlier), so
+// a bet taken at the price the page showed then still matches once the CHECK's been written again)
 export function botObservations(ledgerBets) {
   const out = [];
   for (const b of ledgerBets ?? []) {
@@ -111,6 +112,13 @@ export function botObservations(ledgerBets) {
     out.push({ ...base, kind: 'bot', at: Date.parse(b.placedAt), line: b.market === 'ml' ? null : b.line, odds: b.odds });
     if (b.market === 'prop' && Number.isFinite(b.otherOdds) && (b.side === 'over' || b.side === 'under')) out.push({ ...base, side: b.side === 'over' ? 'under' : 'over', kind: 'bot', at: Date.parse(b.placedAt), line: b.line, odds: b.otherOdds });
     if (b.seen && Number.isFinite(b.seen.odds)) out.push({ ...base, kind: 'bot', at: Date.parse(b.seen.at), line: b.market === 'ml' ? null : (b.seen.line ?? b.line), odds: b.seen.odds });
+    for (const e of Array.isArray(b.earlier) ? b.earlier : []) {
+      const at = Date.parse(e?.at);
+      const line = b.market === 'ml' ? null : (e?.line ?? b.line);
+      const side = e?.side ?? b.side;
+      if (Number.isFinite(e?.odds)) out.push({ ...base, side, kind: 'bot', at, line, odds: e.odds });
+      if (b.market === 'prop' && Number.isFinite(e?.otherOdds) && (side === 'over' || side === 'under')) out.push({ ...base, side: side === 'over' ? 'under' : 'over', kind: 'bot', at, line, odds: e.otherOdds });
+    }
   }
   return out;
 }

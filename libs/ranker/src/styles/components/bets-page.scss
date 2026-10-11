@@ -457,6 +457,13 @@ $lock-gold: chip.$lock-gold;
   &.pass {
     text-shadow: inherit;
   }
+
+  // (a CHECK's "?" before its word, the two centered and a touch tighter: "?CHECK" in the phone's 50px column)
+  &.check {
+    gap: 1px;
+    justify-content: center;
+    letter-spacing: 0.3px;
+  }
 }
 
 .bet-main,

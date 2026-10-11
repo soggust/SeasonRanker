@@ -44,6 +44,11 @@ test("betWhy: a CHECK above the ranks as a lock is, the first bet under them #1"
   assert.equal(desk.betWhy(rows, 2).place, '#1');
   assert.equal(desk.betWhy(rows, 3).place, '#2');
   assert.equal(desk.betWhy(rows, 3).of, 2);
+  // (a bet's neighbors the nearest bets past the CHECKs, a CHECK's the nearest CHECKs: never a bet against a CHECK)
+  const mixed = [row(0, 'lock', 0.12), row(1, 'check', 0.01), row(2, 'check', 0.3), row(3, 'high', 0.06), row(4, 'medium', 0.03)];
+  assert.deepEqual(desk.betWhy(mixed, 3).vs.map((v) => v.place), ['Lock', '#2']);
+  assert.deepEqual(desk.betWhy(mixed, 0).vs.map((v) => v.place), ['#1']);
+  assert.deepEqual(desk.betWhy(mixed, 1).vs.map((v) => v.place), ['Check']);
 });
 
 test("notePlayers: a prop's own player first, then its game's on the picks, each once; a game market's its game's", () => {
@@ -74,6 +79,13 @@ test("noteOf: the form's note in the rules' shape, the bettor reading it back as
   assert.equal(desk.noteOf({ reason: 'news', player: '4040715', status: '', note: '' }, 'nfl', players).status, 'out');
   assert.deepEqual(desk.noteOf({ reason: 'weather', player: '', status: 'out', note: '' }, 'mma', players), { reason: 'weather', player: null, status: null, team: null, sport: null, note: null });
   assert.equal(desk.noteOf({ reason: 'news', player: '999', status: 'out', note: '' }, 'nfl', players).player, null);
+  // (someone not on the picks, a game market's starter, by his ESPN id: his team left to the bettor)
+  const qb = desk.noteOf({ reason: 'news', player: desk.OTHER_PLAYER, athlete: ' 3139477 ', status: 'out', note: '' }, 'nfl', players);
+  assert.deepEqual(qb, { reason: 'news', player: '3139477', status: 'out', team: null, sport: 'nfl', note: null });
+  assert.match(desk.noteOf({ reason: 'news', player: desk.OTHER_PLAYER, athlete: 'Mahomes', status: 'out', note: '' }, 'nfl', players), /digits/);
+  // (the bot prices with a player and his status; a reason alone is kept for its review)
+  assert.ok(desk.notePrices(news) && desk.notePrices(qb));
+  assert.ok(!desk.notePrices(desk.noteOf({ reason: 'weather', player: '', status: '', note: 'wind 25mph' }, 'nfl', players)));
 
   // (the bettor's reader takes it as it was saved)
   const read = deskNoteOf('401:spread', { ...news, by: 'root', at: '2026-10-10T12:00:00Z' });
@@ -88,8 +100,10 @@ test('readNote, noteText, formOf: a saved note read back, in words, and into the
   assert.equal(desk.noteText(desk.readNote({ reason: 'market-wrong' }), players), "Market is wrong, model's right");
   assert.equal(desk.readNote({ reason: 'gossip' }), null);
   assert.equal(desk.readNote(null), null);
-  assert.deepEqual(desk.formOf(n), { reason: 'news', player: '4040715', status: 'out', note: 'ruled out' });
-  assert.deepEqual(desk.formOf(null), { reason: '', player: '', status: '', note: '' });
+  assert.deepEqual(desk.formOf(n, players), { reason: 'news', player: '4040715', athlete: '', status: 'out', note: 'ruled out' });
+  assert.deepEqual(desk.formOf(null), { reason: '', player: '', athlete: '', status: '', note: '' });
+  // (a player the form doesn't list, back as someone else by his id)
+  assert.deepEqual(desk.formOf({ ...n, player: '3139477' }, players), { reason: 'news', player: desk.OTHER_PLAYER, athlete: '3139477', status: 'out', note: 'ruled out' });
 });
 
 test("checkBets and tally: the CHECKs at a unit as if bet, open till graded, a void one and the closed ones out of the record", () => {

@@ -56,6 +56,11 @@ test('upsertCheck: new, then written again only while open, not locked, and some
   // (the price moved: written again, its first time kept)
   assert.equal(upsertCheck(ledger, check({ odds: -120, placedAt: '2026-10-09T12:00:00Z' }), now), 'updated');
   assert.deepEqual([ledger.checks[0].odds, ledger.checks[0].firstAt, ledger.checks[0].n], [-120, '2026-10-09T11:00:00Z', 2]);
+  // (the price it stood at before kept, for the settler: a bet taken at it still matches)
+  assert.deepEqual(ledger.checks[0].earlier.map((e) => [e.at, e.odds]), [['2026-10-09T11:00:00Z', check().odds]]);
+  // (the model moved, the price didn't: nothing more kept)
+  assert.equal(upsertCheck(ledger, check({ odds: -120, model: 0.75, placedAt: '2026-10-09T13:00:00Z' }), now), 'updated');
+  assert.equal(ledger.checks[0].earlier.length, 1);
   // (locked: 20 minutes from the start)
   const late = new Date(Date.parse(ledger.checks[0].start) - 10 * 60e3);
   assert.ok(checkLocked(ledger.checks[0], late));
@@ -195,6 +200,12 @@ test("the settler's price check: a prop's other side at its otherOdds, so a bet 
   assert.equal(checkPrice({ ...play, odds: 110 }, obs).ok, false);
   // (no other side known: none observed)
   assert.equal(botObservations([{ market: 'prop', side: 'over', propType: 'recYds', athlete: 9, line: 50.5, odds: -105, placedAt: '2026-10-09T20:00Z' }]).length, 1);
+  // (a CHECK written again at a new price: a bet at the price the page showed before still matches, either side)
+  const moved = { market: 'prop', side: 'over', propType: 'recYds', athlete: 9, line: 54.5, odds: -125, otherOdds: 105, placedAt: '2026-10-10T12:00Z', earlier: [{ at: '2026-10-10T11:00Z', side: 'over', line: 54.5, odds: -110, otherOdds: -110 }] };
+  const over = { market: 'prop', side: 'over', propType: 'recYds', athlete: '9', line: 54.5, odds: -110, placedAt: '2026-10-10T11:20Z' };
+  assert.ok(checkPrice(over, botObservations([moved])).ok);
+  assert.ok(checkPrice({ ...over, side: 'under' }, botObservations([moved])).ok);
+  assert.equal(checkPrice(over, botObservations([{ ...moved, earlier: undefined }])).ok, false);
 });
 
 // ---------------------------------------------------------------------------

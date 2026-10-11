@@ -280,7 +280,15 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
 
   const vs: BetWhyVs[] = [];
   const mine = new Map(raw.map((p) => [p.key, p]));
-  for (const at of [index - 1, index + 1]) {
+  // (its neighbors of its own kind: a bet's the nearest bets either side, past any CHECK, since a CHECK
+  // is ordered by its gap and isn't a bet; a CHECK's the nearest CHECKs)
+  const isCheck = (r: BetWhyRow | undefined) => r?.confidence === 'check';
+  const nearest = (step: number) => {
+    let at = index + step;
+    while (list[at] && isCheck(list[at]) !== isCheck(row)) at += step;
+    return at;
+  };
+  for (const at of [nearest(-1), nearest(1)]) {
     const other = list[at];
     if (!other) continue;
     const theirs = new Map(partsOf(other).parts.map((p) => [p.key, p]));

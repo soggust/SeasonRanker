@@ -56,10 +56,13 @@ export interface DeskNote {
   note: string | null;
 }
 
-// (the form's fields: a select's empty choice is '')
+// (the form's fields: a select's empty choice is ''; the player OTHER_PLAYER, someone not on the picks, by
+// his ESPN id in athlete: a game market's starter the picks don't name, notes.mjs finding his team)
+export const OTHER_PLAYER = 'other';
 export interface NoteForm {
   reason: NoteReason | '';
   player: string;
+  athlete?: string;
   status: NoteStatus | '';
   note: string;
 }
@@ -99,11 +102,17 @@ export function notePlayers(row: NoteRow, game: readonly NoteRow[]): NotePlayer[
 }
 
 // The note to save from the form, or why it can't be: a reason; a status only with a player, and a player's
-// news needs one (a player alone reads as out); the note trimmed, NOTE_MAX at most
+// news needs one (a player alone reads as out); someone else by his ESPN id, digits, his team left to the bot;
+// the note trimmed, NOTE_MAX at most
 export function noteOf(form: NoteForm, sport: string | null, players: readonly NotePlayer[]): DeskNote | string {
   const reason = NOTE_REASONS.find((r) => r.value === form.reason)?.value;
   if (!reason) return 'Pick a reason';
-  const player = players.find((p) => p.id === form.player) ?? null;
+  let player: NotePlayer | null = players.find((p) => p.id === form.player) ?? null;
+  if (form.player === OTHER_PLAYER) {
+    const id = digits((form.athlete ?? '').trim());
+    if (!id) return "The player's ESPN id is digits (from his espn.com page's address)";
+    player = players.find((p) => p.id === id) ?? { id, name: `player ${id}`, team: null };
+  }
   const status = player ? (NOTE_STATUSES.find((s) => s.value === form.status)?.value ?? 'out') : null;
   const note = form.note.trim();
   if (note.length > NOTE_MAX) return `The note is ${note.length} characters: ${NOTE_MAX} at most`;
@@ -142,10 +151,21 @@ export function noteText(n: DeskNote, players: readonly NotePlayer[]): string {
   return [reason, who, n.note ? `“${n.note}”` : null].filter(Boolean).join(' · ');
 }
 
-// The form a saved note fills back in (or a blank one)
-export function formOf(n: DeskNote | null): NoteForm {
-  return { reason: n?.reason ?? '', player: n?.player ?? '', status: n?.status ?? '', note: n?.note ?? '' };
+// The form a saved note fills back in (or a blank one): a player not among the ones it lists, by his id
+export function formOf(n: DeskNote | null, players: readonly NotePlayer[] = []): NoteForm {
+  const other = !!n?.player && !players.some((p) => p.id === n.player);
+  return {
+    reason: n?.reason ?? '',
+    player: other ? OTHER_PLAYER : (n?.player ?? ''),
+    athlete: other ? n!.player! : '',
+    status: n?.status ?? '',
+    note: n?.note ?? '',
+  };
 }
+
+// (a saved note the bot prices with: a player and his status, notes.mjs applyNotes; the rest kept with the
+// CHECK for its review, tallied by reason)
+export const notePrices = (n: DeskNote | null): boolean => !!n?.player && !!n?.status;
 
 // A CHECK as checks.json keeps it (checks.mjs), as far as the desk reads it
 export interface CheckEntry extends Partial<ModelBet> {

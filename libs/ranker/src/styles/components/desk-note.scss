@@ -99,28 +99,38 @@
   }
 }
 
+// (someone else's ESPN id: the note's box, one line)
+.note-field input,
+.note-text textarea {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid chip.$felt-seam;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #fff;
+  font: inherit;
+  padding: 8px 10px;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus-visible {
+    border-color: var(--scoreboard-led, #{chip.$check-light});
+    outline: none;
+  }
+}
+
+.note-field input {
+  font-size: 12.5px;
+  width: 11em;
+}
+
 .note-text {
   margin-top: 8px;
 
   textarea {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid chip.$felt-seam;
-    border-radius: 8px;
-    box-sizing: border-box;
-    color: #fff;
-    font: inherit;
-    padding: 8px 10px;
     resize: vertical;
     width: 100%;
-
-    &::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    &:focus-visible {
-      border-color: var(--scoreboard-led, #{chip.$check-light});
-      outline: none;
-    }
   }
 }
 

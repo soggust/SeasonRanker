@@ -15,7 +15,9 @@
 //   when     recorded the run it's skipped, and written again by a later run only while it isn't locked
 //            (REPRICE_BY before the start, timing.mjs) and only when something material changed (its side,
 //            line or price, the model or the book moved a point or more, an owner's note): so the picks don't
-//            churn every hour with the refits' small moves
+//            churn every hour with the refits' small moves; the prices it stood at before, as the page showed
+//            them (earlier: { at, side, line, odds, otherOdds }, the last EARLIER_KEPT), so a bet taken at one
+//            of them still matches the board when it's settled (settle-lib.mjs botObservations)
 //   graded   once its game is final, as a bet would be, at a unit, in checkResult ({ status, profit, final,
 //            actual (a prop's), void, gradedAt }): what it would have done, never in the record
 //   closed   when a later run prices its market and the gap guard no longer skips it (the model came back
@@ -63,6 +65,13 @@ export function checkOf(bet, guard) {
   };
 }
 
+// (how many of a CHECK's earlier prices it keeps: an hourly bettor's moves before the lock, with room over)
+export const EARLIER_KEPT = 16;
+
+// (a CHECK's price as the page showed it: its side, line and the two prices)
+const priceOf = (c) => ({ at: c.placedAt, side: c.side, line: c.line ?? null, odds: c.odds, otherOdds: c.otherOdds ?? null });
+const samePrice = (a, b) => a.side === b.side && (a.line ?? null) === (b.line ?? null) && a.odds === b.odds && (a.otherOdds ?? null) === (b.otherOdds ?? null);
+
 // (what a CHECK's material facts are: the ones whose change writes it again)
 const material = (c) => [c.side, c.line, c.odds, c.otherOdds ?? null, Math.round(c.model * 100), Math.round(c.fair * 100), c.note ? `${c.note.reason}:${c.note.player ?? ''}:${c.note.status ?? ''}:${c.note.at ?? ''}` : ''].join('|');
 
@@ -80,7 +89,9 @@ export function upsertCheck(ledger, check, now) {
   if (was.checkResult || checkLocked(was, now)) return null;
   const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}) };
   if (!was.closedAt && material(next) === material(was)) return null;
-  ledger.checks[at] = { ...next, firstAt: was.firstAt ?? was.placedAt, n: (was.n ?? 1) + 1 };
+  // (the price it stood at, kept when this one's another)
+  const earlier = [...(Array.isArray(was.earlier) ? was.earlier : []), ...(samePrice(was, next) ? [] : [priceOf(was)])].slice(-EARLIER_KEPT);
+  ledger.checks[at] = { ...next, ...(earlier.length ? { earlier } : {}), firstAt: was.firstAt ?? was.placedAt, n: (was.n ?? 1) + 1 };
   return 'updated';
 }
 
