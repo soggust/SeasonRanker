@@ -1,7 +1,7 @@
 // The Odds API (the-odds-api.com, v4), for the model desk: game lines and player props from the desk's one
 // book (BOOK, leagues.mjs: DraftKings) with its prices, Pinnacle's sharp line for the fair chance, and the
 // past's lines for the backtest. Paid by the credit (20,000 a month), so every call is accounted for and
-// budgeted:
+// budgeted (a busy day up to BURST days' worth):
 //
 //   cost   /events: free (the coming games' ids); /odds: markets x regions; /events/{id}/odds: the markets it returns x regions; /historical/...: ten
 //          times that. Up to 10 bookmakers named count as one region (the docs: "every group of 10 bookmakers
@@ -35,6 +35,10 @@ export const RESERVE = 2000;
 export const HISTORY_BUDGET = 6000;
 // (the daily split of what's left for the live features, after the reserve and history's share)
 const SHARES = { lines: 0.3, props: 0.7 };
+// (a busy day may spend up to this many days' worth: the NFL's props come nearly all on a Sunday, and a day's
+// even share can't re-ask a full slate priced again on news; the month's total and the reserve still hold, as
+// the share is of what's left)
+const BURST = { lines: 2, props: 4 };
 
 // The sports' keys, and the books: the desk's own (its prices are the ones it bets) and Pinnacle (its line, the
 // vig taken out, is the fair chance); for props, the desk's book alone (Pinnacle's props are thin)
@@ -91,7 +95,7 @@ export function budget(now = Date.now()) {
   // the days left, split by share)
   const historyLeft = Math.max(0, HISTORY_BUDGET - spent.history);
   const free = Math.max(0, remaining - RESERVE - historyLeft);
-  const allowance = Object.fromEntries(Object.entries(SHARES).map(([f, s]) => [f, Math.floor((free * s) / daysLeft)]));
+  const allowance = Object.fromEntries(Object.entries(SHARES).map(([f, s]) => [f, Math.min(Math.floor(free * s), Math.floor(((free * s) / daysLeft) * (BURST[f] ?? 1)))]));
   return {
     cycleStart: cycle?.start.toISOString() ?? null,
     cycleEnd: cycle?.end.toISOString() ?? null,
