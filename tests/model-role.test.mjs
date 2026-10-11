@@ -178,9 +178,9 @@ test('priceProps: a teammate on IR missing; a role change a CHECK either side, a
   rosterSet.out = new Map([['ir', { name: 'Hurt Back', pos: 'RB', status: 'Injured Reserve' }]]);
   const live = { injuries: new Map([['1', []]]), rosters: new Map([['1', rosterSet]]) };
   const props = [
-    // (a: no role change, an even line near his usual; b: a regular at his position on IR, a big cut; c: a line
+    // (a: no role change, an even line near his usual (above his projection, so its under isn't the skew's alone); b: a regular at his position on IR, a big cut; c: a line
     // far from his usual with no price)
-    { athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 49.5, open: null, prices: { over: -110, under: -110 } },
+    { athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 50.5, open: null, prices: { over: -110, under: -110 } },
     { athlete: { id: 'b', name: 'B', team: '1' }, stat: st, line: 49.5, open: null, prices: { over: -110, under: -110 } },
     { athlete: { id: 'c', name: 'C', team: '1' }, stat: st, line: 70.5, open: null, prices: null },
   ];

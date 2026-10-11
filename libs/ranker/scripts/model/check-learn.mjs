@@ -36,7 +36,8 @@
 //   learning   checkLearning(checks): the open CHECKs counted by cause (openByCause, a role's by its
 //              sub-reason: role:<sub>), and the graded CHECKs (closed ones and voids out, as checkSummary's hit
 //              rate), by cause, by cause and stat, and a role's by its sub-reason: the record, the hit rate with
-//              a 95% Wilson interval, the break-even of their prices, the profit and the profit a unit. An
+//              a 95% Wilson interval, the break-even of their prices, the profit and the profit a unit (these from
+//              the ones at a known price alone: one at an assumed -110 is in the record, counted as unpriced). An
 //              older CHECK without a diagnosis diagnosed now (a trimmed one's projection gone: role or unknown)
 //   advice     recommendations, ranked: a cause whose interval sits under its break-even (MIN_N graded or
 //              more) a confirmed blind spot, the market right, named with its evidence and the fix it points
@@ -186,25 +187,32 @@ export function wilson(k, n, z = 1.96) {
   return [round(Math.max(0, mid - half), 4), round(Math.min(1, mid + half), 4)];
 }
 
-// (a list of graded CHECKs' tally: their record at a unit each, the hit rate and its interval, the break-even
-// of their prices (the average of 1 over each one's decimal price, the decided ones'), the profit and a unit's)
+// (a list of graded CHECKs' tally: their record at a unit each (every one), then from the ones at a known price
+// alone (an assumed -110's, oddsAssumed, counted apart: unpriced; its break-even and profit made up) the hit
+// rate and its interval, the break-even of their prices (the average of 1 over each one's decimal price, the
+// decided ones'), the profit and a unit's, and decided: the won and lost the advice needs MIN_N of)
 export function tallyOf(list) {
   const done = list.filter((c) => c.checkResult && !c.checkResult.void);
   const won = done.filter((c) => c.checkResult.status === 'won').length;
   const lost = done.filter((c) => c.checkResult.status === 'lost').length;
-  const decided = done.filter((c) => c.checkResult.status === 'won' || c.checkResult.status === 'lost');
-  const profit = done.reduce((t, c) => t + (c.checkResult.profit ?? 0), 0);
+  const known = done.filter((c) => !c.oddsAssumed);
+  const kWon = known.filter((c) => c.checkResult.status === 'won').length;
+  const kLost = known.filter((c) => c.checkResult.status === 'lost').length;
+  const decided = known.filter((c) => c.checkResult.status === 'won' || c.checkResult.status === 'lost');
+  const profit = known.reduce((t, c) => t + (c.checkResult.profit ?? 0), 0);
   const be = decided.length ? decided.reduce((t, c) => t + 1 / decimal(Number.isFinite(c.odds) && c.odds ? c.odds : -110), 0) / decided.length : null;
   return {
     n: done.length,
     won,
     lost,
     push: done.length - won - lost,
-    hitRate: won + lost ? round(won / (won + lost), 4) : null,
-    ci: wilson(won, won + lost),
+    unpriced: done.length - known.length,
+    decided: kWon + kLost,
+    hitRate: kWon + kLost ? round(kWon / (kWon + kLost), 4) : null,
+    ci: wilson(kWon, kWon + kLost),
     breakEven: be === null ? null : round(be, 4),
     profit: round(profit, 2),
-    perUnit: done.length ? round(profit / done.length, 3) : null,
+    perUnit: known.length ? round(profit / known.length, 3) : null,
   };
 }
 
@@ -274,16 +282,17 @@ export function checkLearning(all = []) {
   };
   const recs = [];
   const advise = (cause, sub, t) => {
-    if (!t.ci || t.won + t.lost < MIN_N || t.breakEven === null) return;
+    // (from the ones at a known price alone: tallyOf)
+    if (!t.ci || t.decided < MIN_N || t.breakEven === null) return;
     const name = sub ? `${cause}:${sub}` : cause;
     const label = `${CAUSE_LABELS[cause] ?? cause}${sub ? ` (${sub})` : ''}`;
-    const ev = `${t.won}-${t.lost}${t.push ? `-${t.push}` : ''}, ${Math.round(t.hitRate * 100)}% [${Math.round(t.ci[0] * 100)}-${Math.round(t.ci[1] * 100)}%] against ${Math.round(t.breakEven * 100)}% to break even, ${t.profit >= 0 ? '+' : ''}${t.profit}u (${t.perUnit >= 0 ? '+' : ''}${t.perUnit}u a CHECK)`;
+    const ev = `${t.won}-${t.lost}${t.push ? `-${t.push}` : ''}${t.unpriced ? ` (${t.unpriced} at an assumed -110 left out)` : ''}, ${Math.round(t.hitRate * 100)}% [${Math.round(t.ci[0] * 100)}-${Math.round(t.ci[1] * 100)}%] against ${Math.round(t.breakEven * 100)}% to break even, ${t.profit >= 0 ? '+' : ''}${t.profit}u (${t.perUnit >= 0 ? '+' : ''}${t.perUnit}u a CHECK)`;
     const evidence = { n: t.n, won: t.won, lost: t.lost, push: t.push, hitRate: t.hitRate, ci: t.ci, breakEven: t.breakEven, profit: t.profit, perUnit: t.perUnit };
     if (t.ci[1] < t.breakEven) recs.push({ kind: 'blind-spot', cause: name, label, confirmed: true, evidence, text: `Blind spot: ${label}, the market right (${ev}). Next fix: ${FIXES[cause] ?? FIXES.unknown}`, score: -t.profit + 100 });
     else if (t.hitRate < t.breakEven && t.perUnit < 0) recs.push({ kind: 'watch', cause: name, label, confirmed: false, evidence, text: `Watch: ${label} leans the market's way (${ev}), not yet clear of chance`, score: -t.profit });
     else if (t.ci[0] > t.breakEven) {
       const change = loosenFor(cause, sub, marketOf(cause));
-      const ready = t.won + t.lost >= LOOSEN_N && t.ci[0] >= t.breakEven + LOOSEN_MARGIN;
+      const ready = t.decided >= LOOSEN_N && t.ci[0] >= t.breakEven + LOOSEN_MARGIN;
       recs.push({
         kind: 'loosen',
         cause: name,

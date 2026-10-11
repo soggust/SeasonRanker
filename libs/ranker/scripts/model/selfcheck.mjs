@@ -24,6 +24,7 @@
 //                 a point against it or whose CLV lost 2 points or more; the beat rate; the 5 biggest moves
 //             C4  over/under drift: per prop type and side, the share of the week's props, the record against
 //                 the expected wins, the ROI, the projection's miss (mean - actual) beside the fit's own bias
+//                 (the NFL's watches flags: its props' known lean to the unders, till pOver is calibrated)
 //             C5  favorite/dog drift: per market, the dogs' share (a plus price, or a spread side getting
 //                 points) this week against the baseline's; the dogs' and favorites' records
 //             C6  CLV by bet type: per market and prop type, the beat rate and the mean CLV (prob and ev), the
@@ -355,6 +356,9 @@ export function c4(x) {
       if (ofType.length >= 20 && share >= 0.75) status = 'watch';
       if (z.n >= 10 && fin(z.z) && z.z <= -2) status = 'watch';
       if ((z.n >= 30 && fin(z.z) && z.z <= -2.5) || (ofType.length >= 20 && share >= 0.75 && z.n >= 10 && fin(z.roi) && z.roi <= -0.1)) status = 'flag';
+      // (the NFL's props: a known lean to the unders from the spread's skew (the projections' dispersion, not
+      // news), so its watches are flags till that's calibrated)
+      if (x.sport === 'nfl' && status === 'watch') status = 'flag';
       cells.push({ key: `${t}:${side}`, label: `${list[0].statLabel ?? t} ${side === 'over' ? 'Over' : 'Under'}`, status, placed: list.length, share: r4(share), ...z, bias: r4(miss), fitBias: r4(types[t]?.check?.bias), allBias: r4(types[t]?.allPlayersBias) });
     }
   }
@@ -366,7 +370,7 @@ export function c4(x) {
     headline: top ? `${top.label}: ${recOf(top)}, ${pct(top.share)} of its stat's props${fin(top.roi) ? `, ROI ${pct(top.roi, 1)}` : ''}` : 'No props placed this week',
     metric: 'z',
     value: top?.z ?? null,
-    threshold: 'watch one side 75% of a stat (20+) or a side z -2 (10+ graded); flag z -2.5 (30+) or one-sided at ROI -10% (10+ graded)',
+    threshold: `watch one side 75% of a stat (20+) or a side z -2 (10+ graded); flag z -2.5 (30+) or one-sided at ROI -10% (10+ graded)${x.sport === 'nfl' ? "; the NFL's watches flags" : ''}`,
     n: placed.length,
     rows: cells.slice(0, WORST * 2),
     tested: cells.length,

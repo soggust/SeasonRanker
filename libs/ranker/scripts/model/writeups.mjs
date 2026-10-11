@@ -6,7 +6,9 @@
 //
 //   which    the picks in picks.json's top 40 at a level in WRITEUP_LEVELS (lock,high: picks.mjs levelOf, the
 //            bet's own band, never the page's), the edge bets on their unguarded games, starting more than
-//            20 minutes from now, with no analysis for the bet's current facts (its hash, writeup.mjs hashOf)
+//            20 minutes from now, that today's guards would still place (guardedNow: not past the gap, not an
+//            assumed -110 the unpriced guard would skip, not a side against its own projection; an open bet placed
+//            before a guard was added isn't argued for), with no analysis for the bet's current facts (its hash, writeup.mjs hashOf)
 //            that's ok, rejected or refused, and fewer than 3 calls on those facts. WRITEUP_TOP_N (0) adds the
 //            top N a sport by score whatever their band (the owner's). Lock before high, then the soonest
 //            start, then the best score
@@ -16,7 +18,9 @@
 //            xhigh or max: the thinking counts against it), the system prompt frozen and cached (no
 //            timestamps: the run's first call writes the cache alone, the rest read it, 3 at a time), the
 //            answer a JSON schema (output_config.format), the API's refusal fallback (WRITEUP_FALLBACKS=off
-//            drops it), the SDK's own retries (2) on a rate limit or a server error
+//            drops it), no SDK retries (a retried call that timed out may have been billed each time): one
+//            CALL_TIMEOUT_MS (4 minutes) at most, and no call started RUN_DEADLINE_MS (5 minutes) after the
+//            run's first, so the step's 10 minutes hold
 //   checked  checkAnswer: every numeral listed with the sheet path it came from and a value there, its
 //            names the sheet's, no injury, weather or rest talk the sheet doesn't hold, none of the banned
 //            words, the side and the line said together (validate); one that fails is asked once more, fresh,
@@ -33,12 +37,15 @@
 //   logged   every call in the AI usage log (.cache/model/ai-usage.json: { what: 'writeup', sport, id, hash,
 //            model (the one that served it), effort, attempt, usage, cost, status, problems, stance, chars }),
 //            its cost from the usage the API reports (ai-budget.mjs costOf: the skill's price table, to verify
-//            on the pricing page); the run's line: written, retried, rejected, its dollars and tokens, the
+//            on the pricing page); a call that failed with none reported at its worst case where it may have
+//            been billed unseen (a timeout, a dropped connection, a server's error), at nothing where the API
+//            turned it away; the run's line: written, retried, rejected, its dollars and tokens, the
 //            day's and the month's spend against the caps
 //   written  writeups.json items[id].ai = { hash, v, at, model, effort, status, headline, reason, risk, stance,
 //            numbers, cites, attempts, sheet (the state-derived facts frozen with it, for audit) }; picks.json
 //            patched in place with applyWriteups (picks.mjs uses the same on every hourly render, so the text
-//            never flips back to plain)
+//            never flips back to plain). writeups.json saved after each bet's done, so a step killed mid-sport
+//            keeps the analyses it paid for
 //
 // Run: node libs/ranker/scripts/model/writeups.mjs [sport ...] [--dry | --count | --probe | --validate] [--rewrite]
 //   (none)      the analyses due, under the caps (only with ANTHROPIC_API_KEY, and WRITEUPS not off)
@@ -57,8 +64,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { aiBudget, costOf, DAY_CAP, MONTH_CAP, PRICES } from './ai-budget.mjs';
-import { intentOf } from './desk.mjs';
+import { aiBudget, costOf, DAY_CAP, FLOOR_FILE, loadSdk, MONTH_CAP, PRICES } from './ai-budget.mjs';
+import { gapGuard, intentOf } from './desk.mjs';
+import { skewOnly, unpricedWhy } from './props.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { applyWriteups, factsOf, plainFor, sibOf, stableStringify, validate } from './writeup.mjs';
 
@@ -76,6 +84,9 @@ export const MAX_ATTEMPTS = 3;
 export const WORST_INPUT = 6000;
 // (the measured run's cap, every call together)
 export const VALIDATE_CAP = 4;
+// (a call's most, and when the run stops starting calls: the workflow step's 10 minutes. No SDK retries)
+export const CALL_TIMEOUT_MS = 240_000;
+export const RUN_DEADLINE_MS = 300_000;
 // (the statuses that are final for a bet's facts: never asked again on the same hash)
 const FINAL = new Set(['ok', 'rejected', 'refused']);
 // (the band's word on the sheet)
@@ -273,12 +284,27 @@ export function checkAnswer(out, sheet) {
 // ---------------------------------------------------------------------------------------------------------
 // The queue
 
+// Why an open bet today's guards wouldn't place (null: they would): past the gap (desk.mjs gapGuard), an
+// assumed -110 the unpriced guard skips (props.mjs unpricedWhy, at his over-rate when placed), or a prop's side
+// against its own projection (props.mjs skewOnly). Bets placed before a guard was added stay open; they're not
+// argued for on the page
+export function guardedNow(bet) {
+  if (!bet) return null;
+  const market = bet.market === 'prop' ? 'prop' : bet.market;
+  if (gapGuard(market, bet.model, bet.fair)) return 'gap';
+  if (bet.market !== 'prop') return null;
+  if (bet.oddsAssumed && (bet.line === 0.5 || (fin(bet.projection?.fairOver) && unpricedWhy(bet.line, bet.projection.fairOver)))) return 'unpriced';
+  if (skewOnly(bet.side, bet.projection?.mean, bet.line)) return 'skew';
+  return null;
+}
+
 const levelRank = (l) => (l === 'lock' ? 0 : l === 'high' ? 1 : 2);
 const gameOf = (games, id) => (games instanceof Map ? games.get(id) : Array.isArray(games) ? games.find((g) => g?.id === id) : null) ?? null;
 
 // A sport's analyses due (see above): [{ sport, id, pick, bet, level, score, hash, sheet, attempts }], in order.
-// writeups: writeups.json, its plain entries brought up to date as picks.mjs does (plainFor)
-export function queueOf({ sport, picks, ledger, state = null, games = null, writeups, now = new Date(), cfg = configOf({}), rewrite = false }) {
+// writeups: writeups.json, its plain entries brought up to date as picks.mjs does (plainFor); guarded: today's
+// guards on an open bet (guardedNow; the tests' fixtures are bets placed before the gap guard)
+export function queueOf({ sport, picks, ledger, state = null, games = null, writeups, now = new Date(), cfg = configOf({}), rewrite = false, guarded = guardedNow }) {
   const bets = new Map((ledger?.bets ?? []).filter((b) => b.status === 'open').map((b) => [b.id, b]));
   const rows = (picks?.picks ?? []).filter((p) => p && p.level !== 'check');
   const topIds = new Set(
@@ -296,6 +322,7 @@ export function queueOf({ sport, picks, ledger, state = null, games = null, writ
     const bet = bets.get(p.id);
     if (!bet || intentOf(bet) !== 'edge' || p.edge === false || bet.context?.guard) continue;
     if (!(Date.parse(bet.start) - now.getTime() > LEAD_MS)) continue;
+    if (guarded(bet)) continue;
     const game = gameOf(games, bet.event);
     const sib = sibOf(bet, ledger.bets);
     const { hash, entry } = plainFor(bet, { game, sib, state, ledger, writeups });
@@ -318,11 +345,15 @@ export function queueOf({ sport, picks, ledger, state = null, games = null, writ
 // (an error's kind: a bad request is the request's fault (rejected); the rest (a rate limit, a server's, a
 // connection's, a timeout) are left for the next run)
 const badRequest = (err) => err?.status === 400 || err?.name === 'BadRequestError';
+// (an error that may have been billed though no usage came back: a timeout, a dropped connection, a server's.
+// A request the API turned away (4xx, but a timeout's 408) was not)
+export const maybeBilled = (err) => !(fin(err?.status) && err.status >= 400 && err.status < 500 && err.status !== 408);
 
 // The run's gate: every call through it, one budget, the calls in flight reserved at their worst case, the run's
-// limit. through(worst, fn): fn's result, or { capped: 'caps' | 'run' } without calling it. A call that fits the
+// limit and its deadline (a clock time). through(worst, fn): fn's result, or { capped: 'caps' | 'run' | 'time' }
+// without calling it. A call that fits the
 // caps but not beside the ones in flight waits for one of them to finish, then asks again
-export function gateOf(budget, { maxPerRun = Infinity, cap = Infinity } = {}) {
+export function gateOf(budget, { maxPerRun = Infinity, cap = Infinity, deadline = Infinity, clock = Date.now } = {}) {
   let reserved = 0;
   let calls = 0;
   let spent = 0;
@@ -344,6 +375,7 @@ export function gateOf(budget, { maxPerRun = Infinity, cap = Infinity } = {}) {
     async through(worst, fn) {
       for (;;) {
         if (calls >= maxPerRun) return { capped: 'run' };
+        if (clock() >= deadline) return { capped: 'time' };
         if (fits(worst)) break;
         if (reserved <= 0) return { capped: 'caps' };
         await new Promise((resolve) => waiting.push(resolve));
@@ -378,7 +410,8 @@ export async function writeOne(client, item, { budget, gate, cfg, what = 'writeu
     if (res.err) {
       const err = res.err;
       const text = String(err?.message ?? err).slice(0, 200);
-      const cost = err?.usage ? costOf(err.usage, MODEL) : 0;
+      // (none reported: its worst case where it may have been billed unseen, so the caps count it)
+      const cost = err?.usage ? costOf(err.usage, MODEL) : maybeBilled(err) ? worst : 0;
       gate.add(cost);
       budget?.record({ ...entry, model: MODEL, usage: err?.usage ?? null, cost, status: 'error', problems: [text], failed: true });
       budget?.save();
@@ -409,12 +442,12 @@ export async function writeOne(client, item, { budget, gate, cfg, what = 'writeu
     const req = requestOf(item.sheet, { effort, maxTokens, fallbacks: cfg.fallbacks, problems });
     const res = await gate.through(worst, async () => {
       try {
-        return account({ msg: await client.beta.messages.create(req, { timeout: 180000, maxRetries: 2 }) });
+        return account({ msg: await client.beta.messages.create(req, { timeout: CALL_TIMEOUT_MS, maxRetries: 0 }) });
       } catch (err) {
         return account({ err });
       }
     });
-    if (res.capped) return { status: calls.length ? 'error' : 'skipped-budget', capped: res.capped, problems: problems ?? [`stopped at ${res.capped === 'run' ? "the run's limit" : 'the AI caps'}`], soft: [], calls, attempts, model };
+    if (res.capped) return { status: calls.length ? 'error' : 'skipped-budget', capped: res.capped, problems: problems ?? [`stopped at ${res.capped === 'run' ? "the run's limit" : res.capped === 'time' ? "the run's deadline" : 'the AI caps'}`], soft: [], calls, attempts, model };
     if (res.err) {
       if (badRequest(res.err)) return { status: 'rejected', problems: [`bad request: ${res.text}`], soft: [], calls, attempts, model };
       return { status: 'error', transient: true, problems: [res.text], soft: [], calls, attempts, model };
@@ -457,11 +490,12 @@ const thousands = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, 
 // One sport's analyses (see above), its data in memory: { picks, ledger, state, games, writeups }, changed in
 // place (writeups.items[id].ai, picks.picks' text). Returns the tally: { queue, written, retried, rejected,
 // refused, errors, skipped, cost, usage, picksChanged, writeupsChanged, stopped }
-export async function writeSport({ sport, data, client, budget, gate, cfg, now = new Date(), rewrite = false, log = console }) {
+// onItem: called after each bet's done (main saves writeups.json then)
+export async function writeSport({ sport, data, client, budget, gate, cfg, now = new Date(), rewrite = false, log = console, onItem = null, guarded = guardedNow }) {
   const { picks, ledger, writeups } = data;
   writeups.items ??= {};
   const before = JSON.stringify(writeups);
-  const queue = queueOf({ sport, picks, ledger, state: data.state, games: data.games, writeups, now, cfg, rewrite });
+  const queue = queueOf({ sport, picks, ledger, state: data.state, games: data.games, writeups, now, cfg, rewrite, guarded });
   const t = { queue: queue.length, written: 0, retried: 0, rejected: 0, refused: 0, errors: 0, skipped: 0, cost: 0, usage: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 }, picksChanged: false, writeupsChanged: false, stopped: null };
   let inARow = 0;
   await inTurn(queue, cfg.concurrency ?? 3, async (item) => {
@@ -472,7 +506,7 @@ export async function writeSport({ sport, data, client, budget, gate, cfg, now =
       addUp(t.usage, c.usage);
     }
     if (r.calls.length > 1) t.retried++;
-    if (r.capped === 'run' && !r.calls.length) {
+    if ((r.capped === 'run' || r.capped === 'time') && !r.calls.length) {
       t.skipped++;
       return;
     }
@@ -505,6 +539,11 @@ export async function writeSport({ sport, data, client, budget, gate, cfg, now =
         sheet: JSON.parse(JSON.stringify(item.sheet)),
       },
     };
+    try {
+      onItem?.();
+    } catch (err) {
+      log.warn?.(`${sport}: writeups.json not saved after ${item.id} (${String(err?.message ?? err).slice(0, 100)})`);
+    }
   });
   // (the picks patched in place, as picks.mjs renders them every hour)
   const was = JSON.stringify(picks);
@@ -705,9 +744,9 @@ function loadSport(sport) {
 
 // (the SDK's client, loaded only when a call is due)
 async function defaultClient(env) {
-  const mod = await import('@anthropic-ai/sdk');
+  const mod = await loadSdk();
   const Anthropic = mod.default ?? mod.Anthropic;
-  return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2, timeout: 180000 });
+  return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 0, timeout: CALL_TIMEOUT_MS });
 }
 
 const AI_USAGE = path.join(ROOT, '.cache/model/ai-usage.json');
@@ -727,7 +766,7 @@ async function main(argv) {
   if (!dry && !env.ANTHROPIC_API_KEY) return console.log('writeups: no ANTHROPIC_API_KEY: plain write-ups only');
   if (flags.has('--validate')) {
     const data = Object.fromEntries(list.map((s) => [s, loadSport(s)]).filter(([, d]) => d));
-    const budget = aiBudget({ file: AI_USAGE, now, caps: { day: Number.MAX_SAFE_INTEGER, month: MONTH_CAP } });
+    const budget = aiBudget({ file: AI_USAGE, floor: FLOOR_FILE, now, caps: { day: Number.MAX_SAFE_INTEGER, month: MONTH_CAP } });
     const client = await defaultClient(env);
     const { report, spent, stopped } = await runValidate({ data, client, budget, now, fallbacks: cfg.fallbacks });
     mkdirSync(path.dirname(VALIDATE_OUT), { recursive: true });
@@ -735,8 +774,8 @@ async function main(argv) {
     budget.save();
     return console.log(`writeups --validate: $${spent.toFixed(2)} spent${stopped ? ` (stopped: ${stopped})` : ''}; the report in ${path.relative(ROOT, VALIDATE_OUT)}`);
   }
-  const budget = aiBudget({ file: AI_USAGE, now, caps: cfg.caps, dry });
-  const gate = gateOf(budget, { maxPerRun: flags.has('--probe') ? 1 : cfg.maxPerRun });
+  const budget = aiBudget({ file: AI_USAGE, floor: FLOOR_FILE, now, caps: cfg.caps, dry });
+  const gate = gateOf(budget, { maxPerRun: flags.has('--probe') ? 1 : cfg.maxPerRun, deadline: Date.now() + RUN_DEADLINE_MS });
   let client = null;
   for (const sport of list) {
     try {
@@ -767,7 +806,8 @@ async function main(argv) {
         break;
       }
       client ??= await defaultClient(env);
-      const t = await writeSport({ sport, data, client, budget, gate, cfg, now, rewrite: flags.has('--rewrite') });
+      // (writeups.json saved after each bet: a step killed mid-sport keeps what it paid for)
+      const t = await writeSport({ sport, data, client, budget, gate, cfg, now, rewrite: flags.has('--rewrite'), onItem: () => writeFileSync(data.files.writeups, JSON.stringify(data.writeups)) });
       if (t.writeupsChanged) writeFileSync(data.files.writeups, JSON.stringify(data.writeups));
       if (t.picksChanged) writeFileSync(data.files.picks, JSON.stringify(data.picks));
       console.log(runLine(sport, t, budget, cfg));

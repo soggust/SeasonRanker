@@ -78,7 +78,9 @@ function mockClient(answers, { delay = 0 } = {}) {
     },
   };
 }
-const run = (data, client, { cfg = configOf({}), budget = aiBudget({ now: NOW }), gate = null } = {}) => writeSport({ sport: 'nfl', data, client, budget, gate: gate ?? gateOf(budget, { maxPerRun: cfg.maxPerRun }), cfg, now: NOW, log: quiet });
+// (the Kmet sample was placed before the gap guard: today's guards (guardedNow) left out here, tested apart)
+const open = () => null;
+const run = (data, client, { cfg = configOf({}), budget = aiBudget({ now: NOW }), gate = null } = {}) => writeSport({ sport: 'nfl', data, client, budget, gate: gate ?? gateOf(budget, { maxPerRun: cfg.maxPerRun }), cfg, now: NOW, log: quiet, guarded: open });
 
 test('the settings: high by default, xhigh with more room, the caps only lowered, the kill switch', () => {
   const c = configOf({});
@@ -296,21 +298,21 @@ test('the queue: lock and high only, edge and unguarded, not within 20 minutes o
   data.picks.picks[0].level = 'medium';
   data.picks.picks[1].level = 'high';
   data.picks.picks[2].level = 'lock';
-  const q = queueOf({ sport: 'nfl', ...data, now: NOW });
+  const q = queueOf({ sport: 'nfl', ...data, now: NOW, guarded: open });
   assert.deepEqual(
     q.map((x) => x.level),
     ['lock', 'high'],
   );
   // (the top N by score whatever the band: the owner's)
-  assert.equal(queueOf({ sport: 'nfl', ...sportData({ n: 3, level: 'medium' }), now: NOW, cfg: { ...configOf({}), topN: 2 } }).length, 2);
+  assert.equal(queueOf({ sport: 'nfl', ...sportData({ n: 3, level: 'medium' }), now: NOW, cfg: { ...configOf({}), topN: 2 }, guarded: open }).length, 2);
   // (an action bet, a guarded game, a start 10 minutes off: none)
   const action = sportData();
   action.ledger.bets[0].intent = 'action';
-  assert.equal(queueOf({ sport: 'nfl', ...action, now: NOW }).length, 0);
+  assert.equal(queueOf({ sport: 'nfl', ...action, now: NOW, guarded: open }).length, 0);
   const guarded = sportData();
   guarded.ledger.bets[0].context = { ...guarded.ledger.bets[0].context, guard: 'starters not posted' };
-  assert.equal(queueOf({ sport: 'nfl', ...guarded, now: NOW }).length, 0);
-  assert.equal(queueOf({ sport: 'nfl', ...sportData({ start: new Date(NOW.getTime() + 10 * 60e3).toISOString() }), now: NOW }).length, 0);
+  assert.equal(queueOf({ sport: 'nfl', ...guarded, now: NOW, guarded: open }).length, 0);
+  assert.equal(queueOf({ sport: 'nfl', ...sportData({ start: new Date(NOW.getTime() + 10 * 60e3).toISOString() }), now: NOW, guarded: open }).length, 0);
   // (--dry: every request built, nothing called)
   for (const it of q) assert.ok(requestOf(it.sheet).messages[0].content.length > 500);
 });

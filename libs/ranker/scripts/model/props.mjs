@@ -38,7 +38,9 @@
 //   from his projection at the book's own price) is a CHECK too (kind 'role', its sub-reason role), whichever
 //   side the model takes, when it's the role alone (one the long-shot, moved or unpriced skips take too, skipped):
 //   the book reprices a role on the news, the model on the logs; and a line with no price that -110 can't be
-//   (unpricedWhy: far from his usual, or 0.5) is skipped as unpriced, not called a gap. Teammates on injured
+//   (unpricedWhy: far from his usual, or 0.5) is skipped as unpriced, not called a gap. A side against its own
+//   projection (an under with the mean above the line, an over below it; lines from SKEW_MIN_LINE: skewOnly) is
+//   skipped as skew: its edge only the spread's assumed skew, which leans the props to the unders. Teammates on injured
 //   reserve, PUP, NFI or suspended (the roster's, espn.mjs) and an NFL regular who's missed his team's last two
 //   games or more and isn't on the report or the game's board count as missing, as the history counts them. Each priced prop keeps the other side's
 //   price beside its own (otherOdds, the book's; none at an assumed -110), for the page's both sides
@@ -150,6 +152,12 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
   }
   return null;
 }
+
+// (the smallest line the skew guard reads: below it a count's own skew is real)
+export const SKEW_MIN_LINE = 5;
+// Whether a side's edge can only be the spread's skew: an under with the projection above the line, an over with
+// it below (lines from SKEW_MIN_LINE)
+export const skewOnly = (side, mu, line) => Number.isFinite(mu) && Number.isFinite(line) && line >= SKEW_MIN_LINE && (side === 'under' ? mu > line : side === 'over' ? mu < line : false);
 
 // Why a prop without the book's prices can't be taken at an assumed -110 (null: it can): his line far from his
 // usual (fairOver: his own over-rate at it, this season and half of last), or a 0.5 line
@@ -769,6 +777,12 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const also = prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null;
       guard = also ? { skip: true, why: `${gapped.why}; ${also}` } : { ...gapped, kind: 'gap' };
     }
+    // (the side against its own projection: an under with the mean above the line, an over with it below. Its
+    // edge comes only from the spread's assumed skew (lineChances' dispersion), not from anything the model
+    // knows about him, and the held-out games show that skew leaning the props to the unders; skipped till pOver
+    // is calibrated by stat and side. Lines under SKEW_MIN_LINE left alone: a small count's skew is real (a 0.5
+    // line's under can be the likelier side with the mean above it))
+    else if (skewOnly(side, mu, prop.line)) guard = { skip: true, kind: 'skew', why: `the projection (${round(mu, 1)}) on the other side of the line from the ${side}: its edge only the spread's assumed skew` };
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
     // likely right)
     else if (prop.prices && fair < 0.25) guard = { skip: true, why: `a long shot (the book's fair chance ${Math.round(fair * 100)}%)` };

@@ -62,13 +62,14 @@ jobs:
           restore-keys: model-desk-
 
       # (the CHECKs' news research, libs/ranker/scripts/model/research.mjs: only with the repository variable
-      # CHECK_RESEARCH set to 1 (and the ANTHROPIC_API_KEY secret); its SDK installed for it alone, as the bettor
-      # runs before the workflow's npm install. Off, nothing here runs and nothing is spent)
+      # CHECK_RESEARCH set to 1 (and the ANTHROPIC_API_KEY secret); its SDK installed for it alone into .cache/sdk
+      # (ai-budget.mjs loadSdk), apart from the repo's tree so it doesn't reify the whole monorepo, as the bettor
+      # runs before the workflow's npm install. Not installed, the research is skipped, never the run. Off,
+      # nothing here runs and nothing is spent. Its findings only label the CHECKs: never a bet)
       - name: Install the Anthropic SDK (CHECK research only)
         if: ${{ vars.CHECK_RESEARCH == '1' }}
         run: |
-          npm install --no-save --no-package-lock @anthropic-ai/sdk@0.131.0
-          git checkout -- package.json package-lock.json 2>/dev/null || true
+          npm install --prefix .cache/sdk --no-save --no-package-lock --no-audit --no-fund @anthropic-ai/sdk@0.131.0 || echo "::warning::the Anthropic SDK not installed: no CHECK research this run"
 
       - name: Grade, refit and bet
         env:
@@ -88,7 +89,9 @@ jobs:
       # ANTHROPIC_API_KEY secret; skipped quietly otherwise, and never failing the run (the plain write-ups
       # stay). After the bettor (its picks fresh), before the cache is saved (its calls are logged in the AI
       # usage log there, against the desk's caps) and before the data is checked (the picks it patches with it).
-      # Its SDK installed for it alone, as the bettor's own runs before the workflow's npm install)
+      # Its SDK installed for it alone into .cache/sdk, as the bettor's own. The day's and month's AI spend is
+      # also committed (apps/nfl/scripts/model/ai-spend.json, by the commit step below), so a lost cache can't
+      # reset the caps: ai-budget.mjs)
       - name: Write the strong bets' analyses
         continue-on-error: true
         timeout-minutes: 10
@@ -105,9 +108,8 @@ jobs:
             echo "Claude write-ups off (WRITEUPS=$WRITEUPS, or no ANTHROPIC_API_KEY): plain write-ups only"
             exit 0
           fi
-          if ! node -e "import('@anthropic-ai/sdk')" 2>/dev/null; then
-            npm install --no-save --no-package-lock @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: plain write-ups only"; exit 0; }
-            git checkout -- package.json package-lock.json 2>/dev/null || true
+          if [ ! -d .cache/sdk/node_modules/@anthropic-ai/sdk ]; then
+            npm install --prefix .cache/sdk --no-save --no-package-lock --no-audit --no-fund @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: plain write-ups only"; exit 0; }
           fi
           node libs/ranker/scripts/model/writeups.mjs || echo "::warning::the write-ups step failed: plain write-ups only"
 

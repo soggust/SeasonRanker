@@ -50,6 +50,18 @@ jobs:
       - name: Run the self-check
         run: node libs/ranker/scripts/model/selfcheck.mjs
 
+      # (npm install, not npm ci, as the desk's run does: the lock put back. The data test needs it (esbuild),
+      # and so does the build)
+      - name: Install dependencies
+        run: |
+          npm install
+          git checkout -- package-lock.json
+
+      # (the hourly desk's npm test asserts selfcheck.json's shape before it commits: a file that failed it would
+      # stop every hourly run's commit. So it's checked here first; failing, the job stops and nothing is committed)
+      - name: Check the self-check's data
+        run: node --test tests/data.test.mjs
+
       # (only the self-check's files, each written only when something but its time changed, so a quiet week
       # commits nothing; a desk run may have pushed meanwhile: rebase and try again, three times)
       - name: Commit the self-check
@@ -74,12 +86,6 @@ jobs:
       # The Algorithm tab reads each sport's data/model/selfcheck.json, served with the site: when it changed,
       # the site is built and deployed (pushes made with GITHUB_TOKEN don't trigger the Firebase deploy
       # workflow, so it's done here, as the desk's run does)
-      - name: Install dependencies
-        if: steps.commit.outputs.changed == 'true'
-        run: |
-          npm install
-          git checkout -- package-lock.json
-
       - name: Build project
         if: steps.commit.outputs.changed == 'true'
         run: npm run build

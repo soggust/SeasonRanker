@@ -59,6 +59,16 @@
 //                    before it; --compare <an earlier run's .json> adds a table of each bucket's bias and log
 //                    loss then and now, all games and the held-out ones
 //
+//   open items       what the role research found and the desk hasn't fixed, only held off by the role CHECKs (so
+//                    those spots aren't bet): (1) an established starter's prior (K 16) still leans on last
+//                    season early on, the early-season term kd not kept for most stats in the fit; (2) the
+//                    vacated term's history (vacHist) counted three ways, split in proportion and capped as
+//                    first built; (3) a quarterback gets nothing from the vacated term (matchups.mjs); and the
+//                    props' lean to the unders from the spread's assumed skew (pOver against the mean): a side
+//                    against its own projection is skipped (props.mjs skewOnly) till pOver is calibrated by
+//                    stat and side on held-out games. Each to revisit once the CHECK learning has 40 or more
+//                    graded a cause (state.json checks.learning, by cause and sub-reason)
+//
 //   node libs/ranker/scripts/model/role-backtest.mjs [--state] [--plain] [--from 2021] [--compare <earlier .json>]
 //                    [--report: the .md again from the .json]
 //   writes .cache/role-backtest.md (the tables) and .cache/role-backtest.json (the same numbers)

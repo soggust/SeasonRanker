@@ -65,9 +65,9 @@
 //      with its numbers), and the graded ones' hit rate and profit by cause turned into ranked
 //      recommendations (checkLearning: a blind spot to fix, a guard that could loosen, recorded, never
 //      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
-//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps), a
-//      finding of a player out or questionable put into the injury report as an owner's note is, flagged
-//      'research', for 30 hours and only where the official report doesn't say otherwise
+//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps, 90
+//      seconds a request and 3 minutes a run), a finding kept on its CHECK as a label only: never put into the
+//      injury report, the prices or a bet (the owner's note does that, where it's right)
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -104,8 +104,8 @@ import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks,
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { researchChecks, researchNote } from './research.mjs';
-import { aiBudget } from './ai-budget.mjs';
+import { researchChecks } from './research.mjs';
+import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -500,10 +500,9 @@ async function fitTheContext(r) {
 // real bet. A noted game's markets resting since before the note are asked about again (resting), and its
 // props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes.
 // The CHECKs' news research (research.mjs: CHECK_RESEARCH=1 alone, never --dry) first: the day's biggest
-// CHECKs looked into (r.researchFound, kept on them by recordChecks), and every open CHECK's finding of a player
-// out or questionable put in the same way, flagged 'research' (r.researchApplied), while it's fresh and the
-// game's official report doesn't list him as bad or worse, or since (researchNote); the owner's own note on a
-// CHECK wins over its research
+// CHECKs looked into (r.researchFound, kept on them by recordChecks) as a label only. A finding is never put
+// into the injury report: an LLM reading the web, with no person in the loop, mustn't move the prices or turn a
+// CHECK into a staked bet; the owner's note on the CHECK puts it in where it's right
 async function noteInjuries(r) {
   r.notesApplied = new Set();
   r.researchApplied = new Set();
@@ -518,20 +517,13 @@ async function noteInjuries(r) {
   }
   try {
     if (!r.checksUnreadable) {
-      const budget = process.env.CHECK_RESEARCH === '1' ? aiBudget({ file: AI_USAGE, now: r.now, dry: DRY }) : null;
+      const budget = process.env.CHECK_RESEARCH === '1' ? aiBudget({ file: AI_USAGE, floor: FLOOR_FILE, now: r.now, dry: DRY }) : null;
       r.researchFound = await researchChecks({ sport: r.sport, checks, now: r.now, dry: DRY, budget, reportOf: (c) => r.live?.get(String(c.event))?.injuries ?? null });
     }
   } catch (err) {
     console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
   }
   const notes = new Map(r.notes ?? []);
-  for (const c of checks) {
-    if (c.checkResult || c.closedAt) continue;
-    // (the official report, this run's, wins over it; a finding 30 hours old no longer applied: researchNote)
-    const n = researchNote(c, r.researchFound.get(c.id) ?? c.research, r.sport, { now: r.now, report: r.live?.get(String(c.event))?.injuries ?? null });
-    const own = notes.get(c.id);
-    if (n && !(own?.player && own?.status)) notes.set(c.id, n);
-  }
   if (!notes.size) return;
   try {
     const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.id));
@@ -1462,7 +1454,7 @@ async function betProps(r) {
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
-  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)' }[k] ?? 'by the other guards'}`).join(', ')}`);
+  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
