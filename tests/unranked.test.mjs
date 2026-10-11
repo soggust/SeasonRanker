@@ -169,7 +169,7 @@ async function harness({ position = 'WR', load } = {}) {
     reader: null,
     readerFor: (context) => (context ? readerOf(context) : host.reader),
     seasonContext(season, rows, p = position) {
-      const context = { season, rows, list: [], empty: (key) => emptyIn(rows[p] ?? [], key), position: p };
+      const context = { season, rows, list: [], empty: (key) => emptyIn(rows[p] ?? [], key), position: p, min: ranker.minFor({ [p]: rows[p] }, p) };
       context.list = host.rankedIn(context, ranker.listed({ [p]: rows[p] }, season, p));
       return context;
     },
@@ -245,6 +245,24 @@ test("nfl: Ridley's seasons under Min Games on his card: UR in the rank tile, hi
   assert.ok(of(2025).stats.every((s) => !s.best), '2025: no career best');
   const now = of(engine.CURRENT_SEASON);
   assert.ok(now.rank >= 1 && now.rank <= now.of && !now.ur, 'this season ranked at the default Min Games');
+});
+
+test("nfl: a row the list's other filters leave out (Injured Players off) is ranked where he'd fall on his card and in compare, never UR", async () => {
+  const { engine, host, data, settings } = await harness();
+  settings.showInjured = false;
+  const table = host.seasonContext(host.season, engine.SKILL_UNITS, 'WR');
+  host.playerList = table.list;
+  const hurt = engine.SKILL_UNITS.WR.find((p) => p.injured && engine.SPORT.playingTime.of(p) >= table.min);
+  assert.ok(hurt, 'an injured WR at Min Games');
+  assert.ok(!table.list.includes(hurt), 'left out of the list');
+  const cards = new engine.PlayerCards(host, data);
+  assert.ok(await cards.openSeason(host.season, hurt.gsisId));
+  assert.ok(!cards.card.ur && cards.card.rank >= 1, `${hurt.name}: ranked where he'd fall`);
+  const compare = new engine.PlayerCompare(host, data);
+  await compare.start(host.playerList.slice(0, 1));
+  await compare.add('WR', host.season, hurt.gsisId);
+  assert.equal(compare.sides.length, 2, 'his season added');
+  assert.ok(!compare.sides[1].ur && compare.sides[1].rank >= 1, `${hurt.name}: ranked in compare`);
 });
 
 test("nfl: the arrow keys on a UR card: up opens the list's last, down its #1", async () => {

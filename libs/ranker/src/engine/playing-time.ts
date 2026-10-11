@@ -32,6 +32,11 @@ export function minCount(settings: RankerSettings, total: number): number {
 // pool the sport's default: TabRanker.scores.)
 export const RANK_EVERYONE = !!SPORT.unrankedSeasons;
 
+// A row out of a list for being under its Min Games cutoff (rank everyone only): UR, as the grid shows it
+export function underMin(player: SkillPlayer, list: { min?: number }): boolean {
+  return RANK_EVERYONE && SPORT.playingTime.of(player) < (list.min ?? 0);
+}
+
 // The default Min Games cutoff a tab's default ranking ranks at (defaultRanking's min): none unless the
 // sport ranks everyone
 export function defaultMin(rows: Record<string, SkillPlayer[]>, position: SkillPosition): number {

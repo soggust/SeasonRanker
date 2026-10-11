@@ -13,7 +13,7 @@ import { CardSkill } from '@ranker/engine/skills';
 import { CURRENT_SEASON, SEASONS, dataPart, dataSeason, isLiveSeason } from '@ranker/engine/data';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, statValue } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { RANK_EVERYONE, defaultMin } from '@ranker/engine/playing-time';
+import { RANK_EVERYONE, defaultMin, underMin } from '@ranker/engine/playing-time';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
@@ -361,7 +361,7 @@ export class PlayerCards {
       const context = host.seasonContext(season, rows, this.position);
       // (someone under the Min Games setting: UR, as the grid shows him, when the sport ranks everyone;
       // otherwise his card ranked where he'd fall)
-      if (!context.list.includes(player) && RANK_EVERYONE) {
+      if (!context.list.includes(player) && underMin(player, context)) {
         this.show(this.render(player, season, context.list, context, true));
         return true;
       }

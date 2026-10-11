@@ -61,7 +61,7 @@
       }
     </li>
     <!-- Nobody listed (every row filtered out by the settings) -->
-    @if (!playerList.length) {
+    @if (!gridRows.length) {
       <li class="empty-list">{{ sport.copy.noneFound ?? 'No Players Found' }}</li>
     }
     @for (player of gridRows; track player.gsisId; let i = $index) {

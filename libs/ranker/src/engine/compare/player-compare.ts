@@ -17,7 +17,7 @@ import { extras } from '@ranker/engine/row-fields';
 import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
 import { SKILL_UNITS, defaultRanking } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { RANK_EVERYONE, defaultMin } from '@ranker/engine/playing-time';
+import { defaultMin, underMin } from '@ranker/engine/playing-time';
 import { CardSkill } from '@ranker/engine/skills';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { rankPct } from '@ranker/core/format';
@@ -446,7 +446,7 @@ export class PlayerCompare {
       context = host.seasonContext(season, rows, position);
       // (someone under the Min Games setting: UR, as the grid shows him, when the sport ranks everyone;
       // otherwise ranked where he'd fall)
-      if (!ur && !context.list.includes(player) && RANK_EVERYONE) ur = true;
+      if (!ur && !context.list.includes(player) && underMin(player, context)) ur = true;
       if (!ur && !context.list.includes(player)) {
         context.list = context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
       }

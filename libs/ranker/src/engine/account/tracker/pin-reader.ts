@@ -117,7 +117,7 @@ export class PinReader {
       readerFor: (context) => (context ? readerOf(context) : host.reader),
       seasonContext(season: number, rows: Record<SkillPosition, SkillPlayer[]>, position: SkillPosition = first): SeasonContext {
         const units = rows[position] ?? [];
-        const context: SeasonContext = { season, rows, list: [], empty: (key) => emptyIn(units, key), position };
+        const context: SeasonContext = { season, rows, list: [], empty: (key) => emptyIn(units, key), position, min: ranker.minFor({ [position]: units }, position) };
         context.list = host.rankedIn(context, ranker.listed({ [position]: units }, season, position));
         return context;
       },

@@ -110,6 +110,9 @@ export interface SeasonContext {
   manual?: boolean;
   // The tab it's for, when not the table's (a card opened from a roster or the hero's team name)
   position?: SkillPosition;
+  // The Min Games cutoff the list was made with (rank everyone: a row under it is UR; one the list's
+  // other filters leave out, Rookies Only or Injured Players, is still ranked where he'd fall)
+  min?: number;
 }
 
 export interface PlayerCard {

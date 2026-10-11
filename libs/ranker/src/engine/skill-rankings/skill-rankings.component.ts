@@ -83,6 +83,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // backup QB's), below the ranked ones as UR (TabRanker.unranked); the grid draws gridRows, the ranked
   // list then them
   unrankedList: SkillPlayer[] = [];
+  private unrankedSet = new Set<SkillPlayer>();
   gridRows: SkillPlayer[] = [];
   private apart: SkillPlayer[] = [];
   private apartFor = '';
@@ -286,12 +287,13 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
 
   private showUnranked(list: SkillPlayer[]): void {
     this.unrankedList = list;
+    this.unrankedSet = new Set(list);
     this.gridRows = list.length ? [...this.playerList, ...list] : this.playerList;
   }
 
   // A UR row: under Min Games, or kept apart by the season
   isUr(player: SkillPlayer): boolean {
-    return this.unrankedList.includes(player);
+    return this.unrankedSet.has(player);
   }
 
   // (every row's score as the sliders have it, for a list in an order dragged by hand: the rank tiles' hovers)
@@ -403,6 +405,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       list: [],
       empty: (key) => emptyIn(units, key),
       ...(position !== this.position && { position }),
+      min: this.ranker.minFor({ [position]: units }, position),
     };
     const listed = this.ranker.listed({ [position]: units }, season, position);
     const saved = this.positionService.seasonUnitOrder(season, position);
