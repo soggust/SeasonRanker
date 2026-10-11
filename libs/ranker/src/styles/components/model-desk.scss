@@ -984,6 +984,17 @@ card-panel {
 
 }
 
+// (a game's row: its teams, its time under them: the column narrower, the picks starting further left)
+.desk-game-stack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .desk-when {
+    margin-top: 0;
+  }
+}
+
 // (its game: the chevron, the teams and when, on one line)
 .desk-group-game {
   align-items: center;
@@ -1071,22 +1082,15 @@ card-panel {
   font-size: 11.5px;
 }
 
-// (a team's player props under its game: a row of their own, a step in, a size down from the game's)
+// (a team's player props under its game: a row of their own, its label in the pick column (the game's picks'
+// column, so it reads as part of the game), no shade of its own (the game's row is its header); a light one on
+// hover, a size down from the game's)
 .desk-subgroup {
   cursor: pointer;
-
-  td,
-  th {
-    background: rgba(255, 255, 255, 0.015);
-  }
 
   &:hover td,
   &:hover th {
     background: rgba(255, 255, 255, 0.04);
-  }
-
-  .desk-group-game {
-    padding-left: 18px;
   }
 
   b {

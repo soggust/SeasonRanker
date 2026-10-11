@@ -486,7 +486,7 @@
                     @if (!sport) {<th>@if (!sg.header) {<img class="desk-league" [src]="leagueLogo(g.bets[0].sport)" [alt]="g.bets[0].sport.toUpperCase()" [title]="g.bets[0].sport.toUpperCase()" />}</th>}
                     <td class="desk-left"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + g.bets[0].matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'live' }"></ng-container>
+                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'live' }"></ng-container></span>
                     </span></td>
                     <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
                     <td></td>
@@ -501,7 +501,8 @@
                   <!-- (a team's player props: a row of their own, folded till it's opened) -->
                   <tr class="desk-subgroup" [class.shut]="!propsShown('live', sec)" (click)="toggleProps('live', sec)">
                     @if (!sport) {<th></th>}
-                    <td class="desk-left" colspan="6"><span class="desk-group-game">
+                    <td></td>
+                    <td class="desk-left" colspan="5"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('live', sec)" [attr.aria-label]="(propsShown('live', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                       <b>{{ sec.team }} Player Props</b>
                       <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
@@ -607,7 +608,7 @@
                     @if (!sport) {<th>@if (!sg.header) {<img class="desk-league" [src]="leagueLogo(g.bets[0].sport)" [alt]="g.bets[0].sport.toUpperCase()" [title]="g.bets[0].sport.toUpperCase()" />}</th>}
                     <td class="desk-left"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + g.bets[0].matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'EEE h:mm a' }"></ng-container>
+                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'EEE h:mm a' }"></ng-container></span>
                     </span></td>
                     <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
                     <td></td>
@@ -623,7 +624,8 @@
                   <!-- (a team's player props: a row of their own, folded till it's opened) -->
                   <tr class="desk-subgroup" [class.shut]="!propsShown('open', sec)" (click)="toggleProps('open', sec)">
                     @if (!sport) {<th></th>}
-                    <td class="desk-left" colspan="7"><span class="desk-group-game">
+                    <td></td>
+                    <td class="desk-left" colspan="6"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('open', sec)" [attr.aria-label]="(propsShown('open', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                       <b>{{ sec.team }} Player Props</b>
                       <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
@@ -699,7 +701,7 @@
                     @if (!sport) {<th>@if (!sg.header) {<img class="desk-league" [src]="leagueLogo(g.bets[0].sport)" [alt]="g.bets[0].sport.toUpperCase()" [title]="g.bets[0].sport.toUpperCase()" />}</th>}
                     <td class="desk-left"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + g.bets[0].matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'MMM d' }"></ng-container>
+                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'MMM d' }"></ng-container></span>
                     </span></td>
                     <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
                     <td></td>
@@ -718,7 +720,8 @@
                   <!-- (a team's player props: a row of their own, folded till it's opened) -->
                   <tr class="desk-subgroup" [class.shut]="!propsShown('recent', sec)" (click)="toggleProps('recent', sec)">
                     @if (!sport) {<th></th>}
-                    <td class="desk-left" colspan="9"><span class="desk-group-game">
+                    <td></td>
+                    <td class="desk-left" colspan="8"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('recent', sec)" [attr.aria-label]="(propsShown('recent', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                       <b>{{ sec.team }} Player Props</b>
                       <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
