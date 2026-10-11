@@ -11,9 +11,12 @@
 //   drivers   driversOf: the steps from his blended rate to the projection, each by the effect it had here (the
 //             fit's power on it: opp^a, script^b, the fit's scale), not the raw factor; the ones measured but
 //             given no weight (notWeighed). The fit's params: the ones the bet was priced with (projection
-//             .applied, props.mjs, since 2026-10), else the state's, frozen with its text at its first write. The
-//             product of the steps must give the projection back within 1%, or no driver is named (the params
-//             it was priced with unknown: "nothing in the matchup moves it much" is said)
+//             .applied, props.mjs, since 2026-10), else the state's (its plain c the type's first context
+//             term's), frozen with its text at its first write. The product of the steps must give the
+//             projection back within 1%, or no driver is named: the text says only that the matchup and the
+//             context take his rate to the projection, never that nothing moves it (that's said only when the
+//             steps do give it back, each under half a percent), and where the params it was priced with are
+//             unknown, his rate unblended (the blend's weight on recent form is the fit's, which a refit moves)
 //   reason    plainOf: HOOK (the pick and what the model sees) + BUILD (a prop's rate and its drivers) + PRICE
 //             (our chance, the break-even, the book's) + a CAVEAT or a game's context, 2 to 4 sentences, at
 //             most 450 characters (trimmed in a fixed order: the second driver, the history, the caveat, last
@@ -30,13 +33,16 @@
 //             so the hourly refits never churn it
 //   checked   validate: a text's numerals each a number on the sheet, its names the sheet's, no injury,
 //             weather or rest talk the sheet doesn't hold, none of the banned words, the side and the line said
-//             together; the plain text passes the same checks the AI's must
+//             together; the plain text passes the same checks the AI's must (one that doesn't, on some field
+//             it's never seen, falls back to its hook and its price sentence (a CHECK's question kept), never
+//             stops the picks)
 
 import { createHash } from 'node:crypto';
 import { decimal, GAP } from './desk.mjs';
 
-// (the plain text's version: bumped, every open bet's text is written again, free)
-export const PLAIN_V = 1;
+// (the plain text's version: bumped, every open bet's text is written again, free. 2: a prop whose drivers
+// don't give its projection back no longer says nothing moves it)
+export const PLAIN_V = 2;
 export const REASON_MAX = 450;
 export const RISK_MAX = 220;
 
@@ -489,12 +495,19 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
     if (fin(p.slot)) proj.slot = p.slot;
     if (fin(p.ppTime)) proj.ppTime = p.ppTime;
     if (p.ctx && typeof p.ctx === 'object') proj.ctx = Object.fromEntries(Object.entries(p.ctx).filter(([, v]) => fin(v)).map(([k, v]) => [k, Math.abs(v)]));
-    sheet.projection = proj;
     const d = driversOf(bet, params);
     sheet.driversOk = d.ok;
+    // (params that don't give the projection back and weren't the ones it was priced with (a refit's): the
+    // blend, its weight on recent form and what it gave no weight are theirs, not the bet's, so left off)
+    const guessed = !d.ok && !p.applied;
+    if (guessed) {
+      delete proj.blendedRate;
+      delete proj.recentWeightPct;
+    }
+    sheet.projection = proj;
     const drivers = d.steps.map((s) => ({ name: s.name, what: driverWhat(s.name, bet, sheet, s.raw), appliedPct: s.appliedPct, raw: fin(s.raw) ? r2(s.raw) : undefined }));
     if (drivers.length) sheet.drivers = drivers;
-    const nw = d.notWeighed.map((x) => ({ name: x.name, what: { recent: 'his recent form', script: 'the game script', role: 'the defense against his role', funnel: 'the defense as a funnel' }[x.name], value: r2(x.value) }));
+    const nw = d.notWeighed.filter((x) => !guessed || (x.name !== 'recent' && x.name !== 'script')).map((x) => ({ name: x.name, what: { recent: 'his recent form', script: 'the game script', role: 'the defense against his role', funnel: 'the defense as a funnel' }[x.name], value: r2(x.value) }));
     if (nw.length) sheet.notWeighed = nw;
     // (his line's move before the bet: against this side when it rose on an over or fell on an under)
     const open = bet.context?.move?.open;
@@ -583,30 +596,40 @@ function checkQuestion(sheet) {
   return 'The question: what does the market know that the model has not seen?';
 }
 
-// (a prop's hook: the pick and the projection against its line)
-function propHook(sheet, seed) {
+// (the pick as the board wrote it, else its side and line; " at" its price where it has one)
+const pickOf = (bet) => (typeof bet.pick === 'string' && bet.pick ? bet.pick : [cap1(bet.sideWord ?? bet.side ?? ''), fin(bet.line) ? fmt.line(bet.line) : ''].filter(Boolean).join(' ') || 'This pick');
+const atOdds = (bet) => (fin(bet.odds) ? ` at ${fmt.odds(bet.odds)}` : '');
+
+// (a prop's hook: the pick and the projection against its line; a CHECK's, never bet, would be a play)
+function propHook(sheet, seed, check = false) {
   const { bet, projection: pr } = sheet;
-  const Side = cap1(bet.side);
+  const Side = cap1(bet.side ?? '');
   const forHim = bet.player ? ` for ${bet.player}` : '';
-  if (!pr || !fin(pr.mean) || !fin(bet.line)) return fin(bet.line) ? `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim} at ${fmt.odds(bet.odds)}.` : `${bet.pick} at ${fmt.odds(bet.odds)}.`;
+  if (!pr || !fin(pr.mean) || !fin(bet.line) || !Side) return fin(bet.line) && Side ? `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}${atOdds(bet)}.` : `${pickOf(bet)}${atOdds(bet)}.`;
   const He = bet.player ?? 'He';
   const over = bet.side === 'over';
   const onSide = over ? pr.mean > bet.line : pr.mean < bet.line;
-  // (the projection on the other side: a skewed count still likelier this side, or a bet on the price alone)
+  // (the projection on the other side: right around the line, or a skewed count still likelier this side,
+  // else a bet on the price alone)
   if (!onSide) {
-    if (fin(pr.sideChancePct) && pr.sideChancePct < 50) return `${He} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${over ? 'under' : 'over'} his line, so the ${bet.side} ${fmt.line(bet.line)} is a bet on the price, not the likelier result.`;
-    return `${He} projects right around the line (${fmt.num(pr.mean)}), but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    const close = Math.abs(pr.mean - bet.line) <= Math.max(0.5, 0.1 * Math.abs(bet.line));
+    const likelier = fin(pr.sideChancePct) ? pr.sideChancePct >= 50 : close;
+    if (!likelier) return `${He} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${over ? 'under' : 'over'} his line, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'would be a play' : 'is a bet'} on the price, not the likelier result.`;
+    if (close) return `${He} projects right around the line (${fmt.num(pr.mean)}), but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    return `${He} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${over ? 'under' : 'over'} his line, but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
   }
   const ratio = bet.line > 0 ? pr.mean / bet.line : Infinity;
   const word = over ? (ratio >= 2 ? 'more than double his line' : ratio >= 1.15 ? 'comfortably over his line' : 'a bit over his line') : ratio <= 0.5 ? 'less than half his line' : ratio <= 0.85 ? 'comfortably under his line' : 'just under his line';
-  if (seed & 1 && bet.player) return `${bet.player} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${word}, so the ${bet.side} ${fmt.line(bet.line)} is the bet.`;
+  if (seed & 1 && bet.player) return `${bet.player} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${word}, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'is the side' : 'is the bet'}.`;
   return `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}: the model projects ${fmt.num(pr.mean)}, ${fmt.num(pr.lineDiffAbs)} ${over ? 'over' : 'under'} the line.`;
 }
 
 // (a prop's build: his blended rate, his games, his recent form where it's counted, then the drivers)
 function propBuild(sheet, { d2 = true, last = true } = {}) {
   const { bet, projection: pr } = sheet;
-  if (!pr || !fin(pr.blendedRate)) return null;
+  // (his blended rate where the params it was priced with are known, else his rate unblended)
+  const rate = fin(pr?.blendedRate) ? pr.blendedRate : fin(pr?.seasonRate) ? pr.seasonRate : null;
+  if (!pr || rate === null) return null;
   const gn = bet.gamesNoun;
   let games = '';
   if (fin(pr.gamesThisSeason)) {
@@ -614,7 +637,12 @@ function propBuild(sheet, { d2 = true, last = true } = {}) {
     else if (pr.gamesThisSeason > 0) games = ` (${pr.gamesThisSeason} ${pr.gamesThisSeason === 1 ? gn.replace(/s$/, '') : gn} this season${last && fin(pr.gamesLastSeason) && pr.gamesLastSeason > 0 ? `, ${pr.gamesLastSeason} last season` : ''})`;
   }
   const recent = fin(pr.recentWeightPct) && pr.recentWeightPct > 0 && fin(pr.recent) ? `, ${fmt.num(pr.recent)} over his last 5` : '';
-  const head = `His blended rate is ${fmt.num(pr.blendedRate)} a game${games}${recent}`;
+  const head = `His ${fin(pr.blendedRate) ? 'blended rate' : 'rate'} is ${fmt.num(rate)} a game${games}${recent}`;
+  // (the drivers not giving the projection back: none named, and none said to be still; only the gap)
+  if (!sheet.driversOk) {
+    if (!fin(pr.mean) || fmt.num(pr.mean) === fmt.num(rate)) return `${head}, about where the model projects him.`;
+    return `${head}; the matchup and the game's context take it to ${fmt.num(pr.mean)}.`;
+  }
   const ds = (sheet.drivers ?? []).slice().sort((a, b) => Math.abs(b.appliedPct) - Math.abs(a.appliedPct) || a.name.localeCompare(b.name)).slice(0, d2 ? 2 : 1);
   if (!ds.length) return `${head}, and nothing in the matchup moves it much.`;
   const parts = ds.map((x) => `${x.what} (${fmt.signed(x.appliedPct)}% here)`);
@@ -658,16 +686,16 @@ function rulesOf(sheet) {
 function gameHook(sheet) {
   const { bet, game } = sheet;
   const sc = game?.expScore;
-  if (!sc || !bet.away || !bet.home || !fin(sc[bet.away]) || !fin(sc[bet.home])) return `${bet.pick} at ${fmt.odds(bet.odds)}.`;
+  if (!sc || !bet.away || !bet.home || !fin(sc[bet.away]) || !fin(sc[bet.home])) return `${pickOf(bet)}${atOdds(bet)}.`;
   const a = fmt.num(sc[bet.away]);
   const h = fmt.num(sc[bet.home]);
   if (bet.kind === 'total') return `${cap1(bet.side)} ${fmt.line(bet.line)}: the model expects ${fmt.num(game.expTotal)} (${bet.away} ${a}, ${bet.home} ${h}).`;
   const team = bet.sideWord;
   const other = team === bet.home ? bet.away : bet.home;
-  if (bet.kind === 'ml' || !fin(bet.line) || bet.line === 0 || !team) return `${team ?? bet.pick} to win: the model has it ${bet.away} ${a}, ${bet.home} ${h}.`;
+  if (bet.kind === 'ml' || !fin(bet.line) || bet.line === 0 || !team) return `${team ?? pickOf(bet)} to win: the model has it ${bet.away} ${a}, ${bet.home} ${h}.`;
   const mine = sc[team];
   const theirs = sc[other];
-  const head = fmt.num(mine) === fmt.num(theirs) ? `${bet.pick}: the model has it level at ${fmt.num(mine)} each` : `${bet.pick}: the model has ${team} ${mine > theirs ? 'winning' : 'losing'} ${fmt.num(mine)} to ${fmt.num(theirs)}`;
+  const head = fmt.num(mine) === fmt.num(theirs) ? `${pickOf(bet)}: the model has it level at ${fmt.num(mine)} each` : `${pickOf(bet)}: the model has ${team} ${mine > theirs ? 'winning' : 'losing'} ${fmt.num(mine)} to ${fmt.num(theirs)}`;
   const margin = rnd(Math.abs(mine - theirs), 2);
   if (bet.line > 0) {
     if (mine >= theirs) return `${head}, so it loses only if ${other} wins by ${game.lossAt} or more.`;
@@ -707,8 +735,11 @@ export function plainOf(sheet) {
   const check = !!bet.check;
   let reason;
   let caveatRule = null;
+  // (the last resorts, longest first: the hook and the price (a CHECK's its disagreement and its question,
+  // the pick's own short hook before the question is ever dropped))
+  let floors;
   if (bet.kind === 'prop') {
-    const hook = propHook(sheet, seed >>> 3);
+    const hook = propHook(sheet, seed >>> 3, check);
     const priceText = check ? checkSentence(sheet) : priceSentence(sheet);
     const push = sheet.projection?.pushPct >= 4 ? `Exactly ${fmt.line(bet.line)} is a push (${fmt.pct(sheet.projection.pushPct)}%).` : null;
     const caveatKey = check ? null : ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'].find((k) => rules[k]);
@@ -731,17 +762,16 @@ export function plainOf(sheet) {
       if (compose(on).length > REASON_MAX) on[k] = false;
     }
     reason = compose(on);
-    if (reason.length > REASON_MAX) reason = join(hook, priceText);
+    floors = check ? [join(hook, priceText, question), join(`${pickOf(bet)}${atOdds(bet)}.`, priceText, question), join(hook, priceText)] : [join(hook, priceText)];
+    if (reason.length > REASON_MAX) reason = fit(floors, REASON_MAX);
     caveatRule = on.caveat && caveat && reason.includes(caveat) ? caveatKey : null;
   } else {
     const hook = gameHook(sheet);
     const priceText = check ? checkSentence(sheet) : priceSentence(sheet);
     const push = !check && fin(sheet.game?.pushPct) && sheet.game.pushPct >= 2 ? `It pushes about ${fmt.pct(sheet.game.pushPct)}% of the time.` : null;
     const question = check ? checkQuestion(sheet) : null;
-    reason = fit(
-      [join(hook, priceText, push, gameContext(sheet, 2, true), question), join(hook, priceText, push, gameContext(sheet, 1, true), question), join(hook, priceText, gameContext(sheet, 1, false), question), join(hook, priceText, question), join(hook, priceText)],
-      REASON_MAX,
-    );
+    floors = check ? [join(hook, priceText, question), join(`${pickOf(bet)}${atOdds(bet)}.`, priceText, question), join(hook, priceText)] : [join(hook, priceText)];
+    reason = fit([join(hook, priceText, push, gameContext(sheet, 2, true), question), join(hook, priceText, push, gameContext(sheet, 1, true), question), join(hook, priceText, gameContext(sheet, 1, false), question), ...floors], REASON_MAX);
   }
   // (the risk: the first rule that applies, never the caveat the reason said)
   let risk;
@@ -762,6 +792,13 @@ export function plainOf(sheet) {
             rules.generic,
           ];
     risk = order.filter(Boolean).map(cap1).find((t) => t.length <= RISK_MAX) ?? '';
+  }
+  // (a text the validator rejects, on some field it's never seen: the last resorts, with its risk, then with
+  // the plain loss rate's; none passing, the text as written (the picks never wait on it))
+  if (validate(`${reason} ${risk}`, sheet).length) {
+    const plainRisk = check ? risk : rules.generic ? cap1(rules.generic) : '';
+    const safe = floors.flatMap((r) => [[r, risk], [r, plainRisk]]).find(([r, k]) => r.length <= REASON_MAX && !validate(`${r} ${k}`, sheet).length);
+    if (safe) [reason, risk] = safe;
   }
   return { reason, risk };
 }
@@ -917,7 +954,8 @@ export function applyWriteups(pick, entry, hash = entry?.plain?.hash) {
   if (plain && typeof plain.reason === 'string' && plain.reason) {
     pick.reason = plain.reason;
     if (plain.risk) pick.risk = plain.risk;
-    pick.by = 'plain';
+    // (the old one-liner a failed write-up fell back to: said so, never taken for the plain text)
+    pick.by = plain.legacy ? 'legacy' : 'plain';
   }
   return pick;
 }
@@ -930,7 +968,7 @@ export function plainFor(bet, { game = null, sib = null, state = null, ledger = 
   const was = writeups?.items?.[bet.id] ?? null;
   if (was?.plain?.hash === hash && was.plain.v === PLAIN_V && was.plain.reason) return { hash, entry: was };
   const frozen = was?.plain?.hash === hash ? was.plain.params : undefined;
-  const params = bet.market === 'prop' && !bet.projection?.applied ? (frozen ?? propParamsOf(state, bet.propType)) : null;
+  const params = bet.market === 'prop' && !bet.projection?.applied ? (frozen ?? propParamsOf(state, bet.propType, firstCtxKeyOf(bet))) : null;
   const sheet = factsOf(bet, { game, sib, state, ledger, params });
   const { reason, risk } = plainOf(sheet);
   const plain = { hash, v: PLAIN_V, reason, risk, ...(params ? { params } : {}) };
@@ -943,9 +981,18 @@ export function plainFor(bet, { game = null, sib = null, state = null, ledger = 
 }
 
 // (a prop type's fit params, the ones a projection's drivers need: its scale, its weights on recent form, the
-// opponent and the game script, and its context terms' sizes)
-export function propParamsOf(state, propType) {
+// opponent and the game script, and its context terms' sizes. The state keeps the first term's size as a
+// plain c (project.mjs ctxFactor): it's that term's, ctxKey (the bet's first ctx key), as props.mjs's applied)
+export function propParamsOf(state, propType, ctxKey = null) {
   const p = (state?.props?.types ?? []).find((t) => t.key === propType)?.params;
   if (!p) return null;
-  return Object.fromEntries(Object.entries(p).filter(([k, v]) => (['scale', 'w', 'a', 'b'].includes(k) || /^c_/.test(k)) && fin(v)));
+  const out = Object.fromEntries(Object.entries(p).filter(([k, v]) => (['scale', 'w', 'a', 'b'].includes(k) || /^c_/.test(k)) && fin(v)));
+  if (ctxKey && fin(p.c) && !fin(out[`c_${ctxKey}`])) out[`c_${ctxKey}`] = p.c;
+  return out;
 }
+
+// (a prop's first context term: its projection's ctx keys are in its type's order, props.mjs)
+export const firstCtxKeyOf = (bet) => {
+  const ctx = bet?.projection?.ctx;
+  return ctx && typeof ctx === 'object' ? (Object.keys(ctx)[0] ?? null) : null;
+};

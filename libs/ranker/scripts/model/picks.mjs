@@ -264,7 +264,7 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       wrote = plainFor(b, { game: g, sib: sibOf(b, ledger.bets), state, ledger, writeups });
     } catch (err) {
       console.warn(`${sport}: write-up for ${b.id} failed (${err.message}): the old text`);
-      wrote = { hash: null, entry: { plain: { reason: legacyReasonOf(b, g) } } };
+      wrote = { hash: null, entry: { plain: { reason: legacyReasonOf(b, g), legacy: true } } };
     }
     const { hash, entry } = wrote;
     const row = {
@@ -309,9 +309,10 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   };
   const picks = top.map(rowOf);
   const checkRows = checks.map(rowOf);
-  // (the write-ups kept: the open bets' and the open CHECKs', the rest dropped (graded, taken back))
+  // (the write-ups kept: the open bets' and the open CHECKs' (as the CHECKs' list: not graded, closed or bet
+  // after all), the rest dropped (graded, taken back))
   if (writeups?.items) {
-    const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => !c.checkResult).map((c) => c.id)]);
+    const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => !c.checkResult && !c.closedAt && !c.bet).map((c) => c.id)]);
     for (const id of Object.keys(writeups.items)) if (!live.has(id)) delete writeups.items[id];
   }
   const published = ledger.bets.filter((b) => b.published);
