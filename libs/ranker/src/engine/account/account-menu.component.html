@@ -9,7 +9,7 @@
     [title]="name || 'Your account'"
   >
     <!-- (the name, then the avatar: flush right, in the brand's place) -->
-    <span class="account-name">{{ first }}</span>
+    <span class="account-name" [title]="shown">{{ shown }}</span>
     <span class="account-pic">
       <account-avatar [photo]="user.profile?.photo" [name]="name" [size]="26"></account-avatar>
       <!-- a dot on the avatar while friend requests wait -->

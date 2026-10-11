@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { SPORT } from '@sport/sport';
 import { goHome, pageHash, pagePath } from '@ranker/engine/page-url';
 import { AccountService } from './account.service';
-import { errorMessage, firstName } from './account-helpers';
+import { errorMessage } from './account-helpers';
 import { canUse } from './features';
 
 // The sport bar's account entry, on the far right: signed out, a small Sign in (the brand after it);
-// signed in, in the brand's place, the user's first name then their avatar (phones: the avatar alone),
+// signed in, in the brand's place, the user's display name then their avatar (phones: the avatar alone),
 // opening their menu: the account pages (at their own addresses: page-url.ts), Settings and Sign out. A faint
 // circle while a returning user's sign-in is restored.
 @Component({
@@ -37,9 +37,10 @@ export class AccountMenuComponent {
     return this.account.profile()?.displayName ?? '';
   }
 
-  // (in the bar: the first name, cleaner in its capitals than an @user_name; the username when there's none)
-  get first(): string {
-    return firstName(this.name) || this.account.profile()?.username || '';
+  // (in the bar: the whole display name, on one line, cut short with an ellipsis only where it won't fit (its
+  // whole on hover); the username when there's none)
+  get shown(): string {
+    return this.name.trim() || this.account.profile()?.username || '';
   }
 
   isOpen(hash: string): boolean {
