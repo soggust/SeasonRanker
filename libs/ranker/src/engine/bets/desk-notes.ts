@@ -176,6 +176,10 @@ export interface CheckEntry extends Partial<ModelBet> {
   firstAt?: string;
   closedAt?: string;
   checkResult?: { status: 'won' | 'lost' | 'push'; profit: number; void?: boolean } | null;
+  // (why it's a CHECK: 'gap' (the model too far from the book) or 'role' (his role changing: props.mjs
+  // roleChangeOf); an older one without it is the gap's)
+  cause?: 'gap' | 'role';
+  roleReason?: string;
 }
 
 // The CHECKs at a unit, as bets for the desk's tally: graded ones with what they'd have done, the rest open; the

@@ -32,7 +32,7 @@
 //            fill-in's own growing, and the games that fed both). And, for the role-change guard (props.mjs
 //            roleChangeOf), a team's quarterback first (qb1: the most passes a game, recent games counting
 //            most), each player's offensive snaps as a share of his team's (snap: his last game's and his
-//            season's), and the regulars who've missed their team's last two games or more (absent). The NBA's
+//            season's), and the regulars who've missed their team's last two games or more this season (absent). The NBA's
 //            the same over the whole
 //            team, two ways (teamWork below): by minutes, and by usage (field goals tried, 0.44 of free throws
 //            tried, and assists: a scorer's shots go to the other scorers, more than his minutes say); the NHL's
@@ -158,7 +158,10 @@ export function nflMatchups(rows, pbp = null) {
     let w = work.get(id);
     if (!w || w.season !== season) {
       const last = w && w.season === season - 1 ? w : null;
-      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, gone: v.gone ?? 0, cur: false }]) : []) };
+      // (his games out counted again from the new season's first: two games rested or hurt at the end of the
+      // last aren't an absence in the next one's first week (absent); the fade's the same, one not yet played
+      // for the team this season (cur false) fading game by game whatever his count)
+      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, gone: 0, cur: false }]) : []) };
       work.set(id, w);
     }
     return w;
@@ -365,7 +368,8 @@ export function nflMatchups(rows, pbp = null) {
       return qbs.length ? { id: String(qbs[0][0]), v: Math.round(qbs[0][1].v * 10) / 10 } : null;
     },
     // (a team's regulars who've missed its last two games or more (by id: how many, his position): missing at
-    // bet time unless the injury report lists him, as the history counts a player not in a game's logs)
+    // bet time unless the injury report lists him or he has a prop on the game's board (props.mjs priceProps),
+    // as the history counts a player not in a game's logs; his games out counted from this season's first)
     absent: (teamId, season) => new Map([...workOf(teamId, season).p].filter(([, x]) => x.v >= 1.5 && (x.gone ?? 0) >= 2).map(([id, x]) => [String(id), { gone: x.gone, pos: x.pos }])),
     // (a team's regulars at a position group now: the ones whose recent work counts in the work missing when
     // they're out (matchups' vacated), by id)

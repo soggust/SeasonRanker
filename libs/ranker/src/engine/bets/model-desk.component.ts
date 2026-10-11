@@ -40,7 +40,8 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // starters, weather, parks, officials, the ranker's own numbers) with each term's fitted size. The arithmetic
 // is desk-math.ts's, the sorting desk-columns.ts's, the hovers desk-help.ts's. By Confidence has the CHECKs
 // too (checks.json: the markets too far from the book to bet), under LOCK, at a unit as if bet: never in the
-// total, the record or the bankroll.
+// total, the record or the bankroll; the props kept for a player's role changing (cause 'role') a row of their
+// own (CHECK ROLE), so the CHECK row's record stays the gap's.
 
 
 const SPORT_KEY = 'deskSport';
@@ -279,8 +280,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
     const band = (b: ModelBet) => confidenceOf(kellyOf(b.p, b.odds) ?? 0, b.p, intentOf(b) === 'edge');
     // (the Bets page's bands as the desk names them, best first: tiers.ts; CHECK the CHECKs' own, at a unit as if
-    // bet, under LOCK and out of the total)
-    this.byConfidence = TIERS.map((t) => tally(t.label.toUpperCase(), t.confidence === 'check' ? this.checks : where((b) => band(b) === t.confidence))).filter((t) => t.bets || t.open);
+    // bet, under LOCK and out of the total: the gap's (an older one without a cause the gap's) and the role's apart)
+    const isRole = (c: ModelBet) => (c as { cause?: string }).cause === 'role';
+    this.byConfidence = TIERS.flatMap((t) =>
+      t.confidence === 'check'
+        ? [tally(t.label.toUpperCase(), this.checks.filter((c) => !isRole(c))), tally(`${t.label.toUpperCase()} ROLE`, this.checks.filter(isRole))]
+        : [tally(t.label.toUpperCase(), where((b) => band(b) === t.confidence))],
+    ).filter((t) => t.bets || t.open);
     this.confidenceTotal = this.byConfidence.length ? tally('Total', bets) : null;
     this.calibration = calibrationOf(bets);
 

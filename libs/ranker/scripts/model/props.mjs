@@ -33,13 +33,14 @@
 //   gone can't be told), or (the NFL) the snap counts are missing for a season's quarter or more of the
 //   history's games. One skipped for the gap alone (kind 'gap') is kept as a CHECK on the model's own side
 //   (checks.mjs, run.mjs betProps): not bet, graded as if it were. Ahead of the gap, an NFL player whose role
-//   is changing (roleChangeOf: a backup quarterback starting or his team's starter out, a regular at his
-//   position out and a big cut of his work, a jump in his snaps, a part-timer with a regular out, a line far
-//   from his projection) is a CHECK too (kind 'role', its sub-reason role), whichever side the model takes:
+//   is changing (roleChangeOf: a backup quarterback starting, his team's starter out, a change at quarterback,
+//   a regular at his position out and a big cut of his work, a jump in his snaps, a part-timer with a regular out, a line far
+//   from his projection at the book's own price) is a CHECK too (kind 'role', its sub-reason role), whichever
+//   side the model takes, when it's the role alone (one the long-shot, moved or unpriced skips take too, skipped):
 //   the book reprices a role on the news, the model on the logs; and a line with no price that -110 can't be
 //   (unpricedWhy: far from his usual, or 0.5) is skipped as unpriced, not called a gap. Teammates on injured
 //   reserve, PUP, NFI or suspended (the roster's, espn.mjs) and an NFL regular who's missed his team's last two
-//   games or more and isn't on the report count as missing, as the history counts them. Each priced prop keeps the other side's
+//   games or more and isn't on the report or the game's board count as missing, as the history counts them. Each priced prop keeps the other side's
 //   price beside its own (otherOdds, the book's; none at an assumed -110), for the page's both sides
 //
 //   when: inside the game's props window (leagues.mjs TIMING; run.mjs betProps), each once the news it waits
@@ -101,7 +102,11 @@ export function restGuard(restDays, debut, date) {
 // whichever side the model takes (props.mjs priceProps, kind 'role'), till the CHECKs show it can read one:
 //   backup-qb   a quarterback who isn't his team's usual starter (qb1: the most passes a game, recent games
 //               counting most: matchups.mjs), or his team's starter missing (out, doubtful, IR, gone)
-//   qb1-out     any other player whose team's starting quarterback is missing: a backup throwing to him
+//   qb-change   his team's usual starter neither missing nor on the game's board, and another of its
+//               quarterbacks on it (boardQbs: the team's quarterbacks with a prop on the board): a change at
+//               quarterback (one back from injury taking the job back, or the one who had it benched), the
+//               quarterback's own prop and every other player's on the team
+//   qb1-out    any other player whose team's starting quarterback is missing: a backup throwing to him
 //   group-out   a regular at his position missing (out, doubtful, IR, off the roster, absent two games or
 //               more), his cut of the work they leave (vacOut: matchups.mjs vacated, a questionable one not
 //               counted) ROLE.vac of his own or more
@@ -109,16 +114,20 @@ export function restGuard(restDays, debut, date) {
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
 //               ROLE.ratioLo times the model's: the market reading a role the model hasn't seen
-// qb1: { id, name, missing (0 to 1) }; snap: { latest, avg, n } (matchups.mjs); mu: the projection; implied: the
-// line's
+// qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }
+// (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
+// says nothing of his role)
 export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, ratioLo: 0.6 };
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, vacOut = 0, snap = null, mu = null, implied = null }) {
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
   if (qb1 && String(qb1.id) !== String(pid)) {
     const usual = qb1.name || 'the usual starter';
+    const change = !(qb1.missing >= 1) && !!boardQbs?.size && !boardQbs.has(String(qb1.id));
+    if (pos === 'QB' && change) return { key: 'qb-change', why: `${who} on the board and his team's starter of late (${usual}) not: a change at quarterback` };
     if (pos === 'QB') return { key: 'backup-qb', why: `${who} not his team's usual starting quarterback (${usual}${qb1.missing >= 1 ? ', out' : ''}): a backup's role` };
     if (qb1.missing >= 1) return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
+    if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
   if (vacOut >= ROLE.vac) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
   if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
@@ -526,6 +535,20 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust
 export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale) {
   const priced = [];
+  // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
+  // role guard: a change at quarterback))
+  const onBoard = new Set();
+  const boardQbs = new Map();
+  for (const x of props) {
+    const id = idx.pid(x.athlete);
+    if (!id) continue;
+    onBoard.add(String(id));
+    if (sport === 'nfl' && (idx.pos(id) ?? x.athlete.pos) === 'QB') {
+      const t = String(x.athlete.team);
+      if (!boardQbs.has(t)) boardQbs.set(t, new Set());
+      boardQbs.get(t).add(String(id));
+    }
+  }
   for (const prop of props) {
     const f = fitted[prop.stat.key];
     if (!f) continue;
@@ -549,18 +572,24 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const roster = live?.rosters?.get?.(String(row.team)) ?? null;
     const rosterOut = roster?.out instanceof Map ? roster.out : new Map();
     const listed = new Set((live?.injuries?.get(String(row.team)) ?? []).map((x) => String(x.id)));
+    // (an absent regular with a prop of his own on this game's board isn't missing: the book expects him to
+    // play, a starter activated off IR with no designation most often. And where the injury report lists a
+    // player, its status is his (one questionable on the roster's IR, designated to return, at half), the
+    // roster's out group only for the ones it doesn't)
     const absent = sport === 'nfl' ? (f.matchups?.absent?.(row.team, game.season) ?? new Map()) : new Map();
-    const unlisted = new Map([...absent].filter(([id]) => !listed.has(id) && !rosterOut.has(id)));
-    const gone = (id) => rosterOut.has(String(id)) || unlisted.has(String(id));
+    const unlisted = new Map([...absent].filter(([id]) => !listed.has(id) && !rosterOut.has(id) && !onBoard.has(id)));
+    const gone = (id) => (rosterOut.has(String(id)) && !listed.has(String(id))) || unlisted.has(String(id));
     const missOf = (q) => (id) => (out.ids.has(String(id)) || gone(id) || (roster && !roster.has(String(id))) ? 1 : out.questionable.has(String(id)) ? q : 0);
     // (their names among the ones out at his position whose work counts (its regulars): the write-up's and the
     // CHECK's words)
     const atPos = (p) => !p || groupOf(sport, p) === groupOf(sport, row.pos);
     const regs = new Set((f.matchups?.regulars?.(row.team, game.season, row.pos) ?? []).map((x) => x.id));
-    for (const [id, x] of rosterOut) if (regs.has(String(id)) && atPos(x.pos) && x.name && !out.names.includes(x.name) && String(id) !== String(pid)) out.names.push(x.name);
+    // (an absent one named only while he's on the roster: one who's left isn't 'out', his work counted
+    // missing all the same)
+    for (const [id, x] of rosterOut) if (!listed.has(String(id)) && regs.has(String(id)) && atPos(x.pos) && x.name && !out.names.includes(x.name) && String(id) !== String(pid)) out.names.push(x.name);
     for (const [id, x] of unlisted) {
       const nm = idx.name?.(id);
-      if (nm && atPos(x.pos) && !out.names.includes(nm) && String(id) !== String(pid)) out.names.push(nm);
+      if (nm && (!roster || roster.has(id)) && atPos(x.pos) && !out.names.includes(nm) && String(id) !== String(pid)) out.names.push(nm);
     }
     const extra = { live, game, home, pitcher: !!prop.stat.pitcher };
     if (f.matchups) Object.assign(row, f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(0.5), extra));
@@ -627,12 +656,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         pos: row.pos,
         pid,
         qb1: qb1 ? { ...qb1, name: idx.name?.(qb1.id) ?? null, missing: missOf(0)(qb1.id) } : null,
+        boardQbs: boardQbs.get(String(row.team)) ?? null,
         vacOut,
         snap: row.snap ?? null,
         mu,
-        // (the line's read only at a price that can be its own: an assumed -110 on a line -110 can't be (unpricedWhy)
-        // says nothing of his role, only that the price is unknown)
-        implied: prop.prices || !unpricedWhy(prop.line, fairOver) ? impliedMean(prop.line, book.fairOver, f.params) : null,
+        // (the line's read only at the book's own price: an assumed -110 says nothing of his role, only that the
+        // price is unknown)
+        implied: prop.prices ? impliedMean(prop.line, book.fairOver, f.params) : null,
       });
     }
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
@@ -689,8 +719,14 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     else if (snapGap?.share >= 0.25) guard = { skip: true, why: `the snap counts missing for ${snapGap.games} games: the history holds only the players who got the ball` };
     else if (rosterBlind) guard = { skip: true, why: "his team's roster not read, and his numbers were made with teammates missing: whether they're back or gone can't be told" };
     // (his role changing (the NFL's, roleChangeOf): the book reprices a role on the news and the model only on
-    // the logs, so neither side is bet till the CHECKs show the model can read one; kind 'role', a CHECK)
-    else if (roleChange) guard = { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
+    // the logs, so neither side is bet till the CHECKs show the model can read one; kind 'role', a CHECK. As
+    // the gap's, only when it's the role alone: one the skips below would take too (no price -110 can be, a
+    // long shot, a line moved twice the limit) is skipped with both their words, no CHECK, so the role
+    // CHECKs are graded only at prices that can be known)
+    else if (roleChange) {
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null);
+      guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
+    }
     else if (vacUnsized && vacNow > vacThen) guard = { skip: true, why: `teammates out (${out.names.join(', ') || 'off the roster'}): a role change the model can't size` };
     else if (vacUnsized) guard = { skip: true, why: "teammates back from an absence that fed his recent numbers: a smaller role the model can't size" };
     // (no price from the book (the NFL's board without The Odds API's) where -110 can't be its price: his line

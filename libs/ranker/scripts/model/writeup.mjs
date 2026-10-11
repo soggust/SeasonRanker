@@ -577,6 +577,7 @@ function priceSentence(sheet) {
 const ROLE_WORDS = {
   'backup-qb': "he is not his team's usual starting quarterback",
   'qb1-out': "his team's starting quarterback is out",
+  'qb-change': 'his team is changing quarterbacks',
   'group-out': 'a regular at his position is out and a big share of that work is his to take',
   'snap-jump': 'his snaps jumped in his last game',
   'part-time': 'he is a part-timer with a regular at his position out',

@@ -194,3 +194,65 @@ test('priceProps: a teammate on IR missing; a role change a CHECK either side, a
   assert.ok(by.b.projection.out.includes('Hurt Back'));
   assert.equal(by.c.guard.kind, 'unpriced');
 });
+
+test("absent: his games out counted from a new season's first; one gone the last two games of the last isn't absent in week 1", () => {
+  const rows = [];
+  for (let d = 1; d <= 3; d++) rows.push(...game(`a${d}`, `2025-12-0${d}T17:00Z`, [['s', 'RB', 18, 3], ['b', 'RB', 4, 1]], 2025));
+  for (let d = 4; d <= 5; d++) rows.push(...game(`a${d}`, `2025-12-0${d}T17:00Z`, [['b', 'RB', 20, 3]], 2025));
+  const m = nflMatchups(rows);
+  assert.deepEqual([...m.absent('1', 2025).keys()], ['s']);
+  assert.deepEqual([...m.absent('1', 2026).keys()], []);
+});
+
+test('roleChangeOf: a change at quarterback (the starter of late off the board, another on it), the quarterback and his receivers', () => {
+  const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'y', name: 'Y', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, implied: 50 };
+  assert.equal(roleChangeOf({ ...base, boardQbs: new Set(['z']) }).key, 'qb-change');
+  const qb = roleChangeOf({ ...base, name: 'Z', pos: 'QB', pid: 'z', boardQbs: new Set(['z']) });
+  assert.equal(qb.key, 'qb-change');
+  assert.match(qb.why, /a change at quarterback/);
+  // (the starter on the board too: his backup's a backup, the receivers as they were; the starter out, as before)
+  assert.equal(roleChangeOf({ ...base, name: 'Z', pos: 'QB', pid: 'z', boardQbs: new Set(['y', 'z']) }).key, 'backup-qb');
+  assert.equal(roleChangeOf({ ...base, boardQbs: new Set(['y', 'z']) }), null);
+  assert.equal(roleChangeOf({ ...base, boardQbs: new Set() }), null);
+  assert.equal(roleChangeOf({ ...base, qb1: { id: 'y', name: 'Y', missing: 1 }, boardQbs: new Set(['z']) }).key, 'qb1-out');
+});
+
+test("priceProps: an absent regular with his own prop on the board isn't missing; the report's questionable over the roster's IR; one who's left not named; a role CHECK only at a price that can be known", async () => {
+  const { priceProps, STATS } = await import('../libs/ranker/scripts/model/props.mjs');
+  const st = STATS.nfl.find((s) => s.key === 'rushYds');
+  const seen = new Map();
+  const matchups = {
+    live: (pid, team, opp, pos, season, missOf) => {
+      if (!seen.has(pid)) seen.set(pid, { back: missOf('back'), irq: missOf('irq'), left: missOf('left') });
+      return { vacs: [pid === 'u' ? 0.6 : 0, 0, 0], vac: 0, snap: { latest: 0.7, avg: 0.7, n: 3 } };
+    },
+    qb1: () => ({ id: 'q', v: 30 }),
+    absent: () => new Map([['back', { gone: 3, pos: 'RB' }], ['left', { gone: 2, pos: 'RB' }]]),
+    regulars: () => [{ id: 'irq', v: 15 }],
+  };
+  const project = () => ({ mu: 50, rate: 50, recent: 50, base: 50, opp: 1, posOpp: 1, roleOpp: null, role: null, funnel: null, funnelF: 1, paceF: 1, tgtF: 1, vac: 0, vacHist: 0, vacF: 1, games: 4, prevGames: 16 });
+  const usual = [[2026, 40], [2026, 45], [2026, 55], [2026, 60]];
+  const fitted = { rushYds: { stat: st, env: { mean: 50, avg: 1 }, model: { project, roleTable: () => [] }, values: new Map(['a', 'back', 'u'].map((id) => [id, usual])), matchups, params: { r: 6, a: 1, b: 0, scale: 1 }, snapGap: null } };
+  const idx = { pid: (a) => a.id, pos: () => 'RB', name: (id) => `N${id}` };
+  const gameRow = { id: 'g', date: '2026-10-11T17:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const rosterSet = new Set(['a', 'back', 'u', 'irq', 'q']);
+  rosterSet.out = new Map([['irq', { name: 'Due Back', pos: 'RB', status: 'Injured Reserve' }]]);
+  const live = { injuries: new Map([['1', [{ id: 'irq', name: 'Due Back', pos: 'RB', status: 'Questionable' }]]]), rosters: new Map([['1', rosterSet]]) };
+  const props = [
+    // (a: a teammate; back: absent three games, activated with no designation, his own prop posted; u: a big
+    // cut and no price at a line -110 can't be)
+    { athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 49.5, open: null, prices: { over: -110, under: -110 } },
+    { athlete: { id: 'back', name: 'Back', team: '1' }, stat: st, line: 49.5, open: null, prices: { over: -110, under: -110 } },
+    { athlete: { id: 'u', name: 'U', team: '1' }, stat: st, line: 70.5, open: null, prices: null },
+  ];
+  const { priced } = priceProps('nfl', gameRow, props, fitted, idx, { homePts: 24, awayPts: 21 }, null, live, {}, 0.1);
+  assert.deepEqual(seen.get('a'), { back: 0, irq: 0.5, left: 1 });
+  const by = Object.fromEntries(priced.map((x) => [x.prop.athlete.id, x]));
+  // (neither the one back nor the one who's left named out; the questionable one named questionable, not out)
+  assert.equal(by.a.projection.out, undefined);
+  assert.deepEqual(by.a.projection.questionable, ['Due Back']);
+  // (a role change on a line with no price -110 can be: skipped with both words, no CHECK)
+  assert.equal(by.u.guard.kind, undefined);
+  assert.equal(by.u.guard.skip, true);
+  assert.match(by.u.guard.why, /a regular at his position out.*; no price/);
+});

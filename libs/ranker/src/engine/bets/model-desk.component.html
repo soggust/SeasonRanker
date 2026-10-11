@@ -280,7 +280,7 @@
             <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'confidence' }"></ng-container></thead>
             <tbody>
               @for (t of sorted('confidence', byConfidence, tallyValue); track t.label) {
-                <tr [ngClass]="'desk-tier-' + t.label.toLowerCase()" [attr.title]="t.label === 'CHECK' ? help['checkBand'] : null"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+                <tr [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()" [attr.title]="t.label === 'CHECK' ? help['checkBand'] : t.label === 'CHECK ROLE' ? help['checkRoleBand'] : null"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
               }
               @if (confidenceTotal; as t) {
                 <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>

@@ -91,10 +91,11 @@ export interface BetRow {
   line?: number | null;
   pickId?: string;
   // (a CHECK, not a bet the bot made: an admin's alone; its gap from the book, signed for its side, and why the
-  // bot didn't bet it)
+  // bot didn't bet it; checkCause 'role' for one kept for his role changing (props.mjs roleChangeOf), not the gap)
   check?: boolean;
   gap?: number | null;
   checkReason?: string | null;
+  checkCause?: 'role' | null;
 }
 
 // (an analyst's pick, as far as the page uses it: the call, its side, its case and its risk)
@@ -198,9 +199,11 @@ interface Pick {
   ev?: number;
   units?: number;
   why?: PickWhy;
-  // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
+  // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; its cause 'role'
+  // where it's kept for a role changing (picks.mjs; none on an older file or a gap's))
   gap?: number | null;
   checkReason?: string | null;
+  checkCause?: string | null;
 }
 interface Picks {
   at: string;
@@ -396,7 +399,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       why: p.why ?? null,
       line: p.line,
       pickId: p.id,
-      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null } : {}),
+      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null, checkCause: p.checkCause === 'role' ? ('role' as const) : null } : {}),
     });
     for (const { sport, picks, bets: file, sheet } of files) {
       // The algorithm's picks
@@ -678,6 +681,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The rank tile's hover: its place (a lock's, above the ranks), its Kelly score and its chance ("#2 of 40 ·
   // Kelly +3.12 · 64% to win")
   rankTitle(r: BetRow, i: number, n: number, locks: number): string {
+    if (r.check && r.checkCause === 'role') return `Check · his role is changing: the model's numbers are his old role's, so neither side is bet (the model ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%)`;
     if (r.check) return `Check · the model ${r.chance ?? '–'}% against the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%: too far apart to bet`;
     const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;

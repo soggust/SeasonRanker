@@ -208,18 +208,23 @@
                 @if (r.risk) {
                   <p class="bet-risk"><b>Devil&#39;s Advocate:</b> {{ r.risk }}</p>
                 }
-                <!-- (a CHECK's: why the bot didn't bet it, the model's chance against the book's) -->
+                <!-- (a CHECK's: why the bot didn't bet it, the model's chance against the book's; a role CHECK's, the
+                     role changing, neither side bet) -->
                 @if (r.check) {
                   <p class="bet-check-why">
                     <b class="bet-check-q" aria-hidden="true">?</b>
-                    <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
+                    @if (r.checkCause === 'role') {
+                      <span><b>Not bet either way:</b> {{ r.checkReason || 'his role is changing' }}. The model's numbers are his old role's. Either side bets as any line does.</span>
+                    } @else {
+                      <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
+                    }
                   </p>
                 }
                 <!-- (its chance to win on the left; where it's played and the weather then on the right, the wind in
                      amber when it could matter) -->
                 <div class="bet-foot">
                   @if (r.check) {
-                    <p class="bet-meta bet-confidence" title="The model's chance this side wins: too far from the book's to bet, so the bot questions it">The model {{ r.chance ?? '–' }}% · the book {{ r.fair != null ? (r.fair * 100 | number: '1.0-0') + '%' : '–' }}</p>
+                    <p class="bet-meta bet-confidence" [attr.title]="r.checkCause === 'role' ? 'The model\'s chance this side wins on his old role\'s numbers: his role is changing, so the bot bets neither side' : 'The model\'s chance this side wins: too far from the book\'s to bet, so the bot questions it'">The model {{ r.chance ?? '–' }}% · the book {{ r.fair != null ? (r.fair * 100 | number: '1.0-0') + '%' : '–' }}</p>
                   } @else {
                     <p class="bet-meta bet-confidence" title="Its chance to win. The list runs by Kelly (the edge on the price, scaled by what it pays); gray: no edge on the price">{{ r.chance ?? '–' }}% to win</p>
                   }
