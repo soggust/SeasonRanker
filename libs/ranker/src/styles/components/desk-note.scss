@@ -1,0 +1,181 @@
+@use "../variables" as v;
+@use "../casino-chip" as chip;
+
+// An admin's note on a CHECK (desk-note.component.ts): under its write-up in the open row, on the felt, edged
+// in the CHECK's lavender; felt dropdowns, a felt Save, the saved note read back in the lavender's light.
+
+:host {
+  display: block;
+  margin-top: 12px;
+}
+
+.desk-note {
+  border: 1px solid color-mix(in srgb, #{chip.$check} 45%, transparent);
+  border-radius: 10px;
+  background: linear-gradient(180deg, color-mix(in srgb, #{chip.$check} 12%, transparent), color-mix(in srgb, #{chip.$check} 4%, transparent));
+  color: rgba(255, 255, 255, 0.9);
+  font-family: v.$font-base;
+  font-size: 13px;
+  padding: 10px 12px;
+}
+
+.note-quiet {
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+// (saved: the note in words, Edit on its right)
+.note-saved {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+  margin: 0;
+
+  > span {
+    flex: 1;
+    min-width: 0;
+  }
+
+  b {
+    color: chip.$check-light;
+    font-weight: 800;
+  }
+
+  .mat-icon {
+    color: chip.$check-light;
+    flex-shrink: 0;
+    margin-top: 1px;
+    @include v.icon-size(17px);
+  }
+}
+
+.note-title {
+  align-items: center;
+  color: chip.$check-light;
+  display: flex;
+  font-weight: 800;
+  gap: 6px;
+  letter-spacing: 0.02em;
+  margin: 0 0 8px;
+
+  .mat-icon {
+    @include v.icon-size(18px);
+  }
+}
+
+.note-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+
+.note-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  > span {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    small {
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  select {
+    @include chip.felt-dropdown;
+    font-size: 12.5px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 8px 32px 8px 14px;
+  }
+}
+
+.note-text {
+  margin-top: 8px;
+
+  textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid chip.$felt-seam;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #fff;
+    font: inherit;
+    padding: 8px 10px;
+    resize: vertical;
+    width: 100%;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:focus-visible {
+      border-color: var(--scoreboard-led, #{chip.$check-light});
+      outline: none;
+    }
+  }
+}
+
+.note-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.note-problem {
+  color: #ff9a8a;
+  font-weight: 700;
+  margin: 0 auto 0 0;
+}
+
+.note-save {
+  @include chip.felt-control;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: v.$font-base;
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 7px 16px;
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+// (a quiet text button: Edit, Cancel; lighter on hover, never yellow)
+.note-link {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  flex-shrink: 0;
+  font: inherit;
+  font-weight: 800;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    outline: none;
+  }
+}
+
+// (phones: each dropdown the row's width)
+@media (max-width: 575px) {
+  .note-field {
+    flex: 1 1 100%;
+  }
+}

@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { tierOf } from './tiers';
+import { tierLabel, tierOf, unranked } from './tiers';
+import { NotePlayer, byBand, notePlayers } from './desk-notes';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
@@ -18,6 +19,17 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // NFL's AI bet desk's sheet for the week (data/analysis/bet-sheet.json) only marks the picks it agrees with
 // (the same game, market and side: "Algorithm + Analyst", ranked a little higher); its other picks aren't
 // shown. A row opens to its reasoning.
+//
+// An admin's (canUse('experimental')) list also has the CHECKs (picks.json's checks: markets the model is too
+// far from the book on to bet, kept for the owner to look into), under the LOCKs and over the rest, in their
+// lavender band with a "?" for a rank: not the bot's bets (their prices bet either side, the slip's bet not the
+// bot's pick), the open row its write-up (the disagreement) and a note to the bot (desk-note.component.ts:
+// Firestore's deskNotes, which the bettor reads on its next run). Nobody else sees them.
+
+// (a game the bot has picks on: its board's key facts, its picks (the CHECKs among them) and its bets alone)
+type GameBoardPicks = { sport: string; event: string; start: string; matchup: string; picks: BetRow[]; betPicks: BetRow[] };
+// (the game dropdown's day: its header, and its games with how many bets each)
+type GameDay = { day: string; games: { key: string; label: string; count: number }[] };
 
 // A game as the picks and the AI desk's sheet name it
 type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
@@ -77,6 +89,11 @@ export interface BetRow {
   // (its line, and its id in the bettor's ledger: "<ESPN event>:<market>", a prop "<event>:prop:<type>:<athlete>")
   line?: number | null;
   pickId?: string;
+  // (a CHECK, not a bet the bot made: an admin's alone; its gap from the book, signed for its side, and why the
+  // bot didn't bet it)
+  check?: boolean;
+  gap?: number | null;
+  checkReason?: string | null;
 }
 
 // (an analyst's pick, as far as the page uses it: the call, its side, its case and its risk)
@@ -180,10 +197,15 @@ interface Pick {
   ev?: number;
   units?: number;
   why?: PickWhy;
+  // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
+  gap?: number | null;
+  checkReason?: string | null;
 }
 interface Picks {
   at: string;
   picks: Pick[];
+  // (the CHECKs, level 'check': files before them carry none)
+  checks?: Pick[];
 }
 
 // A team as the schedule names it (the sportsbook's WSH and LAR are its WAS and LA)
@@ -257,7 +279,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;
   // (Closed Bets: only with bets of the user's settled)
   // (already bet and still open: the stake, so the same bet isn't placed twice by mistake)
-  readonly placedOn = (r: BetRow): number => (r.pickId ? (this.wallet.openOnPick().get(r.pickId) ?? 0) : 0);
+  // (by the pick's id and its side: the wallet's openOnPick)
+  readonly placedOn = (r: BetRow): number => (r.pickId ? (this.wallet.openOnPick().get(`${r.pickId}|${r.side}`) ?? 0) : 0);
   // (the signed-in user's play money: on hand, and what's out on open bets; none signed out or before it loads)
   readonly bankroll = (): { balance: number; atRisk: number; open: number } | null => {
     if (!canUse('bets') || !this.wallet.loaded() || !this.wallet.wallet()) return null;
@@ -284,6 +307,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   game = '';
   readonly limit = 40;
   readonly gameLimit = 15;
+  // (the CHECKs an admin's All Games shows, the biggest gaps first, over the 40 bets)
+  readonly checkLimit = 10;
   open = new Set<number>();
   readonly insteadText = insteadText;
   // each game's venue and kickoff weather, from the bet desk's sheet ("nfl|CHI @ GB")
@@ -333,51 +358,59 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       }),
     );
     const algoRows: BetRow[] = [];
+    const checkRows: BetRow[] = [];
     const sheetRows: SheetCall[] = [];
+    // (a pick as a row; a CHECK's band its own, its gap and why it wasn't bet kept)
+    const rowOf = (sport: string, p: Pick, id: number, check: boolean): BetRow => ({
+      sport,
+      source: 'Algorithm',
+      game: { week: 0, date: p.start.slice(0, 10), kickoff: p.start, matchup: p.matchup, teams: p.teams, line: null },
+      market: p.market,
+      strength: 'like',
+      reason: p.reason,
+      ...(p.risk ? { risk: p.risk } : {}),
+      confidence: p.level,
+      id,
+      key: pickKey(sport, p.matchup, p.kind, p.pick),
+      pick: p.pick,
+      odds: americanOdds(p.odds),
+      // (the order: its Kelly score, the file's, or worked out from its chance and price for a file from
+      // before it ranked by one; its chance shows, its band colors it)
+      sureness: Number.isFinite(p.why?.price) ? p.score : (kellyOf(p.p, p.odds) ?? p.score),
+      chance: p.chance,
+      betType: p.kind,
+      side: p.side ?? null,
+      player: p.player ?? null,
+      athleteId: p.athlete ?? null,
+      playerTeam: p.team ?? null,
+      edge: p.edge,
+      model: p.model,
+      fair: p.fair,
+      p: p.p,
+      ev: p.ev,
+      units: p.units,
+      price: p.odds,
+      otherPrice: p.otherOdds ?? null,
+      book: p.book,
+      why: p.why ?? null,
+      line: p.line,
+      pickId: p.id,
+      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null } : {}),
+    });
     for (const { sport, picks, bets: file, sheet } of files) {
       // The algorithm's picks
-      if (picks?.picks?.length) {
+      if (picks?.picks?.length || picks?.checks?.length) {
         if (!this.updated || picks.at > this.updated) this.updated = picks.at;
         for (const p of picks.picks ?? []) {
-          // (a CHECK, not a bet the bot made (picks.mjs keeps them in their own list; one left in picks by an
-          // older file): never a row, a lit board or a slip's pick here)
-          if ((p.level as string) === 'check') continue;
+          // (a CHECK left in picks by an older file: picks.mjs keeps them in their own list now; never a bet here)
+          if (p.level === 'check') continue;
           if (p.where) this.places.set(`${sport}|${p.matchup}`, p.where);
-          algoRows.push({
-            sport,
-            source: 'Algorithm',
-            game: { week: 0, date: p.start.slice(0, 10), kickoff: p.start, matchup: p.matchup, teams: p.teams, line: null },
-            market: p.market,
-            strength: 'like',
-            reason: p.reason,
-            ...(p.risk ? { risk: p.risk } : {}),
-            confidence: p.level,
-            id: algoRows.length,
-            key: pickKey(sport, p.matchup, p.kind, p.pick),
-            pick: p.pick,
-            odds: americanOdds(p.odds),
-            // (the order: its Kelly score, the file's, or worked out from its chance and price for a file from
-            // before it ranked by one; its chance shows, its band colors it)
-            sureness: Number.isFinite(p.why?.price) ? p.score : (kellyOf(p.p, p.odds) ?? p.score),
-            chance: p.chance,
-            betType: p.kind,
-            side: p.side ?? null,
-            player: p.player ?? null,
-            athleteId: p.athlete ?? null,
-            playerTeam: p.team ?? null,
-            edge: p.edge,
-            model: p.model,
-            fair: p.fair,
-            p: p.p,
-            ev: p.ev,
-            units: p.units,
-            price: p.odds,
-            otherPrice: p.otherOdds ?? null,
-            book: p.book,
-            why: p.why ?? null,
-            line: p.line,
-            pickId: p.id,
-          });
+          algoRows.push(rowOf(sport, p, algoRows.length, false));
+        }
+        // (the CHECKs, apart: never the analyst's, never banded again; an admin's alone)
+        for (const p of picks.checks ?? []) {
+          if (p.where && !this.places.has(`${sport}|${p.matchup}`)) this.places.set(`${sport}|${p.matchup}`, p.where);
+          checkRows.push(rowOf(sport, p, -1, true));
         }
       }
       if (!file?.bets?.length) continue;
@@ -414,8 +447,10 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     // (each one's band from its score as it now stands, the analyst's quarter in it; all sports' picks together,
     // the locks above the rest, then the best Kelly score first)
     for (const a of algoRows) a.confidence = confidenceOf(a.sureness, a.p ?? (a.chance != null ? a.chance / 100 : null), a.edge);
-    const locked = (r: BetRow) => (r.confidence === 'lock' ? 0 : 1);
-    this.rows = algoRows.sort((a, b) => locked(a) - locked(b) || b.sureness - a.sureness || (a.game?.kickoff ?? '').localeCompare(b.game?.kickoff ?? ''));
+    // (the CHECKs' ids after the bets': each row's own)
+    checkRows.forEach((c, i) => (c.id = algoRows.length + i));
+    // (the LOCKs, then the CHECKs (the biggest gap first), then the rest by the Kelly score: desk-notes.ts byBand)
+    this.rows = [...algoRows, ...checkRows].sort(byBand);
     this.dropStarted();
     // (not if the page closed while its files loaded: nothing would stop it)
     if (!this.closed) this.ticker = setInterval(() => this.dropStarted(), 60_000);
@@ -426,14 +461,16 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // ESPN id, start and the bot's picks on it, by the game filter's key; and the games on the boards the bot
   // has no pick on, for the dropdown (their lines only). The slip (<bet-slip>) and #wallet do the rest.
   readonly lines = inject(LinesService);
-  boards = new Map<string, { sport: string; event: string; start: string; matchup: string; picks: BetRow[] }>();
+  // (each board's picks, the CHECKs among them, and its bets alone (betPicks): an admin's lines light the CHECKs too)
+  boards = new Map<string, GameBoardPicks>();
   private buildBoards(): void {
     for (const r of this.rows ?? []) {
       const event = r.pickId?.split(':')[0];
       if (!r.game || !event) continue;
       const key = this.gameKey(r);
-      const b = this.boards.get(key) ?? { sport: r.sport, event, start: r.game.kickoff ?? r.game.date, matchup: r.game.matchup, picks: [] };
+      const b = this.boards.get(key) ?? { sport: r.sport, event, start: r.game.kickoff ?? r.game.date, matchup: r.game.matchup, picks: [], betPicks: [] };
       b.picks.push(r);
+      if (!r.check) b.betPicks.push(r);
       this.boards.set(key, b);
     }
     // (each sport's board on the days the picks are on: the lines, and the games without a pick)
@@ -445,7 +482,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const out: { key: string; label: string; at: string }[] = [];
     for (const g of this.lines.boards().values()) {
       const key = `${g.sport}|${g.matchup}`;
-      if (g.state !== 'pre' || this.boards.has(key) || !(g.spread || g.total || g.ml)) continue;
+      // (a game with picks on show is in the days above; one with none on show (a CHECK's alone, not an admin) here)
+      if (g.state !== 'pre' || this.boardPicks(this.boards.get(key)).length || !(g.spread || g.total || g.ml)) continue;
       const time = new Date(g.start).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
       out.push({ key, label: `${g.sport.toUpperCase()} · ${g.matchup} · ${time}`, at: g.start });
     }
@@ -453,12 +491,17 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
 
   // (the chosen game's board: one with picks, or one from the boards alone)
-  boardFor(key: string): { sport: string; event: string; start: string; matchup: string; picks: BetRow[] } | null {
+  // (a board's picks as this viewer has them: an admin's with the CHECKs)
+  boardPicks(b: GameBoardPicks | null | undefined): BetRow[] {
+    return !b ? [] : this.desk() ? b.picks : b.betPicks;
+  }
+
+  boardFor(key: string): GameBoardPicks | null {
     const known = this.boards.get(key);
     if (known) return known;
     for (const g of this.lines.boards().values()) {
       if (`${g.sport}|${g.matchup}` === key) {
-        const board = { sport: g.sport, event: g.event, start: g.start, matchup: g.matchup, picks: [] };
+        const board = { sport: g.sport, event: g.event, start: g.start, matchup: g.matchup, picks: [], betPicks: [] };
         this.boards.set(key, board);
         return board;
       }
@@ -473,10 +516,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   private dropStarted(): void {
     const now = Date.now();
     const open = (this.rows ?? []).filter((r) => !r.game?.kickoff || Date.parse(r.game.kickoff) > now);
-    if (this.rows && open.length === this.rows.length && this.gameDays.length) return;
+    if (this.rows && open.length === this.rows.length) return;
     this.rows = open;
-    this.gameDays = this.buildGameDays();
-    if (this.game && !open.some((r) => this.gameKey(r) === this.game)) this.game = '';
+    if (this.game && !this.listed.some((r) => this.gameKey(r) === this.game)) this.game = '';
   }
 
   ngOnDestroy(): void {
@@ -489,20 +531,48 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return /^https?:/.test(logo) ? logo : `/${r.sport}/${logo}`;
   }
 
-  // All games: the top 40 bets; a game: its top 15 (from all of its bets, not just those in the top 40)
+  // All games: the top 40 bets; a game: its top 15 (from all of its bets, not just those in the top 40). An admin's
+  // CHECKs besides, never taking a bet's place: All Games the 10 biggest gaps, a game all of its own
   get shown(): BetRow[] {
     // (the chips on that this game has: a game without any of them shows all its bets, not an empty list
     // whose chips have gone)
     const inGame = this.inGame;
     const kinds = [...this.kinds].filter((k) => inGame.some((r) => r.betType === k));
     const rows = kinds.length ? inGame.filter((r) => kinds.includes(r.betType)) : inGame;
-    return rows.slice(0, this.game ? this.gameLimit : this.limit);
+    const limit = this.game ? this.gameLimit : this.limit;
+    const checkLimit = this.game ? Infinity : this.checkLimit;
+    let bets = 0;
+    let checks = 0;
+    return rows.filter((r) => (r.check ? checks++ < checkLimit : bets++ < limit));
   }
 
   // The bets in the chosen game (all of them for All Games)
   private get inGame(): BetRow[] {
-    const rows = this.rows ?? [];
+    const rows = this.listed;
     return this.game ? rows.filter((r) => this.gameKey(r) === this.game) : rows;
+  }
+
+  // The rows this viewer sees: an admin's every one, the CHECKs among them; anyone else's the bets alone (kept till
+  // the rows or the admin flag change: the flag can arrive after the picks)
+  private listedFor: { rows: BetRow[] | null; desk: boolean; list: BetRow[] } | null = null;
+  get listed(): BetRow[] {
+    const desk = this.desk();
+    if (this.listedFor?.rows !== this.rows || this.listedFor?.desk !== desk) {
+      const rows = this.rows ?? [];
+      this.listedFor = { rows: this.rows, desk, list: desk ? rows : rows.filter((r) => !r.check) };
+    }
+    return this.listedFor.list;
+  }
+
+  // (a CHECK's note's players: its own first, then its game's on the picks; kept per row)
+  private playersFor = new Map<number, NotePlayer[]>();
+  notePlayers(r: BetRow): NotePlayer[] {
+    let list = this.playersFor.get(r.id);
+    if (!list) {
+      list = notePlayers(r, this.boards.get(this.gameKey(r))?.picks ?? []);
+      this.playersFor.set(r.id, list);
+    }
+    return list;
   }
 
   // The filter chips: the types of bet in the chosen game, each with how many; none on shows them all
@@ -520,10 +590,16 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The week's games with bets: the dropdown's choices under a header for each day, by kickoff (in the
   // viewer's time zone; London's morning game first on Sunday), each with how many bets it has. Built once the
   // picks are in (they don't change after), not on every check of the page
-  gameDays: { day: string; games: { key: string; label: string; count: number }[] }[] = [];
-  private buildGameDays(): { day: string; games: { key: string; label: string; count: number }[] }[] {
-    const byGame = new Map<string, { key: string; label: string; day: string; at: number; count: number }>();
-    for (const r of this.rows ?? []) {
+  // (kept till the rows on show change: an admin's with the CHECKs' games and counts)
+  private daysFor: { list: BetRow[]; days: GameDay[] } | null = null;
+  get gameDays(): GameDay[] {
+    const list = this.listed;
+    if (this.daysFor?.list !== list) this.daysFor = { list, days: this.buildGameDays(list) };
+    return this.daysFor.days;
+  }
+  private buildGameDays(rows: BetRow[]): GameDay[] {
+    const byGame = new Map<string, { key: string; label: string; day: string; at: number; count: number; bets: number }>();
+    for (const r of rows) {
       if (!r.game) continue;
       const key = this.gameKey(r);
       let game = byGame.get(key);
@@ -538,12 +614,18 @@ export class BetsPageComponent implements OnInit, OnDestroy {
           day: day.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }),
           at: day.getTime(),
           count: 0,
+          bets: 0,
         };
       }
-      game.count = Math.min(game.count + 1, this.gameLimit);
+      // (the bets it shows, gameLimit at most, and an admin's CHECKs on it, all shown)
+      if (r.check) game.count++;
+      else if (game.bets < this.gameLimit) {
+        game.bets++;
+        game.count++;
+      }
       byGame.set(key, game);
     }
-    const days: { day: string; games: { key: string; label: string; count: number }[] }[] = [];
+    const days: GameDay[] = [];
     for (const game of [...byGame.values()].sort((a, b) => a.at - b.at || a.label.localeCompare(b.label))) {
       if (days.at(-1)?.day !== game.day) days.push({ day: game.day, games: [] });
       days.at(-1)!.games.push(game);
@@ -561,9 +643,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return r.strength === 'fade' ? 'fade' : 'like';
   }
 
-  // Its chip, by its band (bet-why.ts confidenceOf): "Lock", "Love", "Bet", or "Pass" (a small edge, or none on
-  // its price: a bet the bot made for the data, never one to make); a fade "Fade"
-  grade(r: BetRow): 'lock' | 'love' | 'like' | 'fade' | 'pass' {
+  // Its chip, by its band (bet-why.ts confidenceOf; a CHECK's its own): "Lock", "Check", "Love", "Like", or "Pass"
+  // (a small edge, or none on its price: a bet the bot made for the data, never one to make); a fade "Fade"
+  grade(r: BetRow): 'lock' | 'check' | 'love' | 'like' | 'fade' | 'pass' {
     if (r.strength === 'fade') return 'fade';
     return tierOf(this.level(r)) ?? 'pass';
   }
@@ -573,9 +655,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return r.confidence ?? 'low';
   }
 
-  // (the locks shown: above the ranks, the first bet under them #1)
+  // (the locks and CHECKs shown: above the ranks, the first bet under them #1)
   lockCount(rows: BetRow[]): number {
-    return rows.filter((r) => r.confidence === 'lock').length;
+    return rows.filter((r) => unranked(r.confidence)).length;
   }
 
   toggle(id: number): void {
@@ -595,7 +677,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The rank tile's hover: its place (a lock's, above the ranks), its Kelly score and its chance ("#2 of 40 ·
   // Kelly +3.12 · 64% to win")
   rankTitle(r: BetRow, i: number, n: number, locks: number): string {
-    const place = r.confidence === 'lock' ? 'Lock' : `#${i + 1 - locks} of ${n - locks}`;
+    if (r.check) return `Check · the model ${r.chance ?? '–'}% against the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%: too far apart to bet`;
+    const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;
   }
 

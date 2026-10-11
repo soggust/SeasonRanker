@@ -29,6 +29,7 @@ import { AboutFrameComponent } from './about/about-frame.component';
 import { PositionService } from './position.service';
 import { BetsPageComponent } from './bets/bets-page.component';
 import { ModelDeskComponent } from './bets/model-desk.component';
+import { DeskNoteComponent } from './bets/desk-note.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
 
 @NgModule({
@@ -52,6 +53,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
     AboutFrameComponent,
     BetsPageComponent,
     ModelDeskComponent,
+    DeskNoteComponent,
     ...ACCOUNT_COMPONENTS,
   ],
   bootstrap: [AppComponent],

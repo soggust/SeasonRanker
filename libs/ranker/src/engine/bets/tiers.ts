@@ -1,12 +1,17 @@
-// A pick's band, in one place: the bettor's confidence (picks.mjs's BANDS: lock, high, medium, low) and the name
-// the site shows for it (LOCK, LOVE, LIKE, PASS), on the Bets rows, the lines' chips, the wallet's Bot column, the
-// slip and the Algorithm's By Confidence. (The wallet stores the shown name on a bet: tier.)
-export type Confidence = 'lock' | 'high' | 'medium' | 'low';
-export type Tier = 'lock' | 'love' | 'like' | 'pass';
+// A pick's band, in one place: the bettor's confidence (picks.mjs's BANDS: lock, high, medium, low, and check) and
+// the name the site shows for it (LOCK, CHECK, LOVE, LIKE, PASS), on the Bets rows, the lines' chips, the wallet's
+// Bot column, the slip and the Algorithm's By Confidence. (The wallet stores the shown name on a bet: tier.)
+//
+// CHECK isn't a bet the bot made: a market the model is too far from the book on to bet (picks.mjs checks,
+// checks.mjs), kept for the owner to look into. Its place is between LOCK and LOVE wherever the bands sort; an
+// admin's alone on the Bets page (its own color, a "?" where LOCK has its padlock)
+export type Confidence = 'lock' | 'check' | 'high' | 'medium' | 'low';
+export type Tier = 'lock' | 'check' | 'love' | 'like' | 'pass';
 
-// (best first)
+// (best first; CHECK after LOCK, before LOVE)
 export const TIERS: readonly { confidence: Confidence; tier: Tier; label: string }[] = [
   { confidence: 'lock', tier: 'lock', label: 'Lock' },
+  { confidence: 'check', tier: 'check', label: 'Check' },
   { confidence: 'high', tier: 'love', label: 'Love' },
   { confidence: 'medium', tier: 'like', label: 'Like' },
   { confidence: 'low', tier: 'pass', label: 'Pass' },
@@ -21,3 +26,12 @@ export function tierOf(confidence: Confidence | null | undefined): Tier | null {
 export function tierLabel(confidence: Confidence): string {
   return TIERS.find((t) => t.confidence === confidence)?.label ?? '';
 }
+
+// (a band's place in the order, LOCK 0 to PASS 4; a tier's name or a confidence, none last: for sorting by band)
+export function bandOrder(band: Confidence | Tier | null | undefined): number {
+  const at = TIERS.findIndex((t) => t.confidence === band || t.tier === band);
+  return at < 0 ? TIERS.length : at;
+}
+
+// (the bands above the ranks, unnumbered: a LOCK, and a CHECK, which isn't ranked as a bet)
+export const unranked = (band: Confidence | null | undefined): boolean => band === 'lock' || band === 'check';

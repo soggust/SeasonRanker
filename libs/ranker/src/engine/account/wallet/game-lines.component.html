@@ -1,8 +1,8 @@
 <!-- A game's every line at DraftKings, both sides: a row a team, a column a market; the bot's pick on each lit in
      its band's color with its chip; a price clicked goes on the bet slip -->
 
-<!-- (one price: its line over its odds; the bot's chip in its corner where it's the bot's pick; lit gold while it's
-     on the slip) -->
+<!-- (one price: its line over its odds; the bot's chip in its corner where it's the bot's pick (a CHECK's "?", no
+     Kelly score: the bot questions it, it didn't bet it); lit gold while it's on the slip) -->
 <ng-template #priceCell let-price let-label="label">
   @if (price && price.odds !== null) {
     @let bot = botOn(price.market, price.side);
@@ -25,7 +25,7 @@
         <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
       }
       @if (bot) {
-        <span class="price-chip" [ngClass]="t ?? ''" aria-hidden="true">@if (t === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ t }}</span>
+        <span class="price-chip" [ngClass]="t ?? ''" aria-hidden="true">@if (t === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>} @else if (t === 'check') {<b class="tier-q">?</b>}{{ t }}</span>
       } @else {
         <!-- (no pick of the bot's: no edge on it, a pass) -->
         <span class="price-chip pass" aria-hidden="true">pass</span>
@@ -34,7 +34,7 @@
         <b class="price-line">{{ price.market === 'total' ? (price.side === 'over' ? 'O ' : 'U ') + price.line : lineText(price.line) }}</b>
       }
       <span class="price-odds">{{ oddsText(price.odds) }}</span>
-      @if (bot) {
+      @if (bot && t !== 'check') {
         <small class="price-kelly">K {{ kellyText(bot) }}</small>
       }
     </button>
@@ -135,7 +135,7 @@
               [class.placed]="wallet.openStakes().has(propKey(p, s.side))"
               [attr.aria-pressed]="wallet.slipKeys().has(propKey(p, s.side))"
               [attr.aria-label]="sideWords(p, s) + ' ' + oddsText(s.odds) + (s.bot ? ', the bot’s pick (' + t + ')' : '')"
-              [title]="sideWords(p, s) + ' ' + oddsText(s.odds) + (s.bot ? ' · The bot’s pick: ' + t?.toUpperCase() + ', Kelly ' + kellyText(p) : ' · Against the bot’s pick')"
+              [title]="sideWords(p, s) + ' ' + oddsText(s.odds) + (t === 'check' ? (s.bot ? ' · The bot’s CHECK: the model is too far from the book here to bet it' : ' · The other side of the bot’s CHECK') : s.bot ? ' · The bot’s pick: ' + t?.toUpperCase() + ', Kelly ' + kellyText(p) : ' · Against the bot’s pick')"
               [disabled]="!open"
               (click)="takeProp(p, s)"
             >
@@ -143,7 +143,7 @@
                 <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
               }
               @if (s.bot) {
-                <span class="price-chip" [ngClass]="t ?? ''" aria-hidden="true">@if (t === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ t }}</span>
+                <span class="price-chip" [ngClass]="t ?? ''" aria-hidden="true">@if (t === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>} @else if (t === 'check') {<b class="tier-q">?</b>}{{ t }}</span>
               } @else {
                 <span class="price-chip pass" aria-hidden="true">pass</span>
               }
@@ -151,7 +151,7 @@
                 <b class="price-line">{{ s.side === 'over' ? 'O ' : 'U ' }}{{ p.line }}</b>
               }
               <span class="price-odds">{{ oddsText(s.odds) }}</span>
-              @if (s.bot) {
+              @if (s.bot && t !== 'check') {
                 <small class="price-kelly">K {{ kellyText(p) }}</small>
               }
             </button>

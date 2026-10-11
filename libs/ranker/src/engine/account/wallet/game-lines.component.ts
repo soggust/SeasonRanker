@@ -36,7 +36,9 @@ const MARKET_OF: Record<string, PlayMarket> = { spread: 'spread', total: 'total'
 // A game's every line, both sides (the spread, the total, the moneyline) at DraftKings' prices from ESPN's
 // board, as a sportsbook lays them out: a row a team, a column a market; and the bot's props on the game (its
 // side, its price). The bot's own pick on each market lit in its band's color with its chip (Lock, Love, Like,
-// Pass) and its Kelly score. A price clicked goes on the bet slip (again, off it); only before the game starts.
+// Pass) and its Kelly score; a CHECK (an admin's: a market the bot questions, not a bet it made) in its lavender
+// with a "?", no Kelly score, either side as good to take, the slip's bet not the bot's pick (botPick false, its
+// tier check). A price clicked goes on the bet slip (again, off it); only before the game starts.
 @Component({
   selector: 'game-lines',
   templateUrl: './game-lines.component.html',
@@ -130,6 +132,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return this.botPicks().find((p) => MARKET_OF[p.betType] === market && p.side === side) ?? null;
   }
 
+  // (a CHECK: the bot questions the market, it didn't bet it)
+  isCheck(p: BotPick | null): boolean {
+    return p?.confidence === 'check';
+  }
+
   tier(p: BotPick | null): Tier | null {
     return p?.confidence ? tierOf(p.confidence) : null;
   }
@@ -142,7 +149,9 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   priceTitle(price: Price, bot: BotPick | null): string {
     const words = pickWords(price, this.matchupText);
     const at = `${words} ${oddsText(price.odds)} at DraftKings`;
-    const botWords = bot
+    const botWords = this.isCheck(bot)
+      ? ` · The bot's CHECK: the model is too far from the book here to bet it${bot!.chance != null ? ` (the model: ${bot!.chance}%)` : ''}`
+      : bot
       ? ` · The bot's pick: ${this.tier(bot)?.toUpperCase()}, Kelly ${this.kellyText(bot)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
       : '';
     return `${at}${botWords}${this.open ? '' : ' · Betting closed: the game has started'}`;
@@ -189,9 +198,10 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       line: price.line,
       odds: price.odds,
       pick: pickWords(price, this.matchupText),
-      botPick: !!bot,
+      // (a CHECK isn't the bot's pick: its tier kept, no Kelly score)
+      botPick: !!bot && !this.isCheck(bot),
       tier: this.tier(bot),
-      kelly: bot ? Math.round(bot.sureness * 1e4) / 100 : null,
+      kelly: bot && !this.isCheck(bot) ? Math.round(bot.sureness * 1e4) / 100 : null,
       ref: bot?.pickId ?? null,
       propType: null,
       athlete: null,
@@ -213,10 +223,12 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       line,
       odds: s.odds,
       pick: s.bot ? p.pick : this.sideWords(p, s),
-      botPick: s.bot,
+      botPick: s.bot && !this.isCheck(p),
       tier: s.bot ? this.tier(p) : null,
-      kelly: s.bot ? Math.round(p.sureness * 1e4) / 100 : null,
-      ref: s.bot ? (p.pickId ?? null) : null,
+      kelly: s.bot && !this.isCheck(p) ? Math.round(p.sureness * 1e4) / 100 : null,
+      // (the pick's id on either side: a prop's ref names its player's count for the settler, and the rules want
+      // one on every prop)
+      ref: p.pickId ?? null,
       propType: this.propType(p),
       athlete: String(p.athleteId ?? ''),
       player: p.player ?? null,

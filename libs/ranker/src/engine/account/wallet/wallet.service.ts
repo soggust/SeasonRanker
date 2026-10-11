@@ -101,7 +101,8 @@ export class WalletService {
   readonly slipOpen = signal(false);
   readonly slipKeys = computed(() => new Set(this.slip().map((s) => s.key)));
   // (what's already bet and still open, so the same bet isn't placed twice by mistake: the stake on each
-  // selection, by its key, and on each of the bot's picks, by the pick's id)
+  // selection, by its key, and on each of the bot's picks, by the pick's id and its side: a prop's other side
+  // carries the pick's id too, so its stake isn't counted as on the pick)
   readonly openStakes = computed(() => {
     const out = new Map<string, number>();
     for (const b of this.openBets()) out.set(selectionKey(b), (out.get(selectionKey(b)) ?? 0) + b.stake);
@@ -109,7 +110,7 @@ export class WalletService {
   });
   readonly openOnPick = computed(() => {
     const out = new Map<string, number>();
-    for (const b of this.openBets()) if (b.ref) out.set(b.ref, (out.get(b.ref) ?? 0) + b.stake);
+    for (const b of this.openBets()) if (b.ref) out.set(`${b.ref}|${b.side}`, (out.get(`${b.ref}|${b.side}`) ?? 0) + b.stake);
     return out;
   });
   // (the last placing's word: how many went on, and any that didn't)

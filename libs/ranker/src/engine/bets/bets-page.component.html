@@ -1,5 +1,6 @@
 <!-- The algorithm's top picks for every sport, one row per bet, the biggest edge first, each with its chance
-     to win; a row opens to its reasoning -->
+     to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
+     their write-up the disagreement, and a note to the bot -->
 <div class="bets-page" [class.desk-view]="view === 'desk'">
   <!-- (the bets to place, the user's open bets (when they have some), or, an admin's, the code-only model desk's
        play-money betting, its record and its changes to itself; one at a time) -->
@@ -29,7 +30,7 @@
     <div class="bets-head">
       <!-- (the left: the game dropdown, and when the sheet was updated under it) -->
       <div class="bets-head-left">
-        @if (rows?.length) {
+        @if (listed.length) {
           <!-- (the chip's rim: its spots drawn as dashes along an outline, so they follow the round ends) -->
           <span class="bets-chip">
             <select class="bets-game" aria-label="Game" [(ngModel)]="game" (ngModelChange)="closeWhy()">
@@ -99,7 +100,7 @@
 
     @if (rows === null) {
       <p class="bets-note">Loading…</p>
-    } @else if (!rows.length) {
+    } @else if (!listed.length) {
       <p class="bets-note">No picks right now: the algorithm posts its best bets as the coming games' lines come in.</p>
     } @else {
       @let locks = lockCount(shown);
@@ -107,7 +108,7 @@
         <!-- (a game chosen: its every line on top, to bet any of them) -->
         @if (game && boardFor(game); as gb) {
           <li class="bet-board">
-            <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="gb.picks"></game-lines>
+            <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)"></game-lines>
             @if (!shown.length) {
               <p class="bets-note">The bot has no pick on this game: its lines are above to bet.</p>
             }
@@ -120,9 +121,9 @@
               <button type="button" class="bet-row" (click)="toggle(r.id)" [attr.aria-expanded]="open.has(r.id)">
                 <mat-icon class="bet-chevron" [fontIcon]="open.has(r.id) ? 'expand_more' : 'chevron_right'"></mat-icon>
                 <span class="bet-rank-slot" aria-hidden="true"></span>
-                <!-- (a like reads by its band: Lock, Love, Like, or Pass for a small edge or none on its price; a fade
-                     "Fade", the side to go against) -->
-                <span class="bet-grade" [ngClass]="grade(r)">{{ grade(r) }}</span>
+                <!-- (a like reads by its band: Lock, Check (an admin's: questioned, not bet), Love, Like, or Pass for a
+                     small edge or none on its price; a fade "Fade", the side to go against) -->
+                <span class="bet-grade" [ngClass]="grade(r)" [attr.title]="r.check ? rankTitle(r, i, n, locks) : null">{{ grade(r) }}</span>
                 <span class="bet-main" [class.has-circle]="r.strength !== 'fade'">
                   <!-- (a fade says what it fades, and the bet to make instead) -->
                   @if (r.strength === 'fade') {
@@ -176,7 +177,11 @@
                 </span>
               </button>
               <!-- The rank tile (a lock's a lock, above the ranks; the first bet under them #1): a click (or Enter / Space) opens how its score is built; its
-                   hover, its place, its Kelly score and its chance -->
+                   hover, its place, its Kelly score and its chance. A CHECK's a "?", no rank and no score to open (it isn't a
+                   bet): clicks pass through it to its row, its hover on its CHECK chip -->
+              @if (r.check) {
+                <span class="bet-rank check" aria-hidden="true">?</span>
+              } @else {
               <button
                 type="button"
                 class="bet-rank"
@@ -195,6 +200,7 @@
                   {{ i + 1 - locks }}
                 }
               </button>
+              }
             </div>
             @if (open.has(r.id)) {
               <div class="bet-reasons">
@@ -202,20 +208,35 @@
                 @if (r.risk) {
                   <p class="bet-risk"><b>Devil&#39;s Advocate:</b> {{ r.risk }}</p>
                 }
+                <!-- (a CHECK's: why the bot didn't bet it, the model's chance against the book's) -->
+                @if (r.check) {
+                  <p class="bet-check-why">
+                    <b class="bet-check-q" aria-hidden="true">?</b>
+                    <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
+                  </p>
+                }
                 <!-- (its chance to win on the left; where it's played and the weather then on the right, the wind in
                      amber when it could matter) -->
                 <div class="bet-foot">
-                  <p class="bet-meta bet-confidence" title="Its chance to win. The list runs by Kelly (the edge on the price, scaled by what it pays); gray: no edge on the price">{{ r.chance ?? '–' }}% to win</p>
+                  @if (r.check) {
+                    <p class="bet-meta bet-confidence" title="The model's chance this side wins: too far from the book's to bet, so the bot questions it">The model {{ r.chance ?? '–' }}% · the book {{ r.fair != null ? (r.fair * 100 | number: '1.0-0') + '%' : '–' }}</p>
+                  } @else {
+                    <p class="bet-meta bet-confidence" title="Its chance to win. The list runs by Kelly (the edge on the price, scaled by what it pays); gray: no edge on the price">{{ r.chance ?? '–' }}% to win</p>
+                  }
                   @if (where(r); as w) {
                     <small class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</small>
                   }
                 </div>
+                <!-- (a CHECK's note to the bot: an admin's alone (desk-note.component.ts)) -->
+                @if (r.check && r.pickId && desk()) {
+                  <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)"></desk-note>
+                }
                 <!-- (the game's every line, to bet this pick or any other; once on top instead when the game's chosen) -->
                 @if (!game && boards.get(gameKey(r)); as gb) {
-                  <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="gb.picks"></game-lines>
+                  <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)"></game-lines>
                 } @else if (game && boards.get(gameKey(r)); as gb) {
                   <!-- (the game's every line is on top: this pick's own two sides here, to bet it or go against it) -->
-                  <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="gb.picks" [only]="r"></game-lines>
+                  <game-lines [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)" [only]="r"></game-lines>
                 }
               </div>
             }

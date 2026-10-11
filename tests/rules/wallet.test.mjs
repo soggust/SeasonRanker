@@ -131,6 +131,18 @@ describe('wallet rules', { skip }, () => {
     await assertFails(place(db, 'ann', 'more', playBet({ stake: 1 })));
   });
 
+  test("a CHECK's side (its tier check, not the bot's pick), and a prop's other side with the pick's id in its ref", async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    await assertSucceeds(place(db, 'ann', 'a-check', playBet({ tier: 'check', botPick: false, stake: 0.5 })));
+    await assertSucceeds(
+      place(db, 'ann', 'a-check-prop', playBet({ market: 'prop', side: 'over', line: 24.5, odds: -110, pick: 'John Gibson Over 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '401:prop:saves:2590824', tier: 'check', botPick: false, stake: 0.5 }), 0.5),
+    );
+    // (a prop's ref is wanted on either side: without one it's refused, so the lines send the pick's id on both)
+    const { ref: _ref, tier: _tier, ...noRef } = playBet({ market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', botPick: false, stake: 0.5 });
+    await assertFails(place(db, 'ann', 'no-ref', noRef, 0.5));
+  });
+
   test('a reload: back to 1,000, one more reset; nothing else, and no settling from the browser', async () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));

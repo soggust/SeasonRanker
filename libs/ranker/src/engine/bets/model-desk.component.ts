@@ -29,6 +29,7 @@ import {
 import { Board, CalibrationRow, Change, ContextRow, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
 import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
+import { CheckEntry, checkBets } from './desk-notes';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
 
 // The algorithm's admin panel (the Bets page, dev only): the code-only desk's play-money betting
@@ -37,7 +38,9 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // how well its chances match what happened, its bankroll over time, the bets still open, the latest graded,
 // every change it's made to itself and why, and the context it weighs beyond the ratings (rest, travel,
 // starters, weather, parks, officials, the ranker's own numbers) with each term's fitted size. The arithmetic
-// is desk-math.ts's, the sorting desk-columns.ts's, the hovers desk-help.ts's.
+// is desk-math.ts's, the sorting desk-columns.ts's, the hovers desk-help.ts's. By Confidence has the CHECKs
+// too (checks.json: the markets too far from the book to bet), under LOCK, at a unit as if bet: never in the
+// total, the record or the bankroll.
 
 
 const SPORT_KEY = 'deskSport';
@@ -107,6 +110,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   sport: string | null = readSport();
   private allBets: ModelBet[] = [];
   private allStates: ModelState[] = [];
+  // (the CHECKs, at a unit as if bet (desk-notes.ts checkBets): By Confidence's CHECK row alone)
+  private allChecks: ModelBet[] = [];
+  private checks: ModelBet[] = [];
 
   // (the bets by when the bot placed them, the dropdown left of the game's: the algorithm changes, so today's
   // bets are today's logic; Today on every visit. The record, tiles, chart and results follow it; the bets
@@ -179,10 +185,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       SPORTS.map(async (sport) => ({
         ledger: await getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
         state: await getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
+        // (none before the bettor's first CHECK file: no CHECK row)
+        checks: await getJson<{ checks?: CheckEntry[] }>(`/${sport}/data/model/checks.json`, { cache: 'no-cache' }),
       })),
     );
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     this.allBets = files.flatMap((f) => f.ledger?.bets ?? []);
+    this.allChecks = files.flatMap((f) => checkBets(Array.isArray(f.checks?.checks) ? f.checks!.checks : []));
     // (a remembered sport with no bets (NBA before its season): every sport instead, not an untouched
     // 1,000u desk that reads like an empty wallet)
     if (this.sport && !this.allBets.some((b) => b.sport === this.sport)) this.sport = null;
@@ -243,6 +252,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (the account is every bet's, whatever the range: a balance doesn't change with the dates on show)
     this.account = tally('All', scoped);
     this.bets = scoped.filter((b) => b.status === 'open' || this.inRange(b));
+    // (the CHECKs in the same sport, game and range: placed, the first time they were recorded)
+    this.checks = this.allChecks.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.inRange(c)));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
     this.build();
     this.loadScores();
@@ -267,8 +278,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
     // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
     const band = (b: ModelBet) => confidenceOf(kellyOf(b.p, b.odds) ?? 0, b.p, intentOf(b) === 'edge');
-    // (the Bets page's bands as the desk names them, best first: tiers.ts)
-    this.byConfidence = TIERS.map((t) => tally(t.label.toUpperCase(), where((b) => band(b) === t.confidence))).filter((t) => t.bets || t.open);
+    // (the Bets page's bands as the desk names them, best first: tiers.ts; CHECK the CHECKs' own, at a unit as if
+    // bet, under LOCK and out of the total)
+    this.byConfidence = TIERS.map((t) => tally(t.label.toUpperCase(), t.confidence === 'check' ? this.checks : where((b) => band(b) === t.confidence))).filter((t) => t.bets || t.open);
     this.confidenceTotal = this.byConfidence.length ? tally('Total', bets) : null;
     this.calibration = calibrationOf(bets);
 

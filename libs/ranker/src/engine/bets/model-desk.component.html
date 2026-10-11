@@ -271,7 +271,8 @@
       }
 
       <!-- (its record by the Bets page's bands: each bet's Kelly score and chance when it was placed, a lock, LOVE,
-           LIKE or PASS (no edge, or a small one); and all of them, the total under) -->
+           LIKE or PASS (no edge, or a small one); and all of them, the total under. CHECK under LOCK: the markets it
+           questioned, at a unit as if bet, not in the total) -->
       @if (byConfidence.length) {
       <card-panel class="tab-card group-results" label="By Confidence" icon="local_fire_department">
         <div class="group-body">
@@ -279,7 +280,7 @@
             <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'confidence' }"></ng-container></thead>
             <tbody>
               @for (t of sorted('confidence', byConfidence, tallyValue); track t.label) {
-                <tr [ngClass]="'desk-tier-' + t.label.toLowerCase()"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+                <tr [ngClass]="'desk-tier-' + t.label.toLowerCase()" [attr.title]="t.label === 'CHECK' ? help['checkBand'] : null"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
               }
               @if (confidenceTotal; as t) {
                 <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>

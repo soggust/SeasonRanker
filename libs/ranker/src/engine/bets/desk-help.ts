@@ -5,6 +5,7 @@ export const DESK_HELP: Record<string, string> = {
   profit: 'Units won or lost, stakes included',
   roi: 'Return on the units staked: profit ÷ staked',
   open: 'Bets placed on games not played yet',
+  checkBand: "CHECK: markets the model was too far from the book on to bet, kept to look into. Their record is a unit each as if bet (open till graded); never in the total, the record or the bankroll",
   available: "What's left to bet with: the bankroll (1,000 to start, plus what's been won or lost, plus 1,000 for each rebuy) less the stakes on open bets, as at a sportsbook",
   intent: 'Edge: bets where it saw value. Action: no edge, placed only for the data (every market gets a bet). The model is judged on the edge record',
   atRisk: "The stakes on every open bet, started or not: out of the balance until they're graded",

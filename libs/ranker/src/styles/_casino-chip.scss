@@ -264,7 +264,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 }
 
 // ---------------------------------------------------------------------------
-// The bands' tags: LOCK, LOVE, LIKE, PASS (and the Bets page's FADE), wherever a bet shows its band: the Bets
+// The bands' tags: LOCK, CHECK, LOVE, LIKE, PASS (and the Bets page's FADE), wherever a bet shows its band: the Bets
 // rows, the lines' prices, the wallet's Bot column, the slip. One palette, one tag, each place its own size.
 // ---------------------------------------------------------------------------
 // (a lock's chocolate; lighter for its padlock and lettering on the dark; its price tile's edge; the gold of
@@ -273,6 +273,12 @@ $lock: #d2691e;
 $lock-light: #f0a060;
 $lock-edge: #e07a30;
 $lock-gold: #ffcf4a;
+// (a CHECK's lavender, the bot questioning a market, not betting it: a periwinkle felt with a soft sheen and dark
+// lettering; lighter for its "?" and lettering on the dark; its price tile's edge; deep for the row's rail ends)
+$check: #a99cf0;
+$check-light: #cdc4ff;
+$check-edge: #9a8cf2;
+$check-deep: #4a3f8e;
 
 @mixin tier-tag($size: 10px, $pad: 3px 6px, $tracking: 0.06em, $radius: 4px, $pass-fill: none) {
   border-radius: $radius;
@@ -290,6 +296,15 @@ $lock-gold: #ffcf4a;
     background: $lock;
     color: #fff;
     @include lock-shine;
+  }
+
+  // (a CHECK: lavender felt, a sheen across its top, dark letters; its "?" before the word)
+  &.check {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 55%),
+      linear-gradient(135deg, #c4b9ff, $check 55%, #b4a8f6);
+    box-shadow: inset 0 0 0 1px rgba(74, 63, 142, 0.35);
+    color: #1f1748;
   }
 
   &.love {
@@ -311,11 +326,20 @@ $lock-gold: #ffcf4a;
     color: rgba(255, 255, 255, 0.7);
   }
 
-  // (a LOCK tag's padlock before its word, a touch under the letters' size, the two centered together)
-  &:has(.tier-lock) {
+  // (a LOCK tag's padlock before its word, a touch under the letters' size, the two centered together; a CHECK's
+  // "?" the same)
+  &:has(.tier-lock),
+  &:has(.tier-q) {
     align-items: center;
     display: inline-flex;
     gap: 2px;
+  }
+
+  // (a CHECK's "?": bold, in the lettering's color, a hair bigger than the word)
+  .tier-q {
+    font-size: 1.15em;
+    font-weight: 900;
+    line-height: 1;
   }
 
   .tier-lock {
@@ -332,6 +356,10 @@ $lock-gold: #ffcf4a;
 @mixin tier-text {
   &.lock {
     color: $lock-light;
+  }
+
+  &.check {
+    color: $check-light;
   }
 
   &.love {

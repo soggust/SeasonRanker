@@ -1,4 +1,4 @@
-import { Confidence, tierLabel } from './tiers';
+import { Confidence, tierLabel, unranked } from './tiers';
 // Why a bet ranks where it does on the Bets page (its rank tile clicked): its score split into what makes it,
 // and what separates it from the bets beside it. The score is its Kelly score (picks.mjs scoreParts): how much
 // of a bankroll its edge is worth at its price, (b·p − (1 − p)) / b, b what a unit pays and p its trusted
@@ -244,8 +244,9 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
 }
 
 export function betWhy(list: BetWhyRow[], index: number): BetWhy {
-  const locks = list.filter((r) => r.confidence === 'lock').length;
-  const placeOf = (i: number) => (list[i].confidence === 'lock' ? 'Lock' : `#${i + 1 - locks}`);
+  // (the LOCKs and CHECKs above the ranks, unnumbered: the first bet under them #1)
+  const locks = list.filter((r) => unranked(r.confidence)).length;
+  const placeOf = (i: number) => (unranked(list[i].confidence) ? tierLabel(list[i].confidence!) : `#${i + 1 - locks}`);
   const row = list[index];
   const score = row.sureness * 100;
   const { parts: raw, partial } = partsOf(row);

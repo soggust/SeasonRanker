@@ -22,8 +22,8 @@
 //            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
 //            never shown or published, never in the record: the open ones on games not started whose market
 //            wasn't bet after all and whose gap hasn't closed since (closedAt), the biggest gap first,
-//            CHECK_TOP at most; their place is between LOCK and LOVE once the page has a CHECK band (the
-//            admins' alone). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
+//            CHECK_TOP at most; the Bets page shows them between LOCK and LOVE in their own band (the
+//            admins' alone, with a note to the bot: tiers.ts, desk-note.component.ts). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
 //            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with)
 //   other    a prop's other side's price (otherOdds; null where unknown): the page shows both sides
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's

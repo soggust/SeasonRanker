@@ -286,6 +286,20 @@ $lock-gold: chip.$lock-gold;
     --rail: linear-gradient(135deg, #7a3b10, #e8914a 30%, #d2691e 55%, #f0a060 75%, #6e3410);
   }
 
+  // (a CHECK: lavender, the bot questioning the market: a periwinkle rail, its bar washed in a soft lavender sheen)
+  &.check {
+    --tint: #{chip.$check};
+    --rail: linear-gradient(135deg, #{chip.$check-deep}, #c9bfff 28%, #{chip.$check} 52%, #e2dcff 72%, #{chip.$check-deep});
+
+    .bet-row {
+      background:
+        linear-gradient(180deg, rgba(205, 196, 255, 0.3), rgba(169, 156, 240, 0.12) 55%, rgba(169, 156, 240, 0.07)),
+        radial-gradient(ellipse 70% 120% at 20% 0%, rgba(236, 232, 255, 0.16), transparent 70%),
+        var(--scoreboard-dots),
+        var(--scoreboard);
+    }
+  }
+
   &.high {
     --tint: #{v.$good};
   }
@@ -405,6 +419,19 @@ $lock-gold: chip.$lock-gold;
   &.top {
     color: var(--tint-good, #3ee07a);
     text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
+  }
+
+  // a CHECK: above the ranks, under the locks: a "?" in the lavender's light, glowing like the digits; no score to
+  // open, so no hover of its own and clicks pass through to its row
+  &.check {
+    border-color: transparent;
+    color: chip.$check-light;
+    cursor: inherit;
+    font-family: v.$font-base;
+    font-size: 19px;
+    padding-top: 0;
+    pointer-events: none;
+    text-shadow: 0 0 8px rgba(205, 196, 255, 0.65);
   }
 
   // a lock: above the ranks, its padlock a light chocolate, glowing like the digits
@@ -582,6 +609,41 @@ $lock-gold: chip.$lock-gold;
     font-size: 12px;
     font-weight: 600;
     margin-top: 8px;
+  }
+
+  // (a CHECK's why it wasn't bet: its "?" in a lavender disc, the words beside it)
+  .bet-check-why {
+    align-items: flex-start;
+    color: rgba(255, 255, 255, 0.78);
+    display: flex;
+    font-size: 13px;
+    gap: 8px;
+    margin-top: 10px;
+
+    b {
+      color: chip.$check-light;
+      font-weight: 800;
+    }
+
+    .bet-check-q {
+      color: #1f1748;
+    }
+  }
+
+  .bet-check-q {
+    align-items: center;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 60%),
+      #{chip.$check};
+    border-radius: 50%;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 12px;
+    height: 18px;
+    justify-content: center;
+    line-height: 1;
+    margin-top: 1px;
+    width: 18px;
   }
 
   // ("High Confidence", in its level's color, lightened to read on the dark)

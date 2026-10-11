@@ -1,0 +1,62 @@
+<!-- An admin's note on a CHECK: saved, it reads back with Edit; else (or editing) the form: a reason, a player the
+     pick involves and his status, a line of their own -->
+<section class="desk-note" aria-label="Your note to the bot">
+  @if (loading()) {
+    <p class="note-quiet" role="status">Reading your note…</p>
+  } @else if (saved() && !editing()) {
+    <p class="note-saved">
+      <mat-icon aria-hidden="true" fontIcon="sticky_note_2"></mat-icon>
+      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· the bot will re-price with it on its next run</span></span>
+      <button type="button" class="note-link" (click)="edit()">Edit</button>
+    </p>
+  } @else {
+    <form class="note-form" (ngSubmit)="save()">
+      <p class="note-title"><mat-icon aria-hidden="true" fontIcon="edit_note"></mat-icon>Tell the bot why</p>
+      <div class="note-fields">
+        <label class="note-field">
+          <span>Reason</span>
+          <select name="reason" [(ngModel)]="form.reason" required>
+            <option value="" disabled>Pick one</option>
+            @for (r of reasons; track r.value) {
+              <option [value]="r.value">{{ r.label }}</option>
+            }
+          </select>
+        </label>
+        @if (players.length) {
+          <label class="note-field">
+            <span>Player <small>(optional)</small></span>
+            <select name="player" [(ngModel)]="form.player" (ngModelChange)="playerChanged()">
+              <option value="">None</option>
+              @for (p of players; track p.id) {
+                <option [value]="p.id">{{ p.name }}</option>
+              }
+            </select>
+          </label>
+          @if (form.player) {
+            <label class="note-field note-status">
+              <span>Status</span>
+              <select name="status" [(ngModel)]="form.status">
+                @for (s of statuses; track s.value) {
+                  <option [value]="s.value">{{ s.label }}</option>
+                }
+              </select>
+            </label>
+          }
+        }
+      </div>
+      <label class="note-field note-text">
+        <span>Note <small>(optional)</small></span>
+        <textarea name="note" rows="2" [(ngModel)]="form.note" [attr.maxlength]="max" placeholder="What the model doesn't know"></textarea>
+      </label>
+      <div class="note-actions">
+        @if (problem(); as p) {
+          <p class="note-problem" role="alert">{{ p }}</p>
+        }
+        @if (saved()) {
+          <button type="button" class="note-link" (click)="cancel()">Cancel</button>
+        }
+        <button type="submit" class="note-save" [disabled]="saving() || !form.reason">{{ saving() ? 'Saving…' : 'Save note' }}</button>
+      </div>
+    </form>
+  }
+</section>
