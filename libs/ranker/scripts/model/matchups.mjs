@@ -32,7 +32,10 @@
 //            fill-in's own growing, and the games that fed both). And, for the role-change guard (props.mjs
 //            roleChangeOf), a team's quarterback first (qb1: the most passes a game, recent games counting
 //            most), each player's offensive snaps as a share of his team's (snap: his last game's and his
-//            season's), and the regulars who've missed their team's last two games or more this season (absent). The NBA's
+//            season's), and the regulars who've missed their team's last two games or more this season (absent).
+//            Each row also gets its own game's snap share (share: null without the counts) and a quarterback's
+//            start (start: 70% of the snaps or more, else the most of his team's quarterbacks; without the counts
+//            the most passes), the game's own, for the projections to learn from after it. The NBA's
 //            the same over the whole
 //            team, two ways (teamWork below): by minutes, and by usage (field goals tried, 0.44 of free throws
 //            tried, and assists: a scorer's shots go to the other scorers, more than his minutes say); the NHL's
@@ -339,6 +342,17 @@ export function nflMatchups(rows, pbp = null) {
       }
       // (the snap shares: each player's offensive snaps over the team's most, where the counts were read)
       const most = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
+      // (each row's own share of the game's snaps (null where the counts weren't read, or he has none in them),
+      // and a quarterback's start: 70% of the snaps or more, or, where none of the team's quarterbacks reached it,
+      // the most snaps of them; without the counts, the most passes. The game's own, for the projections to
+      // learn from after it (project.mjs), never to project it)
+      const qbs = g.rows.filter((r) => POS(r.pos) === 'QB');
+      const qbMost = Math.max(0, ...qbs.map((r) => (most > 0 ? (r.s.snaps ?? 0) : (r.s.passAtt ?? 0))));
+      const anyFull = most > 0 && qbs.some((r) => (r.s.snaps ?? 0) / most >= 0.7);
+      for (const r of g.rows) {
+        r.share = most > 0 && r.s.snaps > 0 ? Math.min(1, r.s.snaps / most) : null;
+        if (POS(r.pos) === 'QB') r.start = most > 0 ? (anyFull ? r.share >= 0.7 : qbMost > 0 && (r.s.snaps ?? 0) === qbMost) : qbMost > 0 && (r.s.passAtt ?? 0) === qbMost;
+      }
       if (most > 0) {
         for (const r of g.rows) {
           if (!POS(r.pos) || !(r.s.snaps > 0)) continue;

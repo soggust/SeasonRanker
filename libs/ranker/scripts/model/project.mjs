@@ -7,6 +7,14 @@
 //            position a book posts props for (each team's top few by usage: eligible), not of everyone: a prop
 //            player pulled toward a backup's numbers would sit under his line
 //   recent   his last five this season, weighted w against the rate
+//   role     the NFL's role-aware base (props.mjs STATS: starts, snaps, early), each fit and kept only if the
+//            held-out games are better with it: a quarterback starting tonight (his team's passer) by his starts
+//            alone (his relief games left out; a starter's prior made up to 10 starts with the league's
+//            starters' average: qs, a blend); a back's or pass-catcher's rate a full game's snaps (his total
+//            over his snap shares', a 1-snap game counting for its snap), his prior the same, times the share
+//            he's expected tonight (his season's, his last game's weighed sr: a role grown or cut since the
+//            games his numbers come from), the per-game rate where the snap counts are missing (sn, a blend);
+//            and the prior's weight K shrinking as his season's games come in (K / (1 + kd x his games))
 //   opponent how far the other side's allowed this stat to his position over the players' own rates, to the
 //            power a (1: in full); and where the stat has roles (a player's place on his own team before the
 //            game: an NFL team's WR1, WR2, WR3, TE1, RB1; an NBA team's starters and bench), how far it's
@@ -134,6 +142,15 @@ export function ctxFactor(stat, params, vals) {
   return Math.exp(s);
 }
 
+// (a player's season tallies: games and total (n, sum); the games whose snap counts were read, their snap
+// shares' total and the stat's total in them (shn, sh, ss); a quarterback's starts and their total (qn, qsum).
+// This season's also keeps his recent games: his last five, the work missing in each, his snap shares, his
+// last five with a share (each [value, share]), his last five starts)
+const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum'];
+const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
+const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [] });
+const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[k] ?? 0)]));
+
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
 export function makeModel(stat, params, env) {
   const players = new Map();
@@ -148,21 +165,71 @@ export function makeModel(stat, params, env) {
     const p = pos.get(posKey(row));
     return p && p.n >= 20 ? p.sum / p.n : (env.mean ?? 1);
   };
+  // (the eligible players' per-snap rate at his position (their total over their snap shares' total), and the
+  // starting quarterbacks' average a start: null till there are 20 games' worth)
+  const poolSnap = (row) => {
+    const p = pos.get(posKey(row));
+    return p && p.sh >= 20 ? p.ss / p.sh : null;
+  };
+  const poolStart = (row) => {
+    const p = pos.get(posKey(row));
+    return p && p.qn >= 20 ? p.qsum / p.qn : pool(row);
+  };
+  const avg = (a) => a.reduce((s, x) => s + x, 0) / a.length;
   const parts = (row) => {
     const pl = players.get(row.pid);
     if (!pl) return null;
-    const cur = pl.season === row.season ? pl.cur : { n: 0, sum: 0, recent: [], vac: [0, 0, 0], recentVac: [] };
-    const prev = pl.season === row.season ? pl.prev : pl.season === row.season - 1 ? pl.cur : { n: 0, sum: 0 };
+    const cur = pl.season === row.season ? pl.cur : fresh();
+    const prev = pl.season === row.season ? pl.prev : pl.season === row.season - 1 ? pl.cur : zero();
     // (the seasons before last, as seen from this one)
     const older =
       pl.season === row.season ? pl.career
-      : pl.season === row.season - 1 ? { n: pl.career.n + pl.prev.n, sum: pl.career.sum + pl.prev.sum }
-      : { n: pl.career.n + pl.prev.n + pl.cur.n, sum: pl.career.sum + pl.prev.sum + pl.cur.sum };
+      : pl.season === row.season - 1 ? addAcc(pl.career, pl.prev)
+      : addAcc(addAcc(pl.career, pl.prev), pl.cur);
     if (cur.n + prev.n < 2) return null;
+    // (the prior's weight K, shrinking as this season's games come in where the fit found it should (kd): K /
+    // (1 + kd x his games this season), so by midseason his own season counts for more than the plain K gives)
+    const K = params.kd ? params.K / (1 + params.kd * cur.n) : params.K;
     const longN = prev.n + 0.5 * older.n;
     const prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row);
-    const rate = (cur.sum + params.K * prior) / (cur.n + params.K);
-    const recent = cur.recent.length >= 3 ? cur.recent.reduce((s, x) => s + x, 0) / cur.recent.length : rate;
+    let rate = (cur.sum + K * prior) / (cur.n + K);
+    let recent = cur.recent.length >= 3 ? avg(cur.recent) : rate;
+    // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
+    //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
+    //           70% of the snaps or more, or the most of his team's quarterbacks; matchups.mjs), not his relief
+    //           appearances; his starts before this season his prior, made up to 10 with the league's starters'
+    //           average where he has fewer (a backup's few starts); blended in by qs
+    //   snaps   a back's or pass-catcher's rate a full game's snaps (his total over his snap shares' total, so a
+    //           1-snap game counts for its one snap, not a game), the prior his longer run's the same way (the
+    //           position's eligible players' where his own is short), times the share of the snaps he's
+    //           expected tonight (his season's, his last game's weighed sr; last season's before he's played
+    //           this one); blended in by sn. Where the snap counts are missing, his per-game rate as before)
+    let mode = null;
+    let share = null;
+    if (params.qs && stat.starts && row.pos === 'QB' && row.qbStart) {
+      const longQ = prev.qn + 0.5 * older.qn;
+      const longQsum = prev.qsum + 0.5 * older.qsum;
+      const priorQ = longQ >= 10 ? longQsum / longQ : (longQsum + (10 - longQ) * poolStart(row)) / 10;
+      const rateQ = (cur.qsum + K * priorQ) / (cur.qn + K);
+      const recentQ = cur.qrecent.length >= 3 ? avg(cur.qrecent) : rateQ;
+      rate = (1 - params.qs) * rate + params.qs * rateQ;
+      recent = (1 - params.qs) * recent + params.qs * recentQ;
+      mode = 'starts';
+    } else if (params.sn && stat.snaps && row.pos !== 'QB') {
+      const sr = params.sr ?? 0;
+      const exp = cur.shares.length ? (1 - sr) * avg(cur.shares) + sr * cur.shares[cur.shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
+      const longSh = prev.sh + 0.5 * older.sh;
+      const priorS = longN >= 10 && longSh >= 2 ? (prev.ss + 0.5 * older.ss) / longSh : poolSnap(row);
+      if (exp !== null && priorS !== null) {
+        share = exp;
+        const rateS = (cur.ss + K * priorS) / (cur.sh + K);
+        const rs = cur.srecent.reduce((t, x) => t + x[1], 0);
+        const recentS = cur.srecent.length >= 3 && rs >= 0.5 ? cur.srecent.reduce((t, x) => t + x[0], 0) / rs : rateS;
+        rate = (1 - params.sn) * rate + params.sn * rateS * share;
+        recent = (1 - params.sn) * recent + params.sn * recentS * share;
+        mode = 'snaps';
+      }
+    }
     const base = (1 - params.w) * rate + params.w * recent;
     // (what the opponent's allowed his position against what those players usually do: a ratio of sums, this
     // season's and half of last, pulled toward even by 8 games' worth)
@@ -211,7 +278,7 @@ export function makeModel(stat, params, env) {
     // matchups.mjs vacPast), so a starter still out is the same cut then as now; else each game's cut as it was)
     const past = row.vacPast;
     const seasonVac = past?.n ? (past.sum[vs] ?? 0) / past.n : null;
-    const rateVac = seasonVac !== null ? (cur.n * seasonVac + params.K * priorVac) / (cur.n + params.K) : ((cur.vac?.[vs] ?? 0) + params.K * priorVac) / (cur.n + params.K);
+    const rateVac = seasonVac !== null ? (cur.n * seasonVac + K * priorVac) / (cur.n + K) : ((cur.vac?.[vs] ?? 0) + K * priorVac) / (cur.n + K);
     const recentVac =
       seasonVac !== null ? (past.rn >= 3 ? (past.rsum[vs] ?? 0) / past.rn : rateVac)
       : cur.recentVac?.length >= 3 ? cur.recentVac.reduce((t, x) => t + (x[vs] ?? 0), 0) / cur.recentVac.length
@@ -219,7 +286,7 @@ export function makeModel(stat, params, env) {
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, params.a) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n };
+    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, K };
   };
   return {
     project: parts,
@@ -257,35 +324,51 @@ export function makeModel(stat, params, env) {
         }
         // (his seasons: this one, last, and the ones before it (career))
         let p = pl;
-        const add = (a, b) => ({ n: a.n + b.n, sum: a.sum + b.sum });
-        const fresh = () => ({ n: 0, sum: 0, recent: [], vac: [0, 0, 0], recentVac: [] });
-        if (!p) p = { season: row.season, cur: fresh(), prev: { n: 0, sum: 0 }, career: { n: 0, sum: 0 } };
+        if (!p) p = { season: row.season, cur: fresh(), prev: zero(), career: zero() };
         else if (p.season !== row.season) {
           const consecutive = p.season === row.season - 1;
-          const before = add(p.career, p.prev);
+          const before = addAcc(p.career, p.prev);
           p = {
             season: row.season,
             cur: fresh(),
-            prev: consecutive ? { n: p.cur.n, sum: p.cur.sum, vac: p.cur.vac } : { n: 0, sum: 0 },
-            career: consecutive ? before : add(before, p.cur),
+            prev: consecutive ? { ...addAcc(zero(), p.cur), vac: p.cur.vac } : zero(),
+            career: consecutive ? before : addAcc(before, p.cur),
           };
         }
         p.cur.n++;
         p.cur.sum += v;
         p.cur.recent = [...p.cur.recent, v].slice(-5);
+        // (his snap share in the game where the counts were read (matchups.mjs row.share: the game's own, learned
+        // after it, never projected from), and a quarterback's start (row.start))
+        const sh = Number.isFinite(row.share) && row.share > 0 ? row.share : null;
+        if (sh !== null) {
+          p.cur.sh += sh;
+          p.cur.ss += v;
+          p.cur.shn++;
+          p.cur.shares = [...p.cur.shares, sh].slice(-20);
+          p.cur.srecent = [...p.cur.srecent, [v, sh]].slice(-5);
+        }
+        if (row.pos === 'QB' && row.start) {
+          p.cur.qn++;
+          p.cur.qsum += v;
+          p.cur.qrecent = [...p.cur.qrecent, v].slice(-5);
+        }
         // (the work his group was missing in each of his games: what his numbers were made with)
         // (as long as the stat's splits: three a measure of work, matchups.mjs)
         const vacs = row.vacs ?? [0, 0, 0];
         p.cur.vac = Array.from({ length: Math.max(p.cur.vac.length, vacs.length) }, (_, k) => (p.cur.vac[k] ?? 0) + (vacs[k] ?? 0));
         p.cur.recentVac = [...p.cur.recentVac, vacs].slice(-5);
         players.set(row.pid, p);
+        const k = posKey(row);
+        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0 };
         if (row.eligible !== false) {
-          const k = posKey(row);
-          const q = pos.get(k) ?? { n: 0, sum: 0 };
           q.n++;
           q.sum += v;
-          pos.set(k, q);
+          if (sh !== null) (q.sh += sh), (q.ss += v);
         }
+        // (the starters' pool: every quarterback's start, eligible or not (a backup's start is a start))
+        if (row.pos === 'QB' && row.start) (q.qn++), (q.qsum += v);
+        pos.set(k, q);
       }
     },
   };
@@ -340,14 +423,27 @@ function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
 // at half an inch; c_oppGoalie: per goal a game the other side's goalie saves over average, a big effect a
 // goal))
 const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
-const GRID = { K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
+const GRID = { kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
-// (each matchup term's off setting, and which stats have it; each context term's size (c_<name>) is off at 0)
-const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0 };
+// (the snaps-based rate's blend and the expected share's weight on his last game (sr), searched together: the
+// weight means nothing without the blend)
+const SN = [0.5, 1];
+const SR = [0, 0.25, 0.5, 0.75, 1];
+// (each matchup term's off setting, and which stats have it; each context term's size (c_<name>) is off at 0;
+// the role-aware base's the same (the NFL's: sn the snaps-based rate, qs a starting quarterback's starts, kd
+// the prior's weight shrinking through the season), off at 0 and kept only if the held-out games are better)
+const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0, sn: 0, qs: 0, kd: 0 };
 const offOf = (key) => (key.startsWith('c_') ? 0 : OPTIONAL[key]);
-const has = (stat, key) => (key === 'roleK' ? !!stat.roles : key === 'tg' ? !!stat.targets : key === 'vc' ? !!stat.vacated : !!stat.volume);
+const has = (stat, key) =>
+  key === 'roleK' ? !!stat.roles
+  : key === 'tg' ? !!stat.targets
+  : key === 'vc' ? !!stat.vacated
+  : key === 'sn' ? !!stat.snaps
+  : key === 'qs' ? !!stat.starts
+  : key === 'kd' ? !!stat.early
+  : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
 function linePairs(list, params) {
@@ -396,7 +492,7 @@ export function fitStat(stat, rows, env) {
   const at = (q) => sorted[Math.floor(sorted.length * q)].date.slice(0, 10);
   const cuts = [at(0.3), at(0.7)];
   const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`) : [];
-  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}) };
+  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}) };
   const optional = [...Object.keys(OPTIONAL).filter((k) => has(stat, k)), ...ctxs];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -404,7 +500,11 @@ export function fitStat(stat, rows, env) {
   for (let pass = 0; pass < 2; pass++) {
     for (const key of keys) {
       // (the vacated work's strength and its split together: the split means nothing without the strength)
-      const tries = key === 'vc' ? GRID.vc.flatMap((v) => splitsOf(stat).map((vs) => ({ vc: v, vs }))) : (GRID[key] ?? GRID.c).map((v) => ({ [key]: v }));
+      // (and the snaps-based rate's blend with its expected share's weight on his last game: sn with sr)
+      const tries =
+        key === 'vc' ? GRID.vc.flatMap((v) => splitsOf(stat).map((vs) => ({ vc: v, vs })))
+        : key === 'sn' ? [{ sn: 0 }, ...SN.flatMap((v) => SR.map((sr) => ({ sn: v, sr })))]
+        : (GRID[key] ?? GRID.c).map((v) => ({ [key]: v }));
       for (const t of tries) {
         if (Object.keys(t).every((k) => t[k] === params[k])) continue;
         const tryP = { ...params, ...t };

@@ -145,3 +145,17 @@ test('report: a headline line and a table per stat', () => {
   assert.match(md, /## rec/);
   assert.match(md, /\| backup-qb \| 2 \| 2 \|/);
 });
+
+test("report: the fit's held-out check and, with an earlier run, each bucket then and now", () => {
+  const s = summarize([{ v: 5, mu: 4, ll: 1, cluster: 'a' }, { v: 6, mu: 4, ll: 1, cluster: 'b' }], { boot: 20 });
+  const t = summarize([{ v: 5, mu: 5, ll: 0.9, cluster: 'a' }, { v: 6, mu: 6, ll: 0.9, cluster: 'b' }], { boot: 20 });
+  const block = (x, fit) => ({ cuts: ['2020-01-01', '2023-01-01'], params: { K: 2, sn: 0.5, sr: 0.25, kd: 0 }, fit, buckets: { 'backup-qb': x, all: x }, periods: { 'held out': { 'backup-qb': x, all: x } } });
+  const md = report({ rec: block(t, { n: 2, logLoss: 0.6, logLossBase: 0.7, bias: -0.1, allBias: 0.2, gains: { sn: 0.004, kd: null } }) }, { before: { rec: block(s, { n: 2, logLoss: 0.65, bias: -0.5, allBias: 0.3 }) } });
+  assert.match(md, /## The fit's held-out check/);
+  assert.match(md, /\| rec \| 2 \| 0\.6000 \| 0\.7000 \| 0\.6500 \|/);
+  assert.match(md, /sn 0\.5\/sr 0\.25 \(\+0\.004\), kd 0 \(not taken\)/);
+  assert.match(md, /## Before and after/);
+  assert.match(md, /\| backup-qb \| 2 \| \+37\.5% \| \+0\.0% \| 1\.000 \| 0\.900 \| 2 \| \+37\.5% \| \+0\.0% \| 1\.000 \| 0\.900 \|/);
+  // (no earlier run: no before and after)
+  assert.doesNotMatch(report({ rec: block(t, null) }), /Before and after/);
+});

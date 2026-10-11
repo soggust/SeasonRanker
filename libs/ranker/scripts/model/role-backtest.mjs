@@ -50,10 +50,18 @@
 //                    ceiling on what a bucket term could earn; under 0 where the dispersion grows with the projection
 //                    (rk) and the scaled one sits wider), and how often the player went over his projection
 //
-//   node libs/ranker/scripts/model/role-backtest.mjs [--state] [--from 2021] [--report: the .md again from the .json]
+//   the fit's check  each stat's held-out check from the fit (fitProps: the eligible players' log loss at lines
+//                    at their median and bias, every player's bias, the terms' gains), beside the buckets
+//   before, after    --plain fits the model without the role-aware base (project.mjs: the snaps-based rate, a
+//                    starting quarterback's starts, the prior's weight shrinking through the season), as it was
+//                    before it; --compare <an earlier run's .json> adds a table of each bucket's bias and log
+//                    loss then and now, all games and the held-out ones
+//
+//   node libs/ranker/scripts/model/role-backtest.mjs [--state] [--plain] [--from 2021] [--compare <earlier .json>]
+//                    [--report: the .md again from the .json]
 //   writes .cache/role-backtest.md (the tables) and .cache/role-backtest.json (the same numbers)
 
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LEAGUES } from './leagues.mjs';
@@ -371,17 +379,32 @@ function stateParams() {
 const pct = (x, d = 1) => (x === null || x === undefined ? '' : `${x >= 0 ? '+' : ''}${(x * 100).toFixed(d)}%`);
 const num = (x, d = 3) => (x === null || x === undefined ? '' : x.toFixed(d));
 
+// (--compare <path>: an earlier run's results, for the before and after; null without it)
+function compareOf() {
+  const at = process.argv.indexOf('--compare');
+  if (at < 0) return null;
+  const file = process.argv[at + 1];
+  if (!file) throw new Error("--compare wants an earlier run's .json");
+  const last = JSON.parse(readFileSync(file, 'utf8'));
+  if (!last?.results) throw new Error(`${file} has no results to compare with`);
+  return last.results;
+}
+
 async function main() {
   const t0 = Date.now();
   // (--report: the tables written again from the last run's numbers, nothing fit)
   if (process.argv.includes('--report')) {
     const last = readJson(path.join(ROOT, '.cache/role-backtest.json'), null);
     if (!last?.results) throw new Error('no .cache/role-backtest.json to report from: run without --report first');
-    writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(last.results, { from: last.from, useState: last.settings === 'state.json', at: last.at, coverage: last.coverage, rosterOnly: last.rosterOnly }));
+    writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(last.results, { from: last.from, useState: last.settings === 'state.json', plain: !!last.plain, at: last.at, coverage: last.coverage, rosterOnly: last.rosterOnly, before: compareOf() }));
     console.log('role backtest: .cache/role-backtest.md written again from .cache/role-backtest.json');
     return;
   }
   const useState = process.argv.includes('--state');
+  // (--plain: the model as it was before the role-aware base, its stats' flags for it taken off)
+  const plain = process.argv.includes('--plain');
+  if (plain) for (const st of STATS.nfl) delete st.snaps, delete st.starts, delete st.early;
+  const earlier = compareOf();
   const fromAt = process.argv.indexOf('--from');
   const FROM = fromAt > 0 ? Number(process.argv[fromAt + 1]) : 2021;
   // (a bad --from fails before minutes of fitting, never a report of empty buckets over the last good one)
@@ -465,7 +488,9 @@ async function main() {
     }
     if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
     if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
-    const block = { cuts, params: f.params, noWeek, buckets: {}, periods: {} };
+    // (the fit's own held-out check, where it was fit here)
+    const fitCheck = f.check ? { n: f.check.n, logLoss: f.check.logLoss, logLossBase: f.check.logLossBase, bias: f.check.bias, allBias: f.checkAll?.bias ?? null, gains: f.gains } : null;
+    const block = { cuts, params: f.params, noWeek, fit: fitCheck, buckets: {}, periods: {} };
     const add = (list) => {
       // (the log loss with the bucket's projections scaled by its own bias: in sample)
       const s = list.reduce((t, x) => t + x.v, 0) / Math.max(1e-9, list.reduce((t, x) => t + x.mu, 0));
@@ -489,18 +514,18 @@ async function main() {
     results[st.key] = block;
     console.log(`role backtest: ${st.key}: ${items.length} eligible rows from ${FROM} (fit window ${cuts[0]} to ${cuts[1]})`);
   }
-  writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', coverage, rosterOnly, results }, null, 1));
-  writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState, coverage, rosterOnly }));
+  writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', plain, coverage, rosterOnly, results }, null, 1));
+  writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState, plain, coverage, rosterOnly, before: earlier }));
   console.log(`role backtest: written .cache/role-backtest.md in ${Math.round((Date.now() - t0) / 1000)}s`);
 }
 
 // The report: the headlines (each bucket's bias whose interval leaves out 0, per stat), then each stat's table
 // and its bias by period
-export function report(results, { from = 2021, useState = false, at = null, coverage = null, rosterOnly = [] } = {}) {
+export function report(results, { from = 2021, useState = false, plain = false, at = null, coverage = null, rosterOnly = [], before = null } = {}) {
   const lines = [];
   lines.push('# Role backtest: the NFL props\' projections against what happened, by situation');
   lines.push('');
-  lines.push(`Generated ${(at ?? new Date().toISOString()).slice(0, 10)} by \`node libs/ranker/scripts/model/role-backtest.mjs${useState ? ' --state' : ''}\` (measurement only; the bettor unchanged). Eligible players' games from ${from}; settings ${useState ? "from the committed state.json" : 'fit as fitProps fits them'}. Bias = sum actual / sum projected - 1 (under 0: the model ran high). LL = the negative binomial's log loss a game at the stat's dispersion (only comparable within a stat). 95% intervals: bootstrap clustered by team-week. "LL saved" = log loss saved a game were the bucket's projections scaled by its own bias (in sample, a rough ceiling on a bucket term; under 0 where the dispersion grows with the projection). "Held out" = the games after the fit window: held out from the continuous settings' fit (K, w, a, b, the scale, the dispersion), but fitStat chose which optional and context terms stay, and rk, on these same games, and the ratings and game context were fit on every game, so the held-out numbers are mildly optimistic. Buckets from pre-game information only (nflverse injury reports, Doubtful counted as out, and weekly rosters, prior work and snaps), each row in the first that fits; eligible players only, so a debut starter at quarterback (no prior passes) is in no passing row.${rosterOnly?.length ? ` Seasons with no injury report read (outs from the rosters' reserve alone, the period marked roster only): ${rosterOnly.join(", ")}.` : ""}`);
+  lines.push(`Generated ${(at ?? new Date().toISOString()).slice(0, 10)} by \`node libs/ranker/scripts/model/role-backtest.mjs${useState ? ' --state' : ''}${plain ? ' --plain' : ''}\` (measurement only; the bettor unchanged). Eligible players' games from ${from}; settings ${useState ? "from the committed state.json" : 'fit as fitProps fits them'}${plain ? ', the role-aware base left out (the model as before it)' : ''}. Bias = sum actual / sum projected - 1 (under 0: the model ran high). LL = the negative binomial's log loss a game at the stat's dispersion (only comparable within a stat). 95% intervals: bootstrap clustered by team-week. "LL saved" = log loss saved a game were the bucket's projections scaled by its own bias (in sample, a rough ceiling on a bucket term; under 0 where the dispersion grows with the projection). "Held out" = the games after the fit window: held out from the continuous settings' fit (K, w, a, b, the scale, the dispersion), but fitStat chose which optional and context terms stay, and rk, on these same games, and the ratings and game context were fit on every game, so the held-out numbers are mildly optimistic. Buckets from pre-game information only (nflverse injury reports, Doubtful counted as out, and weekly rosters, prior work and snaps), each row in the first that fits; eligible players only, so a debut starter at quarterback (no prior passes) is in no passing row.${rosterOnly?.length ? ` Seasons with no injury report read (outs from the rosters' reserve alone, the period marked roster only): ${rosterOnly.join(", ")}.` : ""}`);
   lines.push('');
   // (the QB1-out games' coverage: whose the passing row is)
   if (coverage) {
@@ -529,6 +554,42 @@ export function report(results, { from = 2021, useState = false, at = null, cove
       .filter(([, s]) => s && s.n >= 50 && (s.biasCi[0] > 0 || s.biasCi[1] < 0))
       .map(([b, s]) => `${b} ${pct(s.bias)} [${pct(s.biasCi[0])}, ${pct(s.biasCi[1])}] (n ${s.n})`);
     lines.push(`- **${key}** (all ${pct(held.all?.bias)}, n ${held.all?.n ?? 0}): ${hits.length ? hits.join('; ') : 'none'}`);
+  }
+  // (each stat's fit's own held-out check: the eligible players' log loss at their median lines and bias (the
+  // projection less the actual a game), every player's bias, and the role-aware terms' gains)
+  if (Object.values(results).some((b) => b.fit)) {
+    lines.push('');
+    lines.push("## The fit's held-out check (fitProps: the eligible players' log loss at lines at their median, its plain base's, the bias a game (projected less actual), every player's bias a game)");
+    lines.push('');
+    lines.push(`| stat | n | log loss | base's |${before ? ' log loss then | bias then | all-player bias then |' : ''} bias | all-player bias | role-aware terms (held-out gain) |`);
+    lines.push(`|---|---:|---:|---:|${before ? '---:|---:|---:|' : ''}---:|---:|---|`);
+    for (const [key, block] of Object.entries(results)) {
+      const f = block.fit;
+      if (!f) continue;
+      const b = before?.[key]?.fit;
+      const terms = ['sn', 'qs', 'kd'].filter((k) => k in (f.gains ?? {})).map((k) => `${k} ${block.params[k]}${k === 'sn' && block.params.sn ? `/sr ${block.params.sr}` : ''} (${f.gains[k] === null ? 'not taken' : f.gains[k] > 0 ? `+${f.gains[k]}` : `${f.gains[k]}, left out`})`);
+      lines.push(`| ${key} | ${f.n} | ${num(f.logLoss, 4)} | ${num(f.logLossBase, 4)} |${before ? ` ${num(b?.logLoss, 4)} | ${num(b?.bias, 3)} | ${num(b?.allBias, 3)} |` : ''} ${num(f.bias, 3)} | ${num(f.allBias, 3)} | ${terms.join(', ') || 'none'} |`);
+    }
+  }
+  // (each bucket then (an earlier run's .json: --compare) and now: its bias and log loss, all games and held out)
+  if (before) {
+    lines.push('');
+    lines.push('## Before and after (each bucket\'s bias and log loss a game, then and now: all games from the start season, and the held-out ones)');
+    for (const [key, block] of Object.entries(results)) {
+      const was = before[key];
+      if (!was) continue;
+      lines.push('');
+      lines.push(`### ${key}`);
+      lines.push('');
+      lines.push('| bucket | n | bias then | bias now | LL then | LL now | held-out n | held-out bias then | now | held-out LL then | now |');
+      lines.push('|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|');
+      for (const b of [...BUCKETS, 'all']) {
+        const [t, n] = [was.buckets?.[b], block.buckets[b]];
+        const [ht, hn] = [was.periods?.['held out']?.[b], block.periods?.['held out']?.[b]];
+        if (!t && !n) continue;
+        lines.push(`| ${b === 'all' ? '**all**' : b} | ${n?.n ?? 0} | ${pct(t?.bias)} | ${pct(n?.bias)} | ${num(t?.ll)} | ${num(n?.ll)} | ${hn?.n ?? 0} | ${pct(ht?.bias)} | ${pct(hn?.bias)} | ${num(ht?.ll)} | ${num(hn?.ll)} |`);
+      }
+    }
   }
   for (const [key, block] of Object.entries(results)) {
     lines.push('');

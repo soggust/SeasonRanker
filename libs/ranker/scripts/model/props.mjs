@@ -51,8 +51,10 @@
 // The history it's fit on (fitProps): every game a player took the field at the stat's positions, whatever he
 // did in it, as DraftKings grades him (STATS played), and of those the ones a book would have posted his prop
 // for by what was known before the game (markEligible: his usage in his games before it), never by the
-// game's own box score. An MLB batter's are his starts (his place in the posted lineup: the book only posts a
-// starter's, and the desk bets only one in the lineup), not a pinch hitter's one trip
+// game's own box score; the NFL's passer among them its starter (qbStart), whose projection the fit may take
+// from his starts alone (project.mjs's role-aware base; at bet time a quarterback with a prop on the board).
+// An MLB batter's are his starts (his place in the posted lineup: the book only posts a starter's, and the
+// desk bets only one in the lineup), not a pinch hitter's one trip
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -173,19 +175,25 @@ const NBA_VAC = { vacated: true, vacSplits: 6 };
 // lineup, two plate appearances or more)
 const BATTED = (r) => r.pos === 'B' && (r.start === true || ((r.start === null || r.start === undefined) && r.s.pa >= 2));
 const BATTER_CTX = ['slot', 'platoon', 'oppSp'];
+// (the NFL's role-aware base (project.mjs, each fit and kept only where the held-out games are better with it):
+// a starting quarterback's numbers from his starts alone (starts, his rows' qbStart: the team's passer), a back's
+// or pass-catcher's a full game's snaps times the share he's expected tonight (snaps), and the prior's weight
+// shrinking through the season (early))
+const ROLE_BASE_QB = { starts: true, early: true };
+const ROLE_BASE = { snaps: true, early: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 export const STATS = {
   nfl: [
-    stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: PASSING, volume: 'pass' }),
-    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass' }),
-    stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass' }),
-    stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING }),
-    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: PASSING }),
-    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true }),
-    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true }),
-    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true }),
+    stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
+    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
+    stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
+    stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB }),
+    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB }),
+    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE }),
+    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE }),
+    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true, ...ROLE_BASE }),
   ],
   nba: [
     stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
@@ -324,6 +332,9 @@ export function markEligible(sport, st, rows) {
         const runners = top(list, u('rush'), 2, (r) => r.pos === 'RB' || r.pos === 'FB');
         const catchers = top(list, u('tgt'), 4, (r) => r.pos !== 'QB');
         ok = /^pass/.test(st.key) ? passer : /^rush(Yds|Att)$/.test(st.key) ? new Set([...runners, ...passer]) : st.key === 'rushRecYds' ? new Set([...runners, ...catchers]) : catchers;
+        // (the quarterback starting, as known before the game: his team's passer (the props' starter; at bet time a
+        // quarterback with a prop on the board), whose numbers the role-aware base takes from his starts)
+        for (const r of list) if (r.pos === 'QB') r.qbStart = passer.has(r);
       } else if (sport === 'nba') ok = top(list, u('min'), 8);
       else if (sport === 'nhl') ok = st.goalie ? new Set(list.filter((r) => r.started)) : new Set([...top(list, u('toi'), 6, (r) => r.pos === 'F'), ...top(list, u('toi'), 2, (r) => r.pos === 'D')]);
       else ok = new Set(list.filter((r) => r.pos === 'SP' || (usage.get(r.pid)?.pa ?? 0) >= 3));
@@ -559,7 +570,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     if (home === null) continue;
     // (MLB: his position by the prop, a two-way player's rows being both a batter's and a starter's)
     const pos = sport === 'mlb' ? (prop.stat.pitcher ? 'SP' : 'B') : (idx.pos(pid) ?? a.pos);
-    const row = { pid, name: a.name, pos, date: game.date, season: game.season, team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {} };
+    // (a quarterback with a prop on the board taken as his team's starter (qbStart: the history's passer), his
+    // projection from his starts where the fit kept it; one who isn't is the role guard's backup-qb CHECK)
+    const row = { pid, name: a.name, pos, date: game.date, season: game.season, team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {}, ...(sport === 'nfl' && pos === 'QB' ? { qbStart: true } : {}) };
     // (his role and the defense's funnel, pace and target split, as of now; and the work his position group's
     // regulars missing this game leave: out, doubtful or on IR on the injury report, or no longer on the team's
     // roster (traded, released: the history counts them missing from its games, so the price does too), a
@@ -773,7 +786,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       ev,
       units: guard ? 0.5 : stakeFor(ev, evScale, odds),
       guard,
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1) },
       move: prop.open !== null ? { open: prop.open, now: prop.line } : null,
     });
   }
