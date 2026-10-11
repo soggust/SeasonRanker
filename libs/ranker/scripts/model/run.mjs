@@ -156,7 +156,8 @@ const EARLY_SLACK = 6 * 36e5;
 const EARLY_WEIGHT = 0.5;
 // (The Odds API's props for a game: asked at most this many times (once to bet, once near the start for the
 // close, and again when its props are priced again on news))
-const PROP_ASKS = 4;
+// (6: a slate priced again on a change to the model (--replace) still keeps its near-start ask)
+const PROP_ASKS = 6;
 
 const read = readJson;
 const write = writeJson;

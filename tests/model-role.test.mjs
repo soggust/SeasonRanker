@@ -89,7 +89,10 @@ test('snap shares: his last game against his season', () => {
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {
   const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, implied: 50 };
   assert.equal(roleChangeOf(base), null);
-  assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 1 } }).key, 'backup-qb');
+  // (a backup starting for a starter who's out: his passing read from his starts, his rushing still a CHECK)
+  assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 1 } }), null);
+  assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 1 }, rushing: true }).key, 'backup-qb');
+  assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 1 }, starts: 3 }).key, 'few-starts');
   assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 0 } }).key, 'backup-qb');
   assert.equal(roleChangeOf({ ...base, qb1: { id: 'y', name: 'Y', missing: 1 } }).key, 'qb1-out');
   assert.equal(roleChangeOf({ ...base, qb1: { id: 'y', name: 'Y', missing: 0 } }), null);

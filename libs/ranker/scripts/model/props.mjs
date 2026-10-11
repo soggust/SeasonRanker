@@ -105,8 +105,9 @@ export function restGuard(restDays, debut, date) {
 // the news; the model's numbers are his old role's till the logs catch up, so a prop on him is kept as a CHECK
 // whichever side the model takes (props.mjs priceProps, kind 'role'), till the CHECKs show it can read one:
 //   backup-qb   a quarterback who isn't his team's usual starter (qb1: the most passes a game, recent games
-//               counting most: matchups.mjs), or his team's starter missing (out, doubtful, IR, gone), or
-//               his team's usual starter not known (priced as its starter all the same: qbStart)
+//               counting most: matchups.mjs), or his team's usual starter not known (priced as its starter all
+//               the same: qbStart); a backup starting for a starter who's out, on his rushing props alone (his
+//               passing is read from his starts; few-starts still CHECKs a passer with few)
 //   qb-change  his team's usual starter neither missing nor on the game's board, and another of its
 //               quarterbacks on it (boardQbs: the team's quarterbacks with a prop on the board): a change at
 //               quarterback (one back from injury taking the job back, or the one who had it benched), the
@@ -138,8 +139,11 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     const usual = qb1.name || 'the usual starter';
     const change = !(qb1.missing >= 1) && !!boardQbs?.size && !boardQbs.has(String(qb1.id));
     if (pos === 'QB' && change) return { key: 'qb-change', why: `${who} on the board and his team's starter of late (${usual}) not: a change at quarterback` };
-    if (pos === 'QB') return { key: 'backup-qb', why: `${who} not his team's usual starting quarterback (${usual}${qb1.missing >= 1 ? ', out' : ''}): a backup's role` };
-    if (qb1.missing >= 1) return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
+    // (a backup starting for a starter who's out (out, doubtful, IR: known before the game): his passing read
+    // from his own starts (project.mjs qs, the role backtest's backup-QB passing within about 5%), so only his
+    // rushing (still 6% to 12% high there) and a few-starts passer stay CHECKs; any other backup, a CHECK)
+    if (pos === 'QB' && !(qb1.missing >= 1 && !rushing)) return { key: 'backup-qb', why: `${who} not his team's usual starting quarterback (${usual}${qb1.missing >= 1 ? ', out' : ''}): a backup's role` };
+    if (qb1.missing >= 1 && pos !== 'QB') return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
   if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
