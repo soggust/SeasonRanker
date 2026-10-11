@@ -10,16 +10,26 @@
 //                    instead, quicker but fit on the code the bot last ran: on 2026-10-11 it didn't reproduce,
 //                    receptions 14.5% high overall against 0.5% with the fit; use it for a quick look only), then
 //                    every row replayed with them. The settings are fit on 30% to 70% of the history by date (the
-//                    fit window); the rest after it is held out (the report says which seasons each is)
+//                    fit window); the rest after it is held out (the report says which seasons each is) from the
+//                    continuous settings' fit alone (K, w, a, b, the scale, the dispersion): fitStat chose which
+//                    optional and context terms stay, and rk, on those same games, and the ratings and the game
+//                    context were fit on every game, so the held-out numbers are mildly optimistic
 //   the buckets      from what was known before each game only: nflverse's weekly injury reports (Out,
 //                    Doubtful) and weekly rosters (reserve: IR, PUP, NFI, suspended; a reserve listing for a
 //                    player who played the game is the roster's move after it, not counted), each player's work
 //                    and snap shares in the games before. (The game itself says only who took the field: the rows
 //                    are the ones who did, as the props fit's are, and a reserve listing beside a player in it is
-//                    read as made after.) Each row in the first that fits, in this order:
+//                    read as made after. A report's Doubtful counts as out though some then play: it's what was
+//                    known before; the report counts the QB1-out games whose QB1 played anyway.) A game with no
+//                    week (missing from the nflverse schedule) has no reports to read: its rows are counted and
+//                    left out (bucket 'no-week'). A season with no injury report rows read is warned of and its
+//                    period marked roster only. Each row in the first that fits, in this order:
 //                      backup-qb   his team's QB1 (its quarterback with the most passes a game, recent games
 //                                  counting most, a starter's 15 or more) out, and he's the quarterback next in
-//                                  line (the most snaps this season and last of the ones not out)
+//                                  line (the most passes this season and last of the ones not out, then snaps: a
+//                                  gadget quarterback's snaps don't make him the backup). The report counts the
+//                                  QB1-out games whose eligible passer (the props' own: some prior passes, so a
+//                                  debut starter isn't one) is the backup, another, or none
 //                      qb1-out     any other player on a team whose QB1 is out
 //                      next-up     a regular at his position group out (RB: 8 touches a game or more; WR: 4.5
 //                                  targets; TE: 3.5), and he's the group's next man up (its most-used non-regular)
@@ -77,16 +87,18 @@ const touches = (r, g) => (g === 'QB' ? (r.s.passAtt ?? 0) : g === 'RB' ? (r.s.r
 // a day's games read from what was known before the day, then learned from. weekOf(game): { season, week } or
 // null; outOf(season, week, team): Map of pid to 'report' (Out, Doubtful) or 'reserve' (the roster's IR, PUP,
 // NFI, suspended); rosterOf(season, week, team): a Set of the team's pids that week, or null (then a player's
-// team is the one he last played for)
+// team is the one he last played for). The map's qbOut: each team-game with its QB1 out ({ game, team, qb1,
+// season, kind: his listing, played: whether he played anyway, next: the backup named })
 export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
   const sorted = [...rows].filter((r) => r.team && r.game).sort((a, b) => a.date.localeCompare(b.date));
   const out = new Map();
+  out.qbOut = [];
   // (each player: his last team and season, his work a game in his group, his passes a game (a quarterback's,
-  // not faded while he's out), his snap shares by season, his snaps this season and last)
+  // not faded while he's out), his snap shares by season, his snaps and passes by season)
   const pl = new Map();
   const of = (pid) => {
     let p = pl.get(pid);
-    if (!p) pl.set(pid, (p = { team: null, season: null, group: null, work: null, att: null, shares: new Map(), snaps: new Map() }));
+    if (!p) pl.set(pid, (p = { team: null, season: null, group: null, work: null, att: null, shares: new Map(), snaps: new Map(), passes: new Map() }));
     return p;
   };
   // (each team's players seen, by team: pids)
@@ -126,11 +138,11 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
       const qbs = members.filter((pid) => pl.get(pid).group === 'QB' && pl.get(pid).att !== null);
       const qb1 = qbs.sort((a, b) => pl.get(b).att - pl.get(a).att)[0] ?? null;
       const qb1Out = !!qb1 && pl.get(qb1).att >= QB1_MIN && isOut(qb1);
-      const snapsOf = (pid) => {
-        const s = pl.get(pid).snaps;
-        return (s.get(season) ?? 0) + (s.get(season - 1) ?? 0);
-      };
-      const nextQb = qb1Out ? (qbs.filter((pid) => pid !== qb1 && !isOut(pid)).sort((a, b) => snapsOf(b) - snapsOf(a))[0] ?? null) : null;
+      const twoSeasons = (s) => (s.get(season) ?? 0) + (s.get(season - 1) ?? 0);
+      const nextQb = qb1Out
+        ? (qbs.filter((pid) => pid !== qb1 && !isOut(pid)).sort((a, b) => twoSeasons(pl.get(b).passes) - twoSeasons(pl.get(a).passes) || twoSeasons(pl.get(b).snaps) - twoSeasons(pl.get(a).snaps))[0] ?? null)
+        : null;
+      if (qb1Out) out.qbOut.push({ game, team, season, qb1, kind: listed.get(String(qb1)), played: playing.has(String(qb1)), next: nextQb });
       // (each group's regulars out, its regulars here, and its next man up)
       const groups = {};
       for (const g of ['RB', 'WR', 'TE']) {
@@ -150,20 +162,24 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
         const flags = {
           backupQb: qb1Out && g === 'QB' && pid === nextQb,
           qb1Out: qb1Out && pid !== qb1 && g !== 'QB',
+          // (his team's QB1 listed out but in the game anyway: a Doubtful who played)
+          qb1Played: qb1Out && playing.has(String(qb1)),
           nextUp: !!g && g !== 'QB' && groups[g]?.gone > 0 && groups[g].next === pid,
           groupOut: !!g && g !== 'QB' && groups[g]?.gone > 0 && groups[g].regs.has(pid),
           snapJump: shares.length >= 2 && shares[shares.length - 1] > avg(shares) + JUMP,
           roleGrew: shares.length >= 1 && last.length >= 4 && avg(shares) > avg(last) + JUMP,
           starter: last.length >= STARTER.games && avg(last) >= STARTER.share,
         };
+        // (no week: no reports read, so no bucket can be told: 'no-week', left out of the tables)
         const bucket =
-          flags.backupQb ? 'backup-qb'
+          !week ? 'no-week'
+          : flags.backupQb ? 'backup-qb'
           : flags.qb1Out ? 'qb1-out'
           : flags.nextUp ? 'next-up'
           : flags.groupOut ? 'group-out'
           : flags.snapJump ? 'snap-jump'
           : flags.roleGrew ? 'role-grew'
-          : flags.starter && week ? (week <= 4 ? 'starter-w1-4' : week <= 8 ? 'starter-w5-8' : 'starter-w9+')
+          : flags.starter ? (week <= 4 ? 'starter-w1-4' : week <= 8 ? 'starter-w5-8' : 'starter-w9+')
           : 'other';
         out.set(`${r.game}|${pid}`, { bucket, flags, week, team: r.team, season });
       }
@@ -179,7 +195,10 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
         p.season = r.season;
         if (g) {
           p.group = g;
-          if (g === 'QB') p.att = p.att === null ? touches(r, g) : p.att + (touches(r, g) - p.att) * RATE;
+          if (g === 'QB') {
+            p.att = p.att === null ? touches(r, g) : p.att + (touches(r, g) - p.att) * RATE;
+            p.passes.set(r.season, (p.passes.get(r.season) ?? 0) + touches(r, g));
+          }
           else p.work = p.work === null ? touches(r, g) : p.work + (touches(r, g) - p.work) * RATE;
         }
         if (most > 0 && r.s.snaps > 0) {
@@ -264,6 +283,30 @@ export function summarize(items, { boot = BOOT, seed = 2026 } = {}) {
   };
 }
 
+// The QB1-out team-games' coverage (from FROM): how many, how many with the QB1 in the game anyway (a Doubtful
+// who played), and whose is the eligible passer's row (items: a passing stat's, { game, team, pid, bucket }): the
+// backup named, QB1 himself, another quarterback (bucketed elsewhere), or none eligible (a debut starter: no
+// prior passes, so not the props' passer)
+export function qbCoverage(qbOut, items, from = 0) {
+  const by = new Map();
+  for (const x of items) {
+    const k = `${x.game}|${x.team}`;
+    by.set(k, [...(by.get(k) ?? []), x]);
+  }
+  const c = { games: 0, qb1Played: 0, backup: 0, qb1: 0, another: 0, none: 0 };
+  for (const q of qbOut) {
+    if (q.season < from) continue;
+    c.games++;
+    if (q.played) c.qb1Played++;
+    const mine = by.get(`${q.game}|${q.team}`) ?? [];
+    if (mine.some((x) => x.bucket === 'backup-qb')) c.backup++;
+    else if (mine.some((x) => x.pid === String(q.qb1))) c.qb1++;
+    else if (mine.length) c.another++;
+    else c.none++;
+  }
+  return c;
+}
+
 // (a row's negative-binomial log loss at a projection, the stat's dispersion there)
 export const nbLoss = (v, mu, params) => -nbLog(v, mu, rAt(params, mu));
 
@@ -284,6 +327,8 @@ async function nflverseFile(release, base, columns) {
 async function reportsOf(seasons, espnOfGsis) {
   const out = new Map();
   const rosters = new Map();
+  // (the seasons with no injury report read: their outs from the rosters' reserve alone)
+  const rosterOnly = [];
   const put = (season, week, code, pid, kind) => {
     const key = `${season}|${Number(week)}|${code}`;
     if (!out.has(key)) out.set(key, new Map());
@@ -308,8 +353,13 @@ async function reportsOf(seasons, espnOfGsis) {
       if (x.status === 'RES') put(season, x.week, x.team, pid, 'reserve');
     }
     console.log(`role backtest: ${season}: ${inj.length} report rows, ${ros.length} roster rows`);
+    if (!inj.length) {
+      rosterOnly.push(season);
+      console.warn(`role backtest: WARNING ${season}: no injury report rows read: its outs from the rosters' reserve alone (its period marked roster only)`);
+    }
+    if (!ros.length) console.warn(`role backtest: WARNING ${season}: no weekly roster rows read`);
   }
-  return { out, rosters };
+  return { out, rosters, rosterOnly };
 }
 
 // (the stats' settings from the committed state, an Infinity saved as null)
@@ -327,13 +377,15 @@ async function main() {
   if (process.argv.includes('--report')) {
     const last = readJson(path.join(ROOT, '.cache/role-backtest.json'), null);
     if (!last?.results) throw new Error('no .cache/role-backtest.json to report from: run without --report first');
-    writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(last.results, { from: last.from, useState: last.settings === 'state.json', at: last.at }));
+    writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(last.results, { from: last.from, useState: last.settings === 'state.json', at: last.at, coverage: last.coverage, rosterOnly: last.rosterOnly }));
     console.log('role backtest: .cache/role-backtest.md written again from .cache/role-backtest.json');
     return;
   }
   const useState = process.argv.includes('--state');
   const fromAt = process.argv.indexOf('--from');
   const FROM = fromAt > 0 ? Number(process.argv[fromAt + 1]) : 2021;
+  // (a bad --from fails before minutes of fitting, never a report of empty buckets over the last good one)
+  if (!Number.isInteger(FROM) || FROM < 2000 || FROM > 2100) throw new Error(`--from wants a season's year (e.g. 2021), not ${process.argv[fromAt + 1]}`);
   const sport = 'nfl';
   const cfg = LEAGUES[sport];
   // (the history and the ratings, as run.mjs fits them)
@@ -376,7 +428,7 @@ async function main() {
   const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id'], 1e9);
   const espnOfGsis = new Map((players ?? []).filter((p) => p.espn_id && p.espn_id !== 'NA').map((p) => [p.gsis_id, String(Number(p.espn_id))]));
   const seasons = [...new Set(rows.map((r) => r.season))].filter((s) => s >= FROM - 2).sort();
-  const { out: reports, rosters } = await reportsOf(seasons, espnOfGsis);
+  const { out: reports, rosters, rosterOnly } = await reportsOf(seasons, espnOfGsis);
   const situations = preGame(
     rows.filter((r) => r.season >= FROM - 2),
     {
@@ -387,6 +439,8 @@ async function main() {
   );
   // (each stat's rows replayed with its settings, every row projected; its fit window's dates kept)
   const results = {};
+  let coverage = null;
+  const tag = (name, seasons) => (seasons.some((s) => rosterOnly.includes(s)) ? `${name} (roster only)` : name);
   for (const st of STATS.nfl) {
     const f = fitted[st.key];
     if (!f) continue;
@@ -397,13 +451,21 @@ async function main() {
     const env = envFor(sport, st, expPts, info, mine);
     const { out } = replayStat(st, sorted, f.params, env, ['0000', '0000']);
     const items = [];
+    let noWeek = 0;
     for (const x of out) {
       if (x.row.eligible === false || x.row.season < FROM) continue;
       const s = situations.get(`${x.row.game}|${x.row.pid}`);
       if (!s) continue;
-      items.push({ ...s, v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date });
+      // (a game with no week: counted, left out)
+      if (s.bucket === 'no-week') {
+        noWeek++;
+        continue;
+      }
+      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date });
     }
-    const block = { cuts, params: f.params, buckets: {}, periods: {} };
+    if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
+    if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
+    const block = { cuts, params: f.params, noWeek, buckets: {}, periods: {} };
     const add = (list) => {
       // (the log loss with the bucket's projections scaled by its own bias: in sample)
       const s = list.reduce((t, x) => t + x.v, 0) / Math.max(1e-9, list.reduce((t, x) => t + x.mu, 0));
@@ -411,7 +473,12 @@ async function main() {
     };
     for (const b of BUCKETS) block.buckets[b] = add(items.filter((x) => x.bucket === b));
     block.buckets.all = add(items);
-    const PERIODS = { [`${FROM}-${Math.max(FROM, 2022)}`]: (x) => x.season <= 2022, '2023-2025': (x) => x.season >= 2023 && x.season <= 2025, '2026 so far': (x) => x.season >= 2026, 'held out': (x) => x.held };
+    const PERIODS = {
+      [tag(`${FROM}-${Math.max(FROM, 2022)}`, seasons.filter((s) => s >= FROM && s <= 2022))]: (x) => x.season <= 2022,
+      [tag('2023-2025', [2023, 2024, 2025])]: (x) => x.season >= 2023 && x.season <= 2025,
+      [tag('2026 so far', seasons.filter((s) => s >= 2026))]: (x) => x.season >= 2026,
+      'held out': (x) => x.held,
+    };
     for (const [name, keep] of Object.entries(PERIODS)) {
       block.periods[name] = {};
       for (const b of [...BUCKETS, 'all']) {
@@ -422,19 +489,25 @@ async function main() {
     results[st.key] = block;
     console.log(`role backtest: ${st.key}: ${items.length} eligible rows from ${FROM} (fit window ${cuts[0]} to ${cuts[1]})`);
   }
-  writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', results }, null, 1));
-  writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState }));
+  writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', coverage, rosterOnly, results }, null, 1));
+  writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState, coverage, rosterOnly }));
   console.log(`role backtest: written .cache/role-backtest.md in ${Math.round((Date.now() - t0) / 1000)}s`);
 }
 
 // The report: the headlines (each bucket's bias whose interval leaves out 0, per stat), then each stat's table
 // and its bias by period
-export function report(results, { from = 2021, useState = false, at = null } = {}) {
+export function report(results, { from = 2021, useState = false, at = null, coverage = null, rosterOnly = [] } = {}) {
   const lines = [];
   lines.push('# Role backtest: the NFL props\' projections against what happened, by situation');
   lines.push('');
-  lines.push(`Generated ${(at ?? new Date().toISOString()).slice(0, 10)} by \`node libs/ranker/scripts/model/role-backtest.mjs${useState ? ' --state' : ''}\` (measurement only; the bettor unchanged). Eligible players' games from ${from}; settings ${useState ? "from the committed state.json" : 'fit as fitProps fits them'}. Bias = sum actual / sum projected - 1 (under 0: the model ran high). LL = the negative binomial's log loss a game at the stat's dispersion (only comparable within a stat). 95% intervals: bootstrap clustered by team-week. "LL saved" = log loss saved a game were the bucket's projections scaled by its own bias (in sample, a rough ceiling on a bucket term; under 0 where the dispersion grows with the projection). "Held out" = the games after the fit window, the settings (the scale among them) never fit on them. Buckets from pre-game information only (nflverse injury reports and weekly rosters, prior work and snaps), each row in the first that fits.`);
+  lines.push(`Generated ${(at ?? new Date().toISOString()).slice(0, 10)} by \`node libs/ranker/scripts/model/role-backtest.mjs${useState ? ' --state' : ''}\` (measurement only; the bettor unchanged). Eligible players' games from ${from}; settings ${useState ? "from the committed state.json" : 'fit as fitProps fits them'}. Bias = sum actual / sum projected - 1 (under 0: the model ran high). LL = the negative binomial's log loss a game at the stat's dispersion (only comparable within a stat). 95% intervals: bootstrap clustered by team-week. "LL saved" = log loss saved a game were the bucket's projections scaled by its own bias (in sample, a rough ceiling on a bucket term; under 0 where the dispersion grows with the projection). "Held out" = the games after the fit window: held out from the continuous settings' fit (K, w, a, b, the scale, the dispersion), but fitStat chose which optional and context terms stay, and rk, on these same games, and the ratings and game context were fit on every game, so the held-out numbers are mildly optimistic. Buckets from pre-game information only (nflverse injury reports, Doubtful counted as out, and weekly rosters, prior work and snaps), each row in the first that fits; eligible players only, so a debut starter at quarterback (no prior passes) is in no passing row.${rosterOnly?.length ? ` Seasons with no injury report read (outs from the rosters' reserve alone, the period marked roster only): ${rosterOnly.join(", ")}.` : ""}`);
   lines.push('');
+  // (the QB1-out games' coverage: whose the passing row is)
+  if (coverage) {
+    const c = coverage;
+    lines.push(`QB1-out team-games from ${from}: ${c.games}; the QB1 in the game anyway (a Doubtful who played) ${c.qb1Played}. The eligible passer's row: the backup named (backup-qb) ${c.backup}, the QB1 himself ${c.qb1}, another quarterback (bucketed elsewhere) ${c.another}, none eligible (e.g. a debut starter) ${c.none}.`);
+    lines.push('');
+  }
   lines.push('## Headlines (bias intervals that leave out 0, buckets of 100 games or more)');
   lines.push('');
   for (const [key, block] of Object.entries(results)) {
@@ -445,7 +518,7 @@ export function report(results, { from = 2021, useState = false, at = null } = {
     const all = block.buckets.all;
     lines.push(`- **${key}** (all ${pct(all?.bias)}, n ${all?.n ?? 0}): ${hits.length ? hits.join('; ') : 'none'}`);
   }
-  // (the same on the held-out games alone: the settings, the scale among them, never fit on them)
+  // (the same on the held-out games alone: the continuous settings never fit on them, the terms chosen on them)
   lines.push('');
   lines.push('## Held out only (after the fit window: bias intervals that leave out 0, buckets of 50 games or more)');
   lines.push('');
