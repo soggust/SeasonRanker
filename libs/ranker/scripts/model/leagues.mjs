@@ -37,6 +37,14 @@ export const PROP_CAPS = {
 };
 export const GAME_CAP = 5;
 
+// MODEL_EPOCH (run.mjs refitTrust): the model's latest major change. The trust is fit only on the live bets placed
+// since (and the backtest's, which replays history with the model as it is now): a bet placed under an older
+// model judges that model, not this one, so it stays on the record and in every tally but never moves the trust.
+// Bump it (an ISO time) with every major change to the projections or the pricing; the trust starts over at its
+// starting value until 40 of the new model's bets are graded. History: 2026-10-11, the leak fixes, the
+// role-aware projections, the directional role guard and the lower bands.
+export const MODEL_EPOCH = '2026-10-11T22:00:00Z';
+
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
 //   lines, props  the window: before it, the game's markets (or props) aren't priced or bet at all; inside it

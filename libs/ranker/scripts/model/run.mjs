@@ -92,7 +92,7 @@ import '../env.mjs';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BOOK, GAME_CAP, LEAGUES, PROP_CAPS, TIMING } from './leagues.mjs';
+import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { MAX_LAST, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, newsMissing, phaseOf, propAsk, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
@@ -702,7 +702,10 @@ function refitTrust(r) {
   // (each one's bets with a result or a close, a void one's neither: clv.mjs; and a market's backtest bets, the
   // history's real lines and results, so its trust is fitted from the start, the live bets adding to them as
   // they come)
-  const evidence = (b) => !b.void && (b.status !== 'open' || b.clv);
+  // (and placed under this model: since MODEL_EPOCH, leagues.mjs; an older model's bets stay on the record but
+  // don't judge this one)
+  const epoch = Date.parse(MODEL_EPOCH);
+  const evidence = (b) => !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= epoch;
   // (the backtest's at BACKTEST_WEIGHT: tw, a copy's)
   const backtest = (r.backtestBets ?? []).map((b) => ({ ...b, tw: (b.tw ?? 1) * BACKTEST_WEIGHT }));
   // (a game bet's fair chance from Pinnacle only, as the backtest's are (backtest.mjs trustBets): one priced off
