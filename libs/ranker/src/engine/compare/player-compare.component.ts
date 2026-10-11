@@ -1,5 +1,6 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { SPORT } from '@sport/sport';
+import { pagePath } from '@ranker/engine/page-url';
 import { rankTone } from '@ranker/core/format';
 import { percentileText } from '@ranker/engine/player-card/hover-text';
 import { COMPARE_MAX, CompareHit, CompareTab, PlayerCompare } from './player-compare';
@@ -217,6 +218,8 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
   readonly percentileText = percentileText;
   readonly seasonText = SPORT.seasonText;
   readonly careerOnly = !!SPORT.careerOnly;
+  // (the Tracker's address, this sport's: /tracker/mlb)
+  readonly trackerPath = pagePath('#tracker', SPORT.id);
   // (a career-only sport has no seasons to chart)
   readonly tabs: { id: CompareTab; title: string }[] = [
     { id: 'overview', title: 'Overview' },

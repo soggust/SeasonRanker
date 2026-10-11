@@ -8,6 +8,7 @@ import { FriendsService } from '../friends/friends.service';
 import { Access, BetRecord, accessAll, betRecord, hiddenNote, money, oddsText, recordText, relationOf } from '../friends/friends-helpers';
 import { listPath } from '../lists/lists-helpers';
 import { BetSummary, ListSummary, PinSummary, PresetSummary, loadBalance, loadBets, loadLists, loadPins, loadPresets } from './profile-data';
+import { pagePath } from '@ranker/engine/page-url';
 
 type Load<T> = { state: 'loading' } | { state: 'ready'; value: T } | { state: 'error'; message: string };
 
@@ -122,6 +123,11 @@ export class UserProfileComponent {
 
   listHref(uid: string, list: ListSummary): string {
     return listPath(list.sport || SPORT.id, uid, list.id);
+  }
+
+  // (their Tracker in this sport: /tracker/mlb/<uid>, so a new tab or a shared link stays in it)
+  trackerPath(uid: string): string {
+    return pagePath(`#tracker/${uid}`, SPORT.id);
   }
 
   hidden(kind: VisibilityKind): string {

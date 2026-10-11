@@ -185,7 +185,7 @@
         @if (pinNote) {
           <span class="cmp-pin-toast" animate.enter="share-in"
             >{{ pinNote.text }}@if (pinNote.link) {
-              · <a href="#tracker">Open</a>
+              · <a [href]="trackerPath">Open</a>
             }</span
           >
         }
