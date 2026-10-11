@@ -25,7 +25,7 @@ import { SKILL_UNITS, emptyIn, recentCount, statIsEmpty } from '@ranker/engine/u
 import { StatReader } from '@ranker/engine/stat-reader';
 import { settingGroups, settingOptions, settingText, settingsAt } from '@ranker/engine/setting-options';
 import { CardHost, PlayerCards } from '@ranker/engine/player-card/player-cards';
-import { COMPARE_MAX, PlayerCompare } from '@ranker/engine/compare/player-compare';
+import { COMPARE_MAX, CompareHit, PlayerCompare } from '@ranker/engine/compare/player-compare';
 import { GameViewService, recentRef } from '@ranker/engine/game-view/game-view.service';
 import { SeasonContext } from '@ranker/engine/player-card/card.model';
 import { copyRankingsToClipboard } from '@ranker/core/clipboard';
@@ -106,6 +106,13 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   picked: string[] = [];
   private dragEnded = 0;
 
+  // The search (the picks' button with nobody picked): the compare view's search, a copy of its own (what's
+  // typed here isn't the view's), open in the button bar or not
+  readonly finder: PlayerCompare;
+  finding = false;
+  @ViewChild('findBox') findBox?: ElementRef<HTMLInputElement>;
+  @ViewChild('toolButton') toolButton?: ElementRef<HTMLButtonElement>;
+
   private readonly glide = new RowGlide();
 
   // "List copied" under the copy button
@@ -127,6 +134,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     );
     this.cards = new PlayerCards(this, seasonData);
     this.compare = new PlayerCompare(this, seasonData);
+    this.finder = new PlayerCompare(this, seasonData);
     // (the game view's names and teams open cards)
     this.cards.connectGames(games);
     const service = this.positionService;
@@ -465,7 +473,10 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // (a click anywhere off it and its tile shuts it; so does the list scrolling out from under it)
   @HostListener('document:click', ['$event'])
   clickOff(event: MouseEvent): void {
-    if (this.why && !(event.target as Element | null)?.closest('.rank-why, .rank-tile')) this.closeWhy();
+    const target = event.target as Element | null;
+    if (this.why && !target?.closest('.rank-why, .rank-tile')) this.closeWhy();
+    // (and the search, folded back into its button: what's typed is kept for the next time)
+    if (this.finding && !target?.closest('.find-bar, .compare-toggle')) this.finding = false;
   }
 
   @HostListener('window:resize')
@@ -529,6 +540,71 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     const picks = this.picked.map((id) => this.playerList.find((p) => p.gsisId === id)).filter((p): p is SkillPlayer => !!p);
     this.picked = [];
     this.compare.start(picks);
+  }
+
+  // The button left of Save, by the picks: nobody, the search; one, his card (as his name opens it); two
+  // to four, Compare
+  pickedAction(): void {
+    if (this.picked.length > 1) this.openCompare();
+    else if (this.pickedOne) this.openCard(this.pickedOne);
+    else this.openFind();
+  }
+
+  // (the one picked, as the grid has him)
+  get pickedOne(): SkillPlayer | undefined {
+    return this.picked.length === 1 ? this.playerList.find((p) => p.gsisId === this.picked[0]) : undefined;
+  }
+
+  get pickedLabel(): string {
+    if (this.picked.length > 1) return `Compare the ${this.picked.length} picked`;
+    if (this.picked.length) return `Open ${this.pickedOne?.name ?? 'the one picked'}`;
+    return 'Search for a player';
+  }
+
+  get pickedTitle(): string {
+    if (this.picked.length > 1) return `Compare the ${this.picked.length} picked`;
+    if (this.picked.length) return `Open ${this.pickedOne?.name ?? 'the one picked'} (pick more rows to compare)`;
+    return `Search anyone${this.sport.careerOnly ? '' : ', any season'} and open their card (click rows to pick them for Compare)`;
+  }
+
+  // The search opened in the bar, the box in focus
+  openFind(): void {
+    this.finding = true;
+    setTimeout(() => this.findBox?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  // ...and shut (Esc, its X), the button back in focus
+  closeFind(refocus = false): void {
+    this.finding = false;
+    if (refocus) setTimeout(() => this.toolButton?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  // In the box: the arrows move through the hits, Enter opens the lit one, Esc clears what's typed, then
+  // shuts the search
+  findKey(event: KeyboardEvent): void {
+    const { finder } = this;
+    const n = finder.hits.length;
+    if (event.key === 'Enter') {
+      if (n) this.openFound(finder.hits[finder.active]);
+    } else if (n && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+      finder.active = (finder.active + (event.key === 'ArrowDown' ? 1 : n - 1)) % n;
+      setTimeout(() => document.querySelector('.find-hits .active')?.scrollIntoView({ block: 'nearest' }));
+    } else if (event.key === 'Escape') {
+      if (finder.query) finder.search('');
+      else this.closeFind(true);
+      event.stopPropagation();
+    } else return;
+    event.preventDefault();
+  }
+
+  // A hit: his card for his latest season, on his own tab (the grid stays where it is), the search shut
+  openFound(hit: CompareHit): void {
+    const season = hit.seasons.at(-1);
+    if (season === undefined) return;
+    this.finder.search('');
+    this.closeFind();
+    this.games.backTo = null;
+    void this.cards.openLinked({ position: hit.position, gsisId: hit.id }, season);
   }
 
   // The card's compare button: its season into the compare view (the card closes, the view under it)

@@ -33,7 +33,8 @@ section.rankings-wrapper {
 }
 
 // ---------------------------------------------------------------------------
-// The button bar: [filters] [year] on the left, [copy] [info] [settings] on the right, as leather tiles
+// The button bar: [filters] [year] on the left, [search / compare] [save] [share] [info] [settings] on the
+// right, as leather tiles
 // ---------------------------------------------------------------------------
 section footer {
   align-items: center;
@@ -133,8 +134,14 @@ section.rankings-wrapper > footer {
     order: 2;
   }
 
-  .copy-toggle {
+  // (the right-hand group starts at the picks' button, or the search open in its place: before Save in
+  // the markup, so first of the three)
+  .compare-toggle,
+  .find-bar {
     margin-left: auto !important;
+  }
+
+  .copy-toggle {
     order: 3;
   }
 
@@ -142,7 +149,8 @@ section.rankings-wrapper > footer {
     order: 3;
   }
 
-  // (Compare: the picks' count on a little LED tile at its corner)
+  // (the picks' button: the search, a picked player's card, or Compare with their count on a little LED
+  // tile at its corner)
   .compare-toggle {
     order: 3;
     position: relative;
@@ -173,6 +181,192 @@ section.rankings-wrapper > footer {
 
   .settings-toggle {
     order: 5;
+  }
+
+  // The search, open in the button's place: a scoreboard panel the tiles' height (the year dropdown's
+  // look), the magnifier, the box, its X; the hits drop under it over the grid
+  .find-bar {
+    align-items: center;
+    @include v.scoreboard-panel(8px, 1px 1px 1px rgba(0, 0, 0, 0.6));
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 1 320px;
+    gap: 6px;
+    height: 42px;
+    min-width: 0;
+    order: 3;
+    padding: 0 4px 0 10px;
+    position: relative;
+  }
+
+  .find-icon {
+    color: var(--scoreboard-led);
+    flex: 0 0 auto;
+    @include v.icon-size(20px);
+    text-shadow: var(--scoreboard-glow);
+  }
+
+  .find-input {
+    background: none;
+    border: none;
+    color: #fff;
+    flex: 1 1 auto;
+    font-family: v.$font-base;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 0;
+    outline: none;
+    padding: 0;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    // (the browser's own clear X: the bar has its own)
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+
+  .find-close {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    width: 32px;
+
+    .mat-icon {
+      @include v.icon-size(18px);
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      outline: none;
+    }
+  }
+
+  // (the compare view's list of hits, hung from the bar)
+  .find-hits,
+  .find-none {
+    background: #161b19;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    text-shadow: none;
+    top: calc(100% + 6px);
+    width: max(100%, min(380px, calc(100vw - 32px)));
+    z-index: 40;
+  }
+
+  .find-none {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 14px;
+  }
+
+  .find-hits {
+    max-height: min(400px, 60dvh);
+    overflow-y: auto;
+    padding: 6px;
+
+    button {
+      align-items: center;
+      background: none;
+      border: none;
+      border-radius: 7px;
+      color: #eee;
+      cursor: pointer;
+      display: grid;
+      font-family: v.$font-base;
+      gap: 12px;
+      grid-template-columns: 42px minmax(0, 1fr);
+      padding: 8px 10px;
+      text-align: left;
+      width: 100%;
+
+      // (the one Enter opens: the arrows' or the pointer's)
+      &.active,
+      &:focus-visible {
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: inset 2px 0 0 var(--scoreboard-led);
+        color: #eee;
+      }
+    }
+  }
+
+  // (a hit's headshot, round, in their team's color)
+  .hit-photo {
+    background: color-mix(in srgb, var(--team-badge) 70%, #000);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+    height: 34px;
+    justify-self: center;
+    overflow: hidden;
+    width: 34px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      width: 100%;
+    }
+  }
+
+  // (a hit's team, on a little team card)
+  .hit-badge {
+    align-items: center;
+    background: var(--team-badge);
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    display: flex;
+    height: 29px;
+    justify-content: center;
+    width: 42px;
+
+    img {
+      height: 80%;
+      object-fit: contain;
+      width: 80%;
+    }
+
+    &.white-logo img {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  .hit-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    b {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    small {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
   }
 
   // (More: phones only, below; the settings menu hangs from the anchor along its bottom edge)
@@ -1567,9 +1761,20 @@ section ul li.player > div.player-info .player-name {
 // an 11px base scales it all down together, and the team card, sized in px, steps down with it),
 // slimmer buttons, less room between the bars, just the year in the dropdown
 @media (max-width: 575px) {
-  // (copy, share, About and the gear fold into More; Compare, with its count, stays out, pushed right)
+  // (copy, share, About and the gear fold into More; the search / Compare, with its count, stays out, pushed
+  // right; the search open takes the whole bar, the rest back when it shuts)
   section.rankings-wrapper > footer {
     margin-bottom: 8px;
+
+    &.finding > :not(.find-bar, .toast) {
+      display: none !important;
+    }
+
+    .find-bar {
+      flex: 1 1 auto;
+      height: 36px;
+      margin-left: 0 !important;
+    }
 
     .copy-toggle,
     .share-toggle,
