@@ -1969,9 +1969,12 @@ async function updatePart(part, shared) {
     console.warn(`Could not load the ESPN injury report, keeping previous injury flags: ${err.message}`);
     return null;
   }));
-  // (and the unranked QBs')
+  // (and the unranked QBs', whose yesterday is in yesterday's unranked file)
+  const previousUrQbs = injuries ? [] : (JSON.parse(await readFile(partFile(UR_FILE, part), 'utf8').catch(() => 'null'))?.QB ?? []);
   for (const qb of [...gameData, ...(unranked?.QB ?? [])]) {
-    const status = injuries ? (injuries.get(qb.id) ?? 'Active') : previous.find((p) => p.id === qb.id)?.injuryStatus;
+    const status = injuries
+      ? (injuries.get(qb.id) ?? 'Active')
+      : [...previous, ...previousUrQbs].find((p) => p.id === qb.id)?.injuryStatus;
     qb.injuryStatus = status ?? 'Active';
     qb.injured = INJURED_STATUSES.includes(qb.injuryStatus);
   }
