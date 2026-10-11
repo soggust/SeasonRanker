@@ -1,7 +1,12 @@
 // The CHECK picks: the markets the desk won't bet because the model is too far from the book (desk.mjs
-// gapGuard, a game market's; props.mjs priceProps' gap guard, a prop's), kept anyway as a hypothetical, so the
-// owner can look into them and the desk learns whether they'd have won.
+// gapGuard, a game market's; props.mjs priceProps' gap guard, a prop's), or (an NFL prop's) because the player's
+// role is changing (props.mjs roleChangeOf: the book reprices a role on the news, the model on the logs, so it's
+// bet neither way till these show the model can read one), kept anyway as a hypothetical, so the owner can look
+// into them and the desk learns whether they'd have won.
 //
+//   cause    why it's a CHECK: 'gap' or 'role' (an older one without it, the gap's), a role's sub-reason in
+//            roleReason (backup-qb, qb1-out, group-out, snap-jump, part-time, line); checkSummary tallies both
+//            apart, so the gap's hit rate stays the gap's
 //   what     a CHECK is the market as it stood: the model's side (the side its chance is over the book's
 //            fair chance; past the gap the lean is tapered to nothing, so the side the desk would price best
 //            is only the cheaper vig), its line, its price and the other side's, the model's and the fair
@@ -11,7 +16,8 @@
 //            run reads it as ledger.checks, and an older ledger's checks move there): no units staked, so it's
 //            never in the record, the profit, the trust fit, the caps or the CLV
 //   only     the gap guard alone: a market another guard would skip too (a line moved twice the limit, a long
-//            shot, a juiced assumed price) isn't a CHECK, so the hit rate is the gap's alone
+//            shot, a juiced assumed price) isn't a CHECK, so the hit rate is the gap's alone; a role's ahead of
+//            the gap (a role change with a gap is the role's)
 //   when     recorded the run it's skipped, and written again by a later run only while it isn't locked
 //            (REPRICE_BY before the start, timing.mjs) and only when something material changed (its side,
 //            line or price, the model or the book moved a point or more, an owner's note): so the picks don't
@@ -20,8 +26,9 @@
 //            of them still matches the board when it's settled (settle-lib.mjs botObservations)
 //   graded   once its game is final, as a bet would be, at a unit, in checkResult ({ status, profit, final,
 //            actual (a prop's), void, gradedAt }): what it would have done, never in the record
-//   closed   when a later run prices its market and the gap guard no longer skips it (the model came back
-//            toward the book, or another guard skips it now) before it's locked: closedAt, off the page, still
+//   closed   when a later run prices its market and neither the gap guard nor the role guard skips it (the
+//            model came back toward the book, the role settled, or another guard skips it now) before it's
+//            locked: closedAt, off the page, still
 //            graded but tallied apart (checkSummary's closed), out of the hit rate; a later gap opens it again
 //   trimmed  a graded one, TRIM_AFTER on, loses its context and all of its projection but the mean (checkTrim):
 //            the file stays small over a season, the tally untouched
@@ -43,6 +50,11 @@ export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= RE
 // (how long after its grading a CHECK keeps its context and projection: checkTrim)
 export const TRIM_AFTER = 3 * 24 * 3600e3;
 
+// (the guards whose skip is kept as a CHECK: the gap (desk.mjs gapGuard, props.mjs) and a role changing (an NFL
+// prop's: props.mjs roleChangeOf); a CHECK's cause, an older one's the gap)
+export const CHECK_KINDS = new Set(['gap', 'role']);
+export const causeOf = (guard) => (guard?.kind === 'role' ? 'role' : 'gap');
+
 // The model's side of a market's two (each { side, model, fair, ... }): the one whose chance is over the
 // book's, the other beside it (other)
 export function modelSide(sides) {
@@ -60,6 +72,9 @@ export function checkOf(bet, guard) {
     intent: 'check',
     units: 0,
     gap: round(bet.model - bet.fair, 4),
+    // (why it's a CHECK: the gap, or his role changing (a prop's, props.mjs roleChangeOf: its sub-reason))
+    cause: causeOf(guard),
+    ...(guard?.kind === 'role' && guard.role ? { roleReason: guard.role } : {}),
     reason: guard?.why ?? 'too far from the market',
     status: 'check',
     profit: 0,
@@ -74,7 +89,7 @@ const priceOf = (c) => ({ at: c.placedAt, side: c.side, line: c.line ?? null, od
 const samePrice = (a, b) => a.side === b.side && (a.line ?? null) === (b.line ?? null) && a.odds === b.odds && (a.otherOdds ?? null) === (b.otherOdds ?? null);
 
 // (what a CHECK's material facts are: the ones whose change writes it again)
-const material = (c) => [c.side, c.line, c.odds, c.otherOdds ?? null, Math.round(c.model * 100), Math.round(c.fair * 100), c.note ? `${c.note.reason}:${c.note.player ?? ''}:${c.note.status ?? ''}:${c.note.at ?? ''}` : ''].join('|');
+const material = (c) => [c.cause ?? 'gap', c.roleReason ?? '', c.side, c.line, c.odds, c.otherOdds ?? null, Math.round(c.model * 100), Math.round(c.fair * 100), c.note ? `${c.note.reason}:${c.note.player ?? ''}:${c.note.status ?? ''}:${c.note.at ?? ''}` : ''].join('|');
 
 // A run's CHECK added to the ledger's (ledger.checks), or the one there written again: only while it's open
 // (not graded), not locked, and something material changed; its first time kept (firstAt) and how many times
@@ -175,6 +190,9 @@ export function checkSummary(all = []) {
   return {
     ...tally(checks),
     byMarket: by((c) => (c.market === 'prop' ? `prop:${c.propType}` : c.market)),
+    // (by why each is a CHECK (an older one's the gap), and a role's by its sub-reason)
+    byCause: by((c) => c.cause ?? 'gap'),
+    byRole: by((c) => (c.cause === 'role' ? (c.roleReason ?? 'role') : null)),
     byReason,
     noted: checks.filter((c) => c.note).length,
     closed: { ...tally(shut), noted: shut.filter((c) => c.note).length },

@@ -23,6 +23,7 @@
 //             season, then put back the most telling first where it still fits; the hook and the price never).
 //             A slot's wording varies by the bet's id (fnv1a), never by the run. A CHECK (checks.mjs: too far
 //             from the market to bet) says the disagreement and asks the question it raises instead of the price
+//             (a role CHECK, cause 'role': the role change it's kept for, in words of its sub-reason's)
 //   risk      the single likeliest way it loses, by the first rule that applies (a gap past the limit, the
 //             game's lines held, his recent form against it, his history, the line's move, a teammate
 //             questionable, a short season, a thin cushion, else how often it loses at our number), at most
@@ -272,6 +273,8 @@ const DROP_CTX = (c) => {
 // its grading, its showing or publishing, or the state: those never write it again
 export function hashOf(bet, sib) {
   const pick = (({ side, line, odds, model, fair, p, units, propType, projection, intent }) => ({ side, line, odds, model, fair, p, units, propType, projection, intent }))(bet);
+  // (a role CHECK's cause, so a gap CHECK that becomes one is written again; none on the rest: their hash as it was)
+  if (bet.cause === 'role') Object.assign(pick, { cause: bet.cause, roleReason: bet.roleReason ?? null });
   const sibCtx = sib && sib !== bet && sib.context ? (({ seen: _s, move: _m, ...rest }) => rest)(sib.context) : null;
   const text = stableStringify({ bet: { ...pick, context: DROP_CTX(bet.context) ?? null }, sib: sibCtx });
   return createHash('sha256').update(text).digest('hex').slice(0, 16);
@@ -398,7 +401,7 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
       home: home ?? undefined,
       units: bet.units,
       hoursBeforeStart: bet.placedAt && bet.start ? r2((Date.parse(bet.start) - Date.parse(bet.placedAt)) / 36e5) : undefined,
-      ...(check ? { check: true, checkReason: bet.reason ?? undefined } : {}),
+      ...(check ? { check: true, checkReason: bet.reason ?? undefined, ...(bet.cause === 'role' ? { checkCause: 'role', roleReason: bet.roleReason ?? undefined } : {}) } : {}),
     },
     price,
   };
@@ -569,9 +572,21 @@ function priceSentence(sheet) {
   return `We make ${who} ${P(sheet, 'betPct')}%${tail}; at ${fmt.odds(bet.odds)} it needs ${P(sheet, 'breakEvenPct')}%${fair}${edge}.`;
 }
 
-// (a CHECK's in place of the price: the disagreement, and why it wasn't bet)
+// (a role CHECK's words for its sub-reason (props.mjs roleChangeOf): no number or name of their own, so the
+// validator's checks hold)
+const ROLE_WORDS = {
+  'backup-qb': "he is not his team's usual starting quarterback",
+  'qb1-out': "his team's starting quarterback is out",
+  'group-out': 'a regular at his position is out and a big share of that work is his to take',
+  'snap-jump': 'his snaps jumped in his last game',
+  'part-time': 'he is a part-timer with a regular at his position out',
+  line: 'the line sits far from his projection, the market reading a role the model has not seen',
+};
+
+// (a CHECK's in place of the price: the disagreement, and why it wasn't bet; a role CHECK's, the role)
 function checkSentence(sheet) {
   const { bet, price } = sheet;
+  if (bet.checkCause === 'role') return `Not bet either way: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, and the market prices a role change on the news before the model sees it in the games, so it is kept as a CHECK.`;
   if (!fin(price.modelPct) || !fin(price.bookFairPct)) return 'Not bet: the model is too far from the market to trust, so it is kept as a CHECK.';
   const who = bet.kind === 'prop' || bet.kind === 'total' ? `the ${bet.side}` : bet.sideWord ?? 'its side';
   const src = price.bookFairFrom === 'Pinnacle' ? 'Pinnacle' : bet.book;
@@ -583,6 +598,7 @@ function checkSentence(sheet) {
 // (a CHECK's question: what would settle the disagreement)
 function checkQuestion(sheet) {
   const { bet, projection: pr, game } = sheet;
+  if (bet.checkCause === 'role') return 'The question: how much of the work is his now, and has the market already priced it?';
   if (bet.kind === 'prop') {
     if (pr?.questionable?.length) return `The question: is ${listOf(pr.questionable.slice(0, 2))} playing, and does the market know his share of the work better?`;
     if (bet.stat === 'saves') return `The question: is ${bet.player ?? 'he'} confirmed in net, and what does the market see in the shots he'll face?`;
@@ -776,7 +792,7 @@ export function plainOf(sheet) {
   // (the risk: the first rule that applies, never the caveat the reason said)
   let risk;
   if (check) {
-    risk = 'A gap that size is more often news the model has not seen than an edge; the CHECK keeps the result to show which it was.';
+    risk = bet.checkCause === 'role' ? 'A role change is news the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : 'A gap that size is more often news the model has not seen than an edge; the CHECK keeps the result to show which it was.';
   } else {
     const g = sheet.game ?? {};
     const order =

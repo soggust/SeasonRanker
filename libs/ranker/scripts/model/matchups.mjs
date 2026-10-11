@@ -17,12 +17,23 @@
 //   targets  the NFL: the share of the targets it allows to wide receivers, tight ends and backs, against the
 //            league's, pulled toward the league's by 60 targets
 //   vacated  the NFL: the work a player's position group is missing: its regulars who aren't playing (not in the
-//            game's logs; at bet time, out or doubtful on the injury report or no longer on the team's roster,
-//            and a questionable one at half), their recent work (a back's carries
-//            and targets, a receiver's or tight end's targets, a game's worth, recent games counting most) over
-//            the recent work of those who are. A back stepping in for a hurt starter gets the starter's share to
-//            share out; a player gone a while fades out of it (his recent work fading game by game he misses), by
-//            when the ones taking his place have it in their own numbers. The NBA's the same over the whole
+//            game's logs; at bet time, out or doubtful on the injury report, on the roster's injured reserve,
+//            PUP, NFI or suspended, missing two games or more and not on the report, or no longer on the team's
+//            roster, and a questionable one at half), their recent work (a back's carries and targets, a
+//            receiver's or tight end's targets, a game's worth, recent games counting most) over the recent work
+//            of those who are. A back stepping in for a hurt starter gets the starter's share to share out; a
+//            regular missing (one who's played for the team this season) keeps his work as it was through his
+//            first FREEZE games out (it doesn't fade while he's still out: a fill-in's cut isn't shrunk under
+//            him), then fades out of it game by game (gone a while: by then the ones taking his place have it in
+//            their own numbers; one gone since last season fades from the first game, as before). The cut in the
+//            games a player's numbers come from (vacPast: each of his games this season, its regulars missing
+//            then, worked out on the work as it is now) is measured on the same work as the cut now, so the same
+//            starter still out is the same cut, not a smaller one counted three times (his fading work, the
+//            fill-in's own growing, and the games that fed both). And, for the role-change guard (props.mjs
+//            roleChangeOf), a team's quarterback first (qb1: the most passes a game, recent games counting
+//            most), each player's offensive snaps as a share of his team's (snap: his last game's and his
+//            season's), and the regulars who've missed their team's last two games or more (absent). The NBA's
+//            the same over the whole
 //            team, two ways (teamWork below): by minutes, and by usage (field goals tried, 0.44 of free throws
 //            tried, and assists: a scorer's shots go to the other scorers, more than his minutes say); the NHL's
 //            by position (forwards, defensemen), by time on ice and by power-play time (a top unit's man out, the
@@ -147,13 +158,24 @@ export function nflMatchups(rows, pbp = null) {
     let w = work.get(id);
     if (!w || w.season !== season) {
       const last = w && w.season === season - 1 ? w : null;
-      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5 }]) : []) };
+      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, gone: v.gone ?? 0, cur: false }]) : []) };
       work.set(id, w);
     }
     return w;
   };
   const WORK_RATE = 0.35;
-  const touches = (r, p) => (p === 'RB' ? (r.s.rushAtt ?? 0) + (r.s.targets ?? 0) : (r.s.targets ?? 0));
+  // (a regular's games out before his work starts fading: through a short absence it's his, waiting; only one
+  // who's played for the team this season (cur): one gone since last season fades from its first game, as before)
+  const FREEZE = 4;
+  // (a quarterback's work his passes; a back's carries and targets; a receiver's or tight end's targets)
+  const touches = (r, p) => (p === 'QB' ? (r.s.passAtt ?? 0) : p === 'RB' ? (r.s.rushAtt ?? 0) + (r.s.targets ?? 0) : (r.s.targets ?? 0));
+  // (each team game's regulars missing, as it was: the ids whose work counts in the cut, recorded with the game
+  // so a player's past games can be measured again on the work as it is now (vacPast); and each player's games
+  // this season, by the team's game: { season, games: [{ team, missing }] })
+  const games_ = new Map();
+  // (each player's offensive snaps this season as a share of his team's in the game (its most: its quarterback's,
+  // the plays it ran), the games whose snap counts were read)
+  const snapsOf = new Map();
   // (the work missing from a player's position group, his cut of it over his own work: the absent regulars'
   // recent work shared among the present players by their recent work to the power g, for g of 1 (in proportion),
   // 0.5 and 0 (equally: the next man up's cut as big as the starter's); missOf(id): how surely a teammate is
@@ -180,6 +202,35 @@ export function nflMatchups(rows, pbp = null) {
       const all = here.reduce((t, [v, k]) => t + k * Math.pow(v, g), Math.pow(own, g));
       return Math.round(Math.min(3, (gone * Math.pow(own, g)) / all / Math.max(own, 1)) * 1000) / 1000;
     });
+  };
+  // (a player's games this season before now, each one's cut measured again on the work as it is now (the same
+  // work the cut now is: a starter still out the same cut, not a smaller one): their count, their cuts' sum,
+  // and his last five's count and sum; null for a quarterback or a position without the work)
+  const vacPast = (pid, season, pos) => {
+    const p = POS(pos);
+    if (!p || p === 'QB') return null;
+    const h = games_.get(pid);
+    const list = h && h.season === season ? h.games : [];
+    const sum = NONE.slice();
+    const rsum = NONE.slice();
+    const last = list.length - Math.min(5, list.length);
+    list.forEach((g, i) => {
+      if (!g.missing.size) return;
+      const v = vacated(g.team, season, pid, pos, (id) => (g.missing.has(String(id)) ? 1 : 0));
+      v.forEach((x, k) => {
+        sum[k] += x;
+        if (i >= last) rsum[k] += x;
+      });
+    });
+    const r3 = (a) => a.map((x) => Math.round(x * 1000) / 1000);
+    return { n: list.length, sum: r3(sum), rn: Math.min(5, list.length), rsum: r3(rsum) };
+  };
+  // (a player's snap share: his last game's and his season's average, over the games read; null with none)
+  const snapOf = (pid, season) => {
+    const s = snapsOf.get(pid);
+    if (!s || s.season !== season || !s.list.length) return null;
+    const avg = s.list.reduce((t, x) => t + x, 0) / s.list.length;
+    return { latest: Math.round(s.list[s.list.length - 1] * 1000) / 1000, avg: Math.round(avg * 1000) / 1000, n: s.list.length };
   };
   // (the defense's numbers before a game)
   const defense = (id, season, pos) => {
@@ -217,6 +268,8 @@ export function nflMatchups(rows, pbp = null) {
         r.tgt = d.tgt;
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
+        const past = vacPast(r.pid, g.season, r.pos);
+        if (past) r.vacPast = past;
       }
     }
     // (then learned from)
@@ -255,19 +308,43 @@ export function nflMatchups(rows, pbp = null) {
       }
       t.n++;
       team.set(g.team, t);
-      // (the recent work: the ones who played, their game's; the ones who didn't, fading)
+      // (the recent work: the ones who played, their game's; the ones who didn't, as it was through their first
+      // FREEZE games out, then fading; and the game's regulars missing, as they were, for its players' vacPast)
       const w = workOf(g.team, g.season);
+      const playing = new Set(g.rows.map((r) => r.pid));
+      const missing = new Set([...w.p].filter(([id, x]) => x.v >= 1.5 && !playing.has(id)).map(([id]) => String(id)));
       const played = new Set();
       for (const r of g.rows) {
         const p = POS(r.pos);
-        if (!p || p === 'QB') continue;
+        if (!p) continue;
         played.add(r.pid);
-        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p) };
+        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), gone: 0, cur: true };
         x.pos = p;
         x.v += (touches(r, p) - x.v) * WORK_RATE;
+        x.gone = 0;
+        x.cur = true;
         w.p.set(r.pid, x);
+        const h = games_.get(r.pid);
+        const mine = h && h.season === g.season ? h : { season: g.season, games: [] };
+        mine.games.push({ team: g.team, missing });
+        games_.set(r.pid, mine);
       }
-      for (const [id, x] of w.p) if (!played.has(id)) x.v *= 1 - WORK_RATE;
+      for (const [id, x] of w.p) {
+        if (played.has(id)) continue;
+        x.gone = (x.gone ?? 0) + 1;
+        if (x.gone > FREEZE || !x.cur) x.v *= 1 - WORK_RATE;
+      }
+      // (the snap shares: each player's offensive snaps over the team's most, where the counts were read)
+      const most = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
+      if (most > 0) {
+        for (const r of g.rows) {
+          if (!POS(r.pos) || !(r.s.snaps > 0)) continue;
+          const s = snapsOf.get(r.pid);
+          const mine = s && s.season === g.season ? s : { season: g.season, list: [] };
+          mine.list.push(Math.min(1, r.s.snaps / most));
+          snapsOf.set(r.pid, mine);
+        }
+      }
     }
     i = j;
   }
@@ -277,8 +354,19 @@ export function nflMatchups(rows, pbp = null) {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const missOf = typeof missing === 'function' ? missing : missing instanceof Set ? (id) => (missing.has(String(id)) ? 1 : 0) : () => 0;
       const vacs = vacated(teamId, season, pid, pos, missOf);
-      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs) };
+      const past = vacPast(pid, season, pos);
+      const snap = snapOf(pid, season);
+      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
+    // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
+    // null with none)
+    qb1: (teamId, season) => {
+      const qbs = [...workOf(teamId, season).p].filter(([, x]) => x.pos === 'QB' && x.v >= 1).sort((a, b) => b[1].v - a[1].v);
+      return qbs.length ? { id: String(qbs[0][0]), v: Math.round(qbs[0][1].v * 10) / 10 } : null;
+    },
+    // (a team's regulars who've missed its last two games or more (by id: how many, his position): missing at
+    // bet time unless the injury report lists him, as the history counts a player not in a game's logs)
+    absent: (teamId, season) => new Map([...workOf(teamId, season).p].filter(([, x]) => x.v >= 1.5 && (x.gone ?? 0) >= 2).map(([id, x]) => [String(id), { gone: x.gone, pos: x.pos }])),
     // (a team's regulars at a position group now: the ones whose recent work counts in the work missing when
     // they're out (matchups' vacated), by id)
     regulars: (teamId, season, pos) => {

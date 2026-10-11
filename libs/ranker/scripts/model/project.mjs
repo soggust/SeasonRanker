@@ -23,7 +23,8 @@
 //            skaters' (their position's time on ice or power-play time): his cut of the work his group is
 //            missing (its regulars not playing, matchups.mjs vacs) over his own, against the cut he had in the games his
 //            numbers come from (weighed as they are: his season's against the K-game prior, last season's cut
-//            in it where the prior is his own; his last five by w),
+//            in it where the prior is his own; his last five by w; the NFL's season and last five measured
+//            again on the work as it is now, matchups.mjs vacPast: the same starter still out, the same cut),
 //            to the power vc: ((1 + cut now) / (1 + cut then))^vc. Signed: a starter's work shared out lifts
 //            him, and a starter back from injury takes it back (a fill-in whose last games were the starter's
 //            comes down). How it's shared (vs: in proportion to each one's work, or flatter, to equally, the
@@ -100,6 +101,23 @@ export function lineChances(line, mu, params) {
   const push = Number.isInteger(line) && line >= 0 ? Math.min(0.99, Math.exp(nbLog(line, mu, r))) : 0;
   const over = recal(Math.min(1, raw / (1 - push)), params.cal);
   return { over, under: 1 - over, push };
+}
+
+// The projection a line's price implies: the mean at which the stat's spread (its dispersion as at any
+// projection, no recalibration) goes over the line as often as the book's fair chance says (fairOver; an assumed
+// -110's 0.5: the line its median). By halves on the log of the mean; null where it can't be had
+export function impliedMean(line, fairOver, params) {
+  if (!Number.isFinite(line) || !(fairOver > 0 && fairOver < 1) || !params) return null;
+  const plain = { ...params, cal: null };
+  let lo = Math.log(0.01);
+  let hi = Math.log(Math.max(10, line * 20 + 10));
+  if (lineChances(line, Math.exp(hi), plain).over < fairOver) return null;
+  for (let i = 0; i < 50; i++) {
+    const mid = (lo + hi) / 2;
+    if (lineChances(line, Math.exp(mid), plain).over < fairOver) lo = mid;
+    else hi = mid;
+  }
+  return Math.exp((lo + hi) / 2);
 }
 
 // A stat's context terms' names (props.mjs STATS ctx: one name or a list), and their factor on a projection at
@@ -189,8 +207,15 @@ export function makeModel(stat, params, env) {
     const vs = params.vs ?? 0;
     const vacNow = row.vacs?.[vs] ?? 0;
     const priorVac = longN >= 10 ? (prev.vac?.[vs] ?? 0) / longN : 0;
-    const rateVac = ((cur.vac?.[vs] ?? 0) + params.K * priorVac) / (cur.n + params.K);
-    const recentVac = cur.recentVac?.length >= 3 ? cur.recentVac.reduce((t, x) => t + (x[vs] ?? 0), 0) / cur.recentVac.length : rateVac;
+    // (his games this season measured again on the work as it is now, where the matchups give them (the NFL's:
+    // matchups.mjs vacPast), so a starter still out is the same cut then as now; else each game's cut as it was)
+    const past = row.vacPast;
+    const seasonVac = past?.n ? (past.sum[vs] ?? 0) / past.n : null;
+    const rateVac = seasonVac !== null ? (cur.n * seasonVac + params.K * priorVac) / (cur.n + params.K) : ((cur.vac?.[vs] ?? 0) + params.K * priorVac) / (cur.n + params.K);
+    const recentVac =
+      seasonVac !== null ? (past.rn >= 3 ? (past.rsum[vs] ?? 0) / past.rn : rateVac)
+      : cur.recentVac?.length >= 3 ? cur.recentVac.reduce((t, x) => t + (x[vs] ?? 0), 0) / cur.recentVac.length
+      : rateVac;
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, params.a) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);

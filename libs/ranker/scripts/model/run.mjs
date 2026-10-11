@@ -93,7 +93,7 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
+import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 
@@ -1224,12 +1224,13 @@ function placeBets(r) {
       if (b.market === 'prop' && run) {
         run.bet++;
         run.units += b.units;
+        if (b.side === 'under') run.betUnder = (run.betUnder ?? 0) + 1;
       }
     }
   }
   if (capped || dropped || madeRoom) console.log(`${sport}: the games' ${GAME_CAP}u cap: ${capped} bets cut, ${dropped} not bet, ${madeRoom} open action bets taken back for edge bets' room`);
   r.madeRoom = madeRoom;
-  if (run?.priced) console.log(`${sport}: props bet ${run.bet} for ${run.units}u`);
+  if (run?.priced) console.log(`${sport}: props bet ${run.bet} for ${run.units}u (${run.bet - (run.betUnder ?? 0)} over, ${run.betUnder ?? 0} under)`);
   saveRest(r);
 }
 
@@ -1362,14 +1363,16 @@ async function betProps(r) {
           if (news.length) Object.assign(x, { guard: { why: [x.guard?.why, `bet at the last chance before the news: ${news.join(', ')}`].filter(Boolean).join('; ') }, units: 0.5 });
           candidates.push({ game, x, exp });
         }
-        // (one skipped for the model's distance from the book alone: kept as a CHECK on the model's side
-        // (checks.mjs), on the same terms a bet would wait for: a real price, the news it waits for)
-        // (one priced on those terms the gap guard didn't skip: its CHECK closed, checks.mjs closeChecks)
+        // (one skipped for the model's distance from the book alone, or for his role changing (an NFL prop's:
+        // props.mjs roleChangeOf, either side): kept as a CHECK on the model's side (checks.mjs), on the same
+        // terms a bet would wait for: a real price, the news it waits for. An open bet taken back to price again
+        // (repriceOpen) whose player's role is changing now is one of these: a CHECK, not bet again)
+        // (one priced on those terms neither guard skipped: its CHECK closed, checks.mjs closeChecks)
         for (const x of priced) {
           if (!x.priced && hasKey()) continue;
           if (newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher }).length && phase !== 'last') continue;
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
-          if (x.guard?.kind !== 'gap') {
+          if (!CHECK_KINDS.has(x.guard?.kind)) {
             r.unchecked?.add(id);
             continue;
           }
@@ -1377,7 +1380,18 @@ async function betProps(r) {
           r.checks?.push(checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard));
         }
       }
-      for (const x of priced) r.snapshot.projections[`${game.id}:${x.prop.stat.key}:${x.prop.athlete.id}`] = [x.projection.mean, x.prop.line, x.projection.pOver];
+      // (the dry snapshot's: each prop's mean, line and chance over, the work missing and its factor, the guard's kind
+      // and role, its side)
+      for (const x of priced) r.snapshot.projections[`${game.id}:${x.prop.stat.key}:${x.prop.athlete.id}`] = [x.projection.mean, x.prop.line, x.projection.pOver, x.projection.vac, x.projection.vacF, x.guard?.kind ?? null, x.guard?.role ?? null, x.side];
+      // (the projections' lean: how many the model takes under (its chance over the line under half) against
+      // how many it projects under the line (the mean under it): the spread's skew and the calibration's)
+      for (const x of priced) {
+        run.pUnder = (run.pUnder ?? 0) + (x.projection.pOver < 0.5 ? 1 : 0);
+        run.muUnder = (run.muUnder ?? 0) + (x.projection.mean < x.prop.line ? 1 : 0);
+        if (!CHECK_KINDS.has(x.guard?.kind)) continue;
+        const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind}:${x.side}`;
+        run.checkSides = { ...(run.checkSides ?? {}), [k]: (run.checkSides?.[k] ?? 0) + 1 };
+      }
     } catch (err) {
       console.warn(`${sport}: props for ${game.id} skipped (${err.message})`);
     }
@@ -1405,7 +1419,9 @@ async function betProps(r) {
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
-  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${k === 'gap' ? 'past the market gap' : 'by the other guards'}`).join(', ')}`);
+  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)' }[k] ?? 'by the other guards'}`).join(', ')}`);
+  if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
+  if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
 }
 
@@ -1477,7 +1493,7 @@ function recordChecks(r) {
     const res = upsertCheck(r.ledger, c, r.now);
     if (res === 'new') added++;
     else if (res === 'updated') updated++;
-    if (DRY && res) console.log(`${sport} (dry) CHECK ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})`);
+    if (DRY && res) console.log(`${sport} (dry) CHECK${c.cause === 'role' ? ` (role: ${c.roleReason})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
   }
   const became = markPlaced(r.ledger);
   const ids = new Set((r.checks ?? []).map((c) => c.id));
@@ -1491,7 +1507,7 @@ function recordChecks(r) {
     c.note = kept;
     noted++;
   }
-  if (added || updated || became || closed || noted) console.log(`${sport}: CHECKs (too far from the market to bet, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
+  if (added || updated || became || closed || noted) console.log(`${sport}: CHECKs (too far from the market to bet, or a role changing, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
 }
 
 // The state: the settings and how they test, the trust, the context, the props, the changelog, the teams by

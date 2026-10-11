@@ -303,8 +303,9 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       teams: [away, home].map((abbr) => ({ abbr, logo: logo(sport, abbr) })),
       where: whereOf(b, g),
       reason: entry.plain.reason,
-      // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
-      ...(check ? { gap: b.gap, checkReason: b.reason } : {}),
+      // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; a role
+      // CHECK's cause and sub-reason: checks.mjs)
+      ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : {}) } : {}),
     };
     // (its risk, the page's Devil's Advocate, and the AI's analysis in place of the plain text where it has one)
     return applyWriteups(row, entry, hash);

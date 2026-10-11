@@ -188,16 +188,33 @@ export async function eventOf(league, id) {
 
 // A team's roster now: its players' ESPN ids (every group ESPN lists: offense, defense, special teams, injured
 // reserve; the NHL's by position; the NBA's one flat list); null when it can't be had or looks cut short
-// (under min players: ROSTER_MIN): the props then don't count a teammate gone (props.mjs priceProps) and flag it
+// (under min players: ROSTER_MIN): the props then don't count a teammate gone (props.mjs priceProps) and flag it.
+// The set's out: the ones on it who won't play (ESPN's injured reserve or out group, its suspended group, or an
+// injury status of injured reserve, PUP, NFI or a suspension: the weekly injury report drops a player once he's
+// on IR), by id ({ name, pos, status }): missing at bet time as the history counts them (props.mjs priceProps)
 export const ROSTER_MIN = { nfl: 40, nba: 12, nhl: 18 };
-export async function roster(league, id, min = 40) {
-  const body = await json(`${ESPN}/${league}/teams/${id}/roster`);
+export const ROSTER_OUT_GROUP = /^(injuredReserveOrOut|suspended)$/i;
+export const ROSTER_OUT_STATUS = /injured reserve|\bIR\b|physically unable|\bPUP\b|non-football|\bNFI\b|suspen/i;
+export function rosterOf(body, min = 40) {
   const ids = new Set();
+  const out = new Map();
+  const add = (a, group) => {
+    if (!a?.id) return;
+    const id = String(a.id);
+    ids.add(id);
+    const status = String(a.injuries?.[0]?.status ?? '');
+    if (ROSTER_OUT_GROUP.test(group ?? '') || ROSTER_OUT_STATUS.test(status)) out.set(id, { name: a.displayName ?? a.fullName ?? '', pos: a.position?.abbreviation ?? '', status: status || (/suspend/i.test(group ?? '') ? 'Suspension' : 'Injured Reserve') });
+  };
   for (const g of body?.athletes ?? []) {
-    if (Array.isArray(g?.items)) for (const a of g.items) a?.id && ids.add(String(a.id));
-    else if (g?.id) ids.add(String(g.id));
+    if (Array.isArray(g?.items)) for (const a of g.items) add(a, g.position);
+    else add(g, null);
   }
-  return ids.size >= min ? ids : null;
+  if (ids.size < min) return null;
+  ids.out = out;
+  return ids;
+}
+export async function roster(league, id, min = 40) {
+  return rosterOf(await json(`${ESPN}/${league}/teams/${id}/roster`), min);
 }
 
 // The league's injury report: each team's listed players (ESPN's athlete id, name, position, status)
