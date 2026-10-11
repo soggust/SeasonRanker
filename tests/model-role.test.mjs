@@ -149,7 +149,7 @@ test("a role CHECK's write-up: the role it's kept for, its question and risk, pa
   const check = { ...bet, intent: 'check', units: 0, cause: 'role', roleReason: 'group-out', reason: 'a regular at his position out, the work he leaves 45% of his own: a bigger role' };
   const sheet = factsOf(check, { game: g, sib });
   const { reason, risk } = plainOf(sheet);
-  assert.match(reason, /Not bet either way: a regular at his position is out/);
+  assert.match(reason, /Not bet on this side: a regular at his position is out/);
   assert.match(reason, /The question: how much of the work is his now/);
   assert.match(risk, /^A role change is news/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
@@ -266,4 +266,17 @@ test('typicalShares: a game cut short (under half his median) left out of the sh
   assert.deepEqual(typicalShares([0.9, 0.2, 0.15]), [0.9, 0.2, 0.15]);
   assert.deepEqual(typicalShares([0.3, 0.35, 0.8]), [0.3, 0.35, 0.8]);
   assert.deepEqual(typicalShares([0.7, 0.1]), [0.7, 0.1]);
+});
+
+test('roleChangeOf: each reason names its safe side (the model\'s known error there makes it conservative)', async () => {
+  const { roleChangeOf, ROLE, ROLE_SAFE } = await import('../libs/ranker/scripts/model/props.mjs');
+  assert.equal(ROLE_SAFE['group-out'], 'over');
+  assert.equal(ROLE_SAFE['qb1-out'], 'under');
+  assert.equal(ROLE_SAFE['qb-change'], null);
+  const qb = { name: 'X', pos: 'QB', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 } };
+  assert.equal(roleChangeOf({ ...qb, starts: 2, rushing: true }).safe, 'over');
+  assert.equal(roleChangeOf({ ...qb, starts: 2 }).safe, 'under');
+  const wr = { name: 'W', pos: 'WR', pid: 'w', qb1: { id: 'q', name: 'Q', missing: 0 }, mu: 50 };
+  assert.equal(roleChangeOf({ ...wr, implied: 50 * ROLE.ratioHi + 1 }).safe, 'over');
+  assert.equal(roleChangeOf({ ...wr, implied: 50 * ROLE.ratioLo - 1 }).safe, 'under');
 });

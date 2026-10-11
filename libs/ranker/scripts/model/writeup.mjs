@@ -588,7 +588,7 @@ const ROLE_WORDS = {
 // (a CHECK's in place of the price: the disagreement, and why it wasn't bet; a role CHECK's, the role)
 function checkSentence(sheet) {
   const { bet, price } = sheet;
-  if (bet.checkCause === 'role') return `Not bet either way: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, and the market prices a role change on the news before the model sees it in the games, so it is kept as a CHECK.`;
+  if (bet.checkCause === 'role') return `Not bet on this side: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, and this is the side the model's known error in a role change could be making (the other side bets as usual), so it is kept as a CHECK.`;
   if (!fin(price.modelPct) || !fin(price.bookFairPct)) return 'Not bet: the model is too far from the market to trust, so it is kept as a CHECK.';
   const who = bet.kind === 'prop' || bet.kind === 'total' ? `the ${bet.side}` : bet.sideWord ?? 'its side';
   const src = price.bookFairFrom === 'Pinnacle' ? 'Pinnacle' : bet.book;

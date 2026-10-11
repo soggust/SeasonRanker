@@ -129,6 +129,13 @@ export function restGuard(restDays, debut, date) {
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
 // says nothing of his role)
 export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, ratioLo: 0.6, fewStarts: 6, fewStartsRush: 16 };
+// (each reason's safe side: the one the model's known error there makes conservative, by the role backtest
+// (2026-10-11): a role growing (group-out, snap-jump, part-time, a backup's or a new starter's rushing) the
+// model projects low, so an over it still takes is safe and its under is the risk; a backup throwing to him
+// (qb1-out) or a few-start passer's passing it projects high, so the under is safe; the line's read, the side
+// the market's reading points away from; a change at quarterback, either way: neither. The safe side bets as
+// any prop; only the other is a CHECK (priceProps))
+export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null };
 export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
@@ -146,13 +153,13 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     if (qb1.missing >= 1 && pos !== 'QB') return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
-  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
+  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
   if (vacOut >= ROLE.vac) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
   if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
   if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
   if (Number.isFinite(implied) && mu > 0) {
     const ratio = implied / mu;
-    if (ratio > ROLE.ratioHi || ratio < ROLE.ratioLo) return { key: 'line', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
+    if (ratio > ROLE.ratioHi || ratio < ROLE.ratioLo) return { key: 'line', safe: ratio > ROLE.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
   }
   return null;
 }
@@ -764,7 +771,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // the gap's, only when it's the role alone: one the skips below would take too (no price -110 can be, a
     // long shot, a line moved twice the limit) is skipped with both their words, no CHECK, so the role
     // CHECKs are graded only at prices that can be known)
-    else if (roleChange) {
+    // (only the risky side: the one the model's known error there could be making (ROLE_SAFE); its safe side
+    // bets as any prop would)
+    else if (roleChange && (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side) {
       const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
