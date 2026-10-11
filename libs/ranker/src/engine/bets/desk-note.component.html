@@ -1,4 +1,4 @@
-<!-- An admin's note on a CHECK: saved, it reads back with Edit (and whether the bot prices with it); else (or
+<!-- An admin's note on a CHECK or a bet: saved, it reads back with Edit (and whether the bot prices with it); else (or
      editing) the form: a reason, a player the pick involves (or someone else by his ESPN id) and his status, a
      line of their own -->
 <section class="desk-note" aria-label="Your note to the bot">
@@ -7,7 +7,7 @@
   } @else if (saved() && !editing()) {
     <p class="note-saved">
       <mat-icon aria-hidden="true" fontIcon="sticky_note_2"></mat-icon>
-      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ prices ? 'the bot will re-price with it on its next run' : "kept with the CHECK for the bot's review" }}</span></span>
+      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ prices ? 'the bot will re-price with it on its next run' : check ? "kept with the CHECK for the bot's review" : 'saved; the bot prices only a player and his status' }}</span></span>
       <button type="button" class="note-link" (click)="edit()">Edit</button>
     </p>
   } @else {

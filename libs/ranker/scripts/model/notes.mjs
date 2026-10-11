@@ -15,6 +15,9 @@
 //            game's context, its props and its inputs (timing.mjs inputsOf: an open bet on it is priced again)
 //            all see it, and the CHECK can come back as a real bet. His team: the note's, else the report's,
 //            else the CHECK's own player's, else the two teams' rosters; none found, the note isn't applied
+//   kept     on its CHECK (checks.mjs, in the public model/checks.json) only as publicNote has it: its reason,
+//            player, status, when and whether it was applied. Its own words (note) and its writer's uid (by)
+//            stay in Firestore and in the run's memory, never in a file the site serves or the repo commits
 
 import { createSign } from 'node:crypto';
 
@@ -23,8 +26,10 @@ export const REASONS = ['news', 'role', 'weather', 'suspension', 'market-wrong',
 // (a note's status as the injury report words it; active: off the report)
 export const NOTE_STATUS = { out: 'Out', questionable: 'Questionable', active: null };
 const TIMEOUT = 15e3;
-// (the most notes a run reads: pages of 300)
-const PAGES = 5;
+// (the notes a run reads a page at a time, 300 a page, every page there is; MAX_PAGES only a guard against a
+// listing that never ends, warned of when it's reached)
+const PAGE_SIZE = 300;
+export const MAX_PAGES = 1000;
 
 // (a Firestore REST value as plain data: strings, numbers, booleans, null, times as ISO strings, maps, lists)
 export function fromValue(v) {
@@ -105,8 +110,13 @@ export async function readDeskNotes({ env = process.env, fetchImpl = globalThis.
     } else return null;
     const out = new Map();
     let page = '';
-    for (let i = 0; i < PAGES; i++) {
-      const url = `${base}/deskNotes?pageSize=300${page ? `&pageToken=${encodeURIComponent(page)}` : ''}`;
+    const seen = new Set();
+    for (let i = 0; ; i++) {
+      if (i >= MAX_PAGES) {
+        log.warn?.(`owner's notes: stopped at ${MAX_PAGES} pages (${out.size} notes read)`);
+        break;
+      }
+      const url = `${base}/deskNotes?pageSize=${PAGE_SIZE}${page ? `&pageToken=${encodeURIComponent(page)}` : ''}`;
       const res = await fetchImpl(url, { headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(TIMEOUT) });
       if (!res.ok) throw new Error(`deskNotes: HTTP ${res.status}`);
       const body = await res.json();
@@ -116,7 +126,9 @@ export async function readDeskNotes({ env = process.env, fetchImpl = globalThis.
         if (n) out.set(n.id, n);
       }
       page = body?.nextPageToken ?? '';
-      if (!page) break;
+      // (no more pages, or a token given twice: a listing going round in circles)
+      if (!page || seen.has(page)) break;
+      seen.add(page);
     }
     return out;
   } catch (err) {
@@ -173,5 +185,16 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
 // (a game's owner notes as words for a bet's context: "Owner note: Jalen Hurts out")
 export const noteWords = (l) => (l?.ownerNotes ?? []).map((x) => `Owner note: ${x.name} ${x.status}`);
 
-// (a note as a CHECK keeps it: its outcome is the CHECK's result)
-export const keptNote = (n, applied) => ({ reason: n.reason, player: n.player, status: n.status, note: n.note, by: n.by, at: n.at, ...(applied ? { applied: true } : {}) });
+// (a note as anything public keeps it (checks.json is served and committed): its reason, player, status, when,
+// and whether it was applied; never its words or its writer's uid, which stay in Firestore. An older file's
+// note passed through here loses them too)
+export const PUBLIC_NOTE_KEYS = ['reason', 'player', 'status', 'applied', 'at'];
+export function publicNote(n) {
+  if (!n || typeof n !== 'object') return null;
+  const out = { reason: REASONS.includes(n.reason) ? n.reason : 'other', player: n.player ?? null, status: n.status ?? null, at: n.at ?? null };
+  if (n.applied === true) out.applied = true;
+  return out;
+}
+
+// (a note as a CHECK keeps it: its outcome is the CHECK's result; publicNote's fields alone)
+export const keptNote = (n, applied) => publicNote({ ...n, applied: !!applied });

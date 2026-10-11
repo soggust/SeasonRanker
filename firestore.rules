@@ -363,7 +363,8 @@ service cloud.firestore {
     // A play bet as placed: open, on a game not started (the settler checks the real start, and the price
     // against the board), a stake in half units, at least a half; a spread or moneyline a side, a total over or under,
     // a prop the bot's (its pick's id in ref, either side) with its player and stat. Its tier the bot's band on it (a
-    // CHECK's check: a market the bot questioned, not its pick)
+    // CHECK's check: a market the bot questioned, not its pick; only an admin sees the CHECKs, so only an admin's
+    // bet carries it, and never as the bot's pick or with a Kelly score)
     function noPropFields(d) {
       return !('propType' in d) && !('athlete' in d) && !('player' in d) && !('statLabel' in d);
     }
@@ -396,7 +397,8 @@ service cloud.firestore {
         && d.placedAt == request.time
         && d.status == 'open'
         && (!('botPick' in d) || d.botPick is bool)
-        && (!('tier' in d) || d.tier in ['lock', 'check', 'love', 'like', 'bet', 'pass'])
+        && (!('tier' in d) || d.tier in ['lock', 'love', 'like', 'bet', 'pass']
+          || (d.tier == 'check' && isAdmin() && d.get('botPick', false) == false && !('kelly' in d)))
         && (!('kelly' in d) || d.kelly is number)
         && (!('ref' in d) || (d.ref is string && d.ref.size() <= 80))
         && validPlayMarket(d);

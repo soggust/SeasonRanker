@@ -27,8 +27,9 @@
 //            the file stays small over a season, the tally untouched
 //   placed   when its market is bet after all (the gap closed, or an owner's note priced it again), the bet
 //            it became is noted on it (bet) and the page stops showing it as a CHECK; it's still graded
-//   notes    an owner's note on it (notes.mjs, Firestore's deskNotes/{id}) kept on it (note), so its result
-//            is the note's outcome: checkSummary tallies them by reason, for tuning the gap later
+//   notes    an owner's note on it (notes.mjs, Firestore's deskNotes/{id}) kept on it (note: notes.mjs
+//            publicNote's fields alone, never its words or its writer, the file being public), so its result
+//            is the note's outcome: checkSummary tallies them by reason, a closed one's too, for tuning the gap later
 
 import { round } from './ratings.mjs';
 import { REPRICE_BY } from './timing.mjs';
@@ -146,7 +147,8 @@ export const atUnit = (c) => ({ ...c, units: 1 });
 
 // The CHECKs' tally: how many, open and graded, their record had each been bet a unit (a void one not
 // counted), the hit rate, and the same by market and by the owner's note's reason (the self-check's, for
-// tuning the gap). The closed ones (the gap closed before the lock) tallied apart (closed), out of the rest
+// tuning the gap). The closed ones (the gap closed before the lock) tallied apart (closed), out of the rest;
+// by reason too (each reason's closed), so a note whose CHECK closed (the bot came round to it) still counts
 export function checkSummary(all = []) {
   const checks = all.filter((c) => !c.closedAt);
   const tally = (list) => {
@@ -165,11 +167,16 @@ export function checkSummary(all = []) {
     };
   };
   const by = (key) => Object.fromEntries([...new Set(checks.map(key).filter(Boolean))].sort().map((k) => [k, tally(checks.filter((c) => key(c) === k))]));
+  const reasonOf = (c) => c.note?.reason ?? null;
+  const shut = all.filter((c) => c.closedAt);
+  const byReason = Object.fromEntries(
+    [...new Set(all.map(reasonOf).filter(Boolean))].sort().map((k) => [k, { ...tally(checks.filter((c) => reasonOf(c) === k)), closed: tally(shut.filter((c) => reasonOf(c) === k)) }]),
+  );
   return {
     ...tally(checks),
     byMarket: by((c) => (c.market === 'prop' ? `prop:${c.propType}` : c.market)),
-    byReason: by((c) => c.note?.reason ?? null),
+    byReason,
     noted: checks.filter((c) => c.note).length,
-    closed: tally(all.filter((c) => c.closedAt)),
+    closed: { ...tally(shut), noted: shut.filter((c) => c.note).length },
   };
 }

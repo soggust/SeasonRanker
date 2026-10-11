@@ -52,9 +52,11 @@
 //      changed, closed once a run prices its market and the gap guard doesn't skip it, listed in picks.json
 //      apart from the picks (checks: the Bets page shows only the picks), and graded as a bet would be once
 //      final (4c: checkResult). The owner's notes on them (notes.mjs: Firestore's deskNotes,
-//      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it) are kept on them, and a note's
-//      concrete news (a player out, questionable or active) goes into its game's injury report for the
-//      pricing (2b), so the market may come back as a real bet
+//      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it; on a CHECK or a bet) are kept on
+//      the CHECKs (their reason, player, status and when alone: notes.mjs publicNote; the words and the
+//      writer's uid stay in Firestore, never in a served or committed file), and a note's concrete news (a
+//      player out, questionable or active) goes into its game's injury report for the pricing (2b), so the
+//      market may come back as a real bet, or an open bet on it is priced again
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -88,7 +90,7 @@ import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nfl
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
 import { atUnit, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
-import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
+import { applyNotes, keptNote, noteWords, publicNote, readDeskNotes } from './notes.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -149,17 +151,39 @@ function readKept(file, fallback) {
 }
 
 // The CHECKs (checks.mjs), from their own file (model/checks.json); none there yet, an older ledger's own
-// (ledger.checks, which the next write moves to the file)
-function readChecks(r, ledger) {
-  return readKept(r.files.checks, null)?.checks ?? ledger?.checks ?? [];
+// (ledger.checks, which the next write moves to the file). A file there but unreadable (not JSON, or no list
+// of checks): warned of once, the ledger's own or none, and the file left as it is for a person to mend
+// (r.checksUnreadable: writeLedger never writes over it), so the run goes on without CHECKs rather than
+// stopping or writing a fresh list over the old. Each one's owner's note as the public file may keep it
+// (notes.mjs publicNote: an older file's words and writer dropped on the next write)
+export function readChecks(r, ledger) {
+  let list = null;
+  try {
+    const kept = readKept(r.files.checks, null);
+    if (kept !== null && !Array.isArray(kept?.checks)) throw new Error('no list of checks');
+    list = kept?.checks ?? null;
+  } catch (err) {
+    if (!r.checksUnreadable) console.warn(`${r.sport}: ${path.basename(r.files.checks)} unreadable (${String(err?.message ?? err).slice(0, 120)}): no CHECKs this run, the file left as it is`);
+    r.checksUnreadable = true;
+  }
+  return publicChecks((list ?? ledger?.checks ?? []).filter((c) => c && typeof c === 'object'));
+}
+
+// (the CHECKs as the public file keeps them: each note publicNote's fields alone)
+function publicChecks(checks) {
+  for (const c of checks) if (c.note) c.note = publicNote(c.note);
+  return checks;
 }
 
 // The ledger written, its CHECKs apart in their own file (checks.json: the ledger the wallet and the Algorithm
-// tab fetch keeps its old shape and size), the graded ones' bulk trimmed (checks.mjs checkTrim)
+// tab fetch keeps its old shape and size), the graded ones' bulk trimmed (checks.mjs checkTrim), every note
+// public's alone (publicNote); an unreadable checks file (readChecks) never written over
 function writeLedger(r, ledger) {
   const { checks = [], ...bets } = ledger;
   checkTrim(checks, r.now);
+  publicChecks(checks);
   writeIfChanged(r.files.ledger, bets);
+  if (r.checksUnreadable) return;
   if (checks.length || existsSync(r.files.checks)) writeIfChanged(r.files.checks, { sport: r.sport, checks });
 }
 

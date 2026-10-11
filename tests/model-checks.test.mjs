@@ -14,7 +14,8 @@ import { gapGuard, record, settle } from '../libs/ranker/scripts/model/desk.mjs'
 import { settleProp } from '../libs/ranker/scripts/model/props.mjs';
 import { atUnit, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
 import { readLedgers } from '../libs/ranker/scripts/accounts/settle.mjs';
-import { applyNotes, fromValue, keptNote, noteOf, noteWords, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
+import { applyNotes, fromValue, keptNote, MAX_PAGES, noteOf, noteWords, publicNote, PUBLIC_NOTE_KEYS, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
+import { readChecks } from '../libs/ranker/scripts/model/run.mjs';
 import { buildPicks } from '../libs/ranker/scripts/model/picks.mjs';
 import { botObservations, checkPrice } from '../libs/ranker/scripts/accounts/settle-lib.mjs';
 
@@ -317,4 +318,93 @@ test("applyNotes: a note's player out, questionable or active in his game's own 
   assert.equal(one.length, 1);
   assert.equal(mlb.get('501').injuries.get('5')[0].status, 'Out');
   assert.deepEqual(await applyNotes('nfl', live, upcoming, null), []);
+});
+
+test("keptNote / publicNote: a CHECK keeps a note's reason, player, status, when and whether applied; never its words or its writer's uid", () => {
+  const n = noteOf('401:spread', { reason: 'news', player: '12', status: 'out', note: 'my private words', by: 'uid-abc', at: '2026-10-09T12:00:00Z' });
+  const kept = keptNote(n, true);
+  assert.deepEqual(kept, { reason: 'news', player: '12', status: 'out', at: '2026-10-09T12:00:00Z', applied: true });
+  assert.deepEqual(keptNote(n, false), { reason: 'news', player: '12', status: 'out', at: '2026-10-09T12:00:00Z' });
+  assert.ok(Object.keys(kept).every((k) => PUBLIC_NOTE_KEYS.includes(k)));
+  // (an older file's note, its words and writer on it: dropped)
+  const old = { reason: 'market-wrong', player: null, status: null, note: 'words', by: 'uid', at: 'x', applied: true };
+  assert.deepEqual(publicNote(old), { reason: 'market-wrong', player: null, status: null, at: 'x', applied: true });
+  assert.equal(publicNote(null), null);
+});
+
+test("checkSummary: a closed CHECK's note still tallied by its reason (its own closed tally), out of the open ones'", () => {
+  const g = { status: 'won', profit: 0.909 };
+  const checks = [
+    { ...check({ id: 'a' }), checkResult: g, note: keptNote(noteOf('a', { reason: 'news', player: '1', status: 'out' })) },
+    { ...check({ id: 'b' }), closedAt: now.toISOString(), checkResult: { status: 'lost', profit: -1 }, note: keptNote(noteOf('b', { reason: 'news' })) },
+    { ...check({ id: 'c' }), closedAt: now.toISOString(), checkResult: g, note: keptNote(noteOf('c', { reason: 'weather' })) },
+  ];
+  const s = checkSummary(checks);
+  assert.deepEqual(Object.keys(s.byReason), ['news', 'weather']);
+  assert.deepEqual([s.byReason.news.n, s.byReason.news.won, s.byReason.news.closed.n, s.byReason.news.closed.lost], [1, 1, 1, 1]);
+  assert.deepEqual([s.byReason.weather.n, s.byReason.weather.closed.n, s.byReason.weather.closed.won], [0, 1, 1]);
+  assert.deepEqual([s.n, s.noted, s.closed.n, s.closed.noted], [1, 1, 2, 2]);
+});
+
+test('readDeskNotes: every page read (past the old 5-page stop), a repeated token ends it', async () => {
+  let i = 0;
+  const fetchImpl = async () => {
+    i++;
+    return json({ documents: [DOC(`40${i}:spread`, { reason: { stringValue: 'news' } })], ...(i < 9 ? { nextPageToken: `t${i}` } : {}) });
+  };
+  const got = await readDeskNotes({ env: { FIRESTORE_EMULATOR_HOST: 'h:1' }, fetchImpl, log: { warn: assert.fail } });
+  assert.equal(got.size, 9);
+  assert.ok(MAX_PAGES >= 100);
+  let j = 0;
+  const loop = await readDeskNotes({ env: { FIRESTORE_EMULATOR_HOST: 'h:1' }, fetchImpl: async () => (j++, json({ documents: [DOC(`5${j}:ml`, {})], nextPageToken: 'same' })), log: { warn: assert.fail } });
+  assert.deepEqual([j, loop.size], [2, 2]);
+});
+
+test("readChecks: a corrupt checks.json falls back (the ledger's own, or none), warned of once and flagged so it's never written over; a readable one's notes made public", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-read-'));
+  const warn = console.warn;
+  const said = [];
+  console.warn = (m) => said.push(m);
+  try {
+    const file = path.join(root, 'checks.json');
+    const r = { sport: 'nfl', files: { checks: file } };
+    assert.deepEqual(readChecks(r, null), []);
+    assert.equal(r.checksUnreadable, undefined);
+    fs.writeFileSync(file, '{"sport":"nfl","checks":[{"id":');
+    assert.deepEqual(readChecks(r, { checks: [check()] }).map((c) => c.id), ['401:spread']);
+    assert.deepEqual(readChecks(r, {}), []);
+    assert.equal(r.checksUnreadable, true);
+    assert.equal(said.length, 1);
+    assert.match(said[0], /checks.json unreadable/);
+    const r2 = { sport: 'nfl', files: { checks: file } };
+    fs.writeFileSync(file, JSON.stringify({ sport: 'nfl', checks: 'nope' }));
+    assert.deepEqual(readChecks(r2, {}), []);
+    assert.equal(r2.checksUnreadable, true);
+    const r3 = { sport: 'nfl', files: { checks: file } };
+    fs.writeFileSync(file, JSON.stringify({ sport: 'nfl', checks: [{ ...check(), note: { reason: 'news', player: '1', status: 'out', note: 'words', by: 'uid', at: 'x' } }, null] }));
+    const got = readChecks(r3, {});
+    assert.deepEqual(got.map((c) => c.note), [{ reason: 'news', player: '1', status: 'out', at: 'x' }]);
+    assert.equal(r3.checksUnreadable, undefined);
+  } finally {
+    console.warn = warn;
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("the public model files hold no owner's note words or writer: every note on a CHECK publicNote's fields alone", () => {
+  const apps = path.resolve(import.meta.dirname, '../apps');
+  for (const sport of fs.readdirSync(apps)) {
+    const dir = path.join(apps, sport, 'src/StaticData/model');
+    if (!fs.existsSync(dir)) continue;
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+      const walk = (x) => {
+        if (!x || typeof x !== 'object') return;
+        if (!Array.isArray(x) && x.note && typeof x.note === 'object' && !Array.isArray(x.note)) {
+          for (const k of Object.keys(x.note)) assert.ok(PUBLIC_NOTE_KEYS.includes(k), `${sport}/${name}: a note's ${k}`);
+        }
+        for (const v of Object.values(x)) walk(v);
+      };
+      walk(JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8')));
+    }
+  }
 });

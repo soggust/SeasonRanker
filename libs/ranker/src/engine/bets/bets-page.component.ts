@@ -24,7 +24,8 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // far from the book on to bet, kept for the owner to look into), under the LOCKs and over the rest, in their
 // lavender band with a "?" for a rank: not the bot's bets (their prices bet either side, the slip's bet not the
 // bot's pick), the open row its write-up (the disagreement) and a note to the bot (desk-note.component.ts:
-// Firestore's deskNotes, which the bettor reads on its next run). Nobody else sees them.
+// Firestore's deskNotes, which the bettor reads on its next run). Nobody else sees them. Its open bets' rows
+// take a note too (the same deskNotes/{pick id}: a player's news re-prices the game's open bets).
 
 // (a game the bot has picks on: its board's key facts, its picks (the CHECKs among them) and its bets alone)
 type GameBoardPicks = { sport: string; event: string; start: string; matchup: string; picks: BetRow[]; betPicks: BetRow[] };

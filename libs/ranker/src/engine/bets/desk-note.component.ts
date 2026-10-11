@@ -3,12 +3,12 @@ import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account/account.service';
 import { DeskNote, NOTE_MAX, NOTE_REASONS, NOTE_STATUSES, NoteForm, NotePlayer, OTHER_PLAYER, formOf, noteOf, notePrices, noteText, readNote } from './desk-notes';
 
-// An admin's note on a pick (a CHECK's, under its write-up on the Bets page): why the model and the book
+// An admin's note on a pick (a CHECK's or a bet's, under its write-up on the Bets page): why the model and the book
 // disagree, a reason, a player the pick involves and his status, a line of their own. Saved to Firestore's
 // deskNotes/{pick id} (firestore.rules: admins only, by its writer, at the write's time); the bettor reads them
 // on its next run (libs/ranker/scripts/model/notes.mjs), a player's news an injury override for his game, so
-// the pick's priced again (a note with no player and status is kept with the CHECK for the bot's review, and
-// says so). A player not on the picks (a game market's starter) by his ESPN id. Shown back once saved, with
+// the pick's priced again (a note with no player and status is kept with a CHECK for the bot's review, on a
+// bet only in Firestore, and says so). A player not on the picks (a game market's starter) by his ESPN id. Shown back once saved, with
 // Edit to change it; a read that fails says a note may be there, the form still usable. The page shows it to
 // admins alone (canUse('experimental')); a write the rules refuse (the dev server, signed in without the claim) says so,
 // nothing else changes. desk-notes.ts holds the pure parts.
@@ -24,6 +24,8 @@ export class DeskNoteComponent implements OnInit {
   @Input() sport: string | null = null;
   // (the players it can name: the pick's own first)
   @Input() players: NotePlayer[] = [];
+  // (a CHECK's row, or a bet's: what a note the bot doesn't price with says becomes of it)
+  @Input() check = true;
 
   private readonly account = inject(AccountService);
   readonly reasons = NOTE_REASONS;
