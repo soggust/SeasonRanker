@@ -141,7 +141,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       const r = this.rowOfPick(p);
       if (!had.has(r.key)) rows.push(r);
     }
-    const order = (t: string) => (g && t === g.a[1] ? 0 : g && t === g.h[1] ? 1 : 2);
+    const order = (t: string) => (g && t === String(g.a[1]) ? 0 : g && t === String(g.h[1]) ? 1 : 2);
     rows.sort((a, b) => order(a.team) - order(b.team) || a.player.localeCompare(b.player) || a.label.localeCompare(b.label));
     rows.forEach((r, i) => (r.first = i === 0 || rows[i - 1].athlete !== r.athlete || rows[i - 1].team !== r.team));
     return rows;
@@ -154,7 +154,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     for (const r of this.propRows()) {
       let t = out.find((x) => x.id === r.team);
       if (!t) {
-        const abbr = g && r.team === g.a[1] ? g.a[0] : g && r.team === g.h[1] ? g.h[0] : '';
+        const abbr = g && r.team === String(g.a[1]) ? g.a[0] : g && r.team === String(g.h[1]) ? g.h[0] : 'Other';
         out.push((t = { id: r.team, abbr, rows: [], picks: 0 }));
       }
       t.rows.push(r);
@@ -326,7 +326,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       key: this.rowKey(String(p.athleteId ?? ''), this.propType(p)),
       player: p.player ?? '',
       athlete: String(p.athleteId ?? ''),
-      team: '',
+      // (the pick's player's team, so it's grouped with his team's props, not apart)
+      team: String((p as { playerTeam?: string | number | null }).playerTeam ?? ''),
       propType: this.propType(p),
       label: p.market,
       line: p.line as number,

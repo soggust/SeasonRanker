@@ -108,7 +108,10 @@
         <!-- (a game chosen: its every line on top, to bet any of them) -->
         @if (game && boardFor(game); as gb) {
           <li class="bet-board">
-            <game-lines [desk]="desk()" [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)"></game-lines>
+            <!-- (made again for each game chosen: a panel keeps the game it first loaded) -->
+            @for (one of [gb]; track one.sport + '|' + one.event) {
+              <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)"></game-lines>
+            }
             @if (!shown.length) {
               <p class="bets-note">The bot has no pick on this game: its lines are above to bet.</p>
             }
@@ -246,7 +249,10 @@
                 }
                 <!-- (the game's every line, to bet this pick or any other; once on top instead when the game's chosen) -->
                 @if (!game && boards.get(gameKey(r)); as gb) {
-                  <game-lines [desk]="desk()" [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)"></game-lines>
+                  <!-- (made again for each game chosen: a panel keeps the game it first loaded) -->
+            @for (one of [gb]; track one.sport + '|' + one.event) {
+              <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)"></game-lines>
+            }
                 } @else if (game && boards.get(gameKey(r)); as gb) {
                   <!-- (the game's every line is on top: this pick's own two sides here, to bet it or go against it) -->
                   <game-lines [desk]="desk()" [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)" [only]="r"></game-lines>
