@@ -119,6 +119,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   gameDays: GameDay[] = [];
 
   overall!: Tally;
+  // (every bet's tally in the sport and game on show, whatever the range: the account's balance and rebuys)
+  account!: Tally;
   bySport: SportTally[] = [];
   byMarket: Tally[] = [];
   byStake: Tally[] = [];
@@ -236,8 +238,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (what's on show changed: its bets and states picked, everything built from them, the scores asked, the
   // tiles counting up to their new numbers)
   private show(): void {
-    const sport = (this.sport ? this.allBets.filter((b) => b.sport === this.sport) : this.allBets).filter((b) => b.status === 'open' || this.inRange(b));
-    this.bets = this.game ? sport.filter((b) => b.event === this.game) : sport;
+    const sportAll = this.sport ? this.allBets.filter((b) => b.sport === this.sport) : this.allBets;
+    const scoped = this.game ? sportAll.filter((b) => b.event === this.game) : sportAll;
+    // (the account is every bet's, whatever the range: a balance doesn't change with the dates on show)
+    this.account = tally('All', scoped);
+    this.bets = scoped.filter((b) => b.status === 'open' || this.inRange(b));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
     this.build();
     this.loadScores();
@@ -388,11 +393,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
   // (the bankroll: the starting 1,000 plus what's been won or lost, plus 1,000 for each rebuy)
   get balance(): number {
-    return this.bankroll + this.overall.profit + this.rebuys * this.bankroll;
+    return this.bankroll + this.account.profit + this.rebuys * this.bankroll;
   }
 
+  // (both from every bet's profit, not the range's)
   get rebuys(): number {
-    return rebuysFor(this.bankroll, this.overall.profit, this.atRisk);
+    return rebuysFor(this.bankroll, this.account.profit, this.atRisk);
   }
 
   // (the stakes on open bets, started or not)

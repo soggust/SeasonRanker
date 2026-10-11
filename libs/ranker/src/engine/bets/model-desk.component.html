@@ -86,7 +86,7 @@
       <div class="desk-tiles">
         <div class="desk-tile" [title]="help['available'] + ' (bankroll ' + balance.toFixed(2) + 'u' + (rebuys ? ', ' + rebuys + ' rebuy' + (rebuys > 1 ? 's' : '') : '') + ')'">
           <small>Balance</small>
-          <b [class.up]="overall.profit > 0" [class.down]="overall.profit < 0">{{ ticked(available).toFixed(2) }}u</b>
+          <b [class.up]="account.profit > 0" [class.down]="account.profit < 0">{{ ticked(available).toFixed(2) }}u</b>
         </div>
         <div class="desk-tile" [title]="help['record']">
           <small>Record</small>
