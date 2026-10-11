@@ -35,7 +35,7 @@
 <!-- (the bot's tag on a bet it picked too, in a column of its own: its band, with its Kelly score) -->
 <ng-template #tierCell let-b>
   @if (b.tier) {
-    <span class="w-tier" [ngClass]="b.tier" [title]="b.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + b.tier + (b.kelly !== null && b.kelly !== undefined ? ', Kelly ' + b.kelly : '')">@if (b.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>} @else if (b.tier === 'check') {<b class="tier-q" aria-hidden="true">?</b>}{{ b.tier }}</span>
+    <span class="w-tier" [ngClass]="b.tier" [title]="b.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + b.tier + (b.kelly !== null && b.kelly !== undefined ? ', Kelly ' + b.kelly : '')">@if (b.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ b.tier }}</span>
   }
 </ng-template>
 

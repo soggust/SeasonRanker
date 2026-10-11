@@ -123,7 +123,7 @@
                 <span class="bet-rank-slot" aria-hidden="true"></span>
                 <!-- (a like reads by its band: Lock, Check (an admin's: questioned, not bet), Love, Like, or Pass for a
                      small edge or none on its price; a fade "Fade", the side to go against) -->
-                <span class="bet-grade" [ngClass]="grade(r)" [attr.title]="r.check ? rankTitle(r, i, n, locks) : null">@if (r.check) {<b class="tier-q" aria-hidden="true">?</b>}{{ grade(r) }}</span>
+                <span class="bet-grade" [ngClass]="grade(r)" [attr.title]="r.check ? rankTitle(r, i, n, locks) : null">{{ grade(r) }}</span>
                 <span class="bet-main" [class.has-circle]="r.strength !== 'fade'">
                   <!-- (a fade says what it fades, and the bet to make instead) -->
                   @if (r.strength === 'fade') {
