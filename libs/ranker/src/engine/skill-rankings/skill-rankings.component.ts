@@ -516,6 +516,8 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       this.toast(anchor, `Compare up to ${COMPARE_MAX} at a time`);
       return null;
     } else this.picked.push(player.gsisId);
+    // (the search folds away with any pick, so it never comes back on its own when the picks reach none)
+    this.finding = false;
     return at < 0;
   }
 
@@ -535,7 +537,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     this.dragEnded = Date.now();
   }
 
-  // The button: the picks compared (then let go), or the view open to search anyone
+  // The picks compared (then let go)
   openCompare(): void {
     const picks = this.picked.map((id) => this.playerList.find((p) => p.gsisId === id)).filter((p): p is SkillPlayer => !!p);
     this.picked = [];
@@ -547,7 +549,11 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   pickedAction(): void {
     if (this.picked.length > 1) this.openCompare();
     else if (this.pickedOne) this.openCard(this.pickedOne);
-    else this.openFind();
+    else if (this.picked.length) {
+      // (one the list no longer shows, a filter or the cap since: his card from the season's rows all the same)
+      this.games.backTo = null;
+      void this.cards.openLinked({ position: this.position, gsisId: this.picked[0] }, this.season);
+    } else this.openFind();
   }
 
   // (the one picked, as the grid has him)
