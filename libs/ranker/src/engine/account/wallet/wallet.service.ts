@@ -313,7 +313,9 @@ export class WalletService {
           this.remove(s.key);
         } catch (error) {
           const code = (error as { code?: string }).code ?? '';
-          result.failed.push({ key: s.key, why: code === 'permission-denied' ? 'Not enough in the wallet, or the game has started' : 'Couldn’t place it: try again' });
+          // (a CHECK's bet is an admin's alone (firestore.rules), and the dev server shows CHECKs without the claim)
+          const denied = s.tier === 'check' ? 'Not placed: a bet on a CHECK needs an admin’s sign-in' : 'Not enough in the wallet, or the game has started';
+          result.failed.push({ key: s.key, why: code === 'permission-denied' ? denied : 'Couldn’t place it: try again' });
         }
       }
     } finally {

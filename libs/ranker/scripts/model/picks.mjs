@@ -203,7 +203,9 @@ function whereOf(bet, game) {
 // The sport's picks: its bets on games not started, the best Kelly score first, the top TOP; each one marked
 // shown on the ledger (its level then), published once it's locked, and the published ones' record. extra:
 // { state (the trust, the context's terms and the props' fits the write-ups read), writeups (writeups.json: the
-// write-ups kept per bet, written to here (new or changed ones) and pruned to the open bets and CHECKs) }
+// write-ups kept per bet, written to here (new or changed ones) and pruned to the open bets and CHECKs), keepChecks
+// (checks.json unreadable, checks-file.mjs: the ledger's CHECKs aren't the whole list, so no write-up that
+// isn't a bet's is pruned) }
 export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   const state = extra.state ?? { trust };
   const writeups = extra.writeups ?? null;
@@ -313,7 +315,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   // after all), the rest dropped (graded, taken back))
   if (writeups?.items) {
     const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => !c.checkResult && !c.closedAt && !c.bet).map((c) => c.id)]);
-    for (const id of Object.keys(writeups.items)) if (!live.has(id)) delete writeups.items[id];
+    const bets = new Set(ledger.bets.map((b) => b.id));
+    for (const id of Object.keys(writeups.items)) if (!live.has(id) && !(extra.keepChecks && !bets.has(id))) delete writeups.items[id];
   }
   const published = ledger.bets.filter((b) => b.published);
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));

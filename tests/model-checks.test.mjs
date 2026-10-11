@@ -15,7 +15,7 @@ import { settleProp } from '../libs/ranker/scripts/model/props.mjs';
 import { atUnit, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
 import { readLedgers } from '../libs/ranker/scripts/accounts/settle.mjs';
 import { applyNotes, fromValue, keptNote, MAX_PAGES, noteOf, noteWords, publicNote, PUBLIC_NOTE_KEYS, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
-import { readChecks } from '../libs/ranker/scripts/model/run.mjs';
+import { ledgerWrites, readChecks } from '../libs/ranker/scripts/model/checks-file.mjs';
 import { buildPicks } from '../libs/ranker/scripts/model/picks.mjs';
 import { botObservations, checkPrice } from '../libs/ranker/scripts/accounts/settle-lib.mjs';
 
@@ -389,6 +389,57 @@ test("readChecks: a corrupt checks.json falls back (the ledger's own, or none), 
     console.warn = warn;
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("ledgerWrites: a readable file gets the CHECKs, their notes public (no note's words or writer's uid anywhere in either file); an unreadable one is never written, the ledger's own list kept on it", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-write-'));
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    const file = path.join(root, 'checks.json');
+    const WORDS = 'Starter hurt his hamstring in practice';
+    const UID = 'uid-owner-0001';
+    const noted = () => ({ ...check(), note: { reason: 'injury', player: '1', status: 'out', note: WORDS, text: WORDS, by: UID, uid: UID, at: 'x', applied: true } });
+    const r = { sport: 'nfl', now, files: { checks: file } };
+    const out = ledgerWrites(r, { sport: 'nfl', bets: [bet()], checks: [noted()] });
+    assert.equal(out.ledger.checks, undefined);
+    assert.deepEqual(out.checks.checks.map((c) => c.id), ['401:spread']);
+    // (every string anywhere in what's written: never the note's words or its writer)
+    const strings = [];
+    const walk = (x) => (typeof x === 'string' ? strings.push(x) : x && typeof x === 'object' && Object.values(x).forEach(walk));
+    walk(out);
+    assert.ok(!strings.some((x) => x.includes(WORDS) || x.includes(UID)));
+    // (the written file read back: the same)
+    fs.writeFileSync(file, JSON.stringify(out.checks));
+    assert.ok(!fs.readFileSync(file, 'utf8').includes(UID));
+    assert.deepEqual(readChecks({ sport: 'nfl', files: { checks: file } }, {}).map((c) => c.id), ['401:spread']);
+    // (unreadable: checks.json not written, an older ledger's own list kept on the ledger, notes public)
+    fs.writeFileSync(file, '{"sport":"nfl","checks":[');
+    const r2 = { sport: 'nfl', now, files: { checks: file } };
+    const old = { sport: 'nfl', bets: [bet()], checks: [noted()] };
+    old.checks = readChecks(r2, old);
+    const out2 = ledgerWrites(r2, old);
+    assert.equal(out2.checks, null);
+    assert.deepEqual(out2.ledger.checks.map((c) => c.id), ['401:spread']);
+    assert.ok(!JSON.stringify(out2).includes(UID) && !JSON.stringify(out2).includes(WORDS));
+    // (and with no list of its own: the ledger as it was, no checks key)
+    const out3 = ledgerWrites(r2, { sport: 'nfl', bets: [], checks: [] });
+    assert.deepEqual([out3.checks, 'checks' in out3.ledger], [null, false]);
+  } finally {
+    console.warn = warn;
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("buildPicks keepChecks (checks.json unreadable): no write-up but a finished bet's pruned, so the CHECKs' write-ups survive till the file's mended", () => {
+  const ledger = { bets: [bet({ id: '500:spread', event: '500', status: 'won' }), bet({ id: '501:spread', event: '501' })], checks: [] };
+  const items = () => ({ '500:spread': { a: 1 }, '501:spread': { a: 1 }, '401:ml': { a: 1 }, '402:prop:pts:1': { a: 1 } });
+  const kept = { items: items() };
+  buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now, { writeups: kept, keepChecks: true });
+  assert.deepEqual(['500:spread', '501:spread', '401:ml', '402:prop:pts:1'].map((id) => id in kept.items), [false, true, true, true]);
+  const pruned = { items: items() };
+  buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now, { writeups: pruned });
+  assert.deepEqual(['500:spread', '501:spread', '401:ml', '402:prop:pts:1'].map((id) => id in pruned.items), [false, true, false, false]);
 });
 
 test("the public model files hold no owner's note words or writer: every note on a CHECK publicNote's fields alone", () => {

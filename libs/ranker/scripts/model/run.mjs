@@ -56,7 +56,11 @@
 //      the CHECKs (their reason, player, status and when alone: notes.mjs publicNote; the words and the
 //      writer's uid stay in Firestore, never in a served or committed file), and a note's concrete news (a
 //      player out, questionable or active) goes into its game's injury report for the pricing (2b), so the
-//      market may come back as a real bet, or an open bet on it is priced again
+//      market may come back as a real bet, or an open bet on it is priced again (a note on a prop CHECK owes its
+//      game one more ask of The Odds API's props the first run it's seen, or edited: PROP_ASKS a game at most;
+//      a note on a bet or a game market's CHECK owes none). A checks.json there but unreadable (checks-file.mjs
+//      readChecks): a GitHub warning, and the CHECKs' list, file, tally (state.json's checks), picks.json's
+//      list and write-ups all left as they were till a person mends it; no CHECK recorded meanwhile
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -71,7 +75,7 @@
 
 // (the keys: .env on this machine, the repo's secrets on GitHub; first, so every module sees them)
 import '../env.mjs';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, PROP_CAPS, TIMING } from './leagues.mjs';
@@ -89,8 +93,9 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { atUnit, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
-import { applyNotes, keptNote, noteWords, publicNote, readDeskNotes } from './notes.mjs';
+import { atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
+import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
+import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -144,47 +149,12 @@ const PROP_ASKS = 4;
 const read = readJson;
 const write = writeJson;
 
-// (a committed file the run builds on (the ledger, the state, the history): missing, a fresh start; there
-// but unreadable, the sport stops, rather than a fresh one being written over it)
-function readKept(file, fallback) {
-  return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback;
-}
-
-// The CHECKs (checks.mjs), from their own file (model/checks.json); none there yet, an older ledger's own
-// (ledger.checks, which the next write moves to the file). A file there but unreadable (not JSON, or no list
-// of checks): warned of once, the ledger's own or none, and the file left as it is for a person to mend
-// (r.checksUnreadable: writeLedger never writes over it), so the run goes on without CHECKs rather than
-// stopping or writing a fresh list over the old. Each one's owner's note as the public file may keep it
-// (notes.mjs publicNote: an older file's words and writer dropped on the next write)
-export function readChecks(r, ledger) {
-  let list = null;
-  try {
-    const kept = readKept(r.files.checks, null);
-    if (kept !== null && !Array.isArray(kept?.checks)) throw new Error('no list of checks');
-    list = kept?.checks ?? null;
-  } catch (err) {
-    if (!r.checksUnreadable) console.warn(`${r.sport}: ${path.basename(r.files.checks)} unreadable (${String(err?.message ?? err).slice(0, 120)}): no CHECKs this run, the file left as it is`);
-    r.checksUnreadable = true;
-  }
-  return publicChecks((list ?? ledger?.checks ?? []).filter((c) => c && typeof c === 'object'));
-}
-
-// (the CHECKs as the public file keeps them: each note publicNote's fields alone)
-function publicChecks(checks) {
-  for (const c of checks) if (c.note) c.note = publicNote(c.note);
-  return checks;
-}
-
-// The ledger written, its CHECKs apart in their own file (checks.json: the ledger the wallet and the Algorithm
-// tab fetch keeps its old shape and size), the graded ones' bulk trimmed (checks.mjs checkTrim), every note
-// public's alone (publicNote); an unreadable checks file (readChecks) never written over
+// The ledger written, its CHECKs apart in their own file (checks-file.mjs ledgerWrites: checks.json; an
+// unreadable one never written over, the ledger's own list kept on it till it's mended)
 function writeLedger(r, ledger) {
-  const { checks = [], ...bets } = ledger;
-  checkTrim(checks, r.now);
-  publicChecks(checks);
-  writeIfChanged(r.files.ledger, bets);
-  if (r.checksUnreadable) return;
-  if (checks.length || existsSync(r.files.checks)) writeIfChanged(r.files.checks, { sport: r.sport, checks });
+  const out = ledgerWrites(r, ledger);
+  writeIfChanged(r.files.ledger, out.ledger);
+  if (out.checks) writeIfChanged(r.files.checks, out.checks);
 }
 
 // A file the workflow commits, written only when its content changed (ignoring what changes every run: when
@@ -285,7 +255,9 @@ function writePicks(r, alone = false) {
   const state = { trust, context: (alone ? null : r.context) ?? saved?.context ?? null, props: r.props && !alone ? { types: Object.entries(r.props).map(([key, f]) => ({ key, params: f.params, check: f.check, allPlayersBias: f.checkAll?.bias ?? null })) } : (saved?.props ?? null) };
   const writeups = readJson(r.files.writeups, null) ?? { sport: r.sport, items: {} };
   writeups.items ??= {};
-  const out = buildPicks(r.sport, ledger, trust, games, r.now, { state, writeups });
+  const out = buildPicks(r.sport, ledger, trust, games, r.now, { state, writeups, keepChecks: !!r.checksUnreadable });
+  // (checks.json unreadable: picks.json's CHECKs the last good list, its games not started)
+  if (r.checksUnreadable) out.checks = (readJson(r.files.picks, null)?.checks ?? []).filter((c) => Date.parse(c?.start) > r.now.getTime());
   if (DRY) {
     console.log(`${r.sport} (dry): ${out.checks.length} CHECKs (their own list), ${out.picks.length} picks: ${out.picks.map((p) => `${p.level} ${p.pick} (${p.score})`).join(' | ')}`);
     return;
@@ -518,14 +490,18 @@ async function fitTheContext(r) {
 async function noteInjuries(r) {
   r.notesApplied = new Set();
   r.noteAt = new Map();
+  r.propNoteAt = new Map();
   if (!r.notes?.size) return;
   try {
     const checks = readChecks(r, readKept(r.files.ledger, {}));
+    const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.id));
     const applied = await applyNotes(r.sport, r.live, r.upcoming, r.notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
     for (const x of applied) {
       r.notesApplied.add(x.id);
       const at = Date.parse(r.notes.get(x.id)?.at ?? '') || 0;
       r.noteAt.set(x.event, Math.max(r.noteAt.get(x.event) ?? 0, at));
+      // (a prop CHECK's note alone owes its game's props an ask: betProps)
+      if (propChecks.has(x.id)) r.propNoteAt.set(x.event, Math.max(r.propNoteAt.get(x.event) ?? 0, at));
     }
     if (applied.length) console.log(`${r.sport}: owner's notes put into the injury reports: ${applied.map((x) => `${x.name} ${x.status}`).join(', ')}`);
   } catch (err) {
@@ -1298,10 +1274,10 @@ async function betProps(r) {
   const asked = read(PROPS_ASKED, {});
   if (!DRY) {
     const owe = new Set([...(r.replacedProps ?? []), ...[...(r.takenBack?.values() ?? [])].filter((x) => x.bet.market === 'prop').map((x) => x.bet.event)]);
-    // (a game with a prop CHECK and an owner's note not seen before: its props asked for again, priced on it)
-    const propChecks = new Set((ledger.checks ?? []).filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.event));
-    for (const [id, noteAt] of r.noteAt ?? []) {
-      if (!propChecks.has(id) || asked[`${id}:note`] === noteAt) continue;
+    // (a game with an owner's note on a prop CHECK not seen before: its props asked for again, priced on it;
+    // a note on a bet or a game market's CHECK owes none, so the notes on every pick cost no more asks)
+    for (const [id, noteAt] of r.propNoteAt ?? []) {
+      if (asked[`${id}:note`] === noteAt) continue;
       asked[`${id}:note`] = noteAt;
       owe.add(id);
     }
@@ -1490,6 +1466,11 @@ function propBet(r, game, x, exp, { id, intent, units, tested }) {
 // its outcome the CHECK's own result (gradeChecks)
 function recordChecks(r) {
   const { sport } = r;
+  // (checks.json unreadable: nothing recorded on a list that won't be written, so nothing is half-kept)
+  if (r.checksUnreadable) {
+    if (r.checks?.length) console.warn(`${sport}: ${r.checks.length} CHECKs this run not recorded (checks.json unreadable)`);
+    return;
+  }
   let added = 0;
   let updated = 0;
   for (const c of r.checks ?? []) {
@@ -1567,7 +1548,8 @@ function saveState(r) {
     record: record(ledger.bets),
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)
-    checks: checkSummary(ledger.checks ?? []),
+    // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)
+    checks: r.checksUnreadable ? { ...(state.checks ?? {}), unreadable: true } : checkSummary(ledger.checks ?? []),
     // (the lines' source this run, and The Odds API's credits)
     lines: r.linesSource,
     backtest: r.backtest,
