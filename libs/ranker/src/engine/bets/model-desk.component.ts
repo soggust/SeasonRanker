@@ -26,7 +26,7 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
 import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
@@ -44,6 +44,9 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // own (CHECK ROLE), so the CHECK row's record stays the gap's. The CHECKs panel: each sport's CHECKs by what
 // drove their gap (state.json's checks.learning, check-learn.mjs: open and graded, the hit rate with its 95%
 // interval against the break-even, the profit) and the ranked advice they make (desk-model.ts checkPanelOf).
+// The Self-check panel, first: each sport's weekly self-check (selfcheck.json, libs/ranker/scripts/model/
+// selfcheck.mjs: free, no AI), its flags and watches first in plain words, the rest folded (desk-model.ts
+// selfCheckPanelOf); a check opens to its rows, its threshold, how it's measured and the bets it names.
 
 
 const SPORT_KEY = 'deskSport';
@@ -169,6 +172,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   checkAdvice: (CheckAdvice & { sport: string })[] = [];
   backtestRows: BacktestRow[] = [];
   credits: OddsUsage | null = null;
+  // (the weekly self-check: each sport's on show, flags first; the checks opened, and the sports whose folded
+  // checks are shown, by key)
+  selfChecks: SelfCheckView[] = [];
+  private allSelfChecks: (SelfCheckFile | null)[] = [];
+  private selfOpen = new Set<string>();
 
   // (each in-play game's score and clock, by its ESPN id, from ESPN's scoreboard every minute)
   scores = new Map<string, { text: string; score: string; detail: string; final: boolean }>();
@@ -193,8 +201,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         state: await getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
         // (none before the bettor's first CHECK file: no CHECK row)
         checks: await getJson<{ checks?: CheckEntry[] }>(`/${sport}/data/model/checks.json`, { cache: 'no-cache' }),
+        // (none before the weekly self-check's first run: the panel says so)
+        selfcheck: await getJson<SelfCheckFile>(`/${sport}/data/model/selfcheck.json`, { cache: 'no-cache' }),
       })),
     );
+    this.allSelfChecks = files.map((f) => f.selfcheck);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     this.allBets = files.flatMap((f) => f.ledger?.bets ?? []);
     this.allChecks = files.flatMap((f) => checkBets(Array.isArray(f.checks?.checks) ? f.checks!.checks : []));
@@ -266,6 +277,32 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.startTick();
   }
 
+  // (the Self-check panel's name, with the week it covers; open to begin with when a sport has a flag)
+  get selfTitle(): string {
+    const week = this.selfChecks.find((v) => v.week)?.week;
+    return week ? `Self-check · week of ${week}` : 'Self-check';
+  }
+
+  get selfLoud(): boolean {
+    return this.selfChecks.some((v) => v.counts.some((c) => c.status === 'flag'));
+  }
+
+  // (a self-check's row, or a sport's folded checks, opened or closed: by its key)
+  selfShown(key: string): boolean {
+    return this.selfOpen.has(key);
+  }
+
+  toggleSelf(key: string): void {
+    if (this.selfOpen.has(key)) this.selfOpen.delete(key);
+    else this.selfOpen.add(key);
+  }
+
+  // (a self-check's example bet in words: its pick and game, where the desk has it; else its id)
+  selfExample(id: string): string {
+    const b = this.allBets.find((x) => x.id === id) ?? this.allChecks.find((x) => x.id === id);
+    return b ? `${b.pick} · ${b.matchup}${b.status !== 'open' ? ` · ${b.status}` : ''}` : id;
+  }
+
   // (a sport's open bets, or every sport's: the chips' counts)
   openCount(sport: string | null): number {
     return this.allBets.filter((b) => b.status === 'open' && (!sport || b.sport === sport)).length;
@@ -327,6 +364,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (the props: each sport's prop types and their projections' fit and check; the bets by type)
     this.propRows = this.states.flatMap((s) => (s.props?.types ?? []).map((t) => ({ ...t, sport: s.label })));
     const panel = checkPanelOf(this.states);
+    this.selfChecks = selfCheckPanelOf(
+      this.allSelfChecks.filter((f) => !!f && (!this.sport || f.sport === this.sport)),
+      Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
+    );
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     const typeOf = (b: ModelBet) => `${b.sport.toUpperCase()} ${b.statLabel}`;

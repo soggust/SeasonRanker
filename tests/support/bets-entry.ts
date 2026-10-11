@@ -11,3 +11,4 @@ export * from '../../libs/ranker/src/engine/bets/bet-why';
 export * from '../../libs/ranker/src/engine/bets/tiers';
 export * from '../../libs/ranker/src/engine/bets/desk-notes';
 export { CHECK_CAUSE_LABELS, checkPanelOf } from '../../libs/ranker/src/engine/bets/desk-model';
+export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/src/engine/bets/desk-model';

@@ -1162,3 +1162,193 @@ card-panel {
     letter-spacing: 0.06em;
   }
 }
+
+// (the weekly self-check: each sport's counts as chips, its checks a row each, flags first; a flag the desk's
+// loss red, a watch orange, ok muted, thin, partial and info grey. A row's chevron lightens on hover, never
+// yellow)
+.desk-self-panel {
+  --sc-flag: var(--loss);
+  --sc-watch: #ff9a3c;
+  --sc-muted: rgba(255, 255, 255, 0.55);
+  --sc-grey: rgba(255, 255, 255, 0.38);
+}
+
+.desk-self + .desk-self {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.desk-self-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 6px;
+
+  b {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+
+  small {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+  }
+}
+
+.desk-self-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+
+.desk-self-chip {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: var(--sc-grey);
+  flex: none;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 3px 7px;
+  text-transform: uppercase;
+
+  &.is-flag {
+    background: color-mix(in srgb, var(--sc-flag) 18%, transparent);
+    color: var(--sc-flag);
+  }
+
+  &.is-watch {
+    background: color-mix(in srgb, var(--sc-watch) 14%, transparent);
+    color: var(--sc-watch);
+  }
+
+  &.is-ok {
+    color: var(--sc-muted);
+  }
+}
+
+.desk-self-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.desk-self-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &.is-flag {
+    box-shadow: inset 2px 0 0 var(--sc-flag);
+  }
+
+  &.is-watch {
+    box-shadow: inset 2px 0 0 var(--sc-watch);
+  }
+}
+
+.desk-self-line,
+.desk-self-fold {
+  align-items: flex-start;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 8px;
+  padding: 7px 4px;
+  text-align: left;
+  width: 100%;
+
+  &:hover .desk-group-toggle,
+  &:focus-visible .desk-group-toggle {
+    color: #fff;
+  }
+}
+
+.desk-self-fold {
+  align-items: center;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+  gap: 6px;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.desk-self-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+
+  b {
+    font-size: 13px;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+  }
+}
+
+.desk-self-detail {
+  font-size: 12px;
+  padding: 0 4px 10px 30px;
+
+  dl {
+    display: grid;
+    gap: 3px 10px;
+    grid-template-columns: auto 1fr;
+    margin: 8px 0 0;
+  }
+
+  dt {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+}
+
+// (a check's rows: a small table that scrolls sideways on a phone rather than running past the edge)
+.desk-self-table {
+  overflow-x: auto;
+
+  .desk-table {
+    font-size: 11.5px;
+
+    th,
+    td {
+      padding: 4px 6px;
+      white-space: nowrap;
+    }
+  }
+}
+
+.desk-self-examples {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .desk-self-detail {
+    padding-left: 8px;
+  }
+}

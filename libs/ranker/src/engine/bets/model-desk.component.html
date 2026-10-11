@@ -17,6 +17,67 @@
   </th>
 </ng-template>
 
+<!-- (a self-check's row: its status chip, its title and headline; a chevron opens its rows, threshold, how it's
+     measured, the bot fields it needs and the bets it names) -->
+<ng-template #selfRow let-c let-v="view">
+  <li class="desk-self-row" [class]="'desk-self-row is-' + c.status" [class.shut]="!selfShown(c.key)">
+    <button type="button" class="desk-self-line" [attr.aria-expanded]="selfShown(c.key)" (click)="toggleSelf(c.key)" [title]="help['self' + c.id]">
+      <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>
+      <span class="desk-self-chip" [class]="'desk-self-chip is-' + c.status">{{ c.status }}</span>
+      <span class="desk-self-text"><b>{{ c.title }}</b><span>{{ c.headline }}</span></span>
+    </button>
+    @if (selfShown(c.key)) {
+      <div class="desk-self-detail">
+        @if (c.cells.length) {
+          <div class="desk-self-table">
+            <table class="desk-table">
+              <thead>
+                <tr>
+                  @for (k of c.columns; track k) {<th>{{ k }}</th>}
+                </tr>
+              </thead>
+              <tbody>
+                @for (r of c.cells; track $index) {
+                  <tr>
+                    @for (cell of r; track $index) {<td>{{ cell }}</td>}
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+        <dl>
+          @if (c.threshold) {<dt>Threshold</dt><dd>{{ c.threshold }}</dd>}
+          @if (c.how) {<dt>How</dt><dd>{{ c.how }}</dd>}
+          @if (c.tested) {<dt>Tested</dt><dd>{{ c.tested }} cells (the worst listed)</dd>}
+          @if (c.needs) {<dt>Needs</dt><dd>{{ c.needs.join('; ') }}</dd>}
+          @if (c.examples.length) {
+            <dt>Bets</dt>
+            <dd>
+              <ul class="desk-self-examples">
+                @for (id of c.examples; track id) {<li [title]="id">{{ selfExample(id) }}</li>}
+              </ul>
+            </dd>
+          }
+        </dl>
+        <!-- (the write-ups' check: 3 of the week's Claude analyses in full, for a person to read) -->
+        @if (c.id === 'C15' && v.sample.length) {
+          <ul class="desk-changes">
+            @for (x of v.sample; track x.id) {
+              <li>
+                <small>{{ selfExample(x.id) }}</small>
+                @if (x.headline) {<b>{{ x.headline }}</b>}
+                <span>{{ x.reason }}</span>
+                <span>Risk: {{ x.risk }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    }
+  </li>
+</ng-template>
+
 <!-- (a bet's game: each team's logo beside its abbreviation, away @ home) -->
 <ng-template #gameCell let-b let-when="when">
   @let teams = teamsOf(b);
@@ -158,6 +219,49 @@
     <!-- (the bettor runs on GitHub only: the Model Desk workflow; locally, only ever with --dry) -->
     <p class="desk-note">Nothing yet: the bettor (GitHub's Model Desk workflow) hasn't run.</p>
   } @else {
+    <!-- Self-check -->
+    <!-- (the weekly self-check, first (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
+         sport's flags, watches and partial checks in plain words, the rest folded under a line of counts) -->
+    <div class="desk-grid">
+      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="selfLoud">
+        <div class="group-body">
+          @if (!selfChecks.length) {
+            <p class="desk-note">No self-check yet (runs Monday mornings)</p>
+          }
+          @for (v of selfChecks; track v.sport) {
+            <section class="desk-self">
+              <header class="desk-self-head">
+                <b>{{ v.label }}</b>
+                <small [title]="'Run ' + (v.at | date: 'MMM d, h:mm a')">week of {{ v.week }}</small>
+                <ul class="desk-self-counts">
+                  @for (n of v.counts; track n.status) {
+                    <li class="desk-self-chip" [class]="'desk-self-chip is-' + n.status" [title]="help['self_' + n.status]">{{ n.n }} {{ n.status }}</li>
+                  }
+                </ul>
+              </header>
+              <ul class="desk-self-list">
+                @for (c of v.shown; track c.key) {
+                  <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
+                }
+              </ul>
+              @if (v.folded.length) {
+                <button type="button" class="desk-self-fold" [class.shut]="!selfShown(v.sport + ':folded')" [attr.aria-expanded]="selfShown(v.sport + ':folded')" (click)="toggleSelf(v.sport + ':folded')">
+                  <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>{{ v.foldedLine }}
+                </button>
+                @if (selfShown(v.sport + ':folded')) {
+                  <ul class="desk-self-list">
+                    @for (c of v.folded; track c.key) {
+                      <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
+                    }
+                  </ul>
+                }
+              }
+            </section>
+          }
+        </div>
+      </card-panel>
+    </div>
+
     <!-- (the profit after each graded bet, all of it and each sport's, in units from 0) -->
     @if (overall.bets) {
       <div class="desk-curve" [style.--total]="curveSolo ? 'var(--line-' + curveSolo + ')' : null">

@@ -228,6 +228,37 @@ for (const sport of SPORTS) {
       gap = Math.abs(c.gap);
     }
   });
+
+  // The weekly self-check (libs/ranker/scripts/model/selfcheck.mjs): every check's status one of the six, its
+  // numbers finite, the summary's counts its checks'
+  test(`${sport}: model self-check is whole`, () => {
+    const file = path.join(dir, 'selfcheck.json');
+    if (!fs.existsSync(file)) return;
+    const sc = readJson(file);
+    const OK = new Set(['flag', 'watch', 'partial', 'ok', 'thin', 'info']);
+    assert.equal(sc.sport, sport, 'selfcheck.json: sport');
+    assert.ok(isDate(sc.at), 'selfcheck.json: at');
+    for (const key of ['from', 'to']) assert.match(sc.window?.[key] ?? '', /^\d{4}-\d{2}-\d{2}$/, `selfcheck.json: window.${key}`);
+    assert.ok(Array.isArray(sc.checks) && sc.checks.length, 'selfcheck.json: no checks');
+    const ids = new Set();
+    for (const c of sc.checks) {
+      const at = `${sport} self-check ${c?.id}`;
+      assert.match(c.id, /^C\d+$/, `${at}: id`);
+      assert.ok(!ids.has(c.id), `${at}: twice`);
+      ids.add(c.id);
+      assert.ok(OK.has(c.status), `${at}: status ${c.status}`);
+      for (const key of ['title', 'headline', 'how']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
+      for (const key of ['value', 'n', 'tested']) assert.ok(c[key] === null || Number.isFinite(c[key]), `${at}: ${key} ${c[key]}`);
+      assert.ok(Array.isArray(c.rows) && Array.isArray(c.examples), `${at}: rows or examples`);
+      assert.ok(c.needs === null || (Array.isArray(c.needs) && c.needs.length), `${at}: needs`);
+      // (no NaN or Infinity hidden in a row: JSON writes them null, so a number there is finite)
+      JSON.stringify(c.rows, (k, v) => {
+        if (typeof v === 'number') assert.ok(Number.isFinite(v), `${at}: rows.${k}`);
+        return v;
+      });
+    }
+    for (const s of OK) assert.equal(sc.summary?.[s], sc.checks.filter((c) => c.status === s).length, `selfcheck.json: summary.${s}`);
+  });
 }
 
 // The game view's kept highlights (libs/ranker/scripts/highlights.mjs writes StaticData/highlights/<season>.json):

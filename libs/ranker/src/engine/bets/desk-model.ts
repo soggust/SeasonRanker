@@ -263,3 +263,128 @@ export function checkPanelOf(states: ModelState[]): { rows: CheckCauseRow[]; adv
   advice.sort((a, b) => order[a.kind] - order[b.kind] || Number(b.confirmed) - Number(a.confirmed) || a.rank - b.rank);
   return { rows, advice };
 }
+
+// ---- the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs: each sport's data/model/selfcheck.json) ----
+
+export type SelfCheckStatus = 'flag' | 'watch' | 'partial' | 'ok' | 'thin' | 'info';
+
+// (one check: its status, its headline (every number in it from its rows), what it measured and how, the rows,
+// the example bets' ids, the bot fields it needs (partial), how many cells it tested (a many-cell check))
+export interface SelfCheck {
+  id: string;
+  title: string;
+  status: SelfCheckStatus;
+  headline: string;
+  metric: string | null;
+  value: number | null;
+  threshold: string | null;
+  n: number | null;
+  rows: Record<string, unknown>[];
+  examples: string[];
+  how: string;
+  needs: string[] | null;
+  tested: number | null;
+}
+
+export interface SelfCheckFile {
+  v?: number;
+  sport: string;
+  at: string;
+  window: { from: string; to: string };
+  baseline?: { from: string; to: string };
+  summary: Partial<Record<SelfCheckStatus, number>> & { headline?: string };
+  checks: SelfCheck[];
+  writeups?: { sample?: { id: string; headline?: string | null; reason: string; risk: string }[] } | null;
+  notes?: string[];
+}
+
+// (a check as the panel shows it: its key for the open/closed state, the rows as a small table)
+export interface SelfCheckRow extends SelfCheck {
+  key: string;
+  columns: string[];
+  cells: string[][];
+}
+
+// (a sport's self-check as the panel shows it: its week, its counts, the checks to look at (flag, watch,
+// partial) and the rest folded under a line of counts)
+export interface SelfCheckView {
+  sport: string;
+  label: string;
+  week: string;
+  at: string;
+  counts: { status: SelfCheckStatus; n: number }[];
+  shown: SelfCheckRow[];
+  folded: SelfCheckRow[];
+  foldedLine: string;
+  sample: { id: string; headline?: string | null; reason: string; risk: string }[];
+  notes: string[];
+}
+
+export const SELF_CHECK_ORDER: SelfCheckStatus[] = ['flag', 'watch', 'partial', 'ok', 'thin', 'info'];
+
+// (a week's dates as the header says them: Oct 5-11, Sep 28-Oct 4)
+export function weekLabel(from: string, to: string): string {
+  const f = new Date(`${from}T12:00:00Z`);
+  const t = new Date(`${to}T12:00:00Z`);
+  if (Number.isNaN(f.getTime()) || Number.isNaN(t.getTime())) return '';
+  const month = (d: Date) => d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' });
+  return f.getUTCMonth() === t.getUTCMonth() ? `${month(f)} ${f.getUTCDate()}-${t.getUTCDate()}` : `${month(f)} ${f.getUTCDate()}-${month(t)} ${t.getUTCDate()}`;
+}
+
+// (a cell's words: a number to 2 places at most, a share-like key as a percent, a nested record as its parts)
+const PCT_KEYS = /^(share|shareBase|dogShare|dogShareBase|moved|beat|roi|hitRate|breakEven|rejectRate|r)$/;
+export function selfCheckCell(key: string, v: unknown): string {
+  if (v === null || v === undefined) return '-';
+  if (typeof v === 'number') {
+    if (!Number.isFinite(v)) return '-';
+    if (PCT_KEYS.test(key)) return `${Math.round(v * 1000) / 10}%`;
+    return String(Math.round(v * 100) / 100);
+  }
+  if (typeof v === 'boolean') return v ? 'yes' : 'no';
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) return v.map((x) => (x && typeof x === 'object' ? selfCheckCell('', x) : selfCheckCell(key, x))).join(', ') || '-';
+  if (typeof v === 'object') {
+    return Object.entries(v as Record<string, unknown>)
+      .filter(([, x]) => x !== null && x !== undefined)
+      .map(([k, x]) => `${k} ${selfCheckCell(k, x)}`)
+      .join(' · ');
+  }
+  return String(v);
+}
+
+// The Self-check panel's sports: each sport's file, its checks sorted flag, watch, partial first (the file's
+// order within each), the rest folded ("9 checks fine · 2 too thin"); labels: a sport's name by its key
+export function selfCheckPanelOf(files: (SelfCheckFile | null)[], labels: Record<string, string> = {}): SelfCheckView[] {
+  const out: SelfCheckView[] = [];
+  for (const f of files) {
+    if (!f || !Array.isArray(f.checks)) continue;
+    const rank = (s: SelfCheckStatus) => {
+      const i = SELF_CHECK_ORDER.indexOf(s);
+      return i < 0 ? SELF_CHECK_ORDER.length : i;
+    };
+    const rows: SelfCheckRow[] = f.checks
+      .map((c, i) => ({ c, i }))
+      .sort((a, b) => rank(a.c.status) - rank(b.c.status) || a.i - b.i)
+      .map(({ c }) => {
+        const list = Array.isArray(c.rows) ? c.rows : [];
+        const columns = [...new Set(list.flatMap((r) => Object.keys(r)))].filter((k) => k !== 'ids');
+        return { ...c, key: `${f.sport}:${c.id}`, columns, cells: list.map((r) => columns.map((k) => selfCheckCell(k, r[k]))) };
+      });
+    const loud = new Set<SelfCheckStatus>(['flag', 'watch', 'partial']);
+    const n = (s: SelfCheckStatus) => f.checks.filter((c) => c.status === s).length;
+    const parts = [n('ok') ? `${n('ok')} check${n('ok') === 1 ? '' : 's'} fine` : '', n('thin') ? `${n('thin')} too thin` : '', n('info') ? `${n('info')} for information` : ''].filter(Boolean);
+    out.push({
+      sport: f.sport,
+      label: labels[f.sport] ?? f.sport.toUpperCase(),
+      week: weekLabel(f.window?.from ?? '', f.window?.to ?? ''),
+      at: f.at,
+      counts: SELF_CHECK_ORDER.map((status) => ({ status, n: n(status) })).filter((x) => x.n),
+      shown: rows.filter((r) => loud.has(r.status)),
+      folded: rows.filter((r) => !loud.has(r.status)),
+      foldedLine: parts.join(' · '),
+      sample: f.writeups?.sample ?? [],
+      notes: f.notes ?? [],
+    });
+  }
+  return out;
+}
