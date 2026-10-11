@@ -62,7 +62,7 @@
             @if (many) {
               <tr class="desk-group">
                 <th><img class="desk-league" [src]="leagueLogo(g.sport)" [alt]="g.sport.toUpperCase()" /></th>
-                <td class="desk-left"><span class="desk-group-game"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g, when: 'EEE h:mm a' }"></ng-container></span></td>
+                <td class="desk-left"><span class="desk-group-game"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g, when: 'EEE h:mm a' }"></ng-container></span></span></td>
                 <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="w-phone-game">{{ g.matchup }} · {{ g.start | date: 'EEE MMM d' }}</small></td>
                 <td></td>
                 <td></td>
@@ -169,7 +169,7 @@
                   <th>@if (!sg.header) {<img class="desk-league" [src]="leagueLogo(g.sport)" [alt]="g.sport.toUpperCase()" />}</th>
                   <td class="desk-left"><span class="desk-group-game">
                     <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' bets on ' + g.matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                    <ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g }"></ng-container>
+                    <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g }"></ng-container></span>
                   </span></td>
                   <td class="w-date">{{ g.start | date: 'MMM d' }}</td>
                   <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="w-phone-game">{{ g.matchup }}</small></td>
