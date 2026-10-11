@@ -97,6 +97,13 @@ export function scoreOf(bet, trust) {
   return round(bet.ev * (trust?.[key]?.fitted ? 1 : 0.5), 4);
 }
 
+// (a price's Kelly score at a trusted chance p: (b·p − (1 − p)) / b, b what a unit pays; the picks' order, and
+// every side's on the board, board.mjs)
+export function kellyOf(odds, p) {
+  const b = decimal(odds) - 1;
+  return round((p - 1 / (b + 1)) * ((b + 1) / b), 4);
+}
+
 // A bet's Kelly score (the order), and its parts as the page's rank tile shows them: what a unit pays (b) and
 // the price's break-even chance (p0), then the price's part, the book's own fair chance against that
 // break-even (its vig on this side: under 0, or over where the price beats its own fair chance), and the
@@ -107,7 +114,7 @@ export function scoreParts(bet, trust) {
   const b = decimal(bet.odds) - 1;
   const p0 = 1 / (b + 1);
   const scale = (b + 1) / b;
-  const score = round((bet.p - p0) * scale, 4);
+  const score = kellyOf(bet.odds, bet.p);
   const price = round((bet.fair - p0) * scale, 4);
   const key = bet.market === 'prop' ? `prop:${bet.propType}` : bet.market;
   const gap = bet.model - bet.fair;

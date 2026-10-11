@@ -103,6 +103,7 @@ import { closeOf, closingLines, clvOf, clvSummary, propCloseOf } from './clv.mjs
 import { LINE_BOOKS, SPORT_KEYS, call, canSpend, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, unlock } from './picks.mjs';
+import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
@@ -206,6 +207,9 @@ async function runSport(sport) {
     teams: path.join(ROOT, 'apps', sport, 'src/StaticData/model/teams.json'),
     // (the picks' write-ups, kept per bet till its facts change: committed, not deployed)
     writeups: path.join(ROOT, 'apps', sport, 'scripts/model/writeups.json'),
+    // (the betting board, every market priced (board.mjs), and every price it's shown, for the settler)
+    board: path.join(ROOT, 'apps', sport, 'src/StaticData/model/board.json'),
+    boardSeen: path.join(ROOT, 'apps', sport, 'scripts/model/board-seen.json'),
   };
   // (--picks-only: the picks written from the ledger as it stands, nothing fetched, fit or bet)
   if (PICKS_ONLY) return writePicks(r, true);
@@ -238,6 +242,7 @@ async function runSport(sport) {
   placeBets(r);
   recordChecks(r);
   writePicks(r);
+  writeBoard(r);
   saveState(r);
 }
 
@@ -286,6 +291,28 @@ function writePicks(r, alone = false) {
   writeIfChanged(r.files.writeups, writeups);
   if (alone) writeLedger(r, ledger);
   console.log(`${r.sport}: ${out.picks.length} picks${changed ? ' written' : ' unchanged'}`);
+}
+
+// 7b. the betting board (board.mjs): every market this run priced on the games not started, each side's Kelly
+// score and band, the bot's open sides marked, over the last board where a game or its props weren't priced
+// again; and every price it's shown kept (board-seen.json) for the play-money settler's price check. --dry:
+// only with --board-out=<dir>, written there (a scratch check of its shape and size), never the committed ones
+function writeBoard(r) {
+  const out = BOARD_OUT ? path.resolve(BOARD_OUT) : null;
+  if (DRY && !out) return;
+  const board = buildBoard(r.sport, { prev: readJson(r.files.board, null), games: r.boardGames ?? new Map(), props: r.boardProps ?? new Map(), bets: r.ledger.bets, checks: r.ledger.checks ?? [], now: r.now });
+  const seen = seenUpdate(readJson(r.files.boardSeen, null), board, r.now);
+  const props = board.games.reduce((t, g) => t + g.p.length, 0);
+  if (DRY) {
+    mkdirSync(out, { recursive: true });
+    writeFileSync(path.join(out, `board-${r.sport}.json`), JSON.stringify(board));
+    writeFileSync(path.join(out, `board-seen-${r.sport}.json`), JSON.stringify(seen));
+    console.log(`${r.sport} (dry): board of ${board.games.length} games, ${props} props, ${JSON.stringify(board).length} bytes, in ${out}`);
+    return;
+  }
+  const changed = writeIfChanged(r.files.board, board);
+  writeIfChanged(r.files.boardSeen, seen);
+  console.log(`${r.sport}: board of ${board.games.length} games, ${props} props${changed ? ' written' : ' unchanged'}`);
 }
 
 // 1. the history: games.json brought up to date from the last few days' scoreboards (and the next two: the
@@ -1055,6 +1082,8 @@ function betGames(r) {
     const news = newsMissing(sport, r.live?.get(game.id), { kind: 'lines' });
     const notYet = phase === 'early' ? 'not in its window yet' : news.length && phase !== 'last' ? `waiting for the news: ${news.join(', ')}` : null;
     const priced = price(game, exp, lines, params, r.shape);
+    // (every market priced, both sides, on the betting board: writeBoard)
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the book');
     let picks = [];
@@ -1425,6 +1454,10 @@ async function betProps(r) {
       const live = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE);
       run.priced += priced.length;
+      // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
+      // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
+      const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at)), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;
@@ -1805,6 +1838,8 @@ const ALL_SOURCES = process.argv.includes('--all-sources');
 const BACKTEST = process.argv.includes('--backtest');
 // (--picks-only: only the picks, from the ledger as it is: no fetching, fitting or betting)
 const PICKS_ONLY = process.argv.includes('--picks-only');
+// (--board-out=<dir>: a dry run's betting board written there, to check: writeBoard)
+const BOARD_OUT = process.argv.find((a) => a.startsWith('--board-out='))?.slice(12) ?? null;
 // (the runs' recent gap, hours: set below, before any sport runs; null with too few runs kept)
 let GAP = null;
 // (the owner's notes, read once a process: notes.mjs readDeskNotes)

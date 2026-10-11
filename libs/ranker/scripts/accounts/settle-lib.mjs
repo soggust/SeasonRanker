@@ -9,10 +9,13 @@
 //   snap    the settler's own snapshots of ESPN's scoreboard (lines/{sport}_{event}), taken each hourly run for
 //           the next three days' games whenever a line or price moved
 //   bot     the bettor's own bets on the game (its ledger: its side's line and price when it bet, and the last
-//           it saw); a prop is only ever the bot's pick, at the bot's price (the Bets page shows nothing else)
+//           it saw)
+//   board   every price the bettor's betting board has shown for the game (board.mjs: its board-seen.json, kept
+//           a week past the start), any market's either side, a prop no one bet among them: the page lets a
+//           user bet any of them at the board's price
 // A bet matches one of these when it's the same market and side, the same line (a moneyline has none), and its
 // price is within TOLERANCE cents of that one's (cents: American odds on one scale, -110 is -10, +120 is +20;
-// a long price, past 250 either way, a little more room: 4% of it). The open, the close and the bot's are
+// a long price, past 250 either way, a little more room: 4% of it). The open, the close, the bot's and the board's are
 // good whenever the bet was placed (before the start: checked first); a snapshot only within WINDOW of its time.
 // Limits: between snapshots a line can move and move back unseen, so a bet on a short-lived price can be voided
 // ("price didn't match the board"); a bet whose game was never snapshotted is checked against the open, the
@@ -119,6 +122,20 @@ export function botObservations(ledgerBets) {
       if (Number.isFinite(e?.odds)) out.push({ ...base, side, kind: 'bot', at, line, odds: e.odds });
       if (b.market === 'prop' && Number.isFinite(e?.otherOdds) && (side === 'over' || side === 'under')) out.push({ ...base, side: side === 'over' ? 'under' : 'over', kind: 'bot', at, line, odds: e.otherOdds });
     }
+  }
+  return out;
+}
+
+// The betting board's prices seen for the game (board.mjs seenOf's entries, "market|side|line|price|stat|athlete")
+// as observations, good whenever the bet was placed (as the bot's)
+export function boardObservations(entries) {
+  const out = [];
+  for (const e of Array.isArray(entries) ? entries : []) {
+    const [market, side, line, odds, propType, athlete] = String(e).split('|');
+    const o = Number(odds);
+    const l = line === '' ? null : Number(line);
+    if (!market || !side || !Number.isFinite(o) || (market !== 'ml' && !Number.isFinite(l))) continue;
+    out.push({ kind: 'board', at: null, market, side, propType: propType || null, athlete: athlete || null, line: market === 'ml' ? null : l, odds: o });
   }
   return out;
 }

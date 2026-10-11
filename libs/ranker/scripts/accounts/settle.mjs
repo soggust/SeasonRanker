@@ -23,6 +23,7 @@ import { statInFinal } from '../model/props.mjs';
 import {
   DAY,
   addToTally,
+  boardObservations,
   botObservations,
   coreObservations,
   creditOf,
@@ -82,6 +83,21 @@ export function readLedgers(root = ROOT) {
   return out;
 }
 
+// (the bettor's betting boards seen, each sport's (board.mjs seenUpdate: board-seen.json): event -> every price
+// its board showed, for the price check; none read, none)
+export function readBoards(root = ROOT) {
+  const out = {};
+  for (const sport of Object.keys(LEAGUES)) {
+    try {
+      const seen = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'scripts/model/board-seen.json'), 'utf8'));
+      out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.o ?? []]));
+    } catch {
+      out[sport] = {};
+    }
+  }
+  return out;
+}
+
 // (ESPN's day for a date: US Eastern, "20261011")
 const espnDay = (t) => {
   const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date(t));
@@ -129,7 +145,7 @@ export async function snapshotLines(db, { fetchJson = get, now = Date.now(), dry
 // ---------------------------------------------------------------------------
 // Settling
 // ---------------------------------------------------------------------------
-export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), dry = false, log = console.log } = {}) {
+export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), dry = false, log = console.log } = {}) {
   const snap = await db.collectionGroup('bets').where('status', '==', 'open').get();
   const users = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users');
   // (a deleted account's open bets: the browser can't delete an open bet (firestore.rules), so they go here,
@@ -148,9 +164,10 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     const [sport, event] = key.split('|');
     if (!LEAGUES[sport]) continue;
     const { game, body } = await gameAndBox(fetchJson, sport, event);
-    // (what was on the board: the open and the close, the settler's snapshots, the bettor's own bets)
+    // (what was on the board: the open and the close, the settler's snapshots, the bettor's own bets and every
+    // price its betting board showed)
     const mine = (ledgers[sport] ?? []).filter((b) => String(b.event) === String(event));
-    let observations = botObservations(mine);
+    let observations = [...botObservations(mine), ...boardObservations(seen[sport]?.[String(event)])];
     if (game?.final && docs.some((d) => d.get('market') !== 'prop')) {
       const [kind, lg] = LEAGUES[sport].split('/');
       observations.push(...coreObservations(await fetchJson(`${CORE}/${kind}/leagues/${lg}/events/${event}/competitions/${event}/odds/100?lang=en&region=us`)));
@@ -270,7 +287,7 @@ export async function boardsDue(db, counts, now = Date.now()) {
 
 // The whole run: settle, then the boards (when they're due), then the lines' snapshots (each part on its own: one
 // failing doesn't stop the others)
-export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, dry = false, log = console.log } = {}) {
+export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, seen, dry = false, log = console.log } = {}) {
   let failed = false;
   const step = async (name, fn) => {
     try {
@@ -281,7 +298,7 @@ export async function run({ db = getFirestore(adminApp()), fetchJson = get, now 
       return null;
     }
   };
-  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers: ledgers ?? readLedgers(), dry, log }));
+  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers: ledgers ?? readLedgers(), seen: seen ?? readBoards(), dry, log }));
   const boards = await step('Leaderboards', async () => ((await boardsDue(db, counts, now)) ? writeLeaderboards(db, { now, dry, log }) : null));
   const lines = await step('Lines', () => snapshotLines(db, { fetchJson, now, dry, log }));
   return { counts, boards, lines, failed };
