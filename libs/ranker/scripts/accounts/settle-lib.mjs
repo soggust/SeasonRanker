@@ -16,7 +16,8 @@
 // A bet matches one of these when it's the same market and side, the same line (a moneyline has none), and its
 // price is within TOLERANCE cents of that one's (cents: American odds on one scale, -110 is -10, +120 is +20;
 // a long price, past 250 either way, a little more room: 4% of it). The open, the close, the bot's and the board's are
-// good whenever the bet was placed (before the start: checked first); a snapshot only within WINDOW of its time.
+// good whenever the bet was placed (before the start: checked first); the board's only while it was on show
+// (BOARD_EARLY before its first showing to BOARD_LATE past its last); a snapshot only within WINDOW of its time.
 // Limits: between snapshots a line can move and move back unseen, so a bet on a short-lived price can be voided
 // ("price didn't match the board"); a bet whose game was never snapshotted is checked against the open, the
 // close and the bot's alone; and a tampered slip could still take the open or a price from up to WINDOW away.
@@ -29,6 +30,10 @@ export const START = 1000;
 export const DAY = 864e5;
 export const TOLERANCE = 10;
 export const WINDOW = 3 * 36e5;
+// (a board's price good from a little before its first showing to past its last: the bettor runs hourly, the
+// board on the page till the next run, and a run can come late)
+export const BOARD_EARLY = 5 * 6e4;
+export const BOARD_LATE = 90 * 6e4;
 // (a prop the box score never counts, or a game ESPN never finishes: void after this long, its stake back; a
 // final's count not read yet waits longer, PROP_WAIT, as the bettor's own pick does)
 export const GIVE_UP = 3 * DAY;
@@ -127,15 +132,17 @@ export function botObservations(ledgerBets) {
 }
 
 // The betting board's prices seen for the game (board.mjs seenOf's entries, "market|side|line|price|stat|athlete")
-// as observations, good whenever the bet was placed (as the bot's)
+// with its [firstAt, lastAt]) as observations, good only while the board showed it (from, to)
 export function boardObservations(entries) {
   const out = [];
-  for (const e of Array.isArray(entries) ? entries : []) {
+  for (const [e, seen] of entries && typeof entries === 'object' && !Array.isArray(entries) ? Object.entries(entries) : []) {
     const [market, side, line, odds, propType, athlete] = String(e).split('|');
+    const [from, to] = Array.isArray(seen) ? seen : [];
+    if (!Number.isFinite(from) || !Number.isFinite(to)) continue;
     const o = Number(odds);
     const l = line === '' ? null : Number(line);
     if (!market || !side || !Number.isFinite(o) || (market !== 'ml' && !Number.isFinite(l))) continue;
-    out.push({ kind: 'board', at: null, market, side, propType: propType || null, athlete: athlete || null, line: market === 'ml' ? null : l, odds: o });
+    out.push({ kind: 'board', at: null, from, to, market, side, propType: propType || null, athlete: athlete || null, line: market === 'ml' ? null : l, odds: o });
   }
   return out;
 }
@@ -147,7 +154,10 @@ export function checkPrice(bet, observations) {
     (o) => o.market === bet.market && o.side === bet.side && (bet.market !== 'prop' || (o.propType === bet.propType && String(o.athlete) === String(bet.athlete))),
   );
   if (!mine.length) return { ok: false, why: 'couldn’t check the price: no board for this market' };
-  const timely = (o) => o.kind !== 'snap' || (Number.isFinite(o.at) && Math.abs(placed - o.at) <= WINDOW);
+  const timely = (o) =>
+    o.kind === 'snap'
+      ? Number.isFinite(o.at) && Math.abs(placed - o.at) <= WINDOW
+      : o.kind !== 'board' || (placed >= o.from - BOARD_EARLY && placed <= o.to + BOARD_LATE);
   const sameLine = (o) => bet.market === 'ml' || o.line === bet.line;
   const match = mine.find((o) => timely(o) && sameLine(o) && priceNear(bet.odds, o.odds));
   return match ? { ok: true, by: match.kind } : { ok: false, why: 'price didn’t match the board' };

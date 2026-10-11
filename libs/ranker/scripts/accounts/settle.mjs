@@ -90,7 +90,7 @@ export function readBoards(root = ROOT) {
   for (const sport of Object.keys(LEAGUES)) {
     try {
       const seen = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'scripts/model/board-seen.json'), 'utf8'));
-      out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.o ?? []]));
+      out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.o ?? {}]));
     } catch {
       out[sport] = {};
     }

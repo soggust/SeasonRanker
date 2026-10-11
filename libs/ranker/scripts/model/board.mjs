@@ -23,7 +23,8 @@
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
 // market, side, line and price each game's board has shown, kept a week past its start, so the play-money
 // settler can check a bet's price against it after the game's gone from the board (settle-lib.mjs
-// boardObservations). An entry "market|side|line|price|stat|athlete" (line, stat and athlete empty where none).
+// boardObservations). An entry "market|side|line|price|stat|athlete" (line, stat and athlete empty where none),
+// with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
 import { chanceAt, decimal, gapGuard } from './desk.mjs';
@@ -77,7 +78,7 @@ export function boardProp(x, at) {
     lb: x.prop.stat.label,
     l: x.prop.line,
     o: [over.o, under.o],
-    c: round(by.over?.p ?? 0, 3),
+    c: by.over ? round(by.over.p, 3) : by.under ? round(1 - by.under.p, 3) : null,
     ks: [over.ks, under.ks],
     b: [over.b, under.b],
     ...(pass ? { sk: 1 } : {}),
@@ -145,13 +146,16 @@ export function seenOf(g) {
 }
 
 // The board seen brought up to date: each game's entries with this board's added, the games a week past their
-// start dropped. seen: { sport, games: { [event]: { start, o: [entries] } } }
+// start dropped; an entry shown again its last time now. seen: { sport, games: { [event]: { start, o: { [entry]:
+// [firstAt, lastAt] } } } }
 export function seenUpdate(seen, board, now = new Date()) {
+  const t = now.getTime();
   const games = { ...(seen?.games ?? {}) };
   for (const g of board.games) {
-    const was = games[g.id]?.o ?? [];
-    const add = seenOf(g).filter((e) => !was.includes(e));
-    games[g.id] = { start: g.start, o: add.length ? [...was, ...add] : was };
+    const was = games[g.id]?.o;
+    const o = was && !Array.isArray(was) ? { ...was } : {};
+    for (const e of seenOf(g)) o[e] = [o[e]?.[0] ?? t, t];
+    games[g.id] = { start: g.start, o };
   }
   for (const [id, g] of Object.entries(games)) if (!(Date.parse(g.start) > now.getTime() - SEEN_KEEP)) delete games[id];
   return { sport: board.sport, games };

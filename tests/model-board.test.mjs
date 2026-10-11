@@ -86,15 +86,21 @@ test('buildBoard: the games not started, the bot’s sides marked, a prop kept b
   assert.equal(buildBoard('nfl', { prev: next, now: new Date(game.date) }).games.length, 0);
 });
 
-test('seenUpdate keeps every price shown, a week past the start', () => {
+test('seenUpdate keeps every price shown, its first and last showing, a week past the start', () => {
   const b = buildBoard('nfl', { games: new Map([['401', { game, markets: boardMarkets(markets, () => 1), at: 'T' }]]), props: new Map([['401', { rows: [boardProp(prop(-115, -105), 'T')], whole: true }]]), now: NOW });
   const s1 = seenUpdate(null, b, NOW);
-  assert.ok(s1.games['401'].o.includes('prop|over|245.5|-115|passYds|3139477'));
-  assert.ok(s1.games['401'].o.includes('ml|away||145||'));
+  const t = NOW.getTime();
+  assert.deepEqual(s1.games['401'].o['prop|over|245.5|-115|passYds|3139477'], [t, t]);
+  assert.deepEqual(s1.games['401'].o['ml|away||145||'], [t, t]);
   const moved = JSON.parse(JSON.stringify(b));
   moved.games[0].p[0].o = [-125, 105];
-  const s2 = seenUpdate(s1, moved, NOW);
-  assert.equal(s2.games['401'].o.length, seenOf(b.games[0]).length + 2);
+  const later = new Date(t + 36e5);
+  const s2 = seenUpdate(s1, moved, later);
+  assert.equal(Object.keys(s2.games['401'].o).length, seenOf(b.games[0]).length + 2);
+  // (each entry's first and last showing: one gone from the board keeps its last)
+  assert.deepEqual(s2.games['401'].o['ml|away||145||'], [t, later.getTime()]);
+  assert.deepEqual(s2.games['401'].o['prop|over|245.5|-115|passYds|3139477'], [t, t]);
+  assert.deepEqual(s2.games['401'].o['prop|over|245.5|-125|passYds|3139477'], [later.getTime(), later.getTime()]);
   assert.deepEqual(seenUpdate(s2, { sport: 'nfl', games: [] }, new Date(Date.parse(game.date) + SEEN_KEEP + 1)).games, {});
 });
 
@@ -109,4 +115,8 @@ test('the settler takes a bet on any market the board showed, at its price', () 
   assert.deepEqual(checkPrice({ market: 'ml', side: 'away', line: null, odds: 145, placedAt: bet.placedAt }, obs), { ok: true, by: 'board' });
   assert.deepEqual(checkPrice({ market: 'total', side: 'under', line: 47.5, odds: -115, placedAt: bet.placedAt }, obs), { ok: true, by: 'board' });
   assert.equal(checkPrice({ market: 'total', side: 'under', line: 46.5, odds: -115, placedAt: bet.placedAt }, obs).ok, false);
+  // (only while the board showed it: not before, nor long after its last showing)
+  assert.equal(checkPrice({ ...bet, placedAt: '2026-10-11T11:00:00Z' }, obs).ok, false);
+  assert.equal(checkPrice({ ...bet, placedAt: '2026-10-11T13:31:00Z' }, obs).ok, false);
+  assert.equal(checkPrice({ ...bet, placedAt: '2026-10-11T13:29:00Z' }, obs).ok, true);
 });

@@ -23,7 +23,7 @@ export interface BoardProp {
   lb: string;
   l: number;
   o: [number | null, number | null];
-  c: number;
+  c: number | null;
   ks: [number | null, number | null];
   b: [BoardBand | null, BoardBand | null];
   sk?: 1;

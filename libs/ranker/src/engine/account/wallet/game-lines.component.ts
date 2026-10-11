@@ -91,6 +91,9 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   @Input({ required: true }) event = '';
   @Input({ required: true }) start = '';
   @Input() matchup = '';
+  // (an admin's: the board's CHECKs on show; anyone else's a CHECK is a pass, no Kelly score, no side the bot's,
+  // as the rules take a CHECK's bet from an admin alone)
+  @Input() desk = false;
   // (the bot's picks on this game)
   @Input() set picks(list: BotPick[] | null | undefined) {
     this.botPicks.set(list ?? []);
@@ -240,6 +243,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       return { bot, tier: this.tier(bot), kelly: check ? null : bot.sureness, chance: bot.chance != null ? bot.chance / 100 : (side?.c ?? null) };
     }
     if (!side || price.odds === null) return { bot: null, tier: 'pass', kelly: null, chance: null };
+    if (side.b === 'check' && !this.desk) return { bot: null, tier: 'pass', kelly: null, chance: side.c };
     if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c };
     const kelly = kellyOf(side.c, price.odds) ?? side.ks;
     const band = side.b === 'low' && side.ks > 0 ? 'low' : confidenceOf(kelly, side.c, true);
@@ -279,10 +283,13 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   // A board prop as a row: each side at its price with the bot's Kelly score and band (the bot's side its pick's,
   // where it made one)
   private rowOf(x: BoardProp, pick: BotPick | null): PropRow {
-    const check = x.bk === 'check' || this.isCheck(pick);
-    const botSide = pick?.side ?? x.bot ?? null;
+    // (not an admin: the board's CHECK a pass, no Kelly score, its side not the bot's)
+    const hidden = !this.desk;
+    const check = (x.bk === 'check' && !hidden) || this.isCheck(pick);
+    const botSide = pick?.side ?? (x.bk === 'check' && hidden ? null : x.bot) ?? null;
     const sides = (['over', 'under'] as const).map((side, i): PropSide => {
       const bot = botSide === side;
+      if (!(bot && pick) && x.b[i] === 'check' && hidden) return { side, odds: x.o[i], kelly: null, tier: 'pass', bot: false };
       const tier = bot && pick ? this.tier(pick) : tierOfBand(x.b[i]);
       const kelly = tier === 'check' ? null : bot && pick && !check ? pick.sureness : x.ks[i];
       return { side, odds: x.o[i], kelly, tier, bot };
@@ -395,7 +402,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   takeProp(r: PropRow, s: PropSide): void {
     if (!this.open || s.odds === null || !Number.isFinite(s.odds)) return;
-    const botPick = s.bot && !r.check;
+    // (the bot's pick only where this viewer has it: an open bet of the bot's off the list isn't one)
+    const botPick = s.bot && !!r.pick && !r.check;
     this.wallet.toggle({
       sport: this.sport,
       event: this.event,
@@ -407,7 +415,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       odds: s.odds,
       pick: s.bot && r.pick ? r.pick.pick : this.sideWords(r, s),
       botPick,
-      tier: s.bot ? s.tier : null,
+      // (a CHECK's tier from an admin alone: the rules refuse it from anyone else)
+      tier: s.bot && (s.tier !== 'check' || this.desk) ? s.tier : null,
       kelly: botPick && s.kelly !== null ? Math.round(s.kelly * 1e4) / 100 : null,
       // (the pick's id, or the bot's own form of one where it made none: a prop's ref names its player's count
       // for the settler, and the rules want one on every prop)
