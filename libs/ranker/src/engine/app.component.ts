@@ -125,7 +125,12 @@ export class AppComponent {
   private markBetsView(): void {
     document.documentElement.classList.toggle('bets-view', this.view === 'bets');
     document.documentElement.classList.toggle('sheet-view', this.onSheet);
+    // (the browser tab: the sport's own on its rankings (index.html's, "Season Ranker | NFL"), "Season Ranker |
+    // Bets" on the Bets page, and plain "Season Ranker" on the pages every sport shares)
+    document.title = this.view === 'rankings' ? this.sportTitle : this.view === 'bets' ? 'Season Ranker | Bets' : 'Season Ranker';
   }
+  // (the sport's tab title, as index.html set it before any page changed it)
+  private readonly sportTitle = document.title;
 
   // Every page but the rankings and the Bets page sits on the app's sheet (its scroll container)
   get onSheet(): boolean {
