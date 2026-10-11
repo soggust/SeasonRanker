@@ -599,6 +599,20 @@ $lock-gold: chip.$lock-gold;
     margin: 0;
   }
 
+  // (Claude's analysis: its headline above the reason, and whose it is under the risk)
+  .bet-headline {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .bet-caption {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
   // (a desk pick's risk, its devil's advocate: the most likely way it loses, labeled in orange)
   .bet-risk {
     color: rgba(255, 255, 255, 0.78);

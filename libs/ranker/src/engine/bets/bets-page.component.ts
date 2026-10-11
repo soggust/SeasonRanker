@@ -55,6 +55,11 @@ export interface BetRow {
   reason: string;
   // (the most likely way it loses: the pick's own write-up's (picks.mjs), and the analyst's where it agrees)
   risk?: string;
+  // (Claude's analysis where the pick has one (writeups.mjs): its headline above the reason, who wrote the
+  // text ('claude' or 'plain') and Claude's own read of the case, apart from the band)
+  headline?: string;
+  by?: string;
+  read?: string;
   // (its band: its chance to win 60% or more, 53% or more, or under; picks.mjs)
   confidence: Confidence | null;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
@@ -191,6 +196,11 @@ interface Pick {
   reason: string;
   // (its write-up's risk line, the row's Devil's Advocate: files before the write-ups carry none)
   risk?: string;
+  // (Claude's analysis, in place of the plain text in the same slots: its headline, 'claude' or 'plain', and
+  // its read: strong, fair or thin. Files before it carry none)
+  headline?: string;
+  by?: string;
+  read?: string;
   // (its score's makings: older files carry the chances without the parts)
   edge?: boolean;
   model?: number;
@@ -373,6 +383,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       strength: 'like',
       reason: p.reason,
       ...(p.risk ? { risk: p.risk } : {}),
+      ...(p.headline ? { headline: p.headline } : {}),
+      ...(p.by ? { by: p.by } : {}),
+      ...(p.read ? { read: p.read } : {}),
       confidence: p.level,
       id,
       key: pickKey(sport, p.matchup, p.kind, p.pick),

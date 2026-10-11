@@ -204,9 +204,17 @@
             </div>
             @if (open.has(r.id)) {
               <div class="bet-reasons">
+                <!-- (Claude's analysis, where the pick has one: its headline above the reason, said whose it is, and
+                     a thin read said so; the same slots as the plain text) -->
+                @if (r.headline) {
+                  <p class="bet-headline">{{ r.headline }}</p>
+                }
                 <p>{{ r.reason }}</p>
                 @if (r.risk) {
                   <p class="bet-risk"><b>Devil&#39;s Advocate:</b> {{ r.risk }}</p>
+                }
+                @if (r.by === 'claude') {
+                  <p class="bet-caption">Analysis by Claude from this bet&#39;s numbers when it was placed@if (r.read === 'thin') {<span>. Claude&#39;s read: thin</span>}</p>
                 }
                 <!-- (a CHECK's: why the bot didn't bet it, the model's chance against the book's; a role CHECK's, the
                      role changing, neither side bet) -->

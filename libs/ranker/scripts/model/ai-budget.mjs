@@ -1,4 +1,4 @@
-// The desk's spend on Claude, capped and logged (the CHECKs' research, research.mjs; the AI write-ups share it):
+// The desk's spend on Claude, capped and logged (the CHECKs' research, research.mjs; the AI write-ups, writeups.mjs, share it):
 // every call's real usage and cost kept in one log for every sport, so the caps hold across the hourly runs.
 //
 //   caps     DAY_CAP ($1.50 a UTC day) and MONTH_CAP ($25 a UTC month), every use together. A call goes only
@@ -18,8 +18,14 @@ import path from 'node:path';
 export const DAY_CAP = 1.5;
 export const MONTH_CAP = 25;
 const KEEP_DAYS = 40;
-// ($ a million tokens, and a web search's, by model)
-export const PRICES = { 'claude-opus-5-5': { input: 4, output: 20, cacheWrite: 5, cacheRead: 0.2 } };
+// ($ a million tokens, and a web search's, by model: the claude-api skill's table, cached 2026-10-06, to verify
+// on the pricing page before quoting. The older Opus ones are what the API's refusal fallback may serve a call
+// on, and a call is priced by the model that served it)
+export const PRICES = {
+  'claude-opus-5-5': { input: 4, output: 20, cacheWrite: 5, cacheRead: 0.2 },
+  'claude-opus-5': { input: 5, output: 25, cacheWrite: 6.25, cacheRead: 0.5 },
+  'claude-opus-4-8': { input: 5, output: 25, cacheWrite: 6.25, cacheRead: 0.5 },
+};
 export const SEARCH_PRICE = 0.01;
 
 // (a call's real cost from the usage the API reports; a model not priced here at Opus 5.5's)

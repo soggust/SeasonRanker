@@ -83,6 +83,34 @@ jobs:
           REPLACE: ${{ inputs.replace && '--replace' || '' }}
         run: node libs/ranker/scripts/model/run.mjs $REPLACE
 
+      # (Claude's analysis for the strong picks, libs/ranker/scripts/model/writeups.mjs: only with the repository
+      # variable WRITEUPS set to on (off till the owner's measured run, writeups.mjs --validate) and the
+      # ANTHROPIC_API_KEY secret; skipped quietly otherwise, and never failing the run (the plain write-ups
+      # stay). After the bettor (its picks fresh), before the cache is saved (its calls are logged in the AI
+      # usage log there, against the desk's caps) and before the data is checked (the picks it patches with it).
+      # Its SDK installed for it alone, as the bettor's own runs before the workflow's npm install)
+      - name: Write the strong bets' analyses
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          WRITEUPS: ${{ vars.WRITEUPS || 'off' }}
+          ANTHROPIC_API_KEY: ${{ vars.WRITEUPS == 'on' && secrets.ANTHROPIC_API_KEY || '' }}
+          WRITEUP_EFFORT: ${{ vars.WRITEUP_EFFORT || 'high' }}
+          WRITEUP_LEVELS: ${{ vars.WRITEUP_LEVELS || 'lock,high' }}
+          WRITEUP_MAX_PER_RUN: ${{ vars.WRITEUP_MAX_PER_RUN || '12' }}
+          WRITEUP_DAILY_USD: ${{ vars.WRITEUP_DAILY_USD || '1.50' }}
+          WRITEUP_MONTHLY_USD: ${{ vars.WRITEUP_MONTHLY_USD || '25' }}
+        run: |
+          if [ "$WRITEUPS" != "on" ] || [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Claude write-ups off (WRITEUPS=$WRITEUPS, or no ANTHROPIC_API_KEY): plain write-ups only"
+            exit 0
+          fi
+          if ! node -e "import('@anthropic-ai/sdk')" 2>/dev/null; then
+            npm install --no-save --no-package-lock @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: plain write-ups only"; exit 0; }
+            git checkout -- package.json package-lock.json 2>/dev/null || true
+          fi
+          node libs/ranker/scripts/model/writeups.mjs || echo "::warning::the write-ups step failed: plain write-ups only"
+
       - name: Save the desk's cache
         if: always()
         uses: actions/cache/save@v6
