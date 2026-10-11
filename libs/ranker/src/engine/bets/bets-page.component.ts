@@ -696,6 +696,21 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly signedPoints = signedPoints;
   readonly betScoreText = betScoreText;
 
+  // (a CHECK's popover, its "?" clicked: the model's chance against the book's, the gap, the model's Kelly, why
+  // it isn't bet)
+  checkWhy: {
+    id: number;
+    name: string;
+    at: { top: number | null; bottom: number | null; left: number; room: number };
+    sheet: boolean;
+    kelly: number | null;
+    model: number | null;
+    fair: number | null;
+    gap: number | null;
+    cause: string;
+    reason: string | null;
+  } | null = null;
+
   // (a CHECK's model Kelly: its own chance at the price, untrusted: the disagreement's size)
   checkKelly(r: BetRow): number | null {
     return kellyOf(r.model, typeof r.price === 'number' ? r.price : null);
@@ -716,7 +731,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const rows = this.shown;
     const row = rows[index];
     if (!row) return;
-    if (this.why?.id === row.id) {
+    if (this.why?.id === row.id || this.checkWhy?.id === row.id) {
       this.closeWhy(true);
       return;
     }
@@ -730,14 +745,36 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       below >= 420 || below >= rect.top
         ? { top: rect.bottom + 6, bottom: null, left, room: below - 14 }
         : { top: null, bottom: innerHeight - rect.top + 6, left, room: rect.top - 14 };
-    this.why = { ...betWhy(rows, index), at, sheet: matchMedia('(max-width: 575px)').matches };
+    const sheet = matchMedia('(max-width: 575px)').matches;
+    // (a CHECK's: no rank to build, its disagreement instead)
+    if (row.check) {
+      this.why = null;
+      const model = row.model ?? null;
+      const fair = row.fair ?? null;
+      this.checkWhy = {
+        id: row.id,
+        name: row.pick,
+        at,
+        sheet,
+        kelly: this.checkKelly(row),
+        model: model === null ? null : Math.round(model * 1000) / 10,
+        fair: fair === null ? null : Math.round(fair * 1000) / 10,
+        gap: Number.isFinite(row.gap) ? Math.round(Math.abs(row.gap!) * 1000) / 10 : model !== null && fair !== null ? Math.round(Math.abs(model - fair) * 1000) / 10 : null,
+        cause: row.checkCause === 'role' ? 'His role is changing' : 'Too far from the market',
+        reason: row.checkReason ?? null,
+      };
+    } else {
+      this.checkWhy = null;
+      this.why = { ...betWhy(rows, index), at, sheet };
+    }
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
   }
 
   closeWhy(refocus = false): void {
-    if (!this.why) return;
+    if (!this.why && !this.checkWhy) return;
     this.why = null;
+    this.checkWhy = null;
     if (refocus) this.whyTile?.focus({ preventScroll: true });
     this.whyTile = null;
   }
@@ -746,7 +783,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // screen changing size)
   @HostListener('document:click', ['$event'])
   clickOff(event: MouseEvent): void {
-    if (this.why && !(event.target as Element | null)?.closest('.bet-why, .bet-rank')) this.closeWhy();
+    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank')) this.closeWhy();
   }
 
   @HostListener('window:resize')

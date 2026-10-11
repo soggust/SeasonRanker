@@ -157,7 +157,7 @@
                     <b>@if (r.betType === 'player' && r.player) {{{ r.player }}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
                     <!-- (none without a price: an empty line under it would lift the pick off the row's middle) -->
                     @if (r.odds) {
-                      <small>{{ r.odds }}@if (r.check && checkKelly(r) !== null) {<span class="bet-check-kelly" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price (not bet: a CHECK)"> · K {{ betScoreText(checkKelly(r)! * 100) }}</span>}@if (placedOn(r); as staked) {<span class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</span>}</small>
+                      <small>{{ r.odds }}@if (placedOn(r); as staked) {<span class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</span>}</small>
                     }
                   }
                 </span>
@@ -190,7 +190,17 @@
                    hover, its place, its Kelly score and its chance. A CHECK's a "?", no rank and no score to open (it isn't a
                    bet): clicks pass through it to its row, its hover on its CHECK chip -->
               @if (r.check) {
-                <span class="bet-rank check" aria-hidden="true">?</span>
+                <!-- (a CHECK's "?": its popover says why it isn't bet, the model against the book) -->
+                <button
+                  type="button"
+                  class="bet-rank check"
+                  [class.open]="checkWhy?.id === r.id"
+                  aria-haspopup="dialog"
+                  [attr.aria-expanded]="checkWhy?.id === r.id"
+                  aria-label="CHECK: why it isn't bet"
+                  title="A CHECK: why it isn't bet"
+                  (click)="toggleWhy(i, $event)"
+                >?</button>
               } @else {
               <button
                 type="button"
@@ -286,6 +296,45 @@
     <!-- How a bet's Kelly score is built (its rank tile clicked): the price and the model's lean, adding up to
          the score the list went by (and the analyst's quarter where it agrees and has an edge); its chance, its
          confidence and its expected return; then the bets beside it -->
+    @if (checkWhy; as c) {
+      <div
+        class="bet-why"
+        [class.above]="c.at.top === null"
+        [class.sheet]="c.sheet"
+        role="dialog"
+        tabindex="-1"
+        [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
+        [style.top.px]="c.at.top"
+        [style.bottom.px]="c.at.bottom"
+        [style.left.px]="c.at.left"
+        [style.max-height.px]="c.at.room"
+      >
+        <div class="why-head">
+          <p class="why-title">
+            <span class="why-score" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price">Model Kelly <b [class.neg]="(c.kelly ?? 0) <= 0">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</b></span>
+            <span class="why-place">CHECK</span>
+          </p>
+          <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
+        </div>
+        <p class="why-name">{{ c.name }}</p>
+        <div class="why-facts">
+          @if (c.model !== null) {
+            <p><span>Model's chance</span> <b>{{ c.model }}%</b></p>
+          }
+          @if (c.fair !== null) {
+            <p><span>Book's chance (no vig)</span> <b>{{ c.fair }}%</b></p>
+          }
+          @if (c.gap !== null) {
+            <p><span>Gap</span> <b>{{ c.gap }} points</b></p>
+          }
+          <p><span>Not bet</span> <b>{{ c.cause }}</b></p>
+        </div>
+        @if (c.reason) {
+          <p class="why-foot">{{ c.reason }}</p>
+        }
+        <p class="why-foot">A CHECK is graded as if bet, so the bot learns whether the market or the model was right.</p>
+      </div>
+    }
     @if (why; as w) {
       <div
         #whyPop

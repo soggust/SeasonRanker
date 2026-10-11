@@ -421,12 +421,12 @@ $lock-gold: chip.$lock-gold;
     text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
   }
 
-  // a CHECK: above the ranks, under the locks: a "?" in the lavender's light, glowing like the digits; no score to
-  // open, so no hover of its own and clicks pass through to its row
+  // a CHECK: above the ranks, under the locks: a "?" in the lavender's light, glowing like the digits; a click
+  // opens its popover (the model against the book, the model's Kelly, why it isn't bet), like a rank's
   &.check {
     border-color: transparent;
     color: chip.$check-light;
-    cursor: inherit;
+    cursor: pointer;
     font-family: v.$font-base;
     font-size: 19px;
     padding-top: 0;
