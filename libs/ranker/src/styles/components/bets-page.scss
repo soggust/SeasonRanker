@@ -1022,6 +1022,12 @@ $arm-length: 175px;
   overflow-y: auto;
 }
 
+// (Open Bets and Closed Bets: their tables up to the grid's width, like the Algorithm's, so they fit without a
+// sideways scroll on a wide screen)
+.bets-page.wallet-view {
+  max-width: 1240px;
+}
+
 .bets-page.desk-view {
   max-width: 1240px;
 

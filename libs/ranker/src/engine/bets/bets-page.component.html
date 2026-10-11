@@ -1,7 +1,7 @@
 <!-- The algorithm's top picks for every sport, one row per bet, the biggest edge first, each with its chance
      to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
      their write-up the disagreement, and a note to the bot -->
-<div class="bets-page" [class.desk-view]="view === 'desk'">
+<div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'">
   <!-- (the bets to place, the user's open bets (when they have some), or, an admin's, the code-only model desk's
        play-money betting, its record and its changes to itself; one at a time) -->
   @if (desk() || hasOpen() || hasClosed()) {

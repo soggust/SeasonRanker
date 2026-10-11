@@ -193,11 +193,13 @@ about-panel ::-webkit-scrollbar-track {
 }
 
 
-// The Bets page's list scrolls in its panel on a felt-blue thumb; the Algorithm desk (and its panels' wide
-// tables, sideways) on the page's own: the primary's thumb on the scoreboard track, 10px
+// The Bets page's list scrolls in its panel on a felt-blue thumb; the Algorithm desk and Open/Closed Bets (and
+// their wide tables, sideways, on a phone) on the page's own: the primary's thumb on the scoreboard track, 10px
 bets-page .bets-list::-webkit-scrollbar,
 bets-page model-desk::-webkit-scrollbar,
-bets-page model-desk ::-webkit-scrollbar {
+bets-page model-desk ::-webkit-scrollbar,
+bets-page wallet-page::-webkit-scrollbar,
+bets-page wallet-page ::-webkit-scrollbar {
   height: 10px;
   width: 10px;
 }
