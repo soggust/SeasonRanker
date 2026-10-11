@@ -240,11 +240,12 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const side: BoardSide | undefined = this.model()?.k[price.market as 'spread' | 'total' | 'ml']?.find((s) => s.s === price.side && s.l === price.line);
     if (bot) {
       const check = this.isCheck(bot);
-      return { bot, tier: this.tier(bot), kelly: check ? null : bot.sureness, chance: bot.chance != null ? bot.chance / 100 : (side?.c ?? null) };
+      // (a CHECK's: the model's own Kelly, its chance taken at its word: how far it is from the price)
+      return { bot, tier: this.tier(bot), kelly: check ? kellyOf((bot as { model?: number }).model, price.odds) : bot.sureness, chance: bot.chance != null ? bot.chance / 100 : (side?.c ?? null) };
     }
     if (!side || price.odds === null) return { bot: null, tier: 'pass', kelly: null, chance: null };
     if (side.b === 'check' && !this.desk) return { bot: null, tier: 'pass', kelly: null, chance: side.c };
-    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c };
+    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.ks ?? null, chance: side.c };
     const kelly = kellyOf(side.c, price.odds) ?? side.ks;
     const band = side.b === 'low' && side.ks > 0 ? 'low' : confidenceOf(kelly, side.c, true);
     return { bot: null, tier: tierOf(band), kelly, chance: side.c };

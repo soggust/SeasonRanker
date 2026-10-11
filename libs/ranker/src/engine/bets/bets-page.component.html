@@ -157,7 +157,7 @@
                     <b>@if (r.betType === 'player' && r.player) {{{ r.player }}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
                     <!-- (none without a price: an empty line under it would lift the pick off the row's middle) -->
                     @if (r.odds) {
-                      <small>{{ r.odds }}@if (placedOn(r); as staked) {<span class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</span>}</small>
+                      <small>{{ r.odds }}@if (r.check && checkKelly(r) !== null) {<span class="bet-check-kelly" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price (not bet: a CHECK)"> · K {{ betScoreText(checkKelly(r)! * 100) }}</span>}@if (placedOn(r); as staked) {<span class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</span>}</small>
                     }
                   }
                 </span>
@@ -232,7 +232,7 @@
                   <p class="bet-check-why">
                     <b class="bet-check-q" aria-hidden="true">?</b>
                     @if (r.checkCause === 'role') {
-                      <span><b>Not bet either way:</b> {{ r.checkReason || 'his role is changing' }}. The model's numbers are his old role's. Either side bets as any line does.</span>
+                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The model's known error in a role change could be making this side; the other side bets as usual.</span>
                     } @else {
                       <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
                     }

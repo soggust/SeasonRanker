@@ -696,6 +696,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly signedPoints = signedPoints;
   readonly betScoreText = betScoreText;
 
+  // (a CHECK's model Kelly: its own chance at the price, untrusted: the disagreement's size)
+  checkKelly(r: BetRow): number | null {
+    return kellyOf(r.model, typeof r.price === 'number' ? r.price : null);
+  }
+
   // The rank tile's hover: its place (a lock's, above the ranks), its Kelly score and its chance ("#2 of 40 ·
   // Kelly +3.12 · 64% to win")
   rankTitle(r: BetRow, i: number, n: number, locks: number): string {
