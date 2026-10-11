@@ -34,7 +34,7 @@
           <!-- (the chip's rim: its spots drawn as dashes along an outline, so they follow the round ends) -->
           <span class="bets-chip">
             <select class="bets-game" aria-label="Game" [(ngModel)]="game" (ngModelChange)="closeWhy()">
-              <option value="">All Games</option>
+              <option value="">Best Bets</option>
               @for (d of gameDays; track d.day) {
                 <optgroup [label]="d.day">
                   @for (g of d.games; track g.key) {
