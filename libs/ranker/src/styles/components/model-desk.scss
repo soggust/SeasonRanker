@@ -1116,6 +1116,143 @@ card-panel {
   border-top-color: rgba(255, 255, 255, 0.03);
 }
 
+// The bet tables' columns (In Play, Open Bets, Latest Results; the Bets page's Open and Closed Bets) set once,
+// by their colgroups, not by what's in them: the same widths with every sport, game and team's props folded or
+// open, so nothing moves sideways on a click. Each wide enough for its header with the sort arrow and its usual
+// content (a game's teams with its time or score under them, the odds, the units, a meter); the pick takes
+// what's left and wraps, the why wraps, and anything longer elsewhere (a long score, a prop's final) is cut
+// short, in full on hover. Too narrow for the pick, the table scrolls sideways in its panel. On a phone the
+// tables size by content as before (the wallet's hide their sport and game columns there)
+.group-body:has(> .desk-cols) {
+  overflow-x: auto;
+}
+
+@media (min-width: 601px) {
+  .desk-cols {
+    min-width: 980px;
+    table-layout: fixed;
+
+    td,
+    thead th {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    // (a game's time or score under its teams, cut short rather than widening it)
+    .desk-when {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .desk-game-stack {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    // (the pick: the column that gives, its words wrapping beside the circle)
+    td.desk-left .desk-pick b {
+      white-space: normal;
+    }
+
+    // (a meter's pips wrapping under one another past the column's width; a note under a value cut short, but
+    // the Bets page's decided bet's, wrapping under its amount)
+    .desk-meter {
+      flex-wrap: wrap;
+    }
+
+    td small {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    td.w-paid small {
+      white-space: normal;
+    }
+  }
+
+  // (Latest Results, ten columns: its game's date shorter than a time, its why a little narrower)
+  .desk-cols-recent {
+    min-width: 1350px;
+
+    .desk-c-game {
+      width: 186px;
+    }
+
+    .desk-c-why {
+      width: 230px;
+    }
+  }
+
+  // (the sport's header with its sort arrow)
+  .desk-c-sport {
+    width: 78px;
+  }
+
+  .desk-c-game {
+    width: 204px;
+  }
+
+  .desk-c-odds {
+    width: 84px;
+  }
+
+  .desk-c-units {
+    width: 70px;
+  }
+
+  .desk-c-win {
+    width: 84px;
+  }
+
+  .desk-c-live {
+    width: 176px;
+  }
+
+  .desk-c-chance {
+    width: 106px;
+  }
+
+  .desk-c-book {
+    width: 80px;
+  }
+
+  .desk-c-ev,
+  .desk-c-clv {
+    width: 68px;
+  }
+
+  .desk-c-final {
+    width: 170px;
+  }
+
+  .desk-c-result {
+    width: 100px;
+  }
+
+  .desk-c-why {
+    width: 250px;
+  }
+
+  // (the Bets page's: the bot's band, the settled game's date, a settled bet's result with its final under it)
+  .desk-c-bot {
+    width: 72px;
+  }
+
+  .desk-c-date {
+    width: 76px;
+  }
+
+  .wallet-cols-settled .desk-c-result {
+    width: 150px;
+  }
+
+  // (no sorting there: the sport's header without an arrow)
+  .wallet-bets .desk-c-sport {
+    width: 58px;
+  }
+}
+
 // (By Confidence: each band's name in its color, the Bets page's; the total under a firmer line)
 .desk-table {
   .desk-tier-lock th {

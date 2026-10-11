@@ -448,7 +448,17 @@
     @if (live.length) {
       <card-panel class="tab-card group-support" [label]="'In Play · ' + liveRisk.toFixed(1) + 'u'" icon="sports_score">
         <div class="group-body">
-          <table class="desk-table desk-bets">
+          <!-- (its columns' widths set, the same whatever's folded: desk-cols) -->
+          <table class="desk-table desk-bets desk-cols desk-cols-live">
+            <colgroup>
+              @if (!sport) {<col class="desk-c-sport" />}
+              <col class="desk-c-game" />
+              <col class="desk-c-pick" />
+              <col class="desk-c-odds" />
+              <col class="desk-c-units" />
+              <col class="desk-c-win" />
+              <col class="desk-c-live" />
+            </colgroup>
             <thead>
               <tr>
                 @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'live', key: 'sport', label: 'Sport' }"></ng-container>}
@@ -569,7 +579,17 @@
     @if (open.length) {
       <card-panel class="tab-card group-results" label="Open Bets" icon="schedule">
         <div class="group-body">
-          <table class="desk-table desk-bets">
+          <table class="desk-table desk-bets desk-cols desk-cols-open">
+            <colgroup>
+              @if (!sport) {<col class="desk-c-sport" />}
+              <col class="desk-c-game" />
+              <col class="desk-c-pick" />
+              <col class="desk-c-odds" />
+              <col class="desk-c-units" />
+              <col class="desk-c-chance" />
+              <col class="desk-c-book" />
+              <col class="desk-c-ev" />
+            </colgroup>
             <thead>
               <tr>
                 @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'sport', label: 'Sport' }"></ng-container>}
@@ -660,7 +680,19 @@
     @if (recent.length) {
       <card-panel class="tab-card group-advanced" label="Latest Results" icon="history">
         <div class="group-body">
-          <table class="desk-table desk-bets">
+          <table class="desk-table desk-bets desk-cols desk-cols-recent">
+            <colgroup>
+              @if (!sport) {<col class="desk-c-sport" />}
+              <col class="desk-c-game" />
+              <col class="desk-c-pick" />
+              <col class="desk-c-odds" />
+              <col class="desk-c-units" />
+              <col class="desk-c-chance" />
+              <col class="desk-c-final" />
+              <col class="desk-c-result" />
+              <col class="desk-c-clv" />
+              <col class="desk-c-why" />
+            </colgroup>
             <thead>
               <tr>
                 @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'sport', label: 'Sport' }"></ng-container>}
@@ -707,7 +739,7 @@
                     <td></td>
                     <td>{{ groupUnits(g) }}</td>
                     <td></td>
-                    <td>{{ groupFinal(g) }}</td>
+                    <td [title]="groupFinal(g)">{{ groupFinal(g) }}</td>
                     @let won = groupProfit(g);
                     <td [class.up]="(won ?? 0) > 0" [class.down]="(won ?? 0) < 0">{{ won === null ? '' : units(won) }}</td>
                     <td></td>
@@ -738,7 +770,7 @@
                   @let r = result(b);
                   <td [class.up]="r?.status === 'won'" [class.down]="r?.status === 'lost'">{{ b.units }}</td>
                   <td>{{ pct(b.p) }}</td>
-                  <td>{{ finalScore(b) }}</td>
+                  <td [title]="finalScore(b)">{{ finalScore(b) }}</td>
                   <td [class.up]="(r?.profit ?? 0) > 0" [class.down]="(r?.profit ?? 0) < 0" [title]="b.status === 'open' ? 'From the final score; graded officially on the next run' : ''">{{ r ? r.status + ' ' + units(r.profit) : 'final' }}</td>
                   <td [class.up]="b.clv?.beat === true" [class.down]="b.clv?.beat === false">{{ betClv(b) }}</td>
                   <td class="desk-why" [title]="recapText(b)">

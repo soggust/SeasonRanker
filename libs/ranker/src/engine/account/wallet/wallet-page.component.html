@@ -43,7 +43,18 @@
 <ng-template #openPanel>
 <card-panel class="tab-card group-support" [label]="'Open Bets · ' + tally().atRisk + 'u'" icon="schedule" [expandable]="!only" [startOpen]="true">
   <div class="group-body">
-      <table class="desk-table desk-bets wallet-bets">
+      <!-- (its columns' widths set, as the Algorithm's: model-desk.scss's desk-cols) -->
+      <table class="desk-table desk-bets wallet-bets desk-cols wallet-cols-open">
+        <colgroup>
+          <col class="desk-c-sport" />
+          <col class="desk-c-game" />
+          <col class="desk-c-pick" />
+          <col class="desk-c-bot" />
+          <col class="desk-c-odds" />
+          <col class="desk-c-units" />
+          <col class="desk-c-win" />
+          <col class="desk-c-live" />
+        </colgroup>
         <thead>
           <tr>
             <th>Sport</th>
@@ -129,7 +140,17 @@
 <ng-template #settledPanel>
 <card-panel class="tab-card group-results" [label]="'Settled · ' + settled().length" icon="fact_check" [expandable]="!only">
   <div class="group-body">
-    <table class="desk-table desk-bets wallet-bets wallet-settled">
+    <table class="desk-table desk-bets wallet-bets wallet-settled desk-cols wallet-cols-settled">
+      <colgroup>
+        <col class="desk-c-sport" />
+        <col class="desk-c-game" />
+        <col class="desk-c-date" />
+        <col class="desk-c-pick" />
+        <col class="desk-c-bot" />
+        <col class="desk-c-odds" />
+        <col class="desk-c-units" />
+        <col class="desk-c-result" />
+      </colgroup>
       <thead>
         <tr>
           <th>Sport</th>
