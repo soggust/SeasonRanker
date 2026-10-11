@@ -158,11 +158,17 @@ for (const sport of SPORTS) {
       if (bet.status === 'open') assert.equal(bet.profit, 0, `${at}: an open bet with a profit`);
       if (bet.market === 'prop') for (const key of ['player', 'propType']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
     }
-    // (the CHECKs, apart from the bets: markets too far from the book to bet, no units, graded as if bet
-    // (checks.mjs))
+    // (the CHECKs, apart from the bets in their own file (checks.json; an older ledger's checks): markets too
+    // far from the book to bet, no units, graded as if bet (checks.mjs))
     if ('checks' in ledger) assert.ok(Array.isArray(ledger.checks), 'ledger.json: checks');
+    const checksPath = path.join(dir, 'checks.json');
+    const checksFile = fs.existsSync(checksPath) ? readJson(checksPath) : null;
+    if (checksFile) {
+      assert.equal(checksFile.sport, sport, 'checks.json: sport');
+      assert.ok(Array.isArray(checksFile.checks), 'checks.json: checks');
+    }
     const checkIds = new Set();
-    for (const c of ledger.checks ?? []) {
+    for (const c of checksFile?.checks ?? ledger.checks ?? []) {
       const at = `${sport} CHECK ${c?.id}`;
       assert.equal(typeof c.id, 'string', `${at}: id`);
       assert.ok(!checkIds.has(c.id), `${at}: kept twice`);
@@ -175,6 +181,7 @@ for (const sport of SPORTS) {
       assert.ok(Number.isFinite(c.odds), `${at}: odds`);
       for (const key of ['model', 'fair', 'gap']) assert.ok(Number.isFinite(c[key]), `${at}: ${key}`);
       if (c.checkResult) assert.ok(STATUSES.has(c.checkResult.status), `${at}: result ${c.checkResult.status}`);
+      if (c.closedAt) assert.ok(isDate(c.closedAt), `${at}: closedAt`);
     }
   });
 
@@ -187,9 +194,9 @@ for (const sport of SPORTS) {
     assert.ok(Array.isArray(file.picks), 'picks.json: no picks list');
     if (file.record) for (const key of ['overall', 'byLevel']) assert.ok(file.record[key], `picks.json: record.${key}`);
     const KINDS = new Set(['spread', 'total', 'team_total', 'moneyline', 'player', 'team_stat']);
-    // (the bands, by the Kelly score: a lock above them all; picks.mjs BANDS)
-    // (and a CHECK: not bet, too far from the market; ranked below the locks, above the rest: checks.mjs)
-    const LEVELS = new Set(['lock', 'check', 'high', 'medium', 'low']);
+    // (the bands, by the Kelly score: a lock above them all; picks.mjs BANDS. Never a CHECK: the page reads
+    // every pick as a bet the bot made, so they're in their own list, checks)
+    const LEVELS = new Set(['lock', 'high', 'medium', 'low']);
     let last = Infinity;
     for (const [i, p] of file.picks.entries()) {
       const at = `${sport} pick ${i + 1}`;
@@ -199,14 +206,22 @@ for (const sport of SPORTS) {
       assert.ok(LEVELS.has(p.level), `${at}: level ${p.level}`);
       // (a Kelly score: 0 or under for a pick with no edge on its price; files before it, the chance)
       assert.ok(Number.isFinite(p.score), `${at}: score ${p.score}`);
-      // (the bets in score order; the CHECKs between the locks and the rest, by their gap)
-      if (p.level !== 'check') {
-        assert.ok(p.score <= last, `${at}: not in score order`);
-        last = p.score;
-      }
+      assert.ok(p.score <= last, `${at}: not in score order`);
+      last = p.score;
       assert.ok(Number.isFinite(p.odds), `${at}: odds`);
       assert.ok(isDate(p.start), `${at}: start`);
       assert.ok(Array.isArray(p.teams) && p.teams.length === 2, `${at}: teams`);
+    }
+    // (the CHECKs, their own list (checks.mjs): level 'check', no units, the biggest gap first)
+    if ('checks' in file) assert.ok(Array.isArray(file.checks), 'picks.json: checks');
+    let gap = Infinity;
+    for (const [i, c] of (file.checks ?? []).entries()) {
+      const at = `${sport} CHECK pick ${i + 1}`;
+      assert.equal(c.level, 'check', `${at}: level`);
+      assert.equal(c.units, 0, `${at}: units`);
+      for (const key of ['id', 'pick', 'matchup', 'reason', 'checkReason']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
+      assert.ok(Number.isFinite(c.gap) && Math.abs(c.gap) <= gap, `${at}: gap ${c.gap}`);
+      gap = Math.abs(c.gap);
     }
   });
 }

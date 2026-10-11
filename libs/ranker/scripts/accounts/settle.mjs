@@ -61,13 +61,20 @@ function adminApp() {
 }
 
 // (the bettor's ledgers, each sport's: its own bets, for the props' values and the price check; its CHECKs
-// too (checks.mjs: the page shows them), for the price check alone)
+// too (checks.mjs: their own file, checks.json, or an older ledger's checks), for the price check alone)
 export function readLedgers(root = ROOT) {
   const out = {};
   for (const sport of Object.keys(LEAGUES)) {
+    const dir = path.join(root, 'apps', sport, 'src/StaticData/model');
     try {
-      const ledger = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'src/StaticData/model/ledger.json'), 'utf8'));
-      out[sport] = [...(ledger.bets ?? []), ...(ledger.checks ?? [])];
+      const ledger = JSON.parse(fs.readFileSync(path.join(dir, 'ledger.json'), 'utf8'));
+      let checks = ledger.checks ?? [];
+      try {
+        checks = JSON.parse(fs.readFileSync(path.join(dir, 'checks.json'), 'utf8')).checks ?? checks;
+      } catch {
+        // (no checks file yet: the ledger's own, or none)
+      }
+      out[sport] = [...(ledger.bets ?? []), ...checks];
     } catch {
       out[sport] = [];
     }

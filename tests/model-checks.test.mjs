@@ -1,14 +1,19 @@
 // The CHECK picks and the owner's notes (libs/ranker/scripts/model/checks.mjs, notes.mjs): a market too far
 // from the book to bet kept on the model's side, apart from the bets; written again only while it isn't
-// locked and something material changed; graded at a unit, out of the record; on the picks between the locks
-// and the rest; a prop's other side's price on its bet, its pick and the settler's price check; the notes read
+// locked and something material changed, closed when the gap does; graded at a unit, out of the record, then
+// trimmed; in picks.json's own list (checks), never its picks; kept in their own file (checks.json); a prop's
+// other side's price on its bet, its pick and the settler's price check; the notes read
 // from Firestore's REST API (a mock: no network, no real key) and put into a game's own injury report.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generateKeyPairSync } from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { gapGuard, record, settle } from '../libs/ranker/scripts/model/desk.mjs';
 import { settleProp } from '../libs/ranker/scripts/model/props.mjs';
-import { atUnit, checkLocked, checkOf, checkResultOf, checkSummary, markPlaced, modelSide, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { atUnit, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { readLedgers } from '../libs/ranker/scripts/accounts/settle.mjs';
 import { applyNotes, fromValue, keptNote, noteOf, noteWords, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
 import { buildPicks } from '../libs/ranker/scripts/model/picks.mjs';
 import { botObservations, checkPrice } from '../libs/ranker/scripts/accounts/settle-lib.mjs';
@@ -61,6 +66,57 @@ test('upsertCheck: new, then written again only while open, not locked, and some
   assert.equal(ledger.checks.length, 1);
 });
 
+test('closeChecks: a CHECK whose market was priced without the gap skipping it is closed (open, unbet, unlocked only); a later gap opens it again', () => {
+  const ledger = { bets: [] };
+  upsertCheck(ledger, check(), now);
+  upsertCheck(ledger, check({ id: '401:total' }), now);
+  assert.equal(closeChecks(ledger, new Set(['401:spread', 'nope']), now), 1);
+  assert.equal(ledger.checks[0].closedAt, now.toISOString());
+  assert.equal(ledger.checks[1].closedAt, undefined);
+  // (closed once: not again)
+  assert.equal(closeChecks(ledger, new Set(['401:spread']), now), 0);
+  // (locked: as it stood)
+  const late = new Date(Date.parse(ledger.checks[1].start) - 10 * 60e3);
+  assert.equal(closeChecks(ledger, new Set(['401:total']), late), 0);
+  // (the gap back, the same numbers: opened again)
+  assert.equal(upsertCheck(ledger, check(), now), 'updated');
+  assert.equal(ledger.checks[0].closedAt, undefined);
+  // (off the page, out of the hit rate, tallied apart)
+  ledger.checks[0].closedAt = now.toISOString();
+  ledger.checks[0].checkResult = { status: 'won', profit: 0.909 };
+  ledger.checks[1].checkResult = { status: 'lost', profit: -1 };
+  const s = checkSummary(ledger.checks);
+  assert.deepEqual([s.n, s.won, s.lost, s.hitRate, s.closed.n, s.closed.won], [1, 0, 1, 0, 1, 1]);
+});
+
+test('checkTrim: a graded CHECK loses its context and its projection but the mean, TRIM_AFTER on; its result kept', () => {
+  const graded = { ...check({ projection: { mean: 61.2, sd: 20, rate: 55 }, context: { weather: { wind: 3 } } }), checkResult: { status: 'won', profit: 0.909, gradedAt: now.toISOString() } };
+  const open = check({ id: 'o', context: { weather: {} } });
+  assert.equal(checkTrim([graded, open], new Date(now.getTime() + TRIM_AFTER - 1)), 0);
+  assert.equal(checkTrim([graded, open], new Date(now.getTime() + TRIM_AFTER)), 1);
+  assert.deepEqual([graded.context, graded.projection, graded.trimmed, graded.checkResult.status], [undefined, { mean: 61.2 }, true, 'won']);
+  assert.ok(open.context);
+  assert.equal(checkTrim([graded], new Date(now.getTime() + 2 * TRIM_AFTER)), 0);
+});
+
+test("readLedgers: the settler reads the CHECKs from their own file, or an older ledger's", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-'));
+  try {
+    const dir = (s) => path.join(root, 'apps', s, 'src/StaticData/model');
+    fs.mkdirSync(dir('nfl'), { recursive: true });
+    fs.mkdirSync(dir('nba'), { recursive: true });
+    fs.writeFileSync(path.join(dir('nfl'), 'ledger.json'), JSON.stringify({ bets: [bet()] }));
+    fs.writeFileSync(path.join(dir('nfl'), 'checks.json'), JSON.stringify({ sport: 'nfl', checks: [check()] }));
+    fs.writeFileSync(path.join(dir('nba'), 'ledger.json'), JSON.stringify({ bets: [], checks: [check({ sport: 'nba' })] }));
+    const got = readLedgers(root);
+    assert.deepEqual(got.nfl.map((b) => b.id), ['x', '401:spread']);
+    assert.deepEqual(got.nba.map((b) => b.id), ['401:spread']);
+    assert.deepEqual(got.nhl, []);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('markPlaced: a CHECK whose market was bet after all notes the bet, once', () => {
   const ledger = { bets: [bet({ id: '401:spread', placedAt: '2026-10-09T14:00:00Z', units: 2, intent: 'edge' })] };
   upsertCheck(ledger, check(), now);
@@ -89,7 +145,7 @@ test('graded at a unit: a spread CHECK and a prop CHECK, what they would have do
   assert.equal(s.byMarket['prop:recYds'].lost, 1);
 });
 
-test('buildPicks: the CHECKs below the locks, above the rest; no units, not in the record, gone once bet; a prop keeps its other side', () => {
+test("buildPicks: the CHECKs in their own list, never the picks (the page's rows); no units, the model's chance, not in the record, gone once bet or closed; a prop keeps its other side", () => {
   const ledger = {
     bets: [
       bet({ id: 'lock', model: 0.66, fair: 0.6, p: 0.627, ev: 0.197, intent: 'edge' }),
@@ -105,16 +161,21 @@ test('buildPicks: the CHECKs below the locks, above the rest; no units, not in t
       // (graded, or on a game started: not shown)
       { ...check({ id: '403:spread', event: '403' }), checkResult: { status: 'won' } },
       check({ id: '404:spread', event: '404', start: '2026-10-09T11:00:00Z' }),
+      // (closed: the gap gone since)
+      { ...check({ id: '405:spread', event: '405' }), closedAt: now.toISOString() },
     ],
   };
   const out = buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now);
   const ids = out.picks.map((p) => `${p.level}:${p.id}`);
   assert.equal(ids[0], 'lock:lock');
-  assert.deepEqual(ids.slice(1, 3), ['check:401:ml', 'check:401:total']);
-  assert.ok(!ids.includes('check:402:spread') && ids.includes(`${out.picks.find((p) => p.id === '402:spread').level}:402:spread`));
-  assert.equal(out.picks.filter((p) => p.level === 'check').length, 2);
-  const c = out.picks.find((p) => p.id === '401:ml');
-  assert.deepEqual([c.units, c.edge, c.gap, c.rank], [0, false, 0.3, 2]);
+  assert.equal(out.picks.filter((p) => p.level === 'check').length, 0);
+  assert.ok(ids.includes(`${out.picks.find((p) => p.id === '402:spread').level}:402:spread`));
+  // (the picks in their Kelly score order, as before the CHECKs)
+  assert.deepEqual(out.picks.map((p) => p.score), out.picks.map((p) => p.score).sort((a, b) => b - a));
+  assert.deepEqual(out.checks.map((p) => `${p.level}:${p.id}`), ['check:401:ml', 'check:401:total']);
+  const c = out.checks.find((p) => p.id === '401:ml');
+  // (its chance the model's: past the gap the trusted chance is about the book's)
+  assert.deepEqual([c.units, c.edge, c.gap, c.rank, c.chance], [0, false, 0.3, 1, 80]);
   assert.match(c.reason, /Not bet: the model's 70%/);
   assert.match(c.checkReason, /too far from the market/);
   assert.equal(out.picks.find((p) => p.id === 'prop').otherOdds, -120);

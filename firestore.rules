@@ -196,7 +196,7 @@ service cloud.firestore {
         && (!('player' in d) || d.player == null || (d.player is string && d.player.matches('[0-9]{1,12}')))
         && (!('status' in d) || d.status == null || d.status in ['out', 'questionable', 'active'])
         && (!('team' in d) || d.team == null || (d.team is string && d.team.matches('[0-9]{1,12}')))
-        && (!('sport' in d) || d.sport in ['nfl', 'nba', 'nhl', 'mlb'])
+        && (!('sport' in d) || d.sport == null || d.sport in ['nfl', 'nba', 'nhl', 'mlb'])
         && (!('note' in d) || d.note == null || (d.note is string && d.note.size() <= 500))
         && d.by == request.auth.uid
         && d.at == request.time;

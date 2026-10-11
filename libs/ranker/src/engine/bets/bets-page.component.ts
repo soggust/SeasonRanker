@@ -337,6 +337,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       if (picks?.picks?.length) {
         if (!this.updated || picks.at > this.updated) this.updated = picks.at;
         for (const p of picks.picks ?? []) {
+          // (a CHECK, not a bet the bot made (picks.mjs keeps them in their own list; one left in picks by an
+          // older file): never a row, a lit board or a slip's pick here)
+          if ((p.level as string) === 'check') continue;
           if (p.where) this.places.set(`${sport}|${p.matchup}`, p.where);
           algoRows.push({
             sport,

@@ -603,7 +603,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     else if (vacUnsized) guard = { skip: true, why: "teammates back from an absence that fed his recent numbers: a smaller role the model can't size" };
     // (the model's chance far from the book's (desk.mjs GAP.prop): a gap that size is the market knowing
     // something the model doesn't, an injury, a role, a lineup, far more often than an edge)
-    else if (gapped) guard = { ...gapped, kind: 'gap' };
+    // A CHECK (kind 'gap') only when it's the gap alone: one the skips below would take too (a long shot, a
+    // juiced price it can't know, a line moved twice the limit) is skipped with both their words, no CHECK, so
+    // the CHECKs' hit rate is the gap's
+    else if (gapped) {
+      const also = prop.prices && fair < 0.25 ? 'a long shot' : !prop.prices && (fairOver < 0.4 || fairOver > 0.6) ? 'a juiced price the desk can\'t know' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null;
+      guard = also ? { skip: true, why: `${gapped.why}; ${also}` } : { ...gapped, kind: 'gap' };
+    }
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
     // likely right)
     else if (prop.prices && fair < 0.25) guard = { skip: true, why: `a long shot (the book's fair chance ${Math.round(fair * 100)}%)` };

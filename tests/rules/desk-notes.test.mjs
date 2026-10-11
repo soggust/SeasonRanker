@@ -68,6 +68,8 @@ describe('deskNotes', { skip }, () => {
     const { reason: _r, ...noReason } = note();
     await assertFails(setDoc(ref(db), noReason));
     await assertSucceeds(setDoc(ref(db), note({ team: '21', sport: 'nfl', status: 'questionable' })));
+    // (every optional key null, sport too: a form that sends them all)
+    await assertSucceeds(setDoc(ref(db), note({ player: null, status: null, team: null, sport: null, note: null })));
   });
 
   test('the bettor reads them back by the REST API, each note as it was written', async () => {

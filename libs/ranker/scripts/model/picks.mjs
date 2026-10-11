@@ -18,10 +18,13 @@
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (10% or more, and a 60%
 //            chance), high (5%: LOVE), medium (2%: LIKE), low (PASS)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
-//            and learn from), level 'check', no units, never shown or published, never in the record: the open
-//            ones on games not started whose market wasn't bet after all, the biggest gap first, CHECK_TOP at
-//            most, ordered below the locks and above the rest (the page's CHECK band, between LOCK and LOVE);
-//            each with its gap and why it wasn't bet (checkReason, and said in its reason)
+//            and learn from), in their own list (checks, never picks: the Bets page reads every pick as a bet
+//            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
+//            never shown or published, never in the record: the open ones on games not started whose market
+//            wasn't bet after all and whose gap hasn't closed since (closedAt), the biggest gap first,
+//            CHECK_TOP at most; their place is between LOCK and LOVE once the page has a CHECK band (the
+//            admins' alone). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
+//            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with)
 //   other    a prop's other side's price (otherOdds; null where unknown): the page shows both sides
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
 //            band is its score's; one without an edge is low, whatever its score (a favorite at a short price
@@ -228,20 +231,18 @@ export function buildPicks(sport, ledger, trust, games, now) {
     b.publishedLevel = levelOf(b, b.publishedKelly, b.publishedP);
   }
   // (the CHECKs: too far from the market to bet (checks.mjs), on games not started and not bet after all (an
-  // open bet on the market: that one shows); the biggest gap first, CHECK_TOP at most. Below the locks, above
-  // the rest: the ones the owner should look into)
+  // open bet on the market: that one shows) and not closed since (the gap closed: closedAt); the biggest gap
+  // first, CHECK_TOP at most. Their own list, apart from the picks: the ones the owner should look into)
   const betIds = new Set(open.map((b) => b.id));
   const checks = (ledger.checks ?? [])
-    .filter((c) => !c.checkResult && !c.bet && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
+    .filter((c) => !c.checkResult && !c.bet && !c.closedAt && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
     .sort((x, y) => Math.abs(y.gap ?? 0) - Math.abs(x.gap ?? 0) || x.start.localeCompare(y.start))
     .slice(0, CHECK_TOP)
     .map((b) => {
       const { score, ...why } = scoreParts(b, trust);
       return { b, score, why, check: true };
     });
-  const locks = top.filter(({ b, score }) => levelOf(b, score) === 'lock');
-  const rest = top.filter((x) => !locks.includes(x));
-  const picks = [...locks, ...checks, ...rest].map(({ b, score, why, check }, i) => {
+  const rowOf = ({ b, score, why, check }, i) => {
     const g = games.get(b.event);
     const [away, home] = b.matchup.split(' @ ');
     return {
@@ -249,7 +250,8 @@ export function buildPicks(sport, ledger, trust, games, now) {
       rank: i + 1,
       sport,
       score,
-      chance: Math.round(b.p * 100),
+      // (a CHECK's the model's: its trusted chance, past the gap, is about the book's)
+      chance: Math.round((check ? b.model : b.p) * 100),
       level: check ? 'check' : levelOf(b, score),
       edge: intentOf(b) === 'edge',
       kind: KIND[b.market] ?? 'player',
@@ -280,10 +282,11 @@ export function buildPicks(sport, ledger, trust, games, now) {
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
       ...(check ? { gap: b.gap, checkReason: b.reason } : {}),
     };
-  });
+  };
+  const picks = top.map(rowOf);
   const published = ledger.bets.filter((b) => b.published);
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks };
+  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checks.map(rowOf) };
 }
 
 // (a record as the page's: wins, losses, pushes, the win share; a void bet, no action, isn't counted)

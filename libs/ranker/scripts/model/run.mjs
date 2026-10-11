@@ -46,10 +46,12 @@
 //      most GAME_CAP (leagues.mjs; desk.mjs capGame), an earlier run's action bets on the game taken back to
 //      make room for this run's edge bets (desk.mjs makeRoom)
 //   6c. the CHECKs (checks.mjs): a market or prop skipped only for the model's distance from the book (the
-//      gap guard) isn't bet, but kept on the ledger apart from the bets (ledger.checks: no units, never in the
-//      record, the trust fit, the caps or the CLV) on the model's side, written again while it isn't locked
-//      and something material changed, shown on the Bets page as a CHECK (picks.mjs), and graded as a bet
-//      would be once final (4c: checkResult). The owner's notes on them (notes.mjs: Firestore's deskNotes,
+//      gap guard alone: not one another guard skips too) isn't bet, but kept apart from the bets in their own
+//      file (model/checks.json, read in as ledger.checks: no units, never in the record, the trust fit, the
+//      caps or the CLV) on the model's side, written again while it isn't locked and something material
+//      changed, closed once a run prices its market and the gap guard doesn't skip it, listed in picks.json
+//      apart from the picks (checks: the Bets page shows only the picks), and graded as a bet would be once
+//      final (4c: checkResult). The owner's notes on them (notes.mjs: Firestore's deskNotes,
 //      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it) are kept on them, and a note's
 //      concrete news (a player out, questionable or active) goes into its game's injury report for the
 //      pricing (2b), so the market may come back as a real bet
@@ -85,7 +87,7 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { atUnit, checkOf, checkResultOf, checkSummary, markPlaced, modelSide, upsertCheck } from './checks.mjs';
+import { atUnit, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -146,6 +148,21 @@ function readKept(file, fallback) {
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback;
 }
 
+// The CHECKs (checks.mjs), from their own file (model/checks.json); none there yet, an older ledger's own
+// (ledger.checks, which the next write moves to the file)
+function readChecks(r, ledger) {
+  return readKept(r.files.checks, null)?.checks ?? ledger?.checks ?? [];
+}
+
+// The ledger written, its CHECKs apart in their own file (checks.json: the ledger the wallet and the Algorithm
+// tab fetch keeps its old shape and size), the graded ones' bulk trimmed (checks.mjs checkTrim)
+function writeLedger(r, ledger) {
+  const { checks = [], ...bets } = ledger;
+  checkTrim(checks, r.now);
+  writeIfChanged(r.files.ledger, bets);
+  if (checks.length || existsSync(r.files.checks)) writeIfChanged(r.files.checks, { sport: r.sport, checks });
+}
+
 // A file the workflow commits, written only when its content changed (ignoring what changes every run: when
 // it ran, the props' last-run counts); lines: an array written an item a line (small diffs)
 function writeIfChanged(file, data, { lines = false } = {}) {
@@ -171,6 +188,7 @@ async function runSport(sport) {
     context: path.join(CACHE, `context-${sport}.json`),
     backtest: path.join(ROOT, 'apps', sport, 'scripts/model/backtest.json'),
     picks: path.join(ROOT, 'apps', sport, 'src/StaticData/model/picks.json'),
+    checks: path.join(ROOT, 'apps', sport, 'src/StaticData/model/checks.json'),
     teams: path.join(ROOT, 'apps', sport, 'src/StaticData/model/teams.json'),
   };
   // (--picks-only: the picks written from the ledger as it stands, nothing fetched, fit or bet)
@@ -186,6 +204,7 @@ async function runSport(sport) {
   logContext(r);
   r.ledger = readKept(r.files.ledger, { sport, bankroll: BANKROLL, bets: [] });
   r.ledger.bankroll = BANKROLL;
+  r.ledger.checks = readChecks(r, r.ledger);
   // (the open bets published before they were locked (the old rule: published the run they were first shown)
   // made shown ones again, so the news and --replace price them again: picks.mjs unlock)
   const unlocked = unlock(r.ledger, r.now);
@@ -230,15 +249,16 @@ async function writeTeams(r) {
 // start), so their record is theirs alone and of the bets as they stood at the start
 function writePicks(r, alone = false) {
   const ledger = alone ? readKept(r.files.ledger, { bets: [] }) : r.ledger;
+  if (alone) ledger.checks = readChecks(r, ledger);
   const trust = alone ? (readKept(r.files.state, {}).trust ?? {}) : r.trust;
   const games = alone ? new Map(readKept(r.files.games, []).map((g) => [g.id, g])) : r.games;
   const out = buildPicks(r.sport, ledger, trust, games, r.now);
   if (DRY) {
-    console.log(`${r.sport} (dry): ${out.picks.length} picks: ${out.picks.map((p) => `${p.level} ${p.pick} (${p.score})`).join(' | ')}`);
+    console.log(`${r.sport} (dry): ${out.checks.length} CHECKs (their own list), ${out.picks.length} picks: ${out.picks.map((p) => `${p.level} ${p.pick} (${p.score})`).join(' | ')}`);
     return;
   }
   const changed = writeIfChanged(r.files.picks, out);
-  if (alone) writeIfChanged(r.files.ledger, ledger);
+  if (alone) writeLedger(r, ledger);
   console.log(`${r.sport}: ${out.picks.length} picks${changed ? ' written' : ' unchanged'}`);
 }
 
@@ -268,7 +288,7 @@ async function loadHistory(r) {
   const days = new Set(Array.from({ length: 7 }, (_, i) => ymd(new Date(now.getTime() + (i - 4) * DAY))));
   // (the CHECKs not yet graded too: checks.mjs)
   const kept = readKept(r.files.ledger, { bets: [] });
-  const open = [...kept.bets.filter((b) => b.status === 'open'), ...(kept.checks ?? []).filter((c) => !c.checkResult)];
+  const open = [...kept.bets.filter((b) => b.status === 'open'), ...readChecks(r, kept).filter((c) => !c.checkResult)];
   for (const bet of open) {
     if (Date.parse(bet.start) < now.getTime() - 4 * DAY) days.add(ymd(new Date(bet.start)));
   }
@@ -466,7 +486,7 @@ async function noteInjuries(r) {
   r.noteAt = new Map();
   if (!r.notes?.size) return;
   try {
-    const checks = readKept(r.files.ledger, {}).checks ?? [];
+    const checks = readChecks(r, readKept(r.files.ledger, {}));
     const applied = await applyNotes(r.sport, r.live, r.upcoming, r.notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
     for (const x of applied) {
       r.notesApplied.add(x.id);
@@ -960,8 +980,10 @@ function betGames(r) {
   const { sport, cfg, params, trust, at } = r;
   const held = new Map();
   r.pending = [];
-  // (this run's CHECKs, game markets' and props': recordChecks)
+  // (this run's CHECKs, game markets' and props': recordChecks; and the markets it priced that the gap guard
+  // didn't skip, whose CHECKs are closed: checks.mjs closeChecks)
   r.checks = [];
+  r.unchecked = new Set();
   for (const { game, lines } of r.upcoming) {
     const { exp, f, adjM, adjT } = expectFor(r, game);
     const fairFrom = lines.fairSource ?? {};
@@ -1011,7 +1033,11 @@ function betGames(r) {
     const totalWhy = wx?.roof === 'retractable' ? 'a retractable roof not yet said open or closed: its weather unseen' : wx?.precipForecast >= 0.2 ? `${wx.precipForecast} in of rain forecast: a total priced off a forecast's rain` : null;
     const guardFor = (key, pick) => {
       const flags = [...(f?.info.flags ?? []), ...(key === 'total' && totalWhy ? [totalWhy] : []), ...(news.length ? [`bet at the last chance before the news: ${news.join(', ')}`] : [])];
-      const g = gapGuard(key, pick.model, pick.fair) ?? guardOf(cfg.guard, key, lines.move, flags, { m: adjM, t: adjT }, params.sigma, pick.side);
+      // (the gap's skip a CHECK only when it's the gap alone: another guard's skip (a line moved twice the
+      // limit) wins, with both its words, so the CHECKs' hit rate is the gap's)
+      const gap = gapGuard(key, pick.model, pick.fair);
+      const other = guardOf(cfg.guard, key, lines.move, flags, { m: adjM, t: adjT }, params.sigma, pick.side);
+      const g = gap && other?.skip ? { ...other, why: `${gap.why}; ${other.why}` } : (gap ?? other);
       if (g?.skip || pick.anchored !== false) return g;
       return { why: [g?.why, 'no spread market to price the moneyline off'].filter(Boolean).join('; ') };
     };
@@ -1059,6 +1085,7 @@ function betGames(r) {
     // (the skips first, so a market the guard skips never makes the other give way: oneSide)
     picks = picks.filter((x) => {
       x.guard = guardFor(x.market, x.pick);
+      if (x.guard?.kind !== 'gap') r.unchecked.add(x.id);
       if (x.guard?.skip) skipped(x.market, x.id, x.guard, x.pick);
       return !x.guard?.skip;
     });
@@ -1327,10 +1354,15 @@ async function betProps(r) {
         }
         // (one skipped for the model's distance from the book alone: kept as a CHECK on the model's side
         // (checks.mjs), on the same terms a bet would wait for: a real price, the news it waits for)
+        // (one priced on those terms the gap guard didn't skip: its CHECK closed, checks.mjs closeChecks)
         for (const x of priced) {
-          if (x.guard?.kind !== 'gap' || (!x.priced && hasKey())) continue;
+          if (!x.priced && hasKey()) continue;
           if (newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher }).length && phase !== 'last') continue;
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+          if (x.guard?.kind !== 'gap') {
+            r.unchecked?.add(id);
+            continue;
+          }
           if (r.placed.has(id) && !DRY) continue;
           r.checks?.push(checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard));
         }
@@ -1419,7 +1451,8 @@ function propBet(r, game, x, exp, { id, intent, units, tested }) {
 
 // 6c. this run's CHECKs (betGames' and betProps': checks.mjs) on the ledger's list (ledger.checks, apart from
 // its bets): a new one added, one there written again while it isn't locked and something material changed;
-// one whose market was bet after all noted with the bet; and each one's owner's note kept on it (notes.mjs),
+// one whose market was bet after all noted with the bet; one whose market was priced this run without the gap
+// guard skipping it closed (closeChecks); and each one's owner's note kept on it (notes.mjs),
 // its outcome the CHECK's own result (gradeChecks)
 function recordChecks(r) {
   const { sport } = r;
@@ -1432,6 +1465,8 @@ function recordChecks(r) {
     if (DRY && res) console.log(`${sport} (dry) CHECK ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})`);
   }
   const became = markPlaced(r.ledger);
+  const ids = new Set((r.checks ?? []).map((c) => c.id));
+  const closed = closeChecks(r.ledger, new Set([...(r.unchecked ?? [])].filter((id) => !ids.has(id))), r.now);
   let noted = 0;
   for (const c of r.ledger.checks ?? []) {
     const n = r.notes?.get(c.id);
@@ -1441,7 +1476,7 @@ function recordChecks(r) {
     c.note = kept;
     noted++;
   }
-  if (added || updated || became || noted) console.log(`${sport}: CHECKs (too far from the market to bet, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
+  if (added || updated || became || closed || noted) console.log(`${sport}: CHECKs (too far from the market to bet, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
 }
 
 // The state: the settings and how they test, the trust, the context, the props, the changelog, the teams by
@@ -1509,7 +1544,7 @@ function saveState(r) {
   state.changelog = state.changelog.slice(-200);
   if (!DRY) {
     writeIfChanged(r.files.state, state);
-    writeIfChanged(r.files.ledger, ledger);
+    writeLedger(r, ledger);
   } else {
     write(path.join(ROOT, '.cache/model', `dry-${sport}.json`), {
       params: state.params,
