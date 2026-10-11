@@ -101,12 +101,15 @@ export function coreObservations(body) {
   return out;
 }
 
-// The bettor's own bets on the game as observations (its side, its price when it bet, and the last it saw)
+// The bettor's own bets on the game as observations (its side, its price when it bet, and the last it saw;
+// a prop's other side at the price beside it (otherOdds), so a bet against the bot's prop is checked too; a
+// CHECK's (checks.mjs, which the page shows too) the same way)
 export function botObservations(ledgerBets) {
   const out = [];
   for (const b of ledgerBets ?? []) {
     const base = { market: b.market, side: b.side, propType: b.propType ?? null, athlete: b.athlete != null ? String(b.athlete) : null };
     out.push({ ...base, kind: 'bot', at: Date.parse(b.placedAt), line: b.market === 'ml' ? null : b.line, odds: b.odds });
+    if (b.market === 'prop' && Number.isFinite(b.otherOdds) && (b.side === 'over' || b.side === 'under')) out.push({ ...base, side: b.side === 'over' ? 'under' : 'over', kind: 'bot', at: Date.parse(b.placedAt), line: b.line, odds: b.otherOdds });
     if (b.seen && Number.isFinite(b.seen.odds)) out.push({ ...base, kind: 'bot', at: Date.parse(b.seen.at), line: b.market === 'ml' ? null : (b.seen.line ?? b.line), odds: b.seen.odds });
   }
   return out;

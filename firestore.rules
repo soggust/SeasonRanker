@@ -183,6 +183,30 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // -------------------------------------------------------------------------
+    // deskNotes/{id}: the owner's notes on the bettor's picks (a CHECK's mostly; the id the pick's), read by
+    // the bettor with the Admin's service account (libs/ranker/scripts/model/notes.mjs): a player's news
+    // becomes an injury override for his game's pricing. Admins (the token's claim) only, both ways; a note
+    // is { reason, player?, status?, team?, sport?, note?, by, at }, by its writer, at the write's time
+    // -------------------------------------------------------------------------
+    function validDeskNote(d) {
+      return d.keys().hasOnly(['reason', 'player', 'status', 'team', 'sport', 'note', 'by', 'at'])
+        && d.keys().hasAll(['reason', 'by', 'at'])
+        && d.reason in ['news', 'role', 'weather', 'suspension', 'market-wrong', 'other']
+        && (!('player' in d) || d.player == null || (d.player is string && d.player.matches('[0-9]{1,12}')))
+        && (!('status' in d) || d.status == null || d.status in ['out', 'questionable', 'active'])
+        && (!('team' in d) || d.team == null || (d.team is string && d.team.matches('[0-9]{1,12}')))
+        && (!('sport' in d) || d.sport in ['nfl', 'nba', 'nhl', 'mlb'])
+        && (!('note' in d) || d.note == null || (d.note is string && d.note.size() <= 500))
+        && d.by == request.auth.uid
+        && d.at == request.time;
+    }
+
+    match /deskNotes/{id} {
+      allow read, delete: if isAdmin();
+      allow create, update: if isAdmin() && id.size() <= 200 && validDeskNote(request.resource.data);
+    }
+
     // ---- friends (phase 2) ----
     // users/{uid}/friends/{other}: { status, since } on both sides. A request writes the asker's 'pending-out'
     // and the other's 'pending-in' together; an accept turns both to 'friends'; a decline, cancel or unfriend

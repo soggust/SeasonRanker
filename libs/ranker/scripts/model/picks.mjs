@@ -17,6 +17,12 @@
 //   chance   what the page shows beside it: the trusted chance the bet wins, as a whole percent
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (10% or more, and a 60%
 //            chance), high (5%: LOVE), medium (2%: LIKE), low (PASS)
+//   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
+//            and learn from), level 'check', no units, never shown or published, never in the record: the open
+//            ones on games not started whose market wasn't bet after all, the biggest gap first, CHECK_TOP at
+//            most, ordered below the locks and above the rest (the page's CHECK band, between LOCK and LOVE);
+//            each with its gap and why it wasn't bet (checkReason, and said in its reason)
+//   other    a prop's other side's price (otherOdds; null where unknown): the page shows both sides
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
 //            band is its score's; one without an edge is low, whatever its score (a favorite at a short price
 //            isn't a strong bet)
@@ -35,6 +41,7 @@
 import { round } from './ratings.mjs';
 import { decimal, intentOf, record } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
+import { CHECK_TOP } from './checks.mjs';
 
 // (a bet locked: its game starts within REPRICE_BY, or has started; nothing prices it again from here)
 const locked = (b, now) => Date.parse(b.start) - now.getTime() <= REPRICE_BY;
@@ -157,6 +164,8 @@ export function reasonOf(bet, game) {
   if (Number.isFinite(w.snow) && w.snow >= 0.5) notes.push(`snow in the forecast (${w.snow} in)`);
   else if (Number.isFinite(w.precip) && w.precip >= 0.1) notes.push(`rain in the forecast (${w.precip} in)`);
   if (w.rain === true) notes.push('rain at the park');
+  // (the owner's word on a player, put into the injury report it was priced on: notes.mjs; first, so it's said)
+  notes.unshift(...(c.ownerNotes ?? []).map((n) => n.replace(/^Owner note: /, 'owner note: ')));
   if (notes.length) out.push(`${notes.slice(0, 3).join('; ').replace(/^./, (x) => x.toUpperCase())}.`);
   // (a line that's moved its way since it was bet: the market agreeing)
   const seen = bet.seen;
@@ -164,6 +173,8 @@ export function reasonOf(bet, game) {
     const better = bet.market === 'spread' ? seen.line < bet.line : bet.side === 'over' ? seen.line > bet.line : bet.side === 'under' ? seen.line < bet.line : false;
     if (better) out.push(`The line has moved its way since (${bet.line} to ${seen.line}).`);
   } else if (seen && Number.isFinite(seen.fair) && seen.fair - bet.fair >= 0.015) out.push(`The market has moved its way since (${pct(bet.fair)} to ${pct(seen.fair)}).`);
+  // (a CHECK: why it wasn't bet, the guard's words)
+  if (bet.intent === 'check' && bet.reason) out.push(`Not bet: ${bet.reason}.`);
   return out.join(' ');
 }
 
@@ -216,7 +227,21 @@ export function buildPicks(sport, ledger, trust, games, now) {
     if (!Number.isFinite(b.publishedKelly)) b.publishedKelly = score;
     b.publishedLevel = levelOf(b, b.publishedKelly, b.publishedP);
   }
-  const picks = top.map(({ b, score, why }, i) => {
+  // (the CHECKs: too far from the market to bet (checks.mjs), on games not started and not bet after all (an
+  // open bet on the market: that one shows); the biggest gap first, CHECK_TOP at most. Below the locks, above
+  // the rest: the ones the owner should look into)
+  const betIds = new Set(open.map((b) => b.id));
+  const checks = (ledger.checks ?? [])
+    .filter((c) => !c.checkResult && !c.bet && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
+    .sort((x, y) => Math.abs(y.gap ?? 0) - Math.abs(x.gap ?? 0) || x.start.localeCompare(y.start))
+    .slice(0, CHECK_TOP)
+    .map((b) => {
+      const { score, ...why } = scoreParts(b, trust);
+      return { b, score, why, check: true };
+    });
+  const locks = top.filter(({ b, score }) => levelOf(b, score) === 'lock');
+  const rest = top.filter((x) => !locks.includes(x));
+  const picks = [...locks, ...checks, ...rest].map(({ b, score, why, check }, i) => {
     const g = games.get(b.event);
     const [away, home] = b.matchup.split(' @ ');
     return {
@@ -225,7 +250,7 @@ export function buildPicks(sport, ledger, trust, games, now) {
       sport,
       score,
       chance: Math.round(b.p * 100),
-      level: levelOf(b, score),
+      level: check ? 'check' : levelOf(b, score),
       edge: intentOf(b) === 'edge',
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
@@ -237,6 +262,8 @@ export function buildPicks(sport, ledger, trust, games, now) {
       player: b.player ?? null,
       line: b.line,
       odds: b.odds,
+      // (the other side's price, a prop's (the page shows both sides); none where it isn't known)
+      otherOdds: Number.isFinite(b.otherOdds) ? b.otherOdds : null,
       book: b.book ?? 'DraftKings',
       model: b.model,
       fair: b.fair,
@@ -250,6 +277,8 @@ export function buildPicks(sport, ledger, trust, games, now) {
       teams: [away, home].map((abbr) => ({ abbr, logo: logo(sport, abbr) })),
       where: whereOf(b, g),
       reason: reasonOf(b, g),
+      // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
+      ...(check ? { gap: b.gap, checkReason: b.reason } : {}),
     };
   });
   const published = ledger.bets.filter((b) => b.published);

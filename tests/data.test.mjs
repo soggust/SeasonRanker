@@ -158,6 +158,24 @@ for (const sport of SPORTS) {
       if (bet.status === 'open') assert.equal(bet.profit, 0, `${at}: an open bet with a profit`);
       if (bet.market === 'prop') for (const key of ['player', 'propType']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
     }
+    // (the CHECKs, apart from the bets: markets too far from the book to bet, no units, graded as if bet
+    // (checks.mjs))
+    if ('checks' in ledger) assert.ok(Array.isArray(ledger.checks), 'ledger.json: checks');
+    const checkIds = new Set();
+    for (const c of ledger.checks ?? []) {
+      const at = `${sport} CHECK ${c?.id}`;
+      assert.equal(typeof c.id, 'string', `${at}: id`);
+      assert.ok(!checkIds.has(c.id), `${at}: kept twice`);
+      checkIds.add(c.id);
+      assert.equal(c.sport, sport, `${at}: sport`);
+      assert.equal(c.intent, 'check', `${at}: intent`);
+      assert.equal(c.units, 0, `${at}: units`);
+      assert.ok(isDate(c.start), `${at}: start`);
+      for (const key of ['matchup', 'market', 'side', 'pick', 'reason']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
+      assert.ok(Number.isFinite(c.odds), `${at}: odds`);
+      for (const key of ['model', 'fair', 'gap']) assert.ok(Number.isFinite(c[key]), `${at}: ${key}`);
+      if (c.checkResult) assert.ok(STATUSES.has(c.checkResult.status), `${at}: result ${c.checkResult.status}`);
+    }
   });
 
   // The public Bets page's picks (libs/ranker/scripts/model/picks.mjs): the algorithm's top bets, ranked
@@ -170,7 +188,8 @@ for (const sport of SPORTS) {
     if (file.record) for (const key of ['overall', 'byLevel']) assert.ok(file.record[key], `picks.json: record.${key}`);
     const KINDS = new Set(['spread', 'total', 'team_total', 'moneyline', 'player', 'team_stat']);
     // (the bands, by the Kelly score: a lock above them all; picks.mjs BANDS)
-    const LEVELS = new Set(['lock', 'high', 'medium', 'low']);
+    // (and a CHECK: not bet, too far from the market; ranked below the locks, above the rest: checks.mjs)
+    const LEVELS = new Set(['lock', 'check', 'high', 'medium', 'low']);
     let last = Infinity;
     for (const [i, p] of file.picks.entries()) {
       const at = `${sport} pick ${i + 1}`;
@@ -180,8 +199,11 @@ for (const sport of SPORTS) {
       assert.ok(LEVELS.has(p.level), `${at}: level ${p.level}`);
       // (a Kelly score: 0 or under for a pick with no edge on its price; files before it, the chance)
       assert.ok(Number.isFinite(p.score), `${at}: score ${p.score}`);
-      assert.ok(p.score <= last, `${at}: not in score order`);
-      last = p.score;
+      // (the bets in score order; the CHECKs between the locks and the rest, by their gap)
+      if (p.level !== 'check') {
+        assert.ok(p.score <= last, `${at}: not in score order`);
+        last = p.score;
+      }
       assert.ok(Number.isFinite(p.odds), `${at}: odds`);
       assert.ok(isDate(p.start), `${at}: start`);
       assert.ok(Array.isArray(p.teams) && p.teams.length === 2, `${at}: teams`);

@@ -31,7 +31,9 @@
 //   chance is more than GAP.prop from the book's (the market knowing something it doesn't); also when his
 //   team's roster can't be read and his numbers were made with teammates missing (whether they're back or
 //   gone can't be told), or (the NFL) the snap counts are missing for a season's quarter or more of the
-//   history's games
+//   history's games. One skipped for the gap alone (kind 'gap') is kept as a CHECK on the model's own side
+//   (checks.mjs, run.mjs betProps): not bet, graded as if it were. Each priced prop keeps the other side's
+//   price beside its own (otherOdds, the book's; none at an assumed -110), for the page's both sides
 //
 //   when: inside the game's props window (leagues.mjs TIMING; run.mjs betProps), each once the news it waits
 //   for is in (timing.mjs newsMissing: an MLB batter's lineup and the other side's starter, a pitcher's own
@@ -545,8 +547,14 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const p = chanceAt('prop', x.fair, x.model, t);
       return { ...x, p, ev: (1 - chances.push) * (p * decimal(x.odds) - 1) };
     });
-    const pick = sides[0].ev >= sides[1].ev ? sides[0] : sides[1];
+    // (the model too far from the book (the gap guard below, the same either side): the model's own side, the
+    // one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the better return is only
+    // the cheaper vig); else the better return)
+    const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
+    const pick = gapSide ?? (sides[0].ev >= sides[1].ev ? sides[0] : sides[1]);
     const { side, model, ev, odds, fair } = pick;
+    // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
+    const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
     const pTrusted = pick.p;
     // (the guard: his status, his line's move)
     const status = statusOf(sport, prop, live, home, game);
@@ -618,6 +626,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       model,
       fair,
       odds,
+      otherOdds,
       priced: !!prop.prices,
       p: pTrusted,
       ev,

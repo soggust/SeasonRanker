@@ -60,12 +60,14 @@ function adminApp() {
   throw new Error('Set FIREBASE_SERVICE_ACCOUNT (the JSON) or GOOGLE_APPLICATION_CREDENTIALS (its path)');
 }
 
-// (the bettor's ledgers, each sport's: its own bets, for the props' values and the price check)
+// (the bettor's ledgers, each sport's: its own bets, for the props' values and the price check; its CHECKs
+// too (checks.mjs: the page shows them), for the price check alone)
 export function readLedgers(root = ROOT) {
   const out = {};
   for (const sport of Object.keys(LEAGUES)) {
     try {
-      out[sport] = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'src/StaticData/model/ledger.json'), 'utf8')).bets ?? [];
+      const ledger = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'src/StaticData/model/ledger.json'), 'utf8'));
+      out[sport] = [...(ledger.bets ?? []), ...(ledger.checks ?? [])];
     } catch {
       out[sport] = [];
     }

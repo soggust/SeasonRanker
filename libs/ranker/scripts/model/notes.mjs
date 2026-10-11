@@ -1,0 +1,177 @@
+// The owner's notes on the desk's picks (Firestore's deskNotes/{id}, the id a pick's: a CHECK's mostly, which
+// the Algorithm page lets an admin explain): { reason: news | role | weather | suspension | market-wrong |
+// other, player?: ESPN's athlete id, status?: out | questionable | active, team?: ESPN's team id, note?, by, at }.
+//
+//   read     once a process, by Firestore's REST API with the service account the workflow already has
+//            (FIREBASE_SERVICE_ACCOUNT, as the play bets' settler uses: its key signs a token, nothing
+//            installed, so it works before the workflow's npm install); FIRESTORE_EMULATOR_HOST for the
+//            emulator. Read only: nothing is written back (each note's outcome is its CHECK's result, kept on
+//            the ledger: checks.mjs). Without the secret, or on any failure, no notes: quietly, the desk as
+//            it was. The key is never printed
+//   applied  a note with concrete news (a player and his status) is an injury override for its game's pricing
+//            from the next run on, till the game starts: merged into that game's injury report (a copy of the
+//            league's, the game's own; MLB's, which the desk doesn't read, a report of the notes alone), the
+//            player put out or questionable (flagged from: 'owner note') or taken off it (active). So the
+//            game's context, its props and its inputs (timing.mjs inputsOf: an open bet on it is priced again)
+//            all see it, and the CHECK can come back as a real bet. His team: the note's, else the report's,
+//            else the CHECK's own player's, else the two teams' rosters; none found, the note isn't applied
+
+import { createSign } from 'node:crypto';
+
+const PROJECT = 'qbranker2026';
+export const REASONS = ['news', 'role', 'weather', 'suspension', 'market-wrong', 'other'];
+// (a note's status as the injury report words it; active: off the report)
+export const NOTE_STATUS = { out: 'Out', questionable: 'Questionable', active: null };
+const TIMEOUT = 15e3;
+// (the most notes a run reads: pages of 300)
+const PAGES = 5;
+
+// (a Firestore REST value as plain data: strings, numbers, booleans, null, times as ISO strings, maps, lists)
+export function fromValue(v) {
+  if (!v || typeof v !== 'object') return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return Number(v.integerValue);
+  if ('doubleValue' in v) return Number(v.doubleValue);
+  if ('booleanValue' in v) return !!v.booleanValue;
+  if ('timestampValue' in v) return v.timestampValue;
+  if ('nullValue' in v) return null;
+  if ('mapValue' in v) return Object.fromEntries(Object.entries(v.mapValue.fields ?? {}).map(([k, x]) => [k, fromValue(x)]));
+  if ('arrayValue' in v) return (v.arrayValue.values ?? []).map(fromValue);
+  return null;
+}
+
+// A note as the desk reads it, or null when it isn't one: its id the doc's; reason one of REASONS (else
+// other); player and team as strings of digits; status one of NOTE_STATUS's (else none)
+export function noteOf(id, d) {
+  if (!id || !d || typeof d !== 'object') return null;
+  const digits = (x) => (x !== null && x !== undefined && /^\d{1,12}$/.test(String(x)) ? String(x) : null);
+  const reason = REASONS.includes(d.reason) ? d.reason : 'other';
+  const status = Object.hasOwn(NOTE_STATUS, d.status ?? '') ? d.status : null;
+  return {
+    id: String(id),
+    reason,
+    player: digits(d.player),
+    status,
+    team: digits(d.team),
+    sport: typeof d.sport === 'string' ? d.sport : null,
+    note: typeof d.note === 'string' ? d.note.slice(0, 500) : null,
+    by: typeof d.by === 'string' ? d.by : null,
+    at: typeof d.at === 'string' ? d.at : Number.isFinite(d.at) ? new Date(d.at).toISOString() : null,
+  };
+}
+
+const b64url = (x) => Buffer.from(x).toString('base64').replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+
+// (the service account's access token: a JWT its key signs, swapped at Google's token endpoint)
+async function tokenOf(account, fetchImpl) {
+  const now = Math.floor(Date.now() / 1000);
+  const aud = account.token_uri || 'https://oauth2.googleapis.com/token';
+  const head = b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
+  const claims = b64url(JSON.stringify({ iss: account.client_email, scope: 'https://www.googleapis.com/auth/datastore', aud, iat: now, exp: now + 3600 }));
+  const signer = createSign('RSA-SHA256');
+  signer.update(`${head}.${claims}`);
+  const jwt = `${head}.${claims}.${b64url(signer.sign(account.private_key))}`;
+  const res = await fetchImpl(aud, {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: jwt }).toString(),
+    signal: AbortSignal.timeout(TIMEOUT),
+  });
+  if (!res.ok) throw new Error(`token: HTTP ${res.status}`);
+  const body = await res.json();
+  if (!body?.access_token) throw new Error('token: none given');
+  return body.access_token;
+}
+
+// Every note (id -> note), or null: no credentials (quietly), or any failure (a short warning, no secrets).
+// env: process.env's names; fetchImpl: fetch (a test's mock)
+export async function readDeskNotes({ env = process.env, fetchImpl = globalThis.fetch, log = console } = {}) {
+  try {
+    let base;
+    let token;
+    if (env.FIRESTORE_EMULATOR_HOST) {
+      base = `http://${env.FIRESTORE_EMULATOR_HOST}/v1/projects/${env.GCLOUD_PROJECT || PROJECT}/databases/(default)/documents`;
+      token = 'owner';
+    } else if (env.FIREBASE_SERVICE_ACCOUNT) {
+      let account;
+      try {
+        account = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+      } catch {
+        throw new Error('FIREBASE_SERVICE_ACCOUNT isn’t valid JSON');
+      }
+      if (!account?.client_email || !account?.private_key) throw new Error('FIREBASE_SERVICE_ACCOUNT has no key');
+      base = `https://firestore.googleapis.com/v1/projects/${account.project_id || PROJECT}/databases/(default)/documents`;
+      token = await tokenOf(account, fetchImpl);
+    } else return null;
+    const out = new Map();
+    let page = '';
+    for (let i = 0; i < PAGES; i++) {
+      const url = `${base}/deskNotes?pageSize=300${page ? `&pageToken=${encodeURIComponent(page)}` : ''}`;
+      const res = await fetchImpl(url, { headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(TIMEOUT) });
+      if (!res.ok) throw new Error(`deskNotes: HTTP ${res.status}`);
+      const body = await res.json();
+      for (const doc of body?.documents ?? []) {
+        const id = decodeURIComponent(String(doc.name ?? '').split('/').pop() ?? '');
+        const n = noteOf(id, fromValue({ mapValue: { fields: doc.fields ?? {} } }));
+        if (n) out.set(n.id, n);
+      }
+      page = body?.nextPageToken ?? '';
+      if (!page) break;
+    }
+    return out;
+  } catch (err) {
+    log.warn?.(`owner's notes not read (${String(err?.message ?? err).slice(0, 120)})`);
+    return null;
+  }
+}
+
+// The notes with concrete news put into their games' injury reports (see above). live: run.mjs r.live (each
+// coming game's facts, its injuries a Map of team id -> [{ id, name, pos, status }]); upcoming: the coming
+// games ({ game }); checks: the ledger's CHECKs (the note's player's name and team, when he's theirs);
+// rosterOf(team): a team's roster ids (a Set) or null. Returns the notes applied ({ id, event, team, player,
+// name, status }), each game's also on its live facts (ownerNotes)
+export async function applyNotes(sport, live, upcoming, notes, { checks = [], rosterOf = async () => null } = {}) {
+  const applied = [];
+  if (!notes?.size || !live?.size) return applied;
+  const games = new Map((upcoming ?? []).map((u) => [String(u.game.id), u.game]));
+  for (const n of notes.values()) {
+    if (!n.player || !n.status || (n.sport && n.sport !== sport)) continue;
+    const game = games.get(n.id.split(':')[0]);
+    const l = game && live.get(game.id);
+    // (a game whose report failed isn't bet this run anyway: run.mjs blindOf)
+    if (!l || l.injuriesFailed) continue;
+    const sides = [String(game.home), String(game.away)];
+    const report = l.injuries instanceof Map ? l.injuries : new Map();
+    let team = n.team && sides.includes(n.team) ? n.team : null;
+    let listed = null;
+    for (const t of sides) {
+      const e = (report.get(t) ?? []).find((p) => String(p.id) === n.player);
+      if (e && (!team || team === t)) (team = t), (listed = e);
+    }
+    const check = checks.find((c) => c.id === n.id && String(c.athlete ?? '') === n.player);
+    if (!team && check?.team && sides.includes(String(check.team))) team = String(check.team);
+    for (const t of sides) {
+      if (team) break;
+      const ids = await rosterOf(t).catch(() => null);
+      if (ids?.has?.(n.player)) team = t;
+    }
+    if (!team) continue;
+    const name = listed?.name || check?.player || `athlete ${n.player}`;
+    // (the game's own copy: the league's report is one Map every game shares)
+    const mine = new Map(report);
+    const list = (mine.get(team) ?? []).filter((p) => String(p.id) !== n.player);
+    if (NOTE_STATUS[n.status]) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: NOTE_STATUS[n.status], from: 'owner note' });
+    mine.set(team, list);
+    l.injuries = mine;
+    const one = { id: n.id, event: String(game.id), team, player: n.player, name, status: n.status };
+    l.ownerNotes = [...(l.ownerNotes ?? []), one];
+    applied.push(one);
+  }
+  return applied;
+}
+
+// (a game's owner notes as words for a bet's context: "Owner note: Jalen Hurts out")
+export const noteWords = (l) => (l?.ownerNotes ?? []).map((x) => `Owner note: ${x.name} ${x.status}`);
+
+// (a note as a CHECK keeps it: its outcome is the CHECK's result)
+export const keptNote = (n, applied) => ({ reason: n.reason, player: n.player, status: n.status, note: n.note, by: n.by, at: n.at, ...(applied ? { applied: true } : {}) });

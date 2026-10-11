@@ -45,6 +45,14 @@
 //   6. the props (below), then every new bet placed, each game's open stake, markets and props together, at
 //      most GAME_CAP (leagues.mjs; desk.mjs capGame), an earlier run's action bets on the game taken back to
 //      make room for this run's edge bets (desk.mjs makeRoom)
+//   6c. the CHECKs (checks.mjs): a market or prop skipped only for the model's distance from the book (the
+//      gap guard) isn't bet, but kept on the ledger apart from the bets (ledger.checks: no units, never in the
+//      record, the trust fit, the caps or the CLV) on the model's side, written again while it isn't locked
+//      and something material changed, shown on the Bets page as a CHECK (picks.mjs), and graded as a bet
+//      would be once final (4c: checkResult). The owner's notes on them (notes.mjs: Firestore's deskNotes,
+//      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it) are kept on them, and a note's
+//      concrete news (a player out, questionable or active) goes into its game's injury report for the
+//      pricing (2b), so the market may come back as a real bet
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -77,6 +85,8 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
+import { atUnit, checkOf, checkResultOf, checkSummary, markPlaced, modelSide, upsertCheck } from './checks.mjs';
+import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -166,6 +176,8 @@ async function runSport(sport) {
   // (--picks-only: the picks written from the ledger as it stands, nothing fetched, fit or bet)
   if (PICKS_ONLY) return writePicks(r, true);
   await writeTeams(r);
+  // (the owner's notes on the picks, read once for every sport: none without the secret, quietly)
+  r.notes = await (NOTES ??= readDeskNotes());
   await loadHistory(r);
   fitRatings(r);
   await fitTheContext(r);
@@ -189,6 +201,7 @@ async function runSport(sport) {
   betGames(r);
   await betProps(r);
   placeBets(r);
+  recordChecks(r);
   writePicks(r);
   saveState(r);
 }
@@ -253,7 +266,9 @@ async function loadHistory(r) {
   // (the last few days and the next two; and the day of any bet still open from before then, should the
   // runs ever have stopped a while)
   const days = new Set(Array.from({ length: 7 }, (_, i) => ymd(new Date(now.getTime() + (i - 4) * DAY))));
-  const open = readKept(r.files.ledger, { bets: [] }).bets.filter((b) => b.status === 'open');
+  // (the CHECKs not yet graded too: checks.mjs)
+  const kept = readKept(r.files.ledger, { bets: [] });
+  const open = [...kept.bets.filter((b) => b.status === 'open'), ...(kept.checks ?? []).filter((c) => !c.checkResult)];
   for (const bet of open) {
     if (Date.parse(bet.start) < now.getTime() - 4 * DAY) days.add(ymd(new Date(bet.start)));
   }
@@ -365,7 +380,12 @@ function matchGames(events, upcoming) {
 
 // (a market resting: skipped by the guard or not priced by the book a run ago, not asked about again until
 // its time is up)
-const resting = (r, id) => Date.parse(r.rest?.[id]?.until ?? '') > r.now.getTime();
+// (one rested before an owner's note on its game was written isn't: the note's news may change it)
+const resting = (r, id) => {
+  const until = Date.parse(r.rest?.[id]?.until ?? '');
+  if (!(until > r.now.getTime())) return false;
+  return !((r.noteAt?.get(id.split(':')[0]) ?? 0) > until - REST_FOR);
+};
 function rest(r, id, why) {
   r.rest[id] = { until: new Date(r.now.getTime() + REST_FOR).toISOString(), why };
 }
@@ -412,6 +432,8 @@ async function fitTheContext(r) {
   try {
     const t0 = Date.now();
     r.live = await gather(sport, cfg, history, r.upcoming, r.facts, wantSource(r), (r.times = {}));
+    // (the owner's notes with concrete news, into their games' injury reports before the context reads them)
+    await noteInjuries(r);
     const { nfl: _rows, ...kept } = r.facts;
     write(r.files.context, kept);
     r.feats = featurize(sport, cfg, history, r.facts, r.live);
@@ -432,6 +454,29 @@ async function fitTheContext(r) {
   }).state;
   r.weights = r.teams.weights ?? null;
   fitTheMargins(r);
+}
+
+// 2b. the owner's notes (notes.mjs: Firestore's deskNotes, read at the run's start) with a player and his
+// status put into their coming games' injury reports, flagged as an owner's note: the context, the props and
+// the inputs (an open bet on the game priced again: repriceOpen) all see it, so a CHECK can come back as a
+// real bet. A noted game's markets resting since before the note are asked about again (resting), and its
+// props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes
+async function noteInjuries(r) {
+  r.notesApplied = new Set();
+  r.noteAt = new Map();
+  if (!r.notes?.size) return;
+  try {
+    const checks = readKept(r.files.ledger, {}).checks ?? [];
+    const applied = await applyNotes(r.sport, r.live, r.upcoming, r.notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
+    for (const x of applied) {
+      r.notesApplied.add(x.id);
+      const at = Date.parse(r.notes.get(x.id)?.at ?? '') || 0;
+      r.noteAt.set(x.event, Math.max(r.noteAt.get(x.event) ?? 0, at));
+    }
+    if (applied.length) console.log(`${r.sport}: owner's notes put into the injury reports: ${applied.map((x) => `${x.name} ${x.status}`).join(', ')}`);
+  } catch (err) {
+    console.warn(`${r.sport}: owner's notes not applied (${err.message})`);
+  }
 }
 
 // 2b'. the margins' shape (margins.mjs fitMargins): how often each margin comes against the normal's say, fit
@@ -671,6 +716,7 @@ async function gradeBets(r) {
       console.warn(`${sport}: prop ${bet.id} not graded (${err.message})`);
     }
   }
+  await gradeChecks(r);
   await statCorrections(r);
   // (the ones just graded, and any graded before there were post-mortems; once, when the rule for a broken
   // premise changes (PM_RULE), the ones it weighed down, again)
@@ -723,6 +769,41 @@ async function statCorrections(r) {
     }
   }
   if (changed) console.log(`${sport}: ${changed} props' counts corrected in the box score since (noted; graded as the book graded them, at the final)`);
+}
+
+// 4c. the CHECKs (checks.mjs: the markets too far from the book to bet, kept anyway) graded as a bet would be,
+// at a unit, once their games are final (void the same way when called off; a prop's count waiting PROP_WAIT
+// at most): their result (checkResult) is what they'd have done, never in the record
+async function gradeChecks(r) {
+  const { sport, cfg, games, at } = r;
+  let n = 0;
+  for (const c of r.ledger.checks ?? []) {
+    if (c.checkResult) continue;
+    const g = games.get(c.event);
+    try {
+      const voided = voidOf(c, g, r.now.getTime());
+      if (voided) {
+        c.checkResult = checkResultOf(voided, at);
+        n++;
+        continue;
+      }
+      if (!g?.final || g.hs === null) continue;
+      if (c.market !== 'prop') {
+        c.checkResult = checkResultOf(settle(atUnit(c), g), at);
+        n++;
+        continue;
+      }
+      const body = await finalSummary(sport, cfg.league, g.id);
+      if (!body) continue;
+      const value = await statInFinal(sport, c, body, r.facts?.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete) });
+      if (value === undefined && r.now.getTime() - Date.parse(c.start) < PROP_WAIT) continue;
+      c.checkResult = checkResultOf(value === undefined ? { status: 'push', profit: 0, void: true, actual: null, final: 'stat not read' } : settleProp(atUnit(c), value), at);
+      n++;
+    } catch (err) {
+      console.warn(`${sport}: CHECK ${c.id} not graded (${err.message})`);
+    }
+  }
+  if (n) console.log(`${sport}: ${n} CHECKs graded (what they'd have done, out of the record)`);
 }
 
 // (--replace: the open bets on games not started yet (more than REPRICE_BY off: one taken back closer might
@@ -879,6 +960,8 @@ function betGames(r) {
   const { sport, cfg, params, trust, at } = r;
   const held = new Map();
   r.pending = [];
+  // (this run's CHECKs, game markets' and props': recordChecks)
+  r.checks = [];
   for (const { game, lines } of r.upcoming) {
     const { exp, f, adjM, adjT } = expectFor(r, game);
     const fairFrom = lines.fairSource ?? {};
@@ -932,14 +1015,51 @@ function betGames(r) {
       if (g?.skip || pick.anchored !== false) return g;
       return { why: [g?.why, 'no spread market to price the moneyline off'].filter(Boolean).join('; ') };
     };
-    const skipped = (key, id, guard) => {
+    // (an owner's note on the game: its words on what's bet, checks.mjs and notes.mjs)
+    const noted = noteWords(r.live?.get(game.id));
+    // (one skipped for the model's distance from the book alone (gapGuard's kind 'gap'): kept as a CHECK on
+    // the model's own side, not bet (checks.mjs; recordChecks))
+    const checkFor = (key, id, pick, guard) => {
+      const s = pick.other ? modelSide([pick, pick.other]) : pick;
+      const c = checkOf(
+        {
+          id,
+          event: game.id,
+          sport,
+          start: game.date,
+          placedAt: new Date().toISOString(),
+          matchup: `${game.awayAbbr} @ ${game.homeAbbr}`,
+          market: key,
+          side: s.side,
+          line: s.line,
+          odds: s.odds,
+          otherOdds: s.other?.odds ?? null,
+          model: round(s.model, 4),
+          fair: round(s.fair, 4),
+          p: round(s.p, 4),
+          ev: round(s.ev, 4),
+          ...(s.push ? { push: round(s.push, 4) } : {}),
+          expMargin: round(exp.margin, 2),
+          expTotal: round(exp.total, 2),
+          book: lines.book,
+          fairFrom: fairFrom[key] ?? 'its own prices',
+          context: { ...seen, ...(noted.length ? { ownerNotes: noted } : {}) },
+        },
+        // (the guard's words for the model's side: the skip was judged on the side the price favored)
+        gapGuard(key, s.model, s.fair) ?? guard,
+      );
+      c.pick = pickText(c, game);
+      r.checks.push(c);
+    };
+    const skipped = (key, id, guard, pick) => {
       rest(r, id, guard.why);
-      if (DRY) console.log(`${sport} (dry) skipped ${game.awayAbbr} @ ${game.homeAbbr} ${key}: ${guard.why}; ${JSON.stringify(seen)}`);
+      if (guard.kind === 'gap' && pick) checkFor(key, id, pick, guard);
+      if (DRY) console.log(`${sport} (dry) skipped ${game.awayAbbr} @ ${game.homeAbbr} ${key}: ${guard.why}${guard.kind === 'gap' ? ' (a CHECK)' : ''}; ${JSON.stringify(seen)}`);
     };
     // (the skips first, so a market the guard skips never makes the other give way: oneSide)
     picks = picks.filter((x) => {
       x.guard = guardFor(x.market, x.pick);
-      if (x.guard?.skip) skipped(x.market, x.id, x.guard);
+      if (x.guard?.skip) skipped(x.market, x.id, x.guard, x.pick);
       return !x.guard?.skip;
     });
     // (the spread and the moneyline never on one side, this run's or against the game's open bets: oneSide)
@@ -960,7 +1080,7 @@ function betGames(r) {
       // (a flipped side's guards its own: the move counted against the new side)
       let guard = flipped ? guardFor(key, pick) : was;
       if (guard?.skip) {
-        skipped(key, id, guard);
+        skipped(key, id, guard, pick);
         continue;
       }
       // (on ESPN's board with a key to hand: The Odds API's price never came; for the data only)
@@ -994,7 +1114,7 @@ function betGames(r) {
         expTotal: round(exp.total, 2),
         book: lines.book,
         fairFrom: fairFrom[market.market] ?? 'its own prices',
-        context: { ...seen, ...(guard ? { guard: guard.why } : {}), ...(flipped ? { oneSide: `the other side of its ${key === 'ml' ? 'spread' : 'moneyline'}'s, which took this one` } : {}) },
+        context: { ...seen, ...(guard ? { guard: guard.why } : {}), ...(flipped ? { oneSide: `the other side of its ${key === 'ml' ? 'spread' : 'moneyline'}'s, which took this one` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
         status: 'open',
         profit: 0,
         // (the inputs it was priced on, and the bet it replaces when priced again on news: repriceOpen)
@@ -1117,6 +1237,13 @@ async function betProps(r) {
   const asked = read(PROPS_ASKED, {});
   if (!DRY) {
     const owe = new Set([...(r.replacedProps ?? []), ...[...(r.takenBack?.values() ?? [])].filter((x) => x.bet.market === 'prop').map((x) => x.bet.event)]);
+    // (a game with a prop CHECK and an owner's note not seen before: its props asked for again, priced on it)
+    const propChecks = new Set((ledger.checks ?? []).filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.event));
+    for (const [id, noteAt] of r.noteAt ?? []) {
+      if (!propChecks.has(id) || asked[`${id}:note`] === noteAt) continue;
+      asked[`${id}:note`] = noteAt;
+      owe.add(id);
+    }
     for (const id of owe) asked[`${id}:owed`] = 1;
     if (owe.size) write(PROPS_ASKED, asked);
   }
@@ -1198,6 +1325,15 @@ async function betProps(r) {
           if (news.length) Object.assign(x, { guard: { why: [x.guard?.why, `bet at the last chance before the news: ${news.join(', ')}`].filter(Boolean).join('; ') }, units: 0.5 });
           candidates.push({ game, x, exp });
         }
+        // (one skipped for the model's distance from the book alone: kept as a CHECK on the model's side
+        // (checks.mjs), on the same terms a bet would wait for: a real price, the news it waits for)
+        for (const x of priced) {
+          if (x.guard?.kind !== 'gap' || (!x.priced && hasKey())) continue;
+          if (newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher }).length && phase !== 'last') continue;
+          const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+          if (r.placed.has(id) && !DRY) continue;
+          r.checks?.push(checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard));
+        }
       }
       for (const x of priced) r.snapshot.projections[`${game.id}:${x.prop.stat.key}:${x.prop.athlete.id}`] = [x.projection.mean, x.prop.line, x.projection.pOver];
     } catch (err) {
@@ -1219,45 +1355,7 @@ async function betProps(r) {
     if (caps.perPlayer !== null && caps.perPlayer !== undefined && mine.filter((b) => String(b.athlete) === String(x.prop.athlete.id)).length >= caps.perPlayer) continue;
     x.units = Math.min(x.units, caps.maxUnits);
     if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
-    const bet = {
-      id,
-      event: game.id,
-      sport,
-      start: game.date,
-      placedAt: new Date().toISOString(),
-      matchup: `${game.awayAbbr} @ ${game.homeAbbr}`,
-      market: 'prop',
-      propType: x.prop.stat.key,
-      statLabel: x.prop.stat.label,
-      player: x.prop.athlete.name,
-      athlete: x.prop.athlete.id,
-      // (MLB: his StatsAPI id too, which grades his total bases by id rather than by name)
-      ...(sport === 'mlb' && String(x.pid).startsWith('mlb:') ? { mlbId: String(x.pid).slice(4) } : {}),
-      // (his team, ESPN's id: the desk colors the bet by it)
-      team: x.prop.athlete.team ?? null,
-      side: x.side,
-      line: x.prop.line,
-      odds: x.odds,
-      oddsAssumed: !x.priced,
-      model: round(x.model, 4),
-      fair: round(x.fair, 4),
-      p: round(x.p, 4),
-      ev: round(x.ev, 4),
-      intent: x.ev > 0 && !x.guard ? 'edge' : 'action',
-      units: x.units,
-      expMargin: round(exp.margin, 2),
-      expTotal: round(exp.total, 2),
-      book: 'DraftKings',
-      pricesFrom: x.prop.source ?? (x.priced ? 'espn' : 'assumed -110'),
-      projection: x.projection,
-      tested,
-      context: { move: x.move, ...(x.guard ? { guard: x.guard.why } : {}) },
-      status: 'open',
-      profit: 0,
-      // (the inputs it was priced on, and the bet it replaces when priced again on news: repriceOpen)
-      ...stampOf(r, id, game.id),
-    };
-    bet.pick = `${bet.player} ${bet.side === 'over' ? 'Over' : 'Under'} ${bet.line} ${bet.statLabel}`;
+    const bet = propBet(r, game, x, exp, { id, intent: x.ev > 0 && !x.guard ? 'edge' : 'action', units: x.units, tested });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -1267,6 +1365,83 @@ async function betProps(r) {
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${k === 'gap' ? 'past the market gap' : 'by the other guards'}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
+}
+
+// A priced prop (props.mjs priceProps) as the ledger's bet (or, intent 'check', the CHECK's: checks.mjs): its
+// player and his team, its side, line and price and the other side's, its chances, its projection, the context
+// it saw (an owner's note on the game among it), and the inputs it was priced on
+function propBet(r, game, x, exp, { id, intent, units, tested }) {
+  const { sport } = r;
+  const noted = noteWords(r.live?.get(game.id));
+  const bet = {
+    id,
+    event: game.id,
+    sport,
+    start: game.date,
+    placedAt: new Date().toISOString(),
+    matchup: `${game.awayAbbr} @ ${game.homeAbbr}`,
+    market: 'prop',
+    propType: x.prop.stat.key,
+    statLabel: x.prop.stat.label,
+    player: x.prop.athlete.name,
+    athlete: x.prop.athlete.id,
+    // (MLB: his StatsAPI id too, which grades his total bases by id rather than by name)
+    ...(sport === 'mlb' && String(x.pid).startsWith('mlb:') ? { mlbId: String(x.pid).slice(4) } : {}),
+    // (his team, ESPN's id: the desk colors the bet by it)
+    team: x.prop.athlete.team ?? null,
+    side: x.side,
+    line: x.prop.line,
+    odds: x.odds,
+    // (the other side's price, the book's: the page shows both sides; none at an assumed -110)
+    ...(Number.isFinite(x.otherOdds) ? { otherOdds: x.otherOdds } : {}),
+    oddsAssumed: !x.priced,
+    model: round(x.model, 4),
+    fair: round(x.fair, 4),
+    p: round(x.p, 4),
+    ev: round(x.ev, 4),
+    intent,
+    units,
+    expMargin: round(exp.margin, 2),
+    expTotal: round(exp.total, 2),
+    book: 'DraftKings',
+    pricesFrom: x.prop.source ?? (x.priced ? 'espn' : 'assumed -110'),
+    projection: x.projection,
+    tested,
+    context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
+    status: 'open',
+    profit: 0,
+    // (the inputs it was priced on, and the bet it replaces when priced again on news: repriceOpen)
+    ...(intent === 'check' ? {} : stampOf(r, id, game.id)),
+  };
+  bet.pick = `${bet.player} ${bet.side === 'over' ? 'Over' : 'Under'} ${bet.line} ${bet.statLabel}`;
+  return bet;
+}
+
+// 6c. this run's CHECKs (betGames' and betProps': checks.mjs) on the ledger's list (ledger.checks, apart from
+// its bets): a new one added, one there written again while it isn't locked and something material changed;
+// one whose market was bet after all noted with the bet; and each one's owner's note kept on it (notes.mjs),
+// its outcome the CHECK's own result (gradeChecks)
+function recordChecks(r) {
+  const { sport } = r;
+  let added = 0;
+  let updated = 0;
+  for (const c of r.checks ?? []) {
+    const res = upsertCheck(r.ledger, c, r.now);
+    if (res === 'new') added++;
+    else if (res === 'updated') updated++;
+    if (DRY && res) console.log(`${sport} (dry) CHECK ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})`);
+  }
+  const became = markPlaced(r.ledger);
+  let noted = 0;
+  for (const c of r.ledger.checks ?? []) {
+    const n = r.notes?.get(c.id);
+    if (!n) continue;
+    const kept = keptNote(n, c.note?.applied || r.notesApplied?.has(c.id));
+    if (JSON.stringify(kept) === JSON.stringify(c.note)) continue;
+    c.note = kept;
+    noted++;
+  }
+  if (added || updated || became || noted) console.log(`${sport}: CHECKs (too far from the market to bet, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
 }
 
 // The state: the settings and how they test, the trust, the context, the props, the changelog, the teams by
@@ -1321,6 +1496,9 @@ function saveState(r) {
       .map(([id, rating]) => ({ id, abbr: abbr.get(id) ?? id, rating: round(rating, 2), off: round(r.teams.o.get(id), 2), def: round(r.teams.d.get(id), 2) }))
       .sort((a, b) => b.rating - a.rating),
     record: record(ledger.bets),
+    // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
+    // owner's notes' reasons, for tuning the gap)
+    checks: checkSummary(ledger.checks ?? []),
     // (the lines' source this run, and The Odds API's credits)
     lines: r.linesSource,
     backtest: r.backtest,
@@ -1403,6 +1581,8 @@ const BACKTEST = process.argv.includes('--backtest');
 const PICKS_ONLY = process.argv.includes('--picks-only');
 // (the runs' recent gap, hours: set below, before any sport runs; null with too few runs kept)
 let GAP = null;
+// (the owner's notes, read once a process: notes.mjs readDeskNotes)
+let NOTES = null;
 // (only when run as the script itself: imported (a check, a test), it bets nothing and asks nothing)
 if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.url)) === '') {
   const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));

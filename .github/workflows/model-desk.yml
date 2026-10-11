@@ -65,6 +65,9 @@ jobs:
         env:
           # (The Odds API: real lines and prices, props and history; without it the free ESPN board is used)
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          # (the owner's notes on the picks, Firestore's deskNotes: read only, by its REST API, nothing to install;
+          # without it, or on any failure, the desk runs without them: libs/ranker/scripts/model/notes.mjs)
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           REPLACE: ${{ inputs.replace && '--replace' || '' }}
         run: node libs/ranker/scripts/model/run.mjs $REPLACE
 
