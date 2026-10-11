@@ -728,6 +728,12 @@ section footer .mat-mdc-select.season-select {
   outline-offset: 2px !important;
 }
 
+// (the rankings' player search: its focus a line under the text instead (rankings.component.scss find-input),
+// the ring too tight in its bar)
+.find-bar .find-input:focus-visible {
+  outline: none !important;
+}
+
 // ---------------------------------------------------------------------------
 // Keyframes used from inside a component's @media blocks (reduced motion, a phone's width): defined here, once,
 // globally. Angular renames a component's own keyframes but not the names inside its media queries, so defined in

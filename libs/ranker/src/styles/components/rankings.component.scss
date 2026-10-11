@@ -206,17 +206,25 @@ section.rankings-wrapper > footer {
     text-shadow: var(--scoreboard-glow);
   }
 
+  // (focused: a line under the text in the board's light, not the global ring (too tight in the bar); its
+  // room kept by a margin, so the box sits where it did)
   .find-input {
     background: none;
     border: none;
+    border-bottom: 2px solid transparent;
     color: #fff;
     flex: 1 1 auto;
     font-family: v.$font-base;
     font-size: 13px;
     font-weight: 700;
+    margin-left: 2px;
     min-width: 0;
     outline: none;
-    padding: 0;
+    padding: 2px 0 1px;
+
+    &:focus {
+      border-bottom-color: var(--scoreboard-led);
+    }
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.45);

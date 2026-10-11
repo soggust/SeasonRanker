@@ -603,9 +603,10 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     event.preventDefault();
   }
 
-  // A hit: his card for his latest season, on his own tab (the grid stays where it is), the search shut
+  // A hit: his card for his latest ranked season (his latest unranked one if he was never ranked), on his own
+  // tab (the grid stays where it is), the search shut
   openFound(hit: CompareHit): void {
-    const season = hit.seasons.at(-1);
+    const season = hit.ranked?.at(-1) ?? hit.seasons.at(-1);
     if (season === undefined) return;
     this.finder.search('');
     this.closeFind();

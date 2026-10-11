@@ -116,6 +116,8 @@ export interface CompareHit {
   span: string;
   best: { season: number; rank: number; of: number };
   seasons: number[];
+  // (the seasons he was ranked in, oldest first: none for a player with unranked (UR) seasons alone)
+  ranked: number[];
 }
 
 export interface CompareCell {
@@ -744,6 +746,7 @@ export class PlayerCompare {
           span: SPORT.careerOnly ? '' : first === last ? SPORT.seasonText(first) : `${first}-${last}`,
           best: { season: best.season, rank: best.rank, of: best.of },
           seasons: seasons.map((s) => s.season),
+          ranked: seasons.filter((s) => s.rank > 0).map((s) => s.season),
         };
       });
     });
