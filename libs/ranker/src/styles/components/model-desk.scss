@@ -1171,16 +1171,25 @@ card-panel {
     }
   }
 
-  // (Latest Results, ten columns: its game's date shorter than a time, its why a little narrower)
+  // (Latest Results, ten columns, fitting a 1400px window: its game's date shorter than a time, its why, final
+  // and chance narrower (a long final cut short, its whole on hover), the pick the rest)
   .desk-cols-recent {
-    min-width: 1350px;
+    min-width: 1150px;
 
     .desk-c-game {
-      width: 186px;
+      width: 170px;
     }
 
     .desk-c-why {
-      width: 230px;
+      width: 180px;
+    }
+
+    .desk-c-final {
+      width: 140px;
+    }
+
+    .desk-c-chance {
+      width: 84px;
     }
   }
 
