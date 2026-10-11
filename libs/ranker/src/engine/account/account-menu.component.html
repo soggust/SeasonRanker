@@ -32,7 +32,7 @@
       }
     </div>
     @for (item of items; track item.hash) {
-      <a mat-menu-item [href]="item.hash" [class.current]="isOpen(item.hash)" [attr.aria-current]="isOpen(item.hash) ? 'page' : null">
+      <a mat-menu-item [href]="item.href" [class.current]="isOpen(item.hash)" [attr.aria-current]="isOpen(item.hash) ? 'page' : null">
         <mat-icon aria-hidden="true" [fontIcon]="item.icon"></mat-icon><span>{{ item.label }}</span>
         <!-- how many requests wait -->
         @if (item.hash === '#friends') {

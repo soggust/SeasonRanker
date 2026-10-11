@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild, effect } from '@angular/core';
+import { goHome, pageHash } from '@ranker/engine/page-url';
 import { SPORT } from '@sport/sport';
 import { DATA } from '@ranker/engine/data';
 import { SITE_SPORTS } from '@ranker/core/sports';
@@ -57,7 +58,7 @@ export async function resizeAvatar(file: Blob): Promise<string> {
   }
 }
 
-// (#account/privacy: Settings with its Privacy panel open, scrolled to)
+// (#account/privacy, /settings/privacy: Settings with its Privacy panel open, scrolled to)
 export const PRIVACY_HASH = '#account/privacy';
 
 // The Settings page (#account): the profile (the picture, sign-in methods and password, the email, name,
@@ -103,7 +104,7 @@ export class AccountPageComponent implements OnDestroy {
 
   // The panels (the profile open; Privacy shut unless the hash asks for it)
   profileOpen = true;
-  privacyOpen = location.hash === PRIVACY_HASH;
+  privacyOpen = pageHash() === PRIVACY_HASH;
 
   // The account
   currentPassword = '';
@@ -142,7 +143,7 @@ export class AccountPageComponent implements OnDestroy {
   // (#account/privacy while already here: open Privacy and bring it into view)
   @HostListener('window:hashchange')
   onHashChange(): void {
-    if (location.hash !== PRIVACY_HASH) return;
+    if (pageHash() !== PRIVACY_HASH) return;
     this.privacyOpen = true;
     this.showPrivacy();
   }
@@ -439,8 +440,7 @@ export class AccountPageComponent implements OnDestroy {
     this.deleteError = '';
     try {
       await this.account.deleteAccount(this.hasPassword ? this.deletePassword : undefined);
-      history.pushState(null, '', location.pathname + location.search);
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      goHome();
     } catch (error) {
       const code = (error as { code?: string }).code;
       this.deleteError =

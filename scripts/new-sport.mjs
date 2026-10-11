@@ -73,6 +73,12 @@ save('package.json', pkg);
 // firebase.json: serve it at /<id>/
 const firebase = json('firebase.json');
 firebase.hosting.rewrites.push({ source: `/${id}`, destination: `/${id}/index.html` }, { source: `/${id}/**`, destination: `/${id}/index.html` });
+// (and the shared pages measured per sport, /community/<id>, /lists/<id>/..., /tracker/<id> (page-url.ts), ahead of the
+// rules that send those pages to the first sport's app)
+firebase.hosting.rewrites.unshift(
+  { source: `/@(community|lists|tracker)/${id}`, destination: `/${id}/index.html` },
+  { source: `/@(community|lists|tracker)/${id}/**`, destination: `/${id}/index.html` },
+);
 firebase.hosting.headers.push({ source: `/${id}/`, headers: [{ key: 'Cache-Control', value: 'no-cache' }] });
 save('firebase.json', firebase);
 

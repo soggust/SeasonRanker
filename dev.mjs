@@ -28,9 +28,12 @@ const TYPES = {
   '.map': 'application/json',
 };
 
-// Live reload: each page listens on /__reload and reloads when its own app rebuilds
+const SHARED_PAGES = ['bets', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u'];
+
+// Live reload: each page listens on /__reload and reloads when its own app rebuilds (its base href's, so a
+// shared page's address, /wallet, too)
 const listeners = new Set();
-const RELOAD = `<script>new EventSource('/__reload').onmessage = (e) => location.pathname.startsWith('/' + e.data + '/') && location.reload();</script>`;
+const RELOAD = `<script>new EventSource('/__reload').onmessage = (e) => new URL(document.baseURI).pathname === '/' + e.data + '/' && location.reload();</script>`;
 
 // (on Windows the build runs under a shell: end its whole process tree, not just the shell)
 const kill = (child) => {
@@ -85,6 +88,13 @@ createServer((req, res) => {
   if (url.pathname === '/') {
     res.writeHead(302, { Location: `/${sports[0].id}/${url.search}` });
     return res.end();
+  }
+  // (the pages every sport shares, at their own addresses, as firebase.json serves them: from the first sport's
+  // app, or the sport's own for /community/<id>, /lists/<id>/..., /tracker/<id> (page-url.ts))
+  const [, page, named] = url.pathname.split('/');
+  if (SHARED_PAGES.includes(page)) {
+    const app = ['community', 'lists', 'tracker'].includes(page) && sports.some((s) => s.id === named) ? named : sports[0].id;
+    url.pathname = `/${app}/`;
   }
   const [, id, ...rest] = url.pathname.split('/');
   if (!sports.some((s) => s.id === id)) {

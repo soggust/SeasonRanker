@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { SPORT } from '@sport/sport';
+import { goHome, pageHash, pagePath } from '@ranker/engine/page-url';
 import { AccountService } from './account.service';
 import { errorMessage, firstName } from './account-helpers';
 import { canUse } from './features';
 
 // The sport bar's account entry, on the far right: signed out, a small Sign in (the brand after it);
 // signed in, in the brand's place, the user's first name then their avatar (phones: the avatar alone),
-// opening their menu: the account pages (hash routes in app.component), Settings and Sign out. A faint
+// opening their menu: the account pages (at their own addresses: page-url.ts), Settings and Sign out. A faint
 // circle while a returning user's sign-in is restored.
 @Component({
   selector: 'account-menu',
@@ -24,7 +26,7 @@ export class AccountMenuComponent {
     { hash: '#wallet', icon: 'account_balance_wallet', label: 'Betting Wallet' },
     { hash: '#friends', icon: 'group', label: 'Friends' },
     { hash: '#account', icon: 'settings', label: 'Settings' },
-  ];
+  ].map((item) => ({ ...item, href: pagePath(item.hash, SPORT.id) }));
 
   // (the Betting Wallet only where play betting is open: development, or an admin, like the Bets link)
   get items() {
@@ -41,17 +43,15 @@ export class AccountMenuComponent {
   }
 
   isOpen(hash: string): boolean {
-    return location.hash === hash || location.hash.startsWith(hash + '/');
+    const here = pageHash();
+    return here === hash || here.startsWith(hash + '/');
   }
 
   async signOut(): Promise<void> {
     try {
       await this.account.signOut();
       // (off an account page: back to the rankings)
-      if (location.hash && location.hash !== '#bets') {
-        history.pushState(null, '', location.pathname + location.search);
-        window.dispatchEvent(new HashChangeEvent('hashchange'));
-      }
+      if (pageHash() && pageHash() !== '#bets') goHome();
     } catch (error) {
       alert(errorMessage(error));
     }

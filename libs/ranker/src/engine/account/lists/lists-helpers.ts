@@ -260,9 +260,9 @@ export function logoUrl(sport: string, logo: string | null | undefined): string 
   return /^(https?:|data:|\/)/.test(logo) ? logo : `/${sport}/${logo}`;
 }
 
-// A list's address, to open or share it: on its own sport's page
+// A list's address, to open or share it: shown by its own sport's app (/lists/<sport>/<uid>/<id>)
 export function listPath(sport: string, owner: string, id: string): string {
-  return `/${sport}/#lists/${encodeURIComponent(owner)}/${encodeURIComponent(id)}`;
+  return `/lists/${sport}/${encodeURIComponent(owner)}/${encodeURIComponent(id)}`;
 }
 
 // (#lists/<uid>/<id>: whose list and which; null for the lists page itself)

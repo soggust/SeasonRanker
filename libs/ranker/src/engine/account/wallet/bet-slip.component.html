@@ -13,7 +13,7 @@
     <header class="slip-head">
       <h2>Bet slip</h2>
       @if (account.signedIn()) {
-        <a class="slip-balance" href="#wallet" title="Your play money: open the wallet">
+        <a class="slip-balance" href="/wallet" title="Your play money: open the wallet">
           <small>Wallet</small><b>{{ wallet.balance() | number: '1.0-2' }}u</b>
         </a>
       }
@@ -66,7 +66,7 @@
       </ol>
     } @else if (wallet.placed()?.placed; as n) {
       <p class="slip-done" role="status">
-        <mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="#wallet">See them in your wallet</a>
+        <mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a>
       </p>
     } @else {
       <p class="slip-empty">Tap a price on any game's lines to add it here.</p>

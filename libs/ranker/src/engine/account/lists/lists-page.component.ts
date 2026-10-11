@@ -1,4 +1,5 @@
 import { Component, HostListener, effect, inject } from '@angular/core';
+import { goHome, pageHash } from '@ranker/engine/page-url';
 import { SPORT } from '@sport/sport';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { badgeColor } from '@sport/team-colors';
@@ -18,8 +19,8 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
       @if (target; as t) {
         <!-- (the lists' strip, as My Lists' and the Community's: back on the left, the Community in its corner) -->
         <nav class="lists-bar page-crumbs" aria-label="Lists">
-          <a class="app-btn-primary small bar-back" href="#lists"><mat-icon aria-hidden="true" fontIcon="arrow_back"></mat-icon>{{ account.user() ? 'My Lists' : 'Lists' }}</a>
-          <a class="app-btn-primary small bar-link" href="#community"><mat-icon aria-hidden="true" fontIcon="groups"></mat-icon>Community</a>
+          <a class="app-btn-primary small bar-back" href="/lists"><mat-icon aria-hidden="true" fontIcon="arrow_back"></mat-icon>{{ account.user() ? 'My Lists' : 'Lists' }}</a>
+          <a class="app-btn-primary small bar-link" href="/community"><mat-icon aria-hidden="true" fontIcon="groups"></mat-icon>Community</a>
         </nav>
         <list-view [owner]="t.owner" [listId]="t.id"></list-view>
       } @else if (!account.ready()) {
@@ -30,7 +31,7 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
           <h2>My Lists</h2>
           <p class="soon-detail">Sign in to save your rankings as they are, see how they hold up, share them and submit them to the Community.</p>
           <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
-          <a class="soon-back" href="#community">See the Community’s lists</a>
+          <a class="soon-back" href="/community">See the Community’s lists</a>
         </div>
       } @else {
         <!-- The lists' bar: the sport pills, the Community in its corner (the Community's own top row is the same) -->
@@ -47,7 +48,7 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
             </div>
           }
           </div>
-          <a class="app-btn-primary small bar-link" href="#community"><mat-icon aria-hidden="true" fontIcon="groups"></mat-icon>Community</a>
+          <a class="app-btn-primary small bar-link" href="/community"><mat-icon aria-hidden="true" fontIcon="groups"></mat-icon>Community</a>
         </div>
 
         @if (lists === null) {
@@ -118,7 +119,7 @@ export class ListsPageComponent {
   readonly listWhere = listWhere;
   readonly dateText = dateText;
 
-  target = readListHash(location.hash);
+  target = readListHash(pageHash());
   sport: string | null = null;
 
   constructor() {
@@ -128,7 +129,7 @@ export class ListsPageComponent {
 
   @HostListener('window:hashchange')
   hashChanged(): void {
-    const next = readListHash(location.hash);
+    const next = readListHash(pageHash());
     if (next?.owner !== this.target?.owner || next?.id !== this.target?.id) this.target = next;
   }
 
@@ -151,7 +152,7 @@ export class ListsPageComponent {
   }
 
   href(list: SavedList): string {
-    return list.sport === SPORT.id ? `#lists/${encodeURIComponent(list.owner)}/${encodeURIComponent(list.id)}` : listPath(list.sport, list.owner, list.id);
+    return listPath(list.sport, list.owner, list.id);
   }
 
   logo(list: SavedList, teamLogo: string | null): string | null {
@@ -169,7 +170,6 @@ export class ListsPageComponent {
 
   back(event: Event): void {
     event.preventDefault();
-    history.pushState(null, '', location.pathname + location.search);
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    goHome();
   }
 }

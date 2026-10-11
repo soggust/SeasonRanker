@@ -25,7 +25,7 @@
         <span class="hero-user">&#64;{{ profile.username }}</span>
       </div>
       <!-- (the profile as others see it, by the Privacy settings below) -->
-      <a class="hero-link" [href]="'#u/' + profile.username" title="Your profile, as others see it"><mat-icon aria-hidden="true" fontIcon="badge"></mat-icon><span class="hero-link-text">View profile</span></a>
+      <a class="hero-link" [href]="'/u/' + profile.username" title="Your profile, as others see it"><mat-icon aria-hidden="true" fontIcon="badge"></mat-icon><span class="hero-link-text">View profile</span></a>
     </header>
 
     <!-- The profile: the picture, how you sign in, the email and names; deleting the account at its foot -->
@@ -157,7 +157,7 @@
                   @case ('checking') { <span class="field-hint">Checking…</span> }
                   @case ('available') { <span class="field-ok">&#10003; Available</span> }
                   @case ('error') { <span class="field-error">Couldn’t check it. Try again.</span> }
-                  @case ('same') { <span class="field-hint">Your profile’s address: #u/{{ profile.username }}</span> }
+                  @case ('same') { <span class="field-hint">Your profile’s address: seasonranker.com/u/{{ profile.username }}</span> }
                   @default { @if (usernameError; as p) { <span class="field-error">{{ p }}</span> } }
                 }
               </span>
@@ -211,7 +211,7 @@
       }
     </card-panel>
 
-    <!-- Who sees what (#account/privacy opens it: the Friends page's eye) -->
+    <!-- Who sees what (/settings/privacy opens it: the Friends page's eye) -->
     <card-panel id="privacy-settings" class="account-panel" label="Privacy" icon="visibility" [open]="privacyOpen" (toggled)="privacyOpen = !privacyOpen">
       <div class="panel-pad">
         <p class="panel-lede">Who can see each of these on your profile. Friends means people you’ve both added.</p>
@@ -244,8 +244,8 @@
 
   <!-- (the site's policies: what's kept, and how to have it deleted) -->
   <nav class="legal-links" aria-label="Policies">
-    <a href="#privacy">Privacy Policy</a>
+    <a href="/privacy">Privacy Policy</a>
     <span aria-hidden="true">·</span>
-    <a href="#data-deletion">Data Deletion</a>
+    <a href="/data-deletion">Data Deletion</a>
   </nav>
 </div>

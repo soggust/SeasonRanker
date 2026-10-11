@@ -55,7 +55,7 @@
         <ul class="people panel-pad" [class.stale]="searching" aria-label="Search results">
           @for (person of results; track person.uid) {
             <li class="person">
-              <a class="person-link" [href]="profileHash(person.profile.username)">
+              <a class="person-link" [href]="profilePath(person.profile.username)">
                 <account-avatar [photo]="person.profile.photo" [name]="person.profile.displayName" [size]="40"></account-avatar>
                 <span class="person-names">
                   <span class="person-name">{{ person.profile.displayName }}</span>
@@ -123,7 +123,7 @@
 <ng-template #row let-entry>
   <li class="person">
     @if (entry.profile; as p) {
-      <a class="person-link" [href]="profileHash(p.username)">
+      <a class="person-link" [href]="profilePath(p.username)">
         <account-avatar [photo]="p.photo" [name]="p.displayName" [size]="40"></account-avatar>
         <span class="person-names">
           <span class="person-name">{{ p.displayName }}</span>

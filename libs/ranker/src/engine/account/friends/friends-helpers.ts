@@ -59,8 +59,8 @@ export function prefixRange(prefix: string): [string, string] {
 // ---------------------------------------------------------------------------
 // Addresses
 // ---------------------------------------------------------------------------
-export function profileHash(username: string): string {
-  return '#u/' + encodeURIComponent(username);
+export function profilePath(username: string): string {
+  return '/u/' + encodeURIComponent(username);
 }
 
 // (#u/<username> -> the username, or null)

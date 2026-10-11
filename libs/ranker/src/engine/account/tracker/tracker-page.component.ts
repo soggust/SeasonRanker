@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, NgZone, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
+import { pageHash } from '@ranker/engine/page-url';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SPORT } from '@sport/sport';
 import { SITE_SPORTS } from '@ranker/core/sports';
@@ -139,14 +140,14 @@ export class TrackerPageComponent implements OnDestroy {
   readonly sinceText = sinceText;
 
   // Whose tracker: #tracker/<uid> someone's (read only), else the signed-in user's
-  private readonly hashUid = signal(uidOf(location.hash));
+  private readonly hashUid = signal(uidOf(pageHash()));
   get viewing(): string | null {
     return this.hashUid();
   }
 
   @HostListener('window:hashchange')
   onHash(): void {
-    if (location.hash.startsWith('#tracker')) this.hashUid.set(uidOf(location.hash));
+    if (pageHash().startsWith('#tracker')) this.hashUid.set(uidOf(pageHash()));
   }
   // (loading; 'hidden': theirs isn't shared with this reader; 'missing': no such user)
   state: 'wait' | 'ready' | 'hidden' | 'missing' | 'error' = 'wait';
@@ -431,7 +432,7 @@ export class TrackerPageComponent implements OnDestroy {
 
   // (another sport's card: its own sport's tracker, where it's measured now)
   trackerHref(card: PinCard): string {
-    return `/${card.pin.sport}/#tracker`;
+    return `/tracker/${card.pin.sport}`;
   }
 
   seenText(card: PinCard): string {
@@ -445,7 +446,7 @@ export class TrackerPageComponent implements OnDestroy {
   }
 
   sportHref(id: string): string {
-    return `/${id}/#tracker${this.viewing ? '/' + encodeURIComponent(this.viewing) : ''}`;
+    return `/tracker/${id}${this.viewing ? '/' + encodeURIComponent(this.viewing) : ''}`;
   }
 
   // ---------------------------------------------------------------------------
@@ -569,7 +570,7 @@ export class TrackerPageComponent implements OnDestroy {
   copyLink(): void {
     const uid = this.account.user()?.uid;
     if (!uid) return;
-    const url = `${location.origin}/${SPORT.id}/#tracker/${encodeURIComponent(uid)}`;
+    const url = `${location.origin}/tracker/${SPORT.id}/${encodeURIComponent(uid)}`;
     navigator.clipboard
       ?.writeText(url)
       .then(() => this.say('Link copied'))

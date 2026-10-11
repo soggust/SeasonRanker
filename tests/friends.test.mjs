@@ -45,12 +45,38 @@ test('the username search: a clean lowercase prefix, as a document-id range', ()
 });
 
 test('profile addresses round-trip', () => {
-  assert.equal(h.profileHash('Sam_9'), '#u/Sam_9');
+  assert.equal(h.profilePath('Sam_9'), '/u/Sam_9');
   assert.equal(h.usernameFromHash('#u/Sam_9'), 'Sam_9');
-  assert.equal(h.usernameFromHash(h.profileHash('a b')), 'a b');
+  assert.equal(h.usernameFromHash(h.readPagePath(h.profilePath('a b')).hash), 'a b');
   assert.equal(h.usernameFromHash('#friends'), null);
   assert.equal(h.usernameFromHash('#u/'), null);
   assert.equal(h.usernameFromHash('#u/%E0%A4%A'), null);
+});
+
+test('the shared pages: their own addresses, sport-free but for the pages measured per sport', () => {
+  // (hash -> address)
+  assert.equal(h.pagePath('#wallet', 'mlb'), '/wallet');
+  assert.equal(h.pagePath('#account', 'nfl'), '/settings');
+  assert.equal(h.pagePath('#account/privacy', 'nfl'), '/settings/privacy');
+  assert.equal(h.pagePath('#u/sam', 'nba'), '/u/sam');
+  assert.equal(h.pagePath('#lists', 'nba'), '/lists');
+  assert.equal(h.pagePath('#lists/u1/abc', 'nba'), '/lists/nba/u1/abc');
+  assert.equal(h.pagePath('#community/QB/2026', 'nfl'), '/community/nfl/QB/2026');
+  assert.equal(h.pagePath('#tracker', 'nhl'), '/tracker/nhl');
+  assert.equal(h.pagePath('', 'nhl'), '/nhl/');
+  // (address -> hash, and the sport it names)
+  assert.deepEqual(h.readPagePath('/wallet'), { hash: '#wallet', sport: null });
+  assert.deepEqual(h.readPagePath('/wallet/'), { hash: '#wallet', sport: null });
+  assert.deepEqual(h.readPagePath('/settings/privacy'), { hash: '#account/privacy', sport: null });
+  assert.deepEqual(h.readPagePath('/community/mlb/SP/2026'), { hash: '#community/SP/2026', sport: 'mlb' });
+  assert.deepEqual(h.readPagePath('/community'), { hash: '#community', sport: null });
+  assert.deepEqual(h.readPagePath('/tracker/abcUID'), { hash: '#tracker/abcUID', sport: null });
+  assert.deepEqual(h.readPagePath('/lists/nfl/u1/abc'), { hash: '#lists/u1/abc', sport: 'nfl' });
+  for (const app of ['/nfl/', '/nfl', '/', '/mlb/data/x.json']) assert.equal(h.readPagePath(app), null, app);
+  // (every page's address reads back as its hash)
+  for (const hash of ['#bets', '#friends', '#privacy', '#data-deletion', '#u/x', '#lists/a/b', '#tracker/uid', '#community/QB/2025']) {
+    assert.equal(h.readPagePath(h.pagePath(hash, 'nfl')).hash, hash);
+  }
 });
 
 test('the Friends page: requests newest first, friends by name', () => {

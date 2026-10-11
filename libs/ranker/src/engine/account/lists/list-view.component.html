@@ -5,7 +5,7 @@
     <mat-icon class="soon-icon" aria-hidden="true" fontIcon="lock"></mat-icon>
     <h2>List not available</h2>
     <p class="soon-detail">It’s private, only for its owner’s friends, or it was deleted.</p>
-    <a class="soon-back" href="#lists">Back to the lists</a>
+    <a class="soon-back" href="/lists">Back to the lists</a>
   </div>
 } @else if (elsewhere) {
   <div class="soon-panel">
@@ -29,7 +29,7 @@
       @if (!mine) {
         <account-avatar [photo]="ownerProfile?.photo" [name]="ownerName" [size]="22"></account-avatar>
         @if (ownerProfile?.username; as username) {
-          <a class="hero-owner" [href]="'#u/' + username">{{ ownerName }}</a>
+          <a class="hero-owner" [href]="'/u/' + username">{{ ownerName }}</a>
         } @else {
           <span class="hero-owner">{{ ownerName }}</span>
         }

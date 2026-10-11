@@ -7,10 +7,12 @@ import { SITE_SPORTS } from '@ranker/core/sports';
 import { SportSettings } from '@ranker/engine/sport';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { canUse } from '@ranker/engine/account/features';
+import { forwardOldLink, goTo, pageHash, readPagePath, rememberSport } from '@ranker/engine/page-url';
 
-// The page showing, from the address's hash: the rankings (no hash), the Bets page (#bets), or an account
-// page (#account, #lists, #community, #tracker, #wallet, #friends, #u/<username>: a public profile), or the
-// site's Privacy Policy (#privacy) and Data deletion (#data-deletion) pages, open to anyone
+// The page showing, by its hash (page-url.ts reads it off the page's own address, /wallet, /u/<username>):
+// the rankings (no hash), the Bets page (#bets), or an account page (#account, #lists, #community, #tracker,
+// #wallet, #friends, #u/<username>: a public profile), or the site's Privacy Policy (#privacy) and Data
+// deletion (#data-deletion) pages, open to anyone
 export type View =
   | 'rankings'
   | 'bets'
@@ -92,29 +94,45 @@ export class AppComponent {
   // (the page's name, for its heading: "NFL")
   readonly sportName = SITE_SPORTS.find((s) => s.id === SPORT.id)?.label ?? SPORT.id.toUpperCase();
 
-  // The page in place of the rankings, from the hash: the Bets page (#bets, from the sport bar's Bets
-  // link) or an account page (the account menu's)
-  view: View = viewOf(location.hash);
+  // The page in place of the rankings: the Bets page (/bets, from the sport bar's Bets link) or an account
+  // page (the account menu's). (An old link, /nfl/#wallet, gets the page's own address, /wallet, first.)
+  view: View = viewOf((forwardOldLink(), pageHash()));
   readonly canUse = canUse;
 
-  // A link to one of this page's views (href="#lists", "#bets", "#u/name"): only its hash changes. Taken as
-  // written, it resolves against the page's <base href="/<sport>/"> and loads the app again, losing the
-  // address's ?pos and ?season (the grid's tab and season) and the app's state
+  // A link to one of the pages this app shows (href="/lists", "/bets", "/u/name", or an old "#lists"): the
+  // address changes with no reload, which would lose the grid's tab and season and the app's state. A page of
+  // another sport's (/community/mlb) loads that sport's app.
   @HostListener('document:click', ['$event'])
-  onHashLink(event: MouseEvent): void {
+  onPageLink(event: MouseEvent): void {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const link = (event.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+    const link = (event.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
     if (!link || (link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+    const href = link.getAttribute('href')!;
+    let hash: string | null = null;
+    // (a bare # is the rankings; any other hash not a page's (#rankings, the skip link) is the page's own anchor)
+    if (href.startsWith('#')) hash = href === '#' || viewOf(href) !== 'rankings' ? href : null;
+    else {
+      const url = new URL(link.href);
+      const page = url.origin === location.origin ? readPagePath(url.pathname) : null;
+      if (page && (!page.sport || page.sport === SPORT.id)) hash = page.hash;
+    }
+    if (hash === null) return;
     event.preventDefault();
-    const hash = link.getAttribute('href')!;
-    if (location.hash !== hash) location.hash = hash;
+    goTo(hash);
+  }
+
+  // (back and forward between the pages: pushState's entries, which no hashchange announces)
+  @HostListener('window:popstate')
+  onPopState(): void {
+    if (!location.hash) window.dispatchEvent(new HashChangeEvent('hashchange'));
   }
 
   @HostListener('window:hashchange')
   onHashChange(): void {
+    forwardOldLink();
     const before = this.view + this.viewUser;
-    this.view = viewOf(location.hash);
-    this.viewUser = userOf(location.hash);
+    this.view = viewOf(pageHash());
+    this.viewUser = userOf(pageHash());
     this.markBetsView();
     // (another page on the sheet: its top, not the last page's scroll)
     if (this.view + this.viewUser !== before && this.sheetBody) this.sheetBody.nativeElement.scrollTop = 0;
@@ -128,6 +146,8 @@ export class AppComponent {
     // (the browser tab: the sport's own on its rankings (index.html's, "Season Ranker | NFL"), "Season Ranker |
     // Bets" on the Bets page, and plain "Season Ranker" on the pages every sport shares)
     document.title = this.view === 'rankings' ? this.sportTitle : this.view === 'bets' ? 'Season Ranker | Bets' : 'Season Ranker';
+    // (the rankings open: the sport a page's way back returns to)
+    if (this.view === 'rankings') rememberSport();
   }
   // (the sport's tab title, as index.html set it before any page changed it)
   private readonly sportTitle = document.title;
@@ -148,7 +168,7 @@ export class AppComponent {
 
   // (#u/<username>: whose profile; set with the view, so a change of page never hands the profile another
   // page's hash for a name)
-  viewUser = userOf(location.hash);
+  viewUser = userOf(pageHash());
 
   // The sport bar's sports: a sport not ready for everyone (MMA) only in development or for an admin
   get sports(): { id: string; label: string }[] {

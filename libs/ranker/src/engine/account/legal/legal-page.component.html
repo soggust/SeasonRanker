@@ -1,8 +1,8 @@
 <article class="legal">
   <!-- (the two pages, one tab each, and when they last changed) -->
   <nav class="legal-tabs" aria-label="Policies">
-    <a href="#privacy" [class.active]="page === 'privacy'" [attr.aria-current]="page === 'privacy' ? 'page' : null">Privacy Policy</a>
-    <a href="#data-deletion" [class.active]="page === 'data-deletion'" [attr.aria-current]="page === 'data-deletion' ? 'page' : null">Data Deletion</a>
+    <a href="/privacy" [class.active]="page === 'privacy'" [attr.aria-current]="page === 'privacy' ? 'page' : null">Privacy Policy</a>
+    <a href="/data-deletion" [class.active]="page === 'data-deletion'" [attr.aria-current]="page === 'data-deletion' ? 'page' : null">Data Deletion</a>
   </nav>
 
   @if (page === 'privacy') {
@@ -74,7 +74,7 @@
       <h3>Keeping and deleting</h3>
       <p>
         We keep your data while you have an account. Delete the account and it's removed, as the
-        <a href="#data-deletion">Data Deletion</a> page explains.
+        <a href="/data-deletion">Data Deletion</a> page explains.
       </p>
     </section>
 

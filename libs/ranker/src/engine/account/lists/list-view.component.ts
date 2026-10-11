@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
+import { goTo, pagePath } from '@ranker/engine/page-url';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SPORT } from '@sport/sport';
 import { badgeColor, whiteLogo } from '@sport/team-colors';
@@ -152,7 +153,7 @@ export class ListViewComponent implements OnChanges, OnDestroy {
   }
 
   get elsewhereHref(): string {
-    return this.list ? listPath(this.list.sport, this.list.owner, this.list.id) : '#lists';
+    return this.list ? listPath(this.list.sport, this.list.owner, this.list.id) : '/lists';
   }
 
   get ownerName(): string {
@@ -316,7 +317,7 @@ export class ListViewComponent implements OnChanges, OnDestroy {
     const list = this.list;
     if (!list) return;
     await this.run(() => this.store.remove(list), '');
-    if (!this.error) location.hash = '#lists';
+    if (!this.error) goTo('#lists');
   }
 
   get boardName(): string {
@@ -324,7 +325,7 @@ export class ListViewComponent implements OnChanges, OnDestroy {
   }
 
   get boardHref(): string {
-    return this.list ? `#community/${this.list.tab}/${this.list.season}` : '#community';
+    return this.list ? pagePath(`#community/${this.list.tab}/${this.list.season}`, this.list.sport) : '/community';
   }
 
   async submit(): Promise<void> {

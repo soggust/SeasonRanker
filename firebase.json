@@ -50,6 +50,54 @@
       {
         "source": "/mma/**",
         "destination": "/mma/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nfl",
+        "destination": "/nfl/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nfl/**",
+        "destination": "/nfl/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/mlb",
+        "destination": "/mlb/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/mlb/**",
+        "destination": "/mlb/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nba",
+        "destination": "/nba/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nba/**",
+        "destination": "/nba/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nhl",
+        "destination": "/nhl/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/nhl/**",
+        "destination": "/nhl/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/mma",
+        "destination": "/mma/index.html"
+      },
+      {
+        "source": "/@(community|lists|tracker)/mma/**",
+        "destination": "/mma/index.html"
+      },
+      {
+        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)",
+        "destination": "/nfl/index.html"
+      },
+      {
+        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)/**",
+        "destination": "/nfl/index.html"
       }
     ],
     "headers": [

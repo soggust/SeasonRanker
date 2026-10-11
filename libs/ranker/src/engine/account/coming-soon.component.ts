@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { goHome } from '@ranker/engine/page-url';
 
 // A page that isn't built yet (the account pages later phases fill in), or a sport not open to everyone
 // yet: its name and Coming soon on a scoreboard panel, and the way back to the rankings
@@ -26,10 +27,9 @@ export class ComingSoonComponent {
   @Input() backHref = '';
   @Input() backLabel = 'Back to the rankings';
 
-  // (the rankings: the hash cleared, without leaving a bare # in the address)
+  // (the rankings, at the sport's own address)
   back(event: Event): void {
     event.preventDefault();
-    history.pushState(null, '', location.pathname + location.search);
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    goHome();
   }
 }

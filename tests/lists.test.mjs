@@ -135,7 +135,7 @@ test('the lists\' checks, addresses and presets\' payload', () => {
   assert.equal(l.logoUrl('nfl', 'assets/NFL_Icons/KC.png'), '/nfl/assets/NFL_Icons/KC.png');
   assert.equal(l.logoUrl('nba', 'https://cdn/x.svg'), 'https://cdn/x.svg');
   assert.equal(l.logoUrl('nba', null), null);
-  assert.equal(l.listPath('nfl', 'u 1', 'abc'), '/nfl/#lists/u%201/abc');
+  assert.equal(l.listPath('nfl', 'u 1', 'abc'), '/lists/nfl/u%201/abc');
   assert.deepEqual(l.readListHash('#lists/u%201/abc'), { owner: 'u 1', id: 'abc' });
   assert.equal(l.readListHash('#lists'), null);
   assert.equal(l.readListHash('#lists/onlyone'), null);

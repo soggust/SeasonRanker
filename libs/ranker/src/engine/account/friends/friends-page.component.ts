@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { AccountService } from '../account.service';
 import { errorMessage } from '../account-helpers';
 import { FriendsService, PublicProfile } from './friends.service';
-import { SEARCH_MIN, profileHash, searchPrefix } from './friends-helpers';
+import { SEARCH_MIN, profilePath, searchPrefix } from './friends-helpers';
 import { PRIVACY_HASH } from '../account-page.component';
 
 // The Friends page (#friends): a bar on top (find people by username, a prefix search of the claims; the
@@ -17,7 +17,7 @@ import { PRIVACY_HASH } from '../account-page.component';
 })
 export class FriendsPageComponent implements OnDestroy {
   readonly searchMin = SEARCH_MIN;
-  readonly profileHash = profileHash;
+  readonly profilePath = profilePath;
   readonly privacyHash = PRIVACY_HASH;
 
   query = '';

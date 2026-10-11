@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy, inject } from '@angular/core';
+import { goTo, pageHash, pagePath } from '@ranker/engine/page-url';
 import { POSITIONS, SkillPlayer, SkillPosition } from '@sport/positions';
 import { SPORT } from '@sport/sport';
 import { badgeColor, whiteLogo } from '@sport/team-colors';
@@ -85,7 +86,7 @@ export class CommunityPageComponent implements OnDestroy {
 
   @HostListener('window:hashchange')
   fromHash(): void {
-    const { tab, season } = readCommunityHash(location.hash);
+    const { tab, season } = readCommunityHash(pageHash());
     this.asked = !!tab && this.tabs.includes(tab);
     // (nothing asked for: the tab and season the rankings are on, when this page came from them)
     const shown = this.positions.position as string;
@@ -123,7 +124,7 @@ export class CommunityPageComponent implements OnDestroy {
 
   // (a board picked: its address, so it can be shared and the back button works)
   pick(tab: string, season: number): void {
-    location.hash = `#community/${encodeURIComponent(tab)}/${season}`;
+    goTo(`#community/${encodeURIComponent(tab)}/${season}`);
   }
 
   // ---------------------------------------------------------------------------
@@ -197,7 +198,7 @@ export class CommunityPageComponent implements OnDestroy {
       // submitted on another tab isn't hidden behind an empty board)
       const withLists = this.asked ? -1 : boardWithLists(boards.map((b) => b.length), this.tabs.indexOf(this.tab));
       if (withLists >= 0) {
-        history.replaceState(null, '', `${location.pathname}${location.search}#community/${encodeURIComponent(this.tabs[withLists])}/${this.season}`);
+        goTo(`#community/${encodeURIComponent(this.tabs[withLists])}/${this.season}`, { replace: true, quiet: true });
         this.fromHash();
         return;
       }
@@ -261,7 +262,7 @@ export class CommunityPageComponent implements OnDestroy {
   }
 
   listHref(card: EntryCard): string {
-    return `#lists/${encodeURIComponent(card.entry.owner)}/${encodeURIComponent(card.entry.listId)}`;
+    return pagePath(`#lists/${encodeURIComponent(card.entry.owner)}/${encodeURIComponent(card.entry.listId)}`, SPORT.id);
   }
 
   toggle(card: EntryCard): void {

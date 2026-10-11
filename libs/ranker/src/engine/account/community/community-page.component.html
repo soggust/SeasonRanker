@@ -6,7 +6,7 @@
     <div class="bar-filters">
       <div class="sport-pills" role="group" aria-label="Sport">
         @for (s of sports; track s.id) {
-          <a class="app-pill" [class.active]="s.id === sportId" [attr.aria-current]="s.id === sportId ? 'page' : null" [href]="s.id === sportId ? '#community' : '/' + s.id + '/#community'">{{ s.label }}</a>
+          <a class="app-pill" [class.active]="s.id === sportId" [attr.aria-current]="s.id === sportId ? 'page' : null" [href]="'/community/' + s.id">{{ s.label }}</a>
         }
       </div>
       <label class="bar-select">
@@ -28,7 +28,7 @@
       </label>
     </div>
     @if (account.user()) {
-      <a class="app-btn-primary small bar-link" href="#lists"><mat-icon aria-hidden="true" fontIcon="format_list_numbered"></mat-icon>My Lists</a>
+      <a class="app-btn-primary small bar-link" href="/lists"><mat-icon aria-hidden="true" fontIcon="format_list_numbered"></mat-icon>My Lists</a>
     }
   </div>
 
@@ -107,7 +107,7 @@
                 <account-avatar [photo]="makerProfile(maker)?.photo" [name]="maker.name" [size]="26"></account-avatar>
                 <span class="m-name">
                   @if (makerProfile(maker)?.username; as username) {
-                    <a [href]="'#u/' + username">{{ maker.name }}</a>
+                    <a [href]="'/u/' + username">{{ maker.name }}</a>
                   } @else {
                     {{ maker.name }}
                   }
@@ -137,7 +137,7 @@
                 <account-avatar [photo]="ownerProfile(card)?.photo" [name]="card.entry.ownerName" [size]="20"></account-avatar>
                 <span class="card-where entry-owner">
                   @if (ownerProfile(card)?.username; as username) {
-                    <a [href]="'#u/' + username">{{ card.entry.ownerName }}</a>
+                    <a [href]="'/u/' + username">{{ card.entry.ownerName }}</a>
                   } @else {
                     {{ card.entry.ownerName }}
                   }

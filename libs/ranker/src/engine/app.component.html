@@ -9,9 +9,9 @@
   @for (s of sports; track s.id) {
     <a [href]="'/' + s.id + '/'" [class.active]="s.id === sport && view === 'rankings'" [attr.aria-current]="s.id === sport && view === 'rankings' ? 'page' : null">{{ s.label }}</a>
   }
-  <!-- Every sport's betting angles on one page (#bets): linked in development, and for an admin -->
+  <!-- Every sport's betting angles on one page (/bets): linked in development, and for an admin -->
   @if (canUse('bets')) {
-    <a href="#bets" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null">Bets</a>
+    <a href="/bets" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null">Bets</a>
   }
   <!-- The far right, flush with the page's edge, each name left of its picture: signed out, Sign in | the
        site's name and its podium; signed in, the user's name and avatar (their menu) in place of the brand -->
