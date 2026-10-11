@@ -292,7 +292,8 @@ $lock-gold: chip.$lock-gold;
   top: -7px;
 }
 
-// The bot's props: a row each, the player's face, the bet, its price
+// The props: a team's under a bar of its own, folded till it's opened; a row a player's stat, his face and name on
+// his first, over and under
 // (one pick alone, under its row: its market's two sides side by side, no frame of its own)
 .lines-pair {
   display: grid;
@@ -315,15 +316,83 @@ $lock-gold: chip.$lock-gold;
   padding-top: 10px;
 }
 
+// (a team's bar: the chevron, its logo, "SEA Player Props", its count; the chevron lightens on hover, never the
+// accent, and turns down open)
+.props-team-bar {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-family: v.$font-base;
+  gap: 6px;
+  padding: 4px 2px;
+  text-align: left;
+  width: 100%;
+
+  img {
+    height: 20px;
+    object-fit: contain;
+    width: 20px;
+  }
+
+  b {
+    font-size: 13.5px;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 1px;
+  }
+
+  &:hover .props-chevron,
+  &:focus-visible .props-chevron {
+    color: #fff;
+  }
+}
+
+.props-chevron {
+  color: rgba(255, 255, 255, 0.55);
+  flex: none;
+  transform: rotate(90deg);
+  transition:
+    color 0.15s,
+    transform 0.15s;
+  @include v.icon-size(18px);
+
+  .shut & {
+    transform: none;
+  }
+}
+
+.props-team-count {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11.5px;
+  font-weight: 700;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.props-team-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0 6px;
+}
+
 .prop {
   align-items: center;
   display: grid;
   gap: 10px;
-  grid-template-columns: 34px minmax(0, 1fr) 92px;
+  grid-template-columns: 34px minmax(0, 1fr) 92px 92px;
 
-  // (both sides: over then under, a column each)
-  &.two {
-    grid-template-columns: 34px minmax(0, 1fr) 92px 92px;
+  // (a player's next stat: close under his first)
+  &:not(.first) {
+    margin-top: -2px;
   }
 
   .price {
@@ -396,6 +465,23 @@ $lock-gold: chip.$lock-gold;
       height: 18px;
       width: 18px;
     }
+  }
+
+  // (a prop's sides narrower, its face smaller)
+  .prop {
+    gap: 6px;
+    grid-template-columns: 26px minmax(0, 1fr) 72px 72px;
+  }
+
+  .prop-face {
+    height: 26px;
+    width: 26px;
+  }
+
+  // (a player's whole name, on two lines where it needs them)
+  .prop-words b {
+    line-height: 1.15;
+    white-space: normal;
   }
 
   .price-line,

@@ -3,6 +3,48 @@ import { ESPN_LEAGUES } from '../../bets/desk-math';
 import { SummaryBox, liveStat } from '../../bets/live-props';
 import { EspnEvent, GameBoard, boardOf, espnDay } from './wallet-math';
 
+// The bettor's betting board (libs/ranker/scripts/model/board.mjs, its header has the keys: data/model/
+// board.json): every market it priced on the games not started, each side with its Kelly score and band
+export type BoardBand = 'lock' | 'high' | 'medium' | 'low' | 'check';
+export interface BoardSide {
+  s: string;
+  l: number | null;
+  o: number;
+  c: number;
+  ks: number;
+  b: BoardBand;
+  bot?: 'bet' | 'check';
+}
+export interface BoardProp {
+  n: string;
+  id: string;
+  t: string | null;
+  k: string;
+  lb: string;
+  l: number;
+  o: [number | null, number | null];
+  c: number;
+  ks: [number | null, number | null];
+  b: [BoardBand | null, BoardBand | null];
+  sk?: 1;
+  bot?: string;
+  bk?: 'bet' | 'check';
+}
+export interface BoardGame {
+  id: string;
+  start: string;
+  m: string;
+  a: [string, string];
+  h: [string, string];
+  k: { spread?: BoardSide[]; total?: BoardSide[]; ml?: BoardSide[] };
+  p?: BoardProp[];
+}
+export interface ModelBoard {
+  sport: string;
+  at: string;
+  games: BoardGame[];
+}
+
 // Every game's DraftKings lines, from ESPN's free scoreboard (the one the bettor reads when it has no Odds API
 // key: espn.mjs linesOf), straight from the browser. A sport's day is asked for once a minute at most; the
 // boards land in one signal (by "sport|event") so every board on the page updates together.
@@ -13,6 +55,29 @@ export class LinesService {
   readonly boards = this.all.asReadonly();
   // (each sport's day as last loaded: when, for the board's "as of")
   readonly loadedAt = signal<number | null>(null);
+  // (each sport's betting board: asked for once on a page's visit, again after five minutes at most)
+  private readonly models = new Map<string, { at: number; load: Promise<ModelBoard | null> }>();
+  private readonly modelAll = signal(new Map<string, ModelBoard>());
+
+  // A game on its sport's betting board, as last loaded (none: not on it, begun, or not loaded yet)
+  modelGame(sport: string, event: string): BoardGame | undefined {
+    return this.modelAll().get(sport)?.games.find((g) => g.id === event);
+  }
+
+  // A sport's betting board (the bettor writes it hourly: kept five minutes)
+  model(sport: string, maxAge = 5 * 60e3): Promise<ModelBoard | null> {
+    const kept = this.models.get(sport);
+    if (kept && Date.now() - kept.at < maxAge) return kept.load;
+    const load = fetch(`/${sport}/data/model/board.json`, { cache: 'no-cache' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((body: ModelBoard | null) => {
+        if (body?.games) this.modelAll.set(new Map(this.modelAll()).set(sport, body));
+        return body;
+      })
+      .catch(() => null);
+    this.models.set(sport, { at: Date.now(), load });
+    return load;
+  }
 
   board(sport: string, event: string): GameBoard | undefined {
     return this.all().get(`${sport}|${event}`);
