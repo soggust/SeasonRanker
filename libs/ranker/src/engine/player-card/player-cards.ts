@@ -83,10 +83,14 @@ export class PlayerCards {
     games.openPlayer = (link, season) => this.openLinked(link, season);
     games.findPlayers = async (season) => {
       const rows = season === this.host.season ? SKILL_UNITS : await this.data.rows(season);
+      // (and who played outside the ranked lists: their unranked cards)
+      const unranked = await this.data.unranked(season);
       const players = new Map<string, { position: string; gsisId: string }>();
-      for (const [position, list] of Object.entries(rows)) {
-        if (SPORT.teamTabs?.includes(position)) continue;
-        for (const p of (list ?? []) as SkillPlayer[]) if (!players.has(nameKey(p.name))) players.set(nameKey(p.name), { position, gsisId: p.gsisId });
+      for (const tabs of [rows, unranked]) {
+        for (const [position, list] of Object.entries(tabs)) {
+          if (SPORT.teamTabs?.includes(position)) continue;
+          for (const p of (list ?? []) as SkillPlayer[]) if (!players.has(nameKey(p.name))) players.set(nameKey(p.name), { position, gsisId: p.gsisId });
+        }
       }
       return players;
     };
@@ -236,9 +240,13 @@ export class PlayerCards {
   private async linkRoster(view: DepthView, season: number): Promise<void> {
     const rows = season === this.host.season ? SKILL_UNITS : await this.data.rows(season).catch(() => null);
     if (!rows) return;
+    // (someone who played outside the ranked lists links to his unranked card; a ranked row comes first)
+    const unranked = await this.data.unranked(season);
     const index = new Map<string, { position: string; gsisId: string }>();
-    for (const [position, list] of Object.entries(rows)) {
-      for (const p of (list ?? []) as SkillPlayer[]) if (p.gsisId) index.set(p.gsisId, { position, gsisId: p.gsisId });
+    for (const tabs of [unranked, rows]) {
+      for (const [position, list] of Object.entries(tabs)) {
+        for (const p of (list ?? []) as SkillPlayer[]) if (p.gsisId) index.set(p.gsisId, { position, gsisId: p.gsisId });
+      }
     }
     const link = (p: DepthPlayer | null | undefined) => {
       if (p) p.link = index.get(p.id) ?? (p.espnId ? index.get(`QB-${p.espnId}`) : undefined) ?? null;
@@ -348,7 +356,7 @@ export class PlayerCards {
     try {
       const rows = season === host.season ? SKILL_UNITS : await this.data.rows(season);
       const player = rows[this.position]?.find((p) => p.gsisId === gsisId);
-      if (!player) return false;
+      if (!player) return await this.openUnranked(season, gsisId, rows);
       const context = host.seasonContext(season, rows, this.position);
       // (someone under the Min Games setting still gets their card, ranked where they'd fall)
       if (!context.list.includes(player)) {
@@ -364,11 +372,23 @@ export class PlayerCards {
     }
   }
 
+  // A season they played outside the tab's ranked list (SPORT.unrankedSeasons): its card, the stats read
+  // against that season's list as the table reads them but never ranked in it (UR)
+  private async openUnranked(season: number, gsisId: string, rows: Record<SkillPosition, SkillPlayer[]>): Promise<boolean> {
+    const player = await this.data.unrankedRow(season, this.position, gsisId);
+    if (!player) return false;
+    const context = this.host.seasonContext(season, rows, this.position);
+    this.show(this.render(player, season, context.list, context, true));
+    return true;
+  }
+
   // The player above or below in the list (arrow keys too)
   step(step: number): void {
     if (!this.card) return;
     const { list, season, context, player } = this.card;
-    const next = list[(list.indexOf(player) + step + list.length) % list.length];
+    // (a UR card's player isn't in the list: he stands between its end and #1, so up opens the last, down #1)
+    const to = this.card.ur ? (step > 0 ? step - 1 : list.length + step) : list.indexOf(player) + step;
+    const next = list[(to + list.length) % list.length];
     if (next) this.show(this.render(next, season, list, context));
   }
 
@@ -403,7 +423,8 @@ export class PlayerCards {
     // (a tab this card doesn't have falls back to the Overview)
     if (!this.tabsFor(card).some((tab) => tab.id === this.tab)) this.tab = 'overview';
     this.loadSeasons(card);
-    this.loadPrevSkills(card);
+    // (an unranked season has no skills to set against last season's)
+    if (!card.ur) this.loadPrevSkills(card);
     // (the hero in the team's own color, as the game view draws it, once ESPN's list is in)
     const league = SPORT.gameLog?.league;
     if (league && card.heroColor === undefined) {
@@ -416,7 +437,8 @@ export class PlayerCards {
   // ---------------------------------------------------------------------------
   // The card itself: the hero and the Stats tab's tiles, then the Overview
   // ---------------------------------------------------------------------------
-  private render(player: SkillPlayer, season: number, list: SkillPlayer[], context: SeasonContext | null): PlayerCard {
+  // (ur: an unranked season, not in the list: its stats with no rank or color, no skills or awards)
+  private render(player: SkillPlayer, season: number, list: SkillPlayer[], context: SeasonContext | null, ur = false): PlayerCard {
     const reader = this.host.readerFor(context);
     const groups = this.host
       .shownGroups(reader, this.position)
@@ -429,17 +451,19 @@ export class PlayerCards {
         stats: group.stats
           .filter((stat) => !context || !SPORT.tableSeasonOnly?.(stat))
           .filter((stat) => !stat.infoOnly || Number.isFinite(reader.value(player, stat)))
-          .map((stat) => this.cardStat(reader, player, stat, list, group.id)),
+          .map((stat) => this.cardStat(reader, player, stat, list, group.id))
+          .map((stat) => (ur ? { ...stat, rank: null, tied: false, pct: null, tint: null } : stat)),
       }))
       .filter((group) => group.stats.length);
     const rows = context ? context.rows : SKILL_UNITS;
     // (the sport's breakdown panel, and its takes among the Overview's, under the archetype)
-    const breakdown = SPORT.cardBreakdown?.(player, this.position, list) ?? null;
-    const overview = this.overview(reader, player, season, list, context);
+    const breakdown = ur ? null : (SPORT.cardBreakdown?.(player, this.position, list) ?? null);
+    const overview = ur ? this.unrankedOverview(season) : this.overview(reader, player, season, list, context);
     if (breakdown) overview.flags = [...overview.flags, ...breakdown.flags];
     return {
       player,
       season,
+      ...(ur ? { ur } : {}),
       list,
       context,
       name: player.name,
@@ -453,9 +477,9 @@ export class PlayerCards {
       whiteLogo: whiteLogo(player.teamLogo),
       // The table's headshot, big enough for the card's hero
       photo: this.host.headshot(player, 440),
-      rank: list.indexOf(player) + 1,
+      rank: ur ? 0 : list.indexOf(player) + 1,
       of: list.length,
-      awards: awardsFor(player, this.position, season),
+      awards: ur ? [] : awardsFor(player, this.position, season),
       groups,
       overview,
       breakdown,
@@ -505,6 +529,19 @@ export class PlayerCards {
       report,
       flags: this.flags(reader, player, season, overall, skillScores(this.position, skills), !context),
       radar: radar(skills),
+      prev: null,
+    };
+  }
+
+  // An unranked season's Overview: what UR means, in place of skills against a list he isn't in
+  private unrankedOverview(season: number): CardOverview {
+    return {
+      archetype: 'Unranked season',
+      blurb: `Played outside the ${SPORT.seasonText(season)} ${POSITION_NAMES[this.position]} rankings: the stats are here, but the season isn't ranked, graded or set against the list (UR).`,
+      skills: [],
+      report: scoutingReport([]).report,
+      flags: [],
+      radar: radar([]),
       prev: null,
     };
   }
@@ -604,12 +641,14 @@ export class PlayerCards {
       card.seasons = seasons;
       if (this.tab === 'seasons' && seasons.length < 2) this.tab = 'overview';
       if (this.tab === 'seasons') this.rankCareer(card);
+      // (an unranked season: no career history, blocking skills or similar seasons; it has no standing)
+      if (card.ur) return;
       if (!partRow) this.loadHistory(card);
       this.loadExtras(card);
     } catch (err) {
       console.error(err);
     }
-    if (card.season !== CURRENT_SEASON && !partRow) this.loadComps(card);
+    if (card.season !== CURRENT_SEASON && !partRow && !card.ur) this.loadComps(card);
   }
 
   // A line per season they're in (careerLines)
@@ -629,6 +668,8 @@ export class PlayerCards {
   }
 
   private async rankSeasonLine(card: PlayerCard, line: CardSeason): Promise<void> {
+    // (an unranked season stays UR)
+    if (line.ur) return;
     const { list, context } = await this.rankedSeason(line.season);
     const at = list.findIndex((p) => p.gsisId === card.player.gsisId);
     // (under the Min Games setting that year, or hidden as injured: the default rank stays)
@@ -667,7 +708,9 @@ export class PlayerCards {
     if (SPORT.teamTabs?.includes(this.position) || !card.seasons) return;
     const upTo = card.seasons.filter((s) => s.season <= card.season);
     try {
-      const entries = (await Promise.all(upTo.map((s) => this.careerSeason(card, s.season)))).filter((e): e is CareerSeason => !!e);
+      // (every season played counts toward where they are in their career; the unranked ones have no standing)
+      const ranked = upTo.filter((s) => !s.ur);
+      const entries = (await Promise.all(ranked.map((s) => this.careerSeason(card, s.season)))).filter((e): e is CareerSeason => !!e);
       if (this.card !== card || !entries.length) return;
       const played = upTo.map((s) => s.season);
       card.overview.flags = [
@@ -732,7 +775,7 @@ export class PlayerCards {
         player: card.player,
         season: card.season,
         position: this.position,
-        seasons: card.seasons.filter((s) => s.season <= card.season).map((s) => s.season),
+        seasons: card.seasons.filter((s) => s.season <= card.season && !s.ur).map((s) => s.season),
         open: () => this.card === card,
         tabRows: (season) => this.data.tabRows(season, this.position),
         seasonFile: (season, file) => this.data.extraFile(season, file),
@@ -761,6 +804,7 @@ export class PlayerCards {
 export async function careerLines(data: SeasonDataService, tableSeason: number, position: SkillPosition, id: string): Promise<CardSeason[]> {
   const current = tableSeason === CURRENT_SEASON ? SKILL_UNITS : await data.rows(CURRENT_SEASON);
   const headline = headlineStats(position);
+  // (rank 0: an unranked season, UR)
   const line = (season: number, teamLogo: string, games: number, rank: number, of: number, stats: (number | null)[]): CardSeason => ({
     season,
     // (the team's logo that season, and the team's own file: whiteLogo reads it)
@@ -769,27 +813,33 @@ export async function careerLines(data: SeasonDataService, tableSeason: number, 
     games,
     rank,
     of,
-    pct: rankPct(rank, of),
+    pct: rank > 0 ? rankPct(rank, of) : 0,
+    ...(rank > 0 ? {} : { ur: true }),
     stats: headline.map((stat, i) => ({ text: totalText(stat, stats[i] ?? null), label: stat.label, value: stats[i] ?? null, share: 0, best: false })),
   });
   const seasons = ((await data.careers(position))[id] ?? []).map(([season, logo, games, rank, of, stats]) =>
     line(season, SPORT.teamLogo(logo), games, rank, of, stats),
   );
   const now = (current[position] ?? []).find((p) => p.gsisId === id);
+  // (not ranked this season: played outside the list, UR)
+  const unranked = now ? undefined : await data.unrankedRow(CURRENT_SEASON, position, id);
+  const context: ValueContext = { position, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
   if (now) {
     const ranked = defaultRanking(position, presetWeights(position, 'default'), current);
-    const context: ValueContext = { position, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
     const stats = headline.map((stat) => statValue(now, stat, context));
     seasons.push(line(CURRENT_SEASON, now.teamLogo, now.games, ranked.indexOf(now) + 1, ranked.length, stats));
+  } else if (unranked) {
+    seasons.push(line(CURRENT_SEASON, unranked.teamLogo, unranked.games, 0, 0, headline.map((stat) => statValue(unranked, stat, context))));
   }
-  const finished = seasons.filter((s) => !isLiveSeason(s.season));
+  // (a career best is a ranked season's: a handful of plays outside the list would take the rates)
+  const finished = seasons.filter((s) => !isLiveSeason(s.season) && !s.ur);
   headline.forEach((stat, i) => {
     const done = finished.map((s) => s.stats[i].value).filter((v): v is number => v !== null);
     if (!seasons.some((s) => s.stats[i].value !== null)) return;
     const best = stat.negative ? Math.min(...done) : Math.max(...done);
     for (const s of seasons) {
       const v = s.stats[i].value;
-      if (v !== null) s.stats[i].best = done.length > 1 && !isLiveSeason(s.season) && v === best;
+      if (v !== null) s.stats[i].best = done.length > 1 && !isLiveSeason(s.season) && !s.ur && v === best;
     }
   });
   return seasons;

@@ -54,7 +54,7 @@
               [style.--side]="s.color"
               [style.--team-badge]="s.badge"
               [attr.aria-expanded]="sheet === s.uid"
-              [attr.aria-label]="s.label + ', #' + s.rank + ' of ' + s.of"
+              [attr.aria-label]="s.label + (s.ur ? ', unranked' : ', #' + s.rank + ' of ' + s.of)"
               (click)="toggle(s.uid)"
               animate.enter="chip-in"
               animate.leave="chip-out"
@@ -65,7 +65,7 @@
                 <span class="chip-photo chip-logo" [class.white-logo]="s.whiteLogo"><img [src]="s.logo" alt="" /></span>
               }
               <span class="chip-name">{{ s.tag }}</span>
-              <b class="chip-rank" [style.--tone]="rankTone(s.pct)">{{ s.rank }}</b>
+              <b class="chip-rank" [style.--tone]="rankTone(s.ur ? null : s.pct)">{{ s.ur ? 'UR' : s.rank }}</b>
             </button>
           }
           @if (sides.length < max) {
@@ -101,7 +101,7 @@
                 <mat-select class="tape-season" [panelWidth]="null" [value]="s.season" [attr.aria-label]="'Season for ' + s.name" title="Another of their seasons" (valueChange)="compare.add(s.position, $event, s.gsisId, i)" (openedChange)="$event && compare.rankCareer(s)">
                   <mat-select-trigger>{{ s.seasonText }}</mat-select-trigger>
                   @for (line of s.career; track line.season) {
-                    <mat-option [value]="line.season">{{ seasonText(line.season) }} · #{{ line.rank }}</mat-option>
+                    <mat-option [value]="line.season">{{ seasonText(line.season) }} · {{ line.ur ? 'UR' : '#' + line.rank }}</mat-option>
                   }
                 </mat-select>
               } @else {
@@ -110,8 +110,13 @@
             </div>
             <!-- (along the bottom: the rank that season, the archetype) -->
             <div class="tape-foot">
-              <span class="tape-rank" [style.--tone]="rankTone(s.pct)" [title]="'#' + s.rank + ' of ' + s.of + ' that season, with your sliders'">{{ s.rank }}</span>
-              <span class="tape-of">of {{ s.of }}</span>
+              @if (s.ur) {
+                <span class="tape-rank" [style.--tone]="rankTone(null)" title="Unranked: played outside that season's ranked list">UR</span>
+                <span class="tape-of">unranked</span>
+              } @else {
+                <span class="tape-rank" [style.--tone]="rankTone(s.pct)" [title]="'#' + s.rank + ' of ' + s.of + ' that season, with your sliders'">{{ s.rank }}</span>
+                <span class="tape-of">of {{ s.of }}</span>
+              }
               <span class="tape-archetype">{{ s.archetype }}</span>
             </div>
           </div>
@@ -407,7 +412,7 @@
                     </g>
                     @for (l of a.lines; track l.key) {
                       @for (d of l.dots; track $index) {
-                        <circle class="arc-dot" [class.now]="d.now" [attr.r]="d.now ? 6 : 3.2" [attr.cx]="d.x" [attr.cy]="d.y" [style.--side]="l.color">
+                        <circle class="arc-dot" [class.now]="d.now" [class.ur]="d.ur" [attr.r]="d.now ? 6 : 3.2" [attr.cx]="d.x" [attr.cy]="d.y" [style.--side]="l.color">
                           <title>{{ d.title }}</title>
                         </circle>
                       }

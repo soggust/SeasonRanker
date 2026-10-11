@@ -94,6 +94,9 @@ export interface CardSeason {
   stats: { text: string; label: string; value: number | null; share: number; best: boolean; tint?: string | null }[];
   // Ranked with the current sliders (or that season's dragged order) yet; until then, the default rank
   yours?: boolean;
+  // Unranked: a season played outside the tab's ranked list (SPORT.unrankedSeasons), shown as UR (rank and
+  // list size 0, pct 0) in neutral grey
+  ur?: boolean;
 }
 
 // A season other than the table's, for its cards: its rows, its list (ranked with the current sliders,
@@ -112,6 +115,8 @@ export interface SeasonContext {
 export interface PlayerCard {
   player: SkillPlayer;
   season: number;
+  // An unranked season (SPORT.unrankedSeasons): its stats with no ranks, UR in the rank tile (rank 0)
+  ur?: boolean;
   // The list it's ranked in (the table's, or that season's), and that season when it isn't the table's
   list: SkillPlayer[];
   context: SeasonContext | null;

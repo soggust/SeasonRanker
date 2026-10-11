@@ -12,13 +12,13 @@
           type="button"
           class="arc"
           [class.active]="s.season === c.season"
-          [class.pending]="!s.yours"
+          [class.pending]="!s.yours && !s.ur"
           [style.--pct]="s.pct"
-          [style.--tone]="rankTone(s.pct)"
-          [title]="seasonText(s.season) + ' · ' + rankText(s.rank, s.of)"
+          [style.--tone]="rankTone(s.ur ? null : s.pct)"
+          [title]="seasonText(s.season) + ' · ' + (s.ur ? 'Unranked (UR)' : rankText(s.rank, s.of))"
           (click)="s.season !== c.season && cards.openSeason(s.season, c.player.gsisId)"
         >
-          <span class="arc-rank">#{{ s.rank }}</span>
+          <span class="arc-rank">{{ s.ur ? 'UR' : '#' + s.rank }}</span>
           <span class="arc-bar"></span>
           <span class="arc-year">'{{ s.season % 100 | number: '2.0' }}</span>
         </button>
@@ -38,8 +38,8 @@
           type="button"
           class="season-row"
           [class.active]="s.season === c.season"
-          [class.pending]="!s.yours"
-          [style.--tone]="rankTone(s.pct)"
+          [class.pending]="!s.yours && !s.ur"
+          [style.--tone]="rankTone(s.ur ? null : s.pct)"
           [title]="s.season === c.season ? 'Showing this season' : 'Open the ' + seasonText(s.season) + ' card'"
           (click)="s.season !== c.season && cards.openSeason(s.season, c.player.gsisId)"
         >
@@ -55,14 +55,18 @@
               [class.tinted]="h.tint"
               [style.--share]="h.share"
               [style.--tint]="h.tint"
-              [title]="h.label + ': ' + h.text + (s.yours && h.value !== null ? ' · ' + pctText(h.share) + ' that year' : '') + (h.best ? ' · Career best' : '')"
+              [title]="h.label + ': ' + h.text + (s.yours && !s.ur && h.value !== null ? ' · ' + pctText(h.share) + ' that year' : '') + (h.best ? ' · Career best' : '')"
             >
               <b>{{ h.text }}</b>
               <i></i>
               <small>{{ h.label }}</small>
             </span>
           }
-          <span class="season-rank">#{{ s.rank }}<small> / {{ s.of }}</small></span>
+          @if (s.ur) {
+            <span class="season-rank" title="Unranked: played outside that season's ranked list">UR</span>
+          } @else {
+            <span class="season-rank">#{{ s.rank }}<small> / {{ s.of }}</small></span>
+          }
         </button>
       }
     </div>

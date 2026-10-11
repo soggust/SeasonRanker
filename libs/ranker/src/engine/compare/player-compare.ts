@@ -89,6 +89,8 @@ export interface CompareSide {
   rank: number;
   of: number;
   pct: number;
+  // An unranked season (SPORT.unrankedSeasons): rank 0, UR; its columns' values with no ranks, no skills
+  ur?: boolean;
   archetype: string;
   skills: CardSkill[];
   // Every season they're in on this tab (the season picker, the career arc): null while it loads
@@ -187,7 +189,8 @@ export interface CompareArcs {
   xTicks: { x: number; label: string }[];
   yTicks: { y: number; label: string }[];
   // (a line's key: its side's and the bottom's, so a line switched is drawn in again)
-  lines: { key: string; name: string; color: string; points: string; dots: { x: number; y: number; title: string; now: boolean }[] }[];
+  // (an unranked season's dot: on the bottom line, hollow, and left out of the line)
+  lines: { key: string; name: string; color: string; points: string; dots: { x: number; y: number; title: string; now: boolean; ur?: boolean }[] }[];
   // Each line's face, just past its last season's point (nudged apart where two end together): the side's
   // headshot ringed in its color (none: its team's logo on its badge), and the point it hangs off
   faces: CompareFace[];
@@ -340,7 +343,7 @@ export class PlayerCompare {
         .then((career) => {
           // (the season it's on ranked as its tile is, with your sliders; the rest with them once the
           // picker's opened: rankCareer)
-          side.career = career.map((l) => (l.season === side.season ? { ...l, rank: side.rank, of: side.of, pct: side.pct } : l));
+          side.career = career.map((l) => (l.season === side.season && !side.ur ? { ...l, rank: side.rank, of: side.of, pct: side.pct } : l));
           this.arcs = this.buildArcs();
         });
     } catch (err) {
@@ -360,6 +363,8 @@ export class PlayerCompare {
     const { host } = this;
     const lines = await Promise.all(
       side.career.map(async (l) => {
+        // (an unranked season stays UR)
+        if (l.ur) return l;
         if (l.season === side.season) return { ...l, rank: side.rank, of: side.of, pct: side.pct };
         try {
           let list: SkillPlayer[];
@@ -424,22 +429,28 @@ export class PlayerCompare {
     let rows = SKILL_UNITS;
     let list = host.playerList;
     let context: SeasonContext | null = null;
+    let ur = false;
     if (!player) {
       // (the whole season, as the card opens one: the sport's team names and values from other tabs read it)
       rows = tableSeason ? SKILL_UNITS : await this.data.rows(season);
       player = rows[position]?.find((p) => p.gsisId === gsisId);
-      if (!player) return null;
+      // (a season played outside the ranked list: read against that list, never ranked in it)
+      if (!player) {
+        player = await this.data.unrankedRow(season, position, gsisId);
+        if (!player) return null;
+        ur = true;
+      }
       context = host.seasonContext(season, rows, position);
       // (someone under the Min Games setting still gets ranked, where they'd fall)
-      if (!context.list.includes(player)) {
+      if (!ur && !context.list.includes(player)) {
         context.list = context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
       }
       list = context.list;
     }
     const reader = context ? host.readerFor(context) : host.reader;
-    const rank = list.indexOf(player) + 1;
-    const pct = rankPct(rank, list.length);
-    const skills = skillsOf(position, SKILL_STATS[position], reader, player, list);
+    const rank = ur ? 0 : list.indexOf(player) + 1;
+    const pct = ur ? 0 : rankPct(rank, list.length);
+    const skills = ur ? [] : skillsOf(position, SKILL_STATS[position], reader, player, list);
     const teamName = SPORT.teamName ? SPORT.teamName(player, position, rows) : (extras(player).teamName ?? null);
     const short = SPORT.careerOnly ? '' : `’${String(season).slice(-2)}`;
     const last = surname(player.name);
@@ -464,7 +475,8 @@ export class PlayerCompare {
       rank,
       of: list.length,
       pct,
-      archetype: archetypeFor(position, skills, pct, player),
+      ...(ur ? { ur } : {}),
+      archetype: ur ? 'Unranked season' : archetypeFor(position, skills, pct, player),
       skills,
       career: null,
       reader,
@@ -623,11 +635,13 @@ export class PlayerCompare {
     const lines = sides.map((side) => {
       const dots = side.career!.map((c) => ({
         x: px(xOf(side, c)),
-        y: py(c.pct),
+        y: py(c.ur ? 0 : c.pct),
         now: c.season === side.season,
-        title: `${side.name}, ${SPORT.seasonText(c.season)}: #${c.rank} of ${c.of}${byYear ? ` (year ${xOf(side, c)})` : ''}`,
+        ...(c.ur ? { ur: true } : {}),
+        title: `${side.name}, ${SPORT.seasonText(c.season)}: ${c.ur ? 'unranked (UR)' : `#${c.rank} of ${c.of}`}${byYear ? ` (year ${xOf(side, c)})` : ''}`,
       }));
-      return { key: `${side.key}/${byYear ? 'year' : 'season'}`, name: side.name, color: side.color, points: dots.map((d) => `${d.x},${d.y}`).join(' '), dots };
+      const ranked = dots.filter((d) => !d.ur);
+      return { key: `${side.key}/${byYear ? 'year' : 'season'}`, name: side.name, color: side.color, points: ranked.map((d) => `${d.x},${d.y}`).join(' '), dots };
     });
     return { width, height, left, right, byYear, xTicks, yTicks, lines, faces: facesOf(sides, lines, width, height) };
   }
@@ -651,7 +665,10 @@ export class PlayerCompare {
     if (query !== this.query) return;
     // (a name starting with what's typed first, then the table's own tab, then the better careers)
     const score = (e: SearchEntry) =>
-      (e.key.split(' ').some((part) => part.startsWith(words[0])) ? 2 : 0) + (e.position === this.host.position ? 1 : 0) + rankPct(e.best.rank, e.best.of) / 2;
+      (e.key.split(' ').some((part) => part.startsWith(words[0])) ? 2 : 0) +
+      (e.position === this.host.position ? 1 : 0) +
+      // (never ranked: unranked seasons alone, last)
+      (e.best.rank > 0 ? rankPct(e.best.rank, e.best.of) : 0) / 2;
     this.hits = entries
       .filter((e) => words.every((w) => e.key.includes(w)))
       .map((e) => ({ e, score: score(e) }))
@@ -682,11 +699,12 @@ export class PlayerCompare {
 
   // Everyone on every tab: the careers files' finished seasons (named by careers/names.json: only the tabs
   // it names have a file; a career-only sport has none) and the season being played, ranked with the
-  // default sliders like them
+  // default sliders like them (its unranked rows too: rank 0, UR)
   private async entries(): Promise<SearchEntry[]> {
-    const [names, current] = await Promise.all([
+    const [names, current, unranked] = await Promise.all([
       SPORT.careerOnly ? ({} as CareerNames) : this.data.careerNames(),
       this.host.season === CURRENT_SEASON ? SKILL_UNITS : this.data.rows(CURRENT_SEASON),
+      this.data.unranked(CURRENT_SEASON),
     ]);
     const careers = await Promise.all(TABS.map((tab): Promise<CareersFile> | CareersFile => (names[tab] ? this.data.careers(tab).catch(() => ({})) : {})));
     type Line = { season: number; logo: string; rank: number; of: number };
@@ -700,8 +718,12 @@ export class PlayerCompare {
       }
       const rows = current[position] ?? [];
       const ranked = rows.length ? defaultRanking(position, presetWeights(position, 'default'), current) : [];
-      for (const row of rows) {
-        const line = { season: CURRENT_SEASON, logo: row.teamLogo, rank: ranked.indexOf(row) + 1, of: ranked.length };
+      const lines = [
+        ...rows.map((row) => ({ row, rank: ranked.indexOf(row) + 1, of: ranked.length })),
+        ...(unranked[position] ?? []).map((row) => ({ row, rank: 0, of: 0 })),
+      ];
+      for (const { row, rank, of } of lines) {
+        const line = { season: CURRENT_SEASON, logo: row.teamLogo, rank, of };
         const known = byId.get(row.gsisId);
         if (!known) byId.set(row.gsisId, { name: row.name, headshotId: row.id ?? null, seasons: [line] });
         else if (!known.seasons.some((s) => s.season === CURRENT_SEASON)) known.seasons.push(line);
@@ -743,7 +765,8 @@ function cell(side: CompareSide, stat: SkillStat | null): CompareCell {
   const { reader, player, list } = side;
   const value = reader.value(player, stat);
   const text = reader.format(player, stat);
-  if (value === null || stat.infoOnly) return { ...none, text };
+  // (an unranked season: its value, never ranked or colored against the list, and so never the leader)
+  if (value === null || stat.infoOnly || side.ur) return { ...none, text };
   const values = list.map((p) => reader.value(p, stat)).filter((v): v is number => v !== null);
   const rank = 1 + values.filter((v) => (lowerBetter ? v < value : v > value)).length;
   return { text, value, lowerBetter, pct: rankPct(rank, values.length), rank, of: values.length, tint: reader.valueColor(player, stat) };

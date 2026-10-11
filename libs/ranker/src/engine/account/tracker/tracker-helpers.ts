@@ -30,6 +30,8 @@ export interface PinSideSnap {
   rank: number;
   of: number;
   pct: number;
+  // (a season played outside the ranked list: unranked, UR, its rank 0 and no percentile; only kept when so)
+  ur?: boolean;
   // (the list's score behind the rank: rank-why's)
   score: number | null;
   // Each skill's percentile and each column's value, in the snapshot's skills' and rows' order (null:
@@ -46,7 +48,7 @@ export interface PinSnapshot {
   rows: { key: string; label: string; name: string; group: string; lower: boolean }[];
 }
 
-// A day it was looked at: each side's rank, of how many, percentile and score
+// A day it was looked at: each side's rank, of how many, percentile and score (r 0: unranked that day, UR)
 export interface PinPoint {
   d: string;
   sides: { k: string; r: number; o: number; p: number; s: number | null }[];
@@ -75,6 +77,7 @@ export interface SnapSide {
   rank: number;
   of: number;
   pct: number;
+  ur?: boolean;
 }
 
 export interface SnapView {
@@ -104,6 +107,7 @@ export function snapshotOf(sides: SnapSide[], view: SnapView | null, scores: (nu
       rank: side.rank,
       of: side.of,
       pct: round(side.pct),
+      ...(side.ur ? { ur: true } : {}),
       score: scores[i] == null || !Number.isFinite(scores[i]) ? null : round(scores[i]!),
       skills: skills.map((s) => (s.pcts[i] == null ? null : round(s.pcts[i]!))),
       stats: rows.map(({ row }) => {
@@ -217,7 +221,8 @@ export function trackView(then: PinSnapshot, now: PinSnapshot | null): TrackView
       key,
       then: a,
       now: b,
-      moved: a && b ? a.rank - b.rank : null,
+      // (a UR side then or now: no rank to move)
+      moved: a && b && !a.ur && !b.ur ? a.rank - b.rank : null,
       scoreMove: a?.score != null && b?.score != null ? round(b.score - a.score) : null,
     };
   });
@@ -309,7 +314,12 @@ export function lastSeen(baseline: PinSnapshot, history: PinPoint[]): PinSnapsho
   if (!last) return null;
   const sides = baseline.sides.flatMap((side) => {
     const p = last.sides.find((x) => x.k === side.key);
-    return p ? [{ ...side, rank: p.r, of: p.o, pct: p.p, score: p.s }] : [];
+    if (!p) return [];
+    // (UR by the day's rank, 0, not the pin's)
+    const seen: PinSideSnap = { ...side, rank: p.r, of: p.o, pct: p.p, score: p.s };
+    if (p.r > 0) delete seen.ur;
+    else seen.ur = true;
+    return [seen];
   });
   return { ...baseline, at: dayMs(last.d), sides };
 }
@@ -382,7 +392,8 @@ export function trendChart(baseline: PinSnapshot, history: PinPoint[], now: PinS
   const t1 = Math.max(points.at(-1)!.t, t0 + 1);
   // (still the pin's own day, nothing kept since: nothing to draw a line through yet)
   const single = points.length < 2 || (!history.length && dayOf(points.at(-1)!.t) === dayOf(t0));
-  const ranks = points.flatMap((p) => p.point.sides.filter((s) => sides.some((x) => x.key === s.k)).map((s) => s.r));
+  // (a UR day, rank 0, has no place on it: left off)
+  const ranks = points.flatMap((p) => p.point.sides.filter((s) => s.r > 0 && sides.some((x) => x.key === s.k)).map((s) => s.r));
   const lo = 1;
   const hi = Math.max(lo + 3, Math.max(...ranks, 1) + 1);
   const plotW = Math.max(40, width - left - right);
@@ -407,7 +418,7 @@ export function trendChart(baseline: PinSnapshot, history: PinPoint[], now: PinS
   const lines = sides.flatMap((side) => {
     const own = points.flatMap((p) => {
       const s = p.point.sides.find((x) => x.k === side.key);
-      return s ? [{ ...p, s }] : [];
+      return s && s.r > 0 ? [{ ...p, s }] : [];
     });
     if (!own.length) return [];
     const dots: TrendDot[] = own.map((p) => ({

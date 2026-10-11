@@ -147,7 +147,9 @@
                       <li [style.--side]="s.color">
                         <i aria-hidden="true"></i>
                         <span class="pin-glance-name">{{ s.head }}</span>
-                        @if (s.rank !== null) {
+                        @if (s.ur) {
+                          <b class="pin-glance-rank" [style.--tone]="s.tone" title="Unranked (UR): a season played outside the ranked list">UR</b>
+                        } @else if (s.rank !== null) {
                           <b class="pin-glance-rank" [style.--tone]="s.tone" [title]="'#' + s.rank + ' of ' + s.of + (card.here ? ' now' : ' when last seen')">#{{ s.rank }}</b>
                         } @else if (card.loading) {
                           <span class="spinner tiny" aria-label="Loading"></span>
@@ -214,7 +216,9 @@
                     </div>
                   </div>
                   <div class="pin-standing">
-                    @if (s.rank !== null) {
+                    @if (s.ur) {
+                      <span class="pin-rank" [style.--tone]="s.tone" title="Unranked (UR): a season played outside the ranked list">UR</span>
+                    } @else if (s.rank !== null) {
                       <span class="pin-rank" [style.--tone]="s.tone" [title]="'#' + s.rank + ' of ' + s.of + ' now'">{{ s.rank }}</span>
                       <span class="pin-of">of {{ s.of }}</span>
                     } @else if (card.loading) {
@@ -226,7 +230,7 @@
                       class="pin-move"
                       [class.good]="(s.track.moved ?? 0) > 0"
                       [class.bad]="(s.track.moved ?? 0) < 0"
-                      [title]="s.track.then ? '#' + s.track.then.rank + ' of ' + s.track.then.of + ' when pinned' : ''"
+                      [title]="s.track.then ? (s.track.then.ur ? 'Unranked (UR)' : '#' + s.track.then.rank + ' of ' + s.track.then.of) + ' when pinned' : ''"
                     >
                       @if ((s.track.moved ?? 0) !== 0) {
                         <mat-icon [fontIcon]="(s.track.moved ?? 0) > 0 ? 'arrow_upward' : 'arrow_downward'" aria-hidden="true"></mat-icon>
@@ -236,7 +240,7 @@
                   </div>
                   <div class="pin-foot">
                     @if (s.track.then) {
-                      <span>Pinned at <b>#{{ s.track.then.rank }}</b></span>
+                      <span>Pinned at <b>{{ s.track.then.ur ? 'UR' : '#' + s.track.then.rank }}</b></span>
                     }
                     @if (s.track.now?.score != null) {
                       <span class="pin-score" title="The list's score behind the rank (its sliders' weighted standard scores)">

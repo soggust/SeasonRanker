@@ -32,6 +32,25 @@ export function expandRows(file) {
   );
 }
 
+// A season's unranked rows by tab (skill-players.ur.json, each marked ur, as the season data service reads
+// them; none: {})
+export function unrankedData(sport, season, current) {
+  const file = path.join(seasonDir(sport, season, current), 'skill-players.ur.json');
+  const tabs = fs.existsSync(file) ? readJson(file) : {};
+  for (const rows of Object.values(tabs)) for (const row of rows) row.ur = true;
+  return tabs;
+}
+
+// The season data service's unranked calls on the static files (a season's read once)
+export function unrankedService(sport, current) {
+  const seasons = new Map();
+  const unranked = async (season) => {
+    if (!seasons.has(season)) seasons.set(season, unrankedData(sport, season, current));
+    return seasons.get(season);
+  };
+  return { unranked, unrankedRow: async (season, position, id) => ((await unranked(season))[position] ?? []).find((p) => p.gsisId === id) };
+}
+
 // skill-players.json -> skillPlayers
 const keyOf = (file) => file.replace(/\.json$/, '').replace(/-(\w)/g, (_, c) => c.toUpperCase());
 

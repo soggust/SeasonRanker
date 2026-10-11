@@ -5,6 +5,10 @@ import { SkillPlayer, SkillPosition } from '@sport/positions';
 import { CURRENT_SEASON, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
 import { unitsForSeason } from '@ranker/engine/unit-scoring';
 import { CareersFile, CompsFile } from '@ranker/engine/player-card/card.model';
+import { SPORT } from '@sport/sport';
+
+// A season's unranked rows (SPORT.unrankedSeasons)
+const UR_FILE = 'skill-players.ur.json';
 
 // A file checked with the server each visit: {} when it isn't there (a tab without any; the host's page
 // fallback answers a missing file with the app's page, not JSON), a failure thrown (asked
@@ -35,6 +39,25 @@ export class SeasonDataService {
   // One tab's rows for a finished season (a small file per tab)
   tabRows(season: number, position: SkillPosition): Promise<SkillPlayer[]> {
     return this.once(`tab.${season}.${position}`, () => fetchSeasonFile<SkillPlayer[]>(season, `units/${position}.json`));
+  }
+
+  // A season's unranked rows by tab (SPORT.unrankedSeasons: skill-players.ur.json, everyone who played
+  // outside the ranked lists), each marked ur; none for a sport without them, or a season without the file
+  unranked(season: number): Promise<Partial<Record<SkillPosition, SkillPlayer[]>>> {
+    if (!SPORT.unrankedSeasons) return Promise.resolve({});
+    return this.once(`ur.${season}`, () =>
+      fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, UR_FILE)
+        .then((tabs) => {
+          for (const rows of Object.values(tabs ?? {})) for (const row of rows ?? []) (row as SkillPlayer & { ur?: boolean }).ur = true;
+          return tabs ?? {};
+        })
+        .catch(() => ({})),
+    );
+  }
+
+  // One unranked row: someone's season outside a tab's ranked list (none: he's ranked, or didn't play)
+  async unrankedRow(season: number, position: SkillPosition, gsisId: string): Promise<SkillPlayer | undefined> {
+    return (await this.unranked(season))[position]?.find((p) => p.gsisId === gsisId);
   }
 
   // A tab's finished seasons, each one's (checked with the server each visit: it changes once a year, at

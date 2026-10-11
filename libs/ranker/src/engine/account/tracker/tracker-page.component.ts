@@ -50,6 +50,8 @@ interface CardSide {
   track: TrackSide;
   // (now's rank and its tone; the pin's)
   rank: number | null;
+  // (now a season played outside the ranked list: UR in the rank's place, its tone neutral)
+  ur: boolean;
   of: number | null;
   tone: string;
   live: boolean;
@@ -337,7 +339,8 @@ export class TrackerPageComponent implements OnDestroy {
       const snap = track.now ?? track.then!;
       const season = snap.season;
       const seasonText = SPORT.careerOnly ? 'Career' : season === CURRENT_SEASON ? `${SPORT.seasonText(season)} season` : SPORT.seasonText(season);
-      const rank = track.now?.rank ?? null;
+      const ur = !!track.now?.ur;
+      const rank = ur ? null : (track.now?.rank ?? null);
       return {
         key: track.key,
         name: snap.name,
@@ -351,8 +354,9 @@ export class TrackerPageComponent implements OnDestroy {
         photo: side?.photo ?? null,
         track,
         rank,
+        ur,
         of: track.now?.of ?? null,
-        tone: rankTone(track.now?.pct ?? track.then?.pct ?? null),
+        tone: (track.now ?? track.then)?.ur ? rankTone(null) : rankTone(track.now?.pct ?? track.then?.pct ?? null),
         live: season === CURRENT_SEASON,
         side,
       };
@@ -410,6 +414,9 @@ export class TrackerPageComponent implements OnDestroy {
   moveText(side: CardSide, card?: PinCard): string {
     if (card && !card.here && card.seen === null) return 'As pinned';
     const m = side.track.moved;
+    const { then, now } = side.track;
+    // (UR then or now: no rank to move from or to)
+    if (m === null && then && now && (then.ur || now.ur)) return then.ur && now.ur ? 'Unranked' : now.ur ? 'Unranked now' : 'Ranked since the pin';
     if (m === null) return side.track.now ? 'New since the pin' : 'Not found now';
     if (m === 0) return 'No change';
     return `${m > 0 ? 'Up' : 'Down'} ${Math.abs(m)}`;

@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadEngine, readJson, seasonData, seasonDir, staticDir } from './support/engine.mjs';
+import { loadEngine, readJson, seasonData, seasonDir, staticDir, unrankedService } from './support/engine.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'tracker-entry.ts');
 let engine;
@@ -240,6 +240,30 @@ test('the rank chart: #1 on top, a step a side from the pin to now, the pin\'s d
   assert.deepEqual(rankTicks(1, 80), [1, 20, 40, 60, 80]);
 });
 
+test('a UR side (a season outside the ranked list): kept as UR, no move, off the rank chart', async () => {
+  const { snapshotOf, trackView, pointOf, lastSeen, trendChart } = await load();
+  const at = new Date(2026, 9, 1, 12).getTime();
+  const ur = { ...side('WR/2025/r', 0, 0), position: 'WR', season: 2025, tabLabel: 'WR', ur: true };
+  const base = snapshotOf([side('QB/2026/a', 3, 0.94), ur], null, [1.2, null], at);
+  assert.equal(base.sides[1].ur, true, 'the UR side marked');
+  assert.ok(!('ur' in base.sides[0]), 'a ranked one not (no key at all)');
+  const now = snapshotOf([side('QB/2026/a', 2, 0.97), ur], null, [1.4, null], at + 3 * 86_400_000);
+  const view = trackView(base, now);
+  assert.equal(view.sides[0].moved, 1);
+  assert.equal(view.sides[1].moved, null, 'no rank to move');
+  // (its points keep rank 0; the chart draws only the ranked side, its scale theirs)
+  assert.equal(pointOf(now).sides[1].r, 0);
+  const chart = trendChart(base, [], now, [{ key: 'QB/2026/a', name: 'a', color: '#f00' }, { key: 'WR/2025/r', name: 'r', color: '#0f0' }], 400, 150);
+  assert.deepEqual(chart.lines.map((l) => l.key), ['QB/2026/a']);
+  assert.ok(chart.yTicks.every((t) => !t.label.includes('#0')), 'no #0');
+  // (another sport's, as last seen: UR by the day's rank)
+  const seen = lastSeen(base, [{ d: '2026-10-03', sides: [{ k: 'QB/2026/a', r: 4, o: 40, p: 0.9, s: 1 }, { k: 'WR/2025/r', r: 0, o: 80, p: 0, s: null }] }]);
+  assert.equal(seen.sides[1].ur, true);
+  assert.ok(!('ur' in seen.sides[0]));
+  const ranked = lastSeen({ ...base, sides: [base.sides[1]] }, [{ d: '2026-10-03', sides: [{ k: 'WR/2025/r', r: 30, o: 80, p: 0.6, s: 0.2 }] }]);
+  assert.ok(!ranked.sides[0].ur, 'ranked since: no longer UR');
+});
+
 test('the pin\'s link: the list and the comparison kept, nothing else; its title; its order', async () => {
   const { specOf, parseSpec, decodeShared, compareHref, defaultTitle, cleanTitle, moved, sinceText, PIN_TITLE_MAX } = await load();
   const code = Buffer.from(JSON.stringify({ v: 1, w: { QB: { epa: 80 } } })).toString('base64url');
@@ -278,6 +302,7 @@ function dataFor(e) {
     careers: async (p) => orEmpty(`${p}.json`),
     careerNames: async () => orEmpty('names.json'),
     firstSeasons: async () => ({}),
+    ...unrankedService('nfl', e.CURRENT_SEASON),
   };
 }
 

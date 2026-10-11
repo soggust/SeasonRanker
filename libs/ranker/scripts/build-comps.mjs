@@ -9,7 +9,9 @@
 // - careers/<tab>.json: every season each one appears in, for the card's Seasons tab: [season, team,
 //   games, rank with the default sliders, list size, headline stats (headlineStats, season totals)],
 //   a file per tab (a card loads its own); careers/first-seasons.json each one's first season (Rookies
-//   Only). The current season isn't in them: the app works it out from the rows it has.
+//   Only). The current season isn't in them: the app works it out from the rows it has. A season someone
+//   played outside the ranked list (seasons/<year>/skill-players.ur.json, the NFL's: see its update-data.mjs)
+//   is in them too, unranked: rank and list size 0 (UR), and never a similar season or one to find them for.
 // - seasons/<year>/units/<tab>.json: each tab's rows, which the Seasons tab ranks with the current
 //   sliders (and uses in place of the default ranks above once they load).
 //
@@ -24,6 +26,8 @@ import { writeCareers } from './careers.mjs';
 
 const Z_CAP = 3;
 const COMPS = 3;
+// (a season's unranked rows, beside its ranked ones)
+export const UR_FILE = 'skill-players.ur.json';
 
 // app: the sport's app folder (apps/<sport>). minGames(position, season): the fewest games a season
 // needs to get similar seasons (subject) and to be one (pool), in that tab's games. dataFiles: the
@@ -44,6 +48,12 @@ export async function buildComps({
     Object.fromEntries(
       Object.entries(FILES).map(([key, file]) => [key, JSON.parse(fs.readFileSync(path.join(SEASONS_DIR, String(year), file), 'utf8'))]),
     );
+
+  // A season's unranked rows, by tab (none: {})
+  const readUnranked = (year) => {
+    const file = path.join(SEASONS_DIR, String(year), UR_FILE);
+    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
+  };
 
   const seasons = fs
     .readdirSync(SEASONS_DIR)
@@ -75,6 +85,7 @@ export async function buildComps({
   const careers = {};
   for (const season of seasons) {
     const units = unitsFor(readSeason(season));
+    const unranked = readUnranked(season);
     // Each tab's rows on their own (QBs already built), so the Seasons tab can rank a player's other
     // years with the current sliders without downloading whole seasons: seasons/<year>/units/<tab>.json
     const unitsDir = path.join(SEASONS_DIR, String(season), 'units');
@@ -105,11 +116,13 @@ export async function buildComps({
       // first shows it), and the headline stats as season totals
       const ranked = defaultRanking(position, presetWeights(position, 'default'), units);
       const headline = headlineStats(position);
-      for (const unit of rows) {
-        const stats = headline.map((stat) => {
+      const headlineOf = (unit) =>
+        headline.map((stat) => {
           const v = unitStat(unit, stat.key);
           return v === null || v === undefined ? null : Math.round(v * 1000) / 1000;
         });
+      for (const unit of rows) {
+        const stats = headlineOf(unit);
         (careers[position] ??= {})[unit.gsisId] ??= [];
         careers[position][unit.gsisId].push([
           season,
@@ -134,6 +147,13 @@ export async function buildComps({
           games: unit.games,
           z,
         });
+      }
+      // (the unranked seasons: a line each, rank 0 of 0, and no similar seasons either way)
+      const listed = new Set(rows.map((unit) => unit.gsisId));
+      for (const unit of unranked[position] ?? []) {
+        if (listed.has(unit.gsisId)) continue;
+        (careers[position] ??= {})[unit.gsisId] ??= [];
+        careers[position][unit.gsisId].push([season, logoKey(unit.teamLogo), unit.games, 0, 0, headlineOf(unit)]);
       }
     }
   }

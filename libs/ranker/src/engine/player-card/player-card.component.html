@@ -63,14 +63,22 @@
       </div>
 
       <!-- Overall rank, as a scoreboard tile: the words lit in the board's dots, the number in segments over
-           its unlit 8s -->
-      <div class="hero-rank" [style.--tone]="rankTone(rankPct(c.rank, c.of))">
-        <span class="rank-label">Rank</span>
-        <span class="rank-number"
-          ><span class="rank-unlit" aria-hidden="true">{{ '8'.repeat((c.rank + '').length) }}</span><span class="rank-lit">{{ c.rank }}</span></span
-        >
-        <span class="rank-of">of {{ c.of }}</span>
-      </div>
+           its unlit 8s (an unranked season: UR, in neutral grey) -->
+      @if (c.ur) {
+        <div class="hero-rank" [style.--tone]="rankTone(null)" title="Unranked: played outside this season's ranked list">
+          <span class="rank-label">Rank</span>
+          <span class="rank-number"><span class="rank-unlit" aria-hidden="true">88</span><span class="rank-lit">UR</span></span>
+          <span class="rank-of">unranked</span>
+        </div>
+      } @else {
+        <div class="hero-rank" [style.--tone]="rankTone(rankPct(c.rank, c.of))">
+          <span class="rank-label">Rank</span>
+          <span class="rank-number"
+            ><span class="rank-unlit" aria-hidden="true">{{ '8'.repeat((c.rank + '').length) }}</span><span class="rank-lit">{{ c.rank }}</span></span
+          >
+          <span class="rank-of">of {{ c.of }}</span>
+        </div>
+      }
 
       <div class="card-controls">
         <!-- (opened from a game: back to it, the card set aside under it again) -->

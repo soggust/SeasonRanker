@@ -1109,6 +1109,13 @@
       stroke: #fff;
       stroke-width: 2.2;
     }
+
+    // (an unranked season: hollow, on the bottom line, off the line itself)
+    &.ur {
+      fill: #1f2824;
+      stroke: var(--side);
+      stroke-dasharray: 2 1.5;
+    }
   }
 
   // (each line's face past its end: the headshot on the team's badge, ringed in the side's color)

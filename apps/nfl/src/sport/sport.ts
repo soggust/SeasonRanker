@@ -182,6 +182,8 @@ export const SPORT: SportConfig = {
   },
   // The card's Analysis tab: the AI write-ups (apps/nfl/scripts/analysis)
   analysis: true,
+  // (every RB/WR/TE/K/P season outside the ranked lists: update-data.mjs's unrankedRows)
+  unrankedSeasons: true,
   // The card's Game Log tab: teams, defenses, lines and coaches get their team's games; a player ESPN's
   // columns, without the longest gains, sacks, or fumbles but the ones lost (FL, at the end of Rushing),
   // charting his total yards

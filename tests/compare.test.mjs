@@ -12,7 +12,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadEngine, readJson, seasonData, seasonDir, staticDir } from './support/engine.mjs';
+import { loadEngine, readJson, seasonData, seasonDir, staticDir, unrankedService } from './support/engine.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'compare-entry.ts');
 
@@ -78,6 +78,7 @@ function harness(engine, sport, position) {
     rows: async (season) => (season === CURRENT_SEASON ? SKILL_UNITS : unitsForSeason(seasonData(seasonDir(sport, season, CURRENT_SEASON), SPORT.dataFiles), season)),
     careers: async (p) => (asked.push(`${p}.json`), orEmpty(`${p}.json`)),
     careerNames: async () => (asked.push('names.json'), orEmpty('names.json')),
+    ...unrankedService(sport, CURRENT_SEASON),
   };
   return { host, data, asked, compare: new engine.PlayerCompare(host, data) };
 }

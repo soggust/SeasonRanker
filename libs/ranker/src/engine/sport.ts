@@ -403,6 +403,10 @@ export interface SportConfig {
   cardLogo?: (logo: string) => string;
   // The card's Analysis tab: the sport publishes AI write-ups (data/analysis: player-card/analysis.ts)
   analysis?: boolean;
+  // Unranked (UR) seasons: each season's skill-players.ur.json, everyone who played outside a tab's ranked
+  // list (the NFL's: its lists are cut to the top so many by usage). Never ranked or in the table; their
+  // cards, Career lines and compare sides show the stats, marked UR where a rank would be
+  unrankedSeasons?: boolean;
   // A history tab on the card in place of the seasons one (MMA's fights): its title and icon, and a
   // player's rows, newest first
   cardHistory?: { title: string; icon: string; rows: (player: SkillPlayer) => HistoryRow[] };
