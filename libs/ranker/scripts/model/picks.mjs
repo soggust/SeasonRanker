@@ -29,9 +29,15 @@
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
 //            band is its score's; one without an edge is low, whatever its score (a favorite at a short price
 //            isn't a strong bet)
-//   reason   written from the bet's own numbers: the model's chance against the book's, the price and book,
-//            the projection (a prop's) or the expected score, what the context saw (a backup quarterback, the
-//            weather, a back-to-back, players out, the goalie or pitcher), and a line that's moved its way
+//   reason   its plain write-up (writeup.mjs): the pick and what the model sees (a prop's projection against
+//            its line, from his blended rate by the drivers that moved it; a game's expected score and what its
+//            context saw), the price (our chance, the break-even, the book's no-vig chance, where the edge comes
+//            from) and a caveat; a CHECK's says the disagreement and asks its question. Its risk beside it (the
+//            page's Devil's Advocate): the likeliest way it loses. Each frozen per bet (writeups.json, extra
+//            .writeups) till its material facts change (a re-price) or the text's version is bumped, so the
+//            hourly refits never churn it; the analysis Claude wrote for it, where there is one for its facts as
+//            they stand, in its place (by 'claude', its headline and read). legacyReasonOf, the old one-liner
+//            (kept a release, to diff against)
 //   record   the picks' own: each bet the page shows is marked shown (with its chance and Kelly score when
 //            first shown, publishedP and publishedKelly), and published once it's locked: REPRICE_BY before its
 //            start (timing.mjs), when the news can no longer price it again, or the first run after the start
@@ -45,6 +51,7 @@ import { round } from './ratings.mjs';
 import { decimal, intentOf, record } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
 import { CHECK_TOP } from './checks.mjs';
+import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
 
 // (a bet locked: its game starts within REPRICE_BY, or has started; nothing prices it again from here)
 const locked = (b, now) => Date.parse(b.start) - now.getTime() <= REPRICE_BY;
@@ -115,8 +122,9 @@ export function scoreParts(bet, trust) {
   };
 }
 
-// A bet's reasons, in a few short sentences from its own numbers
-export function reasonOf(bet, game) {
+// A bet's reasons, in a few short sentences from its own numbers: the old text, before the plain write-ups
+// (writeup.mjs); kept a release, for diffing against
+export function legacyReasonOf(bet, game) {
   const [away, home] = bet.matchup.split(' @ ');
   const c = bet.context ?? {};
   const out = [];
@@ -193,8 +201,12 @@ function whereOf(bet, game) {
 }
 
 // The sport's picks: its bets on games not started, the best Kelly score first, the top TOP; each one marked
-// shown on the ledger (its level then), published once it's locked, and the published ones' record
-export function buildPicks(sport, ledger, trust, games, now) {
+// shown on the ledger (its level then), published once it's locked, and the published ones' record. extra:
+// { state (the trust, the context's terms and the props' fits the write-ups read), writeups (writeups.json: the
+// write-ups kept per bet, written to here (new or changed ones) and pruned to the open bets and CHECKs) }
+export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
+  const state = extra.state ?? { trust };
+  const writeups = extra.writeups ?? null;
   // (the ones shown before and locked since (their game within REPRICE_BY, or started between runs, graded
   // even): published, at their chance and level when first shown)
   for (const b of ledger.bets) {
@@ -245,7 +257,17 @@ export function buildPicks(sport, ledger, trust, games, now) {
   const rowOf = ({ b, score, why, check }, i) => {
     const g = games.get(b.event);
     const [away, home] = b.matchup.split(' @ ');
-    return {
+    // (its write-up: kept per bet till its facts change; a prop's game read off its game's own bet. One that
+    // fails to write falls back to the old text, never stops the picks)
+    let wrote;
+    try {
+      wrote = plainFor(b, { game: g, sib: sibOf(b, ledger.bets), state, ledger, writeups });
+    } catch (err) {
+      console.warn(`${sport}: write-up for ${b.id} failed (${err.message}): the old text`);
+      wrote = { hash: null, entry: { plain: { reason: legacyReasonOf(b, g) } } };
+    }
+    const { hash, entry } = wrote;
+    const row = {
       id: b.id,
       rank: i + 1,
       sport,
@@ -278,15 +300,23 @@ export function buildPicks(sport, ledger, trust, games, now) {
       matchup: b.matchup,
       teams: [away, home].map((abbr) => ({ abbr, logo: logo(sport, abbr) })),
       where: whereOf(b, g),
-      reason: reasonOf(b, g),
+      reason: entry.plain.reason,
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet)
       ...(check ? { gap: b.gap, checkReason: b.reason } : {}),
     };
+    // (its risk, the page's Devil's Advocate, and the AI's analysis in place of the plain text where it has one)
+    return applyWriteups(row, entry, hash);
   };
   const picks = top.map(rowOf);
+  const checkRows = checks.map(rowOf);
+  // (the write-ups kept: the open bets' and the open CHECKs', the rest dropped (graded, taken back))
+  if (writeups?.items) {
+    const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => !c.checkResult).map((c) => c.id)]);
+    for (const id of Object.keys(writeups.items)) if (!live.has(id)) delete writeups.items[id];
+  }
   const published = ledger.bets.filter((b) => b.published);
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checks.map(rowOf) };
+  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checkRows };
 }
 
 // (a record as the page's: wins, losses, pushes, the win share; a void bet, no action, isn't counted)

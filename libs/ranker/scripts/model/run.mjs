@@ -190,6 +190,8 @@ async function runSport(sport) {
     picks: path.join(ROOT, 'apps', sport, 'src/StaticData/model/picks.json'),
     checks: path.join(ROOT, 'apps', sport, 'src/StaticData/model/checks.json'),
     teams: path.join(ROOT, 'apps', sport, 'src/StaticData/model/teams.json'),
+    // (the picks' write-ups, kept per bet till its facts change: committed, not deployed)
+    writeups: path.join(ROOT, 'apps', sport, 'scripts/model/writeups.json'),
   };
   // (--picks-only: the picks written from the ledger as it stands, nothing fetched, fit or bet)
   if (PICKS_ONLY) return writePicks(r, true);
@@ -246,18 +248,26 @@ async function writeTeams(r) {
 
 // 7. the public picks (picks.mjs): the best bets on games not started, written for the site's Bets page when
 // they change; the ones shown marked shown on the ledger, and published once locked (REPRICE_BY before the
-// start), so their record is theirs alone and of the bets as they stood at the start
+// start), so their record is theirs alone and of the bets as they stood at the start. Each with its write-up
+// (writeup.mjs), kept per bet in writeups.json till its facts change, written from the state as it stands
+// (this run's trust, context terms and props' fits): an unreadable writeups.json is written fresh, never stops
+// the picks
 function writePicks(r, alone = false) {
   const ledger = alone ? readKept(r.files.ledger, { bets: [] }) : r.ledger;
   if (alone) ledger.checks = readChecks(r, ledger);
-  const trust = alone ? (readKept(r.files.state, {}).trust ?? {}) : r.trust;
+  const saved = alone ? readKept(r.files.state, {}) : r.state;
+  const trust = alone ? (saved.trust ?? {}) : r.trust;
   const games = alone ? new Map(readKept(r.files.games, []).map((g) => [g.id, g])) : r.games;
-  const out = buildPicks(r.sport, ledger, trust, games, r.now);
+  const state = { trust, context: (alone ? null : r.context) ?? saved?.context ?? null, props: r.props && !alone ? { types: Object.entries(r.props).map(([key, f]) => ({ key, params: f.params, check: f.check, allPlayersBias: f.checkAll?.bias ?? null })) } : (saved?.props ?? null) };
+  const writeups = readJson(r.files.writeups, null) ?? { sport: r.sport, items: {} };
+  writeups.items ??= {};
+  const out = buildPicks(r.sport, ledger, trust, games, r.now, { state, writeups });
   if (DRY) {
     console.log(`${r.sport} (dry): ${out.checks.length} CHECKs (their own list), ${out.picks.length} picks: ${out.picks.map((p) => `${p.level} ${p.pick} (${p.score})`).join(' | ')}`);
     return;
   }
   const changed = writeIfChanged(r.files.picks, out);
+  writeIfChanged(r.files.writeups, writeups);
   if (alone) writeLedger(r, ledger);
   console.log(`${r.sport}: ${out.picks.length} picks${changed ? ' written' : ' unchanged'}`);
 }

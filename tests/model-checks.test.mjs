@@ -176,7 +176,10 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   const c = out.checks.find((p) => p.id === '401:ml');
   // (its chance the model's: past the gap the trusted chance is about the book's)
   assert.deepEqual([c.units, c.edge, c.gap, c.rank, c.chance], [0, false, 0.3, 1, 80]);
-  assert.match(c.reason, /Not bet: the model's 70%/);
+  // (its write-up says the disagreement and asks its question; the guard's words in checkReason)
+  assert.match(c.reason, /Not bet: the model makes DAL 80% and DraftKings' no-vig price 50%, a 30-point gap, past the 15 points the desk allows/);
+  assert.match(c.reason, /The question: /);
+  assert.match(c.risk, /more often news the model has not seen than an edge/);
   assert.match(c.checkReason, /too far from the market/);
   assert.equal(out.picks.find((p) => p.id === 'prop').otherOdds, -120);
   assert.equal(out.picks.find((p) => p.id === 'love').otherOdds, null);

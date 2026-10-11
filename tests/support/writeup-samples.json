@@ -1,0 +1,684 @@
+[
+ {
+  "bet": {
+   "id": "401872990:prop:recYds:4258595",
+   "event": "401872990",
+   "sport": "nfl",
+   "start": "2026-10-11T17:00Z",
+   "placedAt": "2026-10-10T12:30:52.450Z",
+   "matchup": "CHI @ GB",
+   "market": "prop",
+   "propType": "recYds",
+   "statLabel": "Rec Yds",
+   "player": "Cole Kmet",
+   "athlete": "4258595",
+   "team": "3",
+   "side": "over",
+   "line": 8.5,
+   "odds": -115,
+   "oddsAssumed": false,
+   "model": 0.7708,
+   "fair": 0.5063,
+   "p": 0.6386,
+   "ev": 0.1938,
+   "intent": "edge",
+   "units": 1,
+   "expMargin": -2.71,
+   "expTotal": 42.61,
+   "book": "DraftKings",
+   "pricesFrom": "the odds api",
+   "projection": {
+    "mean": 19.5,
+    "r": 1,
+    "rate": 17.92,
+    "recent": 12,
+    "opp": 0.871,
+    "posOpp": 0.871,
+    "role": "TE2+",
+    "roleOpp": null,
+    "roleFactor": 0.772,
+    "roleRank": {
+     "rank": 19,
+     "of": 29
+    },
+    "roleUsed": false,
+    "funnel": -0.03,
+    "funnelUsed": false,
+    "funnelF": 1,
+    "paceF": 1,
+    "tgtF": 1,
+    "script": 0.94,
+    "ctx": 1,
+    "games": 4,
+    "lastSeason": 18,
+    "pOver": 0.7708,
+    "fairOver": 0.6667,
+    "record": 13,
+    "applied": {
+     "scale": 1.166,
+     "w": 0,
+     "a": 0.5,
+     "b": 0
+    }
+   },
+   "tested": false,
+   "context": {
+    "move": {
+     "open": 8.5,
+     "now": 8.5
+    }
+   },
+   "pick": "Cole Kmet Over 8.5 Rec Yds",
+   "status": "open",
+   "profit": 0
+  },
+  "sib": {
+   "id": "401872990:total",
+   "event": "401872990",
+   "sport": "nfl",
+   "start": "2026-10-11T17:00Z",
+   "placedAt": "2026-10-09T00:38:33.835Z",
+   "matchup": "CHI @ GB",
+   "market": "total",
+   "side": "under",
+   "line": 45.5,
+   "odds": -102,
+   "model": 0.5503,
+   "fair": 0.4826,
+   "p": 0.5029,
+   "ev": -0.004,
+   "units": 0.5,
+   "expMargin": -2.69,
+   "expTotal": 43.8,
+   "book": "DraftKings",
+   "fairFrom": "draftkings",
+   "context": {
+    "rest": [
+     7,
+     7
+    ],
+    "b2b": [
+     0,
+     0
+    ],
+    "miles": [
+     1186,
+     185
+    ],
+    "starters": {
+     "home": "Jordan Love",
+     "away": "Tyson Bagent",
+     "backup": [
+      0,
+      1
+     ]
+    },
+    "weather": {
+     "roof": "outdoors",
+     "temp": 74,
+     "wind": 9,
+     "forecast": true
+    },
+    "ranker": {
+     "rkNet": 0.41,
+     "rkLine": -0.92,
+     "rkWeapons": -1.38,
+     "rkRush": 0.6,
+     "rkScoreT": 2.231
+    },
+    "more": {
+     "epa": [
+      0.068,
+      0.022
+     ],
+     "olChanged": [
+      0,
+      0
+     ],
+     "crosswind": 4.225
+    },
+    "officials": {
+     "crew": null
+    },
+    "schedule": {
+     "dense": [
+      0,
+      0
+     ],
+     "east": [
+      0,
+      0
+     ],
+     "climb": [
+      0,
+      0
+     ]
+    },
+    "flags": [],
+    "adj": {
+     "margin": 1.95,
+     "total": -2.28
+    },
+    "move": {
+     "spread": 5.5,
+     "total": -4,
+     "ml": -0.142
+    }
+   },
+   "pick": "Under 45.5",
+   "status": "open",
+   "profit": 0
+  },
+  "game": {
+   "id": "401872990",
+   "date": "2026-10-11T17:00Z",
+   "season": 2026,
+   "type": 2,
+   "home": "9",
+   "away": "3",
+   "homeAbbr": "GB",
+   "awayAbbr": "CHI",
+   "neutral": false,
+   "final": false,
+   "hs": null,
+   "as": null,
+   "venue": "Green Bay|WI|USA",
+   "indoor": false
+  }
+ },
+ {
+  "bet": {
+   "id": "401892478:prop:saves:3904177",
+   "event": "401892478",
+   "sport": "nhl",
+   "start": "2026-10-10T23:00Z",
+   "placedAt": "2026-10-10T21:44:20.199Z",
+   "matchup": "TOR @ COL",
+   "market": "prop",
+   "propType": "saves",
+   "statLabel": "Saves",
+   "player": "Mackenzie Blackwood",
+   "athlete": "3904177",
+   "team": "17",
+   "side": "under",
+   "line": 23.5,
+   "odds": -105,
+   "oddsAssumed": false,
+   "model": 0.6953,
+   "fair": 0.4797,
+   "p": 0.5875,
+   "ev": 0.147,
+   "intent": "edge",
+   "units": 1,
+   "expMargin": 1.67,
+   "expTotal": 6.43,
+   "book": "DraftKings",
+   "pricesFrom": "espn",
+   "projection": {
+    "mean": 20.89,
+    "r": 60,
+    "rate": 23.09,
+    "recent": 22.67,
+    "opp": 0.955,
+    "posOpp": 0.955,
+    "role": null,
+    "roleOpp": null,
+    "roleFactor": null,
+    "roleRank": null,
+    "roleUsed": false,
+    "funnel": null,
+    "funnelUsed": false,
+    "funnelF": 1,
+    "paceF": 1,
+    "tgtF": 1,
+    "script": 0.902,
+    "ctx": 0,
+    "games": 3,
+    "lastSeason": 37,
+    "pOver": 0.3047,
+    "fairOver": 0.4468,
+    "record": 21.5,
+    "applied": {
+     "scale": 1.001,
+     "w": 0.2,
+     "a": 1,
+     "b": 0.5
+    }
+   },
+   "tested": false,
+   "context": {
+    "move": {
+     "open": 24.5,
+     "now": 23.5
+    }
+   },
+   "pick": "Mackenzie Blackwood Under 23.5 Saves",
+   "status": "open",
+   "profit": 0
+  },
+  "sib": {
+   "id": "401892478:spread",
+   "event": "401892478",
+   "sport": "nhl",
+   "start": "2026-10-10T23:00Z",
+   "placedAt": "2026-10-09T19:05:06.938Z",
+   "matchup": "TOR @ COL",
+   "market": "spread",
+   "side": "home",
+   "line": -1.5,
+   "odds": 120,
+   "model": 0.5488,
+   "fair": 0.4365,
+   "p": 0.4702,
+   "ev": 0.0344,
+   "intent": "edge",
+   "units": 1.5,
+   "expMargin": 1.81,
+   "expTotal": 6.44,
+   "book": "DraftKings",
+   "fairFrom": "its own prices",
+   "context": {
+    "rest": [
+     2,
+     2
+    ],
+    "b2b": [
+     0,
+     0
+    ],
+    "miles": [
+     896,
+     605
+    ],
+    "starters": {
+     "home": "Mackenzie Blackwood",
+     "away": "Sergei Bobrovsky",
+     "saved": [
+      0.032,
+      -0.334
+     ],
+     "vsUsual": [
+      -0.11,
+      -0.233
+     ]
+    },
+    "ranker": {
+     "rkXg": 2.26,
+     "rkGsax": 4.38,
+     "rkPdo": 1.9
+    },
+    "more": {
+     "xg": [
+      0,
+      0
+     ],
+     "gsaxVsUsual": [
+      0,
+      0
+     ],
+     "topThree": [
+      0.38,
+      0.421
+     ]
+    },
+    "officials": {
+     "crew": null
+    },
+    "schedule": {
+     "dense": [
+      1,
+      0
+     ],
+     "east": [
+      0,
+      0
+     ],
+     "climb": [
+      0,
+      0
+     ]
+    },
+    "flags": [],
+    "adj": {
+     "margin": 0.07,
+     "total": 0
+    },
+    "move": {
+     "spread": 0,
+     "total": 0,
+     "ml": 0.028
+    }
+   },
+   "pick": "COL -1.5",
+   "status": "open",
+   "profit": 0
+  },
+  "game": {
+   "id": "401892478",
+   "date": "2026-10-10T23:00Z",
+   "season": 2027,
+   "type": 2,
+   "home": "17",
+   "away": "21",
+   "homeAbbr": "COL",
+   "awayAbbr": "TOR",
+   "neutral": false,
+   "final": false,
+   "hs": null,
+   "as": null,
+   "venue": "Denver|CO|USA",
+   "indoor": true
+  }
+ },
+ {
+  "bet": {
+   "id": "401891805:spread",
+   "event": "401891805",
+   "sport": "nhl",
+   "start": "2026-10-10T22:00Z",
+   "placedAt": "2026-10-09T00:39:00.585Z",
+   "matchup": "MIN @ FLA",
+   "market": "spread",
+   "side": "away",
+   "line": 1.5,
+   "odds": -217,
+   "model": 0.7894,
+   "fair": 0.6571,
+   "p": 0.7034,
+   "ev": 0.0276,
+   "units": 1.5,
+   "expMargin": -0.55,
+   "expTotal": 6.3,
+   "book": "DraftKings",
+   "fairFrom": "draftkings",
+   "context": {
+    "rest": [
+     3,
+     2
+    ],
+    "b2b": [
+     0,
+     0
+    ],
+    "miles": [
+     2330,
+     191
+    ],
+    "starters": {
+     "home": "Jacob Markstrom",
+     "away": "Jesper Wallstedt",
+     "saved": [
+      -0.205,
+      0.282
+     ],
+     "vsUsual": [
+      -0.062,
+      0.024
+     ]
+    },
+    "ranker": {
+     "rkXg": -0.44,
+     "rkGsax": -1.67,
+     "rkPdo": -1.8
+    },
+    "more": {
+     "xg": [
+      0.03,
+      0.137
+     ],
+     "gsaxVsUsual": [
+      -0.005,
+      0.026
+     ],
+     "topThree": [
+      0.366,
+      0.366
+     ]
+    },
+    "officials": {
+     "crew": null
+    },
+    "schedule": {
+     "dense": [
+      0,
+      0
+     ],
+     "east": [
+      0,
+      0
+     ],
+     "climb": [
+      0,
+      0
+     ]
+    },
+    "flags": [],
+    "adj": {
+     "margin": -0.05,
+     "total": 0
+    },
+    "move": {
+     "spread": 0,
+     "total": 0,
+     "ml": -0.009
+    }
+   },
+   "pick": "MIN +1.5",
+   "status": "open",
+   "profit": 0
+  },
+  "sib": null,
+  "game": {
+   "id": "401891805",
+   "date": "2026-10-10T22:00Z",
+   "season": 2027,
+   "type": 2,
+   "home": "26",
+   "away": "30",
+   "homeAbbr": "FLA",
+   "awayAbbr": "MIN",
+   "neutral": false,
+   "final": true,
+   "hs": 1,
+   "as": 4,
+   "venue": "Sunrise|FL|USA",
+   "indoor": true
+  }
+ },
+ {
+  "bet": {
+   "id": "401907994:prop:k:4867679",
+   "event": "401907994",
+   "sport": "mlb",
+   "start": "2026-10-11T00:00Z",
+   "placedAt": "2026-10-09T07:00:14.570Z",
+   "matchup": "CHW @ CLE",
+   "market": "prop",
+   "propType": "k",
+   "statLabel": "Strikeouts",
+   "player": "Sean Burke",
+   "athlete": "4867679",
+   "team": "4",
+   "side": "over",
+   "line": 4.5,
+   "odds": -101,
+   "oddsAssumed": false,
+   "model": 0.6079,
+   "fair": 0.474,
+   "p": 0.541,
+   "ev": 0.0766,
+   "intent": "edge",
+   "units": 1,
+   "expMargin": -0.25,
+   "expTotal": 8.76,
+   "book": "DraftKings",
+   "pricesFrom": "espn",
+   "projection": {
+    "mean": 5.17,
+    "r": 60,
+    "rate": 5.55,
+    "recent": 4.2,
+    "opp": 0.892,
+    "posOpp": 0.892,
+    "role": null,
+    "roleOpp": null,
+    "roleFactor": null,
+    "roleRank": null,
+    "roleUsed": false,
+    "funnel": null,
+    "funnelUsed": false,
+    "funnelF": 1,
+    "paceF": 1,
+    "tgtF": 1,
+    "script": 0.958,
+    "ctx": 0,
+    "games": 24,
+    "lastSeason": 21,
+    "pOver": 0.6079,
+    "fairOver": 0.6164,
+    "record": 34.5,
+    "applied": {
+     "scale": 0.986,
+     "w": 0,
+     "a": 0.5,
+     "b": 0
+    }
+   },
+   "tested": false,
+   "context": {
+    "move": {
+     "open": 4.5,
+     "now": 4.5
+    }
+   },
+   "pick": "Sean Burke Over 4.5 Strikeouts",
+   "status": "open",
+   "profit": 0
+  },
+  "sib": {
+   "id": "401907994:spread",
+   "event": "401907994",
+   "sport": "mlb",
+   "start": "2026-10-11T00:00Z",
+   "placedAt": "2026-10-09T07:00:14.570Z",
+   "matchup": "CHW @ CLE",
+   "market": "spread",
+   "side": "away",
+   "line": 1.5,
+   "odds": -192,
+   "model": 0.6518,
+   "fair": 0.6291,
+   "p": 0.645,
+   "ev": -0.0191,
+   "intent": "action",
+   "units": 0.5,
+   "expMargin": -0.25,
+   "expTotal": 8.76,
+   "book": "DraftKings",
+   "fairFrom": "draftkings",
+   "context": {
+    "rest": [
+     2,
+     2
+    ],
+    "b2b": [
+     0,
+     0
+    ],
+    "miles": [
+     307,
+     307
+    ],
+    "starters": {
+     "home": null,
+     "away": null,
+     "saved": [
+      0,
+      0
+     ]
+    },
+    "weather": {
+     "temp": 69,
+     "windOut": 5.9,
+     "forecast": true
+    },
+    "ranker": {
+     "rkOps": -0.06,
+     "rkEra": 0.56,
+     "rkField": 3.7,
+     "rkOpsT": -0.93,
+     "rkEraT": -0.346,
+     "rkPark": -0.6
+    },
+    "lineups": {
+     "lefties": [
+      0.778,
+      0.644
+     ],
+     "platoon": [
+      0.778,
+      0.644
+     ],
+     "posted": false,
+     "park": "Progressive Field"
+    },
+    "more": {
+     "air": 1.181,
+     "bullpenPitches": [
+      0,
+      0
+     ]
+    },
+    "officials": {
+     "crew": null
+    },
+    "schedule": {
+     "dense": [
+      1,
+      1
+     ],
+     "east": [
+      0,
+      0
+     ],
+     "climb": [
+      0,
+      0
+     ]
+    },
+    "flags": [
+     "a starting pitcher not announced"
+    ],
+    "adj": {
+     "margin": 0,
+     "total": 0.26
+    },
+    "move": {
+     "spread": 0,
+     "total": 0,
+     "ml": -0.021
+    },
+    "guard": "a starting pitcher not announced"
+   },
+   "pick": "CHW +1.5",
+   "status": "open",
+   "profit": 0
+  },
+  "game": {
+   "id": "401907994",
+   "date": "2026-10-11T00:00Z",
+   "season": 2026,
+   "type": 3,
+   "home": "5",
+   "away": "4",
+   "homeAbbr": "CLE",
+   "awayAbbr": "CHW",
+   "neutral": false,
+   "final": false,
+   "hs": null,
+   "as": null,
+   "venue": "Cleveland|Ohio|",
+   "indoor": false
+  }
+ }
+]

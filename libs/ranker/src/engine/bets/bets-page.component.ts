@@ -40,7 +40,7 @@ export interface BetRow {
   // (always a like: a fade is the analyst's alone, and the analyst's own picks aren't shown)
   strength: 'like' | 'fade';
   reason: string;
-  // (the analyst's, where it agrees: the most likely way it loses)
+  // (the most likely way it loses: the pick's own write-up's (picks.mjs), and the analyst's where it agrees)
   risk?: string;
   // (its band: its chance to win 60% or more, 53% or more, or under; picks.mjs)
   confidence: Confidence | null;
@@ -170,6 +170,8 @@ interface Pick {
   teams: { abbr: string; logo: string | null }[];
   where: GameInfo | null;
   reason: string;
+  // (its write-up's risk line, the row's Devil's Advocate: files before the write-ups carry none)
+  risk?: string;
   // (its score's makings: older files carry the chances without the parts)
   edge?: boolean;
   model?: number;
@@ -348,6 +350,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
             market: p.market,
             strength: 'like',
             reason: p.reason,
+            ...(p.risk ? { risk: p.risk } : {}),
             confidence: p.level,
             id: algoRows.length,
             key: pickKey(sport, p.matchup, p.kind, p.pick),
@@ -405,7 +408,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       a.source = 'Algorithm + Analyst';
       a.sureness = withAnalyst(a.sureness);
       a.reason = `${a.reason} Analyst: ${s.reason}`;
-      a.risk = s.risk;
+      // (the pick's own risk kept, the analyst's beside it where it says something else)
+      a.risk = a.risk ? (s.risk && s.risk !== a.risk ? `${a.risk} Analyst: ${s.risk}` : a.risk) : s.risk;
     }
     // (each one's band from its score as it now stands, the analyst's quarter in it; all sports' picks together,
     // the locks above the rest, then the best Kelly score first)

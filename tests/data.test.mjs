@@ -202,6 +202,9 @@ for (const sport of SPORTS) {
       const at = `${sport} pick ${i + 1}`;
       assert.equal(p.sport, sport, `${at}: sport`);
       for (const key of ['id', 'pick', 'matchup', 'market', 'book', 'reason']) assert.equal(typeof p[key], 'string', `${at}: ${key}`);
+      // (its write-up's: the risk line, and the AI's headline, by and read where there are; reason never empty)
+      assert.ok(p.reason.length > 0, `${at}: reason empty`);
+      for (const key of ['risk', 'headline', 'by', 'read']) if (p[key] !== undefined) assert.equal(typeof p[key], 'string', `${at}: ${key}`);
       assert.ok(KINDS.has(p.kind), `${at}: kind ${p.kind}`);
       assert.ok(LEVELS.has(p.level), `${at}: level ${p.level}`);
       // (a Kelly score: 0 or under for a pick with no edge on its price; files before it, the chance)
@@ -220,6 +223,7 @@ for (const sport of SPORTS) {
       assert.equal(c.level, 'check', `${at}: level`);
       assert.equal(c.units, 0, `${at}: units`);
       for (const key of ['id', 'pick', 'matchup', 'reason', 'checkReason']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
+      if (c.risk !== undefined) assert.equal(typeof c.risk, 'string', `${at}: risk`);
       assert.ok(Number.isFinite(c.gap) && Math.abs(c.gap) <= gap, `${at}: gap ${c.gap}`);
       gap = Math.abs(c.gap);
     }
