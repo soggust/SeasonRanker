@@ -103,11 +103,16 @@ export function restGuard(restDays, debut, date) {
 // the news; the model's numbers are his old role's till the logs catch up, so a prop on him is kept as a CHECK
 // whichever side the model takes (props.mjs priceProps, kind 'role'), till the CHECKs show it can read one:
 //   backup-qb   a quarterback who isn't his team's usual starter (qb1: the most passes a game, recent games
-//               counting most: matchups.mjs), or his team's starter missing (out, doubtful, IR, gone)
-//   qb-change   his team's usual starter neither missing nor on the game's board, and another of its
+//               counting most: matchups.mjs), or his team's starter missing (out, doubtful, IR, gone), or
+//               his team's usual starter not known (priced as its starter all the same: qbStart)
+//   qb-change  his team's usual starter neither missing nor on the game's board, and another of its
 //               quarterbacks on it (boardQbs: the team's quarterbacks with a prop on the board): a change at
 //               quarterback (one back from injury taking the job back, or the one who had it benched), the
 //               quarterback's own prop and every other player's on the team
+//   few-starts  a quarterback with fewer than ROLE.fewStarts starts before tonight (his team's passer: project.mjs),
+//               or ROLE.fewStartsRush on a rushing prop: the role backtest (2026-10-11) had the few-start ones'
+//               passing 3% to 6% high and their rushing 15% to 30% low (a rookie's legs), the base's prior made up
+//               with other starters' numbers
 //   qb1-out    any other player whose team's starting quarterback is missing: a backup throwing to him
 //   group-out   a regular at his position missing (out, doubtful, IR, off the roster, absent two games or
 //               more), his cut of the work they leave (vacOut: matchups.mjs vacated, a questionable one not
@@ -116,13 +121,17 @@ export function restGuard(restDays, debut, date) {
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
 //               ROLE.ratioLo times the model's: the market reading a role the model hasn't seen
-// qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }
+// qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }; starts:
+// a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
 // says nothing of his role)
-export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, ratioLo: 0.6 };
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null }) {
+export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, ratioLo: 0.6, fewStarts: 6, fewStartsRush: 16 };
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
+  // (no usual starter known for his team (no quarterback's passes in its games): any quarterback with a prop is
+  // priced as its starter (qbStart), a backup or a gadget passer included, so he's a CHECK)
+  if (!qb1 && pos === 'QB') return { key: 'backup-qb', why: `${who} on a team whose usual starting quarterback isn't known: taken as its starter, maybe a backup` };
   if (qb1 && String(qb1.id) !== String(pid)) {
     const usual = qb1.name || 'the usual starter';
     const change = !(qb1.missing >= 1) && !!boardQbs?.size && !boardQbs.has(String(qb1.id));
@@ -131,6 +140,7 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     if (qb1.missing >= 1) return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
+  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
   if (vacOut >= ROLE.vac) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
   if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
   if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
@@ -673,6 +683,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         vacOut,
         snap: row.snap ?? null,
         mu,
+        // (a quarterback's starts before tonight, all his seasons': a few-start one's a CHECK)
+        starts: row.pos === 'QB' ? (p.careerStarts ?? null) : null,
+        rushing: /^rush/.test(prop.stat.key),
         // (the line's read only at the book's own price: an assumed -110 says nothing of his role, only that the
         // price is unknown)
         implied: prop.prices ? impliedMean(prop.line, book.fairOver, f.params) : null,

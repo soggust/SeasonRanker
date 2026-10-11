@@ -5,7 +5,7 @@
 // into them and the desk learns whether they'd have won.
 //
 //   cause    why it's a CHECK: 'gap' or 'role' (an older one without it, the gap's), a role's sub-reason in
-//            roleReason (backup-qb, qb-change, qb1-out, group-out, snap-jump, part-time, line); checkSummary tallies both
+//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line); checkSummary tallies both
 //            apart, so the gap's hit rate stays the gap's
 //   what     a CHECK is the market as it stood: the model's side (the side its chance is over the book's
 //            fair chance; past the gap the lean is tapered to nothing, so the side the desk would price best

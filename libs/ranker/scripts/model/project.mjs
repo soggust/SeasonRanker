@@ -9,12 +9,15 @@
 //   recent   his last five this season, weighted w against the rate
 //   role     the NFL's role-aware base (props.mjs STATS: starts, snaps, early), each fit and kept only if the
 //            held-out games are better with it: a quarterback starting tonight (his team's passer) by his starts
-//            alone (his relief games left out; a starter's prior made up to 10 starts with the league's
-//            starters' average: qs, a blend); a back's or pass-catcher's rate a full game's snaps (his total
-//            over his snap shares', a 1-snap game counting for its snap), his prior the same, times the share
-//            he's expected tonight (his season's, his last game's weighed sr: a role grown or cut since the
-//            games his numbers come from), the per-game rate where the snap counts are missing (sn, a blend);
-//            and the prior's weight K shrinking as his season's games come in (K / (1 + kd x his games))
+//            alone (a start his team's passer as known before the game; his relief games left out; a starter's
+//            prior made up to 10 starts with the average of the starters with few: qs, a blend); a back's or
+//            pass-catcher's rate a full game's snaps (his total over his snap shares', a 1-snap game counting
+//            for its snap), his prior the same, times the share he's expected tonight (his season's, his last
+//            game's weighed sr: a role grown or cut since the games his numbers come from), the per-game rate
+//            where the snap counts are missing or miss his recent games (sn, a blend); and the prior's weight K
+//            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
+//            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
+//            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
 //   opponent how far the other side's allowed this stat to his position over the players' own rates, to the
 //            power a (1: in full); and where the stat has roles (a player's place on his own team before the
 //            game: an NFL team's WR1, WR2, WR3, TE1, RB1; an NBA team's starters and bench), how far it's
@@ -148,7 +151,7 @@ export function ctxFactor(stat, params, vals) {
 // last five with a share (each [value, share]), his last five starts)
 const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum'];
 const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
-const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [] });
+const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [], lastSh: false });
 const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[k] ?? 0)]));
 
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
@@ -171,9 +174,12 @@ export function makeModel(stat, params, env) {
     const p = pos.get(posKey(row));
     return p && p.sh >= 20 ? p.ss / p.sh : null;
   };
+  // (the starters' average is the one of quarterbacks with few starts (under 10 before the game: a rookie's,
+  // a backup's, a new starter's), the ones it's a prior for: every start's would be a veteran starter's, and
+  // ran the few-start ones 7% high held out; every start's till there are 20, then the plain pool)
   const poolStart = (row) => {
     const p = pos.get(posKey(row));
-    return p && p.qn >= 20 ? p.qsum / p.qn : pool(row);
+    return p && p.fqn >= 20 ? p.fqsum / p.fqn : p && p.qn >= 20 ? p.qsum / p.qn : pool(row);
   };
   const avg = (a) => a.reduce((s, x) => s + x, 0) / a.length;
   const parts = (row) => {
@@ -196,14 +202,19 @@ export function makeModel(stat, params, env) {
     let recent = cur.recent.length >= 3 ? avg(cur.recent) : rate;
     // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
     //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
-    //           70% of the snaps or more, or the most of his team's quarterbacks; matchups.mjs), not his relief
-    //           appearances; his starts before this season his prior, made up to 10 with the league's starters'
-    //           average where he has fewer (a backup's few starts); blended in by qs
+    //           his team's passer as known before the game, a start he left hurt early counted as the bet
+    //           counts it; matchups.mjs's by the game's snaps where the rows weren't marked), not his relief
+    //           appearances; his starts before this season his prior, made up to 10 with the few-start
+    //           starters' average where he has fewer (a backup's, a rookie's); blended in by qs
     //   snaps   a back's or pass-catcher's rate a full game's snaps (his total over his snap shares' total, so a
     //           1-snap game counts for its one snap, not a game), the prior his longer run's the same way (the
     //           position's eligible players' where his own is short), times the share of the snaps he's
     //           expected tonight (his season's, his last game's weighed sr; last season's before he's played
-    //           this one); blended in by sn. Where the snap counts are missing, his per-game rate as before)
+    //           this one); blended in by sn. Where the snap counts are missing, or miss his last game or more
+    //           than one of his season's, his per-game rate as before. A missing regular's share isn't added
+    //           to the share expected: the work he leaves is the vacated term's (vacF, below), which then lifts
+    //           a fill-in whose last game's share (sr) already holds some of it (the joint fit sizes the two
+    //           together, on average; the role guard CHECKs these, so mind it before loosening the guard))
     let mode = null;
     let share = null;
     if (params.qs && stat.starts && row.pos === 'QB' && row.qbStart) {
@@ -217,9 +228,18 @@ export function makeModel(stat, params, env) {
       mode = 'starts';
     } else if (params.sn && stat.snaps && row.pos !== 'QB') {
       const sr = params.sr ?? 0;
-      const exp = cur.shares.length ? (1 - sr) * avg(cur.shares) + sr * cur.shares[cur.shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
+      // (only where the counts cover his season: his last game's read and all but one of the rest (or no games
+      // yet). A game without its counts is in neither the snaps' rate nor the share, so a week the counts lag
+      // would drop his latest game, the role grown in it unseen, and last season's share would stand in for a
+      // season unread: the per-game rate then, as with no counts at all)
+      const covered = cur.n === 0 || (cur.lastSh && cur.shn >= cur.n - 1);
+      const exp = !covered ? null : cur.shares.length ? (1 - sr) * avg(cur.shares) + sr * cur.shares[cur.shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
+      // (his own per-snap prior on 5 full games' worth of counted snaps or more, else made up to 5 with the
+      // position's (a long run whose few counted games would be a noisy prior))
       const longSh = prev.sh + 0.5 * older.sh;
-      const priorS = longN >= 10 && longSh >= 2 ? (prev.ss + 0.5 * older.ss) / longSh : poolSnap(row);
+      const ownSs = prev.ss + 0.5 * older.ss;
+      const pS = poolSnap(row);
+      const priorS = longSh >= 5 ? ownSs / longSh : pS !== null ? (ownSs + (5 - longSh) * pS) / 5 : longSh >= 2 ? ownSs / longSh : null;
       if (exp !== null && priorS !== null) {
         share = exp;
         const rateS = (cur.ss + K * priorS) / (cur.sh + K);
@@ -286,7 +306,7 @@ export function makeModel(stat, params, env) {
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, params.a) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, K };
+    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K };
   };
   return {
     project: parts,
@@ -348,7 +368,13 @@ export function makeModel(stat, params, env) {
           p.cur.shares = [...p.cur.shares, sh].slice(-20);
           p.cur.srecent = [...p.cur.srecent, [v, sh]].slice(-5);
         }
-        if (row.pos === 'QB' && row.start) {
+        p.cur.lastSh = sh !== null;
+        // (a start: his team's passer as known before the game (markEligible's qbStart, the props' starter, so a
+        // start he left hurt in the first quarter counts, as it does for the bet), else the game's own (row.start,
+        // matchups.mjs) where the rows weren't marked; and his starts before it, for the few-start starters' pool)
+        const started = row.pos === 'QB' && !!(row.qbStart ?? row.start);
+        const startsBefore = p.career.qn + p.prev.qn + p.cur.qn;
+        if (started) {
           p.cur.qn++;
           p.cur.qsum += v;
           p.cur.qrecent = [...p.cur.qrecent, v].slice(-5);
@@ -360,14 +386,19 @@ export function makeModel(stat, params, env) {
         p.cur.recentVac = [...p.cur.recentVac, vacs].slice(-5);
         players.set(row.pid, p);
         const k = posKey(row);
-        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0 };
+        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0 };
         if (row.eligible !== false) {
           q.n++;
           q.sum += v;
           if (sh !== null) (q.sh += sh), (q.ss += v);
         }
-        // (the starters' pool: every quarterback's start, eligible or not (a backup's start is a start))
-        if (row.pos === 'QB' && row.start) (q.qn++), (q.qsum += v);
+        // (the starters' pool: every quarterback's start, eligible or not (a backup's start is a start), and the
+        // starts of the ones with fewer than 10 before it apart)
+        if (started) {
+          q.qn++;
+          q.qsum += v;
+          if (startsBefore < 10) (q.fqn++), (q.fqsum += v);
+        }
         pos.set(k, q);
       }
     },

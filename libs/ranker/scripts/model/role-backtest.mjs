@@ -52,6 +52,8 @@
 //
 //   the fit's check  each stat's held-out check from the fit (fitProps: the eligible players' log loss at lines
 //                    at their median and bias, every player's bias, the terms' gains), beside the buckets
+//   by starts        the passing stats' quarterbacks by their starts before the game (0-5, 6-15, 16+: a
+//                    few-start starter's prior the most made up, and the guard's few-starts CHECK)
 //   before, after    --plain fits the model without the role-aware base (project.mjs: the snaps-based rate, a
 //                    starting quarterback's starts, the prior's weight shrinking through the season), as it was
 //                    before it; --compare <an earlier run's .json> adds a table of each bucket's bias and log
@@ -75,6 +77,8 @@ import { CACHE, nflverseRows, readJson } from './sources.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 
+// (a quarterback's starts before the game, the groups the passing stats' rows are told by)
+export const START_GROUPS = { '0-5': (n) => n < 6, '6-15': (n) => n >= 6 && n < 16, '16+': (n) => n >= 16 };
 // (the buckets, in the order a row is put in the first that fits)
 export const BUCKETS = ['backup-qb', 'qb1-out', 'next-up', 'group-out', 'snap-jump', 'role-grew', 'starter-w1-4', 'starter-w5-8', 'starter-w9+', 'other'];
 // (a regular at his position group: his recent work a game, recent games counting most (RATE a game): a back's
@@ -484,7 +488,7 @@ async function main() {
         noWeek++;
         continue;
       }
-      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date });
+      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
     }
     if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
     if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
@@ -509,6 +513,15 @@ async function main() {
       for (const b of [...BUCKETS, 'all']) {
         const list = items.filter((x) => keep(x) && (b === 'all' || x.bucket === b));
         block.periods[name][b] = list.length ? summarize(list, { boot: 300 }) : null;
+      }
+    }
+    // (a passing stat's quarterbacks by their starts before the game (his team's passer: project.mjs), all games
+    // and held out: a few-start starter's prior is the most made up)
+    if (st.starts) {
+      block.qbStarts = {};
+      for (const [name, keep] of Object.entries(START_GROUPS)) {
+        const list = items.filter((x) => x.qbStarts !== null && keep(x.qbStarts));
+        block.qbStarts[name] = { all: list.length ? summarize(list, { boot: 300 }) : null, held: list.some((x) => x.held) ? summarize(list.filter((x) => x.held), { boot: 300 }) : null };
       }
     }
     results[st.key] = block;
@@ -569,6 +582,21 @@ export function report(results, { from = 2021, useState = false, plain = false, 
       const b = before?.[key]?.fit;
       const terms = ['sn', 'qs', 'kd'].filter((k) => k in (f.gains ?? {})).map((k) => `${k} ${block.params[k]}${k === 'sn' && block.params.sn ? `/sr ${block.params.sr}` : ''} (${f.gains[k] === null ? 'not taken' : f.gains[k] > 0 ? `+${f.gains[k]}` : `${f.gains[k]}, left out`})`);
       lines.push(`| ${key} | ${f.n} | ${num(f.logLoss, 4)} | ${num(f.logLossBase, 4)} |${before ? ` ${num(b?.logLoss, 4)} | ${num(b?.bias, 3)} | ${num(b?.allBias, 3)} |` : ''} ${num(f.bias, 3)} | ${num(f.allBias, 3)} | ${terms.join(', ') || 'none'} |`);
+    }
+  }
+  // (a passing stat's quarterbacks by their starts before the game)
+  if (Object.values(results).some((b) => b.qbStarts)) {
+    lines.push('');
+    lines.push("## Quarterbacks by their starts before the game (the passing stats' rows; a start his team's passer: bias and its 95% interval, all games and held out)");
+    lines.push('');
+    lines.push('| stat | starts | n | bias | interval | held-out n | held-out bias | interval |');
+    lines.push('|---|---|---:|---:|---|---:|---:|---|');
+    for (const [key, block] of Object.entries(results)) {
+      for (const [name, g] of Object.entries(block.qbStarts ?? {})) {
+        const a = g.all;
+        const h = g.held;
+        lines.push(`| ${key} | ${name} | ${a?.n ?? 0} | ${pct(a?.bias)} | ${a ? `[${pct(a.biasCi[0])}, ${pct(a.biasCi[1])}]` : ''} | ${h?.n ?? 0} | ${pct(h?.bias)} | ${h ? `[${pct(h.biasCi[0])}, ${pct(h.biasCi[1])}]` : ''} |`);
+      }
     }
   }
   // (each bucket then (an earlier run's .json: --compare) and now: its bias and log loss, all games and held out)

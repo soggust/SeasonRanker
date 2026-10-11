@@ -140,3 +140,120 @@ test("markEligible: a quarterback's qbStart is his team's passer by the usage be
   assert.ok(STATS.nfl.find((s) => s.key === 'recYds').snaps);
   assert.ok(!STATS.nba.some((s) => s.snaps || s.starts || s.early));
 });
+
+test("snaps: a season whose counts are missing after one with them, or a latest game unread, is the per-game rate (not last season's share)", () => {
+  const stat = { key: 'recYds', snaps: true };
+  const plain = makeModel(stat, BASE, {});
+  const snaps = makeModel(stat, { ...BASE, sn: 1, sr: 0 }, {});
+  // (last season 20 a game at 40% of the snaps; this season 6 games of 90 whose counts weren't read)
+  const last = Array.from({ length: 12 }, (_, i) => ({ ...wr(i + 1, 20, 0.4), season: 2025, date: `2025-09-${String(i + 1).padStart(2, '0')}` }));
+  const now = [1, 2, 3, 4, 5, 6].map((d) => wr(d, 90, null));
+  for (const m of [plain, snaps]) m.learn(last), m.learn(now);
+  const row = { pid: 'w', pos: 'WR', season: 2026, date: at(10), opp: 'o' };
+  const b = snaps.project(row);
+  assert.equal(b.mode, null);
+  assert.ok(Math.abs(b.rate - plain.project(row).rate) < 1e-9);
+  assert.ok(b.rate > 55, `${b.rate}`);
+  // (counts read for his first four, his latest unread (the counts a week behind): the per-game rate; one
+  // earlier game unread and his latest read: the snaps')
+  const lag = makeModel(stat, { ...BASE, sn: 1, sr: 0 }, {});
+  lag.learn(last);
+  lag.learn([wr(1, 30, 0.5), wr(2, 30, 0.5), wr(3, 30, 0.5), wr(4, 30, 0.5), wr(5, 80, null)]);
+  assert.equal(lag.project(row).mode, null);
+  const gap = makeModel(stat, { ...BASE, sn: 1, sr: 0 }, {});
+  gap.learn(last);
+  gap.learn([wr(1, 30, 0.5), wr(2, 30, null), wr(3, 30, 0.5), wr(4, 30, 0.5), wr(5, 30, 0.5)]);
+  assert.equal(gap.project(row).mode, 'snaps');
+});
+
+test("snaps: a long run with few counted games has its per-snap prior made up to 5 games' worth with the position's", () => {
+  const stat = { key: 'recYds', snaps: true };
+  const m = makeModel(stat, { ...BASE, sn: 1, sr: 0 }, {});
+  // (the position: 50 a full game; his last season 12 games, two of them counted, at 100 a full game)
+  m.learn(Array.from({ length: 30 }, (_, i) => ({ pid: `o${i}`, pos: 'WR', season: 2025, date: '2025-08-01', opp: 'o', s: { recYds: 40 }, share: 0.8 })));
+  m.learn(Array.from({ length: 12 }, (_, i) => ({ ...wr(i + 1, 50, i < 2 ? 0.5 : null), season: 2025, date: `2025-09-${String(i + 1).padStart(2, '0')}` })));
+  m.learn([wr(1, 30, 0.6)]);
+  const p = m.project({ pid: 'w', pos: 'WR', season: 2026, date: at(10), opp: 'o' });
+  assert.equal(p.mode, 'snaps');
+  // (his prior (100 x 1 + the pool's x 4) / 5, near 60 a full game, not his own 100; the pool's taken with his
+  // own games in)
+  const pool = (30 * 40 + 2 * 50 + 30) / (30 * 0.8 + 2 * 0.5 + 0.6);
+  const priorS = (2 * 50 + 4 * pool) / 5;
+  assert.ok(Math.abs(p.rate - ((30 + 4 * priorS) / (0.6 + 4)) * 0.6) < 1e-9, `${p.rate}`);
+});
+
+test("starts: a start is his team's passer as known before the game (one he left hurt counts); a few-start starter's prior the few-start starters' average", () => {
+  const stat = { key: 'passAtt', starts: true };
+  const m = makeModel(stat, { ...BASE, K: 16, qs: 1 }, {});
+  // (veterans: 3 with 30 starts each at 36 (their first 10 apiece in the few-start pool too); then 30 rookies'
+  // first starts at 28)
+  const vets = [];
+  for (let v = 0; v < 3; v++) for (let i = 0; i < 30; i++) vets.push({ pid: `v${v}`, pos: 'QB', season: 2025, date: `2025-0${1 + Math.floor(i / 28)}-${String((i % 28) + 1).padStart(2, '0')}`, opp: 'o', s: { passAtt: 36 }, qbStart: true });
+  const rookies = Array.from({ length: 30 }, (_, i) => ({ pid: `r${i}`, pos: 'QB', season: 2025, date: '2025-12-01', opp: 'o', s: { passAtt: 28 }, qbStart: true }));
+  m.learn(vets);
+  m.learn(rookies);
+  // (his: a relief game, then two starts, the second left hurt early (no start by the snaps, his team's passer
+  // before it all the same))
+  m.learn([{ pid: 'q', pos: 'QB', season: 2026, date: at(1), opp: 'o', s: { passAtt: 3 }, qbStart: false, start: false }]);
+  m.learn([{ pid: 'q', pos: 'QB', season: 2026, date: at(2), opp: 'o', s: { passAtt: 30 }, qbStart: true, start: true }]);
+  m.learn([{ pid: 'q', pos: 'QB', season: 2026, date: at(3), opp: 'o', s: { passAtt: 6 }, qbStart: true, start: false }]);
+  const p = m.project({ pid: 'q', pos: 'QB', season: 2026, date: at(10), opp: 'o', qbStart: true });
+  assert.equal(p.mode, 'starts');
+  assert.equal(p.starts, 2);
+  assert.equal(p.careerStarts, 2);
+  // (the few-start pool: the veterans' first 10 each (30 at 36), the rookies' 30 at 28, and his own 2)
+  const few = (30 * 36 + 30 * 28 + 36) / 62;
+  assert.ok(Math.abs(p.rate - (36 + 16 * few) / 18) < 1e-9, `${p.rate}`);
+});
+
+test('roleChangeOf: no usual starter known for his team, a quarterback with a prop a CHECK, his receivers not; a few-start quarterback a CHECK', async () => {
+  const { roleChangeOf } = await import('../libs/ranker/scripts/model/props.mjs');
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1: null }).key, 'backup-qb');
+  assert.equal(roleChangeOf({ name: 'W', pos: 'WR', pid: 'w', qb1: null }), null);
+  // (his team's usual starter with few starts: under 6 a CHECK, under 16 on a rushing prop)
+  const qb1 = { id: 'q', name: 'Q', missing: 0 };
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1, starts: 5 }).key, 'few-starts');
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1, starts: 6 }), null);
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1, starts: 12, rushing: true }).key, 'few-starts');
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1, starts: 16, rushing: true }), null);
+  assert.equal(roleChangeOf({ name: 'Q', pos: 'QB', pid: 'q', qb1 }), null);
+});
+
+test("priceProps with the real model: a quarterback's projection from his starts and a receiver's from his snaps where the fit kept them (baseBy, starts, share); an old fit without them prices as before", async () => {
+  const { priceProps } = await import('../libs/ranker/scripts/model/props.mjs');
+  const env = { mean: 30, avg: 1 };
+  const gameRow = { id: 'g', date: '2026-10-11T17:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const live = { injuries: new Map([['1', []]]), rosters: new Map() };
+  const matchups = { live: () => ({ vacs: [0, 0, 0], vac: 0 }), qb1: () => ({ id: 'q', v: 30 }), absent: () => new Map(), regulars: () => [] };
+  const price = (key, pid, pos, hist, params) => {
+    const st = STATS.nfl.find((s) => s.key === key);
+    const model = makeModel(st, params, env);
+    model.learn(hist);
+    const fitted = { [key]: { stat: st, env, model, values: new Map([[pid, hist.filter((r) => r.pid === pid).map((r) => [r.season, r.s[key]])]]), matchups, params: { r: 6, ...params }, snapGap: null } };
+    const props = [{ athlete: { id: pid, name: pid.toUpperCase(), team: '1' }, stat: st, line: 25.5, open: null, prices: { over: -110, under: -110 } }];
+    const idx = { pid: (a) => a.id, pos: () => pos, name: (id) => id };
+    return priceProps('nfl', gameRow, props, fitted, idx, { homePts: 24, awayPts: 21 }, null, live, {}, 0.1).priced[0];
+  };
+  const qbRow = (d, v, qbStart) => ({ pid: 'q', pos: 'QB', season: 2026, date: at(d), opp: 'o', team: '1', s: { passAtt: v }, qbStart });
+  const qbHist = [qbRow(1, 4, false), qbRow(2, 32, true), qbRow(3, 34, true), qbRow(4, 30, true)];
+  const old = { K: 4, w: 0.2, a: 0, b: 0, roleK: Infinity, scale: 1 };
+  const plainQ = price('passAtt', 'q', 'QB', qbHist, old);
+  assert.equal(plainQ.projection.baseBy, undefined);
+  const qs = price('passAtt', 'q', 'QB', qbHist, { ...old, qs: 1 });
+  assert.equal(qs.projection.baseBy, 'starts');
+  assert.equal(qs.projection.starts, 3);
+  // (three starts before tonight: a few-start quarterback, a CHECK)
+  assert.equal(qs.guard?.kind, 'role');
+  assert.equal(qs.guard?.role, 'few-starts');
+  assert.ok(qs.projection.mean > plainQ.projection.mean);
+  // (the old fit's rate the plain model's, to the digit)
+  const m = makeModel(STATS.nfl.find((s) => s.key === 'passAtt'), old, env);
+  m.learn(qbHist);
+  assert.equal(plainQ.projection.rate, Math.round(m.project({ pid: 'q', pos: 'QB', season: 2026, date: gameRow.date, opp: '2', qbStart: true }).rate * 100) / 100);
+  const others = Array.from({ length: 30 }, (_, i) => ({ pid: `o${i}`, pos: 'WR', season: 2025, date: '2025-08-01', opp: 'o', team: '1', s: { recYds: 40 }, share: 0.8 }));
+  const wrHist = [...others, ...[1, 2, 3, 4].map((d) => ({ ...wr(d, 40, 0.8), team: '1' }))];
+  const sn = price('recYds', 'w', 'WR', wrHist, { ...old, vc: 0, sn: 1, sr: 0 });
+  assert.equal(sn.projection.baseBy, 'snaps');
+  assert.equal(sn.projection.share, 0.8);
+  assert.equal(price('recYds', 'w', 'WR', wrHist, old).projection.baseBy, undefined);
+});
