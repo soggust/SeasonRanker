@@ -577,16 +577,28 @@ $gold: casino.$lock-gold;
       display: none;
     }
 
-    // (a result's words wrap under its amount)
+    // (a result's words wrap under its amount: the last column's, or the open bets' To win, the live column after it)
     td:last-child,
-    td:last-child small {
+    td:last-child small,
+    td.w-paid,
+    td.w-paid small {
       white-space: normal;
     }
 
-    td:last-child small {
+    td:last-child small,
+    td.w-paid small {
       display: block;
       max-width: 96px;
       margin-left: auto;
+    }
+
+    // (the live column's meter: a shorter bar, a long row of pips wrapping)
+    .desk-meter {
+      flex-wrap: wrap;
+
+      .bar {
+        width: 72px;
+      }
     }
   }
 }

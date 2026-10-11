@@ -149,6 +149,31 @@ test('in play: a bet decided by the score before the settler pays it, as desk-ma
   assert.equal(w.provisionalOf(bet(), undefined, null), null);
 });
 
+test('in play: an open bet’s live column, as the Algorithm’s In Play (a meter for a prop or a total, a side at the score)', () => {
+  const board = (hs, as, final, state = final ? 'post' : 'in') =>
+    w.boardOf('nfl', espnEvent({ state, completed: final, name: final ? 'STATUS_FINAL' : 'STATUS_IN_PROGRESS', hs: String(hs), as: String(as) }));
+  // (nothing before the game's under way)
+  assert.equal(w.liveOf(bet(), w.boardOf('nfl', espnEvent()), null), null);
+  assert.equal(w.liveOf(bet(), undefined, null), null);
+  // (a spread: covering or short at the score, colored by how far; once it's final, how it came out)
+  const covering = w.liveOf(bet(), board(14, 7, false), null);
+  assert.deepEqual([covering.count, covering.text, covering.title], [null, 'Covering by 3.5', 'Covering by 3.5']);
+  assert.ok(covering.color.includes('var(--win)'));
+  assert.equal(w.liveOf(bet(), board(7, 7, false), null).text, 'Short by 3.5');
+  assert.equal(w.liveOf(bet(), board(24, 10, true), null).text, 'Won');
+  // (a moneyline: leading or trailing; level, uncolored)
+  assert.equal(w.liveOf(bet({ market: 'ml', side: 'away', line: null }), board(10, 3, false), null).text, 'Trailing by 7');
+  assert.equal(w.liveOf(bet({ market: 'ml', line: null }), board(3, 3, false), null).color, null);
+  // (a total: the game's points against the line, a bar; the under lost once it's past)
+  const under = w.liveOf(bet({ market: 'total', side: 'under', line: 44.5 }), board(28, 21, false), null);
+  assert.deepEqual([under.count, under.state, under.text, !!under.meter.pips], [49, 'lost', '49 / 44.5 pts', false]);
+  // (a short prop: pips, one a unit up to the one past the line, lit as they come)
+  const catches = w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec', statLabel: 'Receptions', player: 'A. Player' }), board(7, 3, false), 3);
+  assert.deepEqual([catches.state, catches.text, catches.meter.pips.map((p) => p.on)], ['alive', '3 / 4.5 Receptions', [true, true, true, false, false, false]]);
+  // (a prop whose player isn't in the box score yet: no count, just under way)
+  assert.equal(w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec' }), board(7, 3, false), null).text, 'Under way');
+});
+
 test('the wallet’s record: won, lost, pushed and void; staked, profit, return; at risk; the curve', () => {
   const list = [
     bet({ id: 'a', status: 'won', profit: 9.09, settledAt: '2026-10-11T21:00Z' }),

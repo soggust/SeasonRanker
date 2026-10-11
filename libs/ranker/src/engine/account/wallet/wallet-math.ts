@@ -2,8 +2,8 @@
 // Node): a game's DraftKings lines off ESPN's scoreboard, a bet slip's stakes and payouts, a bet in play
 // settled by the score as the settler will settle it (desk-math's provisional), the wallet's tallies, its
 // curve, and the user's record beside the bot's
-import { Board, ModelBet, Settled } from '../../bets/desk-model';
-import { profitCurves, provisional } from '../../bets/desk-math';
+import { Board, Meter, ModelBet, Settled } from '../../bets/desk-model';
+import { UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../bets/desk-math';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
@@ -316,6 +316,36 @@ export function provisionalOf(b: PlayBet, board: GameBoard | undefined, propNow:
   if (b.status !== 'open') return null;
   const r = provisional(asDeskBet(b), scoreOf(board), propNow);
   return r ? { status: r.status, profit: round2(r.profit) } : null;
+}
+
+// An open bet's live column, as the Algorithm's In Play (desk-math.ts): a prop or a total its count so far
+// against the line, as a meter (pips or a bar with the line notched), lit by how it stands; a spread or a
+// moneyline where it stands at the score (covering, leading, or how it came out), colored by how far. Null
+// before its game's under way (no score yet)
+export interface PlayLive {
+  // (a prop's or a total's count so far; null for a side, or a prop whose player isn't in the box score yet)
+  count: number | null;
+  state: 'won' | 'lost' | 'push' | 'alive' | null;
+  meter: Meter | null;
+  // (what it counts: the prop's stat, or the game's points, goals or runs)
+  unit: string;
+  // (the rest: its words, their hover, their color)
+  text: string;
+  title: string;
+  color: string | null;
+}
+
+export function liveOf(b: PlayBet, board: GameBoard | undefined, propNow: number | null | undefined): PlayLive | null {
+  const game = scoreOf(board);
+  if (b.status !== 'open' || !game) return null;
+  const d = asDeskBet(b);
+  const count = countNowOf(d, game, propNow);
+  const unit = b.market === 'prop' ? (b.statLabel ?? '') : (UNIT_WORDS[b.sport] ?? 'pts');
+  if (count !== null) {
+    const state = provisional(d, game, propNow)?.status ?? propState(d, count);
+    return { count, state, meter: meterOf(d, count), unit, text: `${count} / ${b.line} ${unit}`, title: `${b.market === 'prop' ? b.player + ': ' : 'The game: '}${count} ${unit} so far, ${b.side} ${b.line}`, color: null };
+  }
+  return { count: null, state: provisional(d, game, propNow)?.status ?? null, meter: null, unit, text: sideTextOf(d, game), title: sideTitleOf(d, game), color: edgeColorOf(d, game) };
 }
 
 // ---------------------------------------------------------------------------

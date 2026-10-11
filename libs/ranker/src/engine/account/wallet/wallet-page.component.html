@@ -53,6 +53,7 @@
             <th>Odds</th>
             <th>Stake</th>
             <th title="What it pays on top of the stake if it wins; decided in play, what it came to, pending settlement">To win</th>
+            <th title="Once its game's under way (ESPN, every minute): a prop's or a total's count so far against the line, a side where it stands at the score">Result</th>
           </tr>
         </thead>
         <tbody>
@@ -67,6 +68,7 @@
                 <td></td>
                 <td>{{ stakeOf(g.bets) }}</td>
                 <td></td>
+                <td></td>
               </tr>
             }
             @for (b of g.bets; track b.id) {
@@ -79,9 +81,36 @@
                 <td>{{ oddsText(b.odds) }}</td>
                 <td>{{ b.stake }}@if (oldRun(b)) {<small title="Placed before a reload: it settles and counts in your record, its payout stays with that run">run {{ b.run + 1 }}</small>}</td>
                 @if (d) {
-                  <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash" title="Decided by the score: the settler pays it after the game">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
+                  <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash w-paid" title="Decided by the score: the settler pays it after the game">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
                 } @else {
-                  <td class="up">{{ units(toWin(b.stake, b.odds)) }}</td>
+                  <td class="up w-paid">{{ units(toWin(b.stake, b.odds)) }}</td>
+                }
+                <!-- (its live column, as the Algorithm's In Play: a prop or a total its meter (pips for a short count, a
+                     bar with the line notched for yards, saves, outs and a game's total), lit by how it stands, its count
+                     against the line; a side where it stands at the score, colored by how far; nothing before it starts) -->
+                @let lv = live().get(b.id);
+                @if (!lv) {
+                  <td></td>
+                } @else if (lv.count !== null) {
+                  <td class="desk-score" [class.up]="lv.state === 'won'" [class.down]="lv.state === 'lost'" [title]="lv.title">
+                    @if (lv.meter; as m) {
+                      <span class="desk-meter" [class.won]="lv.state === 'won'" [class.lost]="lv.state === 'lost'" [class.under]="b.side === 'under'" aria-hidden="true">
+                        @if (m.pips) {
+                          @for (pip of m.pips; track $index) {
+                            <span class="pip" [class.on]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
+                          }
+                          @if (m.extra) {
+                            <span class="pip-extra">+{{ m.extra }}</span>
+                          }
+                        } @else {
+                          <span class="bar"><span class="fill" [style.width.%]="m.fill"></span><span class="mark" [style.left.%]="m.mark"></span></span>
+                        }
+                      </span>
+                    }
+                    <b>{{ lv.text }}</b>
+                  </td>
+                } @else {
+                  <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}</td>
                 }
               </tr>
             }

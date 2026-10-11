@@ -6,13 +6,14 @@ import { DESK_HELP } from './desk-help';
 import {
   BANKROLL,
   CURVE_W,
-  EDGE_FULL,
   ESPN_LEAGUES,
   MARKET_NAMES,
   SPORTS,
   STAKES,
   UNIT_WORDS,
   calibrationOf,
+  countNowOf,
+  edgeColorOf,
   gameDaysOf,
   gradedOrder,
   intentOf,
@@ -22,6 +23,8 @@ import {
   provisional,
   rebuysFor,
   sideEdge,
+  sideTextOf,
+  sideTitleOf,
   streakOf,
   tally,
   toWin,
@@ -58,9 +61,6 @@ const readSport = (): string | null => {
     return null;
   }
 };
-// (the desk's own win and loss colors, model-desk.scss --win and --loss)
-const GOOD = 'var(--win)';
-const BAD = 'var(--loss)';
 // (the tiles' numbers count up this long when the desk opens or the sport changes)
 const TICK_MS = 650;
 
@@ -530,13 +530,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return board?.state === 'pre' || (board?.state === 'post' && !board.final);
   }
 
-  // (what an in-play bet's meter counts: a prop's stat so far, a total's points so far; null for the rest,
-  // whose result is the score)
+  // (what an in-play bet's meter counts, and a side's words and color at the score: desk-math.ts, shared with
+  // the Bets page's Open Bets)
   countNow(b: ModelBet): number | null {
-    if (b.market === 'prop') return this.propNow.get(b.id) ?? null;
-    if (b.market !== 'total') return null;
-    const game = this.boardOf(b);
-    return game ? game.hs + game.as : null;
+    return countNowOf(b, this.boardOf(b), this.propNow.get(b.id));
   }
 
   propState(b: ModelBet): 'won' | 'alive' | 'lost' | null {
@@ -551,34 +548,16 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return sideEdge(b, this.boardOf(b));
   }
 
-  // (a side in play, in words: where it stands at the score, or once the game's over, how it came out)
   sideText(b: ModelBet): string {
-    const decided = this.provisional(b);
-    if (decided) return decided.status === 'won' ? 'Won' : decided.status === 'lost' ? 'Lost' : 'Push';
-    const edge = this.sideEdge(b);
-    if (edge === null) return 'Under way';
-    if (edge === 0) return 'Level';
-    const by = Math.abs(edge);
-    if (b.market === 'spread') return edge > 0 ? `Covering by ${by}` : `Short by ${by}`;
-    return edge > 0 ? `Leading by ${by}` : `Trailing by ${by}`;
+    return sideTextOf(b, this.boardOf(b));
   }
 
-  // (its hover: the same, the spread's shortfall said in full)
   sideTitle(b: ModelBet): string {
-    const edge = this.sideEdge(b);
-    if (edge === null) return '';
-    if (edge === 0) return 'Level';
-    const spread = b.market === 'spread';
-    return edge > 0 ? `${spread ? 'Covering' : 'Leading'} by ${edge}` : `${spread ? 'Short of covering' : 'Trailing'} by ${-edge}`;
+    return sideTitleOf(b, this.boardOf(b));
   }
 
-  // (its score's color: green covering or leading, red not, deeper the further (about two touchdowns, 12
-  // points, 2 goals or 3 runs is all the way); white level)
   edgeColor(b: ModelBet): string | null {
-    const edge = this.sideEdge(b);
-    if (edge === null || edge === 0) return null;
-    const share = Math.round(35 + 65 * Math.min(1, Math.abs(edge) / (EDGE_FULL[b.sport] ?? 10)));
-    return `color-mix(in srgb, ${edge > 0 ? GOOD : BAD} ${share}%, #fff)`;
+    return edgeColorOf(b, this.boardOf(b));
   }
 
   // (a total's unit: the game's points, goals or runs)

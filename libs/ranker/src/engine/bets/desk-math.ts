@@ -116,6 +116,47 @@ export function meterOf(b: ModelBet, count: number | null): Meter | null {
   return { pips: null, fill: Math.min(100, (count / span) * 100), mark: (b.line / span) * 100, extra: 0 };
 }
 
+// The live column, shared by the Algorithm's In Play and the Bets page's Open Bets: a bet in play's count,
+// and a side's words and color at the score
+
+// (what an in-play bet's meter counts: a prop's stat so far, a total's points so far; null for the rest,
+// whose result is the score)
+export function countNowOf(b: ModelBet, game: Board | undefined, propNow: number | null | undefined): number | null {
+  if (b.market === 'prop') return propNow ?? null;
+  if (b.market !== 'total') return null;
+  return game ? game.hs + game.as : null;
+}
+
+// (a side in play, in words: where it stands at the score, or once the game's over, how it came out)
+export function sideTextOf(b: ModelBet, game: Board | undefined): string {
+  const decided = provisional(b, game, null);
+  if (decided) return decided.status === 'won' ? 'Won' : decided.status === 'lost' ? 'Lost' : 'Push';
+  const edge = sideEdge(b, game);
+  if (edge === null) return 'Under way';
+  if (edge === 0) return 'Level';
+  const by = Math.abs(edge);
+  if (b.market === 'spread') return edge > 0 ? `Covering by ${by}` : `Short by ${by}`;
+  return edge > 0 ? `Leading by ${by}` : `Trailing by ${by}`;
+}
+
+// (its hover: the same, the spread's shortfall said in full)
+export function sideTitleOf(b: ModelBet, game: Board | undefined): string {
+  const edge = sideEdge(b, game);
+  if (edge === null) return '';
+  if (edge === 0) return 'Level';
+  const spread = b.market === 'spread';
+  return edge > 0 ? `${spread ? 'Covering' : 'Leading'} by ${edge}` : `${spread ? 'Short of covering' : 'Trailing'} by ${-edge}`;
+}
+
+// (its score's color: green covering or leading, red not, deeper the further (about two touchdowns, 12
+// points, 2 goals or 3 runs is all the way); white level)
+export function edgeColorOf(b: ModelBet, game: Board | undefined): string | null {
+  const edge = sideEdge(b, game);
+  if (edge === null || edge === 0) return null;
+  const share = Math.round(35 + 65 * Math.min(1, Math.abs(edge) / (EDGE_FULL[b.sport] ?? 10)));
+  return `color-mix(in srgb, ${edge > 0 ? 'var(--win)' : 'var(--loss)'} ${share}%, #fff)`;
+}
+
 // How often the sides it gave each chance actually won: by its chance, five points wide (30% and under in the
 // first band, 85% and over in the last); a bet whose premise broke in the game counts for its weight
 export function calibrationOf(bets: ModelBet[]): CalibrationRow[] {

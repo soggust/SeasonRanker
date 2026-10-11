@@ -11,10 +11,12 @@ import { WalletService } from './wallet.service';
 import {
   Leaderboard,
   PlayBet,
+  PlayLive,
   SPORTS,
   START,
   Versus,
   byGame,
+  liveOf,
   oddsText,
   playBySport,
   playCurve,
@@ -159,6 +161,18 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const props = this.propNow();
     for (const b of this.open()) {
       const r = provisionalOf(b, boards.get(`${b.sport}|${b.event}`), props.get(b.id));
+      if (r) out.set(b.id, r);
+    }
+    return out;
+  });
+  // (each open bet's live column, as the Algorithm's In Play: a prop's or a total's meter, a side at the score;
+  // none before its game's under way)
+  readonly live = computed(() => {
+    const out = new Map<string, PlayLive>();
+    const boards = this.lines.boards();
+    const props = this.propNow();
+    for (const b of this.open()) {
+      const r = liveOf(b, boards.get(`${b.sport}|${b.event}`), props.get(b.id));
       if (r) out.set(b.id, r);
     }
     return out;
