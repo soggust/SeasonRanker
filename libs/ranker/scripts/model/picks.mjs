@@ -310,8 +310,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // CHECK's cause and sub-reason: checks.mjs)
       ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : {}) } : {}),
       // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered
-      // once it's after the note)
-      ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, by: b.resolved.by } } : {}),
+      // once it's after the note; held, why a noted one couldn't be re-priced)
+      ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, by: b.resolved.by, ...(b.resolved.held ? { held: b.resolved.held } : {}) } } : {}),
     };
     // (its risk, the page's Devil's Advocate, and the AI's analysis in place of the plain text where it has one)
     return applyWriteups(row, entry, hash);

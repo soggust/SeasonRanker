@@ -136,6 +136,8 @@ test("noteState: a CHECK's note 'Noted' (pending) till a re-evaluation after it 
   assert.equal(desk.noteState(at, null, false), null);
   // (a note whose time isn't known: any re-evaluation answers it)
   assert.equal(desk.noteState(null, { at: '2026-10-11T15:00:00Z', as: 'still', by: 'note' }), 'still');
+  // (the run couldn't re-price it: held, its why on resolved, not "Noted" for a re-price that isn't coming)
+  assert.equal(desk.noteState(at, { at: '2026-10-11T15:00:00Z', as: 'still', by: 'note', held: 'its line moved on the board' }), 'held');
   assert.equal(desk.noteAtOf({ toMillis: () => at }), at);
   assert.equal(desk.noteAtOf('2026-10-11T14:30:00Z'), at);
   assert.equal(desk.noteAtOf(at), at);

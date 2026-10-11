@@ -8,8 +8,9 @@
     <p class="note-saved">
       <mat-icon aria-hidden="true" fontIcon="sticky_note_2"></mat-icon>
       <!-- (a CHECK's: noted till the bot's next run re-prices it (picks.json's resolved, after the note), then what
-           came of it; a closed or bet one's row is gone) -->
-      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ check ? (state === 'still' ? 'Re-priced with it: still a CHECK' : 'Noted: the bot re-prices it on its next run') : prices ? 'the bot will re-price with it on its next run' : 'saved; the bot prices only a player and his status' }}</span></span>
+           came of it, or why it couldn't (held: re-priced once its props are priced again); a closed or bet one's
+           row is gone) -->
+      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ check ? (state === 'still' ? 'Re-priced with it: still a CHECK' : state === 'held' ? 'Not re-priced yet: ' + held + '. Still a CHECK till its props are priced again' : 'Noted: the bot re-prices it on its next run') : prices ? 'the bot will re-price with it on its next run' : 'saved; the bot prices only a player and his status' }}</span></span>
       <button type="button" class="note-link" (click)="edit()">Edit</button>
     </p>
   } @else if (!saved() && !opened()) {

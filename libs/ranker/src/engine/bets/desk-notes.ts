@@ -14,7 +14,7 @@ import { bandOrder } from './tiers';
 //            NOTE_STATUSES (only with a player), the note 500 characters at most; by and at the writer's and the
 //            write's time, the service's to add. On a CHECK, "Noted: the bot re-prices it on its next run" till
 //            a re-evaluation after it (picks.json's resolved: noteState), then what came of it (still a CHECK;
-//            closed or bet, the row's gone, the bet a pick)
+//            closed or bet, the row's gone, the bet a pick); one the bot couldn't re-price says why (held)
 //   tally    a CHECK at a unit, graded as if it had been bet (checks.mjs checkResult): a bet-shaped row for the
 //            desk's tally, open till it's graded; a closed one (the gap closed before the lock) left out
 
@@ -175,6 +175,8 @@ export interface CheckResolved {
   at: string;
   as: 'bet' | 'closed' | 'still';
   by: 'note' | 'reprice';
+  // (a noted CHECK the run couldn't re-price: why (no price kept, its line moved, waiting on the news))
+  held?: string;
 }
 
 // (when a saved note was written, in ms: Firestore's Timestamp (toMillis), a time's string or ms; else null)
@@ -185,12 +187,13 @@ export function noteAtOf(at: unknown): number | null {
 }
 
 // What a CHECK's note says of it: 'pending' (the bot re-prices it on its next run) till a re-evaluation after
-// the note (resolved, its at later), then 'still' (re-priced with it, still a CHECK); no note, null. A note
-// whose time isn't known answered by any re-evaluation
-export function noteState(noteAt: number | null, resolved: CheckResolved | null | undefined, noted = true): 'pending' | 'still' | null {
+// the note (resolved, its at later), then 'still' (re-priced with it, still a CHECK) or 'held' (the run
+// couldn't re-price it: resolved's held says why); no note, null. A note whose time isn't known answered by
+// any re-evaluation
+export function noteState(noteAt: number | null, resolved: CheckResolved | null | undefined, noted = true): 'pending' | 'still' | 'held' | null {
   if (!noted) return null;
   const answered = !!resolved && (noteAt === null || Date.parse(resolved.at) >= noteAt);
-  return answered ? (resolved!.as === 'still' ? 'still' : null) : 'pending';
+  return answered ? (resolved!.as === 'still' ? (resolved!.held ? 'held' : 'still') : null) : 'pending';
 }
 
 // A CHECK as checks.json keeps it (checks.mjs), as far as the desk reads it

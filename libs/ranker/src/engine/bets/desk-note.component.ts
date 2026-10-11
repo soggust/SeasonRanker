@@ -70,9 +70,14 @@ export class DeskNoteComponent implements OnInit {
     return notePrices(this.saved());
   }
 
-  // (a CHECK's note: pending till the bot's next run re-prices it, then still a CHECK (desk-notes.ts noteState))
-  get state(): 'pending' | 'still' | null {
+  // (a CHECK's note: pending till the bot's next run re-prices it, then still a CHECK, or held: the run
+  // couldn't re-price it, and why (desk-notes.ts noteState))
+  get state(): 'pending' | 'still' | 'held' | null {
     return noteState(this.savedAt(), this.resolved, !!this.saved());
+  }
+
+  get held(): string {
+    return this.resolved?.held ?? '';
   }
 
   get text(): string {

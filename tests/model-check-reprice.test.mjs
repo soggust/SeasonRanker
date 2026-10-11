@@ -2,10 +2,12 @@
 // resolveChecks; run.mjs betProps and recordChecks): priced from its own stored prices while its line is still
 // the board's (or the board shows none for him), never at an invented one; how it came out (still a CHECK,
 // closed, or bet) kept on it as resolved; a stored price bet only while STORED_FRESH old; an owner's note not
-// yet answered asks for it (by 'note'); and picks.json's list carrying it, gone once closed or bet.
+// yet answered asks for it (by 'note'), or, the run unable to re-price it, is answered still with why (held);
+// one off a board still showing his market (pulled) never bet from its stored price (storedBet), nor a stale
+// one with The Odds API to hand; and picks.json's list carrying it, gone once closed or bet.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STORED_FRESH, checkOf, closeChecks, markPlaced, noteOpen, openCheck, priceAtOf, resolveChecks, storedFresh, upsertCheck, withStoredPrices } from '../libs/ranker/scripts/model/checks.mjs';
+import { STORED_FRESH, checkOf, closeChecks, markPlaced, noteOpen, openCheck, priceAtOf, resolveChecks, storedBet, storedFresh, upsertCheck, withStoredPrices } from '../libs/ranker/scripts/model/checks.mjs';
 import { STATS } from '../libs/ranker/scripts/model/props.mjs';
 import { buildPicks } from '../libs/ranker/scripts/model/picks.mjs';
 
@@ -187,4 +189,54 @@ test("upsertCheck: the same price asked again moves its price time up (priceAt),
   assert.equal(upsertCheck(ledger, propCheck({ placedAt: '2026-10-11T12:00:00Z', priceAt: '2026-10-11T12:00:00Z' }), now), null);
   assert.equal(ledger.checks[0].priceAt, '2026-10-11T12:00:00Z');
   assert.equal(ledger.checks[0].placedAt, '2026-10-11T06:00:00Z');
+});
+
+test("withStoredPrices: off a board that still shows his market (his other props, or the stat's for others), pulled; a board without the stat at all, not", () => {
+  const ledger = ledgerOf();
+  const OTHER = STATS.nfl.find((x) => x.key !== KEY).key;
+  // (his other prop on the board, this one gone: the book took it down)
+  const his = withStoredPrices([row({ stat: statOf(OTHER) })], ledger.checks, game, now, statOf);
+  assert.deepEqual([his.board[1].stored.offBoard, his.board[1].stored.pulled], [true, true]);
+  // (the stat's market for another player, his gone)
+  const stat = withStoredPrices([row({ athlete: { id: '9', name: 'Other', team: '1' } })], ledger.checks, game, now, statOf);
+  assert.equal(stat.board[1].stored.pulled, true);
+  // (the board showing another stat for another player only, or nothing: it can't tell, not pulled)
+  const other = withStoredPrices([row({ athlete: { id: '9', name: 'Other', team: '1' }, stat: statOf(OTHER) })], ledger.checks, game, now, statOf);
+  assert.equal(other.board[1].stored.pulled, undefined);
+  assert.equal(withStoredPrices([], ledger.checks, game, now, statOf).board[0].stored.pulled, undefined);
+});
+
+test("storedBet (betProps' bets loop): a stored price bet only while fresh with The Odds API to hand, and never one pulled; a fresh price's prop untouched", () => {
+  const fresh = { id: ID, at: '2026-10-11T12:00:00Z' };
+  const stale = { id: ID, at: '2026-10-11T06:00:00Z' };
+  assert.equal(storedBet(undefined, true, now), null);
+  assert.equal(storedBet(fresh, true, now), null);
+  assert.equal(storedBet(stale, true, now), 'stale');
+  assert.equal(storedBet({ id: ID }, true, now), 'stale');
+  // (no key: the stored price the best there is)
+  assert.equal(storedBet(stale, false, now), null);
+  // (pulled: whatever its age or the key)
+  for (const keyed of [true, false]) assert.equal(storedBet({ ...fresh, offBoard: true, pulled: true }, keyed, now), 'pulled');
+  assert.equal(storedBet({ ...fresh, offBoard: true }, true, now), null);
+});
+
+test("a noted CHECK the run couldn't re-price: answered still with why (held), the note no longer open, picks.json carrying it; a later re-evaluation writes over it", () => {
+  const ledger = ledgerOf();
+  const c = ledger.checks[0];
+  const note = { id: ID, reason: 'role', player: null, status: null, at: '2026-10-11T14:30:00Z' };
+  const why = 'its line moved on the board, no fresh price for the new one yet';
+  const n = resolveChecks(ledger, new Map(), beforeOf(ledger), now, new Map([[ID, why]]));
+  assert.deepEqual([n.held, n.still], [1, 0]);
+  assert.deepEqual(c.resolved, { at: now.toISOString(), as: 'still', by: 'note', held: why });
+  assert.equal(noteOpen(c, note), false);
+  assert.deepEqual(buildPicks('nfl', ledger, {}, new Map(), now, {}).checks[0].resolved, { at: now.toISOString(), as: 'still', by: 'note', held: why });
+  // (re-evaluated later from its stored price: still, written over the held one)
+  const later = new Date(now.getTime() + 3600e3);
+  resolveChecks(ledger, new Map([[ID, 'reprice']]), beforeOf(ledger), later);
+  assert.deepEqual(c.resolved, { at: later.toISOString(), as: 'still', by: 'reprice' });
+  // (closed or bet already: nothing held on it)
+  const done = ledgerOf();
+  done.checks[0].closedAt = now.toISOString();
+  assert.equal(resolveChecks(done, new Map(), beforeOf(done), now, new Map([[ID, why]])).held, 0);
+  assert.equal(done.checks[0].resolved, undefined);
 });
