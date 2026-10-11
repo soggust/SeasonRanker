@@ -408,8 +408,8 @@ export interface SportConfig {
   // gate (playing-time's RANK_EVERYONE): the rows at it are ranked and are the pool each stat is measured
   // against; the rows under it are UR, below the list in the grid, and UR on their cards, Career lines and
   // compare sides. A tab the ranked file doesn't have (the QBs, the games' starters) keeps them apart,
-  // always UR. (The careers files' finished seasons were ranked at build time, the old usage-cut lists
-  // with the default settings: their ranks and UR lines stay as built.)
+  // always UR. (The careers files' finished seasons are ranked the same way at build time, build-comps.mjs:
+  // the default sliders at the default Min Games.)
   unrankedSeasons?: boolean;
   // A history tab on the card in place of the seasons one (MMA's fights): its title and icon, and a
   // player's rows, newest first

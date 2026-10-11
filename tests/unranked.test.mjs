@@ -5,7 +5,8 @@
 // compare view on a real one: Calvin Ridley's 2025 (seven games, hurt) and 2026 (a handful of targets) seasons.
 // Rank everyone: those rows load into their tabs' rows, and Min Games is the gate, so at the default he's
 // ranked, and with Min Games raised past his games he's UR with his stats, never ranked, colored or leading a
-// column (the careers' finished seasons stay as built: 2025 a UR line there). The QBs too: the tab is each game's starters,
+// column. The careers' finished seasons are ranked the same way, at the default Min Games (build-comps.mjs),
+// so his 2025 is a ranked line there too. The QBs too: the tab is each game's starters,
 // so a backup who only came on in relief is unranked (unrankedQbs), from nflverse's totals, the starter's own
 // stats (record, recent starts, Responsibility) empty. And each part has its own (skill-players.ur.post.json,
 // .all.json): a playoff card of someone outside the playoffs' list reads his playoffs.
@@ -83,7 +84,7 @@ test('nfl: every season and part has its unranked rows, nobody in them is ranked
   assert.ok(parts > 60, `the parts with unranked rows: ${parts}`);
 });
 
-test("nfl: the careers have an unranked season as a line ranked 0 of 0, and the ranked ones' ranks stay ranks", () => {
+test("nfl: the careers rank a season at the default Min Games, the rest a line ranked 0 of 0 (UR)", () => {
   const unrankedIn = new Map();
   for (const [season, dir] of seasonFolders()) {
     if (season === null) continue;
@@ -98,30 +99,57 @@ test("nfl: the careers have an unranked season as a line ranked 0 of 0, and the 
       assert.equal(new Set(seasons).size, seasons.length, `${tab} ${id}: a season twice`);
       for (const [season, , games, rank, of] of lines) {
         const unranked = unrankedIn.get(season)[tab].some((p) => p.gsisId === id);
+        // (rank everyone: under the default Min Games, 10% of the season, two games; the QBs' backups always)
+        const under = games < 2 || (tab === 'QB' && unranked);
         if (rank === 0) {
           ur++;
           assert.equal(of, 0, `${tab} ${id} ${season}: UR is 0 of 0`);
-          assert.ok(unranked, `${tab} ${id} ${season}: UR but not in the season's unranked rows`);
+          assert.ok(under, `${tab} ${id} ${season}: UR at ${games} games`);
           assert.ok(games > 0);
         } else {
           assert.ok(rank >= 1 && rank <= of, `${tab} ${id} ${season}: #${rank} of ${of}`);
-          assert.ok(!unranked, `${tab} ${id} ${season}: ranked and unranked`);
+          assert.ok(!under, `${tab} ${id} ${season}: ranked at ${games} games`);
         }
       }
     }
     assert.ok(ur > 0, `${tab}: unranked seasons in the careers`);
   }
-  // (Ridley: his ranked seasons ranked, his 2021 and 2025 unranked; the season being played isn't in them)
+  // (Ridley: 2024 ranked, and 2025's seven games too, at the default Min Games; the season being played isn't in them)
   const ridley = readJson(path.join(NFL, 'careers', 'WR.json'))[RIDLEY];
   const line = (season) => ridley.find(([s]) => s === season);
   assert.ok(line(2024)[3] >= 1, '2024 ranked');
-  assert.deepEqual(line(2025).slice(0, 5), [2025, 'Titans', 7, 0, 0], '2025 UR');
+  assert.deepEqual(line(2025).slice(0, 3), [2025, 'Titans', 7]);
+  assert.ok(line(2025)[3] >= 1 && line(2025)[3] <= line(2025)[4], '2025 ranked');
   assert.equal(line(2026), undefined, 'the current season comes from its own rows');
   // (and the search's names have everyone, an unranked-only player too)
   const names = readJson(path.join(NFL, 'careers', 'names.json'));
   for (const tab of TABS) {
     const careers = readJson(path.join(NFL, 'careers', `${tab}.json`));
     for (const id of Object.keys(careers)) assert.ok(names[tab]?.[id], `${tab} ${id}: no name`);
+  }
+});
+
+// (who's ranked and the list size; the order is defaultRanking's, the default sliders' as the card's Career
+// line for this season reads them, which can sit a few places from the grid's own sort)
+test("nfl: the careers' finished seasons rank who the grid ranks by default, out of as many (every tab, 2024 and 2025)", async () => {
+  const { engine, host, data } = await harness();
+  for (const season of [2024, 2025]) {
+    const rows = await data.rows(season);
+    for (const tab of TABS) {
+      const careers = readJson(path.join(NFL, 'careers', `${tab}.json`));
+      const list = host.seasonContext(season, rows, tab).list;
+      assert.ok(list.length > 20, `${season} ${tab}: a list`);
+      const at = new Map(list.map((p, i) => [p.gsisId.replace(/^QB-/, ''), i + 1]));
+      let ranked = 0;
+      for (const [id, lines] of Object.entries(careers)) {
+        const line = lines.find(([s]) => s === season);
+        if (!line) continue;
+        const listed = at.has(id.replace(/^QB-/, ''));
+        assert.deepEqual([line[3] > 0, line[4]], [listed, listed ? list.length : 0], `${season} ${tab} ${id}: ranked as the grid`);
+        if (listed) ranked++;
+      }
+      assert.equal(ranked, list.length, `${season} ${tab}: everyone in the grid's list in the careers`);
+    }
   }
 });
 
@@ -234,15 +262,16 @@ test("nfl: Ridley's seasons under Min Games on his card: UR in the rank tile, hi
     assert.deepEqual(card.overview.skills, [], 'no skills against a list he is not in');
     assert.equal(card.overview.archetype, 'Unranked season');
   }
-  // (his Career lines: the default settings'. The careers file's 2025 stays as it was built, UR, never a
-  // career best; this season's is ranked at the default Min Games)
+  // (his Career lines: the default settings', so 2025 and this season ranked at the default Min Games, as
+  // his card was; the careers file's 2025 where the grid ranks him by default)
   const lines = await engine.careerLines(data, host.season, 'WR', RIDLEY);
   const of = (season) => lines.find((l) => l.season === season);
   assert.ok(of(2024).rank >= 1 && !of(2024).ur);
-  assert.equal(of(2025).ur, true, '2025: UR in the careers file');
-  assert.equal(of(2025).rank, 0);
+  settings.minShare = engine.DEFAULT_SETTINGS.minShare;
+  const grid2025 = host.seasonContext(2025, await data.rows(2025), 'WR').list;
+  assert.ok(!of(2025).ur && of(2025).rank >= 1, '2025: ranked in the careers file');
+  assert.equal(of(2025).of, grid2025.length, "2025: out of the grid's default list");
   assert.ok(of(2025).stats[0].value > 0, '2025: his headline stats');
-  assert.ok(of(2025).stats.every((s) => !s.best), '2025: no career best');
   const now = of(engine.CURRENT_SEASON);
   assert.ok(now.rank >= 1 && now.rank <= now.of && !now.ur, 'this season ranked at the default Min Games');
 });
@@ -300,12 +329,12 @@ test("nfl: Ridley's 2025 under Min Games in the compare view: UR, his values, no
     assert.equal(row.cells[1].tint, null, `${row.key}: no color`);
     assert.ok(!row.leaders.includes(1), `${row.key}: an unranked season leads`);
   }
-  // (his career: the picker has 2025 as UR; the arc's dot for it hollow, on the bottom, off the line)
+  // (his career: the picker has 2025 ranked, the default Min Games'; with yours, raised past his games, UR,
+  // the arc's dot for it hollow, on the bottom, off the line)
   for (let i = 0; i < 500 && compare.sides.some((s) => s.career === null); i++) await new Promise((r) => setImmediate(r));
-  const ur = side.career.find((l) => l.season === 2025);
-  assert.equal(ur.ur, true);
+  assert.ok(!side.career.find((l) => l.season === 2025).ur, 'ranked at the default Min Games');
   await compare.rankCareer(side);
-  assert.equal(compare.sides[1].career.find((l) => l.season === 2025).ur, true, 'still UR with your sliders');
+  assert.equal(compare.sides[1].career.find((l) => l.season === 2025).ur, true, 'UR with your Min Games');
   const line = compare.arcs.lines[1];
   const dots = line.dots.filter((d) => d.ur);
   assert.ok(dots.length >= 2, 'his unranked seasons on the arc');

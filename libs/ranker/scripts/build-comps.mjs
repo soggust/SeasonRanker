@@ -9,11 +9,15 @@
 // - careers/<tab>.json: every season each one appears in, for the card's Seasons tab: [season, team,
 //   games, rank with the default sliders, list size, headline stats (headlineStats, season totals)],
 //   a file per tab (a card loads its own); careers/first-seasons.json each one's first season (Rookies
-//   Only). The current season isn't in them: the app works it out from the rows it has. A season someone
-//   played outside the ranked list (seasons/<year>/skill-players.ur.json, the NFL's: see its update-data.mjs)
-//   is in them too, unranked: rank and list size 0 (UR), and never a similar season or one to find them for.
-// - seasons/<year>/units/<tab>.json: each tab's rows, which the Seasons tab ranks with the current
-//   sliders (and uses in place of the default ranks above once they load).
+//   Only). The current season isn't in them: the app works it out from the rows it has. A sport that ranks
+//   everyone (the NFL: seasons/<year>/skill-players.ur.json, everyone who played outside the usage-cut
+//   list, see its update-data.mjs) has those rows in its tabs' rows, as the grid does, and ranks them the
+//   way the grid first shows them: the rows at the default Min Games ranked (and the list size), the rest
+//   rank and list size 0 (UR); a tab the ranked file doesn't have (the QBs) keeps them apart, always UR.
+//   Similar seasons stay the usage-cut lists' (the other players never one, or one to find them for).
+// - seasons/<year>/units/<tab>.json: each tab's rows (with the other players, as the grid has them),
+//   which the Seasons tab ranks with the current sliders (and uses in place of the default ranks above
+//   once they load).
 //
 // The rows and stats come from the app's own code (the engine with the sport's modules, bundled with
 // esbuild through the app's tsconfig), so they match the tables.
@@ -44,10 +48,14 @@ export async function buildComps({
   const STATIC = path.join(ROOT, 'src/StaticData');
   const SEASONS_DIR = path.join(STATIC, 'seasons');
 
-  const readSeason = (year) =>
-    Object.fromEntries(
+  // (with its other players, rank everyone: unitsFor puts them in their tabs' rows, as data.ts loads them;
+  // always set, so one season's never carry into the next)
+  const readSeason = (year) => ({
+    ...Object.fromEntries(
       Object.entries(FILES).map(([key, file]) => [key, JSON.parse(fs.readFileSync(path.join(SEASONS_DIR, String(year), file), 'utf8'))]),
-    );
+    ),
+    unrankedRows: readUnranked(year),
+  });
 
   // A season's unranked rows, by tab (none: {})
   const readUnranked = (year) => {
@@ -73,7 +81,7 @@ export async function buildComps({
     tsconfig: path.join(ROOT, 'tsconfig.json'),
   });
   globalThis.__DATA = readSeason(seasons[0]);
-  const { unitsFor, SKILL_STATS, defaultRanking, headlineStats, presetWeights, unitStat } = await import(
+  const { unitsFor, SKILL_STATS, defaultMin, defaultRanking, headlineStats, presetWeights, unitStat } = await import(
     pathToFileURL(bundle).href
   );
   fs.rmSync(bundle);
@@ -84,8 +92,9 @@ export async function buildComps({
   const entries = {};
   const careers = {};
   for (const season of seasons) {
-    const units = unitsFor(readSeason(season));
-    const unranked = readUnranked(season);
+    const data = readSeason(season);
+    const units = unitsFor(data);
+    const unranked = data.unrankedRows;
     // Each tab's rows on their own (QBs already built), so the Seasons tab can rank a player's other
     // years with the current sliders without downloading whole seasons: seasons/<year>/units/<tab>.json
     const unitsDir = path.join(SEASONS_DIR, String(season), 'units');
@@ -95,6 +104,9 @@ export async function buildComps({
     }
     for (const [position, stats] of Object.entries(SKILL_STATS)) {
       const rows = units[position] ?? [];
+      // (similar seasons: the usage-cut list's rows, not the other players the tab took in)
+      const cut = data.skillPlayers?.[position] && unranked[position]?.length ? new Set(data.skillPlayers[position].map((unit) => unit.gsisId)) : null;
+      const compRows = cut ? rows.filter((unit) => cut.has(unit.gsisId)) : rows;
       const scored = stats.filter(isScored);
       const value = (unit, stat) => {
         const raw = unitStat(unit, stat.key);
@@ -103,7 +115,7 @@ export async function buildComps({
       };
       // Each stat's league mean and spread that season, over full-enough seasons
       const poolMin = minGames(position, season).pool;
-      const pool = rows.filter((unit) => unit.games >= poolMin);
+      const pool = compRows.filter((unit) => unit.games >= poolMin);
       const scales = new Map();
       for (const stat of scored) {
         const values = pool.map((unit) => value(unit, stat)).filter((v) => v !== null);
@@ -113,8 +125,9 @@ export async function buildComps({
         if (sd > 0) scales.set(stat, { mean, sd });
       }
       // The Seasons tab's line for each: games, rank with the default sliders (the list as the table
-      // first shows it), and the headline stats as season totals
-      const ranked = defaultRanking(position, presetWeights(position, 'default'), units);
+      // first shows it: rank everyone, the rows at the default Min Games; under it rank 0, UR), and the
+      // headline stats as season totals
+      const ranked = defaultRanking(position, presetWeights(position, 'default'), units, undefined, defaultMin(units, position));
       const headline = headlineStats(position);
       const headlineOf = (unit) =>
         headline.map((stat) => {
@@ -123,15 +136,10 @@ export async function buildComps({
         });
       for (const unit of rows) {
         const stats = headlineOf(unit);
+        const rank = ranked.indexOf(unit) + 1;
         (careers[position] ??= {})[unit.gsisId] ??= [];
-        careers[position][unit.gsisId].push([
-          season,
-          logoKey(unit.teamLogo),
-          unit.games,
-          ranked.indexOf(unit) + 1,
-          ranked.length,
-          stats,
-        ]);
+        careers[position][unit.gsisId].push([season, logoKey(unit.teamLogo), unit.games, rank, rank ? ranked.length : 0, stats]);
+        if (cut && !cut.has(unit.gsisId)) continue;
         if (unit.games < minGames(position, season).subject) continue;
         const z = {};
         for (const [stat, { mean, sd }] of scales) {

@@ -4,6 +4,7 @@
 import './prefill';
 import { DATA } from '@ranker/engine/data';
 import { SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
+import { defaultMin } from '@ranker/engine/playing-time';
 import { SKILL_STATS, headlineStats, presetWeights, statGroup, unitStat } from '@sport/positions';
 
 export function unitsFor(data: object) {
@@ -12,4 +13,4 @@ export function unitsFor(data: object) {
   return SKILL_UNITS;
 }
 
-export { SKILL_STATS, defaultRanking, headlineStats, presetWeights, statGroup, unitStat };
+export { SKILL_STATS, defaultMin, defaultRanking, headlineStats, presetWeights, statGroup, unitStat };

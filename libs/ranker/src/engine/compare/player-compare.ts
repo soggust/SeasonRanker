@@ -366,9 +366,11 @@ export class PlayerCompare {
     const { host } = this;
     const lines = await Promise.all(
       side.career.map(async (l) => {
-        // (an unranked season stays UR)
+        // (an unranked season stays UR; one under your Min Games is UR too, rank everyone: the careers rank
+        // a finished season at the default one)
         if (l.ur) return l;
-        if (l.season === side.season) return { ...l, rank: side.rank, of: side.of, pct: side.pct };
+        const ur = { ...l, rank: 0, of: 0, pct: 0, ur: true };
+        if (l.season === side.season) return side.ur ? ur : { ...l, rank: side.rank, of: side.of, pct: side.pct };
         try {
           let list: SkillPlayer[];
           let player: SkillPlayer | undefined;
@@ -380,6 +382,7 @@ export class PlayerCompare {
             player = rows[side.position]?.find((p) => p.gsisId === side.gsisId);
             if (!player) return l;
             const context = host.seasonContext(l.season, rows, side.position);
+            if (underMin(player, context)) return ur;
             list = context.list.includes(player) ? context.list : context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
           }
           const rank = player ? list.indexOf(player) + 1 : 0;
