@@ -12,7 +12,9 @@ import { bandOrder } from './tiers';
 //   note     { reason, player?, status?, team?, sport?, note?, by, at } as firestore.rules validDeskNote has it:
 //            the reason one of NOTE_REASONS, the player and his team ESPN ids (digits), the status one of
 //            NOTE_STATUSES (only with a player), the note 500 characters at most; by and at the writer's and the
-//            write's time, the service's to add
+//            write's time, the service's to add. On a CHECK, "Noted: the bot re-prices it on its next run" till
+//            a re-evaluation after it (picks.json's resolved: noteState), then what came of it (still a CHECK;
+//            closed or bet, the row's gone, the bet a pick)
 //   tally    a CHECK at a unit, graded as if it had been bet (checks.mjs checkResult): a bet-shaped row for the
 //            desk's tally, open till it's graded; a closed one (the gap closed before the lock) left out
 
@@ -166,6 +168,30 @@ export function formOf(n: DeskNote | null, players: readonly NotePlayer[] = []):
 // (a saved note the bot prices with: a player and his status, notes.mjs applyNotes; the rest kept with the
 // CHECK for its review, tallied by reason)
 export const notePrices = (n: DeskNote | null): boolean => !!n?.player && !!n?.status;
+
+// A CHECK's last re-evaluation, as picks.json carries it (checks.mjs resolveChecks: priced again from its stored
+// prices, or on an owner's note): still a CHECK (a closed or bet one is off the CHECKs' list, the bet a pick)
+export interface CheckResolved {
+  at: string;
+  as: 'bet' | 'closed' | 'still';
+  by: 'note' | 'reprice';
+}
+
+// (when a saved note was written, in ms: Firestore's Timestamp (toMillis), a time's string or ms; else null)
+export function noteAtOf(at: unknown): number | null {
+  if (at && typeof (at as { toMillis?: unknown }).toMillis === 'function') return (at as { toMillis: () => number }).toMillis();
+  const ms = typeof at === 'number' ? at : typeof at === 'string' ? Date.parse(at) : NaN;
+  return Number.isFinite(ms) ? ms : null;
+}
+
+// What a CHECK's note says of it: 'pending' (the bot re-prices it on its next run) till a re-evaluation after
+// the note (resolved, its at later), then 'still' (re-priced with it, still a CHECK); no note, null. A note
+// whose time isn't known answered by any re-evaluation
+export function noteState(noteAt: number | null, resolved: CheckResolved | null | undefined, noted = true): 'pending' | 'still' | null {
+  if (!noted) return null;
+  const answered = !!resolved && (noteAt === null || Date.parse(resolved.at) >= noteAt);
+  return answered ? (resolved!.as === 'still' ? 'still' : null) : 'pending';
+}
 
 // A CHECK as checks.json keeps it (checks.mjs), as far as the desk reads it
 export interface CheckEntry extends Partial<ModelBet> {

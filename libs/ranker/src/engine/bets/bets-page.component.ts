@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { tierLabel, tierOf, unranked } from './tiers';
-import { NotePlayer, byBand, notePlayers } from './desk-notes';
+import { CheckResolved, NotePlayer, byBand, notePlayers } from './desk-notes';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
@@ -101,6 +101,8 @@ export interface BetRow {
   gap?: number | null;
   checkReason?: string | null;
   checkCause?: 'role' | null;
+  // (its last re-evaluation, still a CHECK (picks.json's: checks.mjs resolveChecks): its note answered once after it)
+  resolved?: CheckResolved | null;
 }
 
 // (an analyst's pick, as far as the page uses it: the call, its side, its case and its risk)
@@ -214,6 +216,7 @@ interface Pick {
   gap?: number | null;
   checkReason?: string | null;
   checkCause?: string | null;
+  resolved?: CheckResolved | null;
 }
 interface Picks {
   at: string;
@@ -412,7 +415,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       why: p.why ?? null,
       line: p.line,
       pickId: p.id,
-      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null, checkCause: p.checkCause === 'role' ? ('role' as const) : null } : {}),
+      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null, checkCause: p.checkCause === 'role' ? ('role' as const) : null, resolved: p.resolved ?? null } : {}),
     });
     for (const { sport, picks, bets: file, sheet } of files) {
       // The algorithm's picks

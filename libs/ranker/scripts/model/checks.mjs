@@ -34,6 +34,16 @@
 //            the file stays small over a season, the tally untouched
 //   placed   when its market is bet after all (the gap closed, or an owner's note priced it again), the bet
 //            it became is noted on it (bet) and the page stops showing it as a CHECK; it's still graded
+//   repriced a prop's, a run with no fresh price for it (the NFL's board has none; The Odds API not asked for
+//            its game this run) prices it from its own stored prices (withStoredPrices: its side's and the
+//            other's, never an assumed -110), only while its line is still the board's (or the board shows
+//            none for him): its projection and every guard run again as for a priced prop, so it's written
+//            again (still a CHECK), closed (no guard keeps it one), or bet (as any prop: its timing, news and
+//            caps; with The Odds API to hand only at a stored price STORED_FRESH old or less (priceAt: when the
+//            API last gave it), else only closed, the bet left to the next ask). An owner's note not yet
+//            answered (noteOpen) is answered the same way the next run, its line moved owing its game an ask
+//            (run.mjs betProps). How it came out kept on it (resolveChecks: resolved { at, as: bet | closed |
+//            still, by: note | reprice }), the page's "Noted" till then
 //   diagnosis what drives its disagreement with the book (check-learn.mjs diagnose: a cause, its sub-reason
 //            and its numbers), made with it (checkOf) and kept through its trimming; an older one's given the
 //            next run's while nothing else changes. The graded ones' hit rate by cause and the recommendations
@@ -118,11 +128,14 @@ export function upsertCheck(ledger, check, now) {
   }
   const was = ledger.checks[at];
   if (was.checkResult || checkLocked(was, now)) return null;
-  // (its research kept: research.mjs, a finding made once)
-  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}) };
+  // (its research kept: research.mjs, a finding made once; and how its last re-evaluation came out: resolved)
+  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}), ...(was.resolved ? { resolved: was.resolved } : {}) };
   if (!was.closedAt && material(next) === material(was)) {
     // (an older one without a diagnosis given this run's, nothing else written)
     if (!was.diagnosis && check.diagnosis) was.diagnosis = check.diagnosis;
+    // (the same price asked of The Odds API again: when it was last seen moved up, so a run that prices it
+    // from this CHECK knows how old it is (STORED_FRESH))
+    if (check.priceAt && !(Date.parse(was.priceAt ?? '') >= Date.parse(check.priceAt))) was.priceAt = check.priceAt;
     return null;
   }
   // (the price it stood at, kept when this one's another)
@@ -139,6 +152,78 @@ export function closeChecks(ledger, ids, now) {
     if (!ids.has(c.id) || c.checkResult || c.bet || c.closedAt || checkLocked(c, now)) continue;
     c.closedAt = now.toISOString();
     n++;
+  }
+  return n;
+}
+
+// (a CHECK still to be priced again: not graded, closed, bet or locked)
+export const openCheck = (c, now) => !!c && !c.checkResult && !c.closedAt && !c.bet && !checkLocked(c, now);
+
+// (how old a CHECK's stored price may be and still be bet at, with The Odds API to hand: a real price that
+// recent stands in for the one the run didn't ask for; older, the CHECK is only closed, the bet left to the next
+// ask. When it was priced: priceAt, The Odds API's ask (an older one without it, when it was last written))
+export const STORED_FRESH = 6 * 3600e3;
+export const priceAtOf = (c) => c?.priceAt ?? c?.placedAt ?? null;
+export const storedFresh = (at, now) => now.getTime() - Date.parse(at ?? '') <= STORED_FRESH;
+
+// (a CHECK's owner's note not yet answered by a re-evaluation: its note (notes.mjs, the run's read of it) later
+// than its last resolved, or none resolved)
+export const noteOpen = (c, note) => !!note && !(Date.parse(c?.resolved?.at ?? '') >= (Date.parse(note.at ?? '') || 0));
+
+// A game's prop board with its open CHECKs' stored prices on it: a prop the run has no price for (the NFL's
+// board has none of its own; The Odds API not asked for its game this run) priced from its CHECK's (its side's
+// odds and the other side's, the book's as the CHECK kept them), only where the CHECK's line is still the one
+// the board shows, or the board shows none for him (then his prop is the CHECK's, its line and its open, off
+// the board: offBoard, left out of the board's players). Never invented: a CHECK at an assumed -110, or without
+// both prices, gives none. checks: the ledger's; statOf(key): the stat a CHECK's propType names. Returns
+// { board, used: Map(id -> the price's time), moved: Set(ids: the line moved, nothing priced) }
+export function withStoredPrices(board_, checks, game, now, statOf) {
+  const used = new Map();
+  const moved = new Set();
+  const out = [...board_];
+  for (const c of checks ?? []) {
+    if (c.market !== 'prop' || String(c.event) !== String(game.id) || !openCheck(c, now)) continue;
+    if (c.oddsAssumed || !Number.isFinite(c.odds) || !Number.isFinite(c.otherOdds) || !Number.isFinite(c.line) || (c.side !== 'over' && c.side !== 'under')) continue;
+    const prices = c.side === 'over' ? { over: c.odds, under: c.otherOdds } : { over: c.otherOdds, under: c.odds };
+    const at = priceAtOf(c);
+    const stored = { id: c.id, at };
+    const i = out.findIndex((p) => String(p.athlete?.id) === String(c.athlete) && p.stat?.key === c.propType);
+    if (i >= 0) {
+      const p = out[i];
+      // (a price of its own this run: the fresh one prices it)
+      if (p.prices) continue;
+      if (p.line !== c.line) {
+        moved.add(c.id);
+        continue;
+      }
+      out[i] = { ...p, prices, source: 'its CHECK (the odds api)', stored };
+    } else {
+      const stat = statOf(c.propType);
+      if (!stat || !c.athlete) continue;
+      out.push({ athlete: { id: String(c.athlete), name: c.player, pos: '', team: c.team ?? null }, stat, line: c.line, open: c.context?.move?.open ?? null, prices, source: 'its CHECK (the odds api)', stored: { ...stored, offBoard: true } });
+    }
+    used.set(c.id, at);
+  }
+  return { board: out, used, moved };
+}
+
+// How each CHECK re-evaluated this run came out (reEval: id -> 'note' | 'reprice', the note's when an owner's
+// note unanswered asked for it): bet (its market bet this run: markPlaced), closed (closeChecks, this run) or
+// still a CHECK; kept on it as resolved { at, as, by }. before: the ids bet and closed before this run's
+// recording. A reprice's 'still' written once, not each run, so the file doesn't churn. Returns the counts and
+// each one's outcome (items: { check, as, by })
+export function resolveChecks(ledger, reEval, before, now) {
+  const n = { bet: 0, closed: 0, still: 0, items: [] };
+  const at = now.toISOString();
+  for (const c of ledger.checks ?? []) {
+    const by = reEval?.get(c.id);
+    if (!by || c.checkResult) continue;
+    const as = c.bet && !before.bet.has(c.id) ? 'bet' : c.closedAt && !before.closed.has(c.id) ? 'closed' : !c.bet && !c.closedAt ? 'still' : null;
+    if (!as) continue;
+    n[as]++;
+    n.items.push({ check: c, as, by });
+    if (as === 'still' && by === 'reprice' && c.resolved?.as === 'still') continue;
+    c.resolved = { at, as, by };
   }
   return n;
 }

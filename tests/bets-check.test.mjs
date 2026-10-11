@@ -124,3 +124,20 @@ test("checkBets and tally: the CHECKs at a unit as if bet, open till graded, a v
   assert.ok(Math.abs(t.profit - -0.091) < 1e-9);
   assert.deepEqual(desk.checkBets(null), []);
 });
+
+test("noteState: a CHECK's note 'Noted' (pending) till a re-evaluation after it (picks.json's resolved), then still a CHECK; noteAtOf reads Firestore's time", () => {
+  const at = Date.parse('2026-10-11T14:30:00Z');
+  assert.equal(desk.noteState(at, null), 'pending');
+  // (re-evaluated before the note: still pending)
+  assert.equal(desk.noteState(at, { at: '2026-10-11T14:00:00Z', as: 'still', by: 'reprice' }), 'pending');
+  assert.equal(desk.noteState(at, { at: '2026-10-11T15:00:00Z', as: 'still', by: 'note' }), 'still');
+  // (closed or bet: the row's gone; nothing to say)
+  assert.equal(desk.noteState(at, { at: '2026-10-11T15:00:00Z', as: 'closed', by: 'note' }), null);
+  assert.equal(desk.noteState(at, null, false), null);
+  // (a note whose time isn't known: any re-evaluation answers it)
+  assert.equal(desk.noteState(null, { at: '2026-10-11T15:00:00Z', as: 'still', by: 'note' }), 'still');
+  assert.equal(desk.noteAtOf({ toMillis: () => at }), at);
+  assert.equal(desk.noteAtOf('2026-10-11T14:30:00Z'), at);
+  assert.equal(desk.noteAtOf(at), at);
+  assert.equal(desk.noteAtOf({}), null);
+});

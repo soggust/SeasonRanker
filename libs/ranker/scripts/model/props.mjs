@@ -572,7 +572,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
   // role guard: a change at quarterback))
   const onBoard = new Set();
   const boardQbs = new Map();
+  // (a CHECK's prop the board doesn't show, priced from its stored prices (checks.mjs withStoredPrices): not
+  // the board's, so it changes no one's role)
   for (const x of props) {
+    if (x.stored?.offBoard) continue;
     const id = idx.pid(x.athlete);
     if (!id) continue;
     onBoard.add(String(id));

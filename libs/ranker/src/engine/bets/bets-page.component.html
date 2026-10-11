@@ -242,7 +242,7 @@
                 </div>
                 <!-- (a note to the bot on a CHECK: an admin's alone (desk-note.component.ts), a small button till it's asked for) -->
                 @if (r.pickId && desk() && r.check) {
-                  <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check"></desk-note>
+                  <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check" [resolved]="r.resolved ?? null"></desk-note>
                 }
                 <!-- (the game's every line, to bet this pick or any other; once on top instead when the game's chosen) -->
                 @if (!game && boards.get(gameKey(r)); as gb) {

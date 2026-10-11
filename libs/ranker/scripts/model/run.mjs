@@ -58,7 +58,12 @@
 //      player out, questionable or active) goes into its game's injury report for the pricing (2b), so the
 //      market may come back as a real bet, or an open bet on it is priced again (a note on a prop CHECK owes its
 //      game one more ask of The Odds API's props the first run it's seen, or edited: PROP_ASKS a game at most;
-//      a note on a bet or a game market's CHECK owes none). A checks.json there but unreadable (checks-file.mjs
+//      a note on a bet or a game market's CHECK owes none). A prop CHECK with no fresh price this run (the
+//      NFL's board has none; The Odds API not asked for its game) is priced from its own stored prices while
+//      its line is still the board's (checks.mjs withStoredPrices), its projection and guards run again: still a
+//      CHECK, closed, or bet (with The Odds API to hand, only at a price STORED_FRESH old or less); an owner's
+//      note on it answered the same way the next run (its line moved, its game owed an ask), and how it came out
+//      kept on it (resolved: checks.mjs resolveChecks). A checks.json there but unreadable (checks-file.mjs
 //      readChecks): a GitHub warning, and the CHECKs' list, file, tally (state.json's checks), picks.json's
 //      list and write-ups all left as they were till a person mends it; no CHECK recorded meanwhile. Each
 //      CHECK diagnosed as it's made (check-learn.mjs diagnose: the part of the projection that drives the gap,
@@ -100,7 +105,7 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
+import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
 import { checkLearning } from './check-learn.mjs';
@@ -1289,7 +1294,11 @@ async function betProps(r) {
   const { sport, cfg, state, trust, ledger, at } = r;
   const run = { games: 0, priced: 0, under: 0, even: 0, evenUnder: 0, bet: 0, units: 0 };
   r.propRun = run;
+  // (the open CHECKs evaluated again this run: id -> 'note' or 'reprice', recordChecks' resolved)
+  r.reEval = new Map();
   if (!r.props || !Object.keys(r.props).length) return;
+  const statOf = (key) => STATS[sport]?.find((s) => s.key === key) ?? null;
+  const STORED_HOURS = STORED_FRESH / 36e5;
   const idx = rowsIndex(sport, r.rows);
   const candidates = [];
   // (the caps: a prop type not yet tested (its trust unfit) stakes little; the day is the game's US Eastern date,
@@ -1344,9 +1353,21 @@ async function betProps(r) {
         continue;
       }
       let board_ = await board(sport, cfg.league, game);
-      if (!board_.length) continue;
+      // (its open prop CHECKs (checks.mjs openCheck): priced from their stored prices where nothing fresher
+      // comes, so a game whose board shows none still has them)
+      const openChecks = (ledger.checks ?? []).filter((c) => c.market === 'prop' && String(c.event) === String(game.id) && openCheck(c, r.now));
+      if (!board_.length && !openChecks.length) continue;
       const times = asked[game.id] ?? 0;
       const open = ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && b.status === 'open');
+      // (an owner's note not yet answered on a CHECK whose line has moved on the board: its stored price is no
+      // longer the board's, so its game's props are owed an ask, once a note, to price it on the note's run)
+      const movedNoted = withStoredPrices(board_, openChecks, game, r.now, statOf).moved;
+      const noteAt = Math.max(0, ...openChecks.filter((c) => movedNoted.has(c.id) && noteOpen(c, r.notes?.get(c.id))).map((c) => Date.parse(r.notes.get(c.id).at ?? '') || 1));
+      if (noteAt && !DRY && asked[`${game.id}:note-moved`] !== noteAt) {
+        asked[`${game.id}:note-moved`] = noteAt;
+        asked[`${game.id}:owed`] = 1;
+        write(PROPS_ASKED, asked);
+      }
       // (asked once its props are due, once more near the start for the open ones' last line (the NFL's
       // close), and again when its props were taken back and its board has no prices (owed), at most
       // PROP_ASKS times a game: timing.mjs propAsk)
@@ -1354,9 +1375,11 @@ async function betProps(r) {
       const boardPriced = board_.some((p) => p.prices);
       const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length });
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
+      let fresh = false;
       if (why && u.lines.oddsEvent && !DRY) {
         const api = await apiProps(sport, u.lines.oddsEvent);
         if (api) {
+          fresh = true;
           asked[game.id] = times + 1;
           if (why === 'near') asked[`${game.id}:near`] = 1;
           delete asked[`${game.id}:owed`];
@@ -1371,6 +1394,16 @@ async function betProps(r) {
           }
         }
       }
+      // (no fresh price from The Odds API this run: its open CHECKs priced from their stored prices, where the
+      // line is still the board's (checks.mjs withStoredPrices), so each is evaluated again: still a CHECK,
+      // closed, or bet. The Odds API asked, the props it didn't price stay unpriced: the book took them down)
+      if (!fresh && openChecks.length) {
+        const sp = withStoredPrices(board_, openChecks, game, r.now, statOf);
+        board_ = sp.board;
+        run.stored = (run.stored ?? 0) + sp.used.size;
+        run.storedMoved = (run.storedMoved ?? 0) + sp.moved.size;
+      }
+      if (!board_.length) continue;
       run.games++;
       const { exp, f } = expectFor(r, game);
       const live = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
@@ -1391,6 +1424,12 @@ async function betProps(r) {
       if (Date.parse(game.date) - Date.now() >= 5 * 60e3) {
         for (const x of bets) {
           if (!x.priced && hasKey()) continue;
+          // (priced from its CHECK's stored price (withStoredPrices): with The Odds API to hand, a real price only
+          // while STORED_FRESH old; an older one's CHECK is only closed, the bet left to the next ask)
+          if (x.prop.stored && hasKey() && !storedFresh(x.prop.stored.at, r.now)) {
+            run.storedStale = (run.storedStale ?? 0) + 1;
+            continue;
+          }
           const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
           if (news.length && phase !== 'last') {
             run.waiting = (run.waiting ?? 0) + 1;
@@ -1408,6 +1447,11 @@ async function betProps(r) {
           if (!x.priced && hasKey()) continue;
           if (newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher }).length && phase !== 'last') continue;
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+          // (an open CHECK evaluated again: from its stored price, or on an owner's note not yet answered; how it
+          // comes out kept on it, recordChecks)
+          const was = openChecks.find((c) => c.id === id);
+          const noted = !!was && noteOpen(was, r.notes?.get(id));
+          if (was && (x.prop.stored || noted)) r.reEval?.set(id, noted ? 'note' : 'reprice');
           if (!CHECK_KINDS.has(x.guard?.kind)) {
             r.unchecked?.add(id);
             continue;
@@ -1454,6 +1498,7 @@ async function betProps(r) {
   }
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
+  if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
@@ -1499,6 +1544,9 @@ function propBet(r, game, x, exp, { id, intent, units, tested }) {
     expTotal: round(exp.total, 2),
     book: 'DraftKings',
     pricesFrom: x.prop.source ?? (x.priced ? 'espn' : 'assumed -110'),
+    // (when its price was The Odds API's: this run's ask, or (priced from its CHECK's stored price:
+    // checks.mjs withStoredPrices) the ask that gave it; a CHECK keeps it, so a later run knows how old it is)
+    ...(x.prop.stored ? { priceAt: x.prop.stored.at } : intent === 'check' && x.prop.source === 'the odds api' ? { priceAt: new Date().toISOString() } : {}),
     projection: x.projection,
     tested,
     context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
@@ -1525,6 +1573,8 @@ function recordChecks(r) {
   }
   let added = 0;
   let updated = 0;
+  // (the ones bet and closed before this run's recording: the rest, bet or closed by it, resolved so)
+  const before = { bet: new Set((r.ledger.checks ?? []).filter((c) => c.bet).map((c) => c.id)), closed: new Set((r.ledger.checks ?? []).filter((c) => c.closedAt).map((c) => c.id)) };
   for (const c of r.checks ?? []) {
     const res = upsertCheck(r.ledger, c, r.now);
     if (res === 'new') added++;
@@ -1541,6 +1591,14 @@ function recordChecks(r) {
   const became = markPlaced(r.ledger);
   const ids = new Set((r.checks ?? []).map((c) => c.id));
   const closed = closeChecks(r.ledger, new Set([...(r.unchecked ?? [])].filter((id) => !ids.has(id))), r.now);
+  // (the open CHECKs evaluated again this run, from their stored prices or on an owner's note (betProps): how
+  // each came out kept on it, checks.mjs resolveChecks)
+  const resolved = resolveChecks(r.ledger, r.reEval, before, r.now);
+  if (r.reEval?.size) {
+    const by = [...r.reEval.values()].filter((v) => v === 'note').length;
+    console.log(`${sport}: open CHECKs evaluated again (${r.reEval.size - by} from their stored prices, ${by} on an owner's note): ${resolved.bet} bet, ${resolved.closed} closed, ${resolved.still} still CHECKs`);
+    if (DRY) for (const { check: c, as, by: why } of resolved.items) console.log(`${sport} (dry) CHECK evaluated again (${why}, priced ${c.priceAt ?? c.placedAt}): ${c.matchup} ${c.pick} ${c.odds}: ${as}${as === 'still' ? ` (model ${c.model} vs ${c.fair}: ${c.reason})` : as === 'bet' ? ` (${c.bet.units}u ${c.bet.intent})` : ''}`);
+  }
   // (the day's news research on them (research.mjs), and whether a finding was put into the injury report)
   let researched = 0;
   for (const c of r.ledger.checks ?? []) {

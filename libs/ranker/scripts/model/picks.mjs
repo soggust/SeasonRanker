@@ -24,8 +24,11 @@
 //            wasn't bet after all and whose gap hasn't closed since (closedAt), the biggest gap first,
 //            CHECK_TOP at most; the Bets page shows them between LOCK and LOVE in their own band (the
 //            admins' alone, with a note to the bot: tiers.ts, desk-note.component.ts). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
-//            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with)
-//   other    a prop's other side's price (otherOdds; null where unknown): the page shows both sides
+//            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with),
+//            and its last re-evaluation where it was still one (resolved { at, as, by }: checks.mjs
+//            resolveChecks; the page's "Noted" till it's after the owner's note); one closed or bet by it is gone
+//            from the list, the bet a pick like any other
+//   other   a prop's other side's price (otherOdds; null where unknown): the page shows both sides
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
 //            band is its score's; one without an edge is low, whatever its score (a favorite at a short price
 //            isn't a strong bet)
@@ -306,6 +309,9 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; a role
       // CHECK's cause and sub-reason: checks.mjs)
       ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : {}) } : {}),
+      // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered
+      // once it's after the note)
+      ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, by: b.resolved.by } } : {}),
     };
     // (its risk, the page's Devil's Advocate, and the AI's analysis in place of the plain text where it has one)
     return applyWriteups(row, entry, hash);
