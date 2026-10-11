@@ -13,6 +13,7 @@ import { CardSkill } from '@ranker/engine/skills';
 import { CURRENT_SEASON, SEASONS, dataPart, dataSeason, isLiveSeason } from '@ranker/engine/data';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, statValue } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
+import { RANK_EVERYONE, defaultMin } from '@ranker/engine/playing-time';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
@@ -358,7 +359,12 @@ export class PlayerCards {
       const player = rows[this.position]?.find((p) => p.gsisId === gsisId);
       if (!player) return await this.openUnranked(season, gsisId, rows);
       const context = host.seasonContext(season, rows, this.position);
-      // (someone under the Min Games setting still gets their card, ranked where they'd fall)
+      // (someone under the Min Games setting: UR, as the grid shows him, when the sport ranks everyone;
+      // otherwise his card ranked where he'd fall)
+      if (!context.list.includes(player) && RANK_EVERYONE) {
+        this.show(this.render(player, season, context.list, context, true));
+        return true;
+      }
       if (!context.list.includes(player)) {
         context.list = context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
       }
@@ -537,7 +543,7 @@ export class PlayerCards {
   private unrankedOverview(season: number): CardOverview {
     return {
       archetype: 'Unranked season',
-      blurb: `Played outside the ${SPORT.seasonText(season)} ${POSITION_NAMES[this.position]} rankings: the stats are here, but the season isn't ranked, graded or set against the list (UR).`,
+      blurb: `Not ranked in the ${SPORT.seasonText(season)} ${POSITION_NAMES[this.position]} rankings (${RANK_EVERYONE ? 'under the Min Games setting, or outside the list' : 'outside the list'}): the stats are here, but the season isn't ranked, graded or set against the list (UR).`,
       skills: [],
       report: scoutingReport([]).report,
       flags: [],
@@ -825,9 +831,11 @@ export async function careerLines(data: SeasonDataService, tableSeason: number, 
   const unranked = now ? undefined : await data.unrankedRow(CURRENT_SEASON, position, id);
   const context: ValueContext = { position, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
   if (now) {
-    const ranked = defaultRanking(position, presetWeights(position, 'default'), current);
+    const ranked = defaultRanking(position, presetWeights(position, 'default'), current, undefined, defaultMin(current, position));
     const stats = headline.map((stat) => statValue(now, stat, context));
-    seasons.push(line(CURRENT_SEASON, now.teamLogo, now.games, ranked.indexOf(now) + 1, ranked.length, stats));
+    // (rank everyone: under the default Min Games, UR)
+    const rank = ranked.indexOf(now) + 1;
+    seasons.push(line(CURRENT_SEASON, now.teamLogo, now.games, rank, rank ? ranked.length : 0, stats));
   } else if (unranked) {
     seasons.push(line(CURRENT_SEASON, unranked.teamLogo, unranked.games, 0, 0, headline.map((stat) => statValue(unranked, stat, context))));
   }

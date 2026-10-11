@@ -12,7 +12,7 @@ interface Column {
 // into forums and docs).
 export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promise<void> {
   const header = list.querySelector<HTMLElement>(':scope > li.header-row');
-  const rows = Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row)'));
+  const rows = Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row):not(.unranked)'));
   const columns = header && stats ? readColumns(header) : [];
 
   // (headshots load as they scroll into view: one that has loaded gives the shape for every row's)

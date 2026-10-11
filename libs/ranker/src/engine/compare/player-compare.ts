@@ -17,6 +17,7 @@ import { extras } from '@ranker/engine/row-fields';
 import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
 import { SKILL_UNITS, defaultRanking } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
+import { RANK_EVERYONE, defaultMin } from '@ranker/engine/playing-time';
 import { CardSkill } from '@ranker/engine/skills';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { rankPct } from '@ranker/core/format';
@@ -443,7 +444,9 @@ export class PlayerCompare {
         ur = true;
       }
       context = host.seasonContext(season, rows, position);
-      // (someone under the Min Games setting still gets ranked, where they'd fall)
+      // (someone under the Min Games setting: UR, as the grid shows him, when the sport ranks everyone;
+      // otherwise ranked where he'd fall)
+      if (!ur && !context.list.includes(player) && RANK_EVERYONE) ur = true;
       if (!ur && !context.list.includes(player)) {
         context.list = context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
       }
@@ -719,9 +722,11 @@ export class PlayerCompare {
         if (name && lines.length) byId.set(id, { name, headshotId: headshotId ?? null, seasons: lines.map(([season, logo, , rank, of]) => ({ season, logo: SPORT.teamLogo(logo), rank, of })) });
       }
       const rows = current[position] ?? [];
-      const ranked = rows.length ? defaultRanking(position, presetWeights(position, 'default'), current) : [];
+      const ranked = rows.length ? defaultRanking(position, presetWeights(position, 'default'), current, undefined, defaultMin(current, position)) : [];
+      // (rank everyone: a row under the default Min Games is UR, 0 of 0)
+      const rankOf = (row: SkillPlayer) => ranked.indexOf(row) + 1;
       const lines = [
-        ...rows.map((row) => ({ row, rank: ranked.indexOf(row) + 1, of: ranked.length })),
+        ...rows.map((row) => ({ row, rank: rankOf(row), of: rankOf(row) ? ranked.length : 0 })),
         ...(unranked[position] ?? []).map((row) => ({ row, rank: 0, of: 0 })),
       ];
       for (const { row, rank, of } of lines) {

@@ -2,7 +2,7 @@
 // for the visit. A failed fetch is forgotten, so the next ask tries again.
 import { Injectable } from '@angular/core';
 import { SkillPlayer, SkillPosition } from '@sport/positions';
-import { CURRENT_SEASON, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
+import { CURRENT_SEASON, DATA, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
 import { unitsForSeason } from '@ranker/engine/unit-scoring';
 import { CareersFile, CompsFile } from '@ranker/engine/player-card/card.model';
 import { SPORT } from '@sport/sport';
@@ -43,6 +43,8 @@ export class SeasonDataService {
 
   // A season's unranked rows by tab (SPORT.unrankedSeasons: skill-players.ur.json, everyone who played
   // outside the ranked lists), each marked ur; none for a sport without them, or a season without the file.
+  // Only the tabs the season's rows don't take them into (unit-scoring's withUnranked: a ranked file's tab
+  // has them among its rows, where Min Games decides): the NFL's QBs, a backup's relief snaps, always UR.
   // The part is the one its ranked rows are read in: the table's for the table's season (the playoffs, or
   // both, when Length is on one), the regular season for any other, as the card and the compare view read
   // those; a part with no file (no playoffs played, or none built) has none
@@ -51,8 +53,10 @@ export class SeasonDataService {
     return this.once(`ur.${season}.${part}`, () =>
       fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, urFile(part))
         .then((tabs) => {
-          for (const rows of Object.values(tabs ?? {})) for (const row of rows ?? []) (row as SkillPlayer & { ur?: boolean }).ur = true;
-          return tabs ?? {};
+          const merged = (DATA.skillPlayers ?? {}) as Record<string, unknown>;
+          const apart = Object.fromEntries(Object.entries(tabs ?? {}).filter(([tab]) => !(tab in merged))) as Partial<Record<SkillPosition, SkillPlayer[]>>;
+          for (const rows of Object.values(apart)) for (const row of rows ?? []) (row as SkillPlayer & { ur?: boolean }).ur = true;
+          return apart;
         })
         .catch(() => ({})),
     );

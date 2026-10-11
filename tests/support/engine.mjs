@@ -34,9 +34,14 @@ export function expandRows(file) {
 
 // A season's unranked rows by tab (skill-players.ur.json, or a part's: skill-players.ur.post.json; each marked
 // ur, as the season data service reads them; none: {})
+// (only the tabs the season's ranked file doesn't have, the QBs: the others' are among its rows, rank
+// everyone, as the service reads them)
 export function unrankedData(sport, season, current, part = 'regular') {
-  const file = path.join(seasonDir(sport, season, current), part === 'regular' ? 'skill-players.ur.json' : `skill-players.ur.${part}.json`);
-  const tabs = fs.existsSync(file) ? readJson(file) : {};
+  const dir = seasonDir(sport, season, current);
+  const file = path.join(dir, part === 'regular' ? 'skill-players.ur.json' : `skill-players.ur.${part}.json`);
+  const rankedFile = path.join(dir, part === 'regular' ? 'skill-players.json' : `skill-players.${part}.json`);
+  const merged = fs.existsSync(rankedFile) ? readJson(rankedFile) : {};
+  const tabs = fs.existsSync(file) ? Object.fromEntries(Object.entries(readJson(file)).filter(([tab]) => !(tab in merged))) : {};
   for (const rows of Object.values(tabs)) for (const row of rows) row.ur = true;
   return tabs;
 }
@@ -67,7 +72,11 @@ export function seasonData(dir, dataFiles) {
           .filter((f) => /^[a-z-]+\.json$/.test(f) && f !== 'comps.json' && f !== 'blocking.json')
           .map((f) => [keyOf(f), f]),
       );
-  return Object.fromEntries(Object.entries(files).map(([key, file]) => [key, expandRows(readJson(path.join(dir, file)))]));
+  const data = Object.fromEntries(Object.entries(files).map(([key, file]) => [key, expandRows(readJson(path.join(dir, file)))]));
+  // (and the season's other players, rank everyone: the NFL's skill-players.ur.json, as data.ts loads it)
+  const others = path.join(dir, 'skill-players.ur.json');
+  if (fs.existsSync(others)) data.unrankedRows = readJson(others);
+  return data;
 }
 
 // The app's tsconfig, or with RANKER_SRC one like it whose @ranker/* paths point at that copy

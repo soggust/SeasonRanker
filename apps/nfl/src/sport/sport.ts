@@ -155,7 +155,8 @@ export const SPORT: SportConfig = {
   roleWord: (position) => (['K', 'P'].includes(position) ? 'specialist' : 'starter'),
   playingTime: {
     label: 'Games',
-    title: 'Leave out players who played less than this share of the season so far (player tabs only; 1 shows everyone); the number is the games it takes',
+    // (rank everyone, unrankedSeasons: it's the gate to the ranking, and to the pool the stats are measured against)
+    title: 'Rank the players who played at least this share of the season so far, measured against each other (player tabs only; 1 ranks nearly everyone); the rest show below the list as UR, with their stats. The number is the games it takes',
     of: (player) => player.games,
     // The team games so far (the most any defense has played), a full 17-game season at most; another
     // season's card reads its own tab

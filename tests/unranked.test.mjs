@@ -2,8 +2,10 @@
 // SKILL_POSITIONS), and everyone else who played a season is kept beside them, in skill-players.ur.json,
 // never ranked. These check the files (nobody in both, everyone in them played, every season has one), the
 // careers (an unranked season a line ranked 0 of 0, the ranked lines as they were), and the card and the
-// compare view on a real one: Calvin Ridley's 2025 (seven games, hurt) and 2026 (a handful of targets) seasons,
-// UR with their stats, never ranked, colored or leading a column. The QBs too: the tab is each game's starters,
+// compare view on a real one: Calvin Ridley's 2025 (seven games, hurt) and 2026 (a handful of targets) seasons.
+// Rank everyone: those rows load into their tabs' rows, and Min Games is the gate, so at the default he's
+// ranked, and with Min Games raised past his games he's UR with his stats, never ranked, colored or leading a
+// column (the careers' finished seasons stay as built: 2025 a UR line there). The QBs too: the tab is each game's starters,
 // so a backup who only came on in relief is unranked (unrankedQbs), from nflverse's totals, the starter's own
 // stats (record, recent starts, Responsibility) empty. And each part has its own (skill-players.ur.post.json,
 // .all.json): a playoff card of someone outside the playoffs' list reads his playoffs.
@@ -194,7 +196,7 @@ async function harness({ position = 'WR', load } = {}) {
     extraFile: async () => ({}),
     ...unrankedService('nfl', CURRENT_SEASON),
   };
-  return { engine, host, data: load ? new engine.SeasonDataService() : data };
+  return { engine, host, settings, ranker, data: load ? new engine.SeasonDataService() : data };
 }
 
 // (the card asks ESPN for the hero's team color, after the test's done with it: no network in these tests;
@@ -207,10 +209,16 @@ globalThis.fetch = async (url) => {
   return { ok: true, status: 200, json: async () => readJson(file) };
 };
 
-test("nfl: Ridley's unranked seasons on his card: UR in the rank tile and the Career tab, his stats, no ranks or colors", async () => {
-  const { engine, host, data } = await harness();
-  assert.ok(!host.playerList.some((p) => p.gsisId === RIDLEY), 'not in the table');
+test("nfl: Ridley's seasons under Min Games on his card: UR in the rank tile, his stats, no ranks or colors", async () => {
+  const { engine, host, data, settings } = await harness();
+  // (rank everyone: his three games this season meet the default Min Games, so he's ranked in the table)
+  assert.ok(host.playerList.some((p) => p.gsisId === RIDLEY), 'ranked in the table at the default Min Games');
   const cards = new engine.PlayerCards(host, data);
+  assert.ok(await cards.openSeason(2025, RIDLEY));
+  assert.ok(!cards.card.ur && cards.card.rank >= 1, '2025 (seven games) ranked at the default Min Games');
+  // (Min Games raised to every game: both seasons fall under it, and the table sorts again)
+  settings.minShare = 100;
+  host.playerList = host.seasonContext(host.season, engine.SKILL_UNITS, 'WR').list;
   for (const season of [2025, engine.CURRENT_SEASON]) {
     assert.ok(await cards.openSeason(season, RIDLEY), `${season}: his card opens`);
     const card = cards.card;
@@ -226,20 +234,22 @@ test("nfl: Ridley's unranked seasons on his card: UR in the rank tile and the Ca
     assert.deepEqual(card.overview.skills, [], 'no skills against a list he is not in');
     assert.equal(card.overview.archetype, 'Unranked season');
   }
-  // (his Career lines: the ranked seasons ranked, 2025 and 2026 UR, never a career best)
+  // (his Career lines: the default settings'. The careers file's 2025 stays as it was built, UR, never a
+  // career best; this season's is ranked at the default Min Games)
   const lines = await engine.careerLines(data, host.season, 'WR', RIDLEY);
   const of = (season) => lines.find((l) => l.season === season);
   assert.ok(of(2024).rank >= 1 && !of(2024).ur);
-  for (const season of [2025, engine.CURRENT_SEASON]) {
-    assert.equal(of(season).ur, true, `${season}: UR`);
-    assert.equal(of(season).rank, 0);
-    assert.ok(of(season).stats[0].value > 0, `${season}: his headline stats`);
-    assert.ok(of(season).stats.every((s) => !s.best), `${season}: no career best`);
-  }
+  assert.equal(of(2025).ur, true, '2025: UR in the careers file');
+  assert.equal(of(2025).rank, 0);
+  assert.ok(of(2025).stats[0].value > 0, '2025: his headline stats');
+  assert.ok(of(2025).stats.every((s) => !s.best), '2025: no career best');
+  const now = of(engine.CURRENT_SEASON);
+  assert.ok(now.rank >= 1 && now.rank <= now.of && !now.ur, 'this season ranked at the default Min Games');
 });
 
 test("nfl: the arrow keys on a UR card: up opens the list's last, down its #1", async () => {
-  const { engine, host, data } = await harness();
+  const { engine, host, data, settings } = await harness();
+  settings.minShare = 100;
   const cards = new engine.PlayerCards(host, data);
   assert.ok(await cards.openSeason(2025, RIDLEY));
   const list = cards.card.list;
@@ -252,10 +262,11 @@ test("nfl: the arrow keys on a UR card: up opens the list's last, down its #1", 
   assert.equal(cards.card.player, list.at(-2), 'then on up the list as ever');
 });
 
-test("nfl: Ridley's 2025 in the compare view: UR, his values, no ranks, never a column's leader, a hollow dot on his arc", async () => {
-  const { engine, host, data } = await harness();
+test("nfl: Ridley's 2025 under Min Games in the compare view: UR, his values, no ranks, never a column's leader, a hollow dot on his arc", async () => {
+  const { engine, host, data, settings } = await harness();
   const compare = new engine.PlayerCompare(host, data);
   await compare.start(host.playerList.slice(0, 1));
+  settings.minShare = 100;
   await compare.add('WR', 2025, RIDLEY);
   assert.equal(compare.sides.length, 2, 'his 2025 added');
   const side = compare.sides[1];
@@ -288,13 +299,31 @@ test("nfl: Ridley's 2025 in the compare view: UR, his values, no ranks, never a 
   assert.ok(hit.seasons.includes(2025) && hit.seasons.includes(engine.CURRENT_SEASON), 'his unranked seasons among his seasons');
 });
 
-test("nfl: the ranking never sees an unranked row: the table's list is skill-players.json's alone", async () => {
-  const { engine, host } = await harness();
+test("nfl: rank everyone: the tab's rows are both files', Min Games decides who's ranked, and the rest are UR below", async () => {
+  const { engine, host, settings, ranker } = await harness();
+  const { SKILL_UNITS, SPORT } = engine;
   const unranked = readJson(path.join(NFL, 'skill-players.ur.json'));
-  const ids = new Set(unranked.WR.map((p) => p.gsisId));
-  assert.ok(ids.size > 0);
-  assert.ok(!engine.SKILL_UNITS.WR.some((p) => ids.has(p.gsisId) || p.ur), 'no unranked row in the rows');
-  assert.ok(!host.playerList.some((p) => ids.has(p.gsisId)), 'none in the table');
+  const ranked = readJson(path.join(NFL, 'skill-players.json'));
+  const rowIds = new Set(SKILL_UNITS.WR.map((p) => p.gsisId));
+  assert.ok(unranked.WR.length > 0);
+  assert.ok([...ranked.WR, ...unranked.WR].every((p) => rowIds.has(p.gsisId)), "every WR of both files in the tab's rows");
+  assert.equal(rowIds.size, SKILL_UNITS.WR.length, 'nobody twice');
+  assert.ok(!SKILL_UNITS.WR.some((p) => p.ur), 'no row keeps a ur mark: UR is under Min Games');
+  // (the table: the rows at Min Games; the UR rows: the rest the filters keep, none of them in the list)
+  for (const minShare of [0, 50, 100]) {
+    settings.minShare = minShare;
+    const min = ranker.minFor(SKILL_UNITS, 'WR');
+    const list = ranker.listed(SKILL_UNITS, host.season, 'WR');
+    const ur = ranker.unranked(host.reader, [], host.season, 'WR', SKILL_UNITS);
+    assert.ok(list.every((p) => SPORT.playingTime.of(p) >= min), `Min ${minShare}%: the list at Min Games`);
+    assert.ok(ur.every((p) => SPORT.playingTime.of(p) < min && !list.includes(p)), `Min ${minShare}%: the UR rows under it`);
+    assert.equal(list.length + ur.length, ranker.listed(SKILL_UNITS, host.season, 'WR', SKILL_UNITS.WR, 0).length, `Min ${minShare}%: everyone listed once`);
+    // (the ranking measured against the list alone: the UR rows never move it)
+    const order = (rows) => ranker.ranked(host.reader, list, 'WR', rows).map((p) => p.gsisId);
+    assert.deepEqual(order(SKILL_UNITS), order({ ...SKILL_UNITS, WR: list }), `Min ${minShare}%: the UR rows moved the ranking`);
+  }
+  settings.minShare = 100;
+  assert.ok(ranker.unranked(host.reader, [], host.season, 'WR', SKILL_UNITS).some((p) => p.gsisId === RIDLEY), 'Ridley UR at every game');
 });
 
 // A backup's season: Tyson Bagent's 2025 (two relief appearances behind Caleb Williams), and Mac Jones's 2025

@@ -5,7 +5,7 @@
 // instead (SPORT.playingTime.fixed: MMA's fights).
 import { SkillPlayer, SkillPosition } from '@sport/positions';
 import { SPORT } from '@sport/sport';
-import { MIN_SHARE_STEP, RankerSettings } from '@ranker/engine/position.service';
+import { DEFAULT_SETTINGS, MIN_SHARE_STEP, RankerSettings } from '@ranker/engine/position.service';
 
 // What the share is of: the most playing time anyone on the tab has, or the sport's season length
 export function seasonLength(rows: Record<string, SkillPlayer[]>, position: SkillPosition): number {
@@ -23,6 +23,19 @@ export function minCount(settings: RankerSettings, total: number): number {
   const fixed = SPORT.playingTime.fixed;
   if (fixed) return settings.minCount ?? fixed.default;
   return settings.minShare ? Math.max(1, Math.round((settings.minShare / 100) * total)) : 1;
+}
+
+// Rank everyone (SPORT.unrankedSeasons: the NFL, whose seasons keep every player who played): Min Games
+// is the gate. The rows at it are ranked, and they're the pool each stat's average and spread come from;
+// the rows under it are UR (shown below the list, never ranked, scored against the pool). Raised, the
+// fringe drops to UR; at 1, nearly everyone is ranked. (Elsewhere Min Games only leaves players out, the
+// pool the sport's default: TabRanker.scores.)
+export const RANK_EVERYONE = !!SPORT.unrankedSeasons;
+
+// The default Min Games cutoff a tab's default ranking ranks at (defaultRanking's min): none unless the
+// sport ranks everyone
+export function defaultMin(rows: Record<string, SkillPlayer[]>, position: SkillPosition): number {
+  return RANK_EVERYONE && hasMin(position) ? minCount(DEFAULT_SETTINGS, seasonLength(rows, position)) : 0;
 }
 
 // The setting a step up or down gives (null: it can't move that way). A step moves the cutoff by

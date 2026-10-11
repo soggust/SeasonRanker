@@ -41,11 +41,15 @@ export let dataSeason = CURRENT_SEASON;
 export let dataPart: SeasonPart = linkedPart();
 export let dataVersion = 0;
 
+// (rank everyone, SPORT.unrankedSeasons: the season's other players, skill-players.ur.json, load with it;
+// unit-scoring puts them in their tabs' rows, where Min Games decides who's ranked)
+export const UNRANKED_KEY = 'unrankedRows';
 const FILES: Record<string, string> = {
   skillPlayers: 'skill-players.json',
   ...SPORT.dataFiles,
+  ...(SPORT.unrankedSeasons && { [UNRANKED_KEY]: 'skill-players.ur.json' }),
 };
-const PART_KEYS = new Set(['skillPlayers', ...(SPORT.seasonPartFiles ?? [])]);
+const PART_KEYS = new Set(['skillPlayers', UNRANKED_KEY, ...(SPORT.seasonPartFiles ?? [])]);
 
 // (a file's name for a part: skill-players.post.json)
 const partFile = (key: string, file: string, part: SeasonPart) => (part !== 'regular' && PART_KEYS.has(key) ? file.replace(/\.json$/, `.${part}.json`) : file);
@@ -123,7 +127,11 @@ export function withSeason<T>(season: number, data: AppData, fn: () => T): T {
 // leaving the table on its own)
 export async function fetchSeason(season: number, part: SeasonPart = 'regular'): Promise<AppData> {
   const entries = await Promise.all(
-    Object.entries(FILES).map(async ([key, file]) => [key, await fetchSeasonFile(season, partFile(key, file, part))] as const),
+    Object.entries(FILES).map(async ([key, file]) => {
+      const fetched = fetchSeasonFile(season, partFile(key, file, part));
+      // (a season without its other players' file: its ranked rows alone)
+      return [key, await (key === UNRANKED_KEY ? fetched.catch(() => ({})) : fetched)] as const;
+    }),
   );
   return Object.fromEntries(entries) as unknown as AppData;
 }

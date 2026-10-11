@@ -1,6 +1,8 @@
 // Min Games only leaves players out (TabRanker.ranked, weightedTotals' pool): raising it must never
 // reorder the players who stay, and the list as it first opens (the default settings) must rank the same
-// as it did before the fix, when each stat was measured over the listed players alone.
+// as it did before the fix, when each stat was measured over the listed players alone. A sport that ranks
+// everyone (SPORT.unrankedSeasons: the NFL) makes Min Games the gate instead: at every step the list is
+// measured against the players it lists alone, so raising it can reorder them (the fringe leaves the pool).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -65,11 +67,18 @@ for (const sport of SPORTS) {
             const { ranker, reader, listed } = harness(engine, rows, season, position, settings);
             return ids(ranker.ranked(reader, listed, position, rows));
           });
-          // (the loosest list holds every stricter one; each stricter one is it with players left out)
+          // (the loosest list holds every stricter one; each stricter one is it with players left out, in
+          // the same order; ranking everyone, in the order of its players ranked alone)
           const loosest = lists[0];
           lists.forEach((list, i) => {
             const kept = new Set(list);
-            assert.deepEqual(list, loosest.filter((id) => kept.has(id)), `${sport} ${season} ${position}: Min step ${JSON.stringify(steps[i])} reordered the players who stayed`);
+            assert.deepEqual([...kept].sort(), loosest.filter((id) => kept.has(id)).sort(), `${sport} ${season} ${position}: Min step ${JSON.stringify(steps[i])} let someone in`);
+            if (SPORT.unrankedSeasons) {
+              const { ranker, reader, listed } = harness(engine, rows, season, position, { ...DEFAULT_SETTINGS, ...steps[i] });
+              assert.deepEqual(list, ids(ranker.ranked(reader, listed, position, { ...rows, [position]: listed })), `${sport} ${season} ${position}: Min step ${JSON.stringify(steps[i])} not measured against its list`);
+            } else {
+              assert.deepEqual(list, loosest.filter((id) => kept.has(id)), `${sport} ${season} ${position}: Min step ${JSON.stringify(steps[i])} reordered the players who stayed`);
+            }
           });
           if (lists.at(-1).length < loosest.length) filtered++;
           if (process.env.VERBOSE) console.log(sport, season, position, lists.map((l) => l.length).join("/"));

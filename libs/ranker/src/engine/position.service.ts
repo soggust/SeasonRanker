@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, combineLatest, distinctUntilChanged, map, merge } from 'rxjs';
 import { connectRosterGrades } from '@ranker/engine/roster-grades';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
+import { defaultMin } from '@ranker/engine/playing-time';
 import { COMPARE_PARAM, SharedCompare, SharedSide, applySharedLink, compareCode, readCompareCode, shareLink } from '@ranker/engine/share';
 import type { EngineHost, SportSettings } from '@ranker/engine/sport';
 import {
@@ -395,9 +396,9 @@ export class PositionService {
         if (emphasis && !order?.manual) {
           const tab = weights[position] ?? {};
           const leaned = Object.fromEntries(Object.entries(tab).map(([key, weight]) => [key, weight * (emphasis[key] ?? 1)]));
-          return defaultRanking(position, leaned, SKILL_UNITS, settings);
+          return defaultRanking(position, leaned, SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position));
         }
-        if (!order) return defaultRanking(position, weights[position], SKILL_UNITS, settings);
+        if (!order) return defaultRanking(position, weights[position], SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position));
         const byId = new Map(SKILL_UNITS[position].map((unit) => [unit.gsisId, unit]));
         return order.ids.map((id) => byId.get(id)).filter((unit) => !!unit);
       }),

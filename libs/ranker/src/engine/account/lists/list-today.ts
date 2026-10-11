@@ -5,7 +5,7 @@ import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { SeasonPart, dataPart, dataSeason, fetchSeason } from '@ranker/engine/data';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, combinedFor, defaultRanking, emptyIn, unitsForSeason } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
+import { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 import { SavedList, TodayRow } from './lists-helpers';
 
 // The season's rows as they are now: the grid's own when it shows that season and part, else fetched
@@ -27,7 +27,7 @@ export async function readToday(list: SavedList, seasons: SeasonDataService): Pr
   const weights = presetWeights(tab, 'default');
   const settings = { ...DEFAULT_SETTINGS, statBasis: (list.basis || DEFAULT_SETTINGS.statBasis) as typeof DEFAULT_SETTINGS.statBasis };
   const min = hasMin(tab) ? minCount(DEFAULT_SETTINGS, seasonLength(rows, tab)) : 0;
-  const ranked = defaultRanking(tab, weights, rows, DEFAULT_SPORT_SETTINGS).filter(
+  const ranked = defaultRanking(tab, weights, rows, DEFAULT_SPORT_SETTINGS, defaultMin(rows, tab)).filter(
     (p) => SPORT.playingTime.of(p) >= min && (SPORT.rowVisible?.(p, DEFAULT_SPORT_SETTINGS) ?? true),
   );
   const rank = new Map(ranked.map((p, i) => [p.gsisId, i + 1]));

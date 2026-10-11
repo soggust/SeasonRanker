@@ -1,4 +1,4 @@
-import { AppData, DATA, dataVersion, withSeason } from '@ranker/engine/data';
+import { AppData, DATA, UNRANKED_KEY, dataVersion, withSeason } from '@ranker/engine/data';
 import type { SportSettings, ValueContext } from '@ranker/engine/sport';
 import { extras } from '@ranker/engine/row-fields';
 import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatKey, SkillWeights, unitStat } from '@sport/positions';
@@ -11,7 +11,7 @@ import { rosterGradeValue } from '@ranker/engine/roster-grades';
 export const SKILL_UNITS = {} as Record<SkillPosition, SkillPlayer[]>;
 
 export function rebuildUnits(): void {
-  const rows = { ...(DATA.skillPlayers as Record<string, SkillPlayer[]>), ...SPORT.extraRows?.() };
+  const rows = { ...withUnranked(DATA), ...SPORT.extraRows?.() };
   // (a tab the new season doesn't have is emptied, not left with the last season's rows)
   for (const tab of Object.keys(SKILL_UNITS)) if (!(tab in rows)) delete SKILL_UNITS[tab as SkillPosition];
   Object.assign(SKILL_UNITS, rows);
@@ -21,9 +21,26 @@ rebuildUnits();
 // Another season's rows, from its files, without touching the loaded season (DATA and dataSeason are
 // swapped just while the sport builds its own tabs, then put back)
 export function unitsForSeason(data: AppData, season: number): Record<SkillPosition, SkillPlayer[]> {
-  const rows = data.skillPlayers as Record<SkillPosition, SkillPlayer[]>;
+  const rows = withUnranked(data);
   if (!SPORT.extraRows) return rows;
   return withSeason(season, data, () => ({ ...rows, ...SPORT.extraRows!() }));
+}
+
+// Rank everyone (SPORT.unrankedSeasons): a season's rows are its ranked file's and its other players'
+// (skill-players.ur.json) together, each tab's, so Min Games decides who's ranked; a tab the ranked file
+// doesn't have (the NFL's QBs, built from the games: a backup's relief snaps) keeps them apart, always UR
+// (SeasonDataService.unranked). The rows keep no ur mark: a row is UR when it's under Min Games.
+function withUnranked(data: AppData): Record<SkillPosition, SkillPlayer[]> {
+  const rows = data.skillPlayers as Record<SkillPosition, SkillPlayer[]>;
+  const others = data[UNRANKED_KEY] as Partial<Record<SkillPosition, (SkillPlayer & { ur?: boolean })[]>> | undefined;
+  if (!others || !rows) return rows;
+  const merged = { ...rows };
+  for (const [tab, extra] of Object.entries(others) as [SkillPosition, (SkillPlayer & { ur?: boolean })[]][]) {
+    if (!merged[tab] || !extra?.length) continue;
+    const ranked = new Set(merged[tab].map((p) => p.gsisId));
+    merged[tab] = [...merged[tab], ...extra.filter((p) => !ranked.has(p.gsisId)).map(({ ur: _, ...row }) => row as SkillPlayer)];
+  }
+  return merged;
 }
 
 // The sport's settings at their defaults
@@ -263,8 +280,12 @@ export function defaultRanking(
   weights: SkillWeights,
   rows: Record<string, SkillPlayer[]> = SKILL_UNITS,
   settings: SportSettings = DEFAULT_SPORT_SETTINGS,
+  // (rank everyone: the Min Games cutoff, playerGate's; only the rows at it are ranked, and they're the
+  // pool each stat's average and spread come from)
+  min = 0,
 ): SkillPlayer[] {
-  const units = rows[position] ?? [];
+  const all = rows[position] ?? [];
+  const units = min ? all.filter((unit) => SPORT.playingTime.of(unit) >= min) : all;
   const context: ValueContext = { position, settings, rows, tableSeason: false, defaults: true };
   const totals = weightedTotals(
     units,

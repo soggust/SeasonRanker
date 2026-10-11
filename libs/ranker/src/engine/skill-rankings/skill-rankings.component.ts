@@ -29,6 +29,7 @@ import { COMPARE_MAX, CompareHit, PlayerCompare } from '@ranker/engine/compare/p
 import { GameViewService, recentRef } from '@ranker/engine/game-view/game-view.service';
 import { SeasonContext } from '@ranker/engine/player-card/card.model';
 import { copyRankingsToClipboard } from '@ranker/core/clipboard';
+import { RANK_EVERYONE } from '@ranker/engine/playing-time';
 import { RowGlide } from './row-glide';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
@@ -75,6 +76,17 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
 
   // The table's values: this season's rows, ranked as the list shows
   readonly reader = new StatReader(this.tableSource());
+  // ...and the UR rows': the same values, never colored or placed against the list
+  readonly urReader = new StatReader(this.tableSource(true));
+
+  // Rank everyone (RANK_EVERYONE: the NFL): the rows under Min Games, and those the season keeps apart (a
+  // backup QB's), below the ranked ones as UR (TabRanker.unranked); the grid draws gridRows, the ranked
+  // list then them
+  unrankedList: SkillPlayer[] = [];
+  gridRows: SkillPlayer[] = [];
+  private apart: SkillPlayer[] = [];
+  private apartFor = '';
+  private unrankedAsk = 0;
 
   // How the list is made (the filters, the sliders, the columns), from the table's tab as it is now (one
   // object, read through: the ranker asks for it for every cell)
@@ -173,6 +185,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       else {
         this.closeWhy();
         this.totals = this.scoreTotals(this.ranker.listed(SKILL_UNITS, this.season, this.position));
+        this.listUnranked();
       }
     });
   }
@@ -225,6 +238,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     const { ranked, totals } = this.ranker.rankedTotals(this.reader, this.ranker.listed(SKILL_UNITS, this.season, this.position), this.position, SKILL_UNITS);
     this.playerList = this.limited(this.shown(ranked));
     this.totals = totals;
+    this.listUnranked();
     this.publishOrder(false);
     this.glide.play(() => this.rankingsList?.nativeElement, from);
   }
@@ -232,7 +246,9 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // A row dragged to another place: the order is kept, by hand, until the tab re-sorts
   drop(event: CdkDragDrop<string[]>): void {
     this.closeWhy();
-    moveItemInArray(this.playerList, event.previousIndex, event.currentIndex);
+    // (the ranked rows only: an unranked row doesn't drag, and none goes below them)
+    moveItemInArray(this.playerList, event.previousIndex, Math.min(event.currentIndex, this.playerList.length - 1));
+    this.showUnranked(this.unrankedList);
     this.publishOrder(true);
   }
 
@@ -241,6 +257,41 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     const listed = this.ranker.listed(SKILL_UNITS, this.season, this.position);
     this.playerList = this.limited(this.ranker.inOrder(this.shown(listed), ids));
     this.totals = this.scoreTotals(listed);
+    this.listUnranked();
+  }
+
+  // The UR rows under the list (rank everyone): the tab's rows under Min Games at once, then those the
+  // season keeps apart when their file comes (loaded when first asked for, kept for the same season and tab)
+  private listUnranked(): void {
+    const ask = ++this.unrankedAsk;
+    if (!RANK_EVERYONE) {
+      this.showUnranked([]);
+      return;
+    }
+    const { season, position } = this;
+    const key = `${season}.${this.seasonPart}.${position}`;
+    const list = (apart: SkillPlayer[]) => this.shown(this.ranker.unranked(this.reader, apart, season, position, SKILL_UNITS));
+    this.showUnranked(list(this.apartFor === key ? this.apart : []));
+    if (this.apartFor === key) return;
+    this.seasonData
+      .unranked(season)
+      .then((tabs) => {
+        if (ask !== this.unrankedAsk) return;
+        this.apartFor = key;
+        this.apart = tabs[position] ?? [];
+        if (this.apart.length) this.showUnranked(list(this.apart));
+      })
+      .catch((err) => console.error(err));
+  }
+
+  private showUnranked(list: SkillPlayer[]): void {
+    this.unrankedList = list;
+    this.gridRows = list.length ? [...this.playerList, ...list] : this.playerList;
+  }
+
+  // A UR row: under Min Games, or kept apart by the season
+  isUr(player: SkillPlayer): boolean {
+    return this.unrankedList.includes(player);
   }
 
   // (every row's score as the sliders have it, for a list in an order dragged by hand: the rank tiles' hovers)
@@ -290,14 +341,19 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // ---------------------------------------------------------------------------
   // Reading the stats (StatReader): the table's season, or another one for the player card
   // ---------------------------------------------------------------------------
-  private tableSource() {
+  private tableSource(unranked = false) {
     const table = this;
+    // (the UR rows' reader: Color-Coded Values and Show As Ranks off, the same object until the
+    // settings change)
+    let plain: { from: RankerSettings; settings: RankerSettings } | null = null;
     return {
       get position() {
         return table.position;
       },
       get settings() {
-        return table.settings;
+        if (!unranked) return table.settings;
+        if (plain?.from !== table.settings) plain = { from: table.settings, settings: { ...table.settings, colorValues: false, showRanks: false } };
+        return plain.settings;
       },
       get rows() {
         return SKILL_UNITS;
@@ -415,13 +471,15 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // A row's card (a click in the grid: a fresh start, no game to go back to)
   openCard(player: SkillPlayer): void {
     this.games.backTo = null;
-    this.cards.open(player);
+    // (an unranked row: his unranked card, as a search or a link opens it)
+    if (this.isUr(player)) void this.cards.openLinked({ position: this.position, gsisId: player.gsisId }, this.season);
+    else this.cards.open(player);
   }
 
   // ---------------------------------------------------------------------------
   // Why a row ranks where it does: its rank tile clicked (or Enter / Space on it) opens its breakdown
   // ---------------------------------------------------------------------------
-  why: (RankWhy & { at: { top: number | null; bottom: number | null; left: number; room: number } }) | null = null;
+  why: (RankWhy & { ur?: boolean; at: { top: number | null; bottom: number | null; left: number; room: number } }) | null = null;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
   private whyTile: HTMLElement | null = null;
   readonly signedScore = signedScore;
@@ -430,6 +488,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
 
   // The rank tile's hover: its place and its score ("Rank 1 · Score 21.04")
   rankTitle(player: SkillPlayer, index: number): string {
+    if (this.isUr(player)) return 'Unranked (UR): under the Min Games setting';
     const total = this.totals.get(player);
     return `Rank ${index + 1}${total === undefined ? '' : ` · Score ${scoreText(total)}`}`;
   }
@@ -442,13 +501,11 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       return;
     }
     const tile = event.currentTarget as HTMLElement;
+    // (an unranked row: no score or place, just what UR means)
+    const ur = this.isUr(player);
+    const empty: RankWhy = { id: player.gsisId, name: player.name, rank: 0, of: this.playerList.length, score: 0, scoreRank: 0, manual: false, movedByHeadToHead: false, parts: [], vs: [] };
     // (the list's own scoring, each stat's share kept: the same rows, sliders and filters as sortPlayers)
-    const parts = new Map<SkillPlayer, Map<string, number>>();
-    const listed = this.ranker.listed(SKILL_UNITS, this.season, this.position);
-    const strengths = new Map<string, number>();
-    const { totals, counted, weights } = this.ranker.scores(this.reader, listed, this.position, SKILL_UNITS, parts, strengths);
-    const manual = !!this.positionService.unitOrder(this.position)?.manual;
-    const why = rankWhy(this.playerList, index, { totals, counted, parts, weights, strengths }, this.reader, { manual, settings: this.sportSettings });
+    const why = ur ? empty : this.rankedWhy(index);
     // (hung under the tile, or over it when there's more room above; inside the screen's edges, no taller
     // than the room it has: its list of stats scrolls)
     const rect = tile.getBoundingClientRect();
@@ -458,9 +515,18 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       below >= 560 || below >= rect.top
         ? { top: rect.bottom + 6, bottom: null, left, room: below - 14 }
         : { top: null, bottom: innerHeight - rect.top + 6, left, room: rect.top - 14 };
-    this.why = { ...why, at };
+    this.why = { ...why, ur, at };
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  private rankedWhy(index: number): RankWhy {
+    const parts = new Map<SkillPlayer, Map<string, number>>();
+    const listed = this.ranker.listed(SKILL_UNITS, this.season, this.position);
+    const strengths = new Map<string, number>();
+    const { totals, counted, weights } = this.ranker.scores(this.reader, listed, this.position, SKILL_UNITS, parts, strengths);
+    const manual = !!this.positionService.unitOrder(this.position)?.manual;
+    return rankWhy(this.playerList, index, { totals, counted, parts, weights, strengths }, this.reader, { manual, settings: this.sportSettings });
   }
 
   closeWhy(refocus = false): void {
@@ -539,7 +605,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
 
   // The picks compared (then let go)
   openCompare(): void {
-    const picks = this.picked.map((id) => this.playerList.find((p) => p.gsisId === id)).filter((p): p is SkillPlayer => !!p);
+    const picks = this.picked.map((id) => this.gridRows.find((p) => p.gsisId === id)).filter((p): p is SkillPlayer => !!p);
     this.picked = [];
     this.compare.start(picks);
   }
@@ -558,7 +624,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
 
   // (the one picked, as the grid has him)
   get pickedOne(): SkillPlayer | undefined {
-    return this.picked.length === 1 ? this.playerList.find((p) => p.gsisId === this.picked[0]) : undefined;
+    return this.picked.length === 1 ? this.gridRows.find((p) => p.gsisId === this.picked[0]) : undefined;
   }
 
   get pickedLabel(): string {

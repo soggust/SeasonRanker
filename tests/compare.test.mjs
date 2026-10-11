@@ -153,9 +153,10 @@ function checkSummary(view, sides) {
 }
 
 // Someone in a tab's careers file with a season besides the given one
-async function withAnotherSeason(data, position, players, season) {
+// (sameTeam: one whose other season was with the team he's with now)
+async function withAnotherSeason(data, position, players, season, sameTeam) {
   const careers = await data.careers(position);
-  return players.find((p) => (careers[p.gsisId] ?? []).some(([s]) => s !== season));
+  return players.find((p) => (careers[p.gsisId] ?? []).some(([s, logo]) => s !== season && (!sameTeam || sameTeam(logo, p))));
 }
 
 test('nfl: two picked backs, then a quarterback from another season, compared', async () => {
@@ -404,10 +405,12 @@ test('nfl: removing and switching sides keeps the colors, and one added takes it
   checkColors(engine, compare.sides);
 
   // (a season switched while another side is removed: it's still that side that's switched)
-  const vet = await withAnotherSeason(data, 'RB', host.playerList.slice(4), host.season);
+  // (one whose other season was with the same team: a season switched to another team's takes that team's color)
+  const sameTeam = (logo, p) => engine.SPORT.teamLogo(logo) === p.teamLogo;
+  const vet = await withAnotherSeason(data, 'RB', host.playerList.slice(4), host.season, sameTeam);
   await compare.add('RB', host.season, vet.gsisId);
   const switching = compare.sides[3];
-  const season = (await data.careers('RB'))[vet.gsisId].find(([s]) => s !== host.season)[0];
+  const season = (await data.careers('RB'))[vet.gsisId].find(([s, logo]) => s !== host.season && sameTeam(logo, vet))[0];
   const pending = compare.add('RB', season, vet.gsisId, 3);
   compare.remove(0);
   await pending;

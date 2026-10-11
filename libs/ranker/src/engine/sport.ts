@@ -403,9 +403,13 @@ export interface SportConfig {
   cardLogo?: (logo: string) => string;
   // The card's Analysis tab: the sport publishes AI write-ups (data/analysis: player-card/analysis.ts)
   analysis?: boolean;
-  // Unranked (UR) seasons: each season's skill-players.ur.json, everyone who played outside a tab's ranked
-  // list (the NFL's: its lists are cut to the top so many by usage). Never ranked or in the table; their
-  // cards, Career lines and compare sides show the stats, marked UR where a rank would be
+  // Rank everyone: each season's skill-players.ur.json, everyone who played outside a tab's usage-cut list
+  // (the NFL's: the top so many by usage), loads with the season into its tabs' rows, and Min Games is the
+  // gate (playing-time's RANK_EVERYONE): the rows at it are ranked and are the pool each stat is measured
+  // against; the rows under it are UR, below the list in the grid, and UR on their cards, Career lines and
+  // compare sides. A tab the ranked file doesn't have (the QBs, the games' starters) keeps them apart,
+  // always UR. (The careers files' finished seasons were ranked at build time, the old usage-cut lists
+  // with the default settings: their ranks and UR lines stay as built.)
   unrankedSeasons?: boolean;
   // A history tab on the card in place of the seasons one (MMA's fights): its title and icon, and a
   // player's rows, newest first

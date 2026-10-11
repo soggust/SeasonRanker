@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS, PositionService } from '@ranker/engine/position.servi
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { byTotals, combinedFor, combinedWeights, weightedTotals } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
+import { RANK_EVERYONE, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 
 // The table's own tab: its stats, groups, switched-off groups and sliders (kept by the grid, which
 // listens for their changes)
@@ -51,15 +51,26 @@ export class TabRanker {
   // ---------------------------------------------------------------------------
   // The players a season's rows list: injured players only with Injured Players on, enough playing
   // time (Min Games), only rookies with Rookies Only on, and the sport's own filter
-  listed(rows: Record<string, SkillPlayer[]>, season: number, position: SkillPosition): SkillPlayer[] {
-    const min = hasMin(position) ? minCount(this.settings, seasonLength(rows, position)) : 0;
-    return (rows[position] ?? []).filter(
+  // (players: others read by the same filters, the season's rows kept apart; min: another cutoff, 0 none)
+  listed(
+    rows: Record<string, SkillPlayer[]>,
+    season: number,
+    position: SkillPosition,
+    players: SkillPlayer[] = rows[position] ?? [],
+    min = this.minFor(rows, position),
+  ): SkillPlayer[] {
+    return players.filter(
       (player) =>
         (this.settings.showInjured || !player.injured || !!SPORT.noSwitches?.includes('showInjured')) &&
         SPORT.playingTime.of(player) >= min &&
         this.rookieOk(player, season, position) &&
         (SPORT.rowVisible?.(player, this.settings.sport) ?? true),
     );
+  }
+
+  // The Min Games cutoff the settings give a tab (0: a tab without one)
+  minFor(rows: Record<string, SkillPlayer[]>, position: SkillPosition, settings = this.settings): number {
+    return hasMin(position) ? minCount(settings, seasonLength(rows, position)) : 0;
   }
 
   // Best first by the sliders: switched-off groups and stats don't count, and each combined pair's
@@ -70,7 +81,9 @@ export class TabRanker {
   // tab is ranked, each stat measured against the same players whatever they're set to (the rows with
   // the sport's default Min Games: the list as it first opens), and then the players asked for are kept
   // in that order. (Measured against just the players left, a stat's average and spread moved with
-  // the filters, and players who stayed swapped places.)
+  // the filters, and players who stayed swapped places.) A sport that ranks everyone (RANK_EVERYONE: the
+  // NFL) measures them against the rows at the Min Games set instead: it's the gate to the ranking, so
+  // raising it takes the fringe out of the averages too, and lowering it to 1 ranks nearly everyone.
   ranked(reader: StatReader, players: SkillPlayer[], position: SkillPosition, rows: Record<string, SkillPlayer[]> = { [position]: players }): SkillPlayer[] {
     return this.rankedTotals(reader, players, position, rows).ranked;
   }
@@ -97,6 +110,8 @@ export class TabRanker {
     rows: Record<string, SkillPlayer[]> = { [position]: players },
     parts?: Map<SkillPlayer, Map<string, number>>,
     strengths?: Map<string, number>,
+    // (rows scored beside them but left out of the pool and the order: ones the season keeps apart)
+    outside: SkillPlayer[] = [],
   ): { totals: Map<SkillPlayer, number>; counted: SkillStat[]; weights: SkillWeights; ranked: SkillPlayer[] } {
     const { stats, hidden } = this.tab(position);
     const combined = this.settings.combineStats;
@@ -107,10 +122,28 @@ export class TabRanker {
     const visible = (rows[position] ?? []).filter((player) => SPORT.rowVisible?.(player, this.settings.sport) ?? true);
     const seen = new Set(visible);
     const all = [...visible, ...players.filter((player) => !seen.has(player))];
-    const min = hasMin(position) ? minCount(DEFAULT_SETTINGS, seasonLength(rows, position)) : 0;
+    const min = this.minFor(rows, position, RANK_EVERYONE ? this.settings : DEFAULT_SETTINGS);
     const pool = all.filter((player) => SPORT.playingTime.of(player) >= min);
-    const totals = weightedTotals(all, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths);
+    const scored = outside.length ? [...all, ...outside] : all;
+    const totals = weightedTotals(scored, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths);
     return { totals, counted, weights, ranked: byTotals(all, totals, this.settings.sport) };
+  }
+
+  // Rank everyone (RANK_EVERYONE): the UR rows shown below the list. The tab's rows the list's other
+  // filters keep but Min Games leaves out, and those the season keeps apart (apart: the NFL's backup QBs,
+  // always UR), best first by the sliders among themselves, each scored against the pool the list is (the
+  // rows at Min Games), so they never move it, its scores or its colors. None for another sport.
+  unranked(reader: StatReader, apart: SkillPlayer[], season: number, position: SkillPosition, rows: Record<string, SkillPlayer[]>): SkillPlayer[] {
+    if (!RANK_EVERYONE) return [];
+    const min = this.minFor(rows, position);
+    const under = this.listed(rows, season, position, rows[position] ?? [], 0).filter((player) => SPORT.playingTime.of(player) < min);
+    const outside = this.listed(rows, season, position, apart, 0);
+    const listed = [...under, ...outside];
+    if (!listed.length) return [];
+    const { totals } = this.scores(reader, [], position, rows, undefined, undefined, outside);
+    const at = new Map(listed.map((player, i) => [player, i]));
+    const score = (player: SkillPlayer) => totals.get(player) ?? -Infinity;
+    return [...listed].sort((a, b) => score(b) - score(a) || at.get(a)! - at.get(b)!);
   }
 
   // A list in a saved order (players that have since appeared go at the end)

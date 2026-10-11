@@ -64,10 +64,17 @@
     @if (!playerList.length) {
       <li class="empty-list">{{ sport.copy.noneFound ?? 'No Players Found' }}</li>
     }
-    @for (player of playerList; track player.gsisId; let i = $index) {
+    @for (player of gridRows; track player.gsisId; let i = $index) {
+      <!-- (a UR row, under Min Games: below the ranked ones, UR in its tile, read by urReader: its values
+           never colored or placed against the list; it doesn't drag) -->
+      @let ur = i >= playerList.length;
+      @let r = ur ? urReader : reader;
       <!-- (a click on a row, off its name and links, picks it for Compare; so does C on its name) -->
       <li
         cdkDrag
+        [cdkDragDisabled]="ur"
+        [class.unranked]="ur"
+        [class.first-unranked]="ur && i === playerList.length"
         cdkDragPreviewContainer="parent"
         class="player"
         [class.picked]="picked.includes(player.gsisId)"
@@ -89,19 +96,19 @@
         >
           <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
           <span
-            [ngClass]="rankClasses(i)"
+            [ngClass]="ur ? 'count unranked' : rankClasses(i)"
             class="rank-tile"
             [class.open]="why?.id === player.gsisId"
             role="button"
             tabindex="0"
             aria-haspopup="dialog"
             [attr.aria-expanded]="why?.id === player.gsisId"
-            [attr.aria-label]="'#' + (i + 1) + ': why ' + player.name + ' ranks here'"
+            [attr.aria-label]="ur ? player.name + ': unranked (UR)' : '#' + (i + 1) + ': why ' + player.name + ' ranks here'"
             [title]="rankTitle(player, i)"
             (click)="toggleWhy(player, i, $event)"
             (keydown.enter)="toggleWhy(player, i, $event)"
             (keydown.space)="toggleWhy(player, i, $event)"
-          >@if (i === 0) {<span class="lombardi" aria-hidden="true"></span
+          >@if (ur) {UR} @else if (i === 0) {<span class="lombardi" aria-hidden="true"></span
             ><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span
         >
           <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
@@ -174,8 +181,8 @@
               <div class="box support-box" [style.min-width.em]="group.stats.length * 7.5">
                 @for (stat of group.stats; track stat.key) {
                   <div>
-                    <p [style.color]="reader.gradeColor(player, stat) ?? reader.valueColor(player, stat)">{{ reader.cellText(player, stat) }}</p>
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ reader.label(stat) }}</p>
+                    <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
                 }
               </div>
@@ -187,7 +194,7 @@
                   <div class="box support-box recent-box">
                     <div class="last-five" [class.many]="manyRecent" (mouseenter)="games.primeSoon(recentTeam(player), season)" (mouseleave)="games.cancelPrime()">
                       <div>
-                        @for (result of reader.lastFive(player); track $index) {
+                        @for (result of r.lastFive(player); track $index) {
                           <p
                             [ngClass]="result === 1 ? 'green' : result === 0.5 ? 'tie' : 'red'"
                             [class.ot]="recentOt(player, $index)"
@@ -202,36 +209,36 @@
                           <p class="unplayed">-</p>
                         }
                       </div>
-                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ reader.label(stat) }}</p>
+                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                     </div>
                   </div>
-                } @else if (stat.format === 'rank' && reader.value(player, stat) === 0) {
+                } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
                   <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
                   <div>
                     <p class="rank-value"><span class="lombardi rank-champ" title="Champion"></span></p>
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ reader.label(stat) }}</p>
+                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
-                } @else if (stat.format === 'rank' && reader.value(player, stat) !== null) {
+                } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
                   <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
                   <div>
-                    <p class="rank-value" [style.color]="reader.valueColor(player, stat)"
-                      ><span class="rank-hash">#</span>{{ reader.value(player, stat) }}@if (reader.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
+                    <p class="rank-value" [style.color]="r.valueColor(player, stat)"
+                      ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
                     >
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ reader.label(stat) }}</p>
+                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
-                } @else if (reader.showsRank(stat) && reader.listRank(player, stat); as place) {
+                } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
                   <!-- Show Ranks: the value's place in the list, styled like a rank column -->
                   <div>
-                    <p class="rank-value" [style.color]="reader.gradeColor(player, stat) ?? reader.valueColor(player, stat)"
+                    <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
                       ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
                     >
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ reader.label(stat) }}</p>
+                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
                 } @else {
                   <div>
-                    <p [style.color]="reader.gradeColor(player, stat) ?? reader.valueColor(player, stat)">{{ reader.cellText(player, stat) }}</p>
+                    <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
                     <p class="stat-label" [title]="valueTitle(player, stat)">
-                      {{ reader.label(stat) }}
+                      {{ r.label(stat) }}
                     </p>
                   </div>
                 }
@@ -255,7 +262,7 @@
       [class.above]="w.at.top === null"
       role="dialog"
       tabindex="-1"
-      [attr.aria-label]="'Why ' + w.name + ' ranks #' + w.rank"
+      [attr.aria-label]="w.ur ? w.name + ': unranked' : 'Why ' + w.name + ' ranks #' + w.rank"
       [style.top.px]="w.at.top"
       [style.bottom.px]="w.at.bottom"
       [style.left.px]="w.at.left"
@@ -263,12 +270,19 @@
     >
       <div class="why-head">
         <p class="why-title">
-          <span class="why-score">Score <b>{{ scoreText(w.score) }}</b></span>
-          <span class="why-place">#{{ w.rank }} of {{ w.of }}</span>
+          @if (w.ur) {
+            <span class="why-score"><b>Unranked</b> (UR)</span>
+          } @else {
+            <span class="why-score">Score <b>{{ scoreText(w.score) }}</b></span>
+            <span class="why-place">#{{ w.rank }} of {{ w.of }}</span>
+          }
         </p>
         <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
       </div>
       <p class="why-name">{{ w.name }}</p>
+      @if (w.ur) {
+        <p class="why-note">Unranked: he played fewer games than the Min Games setting (Settings), which decides who's ranked (on a tab of starters: he made no start). Lower it to rank him. His stats show, but he isn't ranked, and doesn't count in the list's averages or colors</p>
+      } @else {
       @if (w.manual) {
         <p class="why-note">Order set by hand (a dragged row): #{{ w.scoreRank }} on score</p>
       } @else if (w.movedByHeadToHead) {
@@ -309,6 +323,7 @@
         </div>
       }
       <p class="why-foot">Each stat: how far from the list's average it is (in standard deviations), times its slider</p>
+      }
     </div>
   }
 
