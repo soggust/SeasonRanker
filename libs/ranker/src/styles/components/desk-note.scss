@@ -164,6 +164,32 @@
 }
 
 // (a quiet text button: Edit, Cancel; lighter on hover, never yellow)
+// (the button that opens the form: small, quiet, out of the bet buttons' way)
+.note-open {
+  align-items: center;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  gap: 4px;
+  padding: 2px 0;
+
+  mat-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+  }
+}
+
 .note-link {
   background: none;
   border: none;

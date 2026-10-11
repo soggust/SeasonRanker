@@ -232,8 +232,8 @@
                     <small class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</small>
                   }
                 </div>
-                <!-- (a note to the bot on a CHECK or any pick: an admin's alone (desk-note.component.ts)) -->
-                @if (r.pickId && desk()) {
+                <!-- (a note to the bot on a CHECK: an admin's alone (desk-note.component.ts), a small button till it's asked for) -->
+                @if (r.pickId && desk() && r.check) {
                   <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check"></desk-note>
                 }
                 <!-- (the game's every line, to bet this pick or any other; once on top instead when the game's chosen) -->

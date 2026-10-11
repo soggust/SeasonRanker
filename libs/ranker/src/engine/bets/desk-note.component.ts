@@ -37,6 +37,8 @@ export class DeskNoteComponent implements OnInit {
   readonly saved = signal<DeskNote | null>(null);
   readonly loading = signal(true);
   readonly editing = signal(false);
+  // (the form asked for: none saved yet, its button pressed)
+  readonly opened = signal(false);
   readonly saving = signal(false);
   readonly problem = signal<string | null>(null);
   form: NoteForm = formOf(null);
@@ -75,6 +77,7 @@ export class DeskNoteComponent implements OnInit {
   cancel(): void {
     this.problem.set(null);
     this.editing.set(false);
+    this.opened.set(false);
   }
 
   // (a player picked: Out unless another status is chosen; none, no status)
