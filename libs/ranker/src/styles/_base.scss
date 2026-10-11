@@ -728,9 +728,10 @@ section footer .mat-mdc-select.season-select {
   outline-offset: 2px !important;
 }
 
-// (the rankings' player search: its focus a line under the text instead (rankings.component.scss find-input),
-// the ring too tight in its bar)
-.find-bar .find-input:focus-visible {
+// (the player searches, the rankings' and Compare's: no ring on their boxes (too tight in the rankings' bar;
+// Compare's keeps its own 1px border))
+.find-bar .find-input:focus-visible,
+.tape-search:focus-visible {
   outline: none !important;
 }
 
