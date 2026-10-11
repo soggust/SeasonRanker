@@ -104,11 +104,12 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     readonly wallet: WalletService,
     readonly lines: LinesService,
   ) {
-    // (the open bets' games looked up as soon as the bets arrive, and whenever they change)
+    // (the open bets' games looked up as soon as the bets arrive, and whenever they change: not while the page
+    // is out of sight (a bet placed or settled in another tab), the minute's look picking it up once it's back)
     let seen = '';
     effect(() => {
       const ids = this.open().map((b) => b.id).join(',');
-      if (ids && ids !== seen) {
+      if (ids && ids !== seen && !document.hidden) {
         seen = ids;
         void this.refresh();
       }
@@ -206,7 +207,13 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     await this.lines.games(open, 50e3);
     const boards = this.lines.boards();
     const next = new Map(this.propNow());
-    const props = open.filter((b) => b.market === 'prop' && b.propType && b.athlete && boards.get(`${b.sport}|${b.event}`)?.state !== 'pre');
+    // (a prop's box score once its game's on the board and under way; once it's final and counted, no more
+    // looks while it waits on the settler)
+    const props = open.filter((b) => {
+      const board = boards.get(`${b.sport}|${b.event}`);
+      if (b.market !== 'prop' || !b.propType || !b.athlete || !board || board.state === 'pre') return false;
+      return !(board.final && next.get(b.id) != null);
+    });
     const events = new Map<string, PlayBet[]>();
     for (const b of props) events.set(`${b.sport}|${b.event}`, [...(events.get(`${b.sport}|${b.event}`) ?? []), b]);
     await Promise.all(

@@ -108,9 +108,11 @@
                       </span>
                     }
                     <b>{{ lv.text }}</b>
+                    <small class="w-phone-game">{{ gameState(b).text }}</small>
                   </td>
                 } @else {
-                  <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}</td>
+                  <!-- (the score under it on phones, where the game's column goes) -->
+                  <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}<small class="w-phone-game">{{ gameState(b).text }}</small></td>
                 }
               </tr>
             }

@@ -567,6 +567,12 @@ $gold: casino.$lock-gold;
     .desk-group-count .w-phone-game {
       margin-left: 0;
     }
+
+    // (the live column's score under its count or its side's words)
+    .desk-score .w-phone-game {
+      margin-left: 0;
+      white-space: normal;
+    }
   }
 }
 

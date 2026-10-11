@@ -343,7 +343,9 @@ export function liveOf(b: PlayBet, board: GameBoard | undefined, propNow: number
   const unit = b.market === 'prop' ? (b.statLabel ?? '') : (UNIT_WORDS[b.sport] ?? 'pts');
   if (count !== null) {
     const state = provisional(d, game, propNow)?.status ?? propState(d, count);
-    return { count, state, meter: meterOf(d, count), unit, text: `${count} / ${b.line} ${unit}`, title: `${b.market === 'prop' ? b.player + ': ' : 'The game: '}${count} ${unit} so far, ${b.side} ${b.line}`, color: null };
+    // (a prop with no stat label: its count bare, no space left hanging)
+    const of = unit ? ` ${unit}` : '';
+    return { count, state, meter: meterOf(d, count), unit, text: `${count} / ${b.line}${of}`, title: `${b.market === 'prop' ? b.player + ': ' : 'The game: '}${count}${of} so far, ${b.side} ${b.line}`, color: null };
   }
   return { count: null, state: provisional(d, game, propNow)?.status ?? null, meter: null, unit, text: sideTextOf(d, game), title: sideTitleOf(d, game), color: edgeColorOf(d, game) };
 }
