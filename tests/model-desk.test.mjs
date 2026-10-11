@@ -536,9 +536,10 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
 // The public picks (picks.mjs) and the leagues' setup
 // ---------------------------------------------------------------------------
 
-test("picks.mjs bands, by the Kelly score: 5% and up high, 2% medium, under low; a bet without an edge low whatever its score", () => {
-  assert.deepEqual([0.05, 0.0499, 0.02, 0.0199, 0.12, -0.03].map((k) => level(k)), ['high', 'medium', 'medium', 'low', 'high', 'low']);
-  assert.equal(level(0.12, 0.6), 'lock', 'a big edge on a likely result: a lock');
+test("picks.mjs bands, by the Kelly score: 2% and up high, 1% medium, under low; a bet without an edge low whatever its score", () => {
+  assert.deepEqual([0.02, 0.0199, 0.01, 0.0099, 0.12, -0.03].map((k) => level(k)), ['high', 'medium', 'medium', 'low', 'high', 'low']);
+  assert.equal(level(0.05, 0.6), 'lock', 'a big edge on a likely result: a lock');
+  assert.equal(level(0.0499, 0.6), 'high', "under the lock's 5%: a love");
   assert.equal(levelOf({ intent: 'action', ev: -0.01 }, 0.07), 'low');
   assert.equal(levelOf({ ev: 0.02 }, 0.07), 'high');
 });
@@ -558,14 +559,14 @@ test('buildPicks: the open bets not started, likeliest first, at most TOP, each 
   const ledger = { bets };
   const out = buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now);
   // (by Kelly: the 70% favorite at -300 has no edge on its price and sorts last, its chance notwithstanding)
-  assert.deepEqual(out.picks.map((p) => [p.id, p.level, p.chance]), [['hi', 'lock', 64], ['mid', 'medium', 54], ['fav', 'low', 70]]);
+  assert.deepEqual(out.picks.map((p) => [p.id, p.level, p.chance]), [['hi', 'lock', 64], ['mid', 'high', 54], ['fav', 'low', 70]]);
   assert.equal(out.picks[2].edge, false);
   assert.ok(out.picks[2].score < 0);
   assert.deepEqual(out.picks[0].teams.map((t) => t.abbr), ['TB', 'DAL']);
   // (shown, not yet published: the news can still price it again till REPRICE_BY before the start)
   assert.ok(bets.find((b) => b.id === 'hi').shown);
   assert.equal(bets.find((b) => b.id === 'hi').published, undefined);
-  assert.equal(bets.find((b) => b.id === 'mid').publishedLevel, 'medium');
+  assert.equal(bets.find((b) => b.id === 'mid').publishedLevel, 'high');
   assert.equal(bets.find((b) => b.id === 'started').published, undefined);
   // (locked: its game 10 minutes off, or started between runs: published at its chance when first shown)
   const later = new Date('2026-10-10T16:50:00Z');

@@ -112,7 +112,9 @@ export function kellyOf(p: number | undefined | null, american: number | undefin
 // them all at 10% or more with a 60% chance to win (a big edge on a likely result: LOCK), then 5% (LOVE), 2%
 // (LIKE), under that or without an edge low (PASS)
 export type { Confidence } from './tiers';
-export const BANDS = { lock: 0.1, lockChance: 0.6, high: 0.05, medium: 0.02 };
+// (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
+// from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
+export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0.01 };
 export function confidenceOf(kelly: number, p: number | null | undefined, edge: boolean | undefined): Confidence {
   if (edge === false || !(kelly > 0)) return 'low';
   if (kelly >= BANDS.lock && (p ?? 0) >= BANDS.lockChance) return 'lock';

@@ -78,7 +78,9 @@ export const TOP = 40;
 // (the confidence bands, by the Kelly score: a bankroll's 5% or more high (the page's LOVE), 2% or more medium (LIKE),
 // under that low (PASS); a lock above them all: 10% or more and a 60% chance to win, a big edge on a likely
 // result. The page reads the same bands: bet-why.ts confidenceOf)
-export const BANDS = { lock: 0.1, lockChance: 0.6, high: 0.05, medium: 0.02 };
+// (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
+// from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
+export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0.01 };
 const KIND = { spread: 'spread', total: 'total', ml: 'moneyline', prop: 'player' };
 const LABEL = { spread: 'Spread', total: 'Game total', ml: 'Moneyline' };
 
