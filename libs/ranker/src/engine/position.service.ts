@@ -396,9 +396,9 @@ export class PositionService {
         if (emphasis && !order?.manual) {
           const tab = weights[position] ?? {};
           const leaned = Object.fromEntries(Object.entries(tab).map(([key, weight]) => [key, weight * (emphasis[key] ?? 1)]));
-          return defaultRanking(position, leaned, SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position));
+          return defaultRanking(position, leaned, SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position), this.settings.combineStats);
         }
-        if (!order) return defaultRanking(position, weights[position], SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position));
+        if (!order) return defaultRanking(position, weights[position], SKILL_UNITS, settings, defaultMin(SKILL_UNITS, position), this.settings.combineStats);
         const byId = new Map(SKILL_UNITS[position].map((unit) => [unit.gsisId, unit]));
         return order.ids.map((id) => byId.get(id)).filter((unit) => !!unit);
       }),

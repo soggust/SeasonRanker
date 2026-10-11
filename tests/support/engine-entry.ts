@@ -19,7 +19,7 @@ export {
 export { TabRanker } from '@ranker/engine/skill-rankings/tab-ranker';
 export { StatReader } from '@ranker/engine/stat-reader';
 export { DEFAULT_SETTINGS, PositionService } from '@ranker/engine/position.service';
-export { hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
+export { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 export { shareLink, applySharedLink, compareCode, readCompareCode } from '@ranker/engine/share';
 export { SPORT } from '@sport/sport';
 export { POSITIONS, SKILL_STATS, presetWeights, skillGroups, statGroup } from '@sport/positions';

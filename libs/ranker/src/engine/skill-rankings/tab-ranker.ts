@@ -2,7 +2,7 @@ import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatGroup, Ski
 import { SPORT } from '@sport/sport';
 import { DEFAULT_SETTINGS, PositionService } from '@ranker/engine/position.service';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
-import { byTotals, combinedFor, combinedWeights, weightedTotals } from '@ranker/engine/unit-scoring';
+import { byTotals, combinedFor, combinedStats, combinedWeights, weightedTotals } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
 import { RANK_EVERYONE, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 
@@ -210,16 +210,7 @@ export class TabRanker {
   // Combine setting: a pair (rushing + receiving yards) shows as one total column where the first of the
   // two sits, when the tab has both (spots: the stat whose spot each total took)
   private combine(stats: SkillStat[], position: SkillPosition): { stats: SkillStat[]; spots: Record<string, string> } {
-    const spots: Record<string, string> = {};
-    if (!this.settings.combineStats) return { stats, spots };
-    let out = stats;
-    for (const { stat: total, parts } of combinedFor(position)) {
-      const at = out.findIndex((stat) => (parts as string[]).includes(stat.key));
-      if (at === -1 || !parts.every((part) => out.some((stat) => stat.key === part))) continue;
-      spots[total.key] = out[at].key;
-      out = out.flatMap((stat, i) => (i === at ? [total] : (parts as string[]).includes(stat.key) ? [] : [stat]));
-    }
-    return { stats: out, spots };
+    return this.settings.combineStats ? combinedStats(stats, position) : { stats, spots: {} };
   }
 
   // Switched off with its sidebar eye (or its combined pair's parent eye): hidden and out of the

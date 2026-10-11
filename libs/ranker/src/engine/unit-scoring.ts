@@ -88,6 +88,20 @@ export function combinedFor(position: string) {
   return SPORT.combined?.stats(position) ?? [];
 }
 
+// A tab's stats with each combined pair (the Combine setting, on by default) as its one total column, where
+// the first of the two sits, when the tab has both (spots: the stat whose spot each total took)
+export function combinedStats(stats: SkillStat[], position: string): { stats: SkillStat[]; spots: Record<string, string> } {
+  const spots: Record<string, string> = {};
+  let out = stats;
+  for (const { stat: total, parts } of combinedFor(position)) {
+    const at = out.findIndex((stat) => (parts as string[]).includes(stat.key));
+    if (at === -1 || !parts.every((part) => out.some((stat) => stat.key === part))) continue;
+    spots[total.key] = out[at].key;
+    out = out.flatMap((stat, i) => (i === at ? [total] : (parts as string[]).includes(stat.key) ? [] : [stat]));
+  }
+  return { stats: out, spots };
+}
+
 // Slider weights with each combined pair's parts scaled by their parent slider (50 = as set, 0 = off).
 // Combined (the Combine setting: the pair one column), the pair counts as its total instead, at the
 // parent's weight times its parts' (what the two counted for apart), the total read as the parts mixed
@@ -272,9 +286,10 @@ export function headToHead<T>(sorted: T[], settings: SportSettings = DEFAULT_SPO
   return list;
 }
 
-// A tab's default ranking (its sliders, before it's been opened), best first: combined pairs' parts
-// scaled by their parent sliders, the sport's settings as given (their defaults if not), and grades
-// from other tabs as average. The loaded season's rows unless given another season's.
+// A tab's default ranking (its sliders, before it's been opened), best first: combined pairs counted as the
+// grid counts them (combined: the Combine setting, on as the grid first opens, each pair as its total; off,
+// its parts scaled by their parent sliders), the sport's settings as given (their defaults if not), and
+// grades from other tabs as average. The loaded season's rows unless given another season's.
 export function defaultRanking(
   position: SkillPosition,
   weights: SkillWeights,
@@ -283,14 +298,16 @@ export function defaultRanking(
   // (rank everyone: the Min Games cutoff, playerGate's; only the rows at it are ranked, and they're the
   // pool each stat's average and spread come from)
   min = 0,
+  combined = true,
 ): SkillPlayer[] {
   const all = rows[position] ?? [];
   const units = min ? all.filter((unit) => SPORT.playingTime.of(unit) >= min) : all;
-  const context: ValueContext = { position, settings, rows, tableSeason: false, defaults: true };
+  const stats = combined ? combinedStats(SKILL_STATS[position], position).stats : SKILL_STATS[position];
+  const context: ValueContext = { position, settings, rows, tableSeason: false, defaults: true, weights };
   const totals = weightedTotals(
     units,
-    SKILL_STATS[position],
-    combinedWeights(position, weights),
+    stats,
+    combinedWeights(position, weights, combined),
     (unit, stat) => statValue(unit, stat, context),
     undefined,
     settings,

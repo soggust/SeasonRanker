@@ -372,12 +372,11 @@ export class PlayerCompare {
         const ur = { ...l, rank: 0, of: 0, pct: 0, ur: true };
         if (l.season === side.season) return side.ur ? ur : { ...l, rank: side.rank, of: side.of, pct: side.pct };
         try {
-          let list: SkillPlayer[];
-          let player: SkillPlayer | undefined;
-          if (l.season === host.season && side.position === host.position) {
-            list = host.playerList;
-            player = list.find((p) => p.gsisId === side.gsisId);
-          } else {
+          let list: SkillPlayer[] = host.playerList;
+          // (the table's own tab and season: his row in its list; one it leaves out, under its Min Games or
+          // filtered, is read below as any other season's, so under Min Games he's UR as the grid shows him)
+          let player = l.season === host.season && side.position === host.position ? list.find((p) => p.gsisId === side.gsisId) : undefined;
+          if (!player) {
             const rows = l.season === host.season ? SKILL_UNITS : await this.data.rows(l.season);
             player = rows[side.position]?.find((p) => p.gsisId === side.gsisId);
             if (!player) return l;

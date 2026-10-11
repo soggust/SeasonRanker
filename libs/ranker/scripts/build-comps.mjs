@@ -7,7 +7,7 @@
 //   turned into a z-score within its own season, so a season is judged by how far it stood out from
 //   that year's league; two seasons are compared on the stats both have (RMS difference).
 // - careers/<tab>.json: every season each one appears in, for the card's Seasons tab: [season, team,
-//   games, rank with the default sliders, list size, headline stats (headlineStats, season totals)],
+//   games, rank as the grid first shows that season's tab (the default sliders and settings), list size, headline stats (headlineStats, season totals)],
 //   a file per tab (a card loads its own); careers/first-seasons.json each one's first season (Rookies
 //   Only). The current season isn't in them: the app works it out from the rows it has. A sport that ranks
 //   everyone (the NFL: seasons/<year>/skill-players.ur.json, everyone who played outside the usage-cut
@@ -81,7 +81,7 @@ export async function buildComps({
     tsconfig: path.join(ROOT, 'tsconfig.json'),
   });
   globalThis.__DATA = readSeason(seasons[0]);
-  const { unitsFor, SKILL_STATS, defaultMin, defaultRanking, headlineStats, presetWeights, unitStat } = await import(
+  const { unitsFor, gridRankings, SKILL_STATS, headlineStats, unitStat } = await import(
     pathToFileURL(bundle).href
   );
   fs.rmSync(bundle);
@@ -93,7 +93,9 @@ export async function buildComps({
   const careers = {};
   for (const season of seasons) {
     const data = readSeason(season);
-    const units = unitsFor(data);
+    const units = unitsFor(data, season);
+    // (each tab's list as the grid first shows it: who's in it, their order, its size)
+    const grid = gridRankings(season);
     const unranked = data.unrankedRows;
     // Each tab's rows on their own (QBs already built), so the Seasons tab can rank a player's other
     // years with the current sliders without downloading whole seasons: seasons/<year>/units/<tab>.json
@@ -124,10 +126,10 @@ export async function buildComps({
         const sd = Math.sqrt(values.reduce((a, v) => a + (v - mean) ** 2, 0) / values.length);
         if (sd > 0) scales.set(stat, { mean, sd });
       }
-      // The Seasons tab's line for each: games, rank with the default sliders (the list as the table
-      // first shows it: rank everyone, the rows at the default Min Games; under it rank 0, UR), and the
-      // headline stats as season totals
-      const ranked = defaultRanking(position, presetWeights(position, 'default'), units, undefined, defaultMin(units, position));
+      // The Seasons tab's line for each: games, rank as the grid first shows the season's tab (gridRankings:
+      // the default sliders and settings, the grades from other tabs; rank everyone, the rows at the
+      // default Min Games; under it rank 0, UR), and the headline stats as season totals
+      const ranked = grid[position] ?? [];
       const headline = headlineStats(position);
       const headlineOf = (unit) =>
         headline.map((stat) => {

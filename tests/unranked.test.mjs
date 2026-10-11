@@ -129,8 +129,8 @@ test("nfl: the careers rank a season at the default Min Games, the rest a line r
   }
 });
 
-// (who's ranked and the list size; the order is defaultRanking's, the default sliders' as the card's Career
-// line for this season reads them, which can sit a few places from the grid's own sort)
+// (who's ranked and the list size, against the compare view's host's list for a season; the order is
+// checked against the grid's own below)
 test("nfl: the careers' finished seasons rank who the grid ranks by default, out of as many (every tab, 2024 and 2025)", async () => {
   const { engine, host, data } = await harness();
   for (const season of [2024, 2025]) {
@@ -150,6 +150,43 @@ test("nfl: the careers' finished seasons rank who the grid ranks by default, out
       }
       assert.equal(ranked, list.length, `${season} ${tab}: everyone in the grid's list in the careers`);
     }
+  }
+});
+
+// The order too: a finished season's career ranks are the grid's as the page first opens on that season and
+// tab, the app's own pieces (the season loaded as the year selector loads it, a fresh PositionService whose
+// sportChanged$ works out the grades from other tabs from their default rankings, a TabRanker on it and
+// the table's StatReader), every setting and slider at its default: Combine on (a pair counts as its total),
+// no Recent for a finished season, the grades from other tabs counted. (Before, the careers ranked by
+// defaultRanking with each pair's parts apart and those grades average, so Nacua's 2024 was #5 there and
+// #18 in the grid.)
+test("nfl: the careers' finished seasons in the grid's own order, as it first opens (every tab's top 20, 2024 and 2025)", async () => {
+  globalThis.location ??= new URL('http://localhost/');
+  globalThis.history ??= { replaceState: () => {} };
+  const engine = await loadEngine('nfl', { entry: ENTRY });
+  const { TabRanker, StatReader, PositionService, SKILL_STATS, SKILL_UNITS, skillGroups, presetWeights, emptyIn } = engine;
+  const careers = Object.fromEntries(TABS.map((tab) => [tab, readJson(path.join(NFL, 'careers', `${tab}.json`))]));
+  for (const season of [2024, 2025]) {
+    await engine.loadData(season, 'regular');
+    engine.rebuildUnits();
+    const positions = new PositionService();
+    const grades = positions.sportChanged$.subscribe();
+    for (const tab of TABS) {
+      const table = { position: tab, stats: SKILL_STATS[tab], groups: skillGroups(tab), hidden: {}, weights: presetWeights(tab, 'default') };
+      const ranker = new TabRanker(positions, { firstSeasons: async () => ({}) }, () => table, () => {});
+      const list = ranker.listed(SKILL_UNITS, season, tab);
+      const reader = new StatReader({ position: tab, settings: positions.settings, rows: SKILL_UNITS, list, tableSeason: true, season, empty: (key) => emptyIn(SKILL_UNITS[tab], key), weights: ranker.mixWeights(tab) });
+      const grid = ranker.ranked(reader, list, tab, SKILL_UNITS).map((p) => p.gsisId.replace(/^QB-/, ''));
+      const ranks = [];
+      for (const [id, lines] of Object.entries(careers[tab])) {
+        const line = lines.find(([s]) => s === season);
+        if (line?.[3] > 0) ranks[line[3] - 1] = id.replace(/^QB-/, '');
+      }
+      assert.equal(ranks.length, grid.length, `${season} ${tab}: as many ranked`);
+      assert.deepEqual(ranks.slice(0, 20), grid.slice(0, 20), `${season} ${tab}: the top 20 in the grid's order`);
+      assert.deepEqual(ranks, grid, `${season} ${tab}: every rank the grid's`);
+    }
+    grades.unsubscribe();
   }
 });
 

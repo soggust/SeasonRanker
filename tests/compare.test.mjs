@@ -23,9 +23,10 @@ const engineFor = (sport) => (engines[sport] ??= loadEngine(sport, { entry: ENTR
 // A stand-in for the grid (the compare view's host: skill-rankings.component.ts) on a tab of the season
 // being played, ranked with the default sliders, and for the data service, reading the static files (a
 // file that isn't there reads empty, as fetchOrEmpty does)
-function harness(engine, sport, position) {
+// (settings: ones changed from the defaults, Min Games raised)
+function harness(engine, sport, position, changed = {}) {
   const { TabRanker, StatReader, SKILL_STATS, skillGroups, presetWeights, emptyIn, SKILL_UNITS, CURRENT_SEASON, DEFAULT_SETTINGS, unitsForSeason, SPORT } = engine;
-  const settings = { ...DEFAULT_SETTINGS };
+  const settings = { ...DEFAULT_SETTINGS, ...changed };
   const positions = {
     settings,
     statHiddenState: {},
@@ -58,7 +59,7 @@ function harness(engine, sport, position) {
     reader: null,
     readerFor: (context) => (context ? readerOf(context) : host.reader),
     seasonContext(season, rows, p = position) {
-      const context = { season, rows, list: [], empty: (key) => emptyIn(rows[p] ?? [], key), position: p };
+      const context = { season, rows, list: [], empty: (key) => emptyIn(rows[p] ?? [], key), position: p, min: ranker.minFor({ [p]: rows[p] }, p) };
       context.list = host.rankedIn(context, ranker.listed({ [p]: rows[p] }, season, p));
       return context;
     },
@@ -484,6 +485,26 @@ test('nfl: the same player picked again adds his next season down, until none ar
   const below = hit.seasons.filter((s) => s < hit.best.season).at(-1);
   assert.equal(second, below ?? hit.seasons.find((s) => s > hit.best.season), 'the next season down');
   assert.equal(compare.note, '', 'no "already in" while he has others');
+});
+
+// The season picker: a season from the table's own tab and season under its Min Games (raised to the whole season) is UR
+// there, as the grid shows him, though his Career line (the default Min Games) ranks it
+test("nfl: the season picker reads the table's own season under its Min Games as UR", async () => {
+  const engine = await engineFor('nfl');
+  const { SKILL_UNITS, CURRENT_SEASON } = engine;
+  const { host, data, compare } = harness(engine, 'nfl', 'WR', { minShare: 100 });
+  const careers = await data.careers('WR');
+  const listed = new Set(host.playerList);
+  const under = SKILL_UNITS.WR.find((p) => !listed.has(p) && p.games >= engine.defaultMin(SKILL_UNITS, 'WR') && (careers[p.gsisId] ?? []).some(([s, , , rank]) => s === CURRENT_SEASON - 1 && rank > 0));
+  assert.ok(under, 'a receiver under the Min Games set but not the default, ranked last season');
+  await compare.start([]);
+  await compare.add('WR', CURRENT_SEASON - 1, under.gsisId);
+  await careersIn(compare);
+  const [side] = compare.sides;
+  const now = () => side.career.find((l) => l.season === CURRENT_SEASON);
+  assert.ok(now() && !now().ur && now().rank > 0, 'his Career line ranks this season at the default Min Games');
+  await compare.rankCareer(side);
+  assert.deepEqual([now().ur, now().rank, now().of], [true, 0, 0], 'the picker: UR under the Min Games set');
 });
 
 // Every other sport: its first tab's top two compared, someone found by name and added, the arcs drawn
