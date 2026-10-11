@@ -89,6 +89,47 @@ export interface ModelState {
   lines?: string;
   odds?: OddsUsage | null;
   backtest?: { at: string; snapshots: number; planned: number; markets: Record<string, BacktestMarket> } | null;
+  // (the CHECKs' tally and what drives them: checks.mjs checkSummary, check-learn.mjs checkLearning)
+  checks?: { n?: number; open?: number; unreadable?: boolean; learning?: CheckLearning | null } | null;
+}
+
+// (a group of graded CHECKs: their record at a unit each, the hit rate and its 95% interval, the break-even of
+// their prices, the profit and the profit a CHECK)
+export interface CheckTally {
+  n: number;
+  won: number;
+  lost: number;
+  push: number;
+  hitRate: number | null;
+  ci: [number, number] | null;
+  breakEven: number | null;
+  profit: number;
+  perUnit: number | null;
+}
+
+// (a ranked recommendation from the graded CHECKs: a blind spot to fix, a lean to watch, a guard that can loosen
+// with the threshold change it supports, never applied by the desk)
+export interface CheckAdvice {
+  rank: number;
+  kind: 'blind-spot' | 'watch' | 'loosen';
+  cause: string;
+  label: string;
+  confirmed: boolean;
+  text: string;
+  evidence: CheckTally;
+  change?: { guard: string; from: number | string; to: number | string; ready: boolean; applied: boolean };
+}
+
+export interface CheckLearning {
+  v: number;
+  graded: number;
+  open: number;
+  byCause: Record<string, CheckTally>;
+  byRole: Record<string, CheckTally>;
+  byCauseStat: Record<string, Record<string, CheckTally>>;
+  // (the open ones by cause, a role's as role:<sub-reason>)
+  openByCause?: Record<string, number>;
+  recommendations: CheckAdvice[];
 }
 
 export type Change = { at: string; what: string; from: number; to: number; why: string; sport?: string };
@@ -174,3 +215,51 @@ export type CurveLine = { sport: string; values: number[]; path: string; profit:
 export type Meter = { pips: { on: boolean; past: boolean }[] | null; fill: number; mark: number; extra: number };
 
 export type GameDay = { day: string; games: { event: string; label: string; count: number }[] };
+
+// (a CHECK cause's words: check-learn.mjs CAUSE_LABELS)
+export const CHECK_CAUSE_LABELS: Record<string, string> = {
+  role: 'Role change',
+  unpriced: 'Unpriced (assumed -110)',
+  'missing-starter-not-seen': 'Missing player not seen',
+  'vacated-fade': 'Vacated work',
+  'early-season-prior': 'Early-season prior',
+  matchup: 'Opponent / matchup',
+  'game-script': 'Game script',
+  'context-term': 'Context term',
+  dispersion: 'Dispersion / skew',
+  unknown: 'Unknown',
+};
+
+// (a row of the CHECKs panel: a sport's cause, or a role's sub-reason, with its tally and its stats)
+export type CheckCauseRow = CheckTally & { sport: string; key: string; label: string; stats: string; open: number };
+
+// The CHECKs panel's rows and its ranked advice from each sport's state (check-learn.mjs checkLearning): a cause
+// a row (the role's sub-reasons as their own rows), the most graded first; the advice blind spots first, then
+// the guards that can loosen, then the leans to watch, each sport's in its own rank order
+export function checkPanelOf(states: ModelState[]): { rows: CheckCauseRow[]; advice: (CheckAdvice & { sport: string })[] } {
+  const rows: CheckCauseRow[] = [];
+  const advice: (CheckAdvice & { sport: string })[] = [];
+  for (const s of states) {
+    const l = s.checks?.learning;
+    if (!l) continue;
+    const statsOf = (cause: string) =>
+      Object.entries(l.byCauseStat?.[cause] ?? {})
+        .sort((a, b) => b[1].n - a[1].n)
+        .slice(0, 3)
+        .map(([k, t]) => `${k.replace(/^prop:/, '')} ${t.won}-${t.lost}`)
+        .join(', ');
+    const open = l.openByCause ?? {};
+    const none: CheckTally = { n: 0, won: 0, lost: 0, push: 0, hitRate: null, ci: null, breakEven: null, profit: 0, perUnit: null };
+    const labelOf = (key: string) => (key.startsWith('role:') ? `${CHECK_CAUSE_LABELS['role']} (${key.slice(5)})` : (CHECK_CAUSE_LABELS[key] ?? key));
+    const keys = new Set<string>([...Object.keys(l.byCause ?? {}).filter((k) => k !== 'role'), ...Object.keys(l.byRole ?? {}).map((k) => `role:${k}`), ...Object.keys(open)]);
+    for (const key of keys) {
+      const t = key.startsWith('role:') ? l.byRole?.[key.slice(5)] : l.byCause?.[key];
+      rows.push({ ...(t ?? none), sport: s.label, key, label: labelOf(key), stats: key.startsWith('role:') ? '' : statsOf(key), open: open[key] ?? 0 });
+    }
+    for (const a of l.recommendations ?? []) advice.push({ ...a, sport: s.label });
+  }
+  const order: Record<string, number> = { 'blind-spot': 0, loosen: 1, watch: 2 };
+  rows.sort((a, b) => b.n - a.n || b.open - a.open || a.label.localeCompare(b.label));
+  advice.sort((a, b) => order[a.kind] - order[b.kind] || Number(b.confirmed) - Number(a.confirmed) || a.rank - b.rank);
+  return { rows, advice };
+}

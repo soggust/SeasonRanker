@@ -11,7 +11,7 @@
 //   applied  a note with concrete news (a player and his status) is an injury override for its game's pricing
 //            from the next run on, till the game starts: merged into that game's injury report (a copy of the
 //            league's, the game's own; MLB's, which the desk doesn't read, a report of the notes alone), the
-//            player put out or questionable (flagged from: 'owner note') or taken off it (active). So the
+//            player put out or questionable (flagged from: 'owner note'; a CHECK's news research, research.mjs, the same way, flagged 'research') or taken off it (active). So the
 //            game's context, its props and its inputs (timing.mjs inputsOf: an open bet on it is priced again)
 //            all see it, and the CHECK can come back as a real bet. His team: the note's, else the report's,
 //            else the CHECK's own player's, else the two teams' rosters; none found, the note isn't applied
@@ -172,10 +172,10 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
     // (the game's own copy: the league's report is one Map every game shares)
     const mine = new Map(report);
     const list = (mine.get(team) ?? []).filter((p) => String(p.id) !== n.player);
-    if (NOTE_STATUS[n.status]) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: NOTE_STATUS[n.status], from: 'owner note' });
+    if (NOTE_STATUS[n.status]) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: NOTE_STATUS[n.status], from: n.from === 'research' ? 'research' : 'owner note' });
     mine.set(team, list);
     l.injuries = mine;
-    const one = { id: n.id, event: String(game.id), team, player: n.player, name, status: n.status };
+    const one = { id: n.id, event: String(game.id), team, player: n.player, name, status: n.status, ...(n.from === 'research' ? { from: 'research' } : {}) };
     l.ownerNotes = [...(l.ownerNotes ?? []), one];
     applied.push(one);
   }
@@ -183,7 +183,7 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
 }
 
 // (a game's owner notes as words for a bet's context: "Owner note: Jalen Hurts out")
-export const noteWords = (l) => (l?.ownerNotes ?? []).map((x) => `Owner note: ${x.name} ${x.status}`);
+export const noteWords = (l) => (l?.ownerNotes ?? []).map((x) => `${x.from === 'research' ? 'Research' : 'Owner note'}: ${x.name} ${x.status}`);
 
 // (a note as anything public keeps it (checks.json is served and committed): its reason, player, status, when,
 // and whether it was applied; never its words or its writer's uid, which stay in Firestore. An older file's

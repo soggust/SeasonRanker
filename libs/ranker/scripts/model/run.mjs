@@ -60,7 +60,14 @@
 //      game one more ask of The Odds API's props the first run it's seen, or edited: PROP_ASKS a game at most;
 //      a note on a bet or a game market's CHECK owes none). A checks.json there but unreadable (checks-file.mjs
 //      readChecks): a GitHub warning, and the CHECKs' list, file, tally (state.json's checks), picks.json's
-//      list and write-ups all left as they were till a person mends it; no CHECK recorded meanwhile
+//      list and write-ups all left as they were till a person mends it; no CHECK recorded meanwhile. Each
+//      CHECK diagnosed as it's made (check-learn.mjs diagnose: the part of the projection that drives the gap,
+//      with its numbers), and the graded ones' hit rate and profit by cause turned into ranked
+//      recommendations (checkLearning: a blind spot to fix, a guard that could loosen, recorded, never
+//      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
+//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps), a
+//      finding of a player out or questionable put into the injury report as an owner's note is, flagged
+//      'research'
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -96,6 +103,9 @@ import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTr
 import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, upsertCheck } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
+import { checkLearning } from './check-learn.mjs';
+import { researchChecks, researchNote } from './research.mjs';
+import { aiBudget } from './ai-budget.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -131,6 +141,8 @@ const MAX_REPRICES = 6;
 // (the recent runs' start times, for the gap between them (timing.mjs cadenceOf): .cache/model/runs.json, the
 // last 24; a dry run reads it and adds nothing)
 const RUNS = path.join(CACHE, 'runs.json');
+// (the desk's Claude spend, every sport's, against the caps: ai-budget.mjs; the workflow's cache keeps it)
+const AI_USAGE = path.join(CACHE, 'ai-usage.json');
 // (the open bets taken back on news but not yet placed again, kept across runs (a bet held a run, its price
 // not in yet or its market resting, keeps its count toward MAX_REPRICES and what it was when it's placed
 // later): .cache/model/taken-back-<sport>.json, each dropped once its game starts or it's placed again)
@@ -486,24 +498,50 @@ async function fitTheContext(r) {
 // status put into their coming games' injury reports, flagged as an owner's note: the context, the props and
 // the inputs (an open bet on the game priced again: repriceOpen) all see it, so a CHECK can come back as a
 // real bet. A noted game's markets resting since before the note are asked about again (resting), and its
-// props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes
+// props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes.
+// The CHECKs' news research (research.mjs: CHECK_RESEARCH=1 alone, never --dry) first: the day's biggest
+// CHECKs looked into (r.researchFound, kept on them by recordChecks), and every open CHECK's finding of a player
+// out or questionable put in the same way, flagged 'research' (r.researchApplied); the owner's own note on a
+// CHECK wins over its research
 async function noteInjuries(r) {
   r.notesApplied = new Set();
+  r.researchApplied = new Set();
+  r.researchFound = new Map();
   r.noteAt = new Map();
   r.propNoteAt = new Map();
-  if (!r.notes?.size) return;
+  let checks = [];
   try {
-    const checks = readChecks(r, readKept(r.files.ledger, {}));
+    checks = readChecks(r, readKept(r.files.ledger, {}));
+  } catch (err) {
+    console.warn(`${r.sport}: CHECKs not read for the notes (${err.message})`);
+  }
+  try {
+    if (!r.checksUnreadable) {
+      const budget = process.env.CHECK_RESEARCH === '1' ? aiBudget({ file: AI_USAGE, now: r.now, dry: DRY }) : null;
+      r.researchFound = await researchChecks({ sport: r.sport, checks, now: r.now, dry: DRY, budget, reportOf: (c) => r.live?.get(String(c.event))?.injuries ?? null });
+    }
+  } catch (err) {
+    console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
+  }
+  const notes = new Map(r.notes ?? []);
+  for (const c of checks) {
+    if (c.checkResult || c.closedAt) continue;
+    const n = researchNote(c, r.researchFound.get(c.id) ?? c.research, r.sport);
+    const own = notes.get(c.id);
+    if (n && !(own?.player && own?.status)) notes.set(c.id, n);
+  }
+  if (!notes.size) return;
+  try {
     const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.id));
-    const applied = await applyNotes(r.sport, r.live, r.upcoming, r.notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
+    const applied = await applyNotes(r.sport, r.live, r.upcoming, notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
     for (const x of applied) {
-      r.notesApplied.add(x.id);
-      const at = Date.parse(r.notes.get(x.id)?.at ?? '') || 0;
+      (x.from === 'research' ? r.researchApplied : r.notesApplied).add(x.id);
+      const at = Date.parse(notes.get(x.id)?.at ?? '') || 0;
       r.noteAt.set(x.event, Math.max(r.noteAt.get(x.event) ?? 0, at));
       // (a prop CHECK's note alone owes its game's props an ask: betProps)
       if (propChecks.has(x.id)) r.propNoteAt.set(x.event, Math.max(r.propNoteAt.get(x.event) ?? 0, at));
     }
-    if (applied.length) console.log(`${r.sport}: owner's notes put into the injury reports: ${applied.map((x) => `${x.name} ${x.status}`).join(', ')}`);
+    if (applied.length) console.log(`${r.sport}: notes put into the injury reports: ${applied.map((x) => `${x.name} ${x.status}${x.from === 'research' ? ' (research)' : " (owner's note)"}`).join(', ')}`);
   } catch (err) {
     console.warn(`${r.sport}: owner's notes not applied (${err.message})`);
   }
@@ -1498,9 +1536,27 @@ function recordChecks(r) {
     else if (res === 'updated') updated++;
     if (DRY && res) console.log(`${sport} (dry) CHECK${c.cause === 'role' ? ` (role: ${c.roleReason})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
   }
+  // (this run's CHECKs by what drives them: check-learn.mjs diagnose, made with each)
+  const diag = {};
+  for (const c of r.checks ?? []) {
+    const k = c.diagnosis ? `${c.diagnosis.cause}${c.diagnosis.sub ? `:${c.diagnosis.sub}` : ''}` : 'none';
+    diag[k] = (diag[k] ?? 0) + 1;
+  }
+  if (r.checks?.length) console.log(`${sport}: this run's CHECKs by diagnosis: ${Object.entries(diag).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ')}`);
   const became = markPlaced(r.ledger);
   const ids = new Set((r.checks ?? []).map((c) => c.id));
   const closed = closeChecks(r.ledger, new Set([...(r.unchecked ?? [])].filter((id) => !ids.has(id))), r.now);
+  // (the day's news research on them (research.mjs), and whether a finding was put into the injury report)
+  let researched = 0;
+  for (const c of r.ledger.checks ?? []) {
+    const found = r.researchFound?.get(c.id);
+    if (found && !c.research) {
+      c.research = found;
+      researched++;
+    }
+    if (c.research && r.researchApplied?.has(c.id) && !c.research.applied) c.research = { ...c.research, applied: true };
+  }
+  if (researched) console.log(`${sport}: ${researched} CHECKs researched (their findings kept on them)`);
   let noted = 0;
   for (const c of r.ledger.checks ?? []) {
     const n = r.notes?.get(c.id);
@@ -1511,6 +1567,21 @@ function recordChecks(r) {
     noted++;
   }
   if (added || updated || became || closed || noted) console.log(`${sport}: CHECKs (too far from the market to bet, or a role changing, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
+}
+
+// (the graded CHECKs' learning, check-learn.mjs: by cause, and its ranked recommendations logged; a failure
+// leaves none, never the state unwritten)
+function learningOf(sport, checks) {
+  try {
+    const l = checkLearning(checks);
+    const causes = Object.entries(l.byCause).map(([k, t]) => `${k} ${t.won}-${t.lost}${t.push ? `-${t.push}` : ''} ${t.profit >= 0 ? '+' : ''}${t.profit}u`);
+    if (l.graded) console.log(`${sport}: CHECKs graded by cause: ${causes.join(', ')}`);
+    for (const x of l.recommendations.slice(0, 5)) console.log(`${sport}: CHECK advice ${x.rank}. ${x.text}`);
+    return l;
+  } catch (err) {
+    console.warn(`${sport}: the CHECKs' learning skipped (${err.message})`);
+    return null;
+  }
 }
 
 // The state: the settings and how they test, the trust, the context, the props, the changelog, the teams by
@@ -1568,7 +1639,9 @@ function saveState(r) {
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)
     // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)
-    checks: r.checksUnreadable ? { ...(state.checks ?? {}), unreadable: true } : checkSummary(ledger.checks ?? []),
+    // (and what drives them: each graded one's cause, its hit rate and the recommendations they make,
+    // check-learn.mjs checkLearning; the Algorithm tab's CHECKs panel and the weekly self-check read it)
+    checks: r.checksUnreadable ? { ...(state.checks ?? {}), unreadable: true } : { ...checkSummary(ledger.checks ?? []), learning: learningOf(r.sport, ledger.checks ?? []) },
     // (the lines' source this run, and The Odds API's credits)
     lines: r.linesSource,
     backtest: r.backtest,

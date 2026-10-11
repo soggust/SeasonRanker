@@ -26,7 +26,7 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, ContextRow, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
 import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
@@ -41,7 +41,9 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // is desk-math.ts's, the sorting desk-columns.ts's, the hovers desk-help.ts's. By Confidence has the CHECKs
 // too (checks.json: the markets too far from the book to bet), under LOCK, at a unit as if bet: never in the
 // total, the record or the bankroll; the props kept for a player's role changing (cause 'role') a row of their
-// own (CHECK ROLE), so the CHECK row's record stays the gap's.
+// own (CHECK ROLE), so the CHECK row's record stays the gap's. The CHECKs panel: each sport's CHECKs by what
+// drove their gap (state.json's checks.learning, check-learn.mjs: open and graded, the hit rate with its 95%
+// interval against the break-even, the profit) and the ranked advice they make (desk-model.ts checkPanelOf).
 
 
 const SPORT_KEY = 'deskSport';
@@ -162,6 +164,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   contextRows: ContextRow[] = [];
   contextTests: { label: string; games: number; before: TestNumbers; after: TestNumbers }[] = [];
   propRows: PropRow[] = [];
+  // (the CHECKs panel: each sport's graded CHECKs by what drove them, and the advice they make: desk-model.ts checkPanelOf)
+  checkCauses: CheckCauseRow[] = [];
+  checkAdvice: (CheckAdvice & { sport: string })[] = [];
   backtestRows: BacktestRow[] = [];
   credits: OddsUsage | null = null;
 
@@ -321,6 +326,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
     // (the props: each sport's prop types and their projections' fit and check; the bets by type)
     this.propRows = this.states.flatMap((s) => (s.props?.types ?? []).map((t) => ({ ...t, sport: s.label })));
+    const panel = checkPanelOf(this.states);
+    this.checkCauses = panel.rows;
+    this.checkAdvice = panel.advice;
     const typeOf = (b: ModelBet) => `${b.sport.toUpperCase()} ${b.statLabel}`;
     const props = where((b) => b.market === 'prop');
     this.byProp = [...new Set(props.map(typeOf))].map((label) => tally(label, props.filter((b) => typeOf(b) === label)));

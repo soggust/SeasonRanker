@@ -176,7 +176,7 @@ export function legacyReasonOf(bet, game) {
   else if (Number.isFinite(w.precip) && w.precip >= 0.1) notes.push(`rain in the forecast (${w.precip} in)`);
   if (w.rain === true) notes.push('rain at the park');
   // (the owner's word on a player, put into the injury report it was priced on: notes.mjs; first, so it's said)
-  notes.unshift(...(c.ownerNotes ?? []).map((n) => n.replace(/^Owner note: /, 'owner note: ')));
+  notes.unshift(...(c.ownerNotes ?? []).map((n) => n.replace(/^(Owner note|Research): /, (m) => m.toLowerCase())));
   if (notes.length) out.push(`${notes.slice(0, 3).join('; ').replace(/^./, (x) => x.toUpperCase())}.`);
   // (a line that's moved its way since it was bet: the market agreeing)
   const seen = bet.seen;

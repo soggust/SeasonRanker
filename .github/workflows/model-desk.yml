@@ -61,8 +61,20 @@ jobs:
           key: model-desk-${{ github.run_id }}
           restore-keys: model-desk-
 
+      # (the CHECKs' news research, libs/ranker/scripts/model/research.mjs: only with the repository variable
+      # CHECK_RESEARCH set to 1 (and the ANTHROPIC_API_KEY secret); its SDK installed for it alone, as the bettor
+      # runs before the workflow's npm install. Off, nothing here runs and nothing is spent)
+      - name: Install the Anthropic SDK (CHECK research only)
+        if: ${{ vars.CHECK_RESEARCH == '1' }}
+        run: |
+          npm install --no-save --no-package-lock @anthropic-ai/sdk@0.131.0
+          git checkout -- package.json package-lock.json 2>/dev/null || true
+
       - name: Grade, refit and bet
         env:
+          # (the CHECKs' news research: off unless the variable is 1; under the desk's AI caps, ai-budget.mjs)
+          CHECK_RESEARCH: ${{ vars.CHECK_RESEARCH }}
+          ANTHROPIC_API_KEY: ${{ vars.CHECK_RESEARCH == '1' && secrets.ANTHROPIC_API_KEY || '' }}
           # (The Odds API: real lines and prices, props and history; without it the free ESPN board is used)
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           # (the owner's notes on the picks, Firestore's deskNotes: read only, by its REST API, nothing to install;

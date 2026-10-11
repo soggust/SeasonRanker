@@ -657,6 +657,61 @@
       </card-panel>
     }
 
+    @if (checkCauses.length || checkAdvice.length) {
+      <card-panel class="tab-card group-support" label="CHECKs" icon="fact_check">
+        <div class="group-body">
+          <!-- (the graded CHECKs by what drove each one's gap (check-learn.mjs diagnose), at a unit each as if bet,
+               and the advice they make: a blind spot where the market keeps being right, a guard that can loosen
+               where the model does; recorded, never applied by the desk) -->
+          @if (checkAdvice.length) {
+            <ol class="desk-changes desk-check-advice">
+              @for (a of checkAdvice; track a.sport + a.cause + a.kind) {
+                <li>
+                  <small>{{ a.sport }} · {{ a.kind === 'blind-spot' ? 'Blind spot' : a.kind === 'loosen' ? 'Guard can loosen' : 'Watch' }}{{ a.confirmed ? '' : ' (not yet clear)' }}</small>
+                  <b>{{ a.label }}: {{ a.evidence.won }}-{{ a.evidence.lost }}, {{ pct(a.evidence.hitRate, 0) }} against {{ pct(a.evidence.breakEven, 0) }} to break even</b>
+                  <span>{{ a.text }}</span>
+                </li>
+              }
+            </ol>
+          }
+          @if (checkCauses.length) {
+            <table class="desk-table desk-bets">
+              <thead>
+                <tr>
+                  @if (!sport) {<th>Sport</th>}
+                  <th class="desk-left">Cause</th>
+                  <th>Open</th>
+                  <th>Graded</th>
+                  <th>Record</th>
+                  <th [title]="'The hit rate and its 95% interval'">Hit rate</th>
+                  <th [title]="'The hit rate their prices needed to break even'">Break-even</th>
+                  <th>Profit</th>
+                  <th>Per CHECK</th>
+                  <th class="desk-left">Stats</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (c of checkCauses; track c.sport + c.key) {
+                  <tr>
+                    @if (!sport) {<th>{{ c.sport }}</th>}
+                    <td class="desk-left">{{ c.label }}</td>
+                    <td>{{ c.open }}</td>
+                    <td>{{ c.n }}</td>
+                    <td>{{ c.won }}-{{ c.lost }}{{ c.push ? '-' + c.push : '' }}</td>
+                    <td [class.up]="!!c.ci && c.breakEven !== null && c.ci[0] > c.breakEven" [class.down]="!!c.ci && c.breakEven !== null && c.ci[1] < c.breakEven">{{ pct(c.hitRate, 0) }}@if (c.ci) {<small> {{ pct(c.ci[0], 0) }}-{{ pct(c.ci[1], 0) }}</small>}</td>
+                    <td>{{ pct(c.breakEven, 0) }}</td>
+                    <td [class.up]="c.profit > 0" [class.down]="c.profit < 0">{{ units(c.profit) }}</td>
+                    <td>{{ c.perUnit === null ? '-' : units(c.perUnit) }}</td>
+                    <td class="desk-left">{{ c.stats || '-' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </card-panel>
+    }
+
     @if (changes.length) {
       <card-panel class="tab-card group-support" label="What It's Changed" icon="auto_fix_high">
         <div class="group-body">

@@ -302,7 +302,7 @@ function situationOf(bet, ctx, away, home, kept) {
   const keptKey = new Set(kept.map((t) => t.key));
   const push = (text, ...terms) => out.push({ text, counted: terms.some((t) => keptKey.has(t)) });
   const team = [home, away];
-  for (const n of c.ownerNotes ?? []) if (typeof n === 'string' && n) out.push({ text: n.replace(/^Owner note: /, 'owner note: '), counted: false, note: true });
+  for (const n of c.ownerNotes ?? []) if (typeof n === 'string' && n) out.push({ text: n.replace(/^(Owner note|Research): /, (m) => m.toLowerCase()), counted: false, note: true });
   if (bet.sport === 'nfl') {
     for (const [i, qb] of [
       [0, s.home],

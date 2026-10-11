@@ -34,10 +34,16 @@
 //            the file stays small over a season, the tally untouched
 //   placed   when its market is bet after all (the gap closed, or an owner's note priced it again), the bet
 //            it became is noted on it (bet) and the page stops showing it as a CHECK; it's still graded
+//   diagnosis what drives its disagreement with the book (check-learn.mjs diagnose: a cause, its sub-reason
+//            and its numbers), made with it (checkOf) and kept through its trimming; an older one's given the
+//            next run's while nothing else changes. The graded ones' hit rate by cause and the recommendations
+//            they make: check-learn.mjs checkLearning (state.json's checks.learning)
+//   research a news finding on it (research.mjs: CHECK_RESEARCH=1 only), made once and kept (research)
 //   notes    an owner's note on it (notes.mjs, Firestore's deskNotes/{id}) kept on it (note: notes.mjs
 //            publicNote's fields alone, never its words or its writer, the file being public), so its result
 //            is the note's outcome: checkSummary tallies them by reason, a closed one's too, for tuning the gap later
 
+import { diagnose } from './check-learn.mjs';
 import { round } from './ratings.mjs';
 import { REPRICE_BY } from './timing.mjs';
 
@@ -67,7 +73,7 @@ export function modelSide(sides) {
 // guard that stopped it: no units, intent 'check', the guard's words its reason, the gap signed for its side
 export function checkOf(bet, guard) {
   const { units: _units, intent: _intent, ...rest } = bet;
-  return {
+  const c = {
     ...rest,
     intent: 'check',
     units: 0,
@@ -79,6 +85,15 @@ export function checkOf(bet, guard) {
     status: 'check',
     profit: 0,
   };
+  // (what drives the disagreement: check-learn.mjs diagnose, from its own numbers; a failure leaves none, and
+  // the learning diagnoses it later)
+  try {
+    const d = diagnose(c);
+    if (d) c.diagnosis = d;
+  } catch {
+    // (none kept)
+  }
+  return c;
 }
 
 // (how many of a CHECK's earlier prices it keeps: an hourly bettor's moves before the lock, with room over)
@@ -103,8 +118,13 @@ export function upsertCheck(ledger, check, now) {
   }
   const was = ledger.checks[at];
   if (was.checkResult || checkLocked(was, now)) return null;
-  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}) };
-  if (!was.closedAt && material(next) === material(was)) return null;
+  // (its research kept: research.mjs, a finding made once)
+  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}) };
+  if (!was.closedAt && material(next) === material(was)) {
+    // (an older one without a diagnosis given this run's, nothing else written)
+    if (!was.diagnosis && check.diagnosis) was.diagnosis = check.diagnosis;
+    return null;
+  }
   // (the price it stood at, kept when this one's another)
   const earlier = [...(Array.isArray(was.earlier) ? was.earlier : []), ...(samePrice(was, next) ? [] : [priceOf(was)])].slice(-EARLIER_KEPT);
   ledger.checks[at] = { ...next, ...(earlier.length ? { earlier } : {}), firstAt: was.firstAt ?? was.placedAt, n: (was.n ?? 1) + 1 };
