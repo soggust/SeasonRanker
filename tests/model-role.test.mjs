@@ -104,7 +104,7 @@ test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap
   assert.equal(roleChangeOf({ ...base, implied: 81 }).key, 'line');
   assert.equal(roleChangeOf({ ...base, implied: 29 }).key, 'line');
   assert.equal(roleChangeOf({ ...base, implied: 79 }), null);
-  assert.match(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Lamar Jackson', missing: 1 } }).why, /Lamar Jackson, out/);
+  assert.match(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Lamar Jackson', missing: 1 }, rushing: true }).why, /Lamar Jackson, out/);
 });
 
 test("impliedMean: the mean a line's price implies (an even price's, the line its median); unpricedWhy", () => {
