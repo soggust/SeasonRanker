@@ -18,8 +18,9 @@
 //                                          run once, since a finished season doesn't change)
 //        OUT_DIR=some/folder              (write somewhere else, e.g. for a dry run)
 //        PART=post,all                    (only those parts: see below)
-//        UR_ONLY=1                        (only the unranked seasons, skill-players.ur.json, from nflverse:
-//                                          beside a season's ranked rows as they are; see unrankedRows)
+//        UR_ONLY=1                        (only the unranked seasons, skill-players.ur.json and its .post and
+//                                          .all, from nflverse: beside a season's ranked rows as they are;
+//                                          see unrankedRows and unrankedQbs)
 //
 // Each run writes three parts of the season (the app's Stats From setting): the regular season
 // (skill-players.json, games.json, data-grades.json), the playoffs (skill-players.post.json,
@@ -37,7 +38,7 @@
 // outweighs them completely), and it fails outright if nflverse can't be loaded, rather than keeping
 // previous values.
 
-import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
@@ -67,7 +68,7 @@ const SCHEDULE_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/
 // The parts this run builds (see the top), a file's name in a part, and which games a part counts:
 // ESPN's season types (2 the regular season, 3 the playoffs) and nflverse's REG or not
 const UR_ONLY = process.env.UR_ONLY === '1';
-const PARTS = (UR_ONLY ? 'regular' : (process.env.PART ?? 'regular,post,all')).split(',').map((part) => part.trim());
+const PARTS = (process.env.PART ?? 'regular,post,all').split(',').map((part) => part.trim());
 const PART_NAMES = { regular: 'regular season', post: 'playoffs', all: 'regular season and playoffs' };
 for (const part of PARTS) if (!PART_NAMES[part]) throw new Error(`Unknown PART "${part}" (regular, post or all)`);
 const partFile = (file, part) => new URL(part === 'regular' ? file : file.replace(/\.json$/, `.${part}.json`), DATA_DIR);
@@ -373,21 +374,29 @@ function nflversePart(season, part) {
 // five-snap cameo as a full game, which would halve a one-start QB's per-game numbers.
 const QB_GAME_PLAYS = 10;
 
-function advancedStats(espnIds, { pbp, playerStats, gsisByEspn, pfrByGsis, ngs, pfr }) {
+function advancedStats(espnIds, nflverse) {
+  const of = advancedFor(nflverse);
+  const stats = new Map();
+  for (const espnId of espnIds) {
+    const gsisId = nflverse.gsisByEspn.get(espnId);
+    if (!gsisId) continue;
+    stats.set(espnId, of(gsisId));
+  }
+  return stats;
+}
+
+// (one QB's, by his nflverse id: advancedStats, and the unranked QBs' too, unrankedQbs)
+function advancedFor({ pbp, playerStats, pfrByGsis, ngs, pfr }) {
   // (the part's plays: nflversePart)
   const plays = pbp.filter((play) => play.pass === '1' || play.rush === '1');
   const seasonRows = new Map(playerStats.map((row) => [row.player_id, row]));
-
-  const stats = new Map();
-  for (const espnId of espnIds) {
-    const gsisId = gsisByEspn.get(espnId);
-    if (!gsisId) continue;
+  return (gsisId) => {
     const own = plays.filter((play) => play.id === gsisId && num(play.qb_epa) !== null);
     const cpoe = plays.filter((play) => play.passer_player_id === gsisId).map((play) => num(play.cpoe));
     const pressure = pfr.pass.get(pfrByGsis.get(gsisId));
     const tracking = ngs.pass.get(gsisId);
     const attempts = num(seasonRows.get(gsisId)?.attempts) ?? 0;
-    stats.set(espnId, {
+    return {
       pressureToSack: pressure?.times_pressured ? ratio(pressure.times_sacked, pressure.times_pressured) : null,
       badThrowPct: pressure && attempts ? ratio(pressure.passing_bad_throws, attempts) : null,
       timeToThrow: tracking ? round(num(tracking.avg_time_to_throw), 2) : null,
@@ -403,9 +412,8 @@ function advancedStats(espnIds, { pbp, playerStats, gsisByEspn, pfrByGsis, ngs, 
       ).size,
       fantasyStd: round(num(seasonRows.get(gsisId)?.fantasy_points) ?? 0, 2),
       receptions: num(seasonRows.get(gsisId)?.receptions) ?? 0,
-    });
-  }
-  return stats;
+    };
+  };
 }
 
 // nflverse team abbreviations -> logo file names in src/assets/NFL_Icons
@@ -1285,7 +1293,9 @@ function skillPlayers(nflverse) {
 // a carry or a target for a back, a kick for a kicker) but fell outside its ranked list (SKILL_POSITIONS'
 // count). Kept apart from the ranked rows, in skill-players.ur.json, so the ranking, its normalization,
 // similar seasons and awards never see them; the card, the Career tab and the compare view show their
-// stats, marked UR where a rank would be. (The regular season's only.)
+// stats, marked UR where a rank would be. Each part has its own, like the ranked rows (skill-players.ur.post.json
+// and .all.json: someone ranked in the regular season but outside the playoffs' list is unranked there), and
+// the QBs are in them too (unrankedQbs).
 const UR_FILE = 'skill-players.ur.json';
 const PLAYED = {
   RB: (s) => s.carries + (s.targets ?? 0) + s.receptions > 0,
@@ -1299,6 +1309,105 @@ function unrankedRows(position, players, ranked) {
     .filter((player) => !ranked.has(player.gsisId) && player.games > 0 && PLAYED[position](player.stats))
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((player) => ({ ...player, ur: true }));
+}
+
+// The unranked QBs: the QB tab is its starters (games.json, each game's starter from ESPN's box scores), so
+// a QB who played without starting (a backup in relief, the kneel-downs) has no row there. His season comes
+// from nflverse's player stats instead, every QB with a dropback or a carry in the part, as the tab's rows
+// are (buildQbUnits): the box stats from nflverse's totals (the rating worked out the same way), the
+// play-by-play, Pro Football Reference and Next Gen Stats ones as the ranked QBs get theirs (advancedFor).
+// What only a starter has is empty: no record, no recent starts, no Responsibility grade. His games are the
+// ranked QBs' kind (starts and relief with real snaps), or nflverse's when he never had one of those.
+// ranked: the part's QB rows (games.json's, with box stats: the ones the tab lists). known: the ESPN ids the
+// site's QBs go by (knownQbIds): nflverse's ESPN id for an older QB isn't always the one ESPN's box scores
+// gave him, so one the site doesn't know gives way to the id his name has there (his career one line)
+function unrankedQbs(nflverse, ranked, known) {
+  const names = new Set(ranked.map((qb) => nameKey(qb.name)));
+  const advanced = advancedFor(nflverse);
+  const competitive = advancedFor({ ...nflverse, pbp: nflverse.pbp.filter(competitivePlay) });
+  return nflverse.playerStats
+    .filter((row) => row.position === 'QB')
+    .map((row) => {
+      const n = (key) => num(row[key]) ?? 0;
+      const nflverseId = nflverse.espnByGsis.get(row.player_id) ?? null;
+      const espnId = nflverseId !== null && known.ids.has(nflverseId) ? nflverseId : (known.byName.get(nameKey(row.player_display_name)) ?? nflverseId);
+      return { row, n, espnId };
+    })
+    .filter(({ row, n, espnId }) => {
+      // (a starter is ranked: by his id, or by his name)
+      if (ranked.some((qb) => qb.id === espnId) || names.has(nameKey(row.player_display_name))) return false;
+      return n('games') > 0 && n('attempts') + n('carries') + n('sacks_suffered') > 0;
+    })
+    .map(({ row, n, espnId }) => {
+      const icon = TEAM_ICONS[row.recent_team];
+      if (!icon) throw new Error(`Unknown team abbreviation "${row.recent_team}" for ${row.player_display_name}`);
+      const own = advanced(row.player_id);
+      const attempts = n('attempts');
+      const completions = n('completions');
+      const passYards = n('passing_yards');
+      const passTds = n('passing_tds');
+      const ints = num(row.passing_interceptions) ?? n('interceptions');
+      return {
+        id: espnId,
+        gsisId: `QB-${espnId ?? row.player_id}`,
+        name: row.player_display_name,
+        teamLogo: `assets/NFL_Icons/${icon}.png`,
+        games: own.realGames || n('games'),
+        lastFive: [],
+        lastFiveVs: [],
+        starts: {},
+        competitive: pick(competitive(row.player_id), COMPETITIVE_KEYS.QB),
+        stats: {
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          winPct: null,
+          compPct: attempts ? round((completions / attempts) * 100, 1) : null,
+          passYards,
+          rushYards: n('rushing_yards'),
+          passTds,
+          rushTds: n('rushing_tds'),
+          ints,
+          fumbles: n('sack_fumbles_lost') + n('rushing_fumbles_lost') + n('receiving_fumbles_lost'),
+          ypa: attempts ? round(passYards / attempts, 2) : null,
+          rating: passerRating(completions, attempts, passYards, passTds, ints),
+          epaPerPlay: own.epaPerPlay,
+          successRate: own.successRate,
+          cpoe: own.cpoe,
+          pressureToSack: own.pressureToSack,
+          badThrowPct: own.badThrowPct,
+          timeToThrow: own.timeToThrow,
+          adot: own.adot,
+          aggressiveness: own.aggressiveness,
+          fantasyStd: own.fantasyStd,
+          receptions: own.receptions,
+          responsibility: null,
+        },
+        ur: true,
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// (the QBs a part's games.json lists in the tab: the ones with box stats, buildQbUnits)
+const rankedQbs = (gameData) => gameData.filter((qb) => !!qb.box);
+
+// Every ESPN id the site's QBs go by, every season's and part's games.json, and each name's (one name with two
+// ids: neither, it can't say which)
+const STATIC_DIR = new URL('../src/StaticData/', import.meta.url);
+async function knownQbIds() {
+  const dirs = [STATIC_DIR, ...(await readdir(new URL('seasons/', STATIC_DIR))).filter((d) => /^\d{4}$/.test(d)).map((d) => new URL(`seasons/${d}/`, STATIC_DIR))];
+  const ids = new Set();
+  const named = new Map();
+  for (const dir of dirs) {
+    for (const file of [GAMES_FILE, 'games.post.json', 'games.all.json']) {
+      for (const qb of JSON.parse(await readFile(new URL(file, dir), 'utf8').catch(() => '[]'))) {
+        ids.add(qb.id);
+        (named.get(nameKey(qb.name)) ?? named.set(nameKey(qb.name), new Set()).get(nameKey(qb.name))).add(qb.id);
+      }
+    }
+  }
+  return { ids, byName: new Map([...named].filter(([, set]) => set.size === 1).map(([name, set]) => [name, [...set][0]])) };
 }
 
 // Every player at each of SKILL_POSITIONS who has a season line, with his stats (skillPlayers lists them)
@@ -1666,28 +1775,39 @@ async function main() {
   }
 }
 
-// UR_ONLY: a season's unranked rows alone, beside the ranked ones already written (whoever's in
-// skill-players.json stays ranked, even if nflverse's numbers have moved since: the ranking isn't touched)
+// UR_ONLY: a season's unranked rows alone, each part's (PARTS), beside the ranked ones already written
+// (whoever's in skill-players.json or games.json stays ranked, even if nflverse's numbers have moved since:
+// the ranking isn't touched). A part with no ranked rows (no playoffs played) has none either.
 async function unrankedOnly() {
   const shared = {};
-  const nflverse = nflversePart(await once(shared, 'nflverse', () => loadNflverse(shared)), 'regular');
-  const ranked = JSON.parse(await readFile(partFile(SKILL_FILE, 'regular'), 'utf8'));
-  const injuries = PAST_SEASON ? await seasonEndReserve(nflverse.espnByGsis) : await espnInjuries().catch(() => null);
-  const unranked = {};
-  const moved = [];
-  for (const [position, players] of Object.entries(positionPlayers(nflverse))) {
-    const ids = new Set((ranked[position] ?? []).map((player) => player.gsisId));
-    // (who'd be listed now and isn't: nflverse's numbers changed since the season was built)
-    for (const player of listedPlayers(players, SKILL_POSITIONS[position])) if (!ids.has(player.gsisId)) moved.push(`${player.name} (${position})`);
-    unranked[position] = unrankedRows(position, players, ids);
-    for (const player of unranked[position]) {
+  const season = await once(shared, 'nflverse', () => loadNflverse(shared));
+  const injuries = PAST_SEASON ? await seasonEndReserve(season.espnByGsis) : await espnInjuries().catch(() => null);
+  for (const part of PARTS) {
+    const label = part === 'regular' ? '' : ` (${PART_NAMES[part]})`;
+    const ranked = JSON.parse(await readFile(partFile(SKILL_FILE, part), 'utf8').catch(() => 'null'));
+    const rankedQb = JSON.parse(await readFile(partFile(GAMES_FILE, part), 'utf8').catch(() => 'null'));
+    if (!ranked || !rankedQb || !season.playerStatsByPart[part].length) {
+      await rm(partFile(UR_FILE, part), { force: true });
+      console.log(`Season ${SEASON}${label}: no ranked rows, no unranked ones`);
+      continue;
+    }
+    const nflverse = nflversePart(season, part);
+    const unranked = { QB: unrankedQbs(nflverse, rankedQbs(rankedQb), await once(shared, 'knownQbs', knownQbIds)) };
+    const moved = [];
+    for (const [position, players] of Object.entries(positionPlayers(nflverse))) {
+      const ids = new Set((ranked[position] ?? []).map((player) => player.gsisId));
+      // (who'd be listed now and isn't: nflverse's numbers changed since the season was built)
+      for (const player of listedPlayers(players, SKILL_POSITIONS[position])) if (!ids.has(player.gsisId)) moved.push(`${player.name} (${position})`);
+      unranked[position] = unrankedRows(position, players, ids);
+    }
+    for (const player of Object.values(unranked).flat()) {
       player.injuryStatus = (player.id && injuries?.get(Number(player.id))) || 'Active';
       player.injured = INJURED_STATUSES.includes(player.injuryStatus);
     }
+    if (moved.length) console.log(`Would be ranked by today's numbers${label}, left unranked: ${moved.join(', ')}`);
+    await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
+    console.log(`Season ${SEASON}${label}: wrote unranked seasons: ${Object.entries(unranked).map(([pos, list]) => `${list.length} ${pos}`).join(', ')}`);
   }
-  if (moved.length) console.log(`Would be ranked by today's numbers, left unranked: ${moved.join(', ')}`);
-  await writeFile(new URL(UR_FILE, DATA_DIR), JSON.stringify(unranked));
-  console.log(`Season ${SEASON}: wrote unranked seasons: ${Object.entries(unranked).map(([pos, list]) => `${list.length} ${pos}`).join(', ')}`);
 }
 
 // What the parts share, worked out the first time one needs it: the season's nflverse files (a promise,
@@ -1700,7 +1820,7 @@ async function updatePart(part, shared) {
   const games = await completedGames(part);
   // (none yet: and none left over from the season before, once the new one is current)
   if (part !== 'regular' && !games.some((game) => game.playoff)) {
-    await Promise.all([GAMES_FILE, SKILL_FILE, DATA_GRADES_FILE].map((file) => rm(partFile(file, part), { force: true })));
+    await Promise.all([GAMES_FILE, SKILL_FILE, DATA_GRADES_FILE, UR_FILE].map((file) => rm(partFile(file, part), { force: true })));
     console.log(`Season ${SEASON}: no playoff games yet (no ${part} files)`);
     return false;
   }
@@ -1795,8 +1915,9 @@ async function updatePart(part, shared) {
   const previous = JSON.parse(await readFile(partFile(GAMES_FILE, part), 'utf8').catch(() => '[]'));
   let advanced = new Map();
   let skill = null;
-  // (the regular season's unranked rows: skillPlayers)
+  // (the part's unranked rows: skillPlayers, and the QBs' once the ranked ones are known, unrankedQbs)
   let unranked = null;
+  let nflversePlayed = null;
   let dataGrades = null;
   // (a past season's injury flags: who finished it on injured reserve)
   let seasonEndInjuries = new Map();
@@ -1813,6 +1934,7 @@ async function updatePart(part, shared) {
     const competitive = advancedStats(gameData.map((qb) => qb.id), { ...nflverse, pbp: nflverse.pbp.filter(competitivePlay) });
     for (const [id, stats] of advanced) stats.competitive = pick(competitive.get(id), COMPETITIVE_KEYS.QB);
     ({ skill, unranked } = skillPlayers(nflverse));
+    nflversePlayed = nflverse;
     dataGrades = { teams: teamDataGrades(nflverse), qbs: qbDataGrades(gameData.map((qb) => qb.id), nflverse) };
   } catch (err) {
     if (PAST_SEASON) throw err;
@@ -1839,6 +1961,7 @@ async function updatePart(part, shared) {
   });
   const noBox = gameData.filter((qb) => !qb.box).map((qb) => qb.name);
   if (noBox.length) console.warn(`No ESPN box stats for: ${noBox.join(', ')}`);
+  if (unranked) unranked = { QB: unrankedQbs(nflversePlayed, rankedQbs(gameData), await once(shared, 'knownQbs', knownQbIds)), ...unranked };
 
   // Injury flags from ESPN's report; keep yesterday's if the report can't be loaded
   // (a past season has no report: its flags are the players who finished on injured reserve)
@@ -1846,7 +1969,8 @@ async function updatePart(part, shared) {
     console.warn(`Could not load the ESPN injury report, keeping previous injury flags: ${err.message}`);
     return null;
   }));
-  for (const qb of gameData) {
+  // (and the unranked QBs')
+  for (const qb of [...gameData, ...(unranked?.QB ?? [])]) {
     const status = injuries ? (injuries.get(qb.id) ?? 'Active') : previous.find((p) => p.id === qb.id)?.injuryStatus;
     qb.injuryStatus = status ?? 'Active';
     qb.injured = INJURED_STATUSES.includes(qb.injuryStatus);
@@ -1867,7 +1991,7 @@ async function updatePart(part, shared) {
     );
     const hurtSkill = [];
     for (const pos of ['RB', 'WR', 'TE', 'K', 'P']) {
-      for (const player of [...(skillOut[pos] ?? []), ...(part === 'regular' ? (unranked?.[pos] ?? []) : [])]) {
+      for (const player of [...(skillOut[pos] ?? []), ...(unranked?.[pos] ?? [])]) {
         if (!player.id) continue;
         const id = Number(player.id);
         player.injuryStatus = (injuries ? (injuries.get(id) ?? 'Active') : previousStatus.get(id)) ?? 'Active';
@@ -1882,9 +2006,9 @@ async function updatePart(part, shared) {
     if (hurtSkill.length && part === 'regular') console.log(`Injured players: ${hurtSkill.join(', ')}`);
   }
   // (everyone else who played, unranked: kept as they were when nflverse couldn't be loaded)
-  if (unranked && part === 'regular') {
-    await writeFile(new URL(UR_FILE, DATA_DIR), JSON.stringify(unranked));
-    console.log(`Wrote unranked seasons: ${Object.entries(unranked).map(([pos, list]) => `${list.length} ${pos}`).join(', ')}`);
+  if (unranked) {
+    await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
+    console.log(`Wrote unranked seasons${label}: ${Object.entries(unranked).map(([pos, list]) => `${list.length} ${pos}`).join(', ')}`);
   }
 
   await writeFile(partFile(GAMES_FILE, part), JSON.stringify(gameData));

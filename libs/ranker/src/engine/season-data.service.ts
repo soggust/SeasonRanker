@@ -2,13 +2,13 @@
 // for the visit. A failed fetch is forgotten, so the next ask tries again.
 import { Injectable } from '@angular/core';
 import { SkillPlayer, SkillPosition } from '@sport/positions';
-import { CURRENT_SEASON, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
+import { CURRENT_SEASON, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
 import { unitsForSeason } from '@ranker/engine/unit-scoring';
 import { CareersFile, CompsFile } from '@ranker/engine/player-card/card.model';
 import { SPORT } from '@sport/sport';
 
-// A season's unranked rows (SPORT.unrankedSeasons)
-const UR_FILE = 'skill-players.ur.json';
+// A season's unranked rows (SPORT.unrankedSeasons), a file per part like its ranked ones (skill-players.ur.post.json)
+const urFile = (part: SeasonPart) => (part === 'regular' ? 'skill-players.ur.json' : `skill-players.ur.${part}.json`);
 
 // A file checked with the server each visit: {} when it isn't there (a tab without any; the host's page
 // fallback answers a missing file with the app's page, not JSON), a failure thrown (asked
@@ -42,11 +42,14 @@ export class SeasonDataService {
   }
 
   // A season's unranked rows by tab (SPORT.unrankedSeasons: skill-players.ur.json, everyone who played
-  // outside the ranked lists), each marked ur; none for a sport without them, or a season without the file
-  unranked(season: number): Promise<Partial<Record<SkillPosition, SkillPlayer[]>>> {
+  // outside the ranked lists), each marked ur; none for a sport without them, or a season without the file.
+  // The part is the one its ranked rows are read in: the table's for the table's season (the playoffs, or
+  // both, when Length is on one), the regular season for any other, as the card and the compare view read
+  // those; a part with no file (no playoffs played, or none built) has none
+  unranked(season: number, part: SeasonPart = season === dataSeason ? dataPart : 'regular'): Promise<Partial<Record<SkillPosition, SkillPlayer[]>>> {
     if (!SPORT.unrankedSeasons) return Promise.resolve({});
-    return this.once(`ur.${season}`, () =>
-      fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, UR_FILE)
+    return this.once(`ur.${season}.${part}`, () =>
+      fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, urFile(part))
         .then((tabs) => {
           for (const rows of Object.values(tabs ?? {})) for (const row of rows ?? []) (row as SkillPlayer & { ur?: boolean }).ur = true;
           return tabs ?? {};
@@ -55,9 +58,10 @@ export class SeasonDataService {
     );
   }
 
-  // One unranked row: someone's season outside a tab's ranked list (none: he's ranked, or didn't play)
-  async unrankedRow(season: number, position: SkillPosition, gsisId: string): Promise<SkillPlayer | undefined> {
-    return (await this.unranked(season))[position]?.find((p) => p.gsisId === gsisId);
+  // One unranked row: someone's season outside a tab's ranked list (none: he's ranked, or didn't play), in
+  // the part unranked reads
+  async unrankedRow(season: number, position: SkillPosition, gsisId: string, part?: SeasonPart): Promise<SkillPlayer | undefined> {
+    return (await this.unranked(season, part))[position]?.find((p) => p.gsisId === gsisId);
   }
 
   // A tab's finished seasons, each one's (checked with the server each visit: it changes once a year, at

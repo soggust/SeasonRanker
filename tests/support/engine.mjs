@@ -32,23 +32,25 @@ export function expandRows(file) {
   );
 }
 
-// A season's unranked rows by tab (skill-players.ur.json, each marked ur, as the season data service reads
-// them; none: {})
-export function unrankedData(sport, season, current) {
-  const file = path.join(seasonDir(sport, season, current), 'skill-players.ur.json');
+// A season's unranked rows by tab (skill-players.ur.json, or a part's: skill-players.ur.post.json; each marked
+// ur, as the season data service reads them; none: {})
+export function unrankedData(sport, season, current, part = 'regular') {
+  const file = path.join(seasonDir(sport, season, current), part === 'regular' ? 'skill-players.ur.json' : `skill-players.ur.${part}.json`);
   const tabs = fs.existsSync(file) ? readJson(file) : {};
   for (const rows of Object.values(tabs)) for (const row of rows) row.ur = true;
   return tabs;
 }
 
-// The season data service's unranked calls on the static files (a season's read once)
-export function unrankedService(sport, current) {
+// The season data service's unranked calls on the static files (a season's part read once; the part the
+// regular season unless partOf(season) says another, as the service takes the table's for its season)
+export function unrankedService(sport, current, partOf = () => 'regular') {
   const seasons = new Map();
-  const unranked = async (season) => {
-    if (!seasons.has(season)) seasons.set(season, unrankedData(sport, season, current));
-    return seasons.get(season);
+  const unranked = async (season, part = partOf(season)) => {
+    const key = `${season}.${part}`;
+    if (!seasons.has(key)) seasons.set(key, unrankedData(sport, season, current, part));
+    return seasons.get(key);
   };
-  return { unranked, unrankedRow: async (season, position, id) => ((await unranked(season))[position] ?? []).find((p) => p.gsisId === id) };
+  return { unranked, unrankedRow: async (season, position, id, part) => ((await unranked(season, part))[position] ?? []).find((p) => p.gsisId === id) };
 }
 
 // skill-players.json -> skillPlayers

@@ -3,7 +3,10 @@
 // never ranked. These check the files (nobody in both, everyone in them played, every season has one), the
 // careers (an unranked season a line ranked 0 of 0, the ranked lines as they were), and the card and the
 // compare view on a real one: Calvin Ridley's 2025 (seven games, hurt) and 2026 (a handful of targets) seasons,
-// UR with their stats, never ranked, colored or leading a column.
+// UR with their stats, never ranked, colored or leading a column. The QBs too: the tab is each game's starters,
+// so a backup who only came on in relief is unranked (unrankedQbs), from nflverse's totals, the starter's own
+// stats (record, recent starts, Responsibility) empty. And each part has its own (skill-players.ur.post.json,
+// .all.json): a playoff card of someone outside the playoffs' list reads his playoffs.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -12,7 +15,8 @@ import { loadEngine, readJson, seasonData, seasonDir, staticDir, unrankedService
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'unranked-entry.ts');
 const NFL = staticDir('nfl');
-const TABS = ['RB', 'WR', 'TE', 'K', 'P'];
+const TABS = ['QB', 'RB', 'WR', 'TE', 'K', 'P'];
+const PARTS = ['regular', 'post', 'all'];
 const RIDLEY = '00-0034837';
 
 // Every NFL season's folder: the finished ones, then the current season's (the top of StaticData)
@@ -21,8 +25,9 @@ const seasonFolders = () => [
   [null, NFL],
 ];
 
-// A stat the tab counts (update-data.mjs's PLAYED)
+// A stat the tab counts (update-data.mjs's PLAYED; a QB's games are a dropback or a carry: unrankedQbs)
 const PLAYED = {
+  QB: () => true,
   RB: (s) => s.carries + (s.targets ?? 0) + s.receptions > 0,
   WR: (s) => s.carries + (s.targets ?? 0) + s.receptions > 0,
   TE: (s) => s.carries + (s.targets ?? 0) + s.receptions > 0,
@@ -30,18 +35,35 @@ const PLAYED = {
   P: (s) => s.punts > 0,
 };
 
-test('nfl: every season has its unranked rows, nobody in them is ranked, and everyone in them played', () => {
-  for (const [season, dir] of seasonFolders()) {
-    const file = path.join(dir, 'skill-players.ur.json');
-    assert.ok(fs.existsSync(file), `${season ?? 'current'}: skill-players.ur.json`);
+// A part's file (skill-players.json, skill-players.post.json)
+const partFile = (file, part) => (part === 'regular' ? file : file.replace(/\.json$/,`.${part}.json`));
+
+// The QB tab's rows' stats (a finished season's, as build-comps.mjs wrote them)
+const QB_STATS = Object.keys(readJson(path.join(NFL, 'seasons', '2025', 'units', 'QB.json'))[0].stats).sort();
+
+test('nfl: every season and part has its unranked rows, nobody in them is ranked, and everyone in them played', () => {
+  let parts = 0;
+  for (const [season, dir] of seasonFolders()) for (const part of PARTS) {
+    const file = path.join(dir, partFile('skill-players.ur.json', part));
+    const rankedFile = path.join(dir, partFile('skill-players.json', part));
+    // (a part with no ranked rows, the playoffs before they're played, has no unranked ones)
+    if (!fs.existsSync(rankedFile)) {
+      assert.ok(part !== 'regular', `${season}: skill-players.json`);
+      assert.ok(!fs.existsSync(file), `${season} ${part}: unranked rows with no ranked ones`);
+      continue;
+    }
+    assert.ok(fs.existsSync(file), `${season ?? 'current'}: ${path.basename(file)}`);
+    parts++;
     const unranked = readJson(file);
-    const ranked = readJson(path.join(dir, 'skill-players.json'));
-    assert.deepEqual(Object.keys(unranked).sort(), [...TABS].sort(), `${season}: a list per tab`);
+    const ranked = readJson(rankedFile);
+    // (the QB tab's: the part's starters with box stats, buildQbUnits)
+    ranked.QB = readJson(path.join(dir, partFile('games.json', part))).filter((qb) => qb.box).map((qb) => ({ gsisId: `QB-${qb.id}`, stats: Object.fromEntries(QB_STATS.map((k) => [k, 0])) }));
+    assert.deepEqual(Object.keys(unranked).sort(), [...TABS].sort(), `${season} ${part}: a list per tab`);
     for (const tab of TABS) {
       const listed = new Set(ranked[tab].map((p) => p.gsisId));
       const ids = new Set();
       for (const row of unranked[tab]) {
-        assert.ok(!listed.has(row.gsisId), `${season} ${tab}: ${row.name} is ranked and unranked`);
+        assert.ok(!listed.has(row.gsisId), `${season} ${part} ${tab}: ${row.name} is ranked and unranked`);
         assert.ok(!ids.has(row.gsisId), `${season} ${tab}: ${row.name} twice`);
         ids.add(row.gsisId);
         assert.equal(row.ur, true, `${season} ${tab}: ${row.name} marked ur`);
@@ -50,7 +72,13 @@ test('nfl: every season has its unranked rows, nobody in them is ranked, and eve
         assert.deepEqual(Object.keys(row.stats).sort(), Object.keys(ranked[tab][0].stats).sort(), `${season} ${tab}: ${row.name}'s stats`);
       }
     }
+    // (a QB's: his stats from nflverse, a starter's own empty)
+    for (const qb of unranked.QB) {
+      assert.match(qb.gsisId, /^QB-/, `${season} ${part}: ${qb.name}'s id`);
+      assert.deepEqual([qb.stats.wins, qb.stats.losses, qb.stats.winPct, qb.stats.responsibility, qb.lastFive.length], [0, 0, null, null, 0], `${season} ${qb.name}: no starts`);
+    }
   }
+  assert.ok(parts > 60, `the parts with unranked rows: ${parts}`);
 });
 
 test("nfl: the careers have an unranked season as a line ranked 0 of 0, and the ranked ones' ranks stay ranks", () => {
@@ -95,12 +123,17 @@ test("nfl: the careers have an unranked season as a line ranked 0 of 0, and the 
   }
 });
 
-// A stand-in for the grid on the WR tab of the season being played (default sliders), the card's and the
-// compare view's host, and the data service on the static files (as tests/compare.test.mjs's)
-async function harness() {
+// A stand-in for the grid on a tab (the WR tab) of the season being played (default sliders), the card's and the
+// compare view's host, and the data service on the static files (as tests/compare.test.mjs's). load: another
+// season and part in the table (the app's loadData, its files read from disk), the data service the app's own
+async function harness({ position = 'WR', load } = {}) {
   const engine = await loadEngine('nfl', { entry: ENTRY });
   const { TabRanker, StatReader, SKILL_STATS, skillGroups, presetWeights, emptyIn, SKILL_UNITS, CURRENT_SEASON, DEFAULT_SETTINGS, unitsForSeason, SPORT } = engine;
-  const position = 'WR';
+  if (load) {
+    await engine.loadData(load.season, load.part);
+    engine.rebuildUnits();
+  }
+  const tableSeason = engine.dataSeason;
   const settings = { ...DEFAULT_SETTINGS };
   const positions = {
     settings,
@@ -127,7 +160,7 @@ async function harness() {
     });
   const host = {
     position,
-    season: CURRENT_SEASON,
+    season: tableSeason,
     stats: SKILL_STATS[position],
     colorValues: true,
     playerList: [],
@@ -143,7 +176,7 @@ async function harness() {
     headshot: () => null,
     noHeadshot: () => {},
   };
-  const table = host.seasonContext(CURRENT_SEASON, SKILL_UNITS, position);
+  const table = host.seasonContext(tableSeason, SKILL_UNITS, position);
   host.playerList = table.list;
   host.reader = readerOf(table);
   const careers = (file) => readJson(path.join(NFL, 'careers', file));
@@ -161,12 +194,17 @@ async function harness() {
     extraFile: async () => ({}),
     ...unrankedService('nfl', CURRENT_SEASON),
   };
-  return { engine, host, data };
+  return { engine, host, data: load ? new engine.SeasonDataService() : data };
 }
 
-// (the card asks ESPN for the hero's team color, after the test's done with it: no network in these tests)
-globalThis.fetch = async () => {
-  throw new Error('offline');
+// (the card asks ESPN for the hero's team color, after the test's done with it: no network in these tests;
+// the site's own files, data/..., are read from StaticData, as the host serves them)
+globalThis.fetch = async (url) => {
+  const own = String(url).match(/^data\/(.+)$/);
+  if (!own) throw new Error('offline');
+  const file = path.join(NFL, own[1]);
+  if (!fs.existsSync(file)) return { ok: false, status: 404, json: async () => ({}) };
+  return { ok: true, status: 200, json: async () => readJson(file) };
 };
 
 test("nfl: Ridley's unranked seasons on his card: UR in the rank tile and the Career tab, his stats, no ranks or colors", async () => {
@@ -257,4 +295,59 @@ test("nfl: the ranking never sees an unranked row: the table's list is skill-pla
   assert.ok(ids.size > 0);
   assert.ok(!engine.SKILL_UNITS.WR.some((p) => ids.has(p.gsisId) || p.ur), 'no unranked row in the rows');
   assert.ok(!host.playerList.some((p) => ids.has(p.gsisId)), 'none in the table');
+});
+
+// A backup's season: Tyson Bagent's 2025 (two relief appearances behind Caleb Williams), and Mac Jones's 2025
+// playoffs (ranked in the regular season, a relief snap or two in the playoffs: unranked there)
+const BAGENT = 'QB-4434153';
+const MAC_JONES = 'QB-4241464';
+
+test("nfl: a backup QB's season has a UR card: his stats from nflverse, a starter's own '-', never ranked or colored", async () => {
+  const { engine, host, data } = await harness({ position: 'QB' });
+  const cards = new engine.PlayerCards(host, data);
+  assert.ok(await cards.openSeason(2025, BAGENT), 'his card opens');
+  const card = cards.card;
+  assert.equal(card.ur, true);
+  assert.equal(card.rank, 0);
+  assert.equal(card.player.name, 'Tyson Bagent');
+  assert.ok(!card.list.includes(card.player), 'never put in the list');
+  const stats = card.groups.flatMap((g) => g.stats);
+  const shown = (key) => stats.find((s) => s.key === key)?.display;
+  // (47 passing yards and 7 rushing: their total, the Combine setting's default)
+  assert.equal(shown('totalYards'), '54');
+  assert.equal(shown('compPct'), '75.0%');
+  assert.equal(shown('rating'), '113.5');
+  assert.equal(shown('winPct'), '-', 'no record as a starter');
+  assert.ok(stats.every((s) => s.rank === null && s.pct === null && s.tint === null), 'no rank or color on a stat');
+  // (his Career: 2025 a UR line)
+  const lines = await engine.careerLines(data, host.season, 'QB', BAGENT);
+  const line = lines.find((l) => l.season === 2025);
+  assert.ok(line?.ur && line.rank === 0, '2025 UR on his Career tab');
+  // (the QB tab never sees him: the ranked QBs are games.json's starters, as they were)
+  assert.ok(!engine.SKILL_UNITS.QB.some((p) => p.ur), 'no unranked row among the QBs');
+  const ranked = (await data.rows(2025)).QB;
+  assert.ok(!ranked.some((p) => p.gsisId === BAGENT || p.ur), 'not among 2025 QBs');
+  assert.deepEqual(
+    ranked.map((p) => p.gsisId).sort(),
+    readJson(path.join(NFL, 'seasons', '2025', 'games.json')).filter((qb) => qb.box).map((qb) => `QB-${qb.id}`).sort(),
+    "2025's QBs are its starters",
+  );
+});
+
+test("nfl: the table on 2025's playoffs: a UR card reads his playoffs (skill-players.ur.post.json), another season the regular season's", async () => {
+  const { engine, host, data } = await harness({ position: 'QB', load: { season: 2025, part: 'post' } });
+  assert.deepEqual([engine.dataSeason, engine.dataPart], [2025, 'post']);
+  assert.ok(!host.playerList.some((p) => p.gsisId === MAC_JONES), 'not a playoff starter');
+  const cards = new engine.PlayerCards(host, data);
+  assert.ok(await cards.openSeason(2025, MAC_JONES), 'his playoff card opens');
+  assert.equal(cards.card.ur, true);
+  const stats = cards.card.groups.flatMap((g) => g.stats);
+  assert.equal(stats.find((s) => s.key === 'totalYards').display, '11', 'his playoffs: 4 passing yards and 7 rushing');
+  // (the data service's part: the table's for its season, the regular season for another; a part with no
+  // file has no unranked rows)
+  assert.ok((await data.unranked(2025)).QB.some((p) => p.gsisId === MAC_JONES));
+  assert.ok(!(await data.unranked(2025, 'regular')).QB.some((p) => p.gsisId === MAC_JONES), 'ranked in the regular season');
+  assert.ok((await data.unranked(2025, 'regular')).QB.some((p) => p.gsisId === BAGENT));
+  assert.equal((await data.unrankedRow(2024, 'WR', RIDLEY))?.ur, undefined, 'another season: the regular season (2024 ranked)');
+  assert.deepEqual(await data.unranked(engine.CURRENT_SEASON, 'post'), {}, 'no playoffs yet: none');
 });
