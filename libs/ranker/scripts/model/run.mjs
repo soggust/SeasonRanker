@@ -67,7 +67,7 @@
 //      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
 //      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps), a
 //      finding of a player out or questionable put into the injury report as an owner's note is, flagged
-//      'research'
+//      'research', for 30 hours and only where the official report doesn't say otherwise
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -501,7 +501,8 @@ async function fitTheContext(r) {
 // props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes.
 // The CHECKs' news research (research.mjs: CHECK_RESEARCH=1 alone, never --dry) first: the day's biggest
 // CHECKs looked into (r.researchFound, kept on them by recordChecks), and every open CHECK's finding of a player
-// out or questionable put in the same way, flagged 'research' (r.researchApplied); the owner's own note on a
+// out or questionable put in the same way, flagged 'research' (r.researchApplied), while it's fresh and the
+// game's official report doesn't list him as bad or worse, or since (researchNote); the owner's own note on a
 // CHECK wins over its research
 async function noteInjuries(r) {
   r.notesApplied = new Set();
@@ -526,7 +527,8 @@ async function noteInjuries(r) {
   const notes = new Map(r.notes ?? []);
   for (const c of checks) {
     if (c.checkResult || c.closedAt) continue;
-    const n = researchNote(c, r.researchFound.get(c.id) ?? c.research, r.sport);
+    // (the official report, this run's, wins over it; a finding 30 hours old no longer applied: researchNote)
+    const n = researchNote(c, r.researchFound.get(c.id) ?? c.research, r.sport, { now: r.now, report: r.live?.get(String(c.event))?.injuries ?? null });
     const own = notes.get(c.id);
     if (n && !(own?.player && own?.status)) notes.set(c.id, n);
   }

@@ -6,7 +6,8 @@
 //            fits under both what's left today and this month; its real cost, from the usage the API
 //            reports (costOf: Opus 5.5's $4 in, $20 out a million tokens, cache writes $5, reads $0.20, each
 //            web search $0.01), is what's logged
-//   log      { entries: [{ at, what, sport, id, model, usage, cost }] }, the last KEEP_DAYS' kept (the month's
+//   log      { entries: [{ at, what, sport, id, model, usage, cost, finding?, retry?, failed? }] } (a research
+//            call's finding kept with it, research.mjs), the last KEEP_DAYS' kept (the month's
 //            total needs them), in .cache/model (the workflow's cache, as the Odds API's usage is); a log there
 //            but unreadable spends nothing (fail safe: a cap that can't be counted is a cap reached), warned of
 //   dry      a budget made with dry (run.mjs --dry) never writes its log
@@ -42,7 +43,7 @@ export function addUsage(a = {}, b = {}) {
   };
 }
 
-// The budget: { spent: { day, month }, left(), canSpend(estimate), record(entry), save() }. file: the log;
+// The budget: { spent: { day, month }, left(), canSpend(estimate), record(entry), list(), save() }. file: the log;
 // now: the run's clock; caps: { day, month } (the tests'); dry: never written
 export function aiBudget({ file, now = new Date(), caps = { day: DAY_CAP, month: MONTH_CAP }, dry = false, log = console } = {}) {
   let entries = [];
@@ -76,6 +77,8 @@ export function aiBudget({ file, now = new Date(), caps = { day: DAY_CAP, month:
     spent,
     left,
     canSpend: (estimate) => !broken && Number.isFinite(estimate) && estimate <= left(),
+    // (the entries logged, a copy; an unreadable log's none)
+    list: () => (broken ? [] : entries.map((e) => ({ ...e }))),
     record(entry) {
       const e = { at: now.toISOString(), ...entry, cost: Math.round((entry.cost ?? 0) * 1e5) / 1e5 };
       entries.push(e);

@@ -199,6 +199,9 @@ export function makeModel(stat, params, env) {
     const longN = prev.n + 0.5 * older.n;
     const prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row);
     let rate = (cur.sum + K * prior) / (cur.n + K);
+    // (the prior's weight in the rate as it's made: the per-game blend's, with the starts' or the snaps' own
+    // (K against his starts, or his snap shares' total) blended in as the rate is; check-learn.mjs reads it)
+    let priorW = cur.n + K > 0 ? K / (cur.n + K) : null;
     let recent = cur.recent.length >= 3 ? avg(cur.recent) : rate;
     // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
     //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
@@ -224,6 +227,7 @@ export function makeModel(stat, params, env) {
       const rateQ = (cur.qsum + K * priorQ) / (cur.qn + K);
       const recentQ = cur.qrecent.length >= 3 ? avg(cur.qrecent) : rateQ;
       rate = (1 - params.qs) * rate + params.qs * rateQ;
+      if (priorW !== null && cur.qn + K > 0) priorW = (1 - params.qs) * priorW + (params.qs * K) / (cur.qn + K);
       recent = (1 - params.qs) * recent + params.qs * recentQ;
       mode = 'starts';
     } else if (params.sn && stat.snaps && row.pos !== 'QB') {
@@ -246,6 +250,7 @@ export function makeModel(stat, params, env) {
         const rs = cur.srecent.reduce((t, x) => t + x[1], 0);
         const recentS = cur.srecent.length >= 3 && rs >= 0.5 ? cur.srecent.reduce((t, x) => t + x[0], 0) / rs : rateS;
         rate = (1 - params.sn) * rate + params.sn * rateS * share;
+        if (priorW !== null && cur.sh + K > 0) priorW = (1 - params.sn) * priorW + (params.sn * K) / (cur.sh + K);
         recent = (1 - params.sn) * recent + params.sn * recentS * share;
         mode = 'snaps';
       }
@@ -306,7 +311,7 @@ export function makeModel(stat, params, env) {
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, params.a) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K };
+    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW };
   };
   return {
     project: parts,

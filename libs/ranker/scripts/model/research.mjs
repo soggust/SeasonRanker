@@ -9,26 +9,49 @@
 //            the desk as it was. The SDK (@anthropic-ai/sdk) loaded only when it runs (the workflow installs
 //            it first only when research is on); a client can be given (the tests' mock)
 //   which    the open CHECKs (not graded, closed, bet, researched or locked), the biggest gap first, at most
-//            CHECK_RESEARCH_N (TOP, 3) a sport a UTC day, counting the ones researched earlier that day
+//            CHECK_RESEARCH_N (TOP, 3) a sport a UTC day, counted from the AI usage log (every CHECK asked
+//            about today, kept or not) and the CHECKs researched today. A finding is logged with its call, so
+//            a run that failed after paying for it (its CHECKs never saved) has it back from the log the next
+//            run, never asked again; one cut short (max_tokens, its turns used up, the caps) is asked once more
+//            (2 calls a CHECK at most), never kept as a finding
 //   capped   ai-budget.mjs: the calls share the write-ups' caps ($1.50 a day, $25 a month, every sport); a
-//            call goes only when ESTIMATE (its most) fits, its real usage and cost logged
-//   checked  findingOf: the answer's JSON alone, its fields checked (a status out, questionable, active or
+//            call starts only when a turn's worst case (ESTIMATE: MAX_TOKENS out, TURN_INPUT in with its
+//            searches, MAX_SEARCHES searches) fits, and each paused turn is continued only when the call's cost
+//            so far plus the next turn's worst case (the history re-sent, more searches) still fits: else it
+//            stops there, cut short. Its real usage and cost logged
+//   checked  findingOf: the answer's JSON alone (its text blocks joined as they come: the citations split a
+//            reply's text mid-sentence, mid-JSON), its fields checked (a status out, questionable, active or
 //            unknown; a reason of REASON_OF's; a summary 240 characters at most; the sources http(s) URLs, 5
 //            at most); one that doesn't parse is a finding of nothing (unknown), kept so it isn't asked again
 //   applied   researchNote: only a status out or questionable, with a source, whose player is the CHECK's own
-//            or one the game's injury report names (his ESPN id); the owner's own note on the same CHECK wins
+//            or one the game's injury report names (his ESPN id); the owner's own note on the same CHECK wins.
+//            The official report wins over it: not applied where the report lists him as bad or worse (never
+//            Out made Questionable), nor where it lists him at all undated or dated since the research (its
+//            news newer), nor where he was on the report when researched and is off it now (cleared); and a
+//            finding is applied only RESEARCH_TTL_H hours (30) after it's made (one search, once: the report's
+//            own word after that)
 
 import { checkLocked } from './checks.mjs';
 import { addUsage, costOf } from './ai-budget.mjs';
+import { OUT_STATUS, Q_STATUS } from './timing.mjs';
 
 export const RESEARCH_MODEL = 'claude-opus-5-5';
 export const TOP = 3;
-// (a call's most: 4,000 tokens out, 40,000 in with its search results, its three searches: about $0.27)
-export const MAX_TOKENS = 4000;
+// (a turn's most: 8,000 tokens out (the thinking counts against it), 60,000 fresh in with its search results,
+// three searches: $0.43; a continued turn's the history re-sent on top: turnEstimate)
+export const MAX_TOKENS = 8000;
 export const MAX_SEARCHES = 3;
-export const ESTIMATE = 0.3;
+export const TURN_INPUT = 60000;
 // (the pauses a long search turn may take before it's left unfinished)
-const MAX_TURNS = 3;
+export const MAX_TURNS = 3;
+// (a finding applied to the injury report this long after it's made, no longer)
+export const RESEARCH_TTL_H = 30;
+// (a CHECK asked about this many times at most, a call cut short asked once more)
+const MAX_TRIES = 2;
+// (a turn's worst case given the input re-sent from the turns before: its own fresh input, its whole output,
+// its searches)
+export const turnEstimate = (resent = 0) => costOf({ input_tokens: resent + TURN_INPUT, output_tokens: MAX_TOKENS, server_tool_use: { web_search_requests: MAX_SEARCHES } }, RESEARCH_MODEL);
+export const ESTIMATE = turnEstimate(0);
 const STATUSES = ['out', 'questionable', 'active', 'unknown'];
 // (a finding's reason as the owner's notes word it: notes.mjs REASONS)
 export const REASON_OF = { injury: 'news', role: 'role', suspension: 'suspension', weather: 'weather', none: 'other', other: 'other' };
@@ -106,10 +129,29 @@ export function athleteOf(c, name, report = null) {
   return null;
 }
 
+// (a status's weight: out 2, questionable 1, anything else 0)
+const severity = (s) => (OUT_STATUS.test(String(s ?? '')) || s === 'out' ? 2 : Q_STATUS.test(String(s ?? '')) || s === 'questionable' ? 1 : 0);
+
+// (a player's entry on the official report (report: a Map of team id -> [{ id, status, date? }]; the notes' own
+// entries, flagged from, aren't the report's), or null)
+export function officialEntry(report, athlete) {
+  for (const list of report instanceof Map ? report.values() : []) for (const p of list ?? []) if (!p?.from && String(p?.id) === String(athlete)) return p;
+  return null;
+}
+
 // A CHECK's research as a note (notes.mjs noteOf's shape, from 'research'), or null: only an out or
-// questionable status with a source and a player known by his ESPN id
-export function researchNote(c, rs, sport) {
+// questionable status with a source and a player known by his ESPN id, made RESEARCH_TTL_H hours ago at most,
+// and the official report (report: the game's, this run's) not saying otherwise (see above)
+export function researchNote(c, rs, sport, { now = new Date(), report = null } = {}) {
   if (!rs || !['out', 'questionable'].includes(rs.status) || !rs.athlete || !/^\d{1,12}$/.test(String(rs.athlete)) || !rs.sources?.length) return null;
+  const at = Date.parse(rs.at ?? '');
+  if (!Number.isFinite(at) || now.getTime() - at > RESEARCH_TTL_H * 36e5) return null;
+  const listed = officialEntry(report, rs.athlete);
+  if (listed) {
+    if (severity(listed.status) >= severity(rs.status)) return null;
+    const dated = Date.parse(listed.date ?? '');
+    if (!Number.isFinite(dated) || dated >= at) return null;
+  } else if (rs.onReport) return null;
   return { id: c.id, reason: REASON_OF[rs.reason] ?? 'news', player: String(rs.athlete), status: rs.status, team: null, sport, note: null, by: null, at: rs.at ?? null, from: 'research' };
 }
 
@@ -120,12 +162,18 @@ async function defaultClient(env) {
   return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 }
 
-// One CHECK researched: { finding, usage, cost, turns }. client: the SDK's (or a mock with beta.messages.create)
-export async function researchOne(client, c, sport) {
+// (the stops that cut a call short: asked once more, never kept as a finding)
+const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps)/;
+
+// One CHECK researched: { finding, usage, cost, turns, retry }. client: the SDK's (or a mock with
+// beta.messages.create); budget: ai-budget.mjs's, each continued turn only while the call's cost so far and the
+// next turn's worst case fit (none: no continuation)
+export async function researchOne(client, c, sport, budget = null) {
   const messages = [{ role: 'user', content: researchPrompt(c, sport) }];
   let usage = {};
   let msg = null;
   let turns = 0;
+  let capped = false;
   for (; turns < MAX_TURNS; turns++) {
     try {
       msg = await callOnce();
@@ -135,8 +183,13 @@ export async function researchOne(client, c, sport) {
       throw err;
     }
     usage = addUsage(usage, msg?.usage);
-    // (a long search turn paused: continued with what it has so far)
-    if (msg?.stop_reason !== 'pause_turn') break;
+    // (a long search turn paused: continued with what it has so far, if the caps still hold its worst case)
+    if (msg?.stop_reason !== 'pause_turn' || turns + 1 >= MAX_TURNS) break;
+    const resent = (msg.usage?.input_tokens ?? 0) + (msg.usage?.cache_read_input_tokens ?? 0) + (msg.usage?.cache_creation_input_tokens ?? 0) + (msg.usage?.output_tokens ?? 0);
+    if (!budget?.canSpend(costOf(usage, RESEARCH_MODEL) + turnEstimate(resent))) {
+      capped = true;
+      break;
+    }
     messages.push({ role: 'assistant', content: msg.content });
   }
   function callOnce() {
@@ -152,9 +205,10 @@ export async function researchOne(client, c, sport) {
       messages,
     });
   }
-  const text = msg?.stop_reason === 'end_turn' ? (msg.content ?? []).filter((b) => b.type === 'text').map((b) => b.text).join('\n') : null;
-  const finding = text ? findingOf(text) : { player: null, status: 'unknown', reason: 'none', summary: '', sources: [], problem: `stopped: ${msg?.stop_reason ?? 'no answer'}` };
-  return { finding, usage, cost: costOf(usage, RESEARCH_MODEL), turns: turns + 1 };
+  // (the text blocks joined as they come: the citations split one reply's text, JSON strings and all)
+  const text = msg?.stop_reason === 'end_turn' ? (msg.content ?? []).filter((b) => b.type === 'text').map((b) => b.text).join('') : null;
+  const finding = text ? findingOf(text) : { player: null, status: 'unknown', reason: 'none', summary: '', sources: [], problem: `stopped: ${capped ? 'the AI caps' : (msg?.stop_reason ?? 'no answer')}` };
+  return { finding, usage, cost: costOf(usage, RESEARCH_MODEL), turns: Math.min(turns + 1, MAX_TURNS), retry: RETRY.test(finding.problem ?? '') };
 }
 
 // The day's research (see above): a Map of CHECK id -> its research record ({ at, by, model, status, reason,
@@ -168,11 +222,26 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   }
   const top = Math.max(0, Math.min(10, Number.parseInt(env.CHECK_RESEARCH_N ?? '', 10) || TOP));
   const day = now.toISOString().slice(0, 10);
-  const done = checks.filter((c) => String(c.research?.at ?? '').slice(0, 10) === day).length;
+  // (the usage log's research calls, this sport's: a CHECK's tries, and a finding paid for but never saved)
+  const logged = (budget?.list?.() ?? []).filter((e) => e.what === 'check-research' && e.sport === sport && e.id);
+  const tries = new Map();
+  for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
+  const open = (c) => c && !c.checkResult && !c.closedAt && !c.research;
+  for (const c of checks) {
+    const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object');
+    if (kept) out.set(c.id, kept.finding);
+  }
+  if (out.size) log.log?.(`${sport}: ${out.size} CHECK research findings back from the usage log (their run never saved them)`);
+  const doneIds = new Set([...logged.filter((e) => e.at.slice(0, 10) === day).map((e) => e.id), ...checks.filter((c) => String(c.research?.at ?? '').slice(0, 10) === day).map((c) => c.id)]);
   const due = checks
-    .filter((c) => c && !c.checkResult && !c.closedAt && !c.bet && !c.research && !checkLocked(c, now) && Date.parse(c.start) > now.getTime())
+    .filter((c) => open(c) && !out.has(c.id) && !c.bet && !checkLocked(c, now) && Date.parse(c.start) > now.getTime())
+    // (asked before: again only when every try was cut short, MAX_TRIES at most)
+    .filter((c) => {
+      const t = tries.get(c.id) ?? [];
+      return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed);
+    })
     .sort((a, b) => Math.abs(b.gap ?? 0) - Math.abs(a.gap ?? 0))
-    .slice(0, Math.max(0, top - done));
+    .slice(0, Math.max(0, top - doneIds.size));
   if (!due.length) return out;
   if (dry) {
     log.log?.(`${sport} (dry): CHECK research would look into ${due.length}: ${due.map((c) => c.pick ?? c.id).join(' | ')}`);
@@ -194,12 +263,20 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       break;
     }
     try {
-      const { finding, usage, cost } = await researchOne(client, c, sport);
-      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage, cost });
-      const athlete = finding.player ? athleteOf(c, finding.player, reportOf(c)) : null;
+      const { finding, usage, cost, retry } = await researchOne(client, c, sport, budget);
+      const report = reportOf(c);
+      const athlete = finding.player ? athleteOf(c, finding.player, report) : null;
       const { problem: _p, ...kept } = finding;
-      out.set(c.id, { at: now.toISOString(), by: 'claude', model: RESEARCH_MODEL, ...kept, athlete, cost: Math.round(cost * 1e4) / 1e4 });
-      log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: ${finding.player ?? 'no one'} ${finding.status} (${finding.reason}), ${finding.sources.length} sources, $${cost.toFixed(3)}${finding.problem ? ` [${finding.problem}]` : ''}`);
+      // (whether the official report listed him when researched: off it later, he's been cleared)
+      const listed = athlete ? officialEntry(report, athlete) : null;
+      const rec = retry ? null : { at: now.toISOString(), by: 'claude', model: RESEARCH_MODEL, ...kept, athlete, ...(listed ? { onReport: String(listed.status ?? '') || 'listed' } : {}), cost: Math.round(cost * 1e4) / 1e4 };
+      // (the finding logged with its call: a run that fails before saving it has it back next time)
+      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage, cost, ...(rec ? { finding: rec } : { retry: true }) });
+      budget.save();
+      if (rec) out.set(c.id, rec);
+      log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: ${finding.player ?? 'no one'} ${finding.status} (${finding.reason}), ${finding.sources.length} sources, $${cost.toFixed(3)}${finding.problem ? ` [${finding.problem}${retry ? ', to be asked once more' : ''}]` : ''}`);
+      // (a call stopped at the caps: none other started)
+      if (finding.problem === 'stopped: the AI caps') break;
     } catch (err) {
       if (err?.usage) budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage: err.usage, cost: costOf(err.usage, RESEARCH_MODEL), failed: true });
       log.warn?.(`${sport}: CHECK research on ${c.id} failed (${String(err?.message ?? err).slice(0, 120)})`);

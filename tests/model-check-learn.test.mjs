@@ -12,7 +12,7 @@ import path from 'node:path';
 import { CAUSES, checkLearning, diagnose, diagnosisOf, FIXES, LOOSEN_N, loosenFor, tallyOf, wilson } from '../libs/ranker/scripts/model/check-learn.mjs';
 import { checkOf, checkTrim, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
 import { aiBudget, costOf } from '../libs/ranker/scripts/model/ai-budget.mjs';
-import { athleteOf, findingOf, researchChecks, researchNote, researchOne } from '../libs/ranker/scripts/model/research.mjs';
+import { athleteOf, ESTIMATE, findingOf, researchChecks, researchNote, researchOne, RESEARCH_TTL_H } from '../libs/ranker/scripts/model/research.mjs';
 import { applyNotes, noteWords } from '../libs/ranker/scripts/model/notes.mjs';
 import { ROLE } from '../libs/ranker/scripts/model/props.mjs';
 import { GAP } from '../libs/ranker/scripts/model/desk.mjs';
@@ -214,10 +214,33 @@ test('findingOf: the JSON alone, its fields checked; athleteOf: his own id or th
   assert.equal(athleteOf(c, 'chris godwin jr', report), '4241');
   assert.equal(athleteOf(c, 'Someone Else', report), null);
   const rs = { ...f, athlete: '4241', at: '2026-10-09T12:00:00Z' };
-  assert.deepEqual(researchNote(c, rs, 'nfl'), { id: c.id, reason: 'news', player: '4241', status: 'out', team: null, sport: 'nfl', note: null, by: null, at: rs.at, from: 'research' });
-  assert.equal(researchNote(c, { ...rs, sources: [] }, 'nfl'), null);
-  assert.equal(researchNote(c, { ...rs, status: 'active' }, 'nfl'), null);
-  assert.equal(researchNote(c, { ...rs, athlete: null }, 'nfl'), null);
+  assert.deepEqual(researchNote(c, rs, 'nfl', { now }), { id: c.id, reason: 'news', player: '4241', status: 'out', team: null, sport: 'nfl', note: null, by: null, at: rs.at, from: 'research' });
+  assert.equal(researchNote(c, { ...rs, sources: [] }, 'nfl', { now }), null);
+  assert.equal(researchNote(c, { ...rs, status: 'active' }, 'nfl', { now }), null);
+  assert.equal(researchNote(c, { ...rs, athlete: null }, 'nfl', { now }), null);
+});
+
+test('researchNote: the official report wins (never Out made Questionable, a listing since the research, a player cleared), and a finding expires', () => {
+  const c = prop();
+  const rs = { status: 'questionable', reason: 'injury', athlete: '4241', sources: ['https://a.b'], at: '2026-10-09T06:00:00Z' };
+  const rep = (status, date) => new Map([['27', [{ id: '4241', name: 'Chris Godwin', status, ...(date ? { date } : {}) }]]]);
+  // (fresh, not on the report: applied)
+  assert.equal(researchNote(c, rs, 'nfl', { now, report: new Map() })?.status, 'questionable');
+  // (the report lists him Out: never made Questionable; nor a report's Questionable made Questionable again)
+  assert.equal(researchNote(c, rs, 'nfl', { now, report: rep('Out', '2026-10-08T00:00Z') }), null);
+  assert.equal(researchNote(c, rs, 'nfl', { now, report: rep('Questionable', '2026-10-08T00:00Z') }), null);
+  // (research out over an older Questionable: applied; over one dated since, or undated: the report's word)
+  const out = { ...rs, status: 'out' };
+  assert.equal(researchNote(c, out, 'nfl', { now, report: rep('Questionable', '2026-10-08T00:00Z') })?.status, 'out');
+  assert.equal(researchNote(c, out, 'nfl', { now, report: rep('Questionable', '2026-10-09T10:00Z') }), null);
+  assert.equal(researchNote(c, out, 'nfl', { now, report: rep('Questionable') }), null);
+  // (an owner's note's entry isn't the report's)
+  assert.equal(researchNote(c, out, 'nfl', { now, report: new Map([['27', [{ id: '4241', status: 'Out', from: 'owner note' }]]]) })?.status, 'out');
+  // (on the report when researched, off it now: cleared)
+  assert.equal(researchNote(c, { ...out, onReport: 'Questionable' }, 'nfl', { now, report: new Map() }), null);
+  // (RESEARCH_TTL_H hours on, or no time: no longer applied)
+  assert.equal(researchNote(c, out, 'nfl', { now: new Date(Date.parse(rs.at) + (RESEARCH_TTL_H + 1) * 36e5), report: new Map() }), null);
+  assert.equal(researchNote(c, { ...out, at: 'x' }, 'nfl', { now }), null);
 });
 
 // (a mock of the SDK's client: each answer in turn, every request kept)
@@ -232,7 +255,7 @@ test('researchOne: Opus 5.5 with the web search tool and the fallback, a paused 
     { stop_reason: 'pause_turn', content: [{ type: 'server_tool_use', name: 'web_search' }], usage: { input_tokens: 1000, output_tokens: 100, server_tool_use: { web_search_requests: 1 } } },
     answer({ player: 'Mike Evans', status: 'questionable', reason: 'injury', summary: 'Hamstring.', sources: ['https://a.b/c'] }),
   ]);
-  const r = await researchOne(client, prop(), 'nfl');
+  const r = await researchOne(client, prop(), 'nfl', aiBudget({ now }));
   assert.equal(client.asked.length, 2);
   assert.equal(client.asked[0].model, 'claude-opus-5-5');
   assert.equal(client.asked[0].tools[0].type, 'web_search_20260209');
@@ -243,6 +266,82 @@ test('researchOne: Opus 5.5 with the web search tool and the fallback, a paused 
   assert.equal(Math.round(r.cost * 1e4) / 1e4, Math.round(((21000 * 4 + 1100 * 20) / 1e6 + 0.03) * 1e4) / 1e4);
   const refused = await researchOne(mockClient([{ stop_reason: 'refusal', content: [], usage: { input_tokens: 10, output_tokens: 0 } }]), prop(), 'nfl');
   assert.equal(refused.finding.status, 'unknown');
+  assert.equal(refused.retry, false);
+  // (cut short at max_tokens: an unknown, to be asked once more)
+  const cut = await researchOne(mockClient([{ stop_reason: 'max_tokens', content: [], usage: { input_tokens: 10, output_tokens: 8000 } }]), prop(), 'nfl');
+  assert.equal(cut.retry, true);
+  // (the citations split one reply's text mid-JSON: joined as they come)
+  const json = JSON.stringify({ player: 'Mike Evans', status: 'out', reason: 'injury', summary: 'Ruled out with a hamstring injury on Friday.', sources: ['https://a.b/c'] });
+  const i = json.indexOf('hamstring');
+  const split = { stop_reason: 'end_turn', content: [{ type: 'text', text: json.slice(0, i) }, { type: 'text', text: json.slice(i, i + 9), citations: [{ type: 'web_search_result_location', url: 'https://a.b/c' }] }, { type: 'text', text: json.slice(i + 9) }], usage: { input_tokens: 10, output_tokens: 10 } };
+  const joined = await researchOne(mockClient([split]), prop(), 'nfl');
+  assert.equal(joined.finding.status, 'out');
+  assert.equal(joined.finding.summary, 'Ruled out with a hamstring injury on Friday.');
+});
+
+test('researchOne: a paused turn continued only while the caps hold its worst case; the day stays under the cap', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-cap-'));
+  const file = path.join(dir, 'ai-usage.json');
+  // (a big turn: 60,000 in, 4,000 out, three searches: $0.35 each)
+  const big = { stop_reason: 'pause_turn', content: [{ type: 'server_tool_use', name: 'web_search' }], usage: { input_tokens: 60000, output_tokens: 4000, server_tool_use: { web_search_requests: 3 } } };
+  const pausing = () => mockClient([{ ...big }, { ...big }, { ...big }]);
+  const quiet = { log: () => {}, warn: () => {} };
+  const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
+  // ($1.20 spent today: $0.30 left, under a turn's worst case: nothing asked)
+  fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 1.2 }] }));
+  let client = pausing();
+  await researchChecks({ sport: 'nfl', checks: [prop({ id: 'a' })], now, env, budget: aiBudget({ file, now }), client, log: quiet });
+  assert.equal(client.asked.length, 0);
+  // ($0.70 spent: the first turn fits, the second's worst case (the first's history re-sent) doesn't: stopped
+  // there, cut short, the day under the cap)
+  fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 0.7 }] }));
+  client = pausing();
+  const budget = aiBudget({ file, now });
+  assert.ok(budget.canSpend(ESTIMATE));
+  const found = await researchChecks({ sport: 'nfl', checks: [prop({ id: 'a' }), prop({ id: 'b', gap: 0.1 })], now, env, budget, client, log: quiet });
+  assert.equal(client.asked.length, 1);
+  assert.equal(found.size, 0);
+  assert.ok(budget.spent().day <= 1.5);
+  const log = JSON.parse(fs.readFileSync(file, 'utf8')).entries.filter((e) => e.what === 'check-research');
+  assert.deepEqual(log.map((e) => [e.id, !!e.retry]), [['a', true]]);
+  // (plenty left: continued to MAX_TURNS, each turn's worst case checked, still a cut-short call)
+  client = pausing();
+  const roomy = await researchOne(client, prop(), 'nfl', aiBudget({ now, caps: { day: 10, month: 25 } }));
+  assert.equal(client.asked.length, 3);
+  assert.equal(roomy.retry, true);
+});
+
+test('researchChecks: the quota from the usage log; a finding paid for but never saved back from it; a cut-short CHECK asked once more, no more', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-log-'));
+  const file = path.join(dir, 'ai-usage.json');
+  const quiet = { log: () => {}, warn: () => {} };
+  const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
+  const at = now.toISOString();
+  const kept = { at, by: 'claude', status: 'out', athlete: '4241', sources: ['https://a.b'] };
+  fs.writeFileSync(
+    file,
+    JSON.stringify({
+      entries: [
+        { at, what: 'check-research', sport: 'nfl', id: 'a', cost: 0.1, finding: kept },
+        { at, what: 'check-research', sport: 'nfl', id: 'b', cost: 0.1, retry: true },
+        { at, what: 'check-research', sport: 'nfl', id: 'c', cost: 0.1, retry: true },
+        { at, what: 'check-research', sport: 'nfl', id: 'c', cost: 0.1, retry: true },
+      ],
+    }),
+  );
+  const client = mockClient([answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] }), answer({})]);
+  const checks = [prop({ id: 'a', gap: 0.5 }), prop({ id: 'b', gap: 0.4 }), prop({ id: 'c', gap: 0.3 }), prop({ id: 'd', gap: 0.2 })];
+  const found = await researchChecks({ sport: 'nfl', checks, now, env, budget: aiBudget({ file, now }), client, log: quiet });
+  // (a's finding back from the log, never asked again; three asked about today already (a, b, c): the quota
+  // spent, so b's second try waits, c's tries done, d not reached)
+  assert.deepEqual([...found.keys()], ['a']);
+  assert.equal(found.get('a').status, 'out');
+  assert.equal(client.asked.length, 0);
+  // (a new day: b asked once more, c not again, d asked)
+  const tomorrow = new Date(now.getTime() + 864e5);
+  const later = await researchChecks({ sport: 'nfl', checks: checks.map((c) => ({ ...c, start: '2026-10-12T17:00:00Z' })), now: tomorrow, env, budget: aiBudget({ file, now: tomorrow }), client, log: quiet });
+  assert.equal(client.asked.length, 2);
+  assert.deepEqual([...later.keys()].sort(), ['a', 'b', 'd']);
 });
 
 test('researchChecks: off, without a key or on a dry run nothing asked; on, the biggest gaps first, the day\'s quota, the caps, each cost logged', async () => {
@@ -277,8 +376,8 @@ test('researchChecks: off, without a key or on a dry run nothing asked; on, the 
 
 test("a research finding goes into the injury report as an owner's note does, flagged research", async () => {
   const c = prop();
-  const live = new Map([['401', { injuries: new Map([['27', [{ id: '4241', name: 'Chris Godwin', pos: 'WR', status: 'Questionable' }]]]) }]]);
-  const notes = new Map([[c.id, researchNote(c, { status: 'out', reason: 'injury', athlete: '4241', sources: ['https://a.b'], at: 'x' }, 'nfl')]]);
+  const live = new Map([['401', { injuries: new Map([['27', [{ id: '4241', name: 'Chris Godwin', pos: 'WR', status: 'Questionable', date: '2026-10-08T00:00Z' }]]]) }]]);
+  const notes = new Map([[c.id, researchNote(c, { status: 'out', reason: 'injury', athlete: '4241', sources: ['https://a.b'], at: '2026-10-09T10:00:00Z' }, 'nfl', { now, report: live.get('401').injuries })]]);
   const applied = await applyNotes('nfl', live, [{ game: { id: '401', home: '27', away: '6' } }], notes, { checks: [c] });
   assert.equal(applied.length, 1);
   assert.equal(applied[0].from, 'research');

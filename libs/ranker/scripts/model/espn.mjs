@@ -217,7 +217,7 @@ export async function roster(league, id, min = 40) {
   return rosterOf(await json(`${ESPN}/${league}/teams/${id}/roster`), min);
 }
 
-// The league's injury report: each team's listed players (ESPN's athlete id, name, position, status)
+// The league's injury report: each team's listed players (ESPN's athlete id, name, position, status, date)
 export async function injuries(league) {
   const body = await json(`${ESPN}/${league}/injuries`);
   if (!body) return null;
@@ -230,6 +230,8 @@ export async function injuries(league) {
         name: i.athlete?.displayName ?? '',
         pos: i.athlete?.position?.abbreviation ?? '',
         status: i.status ?? '',
+        // (when ESPN last updated it: a CHECK's research, older, gives way to it, research.mjs)
+        date: typeof i.date === 'string' ? i.date : null,
       })),
     );
   }

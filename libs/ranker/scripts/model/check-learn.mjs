@@ -14,7 +14,8 @@
 //                vacated-fade              the vacated term (vacF) VAC_STEP or more off 1, toward the model's side
 //                                          (sub boost or fade)
 //                early-season-prior        EARLY_MAX or fewer games this season and: the prior PRIOR_W or more of
-//                                          his rate (K / (games + K), the projection's priorW: sub prior-weight);
+//                                          his rate (the projection's priorW: K / (games + K), K against his starts
+//                                          or snaps where the role-aware base took them: sub prior-weight);
 //                                          an older CHECK without priorW, EARLY_GAMES or fewer (few-games); or his
 //                                          recent form within RECENT_NEAR of the line while his blended rate is
 //                                          RATE_FAR off it on the model's side (recent-at-line)

@@ -91,6 +91,13 @@ test("starts: a backup's relief games left out of his numbers once he's the star
   assert.ok(Math.abs(b.rate - (4 * 30 + 16 * starters) / 20) < 1e-9, `starts ${b.rate}`);
   // (and a quarterback not his team's passer tonight: the plain rate)
   assert.equal(starts.project({ ...row, qbStart: false }).mode, null);
+  // (the prior's weight as used: K against his starts, not his games (check-learn.mjs reads it). This season
+  // 4 relief games and 1 start: 16 / 17 by his starts, 16 / 21 by his games)
+  const backup = makeModel(stat, { ...BASE, K: 16, qs: 1 }, {});
+  backup.learn(league);
+  backup.learn([...[1, 2, 3, 4].map((d) => qb(d, 4, false)), qb(5, 30, true)]);
+  assert.ok(Math.abs(backup.project(row).priorW - 16 / 17) < 1e-9);
+  assert.ok(Math.abs(backup.project({ ...row, qbStart: false }).priorW - 16 / 21) < 1e-9);
 });
 
 test("kd: the prior's weight shrinks as his season's games come in", () => {
