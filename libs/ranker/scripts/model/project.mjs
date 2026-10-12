@@ -40,16 +40,17 @@
 //            out, the stat exactly as without it): sk, the snaps-based rate's prior weighed as K games at his
 //            share tonight (K x ((1 - sk) + sk x share): a part-timer's season counts as his games, not his snap
 //            units, so it isn't pulled to the prior 1/share harder than a starter's); rx, his last five spanning
-//            the season boundary while this season has under 3 games (last season's latest at weight rx; his
-//            per-snap last five the same); pl, his own prior leaning to last season's last 8 games (pl of their
+//            the season boundary while this season has under 3 games (last season's latest at weight rx; with
+//            none this season the rate in as one game at weight 1; his per-snap last five the same); pl, his own prior leaning to last season's last 8 games (pl of their
 //            average, where last season had 12 or more; the per-snap prior by their snaps the same): a role he
 //            grew into late last season (Ty Johnson's 2025, 0.33 catches a game in weeks 1-8, 2.2 from 9) not
 //            averaged away. The volume base's target share as before. Measured 2026-10-12: pl kept on rushing
 //            yards (0.5, +0.0007, bias -0.545 to -0.478); left out on receptions (0.25, +0.0002), carries (0.5,
 //            +0.0002), receiving yards (0.25, +0.0003, every player's bias -0.485 to -0.491) and rush+rec yards
 //            (0.25, +0.001, every player's -0.651 to -0.668); sk left out (rushing yards 1, +0.0006, bias larger;
-//            not taken on the receiving stats), rx nowhere (0 to -0.0001); the NHL's sog and points took neither
-//            on the fit window. Ty Johnson's receptions (1.48 against the book's 2.20) as before: forced, rx 0.5
+//            not taken on the receiving stats), rx nowhere (-0.0001 to +0.0001); the NHL's sog and points took
+//            neither on the fit window. Since, only pl searched (sk and rx forced by role-backtest.mjs --set) and
+//            the NHL's stats off the carryover: the search cost the NFL props' fit 17% every hourly run. Ty Johnson's receptions (1.48 against the book's 2.20) as before: forced, rx 0.5
 //            1.80, pl 0.25 1.65, both 1.91
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
@@ -249,8 +250,11 @@ const DRAFT_GAIN = 0.0003;
 // (and the seasons' carryover (sk, rx, pl) the same way, on the same floor: tried after the rest as fit, on the
 // whole stat's gate (on every row, not a few))
 const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN };
-// (the carryover's: the late terms tried after the next man up and the injury return, in this order)
-const CARRY = ['sk', 'rx', 'pl'];
+// (the carryover's: the late terms tried after the next man up and the injury return, in this order. sk and rx
+// were left out on every stat they were tried on (2026-10-12), and the carryover's search cost the NFL props'
+// fit about 17% (1005s to 1175s locally, every hourly run): only pl is searched now, sk and rx kept in the code
+// for role-backtest.mjs --set to force (back in this list to try them again))
+const CARRY = ['pl'];
 // (the carryover's last season games read (pl: his last PL_N, where last season had PL_MIN or more), and his
 // last five's games (rx: this season's under RX_MIN))
 const PL_N = 8;
@@ -472,9 +476,11 @@ export function makeModel(stat, params, env) {
     let priorW = cur.wn + K > 0 ? K / (cur.wn + K) : null;
     let recent = cur.recent.length >= 3 ? (wavg(cur.recent, cur.rw) ?? rate) : rate;
     // (the carryover (rx): under RX_MIN games this season, his last five made up with last season's latest,
-    // each at weight rx, where that makes RX_MIN or more)
+    // each at weight rx, where that makes RX_MIN or more; with no game this season the rate stays in as one
+    // game at weight 1, else rx would weigh nothing against nothing (last season's last five outright))
     const carried = params.rx && cur.recent.length < RX_MIN ? tail.slice(Math.max(0, tail.length - (5 - cur.recent.length))) : [];
-    if (carried.length && carried.length + cur.recent.length >= RX_MIN) recent = wavg([...carried.map((x) => x[0]), ...cur.recent], [...carried.map(() => params.rx), ...cur.rw]) ?? recent;
+    const anchor = cur.recent.length ? [] : [rate];
+    if (carried.length && carried.length + cur.recent.length >= RX_MIN) recent = wavg([...carried.map((x) => x[0]), ...cur.recent, ...anchor], [...carried.map(() => params.rx), ...cur.rw, ...anchor.map(() => 1)]) ?? recent;
     // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
     //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
     //           his team's passer as known before the game, a start he left hurt early counted as the bet
@@ -547,10 +553,11 @@ export function makeModel(stat, params, env) {
         const kS = params.sk ? K * (1 - params.sk + params.sk * share) : K;
         const rateS = (cur.ss + kS * priorS) / (cur.sh + kS);
         // (his per-snap last five, under RX_MIN games this season made up with last season's latest at weight rx
-        // (rx, as the per-game one))
+        // (rx, as the per-game one; with no game this season the per-snap rate in as one full game's snaps))
         const sCarried = params.rx && cur.srecent.length < RX_MIN ? tailS.slice(Math.max(0, tailS.length - (5 - cur.srecent.length))) : [];
-        const sv = cur.srecent.reduce((t, x) => t + x[0], 0) + sCarried.reduce((t, x) => t + params.rx * x[0], 0);
-        const rs = cur.srecent.reduce((t, x) => t + x[1], 0) + sCarried.reduce((t, x) => t + params.rx * x[1], 0);
+        const sAnchor = sCarried.length && !cur.srecent.length ? 1 : 0;
+        const sv = cur.srecent.reduce((t, x) => t + x[0], 0) + sCarried.reduce((t, x) => t + params.rx * x[0], 0) + sAnchor * rateS;
+        const rs = cur.srecent.reduce((t, x) => t + x[1], 0) + sCarried.reduce((t, x) => t + params.rx * x[1], 0) + sAnchor;
         const recentS = cur.srecent.length + sCarried.length >= 3 && rs >= 0.5 ? sv / rs : rateS;
         rate = (1 - params.sn) * rate + params.sn * rateS * share;
         if (priorW !== null && cur.sh + kS > 0) priorW = (1 - params.sn) * priorW + (params.sn * kS) / (cur.sh + kS);

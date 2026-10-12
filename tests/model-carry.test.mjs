@@ -46,6 +46,17 @@ test('pl: his own prior leans to last season\'s last 8 games (12 or more last se
   const sOn = project({ ...SNAPS, pl: 1 });
   assert.equal(sOn.mode, 'snaps');
   assert.ok(sOn.rate > sOff.rate);
+  // (exactly: his per-snap prior 18 on 5.1 snap units before, the last 8's 16 on 2.4 with it; the rate K 4 of it
+  // against this season's 6 on 0.6, times his share)
+  assert.ok(Math.abs(sOff.rate - ((6 + (4 * 18) / 5.1) / 4.6) * sOff.share) < 1e-9);
+  assert.ok(Math.abs(sOn.rate - ((6 + (4 * 16) / 2.4) / 4.6) * sOn.share) < 1e-9);
+  // (the last 8's snap shares unread: the per-snap prior as before, the per-game one still moved)
+  const unread = [...lastSeason.map((r, g) => ({ ...r, share: g < 9 ? 0.6 : null })), ...thisSeason];
+  const [uOn, uOff] = [project({ ...SNAPS, pl: 1 }, unread), project(SNAPS, unread)];
+  assert.equal(uOn.mode, 'snaps');
+  assert.equal(uOn.rate, uOff.rate);
+  assert.ok(Math.abs(uOn.prior - 2) < 1e-9);
+  assert.ok(Math.abs(uOff.prior - 18 / 17) < 1e-9);
   // (last season under 12 games: as before)
   const short = [...lastSeason.slice(6), ...thisSeason];
   assert.deepEqual(project({ ...BASE, pl: 1 }, short), project(BASE, short));
@@ -72,6 +83,15 @@ test('rx: under 3 games this season, his last five made up with last season\'s l
   // (the per-snap last five the same: 12 catches on 1.5 full games' snaps, times his 30%)
   const s = project({ ...SNAPS, rx: 1 });
   assert.ok(Math.abs(s.recent - (12 / 1.5) * 0.3) < 1e-9);
+  // (no game this season: the rate in as one game at weight 1, so rx weighs last season's last five against it)
+  const z0 = project(BASE, lastSeason);
+  assert.equal(z0.recent, z0.rate);
+  const [z1, zh] = [project({ ...BASE, rx: 1 }, lastSeason), project({ ...BASE, rx: 0.5 }, lastSeason)];
+  assert.ok(Math.abs(z1.recent - (10 + z1.rate) / 6) < 1e-9);
+  assert.ok(Math.abs(zh.recent - (5 + zh.rate) / 3.5) < 1e-9);
+  // (per snap: his last five's 10 on 1.5 snap units and the per-snap rate (his prior, 18 on 5.1) as one full game's)
+  const zs = project({ ...SNAPS, rx: 1 }, lastSeason);
+  assert.ok(Math.abs(zs.recent - ((10 + 18 / 5.1) / 2.5) * zs.share) < 1e-9);
 });
 
 test('sk: the snaps-based prior weighed as K games at his share, a part-timer\'s season not pulled harder than a starter\'s', () => {
@@ -85,10 +105,10 @@ test('sk: the snaps-based prior weighed as K games at his share, a part-timer\'s
   assert.deepEqual(project({ ...BASE, sk: 1 }), project(BASE));
 });
 
-test('the carryover\'s stats: the NFL backs\' and pass-catchers\', the NHL skaters\'; not the passers\', the NBA\'s or MLB\'s', () => {
+test('the carryover\'s stats: the NFL backs\' and pass-catchers\'; not the passers\', the NHL\'s (taken on neither), the NBA\'s or MLB\'s', () => {
   const carry = (sport) => STATS[sport].filter((s) => s.carry).map((s) => s.key);
   assert.deepEqual(carry('nfl'), ['rushYds', 'rushAtt', 'recYds', 'rec', 'rushRecYds']);
-  assert.deepEqual(carry('nhl'), ['sog', 'pts']);
+  assert.deepEqual(carry('nhl'), []);
   assert.deepEqual(carry('nba'), []);
   assert.deepEqual(carry('mlb'), []);
 });

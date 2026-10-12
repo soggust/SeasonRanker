@@ -35,9 +35,11 @@ permissions:
 jobs:
   desk:
     runs-on: ubuntu-latest
-    # (a run is about 12 to 19 minutes as of 2026-10-12 (the NFL props' fit alone about 6, its receiving stats'
-    # opponent by position group and volume base adding replays), a cold one longer, the build and deploy a few
-    # more: a hung source stops here, not after GitHub's 6 hours of runs queued behind it)
+    # (a run is about 15 to 25 minutes as of 2026-10-12 (the NFL props' fit alone about 12 here, 707s on the
+    # 20:17 run: its late terms (the next man up, the injury return, the seasons' carryover's pl) adding replays;
+    # the carryover's sk and rx no longer searched for it), a cold one longer, the build and deploy a few more: a
+    # hung source stops here, not after GitHub's 6 hours of runs queued behind it. Under 30 the margin to keep:
+    # a late term never kept comes off the search, project.mjs)
     timeout-minutes: 45
 
     steps:
