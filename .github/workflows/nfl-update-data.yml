@@ -4,11 +4,13 @@ on:
   schedule:
     # Nightly at 08:13 UTC (4:13 AM EDT / 3:13 AM CDT): hours after the last night game ends.
     # Off the top of the hour on purpose: GitHub delays and sometimes drops scheduled runs set
-    # for :00, when everyone's run at once. The 12:47 and 14:47 UTC runs are retries: the update
+    # for :00, when everyone's run at once. The 10:13, 12:47 and 14:47 UTC runs are retries: the update
     # waits until ESPN's season stats cover every game in its results (update-data.mjs, a run
     # that holds writes nothing), and they also cover a delayed or dropped run. A run with
     # nothing new is a no-op (no commit, no deploy).
     - cron: "13 8 * * *"
+    # (an early retry: GitHub sometimes drops a scheduled run outright, and the next was hours off)
+    - cron: "13 10 * * *"
     - cron: "47 12 * * *"
     - cron: "47 14 * * *"
   workflow_dispatch:
