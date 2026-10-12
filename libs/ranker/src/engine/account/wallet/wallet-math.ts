@@ -25,7 +25,8 @@ export interface PlayBet {
   event: string;
   matchup: string;
   start: string;
-  market: PlayMarket;
+  // (a parlay's: parlay, its legs' their own)
+  market: PlayMarket | 'parlay';
   side: string;
   line: number | null;
   odds: number;
@@ -50,6 +51,37 @@ export interface PlayBet {
   final?: string;
   note?: string;
   settledAt?: string;
+  // (a parlay (kind 'parlay'): its legs, each a straight bet's fields with its own result once graded; its odds the
+  // legs' combined as placed, its sport 'parlay' here (the document has none: its legs may be on several); once
+  // settled with a leg dropped out, the price it paid at)
+  kind?: 'parlay';
+  legs?: ParlayLeg[];
+  paidOdds?: number;
+}
+
+// A parlay's leg as users/{uid}/bets/{id} keeps it: what a straight bet is, without the stake, and its result
+// once the settler's graded it (an open parlay's legs graded as their games end)
+export interface ParlayLeg {
+  sport: string;
+  event: string;
+  matchup: string;
+  start: string;
+  market: PlayMarket;
+  side: string;
+  line: number | null;
+  odds: number;
+  pick: string;
+  botPick?: boolean;
+  tier?: Tier | null;
+  kelly?: number | null;
+  ref?: string | null;
+  propType?: string | null;
+  athlete?: string | null;
+  player?: string | null;
+  statLabel?: string | null;
+  status?: PlayStatus;
+  final?: string;
+  note?: string;
 }
 
 // One side of one market, a price on the board
@@ -244,7 +276,7 @@ export function pickWords(p: { market: PlayMarket; side: string; line: number | 
 }
 
 // (one bet on the slip a market's side: a prop also its player and its stat)
-export const selectionKey = (p: { sport: string; event: string; market: PlayMarket; side: string; propType?: string | null; athlete?: string | null }): string =>
+export const selectionKey = (p: { sport: string; event: string; market: PlayMarket | 'parlay'; side: string; propType?: string | null; athlete?: string | null }): string =>
   [p.sport, p.event, p.market, p.side, p.propType ?? '', p.athlete ?? ''].join('|');
 
 // ---------------------------------------------------------------------------
@@ -273,6 +305,85 @@ export function slipTotals(list: Pick<Selection, 'stake' | 'odds'>[]): { count: 
   return { count: staked.length, stake, toWin: win, payout: round2(stake + win) };
 }
 
+// ---------------------------------------------------------------------------
+// Parlays: the slip's selections as one bet, 2 to 10 legs, each on a game of its own; the settler grades each
+// leg as a straight bet (settle-lib.mjs settleParlay: the same arithmetic as here)
+// ---------------------------------------------------------------------------
+export const PARLAY_MIN = 2;
+export const PARLAY_MAX = 10;
+
+// (American odds as decimal, what a unit pays back: -110 is 1.909, +150 is 2.5; and back, a whole number)
+export const decimalOf = (odds: number): number => (odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds);
+export const americanOf = (dec: number): number => (dec >= 2 ? Math.round((dec - 1) * 100) : Math.round(-100 / (dec - 1)));
+// (the legs' combined price: the product of their decimal odds, as American)
+export const parlayOdds = (legs: { odds: number }[]): number => americanOf(legs.reduce((p, l) => p * decimalOf(l.odds), 1));
+
+// Why the slip's selections can't go together as a parlay, if they can't: too few or too many legs, both sides
+// of one market, or two legs on one game (a same-game parlay's price carries the book's correlation adjustments,
+// which can't be replicated here, so they aren't offered)
+export function parlayProblem(list: Pick<Selection, 'sport' | 'event' | 'market' | 'side' | 'propType' | 'athlete'>[]): string | null {
+  if (list.length < PARLAY_MIN) return `A parlay needs ${PARLAY_MIN} legs or more`;
+  if (list.length > PARLAY_MAX) return `A parlay takes ${PARLAY_MAX} legs at most`;
+  const market = (s: (typeof list)[number]) => [s.sport, s.event, s.market, s.propType ?? '', s.athlete ?? ''].join('|');
+  const markets = list.map(market);
+  if (new Set(markets).size < markets.length) return 'Both sides of one market can’t go in a parlay';
+  const games = list.map((s) => `${s.sport}|${s.event}`);
+  if (new Set(games).size < games.length) return 'No same-game parlays: their prices carry correlation adjustments the book makes, which can’t be replicated here. One leg per game';
+  return null;
+}
+
+// A parlay's result from its legs' (each its odds and its status: won, lost, push or void, or open (or null)
+// while it waits), as the settler comes to it: a leg lost loses it; a pushed or void leg drops out, the rest's
+// product the price (one leg left, that straight bet's; none, its stake back); null while a leg's open and none
+// has lost. With the price it paid at, and "2 of 4 hit"
+export interface ParlayResult {
+  status: Exclude<PlayStatus, 'open'>;
+  profit: number;
+  final: string;
+  odds?: number;
+  note?: string;
+}
+export function parlayOutcome(stake: number, legs: { odds: number; status?: string | null }[]): ParlayResult | null {
+  const n = legs.length;
+  const of = (s: string) => legs.filter((l) => l.status === s).length;
+  const hit = `${of('won')} of ${n} hit`;
+  if (of('lost')) return { status: 'lost', profit: -stake, final: hit };
+  if (legs.some((l) => !l.status || l.status === 'open')) return null;
+  const won = legs.filter((l) => l.status === 'won');
+  const out = [of('push') && `${of('push')} pushed`, of('void') && `${of('void')} void`].filter(Boolean).join(', ');
+  const final = out ? `${hit}, ${out}` : hit;
+  if (!won.length) return of('push') ? { status: 'push', profit: 0, final } : { status: 'void', profit: 0, final, note: 'every leg void' };
+  const odds = won.length === 1 ? won[0].odds : parlayOdds(won);
+  const profit = won.length === 1 ? toWin(stake, odds) : round2(stake * (won.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
+  return { status: 'won', profit, final, odds };
+}
+
+// A parlay's legs as bets of their own, for the page's leg rows (their games' scores, a prop's count, the live
+// column): each with the parlay's stake and run, its own result once graded, else open (one never graded on a
+// settled parlay, lost on another leg first, stays so: the page reads it live only while the parlay's open)
+export function legBets(p: PlayBet): PlayBet[] {
+  return (p.legs ?? []).map((l, i) => ({
+    ...l,
+    id: `${p.id}~${i}`,
+    stake: p.stake,
+    run: p.run,
+    placedAt: p.placedAt,
+    botPick: !!l.botPick,
+    line: l.line ?? null,
+    status: l.status ?? 'open',
+    profit: undefined,
+  }));
+}
+
+// A parlay as it stands: its legs' results so far (each its stored one, else its result decided in play, else
+// null), how many hit ("2 of 4 hit"), and its own result once they decide it (pending settlement)
+export function parlayProgress(p: PlayBet, states: (PlayStatus | null | undefined)[]): { hit: number; n: number; text: string; decided: ParlayResult | null } {
+  const legs = p.legs ?? [];
+  const hit = states.filter((s) => s === 'won').length;
+  const decided = p.status === 'open' ? parlayOutcome(p.stake, legs.map((l, i) => ({ odds: l.odds, status: states[i] ?? null }))) : null;
+  return { hit, n: legs.length, text: `${hit} of ${legs.length} hit`, decided };
+}
+
 // A chip on a stake: added to it (a casino's chips stack), never past the balance
 export const addChip = (stake: number, chip: number, room: number): number => Math.max(0, Math.min(Math.floor(room * 2) / 2, (stake > 0 ? stake : 0) + chip));
 
@@ -292,7 +403,7 @@ export function asDeskBet(b: PlayBet): ModelBet {
     start: b.start,
     placedAt: b.placedAt,
     matchup: b.matchup,
-    market: b.market,
+    market: b.market as ModelBet['market'],
     propType: b.propType ?? undefined,
     statLabel: b.statLabel ?? undefined,
     player: b.player ?? undefined,
@@ -400,11 +511,12 @@ export function playCurve(bets: PlayBet[]) {
   return profitCurves(graded, START, (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}`);
 }
 
-// Bets by game, the soonest (or the latest settled) first, each game's bets in the order placed
+// Bets by game, the soonest (or the latest settled) first, each game's bets in the order placed; a parlay a
+// group of its own (its sport 'parlay', its start its first leg's)
 export function byGame(bets: PlayBet[], latestFirst = false): { key: string; sport: string; matchup: string; start: string; event: string; bets: PlayBet[] }[] {
   const groups = new Map<string, { key: string; sport: string; matchup: string; start: string; event: string; bets: PlayBet[] }>();
   for (const b of bets) {
-    const key = `${b.sport}|${b.event}`;
+    const key = b.kind === 'parlay' ? `parlay|${b.id}` : `${b.sport}|${b.event}`;
     const g = groups.get(key) ?? { key, sport: b.sport, matchup: b.matchup, start: b.start, event: b.event, bets: [] };
     g.bets.push(b);
     groups.set(key, g);

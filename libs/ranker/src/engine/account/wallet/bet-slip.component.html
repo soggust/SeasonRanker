@@ -1,5 +1,6 @@
 <!-- The bet slip: shut, a stack of chips in the corner with how many bets are on it; open, a drawer (a sheet
-     on phones): each bet with its stake in chips, what it'd win, then Place -->
+     on phones): each bet with its stake in chips, what it'd win, then Place; with 2 or more, Straight or Parlay
+     (a parlay its legs listed, one stake in chips at their combined price) -->
 @if (!wallet.slipOpen() && (wallet.slip().length || wallet.placed()?.placed)) {
   <button type="button" class="slip-tab" (click)="wallet.slipOpen.set(true)" [attr.aria-label]="'Bet slip, ' + wallet.slip().length + ' bets'">
     <span class="slip-stack" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -27,11 +28,20 @@
       </div>
     }
 
+    <!-- (Straight or Parlay: a switch once there's more than one) -->
+    @if (wallet.slip().length >= 2) {
+      <div class="slip-mode" role="group" aria-label="Bet type">
+        <button type="button" [class.on]="!wallet.asParlay()" [attr.aria-pressed]="!wallet.asParlay()" (click)="mode('straight')">Straight</button>
+        <button type="button" [class.on]="wallet.asParlay()" [attr.aria-pressed]="wallet.asParlay()" (click)="mode('parlay')">Parlay<b>{{ wallet.slip().length }}</b></button>
+      </div>
+    }
+
     @if (wallet.slip().length) {
-      <ol class="slip-list">
+      @let parlay = wallet.asParlay();
+      <ol class="slip-list" [class.slip-legs]="parlay">
         @for (s of wallet.slip(); track s.key) {
           @let problem = s.stake > 0 ? wallet.problem(s) : null;
-          <li class="slip-item" [class.bot]="s.botPick">
+          <li class="slip-item" [class.bot]="s.botPick" [class.slip-leg]="parlay">
             <div class="slip-pick">
               @if (s.tier) {
                 <span class="slip-tier" [ngClass]="s.tier" [title]="s.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + s.tier + (s.kelly !== null ? ', Kelly ' + s.kelly : '')">@if (s.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ s.tier }}</span>
@@ -41,6 +51,7 @@
               <button type="button" class="slip-remove" [attr.aria-label]="'Remove ' + s.pick" (click)="wallet.remove(s.key)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
             </div>
             <small class="slip-game">{{ s.sport.toUpperCase() }} · {{ s.matchup }} · {{ s.start | date: 'EEE h:mm a' }}</small>
+            @if (!parlay) {
             <div class="slip-stake">
               <label class="slip-amount">
                 <span class="visually-hidden">Stake on {{ s.pick }}, in units</span>
@@ -61,9 +72,42 @@
             } @else if (s.stake > 0) {
               <p class="slip-pays">To win <b>{{ toWin(s.stake, s.odds) | number: '1.2-2' }}</b> · Pays <b>{{ payout(s.stake, s.odds) | number: '1.2-2' }}</b></p>
             }
+            }
           </li>
         }
       </ol>
+      <!-- (the parlay: its legs' combined price, one stake in chips, what it'd pay; why the legs can't go together) -->
+      @if (parlay) {
+        @let p = wallet.parlay();
+        @let stake = wallet.parlayStake();
+        <div class="slip-item slip-parlay">
+          <div class="slip-pick">
+            <b class="slip-words">{{ wallet.slip().length }}-leg parlay</b>
+            <span class="slip-odds" title="The legs' combined price: their decimal odds multiplied">{{ oddsText(p.odds) }}</span>
+          </div>
+          <small class="slip-game">One stake, every leg to hit · {{ parlayMax }} legs at most, one a game</small>
+          <div class="slip-stake">
+            <label class="slip-amount">
+              <span class="visually-hidden">Stake on the parlay, in units</span>
+              <input type="number" inputmode="decimal" min="0.5" step="0.5" placeholder="Stake" [value]="stake || ''" (input)="parlayTyped($any($event.target).value)" />
+              <span aria-hidden="true">u</span>
+            </label>
+            <div class="slip-chips" role="group" aria-label="Add chips to the parlay's stake">
+              @for (c of chips; track c) {
+                <button type="button" class="stake-chip" [ngClass]="c < 1 ? 'c-half' : 'c' + c" [attr.aria-label]="'Add ' + c" [disabled]="wallet.balance() - stake < c" (click)="parlayChip(c)">
+                  {{ c < 1 ? '½' : c }}
+                  <svg class="chip-rim" aria-hidden="true"><rect pathLength="48" /></svg>
+                </button>
+              }
+            </div>
+          </div>
+          @if (wallet.parlayIssue() || failure('parlay'); as why) {
+            <p class="slip-problem" role="alert">{{ why }}</p>
+          } @else if (stake > 0 && p.odds !== null) {
+            <p class="slip-pays">To win <b>{{ toWin(stake, p.odds) | number: '1.2-2' }}</b> · Pays <b>{{ payout(stake, p.odds) | number: '1.2-2' }}</b></p>
+          }
+        </div>
+      }
     } @else if (wallet.placed()?.placed; as n) {
       <p class="slip-done" role="status">
         <mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a>
@@ -89,6 +133,8 @@
             <button type="button" class="primary slip-place" [disabled]="!totals.count || problems || wallet.placing()" (click)="place()">
               @if (wallet.placing()) {
                 <span class="spinner" aria-hidden="true"></span>Placing…
+              } @else if (wallet.asParlay()) {
+                Place parlay
               } @else {
                 Place {{ totals.count || '' }} bet{{ totals.count === 1 ? '' : 's' }}
               }
@@ -97,7 +143,7 @@
             <button type="button" class="primary slip-place" (click)="account.openLogin()">Sign in to place</button>
           }
         </div>
-        <p class="slip-fine">Play money. Bets settle from the final score after the game; prices are checked against DraftKings' board.</p>
+        <p class="slip-fine">Play money. Bets settle from the final score after the game; prices are checked against DraftKings' board.@if (wallet.asParlay()) { A parlay loses on any leg lost; a pushed or void leg drops out, the rest's price paid.}</p>
       </footer>
     }
   </aside>

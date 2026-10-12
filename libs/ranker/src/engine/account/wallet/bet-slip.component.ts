@@ -1,12 +1,14 @@
 import { Component, ElementRef, HostListener, ViewChild, effect } from '@angular/core';
 import { AccountService } from '../account.service';
 import { WalletService } from './wallet.service';
-import { CHIPS, START, Selection, addChip, oddsText, payout, slipTotals, toWin } from './wallet-math';
+import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, payout, slipTotals, toWin } from './wallet-math';
 
 // The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
 // drawer from the corner (a sheet along the bottom on phones) styled as a chip tray; a stack of chips with
-// the count shows while it's shut. Play money only: signed out, it asks for a sign-in first.
+// the count shows while it's shut. With 2 selections or more, Straight or Parlay: a parlay the selections as one
+// bet (2 to 10 legs, one a game: no same-game parlays), one stake at their combined price. Play money only:
+// signed out, it asks for a sign-in first.
 @Component({
   selector: 'bet-slip',
   templateUrl: './bet-slip.component.html',
@@ -20,6 +22,7 @@ export class BetSlipComponent {
   readonly oddsText = oddsText;
   readonly toWin = toWin;
   readonly payout = payout;
+  readonly parlayMax = PARLAY_MAX;
   error = '';
   @ViewChild('panel') panel?: ElementRef<HTMLElement>;
 
@@ -33,8 +36,12 @@ export class BetSlipComponent {
     });
   }
 
+  // (the tray's sums: each straight bet's, or the parlay's one stake at its combined price)
   get totals() {
-    return slipTotals(this.wallet.slip());
+    if (!this.wallet.asParlay()) return slipTotals(this.wallet.slip());
+    const odds = this.wallet.parlay().odds;
+    const stake = this.wallet.parlayStake();
+    return odds === null ? slipTotals([]) : slipTotals([{ stake, odds }]);
   }
 
   // (what's left in the wallet for this bet: the balance less the slip's other stakes)
@@ -51,7 +58,22 @@ export class BetSlipComponent {
     this.wallet.setStake(s.key, Number(value));
   }
 
+  // (the parlay's one stake: chips onto it up to the balance, or typed)
+  parlayChip(value: number): void {
+    this.wallet.setParlayStake(addChip(this.wallet.parlayStake(), value, this.wallet.balance()));
+  }
+
+  parlayTyped(value: string): void {
+    this.wallet.setParlayStake(Number(value));
+  }
+
+  mode(m: 'straight' | 'parlay'): void {
+    this.wallet.slipMode.set(m);
+    this.wallet.placed.set(null);
+  }
+
   get problems(): boolean {
+    if (this.wallet.asParlay()) return !!this.wallet.parlayIssue();
     return this.wallet.slip().some((s) => s.stake > 0 && this.wallet.problem(s));
   }
 
@@ -60,8 +82,9 @@ export class BetSlipComponent {
   }
 
   // (the failure the last placing had on a bet still on the slip)
-  failure(s: Selection): string | null {
-    return this.wallet.placed()?.failed.find((f) => f.key === s.key)?.why ?? null;
+  failure(s: Selection | 'parlay'): string | null {
+    const key = s === 'parlay' ? s : s.key;
+    return this.wallet.placed()?.failed.find((f) => f.key === key)?.why ?? null;
   }
 
   async place(): Promise<void> {

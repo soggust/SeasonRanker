@@ -383,25 +383,105 @@ service cloud.firestore {
           && d.ref is string);
     }
 
-    function validPlayBet(d) {
-      return d.keys().hasAll(['sport', 'event', 'matchup', 'start', 'market', 'side', 'odds', 'stake', 'pick', 'run', 'placedAt', 'status'])
-        && d.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'stake', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'run', 'placedAt', 'status'])
-        && d.sport in ['nfl', 'nba', 'nhl', 'mlb']
+    // (what a bet is on, a straight bet's or a parlay leg's: its game, its market and side, its price, the bot's
+    // tag on it)
+    function validPlayPick(d) {
+      return d.sport in ['nfl', 'nba', 'nhl', 'mlb']
         && d.event is string && d.event.matches('^[0-9]{1,20}$')
         && d.matchup is string && d.matchup.matches('^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$')
         && d.start is timestamp && d.start > request.time && d.start < request.time + duration.value(15, 'd')
         && d.odds is int && ((d.odds >= 100 && d.odds <= 50000) || (d.odds <= -100 && d.odds >= -50000))
-        && d.stake is number && d.stake >= 0.5 && math.floor(d.stake * 2) == d.stake * 2
         && d.pick is string && d.pick.size() > 0 && d.pick.size() <= 80
-        && d.run is int && d.run >= 0
-        && d.placedAt == request.time
-        && d.status == 'open'
         && (!('botPick' in d) || d.botPick is bool)
         && (!('tier' in d) || d.tier in ['lock', 'love', 'like', 'bet', 'pass']
           || (d.tier == 'check' && isAdmin() && d.get('botPick', false) == false && !('kelly' in d)))
         && (!('kelly' in d) || d.kelly is number)
         && (!('ref' in d) || (d.ref is string && d.ref.size() <= 80))
         && validPlayMarket(d);
+    }
+
+    // (a bet's stake, its run, and placed open now: a straight bet's and a parlay's alike)
+    function validPlayStake(d) {
+      return d.stake is number && d.stake >= 0.5 && math.floor(d.stake * 2) == d.stake * 2
+        && d.run is int && d.run >= 0
+        && d.placedAt == request.time
+        && d.status == 'open';
+    }
+
+    function validPlayBet(d) {
+      return d.keys().hasAll(['sport', 'event', 'matchup', 'start', 'market', 'side', 'odds', 'stake', 'pick', 'run', 'placedAt', 'status'])
+        && d.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'stake', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'run', 'placedAt', 'status'])
+        && validPlayPick(d)
+        && validPlayStake(d);
+    }
+
+    // A parlay: one bet of 2 to 10 legs (kind 'parlay'), each leg what a straight bet is on, on a game of its own:
+    // games names each leg's "sport_event" in order, no game twice (no same-game parlays: their prices carry the
+    // book's correlation adjustments). A leg carries a straight bet's fields and nothing else (no stake, and no
+    // result: the settler writes each leg's); its start no earlier than the parlay's (its first leg's, when the
+    // settler first looks). Its odds only what it was placed at: the settler pays from the legs' own prices, never
+    // a figure of the browser's. The rules evaluate 1,000 expressions a write at most, and ten legs checked as a
+    // straight bet is would take several times that: a leg's own market, side, line and price are the settler's
+    // to check (settle-lib.mjs legProblem and the price check: a leg that isn't a bet on the board is void and
+    // drops out), and only an admin's straight bet can be a CHECK's (a parlay's leg tagged one is just a tag)
+    function parlayLeg(x, game, start) {
+      return x.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel'])
+        && game == x.sport + '_' + x.event
+        && x.start >= start;
+    }
+
+    // (each leg in turn, only as many as it has: parlayLegs0 the first on)
+    function parlayLegs9(d) {
+      return d.legs.size() <= 9 || (parlayLeg(d.legs[9], d.games[9], d.start));
+    }
+
+    function parlayLegs8(d) {
+      return d.legs.size() <= 8 || (parlayLeg(d.legs[8], d.games[8], d.start) && parlayLegs9(d));
+    }
+
+    function parlayLegs7(d) {
+      return d.legs.size() <= 7 || (parlayLeg(d.legs[7], d.games[7], d.start) && parlayLegs8(d));
+    }
+
+    function parlayLegs6(d) {
+      return d.legs.size() <= 6 || (parlayLeg(d.legs[6], d.games[6], d.start) && parlayLegs7(d));
+    }
+
+    function parlayLegs5(d) {
+      return d.legs.size() <= 5 || (parlayLeg(d.legs[5], d.games[5], d.start) && parlayLegs6(d));
+    }
+
+    function parlayLegs4(d) {
+      return d.legs.size() <= 4 || (parlayLeg(d.legs[4], d.games[4], d.start) && parlayLegs5(d));
+    }
+
+    function parlayLegs3(d) {
+      return d.legs.size() <= 3 || (parlayLeg(d.legs[3], d.games[3], d.start) && parlayLegs4(d));
+    }
+
+    function parlayLegs2(d) {
+      return d.legs.size() <= 2 || (parlayLeg(d.legs[2], d.games[2], d.start) && parlayLegs3(d));
+    }
+
+    function parlayLegs1(d) {
+      return d.legs.size() <= 1 || (parlayLeg(d.legs[1], d.games[1], d.start) && parlayLegs2(d));
+    }
+
+    function parlayLegs0(d) {
+      return d.legs.size() <= 0 || (parlayLeg(d.legs[0], d.games[0], d.start) && parlayLegs1(d));
+    }
+
+    function validParlay(d) {
+      return d.keys().hasAll(['kind', 'legs', 'games', 'start', 'odds', 'stake', 'pick', 'run', 'placedAt', 'status'])
+        && d.keys().hasOnly(['kind', 'legs', 'games', 'start', 'odds', 'stake', 'pick', 'run', 'placedAt', 'status'])
+        && d.kind == 'parlay'
+        && d.legs.size() >= 2 && d.legs.size() <= 10
+        && d.games.size() == d.legs.size() && d.games.toSet().size() == d.games.size()
+        && d.start is timestamp && d.start > request.time
+        && d.odds is int && (d.odds >= 100 || d.odds <= -100)
+        && d.pick is string && d.pick.size() <= 80
+        && validPlayStake(d)
+        && parlayLegs0(d);
     }
 
     match /users/{uid}/bets/{bet} {
@@ -412,7 +492,7 @@ service cloud.firestore {
 
       // (with its stake out of the wallet in the same write, in the wallet's current run)
       allow create: if isOwner(uid)
-        && validPlayBet(request.resource.data)
+        && ('kind' in request.resource.data ? validParlay(request.resource.data) : validPlayBet(request.resource.data))
         && exists(walletPath(uid))
         && request.resource.data.run == get(walletPath(uid)).data.resets
         && getAfter(walletPath(uid)).data.get('lastBet', '') == bet

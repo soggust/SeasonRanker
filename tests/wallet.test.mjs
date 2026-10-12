@@ -355,3 +355,151 @@ test('the tallies and the leaderboards: public players only, by profit, by perio
   const all = lib.leaderboard(entries, '0000-00-00');
   assert.deepEqual(all.find((r) => r.username === 'ace'), { uid: 'a', username: 'ace', displayName: 'ace', photo: null, won: 1, lost: 1, push: 0, staked: 30, profit: -10.91, roi: -0.3637, reloads: 0 });
 });
+
+// ---------------------------------------------------------------------------
+// Parlays: the slip's rules, the arithmetic (the page's and the settler's alike), every mix of legs settled
+// ---------------------------------------------------------------------------
+const sel = (over = {}) => ({ sport: 'nfl', event: '401', market: 'spread', side: 'home', propType: null, athlete: null, odds: -110, ...over });
+
+test('parlays on the slip: 2 to 10 legs, one a game (no same-game parlays), at the legs’ combined price', () => {
+  assert.equal(w.parlayProblem([sel()]), 'A parlay needs 2 legs or more');
+  assert.equal(w.parlayProblem([sel(), sel({ event: '402' })]), null);
+  assert.equal(w.parlayProblem(Array.from({ length: 10 }, (_, i) => sel({ event: String(500 + i) }))), null);
+  assert.equal(w.parlayProblem(Array.from({ length: 11 }, (_, i) => sel({ event: String(500 + i) }))), 'A parlay takes 10 legs at most');
+  // (both sides of one market; two markets of one game; one prop each of two players in one game)
+  assert.equal(w.parlayProblem([sel(), sel({ side: 'away' })]), 'Both sides of one market can’t go in a parlay');
+  assert.match(w.parlayProblem([sel(), sel({ market: 'total', side: 'over' })]), /No same-game parlays/);
+  assert.match(w.parlayProblem([sel({ market: 'prop', side: 'over', propType: 'saves', athlete: '1' }), sel({ market: 'prop', side: 'over', propType: 'saves', athlete: '2' })]), /correlation/);
+  // (the same game number in two sports is two games)
+  assert.equal(w.parlayProblem([sel(), sel({ sport: 'nhl' })]), null);
+  // (the price: the legs' decimal odds multiplied, as American; the page's and the settler's the same)
+  assert.equal(w.decimalOf(150), 2.5);
+  assert.equal(Math.round(w.decimalOf(-110) * 1e4), 19091);
+  assert.equal(w.americanOf(2.5), 150);
+  assert.equal(w.americanOf(1.5), -200);
+  assert.equal(w.parlayOdds([{ odds: -110 }, { odds: -110 }]), 264);
+  assert.equal(w.parlayOdds([{ odds: -110 }, { odds: 150 }, { odds: -110 }]), 811);
+  assert.equal(w.parlayOdds([{ odds: -500 }, { odds: -500 }]), -227);
+  assert.equal(lib.parlayOdds([{ odds: -108 }, { odds: -180 }]), 200);
+  // (what the slip shows it paying: the stake at the combined price)
+  assert.equal(w.payout(10, w.parlayOdds([{ odds: -110 }, { odds: -110 }])), 36.4);
+});
+
+test('a parlay’s result from its legs: any leg lost loses it; pushes and voids drop out; one leg left pays straight; all void, the stake back', () => {
+  const mixes = [
+    // [legs as odds:status, expected]
+    [[[-110, 'won'], [150, 'won'], [-110, 'won']], { status: 'won', profit: 81.12, final: '3 of 3 hit', odds: 811 }],
+    // (lost the moment a leg loses, the others still open)
+    [[[-110, 'open'], [150, 'lost'], [-110, null]], { status: 'lost', profit: -10, final: '0 of 3 hit' }],
+    [[[-110, 'won'], [150, 'lost'], [-110, 'won']], { status: 'lost', profit: -10, final: '2 of 3 hit' }],
+    // (a leg still open, none lost: waits)
+    [[[-110, 'won'], [150, 'open']], null],
+    [[[-110, 'won'], [150, null]], null],
+    // (a push drops out: the other two's price)
+    [[[-110, 'won'], [150, 'push'], [-110, 'won']], { status: 'won', profit: 26.45, final: '2 of 3 hit, 1 pushed', odds: 264 }],
+    // (a void the same)
+    [[[-110, 'won'], [150, 'void'], [-110, 'won']], { status: 'won', profit: 26.45, final: '2 of 3 hit, 1 void', odds: 264 }],
+    // (down to one leg: that straight bet)
+    [[[-110, 'won'], [150, 'void'], [-110, 'push']], { status: 'won', profit: 9.09, final: '1 of 3 hit, 1 pushed, 1 void', odds: -110 }],
+    [[[150, 'won'], [-110, 'push']], { status: 'won', profit: 15, final: '1 of 2 hit, 1 pushed', odds: 150 }],
+    // (none left: every leg void, the stake back; a push among them, a push)
+    [[[-110, 'void'], [150, 'void']], { status: 'void', profit: 0, final: '0 of 2 hit, 2 void', note: 'every leg void' }],
+    [[[-110, 'push'], [150, 'void']], { status: 'push', profit: 0, final: '0 of 2 hit, 1 pushed, 1 void' }],
+    // (a lost leg beats a push or a void)
+    [[[-110, 'push'], [150, 'lost']], { status: 'lost', profit: -10, final: '0 of 2 hit' }],
+  ];
+  for (const [legs, want] of mixes) {
+    const list = legs.map(([odds, status]) => ({ odds, status }));
+    assert.deepEqual(lib.parlayOutcome(10, list), want, JSON.stringify(legs));
+    // (the page's provisional reads the same)
+    assert.deepEqual(w.parlayOutcome(10, list), want, `page: ${JSON.stringify(legs)}`);
+  }
+  // (what goes back in the wallet: the stake and the winnings, nothing, the stake)
+  assert.equal(lib.creditOf(10, lib.parlayOutcome(10, [{ odds: -110, status: 'won' }, { odds: -110, status: 'won' }])), 36.45);
+  assert.equal(lib.creditOf(10, lib.parlayOutcome(10, [{ odds: -110, status: 'lost' }, { odds: -110, status: 'won' }])), 0);
+  assert.equal(lib.creditOf(10, lib.parlayOutcome(10, [{ odds: -110, status: 'void' }, { odds: -110, status: 'void' }])), 10);
+});
+
+test('settling a parlay: each leg graded as a straight bet (its price checked), a leg not begun waiting, a leg graded before kept', () => {
+  // (two games: LV @ NE 20-24 final, CLE @ NYJ 3-7 final; a third, KC @ DEN, not begun)
+  const g1 = { game: game(), observations: board };
+  const g2 = { game: game({ id: '402', homeAbbr: 'NYJ', awayAbbr: 'CLE', hs: 7, as: 3 }), observations: board };
+  const leg = (over = {}) => ({ sport: 'nfl', event: '401', matchup: 'LV @ NE', start: '2026-10-11T17:00Z', market: 'spread', side: 'home', line: -3.5, odds: -108, pick: 'NE -3.5', ...over });
+  const nyj = leg({ event: '402', matchup: 'CLE @ NYJ', market: 'ml', line: null, odds: -180, pick: 'NYJ ML' });
+  const kc = leg({ event: '403', matchup: 'KC @ DEN', start: '2026-10-12T20:00Z', market: 'ml', side: 'away', line: null, odds: 120, pick: 'KC ML' });
+  const parlay = (legs, over = {}) => ({ id: 'p', kind: 'parlay', legs, stake: 10, placedAt: '2026-10-10T12:00:00.000Z', start: '2026-10-11T17:00Z', status: 'open', ...over });
+  // (both hit: paid at their product, -108 and -180 as +200)
+  let r = lib.settleParlay(parlay([leg(), nyj]), [g1, g2], { now });
+  assert.deepEqual(r.result, { status: 'won', profit: 19.96, final: '2 of 2 hit', odds: 200 });
+  assert.deepEqual(r.legs.map((l) => [l.status, l.final]), [['won', 'LV 20 @ NE 24'], ['won', 'CLE 3 @ NYJ 7']]);
+  // (one lost: lost at once, the leg not begun left open)
+  r = lib.settleParlay(parlay([leg({ side: 'away', line: 3.5, odds: -112, pick: 'LV +3.5' }), kc]), [g1, null], { now });
+  assert.deepEqual(r.result, { status: 'lost', profit: -10, final: '0 of 2 hit' });
+  assert.deepEqual(r.legs.map((l) => l.status), ['lost', undefined]);
+  // (one hit, the other not begun: waits, the hit kept for the page)
+  r = lib.settleParlay(parlay([leg(), kc]), [g1, null], { now });
+  assert.equal(r.result, null);
+  assert.deepEqual(r.legs.map((l) => l.status), ['won', undefined]);
+  // (next run: the graded leg kept as it was, the other graded now: hit at +120, the two at their product)
+  const later = { game: game({ id: '403', homeAbbr: 'DEN', awayAbbr: 'KC', hs: 10, as: 13, date: '2026-10-12T20:00Z' }), observations: lib.observationsOf({ ml: { home: -140, away: 120 } }, 'close') };
+  r = lib.settleParlay(parlay(r.legs), [null, later], { now: now + 2 * lib.DAY });
+  assert.deepEqual(r.result, { status: 'won', profit: 32.37, final: '2 of 2 hit', odds: 324 });
+  // (a leg whose price wasn't on the board: void, dropping out; the other paid as a straight bet)
+  r = lib.settleParlay(parlay([leg({ odds: 130 }), nyj]), [g1, g2], { now });
+  assert.deepEqual(r.legs.map((l) => [l.status, l.note]), [['void', 'price didn’t match the board'], ['won', undefined]]);
+  assert.deepEqual(r.result, { status: 'won', profit: 5.56, final: '1 of 2 hit, 1 void', odds: -180 });
+  // (a pushed leg: NE -4 on a 4-point win; the other's price)
+  r = lib.settleParlay(parlay([leg({ line: -4, odds: -110 }), nyj]), [{ ...g1, observations: [...board, ...lib.observationsOf({ spread: { home: { line: -4, odds: -110 }, away: { line: 4, odds: -110 } } }, 'close')] }, g2], { now });
+  assert.equal(r.legs[0].status, 'push');
+  assert.deepEqual(r.result, { status: 'won', profit: 5.56, final: '1 of 2 hit, 1 pushed', odds: -180 });
+  // (every leg void: the stake back)
+  r = lib.settleParlay(parlay([leg({ odds: 130 }), nyj]), [g1, { ...g2, observations: [] }], { now });
+  assert.deepEqual(r.result, { status: 'void', profit: 0, final: '0 of 2 hit, 2 void', note: 'every leg void' });
+  // (a leg that isn't a bet the page could place: void, without its game looked at)
+  assert.equal(lib.legProblem(leg()), null);
+  assert.equal(lib.legProblem(nyj), null);
+  assert.equal(lib.legProblem(leg({ market: 'parlay' })), 'not a market');
+  assert.equal(lib.legProblem(leg({ side: 'over' })), 'not a market');
+  assert.equal(lib.legProblem(leg({ odds: 50 })), 'not a price');
+  assert.equal(lib.legProblem(leg({ sport: 'mma' })), 'not a game');
+  assert.equal(lib.legProblem(leg({ market: 'ml', line: -3.5 })), 'not a line');
+  assert.equal(lib.legProblem(leg({ market: 'prop', side: 'over', line: 24.5 })), 'not a prop');
+  r = lib.settleParlay(parlay([leg({ market: 'parlay' }), nyj]), [g1, g2], { now });
+  assert.deepEqual([r.legs[0].status, r.legs[0].note, r.result.status, r.result.profit], ['void', 'not a market', 'won', 5.56]);
+  // (two legs on one game, past the rules somehow: the parlay void)
+  r = lib.settleParlay(parlay([leg(), leg({ market: 'total', side: 'under', line: 45.5, odds: -115 })]), [g1, g1], { now });
+  assert.deepEqual(r.result, { status: 'void', profit: 0, note: 'two legs on one game' });
+  // (a game ESPN never has: waits, then that leg void after three days)
+  r = lib.settleParlay(parlay([leg(), nyj]), [g1, { game: null, observations: [] }], { now });
+  assert.equal(r.result, null);
+  r = lib.settleParlay(parlay([leg(), nyj]), [g1, { game: null, observations: [] }], { now: now + 4 * lib.DAY });
+  assert.deepEqual([r.legs[1].note, r.result.status, r.result.odds], ['game not found', 'won', -108]);
+  // (in the tally: one bet, its result)
+  const t = lib.addToTally(null, { stake: 10, start: '2026-10-11T17:00Z' }, { status: 'won', profit: 19.96 });
+  assert.deepEqual(t.all, { won: 1, lost: 0, push: 0, void: 0, staked: 10, profit: 19.96 });
+});
+
+test('a parlay on the page: one row (its own group), its legs as bets of their own, "2 of 4 hit", one bet in the record', () => {
+  const p = {
+    ...bet({ id: 'p1', kind: 'parlay', sport: 'parlay', event: 'p1', matchup: '', market: 'parlay', side: '', line: null, odds: 264, pick: '2-leg parlay', start: '2026-10-11T17:00Z' }),
+    legs: [
+      { sport: 'nfl', event: '401', matchup: 'LV @ NE', start: '2026-10-11T17:00Z', market: 'spread', side: 'home', line: -3.5, odds: -110, pick: 'NE -3.5', status: 'won', final: 'LV 20 @ NE 24' },
+      { sport: 'nhl', event: '501', matchup: 'SEA @ DET', start: '2026-10-11T23:00Z', market: 'ml', side: 'home', line: null, odds: -110, pick: 'DET ML' },
+    ],
+  };
+  const legs = w.legBets(p);
+  assert.deepEqual(legs.map((l) => [l.id, l.sport, l.status, l.stake]), [['p1~0', 'nfl', 'won', 10], ['p1~1', 'nhl', 'open', 10]]);
+  // (its progress: the graded leg, the other decided in play or not yet)
+  assert.deepEqual(w.parlayProgress(p, ['won', null]), { hit: 1, n: 2, text: '1 of 2 hit', decided: null });
+  assert.deepEqual(w.parlayProgress(p, ['won', 'won']).decided, { status: 'won', profit: 26.45, final: '2 of 2 hit', odds: 264 });
+  assert.equal(w.parlayProgress(p, ['won', 'lost']).decided.status, 'lost');
+  // (its own group among the games, beside a straight bet on one of its legs' games)
+  const groups = w.byGame([p, bet()]);
+  assert.deepEqual(groups.map((g) => [g.key, g.bets.length]), [['parlay|p1', 1], ['nfl|401', 1]]);
+  // (one bet in the record, by its own result)
+  const settled = { ...p, status: 'won', profit: 26.45, settledAt: '2026-10-12T05:00:00Z' };
+  const t = w.playTally([settled, bet({ id: 'b2', status: 'lost', profit: -10, settledAt: '2026-10-12T04:00:00Z' })]);
+  assert.deepEqual([t.won, t.lost, t.staked, t.profit], [1, 1, 20, 16.45]);
+  // (a settled parlay's leg never graded (it lost on another first) stays ungraded)
+  assert.deepEqual(w.legBets({ ...settled, status: 'lost' }).map((l) => l.status), ['won', 'open']);
+});

@@ -94,11 +94,14 @@ export async function loadPins(uid: string, owner: boolean, friend: boolean): Pr
 
 function bet(d: { id: string; data: () => Record<string, unknown> }): BetSummary {
   const x = d.data();
+  // (a parlay: its legs' sport when they share one, its legs' picks for its game line)
+  const legs = x['kind'] === 'parlay' && Array.isArray(x['legs']) ? (x['legs'] as Record<string, unknown>[]) : null;
+  const sports = legs ? [...new Set(legs.map((l) => text(l['sport'])))] : [];
   return {
     id: d.id,
     status: text(x['status'], 'open'),
-    sport: text(x['sport']),
-    matchup: text(x['matchup']),
+    sport: legs ? (sports.length === 1 ? sports[0] : 'parlay') : text(x['sport']),
+    matchup: legs ? legs.map((l) => text(l['pick'])).join(' · ') : text(x['matchup']),
     pick: text(x['pick']),
     odds: num(x['odds']),
     stake: num(x['stake']) ?? 0,

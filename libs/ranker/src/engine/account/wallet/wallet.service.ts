@@ -3,7 +3,7 @@ import { signedOut } from '../account-helpers';
 import type { DocumentData, Firestore, Query, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account.service';
-import { Leaderboard, PlayBet, START, Selection, selectionKey, stakeProblem } from './wallet-math';
+import { Leaderboard, ParlayLeg, PlayBet, START, Selection, parlayOdds, parlayProblem, selectionKey, stakeProblem } from './wallet-math';
 
 // (the open bets listened to: far more than anyone holds at once; the settled history a page at a time)
 const OPEN_MAX = 200;
@@ -40,8 +40,61 @@ const iso = (v: unknown): string => {
   return new Date().toISOString();
 };
 
-// (a bet document as the page reads it)
+// (a parlay's leg as the page reads it)
+function legFrom(d: DocumentData): ParlayLeg {
+  return {
+    sport: d['sport'],
+    event: d['event'],
+    matchup: d['matchup'],
+    start: iso(d['start']),
+    market: d['market'],
+    side: d['side'],
+    line: d['line'] ?? null,
+    odds: d['odds'],
+    pick: d['pick'],
+    botPick: !!d['botPick'],
+    tier: d['tier'] === 'bet' ? 'like' : (d['tier'] ?? null),
+    kelly: d['kelly'] ?? null,
+    ref: d['ref'] ?? null,
+    propType: d['propType'] ?? null,
+    athlete: d['athlete'] ?? null,
+    player: d['player'] ?? null,
+    statLabel: d['statLabel'] ?? null,
+    status: d['status'],
+    final: d['final'],
+    note: d['note'],
+  };
+}
+
+// (a bet document as the page reads it; a parlay's sport and market 'parlay', its legs each a leg)
 export function betFrom(id: string, d: DocumentData): PlayBet {
+  if (d['kind'] === 'parlay') {
+    const legs = ((d['legs'] ?? []) as DocumentData[]).map(legFrom);
+    return {
+      id,
+      kind: 'parlay',
+      legs,
+      sport: 'parlay',
+      event: id,
+      matchup: '',
+      start: iso(d['start']),
+      market: 'parlay',
+      side: '',
+      line: null,
+      // (its price from its legs' own, as the settler pays it: the figure the browser wrote is only what it showed)
+      odds: legs.length >= 2 && legs.every((l) => Number.isFinite(l.odds)) ? parlayOdds(legs) : d['odds'],
+      stake: d['stake'],
+      pick: d['pick'],
+      run: d['run'] ?? 0,
+      placedAt: iso(d['placedAt']),
+      status: d['status'],
+      profit: d['profit'],
+      final: d['final'],
+      note: d['note'],
+      paidOdds: d['paidOdds'],
+      settledAt: d['settledAt'] ? iso(d['settledAt']) : undefined,
+    };
+  }
   return {
     id,
     sport: d['sport'],
@@ -71,6 +124,27 @@ export function betFrom(id: string, d: DocumentData): PlayBet {
     note: d['note'],
     settledAt: d['settledAt'] ? iso(d['settledAt']) : undefined,
   };
+}
+
+// (a selection's own fields as a bet or a parlay's leg keeps them: the stake, the run and the rest are the bet's)
+function pickFields(f: typeof import('firebase/firestore'), s: Selection): Record<string, unknown> {
+  const out: Record<string, unknown> = {
+    sport: s.sport,
+    event: s.event,
+    matchup: s.matchup,
+    start: f.Timestamp.fromDate(new Date(s.start)),
+    market: s.market,
+    side: s.side,
+    line: s.line,
+    odds: s.odds,
+    pick: s.pick.slice(0, 80),
+    botPick: s.botPick,
+  };
+  if (s.tier) out['tier'] = s.tier;
+  if (s.kelly !== null && Number.isFinite(s.kelly)) out['kelly'] = s.kelly;
+  if (s.ref) out['ref'] = s.ref;
+  if (s.market === 'prop') Object.assign(out, { propType: s.propType, athlete: s.athlete, player: s.player, statLabel: s.statLabel });
+  return out;
 }
 
 // The signed-in user's wallet and bets (live, from Firestore), and the bet slip: the Bets page's prices
@@ -105,13 +179,22 @@ export class WalletService {
   // carries the pick's id too, so its stake isn't counted as on the pick)
   readonly openStakes = computed(() => {
     const out = new Map<string, number>();
-    for (const b of this.openBets()) out.set(selectionKey(b), (out.get(selectionKey(b)) ?? 0) + b.stake);
+    for (const b of this.openBets()) if (b.kind !== 'parlay') out.set(selectionKey(b), (out.get(selectionKey(b)) ?? 0) + b.stake);
     return out;
   });
   readonly openOnPick = computed(() => {
     const out = new Map<string, number>();
-    for (const b of this.openBets()) if (b.ref) out.set(`${b.ref}|${b.side}`, (out.get(`${b.ref}|${b.side}`) ?? 0) + b.stake);
+    for (const b of this.openBets()) if (b.ref && b.kind !== 'parlay') out.set(`${b.ref}|${b.side}`, (out.get(`${b.ref}|${b.side}`) ?? 0) + b.stake);
     return out;
+  });
+  // (Straight or Parlay, once there are 2 selections or more: a parlay the slip's selections as one bet, one
+  // stake, at their combined price; why they can't go together, if they can't (same-game legs, too many))
+  readonly slipMode = signal<'straight' | 'parlay'>('straight');
+  readonly parlayStake = signal(0);
+  readonly asParlay = computed(() => this.slipMode() === 'parlay' && this.slip().length >= 2);
+  readonly parlay = computed(() => {
+    const list = this.slip();
+    return { odds: list.length >= 2 ? parlayOdds(list) : null, problem: parlayProblem(list) };
   });
   // (the last placing's word: how many went on, and any that didn't)
   readonly placed = signal<PlaceResult | null>(null);
@@ -256,7 +339,18 @@ export class WalletService {
 
   clearSlip(): void {
     this.slip.set([]);
+    this.parlayStake.set(0);
     this.placed.set(null);
+  }
+
+  // (the parlay's one stake, in half units as a straight bet's)
+  setParlayStake(stake: number): void {
+    this.parlayStake.set(Math.max(0, Math.floor(stake * 2) / 2 || 0));
+  }
+
+  // (the parlay's stake problem, or why its legs can't go together)
+  parlayIssue(): string | null {
+    return this.parlay().problem ?? (this.parlayStake() > 0 ? stakeProblem(this.parlayStake(), this.balance()) : null);
   }
 
   // (a selection's stake problem, the slip's other stakes counted against the balance)
@@ -268,6 +362,7 @@ export class WalletService {
   // Places every bet on the slip with a stake, one at a time (each bet its own batch with the balance's
   // stake out of the wallet); the ones placed come off the slip
   async place(now = Date.now()): Promise<PlaceResult> {
+    if (this.asParlay()) return this.placeParlay(now);
     const uid = this.uid;
     if (!uid) throw signedOut();
     this.placing.set(true);
@@ -284,26 +379,7 @@ export class WalletService {
           continue;
         }
         const ref = f.doc(f.collection(firestore, 'users', uid, 'bets'));
-        const bet: Record<string, unknown> = {
-          sport: s.sport,
-          event: s.event,
-          matchup: s.matchup,
-          start: f.Timestamp.fromDate(new Date(s.start)),
-          market: s.market,
-          side: s.side,
-          line: s.line,
-          odds: s.odds,
-          stake: s.stake,
-          pick: s.pick.slice(0, 80),
-          botPick: s.botPick,
-          run,
-          placedAt: f.serverTimestamp(),
-          status: 'open',
-        };
-        if (s.tier) bet['tier'] = s.tier;
-        if (s.kelly !== null && Number.isFinite(s.kelly)) bet['kelly'] = s.kelly;
-        if (s.ref) bet['ref'] = s.ref;
-        if (s.market === 'prop') Object.assign(bet, { propType: s.propType, athlete: s.athlete, player: s.player, statLabel: s.statLabel });
+        const bet: Record<string, unknown> = { ...pickFields(f, s), stake: s.stake, run, placedAt: f.serverTimestamp(), status: 'open' };
         const batch = f.writeBatch(firestore);
         batch.set(ref, bet);
         batch.update(walletRef, { balance: f.increment(-s.stake), lastBet: ref.id, updatedAt: f.serverTimestamp() });
@@ -317,6 +393,62 @@ export class WalletService {
           const denied = s.tier === 'check' ? 'Not placed: a bet on a CHECK needs an admin’s sign-in' : 'Not enough in the wallet, or the game has started';
           result.failed.push({ key: s.key, why: code === 'permission-denied' ? denied : 'Couldn’t place it: try again' });
         }
+      }
+    } finally {
+      this.placing.set(false);
+    }
+    this.placed.set(result);
+    return result;
+  }
+
+  // The slip as one parlay: its legs (each a straight bet's fields, no stake), the parlay's one stake out of the
+  // wallet in the same batch, the combined price as placed (what the slip showed: the settler pays from the legs'
+  // own prices, never from this). Placed, the slip empties
+  private async placeParlay(now: number): Promise<PlaceResult> {
+    const uid = this.uid;
+    if (!uid) throw signedOut();
+    const list = this.slip();
+    const key = 'parlay';
+    const result: PlaceResult = { placed: 0, failed: [] };
+    const problem = this.parlayIssue() ?? (this.parlayStake() > 0 ? null : 'Set a stake');
+    const started = list.find((s) => Date.parse(s.start) <= now);
+    if (problem || started) {
+      result.failed.push({ key, why: problem ?? `${started!.pick}: the game has started` });
+      this.placed.set(result);
+      return result;
+    }
+    this.placing.set(true);
+    try {
+      await this.ensureWallet();
+      const [firestore, f] = await firestoreSdk();
+      const walletRef = f.doc(firestore, 'users', uid, 'wallet', 'main');
+      const run = this.wallet()?.resets ?? (await f.getDoc(walletRef)).data()?.['resets'] ?? 0;
+      const stake = this.parlayStake();
+      const first = list.map((s) => s.start).sort()[0];
+      const ref = f.doc(f.collection(firestore, 'users', uid, 'bets'));
+      const batch = f.writeBatch(firestore);
+      batch.set(ref, {
+        kind: 'parlay',
+        legs: list.map((s) => pickFields(f, s)),
+        games: list.map((s) => `${s.sport}_${s.event}`),
+        start: f.Timestamp.fromDate(new Date(first)),
+        odds: parlayOdds(list),
+        stake,
+        pick: `${list.length}-leg parlay`,
+        run,
+        placedAt: f.serverTimestamp(),
+        status: 'open',
+      });
+      batch.update(walletRef, { balance: f.increment(-stake), lastBet: ref.id, updatedAt: f.serverTimestamp() });
+      try {
+        await batch.commit();
+        result.placed = 1;
+        this.slip.set([]);
+        this.parlayStake.set(0);
+      } catch (error) {
+        const code = (error as { code?: string }).code ?? '';
+        const denied = list.some((s) => s.tier === 'check') ? 'Not placed: a leg on a CHECK needs an admin’s sign-in' : 'Not enough in the wallet, or a game has started';
+        result.failed.push({ key, why: code === 'permission-denied' ? denied : 'Couldn’t place it: try again' });
       }
     } finally {
       this.placing.set(false);

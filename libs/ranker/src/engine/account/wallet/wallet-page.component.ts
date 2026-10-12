@@ -16,8 +16,10 @@ import {
   START,
   Versus,
   byGame,
+  legBets,
   liveOf,
   oddsText,
+  parlayProgress,
   playBySport,
   playCurve,
   playTally,
@@ -32,8 +34,9 @@ type Period = Leaderboard['period'];
 // #wallet: the play-money bankroll as the Algorithm desk shows the bot's (balance, record, profit, return,
 // what's at risk, the profit after each settled bet), the open bets (in play, a result as soon as the score
 // decides it, pending settlement: the settler pays it after the game), the settled history by game, the
-// user's record beside the bot's over the same stretch, and the leaderboards. Reload (back to 1,000, a new
-// run) and Clear history (typed to confirm) at the top.
+// user's record beside the bot's over the same stretch, and the leaderboards; a parlay one row, opening to its
+// legs (each with its own live column, the parlay "2 of 4 hit"). Reload (back to 1,000, a new run) and Clear
+// history (typed to confirm) at the top.
 // (the bot's ledgers, every sport's, for You vs the Bot: fetched once a visit, however often the wallet opens)
 let ledgerPromise: Promise<ModelBet[]> | null = null;
 function botLedger(): Promise<ModelBet[]> {
@@ -129,6 +132,11 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   private extrasAsked = false;
 
   readonly open = computed(() => this.wallet.bets().filter((b) => b.status === 'open'));
+  // (what's in play, game by game: the open straight bets, and the open parlays' legs not graded yet, each a bet
+  // of its own for its game's score and a prop's count)
+  readonly tracked = computed(() => this.open().flatMap((b) => (b.kind === 'parlay' ? legBets(b).filter((l) => l.status === 'open') : [b])));
+  // (each parlay's legs as bets, by the parlay's id)
+  readonly legs = computed(() => new Map(this.wallet.bets().filter((b) => b.kind === 'parlay').map((b) => [b.id, legBets(b)])));
   readonly settled = computed(() => this.wallet.bets().filter((b) => b.status !== 'open'));
   readonly tally = computed(() => playTally(this.wallet.bets()));
   readonly curve = computed(() => playCurve(this.wallet.bets()));
@@ -160,9 +168,25 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const out = new Map<string, Settled>();
     const boards = this.lines.boards();
     const props = this.propNow();
-    for (const b of this.open()) {
+    for (const b of this.tracked()) {
       const r = provisionalOf(b, boards.get(`${b.sport}|${b.event}`), props.get(b.id));
       if (r) out.set(b.id, r);
+    }
+    // (a parlay once its legs decide it: a leg lost, or every leg in)
+    for (const [id, p] of this.progress()) {
+      if (p.decided) out.set(id, { status: p.decided.status === 'void' ? 'push' : p.decided.status, profit: p.decided.profit });
+    }
+    return out;
+  });
+  // (each open parlay as it stands: its legs' results, graded by the settler or decided in play, how many hit)
+  readonly progress = computed(() => {
+    const out = new Map<string, ReturnType<typeof parlayProgress>>();
+    const boards = this.lines.boards();
+    const props = this.propNow();
+    for (const b of this.open()) {
+      if (b.kind !== 'parlay') continue;
+      const states = (this.legs().get(b.id) ?? []).map((l) => (l.status !== 'open' ? l.status : (provisionalOf(l, boards.get(`${l.sport}|${l.event}`), props.get(l.id))?.status ?? null)));
+      out.set(b.id, parlayProgress(b, states));
     }
     return out;
   });
@@ -172,16 +196,23 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const out = new Map<string, PlayLive>();
     const boards = this.lines.boards();
     const props = this.propNow();
-    for (const b of this.open()) {
+    for (const b of this.tracked()) {
       const r = liveOf(b, boards.get(`${b.sport}|${b.event}`), props.get(b.id));
       if (r) out.set(b.id, r);
     }
     return out;
   });
+  // (the decided bets' profit, pending settlement: a parlay's legs counted only in the parlay's own)
   readonly pending = computed(() => {
     let profit = 0;
-    for (const r of this.decided().values()) profit += r.profit;
-    return { count: this.decided().size, profit };
+    let count = 0;
+    for (const b of this.open()) {
+      const r = this.decided().get(b.id);
+      if (!r) continue;
+      profit += r.profit;
+      count++;
+    }
+    return { count, profit };
   });
 
   ngOnInit(): void {
@@ -190,7 +221,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     if (this.only !== 'closed') {
       void this.refresh();
       this.timer = setInterval(() => {
-        if (!document.hidden && this.open().some((b) => Date.parse(b.start) - NEAR <= Date.now())) void this.refresh();
+        if (!document.hidden && this.tracked().some((b) => Date.parse(b.start) - NEAR <= Date.now())) void this.refresh();
       }, 60e3);
     }
   }
@@ -202,7 +233,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // The open bets' games: their scores (each sport's scoreboard on their days), and the props' counts once
   // their games are under way
   private async refresh(): Promise<void> {
-    const open = this.open();
+    const open = this.tracked();
     if (!open.length) return;
     await this.lines.games(open, 50e3);
     const boards = this.lines.boards();
@@ -264,6 +295,18 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const board = this.lines.boards().get(`${g.sport}|${g.event}`);
     if (!board || board.state === 'pre') return { text: '', live: false };
     return { text: `${board.away.abbr} ${board.away.score ?? 0} · ${board.home.abbr} ${board.home.score ?? 0} · ${board.detail}`, live: board.state === 'in' };
+  }
+
+  // (a parlay's sport group's name, a sport's its letters)
+  sportName(sport: string): string {
+    return sport === 'parlay' ? 'Parlays' : sport.toUpperCase();
+  }
+
+  // (a parlay's leg's result word on a settled parlay: graded, or not, its parlay lost on another leg first)
+  legResult(l: PlayBet): string {
+    if (l.status === 'open') return 'not graded';
+    const base = l.status === 'won' ? 'hit' : l.status === 'lost' ? 'missed' : l.status;
+    return `${base}${l.final ? ' · ' + l.final : ''}${l.note ? ' (' + l.note + ')' : ''}`;
   }
 
   // (a settled bet's result word: won, lost, push, or void with why)

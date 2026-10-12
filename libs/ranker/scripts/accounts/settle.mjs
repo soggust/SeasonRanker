@@ -2,7 +2,8 @@
 // bettor's own rules (settle-lib.mjs: won, lost or pushed, its winnings paid into the user's wallet; void, its
 // stake back, when the game's called off, the player didn't play, or its price wasn't one on the board), each in
 // a transaction of its own (a bet already settled is left alone, so a run cut short or run twice pays nothing
-// twice). Then the leaderboards (leaderboards/{week|season|all}: the public players' records) from each user's
+// twice). A parlay's legs each graded the same way (settle-lib.mjs settleParlay: a leg lost loses it at once, a
+// pushed or void leg drops out, its legs graded so far kept on it while it's open). Then the leaderboards (leaderboards/{week|season|all}: the public players' records) from each user's
 // tally (tallies/{uid}, kept here). And each run, the next three days' lines snapshotted (lines/{sport}_{event}),
 // so a bet's price can be checked against the board it was placed from.
 //
@@ -33,6 +34,7 @@ import {
   periodsAt,
   leaderboard,
   round2,
+  settleParlay,
   settlePlayBet,
 } from './settle-lib.mjs';
 
@@ -152,51 +154,103 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
   // with its tally, never settled)
   const gone = await goneUsers(db, users);
   if (gone.size) await removeGone(db, users.filter((d) => gone.has(d.ref.parent.parent.id)), gone, { dry, log });
-  // (due by the start the bet says; it's checked against the game's own below)
-  const due = users.filter((d) => !gone.has(d.ref.parent.parent.id) && iso(d.get('start')) <= new Date(now).toISOString());
-  const byGame = new Map();
-  for (const d of due) {
-    const key = `${d.get('sport')}|${d.get('event')}`;
-    byGame.set(key, [...(byGame.get(key) ?? []), d]);
-  }
-  const counts = { settled: 0, void: 0, waiting: 0 };
-  for (const [key, docs] of byGame) {
-    const [sport, event] = key.split('|');
-    if (!LEAGUES[sport]) continue;
-    const { game, body } = await gameAndBox(fetchJson, sport, event);
-    // (what was on the board: the open and the close, the settler's snapshots, the bettor's own bets and every
-    // price its betting board showed)
-    const mine = (ledgers[sport] ?? []).filter((b) => String(b.event) === String(event));
-    let observations = [...botObservations(mine), ...boardObservations(seen[sport]?.[String(event)])];
-    if (game?.final && docs.some((d) => d.get('market') !== 'prop')) {
+  // (due by the start the bet says (a parlay's: its first leg's); it's checked against the game's own below)
+  const nowIso = new Date(now).toISOString();
+  const due = users.filter((d) => !gone.has(d.ref.parent.parent.id) && iso(d.get('start')) <= nowIso);
+  // (each game read once a run, however many bets and parlay legs are on it: its final and box score, and what
+  // was on the board: the bettor's own bets and every price its betting board showed; the open, the close and
+  // the settler's snapshots too once it's final, when a bet on it isn't a prop)
+  const games = new Map();
+  const gameFor = (sport, event) => {
+    const key = `${sport}|${event}`;
+    if (!games.has(key)) {
+      games.set(
+        key,
+        gameAndBox(fetchJson, sport, event).then(({ game, body }) => {
+          const mine = (ledgers[sport] ?? []).filter((b) => String(b.event) === String(event));
+          return { game, body, mine, observations: [...botObservations(mine), ...boardObservations(seen[sport]?.[String(event)])], board: null };
+        }),
+      );
+    }
+    return games.get(key);
+  };
+  const finalBoard = (sport, event, g) => {
+    g.board ??= (async () => {
       const [kind, lg] = LEAGUES[sport].split('/');
-      observations.push(...coreObservations(await fetchJson(`${CORE}/${kind}/leagues/${lg}/events/${event}/competitions/${event}/odds/100?lang=en&region=us`)));
+      const out = coreObservations(await fetchJson(`${CORE}/${kind}/leagues/${lg}/events/${event}/competitions/${event}/odds/100?lang=en&region=us`));
       const lines = await db.doc(`lines/${sport}_${event}`).get();
-      for (const s of lines.exists ? (lines.get('snaps') ?? []) : []) observations.push(...observationsOf(s, 'snap', Date.parse(s.at)));
+      for (const s of lines.exists ? (lines.get('snaps') ?? []) : []) out.push(...observationsOf(s, 'snap', Date.parse(s.at)));
+      return out;
+    })();
+    return g.board;
+  };
+  // (what settlePlayBet takes for a bet or a parlay's leg: its game, what was on the board, a prop's count)
+  const inputsFor = async (bet) => {
+    const g = await gameFor(bet.sport, bet.event);
+    const observations = g.game?.final && bet.market !== 'prop' ? [...g.observations, ...(await finalBoard(bet.sport, bet.event, g))] : g.observations;
+    let propValue;
+    if (bet.market === 'prop' && g.game?.final) {
+      // (the bettor's graded value for the same pick, else the box score's count)
+      const graded = gradedPick(bet, g.mine);
+      propValue = graded ? graded.actual : await statInFinal(bet.sport, bet, g.body, null);
+      if (propValue === null && !graded && bet.propType === 'tb') propValue = undefined;
     }
-    for (const d of docs) {
-      const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
-      let propValue;
-      if (bet.market === 'prop' && game?.final) {
-        // (the bettor's graded value for the same pick, else the box score's count)
-        const graded = gradedPick(bet, mine);
-        propValue = graded ? graded.actual : await statInFinal(sport, bet, body, null);
-        if (propValue === null && !graded && bet.propType === 'tb') propValue = undefined;
-      }
-      const result = settlePlayBet(bet, game, { observations, propValue, now });
-      if (!result) {
-        counts.waiting++;
-        continue;
-      }
-      counts[result.status === 'void' ? 'void' : 'settled']++;
-      log(`${sport} ${bet.matchup} ${bet.pick} ${bet.odds} x${bet.stake}: ${result.status}${result.note ? ` (${result.note})` : ''}`);
-      if (dry) continue;
-      // (filed under the game's own start, not the one the browser wrote)
-      await settleOne(db, d.ref, result, { start: game?.date });
+    return { game: g.game, observations, propValue };
+  };
+  const counts = { settled: 0, void: 0, waiting: 0 };
+  const done = async (d, bet, result, start, extra) => {
+    counts[result.status === 'void' ? 'void' : 'settled']++;
+    log(`${bet.sport ?? 'parlay'} ${bet.matchup ?? `${bet.legs.length} legs`} ${bet.pick} ${bet.odds} x${bet.stake}: ${result.status}${result.note ? ` (${result.note})` : ''}`);
+    if (!dry) await settleOne(db, d.ref, result, { start, ...extra });
+  };
+  // (the straight bets, a game's together)
+  const straight = due.filter((d) => d.get('kind') !== 'parlay').sort((a, b) => `${a.get('sport')}|${a.get('event')}`.localeCompare(`${b.get('sport')}|${b.get('event')}`));
+  for (const d of straight) {
+    if (!LEAGUES[d.get('sport')]) continue;
+    const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+    const inputs = await inputsFor(bet);
+    const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, now });
+    if (!result) {
+      counts.waiting++;
+      continue;
     }
+    // (filed under the game's own start, not the one the browser wrote)
+    await done(d, bet, result, inputs.game?.date);
+  }
+  // (the parlays: each leg graded as a straight bet is, once its game's begun; a leg graded on an earlier run
+  // kept as it was)
+  for (const d of due.filter((x) => x.get('kind') === 'parlay')) {
+    const legs = (d.get('legs') ?? []).map((l) => ({ ...l, start: iso(l.start) }));
+    const parlay = { ...d.data(), id: d.id, legs, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+    const inputs = await Promise.all(legs.map((l) => (LEAGUES[l.sport] && l.start <= nowIso && (!l.status || l.status === 'open') ? inputsFor(l) : null)));
+    const { result, legs: graded } = settleParlay(parlay, inputs, { now });
+    if (!result) {
+      counts.waiting++;
+      // (its legs graded so far written on the open parlay: the page shows them)
+      if (!dry && graded.some((l, i) => l.status !== legs[i].status)) await gradeLegs(db, d.ref, graded);
+      continue;
+    }
+    // (filed under the day it was decided: its losing leg's game, else its last)
+    const lost = graded.find((l) => l.status === 'lost');
+    const start = lost ? lost.start : graded.map((l) => l.start).sort().at(-1);
+    await done(d, parlay, result, start, { legs: graded, ...(Number.isFinite(result.odds) ? { paidOdds: result.odds } : {}) });
   }
   log(`bets: ${counts.settled} settled, ${counts.void} void, ${counts.waiting} waiting${dry ? ' (dry)' : ''}`);
   return counts;
+}
+
+// (a parlay's legs' results onto its stored legs: each leg's status, final and note, nothing else of it touched)
+const LEG_RESULT = ['status', 'final', 'note'];
+const withResults = (stored, legs) => stored.map((l, i) => ({ ...l, ...Object.fromEntries(LEG_RESULT.filter((k) => legs[i]?.[k] !== undefined).map((k) => [k, legs[i][k]])) }));
+
+// An open parlay's legs as graded so far, written back while it's still open (one settled since left alone)
+async function gradeLegs(db, ref, legs) {
+  return db.runTransaction(async (tx) => {
+    const bet = await tx.get(ref);
+    if (!bet.exists || bet.get('status') !== 'open') return false;
+    tx.update(ref, { legs: withResults(bet.get('legs') ?? [], legs) });
+    return true;
+  });
 }
 
 // (the owners of these bets whose profile is gone: their accounts deleted)
@@ -223,7 +277,7 @@ async function removeGone(db, docs, gone, { dry = false, log = console.log } = {
 // alone: settled already). A bet placed before a reload counts in the record; its payout stays with its run,
 // and a bet placed before the wallet was made (deleted and made again) is paid nothing (paysInto). The tally's
 // day is the game's own start when it's known (`start`), not the one the browser wrote on the bet.
-export async function settleOne(db, ref, result, { start = null } = {}) {
+export async function settleOne(db, ref, result, { start = null, legs = null, paidOdds } = {}) {
   const uid = ref.parent.parent.id;
   const walletRef = db.doc(`users/${uid}/wallet/main`);
   const tallyRef = db.doc(`tallies/${uid}`);
@@ -236,6 +290,9 @@ export async function settleOne(db, ref, result, { start = null } = {}) {
       profit: result.profit,
       ...(result.final ? { final: result.final } : {}),
       ...(result.note ? { note: result.note } : {}),
+      // (a parlay: its legs' results, and the price it paid at once a leg dropped out)
+      ...(legs ? { legs: withResults(bet.get('legs') ?? [], legs) } : {}),
+      ...(paidOdds !== undefined ? { paidOdds } : {}),
       settledAt: FieldValue.serverTimestamp(),
     });
     const credit = creditOf(data.stake, result);

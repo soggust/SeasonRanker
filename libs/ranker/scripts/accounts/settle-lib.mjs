@@ -202,6 +202,80 @@ export function settlePlayBet(bet, game, { observations = [], propValue, now = D
   return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final };
 }
 
+// ---------------------------------------------------------------------------
+// Parlays: one bet of 2 to 10 legs, each on a game of its own (users/{uid}/bets/{id} with kind 'parlay', its
+// legs[] each a straight bet's fields; firestore.rules has the shape). The bot never makes one: they're the
+// user's alone. Each leg is graded as a straight bet is (settlePlayBet: its price checked, its game final);
+// a leg lost loses the parlay then and there; a pushed or void leg drops out, the odds the product of the rest
+// (down to one leg, it pays as that straight bet; none left, its stake back); a leg still open waits.
+// ---------------------------------------------------------------------------
+
+// (American odds as decimal, what a unit pays back: -110 is 1.909, +150 is 2.5; and back, rounded to the cent's
+// whole number as a book quotes it)
+export const decimalOf = (odds) => (odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds);
+export const americanOf = (dec) => (dec >= 2 ? Math.round((dec - 1) * 100) : Math.round(-100 / (dec - 1)));
+
+// (the legs' combined price: the product of their decimal odds, as American)
+export const parlayOdds = (legs) => americanOf(legs.reduce((p, l) => p * decimalOf(l.odds), 1));
+
+// A parlay's result from its legs' (each { odds, status } with status won | lost | push | void, or open (or
+// null) while it waits): { status, profit, final, odds? } (odds: the price it paid at, the legs that dropped
+// out gone) or null while a leg's still open and none has lost
+export function parlayOutcome(stake, legs) {
+  const n = legs.length;
+  const of = (s) => legs.filter((l) => l.status === s).length;
+  const hit = `${of('won')} of ${n} hit`;
+  if (of('lost')) return { status: 'lost', profit: -stake, final: hit };
+  if (legs.some((l) => !l.status || l.status === 'open')) return null;
+  const won = legs.filter((l) => l.status === 'won');
+  const out = [of('push') && `${of('push')} pushed`, of('void') && `${of('void')} void`].filter(Boolean).join(', ');
+  const final = out ? `${hit}, ${out}` : hit;
+  if (!won.length) return of('push') ? { status: 'push', profit: 0, final } : { status: 'void', profit: 0, final, note: 'every leg void' };
+  // (one leg left: that straight bet's price; more, their product)
+  const odds = won.length === 1 ? won[0].odds : parlayOdds(won);
+  const profit = won.length === 1 ? toWin(stake, odds) : round2(stake * (won.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
+  return { status: 'won', profit, final, odds };
+}
+
+// Why a parlay's leg isn't a bet the page could have placed, if it isn't (firestore.rules checks a straight bet's
+// market, side, line and price, but a parlay's ten legs can't all be checked inside the rules' limit, so the
+// settler checks them here): its sport, its market and side, its line, an American price, a prop's player and stat
+export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb'];
+export function legProblem(l) {
+  const num = (v) => typeof v === 'number' && Number.isFinite(v);
+  if (!SPORTS.includes(l.sport) || !/^[0-9]{1,20}$/.test(String(l.event ?? ''))) return 'not a game';
+  if (typeof l.matchup !== 'string' || !/^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$/.test(l.matchup)) return 'not a game';
+  if (!Number.isInteger(l.odds) || Math.abs(l.odds) < 100 || Math.abs(l.odds) > 50000) return 'not a price';
+  const sides = l.market === 'spread' || l.market === 'ml' ? ['home', 'away'] : l.market === 'total' || l.market === 'prop' ? ['over', 'under'] : [];
+  if (!sides.includes(l.side)) return 'not a market';
+  if (l.market === 'ml' ? l.line != null : !num(l.line)) return 'not a line';
+  if (l.market === 'prop' && (typeof l.propType !== 'string' || !/^[0-9]{1,20}$/.test(String(l.athlete ?? '')))) return 'not a prop';
+  return null;
+}
+
+// A parlay against its legs' games: each leg's own result (a leg settled on an earlier run kept as it was; one
+// whose game hasn't begun waits), and the parlay's ({ ...parlayOutcome, legs } or null while it waits, with the
+// legs graded so far, so an open parlay can show them). games: by leg, { game, observations, propValue } as
+// settlePlayBet takes them, or null for a game not begun
+export function settleParlay(parlay, games, { now = Date.now() } = {}) {
+  // (two legs on one game: the rules refuse it, and so does this, the parlay void)
+  const keys = parlay.legs.map((l) => `${l.sport}|${l.event}`);
+  if (new Set(keys).size < keys.length) return { result: { status: 'void', profit: 0, note: 'two legs on one game' }, legs: parlay.legs };
+  const legs = parlay.legs.map((leg, i) => {
+    if (leg.status && leg.status !== 'open') return leg;
+    // (a leg that isn't a bet as a straight one would be: void, out of it)
+    const problem = legProblem(leg);
+    if (problem) return { ...leg, status: 'void', note: problem };
+    const g = games[i];
+    if (!g) return leg;
+    const r = settlePlayBet({ ...leg, stake: parlay.stake, placedAt: parlay.placedAt, start: leg.start }, g.game, { observations: g.observations, propValue: g.propValue, now });
+    if (!r) return leg;
+    return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}) };
+  });
+  const r = parlayOutcome(parlay.stake, legs);
+  return { result: r, legs };
+}
+
 // (the bettor's graded pick a prop is settled by: the same stat of the same player in the same game, the one
 // its ref names first, else any (the count doesn't depend on the side or the ref: a bet against the bot, or one
 // whose ref isn't the bettor's, is graded by the bettor's count too, its snap counts and all, not the box score

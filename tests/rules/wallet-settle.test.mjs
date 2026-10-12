@@ -213,6 +213,44 @@ describe('the settler', { skip }, () => {
     assert.equal((await get('lines/nfl_403')).snaps.length, 2);
   });
 
+  test('parlays: each leg graded as a straight bet, paid at the legs’ product, lost at a leg’s loss, waiting on a game not over with its graded legs kept', async () => {
+    const leg = (over = {}) => {
+      const { stake: _s, run: _r, placedAt: _p, status: _st, ...l } = bet(over);
+      return l;
+    };
+    const ne = leg();
+    const gibson = leg({ sport: 'nhl', event: '501', matchup: 'SEA @ DET', start: at('2026-10-11T23:00Z'), market: 'prop', side: 'under', line: 24.5, odds: -110, propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '501:prop:saves:2590824', pick: 'John Gibson Under 24.5 Saves' });
+    const cle = leg({ event: '402', matchup: 'CLE @ NYJ', start: at('2026-10-11T20:00Z'), side: 'away', line: 2.5, odds: -110, pick: 'CLE +2.5' });
+    const lv = leg({ market: 'ml', side: 'away', line: null, odds: 150, pick: 'LV ML' });
+    const parlay = (legs, over = {}) => ({ kind: 'parlay', legs, games: legs.map((l) => `${l.sport}_${l.event}`), start: legs[0].start, odds: 999, stake: 10, pick: `${legs.length}-leg parlay`, run: 0, placedAt: at('2026-10-10T15:00Z'), status: 'open', ...over });
+    await seed('dee', { balance: 500, bets: { won: parlay([ne, gibson]), lost: parlay([lv, cle]), waiting: parlay([ne, cle]) } });
+    const first = await run({ db, fetchJson, now: NOW, ledgers, log: quiet });
+    assert.deepEqual(first.counts, { settled: 2, void: 0, waiting: 1 });
+    const get = async (p) => (await db.doc(`users/dee/${p}`).get()).data();
+    // (both hit: -108 and -110 as +268, the browser's own 999 never read)
+    const won = await get('bets/won');
+    assert.deepEqual([won.status, won.profit, won.final, won.paidOdds], ['won', 26.77, '2 of 2 hit', 268]);
+    assert.deepEqual(won.legs.map((l) => [l.status, l.final]), [['won', 'LV 20 @ NE 24'], ['won', 'John Gibson 24 Saves']]);
+    // (LV lost: the parlay lost though CLE's game isn't over, that leg left ungraded)
+    const lost = await get('bets/lost');
+    assert.deepEqual([lost.status, lost.profit, lost.final], ['lost', -10, '0 of 2 hit']);
+    assert.deepEqual(lost.legs.map((l) => l.status ?? null), ['lost', null]);
+    // (one hit, the other's game not over: open, the hit written on it for the page)
+    const waiting = await get('bets/waiting');
+    assert.equal(waiting.status, 'open');
+    assert.deepEqual(waiting.legs.map((l) => l.status ?? null), ['won', null]);
+    assert.equal(waiting.legs[0].pick, 'NE -3.5');
+    // (paid: 500 + 36.77; one bet each in the record)
+    assert.equal((await db.doc('users/dee/wallet/main').get()).get('balance'), 536.77);
+    const tally = (await db.doc('tallies/dee').get()).data();
+    assert.deepEqual(tally.all, { won: 1, lost: 1, push: 0, void: 0, staked: 20, profit: 16.77 });
+    // (run again: nothing paid twice, the graded leg kept)
+    const second = await run({ db, fetchJson, now: NOW + 36e5, ledgers, log: quiet });
+    assert.deepEqual(second.counts, { settled: 0, void: 0, waiting: 1 });
+    assert.equal((await db.doc('users/dee/wallet/main').get()).get('balance'), 536.77);
+    assert.equal((await get('bets/waiting')).legs[0].status, 'won');
+  });
+
   test('a bet placed from a snapshot’s price within its window stands; a dry run writes nothing', async () => {
     await db.doc('lines/nfl_401').set({ sport: 'nfl', event: '401', snaps: [{ at: '2026-10-10T14:00:00Z', spread: { home: { line: -2.5, odds: -105 }, away: { line: 2.5, odds: -115 } }, total: { line: 46, over: -110, under: -110 }, ml: { home: -190, away: 160 } }] });
     await seed('cy', { bets: { snap: bet({ line: -2.5, odds: -105 }), late: bet({ line: -2.5, odds: -105, placedAt: at('2026-10-11T10:00Z') }) } });

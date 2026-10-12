@@ -56,6 +56,30 @@ const playBet = (over = {}) => ({
   ...over,
 });
 
+// (a parlay's leg: a straight bet's fields without its stake, run, time or status)
+const leg = (over = {}) => {
+  const { stake: _s, run: _r, placedAt: _p, status: _st, ...l } = playBet(over);
+  return l;
+};
+// (a parlay as the app places it: its games named in order, its start its first leg's, its price the legs')
+const decimal = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
+const parlayOf = (legs, over = {}) => {
+  const dec = legs.reduce((p, l) => p * decimal(l.odds), 1);
+  return {
+    kind: 'parlay',
+    legs,
+    games: legs.map((l) => `${l.sport}_${l.event}`),
+    start: legs.map((l) => l.start).sort((a, b) => a.toMillis() - b.toMillis())[0],
+    odds: dec >= 2 ? Math.round((dec - 1) * 100) : Math.round(-100 / (dec - 1)),
+    stake: 10,
+    pick: `${legs.length}-leg parlay`,
+    run: 0,
+    placedAt: serverTimestamp(),
+    status: 'open',
+    ...over,
+  };
+};
+
 // (a bet as the app places it: the bet and the stake out of the wallet, one batch)
 function place(db, uid, id, bet = playBet(), take = bet.stake) {
   const batch = writeBatch(db);
@@ -152,6 +176,60 @@ describe('wallet rules', { skip }, () => {
     // (a prop's ref is wanted on either side: without one it's refused, so the lines send the pick's id on both)
     const { ref: _ref, tier: _tier, ...noRef } = playBet({ market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', botPick: false, stake: 0.5 });
     await assertFails(place(db, 'ann', 'no-ref', noRef, 0.5));
+  });
+
+  test('a parlay: 2 to 10 legs, one a game, each leg a straight bet’s fields and no result, its stake out of the wallet', async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    // (a few games, each its own event)
+    const legs = [
+      leg(),
+      leg({ event: '401872987', matchup: 'KC @ DEN', market: 'ml', side: 'away', line: null, odds: 145, pick: 'KC ML', start: later(30) }),
+      leg({ sport: 'nhl', event: '401990001', matchup: 'SEA @ DET', market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '401990001:prop:saves:2590824', start: later(2) }),
+    ];
+    await assertSucceeds(place(db, 'ann', 'p1', parlayOf(legs)));
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 990);
+    // (ten legs, each its own game: the most)
+    const ten = Array.from({ length: 10 }, (_, i) => leg({ event: String(402000000 + i), odds: -110 }));
+    await assertSucceeds(place(db, 'ann', 'p10', parlayOf(ten, { stake: 0.5 })));
+    const bad = {
+      // (one leg, eleven)
+      one: parlayOf(legs.slice(0, 1)),
+      eleven: parlayOf(Array.from({ length: 11 }, (_, i) => leg({ event: String(403000000 + i) }))),
+      // (two legs on one game: the same market's two sides, or two markets of it)
+      bothSides: parlayOf([leg(), leg({ side: 'away', line: 3.5, pick: 'LV +3.5' })]),
+      sameGame: parlayOf([leg(), leg({ market: 'total', side: 'over', line: 45.5, pick: 'Over 45.5' })]),
+      // (its games list not naming its legs' games: a same-game parlay dressed up)
+      lyingGames: { ...parlayOf([leg(), leg({ market: 'total', side: 'over', line: 45.5, pick: 'Over 45.5' })]), games: ['nfl_401872986', 'nfl_1'] },
+      // (odds that aren't American, a payout or a result of its own, a leg with a stake or a result)
+      notAmerican: parlayOf(legs, { odds: 50 }),
+      payout: parlayOf(legs, { payout: 300 }),
+      profit: parlayOf(legs, { profit: 300 }),
+      won: parlayOf(legs, { status: 'won' }),
+      legStake: parlayOf([{ ...legs[0], stake: 10 }, legs[1]]),
+      legStatus: parlayOf([{ ...legs[0], status: 'won' }, legs[1]]),
+      // (a leg on a game begun, or with no game)
+      started: parlayOf([leg({ start: later(-1) }), legs[1]]),
+      noEvent: parlayOf([(({ event: _e, ...l }) => l)(legs[0]), legs[1]]),
+      // (its start after its first leg's: the settler would look too late)
+      lateStart: parlayOf(legs, { start: later(40) }),
+      // (a straight bet can't claim to be part of one)
+      straightKind: playBet({ kind: 'parlay' }),
+    };
+    for (const [name, b] of Object.entries(bad)) {
+      try {
+        await assertFails(place(db, 'ann', `bad-${name}`, b, b.stake));
+      } catch (error) {
+        throw new Error(`${name}: ${error.message}`);
+      }
+    }
+    // (its stake out of the wallet, exactly)
+    await assertFails(place(db, 'ann', 'p-short', parlayOf(legs), 5));
+    // (ten prop legs, the biggest a parlay gets: inside the rules' 1,000 expressions)
+    const props = Array.from({ length: 10 }, (_, i) => leg({ sport: 'nhl', event: String(404000000 + i), matchup: 'SEA @ DET', market: 'prop', side: 'over', line: 24.5, odds: 120, pick: 'John Gibson Over 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '401990001:prop:saves:2590824' }));
+    await assertSucceeds(place(db, 'ann', 'p-props', parlayOf(props, { stake: 1 })));
+    // (never settled from the browser)
+    await assertFails(updateDoc(doc(db, 'users', 'ann', 'bets', 'p1'), { status: 'won', profit: 50 }));
   });
 
   test('a reload: back to 1,000, one more reset; nothing else, and no settling from the browser', async () => {
