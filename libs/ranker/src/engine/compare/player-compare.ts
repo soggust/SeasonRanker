@@ -9,19 +9,20 @@
 // each one leads, and where he's clearly the best) and the career arcs (every season's standing, the compared one ringed). Sides on different tabs
 // share only what's the same skill or column by name, and a column they share goes to the bigger number: a
 // percentile among backs and one among receivers don't say who did more.
-import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, presetWeights } from '@sport/positions';
+import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat } from '@sport/positions';
 import { SPORT } from '@sport/sport';
 import { badgeColor, teamColors, whiteLogo } from '@sport/team-colors';
 import { logoForSeason } from '@sport/logo-eras';
 import { extras } from '@ranker/engine/row-fields';
 import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
-import { SKILL_UNITS, defaultRanking } from '@ranker/engine/unit-scoring';
+import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { defaultMin, underMin } from '@ranker/engine/playing-time';
+import { underMin } from '@ranker/engine/playing-time';
 import { CardSkill } from '@ranker/engine/skills';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { rankPct } from '@ranker/core/format';
 import { CardHost, careerLines } from '@ranker/engine/player-card/player-cards';
+import { currentGrid } from '@ranker/engine/skill-rankings/grid-rankings';
 import { CardRadar, CardSeason, CareersFile, SeasonContext } from '@ranker/engine/player-card/card.model';
 import { archetypeFor, skillsOf } from '@ranker/engine/player-card/overview';
 import { radar } from '@ranker/engine/player-card/radar';
@@ -713,6 +714,8 @@ export class PlayerCompare {
       this.host.season === CURRENT_SEASON ? SKILL_UNITS : this.data.rows(CURRENT_SEASON),
       this.data.unranked(CURRENT_SEASON),
     ]);
+    // (this season as the grid first shows each tab, as the card's Career line has it)
+    const grid = await currentGrid(this.data, current);
     const careers = await Promise.all(TABS.map((tab): Promise<CareersFile> | CareersFile => (names[tab] ? this.data.careers(tab).catch(() => ({})) : {})));
     type Line = { season: number; logo: string; rank: number; of: number };
     return TABS.flatMap((position, t) => {
@@ -724,7 +727,7 @@ export class PlayerCompare {
         if (name && lines.length) byId.set(id, { name, headshotId: headshotId ?? null, seasons: lines.map(([season, logo, , rank, of]) => ({ season, logo: SPORT.teamLogo(logo), rank, of })) });
       }
       const rows = current[position] ?? [];
-      const ranked = rows.length ? defaultRanking(position, presetWeights(position, 'default'), current, undefined, defaultMin(current, position)) : [];
+      const ranked = grid[position] ?? [];
       // (rank everyone: a row under the default Min Games is UR, 0 of 0)
       const rankOf = (row: SkillPlayer) => ranked.indexOf(row) + 1;
       const lines = [

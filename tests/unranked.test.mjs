@@ -464,3 +464,59 @@ test("nfl: the table on 2025's playoffs: a UR card reads his playoffs (skill-pla
   assert.equal((await data.unrankedRow(2024, 'WR', RIDLEY))?.ur, undefined, 'another season: the regular season (2024 ranked)');
   assert.deepEqual(await data.unranked(engine.CURRENT_SEASON, 'post'), {}, 'no playoffs yet: none');
 });
+
+// The season being played the same way: the card's Career line (careerLines) ranks it as the grid first opens
+// on its tab (currentGrid: the grid's own code at the default settings, the grades from other tabs counted),
+// not the default ranking with those grades average. Checked against a fresh PositionService's grid, as the
+// finished seasons are above, with the table on this season (its own rows) and on 2025 (this season's rows
+// and files from the data service); and the table's grades are left as they were.
+test("nfl: this season's Career line in the grid's own order, as it first opens (every tab's top 20, the table on it or on 2025)", async () => {
+  globalThis.location ??= new URL('http://localhost/');
+  globalThis.history ??= { replaceState: () => {} };
+  const { engine, data } = await harness();
+  const { TabRanker, StatReader, PositionService, SKILL_STATS, SKILL_UNITS, CURRENT_SEASON, skillGroups, presetWeights, emptyIn, careerLines } = engine;
+  const tabs = Object.keys(SKILL_STATS);
+  const positions = new PositionService();
+  const grades = positions.sportChanged$.subscribe();
+  const gridOf = (tab) => {
+    const table = { position: tab, stats: SKILL_STATS[tab], groups: skillGroups(tab), hidden: {}, weights: presetWeights(tab, 'default') };
+    const ranker = new TabRanker(positions, { firstSeasons: async () => ({}) }, () => table, () => {});
+    const list = ranker.listed(SKILL_UNITS, CURRENT_SEASON, tab);
+    const reader = new StatReader({ position: tab, settings: positions.settings, rows: SKILL_UNITS, list, tableSeason: true, season: CURRENT_SEASON, empty: (key) => emptyIn(SKILL_UNITS[tab], key), weights: ranker.mixWeights(tab) });
+    return ranker.ranked(reader, list, tab, SKILL_UNITS).map((p) => p.gsisId);
+  };
+  const grids = Object.fromEntries(tabs.map((tab) => [tab, gridOf(tab)]));
+  // (each tab's careers read once)
+  const careers = new Map();
+  const cached = (service) => Object.assign(Object.create(service), { careers: (p) => (careers.has(p) ? careers.get(p) : careers.set(p, service.careers(p)).get(p)) });
+  // (the Career line's top 20: everyone the season's rows have, by the rank on his line)
+  const top20 = async (service, tableSeason, rows) => {
+    const out = {};
+    for (const tab of tabs) {
+      const ranks = [];
+      for (const p of rows[tab] ?? []) {
+        const line = (await careerLines(service, tableSeason, tab, p.gsisId)).find((s) => s.season === CURRENT_SEASON);
+        if (line?.rank > 0 && line.rank <= 20) ranks[line.rank - 1] = p.gsisId;
+        if (line?.rank > 0) assert.equal(line.of, grids[tab].length, `${tab} ${p.gsisId}: out of the grid's list`);
+      }
+      out[tab] = ranks;
+    }
+    return out;
+  };
+  const onIt = await top20(cached(data), CURRENT_SEASON, SKILL_UNITS);
+  for (const tab of tabs) {
+    assert.ok(grids[tab].length >= 20, `${tab}: a list`);
+    assert.deepEqual(onIt[tab], grids[tab].slice(0, 20), `${tab}: the top 20 in the grid's order`);
+    // (the grid's ranking worked out its own grades: the table's are back, so the grid ranks as it did)
+    assert.deepEqual(gridOf(tab), grids[tab], `${tab}: the table's grades put back`);
+  }
+  grades.unsubscribe();
+
+  // The table on 2025: this season's rows and files from the data service, its grades its own
+  await engine.loadData(2025, 'regular');
+  engine.rebuildUnits();
+  const service = new engine.SeasonDataService();
+  const current = await service.rows(CURRENT_SEASON);
+  const onAnother = await top20(cached(service), 2025, current);
+  for (const tab of tabs) assert.deepEqual(onAnother[tab].map((id) => id.replace(/^QB-/, '')), grids[tab].slice(0, 20).map((id) => id.replace(/^QB-/, '')), `${tab} (the table on 2025): the top 20 in the grid's order`);
+});

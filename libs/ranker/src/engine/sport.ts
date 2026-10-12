@@ -447,6 +447,9 @@ export interface SportConfig {
   // Called once at startup with the engine's rankings (for grades from other tabs); what it returns
   // fires whenever those values change, re-sorting the table
   connect?: (host: EngineHost) => Observable<unknown>;
+  // The grades connect sets, kept: what it returns puts them back (gridRankings works out a default
+  // ranking's own grades, then the table's come back)
+  keepGrades?: () => () => void;
 
   // Wording for the engine's own takes and menus
   copy: {

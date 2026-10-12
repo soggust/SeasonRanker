@@ -2,7 +2,7 @@
 // showing in the grid, as ranks in the list it's ranked in (the table's, or another season's ranked the
 // same way); then the Overview (skills, archetype, flags, radar, scouting report), the seasons they're
 // in and similar seasons load in behind it.
-import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatGroup, headlineStats, presetWeights } from '@sport/positions';
+import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatGroup, headlineStats } from '@sport/positions';
 import { awardsFor } from '@sport/awards';
 import { SPORT } from '@sport/sport';
 import { extras, logoFile, rowTeamNames } from '@ranker/engine/row-fields';
@@ -11,10 +11,11 @@ import { logoForSeason } from '@sport/logo-eras';
 import { CardFlag, FlagContext, ValueContext } from '@ranker/engine/sport';
 import { CardSkill } from '@ranker/engine/skills';
 import { CURRENT_SEASON, SEASONS, dataPart, dataSeason, isLiveSeason } from '@ranker/engine/data';
-import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, statValue } from '@ranker/engine/unit-scoring';
+import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, statValue } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
-import { RANK_EVERYONE, defaultMin, underMin } from '@ranker/engine/playing-time';
+import { RANK_EVERYONE, underMin } from '@ranker/engine/playing-time';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
+import { currentGrid } from '@ranker/engine/skill-rankings/grid-rankings';
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
@@ -805,7 +806,7 @@ export class PlayerCards {
 }
 
 // A line per season someone's in (the card's Career tab and history, the compare view's arcs), ranked with
-// the default sliders (careers/<tab>.json for the finished seasons, this season from its rows), each headline stat's best finished season lit (lowest for a
+// the default sliders as the grid first shows each season (careers/<tab>.json for the finished seasons, this season from its rows: currentGrid), each headline stat's best finished season lit (lowest for a
 // stat that counts against them; a few games into this season, a hot start would take it)
 export async function careerLines(data: SeasonDataService, tableSeason: number, position: SkillPosition, id: string): Promise<CardSeason[]> {
   const current = tableSeason === CURRENT_SEASON ? SKILL_UNITS : await data.rows(CURRENT_SEASON);
@@ -831,7 +832,9 @@ export async function careerLines(data: SeasonDataService, tableSeason: number, 
   const unranked = now ? undefined : await data.unrankedRow(CURRENT_SEASON, position, id);
   const context: ValueContext = { position, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
   if (now) {
-    const ranked = defaultRanking(position, presetWeights(position, 'default'), current, undefined, defaultMin(current, position));
+    // (as the grid first shows this season's tab: its own ranking at the default settings, the grades from
+    // other tabs counted, as the careers' finished seasons are)
+    const ranked = (await currentGrid(data, current))[position] ?? [];
     const stats = headline.map((stat) => statValue(now, stat, context));
     // (rank everyone: under the default Min Games, UR)
     const rank = ranked.indexOf(now) + 1;

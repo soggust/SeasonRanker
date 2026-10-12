@@ -2,7 +2,7 @@
 // for the visit. A failed fetch is forgotten, so the next ask tries again.
 import { Injectable } from '@angular/core';
 import { SkillPlayer, SkillPosition } from '@sport/positions';
-import { CURRENT_SEASON, DATA, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
+import { AppData, CURRENT_SEASON, DATA, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
 import { unitsForSeason } from '@ranker/engine/unit-scoring';
 import { CareersFile, CompsFile } from '@ranker/engine/player-card/card.model';
 import { SPORT } from '@sport/sport';
@@ -31,9 +31,15 @@ export class SeasonDataService {
     return data;
   }
 
-  // A season's rows, every tab
+  // A season's files (its regular season), as loadData puts them in DATA (the grid's ranking of a season
+  // the table isn't on reads them: gridRankings)
+  files(season: number): Promise<AppData> {
+    return this.once(`files.${season}`, () => fetchSeason(season));
+  }
+
+  // A season's rows, every tab (from its files)
   rows(season: number): Promise<Record<SkillPosition, SkillPlayer[]>> {
-    return this.once(`rows.${season}`, () => fetchSeason(season).then((data) => unitsForSeason(data, season)));
+    return this.once(`rows.${season}`, () => this.files(season).then((data) => unitsForSeason(data, season)));
   }
 
   // One tab's rows for a finished season (a small file per tab)

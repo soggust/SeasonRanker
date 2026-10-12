@@ -17,7 +17,7 @@ import {
 import { DATA, dataPart } from '@ranker/engine/data';
 import { CAST_GRADES, GARBAGE_TIME_STAT } from './skills';
 import { buildQbUnits } from './qb-rows';
-import { OLINE_LEAN, computedValue, connectTeamGrades, fromOtherTabs } from './team-grades';
+import { OLINE_LEAN, computedValue, connectTeamGrades, fromOtherTabs, keepTeamGrades } from './team-grades';
 import { blockingExtras } from './blocking';
 import { loadDepthChart } from './depth-chart';
 import { hasFieldMap, loadFieldMap } from './field-map';
@@ -281,6 +281,7 @@ export const SPORT: SportConfig = {
   computedValue,
   tableSeasonOnly: fromOtherTabs,
   connect: connectTeamGrades,
+  keepGrades: keepTeamGrades,
 
   copy: {
     noHolesIcon: 'shield',

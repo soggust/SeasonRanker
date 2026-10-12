@@ -56,6 +56,16 @@ export function connectRosterGrades(host: EngineHost): Observable<unknown> {
   );
 }
 
+// The grades as they are, and a way to put them back (the card's gridRankings works out the default
+// ranking's own, then the table's come back)
+export function keepRosterGrades(): () => void {
+  const kept = new Map(grades);
+  return () => {
+    grades.clear();
+    for (const [key, byTeam] of kept) grades.set(key, byTeam);
+  };
+}
+
 // A roster grade's value for a team row (undefined: not a roster grade). The table's season only:
 // another season's card, or a default ranking, counts it as average (null)
 export function rosterGradeValue(unit: SkillPlayer, key: string, context: ValueContext): number | null | undefined {

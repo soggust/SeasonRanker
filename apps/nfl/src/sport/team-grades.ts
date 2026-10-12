@@ -219,6 +219,15 @@ export function connectTeamGrades(host: EngineHost): Observable<unknown> {
   return merge(defense$, coaching$, qbPlay$, oline$, olinePass$, olineRun$, weapons$, rbPlay$);
 }
 
+// SPORT.keepGrades: every grade as it is now, and a way to put them back (each stream above sets a new
+// map, so the kept ones are left as they were)
+export function keepTeamGrades(): () => void {
+  const kept = [defenseGrades, qbPlayGrades, rbPlayGrades, olineCurve, olinePassCurve, olineRunCurve, weaponsCurve, coachingCurve] as const;
+  return () => {
+    [defenseGrades, qbPlayGrades, rbPlayGrades, olineCurve, olinePassCurve, olineRunCurve, weaponsCurve, coachingCurve] = kept;
+  };
+}
+
 // The grades from other tabs (support stats but a QB's own Responsibility, and the Teams tab's roster
 // grades, the same grades as the team's own strengths): the table's season only
 const TEAM_GRADES = new Set(['qbPlay', 'rbPlay', 'weapons', 'oline', 'defense', 'coaching']);
