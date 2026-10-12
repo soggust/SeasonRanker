@@ -42,7 +42,8 @@
 //            units, so it isn't pulled to the prior 1/share harder than a starter's); rx, his last five spanning
 //            the season boundary while this season has under 3 games (last season's latest at weight rx; with
 //            none this season the rate in as one game at weight 1; his per-snap last five the same); pl, his own prior leaning to last season's last 8 games (pl of their
-//            average, where last season had 12 or more; the per-snap prior by their snaps the same): a role he
+//            average, where last season had 12 or more; the per-snap prior by their snaps the same, and the work his
+//            group was missing in them in vacHist's prior, so a late role a hurt starter left isn't counted twice): a role he
 //            grew into late last season (Ty Johnson's 2025, 0.33 catches a game in weeks 1-8, 2.2 from 9) not
 //            averaged away. The volume base's target share as before. Measured 2026-10-12: pl kept on rushing
 //            yards (0.5, +0.0007, bias -0.545 to -0.478); left out on receptions (0.25, +0.0002), carries (0.5,
@@ -295,7 +296,8 @@ const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
 // (this season's also weighs each game (ij, below): wn and wsum the per-game rate's count and total, rw his
 // last five's weights, shw his snap shares', last his latest game's parts (to weigh it again once he's missed
 // games after it); his targets' tallies (tg, tt, ts, trecent) weighed as they're added. Every game 1: as before.
-// And his last PL_N games (tail, each [value, snap share or null]), read next season by the carryover (rx, pl))
+// And his last PL_N games (tail, each [value, snap share or null, the work his group was missing]), read next
+// season by the carryover (rx, pl))
 const fresh = () => ({ ...zero(), wn: 0, wsum: 0, recent: [], rw: [], vac: [0, 0, 0], recentVac: [], shares: [], shw: [], srecent: [], qrecent: [], trecent: [], tail: [], lastSh: false, last: null });
 // (the injury return (ij): an absence's games tried (his team's he missed, ia: 1 or 2), the games back read as
 // his return (RAMP: the 1st to 3rd), a game under this share of his healthy one weighed down, and the games'
@@ -657,7 +659,11 @@ export function makeModel(stat, params, env) {
     // season or the end of last, has them taken back down when the starter returns)
     const vs = params.vs ?? 0;
     const vacNow = row.vacs?.[vs] ?? 0;
-    const priorVac = longN >= 10 ? (prev.vac?.[vs] ?? 0) / longN : 0;
+    let priorVac = longN >= 10 ? (prev.vac?.[vs] ?? 0) / longN : 0;
+    // (the carryover (pl): where his prior leans to last season's last PL_N games, the work his group was
+    // missing in them leans in the same, so a role he grew into late with a starter hurt is taken back down
+    // once the starter's back (vacF), not carried in the prior as his own)
+    if (late8 !== null) priorVac = (1 - params.pl) * priorVac + params.pl * avg(tail.map((x) => x[2]?.[vs] ?? 0));
     // (his games this season measured again on the work as it is now, where the matchups give them (the NFL's:
     // matchups.mjs vacPast), so a starter still out is the same cut then as now; else each game's cut as it was)
     const past = row.vacPast;
@@ -761,7 +767,7 @@ export function makeModel(stat, params, env) {
         p.cur.wsum += wt * v;
         p.cur.recent = [...p.cur.recent, v].slice(-5);
         p.cur.rw = [...p.cur.rw, wt].slice(-5);
-        p.cur.tail = [...p.cur.tail, [v, sh]].slice(-PL_N);
+        p.cur.tail = [...p.cur.tail, [v, sh, row.vacs ?? [0, 0, 0]]].slice(-PL_N);
         if (sh !== null) {
           p.cur.sh += sh;
           p.cur.ss += v;

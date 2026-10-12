@@ -112,3 +112,24 @@ test('the carryover\'s stats: the NFL backs\' and pass-catchers\'; not the passe
   assert.deepEqual(carry('nba'), []);
   assert.deepEqual(carry('mlb'), []);
 });
+
+test('pl: the work his group was missing in last season\'s last 8 leans into vacHist\'s prior the same (a late role a hurt starter left not counted twice)', () => {
+  const V = { key: 'rec', snaps: true, carry: true, vacated: true };
+  // (last season's last 9 with a starter out, 0.4 of the work missing; tonight he's back, none missing)
+  const vacRows = [...lastSeason.map((r, g) => ({ ...r, vacs: g < 8 ? [0, 0, 0] : [0.4, 0.4, 0.4] })), ...thisSeason.map((r) => ({ ...r, vacs: [0, 0, 0] }))];
+  const proj = (params) => {
+    const m = makeModel(V, params, {});
+    m.learn(pool);
+    for (const r of vacRows) m.learn([r]);
+    return m.project({ ...tonight, vacs: [0, 0, 0] });
+  };
+  const P = { ...BASE, vc: 1 };
+  const [off, on] = [proj(P), proj({ ...P, pl: 1 })];
+  // (the prior's cut: last season's 3.6 over 17 games before; its last 8's 0.4 with pl 1)
+  const rateVac = (pv) => (4 * pv) / (2 + 4);
+  assert.ok(Math.abs(off.vacHist - rateVac(3.6 / 17)) < 1e-9);
+  assert.ok(Math.abs(on.vacHist - rateVac(0.4)) < 1e-9);
+  assert.ok(on.vacF < off.vacF);
+  // (pl off: vacHist as before, whatever the tail holds)
+  assert.deepEqual(proj({ ...P, pl: 0 }), off);
+});
