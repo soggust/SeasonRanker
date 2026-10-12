@@ -806,7 +806,7 @@ export function plainOf(sheet) {
   // (the risk: the first rule that applies, never the caveat the reason said)
   let risk;
   if (check) {
-    risk = bet.checkCause === 'news' ? 'A change of play-caller or coach is news the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : bet.checkCause === 'role' ? 'A role change is news the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : 'A gap that size is more often news the model has not seen than an edge; the CHECK keeps the result to show which it was.';
+    risk = bet.checkCause === 'news' ? 'News on his team (a new play-caller, coordinator, coach or starter) is a change the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : bet.checkCause === 'role' ? 'A role change is news the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : 'A gap that size is more often news the model has not seen than an edge; the CHECK keeps the result to show which it was.';
   } else {
     const g = sheet.game ?? {};
     const order =

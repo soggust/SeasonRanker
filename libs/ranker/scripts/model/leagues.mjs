@@ -42,8 +42,13 @@ export const GAME_CAP = 5;
 // model judges that model, not this one, so it stays on the record and in every tally but never moves the trust.
 // Bump it (an ISO time) with every major change to the projections or the pricing; the trust starts over at its
 // starting value until 40 of the new model's bets are graded. History: 2026-10-11, the leak fixes, the
-// role-aware projections, the directional role guard and the lower bands.
-export const MODEL_EPOCH = '2026-10-11T22:00:00Z';
+// role-aware projections, the directional role guard and the lower bands. 2026-10-12, the receiving stats'
+// opponent by position group (a_<group>), receiving yards' volume base (targets expected times yards a target),
+// receptions' volume base off, the teams' news (a change of play-caller, coordinator or head coach, a benching:
+// the unit's props CHECKs, the game's lines at the minimum) and the owner's notes on a team the same way, a
+// late flag judged on its own rows; measured and left out: RB1 out, QB1 out, the draft's prior, a new head
+// coach's first games, the weeks 5-8, the NHL's power-play share.
+export const MODEL_EPOCH = '2026-10-12T17:34:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
