@@ -3,7 +3,10 @@
 // weight:
 //
 //   role     the NFL: a team's WR1, WR2, WR3 (its wide receivers by their share of its targets), TE1 (its top
-//            tight end by targets), RB1 (its top back by carries); the rest WR4+, TE2+, RB2+. The NBA: a team's
+//            tight end by targets), RB1 (its top back by carries); the rest WR4+, TE2+, RB2+; and the role he
+//            steps into with the ones missing out of the order (roleUp: the next man up's), the snap share of
+//            the one missing above him (leadShare), and his return from an absence (back, ret: his team's games
+//            he missed, his games since). The NBA: a team's
 //            five with the most minutes a game among the ones playing are its starters (S), the rest its bench
 //            (B): a starter out, the next man up starts (in the history, the ones in the game's box score; at
 //            bet time, the ones not out or doubtful on the injury report)
@@ -295,16 +298,55 @@ export function nflMatchups(rows, pbp = null) {
   };
   // (a player's role on his team before a game: his place among its players at his position, by targets (by
   // carries for a back))
-  const roleOf = (pid, teamId, season, pos) => {
+  // (out: the ones missing tonight, by id, taken out of the order: the role he steps into, promotion below)
+  const roleOf = (pid, teamId, season, pos, out = null) => {
     const p = POS(pos);
     if (!p || p === 'QB') return null;
     const t = teamOf(teamId, season);
     const by = p === 'RB' ? t.car : t.tgt;
-    const mine = [...by.entries()].filter(([id]) => t.pos?.get(id) === p).sort((a, b) => b[1] - a[1]);
+    const mine = [...by.entries()].filter(([id]) => t.pos?.get(id) === p && (!out || String(id) === String(pid) || !out(id))).sort((a, b) => b[1] - a[1]);
     const at = mine.findIndex(([id]) => id === pid);
     if (at < 0) return p === 'WR' ? 'WR4+' : `${p}2+`;
     if (p === 'WR') return at < 3 ? `WR${at + 1}` : 'WR4+';
     return at === 0 ? `${p}1` : `${p}2+`;
+  };
+  // (the next man up: his role with his group's missing ones out of the order (roleUp: the ones who've played
+  // for the team this season (a regular gone since last season is in the order as before); in the history, not
+  // in the game's logs; at bet time, out, doubtful, on IR or off the roster, a questionable one not), a TE2
+  // whose TE1 is out the TE1, a WR3 whose WR1 is out the WR2; and the snap share of the most-used one missing
+  // above him (his season's average, leadShare: null with none read), the work he steps into. project.mjs rp
+  // and nu read them, kept only where the held-out games are better)
+  const promotion = (pid, teamId, season, pos, out) => {
+    const p = POS(pos);
+    if (!p || p === 'QB') return { roleUp: null, leadShare: null };
+    const t = teamOf(teamId, season);
+    const by = p === 'RB' ? t.car : t.tgt;
+    const own = by.get(pid) ?? 0;
+    const w = workOf(teamId, season).p;
+    const gone = (id) => !!w.get(id)?.cur && out(id);
+    let lead = null;
+    for (const [id, v] of by) {
+      if (t.pos?.get(id) !== p || String(id) === String(pid) || !(v > own) || !gone(id)) continue;
+      const s = snapOf(id, season)?.avg ?? null;
+      if (s !== null && (lead === null || s > lead)) lead = s;
+    }
+    return { roleUp: roleOf(pid, teamId, season, pos, gone), leadShare: lead };
+  };
+  // (a player back from an absence: back, his team's games he missed just before this one while on its books
+  // (the work's gone count: his team's games this season he wasn't in the logs of, from its first for one
+  // carried over from last season; a bye isn't a game; one new to the team none), and ret, his game since
+  // coming back ({ k: 1 the first back, to RAMP; len: the games he'd missed }), null otherwise. Before the game:
+  // in the history his not being in the logs of the games before it, at bet time the same. project.mjs ij reads
+  // them (the games he was eased back in and the one he left hurt weighed down, his game back eased by the
+  // returners' ramp), kept only where the held-out games are better)
+  const RAMP = 3;
+  const rets = new Map();
+  const returnOf = (pid, teamId, season) => {
+    const x = workOf(teamId, season).p.get(pid);
+    const back = x ? (x.gone ?? 0) : 0;
+    if (back >= 1) return { back, ret: { k: 1, len: back } };
+    const s = rets.get(pid);
+    return { back: 0, ret: s && s.season === season && s.team === teamId && s.k < RAMP ? { k: s.k + 1, len: s.len } : null };
   };
   let i = 0;
   while (i < list.length) {
@@ -328,6 +370,7 @@ export function nflMatchups(rows, pbp = null) {
         r.qb1Out = q1.v;
         r.qb1Miss = q1.miss;
         r.teamGame = gameNo(g.team, g.season);
+        Object.assign(r, promotion(r.pid, g.team, g.season, r.pos, (id) => !playing.has(id)), returnOf(r.pid, g.team, g.season));
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
       }
@@ -378,6 +421,9 @@ export function nflMatchups(rows, pbp = null) {
       for (const r of g.rows) {
         const p = POS(r.pos);
         if (!p) continue;
+        // (his games since coming back, for the next one's ret)
+        if (r.ret) rets.set(r.pid, { season: g.season, team: g.team, ...r.ret });
+        else rets.delete(r.pid);
         played.add(r.pid);
         const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), gone: 0, cur: true };
         x.pos = p;
@@ -429,7 +475,7 @@ export function nflMatchups(rows, pbp = null) {
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
       const q1 = qb1Out(teamId, season, pid, pos, missOf);
-      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { role: roleOf(pid, teamId, season, pos), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)

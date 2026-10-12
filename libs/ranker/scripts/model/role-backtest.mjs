@@ -31,6 +31,9 @@
 //                                  QB1-out games whose eligible passer (the props' own: some prior passes, so a
 //                                  debut starter isn't one) is the backup, another, or none
 //                      qb1-out     any other player on a team whose QB1 is out
+//                      returner    his 1st to RETURN_GAMES-th game back from an absence of RETURN_MIN of his
+//                                  team's games or more (games it played while he was on its books: its
+//                                  weekly roster, else his last team; not in their logs)
 //                      next-up     a regular at his position group out (RB: 8 touches a game or more; WR: 4.5
 //                                  targets; TE: 3.5), and he's the group's next man up (its most-used non-regular)
 //                      group-out   a regular at his position group out, and he's another of its regulars
@@ -65,6 +68,10 @@
 //   qb1Out           the fit's qb1Out rows (matchups.mjs: the lead quarterback not in the game's logs) by whether
 //                    the reports had him out (listed) or not (a benching, an unlisted inactive: live play reads
 //                    the report alone, so these are the history's only)
+//   moved            the fit's own next men up (matchups.mjs roleUp: his role moved up with the ones not in the
+//                    game's logs out of the order, by position) and returners (ret: his 1st to 3rd game back, by
+//                    the absence's length, 1 game or 2 or more): the rows project.mjs's rp and ij are judged on
+//                    (--set rp=0,ij=0: the same without them)
 //   by starts        the passing stats' quarterbacks by their starts before the game (0-5, 6-15, 16+: a
 //                    few-start starter's prior the most made up, and the guard's few-starts CHECK)
 //   before, after    --plain fits the model without the role-aware base (project.mjs: the snaps-based rate, a
@@ -108,7 +115,7 @@ const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (a quarterback's starts before the game, the groups the passing stats' rows are told by)
 export const START_GROUPS = { '0-5': (n) => n < 6, '6-15': (n) => n >= 6 && n < 16, '16+': (n) => n >= 16 };
 // (the buckets, in the order a row is put in the first that fits)
-export const BUCKETS = ['backup-qb', 'qb1-out', 'next-up', 'group-out', 'snap-jump', 'role-grew', 'starter-w1-4', 'starter-w5-8', 'starter-w9+', 'other'];
+export const BUCKETS = ['backup-qb', 'qb1-out', 'returner', 'next-up', 'group-out', 'snap-jump', 'role-grew', 'starter-w1-4', 'starter-w5-8', 'starter-w9+', 'other'];
 // (a regular at his position group: his recent work a game, recent games counting most (RATE a game): a back's
 // carries and targets, a receiver's or tight end's targets)
 export const REGULAR = { RB: 8, WR: 4.5, TE: 3.5 };
@@ -118,6 +125,9 @@ export const RATE = 0.35;
 // (a snap share's jump, a role grown, and an established starter's last season)
 export const JUMP = 0.1;
 export const STARTER = { games: 8, share: 0.6 };
+// (a returner: his games back, and the absence it takes (his team's games))
+export const RETURN_GAMES = 3;
+export const RETURN_MIN = 2;
 const BOOT = 1000;
 
 const GROUP = (pos) => (pos === 'RB' || pos === 'FB' ? 'RB' : pos === 'WR' ? 'WR' : pos === 'TE' ? 'TE' : pos === 'QB' ? 'QB' : null);
@@ -138,11 +148,16 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
   const pl = new Map();
   const of = (pid) => {
     let p = pl.get(pid);
-    if (!p) pl.set(pid, (p = { team: null, season: null, group: null, work: null, att: null, shares: new Map(), snaps: new Map(), passes: new Map() }));
+    if (!p) pl.set(pid, (p = { team: null, season: null, group: null, work: null, att: null, shares: new Map(), snaps: new Map(), passes: new Map(), at: null, ret: null }));
     return p;
   };
   // (each team's players seen, by team: pids)
   const seen = new Map();
+  // (each team's games this season so far, by team: { season, n })
+  const played = new Map();
+  const nOf = (team, season) => (played.get(team)?.season === season ? played.get(team).n : 0);
+  // (each row's return, the day's: for his next game's)
+  const backs = new Map();
   let i = 0;
   while (i < sorted.length) {
     const day = sorted[i].date.slice(0, 10);
@@ -150,6 +165,7 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
     while (j < sorted.length && sorted[j].date.slice(0, 10) === day) j++;
     const batch = sorted.slice(i, j);
     const games = new Map();
+    backs.clear();
     for (const r of batch) {
       const key = `${r.game}|${r.team}`;
       games.set(key, [...(games.get(key) ?? []), r]);
@@ -192,10 +208,18 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
         const next = gone.length ? (mine.filter((pid) => !reg(pid) && !isOut(pid)).sort((a, b) => pl.get(b).work - pl.get(a).work)[0] ?? null) : null;
         groups[g] = { gone: gone.length, next, regs: new Set(mine.filter((pid) => reg(pid) && !isOut(pid))) };
       }
+      // (his team's games he missed just before this one: its games since his last for it this season, or all of
+      // this season's where his last was last season's (on its books: the weekly roster's, else the team he last
+      // played for); a new arrival none)
+      const n = nOf(team, season);
       for (const r of list) {
         const pid = String(r.pid);
         const p = pl.get(pid);
         const g = GROUP(r.pos);
+        const onBooks = !!p?.at && p.at.team === team && (!roster || roster.has(pid));
+        const missed = !onBooks ? 0 : p.at.season === season ? n - p.at.n : p.at.season === season - 1 ? n : 0;
+        const back = missed >= 1 ? { k: 1, len: missed } : p?.ret && p.ret.season === season && p.ret.k < RETURN_GAMES ? { k: p.ret.k + 1, len: p.ret.len } : null;
+        backs.set(r, back);
         const shares = p?.shares.get(season) ?? [];
         const last = p?.shares.get(season - 1) ?? [];
         const avg = (a) => a.reduce((t, x) => t + x, 0) / a.length;
@@ -209,19 +233,21 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
           snapJump: shares.length >= 2 && shares[shares.length - 1] > avg(shares) + JUMP,
           roleGrew: shares.length >= 1 && last.length >= 4 && avg(shares) > avg(last) + JUMP,
           starter: last.length >= STARTER.games && avg(last) >= STARTER.share,
+          returner: !!back && back.len >= RETURN_MIN,
         };
         // (no week: no reports read, so no bucket can be told: 'no-week', left out of the tables)
         const bucket =
           !week ? 'no-week'
           : flags.backupQb ? 'backup-qb'
           : flags.qb1Out ? 'qb1-out'
+          : flags.returner ? 'returner'
           : flags.nextUp ? 'next-up'
           : flags.groupOut ? 'group-out'
           : flags.snapJump ? 'snap-jump'
           : flags.roleGrew ? 'role-grew'
           : flags.starter ? (week <= 4 ? 'starter-w1-4' : week <= 8 ? 'starter-w5-8' : 'starter-w9+')
           : 'other';
-        out.set(`${r.game}|${pid}`, { bucket, flags, week, team: r.team, season });
+        out.set(`${r.game}|${pid}`, { bucket, flags, week, team: r.team, season, back });
       }
     }
     // (then the day learned: work, passes, snap shares, snaps; the team's players seen)
@@ -233,6 +259,9 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
         const p = of(pid);
         p.team = r.team;
         p.season = r.season;
+        p.at = { team: r.team, season: r.season, n: nOf(r.team, r.season) + 1 };
+        const b = backs.get(r);
+        p.ret = b ? { season: r.season, ...b } : null;
         if (g) {
           p.group = g;
           if (g === 'QB') {
@@ -248,6 +277,8 @@ export function preGame(rows, { weekOf, outOf, rosterOf = () => null }) {
         if (!seen.has(r.team)) seen.set(r.team, new Set());
         seen.get(r.team).add(pid);
       }
+      const { team, season } = list[0];
+      played.set(team, { season, n: nOf(team, season) + 1 });
     }
     i = j;
   }
@@ -472,7 +503,7 @@ async function main() {
   const forced = setAt > 0 ? Object.fromEntries(String(process.argv[setAt + 1] ?? '').split(',').filter(Boolean).map((kv) => kv.split('=')).map(([k, v]) => [k, Number(v)])) : {};
   for (const [k, v] of Object.entries(forced)) {
     if (!Number.isFinite(v)) throw new Error(`--set wants key=number, not ${k}=${v}`);
-    for (const f of Object.values(fitted)) if (f.params && k in f.params) f.params = { ...f.params, [k]: v };
+    for (const f of Object.values(fitted)) if (f.params && (k in f.params || (LATE.includes(k) && f.stat?.snaps))) f.params = { ...f.params, [k]: v };
   }
   console.log(`role backtest: ${rows.length} player rows, settings ${useState ? 'from state.json' : 'fit'} in ${Math.round((Date.now() - t0) / 1000)}s`);
   // (the buckets, from before each game)
@@ -524,7 +555,7 @@ async function main() {
         noWeek++;
         continue;
       }
-      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, pos: x.row.pos, own: x.p.own ?? null, prior: x.p.prior ?? null, priorW: x.p.priorW ?? null, base: x.p.base ?? null, teamGame: x.row.teamGame ?? null, fitQb1Out: x.row.qb1Out ?? 0, qbListed: !!(s.flags?.qb1Out || s.flags?.backupQb), qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
+      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, pos: x.row.pos, own: x.p.own ?? null, prior: x.p.prior ?? null, priorW: x.p.priorW ?? null, base: x.p.base ?? null, teamGame: x.row.teamGame ?? null, fitQb1Out: x.row.qb1Out ?? 0, promoted: !!x.row.roleUp && x.row.roleUp !== x.row.role, fitBack: x.row.ret ?? null, qbListed: !!(s.flags?.qb1Out || s.flags?.backupQb), qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
     }
     if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
     if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
@@ -573,12 +604,34 @@ async function main() {
     // whether the reports had him out (the qb1-out and backup-qb buckets: out, doubtful or on reserve) or not (a
     // benching, an inactive with no listing): live play reads the report alone)
     block.qb1Fit = qb1FitTable(items);
+    // (the fit's own next men up (matchups.mjs roleUp: a role moved up with the missing out of the order) and
+    // returners (ret: his 1st to 3rd game back, by the absence's length), what project.mjs rp and ij are judged
+    // on: the buckets above are the reports')
+    block.moved = movedTable(items);
     results[st.key] = block;
     console.log(`role backtest: ${st.key}: ${items.length} eligible rows from ${FROM} (fit window ${cuts[0]} to ${cuts[1]})`);
   }
   writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', plain, coverage, rosterOnly, results }, null, 1));
   writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState, plain, coverage, rosterOnly, before: earlier }));
   console.log(`role backtest: written .cache/role-backtest.md in ${Math.round((Date.now() - t0) / 1000)}s`);
+}
+
+// (the late terms --set can force on a stat that has them though the fit left them out (absent from its params):
+// the next man up's and the injury return's, project.mjs)
+const LATE = ['rp', 'nu', 'ij', 'ia', 'ir'];
+
+// (the fit's next men up and returners: n, the bias, all and held out; the returners by the absence's length (1
+// game, 2 or more) and his game back)
+export function movedTable(items) {
+  const out = {};
+  const put = (name, list) => {
+    const held = list.filter((x) => x.held);
+    if (list.length) out[name] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null };
+  };
+  put('promoted', items.filter((x) => x.promoted));
+  for (const g of ['WR', 'TE', 'RB']) put(`promoted ${g}`, items.filter((x) => x.promoted && GROUP(x.pos) === g));
+  for (const len of [1, 2]) for (const k of [1, 2, 3]) put(`back ${len === 1 ? '1 game' : '2+ games'}, game ${k}`, items.filter((x) => x.fitBack && x.fitBack.k === k && (len === 1 ? x.fitBack.len === 1 : x.fitBack.len >= 2)));
+  return out;
 }
 
 // (the weeks' table: by week group (WEEKS) and group (every eligible player, the established starters, and
@@ -726,6 +779,17 @@ export function report(results, { from = 2021, useState = false, plain = false, 
     lines.push('|---|---|---:|---:|---:|---:|---:|');
     for (const [key, block] of Object.entries(results)) {
       for (const [name, x] of Object.entries(block.qb1Fit ?? {})) if (x.n) lines.push(`| ${key} | ${name} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} | ${num(x.value, 2)} |`);
+    }
+  }
+  // (the fit's next men up and returners)
+  if (Object.values(results).some((b) => b.moved)) {
+    lines.push('');
+    lines.push("## The fit's next men up and returners (matchups.mjs: a role moved up with the ones missing from the game's logs out of the order, roleUp; his 1st to 3rd game back from an absence, ret, by its length: what project.mjs rp and ij are judged on)");
+    lines.push('');
+    lines.push('| stat | rows | n | bias | held-out n | held-out bias |');
+    lines.push('|---|---|---:|---:|---:|---:|');
+    for (const [key, block] of Object.entries(results)) {
+      for (const [name, x] of Object.entries(block.moved ?? {})) lines.push(`| ${key} | ${name} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} |`);
     }
   }
   // (a passing stat's quarterbacks by their starts before the game)

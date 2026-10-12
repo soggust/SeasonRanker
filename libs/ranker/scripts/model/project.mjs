@@ -18,13 +18,29 @@
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
+//   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
+//            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
+//            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
+//            it; with nu, his expected snap share at least nu of the missing one's above him (leadShare). Its
+//            own held-out rows (every player's, 2021 on) ran 13% to 16% over their projections without it
+//   return   the NFL's injury return (ij, with ia and ir, a late term the same way): a game back from an absence
+//            of ia of his team's games or more (matchups.mjs back, ret: before the game, his not being in the
+//            logs of the ones before it), the last game before it (the one he most likely left hurt) and his 1st
+//            to RAMP-th games back each weigh 1 - ij in his per-game rate, his last five, his expected snap share
+//            and his target share where its snap share was under UNDER of his healthy share (his season's typical
+//            share before the absence, else last season's); and the game tonight eased by the returners' ramp to
+//            the power ir (what returners did in that game back over their projections, learned as the replay
+//            goes). The role backtest's returners (2 games out or
+//            more) ran 7% to 12% under their projections without it (2026-10-12), their first game back 14% to
+//            18%: the ramp's way, not the weights'
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
 //            power-play share, on a floor of 0.0001, on no stat's ctx now) tried after the rest the same way as
 //            the draft's prior (below): on top of them as fit, against none at the dispersion the same search
 //            found, kept only
 //            with a held-out gain of its floor or more (0.0003 the flags'), and the bias: a flag on a few rows
-//            (SUBGROUP: the head coach's, the quarterback's) its own rows' smaller and the rest's no larger (half
+//            (SUBGROUP: the head coach's, the quarterback's, the next man up's promoted rows, the returners'
+//            games back) its own rows' smaller and the rest's no larger (half
 //            a percent of their mean actual), ppShare the eligible players' and every player's no larger (not
 //            measured: left out); left out, the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
@@ -210,11 +226,24 @@ const DRAFT_GAIN = 0.0003;
 // skater, not a flag on a few hundred games, so over the rounding's 0 (0.0001); searched with the rest it moved
 // the vacated and goalie terms on points (2026-10-12), kept at +0.0002 with the stat's held out worse; left out
 // late too, and off the NHL's ctx since: props.mjs)
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001 };
+// (and the NFL's next man up (rp, with nu) and injury return (ij, with ia and ir) the same way, on the same
+// floor: each changes a few rows (a promoted role's, a returner's), tried after the rest as fit)
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN };
 // (the flags on a few of the rows, each judged on its own rows' bias (fitStat): the held-out rows it's on, this
 // many or more, and the rest's no larger by more than this share of their mean actual (the lean refit with it
-// moves them a little); ppShare, on every skater, judged on the whole stat's as before)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason']);
+// moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
+// are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
+// games back from an absence of ia games or more)
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'rp', 'ij']);
+// (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
+// one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left
+// hurt (1 - ij), the absence it takes (ia team games), and the returners' ramp on his game back to the power ir
+// (0 none; yards needn't fall as far as the snaps))
+const NU = [0, 0.5, 0.75, 1];
+const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
+const lateTries = (key) => (key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+// (a late term's setting as the log says it: a flag's size, a compound's each part)
+const sizeOf = (key, t) => (Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
 const SUBGROUP_TOL = 0.005;
 // (a list's bias a game, projected less actual, its count and its mean actual; null with none)
@@ -230,7 +259,25 @@ const tz = () => ({ n: 0, got: 0, usual: 0 });
 
 const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum', 'tgn', 'tg', 'tt', 'ts'];
 const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
-const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [], trecent: [], lastSh: false });
+// (this season's also weighs each game (ij, below): wn and wsum the per-game rate's count and total, rw his
+// last five's weights, shw his snap shares', last his latest game's parts (to weigh it again once he's missed
+// games after it); his targets' tallies (tg, tt, ts, trecent) weighed as they're added. Every game 1: as before)
+const fresh = () => ({ ...zero(), wn: 0, wsum: 0, recent: [], rw: [], vac: [0, 0, 0], recentVac: [], shares: [], shw: [], srecent: [], qrecent: [], trecent: [], lastSh: false, last: null });
+// (the injury return (ij): an absence's games tried (his team's he missed, ia: 1 or 2), the games back read as
+// his return (RAMP: the 1st to 3rd), a game under this share of his healthy one weighed down, and the games'
+// worth the ramp's ratio is pulled toward even by)
+export const RAMP = 3;
+const UNDER = 0.9;
+const RAMP_M = 10;
+// (a row his game back from an absence of ia team games or more, the 1st to RAMP-th: matchups.mjs ret)
+export const isBack = (row, ia = 2) => !!row?.ret && row.ret.k >= 1 && row.ret.k <= RAMP && row.ret.len >= ia;
+// (a weighted average; null where the weights sum to none)
+const wavg = (xs, ws) => {
+  let t = 0;
+  let w = 0;
+  xs.forEach((x, i) => ((t += (ws[i] ?? 1) * x), (w += ws[i] ?? 1)));
+  return w > 0 ? t / w : null;
+};
 const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[k] ?? 0)]));
 
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
@@ -296,9 +343,74 @@ export function makeModel(stat, params, env) {
     return Math.pow((t.got + DRAFT_M * per) / (t.usual + DRAFT_M * per), params.dp);
   };
   const avg = (a) => a.reduce((s, x) => s + x, 0) / a.length;
+  // (the role he's projected in: with the next man up's promotion (rp, kept only where the held-out games are
+  // better) the one he steps into with his group's missing ones out of the order (matchups.mjs roleUp), else
+  // his place by the season's work as before; the defenses' tables learned by the same)
+  const roleAt = (row) => (params.rp && row.roleUp ? row.roleUp : row.role);
+  // (the injury return (ij, the NFL's backs and pass-catchers: stat.snaps; 0 off, kept only where the held-out
+  // games are better): a game he left hurt or was eased back in weighs 1 - ij in his per-game rate, his last
+  // five, his expected snap share and his target share (his per-snap rate as it is: a short game's per snap
+  // is his), and the game tonight eased by the returners' ramp (ir; ij 0 with ir: the ramp alone))
+  const IJ = !!((params.ij || params.ir) && stat.snaps);
+  const ia = params.ia ?? 2;
+  // (the returners' ramp: what they did in their 1st to RAMP-th game back over their projections without it,
+  // learned as the replay goes (every returner's of ia games or more, before tonight; their own projections,
+  // before each game), pulled toward even by RAMP_M games' worth. The eligible players' alone (learned from and
+  // eased) tried too (2026-10-12): receptions' held-out gain +0.0004 to -0.0002. Their snap share over their
+  // healthy share was tried first: receiving yards' returners went from 4% under their projections to 7% over,
+  // the share's dip not the output's)
+  const ramps = Array.from({ length: RAMP }, () => ({ n: 0, got: 0, usual: 0 }));
+  const rampOf = (k) => {
+    const x = ramps[k - 1];
+    if (!x?.n) return 1;
+    const per = x.usual / x.n;
+    return (x.got + RAMP_M * per) / (x.usual + RAMP_M * per);
+  };
+  // (his healthy share: this season's typical share (typicalShares, each game by its weight) leaving out his
+  // latest skip games, else last season's (4 games' counts or more); null with neither)
+  const healthyOf = (cur, prev, skip) => {
+    const s = cur.shares.slice(0, Math.max(0, cur.shares.length - skip));
+    const w = cur.shw.slice(0, s.length);
+    const kept = typicalIdx(s);
+    const h = kept.length ? wavg(kept.map((i) => s[i]), kept.map((i) => w[i])) : null;
+    return h !== null ? h : prev.shn >= 4 ? prev.sh / prev.shn : null;
+  };
+  // (his latest game weighed again (w): its parts in his per-game rate, his last five, his shares and targets)
+  const reweight = (cur, rec, w) => {
+    const d = w - rec.w;
+    if (!d) return;
+    cur.wn += d;
+    cur.wsum += d * rec.v;
+    if (cur.rw.length) cur.rw[cur.rw.length - 1] = w;
+    if (rec.sh !== null && cur.shw.length) cur.shw[cur.shw.length - 1] = w;
+    if (rec.tgOk) {
+      cur.tg += d * rec.tg;
+      cur.tt += d * rec.tt;
+      cur.ts += d * rec.v;
+      if (cur.trecent.length) cur.trecent[cur.trecent.length - 1] = [w * rec.tg, w * rec.tt];
+    }
+    rec.w = w;
+  };
+  // (a game back from an absence of ia team games or more (matchups.mjs back: known before it, his not being in
+  // the logs of the ones before): the last game before it, the one he most likely left hurt, weighs 1 - ij where
+  // its snap share was under UNDER of his healthy share (the rest of his season's, else last season's); and
+  // the healthy share kept for the games he's eased back in (learn). Once a game)
+  const settle = (pl, row) => {
+    if (!IJ || pl.settled === row.game) return;
+    pl.settled = row.game;
+    if (!((row.back ?? 0) >= ia)) return;
+    const same = pl.season === row.season;
+    const cur = same ? pl.cur : fresh();
+    const prev = same ? pl.prev : pl.season === row.season - 1 ? pl.cur : zero();
+    const last = same ? cur.last : null;
+    const healthy = healthyOf(cur, prev, last && last.sh !== null ? 1 : 0);
+    pl.healthy = { season: row.season, v: healthy };
+    if (last && last.sh !== null && healthy !== null && last.sh < UNDER * healthy) reweight(cur, last, 1 - params.ij);
+  };
   const parts = (row) => {
     const pl = players.get(row.pid);
     if (!pl) return null;
+    settle(pl, row);
     const cur = pl.season === row.season ? pl.cur : fresh();
     const prev = pl.season === row.season ? pl.prev : pl.season === row.season - 1 ? pl.cur : zero();
     // (the seasons before last, as seen from this one)
@@ -318,11 +430,12 @@ export function makeModel(stat, params, env) {
     // one taken, and a target's apart), each only where its own prior is the position's: what the board shows)
     let draftUsed = longN < 10 ? draftG : 1;
     let draftY = 1;
-    let rate = (cur.sum + K * prior) / (cur.n + K);
+    // (this season's games each by its weight: every one 1 but a game he left hurt or was eased back in, ij)
+    let rate = (cur.wsum + K * prior) / (cur.wn + K);
     // (the prior's weight in the rate as it's made: the per-game blend's, with the starts' or the snaps' own
     // (K against his starts, or his snap shares' total) blended in as the rate is; check-learn.mjs reads it)
-    let priorW = cur.n + K > 0 ? K / (cur.n + K) : null;
-    let recent = cur.recent.length >= 3 ? avg(cur.recent) : rate;
+    let priorW = cur.wn + K > 0 ? K / (cur.wn + K) : null;
+    let recent = cur.recent.length >= 3 ? (wavg(cur.recent, cur.rw) ?? rate) : rate;
     // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
     //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
     //           his team's passer as known before the game, a start he left hurt early counted as the bet
@@ -361,8 +474,20 @@ export function makeModel(stat, params, env) {
       const covered = cur.n === 0 || (cur.lastSh && cur.shn >= cur.n - 1);
       // (a game far under his usual share (under half his median: he left it hurt, say) left out of what's
       // expected tonight, unless his last two were both: a role cut, not a game cut short)
-      const shares = typicalShares(cur.shares);
-      const exp = !covered ? null : shares.length ? (1 - sr) * avg(shares) + sr * shares[shares.length - 1] : prev.shn >= 4 ? prev.sh / prev.shn : null;
+      // (each game by its weight (ij: a game he left hurt or was eased back in weighs less, his last game's sr
+      // with it); every weight none, as they are)
+      const kept = typicalIdx(cur.shares);
+      let exp = null;
+      if (covered && kept.length) {
+        const ks = kept.map((i) => cur.shares[i]);
+        const kw0 = kept.map((i) => cur.shw[i] ?? 1);
+        const kw = kw0.some((x) => x > 0) ? kw0 : kw0.map(() => 1);
+        const lw = kw[kw.length - 1];
+        exp = (1 - sr * lw) * wavg(ks, kw) + sr * lw * ks[ks.length - 1];
+      } else if (covered) exp = prev.shn >= 4 ? prev.sh / prev.shn : null;
+      // (the next man up (rp with nu): the role he steps into's share, nu of the snap share of the one missing
+      // above him (matchups.mjs leadShare), where it's more than his own)
+      if (exp !== null && params.rp && params.nu && row.roleUp && row.roleUp !== row.role && row.leadShare > 0) exp = Math.max(exp, params.nu * row.leadShare);
       // (his own per-snap prior on 5 full games' worth of counted snaps or more, else made up to 5 with the
       // position's (a long run whose few counted games would be a noisy prior))
       const longSh = prev.sh + 0.5 * older.sh;
@@ -426,7 +551,11 @@ export function makeModel(stat, params, env) {
         }
       }
     }
-    const base = (1 - params.w) * rate + params.w * recent;
+    // (his game back from an absence (ir): eased by the returners' ramp at his game since coming back, to the
+    // power ir: his healthy level (the games weighed down) times what returners have done in that game against
+    // their projections)
+    const rampF = IJ && params.ir && isBack(row, ia) ? Math.pow(rampOf(row.ret.k), params.ir) : 1;
+    const base = rampF * ((1 - params.w) * rate + params.w * recent);
     // (what the opponent's allowed his position against what those players usually do: a ratio of sums, this
     // season's and half of last, pulled toward even by 8 games' worth)
     // (a table's sums for this season, last season's at half weight)
@@ -445,8 +574,9 @@ export function makeModel(stat, params, env) {
     // (his role's: the same against players in his role, pulled toward the position's by roleK games of it)
     const posOpp = opp;
     let roleOpp = null;
-    if (row.role && Number.isFinite(params.roleK)) {
-      const x = roles.get(`${row.opp}|${row.role}`);
+    const myRole = roleAt(row);
+    if (myRole && Number.isFinite(params.roleK)) {
+      const x = roles.get(`${row.opp}|${myRole}`);
       if (x) {
         const { got, usual, n } = sums(x);
         const per = n ? usual / n : base;
@@ -483,7 +613,7 @@ export function makeModel(stat, params, env) {
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const oppA = oppAOf(row);
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: row.roleUp ?? null, ramp: rampF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -532,7 +662,8 @@ export function makeModel(stat, params, env) {
             table.set(key, o);
           };
           tally(opps, `${row.opp}|${posKey(row)}`);
-          if (row.role) tally(roles, `${row.opp}|${row.role}`);
+          const myRole = roleAt(row);
+          if (myRole) tally(roles, `${row.opp}|${myRole}`);
         }
         // (his seasons: this one, last, and the ones before it (career))
         let p = pl;
@@ -545,19 +676,39 @@ export function makeModel(stat, params, env) {
             cur: fresh(),
             prev: consecutive ? { ...addAcc(zero(), p.cur), vac: p.cur.vac } : zero(),
             career: consecutive ? before : addAcc(before, p.cur),
+            healthy: p.healthy,
+            settled: p.settled,
           };
         }
-        p.cur.n++;
-        p.cur.sum += v;
-        p.cur.recent = [...p.cur.recent, v].slice(-5);
         // (his snap share in the game where the counts were read (matchups.mjs row.share: the game's own, learned
         // after it, never projected from), and a quarterback's start (row.start))
         const sh = Number.isFinite(row.share) && row.share > 0 ? row.share : null;
+        // (the game's weight (ij): his 1st to RAMP-th game back from an absence, its snap share under UNDER of his
+        // healthy share (kept when he came back: settle), 1 - ij; and the returners' ramp learned from it: what he
+        // did over his projection before the ramp)
+        let wt = 1;
+        if (IJ && isBack(row, ia)) {
+          const h = p.healthy?.season === row.season ? p.healthy.v : null;
+          if (sh !== null && h !== null && h > 0 && sh < UNDER * h) wt = 1 - params.ij;
+          if (before?.ramp > 0) {
+            const x = ramps[row.ret.k - 1];
+            x.n++;
+            x.got += v;
+            x.usual += before.mu / before.ramp;
+          }
+        }
+        p.cur.n++;
+        p.cur.sum += v;
+        p.cur.wn += wt;
+        p.cur.wsum += wt * v;
+        p.cur.recent = [...p.cur.recent, v].slice(-5);
+        p.cur.rw = [...p.cur.rw, wt].slice(-5);
         if (sh !== null) {
           p.cur.sh += sh;
           p.cur.ss += v;
           p.cur.shn++;
           p.cur.shares = [...p.cur.shares, sh].slice(-20);
+          p.cur.shw = [...p.cur.shw, wt].slice(-20);
           p.cur.srecent = [...p.cur.srecent, [v, sh]].slice(-5);
         }
         p.cur.lastSh = sh !== null;
@@ -578,13 +729,17 @@ export function makeModel(stat, params, env) {
         p.cur.recentVac = [...p.cur.recentVac, vacs].slice(-5);
         // (his targets and his team's in the game, where both were read)
         const tg = games.get(`${row.game}|${row.team}`);
-        if (tg?.ok && tg.sum > 0) {
+        // (each by the game's weight: 1 but a game he was eased back in, ij)
+        const tgOk = !!(tg?.ok && tg.sum > 0);
+        if (tgOk) {
           p.cur.tgn++;
-          p.cur.tg += row.s.targets;
-          p.cur.tt += tg.sum;
-          p.cur.ts += v;
-          p.cur.trecent = [...p.cur.trecent, [row.s.targets, tg.sum]].slice(-5);
+          p.cur.tg += wt * row.s.targets;
+          p.cur.tt += wt * tg.sum;
+          p.cur.ts += wt * v;
+          p.cur.trecent = [...p.cur.trecent, [wt * row.s.targets, wt * tg.sum]].slice(-5);
         }
+        // (his latest game's parts, to weigh it again should he miss games after it: settle)
+        if (IJ) p.cur.last = { v, w: wt, sh, tgOk, tg: tgOk ? row.s.targets : 0, tt: tgOk ? tg.sum : 0 };
         p.draft = row.draft ?? pl?.draft ?? null;
         players.set(row.pid, p);
         const k = posKey(row);
@@ -737,6 +892,8 @@ const has = (stat, key) =>
   : key === 'kd' ? !!stat.early
   : key === 'vol' ? !!stat.perTarget
   : key === 'dp' ? !!stat.draft
+  : key === 'rp' ? !!(stat.snaps && stat.roles)
+  : key === 'ij' ? !!stat.snaps
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -791,7 +948,7 @@ export function fitStat(stat, rows, env) {
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
-  const late = ctxs.filter((k) => MIN_GAIN[k] !== undefined);
+  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined), ...['rp', 'ij'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -852,9 +1009,17 @@ export function fitStat(stat, rows, env) {
   // game aren't projected at all (parts: 2 games of his own or more), live or here, so none is in them)
   const youngOf = (o, yrs) => o.filter((x) => x.win === 2 && x.row.eligible !== false && x.row.draft && x.row.season - x.row.draft.year >= 0 && x.row.season - x.row.draft.year <= yrs);
   const allOf = (o) => o.filter((x) => x.win === 2 && !(x.row.s.snaps > 0 && x.row.s.snaps < 10));
-  // (split: a flag's name (SUBGROUP): the held-out games' bias a game, projected less actual, on the rows it's
-  // on (its value over 0, every player's) and the rest (every player's and the eligible's), and the rest's mean
+  // (split: the rows a late term is on (SUBGROUP, onOf): the held-out games' bias a game, projected less actual,
+  // on the rows it's on (every player's) and the rest (every player's and the eligible's), and the rest's mean
   // actual, for its gate below)
+  // (a flag's rows its value over 0; the next man up's a role moved up with the missing out of the order
+  // (whether or not the term's on: the same rows both sides); the injury return's his games back as tried (ia))
+  const onOf = (key, t) => {
+    if (key === 'rp') return (x) => !!x.row.roleUp && x.row.roleUp !== x.row.role;
+    if (key === 'ij') return (x) => isBack(x.row, t.ia);
+    const i = ctxKeys(stat).indexOf(key.slice(2));
+    return (x) => (x.p.ctx?.[i] ?? 0) > 0;
+  };
   const heldOut = (p, split = null) => {
     const o = replayStat(stat, sorted, p, env, cuts).out;
     const cal = fitRecal(linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p));
@@ -862,8 +1027,7 @@ export function fitStat(stat, rows, env) {
     const all = has(stat, 'dp') || late.length ? check(allOf(o), { ...p, cal }) : null;
     let parts = null;
     if (split) {
-      const i = ctxKeys(stat).indexOf(split.slice(2));
-      const on = (x) => (x.p.ctx?.[i] ?? 0) > 0;
+      const on = split;
       const a = allOf(o);
       parts = { on: biasOf(a.filter(on)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
     }
@@ -930,19 +1094,18 @@ export function fitStat(stat, rows, env) {
     const shape = { rk: params.rk ?? 0, rm };
     const s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
     let sBest = s0;
-    let v = 0;
-    for (const x of GRID[key] ?? GRID.c) {
-      if (!x) continue;
-      const sc = scoreOf(replayStat(stat, sorted, { ...params, [key]: x }, env, cuts).out, 1, shape);
+    let v = null;
+    for (const x of lateTries(key)) {
+      const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
       if (sc.ll > sBest.ll) (sBest = sc), (v = x);
     }
     gains[key] = null;
     if (!v) continue;
     const offP = { ...params, r: s0.r };
     offP.scale = scaleOf(offP);
-    const sub = SUBGROUP.has(key) ? key : null;
+    const sub = SUBGROUP.has(key) ? onOf(key, v) : null;
     const off = heldOut(offP, sub);
-    const tryP = { ...params, [key]: v, r: sBest.r };
+    const tryP = { ...params, ...v, r: sBest.r };
     tryP.scale = scaleOf(tryP);
     const tried = heldOut(tryP, sub);
     gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
@@ -963,7 +1126,7 @@ export function fitStat(stat, rows, env) {
       const ab = fine(tried.all?.bias, off.all?.bias);
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
     }
-    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -1108,12 +1271,18 @@ function check(list, params) {
 // hurt, or was eased back), unless his last two games were both that low (a role cut). Fewer than 3 games: as
 // they are
 export function typicalShares(shares) {
-  if (!Array.isArray(shares) || shares.length < 3) return shares ?? [];
+  return typicalIdx(shares).map((i) => shares[i]);
+}
+// (the same as the games' places in the list, so each one's weight goes with it)
+export function typicalIdx(shares) {
+  if (!Array.isArray(shares)) return [];
+  const all = shares.map((_, i) => i);
+  if (shares.length < 3) return all;
   const sorted = [...shares].sort((x, y) => x - y);
   const med = sorted[Math.floor(sorted.length / 2)];
   const low = (x) => x < 0.5 * med;
   const n = shares.length;
-  if (low(shares[n - 1]) && low(shares[n - 2])) return shares;
-  const kept = shares.filter((x) => !low(x));
-  return kept.length ? kept : shares;
+  if (low(shares[n - 1]) && low(shares[n - 2])) return all;
+  const kept = all.filter((i) => !low(shares[i]));
+  return kept.length ? kept : all;
 }
