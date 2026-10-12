@@ -644,15 +644,17 @@ async function fitTheProps(r) {
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (each stat's matchup terms kept, and what each did for the held-out games' log loss)
     for (const [key, f] of Object.entries(r.props ?? {})) {
-      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? ', left out: its rookies worse' : ''}` : `${g}, left out`})`);
+      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : ''}` : `${g}, left out`})`);
       // (and its held-out check: the eligible players' log loss at lines at their median, the bias a game
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
-      // (the draft's prior on the players in their first season and first two: without it, then at the size the
-      // search took (dp), the eligible players' held-out games)
+      // (the draft's prior's gate, its own numbers: without it, then at the size the search took (dp), each at
+      // its own dispersion r: the eligible players' held-out games, every player's bias, the players in their
+      // first season and first two, and those two seasons' early games (under 3 of his own: bias and error))
       const rk = f.rookie;
       const two = (x) => (x?.[0] && x?.[1] ? `${x[0].logLoss} to ${x[1].logLoss}, bias ${x[0].bias} to ${x[1].bias} (${x[1].lines} lines of ${x[1].n})` : 'n/a');
-      if (rk) kept.push(`draft dp ${rk.dp}${rk.dp && !rk.kept ? ' (left out)' : ''}: rookies ${two(rk.rookie)}, first two seasons ${two(rk.young)}`);
+      const bias = (x) => (x?.[0] && x?.[1] ? `bias ${x[0].bias} to ${x[1].bias}, error ${x[0].mae} to ${x[1].mae} (${x[1].n} games)` : 'n/a');
+      if (rk) kept.push(`draft dp ${rk.dp}${rk.dp && !rk.kept ? ' (left out)' : ''}, r ${rk.r?.[0]} to ${rk.r?.[1]}: eligible ${two(rk.check)}, all players' ${bias(rk.all)}, rookies ${two(rk.rookie)}, first two seasons ${two(rk.young)}, their early games ${bias(rk.early)}`);
       if (kept.length) console.log(`${sport}:   ${key}: ${kept.join(', ')}`);
     }
   } catch (err) {
