@@ -263,18 +263,22 @@ export function nflMatchups(rows, pbp = null) {
   // quarterback's own 0 (his passing is the starts' base's: project.mjs qs). Times the share of his own games
   // this season the lead quarterback played in (his season's numbers already the backup's, as far as they go:
   // a flag at full strength on an absence's fourth game would count its first three twice; none yet, in full).
-  // Kept only past its floor: project.mjs MIN_GAIN)
+  // Kept only past its floor: project.mjs MIN_GAIN. Its { v, miss }: miss how surely he's missing alone (1 out, a
+  // half questionable), the write-up's words (v is under 1 for an out starter once he's missed a game))
+  // (the history's missing is any lead quarterback not in the game's logs, a benching or an unlisted inactive
+  // too, where live play reads the report and the roster alone: the role backtest's qb1Out table has the
+  // history's rows by whether the reports listed him)
   const QB_LEAD = 15;
   const qb1Out = (teamId, season, pid, pos, missOf) => {
-    if (!POS(pos) || POS(pos) === 'QB') return 0;
+    if (!POS(pos) || POS(pos) === 'QB') return { v: 0, miss: 0 };
     let lead = null;
     for (const [id, x] of workOf(teamId, season).p) if (x.pos === 'QB' && x.cur && x.v >= QB_LEAD && (!lead || x.v > lead.v)) lead = { id, v: x.v };
     const m = lead ? Math.min(1, Math.max(0, Number(missOf(lead.id)) || 0)) : 0;
-    if (!m) return 0;
+    if (!m) return { v: 0, miss: 0 };
     const h = games_.get(pid);
     const list = h && h.season === season ? h.games : [];
     const with_ = list.length ? list.filter((g) => !g.missing.has(String(lead.id))).length / list.length : 1;
-    return Math.round(m * with_ * 1000) / 1000;
+    return { v: Math.round(m * with_ * 1000) / 1000, miss: m };
   };
   // (a player's snap share: his last game's and his season's average, over the games read; null with none)
   const snapOf = (pid, season) => {
@@ -320,7 +324,9 @@ export function nflMatchups(rows, pbp = null) {
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
         r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
-        r.qb1Out = qb1Out(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        const q1 = qb1Out(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        r.qb1Out = q1.v;
+        r.qb1Miss = q1.miss;
         r.teamGame = gameNo(g.team, g.season);
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
@@ -422,7 +428,8 @@ export function nflMatchups(rows, pbp = null) {
       const vacs = vacated(teamId, season, pid, pos, missOf);
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
-      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: qb1Out(teamId, season, pid, pos, missOf), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      const q1 = qb1Out(teamId, season, pid, pos, missOf);
+      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)
@@ -627,12 +634,14 @@ export function nhlMatchups(rows, facts = null) {
   const ppOf = (pid) => pp.get(pid) ?? null;
   // (his share of his team's power play: his power-play minutes over the team's (its skaters' summed over 5, a
   // game with under half a minute of it not read), recent games counting most (RATE), carried across seasons as
-  // his minutes are; against the league's for his position's prop players (each team-game's top six forwards and
-  // top two defensemen by the game's time on ice, the eligible as markEligible picks them before the game), a
-  // running average learned after each day: ppShare, a top unit's man over 0, a second-pair defenseman under it.
-  // The prior (project.mjs: the position's eligible players) is a top unit's and a third line's alike; this reads
-  // which he is. null with no share read yet (no effect))
+  // his minutes are (his first game for a new team counting half: a top unit's man traded to a second unit isn't
+  // read as the first for long); against the league's for his position's prop players (each team-game's top six
+  // forwards and top two defensemen by that game's own time on ice, learned after it and read from the next day
+  // on: the 0 the share is centred on), a running average: ppShare, a top unit's man over 0, a second-pair
+  // defenseman under it. The prior (project.mjs: the position's eligible players) is a top unit's and a third
+  // line's alike; this reads which he is. null with no share read yet (no effect))
   const share = new Map();
+  const shareTeam = new Map();
   const lgShare = { F: { v: 0.3, n: 0 }, D: { v: 0.3, n: 0 } };
   const shareOf = (pid, pos) => {
     const v = share.get(pid);
@@ -676,7 +685,9 @@ export function nhlMatchups(rows, facts = null) {
         for (const r of skaters) {
           const x = Math.min(1, r.s.pptoi / teamPp);
           const was = share.get(r.pid);
-          share.set(r.pid, was === undefined ? x : was + (x - was) * RATE);
+          const moved = shareTeam.has(r.pid) && shareTeam.get(r.pid) !== r.team;
+          share.set(r.pid, was === undefined ? x : was + (x - was) * (moved ? Math.max(RATE, 0.5) : RATE));
+          shareTeam.set(r.pid, r.team);
         }
         // (the league's, on the game's own prop players: learned after the game, read from the next day on)
         for (const [pos, n] of [['F', 6], ['D', 2]]) {

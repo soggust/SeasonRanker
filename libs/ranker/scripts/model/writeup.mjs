@@ -248,7 +248,9 @@ function ctxWhat(bet, sheet) {
     backupQb: `${sheet.bet.team ?? 'his team'} starting a backup QB`,
     rb1Out: `${sheet.bet.team ?? 'his team'} ${v < 1 ? 'with its lead back questionable' : 'without its lead back'}`,
     newCoach: `${sheet.bet.team ?? 'his team'} in its first games under a new head coach`,
-    qb1Out: `${sheet.bet.team ?? 'his team'} ${v < 1 ? 'with its starting QB questionable' : 'without its starting QB'}`,
+    // (by how surely he's missing (projection qb1Miss), not the term's value: that's under 1 for an out starter
+    // once he's missed a game; neither known, both words)
+    qb1Out: `${sheet.bet.team ?? 'his team'} ${!fin(bet.projection?.qb1Miss) ? 'without (or possibly without) its starting QB' : bet.projection.qb1Miss < 1 ? 'with its starting QB questionable' : 'without its starting QB'}`,
     b2b: 'a back-to-back',
     pp: 'his power-play time',
     ppTime: 'his power-play time',

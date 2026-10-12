@@ -128,6 +128,10 @@ test("qb1Out: the team's lead quarterback missing, for its backs and pass-catche
   // played in (3 of 4: the fourth already the backup's); a quarterback's own 0)
   assert.equal(m.live('w', '1', '2', 'WR', 2026, new Set(['q'])).qb1Out, 0.75);
   assert.equal(m.live('s', '1', '2', 'RB', 2026, (id) => (id === 'q' ? 0.5 : 0)).qb1Out, 0.375);
+  // (how surely he's missing kept apart (the write-up's words): out 1 though the term's value is 0.75)
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, new Set(['q'])).qb1Miss, 1);
+  assert.equal(m.live('s', '1', '2', 'RB', 2026, (id) => (id === 'q' ? 0.5 : 0)).qb1Miss, 0.5);
+  assert.equal(rows.find((r) => r.pid === 'w' && r.game === 'a4').qb1Miss, 1);
   assert.equal(m.live('w', '1', '2', 'WR', 2026, null).qb1Out, 0);
   assert.equal(m.live('k', '1', '2', 'QB', 2026, new Set(['q'])).qb1Out, 0);
   // (last season's starter, gone: not this season's lead, his absence nothing)
@@ -151,6 +155,28 @@ test("teamGame: the team's game number tonight, from 1 each season; the midseaso
   assert.equal(m.live('w', '1', '2', 'WR', 2026, null).teamGame, 7);
   assert.equal(CTX.midSeason({}, true, null, { teamGame: 9 }), 0);
   assert.equal(CTX.midSeason({}, true, null, {}), 0);
+});
+
+test("the role backtest's tables: by the team's game (its week where missing), by season, and the fit's qb1Out rows by the reports", async () => {
+  const { weekTable, seasonTable, qb1FitTable } = await import('../libs/ranker/scripts/model/role-backtest.mjs');
+  const it = (o) => ({ v: 10, mu: 8, base: 10, season: 2025, held: false, bucket: 'other', pos: 'WR', fitQb1Out: 0, qbListed: false, ...o });
+  // (a bye in week 5: the team's 5th game is week 6, grouped as w5-8 by its game; the week only where no game)
+  const items = [it({ week: 6, teamGame: 4 }), it({ week: 6, teamGame: 5, mu: 10 }), it({ week: 5, teamGame: null, mu: 5 })];
+  const w = weekTable(items);
+  assert.equal(w['w1-4'].all.n, 1);
+  assert.equal(w['w5-8'].all.n, 2);
+  assert.ok(Math.abs(w['w5-8'].all.bias - (20 / 15 - 1)) < 1e-9);
+  assert.ok(Math.abs(w['w5-8'].all.factors - (15 / 20 - 1)) < 1e-9);
+  assert.equal(w['w5-8'].all.overBase, 0);
+  const s = seasonTable([it({ season: 2024 }), it({ season: 2025, held: true, mu: 12.5 })]);
+  assert.deepEqual(Object.keys(s), ['2024', '2025']);
+  assert.ok(Math.abs(s[2025].heldBias - (10 / 12.5 - 1)) < 1e-9);
+  assert.equal(s[2024].heldBias, null);
+  const q = qb1FitTable([it({ fitQb1Out: 1, qbListed: true, mu: 12.5 }), it({ fitQb1Out: 0.5, qbListed: false }), it({ fitQb1Out: 0 })]);
+  assert.equal(q.listed.n, 1);
+  assert.equal(q['not listed'].n, 1);
+  assert.equal(q['not listed'].value, 0.5);
+  assert.ok(Math.abs(q.listed.bias - (10 / 12.5 - 1)) < 1e-9);
 });
 
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {

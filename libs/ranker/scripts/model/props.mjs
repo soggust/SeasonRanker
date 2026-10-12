@@ -206,9 +206,18 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // (project.mjs MIN_GAIN, a flag on a few hundred team-games), as the new head coach's. Measured 2026-10-12 (the
 // role backtest's qb1-out: receiving yards 11% under the projection, receptions 6%, both yards 8%): as a plain
 // flag, held out -0.0001 to +0.0003; times the share of his games the starter played in, receiving yards -0.15
-// (+0.0003), both yards -0.05 (+0.0006), receptions -0.075 (+0.0002), but every one with the eligible players'
-// bias larger (receiving yards -0.65 to -0.73 a game, the held-out games already under their projections): left
-// out, refit each run. The role guard's qb1-out (ROLE_SAFE) CHECKs the over and bets the under, as before)
+// (+0.0003), both yards -0.05 (+0.0006), receptions -0.075 (+0.0002). Judged then on the whole stat's bias,
+// which a term lowering any rows can't pass (bias = projection less actual: the held-out receiving yards already
+// over their projections, -0.65 a game, so lowering any rows makes it larger); since judged on its own rows'
+// (project.mjs SUBGROUP, review of 94fddea5): the flag's held-out rows (2122, every player's) were already
+// right on before it (receiving yards' actual -0.04% under the projection; receptions +0.5%) and the term put
+// them 12% (6%) over: left out on its own bias, every stat. Why: the role backtest's qb1Out table, the fit's
+// flagged rows by the reports, has the listed absences (out, doubtful, on reserve: 725 rows from 2021) 11.9%
+// under the projection on receiving yards (held out 12.1%), receptions 6.7%, both yards 8.5%, but the unlisted
+// ones (892: a benching, an unlisted inactive) +0.5% (held out +3.6%): the history's flag (not in the logs) is
+// more than half benchings live play never flags, so its one size fits neither. Kept off till the history reads
+// the injury reports too (the backlog). The role guard's qb1-out (ROLE_SAFE, read from the reports: the listed
+// rows) CHECKs the over and bets the under, as before: the side the listed rows' 12% says)
 // (his team in its first COACH_GAMES games under a new head coach (newCoach, football.mjs: the schedule's
 // coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
 // project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
@@ -233,11 +242,16 @@ const NBA_VAC = { vacated: true, vacSplits: 6 };
 // (the NHL skaters' power-play share (ppShare: his share of his team's power play against his position's prop
 // players', matchups.mjs) measured 2026-10-12 as a late term (project.mjs MIN_GAIN, floor 0.0001): shots not
 // taken on the fit window, points 0.25 taken there and held out -0.0001, left out; searched with the rest it
-// moved the vacated and goalie terms and the stat's held-out log loss went 0.5467 to 0.5470. Also tried then: a
-// skater's own longer run pulled toward the position's by 5 to 40 games (a third-pair defenseman's 26 games
-// with a point projected 0.05 points a game, the book's line about 0.17): not taken on the fit window, whose
-// eligible players (each team's top six forwards and top two defensemen) are the ones with long runs of their
-// own; the far line on such a player stays the gap guard's CHECK)
+// moved the vacated and goalie terms and the stat's held-out log loss went 0.5467 to 0.5470. Taken off both
+// stats' ctx (review of 94fddea5): its late search ran every hour for nothing kept, the NHL's props fit 88s to
+// about 118s; CTX.ppShare and matchups.mjs's share kept for a measure on demand (add it back to a ctx). Also
+// tried then: a
+// skater's own longer run pulled toward the position's by 5 to 40 games, for a second-pair defenseman's points
+// (David Jiricek, 2026-10-11: projected 0.05 a game, the under 0.5 at 95% against the book's 65%, -233): not
+// taken on the fit window, whose eligible players (each team's top six forwards and top two defensemen) are the
+// ones with long runs of their own. So a low-usage defenseman's points can't be learned by this fit at all, and
+// his far line rests on the gap guard's CHECK alone (fail safe: not bet); a backlog item, a prior for the
+// players under the eligible pool)
 // (an MLB batter's start: his place in the game's lineup (matchups.mjs mlbMatchups: start), DraftKings' book
 // only posts a starter's, and a pinch hitter's one trip would drag a starter's rate down; a game without its
 // lineup, two plate appearances or more)
@@ -282,8 +296,8 @@ export const STATS = {
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
   ],
   nhl: [
-    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp', 'ppShare'], ...NBA_VAC }),
-    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie', 'ppShare'], ...NBA_VAC }),
+    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
+    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], ...NBA_VAC }),
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: ['oppShots'], goalie: true }),
   ],
   mlb: [
@@ -341,8 +355,13 @@ export const CTX = {
   // every eligible player's 2% to 4%, their actual over their own season so far (+3% receiving yards) and at
   // their prior (-1%): not the prior's weight (kd, the prior shrinking, leans on the early weeks, lower still).
   // As a flag (project.mjs MIN_GAIN, 0.0003) on receiving yards, receptions and both yards it was not taken or
-  // taken the other way on the fit window (-0.025, held out -0.0002): the lift is the held-out seasons' alone,
-  // not one the history repeats. On no stat's ctx; kept for later work)
+  // taken the other way on the fit window (-0.025, held out -0.0002). Not the lean either (review of 94fddea5:
+  // the role backtest by season and by the team's game): the held-out seasons' receiving yards ran +1.9%, +4.1%,
+  // -1.1%, +1.2% over the projection (2023 to 2026, no trend for a refit lean to take), and the factors' pull
+  // (the projection over the blended base: the lean, the opponent, the script) -3% to -5% in every game group
+  // alike; the starters' 5-8 lift (+5.4%, held out +8.5%, by the team's game) is their actual over the base
+  // (+0.9% there, -4.6% in 1-4, -6.5% from 9: over their own and their prior alike), the season's shape of
+  // their output, the tight ends' most (+12.8%). On no stat's ctx; kept for later work)
   midSeason: (info, home, pts, row) => (Number.isFinite(row?.teamGame) && row.teamGame >= MID_SEASON[0] && row.teamGame <= MID_SEASON[1] ? 1 : 0),
   // (his team in its first COACH_GAMES games under a new head coach (football.mjs: the game's number under him,
   // known before it by the schedule's coaches))
@@ -918,7 +937,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       guard,
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1) },
       move: prop.open !== null ? { open: prop.open, now: prop.line } : null,
     });
   }

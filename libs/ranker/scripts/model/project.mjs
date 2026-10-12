@@ -20,10 +20,13 @@
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
-//            power-play share, on a floor of 0.0001) tried after the rest the same way as the draft's prior
-//            (below): on top of them as fit, against none at the dispersion the same search found, kept only
-//            with a held-out gain of its floor or more (0.0003 the flags'), the eligible players' and every
-//            player's bias no larger (not measured: left out); left out, the stat exactly as without it
+//            power-play share, on a floor of 0.0001, on no stat's ctx now) tried after the rest the same way as
+//            the draft's prior (below): on top of them as fit, against none at the dispersion the same search
+//            found, kept only
+//            with a held-out gain of its floor or more (0.0003 the flags'), and the bias: a flag on a few rows
+//            (SUBGROUP: the head coach's, the quarterback's) its own rows' smaller and the rest's no larger (half
+//            a percent of their mean actual), ppShare the eligible players' and every player's no larger (not
+//            measured: left out); left out, the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
 //            dispersion the same search found, kept only on the RB1-out standard: a held-out gain of 0.0003 or
 //            more, the eligible players' and every player's bias no larger, and its own no worse: the rookies'
@@ -205,8 +208,22 @@ const DRAFT_GAIN = 0.0003;
 // team's lead quarterback out (CTX qb1Out))
 // (and an NHL skater's power-play share (CTX ppShare) the same way, on its own floor: a continuous term on every
 // skater, not a flag on a few hundred games, so over the rounding's 0 (0.0001); searched with the rest it moved
-// the vacated and goalie terms on points (2026-10-12), kept at +0.0002 with the stat's held out worse)
+// the vacated and goalie terms on points (2026-10-12), kept at +0.0002 with the stat's held out worse; left out
+// late too, and off the NHL's ctx since: props.mjs)
 const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001 };
+// (the flags on a few of the rows, each judged on its own rows' bias (fitStat): the held-out rows it's on, this
+// many or more, and the rest's no larger by more than this share of their mean actual (the lean refit with it
+// moves them a little); ppShare, on every skater, judged on the whole stat's as before)
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason']);
+const SUBGROUP_N = 100;
+const SUBGROUP_TOL = 0.005;
+// (a list's bias a game, projected less actual, its count and its mean actual; null with none)
+const biasOf = (list) => {
+  if (!list.length) return null;
+  const mu = list.reduce((t, x) => t + x.p.mu, 0);
+  const v = list.reduce((t, x) => t + x.v, 0);
+  return { n: list.length, bias: Math.round(((mu - v) / list.length) * 10000) / 10000, mean: Math.round((v / list.length) * 1000) / 1000, ratio: mu ? Math.round((v / mu - 1) * 10000) / 10000 : null };
+};
 const DRAFT_LINES = 100;
 const DRAFT_EARLY = 100;
 const tz = () => ({ n: 0, got: 0, usual: 0 });
@@ -835,12 +852,22 @@ export function fitStat(stat, rows, env) {
   // game aren't projected at all (parts: 2 games of his own or more), live or here, so none is in them)
   const youngOf = (o, yrs) => o.filter((x) => x.win === 2 && x.row.eligible !== false && x.row.draft && x.row.season - x.row.draft.year >= 0 && x.row.season - x.row.draft.year <= yrs);
   const allOf = (o) => o.filter((x) => x.win === 2 && !(x.row.s.snaps > 0 && x.row.s.snaps < 10));
-  const heldOut = (p) => {
+  // (split: a flag's name (SUBGROUP): the held-out games' bias a game, projected less actual, on the rows it's
+  // on (its value over 0, every player's) and the rest (every player's and the eligible's), and the rest's mean
+  // actual, for its gate below)
+  const heldOut = (p, split = null) => {
     const o = replayStat(stat, sorted, p, env, cuts).out;
     const cal = fitRecal(linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p));
     const young = has(stat, 'dp') ? [...[0, 1].map((y) => check(youngOf(o, y), { ...p, cal })), check(youngOf(o, 1).filter((x) => x.p.games < 3), { ...p, cal })] : null;
     const all = has(stat, 'dp') || late.length ? check(allOf(o), { ...p, cal }) : null;
-    return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young, all };
+    let parts = null;
+    if (split) {
+      const i = ctxKeys(stat).indexOf(split.slice(2));
+      const on = (x) => (x.p.ctx?.[i] ?? 0) > 0;
+      const a = allOf(o);
+      parts = { on: biasOf(a.filter(on)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
+    }
+    return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young, all, parts };
   };
   let current = heldOut(params);
   const gains = {};
@@ -892,6 +919,12 @@ export function fitStat(stat, rows, env) {
   // the lean fit again on both sides; kept only with a held-out gain of its floor or more, the eligible
   // players' and every player's bias no larger (either not measured: left out, so said). Left out, the stat is
   // exactly as it was without it. Why it's left out, and the bias without and with it: floors)
+  // (a flag on a few of the rows (SUBGROUP) is judged on its bias where it is, not the whole stat's: a flag that
+  // lowers the projections it's on makes a stat already projected low overall (held-out receiving yards -0.65 a
+  // game, projected less actual) lower still on the whole even where those rows ran over their projections
+  // (the qb1-out's, 11% over in the role backtest), and the lean refit on the fit window doesn't offset the
+  // held-out games. So: the rows it's on (every player's, SUBGROUP_N or more) with their bias smaller, and the
+  // rest (every player's and the eligible's) no larger by more than SUBGROUP_TOL of their mean actual)
   const floors = {};
   for (const key of late) {
     const shape = { rk: params.rk ?? 0, rm };
@@ -907,19 +940,30 @@ export function fitStat(stat, rows, env) {
     if (!v) continue;
     const offP = { ...params, r: s0.r };
     offP.scale = scaleOf(offP);
-    const off = heldOut(offP);
+    const sub = SUBGROUP.has(key) ? key : null;
+    const off = heldOut(offP, sub);
     const tryP = { ...params, [key]: v, r: sBest.r };
     tryP.scale = scaleOf(tryP);
-    const tried = heldOut(tryP);
+    const tried = heldOut(tryP, sub);
     gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
-    const fine = (a, b) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) ? null : 'larger');
+    const fine = (a, b, tol = 0) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) + tol ? null : 'larger');
     const fails = [];
     if (!(gains[key] >= MIN_GAIN[key])) fails.push('gain');
-    const eb = fine(tried.check?.bias, off.check?.bias);
-    if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
-    const ab = fine(tried.all?.bias, off.all?.bias);
-    if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
-    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null] };
+    if (sub) {
+      const [o, t] = [off.parts, tried.parts];
+      const on = (o?.on?.n ?? 0) < SUBGROUP_N ? 'not measured' : t.on.bias === 0 && o.on.bias === 0 ? null : Math.abs(t.on.bias) < Math.abs(o.on.bias) ? null : 'larger';
+      if (on) fails.push(on === 'larger' ? 'its own bias' : 'its own bias not measured');
+      const rb = fine(t?.rest?.bias, o?.rest?.bias, SUBGROUP_TOL * (o?.rest?.mean ?? 0));
+      if (rb) fails.push(rb === 'larger' ? "the rest's bias" : "the rest's bias not measured");
+      const re = fine(t?.restElig?.bias, o?.restElig?.bias, SUBGROUP_TOL * (o?.restElig?.mean ?? 0));
+      if (re) fails.push(re === 'larger' ? "the eligible rest's bias" : "the eligible rest's bias not measured");
+    } else {
+      const eb = fine(tried.check?.bias, off.check?.bias);
+      if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
+      const ab = fine(tried.all?.bias, off.all?.bias);
+      if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
+    }
+    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
