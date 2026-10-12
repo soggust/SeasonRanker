@@ -37,7 +37,10 @@
 //   a regular at his position out and a big cut of his work, a jump in his snaps, a part-timer with a regular out, a line far
 //   from his projection at the book's own price) is a CHECK too (kind 'role', its sub-reason role), whichever
 //   side the model takes, when it's the role alone (one the long-shot, moved or unpriced skips take too, skipped):
-//   the book reprices a role on the news, the model on the logs; and a line with no price that -110 can't be
+//   the book reprices a role on the news, the model on the logs. Ahead of the role, a player whose unit (his
+//   team's offense or defense, or the whole team) the news flags (news.mjs: a change of play-caller,
+//   coordinator or head coach, a benching, in the team's next games) is a CHECK either side (kind 'news', the
+//   headline its reason), on the same terms; and a line with no price that -110 can't be
 //   (unpricedWhy: far from his usual, or 0.5) is skipped as unpriced, not called a gap. A side against its own
 //   projection (an under with the mean above the line, an over below it; lines from SKEW_MIN_LINE: skewOnly) is
 //   skipped as skew: its edge only the spread's assumed skew, which leans the props to the unders. Teammates on injured
@@ -69,6 +72,8 @@ import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
 import { OUT_STATUS, Q_STATUS } from './timing.mjs';
+import { newsOn } from './news.mjs';
+import { COACH_GAMES } from './football.mjs';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
 // (no cap a game: every main-line prop that isn't skipped gets a bet, 0.5u at no edge, like the game markets:
@@ -193,8 +198,11 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // count as having played it, which side's expected score is its game script (opp: the other side's), its
 // context terms (ctxValue; each fit on its own and kept only if the held-out games are better with it:
 // project.mjs; an NHL goalie's saves also by the other side's expected shots on goal, hockey.mjs)
-const PASSING = ['wind', 'cold', 'precip'];
-const CARRYING = ['backupQb', 'wind', 'precip'];
+// (his team in its first COACH_GAMES games under a new head coach (newCoach, football.mjs: the schedule's
+// coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
+// project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
+const PASSING = ['wind', 'cold', 'precip', 'newCoach'];
+const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach'];
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
 // only +0.0001, the rounding's floor (0.6168 to 0.6167), with the bias worse (eligible -0.051 to -0.054, all
@@ -305,6 +313,12 @@ export const CTX = {
   // (his team's lead back out (matchups.mjs leadBack: out, doubtful or on IR, or not in the game's logs in the
   // history; a questionable one at half): a pass-catcher's receptions, a back's own 0)
   rb1Out: (info, home, pts, row) => (Number.isFinite(row?.rb1Out) ? row.rb1Out : 0),
+  // (his team in its first COACH_GAMES games under a new head coach (football.mjs: the game's number under him,
+  // known before it by the schedule's coaches))
+  newCoach: (info, home) => {
+    const n = info?.more?.newCoach?.[home ? 0 : 1];
+    return Number.isFinite(n) && n >= 1 && n <= COACH_GAMES ? 1 : 0;
+  },
   // (his teammates' production missing, per 10: an NBA player's usage)
   usage: (info, home) => (info?.starters?.missing?.[home ? 0 : 1] ?? 0) / 10,
   // (his side on the second night of a back-to-back)
@@ -455,7 +469,7 @@ export function fitProps(sport, rows, expPts, info, facts = null) {
     // (each player's values, by season: his record at a line)
     const values = new Map();
     for (const r of sorted) values.set(r.pid, [...(values.get(r.pid) ?? []), [r.season, Math.max(0, Math.round(r.s[st.key]))]]);
-    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, rookie: fitted.rookie ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10 };
+    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10 };
   }
   return out;
 }
@@ -742,7 +756,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the
     // better return is only the cheaper vig); else the better return)
-    const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) || roleChange ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
+    // (and his unit flagged by the news (news.mjs newsOn): a CHECK either side, the same way)
+    const newsFlag = newsOn(sport, live, row.team, row.pos);
+    const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) || roleChange || newsFlag ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
     const pick = gapSide ?? (sides[0].ev >= sides[1].ev ? sides[0] : sides[1]);
     const { side, model, ev, odds, fair } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
@@ -792,6 +808,16 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     else if (layoff) guard = { skip: true, why: row.restDays >= LAYOFF ? `${a.name}'s first start in ${row.restDays} days: back from a layoff, his pitch count likely held down` : `${a.name}'s first start of the season: back from injury most likely, his pitch count likely held down` };
     else if (snapGap?.share >= 0.25) guard = { skip: true, why: `the snap counts missing for ${snapGap.games} games: the history holds only the players who got the ball` };
     else if (rosterBlind) guard = { skip: true, why: "his team's roster not read, and his numbers were made with teammates missing: whether they're back or gone can't be told" };
+    // (his unit flagged by the news (news.mjs: a play-caller, a coordinator or the head coach changed, a
+    // benching; the team's next NEWS_GAMES games): the book reprices that on the news and the model only on the
+    // logs, either way, so neither side is bet; kind 'news', a CHECK on the model's side, the headline its
+    // reason. As the role's, only when it's the news alone: one the skips below would take too (no price -110
+    // can be, a long shot, a line moved twice the limit), skipped with both their words, no CHECK)
+    else if (newsFlag) {
+      const why = `news (${newsFlag.unit}): ${newsFlag.headline}`;
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null);
+      guard = also ? { skip: true, why: `${why}; ${also}` } : { skip: true, kind: 'news', news: newsFlag.unit, why };
+    }
     // (his role changing (the NFL's, roleChangeOf): the book reprices a role on the news and the model only on
     // the logs, so neither side is bet till the CHECKs show the model can read one; kind 'role', a CHECK. As
     // the gap's, only when it's the role alone: one the skips below would take too (no price -110 can be, a

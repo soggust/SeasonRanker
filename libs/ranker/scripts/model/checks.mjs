@@ -4,8 +4,10 @@
 // bet neither way till these show the model can read one), kept anyway as a hypothetical, so the owner can look
 // into them and the desk learns whether they'd have won.
 //
-//   cause    why it's a CHECK: 'gap' or 'role' (an older one without it, the gap's), a role's sub-reason in
-//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line); checkSummary tallies both
+//   cause    why it's a CHECK: 'gap', 'role' or 'news' (an older one without it, the gap's), a role's sub-reason in
+//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line), the
+//            news's unit in newsUnit (a prop's: news.mjs, his unit's play-caller, coordinator or head coach
+//            changed, or a benching, either side; the headline its reason); checkSummary tallies them
 //            apart, so the gap's hit rate stays the gap's
 //   what     a CHECK is the market as it stood: the model's side (the side its chance is over the book's
 //            fair chance; past the gap the lean is tapered to nothing, so the side the desk would price best
@@ -70,10 +72,11 @@ export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= RE
 // (how long after its grading a CHECK keeps its context and projection: checkTrim)
 export const TRIM_AFTER = 3 * 24 * 3600e3;
 
-// (the guards whose skip is kept as a CHECK: the gap (desk.mjs gapGuard, props.mjs) and a role changing (an NFL
-// prop's: props.mjs roleChangeOf); a CHECK's cause, an older one's the gap)
-export const CHECK_KINDS = new Set(['gap', 'role']);
-export const causeOf = (guard) => (guard?.kind === 'role' ? 'role' : 'gap');
+// (the guards whose skip is kept as a CHECK: the gap (desk.mjs gapGuard, props.mjs), a role changing (an NFL
+// prop's: props.mjs roleChangeOf) and the news on his unit (a prop's: news.mjs); a CHECK's cause, an older
+// one's the gap)
+export const CHECK_KINDS = new Set(['gap', 'role', 'news']);
+export const causeOf = (guard) => (guard?.kind === 'role' ? 'role' : guard?.kind === 'news' ? 'news' : 'gap');
 
 // The model's side of a market's two (each { side, model, fair, ... }): the one whose chance is over the
 // book's, the other beside it (other)
@@ -92,9 +95,11 @@ export function checkOf(bet, guard) {
     intent: 'check',
     units: 0,
     gap: round(bet.model - bet.fair, 4),
-    // (why it's a CHECK: the gap, or his role changing (a prop's, props.mjs roleChangeOf: its sub-reason))
+    // (why it's a CHECK: the gap, his role changing (a prop's, props.mjs roleChangeOf: its sub-reason), or the
+    // news on his unit (news.mjs: the unit))
     cause: causeOf(guard),
     ...(guard?.kind === 'role' && guard.role ? { roleReason: guard.role } : {}),
+    ...(guard?.kind === 'news' && guard.news ? { newsUnit: guard.news } : {}),
     reason: guard?.why ?? 'too far from the market',
     status: 'check',
     profit: 0,

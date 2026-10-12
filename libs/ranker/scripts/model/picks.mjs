@@ -316,8 +316,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       where: whereOf(b, g),
       reason: entry.plain.reason,
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; a role
-      // CHECK's cause and sub-reason: checks.mjs)
-      ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : {}) } : {}),
+      // CHECK's cause and sub-reason, a news one's cause and unit: checks.mjs)
+      ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : b.cause === 'news' ? { checkCause: 'news', newsUnit: b.newsUnit ?? null } : {}) } : {}),
       // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered
       // once it's after the note; held, why a noted one couldn't be re-priced)
       ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, by: b.resolved.by, ...(b.resolved.held ? { held: b.resolved.held } : {}) } } : {}),

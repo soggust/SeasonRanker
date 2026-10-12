@@ -52,8 +52,9 @@ import { round } from './ratings.mjs';
 import { driversOf } from './writeup.mjs';
 
 export const DIAGNOSIS_V = 1;
-export const CAUSES = ['role', 'unpriced', 'missing-starter-not-seen', 'vacated-fade', 'early-season-prior', 'matchup', 'game-script', 'context-term', 'dispersion', 'unknown'];
+export const CAUSES = ['news', 'role', 'unpriced', 'missing-starter-not-seen', 'vacated-fade', 'early-season-prior', 'matchup', 'game-script', 'context-term', 'dispersion', 'unknown'];
 export const CAUSE_LABELS = {
+  news: 'News on his unit',
   role: 'Role change',
   unpriced: 'Unpriced (assumed -110)',
   'missing-starter-not-seen': 'Missing player not seen',
@@ -105,6 +106,7 @@ function diagnoseProp(c) {
     gap: fin(c.gap) ? c.gap : fin(c.model) && fin(c.fair) ? round(c.model - c.fair, 4) : null,
   };
   const tags = [];
+  if (c.cause === 'news') tags.push({ cause: 'news', sub: c.newsUnit ?? 'news', why: `the news on his team's ${c.newsUnit ?? 'unit'} (${c.reason ?? 'a change'}): the book reprices that on the news, the model on the logs` });
   if (c.cause === 'role') tags.push({ cause: 'role', sub: c.roleReason ?? 'role', why: `his role changing (${c.roleReason ?? 'role'}): the book reprices a role on the news, the model on the logs` });
   if (c.oddsAssumed) tags.push({ cause: 'unpriced', why: 'priced at an assumed -110: the book’s chance an even guess, so the gap is against no real price' });
   const seen = (fin(p.vac) && p.vac >= 0.05) || has(p.out);
@@ -173,6 +175,7 @@ export function diagnose(c) {
 // (a CHECK's diagnosis as the learning reads it: its own, else made now; a trimmed one without, by its guard)
 export function diagnosisOf(c) {
   if (c?.diagnosis?.cause) return c.diagnosis;
+  if (c?.trimmed && !c.projection?.rate && c.cause === 'news') return { cause: 'news', ...(c.newsUnit ? { sub: c.newsUnit } : {}) };
   if (c?.trimmed && !c.projection?.rate) return { cause: c.cause === 'role' ? 'role' : 'unknown', ...(c.cause === 'role' && c.roleReason ? { sub: c.roleReason } : {}) };
   return diagnose(c) ?? { cause: 'unknown' };
 }
@@ -228,12 +231,14 @@ export function loosenFor(cause, sub = null, market = 'prop') {
     }[sub];
     return role ?? { guard: `the role guard's ${sub ?? 'role'} CHECK`, from: 'a CHECK', to: 'priced and bet as any prop' };
   }
+  if (cause === 'news') return { guard: "the news guard's CHECK (news.mjs)", from: 'a CHECK', to: 'priced and bet as any prop' };
   const limit = GAP[market] ?? GAP.prop;
   return { guard: `GAP.${market in GAP ? market : 'prop'} for CHECKs diagnosed ${cause}`, from: limit, to: round(limit + 0.05, 2) };
 }
 
 // (where a confirmed blind spot points: the fix to make next)
 export const FIXES = {
+  news: 'the news guard is right to hold these: keep it, and read what the change does to his role before betting them',
   role: 'the role guard is right to hold these: keep it, and build the projection a new role needs before betting them',
   unpriced: 'the assumed -110 hides the real price: keep these unpriced lines out of the CHECKs, or wait for the book’s price',
   'missing-starter-not-seen': 'the injury report and roster miss who is out: read the inactives and depth charts (or research these) before pricing',

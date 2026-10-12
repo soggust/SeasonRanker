@@ -144,6 +144,9 @@ export function inputsOf(sport, game, live, info, ok = {}) {
       parts[`q:${s}`] = list ? list.filter((p) => !OUT.test(p.status) && QUESTIONABLE.test(p.status)).map(key).sort().join(',') : null;
     }
   }
+  // (the news flags on each side (news.mjs: l.news, its unit and story; '' none), once the teams' news was
+  // read (l.newsRead): a story landing, or one running out, prices an open bet on the game again)
+  for (const [s, team] of sides) parts[`news:${s}`] = l.newsRead ? (l.news ?? []).filter((x) => x.team === String(team)).map((x) => `${x.unit}:${x.id}`).sort().join(',') : null;
   if (sport === 'nfl') {
     const known = ok.nflverse !== false && !!l.row;
     const st = info?.starters;
@@ -182,7 +185,7 @@ export function inputsOf(sport, game, live, info, ok = {}) {
 }
 
 // (each part's words, for the changelog)
-const WORDS = { out: 'out list', q: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup' };
+const WORDS = { out: 'out list', q: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup', news: 'news flags' };
 
 // What changed between a bet's inputs (hashes) and the game's now: [{ key, words }]; before: the game's
 // parts as a run before saw them (the cache: the names who joined or left a list), when it has them
@@ -202,6 +205,8 @@ export function inputChanges(was, now, { game = null, before = null, names = {} 
     // and read now is: the news the bet was priced without)
     if (h === null || h === undefined || then === undefined || (h === '-' && !scratched) || h === then) continue;
     if ((kind === 'out' || kind === 'q') && vanished(s)) continue;
+    // (the news unread then and nothing flagged now: nothing the bet missed)
+    if (kind === 'news' && then === null && h === '') continue;
     const team = game ? (s === 'h' ? game.homeAbbr : game.awayAbbr) : s === 'h' ? 'home' : 'away';
     let detail = '';
     const prev = before?.[key];
@@ -217,6 +222,7 @@ export function inputChanges(was, now, { game = null, before = null, names = {} 
       const [id, conf] = String(now.parts[key]).split(' ');
       detail = `${names[id] ?? id}${conf ? ' confirmed' : ''}`;
     } else if (kind === 'lu') detail = then === '-' || then === null ? 'posted' : 'changed';
+    else if (kind === 'news') detail = now.parts[key] ? now.parts[key].split(',').map((x) => x.split(':')[0]).join(', ') : 'cleared';
     out.push({ key, words: `${team} ${WORDS[kind] ?? kind}${detail ? ` (${detail})` : ''}` });
   }
   return out;

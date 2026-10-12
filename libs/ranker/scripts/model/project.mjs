@@ -18,6 +18,10 @@
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
+//   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
+//            new head coach) tried after the rest the same way as the draft's prior (below): on top of them as
+//            fit, against none at the dispersion the same search found, kept only with a held-out gain of 0.0003
+//            or more and the eligible players' bias no larger; left out, the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
 //            dispersion the same search found, kept only on the RB1-out standard: a held-out gain of 0.0003 or
 //            more, the eligible players' and every player's bias no larger, and its own no worse: the rookies'
@@ -194,6 +198,8 @@ const DRAFT_M = 20;
 // (what keeping it takes (fitStat): the held-out gain (the RB1-out standard, 94ac4063: under it, the rounding's
 // floor and noise), and the lines in each of its own buckets and the early games, fewer and nothing's measured)
 const DRAFT_GAIN = 0.0003;
+// (a context flag's own floor, the same standard: a new head coach's first games (props.mjs CTX newCoach))
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN };
 const DRAFT_LINES = 100;
 const DRAFT_EARLY = 100;
 const tz = () => ({ n: 0, got: 0, usual: 0 });
@@ -666,7 +672,10 @@ const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
 // stat's ctx now (props.mjs: receptions' +0.025 held out at the rounding's floor); the grid to 0.05 either way,
 // what was measured, so a refit can't take 10% on a few hundred-thousandths)
 const RB1_OUT = [-0.05, -0.025, 0, 0.025, 0.05];
-const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT };
+// (c_newCoach: a new head coach's first games (props.mjs CTX newCoach), 0 or 1, finer than GRID.c to 10%
+// either way)
+const COACH = [-0.1, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
+const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -750,7 +759,10 @@ export function fitStat(stat, rows, env) {
   const aPos = aKeys(stat);
   let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}) };
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
-  const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs];
+  // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
+  // tried after the rest: searched with them, a flag left out still moved the others' sizes)
+  const late = ctxs.filter((k) => MIN_GAIN[k] !== undefined);
+  const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
   let best = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1);
@@ -861,6 +873,36 @@ export function fitStat(stat, rows, env) {
     gains.rk = Math.round(((without.check?.logLoss ?? 0) - (current.check?.logLoss ?? 0)) * 10000) / 10000;
     if (gains.rk <= 0) (params = { ...params, ...plain }), (current = without);
   } else gains.rk = null;
+  // (the context flags with a floor (MIN_GAIN: a new head coach's first games, a 0-or-1 flag on a few hundred
+  // team-games), tried on top of the rest as fit and left as they are, as the draft's prior below: each size
+  // searched on the fit window at its own best r, judged against none at the r the same search found for it,
+  // the lean fit again on both sides; kept only with a held-out gain of its floor or more and the eligible
+  // players' bias no larger. Left out, the stat is exactly as it was without it. Why it's left out, and the
+  // bias without and with it: floors)
+  const floors = {};
+  for (const key of late) {
+    const shape = { rk: params.rk ?? 0, rm };
+    const s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
+    let sBest = s0;
+    let v = 0;
+    for (const x of GRID[key] ?? GRID.c) {
+      if (!x) continue;
+      const sc = scoreOf(replayStat(stat, sorted, { ...params, [key]: x }, env, cuts).out, 1, shape);
+      if (sc.ll > sBest.ll) (sBest = sc), (v = x);
+    }
+    gains[key] = null;
+    if (!v) continue;
+    const offP = { ...params, r: s0.r };
+    offP.scale = scaleOf(offP);
+    const off = heldOut(offP);
+    const tryP = { ...params, [key]: v, r: sBest.r };
+    tryP.scale = scaleOf(tryP);
+    const tried = heldOut(tryP);
+    gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+    const fails = [...(gains[key] >= MIN_GAIN[key] ? [] : ['gain']), ...(Math.abs(tried.check?.bias ?? Infinity) <= Math.abs(off.check?.bias ?? 0) ? [] : ['bias'])];
+    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null] };
+    if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
+  }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
   // steered the veterans' terms: on 2026-10-12 passing yards' precipitation and passing attempts' kd moved with
   // it, and stayed moved where it was left out), so left out the stat is as it was without it: its size
@@ -927,7 +969,7 @@ export function fitStat(stat, rows, env) {
   // game he took under 10 offensive snaps in (a kneel-down, a gadget play: a backup's line no projection is
   // for) left out of it, as the board never posts his prop)
   const all = allOf(final);
-  return { params, gains, base, check: current.check, checkAll: check(all, params), fitN: best.n, rookie };
+  return { params, gains, floors, base, check: current.check, checkAll: check(all, params), fitN: best.n, rookie };
 }
 
 // The check on the held-out games: the projection's error against a plain season average's, and its chance of

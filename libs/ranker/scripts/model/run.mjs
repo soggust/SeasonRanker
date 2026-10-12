@@ -74,7 +74,12 @@
 //      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
 //      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps, 90
 //      seconds a request and 3 minutes a run), a finding kept on its CHECK as a label only: never put into the
-//      injury report, the prices or a bet (the owner's note does that, where it's right)
+//      injury report, the prices or a bet (the owner's note does that, where it's right). The teams' news
+//      (news.mjs: ESPN's free per-team feed, once a UTC day a team, cached; no AI): a story on a change of
+//      play-caller, coordinator or head coach, or a benching, flags its team's unit for its next 2 games, an
+//      owner's note with no player (reason news or other) its team for the game (notes.mjs teamNotes): the
+//      unit's props CHECKs either side (cause 'news', the headline the reason), the game's lines at the minimum
+//      stake, an open bet on it priced again (2b: teamNews)
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -110,7 +115,8 @@ import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
-import { applyNotes, keptNote, noteWords, readDeskNotes } from './notes.mjs';
+import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
+import { newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
 import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
@@ -507,6 +513,8 @@ async function fitTheContext(r) {
     r.live = await gather(sport, cfg, history, r.upcoming, r.facts, wantSource(r), (r.times = {}));
     // (the owner's notes with concrete news, into their games' injury reports before the context reads them)
     await noteInjuries(r);
+    // (the teams' news, and the owner's notes on a team: their flags on the coming games)
+    await teamNews(r);
     const { nfl: _rows, ...kept } = r.facts;
     write(r.files.context, kept);
     r.feats = featurize(sport, cfg, history, r.facts, r.live);
@@ -550,6 +558,8 @@ async function noteInjuries(r) {
   } catch (err) {
     console.warn(`${r.sport}: CHECKs not read for the notes (${err.message})`);
   }
+  // (and for the notes on a team: teamNews)
+  r.noteChecks = checks;
   try {
     if (!r.checksUnreadable) {
       const budget = process.env.CHECK_RESEARCH === '1' ? aiBudget({ file: AI_USAGE, floor: FLOOR_FILE, now: r.now, dry: DRY }) : null;
@@ -574,6 +584,35 @@ async function noteInjuries(r) {
   } catch (err) {
     console.warn(`${r.sport}: owner's notes not applied (${err.message})`);
   }
+}
+
+// 2b. the teams' news (news.mjs: ESPN's per-team feed, read once a UTC day a team, cached): a story on a
+// change of play-caller, coordinator or head coach (or a benching) flags its team's unit for its next games,
+// each coming game's flags on its live facts (l.news): its props of that unit held as CHECKs either side
+// (props.mjs, cause 'news'), its game lines at the minimum stake (bet), its inputs priced again when a story
+// lands (timing.mjs inputsOf). Then the owner's notes on a team (notes.mjs teamNotes: no player, reason news or
+// other) the same way. Any failure: no flags, the desk as it was
+async function teamNews(r) {
+  try {
+    const news = await readNews(r.sport, r.cfg, { now: r.now });
+    if (news) for (const l of r.live.values()) l.newsRead = true;
+    newsFlags(news, r.live, r.history, r.upcoming);
+  } catch (err) {
+    console.warn(`${r.sport}: teams' news not applied (${err.message})`);
+  }
+  try {
+    const notes = new Map(r.notes ?? []);
+    for (const x of teamNotes(r.sport, r.live, r.upcoming, notes, { checks: r.noteChecks ?? [] })) {
+      r.notesApplied?.add(x.id);
+      const at = Date.parse(notes.get(x.id)?.at ?? '') || 0;
+      r.noteAt?.set(x.event, Math.max(r.noteAt.get(x.event) ?? 0, at));
+    }
+  } catch (err) {
+    console.warn(`${r.sport}: owner's notes on a team not applied (${err.message})`);
+  }
+  const abbr = new Map((r.upcoming ?? []).flatMap(({ game }) => [[String(game.home), game.homeAbbr], [String(game.away), game.awayAbbr]]));
+  const flagged = (r.upcoming ?? []).flatMap(({ game }) => (r.live.get(game.id)?.news ?? []).map((x) => `${abbr.get(x.team) ?? x.team} ${x.unit} (${game.awayAbbr} @ ${game.homeAbbr} ${String(game.date).slice(0, 10)}: ${x.from === 'owner note' ? "an owner's note" : x.headline})`));
+  if (flagged.length) console.log(`${r.sport}: news flags on the coming games: ${flagged.join('; ')}`);
 }
 
 // 2b'. the margins' shape (margins.mjs fitMargins): how often each margin comes against the normal's say, fit
@@ -644,7 +683,7 @@ async function fitTheProps(r) {
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (each stat's matchup terms kept, and what each did for the held-out games' log loss)
     for (const [key, f] of Object.entries(r.props ?? {})) {
-      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : ''}` : `${g}, left out`})`);
+      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : f.floors?.[k] ? `${f.params[k] ? '' : `, left out at ${f.floors[k].size}: ${f.floors[k].fails.join(', ')}`}, bias ${f.floors[k].bias[0]} to ${f.floors[k].bias[1]}` : ''}` : `${g}, left out${f.floors?.[k] ? ` at ${f.floors[k].size}` : ''}`})`);
       // (and its held-out check: the eligible players' log loss at lines at their median, the bias a game
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
@@ -1123,8 +1162,11 @@ function betGames(r) {
     // retractable roof not yet said open or closed (its weather unknown), cut to the minimum too)
     const wx = sport === 'nfl' ? f?.info.weather : null;
     const totalWhy = wx?.roof === 'retractable' ? 'a retractable roof not yet said open or closed: its weather unseen' : wx?.precipForecast >= 0.2 ? `${wx.precipForecast} in of rain forecast: a total priced off a forecast's rain` : null;
+    // (either side's unit flagged by the news (news.mjs: a change of play-caller, coordinator or head coach, a
+    // benching, in its next games; or an owner's note on the team): the game's lines at the minimum stake)
+    const teamNewsWhy = newsWords(r.live?.get(game.id), (t) => (String(t) === String(game.home) ? game.homeAbbr : game.awayAbbr));
     const guardFor = (key, pick) => {
-      const flags = [...(f?.info.flags ?? []), ...(key === 'total' && totalWhy ? [totalWhy] : []), ...(news.length ? [`bet at the last chance before the news: ${news.join(', ')}`] : [])];
+      const flags = [...(f?.info.flags ?? []), ...(key === 'total' && totalWhy ? [totalWhy] : []), ...(news.length ? [`bet at the last chance before the news: ${news.join(', ')}`] : []), ...teamNewsWhy];
       // (the gap's skip a CHECK only when it's the gap alone: another guard's skip (a line moved twice the
       // limit) wins, with both its words, so the CHECKs' hit rate is the gap's)
       const gap = gapGuard(key, pick.model, pick.fair);
@@ -1540,7 +1582,7 @@ async function betProps(r) {
         run.pUnder = (run.pUnder ?? 0) + (x.projection.pOver < 0.5 ? 1 : 0);
         run.muUnder = (run.muUnder ?? 0) + (x.projection.mean < x.prop.line ? 1 : 0);
         if (!CHECK_KINDS.has(x.guard?.kind)) continue;
-        const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind}:${x.side}`;
+        const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind === 'news' ? `news:${x.guard.news}` : x.guard.kind}:${x.side}`;
         run.checkSides = { ...(run.checkSides ?? {}), [k]: (run.checkSides?.[k] ?? 0) + 1 };
       }
     } catch (err) {
@@ -1571,7 +1613,7 @@ async function betProps(r) {
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
-  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
+  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
@@ -1650,7 +1692,7 @@ function recordChecks(r) {
     const res = upsertCheck(r.ledger, c, r.now);
     if (res === 'new') added++;
     else if (res === 'updated') updated++;
-    if (DRY && res) console.log(`${sport} (dry) CHECK${c.cause === 'role' ? ` (role: ${c.roleReason})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
+    if (DRY && res) console.log(`${sport} (dry) CHECK${c.cause === 'role' ? ` (role: ${c.roleReason})` : c.cause === 'news' ? ` (news: ${c.newsUnit})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
   }
   // (this run's CHECKs by what drives them: check-learn.mjs diagnose, made with each)
   const diag = {};

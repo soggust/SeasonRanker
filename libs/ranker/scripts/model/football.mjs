@@ -8,7 +8,8 @@
 // outdoor final's window (Open-Meteo's archive: context.mjs's weather terms and the props' context); and the
 // schedule's own facts, all nflverse's: a division game, the kickoff by each team's own clock (a West Coast
 // team's 1 p.m. Eastern start is 10 a.m. to it), a field of the other kind (grass or turf) from a team's own,
-// and a team's first games under a new head coach.
+// and a team's first games under a new head coach (COACH_GAMES, by the schedule's coaches; apart, one who
+// took over during a season, an interim mostly; the props' context reads the same: props.mjs CTX newCoach).
 //
 // Kept in the context's facts (.cache/model/context-<sport>.json): plays (each game's [home EPA, home plays, away
 // EPA, away plays, flags, home passes, home runs, away passes, away runs, home over, home xn, away over, away xn]:
@@ -34,8 +35,12 @@ export const FOOTBALL_TERMS = [
   term('divT', 'matchups', 't', 'Division game (total)', 'to the total in a division game'),
   term('bodyClock', 'travel', 'm', 'Body clock', 'when the other side kicks off before 11 a.m. by its own home clock, less its own'),
   term('surface', 'travel', 'm', 'Surface', "when the other side plays on a field of the other kind (grass or turf) from its home field's, less its own"),
-  term('newCoach', 'starters', 'm', 'New head coach', 'when the other side is in its first four games under a new head coach, less its own'),
+  term('newCoach', 'starters', 'm', 'New head coach', 'when the other side is in its first three games under a new head coach, less its own'),
+  term('coachMid', 'starters', 'm', 'Coach fired midseason', 'when the other side is in its first three games under a head coach who took over during the season (an interim), less its own'),
 ];
+
+// (a new head coach's first games, the terms' (newCoach, coachMid) and the props' (props.mjs CTX newCoach))
+export const COACH_GAMES = 3;
 
 // (the share of the outdoor finals whose rain must be known before the rain and snow are fit: gatherFootball's
 // facts.wxCover)
@@ -270,14 +275,16 @@ export function footballOf(facts, live) {
   // before him, and his games so far; by nflverse's team codes)
   const homeField = new Map();
   const coaches = new Map();
-  // (a team's first four games under a new head coach (a hire or an interim's, not its first season in the
-  // history): this game's coach by the schedule, else the one now)
-  const newCoach = (code, named) => {
+  // (a team's game under a new head coach (a hire or an interim's, not its first season in the history): the
+  // game's number under him (1 his first; 0 not a new one), and whether he took over during a season (an
+  // interim's, mostly: mid). This game's coach by the schedule, else the one now)
+  const coachOf = (code, named, season) => {
     const c = coaches.get(code);
-    if (!c) return 0;
-    if (named && named !== c.coach) return 1;
-    return c.before && c.games < 4 ? 1 : 0;
+    if (!c) return { n: 0, mid: 0 };
+    if (named && named !== c.coach) return { n: 1, mid: c.season === season ? 1 : 0 };
+    return c.before ? { n: c.games + 1, mid: c.mid } : { n: 0, mid: 0 };
   };
+  const firstGames = (x) => (x.n >= 1 && x.n <= COACH_GAMES ? 1 : 0);
   const value = (team, season) => {
     const e = eff.get(team);
     if (!e) return { net: 0, off: 0, def: 0 };
@@ -321,7 +328,8 @@ export function footballOf(facts, live) {
     const foreign = (code) => (kind && homeField.get(code) && homeField.get(code) !== kind ? 1 : 0);
     const clock = r ? [early(r.home_team), early(r.away_team)] : [0, 0];
     const other = r ? [foreign(r.home_team), foreign(r.away_team)] : [0, 0];
-    const coach = r ? [newCoach(r.home_team, r.home_coach), newCoach(r.away_team, r.away_coach)] : [0, 0];
+    const none = { n: 0, mid: 0 };
+    const coach = r ? [coachOf(r.home_team, r.home_coach, g.season), coachOf(r.away_team, r.away_coach, g.season)] : [none, none];
     return {
       terms: {
         nsEpa: (h.net - a.net) * 10,
@@ -334,9 +342,10 @@ export function footballOf(facts, live) {
         divT: div,
         bodyClock: clock[1] - clock[0],
         surface: other[1] - other[0],
-        newCoach: coach[1] - coach[0],
+        newCoach: firstGames(coach[1]) - firstGames(coach[0]),
+        coachMid: firstGames(coach[1]) * coach[1].mid - firstGames(coach[0]) * coach[0].mid,
       },
-      info: { epa: [r3(h.net), r3(a.net)], olChanged: ol ?? null, crosswind: r3(cross), funnel: [r3(dh.funnel), r3(da.funnel)], pace: [r3(dh.pace), r3(da.pace)], division: !!div, earlyClock: clock, otherField: other, newCoach: coach },
+      info: { epa: [r3(h.net), r3(a.net)], olChanged: ol ?? null, crosswind: r3(cross), funnel: [r3(dh.funnel), r3(da.funnel)], pace: [r3(dh.pace), r3(da.pace)], division: !!div, earlyClock: clock, otherField: other, newCoach: coach.map((x) => x.n), coachMid: coach.map((x) => x.mid) },
       flags,
       learn: () => {
         // (the home field's kind and the coaches, from the schedule's row)
@@ -348,9 +357,9 @@ export function footballOf(facts, live) {
           ]) {
             if (!code || !name) continue;
             const c = coaches.get(code);
-            if (!c) coaches.set(code, { coach: name, before: null, games: 1 });
-            else if (c.coach !== name) coaches.set(code, { coach: name, before: c.coach, games: 1 });
-            else c.games++;
+            if (!c) coaches.set(code, { coach: name, before: null, games: 1, mid: 0, season: g.season });
+            else if (c.coach !== name) coaches.set(code, { coach: name, before: c.coach, games: 1, mid: c.season === g.season ? 1 : 0, season: g.season });
+            else (c.games++), (c.season = g.season);
           }
         }
         const p = facts.plays?.[g.id];
