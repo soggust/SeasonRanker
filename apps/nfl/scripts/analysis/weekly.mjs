@@ -1,6 +1,7 @@
 // The weekly NFL analysis run (scheduled after Monday night; tried again later in the day): once a day at
-// most, and only once nflverse has every finished game. Rebuilds the dossiers from fresh data, batch-runs
-// every team and QB, publishes them for the site and pushes them live.
+// most, and only once nflverse has every finished game and the site shows them too (Monday night's included).
+// Rebuilds the dossiers from fresh data, batch-runs every team and QB, publishes them for the site and pushes
+// them live.
 //
 // Then the bet desk (bet-desk.mjs) edits the reports' bets into the week's sheet, after grade.mjs has
 // graded the earlier picks.
@@ -96,6 +97,26 @@ if (built === 3) {
   process.exit(0);
 }
 if (built !== 0) process.exit(built ?? 1);
+
+// The site's own numbers caught up too (the GitHub data update, on its own schedule): every finished game in
+// its team-games (data-grades.json on origin/master), so a report never cites a game (Monday night's) the
+// site doesn't show yet
+{
+  git(['fetch', 'origin', 'master']);
+  const shown = git(['show', 'origin/master:apps/nfl/src/StaticData/data-grades.json']);
+  const [head, ...lines] = readFileSync(path.join(ROOT, '.cache/nflverse/games.csv'), 'utf8').trim().split('\n');
+  const at = Object.fromEntries(head.split(',').map((c, i) => [c, i]));
+  const season = String(Math.max(...lines.map((l) => +l.split(',')[at.season]).filter(Number.isFinite)));
+  const finished = lines.map((l) => l.split(',')).filter((c) => c[at.season] === season && c[at.game_type] === 'REG' && c[at.home_score] && c[at.home_score] !== 'NA').length;
+  let siteGames = -1;
+  try {
+    siteGames = Object.values(JSON.parse(shown.out).teams ?? {}).reduce((s, t) => s + (t.games ?? 0), 0);
+  } catch {}
+  if (!shown.ok || siteGames < finished * 2) {
+    console.log(`${stamp()}: the site isn't caught up yet (${siteGames} team-games shown, ${finished * 2} played); trying again at the next scheduled time`);
+    process.exit(0);
+  }
+}
 
 // Nothing new since the last run (the offseason): don't pay to write the same reports again
 const lastRun = existsSync(MARK) ? JSON.parse(readFileSync(MARK, 'utf8')).at : null;
