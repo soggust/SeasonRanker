@@ -18,9 +18,20 @@
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
+//   volume   a receiving stat's (props.mjs STATS perTarget: the NFL's receiving yards and receptions) volume-
+//            based base, blended in by vol (fitted with its yk; 0: left out, kept only if the held-out games are
+//            better with it): his share of his team's targets (his season's pulled toward his longer run's by
+//            K games of the team's; his last five's for the recent part) times his team's targets expected a
+//            game (its season's pulled toward last season's or the league's by 4 games) times what he makes of
+//            a target (yards, or catches: his season's pulled toward his longer run's by yk targets, the
+//            position's making up a short run), so a high-volume receiver whose efficiency dipped keeps the
+//            usage's credit. nflverse's targets, from the player rows; missing ones: as before
 //   opponent how far the other side's allowed this stat to his position over the players' own rates, to the
-//            power a (1: in full); and where the stat has roles (a player's place on his own team before the
-//            game: an NFL team's WR1, WR2, WR3, TE1, RB1; an NBA team's starters and bench), how far it's
+//            power a (1: in full; where the stat fits it by position group (STATS oppPos: the NFL's wide
+//            receivers, tight ends and backs on a receiving stat, backs and quarterbacks on a rushing one), the
+//            group's own a_<group> (null: the stat's a), each kept only if the held-out games are better with
+//            it: a tight end against a defense tight ends feast on weighed apart from a receiver); and where the
+//            stat has roles (a player's place on his own team before the game: an NFL team's WR1, WR2, WR3, TE1, RB1; an NBA team's starters and bench), how far it's
 //            allowed his role, pulled toward its position number by roleK games' worth (fitted; Infinity: the
 //            role left out, kept only if the held-out games are better with it)
 //   script   his team's expected score from the game model (the ratings and context) over the average, to the
@@ -146,12 +157,17 @@ export function ctxFactor(stat, params, vals) {
 }
 
 // (a player's season tallies: games and total (n, sum); the games whose snap counts were read, their snap
-// shares' total and the stat's total in them (shn, sh, ss); a quarterback's starts and their total (qn, qsum).
-// This season's also keeps his recent games: his last five, the work missing in each, his snap shares, his
-// last five with a share (each [value, share]), his last five starts)
-const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum'];
+// shares' total and the stat's total in them (shn, sh, ss); a quarterback's starts and their total (qn, qsum);
+// a receiving stat's games with their targets read, his targets, his team's in those games and the stat's
+// total in them (tgn, tg, tt, ts). This season's also keeps his recent games: his last five, the work missing
+// in each, his snap shares, his last five with a share (each [value, share]), his last five starts, his last
+// five with their targets (each [his, his team's]))
+// (the position group an opponent's power is fit for: a fullback's a back's)
+const oppGroup = (pos) => (pos === 'FB' ? 'RB' : pos);
+
+const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum', 'tgn', 'tg', 'tt', 'ts'];
 const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
-const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [], lastSh: false });
+const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [], trecent: [], lastSh: false });
 const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[k] ?? 0)]));
 
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
@@ -160,8 +176,24 @@ export function makeModel(stat, params, env) {
   const opps = new Map();
   const roles = new Map();
   const pos = new Map();
+  // (a receiving stat's teams' targets a game, this season's and last's, and the league's a team-game)
+  const teams = new Map();
+  const lgT = { n: 0, sum: 0 };
   const val = (row) => Math.max(0, Math.round(row.s[stat.key]));
   const posKey = (row) => stat.posGroup?.(row.pos) ?? row.pos;
+  // (the opponent's power for his position group where the fit gave it one of its own (a_<group>), else the
+  // stat's a)
+  const oppAOf = (row) => params[`a_${oppGroup(row.pos)}`] ?? params.a;
+  // (his team's targets expected tonight: its own a game this season, pulled toward last season's (8 games of
+  // it or more), else the league's, by 4 games; null till the league has 20 team-games)
+  const teamTargets = (row) => {
+    if (lgT.n < 20) return null;
+    const t = teams.get(row.team);
+    const cur = t?.season === row.season ? t : null;
+    const last = cur ? { n: t.prevN, sum: t.prevSum } : t?.season === row.season - 1 ? t : null;
+    const prior = last?.n >= 8 ? last.sum / last.n : lgT.sum / lgT.n;
+    return ((cur?.sum ?? 0) + 4 * prior) / ((cur?.n ?? 0) + 4);
+  };
   const half = (x, season) => (x.season === season ? 1 : x.season === season - 1 ? 0.5 : 0);
   // (the eligible players' average at his position: the prior for a player with no longer run of his own)
   const pool = (row) => {
@@ -258,6 +290,39 @@ export function makeModel(stat, params, env) {
         mode = 'snaps';
       }
     }
+    // (the volume-based base, a receiving stat's (stat.perTarget; kept only where the held-out games are better
+    // with it): the targets he's expected tonight (his share of his team's targets, his season's pulled toward
+    // his longer run's by K games of his team's, his last five's for the recent part, times his team's expected
+    // a game) times what he makes of a target (his season's, pulled toward his longer run's by yk targets: the
+    // position's eligible players' making up a run shorter than that), blended in by vol. A high-volume
+    // receiver whose yards a target dipped gets the usage's credit, his efficiency pulled back toward his
+    // usual. Where the target counts miss his recent games, or he has neither a longer run nor 3 games of his
+    // own, as before)
+    let volume = null;
+    if (params.vol && stat.perTarget) {
+      const T = teamTargets(row);
+      const covered = cur.n === 0 || cur.tgn >= cur.n - 1;
+      const longTt = prev.tt + 0.5 * older.tt;
+      const longTg = prev.tg + 0.5 * older.tg;
+      const priorShare = prev.tgn + 0.5 * older.tgn >= 6 && longTt > 0 ? longTg / longTt : null;
+      if (T !== null && covered && (priorShare !== null || (cur.tgn >= 3 && cur.tt > 0))) {
+        const Kt = K * T;
+        const shareS = priorShare === null ? cur.tg / cur.tt : (cur.tg + Kt * priorShare) / (cur.tt + Kt);
+        const rt = cur.trecent.reduce((t, x) => [t[0] + x[0], t[1] + x[1]], [0, 0]);
+        const shareR = cur.trecent.length >= 3 && rt[1] > 0 ? rt[0] / rt[1] : shareS;
+        const yk = params.yk ?? 40;
+        const ownTs = prev.ts + 0.5 * older.ts;
+        const pq = pos.get(posKey(row));
+        const poolY = pq?.tg >= 200 ? pq.ts / pq.tg : null;
+        const priorY = longTg >= yk ? ownTs / longTg : poolY !== null ? (ownTs + (yk - longTg) * poolY) / yk : longTg > 0 ? ownTs / longTg : null;
+        if (priorY !== null) {
+          const perT = (cur.ts + yk * priorY) / (cur.tg + yk);
+          rate = (1 - params.vol) * rate + params.vol * shareS * T * perT;
+          recent = (1 - params.vol) * recent + params.vol * shareR * T * perT;
+          volume = { targets: ((1 - params.w) * shareS + params.w * shareR) * T, share: shareS, team: T, perTarget: perT };
+        }
+      }
+    }
     const base = (1 - params.w) * rate + params.w * recent;
     // (what the opponent's allowed his position against what those players usually do: a ratio of sums, this
     // season's and half of last, pulled toward even by 8 games' worth)
@@ -313,8 +378,9 @@ export function makeModel(stat, params, env) {
       : rateVac;
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
-    const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, params.a) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW };
+    const oppA = oppAOf(row);
+    const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
+    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW };
   };
   return {
     project: parts,
@@ -330,6 +396,17 @@ export function makeModel(stat, params, env) {
     },
     // (a day's rows learned together, after all of them were projected)
     learn(rows) {
+      // (a receiving stat's team-games: their targets, the day's rows' total, unread where a row's are)
+      const games = new Map();
+      if (stat.perTarget) {
+        for (const row of rows) {
+          const k = `${row.game}|${row.team}`;
+          const g = games.get(k) ?? { team: row.team, season: row.season, sum: 0, ok: true };
+          if (Number.isFinite(row.s.targets)) g.sum += row.s.targets;
+          else g.ok = false;
+          games.set(k, g);
+        }
+      }
       for (const row of rows) {
         const v = val(row);
         const pl = players.get(row.pid);
@@ -392,13 +469,23 @@ export function makeModel(stat, params, env) {
         const vacs = row.vacs ?? [0, 0, 0];
         p.cur.vac = Array.from({ length: Math.max(p.cur.vac.length, vacs.length) }, (_, k) => (p.cur.vac[k] ?? 0) + (vacs[k] ?? 0));
         p.cur.recentVac = [...p.cur.recentVac, vacs].slice(-5);
+        // (his targets and his team's in the game, where both were read)
+        const tg = games.get(`${row.game}|${row.team}`);
+        if (tg?.ok && tg.sum > 0) {
+          p.cur.tgn++;
+          p.cur.tg += row.s.targets;
+          p.cur.tt += tg.sum;
+          p.cur.ts += v;
+          p.cur.trecent = [...p.cur.trecent, [row.s.targets, tg.sum]].slice(-5);
+        }
         players.set(row.pid, p);
         const k = posKey(row);
-        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0 };
+        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0, tg: 0, ts: 0 };
         if (row.eligible !== false) {
           q.n++;
           q.sum += v;
           if (sh !== null) (q.sh += sh), (q.ss += v);
+          if (tg?.ok && tg.sum > 0) (q.tg += row.s.targets), (q.ts += v);
         }
         // (the starters' pool: every quarterback's start, eligible or not (a backup's start is a start), and the
         // starts of the ones with fewer than 10 before it apart)
@@ -408,6 +495,20 @@ export function makeModel(stat, params, env) {
           if (startsBefore < 10) (q.fqn++), (q.fqsum += v);
         }
         pos.set(k, q);
+      }
+      // (the teams' targets a game, after the day's rows were all projected and learned)
+      for (const g of games.values()) {
+        if (!g.ok || g.sum <= 0) continue;
+        let t = teams.get(g.team);
+        if (!t || t.season !== g.season) {
+          const last = t && t.season === g.season - 1 ? t : null;
+          t = { season: g.season, n: 0, sum: 0, prevN: last?.n ?? 0, prevSum: last?.sum ?? 0 };
+        }
+        t.n++;
+        t.sum += g.sum;
+        teams.set(g.team, t);
+        lgT.n++;
+        lgT.sum += g.sum;
       }
     },
   };
@@ -462,7 +563,7 @@ function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
 // at half an inch; c_oppGoalie: per goal a game the other side's goalie saves over average, a big effect a
 // goal))
 const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
-const GRID = { kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
+const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1, 1.5], kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -470,11 +571,16 @@ const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) =>
 // weight means nothing without the blend)
 const SN = [0.5, 1];
 const SR = [0, 0.25, 0.5, 0.75, 1];
+// (the volume-based base's blend and its efficiency prior's weight in targets, searched together the same way)
+const VOL = [0.25, 0.5, 0.75, 1];
+const YK = [15, 40, 100];
+// (the position groups whose opponent's power is fit on its own (a_<group>: off at null, the stat's a))
+const aKeys = (stat) => (stat.oppPos ?? []).map((g) => `a_${g}`);
 // (each matchup term's off setting, and which stats have it; each context term's size (c_<name>) is off at 0;
 // the role-aware base's the same (the NFL's: sn the snaps-based rate, qs a starting quarterback's starts, kd
 // the prior's weight shrinking through the season), off at 0 and kept only if the held-out games are better)
-const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0, sn: 0, qs: 0, kd: 0 };
-const offOf = (key) => (key.startsWith('c_') ? 0 : OPTIONAL[key]);
+const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0, sn: 0, qs: 0, kd: 0, vol: 0 };
+const offOf = (key) => (key.startsWith('c_') ? 0 : key.startsWith('a_') ? null : OPTIONAL[key]);
 const has = (stat, key) =>
   key === 'roleK' ? !!stat.roles
   : key === 'tg' ? !!stat.targets
@@ -482,6 +588,7 @@ const has = (stat, key) =>
   : key === 'sn' ? !!stat.snaps
   : key === 'qs' ? !!stat.starts
   : key === 'kd' ? !!stat.early
+  : key === 'vol' ? !!stat.perTarget
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -531,8 +638,9 @@ export function fitStat(stat, rows, env) {
   const at = (q) => sorted[Math.floor(sorted.length * q)].date.slice(0, 10);
   const cuts = [at(0.3), at(0.7)];
   const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`) : [];
-  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}) };
-  const optional = [...Object.keys(OPTIONAL).filter((k) => has(stat, k)), ...ctxs];
+  const aPos = aKeys(stat);
+  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}) };
+  const optional = [...Object.keys(OPTIONAL).filter((k) => has(stat, k)), ...aPos, ...ctxs];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
   let best = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1);
@@ -543,6 +651,8 @@ export function fitStat(stat, rows, env) {
       const tries =
         key === 'vc' ? GRID.vc.flatMap((v) => splitsOf(stat).map((vs) => ({ vc: v, vs })))
         : key === 'sn' ? [{ sn: 0 }, ...SN.flatMap((v) => SR.map((sr) => ({ sn: v, sr })))]
+        : key === 'vol' ? [{ vol: 0 }, ...VOL.flatMap((v) => YK.map((yk) => ({ vol: v, yk })))]
+        : key.startsWith('a_') ? [null, ...GRID.aPos].map((v) => ({ [key]: v }))
         : (GRID[key] ?? GRID.c).map((v) => ({ [key]: v }));
       for (const t of tries) {
         if (Object.keys(t).every((k) => t[k] === params[k])) continue;

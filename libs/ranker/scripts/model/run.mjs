@@ -644,7 +644,7 @@ async function fitTheProps(r) {
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (each stat's matchup terms kept, and what each did for the held-out games' log loss)
     for (const [key, f] of Object.entries(r.props ?? {})) {
-      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}` : `${g}, left out`})`);
+      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k]}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}` : `${g}, left out`})`);
       // (and its held-out check: the eligible players' log loss at lines at their median, the bias a game
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
