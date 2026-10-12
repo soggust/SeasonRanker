@@ -152,7 +152,7 @@ export const SPORT: SportConfig = {
   },
   coachTab: 'HC',
   teamTabs: ['TM', 'DEF', 'OL'],
-  rowHeader: (position) => (position === 'TM' || position === 'DEF' || position === 'OL' ? 'Team' : position === 'HC' ? 'Coach' : 'Player'),
+  rowHeader: (position) => ({ TM: 'Team', DEF: 'Defense', OL: 'O-Line', HC: 'Coach' } as Record<string, string>)[position] ?? 'Player',
   roleWord: (position) => (['K', 'P'].includes(position) ? 'specialist' : 'starter'),
   playingTime: {
     label: 'Games',
