@@ -35,8 +35,9 @@ permissions:
 jobs:
   desk:
     runs-on: ubuntu-latest
-    # (a cold run is about 6 minutes, the build and deploy a few more: a hung source stops here, not after
-    # GitHub's 6 hours of runs queued behind it)
+    # (a run is about 12 to 19 minutes as of 2026-10-12 (the NFL props' fit alone about 6, its receiving stats'
+    # opponent by position group and volume base adding replays), a cold one longer, the build and deploy a few
+    # more: a hung source stops here, not after GitHub's 6 hours of runs queued behind it)
     timeout-minutes: 45
 
     steps:
@@ -50,7 +51,7 @@ jobs:
           cache: "npm"
 
       # (the context's facts (context-<sport>.json), the players' lines, the summaries and anything else slow:
-      # kept between runs; none of it is needed: a cold cache only makes the run slower, about 6 minutes, as it
+      # kept between runs; none of it is needed: a cold cache only makes the run slower, as it
       # asks for everything again)
       # (restored here, saved right after the bettor even when a later step fails: the re-price counts, the
       # lines resting and the Odds API's usage live in it, and a failed run mustn't lose them)

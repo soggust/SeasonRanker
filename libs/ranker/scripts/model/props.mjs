@@ -212,8 +212,11 @@ const ROLE_BASE_QB = { starts: true, early: true };
 const ROLE_BASE = { snaps: true, early: true };
 // (the NFL's opponent by position group: the defense's power fit for each group on its own (project.mjs
 // a_<group>, kept only where the held-out games are better with it), a tight end against a defense that gives
-// tight ends yards weighed apart from a wide receiver; and a receiving stat's volume-based base (perTarget: his
-// expected targets tonight times what he makes of one, project.mjs vol))
+// tight ends yards weighed apart from a wide receiver; and receiving yards' volume-based base (perTarget: his
+// expected targets tonight times what he makes of one, project.mjs vol). Not receptions': fit there (vol 0.25,
+// yk 200, held out +0.0018 on the same games that chose it), it ran the established starters' weeks 5-8 further
+// under (held out +5.6% before it to +8.2% actual over projected, role-backtest.mjs on 2026-10-12) and the
+// eligible players' bias further low (-0.029 to -0.066 a game): the bucket it was meant to shrink)
 const CATCH_OPP = { oppPos: ['WR', 'TE', 'RB'] };
 const RUSH_OPP = { oppPos: ['RB', 'QB'] };
 const PER_TARGET = { perTarget: true };
@@ -228,7 +231,7 @@ export const STATS = {
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [

@@ -72,10 +72,33 @@ test('the opponent by position group: a tight end at a_TE, a wide receiver at th
   assert.equal(at('FB').oppA, 0.5);
 });
 
-test("the NFL's stats: receiving yards and receptions read volume and fit the opponent by group; rushing by back and quarterback", () => {
+test("the NFL's stats: receiving yards reads volume, it and receptions fit the opponent by group; rushing by back and quarterback", () => {
   const by = Object.fromEntries(STATS.nfl.map((s) => [s.key, s]));
-  for (const k of ['recYds', 'rec']) assert.ok(by[k].perTarget && by[k].oppPos.includes('TE'), k);
+  for (const k of ['recYds', 'rec']) assert.ok(by[k].oppPos.includes('TE'), k);
+  assert.ok(by.recYds.perTarget);
+  // (not receptions': it ran the established starters' weeks 5-8 further under, held out)
+  assert.ok(!by.rec.perTarget);
   assert.ok(!by.rushRecYds.perTarget);
   assert.deepEqual(by.rushYds.oppPos, ['RB', 'QB']);
   assert.ok(!by.passYds.oppPos);
+});
+
+test("volume: a playerlogs row whose targets were blank (read as 0) beside his yards leaves the game unread, the per-game rate as before", () => {
+  const m = makeModel(stat, { ...BASE, vol: 1, yk: 40 }, {});
+  history(m);
+  for (let d = 5; d <= 6; d++) m.learn(game(2026, d, { tg: 0, v: 50 }));
+  const p = m.project(row);
+  assert.equal(p.volume, null);
+  assert.ok(Math.abs(p.rate - (6 * 50 + 4 * 90) / 10) < 1e-9, `${p.rate}`);
+});
+
+test("volume: the prior's weight blended in by vol, its halves' own (yk against his targets, K games of his team's against his season's)", () => {
+  const m = makeModel(stat, { ...BASE, vol: 0.5, yk: 100 }, {});
+  history(m);
+  const p = m.project(row);
+  assert.ok(p.volume, 'volume read');
+  const plain = 4 / (4 + 4);
+  const wY = 100 / (40 + 100);
+  const wS = (4 * 35) / (4 * 35 + 140);
+  assert.ok(Math.abs(p.priorW - (0.5 * plain + 0.5 * ((wY + wS) / 2))) < 1e-9, `${p.priorW}`);
 });

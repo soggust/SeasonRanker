@@ -18,14 +18,16 @@
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
-//   volume   a receiving stat's (props.mjs STATS perTarget: the NFL's receiving yards and receptions) volume-
+//   volume   a receiving stat's (props.mjs STATS perTarget: the NFL's receiving yards; not receptions: props.mjs) volume-
 //            based base, blended in by vol (fitted with its yk; 0: left out, kept only if the held-out games are
 //            better with it): his share of his team's targets (his season's pulled toward his longer run's by
 //            K games of the team's; his last five's for the recent part) times his team's targets expected a
 //            game (its season's pulled toward last season's or the league's by 4 games) times what he makes of
 //            a target (yards, or catches: his season's pulled toward his longer run's by yk targets, the
 //            position's making up a short run), so a high-volume receiver whose efficiency dipped keeps the
-//            usage's credit. nflverse's targets, from the player rows; missing ones: as before
+//            usage's credit (and the prior's weight, priorW, blended in by vol: the two halves' own). nflverse's
+//            targets, from the player rows; missing ones (or a row with none but a catch: a blank read as 0)
+//            leave the team-game unread, and a player whose recent games are unread gets the rate as before
 //   opponent how far the other side's allowed this stat to his position over the players' own rates, to the
 //            power a (1: in full; where the stat fits it by position group (STATS oppPos: the NFL's wide
 //            receivers, tight ends and backs on a receiving stat, backs and quarterbacks on a rushing one), the
@@ -64,7 +66,10 @@
 //            counts against their usual), rest, and the plate umpire's zone. Each is fit like a matchup term
 //            and kept only if the held-out games are better with it (0: left out)
 //   scale    the eligible players' total over their total projection on the fit window: what's left of a lean
-//            once the rest is fit, taken out
+//            once the rest is fit, taken out (fit again once the held-out games leave a term out)
+// A term's held-out gain is the log loss without it less with it, the others as they stand: an a_<group>'s
+// against the stat's a as the search left it (with every group's set, a's first pass value: nothing read it
+// after); a group left out, a is searched again (fitStat).
 //
 // The count's spread: a negative binomial around the projection, its dispersion r fit too (lower: wider), and
 // how it grows with the projection (rk: r x (mu / the average)^rk, a starter's yards tighter around his
@@ -318,6 +323,14 @@ export function makeModel(stat, params, env) {
         if (priorY !== null) {
           const perT = (cur.ts + yk * priorY) / (cur.tg + yk);
           rate = (1 - params.vol) * rate + params.vol * shareS * T * perT;
+          // (the prior's weight blended in the same way: what he makes of a target's (yk against his targets)
+          // and his share's (K games of his team's targets against the ones in his season) averaged, the two
+          // the volume base's halves)
+          if (priorW !== null) {
+            const wY = yk / (cur.tg + yk);
+            const wS = priorShare === null ? 0 : Kt / (cur.tt + Kt);
+            priorW = (1 - params.vol) * priorW + params.vol * ((wY + wS) / 2);
+          }
           recent = (1 - params.vol) * recent + params.vol * shareR * T * perT;
           volume = { targets: ((1 - params.w) * shareS + params.w * shareR) * T, share: shareS, team: T, perTarget: perT };
         }
@@ -402,7 +415,11 @@ export function makeModel(stat, params, env) {
         for (const row of rows) {
           const k = `${row.game}|${row.team}`;
           const g = games.get(k) ?? { team: row.team, season: row.season, sum: 0, ok: true };
-          if (Number.isFinite(row.s.targets)) g.sum += row.s.targets;
+          // (a row with no targets but a catch or receiving yards had its targets left blank, not none
+          // (playerlogs.mjs reads a blank as 0): the team-game unread, as with a count missing outright, so
+          // his share and his yards a target aren't made from it)
+          const blank = row.s.targets === 0 && ((row.s.rec ?? 0) > 0 || (row.s.recYds ?? 0) !== 0);
+          if (Number.isFinite(row.s.targets) && !blank) g.sum += row.s.targets;
           else g.ok = false;
           games.set(k, g);
         }
@@ -563,7 +580,7 @@ function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
 // at half an inch; c_oppGoalie: per goal a game the other side's goalie saves over average, a big effect a
 // goal))
 const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
-const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1, 1.5], kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
+const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2] };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -571,9 +588,13 @@ const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) =>
 // weight means nothing without the blend)
 const SN = [0.5, 1];
 const SR = [0, 0.25, 0.5, 0.75, 1];
-// (the volume-based base's blend and its efficiency prior's weight in targets, searched together the same way)
+// (the volume-based base's blend and its efficiency prior's weight in targets, searched together the same way.
+// yk to 400: receiving yards took the largest of [15, 40, 100] (100), and of these 400 (held out 0.6504 at 100,
+// 0.6501 at 400); 1000 tried too (2026-10-12), taken again on the fit window, held out worse (0.6508, the
+// eligible players' bias -1.17 yards a game against -0.65): his efficiency nearly all his longer run's, an
+// aging receiver's past yards a target read as his now)
 const VOL = [0.25, 0.5, 0.75, 1];
-const YK = [15, 40, 100];
+const YK = [15, 40, 100, 200, 400];
 // (the position groups whose opponent's power is fit on its own (a_<group>: off at null, the stat's a))
 const aKeys = (stat) => (stat.oppPos ?? []).map((g) => `a_${g}`);
 // (each matchup term's off setting, and which stats have it; each context term's size (c_<name>) is off at 0;
@@ -644,8 +665,13 @@ export function fitStat(stat, rows, env) {
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
   let best = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1);
+  // (the stat's own a idle where every position group its rows hold has an a_<group> set: nothing reads it,
+  // so it isn't searched then)
+  const groups = [...new Set(sorted.map((r) => oppGroup(r.pos)))];
+  const aIdle = (p) => aPos.length > 0 && groups.every((g) => p[`a_${g}`] !== null && p[`a_${g}`] !== undefined);
   for (let pass = 0; pass < 2; pass++) {
     for (const key of keys) {
+      if (key === 'a' && aIdle(params)) continue;
       // (the vacated work's strength and its split together: the split means nothing without the strength)
       // (and the snaps-based rate's blend with its expected share's weight on his last game: sn with sr)
       const tries =
@@ -676,10 +702,15 @@ export function fitStat(stat, rows, env) {
     if (s.ll > shapeLl) (shapeLl = s.ll), (shape = { r: s.r, rk });
   }
   params = { ...params, ...shape, rm };
-  // (what's left of a lean on the eligible players once the rest is fit: their total over their projection)
-  const fitOut = replayStat(stat, sorted, params, env, cuts).out.filter((x) => x.win === 1 && x.row.eligible !== false);
-  const sumMu = fitOut.reduce((t, x) => t + x.p.mu, 0);
-  params.scale = sumMu ? Math.round((fitOut.reduce((t, x) => t + x.v, 0) / sumMu) * 1000) / 1000 : 1;
+  // (what's left of a lean on the eligible players once the rest is fit: their total over their projection;
+  // fit again below once the held-out games have left terms out, as the lean was measured with them in)
+  const scaleOf = (p) => {
+    const fitOut = replayStat(stat, sorted, { ...p, scale: 1 }, env, cuts).out.filter((x) => x.win === 1 && x.row.eligible !== false);
+    const sumMu = fitOut.reduce((t, x) => t + x.p.mu, 0);
+    return sumMu ? Math.round((fitOut.reduce((t, x) => t + x.v, 0) / sumMu) * 1000) / 1000 : 1;
+  };
+  params.scale = scaleOf(params);
+  const taken = { ...params };
   // (the recalibration and the check: on the eligible players only, the ones a book posts props for)
   // (each matchup term the fit took up, tested on the held-out games: left out unless its log loss on them is
   // lower with it; its gain recorded either way: the held-out log loss without it less with it)
@@ -701,6 +732,30 @@ export function fitStat(stat, rows, env) {
       params = { ...params, [key]: offOf(key), cal: without.cal };
       current = without;
     }
+  }
+  // (a position group's a left out: its rows read the stat's a again, which the search fit only on the groups
+  // without one of their own (or, every group's set, didn't search at all), so it's searched again on the fit
+  // window with the terms that stayed, kept only if the held-out games are no worse with it; and with any term
+  // left out, the lean fit again without it)
+  const dropped = optional.filter((k) => taken[k] !== offOf(k) && params[k] === offOf(k));
+  if (dropped.length) {
+    let next = { ...params, scale: scaleOf(params) };
+    let nextCheck = heldOut(next);
+    if (dropped.some((k) => k.startsWith('a_'))) {
+      let aBest = null;
+      for (const v of GRID.a) {
+        const s = scoreOf(replayStat(stat, sorted, { ...params, a: v, scale: 1 }, env, cuts).out, 1, { rk: params.rk ?? 0, rm });
+        if (!aBest || s.ll > aBest.ll) aBest = { ll: s.ll, a: v };
+      }
+      if (aBest.a !== params.a) {
+        const tryP = { ...params, a: aBest.a };
+        tryP.scale = scaleOf(tryP);
+        const tried = heldOut(tryP);
+        if ((tried.check?.logLoss ?? Infinity) <= (nextCheck.check?.logLoss ?? Infinity)) (next = tryP), (nextCheck = tried);
+      }
+    }
+    params = { ...next, cal: nextCheck.cal };
+    current = nextCheck;
   }
   // (the dispersion's growth, the same way: the plain negative binomial unless the held-out games say so)
   if (params.rk) {
