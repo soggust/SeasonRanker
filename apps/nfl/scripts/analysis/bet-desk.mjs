@@ -68,8 +68,9 @@ const GRADE = {
     kind: { type: 'string', enum: ['spread', 'moneyline', 'total', 'team_total', 'player', 'team_stat'] },
     team: { type: ['string', 'null'], description: 'the team the bet is on (its abbreviation, as in the matchup)' },
     player: { type: ['string', 'null'], description: 'the player\'s full name, as in the candidates' },
-    stat: { type: ['string', 'null'], enum: [...STATS, null] },
-    direction: { type: ['string', 'null'], enum: ['over', 'under', null] },
+    // (a nullable enum as anyOf: the API refuses a type list beside an enum)
+    stat: { anyOf: [{ type: 'string', enum: STATS }, { type: 'null' }] },
+    direction: { anyOf: [{ type: 'string', enum: ['over', 'under'] }, { type: 'null' }] },
     line: { type: ['number', 'null'] },
   },
   required: ['kind', 'team', 'player', 'stat', 'direction', 'line'],
