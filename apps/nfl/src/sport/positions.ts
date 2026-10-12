@@ -55,6 +55,11 @@ export type SkillStatKey =
   | 'sacks'
   | 'takeaways'
   | 'ptsAllowedPerGame'
+  // (allowed through the air and on the ground: what the app's Pass D and Run D Rank go by)
+  | 'passYdsAllowedPerGame'
+  | 'rushYdsAllowedPerGame'
+  | 'passTdsAllowedPerGame'
+  | 'rushTdsAllowedPerGame'
   // Head coaches
   | 'wins'
   | 'losses'
@@ -136,7 +141,9 @@ export type SkillColumnKey =
   | 'turnovers'
   | 'recent'
   | 'offRank'
-  | 'defRank';
+  | 'defRank'
+  | 'passDefRank'
+  | 'runDefRank';
 
 export type FantasyScoring = 'std' | 'half' | 'ppr';
 
@@ -171,14 +178,27 @@ export const RANK_BASIS_LABELS: Record<RankBasis, string> = {
 // the table and sidebar read the same without opening the settings
 export function statLabelFor(stat: SkillStat, rankBasis: RankBasis): string {
   if (stat.format !== 'rank') return stat.label;
-  return `${stat.label} (${rankBasis === 'points' ? 'Pts' : 'Yds'})`;
+  return `${stat.label} (${rankBasisShort(stat.key, rankBasis)})`;
 }
 
 // The stat each rank uses, and whether higher is better
-export const RANK_METRICS: Record<'offRank' | 'defRank', Record<RankBasis, [SkillStatKey, boolean]>> = {
+// (the DEF tab's Pass D and Run D Rank: points aren't split by play type, so touchdowns stand in for them)
+export const RANK_METRICS: Record<'offRank' | 'defRank' | 'passDefRank' | 'runDefRank', Record<RankBasis, [SkillStatKey, boolean]>> = {
   offRank: { points: ['ptsPerGame', true], yards: ['yardsPerGame', true] },
   defRank: { points: ['ptsAllowedPerGame', false], yards: ['yardsAllowedPerGame', false] },
+  passDefRank: { points: ['passTdsAllowedPerGame', false], yards: ['passYdsAllowedPerGame', false] },
+  runDefRank: { points: ['rushTdsAllowedPerGame', false], yards: ['rushYdsAllowedPerGame', false] },
 };
+const TD_RANKS = new Set<SkillColumnKey>(['passDefRank', 'runDefRank']);
+
+// What a rank goes by, short ("Pts", "TDs", "Yds") and in full ("Points", "Touchdowns", "Yards")
+export function rankBasisShort(key: SkillColumnKey, rankBasis: RankBasis): string {
+  if (rankBasis === 'yards') return 'Yds';
+  return TD_RANKS.has(key) ? 'TDs' : 'Pts';
+}
+export function rankBasisLabel(key: SkillColumnKey, rankBasis: RankBasis): string {
+  return rankBasis === 'points' && TD_RANKS.has(key) ? 'Touchdowns' : RANK_BASIS_LABELS[rankBasis];
+}
 
 // nflverse fantasy_points is standard scoring; PPR adds 1 per reception (verified against fantasy_points_ppr)
 export function fantasyPoints(standard: number, receptions: number, scoring: FantasyScoring): number {
@@ -291,6 +311,12 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   pressureRate: 'Pressure Rate',
   takeaways: 'Takeaways',
   ptsAllowedPerGame: 'Points Allowed per Game',
+  passYdsAllowedPerGame: 'Passing Yards Allowed per Game',
+  rushYdsAllowedPerGame: 'Rushing Yards Allowed per Game',
+  passTdsAllowedPerGame: 'Passing Touchdowns Allowed per Game',
+  rushTdsAllowedPerGame: 'Rushing Touchdowns Allowed per Game',
+  passDefRank: 'Pass Defense Rank',
+  runDefRank: 'Run Defense Rank',
   thirdDownPct: 'Third Down Conversion Rate Allowed',
   redZoneTdPct: 'Red Zone Touchdown Rate Allowed',
   missedTacklePct: 'Missed Tackle Percentage',
@@ -931,6 +957,30 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   DEF: [
     GAMES_STAT,
     { key: 'topPerGame', label: 'TOP / Game', name: 'Time of Possession per Game', description: "The team's own time with the ball per game: how long its defense rests (for context; not part of the ranking)", kind: 'efficiency', format: 'mmss', infoOnly: true },
+    // Where it ranks in the league against the pass and the run (1 = best), by the Rank Base setting: there to
+    // read, not part of the ranking (a slider at 0% would hide the column; its EPA columns already rank it)
+    {
+      key: 'passDefRank',
+      label: 'Pass D Rank',
+      name: 'Pass Defense Rank',
+      description:
+        "The defense's league rank against the pass (1 = best), by the Rank Base setting. Yards: passing yards allowed per game, sacks taken off. Points: passing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in). For context; not part of the ranking",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+      infoOnly: true,
+    },
+    {
+      key: 'runDefRank',
+      label: 'Run D Rank',
+      name: 'Run Defense Rank',
+      description:
+        "The defense's league rank against the run (1 = best), by the Rank Base setting. Yards: rushing yards allowed per game, QB scrambles included. Points: rushing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in). For context; not part of the ranking",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+      infoOnly: true,
+    },
     {
       key: 'epaAllowed',
       label: 'EPA / Play',
@@ -1230,6 +1280,8 @@ const RESULTS_STATS = new Set<SkillColumnKey>([
   'atsPct',
   'offRank',
   'defRank',
+  'passDefRank',
+  'runDefRank',
 ]);
 
 const ADVANCED_STATS = new Set<SkillColumnKey>([

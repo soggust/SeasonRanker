@@ -52,6 +52,7 @@ export class AboutComponent {
     ['Short Yd %', 'Conversion rate on 3rd and 4th and 1-2 runs.'],
     ['Pressure % / Sack %', 'Pressures or sacks per dropback: allowed (O-lines) or created (defenses).'],
     ['Off / Def Rank', "Where a head coach's offense and defense rank in the league (1 = best), by points or yards per game (Rank Base setting)."],
+    ['Pass / Run D Rank', "Where a defense ranks in the league against the pass and against the run (1 = best; Defenses tab, Results), by the Rank Base setting: passing or rushing yards allowed per game (sacks count against passing, QB scrambles as runs), or for Points, the passing or rushing touchdowns allowed per game, since points aren't split by pass and run. For context: they don't count in the ranking (the Pass EPA and Rush EPA columns do)."],
     ['ST EPA / Game', 'Expected Points Added per game on kicks, punts and returns, net of what opponents gain on them.'],
     ['Wins Over Exp', 'Wins minus the wins the betting lines expected before each game.'],
     ['ATS %', 'Share of games covering the point spread.'],

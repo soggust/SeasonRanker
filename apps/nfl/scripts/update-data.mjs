@@ -42,6 +42,7 @@ import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { pathToFileURL } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { defenseSplits } from './defense-splits.mjs';
 import { defenseVsPosition } from './defense-vs-position.mjs';
 
 const CURRENT_SEASON = 2026;
@@ -657,6 +658,9 @@ function defenseUnits({ pbp, games, pfr }) {
         sacks,
         takeaways,
         ptsAllowedPerGame: allowed.length ? round(allowed.reduce((a, b) => a + b, 0) / allowed.length, 1) : 0,
+        // (yards and touchdowns allowed per game through the air and on the ground, for the app's Pass D and
+        // Run D Rank: defense-splits.mjs)
+        ...defenseSplits(defPlays, team, played.length),
         fantasyStd:
           sacks + takeaways * 2 + tds * 6 + safeties * 2 + allowed.reduce((sum, p) => sum + pointsAllowedFantasy(p), 0),
         receptions: 0,

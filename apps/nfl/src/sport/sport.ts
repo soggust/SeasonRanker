@@ -6,6 +6,7 @@ import {
   RANK_BASIS_LABELS,
   RANK_METRICS,
   RankBasis,
+  rankBasisLabel,
   STAT_NAMES,
   SkillPlayer,
   SkillPosition,
@@ -241,7 +242,7 @@ export const SPORT: SportConfig = {
     {
       key: 'rankBasis',
       label: 'Rank Base',
-      title: "Click to switch what the head coaches' Off Rank and Def Rank columns rank on: points per game or yards per game (their EPA per play has its own columns in Advanced Stats)",
+      title: "Click to switch what the rank columns rank on: points per game or yards per game. The head coaches' Off Rank and Def Rank, and the defenses' Pass D Rank and Run D Rank (by touchdowns for Points: points aren't split by pass and run). EPA per play has its own columns in Advanced Stats",
       options: RANK_BASIS_LABELS,
       default: 'points',
       slot: 'formatTop',
@@ -274,7 +275,7 @@ export const SPORT: SportConfig = {
     }
     if (stat.key in RANK_METRICS) {
       const name = stat.name ?? STAT_NAMES[stat.key] ?? stat.label;
-      return `${name} (by ${RANK_BASIS_LABELS[settings['rankBasis'] as RankBasis]})`;
+      return `${name} (by ${rankBasisLabel(stat.key, settings['rankBasis'] as RankBasis)})`;
     }
     return undefined;
   },

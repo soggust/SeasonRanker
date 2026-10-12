@@ -18,14 +18,16 @@ import { dataWeight, preseasonCoaching, preseasonOline, preseasonWeapons, teamGa
 // better O-line on the Offensive Lines tab is a better O-line grade on every tab).
 
 // ---------------------------------------------------------------------------
-// League ranks (1 = best) for the head coaches' offense and defense, on the stat the Rank Base
-// setting picks. Ties share a rank. Worked out once per season's rows and setting.
+// League ranks (1 = best) for the head coaches' offense and defense, and the defenses' against the pass
+// and the run, on the stat the Rank Base setting picks. Ties share a rank; a missing value has none (a
+// season written before the pass and run splits: "-"). Worked out once per season's rows and setting.
 // ---------------------------------------------------------------------------
 export type UnitRankKey = keyof typeof RANK_METRICS;
 
 function unitRanks(units: SkillPlayer[], settings: SportSettings): Map<SkillPlayer, Record<UnitRankKey, number | null>> {
   const basis = settings['rankBasis'] as RankBasis;
-  const ranks = new Map(units.map((unit) => [unit, { offRank: null, defRank: null } as Record<UnitRankKey, number | null>]));
+  const empty = () => Object.fromEntries(Object.keys(RANK_METRICS).map((key) => [key, null])) as Record<UnitRankKey, number | null>;
+  const ranks = new Map(units.map((unit) => [unit, empty()]));
   for (const key of Object.keys(RANK_METRICS) as UnitRankKey[]) {
     const [stat, higherIsBetter] = RANK_METRICS[key][basis];
     const values = units.map((unit) => unitStat(unit, stat, settings));
@@ -246,6 +248,8 @@ export function computedValue(player: SkillPlayer, stat: SkillStat, context: Val
     }
     case 'offRank':
     case 'defRank':
+    case 'passDefRank':
+    case 'runDefRank':
       return rankOf(player, stat.key, context.rows[context.position] ?? [], settings);
   }
   if (!fromOtherTabs(stat)) return undefined;
