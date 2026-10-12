@@ -1,9 +1,11 @@
 // A defense's pass and run splits: yards and touchdowns allowed per game through the air and on the
 // ground, for the DEF tab's Pass D Rank and Run D Rank (the app ranks them by the Rank Base setting:
-// yards, or touchdowns standing in for points, which the data doesn't split by play type).
+// yards, or touchdowns standing in for points, which the data doesn't split by play type), and the two
+// yards together for its Def Rank by yards (by points it goes by the points allowed already there).
 // update-data.mjs adds them to each DEF row's stats; run on its own, this file adds them to the files
-// that are already written (the current season's, in StaticData/ itself, too), from the play-by-play
-// kept in .cache/nflverse:
+// that are already written (the current season's, in StaticData/ itself, too, and each past season's
+// units/DEF.json, the rows the cards, compare and Seasons tab read, so build-comps needn't run again),
+// from the play-by-play kept in .cache/nflverse (the season being played's downloaded afresh):
 //
 //   node apps/nfl/scripts/defense-splits.mjs            (every season, 2000 on, the current one too)
 //   node apps/nfl/scripts/defense-splits.mjs 2024 2025  (just those)
@@ -16,8 +18,9 @@ import { gunzipSync } from 'node:zlib';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 
-export const SPLIT_KEYS = ['passYdsAllowedPerGame', 'rushYdsAllowedPerGame', 'passTdsAllowedPerGame', 'rushTdsAllowedPerGame'];
+export const SPLIT_KEYS = ['passYdsAllowedPerGame', 'rushYdsAllowedPerGame', 'passTdsAllowedPerGame', 'rushTdsAllowedPerGame', 'yardsAllowedPerGame'];
 
 const num = (v) => (v === undefined || v === '' || v === 'NA' ? null : Number(v));
 const round = (v, places) => Math.round(v * 10 ** places) / 10 ** places;
@@ -49,6 +52,8 @@ export function defenseSplits(plays, team, games) {
     rushYdsAllowedPerGame: round(rushYds / games, 1),
     passTdsAllowedPerGame: round(passTds / games, 2),
     rushTdsAllowedPerGame: round(rushTds / games, 2),
+    // (all of it: the head coaches' Yds Allowed / Game, the same plays)
+    yardsAllowedPerGame: round((passYds + rushYds) / games, 1),
   };
 }
 
@@ -56,6 +61,7 @@ export function defenseSplits(plays, team, games) {
 // Run on its own: add the splits to the seasons' DEF rows (every part already written)
 // ---------------------------------------------------------------------------
 const CACHE = new URL('../../../.cache/nflverse/', import.meta.url);
+const NFLVERSE = 'https://github.com/nflverse/nflverse-data/releases/download';
 const STATIC_DIR = new URL('../src/StaticData/', import.meta.url);
 const SEASONS_DIR = new URL('seasons/', STATIC_DIR);
 const CURRENT_SEASON = currentSeason(path.join(import.meta.dirname, '..'));
@@ -93,9 +99,13 @@ function parseCsv(text) {
 
 async function backfill(seasons) {
   for (const year of seasons) {
-    const text = await readFile(new URL(`play_by_play_${year}.csv.gz`, CACHE)).catch(() => null);
-    if (!text) {
-      console.log(`${year}: no play-by-play in .cache/nflverse, skipped`);
+    // (the season being played isn't kept there: downloaded afresh, as update-data.mjs does)
+    const text =
+      year === CURRENT_SEASON
+        ? await fetchRetry(`${NFLVERSE}/pbp/play_by_play_${year}.csv.gz`, { as: 'buffer', attempts: 2, timeout: 300000 }).catch(() => null)
+        : await readFile(new URL(`play_by_play_${year}.csv.gz`, CACHE)).catch(() => null);
+    if (!text?.length) {
+      console.log(`${year}: no play-by-play (.cache/nflverse, or the download for the season being played), skipped`);
       continue;
     }
     const pbp = parseCsv(gunzipSync(text).toString());
@@ -108,10 +118,28 @@ async function backfill(seasons) {
       if (json === null) continue;
       const data = JSON.parse(json);
       const plays = pbp.filter((play) => part === 'all' || (part === 'regular') === (play.season_type === 'REG'));
-      // (each row's own games, as update-data counted them)
-      for (const row of data.DEF ?? []) Object.assign(row.stats, defenseSplits(plays, row.gsisId.replace(/^DEF-/, ''), row.games));
+      // (over the games in these plays: a past season's are each row's own games, and the season being
+      // played may have a game more than its files)
+      for (const row of data.DEF ?? []) {
+        const team = row.gsisId.replace(/^DEF-/, '');
+        const games = new Set(plays.filter((play) => play.defteam === team).map((play) => play.game_id)).size;
+        Object.assign(row.stats, defenseSplits(plays, team, games));
+      }
       await writeFile(file, JSON.stringify(data));
       done.push(part);
+      // (a past season's units/DEF.json: build-comps.mjs's copy of the regular season's rows)
+      if (part !== 'regular' || year === CURRENT_SEASON) continue;
+      const unitsFile = new URL('units/DEF.json', dir);
+      const units = await readFile(unitsFile, 'utf8').catch(() => null);
+      if (units === null) continue;
+      const byId = new Map((data.DEF ?? []).map((row) => [row.gsisId, row.stats]));
+      const rows = JSON.parse(units);
+      for (const row of rows) {
+        const stats = byId.get(row.gsisId);
+        if (stats) for (const key of SPLIT_KEYS) row.stats[key] = stats[key];
+      }
+      await writeFile(unitsFile, JSON.stringify(rows));
+      done.push('units');
     }
     console.log(`${year}: pass/run splits added (${done.join(', ') || 'no files'})`);
   }

@@ -659,7 +659,7 @@ function defenseUnits({ pbp, games, pfr }) {
         takeaways,
         ptsAllowedPerGame: allowed.length ? round(allowed.reduce((a, b) => a + b, 0) / allowed.length, 1) : 0,
         // (yards and touchdowns allowed per game through the air and on the ground, for the app's Pass D and
-        // Run D Rank: defense-splits.mjs)
+        // Run D Rank, and the yards in all for its Def Rank by yards: defense-splits.mjs)
         ...defenseSplits(defPlays, team, played.length),
         fantasyStd:
           sacks + takeaways * 2 + tds * 6 + safeties * 2 + allowed.reduce((sum, p) => sum + pointsAllowedFantasy(p), 0),

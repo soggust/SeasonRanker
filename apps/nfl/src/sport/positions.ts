@@ -957,8 +957,20 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   DEF: [
     GAMES_STAT,
     { key: 'topPerGame', label: 'TOP / Game', name: 'Time of Possession per Game', description: "The team's own time with the ball per game: how long its defense rests (for context; not part of the ranking)", kind: 'efficiency', format: 'mmss', infoOnly: true },
-    // Where it ranks in the league against the pass and the run (1 = best), by the Rank Base setting: there to
-    // read, not part of the ranking (a slider at 0% would hide the column; its EPA columns already rank it)
+    // Where it ranks in the league (1 = best), in all and against the pass and the run, by the Rank Base
+    // setting: there to read, not part of the ranking (a slider at 0% would hide the column; its EPA columns
+    // already rank it)
+    {
+      key: 'defRank',
+      label: 'Def Rank',
+      name: 'Defense Rank',
+      description:
+        "The defense's league rank (1 = best), by the Rank Base setting: points allowed per game (the scoring defense rank) or yards allowed per game. For context; not part of the ranking",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+      infoOnly: true,
+    },
     {
       key: 'passDefRank',
       label: 'Pass D Rank',
