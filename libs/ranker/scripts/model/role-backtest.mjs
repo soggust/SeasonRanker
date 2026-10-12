@@ -590,7 +590,7 @@ export function report(results, { from = 2021, useState = false, plain = false, 
       const f = block.fit;
       if (!f) continue;
       const b = before?.[key]?.fit;
-      const terms = ['sn', 'qs', 'kd'].filter((k) => k in (f.gains ?? {})).map((k) => `${k} ${block.params[k]}${k === 'sn' && block.params.sn ? `/sr ${block.params.sr}` : ''} (${f.gains[k] === null ? 'not taken' : f.gains[k] > 0 ? `+${f.gains[k]}` : `${f.gains[k]}, left out`})`);
+      const terms = ['sn', 'qs', 'kd', 'dp'].filter((k) => k in (f.gains ?? {})).map((k) => `${k} ${block.params[k]}${k === 'sn' && block.params.sn ? `/sr ${block.params.sr}` : ''} (${f.gains[k] === null ? 'not taken' : f.gains[k] > 0 ? `+${f.gains[k]}` : `${f.gains[k]}, left out`})`);
       lines.push(`| ${key} | ${f.n} | ${num(f.logLoss, 4)} | ${num(f.logLossBase, 4)} |${before ? ` ${num(b?.logLoss, 4)} | ${num(b?.bias, 3)} | ${num(b?.allBias, 3)} |` : ''} ${num(f.bias, 3)} | ${num(f.allBias, 3)} | ${terms.join(', ') || 'none'} |`);
     }
   }

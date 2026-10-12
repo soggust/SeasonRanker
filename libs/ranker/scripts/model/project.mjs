@@ -18,6 +18,15 @@
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
+//   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, kept only if the held-out
+//            games are better with it and its own no worse: the rookies' and the first two seasons' log loss): a
+//            player in his first two seasons whose prior is the position's (a run of his own too short) has it
+//            times his draft slot's ratio (picks 1-10, 11-32, 33-64, 65-100, 101-150, later, undrafted: what the
+//            rookies taken there did in their first season against the position's prior before each game, by the
+//            game, the snap, the start and the target, pulled toward even by 20 games' worth) to the power dp; it
+//            fades as his own games come in, by K as the prior does. His draft is nflverse's players file
+//            (playerlogs.mjs), known before his first game; none known, or a veteran, as before. College production
+//            isn't read (CollegeFootballData needs a key, CFBD_API_KEY, not set up)
 //   volume   a receiving stat's (props.mjs STATS perTarget: the NFL's receiving yards; not receptions: props.mjs) volume-
 //            based base, blended in by vol (fitted with its yk; 0: left out, kept only if the held-out games are
 //            better with it): his share of his team's targets (his season's pulled toward his longer run's by
@@ -170,6 +179,15 @@ export function ctxFactor(stat, params, vals) {
 // (the position group an opponent's power is fit for: a fullback's a back's)
 const oppGroup = (pos) => (pos === 'FB' ? 'RB' : pos);
 
+// (the draft's prior (dp): the slots a pick falls in (overall; 0 undrafted, its own slot, at the bottom), the
+// seasons it's read for (his first and second: DRAFT_YEARS after his first), and the games' worth its ratio is
+// pulled toward even by)
+const DRAFT_SLOTS = [10, 32, 64, 100, 150];
+export const draftBucket = (pick) => (!(pick > 0) ? 'undrafted' : `${DRAFT_SLOTS.find((x) => pick <= x) ?? 'late'}`);
+const DRAFT_YEARS = 1;
+const DRAFT_M = 20;
+const tz = () => ({ n: 0, got: 0, usual: 0 });
+
 const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum', 'tgn', 'tg', 'tt', 'ts'];
 const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
 const fresh = () => ({ ...zero(), recent: [], vac: [0, 0, 0], recentVac: [], shares: [], srecent: [], qrecent: [], trecent: [], lastSh: false });
@@ -218,6 +236,25 @@ export function makeModel(stat, params, env) {
     const p = pos.get(posKey(row));
     return p && p.fqn >= 20 ? p.fqsum / p.fqn : p && p.qn >= 20 ? p.qsum / p.qn : pool(row);
   };
+  // (the draft's prior (the NFL's, dp): what the rookies taken in each slot at a position did in their first
+  // season against the position's prior as it stood before each game (by the game: the eligible players'
+  // average; by the snap: their per-snap rate times his share; a quarterback's start: the few-start starters';
+  // by the target: their yards a target times his targets), learned as the replay goes; a player in his first
+  // two seasons has the position's prior times his slot's ratio (pulled toward even by DRAFT_M games' worth) to
+  // the power dp. Only where the position's prior is used: a short run of his own (it fades as his games come
+  // in, by K as before); a row without a draft known, or a veteran, as before)
+  const drafts = new Map();
+  const draftOf = (row) => row.draft ?? players.get(row.pid)?.draft ?? null;
+  const draftKey = (row, d) => `${posKey(row)}|${draftBucket(d.pick)}`;
+  const draftF = (row, d, kind) => {
+    if (!params.dp || !d) return 1;
+    const y = row.season - d.year;
+    if (!(y >= 0 && y <= DRAFT_YEARS)) return 1;
+    const t = drafts.get(draftKey(row, d))?.[kind];
+    if (!t?.n || !(t.usual > 0)) return 1;
+    const per = t.usual / t.n;
+    return Math.pow((t.got + DRAFT_M * per) / (t.usual + DRAFT_M * per), params.dp);
+  };
   const avg = (a) => a.reduce((s, x) => s + x, 0) / a.length;
   const parts = (row) => {
     const pl = players.get(row.pid);
@@ -234,7 +271,9 @@ export function makeModel(stat, params, env) {
     // (1 + kd x his games this season), so by midseason his own season counts for more than the plain K gives)
     const K = params.kd ? params.K / (1 + params.kd * cur.n) : params.K;
     const longN = prev.n + 0.5 * older.n;
-    const prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row);
+    const dr = draftOf(row);
+    const draftG = draftF(row, dr, 'g');
+    const prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row) * draftG;
     let rate = (cur.sum + K * prior) / (cur.n + K);
     // (the prior's weight in the rate as it's made: the per-game blend's, with the starts' or the snaps' own
     // (K against his starts, or his snap shares' total) blended in as the rate is; check-learn.mjs reads it)
@@ -260,7 +299,7 @@ export function makeModel(stat, params, env) {
     if (params.qs && stat.starts && row.pos === 'QB' && row.qbStart) {
       const longQ = prev.qn + 0.5 * older.qn;
       const longQsum = prev.qsum + 0.5 * older.qsum;
-      const priorQ = longQ >= 10 ? longQsum / longQ : (longQsum + (10 - longQ) * poolStart(row)) / 10;
+      const priorQ = longQ >= 10 ? longQsum / longQ : (longQsum + (10 - longQ) * poolStart(row) * draftF(row, dr, 'q')) / 10;
       const rateQ = (cur.qsum + K * priorQ) / (cur.qn + K);
       const recentQ = cur.qrecent.length >= 3 ? avg(cur.qrecent) : rateQ;
       rate = (1 - params.qs) * rate + params.qs * rateQ;
@@ -282,7 +321,8 @@ export function makeModel(stat, params, env) {
       // position's (a long run whose few counted games would be a noisy prior))
       const longSh = prev.sh + 0.5 * older.sh;
       const ownSs = prev.ss + 0.5 * older.ss;
-      const pS = poolSnap(row);
+      const pS0 = poolSnap(row);
+      const pS = pS0 === null ? null : pS0 * draftF(row, dr, 's');
       const priorS = longSh >= 5 ? ownSs / longSh : pS !== null ? (ownSs + (5 - longSh) * pS) / 5 : longSh >= 2 ? ownSs / longSh : null;
       if (exp !== null && priorS !== null) {
         share = exp;
@@ -318,7 +358,7 @@ export function makeModel(stat, params, env) {
         const yk = params.yk ?? 40;
         const ownTs = prev.ts + 0.5 * older.ts;
         const pq = pos.get(posKey(row));
-        const poolY = pq?.tg >= 200 ? pq.ts / pq.tg : null;
+        const poolY = pq?.tg >= 200 ? (pq.ts / pq.tg) * draftF(row, dr, 'y') : null;
         const priorY = longTg >= yk ? ownTs / longTg : poolY !== null ? (ownTs + (yk - longTg) * poolY) / yk : longTg > 0 ? ownTs / longTg : null;
         if (priorY !== null) {
           const perT = (cur.ts + yk * priorY) / (cur.tg + yk);
@@ -393,7 +433,7 @@ export function makeModel(stat, params, env) {
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const oppA = oppAOf(row);
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW };
+    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: longN < 10 && draftG !== 1 ? { pick: dr.pick, factor: draftG } : null };
   };
   return {
     project: parts,
@@ -495,8 +535,28 @@ export function makeModel(stat, params, env) {
           p.cur.ts += v;
           p.cur.trecent = [...p.cur.trecent, [row.s.targets, tg.sum]].slice(-5);
         }
+        p.draft = row.draft ?? pl?.draft ?? null;
         players.set(row.pid, p);
         const k = posKey(row);
+        // (a rookie's game in his draft slot's tables, against the position's priors as they stood before it
+        // (each kept as the pools below are: the eligible players', a start any quarterback's))
+        const d = row.draft;
+        if (d && row.season === d.year) {
+          const dk = draftKey(row, d);
+          const t = drafts.get(dk) ?? { g: tz(), s: tz(), q: tz(), y: tz() };
+          const add = (kind, usual) => {
+            if (Number.isFinite(usual) && usual > 0) (t[kind].n++), (t[kind].got += v), (t[kind].usual += usual);
+          };
+          const pp = pos.get(k);
+          if (row.eligible !== false) {
+            if (pp?.n >= 20) add('g', pp.sum / pp.n);
+            const ps = poolSnap(row);
+            if (sh !== null && ps !== null) add('s', sh * ps);
+            if (tg?.ok && tg.sum > 0 && pp?.tg >= 200) add('y', row.s.targets * (pp.ts / pp.tg));
+          }
+          if (started) add('q', poolStart(row));
+          drafts.set(dk, t);
+        }
         const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0, tg: 0, ts: 0 };
         if (row.eligible !== false) {
           q.n++;
@@ -586,7 +646,7 @@ const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
 // stat's ctx now (props.mjs: receptions' +0.025 held out at the rounding's floor); the grid to 0.05 either way,
 // what was measured, so a refit can't take 10% on a few hundred-thousandths)
 const RB1_OUT = [-0.05, -0.025, 0, 0.025, 0.05];
-const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT };
+const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -605,8 +665,9 @@ const YK = [15, 40, 100, 200, 400];
 const aKeys = (stat) => (stat.oppPos ?? []).map((g) => `a_${g}`);
 // (each matchup term's off setting, and which stats have it; each context term's size (c_<name>) is off at 0;
 // the role-aware base's the same (the NFL's: sn the snaps-based rate, qs a starting quarterback's starts, kd
-// the prior's weight shrinking through the season), off at 0 and kept only if the held-out games are better)
-const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0, sn: 0, qs: 0, kd: 0, vol: 0 };
+// the prior's weight shrinking through the season, dp the draft's prior for a player in his first two seasons),
+// off at 0 and kept only if the held-out games are better)
+const OPTIONAL = { roleK: Infinity, fun: 0, pc: 0, tg: 0, vc: 0, sn: 0, qs: 0, kd: 0, vol: 0, dp: 0 };
 const offOf = (key) => (key.startsWith('c_') ? 0 : key.startsWith('a_') ? null : OPTIONAL[key]);
 const has = (stat, key) =>
   key === 'roleK' ? !!stat.roles
@@ -616,6 +677,7 @@ const has = (stat, key) =>
   : key === 'qs' ? !!stat.starts
   : key === 'kd' ? !!stat.early
   : key === 'vol' ? !!stat.perTarget
+  : key === 'dp' ? !!stat.draft
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -667,7 +729,8 @@ export function fitStat(stat, rows, env) {
   const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`) : [];
   const aPos = aKeys(stat);
   let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}) };
-  const optional = [...Object.keys(OPTIONAL).filter((k) => has(stat, k)), ...aPos, ...ctxs];
+  // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
+  const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
   let best = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1);
@@ -720,10 +783,14 @@ export function fitStat(stat, rows, env) {
   // (the recalibration and the check: on the eligible players only, the ones a book posts props for)
   // (each matchup term the fit took up, tested on the held-out games: left out unless its log loss on them is
   // lower with it; its gain recorded either way: the held-out log loss without it less with it)
+  // (and where the stat has the draft's prior, the same on the players in their first season and their first
+  // two (young: [rookies, first two]), the games it's for)
+  const youngOf = (o, yrs) => o.filter((x) => x.win === 2 && x.row.eligible !== false && x.row.draft && x.row.season - x.row.draft.year >= 0 && x.row.season - x.row.draft.year <= yrs);
   const heldOut = (p) => {
     const o = replayStat(stat, sorted, p, env, cuts).out;
     const cal = fitRecal(linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p));
-    return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }) };
+    const young = has(stat, 'dp') ? [0, 1].map((y) => check(youngOf(o, y), { ...p, cal })) : null;
+    return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young };
   };
   let current = heldOut(params);
   const gains = {};
@@ -769,6 +836,31 @@ export function fitStat(stat, rows, env) {
     gains.rk = Math.round(((without.check?.logLoss ?? 0) - (current.check?.logLoss ?? 0)) * 10000) / 10000;
     if (gains.rk <= 0) (params = { ...params, ...plain }), (current = without);
   } else gains.rk = null;
+  // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
+  // steered the veterans' terms: on 2026-10-12 passing yards' precipitation and passing attempts' kd moved with
+  // it, and stayed moved where it was left out), so left out the stat is as it was without it: its size
+  // searched on the fit window, then kept only if the held-out games are better with it and its own games no
+  // worse (the rookies' and the first two seasons' log loss: a gain on the whole at the rounding's floor can
+  // come from the veterans' rows); with it, the lean fit again)
+  let draftTaken = 0;
+  if (has(stat, 'dp')) {
+    const shape = { rk: params.rk ?? 0, rm };
+    let dBest = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
+    for (const v of GRID.dp) {
+      if (!v) continue;
+      const sc = scoreOf(replayStat(stat, sorted, { ...params, dp: v }, env, cuts).out, 1, shape);
+      if (sc.ll > dBest.ll) (dBest = sc), (draftTaken = v);
+    }
+    gains.dp = null;
+    if (draftTaken) {
+      const tryP = { ...params, dp: draftTaken, r: dBest.r };
+      tryP.scale = scaleOf(tryP);
+      const tried = heldOut(tryP);
+      gains.dp = Math.round(((current.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+      const youngWorse = [0, 1].some((y) => (tried.young?.[y]?.logLoss ?? 0) > (current.young?.[y]?.logLoss ?? 0));
+      if (gains.dp > 0 && !youngWorse) (params = { ...tryP, cal: tried.cal }), (current = tried);
+    }
+  }
   params.cal = current.cal;
   const final = replayStat(stat, sorted, params, env, cuts).out;
   // (the held-out numbers with no matchup or context terms at all, for the before and after)
@@ -777,7 +869,16 @@ export function fitStat(stat, rows, env) {
   // game he took under 10 offensive snaps in (a kneel-down, a gadget play: a backup's line no projection is
   // for) left out of it, as the board never posts his prop)
   const all = final.filter((x) => x.win === 2 && !(x.row.s.snaps > 0 && x.row.s.snaps < 10));
-  return { params, gains, base, check: current.check, checkAll: check(all, params), fitN: best.n };
+  // (the draft's prior's own check: the eligible players' held-out games in their first season (rookie) and
+  // their first two (young), with the prior at the size the search took and without it, the rest as they stand)
+  let rookie = null;
+  if (has(stat, 'dp')) {
+    const on = draftTaken === params.dp ? final : replayStat(stat, sorted, { ...params, dp: draftTaken }, env, cuts).out;
+    const off = params.dp ? replayStat(stat, sorted, { ...params, dp: 0 }, env, cuts).out : final;
+    const brief = (c) => (c ? { n: c.n, lines: c.lines, logLoss: c.logLoss, bias: c.bias } : null);
+    rookie = { dp: draftTaken, kept: params.dp, rookie: [brief(check(youngOf(off, 0), params)), brief(check(youngOf(on, 0), params))], young: [brief(check(youngOf(off, 1), params)), brief(check(youngOf(on, 1), params))] };
+  }
+  return { params, gains, base, check: current.check, checkAll: check(all, params), fitN: best.n, rookie };
 }
 
 // The check on the held-out games: the projection's error against a plain season average's, and its chance of
