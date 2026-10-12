@@ -7,7 +7,8 @@ interface Column {
 }
 
 // Copy the rankings exactly as shown: current order and the visible columns, read from the list (or,
-// with stats off, just the rank, picture and name). Plain text is tab-separated (pastes into spreadsheets
+// with stats off, just the rank, picture and name). Only the rows shown (one team's, with a team picked),
+// each at its rank in the whole list (the row's data-rank). Plain text is tab-separated (pastes into spreadsheets
 // and notes); HTML is a table with each row's picture: a player's headshot, or the team's logo (pastes
 // into forums and docs).
 export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promise<void> {
@@ -19,7 +20,7 @@ export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promis
   const loaded = rows.map((row) => row.querySelector<HTMLImageElement>('img.headshot')).find((img) => img?.naturalWidth);
   const headshotRatio = loaded ? loaded.naturalWidth / loaded.naturalHeight : 160 / 116;
   const table = rows.map((row, index) => ({
-    rank: index + 1,
+    rank: Number(row.dataset['rank']) || index + 1,
     name: row.querySelector('.player-name strong')?.textContent?.trim() ?? '',
     // (a player's headshot when the row has one, a fighter's in MMA; else the team's logo)
     image: rowImage(row, headshotRatio),

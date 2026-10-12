@@ -68,6 +68,8 @@ export const SPORT: SportConfig = {
   currentSeasonEnds: '2099-12-31',
   seasonText: seasonName,
   careerOnly: true,
+  // (fighters: no Teams Included)
+  noTeams: true,
   positionNames: {
     P4P: 'Pound-for-Pound',
     WP4P: "Women's Pound-for-Pound",

@@ -472,6 +472,62 @@ html {
       text-align: center;
     }
   }
+
+  // Teams Included: a skinny dropdown in the slot, "All" in the accent or the team's logo (no wider than
+  // what it shows), its caret lightening on hover
+  .team-select {
+    display: inline-flex;
+    max-width: 100%;
+    width: auto;
+
+    .mat-mdc-select-trigger {
+      gap: 2px;
+      height: 24px;
+    }
+
+    .mat-mdc-select-value {
+      flex: 0 0 auto;
+      max-width: none;
+      width: auto;
+    }
+
+    .mat-mdc-select-placeholder,
+    .mat-mdc-select-value-text,
+    .mat-mdc-select-value-text span {
+      color: var(--scoreboard-led) !important;
+      font-weight: 800;
+    }
+
+    .mat-mdc-select-arrow {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+
+  .team-item:hover .team-select .mat-mdc-select-arrow,
+  .team-select:focus .mat-mdc-select-arrow {
+    color: #fff !important;
+  }
+
+  .team-pick-logo {
+    display: block;
+    height: 22px;
+    object-fit: contain;
+    width: 22px;
+  }
+}
+
+// Teams Included's open list: each team's logo before its name (drawn in white where it's dark lettering)
+.team-options .team-option-logo {
+  height: 22px;
+  margin-right: 10px;
+  object-fit: contain;
+  vertical-align: middle;
+  width: 22px;
+}
+
+.team-pick-logo.white-logo,
+.team-options .team-option-logo.white-logo {
+  filter: brightness(0) invert(1);
 }
 
 // ---------------------------------------------------------------------------

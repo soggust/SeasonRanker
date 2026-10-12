@@ -156,10 +156,11 @@ export interface SportSetting {
   // Men's and Women's under it); the closed dropdown still shows the full label from options
   optionGroups?: { label: string; options: Record<string, string> }[];
   default: string | boolean;
-  // Where it sits: the Format section's top (above Stat Base), after Stat Base, among the Display
-  // switches (before Injured Players), at the bottom of the menu, or (a choice) as the footer's dropdown in
-  // the year selector's place (MMA's Current / All-Time)
-  slot: 'formatTop' | 'formatMid' | 'display' | 'displayEnd' | 'footer';
+  // Where it sits: the Format section's top (above Stat Base), after Stat Base, at Format's end (a switch:
+  // under Copy Includes Stats, its toggle in the slot the Format rows line up behind; the NFL's Include
+  // Garbage Time), among the Display switches (before Injured Players), at the bottom of the menu, or (a
+  // choice) as the footer's dropdown in the year selector's place (MMA's Current / All-Time)
+  slot: 'formatTop' | 'formatMid' | 'formatEnd' | 'display' | 'displayEnd' | 'footer';
   // Its menu icon (a cycled choice): a Material icon, or a class the styles draw ('lombardi')
   icon?: string;
   iconClass?: string;
@@ -348,6 +349,8 @@ export interface SportConfig {
   // One career table rather than seasons: no season dropdown, the card reads "Career" and has no
   // season-by-season tab, history takes or similar seasons
   careerOnly?: boolean;
+  // No teams to pick from (MMA): the settings menu has no Teams Included
+  noTeams?: boolean;
   // How much evidence a row's rate stat rests on, 0-1 (MMA: fights / (fights + 4), counting only the
   // fights a stat was kept for): each rate stat's score in the ranking is scaled by it, so small samples
   // sway the list less. The columns show the real values either way.

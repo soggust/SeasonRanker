@@ -250,10 +250,10 @@ export const SPORT: SportConfig = {
     },
     {
       key: 'garbageTime',
-      label: 'Garbage Time Stats',
+      label: 'Include Garbage Time',
       title: "Off: EPA, success rate, CPOE and other play-by-play stats leave out plays run with the game already decided (win probability under 10% or over 90%). Season totals aren't affected",
       default: true,
-      slot: 'display',
+      slot: 'formatEnd',
     },
   ],
   combined: {

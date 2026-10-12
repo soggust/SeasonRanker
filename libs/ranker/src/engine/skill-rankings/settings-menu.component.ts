@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatSelect } from '@angular/material/select';
 import { STAT_BASIS_LABELS, SkillPosition } from '@sport/positions';
 import { SPORT } from '@sport/sport';
 import { SportSetting } from '@ranker/engine/sport';
@@ -8,6 +9,9 @@ import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
 import { minCount, seasonLength, steppedMin } from '@ranker/engine/playing-time';
 import { settingText, settingsAt } from '@ranker/engine/setting-options';
 import { SEASON_PARTS, SeasonPart } from '@ranker/engine/data';
+import { TeamFilterService } from '@ranker/engine/team-filter';
+import { logoForSeason } from '@sport/logo-eras';
+import { whiteLogo } from '@sport/team-colors';
 
 // A switch in the Display section: one of ours, or the sport's (SPORT.settings)
 interface MenuSwitch {
@@ -18,9 +22,9 @@ interface MenuSwitch {
 }
 
 // The settings menu (the footer's gear): how stats are counted (Stat Base, Min Games, the sport's
-// format settings) and what the table shows (dividers, colors, combined columns, injured players,
-// rookies, unweighted stats, the sport's display settings). Shared by every tab; the rankings re-rank
-// on any change (PositionService.settings$).
+// format settings) and what the table shows (the team shown, dividers, colors, combined columns,
+// injured players, rookies, unweighted stats, the sport's display settings). Shared by every tab; the
+// rankings re-rank on any change (PositionService.settings$).
 @Component({
   selector: 'settings-menu',
   templateUrl: './settings-menu.component.html',
@@ -110,7 +114,34 @@ export class SettingsMenuComponent {
     ...settingsAt('displayEnd').map((setting) => this.sportSwitch(setting)),
   ];
 
-  constructor(private positionService: PositionService) {}
+  constructor(
+    private positionService: PositionService,
+    readonly teams: TeamFilterService,
+  ) {}
+
+  // Teams Included (team-filter.ts): the grid's rows for one team, or All; not saved
+  readonly teamsTitle =
+    "Show one team's rows (a traded player under the team on his row), each at its league rank: the ranking, averages and colors stay the " +
+    "whole league's, and Copy copies just the rows shown. Back to All with another sport or a reload";
+
+  openTeams(select: MatSelect): void {
+    select.focus();
+    select.open();
+  }
+
+  // (its list shut: the keyboard back on the row, so the arrows move through the menu again)
+  refocus(item: MatMenuItem): void {
+    setTimeout(() => item.focus());
+  }
+
+  // A team's logo as it looked in the table's season (drawn in white for one that's dark lettering)
+  seasonLogo(logo: string): string {
+    return logoForSeason(logo, this.positionService.season);
+  }
+
+  logoWhite(logo: string): boolean {
+    return whiteLogo(logo);
+  }
 
   private switch(key: 'categoryColors' | 'colorValues' | 'combineStats' | 'showInjured' | 'rookiesOnly' | 'showUnused' | 'showRanks', label: string, title: string): MenuSwitch {
     return { label, title, on: () => this.settings[key], flip: () => this.set({ [key]: !this.settings[key] }) };

@@ -225,7 +225,7 @@ export interface SkillPlayer {
   starts?: Record<string, number>;
 }
 
-// A unit's stat, without garbage time when the Garbage Time Stats setting is off (stats that aren't
+// A unit's stat, without garbage time when the Include Garbage Time setting is off (stats that aren't
 // built from play-by-play have no filtered copy and stay the same)
 export function unitStat(unit: SkillPlayer, key: SkillStatKey, settings: SportSettings = {}): number | null {
   if (settings['garbageTime'] === false && unit.competitive && key in unit.competitive) return unit.competitive[key] ?? null;

@@ -67,11 +67,77 @@
     </span>
     <span>{{ settings.showRanks ? 'Copy Includes Ranks' : 'Copy Includes Stats' }}</span>
   </div>
+  <!-- The sport's settings at Format's end (the NFL's Include Garbage Time): a switch in the slot, as Copy's -->
+  @for (setting of settingsAt('formatEnd'); track setting.key) {
+    @if (setting.options) {
+      <ng-container *ngTemplateOutlet="choice; context: { $implicit: setting }"></ng-container>
+    } @else {
+      <div mat-menu-item role="menuitemcheckbox" [attr.aria-checked]="!!settings.sport[setting.key]" [title]="setting.title" (click)="$event.stopPropagation(); stepSportSetting(setting.key)">
+        <span class="menu-slot">
+          <mat-slide-toggle
+            hideIcon
+            color="accent"
+            class="slide-toggle"
+            aria-hidden="true"
+            tabindex="-1"
+            [ngModel]="!!settings.sport[setting.key]"
+            (ngModelChange)="stepSportSetting(setting.key)"
+            (click)="$event.stopPropagation()"
+          ></mat-slide-toggle>
+        </span>
+        <span>{{ setting.label }}</span>
+      </div>
+    }
+  }
 
   </div>
   <div class="menu-col">
   <!-- Display: what the table shows -->
   <div class="menu-section section-display" (click)="$event.stopPropagation()"><mat-icon fontIcon="visibility"></mat-icon>Display</div>
+  <!-- Teams Included: All, or one team's rows (each at its league rank). A skinny dropdown in the slot,
+       "All" or the team's logo; a click, Enter or Space opens its list (logo and name, A to Z), and focus
+       comes back to the row when it shuts -->
+  @if (teams.available) {
+    <div
+      mat-menu-item
+      #teamItem
+      class="team-item"
+      aria-haspopup="listbox"
+      [attr.aria-label]="'Teams Included: ' + (teams.teamName ?? 'All') + ' (Enter opens the list)'"
+      [title]="teamsTitle"
+      (click)="$event.stopPropagation(); openTeams(teamSelect)"
+      (keydown.enter)="$event.preventDefault(); openTeams(teamSelect)"
+      (keydown.space)="$event.preventDefault(); openTeams(teamSelect)"
+    >
+      <span class="menu-slot">
+        <mat-select
+          #teamSelect
+          class="team-select"
+          panelClass="team-options"
+          panelWidth=""
+          tabindex="-1"
+          aria-label="Teams Included"
+          placeholder="All"
+          [value]="teams.team"
+          (valueChange)="teams.pick($event)"
+          (openedChange)="$event || refocus(teamItem)"
+          (keydown)="$event.stopPropagation()"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-select-trigger
+            >@if (teams.team; as logo) {<img class="team-pick-logo" [class.white-logo]="logoWhite(logo)" [src]="seasonLogo(logo)" [alt]="teams.teamName ?? ''" />}</mat-select-trigger
+          >
+          <mat-option [value]="null">All</mat-option>
+          @for (team of teams.options; track team.logo) {
+            <mat-option [value]="team.logo"
+              ><img class="team-option-logo" [class.white-logo]="logoWhite(team.logo)" [src]="seasonLogo(team.logo)" alt="" />{{ team.name }}</mat-option
+            >
+          }
+        </mat-select>
+      </span>
+      <span>Teams Included</span>
+    </div>
+  }
   @for (item of switches; track item.label) {
     <div mat-menu-item role="menuitemcheckbox" [attr.aria-checked]="item.on()" [title]="item.title" (click)="$event.stopPropagation(); item.flip()">
       <mat-slide-toggle

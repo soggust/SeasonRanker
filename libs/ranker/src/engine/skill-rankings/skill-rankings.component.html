@@ -67,18 +67,21 @@
     @for (player of gridRows; track player.gsisId; let i = $index) {
       <!-- (a UR row, under Min Games: below the ranked ones, UR in its tile, read by urReader: its values
            never colored or placed against the list; it doesn't drag) -->
-      @let ur = i >= playerList.length;
+      @let ur = i >= rankedShown;
       @let r = ur ? urReader : reader;
+      <!-- (a ranked row's league rank: its place in the whole list, also with one team's rows shown) -->
+      @let n = ur ? i : leagueAt(player, i);
       <!-- (a click on a row, off its name and links, picks it for Compare; so does C on its name) -->
       <li
         cdkDrag
-        [cdkDragDisabled]="ur"
+        [cdkDragDisabled]="ur || teamPicked"
         [class.unranked]="ur"
-        [class.first-unranked]="ur && i === playerList.length"
+        [class.first-unranked]="ur && i === rankedShown"
         cdkDragPreviewContainer="parent"
         class="player"
         [class.picked]="picked.includes(player.gsisId)"
         [attr.data-id]="player.gsisId"
+        [attr.data-rank]="ur ? null : n + 1"
         (cdkDragEnded)="rowDropped()"
         (click)="pickRow(player, $event)"
         (keydown)="pickKey(player, $event)"
@@ -96,20 +99,20 @@
         >
           <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
           <span
-            [ngClass]="ur ? 'count unranked' : rankClasses(i)"
+            [ngClass]="ur ? 'count unranked' : rankClasses(n)"
             class="rank-tile"
             [class.open]="why?.id === player.gsisId"
             role="button"
             tabindex="0"
             aria-haspopup="dialog"
             [attr.aria-expanded]="why?.id === player.gsisId"
-            [attr.aria-label]="ur ? player.name + ': unranked (UR)' : '#' + (i + 1) + ': why ' + player.name + ' ranks here'"
-            [title]="rankTitle(player, i)"
-            (click)="toggleWhy(player, i, $event)"
-            (keydown.enter)="toggleWhy(player, i, $event)"
-            (keydown.space)="toggleWhy(player, i, $event)"
-          >@if (ur) {UR} @else if (i === 0) {<span class="lombardi" aria-hidden="true"></span
-            ><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span
+            [attr.aria-label]="ur ? player.name + ': unranked (UR)' : '#' + (n + 1) + ': why ' + player.name + ' ranks here'"
+            [title]="rankTitle(player, n, i)"
+            (click)="toggleWhy(player, n, $event)"
+            (keydown.enter)="toggleWhy(player, n, $event)"
+            (keydown.space)="toggleWhy(player, n, $event)"
+          >@if (ur) {UR} @else if (n === 0) {<span class="lombardi" aria-hidden="true"></span
+            ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
         >
           <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
           <span class="badge-slot card-target" aria-hidden="true" [class.with-photo]="headshot(player)" (click)="openCard(player)"

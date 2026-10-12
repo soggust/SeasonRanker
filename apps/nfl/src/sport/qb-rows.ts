@@ -1,7 +1,7 @@
 import type { SkillPlayer } from '@sport/positions';
 import { DATA, dataPart, dataSeason, isLiveSeason } from '@ranker/engine/data';
 
-// A QB's play-by-play stats (the ones the Garbage Time Stats setting can filter)
+// A QB's play-by-play stats (the ones the Include Garbage Time setting can filter)
 export interface QbPlayByPlay {
   epaPerPlay: number | null;
   cpoe: number | null;

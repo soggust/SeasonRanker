@@ -37,6 +37,7 @@ import { ListDraft } from '@ranker/engine/account/lists/lists.store';
 import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
 import { AccountService } from '@ranker/engine/account/account.service';
+import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
@@ -85,6 +86,11 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   unrankedList: SkillPlayer[] = [];
   private unrankedSet = new Set<SkillPlayer>();
   gridRows: SkillPlayer[] = [];
+  // (with a team picked in the settings' Teams Included: just its rows, the ranked ones the first rankedShown;
+  // each ranked row's place in the whole list, its league rank, in leagueIndex)
+  rankedShown = 0;
+  private leagueIndex = new Map<SkillPlayer, number>();
+  readonly teams = inject(TeamFilterService);
   private apart: SkillPlayer[] = [];
   private apartFor = '';
   private unrankedAsk = 0;
@@ -176,6 +182,11 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       if (changed && this.position) this.ngOnChanges();
     });
     service.seasonLoading$.pipe(takeUntilDestroyed()).subscribe((loading) => (this.seasonLoading = loading));
+    // (a team picked or let go: the same list, more or fewer of its rows shown)
+    this.teams.changed$.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.closeWhy();
+      this.showUnranked(this.unrankedList);
+    });
 
     // The sport's values from other tabs changed (SPORT.connect: the NFL's team grades): they show,
     // and the list re-sorts unless it was dragged by hand (then just its scores, for the rank tiles)
@@ -288,7 +299,28 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   private showUnranked(list: SkillPlayer[]): void {
     this.unrankedList = list;
     this.unrankedSet = new Set(list);
-    this.gridRows = list.length ? [...this.playerList, ...list] : this.playerList;
+    // (the teams in the list for the settings' Teams Included, then the picked one's rows: the ranking
+    // stays the whole list's, each row its league rank)
+    this.teams.offer(teamOptions([...this.playerList, ...list], (row) => this.teamNameOf(row)));
+    const shown = teamRows(this.playerList, list, this.teams.team);
+    this.gridRows = shown.rows;
+    this.rankedShown = shown.ranked;
+    this.leagueIndex = shown.leagueIndex;
+  }
+
+  // A row's team by name (a team tab's row is its team)
+  private teamNameOf(row: SkillPlayer): string | null {
+    return rowTeamName(row, SKILL_UNITS) ?? (SPORT.teamTabs?.includes(this.position) ? row.name : null);
+  }
+
+  // A ranked row's place in the whole list (0 the first), shown or not
+  leagueAt(player: SkillPlayer, index: number): number {
+    return this.leagueIndex.get(player) ?? index;
+  }
+
+  // (dragging by hand needs the whole list: not while one team's rows show)
+  get teamPicked(): boolean {
+    return !!this.teams.team;
   }
 
   // A UR row: under Min Games, or kept apart by the season
@@ -489,11 +521,15 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // (every row's score, as the list last scored it: the rank tile's hover)
   private totals = new Map<SkillPlayer, number>();
 
-  // The rank tile's hover: its place and its score ("Rank 1 · Score 21.04")
-  rankTitle(player: SkillPlayer, index: number): string {
+  // The rank tile's hover: its place and its score ("Rank 1 · Score 21.04"), or with a team picked its
+  // place on the team too ("2nd on the Buffalo Bills · #14 in the league · Score 8.12"). index: in the
+  // whole list; shownIndex: in the rows shown
+  rankTitle(player: SkillPlayer, index: number, shownIndex = index): string {
     if (this.isUr(player)) return 'Unranked (UR): under the Min Games setting';
     const total = this.totals.get(player);
-    return `Rank ${index + 1}${total === undefined ? '' : ` · Score ${scoreText(total)}`}`;
+    const team = this.teams.team && this.teams.teamName;
+    const place = team ? teamPlaceText(shownIndex + 1, index + 1, team) : `Rank ${index + 1}`;
+    return `${place}${total === undefined ? '' : ` · Score ${scoreText(total)}`}`;
   }
 
   toggleWhy(player: SkillPlayer, index: number, event: Event): void {

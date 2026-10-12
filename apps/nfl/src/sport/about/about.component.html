@@ -312,11 +312,12 @@
         <li><mat-icon fontIcon="palette"></mat-icon><span><b>Color-coded values</b> are green above the league average and red below it. Counting stats compare per game, so missed games don't turn a good player red. Hover a column label for the average of what the column shows.</span></li>
         <li><mat-icon fontIcon="emoji_events"></mat-icon><span><b>Rank tiles:</b> a trophy for #1, green through 10, white in the middle and red for the bottom 10.</span></li>
         <li><mat-icon fontIcon="content_copy"></mat-icon><span><b>Copy</b> puts your whole ranked list on the clipboard, ready to paste into a group chat.</span></li>
+        <li><mat-icon fontIcon="groups"></mat-icon><span><b>Teams Included</b> in the settings shows just one team's rows, each at its league rank (hover the rank tile for its place on the team). Copy copies just those; the ranking itself stays league-wide.</span></li>
         <li><mat-icon fontIcon="share"></mat-icon><span><b>Share</b> copies a link that opens your list exactly as it looks: the tab, the season, your sliders, eyes, settings, dragged rows and columns. On a phone it opens the share sheet.</span></li>
         <li><mat-icon fontIcon="swipe"></mat-icon><span><b>Scroll sideways</b> through the columns and the rank and team card stay pinned at the left, so every stat keeps its owner beside it.</span></li>
         <li><mat-icon fontIcon="ads_click"></mat-icon><span><b>Hover a chart</b> (the radar, a bar, a career dot, a slice of the pie) for whose it is, what it is and the number.</span></li>
         <li><mat-icon fontIcon="healing"></mat-icon><span>The <b>bandage</b> marks players ESPN lists as Out, Doubtful or on IR (in a past season, those who finished it on IR). Hide them with <b>Injured Players</b> in the settings.</span></li>
-        <li><mat-icon fontIcon="hourglass_bottom"></mat-icon><span>Turn off <b>Garbage Time Stats</b> to leave out plays run once the game was decided (win probability under 10% or over 90%). Stats padded in blowouts shrink.</span></li>
+        <li><mat-icon fontIcon="hourglass_bottom"></mat-icon><span>Turn off <b>Include Garbage Time</b> (in the settings' Format) to leave out plays run once the game was decided (win probability under 10% or over 90%). Stats padded in blowouts shrink.</span></li>
         <li><mat-icon fontIcon="leaderboard"></mat-icon><span><b>Rank Base</b> in the settings sets what the rank columns rank on, points or yards per game: the head coaches' Off and Def Rank, and the defenses' Def, Pass and Run D Rank (by touchdowns allowed for points).</span></li>
         <li><mat-icon fontIcon="swap_horiz"></mat-icon><span><b>Combine Rush/Pass Stats</b> shows yards and touchdowns as single totals, leaving more room for other columns.</span></li>
         <li><mat-icon fontIcon="filter_list"></mat-icon><span><b>Min Games</b> in the settings leaves out players who played less than a share of the season so far, in steps of 10% (the settings show the games it takes). Early on, 10% is a game; set it to 1 to see everyone.</span></li>
@@ -453,7 +454,7 @@
           left it; bookmark it or send it. No account needed.
         </p>
       </card-panel>
-      <card-panel class="faq-panel panel-plain" label="Why don't some stats change with Garbage Time Stats off?">
+      <card-panel class="faq-panel panel-plain" label="Why don't some stats change with Include Garbage Time off?">
         <p>
           Only stats built play by play can be filtered: EPA, success rate, CPOE and most defense and O-line
           stats. Season totals like yards and touchdowns, and tracking stats like separation, stay the same.
