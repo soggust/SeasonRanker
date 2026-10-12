@@ -50,7 +50,10 @@ export const GAME_CAP = 5;
 // coach's first games, the weeks 5-8, the NHL's power-play share. 2026-10-12 later, the next man up (rp, nu:
 // projected in the role he steps into, kept on receptions and rush+rec yards) and a promoted back's receiving
 // CHECKed either side; measured and left out: the injury return (ij: its eligible returners pushed the other way).
-export const MODEL_EPOCH = '2026-10-12T20:15:00Z';
+// 2026-10-12 evening, the seasons' carryover (project.mjs pl: rushing yards' prior leaning to last season's last 8
+// games, kept); measured and left out: sk (a part-timer's snaps prior), rx (the last five across seasons), pl
+// elsewhere.
+export const MODEL_EPOCH = '2026-10-12T21:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

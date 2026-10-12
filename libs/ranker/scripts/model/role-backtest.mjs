@@ -617,8 +617,8 @@ async function main() {
 }
 
 // (the late terms --set can force on a stat that has them though the fit left them out (absent from its params):
-// the next man up's and the injury return's, project.mjs)
-const LATE = ['rp', 'nu', 'ij', 'ia', 'ir'];
+// the next man up's, the injury return's and the seasons' carryover, project.mjs)
+const LATE = ['rp', 'nu', 'ij', 'ia', 'ir', 'sk', 'rx', 'pl'];
 
 // (the fit's next men up and returners: n, the bias, all and held out; the returners by the absence's length (1
 // game, 2 or more) and his game back)

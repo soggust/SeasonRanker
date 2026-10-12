@@ -262,9 +262,11 @@ const BATTER_CTX = ['slot', 'platoon', 'oppSp'];
 // a starting quarterback's numbers from his starts alone (starts, his rows' qbStart: the team's passer), a back's
 // or pass-catcher's a full game's snaps times the share he's expected tonight (snaps), and the prior's weight
 // shrinking through the season (early); and the draft's prior for a player in his first two seasons (draft: his
-// slot's rookies against the position's prior, project.mjs dp))
+// slot's rookies against the position's prior, project.mjs dp)); and the seasons' carryover on the backs' and
+// pass-catchers' stats and the NHL skaters' (carry: project.mjs sk, rx, pl, late terms each kept only where the
+// held-out games are better and the bias no larger)
 const ROLE_BASE_QB = { starts: true, early: true, draft: true };
-const ROLE_BASE = { snaps: true, early: true, draft: true };
+const ROLE_BASE = { snaps: true, early: true, draft: true, carry: true };
 // (the NFL's opponent by position group: the defense's power fit for each group on its own (project.mjs
 // a_<group>, kept only where the held-out games are better with it), a tight end against a defense that gives
 // tight ends yards weighed apart from a wide receiver; and receiving yards' volume-based base (perTarget: his
@@ -297,8 +299,8 @@ export const STATS = {
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
   ],
   nhl: [
-    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
-    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], ...NBA_VAC }),
+    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], carry: true, ...NBA_VAC }),
+    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], carry: true, ...NBA_VAC }),
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: ['oppShots'], goalie: true }),
   ],
   mlb: [

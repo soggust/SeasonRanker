@@ -35,6 +35,22 @@
 //            goes). The role backtest's returners (2 games out or
 //            more) ran 7% to 12% under their projections without it (2026-10-12), their first game back 14% to
 //            18%: the ramp's way, not the weights'
+//   carry    the seasons' carryover (late terms too, on every row, each kept on the whole stat's gate below: a
+//            held-out gain of DRAFT_GAIN or more, the eligible players' and every player's bias no larger; left
+//            out, the stat exactly as without it): sk, the snaps-based rate's prior weighed as K games at his
+//            share tonight (K x ((1 - sk) + sk x share): a part-timer's season counts as his games, not his snap
+//            units, so it isn't pulled to the prior 1/share harder than a starter's); rx, his last five spanning
+//            the season boundary while this season has under 3 games (last season's latest at weight rx; his
+//            per-snap last five the same); pl, his own prior leaning to last season's last 8 games (pl of their
+//            average, where last season had 12 or more; the per-snap prior by their snaps the same): a role he
+//            grew into late last season (Ty Johnson's 2025, 0.33 catches a game in weeks 1-8, 2.2 from 9) not
+//            averaged away. The volume base's target share as before. Measured 2026-10-12: pl kept on rushing
+//            yards (0.5, +0.0007, bias -0.545 to -0.478); left out on receptions (0.25, +0.0002), carries (0.5,
+//            +0.0002), receiving yards (0.25, +0.0003, every player's bias -0.485 to -0.491) and rush+rec yards
+//            (0.25, +0.001, every player's -0.651 to -0.668); sk left out (rushing yards 1, +0.0006, bias larger;
+//            not taken on the receiving stats), rx nowhere (0 to -0.0001); the NHL's sog and points took neither
+//            on the fit window. Ty Johnson's receptions (1.48 against the book's 2.20) as before: forced, rx 0.5
+//            1.80, pl 0.25 1.65, both 1.91
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
 //            power-play share, on a floor of 0.0001, on no stat's ctx now) tried after the rest the same way as
@@ -230,7 +246,16 @@ const DRAFT_GAIN = 0.0003;
 // late too, and off the NHL's ctx since: props.mjs)
 // (and the NFL's next man up (rp, with nu) and injury return (ij, with ia and ir) the same way, on the same
 // floor: each changes a few rows (a promoted role's, a returner's), tried after the rest as fit)
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN };
+// (and the seasons' carryover (sk, rx, pl) the same way, on the same floor: tried after the rest as fit, on the
+// whole stat's gate (on every row, not a few))
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN };
+// (the carryover's: the late terms tried after the next man up and the injury return, in this order)
+const CARRY = ['sk', 'rx', 'pl'];
+// (the carryover's last season games read (pl: his last PL_N, where last season had PL_MIN or more), and his
+// last five's games (rx: this season's under RX_MIN))
+const PL_N = 8;
+const PL_MIN = 12;
+const RX_MIN = 3;
 // (the flags on a few of the rows, each judged on its own rows' bias (fitStat): the held-out rows it's on, this
 // many or more, and the rest's no larger by more than this share of their mean actual (the lean refit with it
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
@@ -265,8 +290,9 @@ const ACC = ['n', 'sum', 'shn', 'sh', 'ss', 'qn', 'qsum', 'tgn', 'tg', 'tt', 'ts
 const zero = () => Object.fromEntries(ACC.map((k) => [k, 0]));
 // (this season's also weighs each game (ij, below): wn and wsum the per-game rate's count and total, rw his
 // last five's weights, shw his snap shares', last his latest game's parts (to weigh it again once he's missed
-// games after it); his targets' tallies (tg, tt, ts, trecent) weighed as they're added. Every game 1: as before)
-const fresh = () => ({ ...zero(), wn: 0, wsum: 0, recent: [], rw: [], vac: [0, 0, 0], recentVac: [], shares: [], shw: [], srecent: [], qrecent: [], trecent: [], lastSh: false, last: null });
+// games after it); his targets' tallies (tg, tt, ts, trecent) weighed as they're added. Every game 1: as before.
+// And his last PL_N games (tail, each [value, snap share or null]), read next season by the carryover (rx, pl))
+const fresh = () => ({ ...zero(), wn: 0, wsum: 0, recent: [], rw: [], vac: [0, 0, 0], recentVac: [], shares: [], shw: [], srecent: [], qrecent: [], trecent: [], tail: [], lastSh: false, last: null });
 // (the injury return (ij): an absence's games tried (his team's he missed, ia: 1 or 2), the games back read as
 // his return (RAMP: the 1st to 3rd), a game under this share of his healthy one weighed down, and the games'
 // worth the ramp's ratio is pulled toward even by)
@@ -429,17 +455,26 @@ export function makeModel(stat, params, env) {
     const longN = prev.n + 0.5 * older.n;
     const dr = draftOf(row);
     const draftG = draftF(row, dr, 'g');
-    const prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row) * draftG;
+    let prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row) * draftG;
     // (the draft's factor in the base used (the per-game prior's, a start's or a snap's where that base is the
     // one taken, and a target's apart), each only where its own prior is the position's: what the board shows)
     let draftUsed = longN < 10 ? draftG : 1;
     let draftY = 1;
+    // (the carryover (pl): his own prior leaning to last season's last PL_N games, where last season had PL_MIN
+    // or more (prev's tail: last season's latest games, none for a season skipped))
+    const tail = prev.tail ?? [];
+    const late8 = params.pl && prev.n >= PL_MIN && longN >= 10 && tail.length >= PL_N ? avg(tail.map((x) => x[0])) : null;
+    if (late8 !== null) prior = (1 - params.pl) * prior + params.pl * late8;
     // (this season's games each by its weight: every one 1 but a game he left hurt or was eased back in, ij)
     let rate = (cur.wsum + K * prior) / (cur.wn + K);
     // (the prior's weight in the rate as it's made: the per-game blend's, with the starts' or the snaps' own
     // (K against his starts, or his snap shares' total) blended in as the rate is; check-learn.mjs reads it)
     let priorW = cur.wn + K > 0 ? K / (cur.wn + K) : null;
     let recent = cur.recent.length >= 3 ? (wavg(cur.recent, cur.rw) ?? rate) : rate;
+    // (the carryover (rx): under RX_MIN games this season, his last five made up with last season's latest,
+    // each at weight rx, where that makes RX_MIN or more)
+    const carried = params.rx && cur.recent.length < RX_MIN ? tail.slice(Math.max(0, tail.length - (5 - cur.recent.length))) : [];
+    if (carried.length && carried.length + cur.recent.length >= RX_MIN) recent = wavg([...carried.map((x) => x[0]), ...cur.recent], [...carried.map(() => params.rx), ...cur.rw]) ?? recent;
     // (the role-aware base, the NFL's (each kept only where the held-out games are better with it):
     //   starts  a quarterback starting tonight (row.qbStart: his team's passer) by his starts alone (a start:
     //           his team's passer as known before the game, a start he left hurt early counted as the bet
@@ -499,14 +534,26 @@ export function makeModel(stat, params, env) {
       const pS0 = poolSnap(row);
       const draftS = draftF(row, dr, 's');
       const pS = pS0 === null ? null : pS0 * draftS;
-      const priorS = longSh >= 5 ? ownSs / longSh : pS !== null ? (ownSs + (5 - longSh) * pS) / 5 : longSh >= 2 ? ownSs / longSh : null;
+      let priorS = longSh >= 5 ? ownSs / longSh : pS !== null ? (ownSs + (5 - longSh) * pS) / 5 : longSh >= 2 ? ownSs / longSh : null;
+      // (the carryover (pl): his own per-snap prior leaning to last season's last PL_N games' (their total over
+      // their snap shares', 2 full games' worth or more), as the per-game prior)
+      const tailS = tail.filter((x) => x[1] !== null);
+      const tailSh = tailS.reduce((t, x) => t + x[1], 0);
+      if (late8 !== null && priorS !== null && longSh >= 5 && tailSh >= 2) priorS = (1 - params.pl) * priorS + (params.pl * tailS.reduce((t, x) => t + x[0], 0)) / tailSh;
       if (exp !== null && priorS !== null) {
         share = exp;
-        const rateS = (cur.ss + K * priorS) / (cur.sh + K);
-        const rs = cur.srecent.reduce((t, x) => t + x[1], 0);
-        const recentS = cur.srecent.length >= 3 && rs >= 0.5 ? cur.srecent.reduce((t, x) => t + x[0], 0) / rs : rateS;
+        // (the carryover (sk): the prior's K games at his share tonight, against his season's snap units (a
+        // part-timer's 4 games at 30% are 1.2 of them): K x ((1 - sk) + sk x share); 0, K as before)
+        const kS = params.sk ? K * (1 - params.sk + params.sk * share) : K;
+        const rateS = (cur.ss + kS * priorS) / (cur.sh + kS);
+        // (his per-snap last five, under RX_MIN games this season made up with last season's latest at weight rx
+        // (rx, as the per-game one))
+        const sCarried = params.rx && cur.srecent.length < RX_MIN ? tailS.slice(Math.max(0, tailS.length - (5 - cur.srecent.length))) : [];
+        const sv = cur.srecent.reduce((t, x) => t + x[0], 0) + sCarried.reduce((t, x) => t + params.rx * x[0], 0);
+        const rs = cur.srecent.reduce((t, x) => t + x[1], 0) + sCarried.reduce((t, x) => t + params.rx * x[1], 0);
+        const recentS = cur.srecent.length + sCarried.length >= 3 && rs >= 0.5 ? sv / rs : rateS;
         rate = (1 - params.sn) * rate + params.sn * rateS * share;
-        if (priorW !== null && cur.sh + K > 0) priorW = (1 - params.sn) * priorW + (params.sn * K) / (cur.sh + K);
+        if (priorW !== null && cur.sh + kS > 0) priorW = (1 - params.sn) * priorW + (params.sn * kS) / (cur.sh + kS);
         recent = (1 - params.sn) * recent + params.sn * recentS * share;
         mode = 'snaps';
         draftUsed = longSh < 5 && pS !== null ? draftS : 1;
@@ -678,7 +725,7 @@ export function makeModel(stat, params, env) {
           p = {
             season: row.season,
             cur: fresh(),
-            prev: consecutive ? { ...addAcc(zero(), p.cur), vac: p.cur.vac } : zero(),
+            prev: consecutive ? { ...addAcc(zero(), p.cur), vac: p.cur.vac, tail: p.cur.tail } : zero(),
             career: consecutive ? before : addAcc(before, p.cur),
             healthy: p.healthy,
             settled: p.settled,
@@ -707,6 +754,7 @@ export function makeModel(stat, params, env) {
         p.cur.wsum += wt * v;
         p.cur.recent = [...p.cur.recent, v].slice(-5);
         p.cur.rw = [...p.cur.rw, wt].slice(-5);
+        p.cur.tail = [...p.cur.tail, [v, sh]].slice(-PL_N);
         if (sh !== null) {
           p.cur.sh += sh;
           p.cur.ss += v;
@@ -864,7 +912,10 @@ const QB1_OUT = [-0.2, -0.15, -0.1, -0.075, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
 // (c_ppShare: an NHL skater's power-play share over his position's prop players', -0.5 to 0.6 (a second-pair
 // defenseman about -0.3, a top unit's forward +0.3): a 0.3 share's 7% to 35% at 0.25 to 1)
 const PP_SHARE = [-0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
-const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
+// (the carryover's tried (late, 0 its off): sk the prior's K at his share, rx last season's weight in his last
+// five, pl his prior's lean to last season's last games)
+const CARRY_GRID = { sk: [0.5, 1], rx: [0.25, 0.5, 1], pl: [0.25, 0.5, 0.75] };
+const GRID = { ...CARRY_GRID, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -898,6 +949,8 @@ const has = (stat, key) =>
   : key === 'dp' ? !!stat.draft
   : key === 'rp' ? !!(stat.snaps && stat.roles)
   : key === 'ij' ? !!stat.snaps
+  : key === 'sk' ? !!(stat.snaps && stat.carry)
+  : key === 'rx' || key === 'pl' ? !!stat.carry
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -952,7 +1005,7 @@ export function fitStat(stat, rows, env) {
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
-  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined), ...['rp', 'ij'].filter((k) => has(stat, k))];
+  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined), ...['rp', 'ij', ...CARRY].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
