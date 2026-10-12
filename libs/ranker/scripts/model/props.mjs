@@ -195,6 +195,15 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // project.mjs; an NHL goalie's saves also by the other side's expected shots on goal, hockey.mjs)
 const PASSING = ['wind', 'cold', 'precip'];
 const CARRYING = ['backupQb', 'wind', 'precip'];
+// (receptions also by the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work
+// the vacated term's): fit at +0.025 (2.5% more catches), held out +0.0001, the held-out games with him out
+// +8.2% to +5.5% actual over projected. Not the passing volume's: attempts and completions took 0 on the fit
+// window, passing yards a size left out held out (-0.0006); the lead back out, his team's passes ran as
+// projected (held out -1.6% against -1.9% with him in), team-games 2012 on as their season's own (a bell cow's
+// out, 1% to 3% fewer: the work goes to the next back, not the pass). Not receiving yards': fit at -0.025, its
+// held-out gain +0.0009 but the stat's held-out log loss 0.6501 to 0.6502, the games with him out +6.7% to
+// +9.4% over projected (2026-10-12))
+const CATCHING = [...CARRYING, 'rb1Out'];
 const NBA_CTX = ['usage', 'b2b', 'blowout'];
 // (the NBA's and NHL's work missing in two measures (matchups.mjs: minutes or usage; time on ice or power-play
 // time), three splits each)
@@ -231,7 +240,7 @@ export const STATS = {
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [
@@ -289,6 +298,9 @@ export const CTX = {
   precip: (info) => (Number.isFinite(info?.weather?.precip) ? Math.min(0.5, info.weather.precip) * 10 : 0),
   // (his own side starting a backup quarterback, by how much worse he is: a receiver's and a back's numbers)
   backupQb: (info, home) => info?.starters?.backup?.[home ? 0 : 1] ?? 0,
+  // (his team's lead back out (matchups.mjs leadBack: out, doubtful or on IR, or not in the game's logs in the
+  // history; a questionable one at half): a pass-catcher's receptions, a back's own 0)
+  rb1Out: (info, home, pts, row) => (Number.isFinite(row?.rb1Out) ? row.rb1Out : 0),
   // (his teammates' production missing, per 10: an NBA player's usage)
   usage: (info, home) => (info?.starters?.missing?.[home ? 0 : 1] ?? 0) / 10,
   // (his side on the second night of a back-to-back)

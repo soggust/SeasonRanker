@@ -16,6 +16,10 @@ test('ctxKeys: one name or a list', () => {
   assert.deepEqual(ctxKeys({ ctx: ['wind', 'cold'] }), ['wind', 'cold']);
   assert.deepEqual(ctxKeys({}), []);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'recYds')), ['backupQb', 'wind', 'precip']);
+  // (the lead back out: receptions' only, the passing volume's and receiving yards' measured and left out)
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip', 'rb1Out']);
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'passAtt')), ['wind', 'cold', 'precip']);
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rushAtt')), ['backupQb', 'wind', 'precip']);
 });
 
 test("ctxFactor: each term its own size; an old state's single c is the first term's; unknown values no effect", () => {

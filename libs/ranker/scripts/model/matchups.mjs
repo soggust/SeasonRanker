@@ -231,6 +231,22 @@ export function nflMatchups(rows, pbp = null) {
     const r3 = (a) => a.map((x) => Math.round(x * 1000) / 1000);
     return { n: list.length, sum: r3(sum), rn: Math.min(5, list.length), rsum: r3(rsum) };
   };
+  // (a team's lead back now: its back with the most recent work (carries and targets a game, recent games
+  // counting most), LEAD_MIN or more, one who's played for it this season (cur: a back gone since last season
+  // isn't its lead); null with none. How surely he's missing (missOf, 0 to 1) is the rb1Out term's value for
+  // its quarterback and pass-catchers (props.mjs CTX.rb1Out: receptions' only, the passing volume's measured
+  // and left out), a back's own 0: the work he leaves is the vacated term's)
+  const LEAD_MIN = 8;
+  const leadBack = (teamId, season) => {
+    let lead = null;
+    for (const [id, x] of workOf(teamId, season).p) if (x.pos === 'RB' && x.cur && x.v >= LEAD_MIN && (!lead || x.v > lead.v)) lead = { id, v: x.v };
+    return lead;
+  };
+  const rb1Out = (teamId, season, pos, missOf) => {
+    if (POS(pos) === 'RB') return 0;
+    const lead = leadBack(teamId, season);
+    return lead ? Math.min(1, Math.max(0, Number(missOf(lead.id)) || 0)) : 0;
+  };
   // (a player's snap share: his last game's and his season's average, over the games read; null with none)
   const snapOf = (pid, season) => {
     const s = snapsOf.get(pid);
@@ -274,6 +290,7 @@ export function nflMatchups(rows, pbp = null) {
         r.tgt = d.tgt;
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
+        r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
       }
@@ -373,7 +390,7 @@ export function nflMatchups(rows, pbp = null) {
       const vacs = vacated(teamId, season, pid, pos, missOf);
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
-      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)

@@ -86,6 +86,25 @@ test('snap shares: his last game against his season', () => {
   assert.deepEqual(snap, { latest: 0.9, avg: 0.6, n: 2 });
 });
 
+test("rb1Out: the team's lead back missing, for its quarterback and pass-catchers; a back's own 0; a committee's under LEAD_MIN none", () => {
+  const rows = [];
+  for (let d = 1; d <= 3; d++) rows.push(...game(`a${d}`, `2026-09-0${d}T17:00Z`, [['s', 'RB', 18, 3], ['b', 'RB', 4, 1], ['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]]));
+  // (the lead back out of the fourth game: its rows read him missing, from before the game)
+  rows.push(...game('a4', '2026-09-04T17:00Z', [['b', 'RB', 18, 3], ['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]]));
+  const m = nflMatchups(rows);
+  const at = (pid, g) => rows.find((r) => r.pid === pid && r.game === g).rb1Out;
+  assert.deepEqual([at('q', 'a3'), at('w', 'a3'), at('q', 'a4'), at('w', 'a4'), at('b', 'a4')], [0, 0, 1, 1, 0]);
+  // (a coming game: out, questionable at half, in; a back's own 0)
+  assert.equal(m.live('q', '1', '2', 'QB', 2026, new Set(['s'])).rb1Out, 1);
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, (id) => (id === 's' ? 0.5 : 0)).rb1Out, 0.5);
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, null).rb1Out, 0);
+  assert.equal(m.live('b', '1', '2', 'RB', 2026, new Set(['s'])).rb1Out, 0);
+  // (a committee, no back with 8 touches a game: no lead back, nothing missing)
+  const split = [];
+  for (let d = 1; d <= 3; d++) split.push(...game(`c${d}`, `2026-09-0${d}T17:00Z`, [['x', 'RB', 5, 1], ['y', 'RB', 5, 1], ['q', 'QB', 0, 0, 30]]));
+  assert.equal(nflMatchups(split).live('q', '1', '2', 'QB', 2026, new Set(['x'])).rb1Out, 0);
+});
+
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {
   const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, implied: 50 };
   assert.equal(roleChangeOf(base), null);

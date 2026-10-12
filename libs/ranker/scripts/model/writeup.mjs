@@ -243,6 +243,7 @@ function ctxWhat(bet, sheet) {
     snow: 'snow in the forecast',
     cold: 'the cold',
     backupQb: `${sheet.bet.team ?? 'his team'} starting a backup QB`,
+    rb1Out: `${sheet.bet.team ?? 'his team'} without its lead back`,
     b2b: 'a back-to-back',
     pp: 'his power-play time',
     ppTime: 'his power-play time',
