@@ -16,8 +16,10 @@
 //            game's weighed sr: a role grown or cut since the games his numbers come from), the per-game rate
 //            where the snap counts are missing or miss his recent games (sn, a blend); and the prior's weight K
 //            shrinking as his season's games come in (K / (1 + kd x his games)). A missing regular's share is
-//            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
-//            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
+//            the vacated term's to hand on (vacF); with rp and nu kept (next up, below) the next man up's expected
+//            share also has a floor of nu times the missing one's above him, vacF still on top of it, the two fit
+//            together (next-up receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them:
+//            group-out, part-time). His target share in the volume base isn't moved by either
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -40,8 +42,8 @@
 //            found, kept only
 //            with a held-out gain of its floor or more (0.0003 the flags'), and the bias: a flag on a few rows
 //            (SUBGROUP: the head coach's, the quarterback's, the next man up's promoted rows, the returners'
-//            games back) its own rows' smaller and the rest's no larger (half
-//            a percent of their mean actual), ppShare the eligible players' and every player's no larger (not
+//            games back) its own rows' smaller, its own rows' eligible players' (SUBGROUP_ELIG_N or more) and the
+//            rest's no larger (half a percent of their mean actual), ppShare the eligible players' and every player's no larger (not
 //            measured: left out); left out, the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
 //            dispersion the same search found, kept only on the RB1-out standard: a held-out gain of 0.0003 or
@@ -246,6 +248,8 @@ const lateTries = (key) => (key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key
 const sizeOf = (key, t) => (Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
 const SUBGROUP_TOL = 0.005;
+// (and the eligible players' among the rows it's on, judged too where this many or more)
+const SUBGROUP_ELIG_N = 50;
 // (a list's bias a game, projected less actual, its count and its mean actual; null with none)
 const biasOf = (list) => {
   if (!list.length) return null;
@@ -1029,7 +1033,7 @@ export function fitStat(stat, rows, env) {
     if (split) {
       const on = split;
       const a = allOf(o);
-      parts = { on: biasOf(a.filter(on)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
+      parts = { on: biasOf(a.filter(on)), onElig: biasOf(a.filter((x) => on(x) && x.row.eligible !== false)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
     }
     return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young, all, parts };
   };
@@ -1088,7 +1092,8 @@ export function fitStat(stat, rows, env) {
   // game, projected less actual) lower still on the whole even where those rows ran over their projections
   // (the qb1-out's, 11% over in the role backtest), and the lean refit on the fit window doesn't offset the
   // held-out games. So: the rows it's on (every player's, SUBGROUP_N or more) with their bias smaller, and the
-  // rest (every player's and the eligible's) no larger by more than SUBGROUP_TOL of their mean actual)
+  // eligible players' among them (SUBGROUP_ELIG_N or more) and the rest (every player's and the eligible's) no
+  // larger by more than SUBGROUP_TOL of their mean actual)
   const floors = {};
   for (const key of late) {
     const shape = { rk: params.rk ?? 0, rm };
@@ -1116,6 +1121,12 @@ export function fitStat(stat, rows, env) {
       const [o, t] = [off.parts, tried.parts];
       const on = (o?.on?.n ?? 0) < SUBGROUP_N ? 'not measured' : t.on.bias === 0 && o.on.bias === 0 ? null : Math.abs(t.on.bias) < Math.abs(o.on.bias) ? null : 'larger';
       if (on) fails.push(on === 'larger' ? 'its own bias' : 'its own bias not measured');
+      // (and its own rows' eligible players', the ones a book posts props for, no larger the same way: a term
+      // learned on every player's rows, most of them low-usage, can right those and push the bettable ones the
+      // other way (ij on receptions, 2026-10-12: its rows -6.9% to +4.1% actual over projected, the eligible's
+      // -1.5% to +10.1%); fewer than SUBGROUP_ELIG_N of them: not measured, left out)
+      const oe = (o?.onElig?.n ?? 0) < SUBGROUP_ELIG_N ? 'not measured' : fine(t?.onElig?.bias, o?.onElig?.bias, SUBGROUP_TOL * (o?.onElig?.mean ?? 0));
+      if (oe) fails.push(oe === 'larger' ? "its own eligible rows' bias" : "its own eligible rows' bias not measured");
       const rb = fine(t?.rest?.bias, o?.rest?.bias, SUBGROUP_TOL * (o?.rest?.mean ?? 0));
       if (rb) fails.push(rb === 'larger' ? "the rest's bias" : "the rest's bias not measured");
       const re = fine(t?.restElig?.bias, o?.restElig?.bias, SUBGROUP_TOL * (o?.restElig?.mean ?? 0));
@@ -1126,7 +1137,7 @@ export function fitStat(stat, rows, env) {
       const ab = fine(tried.all?.bias, off.all?.bias);
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it

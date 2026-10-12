@@ -124,7 +124,8 @@ export function restGuard(restDays, debut, date) {
 //   qb1-out    any other player whose team's starting quarterback is missing: a backup throwing to him
 //   group-out   a regular at his position missing (out, doubtful, IR, off the roster, absent two games or
 //               more), his cut of the work they leave (vacOut: matchups.mjs vacated, a questionable one not
-//               counted) ROLE.vac of his own or more
+//               counted) ROLE.vac of his own or more; and a back projected in the role he steps into (project.mjs
+//               rp) on a receiving prop, with no safe side (promoted backs' receiving ran high, not low)
 //   snap-jump   his last game's share of his team's offensive snaps ROLE.snapJump over his season's
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
@@ -806,6 +807,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         // price is unknown)
         implied: prop.prices ? impliedMean(prop.line, book.fairOver, f.params) : null,
       });
+      // (a back projected in the role he steps into (project.mjs rp kept, p.role over his own): his receiving
+      // ran high there in the role backtest (2026-10-12, promoted backs' receptions -7.2%, held out -9.3% on
+      // 39 rows), the other way from group-out's safe over, so neither side is safe: both CHECKs till the rows
+      // say otherwise)
+      if (/^RB/.test(p.role ?? '') && row.role && p.role !== row.role && /^rec|^rushRec/.test(prop.stat.key)) {
+        roleChange = { ...(roleChange ?? { key: 'group-out', why: `${a.name || 'he'} stepping up to ${p.role} with the back above him out: a promoted back's receiving` }), safe: null };
+      }
     }
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the

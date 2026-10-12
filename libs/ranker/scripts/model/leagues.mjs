@@ -47,8 +47,10 @@ export const GAME_CAP = 5;
 // receptions' volume base off, the teams' news (a change of play-caller, coordinator or head coach, a benching:
 // the unit's props CHECKs, the game's lines at the minimum) and the owner's notes on a team the same way, a
 // late flag judged on its own rows; measured and left out: RB1 out, QB1 out, the draft's prior, a new head
-// coach's first games, the weeks 5-8, the NHL's power-play share.
-export const MODEL_EPOCH = '2026-10-12T17:34:00Z';
+// coach's first games, the weeks 5-8, the NHL's power-play share. 2026-10-12 later, the next man up (rp, nu:
+// projected in the role he steps into, kept on receptions and rush+rec yards) and a promoted back's receiving
+// CHECKed either side; measured and left out: the injury return (ij: its eligible returners pushed the other way).
+export const MODEL_EPOCH = '2026-10-12T20:15:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

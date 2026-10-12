@@ -284,9 +284,13 @@ export function nflMatchups(rows, pbp = null) {
     return { v: Math.round(m * with_ * 1000) / 1000, miss: m };
   };
   // (a player's snap share: his last game's and his season's average, over the games read; null with none)
-  const snapOf = (pid, season) => {
-    const s = snapsOf.get(pid);
-    if (!s || s.season !== season || !s.list.length) return null;
+  // (team: his games for that team only, null where his latest was for another: a leader traded away isn't the
+  // work his old team's next man up steps into at his new team's share)
+  const snapOf = (pid, season, team = null) => {
+    const s0 = snapsOf.get(pid);
+    if (!s0 || s0.season !== season || !s0.list.length) return null;
+    if (team !== null && String(s0.teams[s0.teams.length - 1]) !== String(team)) return null;
+    const s = team === null ? s0 : { list: s0.list.filter((x, i) => String(s0.teams[i]) === String(team)) };
     const avg = s.list.reduce((t, x) => t + x, 0) / s.list.length;
     return { latest: Math.round(s.list[s.list.length - 1] * 1000) / 1000, avg: Math.round(avg * 1000) / 1000, n: s.list.length };
   };
@@ -327,7 +331,7 @@ export function nflMatchups(rows, pbp = null) {
     let lead = null;
     for (const [id, v] of by) {
       if (t.pos?.get(id) !== p || String(id) === String(pid) || !(v > own) || !gone(id)) continue;
-      const s = snapOf(id, season)?.avg ?? null;
+      const s = snapOf(id, season, teamId)?.avg ?? null;
       if (s !== null && (lead === null || s > lead)) lead = s;
     }
     return { roleUp: roleOf(pid, teamId, season, pos, gone), leadShare: lead };
@@ -338,11 +342,14 @@ export function nflMatchups(rows, pbp = null) {
   // coming back ({ k: 1 the first back, to RAMP; len: the games he'd missed }), null otherwise. Before the game:
   // in the history his not being in the logs of the games before it, at bet time the same. project.mjs ij reads
   // them (the games he was eased back in and the one he left hurt weighed down, his game back eased by the
-  // returners' ramp), kept only where the held-out games are better)
+  // returners' ramp), kept only where the held-out games are better. A game whose snap counts weren't read has
+  // only the players with a stat in its logs (playerlogs.mjs), so one missing from it may have played: an
+  // absence with such a game in it (unread) is no return, back 0 and ret null, as without the term)
   const RAMP = 3;
   const rets = new Map();
   const returnOf = (pid, teamId, season) => {
     const x = workOf(teamId, season).p.get(pid);
+    if (x?.unread) return { back: 0, ret: null };
     const back = x ? (x.gone ?? 0) : 0;
     if (back >= 1) return { back, ret: { k: 1, len: back } };
     const s = rets.get(pid);
@@ -357,6 +364,9 @@ export function nflMatchups(rows, pbp = null) {
     // (the day's rows, from what was known before it)
     for (const g of batch) {
       const playing = new Set(g.rows.map((r) => r.pid));
+      // (the game's snap counts read: without them one missing from its logs may have played with no stat, so
+      // none is promoted over him; the same rows' logs that say who's playing, not their numbers)
+      const read = g.rows.some((r) => (r.s.snaps ?? 0) > 0);
       for (const r of g.rows) {
         const d = defense(g.opp, g.season, POS(r.pos));
         r.role = roleOf(r.pid, g.team, g.season, r.pos);
@@ -370,7 +380,7 @@ export function nflMatchups(rows, pbp = null) {
         r.qb1Out = q1.v;
         r.qb1Miss = q1.miss;
         r.teamGame = gameNo(g.team, g.season);
-        Object.assign(r, promotion(r.pid, g.team, g.season, r.pos, (id) => !playing.has(id)), returnOf(r.pid, g.team, g.season));
+        Object.assign(r, promotion(r.pid, g.team, g.season, r.pos, (id) => read && !playing.has(id)), returnOf(r.pid, g.team, g.season));
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
       }
@@ -429,6 +439,7 @@ export function nflMatchups(rows, pbp = null) {
         x.pos = p;
         x.v += (touches(r, p) - x.v) * WORK_RATE;
         x.gone = 0;
+        x.unread = false;
         x.cur = true;
         w.p.set(r.pid, x);
         const h = games_.get(r.pid);
@@ -436,9 +447,12 @@ export function nflMatchups(rows, pbp = null) {
         mine.games.push({ team: g.team, missing });
         games_.set(r.pid, mine);
       }
+      // (and the snap counts read for the game: a game missed without them makes his absence unread, returnOf)
+      const snapsRead = g.rows.some((r) => (r.s.snaps ?? 0) > 0);
       for (const [id, x] of w.p) {
         if (played.has(id)) continue;
         x.gone = (x.gone ?? 0) + 1;
+        if (!snapsRead) x.unread = true;
         if (x.gone > FREEZE || !x.cur) x.v *= 1 - WORK_RATE;
       }
       // (the snap shares: each player's offensive snaps over the team's most, where the counts were read)
@@ -458,8 +472,9 @@ export function nflMatchups(rows, pbp = null) {
         for (const r of g.rows) {
           if (!POS(r.pos) || !(r.s.snaps > 0)) continue;
           const s = snapsOf.get(r.pid);
-          const mine = s && s.season === g.season ? s : { season: g.season, list: [] };
+          const mine = s && s.season === g.season ? s : { season: g.season, list: [], teams: [] };
           mine.list.push(Math.min(1, r.s.snaps / most));
+          mine.teams.push(g.team);
           snapsOf.set(r.pid, mine);
         }
       }

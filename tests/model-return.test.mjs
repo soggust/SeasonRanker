@@ -58,6 +58,40 @@ test('nflMatchups: back (his team\'s games he missed just before this one) and r
   assert.equal(isBack({ ret: live.ret }, 2), false);
 });
 
+test("nflMatchups: an absence with a game whose snap counts weren't read is no return, and no one is promoted in such a game", () => {
+  const rows = [];
+  for (let d = 1; d <= 2; d++) rows.push(...game(`a${d}`, day(d), [['q', 'QB', 0, 70], ['t1', 'TE', 6, 56], ['t2', 'TE', 2, 28]]));
+  // (game 3's counts not read: only the players with a stat in its logs, the TE1 among the missing)
+  rows.push(...game('a3', day(3), [['q', 'QB', 0, 0], ['t2', 'TE', 3, 0]]));
+  rows.push(...game('a4', day(4), [['q', 'QB', 0, 70], ['t1', 'TE', 6, 56], ['t2', 'TE', 2, 28]]));
+  const m = nflMatchups(rows);
+  const at = (d, pid) => rows.find((x) => x.game === `a${d}` && x.pid === pid);
+  assert.equal(at(3, 't2').roleUp, 'TE2+');
+  assert.equal(at(3, 't2').leadShare, null);
+  assert.equal(at(4, 't1').back, 0);
+  assert.equal(at(4, 't1').ret, null);
+  // (live: the latest game unread, the same)
+  const more = [...rows, ...game('a5', day(5), [['q', 'QB', 0, 0], ['t2', 'TE', 3, 0]])];
+  const live = nflMatchups(more).live('t1', '1', '2', 'TE', 2026, null);
+  assert.equal(live.back, 0);
+  assert.equal(live.ret, null);
+});
+
+test("nflMatchups: a leader traded away gives no lead share from his new team's games", () => {
+  const rows = [];
+  for (let d = 1; d <= 2; d++) rows.push(...game(`a${d}`, day(d), [['q', 'QB', 0, 70], ['t1', 'TE', 6, 56], ['t2', 'TE', 2, 28]]));
+  // (t1 now with team 3, 30% of its snaps)
+  const away = game('b3', day(3), [['q3', 'QB', 0, 70], ['t1', 'TE', 2, 21]]).map((r) => ({ ...r, team: '3', opp: '4' }));
+  rows.push(...away, ...game('a3', day(3), [['q', 'QB', 0, 70], ['t2', 'TE', 4, 50]]));
+  rows.push(...game('a4', day(4), [['q', 'QB', 0, 70], ['t2', 'TE', 4, 50]]));
+  nflMatchups(rows);
+  const r3 = rows.find((x) => x.game === 'a3' && x.pid === 't2');
+  const r4 = rows.find((x) => x.game === 'a4' && x.pid === 't2');
+  // (game 3's day: his new team's game not yet learned, his old team's 80%; after it, none)
+  assert.equal(r3.leadShare, 0.8);
+  assert.equal(r4.leadShare, null);
+});
+
 // (a pass-catcher's season for the model: his games' receptions and snap shares, with the back and ret a
 // matchups pass gives; the position's pool from a few others)
 const STAT = { key: 'rec', snaps: true, roles: true };
