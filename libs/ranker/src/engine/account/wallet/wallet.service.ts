@@ -447,8 +447,8 @@ export class WalletService {
         this.parlayStake.set(0);
       } catch (error) {
         const code = (error as { code?: string }).code ?? '';
-        const denied = list.some((s) => s.tier === 'check') ? 'Not placed: a leg on a CHECK needs an admin’s sign-in' : 'Not enough in the wallet, or a game has started';
-        result.failed.push({ key, why: code === 'permission-denied' ? denied : 'Couldn’t place it: try again' });
+        // (a leg's CHECK tag isn't what the rules refuse a parlay for: its balance or a started game is)
+        result.failed.push({ key, why: code === 'permission-denied' ? 'Not enough in the wallet, or a game has started' : 'Couldn’t place it: try again' });
       }
     } finally {
       this.placing.set(false);

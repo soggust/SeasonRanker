@@ -1,5 +1,6 @@
 import { firestoreSdk } from '@ranker/core/firebase';
 import { BetLike, millis } from '../friends/friends-helpers';
+import { parlayOdds } from '../wallet/wallet-math';
 
 // What a public profile shows of someone's saved things, read straight from their subcollections (the
 // rules let through only what the owner's visibility allows the viewer; the page asks only for those)
@@ -103,7 +104,9 @@ function bet(d: { id: string; data: () => Record<string, unknown> }): BetSummary
     sport: legs ? (sports.length === 1 ? sports[0] : 'parlay') : text(x['sport']),
     matchup: legs ? legs.map((l) => text(l['pick'])).join(' · ') : text(x['matchup']),
     pick: text(x['pick']),
-    odds: num(x['odds']),
+    // (a parlay's price from its legs' own, as the settler pays it (wallet.service betFrom): the figure the
+    // browser wrote is only what it showed)
+    odds: legs && legs.length >= 2 && legs.every((l) => num(l['odds']) !== null) ? parlayOdds(legs.map((l) => ({ odds: l['odds'] as number }))) : num(x['odds']),
     stake: num(x['stake']) ?? 0,
     profit: num(x['profit']),
     start: millis(x['start']),

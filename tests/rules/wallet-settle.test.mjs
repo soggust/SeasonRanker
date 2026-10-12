@@ -251,6 +251,39 @@ describe('the settler', { skip }, () => {
     assert.equal((await get('bets/waiting')).legs[0].status, 'won');
   });
 
+  test('a parlay leg that isn’t a game is void without a read; one parlay that fails is logged and the rest still settle', async () => {
+    const leg = (over = {}) => {
+      const { stake: _s, run: _r, placedAt: _p, status: _st, ...l } = bet(over);
+      return l;
+    };
+    const parlay = (legs, over = {}) => ({ kind: 'parlay', legs, games: legs.map((l) => `${l.sport}_${l.event}`), start: legs[0].start, odds: 999, stake: 10, pick: `${legs.length}-leg parlay`, run: 0, placedAt: at('2026-10-10T15:00Z'), status: 'open', ...over });
+    const ne = leg();
+    const lines = [];
+    const failing = async (url) => {
+      if (url.includes('summary?event=777')) throw new Error('ESPN down');
+      return fetchJson(url);
+    };
+    // (written past the rules: a query string on one leg's event, a padded id on another; a leg whose game read fails)
+    const query = leg({ event: '402&x=/a', matchup: 'CLE @ NYJ', pick: 'CLE +2.5', side: 'away', line: 2.5, odds: -110 });
+    const padded = leg({ event: '0401', market: 'total', side: 'over', line: 44.5, odds: -110, pick: 'Over 44.5' });
+    const boom = leg({ event: '777', matchup: 'KC @ DEN', pick: 'KC ML', market: 'ml', side: 'away', line: null, odds: 120 });
+    // (the boom parlay first in the loop: the others after it settled all the same)
+    await seed('eve', { balance: 500, bets: { a: parlay([boom, ne]), b: parlay([query, ne]), c: parlay([ne, padded]) } });
+    fetched.length = 0;
+    const first = await run({ db, fetchJson: failing, now: NOW, ledgers, log: (s) => lines.push(s) });
+    assert.equal(first.counts.failed, 1);
+    assert.ok(lines.some((s) => /users\/eve\/bets\/a: not settled \(ESPN down\)/.test(s)));
+    const get = async (p) => (await db.doc(`users/eve/${p}`).get()).data();
+    assert.equal((await get('bets/a')).status, 'open');
+    // (the query-string leg void, never read; NE paid as a straight bet)
+    const b = await get('bets/b');
+    assert.deepEqual([b.status, b.legs[0].status, b.legs[0].note, b.paidOdds], ['won', 'void', 'not a game', -108]);
+    assert.ok(!fetched.some((u) => u.includes('&x=')));
+    // (the padded id is the same game as NE's: void, two legs on one game)
+    const c = await get('bets/c');
+    assert.deepEqual([c.status, c.note], ['void', 'two legs on one game']);
+  });
+
   test('a bet placed from a snapshot’s price within its window stands; a dry run writes nothing', async () => {
     await db.doc('lines/nfl_401').set({ sport: 'nfl', event: '401', snaps: [{ at: '2026-10-10T14:00:00Z', spread: { home: { line: -2.5, odds: -105 }, away: { line: 2.5, odds: -115 } }, total: { line: 46, over: -110, under: -110 }, ml: { home: -190, away: 160 } }] });
     await seed('cy', { bets: { snap: bet({ line: -2.5, odds: -105 }), late: bet({ line: -2.5, odds: -105, placedAt: at('2026-10-11T10:00Z') }) } });

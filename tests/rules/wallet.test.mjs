@@ -211,6 +211,13 @@ describe('wallet rules', { skip }, () => {
       // (a leg on a game begun, or with no game)
       started: parlayOf([leg({ start: later(-1) }), legs[1]]),
       noEvent: parlayOf([(({ event: _e, ...l }) => l)(legs[0]), legs[1]]),
+      // (an event that isn't a game's id: a query string for the settler's reads, a leading zero ESPN takes as the
+      // same game (two legs on one game past the games check), a number)
+      queryEvent: parlayOf([leg({ event: '401872986&x=/a' }), legs[1]]),
+      paddedEvent: parlayOf([leg(), leg({ event: '0401872986', market: 'total', side: 'over', line: 45.5, pick: 'Over 45.5' })]),
+      numberEvent: parlayOf([leg({ event: 401872986 }), legs[1]]),
+      // (a leg starting past the 15 days a straight bet's can: never due, its stake held)
+      farLeg: parlayOf([legs[0], leg({ event: '401872987', start: later(24 * 20) })]),
       // (its start after its first leg's: the settler would look too late)
       lateStart: parlayOf(legs, { start: later(40) }),
       // (a straight bet can't claim to be part of one)

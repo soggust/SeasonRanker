@@ -140,7 +140,7 @@
                   @if (d) {
                     <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash w-paid" title="Decided by its legs: the settler pays it once their games are final">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
                   } @else {
-                    <td class="up w-paid">{{ units(toWin(b.stake, b.odds)) }}</td>
+                    <td class="up w-paid">{{ units(betToWin(b)) }}</td>
                   }
                   <td class="desk-score w-parlay-hits" [class.up]="d?.status === 'won'" [class.down]="d?.status === 'lost'" title="Legs hit so far (graded, or decided by the score)">
                     @if (pr) {

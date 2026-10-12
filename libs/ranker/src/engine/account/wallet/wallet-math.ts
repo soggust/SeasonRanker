@@ -317,6 +317,12 @@ export const decimalOf = (odds: number): number => (odds > 0 ? 1 + odds / 100 : 
 export const americanOf = (dec: number): number => (dec >= 2 ? Math.round((dec - 1) * 100) : Math.round(-100 / (dec - 1)));
 // (the legs' combined price: the product of their decimal odds, as American)
 export const parlayOdds = (legs: { odds: number }[]): number => americanOf(legs.reduce((p, l) => p * decimalOf(l.odds), 1));
+// (what a stake wins on the legs together, to the cent, as the settler pays it: from the product itself, not the
+// rounded American price, which can be a few cents off)
+export const parlayToWin = (stake: number, legs: { odds: number }[]): number => round2(stake * (legs.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
+// (what a bet wins if it wins: a straight bet at its price, a parlay on its legs')
+export const betToWin = (b: Pick<PlayBet, 'kind' | 'legs' | 'stake' | 'odds'>): number =>
+  b.kind === 'parlay' && b.legs?.length ? parlayToWin(b.stake, b.legs) : toWin(b.stake, b.odds);
 
 // Why the slip's selections can't go together as a parlay, if they can't: too few or too many legs, both sides
 // of one market, or two legs on one game (a same-game parlay's price carries the book's correlation adjustments,
@@ -354,7 +360,7 @@ export function parlayOutcome(stake: number, legs: { odds: number; status?: stri
   const final = out ? `${hit}, ${out}` : hit;
   if (!won.length) return of('push') ? { status: 'push', profit: 0, final } : { status: 'void', profit: 0, final, note: 'every leg void' };
   const odds = won.length === 1 ? won[0].odds : parlayOdds(won);
-  const profit = won.length === 1 ? toWin(stake, odds) : round2(stake * (won.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
+  const profit = won.length === 1 ? toWin(stake, odds) : parlayToWin(stake, won);
   return { status: 'won', profit, final, odds };
 }
 

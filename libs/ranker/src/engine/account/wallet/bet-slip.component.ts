@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild, effect } from '@angular/core';
 import { AccountService } from '../account.service';
 import { WalletService } from './wallet.service';
-import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, payout, slipTotals, toWin } from './wallet-math';
+import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, payout, slipTotals, toWin } from './wallet-math';
 
 // The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
@@ -36,12 +36,13 @@ export class BetSlipComponent {
     });
   }
 
-  // (the tray's sums: each straight bet's, or the parlay's one stake at its combined price)
+  // (the tray's sums: each straight bet's, or the parlay's one stake on its legs' product, as the settler pays it)
   get totals() {
     if (!this.wallet.asParlay()) return slipTotals(this.wallet.slip());
-    const odds = this.wallet.parlay().odds;
     const stake = this.wallet.parlayStake();
-    return odds === null ? slipTotals([]) : slipTotals([{ stake, odds }]);
+    if (this.wallet.parlay().odds === null || !(stake > 0)) return slipTotals([]);
+    const win = parlayToWin(stake, this.wallet.slip());
+    return { count: 1, stake, toWin: win, payout: Math.round((stake + win) * 100) / 100 };
   }
 
   // (what's left in the wallet for this bet: the balance less the slip's other stakes)

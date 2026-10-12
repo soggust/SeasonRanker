@@ -33,6 +33,8 @@ import {
   paysInto,
   periodsAt,
   leaderboard,
+  legProblem,
+  parlayDay,
   round2,
   settleParlay,
   settlePlayBet,
@@ -218,29 +220,33 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     await done(d, bet, result, inputs.game?.date);
   }
   // (the parlays: each leg graded as a straight bet is, once its game's begun; a leg graded on an earlier run
-  // kept as it was)
+  // kept as it was, and a malformed one never looked up (legProblem: settleParlay voids it). One that fails is
+  // logged and passed over, the rest still settled)
   for (const d of due.filter((x) => x.get('kind') === 'parlay')) {
-    const legs = (d.get('legs') ?? []).map((l) => ({ ...l, start: iso(l.start) }));
-    const parlay = { ...d.data(), id: d.id, legs, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
-    const inputs = await Promise.all(legs.map((l) => (LEAGUES[l.sport] && l.start <= nowIso && (!l.status || l.status === 'open') ? inputsFor(l) : null)));
-    const { result, legs: graded } = settleParlay(parlay, inputs, { now });
-    if (!result) {
-      counts.waiting++;
-      // (its legs graded so far written on the open parlay: the page shows them)
-      if (!dry && graded.some((l, i) => l.status !== legs[i].status)) await gradeLegs(db, d.ref, graded);
-      continue;
+    try {
+      const legs = (d.get('legs') ?? []).map((l) => ({ ...l, start: iso(l.start) }));
+      const parlay = { ...d.data(), id: d.id, legs, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+      const inputs = await Promise.all(legs.map((l) => (LEAGUES[l.sport] && !legProblem(l) && l.start <= nowIso && (!l.status || l.status === 'open') ? inputsFor(l) : null)));
+      const { result, legs: graded } = settleParlay(parlay, inputs, { now });
+      if (!result) {
+        counts.waiting++;
+        // (its legs graded so far written on the open parlay: the page shows them)
+        if (!dry && graded.some((l, i) => l.status !== legs[i].status)) await gradeLegs(db, d.ref, graded);
+        continue;
+      }
+      await done(d, parlay, result, parlayDay(graded), { legs: graded, ...(Number.isFinite(result.odds) ? { paidOdds: result.odds } : {}) });
+    } catch (error) {
+      counts.failed = (counts.failed ?? 0) + 1;
+      log(`parlay ${d.ref.path}: not settled (${error?.message ?? error})`);
     }
-    // (filed under the day it was decided: its losing leg's game, else its last)
-    const lost = graded.find((l) => l.status === 'lost');
-    const start = lost ? lost.start : graded.map((l) => l.start).sort().at(-1);
-    await done(d, parlay, result, start, { legs: graded, ...(Number.isFinite(result.odds) ? { paidOdds: result.odds } : {}) });
   }
-  log(`bets: ${counts.settled} settled, ${counts.void} void, ${counts.waiting} waiting${dry ? ' (dry)' : ''}`);
+  log(`bets: ${counts.settled} settled, ${counts.void} void, ${counts.waiting} waiting${counts.failed ? `, ${counts.failed} failed` : ''}${dry ? ' (dry)' : ''}`);
   return counts;
 }
 
-// (a parlay's legs' results onto its stored legs: each leg's status, final and note, nothing else of it touched)
-const LEG_RESULT = ['status', 'final', 'note'];
+// (a parlay's legs' results onto its stored legs: each leg's status, final and note, and its game's own start,
+// nothing else of it touched)
+const LEG_RESULT = ['status', 'final', 'note', 'date'];
 const withResults = (stored, legs) => stored.map((l, i) => ({ ...l, ...Object.fromEntries(LEG_RESULT.filter((k) => legs[i]?.[k] !== undefined).map((k) => [k, legs[i][k]])) }));
 
 // An open parlay's legs as graded so far, written back while it's still open (one settled since left alone)

@@ -217,6 +217,8 @@ export const americanOf = (dec) => (dec >= 2 ? Math.round((dec - 1) * 100) : Mat
 
 // (the legs' combined price: the product of their decimal odds, as American)
 export const parlayOdds = (legs) => americanOf(legs.reduce((p, l) => p * decimalOf(l.odds), 1));
+// (what a stake wins on the legs together, to the cent: from the product itself, not the rounded American price)
+export const parlayToWin = (stake, legs) => round2(stake * (legs.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
 
 // A parlay's result from its legs' (each { odds, status } with status won | lost | push | void, or open (or
 // null) while it waits): { status, profit, final, odds? } (odds: the price it paid at, the legs that dropped
@@ -233,7 +235,7 @@ export function parlayOutcome(stake, legs) {
   if (!won.length) return of('push') ? { status: 'push', profit: 0, final } : { status: 'void', profit: 0, final, note: 'every leg void' };
   // (one leg left: that straight bet's price; more, their product)
   const odds = won.length === 1 ? won[0].odds : parlayOdds(won);
-  const profit = won.length === 1 ? toWin(stake, odds) : round2(stake * (won.reduce((p, l) => p * decimalOf(l.odds), 1) - 1));
+  const profit = won.length === 1 ? toWin(stake, odds) : parlayToWin(stake, won);
   return { status: 'won', profit, final, odds };
 }
 
@@ -243,7 +245,8 @@ export function parlayOutcome(stake, legs) {
 export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb'];
 export function legProblem(l) {
   const num = (v) => typeof v === 'number' && Number.isFinite(v);
-  if (!SPORTS.includes(l.sport) || !/^[0-9]{1,20}$/.test(String(l.event ?? ''))) return 'not a game';
+  // (a game's id, a string as the page writes it, with no leading zero: ESPN takes a padded id as the game's own)
+  if (!SPORTS.includes(l.sport) || typeof l.event !== 'string' || !/^[1-9][0-9]{0,19}$/.test(l.event)) return 'not a game';
   if (typeof l.matchup !== 'string' || !/^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$/.test(l.matchup)) return 'not a game';
   if (!Number.isInteger(l.odds) || Math.abs(l.odds) < 100 || Math.abs(l.odds) > 50000) return 'not a price';
   const sides = l.market === 'spread' || l.market === 'ml' ? ['home', 'away'] : l.market === 'total' || l.market === 'prop' ? ['over', 'under'] : [];
@@ -258,8 +261,10 @@ export function legProblem(l) {
 // legs graded so far, so an open parlay can show them). games: by leg, { game, observations, propValue } as
 // settlePlayBet takes them, or null for a game not begun
 export function settleParlay(parlay, games, { now = Date.now() } = {}) {
-  // (two legs on one game: the rules refuse it, and so does this, the parlay void)
-  const keys = parlay.legs.map((l) => `${l.sport}|${l.event}`);
+  // (two legs on one game: the rules refuse it, and so does this, the parlay void; a game's id read as a number,
+  // so a padded one is the same game)
+  const gameKey = (e) => (/^[0-9]{1,20}$/.test(String(e ?? '')) ? BigInt(e).toString() : String(e));
+  const keys = parlay.legs.map((l) => `${l.sport}|${gameKey(l.event)}`);
   if (new Set(keys).size < keys.length) return { result: { status: 'void', profit: 0, note: 'two legs on one game' }, legs: parlay.legs };
   const legs = parlay.legs.map((leg, i) => {
     if (leg.status && leg.status !== 'open') return leg;
@@ -270,10 +275,21 @@ export function settleParlay(parlay, games, { now = Date.now() } = {}) {
     if (!g) return leg;
     const r = settlePlayBet({ ...leg, stake: parlay.stake, placedAt: parlay.placedAt, start: leg.start }, g.game, { observations: g.observations, propValue: g.propValue, now });
     if (!r) return leg;
-    return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}) };
+    // (with its game's own start: the parlay's tally day is its legs' games', not the starts the browser wrote)
+    return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}), ...(g.game?.date ? { date: g.game.date } : {}) };
   });
   const r = parlayOutcome(parlay.stake, legs);
   return { result: r, legs };
+}
+
+// (the day a decided parlay is filed under: its losing leg's game, else its last, by the games' own starts
+// (settleParlay's date on each leg graded), not the ones the browser wrote; a leg never graded (void as
+// malformed, or from before the dates were kept) only when none has one)
+export function parlayDay(legs) {
+  const lost = legs.find((l) => l.status === 'lost');
+  if (lost) return lost.date ?? lost.start;
+  const dated = legs.filter((l) => l.date).map((l) => l.date);
+  return (dated.length ? dated : legs.map((l) => l.start)).sort().at(-1);
 }
 
 // (the bettor's graded pick a prop is settled by: the same stat of the same player in the same game, the one

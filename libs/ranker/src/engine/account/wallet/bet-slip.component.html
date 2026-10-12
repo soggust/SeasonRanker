@@ -104,7 +104,7 @@
           @if (wallet.parlayIssue() || failure('parlay'); as why) {
             <p class="slip-problem" role="alert">{{ why }}</p>
           } @else if (stake > 0 && p.odds !== null) {
-            <p class="slip-pays">To win <b>{{ toWin(stake, p.odds) | number: '1.2-2' }}</b> · Pays <b>{{ payout(stake, p.odds) | number: '1.2-2' }}</b></p>
+            <p class="slip-pays">To win <b>{{ totals.toWin | number: '1.2-2' }}</b> · Pays <b>{{ totals.payout | number: '1.2-2' }}</b></p>
           }
         </div>
       }

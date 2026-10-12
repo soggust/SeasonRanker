@@ -15,6 +15,7 @@ import {
   SPORTS,
   START,
   Versus,
+  betToWin,
   byGame,
   legBets,
   liveOf,
@@ -66,6 +67,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   readonly start = START;
   readonly oddsText = oddsText;
   readonly toWin = toWin;
+  readonly betToWin = betToWin;
   readonly recordText = recordText;
   readonly hideImage = hideImage;
   readonly leagueLogo = leagueLogo;

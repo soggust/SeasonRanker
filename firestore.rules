@@ -423,52 +423,58 @@ service cloud.firestore {
     // a figure of the browser's. The rules evaluate 1,000 expressions a write at most, and ten legs checked as a
     // straight bet is would take several times that: a leg's own market, side, line and price are the settler's
     // to check (settle-lib.mjs legProblem and the price check: a leg that isn't a bet on the board is void and
-    // drops out), and only an admin's straight bet can be a CHECK's (a parlay's leg tagged one is just a tag)
-    function parlayLeg(x, game, start) {
-      return x.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel'])
+    // drops out), and only an admin's straight bet can be a CHECK's (a parlay's leg tagged one is just a tag).
+    // Its event checked here all the same: the settler reads ESPN and its own docs by it, so a game's id only, with
+    // no leading zero (ESPN takes a padded id as the game's own, which would put two legs on one game past the
+    // games check); and its start within the 15 days a straight bet's is (a leg never due would hold the stake).
+    // A leg's fields and that latest start worked out once (validParlay) and passed down: written out in each leg's
+    // check they'd count ten times toward the limit, and ten prop legs wouldn't fit
+    function parlayLeg(x, game, start, fields, end) {
+      return x.keys().hasOnly(fields)
+        && x.event.matches('^[1-9][0-9]{0,19}$')
         && game == x.sport + '_' + x.event
-        && x.start >= start;
+        && x.start >= start && x.start < end;
     }
 
     // (each leg in turn, only as many as it has: parlayLegs0 the first on)
-    function parlayLegs9(d) {
-      return d.legs.size() <= 9 || (parlayLeg(d.legs[9], d.games[9], d.start));
+    function parlayLegs9(d, fields, end) {
+      return d.legs.size() <= 9 || (parlayLeg(d.legs[9], d.games[9], d.start, fields, end));
     }
 
-    function parlayLegs8(d) {
-      return d.legs.size() <= 8 || (parlayLeg(d.legs[8], d.games[8], d.start) && parlayLegs9(d));
+    function parlayLegs8(d, fields, end) {
+      return d.legs.size() <= 8 || (parlayLeg(d.legs[8], d.games[8], d.start, fields, end) && parlayLegs9(d, fields, end));
     }
 
-    function parlayLegs7(d) {
-      return d.legs.size() <= 7 || (parlayLeg(d.legs[7], d.games[7], d.start) && parlayLegs8(d));
+    function parlayLegs7(d, fields, end) {
+      return d.legs.size() <= 7 || (parlayLeg(d.legs[7], d.games[7], d.start, fields, end) && parlayLegs8(d, fields, end));
     }
 
-    function parlayLegs6(d) {
-      return d.legs.size() <= 6 || (parlayLeg(d.legs[6], d.games[6], d.start) && parlayLegs7(d));
+    function parlayLegs6(d, fields, end) {
+      return d.legs.size() <= 6 || (parlayLeg(d.legs[6], d.games[6], d.start, fields, end) && parlayLegs7(d, fields, end));
     }
 
-    function parlayLegs5(d) {
-      return d.legs.size() <= 5 || (parlayLeg(d.legs[5], d.games[5], d.start) && parlayLegs6(d));
+    function parlayLegs5(d, fields, end) {
+      return d.legs.size() <= 5 || (parlayLeg(d.legs[5], d.games[5], d.start, fields, end) && parlayLegs6(d, fields, end));
     }
 
-    function parlayLegs4(d) {
-      return d.legs.size() <= 4 || (parlayLeg(d.legs[4], d.games[4], d.start) && parlayLegs5(d));
+    function parlayLegs4(d, fields, end) {
+      return d.legs.size() <= 4 || (parlayLeg(d.legs[4], d.games[4], d.start, fields, end) && parlayLegs5(d, fields, end));
     }
 
-    function parlayLegs3(d) {
-      return d.legs.size() <= 3 || (parlayLeg(d.legs[3], d.games[3], d.start) && parlayLegs4(d));
+    function parlayLegs3(d, fields, end) {
+      return d.legs.size() <= 3 || (parlayLeg(d.legs[3], d.games[3], d.start, fields, end) && parlayLegs4(d, fields, end));
     }
 
-    function parlayLegs2(d) {
-      return d.legs.size() <= 2 || (parlayLeg(d.legs[2], d.games[2], d.start) && parlayLegs3(d));
+    function parlayLegs2(d, fields, end) {
+      return d.legs.size() <= 2 || (parlayLeg(d.legs[2], d.games[2], d.start, fields, end) && parlayLegs3(d, fields, end));
     }
 
-    function parlayLegs1(d) {
-      return d.legs.size() <= 1 || (parlayLeg(d.legs[1], d.games[1], d.start) && parlayLegs2(d));
+    function parlayLegs1(d, fields, end) {
+      return d.legs.size() <= 1 || (parlayLeg(d.legs[1], d.games[1], d.start, fields, end) && parlayLegs2(d, fields, end));
     }
 
-    function parlayLegs0(d) {
-      return d.legs.size() <= 0 || (parlayLeg(d.legs[0], d.games[0], d.start) && parlayLegs1(d));
+    function parlayLegs0(d, fields, end) {
+      return d.legs.size() <= 0 || (parlayLeg(d.legs[0], d.games[0], d.start, fields, end) && parlayLegs1(d, fields, end));
     }
 
     function validParlay(d) {
@@ -481,7 +487,7 @@ service cloud.firestore {
         && d.odds is int && (d.odds >= 100 || d.odds <= -100)
         && d.pick is string && d.pick.size() <= 80
         && validPlayStake(d)
-        && parlayLegs0(d);
+        && parlayLegs0(d, ['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel'], request.time + duration.value(15, 'd'));
     }
 
     match /users/{uid}/bets/{bet} {
