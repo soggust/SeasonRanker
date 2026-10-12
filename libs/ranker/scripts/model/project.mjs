@@ -19,10 +19,11 @@
 //            the vacated term's to hand on (vacF), not added to the share expected: it isn't fit apart (next-up
 //            receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them: group-out, part-time)
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
-//            new head coach) tried after the rest the same way as the draft's prior (below): on top of them as
-//            fit, against none at the dispersion the same search found, kept only with a held-out gain of 0.0003
-//            or more, the eligible players' and every player's bias no larger (not measured: left out); left out,
-//            the stat exactly as without it
+//            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
+//            power-play share, on a floor of 0.0001) tried after the rest the same way as the draft's prior
+//            (below): on top of them as fit, against none at the dispersion the same search found, kept only
+//            with a held-out gain of its floor or more (0.0003 the flags'), the eligible players' and every
+//            player's bias no larger (not measured: left out); left out, the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
 //            dispersion the same search found, kept only on the RB1-out standard: a held-out gain of 0.0003 or
 //            more, the eligible players' and every player's bias no larger, and its own no worse: the rookies'
@@ -79,8 +80,9 @@
 //            or snow (passing; receiving and rushing take wind and rain too), a backup quarterback throwing
 //            to its receivers and handing off to its backs; the NBA's teammates out (production missing), a
 //            back-to-back and the expected blowout (the game model's margin either way: a starter sits the
-//            fourth quarter); the NHL's power play (his power-play time by the power plays his team can expect)
-//            and the other side's goalie; MLB batters' place in the order against their usual and platoon
+//            fourth quarter); the NHL's power play (his power-play time by the power plays his team can
+//            expect; his share of his team's power play against his position's prop players': his unit) and
+//            the other side's goalie; MLB batters' place in the order against their usual and platoon
 //            edge against their usual, and the other side's starter; MLB starters' leash (their recent pitch
 //            counts against their usual), rest, and the plate umpire's zone. Each is fit like a matchup term
 //            and kept only if the held-out games are better with it (0: left out)
@@ -199,8 +201,12 @@ const DRAFT_M = 20;
 // (what keeping it takes (fitStat): the held-out gain (the RB1-out standard, 94ac4063: under it, the rounding's
 // floor and noise), and the lines in each of its own buckets and the early games, fewer and nothing's measured)
 const DRAFT_GAIN = 0.0003;
-// (a context flag's own floor, the same standard: a new head coach's first games (props.mjs CTX newCoach))
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN };
+// (a context flag's own floor, the same standard: a new head coach's first games (props.mjs CTX newCoach), his
+// team's lead quarterback out (CTX qb1Out))
+// (and an NHL skater's power-play share (CTX ppShare) the same way, on its own floor: a continuous term on every
+// skater, not a flag on a few hundred games, so over the rounding's 0 (0.0001); searched with the rest it moved
+// the vacated and goalie terms on points (2026-10-12), kept at +0.0002 with the stat's held out worse)
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001 };
 const DRAFT_LINES = 100;
 const DRAFT_EARLY = 100;
 const tz = () => ({ n: 0, got: 0, usual: 0 });
@@ -460,7 +466,7 @@ export function makeModel(stat, params, env) {
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const oppA = oppAOf(row);
     const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: row.role ?? null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -676,7 +682,13 @@ const RB1_OUT = [-0.05, -0.025, 0, 0.025, 0.05];
 // (c_newCoach: a new head coach's first games (props.mjs CTX newCoach), 0 or 1, finer than GRID.c to 10%
 // either way)
 const COACH = [-0.1, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
-const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH };
+// (c_qb1Out: the lead quarterback out, 0 or 1 (a half questionable): the role backtest had his receivers 6% to
+// 11% under, 2026-10-12; to 20% either way, a step 2.5%)
+const QB1_OUT = [-0.2, -0.15, -0.1, -0.075, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
+// (c_ppShare: an NHL skater's power-play share over his position's prop players', -0.5 to 0.6 (a second-pair
+// defenseman about -0.3, a top unit's forward +0.3): a 0.3 share's 7% to 35% at 0.25 to 1)
+const PP_SHARE = [-0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
+const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -827,7 +839,7 @@ export function fitStat(stat, rows, env) {
     const o = replayStat(stat, sorted, p, env, cuts).out;
     const cal = fitRecal(linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p));
     const young = has(stat, 'dp') ? [...[0, 1].map((y) => check(youngOf(o, y), { ...p, cal })), check(youngOf(o, 1).filter((x) => x.p.games < 3), { ...p, cal })] : null;
-    const all = has(stat, 'dp') ? check(allOf(o), { ...p, cal }) : null;
+    const all = has(stat, 'dp') || late.length ? check(allOf(o), { ...p, cal }) : null;
     return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young, all };
   };
   let current = heldOut(params);

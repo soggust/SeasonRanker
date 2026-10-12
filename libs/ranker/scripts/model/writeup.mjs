@@ -227,7 +227,7 @@ function driverWhat(name, bet, sheet, raw) {
   return name;
 }
 
-const FLAG_CTX = new Set(['rb1Out', 'newCoach']);
+const FLAG_CTX = new Set(['rb1Out', 'newCoach', 'qb1Out']);
 // (the context term that moved it most: its size times its value where the fit's sizes are known, else its value)
 function ctxWhat(bet, sheet) {
   const ctx = bet.projection?.ctx;
@@ -248,9 +248,11 @@ function ctxWhat(bet, sheet) {
     backupQb: `${sheet.bet.team ?? 'his team'} starting a backup QB`,
     rb1Out: `${sheet.bet.team ?? 'his team'} ${v < 1 ? 'with its lead back questionable' : 'without its lead back'}`,
     newCoach: `${sheet.bet.team ?? 'his team'} in its first games under a new head coach`,
+    qb1Out: `${sheet.bet.team ?? 'his team'} ${v < 1 ? 'with its starting QB questionable' : 'without its starting QB'}`,
     b2b: 'a back-to-back',
     pp: 'his power-play time',
     ppTime: 'his power-play time',
+    ppShare: v > 0 ? 'his spot on the top power-play unit' : 'his small share of the power play',
     oppShots: `${opp ? possessive(opp) : 'the opposing'} shot volume`,
     oppGoalie: 'the goalie he faces',
     leash: 'his pitch-count leash',

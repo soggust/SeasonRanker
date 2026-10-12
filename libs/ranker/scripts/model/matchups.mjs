@@ -43,7 +43,9 @@
 //            next one up gets his power play)
 //   power    the NHL: a skater's power-play time a game (recent games counting most) and the power plays his
 //   play     team can expect: its opponent's penalties a game over the league's (season to date, last season's
-//            at half, pulled toward the league's by 10 games); the referees' lean is the context's (props.mjs CTX.pp)
+//            at half, pulled toward the league's by 10 games); the referees' lean is the context's (props.mjs CTX.pp);
+//            and his share of his team's power play (recent games counting most) against the league's prop
+//            players' at his position (ppShare: a top unit's man over 0, a second-pair defenseman under it)
 //   lineup   MLB batters: whether he started (his place in the game's posted lineup: the history's from StatsAPI's
 //            lineups; a game without them, two plate appearances or more), and his place in the order now
 //            against his usual (a leadoff man gets the most trips to the plate: PA_BY_SLOT); the platoon edge on
@@ -153,6 +155,9 @@ export function nflMatchups(rows, pbp = null) {
   const offOf = (id, season) => decay(off.get(id) ?? { season, att: 0, car: 0, n: 0 }, season);
   const defOf = (id, season) => decay(def.get(id) ?? { season, pace: 0, n: 0, WR: 0, TE: 0, RB: 0, all: 0 }, season);
   const funnel = passFunnel();
+  // (each team's games this season so far: a row's teamGame is the team's game number tonight, 1 for its first)
+  const played_ = new Map();
+  const gameNo = (id, season) => (played_.get(id)?.season === season ? played_.get(id).n : 0) + 1;
   const teamOf = (id, season) => decay(team.get(id) ?? { season, tgt: new Map(), car: new Map(), min: new Map(), n: 0 }, season);
   // (each team's players' recent work a game, recent games counting most: their position and its level, faded
   // game by game they miss; a new season starts it over at half)
@@ -249,6 +254,28 @@ export function nflMatchups(rows, pbp = null) {
     const lead = leadBack(teamId, season);
     return lead ? Math.min(1, Math.max(0, Number(missOf(lead.id)) || 0)) : 0;
   };
+  // (a team's lead quarterback now, the same way: its quarterback with the most passes a game (recent games
+  // counting most; a starter's out through FREEZE games kept as they were, then fading, so a backup who's had the
+  // job five games or so is the lead by then and his receivers' numbers are his), QB_LEAD or more, one who's
+  // played for it this season; null with none. How surely he's missing is the qb1Out term's value for its backs
+  // and pass-catchers (the role backtest's qb1-out: receiving 6% to 11% under the projection, 2026-10-12, the
+  // context's backupQb reading only an absence's first games, till the backup is the usual starter), a
+  // quarterback's own 0 (his passing is the starts' base's: project.mjs qs). Times the share of his own games
+  // this season the lead quarterback played in (his season's numbers already the backup's, as far as they go:
+  // a flag at full strength on an absence's fourth game would count its first three twice; none yet, in full).
+  // Kept only past its floor: project.mjs MIN_GAIN)
+  const QB_LEAD = 15;
+  const qb1Out = (teamId, season, pid, pos, missOf) => {
+    if (!POS(pos) || POS(pos) === 'QB') return 0;
+    let lead = null;
+    for (const [id, x] of workOf(teamId, season).p) if (x.pos === 'QB' && x.cur && x.v >= QB_LEAD && (!lead || x.v > lead.v)) lead = { id, v: x.v };
+    const m = lead ? Math.min(1, Math.max(0, Number(missOf(lead.id)) || 0)) : 0;
+    if (!m) return 0;
+    const h = games_.get(pid);
+    const list = h && h.season === season ? h.games : [];
+    const with_ = list.length ? list.filter((g) => !g.missing.has(String(lead.id))).length / list.length : 1;
+    return Math.round(m * with_ * 1000) / 1000;
+  };
   // (a player's snap share: his last game's and his season's average, over the games read; null with none)
   const snapOf = (pid, season) => {
     const s = snapsOf.get(pid);
@@ -293,6 +320,8 @@ export function nflMatchups(rows, pbp = null) {
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
         r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        r.qb1Out = qb1Out(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        r.teamGame = gameNo(g.team, g.season);
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
       }
@@ -332,6 +361,7 @@ export function nflMatchups(rows, pbp = null) {
         t.car.set(r.pid, (t.car.get(r.pid) ?? 0) + (r.s.rushAtt ?? 0));
       }
       t.n++;
+      played_.set(g.team, { season: g.season, n: gameNo(g.team, g.season) });
       team.set(g.team, t);
       // (the recent work: the ones who played, their game's; the ones who didn't, as it was through their first
       // FREEZE games out, then fading; and the game's regulars missing, as they were, for its players' vacPast)
@@ -392,7 +422,7 @@ export function nflMatchups(rows, pbp = null) {
       const vacs = vacated(teamId, season, pid, pos, missOf);
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
-      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { role: roleOf(pid, teamId, season, pos), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: qb1Out(teamId, season, pid, pos, missOf), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)
@@ -579,8 +609,8 @@ export function nbaMatchups(rows) {
 // The NHL's: the work missing (teamWork: by time on ice and by power-play time, forwards and defensemen apart;
 // a core skater out counts at once, a regular from his second game out in a row: teamWork gate) and the power
 // play (a skater's power-play minutes a game, recent games counting most; his opponent's penalties a game over
-// the league's per team, from the context's box facts: facts.games[id].w, each side's power plays first). The
-// same for a coming game
+// the league's per team, from the context's box facts: facts.games[id].w, each side's power plays first), and
+// his share of his team's power play against his position's prop players' (ppShare). The same for a coming game
 export function nhlMatchups(rows, facts = null) {
   const grp = (pos) => (pos === 'F' || pos === 'D' ? pos : null);
   const work = teamWork({ groupOf: grp, measures: [(r) => r.s.toi, (r) => r.s.pptoi], regular: [10, 1], floor: [8, 0.5] });
@@ -595,7 +625,22 @@ export function nhlMatchups(rows, facts = null) {
     return w ? (w * t.sum + 10 * lg.pp) / (w * t.n + 10) - lg.pp : 0;
   };
   const ppOf = (pid) => pp.get(pid) ?? null;
+  // (his share of his team's power play: his power-play minutes over the team's (its skaters' summed over 5, a
+  // game with under half a minute of it not read), recent games counting most (RATE), carried across seasons as
+  // his minutes are; against the league's for his position's prop players (each team-game's top six forwards and
+  // top two defensemen by the game's time on ice, the eligible as markEligible picks them before the game), a
+  // running average learned after each day: ppShare, a top unit's man over 0, a second-pair defenseman under it.
+  // The prior (project.mjs: the position's eligible players) is a top unit's and a third line's alike; this reads
+  // which he is. null with no share read yet (no effect))
+  const share = new Map();
+  const lgShare = { F: { v: 0.3, n: 0 }, D: { v: 0.3, n: 0 } };
+  const shareOf = (pid, pos) => {
+    const v = share.get(pid);
+    const lg = lgShare[pos];
+    return v === undefined || !lg ? null : Math.round((v - lg.v) * 1000) / 1000;
+  };
   const stamp = (r) => {
+    r.ppShare = shareOf(r.pid, r.pos);
     r.ppTime = ppOf(r.pid);
     r.ppOpp = pensOf(r.opp, r.season);
     r.ppAvg = lg.pp;
@@ -625,6 +670,24 @@ export function nhlMatchups(rows, facts = null) {
         const was = pp.get(r.pid);
         pp.set(r.pid, was === undefined || was === null ? r.s.pptoi : was + (r.s.pptoi - was) * RATE);
       }
+      const skaters = list.filter((r) => r.pos !== 'G' && Number.isFinite(r.s.pptoi));
+      const teamPp = skaters.reduce((t, r) => t + r.s.pptoi, 0) / 5;
+      if (teamPp >= 0.5) {
+        for (const r of skaters) {
+          const x = Math.min(1, r.s.pptoi / teamPp);
+          const was = share.get(r.pid);
+          share.set(r.pid, was === undefined ? x : was + (x - was) * RATE);
+        }
+        // (the league's, on the game's own prop players: learned after the game, read from the next day on)
+        for (const [pos, n] of [['F', 6], ['D', 2]]) {
+          const top = skaters.filter((r) => r.pos === pos).sort((a, b) => (b.s.toi ?? 0) - (a.s.toi ?? 0)).slice(0, n);
+          for (const r of top) {
+            const lg = lgShare[pos];
+            lg.n++;
+            lg.v += (Math.min(1, r.s.pptoi / teamPp) - lg.v) / Math.min(lg.n, 2000);
+          }
+        }
+      }
       const w = facts?.games?.[r0.game]?.w;
       if (seen.has(r0.game) || !Array.isArray(w) || w.length < 2) continue;
       seen.add(r0.game);
@@ -646,7 +709,7 @@ export function nhlMatchups(rows, facts = null) {
   return {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missFn(missing), (g) => NHL_CORE[g] ?? 0));
-      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppOpp: pensOf(oppId, season), ppAvg: lg.pp };
+      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppShare: shareOf(pid, pos), ppOpp: pensOf(oppId, season), ppAvg: lg.pp };
     },
   };
 }

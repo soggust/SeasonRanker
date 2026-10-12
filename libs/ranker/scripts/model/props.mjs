@@ -169,6 +169,8 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
   return null;
 }
 
+// (the team games the midseason flag covers (CTX midSeason))
+export const MID_SEASON = [5, 8];
 // (the smallest line the skew guard reads: below it a count's own skew is real)
 export const SKEW_MIN_LINE = 5;
 // Whether a side's edge can only be the spread's skew: an under with the projection above the line, an over with
@@ -198,11 +200,20 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // count as having played it, which side's expected score is its game script (opp: the other side's), its
 // context terms (ctxValue; each fit on its own and kept only if the held-out games are better with it:
 // project.mjs; an NHL goalie's saves also by the other side's expected shots on goal, hockey.mjs)
+// (his team's lead quarterback missing (qb1Out, matchups.mjs: a back's or pass-catcher's, the starter's whole
+// absence till his backup's had the job five games or so; backupQb only its first games, till the backup is the
+// usual starter in the context's last four), on the carrying and receiving stats: kept only past its floor
+// (project.mjs MIN_GAIN, a flag on a few hundred team-games), as the new head coach's. Measured 2026-10-12 (the
+// role backtest's qb1-out: receiving yards 11% under the projection, receptions 6%, both yards 8%): as a plain
+// flag, held out -0.0001 to +0.0003; times the share of his games the starter played in, receiving yards -0.15
+// (+0.0003), both yards -0.05 (+0.0006), receptions -0.075 (+0.0002), but every one with the eligible players'
+// bias larger (receiving yards -0.65 to -0.73 a game, the held-out games already under their projections): left
+// out, refit each run. The role guard's qb1-out (ROLE_SAFE) CHECKs the over and bets the under, as before)
 // (his team in its first COACH_GAMES games under a new head coach (newCoach, football.mjs: the schedule's
 // coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
 // project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
 const PASSING = ['wind', 'cold', 'precip', 'newCoach'];
-const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach'];
+const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
 // only +0.0001, the rounding's floor (0.6168 to 0.6167), with the bias worse (eligible -0.051 to -0.054, all
@@ -219,6 +230,14 @@ const NBA_CTX = ['usage', 'b2b', 'blowout'];
 // (the NBA's and NHL's work missing in two measures (matchups.mjs: minutes or usage; time on ice or power-play
 // time), three splits each)
 const NBA_VAC = { vacated: true, vacSplits: 6 };
+// (the NHL skaters' power-play share (ppShare: his share of his team's power play against his position's prop
+// players', matchups.mjs) measured 2026-10-12 as a late term (project.mjs MIN_GAIN, floor 0.0001): shots not
+// taken on the fit window, points 0.25 taken there and held out -0.0001, left out; searched with the rest it
+// moved the vacated and goalie terms and the stat's held-out log loss went 0.5467 to 0.5470. Also tried then: a
+// skater's own longer run pulled toward the position's by 5 to 40 games (a third-pair defenseman's 26 games
+// with a point projected 0.05 points a game, the book's line about 0.17): not taken on the fit window, whose
+// eligible players (each team's top six forwards and top two defensemen) are the ones with long runs of their
+// own; the far line on such a player stays the gap guard's CHECK)
 // (an MLB batter's start: his place in the game's lineup (matchups.mjs mlbMatchups: start), DraftKings' book
 // only posts a starter's, and a pinch hitter's one trip would drag a starter's rate down; a game without its
 // lineup, two plate appearances or more)
@@ -263,8 +282,8 @@ export const STATS = {
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
   ],
   nhl: [
-    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
-    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], ...NBA_VAC }),
+    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp', 'ppShare'], ...NBA_VAC }),
+    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie', 'ppShare'], ...NBA_VAC }),
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: ['oppShots'], goalie: true }),
   ],
   mlb: [
@@ -313,6 +332,18 @@ export const CTX = {
   // (his team's lead back out (matchups.mjs leadBack: out, doubtful or on IR, or not in the game's logs in the
   // history; a questionable one at half): a pass-catcher's receptions, a back's own 0)
   rb1Out: (info, home, pts, row) => (Number.isFinite(row?.rb1Out) ? row.rb1Out : 0),
+  // (his team's lead quarterback out (matchups.mjs qb1Out: out, doubtful or on IR, gone from the roster, or not in
+  // the game's logs in the history; a questionable one at half), times the share of his games this season the
+  // starter played in: a back's and a pass-catcher's, a quarterback's 0)
+  qb1Out: (info, home, pts, row) => (Number.isFinite(row?.qb1Out) ? row.qb1Out : 0),
+  // (his team's 5th to 8th game of the season (matchups.mjs teamGame). The role backtest (2026-10-12, the week
+  // table) had the established starters' receiving 3% to 13% over the projection there (held out 7% to 19%),
+  // every eligible player's 2% to 4%, their actual over their own season so far (+3% receiving yards) and at
+  // their prior (-1%): not the prior's weight (kd, the prior shrinking, leans on the early weeks, lower still).
+  // As a flag (project.mjs MIN_GAIN, 0.0003) on receiving yards, receptions and both yards it was not taken or
+  // taken the other way on the fit window (-0.025, held out -0.0002): the lift is the held-out seasons' alone,
+  // not one the history repeats. On no stat's ctx; kept for later work)
+  midSeason: (info, home, pts, row) => (Number.isFinite(row?.teamGame) && row.teamGame >= MID_SEASON[0] && row.teamGame <= MID_SEASON[1] ? 1 : 0),
   // (his team in its first COACH_GAMES games under a new head coach (football.mjs: the game's number under him,
   // known before it by the schedule's coaches))
   newCoach: (info, home) => {
@@ -341,6 +372,10 @@ export const CTX = {
     const refs = Number.isFinite(info?.officials?.whistle) ? info.officials.whistle / 2 : 0;
     return (t * ((row.ppOpp ?? 0) + refs)) / row.ppAvg;
   },
+  // (an NHL skater's share of his team's power play against his position's prop players' (matchups.mjs ppShare:
+  // a top unit's man over 0, a second-pair defenseman under it): his role on it, which the position's prior
+  // (project.mjs) doesn't know; 0 with none read)
+  ppShare: (info, home, pts, row) => (Number.isFinite(row?.ppShare) ? row.ppShare : 0),
   // (the other side's starting goalie (NHL) or pitcher (MLB): goals or runs a game he saves over average,
   // context.mjs's starters, from before the game)
   oppGoalie: (info, home) => (Number.isFinite(info?.starters?.saved?.[home ? 1 : 0]) ? info.starters.saved[home ? 1 : 0] : 0),

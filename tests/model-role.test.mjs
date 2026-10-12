@@ -116,6 +116,43 @@ test("rb1Out: the team's lead back missing, for its quarterback and pass-catcher
   assert.equal(gm.live('w', '1', '2', 'WR', 2026, new Set(['s'])).rb1Out, 0);
 });
 
+test("qb1Out: the team's lead quarterback missing, for its backs and pass-catchers; a quarterback's own 0; last season's gone, none", () => {
+  const rows = [];
+  for (let d = 1; d <= 3; d++) rows.push(...game(`a${d}`, `2026-09-0${d}T17:00Z`, [['q', 'QB', 0, 0, 34], ['k', 'QB', 0, 0, 2], ['s', 'RB', 18, 3], ['w', 'WR', 0, 7]]));
+  // (the starter out of the fourth game: his backs' and receivers' rows read him missing, the backup's own 0)
+  rows.push(...game('a4', '2026-09-04T17:00Z', [['k', 'QB', 0, 0, 33], ['s', 'RB', 18, 3], ['w', 'WR', 0, 7]]));
+  const m = nflMatchups(rows);
+  const at = (pid, g) => rows.find((r) => r.pid === pid && r.game === g).qb1Out;
+  assert.deepEqual([at('w', 'a3'), at('s', 'a3'), at('w', 'a4'), at('s', 'a4'), at('k', 'a4')], [0, 0, 1, 1, 0]);
+  // (a coming game: out, questionable at half, in, each times the share of his games this season the starter
+  // played in (3 of 4: the fourth already the backup's); a quarterback's own 0)
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, new Set(['q'])).qb1Out, 0.75);
+  assert.equal(m.live('s', '1', '2', 'RB', 2026, (id) => (id === 'q' ? 0.5 : 0)).qb1Out, 0.375);
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, null).qb1Out, 0);
+  assert.equal(m.live('k', '1', '2', 'QB', 2026, new Set(['q'])).qb1Out, 0);
+  // (last season's starter, gone: not this season's lead, his absence nothing)
+  const gone = [];
+  for (let d = 1; d <= 3; d++) gone.push(...game(`g${d}`, `2025-10-0${d}T17:00Z`, [['q', 'QB', 0, 0, 34], ['w', 'WR', 0, 7]], 2025));
+  for (let d = 1; d <= 2; d++) gone.push(...game(`h${d}`, `2026-09-0${d}T17:00Z`, [['k', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]]));
+  const gm = nflMatchups(gone);
+  assert.deepEqual(gone.filter((r) => r.season === 2026 && r.pid === 'w').map((r) => r.qb1Out), [0, 0]);
+  assert.equal(gm.live('w', '1', '2', 'WR', 2026, new Set(['q'])).qb1Out, 0);
+});
+
+test("teamGame: the team's game number tonight, from 1 each season; the midseason flag on its 5th to 8th", async () => {
+  const { CTX } = await import('../libs/ranker/scripts/model/props.mjs');
+  const rows = [];
+  for (let d = 1; d <= 2; d++) rows.push(...game(`p${d}`, `2025-10-0${d}T17:00Z`, [['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]], 2025));
+  for (let d = 1; d <= 6; d++) rows.push(...game(`a${d}`, `2026-09-0${d}T17:00Z`, [['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]]));
+  const m = nflMatchups(rows);
+  const w = rows.filter((r) => r.pid === 'w');
+  assert.deepEqual(w.map((r) => r.teamGame), [1, 2, 1, 2, 3, 4, 5, 6]);
+  assert.deepEqual(w.map((r) => CTX.midSeason({}, true, null, r)), [0, 0, 0, 0, 0, 0, 1, 1]);
+  assert.equal(m.live('w', '1', '2', 'WR', 2026, null).teamGame, 7);
+  assert.equal(CTX.midSeason({}, true, null, { teamGame: 9 }), 0);
+  assert.equal(CTX.midSeason({}, true, null, {}), 0);
+});
+
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {
   const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, implied: 50 };
   assert.equal(roleChangeOf(base), null);

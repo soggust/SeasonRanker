@@ -52,6 +52,10 @@
 //
 //   the fit's check  each stat's held-out check from the fit (fitProps: the eligible players' log loss at lines
 //                    at their median and bias, every player's bias, the terms' gains), beside the buckets
+//   by week          each stat's eligible players, and the established starters (all, and by position), by the
+//                    week of the season (1-4, 5-8, 9+): the projection's bias, the actual over his season's own
+//                    average so far and over his prior, the prior's mean weight (the early-season prior's work, or
+//                    the league's: every player alike)
 //   by starts        the passing stats' quarterbacks by their starts before the game (0-5, 6-15, 16+: a
 //                    few-start starter's prior the most made up, and the guard's few-starts CHECK)
 //   before, after    --plain fits the model without the role-aware base (project.mjs: the snaps-based rate, a
@@ -498,7 +502,7 @@ async function main() {
         noWeek++;
         continue;
       }
-      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
+      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, pos: x.row.pos, own: x.p.own ?? null, prior: x.p.prior ?? null, priorW: x.p.priorW ?? null, qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
     }
     if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
     if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
@@ -534,12 +538,41 @@ async function main() {
         block.qbStarts[name] = { all: list.length ? summarize(list, { boot: 300 }) : null, held: list.some((x) => x.held) ? summarize(list.filter((x) => x.held), { boot: 300 }) : null };
       }
     }
+    // (the weeks of the season: every eligible player's and the established starters' (all, and by position)
+    // bias against the projection, against his season's own average so far and against his prior, and the
+    // prior's weight: whether a week group's lean is the league's (every player alike) or the prior's (the
+    // starters' projection under their own average, the prior under both))
+    block.weeks = weekTable(items);
     results[st.key] = block;
     console.log(`role backtest: ${st.key}: ${items.length} eligible rows from ${FROM} (fit window ${cuts[0]} to ${cuts[1]})`);
   }
   writeFileSync(path.join(ROOT, '.cache/role-backtest.json'), JSON.stringify({ at: new Date().toISOString(), from: FROM, settings: useState ? 'state.json' : 'fit', plain, coverage, rosterOnly, results }, null, 1));
   writeFileSync(path.join(ROOT, '.cache/role-backtest.md'), report(results, { from: FROM, useState, plain, coverage, rosterOnly, before: earlier }));
   console.log(`role backtest: written .cache/role-backtest.md in ${Math.round((Date.now() - t0) / 1000)}s`);
+}
+
+// (the weeks' table: by week group (WEEKS) and group (every eligible player, the established starters, and
+// those by position), n, the projection's bias (all and held out), the actual over his season's own average
+// so far (rows with one) and over his prior, less 1, and the prior's mean weight)
+export const WEEKS = { 'w1-4': (w) => w <= 4, 'w5-8': (w) => w >= 5 && w <= 8, 'w9+': (w) => w >= 9 };
+export function weekTable(items) {
+  const out = {};
+  const ratio = (list, k) => {
+    const xs = list.filter((x) => Number.isFinite(x[k]));
+    const d = xs.reduce((t, x) => t + x[k], 0);
+    return xs.length && d > 0 ? xs.reduce((t, x) => t + x.v, 0) / d - 1 : null;
+  };
+  for (const [wk, inW] of Object.entries(WEEKS)) {
+    out[wk] = {};
+    for (const g of ['all', 'starters', 'WR', 'TE', 'RB']) {
+      const list = items.filter((x) => Number.isFinite(x.week) && inW(x.week) && (g === 'all' || (String(x.bucket).startsWith('starter-') && (g === 'starters' || GROUP(x.pos) === g))));
+      if (!list.length) continue;
+      const held = list.filter((x) => x.held);
+      const w = list.filter((x) => Number.isFinite(x.priorW));
+      out[wk][g] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null, own: ratio(list, 'own'), prior: ratio(list, 'prior'), priorW: w.length ? w.reduce((t, x) => t + x.priorW, 0) / w.length : null };
+    }
+  }
+  return out;
 }
 
 // The report: the headlines (each bucket's bias whose interval leaves out 0, per stat), then each stat's table
@@ -592,6 +625,19 @@ export function report(results, { from = 2021, useState = false, plain = false, 
       const b = before?.[key]?.fit;
       const terms = ['sn', 'qs', 'kd', 'dp'].filter((k) => k in (f.gains ?? {})).map((k) => `${k} ${block.params[k]}${k === 'sn' && block.params.sn ? `/sr ${block.params.sr}` : ''} (${f.gains[k] === null ? 'not taken' : f.gains[k] > 0 ? `+${f.gains[k]}` : `${f.gains[k]}, left out`})`);
       lines.push(`| ${key} | ${f.n} | ${num(f.logLoss, 4)} | ${num(f.logLossBase, 4)} |${before ? ` ${num(b?.logLoss, 4)} | ${num(b?.bias, 3)} | ${num(b?.allBias, 3)} |` : ''} ${num(f.bias, 3)} | ${num(f.allBias, 3)} | ${terms.join(', ') || 'none'} |`);
+    }
+  }
+  // (the weeks of the season)
+  if (Object.values(results).some((b) => b.weeks)) {
+    lines.push('');
+    lines.push("## By week of the season (every eligible player, and the established starters by position: the projection's bias, all and held out; the actual over his season's own average so far and over his prior; the prior's mean weight)");
+    lines.push('');
+    lines.push('| stat | weeks | group | n | bias | held-out n | held-out bias | over own | over prior | prior weight |');
+    lines.push('|---|---|---|---:|---:|---:|---:|---:|---:|---:|');
+    for (const [key, block] of Object.entries(results)) {
+      for (const [wk, groups] of Object.entries(block.weeks ?? {})) {
+        for (const [g, x] of Object.entries(groups)) lines.push(`| ${key} | ${wk} | ${g} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} | ${pct(x.own)} | ${pct(x.prior)} | ${num(x.priorW, 2)} |`);
+      }
     }
   }
   // (a passing stat's quarterbacks by their starts before the game)

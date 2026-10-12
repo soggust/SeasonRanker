@@ -178,6 +178,27 @@ test("nhlMatchups: a skater's power-play time and his opponent's penalties, from
   assert.equal(CTX.pp({}, true, null, { ...live, ppTime: 0 }), 0);
 });
 
+test("nhlMatchups: a skater's share of his team's power play against his position's prop players' (ppShare), from the games before", async () => {
+  const { nhlMatchups } = await import('../libs/ranker/scripts/model/matchups.mjs');
+  const { CTX } = await import('../libs/ranker/scripts/model/props.mjs');
+  const rows = [];
+  // (a team's power play: four forwards and a defenseman on its top unit, 4 minutes; a second unit 1 minute; a
+  // second-pair defenseman (d2) none)
+  const sk = (pid, pos, toi, pptoi) => ({ pid, pos, toi, pptoi });
+  const team = [sk('f1', 'F', 20, 4), sk('f2', 'F', 19, 4), sk('f3', 'F', 18, 4), sk('f4', 'F', 17, 4), sk('f5', 'F', 15, 1), sk('f6', 'F', 14, 1), sk('f7', 'F', 13, 1), sk('d1', 'D', 24, 4), sk('d2', 'D', 21, 0), sk('d3', 'D', 18, 1), sk('d4', 'D', 16, 1)];
+  for (let d = 1; d <= 3; d++) for (const x of team) rows.push({ pid: x.pid, pos: x.pos, date: `2025-11-0${d}T00:00Z`, season: 2026, team: '1', opp: '2', game: `g${d}`, home: true, s: { toi: x.toi, sog: 2, pts: 0, pptoi: x.pptoi } });
+  const m = nhlMatchups(rows);
+  // (none read before his first game)
+  assert.equal(rows[0].ppShare, null);
+  const at = (pid) => m.live(pid, '1', '2', pid[0] === 'd' ? 'D' : 'F', 2026).ppShare;
+  assert.ok(at('f1') > 0, String(at('f1')));
+  assert.ok(at('d1') > 0, String(at('d1')));
+  assert.ok(at('d2') < -0.2, String(at('d2')));
+  assert.ok(at('f6') < 0, String(at('f6')));
+  assert.equal(CTX.ppShare({}, true, null, { ppShare: at('d2') }), at('d2'));
+  assert.equal(CTX.ppShare({}, true, null, { ppShare: null }), 0);
+});
+
 test("an MLB starter's rest: skipped from LAYOFF days or a debut from May, flagged on a long rest or a late debut", async () => {
   const { restGuard, LAYOFF, LONG_REST } = await import('../libs/ranker/scripts/model/props.mjs');
   assert.equal(LAYOFF, 13);
