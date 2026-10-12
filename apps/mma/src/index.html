@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!-- One home: the site's other addresses (www, Firebase's own) send you to seasonranker.com, same page, so a
+         sign-in (kept per address) is the one you see everywhere; previews and the dev server stay put -->
+    <script>
+      if (['www.seasonranker.com', 'qbranker2026.web.app', 'qbranker2026.firebaseapp.com'].includes(location.hostname)) {
+        location.replace('https://seasonranker.com' + location.pathname + location.search + location.hash);
+      }
+    </script>
     <title>Season Ranker | MMA</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
