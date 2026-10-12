@@ -233,9 +233,11 @@ export function nflMatchups(rows, pbp = null) {
   };
   // (a team's lead back now: its back with the most recent work (carries and targets a game, recent games
   // counting most), LEAD_MIN or more, one who's played for it this season (cur: a back gone since last season
-  // isn't its lead); null with none. How surely he's missing (missOf, 0 to 1) is the rb1Out term's value for
-  // its quarterback and pass-catchers (props.mjs CTX.rb1Out: receptions' only, the passing volume's measured
-  // and left out), a back's own 0: the work he leaves is the vacated term's)
+  // isn't its lead, nor one out since before the opener: a bell cow lost in the preseason is never read); null
+  // with none. How surely he's missing (missOf, 0 to 1) is the rb1Out term's value for its quarterback and
+  // pass-catchers, a back's own 0: the work he leaves is the vacated term's. A questionable one's half is the
+  // vacated term's convention, not a fitted rate (a questionable starter plays more often than half); the
+  // history reads 0 or 1. Measured and on no stat's ctx: props.mjs)
   const LEAD_MIN = 8;
   const leadBack = (teamId, season) => {
     let lead = null;

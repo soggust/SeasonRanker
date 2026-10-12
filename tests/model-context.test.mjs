@@ -16,8 +16,9 @@ test('ctxKeys: one name or a list', () => {
   assert.deepEqual(ctxKeys({ ctx: ['wind', 'cold'] }), ['wind', 'cold']);
   assert.deepEqual(ctxKeys({}), []);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'recYds')), ['backupQb', 'wind', 'precip']);
-  // (the lead back out: receptions' only, the passing volume's and receiving yards' measured and left out)
-  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip', 'rb1Out']);
+  // (the lead back out: measured and on no stat's (props.mjs), receptions' held out at the rounding's floor)
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip']);
+  assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('rb1Out')));
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'passAtt')), ['wind', 'cold', 'precip']);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rushAtt')), ['backupQb', 'wind', 'precip']);
 });

@@ -103,6 +103,17 @@ test("rb1Out: the team's lead back missing, for its quarterback and pass-catcher
   const split = [];
   for (let d = 1; d <= 3; d++) split.push(...game(`c${d}`, `2026-09-0${d}T17:00Z`, [['x', 'RB', 5, 1], ['y', 'RB', 5, 1], ['q', 'QB', 0, 0, 30]]));
   assert.equal(nflMatchups(split).live('q', '1', '2', 'QB', 2026, new Set(['x'])).rb1Out, 0);
+  // (back from his absence: the game he's in reads 0)
+  const back = [...rows, ...game('a5', '2026-09-05T17:00Z', [['s', 'RB', 18, 3], ['b', 'RB', 4, 1], ['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]])];
+  nflMatchups(back);
+  assert.deepEqual([back.find((r) => r.pid === 'w' && r.game === 'a5').rb1Out, back.find((r) => r.pid === 'q' && r.game === 'a5').rb1Out], [0, 0]);
+  // (last season's bell cow, gone: not this season's lead back, his absence nothing in its rows or a coming game)
+  const gone = [];
+  for (let d = 1; d <= 3; d++) gone.push(...game(`g${d}`, `2025-10-0${d}T17:00Z`, [['s', 'RB', 18, 3], ['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]], 2025));
+  for (let d = 1; d <= 2; d++) gone.push(...game(`h${d}`, `2026-09-0${d}T17:00Z`, [['b', 'RB', 4, 1], ['q', 'QB', 0, 0, 30], ['w', 'WR', 0, 7]]));
+  const gm = nflMatchups(gone);
+  assert.deepEqual(gone.filter((r) => r.season === 2026 && r.pid === 'w').map((r) => r.rb1Out), [0, 0]);
+  assert.equal(gm.live('w', '1', '2', 'WR', 2026, new Set(['s'])).rb1Out, 0);
 });
 
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {

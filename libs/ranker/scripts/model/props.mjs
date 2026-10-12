@@ -195,15 +195,18 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // project.mjs; an NHL goalie's saves also by the other side's expected shots on goal, hockey.mjs)
 const PASSING = ['wind', 'cold', 'precip'];
 const CARRYING = ['backupQb', 'wind', 'precip'];
-// (receptions also by the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work
-// the vacated term's): fit at +0.025 (2.5% more catches), held out +0.0001, the held-out games with him out
-// +8.2% to +5.5% actual over projected. Not the passing volume's: attempts and completions took 0 on the fit
-// window, passing yards a size left out held out (-0.0006); the lead back out, his team's passes ran as
-// projected (held out -1.6% against -1.9% with him in), team-games 2012 on as their season's own (a bell cow's
-// out, 1% to 3% fewer: the work goes to the next back, not the pass). Not receiving yards': fit at -0.025, its
-// held-out gain +0.0009 but the stat's held-out log loss 0.6501 to 0.6502, the games with him out +6.7% to
-// +9.4% over projected (2026-10-12))
-const CATCHING = [...CARRYING, 'rb1Out'];
+// (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
+// term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
+// only +0.0001, the rounding's floor (0.6168 to 0.6167), with the bias worse (eligible -0.051 to -0.054, all
+// players' -0.014 to -0.016) and receiving yards fit the other way (-0.025) on the same flag: noise, not an
+// effect, and enough to tip a thin over into a bet. Receiving yards: held-out gain +0.0009 but the stat's
+// held-out log loss 0.6501 to 0.6502, the games with him out +6.7% to +9.4% over projected. The passing volume:
+// attempts and completions took 0 on the fit window, passing yards a size left out held out (-0.0006); the lead
+// back out, his team's passes ran as projected (held out -1.6% against -1.9% with him in), team-games 2012 on as
+// their season's own (a bell cow's out, 1% to 3% fewer: the work goes to the next back, not the pass). Not read
+// where he's been out since before the season (leadBack: a back who's played for the team this season), so
+// this doesn't cover a bell cow lost before the opener. The flag stays on the rows for later work; adding it
+// back takes a held-out gain well over the floor (0.0003 or more) with the bias no worse)
 const NBA_CTX = ['usage', 'b2b', 'blowout'];
 // (the NBA's and NHL's work missing in two measures (matchups.mjs: minutes or usage; time on ice or power-play
 // time), three splits each)
@@ -240,7 +243,7 @@ export const STATS = {
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [

@@ -58,7 +58,7 @@
 //   context  the stat's context terms (props.mjs STATS ctx, one or several), each exp(c x its value) with its
 //            own size c (c_<term>; the old single size c is the first term's): the NFL's wind, cold and rain
 //            or snow (passing; receiving and rushing take wind and rain too), a backup quarterback throwing
-//            to its receivers and handing off to its backs, its lead back out (a pass-catcher's receptions); the NBA's teammates out (production missing), a
+//            to its receivers and handing off to its backs; the NBA's teammates out (production missing), a
 //            back-to-back and the expected blowout (the game model's margin either way: a starter sits the
 //            fourth quarter); the NHL's power play (his power-play time by the power plays his team can expect)
 //            and the other side's goalie; MLB batters' place in the order against their usual and platoon
@@ -582,9 +582,10 @@ function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
 const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
 // (c_rb1Out: the lead back out, 0 or 1 (a half questionable), a few percent either way: GRID.c's smallest step
 // 7%. Team-games with him out against their season's own (2012 on, before the fit): pass attempts even, -1% to
-// -3% where he's a bell cow (18 touches a game or more), the volume moving to the backup, not the pass;
-// receptions took +0.025: props.mjs)
-const RB1_OUT = [-0.1, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
+// -3% where he's a bell cow (18 touches a game or more), the volume moving to the backup, not the pass. On no
+// stat's ctx now (props.mjs: receptions' +0.025 held out at the rounding's floor); the grid to 0.05 either way,
+// what was measured, so a refit can't take 10% on a few hundred-thousandths)
+const RB1_OUT = [-0.05, -0.025, 0, 0.025, 0.05];
 const GRID = { aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)

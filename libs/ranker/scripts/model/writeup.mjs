@@ -226,6 +226,7 @@ function driverWhat(name, bet, sheet, raw) {
   return name;
 }
 
+const FLAG_CTX = new Set(['rb1Out']);
 // (the context term that moved it most: its size times its value where the fit's sizes are known, else its value)
 function ctxWhat(bet, sheet) {
   const ctx = bet.projection?.ctx;
@@ -233,7 +234,8 @@ function ctxWhat(bet, sheet) {
   const P = paramsOf(bet, sheet._params) ?? {};
   const keys = Object.keys(ctx).filter((k) => fin(ctx[k]) && ctx[k] !== 0);
   if (!keys.length) return "the game's context";
-  const size = (k) => Math.abs((fin(P[`c_${k}`]) ? P[`c_${k}`] : 1) * ctx[k]);
+  // (a 0-to-1 flag with no fitted size counts for nothing: its value isn't a size)
+  const size = (k) => Math.abs((fin(P[`c_${k}`]) ? P[`c_${k}`] : FLAG_CTX.has(k) ? 0 : 1) * ctx[k]);
   const k = keys.sort((a, b) => size(b) - size(a) || a.localeCompare(b))[0];
   const v = ctx[k];
   const opp = sheet.bet.opponent;
@@ -243,7 +245,7 @@ function ctxWhat(bet, sheet) {
     snow: 'snow in the forecast',
     cold: 'the cold',
     backupQb: `${sheet.bet.team ?? 'his team'} starting a backup QB`,
-    rb1Out: `${sheet.bet.team ?? 'his team'} without its lead back`,
+    rb1Out: `${sheet.bet.team ?? 'his team'} ${v < 1 ? 'with its lead back questionable' : 'without its lead back'}`,
     b2b: 'a back-to-back',
     pp: 'his power-play time',
     ppTime: 'his power-play time',
