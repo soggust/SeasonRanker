@@ -75,11 +75,11 @@
 //      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps, 90
 //      seconds a request and 3 minutes a run), a finding kept on its CHECK as a label only: never put into the
 //      injury report, the prices or a bet (the owner's note does that, where it's right). The teams' news
-//      (news.mjs: ESPN's free per-team feed, once a UTC day a team, cached; no AI): a story on a change of
-//      play-caller, coordinator or head coach, or a benching, flags its team's unit for its next 2 games, an
-//      owner's note with no player (reason news or other) its team for the game (notes.mjs teamNotes): the
-//      unit's props CHECKs either side (cause 'news', the headline the reason), the game's lines at the minimum
-//      stake, an open bet on it priced again (2b: teamNews)
+//      (news.mjs: ESPN's free per-team feed, once a UTC day a team, a game's two teams every 3 hours from 36
+//      before it, cached; no AI): a story on a change of play-caller, coordinator or head coach, or a benching,
+//      flags its team's unit for its next 2 games, an owner's note with no player (reason news) its team for
+//      the game (notes.mjs teamNotes): the unit's props CHECKs either side (cause 'news', the headline the
+//      reason), the game's lines at the minimum stake, an open bet on it priced again (2b: teamNews)
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -116,7 +116,7 @@ import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTr
 import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
-import { newsFlags, newsWords, readNews } from './news.mjs';
+import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
 import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
@@ -586,15 +586,17 @@ async function noteInjuries(r) {
   }
 }
 
-// 2b. the teams' news (news.mjs: ESPN's per-team feed, read once a UTC day a team, cached): a story on a
-// change of play-caller, coordinator or head coach (or a benching) flags its team's unit for its next games,
-// each coming game's flags on its live facts (l.news): its props of that unit held as CHECKs either side
-// (props.mjs, cause 'news'), its game lines at the minimum stake (bet), its inputs priced again when a story
-// lands (timing.mjs inputsOf). Then the owner's notes on a team (notes.mjs teamNotes: no player, reason news or
-// other) the same way. Any failure: no flags, the desk as it was
+// 2b. the teams' news (news.mjs: ESPN's per-team feed, read once a UTC day a team, a team with a game within
+// SOON_HOURS every REREAD_HOURS, cached): a story on a change of play-caller, coordinator or head coach (or a
+// benching) flags its team's unit for its next games, each coming game's flags on its live facts (l.news):
+// its props of that unit held as CHECKs either side (props.mjs, cause 'news'), its game lines at the minimum
+// stake (bet), its inputs priced again when a story lands (timing.mjs inputsOf). Then the owner's notes on a
+// team (notes.mjs teamNotes: no player, reason news) the same way. Any failure: no flags, the desk as it was
 async function teamNews(r) {
   try {
-    const news = await readNews(r.sport, r.cfg, { now: r.now });
+    const t = (r.now ?? new Date()).getTime();
+    const soon = new Set((r.upcoming ?? []).filter(({ game }) => Date.parse(game.date) - t <= SOON_HOURS * 3600e3).flatMap(({ game }) => [String(game.home), String(game.away)]));
+    const news = await readNews(r.sport, r.cfg, { now: r.now, soon });
     if (news) for (const l of r.live.values()) l.newsRead = true;
     newsFlags(news, r.live, r.history, r.upcoming);
   } catch (err) {

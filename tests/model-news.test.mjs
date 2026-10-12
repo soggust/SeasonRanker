@@ -1,14 +1,14 @@
 // The teams' news (libs/ranker/scripts/model/news.mjs): a story on a change of play-caller, coordinator or head
 // coach (or a benching) flags its team's unit for its next 2 games: the unit's props CHECKs either side (cause
 // 'news', props.mjs), the game's lines at the minimum stake (run.mjs), an open bet priced again (timing.mjs
-// inputsOf); an owner's note with no player on a team the same (notes.mjs teamNotes). And a new head coach's
+// inputsOf); an owner's note with no player, reason news, on a team the same (notes.mjs teamNotes). And a new head coach's
 // first games as context (football.mjs newCoach, coachMid; props.mjs CTX newCoach).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { NEWS_GAMES, flagsFor, newsFlags, newsOn, newsWords, readNews, storyOf, unitOf } from '../libs/ranker/scripts/model/news.mjs';
+import { NEWS_DAYS, NEWS_GAMES, REREAD_HOURS, flagsFor, keepStories, newsFlags, newsOn, newsWords, readNews, storyOf, unitOf } from '../libs/ranker/scripts/model/news.mjs';
 import { teamNotes } from '../libs/ranker/scripts/model/notes.mjs';
 import { inputChanges, inputsOf } from '../libs/ranker/scripts/model/timing.mjs';
 import { CHECK_KINDS, checkOf, checkSummary } from '../libs/ranker/scripts/model/checks.mjs';
@@ -25,7 +25,14 @@ test('unitOf: play-calling, coordinators, a head coach fired or interim, benchin
   assert.equal(unitOf('nfl', 'Jets fire offensive coordinator after 1-4 start'), 'offense');
   assert.equal(unitOf('nfl', 'Raiders name Antonio Pierce interim head coach'), 'team');
   assert.equal(unitOf('nfl', 'Panthers fire head coach Frank Reich'), 'team');
-  assert.equal(unitOf('nfl', 'Giants bench Daniel Jones; Tommy DeVito to start'), null);
+  assert.equal(unitOf('nfl', 'Giants bench Daniel Jones; Tommy DeVito to start'), 'offense');
+  assert.equal(unitOf('nfl', 'Giants bench Daniel Jones for Tommy DeVito'), 'offense');
+  assert.equal(unitOf('nfl', 'Commanders hire Kliff Kingsbury as OC'), 'offense');
+  assert.equal(unitOf('nfl', 'Bears name Caleb Williams starter'), 'offense');
+  assert.equal(unitOf('nfl', "Sources: Sean Payton to expand role in Broncos' playcalling process"), 'offense');
+  // (a coordinator made interim head coach: the team's; a firing with no role named, the head coach's)
+  assert.equal(unitOf('nfl', 'Steelers DC Teryl Austin takes over as interim head coach'), 'team');
+  assert.equal(unitOf('nfl', 'Raiders fire Pete Carroll after 2-9 start'), 'team');
   assert.equal(unitOf('nfl', 'Steelers: Kenny Pickett benched for Mitch Trubisky'), 'offense');
   assert.equal(unitOf('nfl', 'Cornerback benched after penalties, defense reshuffled'), 'defense');
   assert.equal(unitOf('nfl', 'Mason Rudolph takes over as starting quarterback'), 'offense');
@@ -34,9 +41,31 @@ test('unitOf: play-calling, coordinators, a head coach fired or interim, benchin
   assert.equal(unitOf('nfl', 'Should the Jets fire their head coach?'), null);
   assert.equal(unitOf('nfl', 'Bills take over first place in the AFC East'), null);
   assert.equal(unitOf('nfl', 'Broncos get good news on Pat Surtain II ankle'), null);
+  // (fire's other senses; a position coach, an assistant, the front office; a denial; the play-calling
+  // mentioned with no change; the bench as a place)
+  for (const h of [
+    'Bo Nix on fire as coach Payton praises offense',
+    'Seahawks fire back at critics, coach says',
+    'Coach says team was fired up after big win',
+    'Steelers fire offensive line coach',
+    'Jets fire defensive line coach',
+    'Knicks fire assistant coach',
+    'Jets fire general manager Joe Douglas',
+    'Jets part ways with WR Davante Adams',
+    "Broncos' Payton: Concerned about details, not playcalling",
+    'Browns QB Watson: I am the starter, not benched',
+    'Payton denies he will take over playcalling',
+    "Ravens' Lamar Jackson says Monken's play-calling is elite",
+    'Dolphins OC on play-calling: we have to be better',
+    'Backup comes off the bench to lead comeback',
+  ])
+    assert.equal(unitOf('nfl', h), null, h);
   // (another sport: a head coach's or manager's change alone)
   assert.equal(unitOf('mlb', 'Manager Dan Wilson fired as Seattle Mariners finish 76-86'), 'team');
   assert.equal(unitOf('nba', 'Lakers take over playcalling duties'), null);
+  assert.equal(unitOf('mlb', 'Mariners fire Dan Wilson'), 'team');
+  assert.equal(unitOf('mlb', 'Yankees fire pitching coach'), null);
+  assert.equal(unitOf('nba', 'Knicks fire assistant coach'), null);
 });
 
 test("storyOf: the team's own story (two teams tagged at most, its name in it), news or a story, not a recap or a video", () => {
@@ -102,23 +131,33 @@ test("newsFlags and newsOn: a coming game's flags on its live facts; the offense
   assert.deepEqual(inputChanges(old, after, { game }), []);
 });
 
-test("teamNotes: a note with no player, news or other, flags its team for the game; a player's note, another reason or no team, none; the note's words never in", () => {
+test("teamNotes: a note with no player, reason news, flags its team for the game; other (an unknown reason too), a player's note, another reason or no team (a game line's CHECK), none, logged; the note's words never in", async () => {
   const game = { id: '401', date: iso(day(19)), home: '7', away: '24' };
   const live = new Map([['401', {}]]);
   const notes = new Map([
     ['401:spread', { id: '401:spread', reason: 'news', player: null, team: '7', note: 'secret words', at: '2026-10-12T00:00:00Z' }],
     ['401:total', { id: '401:total', reason: 'weather', player: null, team: '24' }],
-    ['401:prop:recYds:9', { id: '401:prop:recYds:9', reason: 'other', player: null, team: null }],
+    ['401:prop:recYds:9', { id: '401:prop:recYds:9', reason: 'news', player: null, team: null }],
+    ['401:prop:rec:9', { id: '401:prop:rec:9', reason: 'other', player: null, team: null }],
+    ['401:moneyline', { id: '401:moneyline', reason: 'news', player: null, team: null }],
     ['401:prop:rushYds:5', { id: '401:prop:rushYds:5', reason: 'news', player: '5', status: 'out', team: '24' }],
     ['999:spread', { id: '999:spread', reason: 'news', player: null, team: '7' }],
   ]);
-  const checks = [{ id: '401:prop:recYds:9', team: '24' }];
-  const applied = teamNotes('nfl', live, [{ game }], notes, { checks });
+  const checks = [{ id: '401:prop:recYds:9', team: '24' }, { id: '401:prop:rec:9', team: '7' }, { id: '401:moneyline' }];
+  const said = [];
+  const applied = teamNotes('nfl', live, [{ game }], notes, { checks, log: { log: (x) => said.push(x) } });
   assert.deepEqual(applied.map((x) => [x.id, x.team]), [['401:spread', '7'], ['401:prop:recYds:9', '24']]);
   const l = live.get('401');
   assert.equal(newsOn('nfl', l, '7', 'QB').from, 'owner note');
   assert.equal(newsOn('nfl', l, '24', 'CB').unit, 'team');
   assert.ok(!JSON.stringify(l.news).includes('secret'));
+  assert.equal(l.news.length, 2);
+  assert.deepEqual(said, ["nfl: an owner's news note on 401:moneyline not applied: no team of the game's (a game line's CHECK has none)"]);
+  // (an unknown reason, read as other (noteOf's): the review's alone)
+  const { noteOf } = await import('../libs/ranker/scripts/model/notes.mjs');
+  const n = noteOf('401:prop:rec:9', { reason: 'looks fine', player: null });
+  assert.equal(n.reason, 'other');
+  assert.deepEqual(teamNotes('nfl', new Map([['401', {}]]), [{ game }], new Map([[n.id, n]]), { checks }), []);
 });
 
 test("a news CHECK: its cause and unit kept, tallied apart, diagnosed as the news's", () => {
@@ -178,7 +217,42 @@ test('readNews: each team read once a UTC day, its flagged stories kept by id; a
   const next = await readNews('nfl', { league: 'football/nfl' }, { now: new Date('2026-10-13T12:00:00Z'), teams: [DEN], file, fetchJson: async () => null, log: quiet });
   assert.deepEqual(next.get('7').map((s) => s.id), ['1']);
   assert.equal(await readNews('nfl', { league: 'football/nfl' }, { now, teams: [DEN], file: path.join(dir, 'none.json'), fetchJson: async () => null, log: quiet }), null);
+  // (a team with a game soon read again once REREAD_HOURS have passed, not before; one with none, once a day)
+  const day2 = new Date('2026-10-13T12:00:00Z');
+  const at = (h) => new Date(day2.getTime() + h * 3600e3);
+  const file2 = path.join(dir, 'soon.json');
+  let n2 = 0;
+  const count = async () => (n2++, body);
+  const soon = new Set(['7']);
+  await readNews('nfl', { league: 'football/nfl' }, { now: day2, teams: [DEN], soon, file: file2, fetchJson: count, log: quiet });
+  await readNews('nfl', { league: 'football/nfl' }, { now: at(1), teams: [DEN], soon, file: file2, fetchJson: count, log: quiet });
+  assert.equal(n2, 1);
+  await readNews('nfl', { league: 'football/nfl' }, { now: at(REREAD_HOURS), teams: [DEN], soon, file: file2, fetchJson: count, log: quiet });
+  assert.equal(n2, 2);
+  await readNews('nfl', { league: 'football/nfl' }, { now: at(REREAD_HOURS * 3), teams: [DEN], soon: new Set(), file: file2, fetchJson: count, log: quiet });
+  assert.equal(n2, 2);
+  // (no cache before: said)
+  const said = [];
+  await readNews('nfl', { league: 'football/nfl' }, { now, teams: [DEN], file: path.join(dir, 'cold.json'), fetchJson, log: { log: (x) => said.push(x), warn() {} } });
+  assert.match(said.join(' '), /no cache before/);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test("keepStories: a cached story read again by today's words (none, gone); a unit's episode kept whole while its latest is recent, so its count doesn't start again from a later story", () => {
+  const t = day(30);
+  const old = { id: 'a', unit: 'offense', headline: 'Payton taking over playcalling', at: iso(day(1)) };
+  const mid = { id: 'b', unit: 'offense', headline: "Broncos beat Chargers in Payton's return to playcalling", at: iso(day(16)) };
+  const deny = { id: 'c', unit: 'offense', headline: "Broncos' Payton: Concerned about details, not playcalling", at: iso(day(20)) };
+  const kept = keepStories('nfl', [old, mid, deny], t);
+  assert.deepEqual(kept.map((s) => s.id), ['a', 'b']);
+  assert.ok(t - Date.parse(old.at) > NEWS_DAYS * 86400e3);
+  // (the episode from its first story (one game between the two, a bye): the game on the 26th not flagged
+  // again; from the later story alone it would be)
+  const starts = [day(5), day(19), day(26)];
+  assert.deepEqual(flagsFor(kept, starts, day(26)), []);
+  assert.equal(flagsFor([mid], starts, day(26)).length, 1);
+  // (a unit whose latest is past NEWS_DAYS, gone whole)
+  assert.deepEqual(keepStories('nfl', [old], t), []);
 });
 
 test("football.mjs: a new head coach's first COACH_GAMES games (newCoach), and apart one who took over during a season (coachMid); the props' CTX newCoach the same games", () => {

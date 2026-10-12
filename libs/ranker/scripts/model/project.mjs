@@ -21,7 +21,8 @@
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach) tried after the rest the same way as the draft's prior (below): on top of them as
 //            fit, against none at the dispersion the same search found, kept only with a held-out gain of 0.0003
-//            or more and the eligible players' bias no larger; left out, the stat exactly as without it
+//            or more, the eligible players' and every player's bias no larger (not measured: left out); left out,
+//            the stat exactly as without it
 //   draft    the NFL's (props.mjs STATS draft; dp, tried last on top of the rest as fit, against none at the
 //            dispersion the same search found, kept only on the RB1-out standard: a held-out gain of 0.0003 or
 //            more, the eligible players' and every player's bias no larger, and its own no worse: the rookies'
@@ -876,9 +877,9 @@ export function fitStat(stat, rows, env) {
   // (the context flags with a floor (MIN_GAIN: a new head coach's first games, a 0-or-1 flag on a few hundred
   // team-games), tried on top of the rest as fit and left as they are, as the draft's prior below: each size
   // searched on the fit window at its own best r, judged against none at the r the same search found for it,
-  // the lean fit again on both sides; kept only with a held-out gain of its floor or more and the eligible
-  // players' bias no larger. Left out, the stat is exactly as it was without it. Why it's left out, and the
-  // bias without and with it: floors)
+  // the lean fit again on both sides; kept only with a held-out gain of its floor or more, the eligible
+  // players' and every player's bias no larger (either not measured: left out, so said). Left out, the stat is
+  // exactly as it was without it. Why it's left out, and the bias without and with it: floors)
   const floors = {};
   for (const key of late) {
     const shape = { rk: params.rk ?? 0, rm };
@@ -899,8 +900,14 @@ export function fitStat(stat, rows, env) {
     tryP.scale = scaleOf(tryP);
     const tried = heldOut(tryP);
     gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
-    const fails = [...(gains[key] >= MIN_GAIN[key] ? [] : ['gain']), ...(Math.abs(tried.check?.bias ?? Infinity) <= Math.abs(off.check?.bias ?? 0) ? [] : ['bias'])];
-    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null] };
+    const fine = (a, b) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) ? null : 'larger');
+    const fails = [];
+    if (!(gains[key] >= MIN_GAIN[key])) fails.push('gain');
+    const eb = fine(tried.check?.bias, off.check?.bias);
+    if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
+    const ab = fine(tried.all?.bias, off.all?.bias);
+    if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
+    floors[key] = { size: v, fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null] };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it

@@ -15,9 +15,12 @@
 //            game's context, its props and its inputs (timing.mjs inputsOf: an open bet on it is priced again)
 //            all see it, and the CHECK can come back as a real bet. His team: the note's, else the report's,
 //            else the CHECK's own player's, else the two teams' rosters; none found, the note isn't applied
-//   a team   a note with no player, reason news or other, on a team (the note's team, else its CHECK's
-//            player's): that team flagged for the game as the news flags one (teamNotes; news.mjs), its
-//            players' props held as CHECKs and its game lines at the minimum stake
+//   a team   a note with no player, reason news (stored so: an unknown reason, read as other, never), on a
+//            team (the note's team, else its CHECK's player's): that team flagged for the game as the news
+//            flags one (teamNotes; news.mjs), its players' props held as CHECKs and its game lines at the
+//            minimum stake. Reason other, or any other, stays the review's alone (desk-note.component.ts: "kept
+//            with a CHECK for the bot's review"). A news note on a game line's CHECK (it has no team) or with
+//            no team of the game's, not applied, and logged
 //   kept     on its CHECK (checks.mjs, in the public model/checks.json) only as publicNote has it: its reason,
 //            player, status, when and whether it was applied. Its own words (note) and its writer's uid (by)
 //            stay in Firestore and in the run's memory, never in a file the site serves or the repo commits
@@ -185,24 +188,28 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
   return applied;
 }
 
-// The notes with no player, reason news or other, on a team: the team flagged for that game as the news
-// flags one (news.mjs: l.news, unit 'team', from 'owner note'), so its players' props are held as CHECKs and
-// its game lines cut to the minimum. The team: the note's, else its CHECK's (a prop's player's team); none
-// that's one of the game's two sides, not applied. The note's words never put in (the flag's headline says
-// only that there's a note). Returns the flags put on ({ id, event, team })
-export function teamNotes(sport, live, upcoming, notes, { checks = [] } = {}) {
+// The notes with no player, reason news, on a team: the team flagged for that game as the news flags one
+// (news.mjs: l.news, unit 'team', from 'owner note'), so its players' props are held as CHECKs and its game
+// lines cut to the minimum. Reason other (an unknown one too) never: a comment for the review. The team: the
+// note's, else its CHECK's (a prop's player's team); none that's one of the game's two sides (a spread's or a
+// total's CHECK has none), not applied, logged. The note's words never put in (the flag's headline says only
+// that there's a note). Returns the flags put on ({ id, event, team })
+export function teamNotes(sport, live, upcoming, notes, { checks = [], log = console } = {}) {
   const applied = [];
   if (!notes?.size || !live?.size) return applied;
   const games = new Map((upcoming ?? []).map((u) => [String(u.game.id), u.game]));
   for (const n of notes.values()) {
-    if (n.player || !['news', 'other'].includes(n.reason) || (n.sport && n.sport !== sport)) continue;
+    if (n.player || n.reason !== 'news' || (n.sport && n.sport !== sport)) continue;
     const game = games.get(n.id.split(':')[0]);
     const l = game && live.get(game.id);
     if (!l) continue;
     const sides = [String(game.home), String(game.away)];
     const check = checks.find((c) => c.id === n.id);
     const team = n.team && sides.includes(n.team) ? n.team : check?.team && sides.includes(String(check.team)) ? String(check.team) : null;
-    if (!team) continue;
+    if (!team) {
+      log.log?.(`${sport}: an owner's news note on ${n.id} not applied: no team of the game's (a game line's CHECK has none)`);
+      continue;
+    }
     l.news = [...(l.news ?? []), { team, unit: 'team', headline: "an owner's note on the team", at: n.at ?? null, id: `note:${n.id}`, from: 'owner note' }];
     applied.push({ id: n.id, event: String(game.id), team });
   }
