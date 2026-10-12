@@ -58,15 +58,18 @@ test('boardProp: both prices, each side’s Kelly and band; an unknown side null
   assert.deepEqual([half.o[1], half.ks[1], half.b[1]], [null, null, null]);
   // (a CHECK the run shows (a role's at a model Kelly of +10 or more) its side check; a gap's, or a role's
   // under the bar, a shadow: a PASS, sk)
-  const role = { guard: { skip: true, kind: 'role', role: 'group-out' }, odds: -115, model: 0.7, fair: 0.5 };
+  // (a shadow's why its sw; at an assumed price (not priced) a role's a shadow, no Kelly to judge it by)
+  const role = { priced: true, guard: { skip: true, kind: 'role', role: 'group-out' }, odds: -115, model: 0.7, fair: 0.5 };
   const chk = boardProp(prop(-115, -105, role), 'T');
-  assert.deepEqual([chk.b, chk.sk], [['check', 'low'], undefined]);
+  assert.deepEqual([chk.b, chk.sk, chk.sw], [['check', 'low'], undefined, undefined]);
   const small = boardProp(prop(-115, -105, { ...role, model: 0.55 }), 'T');
-  assert.deepEqual([small.b, small.sk], [['low', 'low'], 1]);
+  assert.deepEqual([small.b, small.sk, small.sw], [['low', 'low'], 1, 'small']);
+  const assumed = boardProp(prop(-115, -105, { ...role, priced: false }), 'T');
+  assert.deepEqual([assumed.b, assumed.sk, assumed.sw], [['low', 'low'], 1, 'small']);
   const gap = boardProp(prop(-115, -105, { ...role, guard: { skip: true, kind: 'gap' } }), 'T');
-  assert.deepEqual([gap.b, gap.sk], [['low', 'low'], 1]);
+  assert.deepEqual([gap.b, gap.sk, gap.sw], [['low', 'low'], 1, 'gap']);
   const pass = boardProp(prop(-115, -105, { guard: { skip: true, why: 'out' } }), 'T');
-  assert.deepEqual([pass.b, pass.sk], [['low', 'low'], 1]);
+  assert.deepEqual([pass.b, pass.sk, pass.sw], [['low', 'low'], 1, undefined]);
 });
 
 test('buildBoard: the games not started, the bot’s sides marked, a prop kept between asks unless its line moved', () => {

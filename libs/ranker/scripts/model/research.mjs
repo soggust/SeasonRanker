@@ -1,4 +1,4 @@
-// The CHECKs' news research (optional, off by default): for the biggest CHECKs a day (by their gap), Claude
+// The CHECKs' news research (optional, off by default): for the biggest CHECKs a day (by the model's Kelly), Claude
 // (claude-opus-5-5 with the web search tool) looks for the real-world reason the book is so far from the model
 // (an injury, a role, a suspension, the weather) and answers with a structured finding: { player, status,
 // reason, summary, sources }. A label only: its CHECK keeps it (research), so it's asked once, and the page and
@@ -14,7 +14,9 @@
 //   on        only with CHECK_RESEARCH=1 and an ANTHROPIC_API_KEY, never on a --dry run (nothing spent); off,
 //            the desk as it was. The SDK (@anthropic-ai/sdk) loaded only when it runs (the workflow installs
 //            it first only when research is on); a client can be given (the tests' mock)
-//   which    the open CHECKs (not graded, closed, bet, researched or locked), the biggest gap first, at most
+//   which    the open CHECKs (not graded, closed, bet, researched or locked) the rule shows (checks.mjs shadowOf,
+//            judged again from each one's stored fields: one it passes later in the run never paid for), the
+//            biggest model Kelly first (the page's order), at most
 //            CHECK_RESEARCH_N (TOP, 3) a sport a UTC day, counted from the AI usage log (every CHECK asked
 //            about today, kept or not) and the CHECKs researched today. A finding is logged with its call, so
 //            a run that failed after paying for it (its CHECKs never saved) has it back from the log the next
@@ -37,7 +39,7 @@
 //            finding is applied only RESEARCH_TTL_H hours (30) after it's made (one search, once: the report's
 //            own word after that)
 
-import { checkLocked } from './checks.mjs';
+import { checkLocked, modelKelly, shadowOf } from './checks.mjs';
 import { addUsage, costOf, loadSdk } from './ai-budget.mjs';
 import { OUT_STATUS, Q_STATUS } from './timing.mjs';
 
@@ -249,7 +251,7 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   const tries = new Map();
   for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
   // (a shadow (checks.mjs shadowOf: a PASS kept to grade) never: no one sees it, so nothing is spent on it)
-  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.research;
+  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.research && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
   for (const c of checks) {
     const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object');
     if (kept) out.set(c.id, kept.finding);
@@ -263,7 +265,7 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       const t = tries.get(c.id) ?? [];
       return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed);
     })
-    .sort((a, b) => Math.abs(b.gap ?? 0) - Math.abs(a.gap ?? 0))
+    .sort((a, b) => (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
     .slice(0, Math.max(0, top - doneIds.size));
   if (!due.length) return out;
   if (dry) {

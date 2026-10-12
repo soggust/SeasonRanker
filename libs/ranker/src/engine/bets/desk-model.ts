@@ -224,7 +224,7 @@ export const CHECK_CAUSE_LABELS: Record<string, string> = {
   role: 'Role change',
   news: 'News on his unit',
   'shadow:gap': 'PASS: the gap (shadow)',
-  'shadow:small': 'PASS: role under +10 Kelly (shadow)',
+  'shadow:small': 'PASS: role under the CHECK bar (shadow)',
   unpriced: 'Unpriced (assumed -110)',
   'missing-starter-not-seen': 'Missing player not seen',
   'vacated-fade': 'Vacated work',

@@ -45,11 +45,13 @@
 
 import { createHash } from 'node:crypto';
 import { decimal, GAP } from './desk.mjs';
+import { CHECK_KELLY } from './checks.mjs';
 
 // (the plain text's version: bumped, every open bet's text is written again, free. 2: a prop whose drivers
 // don't give its projection back no longer says nothing moves it. 3: a CHECK led by the model's Kelly and the
-// book's implied mean, a projection near its line to two decimals, the CHECKs' risk said plainly)
-export const PLAIN_V = 3;
+// book's implied mean, a projection near its line to two decimals, the CHECKs' risk said plainly. 4: a news
+// CHECK's risk and one under the CHECK bar (a passed role's) never call its Kelly big)
+export const PLAIN_V = 4;
 export const REASON_MAX = 450;
 export const RISK_MAX = 220;
 
@@ -834,8 +836,10 @@ export function plainOf(sheet) {
   let risk;
   if (check) {
     // (said plainly: a big Kelly on the model's own number has won at about the book's rate (2026-10, 509 of
-    // them at +10 or more), and the gap's CHECKs lost far more than they won)
-    risk = bet.checkCause === 'news' ? "A big Kelly on the model's own number isn't value by itself: the news on his team is a change the market prices faster than the model reads it from the logs." : bet.checkCause === 'role' ? "A big Kelly on the model's own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the model reads it." : 'A gap that size has more often been the model missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
+    // them at +10 or more), and the gap's CHECKs lost far more than they won). Big only where it is: a role's at
+    // the CHECK bar or over (checks.mjs CHECK_KELLY), never a news CHECK's (one at any Kelly)
+    const big = fin(sheet.price?.modelKellyPct) && sheet.price.modelKellyPct >= CHECK_KELLY * 100;
+    risk = bet.checkCause === 'news' ? "The news on his team is a change the market prices faster than the model reads it from the logs, so the model's own number isn't value by itself." : bet.checkCause === 'role' ? `${big ? 'A big Kelly on the model' : 'The model'}'s own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the model reads it.` : 'A gap that size has more often been the model missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
   } else {
     const g = sheet.game ?? {};
     const order =

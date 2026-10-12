@@ -143,7 +143,7 @@ test("the CHECK research: a failed try logged at a turn's worst case (counted to
   const file = path.join(dir, 'ai-usage.json');
   const now = new Date('2026-10-09T12:00:00Z');
   const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
-  const check = { id: '401:prop:recYds:9', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', market: 'prop', propType: 'recYds', player: 'Mike Evans', athlete: '9', side: 'over', line: 40, model: 0.7, fair: 0.5, gap: 0.2, projection: { mean: 50 } };
+  const check = { id: '401:prop:recYds:9', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', market: 'prop', propType: 'recYds', player: 'Mike Evans', athlete: '9', side: 'over', line: 40, odds: -110, model: 0.7, fair: 0.5, gap: 0.2, cause: 'role', projection: { mean: 50 } };
   const opts = [];
   const client = { beta: { messages: { create: async (_req, o) => (opts.push(o), Promise.reject(new Error('Request timed out.'))) } } };
   resetDeadline();

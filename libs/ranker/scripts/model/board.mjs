@@ -19,8 +19,9 @@
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
-//             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), at: when
-//             priced, bot and bk: the side the bot has open and 'bet' or 'check' }
+//             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), sw: a shadow's passAs
+//             ('gap' or 'small', why it's a PASS), at: when priced, bot and bk: the side the bot has open and
+//             'bet' or 'check' }
 //
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
 // market, side, line and price each game's board has shown, kept a week past its start, so the play-money
@@ -66,7 +67,8 @@ export function boardProp(x, at) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
   // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
   // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
-  const check = CHECK_KINDS.has(x.guard?.kind) && !shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair });
+  const shadow = CHECK_KINDS.has(x.guard?.kind) ? shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced }) : null;
+  const check = CHECK_KINDS.has(x.guard?.kind) && !shadow;
   const pass = !!x.guard?.skip && !check;
   const prices = x.prop.prices ?? {};
   const side = (k) => {
@@ -90,6 +92,7 @@ export function boardProp(x, at) {
     ks: [over.ks, under.ks],
     b: [over.b, under.b],
     ...(pass ? { sk: 1 } : {}),
+    ...(pass && shadow ? { sw: shadow.passAs } : {}),
     at,
   };
 }

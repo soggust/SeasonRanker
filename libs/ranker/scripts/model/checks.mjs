@@ -75,7 +75,10 @@
 //   passed   a CHECK the page showed that turns a shadow (its role's Kelly fell under the bar, a gap's an older
 //            CHECK's): its price frozen as it was shown (never written over: it's graded at that price), resolved
 //            { as: 'passed', why } and passedAt, and the page shows it in that state for PASSED_SHOWN, so it
-//            doesn't vanish without a word; shown again (back over the bar), written as any CHECK
+//            doesn't vanish without a word; shown again (back over the bar), written as any CHECK; closed and
+//            tripped again, a plain shadow. The stored ones judged by the rule too (rejudgeChecks, each run's
+//            start): one from before it, or one no run prices again, passed the same way. A role's at an assumed
+//            -110 (oddsAssumed) has no real price to judge its Kelly by: a shadow ('small')
 
 import { diagnose } from './check-learn.mjs';
 import { kellyOf } from './picks.mjs';
@@ -99,13 +102,15 @@ const kellyText = (k) => `${k >= 0 ? '+' : '-'}${Math.abs(k * 100).toFixed(2)}`;
 
 // Whether a guard's skip (cause: causeOf's) is a shadow, not a CHECK the page shows (the rule above): null (a
 // CHECK), else { passAs, why }: 'gap' (the gap's, always), 'small' (a role's under CHECK_KELLY, or with no
-// Kelly to judge it by). odds, model, fair: the model's side's price and chances
-export function shadowOf({ cause, odds, model, fair }) {
+// Kelly to judge it by: an assumed -110's (oddsAssumed) a made-up price, judged as none). odds, model, fair: the
+// model's side's price and chances
+export function shadowOf({ cause, odds, model, fair, oddsAssumed = false }) {
   if (cause === 'gap') {
     const pts = Number.isFinite(model) && Number.isFinite(fair) ? Math.round(Math.abs(model - fair) * 100) : null;
     return { passAs: 'gap', why: `the model is ${pts === null ? 'far' : `${pts} points`} off the book with nothing to explain it; that is usually the model missing something` };
   }
   if (cause === 'role') {
+    if (oddsAssumed) return { passAs: 'small', why: 'no real price to judge it by (an assumed -110): under the CHECK bar' };
     const k = modelKelly(odds, model);
     if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no model Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly on the model's own number: under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
   }
@@ -117,6 +122,22 @@ export const shownCheck = (c) => !!c && !c.hidden;
 export const passedShowing = (c, now) => !!c?.hidden && c.resolved?.as === 'passed' && now.getTime() - Date.parse(c.passedAt ?? c.resolved.at ?? '') < PASSED_SHOWN;
 // (one the page lists: open (not graded, bet after all or closed), and shown or passed lately)
 export const listedCheck = (c, now) => !!c && !c.checkResult && !c.bet && !c.closedAt && (shownCheck(c) || passedShowing(c, now));
+
+// The rule on the stored CHECKs (a run's own are judged by checkOf; one written before the rule, or one no run
+// prices again, only here): each open one (not graded, bet or closed) shown that shadowOf makes a shadow from its
+// own fields passed as upsertCheck passes one (its price frozen, resolved { as: 'passed', why }, passedAt), so
+// the page never shows a CHECK the rule drops. Returns the ones passed
+export function rejudgeChecks(checks, now) {
+  const out = [];
+  for (const c of checks ?? []) {
+    if (!c || c.hidden || c.checkResult || c.bet || c.closedAt) continue;
+    const sh = shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
+    if (!sh) continue;
+    Object.assign(c, { hidden: true, passAs: sh.passAs, passWhy: sh.why, passedAt: now.toISOString(), resolved: { at: now.toISOString(), as: 'passed', why: sh.why } });
+    out.push(c);
+  }
+  return out;
+}
 
 // (a CHECK locked: its game starts within REPRICE_BY, or has started; nothing writes it again from here)
 export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= REPRICE_BY;
@@ -199,10 +220,11 @@ export function upsertCheck(ledger, check, now) {
     Object.assign(was, { hidden: true, passAs: check.passAs, passWhy: check.passWhy, passedAt: now.toISOString(), resolved: { at: now.toISOString(), as: 'passed', why: check.passWhy } });
     return 'passed';
   }
-  if (check.hidden && was.passedAt) return null;
+  // (a passed one frozen while it's open; closed (closeChecks), it opens again as a plain shadow)
+  if (check.hidden && was.passedAt && !was.closedAt) return null;
   // (its research kept: research.mjs, a finding made once; and how its last re-evaluation came out: resolved,
-  // a passing's not once it's shown again)
-  const resolved = was.resolved?.as === 'passed' && !check.hidden ? null : was.resolved;
+  // a passing's not once it's shown again, or opened again after it closed)
+  const resolved = was.resolved?.as === 'passed' && (!check.hidden || was.closedAt) ? null : was.resolved;
   const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}), ...(resolved ? { resolved } : {}) };
   if (!was.closedAt && material(next) === material(was)) {
     // (an older one without a diagnosis given this run's, nothing else written)

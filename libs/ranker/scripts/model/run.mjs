@@ -55,7 +55,8 @@
 //      a model Kelly of CHECK_KELLY or more, the news's); the gap's and a small role's a PASS kept as a shadow
 //      (hidden, passAs), graded the same but out of the page, the board's marks, the research, the notes, the
 //      re-pricing and the tallies but their own (byPassAs); one shown that turns a shadow passed, its price
-//      frozen (checks.mjs upsertCheck). The owner's notes on them (notes.mjs: Firestore's deskNotes,
+//      frozen (checks.mjs upsertCheck), the stored ones judged the same at the run's start (rejudgeChecks: one
+//      from before the rule, or one no run prices again). The owner's notes on them (notes.mjs: Firestore's deskNotes,
 //      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it; on a CHECK or a bet) are kept on
 //      the CHECKs (their reason, player, status and when alone: notes.mjs publicNote; the words and the
 //      writer's uid stay in Firestore, never in a served or committed file), and a note's concrete news (a
@@ -117,7 +118,7 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { CHECK_KINDS, atUnit, causeOf, checkOf, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
+import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
@@ -235,6 +236,10 @@ async function runSport(sport) {
   r.ledger = readKept(r.files.ledger, { sport, bankroll: BANKROLL, bets: [] });
   r.ledger.bankroll = BANKROLL;
   r.ledger.checks = readChecks(r, r.ledger);
+  // (the stored CHECKs judged by the rule: one from before it, or one no run prices again, passed (checks.mjs
+  // rejudgeChecks))
+  const rejudged = rejudgeChecks(r.ledger.checks, r.now);
+  if (rejudged.length) console.log(`${sport}: ${rejudged.length} stored CHECKs passed by the CHECK rule (now shadows: their price frozen): ${rejudged.map((c) => `${c.pick} (${c.passAs})`).join(', ')}`);
   // (the open bets published before they were locked (the old rule: published the run they were first shown)
   // made shown ones again, so the news and --replace price them again: picks.mjs unlock)
   const unlocked = unlock(r.ledger, r.now);
@@ -283,7 +288,10 @@ async function writeTeams(r) {
 // the picks
 function writePicks(r, alone = false) {
   const ledger = alone ? readKept(r.files.ledger, { bets: [] }) : r.ledger;
-  if (alone) ledger.checks = readChecks(r, ledger);
+  if (alone) {
+    ledger.checks = readChecks(r, ledger);
+    rejudgeChecks(ledger.checks, r.now);
+  }
   const saved = alone ? readKept(r.files.state, {}) : r.state;
   const trust = alone ? (saved.trust ?? {}) : r.trust;
   const games = alone ? new Map(readKept(r.files.games, []).map((g) => [g.id, g])) : r.games;
@@ -559,6 +567,8 @@ async function noteInjuries(r) {
   let checks = [];
   try {
     checks = readChecks(r, readKept(r.files.ledger, {}));
+    // (judged by the CHECK rule as the run's start does: a CHECK it passes neither researched nor a note's)
+    rejudgeChecks(checks, r.now);
   } catch (err) {
     console.warn(`${r.sport}: CHECKs not read for the notes (${err.message})`);
   }
@@ -1590,7 +1600,7 @@ async function betProps(r) {
         run.muUnder = (run.muUnder ?? 0) + (x.projection.mean < x.prop.line ? 1 : 0);
         if (!CHECK_KINDS.has(x.guard?.kind)) continue;
         // (a shadow's (checks.mjs shadowOf, as recordChecks keeps it) by its passAs)
-        const sh = shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair });
+        const sh = shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced });
         const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind === 'news' ? `news:${x.guard.news}` : x.guard.kind}:${x.side}${sh ? `:pass-${sh.passAs}` : ''}`;
         run.checkSides = { ...(run.checkSides ?? {}), [k]: (run.checkSides?.[k] ?? 0) + 1 };
       }
@@ -1622,7 +1632,7 @@ async function betProps(r) {
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
-  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: 'role changes (CHECKs at a model Kelly of +10 or more, else shadows)', news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
+  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: `role changes (CHECKs at a model Kelly of +${Math.round(CHECK_KELLY * 100)} or more, else shadows)`, news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);

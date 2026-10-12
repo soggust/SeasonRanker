@@ -781,7 +781,10 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       const k = this.checkKelly(r);
       const chances = `the model ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
       if (this.passed(r)) return `Passed · no longer a CHECK: ${r.resolved?.why ?? 'under the CHECK bar now'} (${chances})`;
-      return `CHECK · ${k === null ? 'the model' : `a ${betScoreText(k * 100)} Kelly on the model's own number`}, too big to bet blind: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
+      // (too big to bet blind only where it is: at the bar or over; a news CHECK's held for the news, at any Kelly)
+      const kText = k === null ? 'the model' : `a ${betScoreText(k * 100)} Kelly on the model's own number`;
+      const held = r.checkCause === 'news' ? 'held for the news' : k !== null && this.checkBar !== null && k >= this.checkBar ? 'too big to bet blind' : 'kept for a look';
+      return `CHECK · ${kText}, ${held}: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
     }
     const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;

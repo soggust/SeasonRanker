@@ -27,6 +27,9 @@ export interface BoardProp {
   ks: [number | null, number | null];
   b: [BoardBand | null, BoardBand | null];
   sk?: 1;
+  // (a skipped prop's why, where it's a CHECK the rule drops (checks.mjs shadowOf): the gap, or a role change
+  // under the CHECK bar)
+  sw?: 'gap' | 'small';
   bot?: string;
   bk?: 'bet' | 'check';
 }

@@ -54,6 +54,8 @@ export interface PropRow {
   chance: number | null;
   check: boolean;
   pass: boolean;
+  // (why it passes, where the board says: board.mjs sw)
+  passWhy?: 'gap' | 'small';
   pick: BotPick | null;
   sides: PropSide[];
   // (the player's first stat: his face and name on it, the rest under it)
@@ -306,6 +308,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       chance: x.c,
       check,
       pass: !!x.sk,
+      ...(x.sw ? { passWhy: x.sw } : {}),
       pick,
       sides,
       first: true,
@@ -352,11 +355,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const chance = r.chance === null ? null : Math.round((s.side === 'over' ? r.chance : 1 - r.chance) * 100);
     const word =
       s.tier === 'check'
-        ? ' · The bot’s CHECK: the model is too far from the book here to bet it'
+        ? ' · The bot’s CHECK: a guard stopped it (a role changing, news on his team), kept for a look, not bet'
         : r.check
         ? ' · The other side of the bot’s CHECK'
         : s.tier
-        ? ` · ${s.bot ? 'The bot’s pick' : 'The bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? ' (it passes on this player for now)' : ''}`
+        ? ` · ${s.bot ? 'The bot’s pick' : 'The bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the model is too far off the book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
         : '';
     return `${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }

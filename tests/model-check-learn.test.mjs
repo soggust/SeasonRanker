@@ -27,6 +27,9 @@ function prop(over = {}, proj = {}) {
   pr.mean = proj.mean ?? base * pr.opp * Math.pow(pr.script, applied.b) * pr.ctxF * pr.paceF * pr.tgtF * pr.vacF;
   return { id: `401:prop:recYds:${over.athlete ?? '9'}`, event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', placedAt: '2026-10-09T11:00:00Z', matchup: 'TB @ DAL', market: 'prop', propType: 'recYds', statLabel: 'Rec Yds', player: 'Mike Evans', athlete: '9', team: '27', side: 'over', line: 40, odds: -110, otherOdds: -110, model: 0.7, fair: 0.5, gap: 0.2, cause: 'gap', projection: pr, status: 'check', profit: 0, ...over };
 }
+// (a CHECK the research may ask about: a role's over the CHECK bar (checks.mjs shadowOf: a gap's never), its model
+// Kelly in its gap's order)
+const rprop = (over = {}, proj = {}) => prop({ cause: 'role', model: 0.5 + Math.abs(over.gap ?? 0.2), ...over }, proj);
 const graded = (c, status, odds = -110) => ({ ...c, odds, checkResult: { status, profit: status === 'won' ? 100 / 110 : status === 'lost' ? -1 : 0, final: 'x', gradedAt: '2026-10-11T00:00:00Z' } });
 
 test('diagnose: a role CHECK is its role, with its sub-reason', () => {
@@ -290,7 +293,7 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   // ($1.20 spent today: $0.30 left, under a turn's worst case: nothing asked)
   fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 1.2 }] }));
   let client = pausing();
-  await researchChecks({ sport: 'nfl', checks: [prop({ id: 'a' })], now, env, budget: aiBudget({ file, now }), client, log: quiet });
+  await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'a' })], now, env, budget: aiBudget({ file, now }), client, log: quiet });
   assert.equal(client.asked.length, 0);
   // ($0.70 spent: the first turn fits, the second's worst case (the first's history re-sent) doesn't: stopped
   // there, cut short, the day under the cap)
@@ -298,7 +301,7 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   client = pausing();
   const budget = aiBudget({ file, now });
   assert.ok(budget.canSpend(ESTIMATE));
-  const found = await researchChecks({ sport: 'nfl', checks: [prop({ id: 'a' }), prop({ id: 'b', gap: 0.1 })], now, env, budget, client, log: quiet });
+  const found = await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'a' }), rprop({ id: 'b', gap: 0.1 })], now, env, budget, client, log: quiet });
   assert.equal(client.asked.length, 1);
   assert.equal(found.size, 0);
   assert.ok(budget.spent().day <= 1.5);
@@ -306,7 +309,7 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   assert.deepEqual(log.map((e) => [e.id, !!e.retry]), [['a', true]]);
   // (plenty left: continued to MAX_TURNS, each turn's worst case checked, still a cut-short call)
   client = pausing();
-  const roomy = await researchOne(client, prop(), 'nfl', aiBudget({ now, caps: { day: 10, month: 25 } }));
+  const roomy = await researchOne(client, rprop(), 'nfl', aiBudget({ now, caps: { day: 10, month: 25 } }));
   assert.equal(client.asked.length, 3);
   assert.equal(roomy.retry, true);
 });
@@ -330,7 +333,7 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
     }),
   );
   const client = mockClient([answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] }), answer({})]);
-  const checks = [prop({ id: 'a', gap: 0.5 }), prop({ id: 'b', gap: 0.4 }), prop({ id: 'c', gap: 0.3 }), prop({ id: 'd', gap: 0.2 })];
+  const checks = [rprop({ id: 'a', gap: 0.5 }), rprop({ id: 'b', gap: 0.4 }), rprop({ id: 'c', gap: 0.3 }), rprop({ id: 'd', gap: 0.2 })];
   const found = await researchChecks({ sport: 'nfl', checks, now, env, budget: aiBudget({ file, now }), client, log: quiet });
   // (a's finding back from the log, never asked again; three asked about today already (a, b, c): the quota
   // spent, so b's second try waits, c's tries done, d not reached)
@@ -344,9 +347,9 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
   assert.deepEqual([...later.keys()].sort(), ['a', 'b', 'd']);
 });
 
-test('researchChecks: off, without a key or on a dry run nothing asked; on, the biggest gaps first, the day\'s quota, the caps, each cost logged', async () => {
+test('researchChecks: off, without a key or on a dry run nothing asked; on, the biggest model Kelly first (a gap never), the day\'s quota, the caps, each cost logged', async () => {
   const quiet = { log: () => {}, warn: () => {} };
-  const checks = [prop({ id: 'a', gap: 0.2 }), prop({ id: 'b', gap: -0.3 }), prop({ id: 'c', gap: 0.25 }), prop({ id: 'd', gap: 0.4, checkResult: { status: 'won' } }), prop({ id: 'e', gap: 0.5, start: '2026-10-09T12:10:00Z' }), prop({ id: 'f', gap: 0.21, research: { at: '2026-10-09T02:00:00Z' } })];
+  const checks = [rprop({ id: 'a', gap: 0.2 }), rprop({ id: 'b', gap: -0.3 }), rprop({ id: 'c', gap: 0.25 }), rprop({ id: 'd', gap: 0.4, checkResult: { status: 'won' } }), rprop({ id: 'e', gap: 0.5, start: '2026-10-09T12:10:00Z' }), rprop({ id: 'f', gap: 0.21, research: { at: '2026-10-09T02:00:00Z' } })];
   const none = mockClient([]);
   assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: {}, client: none, log: quiet })).size, 0);
   assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1' }, client: none, log: quiet })).size, 0);
@@ -359,7 +362,7 @@ test('researchChecks: off, without a key or on a dry run nothing asked; on, the 
   const client = mockClient([answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', summary: 'Out.', sources: ['https://a.b/c'] }), answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] })]);
   const report = new Map([['27', [{ id: '4241', name: 'Chris Godwin' }]]]);
   const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget, client, reportOf: () => report, log: quiet });
-  // (b and c, the biggest open gaps; one done today already, so two of the three; e locked, d graded)
+  // (b and c, the biggest open model Kellys; one done today already, so two of the three; e locked, d graded)
   assert.deepEqual([...found.keys()], ['b', 'c']);
   assert.equal(found.get('b').athlete, '4241');
   assert.equal(found.get('b').status, 'out');
@@ -370,7 +373,7 @@ test('researchChecks: off, without a key or on a dry run nothing asked; on, the 
   // (the caps reached: nothing asked)
   const tight = aiBudget({ file: path.join(dir, 'ai-usage.json'), now, caps: { day: 0.3, month: 25 } });
   const more = mockClient([answer({})]);
-  assert.equal((await researchChecks({ sport: 'nfl', checks: [prop({ id: 'g', gap: 0.3 })], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: tight, client: more, log: quiet })).size, 0);
+  assert.equal((await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'g', gap: 0.3 })], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: tight, client: more, log: quiet })).size, 0);
   assert.equal(more.asked.length, 0);
 });
 

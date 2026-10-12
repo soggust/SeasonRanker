@@ -5,7 +5,8 @@
 // and a shown one that turns a shadow passed, its price frozen. The board and the run judge it alike.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CHECK_KELLY, CHECK_RULE, checkOf, checkSummary, closeChecks, listedCheck, markPlaced, modelKelly, openCheck, PASSED_SHOWN, resolveChecks, shadowOf, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { CHECK_KELLY, CHECK_RULE, checkOf, checkSummary, closeChecks, listedCheck, markPlaced, modelKelly, openCheck, PASSED_SHOWN, rejudgeChecks, resolveChecks, shadowOf, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { factsOf, plainOf } from '../libs/ranker/scripts/model/writeup.mjs';
 import { checkLearning } from '../libs/ranker/scripts/model/check-learn.mjs';
 import { boardProp, buildBoard } from '../libs/ranker/scripts/model/board.mjs';
 import { buildPicks, kellyOf } from '../libs/ranker/scripts/model/picks.mjs';
@@ -149,14 +150,83 @@ test('buildPicks: the shown CHECKs alone (a passed one a while, in its passed st
 });
 
 test('the board and the run judge a prop alike: a check band exactly where the run keeps a shown CHECK', () => {
-  for (const odds of [-150, -110, 100, 139]) {
+  for (const priced of [true, false]) for (const odds of [-150, -110, 100, 139]) {
     for (let m = 0.4; m <= 0.75; m += 0.0125) {
       for (const guard of [ROLE, GAP, NEWS]) {
-        const x = { prop: { athlete: { id: 9, name: 'Ty Johnson', team: 2 }, stat: { key: 'rec', label: 'Receptions' }, line: 1.5, prices: { over: -170, under: odds } }, side: 'under', odds, model: m, fair: 0.45, guard, sides: [{ side: 'over', odds: -170, p: 0.5, ev: 0 }, { side: 'under', odds, p: 0.5, ev: 0 }] };
+        const x = { priced, prop: { athlete: { id: 9, name: 'Ty Johnson', team: 2 }, stat: { key: 'rec', label: 'Receptions' }, line: 1.5, prices: { over: -170, under: odds } }, side: 'under', odds, model: m, fair: 0.45, guard, sides: [{ side: 'over', odds: -170, p: 0.5, ev: 0 }, { side: 'under', odds, p: 0.5, ev: 0 }] };
         const row = boardProp(x, 'T');
-        const c = checkOf(prop({ odds, model: Math.round(m * 1e4) / 1e4, fair: 0.45 }), guard);
-        assert.equal(row.b[1] === 'check', !c.hidden, `${guard.kind} ${odds} ${m}`);
+        const c = checkOf(prop({ odds, model: Math.round(m * 1e4) / 1e4, fair: 0.45, oddsAssumed: !priced }), guard);
+        assert.equal(row.b[1] === 'check', !c.hidden, `${guard.kind} ${odds} ${m} ${priced}`);
+        // (a shadow's why on the board: its passAs)
+        assert.equal(row.sw, c.hidden ? c.passAs : undefined);
       }
     }
   }
+});
+
+test("a role at an assumed -110 (no real price): a shadow, never a CHECK on a made-up price; the news's still a CHECK", () => {
+  const sh = shadowOf({ cause: 'role', odds: 139, model: 0.5745, fair: 0.3947, oddsAssumed: true });
+  assert.equal(sh.passAs, 'small');
+  assert.match(sh.why, /no real price/);
+  assert.equal(checkOf(prop({ oddsAssumed: true }), ROLE).hidden, true);
+  assert.equal(checkOf(prop({ oddsAssumed: false }), ROLE).hidden, undefined);
+  assert.equal(shadowOf({ cause: 'news', odds: -110, model: 0.6, oddsAssumed: true }), null);
+});
+
+test('a passed CHECK that closes and trips again: opened again as a plain shadow, graded in its byPassAs', () => {
+  const ledger = { bets: [] };
+  upsertCheck(ledger, checkOf(prop(), ROLE), now);
+  assert.equal(upsertCheck(ledger, checkOf(prop({ odds: -110, model: 0.55 }), ROLE), later(1)), 'passed');
+  assert.equal(closeChecks(ledger, new Set([prop().id]), later(2)), 1);
+  assert.equal(upsertCheck(ledger, checkOf(prop({ odds: -110, model: 0.56 }), ROLE), later(3)), 'updated');
+  const c = ledger.checks[0];
+  assert.deepEqual([c.closedAt, c.hidden, c.passAs, c.resolved, c.passedAt, c.odds, c.model], [undefined, true, 'small', undefined, undefined, -110, 0.56]);
+  assert.ok(!listedCheck(c, later(3)));
+  // (a plain shadow again: written as any while it stays one)
+  assert.equal(upsertCheck(ledger, checkOf(prop({ odds: -115, model: 0.56 }), ROLE), later(4)), 'updated');
+  assert.equal(checkSummary(ledger.checks).byPassAs.small.open, 1);
+});
+
+test('the stored CHECKs judged by the rule (rejudgeChecks): one from before it, never priced again, passed, never listed as a CHECK', () => {
+  // (as written before the rule: no hidden flag; Ty Johnson's gap, a small role, a big role, the news, one graded)
+  const legacy = (over, guard) => {
+    const c = checkOf(prop(over), guard);
+    delete c.hidden;
+    delete c.passAs;
+    delete c.passWhy;
+    return c;
+  };
+  const gap = legacy({ id: 'gap' }, GAP);
+  const small = legacy({ id: 'small', odds: -110, model: 0.55 }, ROLE);
+  const big = legacy({ id: 'big' }, ROLE);
+  const news = legacy({ id: 'news', odds: -110, model: 0.51 }, NEWS);
+  const graded = { ...legacy({ id: 'graded' }, GAP), checkResult: 'won' };
+  const old = { ...legacy({ id: 'old' }, GAP) };
+  delete old.cause;
+  const checks = [gap, small, big, news, graded, old];
+  assert.ok(listedCheck(gap, now));
+  const passed = rejudgeChecks(checks, now);
+  assert.deepEqual(passed.map((c) => c.id), ['gap', 'small', 'old']);
+  assert.deepEqual([gap.hidden, gap.passAs, gap.resolved.as, gap.passedAt, gap.odds], [true, 'gap', 'passed', now.toISOString(), 139]);
+  assert.deepEqual([small.passAs, big.hidden, news.hidden, graded.hidden, old.passAs], ['small', undefined, undefined, undefined, 'gap']);
+  // (listed in its passed state a while, then gone; never a CHECK the page shows)
+  assert.ok(listedCheck(gap, later(1)));
+  assert.ok(!listedCheck(gap, new Date(now.getTime() + PASSED_SHOWN)));
+  const listed = Object.fromEntries(buildPicks('nfl', { bets: [], checks }, {}, new Map(), later(1)).checks.map((c) => [c.id, c.resolved?.as ?? null]));
+  assert.deepEqual(listed, { big: null, news: null, gap: 'passed', small: 'passed', old: 'passed' });
+  assert.ok(!buildPicks('nfl', { bets: [], checks }, {}, new Map(), new Date(now.getTime() + PASSED_SHOWN + 1)).checks.some((c) => ['gap', 'small', 'old'].includes(c.id)));
+  // (judged once: a second pass passes none)
+  assert.deepEqual(rejudgeChecks(checks, later(1)), []);
+  // (the research never pays for one the rule passes, judged from its own fields though not yet passed)
+  return researchChecks({ sport: 'nfl', checks: [legacy({ id: 'gap2' }, GAP)], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, dry: true, log: { log: (x) => assert.fail(x), warn: () => {} } });
+});
+
+test("a CHECK's risk calls its Kelly big only where it is: never a news CHECK's, never one under the bar", () => {
+  const sheetOf = (over) => factsOf({ ...prop(), intent: 'check', units: 0, ...over }, { game: null, sib: null });
+  const news = plainOf(sheetOf({ cause: 'news', checkCause: 'news', newsUnit: 'offense', odds: -110, model: 0.51 })).risk;
+  assert.doesNotMatch(news, /big/i);
+  const small = plainOf(sheetOf({ cause: 'role', checkCause: 'role', roleReason: 'group-out', odds: -110, model: 0.55 })).risk;
+  assert.match(small, /^The model's own number isn't value by itself/);
+  const big = plainOf(sheetOf({ cause: 'role', checkCause: 'role', roleReason: 'group-out' })).risk;
+  assert.match(big, /^A big Kelly on the model's own number/);
 });
