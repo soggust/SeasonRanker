@@ -187,8 +187,8 @@
                 </span>
               </button>
               <!-- The rank tile (a lock's a lock, above the ranks; the first bet under them #1): a click (or Enter / Space) opens how its score is built; its
-                   hover, its place, its Kelly score and its chance. A CHECK's a "?", no rank and no score to open (it isn't a
-                   bet): clicks pass through it to its row, its hover on its CHECK chip -->
+                   hover, its place, its Kelly score and its chance. A CHECK's a "?", no rank (it isn't a
+                   bet): a click opens why it isn't bet and the model's Kelly; lit on hover like a rank -->
               @if (r.check) {
                 <!-- (a CHECK's "?": its popover says why it isn't bet, the model against the book) -->
                 <button
@@ -260,8 +260,8 @@
                     <small class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</small>
                   }
                 </div>
-                <!-- (a note to the bot on a CHECK: an admin's alone (desk-note.component.ts), a small button till it's asked for) -->
-                @if (r.pickId && desk() && r.check) {
+                <!-- (a note to the bot on a CHECK: a signed-in admin's alone, not the dev server's everyone (desk-note.component.ts), a small button till it's asked for) -->
+                @if (r.pickId && admin() && r.check) {
                   <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check" [resolved]="r.resolved ?? null"></desk-note>
                 }
                 <!-- (the game's every line, to bet this pick or any other; once on top instead when the game's chosen) -->

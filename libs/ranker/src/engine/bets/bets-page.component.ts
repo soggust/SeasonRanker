@@ -5,7 +5,7 @@ import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { SPORT_LINKS } from '@ranker/core/sports';
-import { canUse } from '../account/features';
+import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
@@ -290,6 +290,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // (the model desk, the Algorithm: an admin's, and on the dev server)
   readonly desk = (): boolean => canUse('experimental');
+  // (a note to the bot: a signed-in admin's alone, the dev server too (the rules keep only an admin's))
+  readonly admin = ADMIN;
   readonly canUse = canUse;
   // (the page's About: its header's info button; an admin's has the Algorithm too)
   aboutOpen = false;
