@@ -258,7 +258,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const bot = c.bot;
     const botWords =
       c.tier === 'check'
-        ? ` · The bot's CHECK: the model is too far from the book here to bet it${bot?.chance != null ? ` (the model: ${bot.chance}%)` : ''}`
+        ? ` · The bot's CHECK: a big Kelly on the model's own number that a guard stopped (a role changing, news on his team), kept for a look, not bet${bot?.chance != null ? ` (the model: ${bot.chance}%)` : ''}`
         : bot
         ? ` · The bot's pick: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(bot.sureness)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
         : c.kelly !== null

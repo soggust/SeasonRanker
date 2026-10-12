@@ -129,6 +129,9 @@ export interface CheckLearning {
   byCauseStat: Record<string, Record<string, CheckTally>>;
   // (the open ones by cause, a role's as role:<sub-reason>)
   openByCause?: Record<string, number>;
+  // (the shadows (checks.mjs shadowOf: the gap's and the small role's PASSes, graded, never shown) by passAs,
+  // apart from the causes and the advice)
+  byPassAs?: Record<string, CheckTally & { open?: number }>;
   recommendations: CheckAdvice[];
 }
 
@@ -219,6 +222,9 @@ export type GameDay = { day: string; games: { event: string; label: string; coun
 // (a CHECK cause's words: check-learn.mjs CAUSE_LABELS)
 export const CHECK_CAUSE_LABELS: Record<string, string> = {
   role: 'Role change',
+  news: 'News on his unit',
+  'shadow:gap': 'PASS: the gap (shadow)',
+  'shadow:small': 'PASS: role under +10 Kelly (shadow)',
   unpriced: 'Unpriced (assumed -110)',
   'missing-starter-not-seen': 'Missing player not seen',
   'vacated-fade': 'Vacated work',
@@ -256,6 +262,8 @@ export function checkPanelOf(states: ModelState[]): { rows: CheckCauseRow[]; adv
       const t = key.startsWith('role:') ? l.byRole?.[key.slice(5)] : l.byCause?.[key];
       rows.push({ ...(t ?? none), sport: s.label, key, label: labelOf(key), stats: key.startsWith('role:') ? '' : statsOf(key), open: open[key] ?? 0 });
     }
+    // (the shadows, each passAs its own row: their record for the rule's review, never in the advice)
+    for (const [k, t] of Object.entries(l.byPassAs ?? {})) rows.push({ ...none, ...t, sport: s.label, key: `shadow:${k}`, label: labelOf(`shadow:${k}`), stats: '', open: t.open ?? 0 });
     for (const a of l.recommendations ?? []) advice.push({ ...a, sport: s.label });
   }
   const order: Record<string, number> = { 'blind-spot': 0, loosen: 1, watch: 2 };

@@ -107,8 +107,10 @@
 
       <h4>Guards</h4>
       <ul>
-        <li><b>Gap / CHECK</b>: a market where the model is too far from the book isn't bet. It's kept as a CHECK for the owner to look into.</li>
-        <li><b>Role</b>: a player whose role just changed, in the direction that hurts the bet, is CHECKed, not bet.</li>
+        <li><b>CHECK</b>: a market a guard stopped where the model's own Kelly is {{ checkBarText() }} or more: too big to bet blind, so it's kept for the owner to look into. News on his team (a new play-caller, coordinator or starter) always makes one, whatever the Kelly. It's graded as if bet, never staked.</li>
+        <li><b>Gap</b>: a market where the model is too far from the book isn't bet. It's a PASS, not a CHECK: a gap that size has mostly been the model missing something, not value. It's still graded privately, to check the rule.</li>
+        <li><b>Role</b>: a player whose role just changed isn't bet on the side the model's known error could be making. It's a CHECK at a model Kelly of {{ checkBarText() }} or more; under that, a PASS graded privately.</li>
+        <li><b>His record at the line</b> is shown with every CHECK as context. It isn't a rule: it hasn't told winners from losers.</li>
         <li><b>Skew</b>: a side whose only edge is the spread's own skew (an under with the projection above the line, an over below it) is skipped.</li>
         <li><b>Timing and news</b>: bets are placed only inside each sport's window before the start, and re-priced when news breaks.</li>
         <li><b>Injuries</b>: out, doubtful and IR players are read from the injury report; their work is handed to teammates (vacated work), and a game's open bets are re-priced on news.</li>
@@ -120,7 +122,7 @@
         Stakes come from the Kelly fraction: 0.5 units at no edge, rising to 3 units at the desk's edge scale, in
         half-unit steps (a heavy favorite's stake held to what its edge in chance would stake at -110). The chance
         already includes the trust, so an unproven market bets small. The model's lean tapers as it nears each
-        market's gap limit (12 points on spreads and totals, 15 on moneylines and props); past it, a CHECK.
+        market's gap limit (12 points on spreads and totals, 15 on moneylines and props); past it, not bet.
       </p>
 
       <h4>Trust and CLV</h4>

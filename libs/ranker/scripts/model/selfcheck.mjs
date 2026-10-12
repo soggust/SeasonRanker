@@ -56,7 +56,9 @@
 //             C16 ops: the model files' age with bets overdue to grade, The Odds API's credits, the sources not
 //                 ok, no bets in a week with games
 //             C17 the CHECKs' causes (state.json's checks.learning, check-learn.mjs): each cause's hit rate
-//                 against its break-even and the ranked advice (a confirmed blind spot a flag)
+//                 against its break-even and the ranked advice (a confirmed blind spot a flag); the shadows
+//                 (checks.mjs shadowOf: PASSes graded, never shown) in their own rows alone (shadow:gap,
+//                 shadow:small), out of the status and the advice
 //             C18 the owner's notes on CHECKs by reason (checkSummary's byReason): each reason's record
 //   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
@@ -977,6 +979,9 @@ export function c17(x) {
   const rows = Object.entries(l.byCause ?? {})
     .map(([cause, t]) => ({ key: cause, n: t.n, won: t.won, lost: t.lost, push: t.push, hitRate: t.hitRate, ci: t.ci, breakEven: t.breakEven, profit: t.profit, perUnit: t.perUnit, open: l.openByCause?.[cause] ?? 0 }))
     .sort((a, b) => b.n - a.n || a.key.localeCompare(b.key));
+  // (the shadows (checks.mjs shadowOf: the gap's and the small role's PASSes, graded, never shown) in their own
+  // rows alone, never in the status or the advice: their record, for the rule's review)
+  const shadows = Object.entries(l.byPassAs ?? {}).map(([k, t]) => ({ key: `shadow:${k}`, n: t.n, won: t.won, lost: t.lost, push: t.push, hitRate: t.hitRate, profit: t.profit, open: t.open ?? 0 }));
   let status = (l.graded ?? 0) < MIN_N ? 'thin' : 'ok';
   if (recs.some((r) => r.kind === 'watch' || (r.kind === 'loosen' && r.change?.ready) || (r.kind === 'blind-spot' && !r.confirmed))) status = 'watch';
   if (recs.some((r) => r.kind === 'blind-spot' && r.confirmed)) status = 'flag';
@@ -988,7 +993,7 @@ export function c17(x) {
     value: l.graded ?? 0,
     threshold: `advice from ${MIN_N} graded a cause: a confirmed blind spot a flag; a lean to watch or a guard ready to loosen a watch`,
     n: l.graded ?? 0,
-    rows: [...rows, ...recs.slice(0, WORST).map((r) => ({ key: `advice:${r.rank}`, kind: r.kind, cause: r.cause, confirmed: r.confirmed, text: r.text }))],
+    rows: [...rows, ...shadows, ...recs.slice(0, WORST).map((r) => ({ key: `advice:${r.rank}`, kind: r.kind, cause: r.cause, confirmed: r.confirmed, text: r.text }))],
     how: "the graded CHECKs by what drove their gap (check-learn.mjs), at a unit each as if bet, and the ranked advice: recorded, never applied by the desk",
   });
 }

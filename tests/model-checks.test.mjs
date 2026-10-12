@@ -12,7 +12,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { gapGuard, record, settle } from '../libs/ranker/scripts/model/desk.mjs';
 import { settleProp } from '../libs/ranker/scripts/model/props.mjs';
-import { atUnit, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { atUnit, CHECK_KELLY, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelKelly, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
 import { readLedgers } from '../libs/ranker/scripts/accounts/settle.mjs';
 import { applyNotes, fromValue, keptNote, MAX_PAGES, noteOf, noteWords, publicNote, PUBLIC_NOTE_KEYS, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
 import { ledgerWrites, readChecks } from '../libs/ranker/scripts/model/checks-file.mjs';
@@ -22,7 +22,10 @@ import { botObservations, checkPrice } from '../libs/ranker/scripts/accounts/set
 const now = new Date('2026-10-09T12:00:00Z');
 const bet = (over = {}) => ({ id: 'x', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', placedAt: '2026-10-09T11:00:00Z', matchup: 'TB @ DAL', market: 'spread', side: 'home', line: -3, pick: 'DAL -3', odds: -110, model: 0.6, fair: 0.5, p: 0.535, ev: 0.0214, units: 1, status: 'open', profit: 0, ...over });
 const GAP_WHY = { skip: true, kind: 'gap', why: "the model's 70% against the book's 50%: too far from the market to trust" };
-const check = (over = {}) => checkOf(bet({ id: '401:spread', model: 0.7, fair: 0.5, p: 0.5, ev: -0.045, intent: 'edge', ...over }), GAP_WHY);
+// (a gap CHECK as an older one was kept, shown: the gap's are shadows now (checks.mjs shadowOf), so the
+// lifecycle's tests take one made before the rule)
+const shown = ({ hidden: _h, passAs: _p, passWhy: _w, ...c }) => c;
+const check = (over = {}) => shown(checkOf(bet({ id: '401:spread', model: 0.7, fair: 0.5, p: 0.5, ev: -0.045, intent: 'edge', ...over }), GAP_WHY));
 
 test("gapGuard: past the market's gap it skips, kind 'gap' (a CHECK); inside it, nothing", () => {
   assert.deepEqual({ ...gapGuard('spread', 0.7, 0.5), why: null }, { skip: true, kind: 'gap', why: null });
@@ -178,14 +181,17 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   assert.ok(ids.includes(`${out.picks.find((p) => p.id === '402:spread').level}:402:spread`));
   // (the picks in their Kelly score order, as before the CHECKs)
   assert.deepEqual(out.picks.map((p) => p.score), out.picks.map((p) => p.score).sort((a, b) => b - a));
+  // (the biggest model Kelly first)
   assert.deepEqual(out.checks.map((p) => `${p.level}:${p.id}`), ['check:401:ml', 'check:401:total']);
   const c = out.checks.find((p) => p.id === '401:ml');
   // (its chance the model's: past the gap the trusted chance is about the book's)
-  assert.deepEqual([c.units, c.edge, c.gap, c.rank, c.chance], [0, false, 0.3, 1, 80]);
-  // (its write-up says the disagreement and asks its question; the guard's words in checkReason)
-  assert.match(c.reason, /Not bet: the model makes DAL 80% and DraftKings' no-vig price 50%, a 30-point gap, past the 15 points the desk allows/);
+  assert.deepEqual([c.units, c.edge, c.gap, c.rank, c.chance, c.checkCause], [0, false, 0.3, 1, 80, 'gap']);
+  assert.equal(c.modelKelly, modelKelly(-110, 0.8));
+  assert.deepEqual(out.checkRule, { kelly: CHECK_KELLY });
+  // (its write-up leads with the model's Kelly, then the chances, then why; the guard's words in checkReason)
+  assert.match(c.reason, /Would be a \+58\.00 Kelly bet on the model's own number \(DAL 80% against DraftKings' no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
   assert.match(c.reason, /The question: /);
-  assert.match(c.risk, /more often news the model has not seen than an edge/);
+  assert.match(c.risk, /more often been the model missing something than an edge/);
   assert.match(c.checkReason, /too far from the market/);
   assert.equal(out.picks.find((p) => p.id === 'prop').otherOdds, -120);
   assert.equal(out.picks.find((p) => p.id === 'love').otherOdds, null);

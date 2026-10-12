@@ -58,13 +58,65 @@
 //   notes    an owner's note on it (notes.mjs, Firestore's deskNotes/{id}) kept on it (note: notes.mjs
 //            publicNote's fields alone, never its words or its writer, the file being public), so its result
 //            is the note's outcome: checkSummary tallies them by reason, a closed one's too, for tuning the gap later
+//   rule     (2026-10-12, the owner's: "CHECKs should be for crazy value, not inappropriate math") a guard's skip is
+//            a CHECK the page shows only where it's worth a person's look (shadowOf, the one rule run.mjs and the
+//            board both read): a role's at a model Kelly of CHECK_KELLY or more on the model's own side (picks.mjs
+//            kellyOf at its price and the model's chance, untrusted), the news's always (an uncertainty hold, not
+//            a value call). The gap's never: the gap CHECKs went 18-35 (34% against the book's 49%, -17.7u) over
+//            their first four days, the model missing something, not value. Each of those a PASS, not bet, kept
+//            as a shadow (hidden: true; passAs 'gap' or 'small', passWhy its words): graded as any CHECK so the
+//            rule can be checked again (the small role CHECKs went 61-45, +8.2u, the best group, and the owner's
+//            bar drops them: revisit in about two weeks), but out of everything a CHECK acts on: never on the page
+//            (picks.mjs), the board's marks (board.mjs), researched (research.mjs), an owner's note's player
+//            (notes.mjs), re-priced from its stored price (openCheck), bet after all (markPlaced) or resolved
+//            (resolveChecks), and in the tallies (checkSummary, check-learn.mjs checkLearning) under its own
+//            byPassAs alone. No record filter on bets or CHECKs: his record at the line didn't separate the
+//            losers, so it's shown as context (the write-up, the page), never a rule
+//   passed   a CHECK the page showed that turns a shadow (its role's Kelly fell under the bar, a gap's an older
+//            CHECK's): its price frozen as it was shown (never written over: it's graded at that price), resolved
+//            { as: 'passed', why } and passedAt, and the page shows it in that state for PASSED_SHOWN, so it
+//            doesn't vanish without a word; shown again (back over the bar), written as any CHECK
 
 import { diagnose } from './check-learn.mjs';
+import { kellyOf } from './picks.mjs';
 import { round } from './ratings.mjs';
 import { REPRICE_BY } from './timing.mjs';
 
-// (the most CHECK picks the page shows a sport, the biggest gap first)
+// (the most CHECK picks the page shows a sport, the biggest model Kelly first)
 export const CHECK_TOP = 20;
+
+// (the CHECK bar: a role CHECK only at this model Kelly or more on the model's own side (the owner's +10),
+// published in picks.json (checkRule), the page reading it from there)
+export const CHECK_KELLY = 0.1;
+export const CHECK_RULE = { kelly: CHECK_KELLY };
+// (how long the page shows a CHECK that turned a shadow, in its passed state)
+export const PASSED_SHOWN = 6 * 3600e3;
+
+// (the model's own Kelly on a side: picks.mjs kellyOf at its price and the model's chance, rounded as a CHECK
+// keeps it (4 places), so the board and the run judge the same number; null without either)
+export const modelKelly = (odds, model) => (Number.isFinite(odds) && odds !== 0 && Number.isFinite(model) ? kellyOf(odds, round(model, 4)) : null);
+const kellyText = (k) => `${k >= 0 ? '+' : '-'}${Math.abs(k * 100).toFixed(2)}`;
+
+// Whether a guard's skip (cause: causeOf's) is a shadow, not a CHECK the page shows (the rule above): null (a
+// CHECK), else { passAs, why }: 'gap' (the gap's, always), 'small' (a role's under CHECK_KELLY, or with no
+// Kelly to judge it by). odds, model, fair: the model's side's price and chances
+export function shadowOf({ cause, odds, model, fair }) {
+  if (cause === 'gap') {
+    const pts = Number.isFinite(model) && Number.isFinite(fair) ? Math.round(Math.abs(model - fair) * 100) : null;
+    return { passAs: 'gap', why: `the model is ${pts === null ? 'far' : `${pts} points`} off the book with nothing to explain it; that is usually the model missing something` };
+  }
+  if (cause === 'role') {
+    const k = modelKelly(odds, model);
+    if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no model Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly on the model's own number: under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
+  }
+  return null;
+}
+
+// (a CHECK the page may show: not a shadow; and a shadow that was shown and passed, for PASSED_SHOWN after it)
+export const shownCheck = (c) => !!c && !c.hidden;
+export const passedShowing = (c, now) => !!c?.hidden && c.resolved?.as === 'passed' && now.getTime() - Date.parse(c.passedAt ?? c.resolved.at ?? '') < PASSED_SHOWN;
+// (one the page lists: open (not graded, bet after all or closed), and shown or passed lately)
+export const listedCheck = (c, now) => !!c && !c.checkResult && !c.bet && !c.closedAt && (shownCheck(c) || passedShowing(c, now));
 
 // (a CHECK locked: its game starts within REPRICE_BY, or has started; nothing writes it again from here)
 export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= REPRICE_BY;
@@ -104,6 +156,9 @@ export function checkOf(bet, guard) {
     status: 'check',
     profit: 0,
   };
+  // (a shadow, not shown: shadowOf, its passAs and words kept)
+  const shadow = shadowOf(c);
+  if (shadow) Object.assign(c, { hidden: true, passAs: shadow.passAs, passWhy: shadow.why });
   // (what drives the disagreement: check-learn.mjs diagnose, from its own numbers; a failure leaves none, and
   // the learning diagnoses it later)
   try {
@@ -123,11 +178,14 @@ const priceOf = (c) => ({ at: c.placedAt, side: c.side, line: c.line ?? null, od
 const samePrice = (a, b) => a.side === b.side && (a.line ?? null) === (b.line ?? null) && a.odds === b.odds && (a.otherOdds ?? null) === (b.otherOdds ?? null);
 
 // (what a CHECK's material facts are: the ones whose change writes it again)
-const material = (c) => [c.cause ?? 'gap', c.roleReason ?? '', c.side, c.line, c.odds, c.otherOdds ?? null, Math.round(c.model * 100), Math.round(c.fair * 100), c.note ? `${c.note.reason}:${c.note.player ?? ''}:${c.note.status ?? ''}:${c.note.at ?? ''}` : ''].join('|');
+const material = (c) => [c.cause ?? 'gap', c.roleReason ?? '', c.hidden ? c.passAs ?? 'hidden' : '', c.side, c.line, c.odds, c.otherOdds ?? null, Math.round(c.model * 100), Math.round(c.fair * 100), c.note ? `${c.note.reason}:${c.note.player ?? ''}:${c.note.status ?? ''}:${c.note.at ?? ''}` : ''].join('|');
 
 // A run's CHECK added to the ledger's (ledger.checks), or the one there written again: only while it's open
 // (not graded), not locked, and something material changed; its first time kept (firstAt) and how many times
-// it was written (n). One closed (closeChecks) is opened again: the gap is back. Returns 'new', 'updated' or null
+// it was written (n). One closed (closeChecks) is opened again: the gap is back. One shown that turns a shadow
+// (shadowOf) passed: its price frozen as shown, hidden, resolved { as: 'passed', why } (passedAt), and not
+// written again while it stays one; a shadow shown again written as any CHECK, its passing dropped. Returns
+// 'new', 'updated', 'passed' or null
 export function upsertCheck(ledger, check, now) {
   ledger.checks ??= [];
   const at = ledger.checks.findIndex((c) => c.id === check.id);
@@ -137,8 +195,15 @@ export function upsertCheck(ledger, check, now) {
   }
   const was = ledger.checks[at];
   if (was.checkResult || checkLocked(was, now)) return null;
-  // (its research kept: research.mjs, a finding made once; and how its last re-evaluation came out: resolved)
-  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}), ...(was.resolved ? { resolved: was.resolved } : {}) };
+  if (check.hidden && !was.hidden && !was.closedAt && !was.bet) {
+    Object.assign(was, { hidden: true, passAs: check.passAs, passWhy: check.passWhy, passedAt: now.toISOString(), resolved: { at: now.toISOString(), as: 'passed', why: check.passWhy } });
+    return 'passed';
+  }
+  if (check.hidden && was.passedAt) return null;
+  // (its research kept: research.mjs, a finding made once; and how its last re-evaluation came out: resolved,
+  // a passing's not once it's shown again)
+  const resolved = was.resolved?.as === 'passed' && !check.hidden ? null : was.resolved;
+  const next = { ...check, ...(was.note ? { note: was.note } : {}), ...(was.bet ? { bet: was.bet } : {}), ...(was.research ? { research: was.research } : {}), ...(resolved ? { resolved } : {}) };
   if (!was.closedAt && material(next) === material(was)) {
     // (an older one without a diagnosis given this run's, nothing else written)
     if (!was.diagnosis && check.diagnosis) was.diagnosis = check.diagnosis;
@@ -165,8 +230,9 @@ export function closeChecks(ledger, ids, now) {
   return n;
 }
 
-// (a CHECK still to be priced again: not graded, closed, bet or locked)
-export const openCheck = (c, now) => !!c && !c.checkResult && !c.closedAt && !c.bet && !checkLocked(c, now);
+// (a CHECK still to be priced again: not graded, closed, bet or locked, and not a shadow (never re-priced from
+// its stored price: nothing it could become is shown)
+export const openCheck = (c, now) => !!c && !c.hidden && !c.checkResult && !c.closedAt && !c.bet && !checkLocked(c, now);
 
 // (how old a CHECK's stored price may be and still be bet at, with The Odds API to hand: a real price that
 // recent stands in for the one the run didn't ask for; older, the CHECK is only closed, the bet left to the next
@@ -240,6 +306,8 @@ export function resolveChecks(ledger, reEval, before, now, held = null) {
   const n = { bet: 0, closed: 0, still: 0, held: 0, items: [] };
   const at = now.toISOString();
   for (const c of ledger.checks ?? []) {
+    // (a shadow never: its passing (upsertCheck) its resolution)
+    if (c.hidden) continue;
     const by = reEval?.get(c.id);
     const why = by ? null : held?.get(c.id);
     if (why && !c.checkResult && !c.bet && !c.closedAt) {
@@ -274,13 +342,14 @@ export function checkTrim(checks = [], now) {
   return n;
 }
 
-// (a CHECK whose market was bet after all: the bet it became, noted once; the page stops showing it)
+// (a CHECK whose market was bet after all: the bet it became, noted once; the page stops showing it. A shadow
+// never: its market bet after all closes it, closeChecks)
 export function markPlaced(ledger) {
   let n = 0;
   const bets = new Map(ledger.bets.map((b) => [b.id, b]));
   for (const c of ledger.checks ?? []) {
     const b = bets.get(c.id);
-    if (c.bet || !b || Date.parse(b.placedAt ?? '') < Date.parse(c.firstAt ?? c.placedAt ?? '')) continue;
+    if (c.hidden || c.bet || !b || Date.parse(b.placedAt ?? '') < Date.parse(c.firstAt ?? c.placedAt ?? '')) continue;
     c.bet = { at: b.placedAt, side: b.side, line: b.line, odds: b.odds, units: b.units, intent: b.intent ?? null };
     n++;
   }
@@ -299,8 +368,12 @@ export const atUnit = (c) => ({ ...c, units: 1 });
 // The CHECKs' tally: how many, open and graded, their record had each been bet a unit (a void one not
 // counted), the hit rate, and the same by market and by the owner's note's reason (the self-check's, for
 // tuning the gap). The closed ones (the gap closed before the lock) tallied apart (closed), out of the rest;
-// by reason too (each reason's closed), so a note whose CHECK closed (the bot came round to it) still counts
-export function checkSummary(all = []) {
+// by reason too (each reason's closed), so a note whose CHECK closed (the bot came round to it) still counts.
+// The shadows (shadowOf: PASSes kept to grade) in none of it: their own tally by passAs (byPassAs, the closed
+// left out), and a passed one (shown, then a shadow) among them
+export function checkSummary(list = []) {
+  const all = list.filter(shownCheck);
+  const shadows = list.filter((c) => c?.hidden && !c.closedAt);
   const checks = all.filter((c) => !c.closedAt);
   const tally = (list) => {
     const done = list.filter((c) => c.checkResult && !c.checkResult.void);
@@ -332,5 +405,6 @@ export function checkSummary(all = []) {
     byReason,
     noted: checks.filter((c) => c.note).length,
     closed: { ...tally(shut), noted: shut.filter((c) => c.note).length },
+    byPassAs: Object.fromEntries([...new Set(shadows.map((c) => c.passAs ?? 'hidden'))].sort().map((k) => [k, tally(shadows.filter((c) => (c.passAs ?? 'hidden') === k))])),
   };
 }

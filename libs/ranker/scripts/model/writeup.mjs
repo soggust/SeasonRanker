@@ -24,7 +24,11 @@
 //             A slot's wording varies by the bet's id (fnv1a), never by the run. A CHECK (checks.mjs: too far
 //             from the market to bet) says the disagreement and asks the question it raises instead of the price
 //             (a role CHECK, cause 'role': the role change it's kept for, in words of its sub-reason's; a news
-//             CHECK, cause 'news': the headline on his unit, news.mjs)
+//             CHECK, cause 'news': the headline on his unit, news.mjs), led by the model's own Kelly on it ("Would
+//             be a +26.80 Kelly bet on the model's own number"), then the two chances and the model's mean against
+//             the one the book's price implies ("model 1.48 vs the book's 2.20 catches"), then why it isn't bet; a
+//             projection near its line (fmt.near: within half a unit, or a line of 2.5 or under) said to two
+//             decimals, so 1.48 against a 1.5 line isn't written 1.5
 //   risk      the single likeliest way it loses, by the first rule that applies (a gap past the limit, the
 //             game's lines held, his recent form against it, his history, the line's move, a teammate
 //             questionable, a short season, a thin cushion, else how often it loses at our number), at most
@@ -43,8 +47,9 @@ import { createHash } from 'node:crypto';
 import { decimal, GAP } from './desk.mjs';
 
 // (the plain text's version: bumped, every open bet's text is written again, free. 2: a prop whose drivers
-// don't give its projection back no longer says nothing moves it)
-export const PLAIN_V = 2;
+// don't give its projection back no longer says nothing moves it. 3: a CHECK led by the model's Kelly and the
+// book's implied mean, a projection near its line to two decimals, the CHECKs' risk said plainly)
+export const PLAIN_V = 3;
 export const REASON_MAX = 450;
 export const RISK_MAX = 220;
 
@@ -53,6 +58,9 @@ export const RISK_MAX = 220;
 
 const fin = (v) => typeof v === 'number' && Number.isFinite(v);
 // (half-up with an epsilon: 5.55 to 5.6, never toFixed's 5.5; -0 as 0)
+// (fmt.near's: the distance from the line, and the line, under which a projection's said to two decimals)
+const NEAR_LINE = 0.5;
+const NEAR_SMALL = 2.5;
 const rnd = (x, d = 1) => {
   const k = 10 ** d;
   const v = (Math.sign(x) * Math.round(Math.abs(x) * k + 1e-9)) / k;
@@ -63,6 +71,10 @@ export const fmt = {
   r: rnd,
   // (a projection or a rate: 1 decimal, whole at 100 or more)
   num: (x) => String(Math.abs(x) >= 100 ? rnd(x, 0) : rnd(x, 1)),
+  // (a projection set against its line: two decimals where it's near (within NEAR_LINE, or a line of
+  // NEAR_SMALL or under: a count's half a catch matters), else num's; ref, the number judged near (the mean,
+  // for its distance from the line))
+  near: (x, line, ref = x) => (fin(line) && fin(ref) && (Math.abs(ref - line) <= NEAR_LINE + 1e-9 || line <= NEAR_SMALL) ? rnd(x, 2).toFixed(2) : String(Math.abs(x) >= 100 ? rnd(x, 0) : rnd(x, 1))),
   // (a percent already a percent: whole, or d decimals)
   pct: (x, d = 0) => String(rnd(x, d)),
   odds: (a) => (a > 0 ? `+${a}` : String(a)),
@@ -360,6 +372,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
   const scale = b ? (b + 1) / b : null;
   const score = b && fin(bet.p) ? (bet.p - p0) * scale : null;
   const priceP = b && fin(bet.fair) ? (bet.fair - p0) * scale : null;
+  // (the model's own Kelly: its chance taken at its word, at the price; a CHECK's lead)
+  const modelKelly = b && fin(bet.model) ? (bet.model - p0) * scale : null;
   const lean = fin(score) && fin(priceP) ? score - priceP : null;
   const key = isProp ? `prop:${bet.propType}` : bet.market;
   const trustRec = state?.trust?.[key] ?? null;
@@ -377,6 +391,7 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
     betPct: r2(fin(bet.p) ? bet.p * 100 : NaN),
     lossPct: r2(fin(bet.p) ? 100 - bet.p * 100 : NaN),
     edgePts: r2(edgePts ?? NaN),
+    modelKellyPct: r2(modelKelly !== null ? modelKelly * 100 : NaN),
     gapPts: r2(gap !== null ? Math.abs(gap) * 100 : NaN),
     gapLimitPts: limit ? r2(limit * 100) : undefined,
     pastGapLimit: gap !== null && !!limit && Math.abs(gap) > limit + 1e-9,
@@ -500,6 +515,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
     }
     if (w !== null) proj.recentWeightPct = r2(w * 100);
     if (fin(p.pOver)) proj.sideChancePct = r2((over ? p.pOver : 1 - p.pOver) * 100);
+    // (the mean the book's price implies at the line (a CHECK's: props.mjs impliedMean), beside the model's)
+    if (fin(p.implied)) proj.impliedMean = r2(p.implied);
     if (fin(p.fairOver)) proj.history = { sideSharePct: r2((over ? p.fairOver : 1 - p.fairOver) * 100), weightedGames: fin(p.record) ? p.record : undefined };
     if (fin(p.push)) proj.pushPct = r2(p.push * 100);
     if (Array.isArray(p.out) && p.out.length) proj.out = p.out;
@@ -595,17 +612,27 @@ const ROLE_WORDS = {
   line: 'the line sits far from his projection, the market reading a role the model has not seen',
 };
 
-// (a CHECK's in place of the price: the disagreement, and why it wasn't bet; a role CHECK's, the role)
+// (a CHECK's in place of the price: led by the model's own Kelly ("Would be a +26.80 Kelly bet on the model's
+// own number"), then the two chances, the model's mean against the book's implied one ("model 1.48 vs the
+// book's 2.20 catches"), then why it wasn't bet: the role, the news, or the gap)
 function checkSentence(sheet) {
-  const { bet, price } = sheet;
-  if (bet.checkCause === 'news') return `Not bet either way: the news on his team's ${bet.newsUnit ?? 'unit'} (${bet.checkReason ?? 'a change'}) is a change the model can't read from the logs yet, so it is kept as a CHECK.`;
-  if (bet.checkCause === 'role') return `Not bet on this side: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, and this is the side the model's known error in a role change could be making (the other side bets as usual), so it is kept as a CHECK.`;
-  if (!fin(price.modelPct) || !fin(price.bookFairPct)) return 'Not bet: the model is too far from the market to trust, so it is kept as a CHECK.';
+  const { bet, price, projection: pr } = sheet;
   const who = bet.kind === 'prop' || bet.kind === 'total' ? `the ${bet.side}` : bet.sideWord ?? 'its side';
   const src = price.bookFairFrom === 'Pinnacle' ? 'Pinnacle' : bet.book;
-  const limit = price.pastGapLimit && fin(price.gapLimitPts) ? `, past the ${fmt.pct(price.gapLimitPts)} points the desk allows` : '';
-  const gap = fmt.pct(price.gapPts, 1);
-  return `Not bet: the model makes ${who} ${fmt.pct(price.modelPct)}% and ${possessive(src)} no-vig price ${fmt.pct(price.bookFairPct)}%, ${an(gap)} ${gap}-point gap${limit}, so it is kept as a CHECK.`;
+  const k = price.modelKellyPct;
+  const kelly = fin(k) ? `Would be ${k < 0 ? 'a -' : 'a +'}${rnd(Math.abs(k), 2).toFixed(2)} Kelly bet on the model's own number` : null;
+  const chances = fin(price.modelPct) && fin(price.bookFairPct) ? `${who} ${fmt.pct(price.modelPct)}% against ${possessive(src)} no-vig ${fmt.pct(price.bookFairPct)}%` : null;
+  const means = fin(pr?.mean) && fin(pr?.impliedMean) && fin(bet.line) ? `model ${fmt.near(pr.mean, bet.line)} vs the book's ${fmt.near(pr.impliedMean, bet.line, pr.mean)} ${bet.noun}` : null;
+  const lead = kelly ? `${kelly}${chances ? ` (${chances})` : ''}${means ? `; ${means}` : ''}.` : chances ? `The model makes ${chances}${means ? `; ${means}` : ''}.` : '';
+  let why;
+  if (bet.checkCause === 'news') why = `Not bet either way: the news on his team's ${bet.newsUnit ?? 'unit'} (${bet.checkReason ?? 'a change'}) is a change the model can't read from the logs yet.`;
+  else if (bet.checkCause === 'role') why = `Not bet on this side: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, the side a role change's known error could be making.`;
+  else if (!fin(price.gapPts)) why = 'Not bet: the model is too far from the market to trust.';
+  else {
+    const gap = fmt.pct(price.gapPts, 1);
+    why = `Not bet: ${an(gap)} ${gap}-point gap with nothing to explain it is more often the model missing something than value.`;
+  }
+  return join(lead, why);
 }
 
 // (a CHECK's question: what would settle the disagreement)
@@ -644,14 +671,14 @@ function propHook(sheet, seed, check = false) {
   if (!onSide) {
     const close = Math.abs(pr.mean - bet.line) <= Math.max(0.5, 0.1 * Math.abs(bet.line));
     const likelier = fin(pr.sideChancePct) ? pr.sideChancePct >= 50 : close;
-    if (!likelier) return `${He} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${over ? 'under' : 'over'} his line, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'would be a play' : 'is a bet'} on the price, not the likelier result.`;
-    if (close) return `${He} projects right around the line (${fmt.num(pr.mean)}), but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
-    return `${He} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${over ? 'under' : 'over'} his line, but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    if (!likelier) return `${He} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${over ? 'under' : 'over'} his line, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'would be a play' : 'is a bet'} on the price, not the likelier result.`;
+    if (close) return `${He} projects right around the line (${fmt.near(pr.mean, bet.line)}), but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    return `${He} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${over ? 'under' : 'over'} his line, but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
   }
   const ratio = bet.line > 0 ? pr.mean / bet.line : Infinity;
   const word = over ? (ratio >= 2 ? 'more than double his line' : ratio >= 1.15 ? 'comfortably over his line' : 'a bit over his line') : ratio <= 0.5 ? 'less than half his line' : ratio <= 0.85 ? 'comfortably under his line' : 'just under his line';
-  if (seed & 1 && bet.player) return `${bet.player} projects for ${fmt.num(pr.mean)} ${bet.noun}, ${word}, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'is the side' : 'is the bet'}.`;
-  return `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}: the model projects ${fmt.num(pr.mean)}, ${fmt.num(pr.lineDiffAbs)} ${over ? 'over' : 'under'} the line.`;
+  if (seed & 1 && bet.player) return `${bet.player} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${word}, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'is the side' : 'is the bet'}.`;
+  return `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}: the model projects ${fmt.near(pr.mean, bet.line)}, ${fmt.near(pr.lineDiffAbs, bet.line, pr.mean)} ${over ? 'over' : 'under'} the line.`;
 }
 
 // (a prop's build: his blended rate, his games, his recent form where it's counted, then the drivers)
@@ -671,7 +698,7 @@ function propBuild(sheet, { d2 = true, last = true } = {}) {
   // (the drivers not giving the projection back: none named, and none said to be still; only the gap)
   if (!sheet.driversOk) {
     if (!fin(pr.mean) || fmt.num(pr.mean) === fmt.num(rate)) return `${head}, about where the model projects him.`;
-    return `${head}; the matchup and the game's context take it to ${fmt.num(pr.mean)}.`;
+    return `${head}; the matchup and the game's context take it to ${fmt.near(pr.mean, bet.line)}.`;
   }
   const ds = (sheet.drivers ?? []).slice().sort((a, b) => Math.abs(b.appliedPct) - Math.abs(a.appliedPct) || a.name.localeCompare(b.name)).slice(0, d2 ? 2 : 1);
   if (!ds.length) return `${head}, and nothing in the matchup moves it much.`;
@@ -806,7 +833,9 @@ export function plainOf(sheet) {
   // (the risk: the first rule that applies, never the caveat the reason said)
   let risk;
   if (check) {
-    risk = bet.checkCause === 'news' ? 'News on his team (a new play-caller, coordinator, coach or starter) is a change the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : bet.checkCause === 'role' ? 'A role change is news the market prices faster than the model reads it; the CHECK keeps the result to show whether the model can.' : 'A gap that size is more often news the model has not seen than an edge; the CHECK keeps the result to show which it was.';
+    // (said plainly: a big Kelly on the model's own number has won at about the book's rate (2026-10, 509 of
+    // them at +10 or more), and the gap's CHECKs lost far more than they won)
+    risk = bet.checkCause === 'news' ? "A big Kelly on the model's own number isn't value by itself: the news on his team is a change the market prices faster than the model reads it from the logs." : bet.checkCause === 'role' ? "A big Kelly on the model's own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the model reads it." : 'A gap that size has more often been the model missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
   } else {
     const g = sheet.game ?? {};
     const order =
@@ -886,8 +915,8 @@ function stringsIn(sheet) {
   return out.join(' | ');
 }
 
-const ALLOW = new Set(['DraftKings', 'Pinnacle', 'Over', 'Under', 'LOVE', 'LOCK', 'LIKE', 'PASS', 'CHECK', 'ML', 'QB', 'QBs', 'NFL', 'NBA', 'NHL', 'MLB', 'ET', 'OL', 'TD', 'TDs', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
-const STARTERS = new Set(['The', 'This', 'That', 'At', 'If', 'His', 'He', 'With', 'But', 'And', 'Even', 'On', 'What', 'Two', 'One', 'It', 'Its', 'A', 'An', 'So', 'Still', 'Where', 'When', 'Both', 'Against', 'Only', 'Over', 'Under', 'Across', 'We', 'Exactly', 'Worth', 'Keep', 'Not', 'In', 'Is', 'Are', 'No', 'Owner', 'There', 'Then', 'They', 'Their', 'Our', 'Here', 'For', 'To', 'As', 'By', 'From', 'After', 'Before', 'Because', 'Since', 'Though', 'Although', 'While', 'Despite', 'Given', 'Without', 'Unless', 'Also', 'Yet', 'Or', 'However', 'Instead', 'All', 'Some', 'Most', 'Much', 'Every', 'Each', 'Nothing', 'Neither', 'Goalies', 'Goalie', 'Pitchers', 'Starters', 'Receivers', 'Players', 'Teams', 'Defenses']);
+const ALLOW = new Set(['DraftKings', 'Pinnacle', 'Over', 'Under', 'LOVE', 'LOCK', 'LIKE', 'PASS', 'CHECK', 'CHECKs', 'Kelly', 'ML', 'QB', 'QBs', 'NFL', 'NBA', 'NHL', 'MLB', 'ET', 'OL', 'TD', 'TDs', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
+const STARTERS = new Set(['The', 'This', 'That', 'Would', 'At', 'If', 'His', 'He', 'With', 'But', 'And', 'Even', 'On', 'What', 'Two', 'One', 'It', 'Its', 'A', 'An', 'So', 'Still', 'Where', 'When', 'Both', 'Against', 'Only', 'Over', 'Under', 'Across', 'We', 'Exactly', 'Worth', 'Keep', 'Not', 'In', 'Is', 'Are', 'No', 'Owner', 'There', 'Then', 'They', 'Their', 'Our', 'Here', 'For', 'To', 'As', 'By', 'From', 'After', 'Before', 'Because', 'Since', 'Though', 'Although', 'While', 'Despite', 'Given', 'Without', 'Unless', 'Also', 'Yet', 'Or', 'However', 'Instead', 'All', 'Some', 'Most', 'Much', 'Every', 'Each', 'Nothing', 'Neither', 'Goalies', 'Goalie', 'Pitchers', 'Starters', 'Receivers', 'Players', 'Teams', 'Defenses']);
 const WORDS = /\b(four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|hundred|dozen|third|thirds|quarter|quarters)\b/i;
 const BANNED = /sharp|public money|steam|handle|reverse line|streak|hot hand|momentum|revenge|motivat|coach|must-win|playoff|guarantee|can't lose|free money|\block\b|hammer|smash|empty[- ]net|reportedly|rumou?r|historically|trade|suspend/i;
 const has = (x) => x !== undefined && x !== null && !(Array.isArray(x) && !x.length);

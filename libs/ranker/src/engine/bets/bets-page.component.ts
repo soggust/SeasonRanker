@@ -96,11 +96,20 @@ export interface BetRow {
   line?: number | null;
   pickId?: string;
   // (a CHECK, not a bet the bot made: an admin's alone; its gap from the book, signed for its side, and why the
-  // bot didn't bet it; checkCause 'role' for one kept for his role changing (props.mjs roleChangeOf), not the gap)
+  // bot didn't bet it; checkCause 'role' for one kept for his role changing (props.mjs roleChangeOf), 'news' for
+  // the news on his unit (news.mjs: the headline in checkReason), 'gap' an older one's (the gap's are PASSes now))
   check?: boolean;
   gap?: number | null;
   checkReason?: string | null;
-  checkCause?: 'role' | null;
+  checkCause?: 'gap' | 'role' | 'news' | null;
+  roleReason?: string | null;
+  newsUnit?: string | null;
+  // (the numbers its popover leads with (picks.json's): the model's own Kelly, the model's mean and the one the
+  // book's price implies, his record at the line (his over share and the weighted games it's from))
+  modelKelly?: number | null;
+  mean?: number | null;
+  implied?: number | null;
+  lineRecord?: { over: number; n: number } | null;
   // (its last re-evaluation, still a CHECK (picks.json's: checks.mjs resolveChecks): its note answered once after it)
   resolved?: CheckResolved | null;
 }
@@ -216,6 +225,12 @@ interface Pick {
   gap?: number | null;
   checkReason?: string | null;
   checkCause?: string | null;
+  roleReason?: string | null;
+  newsUnit?: string | null;
+  modelKelly?: number | null;
+  mean?: number | null;
+  implied?: number | null;
+  lineRecord?: { over: number; n: number } | null;
   resolved?: CheckResolved | null;
 }
 interface Picks {
@@ -223,6 +238,8 @@ interface Picks {
   picks: Pick[];
   // (the CHECKs, level 'check': files before them carry none)
   checks?: Pick[];
+  // (the CHECK rule (checks.mjs CHECK_RULE): a role's CHECK only at this model Kelly or more)
+  checkRule?: { kelly: number } | null;
 }
 
 // A team as the schedule names it (the sportsbook's WSH and LAR are its WAS and LA)
@@ -419,12 +436,30 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       why: p.why ?? null,
       line: p.line,
       pickId: p.id,
-      ...(check ? { check: true, confidence: 'check' as const, gap: p.gap ?? null, checkReason: p.checkReason ?? null, checkCause: p.checkCause === 'role' ? ('role' as const) : null, resolved: p.resolved ?? null } : {}),
+      ...(check
+        ? {
+            check: true,
+            confidence: 'check' as const,
+            gap: p.gap ?? null,
+            checkReason: p.checkReason ?? null,
+            // (an older file's without a cause: the gap's)
+            checkCause: p.checkCause === 'role' || p.checkCause === 'news' ? p.checkCause : ('gap' as const),
+            roleReason: p.roleReason ?? null,
+            newsUnit: p.newsUnit ?? null,
+            modelKelly: Number.isFinite(p.modelKelly) ? p.modelKelly! : null,
+            mean: Number.isFinite(p.mean) ? p.mean! : null,
+            implied: Number.isFinite(p.implied) ? p.implied! : null,
+            lineRecord: p.lineRecord && Number.isFinite(p.lineRecord.over) && Number.isFinite(p.lineRecord.n) ? p.lineRecord : null,
+            resolved: p.resolved ?? null,
+          }
+        : {}),
     });
     for (const { sport, picks, bets: file, sheet } of files) {
       // The algorithm's picks
       if (picks?.picks?.length || picks?.checks?.length) {
         if (!this.updated || picks.at > this.updated) this.updated = picks.at;
+        // (the CHECK rule as the bettor publishes it: the page's words read from it, never a copy of its own)
+        if (Number.isFinite(picks.checkRule?.kelly)) this.checkBar = picks.checkRule!.kelly;
         for (const p of picks.picks ?? []) {
           // (a CHECK left in picks by an older file: picks.mjs keeps them in their own list now; never a bet here)
           if (p.level === 'check') continue;
@@ -709,20 +744,45 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     model: number | null;
     fair: number | null;
     gap: number | null;
+    // (a prop's: the model's mean against the book's implied one, his record at the line on this side)
+    means: string | null;
+    record: string | null;
     cause: string;
     reason: string | null;
+    // (turned a PASS since it was shown: why)
+    passed: string | null;
   } | null = null;
 
-  // (a CHECK's model Kelly: its own chance at the price, untrusted: the disagreement's size)
+  // (the CHECK rule, picks.json's checkRule: a role's CHECK only at this model Kelly or more; null till read)
+  checkBar: number | null = null;
+
+  // (a CHECK's model Kelly: its own chance at the price, untrusted: the disagreement's size; picks.json's, else
+  // worked out from its chance and price)
   checkKelly(r: BetRow): number | null {
-    return kellyOf(r.model, typeof r.price === 'number' ? r.price : null);
+    return r.modelKelly ?? kellyOf(r.model, typeof r.price === 'number' ? r.price : null);
+  }
+
+  // (why a CHECK isn't bet, in a few words: its cause)
+  checkCauseText(r: BetRow): string {
+    if (r.checkCause === 'role') return `His role is changing${r.roleReason ? ` (${r.roleReason})` : ''}`;
+    if (r.checkCause === 'news') return `News on his team's ${r.newsUnit ?? 'unit'}`;
+    return 'Too far from the market';
+  }
+
+  // (a CHECK that turned a PASS since it was shown: checks.mjs, its price frozen where it stood)
+  passed(r: BetRow): boolean {
+    return r.resolved?.as === 'passed';
   }
 
   // The rank tile's hover: its place (a lock's, above the ranks), its Kelly score and its chance ("#2 of 40 ·
   // Kelly +3.12 · 64% to win")
   rankTitle(r: BetRow, i: number, n: number, locks: number): string {
-    if (r.check && r.checkCause === 'role') return `Check · his role is changing: the model's numbers are his old role's, so neither side is bet (the model ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%)`;
-    if (r.check) return `Check · the model ${r.chance ?? '–'}% against the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%: too far apart to bet`;
+    if (r.check) {
+      const k = this.checkKelly(r);
+      const chances = `the model ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
+      if (this.passed(r)) return `Passed · no longer a CHECK: ${r.resolved?.why ?? 'under the CHECK bar now'} (${chances})`;
+      return `CHECK · ${k === null ? 'the model' : `a ${betScoreText(k * 100)} Kelly on the model's own number`}, too big to bet blind: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
+    }
     const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;
   }
@@ -762,8 +822,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
         model: model === null ? null : Math.round(model * 1000) / 10,
         fair: fair === null ? null : Math.round(fair * 1000) / 10,
         gap: Number.isFinite(row.gap) ? Math.round(Math.abs(row.gap!) * 1000) / 10 : model !== null && fair !== null ? Math.round(Math.abs(model - fair) * 1000) / 10 : null,
-        cause: row.checkCause === 'role' ? 'His role is changing' : 'Too far from the market',
+        means: Number.isFinite(row.mean) && Number.isFinite(row.implied) ? `${row.mean!.toFixed(2)} vs ${row.implied!.toFixed(2)}` : null,
+        record: row.lineRecord ? `${row.side ?? 'over'} in ${Math.round((row.side === 'under' ? 1 - row.lineRecord.over : row.lineRecord.over) * 100)}% of ${row.lineRecord.n} weighted games` : null,
+        cause: this.checkCauseText(row),
         reason: row.checkReason ?? null,
+        passed: this.passed(row) ? (row.resolved?.why ?? 'under the CHECK bar now') : null,
       };
     } else {
       this.checkWhy = null;

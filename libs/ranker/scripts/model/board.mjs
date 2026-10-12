@@ -12,12 +12,14 @@
 //     k       its game markets, each a list of its two sides: spread [home, away], total [over, under],
 //             ml [home, away]; a side { s: side, l: line (null on a moneyline), o: price, c: the bot's trusted
 //             chance it wins, ks: its Kelly score (picks.mjs kellyOf, the picks' order), b: its band (picks.mjs
-//             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK, on the
-//             model's side), bot: 'bet' or 'check' where the bot has that side open (its ledger) }
+//             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK the page
+//             shows, on the model's side: never a game market's now, the gap's a shadow (checks.mjs shadowOf),
+//             both sides PASS), bot: 'bet' or 'check' where the bot has that side open (its ledger) }
 //     p       its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
-//             guard has the bot pass on it (his status, the line's move, a layoff: its bands PASS), at: when
+//             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
+//             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), at: when
 //             priced, bot and bk: the side the bot has open and 'bet' or 'check' }
 //
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
@@ -28,7 +30,7 @@
 
 import { round } from './ratings.mjs';
 import { chanceAt, decimal, gapGuard } from './desk.mjs';
-import { CHECK_KINDS } from './checks.mjs';
+import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
 import { kellyOf, level } from './picks.mjs';
 
 // (a game's seen prices kept this long past its start: past the settler's longest wait, props.mjs PROP_WAIT)
@@ -43,13 +45,17 @@ export function boardMarkets(markets, trustOf) {
   const out = {};
   for (const m of markets ?? []) {
     const [s0] = m.sides;
-    // (past the market's gap, a CHECK on the model's side: run.mjs betGames' guard)
-    const checkSide = gapGuard(m.market, s0.model, s0.fair) ? (s0.model - s0.fair >= 0 ? s0.side : m.sides[1].side) : null;
+    // (past the market's gap, run.mjs betGames' guard skips it: a CHECK on the model's side only where the run
+    // shows it one (checks.mjs shadowOf: the gap's never), else a PASS both sides)
+    const gapped = gapGuard(m.market, s0.model, s0.fair);
+    const mine = s0.model - s0.fair >= 0 ? s0 : m.sides[1];
+    const checkSide = gapped && !shadowOf({ cause: 'gap', odds: mine.odds, model: mine.model, fair: mine.fair }) ? mine.side : null;
+    const pass = !!gapped && !checkSide;
     out[m.market] = m.sides.map((s) => {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide }) };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }) };
     });
   }
   return out;
@@ -58,7 +64,9 @@ export function boardMarkets(markets, trustOf) {
 // A priced prop (props.mjs priceProps's) as the board's, at its book price (none: null)
 export function boardProp(x, at) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
-  const check = CHECK_KINDS.has(x.guard?.kind);
+  // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
+  // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
+  const check = CHECK_KINDS.has(x.guard?.kind) && !shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair });
   const pass = !!x.guard?.skip && !check;
   const prices = x.prop.prices ?? {};
   const side = (k) => {
@@ -116,8 +124,9 @@ export function buildBoard(sport, { prev = null, games = new Map(), props = new 
     const fresh = new Map(rows.map((p) => [propKey(p), before.has(propKey(p)) && JSON.stringify(bare(before.get(propKey(p)))) === JSON.stringify(bare(p)) ? { ...p, at: before.get(propKey(p)).at } : p]));
     g.p = [...kept.filter((p) => !fresh.has(propKey(p))), ...fresh.values()].sort((x, y) => x.n.localeCompare(y.n) || x.k.localeCompare(y.k));
   }
-  // (the bot's open sides: its bets, and its CHECKs not closed, graded or bet after all, as the picks' list)
-  const marks = [...bets.filter((b) => b.status === 'open' && !b.void).map((b) => [b, 'bet']), ...checks.filter((c) => !c.checkResult && !c.bet && !c.closedAt).map((c) => [c, 'check'])];
+  // (the bot's open sides: its bets, and its CHECKs not closed, graded or bet after all, as the picks' list; a
+  // shadow never, checks.mjs shadowOf)
+  const marks = [...bets.filter((b) => b.status === 'open' && !b.void).map((b) => [b, 'bet']), ...checks.filter((c) => !c.hidden && !c.checkResult && !c.bet && !c.closedAt).map((c) => [c, 'check'])];
   for (const g of out.values()) {
     for (const k of Object.values(g.k)) for (const s of k) delete s.bot;
     for (const p of g.p) delete p.bot, delete p.bk;

@@ -109,7 +109,7 @@ export function kellyOf(p: number | undefined | null, american: number | undefin
 }
 
 // A pick's band, its row's color and its chip (picks.mjs BANDS, the same cuts): by its Kelly score, a lock above
-// them all at 10% or more with a 60% chance to win (a big edge on a likely result: LOCK), then 5% (LOVE), 2%
+// them all at 5% or more with a 60% chance to win (a big edge on a likely result: LOCK), then 2% (LOVE), 1%
 // (LIKE), under that or without an edge low (PASS)
 export type { Confidence } from './tiers';
 // (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
@@ -265,7 +265,7 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
   const levelText = noEdge ? `${tierLabel(level)}: no edge on the price` : tierLabel(level);
   const levelTitle = noEdge
     ? "Its confidence: low, whatever its chance, without an edge on the price (a bet the bot made for the data, not one it likes: a favorite at a short price isn't a strong bet)"
-    : 'Its confidence, by its Kelly score (value and likelihood together, as the picks are ranked): 10 or more with a 60% chance a lock, 5 or more high, 2 or more medium, under that low';
+    : 'Its confidence, by its Kelly score (value and likelihood together, as the picks are ranked): 5 or more with a 60% chance a lock, 2 or more high, 1 or more medium, under that low';
 
   // Its price: what a unit's expected to return at its chance, and its stake
   let edgeText: string | null = null;

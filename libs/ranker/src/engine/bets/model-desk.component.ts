@@ -708,11 +708,31 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_b2b: 'back-to-back',
       c_blowout: 'blowout',
       c_oppShots: 'opponent shots',
+      a_WR: 'opponent allowed to wide receivers',
+      a_TE: 'opponent allowed to tight ends',
+      a_RB: 'opponent allowed to running backs',
+      a_QB: 'opponent allowed to quarterbacks',
+      vol: 'volume base (targets times yards a target)',
+      yk: "yards a target: his longer run's weight (targets)",
+      dp: 'draft slot (a rookie\'s prior)',
+      c_rb1Out: 'lead running back out',
+      c_newCoach: "a new head coach's first games",
+      c_qb1Out: 'starting QB out',
+      c_ppShare: 'power-play share',
+      c_midSeason: 'weeks 5 to 8',
+      rp: 'next man up (projected in the role he steps into)',
+      nu: "next man up: his share at least this much of the missing one's",
+      ij: 'back from injury (his eased games weigh less)',
+      ia: 'back from injury: team games missed',
+      ir: "back from injury: the returners' first game back",
+      sk: "part-timer's prior counted at his snap share",
+      rx: "last five reaching back into last season",
+      pl: "prior leaning to last season's late games",
     };
     return Object.entries(t.gains ?? {})
       .map(([k, g]) => {
         const v = (t.params as unknown as Record<string, number | null>)[k];
-        const on = k === 'roleK' ? v !== null && v !== undefined : !!v;
+        const on = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
         return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : v) : 'left out'} (${gain})`;
       })

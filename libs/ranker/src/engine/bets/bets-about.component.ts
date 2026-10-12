@@ -42,6 +42,27 @@ const TERM_NAMES: Record<string, string> = {
   sr: "expected share: last game's weight",
   qs: 'QB starts (starter by his starts)',
   kd: 'early season (prior shrinks with games)',
+  a_WR: 'opponent allowed to wide receivers',
+  a_TE: 'opponent allowed to tight ends',
+  a_RB: 'opponent allowed to running backs',
+  a_QB: 'opponent allowed to quarterbacks',
+  vol: 'volume base (targets times yards a target)',
+  yk: "yards a target: his longer run's weight (targets)",
+  dp: 'draft slot (a rookie\'s prior)',
+  c_rb1Out: 'lead running back out',
+  c_newCoach: "a new head coach's first games",
+  c_qb1Out: 'starting QB out',
+  c_ppShare: 'power-play share',
+  c_midSeason: 'weeks 5 to 8',
+  rp: 'next man up (projected in the role he steps into)',
+  nu: "next man up: his share at least this much of the missing one's",
+  ij: 'back from injury (his eased games weigh less)',
+  ia: 'back from injury: team games missed',
+  ir: "back from injury: the returners' first game back",
+  sk: "part-timer's prior counted at his snap share",
+  rx: "last five reaching back into last season",
+  pl: "prior leaning to last season's late games",
+
   rk: 'spread grows with projection',
   c_wind: 'wind',
   c_cold: 'cold',
@@ -76,6 +97,11 @@ const EPOCH_FALLBACK = '2026-10-11T22:00:00Z';
 export class BetsAboutComponent implements OnInit {
   // (an admin: the Algorithm sections too)
   @Input() desk = false;
+  // (the CHECK rule as the bettor publishes it (picks.json's checkRule.kelly, the Bets page's read): null till read)
+  @Input() checkKelly: number | null = null;
+  checkBarText(): string {
+    return this.checkKelly === null ? 'the bar the bot publishes' : `+${(this.checkKelly * 100).toFixed(0)}`;
+  }
   @Output() closed = new EventEmitter<void>();
 
   sections: AboutSection[] = [];
@@ -165,9 +191,13 @@ export class BetsAboutComponent implements OnInit {
             n: s.checks.n ?? 0,
             open: s.checks.open ?? 0,
             graded: learning?.graded ?? 0,
-            rows: Object.entries(learning?.byCause ?? {})
-              .sort((a, b) => b[1].n - a[1].n)
-              .map(checkRow),
+            rows: [
+              ...Object.entries(learning?.byCause ?? {})
+                .sort((a, b) => b[1].n - a[1].n)
+                .map(checkRow),
+              // (the shadows: the PASSes kept only to grade, by why they passed)
+              ...Object.entries(learning?.byPassAs ?? {}).map(([k, t]) => checkRow([`shadow:${k}`, t])),
+            ],
           }
         : null,
     };
@@ -183,7 +213,8 @@ export class BetsAboutComponent implements OnInit {
       .join(' · ');
     const terms = Object.entries(t.gains ?? {}).map(([k, g]): TermRow => {
       const v = p[k];
-      const kept = k === 'roleK' ? v !== null && v !== undefined : !!v;
+      // (a size that can be 0 and still kept: the role split's, an opponent group's own power)
+      const kept = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
       return {
         name: termName(k),
         value: kept ? String(v) : 'left out',

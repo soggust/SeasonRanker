@@ -23,7 +23,7 @@
     </button>
   </nav>
   @if (aboutOpen) {
-    <bets-about [desk]="desk()" (closed)="aboutOpen = false"></bets-about>
+    <bets-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></bets-about>
   }
   @if (view === 'desk') {
     <model-desk></model-desk>
@@ -241,8 +241,12 @@
                 @if (r.check) {
                   <p class="bet-check-why">
                     <b class="bet-check-q" aria-hidden="true">?</b>
-                    @if (r.checkCause === 'role') {
-                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The model's known error in a role change could be making this side; the other side bets as usual.</span>
+                    @if (passed(r)) {
+                      <span><b>Passed:</b> {{ r.resolved?.why || 'under the CHECK bar now' }}. No longer a CHECK; it's still graded at the price it was shown at.</span>
+                    } @else if (r.checkCause === 'role') {
+                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. A big Kelly on the model's own number, but the model's known error in a role change could be making this side; the other side bets as usual.</span>
+                    } @else if (r.checkCause === 'news') {
+                      <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the model reads it from the logs.</span>
                     } @else {
                       <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
                     }
@@ -252,7 +256,7 @@
                      amber when it could matter) -->
                 <div class="bet-foot">
                   @if (r.check) {
-                    <p class="bet-meta bet-confidence" [attr.title]="r.checkCause === 'role' ? 'The model\'s chance this side wins on his old role\'s numbers: his role is changing, so the bot bets neither side' : 'The model\'s chance this side wins: too far from the book\'s to bet, so the bot questions it'">The model {{ r.chance ?? '–' }}% · the book {{ r.fair != null ? (r.fair * 100 | number: '1.0-0') + '%' : '–' }}</p>
+                    <p class="bet-meta bet-confidence" [attr.title]="r.checkCause === 'role' ? 'The model\'s chance this side wins on his old role\'s numbers: his role is changing, so the bot doesn\'t bet this side' : r.checkCause === 'news' ? 'The model\'s chance this side wins: news on his team the model can\'t read yet, so the bot bets neither side' : 'The model\'s chance this side wins: too far from the book\'s to bet, so the bot questions it'">The model {{ r.chance ?? '–' }}% · the book {{ r.fair != null ? (r.fair * 100 | number: '1.0-0') + '%' : '–' }}</p>
                   } @else {
                     <p class="bet-meta bet-confidence" title="Its chance to win. The list runs by Kelly (the edge on the price, scaled by what it pays); gray: no edge on the price">{{ r.chance ?? '–' }}% to win</p>
                   }
@@ -312,7 +316,7 @@
         <div class="why-head">
           <p class="why-title">
             <span class="why-score" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price">Model Kelly <b [class.neg]="(c.kelly ?? 0) <= 0">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</b></span>
-            <span class="why-place">CHECK</span>
+            <span class="why-place">{{ c.passed ? 'PASSED' : 'CHECK' }}</span>
           </p>
           <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
         </div>
@@ -327,12 +331,21 @@
           @if (c.gap !== null) {
             <p><span>Gap</span> <b>{{ c.gap }} points</b></p>
           }
+          @if (c.means) {
+            <p title="The model's projection against the mean the book's price implies at this line"><span>Model vs book mean</span> <b>{{ c.means }}</b></p>
+          }
+          @if (c.record) {
+            <p title="His own record at this line (this season, and last season's at half weight): context, never a rule"><span>His record at the line</span> <b>{{ c.record }}</b></p>
+          }
           <p><span>Not bet</span> <b>{{ c.cause }}</b></p>
         </div>
+        @if (c.passed) {
+          <p class="why-foot"><b>Passed:</b> {{ c.passed }}. No longer a CHECK; still graded at the price it was shown at.</p>
+        }
         @if (c.reason) {
           <p class="why-foot">{{ c.reason }}</p>
         }
-        <p class="why-foot">A CHECK is graded as if bet, so the bot learns whether the market or the model was right.</p>
+        <p class="why-foot">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
       </div>
     }
     @if (why; as w) {

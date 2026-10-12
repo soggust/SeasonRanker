@@ -224,16 +224,21 @@ test("a role CHECK keeps its cause and sub-reason, tallied apart from the gap's;
   assert.equal(gap.cause, 'gap');
   assert.equal(gap.roleReason, undefined);
   assert.ok(CHECK_KINDS.has('role') && CHECK_KINDS.has('gap') && !CHECK_KINDS.has('unpriced'));
-  const s = checkSummary([role, gap, { ...gap, id: 'old', cause: undefined }]);
+  // (the gap's a shadow now (checks.mjs shadowOf), the role's at a model Kelly of +16 shown: an older shown gap
+  // CHECK, without the shadow's marks, tallied as the gap's)
+  assert.deepEqual([gap.hidden, gap.passAs, role.hidden], [true, 'gap', undefined]);
+  const { hidden: _h, passAs: _p, passWhy: _w, ...older } = gap;
+  const s = checkSummary([role, gap, { ...older, id: 'old', cause: undefined }]);
   assert.equal(s.byCause.role.n, 1);
-  assert.equal(s.byCause.gap.n, 2);
+  assert.equal(s.byCause.gap.n, 1);
+  assert.equal(s.byPassAs.gap.n, 1);
   assert.equal(s.byRole['group-out'].n, 1);
-  // (a gap CHECK that becomes a role's is written again)
+  // (a gap CHECK that becomes a role's is written again, shown)
   const ledger = { checks: [] };
   const now = new Date('2029-12-31T13:00Z');
   assert.equal(upsertCheck(ledger, gap, now), 'new');
-  assert.equal(upsertCheck(ledger, { ...gap, cause: 'role', roleReason: 'snap-jump' }, now), 'updated');
-  assert.equal(ledger.checks[0].cause, 'role');
+  assert.equal(upsertCheck(ledger, checkOf({ ...bet, id: 'g2' }, { skip: true, kind: 'role', role: 'snap-jump', why: 'his snaps jumped' }), now), 'updated');
+  assert.deepEqual([ledger.checks[0].cause, ledger.checks[0].hidden], ['role', undefined]);
 });
 
 test("a role CHECK's write-up: the role it's kept for, its question and risk, passing the validator; its hash the role's", () => {
@@ -244,7 +249,7 @@ test("a role CHECK's write-up: the role it's kept for, its question and risk, pa
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /Not bet on this side: a regular at his position is out/);
   assert.match(reason, /The question: how much of the work is his now/);
-  assert.match(risk, /^A role change is news/);
+  assert.match(risk, /^A big Kelly on the model's own number isn't value by itself/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
   // (the hash: a role CHECK's differs from the same pick's gap CHECK; a bet's as it was)
   const asGap = { ...check, cause: 'gap', roleReason: undefined };

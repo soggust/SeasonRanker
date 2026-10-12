@@ -15,17 +15,22 @@
 //            leaned on: 1 once the market's is fitted (the backtest's closing lines and the graded bets), 0.5
 //            while it's the untested start (a prop type with fewer than 40 graded)
 //   chance   what the page shows beside it: the trusted chance the bet wins, as a whole percent
-//   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (10% or more, and a 60%
-//            chance), high (5%: LOVE), medium (2%: LIKE), low (PASS)
+//   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 60%
+//            chance), high (2%: LOVE), medium (1%: LIKE), low (PASS)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
 //            and learn from), in their own list (checks, never picks: the Bets page reads every pick as a bet
 //            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
 //            never shown or published, never in the record: the open ones on games not started whose market
-//            wasn't bet after all and whose gap hasn't closed since (closedAt), the biggest gap first,
-//            CHECK_TOP at most; the Bets page shows them between LOCK and LOVE in their own band (the
+//            wasn't bet after all and whose gap hasn't closed since (closedAt), the shown ones alone (checks.mjs
+//            listedCheck: a shadow never, a passed one for PASSED_SHOWN in its passed state), the biggest model
+//            Kelly first, CHECK_TOP at most; the rule (checkRule: { kelly }, checks.mjs CHECK_RULE) beside them,
+//            the page's words read from it; the Bets page shows them between LOCK and LOVE in their own band (the
 //            admins' alone, with a note to the bot: tiers.ts, desk-note.component.ts). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
 //            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with),
-//            and its last re-evaluation where it was still one (resolved { at, as, by }: checks.mjs
+//            its cause (checkCause: gap, role or news), its model Kelly (modelKelly: the model's chance at its
+//            price), the mean the model projects and the one the book's price implies (mean, implied), his record
+//            at the line (lineRecord: { over, n }, props.mjs fairOver and its weighted games: context, never a
+//            rule), and its last re-evaluation where it was still one (resolved { at, as, by }: checks.mjs
 //            resolveChecks; the page's "Noted" till it's after the owner's note); one closed or bet by it is gone
 //            from the list, the bet a pick like any other
 //   other   a prop's other side's price (otherOdds; null where unknown): the page shows both sides
@@ -53,7 +58,7 @@
 import { round } from './ratings.mjs';
 import { decimal, intentOf, record } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
-import { CHECK_TOP } from './checks.mjs';
+import { CHECK_RULE, CHECK_TOP, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
 
 // (a bet locked: its game starts within REPRICE_BY, or has started; nothing prices it again from here)
@@ -256,13 +261,15 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     if (!Number.isFinite(b.publishedKelly)) b.publishedKelly = score;
     b.publishedLevel = levelOf(b, b.publishedKelly, b.publishedP);
   }
-  // (the CHECKs: too far from the market to bet (checks.mjs), on games not started and not bet after all (an
-  // open bet on the market: that one shows) and not closed since (the gap closed: closedAt); the biggest gap
-  // first, CHECK_TOP at most. Their own list, apart from the picks: the ones the owner should look into)
+  // (the CHECKs: a guard's skip worth a person's look (checks.mjs), on games not started and not bet after all
+  // (an open bet on the market: that one shows) and not closed since (closedAt), a shadow never (a passed one for
+  // a while, in its passed state: listedCheck); the biggest model Kelly first, CHECK_TOP at most. Their own list,
+  // apart from the picks: the ones the owner should look into)
   const betIds = new Set(open.map((b) => b.id));
+  const mk = (c) => modelKelly(c.odds, c.model) ?? -Infinity;
   const checks = (ledger.checks ?? [])
-    .filter((c) => !c.checkResult && !c.bet && !c.closedAt && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
-    .sort((x, y) => Math.abs(y.gap ?? 0) - Math.abs(x.gap ?? 0) || x.start.localeCompare(y.start))
+    .filter((c) => listedCheck(c, now) && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
+    .sort((x, y) => mk(y) - mk(x) || Math.abs(y.gap ?? 0) - Math.abs(x.gap ?? 0) || x.start.localeCompare(y.start))
     .slice(0, CHECK_TOP)
     .map((b) => {
       const { score, ...why } = scoreParts(b, trust);
@@ -317,10 +324,13 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       reason: entry.plain.reason,
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; a role
       // CHECK's cause and sub-reason, a news one's cause and unit: checks.mjs)
-      ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : b.cause === 'news' ? { checkCause: 'news', newsUnit: b.newsUnit ?? null } : {}) } : {}),
+      ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : b.cause === 'news' ? { checkCause: 'news', newsUnit: b.newsUnit ?? null } : { checkCause: 'gap' }) } : {}),
+      // (a CHECK's numbers the page leads with: the model's own Kelly, the model's mean and the book's implied one,
+      // his record at the line (context, never a rule))
+      ...(check ? { modelKelly: modelKelly(b.odds, b.model), ...checkNumbers(b) } : {}),
       // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered
       // once it's after the note; held, why a noted one couldn't be re-priced)
-      ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, by: b.resolved.by, ...(b.resolved.held ? { held: b.resolved.held } : {}) } } : {}),
+      ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, ...(b.resolved.by ? { by: b.resolved.by } : {}), ...(b.resolved.held ? { held: b.resolved.held } : {}), ...(b.resolved.why ? { why: b.resolved.why } : {}) } } : {}),
     };
     // (its risk, the page's Devil's Advocate, and the AI's analysis in place of the plain text where it has one)
     return applyWriteups(row, entry, hash);
@@ -330,13 +340,25 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   // (the write-ups kept: the open bets' and the open CHECKs' (as the CHECKs' list: not graded, closed or bet
   // after all), the rest dropped (graded, taken back))
   if (writeups?.items) {
-    const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => !c.checkResult && !c.closedAt && !c.bet).map((c) => c.id)]);
+    const live = new Set([...ledger.bets.filter((b) => b.status === 'open').map((b) => b.id), ...(ledger.checks ?? []).filter((c) => listedCheck(c, now)).map((c) => c.id)]);
     const bets = new Set(ledger.bets.map((b) => b.id));
     for (const id of Object.keys(writeups.items)) if (!live.has(id) && !(extra.keepChecks && !bets.has(id))) delete writeups.items[id];
   }
   const published = ledger.bets.filter((b) => b.published);
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checkRows };
+  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checkRows };
+}
+
+// (a prop CHECK's numbers for the page: the model's mean, the book's implied one, his record at the line (his
+// over share, smoothed, and the weighted games it's from); none a game market's)
+function checkNumbers(c) {
+  const p = c.projection;
+  if (c.market !== 'prop' || !p) return {};
+  return {
+    ...(Number.isFinite(p.mean) ? { mean: p.mean } : {}),
+    ...(Number.isFinite(p.implied) ? { implied: p.implied } : {}),
+    ...(Number.isFinite(p.fairOver) && Number.isFinite(p.record) ? { lineRecord: { over: p.fairOver, n: p.record } } : {}),
+  };
 }
 
 // (a record as the page's: wins, losses, pushes, the win share; a void bet, no action, isn't counted)

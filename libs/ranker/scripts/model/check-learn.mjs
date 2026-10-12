@@ -38,7 +38,9 @@
 //              rate), by cause, by cause and stat, and a role's by its sub-reason: the record, the hit rate with
 //              a 95% Wilson interval, the break-even of their prices, the profit and the profit a unit (these from
 //              the ones at a known price alone: one at an assumed -110 is in the record, counted as unpriced). An
-//              older CHECK without a diagnosis diagnosed now (a trimmed one's projection gone: role or unknown)
+//              older CHECK without a diagnosis diagnosed now (a trimmed one's projection gone: role or unknown).
+//              The shadows (checks.mjs shadowOf: PASSes graded, never shown) in none of it, the advice neither:
+//              their own record by passAs alone (byPassAs: 'gap', 'small'), the closed ones out
 //   advice     recommendations, ranked: a cause whose interval sits under its break-even (MIN_N graded or
 //              more) a confirmed blind spot, the market right, named with its evidence and the fix it points
 //              to (FIXES); one under it but not yet clear a lean to watch; one whose interval sits over its
@@ -253,7 +255,9 @@ export const FIXES = {
 
 // The graded CHECKs' learning (see above): { v, graded, byCause, byRole, byCauseStat, recommendations }
 export function checkLearning(all = []) {
-  const live = (Array.isArray(all) ? all : []).filter((c) => c && !c.closedAt);
+  const list = (Array.isArray(all) ? all : []).filter((c) => c && !c.closedAt);
+  const live = list.filter((c) => !c.hidden);
+  const shadows = list.filter((c) => c.hidden);
   const graded = live.filter((c) => c.checkResult && !c.checkResult.void);
   const statOf = (c) => (c.market === 'prop' ? `prop:${c.propType}` : c.market);
   const rows = graded.map((c) => ({ c, d: diagnosisOf(c) }));
@@ -322,6 +326,7 @@ export function checkLearning(all = []) {
     byRole,
     byCauseStat,
     openByCause: Object.fromEntries(Object.entries(openByCause).sort()),
+    byPassAs: Object.fromEntries([...new Set(shadows.map((c) => c.passAs ?? 'hidden'))].sort().map((k) => [k, { ...tallyOf(shadows.filter((c) => (c.passAs ?? 'hidden') === k)), open: shadows.filter((c) => (c.passAs ?? 'hidden') === k && !c.checkResult).length }])),
     recommendations: recs.map(({ score: _s, ...r }, i) => ({ rank: i + 1, ...r })),
     thresholds: { minN: MIN_N, loosenN: LOOSEN_N, loosenMargin: LOOSEN_MARGIN },
   };

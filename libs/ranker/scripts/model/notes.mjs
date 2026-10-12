@@ -166,7 +166,8 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
       const e = (report.get(t) ?? []).find((p) => String(p.id) === n.player);
       if (e && (!team || team === t)) (team = t), (listed = e);
     }
-    const check = checks.find((c) => c.id === n.id && String(c.athlete ?? '') === n.player);
+    // (a shadow's never: checks.mjs shadowOf, a PASS no one sees)
+    const check = checks.find((c) => !c.hidden && c.id === n.id && String(c.athlete ?? '') === n.player);
     if (!team && check?.team && sides.includes(String(check.team))) team = String(check.team);
     for (const t of sides) {
       if (team) break;
@@ -204,7 +205,7 @@ export function teamNotes(sport, live, upcoming, notes, { checks = [], log = con
     const l = game && live.get(game.id);
     if (!l) continue;
     const sides = [String(game.home), String(game.away)];
-    const check = checks.find((c) => c.id === n.id);
+    const check = checks.find((c) => !c.hidden && c.id === n.id);
     const team = n.team && sides.includes(n.team) ? n.team : check?.team && sides.includes(String(check.team)) ? String(check.team) : null;
     if (!team) {
       log.log?.(`${sport}: an owner's news note on ${n.id} not applied: no team of the game's (a game line's CHECK has none)`);

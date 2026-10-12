@@ -170,11 +170,13 @@ export function formOf(n: DeskNote | null, players: readonly NotePlayer[] = []):
 export const notePrices = (n: DeskNote | null): boolean => !!n?.player && !!n?.status;
 
 // A CHECK's last re-evaluation, as picks.json carries it (checks.mjs resolveChecks: priced again from its stored
-// prices, or on an owner's note): still a CHECK (a closed or bet one is off the CHECKs' list, the bet a pick)
+// prices, or on an owner's note): still a CHECK (a closed or bet one is off the CHECKs' list, the bet a pick); or
+// passed (checks.mjs upsertCheck: shown, then under the CHECK bar, a PASS kept to grade), why it passed (why)
 export interface CheckResolved {
   at: string;
-  as: 'bet' | 'closed' | 'still';
-  by: 'note' | 'reprice';
+  as: 'bet' | 'closed' | 'still' | 'passed';
+  by?: 'note' | 'reprice';
+  why?: string;
   // (a noted CHECK the run couldn't re-price: why (no price kept, its line moved, waiting on the news))
   held?: string;
 }
@@ -205,17 +207,21 @@ export interface CheckEntry extends Partial<ModelBet> {
   firstAt?: string;
   closedAt?: string;
   checkResult?: { status: 'won' | 'lost' | 'push'; profit: number; void?: boolean } | null;
-  // (why it's a CHECK: 'gap' (the model too far from the book) or 'role' (his role changing: props.mjs
-  // roleChangeOf); an older one without it is the gap's)
-  cause?: 'gap' | 'role';
+  // (why it's a CHECK: 'gap' (the model too far from the book), 'role' (his role changing: props.mjs
+  // roleChangeOf) or 'news' (news on his unit: news.mjs); an older one without it is the gap's)
+  cause?: 'gap' | 'role' | 'news';
   roleReason?: string;
+  // (a shadow (checks.mjs shadowOf): a PASS kept only to grade, never shown, never in the CHECKs' tally; passAs
+  // 'gap' or 'small')
+  hidden?: boolean;
+  passAs?: string;
 }
 
 // The CHECKs at a unit, as bets for the desk's tally: graded ones with what they'd have done, the rest open; the
-// closed ones (their gap closed before the lock: checkSummary's apart) left out
+// closed ones (their gap closed before the lock: checkSummary's apart) and the shadows (hidden: PASSes) left out
 export function checkBets(checks: readonly CheckEntry[] | null | undefined): ModelBet[] {
   return (checks ?? [])
-    .filter((c) => c && c.id && !c.closedAt)
+    .filter((c) => c && c.id && !c.closedAt && !c.hidden)
     .map((c) => {
       const r = c.checkResult;
       return {

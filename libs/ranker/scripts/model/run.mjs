@@ -51,7 +51,11 @@
 //      caps or the CLV) on the model's side, written again while it isn't locked and something material
 //      changed, closed once a run prices its market and the gap guard doesn't skip it, listed in picks.json
 //      apart from the picks (checks: the Bets page shows only the picks), and graded as a bet would be once
-//      final (4c: checkResult). The owner's notes on them (notes.mjs: Firestore's deskNotes,
+//      final (4c: checkResult). Only the ones worth a person's look are shown (checks.mjs shadowOf: a role's at
+//      a model Kelly of CHECK_KELLY or more, the news's); the gap's and a small role's a PASS kept as a shadow
+//      (hidden, passAs), graded the same but out of the page, the board's marks, the research, the notes, the
+//      re-pricing and the tallies but their own (byPassAs); one shown that turns a shadow passed, its price
+//      frozen (checks.mjs upsertCheck). The owner's notes on them (notes.mjs: Firestore's deskNotes,
 //      read with the FIREBASE_SERVICE_ACCOUNT secret, none without it; on a CHECK or a bet) are kept on
 //      the CHECKs (their reason, player, status and when alone: notes.mjs publicNote; the words and the
 //      writer's uid stay in Firestore, never in a served or committed file), and a note's concrete news (a
@@ -113,7 +117,7 @@ import { playerRows } from './playerlogs.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
-import { CHECK_KINDS, atUnit, checkOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
+import { CHECK_KINDS, atUnit, causeOf, checkOf, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
@@ -571,7 +575,8 @@ async function noteInjuries(r) {
   const notes = new Map(r.notes ?? []);
   if (!notes.size) return;
   try {
-    const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult).map((c) => c.id));
+    // (a shadow's never: checks.mjs shadowOf, a PASS no one sees, owes no ask)
+    const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult && !c.hidden).map((c) => c.id));
     const applied = await applyNotes(r.sport, r.live, r.upcoming, notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
     for (const x of applied) {
       (x.from === 'research' ? r.researchApplied : r.notesApplied).add(x.id);
@@ -1179,8 +1184,8 @@ function betGames(r) {
     };
     // (an owner's note on the game: its words on what's bet, checks.mjs and notes.mjs)
     const noted = noteWords(r.live?.get(game.id));
-    // (one skipped for the model's distance from the book alone (gapGuard's kind 'gap'): kept as a CHECK on
-    // the model's own side, not bet (checks.mjs; recordChecks))
+    // (one skipped for the model's distance from the book alone (gapGuard's kind 'gap'): kept on the model's own
+    // side, not bet, a shadow (checks.mjs shadowOf: the gap's a PASS, graded, never shown; recordChecks))
     const checkFor = (key, id, pick, guard) => {
       const s = pick.other ? modelSide([pick, pick.other]) : pick;
       const c = checkOf(
@@ -1216,7 +1221,7 @@ function betGames(r) {
     const skipped = (key, id, guard, pick) => {
       rest(r, id, guard.why);
       if (guard.kind === 'gap' && pick) checkFor(key, id, pick, guard);
-      if (DRY) console.log(`${sport} (dry) skipped ${game.awayAbbr} @ ${game.homeAbbr} ${key}: ${guard.why}${guard.kind === 'gap' ? ' (a CHECK)' : ''}; ${JSON.stringify(seen)}`);
+      if (DRY) console.log(`${sport} (dry) skipped ${game.awayAbbr} @ ${game.homeAbbr} ${key}: ${guard.why}${guard.kind === 'gap' ? ' (a PASS, kept as a shadow)' : ''}; ${JSON.stringify(seen)}`);
     };
     // (the skips first, so a market the guard skips never makes the other give way: oneSide)
     picks = picks.filter((x) => {
@@ -1584,7 +1589,9 @@ async function betProps(r) {
         run.pUnder = (run.pUnder ?? 0) + (x.projection.pOver < 0.5 ? 1 : 0);
         run.muUnder = (run.muUnder ?? 0) + (x.projection.mean < x.prop.line ? 1 : 0);
         if (!CHECK_KINDS.has(x.guard?.kind)) continue;
-        const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind === 'news' ? `news:${x.guard.news}` : x.guard.kind}:${x.side}`;
+        // (a shadow's (checks.mjs shadowOf, as recordChecks keeps it) by its passAs)
+        const sh = shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair });
+        const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind === 'news' ? `news:${x.guard.news}` : x.guard.kind}:${x.side}${sh ? `:pass-${sh.passAs}` : ''}`;
         run.checkSides = { ...(run.checkSides ?? {}), [k]: (run.checkSides?.[k] ?? 0) + 1 };
       }
     } catch (err) {
@@ -1615,7 +1622,7 @@ async function betProps(r) {
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
-  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (CHECKs)', role: 'role changes (CHECKs)', news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
+  if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: 'role changes (CHECKs at a model Kelly of +10 or more, else shadows)', news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
@@ -1688,13 +1695,15 @@ function recordChecks(r) {
   }
   let added = 0;
   let updated = 0;
+  let passed = 0;
   // (the ones bet and closed before this run's recording: the rest, bet or closed by it, resolved so)
   const before = { bet: new Set((r.ledger.checks ?? []).filter((c) => c.bet).map((c) => c.id)), closed: new Set((r.ledger.checks ?? []).filter((c) => c.closedAt).map((c) => c.id)) };
   for (const c of r.checks ?? []) {
     const res = upsertCheck(r.ledger, c, r.now);
     if (res === 'new') added++;
     else if (res === 'updated') updated++;
-    if (DRY && res) console.log(`${sport} (dry) CHECK${c.cause === 'role' ? ` (role: ${c.roleReason})` : c.cause === 'news' ? ` (news: ${c.newsUnit})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
+    else if (res === 'passed') passed++;
+    if (DRY && res) console.log(`${sport} (dry) ${res === 'passed' ? 'CHECK passed (now a shadow)' : c.hidden ? `shadow (${c.passAs})` : 'CHECK'}${c.cause === 'role' ? ` (role: ${c.roleReason})` : c.cause === 'news' ? ` (news: ${c.newsUnit})` : ''} ${c.matchup} ${c.pick} ${c.odds}: model ${c.model} vs ${c.fair} (${c.reason})${c.cause === 'role' && c.projection ? ` [mean ${c.projection.mean}, vac ${c.projection.vac}, vacF ${c.projection.vacF}${c.projection.out ? `, out: ${c.projection.out.join(', ')}` : ''}]` : ''}`);
   }
   // (this run's CHECKs by what drives them: check-learn.mjs diagnose, made with each)
   const diag = {};
@@ -1736,7 +1745,7 @@ function recordChecks(r) {
     c.note = kept;
     noted++;
   }
-  if (added || updated || became || closed || noted) console.log(`${sport}: CHECKs (too far from the market to bet, or a role changing, kept to learn from): ${added} new, ${updated} written again${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
+  if (added || updated || passed || became || closed || noted) console.log(`${sport}: CHECKs and shadows (a guard's skip kept to learn from; checks.mjs shadowOf): ${added} new (this run's: ${(r.checks ?? []).filter((c) => !c.hidden).length} shown, ${(r.checks ?? []).filter((c) => c.hidden).length} shadows), ${updated} written again${passed ? `, ${passed} passed (shown, now shadows: their price frozen)` : ''}${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
 }
 
 // (the graded CHECKs' learning, check-learn.mjs: by cause, and its ranked recommendations logged; a failure

@@ -131,7 +131,8 @@ test('the hooks: a bet missing its pick or its price never prints a missing valu
   const far = { ...k.bet, projection: { ...k.bet.projection, mean: 2, pOver: undefined } };
   assert.match(plainOf(factsOf(far, { game: k.game, sib: k.sib, state: STATE })).reason, /so the over 8\.5 is a bet on the price, not the likelier result/);
   const near = { ...k.bet, projection: { ...k.bet.projection, mean: 8.2, pOver: undefined } };
-  assert.match(plainOf(factsOf(near, { game: k.game, sib: k.sib, state: STATE })).reason, /projects right around the line \(8\.2\)/);
+  // (near its line: two decimals (fmt.near), so 8.2 against 8.5 reads 8.20)
+  assert.match(plainOf(factsOf(near, { game: k.game, sib: k.sib, state: STATE })).reason, /projects right around the line \(8\.20\)/);
   // (a CHECK was never bet: it would be a play on the price)
   const chk = { ...far, intent: 'check', units: 0 };
   const said = plainOf(factsOf(chk, { game: k.game, sib: k.sib, state: STATE })).reason;
@@ -346,10 +347,11 @@ test("a CHECK's write-up: the disagreement and its question in place of the pric
   const sheet = factsOf(check, { game, sib, state: STATE });
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /^Under 23\.5 saves for Mackenzie Blackwood/);
-  assert.match(reason, /Not bet: the model makes the under 70% and DraftKings' no-vig price 48%, a 21\.6-point gap, past the 15 points the desk allows, so it is kept as a CHECK\./);
+  assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet on the model's own number \(the under 70% against DraftKings' no-vig 48%\)/);
+  assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the model missing something than value\./);
   assert.match(reason, /The question: is Mackenzie Blackwood confirmed in net/);
   assert.doesNotMatch(reason, /We make/);
-  assert.match(risk, /^A gap that size is more often news/);
+  assert.match(risk, /^A gap that size has more often been the model missing something/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
 });
 

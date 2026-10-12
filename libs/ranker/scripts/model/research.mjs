@@ -248,7 +248,8 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   const logged = (budget?.list?.() ?? []).filter((e) => e.what === 'check-research' && e.sport === sport && e.id);
   const tries = new Map();
   for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
-  const open = (c) => c && !c.checkResult && !c.closedAt && !c.research;
+  // (a shadow (checks.mjs shadowOf: a PASS kept to grade) never: no one sees it, so nothing is spent on it)
+  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.research;
   for (const c of checks) {
     const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object');
     if (kept) out.set(c.id, kept.finding);
