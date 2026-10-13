@@ -5,7 +5,9 @@
 // into them and the desk learns whether they'd have won.
 //
 //   cause    why it's a CHECK: 'gap', 'role' or 'news' (an older one without it, the gap's), a role's sub-reason in
-//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line, depth), the
+//            roleReason (the NFL's backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line,
+//            depth; the NBA's, NHL's and MLB's far line with its cause, props.mjs lineAlarmOf: line-questionable,
+//            line-goalie, line-lineup, line-rest, line-back, line-pitch-count, line-teammates), the
 //            news's unit in newsUnit (a prop's: news.mjs, his unit's play-caller, coordinator or head coach
 //            changed, or a benching, either side; the headline its reason); checkSummary tallies them
 //            apart, so the gap's hit rate stays the gap's
@@ -146,7 +148,7 @@ export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= RE
 export const TRIM_AFTER = 3 * 24 * 3600e3;
 
 // (the guards whose skip is kept as a CHECK: the gap (desk.mjs gapGuard, props.mjs), a role changing (an NFL
-// prop's: props.mjs roleChangeOf) and the news on his unit (a prop's: news.mjs); a CHECK's cause, an older
+// prop's: props.mjs roleChangeOf; another sport's far line with its cause: lineAlarmOf) and the news on his unit (a prop's: news.mjs); a CHECK's cause, an older
 // one's the gap)
 export const CHECK_KINDS = new Set(['gap', 'role', 'news']);
 export const causeOf = (guard) => (guard?.kind === 'role' ? 'role' : guard?.kind === 'news' ? 'news' : 'gap');

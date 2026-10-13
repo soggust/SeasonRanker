@@ -638,6 +638,14 @@ const ROLE_WORDS = {
   'part-time': 'he is a part-timer with a regular at his position out',
   line: 'the line sits far from his projection, the market reading a role the model has not seen',
   depth: "the depth chart ranks him differently than the model's role from his season's work does",
+  // (outside the NFL: a far line with a cause known before the game, props.mjs lineAlarmOf)
+  'line-questionable': 'he is questionable and the line sits far below his projection, the market reading a minutes cap or an early exit',
+  'line-goalie': 'he is expected in goal but not confirmed and the line sits far below his projection, the market reading the other goalie starting',
+  'line-lineup': 'his lineup is not posted and the line sits far below his projection, the market reading a rest day or a lower spot',
+  'line-rest': "it is his team's second night of a back-to-back and the line sits far below his projection, the market reading a rest night or a minutes cap",
+  'line-back': 'teammates are back from an absence that fed his numbers and the line sits far below his projection, the market reading a smaller role',
+  'line-pitch-count': 'his recent starts ran short and the line sits far below his projection, the market reading an opener, a bullpen game or a pitch count',
+  'line-teammates': 'teammates are out and the line sits far above his projection, the market reading a bigger role',
 };
 
 // (a CHECK's in place of the price: led by the model's own Kelly ("Would be a +26.80 Kelly bet on the model's

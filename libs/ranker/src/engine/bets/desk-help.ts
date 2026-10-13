@@ -89,4 +89,6 @@ export const DESK_HELP: Record<string, string> = {
   selfC16: "Ops: how old the model files are with bets waiting to be graded, The Odds API's credits left, any source down, and a week with games but no bets",
   selfC17: "The CHECKs by what drove their gap: each cause's hit rate against its break-even and the ranked advice. A confirmed blind spot (the market right) is a flag: its fix is named; a guard that can loosen is recorded, never applied by the desk",
   selfC18: "The owner's notes on CHECKs by reason, and how those CHECKs did: for tuning the gap",
+  selfC19: "Every graded bet and CHECK by how its line had moved when it was bet (against its side, with it, unmoved) and by how long before the start: each group's record against the book's own chance and its closing-line value. A watch says to cut the moved-against bets or bet earlier or later; never applied",
+  selfC20: "Every graded prop at the book's price by how far the line sits from the projection (the mean its price implies over the model's). If the props bet against a far line do worse against the book than the near ones, the far line alone is news (a PASS); if better, the line alarm's CHECKs could be bet; never applied",
 };

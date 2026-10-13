@@ -764,6 +764,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // (why a CHECK isn't bet, in a few words: its cause)
   checkCauseText(r: BetRow): string {
+    // (outside the NFL a role CHECK is a far line with its cause (props.mjs lineAlarmOf: line-rest, line-goalie...))
+    if (r.checkCause === 'role' && /^line-/.test(r.roleReason ?? '')) return `The line reads news the model hasn't (${r.roleReason!.slice(5)})`;
     if (r.checkCause === 'role') return `His role is changing${r.roleReason ? ` (${r.roleReason})` : ''}`;
     if (r.checkCause === 'news') return `News on his team's ${r.newsUnit ?? 'unit'}`;
     return 'Too far from the market';

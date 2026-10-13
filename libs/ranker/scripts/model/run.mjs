@@ -85,6 +85,10 @@
 //      flags its team's unit for its next 2 games, an owner's note with no player (reason news) its team for
 //      the game (notes.mjs teamNotes): the unit's props CHECKs either side (cause 'news', the headline the
 //      reason), the game's lines at the minimum stake, an open bet on it priced again (2b: teamNews)
+//   6d. the line log (linelog.mjs): every line the run saw (ESPN's game lines for every coming game, The Odds
+//      API's where bought, every prop on a board it read, the closing boards captureClose reads), each market's
+//      row appended only when it's new or its line or a price changed, to .cache/model/lines (a gzip member a
+//      run, a month's file a sport): the lines' history for the fits to come. --dry counts them, writes nothing
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -126,6 +130,7 @@ import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
 import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
+import { gameRows, logLines, propRows } from './linelog.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -255,11 +260,20 @@ async function runSport(sport) {
   await liveLines(r);
   betGames(r);
   await betProps(r);
+  logTheLines(r);
   placeBets(r);
   recordChecks(r);
   writePicks(r);
   writeBoard(r);
   saveState(r);
+}
+
+// The line log (linelog.mjs): every line this run saw, the ones new against the last logged appended to the
+// cache's month file; --dry counts them and writes nothing
+function logTheLines(r) {
+  const starts = new Map([...(r.games?.values?.() ?? [])].map((g) => [String(g.id), Date.parse(g.date)]));
+  const n = logLines(r.sport, r.lineRows ?? [], { now: r.now.getTime(), starts, dry: DRY });
+  if (n !== null) console.log(`${r.sport}: the line log ${n} new of ${(r.lineRows ?? []).length} seen${DRY ? ' (dry: not written)' : ''}`);
 }
 
 // The league's teams' colors for the desk (ESPN's team list, which a browser can't ask: it sends no CORS
@@ -378,7 +392,11 @@ async function loadHistory(r) {
       keep(g);
       const lines = linesOf(e);
       // (not one called off: postponed, suspended or canceled, its lines are stale and its bets would be void)
-      if (!g.final && !g.off && lines && Date.parse(g.date) > now.getTime() + 5 * 60e3) upcoming.push({ game: g, lines, event: e });
+      if (!g.final && !g.off && lines && Date.parse(g.date) > now.getTime() + 5 * 60e3) {
+        upcoming.push({ game: g, lines, event: e });
+        // (the line log: ESPN's board's lines for every coming game, every run (linelog.mjs))
+        (r.lineRows ??= []).push(...gameRows(g.id, lines, 'e'));
+      }
     }
   }
   // (a game bet on, past its start, that none of those days showed: moved off its day, postponed; asked by its
@@ -448,6 +466,7 @@ async function liveLines(r) {
       fair: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.fair])),
       fairSource: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.sharp !== null ? 'pinnacle' : BOOK])),
     };
+    (r.lineRows ??= []).push(...gameRows(u.game.id, u.lines, 'o'));
     matched++;
   }
   r.linesSource = `the odds api (${matched} of ${r.upcoming.length} games)`;
@@ -849,6 +868,8 @@ async function captureClose(r) {
     try {
       const lines = mine.some((b) => b.market !== 'prop') ? await closingLines(cfg.league, id) : null;
       const props = mine.some((b) => b.market === 'prop') && game ? await board(sport, cfg.league, game) : [];
+      // (the line log: the board once the game's started, its closing lines (linelog.mjs))
+      (r.lineRows ??= []).push(...propRows(id, props));
       for (const bet of mine) {
         let close = bet.market === 'prop' ? propCloseOf(bet, props) : closeOf(bet, lines);
         if (close) close.source = 'close';
@@ -1486,6 +1507,8 @@ async function betProps(r) {
         continue;
       }
       let board_ = await board(sport, cfg.league, game);
+      // (the line log: every prop on the board as ESPN shows it, and The Odds API's where it's asked below)
+      (r.lineRows ??= []).push(...propRows(game.id, board_));
       // (its open prop CHECKs (checks.mjs openCheck): priced from their stored prices where nothing fresher
       // comes, so a game whose board shows none still has them)
       const openChecks = openChecksOf(game);
@@ -1520,6 +1543,7 @@ async function betProps(r) {
           delete asked[`${game.id}:owed`];
           write(PROPS_ASKED, asked);
           board_ = withApiPrices(board_, api);
+          r.lineRows.push(...propRows(game.id, board_).filter((x) => x.src === 'o'));
           run.api = (run.api ?? 0) + 1;
           // (each open prop's line and price as the stand-in for its close: captureClose takes it within 3
           // hours of the start)
