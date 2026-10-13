@@ -63,9 +63,9 @@ test('isolateRows after Teams Included: one team\'s rows sorted, places among th
 });
 
 // A tab's default list as the grid ranks it, and its reader
-function grid(engine, position, combineStats = false) {
+function grid(engine, position, combineStats = false, more = {}) {
   const { TabRanker, StatReader, SKILL_STATS, SKILL_UNITS, skillGroups, presetWeights, emptyIn, CURRENT_SEASON, DEFAULT_SETTINGS } = engine;
-  const settings = { ...DEFAULT_SETTINGS, combineStats };
+  const settings = { ...DEFAULT_SETTINGS, combineStats, ...more };
   const table = { position, stats: SKILL_STATS[position], groups: skillGroups(position), hidden: {}, weights: presetWeights(position, 'default') };
   const positions = {
     settings,
@@ -123,3 +123,36 @@ for (const [sport, position, combine] of [['nfl', 'QB', false], ['nfl', 'RB', tr
     assert.deepEqual(names(list), order);
   });
 }
+
+// Show Ranks: a column reads as places ("#3"), which go by the per-game rate, so the sort goes by it too (a
+// season total, Stat Base = Season, put a player with fewer games out of place: #1, #4, #2...)
+test('shownValue: the rate under Show Ranks, the shown value otherwise', async () => {
+  const { isolateRows, shownValue } = await loadEngine('nfl', { entry });
+  const stat = { key: 'yds' };
+  const a = { name: 'a', total: 1000, games: 10 };
+  const b = { name: 'b', total: 800, games: 4 };
+  const reader = (ranks) => ({ showsRank: () => ranks, value: (r) => r.total, rate: (r) => r.total / r.games });
+  assert.deepEqual(names(isolateRows([a, b], 2, (r) => shownValue(reader(false), r, stat), false).rows), ['a', 'b']);
+  assert.deepEqual(names(isolateRows([a, b], 2, (r) => shownValue(reader(true), r, stat), false).rows), ['b', 'a']);
+});
+
+test('nfl QB, Show Ranks on a season basis: every column sorted reads #1, #2, #3... down', async () => {
+  const engine = await loadEngine('nfl', { entry });
+  const { isolateRows, lowerIsBetter, shownValue } = engine;
+  const { ranker, reader, list } = grid(engine, 'QB', false, { showRanks: true, statBasis: 'season' });
+  const stats = ranker.shownGroups(reader, 'QB').groups.flatMap((g) => g.stats);
+  let ranked = 0;
+  let wouldMiss = 0;
+  for (const stat of stats) {
+    if (!reader.hasValues(stat) || !reader.showsRank(stat)) continue;
+    const place = (r) => reader.listRank(r, stat)?.rank ?? Infinity;
+    const inOrder = (rows) => rows.every((r, i) => !i || place(rows[i - 1]) <= place(r));
+    const out = isolateRows(list, list.length, (r) => shownValue(reader, r, stat), lowerIsBetter(stat));
+    assert.ok(inOrder(out.rows), `${stat.key}: ranks out of order`);
+    // (by the season total instead: what went wrong before)
+    if (!inOrder(isolateRows(list, list.length, (r) => reader.value(r, stat), lowerIsBetter(stat)).rows)) wouldMiss++;
+    ranked++;
+  }
+  assert.ok(ranked > 3, 'columns shown as ranks');
+  assert.ok(wouldMiss > 0, 'a volume column whose total and per-game orders differ');
+});

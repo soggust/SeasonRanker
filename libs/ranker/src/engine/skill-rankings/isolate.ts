@@ -46,3 +46,14 @@ export function isolateRows<Row>(
   });
   return { rows: [...top, ...ur].map((entry) => entry.row), places };
 }
+
+// A row's value as its column shows it: with Show Ranks, the place the cell reads ("#3"), which goes by the
+// per-game rate (listRank), so the sort by a season total under it would read #1, #4, #2...; otherwise
+// the value shown
+export function shownValue<Row, Stat>(
+  reader: { showsRank(stat: Stat): boolean; rate(row: Row, stat: Stat): number | null; value(row: Row, stat: Stat): number | null },
+  row: Row,
+  stat: Stat,
+): number | null {
+  return reader.showsRank(stat) ? reader.rate(row, stat) : reader.value(row, stat);
+}

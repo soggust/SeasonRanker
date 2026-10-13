@@ -33,7 +33,7 @@ import { RANK_EVERYONE } from '@ranker/engine/playing-time';
 import { RowGlide } from './row-glide';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
-import { isolateRows, lowerIsBetter } from './isolate';
+import { isolateRows, lowerIsBetter, shownValue } from './isolate';
 import { ListDraft } from '@ranker/engine/account/lists/lists.store';
 import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
@@ -214,7 +214,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     if (this.isolatedKey) {
       this.isolatedKey = null;
       this.isoStat = null;
-      this.isoNote = 'Back to the ranking';
+      this.sayIso('Back to the ranking');
     }
     // A new tab starts scrolled to the top-left of its list
     this.rankingsList?.nativeElement.scrollTo({ top: 0, left: 0 });
@@ -335,11 +335,22 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // (said to screen readers as it starts and ends)
   isoNote = '';
 
+  // (emptied first, then said on the next tick: the same words twice running are still announced)
+  private sayIso(note: string): void {
+    this.isoNote = '';
+    setTimeout(() => (this.isoNote = note));
+  }
+
+  // A column that can be sorted by: one with values this season (a season from before it was kept has none)
+  canIsolate(stat: SkillStat): boolean {
+    return this.reader.hasValues(stat);
+  }
+
   private applyIsolation(): void {
     const stat = this.isolatedKey ? this.shownStat(this.isolatedKey) : null;
     if (this.isolatedKey && !stat) {
       this.isolatedKey = null;
-      this.isoNote = 'Back to the ranking';
+      this.sayIso('Back to the ranking');
     }
     this.isoStat = stat;
     if (!stat) {
@@ -347,7 +358,8 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       this.isoPlaces = null;
       return;
     }
-    const sorted = isolateRows(this.formalRows, this.rankedShown, (row, ur) => (ur ? this.urReader : this.reader).value(row, stat), lowerIsBetter(stat));
+    // (on what the column shows: with Show Ranks, its places, which go by the per-game rate)
+    const sorted = isolateRows(this.formalRows, this.rankedShown, (row, ur) => shownValue(ur ? this.urReader : this.reader, row, stat), lowerIsBetter(stat));
     this.gridRows = sorted.rows;
     this.isoPlaces = sorted.places;
   }
@@ -374,7 +386,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     if (!this.reader.hasValues(stat)) return;
     this.closeWhy();
     this.isolatedKey = stat.key;
-    this.isoNote = `Sorted by ${this.reader.name(stat)} only, ${lowerIsBetter(stat) ? 'lowest' : 'highest'} first. The ranking is unchanged; Escape goes back`;
+    this.sayIso(`Sorted by ${this.reader.name(stat)} only, ${lowerIsBetter(stat) ? 'lowest' : 'highest'} first. The ranking is unchanged; Escape goes back`);
     // (from the top, the best by it in view; the rows glide when the list is there already)
     const list = this.rankingsList?.nativeElement;
     const from = list?.scrollTop ? null : this.glide.measure(list);
@@ -389,7 +401,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     this.closeWhy();
     const from = this.glide.measure(this.rankingsList?.nativeElement);
     this.isolatedKey = null;
-    this.isoNote = 'Back to the ranking';
+    this.sayIso('Back to the ranking');
     this.applyIsolation();
     this.glide.play(() => this.rankingsList?.nativeElement, from);
     if (refocus) this.rankingsList?.nativeElement.focus({ preventScroll: true });
@@ -571,9 +583,11 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   }
 
   // Header hover: the stat written out, plus the list average of what the column shows, and what a click does
-  labelTitle(stat: SkillStat): string {
+  // (can: false, no values to sort by, so no click to offer)
+  labelTitle(stat: SkillStat, can = true): string {
     const name = this.reader.name(stat);
     const avg = this.reader.averageText(stat);
+    if (!can) return avg === null ? name : `${name} (Avg: ${avg})`;
     const click = this.isolatedKey === stat.key ? 'Click to go back to the ranking (Esc)' : 'Click to sort by it alone';
     return `${avg === null ? name : `${name} (Avg: ${avg})`}\n${click}`;
   }

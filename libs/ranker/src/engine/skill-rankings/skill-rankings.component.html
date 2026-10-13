@@ -3,27 +3,27 @@
   @let groups = visibleGroups;
   <!-- The position tabs (from the app), between the button bar and the grid -->
   <ng-content></ng-content>
-  <!-- Isolation (a header clicked): what the rows are sorted by, with an X back to the ranking (phones have
-       no Esc), floating just under the header; and the live region that says it starts and ends -->
-  @if (isoStat; as iso) {
-    <div class="iso-anchor">
-      <div class="iso-chip">
-        <mat-icon class="iso-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
-        <span class="iso-chip-text">Sorted by <b>{{ reader.label(iso) }}</b><span class="iso-chip-hint"> · Esc to clear</span></span>
-        <button type="button" class="iso-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
-          <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
-        </button>
-      </div>
-    </div>
-  }
+  <!-- (isolation: said to screen readers as it starts and ends) -->
   <div class="visually-hidden" role="status" aria-live="polite">{{ isoNote }}</div>
   <ul #rankingsList id="rankings" tabindex="-1" aria-label="Rankings" [class.isolating]="!!isoStat" (scroll)="listMoved()" cdkDropList (cdkDropListDropped)="drop($event)" columnHighlight scrolledSideways>
     <!-- Column headers (stat groups switch on / off with the sidebar eyes) -->
     <li class="player header-row">
       <mat-icon fontIcon="drag_indicator" class="drag-indicator" style="visibility: hidden"></mat-icon>
       <div class="player-info">
-        <!-- One label over the rank and name (the rank tiles, team cards and names read as one column) -->
-        <p class="stat-label header-name">{{ rowHeader }}</p>
+        <!-- One label over the rank and name (the rank tiles, team cards and names read as one column); while
+             isolated, what the rows are sorted by in its place (over the tiles that show the places by it),
+             with an X back to the ranking (phones have no Esc): in the pinned header, so it covers no row -->
+        @if (isoStat; as iso) {
+          <span class="iso-chip">
+            <mat-icon class="iso-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
+            <span class="iso-chip-text"><span class="iso-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="iso-chip-hint"> · Esc to clear</span></span>
+            <button type="button" class="iso-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
+              <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
+            </button>
+          </span>
+        } @else {
+          <p class="stat-label header-name">{{ rowHeader }}</p>
+        }
       </div>
       @for (group of groups; track group.id) {
         <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
@@ -39,29 +39,31 @@
             <div class="box support-box" [style.min-width.em]="group.stats.length * 7.5">
               <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
               @for (stat of group.stats; track stat.key) {
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" role="button" tabindex="0" [class.iso-on]="isolatedKey === stat.key" [attr.aria-pressed]="isolatedKey === stat.key" [attr.aria-label]="isoLabel(stat)" (click)="isolate(stat, $event)" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
+                @let can = canIsolate(stat);
+                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
+                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
                 </div>
               }
             </div>
           } @else {
             @for (stat of group.stats; track stat.key; let first = $first) {
+              @let can = canIsolate(stat);
               @if (stat.format === 'recent') {
-                <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" role="button" tabindex="0" [class.iso-on]="isolatedKey === stat.key" [attr.aria-pressed]="isolatedKey === stat.key" [attr.aria-label]="isoLabel(stat)" (click)="isolate(stat, $event)" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">
+                <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
                   @if (first) {
                     <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
                   }
                   <div class="last-five">
                     <div></div>
-                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
+                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
                   </div>
                 </div>
               } @else {
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" role="button" tabindex="0" [class.iso-on]="isolatedKey === stat.key" [attr.aria-pressed]="isolatedKey === stat.key" [attr.aria-label]="isoLabel(stat)" (click)="isolate(stat, $event)" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">
+                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
                   @if (first) {
                     <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
                   }
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
+                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>
                 </div>
               }
             }

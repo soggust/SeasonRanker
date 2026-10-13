@@ -2199,7 +2199,7 @@ section ul.isolating li.player {
   }
 
   // (a dimmed header still clicks: lit back up under the pointer or the keyboard)
-  &.header-row > .col-group [role="button"]:not(.iso-on):is(:hover, :focus-visible) {
+  &.header-row > .col-group .iso-can:not(.iso-on):is(:hover, :has(.stat-label:focus-visible)) {
     opacity: 0.6;
   }
 
@@ -2230,6 +2230,11 @@ section ul li.player.header-row:hover {
     outline: 2px solid var(--scoreboard-led);
     outline-offset: 2px;
   }
+
+  // (a header that sorts: the pointer says it clicks, its hover still has the stat's name)
+  .iso-can .stat-label {
+    cursor: pointer;
+  }
 }
 
 // A row's place by the stat: white digits in a dashed edge of the board's light (solid on hover, as any tile)
@@ -2245,15 +2250,8 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
   }
 }
 
-// The chip: what it's sorted by and an X back (phones have no Esc), floating just under the header at
-// the board's right (a spot of no height before the list, so nothing moves)
-.iso-anchor {
-  align-self: stretch;
-  height: 0;
-  position: relative;
-  z-index: 6;
-}
-
+// The chip: what it's sorted by and an X back (phones have no Esc), in the header's name cell in place of
+// its label (over the rank tiles showing the places by it): in the pinned header, so it covers no row
 .iso-chip {
   align-items: center;
   @include v.scoreboard-panel(999px, 0 4px 14px rgba(0, 0, 0, 0.55));
@@ -2261,13 +2259,15 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
   color: #eee;
   display: flex;
   font-family: v.$font-base;
+  flex-direction: row;
   font-size: 12px;
   gap: 4px;
-  max-width: calc(100% - 28px);
-  padding: 2px 2px 2px 9px;
-  position: absolute;
-  right: 16px;
-  top: 50px;
+  height: 24px;
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0 2px 0 9px;
+  pointer-events: auto;
   white-space: nowrap;
 
   @media (prefers-reduced-motion: no-preference) {
@@ -2287,6 +2287,16 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
 .iso-chip-text {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+// (scrolled sideways: kept to the pinned strip, the stats passing under the rest; just the stat's name)
+section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
+  max-width: 11em;
+
+  .iso-chip-by,
+  .iso-chip-hint {
+    display: none;
+  }
 }
 
 // (touch: no Esc to mention)
@@ -2322,10 +2332,15 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
     outline: none;
   }
 
-  // (touch: a thumb-sized target around the small button)
+  // (touch: a thumb-sized target around the small button, past the chip's edge)
   @media (pointer: coarse) {
-    height: 32px;
-    width: 32px;
+    position: relative;
+
+    &::after {
+      content: "";
+      inset: -4px;
+      position: absolute;
+    }
   }
 }
 
