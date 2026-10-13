@@ -86,7 +86,8 @@
 //      the game (notes.mjs teamNotes): the unit's props CHECKs either side (cause 'news', the headline the
 //      reason), the game's lines at the minimum stake, an open bet on it priced again (2b: teamNews)
 //   6d. the line log (linelog.mjs): every line the run saw (ESPN's game lines for every coming game, The Odds
-//      API's where bought, every prop on a board it read, the closing boards captureClose reads), each market's
+//      API's where bought, every prop on a board it read, the closing boards and lines captureClose reads after the
+//      start, src 'c'), each market's
 //      row appended only when it's new or its line or a price changed, to .cache/model/lines (a gzip member a
 //      run, a month's file a sport): the lines' history for the fits to come. --dry counts them, writes nothing
 //
@@ -130,7 +131,7 @@ import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
 import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
-import { gameRows, logLines, propRows } from './linelog.mjs';
+import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -269,10 +270,19 @@ async function runSport(sport) {
 }
 
 // The line log (linelog.mjs): every line this run saw, the ones new against the last logged appended to the
-// cache's month file; --dry counts them and writes nothing
+// cache's month file; --dry counts them and writes nothing. The month it started kept in the state (lineLog.since):
+// that month's file gone from the cache (lostSince) is warned of, noted (lineLog.lost) and the months started over
 function logTheLines(r) {
   const starts = new Map([...(r.games?.values?.() ?? [])].map((g) => [String(g.id), Date.parse(g.date)]));
+  const log = r.state?.lineLog ?? null;
+  const lost = lostSince(r.sport, log?.since);
+  if (lost) console.warn(`::warning::${r.sport}: the line log's history since ${log.since} isn't in the cache (missed or evicted): logged again from this run, the months before lost`);
   const n = logLines(r.sport, r.lineRows ?? [], { now: r.now.getTime(), starts, dry: DRY });
+  if (!DRY && r.state && n !== null && (lost || (!log?.since && n > 0))) {
+    const month = r.now.toISOString().slice(0, 7);
+    // (a run that logged nothing after the loss leaves since unset: the next to log sets it, no warning again)
+    r.state.lineLog = { ...(n > 0 ? { since: month } : {}), ...(lost ? { lost: [...(log.lost ?? []), { at: r.now.toISOString(), since: log.since }].slice(-10) } : log?.lost ? { lost: log.lost } : {}) };
+  }
   if (n !== null) console.log(`${r.sport}: the line log ${n} new of ${(r.lineRows ?? []).length} seen${DRY ? ' (dry: not written)' : ''}`);
 }
 
@@ -868,8 +878,9 @@ async function captureClose(r) {
     try {
       const lines = mine.some((b) => b.market !== 'prop') ? await closingLines(cfg.league, id) : null;
       const props = mine.some((b) => b.market === 'prop') && game ? await board(sport, cfg.league, game) : [];
-      // (the line log: the board once the game's started, its closing lines (linelog.mjs))
-      (r.lineRows ??= []).push(...propRows(id, props));
+      // (the line log: the board and the game's lines read once the game's started, their own src 'c' (linelog.mjs):
+      // a fit reading the log for a pre-game line drops them, as it drops any row from the start on)
+      (r.lineRows ??= []).push(...propRows(id, props, 'c'), ...gameRows(id, lines, 'c'));
       for (const bet of mine) {
         let close = bet.market === 'prop' ? propCloseOf(bet, props) : closeOf(bet, lines);
         if (close) close.source = 'close';

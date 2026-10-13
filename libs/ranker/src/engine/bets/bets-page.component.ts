@@ -256,6 +256,17 @@ function pickKey(sport: string, matchup: string, kind: BetKind, pick: string): s
   return `${game}|${kind}|${pick.toLowerCase()}`;
 }
 
+// (a line alarm's cause in a few plain words: props.mjs lineAlarmOf's keys)
+const LINE_CAUSE: Record<string, string> = {
+  'line-questionable': 'he is questionable',
+  'line-goalie': 'an unconfirmed goalie',
+  'line-lineup': 'lineup not posted',
+  'line-rest': 'a back-to-back',
+  'line-back': 'teammates back',
+  'line-pitch-count': 'a short pitch count',
+  'line-teammates': 'teammates out',
+};
+
 // (the sports the bettor covers, as the site names them: MMA has no picks or team colors to ask for)
 const BET_SPORTS = SPORT_LINKS.filter((sport) => SPORTS.includes(sport.id));
 
@@ -764,8 +775,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // (why a CHECK isn't bet, in a few words: its cause)
   checkCauseText(r: BetRow): string {
-    // (outside the NFL a role CHECK is a far line with its cause (props.mjs lineAlarmOf: line-rest, line-goalie...))
-    if (r.checkCause === 'role' && /^line-/.test(r.roleReason ?? '')) return `The line reads news the model hasn't (${r.roleReason!.slice(5)})`;
+    // (outside the NFL a role CHECK of 2026-10-13 is a far line with its cause (props.mjs lineAlarmOf: line-rest,
+    // line-goalie...), its cause in plain words)
+    if (r.checkCause === 'role' && /^line-/.test(r.roleReason ?? '')) return `The line reads news the model hasn't (${LINE_CAUSE[r.roleReason!] ?? 'a role change'})`;
     if (r.checkCause === 'role') return `His role is changing${r.roleReason ? ` (${r.roleReason})` : ''}`;
     if (r.checkCause === 'news') return `News on his team's ${r.newsUnit ?? 'unit'}`;
     return 'Too far from the market';

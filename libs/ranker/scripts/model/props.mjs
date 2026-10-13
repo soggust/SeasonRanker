@@ -39,11 +39,12 @@
 //   a regular at his position out and a big cut of his work, a jump in his snaps, a part-timer with a regular out, a line far
 //   from his projection at the book's own price, the depth chart against his role) is a CHECK too (kind 'role', its sub-reason role), whichever
 //   side the model takes, when it's the role alone (one the long-shot, moved or unpriced skips take too, skipped):
-//   the book reprices a role on the news, the model on the logs. Outside the NFL the same CHECK on the side
-//   against the market's reading where the line at the book's price sits far from his projection and something
-//   known before the game explains it that way (lineAlarmOf: questionable, an unconfirmed goalie, an unposted
-//   lineup, a back-to-back's second night, a starter's short leash, teammates out or back); a far line alone
-//   isn't one (measured: no worse than the rest). Ahead of the role, a player whose unit (his
+//   the book reprices a role on the news, the model on the logs. Outside the NFL a line at the book's price far
+//   from his projection with something known before the game, and unsized by the fit, that explains it that way
+//   (lineAlarmOf: questionable, an unconfirmed goalie, an unposted lineup, an NBA starter's back-to-back, an MLB
+//   starter's pitch count) is only a label (projection.lineAlarm) on the side against the market's reading, bet
+//   or not by the other guards, till selfcheck.mjs C20 says its rows do worse than the book; a far line alone
+//   nothing (measured: no worse than the rest). Ahead of the role, a player whose unit (his
 //   team's offense or defense, or the whole team) the news flags (news.mjs: a change of play-caller,
 //   coordinator or head coach, a benching, in the team's next games) is a CHECK either side (kind 'news', the
 //   headline its reason), on the same terms; and a line with no price that -110 can't be
@@ -182,56 +183,74 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
 
 // The book's line as a news alarm outside the NFL (the NBA, NHL, MLB; null: none). A line whose price puts him
 // past ROLE.ratioHi or under ROLE.ratioLo times the model's projection (impliedMean, at the book's own price) is
-// a role CHECK (kind 'role', its sub-reason the cause's key) only where something known before the game explains
-// the market's reading that way, the late news the logs can't show yet:
+// labeled (projection.lineAlarm: its cause's key and words) on the side against the market's reading only where
+// something known before the game, and not sized by the fit, explains that reading, the late news the logs can't
+// show yet:
 //   low line (under ROLE.ratioLo)
 //     line-questionable  he's questionable, day-to-day or a game-time call (statusOf): a minutes cap, an early exit
 //     line-goalie        an NHL goalie expected, not confirmed: the other one may start
 //     line-lineup        an MLB batter whose lineup isn't posted: a rest day, a lower spot
-//     line-rest          his team's second night of a back-to-back (the NBA, NHL: info.b2b): a rest night, a cap
-//     line-back          teammates back from an absence that fed his recent numbers (the work missing then over
-//                        now by VAC_SWING or more): a smaller role
-//     line-pitch-count   an MLB starter's short leash: his last two starts' pitches under SHORT_LEASH of his
-//                        usual, his last starts all under OPENER_PITCHES, or a long rest or late debut (restGuard):
-//                        an opener, a bullpen game, a pitch count
-//   high line (over ROLE.ratioHi)
-//     line-teammates     teammates out (the work missing now over then by VAC_SWING or more): a bigger role
-// Its safe side the one the market's reading points to (a low line's under, a high one's over), as the NFL's line
-// reason's; only the other is a CHECK, and the CHECK rule (checks.mjs shadowOf) shows it only at a model Kelly of
-// CHECK_KELLY or more, a shadow ('small') under it. A far line with no cause seen is left as it was, bet or not by
-// the other guards (the gap's PASS where the chances are past GAP.prop): measured 2026-10-13 on every graded
-// prop bet at the book's price (its implied mean from the bet's line, fair chance and dispersion: C20's), the
-// NHL's lines far over the model with the model's side against them went 31 bets 4.8 points over the book's fair
-// chance (58.1% won against 53.3%, z 0.55), far under 12 bets 5.7 under (z -0.41), the near ones 654 bets 3.9
-// under (z -2.02): no worse than the rest, so the line alone isn't the news (MLB's 43 all near, the NBA's none
-// yet; the NFL's far line alone is already a role CHECK, roleChangeOf's line).
+//     line-rest          an NBA starter's (roleKnown 'S') second night of a back-to-back, where b2bS isn't kept: a
+//                        rest night, a cap. Not a bench player's (the fit's b2bB: his rows ran high on the second
+//                        night, the other way) nor the NHL's (a confirmed goalie isn't resting, an unconfirmed one is
+//                        line-goalie's; saves on his own side's back-to-back measured +3.8%, CTX b2b kept there)
+//     line-pitch-count   an MLB starter's pitch count: his last two starts both under OPENER_PITCHES (an opener, a
+//                        bullpen game) or their pitches under SHORT_LEASH of his usual, where the fit's leash isn't
+//                        kept (c_leash sizes it); a long rest where restSp isn't kept; a late debut (restGuard)
+//   high line (over ROLE.ratioHi): none. Teammates out (or back, a low line) aren't a cause: where the fit sizes
+//   the work missing (vc kept on a vacated stat) the projection has it, and where it doesn't the unsized
+//   vacancy's skip (priceProps) takes the prop first (the line-teammates and line-back of 2026-10-13, dropped)
+// Only a label, never a cut (the review of 2026-10-13): with the model's side always the one against the market's
+// reading, the alarm as a CHECK took every far line with its cause off the bets, and the caused rows were never
+// measured (old bets keep no status, rest or leash; the far group as a whole ran no worse than the near). The
+// labeled side is bet or not by the other guards as before, and selfcheck.mjs C20 reads the labeled rows apart:
+// a watch past z 2.5 with 60 graded says promote it to a role CHECK. Its safe side (safe) the market's reading's
+// (a low line's under); a pick on it carries no label.
+// Low counts (outside the NFL a 0.5 line most of all, the NHL's points: at a mean of 0.3 a ratio of 1.6 is only
+// 26% to 38% over) aren't read: the line ALARM_MIN or more and the larger of the two means ALARM_MIN or more
+// (farOf, C20's band too). A far line with no cause seen is left as it was, bet or not by the other guards (the
+// gap's PASS where the chances are past GAP.prop): measured 2026-10-13 on every graded prop bet at the book's
+// price (its implied mean from the bet's line, fair chance and dispersion: C20's), the NHL's lines far over the
+// model with the model's side against them went 31 bets 4.8 points over the book's fair chance (58.1% won against
+// 53.3%, z 0.55), far under 12 bets 5.7 under (z -0.41), the near ones 654 bets 3.9 under (z -2.02): no worse than
+// the rest, so the line alone isn't the news (MLB's 43 all near, the NBA's none yet; the NFL's far line alone is
+// already a role CHECK, roleChangeOf's line). With the floor (2026-10-13, origin/master's ledgers, C20): the NHL's
+// far over with the model against 16 bets 7.7 points over the book's chance (z 0.62), far under 3 (+22.9), the
+// near 697 3.9 under; MLB's 43 and the NFL's 72 of 73 near. None of the far ones can be split by cause (the
+// ledgers keep no status, rest or leash): the label starts that count.
 // Every priced prop's ratio is kept (projection.lineRatio) and selfcheck.mjs C20 keeps measuring it. Inputs
-// missing (no price: no implied mean; no status, rest or leash read) give no cause: the old behavior
-export const VAC_SWING = 0.25;
+// missing (no price: no implied mean; no status, role, rest or leash read) give no cause: no label
 export const SHORT_LEASH = Math.log(0.85);
 export const OPENER_PITCHES = 60;
-export function lineAlarmOf({ sport, name = null, mu = null, implied = null, status = null, b2b = 0, vacNow = 0, vacThen = 0, pitcher = false, leash = null, rest = null, pitches = null }) {
+export const ALARM_MIN = 1.5;
+// (a far line's band outside the NFL ('hi', 'lo' or null): the ratio past ROLE's, at a count from ALARM_MIN)
+export function farOf(ratio, mu, line) {
+  if (!Number.isFinite(ratio) || !(mu > 0) || !Number.isFinite(line) || line < ALARM_MIN || Math.max(mu, ratio * mu) < ALARM_MIN) return null;
+  return ratio > ROLE.ratioHi ? 'hi' : ratio < ROLE.ratioLo ? 'lo' : null;
+}
+export function lineAlarmOf({ sport, name = null, mu = null, implied = null, line = null, status = null, b2b = 0, roleKnown = null, b2bSized = false, pitcher = false, leash = null, leashSized = false, rest = null, restSized = false, pitches = null }) {
   if (sport === 'nfl' || !Number.isFinite(implied) || !(mu > 0)) return null;
   const ratio = implied / mu;
-  const dir = ratio > ROLE.ratioHi ? 'high' : ratio < ROLE.ratioLo ? 'low' : null;
-  if (!dir) return null;
+  if (farOf(ratio, mu, line) !== 'lo') return null;
   const who = name || 'he';
   const st = String(status?.why ?? '');
   let cause = null;
-  if (dir === 'high') {
-    if (vacNow - vacThen >= VAC_SWING) cause = { key: 'line-teammates', fact: 'teammates out', reads: 'a bigger role' };
-  } else if (Q_STATUS.test(st)) cause = { key: 'line-questionable', fact: st || `${who} questionable`, reads: 'a minutes cap or an early exit' };
+  if (Q_STATUS.test(st)) cause = { key: 'line-questionable', fact: st || `${who} questionable`, reads: 'a minutes cap or an early exit' };
   else if (sport === 'nhl' && /expected, not confirmed/.test(st)) cause = { key: 'line-goalie', fact: `${who} expected, not confirmed`, reads: 'the other goalie starting' };
   else if (sport === 'mlb' && !pitcher && /lineup not posted/.test(st)) cause = { key: 'line-lineup', fact: 'his lineup not posted', reads: 'a rest day or a lower spot' };
-  else if ((sport === 'nba' || sport === 'nhl') && b2b > 0) cause = { key: 'line-rest', fact: "his team's second night of a back-to-back", reads: 'a rest night or a minutes cap' };
-  else if (vacThen - vacNow >= VAC_SWING) cause = { key: 'line-back', fact: 'teammates back from an absence that fed his numbers', reads: 'a smaller role' };
+  else if (sport === 'nba' && b2b > 0 && roleKnown === 'S' && !b2bSized) cause = { key: 'line-rest', fact: "a starter on his team's second night of a back-to-back", reads: 'a rest night or a minutes cap' };
   else if (sport === 'mlb' && pitcher) {
-    const short = Number.isFinite(leash) && leash <= SHORT_LEASH;
-    const opener = Array.isArray(pitches) && pitches.filter(Number.isFinite).length >= 1 && pitches.filter(Number.isFinite).every((x) => x < OPENER_PITCHES);
-    if (short || opener || rest === 'long' || rest === 'late') cause = opener ? { key: 'line-pitch-count', fact: `his last starts under ${OPENER_PITCHES} pitches`, reads: 'an opener or a bullpen game' } : { key: 'line-pitch-count', fact: short ? 'his last two starts short of his usual pitches' : `${who} back from a long rest`, reads: 'a pitch count' };
+    // (his last two starts, both read: one cut short alone (rain, a comebacker, an early hook) isn't an opener)
+    const last = Array.isArray(pitches) ? pitches.slice(-2) : [];
+    const opener = !leashSized && last.length >= 2 && last.every((x) => Number.isFinite(x) && x < OPENER_PITCHES);
+    const short = !leashSized && Number.isFinite(leash) && leash <= SHORT_LEASH;
+    const long = rest === 'long' && !restSized;
+    if (opener) cause = { key: 'line-pitch-count', fact: `his last two starts under ${OPENER_PITCHES} pitches`, reads: 'an opener or a bullpen game' };
+    else if (short) cause = { key: 'line-pitch-count', fact: 'his last two starts short of his usual pitches', reads: 'a pitch count' };
+    else if (long || rest === 'late') cause = { key: 'line-pitch-count', fact: long ? `${who} back from a long rest` : `${who}'s first start of the season, late`, reads: 'a pitch count' };
   }
   if (!cause) return null;
-  return { key: cause.key, safe: dir === 'high' ? 'over' : 'under', ratio: round(ratio, 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading ${cause.reads}, news the model hasn't seen` };
+  return { key: cause.key, safe: 'under', ratio: round(ratio, 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading ${cause.reads}, which the projection doesn't size` };
 }
 
 // The NFL's depth chart as a pre-game role input, live only: each team's chart now (the site's StaticData/depth,
@@ -1190,24 +1209,31 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // (the depth chart against the model's role (depthRoleOf, live only: the site's charts, live.depth), where
       // nothing above said his role's changing)
       roleChange ??= depthRoleOf({ pos: row.pos, pid, team: row.home ? game.homeAbbr : row.home === false ? game.awayAbbr : null, stat: prop.stat.key, depth: live?.depth, missOf: missOf(0), role: p.role, at: game.date });
-    } else if (sport !== 'nfl') {
-      // (the NBA, NHL, MLB: the book's line far from the projection with a cause known before the game that
-      // explains it (lineAlarmOf): a role CHECK on the model's side against the market's reading, as the NFL's)
-      roleChange = lineAlarmOf({
-        sport,
-        name: a.name,
-        mu,
-        implied: impliedNow,
-        status,
-        b2b: info?.b2b?.[home ? 0 : 1] ?? 0,
-        vacNow: prop.stat.vacated ? (p.vac ?? 0) : 0,
-        vacThen: prop.stat.vacated ? (p.vacHist ?? 0) : 0,
-        pitcher: !!prop.stat.pitcher,
-        leash: row.leash ?? null,
-        rest: sport === 'mlb' && prop.stat.pitcher ? restGuard(row.restDays, row.debut, game.date) : null,
-        pitches: row.pitches ?? null,
-      });
     }
+    // (the NBA, NHL, MLB: the book's line far from the projection with a cause known before the game, unsized by
+    // the fit, that explains it (lineAlarmOf): a label on the side against the market's reading, never a cut
+    // (selfcheck.mjs C20 measures the labeled rows))
+    const keptCtx = (k) => ctxKeysOf.includes(k) && !!f.params[`c_${k}`];
+    const alarm =
+      sport === 'nfl'
+        ? null
+        : lineAlarmOf({
+            sport,
+            name: a.name,
+            mu,
+            implied: impliedNow,
+            line: prop.line,
+            status,
+            b2b: info?.b2b?.[home ? 0 : 1] ?? 0,
+            roleKnown: row.roleKnown ?? null,
+            b2bSized: keptCtx('b2bS'),
+            pitcher: !!prop.stat.pitcher,
+            leash: row.leash ?? null,
+            leashSized: keptCtx('leash'),
+            rest: sport === 'mlb' && prop.stat.pitcher ? restGuard(row.restDays, row.debut, game.date) : null,
+            restSized: keptCtx('restSp'),
+            pitches: row.pitches ?? null,
+          });
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the
     // better return is only the cheaper vig); else the better return)
@@ -1291,8 +1317,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${why}; ${also}` } : { skip: true, kind: 'news', news: newsFlag.unit, why };
     }
-    // (his role changing (the NFL's, roleChangeOf; elsewhere a far line with its cause, lineAlarmOf): the book
-    // reprices a role on the news and the model only on the logs, so neither side is bet till the CHECKs show the model can read one; kind 'role', a CHECK. As
+    // (his role changing (the NFL's, roleChangeOf): the book reprices a role on the news and the model only on
+    // the logs, so neither side is bet till the CHECKs show the model can read one; kind 'role', a CHECK. As
     // the gap's, only when it's the role alone: one the skips below would take too (no price -110 can be, a
     // long shot, a line moved twice the limit) is skipped with both their words, no CHECK, so the role
     // CHECKs are graded only at prices that can be known)
@@ -1366,7 +1392,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       guard,
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
       // (the line's open and now; where the line hasn't moved and the open price was read (board), the over's
       // fair chance at the open and at the price bet (selfcheck.mjs C19: a price-only move, the NHL's at 0.5 and
       // 1.5 most of all, which the line alone doesn't see))

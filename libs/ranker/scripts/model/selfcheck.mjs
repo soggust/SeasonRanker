@@ -71,10 +71,12 @@
 //                 price-only moves, most of the NHL's); never applied
 //             C20 the book's line far from the projection, all-time (every graded prop bet and CHECK at the book's
 //                 price): the mean its price implies over the model's (projection.lineRatio, else estimated), far
-//                 over, far under or near, the model against the market's reading or with it, each row's record
-//                 against the book's fair chance; the line alarm's CHECKs (props.mjs lineAlarmOf) apart. A watch
-//                 when the far ones bet against the market do better or worse than the near ones past z 2.5 with
-//                 60 a side (the far line alone news: a PASS; or the alarm's CHECKs worth betting); never applied
+//                 over, far under or near (outside the NFL at a line and mean from 1.5: props.mjs farOf), the model
+//                 against the market's reading or with it, each row's record against the book's fair chance; the
+//                 line alarm's labeled bets and CHECKs (props.mjs lineAlarmOf, projection.lineAlarm) apart. A watch
+//                 when the far ones bet against the market do better or worse than the near ones, or the alarm's
+//                 labeled bets worse, past z 2.5 with 60 a side (the far line alone news: a PASS; the alarm a
+//                 role CHECK); never applied
 //   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
@@ -92,7 +94,7 @@ import { MIN_N } from './check-learn.mjs';
 import { VOID_AFTER, chanceAt, intentOf, pastGap } from './desk.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { impliedMean } from './project.mjs';
-import { ROLE } from './props.mjs';
+import { ALARM_MIN, farOf, ROLE } from './props.mjs';
 import { round } from './ratings.mjs';
 
 export const SELFCHECK_V = 1;
@@ -1187,12 +1189,14 @@ export function c19(x) {
 // assumed -110 says nothing of where the market puts him): the mean its price implies over the model's (the
 // bet's projection.lineRatio, kept since 2026-10-13, or a CHECK's projection.implied; else estimated from its
 // line, fair chance and the projection's dispersion r, the stat's rk not kept: by 'estimated'), past ROLE.ratioHi or under ROLE.ratioLo
-// (props.mjs, the role guards' line reasons). Outside the NFL a far line is a CHECK only with a cause known before
-// the game (props.mjs lineAlarmOf); alone it's bet as any prop, measured no worse than the rest, so the question
-// it keeps asking is whether the far ones with the model against the market's reading do worse against the book's
-// own chance than the near ones (the far line alone the news: a PASS) or better (the alarm's CHECKs worth
-// betting). The line alarm's CHECKs (roleReason line-*) in their own rows. A watch past MOVE_Z with MOVE_MIN a
-// side, else a report; never applied
+// (props.mjs, the role guards' line reasons; outside the NFL only at a count from ALARM_MIN: props.mjs farOf, a 0.5
+// line's ratio an ordinary lean, not a far line). A far line alone is bet as any prop, measured no worse than the
+// rest, so the question it keeps asking is whether the far ones with the model against the market's reading do
+// worse against the book's own chance than the near ones (the far line alone the news: a PASS) or better. The line
+// alarm's labeled rows (props.mjs lineAlarmOf: a far line with an unsized cause, projection.lineAlarm; the CHECKs
+// of 2026-10-13 by their roleReason line-*) in their own rows, the bets' set against the near ones: worse past
+// MOVE_Z with MOVE_MIN a side says promote the alarm to a role CHECK. A watch past MOVE_Z with MOVE_MIN a side,
+// else a report; never applied
 const LINE_AGAINST = { hi: 'under', lo: 'over' };
 export function lineRatioOf(b) {
   if (b.market !== 'prop' || b.oddsAssumed) return null;
@@ -1205,54 +1209,59 @@ export function lineRatioOf(b) {
   const imp = impliedMean(b.line, fairOver, { r: pr.r });
   return fin(imp) ? { ratio: imp / pr.mean, by: 'estimated' } : null;
 }
+// (a row's band: 'hi', 'lo' or 'near'; the NFL's by the ratio alone (its role guard's line reason), the others'
+// at a count from ALARM_MIN too (farOf))
+export function lineBandOf(q, b, sport) {
+  if (sport === 'nfl') return q.ratio > ROLE.ratioHi ? 'hi' : q.ratio < ROLE.ratioLo ? 'lo' : 'near';
+  return farOf(q.ratio, b.projection?.mean, b.line) ?? 'near';
+}
+const alarmed = (b) => !!b.projection?.lineAlarm?.key || /^line-/.test(b.roleReason ?? '');
 export function c20(x) {
   const bets = x.bets.filter(settledOf);
   const checks = (x.checks ?? [])
     .filter((c) => c && (c.checkResult?.status === 'won' || c.checkResult?.status === 'lost') && !c.void)
     .map((c) => ({ ...c, status: c.checkResult.status, profit: c.checkResult.profit, units: 1 }));
   const rowOf = (key, list) => ({ key, ...zOf(list, (b) => b.fair), overBook: r4(overBook(list).d) });
-  const bandOf = (q) => (q.ratio > ROLE.ratioHi ? 'hi' : q.ratio < ROLE.ratioLo ? 'lo' : 'near');
   const rows = [];
   const advice = [];
   let n = 0;
   let est = 0;
   for (const [src, list] of [['bets', bets], ['CHECKs', checks]]) {
-    const of = list.map((b) => ({ b, q: lineRatioOf(b) })).filter((r) => r.q);
+    const of = list.map((b) => ({ b, q: lineRatioOf(b) })).filter((r) => r.q).map((r) => ({ ...r, band: lineBandOf(r.q, r.b, x.sport) }));
     n += of.length;
     est += count(of, (r) => r.q.by === 'estimated');
     const pick = (f) => of.filter(f).map((r) => r.b);
-    const against = pick((r) => bandOf(r.q) !== 'near' && r.b.side === LINE_AGAINST[bandOf(r.q)]);
-    const near = pick((r) => bandOf(r.q) === 'near');
+    const against = pick((r) => r.band !== 'near' && r.b.side === LINE_AGAINST[r.band]);
+    const near = pick((r) => r.band === 'near');
     for (const [label, l] of [
-      ['far over, the model against it', pick((r) => bandOf(r.q) === 'hi' && r.b.side === 'under')],
-      ['far over, the model with it', pick((r) => bandOf(r.q) === 'hi' && r.b.side !== 'under')],
-      ['far under, the model against it', pick((r) => bandOf(r.q) === 'lo' && r.b.side === 'over')],
-      ['far under, the model with it', pick((r) => bandOf(r.q) === 'lo' && r.b.side !== 'over')],
+      ['far over, the model against it', pick((r) => r.band === 'hi' && r.b.side === 'under')],
+      ['far over, the model with it', pick((r) => r.band === 'hi' && r.b.side !== 'under')],
+      ['far under, the model against it', pick((r) => r.band === 'lo' && r.b.side === 'over')],
+      ['far under, the model with it', pick((r) => r.band === 'lo' && r.b.side !== 'over')],
       ['near the projection', near],
     ]) {
       if (l.length) rows.push(rowOf(`${src}: line ${label}`, l));
     }
-    if (src === 'CHECKs') {
-      const alarm = list.filter((c) => /^line-/.test(c.roleReason ?? ''));
-      if (alarm.length) rows.push(rowOf("CHECKs: the line alarm's (a far line with its cause)", alarm));
-      continue;
-    }
-    const [a, r] = [overBook(against), overBook(near)];
+    const alarm = list.filter(alarmed);
+    if (alarm.length) rows.push(rowOf(`${src}: the line alarm's (a far line with its cause)`, alarm));
+    if (src === 'CHECKs') continue;
+    const [a, r, al] = [overBook(against), overBook(near), overBook(alarm)];
     const z = zBetween(a, r);
-    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the model against it, did worse against the book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the model against it, did better against the book than the near ones (z ${round(z, 2)}): the line alarm's CHECKs could be bet`);
+    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the model against it, did worse against the book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the model against it, did better against the book than the near ones (z ${round(z, 2)})`);
+    const zA = zBetween(al, r);
+    if (al.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && zA <= -MOVE_Z) advice.push(`the props bet with the line alarm's label (a far line with its cause) did worse against the book than the near ones (z ${round(zA, 2)}): the alarm could be a role CHECK (props.mjs lineAlarmOf)`);
   }
   return check('C20', {
     status: advice.length ? 'watch' : n < MOVE_MIN ? 'thin' : 'info',
-    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the model bet against and the near ones` : "No graded props at the book's price yet",
+    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the model bet against, or the line alarm's, and the near ones` : "No graded props at the book's price yet",
     metric: 'graded props',
     value: n,
-    threshold: `a watch when the props bet against a line far from the projection (its implied mean over ${ROLE.ratioHi} or under ${ROLE.ratioLo} times the model's) do better or worse against the book's chance than the near ones: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the props bet against a line far from the projection (its implied mean over ${ROLE.ratioHi} or under ${ROLE.ratioLo} times the model's; outside the NFL at a line and mean from ${ALARM_MIN}) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: "every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near, the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's CHECKs (props.mjs lineAlarmOf: a far line with a cause known before the game) apart. Never applied: it says where to look",
+    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (outside the NFL a far line only at a line and a mean from ${ALARM_MIN}: a 0.5 line's ratio is an ordinary lean), the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
   });
 }
-
 export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20];
 
 // The spans: the week (the 7 days to now), the baseline (the 28 before it), recent (the 28 to now)

@@ -34,7 +34,8 @@
 //            model came back toward the book, the role settled, or another guard skips it now) before it's
 //            locked: closedAt, off the page, still
 //            graded but tallied apart (checkSummary's closed), out of the hit rate; a later gap opens it again
-//   trimmed  a graded one, TRIM_AFTER on, loses its context and all of its projection but the mean (checkTrim):
+//   trimmed  a graded one, TRIM_AFTER on, loses its context and all of its projection but the mean, the line's
+//            ratio and its alarm's key (checkTrim):
 //            the file stays small over a season, the tally untouched
 //   placed   when its market is bet after all (the gap closed, or an owner's note priced it again), the bet
 //            it became is noted on it (bet) and the page stops showing it as a CHECK; it's still graded
@@ -148,7 +149,7 @@ export const checkLocked = (c, now) => Date.parse(c.start) - now.getTime() <= RE
 export const TRIM_AFTER = 3 * 24 * 3600e3;
 
 // (the guards whose skip is kept as a CHECK: the gap (desk.mjs gapGuard, props.mjs), a role changing (an NFL
-// prop's: props.mjs roleChangeOf; another sport's far line with its cause: lineAlarmOf) and the news on his unit (a prop's: news.mjs); a CHECK's cause, an older
+// prop's: props.mjs roleChangeOf) and the news on his unit (a prop's: news.mjs); a CHECK's cause, an older
 // one's the gap)
 export const CHECK_KINDS = new Set(['gap', 'role', 'news']);
 export const causeOf = (guard) => (guard?.kind === 'role' ? 'role' : guard?.kind === 'news' ? 'news' : 'gap');
@@ -359,7 +360,8 @@ export function checkTrim(checks = [], now) {
     const at = Date.parse(c.checkResult?.gradedAt ?? '');
     if (!(now.getTime() - at >= TRIM_AFTER) || c.trimmed) continue;
     delete c.context;
-    if (c.projection) c.projection = { mean: c.projection.mean ?? null };
+    // (the mean, and the line's ratio and its alarm's key: selfcheck.mjs C20 reads them all-time)
+    if (c.projection) c.projection = { mean: c.projection.mean ?? null, ...(Number.isFinite(c.projection.lineRatio) ? { lineRatio: c.projection.lineRatio } : {}), ...(c.projection.lineAlarm?.key ? { lineAlarm: { key: c.projection.lineAlarm.key } } : {}) };
     c.trimmed = true;
     n++;
   }
