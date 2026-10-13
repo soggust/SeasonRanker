@@ -176,13 +176,13 @@ test('Copy Isolated: the isolated order, place, name, team and value, after Team
   const line = (r) => ({ place: out.places.get(r) ?? null, name: r.name, team: teamKey(r.teamLogo), value: r.v === null ? '-' : `${r.v}.0` });
   assert.equal(
     isolatedCopyText('Passing Yards', out.rows, shown.ranked, line),
-    ['Passing Yards (sorted by it alone)', '1\tc\tBUF\t7.0', '1\te\tBUF\t7.0', '3\ta\tBUF\t5.0', '-\td\tBUF\t-'].join('\n'),
+    ['Passing Yards', '1\tc\tBUF\t7.0', '1\te\tBUF\t7.0', '3\ta\tBUF\t5.0', '-\td\tBUF\t-'].join('\n'),
   );
   // (worst first, said so; no team: no team column)
   const worst = isolateRows(shown.rows, shown.ranked, (r) => r.v, true);
   assert.equal(
     isolatedCopyText('Passing Yards', worst.rows, shown.ranked, (r) => ({ place: worst.places.get(r) ?? null, name: r.name, team: null, value: String(r.v ?? '-') }), true),
-    ['Passing Yards (sorted by it alone, worst first)', '1\ta\t5', '2\tc\t7', '2\te\t7', '-\td\t-'].join('\n'),
+    ['Passing Yards, worst first', '1\ta\t5', '2\tc\t7', '2\te\t7', '-\td\t-'].join('\n'),
   );
   // (Recent: its results as letters, newest first)
   assert.equal(recentText([1, 0, 0.5, 1]), 'WLTW');

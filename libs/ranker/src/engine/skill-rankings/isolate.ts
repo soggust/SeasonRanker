@@ -60,7 +60,7 @@ export function shownValue<Row, Stat>(
 }
 
 // Share's Copy Isolated (in the menu only while a column is isolated: copyIsolatedShown): the rows shown in
-// the isolated order, as plain text under a line naming the stat ("Passing Yards (sorted by it alone)"),
+// the isolated order, as plain text under a line naming the stat ("Passing Yards"),
 // each a tab-separated line (pastes into spreadsheets and notes): its place by the stat ("-": none), the
 // name, the team (its name as the grid knows it, else the logo's; none on a team's own row or in a sport without teams) and the
 // value as the column shows it. The ranked rows only, as the other copy has them (no UR rows).
@@ -89,7 +89,7 @@ export function isolatedCopyText<Row>(
   worstFirst = false,
 ): string {
   const lines = rows.slice(0, ranked).map(line);
-  const title = `${statName} (sorted by it alone${worstFirst ? ', worst first' : ''})`;
+  const title = `${statName}${worstFirst ? ', worst first' : ''}`;
   return [title, ...lines.map((l) => [l.place ?? '-', l.name, ...(l.team ? [l.team] : []), l.value].join('\t'))].join('\n');
 }
 
