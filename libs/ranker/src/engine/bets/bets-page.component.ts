@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
 import { tierLabel, tierOf, unranked } from './tiers';
 import { CheckResolved, NotePlayer, byBand, notePlayers } from './desk-notes';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
@@ -11,7 +11,7 @@ import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
 import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints, withAnalyst } from './bet-why';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
-import { MenuDay, MenuGame, MenuGameIn, SPORT_ICONS, gameMenu } from './game-menu';
+import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -33,6 +33,9 @@ type GameBoardPicks = { sport: string; event: string; start: string; matchup: st
 
 // (the game dropdown's chosen game, for its closed face: its words and its sport's icon)
 type ChosenGame = MenuGame & { icon: string };
+
+// (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
+const linesKey = (g: { sport: string; matchup: string; event: string }): string => `${g.sport}|${g.matchup}|${g.event}`;
 
 // A game as the picks and the AI desk's sheet name it
 type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
@@ -555,13 +558,15 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // (the games on ESPN's boards, not begun, with DraftKings' lines, that the bot has no pick on: in the dropdown
   // with the picked ones, their lines only. A game with picks on show is counted from them; one with none on show
-  // (a CHECK's alone, not an admin) is here)
+  // (a CHECK's alone, not an admin) is here. Each keyed by its event too (linesKey): a series' games on
+  // consecutive days share a matchup, and the next one, or one beside a picked game of the same two teams, is
+  // its own game)
   private linesOnly(): MenuGameIn[] {
     const out: MenuGameIn[] = [];
     for (const g of this.lines.boards().values()) {
-      const key = `${g.sport}|${g.matchup}`;
-      if (g.state !== 'pre' || this.boardPicks(this.boards.get(key)).length || !(g.spread || g.total || g.ml)) continue;
-      out.push({ key, sport: g.sport, matchup: g.matchup, start: g.start, count: null });
+      const picked = this.boards.get(`${g.sport}|${g.matchup}`);
+      if (g.state !== 'pre' || (picked?.event === g.event && this.boardPicks(picked).length) || !(g.spread || g.total || g.ml)) continue;
+      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null });
     }
     return out;
   }
@@ -576,7 +581,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const known = this.boards.get(key);
     if (known) return known;
     for (const g of this.lines.boards().values()) {
-      if (`${g.sport}|${g.matchup}` === key) {
+      if (linesKey(g) === key) {
         const board = { sport: g.sport, event: g.event, start: g.start, matchup: g.matchup, picks: [], betPicks: [] };
         this.boards.set(key, board);
         return board;
@@ -592,11 +597,20 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   private dropStarted(): void {
     const now = Date.now();
     const open = (this.rows ?? []).filter((r) => !r.game?.kickoff || Date.parse(r.game.kickoff) > now);
-    if (this.rows && open.length === this.rows.length) return;
-    this.rows = open;
-    // (a game chosen keeps its place while it's still to come: with bets left, or its lines alone)
-    if (this.game && !this.listed.some((r) => this.gameKey(r) === this.game) && !this.linesOnly().some((g) => g.key === this.game)) this.game = '';
+    if (!this.rows || open.length !== this.rows.length) this.rows = open;
+    this.dropGone();
   }
+
+  // (a game chosen keeps its place while it's in the dropdown: with bets left, or its lines alone, not begun.
+  // Gone, the list is Best Bets again: checked each minute, and whenever the boards change (a lines-only game's
+  // own board, refreshed while it's chosen, is what finds it under way), before the page is drawn again)
+  private dropGone(): void {
+    if (this.game && !this.menu().games.has(this.game)) this.game = '';
+  }
+  private readonly boardsWatch = effect(() => {
+    this.lines.boards();
+    untracked(() => this.dropGone());
+  });
 
   ngOnDestroy(): void {
     this.closed = true;
@@ -676,11 +690,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the chosen game as the closed dropdown shows it: its sport's icon and its words)
   get chosenGame(): ChosenGame | null {
     if (!this.game) return null;
-    const known = this.menu().games.get(this.game);
-    if (known) return known;
-    // (one gone from the list, begun since it was chosen: its matchup alone)
-    const [sport, matchup] = this.game.split('|');
-    return { key: this.game, sport, matchup, time: null, label: matchup, at: 0, count: null, icon: SPORT_ICONS[sport] ?? 'sports' };
+    // (never one gone from the list: dropGone has made that Best Bets)
+    return this.menu().games.get(this.game) ?? null;
   }
   private menu(): { days: MenuDay[]; games: Map<string, ChosenGame> } {
     const list = this.listed;

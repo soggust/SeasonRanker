@@ -70,3 +70,25 @@ test('gameMenu: a pick with no kickoff on its date alone (its noon, on that day)
   // (a game with neither: left out, not a NaN day)
   assert.deepEqual(bets.gameMenu([game('nfl', 'KC @ BUF', null, 1)], SPORTS, TZ), []);
 });
+
+test("gameMenu: a series' games on consecutive days each their own (lines-only keyed by event); two of a key, the picked then the earlier", () => {
+  const tue = '2026-10-13T23:08:00Z';
+  const wed = '2026-10-14T23:08:00Z';
+  const days = bets.gameMenu(
+    [
+      // (Wednesday's board read first: both still listed, each on its own day)
+      game('mlb', 'CLE @ TB', wed, null, { key: 'mlb|CLE @ TB|402' }),
+      game('mlb', 'CLE @ TB', tue, null, { key: 'mlb|CLE @ TB|401' }),
+    ],
+    SPORTS,
+    TZ,
+  );
+  assert.deepEqual(shape(days), ['Tuesday, Oct 13: MLB[CLE @ TB · 6:08 PM lines]', 'Wednesday, Oct 14: MLB[CLE @ TB · 6:08 PM lines]']);
+  assert.deepEqual(
+    days.map((d) => d.sports[0].games[0].key),
+    ['mlb|CLE @ TB|401', 'mlb|CLE @ TB|402'],
+  );
+  // (the same key twice, Wednesday's met first: Tuesday's kept; a picked one over an earlier one's lines alone)
+  assert.deepEqual(shape(bets.gameMenu([game('mlb', 'CLE @ TB', wed), game('mlb', 'CLE @ TB', tue)], SPORTS, TZ)), ['Tuesday, Oct 13: MLB[CLE @ TB · 6:08 PM lines]']);
+  assert.deepEqual(shape(bets.gameMenu([game('mlb', 'CLE @ TB', tue), game('mlb', 'CLE @ TB', wed, 2)], SPORTS, TZ)), ['Wednesday, Oct 14: MLB[CLE @ TB · 6:08 PM (2)]']);
+});

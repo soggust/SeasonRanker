@@ -14,7 +14,8 @@ export const SPORT_ICONS: Record<string, string> = {
   mma: 'sports_mma',
 };
 
-// A game for the dropdown: its key (the game filter's: "nfl|CHI @ GB"), its start (its date alone when the
+// A game for the dropdown: its key (the game filter's: "nfl|CHI @ GB"; a lines-only game's its event too,
+// "mlb|CLE @ TB|401700123", so a series' next game is its own), its start (its date alone when the
 // picks have no kickoff), and how many bets it shows (null: lines only, the bot has no pick on it)
 export interface MenuGameIn {
   key: string;
@@ -57,11 +58,18 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
     const i = sports.findIndex((s) => s.id === sport);
     return i < 0 ? sports.length : i;
   };
-  // (one entry a game: a game the bot picked keeps its count over the same game's lines alone)
+  // (one entry a key: a game the bot picked keeps its count over the same game's lines alone, and of two the
+  // same, the earlier start (the page keys a lines-only game by its event too, so a series' games on consecutive
+  // days are each their own; this is only the rule for when two do meet), whichever order they come in)
+  const startOf = (g: MenuGameIn) => {
+    const t = Date.parse(g.start ?? (g.date ? `${g.date}T12:00:00` : ''));
+    return isNaN(t) ? Infinity : t;
+  };
   const byKey = new Map<string, MenuGameIn>();
   for (const g of games) {
     const had = byKey.get(g.key);
-    if (!had || (had.count === null && g.count !== null)) byKey.set(g.key, g);
+    const picked = (x: MenuGameIn) => x.count !== null;
+    if (!had || (picked(g) !== picked(had) ? picked(g) : startOf(g) < startOf(had))) byKey.set(g.key, g);
   }
   const rows: (MenuGame & { day: string })[] = [];
   for (const g of byKey.values()) {
