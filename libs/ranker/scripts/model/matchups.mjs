@@ -983,10 +983,11 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absor
 // it, from his second game out in a row)
 export const NBA_CORE = 24;
 export const NHL_CORE = { F: 14, D: 18 };
-// (an NHL skater's power-play lean (nhlMatchups ppLean): the games of his this season it waits for, the minutes
-// added to each side of the ratio (a second unit's 0.2 against 0.6 isn't a threefold swing), its cap on the log)
+// (an NHL skater's power-play lean (nhlMatchups ppLean): the games of his this season it waits for (his team's
+// with a power play to share), the share added to each side of the ratio (a tenth of the team's power play: a
+// second unit's 0.05 against 0.15 isn't a threefold swing), its cap on the log)
 const PP_LEAN_N = 4;
-const PP_LEAN_PAD = 0.5;
+const PP_LEAN_PAD = 0.1;
 const PP_LEAN_CAP = 1;
 
 // (a coming game's teammates missing, as a function of id (0 to 1) from a function, a set or nothing)
@@ -1165,9 +1166,12 @@ export function nbaMatchups(rows, { learned = false } = {}) {
 // his share of his team's power play against his position's prop players' (ppShare). The same for a coming game.
 // And his ice time first (audit #13): a skater's time on ice over a full game's 60 (share: the game's own, learned
 // after it, never projected from; project.mjs's minutes-first base, the NBA's minutes' place), and his power-play
-// time's lean (ppLean: his power-play minutes a game, recent games counting most (ppTime), against his season's
-// average, as a log; 0 till he has PP_LEAN_N games this season): a top unit's job won or lost since the games
-// his numbers come from (props.mjs CTX ppLean)
+// time's lean (ppLean: his share of his team's power-play time, this season's games alone, recent ones counting
+// most, against his season's average share, as a log; 0 till he has PP_LEAN_N of his team's games with a power
+// play this season): a top unit's job won or lost since the games his numbers come from (props.mjs CTX ppLean).
+// A share, not his minutes (the review of 2026-10-13): his minutes swing with how many power plays the last
+// opponents gave his team, tonight's opponent's penalties another term's (c_pp); this season's alone, so a new
+// season's first games aren't read against last season's
 export function nhlMatchups(rows, facts = null) {
   const grp = (pos) => (pos === 'F' || pos === 'D' ? pos : null);
   const work = teamWork({ groupOf: grp, measures: [(r) => r.s.toi, (r) => r.s.pptoi], regular: [10, 1], floor: [8, 0.5] });
@@ -1182,14 +1186,14 @@ export function nhlMatchups(rows, facts = null) {
     return w ? (w * t.sum + 10 * lg.pp) / (w * t.n + 10) - lg.pp : 0;
   };
   const ppOf = (pid) => pp.get(pid) ?? null;
-  // (his power-play minutes this season ([season, total, games]) and his lean: the recent ones (ppOf) over their
-  // average, each with PP_LEAN_PAD added, as a log held to PP_LEAN_CAP either way; 0 before PP_LEAN_N games)
+  // (his share of his team's power play this season ({ season, now: recent games counting most (RATE), started
+  // over each season, sum, n }) and his lean: now over the season's average, each with PP_LEAN_PAD added, as a
+  // log held to PP_LEAN_CAP either way; 0 before PP_LEAN_N games)
   const ppSeason = new Map();
   const ppLeanOf = (pid, season) => {
     const t = ppSeason.get(pid);
-    const now = ppOf(pid);
-    if (!t || t[0] !== season || t[2] < PP_LEAN_N || !Number.isFinite(now)) return 0;
-    const v = Math.log((now + PP_LEAN_PAD) / (t[1] / t[2] + PP_LEAN_PAD));
+    if (!t || t.season !== season || t.n < PP_LEAN_N) return 0;
+    const v = Math.log((t.now + PP_LEAN_PAD) / (t.sum / t.n + PP_LEAN_PAD));
     return Math.round(Math.max(-PP_LEAN_CAP, Math.min(PP_LEAN_CAP, v)) * 1000) / 1000;
   };
   // (his share of his team's power play: his power-play minutes over the team's (its skaters' summed over 5, a
@@ -1242,8 +1246,6 @@ export function nhlMatchups(rows, facts = null) {
         if (r.pos === 'G' || !Number.isFinite(r.s.pptoi)) continue;
         const was = pp.get(r.pid);
         pp.set(r.pid, was === undefined || was === null ? r.s.pptoi : was + (r.s.pptoi - was) * RATE);
-        const t = ppSeason.get(r.pid);
-        ppSeason.set(r.pid, t && t[0] === r.season ? [r.season, t[1] + r.s.pptoi, t[2] + 1] : [r.season, r.s.pptoi, 1]);
       }
       const skaters = list.filter((r) => r.pos !== 'G' && Number.isFinite(r.s.pptoi));
       const teamPp = skaters.reduce((t, r) => t + r.s.pptoi, 0) / 5;
@@ -1254,6 +1256,9 @@ export function nhlMatchups(rows, facts = null) {
           const moved = shareTeam.has(r.pid) && shareTeam.get(r.pid) !== r.team;
           share.set(r.pid, was === undefined ? x : was + (x - was) * (moved ? Math.max(RATE, 0.5) : RATE));
           shareTeam.set(r.pid, r.team);
+          // (the lean's: this season's alone)
+          const t = ppSeason.get(r.pid);
+          ppSeason.set(r.pid, t && t.season === r.season ? { season: r.season, now: t.now + (x - t.now) * RATE, sum: t.sum + x, n: t.n + 1 } : { season: r.season, now: x, sum: x, n: 1 });
         }
         // (the league's, on the game's own prop players: learned after the game, read from the next day on)
         for (const [pos, n] of [['F', 6], ['D', 2]]) {

@@ -145,6 +145,8 @@ export function restGuard(restDays, debut, date) {
 //               rushing; live only), its safe side the chart's
 //   lineup-start, lineup-bench  the NBA's: tonight's posted starting five against his team's usual one by
 //               starts (lineupRoleOf below), one not usually starting in it or a usual starter not in it
+//   ice-jump    the NHL's: his last three games' time on ice MIN_BACK.jump times his season's or more on the
+//               ice-time base (iceJumpOf below), the over a CHECK
 // qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }; starts:
 // a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
@@ -156,7 +158,7 @@ export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, rati
 // (qb1-out) or a few-start passer's passing it projects high, so the under is safe; the line's read, the side
 // the market's reading points away from; a change at quarterback, either way: neither. The safe side bets as
 // any prop; only the other is a CHECK (priceProps))
-export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under', 'lineup-start': 'over', 'lineup-bench': 'under' };
+export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under', 'lineup-start': 'over', 'lineup-bench': 'under', 'ice-jump': 'under' };
 
 // The NBA's minutes base (project.mjs sn, mode 'minutes') with teammates back (null: none): his last three
 // games' minutes MIN_BACK.jump times his season's or more, and the work his team was missing in the games his
@@ -171,6 +173,17 @@ export function minutesBackOf({ name = null, mode, minutes, vac, vacHist }) {
   if (mode !== 'minutes' || !minutes || !(minutes.season > 0) || !Number.isFinite(vac) || !Number.isFinite(vacHist)) return null;
   if (!(vacHist - vac >= MIN_BACK.vac && minutes.recent >= MIN_BACK.jump * minutes.season)) return null;
   return { key: 'minutes-back', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes over his last three against ${round(minutes.season, 1)} this season, with teammates back from the absence that gave him them: a smaller role tonight` };
+}
+// The NHL's ice-time base (project.mjs sn on shots, mode 'minutes') after a jump (null: none): his last three
+// games' time on ice MIN_BACK.jump times his season's or more, teammates back or not. A role CHECK on the over
+// (the under its safe side) till the CHECKs show the projection reads it: those rows ran 14.9% under their
+// projections held out with the base (n 173 of 7189, the eligible; -6.5% without it; review of 2026-10-13), and
+// most weren't a teammate's return (minutesBackOf's work back, MIN_BACK.vac, is never reached on the NHL's time
+// on ice: the held-out jumps' work missing then over now at most 0.07; with 0.02 or more back, n 49, -6.5%; the
+// rest, n 124, -17.9%), so the jump alone is the CHECK
+export function iceJumpOf({ name = null, mode, minutes }) {
+  if (mode !== 'minutes' || !minutes || !(minutes.season > 0) || !(minutes.recent >= MIN_BACK.jump * minutes.season)) return null;
+  return { key: 'ice-jump', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes on ice over his last three against ${round(minutes.season, 1)} this season: the model leans to the jump and has run high there` };
 }
 // The NBA's posted starting five (context.mjs gather: espn.mjs gameRoster, about 30 minutes before the tip) against
 // his team's usual one by starts (timing.mjs usualStarters: started half its last four games or more, the five
@@ -522,11 +535,12 @@ const CATCHING = [...CARRYING, 'qbDeep'];
 // work missing's size fit again on the base (project.mjs vcM) left out on every stat)
 const NBA_MINUTES = { minutes: 48 };
 // (the NHL's ice time first (audit #13; project.mjs's minutes base, a full game's 60): a skater's per-minute rate
-// times the time on ice he's expected tonight (his season's typical, leaning to his last three by sr; the work
-// missing tonight (teammates out: vacated, by time on ice or power-play time) and the back-to-back on top), on the
+// times the time on ice he's expected tonight (his season's typical, leaning to his last three by sr), on the
 // whole stat's gate with WHOLE_TOL's tolerance as the NBA's. Measured 2026-10-13 (2025-26 and 2026-27's first
 // games, held out the last 30%): kept on shots (sn 0.5/sr 0.5, held out +0.0009); points not taken on the fit
-// window, so its mark is off points (its search ten replays an hourly run for nothing))
+// window, so its mark is off points (its search ten replays an hourly run for nothing). On shots the work missing
+// tonight was searched and not taken (vc 0) and the back-to-back isn't in its ctx, so nothing sits on the base
+// for a teammate's return: a jump in his ice time is a role CHECK on the over (iceJumpOf, the review of 2026-10-13))
 const NHL_MINUTES = { minutes: 60 };
 // (the NBA's positions and pace (audit #10; project.mjs ps, po, late terms on the whole stat's gate after the
 // minutes base): ESPN's position (G, F, C; a PG or SG a guard, an SF or PF a forward, one unknown a forward) for
@@ -561,22 +575,24 @@ const SAVES_CTX = ['oppShots', 'b2b'];
 const NHL_VAC = { vacated: true, vacSplits: 6 };
 // (the NHL skaters' late terms (audit #13; project.mjs MIN_GAIN, each on the whole stat's gate with WHOLE_TOL's
 // tolerance: a factor on every skater, the lean refit with it): his power-play time's lean (ppLean: his recent
-// power-play minutes over his season's, matchups.mjs), his side's expected shots on goal tonight over the
+// share of his team's power play over his season's, matchups.mjs), his side's expected shots on goal tonight over the
 // league's (teamShots: hockey.mjs's, his side's shots a game against the other's allowed; the saves' oppShots the
 // other way round) and the betting total (mTotal: the finals' closes, playerlogs.mjs boxTotals; live the book's).
-// Measured 2026-10-13 (held out the last 30%), each on the stat as fit before it: shots ppLean 0.05 (+0.0003,
-// kept), teamShots 0 (0.5 no better held out), mTotal not taken; points teamShots 0.25 (+0.0006, kept), ppLean and
-// mTotal not taken. The eligible held-out rows, actual over projected without the new terms and with them (all:
+// Measured 2026-10-13 (held out the last 30%), each on the stat as fit before it: shots ppLean 0.1 (+0.0004,
+// kept; from his power-play minutes, before the review, 0.05 +0.0003), teamShots 0 (0.5 no better held out),
+// mTotal not taken; points teamShots 0.25 (+0.0005, kept), ppLean and mTotal not taken. The eligible held-out rows, actual over projected without the new terms and with them (all:
 // shots -2.0% to -2.3%, points -5.3% to -5.3%): shots after an ice-time jump (his last three over 1.2 times his
 // season's, n 390) +4.4% to -5.3%; his power-play time down (ppLean -0.3 or less, n 916) -4.5% to -0.9%, up (0.3
 // or more, n 912) +3.9% to -1.9%; points with his side's expected shots low (teamShots -0.08 or less, n 1438)
 // -15.5% to -12.8%, high (0.08 or more, n 1045) +2.1% to -1.3% (the ice-time jump's overshoot: sr 0.5 the fit's
-// choice on the log loss, the bucket small). Each stat's ctx holds only what it kept (a dead term's late search
+// choice on the log loss: a role CHECK on the over, iceJumpOf). Each stat's ctx holds only what it kept (a dead term's late search
 // five to seven replays an hourly run): CTX keeps the rest for a measure on demand. The power play by the other
-// side's penalties (pp) off both too: not taken on either, before or after (its main search 14 replays a stat);
-// with it off, points took the work missing (vc 0.25, +0.0003))
+// side's penalties (pp) off shots too: not taken, before or after (its main search 14 replays a stat). Kept in
+// points' search though never taken there: off it, the main search's path moved and points held out 0.5471
+// against 0.5469 with it (review of 2026-10-13: the work missing taken, vc 0.25 +0.0003, on a start 0.0005
+// worse), so its replays buy back 0.0002)
 const NHL_SOG_CTX = ['ppLean'];
-const NHL_PTS_CTX = ['oppGoalie', 'teamShots'];
+const NHL_PTS_CTX = ['pp', 'oppGoalie', 'teamShots'];
 // (a typical NHL game's betting total, the market total's even point)
 const MTOTAL_AVG = 6;
 const NBA_VAC = { ...NHL_VAC, vacLearned: [6, 7] };
@@ -857,9 +873,9 @@ export const CTX = {
   // a top unit's man over 0, a second-pair defenseman under it): his role on it, which the position's prior
   // (project.mjs) doesn't know; 0 with none read)
   ppShare: (info, home, pts, row) => (Number.isFinite(row?.ppShare) ? row.ppShare : 0),
-  // (an NHL skater's power-play time's lean: his power-play minutes a game, recent games counting most, over his
-  // season's average, as a log (matchups.mjs ppLean, from the games before); a top unit's job won or lost since
-  // the games his rate comes from; 0 with too few games this season)
+  // (an NHL skater's power-play time's lean: his share of his team's power play, this season's recent games
+  // counting most, over his season's average share, as a log (matchups.mjs ppLean, from the games before); a top
+  // unit's job won or lost since the games his rate comes from; 0 with too few games this season)
   ppLean: (info, home, pts, row) => (Number.isFinite(row?.ppLean) ? row.ppLean : 0),
   // (the betting total's goals over a typical NHL game's (MTOTAL_AVG), as a log (row.mTotal: the history's close,
   // playerlogs.mjs boxTotals; live the book's now): the market's read of the game's scoring past the game model's;
@@ -1386,6 +1402,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the NBA's minutes base with teammates back from an absence that fed his minutes jump (minutesBackOf): a
     // role CHECK on the over, the under bet as any prop)
     if (sport === 'nba') roleChange ??= minutesBackOf({ name: a.name, mode: p.mode, minutes: p.minutes, vac: p.vac, vacHist: p.vacHist });
+    // (the NHL's ice-time base after a jump in his time on ice, teammates back or not (iceJumpOf): a role CHECK on
+    // the over, the under bet as any prop)
+    if (sport === 'nhl') roleChange ??= iceJumpOf({ name: a.name, mode: p.mode, minutes: p.minutes });
     // (the NBA's posted starting five against his team's usual one by starts (lineupRoleOf; players: run.mjs
     // inactivesNow's, timing.mjs lineupNow): a role CHECK on the side its change makes the risk)
     if (sport === 'nba') roleChange ??= lineupRoleOf({ name: a.name, pid, usual: usualStarters(players, row.team, game.season), starters: live?.gameRosters instanceof Map ? (live.gameRosters.get(String(row.team))?.starters ?? null) : null });

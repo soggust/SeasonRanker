@@ -649,6 +649,8 @@ const ROLE_WORDS = {
   // (the NBA: tonight's posted starting five against his role by his minutes, props.mjs lineupRoleOf)
   'lineup-start': "he is in tonight's starting five, not one of his team's usual starters",
   'lineup-bench': "he is not in tonight's starting five, one of his team's usual starters",
+  // (the NHL: his time on ice jumped over his last three games, the ice-time base leaning to it, props.mjs iceJumpOf)
+  'ice-jump': 'his time on ice jumped over his last three games, and the model has run high after a jump like that',
   // (outside the NFL: a far line with a cause known before the game, props.mjs lineAlarmOf)
   'line-questionable': 'he is questionable and the line sits far below his projection, the market reading a minutes cap or an early exit',
   'line-goalie': 'he is expected in goal but not confirmed and the line sits far below his projection, the market reading the other goalie starting',

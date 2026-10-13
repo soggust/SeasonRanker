@@ -105,9 +105,11 @@
 //   ice time the NHL's (audit #13; props.mjs STATS minutes 60): the minutes base with a skater's time on ice for
 //            the minutes (matchups.mjs nhlMatchups share: his time on ice over a full game's 60, the game's own,
 //            learned after it; fullMin), sn and sr searched late on the whole stat's gate with WHOLE_TOL's tolerance
-//            as the NBA's, the work missing tonight and the factors on top of it. Late flags after it on the same
-//            gate (WHOLE_TOL; props.mjs CTX): c_ppLean, his power-play minutes lately (matchups.mjs ppLean, recent
-//            games counting most) over his season's, a log; c_teamShots, his side's expected shots on goal tonight
+//            as the NBA's, the factors on top of it (the work missing tonight searched on shots and not taken, vc
+//            0; the back-to-back not in its ctx: nothing on the base for a teammate's return, so a jump in his ice
+//            time is a role CHECK on the over, props.mjs iceJumpOf). Late flags after it on the same gate
+//            (WHOLE_TOL, one budget a stat; props.mjs CTX): c_ppLean, his share of his team's power play lately
+//            (matchups.mjs ppLean, this season's games, recent ones counting most) over his season's, a log; c_teamShots, his side's expected shots on goal tonight
 //            over the league's (hockey.mjs, its shots a game against the other side's allowed), a log; c_mTotal, the
 //            betting total over 6 goals (playerlogs.mjs boxTotals: the finals' closes, a mild look-ahead as the
 //            NBA's lines; live the book's), a log. Measured 2026-10-13 (2025-26 and 2026-27's first games, 56516
@@ -116,13 +118,23 @@
 //            0.1132) and c_ppLean 0.05 (+0.0003, 0.0444 to 0.0466) kept, held out 0.5918; c_teamShots 0 (0.5 no
 //            better held out) and c_mTotal not taken. Points: sn, c_ppLean and c_mTotal not taken on the fit window,
 //            c_teamShots 0.25 kept (+0.0006, 0.0366 to 0.0367), and with the power play by the other side's
-//            penalties (c_pp, not taken before or after) off its search the work missing (vc 0.25, split 3) was
-//            taken (+0.0003): held out 0.5471. The eligible held-out rows, actual over projected before and after
-//            (all: shots -2.0% to -2.3%): shots after an ice-time jump (his last three over 1.2 times his season's,
-//            n 390) +4.4% to -5.3%, his power-play time down (ppLean -0.3 or less, n 916) -4.5% to -0.9%, up (n 912)
-//            +3.9% to -1.9%; points with his side's expected shots low (-0.08 or less, n 1438) -15.5% to -12.8%.
-//            The dead terms off each stat's ctx (props.mjs NHL_SOG_CTX, NHL_PTS_CTX) and the minutes mark off points:
-//            the NHL props' fit 121s to 158s locally (262s with every term searched)
+//            penalties (c_pp, never taken) kept in its search: off it the main search's path moved (the work missing
+//            then taken, vc 0.25 +0.0003, on a start 0.0005 worse) and points held out 0.5471 against 0.5469 with it.
+//            The review of 2026-10-13: c_ppLean read from his share of the team's power play, not his minutes (they
+//            swing with how many power plays the last opponents gave), this season's games alone (last season's no
+//            longer in the recent part early on): kept at 0.1 (+0.0004, bias 0.0444 to 0.046, every player's 0.1132
+//            to 0.1089), shots held out 0.5917; the WHOLE_TOL terms judged against the bias before the first of them
+//            (no NHL or NBA term changed by it). The eligible held-out rows, actual over projected before and after
+//            (all: shots -2.0% to -2.2%): shots after an ice-time jump (his last three's minutes 1.2 times his
+//            season's or more by the base's own reading, n 173) -6.5% to -14.9% (without c_ppLean -13.1%; the jumps
+//            with his power-play share up 0.3 or more, n 67, -0.5% without it and -5.9% with it: the lean and the
+//            base count a promotion to the top unit twice there; the rest, n 106, -20.6% either way). So the jump's
+//            over is a role CHECK (iceJumpOf); a teammate's return explains little of it (the work missing then over
+//            now 0.02 or more, n 49, -6.5%; never past 0.07, so the NBA's minutesBackOf (0.15) never fires on the
+//            NHL). Points with his side's expected shots low (-0.08 or less, n 1438) -15.5% to -12.8%. The dead
+//            terms off each stat's ctx (props.mjs NHL_SOG_CTX, NHL_PTS_CTX) and the minutes mark off points: the
+//            NHL props' fit 121s to 173s locally (262s with every term searched). Unmeasured: even-strength and
+//            power-play ice time projected apart (the audit's plan) in place of the lean on the total
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -551,7 +563,9 @@ const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).fl
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
 // (the late terms on every row judged on the whole stat's bias with SUBGROUP_TOL (fitStat): the NBA's minutes base
-// and its pace (po: a factor on every row, the lean refit with it))
+// and its pace (po: a factor on every row, the lean refit with it), the NHL's ice-time base and its skaters' late
+// flags. One budget a stat: each judged against the eligible bias before the first of them, so the tolerance
+// doesn't compound term by term (the review of 2026-10-13: shots 0.0411 to 0.0444 to 0.0466, each step legal))
 export const WHOLE_TOL = new Set(['sn', 'po', 'c_ppLean', 'c_teamShots', 'c_mTotal']);
 const SUBGROUP_TOL = 0.005;
 // (and the eligible players' among the rows it's on, judged too where this many or more)
@@ -1639,6 +1653,8 @@ export function fitStat(stat, rows, env) {
     return { s0, sBest, v, exact };
   };
   let slExact = false;
+  // (the eligible held-out bias before the first WHOLE_TOL term judged: their one budget)
+  let wholeBase = null;
   for (const key of late) {
     // (the role order reads nowhere without the role's opponent table (roleK) or the next man up (rp): nothing
     // to try)
@@ -1714,8 +1730,9 @@ export function fitStat(stat, rows, env) {
       // actual, as a flag's rest is judged (the eligible players' alone: every player's held strict, as every
       // other term's); every other term's no larger at all. The hourly refit judges it again each run, so a
       // bias grown past the tolerance as the season comes in drops it)
-      const tol = WHOLE_TOL.has(key) ? SUBGROUP_TOL : 0;
-      const eb = fine(tried.check?.bias, off.check?.bias, tol * (off.check?.mean ?? 0));
+      // (WHOLE_TOL's against the bias before the first of them, wholeBase: the budget shared, not one a term)
+      if (WHOLE_TOL.has(key)) wholeBase ??= off.check ?? null;
+      const eb = WHOLE_TOL.has(key) ? fine(tried.check?.bias, wholeBase?.bias, SUBGROUP_TOL * (wholeBase?.mean ?? 0)) : fine(tried.check?.bias, off.check?.bias);
       if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
       const ab = fine(tried.all?.bias, off.all?.bias);
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");

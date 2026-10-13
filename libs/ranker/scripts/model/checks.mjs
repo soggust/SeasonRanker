@@ -6,7 +6,7 @@
 //
 //   cause    why it's a CHECK: 'gap', 'role' or 'news' (an older one without it, the gap's), a role's sub-reason in
 //            roleReason (the NFL's backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line,
-//            depth; the NBA's minutes-back, lineup-start, lineup-bench; the NBA's, NHL's and MLB's far line
+//            depth; the NBA's minutes-back, lineup-start, lineup-bench; the NHL's ice-jump; the NBA's, NHL's and MLB's far line
 //            with its cause, props.mjs lineAlarmOf: line-questionable, line-goalie, line-lineup, line-rest,
 //            line-back, line-pitch-count, line-teammates), the
 //            news's unit in newsUnit (a prop's: news.mjs, his unit's play-caller, coordinator or head coach

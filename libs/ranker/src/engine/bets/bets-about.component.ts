@@ -97,7 +97,7 @@ const TERM_NAMES: Record<string, string> = {
   c_newStart: 'a bench player who started his last game',
   c_oppShots: 'opponent shots',
   c_pp: 'power play',
-  c_ppLean: "power-play time lately against his season's (NHL: a top unit's spot won or lost)",
+  c_ppLean: "his share of his team's power-play time lately against his season's (NHL: a top unit's spot won or lost)",
   c_teamShots: "his team's expected shots tonight (NHL)",
   c_mTotal: 'the betting total (NHL goals)',
   c_oppGoalie: 'opposing goalie',
