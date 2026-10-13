@@ -76,7 +76,7 @@ import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './de
 import { SKEW_MIN_LINE, ctxFactor, ctxKeys, factorProduct, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
-import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, hasKey } from './oddsapi.mjs';
+import { SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
@@ -934,38 +934,66 @@ export const API_MARKETS = {
   mlb: { pitcher_strikeouts: 'k', pitcher_outs: 'outs', batter_hits: 'hits', batter_total_bases: 'tb' },
 };
 
-// A game's props from The Odds API, the desk's book only (cost: the markets it returns): by player and stat,
-// the line and each side's price; null when it can't be had
-export async function apiProps(sport, oddsEvent) {
+// A game's props from The Odds API (cost: the markets it returns): by player and stat, the desk's book's line
+// and each side's price, and the other books' consensus at that line (oddsapi.mjs consensusOf: consensus, null
+// without enough books). known: the markets the desk's book returned on the game's last ask (none: the first),
+// which alone the other books are asked for (oddsapi.mjs propAsks: they add no market of their own); the
+// markets it returned this time on the result (dkMarkets), the next ask's known. null when it can't be had (a
+// call failed). ask and afford: the call and the allowance's word on its most cost (a test's recorded response)
+export async function apiProps(sport, oddsEvent, { known = null, ask = call, afford = (n) => hasKey() && canSpend('props', n) } = {}) {
   const markets = Object.keys(API_MARKETS[sport]);
-  if (!oddsEvent || !hasKey() || !canSpend('props', markets.length)) return null;
-  const body = await call('props', `/sports/${SPORT_KEYS[sport]}/events/${oddsEvent}/odds`, { markets: markets.join(','), bookmakers: PROP_BOOKS.join(',') });
-  const book = body?.bookmakers?.find((b) => b.key === BOOK);
-  if (!book) return body ? new Map() : null;
-  const out = new Map();
-  for (const m of book.markets ?? []) {
-    const stat = API_MARKETS[sport][m.key];
-    if (!stat) continue;
-    for (const o of m.outcomes ?? []) {
-      const key = `${o.description}|${stat}|${o.point}`;
-      const x = out.get(key) ?? { name: o.description, stat, line: o.point };
-      x[String(o.name).toLowerCase()] = american(o.price);
-      out.set(key, x);
+  if (!oddsEvent || !afford(markets.length)) return null;
+  const bodies = [];
+  for (const plan of propAsks(markets, known)) {
+    const body = await ask('props', `/sports/${SPORT_KEYS[sport]}/events/${oddsEvent}/odds`, { markets: plan.markets.join(','), bookmakers: plan.bookmakers.join(',') });
+    if (!body) return null;
+    bodies.push(body);
+  }
+  return propsFromBodies(sport, bodies);
+}
+
+// (The Odds API's event bodies read: the desk's book's main lines, each with the other books' consensus at its
+// line; dkMarkets, the markets the desk's book returned)
+export function propsFromBodies(sport, bodies) {
+  // (each book's sides: book -> "player|stat|line" -> { over, under })
+  const books = new Map();
+  const dkMarkets = new Set();
+  for (const body of bodies) {
+    for (const b of body?.bookmakers ?? []) {
+      const lines = books.get(b.key) ?? new Map();
+      books.set(b.key, lines);
+      for (const m of b.markets ?? []) {
+        const stat = API_MARKETS[sport][m.key];
+        if (!stat) continue;
+        if (b.key === BOOK) dkMarkets.add(m.key);
+        for (const o of m.outcomes ?? []) {
+          const key = `${o.description}|${stat}|${o.point}`;
+          const x = lines.get(key) ?? { name: o.description, stat, line: o.point };
+          x[String(o.name).toLowerCase()] = american(o.price);
+          lines.set(key, x);
+        }
+      }
     }
   }
   // (a player's main line: the one with both sides; the first such)
   const main = new Map();
-  for (const x of out.values()) if (x.over && x.under && !main.has(`${x.name}|${x.stat}`)) main.set(`${x.name}|${x.stat}`, x);
+  for (const [key, x] of books.get(BOOK) ?? []) {
+    if (!x.over || !x.under || main.has(`${x.name}|${x.stat}`)) continue;
+    const pairs = [...books].filter(([k]) => k !== BOOK).map(([, lines]) => lines.get(key)).filter((y) => y?.over && y?.under).map((y) => [y.over, y.under]);
+    main.set(`${x.name}|${x.stat}`, { ...x, consensus: consensusOf(pairs, [x.over, x.under], ['over', 'under']) });
+  }
+  main.dkMarkets = [...dkMarkets];
   return main;
 }
 
 // ESPN's board with The Odds API's lines and prices on it, where the API has the player: its line and both
-// prices replace the board's (the same book's, fresher, and the NFL's with prices at all)
+// prices replace the board's (the same book's, fresher, and the NFL's with prices at all); the other books'
+// consensus at its line kept beside them, the data's (none without enough books)
 export function withApiPrices(board_, api) {
   if (!api) return board_;
   return board_.map((p) => {
     const x = api.get(`${p.athlete.name}|${p.stat.key}`);
-    return x ? { ...p, line: x.line, prices: { over: x.over, under: x.under }, source: 'the odds api' } : p;
+    return x ? { ...p, line: x.line, prices: { over: x.over, under: x.under }, source: 'the odds api', ...(x.consensus ? { consensus: x.consensus } : {}) } : p;
   });
 }
 

@@ -7,7 +7,15 @@
 //          times that. Up to 10 bookmakers named count as one region (the docs: "every group of 10 bookmakers
 //          is the equivalent of 1 region"), so the desk names just its book and Pinnacle (one region's cost,
 //          and Pinnacle sits in the eu region, which asking by region would add as a second) and never asks by
-//          region
+//          region. The live calls name the other US books too (WIDE_BOOKS: the 10 one region covers), for the
+//          consensus below: a game lines call costs the same with them; a game's props ask them only for the
+//          markets the desk's book returned on that game's last ask (propAsks), so they add no market of their own
+//   consensus each market's fair chance by the other books (consensusOf: the median of their de-vigged pairs at
+//          the desk's book's own line, from CONSENSUS_MIN books, else none), and the side the desk's book prices
+//          OUTLIER or more better than that (its return at the consensus chance): kept beside the book's own
+//          fair on the lines, the props, the bets, the CHECKs and the board, for the data only. Nothing is
+//          priced off it yet (the desk's book's fair, Pinnacle's for game lines, as before) until the graded rows
+//          show it the better chance; the other books missing, none, and nothing changes
 //   usage  each call's cost and the balance after it (the API's x-requests-last and x-requests-remaining) land
 //          in .cache/model/odds-usage.json, by feature (lines, props, history); each sport's state gets a summary
 //   budget the cycle is a month from its first call here (an assumption: the API resets on the plan's billing
@@ -46,6 +54,14 @@ export const SPORT_KEYS = { nfl: 'americanfootball_nfl', nba: 'basketball_nba', 
 export const SHARP = 'pinnacle';
 export const LINE_BOOKS = [BOOK, SHARP];
 export const PROP_BOOKS = [BOOK];
+// (and the other US books, for the consensus only: with the desk's book and Pinnacle the 10 that one region's
+// cost covers (The Odds API's keys; williamhill_us is Caesars), never more, or a call costs a second region)
+export const OTHER_BOOKS = ['fanduel', 'betmgm', 'williamhill_us', 'espnbet', 'fanatics', 'betrivers', 'hardrockbet', 'ballybet'];
+export const WIDE_BOOKS = [BOOK, SHARP, ...OTHER_BOOKS];
+// (the consensus: from this many other books at the desk's book's line, else none; the desk's book an outlier on
+// a side whose price returns this much or more at the consensus chance)
+export const CONSENSUS_MIN = 2;
+export const OUTLIER = 0.03;
 
 // (a URL with its key taken out, for anything shown)
 export const redact = (s) => String(s).replace(/apiKey=[^&\s"']+/gi, 'apiKey=***');
@@ -196,9 +212,48 @@ const devig = (a, b) => {
   return [x / (x + y), y / (x + y)];
 };
 
+// The consensus on a market: the other books' price pairs at the desk's book's line (pairs: [first side's,
+// second's], American), each de-vigged, their median the first side's fair chance; and the side (of sides)
+// whose price at the desk's book (dk, the same pair) returns OUTLIER or more at that chance, its return (by). From
+// CONSENSUS_MIN books, else null
+export function consensusOf(pairs, dk, sides) {
+  const ok = (x) => Array.isArray(x) && x.length === 2 && x.every((o) => Number.isFinite(o) && Math.abs(o) >= 100);
+  const fairs = (pairs ?? []).filter(ok).map(([a, b]) => devig(a, b)[0]).sort((a, b) => a - b);
+  if (fairs.length < CONSENSUS_MIN) return null;
+  const mid = fairs.length >> 1;
+  const fair = fairs.length % 2 ? fairs[mid] : (fairs[mid - 1] + fairs[mid]) / 2;
+  const out = { fair: Math.round(fair * 1e4) / 1e4, n: fairs.length };
+  if (!ok(dk)) return out;
+  const ret = [fair / implied(dk[0]) - 1, (1 - fair) / implied(dk[1]) - 1];
+  const i = ret[0] >= ret[1] ? 0 : 1;
+  return ret[i] >= OUTLIER ? { ...out, outlier: sides[i], by: Math.round(ret[i] * 1e4) / 1e4 } : out;
+}
+
+// A row's consensus fields (a bet's, a CHECK's) from its market's consensus (consensusOf's: its first side's
+// fair, first): fairConsensus its side's fair chance by the other books, consensusN how many, dkOutlier the side
+// the desk's book prices OUTLIER better than them (either side, the row's or not) and dkBy its return there;
+// none without a consensus
+export function consensusFields(c, side, first) {
+  if (!c || !Number.isFinite(c.fair)) return {};
+  return { fairConsensus: Math.round((side === first ? c.fair : 1 - c.fair) * 1e4) / 1e4, consensusN: c.n, ...(c.outlier ? { dkOutlier: c.outlier, dkBy: c.by } : {}) };
+}
+
+// A game's props asks: the markets the desk's book returned on its last ask (known) of all the desk's book and
+// the other books (WIDE_BOOKS), the rest of the desk's book alone (PROP_BOOKS). A call's cost is the markets it
+// returns, so the other books, asked only for markets the desk's book posts, add none of their own (one it has
+// taken down since its last ask the most: what canSpend already holds for), and a market it posts later is
+// asked of it alone, the others joining on the ask after. The first ask: the desk's book alone, as before
+export function propAsks(markets, known = null) {
+  const seen = new Set(known ?? []);
+  const wide = markets.filter((m) => seen.has(m));
+  const own = markets.filter((m) => !seen.has(m));
+  return [...(wide.length ? [{ markets: wide, bookmakers: WIDE_BOOKS }] : []), ...(own.length ? [{ markets: own, bookmakers: PROP_BOOKS }] : [])];
+}
+
 // An event's game lines as the desk prices them: for each market, the desk's book's line and both sides'
 // prices there, and the fair chance of the home (or over) side: Pinnacle's at that same line, the vig taken
-// out, when it posts it; else the desk's book's own, de-vigged (both kept: the backtest compares them)
+// out, when it posts it; else the desk's book's own, de-vigged (both kept: the backtest compares them); and the
+// other books' consensus at that line (consensusOf, Pinnacle among them; null without CONSENSUS_MIN), the data's
 export function linesFromEvent(ev) {
   const book = (ev.bookmakers ?? []).find((b) => b.key === BOOK);
   const sharp = (ev.bookmakers ?? []).find((b) => b.key === SHARP);
@@ -221,7 +276,15 @@ export function linesFromEvent(ev) {
     const theirs = read(sharp, key);
     const same = theirs?.[sides[0]] && theirs?.[sides[1]] && theirs[sides[0]].line === mine[sides[0]].line;
     const pin = same ? devig(theirs[sides[0]].odds, theirs[sides[1]].odds)[0] : null;
-    out[key] = { line: mine[sides[0]].line, prices: Object.fromEntries(sides.map((s) => [s, mine[s].odds])), fair: pin ?? own, own, sharp: pin };
+    // (the other books' pairs at the desk's book's line, both sides)
+    const at = (x) => x?.[sides[0]] && x?.[sides[1]] && sides.every((s) => x[s].line === mine[s].line);
+    const pairs = (ev.bookmakers ?? [])
+      .filter((b) => b.key !== BOOK)
+      .map((b) => read(b, key))
+      .filter(at)
+      .map((x) => sides.map((s) => x[s].odds));
+    const consensus = consensusOf(pairs, sides.map((s) => mine[s].odds), sides);
+    out[key] = { line: mine[sides[0]].line, prices: Object.fromEntries(sides.map((s) => [s, mine[s].odds])), fair: pin ?? own, own, sharp: pin, consensus };
   }
   return out;
 }

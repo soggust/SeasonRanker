@@ -118,7 +118,7 @@ import { adjust, expect, fit, fitContext, gateOf, replay, round } from './rating
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { closeOf, closingLines, clvOf, clvSummary, propCloseOf } from './clv.mjs';
-import { LINE_BOOKS, SPORT_KEYS, call, canSpend, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
+import { OUTLIER, SPORT_KEYS, WIDE_BOOKS, call, canSpend, consensusFields, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
@@ -431,7 +431,8 @@ async function loadHistory(r) {
 }
 
 // 1b. the coming games' lines from The Odds API (oddsapi.mjs): the desk's book's prices, Pinnacle's fair
-// chance; one call for the sport (its three markets: 3 credits), only with a market still to bet (a game already
+// chance, and the other books' consensus beside them, the data's (WIDE_BOOKS: 10 books, one region's cost); one
+// call for the sport (its three markets: 3 credits), only with a market still to bet (a game already
 // bet only notes the line it sees, which ESPN's board, the same book's, gives free: asked hourly, these used
 // up the day's allowance overnight; a market the guard skipped or the book didn't price rests REST_FOR before
 // it's asked about again, so it doesn't buy the call every hour) and today's lines allowance left. Otherwise
@@ -452,7 +453,7 @@ async function liveLines(r) {
     if (Array.isArray(list)) for (const [u, ev] of matchGames(list, r.upcoming)) u.lines.oddsEvent = ev.id;
     return;
   }
-  const events = await call('lines', `/sports/${SPORT_KEYS[r.sport]}/odds`, { markets: 'h2h,spreads,totals', bookmakers: LINE_BOOKS.join(','), ...range });
+  const events = await call('lines', `/sports/${SPORT_KEYS[r.sport]}/odds`, { markets: 'h2h,spreads,totals', bookmakers: WIDE_BOOKS.join(','), ...range });
   if (!Array.isArray(events)) return;
   let matched = 0;
   const pairs = matchGames(events, r.upcoming);
@@ -478,12 +479,31 @@ async function liveLines(r) {
       total: { line: l.totals?.line ?? null, over: l.totals?.prices.over ?? null, under: l.totals?.prices.under ?? null },
       fair: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.fair])),
       fairSource: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.sharp !== null ? 'pinnacle' : BOOK])),
+      // (the other books' consensus at the book's line, by market (oddsapi.mjs consensusOf): the data's, not priced off)
+      consensus: Object.fromEntries(Object.entries(odds).filter(([, v]) => v?.consensus).map(([k, v]) => [k, v.consensus])),
     };
+    consensusSeen(r, 'lines', Object.values(u.lines.consensus), Object.keys(odds).filter((k) => odds[k]).length);
     (r.lineRows ??= []).push(...gameRows(u.game.id, u.lines, 'o'));
     matched++;
   }
   r.linesSource = `the odds api (${matched} of ${r.upcoming.length} games)`;
   console.log(`${r.sport}: lines from The Odds API for ${matched} of ${r.upcoming.length} coming games`);
+  consensusLog(r, 'lines');
+}
+
+// (the other books' consensus this run (oddsapi.mjs consensusOf), counted and logged: of the markets the book
+// priced, how many had one and how many the book priced OUTLIER better than it on a side; the data's only)
+function consensusSeen(r, kind, list, of) {
+  const c = ((r.consensusSeen ??= {})[kind] ??= { markets: 0, with: 0, outliers: 0 });
+  c.markets += of;
+  c.with += list.length;
+  c.outliers += list.filter((x) => x.outlier).length;
+}
+// (a game market's row's consensus fields, its side's: oddsapi.mjs consensusFields; none off ESPN's board)
+const consensusOn = (lines, key, side) => consensusFields(lines?.consensus?.[key], side, key === 'total' ? 'over' : 'home');
+function consensusLog(r, kind) {
+  const c = r.consensusSeen?.[kind];
+  if (c?.markets) console.log(`${r.sport}: the other books' consensus on ${c.with} of ${c.markets} ${kind === 'lines' ? 'game markets' : 'props'} at DraftKings' line, DraftKings ${Math.round(OUTLIER * 100)}%+ better on a side on ${c.outliers} (logged, not priced off)`);
 }
 
 // (The Odds API's events matched to the coming ESPN games: the same two teams, by nickname, within six hours,
@@ -1209,7 +1229,7 @@ function betGames(r) {
     const notYet = phase === 'early' ? 'not in its window yet' : news.length && phase !== 'last' ? `waiting for the news: ${news.join(', ')}` : null;
     const priced = price(game, exp, lines, params, r.shape);
     // (every market priced, both sides, on the betting board: writeBoard)
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST), at });
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the book');
     let picks = [];
@@ -1280,6 +1300,7 @@ function betGames(r) {
           expTotal: round(exp.total, 2),
           book: lines.book,
           fairFrom: fairFrom[key] ?? 'its own prices',
+          ...consensusOn(lines, key, s.side),
           context: { ...seen, ...(noted.length ? { ownerNotes: noted } : {}) },
         },
         // (the guard's words for the model's side: the skip was judged on the side the price favored)
@@ -1358,6 +1379,8 @@ function betGames(r) {
         expTotal: round(exp.total, 2),
         book: lines.book,
         fairFrom: fairFrom[market.market] ?? 'its own prices',
+        // (the other books' consensus fair beside the book's, the data's: never priced off, oddsapi.mjs)
+        ...consensusOn(lines, key, pick.side),
         context: { ...seen, ...(guard ? { guard: guard.why } : {}), ...(flipped ? { oneSide: `the other side of its ${key === 'ml' ? 'spread' : 'moneyline'}'s, which took this one` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
         status: 'open',
         profit: 0,
@@ -1494,8 +1517,9 @@ async function betProps(r) {
   // their last line and price before the close, the NFL's CLV), and again when its props were taken back (on
   // news, or by --replace) and its board has no prices of its own (the NFL's: owed, kept till an ask succeeds,
   // so one whose ask failed or waited on the allowance isn't left with nothing to bet on); timing.mjs propAsk.
-  // PROP_ASKS at most; the counts kept in .cache/model/odds-props.json. The games never asked go first, so the
-  // re-asks don't spend the allowance their first asks need)
+  // PROP_ASKS at most; the counts kept in .cache/model/odds-props.json, with the markets the book returned on each
+  // game's last ask (:dk, the only ones the other books are asked for on the next: oddsapi.mjs propAsks). The
+  // games never asked go first, so the re-asks don't spend the allowance their first asks need)
   const asked = read(PROPS_ASKED, {});
   if (!DRY) {
     const owe = new Set([...(r.replacedProps ?? []), ...[...(r.takenBack?.values() ?? [])].filter((x) => x.bet.market === 'prop').map((x) => x.bet.event)]);
@@ -1561,13 +1585,17 @@ async function betProps(r) {
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
       let fresh = false;
       if (why && u.lines.oddsEvent && !DRY) {
-        const api = await apiProps(sport, u.lines.oddsEvent);
+        // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
+        // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
+        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null });
         if (api) {
           fresh = true;
           asked[game.id] = times + 1;
+          asked[`${game.id}:dk`] = api.dkMarkets ?? [];
           if (why === 'near') asked[`${game.id}:near`] = 1;
           delete asked[`${game.id}:owed`];
           write(PROPS_ASKED, asked);
+          consensusSeen(r, 'props', [...api.values()].map((x) => x.consensus).filter(Boolean), api.size);
           board_ = withApiPrices(board_, api);
           r.lineRows.push(...propRows(game.id, board_).filter((x) => x.src === 'o'));
           run.api = (run.api ?? 0) + 1;
@@ -1724,6 +1752,7 @@ async function betProps(r) {
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
+  consensusLog(r, 'props');
 }
 
 // A priced prop (props.mjs priceProps) as the ledger's bet (or, intent 'check', the CHECK's: checks.mjs): its
@@ -1766,6 +1795,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     expTotal: round(exp.total, 2),
     book: 'DraftKings',
     pricesFrom: x.prop.source ?? (x.priced ? 'espn' : 'assumed -110'),
+    // (the other books' consensus at its line, its side's, the data's: never priced off, oddsapi.mjs)
+    ...consensusFields(x.prop.consensus, x.side, 'over'),
     // (when its price was The Odds API's: this run's ask, or (priced from its CHECK's stored price:
     // checks.mjs withStoredPrices) the ask that gave it; a CHECK keeps it, so a later run knows how old it is)
     ...(x.prop.stored ? { priceAt: x.prop.stored.at } : intent === 'check' && x.prop.source === 'the odds api' ? { priceAt: new Date().toISOString() } : {}),

@@ -14,14 +14,18 @@
 //             chance it wins, ks: its Kelly score (picks.mjs kellyOf, the picks' order), b: its band (picks.mjs
 //             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK the page
 //             shows, on the model's side: never a game market's now, the gap's a shadow (checks.mjs shadowOf),
-//             both sides PASS), bot: 'bet' or 'check' where the bot has that side open (its ledger) }
+//             both sides PASS), bot: 'bet' or 'check' where the bot has that side open (its ledger); fc: the
+//             other books' consensus fair chance of that side at the book's line and cn how many books (none
+//             without a consensus: oddsapi.mjs consensusOf), dv: 1 where the book's price beats it by OUTLIER
+//             or more (the data's: nothing is priced off it) }
 //     p       its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
 //             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), sw: a shadow's passAs
 //             ('gap' or 'small', why it's a PASS), at: when priced, bot and bk: the side the bot has open and
-//             'bet' or 'check' }
+//             'bet' or 'check', fc and cn: the other books' consensus fair chance over and how many books, dv:
+//             the side ('over' or 'under') the book's price beats it on by OUTLIER or more (as the game markets') }
 //
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
 // market, side, line and price each game's board has shown, kept a week past its start, so the play-money
@@ -37,12 +41,16 @@ import { edgeLevel, kellyOf } from './picks.mjs';
 // (a game's seen prices kept this long past its start: past the settler's longest wait, props.mjs PROP_WAIT)
 export const SEEN_KEEP = 8 * 864e5;
 
+// (a game market's side's consensus (c: its market's, the first side's fair: oddsapi.mjs consensusOf): fc, cn, dv)
+const consensusOf = (c, side, first) => (Number.isFinite(c?.fair) ? { fc: round(side === first ? c.fair : 1 - c.fair, 4), cn: c.n, ...(c.outlier === side ? { dv: 1 } : {}) } : {});
+
 // (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's, LIKE at the least)
 const bandOf = (kelly, p, ev, { check = false, pass = false } = {}) => (check ? 'check' : pass || !(ev > 0) ? 'low' : edgeLevel(kelly, p));
 
 // A game's markets as the board's (desk.mjs price's: each market's two sides, the model's chance and the book's
-// fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust
-export function boardMarkets(markets, trustOf) {
+// fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust;
+// consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side
+export function boardMarkets(markets, trustOf, consensus = null) {
   const out = {};
   for (const m of markets ?? []) {
     const [s0] = m.sides;
@@ -56,7 +64,7 @@ export function boardMarkets(markets, trustOf) {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }) };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
     });
   }
   return out;
@@ -93,6 +101,7 @@ export function boardProp(x, at) {
     b: [over.b, under.b],
     ...(pass ? { sk: 1 } : {}),
     ...(pass && shadow ? { sw: shadow.passAs } : {}),
+    ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
     at,
   };
 }
