@@ -705,16 +705,18 @@ async function fitTheProps(r) {
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
       // (the held-out fifths by projection, lowest first: actual over projected less 1, without the pull toward
-      // the middle (sl) and with it where it was tried; and the recalibration by side's (cs): each side's log loss
+      // the middle (sl) and with it where it was tried, then the check as fit (the draft's prior after it); and the
+      // recalibration by side's (cs): each side's log loss
       // (a line under the projection, then at it or over) and the skew's rows (a side taken against its own
-      // projection: the model's chance of it, how often it won), with cal alone then by side)
+      // projection: the model's chance of it, how often it won), with cal alone then by side (cal alone where it
+      // isn't tried: project.mjs TRY_CS))
       const fifths = (x) => (x ? x.map((q) => q.ratio).join('/') : 'n/a');
       const sl = f.floors?.sl;
-      kept.push(sl?.fifths ? `fifths ${fifths(sl.fifths[0])} to ${fifths(sl.fifths[1])}` : `fifths ${fifths(f.check?.fifths)}`);
+      kept.push(sl?.fifths ? `fifths ${fifths(sl.fifths[0])} to ${fifths(sl.fifths[1])}${sl.exact ? ' (each size replayed)' : ''}, final ${fifths(f.check?.fifths)}` : `fifths ${fifths(f.check?.fifths)}`);
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
       const skew = (x) => (x?.n ? `${x.n} said ${x.said} won ${x.was}` : 'none');
-      if (cs) kept.push(`by side ${sides(cs.bySide[0])} to ${sides(cs.bySide[1])}, skew rows ${skew(cs.skew[0])} to ${skew(cs.skew[1])}`);
+      if (cs) kept.push(cs.size === null && cs.fails?.[0] === 'not tried' ? `by side ${sides(cs.bySide[0])}, skew rows ${skew(cs.skew[0])} (by side not tried)` : `by side ${sides(cs.bySide[0])} to ${sides(cs.bySide[1])}, skew rows ${skew(cs.skew[0])} to ${skew(cs.skew[1])}`);
       // (the draft's prior's gate, its own numbers: without it, then at the size the search took (dp), each at
       // its own dispersion r: the eligible players' held-out games, every player's bias, the players in their
       // first season and first two, and those two seasons' early games (under 3 of his own: bias and error))

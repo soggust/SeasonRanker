@@ -1,10 +1,13 @@
 // The pull toward the middle (sl) and the recalibration by side (cs): libs/ranker/scripts/model/project.mjs
 // middleF, calAt, lineChances, impliedMean, fifthsOf, and the live projection's (props.mjs) the same as the
-// history's.
+// history's (factorProduct, the one product both read); searched only on the stats marked middle; the write-up's
+// words by the pull's sign.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { SL_CAP, calAt, fifthsOf, impliedMean, lineChances, makeModel, middleF, nbOver, recal } from '../libs/ranker/scripts/model/project.mjs';
-import { SKEW_MIN_LINE } from '../libs/ranker/scripts/model/props.mjs';
+import { readFileSync } from 'node:fs';
+import { SL_CAP, calAt, factorProduct, fifthsOf, impliedMean, lineChances, makeModel, middleF, nbOver, recal } from '../libs/ranker/scripts/model/project.mjs';
+import { SKEW_MIN_LINE, STATS } from '../libs/ranker/scripts/model/props.mjs';
+import { factsOf } from '../libs/ranker/scripts/model/writeup.mjs';
 
 test('middleF: off at sl 0 or no rm; a low projection pulled up, a high one down, held to SL_CAP', () => {
   assert.equal(middleF({ sl: 0, rm: 4 }, 1), 1);
@@ -70,4 +73,37 @@ test("fifthsOf: the lowest to the highest fifth by projection, each one's actual
 
 test('SKEW_MIN_LINE: props.mjs reads project.mjs\'s, the held-out check\'s skew rows the same', () => {
   assert.equal(SKEW_MIN_LINE, 5);
+});
+
+test("factorProduct: the history's projection before the pull and the lean (makeModel raw) is the one props.mjs prices from", () => {
+  const stat = { key: 'rec' };
+  const params = { K: 4, w: 0.2, a: 0.5, b: 0.5, scale: 1.07, rm: 4, sl: 0.15 };
+  const rows = [1, 2, 3, 4].map((d) => ({ pid: 'x', pos: 'WR', season: 2025, date: `2025-09-0${d}`, opp: 'o', s: { rec: d } }));
+  const m = makeModel(stat, params, {});
+  m.learn(rows);
+  const p = m.project({ pid: 'x', pos: 'WR', season: 2025, date: '2025-09-10', opp: 'o', script: 1.1 });
+  assert.ok(p.raw > 0);
+  // (props.mjs: factorProduct(f.params, { ...p, script: tonight's, ctxF: tonight's }); at the row's own the same x)
+  assert.ok(Math.abs(factorProduct(params, { ...p, script: p.script, ctxF: p.ctxF }) - p.raw) < 1e-12);
+  assert.equal(p.slF, middleF(params, p.raw));
+  assert.ok(Math.abs(params.scale * p.raw * p.slF - p.mu) < 1e-12);
+  const src = readFileSync(new URL('../libs/ranker/scripts/model/props.mjs', import.meta.url), 'utf8');
+  assert.ok(src.includes('const raw = factorProduct(f.params, { ...p, script: scriptV, ctxF });'));
+});
+
+test('the pull searched only on the stats marked middle: NFL passing TDs and MLB hits', () => {
+  const marked = Object.entries(STATS).flatMap(([sport, list]) => list.filter((s) => s.middle).map((s) => `${sport} ${s.key}`));
+  assert.deepEqual(marked, ['nfl passTd', 'mlb hits']);
+});
+
+test("the write-up's words by the pull's sign: toward the typical one over 0, away from it under", () => {
+  const whatOf = (slF, sl) => {
+    const bet = { id: '401:prop:passTd:9', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', placedAt: '2026-10-09T11:00:00Z', matchup: 'BUF @ NYJ', market: 'prop', propType: 'passTd', statLabel: 'Pass TDs', player: 'A Passer', athlete: 9, team: 2, side: 'over', line: 1.5, odds: 120, model: 0.5, fair: 0.45, p: 0.45, units: 0.5, intent: 'action', pick: 'A Passer Over 1.5 Pass TDs', status: 'open', profit: 0, projection: { mean: 2 * slF, rate: 2, recent: 2, slF, ...(sl === undefined ? {} : { sl }), applied: { scale: 1, w: 0 } } };
+    return factsOf(bet, { game: null, sib: null }).drivers?.find((d) => d.name === 'middle')?.what;
+  };
+  assert.match(whatOf(1.2, 0.15), /pulling a low projection back up toward/);
+  assert.match(whatOf(0.8, 0.15), /pulling a high projection back down toward/);
+  assert.match(whatOf(1.2), /pulling a low projection back up toward/);
+  assert.match(whatOf(1.2, -0.05), /pushing a high projection further up, away from/);
+  assert.match(whatOf(0.8, -0.05), /pushing a low projection further down, away from/);
 });

@@ -240,7 +240,13 @@ function driverWhat(name, bet, sheet, raw) {
     return 'teammates back taking some of his work';
   }
   if (name === 'context') return ctxWhat(bet, sheet);
-  if (name === 'middle') return raw >= 1 ? 'the fit pulling a low projection back up toward the typical one' : 'the fit pulling a high projection back toward the typical one';
+  // (sl over 0 pulls toward the stat's typical projection, under 0 pushes away from it: a raised projection was
+  // a low one pulled up, or a high one pushed higher; a bet from before sl was stored, over 0, the only kind kept)
+  if (name === 'middle') {
+    const out = bet.projection?.sl < 0;
+    if (raw >= 1) return out ? 'the fit pushing a high projection further up, away from the typical one' : 'the fit pulling a low projection back up toward the typical one';
+    return out ? 'the fit pushing a low projection further down, away from the typical one' : 'the fit pulling a high projection back down toward the typical one';
+  }
   return name;
 }
 

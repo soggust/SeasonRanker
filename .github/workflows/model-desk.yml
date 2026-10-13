@@ -37,8 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     # (a run is about 15 to 25 minutes as of 2026-10-12 (the NFL props' fit alone about 12 here, 707s on the
     # 20:17 run: its late terms (the next man up, the injury return, the seasons' carryover's pl) adding replays;
-    # the carryover's sk and rx no longer searched for it), a cold one longer, the build and deploy a few more: a
-    # hung source stops here, not after GitHub's 6 hours of runs queued behind it. Under 30 the margin to keep:
+    # the carryover's sk and rx no longer searched for it; the pull toward the middle searched only on passing TDs
+    # and MLB hits, and the recalibration by side not tried: 792s to 721s locally), a cold one longer, the build
+    # and deploy a few more: a hung source stops here, not after GitHub's 6 hours of runs queued behind it. Under 30 the margin to keep:
     # a late term never kept comes off the search, project.mjs)
     timeout-minutes: 45
 
