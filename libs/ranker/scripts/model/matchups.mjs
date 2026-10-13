@@ -71,6 +71,13 @@
 //            next one up gets his power play). The NFL's and the NBA's each with a split learned from the history
 //            after the even ones (absorbTable: who absorbs a missing player's work, by position and place in the
 //            order, across positions, some of it lost; project.mjs vl)
+//   defenders the other side's key defenders out tonight (audit #15; props.mjs CTX oppD, oppDB, oppFront, measured
+//            and on no stat's ctx): the NHL's top-four defensemen missing (oppD: their time on ice a game over 60);
+//            the NFL's regulars missing from its defense (defenseOut: nflverse's snap counts, its secondary's oppDB
+//            and its front seven's oppFront, each starter his share of the snaps). Each at his level before he went
+//            out through his first OUT_MAX games out (then the opponent's tables hold the team without him); in the
+//            history, not in the game's box or snap counts, at bet time the other side's injury report and roster
+//            (props.mjs oppMiss); none read, 0
 //   power    the NHL: a skater's power-play time a game (recent games counting most) and the power plays his
 //   play     team can expect: its opponent's penalties a game over the league's (season to date, last season's
 //            at half, pulled toward the league's by 10 games); the referees' lean is the context's (props.mjs CTX.pp);
@@ -229,6 +236,62 @@ export function sideOfPlays(p, home) {
 // learned: the learned split read into the rows' work missing (vacated's fourth: absorbOf; false, the split in
 // proportion in its place, the default: a caller opts in; its table still learned for the log, about no time:
 // NFL matchups 7.1s either way; props.mjs passes project.mjs TRY_VL)
+// The NFL's other side's key defenders out (audit #15; props.mjs CTX oppDB, oppFront): each team's defenders'
+// share of its defensive snaps a game (nflverse's snap counts, playerlogs.mjs defense: his snaps over the most of
+// any of its defenders in the game), recent games counting most (DEF_RATE), fading game by game he misses, a new
+// season starting at half last season's. Before a game, its regulars (DEF_REG of the snaps or more) missing it,
+// a core one (DEF_CORE or more) at once and the rest from their second game out in a row (teamWork gate's rule:
+// a fringe one's one game out is a coach's call no report carries), each at his share before he went out through
+// his first OUT_MAX games out, their shares summed by group: the secondary
+// (DB: cornerbacks and safeties) and the front seven (FR: linemen and linebackers), a starter about 0.9. In the
+// history missing is not in the game's snap counts (a game without them read: unknown, 0, and not learned from);
+// live, by the other side's injury report and roster (props.mjs oppMiss)
+const DEF_RATE = 0.35;
+const DEF_REG = 0.5;
+const DEF_CORE = 0.7;
+export const defGroup = (pos) => (/^(CB|S|FS|SS|DB|SAF)$/.test(pos ?? '') ? 'DB' : /^(DE|DT|NT|DL|LB|ILB|OLB|MLB|EDGE)$/.test(pos ?? '') ? 'FR' : null);
+export function defenseOut() {
+  const teams = new Map();
+  const teamOf = (id, season) => {
+    let t = teams.get(id);
+    if (!t || t.season !== season) {
+      const last = t && t.season === season - 1 ? t : null;
+      t = { season, p: new Map(last ? [...last.p].map(([k, x]) => [k, { g: x.g, v: x.v * 0.5, h: x.v * 0.5, out: 0 }]) : []) };
+      teams.set(id, t);
+    }
+    return t;
+  };
+  // (a side's regulars missing, by group: { DB, FR }, missOf(id) 0 to 1; each at his share before he went out (h),
+  // through his first OUT_MAX games out in a row)
+  const missing = (id, season, missOf) => {
+    const out = { DB: 0, FR: 0 };
+    for (const [pid, x] of teamOf(id, season).p) {
+      if (x.h < DEF_REG || x.out > OUT_MAX) continue;
+      const m = Math.min(1, Math.max(0, Number(missOf(pid)) || 0));
+      if (m > 0 && (x.h >= DEF_CORE || x.out >= 1)) out[x.g] += m * x.h;
+    }
+    return { DB: Math.round(out.DB * 1000) / 1000, FR: Math.round(out.FR * 1000) / 1000 };
+  };
+  // (a side's game learned: list [id, position, snaps], its defenders who played)
+  const learn = (id, season, list) => {
+    const t = teamOf(id, season);
+    const most = Math.max(0, ...list.map((x) => x[2]));
+    if (!(most > 0)) return;
+    const played = new Set();
+    for (const [pid, pos, n] of list) {
+      const g = defGroup(pos);
+      if (!g) continue;
+      const s = Math.min(1, n / most);
+      const x = t.p.get(pid);
+      played.add(pid);
+      const v = x ? x.v + (s - x.v) * DEF_RATE : s;
+      t.p.set(pid, { g, v, h: v, out: 0 });
+    }
+    for (const [pid, x] of t.p) if (!played.has(pid)) (x.v *= 1 - DEF_RATE), (x.out += 1);
+  };
+  return { missing, learn };
+}
+
 export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   const games = new Map();
   for (const r of rows) {
@@ -243,6 +306,9 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
     games.set(key, g);
   }
   const list = [...games.values()].sort((a, b) => a.date.localeCompare(b.date));
+  // (the other side's key defenders out: playerlogs.mjs's defenders by game and side, none without them)
+  const defLists = rows.defense instanceof Map ? rows.defense : null;
+  const defs = defenseOut();
   const off = new Map();
   const def = new Map();
   const team = new Map();
@@ -621,9 +687,20 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
     let j = i;
     while (j < list.length && list[j].date.slice(0, 10) === day) j++;
     const batch = list.slice(i, j);
+    // (the other side's key defenders out: each side's missing from its game's snap counts, before the day's
+    // learned; a side whose game has none read, unknown (0) and not learned from)
+    const defOut = new Map();
+    for (const g of batch) {
+      const d = defLists?.get(`${g.game}|${g.opp}`);
+      if (d && !defOut.has(`${g.game}|${g.opp}`)) {
+        const on = new Set(d.map((x) => x[0]));
+        defOut.set(`${g.game}|${g.opp}`, defs.missing(g.opp, g.season, (id) => (on.has(id) ? 0 : 1)));
+      }
+    }
     // (the day's rows, from what was known before it)
     for (const g of batch) {
       const playing = new Set(g.rows.map((r) => r.pid));
+      const dOut = defOut.get(`${g.game}|${g.opp}`);
       // (the game's snap counts read: without them one missing from its logs may have played with no stat, so
       // none is promoted over him; the same rows' logs that say who's playing, not their numbers)
       const read = g.rows.some((r) => (r.s.snaps ?? 0) > 0);
@@ -649,6 +726,18 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
         r.sameGames = sameOf(r.pid, g.team, g.season, r.pos, (id) => read && !playing.has(id));
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
+        r.oppDB = dOut?.DB ?? 0;
+        r.oppFront = dOut?.FR ?? 0;
+      }
+    }
+    // (each side's defenders in the day's games learned)
+    const seenDef = new Set();
+    for (const g of batch) {
+      for (const [side, key] of [[g.opp, `${g.game}|${g.opp}`], [g.team, `${g.game}|${g.team}`]]) {
+        const d = defLists?.get(key);
+        if (!d || seenDef.has(key)) continue;
+        seenDef.add(key);
+        defs.learn(side, g.season, d);
       }
     }
     // (then learned from)
@@ -766,7 +855,7 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   return {
     // (missing: how surely each of the team's players is missing the coming game, by id (a function, 0 to 1),
     // or a set of the ones out: the work they leave)
-    live: (pid, teamId, oppId, pos, season, missing = null) => {
+    live: (pid, teamId, oppId, pos, season, missing = null, extra = {}) => {
       const missOf = typeof missing === 'function' ? missing : missing instanceof Set ? (id) => (missing.has(String(id)) ? 1 : 0) : () => 0;
       const vacs = vacated(teamId, season, pid, pos, missOf);
       const past = vacPast(pid, season, pos);
@@ -774,7 +863,9 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
       const q1 = qb1Out(teamId, season, pid, pos, missOf);
       const dep = depthOf(pid, season, pos);
       const p = POS(pos);
-      return { role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
+      const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
+      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => ({ ...absorb.dump(), read: learned }),
@@ -975,7 +1066,21 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absor
     };
   };
   const histMiss = (team, season, playing, core) => gate(team, season, (id) => (playing.has(id) ? 0 : 1), core);
-  return { vacated, learn, gate, histMiss, none: NONE, absorbed: () => (table ? { ...table.dump(), read: absorb.learned !== false } : null) };
+  // (a team's work missing in a group (the other side's key defenders out, audit #15: the NHL's top-four
+  // defensemen): its players there with min a game or more in measure m at their level before they went out
+  // (the fade undone), through their first maxOut games out in a row (the opponent's tables learn the team
+  // without them after), each by how surely he's missing it (missOf, gated as above), their work summed)
+  const missingWork = (team, season, missOf, grp, m, min, maxOut) => {
+    const w = workOf(team, season);
+    let t = 0;
+    for (const [id, x] of w.p) {
+      const out = x.out ?? 0;
+      const v = (x.v[m] ?? 0) / Math.pow(1 - rate, out);
+      if (x.g === grp && out <= maxOut && v >= min) t += Math.min(1, Math.max(0, Number(missOf(id)) || 0)) * v;
+    }
+    return t;
+  };
+  return { vacated, learn, gate, histMiss, missingWork, none: NONE, absorbed: () => (table ? { ...table.dump(), read: absorb.learned !== false } : null) };
 }
 
 // (the core players whose one game out counts at once (teamWork gate, the history's and a coming game's alike):
@@ -983,6 +1088,10 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absor
 // it, from his second game out in a row)
 export const NBA_CORE = 24;
 export const NHL_CORE = { F: 14, D: 18 };
+// (the other side's key defenders out (audit #15): counted at their level before they went out through their first
+// OUT_MAX games out in a row (the NHL's oppD, the NFL's defenseOut), then left to the opponent's tables, which by
+// then hold the team without them)
+const OUT_MAX = 3;
 // (an NHL skater's power-play lean (nhlMatchups ppLean): the games of his this season it waits for (his team's
 // with a power play to share), the share added to each side of the ratio (a tenth of the team's power play: a
 // second unit's 0.05 against 0.15 isn't a threefold swing), its cap on the log)
@@ -1186,6 +1295,9 @@ export function nhlMatchups(rows, facts = null) {
     return w ? (w * t.sum + 10 * lg.pp) / (w * t.n + 10) - lg.pp : 0;
   };
   const ppOf = (pid) => pp.get(pid) ?? null;
+  // (a side's key defenders out (audit #15; props.mjs CTX oppD): its defensemen with NHL_CORE.D minutes a game or
+  // more (its top four), their time on ice missing over a game's 60, a top-pair man about 0.4)
+  const defMissing = (team, season, missOf) => Math.round((work.missingWork(team, season, missOf, 'D', 0, NHL_CORE.D, OUT_MAX) / 60) * 1000) / 1000;
   // (his share of his team's power play this season ({ season, now: recent games counting most (RATE), started
   // over each season, sum, n }) and his lean: now over the season's average, each with PP_LEAN_PAD added, as a
   // log held to PP_LEAN_CAP either way; 0 before PP_LEAN_N games)
@@ -1225,11 +1337,18 @@ export function nhlMatchups(rows, facts = null) {
       const key = `${r.game}|${r.team}`;
       games.set(key, [...(games.get(key) ?? []), r]);
     }
+    // (each side's top-four defensemen missing the game, before it's learned: the other side's rows' oppD)
+    const dOut = new Map();
+    for (const [key, list] of games) {
+      const playing = new Set(list.map((r) => r.pid));
+      dOut.set(key, defMissing(list[0].team, list[0].season, work.histMiss(list[0].team, list[0].season, playing, (g) => NHL_CORE[g] ?? 0)));
+    }
     for (const list of games.values()) {
       const playing = new Set(list.map((r) => r.pid));
       const miss = work.histMiss(list[0].team, list[0].season, playing, (g) => NHL_CORE[g] ?? 0);
       for (const r of list) {
         stamp(r);
+        r.oppD = dOut.get(`${r.game}|${r.opp}`) ?? 0;
         r.vacs = work.vacated(r.team, r.season, r.pid, r.pos, miss);
         r.vac = Math.max(...r.vacs);
         // (a skater's time on ice over a full game's 60: the game's own (an overtime game's a little over 1, its
@@ -1289,9 +1408,12 @@ export function nhlMatchups(rows, facts = null) {
     }
   });
   return {
-    live: (pid, teamId, oppId, pos, season, missing = null) => {
+    // (extra.oppMiss: the other side's players missing it, by id (0 to 1; props.mjs), its key defensemen's oppD; none,
+    // 0)
+    live: (pid, teamId, oppId, pos, season, missing = null, extra = {}) => {
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missFn(missing), (g) => NHL_CORE[g] ?? 0));
-      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppLean: ppLeanOf(pid, season), ppShare: shareOf(pid, pos), ppOpp: pensOf(oppId, season), ppAvg: lg.pp };
+      const oppD = extra?.oppMiss ? defMissing(oppId, season, work.gate(oppId, season, missFn(extra.oppMiss), (g) => NHL_CORE[g] ?? 0)) : 0;
+      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppLean: ppLeanOf(pid, season), ppShare: shareOf(pid, pos), ppOpp: pensOf(oppId, season), ppAvg: lg.pp, oppD };
     },
   };
 }

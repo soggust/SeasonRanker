@@ -239,7 +239,15 @@
 //            it: a tight end against a defense tight ends feast on weighed apart from a receiver); and where the
 //            stat has roles (a player's place on his own team before the game: an NFL team's WR1, WR2, WR3, TE1, RB1; an NBA team's starters and bench), how far it's
 //            allowed his role, pulled toward its position number by roleK games' worth (fitted; Infinity: the
-//            role left out, kept only if the held-out games are better with it)
+//            role left out, kept only if the held-out games are better with it). The tables' recency (od, audit
+//            #15; a late term on the whole stat's strict gate, searched on a stat marked recency: props.mjs
+//            RECENCY): each table's sums, last season's carried part too, times 1 - od at each new game of its
+//            side, so its latest games count most; where the opponent's power is 0 on every group, tried with a at
+//            OD_A. Measured 2026-10-13 on every NFL, NBA and NHL stat: kept on NBA rebounds (0.05, held out +0.0004,
+//            both biases smaller); points, threes and pts+reb+ast gained (+0.0003 to +0.0012) with every player's
+//            bias larger, the rest not taken (props.mjs RECENCY). The other side's key defenders out tonight (its
+//            production missing, its top-four defensemen, its secondary and front seven: props.mjs CTX oppOut,
+//            oppD, oppDB, oppFront, matchups.mjs) measured the same day as late flags and kept on none
 //   script   his team's expected score from the game model (the ratings and context) over the average, to the
 //            power b: a game the model sees as high scoring or a blowout moves volume (the opponent's for a
 //            goalie's saves or a pitcher's outs). Or the market's (mk, a late term on the whole stat's gate,
@@ -476,7 +484,13 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN };
+// (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
+// its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
+// where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
+// maybe what they lacked)
+const OD = [0.05, 0.1, 0.2];
+const OD_A = 0.5;
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -509,7 +523,7 @@ const RX_MIN = 3;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart']);
+const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -1092,6 +1106,10 @@ export function makeModel(stat, params, env) {
               const last = o && o.season === row.season - 1 ? o : null;
               o = { season: row.season, n: 0, got: 0, usual: 0, prevN: last?.n ?? 0, prevGot: last?.got ?? 0, prevUsual: last?.usual ?? 0 };
             }
+            // (its recency (od): every sum, last season's carried part too, times 1 - od at each new game of
+            // this side, so its latest games count most; its own game's rows alike)
+            if (params.od && o.g !== undefined && o.g !== row.game) for (const k of ['n', 'got', 'usual', 'prevN', 'prevGot', 'prevUsual']) o[k] *= 1 - params.od;
+            o.g = row.game;
             o.n++;
             o.got += v;
             // (the NBA's pace taken out first where it's on (stat.pace, po): the tables learn what the other
@@ -1347,7 +1365,14 @@ const PP_LEAN = [-0.2, -0.1, 0.05, 0.1, 0.2, 0.3, 0.5];
 const TEAM_SHOTS = [-0.25, 0.25, 0.5, 0.75, 1];
 // (the NHL's market total (c_mTotal: the betting total over 6 goals, a log, about -0.1 to 0.1), its power)
 const M_TOTAL = [-0.5, 0.5, 1, 1.5];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL };
+// (the other side's key defenders out tonight (audit #15; props.mjs CTX): the NBA's production missing per 10
+// (c_oppOut, about its average: a star out about 4 over it), the NHL's top-four defensemen's time on ice missing over a game's 60 (c_oppD, one
+// about 0.4), the NFL's regulars' defensive snap shares missing, its secondary's (c_oppDB) and its front seven's
+// (c_oppFront, one starter about 0.9): a few percent a starter either way)
+const OPP_OUT = [-0.01, 0.005, 0.01, 0.02];
+const OPP_D = [-0.1, 0.1, 0.2, 0.4];
+const OPP_DEF = [-0.03, 0.03, 0.06, 0.1];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1393,6 +1418,7 @@ const has = (stat, key) =>
   : key === 'sl' ? !!stat.middle
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
+  : key === 'od' ? !!stat.recency
   : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
   : !!stat.volume;
 // (whether fitStat searches a term on a stat (the tests' read: vl off the search while TRY_VL is false))
@@ -1466,7 +1492,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -1475,6 +1501,10 @@ export function fitStat(stat, rows, env) {
   // so it isn't searched then)
   const groups = [...new Set(sorted.map((r) => oppGroup(r.pos)))];
   const aIdle = (p) => aPos.length > 0 && groups.every((g) => p[`a_${g}`] !== null && p[`a_${g}`] !== undefined);
+  // (the defense tables' recency's tries (od): its sizes, and where nothing reads the tables (the opponent's power
+  // 0 on every group its rows hold) each with a at OD_A in its place; every group's own a 0, none)
+  const aZero = (p) => groups.every((g) => (p[`a_${g}`] ?? p.a) === 0);
+  const odTries = (p) => (!aZero(p) ? OD.map((od) => ({ od })) : aIdle(p) ? [] : OD.map((od) => ({ od, a: OD_A })));
   for (let pass = 0; pass < 2; pass++) {
     for (const key of keys) {
       if (key === 'a' && aIdle(params)) continue;
@@ -1682,7 +1712,7 @@ export function fitStat(stat, rows, env) {
     else {
       s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
       sBest = s0;
-      for (const x of lateTries(key, stat)) {
+      for (const x of key === 'od' ? odTries(params) : lateTries(key, stat)) {
         const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
         if (sc.ll > sBest.ll) (sBest = sc), (v = x);
       }

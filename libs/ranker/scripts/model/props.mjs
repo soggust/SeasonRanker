@@ -553,6 +553,29 @@ const NHL_MINUTES = { minutes: 60 };
 // on none (off the search: project.mjs TRY_PS))
 export const nbaPos = (pos) => (/^(PG|SG|G)$/.test(pos ?? '') ? 'G' : pos === 'C' ? 'C' : 'F');
 const NBA_POS_PACE = { positions: nbaPos, pace: true };
+// (the defense tables' recency (audit #15; project.mjs od, a late term on the whole stat's strict gate): searched
+// only on a stat marked recency, the one it was kept on. Measured 2026-10-13 on every NFL, NBA and NHL stat (held
+// out the last 30%): kept on NBA rebounds (od 0.05, held out 0.6267 to 0.6263, +0.0004; the eligible players'
+// bias 0.0268 to 0.0138, every player's 0.1533 to 0.1419). Left out on NBA points (0.05, +0.0009), threes
+// (0.05, +0.0003) and pts+reb+ast (0.1, +0.0012), every player's bias larger on each (points 0.0598 to 0.1183,
+// pts+reb+ast 0.3643 to 0.3961: the lean refit on the eligible players lifts the rest, already over-projected),
+// assists (+0); NHL shots (0.1 with the opponent's power a 0.5 where it was 0: +0.0002, the bias larger), points
+// and every NFL stat not taken on the fit window. The mark back on a stat to try it again)
+const RECENCY = { recency: true };
+// (the other side's key defenders out tonight (audit #15; CTX oppOut, oppD, oppDB, oppFront: late terms, the
+// NBA's on the whole stat's strict gate (a centred value on every row), the rest on the rows with one out
+// (project.mjs SUBGROUP)), measured 2026-10-13 and on no stat's ctx (their late search an hourly cost for nothing
+// kept; CTX keeps them for a measure on demand). The NBA's production missing on the other side (oppOut, about its
+// average): points 0.005 +0.0006, assists +0.0005, threes +0.0005, pts+reb+ast +0.0007, each left out on every
+// player's bias (points 0.0595 to 0.0774; assists' eligible too), rebounds not taken; held out, the eligible
+// players' points ran -1.3% (none out on the other side) to +6.0% (6 or more per 10) actual over projected without
+// it. The NHL's top-four defensemen out (oppD, their time on ice over 60): shots not taken, points -0.1 -0.0001;
+// held out shots +3.5% against -3.0% (one out, n 855; counted only in his first game out, +8.5%, n 431, though the
+// fit window's +2.2%). The NFL's starting secondary (oppDB) and front seven (oppFront) out, from the snap counts:
+// passing TDs oppDB 0.03 +0.0005 (its own 728 rows 7.0% to 5.1% over their projections, the eligible rest's bias
+// larger), carries oppFront +0.0001 (its eligible rows 8.9% to 6.7% over), interceptions, rush+rec yards under the
+// floor, passing yards, attempts, completions, rushing and receiving yards and receptions not taken: the games with
+// one out run over, a few percent, too few and too noisy to clear the floor with the lean held)
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
 const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // (the NHL's back-to-backs (audit #6): his side's (b2b) and the other side's (oppB2b), late flags each on its own
@@ -593,6 +616,10 @@ const NHL_VAC = { vacated: true, vacSplits: 6 };
 // worse), so its replays buy back 0.0002)
 const NHL_SOG_CTX = ['ppLean'];
 const NHL_PTS_CTX = ['pp', 'oppGoalie', 'teamShots'];
+// (the NBA's other side's production missing a game, per 10, about its average (2025-26: 3.3; props.mjs CTX
+// oppOut is centred on it, so a size moves the games with more of it out up and the ones with fewer down, the
+// level the lean's))
+const OPP_OUT_AVG = 3.3;
 // (a typical NHL game's betting total, the market total's even point)
 const MTOTAL_AVG = 6;
 const NBA_VAC = { ...NHL_VAC, vacLearned: [6, 7] };
@@ -663,7 +690,7 @@ export const STATS = {
   ],
   nba: [
     stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
-    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY }),
     stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
     stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
@@ -817,6 +844,15 @@ export const CTX = {
   },
   // (his teammates' production missing, per 10: an NBA player's usage)
   usage: (info, home) => (info?.starters?.missing?.[home ? 0 : 1] ?? 0) / 10,
+  // (the other side's key defenders out tonight (audit #15): the NBA's its production missing, per 10 (context.mjs:
+  // its regulars not in the box score in the history, out on the injury report live, a questionable one at half);
+  // the NHL's its top-four defensemen's time on ice missing over a game's 60 (matchups.mjs nhlMatchups oppD); the
+  // NFL's its regulars' defensive snap shares missing, its secondary's (oppDB) and its front seven's (oppFront:
+  // matchups.mjs defenseOut, nflverse's snap counts). Each from before the game; 0 unknown (the stat as without it))
+  oppOut: (info, home) => (Number.isFinite(info?.starters?.missing?.[home ? 1 : 0]) ? info.starters.missing[home ? 1 : 0] / 10 - OPP_OUT_AVG : 0),
+  oppD: (info, home, pts, row) => (Number.isFinite(row?.oppD) ? row.oppD : 0),
+  oppDB: (info, home, pts, row) => (Number.isFinite(row?.oppDB) ? row.oppDB : 0),
+  oppFront: (info, home, pts, row) => (Number.isFinite(row?.oppFront) ? row.oppFront : 0),
   // (his side on the second night of a back-to-back; the other side's (oppB2b): context.mjs's schedule, known
   // before the game, a season's first game neither)
   b2b: (info, home) => info?.b2b?.[home ? 0 : 1] ?? 0,
@@ -1296,7 +1332,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const nm = idx.name?.(id);
       if (nm && (!roster || roster.has(id)) && atPos(x.pos) && !out.names.includes(nm) && String(id) !== String(pid)) out.names.push(nm);
     }
-    const extra = { live, game, home, pitcher: !!prop.stat.pitcher };
+    // (and the other side's players missing it (the opponent's key defenders out, audit #15: matchups.mjs oppD,
+    // oppDB, oppFront): out, doubtful or on IR on its injury report, or on its roster's injured reserve, PUP, NFI
+    // or suspended, a questionable one at half; none read, none missing (the stat as without it))
+    const oppOut = outOf(sport, live, row.opp, null);
+    const oppRosterOut = live?.rosters?.get?.(String(row.opp))?.out;
+    const oppMiss = (id) => (oppOut.ids.has(String(id)) || (oppRosterOut instanceof Map && oppRosterOut.has(String(id))) ? 1 : oppOut.questionable.has(String(id)) ? 0.5 : 0);
+    const extra = { live, game, home, pitcher: !!prop.stat.pitcher, oppMiss };
     if (f.matchups) Object.assign(row, f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(qMiss), extra));
     const p = f.model.project(row);
     if (!p) continue;
