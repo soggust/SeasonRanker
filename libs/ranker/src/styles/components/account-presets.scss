@@ -3,9 +3,10 @@
 
 // ===========================================================================
 // The filter menu's own presets (preset-bar): in the presets dropdown's row (the host adds nothing of
-// its own: display: contents), the user's preset picked gets Rename and Delete beside the dropdown (the
-// app's small sand buttons, whatever the sport); once the sliders have moved, a slim line under the row,
-// Changed and Update preset. The row itself: sidebar.component.scss (.preset-row).
+// its own: display: contents), the user's preset picked gets Rename and Delete beside the dropdown (small
+// buttons in the sport's light: a preset is the sport's own, like the menu around it); once the sliders
+// have moved, a slim line under the row, Changed and Update preset. Its dialogs' buttons are the sport's
+// too (.primary, .secondary: account-lists-dialog.scss). The row itself: sidebar.component.scss (.preset-row).
 // ===========================================================================
 :host {
   display: contents;
@@ -19,7 +20,7 @@
 
 // (square: the icon alone)
 .preset-icon {
-  @include kit.primary-button;
+  @include kit.primary-button(var(--scoreboard-led));
   @include kit.small-button;
   border-radius: 8px;
   height: 32px;
@@ -51,7 +52,7 @@
 }
 
 .preset-update {
-  @include kit.primary-button;
+  @include kit.primary-button(var(--scoreboard-led));
   @include kit.small-button;
   border-radius: 8px;
   font-size: 10.5px;

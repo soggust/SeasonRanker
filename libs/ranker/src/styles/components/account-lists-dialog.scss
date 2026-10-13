@@ -4,7 +4,8 @@
 // ===========================================================================
 // The lists' and presets' dialogs (list-modal: not encapsulated, so everything sits under its tag and
 // reaches the content the pages put in it): the login dialog's scoreboard panel over the dimmed page,
-// the title on top, the form on the chalkboard
+// the title on top, the form on the chalkboard. Over the whole screen, the sport bar too (_base.scss), like
+// the player card
 // ===========================================================================
 list-modal {
   color: #eee;
@@ -15,8 +16,10 @@ list-modal {
 
   @include kit.pills;
   @include kit.fields;
+  // (a dialog over a sport's page, for something of that sport's (saving the grid as a list, a filter-menu
+  // preset): .primary, .secondary, .danger, in the sport's light; one on an account page (My Lists' edit,
+  // delete, submit): the app's own, .app-btn-*)
   @include kit.buttons;
-  // (the lists' dialogs: the app's own buttons, whatever sport they open over)
   @include kit.app-buttons;
 
   .modal-backdrop {

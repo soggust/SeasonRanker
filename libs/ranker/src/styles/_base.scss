@@ -251,9 +251,12 @@ html body {
   }
 }
 
-// While the player card is open it covers the whole screen: the sport bar drops under the page's layer
-// (where the card is), so the card and its dimmed backdrop go over it
-body:has(.card-backdrop) .sport-bar {
+// While a modal is open it covers the whole screen: the sport bar drops under the page's layer (where the
+// modal is), so the modal and its dimmed backdrop go over it. Every one alike: the player card, a game,
+// Compare, the lists' and presets' dialogs (list-modal), About, the login (any [aria-modal]; not a popover
+// or the bet slip, which leave the page usable). The menus and dropdowns opened in one sit over it still
+// (the overlay container, on top of everything)
+body:has(.card-backdrop, list-modal, [aria-modal="true"]) .sport-bar {
   z-index: 0 !important;
 }
 

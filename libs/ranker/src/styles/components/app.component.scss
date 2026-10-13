@@ -267,8 +267,9 @@ main {
     z-index: 4;
   }
 
+  // (no transform on it: a transformed menu would hold its dialogs (a preset's: position fixed) inside its
+  // own box, clipped by its scroll, instead of over the whole screen)
   .sidebar {
-    transform: translateX(0);
     z-index: 3;
   }
 
