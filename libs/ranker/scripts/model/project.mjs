@@ -125,7 +125,15 @@
 //            role left out, kept only if the held-out games are better with it)
 //   script   his team's expected score from the game model (the ratings and context) over the average, to the
 //            power b: a game the model sees as high scoring or a blowout moves volume (the opponent's for a
-//            goalie's saves or a pitcher's outs)
+//            goalie's saves or a pitcher's outs). Or the market's (mk, a late term on the whole stat's gate,
+//            b searched with it; TRY_MK): the betting lines' implied team points (props.mjs marketPts: the NFL
+//            history's nflverse's closing lines, a mild look-ahead; live the book's now) over their average,
+//            blended in by mk on the log; a game without lines the game model's alone. Measured 2026-10-12
+//            (audit #4; the game model's trust about 0 against the book): kept on no stat. Passing yards
+//            (mk 1/b 0.5) +0.0013 and passing TDs +0.0016 held out, each one's bias larger (0.33 to -0.81
+//            yards; -0.045 to -0.053); completions -0.0044, receiving yards -0.0004 at mk 0.5; the rest not
+//            taken on the fit window. Off the search since (TRY_MK). The lines' spread as a flag (props.mjs
+//            mSpread) is a context term: kept on interceptions
 //   matchup  the NFL defense's funnel (its opponents' pass rate over expected against it over their own, matchups.mjs): a
 //            volume term, exp(fun x funnel) for a passing or receiving stat, exp(-fun x funnel) for a rushing one;
 //            its pace (its opponents' plays over their usual) to the power pc; the share of targets it allows to
@@ -329,7 +337,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN };
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -367,8 +375,14 @@ const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut',
 // hurt (1 - ij), the absence it takes (ia team games), and the returners' ramp on his game back to the power ir
 // (0 none; yards needn't fall as far as the snaps))
 const NU = [0, 0.5, 0.75, 1];
+// (the market's game flow (mk): the script read that far from the betting lines' implied team points (1: from
+// them alone, 0.5: half the way, on the log), its power b searched with it: b was fit on the game model's
+// script. Searched only with TRY_MK: kept on no stat (2026-10-12, header), its search ten replays a stat and
+// the NFL props' fit 693s to 781s locally; true to try it again)
+const MK = [0.5, 1];
+const TRY_MK = false;
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key) => (key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key) => (key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -761,7 +775,7 @@ export function makeModel(stat, params, env) {
         opp = roleOpp;
       }
     }
-    const script = env.script?.(row) ?? 1;
+    const script = env.script?.(row, params) ?? 1;
     const ctx = env.ctx?.(row) ?? null;
     const ctxF = ctxFactor(stat, params, ctx);
     // (the defense's funnel, pace and target split: 1 where the stat or the row has none)
@@ -1075,7 +1089,10 @@ const SL = [-0.1, -0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4];
 // (a regular above him out (c_aheadOut, 0 or 1): the next man up's lift on top of rp and the vacated work, to
 // 30%; the organic trend's power (ot))
 const AHEAD_OUT = [-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.3];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
+// (his side's margin by the betting lines (c_mSpread, per 10 points, signed: a favorite's over 0): a late
+// flag, either way to 15% a 10 points)
+const M_SPREAD = [-0.15, -0.1, -0.05, -0.025, 0.025, 0.05, 0.1, 0.15];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1166,9 +1183,11 @@ export function fitStat(stat, rows, env) {
   if (sorted.length < 300) return null;
   const at = (q) => sorted[Math.floor(sorted.length * q)].date.slice(0, 10);
   const cuts = [at(0.3), at(0.7)];
-  const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`) : [];
+  // (the betting lines' terms (mk, c_mSpread) only where the history has the lines (env.mktN: the rows with
+  // them); without, nothing to fit, the stat as before)
+  const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`).filter((k) => k !== 'c_mSpread' || env.mktN > 0) : [];
   const aPos = aKeys(stat);
-  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}) };
+  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), mk: 0 };
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
@@ -1176,7 +1195,7 @@ export function fitStat(stat, rows, env) {
   // and the injury return: the injury-driven terms first, the organic trend on what they leave)
   const AFTER_RP = ['c_aheadOut'];
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
-  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const late = [...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));

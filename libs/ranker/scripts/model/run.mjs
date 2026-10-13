@@ -115,7 +115,7 @@ import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backte
 import { buildPicks, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { playerRows } from './playerlogs.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
@@ -696,11 +696,12 @@ async function fitTheProps(r) {
     const t0 = Date.now();
     r.rows = await playerRows(sport, cfg, history, r.facts);
     const info = new Map([...(r.feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts);
+    const market = sport === 'nfl' ? await nflMarket(history) : null;
+    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (each stat's matchup terms kept, and what each did for the held-out games' log loss)
     for (const [key, f] of Object.entries(r.props ?? {})) {
-      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k] ?? 0}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : k === 'rp' && f.params.rp ? `/nu ${f.params.nu}` : k === 'ij' && (f.params.ij || f.params.ir) ? `/ia ${f.params.ia}/ir ${f.params.ir}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : f.floors?.[k] ? `${f.params[k] ? '' : `, left out at ${f.floors[k].size}: ${f.floors[k].fails.join(', ')}`}, bias ${f.floors[k].bias[0]} to ${f.floors[k].bias[1]}${f.floors[k].on ? `, its own ${f.floors[k].on[0]?.n ?? 0} rows ${f.floors[k].on[0]?.bias ?? 'n/a'} to ${f.floors[k].on[1]?.bias ?? 'n/a'} (actual over projected ${f.floors[k].on[0]?.ratio ?? 'n/a'} to ${f.floors[k].on[1]?.ratio ?? 'n/a'}; the eligible's ${f.floors[k].onElig?.[0]?.n ?? 0} ${f.floors[k].onElig?.[0]?.ratio ?? 'n/a'} to ${f.floors[k].onElig?.[1]?.ratio ?? 'n/a'}), the rest ${f.floors[k].rest[0]} to ${f.floors[k].rest[1]}` : ''}` : ''}` : `${g}, left out${f.floors?.[k] ? ` at ${f.floors[k].size}` : ''}`})`);
+      const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k] ?? 0}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : k === 'mk' && f.params.mk ? `/b ${f.params.b}` : k === 'rp' && f.params.rp ? `/nu ${f.params.nu}` : k === 'ij' && (f.params.ij || f.params.ir) ? `/ia ${f.params.ia}/ir ${f.params.ir}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : f.floors?.[k] ? `${f.params[k] ? '' : `, left out at ${f.floors[k].size}: ${f.floors[k].fails.join(', ')}`}, bias ${f.floors[k].bias[0]} to ${f.floors[k].bias[1]}${f.floors[k].on ? `, its own ${f.floors[k].on[0]?.n ?? 0} rows ${f.floors[k].on[0]?.bias ?? 'n/a'} to ${f.floors[k].on[1]?.bias ?? 'n/a'} (actual over projected ${f.floors[k].on[0]?.ratio ?? 'n/a'} to ${f.floors[k].on[1]?.ratio ?? 'n/a'}; the eligible's ${f.floors[k].onElig?.[0]?.n ?? 0} ${f.floors[k].onElig?.[0]?.ratio ?? 'n/a'} to ${f.floors[k].onElig?.[1]?.ratio ?? 'n/a'}), the rest ${f.floors[k].rest[0]} to ${f.floors[k].rest[1]}` : ''}` : ''}` : `${g}, left out${f.floors?.[k] ? ` at ${f.floors[k].size}` : ''}`})`);
       // (and its held-out check: the eligible players' log loss at lines at their median, the bias a game
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
@@ -1532,7 +1533,9 @@ async function betProps(r) {
         continue;
       }
       run.games++;
-      const { exp, f } = expectFor(r, game);
+      const { exp: exp0, f } = expectFor(r, game);
+      // (the book's lines now as implied points (props.mjs marketPts): the props' market game flow, where kept)
+      const exp = { ...exp0, market: marketPts(u.lines?.total?.line, Number.isFinite(u.lines?.spread?.home?.line) ? -u.lines.spread.home.line : null) };
       const live0 = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       // (the NFL's depth charts now, the site's (props.mjs readDepth: the role guard's depth CHECK), read once a run)
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;

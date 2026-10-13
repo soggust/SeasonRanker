@@ -228,6 +228,10 @@ function driverWhat(name, bet, sheet, raw) {
     // (a goalie's saves and a pitcher's outs follow the other side's scoring: project.mjs)
     const whoOpp = t === 'saves' || t === 'outs';
     const who = whoOpp ? opp : sheet.bet.team;
+    // (with the market's game flow kept (project.mjs mk), the betting lines' implied points it read: [his
+    // side's, the other's])
+    const mkt = bet.projection?.mk > 0 && Array.isArray(bet.projection.market) ? bet.projection.market[whoOpp ? 1 : 0] : undefined;
+    if (fin(mkt) && who) return `the game script, with ${who} expected to score ${fmt.num(mkt)} by the betting lines`;
     const score = who && g?.expScore ? g.expScore[who] : undefined;
     return fin(score) ? `the game script, with ${who} expected to score ${fmt.num(score)}` : 'the game script';
   }

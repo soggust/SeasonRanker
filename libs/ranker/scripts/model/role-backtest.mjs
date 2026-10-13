@@ -105,7 +105,7 @@ import { LEAGUES } from './leagues.mjs';
 import { fit, fitContext, replay, round } from './ratings.mjs';
 import { featurize, gather } from './context.mjs';
 import { playerRows } from './playerlogs.mjs';
-import { STATS, envFor, fitProps, markEligible } from './props.mjs';
+import { STATS, envFor, fitProps, markEligible, nflMarket } from './props.mjs';
 import { nflMatchups } from './matchups.mjs';
 import { nbLog, rAt, replayStat } from './project.mjs';
 import { CACHE, nflverseRows, readJson } from './sources.mjs';
@@ -491,12 +491,14 @@ async function main() {
   console.log(`role backtest: ratings and context in ${Math.round((Date.now() - t0) / 1000)}s`);
   // (the player rows, and each stat's settings: fit as fitProps fits them, or the committed state's)
   const rows = await playerRows(sport, cfg, history, facts);
+  // (the betting lines' implied points, as run.mjs reads them: the market's game flow)
+  const market = await nflMarket(history);
   let fitted;
   if (useState) {
     nflMatchups(rows, facts.plays);
     const sp = stateParams();
     fitted = Object.fromEntries(STATS.nfl.filter((st) => sp[st.key]).map((st) => [st.key, { stat: st, params: sp[st.key] }]));
-  } else fitted = fitProps(sport, rows, expPts, info, facts);
+  } else fitted = fitProps(sport, rows, expPts, info, facts, market);
   // (--set key=value[,key=value]: a setting forced on every stat that has it, after the fit (a term's size, to
   // measure its buckets with it in and out; the lean as fit, not refit))
   const setAt = process.argv.indexOf('--set');
@@ -538,7 +540,7 @@ async function main() {
   for (const st of STATS.nfl) {
     const f = fitted[st.key];
     if (!f) continue;
-    const mine = markEligible(sport, st, rows.filter((r) => r.team && r.opp && st.played(r)).map((r) => ({ ...r })));
+    const mine = markEligible(sport, st, rows.filter((r) => r.team && r.opp && st.played(r)).map((r) => ({ ...r, mkt: market?.get(r.game) ?? null })));
     const sorted = [...mine].sort((a, b) => a.date.localeCompare(b.date));
     const at = (q) => sorted[Math.floor(sorted.length * q)].date.slice(0, 10);
     const cuts = [at(0.3), at(0.7)];
