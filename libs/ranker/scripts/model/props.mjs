@@ -17,7 +17,9 @@
 //   market's (desk.mjs stakeFor), its lean tapered past half of GAP.prop (15 points) as a game market's (desk.mjs
 //   chanceAt: the further from the book, the less of it counts, so the stake shrinks as the gap grows); one a
 //   player a game (leagues.mjs PROP_CAPS). A whole-number line's push is out of both sides' chances and its stake
-//   comes back in the return (project.mjs lineChances). Cut to 0.5 when the line has moved a lot since it opened,
+//   comes back in the return (project.mjs lineChances; with the early exit's mixture where the fit kept it, exitMix:
+//   his chance of a short game by his role, a short last game and a first game back, the mean as projected). Cut to
+//   0.5 when the line has moved a lot since it opened,
 //   the player's questionable, a questionable teammate's being in or out moves his share of his group's work
 //   (each questionable regular at his position's swing times the spread of his chance of playing, added up:
 //   playchance.mjs), his team's starting quarterback questionable where a kept term reads him (qb1Out, qbDeep:
@@ -73,7 +75,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
-import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
+import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
 import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
@@ -564,6 +566,13 @@ const NBA_POS_PACE = { positions: nbaPos, pace: true };
 // over the floor (DRAFT_GAIN 0.0003) and picked from about 20 stats tried, so the hourly fit dropping it (od 0)
 // is to be expected, not a fault)
 const RECENCY = { recency: true };
+// (the early exit searched (project.mjs ex, a late term on the whole stat's gate, the low lines' log loss no worse too):
+// the stats whose rows read his share of the work (the NFL's snaps, the NBA's minutes). Not the NHL's skaters: their
+// short games (time on ice under half his typical) 0.3% to 0.7%, shots and points measured 2026-10-13 with no held-out
+// gain (shots ex 1 +0, points not taken), off the search; MLB reads no share yet. Marked only where it was kept
+// (2026-10-13: NFL interceptions, rushing, receiving and rush+rec yards, NBA points; project.mjs EXIT_FRAC's notes): left
+// out on receptions, carries, the other passing stats and the other NBA stats, its search off them)
+const EXIT = { exit: true };
 // (the other side's key defenders out tonight (audit #15; CTX oppOut, oppD, oppDB, oppFront: late terms, the
 // NBA's on the whole stat's strict gate (a centred value on every row), the rest on the rows with one out
 // (project.mjs SUBGROUP)), measured 2026-10-13 and on no stat's ctx (their late search an hourly cost for nothing
@@ -688,15 +697,15 @@ export const STATS = {
     stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
-    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
-    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
+    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB, ...EXIT }),
+    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...EXIT }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
-    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
+    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT }),
     stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...EXIT }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...EXIT }),
     stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY }),
     stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
     stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
@@ -1377,7 +1386,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       if (at >= 0) (roleRank = { rank: at + 1, of: table.length }), (roleFactor = table[at].factor);
     }
     // (the model's chances: over and under with a whole-number line's push out of both, and the push's own)
-    const chances = lineChances(prop.line, mu, f.params);
+    // (with the early exit's mixture where the fit kept it (project.mjs exitMix: his short game's chance by his
+    // position and role, a short last game, a first game back and his own, learned through the finals))
+    const mix = exitMix(f.params, p);
+    const chances = lineChances(prop.line, mu, f.params, mix);
     const pOver = chances.over;
     // (the fair chance: his own record at this line, this season and half of last; a game on the line, a push,
     // neither side's)
@@ -1406,7 +1418,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the mean the book's price implies at its line (impliedMean; none at an assumed -110: it says nothing of
     // his role, only that the price is unknown): the role guards' line reasons, a CHECK's, and every priced
     // prop's ratio to the model's (projection.lineRatio: selfcheck.mjs C20))
-    const impliedNow = prop.prices ? impliedMean(prop.line, book.fairOver, f.params) : null;
+    const impliedNow = prop.prices ? impliedMean(prop.line, book.fairOver, f.params, mix) : null;
     // (the guard's first reading: his status (statusOf); the line alarm reads it too)
     const status = statusOf(sport, prop, live, home, game);
     // (the NFL: his role changing (roleChangeOf): kept as a CHECK on the model's side, never bet either way)
@@ -1646,7 +1658,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       guard,
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), ...(mix ? { exit: { q: round(mix.q, 3), f: round(mix.f, 2) } } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
       // (the line's open and now; where the line hasn't moved and the open price was read (board), the over's
       // fair chance at the open and at the price bet (selfcheck.mjs C19: a price-only move, the NHL's at 0.5 and
       // 1.5 most of all, which the line alone doesn't see))

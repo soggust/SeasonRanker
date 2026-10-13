@@ -338,7 +338,9 @@
 //
 // The count's spread: a negative binomial around the projection, its dispersion r fit too (lower: wider), and
 // how it grows with the projection (rk: r x (mu / the average)^rk, a starter's yards tighter around his
-// projection than the plain shape gives; kept only if the held-out games are better with it: rAt). Every
+// projection than the plain shape gives; kept only if the held-out games are better with it: rAt), and where
+// the fit kept it (ex, below exitTracker) a mixture with a short game (he left it hurt, benched or pulled) at
+// its chance learned from the history, the mean the projection's either way. Every
 // setting is scored on the eligible players' games (the ones a book posts props for: props.mjs markEligible,
 // from before each game), not the backups' that are never bet. A whole-number line's push is its own chance,
 // out of both sides (lineChances).
@@ -406,29 +408,158 @@ export function middleF(params, x) {
   return Math.min(SL_CAP, Math.max(1 / SL_CAP, Math.pow(x / rm, -sl)));
 }
 
+// The early exit (audit #17, ex: a late term on the whole stat's gate, the low lines' log loss no worse too):
+// a player can leave a game early (hurt, benched, pulled), which one negative binomial around the projection
+// doesn't shape, a low line's under and over most of all. A short game is one his share of the work (row.share:
+// the NFL's snaps, the NBA's minutes, each the game's own) ran under EXIT_FRAC of his typical (the median of his
+// shares this season before it, EXIT_MIN games or more). Its chance learned as the replay goes (exitTracker,
+// from the games before each day only): every row's, by his position, his role before the game (row.role), and
+// whether his last game this season was short or tonight is his first game back from an absence (row.ret, the
+// NFL's), each level pulled toward the one above it by EXIT_M games, his own short games' rate pulled toward
+// that by EXIT_OWN_M; and what a short game keeps of a full one's work (its share over his typical, EXIT_F0 till
+// EXIT_FM of them). The count is then a mixture: a short game at ex times that chance (held to EXIT_CAP) with
+// its mean that fraction of a full game's, else a full game, the full game's mean set so the mixture's is the
+// projection (exitMix): the projection, its lean and every bias as without it, only the shape around them.
+// The base read 2026-10-13 (the eligible rows with a typical share of 0.4 or more, each against the chance
+// before its day): the NFL's 31762 ran short 6.8% (a WR1 3.2%, a WR4 or lower 15.5%, an RB2 or lower 11.6%), 37.7%
+// after a short last game (n 1516; 25% read), 17.6% in a first game back (n 1715; 12.9% read); the NBA's 16896
+// 3.2% (a starter 1.8%, the bench 5% to 8%), 22.2% after a short last game (n 450; 15.8% read); the chance's
+// log loss on whether each ran short 0.2179 against one rate's 0.2555 (NFL), 0.1300 against 0.1536 (NBA). The
+// betting lines' side read nothing (the NFL's favored by 9.5 or more 5.7%, underdogs 7.1%, the rest 6.8%; the
+// NBA's 2.9%, 3.2%, 3.4%): not a level. The NHL's skaters ran short 0.3% to 0.7% (time on ice), MLB has no
+// share read, the NHL's goalies none: not searched (props.mjs EXIT).
+// Measured 2026-10-13 (held out the last 30%; ex searched last of the late terms, each size at its own best r,
+// both sides on one replay: 0.4s to 3.3s a stat), the held-out log loss without it and with it, the low lines'
+// (LOW_LINE or under) beside it: kept on NFL interceptions ex 4 (0.5503 to 0.5486, +0.0017; low lines, 1024 of
+// them, 0.5508 to 0.5491; r 10 to 150: the mixture took the spread's whole excess; 4 the grid's top, larger
+// untried), rushing yards 2 (0.6479 to 0.6471, +0.0008; 219 low, 0.6877 to 0.6783), receiving yards 3 (0.6497 to
+// 0.6479, +0.0018; 47 low, 0.7409 to 0.642; 2 held out +0.0022, the fit window's choice 3), rush+rec yards 2
+// (0.6538 to 0.652, +0.0018; 55 low, 0.8266 to 0.7526) and NBA points 3 (0.6466 to 0.6463, +0.0003; 38 low,
+// 0.4006 to 0.4049, too few to judge). Left out: receptions 1 (-0.0004; 770 low, 0.6533 to 0.6541), carries 1
+// (+0.0001; 467 low, 0.6551 to 0.6499), passing yards (-0.0004), attempts (-0.0013), completions (-0.0019),
+// passing TDs not taken; NBA rebounds (+0; 799 low 0.6472 to 0.6477), assists (-0.0006; 2588 low 0.6219 to
+// 0.6224), threes (-0.0002; 4342 low 0.5694 to 0.5697), pts+reb+ast (-0.0003). The receptions' and threes' low
+// lines, the audit's worry, are as well shaped by the plain negative binomial: their short games ride in its r.
+// Each stat's mark only where it was kept (props.mjs EXIT); the bias is the same either way (the mean's kept)
+export const EXIT_FRAC = 0.5;
+const EXIT_MIN = 3;
+const EXIT_M = 20;
+const EXIT_OWN_M = 100;
+const EXIT_F0 = 0.3;
+const EXIT_FM = 20;
+const EXIT_CAP = 0.5;
+// (the history's rows the base rate needs before any chance is read: fewer, none)
+const EXIT_N = 200;
+// (the low lines whose held-out log loss the early exit's gate reads apart: check's low)
+export const LOW_LINE = 2.5;
+// The early exit's chances learned from the history (above): learn a day's rows after they were all projected,
+// of a row before its game ({ q: the chance of a short game, f: what one keeps, n: the base's rows }; null till
+// EXIT_N rows)
+export function exitTracker() {
+  const cls = new Map();
+  const own = new Map();
+  const keysOf = (row) => {
+    const pos = row.pos ?? '';
+    const role = `${pos}|${row.role ?? '-'}`;
+    const o = own.get(row.pid);
+    const last = o?.season === row.season && o.last ? 'L' : '-';
+    const back = row.ret?.k === 1 ? 'B' : '-';
+    return ['*', pos, role, `${role}|${last}${back}`];
+  };
+  return {
+    of(row) {
+      const all = cls.get('*');
+      if (!(all?.n >= EXIT_N)) return null;
+      let q = all.s / all.n;
+      let f = (all.fs + EXIT_FM * EXIT_F0) / (all.s + EXIT_FM);
+      for (const k of keysOf(row).slice(1)) {
+        const c = cls.get(k);
+        if (!c) break;
+        q = (c.s + EXIT_M * q) / (c.n + EXIT_M);
+        f = (c.fs + EXIT_FM * f) / (c.s + EXIT_FM);
+      }
+      const o = own.get(row.pid);
+      if (o?.n) q = (o.s + EXIT_OWN_M * q) / (o.n + EXIT_OWN_M);
+      return { q, f, n: all.n };
+    },
+    learn(rows) {
+      for (const row of rows) {
+        const sh = Number.isFinite(row.share) && row.share > 0 ? Math.min(1, row.share) : null;
+        if (sh === null) continue;
+        let o = own.get(row.pid);
+        if (!o) o = { season: row.season, shares: [], n: 0, s: 0 };
+        if (o.season !== row.season) o = { ...o, season: row.season, shares: [] };
+        if (o.shares.length >= EXIT_MIN) {
+          const s = [...o.shares].sort((a, b) => a - b);
+          const typ = s[Math.floor(s.length / 2)];
+          const short = sh < EXIT_FRAC * typ;
+          for (const k of keysOf(row)) {
+            const c = cls.get(k) ?? { n: 0, s: 0, fs: 0 };
+            c.n++;
+            if (short) (c.s++), (c.fs += sh / typ);
+            cls.set(k, c);
+          }
+          o.n++;
+          if (short) o.s++;
+          o.last = short;
+        } else o.last = false;
+        o.shares = [...o.shares, sh].slice(-20);
+        own.set(row.pid, o);
+      }
+    },
+  };
+}
+// (the mixture a projection's chances take: { q, f } where the fit kept the early exit (ex) and the row has its
+// chance, else null: the plain negative binomial)
+export function exitMix(params, p) {
+  const ex = params?.ex;
+  if (!ex || !(p?.exitQ > 0)) return null;
+  return { q: Math.min(EXIT_CAP, ex * p.exitQ), f: Math.min(0.9, Math.max(0, p.exitF ?? EXIT_F0)) };
+}
+// (its parts, [weight, mean]: the full game's mean set so the mixture's is mu)
+const mixParts = (mu, mix) => {
+  const full = mu / (1 - mix.q * (1 - mix.f));
+  return [[1 - mix.q, full], [mix.q, Math.max(1e-3, full * mix.f)]];
+};
+// The log chance of k at a projection, with the early exit's mixture where it's on (mix), else nbLog's
+export function chanceLog(k, mu, params, mix = null) {
+  if (!mix) return nbLog(k, mu, rAt(params, mu));
+  const [[w1, m1], [w2, m2]] = mixParts(mu, mix);
+  const a = Math.log(w1) + nbLog(k, m1, rAt(params, m1));
+  const b = Math.log(w2) + nbLog(k, m2, rAt(params, m2));
+  const top = Math.max(a, b);
+  return top + Math.log(Math.exp(a - top) + Math.exp(b - top));
+}
+// The chance of going over a line at a projection, the same way (nbOver's)
+export function chanceOver(line, mu, params, mix = null) {
+  if (!mix) return nbOver(line, mu, rAt(params, mu));
+  return mixParts(mu, mix).reduce((t, [w, m]) => t + w * nbOver(line, m, rAt(params, m)), 0);
+}
+
 // A line's chances at a projection: over and under with a push left out (each the chance given no push, so
 // they sum to 1), and the push's own chance (a whole-number line: the count landing on it; a half-point line
-// has none). The recalibration (cal, or its side's: calAt) on the over's
-export function lineChances(line, mu, params) {
-  const r = rAt(params, mu);
-  const raw = nbOver(line, mu, r);
-  const push = Number.isInteger(line) && line >= 0 ? Math.min(0.99, Math.exp(nbLog(line, mu, r))) : 0;
+// has none). The recalibration (cal, or its side's: calAt) on the over's; the early exit's mixture (mix,
+// exitMix) where the fit kept it
+export function lineChances(line, mu, params, mix = null) {
+  const raw = chanceOver(line, mu, params, mix);
+  const push = Number.isInteger(line) && line >= 0 ? Math.min(0.99, Math.exp(chanceLog(line, mu, params, mix))) : 0;
   const over = recal(Math.min(1, raw / (1 - push)), calAt(params, mu, line));
   return { over, under: 1 - over, push };
 }
 
 // The projection a line's price implies: the mean at which the stat's spread (its dispersion as at any
 // projection, no recalibration) goes over the line as often as the book's fair chance says (fairOver; an assumed
-// -110's 0.5: the line its median). By halves on the log of the mean; null where it can't be had
-export function impliedMean(line, fairOver, params) {
+// -110's 0.5: the line its median), the early exit's mixture as the model's own where it's on (mix). By halves
+// on the log of the mean; null where it can't be had
+export function impliedMean(line, fairOver, params, mix = null) {
   if (!Number.isFinite(line) || !(fairOver > 0 && fairOver < 1) || !params) return null;
   const plain = { ...params, cal: null, calSide: null };
   let lo = Math.log(0.01);
   let hi = Math.log(Math.max(10, line * 20 + 10));
-  if (lineChances(line, Math.exp(hi), plain).over < fairOver) return null;
+  if (lineChances(line, Math.exp(hi), plain, mix).over < fairOver) return null;
   for (let i = 0; i < 50; i++) {
     const mid = (lo + hi) / 2;
-    if (lineChances(line, Math.exp(mid), plain).over < fairOver) lo = mid;
+    if (lineChances(line, Math.exp(mid), plain, mix).over < fairOver) lo = mid;
     else hi = mid;
   }
   return Math.exp((lo + hi) / 2);
@@ -484,7 +615,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -625,6 +756,8 @@ const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
 export function makeModel(stat, params, env) {
   const players = new Map();
+  // (the early exit's chances (ex, exitTracker): learned whether or not it's on, read only where it is)
+  const exits = exitTracker();
   const opps = new Map();
   const roles = new Map();
   const pos = new Map();
@@ -1066,7 +1199,13 @@ export function makeModel(stat, params, env) {
     return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
-    project: parts,
+    // (a row's projection, its early exit's chance on it (exitQ, exitF; exitMix reads them where ex is on))
+    project(row) {
+      const p = parts(row);
+      const e = p ? exits.of(row) : null;
+      if (p && e) (p.exitQ = e.q), (p.exitF = e.f);
+      return p;
+    },
     // (every defense's number against a role this season, the league's order: for the reasoning's "#2")
     roleTable(role, season) {
       const out = [];
@@ -1249,6 +1388,7 @@ export function makeModel(stat, params, env) {
         }
         pos.set(k, q);
       }
+      exits.learn(rows);
       // (the teams' targets a game, after the day's rows were all projected and learned)
       for (const g of games.values()) {
         if (!g.ok || g.sum <= 0) continue;
@@ -1299,13 +1439,14 @@ const scored = (out, win) => {
   const mine = all.filter((x) => x.row.eligible !== false);
   return mine.length >= 200 ? mine : all;
 };
-// (a window's log-likelihood at its best dispersion, at a growth rk about rm)
+// (a window's log-likelihood at its best dispersion, at a growth rk about rm, and the early exit's ex where it's on)
 function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
   const list = scored(out, win);
   let best = null;
   for (const r of R) {
     let ll = 0;
-    for (const x of list) ll += nbLog(x.v, x.p.mu, rAt({ r, ...shape }, x.p.mu));
+    const p = { r, ...shape };
+    for (const x of list) ll += chanceLog(x.v, x.p.mu, p, exitMix(p, x.p));
     if (!best || ll > best.ll) best = { ll, r };
   }
   return { ...best, n: list.length };
@@ -1372,7 +1513,9 @@ const M_TOTAL = [-0.5, 0.5, 1, 1.5];
 const OPP_OUT = [-0.01, 0.005, 0.01, 0.02];
 const OPP_D = [-0.1, 0.1, 0.2, 0.4];
 const OPP_DEF = [-0.03, 0.03, 0.06, 0.1];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF };
+// (the early exit's sizes tried (ex): times the short game's chance learned)
+const EX = [0.5, 1, 1.5, 2, 3, 4];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1419,6 +1562,7 @@ const has = (stat, key) =>
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
   : key === 'od' ? !!stat.recency
+  : key === 'ex' ? !!stat.exit
   : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
   : !!stat.volume;
 // (whether fitStat searches a term on a stat (the tests' read: vl off the search while TRY_VL is false))
@@ -1433,7 +1577,7 @@ function linePairs(list, params) {
     if (past.length >= 3) {
       const vals = past.sort((a, b) => a - b);
       const line = Math.floor(vals[Math.floor(vals.length / 2)]) + 0.5;
-      out.push({ x, vals, line, p: nbOver(line, x.p.mu, rAt(params, x.p.mu)), over: x.v > line ? 1 : 0 });
+      out.push({ x, vals, line, p: chanceOver(line, x.p.mu, params, exitMix(params, x.p)), over: x.v > line ? 1 : 0 });
     }
     hist.set(x.row.pid, [...(hist.get(x.row.pid) ?? []), { season: x.row.season, v: x.v }]);
   }
@@ -1492,7 +1636,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl', 'ex'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -1577,8 +1721,10 @@ export function fitStat(stat, rows, env) {
     const i = ctxKeys(stat).indexOf(key.slice(2));
     return [(x) => (x.p.ctx?.[i] ?? 0) > SIGNED_AT, (x) => (x.p.ctx?.[i] ?? 0) < -SIGNED_AT];
   };
-  const heldOut = (p, split = null, sides = null) => {
-    const o = replayStat(stat, sorted, p, env, cuts).out;
+  // (o: the replay's output where the caller has it at these projections already (the early exit's: its
+  // size moves no projection, only the chances around them))
+  const heldOut = (p, split = null, sides = null, given = null) => {
+    const o = given ?? replayStat(stat, sorted, p, env, cuts).out;
     const pairs = linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p);
     const cal = fitRecal(pairs);
     // (and by side where it's tried (cs): each side's own, a side with too few lines none (cal))
@@ -1683,6 +1829,13 @@ export function fitStat(stat, rows, env) {
     return { s0, sBest, v, exact };
   };
   let slExact = false;
+  // (the early exit's chance and what a short game keeps, the held-out eligible rows' average: the log's read of
+  // its base)
+  const exitRead = (o) => {
+    const h = o.filter((x) => x.win === 2 && x.row.eligible !== false && x.p.exitQ > 0);
+    const mean = (fn) => (h.length ? Math.round((h.reduce((t, x) => t + fn(x), 0) / h.length) * 10000) / 10000 : null);
+    return { n: h.length, q: mean((x) => x.p.exitQ), f: mean((x) => x.p.exitF) };
+  };
   // (the eligible held-out bias before the first WHOLE_TOL term judged: their one budget)
   let wholeBase = null;
   for (const key of late) {
@@ -1708,8 +1861,21 @@ export function fitStat(stat, rows, env) {
     let s0;
     let sBest;
     let v = null;
+    // (the early exit's (ex): its size moves no projection, so one replay scores every size and is the held-out
+    // check's on both sides, the lean as it stands)
+    let given = null;
+    let exT0 = null;
     if (key === 'sl') ({ s0, sBest, v, exact: slExact } = middleSearch(shape));
-    else {
+    else if (key === 'ex') {
+      exT0 = Date.now();
+      given = replayStat(stat, sorted, params, env, cuts).out;
+      s0 = scoreOf(given, 1, shape);
+      sBest = s0;
+      for (const x of lateTries(key, stat)) {
+        const sc = scoreOf(given, 1, { ...shape, ...x });
+        if (sc.ll > sBest.ll) (sBest = sc), (v = x);
+      }
+    } else {
       s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
       sBest = s0;
       for (const x of key === 'od' ? odTries(params) : lateTries(key, stat)) {
@@ -1729,13 +1895,13 @@ export function fitStat(stat, rows, env) {
     gains[key] = null;
     if (!v) continue;
     const offP = { ...params, r: s0.r };
-    offP.scale = scaleOf(offP);
+    offP.scale = given ? params.scale : scaleOf(offP);
     const sub = SUBGROUP.has(key) ? onOf(key, v) : null;
     const sides = SIGNED.has(key) ? sidesOf(key) : null;
-    const off = heldOut(offP, sub, sides);
+    const off = heldOut(offP, sub, sides, given);
     const tryP = { ...params, ...v, r: sBest.r };
-    tryP.scale = scaleOf(tryP);
-    const tried = heldOut(tryP, sub, sides);
+    tryP.scale = given ? params.scale : scaleOf(tryP);
+    const tried = heldOut(tryP, sub, sides, given);
     gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
     const fine = (a, b, tol = 0) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) + tol ? null : 'larger');
     const fails = [];
@@ -1768,6 +1934,12 @@ export function fitStat(stat, rows, env) {
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
       // (the pull toward the middle's own point: the held-out fifths by projection missing less (each one's
       // actual over projected, off 0, summed), the eligible players')
+      // (the early exit's own point: the low lines' held-out log loss (LOW_LINE or under) no worse, where each
+      // side has CS_MIN of them; fewer (a yards stat's medians), the whole stat's gain alone)
+      if (key === 'ex') {
+        const [a, b] = [tried.check?.low, off.check?.low];
+        if (a?.lines >= CS_MIN && b?.lines >= CS_MIN && a.logLoss > b.logLoss) fails.push("the low lines' log loss");
+      }
       if (key === 'sl') {
         const [a, b] = [fifthsMiss(tried.check), fifthsMiss(off.check)];
         if (!(Number.isFinite(a) && Number.isFinite(b))) fails.push('fifths not measured');
@@ -1782,7 +1954,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -1797,7 +1969,7 @@ export function fitStat(stat, rows, env) {
   let draftTaken = 0;
   let rookie = null;
   if (has(stat, 'dp')) {
-    const shape = { rk: params.rk ?? 0, rm };
+    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0 };
     const d0 = scoreOf(replayStat(stat, sorted, { ...params, dp: 0 }, env, cuts).out, 1, shape);
     let dBest = d0;
     for (const v of GRID.dp) {
@@ -1926,6 +2098,8 @@ function check(list, params) {
   const bands = new Map();
   const side = [0, 1].map(() => ({ lines: 0, ll: 0, said: 0, was: 0 }));
   const skew = { n: 0, said: 0, was: 0 };
+  // (the low lines' (LOW_LINE or under: a catch or two, a shot, a three), the early exit's gate's own)
+  const low = { lines: 0, ll: 0 };
   for (const x of list.sort((a, b) => a.row.date.localeCompare(b.row.date))) {
     mae += Math.abs(x.p.mu - x.v);
     sumMu += x.p.mu;
@@ -1937,7 +2111,7 @@ function check(list, params) {
       nBase++;
       const median = vals[Math.floor(vals.length / 2)];
       const line = Math.floor(median) + 0.5;
-      const p = Math.min(0.995, Math.max(0.005, recal(nbOver(line, x.p.mu, rAt(params, x.p.mu)), calAt(params, x.p.mu, line))));
+      const p = Math.min(0.995, Math.max(0.005, recal(chanceOver(line, x.p.mu, params, exitMix(params, x.p)), calAt(params, x.p.mu, line))));
       const over = x.v > line ? 1 : 0;
       // (by side: a line under his projection (0), at it or over (1))
       const sd = side[x.p.mu > line ? 0 : 1];
@@ -1953,6 +2127,7 @@ function check(list, params) {
         skew.was += (p > 0.5) === !!over ? 1 : 0;
       }
       ll -= Math.log(over ? p : 1 - p);
+      if (line <= LOW_LINE) (low.lines++), (low.ll -= Math.log(over ? p : 1 - p));
       brier += (p - over) ** 2;
       const q = (vals.filter((v) => v > line).length + 1) / (vals.length + 2);
       llBase -= Math.log(over ? q : 1 - q);
@@ -1989,6 +2164,7 @@ function check(list, params) {
     // (by side of the projection: a line under it, at it or over; the chance over said and what happened)
     bySide: side.map((s) => ({ lines: s.lines, logLoss: s.lines ? r4(s.ll / s.lines) : null, said: s.lines ? r4(s.said / s.lines) : null, was: s.lines ? r4(s.was / s.lines) : null })),
     // (the sides taken against their own projection: the model's chance of its side and how often it won)
+    low: { lines: low.lines, logLoss: low.lines ? r4(low.ll / low.lines) : null },
     skew: { n: skew.n, said: skew.n ? r4(skew.said / skew.n) : null, was: skew.n ? r4(skew.was / skew.n) : null },
     fifths: fifthsOf(list),
   };
