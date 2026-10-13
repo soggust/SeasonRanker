@@ -1190,7 +1190,8 @@ export function c19(x) {
 // C20: the book's line far from the projection, over every graded prop bet and CHECK at the book's own price (an
 // assumed -110 says nothing of where the market puts him): the mean its price implies over the model's (the
 // bet's projection.lineRatio, kept since 2026-10-13, or a CHECK's projection.implied; else estimated from its
-// line, fair chance and the projection's dispersion r, the stat's rk not kept: by 'estimated'), past ROLE.ratioHi or under ROLE.ratioLo
+// line, fair chance and the projection's dispersion r, the stat's rk not kept: by 'estimated'; both on the plain
+// shape, never the early exit's mixture: props.mjs impliedNow, review of 6c51e015), past ROLE.ratioHi or under ROLE.ratioLo
 // (props.mjs, the role guards' line reasons; outside the NFL only at a count from ALARM_MIN: props.mjs farOf, a 0.5
 // line's ratio an ordinary lean, not a far line). A far line alone is bet as any prop, measured no worse than the
 // rest, so the question it keeps asking is whether the far ones with the model against the market's reading do

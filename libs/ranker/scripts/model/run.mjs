@@ -790,11 +790,13 @@ async function fitTheProps(r) {
       const sl = f.floors?.sl;
       kept.push(sl?.fifths ? `fifths ${fifths(sl.fifths[0])} to ${fifths(sl.fifths[1])}${sl.exact ? ' (each size replayed)' : ''}, final ${fifths(f.check?.fifths)}` : `fifths ${fifths(f.check?.fifths)}`);
       // (the early exit's gate (project.mjs ex): the held-out eligible rows' chance of a short game and what one
-      // keeps, the low lines' log loss (LOW_LINE or under) and the whole stat's without it and at the size the
+      // keeps, the low lines' log loss (LOW_LINE or under), the high rows' (a short last game, a first game back, a
+      // chance of 10% or more: log loss, over said and was) and the whole stat's without it and at the size the
       // search took, the dispersion r each)
       const ex = f.floors?.ex;
       const ll = (x) => (x ? `${x.logLoss ?? 'n/a'} (${x.lines})` : 'n/a');
-      if (ex) kept.push(`early exit at ${ex.size}: chance ${ex.q ?? 'n/a'} keeping ${ex.f ?? 'n/a'} (${ex.n} rows), low lines ${ll(ex.low[0])} to ${ll(ex.low[1])}, all ${ex.logLoss[0]} to ${ex.logLoss[1]}, r ${ex.r[0]} to ${ex.r[1]} (${ex.seconds}s)${ex.fails.length ? `, left out: ${ex.fails.join(', ')}` : ''}`);
+      const hi = (x) => (x ? `${x.logLoss ?? 'n/a'} said ${x.said ?? 'n/a'} was ${x.was ?? 'n/a'} (${x.lines})` : 'n/a');
+      if (ex) kept.push(`early exit at ${ex.size}: chance ${ex.q ?? 'n/a'} keeping ${ex.f ?? 'n/a'} (${ex.n} rows), low lines ${ll(ex.low[0])} to ${ll(ex.low[1])}, high rows ${hi(ex.high?.[0])} to ${hi(ex.high?.[1])}, all ${ex.logLoss[0]} to ${ex.logLoss[1]}, r ${ex.r[0]} to ${ex.r[1]} (${ex.seconds}s)${ex.fails.length ? `, left out: ${ex.fails.join(', ')}` : ''}`);
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
       const skew = (x) => (x?.n ? `${x.n} said ${x.said} won ${x.was}` : 'none');

@@ -570,8 +570,12 @@ const RECENCY = { recency: true };
 // the stats whose rows read his share of the work (the NFL's snaps, the NBA's minutes). Not the NHL's skaters: their
 // short games (time on ice under half his typical) 0.3% to 0.7%, shots and points measured 2026-10-13 with no held-out
 // gain (shots ex 1 +0, points not taken), off the search; MLB reads no share yet. Marked only where it was kept
-// (2026-10-13: NFL interceptions, rushing, receiving and rush+rec yards, NBA points; project.mjs EXIT_FRAC's notes): left
-// out on receptions, carries, the other passing stats and the other NBA stats, its search off them)
+// (2026-10-13, measured again after the review of 6c51e015 with its high rows' point: NFL receiving yards alone;
+// project.mjs EXIT_FRAC's notes): left out on interceptions (its high rows too few), rushing yards (their log loss
+// worse), rush+rec yards (their over said further from what happened), receptions, carries, the other passing
+// stats and the NBA's, its search off them. The marks read the held-out window (the same last 30% the hourly gate
+// judges on), so a kept stat's held-out gain isn't clean, as RECENCY's: NBA points' +0.0003, at the DRAFT_GAIN
+// floor, picked from about 17 stats, its own 38 low lines worse (0.4006 to 0.4049), taken off as noise)
 const EXIT = { exit: true };
 // (the other side's key defenders out tonight (audit #15; CTX oppOut, oppD, oppDB, oppFront: late terms, the
 // NBA's on the whole stat's strict gate (a centred value on every row), the rest on the rows with one out
@@ -697,15 +701,15 @@ export const STATS = {
     stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
-    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB, ...EXIT }),
-    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...EXIT }),
+    stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
+    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT }),
     stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...EXIT }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...EXIT }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
     stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY }),
     stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
     stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
@@ -1417,8 +1421,12 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     });
     // (the mean the book's price implies at its line (impliedMean; none at an assumed -110: it says nothing of
     // his role, only that the price is unknown): the role guards' line reasons, a CHECK's, and every priced
-    // prop's ratio to the model's (projection.lineRatio: selfcheck.mjs C20))
-    const impliedNow = prop.prices ? impliedMean(prop.line, book.fairOver, f.params, mix) : null;
+    // prop's ratio to the model's (projection.lineRatio: selfcheck.mjs C20)). On the plain shape, never the early
+    // exit's mixture (exitMix): a high chance of a short game sets the mixture's median under its mean, so the
+    // book's line read through it implies a larger mean (about 25% at a chance of 0.5) and the role guard's 0.6
+    // slips to about 0.48 for the very players it's for: questionable, back from injury, short last game (review
+    // of 6c51e015). The mixture prices the line (lineChances) and nothing else)
+    const impliedNow = prop.prices ? impliedMean(prop.line, book.fairOver, f.params) : null;
     // (the guard's first reading: his status (statusOf); the line alarm reads it too)
     const status = statusOf(sport, prop, live, home, game);
     // (the NFL: his role changing (roleChangeOf): kept as a CHECK on the model's side, never bet either way)

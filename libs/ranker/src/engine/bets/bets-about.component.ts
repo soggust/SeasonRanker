@@ -105,7 +105,7 @@ const TERM_NAMES: Record<string, string> = {
   c_oppD: "the opponent's top-four defensemen out tonight (NHL)",
   c_oppDB: "the opponent's starting cornerbacks and safeties out tonight (NFL)",
   c_oppFront: "the opponent's starting linemen and linebackers out tonight (NFL)",
-  ex: "early exit: his chance of a short game (hurt, benched, pulled) shaping the chances around his projection, its average unchanged (NFL, NBA)",
+  ex: "early exit: his chance of a short game (hurt, benched, pulled) shaping the chances around his projection, its average unchanged (NFL receiving yards)",
   c_oppGoalie: 'opposing goalie',
   c_slot: 'batting-order slot',
   c_platoon: 'platoon edge',

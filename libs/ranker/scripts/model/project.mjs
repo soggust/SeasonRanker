@@ -408,19 +408,23 @@ export function middleF(params, x) {
   return Math.min(SL_CAP, Math.max(1 / SL_CAP, Math.pow(x / rm, -sl)));
 }
 
-// The early exit (audit #17, ex: a late term on the whole stat's gate, the low lines' log loss no worse too):
+// The early exit (audit #17, ex: a late term on the whole stat's gate, the low lines' log loss and the high rows'
+// no worse too):
 // a player can leave a game early (hurt, benched, pulled), which one negative binomial around the projection
 // doesn't shape, a low line's under and over most of all. A short game is one his share of the work (row.share:
 // the NFL's snaps, the NBA's minutes, each the game's own) ran under EXIT_FRAC of his typical (the median of his
 // shares this season before it, EXIT_MIN games or more). Its chance learned as the replay goes (exitTracker,
 // from the games before each day only): every row's, by his position, his role before the game (row.role), and
 // whether his last game this season was short or tonight is his first game back from an absence (row.ret, the
-// NFL's), each level pulled toward the one above it by EXIT_M games, his own short games' rate pulled toward
-// that by EXIT_OWN_M; and what a short game keeps of a full one's work (its share over his typical, EXIT_F0 till
-// EXIT_FM of them). The count is then a mixture: a short game at ex times that chance (held to EXIT_CAP) with
-// its mean that fraction of a full game's, else a full game, the full game's mean set so the mixture's is the
-// projection (exitMix): the projection, its lean and every bias as without it, only the shape around them.
-// The base read 2026-10-13 (the eligible rows with a typical share of 0.4 or more, each against the chance
+// NFL's), each level pulled toward the one above it by EXIT_M games, his own short games' rate pulling his
+// role's by EXIT_OWN_M before the short last game's or first game back's level reads; and what a short game keeps
+// of a full one's work (its share over his typical, EXIT_F0 till EXIT_FM of them). The count is then a mixture:
+// a short game at that chance with ex - 1 times his base's added (ex sizes the base only: the short last game's
+// and first game back's levels at their own read; held to EXIT_CAP), its mean that fraction of a full game's,
+// else a full game, the full game's mean set so the mixture's is the projection (exitMix): the projection, its
+// lean and every bias as without it, only the shape around them. The book's line is read for the guards on the
+// plain shape (props.mjs impliedNow): the mixture prices the line, nothing else.
+// The base read 2026-10-13 (his own rate pulled after the levels then, since before them) (the eligible rows with a typical share of 0.4 or more, each against the chance
 // before its day): the NFL's 31762 ran short 6.8% (a WR1 3.2%, a WR4 or lower 15.5%, an RB2 or lower 11.6%), 37.7%
 // after a short last game (n 1516; 25% read), 17.6% in a first game back (n 1715; 12.9% read); the NBA's 16896
 // 3.2% (a starter 1.8%, the bench 5% to 8%), 22.2% after a short last game (n 450; 15.8% read); the chance's
@@ -440,6 +444,16 @@ export function middleF(params, x) {
 // passing TDs not taken; NBA rebounds (+0; 799 low 0.6472 to 0.6477), assists (-0.0006; 2588 low 0.6219 to
 // 0.6224), threes (-0.0002; 4342 low 0.5694 to 0.5697), pts+reb+ast (-0.0003). The receptions' and threes' low
 // lines, the audit's worry, are as well shaped by the plain negative binomial: their short games ride in its r.
+// Measured again after the review of 6c51e015 (ex sizing the base only, his own rate before the levels, a game
+// with no share read leaving his last game unknown; and the gate's high rows: a short last game, a first game
+// back or a chance of EXIT_HIGH or more, at SUBGROUP_N lines their log loss no worse and their over said no
+// further from what happened): ex times the whole of a 25% level had pinned those rows at EXIT_CAP, a coin-flip
+// short game (a WR at 60 on a 30.5 line, r 3: over 0.793 plain, 0.638 so). Kept on receiving yards alone, ex 3
+// (0.6497 to 0.6479, +0.0018; 47 low, 0.7409 to 0.64; its 975 high rows 0.6552 to 0.648, over said 0.4467 to 0.439,
+// was 0.4338). Left out: interceptions, now ex 2 (+0.0006, r 10 to 16; 1024 low 0.5508 to 0.5502; 58 high rows,
+// too few: said 0.3, was 0.138), rushing yards ex 2 (+0.0006; its 1419 high rows 0.6441 to 0.6454, worse), rush+rec
+// yards ex 2 (+0.0017; its 2086 high rows 0.6451 to 0.6441, their over said 0.4629 to 0.4687 against 0.4525:
+// further); NBA points off the search (its +0.0003 the floor's, picked from about 17: noise).
 // Each stat's mark only where it was kept (props.mjs EXIT); the bias is the same either way (the mean's kept)
 export const EXIT_FRAC = 0.5;
 const EXIT_MIN = 3;
@@ -453,8 +467,13 @@ const EXIT_N = 200;
 // (the low lines whose held-out log loss the early exit's gate reads apart: check's low)
 export const LOW_LINE = 2.5;
 // The early exit's chances learned from the history (above): learn a day's rows after they were all projected,
-// of a row before its game ({ q: the chance of a short game, f: what one keeps, n: the base's rows }; null till
-// EXIT_N rows)
+// of a row before its game ({ q: the chance of a short game, q0: his base's (his role's, his own rate pulled
+// toward it: the short last game's and first game back's level not in it; exitMix sizes only this part by ex),
+// f: what one keeps, tier: 'L' after a short last game, 'B' a first game back, else null, n: the base's rows };
+// null till EXIT_N rows). His own short games' rate pulls the base before the short last game's or first game
+// back's level reads (review of 6c51e015: pulled after it, his plain rate dragged those levels back toward his
+// usual, 25% read where 37.7% ran short); a game with no share read (its snap counts not in yet) leaves his last
+// game unknown, never the one before it ('-': the role's chance, not a stale short last game's)
 export function exitTracker() {
   const cls = new Map();
   const own = new Map();
@@ -462,7 +481,7 @@ export function exitTracker() {
     const pos = row.pos ?? '';
     const role = `${pos}|${row.role ?? '-'}`;
     const o = own.get(row.pid);
-    const last = o?.season === row.season && o.last ? 'L' : '-';
+    const last = o?.season === row.season && o.last === true ? 'L' : '-';
     const back = row.ret?.k === 1 ? 'B' : '-';
     return ['*', pos, role, `${role}|${last}${back}`];
   };
@@ -472,20 +491,36 @@ export function exitTracker() {
       if (!(all?.n >= EXIT_N)) return null;
       let q = all.s / all.n;
       let f = (all.fs + EXIT_FM * EXIT_F0) / (all.s + EXIT_FM);
-      for (const k of keysOf(row).slice(1)) {
+      const keys = keysOf(row);
+      let whole = true;
+      for (const k of keys.slice(1, 3)) {
         const c = cls.get(k);
-        if (!c) break;
+        if (!c) {
+          whole = false;
+          break;
+        }
         q = (c.s + EXIT_M * q) / (c.n + EXIT_M);
         f = (c.fs + EXIT_FM * f) / (c.s + EXIT_FM);
       }
       const o = own.get(row.pid);
       if (o?.n) q = (o.s + EXIT_OWN_M * q) / (o.n + EXIT_OWN_M);
-      return { q, f, n: all.n };
+      const q0 = q;
+      const tag = keys[3].slice(-2);
+      const c = whole ? cls.get(keys[3]) : null;
+      if (c) {
+        q = (c.s + EXIT_M * q) / (c.n + EXIT_M);
+        f = (c.fs + EXIT_FM * f) / (c.s + EXIT_FM);
+      }
+      return { q, q0, f, tier: tag[0] === 'L' ? 'L' : tag[1] === 'B' ? 'B' : null, n: all.n };
     },
     learn(rows) {
       for (const row of rows) {
         const sh = Number.isFinite(row.share) && row.share > 0 ? Math.min(1, row.share) : null;
-        if (sh === null) continue;
+        if (sh === null) {
+          const o = own.get(row.pid);
+          if (o && o.season === row.season) o.last = null;
+          continue;
+        }
         let o = own.get(row.pid);
         if (!o) o = { season: row.season, shares: [], n: 0, s: 0 };
         if (o.season !== row.season) o = { ...o, season: row.season, shares: [] };
@@ -510,12 +545,23 @@ export function exitTracker() {
   };
 }
 // (the mixture a projection's chances take: { q, f } where the fit kept the early exit (ex) and the row has its
-// chance, else null: the plain negative binomial)
+// chance, else null: the plain negative binomial. ex sizes his base's chance only (exitQ0): fit on the bulk of
+// the rows, a base of 3% to 8%, it works there as a heavier low tail as much as a count of exits (interceptions'
+// r 10 to 150), so a short last game's or a first game back's level goes on at its own read, the base's ex
+// times added over it (review of 6c51e015: ex times the whole of a 25% level pinned those rows at EXIT_CAP, a
+// coin-flip short game, 3 to 8 points of under where the model knows least); held to EXIT_CAP)
 export function exitMix(params, p) {
   const ex = params?.ex;
   if (!ex || !(p?.exitQ > 0)) return null;
-  return { q: Math.min(EXIT_CAP, ex * p.exitQ), f: Math.min(0.9, Math.max(0, p.exitF ?? EXIT_F0)) };
+  const q0 = Math.min(p.exitQ, p.exitQ0 ?? p.exitQ);
+  const q = Math.min(EXIT_CAP, p.exitQ + (ex - 1) * q0);
+  if (!(q > 0)) return null;
+  return { q, f: Math.min(0.9, Math.max(0, p.exitF ?? EXIT_F0)) };
 }
+// (the rows the early exit's gate reads apart besides the low lines (check's high): a short last game, a first
+// game back, or a chance learned of EXIT_HIGH or more, where the mixture leans hardest)
+const EXIT_HIGH = 0.1;
+const exitHigh = (p) => p?.exitQ > 0 && (!!p.exitTier || p.exitQ >= EXIT_HIGH);
 // (its parts, [weight, mean]: the full game's mean set so the mixture's is mu)
 const mixParts = (mu, mix) => {
   const full = mu / (1 - mix.q * (1 - mix.f));
@@ -1203,7 +1249,7 @@ export function makeModel(stat, params, env) {
     project(row) {
       const p = parts(row);
       const e = p ? exits.of(row) : null;
-      if (p && e) (p.exitQ = e.q), (p.exitF = e.f);
+      if (p && e) (p.exitQ = e.q), (p.exitQ0 = e.q0), (p.exitF = e.f), (p.exitTier = e.tier);
       return p;
     },
     // (every defense's number against a role this season, the league's order: for the reasoning's "#2")
@@ -1936,9 +1982,19 @@ export function fitStat(stat, rows, env) {
       // actual over projected, off 0, summed), the eligible players')
       // (the early exit's own point: the low lines' held-out log loss (LOW_LINE or under) no worse, where each
       // side has CS_MIN of them; fewer (a yards stat's medians), the whole stat's gain alone)
+      // (and its high rows' (check's high: a short last game, a first game back, a chance of EXIT_HIGH or more),
+      // where its confidence sits: their log loss no worse and their over's chance said no further from what
+      // happened, where there are SUBGROUP_N of them; fewer, not measured and left out (review of 6c51e015: the
+      // whole stat's gain and the low lines' could pass with those rows miscalibrated))
       if (key === 'ex') {
         const [a, b] = [tried.check?.low, off.check?.low];
         if (a?.lines >= CS_MIN && b?.lines >= CS_MIN && a.logLoss > b.logLoss) fails.push("the low lines' log loss");
+        const [h1, h0] = [tried.check?.high, off.check?.high];
+        if (!(h1?.lines >= SUBGROUP_N && h0?.lines >= SUBGROUP_N)) fails.push('the high rows not measured');
+        else {
+          if (h1.logLoss > h0.logLoss) fails.push("the high rows' log loss");
+          if (Math.abs(h1.said - h1.was) > Math.abs(h0.said - h0.was)) fails.push("the high rows' over said");
+        }
       }
       if (key === 'sl') {
         const [a, b] = [fifthsMiss(tried.check), fifthsMiss(off.check)];
@@ -1954,7 +2010,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -2100,6 +2156,9 @@ function check(list, params) {
   const skew = { n: 0, said: 0, was: 0 };
   // (the low lines' (LOW_LINE or under: a catch or two, a shot, a three), the early exit's gate's own)
   const low = { lines: 0, ll: 0 };
+  // (and the rows its mixture leans on hardest (exitHigh: a short last game, a first game back, a chance of
+  // EXIT_HIGH or more): their log loss and their over's chance said against what happened)
+  const high = { lines: 0, ll: 0, said: 0, was: 0 };
   for (const x of list.sort((a, b) => a.row.date.localeCompare(b.row.date))) {
     mae += Math.abs(x.p.mu - x.v);
     sumMu += x.p.mu;
@@ -2128,6 +2187,7 @@ function check(list, params) {
       }
       ll -= Math.log(over ? p : 1 - p);
       if (line <= LOW_LINE) (low.lines++), (low.ll -= Math.log(over ? p : 1 - p));
+      if (exitHigh(x.p)) (high.lines++), (high.ll -= Math.log(over ? p : 1 - p)), (high.said += p), (high.was += over);
       brier += (p - over) ** 2;
       const q = (vals.filter((v) => v > line).length + 1) / (vals.length + 2);
       llBase -= Math.log(over ? q : 1 - q);
@@ -2165,6 +2225,7 @@ function check(list, params) {
     bySide: side.map((s) => ({ lines: s.lines, logLoss: s.lines ? r4(s.ll / s.lines) : null, said: s.lines ? r4(s.said / s.lines) : null, was: s.lines ? r4(s.was / s.lines) : null })),
     // (the sides taken against their own projection: the model's chance of its side and how often it won)
     low: { lines: low.lines, logLoss: low.lines ? r4(low.ll / low.lines) : null },
+    high: { lines: high.lines, logLoss: high.lines ? r4(high.ll / high.lines) : null, said: high.lines ? r4(high.said / high.lines) : null, was: high.lines ? r4(high.was / high.lines) : null },
     skew: { n: skew.n, said: skew.n ? r4(skew.said / skew.n) : null, was: skew.n ? r4(skew.was / skew.n) : null },
     fifths: fifthsOf(list),
   };
