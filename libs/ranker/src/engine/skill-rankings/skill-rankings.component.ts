@@ -159,19 +159,22 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     this.cards.connectGames(games);
     const service = this.positionService;
 
-    // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change
+    // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change (each one, a preset
+    // too, ending an isolated look: back to the ranking)
     service.weights$.pipe(takeUntilDestroyed()).subscribe((weights) => {
       if (!this.position) return;
+      this.leaveIsolation();
       this.weights = weights[this.position];
       this.sortPlayers();
     });
     service.skillHidden$.pipe(takeUntilDestroyed()).subscribe((hidden) => {
       if (!this.position) return;
+      this.leaveIsolation();
       this.hidden = hidden[this.position] ?? {};
       this.sortPlayers();
     });
-    service.settings$.pipe(takeUntilDestroyed()).subscribe(() => this.position && this.sortPlayers());
-    service.statHidden$.pipe(takeUntilDestroyed()).subscribe(() => this.position && this.sortPlayers());
+    service.settings$.pipe(takeUntilDestroyed()).subscribe(() => this.position && (this.leaveIsolation(), this.sortPlayers()));
+    service.statHidden$.pipe(takeUntilDestroyed()).subscribe(() => this.position && (this.leaveIsolation(), this.sortPlayers()));
 
     // Another season from the year dropdown (or its playoffs, Length): its rows from the top, in
     // that season's order for this tab (dragged or not) if it has one, otherwise sorted by the sliders
@@ -187,6 +190,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     // just the rows still shown)
     this.teams.changed$.pipe(takeUntilDestroyed()).subscribe(() => {
       this.closeWhy();
+      this.leaveIsolation();
       this.showUnranked(this.unrankedList);
       const shown = new Set(this.gridRows.map((p) => p.gsisId));
       this.picked = this.picked.filter((id) => shown.has(id));
@@ -393,6 +397,13 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     list?.scrollTo({ top: 0, left: list.scrollLeft });
     this.applyIsolation();
     this.glide.play(() => this.rankingsList?.nativeElement, from);
+  }
+
+  // (a filter or setting changed while isolated: back to the ranking at once, the list re-sorting anyway)
+  private leaveIsolation(): void {
+    if (!this.isolatedKey) return;
+    this.isolatedKey = null;
+    this.sayIso('Back to the ranking');
   }
 
   // Back to the ranking (refocus: the list takes focus, the chip's X having gone)

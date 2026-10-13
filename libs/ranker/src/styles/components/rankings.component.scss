@@ -2231,8 +2231,10 @@ section ul li.player.header-row:hover {
     outline-offset: 2px;
   }
 
-  // (a header that sorts: the pointer says it clicks, its hover still has the stat's name)
-  .iso-can .stat-label {
+  // (a header that sorts: the pointer says it clicks, its hover still has the stat's name; past the header
+  // label's own help cursor on hover)
+  div.iso-can .stat-label,
+  div.iso-can .stat-label:hover {
     cursor: pointer;
   }
 }
