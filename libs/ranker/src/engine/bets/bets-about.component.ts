@@ -47,6 +47,8 @@ const TERM_NAMES: Record<string, string> = {
   sn: 'snaps-based rate (NBA: minutes first, his per-minute rate times his expected minutes; NHL: ice time first, the same with his time on ice)',
   ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
   po: "NBA pace: how many possessions tonight's game should have, as a power",
+  ep: "NFL expected plays tonight: how many plays his team should run (its own pace and the other side's, or the game's expected total and its share of the ball), against the games he's played this season, as a power; used in place of the defense's pace",
+  eg: "NFL expected plays' form (1: his team's expected plays from its own pace and the other side's, over their average in his games this season; 2: the same over the plays his team actually ran in his games; 3: the game's expected total times his team's share of it (its time of possession, measured by its share of the plays), over its average in his games; 4: that over the plays actually run)",
   pg: "NBA pace's form (0: the other side's possessions over the league's; 2: the game's expected possessions over their average in his games this season; 3: the other side's over its average in his games this season; 1, off the search: the game's expected over the league's)",
   sr: "expected share: last game's weight (NBA, NHL: his last three games' minutes)",
   qs: 'QB starts (starter by his starts)',

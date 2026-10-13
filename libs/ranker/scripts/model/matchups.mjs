@@ -41,6 +41,13 @@
 //            other side's (pace: his own team's is in his own numbers) and the game's expected (paceG: the two
 //            teams' product over the league's), each 1 till it's known (paceKnown false; project.mjs po, pg).
 //            Unmeasured: a new season's opening weeks (the history's one season opened with no league's pace)
+//   plays    the NFL's expected plays tonight (audit #19b; project.mjs ep, eg), each over the league's plays a
+//            team-game: playsX his team's own plays a game (runs and passes from its players' logs, pulled toward
+//            the league's by PLAYS_K games) times the other side's pace above; playsS the game's expected total
+//            (each side's games' both-sides plays over the league's, multiplied) times his team's expected share
+//            of it (each side's share of its games' plays pulled toward half by PLAYS_K games, put together log5's
+//            way: the time of possession's measure, nflverse's drive times and seconds a play not read); playsA the
+//            game's own plays, learned from after it only. Season to date, last season's at half
 //   targets  the NFL: the share of the targets it allows to wide receivers, tight ends and backs, against the
 //            league's, pulled toward the league's by 60 targets
 //   vacated  the NFL: the work a player's position group is missing: its regulars who aren't playing (not in the
@@ -251,6 +258,8 @@ export function sideOfPlays(p, home) {
 // unmeasured: a regular released or benched (on no other team) still counts in the history through his first
 // OUT_MAX games, where live only the report and roster see him; the own side's unlisted-absent rule has no
 // opponent twin yet (the review of 05f5ef0a), so neither term goes on a ctx before that's measured
+// (expected plays' pull toward the league's, in a team's games: project.mjs ep)
+const PLAYS_K = 4;
 const DEF_RATE = 0.35;
 const DEF_REG = 0.5;
 const DEF_CORE = 0.7;
@@ -324,6 +333,9 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   const lg = { pass: 0.57, plays: 62, share: { WR: 0.6, TE: 0.2, RB: 0.2 }, n: 0 };
   const offOf = (id, season) => decay(off.get(id) ?? { season, att: 0, car: 0, n: 0 }, season);
   const defOf = (id, season) => decay(def.get(id) ?? { season, pace: 0, n: 0, WR: 0, TE: 0, RB: 0, all: 0 }, season);
+  // (each team's games' plays, both sides' (tot), and its share of them (shr): expected plays' playsS)
+  const poss = new Map();
+  const possOf = (id, season) => decay(poss.get(id) ?? { season, tot: 0, shr: 0, n: 0 }, season);
   const funnel = passFunnel();
   // (each team's games this season so far: a row's teamGame is the team's game number tonight, 1 for its first)
   const played_ = new Map();
@@ -574,6 +586,26 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
     const share = pos && pos !== 'QB' ? (d[pos] + 60 * lg.share[pos]) / (d.all + 60) / lg.share[pos] : 1;
     return { funnel: funnel.of(id, season), pace: 1 + d.pace / (d.n + 4), tgt: share };
   };
+  // (expected plays tonight (audit #19b; project.mjs ep, eg), each over the league's plays a team-game, before
+  // the game: playsX his team's own plays a game (pulled toward the league's by PLAYS_K games) times the other
+  // side's pace (its opponents' plays against their usual, the defense's pace above); playsS the game's
+  // expected total (each side's games' totals, both sides' plays, over the league's, multiplied) times his
+  // team's expected share of it (each side's share of its games' plays pulled toward half by PLAYS_K games,
+  // the two put together log5's way: the time of possession's measure here, nflverse's drive times not read),
+  // over half. Each team's tallies season to date, last season's at half)
+  const playsOf = (teamId, oppId, season) => {
+    const o = offOf(teamId, season);
+    const own = (o.att + o.car + PLAYS_K * lg.plays) / (o.n + PLAYS_K) / lg.plays;
+    const d = defOf(oppId, season);
+    const lgTot = 2 * lg.plays;
+    const [a, b] = [possOf(teamId, season), possOf(oppId, season)];
+    const tot = (x) => (x.tot + PLAYS_K * lgTot) / (x.n + PLAYS_K) / lgTot;
+    const sh = (x) => (x.shr + PLAYS_K * 0.5) / (x.n + PLAYS_K);
+    const [sa, sb] = [sh(a), sh(b)];
+    const s = (sa * (1 - sb)) / (sa * (1 - sb) + sb * (1 - sa));
+    const r4 = (x) => Math.round(x * 10000) / 10000;
+    return { playsX: r4(own * (1 + d.pace / (d.n + 4))), playsS: r4(tot(a) * tot(b) * 2 * s) };
+  };
   // (a player's role on his team before a game: his place among its players at his position, by targets (by
   // carries for a back))
   // (out: the ones missing tonight, by id, taken out of the order: the role he steps into, promotion below)
@@ -713,8 +745,15 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
       // (the game's snap counts read: without them one missing from its logs may have played with no stat, so
       // none is promoted over him; the same rows' logs that say who's playing, not their numbers)
       const read = g.rows.some((r) => (r.s.snaps ?? 0) > 0);
+      // (expected plays before the game, and the game's own plays over the league's (playsA: null under 21, learned
+      // from after it, never to project it: project.mjs eg 2's average in his games))
+      const ex = playsOf(g.team, g.opp, g.season);
+      const playsA = g.att + g.car > 20 ? Math.round(((g.att + g.car) / lg.plays) * 10000) / 10000 : null;
       for (const r of g.rows) {
         const d = defense(g.opp, g.season, POS(r.pos));
+        r.playsX = ex.playsX;
+        r.playsS = ex.playsS;
+        r.playsA = playsA;
         r.role = roleOf(r.pid, g.team, g.season, r.pos);
         r.funnel = d.funnel;
         r.pace = d.pace;
@@ -763,6 +802,16 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
         for (const p of ['WR', 'TE', 'RB']) d[p] += g.tgt[p];
         d.all += g.tgt.WR + g.tgt.TE + g.tgt.RB;
         def.set(g.opp, d);
+        // (the game's plays both sides' and his team's share of them, where the other side's were read too)
+        const og = games.get(`${g.game}|${g.opp}`);
+        const oPlays = og ? og.att + og.car : 0;
+        if (oPlays > 20) {
+          const x = possOf(g.team, g.season);
+          x.tot += plays + oPlays;
+          x.shr += plays / (plays + oPlays);
+          x.n++;
+          poss.set(g.team, x);
+        }
         o.att += g.att;
         o.car += g.car;
         o.n++;
@@ -874,7 +923,7 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
       const p = POS(pos);
       // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
-      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => ({ ...absorb.dump(), read: learned }),

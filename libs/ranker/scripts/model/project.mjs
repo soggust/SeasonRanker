@@ -297,6 +297,21 @@
 //            volume term, exp(fun x funnel) for a passing or receiving stat, exp(-fun x funnel) for a rushing one;
 //            its pace (its opponents' plays over their usual) to the power pc; the share of targets it allows to
 //            his position over the league's, to the power tg (a receiving stat)
+//   plays    the NFL's expected plays tonight (audit #19b; ep, a late term on the whole stat's strict gate after the
+//            NBA's pace, searched on a stat marked plays: props.mjs PLAYS), in place of the defense's pace (pc: its
+//            other side's part is in it, so never both): his team's expected plays (eg 1, off the search: its own
+//            plays a game times the other side's pace, matchups.mjs playsX; eg 3: the game's expected total times his
+//            team's share of it, playsS, the share its time of possession's measure) over their average in his games
+//            this season (eg 4, off the search: playsS over his team's actual plays in his games; eg 2: playsX over
+//            them, playsA), each average pulled toward even by PLAYS_M games, to the power ep; none read tonight, pc
+//            as before. His own team's pace is in his numbers, so only tonight's against his games' counts; the
+//            market's script (b, the spread's c_mSpread) fit before it stays as fit, so it's judged on top of them,
+//            and the opponent's tables still learn with the other side's pace in them, as with pc. Measured
+//            2026-10-13 on the eight volume stats: kept on passing attempts (ep 0.5/eg 3, held out 0.6219 to 0.6208,
+//            +0.0011, in place of pc 0.5; the eligible players' bias 0.4952 to 0.4694, every player's 0.7758 to
+//            0.7468); left out on the rest (props.mjs PLAYS' notes), their search off. Unmeasured: seconds a play in
+//            neutral situations and nflverse's drive times (the cached play-by-play keeps neither: a refetch of
+//            every season), the share of the plays standing in for the time of possession
 //   vacated  the NFL backs' and pass-catchers', every NBA player's (his team's minutes or usage), the NHL
 //            skaters' (their position's time on ice or power-play time): his cut of the work his group is
 //            missing (its regulars not playing, matchups.mjs vacs) over his own, against the cut he had in the games his
@@ -693,7 +708,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -793,10 +808,31 @@ const PO = [0.5, 1, 1.5];
 // off the search since 2026-10-13)
 const PG_FORMS = [0, 2, 3];
 const PACE_M = 5;
+// (the NFL's expected plays tonight (audit #19b; props.mjs PLAYS), a late term on the whole stat's gate: ep its
+// power, eg its form: 1 his team's expected plays (matchups.mjs playsX: its own plays a game times the other
+// side's pace) over their average in his games this season, 2 the same over his team's actual plays in his games
+// (playsA), 3 the game's expected total times his team's share of it (playsS: the time of possession's
+// measure) over its average in his games, 4 that over the actual; each average pulled toward even by PLAYS_M
+// games. In place of the defense's pace (pc: the other side's part is in it), never on top of it. Measured
+// 2026-10-13 on every NFL volume stat with all four forms: the search took only 2 and 3 (passing attempts 0.5/3,
+// kept; rushing yards 0.5/2 and rush+rec yards 0.5/2, passing yards, completions and receiving yards 3, left
+// out), so 1 and 4 are off the search (EG_FORMS), kept readable)
+const EP = [0.5, 1];
+const EG_FORMS = [2, 3];
+const PLAYS_M = 4;
 // (a row's pace known: the league's read (matchups.mjs paceKnown); a row without the flag, by its paceG)
 const paceKnownOf = (row) => row.paceKnown ?? Number.isFinite(row.paceG);
+// (expected plays' factor (ep), by its form eg: tonight's (playsX, or playsS for 3 and 4) over its average in his
+// games this season (the expected's for 1 and 3, his team's actual's for 2 and 4), the average pulled toward even
+// by PLAYS_M games; tonight's not read, null (the stat as without it))
+export const playsFactor = (row, cur, eg) => {
+  const now = eg >= 3 ? row.playsS : row.playsX;
+  if (!(Number.isFinite(now) && now > 0)) return null;
+  const k = eg === 2 || eg === 4 ? 'ea' : eg === 3 ? 'es' : 'ex';
+  return now / (((cur?.[`${k}s`] ?? 0) + PLAYS_M) / ((cur?.[`${k}n`] ?? 0) + PLAYS_M));
+};
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'ep' ? EP.flatMap((ep) => EG_FORMS.map((eg) => ({ ep, eg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -1291,7 +1327,11 @@ export function makeModel(stat, params, env) {
     // (pg 1 counts his own team's pace twice (it's in his numbers): off the search since 2026-10-13 (PG_FORMS),
     // kept readable for a fit made before)
     const paceNow = !stat.pace || !params.po ? 1 : params.pg >= 2 ? (!paceKnownOf(row) ? 1 : params.pg === 2 ? row.paceG / (((cur.pgs ?? 0) + PACE_M) / ((cur.pgn ?? 0) + PACE_M)) : row.pace / (((cur.ops ?? 0) + PACE_M) / ((cur.opn ?? 0) + PACE_M))) : ((params.pg ? row.paceG : row.pace) ?? 1);
-    const paceF = stat.pace ? (params.po ? Math.pow(paceNow, params.po) : 1) : stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
+    // (the NFL's expected plays (stat.plays, ep): his team's expected tonight over its average in his games, by
+    // eg's form (EG_FORMS), to the power ep; in place of the defense's pace (pc), whose part it holds. A row
+    // without them (an older cache's), pc as before)
+    const playsNow = stat.plays && params.ep ? playsFactor(row, cur, params.eg) : null;
+    const paceF = stat.pace ? (params.po ? Math.pow(paceNow, params.po) : 1) : playsNow !== null ? Math.pow(playsNow, params.ep) : stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
     const tgtF = stat.targets && params.tg ? Math.pow(row.tgt ?? 1, params.tg) : 1;
     // (the work his position group is missing now against what it was missing in the games his numbers come
     // from, weighed as they are (his season's games against the K-game prior, which had last season's: its
@@ -1479,6 +1519,15 @@ export function makeModel(stat, params, env) {
         // (the game's expected possessions over the league's in his games this season, and the other side's (the
         // NBA's pace, pg 2 and 3: tonight's read against them); only games whose pace was known, a placeholder 1
         // from before the league's was read left out, not pulling the average toward even)
+        // (the NFL's expected plays in his games this season (ep): the expected (playsX, playsS) and his team's actual
+        // (playsA), each where read)
+        if (stat.plays) {
+          for (const [k, v] of [['ex', row.playsX], ['es', row.playsS], ['ea', row.playsA]]) {
+            if (!(Number.isFinite(v) && v > 0)) continue;
+            p.cur[`${k}s`] = (p.cur[`${k}s`] ?? 0) + v;
+            p.cur[`${k}n`] = (p.cur[`${k}n`] ?? 0) + 1;
+          }
+        }
         if (stat.pace && paceKnownOf(row)) {
           p.cur.pgs = (p.cur.pgs ?? 0) + row.paceG;
           p.cur.pgn = (p.cur.pgn ?? 0) + 1;
@@ -1747,6 +1796,7 @@ const has = (stat, key) =>
   : key === 'sp' ? !!stat.start
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
+  : key === 'ep' ? !!stat.plays
   : key === 'od' ? !!stat.recency
   : key === 'ex' ? !!stat.exit
   : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
@@ -1879,7 +1929,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sp', 'sl', 'ex'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sp', 'sl', 'ex'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -2148,6 +2198,7 @@ export function fitStat(stat, rows, env) {
     gains[key] = null;
     if (!v) {
       if (key === 'sp') floors.sp = { size: null, fails: ['not taken on the fit window'], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
+      if (key === 'ep') floors.ep = { size: null, fails: ['not taken on the fit window'], seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       continue;
     }
     const offP = { ...params, r: s0.r };
@@ -2227,7 +2278,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it

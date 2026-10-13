@@ -707,11 +707,23 @@ const MIDDLE = { middle: true };
 // openers are in its fit window (its size picked there) and the next's held out: 2026-27's go to the held-out window
 // first, so 2027-28 at the soonest. The mark back on a stat to try it again)
 const START = { start: true };
+// (expected plays tonight (audit #19b; project.mjs ep, eg, a late term on the whole stat's gate, in place of the
+// defense's pace pc): his team's expected plays (its own plays a game times the other side's pace, or the game's
+// expected total times its share of it: the time of possession's measure) over their average in his games, or
+// over his team's actual plays in them (matchups.mjs playsX, playsS, playsA). Marked only where it was kept:
+// measured 2026-10-13 on the eight volume stats (passing yards, attempts, completions, rushing yards, carries,
+// receiving yards, receptions, rush+rec yards), kept on passing attempts alone (ep 0.5, eg 3: the game's total
+// times his team's share; held out 0.6219 to 0.6208, +0.0011, in place of pc 0.5; the eligible players' bias 0.4952
+// to 0.4694 attempts a game, every player's 0.7758 to 0.7468). Left out: passing yards (0.5/3, -0.0008), completions
+// (1/3, -0.0022), rushing yards (0.5/2, +0.0003, both biases larger: -0.5578 to -0.6345, every player's -0.9654 to
+// -1.0309), receiving yards (0.5/3, -0.0002), rush+rec yards (0.5/2, 0), carries and receptions not taken on the fit
+// window. Their search (about 65s a run, 3.6s to 26.5s a stat) off; the mark back on a stat to try it again)
+const PLAYS = { plays: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 export const STATS = {
   nfl: [
     stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
-    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
+    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
