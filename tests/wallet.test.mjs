@@ -170,8 +170,12 @@ test('in play: an open bet’s live column, as the Algorithm’s In Play (a mete
   // (a short prop: pips, one a unit up to the one past the line, lit as they come)
   const catches = w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec', statLabel: 'Receptions', player: 'A. Player' }), board(7, 3, false), 3);
   assert.deepEqual([catches.state, catches.text, catches.meter.pips.map((p) => p.on)], ['alive', '3 / 4.5 Receptions', [true, true, true, false, false, false]]);
-  // (a prop whose player isn't in the box score yet: no count, just under way)
-  assert.equal(w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec' }), board(7, 3, false), null).text, 'Under way');
+  // (a prop whose player isn't in the box score yet, the game under way: 0 so far on the meter, alive, never
+  // decided by it (grading reads him as not in it))
+  const none = w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec', statLabel: 'Receptions' }), board(7, 3, false), null);
+  assert.deepEqual([none.count, none.state, none.text, none.meter.pips.every((p) => !p.on)], [0, 'alive', '0 / 4.5 Receptions', true]);
+  // (once it's over with him still not in it: no count, the words as before)
+  assert.equal(w.liveOf(bet({ market: 'prop', side: 'over', line: 4.5, propType: 'rec' }), board(7, 3, true), null).count, null);
 });
 
 test('the wallet’s record: won, lost, pushed and void; staked, profit, return; at risk; the curve', () => {

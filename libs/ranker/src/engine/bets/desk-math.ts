@@ -120,9 +120,10 @@ export function meterOf(b: ModelBet, count: number | null): Meter | null {
 // and a side's words and color at the score
 
 // (what an in-play bet's meter counts: a prop's stat so far, a total's points so far; null for the rest,
-// whose result is the score)
+// whose result is the score. A prop whose player isn't in the box score yet, with its game under way, is
+// at 0 on the meter: no catch yet is none so far. For the meter alone: grading still reads him as not in it)
 export function countNowOf(b: ModelBet, game: Board | undefined, propNow: number | null | undefined): number | null {
-  if (b.market === 'prop') return propNow ?? null;
+  if (b.market === 'prop') return propNow ?? (game?.state === 'in' ? 0 : null);
   if (b.market !== 'total') return null;
   return game ? game.hs + game.as : null;
 }
