@@ -215,17 +215,20 @@ for (const sport of SPORTS) {
       assert.ok(isDate(p.start), `${at}: start`);
       assert.ok(Array.isArray(p.teams) && p.teams.length === 2, `${at}: teams`);
     }
-    // (the CHECKs, their own list (checks.mjs): level 'check', no units, the biggest gap first)
+    // (the CHECKs, their own list (checks.mjs): level 'check', no units, the biggest model Kelly first (picks.mjs,
+    // since the CHECK rule; the gap when the Kelly ties)
     if ('checks' in file) assert.ok(Array.isArray(file.checks), 'picks.json: checks');
-    let gap = Infinity;
+    let kelly = Infinity;
     for (const [i, c] of (file.checks ?? []).entries()) {
       const at = `${sport} CHECK pick ${i + 1}`;
       assert.equal(c.level, 'check', `${at}: level`);
       assert.equal(c.units, 0, `${at}: units`);
       for (const key of ['id', 'pick', 'matchup', 'reason', 'checkReason']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
       if (c.risk !== undefined) assert.equal(typeof c.risk, 'string', `${at}: risk`);
-      assert.ok(Number.isFinite(c.gap) && Math.abs(c.gap) <= gap, `${at}: gap ${c.gap}`);
-      gap = Math.abs(c.gap);
+      assert.ok(Number.isFinite(c.gap), `${at}: gap ${c.gap}`);
+      const k = Number.isFinite(c.modelKelly) ? c.modelKelly : -Infinity;
+      assert.ok(k <= kelly, `${at}: model Kelly ${c.modelKelly} after ${kelly}`);
+      kelly = k;
     }
   });
 
