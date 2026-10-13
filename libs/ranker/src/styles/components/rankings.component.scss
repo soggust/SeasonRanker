@@ -2160,7 +2160,7 @@ section ul li.player.unranked .drag-indicator {
 
 // ---------------------------------------------------------------------------
 // Isolation (a header clicked: the rows sorted by that stat alone, for a look): the board a shade darker,
-// every other column barely there, the one sorted by lit in the board's light, the rank tiles' places by
+// every other column barely there, the one sorted by a dashed strip, the rank tiles' places by
 // it edged in a dashed line (a sort, not the ranking), and a chip under the header to go back
 // ---------------------------------------------------------------------------
 section.rankings-wrapper ul.cdk-drop-list {
@@ -2210,9 +2210,33 @@ section ul.isolating li.player {
   }
 }
 
-// The column sorted by: a faint wash of the board's light down it, its header lit and underlined
+// The column sorted by: one strip down it, a plain light shade edged in the rank tiles' dashed line (its
+// sides on every row, its top on the first and its bottom on the last; drawn as backgrounds, the cells'
+// ::before and ::after being taken), its header lit and underlined
 section ul.isolating li.player:not(.header-row) .iso-on {
-  box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--scoreboard-led) 7%, transparent);
+  --iso-edge: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
+  --iso-dash-v: repeating-linear-gradient(to bottom, var(--iso-edge) 0 4px, transparent 4px 8px);
+  --iso-dash-h: repeating-linear-gradient(to right, var(--iso-edge) 0 4px, transparent 4px 8px);
+  background:
+    var(--iso-dash-v) left top / 1px 100% no-repeat,
+    var(--iso-dash-v) right top / 1px 100% no-repeat,
+    rgba(255, 255, 255, 0.06);
+}
+
+section ul.isolating li.player.header-row + li.player .iso-on {
+  background:
+    var(--iso-dash-h) left top / 100% 1px no-repeat,
+    var(--iso-dash-v) left top / 1px 100% no-repeat,
+    var(--iso-dash-v) right top / 1px 100% no-repeat,
+    rgba(255, 255, 255, 0.06);
+}
+
+section ul.isolating li.player:not(.header-row):last-of-type .iso-on {
+  background:
+    var(--iso-dash-h) left bottom / 100% 1px no-repeat,
+    var(--iso-dash-v) left top / 1px 100% no-repeat,
+    var(--iso-dash-v) right top / 1px 100% no-repeat,
+    rgba(255, 255, 255, 0.06);
 }
 
 section ul li.player.header-row,
@@ -2221,7 +2245,7 @@ section ul li.player.header-row:hover {
   .iso-on:hover .stat-label {
     color: var(--scoreboard-led);
     opacity: 1;
-    text-decoration: underline 2px;
+    text-decoration: underline 1px;
     text-shadow: var(--scoreboard-glow);
     text-underline-offset: 4px;
   }
