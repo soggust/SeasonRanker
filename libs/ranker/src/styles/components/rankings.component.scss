@@ -2272,6 +2272,17 @@ section ul li.player.header-row:hover {
     position: relative;
   }
 
+  // (the arrow, then an X back to the ranking beside it: the chip isn't the only way out)
+  .iso-tools {
+    align-items: center;
+    display: flex;
+    gap: 1px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   .iso-dir {
     align-items: center;
     background: none;
@@ -2281,10 +2292,6 @@ section ul li.player.header-row:hover {
     display: flex;
     opacity: 0.8;
     padding: 0;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
 
     .mat-icon {
       font-size: 14px;
@@ -2297,6 +2304,12 @@ section ul li.player.header-row:hover {
       filter: brightness(1.25);
       opacity: 1;
     }
+  }
+
+  // (the X: the header's white, a touch quieter than the arrow)
+  .iso-close {
+    color: #fff;
+    opacity: 0.6;
   }
 
   // (a header that sorts: the pointer says it clicks, its hover still has the stat's name; past the header

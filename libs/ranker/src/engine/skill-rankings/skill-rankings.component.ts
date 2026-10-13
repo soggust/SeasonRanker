@@ -393,7 +393,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // A header clicked (a press, not a drag: a drag never clicks): that stat alone, or back if it's the one
   isolate(stat: SkillStat, event: Event): void {
     // (the group's icon in the cell collapses the group instead)
-    if ((event.target as Element | null)?.closest('.group-icon, .iso-dir')) return;
+    if ((event.target as Element | null)?.closest('.group-icon, .iso-tools')) return;
     event.preventDefault();
     if (this.isolatedKey === stat.key) {
       this.endIsolation();
