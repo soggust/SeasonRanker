@@ -1323,10 +1323,13 @@ function betGames(r) {
         continue;
       }
       // (on ESPN's board with a key to hand: The Odds API's price never came; for the data only)
-      if (hasKey() && !apiLines) guard = { why: [guard?.why, "no Odds API price (ESPN's board)"].filter(Boolean).join('; ') };
+      const noPrice = hasKey() && !apiLines;
+      if (noPrice) guard = { why: [guard?.why, "no Odds API price (ESPN's board)"].filter(Boolean).join('; ') };
       const units = guard ? 0.5 : pick.units;
-      // (an edge bet at its stake; with no edge, or cut by a guard, tracked, not bet: desk.mjs placement)
-      const placed = placement(pick.ev > 0 && !guard, units);
+      // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
+      // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,
+      // tracked, not bet: desk.mjs placement)
+      const placed = placement(pick.ev > 0 && !noPrice, units);
       const bet = {
         id,
         event: game.id,
@@ -1695,7 +1698,9 @@ async function betProps(r) {
     // (the game's props: placed before (a dry run prices those again, so only the published ones, which a live
     // run keeps, and this run's count) and this run's. An edge bet counts only the bets against its caps (a
     // tracked row stakes nothing: no exposure); a tracked one counts every row, as the action bets did)
-    const edge = x.ev > 0 && !x.guard;
+    // (a flagged one (a guard's cut) with an edge: bet at the minimum, as the game markets; the owner's)
+    const edge = x.ev > 0;
+    if (x.guard) x.units = 0.5;
     const mine = [...ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && !b.void && b.id !== id && (!DRY || b.published)), ...pendingProps(game.id)].filter((b) => !edge || !isTracked(b));
     if (r.placed.has(id) && !DRY) continue;
     const caps = capsOf(x.prop.stat.key);

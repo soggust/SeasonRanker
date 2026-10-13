@@ -295,7 +295,8 @@ export function guardOf(limits, market, move, flags, adj = { m: 0, t: 0 }, sigma
 // by their EV. From 2026-10-13 one with no edge is tracked, not bet: 'track')
 export const intentOf = (bet) => bet.intent ?? (bet.ev > 0 ? 'edge' : 'action');
 
-// (a market tracked, not bet: no edge, or a guard cut it. Graded and learned from like a bet, never staked)
+// (a market tracked, not bet: no edge (from 2026-10-13; a guard's cut with an edge is bet at the minimum).
+// Graded and learned from like a bet, never staked)
 export const TRACK = 'track';
 export const isTracked = (bet) => bet?.intent === TRACK;
 
