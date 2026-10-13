@@ -345,7 +345,7 @@
       </card-panel>
 
       <!-- (the chance it gave its picks against how often they won: close together is honest; once there are
-           graded bets) -->
+           graded bets; the tracked rows' too, graded like bets) -->
       @if (calibration.length) {
       <card-panel class="tab-card group-support" label="Calibration" icon="tune">
         <div class="group-body">
@@ -353,7 +353,7 @@
               <thead>
                 <tr>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'label', label: 'Its chance', help: help['calibLabel'] }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'n', label: 'Bets' }"></ng-container>
+                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'n', label: 'Graded', help: help['calibN'] }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'said', label: 'Said' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'was', label: 'Won' }"></ng-container>
                 </tr>

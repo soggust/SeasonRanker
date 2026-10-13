@@ -357,7 +357,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         : [tally(t.label.toUpperCase(), where((b) => band(b) === t.confidence))],
     ).filter((t) => t.bets || t.open);
     this.confidenceTotal = this.byConfidence.length ? tally('Total', bets) : null;
-    this.calibration = calibrationOf(bets);
+    // (the calibration the tracked rows' too: a chance it gave, graded, whether it was bet or not; the no-edge
+    // markets are most of them, and the bets alone are only the sides priced over their break-even)
+    this.calibration = calibrationOf([...bets, ...this.tracked]);
 
     // (the profit after each graded bet, in grading order, the total's and each sport's)
     const graded = gradedOrder(bets);

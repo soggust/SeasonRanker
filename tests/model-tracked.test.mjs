@@ -153,7 +153,14 @@ test('picks: a tracked row is never a pick nor in the record; every pick a LIKE 
   assert.equal(level(0.004), 'medium');
   assert.equal(levelOf({ intent: 'edge' }, 0.004), 'medium');
   assert.equal(desk.confidenceOf(0.004, 0.52, true), 'medium');
-  assert.equal(desk.confidenceOf(0, 0.52, true), 'low');
+  // (an edge bet scored 0 or a hair under it by the rounding: a LIKE in both copies; further under, PASS)
+  assert.equal(desk.confidenceOf(0, 0.52, true), 'medium');
+  assert.equal(desk.confidenceOf(-0.0001, 0.52, true), 'medium');
+  assert.equal(levelOf({ intent: 'edge' }, 0), 'medium');
+  assert.equal(levelOf({ intent: 'edge' }, -0.0001), 'medium');
+  assert.equal(desk.confidenceOf(-0.002, 0.52, true), 'low');
+  assert.equal(levelOf({ intent: 'edge' }, -0.002), 'low');
+  assert.equal(desk.confidenceOf(0, 0.52, undefined), 'low', 'no edge flag (an older file): by the score alone');
   assert.equal(desk.confidenceOf(0.03, 0.52, false), 'low');
   assert.equal(desk.BANDS.medium, 0);
 });

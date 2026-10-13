@@ -99,9 +99,12 @@ const logo = (sport, abbr) => `https://a.espncdn.com/combiner/i?img=/i/teamlogos
 // any score over 0)
 export const level = (kelly, p = 0) =>
   kelly >= BANDS.lock && p >= BANDS.lockChance ? 'lock' : kelly >= BANDS.high ? 'high' : kelly > BANDS.medium ? 'medium' : 'low';
-// (an edge's band: LIKE at the least, its score rounded to 0 or not: every bet the bot places is a LIKE or better.
-// One whose score is under 0 (priced again at a trust that's since fallen: selfcheck.mjs C13) has no edge now: PASS)
-export const edgeLevel = (kelly, p = 0) => (kelly >= 0 && level(kelly, p) === 'low' ? 'medium' : level(kelly, p));
+// (an edge's band: LIKE at the least, its score rounded to 0 or a hair under it or not: every bet the bot places is
+// a LIKE or better. EDGE_ROUND the rounding's reach: its chance kept to 4 places moves a score at a short price by
+// up to about 0.0003, so a tiny edge can read -0.0001. One whose score is further under 0 (priced again at a trust
+// that's since fallen: selfcheck.mjs C13) has no edge now: PASS. bet-why.ts confidenceOf the same)
+export const EDGE_ROUND = 0.0005;
+export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, p) === 'low' ? 'medium' : level(kelly, p));
 // (a bet's band: its Kelly score's if it has an edge, LIKE at the least; else low: a favorite at a short price
 // isn't a strong bet (an older action bet; a tracked row is never a pick))
 export const levelOf = (b, kelly, p = b.p) => (intentOf(b) === 'edge' ? edgeLevel(kelly, p) : 'low');

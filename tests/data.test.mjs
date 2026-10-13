@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { SPORTS, expandRows, loadEngine, readJson, staticDir } from './support/engine.mjs';
+import { isTracked, placement } from '../libs/ranker/scripts/model/desk.mjs';
 
 // Every .json under a folder
 function jsonFiles(dir) {
@@ -122,6 +123,41 @@ for (const sport of SPORTS) {
 const STATUSES = new Set(['open', 'won', 'lost', 'push']);
 const isDate = (v) => typeof v === 'string' && !Number.isNaN(Date.parse(v));
 
+// A ledger row the desk and its page can read: a bet, or a tracked row (desk.mjs TRACK)
+function betWhole(bet, sport, at) {
+  assert.equal(typeof bet.event, 'string', `${at}: event`);
+  assert.equal(bet.sport, sport, `${at}: sport`);
+  assert.ok(isDate(bet.start), `${at}: start ${bet.start}`);
+  if ('placedAt' in bet) assert.ok(isDate(bet.placedAt), `${at}: placedAt ${bet.placedAt}`);
+  for (const key of ['matchup', 'market', 'side', 'pick']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
+  assert.ok(bet.line === null || Number.isFinite(bet.line), `${at}: line ${bet.line}`);
+  assert.ok(Number.isFinite(bet.odds), `${at}: odds ${bet.odds}`);
+  // (a tracked row, a market with no edge since 2026-10-13 (desk.mjs TRACK): units 0, never staked, what it
+  // would have staked kept (trackUnits), no profit on the record)
+  if (isTracked(bet)) {
+    assert.equal(bet.units, 0, `${at}: a tracked row staked ${bet.units}`);
+    assert.ok(Number.isFinite(bet.trackUnits) && bet.trackUnits > 0, `${at}: trackUnits ${bet.trackUnits}`);
+    assert.ok(bet.profit === 0, `${at}: a tracked row with a profit ${bet.profit}`);
+  } else assert.ok(Number.isFinite(bet.units) && bet.units > 0, `${at}: units ${bet.units}`);
+  for (const key of ['model', 'fair', 'p', 'ev']) if (key in bet) assert.ok(Number.isFinite(bet[key]), `${at}: ${key} ${bet[key]}`);
+  assert.ok(STATUSES.has(bet.status), `${at}: status ${bet.status}`);
+  assert.ok(Number.isFinite(bet.profit), `${at}: profit ${bet.profit}`);
+  if (bet.status === 'open') assert.equal(bet.profit, 0, `${at}: an open bet with a profit`);
+  if (bet.market === 'prop') for (const key of ['player', 'propType']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
+}
+
+// (a tracked row as the desk writes it passes, a staked or paid one doesn't: the nightly check reads the
+// ledgers before the first live tracked row is in one)
+test('model ledger: a tracked row (units 0) is whole, a staked or paid one is not', () => {
+  const row = { id: 'nhl-x-ml-home', event: 'x', sport: 'nhl', start: '2026-10-14T23:00:00Z', matchup: 'A @ B', market: 'ml', side: 'home', pick: 'B', line: null, odds: -110, model: 0.5, fair: 0.5, p: 0.5, ev: -0.04, status: 'won', profit: 0, ...placement(false, 0.5) };
+  betWhole(row, 'nhl', 'tracked');
+  assert.throws(() => betWhole({ ...row, units: 0.5 }, 'nhl', 'staked'));
+  assert.throws(() => betWhole({ ...row, profit: 0.45 }, 'nhl', 'paid'));
+  assert.throws(() => betWhole({ ...row, trackUnits: undefined }, 'nhl', 'no stake kept'));
+  betWhole({ ...row, ...placement(true, 1), profit: 0.91 }, 'nhl', 'edge');
+  assert.throws(() => betWhole({ ...row, intent: 'edge', units: 0 }, 'nhl', 'an edge bet at 0'));
+});
+
 for (const sport of SPORTS) {
   const dir = path.join(staticDir(sport), 'model');
   if (!fs.existsSync(dir)) continue;
@@ -144,19 +180,7 @@ for (const sport of SPORTS) {
       assert.equal(typeof bet.id, 'string', `${at}: id`);
       assert.ok(!ids.has(bet.id), `${at}: id placed twice`);
       ids.add(bet.id);
-      assert.equal(typeof bet.event, 'string', `${at}: event`);
-      assert.equal(bet.sport, sport, `${at}: sport`);
-      assert.ok(isDate(bet.start), `${at}: start ${bet.start}`);
-      if ('placedAt' in bet) assert.ok(isDate(bet.placedAt), `${at}: placedAt ${bet.placedAt}`);
-      for (const key of ['matchup', 'market', 'side', 'pick']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
-      assert.ok(bet.line === null || Number.isFinite(bet.line), `${at}: line ${bet.line}`);
-      assert.ok(Number.isFinite(bet.odds), `${at}: odds ${bet.odds}`);
-      assert.ok(Number.isFinite(bet.units) && bet.units > 0, `${at}: units ${bet.units}`);
-      for (const key of ['model', 'fair', 'p', 'ev']) if (key in bet) assert.ok(Number.isFinite(bet[key]), `${at}: ${key} ${bet[key]}`);
-      assert.ok(STATUSES.has(bet.status), `${at}: status ${bet.status}`);
-      assert.ok(Number.isFinite(bet.profit), `${at}: profit ${bet.profit}`);
-      if (bet.status === 'open') assert.equal(bet.profit, 0, `${at}: an open bet with a profit`);
-      if (bet.market === 'prop') for (const key of ['player', 'propType']) assert.equal(typeof bet[key], 'string', `${at}: ${key}`);
+      betWhole(bet, sport, at);
     }
     // (the CHECKs, apart from the bets in their own file (checks.json; an older ledger's checks): markets too
     // far from the book to bet, no units, graded as if bet (checks.mjs))

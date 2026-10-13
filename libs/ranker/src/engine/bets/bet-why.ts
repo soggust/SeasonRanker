@@ -116,9 +116,13 @@ export type { Confidence } from './tiers';
 // from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
 // (2026-10-13, the owner's: LIKE opens to any edge (medium 0: a Kelly over 0); a market with no edge is tracked,
 // not bet)
+// (an edge bet a LIKE at the least, its score rounded to 0 or a hair under it (EDGE_ROUND, the rounding's reach:
+// picks.mjs edgeLevel's); one further under 0, priced again at a fallen trust, has no edge now: PASS)
 export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0 };
+const EDGE_ROUND = 0.0005;
 export function confidenceOf(kelly: number, p: number | null | undefined, edge: boolean | undefined): Confidence {
-  if (edge === false || !(kelly > BANDS.medium)) return 'low';
+  if (edge === false || !Number.isFinite(kelly)) return 'low';
+  if (!(kelly > BANDS.medium)) return edge === true && kelly > -EDGE_ROUND ? 'medium' : 'low';
   if (kelly >= BANDS.lock && (p ?? 0) >= BANDS.lockChance) return 'lock';
   return kelly >= BANDS.high ? 'high' : 'medium';
 }

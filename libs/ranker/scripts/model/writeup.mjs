@@ -613,7 +613,9 @@ function priceSentence(sheet) {
   const src = price.bookFairFrom === 'Pinnacle' ? 'Pinnacle' : bet.book;
   const fair = fin(price.bookFairPct) ? `, and ${possessive(src)} no-vig price says ${P(sheet, 'bookFairPct')}%` : '';
   let edge;
-  if (price.edgeFrom === 'none') edge = ', so there is no edge at this price: a small action bet the desk takes for its data';
+  // (no edge left at this price: an edge bet whose score rounds to 0 or under, priced again at a trust that's
+  // since fallen; a market with no edge is tracked, not bet, since 2026-10-13, and gets no write-up)
+  if (price.edgeFrom === 'none') edge = ', so the edge at this price is a sliver: the smallest bet the desk makes';
   else {
     const from = { projection: bet.kind === 'prop' ? 'the projection' : "the model's read of the game", price: 'the price itself', both: bet.kind === 'prop' ? 'the projection and a soft price' : 'the model and a soft price' }[price.edgeFrom];
     let trust = '';
