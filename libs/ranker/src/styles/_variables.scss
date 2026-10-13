@@ -191,6 +191,23 @@ $chalk-dust:
     1px 1px 1px rgba(0, 0, 0, 0.6);
 }
 
+// The filter menu's own buttons (Reset and Clear All in its footer, and a preset's Rename, Delete and Update
+// beside the presets dropdown: account-presets.scss): leather tiles like the grid's, white lettering, a
+// little brighter hovered. The football's own; the other sports dress them over it (_sport-kit.scss
+// $menu-buttons, in each theme)
+@mixin menu-button {
+  @include leather;
+  border: none;
+  border-radius: 4px;
+  @include leather-edge;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+}
+
 // A component's scrollbars (Emulated styles: each component sets its own): 10px, the corner clear
 @mixin scrollbars($corner: true) {
   ::-webkit-scrollbar {

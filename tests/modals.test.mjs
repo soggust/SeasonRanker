@@ -63,9 +63,24 @@ test("a sport's own dialogs use the sport's buttons, the account pages' the app'
     assert.doesNotMatch(source, /app-btn-/, `${file}: the app's sand buttons in a sport's dialog`);
     assert.match(source, /class="primary"/, file);
   }
+  // (the preset buttons beside the dropdown: the filter menu's own, like Reset and Clear All, one mixin for
+  // both, and every theme's dress for those reaching them)
   const presets = read('libs/ranker/src/styles/components/account-presets.scss');
-  assert.doesNotMatch(presets, /kit\.primary-button;/, "the preset buttons beside the dropdown: the sport's light");
-  assert.match(presets, /kit\.primary-button\(var\(--scoreboard-led\)\)/);
+  assert.doesNotMatch(presets, /kit\.(primary|outline)-button/, "the preset buttons beside the dropdown: the menu's, not the app's");
+  assert.match(presets, /\.preset-icon,\s*\.preset-update \{\s*@include v\.menu-button;/);
+  assert.match(read('libs/ranker/src/styles/components/sidebar.component.scss'), /\.sidebar footer \{[^}]*button \{\s*@include v\.menu-button;/);
+  const sportKit = read('libs/ranker/src/styles/_sport-kit.scss');
+  assert.match(sportKit, /\$menu-buttons: "[^"]*#\{\$preset-buttons\}, #\{\$preset-buttons-hovered\}/);
+  assert.match(sportKit, /\$pressed-buttons: "[^"]*#\{\$preset-buttons-hovered\}"/);
+  for (const sport of ['nba', 'nhl', 'mlb', 'mma']) {
+    assert.match(read(`apps/${sport}/src/theme/_sport-global.scss`), /#\{kit\.\$menu-buttons\}/, sport);
+  }
+  // (the presets list's Save as preset… floppy disk inside the option's text, in a span: the options' color,
+  // black on a light list, white on a dark one; the divider in it too, faded, never a fixed white)
+  assert.match(read(`${engine}/sidebar/sidebar.component.html`), /class="preset-save"[^>]*><span class="preset-save-icon"><mat-icon/);
+  const base = read('libs/ranker/src/styles/_base.scss');
+  const list = base.slice(base.indexOf('html body .mat-mdc-select-panel.preset-options'));
+  assert.doesNotMatch(list.slice(0, list.indexOf('\n}')), /#fff|rgba\(255, 255, 255/);
   // (a Cancel beside a Delete: neutral, not the sport's light (MMA's is red, beside the red Delete))
   assert.match(read('libs/ranker/src/styles/components/account-lists-dialog.scss'), /\.modal-actions:has\(\.danger\) \.secondary \{\s*@include kit\.outline-button\(var\(--app-text-muted/);
   // (My Lists, an account page: its dialogs stay the app's own)

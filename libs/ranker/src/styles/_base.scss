@@ -245,6 +245,7 @@ html body {
   }
 
   .sidebar footer button,
+  #{kit.$preset-buttons},
   bets-page .bets-game {
     font-family: v.$font-heading !important;
     letter-spacing: 0.5px !important;
@@ -286,8 +287,10 @@ body:has(.card-backdrop, list-modal, [aria-modal="true"]) .sport-bar {
 }
 
 // The presets dropdown's list (sidebar.component.html): the user's own presets after a divider, a rule
-// either side of a muted MY PRESETS (not a group heading, so they aren't indented); Save as preset…'s
-// floppy disk in white. (html body and the panel's class: past the sports' option lettering)
+// either side of a muted MY PRESETS (not a group heading, so they aren't indented), both in the options'
+// own color (white on a dark list, black on the NBA's and MLB's light ones), faded. Save as preset…'s floppy
+// disk sits in its text (sidebar.component.html: in a span, so Material doesn't lift it out), so it takes the
+// options' color, hovered too. (html body and the panel's class: past the sports' option lettering)
 html body .mat-mdc-select-panel.preset-options {
   .mat-mdc-option.preset-divider {
     cursor: default;
@@ -296,27 +299,35 @@ html body .mat-mdc-select-panel.preset-options {
 
     .mdc-list-item__primary-text {
       align-items: center;
-      color: rgba(255, 255, 255, 0.5) !important;
       display: flex;
       font-size: 10px !important;
       gap: 10px;
       letter-spacing: 1.5px !important;
-      opacity: 1;
+      opacity: 0.55;
       text-shadow: none;
       width: 100%;
 
       &::before,
       &::after {
-        background: rgba(255, 255, 255, 0.22);
+        background: currentColor;
         content: "";
         flex: 1;
         height: 1px;
+        opacity: 0.45;
       }
     }
   }
 
-  .mat-mdc-option.preset-save .mat-icon {
-    color: #fff !important;
+  .mat-mdc-option.preset-save .preset-save-icon {
+    display: inline-flex;
+    margin-right: 10px;
+    vertical-align: middle;
+
+    .mat-icon {
+      @include v.icon-size(18px);
+      color: inherit !important;
+      margin: 0;
+    }
   }
 }
 

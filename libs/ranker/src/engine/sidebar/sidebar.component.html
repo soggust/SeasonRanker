@@ -31,8 +31,8 @@
                 <mat-option [value]="userPresetValue(preset)" [title]="preset.name">{{ preset.name | uppercase }}</mat-option>
               }
             }
-            <!-- (a floppy disk, as the grid's Save this list) -->
-            <mat-option class="preset-save" [value]="savePreset" title="Keep this tab's sliders under a name"><mat-icon fontIcon="save"></mat-icon>SAVE AS PRESET…</mat-option>
+            <!-- (a floppy disk, as the grid's Save this list: in a span, inside the option's text, so it takes the options' color) -->
+            <mat-option class="preset-save" [value]="savePreset" title="Keep this tab's sliders under a name"><span class="preset-save-icon"><mat-icon fontIcon="save" aria-hidden="true"></mat-icon></span>SAVE AS PRESET…</mat-option>
           }
         </mat-select>
         <!-- the user preset in use: Rename / Delete beside the dropdown, Update under it

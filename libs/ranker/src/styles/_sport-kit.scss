@@ -8,14 +8,19 @@
 // The grid's buttons (filters, copy, share, compare, info, settings, and a phone's More)
 $footer-buttons: "section footer .filter-toggle, section footer .settings-toggle, section footer .copy-toggle, section footer .share-toggle, section footer .compare-toggle, section footer .info-toggle, section footer .more-toggle";
 
-// The filter menu's Reset and Clear All, in every state
+// A preset of the user's own: Rename, Delete and Update preset beside the presets dropdown (preset-bar: its
+// own component, so the themes reach it from here, not through the menu's styles)
+$preset-buttons: "preset-bar .preset-icon, preset-bar .preset-update";
+$preset-buttons-hovered: "preset-bar .preset-icon:hover, preset-bar .preset-update:hover";
+
+// The filter menu's Reset and Clear All, and a preset's buttons, in every state
 // (and the selectable pills, in the same hide: the game view's filters, All Plays / Scoring and the chart's
 // team; the chosen one ringed in the accent: .game-filter in player-card.scss)
-$menu-buttons: ".sidebar footer button, .sidebar footer button.negative, .sidebar footer button:hover, .sidebar footer button.negative:hover, .game-filter, .game-filter:hover, .game-filter.active";
+$menu-buttons: ".sidebar footer button, .sidebar footer button.negative, .sidebar footer button:hover, .sidebar footer button.negative:hover, #{$preset-buttons}, #{$preset-buttons-hovered}, .game-filter, .game-filter:hover, .game-filter.active";
 
 // A grid button whose panel is open, and any button pressed (open or hovered)
 $open-buttons: 'section footer .filter-toggle.open, section footer .info-toggle.open, section footer .settings-toggle[aria-expanded="true"], section footer .more-toggle.open, section footer .more-toggle[aria-expanded="true"]';
-$pressed-buttons: "#{$open-buttons}, section footer .filter-toggle:hover, section footer .copy-toggle:hover, section footer .share-toggle:hover, section footer .compare-toggle:hover, section footer .info-toggle:hover, section footer .settings-toggle:hover, section footer .more-toggle:hover, .sidebar footer button:hover";
+$pressed-buttons: "#{$open-buttons}, section footer .filter-toggle:hover, section footer .copy-toggle:hover, section footer .share-toggle:hover, section footer .compare-toggle:hover, section footer .info-toggle:hover, section footer .settings-toggle:hover, section footer .more-toggle:hover, .sidebar footer button:hover, #{$preset-buttons-hovered}";
 
 // The year dropdown, the filter menu's presets dropdown and the compare view's arcs dropdown, and their
 // open lists
