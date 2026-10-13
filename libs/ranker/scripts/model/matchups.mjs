@@ -781,12 +781,16 @@ export function nbaMatchups(rows) {
     if (known && (at < 0 || avg.length < 5)) return null;
     return at < 0 ? 'B' : at < 5 ? 'S' : 'B';
   };
-  // (whether he started his last game for the team this season (the box's starter flag: 1 or 0; null unknown or
-  // none yet), known before the game: tonight's starters aren't posted till near the tip, so his last game's the
-  // read (props.mjs CTX newStart))
+  // (whether he started his team's game before this season (the box's starter flag: 1 or 0; 0 where he's played
+  // for the team but missed that game, a start weeks ago not his last game's; null unknown or none yet), known
+  // before the game: tonight's starters aren't posted till near the tip, so the game before's the read
+  // (props.mjs CTX newStart))
   const startLastOf = (pid, teamId, season) => {
     const t = team.get(teamId);
-    return t && t.season === season ? (t.p.get(pid)?.start ?? null) : null;
+    if (!t || t.season !== season || !t.p.has(pid)) return null;
+    const b = before.get(teamId);
+    if (b && b.season === season && !b.ids.has(pid)) return 0;
+    return t.p.get(pid).start ?? null;
   };
   // (each team's players in its game before: the history's roleKnown counts out only the ones missing that
   // one too)
@@ -809,7 +813,8 @@ export function nbaMatchups(rows) {
         r.vacs = work.vacated(r.team, r.season, r.pid, r.pos, miss);
         r.vac = Math.max(...r.vacs);
         // (his minutes over a full game's 48: the game's own share, learned after it, never projected from
-        // (project.mjs's minutes-first base, the NFL snap share's place))
+        // (project.mjs's minutes-first base, the NFL snap share's place); an overtime game's over 1, its minutes
+        // all in the per-minute rate, held to 1 in the minutes expected tonight (project.mjs))
         r.share = r.s.min > 0 ? r.s.min / 48 : null;
         r.startLast = startLastOf(r.pid, r.team, r.season);
       }

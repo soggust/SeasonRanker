@@ -4,8 +4,8 @@
 // the new starter (measured, off the ctx: CTX values only).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CTX, STATS } from '../libs/ranker/scripts/model/props.mjs';
-import { makeModel } from '../libs/ranker/scripts/model/project.mjs';
+import { CTX, STATS, minutesBackOf, ROLE_SAFE } from '../libs/ranker/scripts/model/props.mjs';
+import { makeModel, WHOLE_TOL } from '../libs/ranker/scripts/model/project.mjs';
 import { nbaMatchups } from '../libs/ranker/scripts/model/matchups.mjs';
 import { nbaLines, pickLines } from '../libs/ranker/scripts/model/playerlogs.mjs';
 
@@ -122,4 +122,91 @@ test('CTX blowS, blowB: the spread either way per 10 by his role known before th
   assert.equal(CTX.newStart(null, true, null, { roleKnown: 'B', startLast: 1 }), 1);
   assert.equal(CTX.newStart(null, true, null, { roleKnown: 'S', startLast: 1 }), 0);
   assert.equal(CTX.newStart(null, true, null, { roleKnown: 'B', startLast: null }), 0);
+});
+
+test("WHOLE_TOL (the whole stat's bias tolerance) holds the minutes base alone: every other whole-stat term no larger at all", () => {
+  assert.deepEqual([...WHOLE_TOL], ['sn']);
+});
+
+test("early in a season: one short opener after a full last season, his minutes pulled toward last season's", () => {
+  const stat = { key: 'pts', minutes: true };
+  const prior = (d, pts, min, pid = 'p') => ({ ...g(d, pts, min, pid), season: 2025, date: `2025-01-${String(d).padStart(2, '0')}` });
+  const proj = (params) => {
+    const m = makeModel(stat, { ...BASE, ...params }, {});
+    m.learn(Array.from({ length: 50 }, (_, i) => prior(1, 12, 24, `o${i}`)));
+    for (let d = 1; d <= 28; d++) m.learn([prior(d, 25, 34)]);
+    // (the opener: a blowout, 20 minutes)
+    m.learn([g(1, 12, 20)]);
+    return m.project({ pid: 'p', pos: 'G', season: 2026, date: day(3), opp: 'o' });
+  };
+  const off = proj({});
+  const on = proj({ sn: 0.5, sr: 0.5 });
+  assert.equal(on.mode, 'minutes');
+  // (one game against MIN_RECENT of last season's 34: about 30.5 minutes, not 20)
+  assert.ok(on.share * 48 > 29 && on.share * 48 < 32, `${on.share * 48}`);
+  // (the projection within 3% of the per-game base's, not 18% under)
+  assert.ok(on.rate > 0.97 * off.rate, `${on.rate} against ${off.rate}`);
+});
+
+test('early in a season with no last season: the per-game base till he has three games of his own', () => {
+  const stat = { key: 'pts', minutes: true };
+  const m = makeModel(stat, { ...BASE, sn: 0.5, sr: 0.5 }, {});
+  m.learn(Array.from({ length: 50 }, (_, i) => g(1, 12, 24, `o${i}`)));
+  m.learn([g(2, 6, 12), g(3, 6, 12)]);
+  const row = { pid: 'p', pos: 'G', season: 2026, date: day(20), opp: 'o' };
+  assert.equal(m.project(row).mode, null);
+  m.learn([g(4, 6, 12)]);
+  assert.equal(m.project(row).mode, 'minutes');
+});
+
+test("overtime: a game's minutes held to 48 in the minutes expected tonight, the per-minute rate taking them all", () => {
+  const stat = { key: 'pts', minutes: true };
+  const m = makeModel(stat, { ...BASE, sn: 1, sr: 1 }, {});
+  m.learn(Array.from({ length: 50 }, (_, i) => g(1, 12, 24, `o${i}`)));
+  m.learn([g(1, 20, 40), g(2, 20, 40), g(3, 26, 53), g(4, 26, 53), g(5, 26, 53)]);
+  const p = m.project({ pid: 'p', pos: 'G', season: 2026, date: day(20), opp: 'o' });
+  assert.ok(Math.abs(p.share * 48 - 48) < 1e-9, `${p.share * 48}`);
+});
+
+test("teammates back: the minutes lean's games with a starter out are in vacHist at the lean's weight", () => {
+  const stat = { key: 'pts', minutes: true, vacated: true };
+  const P = { ...BASE, w: 0.2, vc: 0.5, vs: 0 };
+  const run = (params) => {
+    const m = makeModel(stat, params, {});
+    m.learn(Array.from({ length: 50 }, (_, i) => g(1, 12, 24, `o${i}`)));
+    // (ten games at 18 minutes with everyone in, then three at 30 with a starter out (0.3 of the work missing))
+    for (let d = 1; d <= 10; d++) m.learn([{ ...g(d, 9, 18), vacs: [0, 0, 0] }]);
+    for (let d = 11; d <= 13; d++) m.learn([{ ...g(d, 15, 30), vacs: [0.3, 0.3, 0.3] }]);
+    // (tonight he's back)
+    return m.project({ pid: 'p', pos: 'G', season: 2026, date: day(20), opp: 'o', vacs: [0, 0, 0] });
+  };
+  const off = run({ ...P, sn: 0 });
+  const on = run({ ...P, sn: 0.5, sr: 0.75 });
+  assert.equal(on.mode, 'minutes');
+  // (the lean on the last three: their 0.3 missing at 0.75 against the season's, so vacHist larger, vacF smaller)
+  assert.ok(on.vacHist > off.vacHist + 0.02, `${on.vacHist} against ${off.vacHist}`);
+  assert.ok(on.vacF < off.vacF, `${on.vacF} against ${off.vacF}`);
+});
+
+test("nbaMatchups startLast: a player who missed the team's game before didn't start it (0), a start weeks ago not read", () => {
+  const row = (d, pid, min, start) => ({ pid, pos: 'G', season: 2026, date: day(d), team: 't', opp: 'o', game: `g${d}`, s: { min, pts: 10, ast: 1, fga: 8, fta: 2, start } });
+  const rows = [row(1, 'a', 36, 1), row(1, 'b', 12, 0), row(2, 'b', 30, 1), row(3, 'a', 30, 0), row(3, 'b', 20, 1)];
+  const mu = nbaMatchups(rows);
+  // (a started game 1, missed game 2: game 3's read is 0, not game 1's start)
+  assert.equal(rows[3].startLast, 0);
+  assert.equal(rows[4].startLast, 1);
+  assert.equal(mu.live('a', 't', 'o', 'G', 2026).startLast, 0);
+  assert.equal(mu.live('c', 't', 'o', 'G', 2026).startLast, null);
+});
+
+test('minutesBackOf: a minutes jump with teammates back is a role CHECK on the over; anything short of it none', () => {
+  const base = { name: 'X', mode: 'minutes', minutes: { season: 20, recent: 30 }, vac: 0, vacHist: 0.2 };
+  const r = minutesBackOf(base);
+  assert.equal(r.key, 'minutes-back');
+  assert.equal(r.safe, 'under');
+  assert.equal(ROLE_SAFE['minutes-back'], 'under');
+  assert.equal(minutesBackOf({ ...base, vacHist: 0.1 }), null);
+  assert.equal(minutesBackOf({ ...base, minutes: { season: 20, recent: 23 } }), null);
+  assert.equal(minutesBackOf({ ...base, mode: null }), null);
+  assert.equal(minutesBackOf({ ...base, minutes: null }), null);
 });

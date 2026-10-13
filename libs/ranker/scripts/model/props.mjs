@@ -154,7 +154,22 @@ export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, rati
 // (qb1-out) or a few-start passer's passing it projects high, so the under is safe; the line's read, the side
 // the market's reading points away from; a change at quarterback, either way: neither. The safe side bets as
 // any prop; only the other is a CHECK (priceProps))
-export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null };
+export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under' };
+
+// The NBA's minutes base (project.mjs sn, mode 'minutes') with teammates back (null: none): his last three
+// games' minutes MIN_BACK.jump times his season's or more, and the work his team was missing in the games his
+// numbers come from (vacHist) MIN_BACK.vac or more over tonight's (vac). A fill-in's minutes jump made with a
+// starter out leans his expected minutes up, and the vacated term (vc) was fit before the minutes base and only
+// takes back its share of the lean (project.mjs minLean, 2026-10-13: before it, those rows ran 2% to 16% under
+// their projections held out, worse with the minutes base than without). Kept a role CHECK on the over (the
+// under its safe side) till the CHECKs show the projection reads it: the fail-safe the unsized vacancy's skip
+// was before vc was kept
+export const MIN_BACK = { vac: 0.15, jump: 1.2 };
+export function minutesBackOf({ name = null, mode, minutes, vac, vacHist }) {
+  if (mode !== 'minutes' || !minutes || !(minutes.season > 0) || !Number.isFinite(vac) || !Number.isFinite(vacHist)) return null;
+  if (!(vacHist - vac >= MIN_BACK.vac && minutes.recent >= MIN_BACK.jump * minutes.season)) return null;
+  return { key: 'minutes-back', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes over his last three against ${round(minutes.season, 1)} this season, with teammates back from the absence that gave him them: a smaller role tonight` };
+}
 export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
@@ -482,7 +497,9 @@ const CATCHING = [...CARRYING, 'qbDeep'];
 // project.mjs's header). The factors below multiply the product, so they act on the minutes. The betting lines'
 // blowout by his role (CTX blowS a starter's, blowB a bench player's) and a bench player who started his last
 // game (CTX newStart), late flags each on its own rows' gate, were measured on top of it and kept on none: off
-// the ctx (their late search an hourly cost for nothing kept), CTX keeping them for a measure on demand)
+// the ctx (their late search an hourly cost for nothing kept), CTX keeping them for a measure on demand. A
+// minutes jump with teammates back is a role CHECK on the over (minutesBackOf, the review of 2026-10-13); the
+// work missing's size fit again on the base (project.mjs vcM) left out on every stat)
 const NBA_MINUTES = { minutes: true };
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
 const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
@@ -1278,6 +1295,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // nothing above said his role's changing)
       roleChange ??= depthRoleOf({ pos: row.pos, pid, team: row.home ? game.homeAbbr : row.home === false ? game.awayAbbr : null, stat: prop.stat.key, depth: live?.depth, missOf: missOf(0), role: p.role, at: game.date });
     }
+    // (the NBA's minutes base with teammates back from an absence that fed his minutes jump (minutesBackOf): a
+    // role CHECK on the over, the under bet as any prop)
+    if (sport === 'nba') roleChange ??= minutesBackOf({ name: a.name, mode: p.mode, minutes: p.minutes, vac: p.vac, vacHist: p.vacHist });
     // (the NBA, NHL, MLB: the book's line far from the projection with a cause known before the game, unsized by
     // the fit, that explains it (lineAlarmOf): a label on the side against the market's reading, never a cut
     // (selfcheck.mjs C20 measures the labeled rows))

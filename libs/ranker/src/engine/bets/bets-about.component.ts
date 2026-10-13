@@ -39,6 +39,7 @@ const TERM_NAMES: Record<string, string> = {
   pc: 'pace',
   tg: 'target share allowed',
   vc: 'vacated work',
+  vcM: 'vacated work fit again on the NBA minutes base',
   vs: 'vacated work: how it is shared',
   sn: 'snaps-based rate (NBA: minutes first, his per-minute rate times his expected minutes)',
   sr: "expected share: last game's weight (NBA: his last three games' minutes)",

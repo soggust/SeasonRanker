@@ -733,6 +733,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       pc: 'pace',
       tg: 'target share',
       vc: 'teammates out (work left)',
+      vcM: 'teammates out, fit again on the NBA minutes base',
       c_wind: 'wind',
       c_cold: 'cold',
       c_precip: 'rain/snow',
