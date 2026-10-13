@@ -560,7 +560,9 @@ const NBA_POS_PACE = { positions: nbaPos, pace: true };
 // (0.05, +0.0003) and pts+reb+ast (0.1, +0.0012), every player's bias larger on each (points 0.0598 to 0.1183,
 // pts+reb+ast 0.3643 to 0.3961: the lean refit on the eligible players lifts the rest, already over-projected),
 // assists (+0); NHL shots (0.1 with the opponent's power a 0.5 where it was 0: +0.0002, the bias larger), points
-// and every NFL stat not taken on the fit window. The mark back on a stat to try it again)
+// and every NFL stat not taken on the fit window. The mark back on a stat to try it again. Rebounds' gain is a hair
+// over the floor (DRAFT_GAIN 0.0003) and picked from about 20 stats tried, so the hourly fit dropping it (od 0)
+// is to be expected, not a fault)
 const RECENCY = { recency: true };
 // (the other side's key defenders out tonight (audit #15; CTX oppOut, oppD, oppDB, oppFront: late terms, the
 // NBA's on the whole stat's strict gate (a centred value on every row), the rest on the rows with one out
@@ -575,7 +577,12 @@ const RECENCY = { recency: true };
 // passing TDs oppDB 0.03 +0.0005 (its own 728 rows 7.0% to 5.1% over their projections, the eligible rest's bias
 // larger), carries oppFront +0.0001 (its eligible rows 8.9% to 6.7% over), interceptions, rush+rec yards under the
 // floor, passing yards, attempts, completions, rushing and receiving yards and receptions not taken: the games with
-// one out run over, a few percent, too few and too noisy to clear the floor with the lean held)
+// one out run over, a few percent, too few and too noisy to clear the floor with the lean held. Measured again
+// after the review (matchups.mjs defenseOut counting only who the live side can see: a defender who's played for
+// the team this season, on no other team since, with an ESPN id; each in his first OUT_MAX games out, not his
+// fourth): passing TDs oppDB 0.06 +0.0006 (its own rows 638, 6.7% to 2.8% over projected) left out on the rest's
+// and the eligible rest's bias, oppFront +0.0001; interceptions +0.0001 each; carries oppFront +0.0002 (n 1432);
+// the NHL's oppD on shots not taken, points -0.0001 (n 1900): none taken, as before)
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
 const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // (the NHL's back-to-backs (audit #6): his side's (b2b) and the other side's (oppB2b), late flags each on its own
@@ -1332,12 +1339,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const nm = idx.name?.(id);
       if (nm && (!roster || roster.has(id)) && atPos(x.pos) && !out.names.includes(nm) && String(id) !== String(pid)) out.names.push(nm);
     }
-    // (and the other side's players missing it (the opponent's key defenders out, audit #15: matchups.mjs oppD,
-    // oppDB, oppFront): out, doubtful or on IR on its injury report, or on its roster's injured reserve, PUP, NFI
-    // or suspended, a questionable one at half; none read, none missing (the stat as without it))
-    const oppOut = outOf(sport, live, row.opp, null);
-    const oppRosterOut = live?.rosters?.get?.(String(row.opp))?.out;
-    const oppMiss = (id) => (oppOut.ids.has(String(id)) || (oppRosterOut instanceof Map && oppRosterOut.has(String(id))) ? 1 : oppOut.questionable.has(String(id)) ? 0.5 : 0);
+    // (and the other side's players missing it (the opponent's key defenders out, audit #15: oppMissOf)
+    const oppMiss = oppMissOf(sport, live, row.opp);
     const extra = { live, game, home, pitcher: !!prop.stat.pitcher, oppMiss };
     if (f.matchups) Object.assign(row, f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(qMiss), extra));
     const p = f.model.project(row);
@@ -1659,6 +1662,25 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
 // (timing.mjs's patterns, the context's too: ESPN's NBA and NHL reports say Day-To-Day for questionable)
 // (names: the ones in his group: the NFL's his position, the NHL's forwards or defensemen, the NBA's anyone)
 const groupOf = (sport, pos) => (sport === 'nba' ? 'all' : sport === 'nhl' ? (/^(C|LW|RW|F|W)$/.test(pos) ? 'F' : pos) : pos);
+// (the other side's players missing a coming game (the opponent's key defenders out, audit #15: matchups.mjs
+// oppD, oppDB, oppFront), id to 0 to 1: the own side's precedence (priceProps gone): where its injury report lists
+// a player, its status is his (out, doubtful or on IR 1, questionable half, any other 0), the roster's out group
+// (injured reserve, PUP, NFI, suspended) 1 only for the ones it doesn't list; none read, none missing (the stat as
+// without it). Known and unmeasured: no unlisted-absent rule for the other side, as the own side has (matchups.mjs
+// defenseOut's note))
+export function oppMissOf(sport, live, opp) {
+  const out = outOf(sport, live, opp, null);
+  const listed = new Set((live?.injuries?.get(String(opp)) ?? []).filter((p) => p.id).map((p) => String(p.id)));
+  const rosterOut = live?.rosters?.get?.(String(opp))?.out;
+  return (id) => {
+    const k = String(id);
+    if (out.ids.has(k)) return 1;
+    if (out.questionable.has(k)) return 0.5;
+    if (listed.has(k)) return 0;
+    return rosterOut instanceof Map && rosterOut.has(k) ? 1 : 0;
+  };
+}
+
 export function outOf(sport, live, team, pos) {
   const report = (live?.injuries?.get(String(team)) ?? []).filter((p) => p.id);
   const list = report.filter((p) => OUT_STATUS.test(p.status));

@@ -4,7 +4,7 @@
 // latest games counting most.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CTX } from '../libs/ranker/scripts/model/props.mjs';
+import { CTX, oppMissOf } from '../libs/ranker/scripts/model/props.mjs';
 import { makeModel } from '../libs/ranker/scripts/model/project.mjs';
 import { defGroup, defenseOut, nflMatchups, nhlMatchups } from '../libs/ranker/scripts/model/matchups.mjs';
 
@@ -32,8 +32,7 @@ test("defenseOut: a core defender (DEF_CORE of the snaps) out counts at once, a 
   // (s2 missed one game: his second out counts, at his share before he went out)
   d.learn('T', 2026, game(['cb1', 'lb3', 'dl']));
   assert.equal(d.missing('T', 2026, out(['s2'])).DB, 0.6);
-  // (and through his first OUT_MAX (3) games out in a row, then left to the tables)
-  d.learn('T', 2026, game(['cb1', 'lb3', 'dl']));
+  // (and his third, the last of his first OUT_MAX (3) games out in a row; his fourth left to the tables)
   d.learn('T', 2026, game(['cb1', 'lb3', 'dl']));
   assert.equal(d.missing('T', 2026, out(['s2'])).DB, 0.6);
   d.learn('T', 2026, game(['cb1', 'lb3', 'dl']));
@@ -43,6 +42,40 @@ test("defenseOut: a core defender (DEF_CORE of the snaps) out counts at once, a 
   assert.deepEqual(d.missing('X', 2026, out(['cb1'])), { DB: 0, FR: 0 });
   // (a new season: last season's shares at half, a starter not counted till he's played)
   assert.equal(d.missing('T', 2027, out(['cb1'])).DB, 0);
+});
+
+test("defenseOut: only what the live side can see too: last season's starter gone in the offseason, a traded one and a 'pfr:' id never count", () => {
+  const d = defenseOut();
+  const out = (ids) => (id) => (ids.includes(id) ? 1 : 0);
+  // (cb1 every snap all last season, gone in the offseason: never counted for T this season)
+  for (let i = 0; i < 6; i++) d.learn('T', 2025, [['cb1', 'CB', 60], ['cb2', 'CB', 60], ['pfr:X', 'S', 60], ['dl', 'DE', 60]]);
+  for (let i = 0; i < 3; i++) d.learn('T', 2026, [['cb2', 'CB', 60], ['pfr:X', 'S', 60], ['dl', 'DE', 60]]);
+  assert.equal(d.missing('T', 2026, out(['cb1'])).DB, 0);
+  // (cb2 played this season: counted (his share back up from last season's half); the 'pfr:' one, no report carries him, never)
+  assert.ok(d.missing('T', 2026, out(['cb2'])).DB > 0.8);
+  assert.equal(d.missing('T', 2026, out(['pfr:X'])).DB, 0);
+  // (cb2 traded: once he's played for U he isn't missing for T)
+  d.learn('U', 2026, [['cb2', 'CB', 60]]);
+  assert.equal(d.missing('T', 2026, out(['cb2'])).DB, 0);
+});
+
+test("oppMissOf: the other side's report first (out 1, questionable half, listed otherwise 0), its roster's out group for the ones it doesn't list; none read 0", () => {
+  const live = {
+    injuries: new Map([['B', [{ id: 'o', status: 'Out' }, { id: 'q', status: 'Questionable' }, { id: 'r', status: 'Questionable' }, { id: 'p', status: 'Probable' }]]]),
+    rosters: new Map([['B', { out: new Map([['r', {}], ['ir', {}], ['p', {}]]) }]]),
+  };
+  const m = oppMissOf('nfl', live, 'B');
+  assert.equal(m('o'), 1);
+  assert.equal(m('q'), 0.5);
+  // (questionable on the report, on the roster's IR (designated to return): the report's half)
+  assert.equal(m('r'), 0.5);
+  // (on the roster's out group, not on the report: out)
+  assert.equal(m('ir'), 1);
+  assert.equal(m('p'), 0);
+  assert.equal(m('x'), 0);
+  // (the other team's report isn't this one's; none read, none missing)
+  assert.equal(oppMissOf('nfl', live, 'A')('o'), 0);
+  assert.equal(oppMissOf('nfl', null, 'B')('o'), 0);
 });
 
 // (an NFL team-game: the offense's rows and each side's defenders by playerlogs.mjs)

@@ -245,28 +245,36 @@ export function sideOfPlays(p, home) {
 // his first OUT_MAX games out, their shares summed by group: the secondary
 // (DB: cornerbacks and safeties) and the front seven (FR: linemen and linebackers), a starter about 0.9. In the
 // history missing is not in the game's snap counts (a game without them read: unknown, 0, and not learned from);
-// live, by the other side's injury report and roster (props.mjs oppMiss)
+// live, by the other side's injury report and roster (props.mjs oppMissOf). Only what the live side can see too:
+// one who has played for the team this season (last season's starter gone in the offseason never counts), not
+// since played for another (a traded one), and with an ESPN id (a 'pfr:' one no report carries). Known and
+// unmeasured: a regular released or benched (on no other team) still counts in the history through his first
+// OUT_MAX games, where live only the report and roster see him; the own side's unlisted-absent rule has no
+// opponent twin yet (the review of 05f5ef0a), so neither term goes on a ctx before that's measured
 const DEF_RATE = 0.35;
 const DEF_REG = 0.5;
 const DEF_CORE = 0.7;
 export const defGroup = (pos) => (/^(CB|S|FS|SS|DB|SAF)$/.test(pos ?? '') ? 'DB' : /^(DE|DT|NT|DL|LB|ILB|OLB|MLB|EDGE)$/.test(pos ?? '') ? 'FR' : null);
 export function defenseOut() {
   const teams = new Map();
+  // (each defender's team as last seen in the snap counts: a traded one is no longer his old team's)
+  const lastTeam = new Map();
   const teamOf = (id, season) => {
     let t = teams.get(id);
     if (!t || t.season !== season) {
       const last = t && t.season === season - 1 ? t : null;
-      t = { season, p: new Map(last ? [...last.p].map(([k, x]) => [k, { g: x.g, v: x.v * 0.5, h: x.v * 0.5, out: 0 }]) : []) };
+      t = { season, p: new Map(last ? [...last.p].map(([k, x]) => [k, { g: x.g, v: x.v * 0.5, h: x.v * 0.5, out: 0, n: 0 }]) : []) };
       teams.set(id, t);
     }
     return t;
   };
   // (a side's regulars missing, by group: { DB, FR }, missOf(id) 0 to 1; each at his share before he went out (h),
-  // through his first OUT_MAX games out in a row)
+  // in his first OUT_MAX games out in a row (out: the games he's missed before this one); n his games for the team
+  // this season)
   const missing = (id, season, missOf) => {
     const out = { DB: 0, FR: 0 };
     for (const [pid, x] of teamOf(id, season).p) {
-      if (x.h < DEF_REG || x.out > OUT_MAX) continue;
+      if (x.h < DEF_REG || x.out >= OUT_MAX || !(x.n >= 1) || String(pid).startsWith('pfr:') || (lastTeam.has(pid) && lastTeam.get(pid) !== id)) continue;
       const m = Math.min(1, Math.max(0, Number(missOf(pid)) || 0));
       if (m > 0 && (x.h >= DEF_CORE || x.out >= 1)) out[x.g] += m * x.h;
     }
@@ -284,8 +292,9 @@ export function defenseOut() {
       const s = Math.min(1, n / most);
       const x = t.p.get(pid);
       played.add(pid);
+      lastTeam.set(pid, id);
       const v = x ? x.v + (s - x.v) * DEF_RATE : s;
-      t.p.set(pid, { g, v, h: v, out: 0 });
+      t.p.set(pid, { g, v, h: v, out: 0, n: (x?.n ?? 0) + 1 });
     }
     for (const [pid, x] of t.p) if (!played.has(pid)) (x.v *= 1 - DEF_RATE), (x.out += 1);
   };
@@ -1068,15 +1077,17 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absor
   const histMiss = (team, season, playing, core) => gate(team, season, (id) => (playing.has(id) ? 0 : 1), core);
   // (a team's work missing in a group (the other side's key defenders out, audit #15: the NHL's top-four
   // defensemen): its players there with min a game or more in measure m at their level before they went out
-  // (the fade undone), through their first maxOut games out in a row (the opponent's tables learn the team
-  // without them after), each by how surely he's missing it (missOf, gated as above), their work summed)
+  // (the fade undone), in their first maxOut games out in a row (out: the games missed before this one; the
+  // opponent's tables learn the team without them after), each by how surely he's missing it (missOf, gated as
+  // above), their work summed. Known and unmeasured: in the history (histMiss) a traded top-four defenseman counts
+  // missing for his old team, where live only its report and roster see him; oppD is on no ctx)
   const missingWork = (team, season, missOf, grp, m, min, maxOut) => {
     const w = workOf(team, season);
     let t = 0;
     for (const [id, x] of w.p) {
       const out = x.out ?? 0;
       const v = (x.v[m] ?? 0) / Math.pow(1 - rate, out);
-      if (x.g === grp && out <= maxOut && v >= min) t += Math.min(1, Math.max(0, Number(missOf(id)) || 0)) * v;
+      if (x.g === grp && out < maxOut && v >= min) t += Math.min(1, Math.max(0, Number(missOf(id)) || 0)) * v;
     }
     return t;
   };
