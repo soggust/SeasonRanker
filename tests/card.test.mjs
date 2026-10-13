@@ -319,14 +319,13 @@ test("Field Map: each chart's total is the row's own in the grid (carries, targe
   const { file, rows } = fieldMaps(2026);
   const section = file.regular;
   const view = (role, row) => nfl.fieldMapView(section, role, [row.gsisId, row.id], { carries: row.stats.carries, targets: row.stats.targets });
-  // (Kyren Williams: 54 carries, every one with its lane)
+  // (Kyren Williams: every carry with its lane, the lanes adding up to them. This season's numbers move every
+  // week, so nothing here is pinned to a count: a pinned one broke the morning data update)
   const kyren = rows.RB.find((r) => r.gsisId === '00-0037840');
   const k = view('RB', kyren);
   assert.equal(k.runs.total, kyren.stats.carries);
-  assert.equal(k.runs.total, 54);
-  assert.equal(k.runs.count, '54 carries');
-  assert.deepEqual(k.runs.lanes.map((l) => l.sub), ['4', '1', '8', '23', '10', '1', '7']);
-  assert.equal(k.runs.lanes[3].main, (142 / 23).toFixed(1));
+  assert.equal(k.runs.count, `${kyren.stats.carries} carries`);
+  assert.equal(k.runs.lanes.reduce((sum, l) => sum + Number(l.sub), 0), k.runs.total);
   assert.ok(k.runsFirst);
   // (every back's, receiver's and tight end's: the plays logged without a direction left out, never more than
   // the grid's; a chart short of it says so in its hover)
