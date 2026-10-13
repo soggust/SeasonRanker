@@ -121,7 +121,7 @@
         <li><b>Timing and news</b>: bets are placed only inside each sport's window before the start, and re-priced when news breaks.</li>
         <li><b>Injuries</b>: out, doubtful and IR players are read from the injury report; their work is handed to teammates (vacated work), and a game's open bets are re-priced on news.</li>
         <li><b>Inactives and starting lineups</b>: in the last two and a half hours before an NFL kickoff (two before an NBA tip) the bot reads each team's posted game-day roster. A questionable player ruled inactive counts as out, and the game's open bets are re-priced on it; a regular inactive the report never listed counts as out for the props (the game lines don't read him). In the NBA, a posted starting five that differs from the usual one (by who has been starting this season) holds the risky side of the affected players' props as a CHECK. It's caught only when a bot run lands between the posting and the lock, which GitHub's schedule doesn't promise.</li>
-        <li><b>Caps</b>: one prop per player per game, 1 unit on an untested prop type (3 once tested), and 5 units per game across all its markets.</li>
+        <li><b>Caps</b>: one prop per player per game, 1 unit on an untested prop type (3 once tested), and 5 units per game across all its markets. Before the cap, a game's edge props are sized together with its other props by how much a game's props have won or lost together (same-game sizing, below each sport): only ever cut, never raised.</li>
       </ul>
 
       <h4>Staking</h4>
@@ -184,6 +184,9 @@
                 <b>Model epoch:</b> {{ epochOf(s) | date: 'MMM d, y, h:mm a' }}@if (!s.epoch) {<span class="muted"> (from the bettor's settings; this state predates the field)</span>}.
                 Trust is fit only on bets placed since.
               </p>
+              @if (s.sameGame) {
+                <p class="muted"><b>Same-game sizing:</b> {{ s.sameGame }}</p>
+              }
 
               <!-- (the game lines' context terms) -->
               <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':context', title: 'Game context terms (' + s.context.length + ')' }"></ng-container>

@@ -93,6 +93,30 @@ export interface ModelState {
   backtest?: { at: string; snapshots: number; planned: number; markets: Record<string, BacktestMarket> } | null;
   // (the CHECKs' tally and what drives them: checks.mjs checkSummary, check-learn.mjs checkLearning)
   checks?: { n?: number; open?: number; unreadable?: boolean; learning?: CheckLearning | null } | null;
+  // (the same-game sizing: desk.mjs sameGameOf)
+  sameGame?: SameGame | null;
+}
+
+// (the props' correlation within a game, fit on the graded props, and the replay that keeps it: desk.mjs sameGameOf)
+export interface SameGame {
+  rho: number;
+  raw: number | null;
+  se: number | null;
+  games: number;
+  pairs: number;
+  fitted: boolean;
+  used: number;
+  replay: { games: number; resized: number; trimmed: number; asBet: number; joint: number };
+}
+
+// (the same-game sizing in plain words, for the About and the Algorithm tab)
+export function sameGameText(g: SameGame | null | undefined): string | null {
+  if (!g) return null;
+  const how = "A game's props win or lose together a little (overs with overs, an over against an under the other way), so its edge props are sized jointly with the rest of its props, as fewer, bigger bets on the game: stakes only cut, never raised, never a bet added or dropped.";
+  if (!g.fitted) return `${how} Not used yet: ${g.games} games with two or more graded props, 10 needed.`;
+  const read = `Read on ${g.pairs.toLocaleString()} prop pairs in ${g.games} games: ${g.raw ?? '-'} (give or take ${g.se ?? '-'}), pulled toward 0 for the few games to ${g.rho}`;
+  const replay = g.replay.resized ? `; replayed on the graded games, it would have cut ${g.replay.resized} stakes by ${g.replay.trimmed}u` : '; replayed on the graded games, it would have changed no stake';
+  return `${how} ${read}${replay}. ${g.used ? `Used at ${g.used}.` : 'Not used: the replay grew the bankroll less with it.'}`;
 }
 
 // (a group of graded CHECKs: their record at a unit each, the hit rate and its 95% interval, the break-even of

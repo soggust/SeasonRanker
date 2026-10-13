@@ -968,6 +968,10 @@
           @for (p of playChances; track p.sport) {
             <p class="desk-test"><small>{{ p.sport }}: {{ p.text }}</small></p>
           }
+          <!-- (the same-game sizing: the props' correlation in a game, fit and replayed) -->
+          @for (g of sameGames; track g.sport) {
+            <p class="desk-test"><small>{{ g.sport }} same-game sizing: {{ g.text }}</small></p>
+          }
         </div>
       </card-panel>
     }

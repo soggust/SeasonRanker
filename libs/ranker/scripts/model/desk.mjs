@@ -13,14 +13,16 @@
 // anchor it leans nothing (the plain normal's underdog lean): the book's chance, tracked.
 // Its stake: by its Kelly fraction, its expected return over what a unit pays (a long shot's edge stakes less
 // than the same edge at -110; a heavy favorite's held to what its edge in chance would stake at -110), 0.5 at
-// the least edge up to 3 (stakeFor); a game's whole stake, every market and prop, at most leagues.mjs GAME_CAP,
-// the edge bets filled first (capGame); the spread and the moneyline never on the same side of a game (oneSide).
+// the least edge up to 3 (stakeFor); a game's edge props sized jointly with its other props by their correlation
+// in a game, fit on the graded props and kept on its replay (fitSameGame, sizeJointly, sameGameOf: only ever
+// cut); a game's whole stake, every market and prop, at most leagues.mjs GAME_CAP, the edge bets filled first
+// (capGame); the spread and the moneyline never on the same side of a game (oneSide).
 // Only an edge is bet (2026-10-13, the owner's: every bet the bot places is a LIKE or better, picks.mjs BANDS): a
 // market with no edge, or one a guard cut (the old action bet, 0.5u for the data), is tracked, not bet (intent
 // 'track', TRACK: units 0, never staked; what it would have staked kept, trackUnits). A tracked row is graded,
 // closed and post-mortemed like a bet and is evidence for everything that learns (the trust fit, the CLV, the
-// self-check: learnView reads it as the action bet it once was), but never in the record, the bankroll, the
-// caps or the picks (record, capGame, makeRoom; picks.mjs).
+// self-check, the same-game fit: learnView reads it as the action bet it once was), but never in the record, the
+// bankroll, the caps, the same-game exposure or the picks (record, capGame, makeRoom, sizeJointly; picks.mjs).
 
 import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
@@ -254,6 +256,133 @@ function capStaked(bets, placed, cap) {
     } else dropped.push(b);
   }
   return { kept, dropped };
+}
+
+// Same-game sizing (audit #20): a game's props share its pace and its script, so they win or lose together a
+// little, overs with overs and unders with unders, an over against an under the other way. One correlation, rho,
+// between any two of a game's props' results, signed by their sides (rho·s_i·s_j, s +1 an over, -1 an under):
+// fit on the sport's graded props (fitSameGame), and a game's edge props sized jointly with it (sizeJointly), so
+// a game's props leaning one way stake like fewer, bigger bets on it, and the ones a hedge balances stake as
+// they were. Stakes only: never a bet added or dropped, never a stake raised.
+//   minGames  games with two or more graded props before rho is read at all (0 till then: the stakes as before)
+//   shrink    games: the read pulled toward 0 by shrink / (games + shrink), so a few games' luck stakes nothing
+//   max       the most rho may be
+export const SAME_GAME = { minGames: 10, shrink: 30, max: 0.25 };
+const sideSign = (b) => (b.side === 'over' ? 1 : b.side === 'under' ? -1 : 0);
+
+// rho from the graded props (won or lost; a push or a void isn't a result): each one's standardized miss,
+// (won − p) / sqrt(p(1 − p)), less the sport's mean miss (a model that ran low on every prop isn't a correlation
+// within games), and every pair in a game: the product of their misses times their signs, averaged over all the
+// pairs (a game with more props, more pairs: the games sizing changes most). raw, that average; se, its
+// jackknife by game; rho, raw past 0 shrunk and held to max, 0 under minGames. Measured 2026-10-13 on the
+// ledgers (prop pairs, the misses centered): NHL same side +0.044 (se 0.024, 5984 pairs in 27 games), opposite
+// sides −0.027 (0.018, 5731), the same team or not alike (same side +0.042 and +0.045); NFL same side +0.004,
+// opposite −0.084 (14 games, se 0.07); MLB 4 games. The game markets with the props: NHL +0.003 (2124 pairs),
+// left out. A tracked row (TRACK) is a result like a bet's: read (its stake never is)
+export function fitSameGame(list) {
+  const graded = list.filter((b) => b.market === 'prop' && !b.void && (b.status === 'won' || b.status === 'lost') && b.p > 0 && b.p < 1 && sideSign(b));
+  const none = { rho: 0, raw: null, se: null, games: 0, pairs: 0, fitted: false };
+  if (!graded.length) return none;
+  const zOf = (b) => ((b.status === 'won') - b.p) / Math.sqrt(b.p * (1 - b.p));
+  const mean = graded.reduce((t, b) => t + zOf(b), 0) / graded.length;
+  const byGame = new Map();
+  for (const b of graded) byGame.set(b.event, [...(byGame.get(b.event) ?? []), b]);
+  const sums = [];
+  for (const bets of byGame.values()) {
+    if (bets.length < 2) continue;
+    const z = bets.map((b) => (zOf(b) - mean) * sideSign(b));
+    let s = 0;
+    for (let i = 0; i < z.length; i++) for (let j = i + 1; j < z.length; j++) s += z[i] * z[j];
+    sums.push([s, (z.length * (z.length - 1)) / 2]);
+  }
+  const S = sums.reduce((t, x) => t + x[0], 0);
+  const N = sums.reduce((t, x) => t + x[1], 0);
+  const games = sums.length;
+  if (!N) return none;
+  const raw = S / N;
+  // (the jackknife by game: each game left out in turn)
+  const jk = sums.length > 1 ? sums.map(([s, n]) => (S - s) / (N - n)) : [];
+  const jm = jk.reduce((t, x) => t + x, 0) / Math.max(1, jk.length);
+  const se = jk.length > 1 ? Math.sqrt(((jk.length - 1) / jk.length) * jk.reduce((t, x) => t + (x - jm) ** 2, 0)) : null;
+  const fitted = games >= SAME_GAME.minGames;
+  const rho = fitted ? Math.min(SAME_GAME.max, (Math.max(0, raw) * games) / (games + SAME_GAME.shrink)) : 0;
+  return { rho: round(rho, 4), raw: round(raw, 4), se: se === null ? null : round(se, 4), games, pairs: N, fitted };
+}
+
+// A game's new bets sized jointly at rho (fitSameGame): its edge props (more than the 0.5 minimum) are the
+// stakes that move; every other prop on the game, this run's action ones and the ones already open on it
+// (fixed: a list of { side, units }), counts as placed. Kelly for bets that correlated (stakes in units as the
+// stakes' scale; each bet's spread about alike near even money): the stakes u solving R·u = u0 on the edge
+// props' rows, u0 each one's own stake and R the correlations, rho·s_i·s_j off the diagonal. With one rho that
+// has a closed form: T, the game's signed units (overs less unders) all told, is ((1 − rho)·T_fixed + Σ s·u0) /
+// (1 − rho + m·rho) over the m edge props, and each u = (u0 − rho·s·T) / (1 − rho). A stake that would rise (a
+// hedge's) stays its own, one under 0.5 is 0.5, and those fixed, the rest solved again; then by half units. So n
+// edge props on one side at a stake each stake 1 / (1 + (n − 1)·rho) of it. The game markets aren't in it (their
+// results with the props' measured at about 0). A tracked row (TRACK) stakes nothing: no exposure, never among
+// the props it counts. Returns the bets, a resized one with sizedFrom (its own stake)
+export function sizeJointly(bets, fixed, rho) {
+  if (!(rho > 0)) return bets;
+  const moves = (b) => b.market === 'prop' && intentOf(b) === 'edge' && b.units > 0.5 && sideSign(b);
+  let free = bets.filter(moves);
+  if (!free.length) return bets;
+  const held = [...bets.filter((b) => b.market === 'prop' && !moves(b)), ...fixed].filter((b) => sideSign(b) && !isTracked(b));
+  const pinned = new Map();
+  let u = new Map();
+  for (let pass = 0; pass <= bets.length; pass++) {
+    const tFixed = held.reduce((t, b) => t + sideSign(b) * b.units, 0) + [...pinned].reduce((t, [b, x]) => t + sideSign(b) * x, 0);
+    const m = free.length;
+    const T = ((1 - rho) * tFixed + free.reduce((t, b) => t + sideSign(b) * b.units, 0)) / (1 - rho + m * rho);
+    u = new Map(free.map((b) => [b, (b.units - rho * sideSign(b) * T) / (1 - rho)]));
+    const out = free.filter((b) => u.get(b) > b.units + 1e-9 || u.get(b) < 0.5 - 1e-9);
+    if (!out.length) break;
+    for (const b of out) pinned.set(b, u.get(b) > b.units ? b.units : 0.5);
+    free = free.filter((b) => !pinned.has(b));
+    if (!free.length) break;
+  }
+  return bets.map((b) => {
+    if (!moves(b)) return b;
+    const x = pinned.has(b) ? pinned.get(b) : u.get(b);
+    const units = Math.min(b.units, Math.max(0.5, Math.round(x * 2) / 2));
+    return units === b.units ? b : { ...b, units, sizedFrom: b.units };
+  });
+}
+
+// The same-game sizing the desk bets with (run.mjs placeBets): rho fit on every graded prop (fitSameGame), and
+// kept only where the graded games show it no worse. The replay: each game's graded bets in the order played,
+// its props sized jointly (one batch, nothing open before it: the live runs size each run's against the ones
+// already open) at the rho fit on the days before its own (no look-ahead), every bet's profit at its stake
+// that way; log growth on the bankroll, each game at once, against the stakes as bet. Kept (used: rho) where it
+// resized nothing (no evidence either way, and nothing it does) or grew the bankroll no less; else used 0, the
+// stakes as before. Read 2026-10-13: NFL rho 0.014 (raw +0.043, se 0.053, 14 games), NHL 0.017 (raw +0.035, se
+// 0.018, 27 games), MLB under minGames: no stake resized in the replay. At the NHL's raw rho, unshrunk, 6 edge
+// props would have been cut 3u and the bankroll 1.3u worse (they won more than they lost): the shrink stays.
+// A tracked row (TRACK, not bet) is evidence for the fit, each day's too (its result, as every fit reads one),
+// but stakes nothing in the replay, as it stakes nothing live
+export function sameGameOf(list) {
+  const fit = fitSameGame(list);
+  const done = list.filter((b) => !b.void && (b.status === 'won' || b.status === 'lost' || b.status === 'push') && Number.isFinite(b.profit) && b.units > 0 && !isTracked(b));
+  const day = (b) => String(b.start).slice(0, 10);
+  const games = new Map();
+  for (const b of done) games.set(b.event, [...(games.get(b.event) ?? []), b]);
+  const order = [...games.values()].sort((a, b) => Date.parse(a[0].start) - Date.parse(b[0].start));
+  const rhoOn = new Map();
+  let br = { asBet: BANKROLL, joint: BANKROLL };
+  const growth = { asBet: 0, joint: 0 };
+  let resized = 0;
+  let trimmed = 0;
+  for (const g of order) {
+    const d = day(g[0]);
+    if (!rhoOn.has(d)) rhoOn.set(d, fitSameGame(list.filter((b) => day(b) < d)).rho);
+    const sized = sizeJointly(g, [], rhoOn.get(d));
+    const p = { asBet: g.reduce((t, b) => t + b.profit, 0), joint: sized.reduce((t, b, i) => t + (g[i].profit * b.units) / g[i].units, 0) };
+    for (let i = 0; i < g.length; i++) if (sized[i].units !== g[i].units) (resized++, (trimmed += g[i].units - sized[i].units));
+    for (const k of ['asBet', 'joint']) {
+      growth[k] += Math.log(Math.max(1e-9, br[k] + p[k]) / br[k]);
+      br[k] = br[k] + p[k] > 0 ? br[k] + p[k] : BANKROLL;
+    }
+  }
+  const kept = fit.rho > 0 && (!resized || growth.joint >= growth.asBet - 1e-12);
+  return { ...fit, used: kept ? fit.rho : 0, replay: { games: order.length, resized, trimmed: round(trimmed, 1), asBet: round(growth.asBet * 1e3, 3), joint: round(growth.joint * 1e3, 3) } };
 }
 
 // The guard for a market: why to cut its stake (or skip it), or null

@@ -47,7 +47,10 @@
 //   6. the props (below), then every new bet placed, each game's open stake, markets and props together, at
 //      most GAME_CAP (leagues.mjs; desk.mjs capGame: a tracked row stakes nothing, always kept), an earlier
 //      run's action bets on the game (from before they were tracked) taken back to make room for this run's
-//      edge bets (desk.mjs makeRoom)
+//      edge bets (desk.mjs makeRoom); before the cap, a game's edge props sized jointly with its other props,
+//      this run's and the ones open (desk.mjs sizeJointly: the same-game correlation fit on the graded props,
+//      tracked rows among them as evidence, and kept on its replay, sameGameOf; stakes only, never one raised; a
+//      tracked row stakes nothing, so it's no exposure)
 //   6c. the CHECKs (checks.mjs): a market or prop skipped only for the model's distance from the book (the
 //      gap guard alone: not one another guard skips too) isn't bet, but kept apart from the bets in their own
 //      file (model/checks.json, read in as ledger.checks: no units, never in the record, the trust fit, the
@@ -126,7 +129,7 @@ import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
-import { BANKROLL, MARKETS, capGame, choose, intentOf, isTracked, makeRoom, trackedRecord, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, capGame, choose, intentOf, isTracked, makeRoom, trackedRecord, fairPair, sameGameOf, sizeJointly, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
@@ -1451,19 +1454,26 @@ const standing = (r, b) => b.status === 'open' && !(DRY && !b.published && Date.
 // units already open on it and the new ones' together; over it the new ones scaled down alike, the least worth
 // having dropped (desk.mjs capGame; a game market dropped rests, as a skipped one does). Before that, an
 // earlier run's action bets on the game (no edge, not locked, from before they were tracked) taken back as far as this run's edge bets need
-// the room (desk.mjs makeRoom: the cap would otherwise go to whichever came first). The rests kept
+// the room (desk.mjs makeRoom: the cap would otherwise go to whichever came first). First of all, the game's edge
+// props sized jointly (desk.mjs sizeJointly, at the same-game correlation sameGameOf keeps: r.sameGame), with its
+// other props this run's and the ones standing on it as placed (a tracked row, staking nothing, not among them). The rests kept
 function placeBets(r) {
   const { sport } = r;
   const pending = r.pending ?? [];
   const ids = new Set(pending.map((x) => x.bet.id));
   const byGame = new Map();
   for (const x of pending) byGame.set(x.bet.event, [...(byGame.get(x.bet.event) ?? []), x.bet]);
+  // (the same-game correlation: fit on the graded props, used only where its replay held up)
+  const sg = (r.sameGame = sameGameOf(r.ledger.bets));
+  console.log(`${sport}: same-game sizing: rho ${sg.used}${sg.used !== sg.rho ? ` (fit ${sg.rho}, left out: its replay grew the bankroll less)` : ''}, raw ${sg.raw ?? '-'} (se ${sg.se ?? '-'}) on ${sg.pairs} prop pairs in ${sg.games} games${sg.fitted ? '' : ' (under the games it needs)'}; replay ${sg.replay.resized} stakes resized, ${sg.replay.trimmed}u, log growth ${sg.replay.asBet} as bet, ${sg.replay.joint} jointly (x1000)`);
+  let sized = 0;
   let capped = 0;
   let dropped = 0;
   let madeRoom = 0;
   const run = r.propRun;
-  for (const [event, bets] of byGame) {
+  for (const [event, mine] of byGame) {
     const standingNow = r.ledger.bets.filter((b) => b.event === event && standing(r, b) && !ids.has(b.id));
+    const bets = sizeJointly(mine, standingNow.filter((b) => b.market === 'prop'), sg.used);
     const need = bets.filter((b) => intentOf(b) === 'edge').reduce((t, b) => t + b.units, 0);
     const out = makeRoom(standingNow, need, GAME_CAP, (b) => !b.published && Date.parse(b.start) - Date.now() > REPRICE_BY);
     if (out.length) {
@@ -1490,12 +1500,16 @@ function placeBets(r) {
       if (DRY) console.log(`${sport} (dry) not bet ${b.matchup} ${b.pick}: the game's ${GAME_CAP}u cap (${open}u open on it)`);
     }
     for (const kept of res.kept) {
-      const { cappedFrom, ...b } = kept;
+      const { cappedFrom, sizedFrom, ...b } = kept;
+      if (sizedFrom) {
+        sized++;
+        b.context = { ...b.context, sameGame: `${sizedFrom}u sized to ${cappedFrom ?? b.units}u with the game's other props (same-game rho ${sg.used})` };
+      }
       if (cappedFrom) {
         capped++;
         b.context = { ...b.context, cap: `${cappedFrom}u cut to ${b.units}u: the game's ${GAME_CAP}u cap` };
       }
-      if (DRY) console.log(`${sport} (dry) ${isTracked(b) ? 'tracked ' : ''}${b.market === 'prop' ? 'prop ' : ''}${b.matchup} ${b.pick} ${isTracked(b) ? `0u (${b.trackUnits}u as an action bet)` : `${b.units}u ${levelOf(b, kellyOf(b.odds, b.p), b.p)}`} p ${b.p} ev ${b.ev}${b.market === 'prop' ? `: ${JSON.stringify(b.projection)}` : ''}${b.context?.guard ? ` [${b.context.guard}]` : ''}${b.context?.cap ? ` [${b.context.cap}]` : ''}${b.context?.oneSide ? ' [flipped: one side]' : ''}`);
+      if (DRY) console.log(`${sport} (dry) ${isTracked(b) ? 'tracked ' : ''}${b.market === 'prop' ? 'prop ' : ''}${b.matchup} ${b.pick} ${isTracked(b) ? `0u (${b.trackUnits}u as an action bet)` : `${b.units}u ${levelOf(b, kellyOf(b.odds, b.p), b.p)}`} p ${b.p} ev ${b.ev}${b.market === 'prop' ? `: ${JSON.stringify(b.projection)}` : ''}${b.context?.guard ? ` [${b.context.guard}]` : ''}${b.context?.sameGame ? ` [${b.context.sameGame}]` : ''}${b.context?.cap ? ` [${b.context.cap}]` : ''}${b.context?.oneSide ? ' [flipped: one side]' : ''}`);
       r.ledger.bets.push(b);
       r.newBets++;
       if (isTracked(b)) {
@@ -1510,6 +1524,7 @@ function placeBets(r) {
       }
     }
   }
+  if (sized) console.log(`${sport}: same-game sizing: ${sized} edge props' stakes cut with their games' other props`);
   if (capped || dropped || madeRoom) console.log(`${sport}: the games' ${GAME_CAP}u cap: ${capped} bets cut, ${dropped} not bet, ${madeRoom} open action bets taken back for edge bets' room`);
   r.madeRoom = madeRoom;
   if (run?.priced) console.log(`${sport}: props bet ${run.bet} for ${run.units}u (${run.bet - (run.betUnder ?? 0)} over, ${run.betUnder ?? 0} under), ${run.tracked ?? 0} tracked (no edge: not bet)`);
@@ -1972,6 +1987,8 @@ function saveState(r) {
     trust,
     evScale: EV_SCALE,
     gameCap: GAME_CAP,
+    // (the same-game sizing, desk.mjs sameGameOf: the props' correlation in a game, fit, used and its replay)
+    sameGame: r.sameGame ?? state.sameGame ?? null,
     // (the model's latest major change, leagues.mjs: the trust is fit only on bets since; the Bets About shows it)
     epoch: MODEL_EPOCH,
     // (the margins' shape, margins.mjs: kept or not, what it did for the held-out finals, its weights)

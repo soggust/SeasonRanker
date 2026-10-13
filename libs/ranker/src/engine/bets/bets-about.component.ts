@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AboutSection } from '../about/about-frame.component';
 import { BANDS } from './bet-why';
-import { CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, playChanceText } from './desk-model';
+import { CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, playChanceText, sameGameText } from './desk-model';
 import { MARKET_NAMES, SPORTS } from './desk-math';
 
 // The Bets page's About (its header's info button): the shared About frame (about/about-frame.component) with the
@@ -24,6 +24,8 @@ type SportView = {
   props: PropView[];
   // (the NFL's questionable players' chance of playing, in words; null elsewhere)
   playChance: string | null;
+  // (the same-game sizing, in words; null where the state predates it)
+  sameGame: string | null;
   trust: TrustRow[];
   checks: { n: number; open: number; graded: number; rows: CheckRow[] } | null;
 };
@@ -213,6 +215,7 @@ export class BetsAboutComponent implements OnInit {
       })),
       props: props.map((t) => this.propOf(t, trustText(t.trust ?? s.trust?.[`prop:${t.key}`]))),
       playChance: playChanceText(s.props?.playChance),
+      sameGame: sameGameText(s.sameGame),
       trust: Object.entries(s.trust ?? {}).map(([key, t]) => ({
         key,
         label: key.startsWith('prop:') ? `Prop: ${propLabel.get(key) ?? key.slice(5)}` : (MARKET_NAMES[key] ?? key),
