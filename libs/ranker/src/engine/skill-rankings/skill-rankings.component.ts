@@ -1047,9 +1047,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   }
 
   // The list as text, then "List copied" for two seconds, just under the button
-  // (isolated: the rows as shown, each at its place by the stat, under a line saying so)
+  // (isolated: the rows as shown, each at its place by the stat and with its value, under a line saying so)
   copyList(button: HTMLElement): void {
-    const note = this.isoStat ? `Sorted by ${this.reader.name(this.isoStat)} only (not the ranking)` : undefined;
+    const note = this.isoStat ? `Sorted by ${this.reader.name(this.isoStat)}${this.isoReversed ? ', worst first' : ''}` : undefined;
     copyRankingsToClipboard(this.rankingsList.nativeElement, this.settings.copyStats, note)
       .then(() => this.toast(button, 'List copied to clipboard!'))
       .catch((err) => console.error('Failed to copy: ', err));

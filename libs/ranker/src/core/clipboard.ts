@@ -1,21 +1,25 @@
-const BASE_URL = 'https://qbranker2026.web.app';
+const BASE_URL = 'https://www.seasonranker.com';
 
 interface Column {
   label: string;
   // The cell in a row, found by its position (and position inside a grouped box)
   path: number[];
+  // (the column a header click isolated)
+  iso?: boolean;
 }
 
 // Copy the rankings exactly as shown: current order and the visible columns, read from the list (or,
 // with stats off, just the rank, picture and name). Only the rows shown (one team's, with a team picked),
 // each at its rank in the whole list (the row's data-rank). Plain text is tab-separated (pastes into spreadsheets
 // and notes); HTML is a table with each row's picture: a player's headshot, or the team's logo (pastes
-// into forums and docs). note: a line over the list (a header clicked: "Sorted by ... only"), each row's
-// data-rank then its place by that stat ("-": none).
+// into forums and docs). note: a line over the list (a header clicked: "Sorted by Passing Yards"), each row's
+// data-rank then its place by that stat ("-": none); with a column isolated, its values come along even with the
+// stats off (rank, name and that stat).
 export function copyRankingsToClipboard(list: HTMLElement, stats = true, note?: string): Promise<void> {
   const header = list.querySelector<HTMLElement>(':scope > li.header-row');
   const rows = Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row):not(.unranked)'));
-  const columns = header && stats ? readColumns(header) : [];
+  const all = header ? readColumns(header) : [];
+  const columns = stats ? all : all.filter((c) => c.iso);
 
   // (headshots load as they scroll into view: one that has loaded gives the shape for every row's)
   const loaded = rows.map((row) => row.querySelector<HTMLImageElement>('img.headshot')).find((img) => img?.naturalWidth);
@@ -105,10 +109,10 @@ function readColumns(header: HTMLElement): Column[] {
     const grouped = inner.filter((child) => child.querySelector('.stat-label'));
     if (grouped.length > 1) {
       grouped.forEach((child) =>
-        columns.push({ label: labelOf(child), path: [i, inner.indexOf(child)] }),
+        columns.push({ label: labelOf(child), path: [i, inner.indexOf(child)], iso: child.classList.contains('iso-on') }),
       );
     } else {
-      columns.push({ label: labelOf(cell), path: [i] });
+      columns.push({ label: labelOf(cell), path: [i], iso: cell.classList.contains('iso-on') });
     }
   });
   return columns;
