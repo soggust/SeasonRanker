@@ -310,7 +310,7 @@ export function withStoredPrices(board_, checks, game, now, statOf) {
       const stat = statOf(c.propType);
       if (!stat || !c.athlete) continue;
       const pulled = board_.some((p) => String(p.athlete?.id) === String(c.athlete) || p.stat?.key === c.propType);
-      out.push({ athlete: { id: String(c.athlete), name: c.player, pos: '', team: c.team ?? null }, stat, line: c.line, open: c.context?.move?.open ?? null, prices, source: 'its CHECK (the odds api)', stored: { ...stored, offBoard: true, ...(pulled ? { pulled: true } : {}) } });
+      out.push({ athlete: { id: String(c.athlete), name: c.player, pos: '', team: c.team ?? null }, stat, line: c.line, open: c.context?.move?.open ?? null, ...(Number.isFinite(c.context?.move?.openFair) ? { openFair: c.context.move.openFair } : {}), prices, source: 'its CHECK (the odds api)', stored: { ...stored, offBoard: true, ...(pulled ? { pulled: true } : {}) } });
     }
     used.set(c.id, at);
   }

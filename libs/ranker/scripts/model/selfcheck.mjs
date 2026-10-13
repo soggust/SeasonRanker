@@ -65,8 +65,11 @@
 //                 against the book's own fair chance and its CLV; by the hours before the start it was placed,
 //                 the CLV and the record, early against late. A watch with its advice (cut the moved-against
 //                 ones, let a prop moved its way through the guard, bet earlier or later) only past z 2.5 with
-//                 60 a side; never applied
-//   output   { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
+//                 60 a side (the timing's with the record against the book the same way at z 1 or more; the
+//                 game lines' moved past the limit their way doing worse too); a prop's unmoved line read by
+//                 its price's move where the open price was kept (since 2026-10-13: before, 'unmoved' holds the
+//                 price-only moves, most of the NHL's); never applied
+//   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
 //             4 places, written only when something but `at` changed (writeIfChanged)
@@ -1041,7 +1044,14 @@ export const MOVE_EARLY = 6;
 export const LEAD_BUCKETS = [[0, 3], [3, 6], [6, 12], [12, 24], [24, Infinity]];
 
 // (a bet's line move before it was bet, its own side's way: { way: 'against' | 'with' | 'none', pts, past }
-// (past: the guard's limit or more: a prop's max(1, 12% of the line), a game's gameMoveOf), null without an open)
+// (past: the guard's limit or more: a prop's max(1, 12% of the line), a game's gameMoveOf), null without an open.
+// A prop's line that didn't move can still have moved in price (the NHL's sit at 0.5 or 1.5 and move by the
+// price): where the desk kept the open price (props.mjs board, context.move openFair and nowFair: the over's
+// fair chance at the open and when bet, since 2026-10-13) a fair-chance move of MOVE_PRICE or more its side's
+// way counts as the move's (by: 'price', prob: the side's chance's move, never past: the guard reads the line
+// alone); without it (every bet before then, and the NFL's, whose board carries no prices) a line unmoved is
+// 'none' with price: false, its price's move unknown)
+export const MOVE_PRICE = 0.025;
 export function moveWayOf(b, sport) {
   let pts = null;
   let limit = null;
@@ -1050,6 +1060,12 @@ export function moveWayOf(b, sport) {
     if (!m || !fin(m.open) || !fin(m.now)) return null;
     pts = againstPts('prop', b.side, m.open, m.now);
     limit = Math.max(1, 0.12 * (fin(b.line) ? b.line : m.now));
+    if (pts === 0) {
+      if (!fin(m.openFair) || !fin(m.nowFair) || (b.side !== 'over' && b.side !== 'under')) return { way: 'none', pts: 0, past: false, price: false };
+      // (the side's fair chance now less at the open: up is the market moving its way)
+      const prob = (b.side === 'over' ? 1 : -1) * (m.nowFair - m.openFair);
+      return { way: prob >= MOVE_PRICE ? 'with' : prob <= -MOVE_PRICE ? 'against' : 'none', pts: 0, past: false, price: true, by: 'price', prob: r4(prob) };
+    }
   } else {
     const g = gameMoveOf(b, sport);
     if (!g) return null;
@@ -1060,18 +1076,22 @@ export function moveWayOf(b, sport) {
   return { way: pts > 0 ? 'against' : pts < 0 ? 'with' : 'none', pts, past: Math.abs(pts) >= limit };
 }
 
-// (a list's record against the book's chance, a bet: d = (W - E) / n, its variance sum p(1 - p) / n^2)
+// (a list's record against the book's chance, a bet, each weighted as zOf weights it (weightOf: 0.3 when its
+// premise broke): d = sum w (won - p) / sum w, its variance sum w^2 p(1 - p) / (sum w)^2)
 export function overBook(list) {
   let n = 0;
+  let W = 0;
   let d = 0;
   let v = 0;
   for (const b of list) {
     if (!settledOf(b) || !fin(b.fair)) continue;
+    const w = weightOf(b);
     n++;
-    d += (b.status === 'won' ? 1 : 0) - b.fair;
-    v += b.fair * (1 - b.fair);
+    W += w;
+    d += w * ((b.status === 'won' ? 1 : 0) - b.fair);
+    v += w * w * b.fair * (1 - b.fair);
   }
-  return n ? { n, d: d / n, v: v / (n * n) } : { n: 0, d: null, v: null };
+  return n && W > 0 ? { n, d: d / W, v: v / (W * W) } : { n: 0, d: null, v: null };
 }
 // (two lists' difference, a's less b's, in its standard errors)
 const zBetween = (a, b) => (a.n && b.n && a.v + b.v > 0 ? (a.d - b.d) / Math.sqrt(a.v + b.v) : null);
@@ -1102,7 +1122,10 @@ export function c19(x) {
       const way = (w, past = false) => of.filter((r) => r.m.way === w && (!past || r.m.past)).map((r) => r.b);
       const against = way('against');
       const rest = of.filter((r) => r.m.way !== 'against').map((r) => r.b);
-      for (const [label, l] of [['against', against], ['unmoved', way('none')], ['with', way('with')], ['with, past the limit', way('with', true)]]) if (l.length) rows.push(rowOf(`${src} ${kind}: ${label === 'unmoved' ? label : `moved ${label}`}`, l));
+      // (unmoved: every one whose line didn't move, its price read or not; 'unmoved, its price too' the ones whose
+      // open price was kept and didn't move MOVE_PRICE either way: the rest's price moves unknown)
+      const still = of.filter((r) => r.m.way === 'none' && r.m.price).map((r) => r.b);
+      for (const [label, l] of [['against', against], ['unmoved', way('none')], ['unmoved, its price too', still], ['with', way('with')], ['with, past the limit', way('with', true)]]) if (l.length) rows.push(rowOf(`${src} ${kind}: ${/^unmoved/.test(label) ? label : `moved ${label}`}`, l));
       if (src !== 'bets') continue;
       const [a, r] = [overBook(against), overBook(rest)];
       const zA = zBetween(a, r);
@@ -1110,12 +1133,18 @@ export function c19(x) {
       const [w, none] = [overBook(way('with', true)), overBook(way('none'))];
       const zW = zBetween(w, none);
       if (kind === 'props' && w.n >= MOVE_MIN && none.n >= MOVE_MIN && fin(zW) && zW >= MOVE_Z) advice.push(`props: the ones moved past the guard's limit their way did better than the unmoved (z ${round(zW, 2)}): the guard could let a move with the side through`);
+      // (the mirror for the game lines, whose guard (desk.mjs guardOf) lets a move with the side through: the
+      // ones moved past its limit their way doing worse than the unmoved (the NFL's 9 bets on 2026-10-13, 28
+      // points under the book's chance, its z -1.61, 1 unmoved: one to watch, not past noise))
+      if (kind === 'games' && w.n >= MOVE_MIN && none.n >= MOVE_MIN && fin(zW) && zW <= -MOVE_Z) advice.push(`games: the ones moved past the guard's limit their way did worse than the unmoved (z ${round(zW, 2)}): the guard could cut a move with the side too`);
     }
   }
   // (the lead time: the hours before the start it was placed)
   const leadOf = (b) => (ms(b.start) - ms(b.placedAt)) / 36e5;
   for (const kind of ['props', 'games']) {
-    const list = bets.filter((b) => kindOf(b) === kind && fin(leadOf(b)));
+    // (placed before its start only: one placed after it (a late grade's or a live oddity's) in neither the
+    // buckets nor the split, so the buckets add up to the split's n)
+    const list = bets.filter((b) => kindOf(b) === kind && fin(leadOf(b)) && leadOf(b) >= 0);
     if (!list.length) continue;
     for (const [a, z] of LEAD_BUCKETS) {
       const l = list.filter((b) => leadOf(b) >= a && leadOf(b) < z);
@@ -1138,10 +1167,10 @@ export function c19(x) {
     headline: advice.length ? advice.join('; ') : n ? `${n} graded (${bets.length} bets, ${checks.length} CHECKs), ${moved} with a line moved since it opened: no difference past z ${MOVE_Z} by the move's way or the lead time` : 'No graded bets yet',
     metric: 'graded',
     value: n,
-    threshold: `a watch when the bets moved against do better or worse against the book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, or the bets ${MOVE_EARLY}h or more early beat the close more or less than the later ones with the results the same way: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the bets moved against do better or worse against the book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, the game lines moved past it their way worse, or the bets ${MOVE_EARLY}h or more early beat the close more or less than the later ones (CLV z ${MOVE_Z}) with their record against the book the same way at z 1 or more: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2), the record against the book's fair chance (overBook: won less the chance, a bet); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
+    how: "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
   });
 }
 

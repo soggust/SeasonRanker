@@ -375,11 +375,14 @@ export function weekLabel(from: string, to: string): string {
 // (a cell's words: a number to 2 places at most, a share-like key as a percent, a nested record as its parts)
 // (overBook: C19's record against the book's chance, won less the chance a bet)
 const PCT_KEYS = /^(share|shareBase|dogShare|dogShareBase|moved|beat|roi|hitRate|breakEven|rejectRate|r|overBook)$/;
+const PTS_KEYS = /^(clvProb|clvSe)$/;
 export function selfCheckCell(key: string, v: unknown): string {
   if (v === null || v === undefined) return '-';
   if (typeof v === 'number') {
     if (!Number.isFinite(v)) return '-';
     if (PCT_KEYS.test(key)) return `${Math.round(v * 1000) / 10}%`;
+    // (C19's CLV chance and its standard error: a few tenths of a point, so two decimals)
+    if (PTS_KEYS.test(key)) return `${(v * 100).toFixed(2)}%`;
     return String(Math.round(v * 100) / 100);
   }
   if (typeof v === 'boolean') return v ? 'yes' : 'no';

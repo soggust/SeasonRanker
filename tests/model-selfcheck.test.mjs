@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { STATUSES, TITLES, againstPts, c1, c2, c4, c6, c7, c9, c10, c13, c17, c19, canon, gameMoveOf, guardKind, lastWeekC6, moveWayOf, selfCheck, spansOf, writeIfChanged, zOf } from '../libs/ranker/scripts/model/selfcheck.mjs';
+import { STATUSES, TITLES, againstPts, c1, c2, c4, c6, c7, c9, c10, c13, c17, c19, canon, gameMoveOf, guardKind, lastWeekC6, moveWayOf, overBook, selfCheck, spansOf, writeIfChanged, zOf } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { VOID_AFTER } from '../libs/ranker/scripts/model/desk.mjs';
 import { loadEngine } from './support/engine.mjs';
 
@@ -269,6 +269,8 @@ test("the Algorithm tab's Self-check panel: flags, watches and partial ones show
   assert.equal(desk.weekLabel('2026-09-28', '2026-10-04'), 'Sep 28-Oct 4');
   assert.equal(desk.selfCheckCell('share', 0.4567), '45.7%');
   assert.equal(desk.selfCheckCell('overBook', -0.1116), '-11.2%');
+  assert.equal(desk.selfCheckCell('clvProb', 0.004), '0.40%');
+  assert.equal(desk.selfCheckCell('clvSe', 0.0011), '0.11%');
   assert.equal(desk.selfCheckCell('n', 12), '12');
   assert.equal(desk.selfCheckCell('dogs', { n: 3, z: -1.234 }), 'n 3 · z -1.23');
   assert.equal(desk.selfCheckCell('x', null), '-');
@@ -297,6 +299,32 @@ test("C19: a line's move its side's way; the bets moved against doing worse agai
   assert.equal(few.status, 'info');
   assert.match(few.headline, /^60 graded \(60 bets, 0 CHECKs\), 20 with a line moved since it opened: no difference/);
   assert.equal(c19(ctxOf([])).status, 'thin');
+});
+
+test("C19: a prop's unmoved line read by its kept open price; a premise-broken bet weighted as zOf; a bet placed after its start in neither the buckets nor the split; game lines moved their way doing worse a watch", () => {
+  // (the line unmoved: the over's fair chance down 4 points is against an over, with an under; under 2.5 points none; no open price none, unread)
+  assert.deepEqual(moveWayOf({ market: 'prop', side: 'over', line: 0.5, context: { move: { open: 0.5, now: 0.5, openFair: 0.55, nowFair: 0.51 } } }, 'nhl'), { way: 'against', pts: 0, past: false, price: true, by: 'price', prob: -0.04 });
+  assert.equal(moveWayOf({ market: 'prop', side: 'under', line: 0.5, context: { move: { open: 0.5, now: 0.5, openFair: 0.55, nowFair: 0.51 } } }, 'nhl').way, 'with');
+  assert.equal(moveWayOf({ market: 'prop', side: 'over', line: 0.5, context: { move: { open: 0.5, now: 0.5, openFair: 0.55, nowFair: 0.54 } } }, 'nhl').way, 'none');
+  assert.deepEqual(moveWayOf({ market: 'prop', side: 'over', line: 0.5, context: { move: { open: 0.5, now: 0.5 } } }, 'nhl'), { way: 'none', pts: 0, past: false, price: false });
+  // (a line that moved: the line's way, the price not read)
+  assert.equal(moveWayOf({ market: 'prop', side: 'over', line: 1.5, context: { move: { open: 0.5, now: 1.5, openFair: 0.6, nowFair: 0.4 } } }, 'nhl').way, 'with');
+  // (the rows: 'unmoved' all, 'unmoved, its price too' the read ones alone)
+  const c = c19(ctxOf([...many(10, 5, { context: { move: { open: 0.5, now: 0.5, openFair: 0.5, nowFair: 0.5 } } }), ...many(10, 5, { context: { move: { open: 0.5, now: 0.5 } } }), ...many(10, 5, { context: { move: { open: 0.5, now: 0.5, openFair: 0.55, nowFair: 0.5 } } })]));
+  assert.equal(c.rows.find((r) => r.key === 'bets props: unmoved').n, 20);
+  assert.equal(c.rows.find((r) => r.key === 'bets props: unmoved, its price too').n, 10);
+  assert.equal(c.rows.find((r) => r.key === 'bets props: moved against').n, 10);
+  // (overBook weighted: a 0.3 bet won counts 0.3 of a full one)
+  const ob = overBook([{ status: 'won', fair: 0.5, weight: 0.3 }, { status: 'lost', fair: 0.5 }]);
+  assert.equal(ob.n, 2);
+  assert.ok(Math.abs(ob.d - (0.3 * 0.5 - 0.5) / 1.3) < 1e-9);
+  // (placed after its start: out of both)
+  const t = c19(ctxOf([...many(10, 5), ...many(5, 2, { placedAt: '2026-10-11T20:00:00Z', start: '2026-10-11T18:00:00Z' })]));
+  const split = t.rows.find((r) => r.key === 'bets props: 6h or more before, against later');
+  const buckets = t.rows.filter((r) => /^bets props: placed/.test(r.key)).reduce((s, r) => s + r.n, 0);
+  assert.equal(split.n, buckets);
+  assert.equal(split.n, 10);
+  assert.match(t.threshold, /record against the book the same way at z 1 or more/);
 });
 
 test('C19: the CHECKs graded in their own rows, never in the advice; bets placed early beating the close and the book a watch to bet earlier', () => {

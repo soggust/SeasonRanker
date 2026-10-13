@@ -918,7 +918,10 @@ export async function board(sport, league, game) {
     const it = at[0];
     const who = await athlete(key.split('|')[0], [String(game.home), String(game.away)]);
     if (!who) return;
-    out.push({ athlete: who, stat: STATS[sport].find((s) => s.key === key.split('|')[1]), line, open: it.open?.target?.value ?? null, prices: pricesOf(at) });
+    // (the open price, where the line hasn't moved from its open: each side's odds.american.open, the over's fair
+    // chance with the vig out (openFair); a line that moved, or a board without prices (the NFL's), none)
+    const openP = at.every((x) => x.open?.target?.value === line) ? pricesOf(at.map((x) => ({ odds: { american: { value: x.odds?.american?.open } } }))) : null;
+    out.push({ athlete: who, stat: STATS[sport].find((s) => s.key === key.split('|')[1]), line, open: it.open?.target?.value ?? null, prices: pricesOf(at), ...(openP ? { openFair: fairPair(openP.over, openP.under) } : {}) });
   });
   saveAthletes();
   return out;
@@ -1144,7 +1147,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // Measured 2026-10-13 on every graded bet and CHECK (selfcheck.mjs C19, the record against the book's own
     // fair chance): neither way differs from the rest past noise (the NFL's prop bets moved against 23, 11 points
     // under the book's chance, their CHECKs moved against 87, 7 over; moved its way 15 bets 10 over, 55 CHECKs 3
-    // over; the NHL's 10 and 15), so the guard stays both ways till C19 says otherwise)
+    // over; the NHL's 10 and 15), so the guard stays both ways till C19 says otherwise. That measured the line's
+    // move alone: the NHL's props sit at 0.5 and 1.5 and the market moves them by the price, so its 691
+    // 'unmoved' bets hold every price-only move, and the NHL's figures don't test the question. The open price
+    // is kept from 2026-10-13 (move.openFair, nowFair) for C19 to read; this guard still reads the line alone)
     const movedWhy = `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened${moved && (moved > 0) !== (side === 'over') ? ', against it' : moved ? ', its way' : ''}`;
     let guard = null;
     // (his group's missing work now against what it was in the games his numbers come from, where the
@@ -1281,7 +1287,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
       projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
-      move: prop.open !== null ? { open: prop.open, now: prop.line } : null,
+      // (the line's open and now; where the line hasn't moved and the open price was read (board), the over's
+      // fair chance at the open and at the price bet (selfcheck.mjs C19: a price-only move, the NHL's at 0.5 and
+      // 1.5 most of all, which the line alone doesn't see))
+      move: prop.open !== null ? { open: prop.open, now: prop.line, ...(Number.isFinite(prop.openFair) && prop.open === prop.line && prop.prices ? { openFair: round(prop.openFair, 4), nowFair: round(book.fairOver, 4) } : {}) } : null,
     });
   }
   const bets = priced.filter((x) => !x.guard?.skip).sort((a, b) => b.ev - a.ev);

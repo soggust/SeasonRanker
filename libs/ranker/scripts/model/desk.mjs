@@ -245,7 +245,10 @@ export function capGame(bets, placed, cap) {
 // left of the move once the context's shift is taken off it does. A context shift the other way explains
 // nothing. Each in the line's own units: the home side's points (a home spread moving down is the market
 // moving toward home), the total's points, the moneyline's home chance (its points through the margin spread:
-// a chance near even moves about 0.4 / sigma a point). side: the bet's (none: a move either way counts)
+// a chance near even moves about 0.4 / sigma a point). side: the bet's (none: a move either way counts).
+// One to watch (selfcheck.mjs C19, 2026-10-13): the NFL's game bets moved past the limit their way, which this
+// lets through, ran 28 points under the book's chance on 9 bets (its z -1.61 against that chance; 1 unmoved
+// to set it against): not past noise; C19 says when it is
 export function guardOf(limits, market, move, flags, adj = { m: 0, t: 0 }, sigma = null, side = null) {
   const limit = limits?.[market];
   const moved = move?.[market];
