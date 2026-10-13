@@ -11,15 +11,16 @@
 //        season's file couldn't be read) holds only the players who got the ball: the rows' snapGap says how
 //        many (props.mjs flags the NFL's props, or skips them when it's a season's quarter or more)
 //   NBA  ESPN's box scores: minutes, points, rebounds, assists, threes, field goals and free throws tried (the
-//        usage the work a teammate leaves is shared by: matchups.mjs)
+//        usage the work a teammate leaves is shared by: matchups.mjs), whether he started, threes tried,
+//        offensive and defensive rebounds, turnovers and fouls; and each final's betting lines (boxMarket)
 //   NHL  ESPN's box scores: skaters' time on ice, power-play time on ice, shots on goal, goals and assists;
 //        goalies' saves
 //   MLB  StatsAPI: the probable starters' game logs (strikeouts, outs: kept in the context's facts already) and the
 //        lineups' batters' game logs (hits, total bases, home runs, plate appearances)
 //
-// (an NBA or NHL final's lines kept before the usage and the power-play time were (LINES_V) are asked again
-// once; one whose summary can't be had keeps its old lines, those fields missing: matchups.mjs reads them as
-// unknown)
+// (an NBA or NHL final's lines kept before the sport's latest fields were (LINES_V: the usage and the power-play
+// time, then the NBA's starter flag and the rest) are asked again once; one whose summary can't be had keeps
+// its old lines, those fields missing: matchups.mjs reads them as unknown)
 //
 // A row: { pid, name, pos, date, season, team (ESPN id), opp (ESPN id), game (ESPN id or null), home, s: {stat: value} }
 // (the NFL's also his draft: { year: his first NFL season, pick: overall, 0 undrafted }, or null: nflverse's players
@@ -47,11 +48,16 @@ const save = (sport) => {
   kept.get(sport).dirty = false;
 };
 
-// (the kept lines' version: 2, the NBA's with field goals and free throws tried, the NHL's with power-play time)
-const LINES_V = 2;
+// (the kept lines' version, a sport's own: 2, the NBA's with field goals and free throws tried, the NHL's with
+// power-play time; 3, the NBA's with the starter flag, threes tried, offensive and defensive rebounds, turnovers
+// and fouls, and the game's betting lines (m) where the summary has them)
+const LINES_V = { nba: 3, nhl: 2 };
 
 // An NBA or NHL final's player lines from its summary, kept: context.mjs reads each new final's summary for
-// its own facts and hands it here too, so a final's summary is asked for once
+// its own facts and hands it here too, so a final's summary is asked for once. An NBA final's betting lines
+// too (m: [the home side's margin, the total], the summary's pickcenter, DraftKings' where it's there: ESPN's
+// line at the tip, a close; none on 2025-26's first weeks' finals): the props' blowout by role (props.mjs
+// blowS, blowB) reads the history's spread from them (boxMarket)
 export function recordBox(sport, g, body) {
   const box = body?.boxscore?.players;
   if (!box?.length || (sport !== 'nba' && sport !== 'nhl')) return;
@@ -61,9 +67,35 @@ export function recordBox(sport, g, body) {
     if (where) sides[where] = sport === 'nba' ? nbaLines(p) : nhlLines(p);
   }
   if (sides.h && sides.a) {
-    load(sport)[g.id] = { ...sides, v: LINES_V };
+    const m = sport === 'nba' ? pickLines(body) : null;
+    load(sport)[g.id] = { ...sides, ...(m ? { m } : {}), v: LINES_V[sport] };
     kept.get(sport).dirty = true;
   }
+}
+
+// (a summary's betting lines: [the home side's margin, the total] from its pickcenter (the spread is the home
+// side's: -5.5 a 5.5-point home favorite), DraftKings' first; null without both)
+export function pickLines(body) {
+  const list = Array.isArray(body?.pickcenter) ? body.pickcenter : [];
+  const pc = list.find((x) => /draftkings/i.test(x?.provider?.name ?? '')) ?? list[0];
+  const spread = Number(pc?.spread);
+  const total = Number(pc?.overUnder);
+  return pc && pc.spread !== null && pc.spread !== undefined && Number.isFinite(spread) && Number.isFinite(total) && total > 0 ? [-spread, total] : null;
+}
+
+// The NBA history's betting lines as implied points by ESPN's game id ([home, away]: the total split by the
+// home side's margin, as props.mjs marketPts), from the kept finals' (recordBox m); null with none (the
+// blowout by role reads the game model's margin then, as live without a line)
+export function boxMarket(sport) {
+  const out = new Map();
+  for (const [id, k] of Object.entries(load(sport))) {
+    const [margin, total] = Array.isArray(k?.m) ? k.m : [];
+    if (!Number.isFinite(margin) || !(total > 0)) continue;
+    const h = (total + margin) / 2;
+    const a = (total - margin) / 2;
+    if (h > 0 && a > 0) out.set(String(id), [h, a]);
+  }
+  return out.size ? out : null;
 }
 
 // Every player row for a sport, the kept ones brought up to date
@@ -198,11 +230,12 @@ async function boxRows(sport, cfg, history) {
   const lines = load(sport);
   // (finals still without lines: the summaries context.mjs didn't read this run, all of them on a cold cache;
   // and the ones kept before LINES_V, asked again once: one whose summary can't be had keeps its old lines)
-  const todo = history.filter((g) => g.final && g.hs !== null && (!(g.id in lines) || (lines[g.id]?.v ?? 1) < LINES_V));
+  const V = LINES_V[sport];
+  const todo = history.filter((g) => g.final && g.hs !== null && (!(g.id in lines) || (lines[g.id]?.v ?? 1) < V));
   if (todo.length) {
     const t0 = Date.now();
     await pool(todo, 6, async (g) => recordBox(sport, g, await summary(cfg.league, g.id)));
-    for (const g of todo) if (lines[g.id] && (lines[g.id].v ?? 1) < LINES_V) (lines[g.id].v = LINES_V), (kept.get(sport).dirty = true);
+    for (const g of todo) if (lines[g.id] && (lines[g.id].v ?? 1) < V) (lines[g.id].v = V), (kept.get(sport).dirty = true);
     console.log(`${sport}: player lines for ${todo.length} finals new or kept before (${Math.round((Date.now() - t0) / 1000)}s)`);
   }
   if (kept.get(sport).dirty) save(sport);
@@ -219,7 +252,7 @@ async function boxRows(sport, cfg, history) {
         // (a field a line kept before it was, undefined: unknown)
         const s =
           sport === 'nba'
-            ? { min: v[0], pts: v[1], reb: v[2], ast: v[3], fg3: v[4], pra: v[1] + v[2] + v[3], fga: v[5] ?? undefined, fta: v[6] ?? undefined }
+            ? { min: v[0], pts: v[1], reb: v[2], ast: v[3], fg3: v[4], pra: v[1] + v[2] + v[3], fga: v[5] ?? undefined, fta: v[6] ?? undefined, start: v[7] ?? undefined, fg3a: v[8] ?? undefined, oreb: v[9] ?? undefined, dreb: v[10] ?? undefined, tov: v[11] ?? undefined, pf: v[12] ?? undefined }
             : pos === 'G'
               ? { toi: v[0], saves: v[1] }
               : { toi: v[0], sog: v[1], pts: v[2] + v[3], goals: v[2], pptoi: v[4] ?? undefined };
@@ -231,7 +264,8 @@ async function boxRows(sport, cfg, history) {
 }
 
 // (an NBA side's players who played: [id, name, position, minutes, points, rebounds, assists, threes, field
-// goals tried, free throws tried])
+// goals tried, free throws tried, started (1 or 0), threes tried, offensive rebounds, defensive rebounds,
+// turnovers, fouls]; a column the box doesn't have, null)
 export function nbaLines(p) {
   const s = p.statistics?.[0];
   const at = (k) => (s?.labels ?? []).indexOf(k);
@@ -239,7 +273,8 @@ export function nbaLines(p) {
     .filter((a) => !a.didNotPlay && a.stats?.length && Number(a.stats[at('MIN')]) > 0)
     .map((a) => {
       const n = (k, part = 0) => Number(String(a.stats[at(k)]).split('-')[part]) || 0;
-      return [String(a.athlete.id), a.athlete.displayName, a.athlete.position?.abbreviation ?? '', n('MIN'), n('PTS'), n('REB'), n('AST'), n('3PT'), n('FG', 1), n('FT', 1)];
+      const opt = (k, part = 0) => (at(k) >= 0 ? n(k, part) : null);
+      return [String(a.athlete.id), a.athlete.displayName, a.athlete.position?.abbreviation ?? '', n('MIN'), n('PTS'), n('REB'), n('AST'), n('3PT'), n('FG', 1), n('FT', 1), typeof a.starter === 'boolean' ? (a.starter ? 1 : 0) : null, opt('3PT', 1), opt('OREB'), opt('DREB'), opt('TO'), opt('PF')];
     });
 }
 

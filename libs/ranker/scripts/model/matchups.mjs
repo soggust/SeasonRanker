@@ -20,7 +20,9 @@
 //            known before the game (roleKnown: the back-to-backs' by role, props.mjs CTX b2bB): in the history,
 //            a player missing counted out only when he missed his team's game before too (a starter resting the
 //            second night, unannounced at bet time, still a starter), and no role (null) for a player not
-//            ranked himself (under three games for this team: its first games, a player just traded in)
+//            ranked himself (under three games for this team: its first games, a player just traded in). His
+//            minutes over 48 in the game itself (share: learned after it, the minutes-first base's, project.mjs
+//            sn) and whether he started his team's game before (startLast: the box's starter flag; CTX newStart)
 //   depth    the NFL: a pass-catcher's air yards a target (nflverse's receiving air yards) over the league's, his
 //            own pulled toward his position's by 30 targets, season to date, last season's at half (dep), and the
 //            lead quarterback out times how far it runs over the league's, a wide receiver's or tight end's (qbDeep:
@@ -764,8 +766,8 @@ export const nbaUsage = (r) => (Number.isFinite(r.s.fga) ? r.s.fga + 0.44 * (r.s
 // The NBA's roles: each team's five with the most minutes a game so far (three games or more) among the ones
 // playing its starters (S), the rest its bench (B); and the work missing (teamWork: by minutes, by usage, the
 // whole team one group; a core player out counts at once, a regular from his second game out in a row:
-// teamWork gate). The same for a coming game (live: missing, the teammates out by the injury report, none of
-// them a starter)
+// teamWork gate); each game's minutes over 48 (share) and his start in his team's game before (startLast). The
+// same for a coming game (live: missing, the teammates out by the injury report, none of them a starter)
 export function nbaMatchups(rows) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6] });
@@ -778,6 +780,13 @@ export function nbaMatchups(rows) {
     const at = avg.findIndex(([id]) => id === pid);
     if (known && (at < 0 || avg.length < 5)) return null;
     return at < 0 ? 'B' : at < 5 ? 'S' : 'B';
+  };
+  // (whether he started his last game for the team this season (the box's starter flag: 1 or 0; null unknown or
+  // none yet), known before the game: tonight's starters aren't posted till near the tip, so his last game's the
+  // read (props.mjs CTX newStart))
+  const startLastOf = (pid, teamId, season) => {
+    const t = team.get(teamId);
+    return t && t.season === season ? (t.p.get(pid)?.start ?? null) : null;
   };
   // (each team's players in its game before: the history's roleKnown counts out only the ones missing that
   // one too)
@@ -799,6 +808,10 @@ export function nbaMatchups(rows) {
         r.roleKnown = roleOf(r.pid, r.team, r.season, outKnown, true);
         r.vacs = work.vacated(r.team, r.season, r.pid, r.pos, miss);
         r.vac = Math.max(...r.vacs);
+        // (his minutes over a full game's 48: the game's own share, learned after it, never projected from
+        // (project.mjs's minutes-first base, the NFL snap share's place))
+        r.share = r.s.min > 0 ? r.s.min / 48 : null;
+        r.startLast = startLastOf(r.pid, r.team, r.season);
       }
     }
     for (const list of games.values()) {
@@ -808,9 +821,10 @@ export function nbaMatchups(rows) {
       for (const r of list) {
         let t = team.get(r.team);
         if (!t || t.season !== r.season) t = { season: r.season, p: new Map() };
-        const x = t.p.get(r.pid) ?? { n: 0, min: 0 };
+        const x = t.p.get(r.pid) ?? { n: 0, min: 0, start: null };
         x.n++;
         x.min += r.s.min ?? 0;
+        x.start = r.s.start === 1 || r.s.start === 0 ? r.s.start : null;
         t.p.set(r.pid, x);
         team.set(r.team, t);
       }
@@ -820,7 +834,7 @@ export function nbaMatchups(rows) {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const missOf = missFn(missing);
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missOf, () => NBA_CORE));
-      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs) };
+      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs) };
     },
   };
 }

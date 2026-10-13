@@ -122,7 +122,7 @@ import { OUTLIER, SPORT_KEYS, call, canSpend, consensusFields, gameLines, hasKey
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
-import { playerRows } from './playerlogs.mjs';
+import { boxMarket, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
@@ -750,7 +750,9 @@ async function fitTheProps(r) {
     const t0 = Date.now();
     r.rows = await playerRows(sport, cfg, history, r.facts);
     const info = new Map([...(r.feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
-    const market = sport === 'nfl' ? await nflMarket(history) : null;
+    // (the history's betting lines: the NFL's nflverse closes, the NBA's its finals' summaries' (playerlogs.mjs
+    // boxMarket: read by the blowout by role, a measure on demand); none elsewhere)
+    const market = sport === 'nfl' ? await nflMarket(history) : sport === 'nba' ? boxMarket('nba') : null;
     r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports

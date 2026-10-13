@@ -22,6 +22,36 @@
 //            group-out, part-time). His target share in the volume base (receiving yards') has a floor of
 //            its own (nt, a late term on rp's rows, fit apart from rp and nu): nt of the missing one's share of
 //            the team's targets (matchups.mjs leadTgt)
+//   minutes  the NBA's minutes first (audit #3; props.mjs STATS minutes): the snaps-based base with his minutes
+//            for the snaps (matchups.mjs share: his minutes over a full game's 48), his per-minute rate (his
+//            season's total over its minutes, the eligible players' per-minute rate his prior where his own run
+//            is short, K full games of it) times the minutes he's expected tonight (his season's typical, a game
+//            under half his median left out, leaning to his last MIN_RECENT games' average by sr), blended in by
+//            sn. A late term (tried first of them, so the flags fit on top of it) on the whole stat's gate, its
+//            bias no larger by more than SUBGROUP_TOL of the mean actual (WHOLE_TOL: a base on every row, the lean
+//            refit with it). The factors (the work missing, a back-to-back, the blowout) multiply the product, so
+//            each acts on his minutes as much as on his rate. Measured 2026-10-13 on 2025-26, the one NBA season
+//            the history holds (1316 finals, 28462 player games; the fit window December to March, the last 30%,
+//            March to the Finals, held out): kept on every stat, points sn 0.5/sr 0.5 (held out 0.6521 to 0.6475,
+//            +0.0049), rebounds 0.5/0.75 (0.6338 to 0.6265, +0.0073), assists 0.5/0.75 (0.6176 to 0.6112,
+//            +0.0064), threes 0.5/0.75 (0.5647 to 0.5612, +0.0035), pts+reb+ast 0.5/0.5 (0.6489 to 0.6444,
+//            +0.0045); every player's bias smaller on each (points 0.118 to 0.057, pts+reb+ast 0.521 to 0.358),
+//            the eligible players' within the tolerance (points -0.2562 to -0.2575, rebounds 0.0184 to 0.0235,
+//            pts+reb+ast -0.2572 to -0.2839; held to no larger at all, those three were left out). The held-out
+//            eligible rows after a minutes jump (his last three over 1.2 times his season's, n 1410), actual over
+//            projected: points +17.3% to +9.4%, rebounds +18.8% to +5.0%, assists +19.4% to +5.8%, threes +21.1%
+//            to +7.1%, pts+reb+ast +14.0% to +6.6%; after a drop (under 0.8, n 618) -4.5% to -2.1%, -7.3% to -0.1%,
+//            -15.6% to -9.1%, -8.6% to -1.0%, -4.9% to -2.5%; the bench (roleKnown B, n 2728) +9.1% to +5.6% on
+//            points. His last game alone in the last three's place (MIN_RECENT 1) held out within 0.0003 either way
+//            (0.6475, 0.6265, 0.6109, 0.5615, 0.6446): the last three kept, the form the audit's evidence took. One
+//            season: the hourly refit judges it again as the next one comes in. Tried on top of it and left out:
+//            the betting lines' blowout by role (props.mjs CTX blowS, blowB: the spread, from the finals'
+//            summaries, playerlogs.mjs boxMarket; points' starters -0.03 +0.0004 with its own rows' bias larger,
+//            rebounds' bench 0.03 +0.0002, assists' bench -0.03 +0.0001, pts+reb+ast both worse held out: one
+//            season's lines don't show starters losing and the bench gaining past the plain blowout term) and a
+//            bench player who started his last game (CTX newStart: rebounds 0.03 +0.0002, the rest not taken on
+//            the fit window, though its held-out 706 rows still ran under, points +11%, assists +8%); both off the
+//            ctx, CTX keeping them for a measure on demand
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -347,7 +377,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
+const MIN_GAIN = { sn: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -379,7 +409,7 @@ const RX_MIN = 3;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB']);
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -401,10 +431,12 @@ const NU = [0, 0.5, 0.75, 1];
 const MK = [0.5, 1];
 const TRY_MK = false;
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key) => (key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key) => (key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
+// (the late terms on every row judged on the whole stat's bias with SUBGROUP_TOL (fitStat): the NBA's minutes base)
+const WHOLE_TOL = new Set(['sn']);
 const SUBGROUP_TOL = 0.005;
 // (and the eligible players' among the rows it's on, judged too where this many or more)
 const SUBGROUP_ELIG_N = 50;
@@ -648,7 +680,7 @@ export function makeModel(stat, params, env) {
       if (priorW !== null && cur.qn + K > 0) priorW = (1 - params.qs) * priorW + (params.qs * K) / (cur.qn + K);
       recent = (1 - params.qs) * recent + params.qs * recentQ;
       mode = 'starts';
-    } else if (params.sn && stat.snaps && row.pos !== 'QB') {
+    } else if (params.sn && (stat.snaps || stat.minutes) && row.pos !== 'QB') {
       const sr = params.sr ?? 0;
       // (only where the counts cover his season: his last game's read and all but one of the rest (or no games
       // yet). A game without its counts is in neither the snaps' rate nor the share, so a week the counts lag
@@ -666,7 +698,10 @@ export function makeModel(stat, params, env) {
         const kw0 = kept.map((i) => cur.shw[i] ?? 1);
         const kw = kw0.some((x) => x > 0) ? kw0 : kw0.map(() => 1);
         const lw = kw[kw.length - 1];
-        exp = (1 - sr * lw) * wavg(ks, kw) + sr * lw * ks[ks.length - 1];
+        // (the NBA's minutes (stat.minutes): his last MIN_RECENT kept games' average in the last game's place, a
+        // minutes jump over three games the role's, not one game's foul trouble or overtime)
+        const lastN = stat.minutes ? MIN_RECENT : 1;
+        exp = (1 - sr * lw) * wavg(ks, kw) + sr * lw * avg(ks.slice(-lastN));
       } else if (covered) exp = prev.shn >= 4 ? prev.sh / prev.shn : null;
       // (the next man up (rp with nu): the role he steps into's share, nu of the snap share of the one missing
       // above him (matchups.mjs leadShare), where it's more than his own)
@@ -701,7 +736,7 @@ export function makeModel(stat, params, env) {
         rate = (1 - params.sn) * rate + params.sn * rateS * share;
         if (priorW !== null && cur.sh + kS > 0) priorW = (1 - params.sn) * priorW + (params.sn * kS) / (cur.sh + kS);
         recent = (1 - params.sn) * recent + params.sn * recentS * share;
-        mode = 'snaps';
+        mode = stat.minutes ? 'minutes' : 'snaps';
         draftUsed = longSh < 5 && pS !== null ? draftS : 1;
       }
     }
@@ -1123,7 +1158,9 @@ const M_SPREAD = [-0.15, -0.1, -0.05, -0.025, 0.025, 0.05, 0.1, 0.15];
 // (the back-to-backs (c_b2b, c_oppB2b; the NBA's own by role, c_b2bS, c_b2bB: props.mjs CTX), 0 or 1 flags, a
 // few percent to 15% either way, finer than GRID.c's 7% step)
 const B2B = [-0.15, -0.1, -0.07, -0.05, -0.03, 0.03, 0.05, 0.07, 0.1, 0.15];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B };
+// (an NBA bench player who started his team's last game (c_newStart: props.mjs CTX newStart), a 0 or 1 flag)
+const NEW_START = [-0.1, -0.05, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1131,6 +1168,8 @@ const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) =>
 // weight means nothing without the blend)
 const SN = [0.5, 1];
 const SR = [0, 0.25, 0.5, 0.75, 1];
+// (the NBA's minutes: his last games' average his expected minutes lean to by sr, in the last game's place)
+const MIN_RECENT = 3;
 // (the volume-based base's blend and its efficiency prior's weight in targets, searched together the same way.
 // yk to 400: receiving yards took the largest of [15, 40, 100] (100), and of these 400 (held out 0.6504 at 100,
 // 0.6501 at 400); 1000 tried too (2026-10-12), taken again on the fit window, held out worse (0.6508, the
@@ -1150,7 +1189,7 @@ const has = (stat, key) =>
   key === 'roleK' ? !!stat.roles
   : key === 'tg' ? !!stat.targets
   : key === 'vc' ? !!stat.vacated
-  : key === 'sn' ? !!stat.snaps
+  : key === 'sn' ? !!(stat.snaps || stat.minutes)
   : key === 'qs' ? !!stat.starts
   : key === 'kd' ? !!stat.early
   : key === 'vol' ? !!stat.perTarget
@@ -1222,7 +1261,7 @@ export function fitStat(stat, rows, env) {
   // with them); without, nothing to fit, the stat as before)
   const ctxs = env.ctx ? fitCtxs(stat, env) : [];
   const aPos = aKeys(stat);
-  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), mk: 0 };
+  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps || stat.minutes ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), mk: 0 };
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
@@ -1230,8 +1269,8 @@ export function fitStat(stat, rows, env) {
   // and the injury return: the injury-driven terms first, the organic trend on what they leave)
   const AFTER_RP = ['c_aheadOut'];
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
-  const late = [...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
-  const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
+  const late = [...(stat.minutes ? ['sn'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
   let best = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1);
@@ -1470,9 +1509,13 @@ export function fitStat(stat, rows, env) {
       const re = fine(t?.restElig?.bias, o?.restElig?.bias, SUBGROUP_TOL * (o?.restElig?.mean ?? 0));
       if (re) fails.push(re === 'larger' ? "the eligible rest's bias" : "the eligible rest's bias not measured");
     } else {
-      const eb = fine(tried.check?.bias, off.check?.bias);
+      // (a base on every row (WHOLE_TOL: the NBA's minutes) moves the whole stat's lean, refit on the fit window,
+      // a little either way on the held-out games: its bias no larger by more than SUBGROUP_TOL of their mean
+      // actual, as a flag's rest is judged; every other term's no larger at all)
+      const tol = WHOLE_TOL.has(key) ? SUBGROUP_TOL : 0;
+      const eb = fine(tried.check?.bias, off.check?.bias, tol * (off.check?.mean ?? 0));
       if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
-      const ab = fine(tried.all?.bias, off.all?.bias);
+      const ab = fine(tried.all?.bias, off.all?.bias, tol * (off.all?.mean ?? 0));
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
       // (the pull toward the middle's own point: the held-out fifths by projection missing less (each one's
       // actual over projected, off 0, summed), the eligible players')
@@ -1684,6 +1727,7 @@ function check(list, params) {
     n: list.length,
     mae: r4(mae / list.length),
     bias: r4((sumMu - sumV) / list.length),
+    mean: r4(sumV / list.length),
     maeBase: nBase ? r4(maeBase / nBase) : null,
     lines: nLine,
     logLoss: nLine ? r4(ll / nLine) : null,
