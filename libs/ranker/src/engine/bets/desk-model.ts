@@ -176,28 +176,35 @@ export interface PropType {
 }
 
 // (the NFL's questionable players' chance of playing (the bettor's playchance.mjs): the share of past seasons'
-// questionable players who played, the levels its held-out seasons kept, the check against the flat half it
-// replaced, and the chance as read live by a quarterback or not and his team's games missed in a row)
+// questionable regulars who played, the levels its held-out seasons kept, the check (as read live) against the
+// flat half it replaced, each side's (a side that doesn't beat it read at half: half), and the chance as read
+// live by a quarterback or not and his team's games missed in a row)
 export interface PlayChance {
   n: number;
   rate: number;
   levels: string[];
-  check: { held: number[]; n: number; loss: number; flat: number; tried: { level: string; gain: number; kept: boolean; worse?: string[] }[] };
+  half?: string[];
+  check: { held: number[]; n: number; loss: number; flat: number; sides?: Record<string, { n: number; loss: number; half?: boolean }>; tried: { level: string; gain: number; kept: boolean; unread?: boolean; worse?: string[] }[] };
   cells: Record<string, number>;
 }
 
 // (the play chance in plain words, for the About and the Algorithm tab)
-const PLAY_LEVEL_WORDS: Record<string, string> = { gone: 'his games missed in a row', qb: 'a quarterback or not', practice: 'his last practice (not read live: the report ESPN gives carries none)' };
+const PLAY_LEVEL_WORDS: Record<string, string> = { gone: 'his games missed in a row', qb: 'a quarterback or not', practice: 'his last practice' };
 export function playChanceText(p: PlayChance | null | undefined): string | null {
   if (!p) return null;
   const c = p.cells ?? {};
   const pc = (v: number | undefined): string => (v === undefined || !Number.isFinite(v) ? '-' : `${Math.round(v * 100)}%`);
-  const who = (k: string): string => `${pc(c[`${k} 0`])} (missed his last game ${pc(c[`${k} 1`])}, two or more ${pc(c[`${k} 2+`])}, none played yet this season ${pc(c[`${k} new`])})`;
+  const who = (k: string): string => {
+    if ((p.half ?? []).includes(k)) return 'at half (the table doesn\'t beat it on the held-out seasons)';
+    const v = ['0', '1', '2+', 'new'].map((g) => c[`${k} ${g}`]);
+    return v.every((x) => x === v[0]) ? pc(v[0]) : `${pc(v[0])} (missed his last game ${pc(v[1])}, two or more ${pc(v[2])}, none played yet this season ${pc(v[3])})`;
+  };
   const held = p.check?.held?.length ? `${p.check.held[0]}${p.check.held.length > 1 ? `-${p.check.held[p.check.held.length - 1]}` : ''}` : '';
+  const unread = (p.check?.tried ?? []).filter((x) => x.unread).map((x) => `${PLAY_LEVEL_WORDS[x.level] ?? x.level} would save ${x.gain}, not read live (the report ESPN gives carries none)`);
   return (
-    `A questionable teammate counts as missing by his chance of playing, from ${p.n.toLocaleString()} past questionable reports (${pc(p.rate)} played), not a flat half: ` +
+    `A questionable regular teammate counts as missing by his chance of playing once the final injury report is out (the day before the game; before it, at half), from ${p.n.toLocaleString()} past questionable regulars' reports (${pc(p.rate)} played), not a flat half: ` +
     `a quarterback ${who('QB')}; anyone else ${who('other')}. By ${p.levels.length ? p.levels.map((l) => PLAY_LEVEL_WORDS[l] ?? l).join(', ') : 'nothing more'}. ` +
-    `Held out (${held}): log loss ${p.check.loss} against the flat half's ${p.check.flat}.`
+    `Held out (${held}), as read live: log loss ${p.check.loss} against the flat half's ${p.check.flat}${unread.length ? `; ${unread.join('; ')}` : ''}.`
   );
 }
 

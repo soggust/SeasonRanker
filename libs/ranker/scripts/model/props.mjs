@@ -18,7 +18,8 @@
 //   player a game (leagues.mjs PROP_CAPS). A whole-number line's push is out of both sides' chances and its stake
 //   comes back in the return (project.mjs lineChances). Cut to 0.5 when the line has moved a lot since it opened,
 //   the player's questionable, a questionable teammate's being in or out moves his share of his group's work
-//   (its swing times the spread of his chance of playing: playchance.mjs),
+//   (each questionable regular at his position's swing times the spread of his chance of playing, added up:
+//   playchance.mjs),
 //   an outdoor game's forecast failed (or a retractable roof isn't yet said open or closed) where his
 //   projection weighs the weather (wind, cold, rain), the forecast moves his projection 10% or more, the other
 //   side's starter his projection weighs isn't listed yet (an NHL goalie, an MLB pitcher), an MLB starter's
@@ -910,7 +911,7 @@ export function rowsIndex(sport, rows) {
 // most PER_GAME. exp: the game model's expectation (its homePts and awayPts); info: the context's info for the
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
-// every questionable one at half
+// every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
 export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null) {
   const priced = [];
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
@@ -965,9 +966,20 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const unlisted = new Map([...absent].filter(([id]) => !listed.has(id) && !rosterOut.has(id) && !onBoard.has(id)));
     const gone = (id) => (rosterOut.has(String(id)) && !listed.has(String(id))) || unlisted.has(String(id));
     // (missOf(q): q a number, every questionable one at it (0 or 1: the guards' either way), or each one's own
-    // (qMiss: his chance of missing it))
+    // (qMiss: his chance of missing it; the table's for a regular at his position (matchups.mjs regulars: the
+    // work the vacated term counts, the lead back among them), as it's fit on the regulars' reports; half for
+    // the rest, a quarterback too (the table's side for them is at half))
     const qPos = new Map((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id).map((x) => [String(x.id), x.pos]));
-    const qMiss = (id) => (play && sport === 'nfl' ? missChance(play, { pos: idx.pos(id) ?? idx.pos(String(id)) ?? qPos.get(String(id)), gone: f.matchups?.goneOf?.(row.team, game.season, id) ?? null }) : 0.5);
+    const regsAt = new Map();
+    const isReg = (id, p) => {
+      if (!regsAt.has(p)) regsAt.set(p, new Set((f.matchups?.regulars?.(row.team, game.season, p) ?? []).map((x) => String(x.id))));
+      return regsAt.get(p).has(String(id));
+    };
+    const qMiss = (id) => {
+      if (!play || sport !== 'nfl') return 0.5;
+      const p = idx.pos(id) ?? idx.pos(String(id)) ?? qPos.get(String(id));
+      return missChance(play, { pos: p, gone: f.matchups?.goneOf?.(row.team, game.season, id) ?? null, regular: isReg(id, p) });
+    };
     const missOf = (q) => (id) => (out.ids.has(String(id)) || gone(id) || (roster && !roster.has(String(id))) ? 1 : out.questionable.has(String(id)) ? (typeof q === 'function' ? q(id) : q) : 0);
     // (their names among the ones out at his position whose work counts (its regulars): the write-up's and the
     // CHECK's words)
@@ -1099,12 +1111,18 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const sized = !!(prop.stat.vacated && f.params.vc);
     const vacUnsized = !sized && Math.abs(vacNow - vacThen) >= 0.25;
     // (a questionable teammate whose being in or out moves his share: the price takes him at his chance of
-    // missing it, flagged where the share's swing between in and out, times the chance's own spread (2 sqrt(m
-    // (1 - m)): 1 at half, as before; the most uncertain one's), is 0.15 or more)
+    // missing it, flagged where the share's swings, each questionable regular at his position's own (him in or
+    // out, the rest at their chances) times his chance's spread (2 sqrt(m (1 - m)): 1 at half, as before), add
+    // to 0.15 or more. Only the regulars at his position (the work the vacated term counts: one at another
+    // position, a linebacker, a lineman, moves none of it); none of them questionable, no flag)
     const vs = f.params.vs ?? 0;
     const shareAt = (q) => f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(q), extra).vacs?.[vs] ?? 0;
-    const qSpread = Math.max(0, ...[...out.questionable].map((id) => 2 * Math.sqrt(qMiss(id) * (1 - qMiss(id)))));
-    const qShift = f.matchups && prop.stat.vacated && out.questionable.size ? Math.abs(shareAt(1) - shareAt(0)) * qSpread : 0;
+    const qSwing = (id) => {
+      const at = (v) => shareAt((x) => (String(x) === String(id) ? v : qMiss(x)));
+      const m = qMiss(id);
+      return Math.abs(at(1) - at(0)) * 2 * Math.sqrt(m * (1 - m));
+    };
+    const qShift = f.matchups && prop.stat.vacated && out.questionable.size ? [...out.questionable].filter((id) => regs.has(String(id)) && String(id) !== String(pid)).reduce((t, id) => t + qSwing(id), 0) : 0;
     // (his team's roster (the NFL's, the NBA's, the NHL's: espn.mjs ROSTER_MIN): without it a teammate who's
     // left counts as here, the work he leaves unseen)
     // A roster unread can only hide a teammate who's gone, so the work missing now reads low: where his
