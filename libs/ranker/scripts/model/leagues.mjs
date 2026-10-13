@@ -63,8 +63,9 @@ export const GAME_CAP = 5;
 // reads him), the depth chart as a role CHECK, and the line alarm outside the NFL (a label) with every line logged.
 // 2026-10-13 noon, what's bet (the owner's): every bet a LIKE or better (LIKE opens to any edge, a Kelly over 0:
 // picks.mjs BANDS), and a market with no edge (or one a guard cut), the old 0.5u action bet, tracked, not bet
-// (desk.mjs TRACK: graded and learned from the same, never staked or in the record).
-export const MODEL_EPOCH = '2026-10-13T17:05:00Z';
+// (desk.mjs TRACK: graded and learned from the same, never staked or in the record); a LOCK at a 55% chance (was
+// 60%). Set to the push time, after the run that bet tonight's NHL under the old rules.
+export const MODEL_EPOCH = '2026-10-13T18:05:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
