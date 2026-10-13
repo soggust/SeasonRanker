@@ -2214,6 +2214,12 @@ section ul.isolating li.player {
 // sides on every row, its top on the first and its bottom on the last; drawn as backgrounds, the cells'
 // ::before and ::after being taken), its header lit and underlined
 section ul.isolating li.player:not(.header-row) .iso-on {
+  // (the full row's height, past the row's 0.25em padding top and bottom, so the strip runs unbroken from
+  // row to row; the value still centered in it)
+  align-self: stretch;
+  box-sizing: border-box;
+  height: auto;
+  margin-block: -0.25em;
   --iso-edge: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
   --iso-dash-v: repeating-linear-gradient(to bottom, var(--iso-edge) 0 4px, transparent 4px 8px);
   --iso-dash-h: repeating-linear-gradient(to right, var(--iso-edge) 0 4px, transparent 4px 8px);
