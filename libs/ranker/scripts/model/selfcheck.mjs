@@ -60,7 +60,13 @@
 //                 (checks.mjs shadowOf: PASSes graded, never shown) in their own rows alone (shadow:gap,
 //                 shadow:small), out of the status and the advice
 //             C18 the owner's notes on CHECKs by reason (checkSummary's byReason): each reason's record
-//   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
+//             C19 the line's move and the bet's timing, all-time (every graded bet and CHECK, not the week's):
+//                 the bets moved against their side when bet (as C2), with it, unmoved, each one's record
+//                 against the book's own fair chance and its CLV; by the hours before the start it was placed,
+//                 the CLV and the record, early against late. A watch with its advice (cut the moved-against
+//                 ones, let a prop moved its way through the guard, bet earlier or later) only past z 2.5 with
+//                 60 a side; never applied
+//   output   { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
 //             4 places, written only when something but `at` changed (writeIfChanged)
@@ -110,6 +116,7 @@ export const TITLES = {
   C16: 'Ops',
   C17: 'CHECK causes and advice',
   C18: "Owner's notes by reason",
+  C19: 'Line move and bet timing (all graded)',
 };
 
 // ---- helpers ----
@@ -1018,7 +1025,127 @@ export function c18(x) {
   });
 }
 
-export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18];
+// C19: the line's move before the bet and the bet's lead time, over every graded bet and CHECK (the self-check's
+// only all-time check: a week holds too few moved lines to say anything). A move against the side when it was
+// bet is the market's money on the other side; the question is whether those bets do worse against the book's
+// own chance than the rest (the move then information the price doesn't carry: cut them), and whether a prop
+// moved with its side is safe to bet through (the props' guard cuts a move either way, props.mjs; the game
+// lines' only one against, desk.mjs guardOf). The book's fair chance is the yardstick (zOf at b.fair), so the
+// model's own lean is out of it. And by the hours before the start it was placed: the CLV (the chance the close
+// gave its side less the one it was bet at) and the record against the book, early (MOVE_EARLY hours or more)
+// against late, for whether the desk should bet earlier or later. It never changes the desk: a difference past
+// MOVE_Z (MOVE_MIN a side at least) is a watch with its advice, the rest a report
+export const MOVE_MIN = 60;
+export const MOVE_Z = 2.5;
+export const MOVE_EARLY = 6;
+export const LEAD_BUCKETS = [[0, 3], [3, 6], [6, 12], [12, 24], [24, Infinity]];
+
+// (a bet's line move before it was bet, its own side's way: { way: 'against' | 'with' | 'none', pts, past }
+// (past: the guard's limit or more: a prop's max(1, 12% of the line), a game's gameMoveOf), null without an open)
+export function moveWayOf(b, sport) {
+  let pts = null;
+  let limit = null;
+  if (b.market === 'prop') {
+    const m = b.context?.move;
+    if (!m || !fin(m.open) || !fin(m.now)) return null;
+    pts = againstPts('prop', b.side, m.open, m.now);
+    limit = Math.max(1, 0.12 * (fin(b.line) ? b.line : m.now));
+  } else {
+    const g = gameMoveOf(b, sport);
+    if (!g) return null;
+    pts = g.pts;
+    limit = g.limit;
+  }
+  if (!fin(pts)) return null;
+  return { way: pts > 0 ? 'against' : pts < 0 ? 'with' : 'none', pts, past: Math.abs(pts) >= limit };
+}
+
+// (a list's record against the book's chance, a bet: d = (W - E) / n, its variance sum p(1 - p) / n^2)
+export function overBook(list) {
+  let n = 0;
+  let d = 0;
+  let v = 0;
+  for (const b of list) {
+    if (!settledOf(b) || !fin(b.fair)) continue;
+    n++;
+    d += (b.status === 'won' ? 1 : 0) - b.fair;
+    v += b.fair * (1 - b.fair);
+  }
+  return n ? { n, d: d / n, v: v / (n * n) } : { n: 0, d: null, v: null };
+}
+// (two lists' difference, a's less b's, in its standard errors)
+const zBetween = (a, b) => (a.n && b.n && a.v + b.v > 0 ? (a.d - b.d) / Math.sqrt(a.v + b.v) : null);
+// (the mean CLV chance, its standard error, the share that beat the close)
+const clvOfList = (list) => {
+  const v = list.map((b) => b.clv?.prob).filter(fin);
+  const m = mean(v);
+  const sd = v.length > 1 ? Math.sqrt(v.reduce((t, x) => t + (x - m) ** 2, 0) / (v.length - 1)) : null;
+  const beats = list.map((b) => b.clv?.beat).filter((x) => x === true || x === false);
+  return { clvN: v.length, clvProb: r4(m), clvSe: fin(sd) ? r4(sd / Math.sqrt(v.length)) : null, beat: r4(beats.length ? count(beats, (x) => x) / beats.length : null) };
+};
+
+export function c19(x) {
+  const bets = x.bets.filter(settledOf);
+  // (the graded CHECKs as if bet a unit at their price: the model's side where the gap was too big to bet)
+  const checks = (x.checks ?? [])
+    .filter((c) => c && (c.checkResult?.status === 'won' || c.checkResult?.status === 'lost') && !c.void)
+    .map((c) => ({ ...c, status: c.checkResult.status, profit: c.checkResult.profit, units: 1 }));
+  const kindOf = (b) => (b.market === 'prop' ? 'props' : 'games');
+  const rowOf = (key, list) => ({ key, ...zOf(list, (b) => b.fair), overBook: r4(overBook(list).d), ...clvOfList(list) });
+  const rows = [];
+  const advice = [];
+  // (the move's way, per kind: the bets and the CHECKs apart)
+  for (const [src, list] of [['bets', bets], ['CHECKs', checks]]) {
+    for (const kind of ['props', 'games']) {
+      const of = list.filter((b) => kindOf(b) === kind).map((b) => ({ b, m: moveWayOf(b, x.sport) })).filter((r) => r.m);
+      if (!of.length) continue;
+      const way = (w, past = false) => of.filter((r) => r.m.way === w && (!past || r.m.past)).map((r) => r.b);
+      const against = way('against');
+      const rest = of.filter((r) => r.m.way !== 'against').map((r) => r.b);
+      for (const [label, l] of [['against', against], ['unmoved', way('none')], ['with', way('with')], ['with, past the limit', way('with', true)]]) if (l.length) rows.push(rowOf(`${src} ${kind}: ${label === 'unmoved' ? label : `moved ${label}`}`, l));
+      if (src !== 'bets') continue;
+      const [a, r] = [overBook(against), overBook(rest)];
+      const zA = zBetween(a, r);
+      if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && Math.abs(zA) >= MOVE_Z) advice.push(zA < 0 ? `${kind}: the bets moved against did worse against the book than the rest (z ${round(zA, 2)}): cut their stake or pass` : `${kind}: the bets moved against did better against the book than the rest (z ${round(zA, 2)}): the move isn't the market knowing more`);
+      const [w, none] = [overBook(way('with', true)), overBook(way('none'))];
+      const zW = zBetween(w, none);
+      if (kind === 'props' && w.n >= MOVE_MIN && none.n >= MOVE_MIN && fin(zW) && zW >= MOVE_Z) advice.push(`props: the ones moved past the guard's limit their way did better than the unmoved (z ${round(zW, 2)}): the guard could let a move with the side through`);
+    }
+  }
+  // (the lead time: the hours before the start it was placed)
+  const leadOf = (b) => (ms(b.start) - ms(b.placedAt)) / 36e5;
+  for (const kind of ['props', 'games']) {
+    const list = bets.filter((b) => kindOf(b) === kind && fin(leadOf(b)));
+    if (!list.length) continue;
+    for (const [a, z] of LEAD_BUCKETS) {
+      const l = list.filter((b) => leadOf(b) >= a && leadOf(b) < z);
+      if (l.length) rows.push(rowOf(`bets ${kind}: placed ${z === Infinity ? `${a}h or more` : `${a}-${z}h`} before`, l));
+    }
+    const early = list.filter((b) => leadOf(b) >= MOVE_EARLY);
+    const late = list.filter((b) => leadOf(b) < MOVE_EARLY);
+    const [ce, cl] = [clvOfList(early), clvOfList(late)];
+    const zClv = ce.clvN >= MOVE_MIN && cl.clvN >= MOVE_MIN && fin(ce.clvSe) && fin(cl.clvSe) && ce.clvSe + cl.clvSe > 0 ? (ce.clvProb - cl.clvProb) / Math.sqrt(ce.clvSe ** 2 + cl.clvSe ** 2) : null;
+    const zRec = zBetween(overBook(early), overBook(late));
+    // (the close and the results the same way: a CLV difference the results go against is a price that moved
+    // for news the early bet didn't have, not an edge in betting early)
+    if (fin(zClv) && Math.abs(zClv) >= MOVE_Z && fin(zRec) && Math.sign(zRec) === Math.sign(zClv) && Math.abs(zRec) >= 1) advice.push(`${kind}: the bets placed ${MOVE_EARLY}h or more before the start beat the close ${zClv > 0 ? 'more' : 'less'} than the later ones (CLV z ${round(zClv, 2)}, the record against the book z ${round(zRec, 2)}): bet ${zClv > 0 ? 'earlier' : 'later'}`);
+    rows.push({ key: `bets ${kind}: ${MOVE_EARLY}h or more before, against later`, n: list.length, clvZ: r4(zClv), recordZ: r4(zRec) });
+  }
+  const n = bets.length + checks.length;
+  const moved = rows.filter((r) => /moved (against|with)$/.test(r.key)).reduce((t, r) => t + r.n, 0);
+  return check('C19', {
+    status: advice.length ? 'watch' : n < MOVE_MIN ? 'thin' : 'info',
+    headline: advice.length ? advice.join('; ') : n ? `${n} graded (${bets.length} bets, ${checks.length} CHECKs), ${moved} with a line moved since it opened: no difference past z ${MOVE_Z} by the move's way or the lead time` : 'No graded bets yet',
+    metric: 'graded',
+    value: n,
+    threshold: `a watch when the bets moved against do better or worse against the book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, or the bets ${MOVE_EARLY}h or more early beat the close more or less than the later ones with the results the same way: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    n,
+    rows,
+    how: "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2), the record against the book's fair chance (overBook: won less the chance, a bet); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
+  });
+}
+
+export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19];
 
 // The spans: the week (the 7 days to now), the baseline (the 28 before it), recent (the 28 to now)
 export function spansOf(now) {

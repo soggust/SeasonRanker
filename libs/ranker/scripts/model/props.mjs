@@ -1139,6 +1139,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const status = statusOf(sport, prop, live, home, game);
     const moved = prop.open !== null ? prop.line - prop.open : 0;
     const limit = Math.max(1, 0.12 * prop.line);
+    // (the guard's words say the move's way: against the side (the market's money on the other one) or its way.
+    // Both are cut: unlike the game lines' (desk.mjs guardOf, against alone), a prop moved its way is cut too.
+    // Measured 2026-10-13 on every graded bet and CHECK (selfcheck.mjs C19, the record against the book's own
+    // fair chance): neither way differs from the rest past noise (the NFL's prop bets moved against 23, 11 points
+    // under the book's chance, their CHECKs moved against 87, 7 over; moved its way 15 bets 10 over, 55 CHECKs 3
+    // over; the NHL's 10 and 15), so the guard stays both ways till C19 says otherwise)
+    const movedWhy = `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened${moved && (moved > 0) !== (side === 'over') ? ', against it' : moved ? ', its way' : ''}`;
     let guard = null;
     // (his group's missing work now against what it was in the games his numbers come from, where the
     // projection can't size it (the stat's fit left the term out, or has none): teammates out shift his role
@@ -1195,7 +1202,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // can be, a long shot, a line moved twice the limit), skipped with both their words, no CHECK)
     else if (newsFlag) {
       const why = `news (${newsFlag.unit}): ${newsFlag.headline}`;
-      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null);
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${why}; ${also}` } : { skip: true, kind: 'news', news: newsFlag.unit, why };
     }
     // (his role changing (the NFL's, roleChangeOf): the book reprices a role on the news and the model only on
@@ -1206,7 +1213,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (only the risky side: the one the model's known error there could be making (ROLE_SAFE); its safe side
     // bets as any prop would)
     else if (roleChange && (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side) {
-      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null);
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
     else if (vacUnsized && vacNow > vacThen) guard = { skip: true, why: `teammates out (${out.names.join(', ') || 'off the roster'}): a role change the model can't size` };
@@ -1222,7 +1229,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // line moved twice the limit; a juiced price it can't know is the unpriced skip's, above) is skipped with
     // both their words, no CHECK, so the CHECKs' hit rate is the gap's
     else if (gapped) {
-      const also = prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` : null;
+      const also = prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null;
       guard = also ? { skip: true, why: `${gapped.why}; ${also}` } : { ...gapped, kind: 'gap' };
     }
     // (the side against its own projection: an under with the mean above the line, an over with it below. Its
@@ -1239,8 +1246,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
     // likely right)
     else if (prop.prices && fair < 0.25) guard = { skip: true, why: `a long shot (the book's fair chance ${Math.round(fair * 100)}%)` };
-    else if (Math.abs(moved) >= 2 * limit) guard = { skip: true, why: `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` };
-    else if (Math.abs(moved) >= limit) guard = { why: `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` };
+    else if (Math.abs(moved) >= 2 * limit) guard = { skip: true, why: movedWhy };
+    else if (Math.abs(moved) >= limit) guard = { why: movedWhy };
     else if (status.why) guard = { why: status.why };
     else if (weatherBlind) guard = { why: 'no forecast for an outdoor game: the weather its projection weighs unseen' };
     else if (spreadBlind) guard = { why: "no spread on the board for the game: the betting lines' margin its projection weighs unseen" };

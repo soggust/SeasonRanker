@@ -373,7 +373,8 @@ export function weekLabel(from: string, to: string): string {
 }
 
 // (a cell's words: a number to 2 places at most, a share-like key as a percent, a nested record as its parts)
-const PCT_KEYS = /^(share|shareBase|dogShare|dogShareBase|moved|beat|roi|hitRate|breakEven|rejectRate|r)$/;
+// (overBook: C19's record against the book's chance, won less the chance a bet)
+const PCT_KEYS = /^(share|shareBase|dogShare|dogShareBase|moved|beat|roi|hitRate|breakEven|rejectRate|r|overBook)$/;
 export function selfCheckCell(key: string, v: unknown): string {
   if (v === null || v === undefined) return '-';
   if (typeof v === 'number') {
