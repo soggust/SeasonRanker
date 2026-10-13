@@ -219,49 +219,6 @@
     <!-- (the bettor runs on GitHub only: the Model Desk workflow; locally, only ever with --dry) -->
     <p class="desk-note">Nothing yet: the bettor (GitHub's Model Desk workflow) hasn't run.</p>
   } @else {
-    <!-- Self-check -->
-    <!-- (the weekly self-check, first (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
-         sport's flags, watches and partial checks in plain words, the rest folded under a line of counts) -->
-    <div class="desk-grid">
-      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="selfLoud">
-        <div class="group-body">
-          @if (!selfChecks.length) {
-            <p class="desk-note">No self-check yet (runs Monday mornings)</p>
-          }
-          @for (v of selfChecks; track v.sport) {
-            <section class="desk-self">
-              <header class="desk-self-head">
-                <b>{{ v.label }}</b>
-                <small [title]="'Run ' + (v.at | date: 'MMM d, h:mm a')">week of {{ v.week }}</small>
-                <ul class="desk-self-counts">
-                  @for (n of v.counts; track n.status) {
-                    <li class="desk-self-chip" [class]="'desk-self-chip is-' + n.status" [title]="help['self_' + n.status]">{{ n.n }} {{ n.status }}</li>
-                  }
-                </ul>
-              </header>
-              <ul class="desk-self-list">
-                @for (c of v.shown; track c.key) {
-                  <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
-                }
-              </ul>
-              @if (v.folded.length) {
-                <button type="button" class="desk-self-fold" [class.shut]="!selfShown(v.sport + ':folded')" [attr.aria-expanded]="selfShown(v.sport + ':folded')" (click)="toggleSelf(v.sport + ':folded')">
-                  <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>{{ v.foldedLine }}
-                </button>
-                @if (selfShown(v.sport + ':folded')) {
-                  <ul class="desk-self-list">
-                    @for (c of v.folded; track c.key) {
-                      <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
-                    }
-                  </ul>
-                }
-              }
-            </section>
-          }
-        </div>
-      </card-panel>
-    </div>
-
     <!-- (the profit after each graded bet, all of it and each sport's, in units from 0) -->
     @if (overall.bets) {
       <div class="desk-curve" [style.--total]="curveSolo ? 'var(--line-' + curveSolo + ')' : null">
@@ -308,7 +265,7 @@
     }
 
     <div class="desk-grid">
-      <!-- (By Sport alone across the top: open to begin with, the rest folded) -->
+      <!-- (By Sport across the top, open to begin with, the self-check under it; the rest folded) -->
       <card-panel class="tab-card group-results desk-wide" label="By Sport" icon="sports" [startOpen]="true">
         <div class="group-body">
           <table class="desk-table">
@@ -342,6 +299,47 @@
               }
             </tbody>
           </table>
+        </div>
+      </card-panel>
+
+      <!-- Self-check, under By Sport -->
+      <!-- (the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
+           sport's flags, watches and partial checks in plain words, the rest folded under a line of counts) -->
+      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="selfLoud">
+        <div class="group-body">
+          @if (!selfChecks.length) {
+            <p class="desk-note">No self-check yet (runs Monday mornings)</p>
+          }
+          @for (v of selfChecks; track v.sport) {
+            <section class="desk-self">
+              <header class="desk-self-head">
+                <b>{{ v.label }}</b>
+                <small [title]="'Run ' + (v.at | date: 'MMM d, h:mm a')">week of {{ v.week }}</small>
+                <ul class="desk-self-counts">
+                  @for (n of v.counts; track n.status) {
+                    <li class="desk-self-chip" [class]="'desk-self-chip is-' + n.status" [title]="help['self_' + n.status]">{{ n.n }} {{ n.status }}</li>
+                  }
+                </ul>
+              </header>
+              <ul class="desk-self-list">
+                @for (c of v.shown; track c.key) {
+                  <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
+                }
+              </ul>
+              @if (v.folded.length) {
+                <button type="button" class="desk-self-fold" [class.shut]="!selfShown(v.sport + ':folded')" [attr.aria-expanded]="selfShown(v.sport + ':folded')" (click)="toggleSelf(v.sport + ':folded')">
+                  <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>{{ v.foldedLine }}
+                </button>
+                @if (selfShown(v.sport + ':folded')) {
+                  <ul class="desk-self-list">
+                    @for (c of v.folded; track c.key) {
+                      <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
+                    }
+                  </ul>
+                }
+              }
+            </section>
+          }
         </div>
       </card-panel>
 
