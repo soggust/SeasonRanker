@@ -23,6 +23,18 @@ const mean = (list: number[]): number | null => (list.length ? list.reduce((s, v
 // (an older bet without its intent: an edge if its EV was over 0; postmortem.mjs intentOf)
 export const intentOf = (b: ModelBet): Intent => b.intent ?? (b.ev > 0 ? 'edge' : 'action');
 
+// (a market tracked, not bet (desk.mjs TRACK): no edge, or a guard cut it; since TRACKED_FROM. Never in the record,
+// the bankroll or the lists of bets: the Tracked panel's alone. The bets before it with no edge, action bets, stay
+// as they were)
+export const TRACKED_FROM = '2026-10-13';
+export const isTracked = (b: ModelBet): boolean => b.intent === 'track';
+
+// (a tracked row as if bet at a unit: what it would have made, its result's (desk.mjs trackedRecord))
+export function atUnit(b: ModelBet): ModelBet {
+  const won = b.status === 'won' && !b.void;
+  return { ...b, units: 1, profit: won ? toWin({ odds: b.odds, units: 1 }) : b.status === 'lost' && !b.void ? -1 : 0 };
+}
+
 // (what a bet pays on top of its stake if it wins, at its American odds)
 export const toWin = (b: Pick<ModelBet, 'odds' | 'units'>): number => (b.odds > 0 ? (b.units * b.odds) / 100 : (b.units * 100) / -b.odds);
 

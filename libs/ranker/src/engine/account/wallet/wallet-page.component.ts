@@ -45,7 +45,8 @@ function botLedger(): Promise<ModelBet[]> {
     SPORTS.map((s) =>
       fetch(`/${s}/data/model/ledger.json`, { cache: 'no-cache' })
         .then((r) => (r.ok ? r.json() : null))
-        .then((body: { bets?: ModelBet[] } | null) => body?.bets ?? [])
+        // (its bets alone: a market it tracked, not bet (intent 'track', since Oct 13, 2026), never)
+        .then((body: { bets?: ModelBet[] } | null) => (body?.bets ?? []).filter((b) => b.intent !== 'track'))
         .catch(() => [] as ModelBet[]),
     ),
   ).then((all) => all.flat());

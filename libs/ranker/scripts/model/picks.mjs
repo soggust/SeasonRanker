@@ -2,8 +2,9 @@
 // (apps/<sport>/src/StaticData/model/picks.json, written by every run when they change).
 //
 //   which    every bet it's placed on a game not started, a game market's or a prop's (not a guarded one): the
-//            user wants the bot's bets shown, the best first, while it's still learning (rein it in to the
-//            edge bets alone once it's sharper). Only a showcase: nothing here feeds the bettor's learning
+//            user wants the bot's bets shown, the best first. Since 2026-10-13 every bet is an edge bet (a
+//            LIKE or better): a market with no edge is tracked, not bet (desk.mjs TRACK), never a pick, never
+//            in the record. Only a showcase: nothing here feeds the bettor's learning
 //   score    its Kelly score (scoreParts, below: the order): the share of a bankroll its edge is worth at its
 //            price, (b·p − (1 − p)) / b with b what a unit pays and p its trusted chance (the book's fair chance
 //            pulled toward the model's by the market's trust). Value and likelihood together: a heavy favorite
@@ -16,7 +17,7 @@
 //            while it's the untested start (a prop type with fewer than 40 graded)
 //   chance   what the page shows beside it: the trusted chance the bet wins, as a whole percent
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 60%
-//            chance), high (2%: LOVE), medium (1%: LIKE), low (PASS)
+//            chance), high (2%: LOVE), medium (any edge under that: LIKE), low (PASS: no edge, never a bet)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
 //            and learn from), in their own list (checks, never picks: the Bets page reads every pick as a bet
 //            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
@@ -35,8 +36,8 @@
 //            from the list, the bet a pick like any other
 //   other   a prop's other side's price (otherOdds; null where unknown): the page shows both sides
 //   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
-//            band is its score's; one without an edge is low, whatever its score (a favorite at a short price
-//            isn't a strong bet)
+//            band is its score's, LIKE at the least; one without an edge is low, whatever its score (a favorite
+//            at a short price isn't a strong bet: an older action bet's, still open)
 //   reason   its plain write-up (writeup.mjs): the pick and what the model sees (a prop's projection against
 //            its line, from his blended rate by the drivers that moved it; a game's expected score and what its
 //            context saw), the price (our chance, the break-even, the book's no-vig chance, where the edge comes
@@ -56,7 +57,7 @@
 //            bets at their first price whatever the news: unlock turns those back into shown ones)
 
 import { round } from './ratings.mjs';
-import { decimal, intentOf, record } from './desk.mjs';
+import { decimal, intentOf, isTracked, record } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
 import { CHECK_RULE, CHECK_TOP, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
@@ -80,23 +81,30 @@ export function unlock(ledger, now) {
 }
 
 export const TOP = 40;
-// (the confidence bands, by the Kelly score: a bankroll's 5% or more high (the page's LOVE), 2% or more medium (LIKE),
-// under that low (PASS); a lock above them all: 10% or more and a 60% chance to win, a big edge on a likely
-// result. The page reads the same bands: bet-why.ts confidenceOf)
+// (the confidence bands, by the Kelly score: a bankroll's 2% or more high (the page's LOVE), any edge under that
+// medium (LIKE), no edge low (PASS: never bet); a lock above them all: 5% or more and a 60% chance to win, a big
+// edge on a likely result. The page reads the same bands: bet-why.ts confidenceOf)
 // (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
 // from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
-export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0.01 };
+// (2026-10-13, the owner's: every bet the bot places is a LIKE at the least, so LIKE opens to any edge (medium 0:
+// a Kelly over 0) and a market with no edge is tracked, not bet: desk.mjs TRACK)
+export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0 };
 const KIND = { spread: 'spread', total: 'total', ml: 'moneyline', prop: 'player' };
 const LABEL = { spread: 'Spread', total: 'Game total', ml: 'Moneyline' };
 
 const pct = (v) => `${Math.round(v * 100)}%`;
 const odds = (a) => (a > 0 ? `+${a}` : String(a));
 const logo = (sport, abbr) => `https://a.espncdn.com/combiner/i?img=/i/teamlogos/${sport}/500/${abbr.toLowerCase()}.png&w=40&h=40`;
-// (a Kelly score's band, with its chance for a lock: value and likelihood together, as the picks are ranked)
+// (a Kelly score's band, with its chance for a lock: value and likelihood together, as the picks are ranked; LIKE
+// any score over 0)
 export const level = (kelly, p = 0) =>
-  kelly >= BANDS.lock && p >= BANDS.lockChance ? 'lock' : kelly >= BANDS.high ? 'high' : kelly >= BANDS.medium ? 'medium' : 'low';
-// (a bet's band: its Kelly score's if it has an edge, else low: a favorite at a short price isn't a strong bet)
-export const levelOf = (b, kelly, p = b.p) => (intentOf(b) === 'edge' ? level(kelly, p) : 'low');
+  kelly >= BANDS.lock && p >= BANDS.lockChance ? 'lock' : kelly >= BANDS.high ? 'high' : kelly > BANDS.medium ? 'medium' : 'low';
+// (an edge's band: LIKE at the least, its score rounded to 0 or not: every bet the bot places is a LIKE or better.
+// One whose score is under 0 (priced again at a trust that's since fallen: selfcheck.mjs C13) has no edge now: PASS)
+export const edgeLevel = (kelly, p = 0) => (kelly >= 0 && level(kelly, p) === 'low' ? 'medium' : level(kelly, p));
+// (a bet's band: its Kelly score's if it has an edge, LIKE at the least; else low: a favorite at a short price
+// isn't a strong bet (an older action bet; a tracked row is never a pick))
+export const levelOf = (b, kelly, p = b.p) => (intentOf(b) === 'edge' ? edgeLevel(kelly, p) : 'low');
 
 // A bet's score (see above): its EV, half for a market whose trust is still the untested start
 export function scoreOf(bet, trust) {
@@ -233,7 +241,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     Object.assign(b, { published: true, publishedAt: now.toISOString() });
     delete b.shown;
   }
-  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !b.context?.guard);
+  // (a tracked row (desk.mjs TRACK: no edge, not bet) never: the page reads every pick as a bet the bot made)
+  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !b.context?.guard && !isTracked(b));
   // (one a bet: a --dry run prices placed bets again in memory)
   const once = [...new Map(open.map((b) => [b.id, b])).values()];
   // (the order: its Kelly score; its edge score kept beside it)
@@ -344,7 +353,7 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     const bets = new Set(ledger.bets.map((b) => b.id));
     for (const id of Object.keys(writeups.items)) if (!live.has(id) && !(extra.keepChecks && !bets.has(id))) delete writeups.items[id];
   }
-  const published = ledger.bets.filter((b) => b.published);
+  const published = ledger.bets.filter((b) => b.published && !isTracked(b));
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
   return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checkRows };
 }

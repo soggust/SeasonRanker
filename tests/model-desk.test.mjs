@@ -536,8 +536,13 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
 // The public picks (picks.mjs) and the leagues' setup
 // ---------------------------------------------------------------------------
 
-test("picks.mjs bands, by the Kelly score: 2% and up high, 1% medium, under low; a bet without an edge low whatever its score", () => {
-  assert.deepEqual([0.02, 0.0199, 0.01, 0.0099, 0.12, -0.03].map((k) => level(k)), ['high', 'medium', 'medium', 'low', 'high', 'low']);
+test("picks.mjs bands, by the Kelly score: 2% and up high, any edge under it medium (LIKE), none low; a bet without an edge low whatever its score", () => {
+  // (2026-10-13: LIKE opens to any edge, a Kelly over 0)
+  assert.deepEqual([0.02, 0.0199, 0.01, 0.0099, 0.0001, 0, 0.12, -0.03].map((k) => level(k)), ['high', 'medium', 'medium', 'medium', 'medium', 'low', 'high', 'low']);
+  // (an edge bet is a LIKE at the least, its score rounded to 0 or not; one under 0 now, a PASS)
+  assert.equal(levelOf({ intent: 'edge', ev: 0.00001 }, 0), 'medium');
+  assert.equal(levelOf({ intent: 'edge', ev: 0.01 }, -0.01), 'low');
+  assert.equal(levelOf({ intent: 'track', ev: 0.01 }, 0.03), 'low', 'a tracked row is never a band of a bet');
   assert.equal(level(0.05, 0.6), 'lock', 'a big edge on a likely result: a lock');
   assert.equal(level(0.0499, 0.6), 'high', "under the lock's 5%: a love");
   assert.equal(levelOf({ intent: 'action', ev: -0.01 }, 0.07), 'low');

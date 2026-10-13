@@ -1,6 +1,6 @@
 // The Algorithm desk's hovers: what each column, tile and panel means (the template's help[key])
 export const DESK_HELP: Record<string, string> = {
-  record: 'Won-lost-pushed (sorts by the share won)',
+  record: 'Won-lost-pushed (sorts by the share won). Bets only: since Oct 13, 2026 a market with no edge is tracked, not bet, and never in it (the Tracked panel)',
   streak: 'The current run: the latest graded bets in a row that won (W) or lost (L), pushes skipped',
   profit: 'Units won or lost, stakes included',
   roi: 'Return on the units staked: profit ÷ staked',
@@ -8,7 +8,8 @@ export const DESK_HELP: Record<string, string> = {
   checkBand: "CHECK: markets the model was too far from the book on to bet, kept to look into. Their record is a unit each as if bet (open till graded); never in the total, the record or the bankroll",
   checkRoleBand: "CHECK ROLE: props kept for the player's role changing (a quarterback change, a regular at his position out, a jump in his snaps), neither side bet: the model's numbers are his old role's. A unit each as if bet on the model's side, kept apart from CHECK's so each record is its own; never in the total, the record or the bankroll",
   available: "What's left to bet with: the bankroll (1,000 to start, plus what's been won or lost, plus 1,000 for each rebuy) less the stakes on open bets, as at a sportsbook",
-  intent: 'Edge: bets where it saw value. Action: no edge, placed only for the data (every market gets a bet). The model is judged on the edge record',
+  intent: 'Edge: bets where it saw value, every one a LIKE or better. Action: no edge, placed only for the data, till Oct 13, 2026; since then a market with no edge is tracked, not bet (the Tracked panel). The model is judged on the edge record',
+  tracked: 'Markets the bot priced but had no edge on (or a guard cut), since Oct 13, 2026: tracked, not bet. Each is graded like a bet and teaches the trust, the closing-line value and the self-check, but never counts in the record, the bankroll or the picks. Their record is a unit each as if bet',
   atRisk: "The stakes on every open bet, started or not: out of the balance until they're graded",
   live: 'Bets on games under way right now, with the score (ESPN, every minute); graded on the next run after the game ends',
   test: "How the ratings did on games they hadn't seen yet: winners picked right, and how far off the margins and totals were on average",

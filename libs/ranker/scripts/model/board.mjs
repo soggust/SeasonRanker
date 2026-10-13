@@ -30,15 +30,15 @@
 // with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
-import { chanceAt, decimal, gapGuard } from './desk.mjs';
+import { chanceAt, decimal, gapGuard, isTracked } from './desk.mjs';
 import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
-import { kellyOf, level } from './picks.mjs';
+import { edgeLevel, kellyOf } from './picks.mjs';
 
 // (a game's seen prices kept this long past its start: past the settler's longest wait, props.mjs PROP_WAIT)
 export const SEEN_KEEP = 8 * 864e5;
 
-// (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's)
-const bandOf = (kelly, p, ev, { check = false, pass = false } = {}) => (check ? 'check' : pass || !(ev > 0) ? 'low' : level(kelly, p));
+// (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's, LIKE at the least)
+const bandOf = (kelly, p, ev, { check = false, pass = false } = {}) => (check ? 'check' : pass || !(ev > 0) ? 'low' : edgeLevel(kelly, p));
 
 // A game's markets as the board's (desk.mjs price's: each market's two sides, the model's chance and the book's
 // fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust
@@ -128,8 +128,8 @@ export function buildBoard(sport, { prev = null, games = new Map(), props = new 
     g.p = [...kept.filter((p) => !fresh.has(propKey(p))), ...fresh.values()].sort((x, y) => x.n.localeCompare(y.n) || x.k.localeCompare(y.k));
   }
   // (the bot's open sides: its bets, and its CHECKs not closed, graded or bet after all, as the picks' list; a
-  // shadow never, checks.mjs shadowOf)
-  const marks = [...bets.filter((b) => b.status === 'open' && !b.void).map((b) => [b, 'bet']), ...checks.filter((c) => !c.hidden && !c.checkResult && !c.bet && !c.closedAt).map((c) => [c, 'check'])];
+  // shadow never, checks.mjs shadowOf; a tracked row never: not bet, desk.mjs TRACK)
+  const marks = [...bets.filter((b) => b.status === 'open' && !b.void && !isTracked(b)).map((b) => [b, 'bet']), ...checks.filter((c) => !c.hidden && !c.checkResult && !c.bet && !c.closedAt).map((c) => [c, 'check'])];
   for (const g of out.values()) {
     for (const k of Object.values(g.k)) for (const s of k) delete s.bot;
     for (const p of g.p) delete p.bot, delete p.bk;

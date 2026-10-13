@@ -4,7 +4,7 @@
 
 export type Market = 'spread' | 'total' | 'ml' | 'prop';
 export type Status = 'open' | 'won' | 'lost' | 'push';
-export type Intent = 'edge' | 'action';
+export type Intent = 'edge' | 'action' | 'track';
 
 export interface ModelBet {
   id: string;
@@ -35,8 +35,10 @@ export interface ModelBet {
   p: number;
   ev: number;
   units: number;
-  // (edge: it saw value; action: no edge, bet for the data. Older bets go by their EV)
+  // (edge: it saw value; action: no edge, bet for the data (till Oct 13, 2026); track: no edge, tracked, not bet
+  // (units 0; trackUnits, what it would have staked). Older bets go by their EV)
   intent?: Intent;
+  trackUnits?: number;
   status: Status;
   // (a prop whose player didn't play: no action, graded a push, out of the record)
   void?: boolean;

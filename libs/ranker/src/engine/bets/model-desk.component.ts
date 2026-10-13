@@ -11,12 +11,14 @@ import {
   SPORTS,
   STAKES,
   UNIT_WORDS,
+  atUnit,
   calibrationOf,
   countNowOf,
   edgeColorOf,
   gameDaysOf,
   gradedOrder,
   intentOf,
+  isTracked,
   meterOf,
   profitCurves,
   propState,
@@ -50,6 +52,9 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 // The Self-check panel, first: each sport's weekly self-check (selfcheck.json, libs/ranker/scripts/model/
 // selfcheck.mjs: free, no AI), its flags and watches first in plain words, the rest folded (desk-model.ts
 // selfCheckPanelOf); a check opens to its rows, its threshold, how it's measured and the bets it names.
+// The markets tracked, not bet (intent 'track', since TRACKED_FROM: no edge, or a guard cut it; the bettor's
+// desk.mjs TRACK) are kept out of everything above (the record, the bankroll, the bands, In Play and Open Bets) and
+// shown only in the Tracked panel (folded): their record by sport, a unit each as if bet (desk-math.ts atUnit).
 
 
 const SPORT_KEY = 'deskSport';
@@ -119,6 +124,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the CHECKs, at a unit as if bet (desk-notes.ts checkBets): By Confidence's CHECK row alone)
   private allChecks: ModelBet[] = [];
   private checks: ModelBet[] = [];
+  // (the markets tracked, not bet: the Tracked panel alone, never a bet here)
+  private allTracked: ModelBet[] = [];
+  private tracked: ModelBet[] = [];
+  trackedBySport: Tally[] = [];
+  trackedTotal: Tally | null = null;
 
   // (the bets by when the bot placed them, the dropdown left of the game's: the algorithm changes, so today's
   // bets are today's logic; Today on every visit. The record, tiles, chart and results follow it; the bets
@@ -139,7 +149,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the record by the Bets page's bands, LOCK to PASS, and all of them)
   byConfidence: Tally[] = [];
   confidenceTotal: Tally | null = null;
-  // (the bets it saw value in, apart from the ones placed for the data: the real record is the edge's)
+  // (the bets it saw value in, apart from the ones placed for the data (till TRACKED_FROM): the real record is the edge's)
   byIntent: Tally[] = [];
   byProp: Tally[] = [];
   calibration: CalibrationRow[] = [];
@@ -209,7 +219,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
-    this.allBets = files.flatMap((f) => f.ledger?.bets ?? []);
+    const rows = files.flatMap((f) => f.ledger?.bets ?? []);
+    this.allBets = rows.filter((b) => !isTracked(b));
+    this.allTracked = rows.filter(isTracked);
     this.allChecks = files.flatMap((f) => checkBets(Array.isArray(f.checks?.checks) ? f.checks!.checks : []));
     // (a remembered sport with no bets (NBA before its season): every sport instead, not an untouched
     // 1,000u desk that reads like an empty wallet)
@@ -273,6 +285,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.bets = scoped.filter((b) => b.status === 'open' || this.inRange(b));
     // (the CHECKs in the same sport, game and range: placed, the first time they were recorded)
     this.checks = this.allChecks.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.inRange(c)));
+    // (the tracked rows the same way)
+    this.tracked = this.allTracked.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.inRange(c)));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
     this.build();
     this.loadScores();
@@ -301,8 +315,14 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
   // (a self-check's example bet in words: its pick and game, where the desk has it; else its id)
   selfExample(id: string): string {
-    const b = this.allBets.find((x) => x.id === id) ?? this.allChecks.find((x) => x.id === id);
+    const b = this.allBets.find((x) => x.id === id) ?? this.allTracked.find((x) => x.id === id) ?? this.allChecks.find((x) => x.id === id);
     return b ? `${b.pick} · ${b.matchup}${b.status !== 'open' ? ` · ${b.status}` : ''}` : id;
+  }
+
+  // (the Tracked panel's name: how many on show, how many of them open)
+  get trackedTitle(): string {
+    const open = this.tracked.filter((b) => b.status === 'open').length;
+    return `Tracked, not bet · ${this.tracked.length}${open ? ` (${open} open)` : ''}`;
   }
 
   // (a sport's open bets, or every sport's: the chips' counts)
@@ -319,7 +339,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       (t) => t.state || t.bets || t.open,
     );
     this.byMarket = Object.keys(MARKET_NAMES).map((m) => tally(MARKET_NAMES[m], where((b) => b.market === m)));
-    this.byIntent = [tally('Edge', where((b) => intentOf(b) === 'edge')), tally('Action', where((b) => intentOf(b) === 'action'))];
+    // (Action: the bets with no edge placed for the data, till TRACKED_FROM; since then tracked, not bet: the Tracked panel)
+    this.byIntent = [tally('Edge', where((b) => intentOf(b) === 'edge')), tally('Action', where((b) => intentOf(b) === 'action'))].filter((t) => t.label === 'Edge' || t.bets || t.open);
+    // (the tracked rows' record by sport, a unit each as if bet, and all of them)
+    const tracked = this.tracked.map(atUnit);
+    this.trackedBySport = SPORTS.map((sport) => tally(sport.toUpperCase(), tracked.filter((b) => b.sport === sport))).filter((t) => t.bets || t.open);
+    this.trackedTotal = this.trackedBySport.length > 1 ? tally('Total', tracked) : null;
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
     // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
     const band = (b: ModelBet) => confidenceOf(kellyOf(b.p, b.odds) ?? 0, b.p, intentOf(b) === 'edge');

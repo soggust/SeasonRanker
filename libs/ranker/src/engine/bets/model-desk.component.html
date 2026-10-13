@@ -441,6 +441,28 @@
         </div>
       </card-panel>
 
+      <!-- (the markets tracked, not bet since Oct 13, 2026 (desk-math.ts TRACKED_FROM: no edge, or a guard cut them): graded and learned from like
+           bets, never in the record, the bankroll or the lists above; their record by sport, a unit each as if bet;
+           folded to begin with) -->
+      @if (trackedBySport.length) {
+      <card-panel class="tab-card group-advanced" [label]="trackedTitle" icon="visibility" [startOpen]="false">
+        <div class="group-body">
+          <table class="desk-table" [title]="help['tracked']">
+            <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'tracked' }"></ng-container></thead>
+            <tbody>
+              @for (t of sorted('tracked', trackedBySport, tallyValue); track t.label) {
+                <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+              }
+              @if (trackedTotal; as t) {
+                <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+              }
+            </tbody>
+          </table>
+          <p class="desk-note">No edge, so not bet: graded at a unit each as if it had been, for the data the bot learns from (since Oct 13, 2026; before it, no-edge markets were bet at 0.5u as action bets, still on the record).</p>
+        </div>
+      </card-panel>
+      }
+
     </div>
 
     <!-- (the bets on games under way: the score and clock from ESPN, every minute) -->

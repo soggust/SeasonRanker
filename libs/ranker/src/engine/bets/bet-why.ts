@@ -109,16 +109,18 @@ export function kellyOf(p: number | undefined | null, american: number | undefin
 }
 
 // A pick's band, its row's color and its chip (picks.mjs BANDS, the same cuts): by its Kelly score, a lock above
-// them all at 5% or more with a 60% chance to win (a big edge on a likely result: LOCK), then 2% (LOVE), 1%
-// (LIKE), under that or without an edge low (PASS)
+// them all at 5% or more with a 60% chance to win (a big edge on a likely result: LOCK), then 2% (LOVE), any edge
+// under that (LIKE: every bet the bot places is a LIKE or better), without an edge low (PASS: never bet)
 export type { Confidence } from './tiers';
 // (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
 // from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
-export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0.01 };
+// (2026-10-13, the owner's: LIKE opens to any edge (medium 0: a Kelly over 0); a market with no edge is tracked,
+// not bet)
+export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0 };
 export function confidenceOf(kelly: number, p: number | null | undefined, edge: boolean | undefined): Confidence {
-  if (edge === false || !(kelly > 0)) return 'low';
+  if (edge === false || !(kelly > BANDS.medium)) return 'low';
   if (kelly >= BANDS.lock && (p ?? 0) >= BANDS.lockChance) return 'lock';
-  return kelly >= BANDS.high ? 'high' : kelly >= BANDS.medium ? 'medium' : 'low';
+  return kelly >= BANDS.high ? 'high' : 'medium';
 }
 
 // (the analyst agreeing: a quarter more of a positive score, never a negative one made worse)
@@ -264,8 +266,8 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
   const noEdge = row.edge === false || (!partial && score <= 0);
   const levelText = noEdge ? `${tierLabel(level)}: no edge on the price` : tierLabel(level);
   const levelTitle = noEdge
-    ? "Its confidence: low, whatever its chance, without an edge on the price (a bet the bot made for the data, not one it likes: a favorite at a short price isn't a strong bet)"
-    : 'Its confidence, by its Kelly score (value and likelihood together, as the picks are ranked): 5 or more with a 60% chance a lock, 2 or more high, 1 or more medium, under that low';
+    ? "Its confidence: low, whatever its chance, without an edge on the price (not one the bot likes: a favorite at a short price isn't a strong bet; since Oct 13, 2026 the bot tracks these rather than betting them)"
+    : 'Its confidence, by its Kelly score (value and likelihood together, as the picks are ranked): 5 or more with a 60% chance a lock, 2 or more high, any edge under that medium (every bet the bot places is medium or better), none low';
 
   // Its price: what a unit's expected to return at its chance, and its stake
   let edgeText: string | null = null;

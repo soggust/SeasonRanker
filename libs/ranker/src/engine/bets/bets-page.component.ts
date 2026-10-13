@@ -714,7 +714,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
 
   // Its chip, by its band (bet-why.ts confidenceOf; a CHECK's its own): "Lock", "Check", "Love", "Like", or "Pass"
-  // (a small edge, or none on its price: a bet the bot made for the data, never one to make); a fade "Fade"
+  // (no edge on its price: an older bet the bot made for the data, never one to make; since Oct 13, 2026 any edge
+  // is a Like at the least and no edge isn't bet); a fade "Fade"
   grade(r: BetRow): 'lock' | 'check' | 'love' | 'like' | 'fade' | 'pass' {
     if (r.strength === 'fade') return 'fade';
     return tierOf(this.level(r)) ?? 'pass';

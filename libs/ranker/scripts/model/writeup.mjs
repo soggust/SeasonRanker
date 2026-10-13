@@ -44,7 +44,7 @@
 //             stops the picks)
 
 import { createHash } from 'node:crypto';
-import { decimal, GAP } from './desk.mjs';
+import { decimal, GAP, isTracked } from './desk.mjs';
 import { CHECK_KELLY } from './checks.mjs';
 
 // (the plain text's version: bumped, every open bet's text is written again, free. 2: a prop whose drivers
@@ -589,7 +589,7 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
 
   // (the desk's own graded bets of this kind and side, and the published band's record)
   if (ledger?.bets) {
-    const same = ledger.bets.filter((x) => x.market === bet.market && (!isProp || x.propType === bet.propType) && (isProp || kind === 'total' ? x.side === bet.side : true) && (x.status === 'won' || x.status === 'lost'));
+    const same = ledger.bets.filter((x) => !isTracked(x) && x.market === bet.market && (!isProp || x.propType === bet.propType) && (isProp || kind === 'total' ? x.side === bet.side : true) && (x.status === 'won' || x.status === 'lost'));
     sheet.record = { thisTypeSide: { graded: same.length, won: same.filter((x) => x.status === 'won').length, lost: same.filter((x) => x.status === 'lost').length, units: r2(same.reduce((t, x) => t + (fin(x.profit) ? x.profit : 0), 0)) } };
   }
   if (picksRecord && sheet.record) sheet.record.publishedBand = picksRecord;

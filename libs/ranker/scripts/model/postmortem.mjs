@@ -46,9 +46,10 @@ export function storyHurt(recap, name) {
   return (recap?.sentences ?? []).some((s) => s.includes(last) && INJURED.test(s) && !NOT_PLAYER.test(s));
 }
 
-// (a bet with no edge, placed for the data, says so: its result is no verdict on the model's judgement)
+// (a bet with no edge, placed for the data, says so: its result is no verdict on the model's judgement; a
+// tracked one (desk.mjs TRACK: no edge, not bet, since 2026-10-13) the same, as not bet)
 export { intentOf };
-const actionTag = (bet) => (intentOf(bet) === 'action' ? ' (action bet: no edge, placed for the data)' : '');
+const actionTag = (bet) => (intentOf(bet) === 'action' ? ' (action bet: no edge, placed for the data)' : intentOf(bet) === 'track' ? ' (tracked, not bet: no edge)' : '');
 
 // A final's summary, kept (only the parts the post-mortem reads, and when it was read: at)
 const summaryFile = (sport, id) => path.join(CACHE, 'summaries', `${sport}-${id}.json`);

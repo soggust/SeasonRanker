@@ -10,11 +10,17 @@
 // of GAP it tapers to nothing at GAP (a disagreement that size is the market knowing something the model
 // doesn't far more often than an edge), and past GAP the market isn't bet at all (gapGuard). The trust fit and
 // the backtest score each bet at that same tapered chance (chanceAt). A moneyline with no spread market to
-// anchor it leans nothing (the plain normal's underdog lean): the book's chance, an action bet.
+// anchor it leans nothing (the plain normal's underdog lean): the book's chance, tracked.
 // Its stake: by its Kelly fraction, its expected return over what a unit pays (a long shot's edge stakes less
 // than the same edge at -110; a heavy favorite's held to what its edge in chance would stake at -110), 0.5 at
-// no edge up to 3 (stakeFor); a game's whole stake, every market and prop, at most leagues.mjs GAME_CAP, the
-// edge bets filled first (capGame); the spread and the moneyline never on the same side of a game (oneSide).
+// the least edge up to 3 (stakeFor); a game's whole stake, every market and prop, at most leagues.mjs GAME_CAP,
+// the edge bets filled first (capGame); the spread and the moneyline never on the same side of a game (oneSide).
+// Only an edge is bet (2026-10-13, the owner's: every bet the bot places is a LIKE or better, picks.mjs BANDS): a
+// market with no edge, or one a guard cut (the old action bet, 0.5u for the data), is tracked, not bet (intent
+// 'track', TRACK: units 0, never staked; what it would have staked kept, trackUnits). A tracked row is graded,
+// closed and post-mortemed like a bet and is evidence for everything that learns (the trust fit, the CLV, the
+// self-check: learnView reads it as the action bet it once was), but never in the record, the bankroll, the
+// caps or the picks (record, capGame, makeRoom; picks.mjs).
 
 import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
@@ -45,8 +51,8 @@ function fair(a, b) {
 export const GAP = { spread: 0.12, total: 0.12, ml: 0.15, prop: 0.15 };
 
 // Units for a side, by its Kelly fraction (its expected return over what a unit pays at its price): 0.5 at no
-// edge (every game is bet), up to 3 at the desk's edge scale (the return that tops out at -110; a longer price
-// needs a bigger return for the same stake, a shorter one less), by half units. A short price's fraction is
+// edge (what a tracked row would have staked: trackUnits), up to 3 at the desk's edge scale (the return that
+// tops out at -110; a longer price needs a bigger return for the same stake, a shorter one less), by half units. A short price's fraction is
 // held to what its edge in chance (p less its break-even, ev / decimal) would stake at -110: Kelly at -800
 // stakes 3 on a chance a point over break-even, and the model's errors are in chance, so a heavy favorite's
 // noise would buy the most (the shorter price stakes no less than -110 for the same return, and no more for the
@@ -147,14 +153,17 @@ export function choose(market, trust, evScale) {
 
 // The spread and the moneyline never on the same side of one game (the two win together: one bet twice).
 // picks: this run's for the game ({ market, pick }); placed: its open bets already placed. Of two new on the
-// same side, the better return keeps it; a new one against a placed one gives way. The one giving way takes
+// same side, an edge bet over one to be tracked (its guard on it, x.guard), then the better return keeps it;
+// a new one against a placed one gives way (run.mjs passes no tracked row as placed). The one giving way takes
 // the other side if that has an edge (its pick replaced, flipped), else isn't bet (drop: why)
 export function oneSide(picks, placed = []) {
   const s = picks.find((x) => x.market === 'spread');
   const m = picks.find((x) => x.market === 'ml');
   const sideOf = (market) => placed.find((b) => b.market === market)?.side;
   let loser = null;
-  if (s && m && s.pick.side === m.pick.side) loser = s.pick.ev >= m.pick.ev ? m : s;
+  // (an edge bet before one that would be tracked (no edge, or a guard cut it: placement), then the better return)
+  const bets = (x) => x.pick.ev > 0 && !x.guard;
+  if (s && m && s.pick.side === m.pick.side) loser = bets(s) !== bets(m) ? (bets(s) ? m : s) : s.pick.ev >= m.pick.ev ? m : s;
   else if (s && sideOf('ml') === s.pick.side) loser = s;
   else if (m && sideOf('spread') === m.pick.side) loser = m;
   if (!loser) return picks;
@@ -172,12 +181,14 @@ export function oneSide(picks, placed = []) {
 // from the room capGame gives it within a run. open: the game's open bets ({ id, units, ev, intent }); need:
 // the new edge bets' units; takeable(bet): whether it may still be taken back (not locked, run.mjs). The
 // least worth having first (a prop before a game market, the lower return first), only as many as the room
-// needs (all of them, if it needs more: capGame then scales the edge bets into what there is)
+// needs (all of them, if it needs more: capGame then scales the edge bets into what there is). Since action
+// bets are tracked instead (TRACK), only the older ones still open are taken back: a tracked row stakes
+// nothing, so it frees no room and is never taken back
 export function makeRoom(open, need, cap, takeable = () => true) {
   const used = open.reduce((t, b) => t + b.units, 0);
   let short = need - (cap - used);
   if (short <= 1e-9) return [];
-  const pool = open.filter((b) => intentOf(b) !== 'edge' && takeable(b)).sort((a, b) => (b.market === 'prop') - (a.market === 'prop') || a.ev - b.ev);
+  const pool = open.filter((b) => intentOf(b) !== 'edge' && !isTracked(b) && b.units > 0 && takeable(b)).sort((a, b) => (b.market === 'prop') - (a.market === 'prop') || a.ev - b.ev);
   const out = [];
   for (const b of pool) {
     if (short <= 1e-9) break;
@@ -193,8 +204,15 @@ export function makeRoom(open, need, cap, takeable = () => true) {
 // what room is left to the action bets at their stakes (a game market's before a prop's: the main markets'
 // data teach their trust and CLV; the bigger return first), the rest dropped. So an action bet, with no edge,
 // never takes room an edge bet would have had. Each bet: { units, ev, intent, market }; kept (at its units;
-// cappedFrom, what it would have staked) and dropped
+// cappedFrom, what it would have staked) and dropped. A tracked row (TRACK) stakes nothing: always kept, after
+// the bets, outside the cap
 export function capGame(bets, placed, cap) {
+  const tracked = bets.filter(isTracked);
+  const res = capStaked(bets.filter((b) => !isTracked(b)), placed, cap);
+  return { kept: [...res.kept, ...tracked], dropped: res.dropped };
+}
+
+function capStaked(bets, placed, cap) {
   const rank = (b) => (b.intent === 'edge' ? 0 : b.market === 'prop' ? 2 : 1);
   const order = [...bets].sort((a, b) => rank(a) - rank(b) || b.ev - a.ev);
   const room = cap - placed;
@@ -274,8 +292,26 @@ export function guardOf(limits, market, move, flags, adj = { m: 0, t: 0 }, sigma
 }
 
 // (a bet with no edge, placed for the data, or one it saw value in; bets from before the intent was kept go
-// by their EV)
+// by their EV. From 2026-10-13 one with no edge is tracked, not bet: 'track')
 export const intentOf = (bet) => bet.intent ?? (bet.ev > 0 ? 'edge' : 'action');
+
+// (a market tracked, not bet: no edge, or a guard cut it. Graded and learned from like a bet, never staked)
+export const TRACK = 'track';
+export const isTracked = (bet) => bet?.intent === TRACK;
+
+// A new row's intent and stake: an edge bet at its units; anything else tracked, units 0, what it would have
+// staked as the old action bet kept (trackUnits: learnView's)
+export const placement = (edge, units) => (edge ? { intent: 'edge', units } : { intent: TRACK, units: 0, trackUnits: units });
+
+// A row as the learning reads it: a tracked one as the action bet it would have been (intent 'action', its
+// trackUnits staked, its profit at them by its result: as settle and props.mjs settleProp would have paid it),
+// so every fit, measure and check over the ledger comes out as it did when they were placed; a bet as it is
+export function learnView(bet) {
+  if (!isTracked(bet)) return bet;
+  const units = Number.isFinite(bet.trackUnits) ? bet.trackUnits : 0.5;
+  const profit = bet.status === 'won' && !bet.void ? round(units * (decimal(bet.odds) - 1), 3) : bet.status === 'lost' ? -units : 0;
+  return { ...bet, intent: 'action', units, profit };
+}
 
 // (a bet by how far it finished past its line, its side's way: won over 0, lost under, a push at 0; what it
 // paid, its stake back not counted: settle and props.mjs settleProp)
@@ -343,6 +379,8 @@ export function voidOf(bet, game, now) {
 // GAP, which the desk never places, left out. A bet placed under other timing (tw: run.mjs counts a live bet
 // placed well before its sport's window opens, from before the desk waited for the news, at half) counts for
 // that share of both kinds.
+// A tracked row (TRACK: no edge, not bet) is evidence the same as a placed bet: the fit reads its result and its
+// close, never its stake.
 // Until a market has 40 bets with either, the starting trust.
 const RHO = 0.3;
 export function fitTrust(list, start) {
@@ -379,11 +417,12 @@ export function fitTrust(list, start) {
   return { trust: best.trust, n: decided.length, clvN: closed.length, eff, fitted: true, logLoss: round(best.raw / n, 4) };
 }
 
-// A record: won, lost, pushed, units staked and won, the return on them (a void bet, no action, isn't in it)
+// A record: won, lost, pushed, units staked and won, the return on them (a void bet, no action, isn't in it,
+// nor a tracked row: never bet)
 export function record(bets) {
   const r = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
   for (const b of bets) {
-    if (b.status === 'open' || b.void) continue;
+    if (b.status === 'open' || b.void || isTracked(b)) continue;
     r.bets++;
     r[b.status === 'won' ? 'won' : b.status === 'lost' ? 'lost' : 'push']++;
     r.staked += b.units;
@@ -391,3 +430,7 @@ export function record(bets) {
   }
   return { ...r, staked: round(r.staked, 2), profit: round(r.profit, 2), roi: r.staked ? round(r.profit / r.staked, 4) : null };
 }
+
+// The tracked rows' own record (TRACK: not bet), at a unit each as if they had been: what they'd have made,
+// apart from the record (state.json's tracked; the Algorithm tab's Tracked panel)
+export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => learnView({ ...b, trackUnits: 1 })));

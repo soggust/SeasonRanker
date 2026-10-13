@@ -50,7 +50,8 @@
       <p>
         Trust is earned per market and per prop type, from how the bot's past bets did against the closing line and
         the results. A market where the bot hasn't proven itself stays close to the market's price, so its scores stay
-        small. A score at zero or under means no edge at that price: PASS.
+        small. A score at zero or under means no edge at that price: PASS. Any score over zero is an edge, a LIKE at
+        the least: every bet the bot places is a LIKE or better.
       </p>
     }
     @case ('bets') {
@@ -120,10 +121,16 @@
 
       <h4>Staking</h4>
       <p>
-        Stakes come from the Kelly fraction: 0.5 units at no edge, rising to 3 units at the desk's edge scale, in
-        half-unit steps (a heavy favorite's stake held to what its edge in chance would stake at -110). The chance
-        already includes the trust, so an unproven market bets small. The model's lean tapers as it nears each
+        Stakes come from the Kelly fraction: 0.5 units at the smallest edge, rising to 3 units at the desk's edge
+        scale, in half-unit steps (a heavy favorite's stake held to what its edge in chance would stake at -110). The
+        chance already includes the trust, so an unproven market bets small. The model's lean tapers as it nears each
         market's gap limit (12 points on spreads and totals, 15 on moneylines and props); past it, not bet.
+      </p>
+      <p>
+        <b>Tracked, not bet</b>: from Oct 13, 2026, a market with no edge (or one a guard would have cut to the
+        minimum) is tracked, not bet. Before then the bot placed it at 0.5 units for the data (an action bet); those
+        stay on the record as they were. A tracked market is graded like a bet and still teaches the trust, the
+        closing-line value and the self-check, but it's never in the record, the bankroll or the picks.
       </p>
 
       <h4>Trust and CLV</h4>

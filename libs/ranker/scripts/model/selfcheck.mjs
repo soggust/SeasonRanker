@@ -9,7 +9,9 @@
 //             28-day checks (C7, C10, C11): the 28 days up to it
 //   weights   a bet counts w = bet.weight (1; 0.3 when its premise broke in the game: postmortem.mjs); pushes
 //             and voids out. Expected wins E = sum of w x p (the desk's chance), z = (W - E) / sqrt(sum of
-//             w x p(1 - p)), ROI the profit over the units staked
+//             w x p(1 - p)), ROI the profit over the units staked. A tracked row (desk.mjs TRACK, since 2026-10-13:
+//             no edge, not bet) counts as the action bet it once was (learnView: intent action, its trackUnits
+//             staked), so the checks read the ledger as they did when those were placed
 //   statuses  flag (look now), watch, partial (a bot field it needs is missing: named in needs), ok, thin (too
 //             few bets to say; never ok), info (a report, nothing to judge)
 //   checks    C1  inputs changed after placement: a game bet's book moved away from its side after it was
@@ -91,7 +93,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DAY_CAP, MONTH_CAP } from './ai-budget.mjs';
 import { MIN_N } from './check-learn.mjs';
-import { VOID_AFTER, chanceAt, intentOf, pastGap } from './desk.mjs';
+import { VOID_AFTER, chanceAt, intentOf, learnView, pastGap } from './desk.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { impliedMean } from './project.mjs';
 import { ALARM_MIN, farOf, ROLE } from './props.mjs';
@@ -1283,7 +1285,8 @@ export function selfCheck(input) {
     now,
     ...spans,
     prevC6,
-    bets: (input.ledger?.bets ?? []).filter((b) => b && typeof b === 'object'),
+    // (a tracked row (desk.mjs TRACK: no edge, not bet) as the action bet it once was: every check reads it as before)
+    bets: (input.ledger?.bets ?? []).filter((b) => b && typeof b === 'object').map(learnView),
     teams: input.teams ?? {},
   };
   const checks = [];

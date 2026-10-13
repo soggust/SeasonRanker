@@ -125,8 +125,8 @@ export class BetsAboutComponent implements OnInit {
   readonly bands = [
     { tier: 'lock', name: 'LOCK', rule: `Kelly score ${pct(BANDS.lock)} or more and a ${pct(BANDS.lockChance)}+ chance to win`, text: 'A big edge on a likely result. Rare.' },
     { tier: 'love', name: 'LOVE', rule: `Kelly score ${pct(BANDS.high)} or more`, text: 'A strong edge at the price.' },
-    { tier: 'like', name: 'LIKE', rule: `Kelly score ${pct(BANDS.medium)} or more`, text: 'A real but modest edge.' },
-    { tier: 'pass', name: 'PASS', rule: `Kelly score under ${pct(BANDS.medium)}, or no edge`, text: "Priced, but not worth a bet in the bot's eyes." },
+    { tier: 'like', name: 'LIKE', rule: `Any edge: a Kelly score over 0, under ${pct(BANDS.high)}`, text: 'A real but modest edge. Every bet the bot places is a LIKE or better.' },
+    { tier: 'pass', name: 'PASS', rule: 'No edge: a Kelly score of 0 or under', text: "Priced, but not worth a bet in the bot's eyes: never bet (since Oct 13, 2026 it's tracked to learn from, not bet)." },
   ];
 
   // (each sport's model, as its last run left it; loading till they're in)

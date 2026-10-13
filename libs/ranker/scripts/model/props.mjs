@@ -1,8 +1,9 @@
 // Player props: DraftKings' board from ESPN's core API (every coming game's props, a page of up to 1,000 at a
 // time), the main line only (one line a player a stat; no milestone ladders, no first or last scorer, no
 // quarter or half lines, no longest-play lines, no anytime touchdown: it has no line), each priced against
-// its projection (project.mjs) and bet like the game markets: with an edge at its Kelly stake, without one at
-// the 0.5-unit minimum as an action bet (for the data: its trust and CLV), unless a guard skips it.
+// its projection (project.mjs) and bet like the game markets: with an edge at its Kelly stake, without one
+// tracked, not bet (desk.mjs TRACK, since 2026-10-13: once the 0.5-unit minimum as an action bet; graded for the
+// data all the same: its trust and CLV), unless a guard skips it.
 //
 // The board gives each prop's line and where it opened, and for the NBA, NHL and MLB each side's price (a
 // pair of items at the same line: the over first, then the under; their prices are DraftKings', vig and

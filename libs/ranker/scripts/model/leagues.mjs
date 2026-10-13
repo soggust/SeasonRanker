@@ -61,7 +61,10 @@ export const GAME_CAP = 5;
 // NHL saves b2b), a questionable player's play chance (the NFL's table, a quarterback at half), the backup
 // quarterback by the receiver's depth (c_qbDeep: receptions, rush+rec yards; a questionable starter flagged where it
 // reads him), the depth chart as a role CHECK, and the line alarm outside the NFL (a label) with every line logged.
-export const MODEL_EPOCH = '2026-10-13T08:33:00Z';
+// 2026-10-13 noon, what's bet (the owner's): every bet a LIKE or better (LIKE opens to any edge, a Kelly over 0:
+// picks.mjs BANDS), and a market with no edge (or one a guard cut), the old 0.5u action bet, tracked, not bet
+// (desk.mjs TRACK: graded and learned from the same, never staked or in the record).
+export const MODEL_EPOCH = '2026-10-13T17:05:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
