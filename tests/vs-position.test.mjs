@@ -149,5 +149,43 @@ test('NHL 2025: every team has its vs-position numbers, ranked, adding up to the
     assert.ok(b.share.C.s > 0.2 && b.share.C.s < 0.55 && b.share.W.s > 0.2 && b.share.W.s < 0.6, 'centers and wingers share');
   }
   const mean = blocks.reduce((a, b) => a + b.F.vs, 0) / blocks.length;
-  assert.ok(Math.abs(mean) < 0.3, `forwards over their averages by ${mean} on average`);
+  assert.ok(Math.abs(mean) < 0.05, `forwards over their averages by ${mean} on average`);
+});
+
+// The playoffs' lines are against the whole season's averages, which nearly everyone scores under there:
+// vs is centered on the part's league, so each group's, weighted by games, averages to about 0 with teams on
+// both sides, and vs stays pts less exp
+test('NHL: every part of 2025 and 2026 centered, the playoffs too', () => {
+  for (const season of ['2025', '2026']) {
+    for (const file of ['skill-players.json', 'skill-players.post.json', 'skill-players.all.json']) {
+      const at = `${season} ${file}`;
+      const blocks = [...new Map(readJson(path.join(staticDir('nhl'), 'seasons', season, file)).HC.map((c) => [c.teamLogo, c.vsPos])).values()];
+      assert.equal(blocks.length, file.includes('post') ? 16 : 32, at);
+      const games = blocks.reduce((a, b) => a + b.games, 0);
+      for (const role of ['C', 'W', 'D', 'F']) {
+        const mean = blocks.reduce((a, b) => a + b[role].vs * b.games, 0) / games;
+        assert.ok(Math.abs(mean) < 0.05, `${at} ${role}: vs averages ${mean}`);
+        const under = blocks.filter((b) => b[role].vs < 0).length;
+        assert.ok(under >= 3 && under <= blocks.length - 3, `${at} ${role}: ${under} of ${blocks.length} under`);
+        for (const b of blocks) assert.ok(Math.abs(b[role].vs - (b[role].pts - b[role].exp)) <= 0.011, `${at} ${role}: vs ${b[role].vs} isn't pts less exp`);
+      }
+    }
+  }
+});
+
+// (the centering on a fake playoff: both teams' skaters under their season's averages read as average)
+test('NHL: a playoff where everyone scores under his season reads as average defense', () => {
+  const line = (date, opp, g, a) => [date, opp, 'W', g, a, g + a, 0, 2];
+  // (newest first; the first playoffs[id] lines are the playoffs: one each, against TOR and MTL)
+  const logs = {
+    c1: [line('2025-04-20', '@ TOR', 0, 1), line('2025-01-02', 'BOS', 1, 1), line('2025-01-01', 'BOS', 1, 1)],
+    c2: [line('2025-04-20', 'MTL', 0, 0), line('2025-01-02', 'BOS', 1, 1), line('2025-01-01', 'BOS', 1, 1)],
+  };
+  const positionOf = new Map([['c1', 'C'], ['c2', 'C']]);
+  const vs = nhlVsPosition({ logs, playoffs: { c1: 1, c2: 1 }, positionOf, part: 'post' });
+  const [tor, mtl] = [vs.get('TOR'), vs.get('MTL')];
+  // (c1 scored 1 against his 5/3, c2 0: -0.67 and -1.67, the league's -1.17 a team-game taken off)
+  assert.deepEqual([tor.C.vs, mtl.C.vs], [0.5, -0.5]);
+  assert.deepEqual([tor.C.exp, mtl.C.exp], [0.5, 0.5]);
+  assert.deepEqual([mtl.C.rank, tor.C.rank], [1, 2]);
 });

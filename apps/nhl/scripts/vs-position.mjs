@@ -1,7 +1,8 @@
 // Defense vs position, the NHL's: what each team allowed to opposing centers, wingers and defensemen a
 // game (goals, points, shots), and against those players' own averages in their other games, so holding a
 // top line to its usual output reads as average and holding it under as good defense; and the share of
-// the points against it each of them scored beside the league's. Wingers are one group, left and right
+// the points against it each of them scored beside the league's. Centered on the part's league: an average
+// defense is 0 (in the playoffs, the playoff teams'). Wingers are one group, left and right
 // together (a listed side is often not the one he plays), and the forwards' total (F) is kept beside
 // them. Built from the season's game logs (game-logs/<season>/: every listed skater's games, each with its
 // opponent), so every season with logs has it (2009 on). update-data.mjs adds it to each head coach row (vsPos: a team's coaches carry the
@@ -80,6 +81,14 @@ export function nhlVsPosition({ logs, playoffs = {}, positionOf, part = 'regular
       g.exp += exp;
     }
   }
+  // (vs centered on the part's league, so an average defense's is 0: a team-game's over the skaters' usual,
+  // all teams together, taken off, and put on exp so vs stays pts less exp. The regular season's games leave
+  // themselves out, so it's next to nothing there; the playoffs' are against the whole season's averages,
+  // and nearly everyone scores under those there (tighter games, the better defenses): left in, nearly
+  // every playoff team read as holding every group under its usual. The NBA's the same way)
+  const all = [...teams.values()];
+  const teamGames = all.reduce((a, t) => a + t.games.size, 0);
+  const center = Object.fromEntries([...NHL_ROLES, 'F'].map((r) => [r, teamGames ? all.reduce((a, t) => a + t[r].pts - t[r].exp, 0) / teamGames : 0]));
   const leaguePts = { C: 0, W: 0, D: 0 };
   for (const t of teams.values()) for (const role of NHL_ROLES) leaguePts[role] += t[role].pts;
   const leagueTotal = NHL_ROLES.reduce((a, r) => a + leaguePts[r], 0);
@@ -93,8 +102,8 @@ export function nhlVsPosition({ logs, playoffs = {}, positionOf, part = 'regular
         goals: r2(g.goals / games),
         pts: r2(g.pts / games),
         shots: r2(g.shots / games),
-        exp: r2(g.exp / games),
-        vs: r2((g.pts - g.exp) / games),
+        exp: r2(g.exp / games + center[role]),
+        vs: r2((g.pts - g.exp) / games - center[role]),
         rank: null,
       };
     }
