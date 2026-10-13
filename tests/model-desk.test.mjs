@@ -543,7 +543,8 @@ test("picks.mjs bands, by the Kelly score: 2% and up high, any edge under it med
   assert.equal(levelOf({ intent: 'edge', ev: 0.00001 }, 0), 'medium');
   assert.equal(levelOf({ intent: 'edge', ev: 0.01 }, -0.01), 'low');
   assert.equal(levelOf({ intent: 'track', ev: 0.01 }, 0.03), 'low', 'a tracked row is never a band of a bet');
-  assert.equal(level(0.05, 0.6), 'lock', 'a big edge on a likely result: a lock');
+  assert.equal(level(0.05, 0.55), 'lock', 'a big edge on a likely result: a lock (55% since 2026-10-13)');
+  assert.equal(level(0.05, 0.5499), 'high', "under the lock's 55% chance: a love");
   assert.equal(level(0.0499, 0.6), 'high', "under the lock's 5%: a love");
   assert.equal(levelOf({ intent: 'action', ev: -0.01 }, 0.07), 'low');
   assert.equal(levelOf({ ev: 0.02 }, 0.07), 'high');

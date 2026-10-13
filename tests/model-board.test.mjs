@@ -36,7 +36,7 @@ test('boardMarkets: both sides of each market, Kelly score and band; past the ga
   assert.equal(home.l, -3.5);
   assert.equal(home.o, -110);
   assert.equal(home.ks, kellyOf(-110, 0.56));
-  assert.equal(home.b, 'high');
+  assert.equal(home.b, 'lock', 'a 7.6% Kelly at a 56% chance: a lock since the 55% bar');
   assert.equal(away.b, 'low');
   // (the total's model 31 points off the book: skipped, a PASS both sides (checks.mjs shadowOf: the gap's a
   // shadow, as the run keeps it))

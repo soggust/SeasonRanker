@@ -146,7 +146,7 @@ test('picks: a tracked row is never a pick nor in the record; every pick a LIKE 
   ];
   const out = buildPicks('nfl', { bets }, {}, new Map(), new Date('2026-10-12T12:00:00Z'));
   assert.deepEqual(out.picks.map((p) => p.id), ['big', 'small']);
-  assert.deepEqual(out.picks.map((p) => p.level), ['high', 'medium']);
+  assert.deepEqual(out.picks.map((p) => p.level), ['lock', 'medium']);
   assert.equal(out.record.overall.wins, 0);
   assert.equal(bets[2].shown, undefined);
   // (the bands: LIKE any Kelly over 0, the same on the page)

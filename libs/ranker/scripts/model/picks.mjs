@@ -16,7 +16,7 @@
 //            leaned on: 1 once the market's is fitted (the backtest's closing lines and the graded bets), 0.5
 //            while it's the untested start (a prop type with fewer than 40 graded)
 //   chance   what the page shows beside it: the trusted chance the bet wins, as a whole percent
-//   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 60%
+//   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 55%
 //            chance), high (2%: LOVE), medium (any edge under that: LIKE), low (PASS: no edge, never a bet)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
 //            and learn from), in their own list (checks, never picks: the Bets page reads every pick as a bet
@@ -82,13 +82,13 @@ export function unlock(ledger, now) {
 
 export const TOP = 40;
 // (the confidence bands, by the Kelly score: a bankroll's 2% or more high (the page's LOVE), any edge under that
-// medium (LIKE), no edge low (PASS: never bet); a lock above them all: 5% or more and a 60% chance to win, a big
+// medium (LIKE), no edge low (PASS: never bet); a lock above them all: 5% or more and a 55% chance to win, a big
 // edge on a likely result. The page reads the same bands: bet-why.ts confidenceOf)
 // (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
-// from 2%, LOCK from 5% with a 60% chance; the Kelly already counts the trust, an untested type's edge at half)
+// from 2%, LOCK from 5% with a 55% chance; the Kelly already counts the trust, an untested type's edge at half)
 // (2026-10-13, the owner's: every bet the bot places is a LIKE at the least, so LIKE opens to any edge (medium 0:
 // a Kelly over 0) and a market with no edge is tracked, not bet: desk.mjs TRACK)
-export const BANDS = { lock: 0.05, lockChance: 0.6, high: 0.02, medium: 0 };
+export const BANDS = { lock: 0.05, lockChance: 0.55, high: 0.02, medium: 0 };
 const KIND = { spread: 'spread', total: 'total', ml: 'moneyline', prop: 'player' };
 const LABEL = { spread: 'Spread', total: 'Game total', ml: 'Moneyline' };
 

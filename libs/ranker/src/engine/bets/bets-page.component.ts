@@ -60,7 +60,7 @@ export interface BetRow {
   headline?: string;
   by?: string;
   read?: string;
-  // (its band: its chance to win 60% or more, 53% or more, or under; picks.mjs)
+  // (its band, picks.mjs: LOCK (5% Kelly and a 55% chance), LOVE (2%), LIKE (any edge), PASS)
   confidence: Confidence | null;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
