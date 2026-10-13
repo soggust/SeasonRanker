@@ -227,8 +227,9 @@ export function sideOfPlays(p, home) {
 // (live: a player's id, team, opponent, position and the season). plays: the context's play-by-play facts by
 // game (football.mjs: facts.plays), for the funnel over expected; without a game's, its player logs' pass share.
 // learned: the learned split read into the rows' work missing (vacated's fourth: absorbOf; false, the split in
-// proportion in its place, its table still learned for the log: props.mjs passes project.mjs TRY_VL)
-export function nflMatchups(rows, pbp = null, { learned = true } = {}) {
+// proportion in its place, the default: a caller opts in; its table still learned for the log, about no time:
+// NFL matchups 7.1s either way; props.mjs passes project.mjs TRY_VL)
+export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   const games = new Map();
   for (const r of rows) {
     if (!r.team || !r.opp || !r.game) continue;
@@ -337,7 +338,8 @@ export function nflMatchups(rows, pbp = null, { learned = true } = {}) {
     const k = clsOf(p, rank);
     let got = 0;
     for (const [id, x] of all) {
-      if (!ABSORB_NFL.cls[x.pos] || x.v < 1.5 || String(id) === String(pid)) continue;
+      // (one gone since last season (cur false) not read: the table learned fresh absences only)
+      if (!ABSORB_NFL.cls[x.pos] || !x.cur || x.v < 1.5 || String(id) === String(pid)) continue;
       const m = clamp01(missOf(id));
       if (!m) continue;
       const mc = clsOf(x.pos, 1 + all.filter(([, y]) => y.pos === x.pos && y.v > x.v).length);
@@ -365,7 +367,8 @@ export function nflMatchups(rows, pbp = null, { learned = true } = {}) {
     });
     const excess = { t: new Map(), c: new Map() };
     for (const h of here) {
-      const k = clsOf(h.p, 1 + here.filter((o) => o.p === h.p && o.v > h.v).length);
+      // (his place as the live split reads it: among the ones with recent work 0.5 or more)
+      const k = clsOf(h.p, 1 + here.filter((o) => o.p === h.p && o.v >= 0.5 && o.v > h.v).length);
       for (const m of ['t', 'c']) excess[m].set(k, (excess[m].get(k) ?? 0) + h[m]);
     }
     if (!out.length) return absorb.none(excess);
@@ -909,7 +912,8 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absor
       if (missing.some(([, x]) => (x.out ?? 0) >= 1 && (x.out ?? 0) < SETTLED)) continue;
       const out = missing.filter(([, x]) => !((x.out ?? 0) >= 1));
       const here = rows.filter((r) => groupOf(r.pos) === grp).map((r) => ({ r, x: w.p.get(r.pid), now: measures.map((fn) => fn(r)) }));
-      const firsts = here.map((h) => h.x?.v[0] ?? 0);
+      // (his place as the live split reads it: among the ones with floor[0] / 2 or more)
+      const firsts = here.map((h) => h.x?.v[0] ?? 0).filter((v) => v >= floor[0] / 2);
       const excess = Object.fromEntries(measures.map((_, m) => [String(m), new Map()]));
       for (const h of here) {
         const k = classOf(h.r.pos, h.x?.v[0] ?? 0, firsts);
@@ -1020,8 +1024,8 @@ export function nbaPossessions(list) {
 // teamWork gate); each game's minutes over 48 (share) and his start in his team's game before (startLast); the
 // other side's pace (pace) and the game's expected possessions (paceG), each over the league's. The same for a
 // coming game (live: missing, the teammates out by the injury report, none of them a starter). learned: the learned
-// split read (teamWork's; false, the split in proportion in its place)
-export function nbaMatchups(rows, { learned = true } = {}) {
+// split read (teamWork's; false, the default, the split in proportion in its place)
+export function nbaMatchups(rows, { learned = false } = {}) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6], absorb: { ...ABSORB_NBA, learned } });
   // (known: only a role he's ranked in (roleKnown), null for a player under three games or with fewer than

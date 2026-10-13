@@ -40,7 +40,7 @@ const TERM_NAMES: Record<string, string> = {
   tg: 'target share allowed',
   vc: 'vacated work',
   vcM: 'vacated work fit again on the NBA minutes base',
-  vs: 'vacated work: how it is shared (0 to 2: in proportion, flatter, equally within his position; NBA 3 to 5 the same by usage; NFL 3, NBA 6 and 7: who absorbs it, learned from the history)',
+  vs: 'vacated work: how it is shared (0 to 2: in proportion, flatter, equally within his position; NBA 3 to 5 the same by usage, NHL 3 to 5 by power-play time; NFL 3, NBA 6 and 7: who absorbs it, learned from the history)',
   vl: 'who absorbs the missing work: learned from past absences by position and depth (NBA: position and starter or bench), across positions, some of it lost',
   sn: 'snaps-based rate (NBA: minutes first, his per-minute rate times his expected minutes)',
   ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',

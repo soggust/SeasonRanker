@@ -108,9 +108,9 @@ import { LEAGUES } from './leagues.mjs';
 import { fit, fitContext, replay, round } from './ratings.mjs';
 import { featurize, gather } from './context.mjs';
 import { playerRows } from './playerlogs.mjs';
-import { STATS, envFor, fitProps, markEligible, nflMarket } from './props.mjs';
+import { STATS, envFor, fitProps, learnedVs, markEligible, nflMarket } from './props.mjs';
 import { nflMatchups } from './matchups.mjs';
-import { nbLog, rAt, replayStat } from './project.mjs';
+import { TRY_VL, nbLog, rAt, replayStat } from './project.mjs';
 import { CACHE, nflverseRows, readJson } from './sources.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -498,9 +498,12 @@ async function main() {
   const market = await nflMarket(history);
   let fitted;
   if (useState) {
-    nflMatchups(rows, facts.plays);
+    nflMatchups(rows, facts.plays, { learned: TRY_VL });
     const sp = stateParams();
     fitted = Object.fromEntries(STATS.nfl.filter((st) => sp[st.key]).map((st) => [st.key, { stat: st, params: sp[st.key] }]));
+    // (a saved learned split (vs at a vacLearned index) with it off the search (project.mjs TRY_VL): the matchups
+    // above read the split in proportion there, under a vc sized for the learned one)
+    for (const f of Object.values(fitted)) if (!TRY_VL && learnedVs(f.stat, f.params.vs)) console.warn(`role backtest: ${f.stat.key}'s saved vs ${f.params.vs} is the learned split, off the search: read as the split in proportion`);
   } else fitted = fitProps(sport, rows, expPts, info, facts, market);
   // (--set key=value[,key=value]: a setting forced on every stat that has it, after the fit (a term's size, to
   // measure its buckets with it in and out; the lean as fit, not refit))

@@ -4,7 +4,8 @@
 // bench), across positions too, in place of the even ones where the held-out games are better with it.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STATS } from '../libs/ranker/scripts/model/props.mjs';
+import { STATS, learnedVs, plainVs } from '../libs/ranker/scripts/model/props.mjs';
+import { TRY_VL, searched } from '../libs/ranker/scripts/model/project.mjs';
 import { nflMatchups, nbaMatchups } from '../libs/ranker/scripts/model/matchups.mjs';
 
 const date = (d) => new Date(Date.UTC(2025, 8, 1) + d * 864e5).toISOString().slice(0, 10);
@@ -34,7 +35,7 @@ test('every NFL and NBA vacated stat has its learned split, at an index past the
 });
 
 test("the NFL's learned split: the tight end who took the WR1's targets, not the WR2 the even split credits", () => {
-  const lg = nflMatchups(nflLeague(40));
+  const lg = nflMatchups(nflLeague(40), null, { learned: true });
   const t = lg.absorbed();
   assert.ok(t.ready, JSON.stringify({ events: t.events, quiet: t.quiet }));
   assert.ok(t.t.WR1.TE1 > 0.8, `the tight end's share ${t.t.WR1.TE1}`);
@@ -55,7 +56,7 @@ test("the NFL's learned split: the tight end who took the WR1's targets, not the
 });
 
 test('before the history has enough absences, the learned split is the split in proportion', () => {
-  const lg = nflMatchups(nflLeague(8));
+  const lg = nflMatchups(nflLeague(8), null, { learned: true });
   assert.equal(lg.absorbed().ready, false);
   const out = new Set(['T0wr1']);
   for (const [pid, pos] of [['T0te1', 'TE'], ['T0wr2', 'WR']]) {
@@ -96,7 +97,7 @@ const nbaLeague = (days) => {
 
 test("the NBA's learned split: the bench guard who stepped into the five took the starting guard's minutes, not the starters the even split credits", () => {
   // (its last day one the starting guard played: his work as a starter's)
-  const lg = nbaMatchups(nbaLeague(39));
+  const lg = nbaMatchups(nbaLeague(39), { learned: true });
   const t = lg.absorbed();
   assert.ok(t.ready, JSON.stringify({ events: t.events, quiet: t.quiet }));
   // (the bench guard among the five playing: a starter's class)
@@ -124,4 +125,46 @@ test('off the search (learned false: project.mjs TRY_VL, as props.mjs passes it)
   assert.equal(nb.absorbed().read, false);
   const g = nb.live('A0gb', 'A0', 'A1', 'PG', 2026, new Set(['A0g1'])).vacs;
   assert.deepEqual([g[6], g[7]], [g[0], g[3]]);
+});
+
+test('the default: a caller opts in to the learned split (role-backtest --state and any other read the split in proportion)', () => {
+  const lg = nflMatchups(nflLeague(40));
+  assert.equal(lg.absorbed().read, false);
+  const v = lg.live('T0te1', 'T0', 'T1', 'TE', 2025, new Set(['T0wr1'])).vacs;
+  assert.equal(v[3], v[0]);
+  const nb = nbaMatchups(nbaLeague(39));
+  assert.equal(nb.absorbed().read, false);
+});
+
+test("one gone since last season (not on the team this season) isn't read by the learned split: the table learned fresh absences only", () => {
+  // (2025's league, read at 2026's opener: every player carried over at half his work, none on the team yet; the
+  // WR1 gone in the offseason)
+  const lg = nflMatchups(nflLeague(40), null, { learned: true });
+  assert.ok(lg.absorbed().ready);
+  const out = new Set(['T0wr1']);
+  // (the same WR1 on the team this season and out tonight: read (2025's first: a team's work holds one season))
+  assert.ok(lg.live('T0te1', 'T0', 'T1', 'TE', 2025, out).vacs[3] > 0.9);
+  const te = lg.live('T0te1', 'T0', 'T1', 'TE', 2026, out).vacs;
+  assert.equal(te[3], 0, `the learned: ${te[3]}`);
+  // (the even split reads him as it was fit: vc's history measured the same way)
+  const wr2 = lg.live('T0wr2', 'T0', 'T1', 'WR', 2026, out).vacs;
+  assert.ok(wr2[0] > 0, `the even split: ${wr2[0]}`);
+  assert.equal(wr2[3], 0);
+});
+
+test('the safety switch: with TRY_VL false, vl is off the search on every stat with a learned split, and the role guard reads the split in proportion', () => {
+  assert.equal(TRY_VL, false);
+  for (const st of [...STATS.nfl, ...STATS.nba].filter((s) => s.vacLearned)) assert.equal(searched(st, 'vl'), false, st.key);
+  const nfl = STATS.nfl.find((s) => s.vacLearned);
+  const nba = STATS.nba.find((s) => s.vacLearned);
+  // (the role guard's vacOut: a learned index read as the split in proportion; an even one as it is)
+  assert.equal(plainVs(nfl, 3), 0);
+  assert.equal(plainVs(nba, 6), 0);
+  assert.equal(plainVs(nba, 7), 0);
+  assert.equal(plainVs(nfl, 1), 1);
+  assert.equal(plainVs(nfl, undefined), 0);
+  // (the questionable-teammate swing widens past his position only at a learned index)
+  assert.equal(learnedVs(nfl, 3), true);
+  assert.equal(learnedVs(nfl, 0), false);
+  assert.equal(learnedVs(STATS.nhl[0], 3), false);
 });

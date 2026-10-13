@@ -538,6 +538,10 @@ const NBA_VAC = { ...NHL_VAC, vacLearned: [6, 7] };
 // across positions too, some of it lost) at index 3, tried late on its own rows' gate (project.mjs vl; measured
 // 2026-10-13, worse than the even split on every stat, off the search: TRY_VL))
 const NFL_VAC = { vacated: true, vacLearned: [3] };
+// (whether a stat's vs is a learned split's index (vacLearned); the split in proportion (0) in its place where
+// his position's work alone is wanted (the role guard's vacOut))
+export const learnedVs = (stat, vs) => (stat?.vacLearned ?? []).includes(vs);
+export const plainVs = (stat, vs) => (learnedVs(stat, vs) ? 0 : (vs ?? 0));
 // (the NHL skaters' power-play share (ppShare: his share of his team's power play against his position's prop
 // players', matchups.mjs) measured 2026-10-12 as a late term (project.mjs MIN_GAIN, floor 0.0001): shots not
 // taken on the fit window, points 0.25 taken there and held out -0.0001, left out; searched with the rest it
@@ -1287,7 +1291,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const qb1 = f.matchups.qb1?.(row.team, game.season) ?? null;
       // (his position's work alone, the guard's words: the learned split (project.mjs vl, across positions) read
       // as the split in proportion here)
-      const vs0 = (prop.stat.vacLearned ?? []).includes(f.params.vs) ? 0 : (f.params.vs ?? 0);
+      const vs0 = plainVs(prop.stat, f.params.vs);
       const vacOut = f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(0), extra).vacs?.[vs0] ?? 0;
       roleChange = roleChangeOf({
         name: a.name,
@@ -1382,7 +1386,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // position, a linebacker, a lineman, moves none of it); none of them questionable, no flag. With the learned
     // split kept (project.mjs vl: across positions), the regulars at the backs' and pass-catchers' positions)
     const vs = f.params.vs ?? 0;
-    const qRegs = sport === 'nfl' && (prop.stat.vacLearned ?? []).includes(vs) ? new Set(['WR', 'TE', 'RB'].flatMap((q) => (f.matchups?.regulars?.(row.team, game.season, q) ?? []).map((x) => x.id))) : regs;
+    const qRegs = sport === 'nfl' && learnedVs(prop.stat, vs) ? new Set(['WR', 'TE', 'RB'].flatMap((q) => (f.matchups?.regulars?.(row.team, game.season, q) ?? []).map((x) => x.id))) : regs;
     const shareAt = (q) => f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(q), extra).vacs?.[vs] ?? 0;
     const qSwing = (id) => {
       const at = (v) => shareAt((x) => (String(x) === String(id) ? v : qMiss(x)));

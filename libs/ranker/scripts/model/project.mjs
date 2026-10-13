@@ -244,8 +244,11 @@
 //            from 2016: a WR1 out, the receivers below him take 0.33 of his targets, the WR2 stepping up 0.14, the
 //            WR2 0.1, the tight ends 0.09, the backs 0.07, about 0.77 kept; an RB1 out, the backup 0.4 of his
 //            carries, the rest 0.31), but every size and split was worse on the fit window than the even split the
-//            stat had (the fit window's log-likelihood at its best try: carries -75, NBA points -12, rebounds -9,
-//            assists -3, threes -3, pts+reb+ast -31; receptions not better at any), and on the NFL's held-out work
+//            stat had (the fit window's log-likelihood at its best try (vc 0.25 on each, larger worse): carries -75,
+//            rushing yards -10, receiving yards -20, rush+rec yards -47, NBA points -12, rebounds -9, assists -3,
+//            threes -3, pts+reb+ast -31; receptions not better at any; measured with w, pl and K as the main search
+//            fit them around the even split, vl a late term on top: a retry fits the main search once with vs at the
+//            learned index first, and compares), and on the NFL's held-out work
 //            change the cut's correlation was no better than the split in proportion (backs 0.316 against 0.337,
 //            receivers 0.200 against 0.205 (flatter 0.224), tight ends 0.187 against 0.220; the same position's
 //            alone or the proportion scaled by the learned share kept, no better)
@@ -1348,6 +1351,8 @@ const has = (stat, key) =>
   : key === 'po' ? !!stat.pace
   : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
   : !!stat.volume;
+// (whether fitStat searches a term on a stat (the tests' read: vl off the search while TRY_VL is false))
+export const searched = (stat, key) => has(stat, key);
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
 function linePairs(list, params) {
