@@ -621,7 +621,7 @@ const ROLE_WORDS = {
   'snap-jump': 'his snaps jumped in his last game',
   'part-time': 'he is a part-timer with a regular at his position out',
   line: 'the line sits far from his projection, the market reading a role the model has not seen',
-  depth: 'the depth chart ranks him differently than his recent work does',
+  depth: "the depth chart ranks him differently than the model's role from his season's work does",
 };
 
 // (a CHECK's in place of the price: led by the model's own Kelly ("Would be a +26.80 Kelly bet on the model's

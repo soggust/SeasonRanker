@@ -1,7 +1,7 @@
 // The role and work share (audit #2, libs/ranker/scripts/model): the role order by his recent healthy work
 // (matchups.mjs roleW, roleUpW; project.mjs ro), a regular above him out (aheadOut; CTX aheadOut), his organic
 // trend on the games with no one above him missing (trend; project.mjs ot), the next man up's target share
-// floor in the volume base (leadTgt; project.mjs rp with nu), and the depth chart's role CHECK, live only
+// floor in the volume base (leadTgt; project.mjs nt, its own term), and the depth chart's role CHECK, live only
 // (props.mjs readDepth, depthRoleOf). Each off, the model exactly as before.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -65,6 +65,27 @@ test('trend: his organic work recent over its average, the games with a regular 
   assert.equal(rows.find((x) => x.game === 'a5' && x.pid === 'w2').aheadOut, 1);
 });
 
+test("a game without its snap counts: no one in it read as out (aheadOut), and it's neither organic (trend) nor the same absence's (sameGames)", () => {
+  const rows = [];
+  // (w1 the WR1, w2 behind him; the 2nd and 5th games without snap counts and w1 not in their logs)
+  const noSnaps = (list) => list.map(([pid, pos, t]) => [pid, pos, t, 0]);
+  rows.push(...game('a1', day(1), [['q', 'QB', 0, 70], ['w1', 'WR', 10, 66], ['w2', 'WR', 3, 50]]));
+  rows.push(...game('a2', day(2), noSnaps([['q', 'QB', 0], ['w2', 'WR', 9]])));
+  [3, 4].forEach((d) => rows.push(...game('a' + d, day(d), [['q', 'QB', 0, 70], ['w1', 'WR', 10, 66], ['w2', 'WR', 4, 50]])));
+  rows.push(...game('a5', day(5), noSnaps([['q', 'QB', 0], ['w1', 'WR', 10], ['w2', 'WR', 5]])));
+  rows.push(...game('a6', day(6), [['q', 'QB', 0, 70], ['w2', 'WR', 11, 66]]));
+  const m = nflMatchups(rows);
+  assert.equal(rows.find((x) => x.game === 'a2' && x.pid === 'w2').aheadOut, 0);
+  // (w1 out in the 6th, snap counts read: the flag, but the 2nd isn't one of the same absence's games)
+  const r6 = rows.find((x) => x.game === 'a6' && x.pid === 'w2');
+  assert.equal(r6.aheadOut, 1);
+  assert.equal(r6.sameGames, null);
+  // (at bet time, w1 out: the 6th his only game with w1 out known, the 2nd not counted)
+  assert.deepEqual(m.live('w2', '1', '2', 'WR', 2026, new Set(['w1'])).sameGames, ['a6']);
+  // (organic: the 1st, 3rd and 4th; the 2nd and 5th unknown, the 6th not: under 4, none)
+  assert.equal(m.live('w2', '1', '2', 'WR', 2026, null).trend, null);
+});
+
 // (the projections: a tight end's receptions)
 const STAT = { key: 'rec', snaps: true, roles: true };
 const BASE = { K: 4, w: 0.4, a: 0, b: 0, roleK: Infinity, vc: 0, sn: 0.5, sr: 0.5 };
@@ -100,7 +121,7 @@ test('ro: off, his role by the season; on, by his recent healthy work (roleW, ro
   assert.equal(learned({ ...BASE, ro: 1 }).project(pr(10, 0, null, { role: 'TE2+' })).role, 'TE2+');
 });
 
-test("rp in the volume base: the next man up's target share at least nu of the missing one's (leadTgt); rp off, as before", () => {
+test("nt in the volume base: the next man up's target share at least nt of the missing one's (leadTgt), apart from rp and nu; off, as before", () => {
   const stat = { key: 'recYds', perTarget: true, snaps: true, roles: true };
   const P = { K: 4, w: 0, a: 0, b: 0, roleK: Infinity, vc: 0, vol: 1, yk: 40 };
   const g = (season, d, mine) => [
@@ -116,11 +137,13 @@ test("rp in the volume base: the next man up's target share at least nu of the m
   };
   const off = run(P);
   assert.ok(Math.abs(off.volume.share - 2 / 32) < 1e-9, `${off.volume.share}`);
-  const on = run({ ...P, rp: 1, nu: 0.8 });
+  const on = run({ ...P, nt: 0.8 });
   assert.ok(Math.abs(on.volume.share - 0.2) < 1e-9, `${on.volume.share}`);
   assert.ok(on.rate > off.rate * 2, `${on.rate} ${off.rate}`);
-  // (rp with nu 0: the role alone, the share his own)
-  assert.ok(Math.abs(run({ ...P, rp: 1, nu: 0 }).volume.share - 2 / 32) < 1e-9);
+  // (rp and nu, the snap share's floor, leave the target share his own)
+  assert.ok(Math.abs(run({ ...P, rp: 1, nu: 0.8 }).volume.share - 2 / 32) < 1e-9);
+  // (with rp the same as without: nt's alone)
+  assert.ok(Math.abs(run({ ...P, rp: 1, nu: 0, nt: 0.8 }).volume.share - 0.2) < 1e-9);
 });
 
 test('CTX aheadOut: the row\'s flag, 0 without it; measured and on no stat\'s ctx', () => {
@@ -137,23 +160,36 @@ test("readDepth and depthRoleOf: the chart's starter the model has lower a CHECK
     JSON.stringify({
       team: 'LA',
       at,
+      listedKept: true,
       slots: [
-        { side: 'offense', key: 'TE10', depth: ['g1', 'g2', 'espn:30'] },
+        // (the snaps moved g2 up (build-depth.mjs): the chart's own order in listed, the one read)
+        { side: 'offense', key: 'TE10', depth: ['g2', 'g1', 'espn:30'], listed: ['g1', 'g2', 'espn:30'] },
         { side: 'offense', key: 'RB11', depth: ['g4', 'g5'] },
         { side: 'offense', key: 'WR1', depth: ['g6'] },
       ],
       players: { g1: { espnId: '10' }, g2: { espnId: '20' }, g4: { espnId: '40' }, g5: { espnId: '50' }, g6: { espnId: '60' } },
     }),
   );
+  // (a chart built before listed was kept: not read)
+  fs.writeFileSync(path.join(dir, 'Old.json'), JSON.stringify({ team: 'KC', at, slots: [{ side: 'offense', key: 'TE10', depth: ['espn:70', 'espn:80'] }], players: {} }));
+  // (another team's older chart with g2 on it, as one traded since)
+  fs.writeFileSync(path.join(dir, 'Bills.json'), JSON.stringify({ team: 'BUF', at: '2026-10-11T12:00:00Z', listedKept: true, slots: [{ side: 'offense', key: 'TE10', depth: ['espn:20', 'espn:90'] }], players: {} }));
   const depth = readDepth(dir);
-  assert.deepEqual(depth.get('20').order, ['10', '20', '30']);
-  assert.equal(depth.get('40').group, 'RB');
+  assert.deepEqual(depth.get('20')[0].order, ['10', '20', '30']);
+  assert.equal(depth.get('20')[0].team, 'LAR');
+  assert.equal(depth.get('20').length, 2);
+  assert.equal(depth.get('40')[0].group, 'RB');
   assert.equal(depth.get('60'), undefined);
+  assert.equal(depth.get('70'), undefined);
   assert.equal(readDepth(path.join(dir, 'none')).size, 0);
   const now = Date.parse('2026-10-12T15:00:00Z');
   const kick = '2026-10-12T17:00:00Z';
   const none = () => 0;
-  const base = { depth, missOf: none, at: kick, now };
+  const base = { depth, team: 'LAR', missOf: none, at: kick, now };
+  // (read on his team's chart alone: the Bills' has him first, the Rams' second; no team known, nothing)
+  assert.equal(depthRoleOf({ ...base, team: 'BUF', pos: 'TE', pid: '20', stat: 'rec', role: 'TE1' }), null);
+  assert.equal(depthRoleOf({ ...base, team: 'KC', pos: 'TE', pid: '20', stat: 'rec', role: 'TE1' }), null);
+  assert.equal(depthRoleOf({ ...base, team: null, pos: 'TE', pid: '10', stat: 'rec', role: 'TE2+' }), null);
   // (the chart's TE1 the model has as TE2+: the over safe)
   assert.deepEqual(depthRoleOf({ ...base, pos: 'TE', pid: '10', stat: 'recYds', role: 'TE2+' })?.safe, 'over');
   // (the model's TE1 the chart has second: the under safe; with the one ahead out, he's first: nothing)

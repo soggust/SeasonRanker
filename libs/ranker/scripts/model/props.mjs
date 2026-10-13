@@ -192,10 +192,18 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
 // read. Not a projection term: the history's charts before 2025 are weekly, unstamped (not known to be
 // pre-game), and 2025 on is all past the fit window, so nothing can be fit on them yet; it only takes bets away
 // (a CHECK, or the safe side alone), never makes one. A chart older than DEPTH.fresh, stamped after the
-// kickoff, or without him: no reason, as before
+// kickoff, without him, or another team's (a player on two charts, traded since one was built: read only on
+// his team's tonight, the game's abbreviation; none known, none read): no reason, as before. The order read is
+// nflverse's own, as measured: build-depth.mjs moves a backup whose typical game is half the snaps or more, a
+// quarter over the listed starter's, to the top of the site's chart (a snap-heavy blocking tight end over a
+// receiving one), and keeps the chart's own order beside it (slot.listed, the file's listedKept); a chart built
+// before that (no listedKept) isn't read at all, as the order it holds may not be the one measured
 export const DEPTH = { fresh: 3 * 864e5, slots: { TE10: 'TE', RB11: 'RB' }, stats: { TE: ['rec', 'recYds', 'rushRecYds'], RB: ['rushYds', 'rushAtt'] } };
-// (the charts by player: his ESPN id to his spot's group, its order (ESPN ids, first the starter) and the chart's
-// stamp; an empty map where the folder can't be read)
+// (nflverse's team codes where ESPN's differ: the depth charts' against the games' abbreviations)
+const DEPTH_TEAM = { LA: 'LAR', WAS: 'WSH' };
+// (the charts by player: his ESPN id to each chart he's on: his spot's group, its order (ESPN ids, first the
+// starter: nflverse's), the chart's team (ESPN's abbreviation) and stamp, the latest first; an empty map where
+// the folder can't be read)
 export function readDepth(dir) {
   const out = new Map();
   let files = [];
@@ -211,23 +219,24 @@ export function readDepth(dir) {
     } catch {
       continue;
     }
+    if (!j?.listedKept || !j.team) continue;
+    const team = DEPTH_TEAM[j.team] ?? String(j.team);
     const espn = (id) => (String(id).startsWith('espn:') ? String(id).slice(5) : (j.players?.[id]?.espnId ?? null));
     for (const s of j.slots ?? []) {
       const group = DEPTH.slots[s.key];
       if (!group) continue;
-      const order = (s.depth ?? []).map(espn).filter(Boolean).map(String);
-      for (const id of order) {
-        const was = out.get(id);
-        if (!was || String(j.at) > String(was.at)) out.set(id, { group, order, at: j.at ?? null, team: j.team ?? null });
-      }
+      const order = (s.listed ?? s.depth ?? []).map(espn).filter(Boolean).map(String);
+      for (const id of order) out.set(id, [...(out.get(id) ?? []), { group, order, at: j.at ?? null, team }]);
     }
   }
+  for (const list of out.values()) list.sort((a, b) => String(b.at).localeCompare(String(a.at)));
   return out;
 }
-// (his reason, or null: depth the charts (readDepth), missOf a teammate's being out (0 to 1, out at 1), role the
-// model's role for him tonight, at the kickoff, now the run's time)
-export function depthRoleOf({ pos, pid, stat, depth, missOf, role, at, now = Date.now() }) {
-  const c = depth?.get?.(String(pid));
+// (his reason, or null: depth the charts (readDepth), team his team's abbreviation tonight (ESPN's), missOf a
+// teammate's being out (0 to 1, out at 1), role the model's role for him tonight, at the kickoff, now the run's
+// time)
+export function depthRoleOf({ pos, pid, team, stat, depth, missOf, role, at, now = Date.now() }) {
+  const c = team ? (depth?.get?.(String(pid)) ?? []).find((x) => x.team === String(team)) : null;
   if (!c || c.group !== pos || !DEPTH.stats[pos]?.includes(stat) || !role) return null;
   const t = Date.parse(c.at);
   if (!Number.isFinite(t) || now - t > DEPTH.fresh || (Number.isFinite(Date.parse(at)) && t >= Date.parse(at))) return null;
@@ -910,7 +919,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       }
       // (the depth chart against the model's role (depthRoleOf, live only: the site's charts, live.depth), where
       // nothing above said his role's changing)
-      roleChange ??= depthRoleOf({ pos: row.pos, pid, stat: prop.stat.key, depth: live?.depth, missOf: missOf(0), role: p.role, at: game.date });
+      roleChange ??= depthRoleOf({ pos: row.pos, pid, team: row.home ? game.homeAbbr : row.home === false ? game.awayAbbr : null, stat: prop.stat.key, depth: live?.depth, missOf: missOf(0), role: p.role, at: game.date });
     }
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the

@@ -19,8 +19,9 @@
 //            the vacated term's to hand on (vacF); with rp and nu kept (next up, below) the next man up's expected
 //            share also has a floor of nu times the missing one's above him, vacF still on top of it, the two fit
 //            together (next-up receivers ran 16% low held out on 2026-10-11; the role guard CHECKs most of them:
-//            group-out, part-time). With rp and nu, his target share in the volume base (receiving yards') has
-//            the same floor: nu of the missing one's share of the team's targets (matchups.mjs leadTgt)
+//            group-out, part-time). His target share in the volume base (receiving yards') has a floor of
+//            its own (nt, a late term on rp's rows, fit apart from rp and nu): nt of the missing one's share of
+//            the team's targets (matchups.mjs leadTgt)
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -41,7 +42,8 @@
 //            the same absence: with regulars at his position out tonight and 2 games of his this season or more
 //            with every one of them out then too (matchups.mjs sameGames), his base (times the work missing's
 //            factor) blended toward his average in those games by ab, the work missing's factor 1 then (the cut
-//            already in them); on its own rows' gate (SUBGROUP). Measured first (2026-10-12, eligible players
+//            already in them); on its own rows' gate (SUBGROUP: the rows it moves, sameOn, whether it's on or
+//            not; a game without its snap counts none of its). Measured first (2026-10-12, eligible players
 //            2021 on, held out): his last three's work over 1.2x his season's ran receiving yards +17.7% over the
 //            projection where an absence ahead fed it (n 513) against +2.5% where none did (n 802), and +24%
 //            with that absence still on tonight (n 236; carries +29%, n 134): the jump is the injury's, not
@@ -54,8 +56,13 @@
 //            with no regular at his position out, recent ones counting most, over their average, to the power
 //            ot, held to TREND_CAP): -0.0001 to -0.0007 or not taken on every stat (its held-out buckets small:
 //            receiving yards' trend up +7.8% against +2.2% even, rushing yards' 0% against +6%). ro and ot off
-//            the search since (SHARE), forced by role-backtest.mjs --set; rp's target floor tried with rp
-//            (receiving yards took nu 0 on the fit window, so none)
+//            the search since (SHARE), forced by role-backtest.mjs --set; ab too after its second fit
+//            (2026-10-12, its gate on the rows it moves, the games without snap counts out of sameGames: the
+//            same 930 rows and numbers, carries +0.0011 and rushing yards +0.0007, each left out on its own
+//            rows' bias again). nt, the next man up's target floor (above), fit on its own after rp: receiving
+//            yards kept 0.75, held out 0.6501 to 0.6498, its own 872 rows 13.1% to 5.8% over their projections
+//            (the eligible's 595 13.1% to 9.1%), the eligible players' bias -0.647 to -0.627, every player's
+//            -0.485 to -0.426 (tried before only with rp's snap floor, both on nu: nu 0 won, so neither)
 //   carry    the seasons' carryover (late terms too, on every row, each kept on the whole stat's gate below: a
 //            held-out gain of DRAFT_GAIN or more, the eligible players' and every player's bias no larger; left
 //            out, the stat exactly as without it): sk, the snaps-based rate's prior weighed as K games at his
@@ -322,7 +329,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN };
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -339,11 +346,11 @@ const TRY_CS = false;
 // fit about 17% (1005s to 1175s locally, every hourly run): only pl is searched now, sk and rx kept in the code
 // for role-backtest.mjs --set to force (back in this list to try them again))
 const CARRY = ['pl'];
-// (the role and work share's searched (audit #2, 2026-10-12): ab alone. ro and ot were left out on every stat
-// they were tried on and searched for nothing every hourly run (the five stats' fit 837s to 994s locally): kept
-// in the code for role-backtest.mjs --set to force (back in this list to try them again); the flag
-// c_aheadOut off every stat's ctx (props.mjs CARRYING))
-const SHARE = ['ab'];
+// (the role and work share's searched (audit #2, 2026-10-12): none. ro, ab and ot were left out on every stat
+// they were tried on and searched for nothing every hourly run (the five stats' fit 837s to 994s locally; ab
+// alone 721s to 786s on the dry run): kept in the code for role-backtest.mjs --set to force (back in this list
+// to try them again); the flag c_aheadOut off every stat's ctx (props.mjs CARRYING))
+const SHARE = [];
 // (the carryover's last season games read (pl: his last PL_N, where last season had PL_MIN or more), and his
 // last five's games (rx: this season's under RX_MIN))
 const PL_N = 8;
@@ -354,7 +361,7 @@ const RX_MIN = 3;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'ij', 'ab']);
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab']);
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left
 // hurt (1 - ij), the absence it takes (ia team games), and the returners' ramp on his game back to the power ir
@@ -682,12 +689,13 @@ export function makeModel(stat, params, env) {
       const priorShare = prev.tgn + 0.5 * older.tgn >= 6 && longTt > 0 ? longTg / longTt : null;
       if (T !== null && covered && (priorShare !== null || (cur.tgn >= 3 && cur.tt > 0))) {
         const Kt = K * T;
-        // (the next man up (rp with nu): his target share at least nu of the missing one's above him (his team's
-        // targets this season, matchups.mjs leadTgt), as his snap share is above: a TE2 whose TE1 is out gets the
-        // TE1's targets to share, not his own few (promoted tight ends' receiving yards ran 32% over their
-        // projections, 49% held out, 2026-10-12, the volume base's share untouched by rp))
+        // (the next man up's target floor (nt, a late term of its own on rp's rows, fit apart from rp and nu):
+        // his target share at least nt of the missing one's above him (his team's targets this season,
+        // matchups.mjs leadTgt): a TE2 whose TE1 is out gets the TE1's targets to share, not his own few
+        // (promoted tight ends' receiving yards ran 32% over their projections, 49% held out, 2026-10-12, the
+        // volume base's share untouched by rp))
         const upT = upOf(row);
-        const floorT = params.rp && params.nu && upT.roleUp && upT.roleUp !== upT.role && upT.leadTgt > 0 ? params.nu * upT.leadTgt : 0;
+        const floorT = params.nt && upT.roleUp && upT.roleUp !== upT.role && upT.leadTgt > 0 ? params.nt * upT.leadTgt : 0;
         const shareS = Math.max(floorT, priorShare === null ? cur.tg / cur.tt : (cur.tg + Kt * priorShare) / (cur.tt + Kt));
         const rt = cur.trecent.reduce((t, x) => [t[0] + x[0], t[1] + x[1]], [0, 0]);
         const shareR = Math.max(floorT, cur.trecent.length >= 3 && rt[1] > 0 ? rt[0] / rt[1] : shareS);
@@ -791,10 +799,13 @@ export function makeModel(stat, params, env) {
     // are the role he's had with them out, the cut already in them: vacF on it would count it twice). A fill-in
     // still filling in ran 16% to 29% over the projection held out (2026-10-12: his last three's work 1.2x his
     // season's from an absence ahead, the absence still on), the base leaning on his season before it)
+    // (sameOn: the rows ab moves where it's on, read whether it's on or not: its gate's rows, the same both sides)
     let sameAvg = null;
-    if (params.ab && stat.snaps && Array.isArray(row.sameGames)) {
+    let sameOn = false;
+    if (stat.snaps && Array.isArray(row.sameGames)) {
       const vals = row.sameGames.map((g) => cur.byGame?.get(g)).filter(Number.isFinite);
-      if (vals.length >= AB_MIN) sameAvg = avg(vals);
+      sameOn = vals.length >= AB_MIN;
+      if (params.ab && sameOn) sameAvg = avg(vals);
     }
     const baseUsed = sameAvg === null ? base : (1 - params.ab) * base * vacF0 + params.ab * sameAvg;
     const vacF = sameAvg === null ? vacF0 : 1;
@@ -803,7 +814,7 @@ export function makeModel(stat, params, env) {
     // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
     const slF = middleF(params, raw);
     const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
-    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -1064,7 +1075,7 @@ const SL = [-0.1, -0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4];
 // (a regular above him out (c_aheadOut, 0 or 1): the next man up's lift on top of rp and the vacated work, to
 // 30%; the organic trend's power (ot))
 const AHEAD_OUT = [-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.3];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1097,6 +1108,7 @@ const has = (stat, key) =>
   : key === 'vol' ? !!stat.perTarget
   : key === 'dp' ? !!stat.draft
   : key === 'rp' ? !!(stat.snaps && stat.roles)
+  : key === 'nt' ? !!(stat.perTarget && stat.roles)
   : key === 'ij' || key === 'ot' || key === 'ab' ? !!stat.snaps
   : key === 'ro' ? !!(stat.snaps && stat.roles)
   : key === 'sk' ? !!(stat.snaps && stat.carry)
@@ -1164,7 +1176,7 @@ export function fitStat(stat, rows, env) {
   // and the injury return: the injury-driven terms first, the organic trend on what they leave)
   const AFTER_RP = ['c_aheadOut'];
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
-  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -1233,7 +1245,8 @@ export function fitStat(stat, rows, env) {
   const onOf = (key, t) => {
     if (key === 'rp') return (x) => !!x.row.roleUp && x.row.roleUp !== x.row.role;
     if (key === 'c_aheadOut') return (x) => (x.row.aheadOut ?? 0) > 0;
-    if (key === 'ab') return (x) => (x.row.sameGames?.length ?? 0) >= AB_MIN;
+    if (key === 'nt') return onOf('rp', t);
+    if (key === 'ab') return (x) => !!x.p.sameOn;
     if (key === 'ij') return (x) => isBack(x.row, t.ia);
     const i = ctxKeys(stat).indexOf(key.slice(2));
     return (x) => (x.p.ctx?.[i] ?? 0) > 0;
@@ -1345,6 +1358,11 @@ export function fitStat(stat, rows, env) {
     // to try)
     if (key === 'ro' && !(Number.isFinite(params.roleK) || params.rp)) {
       gains.ro = null;
+      continue;
+    }
+    // (nor the next man up's target floor without the volume base (vol))
+    if (key === 'nt' && !params.vol) {
+      gains.nt = null;
       continue;
     }
     const shape = { rk: params.rk ?? 0, rm };

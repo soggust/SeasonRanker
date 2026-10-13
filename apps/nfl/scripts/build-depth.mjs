@@ -537,6 +537,9 @@ async function buildSeason(season, players) {
         if (!behind.length) continue;
         const top = behind.reduce((best, id) => (share(id) > share(best) ? id : best), behind[0]);
         if (share(top) >= 0.5 && share(top) - share(s.depth[0]) >= 0.25) {
+          // (the chart's own order kept beside it (listed): the bettor's depth CHECK reads nflverse's order, the
+          // one it was measured on, libs/ranker/scripts/model/props.mjs DEPTH)
+          s.listed ??= [...s.depth];
           s.depth = [top, ...s.depth.filter((id) => id !== top)];
           starting.add(top);
           moved = true;
@@ -662,7 +665,9 @@ async function buildSeason(season, players) {
       teamGames: games.size || reg.filter((g) => [g.home_team, g.away_team].some((t) => t === code || (ALIAS[t] ?? t) === team)).length,
       front: now.front,
       personnel: personnel(teamSnaps),
-      slots: [...now.slots.values()].map(({ side, key, abb, name, depth }) => ({ side, key, abb, name, depth })),
+      slots: [...now.slots.values()].map(({ side, key, abb, name, depth, listed }) => ({ side, key, abb, name, depth, ...(listed ? { listed } : {}) })),
+      // (a spot the snaps reordered has the chart's own order in listed: this file says so for the bettor)
+      listedKept: true,
       players: Object.fromEntries(people),
       timeline,
     };

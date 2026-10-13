@@ -722,6 +722,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_midSeason: 'weeks 5 to 8',
       rp: 'next man up (projected in the role he steps into)',
       nu: "next man up: his share at least this much of the missing one's",
+      nt: "next man up: his target share at least this much of the missing one's",
       ij: 'back from injury (his eased games weigh less)',
       ia: 'back from injury: team games missed',
       ir: "back from injury: the returners' first game back",
