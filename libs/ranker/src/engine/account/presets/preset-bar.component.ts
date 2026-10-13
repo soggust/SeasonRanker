@@ -6,9 +6,8 @@ import { errorMessage } from '../account-helpers';
 import { PRESET_NAME_MAX, PresetSettings, USER_PRESET, UserPreset, presetNameProblem, presetSettings, samePreset } from '../lists/lists-helpers';
 import { PresetsStore } from './presets.store';
 
-// (the presets dropdown's actions, beside the presets: Save as preset…, or Sign in to save one)
+// (the presets dropdown's action, beside the presets: Save as preset…, signed in only)
 export const SAVE_PRESET = 'action:save';
-export const SIGN_IN_PRESET = 'action:signin';
 
 type Dialog = { mode: 'save' } | { mode: 'rename'; preset: UserPreset } | { mode: 'delete'; preset: UserPreset };
 

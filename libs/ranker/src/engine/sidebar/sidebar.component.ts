@@ -22,7 +22,7 @@ import {
 } from '@sport/positions';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { PresetsStore } from '@ranker/engine/account/presets/presets.store';
-import { PresetBarComponent, SAVE_PRESET, SIGN_IN_PRESET } from '@ranker/engine/account/presets/preset-bar.component';
+import { PresetBarComponent, SAVE_PRESET } from '@ranker/engine/account/presets/preset-bar.component';
 import { USER_PRESET, UserPreset } from '@ranker/engine/account/lists/lists-helpers';
 
 // A sidebar row: one stat, or a pair (e.g. rushing + receiving yards) shown as a parent slider with
@@ -69,7 +69,6 @@ export class SidebarComponent implements OnInit {
   readonly account = inject(AccountService);
   private readonly presetsStore = inject(PresetsStore);
   readonly savePreset = SAVE_PRESET;
-  readonly signInPreset = SIGN_IN_PRESET;
   readonly userPresetValue = (preset: UserPreset) => USER_PRESET + preset.id;
   private presetShown: SkillPreset | 'custom' | null = null;
 
@@ -198,8 +197,8 @@ export class SidebarComponent implements OnInit {
 
   onSkillPresetChange(bar?: PresetBarComponent): void {
     const preset = this.skillPresets[this.position];
-    // Save as preset… (or Sign in), then the dropdown as it was; a user preset
-    if (preset === SAVE_PRESET || preset === SIGN_IN_PRESET) {
+    // Save as preset…, then the dropdown as it was; a user preset
+    if (preset === SAVE_PRESET) {
       this.skillPresets[this.position] = this.presetShown;
       bar?.saveNew();
       return;
