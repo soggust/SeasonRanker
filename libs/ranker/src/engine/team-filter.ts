@@ -13,25 +13,35 @@ interface TeamRow {
 }
 
 export interface TeamOption {
-  // (the row's teamLogo: what the filter matches on)
+  // (the team, as teamKey has it: what the pick and the filter match on)
+  key: string;
+  // (a logo of its from the list, for drawing)
   logo: string;
   name: string;
+}
+
+// A team that stays the same team from season to season: its logo's file without an era (the NHL's
+// BOS_20232024 and BOS_20082009-20222023 are both BOS, and WSH_secondary is WSH)
+export function teamKey(logo: string | undefined): string | null {
+  const file = logoFile(logo) ?? logo;
+  return file ? file.replace(/_(\d{8}(-\d{8})?|secondary)$/, '') : null;
 }
 
 // The teams in a list's rows (a traded player under the team on his row), A to Z by name. nameOf: a
 // team's name from one of its rows, or null (then another of its rows, then the logo's file)
 export function teamOptions<T extends TeamRow>(rows: T[], nameOf: (row: T) => string | null | undefined): TeamOption[] {
-  const names = new Map<string, string | null>();
+  const teams = new Map<string, { logo: string; name: string | null }>();
   for (const row of rows) {
-    if (!row.teamLogo || names.get(row.teamLogo)) continue;
-    names.set(row.teamLogo, nameOf(row) ?? null);
+    const key = teamKey(row.teamLogo);
+    if (!key || teams.get(key)?.name) continue;
+    teams.set(key, { logo: teams.get(key)?.logo ?? row.teamLogo, name: nameOf(row) ?? null });
   }
-  return [...names]
-    .map(([logo, name]) => ({ logo, name: name ?? logoFile(logo) ?? logo }))
+  return [...teams]
+    .map(([key, { logo, name }]) => ({ key, logo, name: name ?? key }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// The grid's rows with a team picked: its ranked rows, then its UR ones, each ranked row's place in the
+// The grid's rows with a team picked (its teamKey): its ranked rows, then its UR ones, each ranked row's place in the
 // whole list (0 the first) and in the team's. No team: everyone, as ranked.
 export interface TeamRows<T> {
   rows: T[];
@@ -43,8 +53,8 @@ export interface TeamRows<T> {
 export function teamRows<T extends TeamRow>(ranked: T[], unranked: T[], team: string | null): TeamRows<T> {
   const leagueIndex = new Map(ranked.map((row, i) => [row, i]));
   if (!team) return { rows: unranked.length ? [...ranked, ...unranked] : ranked, ranked: ranked.length, leagueIndex };
-  const own = ranked.filter((row) => row.teamLogo === team);
-  return { rows: [...own, ...unranked.filter((row) => row.teamLogo === team)], ranked: own.length, leagueIndex };
+  const own = ranked.filter((row) => teamKey(row.teamLogo) === team);
+  return { rows: [...own, ...unranked.filter((row) => teamKey(row.teamLogo) === team)], ranked: own.length, leagueIndex };
 }
 
 // "1st", "2nd", "13th"
@@ -59,25 +69,25 @@ export function teamPlaceText(place: number, league: number, team: string): stri
   return `${ordinal(place)} on the ${team} · #${league} in the league`;
 }
 
-// The pick, for one sport at a time: asked for by another sport, it's All again
+// The pick (a teamKey), for one sport at a time: asked for by another sport, it's All again
 export class TeamPick {
   private sport: string | null = null;
-  private logo: string | null = null;
+  private key: string | null = null;
 
   team(sport: string): string | null {
-    return sport === this.sport ? this.logo : null;
+    return sport === this.sport ? this.key : null;
   }
 
-  pick(sport: string, logo: string | null): void {
+  pick(sport: string, key: string | null): void {
     this.sport = sport;
-    this.logo = logo;
+    this.key = key;
   }
 
   // (another season or tab: kept while the team is in its list, else All)
   keep(sport: string, options: TeamOption[]): boolean {
-    const logo = this.team(sport);
-    if (!logo || options.some((option) => option.logo === logo)) return false;
-    this.logo = null;
+    const key = this.team(sport);
+    if (!key || options.some((option) => option.key === key)) return false;
+    this.key = null;
     return true;
   }
 }
@@ -100,14 +110,19 @@ export class TeamFilterService {
     return this.pickState.team(SPORT.id);
   }
 
-  get teamName(): string | null {
+  // (the picked team's option: its name, and its logo in the season shown)
+  get picked(): TeamOption | null {
     const team = this.team;
-    return team ? (this.options.find((option) => option.logo === team)?.name ?? null) : null;
+    return team ? (this.options.find((option) => option.key === team) ?? null) : null;
   }
 
-  pick(logo: string | null): void {
-    if (logo === this.team) return;
-    this.pickState.pick(SPORT.id, logo);
+  get teamName(): string | null {
+    return this.picked?.name ?? null;
+  }
+
+  pick(key: string | null): void {
+    if (key === this.team) return;
+    this.pickState.pick(SPORT.id, key);
     this.changed$.next();
   }
 

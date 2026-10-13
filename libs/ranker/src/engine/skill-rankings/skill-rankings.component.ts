@@ -182,10 +182,13 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       if (changed && this.position) this.ngOnChanges();
     });
     service.seasonLoading$.pipe(takeUntilDestroyed()).subscribe((loading) => (this.seasonLoading = loading));
-    // (a team picked or let go: the same list, more or fewer of its rows shown)
+    // (a team picked or let go: the same list, more or fewer of its rows shown, and Compare's picks
+    // just the rows still shown)
     this.teams.changed$.pipe(takeUntilDestroyed()).subscribe(() => {
       this.closeWhy();
       this.showUnranked(this.unrankedList);
+      const shown = new Set(this.gridRows.map((p) => p.gsisId));
+      this.picked = this.picked.filter((id) => shown.has(id));
     });
 
     // The sport's values from other tabs changed (SPORT.connect: the NFL's team grades): they show,

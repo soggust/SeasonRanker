@@ -125,11 +125,11 @@
           (click)="$event.stopPropagation()"
         >
           <mat-select-trigger
-            >@if (teams.team; as logo) {<img class="team-pick-logo" [class.white-logo]="logoWhite(logo)" [src]="seasonLogo(logo)" [alt]="teams.teamName ?? ''" />}</mat-select-trigger
+            >@if (teams.picked; as team) {<img class="team-pick-logo" [class.white-logo]="logoWhite(team.logo)" [src]="seasonLogo(team.logo)" [alt]="team.name" />}</mat-select-trigger
           >
           <mat-option [value]="null">All</mat-option>
-          @for (team of teams.options; track team.logo) {
-            <mat-option [value]="team.logo"
+          @for (team of teams.options; track team.key) {
+            <mat-option [value]="team.key"
               ><img class="team-option-logo" [class.white-logo]="logoWhite(team.logo)" [src]="seasonLogo(team.logo)" alt="" />{{ team.name }}</mat-option
             >
           }
