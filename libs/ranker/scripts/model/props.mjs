@@ -304,7 +304,11 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // (his side's margin by the betting lines (mSpread: the game's spread, per 10 points, a favorite's over 0; 0
 // without the lines): the game flow the market sees, a favorite protecting a lead and an underdog forcing
 // throws. A late flag (project.mjs MIN_GAIN) on the whole stat's gate. The history's lines are nflverse's
-// closing ones (run.mjs nflMarket: a mild look-ahead, the live ones the book's now, hours before the close).
+// closing ones (nflMarket, below: a mild look-ahead; the live one is the book's when the bet goes out, days or
+// hours before the close by the bet's window, leagues.mjs TIMING, so it may not have the late news yet: a
+// starter ruled out. At -0.1 per 10 points, about 1% a 3-point move). Live, the spread alone (row.mktSpread,
+// run.mjs), the total not needed; no spread at all where the fit kept it, a CHECK, not a pick'em's projection.
+// Judged on each sign's rows' bias too (project.mjs SIGNED: the favorites' and the underdogs').
 // Measured 2026-10-12 (audit #4) on every passing, carrying and receiving stat: kept on interceptions alone
 // (-0.1: a 7-point favorite's 7% fewer; held out +0.0011, 0.5521 to 0.551, the bias 0.0068 to 0.006); left
 // out on the bias (passing TDs 0.05 +0.0009, receiving yards 0.05 +0.0005, rush+rec yards 0.05 +0.001: each
@@ -458,28 +462,43 @@ export function marketPts(total, homeMargin) {
   return h > 0 && a > 0 ? [h, a] : null;
 }
 
+// A row's home side's margin by the betting lines: the spread alone where it has it (mktSpread, live), else
+// its implied points' (mkt, the history's); null without either
+export function spreadOf(row) {
+  if (Number.isFinite(row?.mktSpread)) return row.mktSpread;
+  return row?.mkt && Number.isFinite(row.mkt[0]) && Number.isFinite(row.mkt[1]) ? row.mkt[0] - row.mkt[1] : null;
+}
+
 // The NFL history's betting lines as implied points (props.mjs marketPts), by ESPN's game id: nflverse's
 // schedule (spread_line: the home side's margin; total_line), the props' market game flow (project.mjs mk,
 // mSpread). These are the closing lines, a mild look-ahead against the line a bet is priced on (the book's
-// now, hours before the close; nflverse keeps no opening line): the fit sees a little more news than live does.
-// A game whose sides nflverse has the other way round (its final's score against ESPN's) read swapped; any
-// failure: none (the market's terms not fit, the props as before)
+// when the bet goes out, days or hours before the close by its window; nflverse keeps no opening line): the
+// fit sees a little more news than live does. Any failure: none (the market's terms not fit, the props as before)
 export async function nflMarket(history) {
   try {
-    const byId = new Map(history.map((g) => [String(g.id), g]));
-    const out = new Map();
-    for (const x of await nflverseGames()) {
-      const g = byId.get(String(x.espn));
-      const pts = g && marketPts(Number(x.total_line), Number(x.spread_line));
-      if (!pts || x.spread_line === '' || x.total_line === '') continue;
-      const swapped = g.final && Number.isFinite(g.hs) && x.home_score !== '' && Number(x.home_score) !== g.hs && Number(x.away_score) === g.hs;
-      out.set(String(g.id), swapped ? [pts[1], pts[0]] : pts);
-    }
-    return out.size ? out : null;
+    return marketOf(history, await nflverseGames());
   } catch (err) {
     console.warn(`nfl: the betting lines' history not read (${err.message})`);
     return null;
   }
+}
+
+// nflverse's schedule rows to the history's games' implied points (nflMarket), by ESPN's id: a game with a
+// blank line skipped (Number('') is 0: a blank spread would read as a pick'em), and a game whose sides nflverse
+// has the other way round (its final's score against ESPN's) read swapped; none matched, null
+export function marketOf(history, games) {
+  const byId = new Map(history.map((g) => [String(g.id), g]));
+  const out = new Map();
+  const blank = (v) => v === undefined || v === null || String(v).trim() === '';
+  for (const x of games ?? []) {
+    const g = byId.get(String(x.espn));
+    if (!g || blank(x.spread_line) || blank(x.total_line)) continue;
+    const pts = marketPts(Number(x.total_line), Number(x.spread_line));
+    if (!pts) continue;
+    const swapped = g.final && Number.isFinite(g.hs) && !blank(x.home_score) && Number(x.home_score) !== g.hs && Number(x.away_score) === g.hs;
+    out.set(String(g.id), swapped ? [pts[1], pts[0]] : pts);
+  }
+  return out.size ? out : null;
 }
 
 // A context term's value for a game, from its info (context.mjs featurize: the weather, starters, schedule),
@@ -503,8 +522,13 @@ export const CTX = {
   qb1Out: (info, home, pts, row) => (Number.isFinite(row?.qb1Out) ? row.qb1Out : 0),
   // (a regular above him at his position out (matchups.mjs aheadOut, 0 or 1; a questionable one not))
   aheadOut: (info, home, pts, row) => (Number.isFinite(row?.aheadOut) ? row.aheadOut : 0),
-  // (his side's margin by the betting lines, per 10 points: a favorite's over 0 (row.mkt, marketPts); 0 without)
-  mSpread: (info, home, pts, row) => (row?.mkt && Number.isFinite(row.mkt[0]) && Number.isFinite(row.mkt[1]) ? ((home ? 1 : -1) * (row.mkt[0] - row.mkt[1])) / 10 : 0),
+  // (his side's margin by the betting lines, per 10 points: a favorite's over 0. From the spread alone where the
+  // row has it (row.mktSpread: the home side's margin, live), else the implied points' (row.mkt, marketPts: the
+  // history's); 0 without (live, priceProps CHECKs that where the fit kept it: spreadBlind))
+  mSpread: (info, home, pts, row) => {
+    const m = spreadOf(row);
+    return m === null ? 0 : ((home ? 1 : -1) * m) / 10;
+  },
   // (his team's 5th to 8th game of the season (matchups.mjs teamGame). The role backtest (2026-10-12, the week
   // table) had the established starters' receiving 3% to 13% over the projection there (held out 7% to 19%),
   // every eligible player's 2% to 4%, their actual over their own season so far (+3% receiving yards) and at
@@ -855,7 +879,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const pos = sport === 'mlb' ? (prop.stat.pitcher ? 'SP' : 'B') : (idx.pos(pid) ?? a.pos);
     // (a quarterback with a prop on the board taken as his team's starter (qbStart: the history's passer), his
     // projection from his starts where the fit kept it; one who isn't is the role guard's backup-qb CHECK)
-    const row = { pid, name: a.name, pos, date: game.date, season: game.season, team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {}, mkt: exp.market ?? null, ...(sport === 'nfl' && pos === 'QB' ? { qbStart: true } : {}) };
+    const row = { pid, name: a.name, pos, date: game.date, season: game.season, team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {}, mkt: exp.market ?? null, mktSpread: Number.isFinite(exp.marketSpread) ? exp.marketSpread : null, ...(sport === 'nfl' && pos === 'QB' ? { qbStart: true } : {}) };
     // (his role and the defense's funnel, pace and target split, as of now; and the work his position group's
     // regulars missing this game leave: out, doubtful or on IR on the injury report, or no longer on the team's
     // roster (traded, released: the history counts them missing from its games, so the price does too), a
@@ -906,6 +930,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const mu = Math.max(0.05, (f.params.scale ?? 1) * raw * slF);
     // (a weather term the fit kept, at an outdoor game whose forecast failed: the projection can't see it)
     const weatherBlind = !!info?.weather?.missing && ctxKeysOf.some((k) => WEATHER_CTX.has(k) && f.params[`c_${k}`]);
+    // (the lines' spread a term the fit kept (c_mSpread) at a game with no spread on the board: it'd read 0, a
+    // pick'em's projection the history never had (every one of its games has its lines))
+    const spreadBlind = !!f.params.c_mSpread && ctxKeysOf.includes('mSpread') && spreadOf(row) === null;
     // (the weather moving his projection 10% or more either way: a forecast's error grows with it, rain's
     // most of all, and the fit's sizes are from what fell, not what was forecast)
     const weatherF = ctxFactor(f.stat, f.params, ctxV.map((v, i) => (WEATHER_CTX.has(ctxKeysOf[i]) ? v : 0)));
@@ -1089,6 +1116,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     else if (Math.abs(moved) >= limit) guard = { why: `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened` };
     else if (status.why) guard = { why: status.why };
     else if (weatherBlind) guard = { why: 'no forecast for an outdoor game: the weather its projection weighs unseen' };
+    else if (spreadBlind) guard = { why: "no spread on the board for the game: the betting lines' margin its projection weighs unseen" };
     else if (weatherBig) guard = { why: `the forecast moves his projection ${weatherF > 1 ? '+' : ''}${Math.round((weatherF - 1) * 100)}%: priced off a forecast` };
     else if (qShift >= 0.15) guard = { why: `teammate questionable (${out.qNames.join(', ') || 'at his position'}): his share depends on it` };
     else if (oppUnknown) guard = { why: sport === 'nhl' ? "no probable goalie listed for the other side: his projection weighs one assumed" : "the other side's starting pitcher not named: his projection weighs him" };

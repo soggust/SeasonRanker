@@ -256,7 +256,7 @@ function driverWhat(name, bet, sheet, raw) {
 
 const FLAG_CTX = new Set(['rb1Out', 'newCoach', 'qb1Out']);
 // (the context term that moved it most: its size times its value where the fit's sizes are known, else its value)
-function ctxWhat(bet, sheet) {
+export function ctxWhat(bet, sheet) {
   const ctx = bet.projection?.ctx;
   if (!ctx || typeof ctx !== 'object') return "the game's context";
   const P = paramsOf(bet, sheet._params) ?? {};
@@ -292,6 +292,8 @@ function ctxWhat(bet, sheet) {
     oppSp: 'the pitcher he faces',
     usage: 'teammates out',
     blowout: 'the chance of a blowout',
+    // (his side's margin by the betting lines, per 10 points: a favorite's over 0)
+    mSpread: v > 0 ? `${sheet.bet.team ?? 'his team'} favored by ${fmt.num(v * 10)} by the betting lines` : `${sheet.bet.team ?? 'his team'} a ${fmt.num(-v * 10)}-point underdog by the betting lines`,
   };
   return words[k] ?? "the game's context";
 }

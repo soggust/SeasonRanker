@@ -99,8 +99,11 @@ export function linesOf(e) {
     const n = Number(String(v ?? '').replace('+', ''));
     return Number.isFinite(n) && n !== 0 ? n : null;
   };
+  // (a missing or blank line none, not 0: Number('') is 0, a pick'em spread or a total of 0 that wasn't posted)
   const line = (v) => {
-    const n = Number(String(v ?? '').replace(/^[ou]/, ''));
+    const s = String(v ?? '').trim().replace(/^[ou]/, '');
+    if (!s) return null;
+    const n = Number(s);
     return Number.isFinite(n) ? n : null;
   };
   const now = (x) => x?.close ?? x?.open ?? null;

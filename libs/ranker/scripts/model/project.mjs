@@ -133,7 +133,9 @@
 //            (mk 1/b 0.5) +0.0013 and passing TDs +0.0016 held out, each one's bias larger (0.33 to -0.81
 //            yards; -0.045 to -0.053); completions -0.0044, receiving yards -0.0004 at mk 0.5; the rest not
 //            taken on the fit window. Off the search since (TRY_MK). The lines' spread as a flag (props.mjs
-//            mSpread) is a context term: kept on interceptions
+//            mSpread) is a context term: kept on interceptions, its favorites' and its underdogs' held-out
+//            bias each no larger too (SIGNED). The team's volume from the market (the vol base's team
+//            targets, the passing attempts, by the lines' implied points) not measured: skipped, a next step
 //   matchup  the NFL defense's funnel (its opponents' pass rate over expected against it over their own, matchups.mjs): a
 //            volume term, exp(fun x funnel) for a passing or receiving stat, exp(-fun x funnel) for a rushing one;
 //            its pace (its opponents' plays over their usual) to the power pc; the share of targets it allows to
@@ -370,6 +372,13 @@ const RX_MIN = 3;
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
 const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab']);
+// (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
+// an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
+// sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
+// every player's, SUBGROUP_N or more each), each one's held-out bias no larger: a size that over-corrects one
+// side and under-corrects the other passes the whole stat's gate alone)
+const SIGNED = new Set(['c_mSpread']);
+const SIGNED_AT = 0.3;
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left
 // hurt (1 - ij), the absence it takes (ia team games), and the returners' ramp on his game back to the power ir
@@ -378,7 +387,9 @@ const NU = [0, 0.5, 0.75, 1];
 // (the market's game flow (mk): the script read that far from the betting lines' implied team points (1: from
 // them alone, 0.5: half the way, on the log), its power b searched with it: b was fit on the game model's
 // script. Searched only with TRY_MK: kept on no stat (2026-10-12, header), its search ten replays a stat and
-// the NFL props' fit 693s to 781s locally; true to try it again)
+// the NFL props' fit 693s to 781s locally; true to try it again. The lines' average it's read over (props.mjs
+// envFor avgMkt) spans the whole history, the held-out games' too, as the game model's own avg does: searched
+// again, take it from the fit window's rows alone first, or its held-out check sees a little of the test window)
 const MK = [0.5, 1];
 const TRY_MK = false;
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
@@ -1177,15 +1188,19 @@ function fitRecal(pairs) {
   return best.cal;
 }
 
+// A stat's context terms to fit (c_<key>): its ctx's, the betting lines' spread (c_mSpread) only where the
+// history has the lines (env.mktN: the rows with them; without, it reads 0 on every row and isn't fit)
+export const fitCtxs = (stat, env) => ctxKeys(stat).map((k) => `c_${k}`).filter((k) => k !== 'c_mSpread' || env?.mktN > 0);
+
 // A stat's settings fit (one at a time, twice round) on the fit window, then checked on the last 30%
 export function fitStat(stat, rows, env) {
   const sorted = [...rows].sort((a, b) => a.date.localeCompare(b.date));
   if (sorted.length < 300) return null;
   const at = (q) => sorted[Math.floor(sorted.length * q)].date.slice(0, 10);
   const cuts = [at(0.3), at(0.7)];
-  // (the betting lines' terms (mk, c_mSpread) only where the history has the lines (env.mktN: the rows with
-  // them); without, nothing to fit, the stat as before)
-  const ctxs = env.ctx ? ctxKeys(stat).map((k) => `c_${k}`).filter((k) => k !== 'c_mSpread' || env.mktN > 0) : [];
+  // (the betting lines' terms (mk, c_mSpread) only where the history has the lines (fitCtxs, env.mktN: the rows
+  // with them); without, nothing to fit, the stat as before)
+  const ctxs = env.ctx ? fitCtxs(stat, env) : [];
   const aPos = aKeys(stat);
   let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), mk: 0 };
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
@@ -1270,7 +1285,12 @@ export function fitStat(stat, rows, env) {
     const i = ctxKeys(stat).indexOf(key.slice(2));
     return (x) => (x.p.ctx?.[i] ?? 0) > 0;
   };
-  const heldOut = (p, split = null) => {
+  // (a signed term's sides (SIGNED): its favorites' rows and its underdogs', by its value on the row)
+  const sidesOf = (key) => {
+    const i = ctxKeys(stat).indexOf(key.slice(2));
+    return [(x) => (x.p.ctx?.[i] ?? 0) > SIGNED_AT, (x) => (x.p.ctx?.[i] ?? 0) < -SIGNED_AT];
+  };
+  const heldOut = (p, split = null, sides = null) => {
     const o = replayStat(stat, sorted, p, env, cuts).out;
     const pairs = linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p);
     const cal = fitRecal(pairs);
@@ -1284,6 +1304,10 @@ export function fitStat(stat, rows, env) {
       const on = split;
       const a = allOf(o);
       parts = { on: biasOf(a.filter(on)), onElig: biasOf(a.filter((x) => on(x) && x.row.eligible !== false)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
+    }
+    if (sides) {
+      const a = allOf(o);
+      parts = { ...(parts ?? {}), sides: sides.map((f) => biasOf(a.filter(f))) };
     }
     return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, parts };
   };
@@ -1402,10 +1426,11 @@ export function fitStat(stat, rows, env) {
     const offP = { ...params, r: s0.r };
     offP.scale = scaleOf(offP);
     const sub = SUBGROUP.has(key) ? onOf(key, v) : null;
-    const off = heldOut(offP, sub);
+    const sides = SIGNED.has(key) ? sidesOf(key) : null;
+    const off = heldOut(offP, sub, sides);
     const tryP = { ...params, ...v, r: sBest.r };
     tryP.scale = scaleOf(tryP);
-    const tried = heldOut(tryP, sub);
+    const tried = heldOut(tryP, sub, sides);
     gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
     const fine = (a, b, tol = 0) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) + tol ? null : 'larger');
     const fails = [];
@@ -1436,8 +1461,16 @@ export function fitStat(stat, rows, env) {
         if (!(Number.isFinite(a) && Number.isFinite(b))) fails.push('fifths not measured');
         else if (!(a < b)) fails.push('fifths');
       }
+      // (a signed term's each side no larger too (SIGNED): the favorites' rows, then the underdogs')
+      if (sides) {
+        ['the favorites', 'the underdogs'].forEach((name, j) => {
+          const [o, t] = [off.parts?.sides?.[j], tried.parts?.sides?.[j]];
+          const r = (o?.n ?? 0) < SUBGROUP_N ? 'not measured' : fine(t?.bias, o?.bias);
+          if (r) fails.push(r === 'larger' ? `${name}' bias` : `${name}' bias not measured`);
+        });
+      }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
