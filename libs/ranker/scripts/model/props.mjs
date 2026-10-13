@@ -703,8 +703,9 @@ const MIDDLE = { middle: true };
 // Left out: passing yards (-0.0003), attempts (+0.0021) and completions (+0.0015) each with the whole stat's log loss
 // worse, passing TDs and interceptions not taken on the fit window, carries (+0.0021: the whole stat's worse, its own
 // eligible rows' bias larger), receptions (+0.0044: its own rows' bias larger, they ran over). The NBA's marked: its
-// history one season, no prior of his own on any row, so none held out and not searched (project.mjs spHeld) till
-// 2026-27's openers are in its held-out window. The mark back on a stat to try it again)
+// history one season, no prior of his own on any row, so not searched (project.mjs spHeld, spFit) till one season's
+// openers are in its fit window (its size picked there) and the next's held out: 2026-27's go to the held-out window
+// first, so 2027-28 at the soonest. The mark back on a stat to try it again)
 const START = { start: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 export const STATS = {

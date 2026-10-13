@@ -209,8 +209,13 @@
 //            season): the gain its early games' (the check's lines need 3 of this season's, so it barely sees
 //            them): their log loss at lines at the median of his last 16 games, any season, DRAFT_GAIN or more on
 //            SUBGROUP_N lines; their bias smaller, their eligible rows' and the rest's no larger (SUBGROUP_TOL);
-//            and the whole stat's held-out log loss no worse. Not searched with fewer than SUBGROUP_N such games
-//            held out (the NBA's history one season so far). Measured 2026-10-13 (held out the 2024 to 2026
+//            and the whole stat's held-out log loss no worse. Those lines are a naive book's (his usual, no shade
+//            for age or a move, which is what sp adds; the real books shade some): its gain an upper bound on the
+//            edge against them (the history has no prop lines to read it at). Not searched with fewer than
+//            SUBGROUP_N such games held out or on the fit window (its size is picked there; the NBA's history one
+//            season so far: 2026-27's openers held out first, searched once a season's are in the fit window and the
+//            next's held out, 2027-28 at the soonest). Its table learned and read on a stat marked start only (the
+//            rest pay nothing). Measured 2026-10-13 (held out the 2024 to 2026
 //            openers): kept on rushing yards (sp 1, early +0.0016, -5.5% to -3.3% actual over projected, n 1259;
 //            the whole stat 0.6479 to 0.6478), receiving yards (0.5, +0.0039, -2.4% to -2.2%, n 1617; 0.6497 to
 //            0.6493) and rush+rec yards (1, +0.0081, -3.5% to -2.5%, n 2154; 0.6538 to 0.6527), each one's eligible
@@ -733,6 +738,8 @@ const SP_CAP = 0.5;
 export const SP_AGES = [25, 28, 31];
 export const SP_EARLY = 4;
 const SP_LINE_N = 8;
+// (each row's age bucket, read once (makeModel ageKey))
+const SP_AGE_OF = new WeakMap();
 const SP_LINE_LAST = 16;
 // (the learned split (vl) too, on the rows with work missing tonight (matchups.mjs vac over 0))
 // (the flags on a few of the rows, each judged on its own rows' bias (fitStat): the held-out rows it's on, this
@@ -916,16 +923,23 @@ export function makeModel(stat, params, env) {
   // runs at (actual over base, all of them), so a cell holds what the prior's games miss past the stat's own
   // lean: g = sum of w(v - R b) over sum of w^2 b, a cell pulled toward his position's and that toward the whole
   // stat's by SP_M games' worth, held to SP_CAP. Applied (params.sp) as (1 + g)^(sp x priorW) on his base: in
-  // full on a prior-only game, fading as his season's games come in. Learned whether or not it's on)
+  // full on a prior-only game, fading as his season's games come in. Learned whether or not it's on, on a stat
+  // marked start (props.mjs START) only: the rest never read it, and its keys and tallies cost every replay)
+  const SP_ON = !!stat.start;
   const spCells = new Map();
   const spAll = { v: 0, b: 0 };
   const bornOf = (row) => row.born ?? players.get(row.pid)?.born ?? null;
+  // (his age's bucket read once a row (SP_AGE_OF): the same every replay, his birth date his row's or his earlier
+  // games')
   const ageKey = (row) => {
+    const hit = SP_AGE_OF.get(row);
+    if (hit !== undefined) return hit;
     const born = bornOf(row);
     const age = born ? (Date.parse(row.date) - Date.parse(born)) / (365.25 * 864e5) : NaN;
-    if (!Number.isFinite(age)) return 'u';
-    const i = SP_AGES.findIndex((a) => age < a);
-    return i < 0 ? `${SP_AGES[SP_AGES.length - 1]}+` : i === 0 ? `<${SP_AGES[0]}` : `${SP_AGES[i - 1]}-${SP_AGES[i] - 1}`;
+    const i = Number.isFinite(age) ? SP_AGES.findIndex((a) => age < a) : null;
+    const k = i === null ? 'u' : i < 0 ? `${SP_AGES[SP_AGES.length - 1]}+` : i === 0 ? `<${SP_AGES[0]}` : `${SP_AGES[i - 1]}-${SP_AGES[i] - 1}`;
+    SP_AGE_OF.set(row, k);
+    return k;
   };
   // (his team before this season: the one he ended last season with (from, kept at the season's turn), or, his
   // first game of a season not learned yet (live, a season's opener), his latest)
@@ -1229,7 +1243,7 @@ export function makeModel(stat, params, env) {
     // (the start-of-season prior (sp): a veteran's base (his own longer run his prior) by his cell's learned level
     // to the power sp x the prior's weight in it; none where his prior is the position's (a rookie's: the draft's
     // prior, dp) or the prior's weight unknown)
-    const spKeys = longN >= 10 && Number.isFinite(priorW) && priorW > 0 ? spLevels(row, pl) : null;
+    const spKeys = SP_ON && longN >= 10 && Number.isFinite(priorW) && priorW > 0 ? spLevels(row, pl) : null;
     const spG = spKeys ? spRead(spKeys) : 0;
     const spF = spKeys && params.sp ? Math.pow(1 + spG, params.sp * priorW) : 1;
     const base = spF * trendF * rampF * ((1 - params.w) * rate + params.w * recent);
@@ -1322,13 +1336,16 @@ export function makeModel(stat, params, env) {
       if (params.ab && sameOn) sameAvg = avg(vals);
     }
     const baseUsed = sameAvg === null ? base : (1 - params.ab) * base * vacF0 + params.ab * sameAvg;
+    // (the base as it would be without the start-of-season prior's factor (sp: what its table learns against, so
+    // the table's the same on or off; the same absence's blend (ab) with his base before it))
+    const spB0 = spF === 1 || sameAvg === null ? baseUsed / spF : (1 - params.ab) * (base / spF) * vacF0 + params.ab * sameAvg;
     const vacF = sameAvg === null ? vacF0 : 1;
     const oppA = oppAOf(row);
     const raw = factorProduct(params, { base: baseUsed, opp, oppA, script, ctxF, funnelF, paceF, tgtF, vacF });
     // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
     const slF = middleF(params, raw);
     const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
-    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, sp: spKeys ? { cell: spKeys[2], g: spG, f: spF } : null, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, sp: spKeys ? { cell: spKeys[2], g: spG, f: spF, b0: spB0 } : null, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     // (a row's projection, its early exit's chance on it (exitQ, exitF; exitMix reads them where ex is on))
@@ -1344,7 +1361,7 @@ export function makeModel(stat, params, env) {
       const out = {};
       for (const [k, c] of spCells) {
         const keys = k === '*' ? ['*'] : k.startsWith('pos ') ? ['*', k] : ['*', `pos ${k.split('|')[0]}`, k];
-        out[k] = { n: c.n, g: Math.round(spRead(keys) * 1000) / 1000 };
+        out[k] = { n: c.n, ne: c.nw > 0 ? Math.round((c.sw * c.sw) / c.nw) : 0, g: Math.round(spRead(keys) * 1000) / 1000 };
       }
       return out;
     },
@@ -1404,16 +1421,17 @@ export function makeModel(stat, params, env) {
           // (the start-of-season prior's table (sp): the eligible players' games, each against his base without
           // the term's own factor, read against the stat's level (every eligible game's actual over base so far)
           // and weighed by the prior's weight in it, his levels each)
-          if (row.eligible !== false && before.base > 0) {
-            const b0 = before.base / (before.sp?.f ?? 1);
+          if (SP_ON && row.eligible !== false && before.base > 0) {
+            const b0 = before.sp?.b0 ?? before.base;
             if (before.sp && before.priorW > 0) {
               const R = spAll.b > 0 ? spAll.v / spAll.b : 1;
               const w = before.priorW;
               for (const k of spLevels(row, pl)) {
-                const c = spCells.get(k) ?? { num: 0, den: 0, nw: 0, n: 0 };
+                const c = spCells.get(k) ?? { num: 0, den: 0, nw: 0, sw: 0, n: 0 };
                 c.num += w * (v - R * b0);
                 c.den += w * w * b0;
                 c.nw += w * w;
+                c.sw += w;
                 c.n++;
                 spCells.set(k, c);
               }
@@ -1792,10 +1810,13 @@ export function fitStat(stat, rows, env) {
   const cuts = [at(0.3), at(0.7)];
   // (the start-of-season prior's early lines (sp): each row's at the median of his last SP_LINE_LAST games before
   // its day, any season, SP_LINE_N or more; and the held-out early games it's judged on counted before any replay
-  // (eligible, his first SP_EARLY of a season after the history's first, 10 games of his before it): too few
-  // and it isn't searched (the NBA's history one season so far: none))
+  // (eligible, his first SP_EARLY of a season after the history's first, 10 games of his before it), and the fit
+  // window's the same (spFit: its size is picked there, so with none there every size ties): too few of either
+  // and it isn't searched (the NBA's history one season so far: its first openers with a prior of their own,
+  // 2026-27's, are held out first; searched once a season's are in the fit window and the next's held out)
   const spLines = new Map();
   let spHeld = 0;
+  let spFit = 0;
   if (has(stat, 'sp')) {
     const hist = new Map();
     const first = sorted[0].season;
@@ -1813,7 +1834,10 @@ export function fitStat(stat, rows, env) {
         }
         const inSeason = h?.season === row.season ? h.inSeason : 0;
         const before = h ? h.vals.length - inSeason : 0;
-        if (day >= cuts[1] && row.eligible !== false && row.season > first && inSeason < SP_EARLY && before >= 10) spHeld++;
+        if (day >= cuts[0] && row.eligible !== false && row.season > first && inSeason < SP_EARLY && before >= 10) {
+          if (day >= cuts[1]) spHeld++;
+          else spFit++;
+        }
       }
       for (const row of batch) {
         const h = hist.get(row.pid) ?? { vals: [], season: row.season, inSeason: 0 };
@@ -2078,10 +2102,11 @@ export function fitStat(stat, rows, env) {
       continue;
     }
     // (nor the start-of-season prior without SUBGROUP_N held-out early games to judge it on (spHeld: a season
-    // after the history's first, his first SP_EARLY games, a run of his own before it))
-    if (key === 'sp' && spHeld < SUBGROUP_N) {
+    // after the history's first, his first SP_EARLY games, a run of his own before it), nor SUBGROUP_N on the fit
+    // window to pick its size on (spFit: none there, every size ties))
+    if (key === 'sp' && (spHeld < SUBGROUP_N || spFit < SUBGROUP_N)) {
       gains.sp = null;
-      floors.sp = { size: null, fails: ['too few early games held out'], held: spHeld };
+      floors.sp = { size: null, fails: [...(spHeld < SUBGROUP_N ? ['too few early games held out'] : []), ...(spFit < SUBGROUP_N ? ['too few early games on the fit window'] : [])], held: spHeld, fit: spFit };
       continue;
     }
     const spT0 = Date.now();
@@ -2122,7 +2147,7 @@ export function fitStat(stat, rows, env) {
     }
     gains[key] = null;
     if (!v) {
-      if (key === 'sp') floors.sp = { size: null, fails: ['not taken on the fit window'], held: spHeld, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
+      if (key === 'sp') floors.sp = { size: null, fails: ['not taken on the fit window'], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       continue;
     }
     const offP = { ...params, r: s0.r };
@@ -2202,7 +2227,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -2293,7 +2318,7 @@ export function fitStat(stat, rows, env) {
   const final = finalRun.out;
   // (the start-of-season prior's table as the history leaves it (sp: learned whether or not it's kept), for the
   // log)
-  const start = has(stat, 'sp') ? { table: finalRun.model.startTable(), held: spHeld } : null;
+  const start = has(stat, 'sp') ? { table: finalRun.model.startTable(), held: spHeld, fit: spFit } : null;
   // (the held-out numbers with no matchup or context terms at all, for the before and after)
   const base = optional.length ? heldOut({ ...params, ...allOff }).check : current.check;
   // (and every player's held-out games, eligible or not, a sanity check on the history's selection: an NFL

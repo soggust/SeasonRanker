@@ -4,10 +4,10 @@
 // Off, the model exactly as before; a rookie (the position's prior) and a row with no table untouched.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { makeModel, SP_EARLY } from '../libs/ranker/scripts/model/project.mjs';
+import { makeModel, fitStat, SP_EARLY } from '../libs/ranker/scripts/model/project.mjs';
 import { STATS } from '../libs/ranker/scripts/model/props.mjs';
 
-const STAT = { key: 'rec' };
+const STAT = { key: 'rec', start: true };
 const BASE = { K: 4, w: 0, a: 0, b: 0, roleK: Infinity, vc: 0 };
 const day = (season, g) => new Date(Date.UTC(season, 8, 1 + g * 7)).toISOString().replace('.000Z', 'Z');
 const row = (pid, season, g, v, extra = {}) => ({ pid, pos: 'WR', season, date: day(season, g), opp: 'o', team: 't1', game: `${pid}-${season}-${g}`, s: { rec: v }, ...extra });
@@ -24,8 +24,8 @@ function history() {
   }
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
-function model(params, rows = history()) {
-  const m = makeModel(STAT, params, {});
+function model(params, rows = history(), stat = STAT) {
+  const m = makeModel(stat, params, {});
   let i = 0;
   while (i < rows.length) {
     const d = rows[i].date.slice(0, 10);
@@ -92,4 +92,49 @@ test('sp\'s stats: the NFL\'s and the NBA\'s marked (the NBA\'s none held out ti
   assert.deepEqual(STATS.nba.filter((s) => s.start).map((s) => s.key), ['pts', 'reb', 'ast', 'fg3', 'pra']);
   assert.deepEqual(STATS.mlb.filter((s) => s.start), []);
   assert.deepEqual(STATS.nhl.filter((s) => s.start), []);
+});
+
+test('sp on a stat not marked start: no table read or learned, the projection the same', () => {
+  const un = { key: 'rec' };
+  const m = model({ ...BASE, sp: 1 }, history(), un);
+  const p = m.project(opener('old1', '1990-01-01'));
+  assert.equal(p.sp, null);
+  assert.deepEqual(m.startTable(), {});
+  assert.equal(p.mu, model(BASE, history(), un).project(opener('old1', '1990-01-01')).mu);
+  assert.equal(p.mu, model(BASE).project(opener('old1', '1990-01-01')).mu);
+});
+
+test('sp: the table learned with it on the same as off (learned against the base without its factor)', () => {
+  const on = model({ ...BASE, sp: 1 }).startTable();
+  const off = model(BASE).startTable();
+  assert.deepEqual(on, off);
+  assert.ok(off['WR|31+|same'].ne > 0 && off['WR|31+|same'].ne <= off['WR|31+|same'].n);
+});
+
+test('sp: a mid-season game on a new team reads the new cell (the team he ended last season with)', () => {
+  // (old1 moved at the turn: his 2026 games on t9; his 3rd of the season projected)
+  const rows = [...history(), row('old1', 2026, 0, 4, { born: '1990-01-01', team: 't9' }), row('old1', 2026, 1, 4, { born: '1990-01-01', team: 't9' })].sort((a, b) => a.date.localeCompare(b.date));
+  const m = model({ ...BASE, sp: 1 }, rows);
+  const third = { ...row('old1', 2026, 2, 0, { born: '1990-01-01', team: 't9' }) };
+  delete third.s;
+  const p = m.project(third);
+  assert.equal(p.sp.cell, 'WR|31+|new');
+  assert.ok(p.priorW < 1 && p.priorW > 0);
+  // (one who stayed: same)
+  const stay = [...history(), row('old2', 2026, 0, 4, { born: '1990-01-01' }), row('old2', 2026, 1, 4, { born: '1990-01-01' })].sort((a, b) => a.date.localeCompare(b.date));
+  const q = { ...row('old2', 2026, 2, 0, { born: '1990-01-01' }) };
+  delete q.s;
+  assert.equal(model({ ...BASE, sp: 1 }, stay).project(q).sp.cell, 'WR|31+|same');
+});
+
+test("sp's gate: too few early games held out or on the fit window, not searched and not set", () => {
+  // (two seasons: the 2025 openers all fall in the fit window (the last 30% held out is 2025's later games))
+  const fit = fitStat({ key: 'rec', start: true }, history().map((x) => ({ ...x, eligible: true })), {});
+  assert.ok(fit);
+  assert.ok(!fit.params.sp);
+  assert.equal(fit.floors.sp.size, null);
+  assert.ok(fit.floors.sp.fails.includes('too few early games held out'));
+  assert.equal(fit.floors.sp.held, 0);
+  assert.ok(fit.floors.sp.fit >= 100);
+  assert.equal(fit.start.held, 0);
 });

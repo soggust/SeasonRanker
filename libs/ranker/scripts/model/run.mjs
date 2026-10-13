@@ -803,12 +803,14 @@ async function fitTheProps(r) {
       if (ex) kept.push(`early exit at ${ex.size}: chance ${ex.q ?? 'n/a'} keeping ${ex.f ?? 'n/a'} (${ex.n} rows), low lines ${ll(ex.low[0])} to ${ll(ex.low[1])}, high rows ${hi(ex.high?.[0])} to ${hi(ex.high?.[1])}, all ${ex.logLoss[0]} to ${ex.logLoss[1]}, r ${ex.r[0]} to ${ex.r[1]} (${ex.seconds}s)${ex.fails.length ? `, left out: ${ex.fails.join(', ')}` : ''}`);
       // (the start-of-season prior's gate (project.mjs sp): the held-out early games it's judged on (his first 4 of a
       // season, a run of his own before it), their log loss at the early lines and actual over projected without it
-      // and at the size the search took, the whole stat's log loss, its seconds; and its table as the history leaves
-      // it, each level's read (under 0: the prior's games ran under the stat's level) and games, the cells with 200)
+      // and at the size the search took, the whole stat's log loss, its seconds, the fit window's early games; and its
+      // table as the history leaves it, each level's read (under 0: the prior's games ran under the stat's level), its
+      // games and their worth at the prior's weight (ne: (sum w)^2 / sum w^2, a December game little), the cells with
+      // 50 games' worth. Its lines a naive book's (his usual): the gain an upper bound on the edge at real lines)
       const sp = f.floors?.sp;
       if (sp || f.start) {
-        const lv = Object.entries(f.start?.table ?? {}).filter(([k, c]) => !k.includes('|') || c.n >= 200).sort(([a], [b]) => a.localeCompare(b)).map(([k, c]) => `${k} ${c.g} (${c.n})`).join(', ');
-        kept.push(`start-of-season prior at ${sp?.size ?? 0}: ${sp?.held ?? f.start?.held ?? 0} early games held out${sp?.early ? `, their lines ${ll(sp.early[0])} to ${ll(sp.early[1])}, actual over projected ${sp.early[0]?.ratio ?? 'n/a'} to ${sp.early[1]?.ratio ?? 'n/a'} (${sp.early[1]?.n ?? 0}), all ${sp.whole[0]} to ${sp.whole[1]}` : ''}${sp?.seconds ? ` (${sp.seconds}s)` : ''}${sp?.fails?.length ? `, left out: ${sp.fails.join(', ')}` : ''}; levels ${lv || 'none'}`);
+        const lv = Object.entries(f.start?.table ?? {}).filter(([k, c]) => !k.includes('|') || (c.ne ?? c.n) >= 50).sort(([a], [b]) => a.localeCompare(b)).map(([k, c]) => `${k} ${c.g} (${c.n}, worth ${c.ne ?? 'n/a'})`).join(', ');
+        kept.push(`start-of-season prior at ${sp?.size ?? 0}: ${sp?.held ?? f.start?.held ?? 0} early games held out, ${sp?.fit ?? f.start?.fit ?? 0} on the fit window${sp?.early ? `, their lines (his usual, no book's shade) ${ll(sp.early[0])} to ${ll(sp.early[1])}, actual over projected ${sp.early[0]?.ratio ?? 'n/a'} to ${sp.early[1]?.ratio ?? 'n/a'} (${sp.early[1]?.n ?? 0}), all ${sp.whole[0]} to ${sp.whole[1]}` : ''}${sp?.seconds ? ` (${sp.seconds}s)` : ''}${sp?.fails?.length ? `, left out: ${sp.fails.join(', ')}` : ''}; levels ${lv || 'none'}`);
       }
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
