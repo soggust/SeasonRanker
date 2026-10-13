@@ -145,6 +145,9 @@ test('the lists\' checks, addresses and presets\' payload', () => {
   assert.deepEqual(p, { weights: { epa: 0, ints: 100, passYards: 55 }, hidden: ['ints'], groups: ['support'] });
   assert.ok(l.samePreset(p, l.presetSettings('QB', { ints: 100, passYards: 55, epa: 0 }, { 'QB.ints': true }, { support: true })));
   assert.ok(!l.samePreset(p, l.presetSettings('QB', { ints: 99, passYards: 55, epa: 0 }, { 'QB.ints': true }, { support: true })));
+  // (read back from Firestore with its keys in another order: still the same, so Save preset stays hidden)
+  const reorder = (v) => (Array.isArray(v) ? v.map(reorder) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).reverse().map(([k, x]) => [k, reorder(x)])) : v);
+  assert.ok(l.samePreset(reorder(p), p));
 });
 
 test('board keys: sport, tab and season, checked like the rules check them', () => {

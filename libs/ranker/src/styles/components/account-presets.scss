@@ -3,7 +3,7 @@
 // ===========================================================================
 // The filter menu's own presets (preset-bar): in the presets dropdown's row (the host adds nothing of
 // its own: display: contents), the user's preset picked gets Rename and Delete beside the dropdown; once
-// the sliders have moved, a slim line under the row, Changed and Update preset. Those buttons are the
+// the sliders have moved, a slim line under the row, Save preset. Those buttons are the
 // menu's own, like Reset and Clear All: the football's leather here (_variables.scss menu-button), each
 // other sport's hide over it from its theme (_sport-kit.scss $menu-buttons: basketball, puck rubber,
 // baseball, the octagon). Delete as plain as Rename (no sport's tile has a quiet way to warn; its dialog's
@@ -50,22 +50,13 @@
   }
 }
 
-// (the sliders moved since: Changed, and Update preset, the one to press)
+// (the sliders moved since: Save preset, the one to press)
 .preset-changed {
   align-items: center;
   display: flex;
   flex: 1 0 100%;
   gap: 8px;
   justify-content: center;
-}
-
-.preset-edited {
-  color: rgba(255, 255, 255, 0.6);
-  font-family: v.$font-base;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
 }
 
 .preset-update {

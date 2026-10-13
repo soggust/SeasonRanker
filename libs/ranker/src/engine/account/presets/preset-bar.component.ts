@@ -13,7 +13,7 @@ type Dialog = { mode: 'save' } | { mode: 'rename'; preset: UserPreset } | { mode
 
 // The filter menu's own presets (signed in): beside the presets dropdown (in its row: the host is
 // display: contents), Rename and Delete for the user's preset picked, and under it, once the sliders have
-// moved, Changed and Update preset (to the sliders as they are now); and the dialogs that name a new one or
+// moved, Save preset (to the sliders as they are now); and the dialogs that name a new one or
 // rename one, and ask before deleting. The dropdown lists them under the built-in presets, after a
 // My Presets divider (sidebar.component.html), with Save as preset… after them.
 @Component({
@@ -30,9 +30,8 @@ type Dialog = { mode: 'save' } | { mode: 'rename'; preset: UserPreset } | { mode
       </span>
       @if (edited) {
         <span class="preset-changed">
-          <span class="preset-edited" title="The sliders have moved since this preset">Changed</span>
           <button type="button" class="preset-update" [disabled]="busy" title="Save the sliders as they are now to this preset" (click)="update(preset)">
-            <mat-icon aria-hidden="true" fontIcon="save"></mat-icon><span>Update preset</span>
+            <mat-icon aria-hidden="true" fontIcon="save"></mat-icon><span>Save preset</span>
           </button>
         </span>
       }

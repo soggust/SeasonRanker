@@ -329,9 +329,19 @@ export function presetSettings(
   };
 }
 
-// (the same settings: Update has nothing to do)
+// (the same settings: Save preset has nothing to do, and isn't shown. Whatever order the keys come in: a preset
+// read back from Firestore has its map's keys in its own order, not the page's)
 export function samePreset(a: PresetSettings, b: PresetSettings): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return canonical(a) === canonical(b);
+}
+
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
+  if (value && typeof value === 'object') {
+    const entries = Object.entries(value as Record<string, unknown>).filter(([, v]) => v !== undefined);
+    return `{${entries.sort(([x], [y]) => (x < y ? -1 : x > y ? 1 : 0)).map(([k, v]) => `${JSON.stringify(k)}:${canonical(v)}`).join(',')}}`;
+  }
+  return JSON.stringify(value) ?? 'null';
 }
 
 // (a preset's dropdown value, beside the built-in presets' keys)
