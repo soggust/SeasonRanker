@@ -158,7 +158,8 @@
 //            own size c (c_<term>; the old single size c is the first term's): the NFL's wind, cold and rain
 //            or snow (passing; receiving and rushing take wind and rain too), a backup quarterback throwing
 //            to its receivers and handing off to its backs; the NBA's teammates out (production missing), a
-//            bench player's back-to-back (b2bB, a late flag) and the expected blowout (the game model's margin
+//            bench player's back-to-back (b2bB, a late flag, by his role known before the game; pts+reb+ast
+//            one size for every player, b2bAll, in the search) and the expected blowout (the game model's margin
 //            either way: a starter sits the fourth quarter); the NHL's power play (his power-play time by the
 //            power plays his team can expect; his share of his team's power play against his position's prop
 //            players': his unit) and the other side's goalie, and a goalie's saves on his team's back-to-back

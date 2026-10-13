@@ -16,7 +16,11 @@
 //            NBA: a team's
 //            five with the most minutes a game among the ones playing are its starters (S), the rest its bench
 //            (B): a starter out, the next man up starts (in the history, the ones in the game's box score; at
-//            bet time, the ones not out or doubtful on the injury report)
+//            bet time, the ones not out or doubtful on the injury report). And the same read only from what's
+//            known before the game (roleKnown: the back-to-backs' by role, props.mjs CTX b2bB): in the history,
+//            a player missing counted out only when he missed his team's game before too (a starter resting the
+//            second night, unannounced at bet time, still a starter), and no role (null) for a player not
+//            ranked himself (under three games for this team: its first games, a player just traded in)
 //   funnel   the NFL: how much more (or less) a defense's opponents pass against it than they do on their own
 //            (passFunnel below: their pass rate over expected against it, nflverse's xpass, in neutral
 //            situations, less their own so far; the plain pass share where a game has no xpass), pulled
@@ -711,13 +715,19 @@ export const nbaUsage = (r) => (Number.isFinite(r.s.fga) ? r.s.fga + 0.44 * (r.s
 export function nbaMatchups(rows) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6] });
-  const roleOf = (pid, teamId, season, out = () => false) => {
+  // (known: only a role he's ranked in (roleKnown), null for a player under three games or with fewer than
+  // five ranked; else B for one not ranked, as roleK has always read it)
+  const roleOf = (pid, teamId, season, out = () => false, known = false) => {
     const t = team.get(teamId);
     if (!t || t.season !== season) return null;
     const avg = [...t.p.entries()].filter(([id, x]) => x.n >= 3 && (String(id) === String(pid) || !out(id))).map(([id, x]) => [id, x.min / x.n]).sort((a, b) => b[1] - a[1]);
     const at = avg.findIndex(([id]) => id === pid);
+    if (known && (at < 0 || avg.length < 5)) return null;
     return at < 0 ? 'B' : at < 5 ? 'S' : 'B';
   };
+  // (each team's players in its game before: the history's roleKnown counts out only the ones missing that
+  // one too)
+  const before = new Map();
   byDay(rows, (batch) => {
     const games = new Map();
     for (const r of batch) {
@@ -727,9 +737,12 @@ export function nbaMatchups(rows) {
     for (const list of games.values()) {
       const playing = new Set(list.map((r) => r.pid));
       const out = (id) => !playing.has(id);
+      const last = before.get(list[0].team);
+      const outKnown = (id) => !playing.has(id) && !!last && last.season === list[0].season && !last.ids.has(id);
       const miss = work.histMiss(list[0].team, list[0].season, playing, () => NBA_CORE);
       for (const r of list) {
         r.role = roleOf(r.pid, r.team, r.season, out);
+        r.roleKnown = roleOf(r.pid, r.team, r.season, outKnown, true);
         r.vacs = work.vacated(r.team, r.season, r.pid, r.pos, miss);
         r.vac = Math.max(...r.vacs);
       }
@@ -737,6 +750,7 @@ export function nbaMatchups(rows) {
     for (const list of games.values()) {
       const r0 = list[0];
       work.learn(r0.team, r0.season, list);
+      before.set(r0.team, { season: r0.season, ids: new Set(list.map((r) => r.pid)) });
       for (const r of list) {
         let t = team.get(r.team);
         if (!t || t.season !== r.season) t = { season: r.season, p: new Map() };
@@ -752,7 +766,7 @@ export function nbaMatchups(rows) {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const missOf = missFn(missing);
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missOf, () => NBA_CORE));
-      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs) };
+      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs) };
     },
   };
 }

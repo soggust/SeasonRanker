@@ -706,6 +706,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_backupQb: 'backup QB',
       c_usage: 'teammates out',
       c_b2b: 'back-to-back (his team played last night)',
+      c_b2bAll: 'back-to-back, every player one size (his team played last night)',
       c_b2bB: 'back-to-back, a bench player (the minutes the starters give up)',
       c_b2bS: 'back-to-back, a starter',
       c_oppB2b: 'opponent on a back-to-back',

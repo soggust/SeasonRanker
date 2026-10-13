@@ -354,7 +354,15 @@ const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // and 0). Searched with the rest instead (the old b2b's way, no floor or rows' gate), b2bS and b2bB both taken
 // on points, assists and pts+reb+ast (held out 0.6516, 0.6178, 0.6488): not the late flags' standard, so not
 // used)
+// (pts+reb+ast keeps the old one size in the search (b2bAll, the old b2b's place in the order): taking it out
+// cost that stat's held-out games (0.6489 to 0.6505) with nothing gating its removal, and b2bB isn't kept there.
+// A kept term comes out only on the same standard it went in on. Refit 2026-10-12, b2bB by the role known
+// before the game (CTX b2bB; the figures above are by the box score's role): pts+reb+ast c_b2bAll 0.07 as
+// before, held out 0.6489 again; points b2bB 0.07 (+0.0007, held out 0.6521, its own 738 rows 6.6% over their
+// projections to 0%, the eligible's 451 15.4% to 8%); threes now left out (+0.0007 but the eligible rest's bias
+// larger: held out 0.5647, the old b2b's); rebounds, assists as before)
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
+const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // (the NHL's back-to-backs (audit #6): his side's (b2b) and the other side's (oppB2b), late flags each on its own
 // rows' gate (project.mjs MIN_GAIN, SUBGROUP). Before them (2026-10-12; the eligible players, actual over
 // projected, against the rows with neither side on one): his own, shots -3.6% on the fit window (+0.1%
@@ -433,7 +441,7 @@ export const STATS = {
     stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
     stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
     stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
-    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
+    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
   ],
   nhl: [
     stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
@@ -582,8 +590,16 @@ export const CTX = {
   // before the game, a season's first game neither)
   b2b: (info, home) => info?.b2b?.[home ? 0 : 1] ?? 0,
   oppB2b: (info, home) => info?.b2b?.[home ? 1 : 0] ?? 0,
-  // (an NBA player's own back-to-back by his role (matchups.mjs nbaMatchups: S, his team's five with the most
-  // minutes a game among the ones playing; B, the rest; live, the ones not out; no role read, 0): a starter's
+  // (the same as b2b under its own name, one size for every NBA player in the main search: pts+reb+ast's, where
+  // it was kept before the by-role ones and they aren't (props.mjs PRA_CTX); b2b itself is a late flag now)
+  b2bAll: (info, home) => info?.b2b?.[home ? 0 : 1] ?? 0,
+  // (an NBA player's own back-to-back by his role, read only from what's known before the game (matchups.mjs
+  // nbaMatchups roleKnown: S, his team's five with the most minutes a game, the ones out counted out in the
+  // history only when they'd missed the game before too, live the injury report's; B, the rest; no role, 0: a
+  // player under three games for his team (its first games, a trade) or fewer than five ranked). Not role,
+  // which ranks the history without everyone who sat (a starter resting the second night, often unannounced at
+  // bet time, would make his fill-in a starter there and a bench player live) and calls an unranked player B
+  // (a star's first games on a new team lifted as a bench player's): a starter's
   // (b2bS) and a bench player's (b2bB), each its own size. The audit (2026-10-12) read the one size for both (b2b,
   // kept at +0.07 on points and pts+reb+ast) as pointing the wrong way: its replay had back-to-backs about 4%
   // under the projection. The side read is right (his own); that 4% is the residual with +0.07 on, and the two
@@ -592,8 +608,8 @@ export const CTX = {
   // held out 14.4% and 5.2%. So the sign is right for both, the size the bench's (likely the minutes the rested
   // and tired starters give up), and one size lifted the starters too far: with it on, theirs ran 4.2% under.
   // b2bS on no stat's ctx (props.mjs NBA_CTX: kept nowhere))
-  b2bS: (info, home, pts, row) => (row?.role === 'S' ? (info?.b2b?.[home ? 0 : 1] ?? 0) : 0),
-  b2bB: (info, home, pts, row) => (row?.role === 'B' ? (info?.b2b?.[home ? 0 : 1] ?? 0) : 0),
+  b2bS: (info, home, pts, row) => (row?.roleKnown === 'S' ? (info?.b2b?.[home ? 0 : 1] ?? 0) : 0),
+  b2bB: (info, home, pts, row) => (row?.roleKnown === 'B' ? (info?.b2b?.[home ? 0 : 1] ?? 0) : 0),
   // (the blowout the game model expects, either way: its margin, per 10 points; a starter sits the end of it)
   // (the shots on goal the other side is expected to take over the league's, as a log: a goalie's saves, its
   // size the power of the ratio; hockey.mjs's from the games before)
