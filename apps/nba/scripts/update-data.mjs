@@ -7,6 +7,8 @@
 //        SEASON=2019 npm run nba:update-data     a finished season, to src/StaticData/seasons/2019/
 //        ALL=1 npm run nba:update-data           every finished season from 2001 to last year
 //        PARTS=post,all ...                      only those parts' files (default: all three)
+//        BOXES=1 SEASON=2019 ...                 an older season's vs Position too (its box scores fetched,
+//                                                about 1,550 ESPN requests the first time)
 //
 // A season is named for the year it ends in, like Basketball-Reference and ESPN do: 2025 is 2024-25.
 //
@@ -20,13 +22,14 @@
 // C: [...], HC: [...] }, each player { id, gsisId, name, teamLogo, teamName, games, stats, awards,
 // injured?, injuryStatus? }. gsisId is the Basketball-Reference id ("jamesle01", a coach's
 // "kerrst01c"); id is ESPN's (headshots; none for coaches).
+import { existsSync } from 'node:fs';
 import { writeFile, readFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { curve } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
-import { updateBoxes } from './box-scores.mjs';
+import { boxFile, updateBoxes } from './box-scores.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
 
 const CURRENT_SEASON = 2026;
@@ -506,8 +509,10 @@ async function buildSeason(season, write) {
   }
 
   // (the season's box scores, brought up to date: each team against each position, vs-position.mjs; a failed
-  // ESPN request leaves what's kept, the rest asked for next run)
-  const boxes = await updateBoxes(season);
+  // ESPN request leaves what's kept, the rest asked for next run). Only the current season, a season already
+  // kept (box-scores/<season>.json) or BOXES=1: any other is about 1,550 requests the first time, and ALL=1
+  // would crawl every season since 2001; without them, no vs Position
+  const boxes = current || existsSync(boxFile(season)) || process.env.BOXES ? await updateBoxes(season) : null;
   let regularPositions = new Map();
 
   await mkdir(dir, { recursive: true });

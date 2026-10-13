@@ -44,7 +44,8 @@ export function rankOf(values) {
 // The season's games (box-scores.mjs's: { d, t, h, a, p: { h, a } }), each listed player's position (ESPN id
 // -> PG...C) and the part: team -> its vsPos
 //   { games, PG: { pts: { g, vs, r, rv }, reb..., pra }, ..., share: { PG: { s, lg }, ... } }
-// g: allowed a game; vs: a game over what those players averaged in their other games; r: g's rank, rv: vs's
+// g: allowed a game; vs: a game over what those players averaged in their other games, the part's average
+// defense's taken off (0 is average); r: g's rank, rv: vs's
 // (1 the least allowed, the stingiest)
 export function nbaVsPosition({ games, positionOf, part = 'regular' }) {
   const inPart = (t) => (part === 'all' ? t === 2 || t === 3 : t === (part === 'post' ? 3 : 2));
@@ -90,6 +91,16 @@ export function nbaVsPosition({ games, positionOf, part = 'regular' }) {
       t[l.role].exp[k] += others > 0 ? (o[k] - self * l.s[k]) / others : leagueAvg[l.role][k];
     }
   }
+  // (vs centered on the part's league, so an average defense's is 0: a team-game's over the players' usual,
+  // all teams together, taken off. The regular season's games leave themselves out, so it's next to nothing
+  // there; the playoffs' are against the whole season's averages, and nearly everyone scores under those
+  // there (the bench's garbage minutes, shorter rotations, slower games): left in, every playoff team read
+  // as holding every position under its usual)
+  const all = [...teams.values()];
+  const teamGames = all.reduce((a, t) => a + t.games.size, 0);
+  const center = Object.fromEntries(
+    NBA_ROLES.map((r) => [r, Object.fromEntries(NBA_STATS.map((k) => [k, teamGames ? all.reduce((a, t) => a + t[r].got[k] - t[r].exp[k], 0) / teamGames : 0]))]),
+  );
   const leaguePts = Object.fromEntries(NBA_ROLES.map((r) => [r, 0]));
   for (const t of teams.values()) for (const r of NBA_ROLES) leaguePts[r] += t[r].got.pts;
   const leagueTotal = NBA_ROLES.reduce((a, r) => a + leaguePts[r], 0);
@@ -100,7 +111,7 @@ export function nbaVsPosition({ games, positionOf, part = 'regular' }) {
     const block = { games, share: {} };
     for (const role of NBA_ROLES) {
       block[role] = Object.fromEntries(
-        NBA_STATS.map((k) => [k, { g: r2(t[role].got[k] / games), vs: r2((t[role].got[k] - t[role].exp[k]) / games), r: null, rv: null }]),
+        NBA_STATS.map((k) => [k, { g: r2(t[role].got[k] / games), vs: r2((t[role].got[k] - t[role].exp[k]) / games - center[role][k]), r: null, rv: null }]),
       );
       block.share[role] = { s: total ? r3(t[role].got.pts / total) : null, lg: leagueTotal ? r3(leaguePts[role] / leagueTotal) : null };
     }

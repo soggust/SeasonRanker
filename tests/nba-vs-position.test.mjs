@@ -65,13 +65,27 @@ test('NBA vs position: each team allowed, a game, against the players\' own aver
 
 test('NBA vs position: the playoffs their own part, a player\'s average his whole season\'s', () => {
   const post = nbaVsPosition({ games: GAMES, positionOf: POSITIONS, part: 'post' });
-  // (g4 alone: player 1's 25 against his other three games' 25; player 2's 6 against his other games' 12)
+  // (g4 alone: player 1's 25 against his other two games' 25; player 2's 6 against his other games' 12, his
+  // 12 rebounds against 9)
   assert.deepEqual([...post.keys()].sort(), ['AAA', 'BBB']);
   assert.equal(post.get('BBB').games, 1);
   assert.equal(post.get('BBB').PG.pts.g, 25);
   assert.equal(post.get('BBB').PG.pts.vs, 0);
-  assert.equal(post.get('AAA').C.pts.vs, -6);
-  assert.equal(post.get('AAA').C.reb.vs, 12 - 9);
+  // (centered on the part's league: the centers' -6 over its 2 team-games, -3 a team-game, taken off; BBB
+  // allowed no center, so +3)
+  assert.equal(post.get('AAA').C.pts.vs, -6 + 3);
+  assert.equal(post.get('BBB').C.pts.vs, 3);
+  assert.equal(post.get('AAA').C.reb.vs, 12 - 9 - 1.5);
+  // (each part's vs adds up to nothing over its team-games, but for its rounding)
+  for (const part of ['regular', 'post', 'all']) {
+    const vs = nbaVsPosition({ games: GAMES, positionOf: POSITIONS, part });
+    for (const role of NBA_ROLES) {
+      for (const stat of NBA_STATS) {
+        const sum = [...vs.values()].reduce((a, t) => a + t[role][stat].vs * t.games, 0);
+        assert.ok(Math.abs(sum) < 0.005 * 8, `${part} ${role} ${stat}: ${sum}`);
+      }
+    }
+  }
   const all = nbaVsPosition({ games: GAMES, positionOf: POSITIONS, part: 'all' });
   assert.equal(all.get('BBB').games, 3);
   // (both parts: player 1's 20 and 25 against BBB, each against his other two games: 27.5 and 25)
@@ -85,10 +99,11 @@ test("NBA vs position: a player with no other game is read against his position'
     x2: { d: '20251022', t: 2, h: 'AAA', a: 'BBB', p: { h: [['1', 'C', 30, 10, 10, 2, 0]], a: [] } },
   };
   const vs = nbaVsPosition({ games, positionOf: new Map([['1', 'C'], ['9', 'C']]), part: 'regular' });
-  // (player 9's lone game: against the centers' league average, (20 + 2 + 10) / 3)
-  assert.equal(vs.get('AAA').C.pts.vs, Math.round((2 - 32 / 3) * 100) / 100);
-  // (player 1: each game against the other)
-  assert.equal(vs.get('BBB').C.pts.vs, 0);
+  // (player 9's lone game: against the centers' league average, (20 + 2 + 10) / 3; player 1: each game against
+  // the other, 0; then the league's, over its 3 team-games, taken off)
+  const center = (2 - 32 / 3) / 3;
+  assert.equal(vs.get('AAA').C.pts.vs, Math.round((2 - 32 / 3 - center) * 100) / 100);
+  assert.equal(vs.get('BBB').C.pts.vs, Math.round(-center * 100) / 100);
 });
 
 test('NBA vs position: ranks share ties and skip nulls; coach rows take their team\'s', () => {
@@ -150,6 +165,25 @@ test('NBA 2025-26: every team has its vs-position numbers, ranked 1-30, adding u
   assert.ok(Math.abs(allowed - scored) / scored < 0.01, `${allowed} allowed against ${scored} scored`);
   // (the Teams tab's rows read it from the coaches')
   assert.ok(data.HC.every((c) => !c.vsPos || c.vsPos === teams.get(c.teamLogo) || c.vsPos.games === teams.get(c.teamLogo).games));
+});
+
+// The playoffs: each player against his whole season's average, which nearly everyone scores under there;
+// centered, it's even across the playoff teams, not every one of them holding every position under its usual
+const POST = path.join(staticDir('nba'), 'skill-players.post.json');
+const post = existsSync(POST) ? readJson(POST) : null;
+
+test('NBA 2025-26 playoffs: vs Position centered on the playoff teams', { skip: !post?.HC?.some((c) => c.vsPos) && 'no vsPos in the file' }, () => {
+  const blocks = [...new Map(post.HC.filter((c) => c.vsPos).map((c) => [c.teamLogo, c.vsPos])).values()];
+  assert.equal(blocks.length, 16);
+  for (const role of NBA_ROLES) {
+    for (const stat of NBA_STATS) {
+      const games = blocks.reduce((a, b) => a + b.games, 0);
+      const mean = blocks.reduce((a, b) => a + b[role][stat].vs * b.games, 0) / games;
+      assert.ok(Math.abs(mean) < 0.01, `${role} ${stat}: ${mean} a team-game over the usual`);
+    }
+  }
+  const net = blocks.map((b) => NBA_ROLES.reduce((a, r) => a + b[r].pts.vs, 0));
+  assert.ok(net.filter((v) => v < 0).length < 12 && net.filter((v) => v > 0).length > 4, `${net.join(', ')}`);
 });
 
 test('NBA box scores: kept between runs, only new days and finals asked for; postponed, All-Star and missing games handled', async () => {
