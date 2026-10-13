@@ -226,12 +226,21 @@ export async function roster(league, id, min = 40) {
 // only where it says something: the NFL's 40 players or more with an inactive among them (every NFL side lists
 // some: a 53-man roster dresses 48 at most), the NBA's an inactive or exactly five starters; else null (the run
 // reads it again the next time). Read on 2026-10-11's finals (GB at CHI: Caleb Williams and Kyle Monangai
-// didNotPlay, as their inactives); when it's posted before a kickoff or tip isn't yet seen live
+// didNotPlay, as their inactives); when it's posted before a kickoff or tip isn't yet seen live, so a count no
+// posting could have (POSTED_MAX: the NFL's more than 12 or a quarter of the list, where the finals seen show 4
+// to 9 a side; the NBA's more than 8 or half the list: a flag defaulted on before the game, say) is read as not
+// posted, logged, never as the whole team out
 export const POSTED_MIN = { nfl: 40, nba: 8 };
+export const POSTED_MAX = { nfl: { n: 12, share: 0.25 }, nba: { n: 8, share: 0.5 } };
 export function gameRosterOf(body, sport) {
   const list = Array.isArray(body?.entries) ? body.entries : [];
   if (list.length < (POSTED_MIN[sport] ?? 1)) return null;
-  const inactive = list.filter((e) => e?.didNotPlay === true && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
+  let inactive = list.filter((e) => e?.didNotPlay === true && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
+  const max = POSTED_MAX[sport];
+  if (max && (inactive.length > max.n || inactive.length > max.share * list.length)) {
+    console.warn(`${sport}: a game-day roster with ${inactive.length} of ${list.length} marked inactive, more than any posting: read as not posted`);
+    inactive = [];
+  }
   const st = list.filter((e) => e?.starter === true && e.playerId).map((e) => String(e.playerId));
   const starters = sport === 'nba' && st.length === 5 ? st : null;
   if (!inactive.length && !starters) return null;

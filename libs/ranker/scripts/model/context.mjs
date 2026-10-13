@@ -246,7 +246,17 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
 }
 
 // (how near its start a game's posted roster is asked for, hours: the NFL's inactives post about 90 minutes
-// before a kickoff, the NBA's starters about 30 before a tip; a run inside it asks each side once a run)
+// before a kickoff, the NBA's starters about 30 before a tip; a run inside it asks each side once a run. Read
+// here, at the run's start, but the bets are priced again only after the fits (run.mjs repriceOpen: about 15
+// minutes into the NFL's run on GitHub, the props' fit alone about 12; the NBA's after the NFL's, so 15 more),
+// and not inside REPRICE_BY (20 minutes) of the start: so an NFL game's inactives count only when a run starts
+// between about 90 and 35 minutes before its kickoff (1:00 ET: 15:30 to 16:25 UTC in EDT, 16:30 to 17:25 in
+// EST; 4:05/4:25 ET: 18:35 to 19:50 EDT, 19:35 to 20:50 EST; the night games' 8:15/8:20 ET: about 22:45 to
+// 23:45 EDT, 23:45 to 00:45 EST), and the NBA's five almost never (posted 30 minutes before a tip, priced again
+// 20 before at the latest, the run's NBA part 15 in). GitHub runs the hourly schedule about five times a day,
+// not 24 (2026-10-11 and 12: 01:00, 07:11, 14:02, 18:53, 22:53; 02:23, 10:47, 20:17), so a window is caught
+// when a run happens to land in it; the Sunday and night-game triggers in .github/workflows/model-desk.yml
+// add tries, and repriceOpen logs how many minutes before the lock each posted game's re-price came)
 export const LINEUP_HOURS = { nfl: 2.5, nba: 2 };
 
 // Each coming game's posted game-day rosters (espn.mjs gameRoster) on its live facts (l.gameRosters: Map of team id

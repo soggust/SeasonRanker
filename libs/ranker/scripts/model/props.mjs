@@ -80,7 +80,7 @@ import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, 
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
-import { OUT_STATUS, Q_STATUS } from './timing.mjs';
+import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
 import { newsOn } from './news.mjs';
 import { COACH_GAMES } from './football.mjs';
 import { missChance } from './playchance.mjs';
@@ -143,8 +143,8 @@ export function restGuard(restDays, debut, date) {
 //   depth       (none of the above) the depth chart's starter at his spot the model's role has lower, or the
 //               model's top man the chart has behind (depthRoleOf below: a tight end's receiving, a back's
 //               rushing; live only), its safe side the chart's
-//   lineup-start, lineup-bench  the NBA's: tonight's posted starting five against his role by his minutes
-//               (lineupRoleOf below), a bench player in it or a starter not in it
+//   lineup-start, lineup-bench  the NBA's: tonight's posted starting five against his team's usual one by
+//               starts (lineupRoleOf below), one not usually starting in it or a usual starter not in it
 // qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }; starts:
 // a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
@@ -173,18 +173,21 @@ export function minutesBackOf({ name = null, mode, minutes, vac, vacHist }) {
   return { key: 'minutes-back', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes over his last three against ${round(minutes.season, 1)} this season, with teammates back from the absence that gave him them: a smaller role tonight` };
 }
 // The NBA's posted starting five (context.mjs gather: espn.mjs gameRoster, about 30 minutes before the tip) against
-// his role by his minutes (matchups.mjs roleKnown, tonight's out counted out; null: not ranked): a bench player
-// in it (lineup-start) or a starter not in it and not out (lineup-bench) is a role CHECK on the side his role's
-// change makes the projection's risk. A bench player who started his team's last game ran 11% over his
-// projection held out on points (2026-10-13, CTX newStart, 706 rows, not taken on the fit window), so the
-// starting one's under is the risk and his over safe; a starter benched, the other way. Not fit: the five
+// his team's usual one by starts (timing.mjs usualStarters: started half its last four games or more, the five
+// with the most at most, read from this season's games; the same rule as the inputs' st part, lineupSurprise):
+// one in it who isn't a usual starter (lineup-start) or a usual starter not in it (lineup-bench; he's priced, so
+// not out) is a role CHECK on the side his role's change makes the projection's risk. A bench player who started
+// his team's last game ran 11% over his projection held out on points (2026-10-13, CTX newStart, 706 rows, not
+// taken on the fit window), so the starting one's under is the risk and his over safe; a starter benched isn't
+// measured, the under taken as safe by the same reading the other way (the CHECKs measure it). Not fit: the five
 // posts too near the tip for the history's lines (the box's flag is after the game), so it's a CHECK till the
-// CHECKs show the projection reads it. Null with no five posted, or his role not known
-export function lineupRoleOf({ name = null, pid, roleKnown = null, starters = null }) {
-  if (!Array.isArray(starters) || starters.length !== 5 || !roleKnown) return null;
+// CHECKs show the projection reads it. Null with no five posted, or the usual one not known
+export function lineupRoleOf({ name = null, pid, usual = null, starters = null }) {
+  if (!Array.isArray(starters) || starters.length !== 5 || !(usual instanceof Set) || !usual.size) return null;
   const inFive = starters.includes(String(pid));
-  if (roleKnown === 'B' && inFive) return { key: 'lineup-start', safe: 'over', why: `${name || 'he'} in tonight's posted starting five, off the bench by his minutes: a bigger role` };
-  if (roleKnown === 'S' && !inFive) return { key: 'lineup-bench', safe: 'under', why: `${name || 'he'} not in tonight's posted starting five, a starter by his minutes: a smaller role` };
+  const isUsual = usual.has(String(pid));
+  if (!isUsual && inFive) return { key: 'lineup-start', safe: 'over', why: `${name || 'he'} in tonight's posted starting five, not one of his team's usual starters: a bigger role` };
+  if (isUsual && !inFive) return { key: 'lineup-bench', safe: 'under', why: `${name || 'he'} not in tonight's posted starting five, one of his team's usual starters: a smaller role` };
   return null;
 }
 export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
@@ -1154,7 +1157,7 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
-export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null) {
+export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null) {
   const priced = [];
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
   // role guard: a change at quarterback))
@@ -1340,9 +1343,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the NBA's minutes base with teammates back from an absence that fed his minutes jump (minutesBackOf): a
     // role CHECK on the over, the under bet as any prop)
     if (sport === 'nba') roleChange ??= minutesBackOf({ name: a.name, mode: p.mode, minutes: p.minutes, vac: p.vac, vacHist: p.vacHist });
-    // (the NBA's posted starting five against his role by his minutes (lineupRoleOf): a role CHECK on the side
-    // its change makes the risk)
-    if (sport === 'nba') roleChange ??= lineupRoleOf({ name: a.name, pid, roleKnown: row.roleKnown ?? null, starters: live?.gameRosters instanceof Map ? (live.gameRosters.get(String(row.team))?.starters ?? null) : null });
+    // (the NBA's posted starting five against his team's usual one by starts (lineupRoleOf; players: run.mjs
+    // inactivesNow's, timing.mjs lineupNow): a role CHECK on the side its change makes the risk)
+    if (sport === 'nba') roleChange ??= lineupRoleOf({ name: a.name, pid, usual: usualStarters(players, row.team, game.season), starters: live?.gameRosters instanceof Map ? (live.gameRosters.get(String(row.team))?.starters ?? null) : null });
     // (the NBA, NHL, MLB: the book's line far from the projection with a cause known before the game, unsized by
     // the fit, that explains it (lineAlarmOf): a label on the side against the market's reading, never a cut
     // (selfcheck.mjs C20 measures the labeled rows))

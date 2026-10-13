@@ -16,14 +16,18 @@
 //   inputsOf     a game's inputs as the bets on it were priced: each side's injury report (out, doubtful, on
 //                IR or suspended; and questionable or day-to-day), the NFL's starting quarterbacks, the NHL's
 //                probable goalies (and whether confirmed), MLB's probable starters and lineups, the NFL's and
-//                NBA's posted inactives that matter (a listed player ruled inactive, or a regular unlisted:
-//                putInactives) and the NBA's posted starting five where it isn't the usual one. Each part's
-//                text, and a short hash of it a bet keeps (ledger: inputs); a part that couldn't be read this run
-//                (its source failed) is null, never taken for a change
+//                NBA's posted inactives (a listed player ruled inactive counted out in the out list, as the game
+//                lines read him; a regular the report doesn't list in his own part, ina: putInactives) and the
+//                NBA's posted starting five where it isn't the usual one (st). Each part's text, and a short hash
+//                of it a bet keeps (ledger: inputs); a part that couldn't be read this run (its source failed) is
+//                null, never taken for a change
 //   propAsk      why The Odds API is asked for a game's props this run: its first ask, owed (its props taken
 //                back and its board unpriced: the NFL's), near the start; or not at all
 //   lineupNow    each player's place now from the history's rows (his team, position, name; a regular: work in
-//                two of his team's last four games; the NBA's usual starter: started half of them or more)
+//                two of his team's last four games; the NBA's usual starter: started half of them or more, the
+//                five with the most starts at most, unknown where the rows have no start flag), with his team's
+//                season in them and its games there (usualStarters, putInactives: read only from LINEUP_MIN
+//                games of the game's own season, so an opener isn't read against last season's last weeks)
 //   putInactives a game's posted inactives (context.mjs gather: espn.mjs gameRoster) put into its own copy of the
 //                injury report as out (status 'Out (inactive)'): a listed player not already out (questionable,
 //                day-to-day: his status kept as was), and, with the players (lineupNow), a regular the report
@@ -34,7 +38,9 @@
 //                that's gone blank (a goalie, a lineup dropped from a source doesn't un-name him: more likely the
 //                source than the news; but an MLB starter gone to none named, StatsAPI read, is the scratch
 //                itself and counts), not a side's whole injury list gone empty in one run (a partial report is
-//                likelier than everyone healed: it counts once a second run agrees) and not one unread now
+//                likelier than everyone healed: it counts once a second run agrees) and not one unread now. A
+//                game line's bet doesn't read ina or st (the line's context reads neither: PROPS_ONLY), a prop's
+//                does
 //
 // Not in the inputs (they'd churn, or a failed fetch would read as news): the weather's forecast, the flags
 // (each starter's flag comes from the parts above), the rosters (a trade inside the window is rare)
@@ -136,10 +142,16 @@ const hash = (s) => (s === null || s === undefined ? null : s === '' || s === '-
 // passes, carries and targets; the NBA's 12 minutes)
 const WORKED = { nfl: (s) => (s.snaps ?? 0) >= 10 || (s.passAtt ?? 0) + (s.rushAtt ?? 0) + (s.targets ?? 0) >= 3, nba: (s) => (s.min ?? 0) >= 12 };
 export const LINEUP_GAMES = 4;
+// (the games of the game's own season a team needs before its regulars and usual five are read: fewer, an
+// opener, and they'd be last season's last weeks (rest, tanking, the ones traded away still on the old team))
+export const LINEUP_MIN = 2;
+// (the usual starters at most: a team rotating its five through the last four has more who started half)
+const FIVE = 5;
 
-// Each player's place now (see above): Map of pid -> { team, pos, name, regular, starter }, from each team's
-// latest season in the rows and its last LINEUP_GAMES games there (a team with one game: that one). The NFL and
-// NBA only (null otherwise)
+// Each player's place now (see above): Map of pid -> { team, pos, name, regular, starter, season, teamGames },
+// from each team's latest season in the rows and its last LINEUP_GAMES games there (a team with one game: that
+// one); season, teamGames: his team's season in the rows and its games there; starter null where none of the
+// team's last games' rows has a start flag (unknown, not nobody). The NFL and NBA only (null otherwise)
 export function lineupNow(rows, sport) {
   const worked = WORKED[sport];
   if (!worked || !rows?.length) return null;
@@ -158,20 +170,34 @@ export function lineupNow(rows, sport) {
     const last = [...g.values()].sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, LINEUP_GAMES);
     const need = Math.min(2, last.length);
     const tally = new Map();
+    let flagged = false;
     for (const { rows: rs } of last) {
       for (const r of rs) {
         const t = tally.get(String(r.pid)) ?? { pos: r.pos ?? '', name: r.name ?? '', n: 0, starts: 0, date: '' };
         if (worked(r.s ?? {})) t.n++;
         if (r.s?.start === 1) t.starts++;
+        if (r.s?.start === 0 || r.s?.start === 1) flagged = true;
         if (String(r.date) > t.date) t.date = String(r.date);
         tally.set(String(r.pid), t);
       }
     }
+    // (the NBA's usual five: started half the last games or more, the five with the most starts at most (ties:
+    // the more work, then the later game); none where the rows have no start flag)
+    const five = new Set(
+      sport === 'nba' && flagged
+        ? [...tally]
+            .filter(([, t]) => t.starts > 0 && t.starts * 2 >= last.length)
+            .sort(([a, x], [b, y]) => y.starts - x.starts || y.n - x.n || y.date.localeCompare(x.date) || a.localeCompare(b))
+            .slice(0, FIVE)
+            .map(([pid]) => pid)
+        : [],
+    );
+    const season = latest.get(team);
     for (const [pid, t] of tally) {
       // (a player in two teams' rows, traded: the team he played for last)
       const prev = out.get(pid);
       if (prev && prev.date > t.date) continue;
-      out.set(pid, { team: String(team), pos: t.pos, name: t.name, date: t.date, regular: need > 0 && t.n >= need, starter: sport === 'nba' && t.starts * 2 >= last.length });
+      out.set(pid, { team: String(team), pos: t.pos, name: t.name, date: t.date, regular: need > 0 && t.n >= need, starter: sport !== 'nba' ? false : flagged ? five.has(pid) : null, season, teamGames: g.size });
     }
   }
   return out;
@@ -199,8 +225,9 @@ export function putInactives(l, game, players = null) {
         changed = true;
         continue;
       }
+      // (a regular unlisted: read only from this season's games, LINEUP_MIN of them; at week 1, the listed alone)
       const who = players?.get(p.id);
-      if (!who?.regular || who.team !== team) continue;
+      if (!who?.regular || who.team !== team || !seasonRead(who, game.season)) continue;
       list.push({ id: p.id, name: who.name || p.name, pos: who.pos ?? '', status: 'Out (inactive)', date: null, inactive: true });
       put.push({ team, id: p.id, name: who.name || p.name, was: null });
       changed = true;
@@ -213,16 +240,31 @@ export function putInactives(l, game, players = null) {
   return put;
 }
 
-// (the NBA's posted starting five against the usual one (lineupNow's starter): the ones starting who usually
-// don't, and the usual starters not in it who aren't out; '' none, null not posted or no players to read)
-export function lineupSurprise(l, team, players) {
+// (a player's place read from the game's own season, LINEUP_MIN of its games or more: lineupNow's season and
+// teamGames; a game with no season known: not read)
+const seasonRead = (who, season) => season !== null && season !== undefined && who?.season === season && (who.teamGames ?? 0) >= LINEUP_MIN;
+
+// A team's usual starting five by starts (lineupNow's starter), read from the game's season: a Set of ids, or
+// null unknown (no start flag in the rows, too few of this season's games, none marked)
+export function usualStarters(players, team, season) {
+  if (!players?.size) return null;
+  const mine = [...players].filter(([, x]) => x.team === String(team));
+  if (!mine.length || !seasonRead(mine[0][1], season) || mine.every(([, x]) => x.starter === null || x.starter === undefined)) return null;
+  const usual = new Set(mine.filter(([, x]) => x.starter === true).map(([id]) => id));
+  return usual.size ? usual : null;
+}
+
+// (the NBA's posted starting five against the usual one (usualStarters): the ones starting who usually don't,
+// and the usual starters not in it who aren't out; '' none, null not posted or the usual one unknown)
+export function lineupSurprise(l, team, players, season) {
   const five = l?.gameRosters instanceof Map ? l.gameRosters.get(String(team))?.starters : null;
-  if (!five || !players?.size) return null;
+  if (!five) return null;
+  const usual = usualStarters(players, team, season);
+  if (!usual) return null;
   const report = l.injuries instanceof Map ? (l.injuries.get(String(team)) ?? []) : [];
   const out = new Set(report.filter((p) => OUT.test(p.status ?? '')).map((p) => String(p.id)));
-  const usual = [...players].filter(([, x]) => x.team === String(team) && x.starter).map(([id]) => id);
   const s = new Set(five);
-  return [...five.filter((id) => !players.get(id)?.starter), ...usual.filter((id) => !s.has(id) && !out.has(id))].sort().join(',');
+  return [...five.filter((id) => !usual.has(id)), ...[...usual].filter((id) => !s.has(id) && !out.has(id))].sort().join(',');
 }
 
 // A game's inputs: { parts: { key: text or null }, hash: { key: short hash or null }, names: { id: name } }.
@@ -243,19 +285,21 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
       const all = report ? (report.get(String(team)) ?? []) : null;
       const key = (p) => String(p.id ?? p.name);
       if (all) for (const p of all) names[key(p)] = p.name;
-      // (the report as ESPN gave it: an inactive put in (putInactives) counted in his own part below, a listed one
-      // at the status he was listed at, so the inactives posting moves only their part)
-      const list = all ? all.filter((p) => !p.inactive || p.was !== undefined).map((p) => (p.inactive ? { ...p, status: p.was } : p)) : null;
+      // (the report with a listed one ruled inactive (putInactives) out, as the game lines' context read it: the
+      // same once ESPN's report has him out too, so that update is no second change; a regular put in unlisted
+      // in his own part below, which the lines never read)
+      const list = all ? all.filter((p) => !p.inactive || p.was !== undefined) : null;
       parts[`out:${s}`] = list ? list.filter((p) => OUT.test(p.status)).map(key).sort().join(',') : null;
       parts[`q:${s}`] = list ? list.filter((p) => !OUT.test(p.status) && QUESTIONABLE.test(p.status)).map(key).sort().join(',') : null;
-      // (the NFL's and NBA's posted inactives that matter, once the side's posted (l.gameRosters); null before)
+      // (the NFL's and NBA's regulars the report doesn't list, posted inactive (run.mjs inactivesNow), once the
+      // side's posted (l.gameRosters); null before. The props' alone: PROPS_ONLY)
       if (sport === 'nfl' || sport === 'nba') {
         const posted = l.gameRosters instanceof Map ? l.gameRosters.get(String(team)) : null;
-        parts[`ina:${s}`] = all && posted ? all.filter((p) => p.inactive).map(key).sort().join(',') : null;
+        parts[`ina:${s}`] = all && posted ? all.filter((p) => p.inactive && p.was === undefined).map(key).sort().join(',') : null;
       }
-      // (the NBA's starting five where it isn't the usual one, once posted)
+      // (the NBA's starting five where it isn't the usual one, once posted; the props' alone)
       if (sport === 'nba') {
-        const st = all ? lineupSurprise(l, team, players) : null;
+        const st = all ? lineupSurprise(l, team, players, game.season) : null;
         if (st) for (const id of st.split(',')) names[id] ??= players?.get(id)?.name ?? id;
         parts[`st:${s}`] = st;
       }
@@ -302,11 +346,17 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
 }
 
 // (each part's words, for the changelog)
-const WORDS = { out: 'out list', q: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup', news: 'news flags', ina: 'inactives', st: 'starting five' };
+const WORDS = { out: 'out list', q: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup', news: 'news flags', ina: 'inactives off the report', st: 'starting five' };
+
+// (the parts only a prop reads: the regulars put in unlisted come after the game lines' context is fit (run.mjs
+// inactivesNow), and nothing on the lines' side reads the NBA's five; a game line's bet priced again on them
+// would be the same numbers at the line now, its closing value given up for no news)
+export const PROPS_ONLY = new Set(['ina', 'st']);
 
 // What changed between a bet's inputs (hashes) and the game's now: [{ key, words }]; before: the game's
-// parts as a run before saw them (the cache: the names who joined or left a list), when it has them
-export function inputChanges(was, now, { game = null, before = null, names = {} } = {}) {
+// parts as a run before saw them (the cache: the names who joined or left a list), when it has them; market:
+// the bet's (a game line's skips PROPS_ONLY; none given: every part)
+export function inputChanges(was, now, { game = null, before = null, names = {}, market = null } = {}) {
   if (!was || !now) return [];
   const out = [];
   // (a side's whole injury list gone empty since the run before, which had names on it: a partial report (one
@@ -315,6 +365,7 @@ export function inputChanges(was, now, { game = null, before = null, names = {} 
   for (const [key, h] of Object.entries(now.hash)) {
     const then = was[key];
     const [kind, s] = key.split(':');
+    if (market && market !== 'prop' && PROPS_ONLY.has(kind)) continue;
     // (an MLB starter gone to none named with StatsAPI read (unread, the part is null, not '-'): the scratch
     // itself, news)
     const scratched = kind === 'sp' && h === '-' && typeof then === 'string' && then !== '-';

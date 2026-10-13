@@ -82,10 +82,12 @@ export const MODEL_EPOCH = '2026-10-13T18:05:00Z';
 // A bet placed is priced again whenever what it was priced on changes before the start (timing.mjs inputsOf:
 // the injury report's out and questionable lists, the starters, the goalies, the lineups, the NFL's and NBA's
 // posted inactives, the NBA's starting five): taken back and placed again by the model as it is then, till
-// REPRICE_BY (20 minutes) before the start. The NFL's inactives post about 90 minutes before a kickoff, so the
-// 70 minutes between them and the lock always hold one of the hourly runs (.github/workflows/model-desk.yml, at
-// :17) when it comes on time; the NBA's starters, about 30 minutes before a tip, leave 10: caught only by a run
-// that happens to land then
+// REPRICE_BY (20 minutes) before the start. The NFL's inactives post about 90 minutes before a kickoff and a run
+// prices again only after its fits (about 15 minutes in), so they count only when a run starts between about 90
+// and 35 minutes before the kickoff (context.mjs LINEUP_HOURS: the windows in EDT and EST); GitHub runs the
+// hourly schedule about five times a day, so that's when one happens to land there (the Sunday and night-game
+// triggers in .github/workflows/model-desk.yml add tries). The NBA's starters, about 30 minutes before a tip,
+// are almost never in time for a re-price
 export const TIMING = {
   nfl: { lines: 26, props: 26, lastChance: 3 },
   nba: { lines: 6, props: 6, lastChance: 3 },

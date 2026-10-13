@@ -808,10 +808,11 @@ async function fitTheProps(r) {
 
 // 2c'. the posted inactives (context.mjs gather: the NFL's and NBA's game-day rosters near the start, the listed
 // ones already in their games' injury reports) with the regulars the report doesn't list put in too, now the rows
-// say who's a regular (timing.mjs lineupNow: work in two of his team's last four games): the props read them out
-// and an open bet's inputs (repriceOpen: the inactives' part, the NBA's starting five against the usual one) see
-// the news. The game lines' context was fit on the listed ones (a regular left off the report is rare). Any
-// failure: the report as it was
+// say who's a regular (timing.mjs lineupNow: work in two of his team's last four games of this season, two of
+// them at least): the props read them out and an open prop's inputs (repriceOpen: the inactives' part ina, the
+// NBA's starting five against the usual one, st) see the news. The game lines' context was fit on the listed
+// ones alone (a regular left off the report is rare), so a game line's bet isn't priced again on ina or st
+// (timing.mjs PROPS_ONLY). Any failure: the report as it was
 function inactivesNow(r) {
   r.players = null;
   try {
@@ -1156,6 +1157,14 @@ function repriceOpen(r) {
     const one = [...r.inputs.values()][0].parts;
     console.log(`${sport} (dry): inputs read for ${r.inputs.size} of ${r.upcoming.length} coming games${unread.length ? `, unread: ${unread.join(', ')}` : ''}; the first: ${JSON.stringify(one).slice(0, 300)}`);
   }
+  // (each game whose game-day roster is posted: how far into the run its re-price comes and how long before
+  // REPRICE_BY, its last chance to be priced again: the inactives are read at the run's start (gather), the
+  // re-price only after the fits, so the first Sundays measure whether the run lands in time)
+  for (const { game } of r.upcoming ?? []) {
+    if (!(r.live?.get(game.id)?.gameRosters?.size > 0)) continue;
+    const left = Math.round((Date.parse(game.date) - REPRICE_BY - Date.now()) / 60e3);
+    console.log(`${sport}: ${game.awayAbbr} @ ${game.homeAbbr} game-day roster read, its re-price ${Math.round((Date.now() - r.now.getTime()) / 60e3)} minutes into the ${sport} run, ${left} minutes before the lock${left < 0 ? ' (too late: the bets stand as placed)' : ''}`);
+  }
   let capped = 0;
   let published = 0;
   for (const b of r.ledger.bets) {
@@ -1164,7 +1173,7 @@ function repriceOpen(r) {
     const now = r.inputs.get(b.event);
     if (!now) continue;
     const prev = before[b.event];
-    const changes = inputChanges(b.inputs, now, { game: games.get(b.event), before: prev?.parts, names: { ...(prev?.names ?? {}), ...now.names } });
+    const changes = inputChanges(b.inputs, now, { game: games.get(b.event), before: prev?.parts, names: { ...(prev?.names ?? {}), ...now.names }, market: b.market });
     if (!changes.length) continue;
     if (b.published) {
       published++;
@@ -1662,7 +1671,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()));
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null);
       run.priced += priced.length;
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
