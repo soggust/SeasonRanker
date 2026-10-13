@@ -11,6 +11,7 @@ import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
 import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints, withAnalyst } from './bet-why';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
+import { MenuDay, MenuGame, MenuGameIn, SPORT_ICONS, gameMenu } from './game-menu';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -29,8 +30,9 @@ import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-sty
 
 // (a game the bot has picks on: its board's key facts, its picks (the CHECKs among them) and its bets alone)
 type GameBoardPicks = { sport: string; event: string; start: string; matchup: string; picks: BetRow[]; betPicks: BetRow[] };
-// (the game dropdown's day: its header, and its games with how many bets each)
-type GameDay = { day: string; games: { key: string; label: string; count: number }[] };
+
+// (the game dropdown's chosen game, for its closed face: its words and its sport's icon)
+type ChosenGame = MenuGame & { icon: string };
 
 // A game as the picks and the AI desk's sheet name it
 type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
@@ -551,17 +553,17 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     void this.lines.games([...this.boards.values(), ...SPORTS.flatMap((sport) => days.map((start) => ({ sport, start })))]);
   }
 
-  // (a game on ESPN's boards, not begun, with DraftKings' lines, that the bot has no pick on)
-  get moreGames(): { key: string; label: string }[] {
-    const out: { key: string; label: string; at: string }[] = [];
+  // (the games on ESPN's boards, not begun, with DraftKings' lines, that the bot has no pick on: in the dropdown
+  // with the picked ones, their lines only. A game with picks on show is counted from them; one with none on show
+  // (a CHECK's alone, not an admin) is here)
+  private linesOnly(): MenuGameIn[] {
+    const out: MenuGameIn[] = [];
     for (const g of this.lines.boards().values()) {
       const key = `${g.sport}|${g.matchup}`;
-      // (a game with picks on show is in the days above; one with none on show (a CHECK's alone, not an admin) here)
       if (g.state !== 'pre' || this.boardPicks(this.boards.get(key)).length || !(g.spread || g.total || g.ml)) continue;
-      const time = new Date(g.start).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
-      out.push({ key, label: `${g.sport.toUpperCase()} · ${g.matchup} · ${time}`, at: g.start });
+      out.push({ key, sport: g.sport, matchup: g.matchup, start: g.start, count: null });
     }
-    return out.sort((a, b) => a.at.localeCompare(b.at) || a.label.localeCompare(b.label));
+    return out;
   }
 
   // (the chosen game's board: one with picks, or one from the boards alone)
@@ -592,7 +594,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const open = (this.rows ?? []).filter((r) => !r.game?.kickoff || Date.parse(r.game.kickoff) > now);
     if (this.rows && open.length === this.rows.length) return;
     this.rows = open;
-    if (this.game && !this.listed.some((r) => this.gameKey(r) === this.game)) this.game = '';
+    // (a game chosen keeps its place while it's still to come: with bets left, or its lines alone)
+    if (this.game && !this.listed.some((r) => this.gameKey(r) === this.game) && !this.linesOnly().some((g) => g.key === this.game)) this.game = '';
   }
 
   ngOnDestroy(): void {
@@ -661,37 +664,43 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     if (!this.kinds.delete(kind)) this.kinds.add(kind);
   }
 
-  // The week's games with bets: the dropdown's choices under a header for each day, by kickoff (in the
-  // viewer's time zone; London's morning game first on Sunday), each with how many bets it has. Built once the
-  // picks are in (they don't change after), not on every check of the page
-  // (kept till the rows on show change: an admin's with the CHECKs' games and counts)
-  private daysFor: { list: BetRow[]; days: GameDay[] } | null = null;
-  get gameDays(): GameDay[] {
-    const list = this.listed;
-    if (this.daysFor?.list !== list) this.daysFor = { list, days: this.buildGameDays(list) };
-    return this.daysFor.days;
+  // The game dropdown (game-menu.ts): a header for each day (in the viewer's time zone; London's morning game first
+  // on Sunday), under it each sport with a game that day (its icon once) by its first game, and under that its
+  // every game early to late: the ones with bets with how many each shows, the rest marked lines only. Built again
+  // only when the rows on show (an admin's with the CHECKs' games and counts) or the boards change, not on every
+  // check of the page
+  private menuFor: { list: BetRow[]; boards: unknown; desk: boolean; days: MenuDay[]; games: Map<string, ChosenGame> } | null = null;
+  get gameMenu(): MenuDay[] {
+    return this.menu().days;
   }
-  private buildGameDays(rows: BetRow[]): GameDay[] {
-    const byGame = new Map<string, { key: string; label: string; day: string; at: number; count: number; bets: number }>();
+  // (the chosen game as the closed dropdown shows it: its sport's icon and its words)
+  get chosenGame(): ChosenGame | null {
+    if (!this.game) return null;
+    const known = this.menu().games.get(this.game);
+    if (known) return known;
+    // (one gone from the list, begun since it was chosen: its matchup alone)
+    const [sport, matchup] = this.game.split('|');
+    return { key: this.game, sport, matchup, time: null, label: matchup, at: 0, count: null, icon: SPORT_ICONS[sport] ?? 'sports' };
+  }
+  private menu(): { days: MenuDay[]; games: Map<string, ChosenGame> } {
+    const list = this.listed;
+    const boards = this.lines.boards();
+    const desk = this.desk();
+    if (this.menuFor?.list !== list || this.menuFor.boards !== boards || this.menuFor.desk !== desk) {
+      const days = gameMenu([...this.pickedGames(list), ...this.linesOnly()], BET_SPORTS);
+      const games = new Map(days.flatMap((d) => d.sports.flatMap((s) => s.games.map((g) => [g.key, { ...g, icon: s.icon }] as const))));
+      this.menuFor = { list, boards, desk, days, games };
+    }
+    return this.menuFor;
+  }
+  // (the games with bets, each with how many it shows: its bets, gameLimit at most, and an admin's CHECKs on it,
+  // all shown)
+  private pickedGames(rows: BetRow[]): MenuGameIn[] {
+    const byGame = new Map<string, MenuGameIn & { count: number; bets: number }>();
     for (const r of rows) {
       if (!r.game) continue;
       const key = this.gameKey(r);
-      let game = byGame.get(key);
-      if (!game) {
-        const kickoff = r.game.kickoff ? new Date(r.game.kickoff) : null;
-        const day = kickoff ?? new Date(`${r.game.date}T12:00:00`);
-        game = {
-          key,
-          label: kickoff
-            ? `${r.game.matchup} · ${kickoff.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
-            : r.game.matchup,
-          day: day.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }),
-          at: day.getTime(),
-          count: 0,
-          bets: 0,
-        };
-      }
-      // (the bets it shows, gameLimit at most, and an admin's CHECKs on it, all shown)
+      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0 };
       if (r.check) game.count++;
       else if (game.bets < this.gameLimit) {
         game.bets++;
@@ -699,12 +708,13 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       }
       byGame.set(key, game);
     }
-    const days: GameDay[] = [];
-    for (const game of [...byGame.values()].sort((a, b) => a.at - b.at || a.label.localeCompare(b.label))) {
-      if (days.at(-1)?.day !== game.day) days.push({ day: game.day, games: [] });
-      days.at(-1)!.games.push(game);
-    }
-    return days;
+    return [...byGame.values()];
+  }
+
+  // (a game picked from the dropdown, or Best Bets (''): the list's filter, as before)
+  chooseGame(key: string): void {
+    this.game = key;
+    this.closeWhy();
   }
 
   gameKey(r: BetRow): string {

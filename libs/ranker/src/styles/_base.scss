@@ -320,6 +320,136 @@ html body .mat-mdc-select-panel.preset-options {
   }
 }
 
+// The Bets page's game dropdown (bets-page.component.html): white lettering on its felt, the felt's own caret for
+// Material's. Its open list the same felt from every sport (past the sports' own lists: html body and the panel's
+// class): each day in the rail's gold, under it each sport's icon and name, under that its games indented, the bets
+// each shows in parentheses, a lines-only game a quiet "LINES" tag. Hovered or picked, a lighter felt (never the
+// gold); taller than Material's 275px, on a phone no wider than the screen
+html body bets-page .bets-game {
+  .mat-mdc-select-trigger {
+    height: auto;
+  }
+
+  .mat-mdc-select-value,
+  .mat-mdc-select-value-text {
+    color: #fff !important;
+    font: inherit;
+  }
+
+  .mat-mdc-select-arrow-wrapper {
+    display: none;
+  }
+}
+
+html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 20%, rgba(255, 255, 255, 0.06), transparent 70%),
+    #{chip.$felt-nap} 0 0 / 140px,
+    #0f3f29 !important;
+  background-blend-mode: normal !important;
+  border: 1px solid #{chip.$felt-seam} !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55) !important;
+  max-height: min(70vh, 520px);
+  max-width: calc(100vw - 32px);
+  min-width: 240px;
+  padding: 0 0 6px;
+  --mat-pseudo-checkbox-minimal-selected-checkmark-color: #{chip.$gold-led};
+  @include kit.list-scrollbar(rgba(0, 0, 0, 0.35), #2a7a52, #3fa36b);
+
+  .mat-mdc-option {
+    min-height: 36px;
+
+    &,
+    span {
+      color: #fff !important;
+      font-family: v.$font-heading !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.5px !important;
+      text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6) !important;
+      text-transform: none !important;
+    }
+
+    &:not(.mdc-list-item--disabled):hover,
+    &:focus-visible,
+    &.mat-mdc-option-active,
+    &.mdc-list-item--selected {
+      background: rgba(255, 255, 255, 0.1) !important;
+
+      span {
+        color: #fff !important;
+      }
+    }
+
+    span.game-count {
+      opacity: 0.7;
+    }
+
+    span.game-lines {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.65) !important;
+      font-size: 9px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.8px !important;
+      margin-left: 4px;
+      padding: 1px 6px;
+      text-shadow: none !important;
+      text-transform: uppercase !important;
+      vertical-align: 1px;
+    }
+  }
+
+  // (a game's line under its sport, indented past the sport's icon)
+  .mat-mdc-optgroup .mat-mdc-option {
+    padding-left: 38px;
+  }
+
+  .mat-mdc-optgroup-label {
+    display: block;
+    min-height: 0;
+    padding: 0;
+
+    .mdc-list-item__primary-text {
+      display: block;
+    }
+  }
+
+  // (the day: in the rail's gold, a rule over it)
+  .day-first .game-day {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: #{chip.$gold-led};
+    display: block;
+    font-family: v.$font-heading;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    padding: 10px 16px 2px;
+    text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
+  }
+
+  .game-sport {
+    align-items: center;
+    color: rgba(255, 255, 255, 0.72);
+    display: flex;
+    font-family: v.$font-heading;
+    font-size: 11px;
+    font-weight: 800;
+    gap: 6px;
+    letter-spacing: 1px;
+    padding: 6px 16px 0;
+    text-transform: uppercase;
+
+    mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
+}
+
 // Menu items (the settings menu, the dropdowns' lists) press in when hovered, focused or picked: a
 // faint dark shade, as if pushed into the panel, rather than Material's light wash
 html {

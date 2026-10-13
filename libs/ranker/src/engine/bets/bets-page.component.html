@@ -37,27 +37,47 @@
     <div class="bets-head">
       <!-- (the left: the game dropdown, and when the sheet was updated under it) -->
       <div class="bets-head-left">
-        @if (listed.length) {
-          <!-- (the chip's rim: its spots drawn as dashes along an outline, so they follow the round ends) -->
+        <!-- (the game dropdown: Best Bets, then each day's games under their sport's icon, early to late, the ones with
+             bets with how many, the rest their lines only (game-menu.ts); there whenever there's a game to bet, picked
+             or not) -->
+        @if (gameMenu.length) {
           <span class="bets-chip">
-            <select class="bets-game" aria-label="Game" [(ngModel)]="game" (ngModelChange)="closeWhy()">
-              <option value="">Best Bets</option>
-              @for (d of gameDays; track d.day) {
-                <optgroup [label]="d.day">
-                  @for (g of d.games; track g.key) {
-                    <option [value]="g.key">{{ g.label }} ({{ g.count }})</option>
-                  }
-                </optgroup>
+            <mat-select
+              class="bets-game"
+              panelClass="bets-game-options"
+              [panelWidth]="null"
+              aria-label="Game"
+              [value]="game"
+              (valueChange)="chooseGame($event)"
+            >
+              <mat-select-trigger>
+                @if (chosenGame; as g) {
+                  <span class="bets-game-face"><mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>{{ g.label }}</span>
+                } @else {
+                  Best Bets
+                }
+              </mat-select-trigger>
+              <mat-option value="">Best Bets</mat-option>
+              @for (d of gameMenu; track d.day) {
+                @for (s of d.sports; track s.sport; let first = $first) {
+                  <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only) -->
+                  <mat-optgroup label="" [class.day-first]="first">
+                    <span class="game-day" [class.visually-hidden]="!first">{{ d.day }}<span class="visually-hidden">, </span></span>
+                    <span class="game-sport"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
+                    @for (g of s.games; track g.key) {
+                      <mat-option [value]="g.key">
+                        {{ g.label }}
+                        @if (g.count === null) {
+                          <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
+                        } @else {
+                          <span class="game-count">({{ g.count }}<span class="visually-hidden"> {{ g.count === 1 ? 'bet' : 'bets' }}</span>)</span>
+                        }
+                      </mat-option>
+                    }
+                  </mat-optgroup>
+                }
               }
-              <!-- (the games the bot has no pick on: their lines only, to bet them) -->
-              @if (moreGames.length) {
-                <optgroup label="More games · lines only">
-                  @for (g of moreGames; track g.key) {
-                    <option [value]="g.key">{{ g.label }}</option>
-                  }
-                </optgroup>
-              }
-            </select>
+            </mat-select>
           </span>
         }
         @if (updated) {
@@ -107,8 +127,8 @@
 
     @if (rows === null) {
       <p class="bets-note">Loading…</p>
-    } @else if (!listed.length) {
-      <p class="bets-note">No picks right now: the algorithm posts its best bets as the coming games' lines come in.</p>
+    } @else if (!listed.length && !game) {
+      <p class="bets-note">No picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
     } @else {
       @let locks = lockCount(shown);
       <ol class="bets-list" [class.spinning]="spinning" (scroll)="closeWhy()">

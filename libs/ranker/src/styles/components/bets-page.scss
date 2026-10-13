@@ -250,8 +250,28 @@ $lock-gold: chip.$lock-gold;
   display: inline-flex;
 }
 
+// (a Material dropdown in the felt: as wide as its words (Best Bets, or the game chosen with its sport's icon), on a
+// phone no wider than the screen; its own caret and lettering inside are styles/_base.scss's, the open list's too)
 .bets-game {
   @include chip.felt-dropdown;
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  line-height: 1.2;
+  max-width: calc(100vw - 32px);
+  width: auto;
+}
+
+.bets-game-face {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+
+  mat-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
 }
 
 .bets-note {
