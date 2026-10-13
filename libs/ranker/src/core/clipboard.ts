@@ -10,8 +10,9 @@ interface Column {
 // with stats off, just the rank, picture and name). Only the rows shown (one team's, with a team picked),
 // each at its rank in the whole list (the row's data-rank). Plain text is tab-separated (pastes into spreadsheets
 // and notes); HTML is a table with each row's picture: a player's headshot, or the team's logo (pastes
-// into forums and docs).
-export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promise<void> {
+// into forums and docs). note: a line over the list (a header clicked: "Sorted by ... only"), each row's
+// data-rank then its place by that stat ("-": none).
+export function copyRankingsToClipboard(list: HTMLElement, stats = true, note?: string): Promise<void> {
   const header = list.querySelector<HTMLElement>(':scope > li.header-row');
   const rows = Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row):not(.unranked)'));
   const columns = header && stats ? readColumns(header) : [];
@@ -20,7 +21,7 @@ export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promis
   const loaded = rows.map((row) => row.querySelector<HTMLImageElement>('img.headshot')).find((img) => img?.naturalWidth);
   const headshotRatio = loaded ? loaded.naturalWidth / loaded.naturalHeight : 160 / 116;
   const table = rows.map((row, index) => ({
-    rank: Number(row.dataset['rank']) || index + 1,
+    rank: row.dataset['rank'] === '-' ? '-' : Number(row.dataset['rank']) || index + 1,
     name: row.querySelector('.player-name strong')?.textContent?.trim() ?? '',
     // (a player's headshot when the row has one, a fighter's in MMA; else the team's logo)
     image: rowImage(row, headshotRatio),
@@ -30,7 +31,7 @@ export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promis
   // Plain text: tab-separated, with a row of column labels when the stats come along (a spreadsheet's
   // header); just "rank, name" lines without them
   const labels = ['Rank', 'Name', ...columns.map((c) => c.label)];
-  const plain = [...(columns.length ? [labels] : []), ...table.map((r) => [r.rank, r.name, ...r.values])]
+  const plain = [...(note ? [[note]] : []), ...(columns.length ? [labels] : []), ...table.map((r) => [r.rank, r.name, ...r.values])]
     .map((cells) => cells.join('\t'))
     .join('\n');
 
@@ -42,6 +43,7 @@ export function copyRankingsToClipboard(list: HTMLElement, stats = true): Promis
   const img = ({ src, width, height }: RowImage) =>
     `<img src="${src}" width="${width}" height="${height}" style="width:${width}px;height:${height}px;max-width:${width}px;vertical-align:middle">`;
   const html = [
+    ...(note ? [`<p><i>${escape(note)}</i></p>`] : []),
     '<table><tbody>',
     ...table.map(
       (r) =>

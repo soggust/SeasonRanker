@@ -2157,3 +2157,181 @@ section ul li.player.first-unranked {
 section ul li.player.unranked .drag-indicator {
   visibility: hidden;
 }
+
+// ---------------------------------------------------------------------------
+// Isolation (a header clicked: the rows sorted by that stat alone, for a look): the board a shade darker,
+// every other column barely there, the one sorted by lit in the board's light, the rank tiles' places by
+// it edged in a dashed line (a sort, not the ranking), and a chip under the header to go back
+// ---------------------------------------------------------------------------
+section.rankings-wrapper ul.cdk-drop-list {
+  transition: box-shadow 0.25s ease;
+
+  &.isolating {
+    box-shadow:
+      inset 0 0 0 100vmax rgba(0, 0, 0, 0.28),
+      0 3px 10px rgba(0, 0, 0, 0.45);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// (the other columns, header and rows: a box of grades dims its own grades, not itself, so the one
+// sorted by stays lit)
+section ul li.player {
+  > .col-group > div,
+  > .col-group > .support-box:not(.recent-box) > div {
+    transition: opacity 0.2s ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+section ul.isolating li.player {
+  > .col-group > div:not(.iso-on):not(.support-box),
+  > .col-group > div.recent-box:not(.iso-on),
+  > .col-group > .support-box:not(.recent-box) > div:not(.iso-on),
+  > .col-group > .support-box:not(.recent-box) > .group-icon {
+    opacity: 0.14;
+  }
+
+  // (a dimmed header still clicks: lit back up under the pointer or the keyboard)
+  &.header-row > .col-group [role="button"]:not(.iso-on):is(:hover, :focus-visible) {
+    opacity: 0.6;
+  }
+
+  // (rows don't drag while it lasts)
+  .drag-indicator {
+    opacity: 0.12;
+    pointer-events: none;
+  }
+}
+
+// The column sorted by: a faint wash of the board's light down it, its header lit and underlined
+section ul.isolating li.player:not(.header-row) .iso-on {
+  box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--scoreboard-led) 7%, transparent);
+}
+
+section ul li.player.header-row,
+section ul li.player.header-row:hover {
+  .iso-on .stat-label,
+  .iso-on:hover .stat-label {
+    color: var(--scoreboard-led);
+    opacity: 1;
+    text-decoration: underline 2px;
+    text-shadow: var(--scoreboard-glow);
+    text-underline-offset: 4px;
+  }
+
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--scoreboard-led);
+    outline-offset: 2px;
+  }
+}
+
+// A row's place by the stat: white digits in a dashed edge of the board's light (solid on hover, as any tile)
+section ul li.player:not(.header-row) .count.rank-tile.iso-place {
+  border-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
+  border-style: dashed;
+
+  &:hover,
+  &:focus-visible,
+  &.open {
+    border-color: var(--scoreboard-led);
+    border-style: solid;
+  }
+}
+
+// The chip: what it's sorted by and an X back (phones have no Esc), floating just under the header at
+// the board's right (a spot of no height before the list, so nothing moves)
+.iso-anchor {
+  align-self: stretch;
+  height: 0;
+  position: relative;
+  z-index: 6;
+}
+
+.iso-chip {
+  align-items: center;
+  @include v.scoreboard-panel(999px, 0 4px 14px rgba(0, 0, 0, 0.55));
+  box-sizing: border-box;
+  color: #eee;
+  display: flex;
+  font-family: v.$font-base;
+  font-size: 12px;
+  gap: 4px;
+  max-width: calc(100% - 28px);
+  padding: 2px 2px 2px 9px;
+  position: absolute;
+  right: 16px;
+  top: 50px;
+  white-space: nowrap;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: iso-chip-in 0.18s ease-out;
+  }
+
+  b {
+    color: var(--scoreboard-led);
+  }
+}
+
+.iso-chip-icon {
+  color: var(--scoreboard-led);
+  @include v.icon-size(15px);
+}
+
+.iso-chip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// (touch: no Esc to mention)
+@media (hover: none) {
+  .iso-chip-hint {
+    display: none;
+  }
+}
+
+.iso-chip-close {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: #ccc;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+
+  .mat-icon {
+    @include v.icon-size(16px);
+  }
+
+  // (lightens, as the site's close buttons do)
+  &:hover,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    outline: none;
+  }
+
+  // (touch: a thumb-sized target around the small button)
+  @media (pointer: coarse) {
+    height: 32px;
+    width: 32px;
+  }
+}
+
+@keyframes iso-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
