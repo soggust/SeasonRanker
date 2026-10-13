@@ -102,6 +102,27 @@
 //            +0.0003 with its bias larger): the minutes base and the per-player rates already carry a center's
 //            rebounds and a guard's threes, and a third of the opponent's games a table thins it. Off the search
 //            (TRY_PS)
+//   ice time the NHL's (audit #13; props.mjs STATS minutes 60): the minutes base with a skater's time on ice for
+//            the minutes (matchups.mjs nhlMatchups share: his time on ice over a full game's 60, the game's own,
+//            learned after it; fullMin), sn and sr searched late on the whole stat's gate with WHOLE_TOL's tolerance
+//            as the NBA's, the work missing tonight and the factors on top of it. Late flags after it on the same
+//            gate (WHOLE_TOL; props.mjs CTX): c_ppLean, his power-play minutes lately (matchups.mjs ppLean, recent
+//            games counting most) over his season's, a log; c_teamShots, his side's expected shots on goal tonight
+//            over the league's (hockey.mjs, its shots a game against the other side's allowed), a log; c_mTotal, the
+//            betting total over 6 goals (playerlogs.mjs boxTotals: the finals' closes, a mild look-ahead as the
+//            NBA's lines; live the book's), a log. Measured 2026-10-13 (2025-26 and 2026-27's first games, 56516
+//            player games, held out the last 30%), against the code before on the same lines (shots 0.593, points
+//            0.5474): shots sn 0.5/sr 0.5 (+0.0009; eligible bias 0.0411 to 0.0444, every player's 0.1282 to
+//            0.1132) and c_ppLean 0.05 (+0.0003, 0.0444 to 0.0466) kept, held out 0.5918; c_teamShots 0 (0.5 no
+//            better held out) and c_mTotal not taken. Points: sn, c_ppLean and c_mTotal not taken on the fit window,
+//            c_teamShots 0.25 kept (+0.0006, 0.0366 to 0.0367), and with the power play by the other side's
+//            penalties (c_pp, not taken before or after) off its search the work missing (vc 0.25, split 3) was
+//            taken (+0.0003): held out 0.5471. The eligible held-out rows, actual over projected before and after
+//            (all: shots -2.0% to -2.3%): shots after an ice-time jump (his last three over 1.2 times his season's,
+//            n 390) +4.4% to -5.3%, his power-play time down (ppLean -0.3 or less, n 916) -4.5% to -0.9%, up (n 912)
+//            +3.9% to -1.9%; points with his side's expected shots low (-0.08 or less, n 1438) -15.5% to -12.8%.
+//            The dead terms off each stat's ctx (props.mjs NHL_SOG_CTX, NHL_PTS_CTX) and the minutes mark off points:
+//            the NHL props' fit 121s to 158s locally (262s with every term searched)
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -443,7 +464,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -531,7 +552,7 @@ const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ?
 const SUBGROUP_N = 100;
 // (the late terms on every row judged on the whole stat's bias with SUBGROUP_TOL (fitStat): the NBA's minutes base
 // and its pace (po: a factor on every row, the lean refit with it))
-export const WHOLE_TOL = new Set(['sn', 'po']);
+export const WHOLE_TOL = new Set(['sn', 'po', 'c_ppLean', 'c_teamShots', 'c_mTotal']);
 const SUBGROUP_TOL = 0.005;
 // (and the eligible players' among the rows it's on, judged too where this many or more)
 const SUBGROUP_ELIG_N = 50;
@@ -1014,7 +1035,7 @@ export function makeModel(stat, params, env) {
     // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
     const slF = middleF(params, raw);
     const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
-    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * 48, recent: minLean.recent * 48 } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -1306,7 +1327,13 @@ const M_SPREAD = [-0.15, -0.1, -0.05, -0.025, 0.025, 0.05, 0.1, 0.15];
 const B2B = [-0.15, -0.1, -0.07, -0.05, -0.03, 0.03, 0.05, 0.07, 0.1, 0.15];
 // (an NBA bench player who started his team's last game (c_newStart: props.mjs CTX newStart), a 0 or 1 flag)
 const NEW_START = [-0.1, -0.05, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START };
+// (an NHL skater's power-play time's lean (c_ppLean: a log, about -1 to 1) and his side's expected shots
+// (c_teamShots: a log, about -0.25 to 0.25, its size the power of the ratio): props.mjs CTX)
+const PP_LEAN = [-0.2, -0.1, 0.05, 0.1, 0.2, 0.3, 0.5];
+const TEAM_SHOTS = [-0.25, 0.25, 0.5, 0.75, 1];
+// (the NHL's market total (c_mTotal: the betting total over 6 goals, a log, about -0.1 to 0.1), its power)
+const M_TOTAL = [-0.5, 0.5, 1, 1.5];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -1316,6 +1343,9 @@ const SN = [0.5, 1];
 const SR = [0, 0.25, 0.5, 0.75, 1];
 // (the NBA's minutes: his last games' average his expected minutes lean to by sr, in the last game's place)
 const MIN_RECENT = 3;
+// (a full game's minutes, the minutes base's (props.mjs STATS minutes): the NBA's 48 (true reads as 48), the
+// NHL's 60)
+export const fullMin = (stat) => (typeof stat?.minutes === 'number' ? stat.minutes : 48);
 // (the volume-based base's blend and its efficiency prior's weight in targets, searched together the same way.
 // yk to 400: receiving yards took the largest of [15, 40, 100] (100), and of these 400 (held out 0.6504 at 100,
 // 0.6501 at 400); 1000 tried too (2026-10-12), taken again on the fit window, held out worse (0.6508, the
@@ -1400,7 +1430,7 @@ function fitRecal(pairs) {
 
 // A stat's context terms to fit (c_<key>): its ctx's, the betting lines' spread (c_mSpread) only where the
 // history has the lines (env.mktN: the rows with them; without, it reads 0 on every row and isn't fit)
-export const fitCtxs = (stat, env) => ctxKeys(stat).map((k) => `c_${k}`).filter((k) => k !== 'c_mSpread' || env?.mktN > 0);
+export const fitCtxs = (stat, env) => ctxKeys(stat).map((k) => `c_${k}`).filter((k) => (k !== 'c_mSpread' || env?.mktN > 0) && (k !== 'c_mTotal' || env?.totN > 0));
 
 // A stat's settings fit (one at a time, twice round) on the fit window, then checked on the last 30%
 export function fitStat(stat, rows, env) {

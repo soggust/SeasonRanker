@@ -290,6 +290,10 @@ export function ctxWhat(bet, sheet) {
     pp: 'his power-play time',
     ppTime: 'his power-play time',
     ppShare: v > 0 ? 'his spot on the top power-play unit' : 'his small share of the power play',
+    // (an NHL skater's power-play time lately against his season's, his side's expected shots, the betting total)
+    ppLean: v > 0 ? 'more power-play time lately' : 'less power-play time lately',
+    teamShots: `${sheet.bet.team ?? 'his team'}'s expected shot volume`,
+    mTotal: "the game's betting total",
     oppShots: `${opp ? possessive(opp) : 'the opposing'} shot volume`,
     oppGoalie: 'the goalie he faces',
     leash: 'his pitch-count leash',

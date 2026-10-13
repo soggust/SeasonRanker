@@ -42,8 +42,9 @@ test("the stats' back-to-backs: the NBA's bench one in place of the one size, th
   // (pts+reb+ast keeps the one size in the main search, its old place in the order: b2bB isn't kept there)
   assert.deepEqual(ctxKeys(STATS.nba.find((s) => s.key === 'pra')), ['usage', 'b2bAll', 'blowout']);
   assert.deepEqual(ctxKeys(STATS.nhl.find((s) => s.key === 'saves')), ['oppShots', 'b2b']);
-  assert.deepEqual(ctxKeys(STATS.nhl.find((s) => s.key === 'sog')), ['pp']);
-  assert.deepEqual(ctxKeys(STATS.nhl.find((s) => s.key === 'pts')), ['pp', 'oppGoalie']);
+  // (the skaters' as audit #13 left them: shots the power-play lean, points the goalie and the side's expected shots)
+  assert.deepEqual(ctxKeys(STATS.nhl.find((s) => s.key === 'sog')), ['ppLean']);
+  assert.deepEqual(ctxKeys(STATS.nhl.find((s) => s.key === 'pts')), ['oppGoalie', 'teamShots']);
 });
 
 test("the write-up names a back-to-back when it moved the projection most", () => {

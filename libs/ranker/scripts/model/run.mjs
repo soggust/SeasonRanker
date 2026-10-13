@@ -122,7 +122,7 @@ import { OUTLIER, SPORT_KEYS, call, canSpend, consensusFields, gameLines, hasKey
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
-import { boxMarket, playerRows } from './playerlogs.mjs';
+import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
@@ -752,9 +752,10 @@ async function fitTheProps(r) {
     r.rows = await playerRows(sport, cfg, history, r.facts);
     const info = new Map([...(r.feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
     // (the history's betting lines: the NFL's nflverse closes, the NBA's its finals' summaries' (playerlogs.mjs
-    // boxMarket: read by the blowout by role, a measure on demand); none elsewhere)
+    // boxMarket: read by the blowout by role, a measure on demand); none elsewhere. The NHL's totals alone, its
+    // finals' summaries' too (boxTotals: the skaters' market total, props.mjs CTX mTotal))
     const market = sport === 'nfl' ? await nflMarket(history) : sport === 'nba' ? boxMarket('nba') : null;
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market);
+    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports
     // (playchance.mjs); none, or another sport: every questionable one at half, as before. This season the
@@ -1665,7 +1666,8 @@ async function betProps(r) {
       // and the home side's margin by the spread alone (marketSpread: the lines' spread term, mSpread, with or
       // without the total; none, and a prop that weighs it is a CHECK: props.mjs spreadBlind))
       const homeMargin = Number.isFinite(u.lines?.spread?.home?.line) ? -u.lines.spread.home.line : null;
-      const exp = { ...exp0, market: marketPts(u.lines?.total?.line, homeMargin), marketSpread: homeMargin };
+      // (and the total alone (marketTotal: the NHL skaters' market total, props.mjs CTX mTotal; none, the term reads 0))
+      const exp = { ...exp0, market: marketPts(u.lines?.total?.line, homeMargin), marketSpread: homeMargin, marketTotal: Number.isFinite(u.lines?.total?.line) ? u.lines.total.line : null };
       const live0 = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       // (the NFL's depth charts now, the site's (props.mjs readDepth: the role guard's depth CHECK), read once a run)
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;

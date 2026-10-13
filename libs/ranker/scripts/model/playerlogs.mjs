@@ -50,14 +50,16 @@ const save = (sport) => {
 
 // (the kept lines' version, a sport's own: 2, the NBA's with field goals and free throws tried, the NHL's with
 // power-play time; 3, the NBA's with the starter flag, threes tried, offensive and defensive rebounds, turnovers
-// and fouls, and the game's betting lines (m) where the summary has them)
-const LINES_V = { nba: 3, nhl: 2 };
+// and fouls, and the game's betting lines (m) where the summary has them; the NHL's with the game's total (t: the
+// betting lines' goals, where the summary has them; audit #13, props.mjs CTX mTotal))
+const LINES_V = { nba: 3, nhl: 3 };
 
 // An NBA or NHL final's player lines from its summary, kept: context.mjs reads each new final's summary for
 // its own facts and hands it here too, so a final's summary is asked for once. An NBA final's betting lines
 // too (m: [the home side's margin, the total], the summary's pickcenter, DraftKings' where it's there: ESPN's
 // line at the tip, a close; none on 2025-26's first weeks' finals): the props' blowout by role (props.mjs
-// blowS, blowB) reads the history's spread from them (boxMarket)
+// blowS, blowB) reads the history's spread from them (boxMarket). An NHL final's total alone (t: its puck line's
+// 1.5 isn't a margin), the same close: the skaters' market total (boxTotals)
 export function recordBox(sport, g, body) {
   const box = body?.boxscore?.players;
   if (!box?.length || (sport !== 'nba' && sport !== 'nhl')) return;
@@ -67,8 +69,9 @@ export function recordBox(sport, g, body) {
     if (where) sides[where] = sport === 'nba' ? nbaLines(p) : nhlLines(p);
   }
   if (sides.h && sides.a) {
-    const m = sport === 'nba' ? pickLines(body) : null;
-    load(sport)[g.id] = { ...sides, ...(m ? { m } : {}), v: LINES_V[sport] };
+    const m = pickLines(body);
+    const lines = sport === 'nba' ? (m ? { m } : {}) : m?.[1] > 0 ? { t: m[1] } : {};
+    load(sport)[g.id] = { ...sides, ...lines, v: LINES_V[sport] };
     kept.get(sport).dirty = true;
   }
 }
@@ -95,6 +98,14 @@ export function boxMarket(sport) {
     const a = (total - margin) / 2;
     if (h > 0 && a > 0) out.set(String(id), [h, a]);
   }
+  return out.size ? out : null;
+}
+
+// The NHL history's betting totals by ESPN's game id (the kept finals' t, recordBox: the close, a mild look-ahead
+// as the NBA's lines); null with none (the market total's term reads 0 then: the stat as without it)
+export function boxTotals(sport) {
+  const out = new Map();
+  for (const [id, k] of Object.entries(load(sport))) if (k?.t > 0) out.set(String(id), k.t);
   return out.size ? out : null;
 }
 

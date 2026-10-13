@@ -15,11 +15,11 @@ const g = (d, pts, min, pid = 'p') => ({ pid, pos: 'G', season: 2026, date: day(
 
 test('every NBA stat is minutes first; the blowout by role and the new starter are off the ctx', () => {
   for (const st of STATS.nba) {
-    assert.equal(st.minutes, true, st.key);
+    assert.equal(st.minutes, 48, st.key);
     for (const k of ['blowS', 'blowB', 'newStart']) assert.ok(!st.ctx.includes(k), `${st.key} ${k}`);
   }
-  // (and no other sport's)
-  for (const sport of ['nfl', 'nhl', 'mlb']) for (const st of STATS[sport]) assert.ok(!st.minutes, `${sport} ${st.key}`);
+  // (and no other sport's but the NHL's shots, ice time first: a full game's 60 (audit #13))
+  for (const sport of ['nfl', 'nhl', 'mlb']) for (const st of STATS[sport]) assert.equal(st.minutes, sport === 'nhl' && st.key === 'sog' ? 60 : undefined, `${sport} ${st.key}`);
 });
 
 test('minutes first off (sn 0): the per-game rate as before, whatever the minutes', () => {
@@ -124,8 +124,8 @@ test('CTX blowS, blowB: the spread either way per 10 by his role known before th
   assert.equal(CTX.newStart(null, true, null, { roleKnown: 'B', startLast: null }), 0);
 });
 
-test("WHOLE_TOL (the whole stat's bias tolerance) holds the minutes base and the NBA's pace alone: every other whole-stat term no larger at all", () => {
-  assert.deepEqual([...WHOLE_TOL], ['sn', 'po']);
+test("WHOLE_TOL (the whole stat's bias tolerance) holds the minutes base, the NBA's pace and the NHL skaters' factors on every row alone: every other whole-stat term no larger at all", () => {
+  assert.deepEqual([...WHOLE_TOL], ['sn', 'po', 'c_ppLean', 'c_teamShots', 'c_mTotal']);
 });
 
 test("early in a season: one short opener after a full last season, his minutes pulled toward last season's", () => {
