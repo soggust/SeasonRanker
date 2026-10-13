@@ -199,6 +199,9 @@
               <!-- (the prop types and their fitted terms) -->
               <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':props', title: 'Prop types (' + s.props.length + ')' }"></ng-container>
               @if (shown(s.sport + ':props')) {
+                @if (s.playChance) {
+                  <p class="muted">{{ s.playChance }}</p>
+                }
                 @for (t of s.props; track t.key) {
                   <div class="prop">
                     <div class="prop-head"><b>{{ t.label }}</b> <span class="muted">{{ t.rows | number }} rows · trust {{ t.trust }}</span></div>

@@ -83,7 +83,7 @@ export interface ModelState {
   teams: { abbr: string; rating: number }[];
   context?: { lambda: number; terms: ContextTerm[]; test: { games: number; before: TestNumbers; after: TestNumbers } } | null;
   postmortem?: { graded: number; disrupted: number; weight: number; fitted: boolean };
-  props?: { types: PropType[]; lastRun?: { games: number; priced: number; bet: number } } | null;
+  props?: { types: PropType[]; lastRun?: { games: number; priced: number; bet: number }; playChance?: PlayChance } | null;
   // (the book it bets, set in leagues.mjs; where this run's lines came from; The Odds API's credits)
   book?: string;
   lines?: string;
@@ -173,6 +173,32 @@ export interface PropType {
   gains?: Record<string, number | null>;
   check: { n: number; mae: number; maeBase: number | null; logLoss: number | null; logLossBase: number | null; brier: number | null; brierBase: number | null; sideHit: number | null } | null;
   trust: Trust | null;
+}
+
+// (the NFL's questionable players' chance of playing (the bettor's playchance.mjs): the share of past seasons'
+// questionable players who played, the levels its held-out seasons kept, the check against the flat half it
+// replaced, and the chance as read live by a quarterback or not and his team's games missed in a row)
+export interface PlayChance {
+  n: number;
+  rate: number;
+  levels: string[];
+  check: { held: number[]; n: number; loss: number; flat: number; tried: { level: string; gain: number; kept: boolean; worse?: string[] }[] };
+  cells: Record<string, number>;
+}
+
+// (the play chance in plain words, for the About and the Algorithm tab)
+const PLAY_LEVEL_WORDS: Record<string, string> = { gone: 'his games missed in a row', qb: 'a quarterback or not', practice: 'his last practice (not read live: the report ESPN gives carries none)' };
+export function playChanceText(p: PlayChance | null | undefined): string | null {
+  if (!p) return null;
+  const c = p.cells ?? {};
+  const pc = (v: number | undefined): string => (v === undefined || !Number.isFinite(v) ? '-' : `${Math.round(v * 100)}%`);
+  const who = (k: string): string => `${pc(c[`${k} 0`])} (missed his last game ${pc(c[`${k} 1`])}, two or more ${pc(c[`${k} 2+`])}, none played yet this season ${pc(c[`${k} new`])})`;
+  const held = p.check?.held?.length ? `${p.check.held[0]}${p.check.held.length > 1 ? `-${p.check.held[p.check.held.length - 1]}` : ''}` : '';
+  return (
+    `A questionable teammate counts as missing by his chance of playing, from ${p.n.toLocaleString()} past questionable reports (${pc(p.rate)} played), not a flat half: ` +
+    `a quarterback ${who('QB')}; anyone else ${who('other')}. By ${p.levels.length ? p.levels.map((l) => PLAY_LEVEL_WORDS[l] ?? l).join(', ') : 'nothing more'}. ` +
+    `Held out (${held}): log loss ${p.check.loss} against the flat half's ${p.check.flat}.`
+  );
 }
 
 export type BacktestRow = BacktestMarket & { sport: string; market: string };

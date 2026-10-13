@@ -33,9 +33,10 @@
 //   vacated  the NFL: the work a player's position group is missing: its regulars who aren't playing (not in the
 //            game's logs; at bet time, out or doubtful on the injury report, on the roster's injured reserve,
 //            PUP, NFI or suspended, missing two games or more and not on the report, or no longer on the team's
-//            roster, and a questionable one at half), their recent work (a back's carries and targets, a
-//            receiver's or tight end's targets, a game's worth, recent games counting most) over the recent work
-//            of those who are. A back stepping in for a hurt starter gets the starter's share to share out; a
+//            roster, and a questionable one by his chance of missing it: playchance.mjs), their recent work (a
+//            back's carries and targets, a receiver's or tight end's targets, a game's worth, recent games
+//            counting most) over the recent work of those who are. A back stepping in for a hurt starter gets
+//            the starter's share to share out; a
 //            regular missing (one who's played for the team this season) keeps his work as it was through his
 //            first FREEZE games out (it doesn't fade while he's still out: a fill-in's cut isn't shrunk under
 //            him), then fades out of it game by game (gone a while: by then the ones taking his place have it in
@@ -206,7 +207,8 @@ export function nflMatchups(rows, pbp = null) {
   // 0.5 and 0 (equally: the next man up's cut as big as the starter's); missOf(id): how surely a teammate is
   // missing, 0 to 1: in the history, 1 for one not in the game's logs, 0 for one in them; at bet time, 1 for
   // one out, doubtful or on IR, or no longer on the team's roster (traded, released: gone from its games as he
-  // is in the history's), a half for one questionable (in the work missing at half, and here at half))
+  // is in the history's), and for one questionable his chance of missing it (playchance.mjs: the NFL's, fit
+  // on past seasons' reports; else half))
   const SPLITS = [1, 0.5, 0];
   const NONE = SPLITS.map(() => 0);
   const vacated = (teamId, season, pid, pos, missOf) => {
@@ -254,9 +256,9 @@ export function nflMatchups(rows, pbp = null) {
   // counting most), LEAD_MIN or more, one who's played for it this season (cur: a back gone since last season
   // isn't its lead, nor one out since before the opener: a bell cow lost in the preseason is never read); null
   // with none. How surely he's missing (missOf, 0 to 1) is the rb1Out term's value for its quarterback and
-  // pass-catchers, a back's own 0: the work he leaves is the vacated term's. A questionable one's half is the
-  // vacated term's convention, not a fitted rate (a questionable starter plays more often than half); the
-  // history reads 0 or 1. Measured and on no stat's ctx: props.mjs)
+  // pass-catchers, a back's own 0: the work he leaves is the vacated term's. A questionable one at his chance
+  // of missing it (playchance.mjs: the NFL's, fit on past seasons' reports; else half); the history reads 0
+  // or 1. Measured and on no stat's ctx: props.mjs)
   const LEAD_MIN = 8;
   const leadBack = (teamId, season) => {
     let lead = null;
@@ -278,7 +280,8 @@ export function nflMatchups(rows, pbp = null) {
   // this season the lead quarterback played in (his season's numbers already the backup's, as far as they go:
   // a flag at full strength on an absence's fourth game would count its first three twice; none yet, in full).
   // Kept only past its floor: project.mjs MIN_GAIN. Its { v, miss }: miss how surely he's missing alone (1 out, a
-  // half questionable), the write-up's words (v is under 1 for an out starter once he's missed a game))
+  // questionable one his chance of missing it: playchance.mjs), the write-up's words (v is under 1 for an out
+  // starter once he's missed a game))
   // (the history's missing is any lead quarterback not in the game's logs, a benching or an unlisted inactive
   // too, where live play reads the report and the roster alone: the role backtest's qb1Out table has the
   // history's rows by whether the reports listed him)
@@ -589,6 +592,13 @@ export function nflMatchups(rows, pbp = null) {
     // bet time unless the injury report lists him or he has a prop on the game's board (props.mjs priceProps),
     // as the history counts a player not in a game's logs; his games out counted from this season's first)
     absent: (teamId, season) => new Map([...workOf(teamId, season).p].filter(([, x]) => x.v >= 1.5 && (x.gone ?? 0) >= 2).map(([id, x]) => [String(id), { gone: x.gone, pos: x.pos }])),
+    // (a player's team games missed in a row now, 0 for one in its last game's logs; null for one who's not
+    // played for it this season (or not at all): a questionable one's play chance reads it, playchance.mjs gone)
+    goneOf: (teamId, season, id) => {
+      const p = workOf(teamId, season).p;
+      const x = p.get(id) ?? p.get(String(id)) ?? p.get(Number(id));
+      return x?.cur ? (x.gone ?? 0) : null;
+    },
     // (a team's regulars at a position group now: the ones whose recent work counts in the work missing when
     // they're out (matchups' vacated), by id)
     regulars: (teamId, season, pos) => {

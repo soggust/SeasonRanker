@@ -942,6 +942,10 @@
               </tbody>
             </table>
           }
+          <!-- (the NFL's questionable players' chance of playing: what a questionable teammate counts as) -->
+          @for (p of playChances; track p.sport) {
+            <p class="desk-test"><small>{{ p.sport }}: {{ p.text }}</small></p>
+          }
         </div>
       </card-panel>
     }

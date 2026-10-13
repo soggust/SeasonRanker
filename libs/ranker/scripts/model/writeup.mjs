@@ -543,6 +543,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
     if (fin(p.push)) proj.pushPct = r2(p.push * 100);
     if (Array.isArray(p.out) && p.out.length) proj.out = p.out;
     if (Array.isArray(p.questionable) && p.questionable.length) proj.questionable = p.questionable;
+    // (the NFL's: each one's chance of playing as priced (props.mjs qPlay, playchance.mjs), by name)
+    if (p.qPlay && typeof p.qPlay === 'object' && Object.keys(p.qPlay).length) proj.questionablePlayPct = Object.fromEntries(Object.entries(p.qPlay).filter(([, v]) => fin(v)).map(([k, v]) => [k, Math.round(v * 100)]));
     if (fin(p.restDays)) proj.restDays = p.restDays;
     if (fin(p.slot)) proj.slot = p.slot;
     if (fin(p.ppTime)) proj.ppTime = p.ppTime;
@@ -754,7 +756,7 @@ function rulesOf(sheet) {
   if (pr && fin(pr.recent) && fin(bet.line) && pr.recentWeightPct === 0 && (over ? pr.recent < bet.line : pr.recent > bet.line)) r.c3 = `his last 5 averaged ${fmt.num(pr.recent)}, the other side of the line, and the fit gives that no weight.`;
   const against = (sheet.drivers ?? []).filter((d) => (over ? d.appliedPct <= -3 : d.appliedPct >= 3)).sort((a, b) => Math.abs(b.appliedPct) - Math.abs(a.appliedPct))[0];
   if (against) r.c4 = over ? `${against.what} takes ${fmt.pct(Math.abs(against.appliedPct), 1)}% off.` : `${against.what} adds ${fmt.pct(Math.abs(against.appliedPct), 1)}%.`;
-  if (pr?.questionable?.length) r.c5 = `${listOf(pr.questionable.slice(0, 2))} ${pr.questionable.length > 1 ? 'were' : 'was'} questionable when it was priced.`;
+  if (pr?.questionable?.length) r.c5 = `${listOf(pr.questionable.slice(0, 2))} ${pr.questionable.length > 1 ? 'were' : 'was'} questionable when it was priced${pr.questionable.length === 1 && fin(pr.questionablePlayPct?.[pr.questionable[0]]) ? ` (the model's chance he plays: ${pr.questionablePlayPct[pr.questionable[0]]}%)` : ''}.`;
   if (pr && fin(pr.gamesThisSeason) && pr.gamesThisSeason <= 3) r.c6 = pr.gamesThisSeason === 0 ? `no ${bet.gamesNoun} yet this season.` : `only ${pr.gamesThisSeason} ${pr.gamesThisSeason === 1 ? bet.gamesNoun.replace(/s$/, '') : bet.gamesNoun} this season.`;
   if (fin(price.edgePts) && price.edgePts > 0 && price.edgePts < 2) r.c7 = `the cushion over break-even is thin (${P(sheet, 'betPct')}% against ${P(sheet, 'breakEvenPct')}%).`;
   if (pr?.history && fin(pr.history.sideSharePct) && pr.history.sideSharePct < 45 && fin(bet.line)) r.hist = `only ${fmt.pct(pr.history.sideSharePct)}% of his weighted games landed on this side of ${fmt.line(bet.line)}.`;

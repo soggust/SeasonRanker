@@ -115,6 +115,7 @@ import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backte
 import { buildPicks, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { playerRows } from './playerlogs.mjs';
+import { nflPlayChance, playChanceSummary } from './playchance.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, capGame, choose, intentOf, makeRoom, fairPair, fitTrust, gapGuard, guardOf, oneSide, pickText, price, record, settle, voidOf } from './desk.mjs';
@@ -699,6 +700,13 @@ async function fitTheProps(r) {
     const market = sport === 'nfl' ? await nflMarket(history) : null;
     r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
+    // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports
+    // (playchance.mjs); none, or another sport: every questionable one at half, as before)
+    r.playChance = sport === 'nfl' ? await nflPlayChance(cfg.deepen ?? 2016, Math.max(...history.map((g) => g.season))) : null;
+    if (r.playChance) {
+      const c = r.playChance.check;
+      console.log(`${sport}: play chance: ${r.playChance.n} questionable reports, ${Math.round(r.playChance.rate * 100)}% played; levels ${r.playChance.levels.join(', ') || 'none'} (held out ${c.held.join(', ')}: ${c.n} reports, log loss ${c.loss} against the flat half's ${c.flat}; ${c.tried.map((x) => `${x.level} ${x.gain >= 0 ? '+' : ''}${x.gain}${x.kept ? '' : `, left out${x.worse ? `: ${x.worse.join(', ')}` : ''}`}`).join('; ')})`);
+    }
     // (each stat's matchup terms kept, and what each did for the held-out games' log loss)
     for (const [key, f] of Object.entries(r.props ?? {})) {
       const kept = Object.entries(f.gains ?? {}).map(([k, g]) => `${k} ${f.params[k] ?? 0}${k === 'vc' ? `/${f.params.vs}` : k === 'sn' && f.params.sn ? `/sr ${f.params.sr}` : k === 'vol' && f.params.vol ? `/yk ${f.params.yk}` : k === 'mk' && f.params.mk ? `/b ${f.params.b}` : k === 'rp' && f.params.rp ? `/nu ${f.params.nu}` : k === 'ij' && (f.params.ij || f.params.ir) ? `/ia ${f.params.ia}/ir ${f.params.ir}` : ''} (${g === null ? 'not taken' : g > 0 ? `+${g}${k === 'dp' && !f.params.dp ? `, left out: ${f.rookie?.fails?.join(', ') || 'its own worse'}` : f.floors?.[k] ? `${f.params[k] ? '' : `, left out at ${f.floors[k].size}: ${f.floors[k].fails.join(', ')}`}, bias ${f.floors[k].bias[0]} to ${f.floors[k].bias[1]}${f.floors[k].on ? `, its own ${f.floors[k].on[0]?.n ?? 0} rows ${f.floors[k].on[0]?.bias ?? 'n/a'} to ${f.floors[k].on[1]?.bias ?? 'n/a'} (actual over projected ${f.floors[k].on[0]?.ratio ?? 'n/a'} to ${f.floors[k].on[1]?.ratio ?? 'n/a'}; the eligible's ${f.floors[k].onElig?.[0]?.n ?? 0} ${f.floors[k].onElig?.[0]?.ratio ?? 'n/a'} to ${f.floors[k].onElig?.[1]?.ratio ?? 'n/a'}), the rest ${f.floors[k].rest[0]} to ${f.floors[k].rest[1]}` : ''}${f.floors[k].sides ? `, the favorites' ${f.floors[k].sides[0][0]?.n ?? 0} rows ${f.floors[k].sides[0][0]?.bias ?? 'n/a'} to ${f.floors[k].sides[0][1]?.bias ?? 'n/a'}, the underdogs' ${f.floors[k].sides[1][0]?.n ?? 0} ${f.floors[k].sides[1][0]?.bias ?? 'n/a'} to ${f.floors[k].sides[1][1]?.bias ?? 'n/a'}` : ''}` : ''}` : `${g}, left out${f.floors?.[k] ? ` at ${f.floors[k].size}` : ''}`})`);
@@ -1542,7 +1550,7 @@ async function betProps(r) {
       const live0 = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       // (the NFL's depth charts now, the site's (props.mjs readDepth: the role guard's depth CHECK), read once a run)
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, r.playChance ?? null);
       run.priced += priced.length;
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
@@ -1836,6 +1844,10 @@ function saveState(r) {
           odds: "DraftKings' prices where the board has them (NBA, NHL, MLB); else -110 a side assumed, lines far from the player's usual not bet (NFL)",
           perGame: PER_GAME,
           lastRun: r.propRun,
+          // (the NFL's questionable players' chance of playing (playchance.mjs): the share who played, the levels
+          // kept and their held-out check, and the chance by a quarterback or not and his games missed in a row,
+          // as read tonight (no practice: ESPN's report doesn't carry it))
+          ...(r.playChance ? { playChance: playChanceSummary(r.playChance) } : {}),
           types: Object.entries(r.props).map(([key, f]) => ({ key, label: f.stat.label, rows: f.rows, eligible: f.eligible, params: { ...f.params, roleK: Number.isFinite(f.params.roleK) ? f.params.roleK : null }, gains: f.gains, base: f.base, check: f.check, allPlayersBias: f.checkAll?.bias ?? null, trust: trust[`prop:${key}`] ?? null })),
         }
       : (state.props ?? null),

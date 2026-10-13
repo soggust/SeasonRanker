@@ -1080,17 +1080,18 @@ function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
 // at half an inch; c_oppGoalie: per goal a game the other side's goalie saves over average, a big effect a
 // goal))
 const POWER = [-0.5, 0, 0.25, 0.5, 0.75, 1, 1.25];
-// (c_rb1Out: the lead back out, 0 or 1 (a half questionable), a few percent either way: GRID.c's smallest step
-// 7%. Team-games with him out against their season's own (2012 on, before the fit): pass attempts even, -1% to
-// -3% where he's a bell cow (18 touches a game or more), the volume moving to the backup, not the pass. On no
-// stat's ctx now (props.mjs: receptions' +0.025 held out at the rounding's floor); the grid to 0.05 either way,
-// what was measured, so a refit can't take 10% on a few hundred-thousandths)
+// (c_rb1Out: the lead back out, 0 or 1 (live, a questionable one his chance of missing it: playchance.mjs), a
+// few percent either way: GRID.c's smallest step 7%. Team-games with him out against their season's own (2012
+// on, before the fit): pass attempts even, -1% to -3% where he's a bell cow (18 touches a game or more), the
+// volume moving to the backup, not the pass. On no stat's ctx now (props.mjs: receptions' +0.025 held out at
+// the rounding's floor); the grid to 0.05 either way, what was measured, so a refit can't take 10% on a few
+// hundred-thousandths)
 const RB1_OUT = [-0.05, -0.025, 0, 0.025, 0.05];
 // (c_newCoach: a new head coach's first games (props.mjs CTX newCoach), 0 or 1, finer than GRID.c to 10%
 // either way)
 const COACH = [-0.1, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
-// (c_qb1Out: the lead quarterback out, 0 or 1 (a half questionable): the role backtest had his receivers 6% to
-// 11% under, 2026-10-12; to 20% either way, a step 2.5%)
+// (c_qb1Out: the lead quarterback out, 0 or 1 (live, a questionable one his chance of missing it): the role
+// backtest had his receivers 6% to 11% under, 2026-10-12; to 20% either way, a step 2.5%)
 const QB1_OUT = [-0.2, -0.15, -0.1, -0.075, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
 // (c_ppShare: an NHL skater's power-play share over his position's prop players', -0.5 to 0.6 (a second-pair
 // defenseman about -0.3, a top unit's forward +0.3): a 0.3 share's 7% to 35% at 0.25 to 1)

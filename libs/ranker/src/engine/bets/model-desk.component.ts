@@ -29,7 +29,7 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, playChanceText } from './desk-model';
 import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
@@ -167,6 +167,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   contextRows: ContextRow[] = [];
   contextTests: { label: string; games: number; before: TestNumbers; after: TestNumbers }[] = [];
   propRows: PropRow[] = [];
+  // (the NFL's questionable players' chance of playing, in words, a sport a line: desk-model.ts playChanceText)
+  playChances: { sport: string; text: string }[] = [];
   // (the CHECKs panel: each sport's graded CHECKs by what drove them, and the advice they make: desk-model.ts checkPanelOf)
   checkCauses: CheckCauseRow[] = [];
   checkAdvice: (CheckAdvice & { sport: string })[] = [];
@@ -363,6 +365,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
     // (the props: each sport's prop types and their projections' fit and check; the bets by type)
     this.propRows = this.states.flatMap((s) => (s.props?.types ?? []).map((t) => ({ ...t, sport: s.label })));
+    this.playChances = this.states.flatMap((s) => {
+      const text = playChanceText(s.props?.playChance);
+      return text ? [{ sport: s.label, text }] : [];
+    });
     const panel = checkPanelOf(this.states);
     this.selfChecks = selfCheckPanelOf(
       this.allSelfChecks.filter((f) => !!f && (!this.sport || f.sport === this.sport)),
