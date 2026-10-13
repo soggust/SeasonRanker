@@ -11,11 +11,12 @@ interface Column {
 // Copy the rankings exactly as shown: current order and the visible columns, read from the list (or,
 // with stats off, just the rank, picture and name). Only the rows shown (one team's, with a team picked),
 // each at its rank in the whole list (the row's data-rank). Plain text is tab-separated (pastes into spreadsheets
-// and notes); HTML is a table with each row's picture: a player's headshot, or the team's logo (pastes
+// and notes); HTML is a table with each row's picture: the team's logo (a fighter's headshot in MMA) (pastes
 // into forums and docs). note: a line over the list (a header clicked: "Sorted by Passing Yards"), each row's
 // data-rank then its place by that stat ("-": none); with a column isolated, its values come along even with the
-// stats off (rank, name and that stat).
-export function copyRankingsToClipboard(list: HTMLElement, stats = true, note?: string): Promise<void> {
+// stats off (rank, name and that stat). plainText: the plain text given whole (Copy Isolated's, with its teams),
+// the HTML table still read from the list.
+export function copyRankingsToClipboard(list: HTMLElement, stats = true, note?: string, plainText?: string): Promise<void> {
   const header = list.querySelector<HTMLElement>(':scope > li.header-row');
   const rows = Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row):not(.unranked)'));
   const all = header ? readColumns(header) : [];
@@ -35,7 +36,7 @@ export function copyRankingsToClipboard(list: HTMLElement, stats = true, note?: 
   // Plain text: tab-separated, with a row of column labels when the stats come along (a spreadsheet's
   // header); just "rank, name" lines without them
   const labels = ['Rank', 'Name', ...columns.map((c) => c.label)];
-  const plain = [...(note ? [[note]] : []), ...(columns.length ? [labels] : []), ...table.map((r) => [r.rank, r.name, ...r.values])]
+  const plain = plainText ?? [...(note ? [[note]] : []), ...(columns.length ? [labels] : []), ...table.map((r) => [r.rank, r.name, ...r.values])]
     .map((cells) => cells.join('\t'))
     .join('\n');
 
@@ -74,9 +75,11 @@ interface RowImage {
 }
 const IMAGE_HEIGHT = 20;
 
+// (the team's logo, a player's too: a headshot that small can't be made out; a fighter, with no team, his headshot)
 function rowImage(row: HTMLElement, headshotRatio: number): RowImage | null {
   const headshot = row.querySelector<HTMLImageElement>('img.headshot');
-  const img = headshot?.getAttribute('src') ? headshot : row.querySelector<HTMLImageElement>('img.team-logo');
+  const logo = row.querySelector<HTMLImageElement>('img.team-logo');
+  const img = logo?.getAttribute('src') ? logo : headshot?.getAttribute('src') ? headshot : null;
   const src = img ? imageUrl(img) : '';
   if (!img || !src) return null;
   const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : img === headshot ? headshotRatio : 1;

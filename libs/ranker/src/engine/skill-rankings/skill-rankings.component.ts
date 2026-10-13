@@ -1078,8 +1078,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
       }),
       this.isoReversed,
     );
-    navigator.clipboard
-      .writeText(text)
+    // (a table like the other copy's, each row's rank, team logo, name and the stat; the text with its teams)
+    const title = text.split('\n')[0];
+    copyRankingsToClipboard(this.rankingsList.nativeElement, false, title, text)
       .then(() => this.toast(button, 'Isolated list copied to clipboard!'))
       .catch((err) => console.error('Failed to copy: ', err));
   }
