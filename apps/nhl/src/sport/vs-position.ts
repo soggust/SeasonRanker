@@ -35,6 +35,8 @@ const signed = (v: number, digits = 2) => {
   return `${Number(text) === 0 ? '' : v > 0 ? '+' : '−'}${text}`;
 };
 const pct = (v: number) => `${Math.round(v * 100)}%`;
+// (a regular season's games before the takes: soft against and shuts down)
+const TAKE_GAMES = 10;
 
 export function nhlVsPositionBreakdown(player: SkillPlayer, position: string, rows: SkillPlayer[]): CardBreakdown | null {
   const vs = position === 'TM' ? nhlVsPosOf(player) : null;
@@ -74,21 +76,24 @@ export function nhlVsPositionBreakdown(player: SkillPlayer, position: string, ro
 
   // The Overview's takes: the group it's softest against and the one it shuts down, by points over their
   // usual: half a point a game or more, or the part's own spread when it's wider (the playoffs' handful of
-  // games swing about twice as far as a season's: the teams' and groups' root mean square)
+  // games swing about twice as far as a season's: the teams' and groups' root mean square). A season's
+  // need TAKE_GAMES games first: a week in, the spread is wide and a third of the cards would carry one,
+  // mostly noise. The playoffs' (16 teams, some out in four games) keep only the spread's bar
   const spread = rows.flatMap((r) => ROLES.map((role) => nhlVsPosOf(r)?.[role]?.vs ?? null)).filter((v): v is number => v !== null);
   const bar = Math.max(0.5, spread.length ? Math.sqrt(spread.reduce((a, v) => a + v * v, 0) / spread.length) : 0);
   const flags: CardFlag[] = [];
+  const takes = of <= 16 || vs.games >= TAKE_GAMES;
   const byVs = ROLES.filter((r) => vs[r].vs !== null).sort((a, b) => vs[b].vs! - vs[a].vs!);
   const soft = byVs[0];
   const tough = byVs.at(-1);
-  if (soft && vs[soft].vs! >= bar) {
+  if (takes && soft && vs[soft].vs! >= bar) {
     flags.push({
       icon: 'person_search',
       tone: 'bad',
       text: `Soft against ${ROLE_INFO[soft].plural}: they score ${vs[soft].vs!.toFixed(2)} more points a game than usual here (#${vs[soft].rank} of ${of})`,
     });
   }
-  if (tough && tough !== soft && vs[tough].vs! <= -bar) {
+  if (takes && tough && tough !== soft && vs[tough].vs! <= -bar) {
     flags.push({
       icon: 'shield',
       tone: 'good',
@@ -108,7 +113,7 @@ export function nhlVsPositionBreakdown(player: SkillPlayer, position: string, ro
   return {
     title: 'vs Position',
     icon: 'person_search',
-    help: "What this team allowed to opposing centers, wingers (left and right together) and defensemen a game, and against what those same skaters averaged in their other games: holding a top line under its usual output reads as good defense. Ranked by points against the usual, #1 the stingiest. Skaters the site doesn't list (a few games' call-ups) aren't counted.",
+    help: "What this team allowed to opposing centers, wingers (left and right together) and defensemen a game, and against what those same skaters averaged in their other games: holding a top line under its usual output reads as good defense, and 0 is the league's average defense (in the playoffs, the playoff teams'). Ranked by points against the usual, #1 the stingiest. Skaters the site doesn't list (a few games' call-ups) aren't counted.",
     rowHeader: { label: 'Pos', title: "The opposing skaters' listed position (C, wing or D)" },
     rankTitle: "Where the team ranks, by the points it allowed to the position against those skaters' own averages (#1 the stingiest)",
     note:

@@ -300,6 +300,22 @@ test('NHL 2025 vs Position: centers, wingers and defensemen, ranked, their colum
   assert.ok(flagged.some((f) => /^Soft against (centers|wingers|defensemen): they score 0\.\d\d more points/.test(f)), 'nobody soft');
   assert.ok(flagged.some((f) => /Shuts down (centers|wingers|defensemen)/.test(f)), 'nobody shuts one down');
   assert.ok(flagged.filter((f) => /Soft against/.test(f)).length < 16, 'too many soft');
+  // (a season's takes wait for 10 games: a week in, however far over, none)
+  const early = structuredClone(teams[0]);
+  Object.assign(early.vsPos, { games: 6 });
+  Object.assign(early.vsPos.C, { vs: 3 });
+  Object.assign(early.vsPos.D, { vs: -3 });
+  assert.ok(!build(early, 'TM', teams).flags.some((f) => /Soft against|Shuts down/.test(f.text)), 'a take after six games');
+  early.vsPos.games = 10;
+  assert.equal(build(early, 'TM', teams).flags.filter((f) => /Soft against centers|Shuts down defensemen/.test(f.text)).length, 2);
+  // (the playoffs': ranked of 16, centered so the takes go both ways, an early exit's too)
+  const post = [...new Map(readJson(path.join(staticDir('nhl'), 'seasons', '2025', 'skill-players.post.json')).HC.map((c) => [c.teamLogo, c])).values()];
+  assert.equal(post.length, 16);
+  const postFlags = post.map((t) => build(t, 'TM', post).flags.map((f) => f.text).join(' | '));
+  assert.ok(postFlags.every((f, i) => build(post[i], 'TM', post).rows.every((r) => r.of === 16)), 'of 16');
+  const soft = postFlags.filter((f) => /Soft against/.test(f)).length;
+  const tough = postFlags.filter((f) => /Shuts down/.test(f)).length;
+  assert.ok(soft >= 2 && tough >= 2 && soft <= 10 && tough <= 10, `playoffs: ${soft} soft, ${tough} shut one down`);
 });
 
 test("a last five game's when: the NFL by its week (playoff rounds named, the preseason blank), others by the day", () => {
