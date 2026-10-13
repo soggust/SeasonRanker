@@ -587,7 +587,7 @@ async function buildSeason(season, part = 'regular') {
     const postGames = post.every(Array.isArray) ? new Map(post.flat().map((r) => [r.playerId, r.gamesPlayed ?? 0])) : null;
     await writeGameLogs(season, skaterRows, out.G, postGames);
   }
-  // (each team against forwards and defensemen, from the season's game logs: vs-position.mjs; on its coaches' rows)
+  // (each team against centers, wingers and defensemen, from the season's game logs: vs-position.mjs; on its coaches' rows)
   addVsPosition(dir, path.join(STATIC, 'game-logs'), season, [part]);
   const champion = [...teamAwards].find(([, a]) => a.includes('cup'))?.[0] ?? '?';
   const rookieCount = [...skaterRows, ...out.G].filter((u) => u.rookie).length;

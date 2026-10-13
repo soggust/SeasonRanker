@@ -6,6 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { readJson, staticDir } from './support/engine.mjs';
+import { nhlVsPosition } from '../apps/nhl/scripts/vs-position.mjs';
 
 const ROLES = ['WR1', 'WR2', 'WR3', 'TE1', 'RB1'];
 const GROUPS = ['WR', 'TE', 'RB'];
@@ -97,19 +98,56 @@ test('NFL 2005: the funnel falls back to the plain pass rate, scores cancelling 
   assert.ok(Math.abs(mean) < 1, `funnel scores average ${mean} points`);
 });
 
-// The NHL's (apps/nhl/scripts/vs-position.mjs, on each head coach row): every team against forwards and
-// defensemen, ranked, its numbers adding up to about the league's scoring
+// The NHL's (apps/nhl/scripts/vs-position.mjs, on each head coach row): every team against centers, wingers
+// (left and right together) and defensemen, and the forwards' total, ranked, its numbers adding up to about
+// the league's scoring
+test('NHL: centers and wingers apart, left and right wings together, the forwards their sum', () => {
+  // (two teams' games: a center, a left and a right winger, a defenseman, each with a game against TOR and
+  // one against MTL; a log line: date, "@ TOR", result, goals, assists, points, +/-, shots)
+  const line = (date, opp, g, a, sog) => [date, opp, 'W', g, a, g + a, 0, sog];
+  const logs = {
+    c1: [line('2025-01-02', '@ TOR', 1, 1, 4), line('2025-01-01', 'MTL', 0, 0, 2)],
+    l1: [line('2025-01-02', '@ TOR', 0, 1, 2), line('2025-01-01', 'MTL', 1, 0, 3)],
+    r1: [line('2025-01-02', '@ TOR', 1, 0, 3), line('2025-01-01', 'MTL', 0, 0, 1)],
+    d1: [line('2025-01-02', '@ TOR', 0, 1, 1), line('2025-01-01', 'MTL', 0, 0, 2)],
+  };
+  const positionOf = new Map([['c1', 'C'], ['l1', 'LW'], ['r1', 'RW'], ['d1', 'D']]);
+  const vs = nhlVsPosition({ logs, positionOf });
+  const tor = vs.get('TOR');
+  assert.equal(tor.games, 1);
+  assert.deepEqual([tor.C.goals, tor.C.pts, tor.C.shots], [1, 2, 4]);
+  // (both wings in W)
+  assert.deepEqual([tor.W.goals, tor.W.pts, tor.W.shots], [1, 2, 5]);
+  assert.deepEqual([tor.D.pts, tor.D.shots], [1, 1]);
+  // (each against his other game: the center's 0, the wingers' 1 and 0; the forwards' the sum)
+  assert.deepEqual([tor.C.exp, tor.C.vs, tor.W.exp, tor.W.vs], [0, 2, 1, 1]);
+  assert.deepEqual([tor.F.goals, tor.F.pts, tor.F.shots, tor.F.exp, tor.F.vs], [2, 4, 9, 1, 3]);
+  // (the shares: of TOR's 5 points, 2 the center's, 2 the wings', 1 the defenseman's; the league's of 6)
+  assert.deepEqual(tor.share, { C: { s: 0.4, lg: 0.333 }, W: { s: 0.4, lg: 0.5 }, D: { s: 0.2, lg: 0.167 } });
+  // (ranked within each group, the least over his usual first)
+  const mtl = vs.get('MTL');
+  assert.deepEqual([mtl.C.rank, tor.C.rank, mtl.W.rank, tor.W.rank, mtl.F.rank, tor.F.rank], [1, 2, 1, 2, 1, 2]);
+});
+
 test('NHL 2025: every team has its vs-position numbers, ranked, adding up to the league', () => {
   const coaches = readJson(path.join(staticDir('nhl'), 'seasons', '2025', 'skill-players.json')).HC;
   const teams = new Map(coaches.map((c) => [c.teamLogo, c.vsPos]));
   assert.equal(teams.size, 32);
   const blocks = [...teams.values()];
   for (const b of blocks) assert.ok(b && b.games >= 80 && b.games <= 82, `a team's vsPos: ${JSON.stringify(b)?.slice(0, 80)}`);
-  for (const role of ['F', 'D']) assertRanks(blocks.map((b) => b[role].vs), blocks.map((b) => b[role].rank), `NHL ${role}`);
+  for (const role of ['C', 'W', 'D', 'F']) assertRanks(blocks.map((b) => b[role].vs), blocks.map((b) => b[role].rank), `NHL ${role}`);
   // (goals by the listed skaters against each team: close to the league's 3 a game, a little under)
-  const goals = blocks.reduce((a, b) => a + b.F.goals + b.D.goals, 0) / blocks.length;
+  const goals = blocks.reduce((a, b) => a + b.C.goals + b.W.goals + b.D.goals, 0) / blocks.length;
   assert.ok(goals > 2.6 && goals < 3.4, `${goals} goals a game against`);
-  for (const b of blocks) assert.ok(b.share.D > 0.1 && b.share.D < 0.4 && Math.abs(b.share.lg - blocks[0].share.lg) < 1e-9, 'defensemen share');
+  for (const b of blocks) {
+    // (the forwards: centers and wingers added up)
+    for (const k of ['goals', 'pts', 'shots', 'exp']) assert.ok(Math.abs(b.F[k] - b.C[k] - b.W[k]) <= 0.02, `F ${k} ${b.F[k]} isn't C's and W's`);
+    const roles = ['C', 'W', 'D'];
+    assert.ok(Math.abs(roles.reduce((a, r) => a + b.share[r].s, 0) - 1) < 0.003, 'shares add up to 100%');
+    for (const r of roles) assert.ok(Math.abs(b.share[r].lg - blocks[0].share[r].lg) < 1e-9, `${r}: one league share`);
+    assert.ok(b.share.D.s > 0.1 && b.share.D.s < 0.4, 'defensemen share');
+    assert.ok(b.share.C.s > 0.2 && b.share.C.s < 0.55 && b.share.W.s > 0.2 && b.share.W.s < 0.6, 'centers and wingers share');
+  }
   const mean = blocks.reduce((a, b) => a + b.F.vs, 0) / blocks.length;
   assert.ok(Math.abs(mean) < 0.3, `forwards over their averages by ${mean} on average`);
 });

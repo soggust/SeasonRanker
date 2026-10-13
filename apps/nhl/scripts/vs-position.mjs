@@ -1,9 +1,10 @@
-// Defense vs position, the NHL's: what each team allowed to opposing forwards and defensemen a game
-// (goals, points, shots), and against those players' own averages in their other games, so holding a
+// Defense vs position, the NHL's: what each team allowed to opposing centers, wingers and defensemen a
+// game (goals, points, shots), and against those players' own averages in their other games, so holding a
 // top line to its usual output reads as average and holding it under as good defense; and the share of
-// the points against it that came from defensemen beside the league's. Built from the season's game logs
-// (game-logs/<season>/: every listed skater's games, each with its opponent), so every season with logs
-// has it (2009 on). update-data.mjs adds it to each head coach row (vsPos: a team's coaches carry the
+// the points against it each of them scored beside the league's. Wingers are one group, left and right
+// together (a listed side is often not the one he plays), and the forwards' total (F) is kept beside
+// them. Built from the season's game logs (game-logs/<season>/: every listed skater's games, each with its
+// opponent), so every season with logs has it (2009 on). update-data.mjs adds it to each head coach row (vsPos: a team's coaches carry the
 // same), the Teams tab's rows take it from them and the team card shows it (src/sport/vs-position.ts).
 // Run on its own, this file adds it to seasons already written:
 //
@@ -17,8 +18,8 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { readLogFiles } from './game-log-files.mjs';
 
-export const NHL_ROLES = ['F', 'D'];
-const GROUP_OF = { C: 'F', LW: 'F', RW: 'F', F: 'F', D: 'D' };
+export const NHL_ROLES = ['C', 'W', 'D'];
+const GROUP_OF = { C: 'C', LW: 'W', RW: 'W', D: 'D' };
 // (a skater's log line: date, "@ TOR", result, goals, assists, points, +/-, shots, PIM, TOI)
 const G = 3;
 const A = 4;
@@ -66,24 +67,27 @@ export function nhlVsPosition({ logs, playoffs = {}, positionOf, part = 'regular
   for (const l of lines) {
     if (!inPart(l.playoff)) continue;
     let t = teams.get(l.opp);
-    if (!t) teams.set(l.opp, (t = { games: new Set(), F: { goals: 0, pts: 0, shots: 0, exp: 0 }, D: { goals: 0, pts: 0, shots: 0, exp: 0 } }));
+    if (!t) teams.set(l.opp, (t = { games: new Set(), ...Object.fromEntries([...NHL_ROLES, 'F'].map((r) => [r, { goals: 0, pts: 0, shots: 0, exp: 0 }])) }));
     t.games.add(`${l.date}|${l.playoff}`);
     const s = own.get(l.id);
     const exp = s && s.games > 1 ? (s.pts - (inBase(l.playoff) ? l.pts : 0)) / (s.games - (inBase(l.playoff) ? 1 : 0)) : leagueAvg[l.group];
-    const g = t[l.group];
-    g.goals += l.goals;
-    g.pts += l.pts;
-    g.shots += l.shots;
-    g.exp += exp;
+    // (its own group's, and a center's or winger's the forwards' too: centers and wingers together)
+    for (const key of l.group === 'D' ? ['D'] : [l.group, 'F']) {
+      const g = t[key];
+      g.goals += l.goals;
+      g.pts += l.pts;
+      g.shots += l.shots;
+      g.exp += exp;
+    }
   }
-  const leaguePts = { F: 0, D: 0 };
+  const leaguePts = { C: 0, W: 0, D: 0 };
   for (const t of teams.values()) for (const role of NHL_ROLES) leaguePts[role] += t[role].pts;
-  const leagueShare = leaguePts.F + leaguePts.D ? leaguePts.D / (leaguePts.F + leaguePts.D) : null;
+  const leagueTotal = NHL_ROLES.reduce((a, r) => a + leaguePts[r], 0);
   const out = new Map();
   for (const [team, t] of teams) {
     const games = t.games.size;
     const block = { games };
-    for (const role of NHL_ROLES) {
+    for (const role of [...NHL_ROLES, 'F']) {
       const g = t[role];
       block[role] = {
         goals: r2(g.goals / games),
@@ -94,12 +98,13 @@ export function nhlVsPosition({ logs, playoffs = {}, positionOf, part = 'regular
         rank: null,
       };
     }
-    const total = t.F.pts + t.D.pts;
-    block.share = { D: total ? r3(t.D.pts / total) : null, lg: r3(leagueShare) };
+    // (each group's share of the points against it, beside the league's)
+    const total = NHL_ROLES.reduce((a, r) => a + t[r].pts, 0);
+    block.share = Object.fromEntries(NHL_ROLES.map((r) => [r, { s: total ? r3(t[r].pts / total) : null, lg: leagueTotal ? r3(leaguePts[r] / leagueTotal) : null }]));
     out.set(team, block);
   }
   // Ranks: the least allowed over expected first (equal values share a rank)
-  for (const role of NHL_ROLES) {
+  for (const role of [...NHL_ROLES, 'F']) {
     const values = [...out.values()].map((b) => b[role].vs).filter((v) => v !== null);
     for (const b of out.values()) if (b[role].vs !== null) b[role].rank = 1 + values.filter((v) => v < b[role].vs).length;
   }
