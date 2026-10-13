@@ -4,15 +4,16 @@ on:
   schedule:
     # Nightly at 08:13 UTC (4:13 AM EDT / 3:13 AM CDT): hours after the last night game ends.
     # Off the top of the hour on purpose: GitHub delays and sometimes drops scheduled runs set
-    # for :00, when everyone's run at once. The 10:13, 12:47 and 14:47 UTC runs are retries: the update
+    # for :00, when everyone's run at once. The hourly runs after it are retries: the update
     # waits until ESPN's season stats cover every game in its results (update-data.mjs, a run
     # that holds writes nothing), and they also cover a delayed or dropped run. A run with
     # nothing new is a no-op (no commit, no deploy).
-    - cron: "13 8 * * *"
-    # (an early retry: GitHub sometimes drops a scheduled run outright, and the next was hours off)
-    - cron: "13 10 * * *"
-    - cron: "47 12 * * *"
-    - cron: "47 14 * * *"
+    # Then every hour through the morning (08:13 to 16:13 UTC): GitHub has been dropping or delaying this
+    # repo's scheduled runs by hours (2026-10-13: neither the 08:13 nor the 10:13 ran), so the more tries
+    # the sooner one lands; a run with nothing new is a no-op. This computer's scheduled task "QBRanker
+    # NFL data kick" (apps/nfl/scripts/kick-update.mjs) also starts it at 4:30 and 7:30 AM Central, off
+    # GitHub's timer altogether
+    - cron: "13 8-16 * * *"
   workflow_dispatch:
 
 # One update at a time: a run that starts while another is still going waits for it
