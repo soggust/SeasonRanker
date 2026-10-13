@@ -100,3 +100,34 @@ test("the role guard's qb1-out keeps the under safe with the depth term on (the 
   assert.equal(r.safe, undefined);
   assert.equal(ROLE_SAFE['qb1-out'], 'under');
 });
+
+test("a questionable starting quarterback flagged where a kept term reads him (qbDeep): the swing in or out times his chance's spread", async () => {
+  const { priceProps, QB_Q_SWING } = await import('../libs/ranker/scripts/model/props.mjs');
+  const st = STATS.nfl.find((s) => s.key === 'rec');
+  // (a deep receiver, depth 1.6: qbDeep his chance of missing times 0.6, qb1Out the chance itself)
+  let miss = 0.5;
+  const matchups = {
+    live: () => ({ vacs: [0, 0, 0], vac: 0, qb1Out: miss, qb1Miss: miss, qbDeep: Math.round(miss * 0.6 * 1000) / 1000 }),
+    qb1: () => null,
+    absent: () => new Map(),
+    regulars: () => [],
+    goneOf: () => null,
+  };
+  const project = () => ({ mu: 5, rate: 5, recent: 5, base: 5, opp: 1, posOpp: 1, roleOpp: null, role: null, funnel: null, funnelF: 1, paceF: 1, tgtF: 1, vac: 0, vacHist: 0, vacF: 1, games: 4, prevGames: 16 });
+  const fit = (c) => ({ rec: { stat: st, env: { mean: 5, avg: 1 }, model: { project, roleTable: () => [] }, values: new Map([['a', [[2026, 4], [2026, 5], [2026, 6], [2026, 5]]]]), matchups, params: { r: 20, a: 1, b: 0, scale: 1, c_qbDeep: c }, snapGap: null } });
+  const idx = { pid: (a) => a.id, pos: () => 'WR', name: (id) => `N${id}` };
+  const gameRow = { id: 'g', date: '2026-10-11T17:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const props = [{ athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 4.5, open: null, prices: { over: -110, under: -110 } }];
+  const run = (c) => priceProps('nfl', gameRow, props.map((p) => ({ ...p })), fit(c), idx, { homePts: 24, awayPts: 21 }, null, {}, {}, 0.1).priced[0];
+  // (at half: -0.3 x 0.6 = 0.18 on the log, over the bar)
+  assert.ok(0.18 >= QB_Q_SWING);
+  assert.match(run(-0.3).guard?.why ?? '', /starting quarterback questionable.*50%/);
+  // (no kept term: nothing reads him, no flag)
+  assert.doesNotMatch(run(0).guard?.why ?? '', /quarterback questionable/);
+  // (a sure starter, 1% missing: the spread 0.2 x 0.18 = 0.036, under the bar)
+  miss = 0.01;
+  assert.doesNotMatch(run(-0.3).guard?.why ?? '', /quarterback questionable/);
+  // (out: the role guard's, not this flag)
+  miss = 1;
+  assert.doesNotMatch(run(-0.3).guard?.why ?? '', /quarterback questionable/);
+});

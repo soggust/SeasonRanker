@@ -19,7 +19,8 @@
 //   comes back in the return (project.mjs lineChances). Cut to 0.5 when the line has moved a lot since it opened,
 //   the player's questionable, a questionable teammate's being in or out moves his share of his group's work
 //   (each questionable regular at his position's swing times the spread of his chance of playing, added up:
-//   playchance.mjs),
+//   playchance.mjs), his team's starting quarterback questionable where a kept term reads him (qb1Out, qbDeep:
+//   the swing him in or out times the spread of his chance, QB_Q_SWING or more),
 //   an outdoor game's forecast failed (or a retractable roof isn't yet said open or closed) where his
 //   projection weighs the weather (wind, cold, rain), the forecast moves his projection 10% or more, the other
 //   side's starter his projection weighs isn't listed yet (an NHL goalie, an MLB pitcher), an MLB starter's
@@ -770,6 +771,10 @@ export function ctxValues(keys, info, home, pts, row = null) {
 }
 // (the terms that read the weather: a coming game whose forecast failed has them unseen)
 const WEATHER_CTX = new Set(['wind', 'cold', 'precip']);
+// (the terms that read his team's lead quarterback missing, and the swing between him in and out, on the log
+// times his chance's spread, that flags a questionable one (priceProps qbSwing))
+export const QB_OUT_CTX = new Set(['qb1Out', 'qbDeep']);
+export const QB_Q_SWING = 0.05;
 
 // Which of a game's players a book would have posted this prop for (eligible), from what was known before the
 // game: each team's top few among the players who took the field, ranked by their usage in their games before
@@ -1279,6 +1284,14 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       return Math.abs(at(1) - at(0)) * 2 * Math.sqrt(m * (1 - m));
     };
     const qShift = f.matchups && prop.stat.vacated && out.questionable.size ? [...out.questionable].filter((id) => regs.has(String(id)) && String(id) !== String(pid)).reduce((t, id) => t + qSwing(id), 0) : 0;
+    // (his team's lead quarterback questionable (qb1Miss under 1), where a kept term reads him (c_qb1Out,
+    // c_qbDeep: the backup's throws, a deep receiver's most): the price takes the backup at his chance of
+    // missing it, a swing the role guard's qb1-out (out alone) never sees. Its swing on the log, him in or out
+    // (the terms' values are linear in his chance), times his chance's spread (2 sqrt(m (1 - m)), as qSwing's),
+    // 5% or more: flagged)
+    const qbM = row.qb1Miss ?? 0;
+    const qbF = qbM > 0 && qbM < 1 ? ctxFactor(f.stat, f.params, ctxV.map((v, i) => (QB_OUT_CTX.has(ctxKeysOf[i]) ? v : 0))) : 1;
+    const qbSwing = qbF !== 1 ? (Math.abs(Math.log(qbF)) / qbM) * 2 * Math.sqrt(qbM * (1 - qbM)) : 0;
     // (his team's roster (the NFL's, the NBA's, the NHL's: espn.mjs ROSTER_MIN): without it a teammate who's
     // left counts as here, the work he leaves unseen)
     // A roster unread can only hide a teammate who's gone, so the work missing now reads low: where his
@@ -1365,6 +1378,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     else if (spreadBlind) guard = { why: "no spread on the board for the game: the betting lines' margin its projection weighs unseen" };
     else if (weatherBig) guard = { why: `the forecast moves his projection ${weatherF > 1 ? '+' : ''}${Math.round((weatherF - 1) * 100)}%: priced off a forecast` };
     else if (qShift >= 0.15) guard = { why: `teammate questionable (${out.qNames.join(', ') || 'at his position'}): his share depends on it` };
+    else if (qbSwing >= QB_Q_SWING) guard = { why: `his starting quarterback questionable: the backup's throws in his projection at ${Math.round(qbM * 100)}%, his chance of missing it` };
     else if (oppUnknown) guard = { why: sport === 'nhl' ? "no probable goalie listed for the other side: his projection weighs one assumed" : "the other side's starting pitcher not named: his projection weighs him" };
     else if (snapGap?.games) guard = { why: `the snap counts missing for ${snapGap.games} games: the history holds only the players who got the ball there` };
     else if (rest === 'long') guard = { why: `${a.name}'s first start in ${row.restDays} days: his pitch count may be held down` };

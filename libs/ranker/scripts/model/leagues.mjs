@@ -55,8 +55,13 @@ export const GAME_CAP = 5;
 // elsewhere. 2026-10-12 night, the round's final pass: pl's lean on the work missing too (the prior leaning to last
 // season's last 8 games leans vacHist's prior the same, so a late role a hurt starter left isn't counted twice;
 // rushing yards' pl kept), on top of the CHECK rule (the gap's a PASS, a role's a CHECK only at a model Kelly of
-// +10 or more, the rest graded shadows, the stored CHECKs judged by it too).
-export const MODEL_EPOCH = '2026-10-12T23:17:00Z';
+// +10 or more, the rest graded shadows, the stored CHECKs judged by it too). 2026-10-13, audit round A's final
+// pass: the pull toward the middle (sl: NFL passing TDs, MLB hits), the next man up's target floor (nt: receiving
+// yards), the lines' spread on interceptions (c_mSpread), the back-to-backs (NBA points b2bB, pts+reb+ast b2bAll,
+// NHL saves b2b), a questionable player's play chance (the NFL's table, a quarterback at half), the backup
+// quarterback by the receiver's depth (c_qbDeep: receptions, rush+rec yards; a questionable starter flagged where it
+// reads him), the depth chart as a role CHECK, and the line alarm outside the NFL (a label) with every line logged.
+export const MODEL_EPOCH = '2026-10-13T08:33:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
