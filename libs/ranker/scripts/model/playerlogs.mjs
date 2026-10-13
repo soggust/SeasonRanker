@@ -2,7 +2,8 @@
 // his team, the opponent, the date and the stats the props are on. Kept under .cache/model (rebuilt from the
 // sources when it's lost: a first run asks for everything, later ones only for the finals new since):
 //
-//   NFL  nflverse's weekly player stats (stats_player_week_<season>), ESPN ids from nflverse's players file; and
+//   NFL  nflverse's weekly player stats (stats_player_week_<season>; a pass-catcher's receiving air yards too,
+//        s.airYds: his depth, matchups.mjs), ESPN ids from nflverse's players file; and
 //        nflverse's snap counts (snap_counts_<season>): each row's offensive snaps (s.snaps), and a row of 0s for
 //        an offensive player who took snaps with no stats (never targeted, never handed the ball: he played),
 //        for the games the weekly stats have (a game only the snap counts have yet isn't in the history: its
@@ -101,7 +102,7 @@ async function nflRows(cfg, history, facts) {
   const out = [];
   // (the games the weekly stats have and the snap counts don't, by season: { season: [missing, of] })
   const gap = {};
-  const cols = ['player_id', 'player_display_name', 'position', 'season', 'week', 'game_id', 'team', 'opponent_team', 'completions', 'attempts', 'passing_yards', 'passing_tds', 'passing_interceptions', 'carries', 'rushing_yards', 'receptions', 'targets', 'receiving_yards'];
+  const cols = ['player_id', 'player_display_name', 'position', 'season', 'week', 'game_id', 'team', 'opponent_team', 'completions', 'attempts', 'passing_yards', 'passing_tds', 'passing_interceptions', 'carries', 'rushing_yards', 'receptions', 'targets', 'receiving_yards', 'receiving_air_yards'];
   for (let season = cfg.deepen ?? current - 1; season <= current; season++) {
     const stats = await nflverseRows('stats_player', `stats_player_week_${season}.csv.gz`, cols, season === current ? 12 : 24 * 365);
     // (each game's offensive snaps by player, nflverse's snap counts: who took the field, a stat or not)
@@ -150,6 +151,7 @@ async function nflRows(cfg, history, facts) {
           rec: n('receptions'),
           rushRecYds: n('rushing_yards') + n('receiving_yards'),
           targets: n('targets'),
+          airYds: n('receiving_air_yards'),
           snaps: Number(snapOf.get(`${s.game_id}|${pid}`)?.offense_snaps) || 0,
         },
       });
@@ -175,7 +177,7 @@ async function nflRows(cfg, history, facts) {
         game: r.espn,
         home,
         draft: draftOf.get(key.split('|')[1]) ?? null,
-        s: { passYds: 0, passAtt: 0, passCmp: 0, passTd: 0, passInt: 0, rushYds: 0, rushAtt: 0, recYds: 0, rec: 0, rushRecYds: 0, targets: 0, snaps: Number(x.offense_snaps) || 0 },
+        s: { passYds: 0, passAtt: 0, passCmp: 0, passTd: 0, passInt: 0, rushYds: 0, rushAtt: 0, recYds: 0, rec: 0, rushRecYds: 0, targets: 0, airYds: 0, snaps: Number(x.offense_snaps) || 0 },
       });
     }
   }

@@ -728,6 +728,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_rb1Out: 'lead running back out',
       c_newCoach: "a new head coach's first games",
       c_qb1Out: 'starting QB out',
+      c_qbDeep: "starting QB out, a deep receiver (his air yards a target over the league's)",
       c_ppShare: 'power-play share',
       c_midSeason: 'weeks 5 to 8',
       rp: 'next man up (projected in the role he steps into)',

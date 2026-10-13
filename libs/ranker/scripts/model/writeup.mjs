@@ -254,7 +254,7 @@ function driverWhat(name, bet, sheet, raw) {
   return name;
 }
 
-const FLAG_CTX = new Set(['rb1Out', 'newCoach', 'qb1Out']);
+const FLAG_CTX = new Set(['rb1Out', 'newCoach', 'qb1Out', 'qbDeep']);
 // (the context term that moved it most: its size times its value where the fit's sizes are known, else its value)
 export function ctxWhat(bet, sheet) {
   const ctx = bet.projection?.ctx;
@@ -278,6 +278,9 @@ export function ctxWhat(bet, sheet) {
     // (by how surely he's missing (projection qb1Miss), not the term's value: that's under 1 for an out starter
     // once he's missed a game; neither known, both words)
     qb1Out: `${sheet.bet.team ?? 'his team'} ${!fin(bet.projection?.qb1Miss) ? 'without (or possibly without) its starting QB' : bet.projection.qb1Miss < 1 ? 'with its starting QB questionable' : 'without its starting QB'}`,
+    // (a deep receiver's catches with the starting QB out (qbDeep: his depth over the league's), the same words
+    // and why it's his)
+    qbDeep: `${sheet.bet.team ?? 'his team'} ${!fin(bet.projection?.qb1Miss) ? 'without (or possibly without) its starting QB' : bet.projection.qb1Miss < 1 ? 'with its starting QB questionable' : 'without its starting QB'}, his deep targets the backup's hardest throws`,
     b2b: 'a back-to-back',
     b2bAll: 'a back-to-back',
     // (an NBA bench player's own back-to-back: the minutes the starters give up; the other side's)

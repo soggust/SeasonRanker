@@ -331,6 +331,20 @@ const INT_CTX = [...PASSING, 'mSpread'];
 // bias larger: left out, and off every stat's ctx (its late search an hourly cost for nothing kept). CTX.aheadOut
 // kept for a measure on demand (add it back to a ctx))
 const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
+// (the backup quarterback by the receiver's depth (qbDeep, audit #14: qb1Out times how far his air yards a
+// target run over the league's, matchups.mjs dep, a wide receiver's or tight end's; a back's 0), on the receiving
+// stats, a late flag on its own rows' gate (project.mjs MIN_GAIN, SUBGROUP), tried after the flat one. Measured
+// 2026-10-12: with his team's lead quarterback out the deep ones (two in five of the flagged pass-catchers) ran
+// under their projections held out (receptions 4.9%, rush+rec yards 7.3%, receiving yards 3.6%, every player's
+// 913 rows; the eligible's 519 3.1%, 5.0%, 4.0%), the flagged rows as a whole about at them (the flat flag's
+// failing). Kept on receptions (-0.15: held out 0.6165 to 0.6161, +0.0004; its rows -4.9% to -0.8%, the
+// eligible's -3.1% to +1.1%) and rush+rec yards (-0.3: 0.6544 to 0.654, +0.0005; -7.3% to +1.5%, the
+// eligible's -5.0% to +4.1%); left out on receiving yards (-0.4, +0.0005, its rows put 8% over: its own bias),
+// and off its ctx (its late search an hourly cost for nothing kept).
+// Tried first and left out: the flag times his whole depth (every flagged pass-catcher lowered: +0.0004 to
+// +0.0007, its rows put 4% to 9% over, the flat flag's way) and times his depth less the league's, signed (the
+// short side 33 rows held out, not measured; the whole stat's bias larger))
+const CATCHING = [...CARRYING, 'qbDeep'];
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
 // only +0.0001, the rounding's floor (0.6168 to 0.6167), with the bias worse (eligible -0.051 to -0.054, all
@@ -436,8 +450,8 @@ export const STATS = {
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CARRYING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [
     stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC }),
@@ -560,6 +574,11 @@ export const CTX = {
   // the game's logs in the history; a questionable one by his chance of missing it), times the share of his
   // games this season the starter played in: a back's and a pass-catcher's, a quarterback's 0)
   qb1Out: (info, home, pts, row) => (Number.isFinite(row?.qb1Out) ? row.qb1Out : 0),
+  // (the same times how far his depth runs over the league's (matchups.mjs qbDeep: qb1Out times dep - 1 where
+  // over 0, dep his air yards a target over the league's, known before the game): a deep threat's about 0.6, a
+  // typical wide receiver's 0.3, most tight ends' 0; a wide receiver's and a tight end's, a back's 0; 0 without
+  // the air yards)
+  qbDeep: (info, home, pts, row) => (Number.isFinite(row?.qbDeep) ? row.qbDeep : 0),
   // (a regular above him at his position out (matchups.mjs aheadOut, 0 or 1; a questionable one not))
   aheadOut: (info, home, pts, row) => (Number.isFinite(row?.aheadOut) ? row.aheadOut : 0),
   // (his side's margin by the betting lines, per 10 points: a favorite's over 0. From the spread alone where the

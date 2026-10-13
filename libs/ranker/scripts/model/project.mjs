@@ -82,7 +82,9 @@
 //            the NHL's stats off the carryover: the search cost the NFL props' fit 17% every hourly run. Ty Johnson's receptions (1.48 against the book's 2.20) as before: forced, rx 0.5
 //            1.80, pl 0.25 1.65, both 1.91
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
-//            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
+//            new head coach; c_qb1Out, his team's lead quarterback out, and c_qbDeep, that by how far a
+//            pass-catcher's air yards a target run over the league's (the backup's deep throws);
+//            the NHL's c_ppShare, a skater's
 //            power-play share, on a floor of 0.0001, on no stat's ctx now; the back-to-backs, c_b2b his side's
 //            (an NHL goalie's saves), c_b2bB an NBA bench player's, c_b2bS a starter's and c_oppB2b the other
 //            side's, each on its own rows' gate) tried after the rest the same way as
@@ -329,7 +331,7 @@ const DRAFT_M = 20;
 // floor and noise), and the lines in each of its own buckets and the early games, fewer and nothing's measured)
 const DRAFT_GAIN = 0.0003;
 // (a context flag's own floor, the same standard: a new head coach's first games (props.mjs CTX newCoach), his
-// team's lead quarterback out (CTX qb1Out))
+// team's lead quarterback out (CTX qb1Out), and that by the receiver's depth (CTX qbDeep))
 // (and an NHL skater's power-play share (CTX ppShare) the same way, on its own floor: a continuous term on every
 // skater, not a flag on a few hundred games, so over the rounding's 0 (0.0001); searched with the rest it moved
 // the vacated and goalie terms on points (2026-10-12), kept at +0.0002 with the stat's held out worse; left out
@@ -345,7 +347,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -377,7 +379,7 @@ const RX_MIN = 3;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB']);
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -1093,6 +1095,11 @@ const COACH = [-0.1, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
 // (c_qb1Out: the lead quarterback out, 0 or 1 (live, a questionable one his chance of missing it): the role
 // backtest had his receivers 6% to 11% under, 2026-10-12; to 20% either way, a step 2.5%)
 const QB1_OUT = [-0.2, -0.15, -0.1, -0.075, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
+// (c_qbDeep: the lead quarterback out times how far his depth runs over the league's (props.mjs CTX qbDeep: about
+// 0.6 a deep threat's, 0.3 a typical wide receiver's, 0 most tight ends' and a back's), per unit of it: at -0.3 a
+// deep threat's 16% and a typical wide receiver's 9%. The measure (2026-10-12, the state's settings) had the deep
+// ones' catches 12% to 16% under the projection, the short ones' 5% to 9%)
+const QB_DEEP = [-0.4, -0.3, -0.2, -0.15, -0.1, -0.05, 0.05, 0.1];
 // (c_ppShare: an NHL skater's power-play share over his position's prop players', -0.5 to 0.6 (a second-pair
 // defenseman about -0.3, a top unit's forward +0.3): a 0.3 share's 7% to 35% at 0.25 to 1)
 const PP_SHARE = [-0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
@@ -1113,7 +1120,7 @@ const M_SPREAD = [-0.15, -0.1, -0.05, -0.025, 0.025, 0.05, 0.1, 0.15];
 // (the back-to-backs (c_b2b, c_oppB2b; the NBA's own by role, c_b2bS, c_b2bB: props.mjs CTX), 0 or 1 flags, a
 // few percent to 15% either way, finer than GRID.c's 7% step)
 const B2B = [-0.15, -0.1, -0.07, -0.05, -0.03, 0.03, 0.05, 0.07, 0.1, 0.15];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B };
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);

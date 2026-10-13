@@ -17,7 +17,7 @@ test('ctxKeys: one name or a list', () => {
   assert.deepEqual(ctxKeys({}), []);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'recYds')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out']);
   // (the lead back out: measured and on no stat's (props.mjs), receptions' held out at the rounding's floor)
-  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out']);
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out', 'qbDeep']);
   assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('rb1Out')));
   // (the midseason flag: measured and on no stat's (props.mjs CTX midSeason))
   assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('midSeason')));

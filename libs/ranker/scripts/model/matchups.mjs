@@ -21,6 +21,10 @@
 //            a player missing counted out only when he missed his team's game before too (a starter resting the
 //            second night, unannounced at bet time, still a starter), and no role (null) for a player not
 //            ranked himself (under three games for this team: its first games, a player just traded in)
+//   depth    the NFL: a pass-catcher's air yards a target (nflverse's receiving air yards) over the league's, his
+//            own pulled toward his position's by 30 targets, season to date, last season's at half (dep), and the
+//            lead quarterback out times how far it runs over the league's, a wide receiver's or tight end's (qbDeep:
+//            the backup's deep throws, props.mjs CTX qbDeep)
 //   funnel   the NFL: how much more (or less) a defense's opponents pass against it than they do on their own
 //            (passFunnel below: their pass rate over expected against it, nflverse's xpass, in neutral
 //            situations, less their own so far; the plain pass share where a game has no xpass), pulled
@@ -297,6 +301,42 @@ export function nflMatchups(rows, pbp = null) {
     const with_ = list.length ? list.filter((g) => !g.missing.has(String(lead.id))).length / list.length : 1;
     return { v: Math.round(m * with_ * 1000) / 1000, miss: m };
   };
+  // (a pass-catcher's depth before a game (dep): his air yards a target (nflverse's receiving air yards, how far
+  // past the line the ball was thrown to him, caught or not) this season, last season's at half, pulled toward
+  // his position's league average by DEPTH_K targets, over the league's average a target (every position's):
+  // about 1.3 a typical wide receiver's, 1.6 or more a deep threat's, 0.85 a tight end's, 0.1 a back's (held at
+  // 0 or more: a screen's is behind the line). null for a quarterback, or with under DEPTH_MIN targets' air yards read in
+  // the league (the term then reads 0). The backup quarterback's by depth (CTX qbDeep: qbDeepOf below))
+  const DEPTH_K = 30;
+  const DEPTH_MIN = 500;
+  const air = new Map();
+  const lgAir = { WR: { a: 0, t: 0 }, TE: { a: 0, t: 0 }, RB: { a: 0, t: 0 } };
+  const depthOf = (pid, season, pos) => {
+    const p = POS(pos);
+    if (!p || p === 'QB') return null;
+    const t = lgAir.WR.t + lgAir.TE.t + lgAir.RB.t;
+    if (t < DEPTH_MIN) return null;
+    const all = (lgAir.WR.a + lgAir.TE.a + lgAir.RB.a) / t;
+    if (!(all > 0)) return null;
+    const prior = lgAir[p].t >= 100 ? lgAir[p].a / lgAir[p].t : all;
+    const x = decay(air.get(pid) ?? { season, a: 0, t: 0 }, season);
+    return Math.round(Math.max(0, (x.a + DEPTH_K * prior) / (x.t + DEPTH_K) / all) * 1000) / 1000;
+  };
+  const learnAir = (r, season) => {
+    const p = POS(r.pos);
+    const t = r.s.targets ?? 0;
+    if (!p || p === 'QB' || !(t > 0) || !Number.isFinite(r.s.airYds)) return;
+    const x = decay(air.get(r.pid) ?? { season, a: 0, t: 0 }, season);
+    x.a += r.s.airYds;
+    x.t += t;
+    air.set(r.pid, x);
+    lgAir[p].a += r.s.airYds;
+    lgAir[p].t += t;
+  };
+  // (the backup quarterback's by his depth: qb1Out's value times his depth less the league's (dep - 1: a deep
+  // threat's over 0, a short one's under), a wide receiver's and a tight end's; a back's 0 (his catches behind
+  // the line, the backup's checkdowns: not a depth's), and 0 without either)
+  const qbDeepOf = (q1, dep, pos) => (q1 > 0 && dep !== null && (POS(pos) === 'WR' || POS(pos) === 'TE') ? Math.round(q1 * Math.max(0, dep - 1) * 1000) / 1000 : 0);
   // (a player's snap share: his last game's and his season's average, over the games read; null with none)
   // (team: his games for that team only, null where his latest was for another: a leader traded away isn't the
   // work his old team's next man up steps into at his new team's share)
@@ -454,6 +494,8 @@ export function nflMatchups(rows, pbp = null) {
         const q1 = qb1Out(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.qb1Out = q1.v;
         r.qb1Miss = q1.miss;
+        r.dep = depthOf(r.pid, g.season, r.pos);
+        r.qbDeep = qbDeepOf(q1.v, r.dep, r.pos);
         r.teamGame = gameNo(g.team, g.season);
         Object.assign(r, promotion(r.pid, g.team, g.season, r.pos, (id) => read && !playing.has(id)), returnOf(r.pid, g.team, g.season));
         r.roleW = roleOf(r.pid, g.team, g.season, r.pos, null, true);
@@ -497,6 +539,7 @@ export function nflMatchups(rows, pbp = null) {
         t.pos.set(r.pid, p);
         t.tgt.set(r.pid, (t.tgt.get(r.pid) ?? 0) + (r.s.targets ?? 0));
         t.car.set(r.pid, (t.car.get(r.pid) ?? 0) + (r.s.rushAtt ?? 0));
+        learnAir(r, g.season);
       }
       t.n++;
       played_.set(g.team, { season: g.season, n: gameNo(g.team, g.season) });
@@ -579,8 +622,9 @@ export function nflMatchups(rows, pbp = null) {
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
       const q1 = qb1Out(teamId, season, pid, pos, missOf);
+      const dep = depthOf(pid, season, pos);
       const p = POS(pos);
-      return { role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)
