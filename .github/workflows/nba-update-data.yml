@@ -40,7 +40,8 @@ jobs:
         run: node scripts/rollover.mjs nba --if-due
 
       # (the regular season, and once the playoffs have begun the playoffs and both too:
-      # skill-players.post.json and .all.json; before then any old ones are removed)
+      # skill-players.post.json and .all.json; before then any old ones are removed; and ESPN's box scores of the
+      # games since the last run, for each team's vs Position: apps/nba/scripts/box-scores.mjs)
       - name: Pull stats from Basketball-Reference and ESPN
         run: npm run nba:update-data
 
@@ -78,7 +79,8 @@ jobs:
       - name: Commit updated data
         id: commit
         run: |
-          git add apps/nba/src/StaticData apps/nba/scripts/update-data.mjs apps/nba/src/sport/sport.ts
+          # (the kept box scores too: the next run asks only for the games since, vs-position.mjs)
+          git add apps/nba/src/StaticData apps/nba/scripts/box-scores apps/nba/scripts/update-data.mjs apps/nba/src/sport/sport.ts
           if git diff --cached --quiet; then
             echo "No data changes"
             echo "changed=false" >> "$GITHUB_OUTPUT"

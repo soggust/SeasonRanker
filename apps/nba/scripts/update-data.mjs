@@ -26,6 +26,8 @@ import { curve } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { updateBoxes } from './box-scores.mjs';
+import { addVsPosition, positionsOf } from './vs-position.mjs';
 
 const CURRENT_SEASON = 2026;
 const FIRST_SEASON = 2001;
@@ -503,6 +505,11 @@ async function buildSeason(season, write) {
     shared.awards.set(id, p.whole?.awards);
   }
 
+  // (the season's box scores, brought up to date: each team against each position, vs-position.mjs; a failed
+  // ESPN request leaves what's kept, the rest asked for next run)
+  const boxes = await updateBoxes(season);
+  let regularPositions = new Map();
+
   await mkdir(dir, { recursive: true });
   const tables = { regular, post, all: post && combine(regular, post) };
   for (const part of PARTS.filter((p) => write.includes(p))) {
@@ -524,11 +531,15 @@ async function buildSeason(season, write) {
       });
       console.warn(`${season} ${part}: ESPN's injury report failed, ${hurt} injuries kept from the last run`);
     }
+    // (each team against each position, on its coaches' rows: vs-position.mjs; the regular season's positions
+    // for the playoffs' too)
+    if (part === 'regular') regularPositions = positionsOf(out);
+    const vsTeams = addVsPosition(out, boxes, part, regularPositions);
     // (compact: the files are served to the browser as is)
     await writeFile(file, JSON.stringify(out));
     const everyone = TABS.flatMap((tab) => out[tab]);
     const photos = everyone.filter((u) => u.id).length;
-    console.log(`${season} ${part}: ${[...TABS, 'HC'].map((tab) => `${out[tab].length} ${tab}`).join(', ')} (${photos}/${everyone.length} with ESPN ids; champion ${champion ?? '?'} over ${runnerUp ?? '?'})`);
+    console.log(`${season} ${part}: ${[...TABS, 'HC'].map((tab) => `${out[tab].length} ${tab}`).join(', ')} (${photos}/${everyone.length} with ESPN ids; champion ${champion ?? '?'} over ${runnerUp ?? '?'}; vs Position on ${vsTeams} coaches)`);
   }
 }
 
