@@ -2261,6 +2261,38 @@ section ul li.player.header-row:hover {
     outline-offset: 2px;
   }
 
+  // (the isolated header's direction: a small arrow at its right, in the board's light, lighter on hover)
+  .iso-on {
+    position: relative;
+  }
+
+  .iso-dir {
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--scoreboard-led);
+    cursor: pointer;
+    display: flex;
+    opacity: 0.8;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .mat-icon {
+      font-size: 14px;
+      height: 14px;
+      width: 14px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      filter: brightness(1.25);
+      opacity: 1;
+    }
+  }
+
   // (a header that sorts: the pointer says it clicks, its hover still has the stat's name; past the header
   // label's own help cursor on hover)
   div.iso-can .stat-label,

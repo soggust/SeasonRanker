@@ -332,6 +332,8 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // ---------------------------------------------------------------------------
   isolatedKey: string | null = null;
   isoStat: SkillStat | null = null;
+  // (its direction flipped by the arrow beside its header: worst first)
+  isoReversed = false;
   // (each ranked row's place by the stat: the rank tile's number while it lasts)
   private isoPlaces: Map<SkillPlayer, number | null> | null = null;
   // (the rows shown in the list's order, before isolation)
@@ -363,7 +365,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
       return;
     }
     // (on what the column shows: with Show Ranks, its places, which go by the per-game rate)
-    const sorted = isolateRows(this.formalRows, this.rankedShown, (row, ur) => shownValue(ur ? this.urReader : this.reader, row, stat), lowerIsBetter(stat));
+    const sorted = isolateRows(this.formalRows, this.rankedShown, (row, ur) => shownValue(ur ? this.urReader : this.reader, row, stat), lowerIsBetter(stat) !== this.isoReversed);
     this.gridRows = sorted.rows;
     this.isoPlaces = sorted.places;
   }
@@ -381,7 +383,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
   // A header clicked (a press, not a drag: a drag never clicks): that stat alone, or back if it's the one
   isolate(stat: SkillStat, event: Event): void {
     // (the group's icon in the cell collapses the group instead)
-    if ((event.target as Element | null)?.closest('.group-icon')) return;
+    if ((event.target as Element | null)?.closest('.group-icon, .iso-dir')) return;
     event.preventDefault();
     if (this.isolatedKey === stat.key) {
       this.endIsolation();
@@ -390,6 +392,7 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     if (!this.reader.hasValues(stat)) return;
     this.closeWhy();
     this.isolatedKey = stat.key;
+    this.isoReversed = false;
     this.sayIso(`Sorted by ${this.reader.name(stat)} only, ${lowerIsBetter(stat) ? 'lowest' : 'highest'} first. The ranking is unchanged; Escape goes back`);
     // (from the top, the best by it in view; the rows glide when the list is there already)
     const list = this.rankingsList?.nativeElement;
@@ -397,6 +400,28 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     list?.scrollTo({ top: 0, left: list.scrollLeft });
     this.applyIsolation();
     this.glide.play(() => this.rankingsList?.nativeElement, from);
+  }
+
+  // The arrow beside the isolated header: the other way round (best first, or worst first), the places with it
+  flipIsoDir(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!this.isoStat) return;
+    this.closeWhy();
+    const from = this.glide.measure(this.rankingsList?.nativeElement);
+    this.isoReversed = !this.isoReversed;
+    this.sayIso(`${this.isoAscending ? 'Lowest' : 'Highest'} first`);
+    this.applyIsolation();
+    this.glide.play(() => this.rankingsList?.nativeElement, from);
+  }
+
+  // (the values running up the list: lowest first)
+  get isoAscending(): boolean {
+    return !!this.isoStat && lowerIsBetter(this.isoStat) !== this.isoReversed;
+  }
+
+  isoDirTitle(): string {
+    return `${this.isoAscending ? 'Lowest' : 'Highest'} first (${this.isoReversed ? 'worst' : 'best'} first): click for ${this.isoAscending ? 'highest' : 'lowest'} first`;
   }
 
   // (a filter or setting changed while isolated: back to the ranking at once, the list re-sorting anyway)
