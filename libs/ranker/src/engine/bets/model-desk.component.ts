@@ -728,6 +728,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       sk: "part-timer's prior counted at his snap share",
       rx: "last five reaching back into last season",
       pl: "prior leaning to last season's late games",
+      sl: 'extreme projections pulled toward the typical one',
+      cs: 'over/under chance calibrated separately above and below the projection',
     };
     return Object.entries(t.gains ?? {})
       .map(([k, g]) => {

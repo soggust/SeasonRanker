@@ -127,6 +127,21 @@
 //            and kept only if the held-out games are better with it (0: left out)
 //   scale    the eligible players' total over their total projection on the fit window: what's left of a lean
 //            once the rest is fit, taken out (fit again once the held-out games leave a term out)
+//   middle   every stat's (sl, a late term on the whole stat's gate, tried after the rest as fit): the projection
+//            pulled toward the stat's typical one (rm: the eligible players' average on the fit window) by sl on
+//            its log, x (x / rm)^-sl (held to SL_CAP either way), the lean fit again with it. The factors
+//            multiply together and run too far from the middle, which one scale can't take out: on the held-out
+//            games (2026-10-12 audit) the lowest fifth of the projections ran 12% to 20% under what happened
+//            (NFL receptions, receiving yards, rush+rec yards, passing TDs; MLB hits), the highest a few percent
+//            over. Kept only with a held-out gain of DRAFT_GAIN or more, the eligible players' and every
+//            player's bias no larger, and the held-out fifths' misses (each fifth by projection: its actual over
+//            projected, off 0, summed) smaller; left out, the stat exactly as without it. Measured 2026-10-12:
+//            kept on NFL passing TDs (0.15, +0.0039; fifths +14.7%/+13.2%/+6.3%/-5.2%/-3.4% to
+//            +5.8%/+8.5%/+4.4%/-4.7%/-0.3%) and MLB hits (0.3, +0.0005; +9.2%..-4.1% to -0.1%..+2.4%); left out on
+//            the bias (passing yards 0.1, interceptions 0.4, MLB outs 0.2, NBA points 0.05, threes 0.05, NFL
+//            receptions 0.05: each one's fifths smaller, the lean held out larger) or the gain (MLB total bases
+//            0.3: +0). The NFL's receiving stats' low fifth (receiving yards +12.8%, rush+rec yards +11.7%) isn't
+//            on the fit window (the search took none, or -0.05): a lean of the seasons since, not the shape's
 // A term's held-out gain is the log loss without it less with it, the others as they stand: an a_<group>'s
 // against the stat's a as the search left it (with every group's set, a's first pass value: nothing read it
 // after); a group left out, a is searched again (fitStat).
@@ -141,7 +156,14 @@
 // first 30% only teaches); the last 30% is never used to fit and is where the projections are checked. Then
 // the chance of going over a line is recalibrated (logistic: cal = [shift, stretch] on its log-odds), fit on
 // the same middle window at lines at each player's median so far: a spread's shape that runs too skewed or
-// too tight (yards are) is straightened out.
+// too tight (yards are) is straightened out. And by side (cs, tried last): a line under his projection and
+// one at it or over, each recalibrated on its own (calSide [under, over]; a side with under CS_MIN of the fit
+// window's lines keeps cal): the negative binomial's skew puts a chance under half on an over whose mean is
+// above the line, which one curve for both can't straighten. Kept only with a held-out gain of DRAFT_GAIN or
+// more and each side's held-out log loss no worse; left out, cal alone as before (props.mjs's skew guard skips
+// a side against its own projection either way: measured, check's skew). Measured 2026-10-12: kept on no stat
+// (NFL receiving yards +0.0013 and rush+rec yards +0.0017 with the lines over the projection worse, passing
+// TDs +0.0012 with too few under it; the rest 0 or less).
 
 // (the log of the gamma function, Lanczos)
 function lgamma(x) {
@@ -179,14 +201,24 @@ export function rAt(params, mu) {
   return Math.min(500, Math.max(0.25, params.r * Math.pow(Math.max(mu, 0.05) / (params.rm || 1), params.rk)));
 }
 
+// The pull toward the middle (sl) on a projection before the lean (x: the factors' product): (x / rm)^-sl,
+// held to SL_CAP either way (a backup's tiny projection isn't tripled); 1 where sl is off, or rm or x unknown
+export const SL_CAP = 1.5;
+export function middleF(params, x) {
+  const sl = params?.sl;
+  const rm = params?.rm;
+  if (!sl || !(rm > 0) || !(x > 0)) return 1;
+  return Math.min(SL_CAP, Math.max(1 / SL_CAP, Math.pow(x / rm, -sl)));
+}
+
 // A line's chances at a projection: over and under with a push left out (each the chance given no push, so
 // they sum to 1), and the push's own chance (a whole-number line: the count landing on it; a half-point line
-// has none). The recalibration (cal) on the over's
+// has none). The recalibration (cal, or its side's: calAt) on the over's
 export function lineChances(line, mu, params) {
   const r = rAt(params, mu);
   const raw = nbOver(line, mu, r);
   const push = Number.isInteger(line) && line >= 0 ? Math.min(0.99, Math.exp(nbLog(line, mu, r))) : 0;
-  const over = recal(Math.min(1, raw / (1 - push)), params.cal);
+  const over = recal(Math.min(1, raw / (1 - push)), calAt(params, mu, line));
   return { over, under: 1 - over, push };
 }
 
@@ -195,7 +227,7 @@ export function lineChances(line, mu, params) {
 // -110's 0.5: the line its median). By halves on the log of the mean; null where it can't be had
 export function impliedMean(line, fairOver, params) {
   if (!Number.isFinite(line) || !(fairOver > 0 && fairOver < 1) || !params) return null;
-  const plain = { ...params, cal: null };
+  const plain = { ...params, cal: null, calSide: null };
   let lo = Math.log(0.01);
   let hi = Math.log(Math.max(10, line * 20 + 10));
   if (lineChances(line, Math.exp(hi), plain).over < fairOver) return null;
@@ -250,7 +282,14 @@ const DRAFT_GAIN = 0.0003;
 // floor: each changes a few rows (a promoted role's, a returner's), tried after the rest as fit)
 // (and the seasons' carryover (sk, rx, pl) the same way, on the same floor: tried after the rest as fit, on the
 // whole stat's gate (on every row, not a few))
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN };
+// (and the pull toward the middle (sl) the same way, on the same floor: tried last of them, on the whole stat's
+// gate and the held-out fifths' (fitStat))
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, ij: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN };
+// (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
+// smallest line props.mjs's skew guard reads (below it a count's own skew is real), the held-out check's skew
+// rows read from it too)
+const CS_MIN = 300;
+export const SKEW_MIN_LINE = 5;
 // (the carryover's: the late terms tried after the next man up and the injury return, in this order. sk and rx
 // were left out on every stat they were tried on (2026-10-12), and the carryover's search cost the NFL props'
 // fit about 17% (1005s to 1175s locally, every hourly run): only pl is searched now, sk and rx kept in the code
@@ -676,8 +715,11 @@ export function makeModel(stat, params, env) {
     const vacHist = (1 - params.w) * rateVac + params.w * recentVac;
     const vacF = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     const oppA = oppAOf(row);
-    const mu = Math.max(0.05, (params.scale ?? 1) * base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF);
-    return { mu, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: row.roleUp ?? null, ramp: rampF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    const raw = base * Math.pow(opp, oppA) * Math.pow(script, params.b) * ctxF * funnelF * paceF * tgtF * vacF;
+    // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
+    const slF = middleF(params, raw);
+    const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
+    return { mu, slF, rate, recent, base, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: row.roleUp ?? null, ramp: rampF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -928,7 +970,10 @@ const PP_SHARE = [-0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
 // (the carryover's tried (late, 0 its off): sk the prior's K at his share, rx last season's weight in his last
 // five, pl his prior's lean to last season's last games)
 const CARRY_GRID = { sk: [0.5, 1], rx: [0.25, 0.5, 1], pl: [0.25, 0.5, 0.75] };
-const GRID = { ...CARRY_GRID, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
+// (the pull toward the middle tried: sl on the projection's log, under 0 pushing out; searched on one replay,
+// the lean fit again at each (fitStat))
+const SL = [-0.1, -0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4];
+const GRID = { ...CARRY_GRID, sl: SL, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -964,6 +1009,7 @@ const has = (stat, key) =>
   : key === 'ij' ? !!stat.snaps
   : key === 'sk' ? !!(stat.snaps && stat.carry)
   : key === 'rx' || key === 'pl' ? !!stat.carry
+  : key === 'sl' ? true
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -981,6 +1027,10 @@ function linePairs(list, params) {
   }
   return out;
 }
+
+// The recalibration a line's chance takes at a projection: its side's (calSide, kept by cs: [a line under the
+// projection, one at it or over]) where the fit kept them and that side has one, else the stat's cal
+export const calAt = (params, mu, line) => (params?.calSide ? (params.calSide[mu > line ? 0 : 1] ?? params.cal) : params?.cal) ?? null;
 
 // A chance recalibrated: [shift, stretch] on its log-odds
 export function recal(p, cal) {
@@ -1018,7 +1068,7 @@ export function fitStat(stat, rows, env) {
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
-  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined), ...['rp', 'ij', ...CARRY].filter((k) => has(stat, k))];
+  const late = [...ctxs.filter((k) => MIN_GAIN[k] !== undefined), ...['rp', 'ij', ...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -1092,16 +1142,20 @@ export function fitStat(stat, rows, env) {
   };
   const heldOut = (p, split = null) => {
     const o = replayStat(stat, sorted, p, env, cuts).out;
-    const cal = fitRecal(linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p));
-    const young = has(stat, 'dp') ? [...[0, 1].map((y) => check(youngOf(o, y), { ...p, cal })), check(youngOf(o, 1).filter((x) => x.p.games < 3), { ...p, cal })] : null;
-    const all = has(stat, 'dp') || late.length ? check(allOf(o), { ...p, cal }) : null;
+    const pairs = linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p);
+    const cal = fitRecal(pairs);
+    // (and by side where it's tried (cs): each side's own, a side with too few lines none (cal))
+    const calSide = p.cs ? sideCals(pairs) : null;
+    const pc = { ...p, cal, calSide };
+    const young = has(stat, 'dp') ? [...[0, 1].map((y) => check(youngOf(o, y), pc)), check(youngOf(o, 1).filter((x) => x.p.games < 3), pc)] : null;
+    const all = has(stat, 'dp') || late.length ? check(allOf(o), pc) : null;
     let parts = null;
     if (split) {
       const on = split;
       const a = allOf(o);
       parts = { on: biasOf(a.filter(on)), onElig: biasOf(a.filter((x) => on(x) && x.row.eligible !== false)), rest: biasOf(a.filter((x) => !on(x))), restElig: biasOf(a.filter((x) => !on(x) && x.row.eligible !== false)) };
     }
-    return { cal, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), { ...p, cal }), young, all, parts };
+    return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, parts };
   };
   let current = heldOut(params);
   const gains = {};
@@ -1161,14 +1215,42 @@ export function fitStat(stat, rows, env) {
   // eligible players' among them (SUBGROUP_ELIG_N or more) and the rest (every player's and the eligible's) no
   // larger by more than SUBGROUP_TOL of their mean actual)
   const floors = {};
-  for (const key of late) {
-    const shape = { rk: params.rk ?? 0, rm };
-    const s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
+  // (the pull toward the middle's search (sl): one replay without it, each size's projections made from its
+  // projections before the lean (the pull reads nothing the replay learns from: the returners' ramp's off on
+  // every stat (ij)), the lean fit again at each on the fit window's eligible players, scored at the stat's best
+  // dispersion. Its gate below replays both sides in full)
+  const middleSearch = (shape) => {
+    const o = replayStat(stat, sorted, { ...params, sl: 0, scale: 1 }, env, cuts).out;
+    const fitE = o.filter((x) => x.win === 1 && x.row.eligible !== false);
+    const sumV = fitE.reduce((t, x) => t + x.v, 0);
+    const at = (sl) => {
+      const f = (x) => x.p.mu * middleF({ sl, rm }, x.p.mu);
+      const sum = fitE.reduce((t, x) => t + f(x), 0);
+      const k = sum > 0 ? sumV / sum : 1;
+      return o.map((x) => ({ ...x, p: { mu: Math.max(0.05, k * f(x)) } }));
+    };
+    const s0 = scoreOf(at(0), 1, shape);
     let sBest = s0;
     let v = null;
-    for (const x of lateTries(key)) {
-      const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
-      if (sc.ll > sBest.ll) (sBest = sc), (v = x);
+    for (const sl of GRID.sl) {
+      const sc = scoreOf(at(sl), 1, shape);
+      if (sc.ll > sBest.ll) (sBest = sc), (v = { sl });
+    }
+    return { s0, sBest, v };
+  };
+  for (const key of late) {
+    const shape = { rk: params.rk ?? 0, rm };
+    let s0;
+    let sBest;
+    let v = null;
+    if (key === 'sl') ({ s0, sBest, v } = middleSearch(shape));
+    else {
+      s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
+      sBest = s0;
+      for (const x of lateTries(key)) {
+        const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
+        if (sc.ll > sBest.ll) (sBest = sc), (v = x);
+      }
     }
     gains[key] = null;
     if (!v) continue;
@@ -1202,8 +1284,15 @@ export function fitStat(stat, rows, env) {
       if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
       const ab = fine(tried.all?.bias, off.all?.bias);
       if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
+      // (the pull toward the middle's own point: the held-out fifths by projection missing less (each one's
+      // actual over projected, off 0, summed), the eligible players')
+      if (key === 'sl') {
+        const [a, b] = [fifthsMiss(tried.check), fifthsMiss(off.check)];
+        if (!(Number.isFinite(a) && Number.isFinite(b))) fails.push('fifths not measured');
+        else if (!(a < b)) fails.push('fifths');
+      }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -1265,6 +1354,29 @@ export function fitStat(stat, rows, env) {
     }
   }
   params.cal = current.cal;
+  // (the recalibration by side (cs), tried last: each side of the projection (a line under it, one at it or
+  // over) recalibrated on its own on the fit window's lines, against the one curve for both as fit; kept only
+  // with a held-out gain of DRAFT_GAIN or more and each side's held-out log loss no worse (fewer than CS_MIN
+  // held-out lines on a side: not measured, left out). Left out, cal alone, exactly as before. Its numbers, the
+  // check's skew rows' among them (a side the model takes against its own projection, lines from
+  // SKEW_MIN_LINE: what props.mjs's skew guard skips), either way: floors.cs)
+  {
+    const sided = heldOut({ ...params, cs: 1 });
+    gains.cs = sided.calSide ? Math.round(((current.check?.logLoss ?? 0) - (sided.check?.logLoss ?? 0)) * 10000) / 10000 : null;
+    const fails = [];
+    if (!sided.calSide) fails.push('too few lines');
+    else {
+      if (!(gains.cs >= DRAFT_GAIN)) fails.push('gain');
+      [0, 1].forEach((i) => {
+        const [a, b] = [sided.check?.bySide?.[i], current.check?.bySide?.[i]];
+        const name = i ? 'over the line' : 'under the line';
+        if (!(a?.lines >= CS_MIN && b?.lines >= CS_MIN)) fails.push(name + ' not measured');
+        else if (a.logLoss > b.logLoss) fails.push(name + "'s log loss");
+      });
+    }
+    floors.cs = { size: sided.calSide ? JSON.stringify(sided.calSide) : null, fails, bias: [current.check?.bias ?? null, sided.check?.bias ?? null], allBias: [current.all?.bias ?? null, sided.all?.bias ?? null], bySide: [current.check?.bySide ?? null, sided.check?.bySide ?? null], skew: [current.check?.skew ?? null, sided.check?.skew ?? null] };
+    if (!fails.length) (params = { ...params, cs: 1, calSide: sided.calSide, cal: sided.cal }), (current = sided);
+  }
   const final = replayStat(stat, sorted, params, env, cuts).out;
   // (the held-out numbers with no matchup or context terms at all, for the before and after)
   const base = optional.length ? heldOut({ ...params, ...allOff }).check : current.check;
@@ -1273,6 +1385,31 @@ export function fitStat(stat, rows, env) {
   // for) left out of it, as the board never posts his prop)
   const all = allOf(final);
   return { params, gains, floors, base, check: current.check, checkAll: check(all, params), fitN: best.n, rookie };
+}
+
+// (a list's fifths by projection, lowest first: each one's projection range, count and actual over projected
+// less 1 (over 0: the model ran low there))
+export function fifthsOf(list) {
+  if (list.length < 50) return null;
+  const s = [...list].sort((a, b) => a.p.mu - b.p.mu);
+  return [0, 1, 2, 3, 4].map((i) => {
+    const part = s.slice(Math.floor((s.length * i) / 5), Math.floor((s.length * (i + 1)) / 5));
+    const mu = part.reduce((t, x) => t + x.p.mu, 0);
+    const v = part.reduce((t, x) => t + x.v, 0);
+    return { lo: Math.round(part[0].p.mu * 100) / 100, hi: Math.round(part[part.length - 1].p.mu * 100) / 100, n: part.length, ratio: mu ? Math.round((v / mu - 1) * 10000) / 10000 : null };
+  });
+}
+// (the fifths' misses summed: each one's actual over projected, off 0; null unmeasured)
+const fifthsMiss = (c) => (c?.fifths ? c.fifths.reduce((t, f) => t + Math.abs(f.ratio ?? 0), 0) : null);
+
+// (each side's recalibration (cs): the lines under the projection, then at it or over, each its own fit with
+// CS_MIN or more of them, else none (cal); none on either side: null)
+function sideCals(pairs) {
+  const out = [0, 1].map((i) => {
+    const mine = pairs.filter((x) => (x.x.p.mu > x.line ? 0 : 1) === i);
+    return mine.length >= CS_MIN ? fitRecal(mine) : null;
+  });
+  return out.some(Boolean) ? out : null;
 }
 
 // The check on the held-out games: the projection's error against a plain season average's, and its chance of
@@ -1295,6 +1432,8 @@ function check(list, params) {
   let sides = 0;
   let sideHits = 0;
   const bands = new Map();
+  const side = [0, 1].map(() => ({ lines: 0, ll: 0, said: 0, was: 0 }));
+  const skew = { n: 0, said: 0, was: 0 };
   for (const x of list.sort((a, b) => a.row.date.localeCompare(b.row.date))) {
     mae += Math.abs(x.p.mu - x.v);
     sumMu += x.p.mu;
@@ -1306,8 +1445,21 @@ function check(list, params) {
       nBase++;
       const median = vals[Math.floor(vals.length / 2)];
       const line = Math.floor(median) + 0.5;
-      const p = Math.min(0.995, Math.max(0.005, recal(nbOver(line, x.p.mu, rAt(params, x.p.mu)), params.cal)));
+      const p = Math.min(0.995, Math.max(0.005, recal(nbOver(line, x.p.mu, rAt(params, x.p.mu)), calAt(params, x.p.mu, line))));
       const over = x.v > line ? 1 : 0;
+      // (by side: a line under his projection (0), at it or over (1))
+      const sd = side[x.p.mu > line ? 0 : 1];
+      sd.lines++;
+      sd.ll -= Math.log(over ? p : 1 - p);
+      sd.said += p;
+      sd.was += over;
+      // (the skew's rows: the side the model takes against its own projection, an under with the mean above
+      // the line or an over with it below, from SKEW_MIN_LINE (props.mjs skewOnly))
+      if (line >= SKEW_MIN_LINE && ((p < 0.5 && x.p.mu > line) || (p > 0.5 && x.p.mu < line))) {
+        skew.n++;
+        skew.said += Math.max(p, 1 - p);
+        skew.was += (p > 0.5) === !!over ? 1 : 0;
+      }
       ll -= Math.log(over ? p : 1 - p);
       brier += (p - over) ** 2;
       const q = (vals.filter((v) => v > line).length + 1) / (vals.length + 2);
@@ -1341,6 +1493,11 @@ function check(list, params) {
     sides,
     sideHit: sides ? r4(sideHits / sides) : null,
     calibration: [...bands.entries()].sort((a, b) => a[0] - b[0]).map(([band, b]) => ({ band, n: b.n, said: r4(b.said / b.n), was: r4(b.was / b.n) })),
+    // (by side of the projection: a line under it, at it or over; the chance over said and what happened)
+    bySide: side.map((s) => ({ lines: s.lines, logLoss: s.lines ? r4(s.ll / s.lines) : null, said: s.lines ? r4(s.said / s.lines) : null, was: s.lines ? r4(s.was / s.lines) : null })),
+    // (the sides taken against their own projection: the model's chance of its side and how often it won)
+    skew: { n: skew.n, said: skew.n ? r4(skew.said / skew.n) : null, was: skew.n ? r4(skew.was / skew.n) : null },
+    fifths: fifthsOf(list),
   };
 }
 

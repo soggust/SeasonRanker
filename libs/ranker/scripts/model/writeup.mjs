@@ -188,6 +188,8 @@ export function driversOf(bet, params) {
   add('pace', fin(p.paceF) ? p.paceF : 1, p.paceF);
   add('targets', fin(p.tgtF) ? p.tgtF : 1, p.tgtF);
   add('vacated', fin(p.vacF) ? p.vacF : 1, p.vacF);
+  // (the pull toward the stat's typical projection (project.mjs middleF): on a projection since it, none before)
+  add('middle', fin(p.slF) ? p.slF : 1, p.slF);
   const product = base === null ? null : Math.max(0.05, steps.reduce((t, s) => t * s.factor, base));
   const ok = product !== null && Math.abs(product - p.mean) <= 0.01 * Math.max(p.mean, 0.05) + 0.005;
   const notWeighed = [];
@@ -238,6 +240,7 @@ function driverWhat(name, bet, sheet, raw) {
     return 'teammates back taking some of his work';
   }
   if (name === 'context') return ctxWhat(bet, sheet);
+  if (name === 'middle') return raw >= 1 ? 'the fit pulling a low projection back up toward the typical one' : 'the fit pulling a high projection back toward the typical one';
   return name;
 }
 

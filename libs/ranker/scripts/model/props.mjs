@@ -64,7 +64,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
-import { ctxFactor, ctxKeys, fitStat, impliedMean, lineChances, makeModel, rAt } from './project.mjs';
+import { SKEW_MIN_LINE, ctxFactor, ctxKeys, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseRows, pool } from './sources.mjs';
 import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, hasKey } from './oddsapi.mjs';
@@ -172,8 +172,9 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
 
 // (the team games the midseason flag covers (CTX midSeason))
 export const MID_SEASON = [5, 8];
-// (the smallest line the skew guard reads: below it a count's own skew is real)
-export const SKEW_MIN_LINE = 5;
+// (the smallest line the skew guard reads: below it a count's own skew is real; project.mjs's, whose held-out
+// check counts the same rows)
+export { SKEW_MIN_LINE };
 // Whether a side's edge can only be the spread's skew: an under with the projection above the line, an over with
 // it below (lines from SKEW_MIN_LINE)
 export const skewOnly = (side, mu, line) => Number.isFinite(mu) && Number.isFinite(line) && line >= SKEW_MIN_LINE && (side === 'under' ? mu > line : side === 'over' ? mu < line : false);
@@ -744,7 +745,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const ctxKeysOf = ctxKeys(f.stat);
     const ctxV = ctxValues(ctxKeysOf, info, home, pts, row);
     const ctxF = ctxFactor(f.stat, f.params, ctxV);
-    const mu = Math.max(0.05, (f.params.scale ?? 1) * p.base * Math.pow(p.opp, p.oppA ?? f.params.a) * Math.pow(scriptV, f.params.b) * ctxF * p.funnelF * p.paceF * p.tgtF * (p.vacF ?? 1));
+    // (and the pull toward the stat's typical projection where the fit kept it (project.mjs middleF, sl): on the
+    // factors' product, before the lean, as the history's)
+    const raw = p.base * Math.pow(p.opp, p.oppA ?? f.params.a) * Math.pow(scriptV, f.params.b) * ctxF * p.funnelF * p.paceF * p.tgtF * (p.vacF ?? 1);
+    const slF = middleF(f.params, raw);
+    const mu = Math.max(0.05, (f.params.scale ?? 1) * raw * slF);
     // (a weather term the fit kept, at an outdoor game whose forecast failed: the projection can't see it)
     const weatherBlind = !!info?.weather?.missing && ctxKeysOf.some((k) => WEATHER_CTX.has(k) && f.params[`c_${k}`]);
     // (the weather moving his projection 10% or more either way: a forecast's error grows with it, rain's
@@ -911,8 +916,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     }
     // (the side against its own projection: an under with the mean above the line, an over with it below. Its
     // edge comes only from the spread's assumed skew (lineChances' dispersion), not from anything the model
-    // knows about him, and the held-out games show that skew leaning the props to the unders; skipped till pOver
-    // is calibrated by stat and side. Lines under SKEW_MIN_LINE left alone: a small count's skew is real (a 0.5
+    // knows about him, and the held-out games show that skew leaning the props to the unders; skipped. pOver
+    // calibrated by side (project.mjs cs) was tried on every stat (2026-10-12) and kept on none, and the held-out
+    // sides taken against their own projection still won less than the model said with it (NFL rush+rec yards
+    // 999 at lines from 5: said 53.8%, won 47.3%; by side 51.8%, 48.2%; NBA rebounds 52.9%, 46.8%), so the guard
+    // stays. Lines under SKEW_MIN_LINE left alone: a small count's skew is real (a 0.5
     // line's under can be the likelier side with the mean above it))
     else if (skewOnly(side, mu, prop.line)) guard = { skip: true, kind: 'skew', why: `the projection (${round(mu, 1)}) on the other side of the line from the ${side}: its edge only the spread's assumed skew` };
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
@@ -951,7 +959,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       guard,
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3) } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3) } : { starts: p.starts }) } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, script: round(scriptV, 3), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
       move: prop.open !== null ? { open: prop.open, now: prop.line } : null,
     });
   }

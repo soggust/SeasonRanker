@@ -62,6 +62,8 @@ const TERM_NAMES: Record<string, string> = {
   sk: "part-timer's prior counted at his snap share",
   rx: "last five reaching back into last season",
   pl: "prior leaning to last season's late games",
+  sl: 'extreme projections pulled toward the typical one',
+  cs: 'over/under chance calibrated separately above and below the projection',
 
   rk: 'spread grows with projection',
   c_wind: 'wind',
