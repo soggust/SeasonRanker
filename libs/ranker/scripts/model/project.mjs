@@ -83,7 +83,9 @@
 //            1.80, pl 0.25 1.65, both 1.91
 //   flags    a context flag with a floor of its own (MIN_GAIN: c_newCoach, his team in its first 3 games under a
 //            new head coach; c_qb1Out, his team's lead quarterback out; the NHL's c_ppShare, a skater's
-//            power-play share, on a floor of 0.0001, on no stat's ctx now) tried after the rest the same way as
+//            power-play share, on a floor of 0.0001, on no stat's ctx now; the back-to-backs, c_b2b his side's
+//            (an NHL goalie's saves), c_b2bB an NBA bench player's, c_b2bS a starter's and c_oppB2b the other
+//            side's, each on its own rows' gate) tried after the rest the same way as
 //            the draft's prior (below): on top of them as fit, against none at the dispersion the same search
 //            found, kept only
 //            with a held-out gain of its floor or more (0.0003 the flags'), and the bias: a flag on a few rows
@@ -156,11 +158,12 @@
 //            own size c (c_<term>; the old single size c is the first term's): the NFL's wind, cold and rain
 //            or snow (passing; receiving and rushing take wind and rain too), a backup quarterback throwing
 //            to its receivers and handing off to its backs; the NBA's teammates out (production missing), a
-//            back-to-back and the expected blowout (the game model's margin either way: a starter sits the
-//            fourth quarter); the NHL's power play (his power-play time by the power plays his team can
-//            expect; his share of his team's power play against his position's prop players': his unit) and
-//            the other side's goalie; MLB batters' place in the order against their usual and platoon
-//            edge against their usual, and the other side's starter; MLB starters' leash (their recent pitch
+//            bench player's back-to-back (b2bB, a late flag) and the expected blowout (the game model's margin
+//            either way: a starter sits the fourth quarter); the NHL's power play (his power-play time by the
+//            power plays his team can expect; his share of his team's power play against his position's prop
+//            players': his unit) and the other side's goalie, and a goalie's saves on his team's back-to-back
+//            (b2b, a late flag); MLB batters' place in the order against their usual and platoon edge against
+//            their usual, and the other side's starter; MLB starters' leash (their recent pitch
 //            counts against their usual), rest, and the plate umpire's zone. Each is fit like a matchup term
 //            and kept only if the held-out games are better with it (0: left out)
 //   scale    the eligible players' total over their total projection on the fit window: what's left of a lean
@@ -336,10 +339,12 @@ const DRAFT_GAIN = 0.0003;
 // whole stat's gate (on every row, not a few))
 // (and the pull toward the middle (sl) the same way, on the same floor: tried last of them (the draft's prior
 // after it), on the whole stat's gate and the held-out fifths' (fitStat))
+// (and the back-to-backs (c_b2b, c_oppB2b, the NBA's by role c_b2bS and c_b2bB: props.mjs CTX) the same way,
+// each on its own rows' gate (SUBGROUP): a flag on the second night's rows, a fifth of them or fewer)
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN };
+const MIN_GAIN = { c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -371,7 +376,7 @@ const RX_MIN = 3;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab']);
+const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -1103,7 +1108,10 @@ const AHEAD_OUT = [-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.3];
 // (his side's margin by the betting lines (c_mSpread, per 10 points, signed: a favorite's over 0): a late
 // flag, either way to 15% a 10 points)
 const M_SPREAD = [-0.15, -0.1, -0.05, -0.025, 0.025, 0.05, 0.1, 0.15];
-const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD };
+// (the back-to-backs (c_b2b, c_oppB2b; the NBA's own by role, c_b2bS, c_b2bB: props.mjs CTX), 0 or 1 flags, a
+// few percent to 15% either way, finer than GRID.c's 7% step)
+const B2B = [-0.15, -0.1, -0.07, -0.05, -0.03, 0.03, 0.05, 0.07, 0.1, 0.15];
+const GRID = { ...CARRY_GRID, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);

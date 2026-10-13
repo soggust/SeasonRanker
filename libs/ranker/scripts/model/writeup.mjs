@@ -279,6 +279,10 @@ export function ctxWhat(bet, sheet) {
     // once he's missed a game; neither known, both words)
     qb1Out: `${sheet.bet.team ?? 'his team'} ${!fin(bet.projection?.qb1Miss) ? 'without (or possibly without) its starting QB' : bet.projection.qb1Miss < 1 ? 'with its starting QB questionable' : 'without its starting QB'}`,
     b2b: 'a back-to-back',
+    // (an NBA bench player's own back-to-back: the minutes the starters give up; the other side's)
+    b2bB: 'a back-to-back (more bench minutes)',
+    b2bS: 'a back-to-back',
+    oppB2b: `${opp ?? 'the other side'} on a back-to-back`,
     pp: 'his power-play time',
     ppTime: 'his power-play time',
     ppShare: v > 0 ? 'his spot on the top power-play unit' : 'his small share of the power play',
@@ -994,7 +998,7 @@ export function validate(text, sheet, numbers = null, { reason = text } = {}) {
   // (weather words as weather: not a cold streak or a player's shooting gone cold, a hockey or basketball turn of
   // phrase)
   if (/(wind|winds|windy|rain|rainy|snow|snowy|weather|forecast)|cold (weather|temperatures?|game|night)|d+s*°/i.test(bare) && !has(g.weather) && !['wind', 'precip', 'snow', 'cold'].some((k) => has(ctx[k]))) problems.push('weather talk without weather on the sheet');
-  if (/\brest|back-to-back|travel|fatigue|tired/i.test(bare) && !has(g.rest) && !has(g.b2b) && !has(pr.restDays) && !has(ctx.b2b)) problems.push('rest talk without rest on the sheet');
+  if (/\brest|back-to-back|travel|fatigue|tired/i.test(bare) && !has(g.rest) && !has(g.b2b) && !has(pr.restDays) && !['b2b', 'b2bS', 'b2bB', 'oppB2b'].some((k) => has(ctx[k]))) problems.push('rest talk without rest on the sheet');
   // 4. banned outright
   if (BANNED.test(bare)) problems.push(`banned: ${bare.match(BANNED)[0]}`);
   // 5. the side and the line, said together; never the other side at the same line
