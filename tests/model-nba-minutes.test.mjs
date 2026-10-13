@@ -124,8 +124,8 @@ test('CTX blowS, blowB: the spread either way per 10 by his role known before th
   assert.equal(CTX.newStart(null, true, null, { roleKnown: 'B', startLast: null }), 0);
 });
 
-test("WHOLE_TOL (the whole stat's bias tolerance) holds the minutes base alone: every other whole-stat term no larger at all", () => {
-  assert.deepEqual([...WHOLE_TOL], ['sn']);
+test("WHOLE_TOL (the whole stat's bias tolerance) holds the minutes base and the NBA's pace alone: every other whole-stat term no larger at all", () => {
+  assert.deepEqual([...WHOLE_TOL], ['sn', 'po']);
 });
 
 test("early in a season: one short opener after a full last season, his minutes pulled toward last season's", () => {

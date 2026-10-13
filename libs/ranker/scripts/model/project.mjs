@@ -75,6 +75,25 @@
 //            first 30% is the fit's warm-up, never scored: the regime the season opens in, and the early-season
 //            pull, were never held out. The hourly refit holds out the latest 30% of the history, so 2026-27's
 //            games are judged as they come in (the minutes base and its bias dropped by the gate if they say so)
+//   pace     the NBA's (audit #10; props.mjs STATS pace, a late term after the minutes base on the whole stat's
+//            gate, its eligible players' bias within WHOLE_TOL's tolerance as the minutes base's: a factor on every
+//            row, the lean refit with it): the other side's possessions a game over the league's (pg 0; his own
+//            team's pace is in his own numbers), the game's expected possessions (pg 1: both teams' over the
+//            league's, matchups.mjs nbaMatchups paceG), or that over its average in his games this season (pg 2,
+//            pulled toward even by PACE_M games: his own team's counted once), to the power po. Measured 2026-10-13
+//            (2025-26, held out March to the Finals): kept on points po 1/pg 1 (held out 0.6478 to 0.6465,
+//            +0.0012; the eligible players' bias -0.2389 to -0.2684, every player's 0.0773 to 0.053), threes 1/1
+//            (0.5613 to 0.5607, +0.0006; -0.0215 to -0.026, every player's 0.0132 to 0.0095) and pts+reb+ast 1/2
+//            (0.6447 to 0.6441, +0.0006; -0.263 to -0.2921, every player's 0.3932 to 0.3682); rebounds (0.5/0,
+//            +0.0001) and assists (0.5/1, 0) under the floor. Each one's eligible players' bias larger (within
+//            the tolerance, half a percent of the mean actual: held to no larger at all, all three were left out),
+//            every player's smaller.
+//            positions (ps; props.mjs STATS positions, ESPN's G, F, C): the opponent's table and the priors by
+//            position group (ps 1), the role's table by it too (ps 2), in place of one pool. Left out on every stat
+//            (points, assists, pts+reb+ast not taken on the fit window; rebounds 1 held out -0.001; threes 1
+//            +0.0003 with its bias larger): the minutes base and the per-player rates already carry a center's
+//            rebounds and a guard's threes, and a third of the opponent's games a table thins it. Off the search
+//            (TRY_PS)
 //   next up  the NFL's (rp, a late term as the flags below): the next man up projected in the role he steps
 //            into (matchups.mjs roleUp: his group's missing ones who've played for the team this season out of
 //            the order, a TE2 whose TE1 is out the TE1), the role's opponent table and its tables learned by
@@ -400,7 +419,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { sn: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
+const MIN_GAIN = { sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -458,13 +477,24 @@ const TRY_MK = false;
 // -0.0006, its bias larger; assists, threes, pts+reb+ast no better size on the fit window), its search about
 // 10s a stat every hourly run: true to try it again)
 const TRY_VCM = false;
+// (the NBA's positions and pace (audit #10), late terms on the whole stat's gate after the minutes base: ps 1
+// the opponent's table and the priors by position group, 2 the role's table by it too; po the pace's power,
+// pg its form (0 the other side's, 1 the game's expected))
+const PS = [{ ps: 1 }, { ps: 2 }];
+// (the positions searched at all: kept on no stat on 2026-10-13 (points, assists, pts+reb+ast not taken on the
+// fit window; rebounds 1 held out -0.001; threes 1 +0.0003 with its bias larger), its search and gate about
+// 15s a run: true to try it again)
+const TRY_PS = false;
+const PO = [0.5, 1, 1.5];
+const PACE_M = 5;
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key) => (key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key) => (key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => [0, 1, 2].map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
-// (the late terms on every row judged on the whole stat's bias with SUBGROUP_TOL (fitStat): the NBA's minutes base)
-export const WHOLE_TOL = new Set(['sn']);
+// (the late terms on every row judged on the whole stat's bias with SUBGROUP_TOL (fitStat): the NBA's minutes base
+// and its pace (po: a factor on every row, the lean refit with it))
+export const WHOLE_TOL = new Set(['sn', 'po']);
 const SUBGROUP_TOL = 0.005;
 // (and the eligible players' among the rows it's on, judged too where this many or more)
 const SUBGROUP_ELIG_N = 50;
@@ -516,7 +546,10 @@ export function makeModel(stat, params, env) {
   const teams = new Map();
   const lgT = { n: 0, sum: 0 };
   const val = (row) => Math.max(0, Math.round(row.s[stat.key]));
-  const posKey = (row) => stat.posGroup?.(row.pos) ?? row.pos;
+  // (his position group: the stat's (posGroup), or where it has positions of its own and the fit kept them
+  // (ps, the NBA's guards, forwards and centers: props.mjs nbaPos), those: the opponent's table and the priors
+  // by them)
+  const posKey = (row) => (params.ps && stat.positions ? stat.positions(row.pos) : (stat.posGroup?.(row.pos) ?? row.pos));
   // (the opponent's power for his position group where the fit gave it one of its own (a_<group>), else the
   // stat's a)
   const oppAOf = (row) => params[`a_${oppGroup(row.pos)}`] ?? params.a;
@@ -578,6 +611,12 @@ export function makeModel(stat, params, env) {
   const roleAt = (row) => {
     const u = upOf(row);
     return params.rp && u.roleUp ? u.roleUp : u.role;
+  };
+  // (the role's opponent table's key: his role, and with ps 2 his position group too (an NBA starting center
+  // apart from a starting guard))
+  const roleKeyOf = (row) => {
+    const r = roleAt(row);
+    return r && params.ps === 2 && stat.positions ? `${r}-${posKey(row)}` : r;
   };
   // (the injury return (ij, the NFL's backs and pass-catchers: stat.snaps; 0 off, kept only where the held-out
   // games are better): a game he left hurt or was eased back in weighs 1 - ij in his per-game rate, his last
@@ -862,8 +901,9 @@ export function makeModel(stat, params, env) {
     const posOpp = opp;
     let roleOpp = null;
     const myRole = roleAt(row);
+    const roleKey = roleKeyOf(row);
     if (myRole && Number.isFinite(params.roleK)) {
-      const x = roles.get(`${row.opp}|${myRole}`);
+      const x = roles.get(`${row.opp}|${roleKey}`);
       if (x) {
         const { got, usual, n } = sums(x);
         const per = n ? usual / n : base;
@@ -877,7 +917,12 @@ export function makeModel(stat, params, env) {
     // (the defense's funnel, pace and target split: 1 where the stat or the row has none)
     const dir = stat.volume === 'rush' ? -1 : stat.volume ? 1 : 0;
     const funnelF = dir && params.fun ? Math.exp(params.fun * dir * (row.funnel ?? 0)) : 1;
-    const paceF = stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
+    // (the NBA's (stat.pace, po): the other side's possessions a game over the league's (pg 0: his own team's
+    // pace is in his own numbers), or the game's expected (pg 1: the two teams' product), to the power po)
+    // (pg 2: the game's expected over its average in his games this season, pulled toward even by PACE_M games:
+    // his own team's pace, in his numbers already, counted once)
+    const paceNow = !stat.pace || !params.po ? 1 : params.pg === 2 ? (row.paceG ?? 1) / (((cur.pgs ?? 0) + PACE_M) / ((cur.pgn ?? 0) + PACE_M)) : ((params.pg ? row.paceG : row.pace) ?? 1);
+    const paceF = stat.pace ? (params.po ? Math.pow(paceNow, params.po) : 1) : stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
     const tgtF = stat.targets && params.tg ? Math.pow(row.tgt ?? 1, params.tg) : 1;
     // (the work his position group is missing now against what it was missing in the games his numbers come
     // from, weighed as they are (his season's games against the K-game prior, which had last season's: its
@@ -928,7 +973,7 @@ export function makeModel(stat, params, env) {
     // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
     const slF = middleF(params, raw);
     const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
-    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * 48, recent: minLean.recent * 48 } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * 48, recent: minLean.recent * 48 } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     project: parts,
@@ -977,7 +1022,7 @@ export function makeModel(stat, params, env) {
             table.set(key, o);
           };
           tally(opps, `${row.opp}|${posKey(row)}`);
-          const myRole = roleAt(row);
+          const myRole = roleKeyOf(row);
           if (myRole) tally(roles, `${row.opp}|${myRole}`);
         }
         // (his seasons: this one, last, and the ones before it (career))
@@ -1014,6 +1059,9 @@ export function makeModel(stat, params, env) {
         }
         p.cur.n++;
         p.cur.sum += v;
+        // (the game's expected possessions over the league's in his games this season (the NBA's pace, pg 2:
+        // tonight's read against them))
+        if (stat.pace) (p.cur.pgs = (p.cur.pgs ?? 0) + (row.paceG ?? 1)), (p.cur.pgn = (p.cur.pgn ?? 0) + 1);
         p.cur.wn += wt;
         p.cur.wsum += wt * v;
         p.cur.recent = [...p.cur.recent, v].slice(-5);
@@ -1250,6 +1298,8 @@ const has = (stat, key) =>
   : key === 'sk' ? !!(stat.snaps && stat.carry)
   : key === 'rx' || key === 'pl' ? !!stat.carry
   : key === 'sl' ? !!stat.middle
+  : key === 'ps' ? !!stat.positions
+  : key === 'po' ? !!stat.pace
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -1318,7 +1368,7 @@ export function fitStat(stat, rows, env) {
   // and the injury return: the injury-driven terms first, the organic trend on what they leave)
   const AFTER_RP = ['c_aheadOut'];
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));

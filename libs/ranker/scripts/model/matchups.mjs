@@ -33,7 +33,12 @@
 //            toward 0 by 4 games' worth: a pass funnel (over 0) means more passing against it, a run funnel
 //            (under 0) more running
 //   pace     the NFL: its opponents' plays (runs and passes) against their own usual, pulled toward even by 4
-//            games
+//            games. The NBA (audit #10): each team's possessions a 48 minutes (its box's field goals tried, 0.44 of
+//            free throws tried, turnovers, less offensive rebounds, the two sides' averaged, over the minutes
+//            played over 240: an overtime game's per 48), this season's pulled toward last season's (or the
+//            league's) by PACE_K games, over the league's this season (last season's till it has PACE_LG
+//            team-games): the other side's (pace: his own team's is in his own numbers) and the game's expected
+//            (paceG: the two teams' product over the league's), each 1 till it's known (project.mjs po, pg)
 //   targets  the NFL: the share of the targets it allows to wide receivers, tight ends and backs, against the
 //            league's, pulled toward the league's by 60 targets
 //   vacated  the NFL: the work a player's position group is missing: its regulars who aren't playing (not in the
@@ -763,11 +768,31 @@ const missFn = (missing) => (typeof missing === 'function' ? missing : missing i
 // the shots were, its points' worth of them (0.87 tries a point, about the league's))
 export const nbaUsage = (r) => (Number.isFinite(r.s.fga) ? r.s.fga + 0.44 * (r.s.fta ?? 0) : 0.87 * (r.s.pts ?? 0)) + (r.s.ast ?? 0);
 
+// (the NBA's pace (nbaMatchups): a team's possessions a game pulled toward its prior by PACE_K games, and the
+// league's this season taken from PACE_LG team-games on, last season's before)
+const PACE_K = 10;
+const PACE_LG = 30;
+// (a team's possessions in a game, a 48 minutes: its field goals tried, 0.44 of its free throws tried and its
+// turnovers, less its offensive rebounds, over its players' minutes over 240; null where a line misses one of
+// them (a line kept before they were) or the minutes are short)
+export function nbaPossessions(list) {
+  let poss = 0;
+  let min = 0;
+  for (const r of list) {
+    const { fga, fta, oreb, tov } = r.s;
+    if (![fga, fta, oreb, tov].every(Number.isFinite)) return null;
+    poss += fga + 0.44 * fta + tov - oreb;
+    min += r.s.min ?? 0;
+  }
+  return min >= 200 && poss > 0 ? (poss * 240) / min : null;
+}
+
 // The NBA's roles: each team's five with the most minutes a game so far (three games or more) among the ones
 // playing its starters (S), the rest its bench (B); and the work missing (teamWork: by minutes, by usage, the
 // whole team one group; a core player out counts at once, a regular from his second game out in a row:
-// teamWork gate); each game's minutes over 48 (share) and his start in his team's game before (startLast). The
-// same for a coming game (live: missing, the teammates out by the injury report, none of them a starter)
+// teamWork gate); each game's minutes over 48 (share) and his start in his team's game before (startLast); the
+// other side's pace (pace) and the game's expected possessions (paceG), each over the league's. The same for a
+// coming game (live: missing, the teammates out by the injury report, none of them a starter)
 export function nbaMatchups(rows) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6] });
@@ -795,6 +820,30 @@ export function nbaMatchups(rows) {
   // (each team's players in its game before: the history's roleKnown counts out only the ones missing that
   // one too)
   const before = new Map();
+  // (the pace: each team's possessions a game by season (n, sum), the league's by season)
+  const paces = new Map();
+  const lgPace = new Map();
+  const lgOf = (season) => {
+    const cur = lgPace.get(season);
+    if (cur?.n >= PACE_LG) return cur.sum / cur.n;
+    const last = lgPace.get(season - 1);
+    return last?.n >= PACE_LG ? last.sum / last.n : null;
+  };
+  // (a team's possessions a game: this season's pulled toward last season's (PACE_LG games of it or more), else
+  // the league's, by PACE_K games; null with the league's unknown)
+  const paceTeam = (teamId, season, lg) => {
+    const t = paces.get(String(teamId));
+    const cur = t?.get(season) ?? { n: 0, sum: 0 };
+    const last = t?.get(season - 1);
+    const prior = last?.n >= PACE_LG ? last.sum / last.n : lg;
+    return (cur.sum + PACE_K * prior) / (cur.n + PACE_K);
+  };
+  const paceOf = (teamId, oppId, season) => {
+    const lg = lgOf(season);
+    if (!(lg > 0)) return { pace: 1, paceG: 1 };
+    const o = paceTeam(oppId, season, lg) / lg;
+    return { pace: o, paceG: (paceTeam(teamId, season, lg) / lg) * o };
+  };
   byDay(rows, (batch) => {
     const games = new Map();
     for (const r of batch) {
@@ -817,6 +866,32 @@ export function nbaMatchups(rows) {
         // all in the per-minute rate, held to 1 in the minutes expected tonight (project.mjs))
         r.share = r.s.min > 0 ? r.s.min / 48 : null;
         r.startLast = startLastOf(r.pid, r.team, r.season);
+        Object.assign(r, paceOf(r.team, r.opp, r.season));
+      }
+    }
+    // (the day's games' possessions, the two sides' averaged (one side's where only it reads), learned after
+    // the day's rows were all given theirs)
+    const byGame = new Map();
+    for (const list of games.values()) {
+      const p = nbaPossessions(list);
+      if (p === null) continue;
+      const g = byGame.get(list[0].game) ?? [];
+      g.push([list[0].team, list[0].season, p]);
+      byGame.set(list[0].game, g);
+    }
+    for (const sides of byGame.values()) {
+      const p = sides.reduce((t, x) => t + x[2], 0) / sides.length;
+      for (const [teamId, season] of sides) {
+        const t = paces.get(String(teamId)) ?? new Map();
+        const x = t.get(season) ?? { n: 0, sum: 0 };
+        x.n++;
+        x.sum += p;
+        t.set(season, x);
+        paces.set(String(teamId), t);
+        const l = lgPace.get(season) ?? { n: 0, sum: 0 };
+        l.n++;
+        l.sum += p;
+        lgPace.set(season, l);
       }
     }
     for (const list of games.values()) {
@@ -839,7 +914,7 @@ export function nbaMatchups(rows) {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const missOf = missFn(missing);
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missOf, () => NBA_CORE));
-      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs) };
+      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, ...paceOf(teamId, oppId, season), tgt: 1, vacs, vac: Math.max(...vacs) };
     },
   };
 }

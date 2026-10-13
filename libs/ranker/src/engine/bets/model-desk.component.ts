@@ -749,6 +749,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_blowB: 'blowout by the betting lines, a bench player (the garbage time his)',
       c_newStart: 'a bench player who started his last game',
       sn: 'snaps-based rate (NBA: minutes first, his per-minute rate times his expected minutes)',
+      ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
+      po: "NBA pace (the other side's possessions a game over the league's)",
       c_oppShots: 'opponent shots',
       a_WR: 'opponent allowed to wide receivers',
       a_TE: 'opponent allowed to tight ends',

@@ -501,6 +501,15 @@ const CATCHING = [...CARRYING, 'qbDeep'];
 // minutes jump with teammates back is a role CHECK on the over (minutesBackOf, the review of 2026-10-13); the
 // work missing's size fit again on the base (project.mjs vcM) left out on every stat)
 const NBA_MINUTES = { minutes: true };
+// (the NBA's positions and pace (audit #10; project.mjs ps, po, late terms on the whole stat's gate after the
+// minutes base): ESPN's position (G, F, C; a PG or SG a guard, an SF or PF a forward, one unknown a forward) for
+// the opponent's table, the priors and, ps 2, the role's table, each one pool before (posGroup 'all', still the
+// one where ps is left out); and the other side's possessions a game, or the game's expected, over the league's
+// (matchups.mjs nbaMatchups pace, paceG). The eligible pool (each team's top few by usage) and the work missing
+// stay the whole team's. Measured 2026-10-13: the pace kept on points, threes and pts+reb+ast (held out +0.0012,
+// +0.0006, +0.0006), the positions on none (off the search: project.mjs TRY_PS))
+export const nbaPos = (pos) => (/^(PG|SG|G)$/.test(pos ?? '') ? 'G' : pos === 'C' ? 'C' : 'F');
+const NBA_POS_PACE = { positions: nbaPos, pace: true };
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
 const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // (the NHL's back-to-backs (audit #6): his side's (b2b) and the other side's (oppB2b), late flags each on its own
@@ -577,11 +586,11 @@ export const STATS = {
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES }),
-    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES }),
-    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES }),
-    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES }),
-    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
   ],
   nhl: [
     stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
@@ -1225,7 +1234,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     let roleRank = null;
     let roleFactor = null;
     if (p.role) {
-      const table = f.model.roleTable(p.role, game.season);
+      const table = f.model.roleTable(p.roleKey ?? p.role, game.season);
       const at = table.findIndex((x) => String(x.opp) === String(row.opp));
       if (at >= 0) (roleRank = { rank: at + 1, of: table.length }), (roleFactor = table[at].factor);
     }
