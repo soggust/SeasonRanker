@@ -97,26 +97,47 @@ export interface ModelState {
   sameGame?: SameGame | null;
 }
 
-// (the props' correlation within a game, fit on the graded props, and the replay that keeps it: desk.mjs sameGameOf)
-export interface SameGame {
+// (one kind of pair's correlation within a game, fit on the graded props, and its held-out score: desk.mjs fitSameGame, sameGameOf)
+export interface SameGameKind {
   rho: number;
   raw: number | null;
   se: number | null;
   games: number;
   pairs: number;
   fitted: boolean;
-  used: number;
-  replay: { games: number; resized: number; trimmed: number; asBet: number; joint: number };
+  held: { games: number; pairs: number; gain: number };
+}
+export interface SameGameReplay {
+  resized: number;
+  trimmed: number;
+  asBet: number;
+  joint: number;
+  worse: boolean;
+}
+// (the props' correlations within a game, a player's own props' and the rest's, and what's used: desk.mjs sameGameOf)
+export interface SameGame {
+  player: SameGameKind;
+  game: SameGameKind;
+  used: { player: number; game: number };
+  floor: boolean;
+  replay: { games: number; asOf: SameGameReplay; inSample: SameGameReplay };
 }
 
-// (the same-game sizing in plain words, for the About and the Algorithm tab)
+// (the same-game sizing in plain words, for the About and the Algorithm tab; null where the state predates the two kinds)
 export function sameGameText(g: SameGame | null | undefined): string | null {
-  if (!g) return null;
-  const how = "A game's props win or lose together a little (overs with overs, an over against an under the other way), so its edge props are sized jointly with the rest of its props, as fewer, bigger bets on the game: stakes only cut, never raised, never a bet added or dropped.";
-  if (!g.fitted) return `${how} Not used yet: ${g.games} games with two or more graded props, 10 needed.`;
-  const read = `Read on ${g.pairs.toLocaleString()} prop pairs in ${g.games} games: ${g.raw ?? '-'} (give or take ${g.se ?? '-'}), pulled toward 0 for the few games to ${g.rho}`;
-  const replay = g.replay.resized ? `; replayed on the graded games, it would have cut ${g.replay.resized} stakes by ${g.replay.trimmed}u` : '; replayed on the graded games, it would have changed no stake';
-  return `${how} ${read}${replay}. ${g.used ? `Used at ${g.used}.` : 'Not used: the replay grew the bankroll less with it.'}`;
+  if (!g?.player || !g.game || !g.used || !g.replay?.inSample) return null;
+  const how = "A game's props win or lose together a little (overs with overs, an over against an under the other way), one player's two props (his points and his shots) more so, so its edge props are sized jointly with the rest of its props, as fewer, bigger bets on the game: stakes only cut, never raised, never a bet added or dropped.";
+  const kind = (k: SameGameKind, name: string, used: number) => {
+    if (!k.fitted) return `${name}: not read yet (${k.games} games with such a pair, 10 needed)`;
+    const read = `${name}: ${k.raw ?? '-'} (give or take ${k.se ?? '-'}) on ${k.pairs.toLocaleString()} pairs in ${k.games} games, pulled toward 0 for the few games to ${k.rho}`;
+    if (used) return `${read}, used (on the days after each read, it was nearer what happened than none, ${k.held.games} games)`;
+    if (g.floor) return `${read}, not used (the bankroll replay did worse with it)`;
+    if (k.held.games < 5) return `${read}, not used yet (scored on ${k.held.games} later games, 5 needed)`;
+    return `${read}, not used (on the days after each read, it was no nearer what happened than none)`;
+  };
+  const r = g.replay.inSample;
+  const replay = r.resized ? `Replayed on the graded games at the values used, it would have cut ${r.resized} stakes by ${r.trimmed}u.` : 'Replayed on the graded games at the values used, it would have changed no stake.';
+  return `${how} ${kind(g.player, "A player's own two props", g.used.player)}. ${kind(g.game, 'Any other two in the game', g.used.game)}. ${replay}`;
 }
 
 // (a group of graded CHECKs: their record at a unit each, the hit rate and its 95% interval, the break-even of
