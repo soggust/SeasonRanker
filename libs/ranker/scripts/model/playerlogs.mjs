@@ -26,7 +26,8 @@
 //
 // A row: { pid, name, pos, date, season, team (ESPN id), opp (ESPN id), game (ESPN id or null), home, s: {stat: value} }
 // (the NFL's also his draft: { year: his first NFL season, pick: overall, 0 undrafted }, or null: nflverse's players
-// file; college production (CollegeFootballData) not read: it needs a key, CFBD_API_KEY, not set up)
+// file; and his birth date, born: 'YYYY-MM-DD' or null, the same file's, the start-of-season prior's age (project.mjs
+// sp); college production (CollegeFootballData) not read: it needs a key, CFBD_API_KEY, not set up)
 // Every row is a game he played in (took the field: a snap, a minute, a shift, a plate appearance), whatever he
 // did in it: the props' history (props.mjs) is every game a bet on him would have had action in
 
@@ -134,7 +135,7 @@ async function nflRows(cfg, history, facts) {
     team.set(`${r.season}|${r.home_team}`, g.home);
     team.set(`${r.season}|${r.away_team}`, g.away);
   }
-  const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id', 'pfr_id', 'rookie_season', 'draft_year', 'draft_pick'], 24 * 7);
+  const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id', 'pfr_id', 'rookie_season', 'draft_year', 'draft_pick', 'birth_date'], 24 * 7);
   const known = (players ?? []).filter((p) => p.espn_id && p.espn_id !== 'NA');
   const espnOf = new Map(known.map((p) => [p.gsis_id, String(Number(p.espn_id))]));
   // (each player's draft: his first NFL season (nflverse's rookie season, else his draft's year) and his pick
@@ -146,6 +147,8 @@ async function nflRows(cfg, history, facts) {
     const pick = Number(p.draft_pick) || 0;
     if (year >= 1990) draftOf.set(String(Number(p.espn_id)), { year, pick: pick > 0 ? pick : 0 });
   }
+  // (his birth date: the start-of-season prior's age (project.mjs sp), known before any game of his)
+  const bornOf = new Map(known.filter((p) => /^\d{4}-\d\d-\d\d$/.test(p.birth_date ?? '')).map((p) => [String(Number(p.espn_id)), p.birth_date]));
   const espnOfPfr = new Map(known.filter((p) => p.pfr_id && p.pfr_id !== 'NA').map((p) => [p.pfr_id, String(Number(p.espn_id))]));
   const current = Math.max(...history.map((g) => g.season));
   const out = [];
@@ -200,6 +203,7 @@ async function nflRows(cfg, history, facts) {
         game: r.espn,
         home: r.home_team === s.team,
         draft: draftOf.get(pid) ?? null,
+        born: bornOf.get(pid) ?? null,
         s: {
           passYds: n('passing_yards'),
           passAtt: n('attempts'),
@@ -238,6 +242,7 @@ async function nflRows(cfg, history, facts) {
         game: r.espn,
         home,
         draft: draftOf.get(key.split('|')[1]) ?? null,
+        born: bornOf.get(key.split('|')[1]) ?? null,
         s: { passYds: 0, passAtt: 0, passCmp: 0, passTd: 0, passInt: 0, rushYds: 0, rushAtt: 0, recYds: 0, rec: 0, rushRecYds: 0, targets: 0, airYds: 0, snaps: Number(x.offense_snaps) || 0 },
       });
     }

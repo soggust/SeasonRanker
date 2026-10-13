@@ -801,6 +801,15 @@ async function fitTheProps(r) {
       const ll = (x) => (x ? `${x.logLoss ?? 'n/a'} (${x.lines})` : 'n/a');
       const hi = (x) => (x ? `${x.logLoss ?? 'n/a'} said ${x.said ?? 'n/a'} was ${x.was ?? 'n/a'} (${x.lines})` : 'n/a');
       if (ex) kept.push(`early exit at ${ex.size}: chance ${ex.q ?? 'n/a'} keeping ${ex.f ?? 'n/a'} (${ex.n} rows), low lines ${ll(ex.low[0])} to ${ll(ex.low[1])}, high rows ${hi(ex.high?.[0])} to ${hi(ex.high?.[1])}, all ${ex.logLoss[0]} to ${ex.logLoss[1]}, r ${ex.r[0]} to ${ex.r[1]} (${ex.seconds}s)${ex.fails.length ? `, left out: ${ex.fails.join(', ')}` : ''}`);
+      // (the start-of-season prior's gate (project.mjs sp): the held-out early games it's judged on (his first 4 of a
+      // season, a run of his own before it), their log loss at the early lines and actual over projected without it
+      // and at the size the search took, the whole stat's log loss, its seconds; and its table as the history leaves
+      // it, each level's read (under 0: the prior's games ran under the stat's level) and games, the cells with 200)
+      const sp = f.floors?.sp;
+      if (sp || f.start) {
+        const lv = Object.entries(f.start?.table ?? {}).filter(([k, c]) => !k.includes('|') || c.n >= 200).sort(([a], [b]) => a.localeCompare(b)).map(([k, c]) => `${k} ${c.g} (${c.n})`).join(', ');
+        kept.push(`start-of-season prior at ${sp?.size ?? 0}: ${sp?.held ?? f.start?.held ?? 0} early games held out${sp?.early ? `, their lines ${ll(sp.early[0])} to ${ll(sp.early[1])}, actual over projected ${sp.early[0]?.ratio ?? 'n/a'} to ${sp.early[1]?.ratio ?? 'n/a'} (${sp.early[1]?.n ?? 0}), all ${sp.whole[0]} to ${sp.whole[1]}` : ''}${sp?.seconds ? ` (${sp.seconds}s)` : ''}${sp?.fails?.length ? `, left out: ${sp.fails.join(', ')}` : ''}; levels ${lv || 'none'}`);
+      }
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
       const skew = (x) => (x?.n ? `${x.n} said ${x.said} won ${x.was}` : 'none');

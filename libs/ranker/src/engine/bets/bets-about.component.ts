@@ -77,6 +77,7 @@ const TERM_NAMES: Record<string, string> = {
   sk: "part-timer's prior counted at his snap share",
   rx: "last five reaching back into last season",
   pl: "prior leaning to last season's late games",
+  sp: "start-of-season prior: a veteran's prior from last season moved by how players like him (his position, his age, on a new team or not) have opened seasons against it, fading as his own games come in",
   sl: 'extreme projections pulled toward the typical one (or pushed from it), fitted',
   mk: "game script from the betting lines (the market's implied team points, not the desk's own)",
   c_mSpread: 'favored or underdog by the betting lines (spread)',

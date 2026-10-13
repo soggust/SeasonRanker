@@ -694,6 +694,18 @@ const PER_TARGET = { perTarget: true };
 // stat each hourly run; left out on passing yards, interceptions, receptions, receiving and rush+rec yards, NBA
 // points and threes, MLB outs and total bases, nothing kept on the NHL's. The mark back on a stat to try it again)
 const MIDDLE = { middle: true };
+// (the start-of-season prior searched (project.mjs sp, audit #11: a veteran's prior by his position, age and new team,
+// learned; a late term judged on his first 4 games of a season, held out): searched only on the stats it was kept on.
+// Measured 2026-10-13 (held out the last 30%: the 2024, 2025 and 2026 openers), its early games' log loss at their
+// lines (the median of his last 16) without it to with it: rushing yards sp 1 (0.6538 to 0.6522, +0.0016; their
+// actual over projected -5.5% to -3.3%, n 1259), receiving yards 0.5 (0.6612 to 0.6573, +0.0039; -2.4% to -2.2%,
+// n 1617), rush+rec yards 1 (0.6573 to 0.6492, +0.0081; -3.5% to -2.5%, n 2154), the whole stat's no worse on each.
+// Left out: passing yards (-0.0003), attempts (+0.0021) and completions (+0.0015) each with the whole stat's log loss
+// worse, passing TDs and interceptions not taken on the fit window, carries (+0.0021: the whole stat's worse, its own
+// eligible rows' bias larger), receptions (+0.0044: its own rows' bias larger, they ran over). The NBA's marked: its
+// history one season, no prior of his own on any row, so none held out and not searched (project.mjs spHeld) till
+// 2026-27's openers are in its held-out window. The mark back on a stat to try it again)
+const START = { start: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 export const STATS = {
   nfl: [
@@ -702,18 +714,18 @@ export const STATS = {
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
-    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
+    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...START }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
-    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT }),
+    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT, ...START }),
     stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...START }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
-    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY }),
-    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
-    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
-    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START }),
+    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY, ...START }),
+    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START }),
+    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START }),
+    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START }),
   ],
   nhl: [
     stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: NHL_SOG_CTX, ...NHL_VAC, ...NHL_MINUTES }),
@@ -1085,7 +1097,7 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
     // (each player's values, by season: his record at a line)
     const values = new Map();
     for (const r of sorted) values.set(r.pid, [...(values.get(r.pid) ?? []), [r.season, Math.max(0, Math.round(r.s[st.key]))]]);
-    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10 };
+    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, start: fitted.start ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10 };
   }
   return out;
 }
