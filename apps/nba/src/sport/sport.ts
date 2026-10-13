@@ -1,10 +1,11 @@
 import type { CardFlag, FlagContext, SportConfig } from '@ranker/engine/sport';
 import { espnGameLog, espnTeamGameLog } from '@ranker/core/game-logs';
 import { teamRowsFromCoaches } from '@ranker/engine/team-rows';
-import { dataPart } from '@ranker/engine/data';
+import { DATA, dataPart } from '@ranker/engine/data';
 import type { SkillPlayer } from './positions';
 import { seasonName } from './awards';
 import { loadTeamRoster } from './team-roster';
+import { nbaVsPosOf, nbaVsPositionBreakdown } from './vs-position';
 
 // The Teams tab's rows, from the head coach rows: the coaches' records added up, the team's ratings,
 // ranks and pace (every coach row carries them), its playoff wins and title badges (the coach who
@@ -20,6 +21,10 @@ export function teamRows(): SkillPlayer[] {
       playoffWins: Math.max(...coaches.map((c) => c.stats.playoffWins ?? 0)),
       pythDiff: Math.round(sum('pythDiff') * 10) / 10,
     };
+  }).map((team) => {
+    // (vs Position: the same on each of the team's coach rows, vs-position.ts)
+    const coach = ((DATA.skillPlayers as Record<string, SkillPlayer[]>)['HC'] ?? []).find((c) => c.teamLogo === team.teamLogo && nbaVsPosOf(c));
+    return coach ? ({ ...team, vsPos: nbaVsPosOf(coach) } as SkillPlayer) : team;
   });
 }
 
@@ -169,6 +174,8 @@ export const SPORT: SportConfig = {
   // ESPN's headshot cutouts (the NFL app's shape)
   headshot: (id, w) => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=${w}&h=${Math.round(w * 0.725)}`,
   cardFlags,
+  // (a team's vs Position: what it allowed to each position, vs-position.ts)
+  cardBreakdown: nbaVsPositionBreakdown,
   // The card's Game Log tab: a player's games this season, from ESPN (by his ESPN id; teams and coaches
   // have none)
   gameLog: {

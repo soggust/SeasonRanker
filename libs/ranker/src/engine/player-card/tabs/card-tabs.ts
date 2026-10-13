@@ -54,9 +54,10 @@ export class CardOverviewTab extends CardTab {
   readonly leanShares = leanShares;
   readonly leanTitle = leanTitle;
 
-  // (a split's pie: each part a slice in its own soft color: the NFL's WRs a blue, TEs a sea green, backs a gold)
+  // (a split's pie: each part a slice in its own soft color: the NFL's WRs a blue, TEs a sea green, backs a gold;
+  // the NBA's five positions those and a lavender and a coral)
   pieColor(i: number): string {
-    return ['#8ab4e0', '#7fc8bb', '#e3cb8f'][i] ?? '#9aa0a6';
+    return ['#8ab4e0', '#7fc8bb', '#e3cb8f', '#c3a8e3', '#e8a598'][i] ?? '#9aa0a6';
   }
 
   // The pie's slice under the pointer (its popover); null: none

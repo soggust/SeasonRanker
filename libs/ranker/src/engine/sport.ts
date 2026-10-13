@@ -101,6 +101,9 @@ export interface CardBreakdown {
   help: string;
   // A line of context under the table (none: nothing)
   note?: string | null;
+  // The rows' header and the rank's hover (none: the NFL's, "Target" and the defense's rank)
+  rowHeader?: { label: string; title: string };
+  rankTitle?: string;
   // Its takes, shown with the Overview's others under the archetype
   flags: CardFlag[];
   columns: { label: string; title: string }[];

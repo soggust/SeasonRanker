@@ -897,6 +897,31 @@
   }
 }
 
+// (six columns or more, the NBA's: on a phone the position's column narrower, the gaps and the numbers
+// smaller, so all of them fit across)
+.bd-wide .bd-row {
+  @media (max-width: 560px) {
+    gap: 5px;
+    grid-template-columns: 34px 30px repeat(var(--bd-cols, 3), minmax(0, 1fr));
+
+    > .bd-label,
+    > .bd-pos {
+      margin-left: 2px;
+    }
+
+    > .bd-cell {
+      font-size: 13px;
+    }
+  }
+}
+
+.bd-wide .bd-head > span {
+  @media (max-width: 560px) {
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+}
+
 // (the rank on a small LED tile, like the game view's fantasy ranks, in its rank color)
 .bd-rank {
   @include v.led-tile;

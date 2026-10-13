@@ -68,10 +68,11 @@
       }
       <!-- (the table, and the pie at its right when there's room, under it when not) -->
       <div class="bd-main">
-        <div class="bd-table" role="table" [attr.aria-label]="b.title" [title]="b.help" [style.--bd-cols]="b.columns.length">
+        <!-- (six columns or more, the NBA's: kept tighter on a phone) -->
+        <div class="bd-table" role="table" [class.bd-wide]="b.columns.length > 4" [attr.aria-label]="b.title" [title]="b.help" [style.--bd-cols]="b.columns.length">
           <div class="bd-row bd-head" role="row">
-            <span role="columnheader" title="Where the defense ranks, by what it allowed against the players' own averages (#1 the stingiest)">Rank</span>
-            <span class="bd-pos" role="columnheader" title="Each offense's player in that role (by his share of its targets, or a back's of its carries)">Target</span>
+            <span role="columnheader" [title]="b.rankTitle ?? 'Where the defense ranks, by what it allowed against the players\' own averages (#1 the stingiest)'">Rank</span>
+            <span class="bd-pos" role="columnheader" [title]="b.rowHeader?.title ?? 'Each offense\'s player in that role (by his share of its targets, or a back\'s of its carries)'">{{ b.rowHeader?.label ?? 'Target' }}</span>
             @for (col of b.columns; track col.label) {
               <span role="columnheader" [title]="col.title">{{ col.label }}</span>
             }
