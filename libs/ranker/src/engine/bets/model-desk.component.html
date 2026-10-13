@@ -304,8 +304,9 @@
 
       <!-- Self-check, under By Sport -->
       <!-- (the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
-           sport's flags, watches and partial checks in plain words, the rest folded under a line of counts) -->
-      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="selfLoud">
+           sport's flags, watches and partial checks in plain words, the rest folded under a line of counts;
+           the panel itself folded to begin with) -->
+      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="false">
         <div class="group-body">
           @if (!selfChecks.length) {
             <p class="desk-note">No self-check yet (runs Monday mornings)</p>
