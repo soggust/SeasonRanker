@@ -113,8 +113,11 @@ test("nbaMatchups: a starter out, the next man up starts (S), and his teammates'
   assert.equal(m.live('f', '1', '2', 'G', 2026, () => 0).role, 'B');
   const out = m.live('f', '1', '2', 'G', 2026, new Set(['a']));
   assert.equal(out.role, 'S');
-  assert.equal(out.vacs.length, 6);
+  // (minutes, usage: three even splits each, then the learned (matchups.mjs absorbTable): too little history to
+  // learn it from, so the split in proportion in its place)
+  assert.equal(out.vacs.length, 8);
   assert.ok(out.vacs[0] > 0 && out.vacs[3] > 0, String(out.vacs));
+  assert.deepEqual([out.vacs[6], out.vacs[7]], [out.vacs[0], out.vacs[3]]);
   // (a questionable star at half: in between)
   const half = m.live('f', '1', '2', 'G', 2026, (id) => (id === 'a' ? 0.5 : 0)).vacs[0];
   assert.ok(half > 0 && half < out.vacs[0]);

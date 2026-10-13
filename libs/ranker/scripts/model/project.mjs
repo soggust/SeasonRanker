@@ -235,7 +235,20 @@
 //            comes down). How it's shared (vs: in proportion to each one's work, or flatter, to equally, the
 //            next man up's cut as big as anyone's; and where the stat has two measures of work (vacSplits 6:
 //            the NBA's minutes or usage, the NHL's time on ice or power-play time), which) fit with it (vc 0:
-//            left out, kept only if the held-out games are better with it)
+//            left out, kept only if the held-out games are better with it). And who absorbs it (audit #7, vl: a
+//            late term on its own rows' gate, the rows with work missing tonight): the split learned from the
+//            history in place of the even ones (matchups.mjs absorbTable: by class, the NFL's position and place
+//            in its order, the NBA's position and starter or bench; across positions too, the work lost where
+//            the team's volume falls with him out), its index (props.mjs STATS vacLearned) and vc searched together.
+//            Measured 2026-10-13 and off the search (TRY_VL): the table reads sane (the NFL's, 643 fresh absences
+//            from 2016: a WR1 out, the receivers below him take 0.33 of his targets, the WR2 stepping up 0.14, the
+//            WR2 0.1, the tight ends 0.09, the backs 0.07, about 0.77 kept; an RB1 out, the backup 0.4 of his
+//            carries, the rest 0.31), but every size and split was worse on the fit window than the even split the
+//            stat had (the fit window's log-likelihood at its best try: carries -75, NBA points -12, rebounds -9,
+//            assists -3, threes -3, pts+reb+ast -31; receptions not better at any), and on the NFL's held-out work
+//            change the cut's correlation was no better than the split in proportion (backs 0.316 against 0.337,
+//            receivers 0.200 against 0.205 (flatter 0.224), tight ends 0.187 against 0.220; the same position's
+//            alone or the proportion scaled by the learned share kept, no better)
 //   context  the stat's context terms (props.mjs STATS ctx, one or several), each exp(c x its value) with its
 //            own size c (c_<term>; the old single size c is the first term's): the NFL's wind, cold and rain
 //            or snow (passing; receiving and rushing take wind and rain too), a backup quarterback throwing
@@ -427,7 +440,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN };
 // (the organic trend's ratio held to this either way)
 const TREND_CAP = 2;
 // (the recalibration by side (cs): the fewest of the fit window's lines a side takes to have its own; and the
@@ -454,12 +467,13 @@ const SHARE = [];
 const PL_N = 8;
 const PL_MIN = 12;
 const RX_MIN = 3;
+// (the learned split (vl) too, on the rows with work missing tonight (matchups.mjs vac over 0))
 // (the flags on a few of the rows, each judged on its own rows' bias (fitStat): the held-out rows it's on, this
 // many or more, and the rest's no larger by more than this share of their mean actual (the lean refit with it
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart']);
+const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -494,6 +508,11 @@ const PS = [{ ps: 1 }, { ps: 2 }];
 // fit window; rebounds 1 held out -0.001; threes 1 +0.0003 with its bias larger), its search and gate about
 // 15s a run: true to try it again)
 const TRY_PS = false;
+// (who absorbs the work missing (vl, audit #7) searched at all: kept on no stat on 2026-10-13 (each size and
+// split worse on the fit window than the even split the stat had, not taken; the history's table measured
+// sane: header), its search five to ten replays a stat every hourly run and the NFL's matchups 8s to 13s with
+// the learned cut read: true to try it again (props.mjs passes it to the matchups, so the cut is read only then))
+export const TRY_VL = false;
 const PO = [0.5, 1, 1.5];
 // (pace's forms searched: 0 the other side's, 2 the game's expected over its average in his games, 3 the other
 // side's over its average in his games; 1 (the game's expected over the league's: his own team's pace twice)
@@ -503,7 +522,7 @@ const PACE_M = 5;
 // (a row's pace known: the league's read (matchups.mjs paceKnown); a row without the flag, by its paceG)
 const paceKnownOf = (row) => row.paceKnown ?? Number.isFinite(row.paceG);
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key) => (key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -1327,6 +1346,7 @@ const has = (stat, key) =>
   : key === 'sl' ? !!stat.middle
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
+  : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
   : !!stat.volume;
 
 // (a window's chances of going over a line at each player's median so far, and what happened)
@@ -1395,7 +1415,9 @@ export function fitStat(stat, rows, env) {
   // and the injury return: the injury-driven terms first, the organic trend on what they leave)
   const AFTER_RP = ['c_aheadOut'];
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
+  // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
+  // that read the work missing)
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po'].filter((k) => has(stat, k)), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sl'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -1463,6 +1485,7 @@ export function fitStat(stat, rows, env) {
   // (whether or not the term's on: the same rows both sides); the injury return's his games back as tried (ia))
   const onOf = (key, t) => {
     if (key === 'rp') return (x) => !!x.row.roleUp && x.row.roleUp !== x.row.role;
+    if (key === 'vl') return (x) => (x.row.vac ?? 0) > 0;
     if (key === 'c_aheadOut') return (x) => (x.row.aheadOut ?? 0) > 0;
     if (key === 'nt') return onOf('rp', t);
     if (key === 'ab') return (x) => !!x.p.sameOn;
@@ -1608,7 +1631,7 @@ export function fitStat(stat, rows, env) {
     else {
       s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
       sBest = s0;
-      for (const x of lateTries(key)) {
+      for (const x of lateTries(key, stat)) {
         const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
         if (sc.ll > sBest.ll) (sBest = sc), (v = x);
       }

@@ -68,7 +68,9 @@
 //            team, two ways (teamWork below): by minutes, and by usage (field goals tried, 0.44 of free throws
 //            tried, and assists: a scorer's shots go to the other scorers, more than his minutes say); the NHL's
 //            by position (forwards, defensemen), by time on ice and by power-play time (a top unit's man out, the
-//            next one up gets his power play)
+//            next one up gets his power play). The NFL's and the NBA's each with a split learned from the history
+//            after the even ones (absorbTable: who absorbs a missing player's work, by position and place in the
+//            order, across positions, some of it lost; project.mjs vl)
 //   power    the NHL: a skater's power-play time a game (recent games counting most) and the power plays his
 //   play     team can expect: its opponent's penalties a game over the league's (season to date, last season's
 //            at half, pulled toward the league's by 10 games); the referees' lean is the context's (props.mjs CTX.pp);
@@ -149,6 +151,68 @@ export function passFunnel() {
   };
 }
 
+// Who absorbs the work missing (audit #7; project.mjs vl): a split learned from the history in place of the even
+// ones (the work shared in proportion, flatter or equally within the position group). Each player is in a class
+// (the NFL's: his position and his place in its order by recent work, WR1, WR2, WR3 for the third and on, TE1, TE2
+// for the second and on, RB1, RB2 for the second and on; the NBA's: a guard, forward or center (props.mjs nbaPos),
+// a starter or off the bench by recent minutes). From each game with a fresh absence (every regular missing played
+// the team's game before: the work of the ones playing not yet grown into his), each class's work in a measure
+// over its players' recent work (its excess: a call-up's all of his), less its average excess in the games with
+// no regular missing (the drift every game has), credited to the missing ones' classes by their share of the
+// work missing. A class's share of a missing class's work (share): that sum over the missing class's work, pulled
+// toward none by p (about a game of a regular's). The cross-position cells (a wide receiver out, the tight end's
+// targets) are learned like any other, and the shares summed fall under 1 where the team's volume drops with him
+// out (the work lost). The league's, every season's (one table: an offense's habits aren't learned apart), each
+// game learned after the day's rows were given theirs. ready once the history has ABSORB_MIN games of each kind
+// (before: the split in proportion in its place)
+const ABSORB_MIN = 100;
+// (a team's first games of a season, not learned from: its recent work starts over at half last season's)
+const ABSORB_EARLY = 4;
+function absorbTable({ p }) {
+  const num = new Map();
+  const den = new Map();
+  const base = new Map();
+  let events = 0;
+  let quiet = 0;
+  const key = (...a) => a.join('|');
+  return {
+    ready: () => events >= ABSORB_MIN && quiet >= ABSORB_MIN,
+    share: (m, mc, k) => (num.get(key(m, mc, k)) ?? 0) / ((den.get(key(m, mc)) ?? 0) + p),
+    // (a game with no regular missing: each class's excess, the drift)
+    none(excess) {
+      quiet++;
+      for (const [m, ex] of Object.entries(excess)) for (const [k, e] of ex) base.set(key(m, k), (base.get(key(m, k)) ?? 0) + e);
+    },
+    // (a game with fresh absences: the missing classes' recent work (gone), each class's excess)
+    event(gone, excess) {
+      events++;
+      for (const [m, g] of Object.entries(gone)) {
+        const total = [...g.values()].reduce((t, x) => t + x, 0);
+        if (!(total > 0)) continue;
+        const ks = new Set([...excess[m].keys(), ...[...base.keys()].filter((b) => b.startsWith(`${m}|`)).map((b) => b.slice(m.length + 1))]);
+        for (const k of ks) {
+          const adj = (excess[m].get(k) ?? 0) - (quiet ? (base.get(key(m, k)) ?? 0) / quiet : 0);
+          for (const [mc, x] of g) num.set(key(m, mc, k), (num.get(key(m, mc, k)) ?? 0) + (adj * x) / total);
+        }
+        for (const [mc, x] of g) den.set(key(m, mc), (den.get(key(m, mc)) ?? 0) + x);
+      }
+    },
+    // (the table as learned: its games, and each measure's missing class's shares by class, for the log)
+    dump: () => {
+      const out = { events, quiet, ready: events >= ABSORB_MIN && quiet >= ABSORB_MIN };
+      for (const k of num.keys()) {
+        const [m, mc, c] = k.split('|');
+        ((out[m] ??= {})[mc] ??= {})[c] = Math.round(((num.get(k) ?? 0) / ((den.get(key(m, mc)) ?? 0) + p)) * 1000) / 1000;
+      }
+      return out;
+    },
+  };
+}
+// (the NFL's classes: a position's places kept apart (WR1, WR2, WR3 and on); about two games of a regular's
+// targets the pull)
+const ABSORB_NFL = { cls: { WR: 3, TE: 2, RB: 2 }, p: 10 };
+const clsOf = (p, rank) => `${p}${Math.min(rank, ABSORB_NFL.cls[p])}`;
+
 // (a game's side from the context's plays (football.mjs: each game's [.., home passes, home runs, away
 // passes, away runs, home over, home xn, away over, away xn]): null where it has none)
 export function sideOfPlays(p, home) {
@@ -161,8 +225,10 @@ export function sideOfPlays(p, home) {
 // The NFL's matchups: every row given its role, its defense's funnel, pace and target share for its position
 // (row.role, row.funnel, row.pace, row.tgt), each from the games before it; and the same for a coming game
 // (live: a player's id, team, opponent, position and the season). plays: the context's play-by-play facts by
-// game (football.mjs: facts.plays), for the funnel over expected; without a game's, its player logs' pass share
-export function nflMatchups(rows, pbp = null) {
+// game (football.mjs: facts.plays), for the funnel over expected; without a game's, its player logs' pass share.
+// learned: the learned split read into the rows' work missing (vacated's fourth: absorbOf; false, the split in
+// proportion in its place, its table still learned for the log: props.mjs passes project.mjs TRY_VL)
+export function nflMatchups(rows, pbp = null, { learned = true } = {}) {
   const games = new Map();
   for (const r of rows) {
     if (!r.team || !r.opp || !r.game) continue;
@@ -188,7 +254,8 @@ export function nflMatchups(rows, pbp = null) {
   const gameNo = (id, season) => (played_.get(id)?.season === season ? played_.get(id).n : 0) + 1;
   const teamOf = (id, season) => decay(team.get(id) ?? { season, tgt: new Map(), car: new Map(), min: new Map(), n: 0 }, season);
   // (each team's players' recent work a game, recent games counting most: their position and its level, faded
-  // game by game they miss; a new season starts it over at half)
+  // game by game they miss; a new season starts it over at half; and his targets and carries apart (t, c), the
+  // same way: the learned split's, absorbed below)
   const work = new Map();
   const workOf = (id, season) => {
     let w = work.get(id);
@@ -197,7 +264,7 @@ export function nflMatchups(rows, pbp = null) {
       // (his games out counted again from the new season's first: two games rested or hurt at the end of the
       // last aren't an absence in the next one's first week (absent); the fade's the same, one not yet played
       // for the team this season (cur false) fading game by game whatever his count)
-      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, hv: (v.hv ?? v.v) * 0.5, gone: 0, cur: false }]) : []) };
+      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, hv: (v.hv ?? v.v) * 0.5, t: (v.t ?? 0) * 0.5, c: (v.c ?? 0) * 0.5, gone: 0, cur: false }]) : []) };
       work.set(id, w);
     }
     return w;
@@ -222,8 +289,12 @@ export function nflMatchups(rows, pbp = null) {
   // one out, doubtful or on IR, or no longer on the team's roster (traded, released: gone from its games as he
   // is in the history's), and for one questionable his chance of missing it (playchance.mjs: the NFL's, fit
   // on past seasons' reports; else half))
+  // (and a fourth, learned (audit #7: project.mjs vl): who absorbs the work, from the history, across positions
+  // too, some of it lost (absorbOf below))
   const SPLITS = [1, 0.5, 0];
-  const NONE = SPLITS.map(() => 0);
+  const NONE = [...SPLITS.map(() => 0), 0];
+  const absorb = absorbTable(ABSORB_NFL);
+  const clamp01 = (m) => Math.min(1, Math.max(0, Number(m) || 0));
   const vacated = (teamId, season, pid, pos, missOf) => {
     const p = POS(pos);
     if (!p || p === 'QB') return NONE;
@@ -232,16 +303,78 @@ export function nflMatchups(rows, pbp = null) {
     const here = [];
     for (const [id, x] of w.p) {
       if (x.pos !== p || x.v < 0.5 || String(id) === String(pid)) continue;
-      const m = Math.min(1, Math.max(0, Number(missOf(id)) || 0));
+      const m = clamp01(missOf(id));
       if (m > 0 && x.v >= 1.5) gone += m * x.v;
       if (m < 1) here.push([x.v, 1 - m]);
     }
-    if (!gone) return NONE;
     const own = Math.max(w.p.get(pid)?.v ?? 0, 0.5);
-    return SPLITS.map((g) => {
-      const all = here.reduce((t, [v, k]) => t + k * Math.pow(v, g), Math.pow(own, g));
-      return Math.round(Math.min(3, (gone * Math.pow(own, g)) / all / Math.max(own, 1)) * 1000) / 1000;
+    const splits = gone
+      ? SPLITS.map((g) => {
+          const all = here.reduce((t, [v, k]) => t + k * Math.pow(v, g), Math.pow(own, g));
+          return Math.round(Math.min(3, (gone * Math.pow(own, g)) / all / Math.max(own, 1)) * 1000) / 1000;
+        })
+      : SPLITS.map(() => 0);
+    const learned = absorbOf(w, pid, p, missOf);
+    return [...splits, learned === null ? splits[0] : learned];
+  };
+  // (the learned split (absorb, ABSORB_NFL): the regulars at the backs' and pass-catchers' positions missing
+  // (their recent work a game 1.5 or more, at their chance of missing it), each by his class (his position and
+  // his place in its order by recent work, the missing ones in it: WR1, WR2, WR3 for the third and on, TE1, TE2
+  // for the second and on, RB1, RB2), times the share of a missing class's targets (carries: a back's) the
+  // history saw his class take (his place among the ones playing: the next man up's class where one's above him
+  // out), his part of it where his class holds more than one (by recent work), over his own work (a back's
+  // carries and targets, a receiver's or tight end's targets: the cut's measure, 1 at least). null (the split in
+  // proportion in its place) till the history holds ABSORB_MIN absences to learn it from)
+  const absorbOf = (w, pid, p, missOf) => {
+    if (!learned || !absorb.ready()) return null;
+    const all = [...w.p];
+    const ownV = w.p.get(pid)?.v ?? 0;
+    // (his place among the ones playing at his position (a regular surely out not in it), his class's work)
+    const here = [ownV, ...all.filter(([id, x]) => x.pos === p && x.v >= 0.5 && String(id) !== String(pid) && clamp01(missOf(id)) < 1).map(([, x]) => x.v)].sort((a, b) => b - a);
+    const rank = 1 + here.filter((v) => v > ownV).length;
+    const top = ABSORB_NFL.cls[p];
+    const part = rank >= top ? Math.max(ownV, 0.5) / here.slice(top - 1).reduce((t, v) => t + Math.max(v, 0.5), 0) : 1;
+    const k = clsOf(p, rank);
+    let got = 0;
+    for (const [id, x] of all) {
+      if (!ABSORB_NFL.cls[x.pos] || x.v < 1.5 || String(id) === String(pid)) continue;
+      const m = clamp01(missOf(id));
+      if (!m) continue;
+      const mc = clsOf(x.pos, 1 + all.filter(([, y]) => y.pos === x.pos && y.v > x.v).length);
+      got += m * (absorb.share('t', mc, k) * (x.t ?? 0) + (p === 'RB' ? absorb.share('c', mc, k) * (x.c ?? 0) : 0));
+    }
+    return Math.round(Math.min(3, Math.max(-0.5, (got * part) / Math.max(ownV, 1))) * 1000) / 1000;
+  };
+  // (a game learned into the split's history (absorb), before the work's own: the regulars at the backs' and
+  // pass-catchers' positions missing it (not in its logs) who played the team's game before (a fresh absence: the
+  // work of the ones playing not yet theirs), each class's targets and carries in it over its players' recent
+  // ones (one new, his all), by the missing classes' recent work (carries a back's alone: a receiver's few are
+  // noise over his tiny own); a game with none fresh, the drift every game has. One out longer is settled by
+  // SETTLED games out (FREEZE's and the fade's: the ones playing have his work in theirs by then), or gone since
+  // last season, and left out of both; a game with one out between (his work still moving into theirs) isn't
+  // learned from)
+  const SETTLED = FREEZE + 2;
+  const learnAbsorb = (w, rows, playing) => {
+    const all = [...w.p];
+    const missing = all.filter(([id, x]) => ABSORB_NFL.cls[x.pos] && x.v >= 1.5 && !playing.has(id));
+    if (missing.some(([, x]) => x.cur && (x.gone ?? 0) >= 1 && (x.gone ?? 0) < SETTLED)) return;
+    const out = missing.filter(([, x]) => x.cur && !((x.gone ?? 0) >= 1));
+    const here = rows.filter((r) => ABSORB_NFL.cls[POS(r.pos)]).map((r) => {
+      const x = w.p.get(r.pid);
+      return { p: POS(r.pos), v: x?.v ?? 0, t: (r.s.targets ?? 0) - (x?.t ?? 0), c: (r.s.rushAtt ?? 0) - (x?.c ?? 0) };
     });
+    const excess = { t: new Map(), c: new Map() };
+    for (const h of here) {
+      const k = clsOf(h.p, 1 + here.filter((o) => o.p === h.p && o.v > h.v).length);
+      for (const m of ['t', 'c']) excess[m].set(k, (excess[m].get(k) ?? 0) + h[m]);
+    }
+    if (!out.length) return absorb.none(excess);
+    const gone = { t: new Map(), c: new Map() };
+    for (const [, x] of out) {
+      const mc = clsOf(x.pos, 1 + all.filter(([, y]) => y.pos === x.pos && y.v > x.v).length);
+      for (const m of x.pos === 'RB' ? ['t', 'c'] : ['t']) gone[m].set(mc, (gone[m].get(mc) ?? 0) + (x[m] ?? 0));
+    }
+    absorb.event(gone, excess);
   };
   // (a player's games this season before now, each one's cut measured again on the work as it is now (the same
   // work the cut now is: a starter still out the same cut, not a smaller one): their count, their cuts' sum,
@@ -561,6 +694,9 @@ export function nflMatchups(rows, pbp = null) {
       // (the snap counts read for the game: without them one missing from its logs may have played with no stat,
       // so the game's neither the same absence's (sameOf) nor organic (trendOf): who was out isn't known, as live)
       const snapsRead = g.rows.some((r) => (r.s.snaps ?? 0) > 0);
+      // (a team's first ABSORB_EARLY games of a season left out: its recent work starts over at half last
+      // season's, every regular's game over it, a drift the absences' games don't share)
+      if (snapsRead && (g.rows[0]?.teamGame ?? 0) > ABSORB_EARLY) learnAbsorb(w, g.rows, playing);
       const played = new Set();
       const most0 = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
       for (const r of g.rows) {
@@ -570,9 +706,11 @@ export function nflMatchups(rows, pbp = null) {
         if (r.ret) rets.set(r.pid, { season: g.season, team: g.team, ...r.ret });
         else rets.delete(r.pid);
         played.add(r.pid);
-        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), hv: touches(r, p), gone: 0, cur: true };
+        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), hv: touches(r, p), t: r.s.targets ?? 0, c: r.s.rushAtt ?? 0, gone: 0, cur: true };
         x.pos = p;
         x.v += (touches(r, p) - x.v) * WORK_RATE;
+        x.t = (x.t ?? 0) + ((r.s.targets ?? 0) - (x.t ?? 0)) * WORK_RATE;
+        x.c = (x.c ?? 0) + ((r.s.rushAtt ?? 0) - (x.c ?? 0)) * WORK_RATE;
         // (his healthy work (roleWork): a game under half his season's snap share (he left it hurt, was eased
         // back) not learned, his work as it was)
         const sn = snapOf(r.pid, g.season);
@@ -594,7 +732,7 @@ export function nflMatchups(rows, pbp = null) {
         if (played.has(id)) continue;
         x.gone = (x.gone ?? 0) + 1;
         if (!snapsRead) x.unread = true;
-        if (x.gone > FREEZE || !x.cur) (x.v *= 1 - WORK_RATE), (x.hv = (x.hv ?? x.v) * (1 - WORK_RATE));
+        if (x.gone > FREEZE || !x.cur) (x.v *= 1 - WORK_RATE), (x.hv = (x.hv ?? x.v) * (1 - WORK_RATE)), (x.t = (x.t ?? 0) * (1 - WORK_RATE)), (x.c = (x.c ?? 0) * (1 - WORK_RATE));
       }
       // (the snap shares: each player's offensive snaps over the team's most, where the counts were read)
       const most = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
@@ -635,6 +773,8 @@ export function nflMatchups(rows, pbp = null) {
       const p = POS(pos);
       return { role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
+    // (the learned split's table as it stands (absorbTable dump): the log's)
+    absorbed: () => ({ ...absorb.dump(), read: learned }),
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)
     qb1: (teamId, season) => {
@@ -681,16 +821,50 @@ function byDay(rows, fn) {
 // group's regulars (regular[m] a game or more) who are missing leave, over his own (floor[m] at least: a
 // fringe player's cut isn't blown up by his tiny own), shared among the ones playing by their work to the power
 // 1, 0.5 and 0 (SPLITS), each measure's three in turn: [m0 in proportion, m0 flatter, m0 equally, m1 ...].
-// A measure a row doesn't have (undefined: a line kept before it was) leaves his number in it as it was
-export function teamWork({ groupOf, measures, regular, floor, rate = 0.35 }) {
+// A measure a row doesn't have (undefined: a line kept before it was) leaves his number in it as it was. And,
+// with absorb ({ cls, top, p, learned }: the NBA's), each measure's learned split after them (absorbTable: who
+// absorbs it, by class, his position's (cls) and whether he's among the team's top (top) by the first measure, a
+// starter, or off the bench; project.mjs vl; learned false, its table learned but not read, the split in
+// proportion in its place): [..., m0 learned, m1 learned]
+export function teamWork({ groupOf, measures, regular, floor, rate = 0.35, absorb = null }) {
   const SPLITS = [1, 0.5, 0];
-  const NONE = measures.flatMap(() => SPLITS.map(() => 0));
+  const NONE = [...measures.flatMap(() => SPLITS.map(() => 0)), ...(absorb ? measures.map(() => 0) : [])];
+  const table = absorb ? absorbTable(absorb) : null;
+  const clamp01 = (m) => Math.min(1, Math.max(0, Number(m) || 0));
+  // (a class: his position's and S among the top (absorb.top) of a list of first measures, else B)
+  const classOf = (pos, v0, list) => `${absorb.cls(pos)}${1 + list.filter((v) => v > v0).length <= absorb.top ? 'S' : 'B'}`;
+  // (his cut of a measure's work missing by the learned split: the missing regulars (regular[m] a game or more,
+  // at their chance of missing it), each by his class (his place among the team's), times the share of that
+  // class's work the history saw his class take (his place among the ones playing), his part of it by his work
+  // in the measure where his class holds more than one, over his own (floor[m] at least); null (the split in
+  // proportion in its place) till the table's ready)
+  const learnedOf = (w, grp, pid, pos, missOf, m) => {
+    if (!table?.ready() || absorb.learned === false) return null;
+    const all = [...w.p].filter(([, x]) => x.g === grp);
+    const ownX = w.p.get(pid);
+    const own0 = ownX?.v[0] ?? 0;
+    const here = all.filter(([id, x]) => String(id) !== String(pid) && (x.v[0] ?? 0) >= floor[0] / 2 && clamp01(missOf(id)) < 1);
+    const k = classOf(pos, own0, here.map(([, x]) => x.v[0] ?? 0));
+    const ownM = Math.max(ownX?.v[m] ?? 0, floor[m] / 2);
+    const firstsHere = [own0, ...here.map(([, x]) => x.v[0] ?? 0)];
+    const mates = here.filter(([, x]) => classOf(x.pos, x.v[0] ?? 0, firstsHere) === k);
+    const part = ownM / mates.reduce((t, [, x]) => t + Math.max(x.v[m] ?? 0, floor[m] / 2), ownM);
+    const firsts = all.map(([, x]) => x.v[0] ?? 0);
+    let got = 0;
+    for (const [id, x] of all) {
+      const v = x.v[m] ?? 0;
+      if (String(id) === String(pid) || v < regular[m]) continue;
+      const miss = clamp01(missOf(id));
+      if (miss) got += miss * table.share(String(m), classOf(x.pos, x.v[0] ?? 0, firsts), k) * v;
+    }
+    return Math.round(Math.min(3, Math.max(-0.5, (got * part) / Math.max(ownM, floor[m]))) * 1000) / 1000;
+  };
   const work = new Map();
   const workOf = (team, season) => {
     let w = work.get(team);
     if (!w || w.season !== season) {
       const last = w && w.season === season - 1 ? w : null;
-      w = { season, p: new Map(last ? [...last.p].map(([k, x]) => [k, { g: x.g, v: x.v.map((v) => (v === null ? null : v * 0.5)) }]) : []) };
+      w = { season, p: new Map(last ? [...last.p].map(([k, x]) => [k, { g: x.g, pos: x.pos, v: x.v.map((v) => (v === null ? null : v * 0.5)) }]) : []) };
       work.set(team, w);
     }
     return w;
@@ -717,11 +891,53 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35 }) {
         out.push(Math.round(Math.min(3, (gone * Math.pow(own, g)) / all / Math.max(own, floor[m])) * 1000) / 1000);
       }
     });
+    if (absorb) measures.forEach((_, m) => out.push(learnedOf(w, grp, pid, pos, missOf, m) ?? out[m * SPLITS.length]));
     return out;
+  };
+  // (a game learned into the learned split's history (absorbTable), before the work's own: the regulars missing
+  // it (regular[0] a game or more, not in its box) who played the team's game before (a fresh absence: the work
+  // of the ones playing not yet theirs), each class's work in each measure over its players' recent work (one new,
+  // his all), by the missing classes' recent work; a game with none fresh, the drift every game has. One out
+  // SETTLED games or more is settled (the fade: the ones playing have his work in theirs by then) and left out of
+  // both; a game with one out between isn't learned from)
+  const SETTLED = 5;
+  const learnAbsorb = (w, rows) => {
+    const playing = new Set(rows.map((r) => r.pid));
+    for (const grp of new Set(rows.map((r) => groupOf(r.pos)).filter((g) => g !== null && g !== undefined))) {
+      const all = [...w.p].filter(([, x]) => x.g === grp);
+      const missing = all.filter(([id, x]) => (x.v[0] ?? 0) >= regular[0] && !playing.has(id));
+      if (missing.some(([, x]) => (x.out ?? 0) >= 1 && (x.out ?? 0) < SETTLED)) continue;
+      const out = missing.filter(([, x]) => !((x.out ?? 0) >= 1));
+      const here = rows.filter((r) => groupOf(r.pos) === grp).map((r) => ({ r, x: w.p.get(r.pid), now: measures.map((fn) => fn(r)) }));
+      const firsts = here.map((h) => h.x?.v[0] ?? 0);
+      const excess = Object.fromEntries(measures.map((_, m) => [String(m), new Map()]));
+      for (const h of here) {
+        const k = classOf(h.r.pos, h.x?.v[0] ?? 0, firsts);
+        measures.forEach((_, m) => {
+          if (!Number.isFinite(h.now[m])) return;
+          const e = excess[String(m)];
+          e.set(k, (e.get(k) ?? 0) + h.now[m] - (h.x?.v[m] ?? 0));
+        });
+      }
+      if (!out.length) {
+        table.none(excess);
+        continue;
+      }
+      const firstsAll = all.map(([, x]) => x.v[0] ?? 0);
+      const gone = Object.fromEntries(measures.map((_, m) => [String(m), new Map()]));
+      for (const [, x] of out) {
+        const mc = classOf(x.pos, x.v[0] ?? 0, firstsAll);
+        measures.forEach((_, m) => gone[String(m)].set(mc, (gone[String(m)].get(mc) ?? 0) + (x.v[m] ?? 0)));
+      }
+      table.event(gone, excess);
+    }
   };
   // (a game's rows for one team learned: the ones who played, their game's; the ones who didn't, fading)
   const learn = (team, season, rows) => {
     const w = workOf(team, season);
+    // (its first ABSORB_EARLY games of a season left out, as the NFL's: the work starts over at half)
+    w.n = (w.n ?? 0) + 1;
+    if (table && w.n > ABSORB_EARLY) learnAbsorb(w, rows);
     const played = new Set();
     for (const r of rows) {
       const grp = groupOf(r.pos);
@@ -730,6 +946,7 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35 }) {
       const now = measures.map((f) => f(r));
       const x = w.p.get(r.pid) ?? { g: grp, v: now.map((v) => (Number.isFinite(v) ? v : null)) };
       x.g = grp;
+      x.pos = r.pos;
       x.v = x.v.map((v, m) => (!Number.isFinite(now[m]) ? v : v === null ? now[m] : v + (now[m] - v) * rate));
       w.p.set(r.pid, x);
     }
@@ -754,7 +971,7 @@ export function teamWork({ groupOf, measures, regular, floor, rate = 0.35 }) {
     };
   };
   const histMiss = (team, season, playing, core) => gate(team, season, (id) => (playing.has(id) ? 0 : 1), core);
-  return { vacated, learn, gate, histMiss, none: NONE };
+  return { vacated, learn, gate, histMiss, none: NONE, absorbed: () => (table ? { ...table.dump(), read: absorb.learned !== false } : null) };
 }
 
 // (the core players whose one game out counts at once (teamWork gate, the history's and a coming game's alike):
@@ -765,6 +982,11 @@ export const NHL_CORE = { F: 14, D: 18 };
 
 // (a coming game's teammates missing, as a function of id (0 to 1) from a function, a set or nothing)
 const missFn = (missing) => (typeof missing === 'function' ? missing : missing instanceof Set ? (id) => (missing.has(String(id)) ? 1 : 0) : () => 0);
+
+// (the NBA's learned split's classes (teamWork absorb): a guard, forward or center (props.mjs nbaPos's: a PG or SG
+// a guard, an SF or PF a forward, one unknown a forward), among the team's five by recent minutes or not; about
+// two thirds of a starter's game the pull)
+const ABSORB_NBA = { cls: (pos) => (/^(PG|SG|G)$/.test(pos ?? '') ? 'G' : pos === 'C' ? 'C' : 'F'), top: 5, p: 20 };
 
 // (an NBA player's usage a game: field goals tried, 0.44 of free throws tried, and assists; a line kept before
 // the shots were, its points' worth of them (0.87 tries a point, about the league's))
@@ -797,10 +1019,11 @@ export function nbaPossessions(list) {
 // whole team one group; a core player out counts at once, a regular from his second game out in a row:
 // teamWork gate); each game's minutes over 48 (share) and his start in his team's game before (startLast); the
 // other side's pace (pace) and the game's expected possessions (paceG), each over the league's. The same for a
-// coming game (live: missing, the teammates out by the injury report, none of them a starter)
-export function nbaMatchups(rows) {
+// coming game (live: missing, the teammates out by the injury report, none of them a starter). learned: the learned
+// split read (teamWork's; false, the split in proportion in its place)
+export function nbaMatchups(rows, { learned = true } = {}) {
   const team = new Map();
-  const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6] });
+  const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6], absorb: { ...ABSORB_NBA, learned } });
   // (known: only a role he's ranked in (roleKnown), null for a player under three games or with fewer than
   // five ranked; else B for one not ranked, as roleK has always read it)
   const roleOf = (pid, teamId, season, out = () => false, known = false) => {
@@ -921,6 +1144,8 @@ export function nbaMatchups(rows) {
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missOf, () => NBA_CORE));
       return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, ...paceOf(teamId, oppId, season), tgt: 1, vacs, vac: Math.max(...vacs) };
     },
+    // (the learned split's table as it stands (absorbTable dump): the log's)
+    absorbed: () => work.absorbed(),
   };
 }
 

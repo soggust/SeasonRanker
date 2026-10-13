@@ -73,7 +73,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
-import { SKEW_MIN_LINE, ctxFactor, ctxKeys, factorProduct, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
+import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, factorProduct, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
 import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
@@ -529,8 +529,15 @@ const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // between the windows: not a term)
 const SAVES_CTX = ['oppShots', 'b2b'];
 // (the NBA's and NHL's work missing in two measures (matchups.mjs: minutes or usage; time on ice or power-play
-// time), three splits each)
-const NBA_VAC = { vacated: true, vacSplits: 6 };
+// time), three splits each; the NBA's learned split of each after them (vacLearned: matchups.mjs teamWork absorb,
+// by position and starter or bench; project.mjs vl, late on its own rows' gate; off the search: TRY_VL))
+const NHL_VAC = { vacated: true, vacSplits: 6 };
+const NBA_VAC = { ...NHL_VAC, vacLearned: [6, 7] };
+// (the NFL's work missing (the backs' and pass-catchers'): three even splits in the search (vs 0 to 2), and the
+// split learned from the history (matchups.mjs absorbTable: who absorbs it, by position and place in its order,
+// across positions too, some of it lost) at index 3, tried late on its own rows' gate (project.mjs vl; measured
+// 2026-10-13, worse than the even split on every stat, off the search: TRY_VL))
+const NFL_VAC = { vacated: true, vacLearned: [3] };
 // (the NHL skaters' power-play share (ppShare: his share of his team's power play against his position's prop
 // players', matchups.mjs) measured 2026-10-12 as a late term (project.mjs MIN_GAIN, floor 0.0001): shots not
 // taken on the fit window, points 0.25 taken there and held out -0.0001, left out; searched with the rest it
@@ -581,11 +588,11 @@ export const STATS = {
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
-    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
-    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', vacated: true, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
-    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, vacated: true, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
+    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP }),
+    stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
   ],
   nba: [
     stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
@@ -595,8 +602,8 @@ export const STATS = {
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE }),
   ],
   nhl: [
-    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NBA_VAC }),
-    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], ...NBA_VAC }),
+    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: ['pp'], ...NHL_VAC }),
+    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: ['pp', 'oppGoalie'], ...NHL_VAC }),
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: SAVES_CTX, goalie: true }),
   ],
   mlb: [
@@ -909,10 +916,11 @@ export function markStarters(rows, facts) {
 // the NFL's from nflverse's closing lines, none elsewhere yet)
 export function fitProps(sport, rows, expPts, info, facts = null, market = null) {
   const out = {};
-  // (each row's role and its defense's funnel, pace and target split, from the games before it: matchups.mjs)
+  // (each row's role and its defense's funnel, pace and target split, from the games before it: matchups.mjs;
+  // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
   // (MLB's: each batter's start, slot and platoon edge, each starter's leash and rest, the batters' history's
   // start (STATS played) among them, so they're marked before the rows are picked)
-  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays) : sport === 'nba' ? nbaMatchups(rows) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
+  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
   if (sport === 'nhl') markStarters(rows, facts);
   for (const st of STATS[sport]) {
     const mine = markEligible(
@@ -1277,7 +1285,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     let roleChange = null;
     if (sport === 'nfl' && f.matchups) {
       const qb1 = f.matchups.qb1?.(row.team, game.season) ?? null;
-      const vs0 = f.params.vs ?? 0;
+      // (his position's work alone, the guard's words: the learned split (project.mjs vl, across positions) read
+      // as the split in proportion here)
+      const vs0 = (prop.stat.vacLearned ?? []).includes(f.params.vs) ? 0 : (f.params.vs ?? 0);
       const vacOut = f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(0), extra).vacs?.[vs0] ?? 0;
       roleChange = roleChangeOf({
         name: a.name,
@@ -1369,15 +1379,17 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // missing it, flagged where the share's swings, each questionable regular at his position's own (him in or
     // out, the rest at their chances) times his chance's spread (2 sqrt(m (1 - m)): 1 at half, as before), add
     // to 0.15 or more. Only the regulars at his position (the work the vacated term counts: one at another
-    // position, a linebacker, a lineman, moves none of it); none of them questionable, no flag)
+    // position, a linebacker, a lineman, moves none of it); none of them questionable, no flag. With the learned
+    // split kept (project.mjs vl: across positions), the regulars at the backs' and pass-catchers' positions)
     const vs = f.params.vs ?? 0;
+    const qRegs = sport === 'nfl' && (prop.stat.vacLearned ?? []).includes(vs) ? new Set(['WR', 'TE', 'RB'].flatMap((q) => (f.matchups?.regulars?.(row.team, game.season, q) ?? []).map((x) => x.id))) : regs;
     const shareAt = (q) => f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(q), extra).vacs?.[vs] ?? 0;
     const qSwing = (id) => {
       const at = (v) => shareAt((x) => (String(x) === String(id) ? v : qMiss(x)));
       const m = qMiss(id);
       return Math.abs(at(1) - at(0)) * 2 * Math.sqrt(m * (1 - m));
     };
-    const qShift = f.matchups && prop.stat.vacated && out.questionable.size ? [...out.questionable].filter((id) => regs.has(String(id)) && String(id) !== String(pid)).reduce((t, id) => t + qSwing(id), 0) : 0;
+    const qShift = f.matchups && prop.stat.vacated && out.questionable.size ? [...out.questionable].filter((id) => qRegs.has(String(id)) && String(id) !== String(pid)).reduce((t, id) => t + qSwing(id), 0) : 0;
     // (his team's lead quarterback questionable (qb1Miss under 1), where a kept term reads him (c_qb1Out,
     // c_qbDeep: the backup's throws, a deep receiver's most): the price takes the backup at his chance of
     // missing it, a swing the role guard's qb1-out (out alone) never sees. Its swing on the log, him in or out

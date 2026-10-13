@@ -734,6 +734,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       tg: 'target share',
       vc: 'teammates out (work left)',
       vcM: 'teammates out, fit again on the NBA minutes base',
+      vl: 'teammates out, who absorbs their work (learned by position and depth, across positions)',
       c_wind: 'wind',
       c_cold: 'cold',
       c_precip: 'rain/snow',
@@ -788,8 +789,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         const v = (t.params as unknown as Record<string, number | null>)[k];
         const on = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
-        const pg = (t.params as unknown as Record<string, number | null>)['pg'] ?? 0;
-        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : v) : 'left out'} (${gain})`;
+        const P = t.params as unknown as Record<string, number | null>;
+        const pg = P['pg'] ?? 0;
+        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'} (${gain})`;
       })
       .join(' · ');
   }
