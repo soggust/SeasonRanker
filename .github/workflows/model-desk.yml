@@ -11,6 +11,8 @@ on:
     # missed, only read later). At :17, off the top of the hour when GitHub's queue is longest. Each run grades
     # what finished, refits the ratings, the context and the trust, and bets every market (and the props) of
     # every game in the next two days it hasn't bet yet (libs/ranker/scripts/model/run.mjs). Code only: free.
+    # (GitHub has been dropping most of these: the owner's computer kicks it too, hourly 8:05 AM to 11:05 PM
+    # Central when none started in the last 45 minutes: the task "QBRanker desk kick", kick-update.mjs --desk)
     - cron: "17 * * * *"
   workflow_dispatch:
     inputs:
