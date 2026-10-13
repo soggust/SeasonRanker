@@ -67,7 +67,8 @@
 //                    window's seasons) shows in every week group of a season alike
 //   qb1Out           the fit's qb1Out rows (matchups.mjs: the lead quarterback not in the game's logs) by whether
 //                    the reports had him out (listed) or not (a benching, an unlisted inactive: live play reads
-//                    the report alone, so these are the history's only)
+//                    the report alone, so these are the history's only), each by depth (a deep receiver, the fit's
+//                    qbDeep over 0; a short one; a back), and the report's qb1-out bucket by depth (dep over 1)
 //   moved            the fit's own next men up (matchups.mjs roleUp: his role moved up with the ones not in the
 //                    game's logs out of the order, by position) and returners (ret: his 1st to 3rd game back, by
 //                    the absence's length, 1 game or 2 or more): the rows project.mjs's rp and ij are judged on
@@ -86,7 +87,9 @@
 //                    first built; (3) a quarterback gets nothing from the vacated term (matchups.mjs); (4) the
 //                    receivers of a listed-out QB1 (12% under the projection on receiving yards): the fit's
 //                    qb1Out reads any absence from the logs, more than half of them benchings at par, so it
-//                    can't be sized till the props' history reads the injury reports; and the
+//                    can't be sized till the props' history reads the injury reports (the deep ones partly
+//                    since, project.mjs c_qbDeep: the listed ones' still 3% to 5% under on receptions, 5% to 9%
+//                    on rush+rec yards, 2026-10-13); and the
 //                    props' lean to the unders from the spread's assumed skew (pOver against the mean): a side
 //                    against its own projection is skipped (props.mjs skewOnly) till pOver is calibrated by
 //                    stat and side on held-out games. Each to revisit once the CHECK learning has 40 or more
@@ -557,7 +560,7 @@ async function main() {
         noWeek++;
         continue;
       }
-      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, pos: x.row.pos, own: x.p.own ?? null, prior: x.p.prior ?? null, priorW: x.p.priorW ?? null, base: x.p.base ?? null, teamGame: x.row.teamGame ?? null, fitQb1Out: x.row.qb1Out ?? 0, promoted: !!x.row.roleUp && x.row.roleUp !== x.row.role, fitBack: x.row.ret ?? null, qbListed: !!(s.flags?.qb1Out || s.flags?.backupQb), qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
+      items.push({ ...s, game: x.row.game, pid: String(x.row.pid), v: x.v, mu: x.p.mu, ll: nbLoss(x.v, x.p.mu, f.params), cluster: `${x.row.team}|${s.season}|${s.week}`, held: x.row.date.slice(0, 10) >= cuts[1], date: x.row.date, pos: x.row.pos, own: x.p.own ?? null, prior: x.p.prior ?? null, priorW: x.p.priorW ?? null, base: x.p.base ?? null, teamGame: x.row.teamGame ?? null, fitQb1Out: x.row.qb1Out ?? 0, fitQbDeep: x.row.qbDeep ?? 0, dep: x.row.dep ?? null, promoted: !!x.row.roleUp && x.row.roleUp !== x.row.role, fitBack: x.row.ret ?? null, qbListed: !!(s.flags?.qb1Out || s.flags?.backupQb), qbStarts: x.row.pos === 'QB' ? (x.p.careerStarts ?? null) : null });
     }
     if (noWeek) console.warn(`role backtest: WARNING ${st.key}: ${noWeek} eligible rows in games with no week left out`);
     if (st.key === 'passAtt') coverage = qbCoverage(situations.qbOut, items, FROM);
@@ -673,27 +676,41 @@ export function weekTable(items) {
 }
 
 // (the seasons' table: by season, the eligible players' n, actual over the projection (all, held out), over the
-// blended base, and the factors' pull)
+// blended base, and the factors' pull; the log loss a game, and the deep receivers' with the lead quarterback out
+// (the fit's qbDeep over 0): n, the bias, the log loss: a term's gain season by season, against a --set run)
+const meanLl = (list) => (list.length ? list.reduce((t, x) => t + x.ll, 0) / list.length : null);
 export function seasonTable(items) {
   const out = {};
   for (const season of [...new Set(items.map((x) => x.season))].sort()) {
     const list = items.filter((x) => x.season === season);
     const held = list.filter((x) => x.held);
-    out[season] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null, overBase: ratio(list, 'base'), factors: factorsOf(list) };
+    const deep = list.filter((x) => x.fitQbDeep > 0);
+    out[season] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null, overBase: ratio(list, 'base'), factors: factorsOf(list), ll: meanLl(list), deepN: deep.length, deepBias: ratio(deep, 'mu'), deepLl: meanLl(deep) };
   }
   return out;
 }
 
 // (the fit's qb1Out rows (its value over 0) by the reports: listed out (the qb1-out and backup-qb buckets) or
-// not, all and held out: n, the bias, the flag's mean value)
+// not, all and held out: n, the bias, the flag's mean value; each split by the receiver's depth (DEPTHS: a deep
+// wide receiver or tight end, the fit's qbDeep over 0 (matchups.mjs: his air yards a target over the
+// league's); a short one; a back), what the role guard's qb1-out safe side is read from. Then the report's
+// qb1-out bucket (his team's QB1 listed out, as live play reads it: the guard's own rows) by the same depth (his
+// dep over 1 the deep side, as qbDeep reads it live; the mean value there his dep))
+export const DEPTHS = { deep: (x) => x.fitQbDeep > 0, short: (x) => GROUP(x.pos) !== 'RB' && !(x.fitQbDeep > 0), back: (x) => GROUP(x.pos) === 'RB' };
+const DEPTHS_LIVE = { deep: (x) => GROUP(x.pos) !== 'RB' && x.dep > 1, short: (x) => GROUP(x.pos) !== 'RB' && !(x.dep > 1), back: (x) => GROUP(x.pos) === 'RB' };
 export function qb1FitTable(items) {
   const out = {};
+  const put = (name, list, value) => {
+    const held = list.filter((x) => x.held);
+    out[name] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null, value: list.length ? list.reduce((t, x) => t + value(x), 0) / list.length : null };
+  };
   const on = items.filter((x) => x.fitQb1Out > 0);
   for (const [name, keep] of [['listed', (x) => x.qbListed], ['not listed', (x) => !x.qbListed]]) {
-    const list = on.filter(keep);
-    const held = list.filter((x) => x.held);
-    out[name] = { n: list.length, bias: ratio(list, 'mu'), heldN: held.length, heldBias: held.length ? ratio(held, 'mu') : null, value: list.length ? list.reduce((t, x) => t + x.fitQb1Out, 0) / list.length : null };
+    put(name, on.filter(keep), (x) => x.fitQb1Out);
+    for (const [d, inD] of Object.entries(DEPTHS)) put(`${name} ${d}`, on.filter((x) => keep(x) && inD(x)), (x) => x.fitQb1Out);
   }
+  const bucket = items.filter((x) => x.bucket === 'qb1-out');
+  for (const [d, inD] of Object.entries(DEPTHS_LIVE)) put(`bucket ${d}`, bucket.filter(inD), (x) => (Number.isFinite(x.dep) ? x.dep : 0));
   return out;
 }
 
@@ -767,10 +784,10 @@ export function report(results, { from = 2021, useState = false, plain = false, 
     lines.push('');
     lines.push("## By season (every eligible player: the actual over the projection, all and held out; over the blended base; the factors' pull, the projection over the base)");
     lines.push('');
-    lines.push('| stat | season | n | bias | held-out n | held-out bias | over base | factors |');
-    lines.push('|---|---|---:|---:|---:|---:|---:|---:|');
+    lines.push('| stat | season | n | bias | held-out n | held-out bias | over base | factors | LL | deep QB-out n | its bias | its LL |');
+    lines.push('|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|');
     for (const [key, block] of Object.entries(results)) {
-      for (const [season, x] of Object.entries(block.seasons ?? {})) lines.push(`| ${key} | ${season} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} | ${pct(x.overBase)} | ${pct(x.factors)} |`);
+      for (const [season, x] of Object.entries(block.seasons ?? {})) lines.push(`| ${key} | ${season} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} | ${pct(x.overBase)} | ${pct(x.factors)} | ${num(x.ll, 4)} | ${x.deepN ?? ''} | ${pct(x.deepBias)} | ${num(x.deepLl, 4)} |`);
     }
   }
   // (the fit's qb1Out rows by the reports)
@@ -778,7 +795,7 @@ export function report(results, { from = 2021, useState = false, plain = false, 
     lines.push('');
     lines.push("## The fit's qb1Out rows (matchups.mjs: the lead quarterback not in the game's logs) by the reports (listed out, doubtful or on reserve; or not: a benching or an unlisted inactive, which live play never flags)");
     lines.push('');
-    lines.push('| stat | reports | n | bias | held-out n | held-out bias | mean value |');
+    lines.push('| stat | reports | n | bias | held-out n | held-out bias | mean value (the flag; the bucket rows: his depth) |');
     lines.push('|---|---|---:|---:|---:|---:|---:|');
     for (const [key, block] of Object.entries(results)) {
       for (const [name, x] of Object.entries(block.qb1Fit ?? {})) if (x.n) lines.push(`| ${key} | ${name} | ${x.n} | ${pct(x.bias)} | ${x.heldN} | ${pct(x.heldBias)} | ${num(x.value, 2)} |`);

@@ -3,6 +3,8 @@
 // at 0 or more), and qbDeep, the lead quarterback out (qb1Out) times how far it runs over the league's (a wide
 // receiver's or tight end's; a back's 0: props.mjs CTX qbDeep), live the same; without the air yards read, none
 // (0: the term reads nothing). On receptions and rush+rec yards, after the flat qb1Out; not receiving yards.
+// Air yards nflverse left NA or blank read as unread (playerlogs.mjs airYdsOf), not 0; the role guard's qb1-out
+// keeps the under as its safe side.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { nflMatchups } from '../libs/ranker/scripts/model/matchups.mjs';
@@ -67,4 +69,34 @@ test('qbDeep on receptions and rush+rec yards, after the flat qb1Out', () => {
     assert.ok(keys.indexOf('qbDeep') > keys.indexOf('qb1Out'), k);
   }
   for (const k of ['recYds', 'rushYds', 'rushAtt', 'passYds']) assert.ok(!ctxKeys(STATS.nfl.find((s) => s.key === k)).includes('qbDeep'), k);
+});
+
+test("air yards NA or blank read as unread, not 0: a season of them leaves his depth as without it", async () => {
+  const { airYdsOf } = await import('../libs/ranker/scripts/model/playerlogs.mjs');
+  assert.deepEqual(['12', '-3.5', '0', 'NA', '', undefined, 'x'].map(airYdsOf), [12, -3.5, 0, undefined, undefined, undefined, undefined]);
+  // (last season's every row NA (airYds unread), this season's read: his depth this season's alone)
+  const day25 = (d) => new Date(Date.UTC(2025, 8, 1 + d)).toISOString().replace('.000', '');
+  const last = [];
+  for (let d = 0; d < 30; d++) last.push(...game(`b${d}`, day25(d), [['q', 'QB', 0, 0, 34], ['d', 'WR', 8, airYdsOf('NA') ?? null], ['w', 'WR', 8, airYdsOf('') ?? null]], 2025));
+  const end = () => game('z', day(31), [['k', 'QB', 0, 0, 30], ['d', 'WR', 8, 120], ['w', 'WR', 8, 40]]);
+  const both = [...last, ...season(), ...end()];
+  const alone = [...season(), ...end()];
+  nflMatchups(both);
+  nflMatchups(alone);
+  const dep = (rows) => rows.find((r) => r.pid === 'd' && r.game === 'z').dep;
+  assert.ok(dep(alone) > 1.6);
+  assert.equal(dep(both), dep(alone));
+  // (the same season read as 0s instead (the old reading): his and the league's averages pulled down, his depth
+  // moved)
+  const zeros = [...last.map((r) => ({ ...r, s: { ...r.s, airYds: 0 } })), ...season(), ...end()];
+  nflMatchups(zeros);
+  assert.notEqual(dep(zeros), dep(alone));
+});
+
+test("the role guard's qb1-out keeps the under safe with the depth term on (the listed absences' rows still under)", async () => {
+  const { ROLE_SAFE, roleChangeOf } = await import('../libs/ranker/scripts/model/props.mjs');
+  const r = roleChangeOf({ name: 'D', pos: 'WR', pid: 'd', qb1: { id: 'q', name: 'Q', missing: 1 } });
+  assert.equal(r.key, 'qb1-out');
+  assert.equal(r.safe, undefined);
+  assert.equal(ROLE_SAFE['qb1-out'], 'under');
 });

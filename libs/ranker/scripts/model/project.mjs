@@ -1098,7 +1098,10 @@ const QB1_OUT = [-0.2, -0.15, -0.1, -0.075, -0.05, -0.025, 0, 0.025, 0.05, 0.1];
 // (c_qbDeep: the lead quarterback out times how far his depth runs over the league's (props.mjs CTX qbDeep: about
 // 0.6 a deep threat's, 0.3 a typical wide receiver's, 0 most tight ends' and a back's), per unit of it: at -0.3 a
 // deep threat's 16% and a typical wide receiver's 9%. The measure (2026-10-12, the state's settings) had the deep
-// ones' catches 12% to 16% under the projection, the short ones' 5% to 9%)
+// ones' catches 12% to 16% under the projection, the short ones' 5% to 9%: the listed absences' (the injury
+// report's; the role backtest 2026-10-13, eligible 2016 on, without the term: deep receptions -7.4%, rush+rec
+// yards -13.3%; short -5.0%, -6.9%). The fit's flag reads the unlisted ones too (a benching), whose deep ones ran
+// -6.6% and -6.9% and short ones -2.0% and -2.7% (held out +7.8%, +10.4%): the fitted size a blend of the two)
 const QB_DEEP = [-0.4, -0.3, -0.2, -0.15, -0.1, -0.05, 0.05, 0.1];
 // (c_ppShare: an NHL skater's power-play share over his position's prop players', -0.5 to 0.6 (a second-pair
 // defenseman about -0.3, a top unit's forward +0.3): a 0.3 share's 7% to 35% at 0.25 to 1)

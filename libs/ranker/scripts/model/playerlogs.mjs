@@ -3,7 +3,7 @@
 // sources when it's lost: a first run asks for everything, later ones only for the finals new since):
 //
 //   NFL  nflverse's weekly player stats (stats_player_week_<season>; a pass-catcher's receiving air yards too,
-//        s.airYds: his depth, matchups.mjs), ESPN ids from nflverse's players file; and
+//        s.airYds: his depth, matchups.mjs; NA or blank unread, airYdsOf), ESPN ids from nflverse's players file; and
 //        nflverse's snap counts (snap_counts_<season>): each row's offensive snaps (s.snaps), and a row of 0s for
 //        an offensive player who took snaps with no stats (never targeted, never handed the ball: he played),
 //        for the games the weekly stats have (a game only the snap counts have yet isn't in the history: its
@@ -30,6 +30,10 @@
 import path from 'node:path';
 import { summary } from './espn.mjs';
 import { CACHE, etDay, mlbPeople, nflverseRows, pool, readJson, writeJson } from './sources.mjs';
+
+// (a row's receiving air yards: unread (undefined) where nflverse left them NA or blank, or the column's missing,
+// so matchups.mjs learnAir skips the row, not a 0-yard target pulling his depth and the league's down)
+export const airYdsOf = (v) => (/^-?\d+(\.\d+)?$/.test(String(v ?? '').trim()) ? Number(v) : undefined);
 
 const fileOf = (sport) => path.join(CACHE, `players-${sport}.json`);
 // (each sport's kept lines, read once a run; dirty: changed since)
@@ -151,7 +155,7 @@ async function nflRows(cfg, history, facts) {
           rec: n('receptions'),
           rushRecYds: n('rushing_yards') + n('receiving_yards'),
           targets: n('targets'),
-          airYds: n('receiving_air_yards'),
+          airYds: airYdsOf(s.receiving_air_yards),
           snaps: Number(snapOf.get(`${s.game_id}|${pid}`)?.offense_snaps) || 0,
         },
       });

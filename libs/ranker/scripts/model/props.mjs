@@ -300,7 +300,12 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // ones (892: a benching, an unlisted inactive) +0.5% (held out +3.6%): the history's flag (not in the logs) is
 // more than half benchings live play never flags, so its one size fits neither. Kept off till the history reads
 // the injury reports too (the backlog). The role guard's qb1-out (ROLE_SAFE, read from the reports: the listed
-// rows) CHECKs the over and bets the under, as before: the side the listed rows' 12% says)
+// rows) CHECKs the over and bets the under, as before: the side the listed rows' 12% says. Revisited with the
+// depth term on (role-backtest.mjs --from 2016, eligible players, 2026-10-13): the report's qb1-out rows
+// (live's) still under their projections by depth: the deep ones (dep over 1) receptions -4.3% (held out -5.5%),
+// rush+rec yards -5.9% (-8.9%), receiving yards -11.4% (-14.2%); the short ones -4.2% (+2.5%), -5.6% (-1.8%),
+// -5.3% (-1.7%); the backs -7.3% (-7.7%), -2.4% (-2.0%), -15.9% (-18.2%). The flagged rows over their
+// projections are the unlisted ones (a benching: live never flags them), so the under stays the safe side)
 // (his team in its first COACH_GAMES games under a new head coach (newCoach, football.mjs: the schedule's
 // coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
 // project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
@@ -343,7 +348,20 @@ const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // and off its ctx (its late search an hourly cost for nothing kept).
 // Tried first and left out: the flag times his whole depth (every flagged pass-catcher lowered: +0.0004 to
 // +0.0007, its rows put 4% to 9% over, the flat flag's way) and times his depth less the league's, signed (the
-// short side 33 rows held out, not measured; the whole stat's bias larger))
+// short side 33 rows held out, not measured; the whole stat's bias larger). The kept form was so chosen with
+// the held-out games in view, its gains just over the floor, and the whole stat's held-out bias larger with it
+// (receptions -0.0508 to -0.0527, rush+rec yards -1.0936 to -1.1475: it lowers rows on stats already under
+// their actuals; its own rows' gate is the one judged). Re-checked season by season (role-backtest.mjs --from
+// 2016, against --set c_qbDeep=0, eligible players, 2026-10-13): log loss a game better in every season 2016 to
+// 2025 on rush+rec yards (+0.0001 to +0.0017; 2016-2018, before the fit window, the form's choice never saw
+// them: +0.001 to +0.0016) and in 9 of 10 on receptions (2016-2018 +0.0004 to +0.0007; 2019 -0.0002, 2021 0);
+// 2026 so far worse (its 28 deep rows 24% over the projection without it, 29% with). Fit on the logs' flag
+// (qb1Out: the starter not in the game's logs, a benching or an unlisted inactive too), while live it reads
+// the injury report alone: by the reports (the role backtest's qb1Out table, eligible 2016 on), the listed
+// absences' deep ones still run under with it (receptions -7.4% to -3.4%, held out -9.2% to -5.1%; rush+rec
+// yards -13.3% to -5.3%, held out -16.7% to -8.7%), the unlisted ones' put over (held out +0.8%, +10.9%): a
+// blend that under-sizes the listed absence, the conservative way for the unders, till the history reads the
+// injury reports (the backlog))
 const CATCHING = [...CARRYING, 'qbDeep'];
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
