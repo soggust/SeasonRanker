@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnChanges, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, ElementRef, HostListener, Input, NgZone, OnChanges, ViewChild, inject } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -31,14 +31,15 @@ import { SeasonContext } from '@ranker/engine/player-card/card.model';
 import { copyRankingsToClipboard } from '@ranker/core/clipboard';
 import { RANK_EVERYONE } from '@ranker/engine/playing-time';
 import { RowGlide } from './row-glide';
+import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
-import { isolateRows, lowerIsBetter, shownValue } from './isolate';
+import { copyIsolatedShown, isolateRows, isolatedCopyText, lowerIsBetter, recentText, shownValue } from './isolate';
 import { ListDraft } from '@ranker/engine/account/lists/lists.store';
 import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
 import { AccountService } from '@ranker/engine/account/account.service';
-import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
+import { TeamFilterService, rowTeamName, teamKey, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
@@ -49,7 +50,7 @@ import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } 
   styleUrls: ['../../styles/components/rankings.component.scss'],
   standalone: false,
 })
-export class SkillRankingsComponent implements OnChanges, CardHost {
+export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHost {
   @ViewChild('rankingsList') rankingsList!: ElementRef<HTMLElement>;
 
   @Input({ required: true }) position!: SkillPosition;
@@ -208,6 +209,15 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
         this.listUnranked();
       }
     });
+  }
+
+  // The columns' widths from the header's labels, kept up as it changes (column-fit.ts)
+  private readonly zone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+
+  ngAfterViewInit(): void {
+    const stop = this.zone.runOutsideAngular(() => watchColumns(this.rankingsList.nativeElement));
+    this.destroyRef.onDestroy(stop);
   }
 
   ngOnChanges(): void {
@@ -628,6 +638,10 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     return `${avg === null ? name : `${name} (Avg: ${avg})`}\n${click}`;
   }
 
+  // A column's width, the header's and every row's alike: at least its label's (column-fit.ts)
+  readonly columnWidth = (stat: SkillStat) => columnWidth(stat.key);
+  readonly boxWidth = (group: SkillStatGroup) => boxWidth(group.id, group.stats.length);
+
   // A header label split before its parenthetical ("HR" + "(162G)"), which shows smaller
   labelParts(stat: SkillStat): [string, string | null] {
     const label = this.reader.label(stat);
@@ -1038,6 +1052,35 @@ export class SkillRankingsComponent implements OnChanges, CardHost {
     const note = this.isoStat ? `Sorted by ${this.reader.name(this.isoStat)} only (not the ranking)` : undefined;
     copyRankingsToClipboard(this.rankingsList.nativeElement, this.settings.copyStats, note)
       .then(() => this.toast(button, 'List copied to clipboard!'))
+      .catch((err) => console.error('Failed to copy: ', err));
+  }
+
+  // Share's Copy Isolated, there only while a column is isolated: the rows shown in its order, each its
+  // place by the stat, name, team and the value as the column shows it (isolate.ts: isolatedCopyText)
+  get copyIsolatedShown(): boolean {
+    return copyIsolatedShown(this.isoStat);
+  }
+
+  copyIsolated(button: HTMLElement): void {
+    const stat = this.isoStat;
+    if (!stat) return;
+    // (a team's own row, or a sport without teams: no team beside the name)
+    const teams = !SPORT.noTeams && !SPORT.teamTabs?.includes(this.position);
+    const text = isolatedCopyText(
+      this.reader.name(stat),
+      this.gridRows,
+      this.rankedShown,
+      (player) => ({
+        place: this.isoPlace(player),
+        name: player.name,
+        team: teams ? teamKey(player.teamLogo) : null,
+        value: stat.format === 'recent' ? recentText(this.reader.lastFive(player)) : this.reader.cellText(player, stat),
+      }),
+      this.isoReversed,
+    );
+    navigator.clipboard
+      .writeText(text)
+      .then(() => this.toast(button, 'Isolated list copied to clipboard!'))
       .catch((err) => console.error('Failed to copy: ', err));
   }
 

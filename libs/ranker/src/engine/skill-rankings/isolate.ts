@@ -57,3 +57,36 @@ export function shownValue<Row, Stat>(
 ): number | null {
   return reader.showsRank(stat) ? reader.rate(row, stat) : reader.value(row, stat);
 }
+
+// Share's Copy Isolated (in the menu only while a column is isolated: copyIsolatedShown): the rows shown in
+// the isolated order, as plain text under a line naming the stat ("Passing Yards (sorted by it alone)"),
+// each a tab-separated line (pastes into spreadsheets and notes): its place by the stat ("-": none), the
+// name, the team (the logo's abbreviation; none on a team's own row or in a sport without teams) and the
+// value as the column shows it. The ranked rows only, as the other copy has them (no UR rows).
+export interface IsolatedLine {
+  place: number | null;
+  name: string;
+  team: string | null;
+  value: string;
+}
+
+export function copyIsolatedShown(isolated: unknown): boolean {
+  return !!isolated;
+}
+
+export function isolatedCopyText<Row>(
+  statName: string,
+  rows: Row[],
+  ranked: number,
+  line: (row: Row) => IsolatedLine,
+  worstFirst = false,
+): string {
+  const lines = rows.slice(0, ranked).map(line);
+  const title = `${statName} (sorted by it alone${worstFirst ? ', worst first' : ''})`;
+  return [title, ...lines.map((l) => [l.place ?? '-', l.name, ...(l.team ? [l.team] : []), l.value].join('\t'))].join('\n');
+}
+
+// A Recent cell's results as text (newest first: W, L or T each), as the other copy reads the dots
+export function recentText(results: number[]): string {
+  return results.map((r) => (r === 1 ? 'W' : r === 0.5 ? 'T' : 'L')).join('');
+}

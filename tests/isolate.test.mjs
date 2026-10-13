@@ -156,3 +156,34 @@ test('nfl QB, Show Ranks on a season basis: every column sorted reads #1, #2, #3
   assert.ok(ranked > 3, 'columns shown as ranks');
   assert.ok(wouldMiss > 0, 'a volume column whose total and per-game orders differ');
 });
+
+// Share's Copy Isolated: in the menu only while a column is isolated; the ranked rows shown, in the isolated
+// order, each its place by the stat ("-": none), name, team (when there is one) and the value as shown,
+// under a line naming the stat; no UR rows (as the other copy)
+test('Copy Isolated: shown only while isolated', async () => {
+  const { copyIsolatedShown } = await loadEngine('nfl', { entry });
+  assert.equal(copyIsolatedShown(null), false);
+  assert.equal(copyIsolatedShown(undefined), false);
+  assert.equal(copyIsolatedShown({ key: 'yds' }), true);
+});
+
+test('Copy Isolated: the isolated order, place, name, team and value, after Teams Included, no UR rows', async () => {
+  const { isolateRows, isolatedCopyText, recentText, teamRows, teamKey } = await loadEngine('nfl', { entry });
+  const ranked = [row('a', 5, 'BUF'), row('b', 9, 'MIA'), row('c', 7, 'BUF'), row('d', null, 'BUF'), row('e', 7, 'BUF')];
+  const ur = [row('u1', 100, 'BUF')];
+  const shown = teamRows(ranked, ur, 'BUF');
+  const out = isolateRows(shown.rows, shown.ranked, (r) => r.v, false);
+  const line = (r) => ({ place: out.places.get(r) ?? null, name: r.name, team: teamKey(r.teamLogo), value: r.v === null ? '-' : `${r.v}.0` });
+  assert.equal(
+    isolatedCopyText('Passing Yards', out.rows, shown.ranked, line),
+    ['Passing Yards (sorted by it alone)', '1\tc\tBUF\t7.0', '1\te\tBUF\t7.0', '3\ta\tBUF\t5.0', '-\td\tBUF\t-'].join('\n'),
+  );
+  // (worst first, said so; no team: no team column)
+  const worst = isolateRows(shown.rows, shown.ranked, (r) => r.v, true);
+  assert.equal(
+    isolatedCopyText('Passing Yards', worst.rows, shown.ranked, (r) => ({ place: worst.places.get(r) ?? null, name: r.name, team: null, value: String(r.v ?? '-') }), true),
+    ['Passing Yards (sorted by it alone, worst first)', '1\ta\t5', '2\tc\t7', '2\te\t7', '-\td\t-'].join('\n'),
+  );
+  // (Recent: its results as letters, newest first)
+  assert.equal(recentText([1, 0, 0.5, 1]), 'WLTW');
+});

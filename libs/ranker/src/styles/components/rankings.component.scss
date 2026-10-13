@@ -1142,13 +1142,15 @@ section ul li.player {
   }
 }
 
-// Wide enough for the longest 11px header labels ("Pressure → Sack", "Total TDs / Game"). The minimum
+// Wide enough for the longest 11px header labels ("Pressure → Sack", "Total TDs / Game"), and never
+// narrower than a column's own label: --label-w, its label's measured width (column-fit.ts), the same in
+// the header and every row, so a long label (or a phone's smaller em) widens its whole column. The minimum
 // width matches the flex size: Safari works a row's width out from its cells' minimums (Chrome from
 // their flex sizes), so with a smaller minimum its rows came out short of their columns.
 section.spread ul li.player > .col-group {
   > div {
     flex: 1 0 8.5em;
-    min-width: 8.5em;
+    min-width: max(8.5em, var(--label-w, 0px));
   }
 
   > div:not(.box) {
@@ -1157,7 +1159,12 @@ section.spread ul li.player > .col-group {
 
   > div.box {
     flex: 0 0 auto;
-    min-width: 6em;
+    min-width: max(6em, var(--label-w, 0px));
+  }
+
+  // (a grade in the box: its label's width too, the box as wide as their sum: boxWidth)
+  > div.support-box:not(.recent-box) > div {
+    min-width: var(--label-w, auto);
   }
 
   // (a collapsed group's strip: its own fixed width, above)
@@ -2217,7 +2224,6 @@ section ul.isolating li.player:not(.header-row) .iso-on {
   // (the full row's height, past the row's 0.25em padding top and bottom, so the strip runs unbroken from
   // row to row; the value still centered in it)
   align-self: stretch;
-  box-sizing: border-box;
   height: auto;
   margin-block: -0.25em;
   --iso-edge: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
