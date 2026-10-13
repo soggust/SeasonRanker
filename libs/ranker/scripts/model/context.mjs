@@ -14,10 +14,10 @@
 // expected, last change), baseball.mjs (the air, the bullpens, the umpire's zone), teamstats.mjs (the
 // ranker's own numbers); this file gathers and weaves them in with the rest.
 
-import { goaliesInOrder, injuries, summary, teamNames, teamSchedule, gameOf } from './espn.mjs';
+import { gameRoster, goaliesInOrder, injuries, summary, teamNames, teamSchedule, gameOf } from './espn.mjs';
 import { RANKER_TERMS, rankerOf } from './teamstats.mjs';
 import { term } from './terms.mjs';
-import { Q_STATUS } from './timing.mjs';
+import { Q_STATUS, putInactives } from './timing.mjs';
 import { recordBox } from './playerlogs.mjs';
 import { OFFICIAL_TERMS, gatherOfficials, officialsOf, refereesOf } from './officials.mjs';
 import { FOOTBALL_TERMS, WX_COVER, footballOf, gatherFootball } from './football.mjs';
@@ -185,10 +185,10 @@ export const OPTIONAL = {
 };
 
 // The facts for every game the history has and the coming ones: the kept ones brought up to date, plus each
-// coming game's live ones (injury reports, probable starters, the forecast). Never throws: a source that
-// fails just adds nothing, except the injury report, whose failure marks every coming game (injuriesFailed:
-// none of them bet this run). want(source): whether to ask an optional one. Each step's time and whether it
-// worked land in times.
+// coming game's live ones (injury reports, probable starters, the forecast, the NFL's and NBA's game-day
+// rosters). Never throws: a source that fails just adds nothing, except the injury report, whose failure marks
+// every coming game (injuriesFailed: none of them bet this run). want(source): whether to ask an optional one.
+// Each step's time and whether it worked land in times.
 export async function gather(sport, cfg, history, upcoming, facts, want = () => true, times = {}) {
   facts.places ??= {};
   facts.games ??= {};
@@ -227,6 +227,10 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
       for (const l of live.values()) (l.injuries = report), delete l.injuriesFailed;
     });
   }
+  // (the NFL's and NBA's game-day rosters, a game within LINEUP_HOURS of its start: its inactives, when posted,
+  // into its own injury report (the listed ones here, the regulars unlisted once the rows are read: run.mjs),
+  // the NBA's starting five kept (l.gameRosters). Unposted, or failed: nothing, the report as it was)
+  if ((sport === 'nfl' || sport === 'nba') && live.size) await step('inactives', () => gameRosters(sport, cfg, upcoming, live));
   if (sport === 'nhl') {
     // (the probable starting goalies ESPN lists for each coming game: confirmed or expected)
     for (const { game, event } of upcoming) {
@@ -239,6 +243,31 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
   }
   if (sport === 'nfl') await step('forecasts', () => nflForecasts(upcoming, facts, live));
   return live;
+}
+
+// (how near its start a game's posted roster is asked for, hours: the NFL's inactives post about 90 minutes
+// before a kickoff, the NBA's starters about 30 before a tip; a run inside it asks each side once a run)
+export const LINEUP_HOURS = { nfl: 2.5, nba: 2 };
+
+// Each coming game's posted game-day rosters (espn.mjs gameRoster) on its live facts (l.gameRosters: Map of team id
+// -> { inactive, starters }, the sides posted), its listed inactives put into its injury report (putInactives)
+async function gameRosters(sport, cfg, upcoming, live, now = Date.now()) {
+  const soon = upcoming.filter(({ game }) => {
+    const until = Date.parse(game.date) - now;
+    return until > 0 && until <= LINEUP_HOURS[sport] * 36e5;
+  });
+  const asks = soon.flatMap(({ game }) => [game.home, game.away].map((team) => ({ game, team: String(team) })));
+  const got = await pool(asks, 4, ({ game, team }) => gameRoster(cfg.league, game.id, team, sport));
+  let posted = 0;
+  asks.forEach(({ game, team }, i) => {
+    if (!got[i]) return;
+    const l = live.get(game.id);
+    if (!l) return;
+    (l.gameRosters ??= new Map()).set(team, got[i]);
+    posted++;
+  });
+  const put = soon.flatMap(({ game }) => putInactives(live.get(game.id), game).map((x) => `${x.name} (${x.was})`));
+  if (asks.length) console.log(`${sport}: game-day rosters posted for ${posted} of ${asks.length} sides within ${LINEUP_HOURS[sport]}h${put.length ? `; listed and now inactive: ${put.join(', ')}` : ''}`);
 }
 
 // Every place a game is played, as coordinates (asked once per place, kept; a failed ask is asked again)

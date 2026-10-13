@@ -642,6 +642,9 @@ const ROLE_WORDS = {
   depth: "the depth chart ranks him differently than the model's role from his season's work does",
   // (the NBA: his minutes jump made with teammates out, they're back, props.mjs minutesBackOf)
   'minutes-back': 'his minutes jumped while teammates were out, and they are back',
+  // (the NBA: tonight's posted starting five against his role by his minutes, props.mjs lineupRoleOf)
+  'lineup-start': "he is in tonight's starting five, off the bench by his minutes",
+  'lineup-bench': "he is not in tonight's starting five, a starter by his minutes",
   // (outside the NFL: a far line with a cause known before the game, props.mjs lineAlarmOf)
   'line-questionable': 'he is questionable and the line sits far below his projection, the market reading a minutes cap or an early exit',
   'line-goalie': 'he is expected in goal but not confirmed and the line sits far below his projection, the market reading the other goalie starting',

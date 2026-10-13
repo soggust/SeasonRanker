@@ -220,6 +220,28 @@ export async function roster(league, id, min = 40) {
   return rosterOf(await json(`${ESPN}/${league}/teams/${id}/roster`), min);
 }
 
+// A side's game-day roster as the team posts it (ESPN's core API: the competition's competitor roster), or null
+// before it's posted. ESPN makes it near the start (a coming NFL game's is a 404 two days out) and marks the
+// inactives (didNotPlay) and the starters (starter): { inactive: [{ id, name }], starters: [ids] or null }. Posted
+// only where it says something: the NFL's 40 players or more with an inactive among them (every NFL side lists
+// some: a 53-man roster dresses 48 at most), the NBA's an inactive or exactly five starters; else null (the run
+// reads it again the next time). Read on 2026-10-11's finals (GB at CHI: Caleb Williams and Kyle Monangai
+// didNotPlay, as their inactives); when it's posted before a kickoff or tip isn't yet seen live
+export const POSTED_MIN = { nfl: 40, nba: 8 };
+export function gameRosterOf(body, sport) {
+  const list = Array.isArray(body?.entries) ? body.entries : [];
+  if (list.length < (POSTED_MIN[sport] ?? 1)) return null;
+  const inactive = list.filter((e) => e?.didNotPlay === true && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
+  const st = list.filter((e) => e?.starter === true && e.playerId).map((e) => String(e.playerId));
+  const starters = sport === 'nba' && st.length === 5 ? st : null;
+  if (!inactive.length && !starters) return null;
+  return { inactive, starters };
+}
+export async function gameRoster(league, event, team, sport) {
+  const [sp, lg] = league.split('/');
+  return gameRosterOf(await json(`https://sports.core.api.espn.com/v2/sports/${sp}/leagues/${lg}/events/${event}/competitions/${event}/competitors/${team}/roster`), sport);
+}
+
 // The league's injury report: each team's listed players (ESPN's athlete id, name, position, status, date)
 export async function injuries(league) {
   const body = await json(`${ESPN}/${league}/injuries`);

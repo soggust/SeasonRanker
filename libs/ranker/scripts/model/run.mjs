@@ -111,7 +111,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
-import { MAX_LAST, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, newsMissing, phaseOf, propAsk, reach } from './timing.mjs';
+import { MAX_LAST, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
 import { adjust, expect, fit, fitContext, gateOf, replay, round } from './ratings.mjs';
@@ -241,6 +241,7 @@ async function runSport(sport) {
   fitRatings(r);
   await fitTheContext(r);
   await fitTheProps(r);
+  inactivesNow(r);
   await runBacktest(r);
   logContext(r);
   r.ledger = readKept(r.files.ledger, { sport, bankroll: BANKROLL, bets: [] });
@@ -805,6 +806,24 @@ async function fitTheProps(r) {
   }
 }
 
+// 2c'. the posted inactives (context.mjs gather: the NFL's and NBA's game-day rosters near the start, the listed
+// ones already in their games' injury reports) with the regulars the report doesn't list put in too, now the rows
+// say who's a regular (timing.mjs lineupNow: work in two of his team's last four games): the props read them out
+// and an open bet's inputs (repriceOpen: the inactives' part, the NBA's starting five against the usual one) see
+// the news. The game lines' context was fit on the listed ones (a regular left off the report is rare). Any
+// failure: the report as it was
+function inactivesNow(r) {
+  r.players = null;
+  try {
+    r.players = lineupNow(r.rows, r.sport);
+    if (!r.players) return;
+    const put = (r.upcoming ?? []).flatMap(({ game }) => putInactives(r.live?.get(game.id), game, r.players).map((x) => `${x.name} (${game.awayAbbr} @ ${game.homeAbbr})`));
+    if (put.length) console.log(`${r.sport}: regulars inactive the injury report doesn't list, now out: ${put.join(', ')}`);
+  } catch (err) {
+    console.warn(`${r.sport}: inactives not put in (${err.message})`);
+  }
+}
+
 // 2d. the backtest (backtest.mjs): with --backtest, the plan's historical snapshots bought (within history's
 // budget) and the bets drawn from them saved (backtest.json, committed); every run, the saved bets read back,
 // each market's numbers worked out for the state, and the bets kept for the trust fit
@@ -1129,7 +1148,7 @@ function repriceOpen(r) {
   for (const { game } of r.upcoming ?? []) {
     games.set(game.id, game);
     if (blindOf(r, game)) continue;
-    r.inputs.set(game.id, inputsOf(sport, game, r.live.get(game.id), r.feats?.feats.get(game.id)?.info ?? null, ok));
+    r.inputs.set(game.id, inputsOf(sport, game, r.live.get(game.id), r.feats?.feats.get(game.id)?.info ?? null, ok, r.players));
   }
   // (--dry: what the inputs read, a part unread (its source failed, or none for the game) by name)
   if (DRY && r.inputs.size) {

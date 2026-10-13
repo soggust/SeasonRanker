@@ -143,6 +143,8 @@ export function restGuard(restDays, debut, date) {
 //   depth       (none of the above) the depth chart's starter at his spot the model's role has lower, or the
 //               model's top man the chart has behind (depthRoleOf below: a tight end's receiving, a back's
 //               rushing; live only), its safe side the chart's
+//   lineup-start, lineup-bench  the NBA's: tonight's posted starting five against his role by his minutes
+//               (lineupRoleOf below), a bench player in it or a starter not in it
 // qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }; starts:
 // a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
@@ -154,7 +156,7 @@ export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, rati
 // (qb1-out) or a few-start passer's passing it projects high, so the under is safe; the line's read, the side
 // the market's reading points away from; a change at quarterback, either way: neither. The safe side bets as
 // any prop; only the other is a CHECK (priceProps))
-export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under' };
+export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under', 'lineup-start': 'over', 'lineup-bench': 'under' };
 
 // The NBA's minutes base (project.mjs sn, mode 'minutes') with teammates back (null: none): his last three
 // games' minutes MIN_BACK.jump times his season's or more, and the work his team was missing in the games his
@@ -169,6 +171,21 @@ export function minutesBackOf({ name = null, mode, minutes, vac, vacHist }) {
   if (mode !== 'minutes' || !minutes || !(minutes.season > 0) || !Number.isFinite(vac) || !Number.isFinite(vacHist)) return null;
   if (!(vacHist - vac >= MIN_BACK.vac && minutes.recent >= MIN_BACK.jump * minutes.season)) return null;
   return { key: 'minutes-back', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes over his last three against ${round(minutes.season, 1)} this season, with teammates back from the absence that gave him them: a smaller role tonight` };
+}
+// The NBA's posted starting five (context.mjs gather: espn.mjs gameRoster, about 30 minutes before the tip) against
+// his role by his minutes (matchups.mjs roleKnown, tonight's out counted out; null: not ranked): a bench player
+// in it (lineup-start) or a starter not in it and not out (lineup-bench) is a role CHECK on the side his role's
+// change makes the projection's risk. A bench player who started his team's last game ran 11% over his
+// projection held out on points (2026-10-13, CTX newStart, 706 rows, not taken on the fit window), so the
+// starting one's under is the risk and his over safe; a starter benched, the other way. Not fit: the five
+// posts too near the tip for the history's lines (the box's flag is after the game), so it's a CHECK till the
+// CHECKs show the projection reads it. Null with no five posted, or his role not known
+export function lineupRoleOf({ name = null, pid, roleKnown = null, starters = null }) {
+  if (!Array.isArray(starters) || starters.length !== 5 || !roleKnown) return null;
+  const inFive = starters.includes(String(pid));
+  if (roleKnown === 'B' && inFive) return { key: 'lineup-start', safe: 'over', why: `${name || 'he'} in tonight's posted starting five, off the bench by his minutes: a bigger role` };
+  if (roleKnown === 'S' && !inFive) return { key: 'lineup-bench', safe: 'under', why: `${name || 'he'} not in tonight's posted starting five, a starter by his minutes: a smaller role` };
+  return null;
 }
 export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
@@ -1323,6 +1340,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the NBA's minutes base with teammates back from an absence that fed his minutes jump (minutesBackOf): a
     // role CHECK on the over, the under bet as any prop)
     if (sport === 'nba') roleChange ??= minutesBackOf({ name: a.name, mode: p.mode, minutes: p.minutes, vac: p.vac, vacHist: p.vacHist });
+    // (the NBA's posted starting five against his role by his minutes (lineupRoleOf): a role CHECK on the side
+    // its change makes the risk)
+    if (sport === 'nba') roleChange ??= lineupRoleOf({ name: a.name, pid, roleKnown: row.roleKnown ?? null, starters: live?.gameRosters instanceof Map ? (live.gameRosters.get(String(row.team))?.starters ?? null) : null });
     // (the NBA, NHL, MLB: the book's line far from the projection with a cause known before the game, unsized by
     // the fit, that explains it (lineAlarmOf): a label on the side against the market's reading, never a cut
     // (selfcheck.mjs C20 measures the labeled rows))
