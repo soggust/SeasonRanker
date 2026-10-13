@@ -207,7 +207,7 @@ export const SPORT: SportConfig = {
   // The NHL's player headshots
   headshot: (id) => `https://assets.nhle.com/mugs/nhl/latest/${id}.png`,
   cardFlags,
-  // (a team's vs Position: what it allowed to forwards and defensemen, vs-position.ts)
+  // (a team's vs Position: what it allowed to centers, wingers and defensemen, vs-position.ts)
   cardBreakdown: nhlVsPositionBreakdown,
   // The card's Team tab (teams and head coaches): the top unit on a rink, every line, the head coaches,
   // everyone who played (team-roster.ts)

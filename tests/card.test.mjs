@@ -277,23 +277,29 @@ test('NFL vs Position: a neutral funnel, and a plain pass rate before expected r
   assert.match(r.lean.help, /^Plain pass rate/);
 });
 
-test('NHL 2025 vs Position: forwards and defensemen, ranked, their columns filled', () => {
+test('NHL 2025 vs Position: centers, wingers and defensemen, ranked, their columns filled', () => {
   const coaches = readJson(path.join(staticDir('nhl'), 'seasons', '2025', 'skill-players.json')).HC;
   const build = nhl.vsPosition.nhlVsPositionBreakdown;
   const teams = [...new Map(coaches.map((c) => [c.teamLogo, c])).values()];
   assert.equal(build(teams[0], 'C', teams), null, 'only a team has one');
   for (const t of teams) {
     const b = build(t, 'TM', teams);
-    assert.deepEqual(b.rows.map((r) => r.label), ['Forwards', 'Defense']);
-    assert.deepEqual(b.columns.map((c) => c.label), ['Pts / G', 'Shots / G', 'vs Avg']);
+    assert.deepEqual(b.rows.map((r) => r.label), ['C', 'W', 'D']);
+    assert.deepEqual(b.columns.map((c) => c.label), ['Pts / G', 'vs Avg', 'G / G', 'Shots / G']);
     for (const r of b.rows) {
       assert.equal(r.of, 32);
       assert.ok(r.rank >= 1 && r.rank <= 32);
       assert.ok(r.cells.every((c) => c.text !== '-'), `${t.name} ${r.label}: a blank`);
     }
-    assert.match(b.note, /^Defensemen's share of the points against it: \d+% \(league \d+%\)$/);
-    assert.equal(b.split, null);
+    assert.match(b.note, /^\d+ games; forwards together: \d\.\d\d points a game, [+−]?\d\.\d\d against their usual \(#\d+ of 32\)$/);
+    assert.deepEqual(b.split.parts.map((p) => p.label), ['C', 'W', 'D']);
+    assert.ok(Math.abs(b.split.parts.reduce((a, p) => a + p.share, 0) - 1) < 0.003, `${t.name}: shares add up`);
   }
+  // (the takes: a team's softest group at half a point a game over the usual, its stingiest under)
+  const flagged = teams.map((t) => build(t, 'TM', teams).flags.map((f) => f.text).join(' | '));
+  assert.ok(flagged.some((f) => /^Soft against (centers|wingers|defensemen): they score 0\.\d\d more points/.test(f)), 'nobody soft');
+  assert.ok(flagged.some((f) => /Shuts down (centers|wingers|defensemen)/.test(f)), 'nobody shuts one down');
+  assert.ok(flagged.filter((f) => /Soft against/.test(f)).length < 16, 'too many soft');
 });
 
 test("a last five game's when: the NFL by its week (playoff rounds named, the preseason blank), others by the day", () => {
