@@ -78,16 +78,24 @@
 //   pace     the NBA's (audit #10; props.mjs STATS pace, a late term after the minutes base on the whole stat's
 //            gate, its eligible players' bias within WHOLE_TOL's tolerance as the minutes base's: a factor on every
 //            row, the lean refit with it): the other side's possessions a game over the league's (pg 0; his own
-//            team's pace is in his own numbers), the game's expected possessions (pg 1: both teams' over the
-//            league's, matchups.mjs nbaMatchups paceG), or that over its average in his games this season (pg 2,
-//            pulled toward even by PACE_M games: his own team's counted once), to the power po. Measured 2026-10-13
-//            (2025-26, held out March to the Finals): kept on points po 1/pg 1 (held out 0.6478 to 0.6465,
-//            +0.0012; the eligible players' bias -0.2389 to -0.2684, every player's 0.0773 to 0.053), threes 1/1
-//            (0.5613 to 0.5607, +0.0006; -0.0215 to -0.026, every player's 0.0132 to 0.0095) and pts+reb+ast 1/2
-//            (0.6447 to 0.6441, +0.0006; -0.263 to -0.2921, every player's 0.3932 to 0.3682); rebounds (0.5/0,
-//            +0.0001) and assists (0.5/1, 0) under the floor. Each one's eligible players' bias larger (within
-//            the tolerance, half a percent of the mean actual: held to no larger at all, all three were left out),
-//            every player's smaller.
+//            team's pace is in his own numbers), the game's expected possessions (both teams' over the league's,
+//            matchups.mjs nbaMatchups paceG) over its average in his games this season (pg 2), or the other side's
+//            over its average in his games (pg 3), each average pulled toward even by PACE_M games and read only
+//            from games whose pace was known (paceKnown), to the power po; tonight's pace not known, 1. The
+//            opponent's and the role's tables learn against the base times the pace's factor, so they keep what a
+//            defense allows past its possessions, not its pace again, and the opponent's power a is fit again
+//            with po on the fit window (a's grid). pg 1 (the game's expected over the league's) counted his own
+//            team's pace twice, once in his numbers: off the search (PG_FORMS), kept readable. Measured
+//            2026-10-13, its review (2025-26, held out March to the Finals): kept on points po 1.5/pg 2 (held out
+//            0.6478 to 0.6466, +0.001; the eligible players' bias -0.2389 to -0.2597, every player's 0.0773 to
+//            0.0595), threes 1.5/2 (0.5613 to 0.5608, +0.0005; -0.0215 to -0.0249) and pts+reb+ast 1.5/2 (0.6447
+//            to 0.644, +0.0007; -0.263 to -0.2963, every player's 0.3932 to 0.3643), a 0.5 after its refit;
+//            rebounds (1/3, +0.0002) and assists (1.5/2, +0.0001) under the floor. Before the review (pg 1 kept,
+//            the tables holding the pace): points 0.6465, threes 0.5607, pts+reb+ast 0.6441, nearly all of it
+//            kept by the clean forms. Each one's eligible players' bias larger (within the tolerance, half a
+//            percent of the mean actual), every player's smaller. Unmeasured: a new season's opening
+//            weeks (a team's prior its last season's pace at PACE_CARRY of its distance from the league's,
+//            matchups.mjs; the history's one season opened with no league's pace, every row 1).
 //            positions (ps; props.mjs STATS positions, ESPN's G, F, C): the opponent's table and the priors by
 //            position group (ps 1), the role's table by it too (ps 2), in place of one pool. Left out on every stat
 //            (points, assists, pts+reb+ast not taken on the fit window; rebounds 1 held out -0.001; threes 1
@@ -479,16 +487,23 @@ const TRY_MK = false;
 const TRY_VCM = false;
 // (the NBA's positions and pace (audit #10), late terms on the whole stat's gate after the minutes base: ps 1
 // the opponent's table and the priors by position group, 2 the role's table by it too; po the pace's power,
-// pg its form (0 the other side's, 1 the game's expected))
+// pg its form (0 the other side's, 2 the game's expected over its average in his games, 3 the other side's
+// over its average in his games), the opponent's power a fit again with it)
 const PS = [{ ps: 1 }, { ps: 2 }];
 // (the positions searched at all: kept on no stat on 2026-10-13 (points, assists, pts+reb+ast not taken on the
 // fit window; rebounds 1 held out -0.001; threes 1 +0.0003 with its bias larger), its search and gate about
 // 15s a run: true to try it again)
 const TRY_PS = false;
 const PO = [0.5, 1, 1.5];
+// (pace's forms searched: 0 the other side's, 2 the game's expected over its average in his games, 3 the other
+// side's over its average in his games; 1 (the game's expected over the league's: his own team's pace twice)
+// off the search since 2026-10-13)
+const PG_FORMS = [0, 2, 3];
 const PACE_M = 5;
+// (a row's pace known: the league's read (matchups.mjs paceKnown); a row without the flag, by its paceG)
+const paceKnownOf = (row) => row.paceKnown ?? Number.isFinite(row.paceG);
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key) => (key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => [0, 1, 2].map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key) => (key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -921,7 +936,11 @@ export function makeModel(stat, params, env) {
     // pace is in his own numbers), or the game's expected (pg 1: the two teams' product), to the power po)
     // (pg 2: the game's expected over its average in his games this season, pulled toward even by PACE_M games:
     // his own team's pace, in his numbers already, counted once)
-    const paceNow = !stat.pace || !params.po ? 1 : params.pg === 2 ? (row.paceG ?? 1) / (((cur.pgs ?? 0) + PACE_M) / ((cur.pgn ?? 0) + PACE_M)) : ((params.pg ? row.paceG : row.pace) ?? 1);
+    // (pg 3: the other side's over its average in his games this season the same way: his own team's out of it
+    // altogether. Pace not known tonight (the league's not read yet): 1 on either, not 1 over his average)
+    // (pg 1 counts his own team's pace twice (it's in his numbers): off the search since 2026-10-13 (PG_FORMS),
+    // kept readable for a fit made before)
+    const paceNow = !stat.pace || !params.po ? 1 : params.pg >= 2 ? (!paceKnownOf(row) ? 1 : params.pg === 2 ? row.paceG / (((cur.pgs ?? 0) + PACE_M) / ((cur.pgn ?? 0) + PACE_M)) : row.pace / (((cur.ops ?? 0) + PACE_M) / ((cur.opn ?? 0) + PACE_M))) : ((params.pg ? row.paceG : row.pace) ?? 1);
     const paceF = stat.pace ? (params.po ? Math.pow(paceNow, params.po) : 1) : stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
     const tgtF = stat.targets && params.tg ? Math.pow(row.tgt ?? 1, params.tg) : 1;
     // (the work his position group is missing now against what it was missing in the games his numbers come
@@ -1018,7 +1037,9 @@ export function makeModel(stat, params, env) {
             }
             o.n++;
             o.got += v;
-            o.usual += before.base;
+            // (the NBA's pace taken out first where it's on (stat.pace, po): the tables learn what the other
+            // side allows past its possessions, not its pace a second time)
+            o.usual += before.base * (stat.pace ? before.paceF : 1);
             table.set(key, o);
           };
           tally(opps, `${row.opp}|${posKey(row)}`);
@@ -1059,9 +1080,15 @@ export function makeModel(stat, params, env) {
         }
         p.cur.n++;
         p.cur.sum += v;
-        // (the game's expected possessions over the league's in his games this season (the NBA's pace, pg 2:
-        // tonight's read against them))
-        if (stat.pace) (p.cur.pgs = (p.cur.pgs ?? 0) + (row.paceG ?? 1)), (p.cur.pgn = (p.cur.pgn ?? 0) + 1);
+        // (the game's expected possessions over the league's in his games this season, and the other side's (the
+        // NBA's pace, pg 2 and 3: tonight's read against them); only games whose pace was known, a placeholder 1
+        // from before the league's was read left out, not pulling the average toward even)
+        if (stat.pace && paceKnownOf(row)) {
+          p.cur.pgs = (p.cur.pgs ?? 0) + row.paceG;
+          p.cur.pgn = (p.cur.pgn ?? 0) + 1;
+          p.cur.ops = (p.cur.ops ?? 0) + row.pace;
+          p.cur.opn = (p.cur.opn ?? 0) + 1;
+        }
         p.cur.wn += wt;
         p.cur.wsum += wt * v;
         p.cur.recent = [...p.cur.recent, v].slice(-5);
@@ -1584,6 +1611,15 @@ export function fitStat(stat, rows, env) {
       for (const x of lateTries(key)) {
         const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
         if (sc.ll > sBest.ll) (sBest = sc), (v = x);
+      }
+      // (the NBA's pace: the opponent's power a fit again with it on the fit window (the tables learn past the
+      // pace with it on, so the a fit before it is read again; a's grid, 2 replays more)
+      if (key === 'po' && v && !aIdle(params)) {
+        for (const a of GRID.a) {
+          if (a === params.a) continue;
+          const sc = scoreOf(replayStat(stat, sorted, { ...params, ...v, a }, env, cuts).out, 1, shape);
+          if (sc.ll > sBest.ll) (sBest = sc), (v = { ...v, a });
+        }
       }
     }
     gains[key] = null;

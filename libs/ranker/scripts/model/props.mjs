@@ -504,10 +504,12 @@ const NBA_MINUTES = { minutes: true };
 // (the NBA's positions and pace (audit #10; project.mjs ps, po, late terms on the whole stat's gate after the
 // minutes base): ESPN's position (G, F, C; a PG or SG a guard, an SF or PF a forward, one unknown a forward) for
 // the opponent's table, the priors and, ps 2, the role's table, each one pool before (posGroup 'all', still the
-// one where ps is left out); and the other side's possessions a game, or the game's expected, over the league's
-// (matchups.mjs nbaMatchups pace, paceG). The eligible pool (each team's top few by usage) and the work missing
-// stay the whole team's. Measured 2026-10-13: the pace kept on points, threes and pts+reb+ast (held out +0.0012,
-// +0.0006, +0.0006), the positions on none (off the search: project.mjs TRY_PS))
+// one where ps is left out); and the other side's possessions a game over the league's, or the game's expected
+// over its average in his games, or the other side's over its average in his games (matchups.mjs nbaMatchups
+// pace, paceG; project.mjs pg). The eligible pool (each team's top few by usage) and the work missing stay the
+// whole team's. Measured 2026-10-13 (its review: the tables learned past the pace, his own team's pace counted
+// once): the pace kept on points, threes and pts+reb+ast (pg 2; held out +0.001, +0.0005, +0.0007), the positions
+// on none (off the search: project.mjs TRY_PS))
 export const nbaPos = (pos) => (/^(PG|SG|G)$/.test(pos ?? '') ? 'G' : pos === 'C' ? 'C' : 'F');
 const NBA_POS_PACE = { positions: nbaPos, pace: true };
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];

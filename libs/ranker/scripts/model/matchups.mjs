@@ -35,10 +35,12 @@
 //   pace     the NFL: its opponents' plays (runs and passes) against their own usual, pulled toward even by 4
 //            games. The NBA (audit #10): each team's possessions a 48 minutes (its box's field goals tried, 0.44 of
 //            free throws tried, turnovers, less offensive rebounds, the two sides' averaged, over the minutes
-//            played over 240: an overtime game's per 48), this season's pulled toward last season's (or the
-//            league's) by PACE_K games, over the league's this season (last season's till it has PACE_LG
-//            team-games): the other side's (pace: his own team's is in his own numbers) and the game's expected
-//            (paceG: the two teams' product over the league's), each 1 till it's known (project.mjs po, pg)
+//            played over 240: an overtime game's per 48), this season's pulled toward last season's (held
+//            PACE_CARRY, half, of its distance from the league's: the offseason's rosters change) or the league's
+//            by PACE_K games, over the league's this season (last season's till it has PACE_LG team-games): the
+//            other side's (pace: his own team's is in his own numbers) and the game's expected (paceG: the two
+//            teams' product over the league's), each 1 till it's known (paceKnown false; project.mjs po, pg).
+//            Unmeasured: a new season's opening weeks (the history's one season opened with no league's pace)
 //   targets  the NFL: the share of the targets it allows to wide receivers, tight ends and backs, against the
 //            league's, pulled toward the league's by 60 targets
 //   vacated  the NFL: the work a player's position group is missing: its regulars who aren't playing (not in the
@@ -772,6 +774,9 @@ export const nbaUsage = (r) => (Number.isFinite(r.s.fga) ? r.s.fga + 0.44 * (r.s
 // league's this season taken from PACE_LG team-games on, last season's before)
 const PACE_K = 10;
 const PACE_LG = 30;
+// (a team's last season carried into this one's prior at this much of its distance from the league's: the
+// offseason's rosters change, and a new season's opening weeks were never held out)
+const PACE_CARRY = 0.5;
 // (a team's possessions in a game, a 48 minutes: its field goals tried, 0.44 of its free throws tried and its
 // turnovers, less its offensive rebounds, over its players' minutes over 240; null where a line misses one of
 // them (a line kept before they were) or the minutes are short)
@@ -829,20 +834,20 @@ export function nbaMatchups(rows) {
     const last = lgPace.get(season - 1);
     return last?.n >= PACE_LG ? last.sum / last.n : null;
   };
-  // (a team's possessions a game: this season's pulled toward last season's (PACE_LG games of it or more), else
-  // the league's, by PACE_K games; null with the league's unknown)
+  // (a team's possessions a game: this season's pulled toward last season's (PACE_LG games of it or more, held
+  // PACE_CARRY of the way from the league's), else the league's, by PACE_K games; null with the league's unknown)
   const paceTeam = (teamId, season, lg) => {
     const t = paces.get(String(teamId));
     const cur = t?.get(season) ?? { n: 0, sum: 0 };
     const last = t?.get(season - 1);
-    const prior = last?.n >= PACE_LG ? last.sum / last.n : lg;
+    const prior = last?.n >= PACE_LG ? lg + PACE_CARRY * (last.sum / last.n - lg) : lg;
     return (cur.sum + PACE_K * prior) / (cur.n + PACE_K);
   };
   const paceOf = (teamId, oppId, season) => {
     const lg = lgOf(season);
-    if (!(lg > 0)) return { pace: 1, paceG: 1 };
+    if (!(lg > 0)) return { pace: 1, paceG: 1, paceKnown: false };
     const o = paceTeam(oppId, season, lg) / lg;
-    return { pace: o, paceG: (paceTeam(teamId, season, lg) / lg) * o };
+    return { pace: o, paceG: (paceTeam(teamId, season, lg) / lg) * o, paceKnown: true };
   };
   byDay(rows, (batch) => {
     const games = new Map();

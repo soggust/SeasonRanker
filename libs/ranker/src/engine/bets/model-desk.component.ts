@@ -750,7 +750,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_newStart: 'a bench player who started his last game',
       sn: 'snaps-based rate (NBA: minutes first, his per-minute rate times his expected minutes)',
       ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
-      po: "NBA pace (the other side's possessions a game over the league's)",
+      po: "NBA pace (tonight's expected possessions, against the league's or his own games'; form 0: the other side's over the league's, 2: the game's expected over his games' average, 3: the other side's over his games' average)",
       c_oppShots: 'opponent shots',
       a_WR: 'opponent allowed to wide receivers',
       a_TE: 'opponent allowed to tight ends',
@@ -788,7 +788,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         const v = (t.params as unknown as Record<string, number | null>)[k];
         const on = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
-        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : v) : 'left out'} (${gain})`;
+        const pg = (t.params as unknown as Record<string, number | null>)['pg'] ?? 0;
+        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : v) : 'left out'} (${gain})`;
       })
       .join(' · ');
   }

@@ -113,3 +113,70 @@ test('positions with ps 2: the role table keyed by role and position', () => {
   assert.equal(p.roleKey, 'S-C');
   assert.ok(m.roleTable('S-C', 2026).length === 1 && m.roleTable('S', 2026).length === 0);
 });
+
+test("pace's forms against his own games: pg 2 the game's expected, pg 3 the other side's, over their averages in his games", () => {
+  const stat = { key: 'pts', pace: true };
+  const hist = [1, 2, 3, 4].flatMap((d) => Array.from({ length: 30 }, (_, i) => ({ pid: `o${i}`, pos: 'G', season: 2026, date: day(d), opp: 'x', pace: 1.1, paceG: 1.2, paceKnown: true, s: { pts: 10 } })));
+  const row = { pid: 'o1', pos: 'G', season: 2026, date: day(9), opp: 'x', pace: 1.1, paceG: 1.2, paceKnown: true };
+  const g2 = makeModel(stat, { ...BASE, po: 1, pg: 2 }, {});
+  const g3 = makeModel(stat, { ...BASE, po: 1, pg: 3 }, {});
+  // (a player with last season's games only: none of his own this season)
+  const last = [1, 2, 3, 4].map((d) => ({ pid: 'new', pos: 'G', season: 2025, date: `2025-04-0${d}`, opp: 'x', pace: 1.1, paceG: 1.2, paceKnown: true, s: { pts: 10 } }));
+  for (const m of [g2, g3]) for (const r of last) m.learn([r]);
+  for (const m of [g2, g3]) for (const d of [1, 2, 3, 4]) m.learn(hist.filter((r) => r.date === day(d)));
+  // (four games at 1.2 (1.1), pulled toward even by PACE_M (5) games)
+  assert.ok(Math.abs(g2.project(row).paceF - 1.2 / ((4 * 1.2 + 5) / (4 + 5))) < 1e-9, `${g2.project(row).paceF}`);
+  assert.ok(Math.abs(g3.project(row).paceF - 1.1 / ((4 * 1.1 + 5) / (4 + 5))) < 1e-9, `${g3.project(row).paceF}`);
+  // (no games of his own this season: the plain ratio)
+  const fresh = { ...row, pid: 'new' };
+  assert.ok(Math.abs(g2.project(fresh).paceF - 1.2) < 1e-9);
+  assert.ok(Math.abs(g3.project(fresh).paceF - 1.1) < 1e-9);
+  // (tonight's pace not known: 1, not 1 over his average)
+  assert.equal(g2.project({ ...row, pace: 1, paceG: 1, paceKnown: false }).paceF, 1);
+  assert.equal(g3.project({ ...row, pace: 1, paceG: 1, paceKnown: false }).paceF, 1);
+});
+
+test("pace's average in his games leaves out the games before the league's pace was known", () => {
+  const stat = { key: 'pts', pace: true };
+  const hist = [1, 2, 3, 4].flatMap((d) => Array.from({ length: 30 }, (_, i) => ({ pid: `o${i}`, pos: 'G', season: 2026, date: day(d), opp: 'x', pace: 1, paceG: 1, paceKnown: false, s: { pts: 10 } })));
+  const m = makeModel(stat, { ...BASE, po: 1, pg: 2 }, {});
+  for (const d of [1, 2, 3, 4]) m.learn(hist.filter((r) => r.date === day(d)));
+  const row = { pid: 'o1', pos: 'G', season: 2026, date: day(9), opp: 'x', pace: 1.1, paceG: 1.2, paceKnown: true };
+  assert.ok(Math.abs(m.project(row).paceF - 1.2) < 1e-9, `${m.project(row).paceF}`);
+});
+
+test("the opponent's table learns past the pace where it's on: a fast side's points not counted twice", () => {
+  const stat = { key: 'pts', pace: true };
+  // (everyone scores 10 against x, a side 10% faster than the league: with po 1 the pace explains it, the table
+  // reads x as allowing less past its possessions)
+  const hist = [1, 2, 3, 4, 5, 6].flatMap((d) => Array.from({ length: 30 }, (_, i) => ({ pid: `o${i}`, pos: 'G', season: 2026, date: day(d), opp: 'x', pace: 1.1, paceG: 1.1, paceKnown: true, s: { pts: 10 } })));
+  const off = makeModel(stat, BASE, {});
+  const on = makeModel(stat, { ...BASE, po: 1, pg: 0 }, {});
+  for (const m of [off, on]) for (const d of [1, 2, 3, 4, 5, 6]) m.learn(hist.filter((r) => r.date === day(d)));
+  const row = { pid: 'o1', pos: 'G', season: 2026, date: day(9), opp: 'x', pace: 1.1, paceG: 1.1, paceKnown: true };
+  assert.ok(on.project(row).opp < off.project(row).opp, `${on.project(row).opp} ${off.project(row).opp}`);
+  // (the projection about the same either way: the pace in the table or in po, not both)
+  assert.ok(Math.abs(on.project(row).mu / off.project(row).mu - 1) < 0.03, `${on.project(row).mu} ${off.project(row).mu}`);
+});
+
+test("a new season's pace: last season's team pace carried half its distance from the league's; known from the first game", () => {
+  const side = (game, date, team, opp, poss) =>
+    Array.from({ length: 5 }, (_, i) => ({ pid: `${team}${i}`, pos: 'G', season: 2026, date, game, team, opp, s: { min: 48, fga: poss / 5, fta: 0, oreb: 0, tov: 0 } }));
+  const rows = [];
+  let n = 0;
+  const teams = ['F', 'A', 'B', 'C'];
+  for (let d = 1; d <= 40; d++) {
+    for (const [h, a] of [[teams[d % 4], teams[(d + 1) % 4]], [teams[(d + 2) % 4], teams[(d + 3) % 4]]]) {
+      const id = `g${n++}`;
+      const poss = h === 'F' || a === 'F' ? 110 : 100;
+      rows.push(...side(id, day(d), h, a, poss), ...side(id, day(d), a, h, poss));
+    }
+  }
+  const m = nbaMatchups(rows);
+  assert.equal(rows.find((r) => r.date === day(1)).paceKnown, false);
+  assert.equal(rows.find((r) => r.date === day(40)).paceKnown, true);
+  // (the league's 105 (F's games half the team-games), F's 110: half of 110/105's distance from even)
+  const live = m.live('A0', 'A', 'F', 'G', 2027);
+  assert.ok(Math.abs(live.pace - (1 + 0.5 * (110 / 105 - 1))) < 1e-6, `${live.pace}`);
+  assert.equal(live.paceKnown, true);
+});
