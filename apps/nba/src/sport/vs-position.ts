@@ -92,19 +92,22 @@ export function nbaVsPositionBreakdown(player: SkillPlayer, position: string, ro
   });
 
   // The Overview's takes: the position it's softest against and the one it shuts down, by points over their
-  // usual (1.5 a game or more)
+  // usual: 1.5 a game or more, or the part's own spread when it's wider (the playoffs' 4 to 23 games a team
+  // swing about three times as far as a season's 82: the teams' and positions' root mean square)
+  const spread = rows.flatMap((r) => ROLES.map((role) => nbaVsPosOf(r)?.[role]?.pts?.vs ?? null)).filter((v): v is number => v !== null);
+  const bar = Math.max(1.5, spread.length ? Math.sqrt(spread.reduce((a, v) => a + v * v, 0) / spread.length) : 0);
   const flags: CardFlag[] = [];
   const byVs = ROLES.filter((r) => vs[r].pts.vs !== null).sort((a, b) => vs[b].pts.vs! - vs[a].pts.vs!);
   const soft = byVs[0];
   const tough = byVs.at(-1);
-  if (soft && vs[soft].pts.vs! >= 1.5) {
+  if (soft && vs[soft].pts.vs! >= bar) {
     flags.push({
       icon: 'person_search',
       tone: 'bad',
       text: `Soft against ${ROLE_INFO[soft].plural}: they score ${vs[soft].pts.vs!.toFixed(1)} more a game than usual here (#${vs[soft].pts.rv} of ${of})`,
     });
   }
-  if (tough && tough !== soft && vs[tough].pts.vs! <= -1.5) {
+  if (tough && tough !== soft && vs[tough].pts.vs! <= -bar) {
     flags.push({
       icon: 'shield',
       tone: 'good',
@@ -115,7 +118,7 @@ export function nbaVsPositionBreakdown(player: SkillPlayer, position: string, ro
   return {
     title: 'vs Position',
     icon: 'person_search',
-    help: "What this team allowed to each position a game (every opposing player by his listed position), and against what those same players averaged in their other games: holding a star to his usual reads as average, under it as good defense. Ranked by points against the usual, #1 the stingiest.",
+    help: "What this team allowed to each position a game (every opposing player by his listed position), and against what those same players averaged in their other games: holding a star to his usual reads as average, under it as good defense. Zero is the league's average defense (in the playoffs, the playoff teams': nearly everyone scores under his season's there). Ranked by points against the usual, #1 the stingiest.",
     rowHeader: { label: 'Pos', title: "The opposing players' listed position (Basketball-Reference's)" },
     rankTitle: "Where the team ranks, by the points it allowed to the position against those players' own averages (#1 the stingiest)",
     note: `${vs.games} games; each value's hover has its rank and how it compares with the players' usual`,
