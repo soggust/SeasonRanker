@@ -543,8 +543,12 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       if (!r.check) b.betPicks.push(r);
       this.boards.set(key, b);
     }
-    // (each sport's board on the days the picks are on: the lines, and the games without a pick)
-    void this.lines.games([...this.boards.values()]);
+    // (each sport's board on the days the picks are on, and every betting sport's today and tomorrow whether the
+    // bot picked anything there or not: the lines, and the games without a pick, so a game it passed on is still
+    // there to bet)
+    const now = Date.now();
+    const days = [now, now + 24 * 3600e3].map((t) => new Date(t).toISOString());
+    void this.lines.games([...this.boards.values(), ...SPORTS.flatMap((sport) => days.map((start) => ({ sport, start })))]);
   }
 
   // (a game on ESPN's boards, not begun, with DraftKings' lines, that the bot has no pick on)
