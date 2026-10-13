@@ -66,6 +66,8 @@ test("a sport's own dialogs use the sport's buttons, the account pages' the app'
   const presets = read('libs/ranker/src/styles/components/account-presets.scss');
   assert.doesNotMatch(presets, /kit\.primary-button;/, "the preset buttons beside the dropdown: the sport's light");
   assert.match(presets, /kit\.primary-button\(var\(--scoreboard-led\)\)/);
+  // (a Cancel beside a Delete: neutral, not the sport's light (MMA's is red, beside the red Delete))
+  assert.match(read('libs/ranker/src/styles/components/account-lists-dialog.scss'), /\.modal-actions:has\(\.danger\) \.secondary \{\s*@include kit\.outline-button\(var\(--app-text-muted/);
   // (My Lists, an account page: its dialogs stay the app's own)
   assert.match(read(`${engine}/account/lists/list-view.component.html`), /<list-modal[\s\S]*class="app-btn-primary"/);
 });

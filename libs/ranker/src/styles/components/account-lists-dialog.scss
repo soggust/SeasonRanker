@@ -22,6 +22,11 @@ list-modal {
   @include kit.buttons;
   @include kit.app-buttons;
 
+  // (Cancel beside a Delete: neutral, so only the Delete reads as the destructive one; MMA's light is red)
+  .modal-actions:has(.danger) .secondary {
+    @include kit.outline-button(var(--app-text-muted, #b8ada1));
+  }
+
   .modal-backdrop {
     animation: list-modal-fade 0.15s ease;
     backdrop-filter: blur(2px);
