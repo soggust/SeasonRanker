@@ -116,6 +116,12 @@ $edge: 2px;
     position: absolute;
     z-index: -1;
   }
+
+  // From the keyboard: the edge lit white. The cut clips away the page's focus ring (an outline, outside it),
+  // and a ring in the accent red would hardly show beside the red edge
+  &:focus-visible {
+    background: $white-text !important;
+  }
 }
 
 #{kit.$footer-buttons},

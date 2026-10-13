@@ -81,6 +81,11 @@ test("a sport's own dialogs use the sport's buttons, the account pages' the app'
   const base = read('libs/ranker/src/styles/_base.scss');
   const list = base.slice(base.indexOf('html body .mat-mdc-select-panel.preset-options'));
   assert.doesNotMatch(list.slice(0, list.indexOf('\n}')), /#fff|rgba\(255, 255, 255/);
+  // (its label readable on the NBA's orange: 3:1 wants 0.8 or more of the ink)
+  const label = list.match(/letter-spacing: 1\.5px !important;\s*opacity: ([\d.]+);/);
+  assert.ok(label && Number(label[1]) >= 0.8, 'the MY PRESETS label: 0.8 or more');
+  // (MMA's octagon cut clips the focus ring away: its buttons and dropdowns light their edge instead)
+  assert.match(read('apps/mma/src/theme/_sport-global.scss'), /@mixin octagon[\s\S]*?&:focus-visible \{\s*background: \$white-text !important;/);
   // (a Cancel beside a Delete: neutral, not the sport's light (MMA's is red, beside the red Delete))
   assert.match(read('libs/ranker/src/styles/components/account-lists-dialog.scss'), /\.modal-actions:has\(\.danger\) \.secondary \{\s*@include kit\.outline-button\(var\(--app-text-muted/);
   // (My Lists, an account page: its dialogs stay the app's own)
