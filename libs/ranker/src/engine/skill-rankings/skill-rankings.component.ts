@@ -34,12 +34,12 @@ import { RowGlide } from './row-glide';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
-import { copyIsolatedShown, isolateRows, isolatedCopyText, lowerIsBetter, recentText, shownValue } from './isolate';
+import { copyIsolatedShown, isolateRows, isolatedCopyText, isolatedTeam, lowerIsBetter, recentText, shownValue } from './isolate';
 import { ListDraft } from '@ranker/engine/account/lists/lists.store';
 import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
 import { AccountService } from '@ranker/engine/account/account.service';
-import { TeamFilterService, rowTeamName, teamKey, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
+import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
@@ -1073,7 +1073,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
       (player) => ({
         place: this.isoPlace(player),
         name: player.name,
-        team: teams ? teamKey(player.teamLogo) : null,
+        team: teams ? isolatedTeam(this.teamNameOf(player), player.teamLogo) : null,
         value: stat.format === 'recent' ? recentText(this.reader.lastFive(player)) : this.reader.cellText(player, stat),
       }),
       this.isoReversed,

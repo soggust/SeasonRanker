@@ -19,6 +19,9 @@ export const boxWidth = (group: string, columns: number) => `max(${columns * 7.5
 export function fitColumns(list: HTMLElement): void {
   const header = list.querySelector<HTMLElement>(':scope > li.header-row');
   if (!header) return;
+  // (every width read first, then every variable written: a write between reads would lay the whole list
+  // out again for the next one)
+  const widths = new Map<string, number>();
   const boxes = new Map<string, number>();
   for (const cell of Array.from(header.querySelectorAll<HTMLElement>('[data-col]'))) {
     const label = cell.querySelector<HTMLElement>('.stat-label');
@@ -26,18 +29,45 @@ export function fitColumns(list: HTMLElement): void {
     if (!label || !key) continue;
     // (the arrow sits at the cell's right, the label centered: its room on both sides)
     const arrow = cell.querySelector<HTMLElement>('.iso-dir');
-    let width = Math.max(label.scrollWidth, Math.ceil(label.getBoundingClientRect().width)) + 1;
+    let width = textWidth(label) + 1;
     if (arrow) width += 2 * (arrow.offsetWidth + ARROW_GAP);
     // (Recent: its dots, too, the same in every row)
-    if (cell.classList.contains('recent-box')) {
-      const dots = list.querySelector<HTMLElement>(':scope > li.player:not(.header-row) .recent-box .last-five > div');
-      if (dots) width = Math.max(width, dots.scrollWidth);
-    }
-    list.style.setProperty(`--lw-${cssKey(key)}`, `${width}px`);
+    if (cell.classList.contains('recent-box')) width = Math.max(width, dotsWidth(list));
+    const name = cssKey(key);
+    widths.set(name, width);
     const box = cell.parentElement?.dataset['box'];
-    if (box) boxes.set(box, (boxes.get(box) ?? 0) + width);
+    if (box) boxes.set(cssKey(box), (boxes.get(cssKey(box)) ?? 0) + width);
   }
-  boxes.forEach((width, group) => list.style.setProperty(`--lw-box-${cssKey(group)}`, `${width}px`));
+  const set = (name: string, width: number) => {
+    const value = `${width}px`;
+    if (list.style.getPropertyValue(name) !== value) list.style.setProperty(name, value);
+  };
+  widths.forEach((width, name) => set(`--lw-${name}`, width));
+  boxes.forEach((width, group) => set(`--lw-box-${group}`, width));
+}
+
+// A label's own width: its text's, not its box's (a block stretched to its cell would read as the cell's
+// width, which this sets: a column that had grown could never come back down)
+function textWidth(label: HTMLElement): number {
+  const range = document.createRange();
+  range.selectNodeContents(label);
+  return Math.ceil(range.getBoundingClientRect().width);
+}
+
+// Recent's dots, their own width (each square and its margins; the row with the most of them), not their
+// row's: the row stretches to the column, which this sets
+function dotsWidth(list: HTMLElement): number {
+  let most: HTMLElement | null = null;
+  for (const dots of Array.from(list.querySelectorAll<HTMLElement>(':scope > li.player:not(.header-row) .recent-box .last-five > div'))) {
+    if (!most || dots.childElementCount > most.childElementCount) most = dots;
+  }
+  if (!most) return 0;
+  let width = 0;
+  for (const dot of Array.from(most.children) as HTMLElement[]) {
+    const style = getComputedStyle(dot);
+    width += dot.offsetWidth + (parseFloat(style.marginLeft) || 0) + (parseFloat(style.marginRight) || 0);
+  }
+  return Math.ceil(width);
 }
 
 // Watches the header and the rows, measuring on the next frame after a change (outside Angular: nothing

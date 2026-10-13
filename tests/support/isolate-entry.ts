@@ -1,4 +1,4 @@
 // The engine (engine-entry.ts) plus the Teams Included and the grid's isolation (a header clicked), for
 // isolate.test.mjs
 export * from './team-filter-entry';
-export { copyIsolatedShown, isolateRows, isolatedCopyText, lowerIsBetter, recentText, shownValue } from '@ranker/engine/skill-rankings/isolate';
+export { copyIsolatedShown, isolateRows, isolatedCopyText, isolatedTeam, lowerIsBetter, recentText, shownValue } from '@ranker/engine/skill-rankings/isolate';

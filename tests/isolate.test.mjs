@@ -186,4 +186,14 @@ test('Copy Isolated: the isolated order, place, name, team and value, after Team
   );
   // (Recent: its results as letters, newest first)
   assert.equal(recentText([1, 0, 0.5, 1]), 'WLTW');
+  assert.equal(recentText([]), '-');
+});
+
+// (the team by name where the grid has one: a logo's file is an MLB id or an NFL nickname)
+test('Copy Isolated: the team by name, the logo only without one', async () => {
+  const { isolatedTeam } = await loadEngine('nfl', { entry });
+  assert.equal(isolatedTeam('Boston Red Sox', 'assets/MLB_Icons/111.svg'), 'Boston Red Sox');
+  assert.equal(isolatedTeam(null, 'assets/MLB_Icons/111.svg'), '111');
+  assert.equal(isolatedTeam(null, 'assets/NHL_Icons/BOS_secondary.svg'), 'BOS');
+  assert.equal(isolatedTeam(null, undefined), null);
 });

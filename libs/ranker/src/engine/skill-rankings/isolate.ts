@@ -4,6 +4,7 @@
 // sorted the same among themselves. Each ranked row gets its place by the stat (tied values share one;
 // none without a value), the rank tile's number while the look lasts.
 import type { StatDef } from '@ranker/engine/sport';
+import { teamKey } from '@ranker/engine/team-filter';
 
 export interface IsolatedRows<Row> {
   rows: Row[];
@@ -61,13 +62,19 @@ export function shownValue<Row, Stat>(
 // Share's Copy Isolated (in the menu only while a column is isolated: copyIsolatedShown): the rows shown in
 // the isolated order, as plain text under a line naming the stat ("Passing Yards (sorted by it alone)"),
 // each a tab-separated line (pastes into spreadsheets and notes): its place by the stat ("-": none), the
-// name, the team (the logo's abbreviation; none on a team's own row or in a sport without teams) and the
+// name, the team (its name as the grid knows it, else the logo's; none on a team's own row or in a sport without teams) and the
 // value as the column shows it. The ranked rows only, as the other copy has them (no UR rows).
 export interface IsolatedLine {
   place: number | null;
   name: string;
   team: string | null;
   value: string;
+}
+
+// A copied row's team: its name as the grid knows it (rowTeamName), else the logo's file, which is only an
+// abbreviation in some sports (an MLB logo is the team's id, an NFL one its nickname)
+export function isolatedTeam(name: string | null, logo: string | undefined): string | null {
+  return name ?? teamKey(logo);
 }
 
 export function copyIsolatedShown(isolated: unknown): boolean {
@@ -86,7 +93,9 @@ export function isolatedCopyText<Row>(
   return [title, ...lines.map((l) => [l.place ?? '-', l.name, ...(l.team ? [l.team] : []), l.value].join('\t'))].join('\n');
 }
 
-// A Recent cell's results as text (newest first: W, L or T each), as the other copy reads the dots
+// A Recent cell's results as text (newest first: W, L or T each), as the other copy reads the dots; no
+// games: "-", as any missing value
 export function recentText(results: number[]): string {
+  if (!results.length) return '-';
   return results.map((r) => (r === 1 ? 'W' : r === 0.5 ? 'T' : 'L')).join('');
 }
