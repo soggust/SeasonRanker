@@ -118,7 +118,7 @@ import { adjust, expect, fit, fitContext, gateOf, replay, round } from './rating
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { closeOf, closingLines, clvOf, clvSummary, propCloseOf } from './clv.mjs';
-import { OUTLIER, SPORT_KEYS, WIDE_BOOKS, call, canSpend, consensusFields, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
+import { OUTLIER, SPORT_KEYS, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
@@ -453,7 +453,8 @@ async function liveLines(r) {
     if (Array.isArray(list)) for (const [u, ev] of matchGames(list, r.upcoming)) u.lines.oddsEvent = ev.id;
     return;
   }
-  const events = await call('lines', `/sports/${SPORT_KEYS[r.sport]}/odds`, { markets: 'h2h,spreads,totals', bookmakers: WIDE_BOOKS.join(','), ...range });
+  // (the wide call refused or failed: asked again of the book and Pinnacle alone, oddsapi.mjs gameLines)
+  const events = await gameLines(r.sport, range);
   if (!Array.isArray(events)) return;
   let matched = 0;
   const pairs = matchGames(events, r.upcoming);

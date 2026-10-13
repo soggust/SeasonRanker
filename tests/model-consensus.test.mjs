@@ -5,7 +5,7 @@
 // none, and nothing changes. The responses below are recorded in The Odds API's v4 shape (no call is made)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CONSENSUS_MIN, OUTLIER, PROP_BOOKS, SHARP, WIDE_BOOKS, american, consensusFields, consensusOf, linesFromEvent, propAsks } from '../libs/ranker/scripts/model/oddsapi.mjs';
+import { CONSENSUS_MIN, LINE_BOOKS, OUTLIER, OTHER_BOOKS, PROP_BOOKS, SHARP, WIDE_BOOKS, american, consensusFields, consensusOf, gameLines, linesFromEvent, propAsks } from '../libs/ranker/scripts/model/oddsapi.mjs';
 import { API_MARKETS, apiProps, propsFromBodies, withApiPrices } from '../libs/ranker/scripts/model/props.mjs';
 import { boardMarkets, boardProp } from '../libs/ranker/scripts/model/board.mjs';
 import { BOOK } from '../libs/ranker/scripts/model/leagues.mjs';
@@ -87,6 +87,17 @@ test("apiProps: the markets parameter of the other books' ask is exactly DraftKi
   assert.equal(next.get('Jayson Tatum|ast').consensus, null);
   // (a failed call: nothing, as before)
   assert.equal(await apiProps('nba', 'ev1', { known: first.dkMarkets, ask: async () => null, afford }), null);
+  // (one of two failing keeps the other's paid prices: the wide one failing, its markets still known for the
+  // next ask; the book-alone one failing, its markets left unknown)
+  const half = await apiProps('nba', 'ev1', { known: first.dkMarkets, ask: recorded({ wide: null, own: OWN }), afford });
+  assert.ok(half.partial);
+  assert.deepEqual(half.dkMarkets.sort(), ['player_assists', 'player_points', 'player_rebounds']);
+  assert.equal(half.get('Jayson Tatum|ast').over !== undefined, true);
+  const other = await apiProps('nba', 'ev1', { known: first.dkMarkets, ask: recorded({ wide: WIDE, own: null }), afford });
+  assert.ok(other.partial);
+  assert.deepEqual(other.dkMarkets.sort(), ['player_points', 'player_rebounds']);
+  assert.equal(other.get('Jayson Tatum|pts').consensus.n, 2);
+  assert.equal(next.partial, undefined);
   // (the allowance can't pay: nothing asked)
   calls.length = 0;
   assert.equal(await apiProps('nba', 'ev1', { ask: recorded({ own: FIRST }), afford: () => false }), null);
@@ -176,4 +187,24 @@ test("boardMarkets: each side's consensus fair, its count, DraftKings' outlier s
   assert.equal('fc' in plain.spread[0], false);
   // (the rest of a side as before)
   assert.deepEqual(Object.keys(plain.spread[0]), ['s', 'l', 'o', 'c', 'ks', 'b']);
+});
+
+test('gameLines: the wide call first; it failing, once more of the book and Pinnacle alone, so the pricing never waits on the other books', async () => {
+  const calls = [];
+  const ask = (answers) => async (feature, route, params) => {
+    calls.push({ feature, route, params });
+    return answers[params.bookmakers === WIDE_BOOKS.join(',') ? 'wide' : 'own'];
+  };
+  const range = { commenceTimeFrom: '2026-10-13T00:00:00Z' };
+  assert.deepEqual(await gameLines('nfl', range, ask({ wide: [{ id: 'w' }] })), [{ id: 'w' }]);
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0], { feature: 'lines', route: '/sports/americanfootball_nfl/odds', params: { markets: 'h2h,spreads,totals', bookmakers: WIDE_BOOKS.join(','), ...range } });
+  calls.length = 0;
+  assert.deepEqual(await gameLines('nfl', range, ask({ wide: null, own: [{ id: 'o' }] })), [{ id: 'o' }]);
+  assert.deepEqual(calls.map((c) => c.params.bookmakers), [WIDE_BOOKS.join(','), LINE_BOOKS.join(',')]);
+  calls.length = 0;
+  assert.equal(await gameLines('nfl', range, ask({ wide: { message: 'bad' }, own: null })), null);
+  assert.equal(calls.length, 2);
+  // (the other books' keys as the API lists them: ESPN BET's kept under theScore Bet)
+  assert.ok(OTHER_BOOKS.every((k) => /^[a-z_]+$/.test(k)) && OTHER_BOOKS.includes('espnbet'));
 });

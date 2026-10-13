@@ -10,6 +10,10 @@
 //          region. The live calls name the other US books too (WIDE_BOOKS: the 10 one region covers), for the
 //          consensus below: a game lines call costs the same with them; a game's props ask them only for the
 //          markets the desk's book returned on that game's last ask (propAsks), so they add no market of their own
+//          (an answer with no data is free, the docs: the desk's book asked alone for the markets it didn't post
+//          last time costs only what it posts now; odds-usage.json's cost line for each call shows it). A wide
+//          game lines call refused is asked again of the desk's book and Pinnacle alone (gameLines), so the
+//          pricing never waits on the consensus books
 //   consensus each market's fair chance by the other books (consensusOf: the median of their de-vigged pairs at
 //          the desk's book's own line, from CONSENSUS_MIN books, else none), and the side the desk's book prices
 //          OUTLIER or more better than that (its return at the consensus chance): kept beside the book's own
@@ -55,7 +59,9 @@ export const SHARP = 'pinnacle';
 export const LINE_BOOKS = [BOOK, SHARP];
 export const PROP_BOOKS = [BOOK];
 // (and the other US books, for the consensus only: with the desk's book and Pinnacle the 10 that one region's
-// cost covers (The Odds API's keys; williamhill_us is Caesars), never more, or a call costs a second region)
+// cost covers (The Odds API's keys, checked against its bookmaker list 2026-10-13: williamhill_us is Caesars,
+// espnbet theScore Bet (formerly ESPN BET, the key kept); fanduel, betmgm, fanatics, betrivers in its us region,
+// espnbet, hardrockbet, ballybet in us2, named all the same), never more, or a call costs a second region)
 export const OTHER_BOOKS = ['fanduel', 'betmgm', 'williamhill_us', 'espnbet', 'fanatics', 'betrivers', 'hardrockbet', 'ballybet'];
 export const WIDE_BOOKS = [BOOK, SHARP, ...OTHER_BOOKS];
 // (the consensus: from this many other books at the desk's book's line, else none; the desk's book an outlier on
@@ -248,6 +254,17 @@ export function propAsks(markets, known = null) {
   const wide = markets.filter((m) => seen.has(m));
   const own = markets.filter((m) => !seen.has(m));
   return [...(wide.length ? [{ markets: wide, bookmakers: WIDE_BOOKS }] : []), ...(own.length ? [{ markets: own, bookmakers: PROP_BOOKS }] : [])];
+}
+
+// A sport's coming games' lines (run.mjs liveLines): asked of WIDE_BOOKS, and, that call failing (a key the API
+// refused, an error), once more of the desk's book and Pinnacle alone (LINE_BOOKS), the call before the
+// consensus: the pricing never depends on the other books. null when neither answers. ask: the call (a test's)
+export async function gameLines(sport, range, ask = call) {
+  const at = (books) => ask('lines', `/sports/${SPORT_KEYS[sport]}/odds`, { markets: 'h2h,spreads,totals', bookmakers: books.join(','), ...range });
+  const wide = await at(WIDE_BOOKS);
+  if (Array.isArray(wide)) return wide;
+  const own = await at(LINE_BOOKS);
+  return Array.isArray(own) ? own : null;
 }
 
 // An event's game lines as the desk prices them: for each market, the desk's book's line and both sides'

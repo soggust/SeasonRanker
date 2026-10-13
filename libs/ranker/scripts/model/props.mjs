@@ -76,7 +76,7 @@ import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './de
 import { SKEW_MIN_LINE, ctxFactor, ctxKeys, factorProduct, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
-import { SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
+import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
@@ -938,18 +938,28 @@ export const API_MARKETS = {
 // and each side's price, and the other books' consensus at that line (oddsapi.mjs consensusOf: consensus, null
 // without enough books). known: the markets the desk's book returned on the game's last ask (none: the first),
 // which alone the other books are asked for (oddsapi.mjs propAsks: they add no market of their own); the
-// markets it returned this time on the result (dkMarkets), the next ask's known. null when it can't be had (a
-// call failed). ask and afford: the call and the allowance's word on its most cost (a test's recorded response)
+// markets it returned this time on the result (dkMarkets), the next ask's known. null when it can't be had (its
+// calls failed; one of two failing, the other's, partial). ask and afford: the call and the allowance's word
+// on its most cost (a test's recorded response)
 export async function apiProps(sport, oddsEvent, { known = null, ask = call, afford = (n) => hasKey() && canSpend('props', n) } = {}) {
   const markets = Object.keys(API_MARKETS[sport]);
   if (!oddsEvent || !afford(markets.length)) return null;
+  // (one of the two calls failing keeps what the other paid for: its prices, and the markets the book returned
+  // there; the failed wide call's markets kept as known, so the other books are asked for them again on the
+  // next ask and no market is added, the failed own call's left unknown, the book alone asked for them again)
   const bodies = [];
-  for (const plan of propAsks(markets, known)) {
+  const carried = [];
+  const plans = propAsks(markets, known);
+  for (const plan of plans) {
     const body = await ask('props', `/sports/${SPORT_KEYS[sport]}/events/${oddsEvent}/odds`, { markets: plan.markets.join(','), bookmakers: plan.bookmakers.join(',') });
-    if (!body) return null;
-    bodies.push(body);
+    if (body) bodies.push(body);
+    else if (plan.bookmakers !== PROP_BOOKS) carried.push(...plan.markets);
   }
-  return propsFromBodies(sport, bodies);
+  if (!bodies.length) return null;
+  const out = propsFromBodies(sport, bodies);
+  out.dkMarkets = [...new Set([...out.dkMarkets, ...carried])];
+  if (bodies.length < plans.length) out.partial = true;
+  return out;
 }
 
 // (The Odds API's event bodies read: the desk's book's main lines, each with the other books' consensus at its
