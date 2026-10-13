@@ -6,7 +6,14 @@
 //            tight end by targets), RB1 (its top back by carries); the rest WR4+, TE2+, RB2+; and the role he
 //            steps into with the ones missing out of the order (roleUp: the next man up's), the snap share of
 //            the one missing above him (leadShare), and his return from an absence (back, ret: his team's games
-//            he missed, his games since). The NBA: a team's
+//            he missed, his games since); the same order by his recent healthy work (roleW, roleUpW: a game he
+//            left hurt not learned, a missing one's kept through his first games out, so a starter who missed
+//            games isn't ranked under his fill-in by the season's totals: project.mjs ro), the target share of
+//            the one missing above him (leadTgt: the volume base's next-man-up floor), a regular above him out
+//            (aheadOut: CTX aheadOut), his games this season with the same regulars at his position out as
+//            tonight (sameGames: project.mjs ab), and his organic trend (trend: his work in the games with no
+//            regular at his position out, recent ones counting most, over their average: project.mjs ot). The
+//            NBA: a team's
 //            five with the most minutes a game among the ones playing are its starters (S), the rest its bench
 //            (B): a starter out, the next man up starts (in the history, the ones in the game's box score; at
 //            bet time, the ones not out or doubtful on the injury report)
@@ -172,7 +179,7 @@ export function nflMatchups(rows, pbp = null) {
       // (his games out counted again from the new season's first: two games rested or hurt at the end of the
       // last aren't an absence in the next one's first week (absent); the fade's the same, one not yet played
       // for the team this season (cur false) fading game by game whatever his count)
-      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, gone: 0, cur: false }]) : []) };
+      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, hv: (v.hv ?? v.v) * 0.5, gone: 0, cur: false }]) : []) };
       work.set(id, w);
     }
     return w;
@@ -303,12 +310,14 @@ export function nflMatchups(rows, pbp = null) {
   // (a player's role on his team before a game: his place among its players at his position, by targets (by
   // carries for a back))
   // (out: the ones missing tonight, by id, taken out of the order: the role he steps into, promotion below)
-  const roleOf = (pid, teamId, season, pos, out = null) => {
+  // (byWork: by his recent healthy work instead (roleWork below), so a starter who missed games isn't ranked
+  // under his fill-in by the season's totals: project.mjs ro)
+  const roleOf = (pid, teamId, season, pos, out = null, byWork = false) => {
     const p = POS(pos);
     if (!p || p === 'QB') return null;
     const t = teamOf(teamId, season);
-    const by = p === 'RB' ? t.car : t.tgt;
-    const mine = [...by.entries()].filter(([id]) => t.pos?.get(id) === p && (!out || String(id) === String(pid) || !out(id))).sort((a, b) => b[1] - a[1]);
+    const by = byWork ? roleWork(teamId, season, p) : p === 'RB' ? t.car : t.tgt;
+    const mine = [...by.entries()].filter(([id]) => (byWork || t.pos?.get(id) === p) && (!out || String(id) === String(pid) || !out(id))).sort((a, b) => b[1] - a[1]);
     const at = mine.findIndex(([id]) => id === pid);
     if (at < 0) return p === 'WR' ? 'WR4+' : `${p}2+`;
     if (p === 'WR') return at < 3 ? `WR${at + 1}` : 'WR4+';
@@ -320,21 +329,79 @@ export function nflMatchups(rows, pbp = null) {
   // whose TE1 is out the TE1, a WR3 whose WR1 is out the WR2; and the snap share of the most-used one missing
   // above him (his season's average, leadShare: null with none read), the work he steps into. project.mjs rp
   // and nu read them, kept only where the held-out games are better)
+  // (and the same by his recent healthy work (roleWork: project.mjs ro): roleW, roleUpW, leadShareW; the target
+  // share of the most-targeted one missing above him (his team's targets this season, last season's at half:
+  // leadTgt, and by work leadTgtW), the volume base's next-man-up floor (project.mjs rp on a receiving stat's
+  // target share); and aheadOut (aheadOf below), 1 where a regular above him by his recent healthy work is missing)
   const promotion = (pid, teamId, season, pos, out) => {
     const p = POS(pos);
     if (!p || p === 'QB') return { roleUp: null, leadShare: null };
     const t = teamOf(teamId, season);
-    const by = p === 'RB' ? t.car : t.tgt;
-    const own = by.get(pid) ?? 0;
     const w = workOf(teamId, season).p;
     const gone = (id) => !!w.get(id)?.cur && out(id);
-    let lead = null;
-    for (const [id, v] of by) {
-      if (t.pos?.get(id) !== p || String(id) === String(pid) || !(v > own) || !gone(id)) continue;
-      const s = snapOf(id, season, teamId)?.avg ?? null;
-      if (s !== null && (lead === null || s > lead)) lead = s;
-    }
-    return { roleUp: roleOf(pid, teamId, season, pos, gone), leadShare: lead };
+    const tgtAll = [...t.tgt.values()].reduce((a, b) => a + b, 0);
+    const leadOf = (by) => {
+      const own = by.get(pid) ?? 0;
+      let lead = null;
+      let tgt = null;
+      for (const [id, v] of by) {
+        if (t.pos?.get(id) !== p || String(id) === String(pid) || !(v > own) || !gone(id)) continue;
+        const s = snapOf(id, season, teamId)?.avg ?? null;
+        if (s !== null && (lead === null || s > lead)) lead = s;
+        const ts = tgtAll >= 20 ? (t.tgt.get(id) ?? 0) / tgtAll : null;
+        if (ts !== null && (tgt === null || ts > tgt)) tgt = ts;
+      }
+      return { lead, tgt: tgt === null ? null : Math.round(tgt * 1000) / 1000 };
+    };
+    const s = leadOf(p === 'RB' ? t.car : t.tgt);
+    const h = leadOf(roleWork(teamId, season, p));
+    return { roleUp: roleOf(pid, teamId, season, pos, gone), leadShare: s.lead, leadTgt: s.tgt, roleUpW: roleOf(pid, teamId, season, pos, gone, true), leadShareW: h.lead, leadTgtW: h.tgt };
+  };
+  // (a regular above him by his recent healthy work missing (out: in the history not in the game's logs, the
+  // snap counts read or not; at bet time out, doubtful, on IR or off the roster): 1, else 0. Once a fill-in's
+  // work passes the missing one's (kept as it was), he's no longer below him: the flag's the absence's first
+  // games; the same absence's games (sameOf) read the ones out at his position whatever their order)
+  const aheadOf = (pid, teamId, season, pos, out) => {
+    const p = POS(pos);
+    if (!p || p === 'QB') return 0;
+    const w = workOf(teamId, season).p;
+    const hw = roleWork(teamId, season, p);
+    const own = hw.get(pid) ?? 0;
+    return [...hw].some(([id, v]) => String(id) !== String(pid) && v >= 1.5 && v > own && !!w.get(id)?.cur && out(id)) ? 1 : 0;
+  };
+  // (a position group's recent healthy work by id (hv: his work a game, recent games counting most, a game he
+  // left hurt or was eased back in (a snap share under half his season's) not learned; kept as it was through
+  // his first FREEZE games out, then fading, as the work is), the role order by it (roleOf byWork))
+  const roleWork = (teamId, season, p) => new Map([...workOf(teamId, season).p].filter(([, x]) => x.pos === p).map(([id, x]) => [id, x.hv ?? x.v]));
+  // (his organic trend before a game: his work a game in his games this season with no regular at his position
+  // missing and no absence of his own just before (the first game back's eased), recent games counting most
+  // (WORK_RATE), over their plain average; null under TREND_MIN such games. The work he took filling in for a
+  // missing regular is the next man up's, the vacated term's and the same absence's (rp, nu, vacF, ab), not
+  // this)
+  const TREND_MIN = 4;
+  // (the same absence: the regulars at his position missing tonight (out: as aheadOf's), and his games this
+  // season for this team with every one of them missing then too (by game id), the role he's had with them out
+  // (project.mjs ab); null with none missing or no such game)
+  const sameOf = (pid, teamId, season, pos, out) => {
+    const p = POS(pos);
+    if (!p || p === 'QB') return null;
+    const w = workOf(teamId, season).p;
+    const ids = [...w].filter(([id, x]) => String(id) !== String(pid) && x.pos === p && x.v >= 1.5 && x.cur && out(id)).map(([id]) => String(id));
+    if (!ids.length) return null;
+    const h = games_.get(pid);
+    const list = h && h.season === season ? h.games : [];
+    const same = list.filter((g) => String(g.team) === String(teamId) && ids.every((id) => g.missing.has(id))).map((g) => g.game);
+    return same.length ? same : null;
+  };
+  const trendOf = (pid, season) => {
+    const h = games_.get(pid);
+    const list = h && h.season === season ? h.games.filter((g) => g.organic) : [];
+    if (list.length < TREND_MIN) return null;
+    const mean = list.reduce((t, g) => t + g.work, 0) / list.length;
+    if (!(mean >= 1)) return null;
+    let e = list[0].work;
+    for (const g of list.slice(1)) e += (g.work - e) * WORK_RATE;
+    return Math.round((e / mean) * 1000) / 1000;
   };
   // (a player back from an absence: back, his team's games he missed just before this one while on its books
   // (the work's gone count: his team's games this season he wasn't in the logs of, from its first for one
@@ -381,6 +448,10 @@ export function nflMatchups(rows, pbp = null) {
         r.qb1Miss = q1.miss;
         r.teamGame = gameNo(g.team, g.season);
         Object.assign(r, promotion(r.pid, g.team, g.season, r.pos, (id) => read && !playing.has(id)), returnOf(r.pid, g.team, g.season));
+        r.roleW = roleOf(r.pid, g.team, g.season, r.pos, null, true);
+        r.aheadOut = aheadOf(r.pid, g.team, g.season, r.pos, (id) => !playing.has(id));
+        r.trend = POS(r.pos) && POS(r.pos) !== 'QB' ? trendOf(r.pid, g.season) : null;
+        r.sameGames = sameOf(r.pid, g.team, g.season, r.pos, (id) => !playing.has(id));
         const past = vacPast(r.pid, g.season, r.pos);
         if (past) r.vacPast = past;
       }
@@ -428,6 +499,7 @@ export function nflMatchups(rows, pbp = null) {
       const playing = new Set(g.rows.map((r) => r.pid));
       const missing = new Set([...w.p].filter(([id, x]) => x.v >= 1.5 && !playing.has(id)).map(([id]) => String(id)));
       const played = new Set();
+      const most0 = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
       for (const r of g.rows) {
         const p = POS(r.pos);
         if (!p) continue;
@@ -435,16 +507,23 @@ export function nflMatchups(rows, pbp = null) {
         if (r.ret) rets.set(r.pid, { season: g.season, team: g.team, ...r.ret });
         else rets.delete(r.pid);
         played.add(r.pid);
-        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), gone: 0, cur: true };
+        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), hv: touches(r, p), gone: 0, cur: true };
         x.pos = p;
         x.v += (touches(r, p) - x.v) * WORK_RATE;
+        // (his healthy work (roleWork): a game under half his season's snap share (he left it hurt, was eased
+        // back) not learned, his work as it was)
+        const sn = snapOf(r.pid, g.season);
+        const short = most0 > 0 && sn !== null && sn.n >= 3 && (r.s.snaps ?? 0) / most0 < 0.5 * sn.avg;
+        if (!short) x.hv = (x.hv ?? x.v) + (touches(r, p) - (x.hv ?? x.v)) * WORK_RATE;
         x.gone = 0;
         x.unread = false;
         x.cur = true;
         w.p.set(r.pid, x);
         const h = games_.get(r.pid);
         const mine = h && h.season === g.season ? h : { season: g.season, games: [] };
-        mine.games.push({ team: g.team, missing });
+        // (and the game, its work and whether it's organic, for the trend: no regular at his position missing,
+        // not his first game back from an absence)
+        mine.games.push({ team: g.team, game: g.game, missing, work: touches(r, p), organic: ![...missing].some((id) => w.p.get(id)?.pos === p) && !(r.back >= 1) });
         games_.set(r.pid, mine);
       }
       // (and the snap counts read for the game: a game missed without them makes his absence unread, returnOf)
@@ -453,7 +532,7 @@ export function nflMatchups(rows, pbp = null) {
         if (played.has(id)) continue;
         x.gone = (x.gone ?? 0) + 1;
         if (!snapsRead) x.unread = true;
-        if (x.gone > FREEZE || !x.cur) x.v *= 1 - WORK_RATE;
+        if (x.gone > FREEZE || !x.cur) (x.v *= 1 - WORK_RATE), (x.hv = (x.hv ?? x.v) * (1 - WORK_RATE));
       }
       // (the snap shares: each player's offensive snaps over the team's most, where the counts were read)
       const most = Math.max(0, ...g.rows.map((r) => r.s.snaps ?? 0));
@@ -490,7 +569,8 @@ export function nflMatchups(rows, pbp = null) {
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
       const q1 = qb1Out(teamId, season, pid, pos, missOf);
-      return { role: roleOf(pid, teamId, season, pos), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      const p = POS(pos);
+      return { role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
     // null with none)

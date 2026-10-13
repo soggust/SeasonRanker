@@ -5,7 +5,7 @@
 // into them and the desk learns whether they'd have won.
 //
 //   cause    why it's a CHECK: 'gap', 'role' or 'news' (an older one without it, the gap's), a role's sub-reason in
-//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line), the
+//            roleReason (backup-qb, qb-change, few-starts, qb1-out, group-out, snap-jump, part-time, line, depth), the
 //            news's unit in newsUnit (a prop's: news.mjs, his unit's play-caller, coordinator or head coach
 //            changed, or a benching, either side; the headline its reason); checkSummary tallies them
 //            apart, so the gap's hit rate stays the gap's

@@ -35,7 +35,7 @@
 //   (checks.mjs, run.mjs betProps): not bet, graded as if it were. Ahead of the gap, an NFL player whose role
 //   is changing (roleChangeOf: a backup quarterback starting, his team's starter out, a change at quarterback,
 //   a regular at his position out and a big cut of his work, a jump in his snaps, a part-timer with a regular out, a line far
-//   from his projection at the book's own price) is a CHECK too (kind 'role', its sub-reason role), whichever
+//   from his projection at the book's own price, the depth chart against his role) is a CHECK too (kind 'role', its sub-reason role), whichever
 //   side the model takes, when it's the role alone (one the long-shot, moved or unpriced skips take too, skipped):
 //   the book reprices a role on the news, the model on the logs. Ahead of the role, a player whose unit (his
 //   team's offense or defense, or the whole team) the news flags (news.mjs: a change of play-caller,
@@ -61,7 +61,7 @@
 // An MLB batter's are his starts (his place in the posted lineup: the book only posts a starter's, and the
 // desk bets only one in the lineup), not a pinch hitter's one trip
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
 import { SKEW_MIN_LINE, ctxFactor, ctxKeys, factorProduct, fitStat, impliedMean, lineChances, makeModel, middleF, rAt } from './project.mjs';
@@ -130,6 +130,9 @@ export function restGuard(restDays, debut, date) {
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
 //               ROLE.ratioLo times the model's: the market reading a role the model hasn't seen
+//   depth       (none of the above) the depth chart's starter at his spot the model's role has lower, or the
+//               model's top man the chart has behind (depthRoleOf below: a tight end's receiving, a back's
+//               rushing; live only), its safe side the chart's
 // qb1: { id, name, missing (0 to 1) }; boardQbs: a Set of ids (null: unknown); snap: { latest, avg, n }; starts:
 // a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
@@ -167,6 +170,72 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     const ratio = implied / mu;
     if (ratio > ROLE.ratioHi || ratio < ROLE.ratioLo) return { key: 'line', safe: ratio > ROLE.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
   }
+  return null;
+}
+
+// The NFL's depth chart as a pre-game role input, live only: each team's chart now (the site's StaticData/depth,
+// built nightly by apps/nfl/scripts/build-depth.mjs from nflverse's daily depth charts, ESPN's snapshots twice a
+// day, each stamped (at)). A player the chart has first at his spot among the ones not out (out, doubtful, IR,
+// off the roster: missOf) where the model's role (project.mjs: his place by the work, the next man up's where rp
+// is kept) has him under it, or the model's first where the chart has someone not out ahead of him, is a role
+// CHECK (kind 'role', role 'depth') on the side the chart says is the risk: the chart's starter the model ranks
+// lower runs over his projection (its safe side the over), the model's top man the chart has behind runs under
+// (the under). Only the single-starter spots where it read: a tight end's receiving (receptions, receiving
+// yards, both yards) and a back's rushing (carries, rushing yards). Measured 2026-10-12 on the 2025 and 2026
+// seasons' eligible rows, each against the latest snapshot before the kickoff (the ones not in the game's logs
+// out of the order): tight ends the chart's starter the model had lower ran 11.4% over the projection on
+// receiving yards (n 150; the two agreeing, 2.0%), receptions 6.3% (2.2%); the model's TE1 the chart had
+// behind -7.3% and -15.7% (n 28); backs the chart's starter the model had lower +9.5% rushing yards and +12.1%
+// carries (n 221; agreeing +4.8%, +4.9%), the model's RB1 the chart had behind -19% and -25% (n 48). The
+// wide receivers' three starting spots against the model's WR1-3 said nothing (+0.2% to +6.9%, either sign by
+// stat), nor a back's receiving (the chart's starter the model had lower ran under there, -12% to -17%): not
+// read. Not a projection term: the history's charts before 2025 are weekly, unstamped (not known to be
+// pre-game), and 2025 on is all past the fit window, so nothing can be fit on them yet; it only takes bets away
+// (a CHECK, or the safe side alone), never makes one. A chart older than DEPTH.fresh, stamped after the
+// kickoff, or without him: no reason, as before
+export const DEPTH = { fresh: 3 * 864e5, slots: { TE10: 'TE', RB11: 'RB' }, stats: { TE: ['rec', 'recYds', 'rushRecYds'], RB: ['rushYds', 'rushAtt'] } };
+// (the charts by player: his ESPN id to his spot's group, its order (ESPN ids, first the starter) and the chart's
+// stamp; an empty map where the folder can't be read)
+export function readDepth(dir) {
+  const out = new Map();
+  let files = [];
+  try {
+    files = readdirSync(dir).filter((f) => f.endsWith('.json'));
+  } catch {
+    return out;
+  }
+  for (const f of files) {
+    let j;
+    try {
+      j = JSON.parse(readFileSync(path.join(dir, f), 'utf8'));
+    } catch {
+      continue;
+    }
+    const espn = (id) => (String(id).startsWith('espn:') ? String(id).slice(5) : (j.players?.[id]?.espnId ?? null));
+    for (const s of j.slots ?? []) {
+      const group = DEPTH.slots[s.key];
+      if (!group) continue;
+      const order = (s.depth ?? []).map(espn).filter(Boolean).map(String);
+      for (const id of order) {
+        const was = out.get(id);
+        if (!was || String(j.at) > String(was.at)) out.set(id, { group, order, at: j.at ?? null, team: j.team ?? null });
+      }
+    }
+  }
+  return out;
+}
+// (his reason, or null: depth the charts (readDepth), missOf a teammate's being out (0 to 1, out at 1), role the
+// model's role for him tonight, at the kickoff, now the run's time)
+export function depthRoleOf({ pos, pid, stat, depth, missOf, role, at, now = Date.now() }) {
+  const c = depth?.get?.(String(pid));
+  if (!c || c.group !== pos || !DEPTH.stats[pos]?.includes(stat) || !role) return null;
+  const t = Date.parse(c.at);
+  if (!Number.isFinite(t) || now - t > DEPTH.fresh || (Number.isFinite(Date.parse(at)) && t >= Date.parse(at))) return null;
+  const first = c.order.find((id) => id === String(pid) || !(Number(missOf?.(id)) >= 1));
+  const chartTop = first === String(pid);
+  const modelTop = role === `${pos}1`;
+  if (chartTop && !modelTop) return { key: 'depth', safe: 'over', why: `the depth chart's ${pos}1 tonight, the model's ${role}: a bigger role than his numbers say` };
+  if (!chartTop && modelTop) return { key: 'depth', safe: 'under', why: `the model's ${pos}1, behind another ${pos === 'TE' ? 'tight end' : 'back'} on the depth chart tonight: a smaller role than his numbers say` };
   return null;
 }
 
@@ -224,6 +293,17 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
 // project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
 const PASSING = ['wind', 'cold', 'precip', 'newCoach'];
+// (a regular above him at his position out tonight (aheadOut, matchups.mjs: one with more recent healthy work
+// than his, out, doubtful, on IR or off the roster; in the history not in the game's logs): the next man up's
+// lift on top of rp and the vacated work, the injury-driven share change explicit (the owner's steer: playing
+// time moves far more with an absence, his own or the one ahead of him, than organically). Measured 2026-10-12
+// (eligible players 2021 on, before it): with one out his receiving yards ran 11.7% over the projection held
+// out (n 677; without, 2.0%), receptions 9.4%, carries 20%, rushing yards 15%. A late flag on its own rows'
+// gate (project.mjs SUBGROUP), tried after rp. Fit on every stat it was on (2026-10-12) it took the other way on
+// the fit window (-0.05 to -0.1: the absences' rows there ran at their projections, 2021 and 2022 -6% to 0% on
+// receiving yards, the lift a 2023-on one), held out worse on every stat (-0.0003 to -0.0009) and its own rows'
+// bias larger: left out, and off every stat's ctx (its late search an hourly cost for nothing kept). CTX.aheadOut
+// kept for a measure on demand (add it back to a ctx))
 const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
@@ -359,6 +439,8 @@ export const CTX = {
   // the game's logs in the history; a questionable one at half), times the share of his games this season the
   // starter played in: a back's and a pass-catcher's, a quarterback's 0)
   qb1Out: (info, home, pts, row) => (Number.isFinite(row?.qb1Out) ? row.qb1Out : 0),
+  // (a regular above him at his position out (matchups.mjs aheadOut, 0 or 1; a questionable one not))
+  aheadOut: (info, home, pts, row) => (Number.isFinite(row?.aheadOut) ? row.aheadOut : 0),
   // (his team's 5th to 8th game of the season (matchups.mjs teamGame). The role backtest (2026-10-12, the week
   // table) had the established starters' receiving 3% to 13% over the projection there (held out 7% to 19%),
   // every eligible player's 2% to 4%, their actual over their own season so far (+3% receiving yards) and at
@@ -826,6 +908,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       if (/^RB/.test(p.role ?? '') && row.role && p.role !== row.role && /^rec|^rushRec/.test(prop.stat.key)) {
         roleChange = { ...(roleChange ?? { key: 'group-out', why: `${a.name || 'he'} stepping up to ${p.role} with the back above him out: a promoted back's receiving` }), safe: null };
       }
+      // (the depth chart against the model's role (depthRoleOf, live only: the site's charts, live.depth), where
+      // nothing above said his role's changing)
+      roleChange ??= depthRoleOf({ pos: row.pos, pid, stat: prop.stat.key, depth: live?.depth, missOf: missOf(0), role: p.role, at: game.date });
     }
     // (the model too far from the book (the gap guard below, the same either side), or his role changing: the
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the
