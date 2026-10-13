@@ -965,33 +965,30 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
       label: 'Def Rank',
       name: 'Defense Rank',
       description:
-        "The defense's league rank (1 = best), by the Rank Base setting: points allowed per game (the scoring defense rank) or yards allowed per game. For context; not part of the ranking",
+        "The defense's league rank (1 = best), by the Rank Base setting: points allowed per game (the scoring defense rank) or yards allowed per game",
       kind: 'efficiency',
       format: 'rank',
       negative: true,
-      infoOnly: true,
     },
     {
       key: 'passDefRank',
       label: 'Pass D Rank',
       name: 'Pass Defense Rank',
       description:
-        "The defense's league rank against the pass (1 = best), by the Rank Base setting. Yards: passing yards allowed per game, sacks taken off. Points: passing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in). For context; not part of the ranking",
+        "The defense's league rank against the pass (1 = best), by the Rank Base setting. Yards: passing yards allowed per game, sacks taken off. Points: passing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in)",
       kind: 'efficiency',
       format: 'rank',
       negative: true,
-      infoOnly: true,
     },
     {
       key: 'runDefRank',
       label: 'Run D Rank',
       name: 'Run Defense Rank',
       description:
-        "The defense's league rank against the run (1 = best), by the Rank Base setting. Yards: rushing yards allowed per game, QB scrambles included. Points: rushing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in). For context; not part of the ranking",
+        "The defense's league rank against the run (1 = best), by the Rank Base setting. Yards: rushing yards allowed per game, QB scrambles included. Points: rushing touchdowns allowed per game (points aren't split by pass and run, so touchdowns stand in)",
       kind: 'efficiency',
       format: 'rank',
       negative: true,
-      infoOnly: true,
     },
     {
       key: 'epaAllowed',

@@ -33,7 +33,7 @@ test('defense splits: sacks pass, scrambles run, only the offense\'s touchdowns,
 });
 
 test('Pass D / Run D Rank: ties share, nulls get none, by points (touchdowns) or yards', async () => {
-  const { SPORT, SKILL_STATS, presetWeights, statGroup } = await loadEngine('nfl');
+  const { SPORT, SKILL_STATS, statGroup } = await loadEngine('nfl');
   const stat = (key) => SKILL_STATS.DEF.find((s) => s.key === key);
   const unit = (team, passYds, rushYds, passTds, rushTds, pts) => ({
     gsisId: `DEF-${team}`,
@@ -67,11 +67,10 @@ test('Pass D / Run D Rank: ties share, nulls get none, by points (touchdowns) or
   assert.equal(oldRank('runDefRank', 'yards'), null);
   assert.equal(oldRank('defRank', 'yards'), null);
   assert.equal(oldRank('defRank', 'points'), 1);
-  // In Results, for reading only: no slider, so the default DEF ranking is as it was
+  // In Results, each a slider (the owner's call: sorted by best pass or run D, weighted like any stat)
   for (const key of ['defRank', 'passDefRank', 'runDefRank']) {
-    assert.ok(stat(key).infoOnly && stat(key).format === 'rank', `${key}: a display-only rank`);
+    assert.ok(!stat(key).infoOnly && stat(key).format === 'rank' && stat(key).negative, `${key}: a scored rank, lower better`);
     assert.equal(statGroup(stat(key)), 'results', `${key}: not in Results`);
-    assert.ok(!(key in presetWeights('DEF', 'default')), `${key}: weighted by default`);
   }
   assert.equal(SPORT.statLabel(stat('passDefRank'), { rankBasis: 'points' }, 'DEF'), 'Pass D Rank (TDs)');
   assert.equal(SPORT.statLabel(stat('runDefRank'), { rankBasis: 'yards' }, 'DEF'), 'Run D Rank (Yds)');
