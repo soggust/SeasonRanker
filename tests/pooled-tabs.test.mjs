@@ -250,6 +250,25 @@ for (const sport of POOLING) {
     }
   });
 
+  test(`${sport}: a Top 50 dragged by hand, then Show all: the rest follow the ranking, not the file's order`, async () => {
+    const engine = await engineFor(sport);
+    const { POOLED, SKILL_UNITS, CURRENT_SEASON } = engine;
+    for (const pooled of Object.keys(POOLED)) {
+      const { host, ranker } = harness(engine, sport, pooled);
+      const listed = ranker.listed(SKILL_UNITS, CURRENT_SEASON, pooled);
+      const { ranked } = ranker.rankedTotals(host.reader, listed, pooled, SKILL_UNITS);
+      assert.ok(ranked.length > 60);
+      // (the 50 that showed, the first two swapped: all the tab saved)
+      const top = ranked.slice(0, 50).map((p) => p.gsisId);
+      [top[0], top[1]] = [top[1], top[0]];
+      const order = ranker.inOrder(listed, top, ranked);
+      assert.deepEqual(order.slice(0, 50).map((p) => p.gsisId), top, 'the dragged top as saved');
+      assert.deepEqual(order.slice(50), ranked.slice(50), 'everyone after in the ranking');
+      // (without the ranking, the rest kept the file's order: what Show all showed before)
+      assert.notDeepEqual(ranker.inOrder(listed, top).slice(50), ranked.slice(50));
+    }
+  });
+
   test(`${sport}: a Top 50 row's card, compare side and search hit are his own tab's`, async () => {
     const engine = await engineFor(sport);
     const { POOLED, CURRENT_SEASON } = engine;

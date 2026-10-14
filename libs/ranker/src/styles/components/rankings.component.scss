@@ -2222,10 +2222,16 @@ section ul li.show-all {
       width: 18px;
     }
 
+    // (an expand control: it lightens, never the yellow accent; focus keeps a ring of its own)
     &:hover,
     &:focus-visible {
-      border-color: var(--scoreboard-led);
-      color: var(--scoreboard-led);
+      border-color: rgba(255, 255, 255, 0.45);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.6);
+      outline-offset: 2px;
     }
   }
 }

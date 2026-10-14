@@ -189,11 +189,13 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     });
     service.seasonLoading$.pipe(takeUntilDestroyed()).subscribe((loading) => (this.seasonLoading = loading));
     // (a team picked or let go: the same list, more or fewer of its rows shown, and Compare's picks
-    // just the rows still shown)
+    // just the rows still shown; a capped tab, the Top 50, lists its whole ranking for a team, so the
+    // team's rows past the cap show too, each with its league rank)
     this.teams.changed$.pipe(takeUntilDestroyed()).subscribe(() => {
       this.closeWhy();
       this.leaveIsolation();
-      this.showUnranked(this.unrankedList);
+      if (this.position && SPORT.listLimit?.(this.position)) this.relist();
+      else this.showUnranked(this.unrankedList);
       const shown = new Set(this.gridRows.map((p) => p.gsisId));
       this.picked = this.picked.filter((id) => shown.has(id));
     });
@@ -289,11 +291,15 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.publishOrder(true);
   }
 
-  // Put the list back in a saved order (players that have since appeared go at the end)
+  // Put the list back in a saved order (players that have since appeared go at the end). A capped tab (the
+  // Top 50) saved only the rows showing, so the rest follow in the sliders' order, under them (Show all
+  // after a drag: the dragged top, then everyone else as ranked, not in the file's order)
   private restoreOrder(ids: string[]): void {
     const listed = this.ranker.listed(SKILL_UNITS, this.season, this.position);
-    this.playerList = this.limited(this.ranker.inOrder(this.shown(listed), ids));
-    this.totals = this.scoreTotals(listed);
+    let ranked: SkillPlayer[] | undefined;
+    if (SPORT.listLimit?.(this.position)) ({ ranked, totals: this.totals } = this.ranker.rankedTotals(this.reader, listed, this.position, SKILL_UNITS));
+    else this.totals = this.scoreTotals(listed);
+    this.playerList = this.limited(this.ranker.inOrder(this.shown(listed), ids, ranked));
     this.listUnranked();
   }
 
@@ -325,8 +331,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.unrankedList = list;
     this.unrankedSet = new Set(list);
     // (the teams in the list for the settings' Teams Included, then the picked one's rows: the ranking
-    // stays the whole list's, each row its league rank)
-    this.teams.offer(teamOptions([...this.playerList, ...list], (row) => this.teamNameOf(row)));
+    // stays the whole list's, each row its league rank; a capped tab offers every team it ranks, not
+    // just those in its top rows)
+    this.teams.offer(teamOptions([...this.rankedAll, ...list], (row) => this.teamNameOf(row)));
     const shown = teamRows(this.playerList, list, this.teams.team);
     this.formalRows = shown.rows;
     this.rankedShown = shown.ranked;
@@ -503,19 +510,24 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   // The tab's top rows only, when the sport caps it (SPORT.listLimit), after the ranking: the cut never moves
   // the order or what each stat is measured against. A pooled tab (the Top 50) can show them all (its Show
-  // all row: the whole ranking, a line under its last place)
+  // all row: the whole ranking, a line under its last place); with a team picked the whole ranking is
+  // listed, the team's rows shown from it
   private limited(list: SkillPlayer[]): SkillPlayer[] {
     this.rankedCount = list.length;
+    this.rankedAll = list;
     const limit = SPORT.listLimit?.(this.position);
-    return limit && !this.showsAll ? list.slice(0, limit) : list;
+    return limit && !this.showsAll && !this.teams.team ? list.slice(0, limit) : list;
   }
 
-  // (the ranked rows before the cap: Show all's count, and where the bottom ten start)
+  // (the ranked rows before the cap: Show all's count, and where the bottom ten start; and the rows
+  // themselves, for Teams Included's teams)
   rankedCount = 0;
+  private rankedAll: SkillPlayer[] = [];
 
   // A pooled tab's cap (the Top 50's 50), when its ranking is longer: the Show all row, and the line
-  // under its last place while they all show
+  // under its last place while they all show (none with a team picked: its rows all show)
   get listCap(): number | null {
+    if (this.teams.team) return null;
     const limit = isPooled(this.position) ? SPORT.listLimit?.(this.position) : undefined;
     return limit && this.rankedCount > limit ? limit : null;
   }
@@ -528,6 +540,11 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   toggleShowAll(): void {
     this.closeWhy();
     this.positionService.setShowAll(this.position, !this.showsAll);
+    this.relist();
+  }
+
+  // (the list again, its cap as it stands: in the order dragged by hand, or sorted by the sliders)
+  private relist(): void {
     const saved = this.positionService.unitOrder(this.position);
     if (saved?.manual) this.restoreOrder(saved.ids);
     else this.sortPlayers();

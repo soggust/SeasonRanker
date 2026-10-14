@@ -148,10 +148,13 @@ export class TabRanker {
     return [...listed].sort((a, b) => score(b) - score(a) || at.get(a)! - at.get(b)!);
   }
 
-  // A list in a saved order (players that have since appeared go at the end)
-  inOrder(players: SkillPlayer[], ids: string[]): SkillPlayer[] {
+  // A list in a saved order (players that have since appeared go at the end; with ranked, those not saved
+  // follow in its order: a capped tab, the Top 50, saves only the rows it showed)
+  inOrder(players: SkillPlayer[], ids: string[], ranked?: SkillPlayer[]): SkillPlayer[] {
     const at = new Map(ids.map((id, i) => [id, i]));
-    return [...players].sort((a, b) => (at.get(a.gsisId) ?? Infinity) - (at.get(b.gsisId) ?? Infinity));
+    const place = new Map(ranked?.map((player, i) => [player, i]));
+    const after = (player: SkillPlayer) => place.get(player) ?? Infinity;
+    return [...players].sort((a, b) => (at.get(a.gsisId) ?? Infinity) - (at.get(b.gsisId) ?? Infinity) || after(a) - after(b));
   }
 
   // Rookies Only (settings menu): players in their first season (first-year head coaches on a coaches'
