@@ -48,7 +48,7 @@ function emulatorPorts(): { auth: number; firestore: number } {
 // Enterprise; the classic v3 is retired; the one App Check and the Fraud Defense console both name). A site key is
 // public: it ships in the page. Empty: App Check is off and
 // nothing loads. 'v3' or 'enterprise' for the kind of key.
-export const APP_CHECK_SITE_KEY = '6LfyGugtAAAAAAqHwguX1EsuSRYmJZwDidhyW0X2';
+export const APP_CHECK_SITE_KEY = '6Lecbe4tAAAAAAjDFNfsllOW1MNS8ELvXkXJJAqt';
 export const APP_CHECK_PROVIDER: 'v3' | 'enterprise' = 'enterprise';
 
 let appCheckPromise: Promise<void> | null = null;
