@@ -28,6 +28,8 @@ export const SKILLS: Record<SkillPosition, SkillDef[]> = {
     { id: 'roster', name: 'Roster', short: 'Roster', parts: [['backcourt', 1], ['wings', 1], ['frontcourt', 1]] },
     { id: 'close', name: 'Close Games', short: 'Close Games', parts: [['pythDiff', 1]] },
   ],
+  // (a Top 50 card opens on his own tab: these just fill the type)
+  TOP: NBA_SKILLS,
   PG: NBA_SKILLS,
   SG: NBA_SKILLS,
   SF: NBA_SKILLS,
@@ -119,6 +121,7 @@ export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
     { name: 'No Defense', test: (s) => s['defense'] <= 0.15 && s['winning'] <= 0.45 },
     { name: "Can't Score", test: (s) => s['offense'] <= 0.15 && s['winning'] <= 0.45 },
   ],
+  TOP: STAR,
   PG: [
     ...STAR,
     { name: 'Floor General', test: (s) => s['playmaking'] >= 0.85 && s['scoring'] <= 0.7 },
@@ -181,6 +184,7 @@ export function fallbackArchetype(position: SkillPosition, overall: number, _pla
   if (position === 'TM') return overall >= 0.75 ? 'Contender' : overall >= 0.45 ? 'Playoff Team' : overall >= 0.25 ? 'Bubble Team' : 'Lottery Team';
   const noun: Record<SkillPosition, string> = {
     TM: 'Team',
+    TOP: 'Player',
     PG: 'Point Guard',
     SG: 'Shooting Guard',
     SF: 'Small Forward',

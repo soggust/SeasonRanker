@@ -35,7 +35,8 @@ const WINNER: SkillPresetDef = {
   weights: { winPct: 100, ws: 90, onOff: 80, vorp: 60 },
 };
 
-// Guards run the offense; wings shoot and defend; bigs rebound, protect the rim and finish
+// Guards run the offense; wings shoot and defend; bigs rebound, protect the rim and finish. The Top 50
+// (every position together) has the ones every tab shares.
 export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
   TM: [
     {
@@ -63,6 +64,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       weights: { defRank: 100, netRtg: 50, frontcourt: 50 },
     },
   ],
+  // (every position together: the presets every tab shares)
+  TOP: [IMPACT, SCORER, DEFENDER, WINNER],
   PG: [
     IMPACT,
     {

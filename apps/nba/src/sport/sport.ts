@@ -132,6 +132,7 @@ export const SPORT: SportConfig = {
   seasonText: seasonName,
   positionNames: {
     TM: 'Team',
+    TOP: 'Top 50',
     PG: 'Point Guard',
     SG: 'Shooting Guard',
     SF: 'Small Forward',
@@ -141,6 +142,7 @@ export const SPORT: SportConfig = {
   },
   tabNames: {
     TM: 'Teams',
+    TOP: 'Top 50',
     PG: 'Point Guards',
     SG: 'Shooting Guards',
     SF: 'Small Forwards',
@@ -152,6 +154,10 @@ export const SPORT: SportConfig = {
   teamTabs: ['TM'],
   rowHeader: (position) => (position === 'HC' ? 'Coach' : position === 'TM' ? 'Team' : 'Player'),
   extraRows: () => ({ TM: teamRows() }),
+  // The Top 50: every position together, ranked on the stats they all share (pooled-tabs.ts), its top 50
+  // shown (the rest one click away)
+  pooledTabs: { TOP: { tabs: ['PG', 'SG', 'SF', 'PF', 'C'] } },
+  listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each spot by your rankings, weighted by minutes
   rosterGrades: [
     { key: 'backcourt', positions: ['PG', 'SG'], usage: (p) => p.stats.minutes ?? 0 },
