@@ -1,0 +1,40 @@
+{
+ "sport": "nba",
+ "days": 2,
+ "signals": [
+  {
+   "team": "13",
+   "abbr": "LAL",
+   "athlete": "4433136",
+   "player": "Walker Kessler",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Walker Kessler impresses in preseason debut for Lakers",
+   "at": "2026-10-14T07:06:18.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4396993",
+   "player": "Tyrese Haliburton",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Tyrese Haliburton's return brings hope and expectations in Indiana",
+   "at": "2026-10-13T17:10:32.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GS",
+   "athlete": "3102531",
+   "player": "Kristaps Porzingis",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Kristaps Porzingis expected to be at Warriors' facility on Tuesday",
+   "at": "2026-10-12T22:02:52.000Z"
+  }
+ ],
+ "at": "2026-10-14T15:40:02.495Z"
+}

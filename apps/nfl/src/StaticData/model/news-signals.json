@@ -1,0 +1,84 @@
+{
+ "sport": "nfl",
+ "days": 2,
+ "signals": [
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4036135",
+   "player": "Alaric Jackson",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "NFL suspends Rams' Alaric Jackson for two games after punch",
+   "at": "2026-10-14T02:01:58.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4574716",
+   "player": "Harrison Mevis",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Rams releasing kicker Mevis after miscues in loss, sign Grupe from Jets",
+   "at": "2026-10-14T01:12:54.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4259619",
+   "player": "Blake Grupe",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Rams releasing kicker Mevis after miscues in loss, sign Grupe from Jets",
+   "at": "2026-10-14T01:12:54.000Z"
+  },
+  {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "3134690",
+   "player": "Montez Sweat",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Bears DE Montez Sweat suspended two games for violating NFL's PED policy",
+   "at": "2026-10-13T22:02:40.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "3916903",
+   "player": "Dre Greenlaw",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "49ers' Dre Greenlaw suspended one game for head-butting helmetless Seahawks LB",
+   "at": "2026-10-13T00:25:40.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": null,
+   "player": "Mike Pettine",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.6,
+   "headline": "Cowboys bring in Mike Pettine to assist first-year DC Christian Parker",
+   "at": "2026-10-12T23:15:33.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Packers' Micah Parsons won't play against Cowboys but return 'getting closer'",
+   "at": "2026-10-12T21:21:08.000Z"
+  }
+ ],
+ "at": "2026-10-14T15:40:02.495Z"
+}
