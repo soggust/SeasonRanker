@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 .sport-bar {
   align-items: stretch;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   box-shadow: inset 0 0 1em rgba(0, 0, 0, 0.4);
   display: flex;
   height: var(--sport-bar-height);
@@ -86,7 +86,6 @@
 
     &:hover {
       background: none;
-      color: var(--scoreboard-led);
       filter: brightness(1.25);
     }
 
@@ -101,7 +100,7 @@
 
   // (the page's side margin is 5% of the width below 1200px: the brand's edge and the avatar's on it, less the
   // bar's own padding (and the toggle's))
-  @media (max-width: 1199px) {
+  @include v.down(laptop) {
     a.brand {
       margin-right: calc(5vw - 14px);
     }
@@ -112,14 +111,14 @@
   }
 
   // (from a phone up to a small tablet: the podium alone, the sports and Sign in want the room)
-  @media (max-width: 760px) {
+  @include v.down(tablet) {
     a.brand .brand-name {
       display: none;
     }
   }
 
   // Phones: the names a size down to suit the slimmer bar, and just the podium (the sports fill the bar)
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     a {
       font-size: 11px;
       padding: 0 10px;
@@ -140,7 +139,7 @@
   }
 
   // (the narrowest phones: the links tighter still)
-  @media (max-width: 400px) {
+  @include v.down(tiny) {
     a {
       letter-spacing: 1px;
       padding: 0 8px;
@@ -165,11 +164,11 @@
   height: calc(100% - var(--sport-bar-height));
   padding: 1em 2em;
 
-  @media (max-width: 1199px) {
+  @include v.down(laptop) {
     padding: 0.75em 5%;
   }
 
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     padding: 8px;
   }
 }
@@ -192,8 +191,8 @@
     max-width: 1240px;
   }
 
-  @media (max-width: 575px) {
-    border-radius: 10px;
+  @include v.down(phone) {
+    border-radius: v.$radius-xl;
   }
 }
 
@@ -201,22 +200,20 @@
 .app-sheet-body {
   box-sizing: border-box;
   flex: 1;
-  padding: 22px 22px 0;
-
-  @media (max-width: 575px) {
-    padding: 12px 12px 0;
-  }
-
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
-
+  padding: 22px 22px 0;
   // (its scrollbar in the app's colors: a sand thumb on the pewter, as the grid's is in the sport's)
-  scrollbar-color: color-mix(in srgb, var(--app-sand, #d8b98a) 55%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--app-sand) 55%, transparent) transparent;
   scrollbar-width: thin;
 
+  @include v.down(phone) {
+    padding: 12px 12px 0;
+  }
+
   &::-webkit-scrollbar {
-    width: 10px;
+    width: v.$scrollbar-size;
   }
 
   &::-webkit-scrollbar-track {
@@ -224,13 +221,13 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--app-sand, #d8b98a) 45%, var(--app-pewter-deep, #24211e));
+    background: color-mix(in srgb, var(--app-sand) 45%, var(--app-pewter-deep));
     border: 2px solid transparent;
-    border-radius: 10px;
+    border-radius: v.$radius-xl;
     background-clip: padding-box;
 
     &:hover {
-      background-color: var(--app-sand, #d8b98a);
+      background-color: var(--app-sand);
     }
   }
 
@@ -247,7 +244,6 @@
   }
 }
 
-
 // ---------------------------------------------------------------------------
 // The page under the sport bar: the menu's drawer and the rankings
 // ---------------------------------------------------------------------------
@@ -263,7 +259,7 @@ main {
   .sidebar-shell {
     flex-shrink: 0;
     position: relative;
-    transition: margin-left 0.25s ease;
+    transition: margin-left v.$t-medium ease;
     z-index: 4;
   }
 
@@ -288,14 +284,14 @@ main {
     // (it can shrink below the grid's width, so the grid scrolls instead of overflowing)
     min-width: 0;
     padding: 1em 2em;
-    transition: width 0.25s ease;
-    width: calc(100% - 28.75em);
+    transition: width v.$t-medium ease;
+    width: calc(100% - #{v.$sidebar-room});
     z-index: 1;
   }
 
   &.sidebar-collapsed {
     .sidebar-shell {
-      margin-left: -26em;
+      margin-left: -1 * v.$sidebar-width;
     }
 
     .content {
@@ -304,13 +300,13 @@ main {
   }
 
   // Below 1200px: the menu slides out over the rankings (the collapse setting doesn't apply)
-  @media (max-width: 1199px) {
+  @include v.down(laptop) {
     justify-content: center;
 
     .sidebar {
       left: -100vw;
       position: fixed;
-      transition: all 0.3s ease-out;
+      transition: left 0.3s ease-out;
       width: 0;
     }
 
@@ -351,12 +347,9 @@ main {
 
   // Tablets and up: one piece with the grid under it (no gap, no line between them, square corners
   // where they meet)
-  @media (min-width: 576px) {
-    background: var(--scoreboard-dots), var(--scoreboard);
-    border: 1px solid #3a3a3a;
+  @include v.up(phone-up) {
+    @include v.scoreboard-panel(v.$tab-r v.$tab-r 0 0, 0 2px 6px rgba(0, 0, 0, 0.35));
     border-bottom: none;
-    border-radius: 9.1px 9.1px 0 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
     margin-bottom: 0;
     overflow: hidden;
   }
@@ -376,8 +369,8 @@ main {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     text-transform: uppercase;
     transition:
-      background 0.15s ease,
-      color 0.15s ease;
+      background v.$t-hover ease,
+      color v.$t-hover ease;
 
     // (pressed in, a faint dark shade)
     &:hover:not(.active) {
@@ -400,7 +393,7 @@ main {
     display: none;
   }
 
-  @media (min-width: 1200px) {
+  @include v.up(desktop) {
     height: 50px;
 
     button {
@@ -410,7 +403,7 @@ main {
     }
   }
 
-  @media (min-width: 1750px) {
+  @include v.up(wide) {
     button {
       .full {
         display: inline;
@@ -423,7 +416,7 @@ main {
   }
 
   // (nine full names only fit on one line in smaller, tighter text)
-  @media (min-width: 1750px) and (max-width: 2099px) {
+  @media (min-width: v.bp(wide)) and (max-width: v.bp(wide-max)) {
     button {
       font-size: 0.9em;
       letter-spacing: 1px;
@@ -433,7 +426,7 @@ main {
 
   // Phones: the tabs don't fit, so one dropdown (the phone's own picker) on a scoreboard panel, its
   // text and caret white
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     height: 36px;
     // (room around it, more under it, so it doesn't crowd the buttons or the grid)
     margin: 4px 0 10px;

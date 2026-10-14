@@ -28,7 +28,6 @@ interface MenuSwitch {
 @Component({
   selector: 'settings-menu',
   templateUrl: './settings-menu.component.html',
-  styleUrls: ['../../styles/components/settings-menu.component.scss'],
   standalone: false,
 })
 export class SettingsMenuComponent {

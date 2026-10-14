@@ -10,7 +10,25 @@
 
 // The chalkboard: dark green-gray slate with chalk dust, smudges and two coach-drawn plays (a pass and a
 // sweep) in faint chalk, scrolling with the rows
-$chalkboard: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, v.$chalk-dust;
+$chalkboard: v.$chalkboard;
+
+// The button bar's leather tiles (the year dropdown and the search bar take their height): their size, and
+// their size on phones
+$bar-tile: 42px;
+$bar-tile-phone: 36px;
+$bar-tiles: ".filter-toggle, .settings-toggle, .copy-toggle, .share-toggle, .compare-toggle, .info-toggle, .more-toggle";
+
+// The year dropdown's and the search bar's panel: a scoreboard panel the tiles' height
+// A hovered row's light wash (the column band's too: column-highlight.directive.ts)
+$row-wash: rgba(255, 255, 255, 0.07);
+
+@mixin bar-panel {
+  align-items: center;
+  @include v.scoreboard-panel(8px, 1px 1px 1px rgba(0, 0, 0, 0.6));
+  box-sizing: border-box;
+  display: inline-flex;
+  height: $bar-tile;
+}
 
 // The space under the grid's top edge that the bars above it take (the button bar and the position tabs)
 @mixin list-height($chrome) {
@@ -25,7 +43,7 @@ section.rankings-wrapper {
   flex-direction: column;
 }
 
-@media (max-width: 1199px) {
+@include v.down(laptop) {
   section {
     align-items: center;
     justify-content: center;
@@ -48,41 +66,28 @@ section footer {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 
   button {
-    color: #fff;
     cursor: pointer;
-
-    &:hover {
-      color: var(--scoreboard-led);
-    }
   }
 
-  .filter-toggle,
-  .settings-toggle,
-  .copy-toggle,
-  .share-toggle,
-  .compare-toggle,
-  .info-toggle,
-  .more-toggle {
+  #{$bar-tiles} {
     align-items: center;
     @include v.leather;
     border: 1px solid rgba(0, 0, 0, 0.55);
-    border-radius: 8px;
+    border-radius: v.$radius-lg;
     @include v.leather-edge;
     display: inline-flex;
     flex: 0 0 auto;
-    height: 42px;
+    height: $bar-tile;
     justify-content: center;
-    margin: 0 !important;
+    margin: 0;
     padding: 0;
-    width: 42px;
+    width: $bar-tile;
 
     .mat-icon {
       color: #fff;
-      font-size: 20px;
-      height: 20px;
+      @include v.icon-size(20px);
       margin: 0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-      width: 20px;
     }
 
     &:hover {
@@ -103,14 +108,10 @@ section footer {
   // The year dropdown: a scoreboard panel the height of the tiles, the year in the position tabs'
   // lettering (its text and caret are styled in _base.scss: they're inside Material's own template)
   .mat-mdc-select.season-select {
-    align-items: center;
-    @include v.scoreboard-panel(8px, 1px 1px 1px rgba(0, 0, 0, 0.6));
-    box-sizing: border-box;
-    display: inline-flex;
+    @include bar-panel;
     font-family: v.$font-base;
     font-size: 13px;
     font-weight: 500;
-    height: 42px;
     letter-spacing: 1.5px;
     padding: 0 1em;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -138,40 +139,35 @@ section.rankings-wrapper > footer {
   // the markup, so first of the three)
   .compare-toggle,
   .find-bar {
-    margin-left: auto !important;
+    margin-left: auto;
   }
 
-  .copy-toggle {
-    order: 3;
-  }
-
-  .share-toggle {
+  .copy-toggle,
+  .share-toggle,
+  .compare-toggle,
+  .find-bar {
     order: 3;
   }
 
   // (the picks' button: the search, a picked player's card, or Compare with their count on a little LED
   // tile at its corner)
   .compare-toggle {
-    order: 3;
     position: relative;
   }
 
   .compare-count {
-    @include v.led-tile;
-    border-radius: 9px;
-    color: var(--scoreboard-led);
+    @include v.led-tile($radius: 9px, $color: var(--scoreboard-led), $text-shadow: var(--scoreboard-glow));
     font-size: 9px;
     height: 17px;
     min-width: 17px;
     padding: 1px 4px 0;
     position: absolute;
     right: -6px;
-    text-shadow: var(--scoreboard-glow);
     top: -6px;
 
     // (a pick added or taken off: the count pops in, a little past its size and back)
     @media (prefers-reduced-motion: no-preference) {
-      animation: count-pop 0.28s cubic-bezier(0.3, 1.6, 0.5, 1) backwards;
+      animation: count-pop 0.28s v.$ease-pop backwards;
     }
   }
 
@@ -186,15 +182,10 @@ section.rankings-wrapper > footer {
   // The search, open in the button's place: a scoreboard panel the tiles' height (the year dropdown's
   // look), the magnifier, the box, its X; the hits drop under it over the grid
   .find-bar {
-    align-items: center;
-    @include v.scoreboard-panel(8px, 1px 1px 1px rgba(0, 0, 0, 0.6));
-    box-sizing: border-box;
-    display: inline-flex;
+    @include bar-panel;
     flex: 0 1 320px;
     gap: 6px;
-    height: 42px;
     min-width: 0;
-    order: 3;
     padding: 0 4px 0 10px;
     position: relative;
   }
@@ -235,7 +226,7 @@ section.rankings-wrapper > footer {
     align-items: center;
     background: none;
     border: none;
-    border-radius: 6px;
+    border-radius: v.$radius-md;
     color: rgba(255, 255, 255, 0.7);
     display: inline-flex;
     flex: 0 0 auto;
@@ -252,7 +243,6 @@ section.rankings-wrapper > footer {
     &:focus-visible {
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      outline: none;
     }
   }
 
@@ -261,7 +251,7 @@ section.rankings-wrapper > footer {
   .find-none {
     background: #161b19;
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 10px;
+    border-radius: v.$radius-xl;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
     left: 0;
@@ -270,7 +260,7 @@ section.rankings-wrapper > footer {
     text-shadow: none;
     top: calc(100% + 6px);
     width: max(100%, min(380px, calc(100vw - 32px)));
-    z-index: 40;
+    z-index: v.z(find-hits);
   }
 
   .find-none {
@@ -285,35 +275,16 @@ section.rankings-wrapper > footer {
     overflow-y: auto;
     padding: 6px;
 
+    // (Enter opens the lit one)
     button {
-      align-items: center;
-      background: none;
-      border: none;
-      border-radius: 7px;
-      color: #eee;
-      cursor: pointer;
-      display: grid;
-      font-family: v.$font-base;
-      gap: 12px;
-      grid-template-columns: 42px minmax(0, 1fr);
-      padding: 8px 10px;
-      text-align: left;
-      width: 100%;
-
-      // (the one Enter opens: the arrows' or the pointer's)
-      &.active,
-      &:focus-visible {
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: inset 2px 0 0 var(--scoreboard-led);
-        color: #eee;
-      }
+      @include v.search-hit;
     }
   }
 
   // (a hit's headshot, round, in their team's color)
   .hit-photo {
     background: color-mix(in srgb, var(--team-badge) 70%, #000);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
     height: 34px;
     justify-self: center;
@@ -346,7 +317,7 @@ section.rankings-wrapper > footer {
     }
 
     &.white-logo img {
-      filter: brightness(0) invert(1);
+      @include v.white-lettering;
     }
   }
 
@@ -359,9 +330,7 @@ section.rankings-wrapper > footer {
       color: #fff;
       font-size: 15px;
       font-weight: 800;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      @include v.ellipsis;
     }
 
     small {
@@ -414,7 +383,7 @@ section.rankings-wrapper > footer {
   }
 }
 
-@media (min-width: 1200px) {
+@include v.up(desktop) {
   section footer {
     padding-right: 0.35em;
   }
@@ -422,7 +391,7 @@ section.rankings-wrapper > footer {
 
 // Below 1200px the column centers its children, so the bar stretches (uneven margins would only shift
 // it) and takes the same space around it
-@media (max-width: 1199px) {
+@include v.down(laptop) {
   section.rankings-wrapper > footer {
     align-self: stretch;
     margin: 8px -3px 12px -1px;
@@ -448,20 +417,20 @@ section ul {
   white-space: nowrap;
   width: auto;
 
-  @media (min-width: 1200px) {
+  @include v.up(desktop) {
     @include list-height(6em);
   }
 
   // (its border and right padding inside the 100%: otherwise it spills past the page's edges, out of line
   // with the bars above it)
-  @media (max-width: 1199px) {
+  @include v.down(laptop) {
     box-sizing: border-box;
     @include list-height(8em);
     width: 100%;
   }
 
   // (phones: a little closer to the bottom of the screen)
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     @include list-height(6.5em);
   }
 
@@ -480,12 +449,12 @@ section ul {
 section.rankings-wrapper ul.cdk-drop-list {
   background: $chalkboard;
   background-attachment: local;
-  border: 1px solid #1d2520;
-  border-radius: 9.1px;
+  border: 1px solid v.$chalk-edge;
+  border-radius: v.$tab-r;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
 
   // (tablets and up: square on top and no line there, under the position tabs)
-  @media (min-width: 576px) {
+  @include v.up(phone-up) {
     border-top: none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -509,8 +478,8 @@ section ul li {
   padding: 0.25em 0.5em;
   text-shadow: var(--text-shadow-small);
   transition:
-    background 0.15s ease,
-    box-shadow 0.15s ease;
+    background v.$t-hover ease,
+    box-shadow v.$t-hover ease;
 
   &:hover {
     box-shadow:
@@ -524,8 +493,9 @@ section ul li {
   }
 }
 
-// A player's row: a faint wash on the board, ending in a hairline yard line (rows are a whole number of
-// pixels tall, so every yard line lands on the same pixel boundary and they all look the same thickness)
+// A player's row: a faint wash on the board (the line under it is each sport's: _sport-rankings.scss; rows
+// are a whole number of pixels tall, so every such line lands on the same pixel boundary and they all look
+// the same thickness)
 section ul li.player:not(.header-row) {
   border: none;
   border-radius: 0;
@@ -537,13 +507,11 @@ section ul li.player:not(.header-row) {
 
   // Hover: the same light wash as the column band, so the crosshair still shows
   &:hover {
-    box-shadow: inset 0 0 0 100vmax rgba(255, 255, 255, 0.07);
+    box-shadow: inset 0 0 0 100vmax $row-wash;
   }
 
   &:not(.cdk-drag-preview) {
-    background:
-      linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)) left bottom / 100% 0.5px no-repeat,
-      rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -558,8 +526,8 @@ section ul li.player.picked:not(.header-row):not(.cdk-drag-preview):hover {
     inset 3px 0 0 var(--scoreboard-led);
   // (the bar slides in from the row's edge a little slower than the wash, so it reads as arriving)
   transition:
-    background 0.15s ease,
-    box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background v.$t-hover ease,
+    box-shadow 0.28s v.$ease-out;
 }
 
 // The row you're dragging: a solid piece of board, lifted (it renders inside the list, so it keeps every
@@ -568,7 +536,7 @@ section ul li.player.cdk-drag-preview,
 section ul li.player.cdk-drag-preview:hover {
   background: $chalkboard;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 9.1px;
+  border-radius: v.$tab-r;
   box-shadow: 0 1em 2.5em rgba(0, 0, 0, 0.55);
   box-sizing: border-box;
   cursor: grabbing;
@@ -586,7 +554,7 @@ section ul li.player.cdk-drag-preview:hover {
 section ul li.player.header-row,
 section ul li.player.header-row:hover {
   backdrop-filter: blur(6px);
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border: none;
   border-radius: 0.7em 0.7em 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
@@ -602,7 +570,7 @@ section ul li.player.header-row:hover {
   z-index: 5;
 
   // (tablets and up: square, under the position tabs)
-  @media (min-width: 576px) {
+  @include v.up(phone-up) {
     border-radius: 0;
   }
 }
@@ -623,10 +591,15 @@ section ul li.player {
     }
   }
 
-  // The rank: a scoreboard tile with segment digits, lit gold for the top 5, green 2-10 (a trophy for #1),
-  // red for the bottom 10, white between
+  // (the header's: there only to keep the columns lined up with the rows')
+  &.header-row > .drag-indicator {
+    visibility: hidden;
+  }
+
+  // The rank: a scoreboard tile with segment digits, a trophy for #1, green 2-10, red for the bottom 10,
+  // white between
   .count {
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 1.15em;
     font-weight: 900;
     line-height: 1;
@@ -638,7 +611,6 @@ section ul li.player {
   // columns share the rest of the row
   div.player-info {
     align-items: center;
-    flex: 1 0 23em;
     flex-direction: row;
     height: 4em;
     justify-content: flex-start;
@@ -663,32 +635,35 @@ section ul li.player {
     }
   }
 
-  // (stats catching up with the record: quiet, not alarming)
-  .stats-behind-icon {
-    color: rgba(255, 255, 255, 0.55);
+  // The name's icons (stats behind, injured): small, a little off the name, a help cursor
+  .stats-behind-icon,
+  .injury-icon {
     font-size: 1em;
     height: 50%;
     margin-left: 0.25em;
     padding-left: 0.5em;
 
     &:hover {
-      color: #fff;
       cursor: help;
+    }
+  }
+
+  // (stats catching up with the record: quiet, not alarming)
+  .stats-behind-icon {
+    color: rgba(255, 255, 255, 0.55);
+
+    &:hover {
+      color: #fff;
     }
   }
 
   .injury-icon {
     animation: injury-pulse 2.4s ease-in-out infinite;
     color: #fb2;
-    font-size: 1em;
-    height: 50%;
-    margin-left: 0.25em;
     margin-top: 0;
-    padding-left: 0.5em;
 
     &:hover {
       color: #fef4d5;
-      cursor: help;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -700,32 +675,16 @@ section ul li.player {
 section.spread ul li.player > div.player-info {
   flex: 0 0 23em;
 
-  @media (min-width: 1600px) {
+  @include v.up(grid-xl) {
     flex-basis: 29em;
   }
 }
 
 section ul li.player:not(.header-row) {
-  .count,
-  .count.top-5,
-  .count.top-10,
-  .count.bottom-5 {
-    align-items: center;
-    background: var(--scoreboard-dots), var(--scoreboard);
-    border: none;
-    border-radius: 6px;
-    box-shadow:
-      inset 0 0 6px rgba(0, 0, 0, 0.6),
-      0 1px 3px rgba(0, 0, 0, 0.35);
-    box-sizing: border-box;
-    color: #fff;
-    display: flex;
+  .count {
+    @include v.led-tile;
     flex: 0 0 auto;
     height: 36px;
-    justify-content: center;
-    opacity: 1;
-    text-shadow: var(--text-shadow-small);
-    transform: none;
     width: 46px;
   }
 
@@ -734,29 +693,24 @@ section ul li.player:not(.header-row) {
   .count:not(.top-5) {
     padding-top: 2.5px;
 
-    @media (max-width: 575px) {
+    @include v.down(phone) {
       padding-top: 1px;
     }
   }
 
-  .count.top-5 {
-    color: var(--scoreboard-led);
-    text-shadow: var(--scoreboard-glow);
-  }
-
   .count.top-10 {
-    color: var(--tint-good, #3ee07a);
-    text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
+    color: var(--tint-good, #{v.$good-bright});
+    text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 
   .count.bottom-5 {
-    color: #ff7468;
-    text-shadow: 0 0 8px rgba(255, 116, 104, 0.7);
+    color: v.$bad-soft;
+    text-shadow: 0 0 8px rgba(v.$bad-soft, 0.7);
   }
 
   // A UR row (under Min Games): UR in neutral grey, no place in the list
   .count.unranked {
-    color: #9aa0a6;
+    color: v.$neutral;
     font-size: 0.85em;
     text-shadow: none;
   }
@@ -765,8 +719,8 @@ section ul li.player:not(.header-row) {
   .count .lombardi {
     animation: trophy-shine 4s ease-in-out infinite;
     background: v.glint();
-    background-color: var(--tint-good, #3ee07a);
-    filter: drop-shadow(0 0 4px rgba(62, 224, 122, 0.55));
+    background-color: var(--tint-good, #{v.$good-bright});
+    filter: drop-shadow(0 0 4px rgba(v.$good-bright, 0.55));
     height: 1.3em;
     width: 1em;
 
@@ -824,24 +778,18 @@ section ul li.player:not(.header-row) {
     margin-right: 0;
     padding-left: 0;
     position: relative;
-    transition: border-color 0.15s ease;
+    transition: border-color v.$t-hover ease;
     width: var(--card-w);
     --orb: var(--card-h);
 
     // The logo, big enough to run off the edges (white-logo teams, like the Giants' "ny", are all
-    // lettering, so they stay nearly whole; so does the Colts' horseshoe, mostly its open middle)
+    // lettering, so they stay nearly whole; a sport's own logo tweaks are in its _sport-rankings.scss)
     .team-logo {
       @include v.team-card-logo(var(--orb));
       margin: 0;
       max-width: none;
       object-fit: contain;
       padding: 0;
-
-      // (the Colts' horseshoe is mostly its open middle: smaller, so it stays whole too)
-      &[src*="/Colts.png"] {
-        height: calc(var(--orb) * 1.05);
-        width: calc(var(--orb) * 1.05);
-      }
     }
 
     &.white-logo .team-logo {
@@ -869,14 +817,13 @@ section ul li.player:not(.header-row) {
 
   .player-info {
     .card-link {
-      transition: color 0.15s ease;
+      transition: color v.$t-hover ease;
     }
 
     &:has(.card-target:hover),
     &:has(.card-link:focus-visible) {
       .card-link {
         color: var(--scoreboard-led) !important;
-        outline: none;
       }
 
       .team-badge {
@@ -919,7 +866,7 @@ section ul li.player {
     p {
       align-items: center;
       display: flex;
-      font-weight: bold;
+      font-weight: 700;
       margin: 0.25em 0;
     }
 
@@ -927,7 +874,7 @@ section ul li.player {
       color: var(--primary-50);
       cursor: help;
       font-size: 0.5em;
-      font-weight: normal;
+      font-weight: 400;
       letter-spacing: 0.25px;
       opacity: 0.95;
       text-transform: uppercase;
@@ -1036,19 +983,17 @@ section ul li.player {
 
       // (each game the game log's W/L square: small, its letter centered in it)
       p {
-        align-items: center;
-        border-radius: 2px;
-        display: flex;
-        justify-content: center;
+        border-radius: v.$radius-xxs;
         color: #111;
         font-family: v.$font-base;
         font-size: 8.5px;
         font-weight: 900;
         height: 13px;
+        justify-content: center;
         letter-spacing: 0;
-        // (Nunito's caps sit high: a pixel down to look centered)
         line-height: 1;
         margin: 0 1.5px;
+        // (Nunito's caps sit high: a pixel down to look centered)
         padding-top: 1px;
         text-align: center;
         text-shadow: none;
@@ -1085,14 +1030,14 @@ section ul li.player {
         // says the result and the opponent)
         &:not(.unplayed) {
           cursor: default;
+          transition:
+            filter v.$t-fast ease,
+            transform v.$t-fast ease;
 
           // (one that opens its game: the game view)
           &.game-link {
             cursor: pointer;
           }
-          transition:
-            filter 0.12s ease,
-            transform 0.12s ease;
 
           &:hover {
             filter: brightness(1.2);
@@ -1117,8 +1062,8 @@ section ul li.player {
   // first; rank 0, the champion, as the trophy in gold
   .rank-value {
     .rank-champ {
-      background-color: #ffcd00;
-      filter: drop-shadow(0 0 3px rgba(255, 205, 0, 0.45));
+      background-color: v.$trophy-gold;
+      filter: drop-shadow(0 0 3px v.$trophy-glow);
       height: 20px;
       width: 20px;
     }
@@ -1137,7 +1082,7 @@ section ul li.player {
   }
 
   // Recent is the last Results column: the normal cell spacing before the next group
-  > .col-group > div.box.support-box.recent-box {
+  > .col-group > .recent-box {
     margin-right: 0.5em;
   }
 }
@@ -1245,7 +1190,6 @@ section ul li.player:not(.header-row) {
     background: none;
     box-shadow: none;
 
-    p > span,
     p[style*="color"] {
       border: 1px solid color-mix(in srgb, currentColor 60%, transparent);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -1285,7 +1229,7 @@ section ul li.player.header-row:hover {
     cursor: help;
     font-family: v.$font-base;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 700;
     letter-spacing: 0.25px;
     margin: 0;
     opacity: 0.9;
@@ -1307,11 +1251,11 @@ section ul li.player.header-row:hover {
       margin: 0 0 0 145px;
       transform: translateX(-50%);
 
-      @media (max-width: 1199px) {
+      @include v.down(laptop) {
         margin-left: 129px;
       }
 
-      @media (max-width: 575px) {
+      @include v.down(phone) {
         margin-left: 106px;
       }
     }
@@ -1349,8 +1293,7 @@ section ul li.player.header-row:hover {
     > .group-icon {
       color: var(--group-color);
       cursor: pointer;
-      font-size: 17px;
-      height: 17px;
+      @include v.icon-size(17px);
       left: 0.35em;
       line-height: 1;
       position: absolute;
@@ -1358,10 +1301,9 @@ section ul li.player.header-row:hover {
       top: 50%;
       transform: translateY(-50%);
       transition:
-        filter 0.12s ease,
-        text-shadow 0.12s ease,
-        transform 0.12s ease;
-      width: 17px;
+        filter v.$t-fast ease,
+        text-shadow v.$t-fast ease,
+        transform v.$t-fast ease;
       z-index: 1;
 
       // (it collapses and opens the group: a lift, a little brighter, a glow in the group's color)
@@ -1516,7 +1458,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
   visibility: hidden;
   white-space: nowrap;
   // (over the compare view too: its share button's)
-  z-index: 1002;
+  z-index: v.z(toast);
 
   &.show {
     opacity: 1;
@@ -1553,12 +1495,12 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
   position: fixed;
   transform: translate(-50%, 12px);
   transition:
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    visibility 0.25s;
+    opacity v.$t-medium ease,
+    transform v.$t-medium ease,
+    visibility v.$t-medium;
   visibility: hidden;
   white-space: nowrap;
-  z-index: 1002;
+  z-index: v.z(toast);
 
   &.show {
     opacity: 1;
@@ -1581,7 +1523,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
   .save-toast-action {
     background: none;
     border: 1px solid color-mix(in srgb, var(--scoreboard-led) 45%, transparent);
-    border-radius: 999px;
+    border-radius: v.$radius-pill;
     color: var(--scoreboard-led);
     cursor: pointer;
     font: inherit;
@@ -1595,7 +1537,6 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     &:hover,
     &:focus-visible {
       background: color-mix(in srgb, var(--scoreboard-led) 16%, transparent);
-      outline: none;
     }
   }
 
@@ -1619,11 +1560,10 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     &:hover,
     &:focus-visible {
       color: #fff;
-      outline: none;
     }
   }
 
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     bottom: 12px;
     font-size: 13px;
   }
@@ -1632,7 +1572,6 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     transition: none;
   }
 }
-
 
 // ---------------------------------------------------------------------------
 // Animations
@@ -1650,8 +1589,6 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     transform: scale(1.1);
   }
 }
-
-// The compare button's count, new
 
 @include awards.trophy-shine;
 
@@ -1685,8 +1622,6 @@ section ul li.player:not(.header-row) {
 // The empty list: one line where the rows would be (on the board itself: no row fill or hover; kept to
 // the visible width, and stuck there, since the list scrolls sideways)
 section ul li.empty-list {
-  background: none !important;
-  border: none;
   color: rgba(255, 255, 255, 0.75);
   display: block;
   font-family: v.$font-base;
@@ -1708,10 +1643,6 @@ section ul.scrolled-x li.player > div.player-info {
   // unscrolled, the grip pinned beside it as it is (below); the strip reaches back to the edge)
   --pin-left: 1.5em;
   left: var(--pin-left);
-
-  @media (min-width: 576px) {
-    --pin-left: 4.25em;
-  }
   pointer-events: none;
   position: sticky;
   z-index: 3;
@@ -1720,6 +1651,10 @@ section ul.scrolled-x li.player > div.player-info {
   // as tall as the row, its padding too)
   align-self: stretch;
   height: auto;
+
+  @include v.up(phone-up) {
+    --pin-left: 4.25em;
+  }
 
   &::before {
     background:
@@ -1748,7 +1683,7 @@ section ul.scrolled-x li.player > div.player-info {
 
 // (a bigger screen's drag grip pinned near the edge, over the strip, a little more room before the rank than
 // unscrolled: rows can still be dragged scrolled)
-@media (min-width: 576px) {
+@include v.up(phone-up) {
   section ul.scrolled-x li.player > .drag-indicator {
     left: 0.25em;
     position: sticky;
@@ -1759,25 +1694,25 @@ section ul.scrolled-x li.player > div.player-info {
 // (a hovered row's piece: the row's light wash over it too, so the crosshair runs across)
 section ul.scrolled-x li.player:not(.header-row):hover > div.player-info::before {
   box-shadow:
-    inset 0 0 0 100vmax rgba(255, 255, 255, 0.07),
+    inset 0 0 0 100vmax $row-wash,
     4px 0 8px rgba(0, 0, 0, 0.4);
 }
 
 // (the header's piece of it: the scoreboard)
 section ul.scrolled-x li.player.header-row > div.player-info::before {
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   bottom: -0.6em;
   top: -0.6em;
 }
 
 section ul li.player > div.player-info .player-name {
-  transition: opacity 0.15s ease;
+  transition: opacity v.$t-hover ease;
 }
 
 // Phones: a compact grid, so more rows fit (44px rows: --row-h; everything in a row is sized in em, so
 // an 11px base scales it all down together, and the team card, sized in px, steps down with it),
 // slimmer buttons, less room between the bars, just the year in the dropdown
-@media (max-width: 575px) {
+@include v.down(phone) {
   // (copy, share, About and the gear fold into More; the search / Compare, with its count, stays out, pushed
   // right; the search open takes the whole bar, the rest back when it shuts)
   section.rankings-wrapper > footer {
@@ -1789,8 +1724,8 @@ section ul li.player > div.player-info .player-name {
 
     .find-bar {
       flex: 1 1 auto;
-      height: 36px;
-      margin-left: 0 !important;
+      height: $bar-tile-phone;
+      margin-left: 0;
     }
 
     .copy-toggle,
@@ -1800,30 +1735,19 @@ section ul li.player > div.player-info .player-name {
       display: none;
     }
 
-    .compare-toggle {
-      margin-left: auto !important;
-    }
-
     .more-toggle {
       display: inline-flex;
     }
   }
 
   section footer {
-    .filter-toggle,
-    .settings-toggle,
-    .copy-toggle,
-    .share-toggle,
-    .compare-toggle,
-    .info-toggle,
-    .more-toggle {
-      height: 36px;
-      min-width: 36px;
-      width: 36px;
+    #{$bar-tiles} {
+      height: $bar-tile-phone;
+      width: $bar-tile-phone;
     }
 
     .mat-mdc-select.season-select {
-      height: 36px;
+      height: $bar-tile-phone;
       width: 150px;
 
       .season-word {
@@ -1841,7 +1765,6 @@ section ul li.player > div.player-info .player-name {
 
     // (the grid scrolls sideways here anyway: the name column takes the room for a whole name)
     div.player-info {
-      flex-basis: 30em;
       min-width: 30em;
       width: 30em;
     }
@@ -1872,19 +1795,18 @@ section ul li.player > div.player-info .player-name {
 section ul li.player:not(.header-row) .count.rank-tile {
   border: 2px solid transparent;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition: border-color v.$t-hover ease;
 
   &:hover,
   &:focus-visible,
   &.open {
     border-color: var(--scoreboard-led);
-    outline: none;
   }
 }
 
 .rank-why {
-  --why-good: var(--tint-good, #3ee07a);
-  --why-bad: #ff7468;
+  --why-good: var(--tint-good, #{v.$good-bright});
+  --why-bad: #{v.$bad-soft};
   @include v.scoreboard-panel(8px, 0 8px 24px rgba(0, 0, 0, 0.6));
   box-sizing: border-box;
   color: #ddd;
@@ -1896,7 +1818,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
   padding: 10px 12px 9px;
   position: fixed;
   width: 340px;
-  z-index: 1001;
+  z-index: v.z(popover);
   @include v.scrollbars(false);
 
   &:focus {
@@ -1974,20 +1896,18 @@ section ul li.player:not(.header-row) .count.rank-tile {
   }
 }
 
-.why-name {
+.rank-why .why-name {
   color: #fff;
   font-weight: 700;
-  margin-top: 2px !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 2px;
+  @include v.ellipsis;
 }
 
-.why-note {
+.rank-why .why-note {
   background: rgba(255, 255, 255, 0.06);
   border-left: 2px solid var(--scoreboard-led);
   color: #ccc;
-  margin-top: 6px !important;
+  margin-top: 6px;
   padding: 3px 7px;
 }
 
@@ -2028,13 +1948,13 @@ section ul li.player:not(.header-row) .count.rank-tile {
 
 .why-bar {
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  border-radius: v.$radius-xxs;
   height: 7px;
   overflow: hidden;
 
   i {
     background: var(--why-good);
-    border-radius: 2px;
+    border-radius: v.$radius-xxs;
     box-shadow: 0 0 5px color-mix(in srgb, var(--why-good) 50%, transparent);
     display: block;
     height: 100%;
@@ -2049,9 +1969,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
 
 .why-stat {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include v.ellipsis;
 
   small {
     color: rgba(255, 255, 255, 0.5);
@@ -2073,8 +1991,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
   white-space: nowrap;
 }
 
-.why-part.hurts .why-amount,
-.why-amount.hurts {
+.why-part.hurts .why-amount {
   color: var(--why-bad);
 }
 
@@ -2111,14 +2028,14 @@ section ul li.player:not(.header-row) .count.rank-tile {
   margin-top: 1px;
 }
 
-.why-foot {
+.rank-why .why-foot {
   color: #777;
   font-size: 10.5px;
-  margin-top: 8px !important;
+  margin-top: 8px;
 }
 
 // (phones: along the bottom, the screen's width)
-@media (max-width: 575px) {
+@include v.down(phone) {
   .rank-why {
     border-radius: 12px 12px 0 0;
     bottom: 0 !important;
@@ -2145,10 +2062,10 @@ section ul li.player:not(.header-row) .count.rank-tile {
   }
 
   .why-bar i {
-    animation: why-fill 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    animation: why-fill 0.3s v.$ease-out backwards;
   }
 
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     .rank-why,
     .rank-why.above {
       animation: why-sheet 0.2s ease-out;
@@ -2158,7 +2075,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
 
 // (the UR rows, under Min Games: below the ranked ones, a line above the first, and no drag handle)
 section ul li.player.first-unranked {
-  border-top: 2px dashed rgba(154, 160, 166, 0.55);
+  border-top: 2px dashed rgba(v.$neutral, 0.55);
 }
 
 section ul li.player.unranked .drag-indicator {
@@ -2168,12 +2085,12 @@ section ul li.player.unranked .drag-indicator {
 // (a pooled tab's whole ranking showing, the Top 50's Show all: the same line under its last place in the
 // top 50, labeled; the rows under it are still ranked, so they keep their ranks, tints and drag)
 section ul li.player.past-cut:not(.cdk-drag-preview) {
-  border-bottom: 2px dashed rgba(154, 160, 166, 0.55);
+  border-bottom: 2px dashed rgba(v.$neutral, 0.55);
   position: relative;
 
   &::after {
     bottom: 2px;
-    color: rgba(154, 160, 166, 0.9);
+    color: rgba(v.$neutral, 0.9);
     content: attr(data-cut);
     font-family: v.$font-base;
     font-size: 8px;
@@ -2191,8 +2108,6 @@ section ul li.player.past-cut:not(.cdk-drag-preview) {
 // (and its Show all row, after the list: a quiet button kept to the visible width, stuck there since the
 // list scrolls sideways)
 section ul li.show-all {
-  background: none !important;
-  border: none;
   display: block;
   left: 0;
   padding: 0.6em 16px 1em;
@@ -2204,7 +2119,7 @@ section ul li.show-all {
     align-items: center;
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 999px;
+    border-radius: v.$radius-pill;
     color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     display: inline-flex;
@@ -2217,9 +2132,7 @@ section ul li.show-all {
     text-transform: uppercase;
 
     .mat-icon {
-      font-size: 18px;
-      height: 18px;
-      width: 18px;
+      @include v.icon-size(18px);
     }
 
     // (an expand control: it lightens, never the yellow accent; focus keeps a ring of its own)
@@ -2242,7 +2155,7 @@ section ul li.show-all {
 // it edged in a dashed line (a sort, not the ranking), and a chip under the header to go back
 // ---------------------------------------------------------------------------
 section.rankings-wrapper ul.cdk-drop-list {
-  transition: box-shadow 0.25s ease;
+  transition: box-shadow v.$t-medium ease;
 
   &.isolating {
     box-shadow:
@@ -2333,11 +2246,6 @@ section ul li.player.header-row:hover {
     text-underline-offset: 4px;
   }
 
-  [role="button"]:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 2px;
-  }
-
   // (the isolated header's direction: a small arrow at its right, in the board's light, lighter on hover)
   .iso-on {
     position: relative;
@@ -2365,9 +2273,7 @@ section ul li.player.header-row:hover {
     padding: 0;
 
     .mat-icon {
-      font-size: 14px;
-      height: 14px;
-      width: 14px;
+      @include v.icon-size(14px);
     }
 
     &:hover,
@@ -2464,7 +2370,7 @@ section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
   align-items: center;
   background: none;
   border: none;
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   color: #ccc;
   cursor: pointer;
   display: inline-flex;
@@ -2483,7 +2389,6 @@ section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
   &:focus-visible {
     background: rgba(255, 255, 255, 0.12);
     color: #fff;
-    outline: none;
   }
 
   // (touch: a thumb-sized target around the small button, past the chip's edge)

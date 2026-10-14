@@ -7,17 +7,21 @@
 // parent), and Reset / Clear All at the bottom. The header and footer sit on the field's sidelines.
 // ===========================================================================
 
-// A small button's icon at $size, no margin
-@mixin em-icon($size) {
-  font-size: $size;
-  height: 1em;
-  margin: 0;
-  width: 1em;
+// A slider's colors: the filled track $active, the rest of the track dark, the knob leather brown when
+// hovered or grabbed too
+@mixin slider-colors($active) {
+  $knob: v.$football-brown;
+
+  --mat-slider-active-track-color: #{$active};
+  --mat-slider-inactive-track-color: var(--primary-600);
+  --mat-slider-handle-color: #{$knob};
+  --mat-slider-hover-handle-color: #{$knob};
+  --mat-slider-focus-handle-color: #{$knob};
 }
 
 .sidebar {
   // (the dots pinned to the viewport, so the drawer tab's dots line up with them)
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   background-attachment: fixed;
   box-shadow: 0 0 0.75em rgba(0, 0, 0, 0.25);
   display: flex;
@@ -25,13 +29,13 @@
   font-family: v.$font-base;
   height: calc(100dvh - var(--sport-bar-height));
   position: relative;
-  width: 26em;
+  width: v.$sidebar-width;
 
   // Every button starts plain (each part styles its own)
   button {
     font-family: v.$font-base;
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: 700;
     height: 2.25em;
     margin: 0 0.5em;
     padding: 1.5em;
@@ -40,19 +44,14 @@
 
   // Small screens: the menu slides over the rankings, a bit wider (leaving room on narrow phones for the
   // 43px drawer tab, which overlaps its border)
-  @media (max-width: 1199px) {
-    width: min(calc(100vw - 43px), max(26em, 50vw));
+  @include v.down(laptop) {
+    width: min(100vw - 43px, max(v.$sidebar-width, 50vw));
   }
-}
 
-// Scrollbars 10px, like the grid's (their colors are global: _base.scss)
-@include v.scrollbars($corner: false);
-
-// The menu's top and its footer sit on the field's sidelines: a 4px line with hash marks running into the
-// menu (down from the top, up from the footer), four little ones to each big one like the grid's
-// category lines. Drawn in solid white and faded as a whole, so where a big and a little hash overlap they
-// don't double up. (A sport's theme draws its own lines.)
-.sidebar {
+  // The menu's top and its footer sit on the field's sidelines: a 4px line with hash marks running into
+  // the menu (down from the top, up from the footer), four little ones to each big one like the grid's
+  // category lines. Drawn in solid white and faded as a whole, so where a big and a little hash overlap
+  // they don't double up. (A sport's theme draws its own lines.)
   &::before,
   footer::before {
     // (past the 4px line, the big hashes reach 10px and the little ones 5px)
@@ -81,6 +80,9 @@
     bottom: 100%;
   }
 }
+
+// Scrollbars 10px, like the grid's (their colors are global: _base.scss)
+@include v.scrollbars($corner: false);
 
 // ---------------------------------------------------------------------------
 // The menu body: the presets dropdown, then the stat cards
@@ -114,14 +116,14 @@
 
   .preset-row > .mat-mdc-select {
     background: #1e1e1e;
-    border: 1px solid #3a3a3a;
+    border: 1px solid v.$panel-edge;
     border-radius: 0.175em;
     box-sizing: border-box;
     color: #fff;
     display: flex;
     flex: 1 1 0;
     font-size: 0.85em;
-    font-weight: bold;
+    font-weight: 700;
     min-width: 0;
     padding: 0.5em 0.75em;
     text-align: center;
@@ -160,7 +162,7 @@
     padding: 0.3em;
 
     .mat-icon {
-      @include em-icon(1.45em);
+      @include v.em-icon(1.45em);
       color: rgba(255, 255, 255, 0.8);
     }
 
@@ -187,11 +189,7 @@
   // A slider's filled track takes its card's color (green results, blue basic stats...), like the card
   // icons and the grid's group headers; the knob stays leather brown when hovered or grabbed
   .mat-mdc-slider {
-    --mat-slider-active-track-color: var(--group-color);
-    --mat-slider-inactive-track-color: var(--primary-600);
-    --mat-slider-handle-color: #a8602f;
-    --mat-slider-hover-handle-color: #a8602f;
-    --mat-slider-focus-handle-color: #a8602f;
+    @include slider-colors(var(--group-color));
   }
 }
 
@@ -244,7 +242,7 @@
     padding: 0;
 
     .mat-icon {
-      @include em-icon(1.6em);
+      @include v.em-icon(1.6em);
       color: var(--scoreboard-led);
     }
 
@@ -265,9 +263,9 @@
 
   span.slider-value {
     color: #9a9a9a;
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 0.65em;
-    font-weight: bold;
+    font-weight: 700;
     grid-area: value;
     margin: 0;
     text-align: right;
@@ -291,7 +289,7 @@
     z-index: 10;
 
     .mat-icon {
-      @include em-icon(1.15em);
+      @include v.em-icon(1.15em);
       color: #fff;
     }
 
@@ -323,11 +321,7 @@
   padding: 0.45em 1.4em 0.1em;
 
   .mat-mdc-slider {
-    --mat-slider-active-track-color: var(--scoreboard-led);
-    --mat-slider-inactive-track-color: var(--primary-600);
-    --mat-slider-handle-color: #a8602f;
-    --mat-slider-hover-handle-color: #a8602f;
-    --mat-slider-focus-handle-color: #a8602f;
+    @include slider-colors(var(--scoreboard-led));
   }
 }
 
@@ -369,24 +363,18 @@
 
   // (a group's, on its bar's right after the eye)
   .group-handle {
-    @include em-icon(1.3em);
+    @include v.em-icon(1.3em);
   }
 
-  // (a row's, in the room to its left)
+  // (a row's, in the room to its left: between the card's edge and the slider, whose touch area starts
+  // about 31px in; on a row with its breakdown open, centered on the row itself, not the row and breakdown)
   .row-handle {
-    height: 1em;
+    @include v.icon-size(1em);
+    left: 16px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 1em;
     z-index: 4;
-  }
-
-  // (between the card's edge and the slider, whose touch area starts about 31px in; on a row with its
-  // breakdown open, centered on the row itself, not the row and breakdown)
-  .row-handle {
-    font-size: 1em;
-    left: 16px;
   }
 
   .row-drag:has(> .sub-rows) .row-handle {
@@ -401,7 +389,7 @@
   .cdk-drag-animating,
   .group-list.cdk-drop-list-dragging .filter-group:not(.cdk-drag-placeholder),
   .group-body.cdk-drop-list-dragging .row-drag:not(.cdk-drag-placeholder) {
-    transition: transform 200ms ease;
+    transition: transform 0.2s ease;
   }
 
   .cdk-drag-preview {
@@ -411,7 +399,7 @@
 
   .row-drag.cdk-drag-preview {
     background: var(--scoreboard-dots), #1d1d1d;
-    border-radius: 6px;
+    border-radius: v.$radius-md;
   }
 }
 
@@ -436,7 +424,7 @@
 
 // Phones: a slimmer footer (more room for the sliders), and less room around the presets. Last in the
 // file so it wins over the sports' own touches.
-@media (max-width: 575px) {
+@include v.down(phone) {
   .sidebar footer {
     height: auto;
     padding: 0.6em 1em;

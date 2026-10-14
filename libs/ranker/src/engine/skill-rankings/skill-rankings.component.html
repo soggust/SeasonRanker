@@ -8,7 +8,7 @@
   <ul #rankingsList id="rankings" tabindex="-1" aria-label="Rankings" [class.isolating]="!!isoStat" (scroll)="listMoved()" cdkDropList (cdkDropListDropped)="drop($event)" columnHighlight scrolledSideways>
     <!-- Column headers (stat groups switch on / off with the sidebar eyes) -->
     <li class="player header-row">
-      <mat-icon fontIcon="drag_indicator" class="drag-indicator" style="visibility: hidden"></mat-icon>
+      <mat-icon fontIcon="drag_indicator" class="drag-indicator"></mat-icon>
       <div class="player-info">
         <!-- One label over the rank and name (the rank tiles, team cards and names read as one column); while
              isolated, what the rows are sorted by in its place (over the tiles that show the places by it),
