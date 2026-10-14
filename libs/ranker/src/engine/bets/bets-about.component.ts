@@ -49,6 +49,8 @@ const TERM_NAMES: Record<string, string> = {
   po: "NBA pace: how many possessions tonight's game should have, as a power",
   ep: "NFL expected plays tonight: how many plays his team should run (its own pace and the other side's, or the game's expected total and its share of the ball), against the games he's played this season, as a power; used in place of the defense's pace",
   eg: "NFL expected plays' form (1: his team's expected plays from its own pace and the other side's, over their average in his games this season; 2: the same over the plays his team actually ran in his games; 3: the game's expected total times his team's share of it (its time of possession, measured by its share of the plays), over its average in his games; 4: that over the plays actually run)",
+  tr: "team allocation: each team's game projected first (its own total of the stat a game, against the opponent's allowed), then each player's projection pulled toward his share of it, so a team's players add up to the team's (receivers' yards to its passing, its backs' carries to its runs, the NBA's points to the team's)",
+  tf: "team allocation's form (1: the team's own games and the opponent's alone; 2: with the betting lines' implied points for his side, at half; 3: in full)",
   pg: "NBA pace's form (0: the other side's possessions over the league's; 2: the game's expected possessions over their average in his games this season; 3: the other side's over its average in his games this season; 1, off the search: the game's expected over the league's)",
   sr: "expected share: last game's weight (NBA, NHL: his last three games' minutes)",
   qs: 'QB starts (starter by his starts)',

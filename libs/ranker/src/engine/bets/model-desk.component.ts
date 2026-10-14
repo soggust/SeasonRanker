@@ -759,6 +759,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
       po: "NBA pace (tonight's expected possessions, against the league's or his own games'; form 0: the other side's over the league's, 2: the game's expected over his games' average, 3: the other side's over his games' average)",
       ep: "NFL expected plays tonight (his team's own pace and the other side's, or the game's total and its share of the ball, against his games this season, leaning on last season's early on; form 1: the expected over his games' expected, 2: over the plays his team ran in them, 3: the game's total times its share over his games', 4: that over the plays run; in place of the defense's pace)",
+      tr: "team allocation: the team's game first (its own total of the stat a game, by the opponent's allowed), each player's projection shrunk toward his share of it so his team's players add up (form 1: the team's games alone; 2 and 3: with the betting lines' implied points, half or in full)",
       c_oppShots: 'opponent shots',
       c_ppLean: "his share of his team's power-play time lately against his season's (NHL: a top unit's spot won or lost)",
       c_teamShots: "his team's expected shots tonight (NHL)",
@@ -808,7 +809,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
         const P = t.params as unknown as Record<string, number | null>;
         const pg = P['pg'] ?? 0;
-        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'ep' ? `${v}, form ${P['eg'] ?? 1}` : k === 'pc' && P['ep'] ? `${v}, replaced by expected plays` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'} (${gain})`;
+        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'ep' ? `${v}, form ${P['eg'] ?? 1}` : k === 'tr' ? `${v}, form ${P['tf'] ?? 1}` : k === 'pc' && P['ep'] ? `${v}, replaced by expected plays` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'} (${gain})`;
       })
       .join(' · ');
   }

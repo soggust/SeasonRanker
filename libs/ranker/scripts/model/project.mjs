@@ -318,6 +318,28 @@
 //            (traded, or signed in the off-season) keeps his old team's games' average as the one tonight's is
 //            read against, as his numbers keep his old team's games (consistent, but the new team's pace read as
 //            tonight's swing)
+//   team     the team's game first, then its players' (audit #19c; tr and its form tf, a late term on the whole
+//            stat's strict gate after the carryover and the start-of-season prior, before the pull toward the
+//            middle; searched on a stat marked team: props.mjs TEAM): each team's expected total of the stat (T,
+//            makeModel's squad: its projected players' total a game this season, pulled toward last season's or
+//            the league's by TR_K games, times the other side's allowed over the league's; tf 2 and 3 times the
+//            betting lines' implied points for his side over their average, at half or in full) against his
+//            team's players' projections summed (S: his own tonight, each teammate's latest by his share of the
+//            team's last SQUAD_N games, a regular out tonight left out as the history counts an absence, live each
+//            one's chance of playing), his projection times (T / S)^tr (T / S held to TR_CAP either way): shrunk
+//            toward his share of the team's, never reset to it. Who got in tonight isn't read (a blowout's garbage
+//            time, a late scratch: measured that way first, the NBA's gain was mostly that look-ahead). How far the
+//            bottom-up projections were from adding up, held out (2026-10-13; the players summed and the team's
+//            expected, each over what those players did, and each one's miss a team-game): NFL rushing yards 1.032
+//            and 0.969 (miss 34.0% and 33.4%), carries 1.020 and 0.973 (23.9%, 22.7%), receiving yards 1.010 and
+//            0.973 (24.6%, 24.0%), receptions 1.050 and 0.983 (22.1%, 20.4%); NBA points 1.006 and 0.997 (12.7%,
+//            8.8%), rebounds 1.036 and 1.014, assists 1.054 and 0.999 (19.3%, 15.4%), threes 1.009 and 1.003; NHL
+//            shots 1.070 and 1.009 (19.2%, 17.9%), points 1.169 and 1.010 (49.4%, 46.5%); the NBA's expected
+//            minutes 248 a team-game for the players who got in against 240 played (miss 10.9%), the NHL's ice time
+//            299 and 298 (4.0%). Kept on NFL rushing yards (tr 0.1), carries (0.25) and NBA assists (0.25), each
+//            tf 1; the rest left out on the bias (props.mjs TEAM's notes). Unmeasured: minutes made to add up to
+//            240 as a term of their own (the minutes base's expected share before the rate), the NHL's ice time made
+//            to add up by line
 //   vacated  the NFL backs' and pass-catchers', every NBA player's (his team's minutes or usage), the NHL
 //            skaters' (their position's time on ice or power-play time): his cut of the work his group is
 //            missing (its regulars not playing, matchups.mjs vacs) over his own, against the cut he had in the games his
@@ -714,7 +736,7 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN };
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -843,8 +865,46 @@ export const playsFactor = (row, cur, eg) => {
   const k = eg === 2 || eg === 4 ? 'ea' : eg === 3 ? 'es' : 'ex';
   return now / (((cur?.[`${k}s`] ?? 0) + PLAYS_M) / ((cur?.[`${k}n`] ?? 0) + PLAYS_M));
 };
+// (the team's game first, then its players' (audit #19c, tr: props.mjs STATS team, a late term on the whole
+// stat's strict gate, tried after the rest but the pull toward the middle and the early exit): his team's players
+// of the stat summed (S, before the lean: his own projection tonight, and each teammate's latest projection (his
+// last game's, before it) times how many of the team's last SQUAD_N games this season he played in, a regular (in
+// SQUAD_REG of them or more) not playing tonight left out, as the history counts an absence, one under it counted
+// only where he played in the team's latest game; live, each one's chance of playing in that place: makeModel's
+// squadMates) against the team's own expected total of it (T: its
+// projected players' total a game this season, pulled toward last season's (8 games of it or more) or the
+// league's by TR_K games, times the other side's allowed over the league's the same way: makeModel's squad); with
+// tf 2 or 3, T times the betting lines' implied points for his side over their average to the power TF_MKT (a
+// game without lines as tf 1). Each player's projection times (T / S)^tr, T / S held to TR_CAP either way: shrunk
+// toward his share of the team's game by tr, never reset to it. None till his team has TR_MIN games this season
+// and the league 20 team-games, or S or T unread: 1, the stat as without it. Not the sum of the ones who played
+// tonight: who got in reads the game (a blowout's garbage time, a late scratch), which no one knows before it;
+// measured that way first (2026-10-13), the NBA's held-out log loss fell 0.0136 on points and 0.0173 on
+// pts+reb+ast, mostly that look-ahead)
+const TR = [0.1, 0.25, 0.5, 0.75, 1];
+const TF = [1, 2, 3];
+const TF_MKT = { 1: 0, 2: 0.5, 3: 1 };
+const TR_K = 4;
+export const TR_MIN = 2;
+const TR_CAP = 2;
+// (who's likely to play tonight (makeModel's squadMates): each of the team's players of the stat by how many of its
+// last SQUAD_N games this season he played in; a regular, SQUAD_REG of them or more: his not playing an absence
+// known before the game, as the history counts it)
+export const SQUAD_N = 5;
+export const SQUAD_REG = 0.6;
+// (the team allocation's factor on a row (tr): sq its team-game's {S, T, m}; 1 off or unread)
+export function squadF(params, sq) {
+  if (!params?.tr || !sq || !(sq.S > 0) || !(sq.T > 0)) return 1;
+  const t = sq.T * (sq.m > 0 ? Math.pow(sq.m, TF_MKT[params.tf] ?? 0) : 1);
+  return Math.pow(Math.min(TR_CAP, Math.max(1 / TR_CAP, t / sq.S)), params.tr);
+}
+// (the betting lines' implied points for a row's side over their average (tf 2 and 3), null without them)
+export const squadMkt = (row, env) => {
+  const v = row?.mkt?.[row.home ? 0 : 1];
+  return Number.isFinite(v) && v > 0 && env?.avgMkt > 0 ? v / env.avgMkt : null;
+};
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'ep' ? EP.flatMap((ep) => EG_FORMS.map((eg) => ({ ep, eg }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'ep' ? EP.flatMap((ep) => EG_FORMS.map((eg) => ({ ep, eg }))) : key === 'tr' ? TR.flatMap((tr) => TF.map((tf) => ({ tr, tf }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -905,6 +965,28 @@ export function makeModel(stat, params, env) {
   // (a receiving stat's teams' targets a game, this season's and last's, and the league's a team-game)
   const teams = new Map();
   const lgT = { n: 0, sum: 0 };
+  // (the team allocation's (tr, a stat marked team): each team's total of the stat a game, its projected players'
+  // (the ones with a projection before it, as S sums), this season's and last's; the other side's allowed the
+  // same way; the league's a team-game by season)
+  const squads = new Map();
+  const against = new Map();
+  const lgSq = new Map();
+  // (and each team's players of the stat in its last SQUAD_N games this season, by id, each with his latest
+  // projection before the lean (his last game's, before it): S's teammates (squadMates))
+  const rosters = new Map();
+  const squadExp = (row) => {
+    const lgOf = (s) => {
+      const x = lgSq.get(s);
+      return x?.n >= 20 ? x.sum / x.n : null;
+    };
+    const lg = lgOf(row.season) ?? lgOf(row.season - 1);
+    const t = squads.get(row.team);
+    if (!lg || !(t?.season === row.season && t.n >= TR_MIN)) return null;
+    const own = (t.sum + TR_K * (t.prevN >= 8 ? t.prevSum / t.prevN : lg)) / (t.n + TR_K);
+    const a = against.get(row.opp);
+    const ac = a?.season === row.season ? a : null;
+    return (own * (((ac?.sum ?? 0) + TR_K * lg) / ((ac?.n ?? 0) + TR_K))) / lg;
+  };
   const val = (row) => Math.max(0, Math.round(row.s[stat.key]));
   // (his position group: the stat's (posGroup), or where it has positions of its own and the fit kept them
   // (ps, the NBA's guards, forwards and centers: props.mjs nbaPos), those: the opponent's table and the priors
@@ -1427,8 +1509,24 @@ export function makeModel(stat, params, env) {
       }
       return out.sort((a, b) => a.factor - b.factor);
     },
+    // (his team's own expected total of the stat tonight (tr's T), null till read: squadExp)
+    squad(row) {
+      return stat.team ? squadExp(row) : null;
+    },
+    // (his team's players of the stat now, each with how many of its last SQUAD_N games this season he played in (w:
+    // 0 to 1, the ones in none left out), whether he played in its latest (last) and his latest projection before
+    // the lean (mu; none yet, left out): S's
+    // teammates, the replay's and live (props.mjs priceProps); null with none of its games this season learned)
+    squadMates(team, season) {
+      const t = rosters.get(String(team));
+      if (!t || t.season !== season || !t.games.length) return null;
+      const latest = t.games[t.games.length - 1];
+      return [...t.seen].map(([pid, s]) => ({ pid, pos: s.pos, mu: s.mu, w: s.games.filter((g) => t.games.includes(g)).length / t.games.length, last: s.games.includes(latest) })).filter((x) => x.w > 0 && x.mu > 0);
+    },
     // (a day's rows learned together, after all of them were projected)
     learn(rows) {
+      // (the team allocation's team-games (tr): their projected players' total)
+      const sq = stat.team ? new Map() : null;
       // (a receiving stat's team-games: their targets, the day's rows' total, unread where a row's are)
       const games = new Map();
       if (stat.perTarget) {
@@ -1448,6 +1546,23 @@ export function makeModel(stat, params, env) {
         const v = val(row);
         const pl = players.get(row.pid);
         const before = parts(row);
+        if (sq) {
+          let t = rosters.get(String(row.team));
+          if (!t || t.season !== row.season) t = { season: row.season, games: [], seen: new Map() };
+          if (!t.games.includes(row.game)) t.games = [...t.games, row.game].slice(-SQUAD_N);
+          const s = t.seen.get(String(row.pid)) ?? { pos: row.pos, games: [], mu: null };
+          s.pos = row.pos;
+          if (before) s.mu = before.mu / (params.scale ?? 1);
+          if (!s.games.includes(row.game)) s.games = [...s.games, row.game].slice(-SQUAD_N);
+          t.seen.set(String(row.pid), s);
+          rosters.set(String(row.team), t);
+        }
+        if (sq && before) {
+          const k = row.game + '|' + row.team;
+          const g = sq.get(k) ?? { team: row.team, opp: row.opp, season: row.season, sum: 0 };
+          g.sum += v;
+          sq.set(k, g);
+        }
         if (before) {
           // (the opponent's tables: by position, and by role where the row has one)
           const tally = (table, key) => {
@@ -1635,6 +1750,28 @@ export function makeModel(stat, params, env) {
         pos.set(k, q);
       }
       exits.learn(rows);
+      // (the team allocation's totals (tr): each team's a game and the other side's allowed, last season's kept
+      // apart, and the league's)
+      if (sq) {
+        const add = (map, key, g) => {
+          let t = map.get(key);
+          if (!t || t.season !== g.season) {
+            const last = t && t.season === g.season - 1 ? t : null;
+            t = { season: g.season, n: 0, sum: 0, prevN: last?.n ?? 0, prevSum: last?.sum ?? 0 };
+          }
+          t.n++;
+          t.sum += g.sum;
+          map.set(key, t);
+        };
+        for (const g of sq.values()) {
+          add(squads, g.team, g);
+          add(against, g.opp, g);
+          const l = lgSq.get(g.season) ?? { n: 0, sum: 0 };
+          l.n++;
+          l.sum += g.sum;
+          lgSq.set(g.season, l);
+        }
+      }
       // (the teams' targets a game, after the day's rows were all projected and learned)
       for (const g of games.values()) {
         if (!g.ok || g.sum <= 0) continue;
@@ -1653,6 +1790,58 @@ export function makeModel(stat, params, env) {
   };
 }
 
+// (his team's sum (tr's S) from its players now (squadMates, before tonight's game): each one's latest projection
+// times how many of its last games he played in and his chance of playing tonight (in(id): 0 to 1), his own taken
+// out and put back at his projection tonight, in full (mine, before the lean); none read, null)
+export function squadSum(mates, pid, mine, inOf, base = null) {
+  if (!mates?.length || !(mine > 0)) return null;
+  const b = base ?? squadBase(mates, inOf);
+  return b.sum - (b.part.get(String(pid)) ?? 0) + mine;
+}
+// (every teammate's part of it, summed, and each one's (by id): once a team-game, each row's sum from it)
+export function squadBase(mates, inOf) {
+  const part = new Map();
+  let sum = 0;
+  for (const x of mates ?? []) {
+    const v = x.w * x.mu * Math.min(1, Math.max(0, inOf(x)));
+    part.set(String(x.pid), v);
+    sum += v;
+  }
+  return { sum, part };
+}
+
+// (the team allocation (tr) on a day's projections, where it's on or searched (params.tr, params.trRead: the rest of
+// the replays never read it): each row's S (squadSum: his teammates by the team's last games,
+// a regular not in tonight's game out, as the history counts an absence; the rest at their share of its last games
+// where they played in its latest, whether or not they get in tonight (who got in reads the game), none where they
+// didn't (an absence going on, or out of the rotation)), its team's expected total (T, the model's squad)
+// and the lines' implied points for its side (m), on the row (p.squad, with sum: the ones who played summed, the
+// log's gap), and each projection times squadF (1 where it's off). batch: the day's rows, every one who played)
+function squadUp(list, batch, params, env, m) {
+  const by = new Map();
+  for (const x of list) {
+    const k = x.row.game + '|' + x.row.team;
+    if (!by.has(k)) by.set(k, []);
+    by.get(k).push(x);
+  }
+  const played = new Set(batch.map((r) => r.game + '|' + r.team + '|' + r.pid));
+  const scale = params.scale ?? 1;
+  for (const [k, xs] of by) {
+    const row = xs[0].row;
+    const mates = m.squadMates(row.team, row.season);
+    const inOf = (x) => (x.w >= SQUAD_REG ? (played.has(k + '|' + x.pid) ? 1 : 0) : x.last ? 1 : 0);
+    const T = m.squad(row);
+    const mk = squadMkt(row, env);
+    const sum = xs.reduce((t, x) => t + x.p.mu, 0) / scale;
+    const base = mates?.length ? squadBase(mates, inOf) : null;
+    for (const x of xs) {
+      x.p.squad = { S: squadSum(mates, x.row.pid, x.p.mu / scale, inOf, base), T, m: mk, sum };
+      const f = squadF(params, x.p.squad);
+      if (f !== 1) x.p.mu = Math.max(0.05, x.p.mu * f);
+    }
+  }
+}
+
 // Replay a stat's rows in date order under one set of settings: each row's projection (where the player had
 // two games or more before it) and its value, by window (0: teaching only, 1: fit, 2: check)
 export function replayStat(stat, rows, params, env, cuts) {
@@ -1665,9 +1854,14 @@ export function replayStat(stat, rows, params, env, cuts) {
     while (j < rows.length && rows[j].date.slice(0, 10) === day) j++;
     const batch = rows.slice(i, j);
     const win = day < cuts[0] ? 0 : day < cuts[1] ? 1 : 2;
-    if (win) for (const row of batch) {
-      const p = m.project(row);
-      if (p) out.push({ row, p, v: Math.max(0, Math.round(row.s[stat.key])), win });
+    if (win) {
+      const list = [];
+      for (const row of batch) {
+        const p = m.project(row);
+        if (p) list.push({ row, p, v: Math.max(0, Math.round(row.s[stat.key])), win });
+      }
+      if (stat.team && (params.tr || params.trRead)) squadUp(list, batch, params, env, m);
+      for (const x of list) out.push(x);
     }
     m.learn(batch);
     i = j;
@@ -1809,6 +2003,7 @@ const has = (stat, key) =>
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
   : key === 'ep' ? !!stat.plays
+  : key === 'tr' ? !!stat.team
   : key === 'od' ? !!stat.recency
   : key === 'ex' ? !!stat.exit
   : key === 'vl' ? !!(TRY_VL && stat.vacated && stat.vacLearned?.length)
@@ -1941,7 +2136,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sp', 'sl', 'ex'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sp', 'tr', 'sl', 'ex'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -2135,6 +2330,58 @@ export function fitStat(stat, rows, env) {
     return { s0, sBest, v, exact };
   };
   let slExact = false;
+  // (the team allocation's search (tr): one replay without it, each size and form's projections made from its
+  // projections before the lean (its factor reads nothing the replay learns from: S and T from before the day's
+  // games), the lean fit again at each on the fit window's eligible players, scored at the stat's best
+  // dispersion. Its gate below replays both sides in full. And how far the players' projections were from adding
+  // up (gap): the held-out team-games with the team's expected total read, their players' projections summed (S,
+  // at the lean) and the team's expected (T) against what those players did (A): each total over A's, and each
+  // one's miss (the sum of |S - A| over A's))
+  const squadSearch = (shape) => {
+    const o = replayStat(stat, sorted, { ...params, tr: 0, trRead: true, scale: 1 }, env, cuts).out;
+    const fitE = o.filter((x) => x.win === 1 && x.row.eligible !== false);
+    const at = (t) => {
+      const f = (x) => x.p.mu * squadF(t, x.p.squad);
+      const sum = fitE.reduce((s, x) => s + f(x), 0);
+      const k = sum > 0 ? fitE.reduce((s, x) => s + x.v, 0) / sum : 1;
+      return o.map((x) => ({ ...x, p: { mu: Math.max(0.05, k * f(x)) } }));
+    };
+    const s0 = scoreOf(at({}), 1, shape);
+    let sBest = s0;
+    let v = null;
+    for (const t of lateTries('tr', stat)) {
+      const sc = scoreOf(at(t), 1, shape);
+      if (sc.ll > sBest.ll) (sBest = sc), (v = t);
+    }
+    const games = new Map();
+    for (const x of o) {
+      if (x.win !== 2) continue;
+      const k = x.row.game + '|' + x.row.team;
+      const g = games.get(k) ?? { S: x.p.squad?.sum ?? 0, T: x.p.squad?.T ?? null, A: 0, mE: 0, mA: 0, mOk: true };
+      g.A += x.v;
+      // (the minutes base's (the NBA's minutes, the NHL's ice time): his expected tonight and what he played)
+      if (stat.minutes) {
+        if (x.p.mode === 'minutes' && Number.isFinite(x.p.share) && Number.isFinite(x.row.share)) (g.mE += x.p.share * fullMin(stat)), (g.mA += x.row.share * fullMin(stat));
+        else g.mOk = false;
+      }
+      games.set(k, g);
+    }
+    const read = [...games.values()].filter((g) => g.T > 0 && g.S > 0);
+    const sc = params.scale ?? 1;
+    const sum = (fn) => read.reduce((t, g) => t + fn(g), 0);
+    const A = sum((g) => g.A);
+    const r4 = (x) => Math.round(x * 10000) / 10000;
+    const gap = A > 0 ? { n: read.length, of: games.size, s: r4(sum((g) => g.S * sc) / A), t: r4(sum((g) => g.T) / A), missS: r4(sum((g) => Math.abs(g.S * sc - g.A)) / A), missT: r4(sum((g) => Math.abs(g.T - g.A)) / A) } : null;
+    // (and the minutes' sum: the team-games with every player's expected minutes read, their average expected and
+    // played a game, and the miss)
+    const mins = [...games.values()].filter((g) => stat.minutes && g.mOk && g.mA > 0);
+    if (gap && mins.length) {
+      const mA = mins.reduce((t, g) => t + g.mA, 0);
+      gap.minutes = { n: mins.length, expected: Math.round((mins.reduce((t, g) => t + g.mE, 0) / mins.length) * 10) / 10, played: Math.round((mA / mins.length) * 10) / 10, miss: r4(mins.reduce((t, g) => t + Math.abs(g.mE - g.mA), 0) / mA) };
+    }
+    return { s0, sBest, v, gap };
+  };
+  let trGap = null;
   // (the early exit's chance and what a short game keeps, the held-out eligible rows' average: the log's read of
   // its base)
   const exitRead = (o) => {
@@ -2181,6 +2428,7 @@ export function fitStat(stat, rows, env) {
     let given = null;
     let exT0 = null;
     if (key === 'sl') ({ s0, sBest, v, exact: slExact } = middleSearch(shape));
+    else if (key === 'tr') ({ s0, sBest, v, gap: trGap } = squadSearch(shape));
     else if (key === 'ex') {
       exT0 = Date.now();
       given = replayStat(stat, sorted, params, env, cuts).out;
@@ -2211,6 +2459,7 @@ export function fitStat(stat, rows, env) {
     if (!v) {
       if (key === 'sp') floors.sp = { size: null, fails: ['not taken on the fit window'], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       if (key === 'ep') floors.ep = { size: null, fails: ['not taken on the fit window'], seconds: Math.round((Date.now() - spT0) / 100) / 10 };
+      if (key === 'tr') floors.tr = { size: null, fails: ['not taken on the fit window'], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       continue;
     }
     const offP = { ...params, r: s0.r };
@@ -2290,7 +2539,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
