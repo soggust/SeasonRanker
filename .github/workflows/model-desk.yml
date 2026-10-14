@@ -52,7 +52,10 @@ jobs:
     # and MLB hits, and the recalibration by side not tried: 792s to 721s locally), a cold one longer, the build
     # and deploy a few more: a hung source stops here, not after GitHub's 6 hours of runs queued behind it. Under 30 the margin to keep:
     # a late term never kept comes off the search, project.mjs)
-    timeout-minutes: 45
+    # 2026-10-14: 45 wasn't enough. Every sport's props refit came to ~50 minutes on GitHub (NFL 1592s, NBA
+    # 549s, NHL 347s), so the runs were cancelled before they committed, and their bets were lost with them.
+    # 110 lets a run finish while the refit is made to reuse the day's fit.
+    timeout-minutes: 110
 
     steps:
       - name: Checkout repository
