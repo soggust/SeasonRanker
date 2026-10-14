@@ -4,7 +4,9 @@
 //   node apps/nfl/scripts/kick-update.mjs           (the NFL data update, nfl-update-data.yml: the scheduled
 //                                                    task "QBRanker NFL data kick", 4:30 and 7:30 AM Central;
 //                                                    skipped once today's has run twice)
-//   node apps/nfl/scripts/kick-update.mjs --desk    (the bettor, model-desk.yml: the task "QBRanker desk kick",
+//   node apps/nfl/scripts/kick-update.mjs --sport=nhl  (another sport's data update, <sport>-update-data.yml:
+//                                                    nhl, nba or mlb; the same task kicks each in turn)
+//   node apps/nfl/scripts/kick-update.mjs --desk   (the bettor, model-desk.yml: the task "QBRanker desk kick",
 //                                                    hourly through the day; skipped when one started in the
 //                                                    last 45 minutes, as its own hourly schedule would have)
 //
@@ -19,7 +21,10 @@ import path from 'node:path';
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const LOG = path.join(ROOT, '.cache/kick-update.log');
 const DESK = process.argv.includes('--desk');
-const WORKFLOW = DESK ? 'model-desk.yml' : 'nfl-update-data.yml';
+// (--sport=nhl, nba or mlb: that sport's data update instead of the NFL's)
+const SPORT = process.argv.find((a) => a.startsWith('--sport='))?.slice('--sport='.length) ?? 'nfl';
+if (!['nfl', 'nhl', 'nba', 'mlb'].includes(SPORT)) throw new Error(`no data update for ${SPORT}`);
+const WORKFLOW = DESK ? 'model-desk.yml' : `${SPORT}-update-data.yml`;
 const RECENT_MS = 45 * 60e3;
 mkdirSync(path.dirname(LOG), { recursive: true });
 const say = (line) => appendFileSync(LOG, `${new Date().toLocaleString()}: ${WORKFLOW}: ${line}\n`);

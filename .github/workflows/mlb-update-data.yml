@@ -6,8 +6,10 @@ on:
     # API and Baseball Savant have caught up, and clear of the NFL update (they share one queue, see
     # concurrency). The 13:07 UTC run is a backup for a delayed or dropped one; a run with nothing new
     # is a no-op (no commit, no deploy).
-    - cron: "33 10 * * *"
-    - cron: "7 13 * * *"
+    # Then every hour through the day (10:33 to 17:33 UTC): GitHub drops scheduled runs (2026-10-14 it
+    # dropped the NHL's two), so the more tries the sooner one lands. This computer's task "QBRanker NFL
+    # data kick" (apps/nfl/scripts/kick-update.mjs --sport=mlb) also starts it, off GitHub's timer
+    - cron: "33 10-17 * * *"
   workflow_dispatch:
 
 # One update at a time: a run that starts while another is still going waits for it
