@@ -558,10 +558,12 @@
 // The radar: faint rings (the middle one is the league average, dashed), spokes, last season's shape as
 // a dashed ghost, and this season's filled in yellow with a dot per skill in its rank color; it grows out
 // from its center when the card opens
+// (the radar centered down its card: the card stretches to the profile beside it, taller with an AI summary)
 .ov-radar {
   align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding: 8px 8px 12px;
 
   svg {
