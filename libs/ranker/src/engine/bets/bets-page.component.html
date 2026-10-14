@@ -318,7 +318,7 @@
     </button>
 
     <!-- How a bet's Kelly score is built (its rank tile clicked): the price and the model's lean, adding up to
-         the score the list went by (and the analyst's quarter where it agrees and has an edge); its chance, its
+         the score the list went by; its chance, its
          confidence and its expected return; then the bets beside it -->
     @if (checkWhy; as c) {
       <div
@@ -433,7 +433,7 @@
         @if (w.partial) {
           <p class="why-foot">The score is its chance to win, in points (this pick's file has no price to weigh it by)</p>
         } @else {
-          <p class="why-foot">Kelly: how much of a bankroll the edge is worth at this price, the edge on the price scaled by what it pays (in points; 0 or under, no edge). An analyst agreeing counts a quarter more of a positive one</p>
+          <p class="why-foot">Kelly: how much of a bankroll the edge is worth at this price, the edge on the price scaled by what it pays (in points; 0 or under, no edge)</p>
         }
       </div>
     }

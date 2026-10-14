@@ -1,6 +1,7 @@
 <!-- The AI write-up (player-card/analysis.ts): the overview (open from the start), the season's strengths and
-     concerns, the coming game (a team's weekly preview: the week ahead), the rest of the season, betting angles, and
-     when it was written. A season's recap (a team whose season is over) is its one section, Recap. Its headline and
+     concerns, the coming game (a team's weekly preview: the week ahead), the rest of the season, and when it was
+     written. No betting angles, in any sport (the Bets page has the bets, at live prices): an older NFL report's
+     bets aren't shown. A season's recap (a team whose season is over) is its one section, Recap. Its headline and
      the archetype's definition show on the Overview tab, under the archetype (overview.component.html) -->
 
 <!-- A point in the analysis: its title, the take, the numbers behind it (their real values and ranks) -->
@@ -152,28 +153,6 @@
             }
           </div>
           <p class="ai-watch"><mat-icon fontIcon="visibility"></mat-icon><span><b>Watch:</b> {{ w.watch }}</span></p>
-        </div>
-      </card-panel>
-    }
-
-    <!-- (the week's bets, before the season's outlook; a team's weekly preview has none) -->
-    @if (r.bets) {
-      <card-panel class="tab-card ai-card ai-bets group-results" [label]="a.game ? 'Betting Angles: Week ' + a.game.week : 'Betting Angles'" icon="paid" [open]="cards.aiOpen.has('bets')" (toggled)="cards.toggleAi('bets')">
-        <div class="group-body">
-          @if (!r.bets.length) {
-            <p class="card-note">Nothing in this matchup looks mispriced.</p>
-          }
-          @for (b of r.bets; track $index) {
-            <div class="ai-bet">
-              <span class="ai-bet-strength" [ngClass]="b.strength === 'fade' ? 'fade' : 'like'">{{ b.strength === 'fade' ? 'fade' : 'like' }}</span>
-              <div class="ai-bet-main">
-                <span class="ai-bet-pick"
-                  >@if (b.strength === 'fade') {<b>{{ b.market }}</b><small>{{ insteadText(b.lean) }}</small>} @else {<b>{{ b.lean }}</b><small>{{ b.market }}</small>}</span
-                >
-                <p>{{ b.reason }}</p>
-              </div>
-            </div>
-          }
         </div>
       </card-panel>
     }

@@ -3,12 +3,12 @@
 // Rebuilds the dossiers from fresh data, batch-runs every team and QB, publishes them for the site and pushes
 // them live.
 //
-// Then the bet desk (bet-desk.mjs) edits the reports' bets into the week's sheet, after grade.mjs has
-// graded the earlier picks.
+// No betting angles (2026-10-14, the owner's: every sport's analysis matches, MLB/NBA/NHL's have none; the
+// Bets page has the bets, at live prices). The bet desk that edited the reports' bets into a weekly sheet
+// (bet-desk.mjs, grade.mjs, ledger.mjs and --desk) is retired, and its scheduled task "QBRanker NFL bet
+// desk" disabled (not deleted).
 //
 //   node apps/nfl/scripts/analysis/weekly.mjs               (npm run nfl:analysis)
-//   node apps/nfl/scripts/analysis/weekly.mjs --desk        (just the bet desk, then push: before the games,
-//                                                            for fresh lines, injuries and weather)
 //   node apps/nfl/scripts/analysis/weekly.mjs --push-only   (just commit and push what's published)
 //
 // A run that's already done today, or whose data is behind (dossier.mjs exits 3), stops without spending
@@ -76,13 +76,10 @@ function push() {
 
 if (process.argv.includes('--push-only')) process.exit(push() ? 0 : 1);
 
-// The bet desk alone (its own scheduled runs before the games): a fresh sheet from this week's reports
+// (the retired bet desk's own runs: nothing to do; its scheduled task is disabled)
 if (process.argv.includes('--desk')) {
-  console.log(`${stamp()}: bet desk`);
-  // (last week's picks graded first, free: the desk sees its record)
-  if (run('grade.mjs', []) !== 0) console.log(`${stamp()}: grading failed; the desk goes on without it`);
-  if (run('bet-desk.mjs', []) !== 0) process.exit(1);
-  process.exit(push() ? 0 : 1);
+  console.log(`${stamp()}: the bet desk is retired (no betting angles in the analysis); nothing to do`);
+  process.exit(0);
 }
 
 if (existsSync(MARK) && JSON.parse(readFileSync(MARK, 'utf8')).date === today) {
@@ -134,17 +131,10 @@ if (lastRun && latestGame && latestGame < lastRun.slice(0, 10)) {
   process.exit(0);
 }
 
-// The picks already played graded (free; the desk below sees its record)
-console.log(`${stamp()}: grading the bet ledger`);
-if (run('grade.mjs', []) !== 0) console.log(`${stamp()}: grading failed; going on without it`);
-
 console.log(`${stamp()}: analyzing every team and QB`);
 const analyzed = run('analyze.mjs', ['--batch', '--teams', '--qbs']);
 if (analyzed !== 0) process.exit(analyzed ?? 1);
 
 writeFileSync(MARK, JSON.stringify({ date: today, at: new Date().toISOString() }));
-// (the reports go live even if the desk fails: the Bets page falls back to their own ranking)
-console.log(`${stamp()}: bet desk`);
-if (run('bet-desk.mjs', []) !== 0) console.log(`${stamp()}: the bet desk failed; publishing the reports without a sheet`);
 push();
 console.log(`${stamp()}: done`);

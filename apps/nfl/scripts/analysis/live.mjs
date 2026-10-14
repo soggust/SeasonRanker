@@ -1,6 +1,6 @@
 // What changes between a week's reports: ESPN's injury report and DraftKings lines, and the kickoff
-// forecast at each outdoor stadium. Shared by the dossiers (Tuesday: an early forecast) and the bet desk
-// (closer to the games: fresh lines, injuries and weather).
+// forecast at each outdoor stadium. Read by the dossiers (Tuesday: an early forecast) and build-depth.mjs
+// (the injury report).
 
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
 // (ESPN's abbreviations that differ from nflverse's)
@@ -92,11 +92,6 @@ const STADIUMS = {
   PAR00: [48.924, 2.36, 'Paris'], MEL00: [-37.82, 144.983, 'Melbourne'],
 };
 
-// A game's venue: its stadium's name and city (an id the table doesn't know: just the name)
-export function venue({ stadiumId, stadium }) {
-  const id = ABROAD.find(([name]) => name.test(stadium ?? ''))?.[1] ?? stadiumId;
-  return { stadium: stadium || null, city: STADIUMS[id]?.[2] ?? null };
-}
 const INDOORS = new Set(['dome', 'closed']);
 // A game abroad by its stadium's name first: the schedule names the venue right before it moves the
 // game's stadium id off the home team's own ("Tottenham Hotspur Stadium" under JAX00)

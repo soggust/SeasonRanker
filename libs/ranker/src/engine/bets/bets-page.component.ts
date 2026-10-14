@@ -9,17 +9,16 @@ import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
-import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints, withAnalyst } from './bet-why';
+import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
 // together by their Kelly score (value and likelihood: the edge on the price, scaled by what it pays; a bet
-// without an edge on its price scores 0 or under, sorts last and reads "Pass", its band low). The
-// NFL's AI bet desk's sheet for the week (data/analysis/bet-sheet.json) only marks the picks it agrees with
-// (the same game, market and side: "Algorithm + Analyst", ranked a little higher); its other picks aren't
-// shown. A row opens to its reasoning.
+// without an edge on its price scores 0 or under, sorts last and reads "Pass", its band low). A row opens to
+// its reasoning. (The NFL's AI bet desk, whose sheet once marked the picks it agreed with "Algorithm +
+// Analyst", is retired (2026-10-14): no sport's AI analysis has betting angles.)
 //
 // An admin's (canUse('experimental')) list also has the CHECKs (picks.json's checks: markets the model is too
 // far from the book on to bet, kept for the owner to look into), under the LOCKs and over the rest, in their
@@ -37,28 +36,20 @@ type ChosenGame = MenuGame & { icon: string };
 // (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
 const linesKey = (g: { sport: string; matchup: string; event: string }): string => `${g.sport}|${g.matchup}|${g.event}`;
 
-// A game as the picks and the AI desk's sheet name it
+// A game as the picks name it
 type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
-
-// (an AI desk report's bet: data/analysis/bets.json, read only for the week its latest reports are on)
-interface BetEntry {
-  game: BetGame | null;
-  at: string;
-}
 
 // One of the algorithm's picks as the page shows it
 export interface BetRow {
   id: number;
   sport: string;
-  // whose pick: the algorithm's, or the algorithm's and the analyst's both
-  source: 'Algorithm' | 'Algorithm + Analyst';
   game: BetGame | null;
   // (its market's words: "Spread", "Passing Yards")
   market: string;
-  // (always a like: a fade is the analyst's alone, and the analyst's own picks aren't shown)
+  // (always a like: the bot never fades)
   strength: 'like' | 'fade';
   reason: string;
-  // (the most likely way it loses: the pick's own write-up's (picks.mjs), and the analyst's where it agrees)
+  // (the most likely way it loses: the pick's own write-up's (picks.mjs))
   risk?: string;
   // (Claude's analysis where the pick has one (writeups.mjs): its headline above the reason, who wrote the
   // text ('claude' or 'plain') and Claude's own read of the case, apart from the band)
@@ -79,7 +70,7 @@ export interface BetRow {
   odds?: string;
   // (the call it makes: pickKey)
   key: string;
-  // (the order: its Kelly score, a quarter higher where the analyst agrees and it has an edge)
+  // (the order: its Kelly score)
   sureness: number;
   // its type, for the filter chips
   betType: BetKind;
@@ -119,11 +110,7 @@ export interface BetRow {
   resolved?: CheckResolved | null;
 }
 
-// (an analyst's pick, as far as the page uses it: the call, its side, its case and its risk)
-type SheetCall = { key: string; strength: 'like' | 'fade'; reason: string; risk: string };
-
-// The bet desk's sheet (data/analysis/bet-sheet.json, scripts/analysis/bet-desk.mjs): the week's picks
-// from every report's bets, each with its case and its risk, and each game's venue and kickoff weather
+// A game's venue and kickoff weather (a pick's where: picks.mjs)
 interface Forecast {
   roof: 'outdoors' | 'retractable' | 'indoors';
   tempF?: number | null;
@@ -137,19 +124,6 @@ interface GameInfo {
   stadium: string | null;
   weather: Forecast | null;
 }
-interface SheetPick {
-  sport: string;
-  bet: string;
-  label: string;
-  side: 'like' | 'fade';
-  fades: string | null;
-  strength: number;
-  case: string;
-  grade?: { kind: BetKind } | null;
-  risk: string;
-  sources: string[];
-  game: BetGame | null;
-}
 // The types of bet, for the filter chips under the game dropdown: each a chip of its own color, like
 // casino chips' denominations
 export type BetKind = 'spread' | 'total' | 'team_total' | 'moneyline' | 'player' | 'team_stat';
@@ -162,26 +136,6 @@ export const BET_KINDS: { kind: BetKind; label: string; name: string }[] = [
   { kind: 'player', label: 'PROP', name: 'Player prop' },
   { kind: 'team_stat', label: 'TEAM', name: "Team stat (a team's own numbers)" },
 ];
-
-// A bet's type: the desk's own grading kind when it has one; otherwise read from its market (a bet
-// on one of the game's teams' own numbers, "BAL under its rushing average", is a team stat)
-function kindOf(graded: BetKind | null | undefined, label: string, bet: string, game: BetGame | null): BetKind {
-  if (graded) return graded;
-  if (/^spread$/i.test(label)) return 'spread';
-  if (/moneyline/i.test(label)) return 'moneyline';
-  if (/^game total$/i.test(label)) return 'total';
-  if (/team total/i.test(label)) return 'team_total';
-  const team = bet.match(/^([A-Z]{2,3})\b/)?.[1];
-  return team && game?.teams?.some((t) => t.abbr === team) ? 'team_stat' : 'player';
-}
-
-interface Sheet {
-  at: string;
-  week: number;
-  summary: string;
-  games: Record<string, GameInfo>;
-  picks: SheetPick[];
-}
 
 // The algorithm's picks file (picks.mjs): its top picks on the games not started, each with its confidence
 // score and level, and its record on the picks it has shown
@@ -365,7 +319,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly checkLimit = 10;
   open = new Set<number>();
   readonly insteadText = insteadText;
-  // each game's venue and kickoff weather, from the bet desk's sheet ("nfl|CHI @ GB")
+  // each game's venue and kickoff weather, from its picks ("nfl|CHI @ GB")
   places = new Map<string, GameInfo>();
   // Under a matchup: the kickoff weather and where it's played ("57° · 8 mph · Lambeau Field"); windy (15+ mph,
   // or gusts of 25+) when the wind could matter
@@ -399,25 +353,13 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       fetch(url, { cache: 'no-cache' })
         .then((res) => (res.ok ? res.json() : null))
         .catch(() => null);
-    // every sport's algorithm picks, and the AI desk's sheet where the sport has AI analyses (sports.json)
-    const files = await Promise.all(
-      // (each sport's files together, not one after another)
-      BET_SPORTS.map(async (s) => {
-        const [picks, bets, sheet] = await Promise.all([
-          get(`/${s.id}/data/model/picks.json`),
-          s.analysis ? get(`/${s.id}/data/analysis/bets.json`) : null,
-          s.analysis ? get(`/${s.id}/data/analysis/bet-sheet.json`) : null,
-        ]);
-        return { sport: s.id, picks: picks as Picks | null, bets, sheet: sheet as Sheet | null };
-      }),
-    );
+    // every sport's algorithm picks (each sport's file together, not one after another)
+    const files = await Promise.all(BET_SPORTS.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
     const algoRows: BetRow[] = [];
     const checkRows: BetRow[] = [];
-    const sheetRows: SheetCall[] = [];
     // (a pick as a row; a CHECK's band its own, its gap and why it wasn't bet kept)
     const rowOf = (sport: string, p: Pick, id: number, check: boolean): BetRow => ({
       sport,
-      source: 'Algorithm',
       game: { week: 0, date: p.start.slice(0, 10), kickoff: p.start, matchup: p.matchup, teams: p.teams, line: null },
       market: p.market,
       strength: 'like',
@@ -470,7 +412,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
           }
         : {}),
     });
-    for (const { sport, picks, bets: file, sheet } of files) {
+    for (const { sport, picks } of files) {
       // The algorithm's picks
       if (picks?.picks?.length || picks?.checks?.length) {
         if (!this.updated || picks.at > this.updated) this.updated = picks.at;
@@ -482,45 +424,15 @@ export class BetsPageComponent implements OnInit, OnDestroy {
           if (p.where) this.places.set(`${sport}|${p.matchup}`, p.where);
           algoRows.push(rowOf(sport, p, algoRows.length, false));
         }
-        // (the CHECKs, apart: never the analyst's, never banded again; an admin's alone)
+        // (the CHECKs, apart: never banded again; an admin's alone)
         for (const p of picks.checks ?? []) {
           if (p.where && !this.places.has(`${sport}|${p.matchup}`)) this.places.set(`${sport}|${p.matchup}`, p.where);
           checkRows.push(rowOf(sport, p, -1, true));
         }
       }
-      if (!file?.bets?.length) continue;
-      // (the AI desk's sheet: only the coming week's, from its latest reports)
-      const newest = Math.max(...file.bets.map((b: BetEntry) => Date.parse(b.at)));
-      const latest = file.bets.filter((b: BetEntry) => newest - Date.parse(b.at) < 6 * 3600e3);
-      const week = Math.min(...latest.map((b: BetEntry) => b.game?.week ?? Infinity));
-      if (sheet?.week === week && sheet.picks?.length) {
-        for (const [matchup, info] of Object.entries(sheet.games ?? {})) if (!this.places.has(`${sport}|${matchup}`)) this.places.set(`${sport}|${matchup}`, info);
-        for (const p of sheet.picks) {
-          const betType = kindOf(p.grade?.kind, p.label, p.bet, p.game);
-          sheetRows.push({
-            key: p.game ? pickKey(sport, p.game.matchup, betType, p.bet) : `${sport}|sheet|${sheetRows.length}`,
-            strength: p.side,
-            reason: p.case,
-            risk: p.risk,
-          });
-        }
-      }
     }
-    // Where the analyst's sheet makes the same call as an algorithm pick: marked as both's, its reasons added,
-    // and its score counted a quarter higher in the order where it has an edge (two independent reads agreeing;
-    // never a negative one made worse); the sheet's other picks aren't shown
-    const byKey = new Map(algoRows.map((r) => [r.key, r]));
-    for (const s of sheetRows) {
-      const a = byKey.get(s.key);
-      if (!a || s.strength === 'fade') continue;
-      a.source = 'Algorithm + Analyst';
-      a.sureness = withAnalyst(a.sureness);
-      a.reason = `${a.reason} Analyst: ${s.reason}`;
-      // (the pick's own risk kept, the analyst's beside it where it says something else)
-      a.risk = a.risk ? (s.risk && s.risk !== a.risk ? `${a.risk} Analyst: ${s.risk}` : a.risk) : s.risk;
-    }
-    // (each one's band from its score as it now stands, the analyst's quarter in it; all sports' picks together,
-    // the locks above the rest, then the best Kelly score first)
+    // (each one's band from its score; all sports' picks together, the locks above the rest, then the best Kelly
+    // score first)
     for (const a of algoRows) a.confidence = confidenceOf(a.sureness, a.p ?? (a.chance != null ? a.chance / 100 : null), a.edge);
     // (the CHECKs' ids after the bets': each row's own)
     checkRows.forEach((c, i) => (c.id = algoRows.length + i));

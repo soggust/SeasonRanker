@@ -14,7 +14,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { kickoffIso } from './live.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const DOSSIERS = path.join(ROOT, '.cache/analysis/dossiers');
@@ -26,7 +25,7 @@ const EFFORT = process.env.EFFORT ?? 'high';
 // $ per million tokens (Opus 5.5); the Batch API halves both
 const PRICE = { input: 4, output: 20 };
 
-const SYSTEM = `You are the analyst behind a football rankings site's player cards. The reader has opened a player's Analysis tab to understand him properly: what kind of player he is, what's really driving his numbers, what's real and what's noise, how the coming game sets up, what to expect the rest of the season, and whether anything in the betting market looks off. Write like a sharp film-and-numbers analyst talking to a smart fan: in depth, in context, with a point of view. Not a stat table read aloud, not a hype piece, not a list of disconnected bullet points.
+const SYSTEM = `You are the analyst behind a football rankings site's player cards. The reader has opened a player's Analysis tab to understand him properly: what kind of player he is, what's really driving his numbers, what's real and what's noise, how the coming game sets up, and what to expect the rest of the season. Write like a sharp film-and-numbers analyst talking to a smart fan: in depth, in context, with a point of view. Not a stat table read aloud, not a hype piece, not a list of disconnected bullet points.
 
 You get one player's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or contracts beyond what the dossier says, and never state a number that isn't in it or directly derivable from it (a difference, a per-game average or a ratio of dossier numbers is fine). The one exception is restOfSeason.projections, which are your own estimates. If something you'd want to know isn't there, don't guess.
 
@@ -55,12 +54,10 @@ Define it in one sentence for this player.
 
 Evidence: every strength, concern and key matchup cites 1-3 numbers from the dossier by JSON path (dot notation from the dossier root, array indexes as numbers: "splits.byDepth.short0to9.epa", "season.ranked.ypa", "gameLog.2.line.passYds", "nextGame.oppDefense.defRushEpa"). The site shows the real value from that path, so the path must exist exactly. The label is a 1-4 word name for the number.
 
-Betting angles: look at the game's line (spread, total, moneyline) and his own production against this matchup, and flag what looks favorable — or say nothing looks off. For his player markets the dossier has no prop lines, so frame those against his own baseline ("his rushing yards: over his 36-a-game average against a front that ..."). Give every angle the data really supports, up to five — and none when nothing stands out; never pad the list. Only bets someone could actually place ("avoid his props" is not a bet), and none at all if he isn't expected to play (ruled out, doubtful, or not the starter). Each needs a real reason in the data, not a vibe. Mark each like (backing the side you name) or fade (going against a side the market or the obvious read favors: name that side as the market, and make the lean the bet itself, the other side); how strong a bet is belongs in its score, not this. Then score each 1-10 for how likely it is to win, apart from its grade (a fade can score as high as any bet). Be decisive, not defensive: when the matchup, recent form, injuries and the number all point the same way, say so with an 8 or 9; a 5-6 is a modest edge; below 5 isn't worth listing. Don't park every bet in the middle to protect yourself; the reader wants to know which of your calls you would actually put money on. This score is about the bet, not about how much data there is (that is the report's confidence).
-
 Style: plain sentences, numbers woven in only where they make the point, no clichés ("he's a gamer", "elite", "weapon"), no filler, never restate the totals table.`;
 
 // Teams: the same report, about a team (its Team, Defense, O-line and Coach cards all show it)
-const TEAM_SYSTEM = `You are the analyst behind a football rankings site's team cards. The reader has opened a team's Analysis tab to understand it properly: what kind of team this is, what is really driving its record, what is real and what is noise, how the coming game sets up, where the season is heading, and whether anything in the betting market looks off. Write like a sharp film-and-numbers analyst talking to a smart fan: in depth, in context, with a point of view. Not a stat table read aloud, not a hype piece, not disconnected bullet points.
+const TEAM_SYSTEM = `You are the analyst behind a football rankings site's team cards. The reader has opened a team's Analysis tab to understand it properly: what kind of team this is, what is really driving its record, what is real and what is noise, how the coming game sets up, and where the season is heading. Write like a sharp film-and-numbers analyst talking to a smart fan: in depth, in context, with a point of view. Not a stat table read aloud, not a hype piece, not disconnected bullet points.
 
 You get one team's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or coaches beyond what the dossier says, and never state a number that isn't in it or directly derivable from it (a difference, a per-game average or a ratio of dossier numbers is fine). The one exception is restOfSeason.projections, which are your own estimates. If something you'd want to know isn't there, don't guess.
 
@@ -83,8 +80,6 @@ The archetype: the established way fans and analysts describe this kind of team,
 Evidence: every strength, concern and key matchup cites 1-3 numbers from the dossier by JSON path (dot notation from the dossier root, array indexes as numbers: "season.team.netEpa", "season.defense.pressureRate", "gameLog.2.box.rushYds", "nextGame.oppSeason.playByPlay.defRushEpa"). The site shows the real value from that path, so the path must exist exactly. The label is a 1-4 word name for the number.
 
 Projections: per-game or season ranges for the rest of the season (e.g. "Final wins", "Points scored / game", "Points allowed / game").
-
-Betting angles: look at the game's line (spread, total, moneyline), each side's team total, and the season picture, and flag what looks favorable — or say nothing looks off. Give every angle the data really supports, up to five, and none when nothing stands out; never pad the list. Only bets someone could actually place ("avoid this game" is not a bet). Each needs a real reason in the data, not a vibe. Mark each like (backing the side you name) or fade (going against a side the market or the obvious read favors: name that side as the market, and make the lean the bet itself, the other side); how strong a bet is belongs in its score, not this. Then score each 1-10 for how likely it is to win, apart from its grade (a fade can score as high as any bet). Be decisive, not defensive: when the matchup, recent form, injuries and the number all point the same way, say so with an 8 or 9; a 5-6 is a modest edge; below 5 isn't worth listing. Don't park every bet in the middle to protect yourself; the reader wants to know which of your calls you would actually put money on. This score is about the bet, not about how much data there is (that is the report's confidence).
 
 Style: plain sentences, numbers woven in only where they make the point, no clichés, no filler, never restate the stats table.`;
 
@@ -165,22 +160,6 @@ const SCHEMA = {
       required: ['body', 'projections', 'swingFactors'],
       additionalProperties: false,
     },
-    bets: {
-      type: 'array',
-      description: '0-5 betting angles for the coming game, only those the data supports; empty when nothing looks off',
-      items: {
-        type: 'object',
-        properties: {
-          market: { type: 'string', description: 'e.g. "BAL -2.5", "Over 44.5", "Jackson rushing yards"' },
-          lean: { type: 'string', description: 'the bet itself, in a few words: "Under 45.5", "TB +9.5", "Over 0.5 INT", "Under his rushing average" (for a fade, the other side: never "fade ...")' },
-          strength: { type: 'string', enum: ['like', 'fade'], description: 'like: backing the side named; fade: going against it (its score says how sure)' },
-          confidence: { type: 'integer', description: 'how likely this bet is to win, 5-10 (decisive: 8-9 when everything lines up; a fade can be a 9)' },
-          reason: { type: 'string', description: '1-3 sentences from the data' },
-        },
-        required: ['market', 'lean', 'strength', 'confidence', 'reason'],
-        additionalProperties: false,
-      },
-    },
     confidence: {
       type: 'object',
       properties: { level: { type: 'string', enum: ['low', 'medium', 'high'] }, note: { type: 'string', description: 'why, in a few words (sample size, role change...)' } },
@@ -188,7 +167,7 @@ const SCHEMA = {
       additionalProperties: false,
     },
   },
-  required: ['archetype', 'headline', 'take', 'strengths', 'concerns', 'trend', 'nextGame', 'restOfSeason', 'bets', 'confidence'],
+  required: ['archetype', 'headline', 'take', 'strengths', 'concerns', 'trend', 'nextGame', 'restOfSeason', 'confidence'],
   additionalProperties: false,
 };
 
@@ -226,7 +205,7 @@ function check(report, dossier) {
   }
   // numbers in the prose that aren't in the dossier (small counts, and the projections, aren't checked)
   const known = numbersIn(dossier);
-  const prose = [report.headline, report.take, ...points(report).map((p) => p.body), report.trend.note, report.nextGame?.body, report.nextGame?.watch, report.restOfSeason.body, ...report.bets.map((b) => `${b.market} ${b.reason}`)].join(' ');
+  const prose = [report.headline, report.take, ...points(report).map((p) => p.body), report.trend.note, report.nextGame?.body, report.nextGame?.watch, report.restOfSeason.body].join(' ');
   for (const m of prose.matchAll(/-?\d{1,3}(?:,\d{3})+(?:\.\d+)?|-?\d+(?:\.\d+)?/g)) {
     const n = Math.abs(Number(m[0].replace(/,/g, '')));
     if (Number.isInteger(n) && n <= 20) continue;
@@ -254,101 +233,24 @@ function save(id, dossier, message, batch) {
 const dossierFile = (id) => (id.startsWith('team-') ? path.join(TEAM_DOSSIERS, `${id.slice(5)}.json`) : path.join(DOSSIERS, `${id}.json`));
 const load = (id) => JSON.parse(readFileSync(dossierFile(id), 'utf8'));
 
-// ---- the Bets page's bets: only bets you could place, from players who'll play
-
-const OUT = /^(out|injured reserve|doubtful|suspended)/i;
-const unavailable = (d) => OUT.test(d.player?.injury?.status ?? '') || OUT.test(d.player?.siteInjuryStatus ?? '');
-// The depth-chart rank of a player's spot ("QB1" -> 1; none: 99)
-const depthRank = (d) => Number(d.player?.depthChart?.match(/^[A-Z]+(\d+)/)?.[1] ?? 99);
-// Whether a player plays this week: not ruled out, and (a QB) the best-ranked of his team's QBs who aren't
-let starters = null;
-function playing(id, dossier) {
-  if (unavailable(dossier)) return false;
-  if (dossier.player?.position !== 'QB') return true;
-  if (!starters) {
-    starters = new Map();
-    for (const f of readdirSync(DOSSIERS)) {
-      const d = JSON.parse(readFileSync(path.join(DOSSIERS, f), 'utf8'));
-      if (d.player?.position !== 'QB' || unavailable(d)) continue;
-      const team = d.player.team;
-      const best = starters.get(team);
-      if (!best || depthRank(d) < best.rank) starters.set(team, { id: f.replace('.json', ''), rank: depthRank(d) });
-    }
-  }
-  return starters.get(dossier.player.team)?.id === id;
-}
-
-// A bet as one you could place, or null. "Avoid ...", "no edge" and "pass" aren't bets. A side spelled out
-// inside ("Against Seattle (SF +2.5)") is that side. Going against something ("Fade WSH -3", "Against
-// NE") is the other side of what it names, or of its market: a spread the other team's, a moneyline the
-// other team's, a total the other way; a player's or team's own numbers stay as written; anything else
-// (no telling the other side) is dropped
-const SAME = { WSH: 'WAS', LAR: 'LA' };
-function otherSide(text, team, opp) {
-  const total = text.match(/\b(over|under)\s*(\d+(?:\.\d+)?)?/i);
-  if (total && !/team total/i.test(text)) return `${/over/i.test(total[1]) ? 'Under' : 'Over'}${total[2] ? ` ${total[2]}` : ''}`;
-  if (!team || !opp) return null;
-  const other = (abbr) => ((SAME[abbr] ?? abbr) === team ? opp : team);
-  const ml = text.match(/\b([A-Z]{2,3})\b[^/]*?\b(?:moneyline|ML)\b/);
-  if (ml) return `${other(ml[1])} ML`;
-  const side = text.match(/\b([A-Z]{2,3})\s*[^\d+-]*([+-])(\d+(?:\.\d+)?)/);
-  if (side) return `${other(side[1])} ${side[2] === '-' ? '+' : '-'}${side[3]}`;
-  return null;
-}
-function actionable(b, team, opp) {
-  const lean = b.lean.trim();
-  if (/^(avoid|no edge|no bet|pass|none|stay away)\b/i.test(lean) || /\bany\b/i.test(b.market)) return null;
-  const inner = lean.match(/\(([A-Z]{2,3})\s*([+-]\d+(?:\.\d+)?)\)/);
-  if (inner) return { ...b, lean: `${inner[1]} ${inner[2]}` };
-  const against = lean.match(/^(?:fade|against)\s+(.*)$/i);
-  if (!against) return b;
-  const flipped = otherSide(against[1], team, opp) ?? otherSide(b.market, team, opp);
-  if (flipped) return { ...b, lean: flipped };
-  // (a player's or team's own numbers: "against the streak" stays as written)
-  return /\b(passing|rushing|receiving|sacks?|interceptions?|touchdowns?|tds?|yards|completions)\b/i.test(b.market) ? b : null;
-}
-
-// Each game's kickoff (an ISO time, UTC) from nflverse's schedule, by its day and teams
-// ("2026-10-11 PHI@JAX"): the schedule's times are Eastern, so each gets that day's Eastern offset
-// (EDT or EST)
-function kickoffs() {
-  const file = path.join(ROOT, '.cache/nflverse/games.csv');
-  if (!existsSync(file)) return new Map();
-  const [head, ...rows] = readFileSync(file, 'utf8').split('\n');
-  const col = Object.fromEntries(head.split(',').map((name, i) => [name.trim(), i]));
-  const out = new Map();
-  for (const row of rows) {
-    const f = row.split(',');
-    const kickoff = kickoffIso(f[col.gameday], f[col.gametime]);
-    if (kickoff) out.set(`${f[col.gameday]} ${f[col.away_team]}@${f[col.home_team]}`, kickoff);
-  }
-  return out;
-}
-
 // ---- the site's copies: what the tab shows, each evidence with its real value (bad paths dropped), the
 // game it previews, keyed by the row ids the site uses (a QB's "QB-<ESPN id>"; a team's report under its
 // Team, Defense, O-line and Coach rows)
 
 function publish() {
-  const kickoff = kickoffs();
-  // each team's logo on the site, by abbreviation (from its defense's row: "DEF-CHI")
-  const logos = new Map(
-    JSON.parse(readFileSync(path.join(ROOT, 'apps/nfl/src/StaticData/skill-players.json'), 'utf8')).DEF.map((unit) => [unit.gsisId.slice(4), unit.teamLogo]),
-  );
   const players = JSON.parse(readFileSync(path.join(ROOT, '.cache/analysis/index.json'), 'utf8'));
   const teams = existsSync(path.join(ROOT, '.cache/analysis/team-index.json')) ? JSON.parse(readFileSync(path.join(ROOT, '.cache/analysis/team-index.json'), 'utf8')) : [];
   const siteIds = new Map([...players.map((p) => [p.gsis, [p.siteId]]), ...teams.map((t) => [`team-${t.team}`, t.siteIds])]);
   rmSync(SITE, { recursive: true, force: true });
   mkdirSync(SITE, { recursive: true });
   const listed = {};
-  // every betting angle, for the Bets page: its game, its source, the call and how sure
-  const bets = [];
   for (const f of readdirSync(REPORTS)) {
     const kept = JSON.parse(readFileSync(path.join(REPORTS, f), 'utf8'));
     const ids = siteIds.get(kept.id);
     if (!ids || !kept.report.take || !existsSync(dossierFile(kept.id))) continue;
     const dossier = load(kept.id);
-    const r = kept.report;
+    // (no betting angles: an older report's bets left out)
+    const { bets: _bets, ...r } = kept.report;
     for (const p of points(r)) p.evidence = p.evidence.map((e) => ({ label: e.label, ...(resolve(dossier, e.path) ?? {}) })).filter((e) => e.value !== undefined);
     const next = dossier.nextGame;
     const file = kept.id.startsWith('team-') ? kept.id : ids[0].replace(/[^\w-]/g, '_');
@@ -362,43 +264,8 @@ function publish() {
       }),
     );
     for (const id of ids) listed[id] = file;
-    const team = (dossier.kind === 'team' ? dossier.team.name : (dossier.player.team ?? '')).match(/\((\w+)\)/)?.[1] ?? null;
-    // (a player's bets only when he's expected to play: his team's starter, not ruled out)
-    if (dossier.kind !== 'team' && !playing(kept.id, dossier)) continue;
-    for (const raw of r.bets ?? []) {
-      const b = actionable(raw, team, next?.opp);
-      if (!b) continue;
-      bets.push({
-        sport: 'nfl',
-        source: kept.name,
-        kind: dossier.kind === 'team' ? 'team' : 'player',
-        position: dossier.player?.position ?? null,
-        rowId: ids[0],
-        team,
-        game:
-          next && team
-            ? {
-                week: next.week,
-                date: next.date,
-                kickoff: kickoff.get(next.at === 'home' ? `${next.date} ${next.opp}@${team}` : `${next.date} ${team}@${next.opp}`) ?? null,
-                matchup: next.at === 'home' ? `${next.opp} @ ${team}` : `${team} @ ${next.opp}`,
-                // (its two teams, each with its logo: the away team first, as in the matchup)
-                teams: (next.at === 'home' ? [next.opp, team] : [team, next.opp]).map((abbr) => ({ abbr, logo: logos.get(abbr) ?? null })),
-                line: next.line ?? null,
-              }
-            : null,
-        market: b.market,
-        lean: b.lean,
-        strength: b.strength === 'strong' ? 'like' : b.strength,
-        score: Number.isInteger(b.confidence) ? b.confidence : null,
-        reason: b.reason,
-        confidence: r.confidence?.level ?? null,
-        at: kept.at,
-      });
-    }
   }
   writeFileSync(path.join(SITE, 'index.json'), JSON.stringify(listed));
-  writeFileSync(path.join(SITE, 'bets.json'), JSON.stringify({ at: new Date().toISOString(), bets }));
   console.log(`published ${new Set(Object.values(listed)).size} analyses (${Object.keys(listed).length} rows)`);
 }
 

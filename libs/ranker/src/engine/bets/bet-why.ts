@@ -4,9 +4,9 @@ import { Confidence, tierLabel, unranked } from './tiers';
 // of a bankroll its edge is worth at its price, (b·p − (1 − p)) / b, b what a unit pays and p its trusted
 // chance. As p is the book's fair chance plus the model's lean, it splits in two: the price (the book's fair
 // chance against the price's break-even, its vig on this side) and the model's lean (the trust times the
-// model's chance less the book's), each scaled by what the price pays; a quarter more where the AI analyst's
-// sheet makes the same call (on a positive score only). In points (times 100), so the parts add up to the score
-// the list went by.
+// model's chance less the book's), each scaled by what the price pays. In points (times 100), so the parts add
+// up to the score the list went by. (The AI analyst's quarter, where the NFL bet desk's sheet made the same call,
+// went with the desk: retired 2026-10-14.)
 
 // (the parts picks.mjs writes beside the score: price + lean is the score; picks written before carry an older
 // split, fair + lean of the chance, or none)
@@ -30,9 +30,8 @@ export interface BetWhyRow {
   market: string;
   confidence: Confidence | null;
   chance?: number;
-  // (the order: the Kelly score, a quarter more where the analyst agrees and it's over 0)
+  // (the order: the Kelly score)
   sureness: number;
-  source: 'Algorithm' | 'Algorithm + Analyst';
   edge?: boolean;
   model?: number;
   fair?: number;
@@ -46,7 +45,7 @@ export interface BetWhyRow {
 
 // One ingredient: what it added to the score, its bar against the largest, its hover
 export interface BetWhyPart {
-  key: 'price' | 'lean' | 'edge' | 'chance' | 'analyst';
+  key: 'price' | 'lean' | 'edge' | 'chance';
   label: string;
   value: string;
   amount: number;
@@ -94,8 +93,6 @@ export interface BetWhy {
   partial: boolean;
 }
 
-const ANALYST = 1.25;
-
 // (what a unit pays at American odds, the stake not counted: -250 0.4, +150 1.5)
 export const payout = (american: number) => (american > 0 ? american / 100 : 100 / -american);
 
@@ -127,9 +124,6 @@ export function confidenceOf(kelly: number, p: number | null | undefined, edge: 
   return kelly >= BANDS.high ? 'high' : 'medium';
 }
 
-// (the analyst agreeing: a quarter more of a positive score, never a negative one made worse)
-export const withAnalyst = (score: number) => (score > 0 ? score * ANALYST : score);
-
 // A score as is, signed ("+3.12", "−1.05"; in points, times 100)
 export function betScoreText(score: number): string {
   const text = Math.abs(score).toFixed(2);
@@ -153,18 +147,10 @@ export function betName(r: BetWhyRow): string {
   return r.player && !r.pick.startsWith(r.player) ? `${r.player} ${r.pick}` : r.pick;
 }
 
-// (its score before the analyst's quarter)
-function baseOf(r: BetWhyRow): number {
-  const total = r.sureness * 100;
-  return r.source === 'Algorithm + Analyst' && total > 0 ? total / ANALYST : total;
-}
-
 // Its score's parts, in points: the price and the model's lean (the edge alone where the file has no fair
-// chance; the chance alone, from a file with no price), and the analyst's quarter
+// chance; the chance alone, from a file with no price)
 function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: boolean } {
-  const analyst = r.source === 'Algorithm + Analyst';
-  const total = r.sureness * 100;
-  const base = baseOf(r);
+  const base = r.sureness * 100;
   const book = r.book ?? 'DraftKings';
   const fair = r.why?.fair ?? r.fair;
   const b = r.why?.b ?? (Number.isFinite(r.price) && r.price ? payout(r.price) : NaN);
@@ -234,18 +220,6 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
       value: Number.isFinite(r.chance) ? `${r.chance}%` : '',
       amount: base,
       title: `Its chance to win, the model's and the book's together\n${signedPoints(base)} to the score (this pick's file has no price to weigh it by)`,
-    });
-  }
-  if (analyst) {
-    parts.push({
-      key: 'analyst',
-      label: 'Analyst agrees',
-      value: total > 0 ? '×1.25' : 'no edge',
-      amount: total - base,
-      title:
-        total > 0
-          ? `The AI analyst's sheet makes the same call: two reads agreeing, the score counted a quarter higher\n${betScoreText(base)} × 1.25 · ${signedPoints(total - base)} to the score`
-          : "The AI analyst's sheet makes the same call, but a quarter more counts only on a positive score: never a bet with no edge made worse\n0.00 to the score",
     });
   }
   return { parts, partial };

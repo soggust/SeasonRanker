@@ -1,9 +1,9 @@
-// The card's Analysis tab: an AI write-up of a player's season, the coming game, the rest of the season and
-// any betting angles (written nightly by the sport's analysis script, from his numbers only: e.g.
-// apps/nfl/scripts/analysis). The site reads the index of who has one, then a player's file when the tab
-// opens. MLB, NBA and NHL teams have weekly ones (libs/ranker/scripts/analysis): a preview while the season
-// is on (the week ahead in place of the next game, no betting angles), and once it's over a recap of the
-// year, its one section.
+// The card's Analysis tab: an AI write-up of a player's season, the coming game and the rest of the season
+// (written by the sport's analysis script, from his numbers only: e.g. apps/nfl/scripts/analysis). No betting
+// angles in any sport: the Bets page has the bets, at live prices (an older NFL report's bets aren't shown).
+// The site reads the index of who has one, then a player's file when the tab opens. MLB, NBA and NHL teams
+// have weekly ones (libs/ranker/scripts/analysis): a preview while the season is on (the week ahead in place
+// of the next game), and once it's over a recap of the year, its one section.
 import { fetchJson } from '@ranker/core/http';
 
 // A number behind a point: its name, the value, its rank in the position this season (when ranked)
@@ -17,14 +17,6 @@ export interface AnalysisPoint {
   title: string;
   body: string;
   evidence: AnalysisEvidence[];
-}
-export interface AnalysisBet {
-  market: string;
-  lean: string;
-  // like (green): backing the side named; fade (red): going against it. An older report's lean or strong
-  // reads as like (how sure a bet is is its confidence)
-  strength: 'fade' | 'lean' | 'like' | 'strong';
-  reason: string;
 }
 // A recap's section: how it ended, the year's story, what went right and wrong, its arc, next year
 export interface AnalysisRecap {
@@ -54,7 +46,7 @@ export interface PlayerAnalysis {
   week?: { date: string; opp: string; at: 'home' | 'away' }[];
   // the game it previews: the week, the opponent, home or away, the sportsbook's line when posted
   game: { week: number; date: string; opp: string; at: 'home' | 'away'; line: { line: string; overUnder: number | null; hisTeamMoneyline: string | null; book: string | null } | null } | null;
-  // (a recap has the archetype, headline, recap and confidence alone; a team preview no nextGame or bets)
+  // (a recap has the archetype, headline, recap and confidence alone; a team preview no nextGame)
   report: {
     archetype: { name: string; definition: string };
     headline: string;
@@ -66,7 +58,6 @@ export interface PlayerAnalysis {
     weekAhead?: AnalysisWeek;
     restOfSeason?: { body: string; projections: { stat: string; low: number; high: number }[]; swingFactors: string[] };
     recap?: AnalysisRecap;
-    bets?: AnalysisBet[];
     confidence: { level: 'low' | 'medium' | 'high'; note: string };
   };
 }
@@ -85,7 +76,7 @@ export async function loadAnalysis(file: string): Promise<PlayerAnalysis> {
 }
 
 // A text's paragraphs (split on blank lines)
-// A fade's line under what it fades: "Bet TB +9.5 instead"; a bet that already says what to do as
+// A fade's line under what it fades (the Bets page's): "Bet TB +9.5 instead"; a bet that already says what to do as
 // written ("Fade the 2-per-game pace instead"); "against X" as "Bet against X instead"
 export function insteadText(bet: string): string {
   const text = bet.trim().replace(/\s+instead\.?$/i, '');
