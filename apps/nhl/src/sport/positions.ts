@@ -1,15 +1,16 @@
-import type { StatBasis, StatDef, StatGroup, StatGroupId } from '@ranker/engine/sport';
+import { POSITION_ADJUST_STAT, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
 
-// The NHL tabs: teams (first, and where the app opens), centers, left wings, right wings, defensemen
-// (the position the NHL lists for each player's season), goalies and head coaches
-export type Position = 'TM' | 'C' | 'LW' | 'RW' | 'D' | 'G' | 'HC';
+// The NHL tabs: teams (first, and where the app opens), the Top 50 (every skater together, forwards and
+// defensemen: built in the app from the four, SPORT.pooledTabs), centers, left wings, right wings,
+// defensemen (the position the NHL lists for each player's season), goalies and head coaches
+export type Position = 'TM' | 'TOP' | 'C' | 'LW' | 'RW' | 'D' | 'G' | 'HC';
 // Every tab uses the same config-driven table, sidebar and scoring below
 export type SkillPosition = Position;
 
-export const POSITIONS: Position[] = ['TM', 'C', 'LW', 'RW', 'D', 'G', 'HC'];
+export const POSITIONS: Position[] = ['TM', 'TOP', 'C', 'LW', 'RW', 'D', 'G', 'HC'];
 
 // Keys of the stats object in skill-players.json (scripts/update-data.mjs)
 export type SkillStatKey =
@@ -78,7 +79,8 @@ export type SkillStatKey =
   | 'coaching';
 
 // Columns worked out in the app rather than read from the data
-export type SkillColumnKey = SkillStatKey | 'games' | 'recent';
+// (posAdj: the Top 50's Position Adjustment, a slider that isn't a stat)
+export type SkillColumnKey = SkillStatKey | 'games' | 'recent' | 'posAdj';
 
 // How counting stats (goals, points, hits...) are shown and ranked: season totals, per game, or at a
 // full season's pace (82 games). Per Game and the pace rank the same; they only read differently.
@@ -89,7 +91,7 @@ export const STAT_BASIS_LABELS: Record<StatBasis, string> = {
 };
 
 // A full season: 82 games at every position
-export const PACE_GAMES: Record<Position, number> = { TM: 82, C: 82, LW: 82, RW: 82, D: 82, G: 82, HC: 82 };
+export const PACE_GAMES: Record<Position, number> = { TM: 82, TOP: 82, C: 82, LW: 82, RW: 82, D: 82, G: 82, HC: 82 };
 
 export interface SkillPlayer {
   // The NHL's player id (headshots), and the same as text
@@ -314,6 +316,10 @@ const COACH_STATS: SkillStat[] = [
 
 export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   TM: TEAM_STATS,
+  // (the stats every skater has, the support grades too, measured across forwards and defensemen
+  // together: no Faceoff %, which wingers and defensemen don't take; and the Position Adjustment's
+  // slider, not a stat)
+  TOP: [...NO_FACEOFFS, POSITION_ADJUST_STAT],
   C: SKATER_STATS,
   LW: NO_FACEOFFS,
   RW: NO_FACEOFFS,
@@ -323,13 +329,14 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
 };
 
 // Default: everything at 50. A preset (skill-presets.ts) sets the stats it's named for, keeps every
-// other stat at 25 as a tiebreaker, and leaves the support grades at 50.
+// other stat at 25 as a tiebreaker, and leaves the support grades at 50. The Top 50's Position
+// Adjustment starts at 0 (neutral) unless a preset names it.
 export function presetWeights(position: SkillPosition, preset: SkillPreset): SkillWeights {
   const def = SKILL_PRESETS[position].find((p) => p.key === preset);
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = def && !stat.support ? 25 : 50;
+    weights[stat.key] = stat.positionAdjust ? 0 : def && !stat.support ? 25 : 50;
   }
   return { ...weights, ...(def?.weights ?? {}) };
 }
@@ -379,7 +386,7 @@ export function statGroup(stat: SkillStat): StatGroupId {
 // assists, points; a goalie's save percentage, goals-against average and shutouts)
 export function headlineStats(position: SkillPosition, count = 3): SkillStat[] {
   return SKILL_STATS[position]
-    .filter((stat) => statGroup(stat) === 'box' && !stat.infoOnly && stat.format !== 'record' && stat.format !== 'grade')
+    .filter((stat) => statGroup(stat) === 'box' && !stat.infoOnly && !stat.positionAdjust && stat.format !== 'record' && stat.format !== 'grade')
     .slice(0, count);
 }
 
@@ -390,6 +397,6 @@ export function skillGroups(position: SkillPosition): SkillStatGroup[] {
   return STAT_GROUP_INFO.map((info) => ({
     ...info,
     title: position === 'TM' && info.id === 'support' ? 'Roster' : info.title,
-    stats: SKILL_STATS[position].filter((stat) => statGroup(stat) === info.id),
+    stats: SKILL_STATS[position].filter((stat) => !stat.positionAdjust && statGroup(stat) === info.id),
   })).filter((group) => group.stats.length);
 }

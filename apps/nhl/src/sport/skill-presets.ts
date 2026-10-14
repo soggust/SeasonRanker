@@ -47,6 +47,12 @@ const WINNER: SkillPresetDef = {
   weights: { winPct: 100, gameScore: 80, xgfPct: 60, plusMinus: 60 },
 };
 
+// (Faceoff %: a center's column only)
+function withoutFaceoffs(weights: SkillWeights): SkillWeights {
+  const { faceoffPct: _, ...rest } = weights;
+  return rest;
+}
+
 // Centers win draws; defensemen move the puck and defend
 const FACEOFF_CENTER: SkillPresetDef = {
   key: 'faceoffs',
@@ -153,6 +159,8 @@ const COACH_PRESETS: SkillPresetDef[] = [
 
 export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
   TM: TEAM_PRESETS,
+  // (every skater together: the presets forwards and defensemen share, Two-Way without Faceoff %)
+  TOP: [IMPACT, SNIPER, PLAYMAKER, { ...TWO_WAY, weights: withoutFaceoffs(TWO_WAY.weights) }, WINNER],
   C: [IMPACT, PLAYMAKER, SNIPER, TWO_WAY, FACEOFF_CENTER, WINNER],
   LW: [IMPACT, SNIPER, PLAYMAKER, TWO_WAY, ENFORCER, WINNER],
   RW: [IMPACT, SNIPER, PLAYMAKER, TWO_WAY, ENFORCER, WINNER],

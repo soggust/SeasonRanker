@@ -180,12 +180,17 @@ export const SPORT: SportConfig = {
   // a season's skill-players.json, scripts/update-data.mjs; the Teams tab is built from its coach rows)
   seasonParts: true,
   seasonText: seasonName,
-  positionNames: { TM: 'Team', C: 'Center', LW: 'Left Wing', RW: 'Right Wing', D: 'Defenseman', G: 'Goalie', HC: 'Head Coach' },
-  tabNames: { TM: 'Teams', C: 'Centers', LW: 'Left Wings', RW: 'Right Wings', D: 'Defensemen', G: 'Goalies', HC: 'Head Coaches' },
+  positionNames: { TM: 'Team', TOP: 'Top 50', C: 'Center', LW: 'Left Wing', RW: 'Right Wing', D: 'Defenseman', G: 'Goalie', HC: 'Head Coach' },
+  tabNames: { TM: 'Teams', TOP: 'Top 50', C: 'Centers', LW: 'Left Wings', RW: 'Right Wings', D: 'Defensemen', G: 'Goalies', HC: 'Head Coaches' },
   coachTab: 'HC',
   teamTabs: ['TM'],
   rowHeader: (position) => (position === 'HC' ? 'Coach' : position === 'TM' ? 'Team' : 'Player'),
   extraRows: () => ({ TM: teamRows() }),
+  // The Top 50: every skater together, forwards and defensemen (no goalies), ranked on the stats they all
+  // share (pooled-tabs.ts), its top 50 shown (the rest one click away). The Position Adjustment groups
+  // the wingers as one (a listed side is often not the one he plays).
+  pooledTabs: { TOP: { tabs: ['C', 'LW', 'RW', 'D'], group: (tab) => (tab === 'LW' || tab === 'RW' ? 'W' : tab) } },
+  listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each spot by your rankings, weighted by ice time (a goalie by games)
   rosterGrades: [
     { key: 'forwards', positions: ['C', 'LW', 'RW'], usage: (p) => (p.stats.toi ?? 0) * p.games },

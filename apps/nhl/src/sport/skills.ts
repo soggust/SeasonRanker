@@ -23,6 +23,8 @@ const CENTER_SKILLS: SkillDef[] = [
 ];
 
 export const SKILLS: Record<SkillPosition, SkillDef[]> = {
+  // (a Top 50 card opens on his own tab: these just fill the type)
+  TOP: SKATER_SKILLS,
   C: CENTER_SKILLS,
   LW: SKATER_SKILLS,
   RW: SKATER_SKILLS,
@@ -96,6 +98,7 @@ const FORWARD: Archetype[] = [
 ];
 
 export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
+  TOP: STAR,
   C: [
     ...FORWARD.slice(0, 2),
     { name: 'Two-Way Center', test: (s) => s['faceoffs'] >= 0.75 && s['defense'] >= 0.7 && s['playmaking'] >= 0.6 },
@@ -149,7 +152,7 @@ export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
 // When no archetype fits: a plain label for where they rank
 export function fallbackArchetype(position: SkillPosition, overall: number, _player?: unknown): string {
   if (position === 'TM') return overall >= 0.75 ? 'Contender' : overall >= 0.45 ? 'Playoff Team' : overall >= 0.25 ? 'Bubble Team' : 'Lottery Team';
-  const noun: Record<SkillPosition, string> = { TM: 'Team', C: 'Center', LW: 'Winger', RW: 'Winger', D: 'Defenseman', G: 'Goalie', HC: 'Head Coach' };
+  const noun: Record<SkillPosition, string> = { TM: 'Team', TOP: 'Skater', C: 'Center', LW: 'Winger', RW: 'Winger', D: 'Defenseman', G: 'Goalie', HC: 'Head Coach' };
   if (position === 'HC') return `${overall >= 0.75 ? 'High-End' : overall >= 0.45 ? 'Solid' : overall >= 0.25 ? 'Middling' : 'Struggling'} Head Coach`;
   const tier = overall >= 0.75 ? 'Top-Line' : overall >= 0.45 ? 'Solid' : overall >= 0.25 ? 'Depth' : 'Fringe';
   return position === 'G' ? `${overall >= 0.75 ? 'Starting' : overall >= 0.45 ? 'Solid' : overall >= 0.25 ? 'Backup' : 'Fringe'} Goalie` : `${tier} ${noun[position]}`;
