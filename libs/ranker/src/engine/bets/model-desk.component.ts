@@ -759,7 +759,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
       po: "NBA pace (tonight's expected possessions, against the league's or his own games'; form 0: the other side's over the league's, 2: the game's expected over his games' average, 3: the other side's over his games' average)",
       ep: "NFL expected plays tonight (his team's own pace and the other side's, or the game's total and its share of the ball, against his games this season, leaning on last season's early on; form 1: the expected over his games' expected, 2: over the plays his team ran in them, 3: the game's total times its share over his games', 4: that over the plays run; in place of the defense's pace)",
-      tr: "team allocation: the team's game first (its own total of the stat a game, by the opponent's allowed), each player's projection shrunk toward his share of it so his team's players add up (form 1: the team's games alone; 2 and 3: with the betting lines' implied points, half or in full)",
+      tr: "team allocation: the team's game first (its own total of the stat a game, by the opponent's allowed), each player's projection shrunk toward his share of it so his team's players add up, as its backs' carries to its runs (form 1: the team's games and the opponent's; 2 and 3: with the betting lines' implied points, half or in full; 4: the team's games alone)",
       c_oppShots: 'opponent shots',
       c_ppLean: "his share of his team's power-play time lately against his season's (NHL: a top unit's spot won or lost)",
       c_teamShots: "his team's expected shots tonight (NHL)",

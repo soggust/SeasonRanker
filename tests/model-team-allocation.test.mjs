@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { STATS } from '../libs/ranker/scripts/model/props.mjs';
-import { SQUAD_N, SQUAD_REG, TR_MIN, makeModel, replayStat, searched, squadF, squadMkt, squadSum } from '../libs/ranker/scripts/model/project.mjs';
+import { SQUAD_N, SQUAD_REG, TR_MIN, makeModel, replayStat, searched, squadBase, squadF, squadIn, squadMkt, squadSum } from '../libs/ranker/scripts/model/project.mjs';
 
 const day = (d) => `2025-${String(9 + Math.floor((d - 1) / 28)).padStart(2, '0')}-${String(((d - 1) % 28) + 1).padStart(2, '0')}`;
 
@@ -159,4 +159,76 @@ test("who's likely to play: each of the team's players by how many of its last S
   assert.equal(gone.squadMates('A', 2025).find((x) => x.pid === 'A0'), undefined);
   assert.equal(m.squadMates('A', 2026), null);
   assert.equal(m.squadMates('X', 2025), null);
+});
+
+test("one rule for who counts (squadIn): a regular by reg, a part-timer in the latest game in full, one back from an absence by back at his season's share", () => {
+  const mates = [
+    { pid: 'R', w: 1, mu: 5, last: true },
+    { pid: 'P', w: 0.4, mu: 2, last: true },
+    { pid: 'Q', w: 0.4, mu: 2, last: false },
+    { pid: 'B', w: 0.2, sw: 0.8, mu: 6, last: false, back: true },
+  ];
+  const all = squadIn(() => 1);
+  assert.deepEqual(mates.map(all), [1, 1, 0, 1]);
+  assert.deepEqual(mates.map(squadIn(() => 0)), [0, 1, 0, 0]);
+  assert.deepEqual(mates.map(squadIn(() => 1, () => 0)), [1, 1, 0, 0]);
+  // (the one back at his season's 0.8, not his last games' 0.2)
+  assert.ok(Math.abs(squadBase(mates, all).sum - (5 + 0.8 + 0.8 * 6)) < 1e-12);
+});
+
+test("who's likely to play: a regular back from an absence (his season's share SQUAD_REG or more, the latest game missed) kept, back", () => {
+  // (A0 in every one of A's games but days 8 to 11's, back on day 12: 7 of 11 this season, 1 of the last 5 (day 7's))
+  const m = makeModel(STAT, BASE, {});
+  const rows = league().filter((r) => !(r.pid === 'A0' && r.date >= day(8)));
+  for (let d = 1; d <= 11; d++) m.learn(rows.filter((r) => r.date === day(d)));
+  const a0 = m.squadMates('A', 2025).find((x) => x.pid === 'A0');
+  assert.ok(a0, 'kept');
+  assert.ok(Math.abs(a0.w - 1 / 5) < 1e-12, `${a0.w}`);
+  assert.equal(a0.back, true);
+  assert.ok(Math.abs(a0.sw - 7 / 11) < 1e-12, `${a0.sw}`);
+  // (his return in the replay: his work in his teammates' sum at his season's share, so they aren't lifted)
+  const back = [...rows, ...league().filter((r) => r.pid === 'A0' && r.date === day(12))].sort((a, b) => a.date.localeCompare(b.date));
+  const out = replayStat(STAT, back, { ...BASE, scale: 1, trRead: true }, {}, ['0000', '0000']).out;
+  const a1 = out.find((x) => x.row.pid === 'A1' && x.row.date === day(12));
+  const gone = replayStat(STAT, rows, { ...BASE, scale: 1, trRead: true }, {}, ['0000', '0000']).out.find((x) => x.row.pid === 'A1' && x.row.date === day(12));
+  assert.ok(a1.p.squad.S > gone.p.squad.S + 0.5 * a0.mu, `${a1.p.squad.S} ${gone.p.squad.S}`);
+});
+
+test('priceProps: the live sum by the same rule (an Out regular none, a questionable one his chance, a part-timer in the latest game in full whatever the report, one back only with a prop of his own), its factor on the projection', async () => {
+  const { priceProps, STATS: S2 } = await import('../libs/ranker/scripts/model/props.mjs');
+  const st = S2.nba.find((s) => s.key === 'ast');
+  const idx = { pid: (a) => a.id, pos: () => 'G', name: (id) => `N${id}` };
+  const game = { id: 'g', date: '2026-10-14T23:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const mates = [
+    { pid: 'a', w: 1, mu: 3, last: true },
+    { pid: 'R', w: 1, mu: 5, last: true },
+    { pid: 'Q', w: 0.8, mu: 4, last: true },
+    { pid: 'P', w: 0.4, mu: 2, last: true },
+    { pid: 'X', w: 0.4, mu: 2, last: false },
+    { pid: 'B', w: 0.2, sw: 0.8, mu: 6, last: false, back: true },
+    { pid: 'C', w: 0, sw: 0.7, mu: 6, last: false, back: true },
+  ];
+  const injuries = new Map([['1', [{ id: 'R', name: 'NR', status: 'Out', pos: 'G' }, { id: 'Q', name: 'NQ', status: 'Questionable', pos: 'G' }, { id: 'P', name: 'NP', status: 'Out', pos: 'G' }]]]);
+  // (B has a prop of his own on the board (a stat not fitted: on the board all the same), C none)
+  const props = [{ athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 4.5, open: 4.5, prices: { over: -110, under: -110 } }, { athlete: { id: 'B', name: 'B', team: '1' }, stat: { key: 'none' }, line: 10.5, prices: { over: -110, under: -110 } }];
+  const run = (params) => {
+    const model = { project: () => ({ mu: 4, rate: 4, recent: 4, base: 4, opp: 1, posOpp: 1, roleOpp: null, role: null, funnel: null, funnelF: 1, paceF: 1, tgtF: 1, vac: 0, vacHist: 0, vacF: 1, games: 10, prevGames: 60 }), roleTable: () => [], squad: (row, own) => (own ? 20 : 15), squadMates: () => mates };
+    const fitted = { ast: { stat: st, env: { mean: 2, avg: 1 }, model, values: new Map(), params: { r: 20, a: 1, b: 0, scale: 1, ...params }, snapGap: null } };
+    return priceProps('nba', game, props.map((p) => ({ ...p })), fitted, idx, { homePts: 110, awayPts: 110 }, null, { injuries }, {}, 0.1).priced.find((x) => x.athlete?.id === 'a' || x.projection);
+  };
+  const off = run({});
+  const mu0 = off.projection.mean;
+  assert.equal(off.projection.squad, undefined);
+  // (his own at tonight's; R out; Q at 0.8 of his 4 by half; P his 0.4 of 2 in full, Out or not (the history's); X
+  // none; B at his season's 0.8 of 6 (his prop on the board); C none)
+  const S = mu0 + 0.8 * 4 * 0.5 + 0.4 * 2 + 0.8 * 6;
+  const on = run({ tr: 0.5, tf: 1 });
+  assert.ok(Math.abs(on.projection.squad.sum - S) < 0.011, `${on.projection.squad.sum} ${S}`);
+  assert.ok(Math.abs(on.projection.squad.factor - Math.sqrt(15 / S)) < 0.001);
+  assert.ok(Math.abs(on.projection.mean - mu0 * Math.sqrt(15 / S)) < 0.011, `${on.projection.mean}`);
+  assert.equal(on.projection.squad.team, 15);
+  // (form 4: the team's own total, the other side's allowed not read)
+  const own = run({ tr: 0.5, tf: 4 });
+  assert.equal(own.projection.squad.team, 20);
+  assert.ok(Math.abs(own.projection.mean - mu0 * Math.sqrt(20 / S)) < 0.011);
 });

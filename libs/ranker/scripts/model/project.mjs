@@ -326,7 +326,11 @@
 //            betting lines' implied points for his side over their average, at half or in full) against his
 //            team's players' projections summed (S: his own tonight, each teammate's latest by his share of the
 //            team's last SQUAD_N games, a regular out tonight left out as the history counts an absence, live each
-//            one's chance of playing), his projection times (T / S)^tr (T / S held to TR_CAP either way): shrunk
+//            one's chance of playing; a part-timer by whether he played the team's latest game alone, live too; a
+//            regular back from an absence (his season's share of the team's games SQUAD_REG or more, the latest
+//            missed) at his season's share where he plays, live only with a prop of his own on the board: squadIn;
+//            tf 4 T without the other side's allowed, each player's projection reading it already), his projection
+//            times (T / S)^tr (T / S held to TR_CAP either way): shrunk
 //            toward his share of the team's, never reset to it. Who got in tonight isn't read (a blowout's garbage
 //            time, a late scratch: measured that way first, the NBA's gain was mostly that look-ahead). How far the
 //            bottom-up projections were from adding up, held out (2026-10-13; the players summed and the team's
@@ -336,8 +340,19 @@
 //            8.8%), rebounds 1.036 and 1.014, assists 1.054 and 0.999 (19.3%, 15.4%), threes 1.009 and 1.003; NHL
 //            shots 1.070 and 1.009 (19.2%, 17.9%), points 1.169 and 1.010 (49.4%, 46.5%); the NBA's expected
 //            minutes 248 a team-game for the players who got in against 240 played (miss 10.9%), the NHL's ice time
-//            299 and 298 (4.0%). Kept on NFL rushing yards (tr 0.1), carries (0.25) and NBA assists (0.25), each
-//            tf 1; the rest left out on the bias (props.mjs TEAM's notes). Unmeasured: minutes made to add up to
+//            299 and 298 (4.0%). A starter's return (2026-10-14, held out, the rows whose team had a regular back
+//            from an absence playing; actual minus projected): counted at none before, it lifted his teammates as
+//            their work shrank, NBA points' -0.221 to -0.336 at tr 0.25, carries' -0.451 to -0.618, rushing
+//            yards' -2.39 to -3.12; counted at his season's share, -0.125, -0.362 and -1.96, the held-out log loss
+//            the same or better. The regulars' playing tonight is read as the vacated terms read it (the
+//            history's absence: a late scratch read with the injury report's); a regular in the team's latest
+//            game counted whatever happened tonight instead (the bound), NBA assists' gain at tr 0.25 fell from
+//            0.0062 to 0.0036 a row's log likelihood but held, so it's kept. T without the other side's (tf 4):
+//            within 0.0012 a row either way of tf 1, the gain mostly the teammates adding up, not the opponent
+//            read twice. Kept on NFL carries (tr 0.25) and NBA assists (0.25), each tf 4; the rest left out on
+//            the bias or the gain (props.mjs TEAM's notes). Left over: a regular resting or scratched off the
+//            injury report counted live, the history knowing he sat; a part-timer listed out counted live, as
+//            the history can't tell. Unmeasured: minutes made to add up to
 //            240 as a term of their own (the minutes base's expected share before the rate), the NHL's ice time made
 //            to add up by line
 //   vacated  the NFL backs' and pass-catchers', every NBA player's (his team's minutes or usage), the NHL
@@ -870,20 +885,23 @@ export const playsFactor = (row, cur, eg) => {
 // of the stat summed (S, before the lean: his own projection tonight, and each teammate's latest projection (his
 // last game's, before it) times how many of the team's last SQUAD_N games this season he played in, a regular (in
 // SQUAD_REG of them or more) not playing tonight left out, as the history counts an absence, one under it counted
-// only where he played in the team's latest game; live, each one's chance of playing in that place: makeModel's
-// squadMates) against the team's own expected total of it (T: its
+// only where he played in the team's latest game, one back from an absence (a regular by his season's share of the
+// team's games, missing its latest) at his season's share where he plays tonight; live, a regular's and a returning
+// one's chance of playing in that place, a returning one only with a prop of his own on the board: squadIn,
+// makeModel's squadMates) against the team's own expected total of it (T: its
 // projected players' total a game this season, pulled toward last season's (8 games of it or more) or the
 // league's by TR_K games, times the other side's allowed over the league's the same way: makeModel's squad); with
 // tf 2 or 3, T times the betting lines' implied points for his side over their average to the power TF_MKT (a
-// game without lines as tf 1). Each player's projection times (T / S)^tr, T / S held to TR_CAP either way: shrunk
+// game without lines as tf 1); tf 4 the team's own total alone, the other side's allowed not read (every player's
+// projection reads the opponent already: its a and posOpp). Each player's projection times (T / S)^tr, T / S held to TR_CAP either way: shrunk
 // toward his share of the team's game by tr, never reset to it. None till his team has TR_MIN games this season
 // and the league 20 team-games, or S or T unread: 1, the stat as without it. Not the sum of the ones who played
 // tonight: who got in reads the game (a blowout's garbage time, a late scratch), which no one knows before it;
 // measured that way first (2026-10-13), the NBA's held-out log loss fell 0.0136 on points and 0.0173 on
 // pts+reb+ast, mostly that look-ahead)
 const TR = [0.1, 0.25, 0.5, 0.75, 1];
-const TF = [1, 2, 3];
-const TF_MKT = { 1: 0, 2: 0.5, 3: 1 };
+const TF = [1, 2, 3, 4];
+const TF_MKT = { 1: 0, 2: 0.5, 3: 1, 4: 0 };
 const TR_K = 4;
 export const TR_MIN = 2;
 const TR_CAP = 2;
@@ -894,8 +912,9 @@ export const SQUAD_N = 5;
 export const SQUAD_REG = 0.6;
 // (the team allocation's factor on a row (tr): sq its team-game's {S, T, m}; 1 off or unread)
 export function squadF(params, sq) {
-  if (!params?.tr || !sq || !(sq.S > 0) || !(sq.T > 0)) return 1;
-  const t = sq.T * (sq.m > 0 ? Math.pow(sq.m, TF_MKT[params.tf] ?? 0) : 1);
+  const T = params.tf === 4 ? sq?.T0 : sq?.T;
+  if (!params?.tr || !sq || !(sq.S > 0) || !(T > 0)) return 1;
+  const t = T * (sq.m > 0 ? Math.pow(sq.m, TF_MKT[params.tf] ?? 0) : 1);
   return Math.pow(Math.min(TR_CAP, Math.max(1 / TR_CAP, t / sq.S)), params.tr);
 }
 // (the betting lines' implied points for a row's side over their average (tf 2 and 3), null without them)
@@ -974,7 +993,7 @@ export function makeModel(stat, params, env) {
   // (and each team's players of the stat in its last SQUAD_N games this season, by id, each with his latest
   // projection before the lean (his last game's, before it): S's teammates (squadMates))
   const rosters = new Map();
-  const squadExp = (row) => {
+  const squadExp = (row, own0 = false) => {
     const lgOf = (s) => {
       const x = lgSq.get(s);
       return x?.n >= 20 ? x.sum / x.n : null;
@@ -985,6 +1004,7 @@ export function makeModel(stat, params, env) {
     const own = (t.sum + TR_K * (t.prevN >= 8 ? t.prevSum / t.prevN : lg)) / (t.n + TR_K);
     const a = against.get(row.opp);
     const ac = a?.season === row.season ? a : null;
+    if (own0) return own;
     return (own * (((ac?.sum ?? 0) + TR_K * lg) / ((ac?.n ?? 0) + TR_K))) / lg;
   };
   const val = (row) => Math.max(0, Math.round(row.s[stat.key]));
@@ -1510,18 +1530,26 @@ export function makeModel(stat, params, env) {
       return out.sort((a, b) => a.factor - b.factor);
     },
     // (his team's own expected total of the stat tonight (tr's T), null till read: squadExp)
-    squad(row) {
-      return stat.team ? squadExp(row) : null;
+    squad(row, own = false) {
+      return stat.team ? squadExp(row, own) : null;
     },
     // (his team's players of the stat now, each with how many of its last SQUAD_N games this season he played in (w:
-    // 0 to 1, the ones in none left out), whether he played in its latest (last) and his latest projection before
-    // the lean (mu; none yet, left out): S's
+    // 0 to 1), whether he played in its latest (last), his share of its games this season (sw) and whether he's a
+    // regular back from an absence (back: sw SQUAD_REG or more, w under it, the latest missed), the ones in none of
+    // the last games and not back left out, and his latest projection before the lean (mu; none yet, left out): S's
     // teammates, the replay's and live (props.mjs priceProps); null with none of its games this season learned)
     squadMates(team, season) {
       const t = rosters.get(String(team));
       if (!t || t.season !== season || !t.games.length) return null;
       const latest = t.games[t.games.length - 1];
-      return [...t.seen].map(([pid, s]) => ({ pid, pos: s.pos, mu: s.mu, w: s.games.filter((g) => t.games.includes(g)).length / t.games.length, last: s.games.includes(latest) })).filter((x) => x.w > 0 && x.mu > 0);
+      return [...t.seen]
+        .map(([pid, s]) => {
+          const w = s.games.filter((g) => t.games.includes(g)).length / t.games.length;
+          const last = s.games.includes(latest);
+          const sw = (s.n ?? 0) / Math.max(1, t.n ?? 0);
+          return { pid, pos: s.pos, mu: s.mu, w, last, sw, back: !last && w < SQUAD_REG && sw >= SQUAD_REG };
+        })
+        .filter((x) => (x.w > 0 || x.back) && x.mu > 0);
     },
     // (a day's rows learned together, after all of them were projected)
     learn(rows) {
@@ -1548,9 +1576,11 @@ export function makeModel(stat, params, env) {
         const before = parts(row);
         if (sq) {
           let t = rosters.get(String(row.team));
-          if (!t || t.season !== row.season) t = { season: row.season, games: [], seen: new Map() };
+          if (!t || t.season !== row.season) t = { season: row.season, games: [], seen: new Map(), n: 0, all: new Set() };
+          if (!t.all.has(row.game)) t.all.add(row.game), t.n++;
           if (!t.games.includes(row.game)) t.games = [...t.games, row.game].slice(-SQUAD_N);
-          const s = t.seen.get(String(row.pid)) ?? { pos: row.pos, games: [], mu: null };
+          const s = t.seen.get(String(row.pid)) ?? { pos: row.pos, games: [], mu: null, n: 0, all: new Set() };
+          if (!s.all.has(row.game)) s.all.add(row.game), s.n++;
           s.pos = row.pos;
           if (before) s.mu = before.mu / (params.scale ?? 1);
           if (!s.games.includes(row.game)) s.games = [...s.games, row.game].slice(-SQUAD_N);
@@ -1798,12 +1828,22 @@ export function squadSum(mates, pid, mine, inOf, base = null) {
   const b = base ?? squadBase(mates, inOf);
   return b.sum - (b.part.get(String(pid)) ?? 0) + mine;
 }
-// (every teammate's part of it, summed, and each one's (by id): once a team-game, each row's sum from it)
+// (whether each teammate counts in S tonight, one rule for the replay and the live price: a regular (SQUAD_REG of
+// the team's last SQUAD_N games or more) at reg(x), his playing tonight; one under it who played in the team's
+// latest at 1 either way (who gets in reads the game; live, the injury report not read for him either, so the price
+// is the fit's); one back from an absence (a regular by his season's share of the team's games, sw, missing its
+// latest: back) at back(x), at his season's share in place of his last games' (squadBase), so a starter's return
+// counts his work in S and doesn't lift his teammates; the rest none. The replay reads reg and back as whether he
+// played tonight, the history's absence as the vacated terms read it; live, his chance of playing (props.mjs
+// priceProps), one back only with a prop of his own on the game's board)
+export const squadIn = (reg, back = reg) => (x) => (x.w >= SQUAD_REG ? reg(x) : x.last ? 1 : x.back ? back(x) : 0);
+// (every teammate's part of it, summed, and each one's (by id): once a team-game, each row's sum from it; one back
+// from an absence at his season's share)
 export function squadBase(mates, inOf) {
   const part = new Map();
   let sum = 0;
   for (const x of mates ?? []) {
-    const v = x.w * x.mu * Math.min(1, Math.max(0, inOf(x)));
+    const v = (x.back ? Math.max(x.w, x.sw) : x.w) * x.mu * Math.min(1, Math.max(0, inOf(x)));
     part.set(String(x.pid), v);
     sum += v;
   }
@@ -1811,12 +1851,15 @@ export function squadBase(mates, inOf) {
 }
 
 // (the team allocation (tr) on a day's projections, where it's on or searched (params.tr, params.trRead: the rest of
-// the replays never read it): each row's S (squadSum: his teammates by the team's last games,
+// the replays never read it): each row's S (squadSum by squadIn: his teammates by the team's last games,
 // a regular not in tonight's game out, as the history counts an absence; the rest at their share of its last games
 // where they played in its latest, whether or not they get in tonight (who got in reads the game), none where they
-// didn't (an absence going on, or out of the rotation)), its team's expected total (T, the model's squad)
-// and the lines' implied points for its side (m), on the row (p.squad, with sum: the ones who played summed, the
-// log's gap), and each projection times squadF (1 where it's off). batch: the day's rows, every one who played)
+// didn't (an absence going on, or out of the rotation), but a regular back from an absence in tonight's game at his
+// season's share (his return known before it, as a regular's absence is)), its team's expected total (T, the
+// model's squad; T0 without the other side's allowed, tf 4's) and the lines' implied points for its side (m), on
+// the row (p.squad, with sum: the ones who played summed, the log's gap), and each projection times squadF (1 where
+// it's off; the projection before it on p.preTr, the pull toward the middle's search's). batch: the day's rows,
+// every one who played)
 function squadUp(list, batch, params, env, m) {
   const by = new Map();
   for (const x of list) {
@@ -1829,15 +1872,16 @@ function squadUp(list, batch, params, env, m) {
   for (const [k, xs] of by) {
     const row = xs[0].row;
     const mates = m.squadMates(row.team, row.season);
-    const inOf = (x) => (x.w >= SQUAD_REG ? (played.has(k + '|' + x.pid) ? 1 : 0) : x.last ? 1 : 0);
+    const inOf = squadIn((x) => (played.has(k + '|' + x.pid) ? 1 : 0));
     const T = m.squad(row);
+    const T0 = m.squad(row, true);
     const mk = squadMkt(row, env);
     const sum = xs.reduce((t, x) => t + x.p.mu, 0) / scale;
     const base = mates?.length ? squadBase(mates, inOf) : null;
     for (const x of xs) {
-      x.p.squad = { S: squadSum(mates, x.row.pid, x.p.mu / scale, inOf, base), T, m: mk, sum };
+      x.p.squad = { S: squadSum(mates, x.row.pid, x.p.mu / scale, inOf, base), T, T0, m: mk, sum };
       const f = squadF(params, x.p.squad);
-      if (f !== 1) x.p.mu = Math.max(0.05, x.p.mu * f);
+      if (f !== 1) (x.p.preTr = x.p.mu), (x.p.mu = Math.max(0.05, x.p.mu * f));
     }
   }
 }
@@ -2304,9 +2348,10 @@ export function fitStat(stat, rows, env) {
   // larger by more than SUBGROUP_TOL of their mean actual)
   const floors = {};
   // (the pull toward the middle's search (sl): one replay without it, each size's projections made from its
-  // projections before the lean (the pull reads nothing the replay learns from while the returners' ramp is
-  // off (ij, ir: off on every stat as of 2026-10-12); kept on, the replay reads the projections, so each size
-  // is replayed in full instead (exact, floors.sl)), the lean fit again at each on the fit window's eligible
+  // projections before the lean (the pull reads nothing the replay learns from while the returners' ramp is off
+  // (ij, ir: off on every stat as of 2026-10-12); kept on, the replay reads the projections, so each size is
+  // replayed in full instead (exact, floors.sl)), its pull on the projection before the team allocation where
+  // that's kept (p.preTr), as the real projection's, the lean fit again at each on the fit window's eligible
   // players, scored at the stat's best dispersion. Its gate below replays both sides in full)
   const middleSearch = (shape) => {
     const exact = !!(params.ij || params.ir);
@@ -2314,7 +2359,7 @@ export function fitStat(stat, rows, env) {
     const fitOf = (list) => list.filter((x) => x.win === 1 && x.row.eligible !== false);
     const at = (sl) => {
       const list = exact && sl ? replayStat(stat, sorted, { ...params, sl, scale: 1 }, env, cuts).out : o;
-      const f = exact ? (x) => x.p.mu : (x) => x.p.mu * middleF({ sl, rm }, x.p.mu);
+      const f = exact ? (x) => x.p.mu : (x) => x.p.mu * middleF({ sl, rm }, x.p.preTr ?? x.p.mu);
       const fitE = fitOf(list);
       const sum = fitE.reduce((t, x) => t + f(x), 0);
       const k = sum > 0 ? fitE.reduce((t, x) => t + x.v, 0) / sum : 1;
