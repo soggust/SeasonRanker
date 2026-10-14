@@ -25,5 +25,6 @@ export { StatReader } from '@ranker/engine/stat-reader';
 export { DEFAULT_SETTINGS, PositionService } from '@ranker/engine/position.service';
 export { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 export { shareLink, applySharedLink, compareCode, readCompareCode } from '@ranker/engine/share';
+export { CARD_PARAM, cardLink, cardTabOf, findLinkedCard, gameLink, gameTabOf, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
 export { SPORT } from '@sport/sport';
 export { POSITIONS, SKILL_STATS, presetWeights, skillGroups, statGroup } from '@sport/positions';

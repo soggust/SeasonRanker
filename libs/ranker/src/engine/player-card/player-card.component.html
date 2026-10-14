@@ -91,6 +91,12 @@
             <mat-icon fontIcon="arrow_back"></mat-icon>
           </button>
         }
+        <!-- (a link to this card: its tab, season and the card tab showing; card-link.ts) -->
+        @if (share) {
+          <button type="button" #shareButton class="card-share" aria-label="Share a link to this card" title="Share a link to this card" (click)="share(shareButton)">
+            <mat-icon fontIcon="share"></mat-icon>
+          </button>
+        }
         <!-- (this season into the compare view, against anyone, any season) -->
         @if (compare) {
           <button type="button" class="card-compare" aria-label="Compare" [title]="'Compare ' + possessive(c.name) + ' ' + c.seasonLabel.toLowerCase() + ' with anyone'" (click)="compare()">

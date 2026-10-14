@@ -605,9 +605,9 @@
 <!-- The settings menu (the gear opens it, or a phone's More), the compare view, and the player card (a name clicked) -->
 <settings-menu #settings [position]="position"></settings-menu>
 <player-compare [compare]="compare" [share]="shareCompare"></player-compare>
-<player-card [cards]="cards" [compare]="compareFromCard"></player-card>
+<player-card [cards]="cards" [compare]="compareFromCard" [share]="shareCard"></player-card>
 <!-- (a game: from a Recent dot, or a game log's row) -->
-<game-view></game-view>
+<game-view [share]="shareGame"></game-view>
 <!-- Save this list (the dialog closes as it saves; then the toast with Open and Rename) -->
 @if (listDraft) {
   <save-list-dialog [draft]="listDraft" [listed]="playerList.length" [suggestedTitle]="listTitle" (closed)="listDraft = null" (saved)="listSaved($event)"></save-list-dialog>

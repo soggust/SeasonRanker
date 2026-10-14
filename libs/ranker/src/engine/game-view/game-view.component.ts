@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SPORT } from '@sport/sport';
 import { extras } from '@ranker/engine/row-fields';
@@ -32,6 +32,9 @@ import { GameTab, GameViewService } from './game-view.service';
   standalone: false,
 })
 export class GameViewComponent implements AfterViewChecked, OnDestroy {
+  // (the hero's share button: a link to this game, on its tab)
+  @Input() share: ((button: HTMLElement) => void) | null = null;
+
   constructor(
     readonly games: GameViewService,
     private positions: PositionService,

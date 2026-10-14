@@ -5,7 +5,9 @@ import { BehaviorSubject, EMPTY, Observable, combineLatest, distinctUntilChanged
 import { connectRosterGrades } from '@ranker/engine/roster-grades';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
 import { defaultMin } from '@ranker/engine/playing-time';
-import { isPooled } from '@ranker/engine/pooled-tabs';
+import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
+import { CardLink, GAME_PARAM, LinkedCard, cardLink, clearCardParams, clearGameParams, findLinkedCard, gameLink, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
+import type { GameTab } from '@ranker/engine/game-view/game-view.service';
 import { COMPARE_PARAM, SharedCompare, SharedSide, applySharedLink, compareCode, readCompareCode, shareLink } from '@ranker/engine/share';
 import type { EngineHost, SportSettings } from '@ranker/engine/sport';
 import {
@@ -76,27 +78,36 @@ function linkedPosition(): Position {
   return POSITIONS.find((position) => position === linked) ?? POSITIONS[0];
 }
 
-// A player's card from a link (?card=<his ESPN id>&name=<his name>: the Algorithm's prop picks): the tab and
-// row he's in this season, by the id where the rows carry ESPN's (the NFL's, the NBA's) and by the name where
-// they don't; the link taken out of the address. Null when he isn't in the season's rows.
-function linkedCard(): { position: SkillPosition; gsisId: string } | null {
+// A card from a link (card-link.ts: ?card=<the row's id>&cardTab=, or the Algorithm's ?card=<his ESPN id>&name=):
+// the tab and row in this season's rows, the link taken out of the address. missing: the link named someone
+// this season doesn't have (the grid says so).
+function linkedCard(): LinkedCard | { missing: true } | null {
   const url = new URL(location.href);
-  const id = url.searchParams.get('card');
-  const name = url.searchParams.get('name');
-  if (!id && !name) return null;
-  url.searchParams.delete('card');
-  url.searchParams.delete('name');
+  const ask = readCardAsk(url);
+  if (!ask) return null;
+  clearCardParams(url);
   history.replaceState(null, '', url);
-  const key = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
-  // (his own tab: not a team's, nor a pooled one, the Top 50, where he'd be found first)
-  const tabs = (POSITIONS as SkillPosition[]).filter((position) => !SPORT.teamTabs?.includes(position) && !isPooled(position));
-  for (const match of [(p: SkillPlayer) => !!id && String(p.id) === id, (p: SkillPlayer) => !!name && key(p.name) === key(name)]) {
-    for (const position of tabs) {
-      const row = (SKILL_UNITS[position] ?? []).find(match);
-      if (row) return { position, gsisId: row.gsisId };
-    }
-  }
-  return null;
+  // (a season the site doesn't have: data.ts loaded the current one instead, so not him)
+  if (ask.season && Number(ask.season) !== dataSeason) return { missing: true };
+  const all = POSITIONS as string[];
+  const found = findLinkedCard(ask, SKILL_UNITS as Record<string, SkillPlayer[]>, {
+    all,
+    // (his own tab: not a team's, nor a pooled one, the Top 50, where he'd be found first)
+    players: all.filter((position) => !SPORT.teamTabs?.includes(position) && !isPooled(position)),
+    pooled: isPooled,
+    home: homeTab,
+  });
+  return found ?? { missing: true };
+}
+
+// A game from a link (?game=<ESPN's event id>&gameTab=), taken out of the address
+function linkedGame(): { event: string; tab: GameTab | null } | null {
+  const url = new URL(location.href);
+  if (!url.searchParams.has(GAME_PARAM)) return null;
+  const ask = readGameAsk(url);
+  clearGameParams(url);
+  history.replaceState(null, '', url);
+  return ask;
 }
 
 // A comparison from a link (?cmp=: share.ts), taken out of the address; null when there's none
@@ -131,8 +142,14 @@ export class PositionService {
   constructor() {
     applySharedLink(this, DEFAULT_SETTINGS);
     // (a card's link: its tab open from the start, the card when the grid draws it)
-    this.pendingCard = linkedCard();
-    if (this.pendingCard) this.positionSubject.next(this.pendingCard.position);
+    const card = linkedCard();
+    if (card && 'missing' in card) this.cardMissing = true;
+    else if (card) {
+      this.pendingCard = card;
+      this.positionSubject.next(card.grid as Position);
+    }
+    // (a game's link: the game open once the grid draws)
+    this.pendingGame = linkedGame();
     // (a comparison's link: the compare view open once the grid draws)
     this.pendingCompare = linkedCompare();
     this.checkSeasonParts(dataSeason);
@@ -148,6 +165,16 @@ export class PositionService {
   // The link to this list as it is now (the tab, the season, and what's changed from the defaults)
   shareLink(): string {
     return shareLink(this, DEFAULT_SETTINGS);
+  }
+
+  // A card's link (its tab, season, row and the card tab showing: card-link.ts), on the list's
+  cardLink(link: CardLink): string {
+    return cardLink(this.shareLink(), link, CURRENT_SEASON);
+  }
+
+  // A game's (ESPN's event id, the game's tab showing)
+  gameLink(event: string, tab: GameTab | null): string {
+    return gameLink(this.shareLink(), event, tab);
   }
 
   // ...and with a comparison on top (its sides ranked with the same sliders)
@@ -202,14 +229,31 @@ export class PositionService {
     else this.shownAll.delete(position);
   }
 
-  // A card a link asked for (linkedCard), until the grid opens it on its tab
-  private pendingCard: { position: SkillPosition; gsisId: string } | null = null;
+  // A card a link asked for (linkedCard), until the grid opens it on its tab; cardMissing: a card's link
+  // that named nobody this season has (the grid's note says so, once)
+  private pendingCard: LinkedCard | null = null;
+  private cardMissing = false;
 
-  takePendingCard(position: SkillPosition): { position: SkillPosition; gsisId: string } | null {
+  takePendingCard(position: SkillPosition): LinkedCard | null {
     const card = this.pendingCard;
-    if (!card || card.position !== position) return null;
+    if (!card || card.grid !== position) return null;
     this.pendingCard = null;
     return card;
+  }
+
+  takeCardMissing(): boolean {
+    const missing = this.cardMissing;
+    this.cardMissing = false;
+    return missing;
+  }
+
+  // A game a link asked for (linkedGame), until the grid opens it
+  private pendingGame: { event: string; tab: GameTab | null } | null = null;
+
+  takePendingGame(): { event: string; tab: GameTab | null } | null {
+    const game = this.pendingGame;
+    this.pendingGame = null;
+    return game;
   }
 
   // A comparison a link asked for (linkedCompare), until the grid opens it

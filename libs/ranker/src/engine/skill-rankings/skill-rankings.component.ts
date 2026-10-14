@@ -31,6 +31,7 @@ import { SeasonContext } from '@ranker/engine/player-card/card.model';
 import { copyRankingsToClipboard } from '@ranker/core/clipboard';
 import { RANK_EVERYONE } from '@ranker/engine/playing-time';
 import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
+import type { LinkedCard } from '@ranker/engine/card-link';
 import { RowGlide } from './row-glide';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
@@ -41,6 +42,9 @@ import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
+
+// (a card's link naming nobody in that season's rows)
+const CARD_MISSING = "Couldn't find that player";
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
@@ -137,7 +141,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   private readonly glide = new RowGlide();
 
-  // "List copied" under the copy button
+  // "List copied" under the copy button (and a link's note: CARD_MISSING)
   toastVisible = false;
   toastText = '';
   toastAt: { top: number; left: number | null; right: number | null } = { top: 0, left: 0, right: null };
@@ -243,9 +247,13 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     const saved = this.positionService.unitOrder(this.position);
     if (saved?.manual) this.restoreOrder(saved.ids);
     else this.sortPlayers();
-    // (a card a link asked for: open on its tab, once)
+    // (a card a link asked for: open on its tab, once; one naming nobody this season: a note saying so)
     const card = this.positionService.takePendingCard(this.position);
-    if (card) this.cards.openLinked(card, this.season);
+    if (card) void this.openSharedCard(card);
+    if (this.positionService.takeCardMissing()) this.note(CARD_MISSING);
+    // (a game a link asked for: open on its tab, once)
+    const game = this.positionService.takePendingGame();
+    if (game) void this.games.open({ event: game.event }, game.tab);
     // (a comparison a link asked for: open over whichever tab, once)
     const shared = this.positionService.takePendingCompare();
     if (shared) this.compare.openLinked(shared);
@@ -961,6 +969,32 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.compare.startWith(position, card.season, card.player.gsisId);
   };
 
+  // A card's link opened (card-link.ts): his card on the tab it was shared on; shared from a pooled tab (the
+  // Top 50), its place there and the arrows walking it
+  private async openSharedCard(card: LinkedCard): Promise<void> {
+    this.games.backTo = null;
+    const pool = card.grid !== card.position && this.playerList.some((p) => p.gsisId === card.gsisId) ? this.playerList : null;
+    if (!(await this.cards.openShared(card, this.season, pool))) this.note(CARD_MISSING);
+  }
+
+  // The card's Share button: a link to this card, its season and the card tab showing (from a pooled tab: the
+  // grid on that tab again)
+  readonly shareCard = (button: HTMLElement) => {
+    const card = this.cards.card;
+    if (!card) return;
+    const position = this.cards.fromPool ? this.position : this.cards.tabPosition;
+    const link = this.positionService.cardLink({ position, season: card.season, id: card.player.gsisId, name: card.player.name, tab: this.cards.tab });
+    this.shareLink(button, link, 'Link copied: anyone who opens it sees this card');
+  };
+
+  // The game view's: the game (ESPN's id) and its tab showing (the one it opens on anyway left out)
+  readonly shareGame = (button: HTMLElement) => {
+    const event = this.games.event;
+    if (!event) return;
+    const tab = this.games.tab === 'summary' || this.games.tab === 'preview' ? null : this.games.tab;
+    this.shareLink(button, this.positionService.gameLink(event, tab), 'Link copied: anyone who opens it sees this game');
+  };
+
   // A Recent square decided past regulation (the NHL's overtime or shootout: a lighter square)
   recentOt(player: SkillPlayer, index: number): boolean {
     return !!extras(player).lastFiveOt?.[index];
@@ -1205,6 +1239,18 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
       .writeText(url)
       .then(() => this.toast(button, copied))
       .catch((err) => console.error('Failed to copy: ', err));
+  }
+
+  // A note over the list, no button under it (a link that found nobody), a few seconds
+  private note(text: string): void {
+    setTimeout(() => {
+      const top = this.rankingsList?.nativeElement.getBoundingClientRect().top ?? 120;
+      this.toastAt = { top: Math.max(8, top + 12), left: innerWidth / 2, right: null };
+      this.toastText = text;
+      this.toastVisible = true;
+      clearTimeout(this.toastTimer);
+      this.toastTimer = setTimeout(() => (this.toastVisible = false), 4000);
+    });
   }
 
   private toast(button: HTMLElement, text: string): void {

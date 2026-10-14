@@ -275,10 +275,30 @@ export class PlayerCards {
 
   // A roster's player (or the hero's team) opened: their card for that season, on their own tab, ranked
   // with that tab's sliders and filters; the grid stays where it is
-  async openLinked(link: { position: string; gsisId: string }, season: number): Promise<void> {
+  async openLinked(link: { position: string; gsisId: string }, season: number): Promise<boolean> {
     const back = this.cardPosition;
     this.cardPosition = link.position === this.host.position ? null : (link.position as SkillPosition);
-    if (!(await this.openSeason(season, link.gsisId))) this.cardPosition = back;
+    const opened = await this.openSeason(season, link.gsisId);
+    if (!opened) this.cardPosition = back;
+    return opened;
+  }
+
+  // A card's link (card-link.ts) opened: the card on the tab it was shared on (one this card doesn't have:
+  // the Overview); pool: the pooled tab's list it was shared from (the Top 50: "#7 in Top 50", the arrows
+  // walking it). False: nobody by that id this season.
+  async openShared(link: { position: string; gsisId: string; tab: CardTab | null }, season: number, pool: SkillPlayer[] | null): Promise<boolean> {
+    // (the Analysis tab shows once the write-ups' index is in)
+    if (link.tab === 'analysis' && SPORT.analysis && !this.analyses) this.analyses = await analysisIndex().catch(() => null);
+    this.tab = link.tab ?? 'overview';
+    this.pool = pool;
+    const opened = await this.openLinked(link, season);
+    if (!opened) this.pool = null;
+    return opened;
+  }
+
+  // The card was opened from a pooled tab (the Top 50), its season: its link opens there
+  get fromPool(): boolean {
+    return !!this.card && this.poolIndex(this.card) >= 0;
   }
 
   // The hero's team name: that season's team row (the sport's team tab), for anyone but a team

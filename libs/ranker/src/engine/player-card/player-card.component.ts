@@ -19,6 +19,8 @@ export class PlayerCardComponent {
   @Input({ required: true }) cards!: PlayerCards;
   // (the hero's compare button: this season into the compare view)
   @Input() compare: (() => void) | null = null;
+  // (the hero's share button: a link to this card; the buttons' order, every header's: Share, Compare, Close)
+  @Input() share: ((button: HTMLElement) => void) | null = null;
 
   constructor(readonly games: GameViewService) {}
 

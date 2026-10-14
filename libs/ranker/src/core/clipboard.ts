@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.seasonranker.com';
+export const BASE_URL = 'https://www.seasonranker.com';
 
 interface Column {
   label: string;

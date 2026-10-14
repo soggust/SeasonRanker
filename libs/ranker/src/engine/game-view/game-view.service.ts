@@ -16,6 +16,16 @@ export type GameRef =
 
 export type GameTab = 'summary' | 'box' | 'plays' | 'chart' | 'fantasy' | 'highlights' | 'info' | 'preview' | 'injuries' | 'pitches';
 
+// Whether a game has a tab (the view's tabsFor; Highlights only once its videos are found)
+export function hasTab(game: GameView, tab: GameTab): boolean {
+  if (game.preview) return tab === 'preview' || tab === 'info' || (tab === 'injuries' && game.injuries.length > 0);
+  if (tab === 'summary' || tab === 'box' || tab === 'plays' || tab === 'info') return true;
+  if (tab === 'chart') return !!game.chart;
+  if (tab === 'pitches') return !!game.chart && 'pitches' in game.chart && game.chart.pitches.length > 0;
+  if (tab === 'fantasy') return game.fantasy.length > 0;
+  return false;
+}
+
 // The game view's state: the game open (or finding it, or failed), its tab, its weather. One at a time,
 // in a player card's place when opened from one (the card is set aside; closing the game brings it back).
 @Injectable({ providedIn: 'root' })
@@ -49,7 +59,13 @@ export class GameViewService {
     return !!SPORT.gameLog?.league;
   }
 
-  async open(ref: GameRef): Promise<void> {
+  // The game open now (ESPN's event id: its Share link), once it's loaded
+  get event(): string | null {
+    return this.game && this.game !== 'loading' && this.game !== 'error' && this.current && 'event' in this.current ? this.current.event : null;
+  }
+
+  // tab: the one to open on (a shared link's), when the game has it; else the Summary, or a game to come's Preview
+  async open(ref: GameRef, tab: GameTab | null = null): Promise<void> {
     const league = SPORT.gameLog?.league;
     if (!league) return;
     const ticket = ++this.opened;
@@ -77,7 +93,7 @@ export class GameViewService {
         .then((map) => ticket === this.opened && (this.players = map))
         .catch(() => null);
       // (a game to come opens on its preview)
-      this.tab = game.preview ? 'preview' : 'summary';
+      this.tab = tab && hasTab(game, tab) ? tab : game.preview ? 'preview' : 'summary';
       // (the Plays tab's first group open, the rest shut)
       if (game.plays.length) this.openPlays.add(0);
       // (no photo of the venue from ESPN: Wikipedia's of it, or of its city)
@@ -88,7 +104,12 @@ export class GameViewService {
           .catch(() => null);
       }
       loadHighlights(game)
-        .then((videos) => ticket === this.opened && (this.videos = videos))
+        .then((videos) => {
+          if (ticket !== this.opened) return;
+          this.videos = videos;
+          // (a link to its Highlights: the tab once they're found)
+          if (tab === 'highlights' && videos.length) this.tab = 'highlights';
+        })
         .catch(() => null);
       this.weather = 'loading';
       loadWeather(game)
