@@ -81,7 +81,7 @@ export async function buildComps({
     tsconfig: path.join(ROOT, 'tsconfig.json'),
   });
   globalThis.__DATA = readSeason(seasons[0]);
-  const { unitsFor, gridRankings, SKILL_STATS, headlineStats, unitStat } = await import(
+  const { unitsFor, gridRankings, SKILL_STATS, headlineStats, unitStat, isPooled } = await import(
     pathToFileURL(bundle).href
   );
   fs.rmSync(bundle);
@@ -101,10 +101,14 @@ export async function buildComps({
     // years with the current sliders without downloading whole seasons: seasons/<year>/units/<tab>.json
     const unitsDir = path.join(SEASONS_DIR, String(season), 'units');
     fs.mkdirSync(unitsDir, { recursive: true });
+    // (a pooled tab, the Top 50, is the other tabs' rows again: no units, careers or comps of its own, so a
+    // player's history stays on his own tab; taking it on later is this skip and the one below)
     for (const position of Object.keys(SKILL_STATS)) {
+      if (isPooled(position)) continue;
       fs.writeFileSync(path.join(unitsDir, `${position}.json`), JSON.stringify(units[position] ?? []));
     }
     for (const [position, stats] of Object.entries(SKILL_STATS)) {
+      if (isPooled(position)) continue;
       const rows = units[position] ?? [];
       // (similar seasons: the usage-cut list's rows, not the other players the tab took in)
       const cut = data.skillPlayers?.[position] && unranked[position]?.length ? new Set(data.skillPlayers[position].map((unit) => unit.gsisId)) : null;

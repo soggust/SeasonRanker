@@ -5,6 +5,7 @@ import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { byTotals, combinedFor, combinedStats, combinedWeights, weightedTotals } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
 import { RANK_EVERYONE, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
+import { adjustFor } from '@ranker/engine/pooled-tabs';
 
 // The table's own tab: its stats, groups, switched-off groups and sliders (kept by the grid, which
 // listens for their changes)
@@ -116,16 +117,17 @@ export class TabRanker {
     const { stats, hidden } = this.tab(position);
     const combined = this.settings.combineStats;
     const counted = (combined ? this.combine(stats, position).stats : stats).filter(
-      (stat) => !hidden[statGroup(stat)] && !this.statHidden(stat.key, position) && !reader.recentOff(stat),
+      (stat) => !stat.positionAdjust && !hidden[statGroup(stat)] && !this.statHidden(stat.key, position) && !reader.recentOff(stat),
     );
-    const weights = combinedWeights(position, this.mixWeights(position), combined);
+    const mix = this.mixWeights(position);
+    const weights = combinedWeights(position, mix, combined);
     const visible = (rows[position] ?? []).filter((player) => SPORT.rowVisible?.(player, this.settings.sport) ?? true);
     const seen = new Set(visible);
     const all = [...visible, ...players.filter((player) => !seen.has(player))];
     const min = this.minFor(rows, position, RANK_EVERYONE ? this.settings : DEFAULT_SETTINGS);
     const pool = all.filter((player) => SPORT.playingTime.of(player) >= min);
     const scored = outside.length ? [...all, ...outside] : all;
-    const totals = weightedTotals(scored, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths);
+    const totals = weightedTotals(scored, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths, adjustFor(position, mix));
     return { totals, counted, weights, ranked: byTotals(all, totals, this.settings.sport) };
   }
 

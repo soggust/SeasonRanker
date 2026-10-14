@@ -95,6 +95,8 @@
         [cdkDragDisabled]="ur || teamPicked || !!isoStat"
         [class.unranked]="ur"
         [class.first-unranked]="ur && i === rankedShown"
+        [class.past-cut]="pastCut(n, ur)"
+        [attr.data-cut]="pastCut(n, ur) ? sport.tabNames[position] : null"
         cdkDragPreviewContainer="parent"
         class="player"
         [class.picked]="picked.includes(player.gsisId)"
@@ -270,6 +272,16 @@
         @if (groups.length) {
           <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
         }
+      </li>
+    }
+    <!-- A pooled tab's ranking past its cap (the Top 50's): the rest a click away, ranked as they stand (a
+         line under the last place in the top 50); for the visit only -->
+    @if (listCap; as cap) {
+      <li class="show-all">
+        <button type="button" [title]="showsAll ? 'Back to the top ' + cap : 'Everyone ranked here, past the top ' + cap + ' (Min Games still decides who is listed)'" (click)="toggleShowAll()">
+          <mat-icon aria-hidden="true" [fontIcon]="showsAll ? 'expand_less' : 'expand_more'"></mat-icon>
+          {{ showsAll ? 'Show the top ' + cap : 'Show all ' + rankedCount }}
+        </button>
       </li>
     }
   </ul>

@@ -313,6 +313,24 @@
   }
 }
 
+// A pooled tab's Position Adjustment (the Top 50's): one slider under the presets, outside the groups, in
+// the menu's yellow; no eye, so the slider runs the row's width
+.sidebar .filters .slider-row.position-adjust {
+  grid-template-areas:
+    "label value"
+    "slider slider";
+  margin: -0.9em 1em 1.4em;
+  padding: 0.45em 1.4em 0.1em;
+
+  .mat-mdc-slider {
+    --mat-slider-active-track-color: var(--scoreboard-led);
+    --mat-slider-inactive-track-color: var(--primary-600);
+    --mat-slider-handle-color: #a8602f;
+    --mat-slider-hover-handle-color: #a8602f;
+    --mat-slider-focus-handle-color: #a8602f;
+  }
+}
+
 // The rows line up with the card titles (past the header's icon), a little further for their grips
 .sidebar .filters .group-body > .row-drag > .slider-row {
   padding-left: calc(2.9em + 15px);

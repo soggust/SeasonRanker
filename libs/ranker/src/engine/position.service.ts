@@ -5,6 +5,7 @@ import { BehaviorSubject, EMPTY, Observable, combineLatest, distinctUntilChanged
 import { connectRosterGrades } from '@ranker/engine/roster-grades';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
 import { defaultMin } from '@ranker/engine/playing-time';
+import { isPooled } from '@ranker/engine/pooled-tabs';
 import { COMPARE_PARAM, SharedCompare, SharedSide, applySharedLink, compareCode, readCompareCode, shareLink } from '@ranker/engine/share';
 import type { EngineHost, SportSettings } from '@ranker/engine/sport';
 import {
@@ -87,7 +88,8 @@ function linkedCard(): { position: SkillPosition; gsisId: string } | null {
   url.searchParams.delete('name');
   history.replaceState(null, '', url);
   const key = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
-  const tabs = (POSITIONS as SkillPosition[]).filter((position) => !SPORT.teamTabs?.includes(position));
+  // (his own tab: not a team's, nor a pooled one, the Top 50, where he'd be found first)
+  const tabs = (POSITIONS as SkillPosition[]).filter((position) => !SPORT.teamTabs?.includes(position) && !isPooled(position));
   for (const match of [(p: SkillPlayer) => !!id && String(p.id) === id, (p: SkillPlayer) => !!name && key(p.name) === key(name)]) {
     for (const position of tabs) {
       const row = (SKILL_UNITS[position] ?? []).find(match);
@@ -185,6 +187,19 @@ export class PositionService {
 
   setFiltersOpen(open: boolean): void {
     this.filtersOpenSubject.next(open);
+  }
+
+  // A pooled tab's whole list showing (its Show all row: past the Top 50's 50), per tab; for the visit only,
+  // not saved or shared, like the filters menu
+  private shownAll = new Set<SkillPosition>();
+
+  showsAll(position: SkillPosition): boolean {
+    return this.shownAll.has(position);
+  }
+
+  setShowAll(position: SkillPosition, on: boolean): void {
+    if (on) this.shownAll.add(position);
+    else this.shownAll.delete(position);
   }
 
   // A card a link asked for (linkedCard), until the grid opens it on its tab

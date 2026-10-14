@@ -5,6 +5,7 @@ import { extras } from '@ranker/engine/row-fields';
 import { badgeColor, whiteLogo } from '@sport/team-colors';
 import { logoForSeason } from '@sport/logo-eras';
 import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
+import { isPooled } from '@ranker/engine/pooled-tabs';
 import { ordinal } from '@ranker/core/format';
 import { pitchColor } from '../player-card/zones';
 import { HOME, TracedPark, fieldSpot, loadTracedParks, tracedPark, wallPath } from './parks';
@@ -95,6 +96,8 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     if (!this.siteLogos) {
       this.siteLogos = new Map();
       for (const [pos, list] of Object.entries(SKILL_UNITS)) {
+        // (a pooled tab's rows, the Top 50's, are copies of the others')
+        if (isPooled(pos)) continue;
         for (const p of list ?? []) {
           const name = extras(p).teamName;
           if (name) this.siteLogos.set(name.toLowerCase(), p.teamLogo);

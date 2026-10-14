@@ -16,6 +16,7 @@ import { StatReader } from '@ranker/engine/stat-reader';
 import { RANK_EVERYONE, underMin } from '@ranker/engine/playing-time';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { currentGrid } from '@ranker/engine/skill-rankings/grid-rankings';
+import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
@@ -90,7 +91,8 @@ export class PlayerCards {
       const players = new Map<string, { position: string; gsisId: string }>();
       for (const tabs of [rows, unranked]) {
         for (const [position, list] of Object.entries(tabs)) {
-          if (SPORT.teamTabs?.includes(position)) continue;
+          // (a pooled tab's rows, the Top 50's, are his own tab's again)
+          if (SPORT.teamTabs?.includes(position) || isPooled(position)) continue;
           for (const p of (list ?? []) as SkillPlayer[]) if (!players.has(nameKey(p.name))) players.set(nameKey(p.name), { position, gsisId: p.gsisId });
         }
       }
@@ -247,6 +249,8 @@ export class PlayerCards {
     const index = new Map<string, { position: string; gsisId: string }>();
     for (const tabs of [unranked, rows]) {
       for (const [position, list] of Object.entries(tabs)) {
+        // (not a pooled tab's copy: his card is his own tab's)
+        if (isPooled(position)) continue;
         for (const p of (list ?? []) as SkillPlayer[]) if (p.gsisId) index.set(p.gsisId, { position, gsisId: p.gsisId });
       }
     }
@@ -340,6 +344,7 @@ export class PlayerCards {
   // A name in the table: their card for the table's season, ranked as the table has them (always on
   // the Overview; flipping through players and seasons keeps the tab you're on)
   open(player: SkillPlayer): void {
+    this.pool = null;
     this.cardPosition = null;
     this.tab = 'overview';
     this.show(this.render(player, this.host.season, this.host.playerList, null));
@@ -389,9 +394,38 @@ export class PlayerCards {
     return true;
   }
 
+  // A name on a pooled tab (the Top 50): his card on his own tab, ranked there with its sliders, as a
+  // roster's link opens it (his own career lines, comps, skills and game log); the arrows walk the pooled
+  // list (list: the table's) while the card is the table's season
+  private pool: SkillPlayer[] | null = null;
+  async openFromPool(row: SkillPlayer, list: SkillPlayer[]): Promise<void> {
+    this.tab = 'overview';
+    this.pool = list;
+    await this.openLinked({ position: homeTab(row, this.host.position), gsisId: row.gsisId }, this.host.season);
+  }
+
+  // His place in the pooled list the card was opened from ("#7 in Top 50"), while it's that season's
+  poolPlace(card: PlayerCard): string | null {
+    const at = this.poolIndex(card);
+    return at < 0 ? null : `#${at + 1} in ${SPORT.tabNames[this.host.position] ?? this.host.position}`;
+  }
+
+  private poolIndex(card: PlayerCard): number {
+    if (!this.pool || card.season !== this.host.season || card.ur) return -1;
+    return this.pool.findIndex((p) => p.gsisId === card.player.gsisId);
+  }
+
   // The player above or below in the list (arrow keys too)
   step(step: number): void {
     if (!this.card) return;
+    // (a card opened from a pooled tab: the next one there, on his own tab)
+    const at = this.poolIndex(this.card);
+    if (at >= 0) {
+      const pool = this.pool!;
+      const next = pool[(at + step + pool.length) % pool.length];
+      void this.openLinked({ position: homeTab(next, this.host.position), gsisId: next.gsisId }, this.card.season);
+      return;
+    }
     const { list, season, context, player } = this.card;
     // (a UR card's player isn't in the list: he stands between its end and #1, so up opens the last, down #1)
     const to = this.card.ur ? (step > 0 ? step - 1 : list.length + step) : list.indexOf(player) + step;
@@ -402,6 +436,7 @@ export class PlayerCards {
   close(): void {
     this.card = null;
     this.cardPosition = null;
+    this.pool = null;
   }
 
   selectTab(tab: CardTab): void {

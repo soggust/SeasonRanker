@@ -7,6 +7,8 @@ export interface RowExtras {
   lastFiveVs?: (string | null)[];
   // (and how each was decided past regulation, when it was: the NHL's "OT" or "SO")
   lastFiveOt?: (string | null)[];
+  // (a pooled tab's row, the Top 50's: the tab it was pooled from, his own; pooled-tabs.ts)
+  homeTab?: string;
 }
 
 export const extras = (row: object): RowExtras => row as RowExtras;

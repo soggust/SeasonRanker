@@ -30,6 +30,7 @@ import { GameViewService, recentRef } from '@ranker/engine/game-view/game-view.s
 import { SeasonContext } from '@ranker/engine/player-card/card.model';
 import { copyRankingsToClipboard } from '@ranker/core/clipboard';
 import { RANK_EVERYONE } from '@ranker/engine/playing-time';
+import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
 import { RowGlide } from './row-glide';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
@@ -500,10 +501,43 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return show ? list.filter((player) => show(player, this.sportSettings)) : list;
   }
 
-  // The tab's top rows only, when the sport caps it (SPORT.listLimit)
+  // The tab's top rows only, when the sport caps it (SPORT.listLimit), after the ranking: the cut never moves
+  // the order or what each stat is measured against. A pooled tab (the Top 50) can show them all (its Show
+  // all row: the whole ranking, a line under its last place)
   private limited(list: SkillPlayer[]): SkillPlayer[] {
+    this.rankedCount = list.length;
     const limit = SPORT.listLimit?.(this.position);
-    return limit ? list.slice(0, limit) : list;
+    return limit && !this.showsAll ? list.slice(0, limit) : list;
+  }
+
+  // (the ranked rows before the cap: Show all's count, and where the bottom ten start)
+  rankedCount = 0;
+
+  // A pooled tab's cap (the Top 50's 50), when its ranking is longer: the Show all row, and the line
+  // under its last place while they all show
+  get listCap(): number | null {
+    const limit = isPooled(this.position) ? SPORT.listLimit?.(this.position) : undefined;
+    return limit && this.rankedCount > limit ? limit : null;
+  }
+
+  get showsAll(): boolean {
+    return isPooled(this.position) && this.positionService.showsAll(this.position);
+  }
+
+  // Show all, or back to the top rows (for the visit; the list keeps its order, dragged or sorted)
+  toggleShowAll(): void {
+    this.closeWhy();
+    this.positionService.setShowAll(this.position, !this.showsAll);
+    const saved = this.positionService.unitOrder(this.position);
+    if (saved?.manual) this.restoreOrder(saved.ids);
+    else this.sortPlayers();
+  }
+
+  // The row the cap falls under while they all show (its league place the cap's last; not isolated, nor
+  // one team's rows)
+  pastCut(n: number, ur: boolean): boolean {
+    const cap = this.listCap;
+    return !!cap && this.showsAll && !ur && !this.isoStat && !this.teams.team && n === cap - 1;
   }
 
   // ---------------------------------------------------------------------------
@@ -624,7 +658,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     if (i === 0) return 'count top-5';
     // (the top 10 keep their green if the list is ever that short)
     if (i < 10) return 'count top-10';
-    if (i >= this.playerList.length - 10) return 'count bottom-5';
+    // (a pooled tab's: the whole ranking's bottom ten, none among its top 50)
+    if (i >= (isPooled(this.position) ? this.rankedCount : this.playerList.length) - 10) return 'count bottom-5';
     return 'count';
   }
 
@@ -669,6 +704,11 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // A row's card (a click in the grid: a fresh start, no game to go back to)
   openCard(player: SkillPlayer): void {
     this.games.backTo = null;
+    // (a pooled tab's row, the Top 50's: his card on his own tab, the arrows walking this list)
+    if (isPooled(this.position)) {
+      void this.cards.openFromPool(player, this.playerList);
+      return;
+    }
     // (an unranked row: his unranked card, as a search or a link opens it)
     if (this.isUr(player)) void this.cards.openLinked({ position: this.position, gsisId: player.gsisId }, this.season);
     else this.cards.open(player);
@@ -831,7 +871,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     else if (this.picked.length) {
       // (one the list no longer shows, a filter or the cap since: his card from the season's rows all the same)
       this.games.backTo = null;
-      void this.cards.openLinked({ position: this.position, gsisId: this.picked[0] }, this.season);
+      const row = isPooled(this.position) ? SKILL_UNITS[this.position]?.find((p) => p.gsisId === this.picked[0]) : undefined;
+      void this.cards.openLinked({ position: row ? homeTab(row, this.position) : this.position, gsisId: this.picked[0] }, this.season);
     } else this.openFind();
   }
 

@@ -18,6 +18,7 @@ import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
 import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
 import { underMin } from '@ranker/engine/playing-time';
+import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
 import { CardSkill } from '@ranker/engine/skills';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { rankPct } from '@ranker/core/format';
@@ -48,7 +49,8 @@ const FACE = { r: 11, gap: 16 };
 // An edge: a skill a side is better at than the best of the rest by this much (percentile points)
 export const EDGE = 10;
 
-const TABS = Object.keys(SKILL_STATS) as SkillPosition[];
+// (not a pooled tab, the Top 50: its players are on their own tabs, so the search lists each once)
+const TABS = (Object.keys(SKILL_STATS) as SkillPosition[]).filter((tab) => !isPooled(tab));
 const isTeamTab = (position: SkillPosition) => !!SPORT.teamTabs?.includes(position);
 const keyOf = (position: SkillPosition, season: number, id: string) => `${position}/${season}/${id}`;
 
@@ -264,7 +266,8 @@ export class PlayerCompare {
   // Opened: the rows picked in the grid (the table's season and tab), or nobody yet (the search ready)
   async start(picks: SkillPlayer[]): Promise<void> {
     this.reset();
-    await this.addAll(picks.map((p) => ({ position: this.host.position, season: this.host.season, gsisId: p.gsisId })));
+    // (a pooled tab's picks, the Top 50's, each on his own tab)
+    await this.addAll(picks.map((p) => ({ position: homeTab(p, this.host.position) as SkillPosition, season: this.host.season, gsisId: p.gsisId })));
   }
 
   // From a link (share.ts): its sides in the link's order (the first four; anyone not found left out), on

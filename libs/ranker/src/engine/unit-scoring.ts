@@ -4,14 +4,15 @@ import { extras } from '@ranker/engine/row-fields';
 import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatKey, SkillWeights, unitStat } from '@sport/positions';
 import { SPORT } from '@sport/sport';
 import { rosterGradeValue } from '@ranker/engine/roster-grades';
+import { adjustFor, withPooled } from '@ranker/engine/pooled-tabs';
 
 // Every tab's rows for the loaded season, from skill-players.json (and the tabs the sport builds from
-// its other files, SPORT.extraRows). Refilled in place when the year selector loads another season, so
-// everything holding SKILL_UNITS sees the new rows.
+// its other files, SPORT.extraRows; then the tabs pooled from them, SPORT.pooledTabs). Refilled in place
+// when the year selector loads another season, so everything holding SKILL_UNITS sees the new rows.
 export const SKILL_UNITS = {} as Record<SkillPosition, SkillPlayer[]>;
 
 export function rebuildUnits(): void {
-  const rows = { ...withUnranked(DATA), ...SPORT.extraRows?.() };
+  const rows = withPooled({ ...withUnranked(DATA), ...SPORT.extraRows?.() });
   // (a tab the new season doesn't have is emptied, not left with the last season's rows)
   for (const tab of Object.keys(SKILL_UNITS)) if (!(tab in rows)) delete SKILL_UNITS[tab as SkillPosition];
   Object.assign(SKILL_UNITS, rows);
@@ -22,8 +23,8 @@ rebuildUnits();
 // swapped just while the sport builds its own tabs, then put back)
 export function unitsForSeason(data: AppData, season: number): Record<SkillPosition, SkillPlayer[]> {
   const rows = withUnranked(data);
-  if (!SPORT.extraRows) return rows;
-  return withSeason(season, data, () => ({ ...rows, ...SPORT.extraRows!() }));
+  if (!SPORT.extraRows) return withPooled(rows);
+  return withPooled(withSeason(season, data, () => ({ ...rows, ...SPORT.extraRows!() })));
 }
 
 // Rank everyone (SPORT.unrankedSeasons): a season's rows are its ranked file's and its other players'
@@ -157,6 +158,10 @@ const MAX_Z = 2.5;
 // read as he did in the ones that were), or the list's average if he has none. Small samples aren't adjusted for unless the sport
 // says how much evidence a row's rates rest on (SPORT.reliability, 0-1: MMA's fights): then each
 // rate's score is scaled by it, so a few fights' perfect numbers count less than a long career's.
+// A pooled tab's Position Adjustment (adjust: pooled-tabs.ts adjustFor) measures each stat partly within
+// the unit's own group too: (1 - share) x his score against the whole pool + share x his score against
+// his group's part of it (each capped), so a stat his position piles up counts for less; a group with
+// under 5 values or no spread uses the whole pool's.
 export function weightedTotals<T>(
   units: T[],
   stats: SkillStat[],
@@ -173,6 +178,8 @@ export function weightedTotals<T>(
   // (and each counted stat's strength: its slider over 50, its boost, a support grade's fifth; a share
   // over it is the unit's score on that stat)
   strengths?: Map<string, number>,
+  // (a pooled tab's Position Adjustment: each unit's group, and the share of each score measured in it)
+  adjust?: { of: (unit: T) => string; share: number },
 ): Map<T, number> {
   const totals = new Map<T, number>(units.map((unit) => [unit, 0]));
   const note = (unit: T, key: string, amount: number) => {
@@ -186,7 +193,7 @@ export function weightedTotals<T>(
   const skipOf = (unit: T) => skipped.get(unit) ?? skipped.set(unit, { missed: 0, sum: 0, strength: 0, keys: [] }).get(unit)!;
   for (const stat of stats) {
     const weight = weights[stat.key] ?? 0;
-    if (!weight || stat.infoOnly || stat.shownWhen?.(settings) === false) continue;
+    if (!weight || stat.infoOnly || stat.positionAdjust || stat.shownWhen?.(settings) === false) continue;
 
     const rawOf = (unit: T) => {
       const shown = value(unit, stat);
@@ -194,9 +201,12 @@ export function weightedTotals<T>(
       return scored === undefined ? shown : scored;
     };
     const raw = units.map(rawOf);
-    const isNumber = (v: number | null): v is number => v !== null;
-    const pooled = pool?.map((unit) => (index.has(unit) ? raw[index.get(unit)!] : rawOf(unit))).filter(isNumber);
-    const known = pooled && pooled.length >= 2 ? pooled : raw.filter(isNumber);
+    // (each known value with its unit: the pool's, or every unit's when the pool has too few)
+    const pairsOf = (list: T[], valueOf: (unit: T, i: number) => number | null) =>
+      list.map((unit, i): [T, number | null] => [unit, valueOf(unit, i)]).filter((pair): pair is [T, number] => pair[1] !== null);
+    const pooled = pool && pairsOf(pool, (unit) => (index.has(unit) ? raw[index.get(unit)!] : rawOf(unit)));
+    const pairs = pooled && pooled.length >= 2 ? pooled : pairsOf(units, (_, i) => raw[i]);
+    const known = pairs.map(([, v]) => v);
     if (known.length < 2) continue;
     const mean = known.reduce((a, b) => a + b, 0) / known.length;
     const sd = Math.sqrt(known.reduce((a, b) => a + (b - mean) ** 2, 0) / known.length);
@@ -208,10 +218,16 @@ export function weightedTotals<T>(
     const better = stat.support ? (stat.supportHelps ? 1 : -1) : stat.negative ? -1 : 1;
     const scale = stat.scale;
     const clamp = (z: number) => Math.max(-MAX_Z, Math.min(MAX_Z, z));
+    // (Position Adjustment: each group's own average and spread, from its part of the same values)
+    const groups = adjust && adjust.share > 0 && !scale ? groupScales(pairs, adjust.of) : null;
     const score = scale
-      ? (v: number) => clamp(MAX_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
-      : (v: number) => better * clamp((v - mean) / sd);
-    const worst = Math.min(...known.map(score));
+      ? (v: number, _unit?: T) => clamp(MAX_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
+      : (v: number, unit?: T) => {
+          const all = better * clamp((v - mean) / sd);
+          const own = groups && unit !== undefined ? groups.get(adjust!.of(unit)) : undefined;
+          return own ? (1 - adjust!.share) * all + adjust!.share * better * clamp((v - own.mean) / own.sd) : all;
+        };
+    const worst = Math.min(...pairs.map(([unit, v]) => score(v, unit)));
     // (a sport can boost a stat behind its slider: the same 0-100% range, more effect at every step;
     // the boost can depend on the sport's settings)
     const boost = typeof stat.boost === 'function' ? stat.boost(settings) : (stat.boost ?? 1);
@@ -225,7 +241,7 @@ export function weightedTotals<T>(
         if (parts) skipOf(unit).keys.push([stat.key, strength]);
         return;
       }
-      const scored = v !== null ? score(v) : stat.missingIsAverage || stat.support ? 0 : worst;
+      const scored = v !== null ? score(v, unit) : stat.missingIsAverage || stat.support ? 0 : worst;
       // (a rate that isn't his own sample's, like the UFC's rank, isn't scaled: stat.settled)
       const trust = reliability && stat.kind === 'efficiency' && !stat.settled ? reliability(unit, stat) : 1;
       totals.set(unit, (totals.get(unit) ?? 0) + scored * strength * trust);
@@ -243,6 +259,24 @@ export function weightedTotals<T>(
     if (missed && strength) for (const [key, part] of keys) note(unit, key, (sum / strength) * part);
   }
   return totals;
+}
+
+// Each group's average and spread over the values given (the Position Adjustment's): only a group with at
+// least 5 of them and some spread
+function groupScales<T>(pairs: [T, number][], of: (unit: T) => string): Map<string, { mean: number; sd: number }> {
+  const byGroup = new Map<string, number[]>();
+  for (const [unit, v] of pairs) {
+    const group = of(unit);
+    (byGroup.get(group) ?? byGroup.set(group, []).get(group)!).push(v);
+  }
+  const scales = new Map<string, { mean: number; sd: number }>();
+  for (const [group, values] of byGroup) {
+    if (values.length < 5) continue;
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const sd = Math.sqrt(values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length);
+    if (sd) scales.set(group, { mean, sd });
+  }
+  return scales;
 }
 
 // Best first by their weighted totals, then the sport's head-to-head rule
@@ -311,6 +345,10 @@ export function defaultRanking(
     (unit, stat) => statValue(unit, stat, context),
     undefined,
     settings,
+    undefined,
+    undefined,
+    undefined,
+    adjustFor(position, weights),
   );
   return byTotals(units, totals, settings);
 }

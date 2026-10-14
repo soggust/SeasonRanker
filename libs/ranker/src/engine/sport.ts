@@ -67,7 +67,25 @@ export interface StatDef<Key extends string = string> {
   scale?: [best: number, worst: number];
   // Not a rate resting on the row's own sample, so not scaled by SPORT.reliability (the UFC's rank)
   settled?: boolean;
+  // A pooled tab's Position Adjustment (SportConfig.pooledTabs): a control, not a stat. Its slider (0 by
+  // default) measures each stat partly against the row's own position's players (pooled-tabs.ts); no
+  // column, no card tile, no part in the ranking as a stat
+  positionAdjust?: boolean;
 }
+
+// A pooled tab's Position Adjustment (the Top 50's), in each sport's stats for that tab: a slider, not a
+// stat (positionAdjust: no column or tile, each sport's skillGroups leaves it out). At 0, its default,
+// everyone is measured against everyone; up, each stat partly against his own position's players
+// (unit-scoring.ts weightedTotals), so a stat his position piles up counts for less.
+export const POSITION_ADJUST_STAT: StatDef<'posAdj'> = {
+  key: 'posAdj',
+  label: 'Position Adj.',
+  name: 'Position Adjustment',
+  description: "0: everyone measured against everyone (default); up: each stat partly against his own position's players, so scarcity counts",
+  kind: 'efficiency',
+  format: 'int',
+  positionAdjust: true,
+};
 
 // The grid's four stat groups (each sport names and colors them), and a group with its stats
 export type StatGroupId = 'results' | 'box' | 'advanced' | 'support';
@@ -429,6 +447,11 @@ export interface SportConfig {
   seasonPartFiles?: string[];
   // Tabs built in the app from DATA rather than read from skill-players.json (the NFL's QBs)
   extraRows?: () => Record<string, SkillPlayer[]>;
+  // Tabs pooled from other tabs' rows (the Top 50: every position together), built in the app from the
+  // season's rows (pooled-tabs.ts): the tabs pooled, and the group each one's players count in for the
+  // Position Adjustment (none: its own tab). A pooled row's card, compare side and career are his own
+  // tab's; no careers file is built for a pooled tab.
+  pooledTabs?: Record<string, { tabs: string[]; group?: (tab: string) => string }>;
   // The sport's own settings (settings menu)
   settings?: SportSetting[];
   // Settings-menu switches a sport has no use for (MMA: no injury report, no rookie seasons), left out

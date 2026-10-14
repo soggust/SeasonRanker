@@ -11,12 +11,16 @@ export {
   weightedTotals,
   byTotals,
   combinedWeights,
+  combinedStats,
   defaultRanking,
   emptyIn,
   statValue,
   DEFAULT_SPORT_SETTINGS,
 } from '@ranker/engine/unit-scoring';
 export { TabRanker } from '@ranker/engine/skill-rankings/tab-ranker';
+export { gridRankings } from '@ranker/engine/skill-rankings/grid-rankings';
+export { POOLED, adjustFor, homeTab, isPooled, withPooled } from '@ranker/engine/pooled-tabs';
+export { SKILL_PRESETS } from '@sport/skill-presets';
 export { StatReader } from '@ranker/engine/stat-reader';
 export { DEFAULT_SETTINGS, PositionService } from '@ranker/engine/position.service';
 export { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';

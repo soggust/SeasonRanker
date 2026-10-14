@@ -27,6 +27,10 @@
         <!-- The season this card is for, as a lit scoreboard chip -->
         <p class="hero-kicker">
           <span class="season-chip">{{ c.seasonLabel }}</span>
+          <!-- (opened from the Top 50: his place there; the card itself is his own position's) -->
+          @if (cards.poolPlace(c); as place) {
+            <span class="season-chip" [title]="place + ': the card ranks him at his own position'">{{ place }}</span>
+          }
         </p>
         @let isTeam = c.positionName === 'Team';
         <h2 [attr.data-name]="c.name" [class.alone]="isTeam && (!c.teamName || c.teamName === c.name)">{{ c.name }}</h2>

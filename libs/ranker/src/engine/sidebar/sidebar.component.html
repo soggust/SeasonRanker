@@ -47,7 +47,25 @@
           (cleared)="userPresetCleared()"
         ></preset-bar>
         </div>
+        <!-- A pooled tab's Position Adjustment (the Top 50's): a slider that isn't a stat (no eye, no column),
+             0 by default; up, each stat partly against his own position's players -->
+        @if (positionAdjust; as adjust) {
+          <div class="slider-row position-adjust" [title]="adjust.description">
+            <p class="slider-label">{{ adjust.name }}</p>
+            <mat-slider min="0" max="100" step="5" color="accent" [style.--knob-roll]="(skillWeights[adjust.key] ?? 0) * 12 + 'deg'">
+              <input
+                matSliderThumb
+                [attr.aria-label]="adjust.name"
+                [attr.aria-valuetext]="(skillWeights[adjust.key] ?? 0) + '%'"
+                [(ngModel)]="skillWeights[adjust.key]"
+                (ngModelChange)="skillPresets[skill] = 'custom'; saveSkillWeights()"
+              />
+            </mat-slider>
+            <span class="slider-value">{{ skillWeights[adjust.key] ?? 0 }}%</span>
+          </div>
+        }
       </div>
+
 
       <!-- Stat groups; drag a card's handle to reorder the grid's groups -->
       <div class="group-list" cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="dropSkillGroup($event)">

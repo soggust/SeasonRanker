@@ -5,6 +5,7 @@ import { SKILL_PRESETS, SkillPresetDef } from '@sport/skill-presets';
 import { PositionService } from '@ranker/engine/position.service';
 import { SPORT } from '@sport/sport';
 import { combinedFor, statIsEmpty } from '@ranker/engine/unit-scoring';
+import { isPooled } from '@ranker/engine/pooled-tabs';
 import { statLabel } from '@ranker/engine/stat-reader';
 import { CURRENT_SEASON, dataSeason } from '@ranker/engine/data';
 import {
@@ -185,9 +186,16 @@ export class SidebarComponent implements OnInit {
     return this.skillStatHidden(key) || (!!parent && this.skillStatHidden(parent));
   }
 
-  // The presets dropdown's placeholder: "QB Presets...", "Team Presets..." on a Teams tab
+  // The presets dropdown's placeholder: "QB Presets...", "Team Presets..." on a Teams tab, "Top 50 Presets..."
+  // on a pooled tab
   get presetsLabel(): string {
-    return `${(this.position as string) === 'TM' ? 'Team' : this.position} Presets...`;
+    const tab = (this.position as string) === 'TM' ? 'Team' : isPooled(this.position) ? SPORT.tabNames[this.position] : this.position;
+    return `${tab} Presets...`;
+  }
+
+  // A pooled tab's Position Adjustment (the Top 50's): its slider under the presets, not in a group
+  get positionAdjust(): SkillStat | undefined {
+    return this.skillStats.find((stat) => stat.positionAdjust);
   }
 
   // This tab's presets (skill-presets.ts)

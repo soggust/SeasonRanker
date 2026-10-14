@@ -5,6 +5,7 @@ import './prefill';
 import { DATA, withSeason } from '@ranker/engine/data';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
 import { defaultMin } from '@ranker/engine/playing-time';
+import { isPooled } from '@ranker/engine/pooled-tabs';
 import { SKILL_STATS, headlineStats, presetWeights, statGroup, unitStat } from '@sport/positions';
 
 // (season: the season the files are, as the app loads it: dataSeason says so while its rows are built, so
@@ -20,5 +21,9 @@ export function unitsFor(data: object, season?: number) {
 // gridRankings, the one the card's Career line ranks the season being played with). Call after unitsFor
 // (the season in DATA).
 export { gridRankings } from '@ranker/engine/skill-rankings/grid-rankings';
+
+// (a pooled tab, the Top 50: its rows are the other tabs', so it has no units, careers or comps of its
+// own; build-comps skips it)
+export { isPooled };
 
 export { SKILL_STATS, DEFAULT_SPORT_SETTINGS, defaultMin, defaultRanking, headlineStats, presetWeights, statGroup, unitStat };
