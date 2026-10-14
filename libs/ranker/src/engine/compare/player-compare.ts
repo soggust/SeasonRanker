@@ -690,13 +690,15 @@ export class PlayerCompare {
     this.searched = true;
   }
 
-  // A hit picked: their best season in; that one's in already, the next one down (then up) that isn't
+  // A hit picked: an active player's current season in, anyone else's best; that one's in already, the next
+  // one down (then up) that isn't
   async pick(hit: CompareHit): Promise<void> {
     this.clearSearch();
     const taken = (season: number) => this.sides.some((s) => s.key === keyOf(hit.position, season, hit.id));
-    const below = hit.seasons.filter((s) => s < hit.best.season).reverse();
-    const above = hit.seasons.filter((s) => s > hit.best.season);
-    const season = [hit.best.season, ...below, ...above].find((s) => !taken(s));
+    const start = hit.seasons.includes(CURRENT_SEASON) ? CURRENT_SEASON : hit.best.season;
+    const below = hit.seasons.filter((s) => s < start).reverse();
+    const above = hit.seasons.filter((s) => s > start);
+    const season = [start, ...below, ...above].find((s) => !taken(s));
     if (season === undefined) return this.say('Every one of their seasons is already in');
     await this.add(hit.position, season, hit.id);
   }
