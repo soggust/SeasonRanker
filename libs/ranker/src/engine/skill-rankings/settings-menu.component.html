@@ -96,7 +96,9 @@
   <div class="menu-section section-display" (click)="$event.stopPropagation()"><mat-icon fontIcon="visibility"></mat-icon>Display</div>
   <!-- Teams Included: All, or one team's rows (each at its league rank). A skinny dropdown in the slot,
        "All" or the team's logo; a click, Enter or Space opens its list (logo and name, A to Z), and focus
-       comes back to the row when it shuts -->
+       comes back to the row when it shuts. (The list is a popover drawn in the slot, beside the dropdown, so
+       the slot keeps its clicks and keys: a click on an option or outside the list, which shuts it, went on to
+       the row, which opened it again, and to the menu, which shuts on a click.) -->
   @if (teams.available) {
     <div
       mat-menu-item
@@ -109,7 +111,7 @@
       (keydown.enter)="$event.preventDefault(); openTeams(teamSelect)"
       (keydown.space)="$event.preventDefault(); openTeams(teamSelect)"
     >
-      <span class="menu-slot">
+      <span class="menu-slot" (click)="$event.stopPropagation()" (keydown)="teamKeydown($event, teamSelect)">
         <mat-select
           #teamSelect
           class="team-select"
@@ -121,8 +123,6 @@
           [value]="teams.team"
           (valueChange)="teams.pick($event)"
           (openedChange)="$event || refocus(teamItem)"
-          (keydown)="$event.stopPropagation()"
-          (click)="$event.stopPropagation()"
         >
           <mat-select-trigger
             >@if (teams.picked; as team) {<img class="team-pick-logo" [class.white-logo]="logoWhite(team.logo)" [src]="seasonLogo(team.logo)" [alt]="team.name" />}</mat-select-trigger

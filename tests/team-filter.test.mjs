@@ -6,6 +6,7 @@
 // team's rows, the ranking and its scores the same after.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine, seasonData, seasonDir } from './support/engine.mjs';
 
@@ -160,4 +161,28 @@ test('MMA has no Teams Included; every team sport does', async () => {
     const { SPORT } = await loadEngine(sport, { entry });
     assert.equal(!SPORT.noTeams, sport !== 'mma', sport);
   }
+});
+
+// (Material draws the dropdown's list as a popover right after the dropdown, inside the row: a click on an
+// option or outside the list, which shuts it, went on to the row, which opened it again, so it never shut.
+// The slot around the dropdown keeps its clicks and keys, and Escape, which Material listens for on the page,
+// shuts the list there)
+test('Teams Included: the list shuts (the slot keeps its clicks and keys, Escape shuts it)', () => {
+  const dir = path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings');
+  const html = fs.readFileSync(path.join(dir, 'settings-menu.component.html'), 'utf8');
+  const ts = fs.readFileSync(path.join(dir, 'settings-menu.component.ts'), 'utf8');
+  const item = html.match(/#teamItem[\s\S]*?<\/mat-select>/)?.[0];
+  assert.ok(item, 'the Teams Included row');
+  // (the row opens the list; the slot, holding the dropdown and its popover, keeps the clicks from it)
+  assert.match(item, /\(click\)="\$event\.stopPropagation\(\); openTeams\(teamSelect\)"/);
+  const slot = item.match(/<span class="menu-slot"([^>]*)>\s*<mat-select\b/)?.[1];
+  assert.ok(slot !== undefined, 'the dropdown sits right in the slot');
+  assert.match(slot, /\(click\)="\$event\.stopPropagation\(\)"/);
+  assert.match(slot, /\(keydown\)="teamKeydown\(\$event, teamSelect\)"/);
+  assert.match(item, /\(openedChange\)="\$event \|\| refocus\(teamItem\)"/);
+  const keydown = ts.match(/teamKeydown\(event: KeyboardEvent, select: MatSelect\): void \{([\s\S]*?)\n {2}\}/)?.[1];
+  assert.ok(keydown, 'teamKeydown');
+  assert.match(keydown, /event\.stopPropagation\(\)/);
+  assert.match(keydown, /event\.key === 'Escape' && select\.panelOpen/);
+  assert.match(keydown, /select\.close\(\)/);
 });

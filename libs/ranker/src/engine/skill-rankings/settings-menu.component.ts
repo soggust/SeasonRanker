@@ -129,6 +129,16 @@ export class SettingsMenuComponent {
     select.open();
   }
 
+  // The dropdown keeps its keys from the menu (the menu's arrows and Escape would move or shut it), so
+  // Escape shuts its list here (Material's own Escape listens on the page, past the stop)
+  teamKeydown(event: KeyboardEvent, select: MatSelect): void {
+    event.stopPropagation();
+    if (event.key === 'Escape' && select.panelOpen) {
+      event.preventDefault();
+      select.close();
+    }
+  }
+
   // (its list shut: the keyboard back on the row, so the arrows move through the menu again)
   refocus(item: MatMenuItem): void {
     setTimeout(() => item.focus());
