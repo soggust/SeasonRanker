@@ -13,9 +13,13 @@ import {
   STAKES,
   UNIT_WORDS,
   atUnit,
+  DeskEpoch,
+  afterEpoch,
   calibrationOf,
   countNowOf,
+  deskEpochOf,
   edgeColorOf,
+  epochLabel,
   gameDaysOf,
   gradedOrder,
   intentOf,
@@ -65,6 +69,16 @@ const readSport = (): string | null => {
     return saved && SPORTS.includes(saved) ? saved : null;
   } catch {
     return null;
+  }
+};
+// (the record since the model's latest change (its epoch), or all time: since it by default; All Time remembered
+// on this browser)
+const SINCE_KEY = 'deskSince';
+const readSince = (): boolean => {
+  try {
+    return localStorage.getItem(SINCE_KEY) !== 'all';
+  } catch {
+    return true;
   }
 };
 // (the tiles' numbers count up this long when the desk opens or the sport changes)
@@ -136,6 +150,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // still open (Open Bets, In Play) are always all there: they're what's happening now)
   readonly ranges = DESK_RANGES;
   range: DeskRange = 'today';
+
+  // (the model's epoch, the newest in the sports' states (desk-math.ts deskEpochOf; a sport without one: all its
+  // bets), and whether the record is since it (the default) or all time. Display only: the ledgers keep every bet,
+  // and the bets still open are always there)
+  epoch: DeskEpoch | null = null;
+  sinceModel = readSince();
 
   // (one game on show, the dropdown left of the chips: its ESPN id; '' every game. A new sport clears it)
   game = '';
@@ -236,6 +256,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
     this.allBets = rows.filter((b) => !isTracked(b));
     this.allTracked = rows.filter(isTracked);
+    this.epoch = deskEpochOf(this.allStates);
     this.allChecks = files.flatMap((f) => checkBets(Array.isArray(f.checks?.checks) ? f.checks!.checks : []));
     // (a remembered sport with no bets (NBA before its season): every sport instead, not an untouched
     // 1,000u desk that reads like an empty wallet)
@@ -262,6 +283,28 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.range = range;
     this.game = '';
     this.show();
+  }
+
+  setSince(since: boolean): void {
+    this.sinceModel = since;
+    this.game = '';
+    try {
+      if (since) localStorage.removeItem(SINCE_KEY);
+      else localStorage.setItem(SINCE_KEY, 'all');
+    } catch {
+      // (storage off: the choice lasts the visit)
+    }
+    this.show();
+  }
+
+  // (the toggle's words: "Since this model (Oct 14, 6:00 AM)")
+  get epochText(): string {
+    return this.epoch ? `Since this model (${epochLabel(this.epoch.at)})` : 'Since this model';
+  }
+
+  // (a bet on the record on show: in the date range, and since the model's epoch unless All Time's picked)
+  private shown(b: ModelBet): boolean {
+    return this.inRange(b) && (!this.sinceModel || afterEpoch(b, this.epoch));
   }
 
   // (a bet placed in the range on show, by this browser's calendar: a bet from before placedAt was kept, by its
@@ -296,11 +339,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const scoped = this.game ? sportAll.filter((b) => b.event === this.game) : sportAll;
     // (the account is every bet's, whatever the range: a balance doesn't change with the dates on show)
     this.account = tally('All', scoped);
-    this.bets = scoped.filter((b) => b.status === 'open' || this.inRange(b));
+    this.bets = scoped.filter((b) => b.status === 'open' || this.shown(b));
     // (the CHECKs in the same sport, game and range: placed, the first time they were recorded)
-    this.checks = this.allChecks.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.inRange(c)));
+    this.checks = this.allChecks.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.shown(c)));
     // (the tracked rows the same way)
-    this.tracked = this.allTracked.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.inRange(c)));
+    this.tracked = this.allTracked.filter((c) => (!this.sport || c.sport === this.sport) && (!this.game || c.event === this.game) && (c.status === 'open' || this.shown(c)));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
     this.build();
     this.loadScores();
@@ -390,7 +433,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
     this.graded = graded.slice(-40).reverse();
     this.splitOpen(now);
-    this.gameDays = gameDaysOf(this.allBets.filter((b) => b.status === 'open' || this.inRange(b)), this.sport, now);
+    this.gameDays = gameDaysOf(this.allBets.filter((b) => b.status === 'open' || this.shown(b)), this.sport, now);
     this.changes = this.states
       .flatMap((s) => s.changelog.map((c) => ({ ...c, sport: s.label })))
       .sort((a, b) => b.at.localeCompare(a.at))

@@ -97,6 +97,8 @@ export interface ModelState {
   sameGame?: SameGame | null;
   // (the props' live calibration: calib.mjs fitCalib)
   calib?: LiveCalib | null;
+  // (the model's latest major change, leagues.mjs MODEL_EPOCH: the trust fit only on bets since; the desk's record since it by default)
+  epoch?: string | null;
 }
 
 // (one spot's live calibration (a stat, a side, a line class): its graded rows since the epoch, its shift on the

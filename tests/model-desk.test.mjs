@@ -396,6 +396,40 @@ test('the profit curve: from 0 through each graded bet, its range (0 in it), its
   assert.equal(c.zeroY, 110);
 });
 
+test("since the model's epoch: the newest across the states, a sport without one all time, a bet by when it was placed", () => {
+  const states = [
+    { sport: 'nfl', epoch: '2026-10-13T08:33:00Z' },
+    { sport: 'nhl', epoch: '2026-10-14T06:00:00Z' },
+    { sport: 'nba', epoch: '2026-10-12T23:17:00Z' },
+    { sport: 'mlb' },
+  ];
+  const e = desk.deskEpochOf(states);
+  assert.equal(e.at, '2026-10-14T06:00:00Z');
+  assert.deepEqual(e.sports, ['nfl', 'nhl', 'nba']);
+  assert.equal(desk.deskEpochOf([{ sport: 'nfl' }, { sport: 'nba', epoch: 'soon' }]), null);
+  assert.equal(desk.deskEpochOf([]), null);
+  const bets = [
+    bet({ id: 'before', placedAt: '2026-10-14T05:59:59Z', status: 'won', profit: 1 }),
+    bet({ id: 'at', placedAt: '2026-10-14T06:00:00Z', status: 'lost', profit: -1.5 }),
+    bet({ id: 'after', sport: 'nhl', placedAt: '2026-10-14T09:00:00Z', status: 'won', profit: 1 }),
+    // (no placedAt: its game's start)
+    bet({ id: 'old', start: '2026-10-04T17:00:00Z', status: 'won', profit: 1 }),
+    bet({ id: 'late', start: '2026-10-15T17:00:00Z', status: 'lost', profit: -1 }),
+    // (a sport whose state has no epoch: all its bets)
+    bet({ id: 'mlb', sport: 'mlb', placedAt: '2026-09-01T00:00:00Z', status: 'won', profit: 1 }),
+  ];
+  assert.deepEqual(desk.sinceEpoch(bets, e).map((b) => b.id), ['at', 'after', 'late', 'mlb']);
+  // (a plain epoch: every sport by it; none: every bet)
+  assert.deepEqual(desk.sinceEpoch(bets, '2026-10-14T06:00:00Z').map((b) => b.id), ['at', 'after', 'late']);
+  assert.equal(desk.sinceEpoch(bets, null).length, bets.length);
+  assert.equal(desk.afterEpoch(bets[0], e), false);
+  // (the record and calibration built from them: the older model's bets out)
+  const t = desk.tally('All', desk.sinceEpoch(bets, e));
+  assert.deepEqual([t.won, t.lost, t.profit], [2, 2, -0.5]);
+  assert.match(desk.epochLabel('2026-10-14T06:00:00Z'), /^Oct 1[34], \d{1,2}:00 [AP]M$/);
+  assert.equal(desk.epochLabel('never'), '');
+});
+
 // (bets in three sports, graded in turn)
 const MIXED = [
   ['nfl', 2.5],

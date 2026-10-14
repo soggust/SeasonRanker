@@ -1,6 +1,7 @@
 // The Algorithm desk's hovers: what each column, tile and panel means (the template's help[key])
 export const DESK_HELP: Record<string, string> = {
   record: 'Won-lost-pushed (sorts by the share won). Bets only: since Oct 13, 2026 a market with no edge is tracked, not bet, and never in it (the Tracked panel)',
+  epoch: "Results since the model's latest change (when its trust restarted); the full history is kept. All time shows every graded bet.",
   streak: 'The current run: the latest graded bets in a row that won (W) or lost (L), pushes skipped',
   profit: 'Units won or lost, stakes included',
   roi: 'Return on the units staked: profit ÷ staked',

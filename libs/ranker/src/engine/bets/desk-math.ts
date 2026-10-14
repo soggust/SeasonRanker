@@ -287,3 +287,38 @@ export function gameDaysOf(bets: ModelBet[], sport: string | null, now: number):
   }
   return [...days.values()];
 }
+
+// The model's epoch (leagues.mjs MODEL_EPOCH, each sport's state.json epoch: its latest major change, when its
+// trust restarted): the desk's record shows the bets since it by default, the full history kept for All Time.
+// The newest across the sports' states, and the sports whose state has one (a sport without: all its bets)
+export interface DeskEpoch {
+  at: string;
+  sports?: string[];
+}
+export function deskEpochOf(states: { sport: string; epoch?: string | null }[]): DeskEpoch | null {
+  const dated = states.filter((s) => typeof s.epoch === 'string' && !Number.isNaN(Date.parse(s.epoch)));
+  if (!dated.length) return null;
+  const at = dated.map((s) => s.epoch as string).sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  return { at, sports: dated.map((s) => s.sport) };
+}
+
+// (a bet placed at or after the epoch, by when it was placed (an older bet without placedAt, its game's start),
+// as run.mjs's trust evidence; true with no epoch, or for a sport the epoch doesn't cover)
+export function afterEpoch(b: { sport: string; placedAt?: string; start: string }, epoch: DeskEpoch | string | null): boolean {
+  if (!epoch) return true;
+  const e: DeskEpoch = typeof epoch === 'string' ? { at: epoch } : epoch;
+  if (e.sports && !e.sports.includes(b.sport)) return true;
+  const at = Date.parse(b.placedAt || b.start);
+  return !Number.isNaN(at) && at >= Date.parse(e.at);
+}
+
+// The bets placed since the epoch (every one with none)
+export const sinceEpoch = <T extends { sport: string; placedAt?: string; start: string }>(bets: T[], epoch: DeskEpoch | string | null): T[] =>
+  bets.filter((b) => afterEpoch(b, epoch));
+
+// (the epoch in words for its toggle: "Oct 14, 6:00 AM", this browser's time)
+export function epochLabel(at: string): string {
+  const d = new Date(at);
+  if (Number.isNaN(d.getTime())) return '';
+  return `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+}
