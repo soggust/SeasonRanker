@@ -92,9 +92,19 @@ jobs:
 
       - name: Grade, refit and bet
         env:
-          # (the CHECKs' news research: off unless the variable is 1; under the desk's AI caps, ai-budget.mjs)
+          # (the CHECKs' news research: off unless the variable is 1; under its own caps, ai-budget.mjs
+          # researchBudget: $0.50 a day and $12 a month unless CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD say
+          # otherwise ($1 and $20 at most). Its trial: 3 CHECKs a day, every sport together, till 15 calls are
+          # measured (CHECK_RESEARCH_TRIAL_N, _TRIAL_CALLS; CHECK_RESEARCH_TRIAL=0 ends it). After it,
+          # CHECK_RESEARCH_N a sport a day (3). Unset, each its default: research.mjs)
           CHECK_RESEARCH: ${{ vars.CHECK_RESEARCH }}
           ANTHROPIC_API_KEY: ${{ vars.CHECK_RESEARCH == '1' && secrets.ANTHROPIC_API_KEY || '' }}
+          CHECK_RESEARCH_N: ${{ vars.CHECK_RESEARCH_N }}
+          CHECK_RESEARCH_DAILY_USD: ${{ vars.CHECK_RESEARCH_DAILY_USD }}
+          CHECK_RESEARCH_MONTHLY_USD: ${{ vars.CHECK_RESEARCH_MONTHLY_USD }}
+          CHECK_RESEARCH_TRIAL: ${{ vars.CHECK_RESEARCH_TRIAL }}
+          CHECK_RESEARCH_TRIAL_N: ${{ vars.CHECK_RESEARCH_TRIAL_N }}
+          CHECK_RESEARCH_TRIAL_CALLS: ${{ vars.CHECK_RESEARCH_TRIAL_CALLS }}
           # (The Odds API: real lines and prices, props and history; without it the free ESPN board is used)
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           # (the owner's notes on the picks, Firestore's deskNotes: read only, by its REST API, nothing to install;

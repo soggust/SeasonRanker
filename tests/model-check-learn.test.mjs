@@ -290,8 +290,9 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   const pausing = () => mockClient([{ ...big }, { ...big }, { ...big }]);
   const quiet = { log: () => {}, warn: () => {} };
   const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
-  // ($1.20 spent today: $0.30 left, under a turn's worst case: nothing asked)
-  fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 1.2 }] }));
+  // ($1.25 spent today: $0.25 left, under a turn's worst case ($0.28): nothing asked)
+  assert.equal(Math.round(ESTIMATE * 100) / 100, 0.28);
+  fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 1.25 }] }));
   let client = pausing();
   await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'a' })], now, env, budget: aiBudget({ file, now }), client, log: quiet });
   assert.equal(client.asked.length, 0);

@@ -17,16 +17,23 @@
 //   which    the open CHECKs (not graded, closed, bet, researched or locked) the rule shows (checks.mjs shadowOf,
 //            judged again from each one's stored fields: one it passes later in the run never paid for), the
 //            biggest model Kelly first (the page's order), at most
-//            CHECK_RESEARCH_N (TOP, 3) a sport a UTC day, counted from the AI usage log (every CHECK asked
+//            CHECK_RESEARCH_N (TOP, 3) a sport a UTC day, counted from the research's usage log (every CHECK asked
 //            about today, kept or not) and the CHECKs researched today. A finding is logged with its call, so
 //            a run that failed after paying for it (its CHECKs never saved) has it back from the log the next
 //            run, never asked again; one cut short (max_tokens, its turns used up, the caps) is asked once more
 //            (2 calls a CHECK at most), never kept as a finding
-//   capped   ai-budget.mjs: the calls share the write-ups' caps ($1.50 a day, $25 a month, every sport); a
-//            call starts only when a turn's worst case (ESTIMATE: MAX_TOKENS out, TURN_INPUT in with its
-//            searches, MAX_SEARCHES searches) fits, and each paused turn is continued only when the call's cost
-//            so far plus the next turn's worst case (the history re-sent, more searches) still fits: else it
-//            stops there, cut short. Its real usage and cost logged
+//   trial    till TRIAL_CALLS (15; CHECK_RESEARCH_TRIAL_CALLS) calls are measured (ai-budget.mjs life: counted
+//            for good in the totals file), at most TRIAL_N (3; CHECK_RESEARCH_TRIAL_N) CHECKs a UTC day, every
+//            sport together, whatever CHECK_RESEARCH_N says: the real per-call cost known before the day's
+//            share grows. CHECK_RESEARCH_TRIAL=0 ends it early
+//   capped   ai-budget.mjs researchBudget: its own log (.cache/model/ai-usage-research.json), totals
+//            (apps/nfl/scripts/model/ai-spend-research.json) and caps, apart from the write-ups' ($0.50 a UTC
+//            day, $12 a UTC month, every sport; CHECK_RESEARCH_DAILY_USD and _MONTHLY_USD set them, $1 and $20
+//            at most); a call starts only when a turn's worst case (ESTIMATE: MAX_TOKENS out, TURN_INPUT in
+//            with its searches, MAX_SEARCHES searches: $0.28) fits, and each paused turn is continued only when
+//            the call's cost so far plus the next turn's worst case (the history re-sent, more searches) still
+//            fits: else it stops there, cut short. Its real usage and cost logged, a line a call (its dollars,
+//            tokens and searches, and every call measured so far: their mean and the highest)
 //   checked  findingOf: the answer's JSON alone (its text blocks joined as they come: the citations split a
 //            reply's text mid-sentence, mid-JSON), its fields checked (a status out, questionable, active or
 //            unknown; a reason of REASON_OF's; a summary 240 characters at most; the sources http(s) URLs, 5
@@ -45,11 +52,15 @@ import { OUT_STATUS, Q_STATUS } from './timing.mjs';
 
 export const RESEARCH_MODEL = 'claude-opus-5-5';
 export const TOP = 3;
-// (a turn's most: 8,000 tokens out (the thinking counts against it), 60,000 fresh in with its search results,
-// three searches: $0.43; a continued turn's the history re-sent on top: turnEstimate)
-export const MAX_TOKENS = 8000;
-export const MAX_SEARCHES = 3;
-export const TURN_INPUT = 60000;
+// (a turn's most: 5,000 tokens out (the thinking counts against it), 40,000 fresh in with its search results,
+// two searches: $0.28, so the day's $0.50 holds two or three calls at the costs a call is expected to run; a
+// continued turn's the history re-sent on top: turnEstimate)
+export const MAX_TOKENS = 5000;
+export const MAX_SEARCHES = 2;
+export const TURN_INPUT = 40000;
+// (the trial: TRIAL_N CHECKs a day, every sport together, till TRIAL_CALLS calls are measured)
+export const TRIAL_N = 3;
+export const TRIAL_CALLS = 15;
 // (the pauses a long search turn may take before it's left unfinished)
 export const MAX_TURNS = 3;
 // (a finding applied to the injury report this long after it's made, no longer)
@@ -235,6 +246,25 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
   return { finding, usage, cost: costOf(usage, RESEARCH_MODEL), turns: Math.min(turns + 1, MAX_TURNS), retry: RETRY.test(finding.problem ?? '') };
 }
 
+// The trial (see above): { on, perDay, need, calls } from the environment and the calls measured so far
+export function trialOf(env = {}, budget = null) {
+  const int = (v, d, lo, hi) => {
+    const n = Number.parseInt(v ?? '', 10);
+    return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : d;
+  };
+  const need = int(env.CHECK_RESEARCH_TRIAL_CALLS, TRIAL_CALLS, 0, 200);
+  const perDay = int(env.CHECK_RESEARCH_TRIAL_N, TRIAL_N, 0, 10);
+  const calls = budget?.life?.().calls ?? 0;
+  return { on: env.CHECK_RESEARCH_TRIAL !== '0' && calls < need, perDay, need, calls };
+}
+
+// (the measured calls in words: "7 calls measured: mean $0.118, highest $0.201")
+export function measuredWords(budget) {
+  const l = budget?.life?.();
+  if (!l?.calls) return 'no calls measured yet';
+  return `${l.calls} call${l.calls === 1 ? '' : 's'} measured: mean $${l.mean.toFixed(3)}, highest $${l.max.toFixed(3)}`;
+}
+
 // The day's research (see above): a Map of CHECK id -> its research record ({ at, by, model, status, reason,
 // player, athlete, summary, sources, cost }). reportOf(c): the CHECK's game's injury report (athleteOf)
 export async function researchChecks({ sport, checks = [], now = new Date(), env = process.env, dry = false, budget = null, client = null, reportOf = () => null, log = console, clock = Date.now } = {}) {
@@ -258,6 +288,10 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   }
   if (out.size) log.log?.(`${sport}: ${out.size} CHECK research findings back from the usage log (their run never saved them)`);
   const doneIds = new Set([...logged.filter((e) => e.at.slice(0, 10) === day).map((e) => e.id), ...checks.filter((c) => String(c.research?.at ?? '').slice(0, 10) === day).map((c) => c.id)]);
+  // (the trial's day: every sport's calls today, tries and failures too, against its TRIAL_N)
+  const trial = trialOf(env, budget);
+  const todayAll = (budget?.list?.() ?? []).filter((e) => e.what === 'check-research' && String(e.at).slice(0, 10) === day).length;
+  const room = Math.max(0, Math.min(top - doneIds.size, trial.on ? trial.perDay - todayAll : Infinity));
   const due = checks
     .filter((c) => open(c) && !out.has(c.id) && !c.bet && !checkLocked(c, now) && Date.parse(c.start) > now.getTime())
     // (asked before: again only when every try was cut short, MAX_TRIES at most)
@@ -266,8 +300,9 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed);
     })
     .sort((a, b) => (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
-    .slice(0, Math.max(0, top - doneIds.size));
+    .slice(0, room);
   if (!due.length) return out;
+  if (trial.on && !dry) log.log?.(`${sport}: CHECK research trial: ${trial.perDay} CHECKs a day every sport together (${todayAll} today) till ${trial.need} calls are measured (${measuredWords(budget)})`);
   if (dry) {
     log.log?.(`${sport} (dry): CHECK research would look into ${due.length}: ${due.map((c) => c.pick ?? c.id).join(' | ')}`);
     return out;
@@ -305,7 +340,10 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage, cost, ...(rec ? { finding: rec } : { retry: true }) });
       budget.save();
       if (rec) out.set(c.id, rec);
-      log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: ${finding.player ?? 'no one'} ${finding.status} (${finding.reason}), ${finding.sources.length} sources, $${cost.toFixed(3)}${finding.problem ? ` [${finding.problem}${retry ? ', to be asked once more' : ''}]` : ''}`);
+      const n = (v) => (Number.isFinite(v) ? v : 0).toLocaleString('en-US');
+      const tokens = `${n((usage.input_tokens ?? 0) + (usage.cache_read_input_tokens ?? 0) + (usage.cache_creation_input_tokens ?? 0))} in, ${n(usage.output_tokens)} out, ${n(usage.server_tool_use?.web_search_requests)} searches`;
+      log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: ${finding.player ?? 'no one'} ${finding.status} (${finding.reason}), ${finding.sources.length} sources${finding.problem ? ` [${finding.problem}${retry ? ', to be asked once more' : ''}]` : ''}`);
+      log.log?.(`${sport}: CHECK research cost: this call $${cost.toFixed(4)} (${tokens}); ${measuredWords(budget)}; today $${budget.spent().day.toFixed(2)} of $${budget.caps?.day?.toFixed(2) ?? '?'}, month $${budget.spent().month.toFixed(2)} of $${budget.caps?.month ?? '?'}`);
       // (a call stopped at the caps: none other started)
       if (finding.problem === 'stopped: the AI caps') break;
     } catch (err) {

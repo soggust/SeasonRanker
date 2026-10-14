@@ -89,7 +89,7 @@
 //      with its numbers), and the graded ones' hit rate and profit by cause turned into ranked
 //      recommendations (checkLearning: a blind spot to fix, a guard that could loosen, recorded, never
 //      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
-//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under ai-budget.mjs's caps, 90
+//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under its own caps, ai-budget.mjs researchBudget, 90
 //      seconds a request and 3 minutes a run), a finding kept on its CHECK as a label only: never put into the
 //      injury report, the prices or a bet (the owner's note does that, where it's right). The teams' news
 //      (news.mjs: ESPN's free per-team feed, once a UTC day a team, a game's two teams every 3 hours from 36
@@ -143,7 +143,7 @@ import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './not
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
-import { aiBudget, FLOOR_FILE } from './ai-budget.mjs';
+import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -180,8 +180,6 @@ const MAX_REPRICES = 6;
 // (the recent runs' start times, for the gap between them (timing.mjs cadenceOf): .cache/model/runs.json, the
 // last 24; a dry run reads it and adds nothing)
 const RUNS = path.join(CACHE, 'runs.json');
-// (the desk's Claude spend, every sport's, against the caps: ai-budget.mjs; the workflow's cache keeps it)
-const AI_USAGE = path.join(CACHE, 'ai-usage.json');
 // (the open bets taken back on news but not yet placed again, kept across runs (a bet held a run, its price
 // not in yet or its market resting, keeps its count toward MAX_REPRICES and what it was when it's placed
 // later): .cache/model/taken-back-<sport>.json, each dropped once its game starts or it's placed again)
@@ -642,7 +640,7 @@ async function noteInjuries(r) {
   r.noteChecks = checks;
   try {
     if (!r.checksUnreadable) {
-      const budget = process.env.CHECK_RESEARCH === '1' ? aiBudget({ file: AI_USAGE, floor: FLOOR_FILE, now: r.now, dry: DRY }) : null;
+      const budget = process.env.CHECK_RESEARCH === '1' ? researchBudget({ now: r.now, dry: DRY }) : null;
       r.researchFound = await researchChecks({ sport: r.sport, checks, now: r.now, dry: DRY, budget, reportOf: (c) => r.live?.get(String(c.event))?.injuries ?? null });
     }
   } catch (err) {

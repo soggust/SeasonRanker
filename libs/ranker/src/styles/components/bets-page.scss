@@ -1420,6 +1420,71 @@ img.bet-face {
     font-size: 10.5px;
     margin-top: 8px;
   }
+
+  // A CHECK's news research (research.mjs): its status, who and why, the summary, the reports' sites
+  .why-research {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 9px;
+    padding-top: 8px;
+
+    .why-research-head {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+
+      span {
+        color: #bbb;
+      }
+    }
+
+    .rs-status {
+      color: #fff;
+
+      &.bad {
+        color: v.$bad;
+      }
+
+      &.caution {
+        color: color-mix(in srgb, #{v.$caution} 75%, #fff);
+      }
+
+      &.good {
+        color: color-mix(in srgb, #{v.$good} 75%, #fff);
+      }
+
+      &.none {
+        color: #bbb;
+      }
+    }
+
+    .rs-who {
+      color: #ddd;
+    }
+
+    .rs-summary {
+      color: #ccc;
+      line-height: 1.4;
+    }
+
+    .rs-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px 10px;
+
+      a {
+        color: #9ecbff;
+        text-decoration: underline;
+        word-break: break-all;
+      }
+    }
+
+    .why-foot {
+      margin-top: 2px;
+    }
+  }
 }
 
 // (phones: along the bottom, the screen's width)

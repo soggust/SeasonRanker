@@ -340,6 +340,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // (a CHECK's numbers the page leads with: the model's own Kelly, the model's mean and the book's implied one,
       // his record at the line (context, never a rule))
       ...(check ? { modelKelly: modelKelly(b.odds, b.model), ...checkNumbers(b) } : {}),
+      // (a CHECK's news research, where it has one (research.mjs): its finding for the popover, a label only)
+      ...(check && b.research ? { research: researchRow(b.research) } : {}),
       // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered
       // once it's after the note; held, why a noted one couldn't be re-priced)
       ...(check && b.resolved ? { resolved: { at: b.resolved.at, as: b.resolved.as, ...(b.resolved.by ? { by: b.resolved.by } : {}), ...(b.resolved.held ? { held: b.resolved.held } : {}), ...(b.resolved.why ? { why: b.resolved.why } : {}) } } : {}),
@@ -370,6 +372,21 @@ function checkNumbers(c) {
     ...(Number.isFinite(p.mean) ? { mean: p.mean } : {}),
     ...(Number.isFinite(p.implied) ? { implied: p.implied } : {}),
     ...(Number.isFinite(p.fairOver) && Number.isFinite(p.record) ? { lineRecord: { over: p.fairOver, n: p.record } } : {}),
+  };
+}
+
+// (a CHECK's research as the page shows it (research.mjs findingOf's fields, checked again): its status, reason,
+// player, summary, its http(s) sources, when it was made and whether it was put into the injury report)
+export function researchRow(rs) {
+  const str = (v, n) => (typeof v === 'string' && v.trim() ? v.replace(/\s+/g, ' ').trim().slice(0, n) : null);
+  return {
+    status: ['out', 'questionable', 'active', 'unknown'].includes(rs?.status) ? rs.status : 'unknown',
+    reason: str(rs?.reason, 20) ?? 'none',
+    player: str(rs?.player, 80),
+    summary: str(rs?.summary, 240) ?? '',
+    sources: (Array.isArray(rs?.sources) ? rs.sources : []).filter((u) => typeof u === 'string' && /^https?:\/\/\S+$/.test(u) && u.length <= 500).slice(0, 5),
+    at: str(rs?.at, 30),
+    ...(rs?.applied ? { applied: true } : {}),
   };
 }
 

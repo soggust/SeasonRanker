@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
 import { tierLabel, tierOf, unranked } from './tiers';
 import { CheckResolved, NotePlayer, byBand, notePlayers } from './desk-notes';
+import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
@@ -108,6 +109,20 @@ export interface BetRow {
   lineRecord?: { over: number; n: number } | null;
   // (its last re-evaluation, still a CHECK (picks.json's: checks.mjs resolveChecks): its note answered once after it)
   resolved?: CheckResolved | null;
+  // (its news research, where it has one (picks.json's: research.mjs, a label only))
+  research?: CheckResearch | null;
+}
+
+// A CHECK's news research (picks.json's research: research.mjs findingOf, picks.mjs researchRow): what Claude found
+// in the news for the gap, the player it's about, a summary and the reports it relied on. A label: never a bet
+export interface CheckResearch {
+  status: 'out' | 'questionable' | 'active' | 'unknown';
+  reason: string;
+  player: string | null;
+  summary: string;
+  sources: string[];
+  at: string | null;
+  applied?: boolean;
 }
 
 // A game's venue and kickoff weather (a pick's where: picks.mjs)
@@ -191,6 +206,7 @@ interface Pick {
   implied?: number | null;
   lineRecord?: { over: number; n: number } | null;
   resolved?: CheckResolved | null;
+  research?: CheckResearch | null;
 }
 interface Picks {
   at: string;
@@ -409,6 +425,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
             implied: Number.isFinite(p.implied) ? p.implied! : null,
             lineRecord: p.lineRecord && Number.isFinite(p.lineRecord.over) && Number.isFinite(p.lineRecord.n) ? p.lineRecord : null,
             resolved: p.resolved ?? null,
+            research: p.research && typeof p.research === 'object' ? p.research : null,
           }
         : {}),
     });
@@ -700,6 +717,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     reason: string | null;
     // (turned a PASS since it was shown: why)
     passed: string | null;
+    // (its news research, finished: research.mjs; null where none)
+    research: CheckResearchView | null;
   } | null = null;
 
   // (the CHECK rule, picks.json's checkRule: a role's CHECK only at this model Kelly or more; null till read)
@@ -782,6 +801,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
         cause: this.checkCauseText(row),
         reason: row.checkReason ?? null,
         passed: this.passed(row) ? (row.resolved?.why ?? 'under the CHECK bar now') : null,
+        research: researchView(row.research),
       };
     } else {
       this.checkWhy = null;

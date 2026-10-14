@@ -365,6 +365,29 @@
         @if (c.reason) {
           <p class="why-foot">{{ c.reason }}</p>
         }
+        <!-- (its news research, where it has one: research.mjs, Claude reading the news for the gap; a label only) -->
+        @if (c.research; as rs) {
+          <div class="why-research">
+            <p class="why-research-head">
+              <span>News research</span>
+              <b class="rs-status" [class]="'rs-status ' + rs.tone">{{ rs.status }}</b>
+            </p>
+            @if (rs.player || rs.reason) {
+              <p class="rs-who">{{ rs.player ?? '' }}{{ rs.player && rs.reason ? ' · ' : '' }}{{ rs.reason ?? '' }}</p>
+            }
+            @if (rs.summary) {
+              <p class="rs-summary">{{ rs.summary }}</p>
+            }
+            @if (rs.sources.length) {
+              <p class="rs-sources">
+                @for (s of rs.sources; track s.url) {
+                  <a [href]="s.url" target="_blank" rel="noopener noreferrer nofollow">{{ s.host }}</a>
+                }
+              </p>
+            }
+            <p class="why-foot">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}. A label only: the bot never bets on it{{ rs.applied ? '; a note put it into the injury report' : '' }}.</p>
+          </div>
+        }
         <p class="why-foot">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
       </div>
     }
