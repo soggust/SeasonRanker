@@ -4,7 +4,7 @@ import { SPORT } from '@sport/sport';
 import { extras, rowTeamNames } from '@ranker/engine/row-fields';
 import { recentWord } from '@ranker/engine/stat-reader';
 import { recentRef } from '../../game-view/game-view.service';
-import { evidenceText, insteadText, paragraphs, weekGameText } from '../analysis';
+import { PlayerAnalysis, evidenceText, insteadText, paragraphs, weekGameText } from '../analysis';
 import { PlayerCard } from '../card.model';
 import { GameLogViewRow, splitVs } from '../game-log-view';
 import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
@@ -53,6 +53,14 @@ export class CardOverviewTab extends CardTab {
   // (the lean bar's shares, adding up to 100, and its hover)
   readonly leanShares = leanShares;
   readonly leanTitle = leanTitle;
+
+  // The card's AI analysis once it's in (its headline and the archetype's definition head the profile);
+  // null without one, or while it loads
+  aiReport(card: PlayerCard): PlayerAnalysis['report'] | null {
+    if (!this.cards.analysisFile(card)) return null;
+    const a = this.cards.analysis(card);
+    return typeof a === 'object' ? a.report : null;
+  }
 
   // (a split's pie: each part a slice in its own soft color: the NFL's WRs a blue, TEs a sea green, backs a gold;
   // the NBA's five positions those and a lavender and a coral)

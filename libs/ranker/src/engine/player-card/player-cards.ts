@@ -194,7 +194,8 @@ export class PlayerCards {
     return cache.get(key) ?? 'error';
   }
 
-  // The Analysis tab's sections open (all folded each time the tab opens, or another card does)
+  // The Analysis tab's sections toggled from where they start (back to that each time the tab opens, or
+  // another card does: the Overview and a recap open, kept here as '-closed' once shut; the rest folded)
   aiOpen = new Set<string>();
   toggleAi(section: string): void {
     if (!this.aiOpen.delete(section)) this.aiOpen.add(section);
@@ -442,7 +443,7 @@ export class PlayerCards {
   selectTab(tab: CardTab): void {
     this.tab = tab;
     // (each tab's panels back to their defaults when it's opened: the Season groups open, the Analysis
-    // sections shut)
+    // sections shut but its Overview or recap)
     if (tab === 'stats') this.closedGroups.clear();
     if (tab === 'analysis') this.aiOpen.clear();
     if (tab === 'seasons' && this.card) this.rankCareer(this.card);

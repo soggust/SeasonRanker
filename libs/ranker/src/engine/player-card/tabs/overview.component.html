@@ -3,12 +3,18 @@
 
 @let o = c.overview;
 @let flags = sortFlags(o.flags);
+<!-- (a card with an AI analysis: its headline under the archetype, and the archetype's definition under the
+     line as a short summary, over the flags; until it's in, or without one, the take) -->
+@let ai = aiReport(c);
 <div class="ov-top">
   <div class="ov-profile">
     <h3 class="ov-archetype">{{ o.archetype }}</h3>
-    <p class="ov-blurb">{{ o.blurb }}</p>
+    <p class="ov-blurb">{{ ai ? ai.headline : o.blurb }}</p>
+    @if (ai) {
+      <p class="ov-summary">{{ ai.archetype.definition }}</p>
+    }
     @if (flags.length) {
-      <ul class="ov-flags">
+      <ul class="ov-flags" [class.after-summary]="ai">
         @for (f of flags; track f.text) {
           <li [ngClass]="f.tone"><mat-icon [fontIcon]="f.icon"></mat-icon><span>{{ f.text }}</span></li>
         }

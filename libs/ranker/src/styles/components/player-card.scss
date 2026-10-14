@@ -502,8 +502,24 @@
   margin: 0;
 }
 
+// (a card's AI analysis: the archetype's definition under the line, a short summary over the flags)
+.ov-summary {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin: 10px 0 0;
+  padding: 10px 0 0;
+}
+
 .ov-flags {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  // (the line already drawn over the summary)
+  &.after-summary {
+    border-top: 0;
+    padding-top: 0;
+  }
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -2281,32 +2297,12 @@
 }
 
 // ---------------------------------------------------------------------------
-// The Analysis tab (an AI write-up): the archetype and headline over the take, the season's strengths and
+// The Analysis tab (an AI write-up; its headline and definition head the Overview's profile, .ov-summary): the
+// take, the season's strengths and
 // concerns side by side, the coming game with its line, the rest of the season's ranges, betting angles.
 // Each section a card like the Season groups, in its own color
 // ---------------------------------------------------------------------------
-.ai-hero {
-  @include v.scoreboard-panel(10px);
-  margin-bottom: 14px;
-  padding: 16px 18px 14px;
-}
-
-// The header's order of attention: the headline (big, in the sport's light), the definition under it
-.ai-headline {
-  color: var(--scoreboard-led);
-  @include v.headline(20px);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  line-height: 1.2;
-  margin: 12px 0;
-}
-
-.ai-definition {
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;
-}
-
+// (when it was written, under the last section)
 .ai-meta {
   color: rgba(255, 255, 255, 0.45);
   display: flex;
@@ -2576,6 +2572,11 @@
   font-weight: 800;
   line-height: 1.4;
   margin: 0 0 12px;
+}
+
+// (What Went Right set off from the story above it, as the arc and Next Season are)
+.ai-recap .ai-prose + .ai-columns {
+  margin-top: 16px;
 }
 
 .ai-next-year {

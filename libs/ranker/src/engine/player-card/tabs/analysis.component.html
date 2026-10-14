@@ -1,6 +1,7 @@
-<!-- The AI write-up (player-card/analysis.ts): the headline and the archetype's definition, the overview, the season's
-     strengths and concerns, the coming game (a team's weekly preview: the week ahead), the rest of the season, betting
-     angles. A season's recap (a team whose season is over) is its one section, Recap, under the headline -->
+<!-- The AI write-up (player-card/analysis.ts): the overview (open from the start), the season's strengths and
+     concerns, the coming game (a team's weekly preview: the week ahead), the rest of the season, betting angles, and
+     when it was written. A season's recap (a team whose season is over) is its one section, Recap. Its headline and
+     the archetype's definition show on the Overview tab, under the archetype (overview.component.html) -->
 
 <!-- A point in the analysis: its title, the take, the numbers behind it (their real values and ranks) -->
 <ng-template #aiPoint let-p>
@@ -29,14 +30,6 @@
   <p class="card-note">The analysis couldn't be loaded.</p>
 } @else {
   @let r = a.report;
-  <div class="ai-hero">
-    <h2 class="ai-headline">{{ r.headline }}</h2>
-    <p class="ai-definition">{{ r.archetype.definition }}</p>
-    <p class="ai-meta">
-      <span>Updated {{ a.at | date: 'MMM d' }}</span>
-    </p>
-  </div>
-
   @if (r.recap; as rc) {
     <!-- (the season's last word: open from the start, the tab's one section) -->
     <card-panel class="tab-card ai-card ai-recap group-advanced" [label]="'Recap: ' + (a.season ?? '')" icon="history_edu" [open]="!cards.aiOpen.has('recap-closed')" (toggled)="cards.toggleAi('recap-closed')">
@@ -69,7 +62,8 @@
       </div>
     </card-panel>
   } @else {
-    <card-panel class="tab-card ai-card" label="Overview" icon="auto_awesome" [open]="cards.aiOpen.has('take')" (toggled)="cards.toggleAi('take')">
+    <!-- (open from the start, as a recap is) -->
+    <card-panel class="tab-card ai-card" label="Overview" icon="auto_awesome" [open]="!cards.aiOpen.has('take-closed')" (toggled)="cards.toggleAi('take-closed')">
       <div class="group-body ai-prose">
         @for (p of paragraphs(r.take ?? ''); track $index) {
           <p>{{ p }}</p>
@@ -210,4 +204,9 @@
       </card-panel>
     }
   }
+
+  <!-- (when it was written) -->
+  <p class="ai-meta">
+    <span>Updated {{ a.at | date: 'MMM d' }}</span>
+  </p>
 }
