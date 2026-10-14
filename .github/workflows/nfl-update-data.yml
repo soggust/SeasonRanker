@@ -33,6 +33,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        # (the branch as it is when the job starts, not the commit it was queued at: a run that waited behind
+        # another would start from data that run already moved on from, and its commit couldn't rebase)
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
