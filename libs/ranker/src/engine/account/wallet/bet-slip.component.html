@@ -48,6 +48,9 @@
               }
               <b class="slip-words">{{ s.pick }}</b>
               <span class="slip-odds">{{ oddsText(s.odds) }}</span>
+              @if (s.preview) {
+                <small class="slip-assumed" title="A preview prop: DraftKings' line via ESPN with no price posted yet, so -110 is assumed; graded at this line">assumed</small>
+              }
               <button type="button" class="slip-remove" [attr.aria-label]="'Remove ' + s.pick" (click)="wallet.remove(s.key)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
             </div>
             <small class="slip-game">{{ s.sport.toUpperCase() }} · {{ s.matchup }} · {{ s.start | date: 'EEE h:mm a' }}</small>

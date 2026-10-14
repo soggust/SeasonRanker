@@ -164,6 +164,138 @@ export function checkPrice(bet, observations) {
 }
 
 // ---------------------------------------------------------------------------
+// Preview props: DraftKings' prop lines off ESPN's core API for a game the bot hadn't priced yet (the Bets page's
+// preview-props.ts), bet at an assumed -110 (no price posted) with preview: true, the line as the page showed it.
+// No price to check, so the line is: it stands if it's within the lowest and highest main line seen for that
+// player's stat (ESPN's open and its current one when the settler looks, the settler's own looks before the start
+// (propLines/{sport_event}: settle.mjs snapshotPreviewLines), and any the bot's board or bets had), the line a bet
+// at a stale line was placed at still the one it's graded at. Then graded as a straight prop is (settleProp: the
+// box score's count, void when he didn't play). Limits: a line ESPN showed only between two looks, outside every
+// line seen at them, isn't known (the bet's void, its stake back).
+// ---------------------------------------------------------------------------
+export const PREVIEW_ODDS = -110;
+
+// (the stats the page offers, as preview-props.ts PREVIEW_STATS has them: the bettor's keys, ESPN's type names;
+// the ones the settler grades from ESPN's box score, so not MLB's total bases)
+export const PREVIEW_STATS = {
+  nfl: [
+    ['passYds', /^Total Passing Yards \(/],
+    ['passAtt', /^Total Passing Attempts/],
+    ['passCmp', /^Total Pass Completions/],
+    ['passTd', /^Total Passing Touchdowns/],
+    ['passInt', /^Total Passing Interceptions/],
+    ['rushYds', /^Total Rushing Yards \(/],
+    ['rushAtt', /^Total Carries/],
+    ['recYds', /^Total Receiving Yards \(/],
+    ['rec', /^Total Receptions/],
+    ['rushRecYds', /^Total Rushing Plus Receiving Yards/],
+  ],
+  nba: [
+    ['pts', /^Total Points( \(|$)/],
+    ['reb', /^Total Rebounds( \(|$)/],
+    ['ast', /^Total Assists( \(|$)/],
+    ['fg3', /^Total (3-Point|Three|Made 3)/i],
+    ['pra', /Points.*(Rebounds.*Assists|Assists.*Rebounds)/i],
+  ],
+  nhl: [
+    ['sog', /^Total Shots on Goal/],
+    ['pts', /^Total Points$/],
+    ['saves', /^Total Saves/],
+  ],
+  mlb: [
+    ['k', /^Total Strikeouts$/],
+    ['outs', /^Total Outs Recorded/],
+    ['hits', /^Total Hits$/],
+  ],
+};
+
+// (an ESPN prop type's stat key, if it's one offered: never a milestone, a period's or a team's)
+export function previewStatOf(sport, typeName) {
+  const name = String(typeName ?? '');
+  if (/milestone/i.test(name) || /^(1st|2nd|3rd|4th|first|last|team)\b/i.test(name)) return null;
+  return (PREVIEW_STATS[sport] ?? []).find(([, re]) => re.test(name))?.[0] ?? null;
+}
+
+const athleteIdOf = (ref) => /\/athletes\/([0-9]{1,20})(?:[/?]|$)/.exec(String(ref ?? ''))?.[1] ?? null;
+
+// (the main line among a player's stat's lines: the one listed most, the middle one at a tie)
+export function mainLineOf(lines) {
+  const counts = new Map();
+  for (const l of lines) counts.set(l, (counts.get(l) ?? 0) + 1);
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
+  const top = ranked.filter((l) => l[1] === ranked[0][1]).map((l) => l[0]);
+  return top[Math.floor((top.length - 1) / 2)];
+}
+
+// A game's propBets items as "athlete|stat" to its main line and where it opened ({ line, open })
+export function previewLinesOf(sport, items) {
+  const groups = new Map();
+  for (const it of items ?? []) {
+    const stat = previewStatOf(sport, it?.type?.name);
+    const athlete = athleteIdOf(it?.athlete?.$ref);
+    const line = it?.current?.target?.value;
+    if (!stat || !athlete || typeof line !== 'number' || !Number.isFinite(line)) continue;
+    const key = `${athlete}|${stat}`;
+    groups.set(key, [...(groups.get(key) ?? []), it]);
+  }
+  const out = new Map();
+  for (const [key, list] of groups) {
+    const line = mainLineOf(list.map((x) => x.current.target.value));
+    const open = list.find((x) => x.current.target.value === line)?.open?.target?.value;
+    out.set(key, { line, open: Number.isFinite(open) ? open : null });
+  }
+  return out;
+}
+
+// (why a bet marked preview isn't one the page could have placed: a prop of a stat offered, at -110, not the bot's)
+export function previewProblem(bet) {
+  if (bet.preview !== true || bet.market !== 'prop' || bet.odds !== PREVIEW_ODDS || bet.botPick === true) return 'not a preview price';
+  if (PREVIEW_STATS[bet.sport] && !PREVIEW_STATS[bet.sport].some(([k]) => k === bet.propType)) return 'not a preview stat';
+  return null;
+}
+
+// Every main line seen for a preview bet's player's stat: ESPN's (espn: previewLinesOf's map, its line and open),
+// the settler's looks (snap: propLines' seen, "athlete|stat" to [lowest, highest]), and the bot's board's and bets'
+// (observations: the price check's, a prop's lines)
+export function previewSeen(bet, { espn = null, snap = null, observations = [] } = {}) {
+  const key = `${bet.athlete}|${bet.propType}`;
+  const out = [];
+  const e = espn?.get?.(key);
+  if (e) out.push(e.line, e.open);
+  const s = snap?.[key];
+  if (Array.isArray(s)) out.push(...s);
+  for (const o of observations ?? []) if (o.market === 'prop' && o.propType === bet.propType && String(o.athlete) === String(bet.athlete)) out.push(o.line);
+  return out.filter((v) => typeof v === 'number' && Number.isFinite(v));
+}
+
+// The line check: { ok: true } when the bet's line is within the lowest and highest seen, else { ok: false, why }
+// (wait: none seen at all, ESPN not read: the bet waits, then is void)
+export function previewLineCheck(bet, seen) {
+  const lines = (seen ?? []).filter(Number.isFinite);
+  if (!lines.length) return { ok: false, wait: true, why: 'couldn’t check the line: no board for this prop' };
+  const lo = Math.min(...lines);
+  const hi = Math.max(...lines);
+  return bet.line >= lo - 1e-9 && bet.line <= hi + 1e-9 ? { ok: true } : { ok: false, why: 'line wasn’t on the board' };
+}
+
+// (the settler's look at a game's preview lines merged into what it kept: each "athlete|stat" its lowest and
+// highest main line (and open) seen; null when nothing's new)
+export function mergePreviewSeen(kept, lines) {
+  const next = { ...(kept ?? {}) };
+  let changed = false;
+  for (const [key, { line, open }] of lines ?? []) {
+    const vals = [line, open, ...(Array.isArray(next[key]) ? next[key] : [])].filter((v) => typeof v === 'number' && Number.isFinite(v));
+    if (!vals.length) continue;
+    const range = [Math.min(...vals), Math.max(...vals)];
+    if (!Array.isArray(next[key]) || next[key][0] !== range[0] || next[key][1] !== range[1]) {
+      next[key] = range;
+      changed = true;
+    }
+  }
+  return changed ? next : null;
+}
+
+// ---------------------------------------------------------------------------
 // Settling
 // ---------------------------------------------------------------------------
 
@@ -175,8 +307,9 @@ const voided = (why, final = null) => ({ status: 'void', profit: 0, note: why, .
 // A user's bet against its game (espn.mjs gameOf's shape, or null when ESPN has none), what was on the board,
 // and, for a prop, the player's count (the bettor's graded value for the same pick, else the box score's;
 // undefined when neither has it yet): its result ({ status: won | lost | push | void, profit, final, note? })
-// or null while it waits
-export function settlePlayBet(bet, game, { observations = [], propValue, now = Date.now() } = {}) {
+// or null while it waits. A preview prop (preview: true) by its lines seen (previewLines: previewSeen's) in place of
+// the price check
+export function settlePlayBet(bet, game, { observations = [], propValue, previewLines, now = Date.now() } = {}) {
   const start = Date.parse(bet.start);
   if (!game) return now - start > GIVE_UP ? voided('game not found') : null;
   if (`${game.awayAbbr} @ ${game.homeAbbr}` !== bet.matchup) return voided('not this game');
@@ -186,8 +319,17 @@ export function settlePlayBet(bet, game, { observations = [], propValue, now = D
   const off = voidOf({ ...bet, units: bet.stake }, game, now);
   if (off) return voided(off.why.replace(/^Void: /, ''), off.final);
   if (!game.final) return bet.market === 'prop' && now - start > GIVE_UP ? voided('couldn’t settle the prop') : null;
-  const price = checkPrice(bet, observations);
-  if (!price.ok) return voided(price.why);
+  if (bet.preview !== undefined) {
+    // (a preview prop: no price was posted, so none to check; held to the assumed -110, its line to the lines ESPN
+    // showed for him, a look that can't be had yet waiting)
+    const problem = previewProblem(bet);
+    if (problem) return voided(problem);
+    const line = previewLineCheck(bet, previewLines);
+    if (!line.ok) return line.wait && now - start <= GIVE_UP ? null : voided(line.why);
+  } else {
+    const price = checkPrice(bet, observations);
+    if (!price.ok) return voided(price.why);
+  }
   const priced = { ...bet, units: bet.stake };
   if (bet.market === 'prop') {
     // (a count not read yet waits as long as the bettor's own pick does (props.mjs PROP_WAIT), so the two end alike)
@@ -253,6 +395,7 @@ export function legProblem(l) {
   if (!sides.includes(l.side)) return 'not a market';
   if (l.market === 'ml' ? l.line != null : !num(l.line)) return 'not a line';
   if (l.market === 'prop' && (typeof l.propType !== 'string' || !/^[0-9]{1,20}$/.test(String(l.athlete ?? '')))) return 'not a prop';
+  if (l.preview !== undefined) return previewProblem(l);
   return null;
 }
 
@@ -273,7 +416,7 @@ export function settleParlay(parlay, games, { now = Date.now() } = {}) {
     if (problem) return { ...leg, status: 'void', note: problem };
     const g = games[i];
     if (!g) return leg;
-    const r = settlePlayBet({ ...leg, stake: parlay.stake, placedAt: parlay.placedAt, start: leg.start }, g.game, { observations: g.observations, propValue: g.propValue, now });
+    const r = settlePlayBet({ ...leg, stake: parlay.stake, placedAt: parlay.placedAt, start: leg.start }, g.game, { observations: g.observations, propValue: g.propValue, previewLines: g.previewLines, now });
     if (!r) return leg;
     // (with its game's own start: the parlay's tally day is its legs' games', not the starts the browser wrote)
     return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}), ...(g.game?.date ? { date: g.game.date } : {}) };

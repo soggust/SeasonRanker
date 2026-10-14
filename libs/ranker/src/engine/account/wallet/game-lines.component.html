@@ -189,6 +189,70 @@
     </div>
   }
 
+  <!-- (no props of the bot's on the game yet: DraftKings' lines off ESPN as preview props, a team's folded till
+       it's opened, each side at an assumed -110: no band, no Kelly score) -->
+  @if (previewTeams().length) {
+    <div class="lines-props preview-props" aria-label="Preview props">
+      <p class="preview-note">
+        <b>Preview props</b> · DraftKings' lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
+        No band or Kelly score: the bot hasn't priced them.
+        @if (previewWindow; as w) {
+          It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
+        }
+      </p>
+      @for (team of previewTeams(); track team.id) {
+        @let shown = teamOpen('pv:' + team.id);
+        <div class="props-team" [class.shut]="!shown">
+          <button type="button" class="props-team-bar" [attr.aria-expanded]="shown" (click)="toggleTeam('pv:' + team.id)">
+            <mat-icon class="props-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>
+            @if (team.abbr) {<img [src]="logo(team.abbr)" alt="" (error)="hideImage($event)" />}
+            <b>{{ team.abbr ? team.abbr + ' ' : '' }}Preview Props</b>
+            <small class="props-team-count">{{ team.rows.length }} {{ team.rows.length === 1 ? 'line' : 'lines' }}</small>
+          </button>
+          @if (shown) {
+            <div class="props-team-rows" role="list" [attr.aria-label]="(team.abbr ? team.abbr + ' ' : '') + 'preview props'">
+              @for (r of team.rows; track r.key) {
+                <div class="prop" [class.first]="r.first" role="listitem">
+                  @if (r.first) {
+                    <img class="prop-face" [src]="previewFace(r)" alt="" (error)="hideImage($event)" />
+                  } @else {
+                    <span aria-hidden="true"></span>
+                  }
+                  <span class="prop-words">
+                    @if (r.first) {<b>{{ r.player }}</b>}
+                    <small>{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small>
+                  </span>
+                  @for (sd of previewSides; track sd) {
+                    <button
+                      type="button"
+                      class="price preview"
+                      [class.on]="wallet.slipKeys().has(previewKey(r, sd))"
+                      [class.placed]="wallet.openStakes().has(previewKey(r, sd))"
+                      [attr.aria-pressed]="wallet.slipKeys().has(previewKey(r, sd))"
+                      [attr.aria-label]="previewWords(r, sd) + ' ' + oddsText(previewOdds) + ', assumed price'"
+                      [title]="previewTitle(r, sd)"
+                      [disabled]="!open"
+                      (click)="takePreview(r, sd)"
+                    >
+                      @if (wallet.openStakes().get(previewKey(r, sd)); as staked) {
+                        <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+                      }
+                      <b class="price-line">{{ sd === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
+                      <span class="price-odds">{{ oddsText(previewOdds) }}</span>
+                      <small class="price-kelly">assumed</small>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  } @else if (previewLoading() && !onlyPick()) {
+    <p class="lines-note" role="status">Reading DraftKings' prop lines…</p>
+  }
+
   <!-- (a game begun: its prices the last ones) -->
   @if (board && !open) {
     <p class="lines-foot">The game has started: these were the last prices</p>

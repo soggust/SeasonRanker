@@ -433,6 +433,31 @@ $lock-gold: chip.$lock-gold;
   }
 }
 
+// (preview props: DraftKings' lines off ESPN the bot hasn't priced, at an assumed -110; their note, a line's move
+// from its open, and their tiles' "assumed" where the Kelly score would be)
+.preview-note {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0 0 2px;
+
+  b {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.preview-moved {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  font-style: normal;
+  margin-left: 6px;
+}
+
+.price.preview .price-kelly {
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
 .lines-foot {
   color: rgba(255, 255, 255, 0.4) !important;
   font-size: 11px !important;

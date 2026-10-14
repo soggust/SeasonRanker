@@ -239,6 +239,43 @@ describe('wallet rules', { skip }, () => {
     await assertFails(updateDoc(doc(db, 'users', 'ann', 'bets', 'p1'), { status: 'won', profit: 50 }));
   });
 
+  test('a preview prop (preview: true): a prop at -110, not the bot’s, no band or Kelly score; a parlay’s leg too', async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    const preview = (over = {}) =>
+      playBet({ market: 'prop', side: 'over', line: 221.5, odds: -110, pick: 'Sam Darnold Over 221.5 Pass Yds', botPick: false, tier: undefined, kelly: undefined, propType: 'passYds', athlete: '3912547', player: 'Sam Darnold', statLabel: 'Pass Yds', ref: '401872986:prop:passYds:3912547', preview: true, stake: 5, ...over });
+    // (the page's shape: no tier, no Kelly score)
+    const clean = (b) => Object.fromEntries(Object.entries(b).filter(([, v]) => v !== undefined));
+    await assertSucceeds(place(db, 'ann', 'pv1', clean(preview())));
+    await assertSucceeds(place(db, 'ann', 'pv2', clean(preview({ side: 'under' }))));
+    const bad = {
+      otherPrice: preview({ odds: -105 }),
+      plusPrice: preview({ odds: 120 }),
+      botPick: preview({ botPick: true }),
+      tier: preview({ tier: 'love' }),
+      kelly: preview({ kelly: 3.1 }),
+      notTrue: preview({ preview: false }),
+      notBool: preview({ preview: 'yes' }),
+      spread: playBet({ preview: true, odds: -110, botPick: false, tier: undefined, kelly: undefined }),
+    };
+    for (const [name, b] of Object.entries(bad)) {
+      try {
+        await assertFails(place(db, 'ann', `pv-bad-${name}`, clean(b), b.stake));
+      } catch (error) {
+        throw new Error(`${name}: ${error.message}`);
+      }
+    }
+    // (a parlay's preview legs: the leg's tag a field it may carry, its price the settler's to hold to -110)
+    const pleg = (over = {}) => {
+      const { stake: _s, run: _r, placedAt: _p, status: _st, ...l } = clean(preview(over));
+      return l;
+    };
+    await assertSucceeds(place(db, 'ann', 'pv-parlay', parlayOf([pleg(), pleg({ event: '401872987', matchup: 'KC @ DEN', ref: '401872987:prop:passYds:3912547', start: later(30) })])));
+    // (ten preview prop legs, the biggest: inside the rules' limit)
+    const ten = Array.from({ length: 10 }, (_, i) => pleg({ event: String(405000000 + i) }));
+    await assertSucceeds(place(db, 'ann', 'pv-ten', parlayOf(ten, { stake: 1 })));
+  });
+
   test('a reload: back to 1,000, one more reset; nothing else, and no settling from the browser', async () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
@@ -309,6 +346,10 @@ describe('wallet rules', { skip }, () => {
     await assertFails(setDoc(doc(as('ann'), 'leaderboards', 'week'), { rows: [{ uid: 'ann', profit: 1e6 }] }));
     await assertFails(setDoc(doc(as('ann'), 'tallies', 'ann'), { all: { won: 99 } }));
     await assertFails(setDoc(doc(as('ann'), 'lines', 'nfl_401'), { snaps: [] }));
+    // (the preview prop lines the settler looked at: no one's but the settler's)
+    await env.withSecurityRulesDisabled((ctx) => setDoc(doc(ctx.firestore(), 'propLines', 'nfl_401'), { seen: {} }));
+    await assertFails(getDoc(doc(as('ann'), 'propLines', 'nfl_401')));
+    await assertFails(setDoc(doc(as('ann'), 'propLines', 'nfl_401'), { seen: { '1|passYds': [0, 999] } }));
   });
 });
 

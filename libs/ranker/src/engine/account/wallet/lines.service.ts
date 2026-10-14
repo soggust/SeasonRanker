@@ -2,6 +2,18 @@ import { Injectable, signal } from '@angular/core';
 import { ESPN_LEAGUES } from '../../bets/desk-math';
 import { SummaryBox, liveStat } from '../../bets/live-props';
 import { EspnEvent, GameBoard, boardOf, espnDay } from './wallet-math';
+import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
+
+const CORE = 'https://sports.core.api.espn.com/v2/sports';
+// (a game's propBets pages read at most, and players looked up one by one past the rosters)
+const PREVIEW_PAGES = 5;
+const PREVIEW_LOOKUPS = 40;
+
+// (a preview prop with its player's name and his team's abbreviation)
+export interface PreviewRow extends PreviewProp {
+  player: string;
+  team: string;
+}
 
 // The bettor's betting board (libs/ranker/scripts/model/board.mjs, its header has the keys: data/model/
 // board.json): every market it priced on the games not started, each side with its Kelly score and band
@@ -120,6 +132,95 @@ export class LinesService {
   async games(list: { sport: string; start: string }[], maxAge = 60e3): Promise<void> {
     const wanted = new Set(list.filter((g) => ESPN_LEAGUES[g.sport]).map((g) => `${g.sport}|${espnDay(g.start)}`));
     await Promise.all([...wanted].map((k) => this.day(k.split('|')[0], k.split('|')[1], maxAge)));
+  }
+
+  // ---------------------------------------------------------------------------
+  // Preview props (preview-props.ts): DraftKings' prop lines for a game the bot hasn't priced, off ESPN's core API
+  // ---------------------------------------------------------------------------
+  // (a game's, by "sport|event": asked for when its board opens without the bot's props, kept five minutes; the
+  // teams' rosters and any player found apart kept for the visit)
+  private readonly previews = new Map<string, { at: number; load: Promise<PreviewRow[] | null> }>();
+  private readonly rosters = new Map<string, Promise<Map<string, string>>>();
+  private readonly athleteNames = new Map<string, Promise<string | null>>();
+
+  // A game's preview props, each with its player's name and team (his team's abbreviation, '' where he's on
+  // neither roster); null when ESPN's board can't be read
+  previewProps(sport: string, event: string, teams: { away: string; home: string }, maxAge = 5 * 60e3): Promise<PreviewRow[] | null> {
+    const key = `${sport}|${event}`;
+    const kept = this.previews.get(key);
+    if (kept && Date.now() - kept.at < maxAge) return kept.load;
+    const load = this.loadPreview(sport, event, teams).catch(() => null);
+    load.then((rows) => rows === null && this.previews.get(key)?.load === load && this.previews.delete(key));
+    this.previews.set(key, { at: Date.now(), load });
+    return load;
+  }
+
+  private async loadPreview(sport: string, event: string, teams: { away: string; home: string }): Promise<PreviewRow[] | null> {
+    const league = ESPN_LEAGUES[sport];
+    if (!league || !/^[0-9]{1,20}$/.test(event)) return null;
+    const [kind, lg] = league.split('/');
+    // (every page, one at a time: a thousand items a page, five pages at most)
+    const items: PropBetItem[] = [];
+    for (let page = 1; page <= PREVIEW_PAGES; page++) {
+      const res = await fetch(`${CORE}/${kind}/leagues/${lg}/events/${event}/competitions/${event}/odds/100/propBets?lang=en&region=us&limit=1000&page=${page}`);
+      if (!res.ok) {
+        if (page === 1) return res.status === 404 ? [] : null;
+        break;
+      }
+      const body = (await res.json()) as { items?: PropBetItem[]; pageCount?: number };
+      items.push(...(body.items ?? []));
+      if (page >= (body.pageCount ?? 1)) break;
+    }
+    const props = previewPropsOf(sport, items);
+    if (!props.length) return [];
+    // (the players' names: the two rosters first, then any not on them by his own ref, a few at a time)
+    const [away, home] = await Promise.all([this.roster(sport, teams.away), this.roster(sport, teams.home)]);
+    const refs = new Map(items.map((it) => [athleteIdOf(it.athlete?.$ref), it.athlete?.$ref]));
+    const missing = [...new Set(props.map((p) => p.athlete))].filter((id) => !away.has(id) && !home.has(id)).slice(0, PREVIEW_LOOKUPS);
+    const found = new Map<string, string | null>();
+    for (let i = 0; i < missing.length; i += 4) {
+      await Promise.all(missing.slice(i, i + 4).map(async (id) => found.set(id, await this.athleteName(id, refs.get(id)))));
+    }
+    const rows: PreviewRow[] = [];
+    for (const p of props) {
+      const player = away.get(p.athlete) ?? home.get(p.athlete) ?? found.get(p.athlete) ?? null;
+      if (!player) continue;
+      rows.push({ ...p, player, team: away.has(p.athlete) ? teams.away : home.has(p.athlete) ? teams.home : '' });
+    }
+    return rows;
+  }
+
+  // (a team's roster as ESPN id to name: none when it can't be read)
+  private roster(sport: string, abbr: string): Promise<Map<string, string>> {
+    const key = `${sport}|${abbr}`;
+    if (!abbr) return Promise.resolve(new Map());
+    if (!this.rosters.has(key)) {
+      const load = fetch(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/teams/${abbr.toLowerCase()}/roster`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((body: RosterBody | null) => rosterNames(body))
+        .catch(() => new Map<string, string>());
+      // (an empty one asked for again next time)
+      load.then((m) => !m.size && this.rosters.delete(key));
+      this.rosters.set(key, load);
+    }
+    return this.rosters.get(key)!;
+  }
+
+  // (a player's name by his core API ref)
+  private athleteName(id: string, ref: string | undefined): Promise<string | null> {
+    if (!this.athleteNames.has(id)) {
+      const url = ref ? ref.replace(/^http:/, 'https:') : null;
+      this.athleteNames.set(
+        id,
+        url
+          ? fetch(url)
+              .then((res) => (res.ok ? res.json() : null))
+              .then((b: { displayName?: string } | null) => b?.displayName ?? null)
+              .catch(() => null)
+          : Promise.resolve(null),
+      );
+    }
+    return this.athleteNames.get(id)!;
   }
 
   // A prop's count so far (a game under way or over), from its game's box score (live-props.ts: the reading

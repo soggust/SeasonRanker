@@ -42,6 +42,8 @@ export interface PlayBet {
   athlete?: string | null;
   player?: string | null;
   statLabel?: string | null;
+  // (a preview prop's: a DraftKings line from ESPN the bot hadn't priced, bet at an assumed -110: preview-props.ts)
+  preview?: boolean;
   // (the wallet's run it was placed in: its reloads at the time)
   run: number;
   placedAt: string;
@@ -79,6 +81,7 @@ export interface ParlayLeg {
   athlete?: string | null;
   player?: string | null;
   statLabel?: string | null;
+  preview?: boolean;
   status?: PlayStatus;
   final?: string;
   note?: string;
@@ -138,6 +141,8 @@ export interface Selection {
   athlete: string | null;
   player: string | null;
   statLabel: string | null;
+  // (a preview prop: its line from ESPN's DraftKings board, its price an assumed -110, none posted)
+  preview?: boolean;
   stake: number;
 }
 

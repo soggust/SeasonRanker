@@ -2,7 +2,8 @@ import { Component, Input, OnDestroy, OnInit, computed, signal } from '@angular/
 import { Confidence, tierOf } from '../../bets/tiers';
 import { betScoreText, confidenceOf, kellyOf } from '../../bets/bet-why';
 import { headshot, hideImage, teamLogo } from '../../bets/bet-format';
-import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService } from './lines.service';
+import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
+import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
 import { WalletService } from './wallet.service';
 import { GameBoard, PlayMarket, Price, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
 
@@ -60,6 +61,20 @@ export interface PropRow {
   sides: PropSide[];
   // (the player's first stat: his face and name on it, the rest under it)
   first: boolean;
+}
+
+// (a preview prop on the board: its player's first stat with his face and name; its line's move from its open)
+export interface PreviewPropRow extends PreviewRow {
+  key: string;
+  first: boolean;
+  moved: string | null;
+}
+
+// (a team's preview props: folded till it's opened, as the bot's)
+export interface PreviewTeam {
+  id: string;
+  abbr: string;
+  rows: PreviewPropRow[];
 }
 
 // (a team's props: folded till it's opened)
@@ -183,6 +198,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     await Promise.all([this.lines.game(this.sport, this.event, this.start).catch(() => null), this.lines.model(this.sport)]);
     this.loading.set(false);
+    void this.loadPreview();
     // (the prices kept fresh while the board's open: once a minute, while the page is in view (the bot's board
     // every five, its own hourly); not at all if the board closed while its first prices loaded, the game filter
     // changed: nothing would stop it)
@@ -191,13 +207,109 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       if (document.hidden) return;
       this.now.set(Date.now());
       void this.lines.game(this.sport, this.event, this.start);
-      void this.lines.model(this.sport);
+      void this.lines.model(this.sport).then(() => this.loadPreview());
     }, 60e3);
   }
 
   ngOnDestroy(): void {
     this.closed = true;
     if (this.timer) clearInterval(this.timer);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Preview props: DraftKings' prop lines off ESPN for a game the bot hasn't priced props on yet (preview-props.ts),
+  // shown until the bot's board has the game's props, then the bot's instead; bet either side at an assumed -110,
+  // no band and no Kelly score (the bot hasn't priced them), and the bot never bets them
+  // ---------------------------------------------------------------------------
+  readonly preview = signal<PreviewRow[] | null>(null);
+  readonly previewLoading = signal(false);
+  readonly previewOdds = PREVIEW_ODDS;
+  readonly previewSides = ['over', 'under'] as const;
+
+  // (whether the preview's for this board: the whole board (not one pick), no props of the bot's on it)
+  readonly previewWanted = computed(() => !this.onlyPick() && !this.propRows().length);
+
+  // (read once the board's open, and again (from its five minutes' cache) each minute while it's wanted: a game
+  // not begun, no props of the bot's)
+  private async loadPreview(): Promise<void> {
+    const b = this.board;
+    if (this.closed || !this.previewWanted() || !b || b.state !== 'pre' || !this.open) return;
+    if (this.preview() === null) this.previewLoading.set(true);
+    try {
+      const rows = await this.lines.previewProps(this.sport, this.event, { away: b.away.abbr, home: b.home.abbr });
+      if (rows) this.preview.set(rows);
+    } finally {
+      this.previewLoading.set(false);
+    }
+  }
+
+  // (the preview props by team: the away team's, then the home team's, then any whose team isn't known; a player's
+  // stats together)
+  readonly previewTeams = computed<PreviewTeam[]>(() => {
+    const rows = this.previewWanted() ? (this.preview() ?? []) : [];
+    const b = this.board;
+    const order = (t: string) => (b && t === b.away.abbr ? 0 : b && t === b.home.abbr ? 1 : 2);
+    const sorted = [...rows].sort((x, y) => order(x.team) - order(y.team) || x.player.localeCompare(y.player) || x.label.localeCompare(y.label));
+    const out: PreviewTeam[] = [];
+    sorted.forEach((r, i) => {
+      const id = r.team || 'other';
+      let t = out.find((x) => x.id === id);
+      if (!t) out.push((t = { id, abbr: r.team, rows: [] }));
+      const first = i === 0 || sorted[i - 1].athlete !== r.athlete;
+      t.rows.push({ ...r, key: `${r.athlete}|${r.propType}`, first, moved: movementText(r) });
+    });
+    return out;
+  });
+
+  // (when the bot starts pricing this game's props: its window before the start (leagues.mjs TIMING's props))
+  get previewWindow(): { hours: number; at: string } | null {
+    const hours = PROPS_WINDOW_HOURS[this.sport];
+    const start = Date.parse(this.board?.start ?? this.start);
+    return hours && Number.isFinite(start) ? { hours, at: new Date(start - hours * 36e5).toISOString() } : null;
+  }
+
+  previewFace(r: PreviewPropRow): string {
+    return headshot(this.sport, r.athlete);
+  }
+
+  previewKey(r: PreviewPropRow, side: string): string {
+    return selectionKey({ sport: this.sport, event: this.event, market: 'prop', side, propType: r.propType, athlete: r.athlete });
+  }
+
+  // (a preview side's words and hover: "Sam Darnold Over 221.5 Pass Yds", at -110 assumed)
+  previewWords(r: PreviewPropRow, side: 'over' | 'under'): string {
+    return `${r.player} ${side === 'over' ? 'Over' : 'Under'} ${r.line} ${r.label}`;
+  }
+
+  previewTitle(r: PreviewPropRow, side: 'over' | 'under'): string {
+    const opened = r.open !== null && r.open !== r.line ? ` (it opened at ${r.open})` : '';
+    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · DraftKings' line via ESPN${opened}, no price posted yet; the bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
+  }
+
+  // A preview side clicked: onto the slip at -110 (or off it), tagged preview, never the bot's pick; its line the
+  // one on show, which it's graded at
+  takePreview(r: PreviewPropRow, side: 'over' | 'under'): void {
+    if (!this.open) return;
+    this.wallet.toggle({
+      sport: this.sport,
+      event: this.event,
+      matchup: this.matchupText,
+      start: this.board?.start ?? this.start,
+      market: 'prop',
+      side,
+      line: r.line,
+      odds: PREVIEW_ODDS,
+      pick: this.previewWords(r, side),
+      botPick: false,
+      tier: null,
+      kelly: null,
+      ref: `${this.event}:prop:${r.propType}:${r.athlete}`,
+      propType: r.propType,
+      athlete: r.athlete,
+      player: r.player,
+      statLabel: r.label,
+      preview: true,
+    });
   }
 
   get open(): boolean {

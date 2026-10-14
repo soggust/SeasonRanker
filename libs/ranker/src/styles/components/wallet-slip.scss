@@ -260,6 +260,14 @@ $gold: #ffcf4a;
   font-weight: 900;
 }
 
+// (a preview prop's price: assumed, none posted)
+.slip-assumed {
+  font-size: 10px;
+  font-style: italic;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
 // (the bot's band on its pick, as the Bets page's rows have it)
 .slip-tier {
   @include chip.tier-tag(9px, 2px 5px, 0.08em);

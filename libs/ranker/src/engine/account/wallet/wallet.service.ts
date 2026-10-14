@@ -60,6 +60,7 @@ function legFrom(d: DocumentData): ParlayLeg {
     athlete: d['athlete'] ?? null,
     player: d['player'] ?? null,
     statLabel: d['statLabel'] ?? null,
+    ...(d['preview'] === true ? { preview: true } : {}),
     status: d['status'],
     final: d['final'],
     note: d['note'],
@@ -116,6 +117,7 @@ export function betFrom(id: string, d: DocumentData): PlayBet {
     athlete: d['athlete'] ?? null,
     player: d['player'] ?? null,
     statLabel: d['statLabel'] ?? null,
+    ...(d['preview'] === true ? { preview: true } : {}),
     run: d['run'] ?? 0,
     placedAt: iso(d['placedAt']),
     status: d['status'],
@@ -144,6 +146,9 @@ function pickFields(f: typeof import('firebase/firestore'), s: Selection): Recor
   if (s.kelly !== null && Number.isFinite(s.kelly)) out['kelly'] = s.kelly;
   if (s.ref) out['ref'] = s.ref;
   if (s.market === 'prop') Object.assign(out, { propType: s.propType, athlete: s.athlete, player: s.player, statLabel: s.statLabel });
+  // (a preview prop: no price was posted, so its -110 is assumed, its line locked as the board showed it; the
+  // rules hold it to a prop at -110 that isn't the bot's, the settler checks its line against ESPN's)
+  if (s.preview && s.market === 'prop') out['preview'] = true;
   return out;
 }
 

@@ -34,7 +34,10 @@ import {
   periodsAt,
   leaderboard,
   legProblem,
+  mergePreviewSeen,
   parlayDay,
+  previewLinesOf,
+  previewSeen,
   round2,
   settleParlay,
   settlePlayBet,
@@ -120,6 +123,54 @@ async function gameAndBox(fetchJson, sport, event) {
 }
 
 // ---------------------------------------------------------------------------
+// Preview props' lines (settle-lib.mjs previewLinesOf): a game's DraftKings prop lines off ESPN's core API, every
+// page (a thousand items a page, five at most); null when it can't be read
+// ---------------------------------------------------------------------------
+export async function fetchPreviewLines(fetchJson, sport, event) {
+  const [kind, lg] = LEAGUES[sport].split('/');
+  const items = [];
+  for (let page = 1; page <= 5; page++) {
+    const body = await fetchJson(`${CORE}/${kind}/leagues/${lg}/events/${event}/competitions/${event}/odds/100/propBets?lang=en&region=us&limit=1000&page=${page}`);
+    if (!body?.items) {
+      if (page === 1) return null;
+      break;
+    }
+    items.push(...body.items);
+    if (page >= (body.pageCount ?? 1)) break;
+  }
+  return previewLinesOf(sport, items);
+}
+
+// The settler's look at the preview lines of each game an open preview bet is on (a straight bet or a parlay's
+// leg) that hasn't begun: each player's stat's lowest and highest main line seen kept (propLines/{sport}_{event}),
+// so a line the page showed between ESPN's open and its last still checks once it's moved on. Only those games:
+// a few reads a run
+export async function snapshotPreviewLines(db, docs, { fetchJson = get, now = Date.now(), dry = false, log = console.log } = {}) {
+  const nowIso = new Date(now).toISOString();
+  const games = new Map();
+  for (const d of docs) {
+    const bets = d.get('kind') === 'parlay' ? (d.get('legs') ?? []) : [d.data()];
+    for (const b of bets) {
+      const start = iso(b.start);
+      if (b.preview === true && LEAGUES[b.sport] && /^[0-9]{1,20}$/.test(String(b.event ?? '')) && start > nowIso) games.set(`${b.sport}_${b.event}`, { sport: b.sport, event: String(b.event), start });
+    }
+  }
+  let written = 0;
+  for (const [id, g] of games) {
+    const lines = await fetchPreviewLines(fetchJson, g.sport, g.event);
+    if (!lines?.size) continue;
+    const ref = db.doc(`propLines/${id}`);
+    const doc = await ref.get();
+    const seen = mergePreviewSeen(doc.exists ? doc.get('seen') : null, lines);
+    if (!seen) continue;
+    written++;
+    if (!dry) await ref.set({ sport: g.sport, event: g.event, start: g.start, seen, at: nowIso });
+  }
+  log(`preview lines: ${games.size} game${games.size === 1 ? '' : 's'} with open preview bets, ${written} with new lines${dry ? ' (dry)' : ''}`);
+  return written;
+}
+
+// ---------------------------------------------------------------------------
 // The lines' snapshots
 // ---------------------------------------------------------------------------
 export async function snapshotLines(db, { fetchJson = get, now = Date.now(), dry = false, log = console.log } = {}) {
@@ -191,13 +242,25 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     const g = await gameFor(bet.sport, bet.event);
     const observations = g.game?.final && bet.market !== 'prop' ? [...g.observations, ...(await finalBoard(bet.sport, bet.event, g))] : g.observations;
     let propValue;
+    let previewLines;
+    // (a preview prop's lines seen: ESPN's now (its open and its last), the settler's looks before the start, and
+    // the bot's board's and bets' on the same prop)
+    if (bet.preview !== undefined && g.game?.final) {
+      g.preview ??= (async () => {
+        const espn = await fetchPreviewLines(fetchJson, bet.sport, bet.event).catch(() => null);
+        const kept = await db.doc(`propLines/${bet.sport}_${bet.event}`).get();
+        return { espn, snap: kept.exists ? (kept.get('seen') ?? null) : null };
+      })();
+      const { espn, snap } = await g.preview;
+      previewLines = previewSeen(bet, { espn, snap, observations: g.observations });
+    }
     if (bet.market === 'prop' && g.game?.final) {
       // (the bettor's graded value for the same pick, else the box score's count)
       const graded = gradedPick(bet, g.mine);
       propValue = graded ? graded.actual : await statInFinal(bet.sport, bet, g.body, null);
       if (propValue === null && !graded && bet.propType === 'tb') propValue = undefined;
     }
-    return { game: g.game, observations, propValue };
+    return { game: g.game, observations, propValue, previewLines };
   };
   const counts = { settled: 0, void: 0, waiting: 0 };
   const done = async (d, bet, result, start, extra) => {
@@ -211,7 +274,7 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     if (!LEAGUES[d.get('sport')]) continue;
     const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
     const inputs = await inputsFor(bet);
-    const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, now });
+    const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, previewLines: inputs.previewLines, now });
     if (!result) {
       counts.waiting++;
       continue;
@@ -241,6 +304,12 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     }
   }
   log(`bets: ${counts.settled} settled, ${counts.void} void, ${counts.waiting} waiting${counts.failed ? `, ${counts.failed} failed` : ''}${dry ? ' (dry)' : ''}`);
+  // (then the preview lines of the games not begun that open preview bets are on; its failing doesn't stop the run)
+  try {
+    await snapshotPreviewLines(db, users.filter((d) => !gone.has(d.ref.parent.parent.id)), { fetchJson, now, dry, log });
+  } catch (error) {
+    log(`preview lines: not read (${error?.message ?? error})`);
+  }
   return counts;
 }
 
