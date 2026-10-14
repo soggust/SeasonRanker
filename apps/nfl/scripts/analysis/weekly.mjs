@@ -3,6 +3,11 @@
 // Rebuilds the dossiers from fresh data, batch-runs every team and QB, publishes them for the site and pushes
 // them live.
 //
+// Season's end (as MLB, NBA and NHL's: libs/ranker/scripts/analysis/weekly.mjs): a team whose season is over
+// (season-state.mjs, from the schedule: its regular season done without a playoff spot, a playoff loss, or
+// the Super Bowl played) gets its recap, the year in one section, and so do its QBs. That's its last report
+// of the season: the runs after it skip the team and its QBs (analyze.mjs's jobs).
+//
 // No betting angles (2026-10-14, the owner's: every sport's analysis matches, MLB/NBA/NHL's have none; the
 // Bets page has the bets, at live prices). The bet desk that edited the reports' bets into a weekly sheet
 // (bet-desk.mjs, grade.mjs, ledger.mjs and --desk) is retired, and its scheduled task "QBRanker NFL bet

@@ -3,6 +3,13 @@
 // position's qualifiers ([value, rank, of]), so "good" and "bad" are the league's, not the model's guess.
 //
 //   node apps/nfl/scripts/analysis/dossier.mjs [name filter...] [--fresh]
+//   ... --season=2025   (a finished season, from its archive (StaticData/seasons/2025), for trying the
+//                        recaps: no ESPN calls, written apart in .cache/analysis/season-2025)
+//
+// Each team's season state (season-state.mjs, from the schedule): a team still playing gets the weekly
+// preview's sheet; a team whose season is over (out of the playoffs, or the Super Bowl played) its recap's
+// (mode: 'recap': no next game, schedule left or injury report; the totals and the months instead), and so
+// do its QBs.
 //
 // Sources (cached in .cache/nflverse for 12 hours): nflverse play-by-play, weekly player stats, Next Gen
 // Stats, PFR advanced stats, snap counts, injuries, depth charts, players, draft picks and the
@@ -16,14 +23,20 @@ import { createInterface } from 'node:readline';
 import path from 'node:path';
 import { espnInjuries, espnLines, kickoffForecast, kickoffIso } from './live.mjs';
 import { currentSeason } from '../../../../libs/ranker/scripts/wiki-staff.mjs';
+import { DIVISIONS, endedText, resultsOf, roundName, conferenceOf, teamStatus, totalsOf, TOTALS_GLOSSARY } from './season-state.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
-const DATA = path.join(ROOT, 'apps/nfl/src/StaticData');
+const STATIC = path.join(ROOT, 'apps/nfl/src/StaticData');
 const CACHE = path.join(ROOT, '.cache/nflverse');
-const OUT = path.join(ROOT, '.cache/analysis/dossiers');
-const TEAM_OUT = path.join(ROOT, '.cache/analysis/teams');
-// (the season in the data: update-data.mjs's, the one scripts/rollover.mjs bumps)
-const SEASON = currentSeason(path.join(ROOT, 'apps/nfl'));
+// (the season in the data: update-data.mjs's, the one scripts/rollover.mjs bumps; --season=2025 a finished
+// one: its site files from its archive, its sheets kept apart)
+const CURRENT = currentSeason(path.join(ROOT, 'apps/nfl'));
+const SEASON = Number(process.argv.find((a) => a.startsWith('--season='))?.slice(9) ?? CURRENT);
+const PAST = SEASON !== CURRENT;
+const DATA = PAST ? path.join(STATIC, 'seasons', String(SEASON)) : STATIC;
+const BASE = path.join(ROOT, '.cache/analysis', PAST ? `season-${SEASON}` : '');
+const OUT = path.join(BASE, 'dossiers');
+const TEAM_OUT = path.join(BASE, 'teams');
 const NFLVERSE = 'https://github.com/nflverse/nflverse-data/releases/download';
 const FILES = {
   pbp: `pbp/play_by_play_${SEASON}.csv.gz`,
@@ -157,7 +170,8 @@ async function main() {
   ]);
   const teamWeekly = await readCsv(paths.teamWeekly, null);
   const depthRows = await readCsv(paths.depth, ['dt', 'team', 'gsis_id', 'pos_abb', 'pos_rank']);
-  const injuryReport = await espnInjuries();
+  // (a finished season's: no injury report, lines or forecasts, today's don't belong to it)
+  const injuryReport = PAST ? new Map() : await espnInjuries();
 
   const bio = new Map(players.map((p) => [p.gsis_id, p]));
   const byEspn = new Map(players.filter((p) => p.espn_id).map((p) => [p.espn_id, p.gsis_id]));
@@ -201,6 +215,10 @@ async function main() {
     awayQb: g.away_qb_name,
   }));
   const gameById = new Map(games.map((g) => [g.id, g]));
+  // Where each team's season stands (season-state.mjs): over once it's out of the playoffs or the Super
+  // Bowl is played; then its sheet, and its QBs', are the recap's
+  const status = teamStatus(games);
+  const modeOf = (t) => (status.get(t)?.over ? 'recap' : 'preview');
   // A game from one team's side: where, the score, the line (favored by: positive favored), covered, over
   const side = (g, team) => {
     const home = g.home === team;
@@ -222,6 +240,8 @@ async function main() {
       div: g.div,
       restDays: home ? g.homeRest : g.awayRest,
       weather: g.roof === 'outdoors' || g.roof === 'open' ? { temp: g.temp, wind: g.wind } : g.roof,
+      // (a playoff game: its round)
+      ...(g.type && g.type !== 'REG' ? { round: roundName(g.type, conferenceOf(team)) } : {}),
     };
   };
   const nextGame = (team) => {
@@ -231,14 +251,28 @@ async function main() {
     const forecast = forecasts.get(g.id);
     return { ...side(g, team), weather: forecast ?? side(g, team).weather, oppCoach: g.home === team ? g.awayCoach : g.homeCoach };
   };
+  // A team's regular-season record, points for and against
+  const record = (t) => {
+    const played = games.filter((g) => (g.home === t || g.away === t) && g.homeScore !== null && g.type === 'REG');
+    const r = { w: 0, l: 0, t: 0, pf: 0, pa: 0 };
+    for (const g of played) {
+      const s = side(g, t);
+      r[s.result === 'W' ? 'w' : s.result === 'L' ? 'l' : 't']++;
+      const [us, them] = s.score.split('-').map(Number);
+      r.pf += us;
+      r.pa += them;
+    }
+    return r;
+  };
+  const recordText = (r) => `${r.w}-${r.l}${r.t ? `-${r.t}` : ''}`;
 
   // The coming week's lines (ESPN's DraftKings), for next games nflverse hasn't a line for yet
   const nextDates = [...new Set(games.filter((g) => g.homeScore === null).map((g) => g.date))].sort().slice(0, 4);
-  const lines = await espnLines(nextDates);
+  const lines = PAST || !nextDates.length ? new Map() : await espnLines(nextDates);
 
   // The coming games' kickoff forecasts (Open-Meteo, at each stadium)
   const forecasts = new Map();
-  for (const g of games.filter((x) => x.homeScore === null && nextDates.includes(x.date))) {
+  for (const g of PAST ? [] : games.filter((x) => x.homeScore === null && nextDates.includes(x.date))) {
     const forecast = await kickoffForecast({ stadiumId: g.stadiumId, stadium: g.stadium, roof: g.roof, kickoff: kickoffIso(g.date, g.time) });
     if (forecast) forecasts.set(g.id, forecast);
   }
@@ -476,9 +510,10 @@ async function main() {
     };
   }
 
-  // ---- season totals per player (weekly stats), for ranking among the position
-  const seasonOf = (gsis) => {
-    const rows = weeklyBy.get(gsis) ?? [];
+  // ---- season totals per player (weekly stats), for ranking among the position: the regular season's, as
+  // the site's lists have them (type 'POST': his playoff games' apart)
+  const seasonOf = (gsis, type = 'REG') => {
+    const rows = (weeklyBy.get(gsis) ?? []).filter((x) => x.season_type === type);
     const s = (k) => sum(rows, k);
     const games = rows.length;
     const att = s('attempts');
@@ -550,7 +585,7 @@ async function main() {
     TM: { high: ['wins', 'winsOverExpected', 'atsPct', 'pointDiffPerGame', 'netEpa', 'offEpa', 'ptsPerGame', 'turnoverDiffPerGame', 'oneScoreWinPct'], low: ['defEpaAllowed', 'ptsAllowedPerGame'], keep: ['losses'] },
   };
   const careers = new Map();
-  const seasonsDir = path.join(DATA, 'seasons');
+  const seasonsDir = path.join(STATIC, 'seasons');
   for (const y of readdirSync(seasonsDir).map(Number).sort()) {
     for (const pos of ['QB', 'RB', 'WR', 'TE', 'TM']) {
       const f = path.join(seasonsDir, String(y), 'units', `${pos}.json`);
@@ -625,6 +660,9 @@ async function main() {
     const weeks = (weeklyBy.get(p.gsis) ?? []).sort((a, b) => Number(a.week) - Number(b.week));
     const team = weeks.at(-1)?.team || LOGO_TEAM[p.site.teamLogo?.match(/NFL_Icons\/(.+)\.png/)?.[1]] || b?.latest_team;
     const season = seasonOf(p.gsis);
+    // (a QB whose team's season is over: his recap; the other positions aren't written up)
+    const mode = p.pos === 'QB' && team ? modeOf(team) : 'preview';
+    p.mode = mode;
     const ranks = seasonRanked[p.pos];
     const ranked = {};
     for (const [k, rank] of Object.entries(ranks.rankers)) ranked[k] = rank(season[k]);
@@ -712,9 +750,12 @@ async function main() {
     const dc = latestDepth.get(p.gsis);
     const dr = draftBy.get(p.gsis);
     const age = b?.birth_date ? r((Date.now() - Date.parse(b.birth_date)) / (365.25 * 864e5), 1) : null;
-    const next = team ? nextGame(team) : null;
+    // (a recap looks back: no next game)
+    const next = team && mode === 'preview' ? nextGame(team) : null;
+    const playoffs = mode === 'recap' ? seasonOf(p.gsis, 'POST') : null;
 
     const dossier = {
+      ...(mode === 'recap' ? { mode, status: { over: true, ended: endedText(status.get(team)), teamRecord: recordText(record(team)) } } : {}),
       player: {
         name,
         position: p.pos,
@@ -750,10 +791,12 @@ async function main() {
             })()
           : {}),
         ...(p.pos === 'QB' && p.site.box ? { record: `${p.site.wins}-${p.site.losses}${p.site.ties ? `-${p.site.ties}` : ''}` } : {}),
+        // (a recap's: his playoff games' totals, apart from the regular season's)
+        ...(playoffs?.games ? { playoffs: Object.fromEntries(Object.entries(playoffs).filter(([, v]) => v !== null && v !== 0)) } : {}),
       },
       splits: p.pos === 'QB' ? qbSplits(p.gsis) : p.pos === 'RB' ? { rushing: rusherSplits(p.gsis, team), receiving: receiverSplits(p.gsis, team) } : receiverSplits(p.gsis, team),
       gameLog,
-      team: team ? { injuries: injuryList(team, p.gsis, true, 10), qbStarts: qbStarts(team), ...teamCtx[team], headCoach: (() => { const g = games.filter((x) => x.home === team || x.away === team).sort((a, b) => b.date.localeCompare(a.date)).find((x) => x.homeScore !== null); return g ? (g.home === team ? g.homeCoach : g.awayCoach) : null; })() } : null,
+      team: team ? { ...(mode === 'recap' ? {} : { injuries: injuryList(team, p.gsis, true, 10) }), qbStarts: qbStarts(team), ...teamCtx[team], headCoach: (() => { const g = games.filter((x) => x.home === team || x.away === team).sort((a, b) => b.date.localeCompare(a.date)).find((x) => x.homeScore !== null); return g ? (g.home === team ? g.homeCoach : g.awayCoach) : null; })() } : null,
       career: (careers.get(p.gsis) ?? []).filter((c) => c.season < SEASON),
       nextGame: next
         ? {
@@ -804,31 +847,15 @@ async function main() {
   const dataGrades = JSON.parse(readFileSync(path.join(DATA, 'data-grades.json'), 'utf8')).teams ?? {};
 
   // records and division standings
-  const DIVISIONS = {
-    'AFC East': ['BUF', 'MIA', 'NE', 'NYJ'], 'AFC North': ['BAL', 'CIN', 'CLE', 'PIT'], 'AFC South': ['HOU', 'IND', 'JAX', 'TEN'], 'AFC West': ['DEN', 'KC', 'LAC', 'LV'],
-    'NFC East': ['DAL', 'NYG', 'PHI', 'WAS'], 'NFC North': ['CHI', 'DET', 'GB', 'MIN'], 'NFC South': ['ATL', 'CAR', 'NO', 'TB'], 'NFC West': ['ARI', 'LA', 'SEA', 'SF'],
-  };
-  const record = (t) => {
-    const played = games.filter((g) => (g.home === t || g.away === t) && g.homeScore !== null && g.type === 'REG');
-    const r = { w: 0, l: 0, t: 0, pf: 0, pa: 0 };
-    for (const g of played) {
-      const s = side(g, t);
-      r[s.result === 'W' ? 'w' : s.result === 'L' ? 'l' : 't']++;
-      const [us, them] = s.score.split('-').map(Number);
-      r.pf += us;
-      r.pa += them;
-    }
-    return r;
-  };
-  const recordText = (r) => `${r.w}-${r.l}${r.t ? `-${r.t}` : ''}`;
+  // (the divisions: season-state.mjs's; the records above)
   const divisionOf = (t) => Object.entries(DIVISIONS).find(([, ts]) => ts.includes(t));
 
   // the team's box score each game (nflverse team stats)
   const teamWeeklyBy = group(teamWeekly.filter((x) => x.season_type === 'REG' || x.season_type === 'POST'), (x) => `${x.team}/${x.game_id}`);
 
-  // who carries the offense: the top passers, rushers and receivers this season
+  // who carries the offense: the top passers, rushers and receivers this regular season
   const usageOf = (t) => {
-    const rows = regWeekly.filter((x) => x.team === t);
+    const rows = regWeekly.filter((x) => x.team === t && x.season_type === 'REG');
     const by = group(rows, 'player_id');
     const total = (rs, k) => sum(rs, k);
     const top = (k, n) =>
@@ -849,13 +876,45 @@ async function main() {
     const coach = coachRows.get(t);
     const rec = record(t);
     const [division, members] = divisionOf(t);
-    const next = nextGame(t);
+    const mode = modeOf(t);
+    const next = mode === 'preview' ? nextGame(t) : null;
     const nickname = TEAMS[t] === 'Buccaneers' ? 'Bucs' : TEAMS[t];
     const played = games.filter((g) => (g.home === t || g.away === t) && g.homeScore !== null).sort((a, b) => a.date.localeCompare(b.date));
     const remaining = games.filter((g) => (g.home === t || g.away === t) && g.homeScore === null).sort((a, b) => a.date.localeCompare(b.date));
     const history = (careers.get(`TM-${nickname}`) ?? []).filter((c) => c.season < SEASON).slice(-8);
+    const gameLog = played.map((g) => {
+      const s = side(g, t);
+      const box = teamWeeklyBy.get(`${t}/${g.id}`)?.[0];
+      const opp = teamWeeklyBy.get(`${s.opp}/${g.id}`)?.[0];
+      return {
+        ...s,
+        qb: g.home === t ? g.homeQb : g.awayQb,
+        oppDefRankNow: teamCtx[s.opp]?.defEpa?.[1] ?? null,
+        oppOffRankNow: teamCtx[s.opp]?.offEpa?.[1] ?? null,
+        box: box
+          ? {
+              passYds: num(box.passing_yards),
+              rushYds: num(box.rushing_yards),
+              passEpa: r(num(box.passing_epa), 1),
+              rushEpa: r(num(box.rushing_epa), 1),
+              turnovers: (num(box.passing_interceptions) ?? 0) + (num(box.fumbles_lost_total) ?? 0),
+              sacksAllowed: num(box.sacks_suffered),
+              defSacks: num(box.def_sacks),
+              takeaways: (num(box.def_interceptions) ?? 0) + (num(opp?.fumbles_lost_total) ?? 0),
+              penaltyYds: num(box.penalty_yards),
+              oppPassYds: num(opp?.passing_yards),
+              oppRushYds: num(opp?.rushing_yards),
+            }
+          : null,
+      };
+    });
+    // the season's totals (both modes; a recap's to quote), and a recap's months and streaks
+    const stats = coach?.stats ?? {};
+    const totals = totalsOf(gameLog, { wins: rec.w, ties: rec.t, winsOverExpected: stats.winsOverExpected ?? null });
     const dossier = {
       kind: 'team',
+      mode,
+      ...(mode === 'recap' ? { status: { over: true, ended: endedText(status.get(t)) } } : {}),
       team: {
         name: `${TEAMS[t]} (${t})`,
         headCoach: coach?.name ?? null,
@@ -879,34 +938,12 @@ async function main() {
       },
       qbStarts: qbStarts(t),
       usage: usageOf(t),
-      gameLog: played.map((g) => {
-        const s = side(g, t);
-        const box = teamWeeklyBy.get(`${t}/${g.id}`)?.[0];
-        const opp = teamWeeklyBy.get(`${s.opp}/${g.id}`)?.[0];
-        return {
-          ...s,
-          qb: g.home === t ? g.homeQb : g.awayQb,
-          oppDefRankNow: teamCtx[s.opp]?.defEpa?.[1] ?? null,
-          oppOffRankNow: teamCtx[s.opp]?.offEpa?.[1] ?? null,
-          box: box
-            ? {
-                passYds: num(box.passing_yards),
-                rushYds: num(box.rushing_yards),
-                passEpa: r(num(box.passing_epa), 1),
-                rushEpa: r(num(box.rushing_epa), 1),
-                turnovers: (num(box.passing_interceptions) ?? 0) + (num(box.fumbles_lost_total) ?? 0),
-                sacksAllowed: num(box.sacks_suffered),
-                defSacks: num(box.def_sacks),
-                takeaways: (num(box.def_interceptions) ?? 0) + (num(opp?.fumbles_lost_total) ?? 0),
-                penaltyYds: num(box.penalty_yards),
-                oppPassYds: num(opp?.passing_yards),
-                oppRushYds: num(opp?.rushing_yards),
-              }
-            : null,
-        };
-      }),
-      injuries: injuryList(t, null, false, 16),
-      nextGame: next
+      gameLog,
+      ...(mode === 'recap'
+        ? { results: resultsOf(gameLog.filter((g) => !g.round)) }
+        : {
+            injuries: injuryList(t, null, false, 16),
+            nextGame: next
         ? {
             ...next,
             oppRecord: recordText(record(next.opp)),
@@ -921,20 +958,23 @@ async function main() {
             oppInjuries: injuryList(next.opp, null, false, 14),
           }
         : null,
-      // the rest of the schedule: each opponent\'s record and its offense / defense EPA ranks today
-      restOfSchedule: remaining.slice(next ? 1 : 0).map((g) => {
-        const s = side(g, t);
-        return { week: s.week, opp: s.opp, at: s.at, oppRecord: recordText(record(s.opp)), oppOffRank: teamCtx[s.opp]?.offEpa?.[1] ?? null, oppDefRank: teamCtx[s.opp]?.defEpa?.[1] ?? null, div: s.div };
-      }),
+            // the rest of the schedule: each opponent's record and its offense / defense EPA ranks today
+            restOfSchedule: remaining.slice(next ? 1 : 0).map((g) => {
+              const s = side(g, t);
+              return { week: s.week, opp: s.opp, at: s.at, oppRecord: recordText(record(s.opp)), oppOffRank: teamCtx[s.opp]?.offEpa?.[1] ?? null, oppDefRank: teamCtx[s.opp]?.defEpa?.[1] ?? null, div: s.div };
+            }),
+          }),
       history,
+      totals,
+      glossary: TOTALS_GLOSSARY,
     };
     writeFileSync(path.join(TEAM_OUT, `${t}.json`), JSON.stringify(dossier));
-    teamIndex.push({ team: t, name: TEAMS[t], siteIds: [`TM-${nickname}`, `DEF-${t}`, `OL-${t}`, ...(coach ? [coach.gsisId] : [])] });
+    teamIndex.push({ team: t, name: TEAMS[t], mode, siteIds: [`TM-${nickname}`, `DEF-${t}`, `OL-${t}`, ...(coach ? [coach.gsisId] : [])] });
   }
-  writeFileSync(path.join(ROOT, '.cache/analysis/team-index.json'), JSON.stringify(teamIndex));
-  console.log(`${teamIndex.length} team dossiers`);
+  writeFileSync(path.join(BASE, 'team-index.json'), JSON.stringify(teamIndex));
+  console.log(`${teamIndex.length} team dossiers (${teamIndex.filter((x) => x.mode === 'recap').length} recaps)`);
 
-  writeFileSync(path.join(ROOT, '.cache/analysis/index.json'), JSON.stringify(list.map((p) => ({ gsis: p.gsis, pos: p.pos, siteId: p.siteId, name: bio.get(p.gsis)?.display_name ?? p.site.name }))));
+  writeFileSync(path.join(BASE, 'index.json'), JSON.stringify(list.map((p) => ({ gsis: p.gsis, pos: p.pos, siteId: p.siteId, name: bio.get(p.gsis)?.display_name ?? p.site.name, mode: p.mode ?? 'preview' }))));
   console.log(`${written} dossiers (${list.length} players listed)`);
 }
 

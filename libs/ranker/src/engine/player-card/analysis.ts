@@ -3,7 +3,9 @@
 // angles in any sport: the Bets page has the bets, at live prices (an older NFL report's bets aren't shown).
 // The site reads the index of who has one, then a player's file when the tab opens. MLB, NBA and NHL teams
 // have weekly ones (libs/ranker/scripts/analysis): a preview while the season is on (the week ahead in place
-// of the next game), and once it's over a recap of the year, its one section.
+// of the next game), and once it's over a recap of the year, its one section. The NFL's teams and QBs get the
+// same recap once the team's season is over (apps/nfl/scripts/analysis: out of the playoffs, or the Super
+// Bowl played).
 import { fetchJson } from '@ranker/core/http';
 
 // A number behind a point: its name, the value, its rank in the position this season (when ranked)
@@ -39,10 +41,11 @@ export interface PlayerAnalysis {
   // when it was written, and by what
   at: string;
   model: string;
-  // (the weekly team reports': a preview or the season's recap, the season's name ("2026", "2025-26"), the
-  // week's games a preview looks at)
+  // (the weekly team reports' and the NFL's: a preview or the season's recap, the season's name ("2026",
+  // "2025-26"), the week's games a preview looks at, how a recap's season ended)
   mode?: 'preview' | 'recap';
   season?: string;
+  ended?: string | null;
   week?: { date: string; opp: string; at: 'home' | 'away' }[];
   // the game it previews: the week, the opponent, home or away, the sportsbook's line when posted
   game: { week: number; date: string; opp: string; at: 'home' | 'away'; line: { line: string; overUnder: number | null; hisTeamMoneyline: string | null; book: string | null } | null } | null;
