@@ -1502,3 +1502,29 @@ card-panel {
     padding-left: 8px;
   }
 }
+
+// The News signals panel (news-signals.ts): a row a signal, its team and what changed, the headline under it
+.desk-news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.desk-news-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 6px;
+
+  small {
+    color: #999;
+    margin-left: 6px;
+  }
+}
+
+.desk-news-headline {
+  color: #aaa;
+  font-size: 0.9em;
+  margin-top: 2px;
+}

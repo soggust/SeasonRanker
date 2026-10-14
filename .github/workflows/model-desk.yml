@@ -142,6 +142,32 @@ jobs:
           fi
           node libs/ranker/scripts/model/writeups.mjs || echo "::warning::the write-ups step failed: plain write-ups only"
 
+      # (the teams' news read for role signals, libs/ranker/scripts/model/news-signals.mjs: only with the
+      # repository variable NEWS_SIGNALS set to 1 and the ANTHROPIC_API_KEY secret; claude-haiku-5-5, a team once
+      # a day, each story once. Log only: the signals move no price, stake or CHECK (a later fit tests them). Its
+      # own caps (ai-budget.mjs newsBudget: $0.15 a day and $4 a month unless NEWS_SIGNALS_DAILY_USD / _MONTHLY_USD
+      # say otherwise, $0.30 and $6 at most), its log committed with the desk (apps/*/scripts/model/
+      # news-signals.json) and the Algorithm tab's summary (apps/*/src/StaticData/model/news-signals.json).
+      # Before the cache is saved (its calls logged there) and never failing the run)
+      - name: Read the teams' news for role signals
+        continue-on-error: true
+        timeout-minutes: 8
+        env:
+          NEWS_SIGNALS: ${{ vars.NEWS_SIGNALS || '0' }}
+          ANTHROPIC_API_KEY: ${{ vars.NEWS_SIGNALS == '1' && secrets.ANTHROPIC_API_KEY || '' }}
+          NEWS_SIGNALS_DAILY_USD: ${{ vars.NEWS_SIGNALS_DAILY_USD }}
+          NEWS_SIGNALS_MONTHLY_USD: ${{ vars.NEWS_SIGNALS_MONTHLY_USD }}
+          NEWS_SIGNALS_MAX_CALLS: ${{ vars.NEWS_SIGNALS_MAX_CALLS }}
+        run: |
+          if [ "$NEWS_SIGNALS" != "1" ] || [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "News signals off (NEWS_SIGNALS=$NEWS_SIGNALS, or no ANTHROPIC_API_KEY)"
+            exit 0
+          fi
+          if [ ! -d .cache/sdk/node_modules/@anthropic-ai/sdk ]; then
+            npm install --prefix .cache/sdk --no-save --no-package-lock --no-audit --no-fund @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: no news signals this run"; exit 0; }
+          fi
+          node libs/ranker/scripts/model/news-signals.mjs || echo "::warning::the news signals step failed: no signals this run"
+
       - name: Save the desk's cache
         if: always()
         uses: actions/cache/save@v6

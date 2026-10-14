@@ -344,6 +344,28 @@
         </div>
       </card-panel>
 
+      <!-- News signals, under the self-check: the teams' news read once a day for role changes
+           (libs/ranker/scripts/model/news-signals.mjs, a small Claude model), the last two days'; log only: they
+           move no price till a fit shows they help. Shown once a sport has the file (NEWS_SIGNALS on) -->
+      @if (newsSignalsOn) {
+        <card-panel class="tab-card group-support desk-wide desk-news-panel" label="News signals" icon="feed" [startOpen]="false">
+          <div class="group-body">
+            <p class="desk-note">Role changes read from each team's news in the last two days: a starter named, a benching, a restriction, a new role, a coaching change, a return. Logged only: they don't move a price or a bet until a test shows they help.</p>
+            @if (!newsSignals.length) {
+              <p class="desk-note">No role changes in the news lately</p>
+            }
+            <ul class="desk-news-list">
+              @for (s of newsSignals; track s.key) {
+                <li class="desk-news-row">
+                  <p class="desk-news-what"><b>{{ s.where }}</b> {{ s.what }} <small>{{ s.sure }}</small></p>
+                  <p class="desk-news-headline">{{ s.headline }} <small>{{ s.at | date: 'MMM d, h:mm a' }}</small></p>
+                </li>
+              }
+            </ul>
+          </div>
+        </card-panel>
+      }
+
       <!-- (the chance it gave its picks against how often they won: close together is honest; once there are
            graded bets; the tracked rows' too, graded like bets) -->
       @if (calibration.length) {

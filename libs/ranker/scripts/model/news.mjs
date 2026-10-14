@@ -136,6 +136,32 @@ export function storyOf(sport, a, team) {
   return { id: String(a.id ?? a.dataSourceIdentifier ?? `${at}:${a.headline}`), unit, headline: String(a.headline).slice(0, 200), at: new Date(at).toISOString() };
 }
 
+// A story as the news signals read it (news-signals.mjs), or null: the same kinds, tags and team naming as a
+// flag's (storyOf), whatever its headline says: { id, headline, summary, at, teams (ESPN's ids), athletes ([{ id,
+// name }], ESPN's tags) }
+export function teamStoryOf(a, team) {
+  if (!a || !KINDS.has(a.type)) return null;
+  const tags = teamsOf(a);
+  if (!tags.includes(String(team.id)) || tags.length > MAX_TEAMS) return null;
+  const text = `${a.headline ?? ''} ${a.description ?? ''}`;
+  const names = [team.nick, team.name].filter((x) => typeof x === 'string' && x.length >= 3);
+  if (names.length && !names.some((n) => text.toLowerCase().includes(n.toLowerCase()))) return null;
+  const at = Date.parse(a.published ?? a.lastModified ?? '');
+  if (!a.headline || !Number.isFinite(at)) return null;
+  const athletes = (a.categories ?? [])
+    .filter((c) => c?.type === 'athlete')
+    .map((c) => ({ id: String(c.athleteId ?? c.athlete?.id ?? ''), name: String(c.description ?? c.athlete?.description ?? '').slice(0, 80) }))
+    .filter((x) => /^\d{1,12}$/.test(x.id) && x.name);
+  return {
+    id: String(a.id ?? a.dataSourceIdentifier ?? `${at}:${a.headline}`),
+    headline: String(a.headline).replace(/\s+/g, ' ').slice(0, 200),
+    summary: String(a.description ?? '').replace(/\s+/g, ' ').slice(0, 400),
+    at: new Date(at).toISOString(),
+    teams: tags,
+    athletes: athletes.slice(0, 8),
+  };
+}
+
 // Every team's flagged stories (team id -> [story]), the cache's brought up to date: a team not read today
 // asked again, and one with a game within SOON_HOURS asked again every REREAD_HOURS (a game day's change, a
 // play-caller's or a starter's that morning, seen before its kickoff); its stories merged in by id. A story the

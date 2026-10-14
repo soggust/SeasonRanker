@@ -3,6 +3,7 @@ import { TIERS } from './tiers';
 import { americanOdds, headshot, hideImage, leagueLogo, num, pct, signed, teamLogo, units } from './bet-format';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
 import { DESK_HELP } from './desk-help';
+import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
 import {
   BANKROLL,
   CURVE_W,
@@ -191,6 +192,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the weekly self-check: each sport's on show, flags first; the checks opened, and the sports whose folded
   // checks are shown, by key)
   selfChecks: SelfCheckView[] = [];
+  // (the News signals panel: the teams' news read for role changes, log only (news-signals.ts); shown once a
+  // sport has the file)
+  newsSignals: NewsSignalRow[] = [];
+  newsSignalsOn = false;
+  private allNewsSignals: (NewsSignalsFile | null)[] = [];
   private allSelfChecks: (SelfCheckFile | null)[] = [];
   private selfOpen = new Set<string>();
 
@@ -219,9 +225,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         checks: await getJson<{ checks?: CheckEntry[] }>(`/${sport}/data/model/checks.json`, { cache: 'no-cache' }),
         // (none before the weekly self-check's first run: the panel says so)
         selfcheck: await getJson<SelfCheckFile>(`/${sport}/data/model/selfcheck.json`, { cache: 'no-cache' }),
+        // (none till the news signals run (NEWS_SIGNALS=1): no panel)
+        news: await getJson<NewsSignalsFile>(`/${sport}/data/model/news-signals.json`, { cache: 'no-cache' }),
       })),
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
+    this.allNewsSignals = files.map((f) => f.news);
+    this.newsSignalsOn = this.allNewsSignals.some((f) => !!f);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
     this.allBets = rows.filter((b) => !isTracked(b));
@@ -413,6 +423,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       this.allSelfChecks.filter((f) => !!f && (!this.sport || f.sport === this.sport)),
       Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
     );
+    this.newsSignals = newsSignalRows(this.allNewsSignals, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     const typeOf = (b: ModelBet) => `${b.sport.toUpperCase()} ${b.statLabel}`;
