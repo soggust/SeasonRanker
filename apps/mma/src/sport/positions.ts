@@ -201,7 +201,7 @@ const MMA_STATS: SkillStat[] = [
   { key: 'recent', label: 'Recent', description: 'His last five fights, newest first (ranked on a recency-weighted win rate); counts double behind its slider in the current lists, not at all in the all-time ones', kind: 'efficiency', format: 'recent', boost: (settings) => (allTime(settings) ? 0 : 2), shownWhen: (settings) => !allTime(settings) },
   { key: 'officialRank', label: 'Org Rank', description: "His promotion's official rank in his division, or pound-for-pound on those tabs: UFC.com's top 15 for a UFC fighter, the PFL's top 10 for a PFL one (counting five places below the UFC's, its field shallower: its champion as the UFC's #5, its #10 as #15). A champion is #0, above #1; an unranked fighter counts as #16; one fighting elsewhere (no rankings), or retired, as average. With UFC Fighters Only on, it's the UFC's rank. Counts 6x behind its slider among current fighters, 1x in the all-time lists", kind: 'efficiency', format: 'rank', noTies: true, negative: true, missingIsAverage: true, scale: [0, 16], settled: true, boost: (settings) => (allTime(settings) ? 1 : 6), shownWhen: (settings) => !allTime(settings) },
   { key: 'peakRank', label: 'Peak Rank', description: "The best he ranked in his division in any month of his career, by the rating across every promotion (the same monthly rankings career points come from): the top spot as the belt, the next as #1, and so on (#16: never that high). The all-time lists' rank, in the current ones' Org Rank place; counts 1x behind its slider", kind: 'efficiency', format: 'rank', noTies: true, negative: true, scale: [0, 16], settled: true, shownWhen: (settings) => allTime(settings) },
-  // (the title ones count double behind their sliders, the rating and career points 12x: the clearest marks of an elite career.
+  // (the title ones count double and triple behind their sliders all-time, the rating 12x in the current lists and career points 6x all-time: the clearest marks of an elite career.
   // The career totals (titles, quality wins) don't count in the current lists, where form leads: careerTotal)
   { key: 'titleDefenses', label: 'Title Defenses', description: 'Successful title defenses, across every reign, in the UFC, PRIDE, Strikeforce, the WEC, Bellator and the PFL (from Wikipedia\'s lists of champions; a Bellator or PFL defense counts half); counts double behind its slider all-time, not at all in the current lists; scored in proportion, 0 to 10 (most fighters have none, so against the list one defense would score like ten)', kind: 'volume', format: 'int', boost: careerTotal(2), scale: [10, 0], shownWhen: (settings) => allTime(settings) },
   { key: 'titleWins', label: 'Title Wins', description: 'Title fight wins in the UFC, PRIDE, Strikeforce, the WEC, Bellator and the PFL: winning a belt and each defense (a Bellator or PFL title counts half, an interim one half again); counts double behind its slider all-time, not at all in the current lists; scored in proportion, 0 to 10', kind: 'volume', format: 'int', boost: careerTotal(3), scale: [10, 0], shownWhen: (settings) => allTime(settings) },
@@ -242,14 +242,17 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = Object.fromEntrie
   SkillStat[]
 >;
 
-// Default: everything at 50. A preset (skill-presets.ts) sets the stats it's named for, keeps every
-// other stat at 25 as a tiebreaker.
+// Default: everything at 50. A preset (skill-presets.ts) sets the stats it's named for and puts every
+// other stat at 10 (the other sports' rest weight on a big tab: restWeight). Each style preset also sets
+// the results stats low itself (its FLOOR), since behind their boosts (the rating 12x) even 10 would
+// outweigh the style it's named for.
+const MMA_REST = 10;
 export function presetWeights(position: SkillPosition, preset: SkillPreset): SkillWeights {
   const def = SKILL_PRESETS[position].find((p) => p.key === preset);
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = def && !stat.support ? 25 : 50;
+    weights[stat.key] = def && !stat.support ? MMA_REST : 50;
   }
   return { ...weights, ...(def?.weights ?? {}) };
 }

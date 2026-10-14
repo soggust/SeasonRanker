@@ -87,6 +87,14 @@ export const POSITION_ADJUST_STAT: StatDef<'posAdj'> = {
   positionAdjust: true,
 };
 
+// A preset's weight for every stat it doesn't name (each sport's presetWeights; support grades, the
+// for-context stats and the Position Adjustment aside): 25 on a small tab, down to 10 on a big one, so the
+// stats a preset names carry it however many columns the tab has (at a flat 25, a big tab's unnamed stats
+// outweighed them, and most presets ranked close to DEFAULT)
+export function restWeight(unnamed: number): number {
+  return Math.max(10, Math.round(25 * Math.min(1, 6 / unnamed)));
+}
+
 // The grid's four stat groups (each sport names and colors them), and a group with its stats
 export type StatGroupId = 'results' | 'box' | 'advanced' | 'support';
 

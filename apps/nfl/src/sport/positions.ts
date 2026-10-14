@@ -1,4 +1,4 @@
-import type { SportSettings, StatBasis, StatDef, StatGroup, StatGroupId } from '@ranker/engine/sport';
+import { restWeight, type SportSettings, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -1251,20 +1251,23 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   ],
 };
 
-// Default: everything at 50 (Run Block EPA and Pass Pro at 10). A preset (skill-presets.ts) sets the stats it's named for, keeps every
-// other stat at 25, and leaves support grades and the parent Total Yds / Total TDs sliders at 50.
-// Fantasy ranks purely on fantasy points.
+// Default: everything at 50 (Run Block EPA and Pass Pro at 10). A preset (skill-presets.ts) sets the stats it's named for and
+// puts every other stat at the rest weight (restWeight: 25 on a small tab like K or HC, down to 10 on a big
+// one like QB or WR, so what it names leads), and leaves support grades and the parent Total Yds / Total TDs
+// sliders at 50. Fantasy ranks purely on fantasy points.
 export function presetWeights(position: SkillPosition, preset: SkillPreset): SkillWeights {
   const def = SKILL_PRESETS[position].find((p) => p.key === preset);
   const fantasyOnly = preset === 'fantasy';
+  // Run blocking is a rough read, so it starts small (a touch of weight, never the story)
+  const small = (stat: SkillStat) => stat.key === 'runBlockEpa' || stat.key === 'passProPct';
+  const rest = restWeight(SKILL_STATS[position].filter((stat) => !stat.infoOnly && !stat.support && !small(stat) && !(stat.key in (def?.weights ?? {}))).length);
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
     if (fantasyOnly) weights[stat.key] = 0;
-    // Run blocking is a rough read, so it starts small (a touch of weight, never the story)
-    else if (stat.key === 'runBlockEpa' || stat.key === 'passProPct') weights[stat.key] = 10;
+    else if (small(stat)) weights[stat.key] = 10;
     else if (!def || stat.support) weights[stat.key] = 50;
-    else weights[stat.key] = 25;
+    else weights[stat.key] = rest;
   }
   for (const { stat } of combinedFor(position)) weights[stat.key] = fantasyOnly ? 0 : 50;
   return { ...weights, ...(def?.weights ?? {}) };
