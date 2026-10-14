@@ -1,9 +1,28 @@
+@use "sass:map";
 @use "../variables" as v;
 @use "../casino-chip" as chip;
 
-// (a lock's colors: chocolate, and its padlock's gold)
+// (a lock's color: chocolate)
 $lock: chip.$lock;
-$lock-gold: chip.$lock-gold;
+
+// (each bet type's denomination: its filter chip's clay, and its swatch in the chips' key)
+$kind-clay: (
+  spread: chip.$chip-blue,
+  total: chip.$chip-green,
+  team_total: #262626,
+  moneyline: #6b3fa0,
+  player: #d0601c,
+  team_stat: #12807e,
+);
+
+// (the page's side gutter; a row's left padding, its chevron's column and the gap between its columns, which
+// place the rank tile over its slot; a pick's circle and the gap beside it, which a phone's game line clears)
+$page-gutter: 16px;
+$row-pad-left: 10px;
+$chevron-col: 20px;
+$row-gap: 12px;
+$circle: 34px;
+$circle-gap: 12px;
 
 // The Bets page: one scoreboard panel down the middle of the page, a row per call, most
 // confident first; like green, fade red (as on the card's Analysis tab).
@@ -37,13 +56,14 @@ $lock-gold: chip.$lock-gold;
   height: 100%;
   margin: 0 auto;
   max-width: 980px;
-  padding: 26px 16px;
+  padding: 26px $page-gutter;
 }
 
 // The panel a slot machine: its top a scoreboard (the header), the rest dark brushed gunmetal, and on
 // wide screens a handle on its right side
 .bets-panel {
-  @include v.scoreboard-panel(12px);
+  border: 1px solid;
+  border-radius: 12px;
   @include v.gunmetal;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
@@ -60,7 +80,7 @@ $lock-gold: chip.$lock-gold;
 // (the machine's top: the scoreboard, out to the panel's edges)
 .bets-head {
   align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
   border-radius: 11px 11px 0 0;
   display: flex;
@@ -110,28 +130,10 @@ $lock-gold: chip.$lock-gold;
   }
 
   // (each type its denomination's color)
-  &.spread {
-    --clay: #1f5fbf;
-  }
-
-  &.total {
-    --clay: #1d8a4e;
-  }
-
-  &.team_total {
-    --clay: #262626;
-  }
-
-  &.moneyline {
-    --clay: #6b3fa0;
-  }
-
-  &.player {
-    --clay: #d0601c;
-  }
-
-  &.team_stat {
-    --clay: #12807e;
+  @each $kind, $clay in $kind-clay {
+    &.#{$kind} {
+      --clay: #{$clay};
+    }
   }
 }
 
@@ -181,7 +183,7 @@ $lock-gold: chip.$lock-gold;
   }
 
   b {
-    border-radius: 4px;
+    border-radius: v.$radius-sm;
     color: #fff;
     display: inline-block;
     font-size: 10.5px;
@@ -191,28 +193,11 @@ $lock-gold: chip.$lock-gold;
     padding: 2px 5px;
     text-align: center;
 
-    &.spread {
-      background: #1f5fbf;
-    }
-
-    &.total {
-      background: #1d8a4e;
-    }
-
-    &.team_total {
-      background: #3a3a3a;
-    }
-
-    &.moneyline {
-      background: #6b3fa0;
-    }
-
-    &.player {
-      background: #d0601c;
-    }
-
-    &.team_stat {
-      background: #12807e;
+    // (the team total's a shade lighter than its chip's clay)
+    @each $kind, $clay in map.merge($kind-clay, (team_total: #3a3a3a)) {
+      &.#{$kind} {
+        background: $clay;
+      }
     }
   }
 }
@@ -224,15 +209,11 @@ $lock-gold: chip.$lock-gold;
   padding-left: 8px;
 }
 
-// ...and under it, the desk's record so far
-.bets-record {
+// ...and under it, the bankroll: a link to the wallet, its amount lit
+.bets-bankroll {
   color: rgba(255, 255, 255, 0.7);
   display: block;
   margin-top: 4px;
-}
-
-// (the bankroll: a link to the wallet, its amount lit)
-.bets-bankroll {
   text-decoration: none;
 
   b {
@@ -253,12 +234,13 @@ $lock-gold: chip.$lock-gold;
 // (a Material dropdown in the felt: as wide as its words (Best Bets, or the game chosen with its sport's icon), on a
 // phone no wider than the screen; its own caret and lettering inside are styles/_base.scss's, the open list's too)
 .bets-game {
-  @include chip.felt-dropdown;
+  // (a mat-select: its options open in an overlay, not under it)
+  @include chip.felt-dropdown(false);
   align-items: center;
   box-sizing: border-box;
   display: inline-flex;
   line-height: 1.2;
-  max-width: calc(100vw - 32px);
+  max-width: calc(100vw - #{2 * $page-gutter});
   width: auto;
 }
 
@@ -268,9 +250,7 @@ $lock-gold: chip.$lock-gold;
   gap: 6px;
 
   mat-icon {
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
+    @include v.icon-size(16px);
   }
 }
 
@@ -293,17 +273,18 @@ $lock-gold: chip.$lock-gold;
 // Each row a panel like the card's Analysis sections: a thin edge and a scoreboard bar tinted by its bet's
 // confidence (green high, yellow medium, gray low), the chevron on the left; open, its reasoning below
 .bet {
+  // (a card table, as the Algorithm's panels: felt in a gold rail; its band on its badge and rank)
+  @include chip.panel(false);
+  // (its confidence color, the row and its open section washed in it)
   --tint: #{v.$neutral};
   // (its full height in the scrolling list, never squeezed to fit)
   flex-shrink: 0;
-  // (its confidence color, the row and its open section washed in it)
-  --soft: var(--tint);
 
   // (a lock: chocolate, never the red of a loss)
   &.lock {
     --tint: #{$lock};
     // (its rail chocolate, not the gold)
-    --rail: linear-gradient(135deg, #7a3b10, #e8914a 30%, #d2691e 55%, #f0a060 75%, #6e3410);
+    --rail: linear-gradient(135deg, #7a3b10, #e8914a 30%, #{$lock} 55%, #{chip.$lock-light} 75%, #6e3410);
   }
 
   // (a CHECK: lavender, the bot questioning the market: a periwinkle rail, its bar washed in a soft lavender sheen)
@@ -313,7 +294,7 @@ $lock-gold: chip.$lock-gold;
 
     .bet-row {
       background:
-        linear-gradient(180deg, rgba(205, 196, 255, 0.3), rgba(169, 156, 240, 0.12) 55%, rgba(169, 156, 240, 0.07)),
+        linear-gradient(180deg, rgba(chip.$check-light, 0.3), rgba(chip.$check, 0.12) 55%, rgba(chip.$check, 0.07)),
         radial-gradient(ellipse 70% 120% at 20% 0%, rgba(236, 232, 255, 0.16), transparent 70%),
         var(--scoreboard-dots),
         var(--scoreboard);
@@ -324,17 +305,10 @@ $lock-gold: chip.$lock-gold;
     --tint: #{v.$good};
   }
 
-  &.medium {
-    --tint: #{v.$caution};
-  }
-
-  &.open .bet-row {
-    border-bottom: 1px solid chip.$felt-seam;
-  }
-
   // (a Like: its rail's gold softer than a Love's, a little brighter in its lights; its bar lit gold, a sheen
   // from the top, not a flat yellow (on the dark, that reads brown))
   &.medium {
+    --tint: #{v.$caution};
     --rail: linear-gradient(135deg, rgba(150, 114, 40, 0.6), rgba(255, 228, 150, 0.7) 22%, rgba(204, 160, 70, 0.6) 45%, rgba(255, 236, 176, 0.7) 62%, rgba(180, 140, 58, 0.6) 82%, rgba(130, 98, 34, 0.6));
 
     .bet-row {
@@ -346,14 +320,14 @@ $lock-gold: chip.$lock-gold;
     }
   }
 
+  &.open .bet-row {
+    border-bottom: 1px solid chip.$felt-seam;
+  }
+
   // (a Pass: its rail the gold gone gray and faint, saying less than the bets)
   &.low {
     --rail: linear-gradient(135deg, rgba(150, 144, 130, 0.35), rgba(205, 198, 182, 0.42) 30%, rgba(140, 134, 120, 0.35) 60%, rgba(195, 188, 172, 0.42) 80%, rgba(130, 124, 110, 0.35));
   }
-
-  // (a card table, as the Algorithm's panels: felt in a gold rail; its band on its badge and rank)
-  --group-color: var(--tint);
-  @include chip.panel;
 }
 
 .bet-row {
@@ -361,7 +335,7 @@ $lock-gold: chip.$lock-gold;
   // (a panel's bar, every sport's: the scoreboard lit in its band's color, a sheen from the top fading down it, as a
   // Bet's gold; the felt opens under it)
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--soft) 28%, transparent), color-mix(in srgb, var(--soft) 12%, transparent) 55%, color-mix(in srgb, var(--soft) 8%, transparent)),
+    linear-gradient(180deg, color-mix(in srgb, var(--tint) 28%, transparent), color-mix(in srgb, var(--tint) 12%, transparent) 55%, color-mix(in srgb, var(--tint) 8%, transparent)),
     radial-gradient(ellipse 70% 120% at 20% 0%, rgba(255, 255, 255, 0.08), transparent 70%),
     var(--scoreboard-dots),
     var(--scoreboard);
@@ -371,13 +345,13 @@ $lock-gold: chip.$lock-gold;
   cursor: pointer;
   display: grid;
   font-family: v.$font-base;
-  gap: 12px;
-  grid-template-columns: 20px 42px 58px minmax(0, 1fr) auto;
-  padding: 10px 14px 10px 10px;
+  gap: $row-gap;
+  grid-template-columns: $chevron-col 42px 58px minmax(0, 1fr) auto;
+  padding: 10px 14px 10px $row-pad-left;
   text-align: left;
   width: 100%;
 
-  transition: filter 0.15s ease;
+  transition: filter v.$t-hover ease;
 
   &:hover {
     filter: brightness(1.12);
@@ -401,32 +375,23 @@ $lock-gold: chip.$lock-gold;
 // white. A click opens how its score is built; lit like the grid's on hover (the 2px border in the board's
 // light; at rest there but clear, so the tile doesn't change size)
 .bet-rank {
+  @include v.led-tile;
+  // (the rank tile spins as its slot's column)
+  --col: 1;
   // (over the slot: past the row's left padding, the chevron and the gap; centered down the row)
   border: 2px solid transparent;
   bottom: 0;
-  box-sizing: border-box;
   cursor: pointer;
-  left: 42px;
+  font-size: 15px;
+  font-weight: 900;
+  height: 32px;
+  left: $row-pad-left + $chevron-col + $row-gap;
   line-height: 1;
   margin: auto 0;
   padding: 2px 0 0;
   position: absolute;
   top: 0;
-  transition: border-color 0.15s ease;
-  align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
-  border-radius: 6px;
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.6),
-    0 1px 3px rgba(0, 0, 0, 0.35);
-  color: #fff;
-  display: flex;
-  font-family: "DSEG7", sans-serif;
-  font-size: 15px;
-  font-weight: 900;
-  height: 32px;
-  justify-content: center;
-  text-shadow: var(--text-shadow-small);
+  transition: border-color v.$t-hover ease;
   width: 42px;
 
   &:hover,
@@ -437,19 +402,18 @@ $lock-gold: chip.$lock-gold;
   }
 
   &.top {
-    color: var(--tint-good, #3ee07a);
-    text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
+    color: var(--tint-good, #{v.$good-bright});
+    text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 
   // a CHECK: above the ranks, under the locks: a "?" in the lavender's light, glowing like the digits; a click
   // opens its popover (the model against the book, the model's Kelly, why it isn't bet), lit on hover like a rank's
   &.check {
     color: chip.$check-light;
-    cursor: pointer;
     font-family: v.$font-base;
     font-size: 19px;
     padding-top: 0;
-    text-shadow: 0 0 8px rgba(205, 196, 255, 0.65);
+    text-shadow: 0 0 8px rgba(chip.$check-light, 0.65);
   }
 
   // a lock: above the ranks, its padlock a light chocolate, glowing like the digits
@@ -459,7 +423,7 @@ $lock-gold: chip.$lock-gold;
     text-shadow: none;
 
     .mat-icon {
-      filter: drop-shadow(0 0 6px rgba(240, 160, 96, 0.6));
+      filter: drop-shadow(0 0 6px rgba(chip.$lock-light, 0.6));
       @include v.icon-size(19px);
     }
   }
@@ -491,11 +455,8 @@ $lock-gold: chip.$lock-gold;
   min-width: 0;
 
   b {
-    font-size: 14.5px;
     font-weight: 900;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   small {
@@ -503,9 +464,7 @@ $lock-gold: chip.$lock-gold;
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
     font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 }
 
@@ -573,14 +532,9 @@ $lock-gold: chip.$lock-gold;
   gap: 6px 16px;
   justify-content: space-between;
   margin-top: 8px;
-
-  .bet-meta {
-    margin-top: 0;
-  }
 }
 
-.bet-foot .bet-where,
-.bet-game .bet-where {
+.bet-foot .bet-where {
   align-items: center;
   // (the gray of a low chance's "% to win", so it reads on the dark; amber when windy)
   color: color-mix(in srgb, #{v.$neutral} 75%, #fff);
@@ -606,7 +560,7 @@ $lock-gold: chip.$lock-gold;
 // (open: the table's felt, as every panel's body is (the bet's own, _casino-chip.scss: nothing over it); it
 // unfolds down from its row, as a card panel does)
 .bet-reasons {
-  animation: bet-unfold 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: bet-unfold 0.24s v.$ease-out;
   background: none;
   padding: 14px 20px 16px;
 
@@ -647,7 +601,6 @@ $lock-gold: chip.$lock-gold;
     color: rgba(255, 255, 255, 0.45);
     font-size: 12px;
     font-weight: 600;
-    margin-top: 8px;
   }
 
   // (a CHECK's why it wasn't bet: its "?" in a lavender disc, the words beside it)
@@ -674,7 +627,7 @@ $lock-gold: chip.$lock-gold;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 60%),
       #{chip.$check};
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     display: inline-flex;
     flex-shrink: 0;
     font-size: 12px;
@@ -698,9 +651,9 @@ $lock-gold: chip.$lock-gold;
 
 // (phones and small tablets: the game and its start a second line under the pick, not gone; the chevron, rank and
 // grade down both lines' middle)
-@media (max-width: 700px) {
+@include v.down(ai-narrow) {
   .bet-row {
-    grid-template-columns: 20px 42px 50px minmax(0, 1fr);
+    grid-template-columns: $chevron-col 42px 50px minmax(0, 1fr);
     row-gap: 6px;
 
     > .bet-chevron,
@@ -726,12 +679,12 @@ $lock-gold: chip.$lock-gold;
 
   // (under the pick's words, past its circle)
   .bet-main.has-circle + .bet-game {
-    padding-left: 46px;
+    padding-left: $circle + $circle-gap;
   }
 }
 
 // (the narrowest phones: the pick's circle gone (its words say whose it is), the pick and its game the room)
-@media (max-width: 420px) {
+@include v.down(slim) {
   .bet-main.has-circle {
     grid-template-columns: minmax(0, 1fr);
 
@@ -754,14 +707,17 @@ $lock-gold: chip.$lock-gold;
 // ---------------------------------------------------------------------------
 // A gold mount bolted to the panel's side (the tables' rail's gold), a hub, the arm up from it and a glossy gold knob. Pulled, the
 // arm swings down through the hub (as if toward you) and springs back.
-$chrome: linear-gradient(90deg, #7a5a1e, #f6e2a4 35%, #c99a45 55%, #6e511b);
+$handle-gold: linear-gradient(90deg, #7a5a1e, #f6e2a4 35%, #c99a45 55%, #6e511b);
 $arm-length: 175px;
+// (the hub's size, and its center's depth into the handle: the lever turns there)
+$hub: 26px;
+$hub-y: 154px;
 
 .slot-handle {
   display: none;
 }
 
-@media (min-width: 1240px) {
+@include v.up(bets-wide) {
   .slot-handle {
     background: none;
     border: none;
@@ -772,10 +728,10 @@ $arm-length: 175px;
     padding: 0;
     // (seen from in front of the hub, so the lever tilts toward you around it)
     perspective: 420px;
-    perspective-origin: 33px 154px;
+    perspective-origin: 33px $hub-y;
     position: absolute;
-    // (the mount and hub halfway down the panel: the hub is 154px into the handle)
-    top: calc(50% - 154px);
+    // (the mount and hub halfway down the panel: the hub is $hub-y into the handle)
+    top: calc(50% - #{$hub-y});
     width: 64px;
 
     &:focus-visible {
@@ -799,16 +755,17 @@ $arm-length: 175px;
     width: 26px;
   }
 
-  // the hub the arm turns on
+  // the hub the arm turns on (over the arm's end)
   .slot-hub {
     background: radial-gradient(circle at 35% 30%, #fff3cc, #c99a45 55%, #5e4415);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-    height: 26px;
+    height: $hub;
     left: 20px;
     position: absolute;
-    top: 141px;
-    width: 26px;
+    top: $hub-y - $hub * 0.5;
+    width: $hub;
+    z-index: 1;
   }
 
   // the lever: the arm up from the hub's middle with the knob on its end, turning on the hub (its bottom
@@ -817,15 +774,15 @@ $arm-length: 175px;
     height: $arm-length + 26px;
     left: 16px;
     position: absolute;
-    top: 154px - $arm-length - 26px;
+    top: $hub-y - $arm-length - 26px;
     transform-origin: 50% 100%;
     transform-style: preserve-3d;
     width: 34px;
   }
 
   .slot-arm {
-    background: $chrome;
-    border-radius: 3px;
+    background: $handle-gold;
+    border-radius: v.$radius-xs;
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.4);
     height: $arm-length;
     left: 13.5px;
@@ -837,7 +794,7 @@ $arm-length: 175px;
   .slot-knob {
     // (the tables' gold, polished)
     background: radial-gradient(circle at 35% 30%, #fff6d6, #ebc56c 45%, #8a6524 85%);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow:
       inset -2px -3px 6px rgba(0, 0, 0, 0.35),
       2px 3px 6px rgba(0, 0, 0, 0.5);
@@ -846,11 +803,6 @@ $arm-length: 175px;
     position: absolute;
     top: 0;
     width: 34px;
-  }
-
-  // (the hub over the arm's end)
-  .slot-hub {
-    z-index: 1;
   }
 
   .slot-handle:hover .slot-knob {
@@ -875,9 +827,7 @@ $arm-length: 175px;
 }
 
 @keyframes slot-pull {
-  40% {
-    transform: rotateX(-155deg);
-  }
+  40%,
   50% {
     transform: rotateX(-155deg);
   }
@@ -893,9 +843,7 @@ $arm-length: 175px;
 }
 
 @keyframes slot-pull-knob {
-  40% {
-    transform: rotateX(155deg);
-  }
+  40%,
   50% {
     transform: rotateX(155deg);
   }
@@ -919,25 +867,10 @@ $arm-length: 175px;
   animation-delay: calc(min(var(--i), 10) * 50ms + var(--col) * 110ms);
 }
 
-// (the rank tile spins as its slot's column)
-.bet-rank {
-  --col: 1;
-}
-
-.bet-row > :nth-child(1) {
-  --col: 0;
-}
-.bet-row > :nth-child(2) {
-  --col: 1;
-}
-.bet-row > :nth-child(3) {
-  --col: 2;
-}
-.bet-row > :nth-child(4) {
-  --col: 3;
-}
-.bet-row > :nth-child(5) {
-  --col: 4;
+@for $i from 1 through 5 {
+  .bet-row > :nth-child(#{$i}) {
+    --col: #{$i - 1};
+  }
 }
 
 // (rolling out the top and back in from the bottom, each pass longer than the last)
@@ -974,16 +907,6 @@ $arm-length: 175px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .slot-handle.pulling .slot-lever,
-  .slot-handle.pulling .slot-knob,
-  .bets-list.spinning .bet-row > *,
-  .bets-list.spinning .bet-rank,
-  .bet-reasons {
-    animation: none;
-  }
-}
-
 @keyframes bet-unfold {
   from {
     clip-path: inset(0 0 100% 0);
@@ -1010,7 +933,7 @@ $arm-length: 175px;
   // (felt pills; the open one ringed in the page's gold)
   button {
     @include chip.felt-control;
-    border-radius: 999px;
+    border-radius: v.$radius-pill;
     color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     font: inherit;
@@ -1020,8 +943,8 @@ $arm-length: 175px;
     padding: 6px 16px;
     text-transform: uppercase;
     transition:
-      color 0.15s,
-      background 0.15s;
+      color v.$t-hover,
+      background v.$t-hover;
 
     &:hover {
       color: #fff;
@@ -1054,8 +977,9 @@ $arm-length: 175px;
   }
 }
 
-// (Open Bets: the wallet's open-bets panel, scrolling inside the page)
-.bets-page wallet-page {
+// (Open Bets: the wallet's open-bets panel, and the desk, scrolling inside the page)
+.bets-page wallet-page,
+.bets-page.desk-view model-desk {
   display: block;
   flex: 1;
   min-height: 0;
@@ -1064,19 +988,9 @@ $arm-length: 175px;
 
 // (Open Bets and Closed Bets: their tables up to the grid's width, like the Algorithm's, so they fit without a
 // sideways scroll on a wide screen)
-.bets-page.wallet-view {
-  max-width: 1240px;
-}
-
+.bets-page.wallet-view,
 .bets-page.desk-view {
   max-width: 1240px;
-
-  model-desk {
-    display: block;
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-  }
 }
 
 // (the book the picks are priced at: DraftKings' crown, once, in the updated line)
@@ -1090,7 +1004,7 @@ $arm-length: 175px;
 .bet-main.has-circle {
   align-content: center;
   align-items: center;
-  column-gap: 12px;
+  column-gap: $circle-gap;
   display: grid;
   grid-template-columns: auto 1fr;
 
@@ -1108,11 +1022,11 @@ $arm-length: 175px;
   align-items: center;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   display: inline-flex;
-  height: 34px;
+  height: $circle;
   justify-content: center;
-  width: 34px;
+  width: $circle;
 
   img {
     height: 22px;
@@ -1131,7 +1045,7 @@ $arm-length: 175px;
   }
 }
 
-img.bet-face {
+.bet-face {
   object-fit: cover;
   object-position: 50% 15%;
 }
@@ -1141,13 +1055,23 @@ img.bet-face {
   font-weight: 900;
 }
 
+// (a section of the popover under a line across it: the facts, the bets beside it, a CHECK's research)
+@mixin why-section($gap) {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  margin-top: 9px;
+  padding-top: 8px;
+}
+
 // ---------------------------------------------------------------------------
 // How a bet's score is built: its rank tile clicked opens it on a scoreboard panel hung from the tile, as the
 // grid's rank tile does (phones: a sheet along the bottom of the screen)
 // ---------------------------------------------------------------------------
 .bet-why {
-  --why-good: var(--tint-good, #3ee07a);
-  --why-bad: #ff7468;
+  --why-good: var(--tint-good, #{v.$good-bright});
+  --why-bad: #{v.$bad-soft};
   @include v.scoreboard-panel(8px, 0 8px 24px rgba(0, 0, 0, 0.6));
   box-sizing: border-box;
   color: #ddd;
@@ -1161,7 +1085,7 @@ img.bet-face {
   padding: 10px 12px 9px;
   position: fixed;
   width: 340px;
-  z-index: 1001;
+  z-index: v.z(popover);
   // (a quick slide in from the tile's side, the bars filling from the left: outside a media query, where
   // Angular rewrites the keyframes' scoped names)
   animation: bet-why-drop 0.14s ease-out;
@@ -1233,7 +1157,7 @@ img.bet-face {
 
   .why-pass {
     border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 4px;
+    border-radius: v.$radius-sm;
     color: #ccc;
     font-size: 10px;
     font-weight: 800;
@@ -1264,9 +1188,7 @@ img.bet-face {
     color: #fff;
     font-weight: 700;
     margin-top: 2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   // One part a line: its bar (green adding, red taking away; the largest the full width), name and value, points
@@ -1293,14 +1215,14 @@ img.bet-face {
 
   .why-bar {
     background: rgba(255, 255, 255, 0.06);
-    border-radius: 2px;
+    border-radius: v.$radius-xxs;
     height: 7px;
     overflow: hidden;
 
     i {
-      animation: bet-why-fill 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      animation: bet-why-fill 0.3s v.$ease-out backwards;
       background: var(--why-good);
-      border-radius: 2px;
+      border-radius: v.$radius-xxs;
       box-shadow: 0 0 5px color-mix(in srgb, var(--why-good) 50%, transparent);
       display: block;
       height: 100%;
@@ -1315,9 +1237,7 @@ img.bet-face {
 
   .why-stat {
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   .why-part.hurts .why-stat {
@@ -1353,12 +1273,7 @@ img.bet-face {
   }
 
   .why-facts {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    margin-top: 9px;
-    padding-top: 8px;
+    @include why-section(3px);
 
     p {
       display: flex;
@@ -1395,12 +1310,7 @@ img.bet-face {
 
   // The bets beside it: the gap, and the parts making it
   .why-vs {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 9px;
-    padding-top: 8px;
+    @include why-section(6px);
 
     b {
       color: #fff;
@@ -1423,12 +1333,7 @@ img.bet-face {
 
   // A CHECK's news research (research.mjs): its status, who and why, the summary, the reports' sites
   .why-research {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 9px;
-    padding-top: 8px;
+    @include why-section(4px);
 
     .why-research-head {
       display: flex;
@@ -1488,7 +1393,7 @@ img.bet-face {
 }
 
 // (phones: along the bottom, the screen's width)
-@media (max-width: 575px) {
+@include v.down(phone) {
   .bet-why {
     border-radius: 12px 12px 0 0;
     bottom: 0 !important;
@@ -1500,8 +1405,13 @@ img.bet-face {
   }
 }
 
-// (none for anyone who's asked for less)
+// (none for anyone who's asked for less: the handle's pull, the reels, the open section's unfold, the popover)
 @media (prefers-reduced-motion: reduce) {
+  .slot-handle.pulling .slot-lever,
+  .slot-handle.pulling .slot-knob,
+  .bets-list.spinning .bet-row > *,
+  .bets-list.spinning .bet-rank,
+  .bet-reasons,
   .bet-why,
   .bet-why .why-bar i {
     animation: none;
@@ -1534,5 +1444,3 @@ img.bet-face {
     transform: scaleX(0);
   }
 }
-
-

@@ -86,7 +86,7 @@
             <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand, what's out,
                  the wallet a click away) -->
             @if (bankroll(); as b) {
-              <a class="bets-record bets-bankroll" href="/wallet" title="Your Betting Wallet">
+              <a class="bets-bankroll" href="/wallet" title="Your Betting Wallet">
                 Bankroll <b>{{ b.balance | number: '1.0-2' }}u</b>@if (b.open) { · {{ b.atRisk | number: '1.0-2' }}u on {{ b.open }} open}
               </a>
             }

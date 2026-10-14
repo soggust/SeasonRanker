@@ -11,7 +11,7 @@
 
 .desk-note {
   border: 1px solid color-mix(in srgb, #{chip.$check} 45%, transparent);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   background: linear-gradient(180deg, color-mix(in srgb, #{chip.$check} 12%, transparent), color-mix(in srgb, #{chip.$check} 4%, transparent));
   color: rgba(255, 255, 255, 0.9);
   font-family: v.$font-base;
@@ -104,7 +104,7 @@
 .note-text textarea {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid chip.$felt-seam;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   box-sizing: border-box;
   color: #fff;
   font: inherit;
@@ -150,7 +150,7 @@
 
 .note-save {
   @include chip.felt-control;
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   cursor: pointer;
   font-family: v.$font-base;
   font-size: 12.5px;
@@ -163,26 +163,14 @@
   }
 }
 
-// (a quiet text button: Edit, Cancel; lighter on hover, never yellow)
-// (the button that opens the form: small, quiet, out of the bet buttons' way)
-.note-open {
-  align-items: center;
+// (a quiet text button, lighter on hover, never yellow; its font the line's, so a size of its own comes after it)
+@mixin note-quiet-button {
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  display: inline-flex;
   font: inherit;
-  font-size: 12px;
   font-weight: 800;
-  gap: 4px;
-  padding: 2px 0;
-
-  mat-icon {
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
-  }
 
   &:hover,
   &:focus-visible {
@@ -190,27 +178,36 @@
   }
 }
 
+// (the button that opens the form: small, quiet, out of the bet buttons' way)
+.note-open {
+  @include note-quiet-button;
+  align-items: center;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 4px;
+  padding: 2px 0;
+
+  mat-icon {
+    @include v.icon-size(16px);
+  }
+}
+
+// (a quiet text button: Edit, Cancel)
 .note-link {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
+  @include note-quiet-button;
   flex-shrink: 0;
-  font: inherit;
-  font-weight: 800;
   padding: 0;
   text-decoration: underline;
   text-underline-offset: 2px;
 
   &:hover,
   &:focus-visible {
-    color: #fff;
     outline: none;
   }
 }
 
 // (phones: each dropdown the row's width)
-@media (max-width: 575px) {
+@include v.down(phone) {
   .note-field {
     flex: 1 1 100%;
   }

@@ -6,7 +6,7 @@
 // folds (a chevron that lightens on hover, never yellow) and small tables
 // ===========================================================================
 
-ul.bands {
+.bands {
   list-style: none;
   padding: 0;
 
@@ -20,7 +20,7 @@ ul.bands {
 
 // (a band's chip, its row's color: LOCK chocolate, LOVE green, LIKE yellow, PASS gray)
 .band-chip {
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: #111;
   flex: 0 0 56px;
   font-size: 11px;
@@ -50,7 +50,7 @@ ul.bands {
 // (a fold: a sport, or a part of one)
 .fold {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   margin-bottom: 8px;
 }
 
@@ -77,8 +77,8 @@ ul.bands {
     flex: none;
     @include v.icon-size(20px);
     transition:
-      color 0.15s,
-      transform 0.15s;
+      color v.$t-hover,
+      transform v.$t-hover;
   }
 
   &:hover .fold-chevron {
@@ -126,20 +126,20 @@ table {
     white-space: nowrap;
   }
 
-  tr.out td {
+  .out td {
     color: rgba(255, 255, 255, 0.45);
   }
 
-  td.up {
+  .up {
     color: v.$good;
   }
 
-  td.down {
+  .down {
     color: #ff7a7a;
   }
 }
 
-@media (max-width: 719px) {
+@include v.down(about) {
   .prop,
   .table-wrap {
     margin-left: 0;
