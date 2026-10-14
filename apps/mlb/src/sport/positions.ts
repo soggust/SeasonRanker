@@ -327,10 +327,11 @@ const TEAM_STATS: SkillStat[] = [
 export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   TM: TEAM_STATS,
   // (every position player's columns, measured across all of them together, and the Position
-  // Adjustment's slider, not a stat. The fielding columns stay: a designated hitter's Def Runs are his
-  // own (usually below zero), and the OAA, FLD % and RF/9 he often lacks count as average, as a
-  // catcher's OAA does)
-  TOP: [...HITTER_STATS, POSITION_ADJUST_STAT],
+  // Adjustment's slider, not a stat. Def Runs and OAA stay: a designated hitter's Def Runs are his own
+  // (usually below zero), and the OAA he often lacks counts as average, as a catcher's does. Not FLD %
+  // or RF/9: across positions they mostly measure the position (a catcher's or first baseman's putouts
+  // run far above a third baseman's or outfielder's), not how well he fields)
+  TOP: [...HITTER_STATS.filter((stat) => !['fieldingPct', 'rangeFactor'].includes(stat.key)), POSITION_ADJUST_STAT],
   C: HITTER_STATS,
   '1B': HITTER_STATS,
   '2B': HITTER_STATS,

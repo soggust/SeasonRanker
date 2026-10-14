@@ -77,8 +77,11 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       weights: { defRank: 100, era: 90, fieldingRuns: 60, rotation: 50, bullpen: 40 },
     },
   ],
-  // (every position player together: the hitters' presets)
-  TOP: HITTER_PRESETS,
+  // (every position player together: the hitters' presets, less the FLD % and RF/9 the tab leaves out)
+  TOP: HITTER_PRESETS.map((p) => ({
+    ...p,
+    weights: Object.fromEntries(Object.entries(p.weights).filter(([key]) => !['fieldingPct', 'rangeFactor'].includes(key))) as SkillWeights,
+  })),
   C: HITTER_PRESETS,
   '1B': HITTER_PRESETS,
   '2B': HITTER_PRESETS,
