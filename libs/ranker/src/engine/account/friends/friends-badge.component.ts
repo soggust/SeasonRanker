@@ -14,7 +14,7 @@ import { FriendsService } from './friends.service';
       }
     }
   `,
-  styleUrls: ['../../../styles/components/account-friend-button.scss'],
+  styleUrls: ['../../../styles/components/account-friends-badge.scss'],
   host: { '[class.as-dot]': 'dot' },
   standalone: false,
 })

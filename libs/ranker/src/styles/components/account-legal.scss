@@ -1,4 +1,5 @@
 @use "../variables" as v;
+@use "account-kit" as kit;
 
 // ===========================================================================
 // #privacy and #data-deletion (legal-page.component): reading text on the app's sheet, its two pages
@@ -18,7 +19,7 @@
   // (the sheet gives the side and top room: only room under the last section here)
   padding: 0 0 36px;
 
-  @media (max-width: 575px) {
+  @include v.down(phone) {
     font-size: 14px;
     padding-bottom: 24px;
   }
@@ -136,17 +137,7 @@ strong {
 }
 
 .legal-back {
-  color: #fff;
   display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
   margin-top: 22px;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-  text-underline-offset: 3px;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--scoreboard-led);
-  }
+  @include kit.back-link;
 }

@@ -12,7 +12,7 @@ list-modal {
   font-family: v.$font-base;
   inset: 0;
   position: fixed;
-  z-index: 1000;
+  z-index: v.z(modal-backdrop);
 
   @include kit.pills;
   @include kit.fields;
@@ -28,7 +28,7 @@ list-modal {
   }
 
   .modal-backdrop {
-    animation: list-modal-fade 0.15s ease;
+    animation: list-modal-fade v.$t-hover ease;
     backdrop-filter: blur(2px);
     background: rgba(0, 0, 0, 0.6);
     inset: 0;
@@ -56,7 +56,7 @@ list-modal {
 
   header {
     align-items: center;
-    border-bottom: 1px solid #3a3a3a;
+    border-bottom: 1px solid v.$panel-edge;
     display: flex;
     flex: 0 0 auto;
     gap: 10px;
@@ -69,10 +69,8 @@ list-modal {
       letter-spacing: 0.75px;
       margin: 0;
       min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include v.ellipsis;
       text-transform: uppercase;
-      white-space: nowrap;
     }
   }
 
@@ -147,8 +145,8 @@ list-modal {
   .form-error {
     background: rgba(255, 90, 79, 0.12);
     border: 1px solid rgba(255, 90, 79, 0.45);
-    border-radius: 8px;
-    color: #ffb4ae;
+    border-radius: v.$radius-lg;
+    color: v.$bad-pale;
     font-size: 13px;
     margin: 0;
     padding: 9px 12px;
@@ -175,7 +173,7 @@ list-modal {
   .save-preview {
     background: rgba(0, 0, 0, 0.28);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
+    border-radius: v.$radius-xl;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -192,12 +190,11 @@ list-modal {
     }
 
     .p-rank {
-      color: var(--app-sand, #d8b98a);
+      @include kit.sand-lit;
       flex: 0 0 22px;
-      font-family: "DSEG7", sans-serif;
+      font-family: v.$font-led;
       font-size: 12px;
       text-align: right;
-      text-shadow: var(--app-sand-glow, none);
     }
 
     img {
@@ -209,9 +206,7 @@ list-modal {
 
     .p-name {
       font-family: v.$font-hand;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      @include v.ellipsis;
     }
 
     .p-more {
@@ -219,17 +214,6 @@ list-modal {
       font-size: 12px;
       padding-left: 32px;
     }
-  }
-
-  a.primary,
-  a.secondary {
-    text-decoration: none;
-  }
-
-  .spinner.tiny {
-    border-width: 1.5px;
-    height: 12px;
-    width: 12px;
   }
 }
 
@@ -253,7 +237,7 @@ list-modal {
   }
 }
 
-@media (max-width: 575px) {
+@include v.down(phone) {
   list-modal .modal-body {
     padding: 16px 14px 18px;
   }

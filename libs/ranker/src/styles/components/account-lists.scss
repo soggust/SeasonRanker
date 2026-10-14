@@ -1,6 +1,11 @@
 @use "../variables" as v;
 @use "account-kit" as kit;
 
+// (a list's chalkboard: the plays drawn on the slate)
+$board: v.$chalkboard;
+// (the top row's one height: its pills, dropdowns and buttons)
+$bar-h: 30px;
+
 // ===========================================================================
 // Saved lists and the Community (lists-page, list-view, community-page), on the app's sheet (app.component:
 // it scrolls, not these); the lists as scoreboard cards; a list (and the consensus) drawn like the grid:
@@ -25,8 +30,6 @@
 @include kit.app-buttons;
 @include kit.states;
 
-$board: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, v.$chalk-dust;
-
 .lists-page {
   box-sizing: border-box;
   color: #eee;
@@ -39,21 +42,15 @@ $board: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, v.$chalk-dust;
 }
 
 .form-error {
-  color: #ffb4ae;
+  color: v.$bad-pale;
   font-size: 13px;
   margin: 0;
-}
-
-a.primary,
-a.secondary {
-  text-decoration: none;
 }
 
 .dot {
   opacity: 0.5;
 }
 
-// (where back to: My lists, the Community)
 // (a list's way back: My Lists and the Community, the app's filled sand buttons)
 .page-crumbs {
   display: flex;
@@ -65,17 +62,16 @@ a.secondary {
 // The little chips: the sport's LED name, who sees a list, on the Community board
 // ---------------------------------------------------------------------------
 .sport-led {
-  color: var(--app-sand, #d8b98a);
+  @include kit.sand-lit;
   font-weight: 900;
   letter-spacing: 1px;
-  text-shadow: var(--app-sand-glow, none);
 }
 
 .vis-chip,
 .community-chip {
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: rgba(255, 255, 255, 0.82);
   display: inline-flex;
   flex: 0 0 auto;
@@ -87,12 +83,9 @@ a.secondary {
   text-decoration: none;
   text-transform: uppercase;
 
-  .mat-icon {
-    @include v.icon-size(14px);
-  }
-
   // (who sees it, quietly: public in the page's light (the app's sand), friends and only me muted)
   .mat-icon {
+    @include v.icon-size(14px);
     color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
   }
 
@@ -131,8 +124,6 @@ a.secondary {
 // The top row of #lists and #community, one family: the filters on the left (the sport pills; the
 // Community's position and season dropdowns), all one height, and the page's other half in the top right
 // corner (a filled button in the page's light: Community, My lists)
-$bar-h: 30px;
-
 .lists-bar {
   // (on the scoreboard, as Track Players' top)
   @include kit.scoreboard-strip;
@@ -166,7 +157,7 @@ $bar-h: 30px;
     flex: 0 0 auto;
     gap: 6px;
     height: $bar-h;
-    min-height: $bar-h !important;
+    min-height: $bar-h;
 
     .mat-icon {
       @include v.icon-size(16px);
@@ -183,7 +174,7 @@ $bar-h: 30px;
   align-items: center;
   background: var(--app-well, rgba(0, 0, 0, 0.3));
   border: 1px solid var(--app-sheet-edge, #4a4a4a);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   box-sizing: border-box;
   display: inline-flex;
   gap: 8px;
@@ -233,9 +224,9 @@ $bar-h: 30px;
 }
 
 .list-card {
-  border: 1px solid #3a3a3a;
+  border: 1px solid v.$panel-edge;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: kit.$panel-shadow;
   color: #eee;
   display: flex;
   flex-direction: column;
@@ -243,9 +234,9 @@ $bar-h: 30px;
   overflow: hidden;
   text-decoration: none;
   transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+    transform v.$t-hover ease,
+    border-color v.$t-hover ease,
+    box-shadow v.$t-hover ease;
 
   &:hover,
   &:focus-visible {
@@ -273,7 +264,7 @@ $bar-h: 30px;
 
 .card-bar {
   align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border-bottom: 1px solid #333;
   display: flex;
   font-size: 11.5px;
@@ -285,9 +276,7 @@ $bar-h: 30px;
     flex: 1;
     font-weight: 700;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   .vis-chip {
@@ -302,7 +291,7 @@ $bar-h: 30px;
   @include v.headline(17px);
   line-height: 1.25;
   padding: 12px 14px 10px;
-  transition: color 0.15s ease;
+  transition: color v.$t-hover ease;
 }
 
 // (a list's first rows: the place, the headshot or logo, the name; the cards' and the Community's)
@@ -334,8 +323,7 @@ $bar-h: 30px;
     padding-top: 1px;
 
     &.first {
-      color: var(--app-sand, #d8b98a);
-      text-shadow: var(--app-sand-glow, none);
+      @include kit.sand-lit;
     }
   }
 
@@ -352,7 +340,7 @@ $bar-h: 30px;
       radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.3), transparent 60%),
       var(--team-badge, rgba(255, 255, 255, 0.08));
     border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-sizing: border-box;
     object-fit: cover;
     object-position: 50% 15%;
@@ -361,10 +349,8 @@ $bar-h: 30px;
   .t-name {
     font-family: v.$font-hand;
     font-size: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include v.ellipsis;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-    white-space: nowrap;
   }
 }
 
@@ -383,7 +369,7 @@ $bar-h: 30px;
 // A list's own page: its name plate, the toolbar (As saved / Today, the owner's actions), who sees it
 // ---------------------------------------------------------------------------
 .list-hero {
-  @include v.scoreboard-panel(12px, 0 6px 18px rgba(0, 0, 0, 0.45));
+  @include v.scoreboard-panel(12px, kit.$panel-shadow);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -480,7 +466,7 @@ $bar-h: 30px;
     align-items: center;
     background: rgba(255, 90, 79, 0.08);
     border: 1px solid color-mix(in srgb, #{v.$bad} 70%, transparent);
-    border-radius: 10px;
+    border-radius: v.$radius-xl;
     box-sizing: border-box;
     color: v.$bad;
     cursor: pointer;
@@ -522,7 +508,7 @@ $bar-h: 30px;
   }
 
   &.bad {
-    color: #ffb4ae;
+    color: v.$bad-pale;
   }
 }
 
@@ -561,7 +547,7 @@ $bar-h: 30px;
   padding: 10px 16px;
   position: fixed;
   transform: translateX(-50%);
-  z-index: 50;
+  z-index: v.z(list-toast);
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -580,7 +566,7 @@ $bar-h: 30px;
 // ---------------------------------------------------------------------------
 .list-board {
   background: $board;
-  border: 1px solid #1d2520;
+  border: 1px solid v.$chalk-edge;
   border-radius: 9px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
   overflow-x: auto;
@@ -623,7 +609,7 @@ $bar-h: 30px;
   }
 
   &.header-row {
-    background: var(--scoreboard-dots), var(--scoreboard);
+    @include v.scoreboard-face;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     color: rgba(255, 255, 255, 0.85);
     font-size: 11px;
@@ -689,11 +675,11 @@ $bar-h: 30px;
 }
 
 .list-board.scrolled-x .row:not(.header-row) .who {
-  background: linear-gradient(90deg, #1f2824 88%, transparent);
+  background: linear-gradient(90deg, v.$chalk-slate 88%, transparent);
 }
 
 .list-board.scrolled-x .row.header-row .who {
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
 }
 
 .grip {
@@ -723,18 +709,17 @@ $bar-h: 30px;
   width: 46px;
 
   &.top-5 {
-    color: var(--app-sand, #d8b98a);
-    text-shadow: var(--app-sand-glow, none);
+    @include kit.sand-lit;
   }
 
   &.top-10 {
-    color: var(--tint-good, #3ee07a);
-    text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
+    color: var(--tint-good, #{v.$good-bright});
+    text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 
   .lombardi {
-    background-color: var(--tint-good, #3ee07a);
-    filter: drop-shadow(0 0 4px rgba(62, 224, 122, 0.55));
+    background-color: var(--tint-good, #{v.$good-bright});
+    filter: drop-shadow(0 0 4px rgba(v.$good-bright, 0.55));
     height: 1.3em;
     width: 1em;
   }
@@ -815,13 +800,11 @@ $bar-h: 30px;
   font-weight: 400;
   min-width: 0;
   opacity: 0.95;
-  overflow: hidden;
+  @include v.ellipsis;
   padding-right: 10px;
-  text-overflow: ellipsis;
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.95),
     0 0 6px rgba(0, 0, 0, 0.7);
-  white-space: nowrap;
 }
 
 // A number column: the value in the hand, the change since under it in green or red
@@ -902,7 +885,7 @@ $bar-h: 30px;
 
 .section-bar {
   align-items: baseline;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border: 1px solid #333;
   border-bottom: none;
   border-radius: 10px 10px 0 0;
@@ -914,14 +897,13 @@ $bar-h: 30px;
 
   h3 {
     align-items: center;
-    color: var(--app-sand, #d8b98a);
+    @include kit.sand-lit;
     display: flex;
     font-size: 13px;
     font-weight: 900;
     gap: 7px;
     letter-spacing: 1.2px;
     margin: 0;
-    text-shadow: var(--app-sand-glow, none);
     text-transform: uppercase;
 
     .mat-icon {
@@ -983,7 +965,7 @@ $bar-h: 30px;
   background:
     linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     $board;
-  border: 1px solid #1d2520;
+  border: 1px solid v.$chalk-edge;
   border-radius: 0 0 10px 10px;
   list-style: none;
   margin: 0;
@@ -1008,8 +990,7 @@ $bar-h: 30px;
     height: 22px;
 
     &.first {
-      color: var(--app-sand, #d8b98a);
-      text-shadow: var(--app-sand-glow, none);
+      @include kit.sand-lit;
     }
   }
 
@@ -1041,7 +1022,7 @@ $bar-h: 30px;
 
   .m-score {
     color: rgba(255, 255, 255, 0.7);
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 13px;
 
     &.pos {
@@ -1062,7 +1043,7 @@ $bar-h: 30px;
   }
 
   &.mine {
-    border-color: color-mix(in srgb, var(--app-sand, #d8b98a) 45%, #3a3a3a);
+    border-color: color-mix(in srgb, var(--app-sand, #d8b98a) 45%, #{v.$panel-edge});
   }
 
   .card-title {
@@ -1112,7 +1093,7 @@ $bar-h: 30px;
   align-items: center;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   display: flex;
@@ -1120,9 +1101,9 @@ $bar-h: 30px;
   justify-content: center;
   padding: 0;
   transition:
-    color 0.12s ease,
-    border-color 0.12s ease,
-    background 0.12s ease;
+    color v.$t-fast ease,
+    border-color v.$t-fast ease,
+    background v.$t-fast ease;
   width: 28px;
 
   .mat-icon {
@@ -1174,7 +1155,7 @@ $bar-h: 30px;
 
 .you-chip {
   border: 1px solid color-mix(in srgb, var(--app-sand, #d8b98a) 55%, transparent);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: var(--app-sand, #d8b98a);
   flex: 0 0 auto;
   font-size: 9.5px;
@@ -1187,13 +1168,13 @@ $bar-h: 30px;
 // ---------------------------------------------------------------------------
 // Narrower screens: the leaderboard under the consensus; phones: a tighter grid and stacked heads
 // ---------------------------------------------------------------------------
-@media (max-width: 900px) {
+@include v.down(medium) {
   .community-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-@media (max-width: 640px) {
+@include v.down(phablet) {
   .lists-page {
     gap: 12px;
     padding: 14px 12px 40px;
@@ -1214,10 +1195,6 @@ $bar-h: 30px;
 
   .tool-btn span {
     display: none;
-  }
-
-  .tool-btn.lit span {
-    display: inline;
   }
 
   .list-grid {

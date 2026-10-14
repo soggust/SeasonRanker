@@ -31,7 +31,7 @@
   font-weight: 800;
   justify-content: center;
   text-transform: uppercase;
-  transition: filter 0.12s ease;
+  transition: filter v.$t-fast ease;
 
   &[disabled] {
     cursor: default;

@@ -6,9 +6,21 @@
 // market lit in its band's color with its chip (Lock the casino's red and gold, Love green, Bet yellow, Pass an
 // outline, as the rows' own chips), and the prices on the slip ringed in gold.
 
-// (a lock's colors: the casino's red, and its padlock's gold; bets-page.scss's)
-$lock: chip.$lock;
+// (a lock's padlock gold; bets-page.scss's)
 $lock-gold: chip.$lock-gold;
+
+// (a price's tile: green felt, the Bets page's controls, under its band's wash; the bot's and a pass's a gray
+// one; a mixin, not a variable: the felt's "0 0 / 140px" would read as a division)
+@mixin felt-tile {
+  background:
+    linear-gradient(var(--wash), var(--wash)),
+    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.08), transparent 70%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35)),
+    #{chip.$felt-nap} 0 0 / 140px,
+    #{chip.$felt};
+}
+
+$grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 
 :host {
   display: block;
@@ -16,9 +28,9 @@ $lock-gold: chip.$lock-gold;
 
 // (a scoreboard card on the open bet's felt, as every panel's bar is)
 .lines {
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border: 1px solid rgba(255, 236, 196, 0.16);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
   color: #fff;
   margin-top: 14px;
@@ -118,14 +130,9 @@ $lock-gold: chip.$lock-gold;
   --wash: transparent;
   align-items: center;
   // (green felt, the Bets page's controls, under its band's wash)
-  background:
-    linear-gradient(var(--wash), var(--wash)),
-    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.08), transparent 70%),
-    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35)),
-    #{chip.$felt-nap} 0 0 / 140px,
-    #{chip.$felt};
+  @include felt-tile;
   border: 1px solid var(--edge);
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.07),
     0 1px 2px rgba(0, 0, 0, 0.4);
@@ -141,10 +148,10 @@ $lock-gold: chip.$lock-gold;
   padding: 6px 4px;
   position: relative;
   transition:
-    border-color 0.12s ease,
-    filter 0.12s ease,
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
+    border-color v.$t-fast ease,
+    filter v.$t-fast ease,
+    transform v.$t-fast ease,
+    box-shadow v.$t-fast ease;
   width: 100%;
 
   &:hover:not([disabled]) {
@@ -164,16 +171,14 @@ $lock-gold: chip.$lock-gold;
   }
 
   &.none {
-    align-items: center;
     color: rgba(255, 255, 255, 0.3);
     cursor: default;
-    display: flex;
   }
 
   // (the bot's pick: its band's color round it and washed in, on the dark tile, not the felt)
   &.bot {
     --edge: #{v.$neutral};
-    background: linear-gradient(var(--wash), var(--wash)), linear-gradient(180deg, #3b434b, #2a3036);
+    background: linear-gradient(var(--wash), var(--wash)), $grey-tile;
   }
 
   &.lock {
@@ -209,12 +214,7 @@ $lock-gold: chip.$lock-gold;
   &.lock,
   &.like,
   &.love {
-    background:
-      linear-gradient(var(--wash), var(--wash)),
-      radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.08), transparent 70%),
-      radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35)),
-      #{chip.$felt-nap} 0 0 / 140px,
-      #{chip.$felt};
+    @include felt-tile;
   }
 
   // (a pass, marked or not: a price the bot has no edge on is one, so it sits back, a quiet gray tile, the
@@ -222,7 +222,7 @@ $lock-gold: chip.$lock-gold;
   &.pass,
   &:not(.bot, .none) {
     --edge: rgba(255, 255, 255, 0.16);
-    background: linear-gradient(180deg, #3b434b, #2a3036);
+    background: $grey-tile;
     box-shadow: none;
     color: rgba(255, 255, 255, 0.62);
     filter: saturate(0.55) brightness(0.78);
@@ -234,25 +234,25 @@ $lock-gold: chip.$lock-gold;
   }
 
   // (already bet and still open: a check in its corner, so it isn't bet twice by mistake)
-.price-placed {
-  color: #6fe39a;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-  // (top left: the bot's chip has the top right)
-  left: 3px;
-  position: absolute;
-  top: 3px;
-  @include v.icon-size(14px);
-}
+  .price-placed {
+    color: #6fe39a;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+    // (top left: the bot's chip has the top right)
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    @include v.icon-size(14px);
+  }
 
-// (on the slip: a gold ring, like a chip set down on the line)
+  // (on the slip: a gold ring, like a chip set down on the line)
   &.on {
     --edge: #{$lock-gold};
     --wash: rgba(255, 207, 74, 0.2);
-    color: #fff;
-    filter: none;
     box-shadow:
       0 0 0 2px $lock-gold,
       0 0 14px rgba(255, 207, 74, 0.45);
+    color: #fff;
+    filter: none;
   }
 }
 
@@ -292,8 +292,6 @@ $lock-gold: chip.$lock-gold;
   top: -7px;
 }
 
-// The props: a team's under a bar of its own, folded till it's opened; a row a player's stat, his face and name on
-// his first, over and under
 // (one pick alone, under its row: its market's two sides side by side, no frame of its own)
 .lines-pair {
   display: grid;
@@ -307,6 +305,8 @@ $lock-gold: chip.$lock-gold;
   padding-top: 0;
 }
 
+// The props: a team's under a bar of its own, folded till it's opened; a row a player's stat, his face and name on
+// his first, over and under
 .lines-props {
   border-top: 1px dashed rgba(255, 236, 196, 0.16);
   display: flex;
@@ -322,7 +322,7 @@ $lock-gold: chip.$lock-gold;
   align-items: center;
   background: none;
   border: 0;
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -360,8 +360,8 @@ $lock-gold: chip.$lock-gold;
   flex: none;
   transform: rotate(90deg);
   transition:
-    color 0.15s,
-    transform 0.15s;
+    color v.$t-hover,
+    transform v.$t-hover;
   @include v.icon-size(18px);
 
   .shut & {
@@ -402,7 +402,7 @@ $lock-gold: chip.$lock-gold;
 
 .prop-face {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   height: 34px;
   object-fit: cover;
   object-position: top;
@@ -416,9 +416,7 @@ $lock-gold: chip.$lock-gold;
 
   b,
   small {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   b {
@@ -467,7 +465,7 @@ $lock-gold: chip.$lock-gold;
 }
 
 // (phones: the team column narrower, the tiles a little shorter)
-@media (max-width: 575px) {
+@include v.down(phone) {
   .lines {
     padding: 8px 8px 6px;
   }
@@ -525,5 +523,3 @@ $lock-gold: chip.$lock-gold;
     }
   }
 }
-
-

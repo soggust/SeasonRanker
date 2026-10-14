@@ -1,0 +1,53 @@
+@use "../variables" as v;
+@use "account-kit" as kit;
+
+// ===========================================================================
+// The account menu's count of friend requests waiting (friends-badge.component.ts): a lit count on the menu's
+// Friends item, a dot on the avatar
+// ===========================================================================
+
+:host(friends-badge) {
+  display: contents;
+}
+
+// (the dot: a zero-size mark just after the avatar in the sport bar's button, the dot on the avatar's corner)
+:host(friends-badge.as-dot) {
+  align-self: center;
+  display: block;
+  height: 0;
+  margin-left: -8px;
+  position: relative;
+  width: 0;
+}
+
+.friends-count {
+  align-items: center;
+  background: var(--scoreboard-led);
+  border-radius: v.$radius-pill;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
+  box-sizing: border-box;
+  color: kit.$ink-dark !important;
+  display: inline-flex;
+  font-family: v.$font-base;
+  font-size: 11px;
+  font-weight: 800;
+  height: 18px;
+  justify-content: center;
+  margin-left: 10px;
+  min-width: 18px;
+  padding: 0 5px;
+  vertical-align: 1px;
+}
+
+.friends-dot {
+  background: var(--scoreboard-led);
+  border: 2px solid kit.$ink-dark;
+  border-radius: v.$radius-round;
+  box-shadow: 0 0 6px var(--scoreboard-led);
+  height: 9px;
+  left: -10px;
+  pointer-events: none;
+  position: absolute;
+  top: -15px;
+  width: 9px;
+}

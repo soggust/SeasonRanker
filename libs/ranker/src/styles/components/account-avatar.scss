@@ -1,8 +1,9 @@
 @use "../variables" as v;
+@use "account-kit" as kit;
 
 // A user's picture: a circle (--size), ringed faintly; initials in the sport's light when there's no picture
 :host {
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.18),
     0 1px 3px rgba(0, 0, 0, 0.5);
@@ -31,7 +32,7 @@ img {
 }
 
 :host(.has-logo) {
-  background: radial-gradient(circle at 35% 30%, #3a3a3a, #161616 70%);
+  @include kit.logo-disc($border: false);
   box-sizing: border-box;
 }
 

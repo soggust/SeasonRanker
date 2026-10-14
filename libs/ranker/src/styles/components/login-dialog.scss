@@ -10,7 +10,7 @@
   @include kit.agnostic;
   inset: 0;
   position: fixed;
-  z-index: 1000;
+  z-index: v.z(modal-backdrop);
 }
 
 @include kit.pills;
@@ -18,7 +18,7 @@
 @include kit.buttons;
 
 .login-backdrop {
-  animation: login-fade 0.15s ease;
+  animation: login-fade v.$t-hover ease;
   backdrop-filter: blur(2px);
   background: rgba(0, 0, 0, 0.6);
   inset: 0;
@@ -44,7 +44,7 @@
 
 header {
   align-items: center;
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid v.$panel-edge;
   display: flex;
   flex: 0 0 auto;
   gap: 12px;
@@ -65,7 +65,7 @@ header {
   background:
     radial-gradient(circle at 35% 28%, rgba(255, 238, 220, 0.22), transparent 60%),
     linear-gradient(160deg, var(--app-pewter-light), var(--app-pewter-deep));
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow:
     0 0 0 1px var(--app-sheet-edge),
     inset 0 -2px 4px rgba(0, 0, 0, 0.45),
@@ -88,8 +88,8 @@ header {
 .login-lock {
   align-items: center;
   background: var(--app-sand);
-  border: 2px solid #141414;
-  border-radius: 50%;
+  border: 2px solid kit.$ink-dark;
+  border-radius: v.$radius-round;
   bottom: -3px;
   display: flex;
   height: 17px;
@@ -159,7 +159,7 @@ header {
   align-items: center;
   background: linear-gradient(180deg, #262626, #181818);
   border: 1px solid #454545;
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 2px 5px rgba(0, 0, 0, 0.35);
@@ -175,8 +175,8 @@ header {
   padding: 0 16px;
   position: relative;
   transition:
-    border-color 0.12s ease,
-    background 0.12s ease;
+    border-color v.$t-fast ease,
+    background v.$t-fast ease;
 
   .mark,
   .spinner {
@@ -243,7 +243,7 @@ header {
 .login-error,
 .login-notice {
   align-items: flex-start;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   display: flex;
   font-size: 13px;
   gap: 8px;
@@ -260,7 +260,7 @@ header {
 .login-error {
   background: rgba(255, 90, 79, 0.12);
   border: 1px solid rgba(255, 90, 79, 0.45);
-  color: #ffb4ae;
+  color: v.$bad-pale;
 
   .mat-icon {
     color: v.$bad;
@@ -309,7 +309,7 @@ header {
 }
 
 // Phones: a little less padding
-@media (max-width: 575px) {
+@include v.down(phone) {
   .login-body {
     padding: 16px 16px 18px;
   }

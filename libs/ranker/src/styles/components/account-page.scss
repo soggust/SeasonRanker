@@ -39,7 +39,7 @@
 // ---------------------------------------------------------------------------
 .account-hero {
   align-items: center;
-  @include v.scoreboard-panel(12px, 0 6px 18px rgba(0, 0, 0, 0.45));
+  @include v.scoreboard-panel(12px, kit.$panel-shadow);
   display: flex;
   gap: 16px;
   padding: 16px 20px;
@@ -98,13 +98,12 @@
   }
 }
 
-
 // ---------------------------------------------------------------------------
 // The panels: the scoreboard bar in the sport's light, the body a darker well of the app's pewter sheet
 // ---------------------------------------------------------------------------
 card-panel.account-panel {
   --group-color: var(--scoreboard-led);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: kit.$panel-shadow;
 
   ::ng-deep > .panel-body {
     background:
@@ -125,29 +124,9 @@ card-panel.account-panel {
 }
 
 .form-error {
-  color: #ffb4ae;
+  color: v.$bad-pale;
   font-size: 13px;
   margin: 0;
-}
-
-
-label.secondary {
-  position: relative;
-
-  &.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  &:has(input:focus-visible) {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-  }
-}
-
-.secondary.open {
-  border-color: var(--scoreboard-led);
-  color: var(--scoreboard-led);
 }
 
 // ---------------------------------------------------------------------------
@@ -173,10 +152,6 @@ label.secondary {
   flex-direction: column;
   gap: 8px;
   width: 100%;
-
-  .secondary {
-    width: 100%;
-  }
 }
 
 .profile-form {
@@ -229,16 +204,15 @@ label.secondary {
 .logo-pick {
   align-items: center;
   aspect-ratio: 1;
-  background: radial-gradient(circle at 35% 30%, #3a3a3a, #161616 70%);
-  border: 1px solid #3a3a3a;
-  border-radius: 50%;
+  @include kit.logo-disc;
+  border-radius: v.$radius-round;
   cursor: pointer;
   display: flex;
   justify-content: center;
   padding: 8px;
   transition:
-    transform 0.12s ease,
-    border-color 0.12s ease;
+    transform v.$t-fast ease,
+    border-color v.$t-fast ease;
 
   img {
     height: 100%;
@@ -335,10 +309,6 @@ label.secondary {
   .field-label {
     justify-content: center;
   }
-
-  > .secondary {
-    width: 100%;
-  }
 }
 
 .providers {
@@ -347,17 +317,13 @@ label.secondary {
   flex-direction: column;
   gap: 6px;
   width: 100%;
-
-  .secondary {
-    width: 100%;
-  }
 }
 
 .provider.linked {
   align-items: center;
   background: rgba(62, 207, 110, 0.1);
   border: 1px solid rgba(62, 207, 110, 0.35);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   box-sizing: border-box;
   color: #fff;
   display: inline-flex;
@@ -493,21 +459,16 @@ label.secondary {
 // ---------------------------------------------------------------------------
 // Phones
 // ---------------------------------------------------------------------------
-@media (max-width: 640px) {
+@include v.down(phablet) {
   // (the hero's View profile: its icon alone)
   .hero-link {
     gap: 0;
-    padding: 0 9px !important;
+    padding: 0 9px;
   }
 
   .hero-link-text {
     border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+    @include v.visually-hidden;
   }
 
   .account-page {
@@ -523,10 +484,6 @@ label.secondary {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-
-    .secondary {
-      width: auto;
-    }
   }
 
   .privacy-row {
@@ -534,7 +491,6 @@ label.secondary {
     flex-direction: column;
     gap: 8px;
   }
-
 
   .panel-pad {
     padding: 16px 14px 18px;

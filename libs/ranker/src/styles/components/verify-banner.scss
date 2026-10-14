@@ -1,3 +1,4 @@
+@use "../variables" as v;
 @use "account-kit" as kit;
 
 // The confirm-your-email strip over the account pages (verify-banner.component): the app's sand on the sheet,
@@ -8,11 +9,11 @@
   align-items: center;
   background: color-mix(in srgb, var(--app-sand, #d8b98a) 12%, rgba(0, 0, 0, 0.3));
   border: 1px solid color-mix(in srgb, var(--app-sand, #d8b98a) 45%, transparent);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   color: var(--app-text, #f1ece6);
   display: flex;
   flex-wrap: wrap;
-  font-family: 'Nunito', sans-serif;
+  font-family: v.$font-base;
   font-size: 13.5px;
   gap: 8px 14px;
   justify-content: space-between;

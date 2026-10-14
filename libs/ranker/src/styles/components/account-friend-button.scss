@@ -3,12 +3,11 @@
 
 // ===========================================================================
 // What you can do about someone (friend-button.component.ts: Add friend, Requested, Accept / Decline,
-// Friends / Remove) and the account menu's count of requests waiting (friends-badge.component.ts)
+// Friends / Remove); the account menu's count of requests waiting has its own (account-friends-badge.scss)
 // ===========================================================================
 @include kit.buttons;
 // (a confirm's Cancel and Remove, a request's Cancel: the app's outline and danger buttons)
 @include kit.app-buttons;
-@include kit.fields;
 
 :host(friend-button) {
   align-items: center;
@@ -22,7 +21,7 @@
 .state-tag {
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: rgba(255, 255, 255, 0.75);
   display: inline-flex;
   font-family: v.$font-base;
@@ -61,56 +60,12 @@
   font-weight: 700;
 }
 
+// (a problem, under the buttons: the kit's field error, right-aligned on its own line)
 .field-error {
+  color: v.$bad;
   flex-basis: 100%;
-  text-align: right;
-}
-
-// ---------------------------------------------------------------------------
-// The badge: a lit count on the menu's Friends item, a dot on the avatar
-// ---------------------------------------------------------------------------
-:host(friends-badge) {
-  display: contents;
-}
-
-// (the dot: a zero-size mark just after the avatar in the sport bar's button, the dot on the avatar's corner)
-:host(friends-badge.as-dot) {
-  align-self: center;
-  display: block;
-  height: 0;
-  margin-left: -8px;
-  position: relative;
-  width: 0;
-}
-
-.friends-count {
-  align-items: center;
-  box-sizing: border-box;
-  background: var(--scoreboard-led);
-  border-radius: 999px;
-  box-shadow: 0 0 6px color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-  color: #141414 !important;
-  display: inline-flex;
   font-family: v.$font-base;
-  font-size: 11px;
-  font-weight: 800;
-  height: 18px;
-  justify-content: center;
-  margin-left: 10px;
-  min-width: 18px;
-  padding: 0 5px;
-  vertical-align: 1px;
-}
-
-.friends-dot {
-  background: var(--scoreboard-led);
-  border: 2px solid #141414;
-  border-radius: 50%;
-  box-shadow: 0 0 6px var(--scoreboard-led);
-  height: 9px;
-  pointer-events: none;
-  left: -10px;
-  position: absolute;
-  top: -15px;
-  width: 9px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: right;
 }

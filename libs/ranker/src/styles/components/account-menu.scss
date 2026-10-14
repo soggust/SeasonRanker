@@ -1,3 +1,4 @@
+@use "sass:meta";
 @use "../variables" as v;
 @use "account-kit" as kit;
 
@@ -17,7 +18,6 @@
 .sign-in,
 .account-toggle {
   align-items: center;
-  white-space: nowrap;
   background: none;
   border: none;
   color: #fff;
@@ -32,6 +32,7 @@
   padding: 0 12px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   text-transform: uppercase;
+  white-space: nowrap;
 
   &:hover,
   &.open {
@@ -57,15 +58,13 @@
   // (cut short only where the bar's short of room: a laptop's 120px, far more on a wide screen)
   .account-name {
     max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
 
-    @media (min-width: 1500px) {
+    @include v.up(menu-xl) {
       max-width: 220px;
     }
 
-    @media (min-width: 2200px) {
+    @include v.up(huge) {
       max-width: 360px;
     }
   }
@@ -73,14 +72,14 @@
 
 .account-pending {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   height: 26px;
   margin: 0 10px;
   width: 26px;
 }
 
 // Phones: the avatar alone, Sign in a size down
-@media (max-width: 575px) {
+@include v.down(phone) {
   .account-toggle {
     padding: 0 6px;
 
@@ -93,7 +92,6 @@
     font-size: 11px;
     letter-spacing: 1px;
     padding: 0 6px 0 8px;
-    white-space: nowrap;
   }
 }
 
@@ -122,9 +120,7 @@
     min-width: 0;
 
     span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      @include v.ellipsis;
     }
   }
 
@@ -143,7 +139,7 @@
 
   // (the menu in the app's Nunito, not Material's own type)
   .mat-mdc-menu-item {
-    --mat-menu-item-label-text-font: "Nunito", sans-serif;
+    --mat-menu-item-label-text-font: #{meta.inspect(v.$font-base)};
     font-family: v.$font-base;
     min-height: 42px;
 
@@ -173,7 +169,7 @@
 // (the Admin badge: a small lit tag, here and on the settings page)
 ::ng-deep .admin-badge {
   border: 1px solid var(--scoreboard-led);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: var(--scoreboard-led) !important;
   flex: 0 0 auto;
   font-family: v.$font-base;

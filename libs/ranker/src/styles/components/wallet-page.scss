@@ -95,10 +95,6 @@ $gold: casino.$lock-gold;
     line-height: 1.55;
     margin: 0;
   }
-
-  .primary {
-    margin-top: 8px;
-  }
 }
 
 .wallet-intro-chips {
@@ -106,8 +102,9 @@ $gold: casino.$lock-gold;
   margin-bottom: 4px;
 
   i {
+    background: var(--c);
     border: 5px dashed #f4efe3;
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow:
       inset 0 0 0 3px var(--c),
       inset 0 0 0 4px rgba(255, 236, 196, 0.5),
@@ -116,7 +113,6 @@ $gold: casino.$lock-gold;
     height: 30px;
     margin: 0 -6px;
     width: 30px;
-    background: var(--c);
   }
 
   .c100 {
@@ -124,12 +120,12 @@ $gold: casino.$lock-gold;
   }
 
   .c25 {
-    --c: #1d8a4e;
+    --c: #{casino.$chip-green};
     transform: translateY(-6px);
   }
 
   .c5 {
-    --c: #c62828;
+    --c: #{casino.$chip-red};
   }
 }
 
@@ -146,21 +142,7 @@ $gold: casino.$lock-gold;
 }
 
 .wallet-chip {
-  @include casino.dropdown-rim;
-  // (the spots on the rim itself, its 4px border, as on the dropdown, not inside it on the face)
-  .chip-rim {
-    height: calc(100% + 8px);
-    inset: -4px;
-    width: calc(100% + 8px);
-  }
-
-  rect {
-    // (round ends, as the dropdown's: the 52px chip less its 4px stroke, halved; both radii, or an over-long one
-    // is drawn as half the WIDTH and the ring goes oval)
-    rx: 24px;
-    ry: 24px;
-  }
-
+  // (its own declarations before the rim's mixin, whose nested rules would otherwise come between them)
   --clay: #b0202b;
   --ink: #fff;
   align-items: center;
@@ -170,7 +152,7 @@ $gold: casino.$lock-gold;
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E") 0 0 / 120px padding-box,
     linear-gradient(var(--clay), var(--clay)) border-box;
   border: 4px solid transparent;
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   box-shadow:
     inset 0 0 0 3px var(--clay),
     inset 0 0 0 4px rgba(255, 236, 196, 0.55),
@@ -191,8 +173,22 @@ $gold: casino.$lock-gold;
   text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
   text-transform: uppercase;
   transition:
-    filter 0.15s ease,
+    filter v.$t-hover ease,
     transform 0.1s ease;
+  @include casino.dropdown-rim;
+
+  // (the spots on the rim itself, its 4px border, as on the dropdown, not inside it on the face)
+  .chip-rim {
+    height: calc(100% + 8px);
+    inset: -4px;
+    width: calc(100% + 8px);
+  }
+
+  rect {
+    // (round ends, as the dropdown's: the 52px chip less its 4px stroke, halved; both radii, or an over-long one
+    // is drawn as half the WIDTH and the ring goes oval; the rim's rect already sets rx)
+    ry: 24px;
+  }
 
   .mat-icon {
     @include v.icon-size(18px);
@@ -231,24 +227,22 @@ $gold: casino.$lock-gold;
 
   &.sand {
     --clay: var(--app-sand, #d8b98a);
-    --ink: #2a1f14;
+    --ink: #{kit.$app-sand-ink};
     text-shadow: 0 1px 0 rgba(255, 245, 230, 0.35);
   }
 
   &.blue {
-    --clay: #1f5fae;
+    --clay: #{casino.$chip-blue-reload};
   }
 
-  &.red {
-    --clay: #b0202b;
-  }
+  // (.red: the default clay above)
 }
 
 // A confirmation, under the actions
 .wallet-confirm {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(91, 157, 255, 0.4);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   margin: 12px auto 0;
   max-width: 620px;
   padding: 12px 14px;
@@ -276,8 +270,8 @@ $gold: casino.$lock-gold;
 
 .wallet-typed input {
   background: rgba(0, 0, 0, 0.45);
-  border: 1px solid #4a525a;
-  border-radius: 8px;
+  border: 1px solid v.$gunmetal-edge;
+  border-radius: v.$radius-lg;
   color: #fff;
   font-family: v.$font-base;
   font-size: 14px;
@@ -339,7 +333,7 @@ $gold: casino.$lock-gold;
   align-items: center;
   background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #{$gold} 85%, #fff), #{$gold} 60%, color-mix(in srgb, #{$gold} 70%, #000));
   border: 2px dashed rgba(0, 0, 0, 0.35);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   color: #1b1b1b;
@@ -350,10 +344,8 @@ $gold: casino.$lock-gold;
   width: 24px;
 
   .mat-icon {
-    font-size: 15px;
-    height: 15px;
+    @include v.icon-size(15px);
     transform: rotate(-45deg);
-    width: 15px;
   }
 }
 
@@ -372,7 +364,7 @@ $gold: casino.$lock-gold;
 
   i {
     border: 1.5px solid rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     height: 8px;
     width: 8px;
 
@@ -435,7 +427,7 @@ $gold: casino.$lock-gold;
 
   li {
     align-items: center;
-    border-radius: 8px;
+    border-radius: v.$radius-lg;
     display: grid;
     font-size: 13px;
     font-variant-numeric: tabular-nums;
@@ -472,14 +464,14 @@ $gold: casino.$lock-gold;
 
 .leader-reloads {
   align-items: center;
-  display: inline-flex;
-  gap: 3px;
   border: 1px solid var(--app-line, rgba(255, 255, 255, 0.12));
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: var(--app-text-muted, rgba(255, 255, 255, 0.65));
+  display: inline-flex;
   flex: 0 0 auto;
   font-size: 10.5px;
   font-weight: 800;
+  gap: 3px;
   letter-spacing: 0.3px;
   padding: 1px 8px;
   white-space: nowrap;
@@ -492,10 +484,8 @@ $gold: casino.$lock-gold;
 .leader-name {
   color: #fff;
   font-weight: 800;
-  overflow: hidden;
+  @include v.ellipsis;
   text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   @include v.link-fade;
 
   &:hover,
@@ -522,7 +512,37 @@ $gold: casino.$lock-gold;
   align-items: center;
 }
 
-@media (max-width: 600px) {
+// (a note's link: lit in the room's blue)
+.desk-note a,
+.wallet-fine a {
+  color: var(--scoreboard-led);
+  font-weight: 800;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+// (the bets' tables: sideways inside their panel if they must; on a phone the sport's column goes (each game
+// shows its teams), the picks wrap, and the columns come in closer)
+.group-body {
+  overflow-x: auto;
+}
+
+// (the settled history's date: the game's day, the column that orders it, in the game's type)
+.wallet-settled .w-date {
+  white-space: nowrap;
+}
+
+// (the game under a pick: phones only, where the game's column goes; over the tables' block smalls)
+.wallet-bets .w-phone-game {
+  display: none;
+}
+
+// Phones (in one block, after every rule it overrides)
+@include v.down(small) {
   .wallet-page {
     padding: 14px 10px 90px;
   }
@@ -545,28 +565,7 @@ $gold: casino.$lock-gold;
     white-space: nowrap;
     width: 1px;
   }
-}
 
-// (a note's link: lit in the room's blue)
-.desk-note a,
-.wallet-fine a {
-  color: var(--scoreboard-led);
-  font-weight: 800;
-  text-decoration: none;
-
-  &:hover,
-  &:focus-visible {
-    text-decoration: underline;
-  }
-}
-
-// (the bets' tables: sideways inside their panel if they must; on a phone the sport's column goes (each game
-// shows its teams), the picks wrap, and the columns come in closer)
-.group-body {
-  overflow-x: auto;
-}
-
-@media (max-width: 600px) {
   .group-body {
     padding: 10px;
   }
@@ -596,26 +595,12 @@ $gold: casino.$lock-gold;
       flex-shrink: 0;
     }
   }
-}
 
-// (the settled history's date: the game's day, the column that orders it, in the game's type)
-.wallet-settled .w-date {
-  white-space: nowrap;
-}
-
-// (phones: a sport's row over its games keeps its one cell, the columns' hiding aside)
-@media (max-width: 600px) {
+  // (a sport's row over its games keeps its one cell, the columns' hiding aside)
   .wallet-bets .desk-sport-group > td:first-child {
     display: table-cell;
   }
-}
 
-// (the game under a pick: phones only, where the game's column goes; over the tables' block smalls)
-.wallet-bets .w-phone-game {
-  display: none;
-}
-
-@media (max-width: 600px) {
   .wallet-bets {
     tr > :nth-child(2) {
       display: none;
@@ -639,9 +624,7 @@ $gold: casino.$lock-gold;
       white-space: normal;
     }
   }
-}
 
-@media (max-width: 600px) {
   .wallet-bets {
     // (a game's own bets under its row: the game said once, above them)
     .desk-grouped .w-phone-game {
@@ -673,5 +656,3 @@ $gold: casino.$lock-gold;
     }
   }
 }
-
-
