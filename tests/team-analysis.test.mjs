@@ -1,10 +1,12 @@
 // The weekly AI team analysis for MLB, NBA and NHL (libs/ranker/scripts/analysis): where each team's season
 // stands (a preview while it plays, its recap once it's over), the hard cap on what a run may spend, and
-// the checks of a report against its sheet. No network and no calls: plain data in.
+// the checks of a report against its sheet, the sheet's totals and the prompt's rules. No network and no
+// calls: plain data in.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { teamStatus, POSTSEASON, PLAY_IN, REGULAR, OFFSEASON } from '../libs/ranker/scripts/analysis/season-state.mjs';
-import { check, numbersIn, resolve, underCap, worstCost, MAX_TOKENS, PRICE, PREVIEW_SCHEMA, RECAP_SCHEMA } from '../libs/ranker/scripts/analysis/analyze.mjs';
+import { check, numbersIn, resolve, systemPrompt, underCap, worstCost, MAX_TOKENS, PRICE, PREVIEW_SCHEMA, RECAP_SCHEMA } from '../libs/ranker/scripts/analysis/analyze.mjs';
+import { innings, SPORTS, totalsOf } from '../libs/ranker/scripts/analysis/dossier.mjs';
 
 const team = (id, clincher = '') => ({ id, abbr: id, clincher });
 // A postseason game between a and b, its series' wins after it
@@ -132,4 +134,48 @@ test('the report shapes: a recap is its one section; a preview has the week ahea
   assert.ok(PREVIEW_SCHEMA.required.includes('weekAhead'));
   assert.ok(!PREVIEW_SCHEMA.required.includes('bets') && !('bets' in PREVIEW_SCHEMA.properties));
   assert.ok(!('nextGame' in PREVIEW_SCHEMA.properties));
+});
+
+test('evidence: a player stat cited without its .stats resolves to it; a missing one still does not', () => {
+  assert.deepEqual(resolve(sheet, 'roster.rotation.0.era'), { value: 1.95 });
+  assert.equal(resolve(sheet, 'roster.rotation.0.fip'), null);
+  assert.equal(resolve(sheet, 'roster.rotation.3.era'), null);
+});
+
+test("the sheet's totals: runs for and against from the scores, the differential, per game, the wins it implies, each group combined", () => {
+  const played = [
+    { score: '5-3', result: 'W' },
+    { score: '2-6', result: 'L' },
+    { score: '4-4', result: 'T' },
+  ];
+  const t = totalsOf({ played, stats: { wins: 1, pythDiff: -0.4 }, groups: { rotation: { players: 2, ip: '10.1' } }, cfg: SPORTS.mlb });
+  assert.deepEqual(t.regularSeason, { games: 3, runsScored: 11, runsAllowed: 13, differential: -2, scoredPerGame: 3.67, allowedPerGame: 4.33, winsByDifferential: 1.4 });
+  assert.deepEqual(t.groups, { rotation: { players: 2, ip: '10.1' } });
+  assert.equal(t.postseason, undefined);
+  // (the NHL's: goals and the standings points, 2 a win and 1 an overtime loss; a postseason when played)
+  const h = totalsOf({ played: [{ score: '3-2' }], postPlayed: [{ score: '1-4' }], stats: { wins: 10, losses: 5, ties: 3 }, cfg: SPORTS.nhl });
+  assert.equal(h.regularSeason.goalsScored, 3);
+  assert.equal(h.regularSeason.standingsPoints, 23);
+  assert.deepEqual(h.postseason, { games: 1, goalsScored: 1, goalsAllowed: 4, differential: -3, scoredPerGame: 1, allowedPerGame: 4 });
+  // and the checker finds them: a season's runs a report quotes are no longer unmatched
+  const withTotals = { ...sheet, totals: { regularSeason: { runsScored: 719, runsAllowed: 673, differential: 46 } } };
+  for (const n of [719, 673, 46]) assert.ok(numbersIn(withTotals).has(n), String(n));
+});
+
+test("innings read as the site shows them: a third an out", () => {
+  assert.equal(innings(175.333), '175.1');
+  assert.equal(innings(162.667), '162.2');
+  assert.equal(innings(97), '97.0');
+  assert.ok(numbersIn({ ip: innings(162.667) }).has(162.2));
+});
+
+test('the prompt: only numbers in the sheet, no sums of its own, the totals block to quote', () => {
+  for (const sport of ['mlb', 'nba', 'nhl']) {
+    const p = systemPrompt(sport, 'recap');
+    assert.match(p, /Cite only numbers in the sheet: don't add up, subtract, average or round sheet numbers yourself/);
+    assert.match(p, /describe it in words/);
+    assert.match(p, /- totals: /);
+    assert.doesNotMatch(p, /directly derivable/);
+  }
+  assert.match(systemPrompt('mlb', 'preview'), /IP is in baseball notation/);
 });

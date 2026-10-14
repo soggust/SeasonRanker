@@ -45,19 +45,21 @@ const SEASON_KINDS = {
   nba: 'Champion, Conference Champion, Contender That Fell Short, Early Playoff Exit, Play-In Exit, Overachiever, Underachiever, Near Miss, Lost Season, Rebuilding Year, Retooling Year',
   nhl: 'Champion, Conference Champion, Contender That Fell Short, Early Playoff Exit, Overachiever, Underachiever, Near Miss, Lost Season, Rebuilding Year, Retooling Year',
 };
+// What each sport scores
+const SCORING = { mlb: 'runs', nba: 'points', nhl: 'goals' };
 // What each sport's sheet holds beyond the common parts
 const SPORT_NOTES = {
   mlb: `- Scoring is runs. season.team: runDiff (Run Diff / G), offRank and defRank (league ranks by runs scored and allowed per game: 1 = best, plain numbers), team OPS and ERA, Fielding Runs, W vs Run Diff (pythDiff: wins beyond what the run differential implies, mostly luck in close games), Park (100 average, context only). Grades: hitters, rotation, bullpen.
-- roster groups: hitters (by plate appearances), rotation (starters, by innings), bullpen (relievers, by innings). WAR, PA, IP, HR, RBI, SB, strikeouts, saves and holds are season totals; the rest are rates (kPct and bbPct are fractions: .218 is 21.8%).`,
+- roster groups: hitters (by plate appearances), rotation (starters, by innings), bullpen (relievers, by innings). WAR, PA, IP, HR, RBI, SB, strikeouts, saves and holds are season totals; the rest are rates (kPct and bbPct are fractions: .218 is 21.8%). IP is in baseball notation as the site shows it ("162.2" is 162 and two thirds innings): quote it as written.`,
   nba: `- Scoring is points. season.team: Net Rtg (points per 100 possessions scored minus allowed), offRank and defRank (league ranks by offensive and defensive rating: 1 = best, plain numbers), W vs Pt Diff (pythDiff: luck in close games), Pace (context only). Grades: backcourt, wings, frontcourt.
-- roster: by minutes; minutes, points, rebounds, assists and threes are season totals (divide by games for per game); TS %, USG % are percentages; BPM, Win Shares, On-Off as the site shows them.
+- roster: by minutes; minutes, points, rebounds, assists and threes are season totals, as the site shows them (no per-game figures of your own); TS %, USG % are percentages; BPM, Win Shares, On-Off as the site shows them.
 - season.vsPosition (and weekAhead.opponents.*.vsPosition): what the defense allowed to each position (PG, SG, SF, PF, C): for pts, reb, ast, fg3 (threes) and pra: g = a game, vs = over those players' own averages in their other games, r = the rank of g and rv the rank of vs (1 = the least allowed); share = the share of the points against it by position (s) against the league's (lg). Context to weigh, not a verdict.`,
   nhl: `- Scoring is goals; the record is wins-losses-overtime losses. season.team: Goal Diff / GP, offRank and defRank (league ranks by goals for and against per game: 1 = best, plain numbers), PP % and PK %, xGF % and CF % (5-on-5 shares of expected goals and shot attempts), Goalies GSAx (goals saved above expected), Pts vs Goal Diff (ptsOver: luck in close games, overtime and shootouts), PDO (5-on-5 shooting % plus save %, 100 average; well above tends to fade; context only). Grades: forwards, blueline (defensemen), goaltending.
 - roster: forwards and defensemen by ice time, goalies by starts; goals, assists, points, shots, +/- and PP points are season totals; TOI is minutes a game; xGF % a fraction.
 - season.vsPosition (and the opponents'): what the defense allowed a game to centers (C), wingers (W), defensemen (D) and all forwards (F): goals, pts, shots; exp = those players' expected points from their own averages; vs = pts minus exp; rank (1 = held furthest under); share = the share of the points against it by role (s) against the league's (lg).`,
 };
 
-const common = (sport) => `You get one team's sheet as JSON. It is your only source. Every number in it is one the site shows its readers, and you may only state numbers that are in it or directly derivable from it (a difference, a per-game average or a ratio of sheet numbers is fine). Use no outside knowledge of players, teams, injuries, trades, contracts, coaches or results beyond what the sheet says. If something you'd want to know isn't there, don't guess.
+const common = (sport) => `You get one team's sheet as JSON. It is your only source. Every number in it is one the site shows its readers or a plain season total of them, and you may only state numbers that are in it. Cite only numbers in the sheet: don't add up, subtract, average or round sheet numbers yourself (no season totals summed from months, no combined innings, WAR or plate appearances of a few players, no records over a stretch of months, no differentials you work out). The totals block already has the totals worth quoting; if a total or a comparison you want isn't in the sheet, describe it in words ("most of the innings", "a losing record after May") rather than with a number. Use no outside knowledge of players, teams, injuries, trades, contracts, coaches or results beyond what the sheet says. If something you'd want to know isn't there, don't guess.
 
 How to read the sheet:
 - [value, rank, of]: the value and its rank among the league's teams this season (1 = best; for stats where less is better, ERA or goals against, rank 1 is the fewest). A plain number is shown as it is.
@@ -66,14 +68,15 @@ How to read the sheet:
 - grades (in season.team): letter grades for each roster group: its players by the site's default rankings of their positions, weighted by playing time, curved across the league (A+ the best group, F the worst).
 - roster: the players who carry each group, most playing time first: tabRank = [his place on his position's tab at the default settings, of], his stats, awards, injury.
 ${SPORT_NOTES[sport]}
-- results: the regular season by month (record, scored, allowed), the longest winning and losing streaks, the last 10 games (score: this team's first).
+- results: the regular season by month (record, scored, allowed, scored and allowed per game, recordThrough = the record at the month's end), the longest winning and losing streaks, the last 10 games (score: this team's first).
 - postseason (when it played in it): the postseason table's line (ranked among the postseason teams), each series and its games, and its players' postseason lines.
 - history: its recent seasons, each with the record, its site rank that season and its stats.
+- totals: season totals added up from the site's numbers, for you to quote as they are: totals.regularSeason (games; the season's ${SCORING[sport]} scored and allowed, from the Game Log's scores; the differential, scored minus allowed; scored and allowed per game; ${sport === 'nhl' ? 'standingsPoints' : 'winsByDifferential, the wins the margin implies (wins minus the W vs differential stat)'}), totals.groups (each roster group's listed players combined: players = how many are listed, and the sum of their season totals${sport === 'mlb' ? ', innings in the same notation' : ''}), and totals.postseason the same for its postseason games when it played some.
 Early in a season samples are small: weigh them honestly and say so when it matters, without hedging everything.
 
 Think like an analyst, not a spreadsheet. Before calling anything a strength or a weakness, ask what produces it and judge the cause: a record built on close wins (luck that tends to regress, the W vs differential stat) versus one built on the margin; a stretch that lines up with who was playing; a group grade carried by one player; numbers against a soft or hard run of opponents. Check history before calling anything new.
 
-Evidence: every point cites 1-3 numbers from the sheet by JSON path (dot notation from the sheet's root, array indexes as numbers: "season.team.runDiff", "roster.rotation.0.stats.era", "results.byMonth.3.record", "postseason.series.1.result"). The site shows the real value from that path, so the path must exist exactly and lead to a number, a [value, rank, of] or a short text. The label is a 1-4 word name for the number.
+Evidence: every point cites 1-3 numbers from the sheet by JSON path (dot notation from the sheet's root, array indexes as numbers, a player's stats under .stats: "season.team.runDiff", "roster.rotation.0.stats.era", "results.byMonth.3.record", "postseason.series.1.result", "totals.regularSeason.differential"). The site shows the real value from that path, so the path must exist exactly and lead to a number, a [value, rank, of] or a short text. The label is a 1-4 word name for the number.
 
 Style: plain sentences, numbers woven in only where they make the point, no clichés, no filler, never restate the stats table.`;
 
@@ -225,7 +228,9 @@ export const params = (sport, dossier) => ({
 
 // ---- checking a report against its sheet
 
-const at = (obj, p) => p.split('.').reduce((o, k) => (o === null || o === undefined ? undefined : o[/^\d+$/.test(k) ? Number(k) : k]), obj);
+const walk = (obj, p) => p.split('.').reduce((o, k) => (o === null || o === undefined ? undefined : o[/^\d+$/.test(k) ? Number(k) : k]), obj);
+// (a player's stat cited without its .stats, "roster.rotation.4.fip", read as roster.rotation.4.stats.fip)
+const at = (obj, p) => walk(obj, p) ?? walk(obj, p.replace(/^((?:postseason\.)?roster\.\w+\.\d+)\.(?!stats$)(\w+)$/, '$1.stats.$2'));
 // The value an evidence path shows: a ranked [value, rank, of] reads as its value and its rank; a short
 // text (a record, a grade) as itself
 export function resolve(dossier, p) {

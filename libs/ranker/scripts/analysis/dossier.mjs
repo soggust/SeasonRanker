@@ -10,6 +10,10 @@
 //   - results (the Game Log tab's: ESPN's schedule), the division's standings by the site's records
 //   - the coming week's games (a preview) or how the season ended (a recap)
 //   - recent seasons (the Seasons tab: each year's row and default rank)
+//   - totals: the plain season totals of those numbers that reports want and the site's rows don't hold
+//     (runs / points / goals for and against from the Game Log's scores, the differential, the wins its
+//     margin implies; each listed roster group's combined innings, WAR, points...), so the model quotes
+//     them instead of adding sheet numbers up itself
 // The engine is bundled with esbuild (site-engine.ts, through the sport's tsconfig) so labels, ranks and
 // grades come out exactly as the site computes them.
 //
@@ -30,21 +34,31 @@ export const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // one its tab shows), the final's name, and the record's shape (the NHL's overtime losses)
 export const SPORTS = {
   mlb: {
-    name: 'MLB', espn: 'baseball/mlb', game: 'baseball', label: (y) => String(y), keep: { hitters: 9, rotation: 5, bullpen: 5 }, final: 'World Series',
+    name: 'MLB', espn: 'baseball/mlb', game: 'baseball', label: (y) => String(y), keep: { hitters: 9, rotation: 5, bullpen: 5 }, final: 'World Series', scoring: 'runs',
+    groupTotals: { hitters: ['war', 'pa', 'homeRuns', 'rbi', 'stolenBases'], rotation: ['war', 'ip', 'strikeOuts'], bullpen: ['war', 'ip', 'saves', 'holds'] },
     stats: { SP: ['war', 'ip', 'era', 'fip', 'whip', 'kPct', 'bbPct', 'strikeOuts'], RP: ['war', 'ip', 'era', 'fip', 'saves', 'holds', 'kPct', 'bbPct'], hitter: ['war', 'pa', 'avg', 'obp', 'slg', 'homeRuns', 'rbi', 'stolenBases', 'wrcPlus', 'defRuns'] },
   },
   nba: {
-    name: 'NBA', espn: 'basketball/nba', game: 'basketball', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { backcourt: 4, wings: 3, frontcourt: 5 }, final: 'NBA Finals',
+    name: 'NBA', espn: 'basketball/nba', game: 'basketball', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { backcourt: 4, wings: 3, frontcourt: 5 }, final: 'NBA Finals', scoring: 'points',
+    groupTotals: { any: ['minutes', 'points', 'rebounds', 'assists', 'threes', 'ws'] },
     stats: { any: ['minutes', 'points', 'rebounds', 'assists', 'threes', 'tsPct', 'usgPct', 'bpm', 'ws', 'onOff'] },
   },
   nhl: {
-    name: 'NHL', espn: 'hockey/nhl', game: 'hockey', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { forwards: 9, blueline: 6, goaltending: 2 }, final: 'Stanley Cup Final', ties: true,
+    name: 'NHL', espn: 'hockey/nhl', game: 'hockey', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { forwards: 9, blueline: 6, goaltending: 2 }, final: 'Stanley Cup Final', ties: true, scoring: 'goals',
+    groupTotals: { goaltending: ['gamesStarted', 'shutouts'], any: ['goals', 'assists', 'points', 'ppPoints', 'shots'] },
     stats: { G: ['gamesStarted', 'savePct', 'gaa', 'gsax', 'shutouts'], any: ['toi', 'goals', 'assists', 'points', 'plusMinus', 'ppPoints', 'shots', 'xgfPct', 'gameScore'] },
   },
 };
 
 const GRADES = ['F', 'D-', 'D', 'D+', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+'];
 const r = (v, d = 3) => (v === null || v === undefined || !Number.isFinite(v) ? null : Number(v.toFixed(d)));
+// Innings as the site shows them (libs/ranker/src/core/format.ts innings): 175.333 -> "175.1", a third an out
+export function innings(value) {
+  const outs = Math.round(value * 3);
+  return `${Math.floor(outs / 3)}.${outs % 3}`;
+}
+// A stat's value in the sheet: innings in the site's notation, the rest rounded
+const shown = (key, v) => (key === 'ip' ? innings(v) : r(v));
 
 // A site file as published: origin/master's copy (what the live site shows; the data bots commit there),
 // else this checkout's. null when neither has it.
@@ -140,8 +154,15 @@ function results(played) {
     run = g.result === run.result ? { result: g.result, n: run.n + 1 } : { result: g.result, n: 1 };
     if (run.n > (best[g.result] ?? 0)) best[g.result] = run.n;
   }
+  let wins = 0;
+  let losses = 0;
   return {
-    byMonth: [...months.values()].map(({ month, w, l, scored, allowed }) => ({ month, record: `${w}-${l}`, scored, allowed })),
+    byMonth: [...months.values()].map(({ month, w, l, scored, allowed }) => {
+      wins += w;
+      losses += l;
+      // (per game and the record at the month's end, so a report quotes them rather than working them out)
+      return { month, record: `${w}-${l}`, scored, allowed, scoredPerGame: r(scored / (w + l), 2), allowedPerGame: r(allowed / (w + l), 2), recordThrough: `${wins}-${losses}` };
+    }),
     longestWinStreak: best.W,
     longestLosingStreak: best.L,
   };
@@ -219,7 +240,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
     for (const s of keys.map((k) => E.SKILL_STATS[pos].find((x) => x.key === k)).filter(Boolean)) {
       const v = E.unitStat(unit, s.key);
       if (v === null || v === undefined || Number.isNaN(v)) continue;
-      stats[s.key] = r(v);
+      stats[s.key] = shown(s.key, v);
       glossary[s.key] ??= glossaryLine(s);
     }
     const rank = withRank ? tabRank(pos, unit) : null;
@@ -233,18 +254,35 @@ export async function buildDossiers(sport, { season, status, standings, games, o
       ...(unit.awards?.length ? { awards: unit.awards.map((a) => E.AWARD_INFO[a]?.name ?? a) } : {}),
     };
   };
-  const rosterOf = (logo, unitsBy, withRank) =>
+  // each roster group's listed players (most playing time first)
+  const groupsOf = (logo, unitsBy) =>
+    gradeDefs.map((def) => [
+      def.key,
+      def.positions
+        .flatMap((pos) => (unitsBy[pos] ?? []).filter((u) => u.teamLogo === logo).map((u) => ({ pos, u })))
+        .sort((a, b) => def.usage(b.u) - def.usage(a.u))
+        .slice(0, cfg.keep[def.key] ?? 5),
+    ]);
+  const rosterOf = (logo, unitsBy, withRank) => Object.fromEntries(groupsOf(logo, unitsBy).map(([key, list]) => [key, list.map(({ pos, u }) => playerLine(pos, u, withRank))]));
+  // the listed players' season totals added up, by group: { players, war, ip... } (innings in the site's notation)
+  const groupTotalsOf = (logo, unitsBy) =>
     Object.fromEntries(
-      gradeDefs.map((def) => [
-        def.key,
-        def.positions
-          .flatMap((pos) => (unitsBy[pos] ?? []).filter((u) => u.teamLogo === logo).map((u) => ({ pos, u })))
-          .sort((a, b) => def.usage(b.u) - def.usage(a.u))
-          .slice(0, cfg.keep[def.key] ?? 5)
-          .map(({ pos, u }) => playerLine(pos, u, withRank)),
-      ]),
+      groupsOf(logo, unitsBy)
+        .filter(([, list]) => list.length)
+        .map(([key, list]) => {
+          const out = { players: list.length };
+          for (const k of cfg.groupTotals[key] ?? cfg.groupTotals.any ?? []) {
+            const vals = list.map(({ u }) => E.unitStat(u, k)).filter((v) => v !== null && v !== undefined && Number.isFinite(v));
+            if (!vals.length) continue;
+            const sum = vals.reduce((a, b) => a + b, 0);
+            out[k] = k === 'ip' ? innings(sum) : r(sum, 1);
+          }
+          return [key, out];
+        }),
     );
   const regularRosters = new Map(teams.map((t) => [t.teamLogo, rosterOf(t.teamLogo, units, true)]));
+  // (here, before the postseason's units are made: making them empties these)
+  const regularGroupTotals = new Map(teams.map((t) => [t.teamLogo, groupTotalsOf(t.teamLogo, units)]));
   const siteRank = new Map((grid.TM ?? []).map((t, i, all) => [t.teamLogo, [i + 1, all.length]]));
   const vsPos = new Map(teams.map((t) => [t.teamLogo, t.vsPos ?? (regular.HC ?? []).find((c) => c.teamLogo === t.teamLogo && c.vsPos)?.vsPos ?? null]));
   const lineOf = new Map(teams.map((t) => [t.teamLogo, teamLine(t)]));
@@ -252,6 +290,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
   // ---- the postseason's table (its own rows), once it has any
   let postTeams = new Map();
   let postRosters = new Map();
+  let postGroupTotals = new Map();
   if (post && (post.TM?.length || post.HC?.length)) {
     const pu = E.unitsFor({ skillPlayers: post, unrankedRows: {} });
     const pteams = pu.TM ?? [];
@@ -268,6 +307,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
       }),
     );
     postRosters = new Map(pteams.map((t) => [t.teamLogo, rosterOf(t.teamLogo, pu, false)]));
+    postGroupTotals = new Map(pteams.map((t) => [t.teamLogo, groupTotalsOf(t.teamLogo, pu)]));
   }
 
   // ---- recent seasons (the Seasons tab's): each year's row and the default ranking's place
@@ -357,6 +397,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
         : `${st.why[0].toUpperCase()}${st.why.slice(1)}${st.by ? ` to ${abbrOf(st.by)}` : ''}`
       : null;
     const regularResults = results(played);
+    const totals = totalsOf({ played, postPlayed, stats: t.stats, groups: regularGroupTotals.get(t.teamLogo), postGroups: postGroupTotals.get(t.teamLogo) ?? null, cfg });
     const dossier = {
       kind: 'team',
       sport: cfg.name,
@@ -387,7 +428,8 @@ export async function buildDossiers(sport, { season, status, standings, games, o
         : {}),
       ...(mode === 'preview' ? { weekAhead: { games: upcoming, opponents } } : {}),
       history: historyOf(t.gsisId),
-      glossary,
+      totals,
+      glossary: { ...glossary, ...totalsGlossary(cfg) },
     };
     // (and for the runner: the row ids the site shows it under, the days of the games ESPN has played, the
     // site's own games, the week's schedule)
@@ -405,4 +447,48 @@ export async function buildDossiers(sport, { season, status, standings, games, o
     });
   }
   return out;
+}
+
+// What a sheet's totals block holds, for its glossary
+const upper = (s) => s[0].toUpperCase() + s.slice(1);
+const totalsGlossary = (cfg) => ({
+  totals: `Season totals added up from the site's numbers, to quote as they are: ${cfg.scoring} scored and allowed (the Game Log's scores), the differential, per game, ${cfg.ties ? 'the standings points' : 'the wins the margin implies'}, and each roster group's listed players combined`,
+  [`${cfg.scoring}Scored`]: `${upper(cfg.scoring)} scored: the season's total over its games (the Game Log's scores)`,
+  [`${cfg.scoring}Allowed`]: `${upper(cfg.scoring)} allowed: the season's total over its games`,
+  differential: `Differential: ${cfg.scoring} scored minus allowed over the season`,
+  ...(cfg.ties
+    ? { standingsPoints: 'Standings points: 2 a win, 1 an overtime or shootout loss' }
+    : { winsByDifferential: `Wins by differential: the wins its ${cfg.scoring} differential implies (its wins minus W vs ${cfg.name === 'MLB' ? 'Run' : 'Pt'} Diff)` }),
+  groups: "Each roster group's listed players (roster.<group>) combined: the sum of their season totals",
+});
+
+// A team's totals block: the plain season totals of the sheet's own numbers (results, the record, the
+// roster groups), so a report quotes them instead of adding them up
+export function totalsOf({ played, postPlayed = [], stats = {}, groups = {}, postGroups = null, cfg }) {
+  const sum = (games) => {
+    let scored = 0;
+    let allowed = 0;
+    for (const g of games) {
+      const [us, them] = g.score.split('-').map(Number);
+      scored += us;
+      allowed += them;
+    }
+    const n = games.length;
+    return {
+      games: n,
+      [`${cfg.scoring}Scored`]: scored,
+      [`${cfg.scoring}Allowed`]: allowed,
+      differential: scored - allowed,
+      scoredPerGame: n ? r(scored / n, 2) : null,
+      allowedPerGame: n ? r(allowed / n, 2) : null,
+    };
+  };
+  const regular = sum(played);
+  if (cfg.ties) regular.standingsPoints = 2 * (stats.wins ?? 0) + (stats.ties ?? 0);
+  else if (Number.isFinite(stats.pythDiff) && Number.isFinite(stats.wins)) regular.winsByDifferential = r(stats.wins - stats.pythDiff, 1);
+  return {
+    regularSeason: regular,
+    groups,
+    ...(postPlayed.length ? { postseason: { ...sum(postPlayed), ...(postGroups ? { groups: postGroups } : {}) } } : {}),
+  };
 }
