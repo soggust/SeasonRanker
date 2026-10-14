@@ -190,6 +190,9 @@
               @if (s.sameGame) {
                 <p class="muted"><b>Same-game sizing:</b> {{ s.sameGame }}</p>
               }
+              @if (s.calib) {
+                <p class="muted"><b>Live calibration:</b> {{ s.calib }}</p>
+              }
 
               <!-- (the game lines' context terms) -->
               <ng-container *ngTemplateOutlet="part; context: { key: s.sport + ':context', title: 'Game context terms (' + s.context.length + ')' }"></ng-container>

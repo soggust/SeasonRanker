@@ -74,6 +74,7 @@
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { calSides } from './calib.mjs';
 import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
 import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
@@ -1317,7 +1318,7 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
-export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null) {
+export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null) {
   const priced = [];
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
   // role guard: a change at quarterback))
@@ -1472,9 +1473,12 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (each side at the trusted chance, the lean tapered past half of the prop's GAP as a game market's is
     // (desk.mjs chanceAt): the further the model is from the book, the less of it counts, so the stake shrinks
     // as the gap grows; its return with a push's stake back)
+    // (each side's model chance with its spot's live calibration (calib.mjs: a small shift fit on the graded
+    // props since the epoch, 0 till a spot's rows and its held-out gain bear it out); raw, the projection's)
+    const cal = calSides(calib, prop.stat.key, prop.line, pOver);
     const sides = [
-      { side: 'over', model: pOver, fair: book.fairOver, odds: book.over },
-      { side: 'under', model: 1 - pOver, fair: 1 - book.fairOver, odds: book.under },
+      { side: 'over', model: cal.over, raw: pOver, cal: cal.so, fair: book.fairOver, odds: book.over },
+      { side: 'under', model: cal.under, raw: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, odds: book.under },
     ].map((x) => {
       const p = chanceAt('prop', x.fair, x.model, t);
       return { ...x, p, ev: (1 - chances.push) * (p * decimal(x.odds) - 1) };
@@ -1564,7 +1568,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const newsFlag = newsOn(sport, live, row.team, row.pos);
     const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) || roleChange || newsFlag ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
     const pick = gapSide ?? (sides[0].ev >= sides[1].ev ? sides[0] : sides[1]);
-    const { side, model, ev, odds, fair } = pick;
+    const { side, model, ev, odds, fair, raw: modelRaw, cal: calShift } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
     const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
     const pTrusted = pick.p;
@@ -1716,6 +1720,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       pid,
       side,
       model,
+      // (the model's chance before the live calibration, and its spot's shift, where it moved it: calib.mjs fits
+      // on the raw one, never on itself)
+      ...(Math.abs(model - modelRaw) > 1e-9 ? { modelRaw, cal: calShift } : {}),
       fair,
       odds,
       otherOdds,

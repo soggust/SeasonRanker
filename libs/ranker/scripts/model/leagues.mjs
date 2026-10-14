@@ -78,7 +78,11 @@ export const GAME_CAP = 5;
 // round A's code on the same games: NBA points 0.6521 to 0.6466, rebounds 0.6338 to 0.6263, assists 0.6176 to
 // 0.608; NHL shots 0.5885 to 0.5869; NFL passing attempts 0.6219 to 0.6208, carries 0.6305 to 0.6295, receiving
 // yards 0.6497 to 0.6468; MLB as before.
-export const MODEL_EPOCH = '2026-10-14T05:37:00Z';
+// 2026-10-14 morning, the props' live calibration (calib.mjs: a small shift on the model chance by sport, stat,
+// side and line class, fit every run on the graded props since the epoch, tracked rows among them; 0 under 300 rows
+// a spot, shrunk, capped, moved a little a run, kept only where the newest rows bear it out) and the projection
+// fits' recency weight (hl: kept on NFL passing yards and attempts).
+export const MODEL_EPOCH = '2026-10-14T06:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

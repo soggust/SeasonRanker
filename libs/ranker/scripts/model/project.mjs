@@ -398,7 +398,11 @@
 //            and kept only if the held-out games are better with it (0: left out)
 //   scale    the eligible players' total over their total projection on the fit window: what's left of a lean
 //            once the rest is fit, taken out (fit again once the held-out games leave a term out)
-//   middle   every stat's (sl, a late term on the whole stat's gate, tried after the rest as fit): the projection
+//   recency  every stat's (hl, tried after the rest as fit, 2026-10-14, the owner's): newer games counting more in
+//            the lean, the dispersion r and the recalibration fit on the fit window, by a half-life of HL seasons
+//            (3, 2, 1), picked inside the fit window and kept only with a held-out gain and both biases no larger
+//            (fitStat: floors.hl); live, nothing new to read: the scale, r and cal it fit
+//   middle  every stat's (sl, a late term on the whole stat's gate, tried after the rest as fit): the projection
 //            pulled toward the stat's typical one (rm: the eligible players' average on the fit window) by sl on
 //            its log, x (x / rm)^-sl (held to SL_CAP either way), the lean fit again with it. The factors
 //            multiply together and run too far from the middle, which one scale can't take out: on the held-out
@@ -1914,6 +1918,12 @@ export function replayStat(stat, rows, params, env, cuts) {
 }
 
 const R = [0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 6, 8, 10, 16, 30, 60, 150];
+// (the recency weight's half-lives tried, in seasons (hl: fitStat), a season a year of days; the share of the fit
+// window its pick fits on, the rest scoring it; TRY_HL false: not tried, every stat as before)
+export const TRY_HL = true;
+export const HL = [3, 2, 1];
+export const INNER_FIT = 0.7;
+const YEAR_MS = 365.25 * 864e5;
 // (the dispersion's growth with the projection tried: rAt)
 const RK = [0.5, 1];
 // (a window's rows the fit scores: the eligible players', the ones a book posts props for and the desk bets,
@@ -1924,13 +1934,14 @@ const scored = (out, win) => {
   return mine.length >= 200 ? mine : all;
 };
 // (a window's log-likelihood at its best dispersion, at a growth rk about rm, and the early exit's ex where it's on)
-function scoreOf(out, win, shape = { rk: 0, rm: 1 }) {
+// (wOf: each row's weight, the recency's (hl); none, every row 1)
+function scoreOf(out, win, shape = { rk: 0, rm: 1 }, wOf = null) {
   const list = scored(out, win);
   let best = null;
   for (const r of R) {
     let ll = 0;
     const p = { r, ...shape };
-    for (const x of list) ll += chanceLog(x.v, x.p.mu, p, exitMix(p, x.p));
+    for (const x of list) ll += (wOf ? wOf(x) : 1) * chanceLog(x.v, x.p.mu, p, exitMix(p, x.p));
     if (!best || ll > best.ll) best = { ll, r };
   }
   return { ...best, n: list.length };
@@ -2083,15 +2094,18 @@ export function recal(p, cal) {
   return 1 / (1 + Math.exp(-z));
 }
 
-// (the recalibration that best fits a window's chances to what happened)
-function fitRecal(pairs) {
+// (the recalibration that best fits a window's chances to what happened; wOf, each pair's row's weight: the
+// recency's (hl), none every one 1)
+function fitRecal(pairs, wOf = null) {
   let best = { ll: Infinity, cal: [0, 1] };
+  const ws = pairs.map((x) => (wOf ? wOf(x.x) : 1));
   for (let a = -0.6; a <= 0.6001; a += 0.05) {
     for (let b = 0.5; b <= 1.6001; b += 0.05) {
       let ll = 0;
-      for (const x of pairs) {
+      for (let i = 0; i < pairs.length; i++) {
+        const x = pairs[i];
         const p = recal(x.p, [a, b]);
-        ll -= Math.log(x.over ? p : 1 - p);
+        ll -= ws[i] * Math.log(x.over ? p : 1 - p);
       }
       if (ll < best.ll) best = { ll, cal: [Math.round(a * 100) / 100, Math.round(b * 100) / 100] };
     }
@@ -2268,15 +2282,16 @@ export function fitStat(stat, rows, env) {
   };
   // (o: the replay's output where the caller has it at these projections already (the early exit's: its
   // size moves no projection, only the chances around them))
-  const heldOut = (p, split = null, sides = null, given = null) => {
+  // (opts: wOf, the recency's weights on the fit window's recalibration (hl); all, every player's check always)
+  const heldOut = (p, split = null, sides = null, given = null, opts = {}) => {
     const o = given ?? replayStat(stat, sorted, p, env, cuts).out;
     const pairs = linePairs(o.filter((x) => x.win === 1 && x.row.eligible !== false), p);
-    const cal = fitRecal(pairs);
+    const cal = fitRecal(pairs, opts.wOf ?? null);
     // (and by side where it's tried (cs): each side's own, a side with too few lines none (cal))
     const calSide = p.cs ? sideCals(pairs) : null;
     const pc = { ...p, cal, calSide };
     const young = has(stat, 'dp') ? [...[0, 1].map((y) => check(youngOf(o, y), pc)), check(youngOf(o, 1).filter((x) => x.p.games < 3), pc)] : null;
-    const all = has(stat, 'dp') || late.length ? check(allOf(o), pc) : null;
+    const all = has(stat, 'dp') || late.length || opts.all ? check(allOf(o), pc) : null;
     let parts = null;
     if (split) {
       const on = split;
@@ -2644,6 +2659,81 @@ export function fitStat(stat, rows, env) {
       const brief = (c) => (c ? { n: c.n, lines: c.lines, logLoss: c.logLoss, bias: c.bias, mae: c.mae } : null);
       rookie = { ...rookie, kept: params.dp, fails, check: [brief(off.check), brief(tried.check)], all: [brief(off.all), brief(tried.all)], rookie: [brief(off.young?.[0]), brief(tried.young?.[0])], young: [brief(off.young?.[1]), brief(tried.young?.[1])], early: [brief(off.young?.[2]), brief(tried.young?.[2])] };
     }
+  }
+  // (the recency weight (hl), tried after the rest as fit and left as they are: newer games count more in the
+  // fit's last three fits on the fit window, the lean (scale), the dispersion (r) and the recalibration (cal), by
+  // a half-life in seasons (HL), so the league's drift is followed. One replay at the lean 1 (the lean's a
+  // multiple of every projection: scaled from it, as the pull toward the middle's search does). The half-life
+  // picked inside the fit window (its first INNER_FIT fit at each, its last games scored unweighted: the one that
+  // scores best, better than none; none, not tried), then judged on the held-out games against none the same way
+  // (the lean, r and recalibration fit unweighted): kept only with a held-out gain and the eligible players' and
+  // every player's bias no larger. Left out: the stat exactly as it was. Its numbers: floors.hl)
+  gains.hl = null;
+  if (TRY_HL) {
+    const hlT0 = Date.now();
+    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0 };
+    const o1 = replayStat(stat, sorted, { ...params, scale: 1 }, env, cuts).out;
+    const fitE = o1.filter((x) => x.win === 1 && x.row.eligible !== false);
+    const fitL = scored(o1, 1);
+    const tOf = (x) => Date.parse(x.row.date.slice(0, 10));
+    const wAt = (hl, ref) => (hl ? (x) => 0.5 ** (Math.max(0, ref - tOf(x)) / (hl * YEAR_MS)) : null);
+    const leanOf = (list, w) => {
+      const sMu = list.reduce((t, x) => t + (w ? w(x) : 1) * x.p.mu, 0);
+      return sMu > 0 ? Math.round((list.reduce((t, x) => t + (w ? w(x) : 1) * x.v, 0) / sMu) * 1000) / 1000 : 1;
+    };
+    const scaled = (k) => o1.map((x) => ({ ...x, p: { ...x.p, mu: Math.max(0.05, k * x.p.mu) } }));
+    // (each row's log-likelihood at a lean and dispersion, weighted)
+    const llOf = (list, k, r, w) => {
+      const pr = { r, ...shape };
+      let ll = 0;
+      for (const x of list) ll += (w ? w(x) : 1) * chanceLog(x.v, Math.max(0.05, k * x.p.mu), pr, exitMix(pr, x.p));
+      return ll;
+    };
+    const rOf = (list, k, w) => R.reduce((b, r) => {
+      const ll = llOf(list, k, r, w);
+      return !b || ll > b.ll ? { ll, r } : b;
+    }, null).r;
+    // (inside the fit window: its first INNER_FIT by date to fit the lean and r at each half-life, the rest scored)
+    const days = fitL.map(tOf).sort((a, b) => a - b);
+    const mid = days.length ? days[Math.floor(days.length * INNER_FIT)] : 0;
+    const innerFit = fitL.filter((x) => tOf(x) < mid);
+    const innerFitE = fitE.filter((x) => tOf(x) < mid);
+    const innerVal = fitL.filter((x) => tOf(x) >= mid);
+    const inner = {};
+    let hl = 0;
+    if (innerFit.length >= 200 && innerVal.length >= 100 && innerFitE.length) {
+      for (const h of [0, ...HL]) {
+        const w = wAt(h, mid);
+        const k = leanOf(innerFitE, w);
+        inner[h] = Math.round((llOf(innerVal, k, rOf(innerFit, k, w), null) / innerVal.length) * 1e5) / 1e5;
+        if (h && inner[h] > inner[hl]) hl = h;
+      }
+    }
+    const fails = [];
+    let off = null;
+    let tried = null;
+    let ks = [null, null];
+    let rs = [null, null];
+    if (!hl) fails.push(Object.keys(inner).length ? 'not taken inside the fit window' : 'too few games to try');
+    else {
+      const k0 = leanOf(fitE, null);
+      const r0 = rOf(fitL, k0, null);
+      off = heldOut({ ...params, scale: k0, r: r0 }, null, null, scaled(k0), { all: true });
+      const w = wAt(hl, Date.parse(cuts[1]));
+      const k = leanOf(fitE, w);
+      const r = rOf(fitL, k, w);
+      const tryP = { ...params, scale: k, r, hl };
+      tried = heldOut(tryP, null, null, scaled(k), { wOf: w, all: true });
+      ks = [k0, k];
+      rs = [r0, r];
+      gains.hl = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+      const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
+      if (!(gains.hl > 0)) fails.push('gain');
+      if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
+      if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
+      if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
+    }
+    floors.hl = { size: hl || null, fails, inner, bias: [off?.check?.bias ?? null, tried?.check?.bias ?? null], allBias: [off?.all?.bias ?? null, tried?.all?.bias ?? null], logLoss: [off?.check?.logLoss ?? null, tried?.check?.logLoss ?? null], scale: ks, r: rs, seconds: Math.round((Date.now() - hlT0) / 100) / 10 };
   }
   params.cal = current.cal;
   // (the recalibration by side (cs), tried last: each side of the projection (a line under it, one at it or

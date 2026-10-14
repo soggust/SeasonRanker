@@ -31,7 +31,7 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, playChanceText, sameGameText } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, sameGameText } from './desk-model';
 import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
@@ -181,6 +181,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   playChances: { sport: string; text: string }[] = [];
   // (each sport's same-game sizing, in words: desk-model.ts sameGameText)
   sameGames: { sport: string; text: string }[] = [];
+  // (each sport's live calibration of the props' chances, in words: desk-model.ts calibText)
+  calibs: { sport: string; text: string }[] = [];
   // (the CHECKs panel: each sport's graded CHECKs by what drove them, and the advice they make: desk-model.ts checkPanelOf)
   checkCauses: CheckCauseRow[] = [];
   checkAdvice: (CheckAdvice & { sport: string })[] = [];
@@ -400,6 +402,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     });
     this.sameGames = this.states.flatMap((s) => {
       const text = sameGameText(s.sameGame);
+      return text ? [{ sport: s.label, text }] : [];
+    });
+    this.calibs = this.states.flatMap((s) => {
+      const text = calibText(s.calib);
       return text ? [{ sport: s.label, text }] : [];
     });
     const panel = checkPanelOf(this.states);
@@ -801,6 +807,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       mk: "game script from the betting lines (the market's implied team points, not the desk's own)",
       c_mSpread: 'favored or underdog by the betting lines (spread)',
       cs: 'over/under chance calibrated separately above and below the projection',
+      hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better and no more biased)",
     };
     return Object.entries(t.gains ?? {})
       .map(([k, g]) => {

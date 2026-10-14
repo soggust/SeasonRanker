@@ -972,6 +972,10 @@
           @for (g of sameGames; track g.sport) {
             <p class="desk-test"><small>{{ g.sport }} same-game sizing: {{ g.text }}</small></p>
           }
+          <!-- (the props' live calibration: each spot's nudge to the model's chance, fit on the graded props) -->
+          @for (c of calibs; track c.sport) {
+            <p class="desk-test"><small>{{ c.sport }} live calibration: {{ c.text }}</small></p>
+          }
         </div>
       </card-panel>
     }

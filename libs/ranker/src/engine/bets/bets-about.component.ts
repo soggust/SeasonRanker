@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AboutSection } from '../about/about-frame.component';
 import { BANDS } from './bet-why';
-import { CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, playChanceText, sameGameText } from './desk-model';
+import { CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, sameGameText } from './desk-model';
 import { MARKET_NAMES, SPORTS } from './desk-math';
 
 // The Bets page's About (its header's info button): the shared About frame (about/about-frame.component) with the
@@ -26,6 +26,8 @@ type SportView = {
   playChance: string | null;
   // (the same-game sizing, in words; null where the state predates it)
   sameGame: string | null;
+  // (the props' live calibration, in words; null where the state predates it)
+  calib: string | null;
   trust: TrustRow[];
   checks: { n: number; open: number; graded: number; rows: CheckRow[] } | null;
 };
@@ -86,6 +88,7 @@ const TERM_NAMES: Record<string, string> = {
   mk: "game script from the betting lines (the market's implied team points, not the desk's own)",
   c_mSpread: 'favored or underdog by the betting lines (spread)',
   cs: 'over/under chance calibrated separately above and below the projection',
+  hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better and no more biased)",
 
   rk: 'spread grows with projection',
   c_wind: 'wind',
@@ -221,6 +224,7 @@ export class BetsAboutComponent implements OnInit {
       props: props.map((t) => this.propOf(t, trustText(t.trust ?? s.trust?.[`prop:${t.key}`]))),
       playChance: playChanceText(s.props?.playChance),
       sameGame: sameGameText(s.sameGame),
+      calib: calibText(s.calib),
       trust: Object.entries(s.trust ?? {}).map(([key, t]) => ({
         key,
         label: key.startsWith('prop:') ? `Prop: ${propLabel.get(key) ?? key.slice(5)}` : (MARKET_NAMES[key] ?? key),

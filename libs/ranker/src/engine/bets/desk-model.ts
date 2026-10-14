@@ -95,6 +95,52 @@ export interface ModelState {
   checks?: { n?: number; open?: number; unreadable?: boolean; learning?: CheckLearning | null } | null;
   // (the same-game sizing: desk.mjs sameGameOf)
   sameGame?: SameGame | null;
+  // (the props' live calibration: calib.mjs fitCalib)
+  calib?: LiveCalib | null;
+}
+
+// (one spot's live calibration (a stat, a side, a line class): its graded rows since the epoch, its shift on the
+// model's chance (log-odds), its target, its held-out gain, kept or why not: calib.mjs fitSpot)
+export interface LiveCalibSpot {
+  n: number;
+  shift: number;
+  target: number;
+  gain: number | null;
+  kept: boolean;
+  why: string | null;
+}
+export interface LiveCalib {
+  epoch: string;
+  rows: number;
+  min: number;
+  cap: number;
+  step: number;
+  spots: Record<string, LiveCalibSpot>;
+}
+
+// (a spot's key in words: 'points|over|0.5' to 'points over 0.5'; '>2.5' as 'lines over 2.5')
+const spotWords = (key: string): string => {
+  const [stat, side, cls] = key.split('|');
+  return `${stat} ${side}s at ${cls === '>2.5' ? 'lines over 2.5' : cls}`;
+};
+// (a log-odds shift as the points it moves a 50% chance: 0.1 about 2.5 points)
+const shiftPts = (s: number): string => {
+  const p = 1 / (1 + Math.exp(-s)) - 0.5;
+  return `${p >= 0 ? '+' : '−'}${Math.abs(p * 100).toFixed(1)} pts`;
+};
+
+// (the live calibration in plain words, for the About and the Algorithm tab; null where the state predates it)
+export function calibText(c: LiveCalib | null | undefined): string | null {
+  if (!c?.spots) return null;
+  const how = `The bot nudges its own chance on a prop where its graded props show it running hot or cold, one spot at a time (a stat, over or under, the line's size). A spot stays at 0 till ${c.min} props are graded there since the model epoch and the newest of them come out better with the nudge; then it grows slowly with the evidence, at most ${shiftPts(c.cap).slice(1)} of a coin flip, and moves only a little each run.`;
+  const spots = Object.entries(c.spots);
+  const kept = spots.filter(([, s]) => s.kept);
+  if (!spots.length) return `${how} No props graded since the epoch yet: no nudges.`;
+  if (!kept.length) {
+    const top = [...spots].sort((a, b) => b[1].n - a[1].n)[0];
+    return `${how} ${c.rows.toLocaleString()} props graded since the epoch, none nudged yet (the busiest spot, ${spotWords(top[0])}, has ${top[1].n}).`;
+  }
+  return `${how} Nudged now: ${kept.map(([k, s]) => `${spotWords(k)} ${shiftPts(s.shift)} at even (${s.n.toLocaleString()} graded)`).join('; ')}.`;
 }
 
 // (one kind of pair's correlation within a game, fit on the graded props, and its held-out score: desk.mjs fitSameGame, sameGameOf)

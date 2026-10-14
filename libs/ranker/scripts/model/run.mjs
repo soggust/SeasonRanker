@@ -18,6 +18,11 @@
 //      a player who played but isn't in his stat's table counts 0; an MLB game cut short voids its run line and
 //      total; each prop's count read again once a day and a half after the start, a stat correction noted on
 //      the bet but not graded again: the book settles on the count at the final)
+//   4b'. the props' live calibration refit (calib.mjs, refitCalib): each spot's (a stat, a side, a line class)
+//      small shift on the model's chance, fit on the graded props since MODEL_EPOCH (the tracked rows among
+//      them), 0 till a spot has CAL_MIN rows and its newest rows' log loss is lower with it, shrunk by its
+//      evidence, held to CAL_CAP and moved at most CAL_STEP a run; applied in the props' pricing (props.mjs
+//      priceProps: the trust and every guard after it as before), kept in state.json (calib)
 //   4b. the open bets priced again whose inputs changed (timing.mjs inputsOf: each side's injury report, the
 //      starters, the goalies, the lineups, as the bet saw them against what the run sees now) on games more than
 //      REPRICE_BY from the start: taken back and placed again below with what the model knows now, logged in
@@ -115,6 +120,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
+import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { MAX_LAST, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
@@ -263,6 +269,7 @@ async function runSport(sport) {
   await captureClose(r);
   refitTrust(r);
   await gradeBets(r);
+  refitCalib(r);
   replaceOpen(r);
   repriceOpen(r);
   // (the coming games' lines once the run knows which markets are due: The Odds API asked only for those)
@@ -822,6 +829,10 @@ async function fitTheProps(r) {
       // one's miss), the size and form the search took, the held-out log loss and biases without it and with it)
       const tr = f.floors?.tr;
       if (tr) kept.push(`team allocation at ${tr.size ?? 0}${tr.gap ? ` (held out ${tr.gap.n} of ${tr.gap.of} team-games read: players summed ${tr.gap.s}, the team's expected ${tr.gap.t} of actual; miss ${tr.gap.missS} against ${tr.gap.missT}${tr.gap.minutes ? `; minutes summed ${tr.gap.minutes.expected} a team-game expected, ${tr.gap.minutes.played} played, miss ${tr.gap.minutes.miss} (${tr.gap.minutes.n})` : ''})` : ''}${tr.logLoss ? `: log loss ${tr.logLoss[0]} to ${tr.logLoss[1]}, bias ${tr.bias?.[0]} to ${tr.bias?.[1]}, all players' ${tr.allBias?.[0]} to ${tr.allBias?.[1]}` : ''}${tr.fails?.length ? ` (left out: ${tr.fails.join(', ')})` : ''}, ${tr.seconds}s`);
+      // (the recency weight's gate (project.mjs hl): the half-life picked inside the fit window (each one's score
+      // on its last games, 0 none), the held-out log loss, biases, lean and dispersion without it and with it)
+      const hl = f.floors?.hl;
+      if (hl) kept.push(`recency at ${hl.size ?? 0}${Object.keys(hl.inner ?? {}).length ? ` (inside the fit window ${Object.entries(hl.inner).map(([h, v]) => `${h} ${v}`).join(', ')})` : ''}${hl.logLoss?.[0] !== null && hl.logLoss?.[0] !== undefined ? `: log loss ${hl.logLoss[0]} to ${hl.logLoss[1]}, bias ${hl.bias[0]} to ${hl.bias[1]}, all players' ${hl.allBias[0]} to ${hl.allBias[1]}, lean ${hl.scale[0]} to ${hl.scale[1]}, r ${hl.r[0]} to ${hl.r[1]}` : ''}${hl.fails?.length ? ` (left out: ${hl.fails.join(', ')})` : ''}, ${hl.seconds}s`);
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
       const skew = (x) => (x?.n ? `${x.n} said ${x.said} won ${x.was}` : 'none');
@@ -949,6 +960,31 @@ function refitTrust(r) {
     );
   }
   r.trust = trust;
+}
+
+// 4b'. the props' live calibration (calib.mjs), refit every run after the grading on the graded props since
+// MODEL_EPOCH (the tracked rows among them): each spot's shift (a stat, a side, a line class) 0 till its rows and
+// their newest's held-out log loss bear one out, shrunk by its evidence, held to CAL_CAP and moved at most CAL_STEP
+// from the last run's (state.calib); a spot kept or let go, or moved a tenth of the cap or more, logged in the
+// changelog. Any failure: none this run (fail safe: the chances as without it)
+function refitCalib(r) {
+  const { state, at, sport } = r;
+  r.calib = null;
+  try {
+    // (no time on it: a run that learned nothing new writes the same state)
+    const c = fitCalib(r.ledger?.bets ?? [], MODEL_EPOCH, state.calib ?? null);
+    const was = state.calib?.epoch === MODEL_EPOCH ? (state.calib?.spots ?? {}) : {};
+    for (const [key, s] of Object.entries(c.spots)) {
+      const from = was[key]?.kept ? was[key].shift : 0;
+      const to = s.kept ? s.shift : 0;
+      if (from === to || (Math.abs(to - from) < CAL_CAP / 10 && !!from === !!to)) continue;
+      state.changelog.push({ at, what: `live calibration: ${key}`, from, to, why: s.kept ? `${s.n} graded rows since the epoch; fit on the older ${s.n - s.held}, the newest ${s.held}'s log loss ${s.gain} lower with it (target ${s.target}, at most ${CAL_STEP} a run)` : `${s.n} graded rows: ${s.why}` });
+    }
+    r.calib = c;
+    console.log(`${sport}: live calibration: ${calibText(c)}`);
+  } catch (err) {
+    console.warn(`${sport}: live calibration left out this run (${err.message})`);
+  }
 }
 
 // 3b. each bet's close, once its game has started (the core API keeps it after kickoff), and its CLV
@@ -1712,7 +1748,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null);
       run.priced += priced.length;
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
@@ -1863,6 +1899,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     ...(Number.isFinite(x.otherOdds) ? { otherOdds: x.otherOdds } : {}),
     oddsAssumed: !x.priced,
     model: round(x.model, 4),
+    // (its chance before the live calibration and the shift, where one moved it: calib.mjs)
+    ...(Number.isFinite(x.modelRaw) ? { modelRaw: round(x.modelRaw, 4), cal: round(x.cal ?? 0, 4) } : {}),
     fair: round(x.fair, 4),
     p: round(x.p, 4),
     ev: round(x.ev, 4),
@@ -2005,6 +2043,9 @@ function saveState(r) {
     gameCap: GAME_CAP,
     // (the same-game sizing, desk.mjs sameGameOf: the props' correlation in a game, fit, used and its replay)
     sameGame: r.sameGame ?? state.sameGame ?? null,
+    // (the props' live calibration, calib.mjs: each spot's shift, its rows, its held-out gain; the last run's
+    // where this one's failed, so the step's still from it)
+    calib: r.calib ?? state.calib ?? null,
     // (the model's latest major change, leagues.mjs: the trust is fit only on bets since; the Bets About shows it)
     epoch: MODEL_EPOCH,
     // (the margins' shape, margins.mjs: kept or not, what it did for the held-out finals, its weights)
@@ -2060,6 +2101,7 @@ function saveState(r) {
       propTypes: state.props?.types?.map((t) => ({ key: t.key, params: t.params, gains: t.gains, base: t.base?.logLoss, check: t.check?.logLoss, bias: t.check?.bias, allBias: t.allPlayersBias, rows: t.rows, eligible: t.eligible })) ?? null,
       props: state.props?.types?.map((t) => [t.key, t.params]) ?? null,
       trust: state.trust,
+      calib: state.calib,
       ...r.snapshot,
     });
     console.log(`${sport} (dry): snapshot in .cache/model/dry-${sport}.json`);

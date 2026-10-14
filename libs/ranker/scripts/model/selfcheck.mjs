@@ -79,6 +79,9 @@
 //                 when the far ones bet against the market do better or worse than the near ones, or the alarm's
 //                 labeled bets worse, past z 2.5 with 60 a side (the far line alone news: a PASS; the alarm a
 //                 role CHECK); never applied
+//             C21 the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class)
+//                 shift on the model's chance, its graded rows since the epoch, target and held-out gain; the
+//                 week's graded props of each spot, their raw chances said, as shifted, and won. A report
 //   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
@@ -93,6 +96,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DAY_CAP, MONTH_CAP } from './ai-budget.mjs';
 import { MIN_N } from './check-learn.mjs';
+import { CAL_CAP, CAL_MIN, CAL_STEP, calAt, lineClass } from './calib.mjs';
 import { VOID_AFTER, chanceAt, intentOf, learnView, pastGap } from './desk.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { impliedMean } from './project.mjs';
@@ -133,6 +137,7 @@ export const TITLES = {
   C18: "Owner's notes by reason",
   C19: 'Line move and bet timing (all graded)',
   C20: 'Line far from the projection (all graded)',
+  C21: 'Live calibration by spot',
 };
 
 // ---- helpers ----
@@ -1265,7 +1270,34 @@ export function c20(x) {
     how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (outside the NFL a far line only at a line and a mean from ${ALARM_MIN}: a 0.5 line's ratio is an ordinary lean), the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
   });
 }
-export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20];
+// C21: the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class) graded rows
+// since the epoch, its shift on the model's chance (0 till its rows and their newest's held-out log loss bear one
+// out), its target and gain; and the week's graded props of each spot, the raw chance they said against what
+// happened, and the chance as shifted. A report: the desk fits and applies it every run itself, within its cap
+export function c21(x) {
+  const c = x.state?.calib ?? null;
+  if (!c?.spots) return check('C21', { status: 'partial', headline: 'No live calibration in the state yet', needs: ['state.calib (run.mjs refitCalib)'] });
+  const week = x.bets.filter((b) => b.market === 'prop' && settledOf(b) && inSpan(b.gradedAt, x.week));
+  const rows = Object.entries(c.spots).map(([key, s]) => {
+    const [stat, side, cls] = key.split('|');
+    const mine = week.filter((b) => b.propType === stat && b.side === side && lineClass(b.line) === cls);
+    const raw = mine.map((b) => (fin(b.modelRaw) ? b.modelRaw : b.model)).filter(fin);
+    return { key, n: s.n, shift: s.shift, target: s.target, gain: s.gain, kept: !!s.kept, why: s.why ?? null, week: mine.length, said: raw.length ? r4(raw.reduce((t, p) => t + p, 0)) : null, shifted: raw.length ? r4(raw.reduce((t, p) => t + calAt(p, s.kept ? s.shift : 0), 0)) : null, won: count(mine, (b) => b.status === 'won') };
+  });
+  const kept = rows.filter((r) => r.kept);
+  const n = c.rows ?? rows.reduce((t, r) => t + r.n, 0);
+  return check('C21', {
+    status: !rows.length ? 'thin' : 'info',
+    headline: !rows.length ? 'No graded props since the epoch yet: every shift 0' : kept.length ? `${kept.length} of ${rows.length} spots shifted: ${kept.map((r) => `${r.key} ${sgn(r.shift, 3)} (n ${r.n}, held-out gain +${r.gain})`).join(', ')}` : `${n} graded props since the epoch in ${rows.length} spots, none shifted (each needs ${c.min ?? CAL_MIN} rows and a held-out gain)`,
+    metric: 'spots shifted',
+    value: kept.length,
+    threshold: `a report: a spot's shift is 0 under ${c.min ?? CAL_MIN} graded rows, pulled toward 0 by its evidence, at most ${c.cap ?? CAL_CAP} on the log-odds and ${c.step ?? CAL_STEP} a run, and kept only where the newest rows' log loss is lower with it`,
+    n,
+    rows: rows.sort((a, b) => b.n - a.n),
+    how: "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
+  });
+}
+export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21];
 
 // The spans: the week (the 7 days to now), the baseline (the 28 before it), recent (the 28 to now)
 export function spansOf(now) {
