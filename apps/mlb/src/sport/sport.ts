@@ -160,6 +160,8 @@ export const SPORT: SportConfig = {
           : mlbGameLog(player.id!, season, 'hitting', [['AB', 'atBats'], ['R', 'runs'], ['H', 'hits'], ['2B', 'doubles'], ['HR', 'homeRuns'], ['RBI', 'rbi'], ['BB', 'baseOnBalls'], ['SO', 'strikeOuts'], ['SB', 'stolenBases'], ['AVG', 'avg']], { chart: { label: 'Hits', stack: ['H'], plus: ['HR'] } }),
   },
   // (the Teams tab's Recent: the last 10 games, a long season's form; the players' 5)
+  // The card's Analysis tab: the teams' weekly AI write-ups (libs/ranker/scripts/analysis)
+  analysis: true,
   recentGames: (position) => (position === 'TM' ? 10 : 5),
   copy: {
     noHolesIcon: 'shield',

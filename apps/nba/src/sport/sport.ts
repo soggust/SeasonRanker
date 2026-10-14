@@ -199,6 +199,8 @@ export const SPORT: SportConfig = {
     load: (player, position, season, context) => loadTeamRoster(player as SkillPlayer, season, season === SPORT.currentSeason, context),
   },
   // (the Teams tab's Recent: the last 7 games)
+  // The card's Analysis tab: the teams' weekly AI write-ups (libs/ranker/scripts/analysis)
+  analysis: true,
   recentGames: (position) => (position === 'TM' ? 7 : 5),
   copy: {
     noHolesIcon: 'verified',

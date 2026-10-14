@@ -1,5 +1,6 @@
 <!-- The AI write-up (player-card/analysis.ts): the headline and the archetype's definition, the overview, the season's
-     strengths and concerns, the coming game, the rest of the season, betting angles -->
+     strengths and concerns, the coming game (a team's weekly preview: the week ahead), the rest of the season, betting
+     angles. A season's recap (a team whose season is over) is its one section, Recap, under the headline -->
 
 <!-- A point in the analysis: its title, the take, the numbers behind it (their real values and ranks) -->
 <ng-template #aiPoint let-p>
@@ -36,108 +37,177 @@
     </p>
   </div>
 
-  <card-panel class="tab-card ai-card" label="Overview" icon="auto_awesome" [open]="cards.aiOpen.has('take')" (toggled)="cards.toggleAi('take')">
-    <div class="group-body ai-prose">
-      @for (p of paragraphs(r.take); track $index) {
-        <p>{{ p }}</p>
-      }
-    </div>
-  </card-panel>
-
-  <card-panel class="tab-card ai-card ai-season" label="Current Performance" icon="insights" [open]="cards.aiOpen.has('season')" (toggled)="cards.toggleAi('season')">
-    <div class="group-body">
-      <div class="ai-columns">
-        <div class="ai-points strengths">
-          <h4><mat-icon fontIcon="trending_up"></mat-icon>Strengths</h4>
-          @for (p of r.strengths; track $index) {
-            <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
-          }
-        </div>
-        <div class="ai-points concerns">
-          <h4><mat-icon fontIcon="trending_down"></mat-icon>Concerns</h4>
-          @for (p of r.concerns; track $index) {
-            <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
-          }
-        </div>
-      </div>
-      <p class="ai-trend" [ngClass]="r.trend.direction"><b>{{ r.trend.direction }}</b>{{ r.trend.note }}</p>
-    </div>
-  </card-panel>
-
-  @if (a.game) {
-    <card-panel class="tab-card ai-card ai-next group-box" label="Next Up: Week {{ a.game.week }} {{ a.game.at === 'home' ? 'vs' : '@' }} {{ a.game.opp }}" icon="sports_football" [open]="cards.aiOpen.has('next')" (toggled)="cards.toggleAi('next')">
+  @if (r.recap; as rc) {
+    <!-- (the season's last word: open from the start, the tab's one section) -->
+    <card-panel class="tab-card ai-card ai-recap group-advanced" [label]="'Recap: ' + (a.season ?? '')" icon="history_edu" [open]="!cards.aiOpen.has('recap-closed')" (toggled)="cards.toggleAi('recap-closed')">
       <div class="group-body">
-        <div class="ai-next-head">
-          <span class="ai-outlook" [ngClass]="r.nextGame.outlook">{{ r.nextGame.outlook }} matchup</span>
-          @if (a.game.line; as line) {
-            <span class="ai-line" [title]="(line.book ?? 'Sportsbook') + ', via ESPN'">
-              <b>{{ line.line }}</b>
-              @if (line.overUnder) {
-                <span>O/U {{ line.overUnder }}</span>
-              }
-              @if (line.hisTeamMoneyline) {
-                <span>ML {{ line.hisTeamMoneyline }}</span>
-              }
-            </span>
-          }
-        </div>
-        <h3 class="ai-subhead">{{ r.nextGame.headline }}</h3>
+        <p class="ai-finish">{{ rc.finish }}</p>
         <div class="ai-prose">
-          @for (p of paragraphs(r.nextGame.body); track $index) {
+          @for (p of paragraphs(rc.body); track $index) {
             <p>{{ p }}</p>
           }
         </div>
-        <div class="ai-points matchups">
-          @for (p of r.nextGame.keyMatchups; track $index) {
-            <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
-          }
+        <div class="ai-columns">
+          <div class="ai-points strengths">
+            <h4><mat-icon fontIcon="trending_up"></mat-icon>What Went Right</h4>
+            @for (p of rc.highlights; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
+          <div class="ai-points concerns">
+            <h4><mat-icon fontIcon="trending_down"></mat-icon>What Went Wrong</h4>
+            @for (p of rc.lowlights; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
         </div>
-        <p class="ai-watch"><mat-icon fontIcon="visibility"></mat-icon><span><b>Watch:</b> {{ r.nextGame.watch }}</span></p>
+        <p class="ai-trend" [ngClass]="rc.arc.direction"><b>{{ rc.arc.direction }}</b>{{ rc.arc.note }}</p>
+        <div class="ai-prose ai-next-year">
+          <h4>Next Season</h4>
+          <p>{{ rc.nextYear }}</p>
+        </div>
       </div>
     </card-panel>
-  }
-
-  <!-- (the week's bets, before the season's outlook) -->
-  <card-panel class="tab-card ai-card ai-bets group-results" [label]="a.game ? 'Betting Angles: Week ' + a.game.week : 'Betting Angles'" icon="paid" [open]="cards.aiOpen.has('bets')" (toggled)="cards.toggleAi('bets')">
-    <div class="group-body">
-      @if (!r.bets.length) {
-        <p class="card-note">Nothing in this matchup looks mispriced.</p>
-      }
-      @for (b of r.bets; track $index) {
-        <div class="ai-bet">
-          <span class="ai-bet-strength" [ngClass]="b.strength === 'fade' ? 'fade' : 'like'">{{ b.strength === 'fade' ? 'fade' : 'like' }}</span>
-          <div class="ai-bet-main">
-            <span class="ai-bet-pick"
-              >@if (b.strength === 'fade') {<b>{{ b.market }}</b><small>{{ insteadText(b.lean) }}</small>} @else {<b>{{ b.lean }}</b><small>{{ b.market }}</small>}</span
-            >
-            <p>{{ b.reason }}</p>
-          </div>
-        </div>
-      }
-    </div>
-  </card-panel>
-
-  <card-panel class="tab-card ai-card ai-rest group-advanced" label="Season Outlook" icon="event_upcoming" [open]="cards.aiOpen.has('rest')" (toggled)="cards.toggleAi('rest')">
-    <div class="group-body">
-      <div class="ai-projections">
-        @for (p of r.restOfSeason.projections; track $index) {
-          <div class="ai-projection">
-            <span class="ai-projection-range">{{ p.low | number: '1.0-2' }}<small>–</small>{{ p.high | number: '1.0-2' }}</span>
-            <span class="ai-projection-stat">{{ p.stat }}</span>
-          </div>
-        }
-      </div>
-      <div class="ai-prose">
-        @for (p of paragraphs(r.restOfSeason.body); track $index) {
+  } @else {
+    <card-panel class="tab-card ai-card" label="Overview" icon="auto_awesome" [open]="cards.aiOpen.has('take')" (toggled)="cards.toggleAi('take')">
+      <div class="group-body ai-prose">
+        @for (p of paragraphs(r.take ?? ''); track $index) {
           <p>{{ p }}</p>
         }
       </div>
-      <div class="ai-swing">
-        <span class="ai-swing-label">Swing factors</span>
-        @for (f of r.restOfSeason.swingFactors; track $index) {
-          <span class="ai-chip">{{ f }}</span>
+    </card-panel>
+
+    <card-panel class="tab-card ai-card ai-season" label="Current Performance" icon="insights" [open]="cards.aiOpen.has('season')" (toggled)="cards.toggleAi('season')">
+      <div class="group-body">
+        <div class="ai-columns">
+          <div class="ai-points strengths">
+            <h4><mat-icon fontIcon="trending_up"></mat-icon>Strengths</h4>
+            @for (p of r.strengths; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
+          <div class="ai-points concerns">
+            <h4><mat-icon fontIcon="trending_down"></mat-icon>Concerns</h4>
+            @for (p of r.concerns; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
+        </div>
+        @if (r.trend; as tr) {
+          <p class="ai-trend" [ngClass]="tr.direction"><b>{{ tr.direction }}</b>{{ tr.note }}</p>
         }
       </div>
-    </div>
-  </card-panel>
+    </card-panel>
+
+    @if (a.game && r.nextGame) {
+      <card-panel class="tab-card ai-card ai-next group-box" label="Next Up: Week {{ a.game.week }} {{ a.game.at === 'home' ? 'vs' : '@' }} {{ a.game.opp }}" icon="sports_football" [open]="cards.aiOpen.has('next')" (toggled)="cards.toggleAi('next')">
+        <div class="group-body">
+          <div class="ai-next-head">
+            <span class="ai-outlook" [ngClass]="r.nextGame.outlook">{{ r.nextGame.outlook }} matchup</span>
+            @if (a.game.line; as line) {
+              <span class="ai-line" [title]="(line.book ?? 'Sportsbook') + ', via ESPN'">
+                <b>{{ line.line }}</b>
+                @if (line.overUnder) {
+                  <span>O/U {{ line.overUnder }}</span>
+                }
+                @if (line.hisTeamMoneyline) {
+                  <span>ML {{ line.hisTeamMoneyline }}</span>
+                }
+              </span>
+            }
+          </div>
+          <h3 class="ai-subhead">{{ r.nextGame.headline }}</h3>
+          <div class="ai-prose">
+            @for (p of paragraphs(r.nextGame.body); track $index) {
+              <p>{{ p }}</p>
+            }
+          </div>
+          <div class="ai-points matchups">
+            @for (p of r.nextGame.keyMatchups; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
+          <p class="ai-watch"><mat-icon fontIcon="visibility"></mat-icon><span><b>Watch:</b> {{ r.nextGame.watch }}</span></p>
+        </div>
+      </card-panel>
+    }
+
+    <!-- (a team's weekly preview: the week's games, how they set up) -->
+    @if (r.weekAhead; as w) {
+      <card-panel class="tab-card ai-card ai-next group-box" label="The Week Ahead" icon="date_range" [open]="cards.aiOpen.has('week')" (toggled)="cards.toggleAi('week')">
+        <div class="group-body">
+          <div class="ai-next-head">
+            <span class="ai-outlook" [ngClass]="w.outlook">{{ w.outlook }} week</span>
+            @if (a.week?.length) {
+              <span class="ai-week">
+                @for (g of a.week; track $index) {
+                  <span>{{ weekGameText(g) }}</span>
+                }
+              </span>
+            }
+          </div>
+          <h3 class="ai-subhead">{{ w.headline }}</h3>
+          <div class="ai-prose">
+            @for (p of paragraphs(w.body); track $index) {
+              <p>{{ p }}</p>
+            }
+          </div>
+          <div class="ai-points matchups">
+            @for (p of w.keyMatchups; track $index) {
+              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+            }
+          </div>
+          <p class="ai-watch"><mat-icon fontIcon="visibility"></mat-icon><span><b>Watch:</b> {{ w.watch }}</span></p>
+        </div>
+      </card-panel>
+    }
+
+    <!-- (the week's bets, before the season's outlook; a team's weekly preview has none) -->
+    @if (r.bets) {
+      <card-panel class="tab-card ai-card ai-bets group-results" [label]="a.game ? 'Betting Angles: Week ' + a.game.week : 'Betting Angles'" icon="paid" [open]="cards.aiOpen.has('bets')" (toggled)="cards.toggleAi('bets')">
+        <div class="group-body">
+          @if (!r.bets.length) {
+            <p class="card-note">Nothing in this matchup looks mispriced.</p>
+          }
+          @for (b of r.bets; track $index) {
+            <div class="ai-bet">
+              <span class="ai-bet-strength" [ngClass]="b.strength === 'fade' ? 'fade' : 'like'">{{ b.strength === 'fade' ? 'fade' : 'like' }}</span>
+              <div class="ai-bet-main">
+                <span class="ai-bet-pick"
+                  >@if (b.strength === 'fade') {<b>{{ b.market }}</b><small>{{ insteadText(b.lean) }}</small>} @else {<b>{{ b.lean }}</b><small>{{ b.market }}</small>}</span
+                >
+                <p>{{ b.reason }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </card-panel>
+    }
+
+    @if (r.restOfSeason; as ros) {
+      <card-panel class="tab-card ai-card ai-rest group-advanced" label="Season Outlook" icon="event_upcoming" [open]="cards.aiOpen.has('rest')" (toggled)="cards.toggleAi('rest')">
+        <div class="group-body">
+          <div class="ai-projections">
+            @for (p of ros.projections; track $index) {
+              <div class="ai-projection">
+                <span class="ai-projection-range">{{ p.low | number: '1.0-2' }}<small>–</small>{{ p.high | number: '1.0-2' }}</span>
+                <span class="ai-projection-stat">{{ p.stat }}</span>
+              </div>
+            }
+          </div>
+          <div class="ai-prose">
+            @for (p of paragraphs(ros.body); track $index) {
+              <p>{{ p }}</p>
+            }
+          </div>
+          <div class="ai-swing">
+            <span class="ai-swing-label">Swing factors</span>
+            @for (f of ros.swingFactors; track $index) {
+              <span class="ai-chip">{{ f }}</span>
+            }
+          </div>
+        </div>
+      </card-panel>
+    }
+  }
 }

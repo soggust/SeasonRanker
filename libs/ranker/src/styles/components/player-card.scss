@@ -2558,6 +2558,39 @@
   }
 }
 
+// A team's weekly preview: the week's games beside its outlook ("Wed 10/15 @ LAD")
+.ai-week {
+  color: rgba(255, 255, 255, 0.6);
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 4px 12px;
+  justify-content: flex-end;
+}
+
+// A season's recap: how it ended, over the story; next season's paragraph under its label
+.ai-finish {
+  color: var(--scoreboard-led);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+
+.ai-next-year {
+  margin-top: 16px;
+
+  h4 {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+  }
+}
+
 .ai-subhead {
   color: #fff;
   @include v.headline(19px);

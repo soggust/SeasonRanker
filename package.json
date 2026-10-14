@@ -28,7 +28,11 @@
     "nhl:build-comps": "node apps/nhl/scripts/build-comps.mjs",
     "start:mma": "ng serve mma",
     "mma:update-data": "node apps/mma/scripts/update-data.mjs",
-    "nfl:analysis": "node apps/nfl/scripts/analysis/weekly.mjs"
+    "nfl:analysis": "node apps/nfl/scripts/analysis/weekly.mjs",
+    "teams:analysis": "node libs/ranker/scripts/analysis/weekly.mjs mlb nba nhl",
+    "mlb:analysis": "node libs/ranker/scripts/analysis/weekly.mjs mlb",
+    "nba:analysis": "node libs/ranker/scripts/analysis/weekly.mjs nba",
+    "nhl:analysis": "node libs/ranker/scripts/analysis/weekly.mjs nhl"
   },
   "private": true,
   "dependencies": {
