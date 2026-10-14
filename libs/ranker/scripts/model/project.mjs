@@ -755,7 +755,29 @@ const DRAFT_GAIN = 0.0003;
 // (and the role order by recent healthy work (ro), a regular above him out (c_aheadOut) and the organic trend
 // (ot), the role and work share's (audit #2), the same way: ro and ot on the whole stat's gate, the flag on its
 // own rows')
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN };
+// (and audit round C's (props.mjs CTX, matchups.mjs batterTables and nflRoundC) the same way, each a late term on
+// the same floor: MLB's lineup strikeouts and on-base, ballpark, plate appearances by slot, air and home on the
+// whole stat's gate (the air and home signed, each side's bias no larger: SIGNED); the NFL's own line changed,
+// a back's late-season load and the last regular-season game on their own rows' (SUBGROUP), the pass rate over
+// expected on the whole stat's, a passing-down back by the script signed)
+export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame'];
+const ROUND_C_GRID = {
+  c_lineupK: [0.25, 0.5, 0.75, 1, 1.25],
+  c_lineupKd: [0.25, 0.5, 0.75, 1, 1.25],
+  c_lineupOb: [-1, -0.5, 0.5, 1],
+  c_parkH: [0.25, 0.5, 0.75, 1],
+  c_parkTB: [0.25, 0.5, 0.75, 1],
+  c_paX: [0.25, 0.5, 0.75, 1],
+  c_airTemp: [-0.03, -0.02, -0.01, 0.01, 0.02, 0.03],
+  c_windOutB: [-0.04, -0.02, -0.01, 0.01, 0.02, 0.04],
+  c_homeBat: [-0.03, -0.02, -0.01, 0.01, 0.02],
+  c_olOut: [-0.04, -0.02, -0.01, 0.01, 0.02],
+  c_proe: [-0.1, -0.05, 0.05, 0.1, 0.2],
+  c_rbLoad: [-0.1, -0.05, -0.03, 0.03, 0.05],
+  c_rbPass: [-0.05, -0.03, -0.015, 0.015, 0.03, 0.05],
+  c_lastGame: [-0.15, -0.1, -0.05, 0.05],
+};
+const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -809,13 +831,13 @@ const SP_LINE_LAST = 16;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp']);
+const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp', 'c_olOut', 'c_rbLoad', 'c_lastGame']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
 // every player's, SUBGROUP_N or more each), each one's held-out bias no larger: a size that over-corrects one
 // side and under-corrects the other passes the whole stat's gate alone)
-const SIGNED = new Set(['c_mSpread']);
+const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB']);
 const SIGNED_AT = 0.3;
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left
@@ -2010,7 +2032,7 @@ const OPP_D = [-0.1, 0.1, 0.2, 0.4];
 const OPP_DEF = [-0.03, 0.03, 0.06, 0.1];
 // (the early exit's sizes tried (ex): times the short game's chance learned)
 const EX = [0.5, 1, 1.5, 2, 3, 4];
-const GRID = { ...CARRY_GRID, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX };
+const GRID = { ...CARRY_GRID, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX, ...ROUND_C_GRID };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -2520,6 +2542,7 @@ export function fitStat(stat, rows, env) {
       if (key === 'sp') floors.sp = { size: null, fails: ['not taken on the fit window'], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       if (key === 'ep') floors.ep = { size: null, fails: ['not taken on the fit window'], seconds: Math.round((Date.now() - spT0) / 100) / 10 };
       if (key === 'tr') floors.tr = { size: null, fails: ['not taken on the fit window'], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 };
+      if (ROUND_C.includes(key)) floors[key] = { size: null, fails: ['not taken on the fit window'] };
       continue;
     }
     const offP = { ...params, r: s0.r };
@@ -2599,7 +2622,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it

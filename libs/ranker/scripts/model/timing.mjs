@@ -12,7 +12,7 @@
 //   newsMissing  the news a bet waits for that isn't in yet: the NHL's probable goalies (both: a skater's
 //                projection weighs the other side's), MLB's probable starters (a game line both; a pitcher's
 //                prop his own; a batter's the other side's) and posted lineups (a game line both: its platoon
-//                terms read them; a batter's prop his own). The NFL and NBA wait for the window alone
+//                terms read them; a batter's prop his own; a pitcher's the other side's: his strikeouts read it). The NFL and NBA wait for the window alone
 //   inputsOf     a game's inputs as the bets on it were priced: each side's injury report (out, doubtful, on
 //                IR or suspended; and questionable or day-to-day), the NFL's starting quarterbacks, the NHL's
 //                probable goalies (and whether confirmed), MLB's probable starters and lineups, the NFL's and
@@ -129,6 +129,8 @@ export function newsMissing(sport, live, { kind = 'lines', home = null, pitcher 
     } else {
       const mine = home ? 0 : 1;
       if (pitcher && !sp[mine]) out.push('his start not announced');
+      // (and a starter's the other side's lineup: his strikeouts read it, audit round C's lineupK, props.mjs CTX)
+      if (pitcher && !lu[1 - mine]) out.push("the other side's lineup not posted");
       if (!pitcher && !sp[1 - mine]) out.push("the other side's starting pitcher not named");
       if (!pitcher && !lu[mine]) out.push('his lineup not posted');
     }

@@ -741,10 +741,27 @@ const PLAYS = { plays: true };
 // stat to try it again)
 const TEAM = { team: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
+// (audit round C, measured 2026-10-14 with every candidate on the stats it could move (held out the last 30%), each a
+// late term on project.mjs's gate (ROUND_C): kept, the last regular-season game on NFL passing yards (lastGame
+// -0.05: held out 0.6528 to 0.6521, +0.0007; its own 106 rows 17.6 to 8.3 yards projected over actual, the
+// eligible's 91 14.0 to 4.2) and attempts (-0.05: 0.6208 to 0.6203, +0.0005; its rows 2.42 to 1.06), and the
+// other side's lineup's strikeout rate on MLB strikeouts (lineupK 0.75: 0.6129 to 0.6042, +0.0087; bias 0.0327 to
+// 0.0101). Left out: lastGame on completions (-0.1, worse, the rest's bias), rushing yards, carries, receiving and
+// rush+rec yards (under the floor), receptions (not taken); lineupKd (+0.0002, bias larger), lineupOb (not taken
+// on strikeouts or outs), lineupK on outs (not taken); parkH (0), parkTB (not taken), paX (+0.0002 hits and total
+// bases), airTemp (+0.0001, +0.0002), windOutB (0, +0.0001), homeBat (-0.0001, 0; the home side's bias larger);
+// the pull toward the middle (sl) on strikeouts (-0.0013) and total bases (0); olOut (not taken but carries:
+// 0.02, -0.001), proe (not taken anywhere), rbLoad (rushing yards +0.0001, carries +0.0003 with the rest's bias
+// larger, rush+rec yards -0.0003), rbPass (receptions and receiving yards -0.0001, rush+rec yards not taken).
+// Each off the stats' ctx (CTX keeps them for a measure on demand): the props' fit 1349s to 913s for the NFL
+// locally, 276s to 95s for MLB. The red-zone share isn't built: the play-by-play the desk keeps has no field
+// position, and no prop it bets but passing TDs scores on it)
+const RC_PASS = [...PASSING, 'lastGame'];
+const RC_K = [...PITCHER_CTX, 'lineupK'];
 export const STATS = {
   nfl: [
-    stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
-    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
+    stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB }),
+    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
@@ -767,7 +784,7 @@ export const STATS = {
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: SAVES_CTX, goalie: true }),
   ],
   mlb: [
-    stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: PITCHER_CTX, pitcher: true }),
+    stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_K, pitcher: true }),
     stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: PITCHER_CTX, pitcher: true }),
     stat('hits', 'Hits', /^Total Hits$/, { played: BATTED, ctx: BATTER_CTX, ...MIDDLE }),
     stat('tb', 'Total Bases', /^Total Bases$/, { played: BATTED, ctx: BATTER_CTX }),
@@ -1004,6 +1021,38 @@ export const CTX = {
   leash: (info, home, pts, row) => (Number.isFinite(row?.leash) ? row.leash : 0),
   restSp: (info, home, pts, row) => (Number.isFinite(row?.rest) ? row.rest : 0),
   ump: (info) => (Number.isFinite(info?.officials?.whistle) ? info.officials.whistle : 0),
+  // (audit round C, MLB (matchups.mjs batterTables, each from before the game; 0 unread): a starter's other side's
+  // posted lineup, its strikeout rate a plate appearance over the league's (lineupK), over its own usual
+  // (lineupKd), its on-base rate over the league's (lineupOb: more batters faced an out), each a log; a batter's
+  // ballpark (parkH, parkTB: its hits or total bases over what its batters hit elsewhere, a log), his plate
+  // appearances expected at his slot tonight, home or away, over his own a game (paX, a log), the air at first
+  // pitch outdoors (airTemp: per 10°F over 70; windOutB: per 10 mph out toward center, in negative: context.mjs
+  // weatherOf, the posted report or the forecast; a closed roof or none, 0) and home or away (homeBat: 1 home, -1
+  // away: the home side's ninth often not batted)
+  lineupK: (info, home, pts, row) => (Number.isFinite(row?.lineupK) ? row.lineupK : 0),
+  lineupKd: (info, home, pts, row) => (Number.isFinite(row?.lineupKd) ? row.lineupKd : 0),
+  lineupOb: (info, home, pts, row) => (Number.isFinite(row?.lineupOb) ? row.lineupOb : 0),
+  parkH: (info, home, pts, row) => (Number.isFinite(row?.parkH) ? row.parkH : 0),
+  parkTB: (info, home, pts, row) => (Number.isFinite(row?.parkTB) ? row.parkTB : 0),
+  paX: (info, home, pts, row) => (Number.isFinite(row?.paX) ? row.paX : 0),
+  airTemp: (info) => (Number.isFinite(info?.weather?.temp) && Number.isFinite(info?.weather?.windOut) ? (info.weather.temp - 70) / 10 : 0),
+  windOutB: (info) => (Number.isFinite(info?.weather?.windOut) ? info.weather.windOut / 10 : 0),
+  homeBat: (info, home) => (home ? 1 : -1),
+  // (audit round C, NFL: his own line's starters changed since its last game (olOut: football.mjs olChanged, the
+  // game's snap counts in the history, the injury report's last five out for a coming game; 0 unread), his team's
+  // own pass rate over expected so far, per 10 points (proe: matchups.mjs nflRoundC), a back's late-season load
+  // (rbLoad), a passing-down back's role by the game's script (rbPass: his share of touches that are targets less
+  // the league's backs', per 10 points, times his side's margin by the lines the other way, per 10: a passing
+  // back on an underdog over 0; 0 without the lines), and his team's last regular-season game (lastGame: week
+  // 18's rest))
+  olOut: (info, home) => (Number.isFinite(info?.more?.olChanged?.[home ? 0 : 1]) ? info.more.olChanged[home ? 0 : 1] : 0),
+  proe: (info, home, pts, row) => (Number.isFinite(row?.proe) ? row.proe * 10 : 0),
+  rbLoad: (info, home, pts, row) => (Number.isFinite(row?.rbLoad) ? row.rbLoad : 0),
+  rbPass: (info, home, pts, row) => {
+    const m = spreadOf(row);
+    return m === null || !Number.isFinite(row?.rbRole) || !row.rbRole ? 0 : row.rbRole * 10 * ((-(home ? 1 : -1) * m) / 10);
+  },
+  lastGame: (info, home, pts, row) => (row?.lastGame === 1 ? 1 : 0),
 };
 // (a game's blowout by its betting lines: the spread either way, per 10 points; 0 without)
 export function blowOf(row) {

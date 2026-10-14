@@ -369,8 +369,11 @@ async function mlbRows(history, facts) {
   const seasons = [...new Set(history.map((g) => g.season))];
   const current = Math.max(...seasons);
   const batters = Object.keys(facts.hands ?? {});
+  // (a season kept before its rows carried strikeouts and walks (BAT_COLS: the starters' props' lineup terms,
+  // matchups.mjs batterTables) asked again once, a past one too)
+  const stale = (logs) => Object.values(logs ?? {}).some((x) => (x.rows?.[0]?.length ?? BAT_COLS) < BAT_COLS);
   for (const season of seasons) {
-    if (mine.logs[season] && (season < current || mine.at[season] >= today)) continue;
+    if (mine.logs[season] && !stale(mine.logs[season]) && (season < current || mine.at[season] >= today)) continue;
     const got = await mlbHitting(batters, season);
     if (!got) continue;
     mine.logs[season] = got;
@@ -381,10 +384,10 @@ async function mlbRows(history, facts) {
   const team = (id) => espnOfTeam.get(facts.mlbTeams?.[id]) ?? null;
   for (const [season, logs] of Object.entries(mine.logs)) {
     for (const [id, { n, rows }] of Object.entries(logs)) {
-      for (const [ymd, pk, teamId, oppId, home, pa, h, tb, hr] of rows) {
+      for (const [ymd, pk, teamId, oppId, home, pa, h, tb, hr, so, bb] of rows) {
         const g = byPk.get(pk);
         const date = g?.date ?? `${String(ymd).slice(0, 4)}-${String(ymd).slice(4, 6)}-${String(ymd).slice(6, 8)}T23:00Z`;
-        out.push({ pid: `mlb:${id}`, name: n, pos: 'B', date, season: Number(season), team: team(teamId), opp: team(oppId), game: g?.id ?? null, home: !!home, s: { pa, hits: h, tb, hr } });
+        out.push({ pid: `mlb:${id}`, name: n, pos: 'B', date, season: Number(season), team: team(teamId), opp: team(oppId), game: g?.id ?? null, home: !!home, s: { pa, hits: h, tb, hr, ...(Number.isFinite(so) ? { so, bb: Number.isFinite(bb) ? bb : 0 } : {}) } });
       }
     }
   }
@@ -392,7 +395,8 @@ async function mlbRows(history, facts) {
 }
 
 // (batters' hitting game logs for a season, 40 to a call: { id: { n: name, rows: [[yyyymmdd, gamePk, team,
-// opponent, home, PA, hits, total bases, home runs]] } }; null when StatsAPI fails)
+// opponent, home, PA, hits, total bases, home runs, strikeouts, walks]] } }; null when StatsAPI fails)
+const BAT_COLS = 11;
 async function mlbHitting(ids, season) {
   const { people, failed, calls } = await mlbPeople(ids, 40, `stats(group=[hitting],type=[gameLog],season=${season})`);
   if (failed > calls / 2) return null;
@@ -400,7 +404,7 @@ async function mlbHitting(ids, season) {
   for (const p of people) {
     const rows = (p.stats?.[0]?.splits ?? [])
       .filter((s) => s.date && (s.stat.plateAppearances ?? 0) > 0)
-      .map((s) => [Number(s.date.replace(/-/g, '')), s.game?.gamePk, s.team?.id, s.opponent?.id, s.isHome ? 1 : 0, s.stat.plateAppearances, s.stat.hits, s.stat.totalBases, s.stat.homeRuns]);
+      .map((s) => [Number(s.date.replace(/-/g, '')), s.game?.gamePk, s.team?.id, s.opponent?.id, s.isHome ? 1 : 0, s.stat.plateAppearances, s.stat.hits, s.stat.totalBases, s.stat.homeRuns, s.stat.strikeOuts ?? 0, (s.stat.baseOnBalls ?? 0) + (s.stat.hitByPitch ?? 0)]);
     if (rows.length) out[p.id] = { n: p.fullName, rows };
   }
   return out;

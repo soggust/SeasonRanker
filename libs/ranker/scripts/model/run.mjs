@@ -134,6 +134,7 @@ import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
+import { ROUND_C } from './project.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, choose, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
@@ -829,6 +830,14 @@ async function fitTheProps(r) {
       if (tr) kept.push(`team allocation at ${tr.size ?? 0}${tr.gap ? ` (held out ${tr.gap.n} of ${tr.gap.of} team-games read: players summed ${tr.gap.s}, the team's expected ${tr.gap.t} of actual; miss ${tr.gap.missS} against ${tr.gap.missT}${tr.gap.minutes ? `; minutes summed ${tr.gap.minutes.expected} a team-game expected, ${tr.gap.minutes.played} played, miss ${tr.gap.minutes.miss} (${tr.gap.minutes.n})` : ''})` : ''}${tr.logLoss ? `: log loss ${tr.logLoss[0]} to ${tr.logLoss[1]}, bias ${tr.bias?.[0]} to ${tr.bias?.[1]}, all players' ${tr.allBias?.[0]} to ${tr.allBias?.[1]}` : ''}${tr.fails?.length ? ` (left out: ${tr.fails.join(', ')})` : ''}, ${tr.seconds}s`);
       // (the recency weight's gate (project.mjs hl): the half-life picked inside the fit window (each one's score
       // on its last games, 0 none), the held-out log loss, biases, lean and dispersion without it and with it)
+      // (audit round C's terms' gates (project.mjs ROUND_C): the size the search took, the held-out log loss and the
+      // eligible players' and every player's bias without it and with it, its own rows' or each sign's, what failed)
+      const b4 = (x) => (x && Number.isFinite(x.bias) ? `${x.bias} (${x.n})` : 'n/a');
+      for (const k of ROUND_C) {
+        const c = f.floors?.[k];
+        if (!c) continue;
+        kept.push(`${k} at ${c.size ?? 0}${c.logLoss ? `: log loss ${c.logLoss[0]} to ${c.logLoss[1]}, bias ${c.bias?.[0]} to ${c.bias?.[1]}, all players' ${c.allBias?.[0]} to ${c.allBias?.[1]}` : ''}${c.on ? `, its rows ${b4(c.on[0])} to ${b4(c.on[1])}, eligible ${b4(c.onElig?.[0])} to ${b4(c.onElig?.[1])}` : ''}${c.sides ? `, sides ${c.sides.map((s) => `${b4(s[0])} to ${b4(s[1])}`).join(' / ')}` : ''}${c.fails?.length ? ` (left out: ${c.fails.join(', ')})` : ' (kept)'}`);
+      }
       const hl = f.floors?.hl;
       if (hl) kept.push(`recency at ${hl.size ?? 0}${Object.keys(hl.inner ?? {}).length ? ` (inside the fit window ${Object.entries(hl.inner).map(([h, v]) => `${h} ${v}`).join(', ')})` : ''}${hl.logLoss?.[0] !== null && hl.logLoss?.[0] !== undefined ? `: log loss ${hl.logLoss[0]} to ${hl.logLoss[1]}, bias ${hl.bias[0]} to ${hl.bias[1]}, all players' ${hl.allBias[0]} to ${hl.allBias[1]}, lean ${hl.scale[0]} to ${hl.scale[1]}, r ${hl.r[0]} to ${hl.r[1]}` : ''}${hl.fails?.length ? ` (left out: ${hl.fails.join(', ')})` : ''}, ${hl.seconds}s`);
       const cs = f.floors?.cs;

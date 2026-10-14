@@ -73,7 +73,8 @@ test('newsMissing: the NHL waits for both goalies; MLB lines for both starters a
   assert.deepEqual(newsMissing('mlb', mlb, { kind: 'props', home: true }), []);
   assert.deepEqual(newsMissing('mlb', mlb, { kind: 'props', home: false }), ['his lineup not posted']);
   assert.deepEqual(newsMissing('mlb', mlb, { kind: 'props', home: false, pitcher: true }), []);
-  assert.deepEqual(newsMissing('mlb', { ap: '12' }, { kind: 'props', home: true, pitcher: true }), ['his start not announced']);
+  assert.deepEqual(newsMissing('mlb', mlb, { kind: 'props', home: true, pitcher: true }), ["the other side's lineup not posted"]);
+  assert.deepEqual(newsMissing('mlb', { ap: '12' }, { kind: 'props', home: true, pitcher: true }), ['his start not announced', "the other side's lineup not posted"]);
 });
 
 const report = (home, away) =>

@@ -310,6 +310,62 @@ export function defenseOut() {
   return { missing, learn };
 }
 
+// (audit round C's NFL tables (props.mjs CTX proe, rbLoad, rbPass, lastGame), each read before a game and learned
+// after its day:
+//   proe      his team's own pass rate over expected so far (nflverse's xpass in neutral situations: the funnel's
+//             plays, sideOfPlays over and xn), last season's at half, pulled toward 0 by PROE_N plays; no
+//             play-by-play read, 0
+//   rbLoad    a back's carries a game this season over RB_LOAD (15), from his team's LATE_GAME-th game (13) on,
+//             RB_MIN_GAMES (4) of his or more; else 0: the late season's heavy load
+//   rbRole    a back's share of his touches that are targets this season (RB_MIN_GAMES or more) less the league's
+//             backs' (its running average): a passing-down back over 0
+//   lastGame  his team's last regular-season game (17 from 2021, 16 before): week 18's rest, 1; else 0)
+const PROE_N = 150;
+const RB_LOAD = 15;
+const LATE_GAME = 13;
+const RB_MIN_GAMES = 4;
+export function nflRoundC() {
+  const team = new Map();
+  const me = new Map();
+  const lg = { role: 0.2, n: 0 };
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  return {
+    of: (pid, teamId, season, pos, teamGame) => {
+      const t = team.get(teamId);
+      const w = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+      const proe = w ? r3((w * t.over) / (w * t.xn + PROE_N)) : 0;
+      const m = me.get(pid);
+      const mine = m?.season === season ? m : null;
+      const rb = POS(pos) === 'RB' && mine && mine.g >= RB_MIN_GAMES;
+      const rbLoad = rb && teamGame >= LATE_GAME ? r3(mine.car / mine.g / RB_LOAD) : 0;
+      const rbRole = rb && mine.car + mine.tgt > 0 ? r3(mine.tgt / (mine.car + mine.tgt) - lg.role) : 0;
+      return { proe, rbLoad, rbRole, lastGame: teamGame === (season >= 2021 ? 17 : 16) ? 1 : 0 };
+    },
+    learn: (g, side) => {
+      if (side && side.xn > 0) {
+        const t = team.get(g.team);
+        const keep = !t ? 0 : t.season === g.season ? 1 : t.season === g.season - 1 ? 0.5 : 0;
+        team.set(g.team, { season: g.season, over: (t?.over ?? 0) * keep + side.over, xn: (t?.xn ?? 0) * keep + side.xn });
+      }
+      for (const r of g.rows) {
+        if (POS(r.pos) !== 'RB') continue;
+        const car = r.s.rushAtt ?? 0;
+        const tgt = r.s.targets ?? 0;
+        if (car + tgt <= 0) continue;
+        let m = me.get(r.pid);
+        if (!m || m.season !== g.season) me.set(r.pid, (m = { season: g.season, g: 0, car: 0, tgt: 0 }));
+        m.g++;
+        m.car += car;
+        m.tgt += tgt;
+        if (car + tgt >= 5) {
+          lg.n++;
+          lg.role += (tgt / (car + tgt) - lg.role) / Math.min(lg.n, 2000);
+        }
+      }
+    },
+  };
+}
+
 export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   const games = new Map();
   for (const r of rows) {
@@ -337,6 +393,7 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   const poss = new Map();
   const possOf = (id, season) => decay(poss.get(id) ?? { season, tot: 0, shr: 0, n: 0 }, season);
   const funnel = passFunnel();
+  const roundC = nflRoundC();
   // (each team's games this season so far: a row's teamGame is the team's game number tonight, 1 for its first)
   const played_ = new Map();
   const gameNo = (id, season) => (played_.get(id)?.season === season ? played_.get(id).n : 0) + 1;
@@ -778,8 +835,11 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
         if (past) r.vacPast = past;
         r.oppDB = dOut?.DB ?? 0;
         r.oppFront = dOut?.FR ?? 0;
+        Object.assign(r, roundC.of(r.pid, g.team, g.season, r.pos, r.teamGame));
       }
     }
+    // (round C's usage and pass rate over expected learned from the day's games, after they're read)
+    for (const g of batch) roundC.learn(g, sideOfPlays(pbp?.[g.game], g.home));
     // (each side's defenders in the day's games learned)
     const seenDef = new Set();
     for (const g of batch) {
@@ -925,7 +985,7 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
       const p = POS(pos);
       // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
-      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => ({ ...absorb.dump(), read: learned }),
@@ -1516,12 +1576,146 @@ export function pitcherBefore(logs, season, day) {
   return { leash: Math.round(leash * 1000) / 1000, restDays, rest: restDays === null ? 0 : (Math.min(restDays, 10) - 5) / 5, debut: !cur.length, pitches: last2.map((r) => r[8]) };
 }
 
+// (audit round C's MLB tables, each read before a game and learned once its day is done: no look-ahead.
+//   batters  each one's strikeouts, walks, hits and total bases a plate appearance, this season's with last
+//            season's at half weight, pulled toward the league's by BAT_K (60) plate appearances (K and on-base),
+//            BAT_H (120: hits) and BAT_TB (150: total bases); his strikeouts and walks only from the logs that
+//            carry them (playerlogs.mjs mlbHitting's 10th and 11th columns: a cache from before them reads none)
+//   lineup   a starter's tonight (lineupOf: the other side's posted nine in order): its strikeout rate a plate
+//            appearance (each batter's at his slot's share of the plate appearances, paAt) over the league's, as a
+//            log (lineupK); the same less the other side's usual (its lineups' lineupK before tonight, EWMA
+//            LINEUP_EWMA: lineupKd); its on-base rate ((hits + walks) a plate appearance, lineupOb) over the
+//            league's, a log: more batters faced an out. None posted, or fewer than 7 of it read, or the league's
+//            strikeouts under LG_MIN plate appearances: none of them (the stat as without)
+//   park     each ballpark's hits and total bases over what the batters who played there hit everywhere (each
+//            one's rate before the game times his plate appearances), pulled toward even by PARK_H (250 hits) and
+//            PARK_TB (400 total bases), a log (parkH, parkTB); no ballpark known: 0
+//   PA       the plate appearances a start at each slot, home and away apart (the home side's ninth often not
+//            batted), learned from the starts (PA_BY_SLOT's at 50 starts a cell to begin), over his own
+//            plate appearances a game (his starts, this season's with last season's at half, pulled to 4 by 5
+//            games), a log (paX); no slot known: 0)
+const BAT_K = 60;
+const BAT_H = 120;
+const BAT_TB = 150;
+const PARK_H = 250;
+const PARK_TB = 400;
+const LINEUP_EWMA = 0.05;
+const LG_MIN = 2000;
+export function batterTables() {
+  const lg = { pa: 0, paK: 0, so: 0, bb: 0, hK: 0, h: 0, tb: 0 };
+  const lgAt = (k) => (k === 'so' ? (lg.paK >= LG_MIN ? lg.so / lg.paK : 0.222) : k === 'ob' ? (lg.paK >= LG_MIN ? (lg.hK + lg.bb) / lg.paK : 0.3) : lg.pa >= LG_MIN ? lg[k] / lg.pa : { h: 0.215, tb: 0.345 }[k]);
+  const me = new Map();
+  const parks = new Map();
+  const slots = Array.from({ length: 9 }, (_, i) => [0, 1].map(() => ({ pa: PA_BY_SLOT[i] * 50, n: 50 })));
+  const teamK = new Map();
+  const totalsOf = (pid, season) => {
+    const m = me.get(pid);
+    if (!m) return null;
+    const cur = m.season === season ? m.cur : null;
+    const prev = m.season === season ? m.prev : m.season === season - 1 ? m.cur : null;
+    const t = { pa: 0, paK: 0, so: 0, bb: 0, hK: 0, h: 0, tb: 0, g: 0, gpa: 0 };
+    for (const [x, w] of [[cur, 1], [prev, 0.5]]) if (x) for (const k of Object.keys(t)) t[k] += w * (x[k] ?? 0);
+    return t;
+  };
+  const rateOf = (pid, season, k) => {
+    const t = totalsOf(pid, season);
+    const lgR = lgAt(k);
+    if (k === 'so') return ((t?.so ?? 0) + BAT_K * lgR) / ((t?.paK ?? 0) + BAT_K);
+    if (k === 'ob') return ((t ? t.hK + t.bb : 0) + BAT_K * lgR) / ((t?.paK ?? 0) + BAT_K);
+    const m = k === 'h' ? BAT_H : BAT_TB;
+    return ((t?.[k] ?? 0) + m * lgR) / ((t?.pa ?? 0) + m);
+  };
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  const slotPa = (slot, home) => {
+    const c = slots[slot - 1][home ? 1 : 0];
+    return c.pa / c.n;
+  };
+  return {
+    // (a starter's: the other side's posted order tonight (ids), its season; oppKey, the other side's, for its usual)
+    lineupOf: (order, season, oppKey = null) => {
+      if (!Array.isArray(order) || order.length < 7 || lg.paK < LG_MIN) return {};
+      const ids = order.slice(0, 9).map((id) => `mlb:${String(id).replace(/^mlb:/, '')}`);
+      const read = ids.filter((pid) => (totalsOf(pid, season)?.paK ?? 0) > 0).length;
+      if (read < 7) return {};
+      let w = 0;
+      let k = 0;
+      let ob = 0;
+      ids.forEach((pid, i) => {
+        const wi = paAt(i + 1);
+        w += wi;
+        k += wi * rateOf(pid, season, 'so');
+        ob += wi * rateOf(pid, season, 'ob');
+      });
+      const lineupK = Math.log(k / w / lgAt('so'));
+      const usual = oppKey !== null ? teamK.get(`${oppKey}|${season}`) : undefined;
+      return { lineupK: r3(lineupK), lineupOb: r3(Math.log(ob / w / lgAt('ob'))), lineupKd: usual === undefined ? 0 : r3(lineupK - usual), lineupKRaw: lineupK };
+    },
+    // (a batter's: his slot tonight, home or away, the ballpark's id)
+    batterOf: (pid, season, slot, home, venue) => {
+      const out = {};
+      const p = venue ? parks.get(String(venue)) : null;
+      if (venue) Object.assign(out, { parkH: r3(Math.log(((p?.h ?? 0) + PARK_H) / ((p?.eh ?? 0) + PARK_H))), parkTB: r3(Math.log(((p?.tb ?? 0) + PARK_TB) / ((p?.etb ?? 0) + PARK_TB))) });
+      if (slot >= 1 && slot <= 9) {
+        const t = totalsOf(pid, season);
+        const usual = ((t?.gpa ?? 0) + 5 * 4) / ((t?.g ?? 0) + 5);
+        out.paX = r3(Math.log(slotPa(slot, home) / usual));
+      }
+      return out;
+    },
+    // (a day's rows learned: the parks' first, by each batter's rates before it; then his totals, the slots', the
+    // league's; and each starter's other side's usual lineup)
+    learn: (batch, venueOf) => {
+      for (const r of batch) {
+        if (r.pos !== 'B' || !(r.s?.pa > 0)) continue;
+        const v = venueOf(r);
+        if (!v) continue;
+        const p = parks.get(String(v)) ?? { h: 0, eh: 0, tb: 0, etb: 0 };
+        p.h += r.s.hits ?? 0;
+        p.tb += r.s.tb ?? 0;
+        p.eh += r.s.pa * rateOf(r.pid, r.season, 'h');
+        p.etb += r.s.pa * rateOf(r.pid, r.season, 'tb');
+        parks.set(String(v), p);
+      }
+      for (const r of batch) {
+        if (r.pos === 'SP' && Number.isFinite(r.lineupKRaw) && r.opp !== null && r.opp !== undefined) {
+          const key = `${r.opp}|${r.season}`;
+          const was = teamK.get(key);
+          teamK.set(key, was === undefined ? r.lineupKRaw : was + LINEUP_EWMA * (r.lineupKRaw - was));
+        }
+        if (r.pos !== 'B' || !(r.s?.pa > 0)) continue;
+        let m = me.get(r.pid);
+        const blank = () => ({ pa: 0, paK: 0, so: 0, bb: 0, hK: 0, h: 0, tb: 0, g: 0, gpa: 0 });
+        if (!m) me.set(r.pid, (m = { season: r.season, cur: blank(), prev: null }));
+        else if (m.season !== r.season) Object.assign(m, { prev: m.season === r.season - 1 ? m.cur : null, cur: blank(), season: r.season });
+        const s = r.s;
+        const hasK = Number.isFinite(s.so);
+        m.cur.pa += s.pa;
+        m.cur.h += s.hits ?? 0;
+        m.cur.tb += s.tb ?? 0;
+        if (hasK) (m.cur.paK += s.pa), (m.cur.so += s.so), (m.cur.bb += s.bb ?? 0), (m.cur.hK += s.hits ?? 0);
+        const batted = r.start === true || ((r.start === null || r.start === undefined) && s.pa >= 2);
+        if (batted) (m.cur.g += 1), (m.cur.gpa += s.pa);
+        lg.pa += s.pa;
+        lg.h += s.hits ?? 0;
+        lg.tb += s.tb ?? 0;
+        if (hasK) (lg.paK += s.pa), (lg.so += s.so), (lg.bb += s.bb ?? 0), (lg.hK += s.hits ?? 0);
+        if (r.start === true && r.slot >= 1 && r.slot <= 9) {
+          const c = slots[r.slot - 1][r.home ? 1 : 0];
+          c.pa += s.pa;
+          c.n += 1;
+        }
+      }
+    },
+  };
+}
+
 // MLB's: each batter's start, slot and platoon edge, and each starter's leash and rest, from the context's facts
 // (facts.games[id].lo: the lineups in order; hp, ap: the probable starters; facts.hands: how each bats and
 // throws; facts.pitchers: the starters' logs), each from before the game. The same for a coming game (live's
 // extra: the game's live facts (its posted lineups, its probables), whether he's home)
 export function mlbMatchups(rows, facts = null) {
   const hist = new Map();
+  const bat = batterTables();
   const handOf = (id) => facts?.hands?.[id] ?? null;
   const edgeOf = (bats, throws) => (!bats || !throws ? null : bats === 'S' || bats !== throws ? 1 : 0);
   const shifts = (pid, slot, edge) => {
@@ -1547,12 +1741,14 @@ export function mlbMatchups(rows, facts = null) {
       const f = r.game ? facts?.games?.[r.game] : null;
       if (r.pos === 'B') {
         const b = batter(r.pid, r.home, f?.lo, f ? f[r.home ? 'ap' : 'hp'] : null);
-        Object.assign(r, { start: b.start, slot: b.slot, edgeNow: b.edge }, shifts(r.pid, b.slot, b.edge));
+        Object.assign(r, { start: b.start, slot: b.slot, edgeNow: b.edge }, shifts(r.pid, b.slot, b.edge), bat.batterOf(r.pid, r.season, b.slot, r.home, f?.v ?? null));
       } else if (r.pos === 'SP') {
         const p = pitcherBefore(facts?.pitchers?.[String(r.pid).replace(/^mlb:/, '')]?.logs, r.season, d8Of(r.date));
-        Object.assign(r, { leash: p.leash, rest: p.rest, restDays: p.restDays });
+        Object.assign(r, { leash: p.leash, rest: p.rest, restDays: p.restDays }, bat.lineupOf(f?.lo?.[r.home ? 1 : 0] ?? null, r.season, r.opp));
       }
     }
+    // (the day learned once its games are read: each batter's rates, the parks' and the slots' tables)
+    bat.learn(batch, (r) => facts?.games?.[r.game]?.v ?? null);
     for (const r of batch) {
       if (r.pos !== 'B' || r.start === false) continue;
       const h = hist.get(r.pid) ?? { slotSum: 0, slotN: 0, edgeSum: 0, edgeN: 0 };
@@ -1568,10 +1764,10 @@ export function mlbMatchups(rows, facts = null) {
       const l = extra.live ?? {};
       if (extra.pitcher ?? pos === 'SP') {
         const p = pitcherBefore(facts?.pitchers?.[String(pid).replace(/^mlb:/, '')]?.logs, season, d8Of(extra.game?.date ?? Date.now()));
-        return { role: null, leash: p.leash, rest: p.rest, restDays: p.restDays, debut: p.debut, pitches: p.pitches };
+        return { role: null, leash: p.leash, rest: p.rest, restDays: p.restDays, debut: p.debut, pitches: p.pitches, ...bat.lineupOf(l.lineups?.[extra.home ? 1 : 0] ?? null, season, oppId) };
       }
       const b = batter(pid, extra.home, l.lineups, l[extra.home ? 'ap' : 'hp'] ?? null);
-      return { role: null, start: b.start, slot: b.slot, edgeNow: b.edge, ...shifts(pid, b.slot, b.edge) };
+      return { role: null, start: b.start, slot: b.slot, edgeNow: b.edge, ...shifts(pid, b.slot, b.edge), ...bat.batterOf(pid, season, b.slot, !!extra.home, l.v ?? null) };
     },
   };
 }

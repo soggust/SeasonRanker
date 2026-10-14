@@ -82,7 +82,16 @@ export const GAME_CAP = 5;
 // side and line class, fit every run on the graded props since the epoch, tracked rows among them; 0 under 300 rows
 // a spot, shrunk, capped, moved a little a run, kept only where the newest rows bear it out) and the projection
 // fits' recency weight (hl: kept on NFL passing yards and attempts).
-export const MODEL_EPOCH = '2026-10-14T06:00:00Z';
+// 2026-10-14, audit round C (each candidate a late term, kept only on a held-out gain of 0.0003 or more with the
+// biases no larger: project.mjs ROUND_C): kept, the other side's posted lineup's strikeout rate on MLB strikeouts
+// (lineupK 0.75, held out 0.6129 to 0.6042, +0.0087; a starter's props now wait for that lineup: timing.mjs) and the
+// last regular-season game on NFL passing yards (lastGame -0.05, 0.6528 to 0.6521, +0.0007; its 106 rows 17.6 to 8.3
+// yards over) and attempts (-0.05, 0.6208 to 0.6203, +0.0005). Measured and left out: the lineup against its usual
+// and its on-base rate, the ballpark, plate appearances by slot and home, the temperature, the wind, home or away, the
+// pull toward the middle on strikeouts and total bases; the NFL's own line changed, its pass rate over expected, a
+// back's late load, a passing-down back by the script, week 18 elsewhere. The red-zone share not built (no field
+// position in the kept play-by-play). Set to the push time.
+export const MODEL_EPOCH = '2026-10-14T14:11:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
