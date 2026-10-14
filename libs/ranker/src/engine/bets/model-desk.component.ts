@@ -97,10 +97,11 @@ const reducedMotion = (): boolean => {
   }
 };
 
-// The Algorithm's date ranges: the bets placed today, this month, this year, or ever
-type DeskRange = 'today' | 'month' | 'year' | 'all';
+// The Algorithm's date ranges: the bets placed today, yesterday, this month, this year, or ever
+type DeskRange = 'today' | 'yesterday' | 'month' | 'year' | 'all';
 const DESK_RANGES: { value: DeskRange; label: string }[] = [
   { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'Yesterday' },
   { value: 'month', label: 'This Month' },
   { value: 'year', label: 'This Year' },
   { value: 'all', label: 'All Time' },
@@ -314,6 +315,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const at = new Date(b.placedAt ?? b.start);
     const now = new Date();
     if (Number.isNaN(at.getTime())) return false;
+    // (yesterday by the calendar: the day before today's, across a month's or a year's turn)
+    if (this.range === 'yesterday') now.setDate(now.getDate() - 1);
     if (at.getFullYear() !== now.getFullYear()) return false;
     if (this.range === 'year') return true;
     if (at.getMonth() !== now.getMonth()) return false;
