@@ -130,11 +130,42 @@ test('nflMatchups: the round C fields on each row, from the games before it', ()
   assert.ok(paAt(1) > paAt(9));
 });
 
-test('kept where the held-out games bore them out: lineupK on MLB strikeouts, lastGame on NFL passing yards and attempts; the rest on no stat', async () => {
+test("batterTables parkRel: tonight's park against the parks his own rate was made in", () => {
+  const t = batterTables();
+  // (60 days: at park C everyone hits 2 in 4, at park N 1 in 4; batters 1-9 alternate C and N, batters 11-19 play
+  // every game at N)
+  for (let d = 1; d <= 60; d++) {
+    const rows = [];
+    const atC = d % 2 === 1;
+    for (let i = 1; i <= 9; i++) rows.push(bRow(i, d, { hits: atC ? 2 : 1, tb: atC ? 2 : 1, game: atC ? 'C' : 'N', slot: i }));
+    for (let i = 11; i <= 19; i++) rows.push(bRow(i, d, { hits: 1, tb: 1, game: 'N', slot: i - 10, home: false }));
+    t.learn(rows, (r) => r.game);
+  }
+  const atC = t.batterOf('mlb:1', 2025, 1, true, 'C').parkRel;
+  const atN = t.batterOf('mlb:1', 2025, 1, true, 'N').parkRel;
+  // (C over his usual, N under)
+  assert.ok(atC > 0.1 && atN < 0, `${atC} ${atN}`);
+  // (one who has only played at N: C reads further over his usual than for one with half his games there)
+  const nOnly = t.batterOf('mlb:11', 2025, 1, false, 'C').parkRel;
+  assert.ok(nOnly > atC, `${nOnly} ${atC}`);
+  // (no ballpark: none)
+  assert.equal(t.batterOf('mlb:1', 2025, 1, true, null).parkRel, undefined);
+});
+
+test('CTX hitEnv: the park against his usual plus 4% a 10°F and 4% a 10 mph out, outdoors, per 10%', () => {
+  const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `${a} ${b}`);
+  near(CTX.hitEnv({ weather: { temp: 90, windOut: 10 } }, true, null, { parkRel: 0.05 }), 10 * (0.05 + 0.04 * 2 + 0.04 * 1));
+  // (a closed roof: the park alone; nothing known: 0)
+  near(CTX.hitEnv({ roof: 'closed' }, true, null, { parkRel: -0.02 }), -0.2);
+  assert.equal(CTX.hitEnv({}, true, null, {}), 0);
+  assert.equal(CTX.parkRel({}, true, null, { parkRel: 0.03 }), 0.03);
+});
+
+test('kept where the held-out games bore them out: lineupK on MLB strikeouts, lastGame on NFL passing yards and attempts, hitEnv on MLB total bases; the rest on no stat', async () => {
   const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
   const { ctxKeys, ROUND_C } = await import('../libs/ranker/scripts/model/project.mjs');
   const on = Object.entries(STATS).flatMap(([sport, list]) => list.flatMap((st) => ctxKeys(st).filter((k) => ROUND_C.includes(`c_${k}`)).map((k) => `${sport} ${st.key} ${k}`)));
-  assert.deepEqual(on, ['nfl passYds lastGame', 'nfl passAtt lastGame', 'mlb k lineupK']);
+  assert.deepEqual(on, ['nfl passYds lastGame', 'nfl passAtt lastGame', 'mlb k lineupK', 'mlb tb hitEnv']);
   // (the shrinkage tried again with them on MLB strikeouts and total bases: left out, the pull on hits alone)
   assert.ok(!STATS.mlb.find((s) => s.key === 'k').middle && !STATS.mlb.find((s) => s.key === 'tb').middle);
 });

@@ -760,7 +760,7 @@ const DRAFT_GAIN = 0.0003;
 // whole stat's gate (the air and home signed, each side's bias no larger: SIGNED); the NFL's own line changed,
 // a back's late-season load and the last regular-season game on their own rows' (SUBGROUP), the pass rate over
 // expected on the whole stat's, a passing-down back by the script signed)
-export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame'];
+export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame', 'c_parkRel', 'c_hitEnv'];
 const ROUND_C_GRID = {
   c_lineupK: [0.25, 0.5, 0.75, 1, 1.25],
   c_lineupKd: [0.25, 0.5, 0.75, 1, 1.25],
@@ -776,6 +776,8 @@ const ROUND_C_GRID = {
   c_rbLoad: [-0.1, -0.05, -0.03, 0.03, 0.05],
   c_rbPass: [-0.05, -0.03, -0.015, 0.015, 0.03, 0.05],
   c_lastGame: [-0.15, -0.1, -0.05, 0.05],
+  c_parkRel: [0.25, 0.5, 0.75, 1],
+  c_hitEnv: [0.025, 0.05, 0.075, 0.1],
 };
 const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
@@ -837,7 +839,7 @@ const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeas
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
 // every player's, SUBGROUP_N or more each), each one's held-out bias no larger: a size that over-corrects one
 // side and under-corrects the other passes the whole stat's gate alone)
-const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB']);
+const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB', 'c_hitEnv']);
 const SIGNED_AT = 0.3;
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left

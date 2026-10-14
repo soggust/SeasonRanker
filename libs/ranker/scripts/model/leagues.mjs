@@ -91,7 +91,11 @@ export const GAME_CAP = 5;
 // pull toward the middle on strikeouts and total bases; the NFL's own line changed, its pass rate over expected, a
 // back's late load, a passing-down back by the script, week 18 elsewhere. The red-zone share not built (no field
 // position in the kept play-by-play). Set to the push time.
-export const MODEL_EPOCH = '2026-10-14T14:11:00Z';
+// 2026-10-14, the park and air re-checked: the batter's environment as one term on MLB total bases (hitEnv, his
+// ballpark against the parks his own rate was made in, plus the temperature and the wind out; 0.025, held out
+// 0.632 to 0.6317, +0.0003, bias -0.0198 to -0.012). Left out on hits (+0.0002) and every term alone. Set to the
+// push time.
+export const MODEL_EPOCH = '2026-10-14T14:40:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

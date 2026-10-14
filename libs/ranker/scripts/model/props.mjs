@@ -758,6 +758,23 @@ const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 // position, and no prop it bets but passing TDs scores on it)
 const RC_PASS = [...PASSING, 'lastGame'];
 const RC_K = [...PITCHER_CTX, 'lineupK'];
+// (the park and air re-checked, 2026-10-14 (the owner's doubt of round C): the round's park terms were sound in
+// their data (Coors +13%, Petco -9%; the wind toward center from StatsAPI's report, so out and in by the park's
+// own orientation; a closed roof none) but measured each alone against a projection that already carries part of
+// them: the hitter's own rate (half his games at his home park) and the game script (the game model's own runs
+// with the wind out and the thin air, Coors's altitude among it, at b 0.5). Raw, 2026's hitters at Coors 0.427
+// total bases a plate appearance against 0.356 at neutral parks (+20%), under 55°F 0.306 against 0.381 at 85°F
+// and up (2025-26); past the live model's projection, held out, Coors still +8% total bases, 85°F and up +4%,
+// wind in -3%. A park against the parks his rate was made in (parkRel, matchups.mjs) and the three as one term
+// (hitEnv: its weights 4% a 10°F and 4% a 10 mph out from the fit window alone) on the same gate: kept, hitEnv on
+// total bases (0.025: held out 0.632 to 0.6317, +0.0003; bias -0.0198 to -0.012, every player's -0.0187 to
+// -0.011; the warm-and-hitter-park side -0.0583 to -0.0275, the cold-and-pitcher-park side 0.0234 to 0.0006).
+// Left out: hitEnv on hits (+0.0002), parkRel alone (hits +0.0001, total bases +0.0002), the round's own again
+// (parkH 0 and +0.0002 with the bias larger, parkTB not taken, airTemp +0.0001 and +0.0002, windOutB 0 and
+// +0.0001, homeBat -0.0001 and 0); on the starters, airTemp (0, the bias larger) and windOutB (not taken) on
+// strikeouts and outs, homeBat on strikeouts (+0.0013) and outs (+0.0004) with both sides' bias halved but the
+// whole stat's larger (0.0101 to 0.0114, 0.0355 to 0.0373): left out by the gate's rule, a candidate)
+const RC_TB = [...BATTER_CTX, 'hitEnv'];
 export const STATS = {
   nfl: [
     stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB }),
@@ -787,7 +804,7 @@ export const STATS = {
     stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_K, pitcher: true }),
     stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: PITCHER_CTX, pitcher: true }),
     stat('hits', 'Hits', /^Total Hits$/, { played: BATTED, ctx: BATTER_CTX, ...MIDDLE }),
-    stat('tb', 'Total Bases', /^Total Bases$/, { played: BATTED, ctx: BATTER_CTX }),
+    stat('tb', 'Total Bases', /^Total Bases$/, { played: BATTED, ctx: RC_TB }),
   ],
 };
 
@@ -1038,6 +1055,12 @@ export const CTX = {
   airTemp: (info) => (Number.isFinite(info?.weather?.temp) && Number.isFinite(info?.weather?.windOut) ? (info.weather.temp - 70) / 10 : 0),
   windOutB: (info) => (Number.isFinite(info?.weather?.windOut) ? info.weather.windOut / 10 : 0),
   homeBat: (info, home) => (home ? 1 : -1),
+  // (the park and air re-checked, 2026-10-14: tonight's ballpark against the parks his own rate was made in
+  // (parkRel, matchups.mjs batterTables: a log; 0 unread), and the batter's whole environment as one term (hitEnv:
+  // parkRel plus 4% a 10°F over 70 and 4% a 10 mph out toward center, outdoors (airTemp, windOutB's), per 10%: the
+  // three's weights from the fit window alone (2025-07-19 to 2026-06-07), each alone under the floor)
+  parkRel: (info, home, pts, row) => (Number.isFinite(row?.parkRel) ? row.parkRel : 0),
+  hitEnv: (info, home, pts, row) => 10 * ((Number.isFinite(row?.parkRel) ? row.parkRel : 0) + 0.04 * CTX.airTemp(info) + 0.04 * CTX.windOutB(info)),
   // (audit round C, NFL: his own line's starters changed since its last game (olOut: football.mjs olChanged, the
   // game's snap counts in the history, the injury report's last five out for a coming game; 0 unread), his team's
   // own pass rate over expected so far, per 10 points (proe: matchups.mjs nflRoundC), a back's late-season load

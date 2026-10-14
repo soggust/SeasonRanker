@@ -841,6 +841,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_airTemp: 'temperature at first pitch, outdoors (MLB batters)',
       c_windOutB: 'wind out toward center, in negative (MLB batters)',
       c_homeBat: "home or away (MLB batters: the home side's ninth often not batted)",
+      c_parkRel: "the ballpark against the parks his own numbers were made in (MLB batters)",
+      c_hitEnv: 'the batting environment: the ballpark against his usual parks, the temperature and the wind out, as one (MLB batters)',
       c_olOut: "his own offensive line's starters changed or out (NFL)",
       c_proe: "his team's pass rate over expected so far (NFL)",
       c_rbLoad: "a back's late-season load: his carries a game from his team's 13th game on (NFL)",

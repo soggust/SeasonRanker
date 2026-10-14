@@ -1593,7 +1593,15 @@ export function pitcherBefore(logs, season, day) {
 //   PA       the plate appearances a start at each slot, home and away apart (the home side's ninth often not
 //            batted), learned from the starts (PA_BY_SLOT's at 50 starts a cell to begin), over his own
 //            plate appearances a game (his starts, this season's with last season's at half, pulled to 4 by 5
-//            games), a log (paX); no slot known: 0)
+//            games), a log (paX); no slot known: 0
+//   parkRel  (the park re-checked, 2026-10-14) the ballpark's hits over what its batters hit everywhere else (each
+//            one's rate away from this park, so a home side's own games don't pull its park toward even), pulled
+//            toward even by PARK_REL_PA (400) plate appearances at the league's rate, a log; less his own park
+//            mix (the PA-weighted average of that log over his games, this season's and last season's at half,
+//            pulled toward 0 by MIX_PA (20)): his rate already carries the parks he's played in (a Rockie's half
+//            Coors), so only tonight's park against his usual counts; no ballpark known: none)
+const PARK_REL_PA = 400;
+const MIX_PA = 20;
 const BAT_K = 60;
 const BAT_H = 120;
 const BAT_TB = 150;
@@ -1608,6 +1616,35 @@ export function batterTables() {
   const parks = new Map();
   const slots = Array.from({ length: 9 }, (_, i) => [0, 1].map(() => ({ pa: PA_BY_SLOT[i] * 50, n: 50 })));
   const teamK = new Map();
+  // (parkRel: each park's hits and the hits its batters hit away from it; each batter's own at each park and his
+  // park mix, by season ({ season, cur, prev }, as his totals))
+  const parks2 = new Map();
+  const atV = new Map();
+  const mix = new Map();
+  const seasonal = (map, key, season, blank) => {
+    let m = map.get(key);
+    if (!m) map.set(key, (m = { season, cur: blank(), prev: null }));
+    else if (m.season !== season) Object.assign(m, { prev: m.season === season - 1 ? m.cur : null, cur: blank(), season });
+    return m;
+  };
+  const weighted = (m, season, keys) => {
+    const t = Object.fromEntries(keys.map((k) => [k, 0]));
+    if (!m) return t;
+    const cur = m.season === season ? m.cur : null;
+    const prev = m.season === season ? m.prev : m.season === season - 1 ? m.cur : null;
+    for (const [x, w] of [[cur, 1], [prev, 0.5]]) if (x) for (const k of keys) t[k] += w * (x[k] ?? 0);
+    return t;
+  };
+  const hitsAway = (pid, season, v) => {
+    const t = totalsOf(pid, season);
+    const a = weighted(atV.get(`${pid}|${v}`), season, ['pa', 'h']);
+    return ((t?.h ?? 0) - a.h + BAT_H * lgAt('h')) / ((t?.pa ?? 0) - a.pa + BAT_H);
+  };
+  const parkLog = (v) => {
+    const p = parks2.get(String(v));
+    const k = PARK_REL_PA * lgAt('h');
+    return Math.log(((p?.h ?? 0) + k) / ((p?.eh ?? 0) + k));
+  };
   const totalsOf = (pid, season) => {
     const m = me.get(pid);
     if (!m) return null;
@@ -1655,6 +1692,10 @@ export function batterTables() {
       const out = {};
       const p = venue ? parks.get(String(venue)) : null;
       if (venue) Object.assign(out, { parkH: r3(Math.log(((p?.h ?? 0) + PARK_H) / ((p?.eh ?? 0) + PARK_H))), parkTB: r3(Math.log(((p?.tb ?? 0) + PARK_TB) / ((p?.etb ?? 0) + PARK_TB))) });
+      if (venue) {
+        const m = weighted(mix.get(pid), season, ['w', 's']);
+        out.parkRel = r3(parkLog(venue) - m.s / (m.w + MIX_PA));
+      }
       if (slot >= 1 && slot <= 9) {
         const t = totalsOf(pid, season);
         const usual = ((t?.gpa ?? 0) + 5 * 4) / ((t?.g ?? 0) + 5);
@@ -1675,6 +1716,27 @@ export function batterTables() {
         p.eh += r.s.pa * rateOf(r.pid, r.season, 'h');
         p.etb += r.s.pa * rateOf(r.pid, r.season, 'tb');
         parks.set(String(v), p);
+      }
+      // (parkRel's: each row's park as it read before the day, then the parks' by each batter's rate away from
+      // it, then his own at the park and his mix)
+      const now = new Map();
+      for (const r of batch) {
+        const v = r.pos === 'B' && r.s?.pa > 0 ? venueOf(r) : null;
+        if (v) now.set(r, [String(v), parkLog(v)]);
+      }
+      for (const [r, [v]] of now) {
+        const p = parks2.get(v) ?? { h: 0, eh: 0 };
+        p.h += r.s.hits ?? 0;
+        p.eh += r.s.pa * hitsAway(r.pid, r.season, v);
+        parks2.set(v, p);
+      }
+      for (const [r, [v, pf]] of now) {
+        const a = seasonal(atV, `${r.pid}|${v}`, r.season, () => ({ pa: 0, h: 0 })).cur;
+        a.pa += r.s.pa;
+        a.h += r.s.hits ?? 0;
+        const m = seasonal(mix, r.pid, r.season, () => ({ w: 0, s: 0 })).cur;
+        m.w += r.s.pa;
+        m.s += r.s.pa * pf;
       }
       for (const r of batch) {
         if (r.pos === 'SP' && Number.isFinite(r.lineupKRaw) && r.opp !== null && r.opp !== undefined) {
