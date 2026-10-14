@@ -662,7 +662,7 @@ export function c9(x) {
       const b = t.params ?? {};
       if (!a) continue;
       const on = (v) => fin(v) && v !== 0;
-      for (const p of ['roleK', 'fun', 'c', 'pc', 'tg', 'vc']) {
+      for (const p of ['roleK', 'fun', 'c', 'pc', 'ep', 'tg', 'vc']) {
         if (on(a[p]) && !on(b[p])) {
           bump('watch');
           rows.push({ key: `prop:${key}:${p}`, label: `${t.label ?? key} ${p}`, what: 'term dropped', status: 'watch', from: r4(a[p]), to: r4(b[p] ?? null) });

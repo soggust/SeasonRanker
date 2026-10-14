@@ -604,7 +604,9 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
     const [sa, sb] = [sh(a), sh(b)];
     const s = (sa * (1 - sb)) / (sa * (1 - sb) + sb * (1 - sa));
     const r4 = (x) => Math.round(x * 10000) / 10000;
-    return { playsX: r4(own * (1 + d.pace / (d.n + 4))), playsS: r4(tot(a) * tot(b) * 2 * s) };
+    // (neither side's tallies read (a team the history hasn't seen: an abbreviation it doesn't have, its first
+    // season), none: project.mjs's ep off on the row, the defense's pace (pc) as before, not the league's read as known)
+    return { playsX: o.n > 0 || d.n > 0 ? r4(own * (1 + d.pace / (d.n + 4))) : null, playsS: a.n > 0 || b.n > 0 ? r4(tot(a) * tot(b) * 2 * s) : null };
   };
   // (a player's role on his team before a game: his place among its players at his position, by targets (by
   // carries for a back))

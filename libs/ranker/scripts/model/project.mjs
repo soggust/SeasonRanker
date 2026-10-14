@@ -303,15 +303,21 @@
 //            plays a game times the other side's pace, matchups.mjs playsX; eg 3: the game's expected total times his
 //            team's share of it, playsS, the share its time of possession's measure) over their average in his games
 //            this season (eg 4, off the search: playsS over his team's actual plays in his games; eg 2: playsX over
-//            them, playsA), each average pulled toward even by PLAYS_M games, to the power ep; none read tonight, pc
-//            as before. His own team's pace is in his numbers, so only tonight's against his games' counts; the
-//            market's script (b, the spread's c_mSpread) fit before it stays as fit, so it's judged on top of them,
-//            and the opponent's tables still learn with the other side's pace in them, as with pc. Measured
-//            2026-10-13 on the eight volume stats: kept on passing attempts (ep 0.5/eg 3, held out 0.6219 to 0.6208,
+//            them, playsA), each average pulled toward even by PLAYS_M games, to the power ep; none read tonight
+//            (neither team's tallies: matchups.mjs), pc as before. His own team's pace is in his numbers, so
+//            tonight's is read against his games'; but pulled toward even, early in a season (his numbers leaning
+//            on last season's) part of his own team's pace is put back on them (the review of 2026-10-13; pulled
+//            toward last season's games' instead, the gain fell to +0.0001: playsFactor); the market's script b,
+//            fit before it, stays as fit, so it's judged on top of it; the spread's c_mSpread, where a stat has it
+//            (not passing attempts), is a ctx term tried after it, on top of it. The opponent's tables still learn
+//            with the other side's pace in them, as with pc. Measured 2026-10-13 on the eight volume stats: kept on passing attempts (ep 0.5/eg 3, held out 0.6219 to 0.6208,
 //            +0.0011, in place of pc 0.5; the eligible players' bias 0.4952 to 0.4694, every player's 0.7758 to
 //            0.7468); left out on the rest (props.mjs PLAYS' notes), their search off. Unmeasured: seconds a play in
 //            neutral situations and nflverse's drive times (the cached play-by-play keeps neither: a refetch of
-//            every season), the share of the plays standing in for the time of possession
+//            every season), the share of the plays standing in for the time of possession; a player on a new team
+//            (traded, or signed in the off-season) keeps his old team's games' average as the one tonight's is
+//            read against, as his numbers keep his old team's games (consistent, but the new team's pace read as
+//            tonight's swing)
 //   vacated  the NFL backs' and pass-catchers', every NBA player's (his team's minutes or usage), the NHL
 //            skaters' (their position's time on ice or power-play time): his cut of the work his group is
 //            missing (its regulars not playing, matchups.mjs vacs) over his own, against the cut he had in the games his
@@ -813,7 +819,7 @@ const PACE_M = 5;
 // side's pace) over their average in his games this season, 2 the same over his team's actual plays in his games
 // (playsA), 3 the game's expected total times his team's share of it (playsS: the time of possession's
 // measure) over its average in his games, 4 that over the actual; each average pulled toward even by PLAYS_M
-// games. In place of the defense's pace (pc: the other side's part is in it), never on top of it. Measured
+// games (playsFactor). In place of the defense's pace (pc: the other side's part is in it), never on top of it. Measured
 // 2026-10-13 on every NFL volume stat with all four forms: the search took only 2 and 3 (passing attempts 0.5/3,
 // kept; rushing yards 0.5/2 and rush+rec yards 0.5/2, passing yards, completions and receiving yards 3, left
 // out), so 1 and 4 are off the search (EG_FORMS), kept readable)
@@ -824,7 +830,13 @@ const PLAYS_M = 4;
 const paceKnownOf = (row) => row.paceKnown ?? Number.isFinite(row.paceG);
 // (expected plays' factor (ep), by its form eg: tonight's (playsX, or playsS for 3 and 4) over its average in his
 // games this season (the expected's for 1 and 3, his team's actual's for 2 and 4), the average pulled toward even
-// by PLAYS_M games; tonight's not read, null (the stat as without it))
+// by PLAYS_M games; tonight's not read, null (the stat as without it). Pulled toward even, not toward his own
+// team's level: early in a season (his numbers leaning on last season's) a fast team's pace is partly put back
+// on them, a slow team's taken off, fading as his games come in (the review of 2026-10-13). Measured the other
+// way (2026-10-13: pulled toward the same average in his games last season, itself pulled toward even, so a fast
+// team against an average side reads about even): passing attempts' gain fell to +0.0001 (ep 1/eg 3, held out
+// 0.6219 to 0.6218, under the floor: left out), against +0.0011 this way, so the held-out games want some of his
+// team's pace on top of his numbers early on; kept this way, the gate judging it each refit)
 export const playsFactor = (row, cur, eg) => {
   const now = eg >= 3 ? row.playsS : row.playsX;
   if (!(Number.isFinite(now) && now > 0)) return null;
@@ -1328,8 +1340,8 @@ export function makeModel(stat, params, env) {
     // kept readable for a fit made before)
     const paceNow = !stat.pace || !params.po ? 1 : params.pg >= 2 ? (!paceKnownOf(row) ? 1 : params.pg === 2 ? row.paceG / (((cur.pgs ?? 0) + PACE_M) / ((cur.pgn ?? 0) + PACE_M)) : row.pace / (((cur.ops ?? 0) + PACE_M) / ((cur.opn ?? 0) + PACE_M))) : ((params.pg ? row.paceG : row.pace) ?? 1);
     // (the NFL's expected plays (stat.plays, ep): his team's expected tonight over its average in his games, by
-    // eg's form (EG_FORMS), to the power ep; in place of the defense's pace (pc), whose part it holds. A row
-    // without them (an older cache's), pc as before)
+    // eg's form (EG_FORMS), to the power ep; in place of the defense's pace (pc), whose part it holds
+    // (the average pulled toward even: playsFactor). A row without them (an older cache's, a team unseen), pc as before)
     const playsNow = stat.plays && params.ep ? playsFactor(row, cur, params.eg) : null;
     const paceF = stat.pace ? (params.po ? Math.pow(paceNow, params.po) : 1) : playsNow !== null ? Math.pow(playsNow, params.ep) : stat.volume && params.pc ? Math.pow(row.pace ?? 1, params.pc) : 1;
     const tgtF = stat.targets && params.tg ? Math.pow(row.tgt ?? 1, params.tg) : 1;

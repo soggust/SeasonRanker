@@ -36,8 +36,9 @@ const league = () => {
 test("expected plays: a fast team's over the league's and its share over half; its game's own plays learned after it", () => {
   const rows = league();
   const m = nflMatchups(rows);
-  const first = rows.filter((r) => r.date === day(1));
-  for (const r of first) assert.ok(Math.abs(r.playsX - 62 / 62) < 0.05 && Math.abs(r.playsS - 1) < 0.05, `${r.team} ${r.playsX} ${r.playsS}`);
+  // (the first day: no team's tallies read, none (ep off on the row, pc as before); the second, near the league's)
+  for (const r of rows.filter((r) => r.date === day(1))) assert.ok(r.playsX === null && r.playsS === null, `${r.team} ${r.playsX} ${r.playsS}`);
+  for (const r of rows.filter((r) => r.date === day(2) && r.team !== 'F' && r.opp !== 'F')) assert.ok(Math.abs(r.playsX - 1) < 0.1 && Math.abs(r.playsS - 1) < 0.1, `${r.team} ${r.playsX} ${r.playsS}`);
   const last = rows.filter((r) => r.date === day(24));
   const f = last.find((r) => r.team === 'F');
   const slow = last.find((r) => r.team !== 'F' && r.opp !== 'F');
@@ -45,11 +46,14 @@ test("expected plays: a fast team's over the league's and its share over half; i
   assert.ok(f.playsS > slow.playsS, `F ${f.playsS} against ${slow.playsS}`);
   // (the game's own plays, over the league's: F's above, read only after it)
   assert.ok(f.playsA > slow.playsA);
-  // (live: the same tables after the last day; one with nothing read, the league's)
+  // (live: the same tables after the last day; teams with nothing read, none, not the league's read as known)
   const live = m.live('Fqb', 'F', 'A', 'QB', 2025);
   assert.ok(live.playsX > 1.1 && live.playsS > 1, `${live.playsX} ${live.playsS}`);
   const none = m.live('Xqb', 'X', 'Y', 'QB', 2025);
-  assert.ok(Math.abs(none.playsX - 1) < 1e-9 && Math.abs(none.playsS - 1) < 1e-9, `${none.playsX} ${none.playsS}`);
+  assert.ok(none.playsX === null && none.playsS === null, `${none.playsX} ${none.playsS}`);
+  // (one side read: what it says)
+  const half = m.live('Fqb', 'F', 'Y', 'QB', 2025);
+  assert.ok(half.playsX > 1.1 && half.playsS > 1, `${half.playsX} ${half.playsS}`);
 });
 
 test("expected plays' factor: tonight's over its average in his games, by the form; nothing read, none", () => {
@@ -86,4 +90,24 @@ test("in the projection: in place of the defense's pace, a row without them as b
   assert.ok(Math.abs(on.project({ ...row, playsX: undefined }).paceF - 1.1) < 1e-9);
   // (a stat not marked: none)
   assert.ok(Math.abs(plain.project(row).paceF - 1.1) < 1e-9);
+});
+
+test("in the projection, the kept form (eg 3): tonight's game total and share over his games', pulled toward even", () => {
+  const stat = { key: 'passAtt', volume: 'pass', plays: true };
+  const BASE = { K: 4, w: 0, a: 0, b: 0, roleK: Infinity, vc: 0, pc: 0.5 };
+  // (a fast team's quarterbacks: 4 games last season and 2 this one, every game's playsS 1.15)
+  const rowsOf = () => [[2024, 1], [2024, 2], [2024, 3], [2024, 4], [2025, 1], [2025, 2]].map(([season, d]) => Array.from({ length: 30 }, (_, i) => ({ pid: `q${i}`, pos: 'QB', season, date: `${season}-09-0${d}`, opp: 'x', pace: 1, playsX: 1.15, playsS: 1.15, playsA: 1.15, s: { passAtt: 30 } })));
+  const on = makeModel(stat, { ...BASE, ep: 0.5, eg: 3 }, {});
+  const days = rowsOf();
+  for (const d of days) on.learn(d);
+  // (tonight's 1.15 over his 2 games' 1.15 pulled by 4 toward even, to the power 0.5: the defense's pace (1.3)
+  // not on top; a fast team's pace partly put back early in a season, as measured: playsFactor)
+  const row = { pid: 'q1', pos: 'QB', season: 2025, date: '2025-09-09', opp: 'x', pace: 1.3, playsX: 1.15, playsS: 1.15 };
+  const f = on.project(row).paceF;
+  assert.ok(Math.abs(f - Math.pow(1.15 / ((2 * 1.15 + 4) / 6), 0.5)) < 1e-9, `${f}`);
+  // (his first game of a season (none this one yet): tonight's over even, to the power 0.5)
+  const first = on.project({ ...row, pid: 'q2', season: 2026, date: '2026-09-09', playsS: 1.2 });
+  assert.ok(Math.abs(first.paceF - Math.pow(1.2, 0.5)) < 1e-9, `${first.paceF}`);
+  // (tonight's not read (a team unseen): the defense's pace to the power pc, as before)
+  assert.ok(Math.abs(on.project({ ...row, playsS: null }).paceF - Math.pow(1.3, 0.5)) < 1e-9);
 });

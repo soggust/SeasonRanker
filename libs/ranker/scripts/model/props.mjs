@@ -717,7 +717,10 @@ const START = { start: true };
 // to 0.4694 attempts a game, every player's 0.7758 to 0.7468). Left out: passing yards (0.5/3, -0.0008), completions
 // (1/3, -0.0022), rushing yards (0.5/2, +0.0003, both biases larger: -0.5578 to -0.6345, every player's -0.9654 to
 // -1.0309), receiving yards (0.5/3, -0.0002), rush+rec yards (0.5/2, 0), carries and receptions not taken on the fit
-// window. Their search (about 65s a run, 3.6s to 26.5s a stat) off; the mark back on a stat to try it again)
+// window. Their search (about 65s a run, 3.6s to 26.5s a stat) off; the mark back on a stat to try it again.
+// The mark and the forms searched were picked on the held-out window (the best of eight stats' tries), so its
+// gain there isn't wholly an independent check: the gate judges it again on every hourly refit, and the mark
+// comes off should ep be left out or its gain fall under the floor (selfcheck watches ep dropped))
 const PLAYS = { plays: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 export const STATS = {
