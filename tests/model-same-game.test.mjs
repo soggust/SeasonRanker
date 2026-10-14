@@ -234,6 +234,13 @@ test('placeGame: sized before the room and the cap; the open props fixed, the op
   assert.match(cut.context.sameGame, /^3u sized to 2u /);
   assert.match(cut.context.cap, /^2u cut to [\d.]+u: the game's 5u cap$/);
   assert.equal(e.capped, e.kept.filter((x) => x.context?.cap).length);
+  // (an open action prop the room takes back: the edge props sized again without it, not cut for a bet that's gone;
+  // 1.5u each with it counted, so 4.5u asked of a 6u cap with 2u open)
+  const along = prop('along', 'over', 2, { athlete: 'z', intent: 'action', start: '2026-10-01T20:00Z' });
+  assert.deepEqual(placeGame(mine(), [along], rho, 8).kept.map((x) => x.units), [1.5, 1.5, 1.5]);
+  const gone = placeGame(mine(), [along], rho, 6);
+  assert.deepEqual(gone.out, [along]);
+  assert.deepEqual(gone.kept.map((x) => x.units), [2, 2, 2]);
   // (no rho: the stakes as they came)
   assert.deepEqual(placeGame(mine(), [], { player: 0, game: 0 }, 99).kept.map((x) => x.units), [3, 3, 3]);
 });

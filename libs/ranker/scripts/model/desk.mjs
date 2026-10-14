@@ -485,15 +485,18 @@ export function sameGameOf(list) {
 
 // A game's new bets placed (run.mjs placeBets): its edge props sized jointly at the rhos used (sizeJointly; its
 // props standing open counted as placed), then room made among its open action bets for its edge bets
-// (makeRoom: takeable, which of them may go), then the game's cap (capGame) on what's left open; a tracked row
-// (TRACK) stakes nothing, in none of the three (kept outside the cap, never sized, never taken back). Returns out
+// (makeRoom: takeable, which of them may go; a prop it takes back sized against no longer: the edge props sized
+// again without it, so a stake isn't cut for a bet that's gone), then the game's cap (capGame) on what's left
+// open; a tracked row (TRACK) stakes nothing, in none of the three (kept outside the cap, never sized against,
+// never taken back). Returns out
 // (the open bets taken back), open (the units still open on it), dropped, and kept: each with its notes, the
 // sizing's (context.sameGame in words and context.sameGameFrom, its stake before, for sameGameOf's replay) and
 // the cap's, and sized and capped (how many each cut)
 export function placeGame(mine, standing, rho, cap, takeable = () => true) {
-  const bets = sizeJointly(mine, standing.filter((b) => b.market === 'prop'), rho);
+  let bets = sizeJointly(mine, standing.filter((b) => b.market === 'prop'), rho);
   const need = bets.filter((b) => intentOf(b) === 'edge').reduce((t, b) => t + b.units, 0);
   const out = makeRoom(standing, need, cap, takeable);
+  if (out.some((b) => b.market === 'prop')) bets = sizeJointly(mine, standing.filter((b) => b.market === 'prop' && !out.includes(b)), rho);
   const open = standing.filter((b) => !out.includes(b)).reduce((t, b) => t + b.units, 0);
   const res = capGame(bets, open, cap);
   let sized = 0;
