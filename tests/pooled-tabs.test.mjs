@@ -117,7 +117,7 @@ const zOf = (values, v) => {
 };
 
 test('the sports with a pooled tab: MLB, the NBA and the NHL as each one gets its Top 50; never the NFL or MMA', () => {
-  for (const sport of ['nba', 'nhl']) assert.ok(POOLING.includes(sport), `pooling: ${POOLING}`);
+  for (const sport of ['mlb', 'nba', 'nhl']) assert.ok(POOLING.includes(sport), `pooling: ${POOLING}`);
   assert.ok(!POOLING.includes('nfl') && !POOLING.includes('mma'));
 });
 

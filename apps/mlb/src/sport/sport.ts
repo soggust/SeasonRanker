@@ -77,6 +77,7 @@ export const SPORT: SportConfig = {
   seasonText: (season) => `${season}`,
   positionNames: {
     TM: 'Team',
+    TOP: 'Top 50',
     C: 'Catcher',
     '1B': 'First Baseman',
     '2B': 'Second Baseman',
@@ -89,6 +90,7 @@ export const SPORT: SportConfig = {
   },
   tabNames: {
     TM: 'Teams',
+    TOP: 'Top 50',
     C: 'Catchers',
     '1B': 'First Base',
     '2B': 'Second Base',
@@ -102,6 +104,11 @@ export const SPORT: SportConfig = {
   coachTab: null,
   teamTabs: ['TM'],
   rowHeader: (position) => (position === 'TM' ? 'Team' : 'Player'),
+  // The Top 50: every position player together, designated hitters too (no pitchers), ranked on the
+  // hitters' stats (pooled-tabs.ts), its top 50 shown (the rest one click away). The Position
+  // Adjustment measures each stat partly within his own tab (outfielders already one).
+  pooledTabs: { TOP: { tabs: ['C', '1B', '2B', '3B', 'SS', 'OF', 'DH'] } },
+  listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each group by your rankings, weighted by playing time
   rosterGrades: [
     { key: 'hitters', positions: ['C', '1B', '2B', '3B', 'SS', 'OF', 'DH'], usage: (p) => p.stats.pa ?? 0 },

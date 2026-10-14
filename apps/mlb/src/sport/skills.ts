@@ -32,6 +32,8 @@ export const SKILLS: Record<SkillPosition, SkillDef[]> = {
     { id: 'roster', name: 'Roster', short: 'Roster', parts: [['hitters', 1], ['rotation', 1], ['bullpen', 1]] },
     { id: 'close', name: 'Close Games', short: 'Close Games', parts: [['pythDiff', 1]] },
   ],
+  // (a Top 50 card opens on his own tab: these just fill the type)
+  TOP: HITTER_SKILLS,
   C: CATCHER_SKILLS,
   '1B': HITTER_SKILLS,
   '2B': HITTER_SKILLS,
@@ -129,6 +131,7 @@ export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
     { name: 'Pitching Woes', test: (s) => s['prevention'] <= 0.15 && s['winning'] <= 0.45 },
     { name: 'Punchless Lineup', test: (s) => s['offense'] <= 0.15 && s['winning'] <= 0.45 },
   ],
+  TOP: HITTER_ARCHETYPES,
   C: HITTER_ARCHETYPES,
   '1B': HITTER_ARCHETYPES,
   '2B': HITTER_ARCHETYPES,
@@ -161,6 +164,7 @@ export function fallbackArchetype(position: SkillPosition, overall: number, _pla
   if (position === 'TM') return overall >= 0.75 ? 'Contender' : overall >= 0.45 ? 'Playoff Team' : overall >= 0.25 ? 'Bubble Team' : 'Retooling';
   const noun: Record<SkillPosition, string> = {
     TM: 'Team',
+    TOP: 'Hitter',
     C: 'Catcher',
     '1B': 'First Baseman',
     '2B': 'Second Baseman',

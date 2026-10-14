@@ -77,6 +77,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       weights: { defRank: 100, era: 90, fieldingRuns: 60, rotation: 50, bullpen: 40 },
     },
   ],
+  // (every position player together: the hitters' presets)
+  TOP: HITTER_PRESETS,
   C: HITTER_PRESETS,
   '1B': HITTER_PRESETS,
   '2B': HITTER_PRESETS,
