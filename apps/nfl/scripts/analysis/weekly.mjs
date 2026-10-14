@@ -5,7 +5,8 @@
 //
 // Season's end (as MLB, NBA and NHL's: libs/ranker/scripts/analysis/weekly.mjs): a team whose season is over
 // (season-state.mjs, from the schedule: its regular season done without a playoff spot, a playoff loss, or
-// the Super Bowl played) gets its recap, the year in one section, and so do its QBs. That's its last report
+// the Super Bowl played) gets its recap, the year in one section, and so do its QBs with 4+ regular-season
+// starts (a QB with fewer gets none, and no more previews). That's its last report
 // of the season: the runs after it skip the team and its QBs (analyze.mjs's jobs).
 //
 // No betting angles (2026-10-14, the owner's: every sport's analysis matches, MLB/NBA/NHL's have none; the

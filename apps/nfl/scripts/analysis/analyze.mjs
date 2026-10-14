@@ -15,7 +15,8 @@
 // Two kinds of report, as MLB, NBA and NHL's (libs/ranker/scripts/analysis/analyze.mjs):
 //   preview  while the team's season is on: who it is, what drives it, the coming game, the rest of the season
 //   recap    once its season is over (out of the playoffs, or the Super Bowl played; season-state.mjs): the
-//            year in one section, for the team and its QBs. That's its last report of the season: the
+//            year in one section, for the team and its QBs (those with 4+ regular-season starts; a QB with
+//            fewer gets none, and no more previews: qb-sheet.mjs). That's its last report of the season: the
 //            weekly runs skip a row whose recap is out (recapDone).
 //
 // Needs ANTHROPIC_API_KEY (not for --publish or --dry).
@@ -41,9 +42,18 @@ const EFFORT = process.env.EFFORT ?? 'high';
 // $ per million tokens (Opus 5.5); the Batch API halves both
 const PRICE = { input: 4, output: 20 };
 
+// A QB's sheet works the arithmetic out for him (qb-sheet.mjs), so his reports follow the same rule: what
+// they compute is in the sheet; what they think isn't arithmetic and stays theirs
+const QB_WORKED = "season.perGame, season.pace17, season.recent, season.vsLastSeason, season.vsLeague, season.asStarter and the splits' epaTotal";
+export const QB_NUMBERS_RULE = `Cite only numbers in the dossier: don't add up, subtract, average or round dossier numbers yourself (no totals summed from games, no combined EPA over a few games or plays, no per-game rates, differences, shares or paces you work out). The dossier has done that arithmetic for you: ${QB_WORKED}. If a number you want isn't in it, say it in words ("most of his yards", "worse since the bye") rather than with a number.`;
+const SHARP = `That rule is about arithmetic, not about thinking: be as sharp as ever. Set numbers side by side (his last few games against his season, this year against last, him against the league, one split against another), say what produces them, follow the trend, and take a clear position; just quote the dossier's numbers for it.`;
+const QB_WORKED_OUT = `- Worked out for you (quote these instead of computing): season.starts (his regular-season starts); season.perGame (a game's averages; passYards, passTds, rushYards and passEpa as [value, rank, of] among the qualifiers); season.pace17 (his per-game rate over a 17-game season); season.recent.last3 and last5 (his last 3 and 5 games: the weeks, his team's record in them, cmpAtt and totals, the rates, perGame, and vsSeason = the stretch minus the whole season, so positive means higher lately; for sackPct and intPct higher is worse); season.vsLastSeason (lastSeason: last year's rates and a game's averages; change: this season minus last); season.vsLeague (leagueAverage: the qualifiers' average; overAverage: his minus it); season.asStarter (his line in the games he started, when he also played in some he didn't); season.totals.passEpa (his passing EPA added up). In splits, epaTotal is the EPA those plays added up to (and dropbackEpaTotal all his dropbacks'); depthGroups puts the depths in two (under10, tenPlus air yards) and chartedAtt counts the attempts with an air-yards figure; topTargets each carry epaTotal.`;
+
 const SYSTEM = `You are the analyst behind a football rankings site's player cards. The reader has opened a player's Analysis tab to understand him properly: what kind of player he is, what's really driving his numbers, what's real and what's noise, how the coming game sets up, and what to expect the rest of the season. Write like a sharp film-and-numbers analyst talking to a smart fan: in depth, in context, with a point of view. Not a stat table read aloud, not a hype piece, not a list of disconnected bullet points.
 
-You get one player's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or contracts beyond what the dossier says, and never state a number that isn't in it or directly derivable from it (a difference, a per-game average or a ratio of dossier numbers is fine). The one exception is restOfSeason.projections, which are your own estimates. If something you'd want to know isn't there, don't guess.
+You get one player's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or contracts beyond what the dossier says. ${QB_NUMBERS_RULE} The one exception is your own forecast: restOfSeason.projections, the ranges you project, which the restOfSeason body may quote. If something you'd want to know isn't there, don't guess.
+
+${SHARP}
 
 How to read the dossier:
 - [value, rank, of]: the value, its rank among the position's qualifiers this season (1 = best; for "bad" stats like ints, sackPct, fumblesLost, rank 1 is the fewest), and how many qualify. Career lines rank within that season's site list.
@@ -52,6 +62,7 @@ How to read the dossier:
 - splits: play-by-play cuts — byDepth (air yards), byDirection, third down, red zone, byScore (game state), shotgun vs under center, scrambles and designed runs; for receivers share of team red-zone and third-down targets, end-zone targets, YAC over expected; for runners by run direction/gap, goal line, short yardage.
 - team: his offense and defense, ranked (defense ranks: 1 = stingiest); qbStarts: who started at QB each week; injuries: his offensive teammates on the injury report, most-used first (snapPct = their share of snaps this season: 90+ is a starter, under 30 a backup). nextGame: the coming opponent, the sportsbook line (line like "BAL -2.5" names the favorite and the spread; overUnder; his team's moneyline), the opponent's injury report, its defense profile and what it allows to his position (pprPerGame etc.: rank 1 = allows the least). oppVsPosition: that defense by role: pprOverAvg.WR1 (WR2, WR3, TE1 the top tight end, RB1 the lead back) = [PPR points a game those players scored against it over their own averages elsewhere, rank, of] (rank 1 = held them furthest under: an elite WR1 held to his average reads as good defense; his role is his place in his team's target or carry share); epaPerPlay.WR1 (and the other roles) = [EPA a play the defense allowed to that role (a target; the lead back's targets and carries), rank, of] (rank 1 = the stingiest); passRateOverNorm = [how many points more often offenses pass on it than they usually do in neutral situations, given the down, distance and field position (pass rate over expected), (negative: they run more, a run funnel), rank (1 = the strongest pass funnel), of]; targetShare = [share of the targets against it to WRs / TEs / RBs, the league's share]. Treat these as context to weigh with everything else, not a verdict on their own: they rest on few games early in a season, and a role's rank can come from who the defense happened to face.
 - career: past seasons, each stat ranked within that season. Use it to separate a real change from a blip, and to see what he has always been.
+${QB_WORKED_OUT}
 - Injuries: player.injury is his own status, with ESPN's news note and an expected return date (an estimate, not a promise). Notes are reports as of their "reported" date: news, not certainty. When availability matters — his own, his QB's, his blockers', his key targets', or a starter on the other side who bears on his matchup — say what it changes and why, concretely. Don't list injuries that don't touch him.
 - Weather: nextGame.weather is the kickoff forecast at the stadium (roof: outdoors; retractable, likely closed in bad weather; or indoors, where weather doesn't matter). early: true means it's more than 3 days out and rough, especially wind: mention a big system, hedged, but don't build a case on it. What moves games: sustained wind of 15+ mph (or gusts of 25+) hurts passing, the deep game and kicking, and leans totals and passing numbers down; heavy rain or snow (a high precipChance with real precipIn) hurts passing and ball security somewhat; cold alone matters little. When it's mild, say nothing about it.
 - Early in a season samples are small: weigh them honestly (a 15-attempt split is a hint, not a fact) and say so when it matters, without hedging everything.
@@ -138,7 +149,7 @@ ${RECAP_STYLE}`;
 
 const QB_RECAP_SYSTEM = `You are the analyst behind a football rankings site's player cards. This quarterback's season is over: his team's is (status.ended says how it ended, status.teamRecord its regular-season record). The reader has opened his Analysis tab for the recap of his year: what kind of quarterback he was, how his season unfolded, what drove his numbers, what was real and what was noise, and what the year leaves for next season. Write like a sharp film-and-numbers analyst looking back with a point of view, in depth and in context: not a stat table read aloud, not a eulogy or a hype piece.
 
-You get one player's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or contracts beyond what the dossier says. ${numbersRule('season.totals (the regular season) and season.playoffs (his playoff games, when he played some)')} If something you'd want to know isn't there, don't guess.
+You get one player's dossier as JSON. It is your only source. Use no outside knowledge of players, teams, injuries, trades or contracts beyond what the dossier says. ${numbersRule(`season.totals (the regular season), season.playoffs (his playoff games, when he played some), and ${QB_WORKED}`)} If something you'd want to know isn't there, don't guess.
 
 How to read the dossier:
 - [value, rank, of]: the value, its rank among the position's qualifiers this season (1 = best; for "bad" stats like ints, sackPct, fumblesLost, rank 1 is the fewest), and how many qualify. Career lines rank within that season's site list.
@@ -148,6 +159,7 @@ How to read the dossier:
 - gameLog: each of his games from his team's side, its playoff games last (round: the playoff round): favoredBy (Vegas; negative = underdog), covered, overUnder, oppDefRankNow (that defense's EPA rank, 1 = best). line holds his stats that game (pressuredPct, blitzed and badThrowPct from PFR charting; time to throw and aggressiveness from Next Gen Stats; snapPct).
 - splits: play-by-play cuts: byDepth (air yards), byDirection, third down, red zone, byScore (game state), shotgun vs under center, scrambles and designed runs.
 - team: his offense and defense, ranked (defense ranks: 1 = stingiest); qbStarts: who started at QB each week.
+${QB_WORKED_OUT}
 - career: past seasons, each stat ranked within that season. Use it to separate a real change from a blip, and to see what he has always been.
 
 Think like a football analyst, not a spreadsheet. Before you call any number a strength or a weakness, ask what produced it, and judge the cause, not the number: a stat is often the price of a strength, or a product of his role, scheme, teammates, opponents or game script (a scrambler's sacks and long time to throw, numbers piled up in garbage time, a dip that lines up with a missing tackle or a run of top defenses). Check the career before calling anything new, and separate what held up all year from what rested on a handful of plays (TD rate on small volume, fumble luck).
@@ -312,10 +324,12 @@ export const params = (dossier) => ({
 const at = (obj, p) => p.split('.').reduce((o, k) => (o === null || o === undefined ? undefined : o[/^\d+$/.test(k) ? Number(k) : k]), obj);
 // The value an evidence path shows: a ranked [value, rank, of] reads as its value and its rank; a short
 // text (a record, a score) as itself
+// (a path cited without its "season." — pressure.badThrowPct for season.pressure.badThrowPct — read as that)
 export function resolve(dossier, p) {
-  const v = at(dossier, p);
+  const v = at(dossier, p) ?? (p.startsWith('season.') ? undefined : at(dossier, `season.${p}`));
   if (v === undefined || v === null || (typeof v === 'object' && !Array.isArray(v))) return null;
-  if (Array.isArray(v)) return v.length === 3 && v.every((x) => typeof x === 'number') ? { value: v[0], rank: v[1], of: v[2] } : null;
+  // (a share beside the league's, [share, league share], reads as the share)
+  if (Array.isArray(v)) return !v.every((x) => typeof x === 'number') ? null : v.length === 3 ? { value: v[0], rank: v[1], of: v[2] } : v.length === 2 ? { value: v[0] } : null;
   if (typeof v === 'string' && v.length > 40) return null;
   return { value: v };
 }
@@ -324,7 +338,7 @@ export function resolve(dossier, p) {
 export function numbersIn(obj, out = new Set()) {
   const add = (n) => {
     for (const x of [n, Math.round(n * 10) / 10, Math.round(n * 100) / 100, Math.round(n)]) out.add(Math.abs(x));
-    if (Math.abs(n) < 1) out.add(Math.abs(Math.round(n * 1000) / 10)); // .363 -> 36.3%
+    if (Math.abs(n) < 1) out.add(Math.abs(Math.round(n * 1000) / 10)).add(Math.abs(Math.round(n * 100))); // .363 -> 36.3%, 36%
   };
   if (typeof obj === 'number') add(obj);
   else if (typeof obj === 'string') for (const m of obj.matchAll(/\d+(?:\.\d+)?/g)) add(Number(m[0]));
@@ -339,8 +353,10 @@ const proseOf = (r) =>
 export function check(report, dossier) {
   const problems = [];
   for (const e of points(report).flatMap((p) => p.evidence)) if (!resolve(dossier, e.path)) problems.push(`bad path: ${e.path}`);
-  // numbers in the prose that aren't in the dossier (small counts, and the projections, aren't checked)
+  // numbers in the prose that aren't in the dossier (small counts aren't checked; the report's own
+  // projections, its forecast, are its to quote)
   const known = numbersIn(dossier);
+  for (const p of report.restOfSeason?.projections ?? []) numbersIn([p.low, p.high], known);
   for (const m of proseOf(report).join(' ').matchAll(/-?\d{1,3}(?:,\d{3})+(?:\.\d+)?|-?\d*\.?\d+/g)) {
     const n = Math.abs(Number(m[0].replace(/,/g, '')));
     if (Number.isInteger(n) && n <= 20) continue;
@@ -465,23 +481,25 @@ export function publish({ siteDir = SITE, reportsDir = REPORTS, base = BASE, sea
 
 // The jobs the command line asks for: --qbs (every QB), --teams (every team), --team=BAL, and names; a row
 // whose recap is out this season is done for the year (its last report), and skipped
-export function jobs(args = process.argv.slice(2)) {
-  const players = JSON.parse(readFileSync(path.join(BASE, 'index.json'), 'utf8'));
-  const teams = JSON.parse(readFileSync(path.join(BASE, 'team-index.json'), 'utf8'));
+export function jobs(args = process.argv.slice(2), { base = BASE, reportsDir = REPORTS } = {}) {
+  const players = JSON.parse(readFileSync(path.join(base, 'index.json'), 'utf8'));
+  const teams = JSON.parse(readFileSync(path.join(base, 'team-index.json'), 'utf8'));
   const names = args.filter((a) => !a.startsWith('--')).map((x) => x.toLowerCase());
   const ids = new Set();
-  if (args.includes('--qbs')) for (const p of players) if (p.pos === 'QB') ids.add(p.gsis);
+  // (a QB whose team's season is over with under 4 starts gets no recap, and no more previews: mode 'none')
+  const due = (p) => p.mode !== 'none';
+  if (args.includes('--qbs')) for (const p of players) if (p.pos === 'QB' && due(p)) ids.add(p.gsis);
   if (args.includes('--teams')) for (const t of teams) ids.add(`team-${t.team}`);
   for (const a of args) if (a.startsWith('--team=')) ids.add(`team-${a.slice(7).toUpperCase()}`);
-  for (const p of players) if (names.some((n) => p.name.toLowerCase().includes(n))) ids.add(p.gsis);
+  for (const p of players) if (due(p) && names.some((n) => p.name.toLowerCase().includes(n))) ids.add(p.gsis);
   // (--skip-done: not the ones already written today)
   const today = new Date().toISOString().slice(0, 10);
-  const done = (id) => existsSync(path.join(REPORTS, `${id}.json`)) && JSON.parse(readFileSync(path.join(REPORTS, `${id}.json`), 'utf8')).at.startsWith(today);
+  const done = (id) => existsSync(path.join(reportsDir, `${id}.json`)) && JSON.parse(readFileSync(path.join(reportsDir, `${id}.json`), 'utf8')).at.startsWith(today);
   const siteId = new Map(players.map((p) => [p.gsis, p.siteId]));
   const skipped = [];
   const out = [...ids].filter((id) => {
     if (args.includes('--skip-done') && done(id)) return false;
-    if (recapDone({ id, file: siteFileOf(id, siteId.get(id) ?? id) })) {
+    if (recapDone({ id, file: siteFileOf(id, siteId.get(id) ?? id), reportsDir })) {
       skipped.push(id);
       return false;
     }

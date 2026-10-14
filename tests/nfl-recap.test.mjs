@@ -175,8 +175,8 @@ test("the recap's prompt: only numbers in the dossier, no sums of its own, the t
   assert.match(qbRecap, /season\.playoffs/);
   assert.doesNotMatch(teamRecap, /nextGame|restOfSchedule/);
   assert.ok(teamRecap.includes(NUMBERS_RULE));
-  // (the QB's weekly preview keeps its own rule)
-  assert.doesNotMatch(systemPrompt({ player: {} }), /Cite only numbers/);
+  // (the QB's weekly preview follows it too since 2026-10-14: tests/nfl-qb-sheet.test.mjs)
+  assert.match(systemPrompt({ player: {} }), /Cite only numbers/);
 });
 
 test('the report shapes: a recap is its one section, as the site shows it for MLB; a preview keeps its sections', () => {

@@ -9,7 +9,9 @@
 // Each team's season state (season-state.mjs, from the schedule): a team still playing gets the weekly
 // preview's sheet; a team whose season is over (out of the playoffs, or the Super Bowl played) its recap's
 // (mode: 'recap': no next game, schedule left or injury report; the totals and the months instead), and so
-// do its QBs.
+// do its QBs with 4+ regular-season starts (a QB under that: nothing more this season, index mode 'none').
+// A QB's sheet also has the numbers worked out for his report (qb-sheet.mjs): a game's averages, a 17-game
+// pace, his last 3 and 5 games against the season, the change from last season, the gap to the league.
 //
 // Sources (cached in .cache/nflverse for 12 hours): nflverse play-by-play, weekly player stats, Next Gen
 // Stats, PFR advanced stats, snap counts, injuries, depth charts, players, draft picks and the
@@ -24,6 +26,7 @@ import path from 'node:path';
 import { espnInjuries, espnLines, kickoffForecast, kickoffIso } from './live.mjs';
 import { currentSeason } from '../../../../libs/ranker/scripts/wiki-staff.mjs';
 import { DIVISIONS, endedText, resultsOf, roundName, conferenceOf, teamStatus, totalsOf, TOTALS_GLOSSARY } from './season-state.mjs';
+import { asStarterOf, leagueAverageOf, paceOf, perGameOf, qbModeOf, recentOf, startsOf, vsLastSeasonOf, vsLeagueOf } from './qb-sheet.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const STATIC = path.join(ROOT, 'apps/nfl/src/StaticData');
@@ -213,6 +216,8 @@ async function main() {
     awayCoach: g.away_coach,
     homeQb: g.home_qb_name,
     awayQb: g.away_qb_name,
+    homeQbId: g.home_qb_id,
+    awayQbId: g.away_qb_id,
   }));
   const gameById = new Map(games.map((g) => [g.id, g]));
   // Where each team's season stands (season-state.mjs): over once it's out of the playoffs or the Super
@@ -399,7 +404,8 @@ async function main() {
   // ---- season splits from play-by-play, per player
   const split = (rows, kind) => {
     if (!rows.length) return null;
-    const out = { plays: rows.length, epa: r(mean(rows, 'epa')), success: r(mean(rows, 'success')) };
+    // (epaTotal: the EPA those plays added up to)
+    const out = { plays: rows.length, epa: r(mean(rows, 'epa')), epaTotal: r(sum(rows, 'epa'), 1), success: r(mean(rows, 'success')) };
     if (kind === 'pass') {
       const att = rows.filter((x) => x.pass_attempt === '1' && x.sack !== '1');
       out.att = att.length;
@@ -447,7 +453,12 @@ async function main() {
     const third = pass.filter((x) => x.down === '3');
     return {
       dropbacks: db.length,
+      // (the EPA his dropbacks added up to, scrambles in)
+      dropbackEpaTotal: r(sum(db, 'epa'), 1),
       byDepth: bucketed(att, depthOf, 'pass'),
+      // (the attempts with an air yards figure, and the depths in two: under 10 air yards, and 10 or more)
+      chartedAtt: att.filter((x) => depthOf(x)).length,
+      depthGroups: { under10: split(att.filter((x) => ['behindLos', 'short0to9'].includes(depthOf(x))), 'pass'), tenPlus: split(att.filter((x) => ['intermediate10to19', 'deep20plus'].includes(depthOf(x))), 'pass') },
       byDirection: bucketed(att, (x) => x.pass_location || null, 'pass'),
       thirdDown: third.length ? { ...split(third, 'pass'), conversionPct: per(third.filter((x) => x.first_down === '1' || x.touchdown === '1').length * 100, third.length, 1), avgToGo: r(mean(third, 'ydstogo'), 1) } : null,
       redZone: split(pass.filter((x) => num(x.yardline_100) <= 20), 'pass'),
@@ -465,7 +476,7 @@ async function main() {
       turnoverWorthy: { ints: pass.filter((x) => x.interception === '1').length, fumbles: plays.filter((x) => x.fumbled_1_player_id === gsis).length },
       // where his passes go: target share by position of the receiver (top targets)
       topTargets: [...group(att.filter((x) => x.receiver_player_id), 'receiver_player_id')]
-        .map(([id, rs]) => ({ name: bio.get(id)?.display_name ?? rs[0].receiver_player_name, pos: bio.get(id)?.position, targets: rs.length, epaPerTarget: r(mean(rs, 'epa')) }))
+        .map(([id, rs]) => ({ name: bio.get(id)?.display_name ?? rs[0].receiver_player_name, pos: bio.get(id)?.position, targets: rs.length, epaPerTarget: r(mean(rs, 'epa')), epaTotal: r(sum(rs, 'epa'), 1) }))
         .sort((a, b) => b.targets - a.targets)
         .slice(0, 5),
     };
@@ -522,6 +533,7 @@ async function main() {
       games,
       // passing
       attempts: att,
+      completions: s('completions'),
       passYards: s('passing_yards'),
       passTds: s('passing_tds'),
       ints: s('passing_interceptions'),
@@ -529,6 +541,7 @@ async function main() {
       cmpPct: per(s('completions') * 100, att, 1),
       ypa: per(s('passing_yards'), att, 2),
       anyPerDropback: per(s('passing_yards') + 20 * s('passing_tds') - 45 * s('passing_interceptions') - s('sack_yards_lost'), db, 2),
+      passEpa: r(s('passing_epa'), 1),
       passEpaPerDropback: per(s('passing_epa'), db, 3),
       cpoe: r(mean(rows.filter((x) => num(x.attempts) >= 5), 'passing_cpoe'), 2),
       sackPct: per(s('sacks_suffered') * 100, db, 1),
@@ -575,6 +588,13 @@ async function main() {
     for (const k of RANKED[pos].low) rankers[k] = ranker(qualified.map(([, s]) => s[k]), true);
     seasonRanked[pos] = { rankers, qualifiers: qualified.length, qualified: new Set(qualified.map(([id]) => id)) };
   }
+  // The QBs' regular-season weekly rows; the qualifiers' league average and a game's averages ranked
+  const regRows = (gsis) => (weeklyBy.get(gsis) ?? []).filter((x) => x.season_type === 'REG');
+  const qbQualified = [...seasonRanked.QB.qualified].map(regRows);
+  const qbLeague = leagueAverageOf(qbQualified);
+  const qbPerGameRank = Object.fromEntries(
+    ['passYards', 'passTds', 'rushYards', 'passEpa'].map((k) => [k, ranker(qbQualified.map((rows) => perGameOf(rows)?.[k] ?? null), false)]),
+  );
 
   // ---- the site's archives: each past season's line, ranked within that season's list
   const CAREER_KEYS = {
@@ -660,9 +680,12 @@ async function main() {
     const weeks = (weeklyBy.get(p.gsis) ?? []).sort((a, b) => Number(a.week) - Number(b.week));
     const team = weeks.at(-1)?.team || LOGO_TEAM[p.site.teamLogo?.match(/NFL_Icons\/(.+)\.png/)?.[1]] || b?.latest_team;
     const season = seasonOf(p.gsis);
-    // (a QB whose team's season is over: his recap; the other positions aren't written up)
-    const mode = p.pos === 'QB' && team ? modeOf(team) : 'preview';
-    p.mode = mode;
+    // (a QB whose team's season is over: his recap, when he started 4+ of its regular-season games; under
+    // that, nothing more this season. The other positions aren't written up)
+    const started = p.pos === 'QB' ? startsOf(games, p.gsis) : [];
+    const mode = p.pos === 'QB' && team ? qbModeOf(modeOf(team) === 'recap', started.length) : 'preview';
+    p.mode = mode ?? 'none';
+    if (!mode) continue;
     const ranks = seasonRanked[p.pos];
     const ranked = {};
     for (const [k, rank] of Object.entries(ranks.rankers)) ranked[k] = rank(season[k]);
@@ -753,6 +776,11 @@ async function main() {
     // (a recap looks back: no next game)
     const next = team && mode === 'preview' ? nextGame(team) : null;
     const playoffs = mode === 'recap' ? seasonOf(p.gsis, 'POST') : null;
+    // (a QB's numbers worked out for the report, so it quotes them rather than doing the arithmetic:
+    // qb-sheet.mjs; his regular-season games, each with his team's result)
+    const qbRows = p.pos === 'QB' ? regRows(p.gsis).map((w) => ({ ...w, result: gameById.get(w.game_id) ? side(gameById.get(w.game_id), w.team).result : null })) : [];
+    const lastSeason = (careers.get(p.gsis) ?? []).filter((c) => c.season === SEASON - 1 && c.pos === 'QB').at(-1);
+    const qbPressureLine = p.pos === 'QB' && qbPressure.get(p.gsis) ? { badThrowPct: pressureRank.badThrowPct(qbPressure.get(p.gsis).badThrowPct) } : null;
 
     const dossier = {
       ...(mode === 'recap' ? { mode, status: { over: true, ended: endedText(status.get(team)), teamRecord: recordText(record(team)) } } : {}),
@@ -791,6 +819,20 @@ async function main() {
             })()
           : {}),
         ...(p.pos === 'QB' && p.site.box ? { record: `${p.site.wins}-${p.site.losses}${p.site.ties ? `-${p.site.ties}` : ''}` } : {}),
+        ...(p.pos === 'QB' && qbRows.length
+          ? Object.fromEntries(Object.entries({
+              starts: started.length,
+              perGame: perGameOf(qbRows, qbPerGameRank),
+              pace17: paceOf(qbRows),
+              recent: (() => {
+                const out = Object.entries({ last3: recentOf(qbRows, 3), last5: recentOf(qbRows, 5) }).filter(([, v]) => v);
+                return out.length ? Object.fromEntries(out) : null;
+              })(),
+              asStarter: asStarterOf(qbRows, started),
+              vsLastSeason: vsLastSeasonOf({ rows: qbRows, tracking: ngsSeason, pressure: qbPressureLine }, lastSeason),
+              vsLeague: vsLeagueOf(qbRows, qbLeague),
+            }).filter(([, v]) => v !== null && v !== undefined))
+          : {}),
         // (a recap's: his playoff games' totals, apart from the regular season's)
         ...(playoffs?.games ? { playoffs: Object.fromEntries(Object.entries(playoffs).filter(([, v]) => v !== null && v !== 0)) } : {}),
       },
