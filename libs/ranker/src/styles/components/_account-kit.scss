@@ -8,7 +8,7 @@
 // player-card.scss's, which doesn't reach here)
 @mixin pills {
   .game-filter {
-    border-radius: 999px !important;
+    border-radius: v.$radius-pill !important;
     cursor: pointer;
     font: inherit;
     font-size: 12px;
@@ -17,14 +17,14 @@
     opacity: 0.72;
     padding: 6px 16px;
     text-transform: uppercase;
-    transition: opacity 0.12s ease;
+    transition: opacity v.$t-fast ease;
 
     &:hover:not([disabled]) {
       opacity: 1;
     }
 
     &.active {
-      border-radius: 999px !important;
+      border-radius: v.$radius-pill !important;
       opacity: 1;
       outline: 2px solid var(--scoreboard-led);
       outline-offset: 2px;
@@ -49,6 +49,32 @@
       outline: 2px solid #fff;
       outline-offset: 2px;
     }
+  }
+}
+
+// (a button inside a field's box at its right end: a password's reveal, a search's clear; muted, lit when
+// hovered or focused)
+@mixin field-end-button($width, $icon) {
+  align-items: center;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  width: $width;
+
+  .mat-icon {
+    @include v.icon-size($icon);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--scoreboard-led);
+    outline: none;
   }
 }
 
@@ -83,7 +109,7 @@
   textarea {
     background: rgba(0, 0, 0, 0.42);
     border: 1px solid #4a4a4a;
-    border-radius: 8px;
+    border-radius: v.$radius-lg;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
     color: #fff;
@@ -91,8 +117,8 @@
     font-size: 15px;
     padding: 10px 12px;
     transition:
-      border-color 0.12s ease,
-      box-shadow 0.12s ease;
+      border-color v.$t-fast ease,
+      box-shadow v.$t-fast ease;
     width: 100%;
 
     &:focus {
@@ -148,27 +174,7 @@
     }
 
     .reveal {
-      align-items: center;
-      background: none;
-      border: none;
-      color: rgba(255, 255, 255, 0.55);
-      cursor: pointer;
-      display: flex;
-      height: 100%;
-      justify-content: center;
-      position: absolute;
-      right: 0;
-      width: 42px;
-
-      .mat-icon {
-        @include v.icon-size(19px);
-      }
-
-      &:hover,
-      &:focus-visible {
-        color: var(--scoreboard-led);
-        outline: none;
-      }
+      @include field-end-button(42px, 19px);
     }
   }
 
@@ -209,14 +215,6 @@
     @include danger-button;
   }
 
-  .primary,
-  .secondary,
-  .danger {
-    .mat-icon {
-      @include v.icon-size(18px);
-    }
-  }
-
   // (a text link that's a button: Forgot password?)
   .link {
     background: none;
@@ -243,7 +241,7 @@
   .spinner {
     animation: account-spin 0.8s linear infinite;
     border: 2px solid currentColor;
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     border-right-color: transparent;
     box-sizing: border-box;
     display: inline-block;
@@ -254,9 +252,7 @@
 
   // (a smaller button, in a row of actions; a spinner sized for one)
   .small-btn {
-    font-size: 11.5px !important;
-    min-height: 32px !important;
-    padding: 0 12px !important;
+    @include small-button(true);
   }
 
   .spinner.tiny {
@@ -354,18 +350,23 @@
   }
 
   .soon-back {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
     margin-top: 6px;
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-    text-underline-offset: 3px;
+    @include back-link;
+  }
+}
 
-    &:hover,
-    &:focus-visible {
-      color: var(--scoreboard-led);
-    }
+// (a link back, in white underlined in the light, lit when hovered or focused: .soon-back, the legal pages')
+@mixin back-link {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
+  text-underline-offset: 3px;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--scoreboard-led);
   }
 }
 
@@ -378,17 +379,25 @@
 // tokens, so a page inside just uses them: var(--app-pewter), var(--app-red)...
 // ===========================================================================
 
+// (some of the tokens' values as Sass constants too, for what's drawn with them at build time: the backdrop)
+$app-pewter-light: #5a5249;
+$app-pewter: #4a443d;
+$app-pewter-dark: #3d3935;
+$app-sheet-edge: #4f4840;
+// (the dark brown lettering on the sand: a filled button, a lit pill, a sand chip)
+$app-sand-ink: #2a1f14;
+
 // The tokens (custom properties: they reach every page inside the shell; the login dialog sets its own)
 @mixin app-tokens {
-  // (the pewter family, light to darkest: a raised face, the base, the backdrop's ground, the deep shadow)
-  --app-pewter-light: #5a5249;
-  --app-pewter: #4a443d;
-  --app-pewter-dark: #3d3935;
+  // (the pewter family, light to darkest: a raised face, the base, the deep shadow; the backdrop's ground,
+  // $app-pewter-dark, is drawn at build time only)
+  --app-pewter-light: #{$app-pewter-light};
+  --app-pewter: #{$app-pewter};
   --app-pewter-deep: #24211e;
   --app-pewter-ink: #171513;
   // (the sheet: a warm scoreboard black, a touch see-through so the backdrop's art shows faintly)
   --app-sheet: rgba(22, 20, 18, 0.86);
-  --app-sheet-edge: #4f4840;
+  --app-sheet-edge: #{$app-sheet-edge};
   // (an inner section on the sheet that isn't a scoreboard panel: a step darker than the sheet)
   --app-well: rgba(0, 0, 0, 0.28);
   // (hairlines and quiet text, warm)
@@ -401,10 +410,29 @@
   --app-sand-glow: 0 0 6px rgba(216, 185, 138, 0.5);
   --scoreboard-led: var(--app-sand);
   --scoreboard-glow: var(--app-sand-glow);
-  // (the red: danger and alerts only; its glow for lit text)
+  // (the red: danger and alerts only)
   --app-red: #c8102e;
   --app-red-bright: #e0384f;
-  --app-red-glow: 0 0 6px rgba(224, 56, 79, 0.55);
+}
+
+// (lit text in the sand: a count, a name, a lit tile)
+@mixin sand-lit {
+  color: var(--app-sand, #d8b98a);
+  text-shadow: var(--app-sand-glow, none);
+}
+
+// (a panel's drop shadow on the sheet: the account pages' hero and panels, a list's card)
+$panel-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+
+// (near-black ink and edges on a lit face: a count's digits, a dot's ring, the login's lock)
+$ink-dark: #141414;
+
+// (a team logo on a dark disc: the avatar's, the logo picker's, a profile's favorite team; edged or not)
+@mixin logo-disc($border: true) {
+  background: radial-gradient(circle at 35% 30%, v.$panel-edge, #161616 70%);
+  @if $border {
+    border: 1px solid v.$panel-edge;
+  }
 }
 
 // The backdrop's art, drawn large and faint: a bump chart of ranks crossing (one line in the
@@ -424,8 +452,8 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
     $app-cracks 0 0 / 900px 900px,
     radial-gradient(ellipse 120% 90% at 50% 35%, transparent 45%, rgba(0, 0, 0, 0.55) 100%),
     $app-art center / cover no-repeat,
-    linear-gradient(160deg, #4f4840 0%, #3d3935 45%, #2a2623 100%);
-  background-color: #3d3935;
+    linear-gradient(160deg, $app-sheet-edge 0%, $app-pewter-dark 45%, #2a2623 100%);
+  background-color: $app-pewter-dark;
 }
 
 // The sheet: one scoreboard card in a warm pewter black (the art faint through it), its edge pewter
@@ -448,12 +476,6 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   border-radius: $radius;
 }
 
-// (an alert in the red: an error, a danger; rarely)
-@mixin app-red-lit {
-  color: var(--app-red-bright);
-  text-shadow: var(--app-red-glow);
-}
-
 // ---------------------------------------------------------------------------
 // The app's buttons: a filled sand primary with dark-brown lettering, a sand outline, a red
 // outline for danger; a sand pill. Mixins to style your own selector, or `@include kit.app-buttons;` for
@@ -461,7 +483,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 // ---------------------------------------------------------------------------
 @mixin app-button-base {
   align-items: center;
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
@@ -476,16 +498,15 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   text-decoration: none;
   text-transform: uppercase;
   transition:
-    filter 0.12s ease,
-    background 0.12s ease,
-    color 0.12s ease,
-    border-color 0.12s ease;
+    filter v.$t-fast ease,
+    background v.$t-fast ease,
+    color v.$t-fast ease,
+    border-color v.$t-fast ease;
 
   &[disabled] {
     cursor: default;
     opacity: 0.5;
   }
-
 
   .mat-icon {
     @include v.icon-size(18px);
@@ -500,7 +521,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 2px 6px rgba(0, 0, 0, 0.45);
-  color: #2a1f14;
+  color: $app-sand-ink;
 
   &:hover:not([disabled]) {
     filter: brightness(1.07);
@@ -532,25 +553,30 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   }
 }
 
-// (a smaller one, in a row of actions)
-@mixin small-button {
-  font-size: 11.5px;
-  min-height: 32px;
-  padding: 0 12px;
+// (a smaller one, in a row of actions; !important where it must beat a theme's)
+@mixin small-button($important: false) {
+  // (@if, not if(): Sass deprecates the function; a null flag prints nothing)
+  $flag: null;
+  @if $important {
+    $flag: !important;
+  }
+  font-size: 11.5px $flag;
+  min-height: 32px $flag;
+  padding: 0 12px $flag;
 }
 
 // A page's top strip on the scoreboard (Track Players' tiles and pills, My Lists' and the Community's pills and
 // links): a lit edge under it, its contents down its middle
 @mixin scoreboard-strip {
   align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border: 1px solid var(--app-line, rgba(255, 255, 255, 0.08));
   border-bottom-color: color-mix(in srgb, var(--scoreboard-led) 55%, transparent);
   border-radius: 12px;
   box-sizing: border-box;
   padding: 14px 18px;
 
-  @media (max-width: 600px) {
+  @include v.down(small) {
     padding: 12px;
   }
 }
@@ -558,7 +584,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 @mixin app-pill {
   background: rgba(255, 238, 220, 0.04);
   border: 1px solid var(--app-sheet-edge, #4f4840);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: var(--app-text-muted, #b8ada1);
   cursor: pointer;
   font-family: v.$font-base;
@@ -578,7 +604,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   &[aria-checked="true"] {
     background: var(--app-sand, #d8b98a);
     border-color: var(--app-sand, #d8b98a);
-    color: #2a1f14;
+    color: $app-sand-ink;
   }
 
   &:focus-visible {
@@ -639,10 +665,9 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   .game-filter:hover,
   .game-filter.active {
     background: rgba(255, 238, 220, 0.04) !important;
-    background-image: none !important;
-    border: 1px solid var(--app-sheet-edge, #4f4840) !important;
     background-blend-mode: normal !important;
-    border-radius: 999px !important;
+    border: 1px solid var(--app-sheet-edge, #4f4840) !important;
+    border-radius: v.$radius-pill !important;
     box-shadow: none !important;
     clip-path: none !important;
     color: var(--app-text-muted, #b8ada1) !important;
@@ -669,7 +694,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   .game-filter[aria-selected="true"] {
     background: var(--app-sand, #d8b98a) !important;
     border-color: var(--app-sand, #d8b98a) !important;
-    color: #2a1f14 !important;
+    color: $app-sand-ink !important;
   }
 
   .game-filter:focus-visible {
@@ -681,7 +706,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   // Bets page's card tables, the scoreboard bar over the felt)
   card-panel:not(wallet-page *) {
     border: 1px solid var(--app-sheet-edge, #4f4840) !important;
-    border-radius: 10px !important;
+    border-radius: v.$radius-xl !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 
     > .group-bar {
@@ -724,7 +749,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
     background: var(--app-pewter-light, #5a5249) !important;
     background-clip: padding-box !important;
     border: 2px solid transparent !important;
-    border-radius: 999px !important;
+    border-radius: v.$radius-pill !important;
   }
 
   ::-webkit-scrollbar-thumb:hover,

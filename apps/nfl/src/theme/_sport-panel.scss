@@ -2,6 +2,7 @@
 // field's sidelines down both sides: a solid line with short hash marks off it, pointing in, and every
 // fifth a longer one (the yard lines), and across the bottom the end zone
 @mixin box {
+  border: 1px solid var(--panel-line);
 }
 
 @mixin edges {

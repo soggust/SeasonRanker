@@ -6,3 +6,6 @@ $lit-label-weight: null;
 // The accent (the scoreboard yellow, --scoreboard-led): the stat categories' colors are worked out from it
 // (_base.scss), so they sit in this sport's palette
 $accent: #ffcd00;
+
+// ...and its glow's strength (--scoreboard-glow: a soft halo in the accent at this alpha)
+$glow-alpha: 0.55;

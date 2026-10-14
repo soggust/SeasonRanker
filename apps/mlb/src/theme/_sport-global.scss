@@ -1,4 +1,6 @@
+@use "sass:list";
 @use "sport-kit" as kit;
+@use "sport-settings" as sport;
 
 // ===========================================================================
 // MLB theme: infield dirt instead of turf, baseballs instead of footballs on the slider knobs and the
@@ -9,10 +11,8 @@
   // This sport's chalkboard plays (the grid, card and About backgrounds) and #1 trophy
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
   --trophy-mask: url("../assets/lombardi.svg");
-  // The accent: the scoreboard lettering, menu highlights, sliders and scrollbars on the dark panels
-  // (the cream hide keeps its seam red for the same states)
-  --scoreboard-led: #f1ece0;
-  --scoreboard-glow: 0 0 6px rgba(241, 236, 224, 0.5);
+  // (the accent, --scoreboard-led, is sport-settings' $accent: the scoreboard lettering, menu highlights,
+  // sliders and scrollbars on the dark panels; the cream hide keeps its seam red for the same states)
 }
 
 // Infield clay: a real dirt photo (CC0, ambientCG Ground088), warmed to clay by multiplying it over the
@@ -21,7 +21,7 @@ body {
   background-blend-mode: normal, multiply;
   background-color: #c9814c;
   background-image:
-    radial-gradient(ellipse at 50% 30%, transparent 40%, rgba(0, 0, 0, 0.35)),
+    kit.vignette(),
     url("../assets/textures/dirt.webp");
   background-size: cover, 512px;
 }
@@ -29,10 +29,26 @@ body {
 $seam-red: #c8102e;
 $ink: #2b1d14;
 $hide-edge: 1px solid rgba(60, 45, 25, 0.45);
+// The hide: the buttons' and inputs' cream, and the ball's own off-white, light to dark
+$cream: #efe8d8;
+$hide-light: sport.$accent;
+$hide-dark: #c9c1ae;
 
 // The ball's off-white leather, shaded across its width (or height) like the ball: the scrollbar thumbs
-@function ball-shade($dir, $light: #fff, $mid: #f1ece0, $dark: #c9c1ae) {
+@function ball-shade($dir, $light: #fff, $mid: $hide-light, $dark: $hide-dark) {
   @return linear-gradient($dir, $light, $mid 55%, $dark);
+}
+
+// The cream hide's face: a soft sheen ($sheen-at), a shade toward the bottom, the cream; the red stitched
+// seams ($seams, an image drawn over the whole face) on top where given
+@function hide($seams: null, $sheen-at: 35% 20%) {
+  $layers: ();
+  @if $seams {
+    $layers: list.append($layers, $seams center / 100% 100% no-repeat, $separator: comma);
+  }
+  $layers: list.append($layers, radial-gradient(ellipse at $sheen-at, rgba(255, 255, 255, 0.7), transparent 60%), $separator: comma);
+  $layers: list.append($layers, linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(90, 70, 40, 0.18)), $separator: comma);
+  @return list.append($layers, $cream, $separator: comma);
 }
 
 // ---------------------------------------------------------------------------
@@ -40,13 +56,12 @@ $hide-edge: 1px solid rgba(60, 45, 25, 0.45);
 // sides) on chalk lines
 // ---------------------------------------------------------------------------
 $baseball:
-  radial-gradient(ellipse 76% 95% at -48% 50%, transparent 96%, rgba(200, 16, 46, 0.5) 97%, rgba(200, 16, 46, 0.5) 104%, transparent 105%),
-  radial-gradient(ellipse 76% 95% at 148% 50%, transparent 96%, rgba(200, 16, 46, 0.5) 97%, rgba(200, 16, 46, 0.5) 104%, transparent 105%),
-  radial-gradient(circle at 38% 30%, #fff, #f1ece0 60%, #c9c1ae);
+  radial-gradient(ellipse 76% 95% at -48% 50%, transparent 96%, rgba($seam-red, 0.5) 97%, rgba($seam-red, 0.5) 104%, transparent 105%),
+  radial-gradient(ellipse 76% 95% at 148% 50%, transparent 96%, rgba($seam-red, 0.5) 97%, rgba($seam-red, 0.5) 104%, transparent 105%),
+  radial-gradient(circle at 38% 30%, #fff, $hide-light 60%, $hide-dark);
 
 .mdc-slider__thumb-knob {
-  @include kit.ball-knob($baseball, #f1ece0);
-  border-radius: 50% !important;
+  @include kit.ball-knob($baseball, $hide-light);
 }
 
 #{kit.$switch} {
@@ -75,11 +90,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
 // ---------------------------------------------------------------------------
 #{kit.$footer-buttons},
 #{kit.$menu-buttons} {
-  background:
-    url("../assets/textures/baseball-seams.svg") center / 100% 100% no-repeat,
-    radial-gradient(ellipse at 35% 20%, rgba(255, 255, 255, 0.7), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(90, 70, 40, 0.18)),
-    #efe8d8 !important;
+  background: hide(url("../assets/textures/baseball-seams.svg")) !important;
   background-blend-mode: normal !important;
   border: $hide-edge !important;
   color: $ink !important;
@@ -99,7 +110,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
 
 // (the little stepper buttons plain cream: seams would crowd the minus and plus)
 .mat-mdc-menu-panel .min-games-stepper button {
-  background: radial-gradient(ellipse at 35% 20%, rgba(255, 255, 255, 0.7), transparent 60%), #efe8d8;
+  background: radial-gradient(ellipse at 35% 20%, rgba(255, 255, 255, 0.7), transparent 60%), $cream;
   color: $ink;
   text-shadow: none;
 }
@@ -114,11 +125,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
 // in too far): bold dark text and caret, red on hover, room on each side to clear the seams
 // ---------------------------------------------------------------------------
 #{kit.$dropdowns} {
-  background:
-    url("../assets/textures/baseball-seams-wide.svg") center / 100% 100% no-repeat,
-    radial-gradient(ellipse at 35% 20%, rgba(255, 255, 255, 0.7), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(90, 70, 40, 0.18)),
-    #efe8d8 !important;
+  background: hide(url("../assets/textures/baseball-seams-wide.svg")) !important;
   background-blend-mode: normal !important;
   border: $hide-edge !important;
   border-radius: 8px !important;
@@ -141,10 +148,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
 // Their open lists in plain cream hide (seams would sit behind the options), dark options that turn
 // red, a darker track so the off-white thumb shows
 #{kit.$open-list} {
-  background:
-    radial-gradient(ellipse at 35% 10%, rgba(255, 255, 255, 0.7), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(90, 70, 40, 0.18)),
-    #efe8d8 !important;
+  background: hide($sheen-at: 35% 10%) !important;
   border: $hide-edge !important;
   border-radius: 8px !important;
   --mat-pseudo-checkbox-minimal-selected-checkmark-color: #{$seam-red};
@@ -168,7 +172,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
   }
 
   &::-webkit-scrollbar-thumb:active {
-    background: ball-shade(90deg, #f1ece0, #ddd5c3, #b5ab95) !important;
+    background: ball-shade(90deg, $hide-light, #ddd5c3, #b5ab95) !important;
     background-clip: padding-box !important;
   }
 }
@@ -191,7 +195,7 @@ html .mat-mdc-slide-toggle .mdc-switch__track {
   }
 
   ::-webkit-scrollbar-thumb:#{$axis}:active {
-    background: ball-shade($dir, #f1ece0, #ddd5c3, #b5ab95) !important;
+    background: ball-shade($dir, $hide-light, #ddd5c3, #b5ab95) !important;
     background-clip: padding-box !important;
   }
 }

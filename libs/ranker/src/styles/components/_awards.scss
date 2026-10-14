@@ -1,16 +1,25 @@
+@use "sass:meta";
 @use "../variables" as v;
 // The sport's choice of metals (apps/<sport>/src/theme/_sport-awards.scss)
 @use "sport-awards";
+
+// The metals: light, middle, dark (_variables.scss's, the plaques' too)
+$gold: v.$metal-gold;
+$silver: v.$metal-silver;
+$bronze: v.$metal-bronze;
+
+// The glint's sweep on a plaque, a cup and the trophy: three times, then still
+$shine: trophy-shine 4s ease-in-out 3;
 
 // Awards by a name (a row's, under the name; the player card's hero): small engraved gold plaques (MVP,
 // OPOY...), icons in a metal (a cup, a star) and the sport's trophy for a champion, catching the light
 // like the #1 trophy; hover one for the award written out. ($scope: where the awards sit)
 
 // An award icon in a metal: the glyph filled with its gradient (and the glint), glowing softly
-@mixin metal-icon($light, $mid, $dark, $glow) {
+@mixin metal-icon($metal, $glow) {
   background:
     v.glint(0.95),
-    linear-gradient(180deg, $light, $mid 55%, $dark);
+    v.metal-gradient($metal);
   -webkit-background-clip: text;
   background-clip: text;
   filter: drop-shadow(0 0 3px $glow);
@@ -25,9 +34,9 @@
 
     // (gold by default; the sport's theme puts its other awards in silver, bronze or steel)
     .award-badge {
-      background: linear-gradient(180deg, #ffe27a, #d9a520 55%, #b8860b);
+      background: v.metal-gradient($gold);
       border: 1px solid rgba(255, 236, 160, 0.8);
-      border-radius: 3px;
+      border-radius: v.$radius-xs;
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
         0 1px 2px rgba(0, 0, 0, 0.6);
@@ -46,7 +55,7 @@
       white-space: nowrap;
 
       &::after {
-        animation: trophy-shine 4s ease-in-out 3;
+        animation: $shine;
         background: v.glint(0.75);
         content: "";
         inset: 0;
@@ -54,37 +63,37 @@
         position: absolute;
       }
 
-      @include sport-awards.metals;
+      @if meta.mixin-exists("metals", "sport-awards") {
+        @include sport-awards.metals;
+      }
     }
 
     // An icon award, its metal clipped to the glyph so only the icon shines: silver (a conference or
     // league title), gold (a champion's cup), bronze (an All-Star's star)
     .award-cup {
-      animation: trophy-shine 4s ease-in-out 3;
+      @include v.icon-size(17px);
+      animation: $shine;
       color: transparent;
       cursor: help;
-      font-size: 17px;
-      height: 17px;
       margin-right: 3px;
-      width: 17px;
-      @include metal-icon(#f4f6f8, #b9c0c8, #8d959e, rgba(220, 228, 236, 0.4));
+      @include metal-icon($silver, rgba(220, 228, 236, 0.4));
 
       &.award-gold {
-        @include metal-icon(#ffe27a, #d9a520, #b8860b, rgba(255, 205, 0, 0.45));
+        @include metal-icon($gold, v.$trophy-glow);
       }
 
       &.award-bronze {
-        @include metal-icon(#f3c79a, #c07a3e, #8f5424, rgba(192, 122, 62, 0.45));
+        @include metal-icon($bronze, rgba(192, 122, 62, 0.45));
       }
     }
 
     // (always first; a little extra room after it, since it's much narrower than the plaques)
-    .lombardi.award-trophy {
-      animation: trophy-shine 4s ease-in-out 3;
+    .award-trophy {
+      animation: $shine;
       background: v.glint();
-      background-color: #ffcd00;
+      background-color: v.$trophy-gold;
       cursor: help;
-      filter: drop-shadow(0 0 3px rgba(255, 205, 0, 0.45));
+      filter: drop-shadow(0 0 3px v.$trophy-glow);
       height: 16px;
       margin-right: 4px;
       width: 11px;
@@ -93,7 +102,7 @@
     @media (prefers-reduced-motion: reduce) {
       .award-badge::after,
       .award-cup,
-      .lombardi.award-trophy {
+      .award-trophy {
         animation: none;
       }
     }

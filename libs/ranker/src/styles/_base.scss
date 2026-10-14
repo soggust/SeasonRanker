@@ -11,14 +11,7 @@
 @use "casino-chip" as chip;
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&family=DynaPuff:wght@400;600;700&display=swap");
 
-// LCD / segment-display fonts (open source, DSEG by keshikan)
-@font-face {
-  font-display: swap;
-  font-family: "DSEG14";
-  font-weight: 700;
-  src: url("https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG14-Classic/DSEG14Classic-Bold.woff2") format("woff2");
-}
-
+// LCD / segment-display font (open source, DSEG by keshikan)
 @font-face {
   font-display: swap;
   font-family: "DSEG7";
@@ -29,17 +22,11 @@
 // (on the Bets page (app.component's bets-view, on <html> so the menus' overlays have it too): the card
 // tables' gold for every sport's light, the sport bar, the menus and the page alike)
 html.bets-view {
-  --scoreboard-led: #ebc56c;
-  --scoreboard-glow: 0 0 6px rgba(235, 197, 108, 0.55);
+  --scoreboard-led: #{chip.$gold-led};
+  --scoreboard-glow: 0 0 6px #{rgba(chip.$gold-led, 0.55)};
 }
 
-// (the page's own light, kept: the account menu takes the app's sand only over the sheet's pages (sheet-view,
-// app.component), the page's light everywhere else, a sport's or the Bets page's gold)
-:root {
-  --page-led: var(--scoreboard-led);
-  --page-glow: var(--scoreboard-glow);
-}
-
+// (the account menu keeps the page's own light: --page-led and --page-glow, in the Tokens below)
 html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   --scoreboard-led: var(--page-led);
   --scoreboard-glow: var(--page-glow);
@@ -53,26 +40,44 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   --sport-bar-height: 38px;
   --row-h: 59px;
 
-  // Scoreboard panels (the tables, menus and tabs) and their lit accent (goalpost yellow; each sport's
-  // theme sets its own)
+  // Scoreboard panels (the tables, menus and tabs) and their lit accent (each sport's own: its
+  // sport-settings $accent, glowing at its $glow-alpha)
   --scoreboard: #121212;
-  --scoreboard-led: #ffcd00;
-  --scoreboard-glow: 0 0 6px rgba(255, 205, 0, 0.55);
+  --scoreboard-led: #{sport.$accent};
+  --scoreboard-glow: 0 0 6px #{rgba(sport.$accent, sport.$glow-alpha)};
   --scoreboard-dots: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.3px) 0 0 / 4px 4px;
+
+  // (the page's own light, kept: the account menu takes the app's sand only over the sheet's pages (sheet-view,
+  // app.component), the page's light everywhere else, a sport's or the Bets page's gold)
+  --page-led: var(--scoreboard-led);
+  --page-glow: var(--scoreboard-glow);
+
+  // A value's tint toward good and bad (value-tint.ts, and the grid's and lists' lit results); a surface can
+  // set its own
+  --tint-good: #{v.$good-bright};
+  --tint-bad: #{v.$bad};
+
+  // A soft shadow under light lettering
+  --text-shadow-small: 1px 1px 2px rgba(0, 0, 0, 0.25);
 
   // Leather for buttons: a muted brown (lower saturation than a game ball) so it sits with the
   // gray-green chalkboard; the texture adds grain on top of this color
   --leather: #6b4e38;
-  --mat-slide-toggle-off-track: rgba(255, 255, 255, 0.22);
+
+  // Switches: the track when off
+  --switch-off-track: rgba(255, 255, 255, 0.22);
 
   // Shared textures (libs/ranker/src/assets); a sport's own (its chalkboard plays, its trophy) come
   // from its theme
   --tex-leather: url("../assets/textures/leather.jpg");
   --tex-chalk-noise: url("../assets/textures/chalk-noise.svg");
+
+  // The sportsbook's crown (DraftKings'), inlined once for every app (v.book-crown draws it)
+  --book-crown: #{v.$book-crown-image};
 }
 
 // Phones: a slimmer sport bar and shorter grid rows, so more of the list fits on screen
-@media (max-width: 575px) {
+@include v.down(phone) {
   :root {
     --sport-bar-height: 32px;
     --row-h: 44px;
@@ -94,22 +99,18 @@ $-category-lightness: math.clamp(61%, color.channel(sport.$accent, "lightness", 
 
 .group-results {
   --group-color: #{-category(0)};
-  --group-icon: "emoji_events";
 }
 
 .group-box {
   --group-color: #{-category(1)};
-  --group-icon: "bar_chart";
 }
 
 .group-advanced {
   --group-color: #{-category(2)};
-  --group-icon: "insights";
 }
 
 .group-support {
   --group-color: #{-category(3)};
-  --group-icon: "groups";
 }
 
 // ---------------------------------------------------------------------------
@@ -117,22 +118,15 @@ $-category-lightness: math.clamp(61%, color.channel(sport.$accent, "lightness", 
 // ---------------------------------------------------------------------------
 html,
 body {
-  display: block;
   height: 100%;
   margin: 0;
 }
 
+// (each sport's theme lays its own ground on the body: turf, dirt, hardwood, ice, canvas)
 body {
   background-attachment: fixed;
-  background-image: linear-gradient(
-    270deg,
-    var(--accent-300) 0%,
-    var(--primary-300) 25%,
-    var(--primary-400) 55%,
-    var(--primary-600) 100%
-  );
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$page-font-size;
 }
 
 // The sport's #1 trophy (the NFL's Lombardi), drawn from its mask in the current color
@@ -146,12 +140,7 @@ body {
 }
 
 .visually-hidden {
-  clip: rect(0 0 0 0);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  @include v.visually-hidden;
 }
 
 // ---------------------------------------------------------------------------
@@ -163,14 +152,14 @@ body {
 ::-webkit-scrollbar-track {
   background-color: var(--scoreboard) !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: v.$scrollbar-radius !important;
 }
 
 ::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--scoreboard-led) 95%, #000) !important;
   background-clip: padding-box !important;
   border: 2px solid transparent !important;
-  border-radius: 8px !important;
+  border-radius: v.$scrollbar-radius !important;
   box-shadow: none !important;
 
   &:hover {
@@ -189,9 +178,8 @@ body {
 .sidebar ::-webkit-scrollbar-track,
 .mat-mdc-menu-panel::-webkit-scrollbar-track,
 about-panel ::-webkit-scrollbar-track {
-  background-color: #2e2e2e !important;
+  background-color: v.$menu-track !important;
 }
-
 
 // The Bets page's list scrolls in its panel on a felt-blue thumb; the Algorithm desk and Open/Closed Bets (and
 // their wide tables, sideways, on a phone) on the page's own: the primary's thumb on the scoreboard track, 10px
@@ -200,8 +188,8 @@ bets-page model-desk::-webkit-scrollbar,
 bets-page model-desk ::-webkit-scrollbar,
 bets-page wallet-page::-webkit-scrollbar,
 bets-page wallet-page ::-webkit-scrollbar {
-  height: 10px;
-  width: 10px;
+  height: v.$scrollbar-size;
+  width: v.$scrollbar-size;
 }
 
 bets-page .bets-list::-webkit-scrollbar-track {
@@ -209,16 +197,16 @@ bets-page .bets-list::-webkit-scrollbar-track {
 }
 
 bets-page .bets-list::-webkit-scrollbar-thumb {
-  background: #1d5f9e !important;
+  background: chip.$felt-blue !important;
   background-clip: padding-box !important;
 
   &:hover {
-    background: #2b7ac4 !important;
+    background: chip.$felt-blue-lit !important;
     background-clip: padding-box !important;
   }
 
   &:active {
-    background: #17507f !important;
+    background: chip.$felt-blue-deep !important;
     background-clip: padding-box !important;
   }
 }
@@ -231,24 +219,21 @@ bets-page .bets-list::-webkit-scrollbar-thumb {
 html body {
   #{kit.$dropdowns} {
     @include kit.dropdown-text {
-      font-family: v.$font-heading !important;
-      letter-spacing: 0.5px !important;
+      @include v.heading-input;
     }
   }
 
   #{kit.$open-list} .mat-mdc-option {
     &,
     .mdc-list-item__primary-text {
-      font-family: v.$font-heading !important;
-      letter-spacing: 0.5px !important;
+      @include v.heading-input;
     }
   }
 
   .sidebar footer button,
   #{kit.$preset-buttons},
   bets-page .bets-game {
-    font-family: v.$font-heading !important;
-    letter-spacing: 0.5px !important;
+    @include v.heading-input;
   }
 }
 
@@ -267,8 +252,8 @@ body:has(.card-backdrop, list-modal, [aria-modal="true"]) .sport-bar {
 .mdc-menu-surface,
 .mat-mdc-menu-panel {
   background: var(--scoreboard-dots), var(--scoreboard) !important;
-  border: solid 1px;
-  border-color: #333 !important;
+  border: 1px solid;
+  border-color: v.$scoreboard-frame !important;
 }
 
 // (a dropdown's list hangs from the dropdown itself: SelectOriginDirective; a pixel below it)
@@ -277,7 +262,7 @@ body:has(.card-backdrop, list-modal, [aria-modal="true"]) .sport-bar {
 
   .mat-mdc-option span {
     color: var(--primary-50) !important;
-    font-weight: bold !important;
+    font-weight: 700 !important;
     text-shadow: var(--text-shadow-small);
   }
 
@@ -357,7 +342,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
   background:
     radial-gradient(ellipse 90% 70% at 50% 20%, rgba(255, 255, 255, 0.06), transparent 70%),
     #{chip.$felt-nap} 0 0 / 140px,
-    #0f3f29 !important;
+    #{chip.$felt-deep} !important;
   background-blend-mode: normal !important;
   border: 1px solid #{chip.$felt-seam} !important;
   border-radius: 12px !important;
@@ -367,7 +352,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
   min-width: 240px;
   padding: 0 0 6px;
   --mat-pseudo-checkbox-minimal-selected-checkmark-color: #{chip.$gold-led};
-  @include kit.list-scrollbar(rgba(0, 0, 0, 0.35), #2a7a52, #3fa36b);
+  @include kit.list-scrollbar(rgba(0, 0, 0, 0.35), chip.$felt-thumb, chip.$felt-light);
 
   .mat-mdc-option {
     min-height: 36px;
@@ -375,10 +360,9 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     &,
     span {
       color: #fff !important;
-      font-family: v.$font-heading !important;
+      @include v.heading-input;
       font-size: 13px !important;
       font-weight: 800 !important;
-      letter-spacing: 0.5px !important;
       text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6) !important;
       text-transform: none !important;
     }
@@ -400,7 +384,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
 
     span.game-lines {
       border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 999px;
+      border-radius: v.$radius-pill;
       color: rgba(255, 255, 255, 0.65) !important;
       font-size: 9px !important;
       font-weight: 800 !important;
@@ -455,9 +439,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     text-transform: uppercase;
 
     mat-icon {
-      font-size: 16px;
-      height: 16px;
-      width: 16px;
+      @include v.icon-size(16px);
     }
   }
 }
@@ -478,7 +460,7 @@ html {
 
 // The settings menu on a wide screen: Format and Display side by side (a rule between them), so it isn't
 // a tall column
-@media (min-width: 1000px) {
+@include v.up(wide-menu) {
   .mat-mdc-menu-panel.settings-menu {
     max-width: none;
 
@@ -533,6 +515,11 @@ html {
       margin-right: 25.5px;
     }
 
+    // (room between a switch and its label)
+    .slide-toggle + span {
+      margin-left: 0.5em;
+    }
+
     // A cycled choice's current value
     .menu-value {
       color: var(--scoreboard-led) !important;
@@ -558,7 +545,6 @@ html {
       white-space: nowrap;
     }
 
-    .min-games-stepper,
     .slide-toggle {
       margin-right: 0;
     }
@@ -577,13 +563,12 @@ html {
     align-items: center;
     display: inline-flex;
     flex: 0 0 auto;
-    margin-right: 14px;
 
     button {
       align-items: center;
       @include v.leather(48px);
       border: none;
-      border-radius: 50%;
+      border-radius: v.$radius-round;
       @include v.leather-edge;
       color: #fff;
       cursor: pointer;
@@ -655,30 +640,26 @@ html {
 
   .team-pick-logo {
     display: block;
-    height: 22px;
-    object-fit: contain;
-    width: 22px;
+    @include v.team-logo-img;
   }
 }
 
 // Teams Included's open list: each team's logo before its name (drawn in white where it's dark lettering)
 .team-options .team-option-logo {
-  height: 22px;
+  @include v.team-logo-img;
   margin-right: 10px;
-  object-fit: contain;
   vertical-align: middle;
-  width: 22px;
 }
 
 .team-pick-logo.white-logo,
 .team-options .team-option-logo.white-logo {
-  filter: brightness(0) invert(1);
+  @include v.white-lettering;
 }
 
 // ---------------------------------------------------------------------------
 // Sliders: a football field (0-100 like the yards, a full line every 10 and a short hash every 5)
-// with a leather football for the knob, rolling as it slides (each slider sets --knob-roll; a sport
-// whose ball shouldn't spin turns it off in its theme)
+// with the sport's ball for the knob (its theme draws it), rolling as it slides (each slider sets
+// --knob-roll; a sport whose ball shouldn't spin turns it off in its theme)
 // ---------------------------------------------------------------------------
 .mat-mdc-slider {
   .mdc-slider__track::after {
@@ -715,99 +696,55 @@ html {
   opacity: 1 !important;
 }
 
-// The football: real leather (the pebbled texture over the football brown) with a soft sheen and white
-// laces, casting a soft shadow. Material paints the knob with a solid border: that goes transparent,
-// and the leather fills the whole football. (Turned inside the knob's own transform, after the
-// translate Material centers it with: the rotate property would swing it off its spot.)
+// The knob: its shape and shadow (each sport's theme draws its ball over it). Material paints the knob
+// with a solid border: that goes transparent, and the ball fills the whole knob. (Turned inside the
+// knob's own transform, after the translate Material centers it with: the rotate property would swing
+// it off its spot.)
 .mdc-slider__thumb-knob {
   --mat-slider-handle-width: 30px;
   --mat-slider-handle-height: 19px;
-  background-blend-mode: normal, soft-light !important;
   background-clip: border-box !important;
-  background-color: #a8602f !important;
-  background-image:
-    radial-gradient(ellipse at 40% 25%, rgba(255, 255, 255, 0.25), transparent 65%),
-    var(--tex-leather) !important;
-  background-position: center !important;
-  background-size: auto, 40px !important;
   border-color: transparent !important;
-  border-radius: 50% !important;
+  border-radius: v.$radius-round !important;
   box-shadow:
     0 2px 5px rgba(0, 0, 0, 0.75),
     0 0 0 1.5px rgba(0, 0, 0, 0.35) !important;
   transform: translate(-50%, -50%) rotate(var(--knob-roll, 0deg)) !important;
-  transition: transform 0.12s ease-out;
-
-  &::after {
-    background:
-      linear-gradient(#fff, #fff) center / 100% 1.5px no-repeat,
-      repeating-linear-gradient(90deg, #fff 0 1.5px, transparent 1.5px 3px) center / 100% 6px no-repeat;
-    content: "";
-    height: 7px;
-    left: -6px;
-    position: absolute;
-    top: -3.5px;
-    width: 12px;
-  }
+  transition: transform v.$t-fast ease-out;
 }
 
-// Breakdown sliders (Pass / Rush Yards, etc.) keep a smaller football
+// Breakdown sliders (Pass / Rush Yards, etc.) keep a smaller knob
 .sub-rows .mdc-slider__thumb-knob {
   --mat-slider-handle-width: 26px;
   --mat-slider-handle-height: 16px;
-
-  &::after {
-    height: 6px;
-    left: -5px;
-    top: -3px;
-    width: 10.5px;
-  }
 }
 
 // ---------------------------------------------------------------------------
-// Settings switches: a football knob like the sliders' (rolling across when flipped) on a thin track
-// in the accent when on, gray when off
+// Settings switches: the sport's ball for the knob (its theme draws it; rolling across when flipped) on
+// a thin track in the accent when on, gray when off
 // ---------------------------------------------------------------------------
-html .mat-mdc-slide-toggle.mat-accent {
+#{kit.$switch} {
   --mat-slide-toggle-handle-width: 26px;
   --mat-slide-toggle-handle-height: 16px;
   --mat-slide-toggle-track-width: 46px;
   --mat-slide-toggle-track-height: 8px;
   --mat-slide-toggle-track-outline-color: transparent;
   --mat-slide-toggle-selected-track-outline-color: transparent;
-  --mat-slide-toggle-selected-track-color: var(--scoreboard-led);
-  --mat-slide-toggle-selected-hover-track-color: var(--scoreboard-led);
-  --mat-slide-toggle-selected-focus-track-color: var(--scoreboard-led);
-  --mat-slide-toggle-selected-pressed-track-color: var(--scoreboard-led);
-  --mat-slide-toggle-unselected-track-color: var(--mat-slide-toggle-off-track);
-  --mat-slide-toggle-unselected-hover-track-color: var(--mat-slide-toggle-off-track);
-  --mat-slide-toggle-unselected-focus-track-color: var(--mat-slide-toggle-off-track);
-  --mat-slide-toggle-unselected-pressed-track-color: var(--mat-slide-toggle-off-track);
-  --mat-slide-toggle-selected-handle-color: var(--primary-800);
-  --mat-slide-toggle-selected-hover-handle-color: var(--primary-800);
-  --mat-slide-toggle-selected-focus-handle-color: var(--primary-800);
-  --mat-slide-toggle-selected-pressed-handle-color: var(--primary-800);
-  --mat-slide-toggle-unselected-handle-color: var(--primary-800);
-  --mat-slide-toggle-unselected-hover-handle-color: var(--primary-800);
-  --mat-slide-toggle-unselected-focus-handle-color: var(--primary-800);
-  --mat-slide-toggle-unselected-pressed-handle-color: var(--primary-800);
-  --mat-slide-toggle-selected-icon-color: var(--primary-50);
-  --mat-slide-toggle-unselected-icon-color: var(--primary-50);
+
+  // (the track in every state: the accent when on, gray when off)
+  @each $selection, $track in (selected: var(--scoreboard-led), unselected: var(--switch-off-track)) {
+    @each $state in ("", "-hover", "-focus", "-pressed") {
+      --mat-slide-toggle-#{$selection}#{$state}-track-color: #{$track};
+    }
+  }
 
   .mdc-switch__handle {
-    border-radius: 50% !important;
+    border-radius: v.$radius-round !important;
     height: 16px !important;
     margin: 0 !important;
     width: 26px !important;
 
     &::after {
-      background:
-        linear-gradient(#fff, #fff) center / 10.5px 1.5px no-repeat,
-        repeating-linear-gradient(90deg, #fff 0 1.5px, transparent 1.5px 3px) center / 10.5px 6px no-repeat,
-        radial-gradient(ellipse at 40% 25%, rgba(255, 255, 255, 0.25), transparent 65%),
-        var(--tex-leather) center / 40px,
-        #a8602f !important;
-      background-blend-mode: normal, normal, normal, soft-light, normal !important;
       border: none !important;
       opacity: 1 !important;
     }
@@ -816,7 +753,7 @@ html .mat-mdc-slide-toggle.mat-accent {
 
 html .mat-mdc-slide-toggle {
   .mdc-switch__handle::after {
-    transition: rotate 0.25s ease-out;
+    transition: rotate v.$t-medium ease-out;
   }
 
   .mdc-switch--selected .mdc-switch__handle::after {
@@ -891,7 +828,7 @@ section footer .mat-mdc-select.season-select {
 .skip-link {
   background: var(--scoreboard);
   border: 2px solid var(--scoreboard-led);
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   color: var(--scoreboard-led);
   font-weight: 800;
   left: 8px;
@@ -900,7 +837,7 @@ section footer .mat-mdc-select.season-select {
   text-decoration: none;
   top: 8px;
   transform: translateY(-200%);
-  z-index: 10000;
+  z-index: v.z(skip-link);
 
   &:focus {
     transform: none;
@@ -970,8 +907,8 @@ section footer .mat-mdc-select.season-select {
 
 @keyframes why-sheet {
   from {
-    transform: translateY(30%);
     opacity: 0;
+    transform: translateY(30%);
   }
 }
 

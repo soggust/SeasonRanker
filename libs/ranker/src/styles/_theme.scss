@@ -1,12 +1,8 @@
 @use "@angular/material" as mat;
-@use 'sass:meta';
-@use 'sass:list';
-@use 'sass:map';
-@include mat.elevation-classes();
-@include mat.app-background();
+@use "sass:map";
 
 // Define Palette
-$QBRanker-primary-palette: (
+$primary-palette: (
   50: hsl(36, 100%, 95%),
   100: hsl(35, 100%, 88%),
   200: hsl(34, 98%, 80%),
@@ -18,20 +14,20 @@ $QBRanker-primary-palette: (
   800: hsl(25, 85%, 42%),
   900: hsl(23, 80%, 36%),
   contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
-    500: rgba(white, 0.87),
-    600: rgba(white, 0.87),
-    700: rgba(white, 0.87),
-    800: rgba(white, 0.87),
-    900: rgba(white, 0.87),
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: rgba(255, 255, 255, 0.87),
+    600: rgba(255, 255, 255, 0.87),
+    700: rgba(255, 255, 255, 0.87),
+    800: rgba(255, 255, 255, 0.87),
+    900: rgba(255, 255, 255, 0.87),
   ),
 );
 
-$QBRanker-accent-palette: (
+$accent-palette: (
   50: hsl(48, 100%, 94%),
   100: hsl(47, 98%, 86%),
   200: hsl(46, 96%, 77%),
@@ -57,45 +53,33 @@ $QBRanker-accent-palette: (
 );
 
 // Set Up Theme
-$QBRanker-primary: mat.m2-define-palette($QBRanker-primary-palette);
-$QBRanker-accent: mat.m2-define-palette($QBRanker-accent-palette);
-$QBRanker-warn: mat.m2-define-palette(mat.$m2-red-palette);
-$QBRanker-theme: mat.m2-define-light-theme(
+$primary: mat.m2-define-palette($primary-palette);
+$accent: mat.m2-define-palette($accent-palette);
+$warn: mat.m2-define-palette(mat.$m2-red-palette);
+$theme: mat.m2-define-light-theme(
   (
     color: (
-      primary: $QBRanker-primary,
-      accent: $QBRanker-accent,
-      warn: $QBRanker-warn,
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
     ),
   )
 );
 
-// Apply Styles
-@include mat.all-component-themes($QBRanker-theme);
+// Apply Styles: only the Material components the apps import (button, icon, menu, select, slide-toggle,
+// slider; core for the options, ripples and overlays). Add a component's theme here when a new Material
+// module is imported (form-field, tooltip, icon-button, dialog...)
+@include mat.core-theme($theme);
+@include mat.button-theme($theme);
+@include mat.icon-theme($theme);
+@include mat.menu-theme($theme);
+@include mat.select-theme($theme);
+@include mat.slide-toggle-theme($theme);
+@include mat.slider-theme($theme);
 
-// Map Palette
-@function qb-map-keys($map) {
-  $keys: ();
-  @each $key, $value in $map {
-    @if meta.type-of($key) == "number" {
-      $keys: list.append($keys, $key);
-    }
-  }
-  @return $keys;
-}
-
-// Assign Root Variables
+// Assign Root Variables: the palette tones the styles read (var(--primary-50) and so on)
 :root {
-  // Theme Map
-  @each $name,
-    $palette
-      in (primary: $QBRanker-primary-palette, accent: $QBRanker-accent-palette)
-  {
-    @each $tone in qb-map-keys($palette) {
-      --#{$name}-#{$tone}: #{map.get($palette, $tone)};
-    }
+  @each $tone in (50, 600, 900) {
+    --primary-#{$tone}: #{map.get($primary-palette, $tone)};
   }
-
-  // Other Vars
-  --text-shadow-small: 1px 1px 2px rgba(0, 0, 0, 0.25);
 }

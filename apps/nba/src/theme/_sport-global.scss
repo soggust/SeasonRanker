@@ -8,10 +8,8 @@
   // This sport's chalkboard plays (the grid, card and About backgrounds) and #1 trophy
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
   --trophy-mask: url("../assets/lombardi.svg");
-  // The accent (the scoreboard lettering, menu highlights, sliders and scrollbars): a bright orange,
-  // so text reads on the dark panels
-  --scoreboard-led: #ff8c32;
-  --scoreboard-glow: 0 0 6px rgba(255, 140, 50, 0.6);
+  // (the accent, --scoreboard-led, is sport-settings' $accent: the scoreboard lettering, menu highlights,
+  // sliders and scrollbars, a bright orange so text reads on the dark panels)
 }
 
 // Hardwood: a real maple floor photo (CC0, ambientCG WoodFloor051), warmed to a court's honey color by
@@ -21,8 +19,8 @@ body {
   background-blend-mode: normal, normal, multiply;
   background-color: #e8b27a;
   background-image:
-    radial-gradient(ellipse at 50% 30%, transparent 40%, rgba(0, 0, 0, 0.35)),
-    radial-gradient(ellipse 70% 45% at 50% 35%, rgba(255, 240, 215, 0.22), transparent 70%),
+    kit.vignette(),
+    kit.arena-lights(rgba(255, 240, 215, 0.22)),
     url("../assets/textures/hardwood.webp");
   background-size: cover, cover, 420px;
 }
@@ -37,25 +35,22 @@ $ball-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 
 .mdc-slider__thumb-knob {
   @include kit.ball-knob($basketball);
-  border-color: transparent !important;
-  border-radius: 50% !important;
   box-shadow: $ball-shadow !important;
 }
 
 #{kit.$switch} {
   @include kit.switch-size(16px);
   @include kit.bare-switch-handle;
-
+  // (the handle as the ball, filling it: written here, not in a kit mixin, so the build resolves the image's
+  // url against this file)
   .mdc-switch__handle::after {
     background: $basketball center / 100% 100% no-repeat !important;
     background-blend-mode: normal !important;
-    border: none !important;
-    border-radius: 50% !important;
-    box-shadow: $ball-shadow !important;
   }
 
-  .mdc-switch__shadow {
-    box-shadow: none !important;
+  .mdc-switch__handle::after {
+    border-radius: 50% !important;
+    box-shadow: $ball-shadow !important;
   }
 }
 

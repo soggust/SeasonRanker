@@ -6,3 +6,10 @@ $lit-label-weight: null;
 // The accent (the puck's ice blue, --scoreboard-led): the stat categories' colors are worked out from it
 // (_base.scss), so they sit in this sport's palette
 $accent: #4cc3ff;
+
+// ...and its glow's strength (--scoreboard-glow: a soft halo in the accent at this alpha)
+$glow-alpha: 0.6;
+
+// The rink's goal and center lines' red, and its blue lines' blue (the filter menu's edges, the grid's goal line)
+$rink-red: #d0213a;
+$rink-blue: #2a6fd6;

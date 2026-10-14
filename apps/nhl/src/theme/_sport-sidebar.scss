@@ -1,14 +1,19 @@
 @use "sport-kit" as kit;
+@use "sport-settings" as sport;
+
+// The rink's goal and center lines' red, and its blue lines' blue (_sport-settings)
+$rink-red: sport.$rink-red;
+$rink-blue: sport.$rink-blue;
 
 // NHL filter menu touches: its edges a rink's painted lines (solid, with a faint sheen down the middle): a
 // blue line over the footer, and along the top the red center line with the blue center-ice faceoff dot
-@include kit.painted-menu-edges(#2a6fd6, 0.55);
+@include kit.painted-menu-edges($rink-blue, 0.55);
 
 .sidebar::before {
   background:
-    radial-gradient(circle, #2a6fd6 0 5px, transparent 5.5px) 50% 50% / 12px 12px no-repeat,
+    radial-gradient(circle, $rink-blue 0 5px, transparent 5.5px) 50% 50% / 12px 12px no-repeat,
     linear-gradient(transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%) 0 50% / 100% 3px no-repeat,
-    linear-gradient(#d0213a, #d0213a) 0 50% / 100% 3px no-repeat;
+    linear-gradient($rink-red, $rink-red) 0 50% / 100% 3px no-repeat;
   height: 12px;
   // (the line at the top edge, the dot centered on it)
   margin-top: -4.5px;

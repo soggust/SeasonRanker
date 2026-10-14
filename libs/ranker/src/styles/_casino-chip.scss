@@ -1,5 +1,32 @@
 @use "variables" as v;
 
+// (a chip's rim spots, cream; its inlay ring's warm cream, as a light)
+$rim-cream: #f4efe3;
+$inlay: #ffecc4;
+
+// (the chips' clays: the wallet's and the slip's stacks and denominations, a bet type's filter chip; a reload's
+// blue a shade apart from the stack's)
+$chip-red: #c62828;
+$chip-green: #1d8a4e;
+$chip-blue: #1f5fbf;
+$chip-blue-reload: #1f5fae;
+$chip-cream: #e8e2d4;
+
+// (each league's chip: its clay on the Algorithm's sport chips (All's the house's gold, apart), and its line on
+// the bankroll curve, the clay lifted to read on the board (the NFL's navy to a blue, the NHL's black to silver))
+$sport-clay: (
+  nfl: #1f3f7a,
+  nba: #b8322a,
+  nhl: #262626,
+  mlb: #1d8a4e,
+);
+$sport-line: (
+  nfl: #6d9cff,
+  nba: #f0604c,
+  nhl: #c5ccd4,
+  mlb: #3ec47e,
+);
+
 // (a rim's spots easing round as its dashes' offset moves; still with reduced motion)
 @mixin rim-turn {
   transition: stroke-dashoffset 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -20,10 +47,10 @@
     linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.22)),
     var(--clay);
   border: 6px solid var(--clay);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow:
     inset 0 0 0 2px var(--clay),
-    inset 0 0 0 3px rgba(255, 236, 196, 0.45),
+    inset 0 0 0 3px rgba($inlay, 0.45),
     0 2px 4px rgba(0, 0, 0, 0.45);
   color: #fff;
   cursor: pointer;
@@ -38,9 +65,9 @@
   position: relative;
   text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
   transition:
-    filter 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    filter v.$t-hover ease,
+    transform v.$t-hover ease,
+    box-shadow v.$t-hover ease;
   width: $size;
 
   &:hover {
@@ -50,7 +77,7 @@
   &.on {
     box-shadow:
       inset 0 0 0 2px var(--clay),
-      inset 0 0 0 3px rgba(255, 236, 196, 0.7),
+      inset 0 0 0 3px rgba($inlay, 0.7),
       0 4px 10px rgba(0, 0, 0, 0.55);
     filter: none;
     transform: translateY(-2px);
@@ -71,7 +98,7 @@
     fill: none;
     height: calc(100% - 6px);
     rx: 999px;
-    stroke: #f4efe3;
+    stroke: $rim-cream;
     stroke-dasharray: 5 5;
     stroke-width: 6px;
     width: calc(100% - 6px);
@@ -110,7 +137,7 @@
     height: calc(100% - 4px);
     // (round ends: half its height, the 52px chip less its 4px border)
     rx: 24px;
-    stroke: #f4efe3;
+    stroke: $rim-cream;
     stroke-dasharray: 4 6;
     stroke-width: 4px;
     width: calc(100% - 4px);
@@ -138,6 +165,13 @@ $felt-seam: rgba(222, 186, 106, 0.55);
 $gold-led: #ebc56c;
 // (the felt's green lit, for a bar's tint and icon where the panels carry no category of their own)
 $felt-light: #3fa36b;
+// (the felt deepened: the game dropdowns' open list and options; and its scrollbar thumb's felt)
+$felt-deep: #0f3f29;
+$felt-thumb: #2a7a52;
+// (the Bets list's felt-blue scrollbar thumb: lit when hovered, deeper while dragged)
+$felt-blue: #1d5f9e;
+$felt-blue-lit: #2b7ac4;
+$felt-blue-deep: #17507f;
 $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
 
 // (--rail: the rail's gold, another for a panel that says less, a Pass)
@@ -150,7 +184,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     linear-gradient(#{$felt}, #{$felt}) #{$box};
 }
 
-@mixin panel {
+@mixin panel($card: true) {
   --corner: 12px;
   border: 2px solid transparent;
   border-radius: var(--corner);
@@ -178,24 +212,27 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     content: none;
   }
 
-  // (the bar: every panel's, card-panel.scss's scoreboard; a gold seam where the panel opens under it)
-  > .group-bar {
-    border-bottom: 1px solid #{$felt-seam};
-    border-radius: 0;
-  }
+  // (a card panel's bar and body ($card: false for a table without them, a Bets row): the bar every panel's,
+  // card-panel.scss's scoreboard; a gold seam where the panel opens under it)
+  @if $card {
+    > .group-bar {
+      border-bottom: 1px solid #{$felt-seam};
+      border-radius: 0;
+    }
 
-  &.closed > .group-bar {
-    border-bottom-color: transparent;
-  }
+    &.closed > .group-bar {
+      border-bottom-color: transparent;
+    }
 
-  > .panel-body {
-    background: none;
-    border-radius: 0;
-    padding-bottom: 0;
+    > .panel-body {
+      background: none;
+      border-radius: 0;
+      padding-bottom: 0;
 
-    &::before,
-    &::after {
-      content: none;
+      &::before,
+      &::after {
+        content: none;
+      }
     }
   }
 }
@@ -209,7 +246,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     0 1px 3px rgba(0, 0, 0, 0.45);
   color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
-  transition: filter 0.15s ease;
+  transition: filter v.$t-hover ease;
 
   &:hover:not([disabled]) {
     filter: brightness(1.15);
@@ -217,7 +254,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 }
 
 // ...a dropdown of it (the Bets page's game picker, the Algorithm's): the felt, its caret, a gold edge
-@mixin felt-dropdown {
+@mixin felt-dropdown($native: true) {
   appearance: none;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") right 16px center / 14px no-repeat,
@@ -226,7 +263,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     #{$felt-nap} 0 0 / 140px,
     #{$felt};
   border: 1px solid #{$felt-seam};
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 2px 6px rgba(0, 0, 0, 0.45);
@@ -238,7 +275,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   min-width: 220px;
   padding: 11px 36px 11px 18px;
   text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
-  transition: filter 0.15s ease;
+  transition: filter v.$t-hover ease;
 
   &:hover,
   &:focus {
@@ -250,16 +287,19 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     border-color: var(--scoreboard-led);
   }
 
-  option,
-  optgroup {
-    background: #0f3f29;
-    color: #fff;
-  }
+  // (a native select's open list; a Material one ($native: false) opens its own in an overlay)
+  @if $native {
+    option,
+    optgroup {
+      background: $felt-deep;
+      color: #fff;
+    }
 
-  // (the day headers in its open list, in gold)
-  optgroup {
-    color: #ebc56c;
-    font-weight: 800;
+    // (the day headers in its open list, in gold)
+    optgroup {
+      color: $gold-led;
+      font-weight: 800;
+    }
   }
 }
 
@@ -326,20 +366,11 @@ $check-deep: #4a3f8e;
     color: rgba(255, 255, 255, 0.7);
   }
 
-  // (a LOCK tag's padlock before its word, a touch under the letters' size, the two centered together; a CHECK's
-  // "?" the same)
-  &:has(.tier-lock),
-  &:has(.tier-q) {
+  // (a LOCK tag's padlock before its word, a touch under the letters' size, the two centered together)
+  &:has(.tier-lock) {
     align-items: center;
     display: inline-flex;
     gap: 2px;
-  }
-
-  // (a CHECK's "?": bold, in the lettering's color, a hair bigger than the word)
-  .tier-q {
-    font-size: 1.15em;
-    font-weight: 900;
-    line-height: 1;
   }
 
   .tier-lock {
@@ -349,29 +380,6 @@ $check-deep: #4a3f8e;
     // (the glyph sits high in its box: down to the letters' middle)
     transform: translateY(1px);
     width: 1em;
-  }
-}
-
-// (a band's name in its color, as lettering: the Algorithm's By Confidence rows)
-@mixin tier-text {
-  &.lock {
-    color: $lock-light;
-  }
-
-  &.check {
-    color: $check-light;
-  }
-
-  &.love {
-    color: v.$good;
-  }
-
-  &.like {
-    color: v.$caution;
-  }
-
-  &.pass {
-    color: rgba(255, 255, 255, 0.55);
   }
 }
 

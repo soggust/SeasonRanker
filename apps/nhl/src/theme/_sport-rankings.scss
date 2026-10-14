@@ -1,4 +1,8 @@
 @use "sport-kit" as kit;
+@use "sport-settings" as sport;
+
+// The rink's goal line red (_sport-settings)
+$rink-red: sport.$rink-red;
 
 // NHL grid touches: painted rink lines and a red goal line under the header
 
@@ -9,5 +13,5 @@
 
 // The header row sits on a thin red goal line
 section ul li.player.header-row {
-  border-bottom: 2px solid rgba(208, 33, 58, 0.55);
+  border-bottom: 2px solid rgba($rink-red, 0.55);
 }

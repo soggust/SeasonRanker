@@ -1,0 +1,8 @@
+@use "sport-kit" as kit;
+
+// The painted sports' card panel (card-panel.scss), the NBA's, the NHL's and MMA's (apps/<sport>/src/theme/
+// _sport-panel.scss forwards it): its outline a painted line in its category's color (thin, solid, like the
+// table's); the line is the border, so there's no second one inside it, and no edges of its own
+@mixin box {
+  @include kit.painted-panel-border;
+}

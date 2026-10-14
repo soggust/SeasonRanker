@@ -1,4 +1,6 @@
 // MLB player card touches: square headshots, chalked stat groups
+@use "variables" as v;
+@use "sport-settings" as sport;
 
 // The headshots are square: the hero's, the similar seasons' and (phones) the hero's again
 .hero-badge {
@@ -11,7 +13,7 @@
   --hang: 4px;
 }
 
-@media (max-width: 640px) {
+@include v.down(phablet) {
   .hero-badge {
     --hang: 7px;
   }
@@ -20,5 +22,5 @@
 // MLB: the square headshots fade out on the left instead of ending in a hard line across the jersey
 .hero-photo,
 .comp-photo {
-  mask-image: linear-gradient(90deg, transparent, #000 28%);
+  mask-image: sport.$headshot-fade;
 }

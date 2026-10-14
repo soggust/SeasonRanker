@@ -1,22 +1,172 @@
 // Shared Sass variables and mixins. The sport's settings (apps/<sport>/src/theme/_sport-settings.scss)
 // tune the few things that differ between sports.
+@use "sass:list";
+@use "sass:map";
 @use "sport-settings" as sport;
+
+// Motion: the house easing (a quick start that settles), the springy pop that overshoots and comes back,
+// and the three durations used most (a quick feedback, a hover's, a medium move), each at its value today
+$ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+$ease-pop: cubic-bezier(0.3, 1.6, 0.5, 1);
+$t-fast: 0.12s;
+$t-hover: 0.15s;
+$t-medium: 0.25s;
 
 // Fonts: the UI's, the headlines' (the card's name, the analysis headlines, the logo, modal titles), and
 // the soft hand the names, values and numbers are written in
 $font-base: "Nunito", sans-serif;
 $font-heading: "Outfit", sans-serif;
 $font-hand: "DynaPuff", cursive;
+// (and the scoreboard's segment digits: DSEG7, its @font-face in _base.scss)
+$font-led: "DSEG7", sans-serif;
+
+// The page's text size (the body's; the open lists letter at 0.85 of it: _sport-kit.scss)
+$page-font-size: 13px;
+
+// Breakpoints: a phone (up to $bp-phone, and $bp-phone-up past it), and the width the settings menu
+// sets Format and Display side by side at
+$bp-phone: 575px;
+$bp-phone-up: 576px;
+$bp-wide-menu: 1000px;
+
+// ...and every width the styles break at, each at its exact value today (some sit close together, 719 and
+// 720, 560 to 640 for a phone: kept apart, not merged). A "-up" key is the first width past its partner.
+// down(key) wraps its rules in (max-width: ...), up(key) in (min-width: ...); bp(key) is the width itself
+// (a query with more than one condition)
+$breakpoints: (
+  tiny: 400px,
+  slim: 420px,
+  card-narrow: 560px,
+  phone: $bp-phone,
+  phone-up: $bp-phone-up,
+  small: 600px,
+  small-up: 601px,
+  phablet: 640px,
+  phablet-up: 641px,
+  ai-narrow: 700px,
+  about: 719px,
+  card-stack: 720px,
+  tablet: 760px,
+  medium: 900px,
+  wide-menu: $bp-wide-menu,
+  tablet-max: 1023px,
+  laptop: 1199px,
+  desktop: 1200px,
+  bets-wide: 1240px,
+  menu-xl: 1500px,
+  grid-xl: 1600px,
+  wide: 1750px,
+  wide-max: 2099px,
+  huge: 2200px,
+);
+
+@function bp($key) {
+  @if not map.has-key($breakpoints, $key) {
+    @error "Unknown breakpoint #{$key}";
+  }
+  @return map.get($breakpoints, $key);
+}
+
+@mixin down($key) {
+  @media (max-width: bp($key)) {
+    @content;
+  }
+}
+
+@mixin up($key) {
+  @media (min-width: bp($key)) {
+    @content;
+  }
+}
+
+// The page's stacking layers (z-index), each at its value today: the find box's hits, the bet slip's tab and
+// the slip, a list's toast; then the modals (the backdrop or the dialog's host; the player card and the
+// popovers over it), the game view (opened from a card, over it) and the toasts beside it, and the skip
+// link over everything. (A component's own stacking inside it, 1 to 20, stays local.)
+$z-layers: (
+  find-hits: 40,
+  slip-tab: 40,
+  slip: 41,
+  list-toast: 50,
+  modal-backdrop: 1000,
+  modal: 1001,
+  popover: 1001,
+  game-backdrop: 1002,
+  toast: 1002,
+  game: 1003,
+  skip-link: 10000,
+);
+
+@function z($layer) {
+  @if not map.has-key($z-layers, $layer) {
+    @error "Unknown layer #{$layer}";
+  }
+  @return map.get($z-layers, $layer);
+}
+
+// Corner radii, each at its value today (exact matches only; nothing snapped to a scale yet): a pill, a
+// circle, and the small to large rounded corners
+$radius-pill: 999px;
+$radius-round: 50%;
+$radius-xxs: 2px;
+$radius-xs: 3px;
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-xl: 10px;
+// (a board tab's corner: 0.7em of the 13px page text, written out in px)
+$tab-r: 0.7 * $page-font-size;
+
+// The filter menu's width, and the room the grid leaves beside it (the menu and its drawer tab)
+$sidebar-width: 26em;
+$sidebar-room: 28.75em;
+
+// A card panel's corner (card-panel.scss; MLB's chalked panel tops: its _sport-panel.scss)
+$panel-radius: 6px;
+
+// A scrollbar's thickness (the bars and the open lists')
+$scrollbar-size: 10px;
+// (and the track's and thumb's corners on the page's scrollbars: _base.scss)
+$scrollbar-radius: 8px;
+
+// The scoreboard's frames: the menus' and dropdown lists' edge, and the track inside the menus
+$scoreboard-frame: #333;
+$menu-track: #2e2e2e;
+// (and a scoreboard panel's own frame: scoreboard-panel, the dialogs' rules, the avatar's disc)
+$panel-edge: #3a3a3a;
+
+// The football's brown (the sliders' handle color: sidebar.component.scss)
+$football-brown: #a8602f;
 
 // Results: good (a win, a strong grade), bad (a loss, a fade) and neither (a tie, a push)
 $good: #3ecf6e;
 $bad: #ff5a4f;
 $neutral: #9aa0a6;
 // (a result decided past regulation, an overtime or shootout win or loss: the same, lighter)
-$good-ot: color-mix(in srgb, #3ecf6e 55%, #fff);
-$bad-ot: color-mix(in srgb, #ff5a4f 55%, #fff);
+$good-ot: color-mix(in srgb, $good 55%, #fff);
+$bad-ot: color-mix(in srgb, $bad 55%, #fff);
 // (and in between: a lean, a medium edge, questionable, volatile; the same yellow in every sport)
 $caution: #ffcd00;
+// (a score's LED: the winner's lit green, the loser's red: score-led)
+$led-won: rgb(80, 207, 80);
+$led-lost: #ff3b30;
+// (the brighter green and the softer red the rank grid, the lists and a bet's reasons paint a result in, and
+// the AI's coral: the same meanings, each named at the shade it's painted in today)
+$good-bright: #3ee07a;
+$bad-soft: #ff7468;
+$bad-coral: #ff6b61;
+// (a message about something gone wrong, in a pale red that reads on the dark panels: a form's error, a
+// list's failure)
+$bad-pale: #ffb4ae;
+
+// The #1 trophy's gold and its glow (its own: the same yellow as $caution and the NFL's accent, another meaning)
+$trophy-gold: #ffcd00;
+$trophy-glow: rgba(255, 205, 0, 0.45);
+
+// The chalkboard's slate (under the dust below; a chart's ring and a list's fade drawn in it) and the darker
+// edge around a slate panel
+$chalk-slate: #1f2824;
+$chalk-edge: #1d2520;
 
 // The playbook chalkboard behind the grid, the player card and About: chalk dust, two smudges and the
 // slate (each puts the sport's chalked plays, --tex-chalk-plays, on top where it wants them)
@@ -24,13 +174,20 @@ $chalk-dust:
   var(--tex-chalk-noise) 0 0 / 300px 300px,
   radial-gradient(ellipse at 20% 15%, rgba(255, 255, 255, 0.05), transparent 40%),
   radial-gradient(ellipse at 75% 60%, rgba(255, 255, 255, 0.04), transparent 45%),
-  #1f2824;
+  $chalk-slate;
+
+// ...and the board itself: the sport's chalked plays over the dust, placed alike everywhere (the grid, a list, the
+// player card's body)
+$chalkboard: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, $chalk-dust;
 
 // A soft diagonal glint that sweeps across a trophy, plaque or award icon (trophy-shine animates it)
 @function glint($strength: 0.85) {
   @return linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, $strength) 50%, transparent 60%) 150% 0 /
     300% 100% no-repeat;
 }
+
+// A soft shadow under the hand's lettering on the board
+$hand-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
 // An icon (Material's font icons) at a size
 @mixin icon-size($size) {
@@ -39,11 +196,43 @@ $chalk-dust:
   width: $size;
 }
 
+// A small button's icon at $size (in em: it scales with its button's text), no margin
+@mixin em-icon($size) {
+  font-size: $size;
+  height: 1em;
+  margin: 0;
+  width: 1em;
+}
+
+// Text cut to one line, an ellipsis where it runs out
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Hidden on screen, still read by a screen reader
+@mixin visually-hidden {
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 // A headline (Outfit)
 @mixin headline($size) {
   font-family: $font-heading;
   font-size: $size;
   font-weight: 500;
+}
+
+// An input's lettering in the headline font (the dropdowns, their open lists, the sidebar's buttons): over
+// Material's and the sports' own
+@mixin heading-input {
+  font-family: $font-heading !important;
+  letter-spacing: 0.5px !important;
 }
 
 // Text in the hand (DynaPuff)
@@ -59,10 +248,15 @@ $chalk-dust:
   text-shadow: 0 0 $blur color-mix(in srgb, var(--tone) $strength, transparent);
 }
 
-// A scoreboard panel: the dot-matrix board behind a thin dark frame
-@mixin scoreboard-panel($radius: 6px, $shadow: 0 2px 6px rgba(0, 0, 0, 0.4)) {
+// The scoreboard's face: the dot matrix over its black
+@mixin scoreboard-face {
   background: var(--scoreboard-dots), var(--scoreboard);
-  border: 1px solid #3a3a3a;
+}
+
+// A scoreboard panel: the dot-matrix board behind a thin dark frame
+@mixin scoreboard-panel($radius: $radius-md, $shadow: 0 2px 6px rgba(0, 0, 0, 0.4)) {
+  @include scoreboard-face;
+  border: 1px solid $panel-edge;
   border-radius: $radius;
   box-shadow: $shadow;
 }
@@ -105,11 +299,26 @@ $chalk-dust:
   width: calc(#{$h} * #{$scale});
 }
 
+// Dark lettering drawn in white
+@mixin white-lettering {
+  filter: brightness(0) invert(1);
+}
+
 // A logo that's dark lettering on its own (the Giants' "ny"): drawn in white, smaller, so it stays whole
 @mixin white-logo($h) {
-  filter: brightness(0) invert(1);
+  @include white-lettering;
   height: calc(#{$h} * 0.95);
   width: calc(#{$h} * 0.95);
+}
+
+// A team's logo in the settings menu's Teams Included (picked, and in its open list): a 22px box, the
+// logo contained in it
+$team-logo-size: 22px;
+
+@mixin team-logo-img {
+  height: $team-logo-size;
+  object-fit: contain;
+  width: $team-logo-size;
 }
 
 // The active tab / item on a scoreboard panel: a lit-up panel whose bottom row of dots glows in the
@@ -137,18 +346,34 @@ $chalk-dust:
   }
 }
 
+// The award metals, light, middle and dark (the plaques below, the award icons: components/_awards.scss)
+$metal-gold: (#ffe27a, #d9a520, #b8860b);
+$metal-silver: (#f4f6f8, #b9c0c8, #8d959e);
+$metal-bronze: (#f3c79a, #c07a3e, #8f5424);
+
+// (a metal's top-to-bottom sheen)
+@function metal-gradient($metal) {
+  @return linear-gradient(180deg, list.nth($metal, 1), list.nth($metal, 2) 55%, list.nth($metal, 3));
+}
+
 // Award plaques in the other metals (the default plaque is gold): a sport's theme picks which of its
 // awards wear which (apps/<sport>/src/theme/_sport-rankings.scss)
 @mixin plaque-silver {
-  background: linear-gradient(180deg, #f4f6f8, #b9c0c8 55%, #8d959e);
+  background: metal-gradient($metal-silver);
   border-color: rgba(240, 244, 248, 0.85);
   color: #1f262d;
 }
 
 @mixin plaque-bronze {
-  background: linear-gradient(180deg, #f3c79a, #c07a3e 55%, #8f5424);
+  background: metal-gradient($metal-bronze);
   border-color: rgba(246, 208, 170, 0.85);
   color: #2e1705;
+}
+
+@mixin plaque-steel {
+  background: linear-gradient(180deg, #d9e6f2, #7f9bb5 55%, #56718a);
+  border-color: rgba(220, 232, 244, 0.85);
+  color: #0f1d2a;
 }
 
 // Dark brushed gunmetal (the Bets page's slot machine, the Algorithm under its scoreboard): a soft sheen
@@ -161,11 +386,8 @@ $chalk-dust:
   border-color: #3a4047;
 }
 
-@mixin plaque-steel {
-  background: linear-gradient(180deg, #d9e6f2, #7f9bb5 55%, #56718a);
-  border-color: rgba(220, 232, 244, 0.85);
-  color: #0f1d2a;
-}
+// (a gunmetal panel's lighter edge: the bet slip and its tab, the wallet's)
+$gunmetal-edge: #4a525a;
 
 // The football's leather (the grid's buttons, the steppers, the dropdowns and pills): a soft sheen, a
 // shade toward the bottom, the pebbled texture at $tile (soft-light over the brown); !important where
@@ -198,7 +420,7 @@ $chalk-dust:
 @mixin menu-button {
   @include leather;
   border: none;
-  border-radius: 4px;
+  border-radius: $radius-sm;
   @include leather-edge;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
@@ -211,8 +433,8 @@ $chalk-dust:
 // A component's scrollbars (Emulated styles: each component sets its own): 10px, the corner clear
 @mixin scrollbars($corner: true) {
   ::-webkit-scrollbar {
-    height: 10px;
-    width: 10px;
+    height: $scrollbar-size;
+    width: $scrollbar-size;
   }
 
   @if $corner {
@@ -231,49 +453,60 @@ $chalk-dust:
 
 @mixin link-fade {
   transition:
-    color 0.15s,
-    text-shadow 0.15s;
+    color $t-hover,
+    text-shadow $t-hover;
 }
 
-// A number on the scoreboard's LED tile (a rank): the lit dots, sunk in, digits in the segment font
-@mixin led-tile {
+// A number on the scoreboard's LED tile (a rank): the lit dots, sunk in, digits in the segment font. A tile
+// can pass its own corner, shadow, color, display and glow; null leaves one out (a tile whose tone-glow sets
+// its color and glow)
+@mixin led-tile(
+  $radius: $radius-md,
+  $shadow: (inset 0 0 6px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.35)),
+  $color: #fff,
+  $display: flex,
+  $text-shadow: var(--text-shadow-small)
+) {
   align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
-  border-radius: 6px;
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.6),
-    0 1px 3px rgba(0, 0, 0, 0.35);
+  @include scoreboard-face;
+  border-radius: $radius;
+  box-shadow: $shadow;
   box-sizing: border-box;
-  color: #fff;
-  display: flex;
-  font-family: "DSEG7", sans-serif;
+  color: $color;
+  display: $display;
+  font-family: $font-led;
   justify-content: center;
-  text-shadow: var(--text-shadow-small);
+  text-shadow: $text-shadow;
 }
 
 // A score on a little LED tile (the game log's PF and PA, the game view's last five): the winner's lit green,
 // the loser's red (add .won / .lost), a tie in the board's own light
 @mixin score-led {
-  @include led-tile;
+  @include led-tile(
+    $radius: $radius-sm,
+    $color: var(--tone),
+    $display: inline-flex,
+    $text-shadow: 0 0 6px color-mix(in srgb, var(--tone) 60%, transparent)
+  );
   --tone: var(--scoreboard-led);
-  border-radius: 4px;
-  color: var(--tone);
-  display: inline-flex;
   font-size: 11px;
   font-weight: 400;
   height: 20px;
   min-width: 30px;
   padding: 1px 5px 0;
-  text-shadow: 0 0 6px color-mix(in srgb, var(--tone) 60%, transparent);
-  transition: text-shadow 0.15s;
+  transition: text-shadow $t-hover;
   vertical-align: middle;
+  @include led-tones;
+}
 
+// (a score's LED tone by its result: add .won / .lost; the game view's rank number too)
+@mixin led-tones {
   &.won {
-    --tone: rgb(80, 207, 80);
+    --tone: #{$led-won};
   }
 
   &.lost {
-    --tone: #ff3b30;
+    --tone: #{$led-lost};
   }
 }
 
@@ -284,10 +517,37 @@ $chalk-dust:
   text-shadow: var(--scoreboard-glow);
 }
 
+// A search's hit (Compare's tape and the grid's find box): a row button, the face or badge then the name,
+// lit on the left edge when it's the one Enter takes (the arrows' or the pointer's)
+@mixin search-hit {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  color: #eee;
+  cursor: pointer;
+  display: grid;
+  font-family: $font-base;
+  gap: 12px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  padding: 8px 10px;
+  text-align: left;
+  width: 100%;
+
+  &.active,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 2px 0 0 var(--scoreboard-led);
+  }
+}
+
 // The sportsbook the bets are priced at: DraftKings' crown, once (beside a table's Odds header, or the Bets
-// page's updated line), not on every bet; inlined, so every app has it without an asset of its own
-@mixin book-crown($size: 14px) {
-  background: url("data:image/png;base64,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") center / contain no-repeat;
+// page's updated line), not on every bet; inlined once, in the global styles (_base.scss's --book-crown), so
+// every app has it without an asset of its own
+$book-crown-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAA7SSURBVHgB7V1bcttGFr3doGg9HWYFplcw9ApMfSapKdsrMJVZgOWaWJk/UT9TGTtVljYQ0SuwXFOZfIpagZUVGFlBGD9EWhK7594GIFMQQDy6AQIgT5VNCQQpEgf39n03QMUwfLbRGe5svKNHWAAYVAjD7UYT6uIYQDbVAQZ9+HyxtbI/smFOwaFCEPVx94pcgoQ21JeOh9vLTZhTVIpgDux+wOEmkSy7jQbMISpD8Pn2Wuua9F5HczQcv4Y5RGUIvrB4c+oJqK7Pdm5vw5yhMgQzxppR53CQu/OmqqtDMIdI4iRAY3Qm5kqKK2VkxQED+QTmCNUhWEo71mkoxcMf1tswJ6hBVUAEs3hxG8n4Q3zoQ0UhtxuNYU10aNmqDMGjy9rpcn0c8+xQd6rUUJG8pfHhiI3b6laXsFWpUOXox41jSdGraNgrzz/cPX+21joH3rImLHAB8nRJCrv+4tMplAijZ7efSCb3Jw6p71gdFQ2kpdkJ/t+OOg/v6sbZzsafKO8Ny3nl1XNklIxRt2HCwsbDe3Bx0S96LPvzzu1dvDG7k8fQbTyix0pZ0aNzvh/nPDK0iOSI05p4JxxSmPPTzsZDKCiCyCVIdn5Aj5UhmAyLpaXxQwnMtGptcn5RSHVN3kAQuZxBb+UnR+uUXkV/+ufGQ87hCRkWfnVrBnLPu1iFA+eHQd+XWdaB93NpCf6IBpIF/CWq0TZkBAHwau35xy4UEHRjB3kDpMHq/x5caZxSEny+s/H4EoDW28ziyg65HzowI9CSQ49sfzAIPMGCQLuASXkw+XvpCP6MBg9av72s/DtUeHhBxd7a80+xDDZTII3EwepgrOYBSeYIHJ8erXlUUuxUSDipwbjnuW9O7vu6esZrMri1Zh35jpUH5MjL+vgty0By6SJKEG+WV2v7rBsiNRlChU85O448UUJ/DOKpxfhb/1NkXN36z4etyWOlkmBWH78Eg+TSHT8ewxYfX5wuz9jXXfn5Yx8DNf3IQA3aHGh7vA16SozlK/+x0rhJf+KahArpLzAI8oc5k4OiBDLkWO5Beth0k/gPlobgr9HYWCGjh1t38Ve8U5kddq6zjsKrWG/MeRsKAoegdCSj9XwQdLzUsWgyTJjgTa+aQ6A04v+n664hQuHIqPVaGSar1t1ZrLthGO6sd/GT7SZ5DfCLu0H+eqWSDX6c7dxGg0y2os9keyvP33ehQEhEMhpeKy8+bAY9Ve2KDin/iHMaVXkUrXZ6hQIsV8tRJELPqTTB6FPGUrtkbMGtpUMoGFZ+Gtie3TE1xm5d9MOemruarFAUuaz28rIZutSQep4SK18QPAG8iC+pCAAKBFWloZIKwZCMvZn2+koTjEGDxEERwXhhepluNNMFoFbj/WnvUWmC8ct9BQmh1mPNhjUi5uzH2y9BA3HIRdiTmaMgVJpgwSCtum2y+tLbND3GHjGY1dmmrBekAPn3Mcil2HMfIlBZgqkZTScpoSSZwSGVxMR9jV/qKOuV1HCj4jknkRBd+Xkp4U3UOZUNdCjpo5oqM1AFeBhM6AU9SbnbUV08kfhT4E2FWR5LiINplZoqm8QwsJGggGF51fo6KgJXWYJHzzaOpflqDxsvGKYV2e/0C5fyDlqxLRkrWua8Xkq0eiXYFFalcl16D8FYO3Gt9pTo1SQqSbCjKsfvoNKIF17NbA0mtTUrn5LXRSrjplQQoh/ntKuEv1flT+E9ncp+1/J8TFWOUnIyAnKtKSbpFSA6UHEE5X6DUDv7Aa08Lne/VPlPVPY7U2r24iTEVU0R4z388W9XBxm7AzmDpFdUtPfoCjJ+4xxnNX6EC3GQud3EN+qg0/9u+OPG4TTH3zPt2SS5oEJ/mVU9BsGR3puF4FWDZ+TFAfcyFkyIp1PeUREd5BPSMV/T0+QHyS2J/sUHrT7wevfjnntlZC3//GnfyT+Gl8KQdIx2Nl570hzWF/Plk8TLx4a+nPpcY4QMVWddffwWqq6aXayuWv24595wk4b/ajSZGL+U040j9AfZETn2U84hCX66+vx96vpiN1ixq2wBqhi8vLTJHlCk12qUZbkfGlyoLlRbaNyTQ/3gVHVBfoTUCcXF2bPb+4zN10yNKGCG7M3qiw+xPZNQP5hKRmhddisUE2Oywy0tnCr/BSbBWLLuyamBDlqXGbfuTVuXwyDYhU6Nr+tPz8eamggxAxweIiNZZGXjWreZjGS9lkvVeMU0l4eKYnm9Zk6CPRDJo3N+Dxfso8iT0SBa0Wy5HNbHhwvpvQmq4U5av5042XD2bB0NHxZl+KSab+E2lx35AyYLuIiZQZpEqmxS0qJsSpExEKdh8dPIfOoCCngdD1ZfvE9UQJA6XZjejcK1XEqbkhpMwiBVLnROIQAerT3/EL1MTkArHzz6YW1bcq5VXLZAfFg1615UkZ0f2gl/w6UxlQHFD5gbi2e+OZqSsSYuR42kyxFGsBLzpd0ATnVKSDLMH8kMw7XyFNn6Q0gqxZG25MK2LsaJ+o29DkmLs7Z0xzcEnZd2PJSxkp2qSjJJIpeAF5f9fkmEorG4trZkZ9Vu6lxHsm2uE500ROnBaE1WNUhmNpeyfwFwYs1ojCElfKS4PoskbeLGeNFd2UgmCbUkHBGha2vWUVLJ7LzGqNsyEiHdIntU173vBqnU6SRuDFYVcjNumc4kjA9hKcOajO5ZX6BvLti4v56g9qzzW6OJvkobpYJq1+7gzdFCQunYNWz92hjg8/g34A2cw1HvUXJ1juRO5tLtpCFKD5mVzRpJNxqER+rKOu/FkVIlmbeQTJIihpE1R0JTBWHwIvcEh73eNxjXj4nJum4JAtVzurldmdZFz5rkJKT6CH2gJNP054lJ9GRdN1rnGL36mCh65fub2SJvkh3/Ux6g2uxHrVmdXxstahXBi/AApPEuiFAwDt1fvhmEplM/7Wz0MAv02MQ4xVw6G7wPDBkirrTiOtpmAh5mJaUJgH4zbPqlmXqUJGevaZziqoFxirkQTEPMblFLZfwenthgKpmB+ecp0npFqnOTxVlHB5BP0sNGjfPIhNUdhtx6k8i3AxHd8xoXUcTSmsqX4Yl0iE10Y+FF38OL3r16L7KeL1HaLfU+D5hZdT7Av7eZFcm5Np+53Q/HmilBG33CrVBiSVol7OqsqX6CA/4GEd5hFmoEM2o+M5JzbQAnnxMv/lNICbIol1ete9PUsS65cUDrZu/vgy66MZvo7yZK34WAEg+vlSVvGLl3+DtN1InnMZLUbpK7UKSRg0T0L98OHuEyoFVg6KLJboHxLXBnMsJBleRC7DvfBn6RKkyXF5Q0CzgAXaDm6fy3kTihMA0zm9ExPLe2YlRqOuQWdVOMCSDJ28D0t8tDH/mlSVU9M4JpPDCV404trC8JuR5wTd4CfWAUC1JHrvyY6ZQdKscNNboiRvQVEbQmY5LgFWiCGQwKzXyMEhld0rdTiEJZBzxZ0AV9NHEtboMBFOIyKuvYt36hZLfKuB27Cj0aWIuRGSPGVmHkRLLrRpfayHkoStm+IiF6QFkUTKnpwhAc1ANF4wCTTJorDD5DD/TRUBEzTRRqpXPGSby/Sxsbe0TTBIHhzsa7NHMjZwVVwcHQxdOF0I/IFXLfJHdkYM8rKeUWa5nfdDJb4Kc9YaAdp9bOvhV6Yyy3Xor+mYj35g363LrraBM0sZj4nhXG+iraRJflguCsUIPMkvhJsCA4K4zSzTbxoQmaWBCcEdLUQmeBBcFZwoSrpIkFwRXHguBiQ1vNF5JgSnibCNNVANoEFyLQ4baNdNwOA6cHSKgmLnr6lPZJSNrbUwVIA2v4TAkmYtkS7KMx8nhKJLJFXXxMQOf7Xxu9uSJa6u94PjMVreqX6/BOkRsTSHQHiT4ujfqW2t0RNmhiJgS7rSQ0vDvNBWjia9+WhGQ9gg0UDuROMBHDpHZzeENJ8uviVnyozkVdyBJKMBtD11C7R2D1IarxP6AIENrfcWCilSVXgpVaZeYqBtG6flJYKeZ6uVy0oI0kK/KVYGl8DyXlXkEBwRjcBz1o13URciVY+bmmIYs3mVZpFd0GODNNbblLsPkGcMhv9EJs1LU11akpXz9vIyuL9bJwazDT3M4PDUX9RjYXuUWy3BlT2pCOb/jmqiTGmumcjRtwv6feUsQNFM67KHTRnR/Uh0utmlBgKDdQY24CSm/PZCg2PxWtWcKivnjByTXiBnIjzeQTb5cT3BKW9CQziLUhIwrPHdBHuol2UoVfU8O09BLyNbL0nHc76gQlQQbmc+BNktiH/f63xq5mhM42Lb2EXAnWasqKyMyo1OPYWIF8C1OTsePl//it8Rjtgy5oQE32ySANmusYJUVCHf6ENEDr+fDbwY0tZTCo38G79L67maZpl4k2Dzn65dtB6GQgIlcIvWYzpZq/G5iYDnADuUqw25TVhzRwBpS0bxznamwv3ahGycWLfopS+Up8DlebJsiFjFSzh1wlmKDShQLeQToEznf03teNddMkOqfsJxkGKsA/hhP8uY8Wez/sRDVF7xbsSqk9S2OA3+delhUquRNMQLVKY5TS9v2Gkuz7Gy0MODRQOpoQ1CHA0KKX+E/gv1r80KA7Se/QRMoTNcQjvJEybaybCcGErf81jnUs3qiRvKZhYkTiJHAJ2MJ1twcZY2YEu5Udx7quBX6BflaFeL5qzzYYQl7kEmZGMMEQyR7Ixz5RseqUG2O4G2zQPgwtls2Q8IGrlvuQE2ZKMME1umhGo+lUIkXNaOIN7ZFoo9T85R+6xpwhoF/hTdEEWqezHBAu4XdpwcO8S35nTrAHdIH2cV2N2ra2lFBzLC+hO4uOw8IQTKCgBQYWdjOVpHxhI7lbeapkPwpFsAeU5q4rzYUti40ArbUHRch+FZJgggpcYG4Vib5fIokeuOp4vygN4IUleBKkuinPyjKe5J4WV1UmnzGmXBBiPZSCYA++cGQbZghFKoU1a+ZzuCZRKoInoXzWGpLMna3nmMbWc3GgWjmlktSTtPsRzgKlJTgILukttf2Nkz++A0z5tw18bDDnWNBNQIkGjzDb7Qmi1k1nENs5Bk5KQqgf/weWfX1632jTcwAAAABJRU5ErkJggg==");
+
+@mixin book-crown($size: 13px) {
+  background: var(--book-crown) center / contain no-repeat;
   display: inline-block;
   height: $size;
   vertical-align: -2px;

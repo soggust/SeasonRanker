@@ -1,11 +1,16 @@
 // NFL grid touches (the shared grid is otherwise the NFL look; its award metals: _sport-awards.scss)
 
-// The rows' yard lines as heavy as the category lines' hash marks (1px; the shared grid draws them a
-// hairline): the line under each row, and each group's colored line across its columns. Borders, not
+// The rows' yard lines as heavy as the category lines' hash marks (1px): the line under each row, and each group's colored line across its columns. Borders, not
 // painted lines: a border lands on whole device pixels, so at a scaled display (125%) none blurs
 section ul li.player:not(.header-row):not(.cdk-drag-preview) {
-  background: rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+// The Colts' horseshoe is mostly its open middle: smaller on the team card, so it stays whole like the
+// white logos' lettering
+section ul li.player:not(.header-row) .team-badge .team-logo[src*="/Colts.png"] {
+  height: calc(var(--orb) * 1.05);
+  width: calc(var(--orb) * 1.05);
 }
 
 // The closing line after the last group: the sideline mirrored, its hash marks facing in toward the grid

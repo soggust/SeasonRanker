@@ -9,10 +9,8 @@
   // trophy (the Stanley Cup)
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
   --trophy-mask: url("../assets/lombardi.svg");
-  // The accent (the scoreboard lettering, menu highlights, sliders and scrollbars): a bright blue, so
-  // text reads on the dark panels
-  --scoreboard-led: #4cc3ff;
-  --scoreboard-glow: 0 0 6px rgba(76, 195, 255, 0.6);
+  // (the accent, --scoreboard-led, is sport-settings' $accent: the scoreboard lettering, menu highlights,
+  // sliders and scrollbars, a bright blue so text reads on the dark panels)
 }
 
 // Rink ice: the ice texture (textures/ice.svg: a pale sheet with skate marks) under the arena lights
@@ -20,8 +18,8 @@
 body {
   background-color: #e6eff5;
   background-image:
-    radial-gradient(ellipse at 50% 30%, transparent 45%, rgba(10, 30, 50, 0.32)),
-    radial-gradient(ellipse 70% 45% at 50% 35%, rgba(255, 255, 255, 0.35), transparent 70%),
+    kit.vignette(45%, rgba(10, 30, 50, 0.32)),
+    kit.arena-lights(rgba(255, 255, 255, 0.35)),
     url("../assets/textures/ice.svg");
   background-size: cover, cover, 800px;
 }
@@ -36,19 +34,20 @@ $ice-text: #e9f6ff;
 
 .mdc-slider__thumb-knob {
   @include kit.ball-knob($puck);
-  border-color: transparent !important;
-  border-radius: 50% !important;
   box-shadow: none !important;
   filter: $puck-glow;
 }
 
 #{kit.$switch} {
   @include kit.switch-size(16px);
-
+  // (the handle as the ball, filling it: written here, not in a kit mixin, so the build resolves the image's
+  // url against this file)
   .mdc-switch__handle::after {
     background: $puck center / 100% 100% no-repeat !important;
     background-blend-mode: normal !important;
-    border: none !important;
+  }
+
+  .mdc-switch__handle::after {
     filter: $puck-glow;
   }
 }
@@ -96,11 +95,7 @@ $on-rubber: 0 1px 1px rgba(0, 0, 0, 0.8);
   }
 }
 
-#{kit.$open-buttons} {
-  .mat-icon {
-    color: var(--scoreboard-led) !important;
-  }
-}
+@include kit.open-icons-lit;
 
 #{kit.$pressed-buttons} {
   box-shadow: $lit-edge !important;
@@ -143,14 +138,7 @@ $on-rubber: 0 1px 1px rgba(0, 0, 0, 0.8);
     font-weight: 800 !important;
   }
 
-  .mat-mdc-option.mdc-list-item--selected,
-  .mat-mdc-option:not(.mdc-list-item--disabled):hover {
-    background: rgba(0, 0, 0, 0.1) !important;
-  }
-
-  .mat-mdc-option.mdc-list-item--selected span {
-    color: var(--scoreboard-led) !important;
-  }
+  @include kit.option-band(rgba(0, 0, 0, 0.1));
 
   @include kit.list-scrollbar(rgba(0, 0, 0, 0.3), var(--scoreboard-led), #fff);
 }

@@ -6,3 +6,9 @@ $lit-label-weight: 800;
 // The accent (the old-park chalk cream, --scoreboard-led): the stat categories' colors are worked out from it
 // (_base.scss), so they sit in this sport's palette
 $accent: #f1ece0;
+
+// ...and its glow's strength (--scoreboard-glow: a soft halo in the accent at this alpha)
+$glow-alpha: 0.5;
+
+// The square headshots' left side fading out (the card's and the grid's: _sport-card, _sport-rankings)
+$headshot-fade: linear-gradient(90deg, transparent, #000 28%);

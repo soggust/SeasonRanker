@@ -14,7 +14,7 @@
 body {
   background-color: #3d7a24;
   background-image:
-    radial-gradient(ellipse at 50% 30%, transparent 40%, rgba(0, 0, 0, 0.35)),
+    kit.vignette(),
     url("../assets/textures/turf.webp");
   background-size: cover, 512px;
 }
@@ -23,6 +23,13 @@ body {
 $on-leather:
   0 1px 2px rgba(0, 0, 0, 0.9),
   0 0 5px rgba(0, 0, 0, 0.55);
+
+// The welt: the leather's thick dark edge, and its raised edge (v.leather-edge's, with the welt round it)
+$welt: #1a120c;
+$welt-shadow:
+  inset 0 1px 0 rgba(255, 255, 255, 0.18),
+  0 0 0 0.5px $welt,
+  1px 1px 1px rgba(0, 0, 0, 0.6);
 
 // ---------------------------------------------------------------------------
 // Inputs in leather, like the grid's buttons
@@ -59,7 +66,7 @@ $on-leather:
     var(--leather) !important;
   background-blend-mode: normal, soft-light, normal !important;
   box-shadow:
-    0 0 0 0.5px #1a120c,
+    0 0 0 0.5px $welt,
     0 0 1em rgba(0, 0, 0, 0.4) !important;
 
   .mat-mdc-option span {
@@ -85,11 +92,8 @@ section footer .mat-mdc-select.season-select {
 // The selectable pills (the game view's filters) in the dropdowns' leather, with its welt and white text
 html .game-filter {
   @include v.leather($important: true);
-  border: 1px solid #1a120c !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 0 0 0.5px #1a120c,
-    1px 1px 1px rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid $welt !important;
+  box-shadow: $welt-shadow !important;
   color: #fff !important;
   text-shadow: $on-leather !important;
 }
@@ -100,16 +104,13 @@ html .game-filter {
 #{kit.$footer-buttons},
 #{kit.$dropdowns},
 #{kit.$open-list} {
-  border: 1px solid #1a120c !important;
-  border-radius: 10px !important;
+  border: 1px solid $welt !important;
+  border-radius: v.$radius-xl !important;
 }
 
 #{kit.$footer-buttons},
 #{kit.$dropdowns} {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 0 0 0.5px #1a120c,
-    1px 1px 1px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: $welt-shadow !important;
 }
 
 #{kit.$footer-buttons} {
@@ -119,26 +120,20 @@ html .game-filter {
 }
 
 .mat-mdc-menu-panel .min-games-stepper button {
-  border: 1px solid #1a120c !important;
+  border: 1px solid $welt !important;
 }
 
 // ---------------------------------------------------------------------------
 // The football (textures/football.svg: shaded, pebbled leather, seams, stitched laces) on the slider
-// knobs and the settings switches, in place of the shared leather-and-laces drawing. A football doesn't
-// roll like the round balls in the other sports.
+// knobs and the settings switches. A football doesn't roll like the round balls in the other sports.
 // ---------------------------------------------------------------------------
 $football: url("../assets/textures/football.svg");
 
 .mdc-slider__thumb-knob {
   background: $football center / 100% 100% no-repeat !important;
   // (sized against the whole knob: Material draws it with a thick border)
-  background-clip: border-box !important;
   background-origin: border-box !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.7));
-  transform: translate(-50%, -50%) !important;
+  @include kit.fixed-knob;
 
   // (its own laces)
   &::after {
@@ -148,24 +143,21 @@ $football: url("../assets/textures/football.svg");
 
 #{kit.$switch} {
   @include kit.bare-switch-handle;
+  // (the handle as the ball, filling it: written here, not in a kit mixin, so the build resolves the image's
+  // url against this file)
+  .mdc-switch__handle::after {
+    background: $football center / 100% 100% no-repeat !important;
+    background-blend-mode: normal !important;
+  }
 
   .mdc-switch__handle {
     border-radius: 0 !important;
 
     &::after {
-      background: $football center / 100% 100% no-repeat !important;
-      background-blend-mode: normal !important;
-      border: none !important;
-      border-radius: 0 !important;
+      @include kit.fixed-handle;
       box-shadow: none !important;
-      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
-      rotate: none !important;
     }
   }
-}
-
-html .mat-mdc-slide-toggle .mdc-switch__shadow {
-  box-shadow: none !important;
 }
 
 @include kit.switch-overreach;

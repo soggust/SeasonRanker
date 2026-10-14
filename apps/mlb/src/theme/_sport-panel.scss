@@ -1,18 +1,27 @@
+@use "variables" as v;
+
 // MLB: a card panel (card-panel.scss) has no border down its body: the body is edged in chalk lines (the
 // table's, slimmer, a little faded) right at its sides and across its bottom; its header bar keeps the
 // thin border in its category's color
+// (the chalk lines: the down and across tiles, a line's width and how far a tile runs)
+$chalk-v: url("../assets/textures/chalk-line-v.svg");
+$chalk-h: url("../assets/textures/chalk-line-h.svg");
+$chalk-w: 6px;
+$chalk-run: 90px;
+
 @mixin box {
-  border-color: transparent;
+  border: 1px solid transparent;
 
   > .group-bar {
-    border-radius: 6px 6px 0 0;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--group-color) 40%, transparent);
+    border-radius: v.$panel-radius v.$panel-radius 0 0;
+    // (card-panel.scss's --panel-line)
+    box-shadow: inset 0 0 0 1px var(--panel-line);
   }
 }
 
 @mixin edges {
   // (room for the chalk along the bottom, so the content keeps as much space above it as at the top)
-  padding-bottom: 6px;
+  padding-bottom: $chalk-w;
   position: relative;
 
   // (the chalk on a layer of its own, so it can fade)
@@ -20,9 +29,9 @@
     background:
       // (each line is drawn down the middle of its tile: the tiles shifted out 2px, so it runs on the edge,
       // in line with the header's border)
-      url("../assets/textures/chalk-line-v.svg") left -2px top / 6px 90px repeat-y,
-      url("../assets/textures/chalk-line-v.svg") right -2px top / 6px 90px repeat-y,
-      url("../assets/textures/chalk-line-h.svg") left bottom -2px / 90px 6px repeat-x;
+      $chalk-v left -2px top / $chalk-w $chalk-run repeat-y,
+      $chalk-v right -2px top / $chalk-w $chalk-run repeat-y,
+      $chalk-h left bottom -2px / #{$chalk-run} $chalk-w repeat-x;
     content: "";
     inset: 0;
     opacity: 0.8;

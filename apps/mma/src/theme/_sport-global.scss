@@ -1,7 +1,7 @@
 @use "sport-kit" as kit;
 
 // ===========================================================================
-// UFC theme: the octagon's canvas instead of turf, fight gloves on the slider knobs and the settings
+// MMA theme: the octagon's canvas instead of turf, fight gloves on the slider knobs and the settings
 // switches, octagon-cut buttons and inputs, and fight-night red as the accent
 // ===========================================================================
 :root {
@@ -9,10 +9,8 @@
   // place of the chalk plays) and #1 trophy (a championship belt)
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
   --trophy-mask: url("../assets/lombardi.svg");
-  // The accent (the scoreboard lettering, menu highlights, sliders and scrollbars): a bright red, so
-  // text reads on the dark panels
-  --scoreboard-led: #ff3b3b;
-  --scoreboard-glow: 0 0 6px rgba(255, 59, 59, 0.6);
+  // (the accent, --scoreboard-led, is sport-settings' $accent: the scoreboard lettering, menu highlights,
+  // sliders and scrollbars, a bright red so text reads on the dark panels)
 }
 
 // The canvas: the octagon's woven mat (textures/canvas.svg) under the arena lights (a bright pool
@@ -20,8 +18,8 @@
 body {
   background-color: #e6e0d4;
   background-image:
-    radial-gradient(ellipse at 50% 30%, transparent 45%, rgba(40, 20, 10, 0.32)),
-    radial-gradient(ellipse 70% 45% at 50% 35%, rgba(255, 255, 255, 0.3), transparent 70%),
+    kit.vignette(45%, rgba(40, 20, 10, 0.32)),
+    kit.arena-lights(rgba(255, 255, 255, 0.3)),
     url("../assets/textures/canvas.svg");
   background-size: cover, cover, 600px;
 }
@@ -36,38 +34,28 @@ $glove: url("../assets/textures/glove.svg");
 
 .mdc-slider__thumb-knob {
   @include kit.ball-knob($glove);
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.7));
-  transform: translate(-50%, -50%) !important;
+  @include kit.fixed-knob;
 }
 
 #{kit.$switch} {
   @include kit.switch-size(18px);
   @include kit.bare-switch-handle;
-
+  // (the handle as the ball, filling it: written here, not in a kit mixin, so the build resolves the image's
+  // url against this file)
   .mdc-switch__handle::after {
     background: $glove center / 100% 100% no-repeat !important;
     background-blend-mode: normal !important;
-    border: none !important;
-    border-radius: 0 !important;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
-    rotate: none !important;
   }
 
-  .mdc-switch__shadow {
-    box-shadow: none !important;
+  .mdc-switch__handle::after {
+    @include kit.fixed-handle;
   }
 }
 
 @include kit.plain-slider-track;
 
 // A switch that's on: an off-white track, so the red glove stands out on it (red on red ran together)
-.mdc-switch.mdc-switch--selected .mdc-switch__track::after,
-.mdc-switch.mdc-switch--selected:enabled:hover .mdc-switch__track::after,
-.mdc-switch.mdc-switch--selected:enabled:focus .mdc-switch__track::after,
-.mdc-switch.mdc-switch--selected:enabled:active .mdc-switch__track::after {
+.mdc-switch.mdc-switch--selected .mdc-switch__track::after {
   background: $white-text !important;
 }
 
@@ -135,11 +123,7 @@ $edge: 2px;
   }
 }
 
-#{kit.$open-buttons} {
-  .mat-icon {
-    color: var(--scoreboard-led) !important;
-  }
-}
+@include kit.open-icons-lit;
 
 // Pressed in: a darker face
 #{kit.$pressed-buttons} {
@@ -201,14 +185,7 @@ $edge: 2px;
     font-weight: 500 !important;
   }
 
-  .mat-mdc-option.mdc-list-item--selected,
-  .mat-mdc-option:not(.mdc-list-item--disabled):hover {
-    background: rgba(0, 0, 0, 0.25) !important;
-  }
-
-  .mat-mdc-option.mdc-list-item--selected span {
-    color: var(--scoreboard-led) !important;
-  }
+  @include kit.option-band(rgba(0, 0, 0, 0.25));
 
   @include kit.list-scrollbar(rgba(0, 0, 0, 0.3), var(--scoreboard-led));
 
@@ -218,7 +195,7 @@ $edge: 2px;
 
     &,
     .mdc-list-item__primary-text {
-      color: rgba(244, 241, 236, 0.45) !important;
+      color: rgba($white-text, 0.45) !important;
       font-size: 10px !important;
       font-weight: 500 !important;
       letter-spacing: 1.5px !important;
