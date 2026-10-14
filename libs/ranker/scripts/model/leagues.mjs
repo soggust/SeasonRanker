@@ -24,7 +24,9 @@
 // tested: once its trust is fit (perDay null: no daily cap)
 // GAME_CAP (run.mjs placeBets, desk.mjs capGame): the most units open on one game, its markets and props
 // together (they rise and fall with the same game: a few bets on it are one big one); over it, the new bets
-// scaled down alike, the least worth having dropped
+// scaled down alike, the least worth having dropped. Before it, a game's edge props sized jointly with its other
+// props by their measured correlations in a game, a player's own props' and the rest's (desk.mjs sameGameOf,
+// sizeJointly, placeGame: stakes only cut, never raised; a tracked row stakes nothing, so it's no exposure)
 // BOOK: the one sportsbook the desk bets, for every market and prop: its lines and prices are the ones
 // priced and placed (The Odds API's key for it; ESPN's free board, the fallback, is DraftKings' too)
 export const BOOK = 'draftkings';
@@ -65,7 +67,18 @@ export const GAME_CAP = 5;
 // picks.mjs BANDS), and a market with no edge (or one a guard cut), the old 0.5u action bet, tracked, not bet
 // (desk.mjs TRACK: graded and learned from the same, never staked or in the record); a LOCK at a 55% chance (was
 // 60%). Set to the push time, after the run that bet tonight's NHL under the old rules.
-export const MODEL_EPOCH = '2026-10-13T18:05:00Z';
+// 2026-10-14, audit round B (replayed onto the tracked rows, the flagged edge bets at the minimum and the other
+// books' consensus), its terms kept together: the NBA's minutes first and its pace; the NHL's ice time first, its
+// power-play lean and the team's expected shots; the NFL's expected plays (ep: passing attempts); the team's game
+// first (tr: NFL carries, NBA assists; rushing yards off since its review); the start-of-season prior (sp: NFL
+// rushing, receiving and rush+rec yards); the early exit (ex: receiving yards); same-game sizing (a game's edge
+// props staked jointly, a player's own props' and the rest's correlations, each used only where held-out days
+// bore it out; a tracked row in the fit as evidence, never as exposure); confirmed inactives and starting fives;
+// the opponent's key defenders out; who absorbs the work missing (measured, off where not kept). Held out against
+// round A's code on the same games: NBA points 0.6521 to 0.6466, rebounds 0.6338 to 0.6263, assists 0.6176 to
+// 0.608; NHL shots 0.5885 to 0.5869; NFL passing attempts 0.6219 to 0.6208, carries 0.6305 to 0.6295, receiving
+// yards 0.6497 to 0.6468; MLB as before.
+export const MODEL_EPOCH = '2026-10-14T05:37:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

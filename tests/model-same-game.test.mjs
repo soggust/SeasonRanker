@@ -244,3 +244,30 @@ test('placeGame: sized before the room and the cap; the open props fixed, the op
   // (no rho: the stakes as they came)
   assert.deepEqual(placeGame(mine(), [], { player: 0, game: 0 }, 99).kept.map((x) => x.units), [3, 3, 3]);
 });
+
+test('a tracked row (no edge, not bet): evidence for the fit, never exposure, never sized, taken back or staked in the replay', () => {
+  const tracked = (b) => ({ ...b, intent: 'track', units: 0, trackUnits: 0.5, profit: 0 });
+  // (every row tracked: the fits and the held-out scores read the same results, the replay stakes nothing)
+  const bet = sameGameOf(ledger(60, 4, 0.5, 3, dayOf));
+  const seen = sameGameOf(ledger(60, 4, 0.5, 3, dayOf).map(tracked));
+  assert.deepEqual(seen.game.rho, bet.game.rho);
+  assert.deepEqual(seen.game.held, bet.game.held);
+  assert.deepEqual(seen.used, bet.used);
+  assert.equal(seen.replay.games, 0);
+  // (open tracked props on the game, even a big lean of them, and new tracked ones: the edge props sized as with none)
+  const mine = () => [1, 2, 3].map((i) => prop(`p${i}`, 'over', 3, { athlete: `a${i}` }));
+  const rho = { player: 0, game: 0.25 };
+  const openT = Array.from({ length: 6 }, (_, i) => tracked(prop(`t${i}`, 'over', 1, { athlete: `t${i}`, start: '2026-10-01T20:00Z' })));
+  const newT = tracked(prop('n', 'over', 1, { athlete: 'n' }));
+  const plan = placeGame([...mine(), newT], openT, rho, 6);
+  assert.deepEqual(plan.out, []);
+  assert.equal(plan.open, 0);
+  assert.deepEqual(plan.kept.map((x) => x.units), [2, 2, 2, 0]);
+  assert.equal(plan.kept[3].intent, 'track');
+  assert.ok(!plan.kept[3].context?.sameGame && !plan.kept[3].context?.cap);
+  // (a flagged edge prop at the 0.5 minimum: never sized below it, counted as placed)
+  const flagged = prop('f', 'over', 0.5, { athlete: 'f', intent: 'edge', ev: 0.03 });
+  const withFlag = placeGame([...mine(), flagged], [], rho, 99);
+  assert.equal(withFlag.kept[3].units, 0.5);
+  assert.ok(withFlag.kept.slice(0, 3).every((x) => x.units <= 2));
+});
