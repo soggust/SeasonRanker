@@ -158,10 +158,12 @@ const MAX_Z = 2.5;
 // read as he did in the ones that were), or the list's average if he has none. Small samples aren't adjusted for unless the sport
 // says how much evidence a row's rates rest on (SPORT.reliability, 0-1: MMA's fights): then each
 // rate's score is scaled by it, so a few fights' perfect numbers count less than a long career's.
-// A pooled tab's Position Adjustment (adjust: pooled-tabs.ts adjustFor) measures each stat partly within
-// the unit's own group too: (1 - share) x his score against the whole pool + share x his score against
-// his group's part of it (each capped), so a stat his position piles up counts for less; a group with
-// under 5 values or no spread uses the whole pool's.
+// A pooled tab's Position Adjustment (adjust: pooled-tabs.ts adjustFor) measures each stat partly against
+// the unit's own group's average: his score against the whole pool (capped), less share x how far his
+// group's average sits from the pool's, on the pool's spread, so a stat his position piles up counts for
+// less. One shift a group, after the cap, the same for everyone in it: two players at one position keep their
+// order at every share (a group's own spread, or the cap after the shift, could swap two elite ones); a group
+// with under 5 values uses the whole pool's.
 export function weightedTotals<T>(
   units: T[],
   stats: SkillStat[],
@@ -221,13 +223,15 @@ export function weightedTotals<T>(
     // (Position Adjustment: each group's own average and spread, from its part of the same values)
     const groups = adjust && adjust.share > 0 && !scale ? groupScales(pairs, adjust.of) : null;
     const score = scale
-      ? (v: number, _unit?: T) => clamp(MAX_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
-      : (v: number, unit?: T) => {
-          const all = better * clamp((v - mean) / sd);
-          const own = groups && unit !== undefined ? groups.get(adjust!.of(unit)) : undefined;
-          return own ? (1 - adjust!.share) * all + adjust!.share * better * clamp((v - own.mean) / own.sd) : all;
-        };
-    const worst = Math.min(...pairs.map(([unit, v]) => score(v, unit)));
+      ? (v: number) => clamp(MAX_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
+      : (v: number) => better * clamp((v - mean) / sd);
+    // (the Position Adjustment's one shift for each unit's group, added to whatever he scores on the stat, a
+    // missing value's too, so nothing within a group moves)
+    const shiftOf = (unit: T) => {
+      const own = groups ? groups.get(adjust!.of(unit)) : undefined;
+      return own ? -adjust!.share * better * clamp((own.mean - mean) / sd) : 0;
+    };
+    const worst = Math.min(...pairs.map(([, v]) => score(v)));
     // (a sport can boost a stat behind its slider: the same 0-100% range, more effect at every step;
     // the boost can depend on the sport's settings)
     const boost = typeof stat.boost === 'function' ? stat.boost(settings) : (stat.boost ?? 1);
@@ -241,7 +245,7 @@ export function weightedTotals<T>(
         if (parts) skipOf(unit).keys.push([stat.key, strength]);
         return;
       }
-      const scored = v !== null ? score(v, unit) : stat.missingIsAverage || stat.support ? 0 : worst;
+      const scored = (v !== null ? score(v) : stat.missingIsAverage || stat.support ? 0 : worst) + shiftOf(unit);
       // (a rate that isn't his own sample's, like the UFC's rank, isn't scaled: stat.settled)
       const trust = reliability && stat.kind === 'efficiency' && !stat.settled ? reliability(unit, stat) : 1;
       totals.set(unit, (totals.get(unit) ?? 0) + scored * strength * trust);

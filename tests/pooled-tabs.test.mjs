@@ -115,6 +115,13 @@ const zOf = (values, v) => {
   const sd = Math.sqrt(values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length);
   return Math.max(-2.5, Math.min(2.5, (v - mean) / sd));
 };
+// (how far his group's average sits from the pool's, on the pool's spread)
+const shiftOf = (values, all) => {
+  const g = values.reduce((a, b) => a + b, 0) / values.length;
+  const m = all.reduce((a, b) => a + b, 0) / all.length;
+  const sd = Math.sqrt(all.reduce((a, b) => a + (b - m) ** 2, 0) / all.length);
+  return Math.max(-2.5, Math.min(2.5, (g - m) / sd));
+};
 
 test('the sports with a pooled tab: MLB, the NBA and the NHL as each one gets its Top 50; never the NFL or MMA', () => {
   for (const sport of ['mlb', 'nba', 'nhl']) assert.ok(POOLING.includes(sport), `pooling: ${POOLING}`);
@@ -187,8 +194,8 @@ for (const sport of POOLING) {
       const loud = weightedTotals(units, [adj], { posAdj: 100 }, () => 1);
       assert.ok([...loud.values()].every((v) => v === 0), 'never a stat');
 
-      // Up: each stat's score is his z against everyone, blended with his z within his group (its own
-      // average and spread); all the way up, his z within his group alone
+      // Up: each stat's score is his z against everyone less share x his group's shift (its average's distance
+      // from the pool's, on the pool's spread): one shift a group, so two players at one position keep their order
       const stats = SKILL_STATS[pooled].filter((s) => !s.infoOnly && !s.support && !s.positionAdjust && !s.scale && s.format !== 'record' && s.format !== 'recent');
       assert.ok(stats.length >= 5);
       const groupOf = (u) => group(u.homeTab);
@@ -204,8 +211,8 @@ for (const sport of POOLING) {
           for (const u of known) {
             const values = byGroup.get(groupOf(u));
             const spread = new Set(values).size > 1;
-            const within = values.length >= 5 && spread ? zOf(values, u.stats[stat.key]) : zOf(all, u.stats[stat.key]);
-            const want = better * ((1 - share) * zOf(all, u.stats[stat.key]) + share * within);
+            const shift = values.length >= 5 && spread ? shiftOf(values, all) : 0;
+            const want = better * zOf(all, u.stats[stat.key]) - share * better * shift;
             assert.ok(Math.abs(scores.get(u) - want) < 1e-9, `${stat.key} at ${share * 100}: ${u.name} ${scores.get(u)} vs ${want}`);
             checked++;
           }
@@ -215,6 +222,15 @@ for (const sport of POOLING) {
       // (and it moves the order: a big enough pool's top 50 changes somewhere)
       const adjusted = defaultRanking(pooled, { ...weights, posAdj: 100 });
       assert.notDeepEqual(ids(adjusted).slice(0, 50), ids(defaultRanking(pooled, weights)).slice(0, 50), 'the Top 50 moves at 100');
+      // (but never within a position: two players at one position keep their order at every share, the
+      // owner's Witt and De La Cruz)
+      const within = (list) => {
+        const out = new Map();
+        for (const u of list) (out.get(groupOf(u)) ?? out.set(groupOf(u), []).get(groupOf(u))).push(u.gsisId);
+        return out;
+      };
+      const before = within(defaultRanking(pooled, weights));
+      for (const [g, order] of within(adjusted)) assert.deepEqual(order, before.get(g), `${pooled} ${g}: the same order within the position`);
       // (every row's parts still add up to his total, adjusted)
       const parts = new Map();
       const adjust = adjustFor(pooled, { posAdj: 60 });
