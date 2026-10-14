@@ -1,7 +1,11 @@
 import type { SkillPosition, SkillWeights } from '@sport/positions';
 
-// Presets for every tab, each built around a kind of player. A preset sets the stats it's named for
-// (60-100); every other stat stays in at 25 as a tiebreaker.
+// Presets for every tab, each built around a kind of player. A preset sets the stats it's named for (the
+// lead at 100, the rest of its list 40-90); every other stat drops to the rest weight (positions.ts
+// presetWeights: 25 on a small tab like HC, down to 10 on the player tabs, so what it names leads). A rate
+// comes with its count (steal rate with steals) so a few good games off the bench don't top a list.
+// Fantasy ranks purely on its nine categories. The order on every tab: Total Impact, the archetypes
+// (offense, then defense), Winning, then Fantasy.
 export interface SkillPresetDef {
   key: string;
   label: string;
@@ -9,30 +13,75 @@ export interface SkillPresetDef {
   weights: SkillWeights;
 }
 
-// On every tab
+// On every player tab
 const IMPACT: SkillPresetDef = {
   key: 'impact',
   label: 'Total Impact',
-  description: 'The all-in-one numbers: Win Shares, VORP, Box Plus/Minus and on-off',
-  weights: { ws: 100, vorp: 100, bpm: 90, ws48: 70, onOff: 60, per: 50 },
+  description: 'The all-in-one numbers: Win Shares, VORP, Box Plus/Minus, WS/48 and On-Off',
+  weights: { ws: 100, vorp: 100, bpm: 100, ws48: 70, onOff: 60 },
 };
 const SCORER: SkillPresetDef = {
   key: 'scorer',
   label: 'Scorer',
-  description: 'Buckets: points, usage and how efficiently he gets them',
-  weights: { points: 100, tsPct: 80, usgPct: 70, fgPct: 50, ftPct: 50, threes: 40 },
+  description: 'Buckets: points, usage and True Shooting',
+  weights: { points: 100, usgPct: 80, tsPct: 80 },
+};
+const PLAYMAKING: SkillWeights = { assists: 100, astPct: 100, tovPct: 60 };
+const SHOOTER: SkillPresetDef = {
+  key: 'shooter',
+  label: 'Shooter',
+  description: 'Range: 3s made, 3-point and free throw accuracy and True Shooting',
+  weights: { threes: 100, fg3Pct: 100, ftPct: 70, tsPct: 70 },
+};
+const THREE_AND_D: SkillPresetDef = {
+  key: 'threeAndD',
+  label: '3 & D',
+  description: 'Knock down 3s and guard: 3-point shooting, Defensive Box Plus/Minus, steals and blocks',
+  weights: { fg3Pct: 90, threes: 90, dbpm: 90, stlPct: 70, blkPct: 40 },
+};
+const POINT_FORWARD: SkillPresetDef = {
+  key: 'pointForward',
+  label: 'Point Forward',
+  description: 'Playmaking from the forward spot: assists and assist rate, then rebounding',
+  weights: { assists: 100, astPct: 100, rebounds: 70, trbPct: 50 },
+};
+const STRETCH_FOUR: SkillPresetDef = {
+  key: 'stretch',
+  label: 'Stretch Four',
+  description: 'A big who spaces the floor: 3s made, 3-point accuracy, True Shooting and rebounding',
+  weights: { threes: 100, fg3Pct: 100, tsPct: 60, rebounds: 60, trbPct: 60 },
+};
+const GLASS: SkillPresetDef = {
+  key: 'glass',
+  label: 'Glass Cleaner',
+  description: 'Rebounds: total rebounds and rebound rate',
+  weights: { rebounds: 100, trbPct: 100 },
+};
+const RIM_PROTECTOR: SkillPresetDef = {
+  key: 'rimProtector',
+  label: 'Rim Protector',
+  description: 'Protecting the paint: blocks, block rate and Defensive Box Plus/Minus',
+  weights: { blocks: 100, blkPct: 100, dbpm: 100 },
 };
 const DEFENDER: SkillPresetDef = {
   key: 'defender',
   label: 'Defender',
-  description: 'Stops: Defensive Box Plus/Minus, steals, blocks and defensive rebounding',
-  weights: { dbpm: 100, stlPct: 80, blkPct: 80, steals: 60, blocks: 60, trbPct: 50 },
+  description: 'Stops: Defensive Box Plus/Minus, steals and blocks',
+  weights: { dbpm: 100, stlPct: 80, steals: 80, blkPct: 70, blocks: 70 },
 };
+// (Win Shares, a season's count, behind the two rates: alone, a few games on a winning team would top it)
 const WINNER: SkillPresetDef = {
   key: 'winner',
   label: 'Winning',
-  description: 'His team winning with him: the record, Win Shares and on-off',
-  weights: { winPct: 100, ws: 90, onOff: 80, vorp: 60 },
+  description: 'His team winning with him: the record and On-Off, then Win Shares',
+  weights: { winPct: 100, onOff: 80, ws: 40 },
+};
+// (positions.ts presetWeights puts every other stat at 0 for it, as the NFL's Fantasy does)
+const FANTASY_9CAT: SkillPresetDef = {
+  key: 'fantasy',
+  label: 'Fantasy',
+  description: 'Fantasy (9-cat): points, rebounds, assists, steals, blocks, 3s, FG %, FT % and turnovers',
+  weights: { points: 100, rebounds: 100, assists: 100, steals: 100, blocks: 100, threes: 100, fgPct: 100, ftPct: 100, turnovers: 100 },
 };
 
 // Guards run the offense; wings shoot and defend; bigs rebound, protect the rim and finish. The Top 50
@@ -54,96 +103,67 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'offense',
       label: 'Offense',
-      description: "The offense's rank first, with the guards and wings",
-      weights: { offRank: 100, netRtg: 50, backcourt: 50, wings: 40 },
+      description: 'The offense: its league rank by offensive rating',
+      weights: { offRank: 100 },
     },
     {
       key: 'defense',
       label: 'Defense',
-      description: "The defense's rank first, with the frontcourt",
-      weights: { defRank: 100, netRtg: 50, frontcourt: 50 },
+      description: 'The defense: its league rank by defensive rating',
+      weights: { defRank: 100 },
     },
   ],
   // (every position together: the presets every tab shares)
-  TOP: [IMPACT, SCORER, DEFENDER, WINNER],
+  TOP: [IMPACT, SCORER, DEFENDER, WINNER, FANTASY_9CAT],
   PG: [
     IMPACT,
+    SCORER,
     {
       key: 'floorGeneral',
       label: 'Floor General',
-      description: 'Running the offense: assists and assist rate, taking care of the ball',
-      weights: { assists: 100, astPct: 100, tovPct: 80, turnovers: 50, onOff: 50 },
+      description: 'Running the offense: assists, assist rate and few turnovers per play',
+      weights: PLAYMAKING,
     },
-    SCORER,
-    {
-      key: 'shooter',
-      label: 'Shooter',
-      description: 'Range: 3s made, 3-point and free throw accuracy, true shooting',
-      weights: { threes: 100, fg3Pct: 100, ftPct: 70, tsPct: 70 },
-    },
+    SHOOTER,
     DEFENDER,
     WINNER,
+    FANTASY_9CAT,
   ],
-  SG: [
+  SG: [IMPACT, SCORER, SHOOTER, THREE_AND_D, DEFENDER, WINNER, FANTASY_9CAT],
+  SF: [IMPACT, SCORER, POINT_FORWARD, THREE_AND_D, DEFENDER, WINNER, FANTASY_9CAT],
+  PF: [IMPACT, SCORER, POINT_FORWARD, STRETCH_FOUR, GLASS, DEFENDER, WINNER, FANTASY_9CAT],
+  C: [
     IMPACT,
     SCORER,
     {
-      key: 'shooter',
-      label: 'Shooter',
-      description: 'Range: 3s made, 3-point and free throw accuracy, true shooting',
-      weights: { threes: 100, fg3Pct: 100, ftPct: 70, tsPct: 70 },
+      key: 'playmaker',
+      label: 'Playmaking Big',
+      description: 'The offense runs through him: assists, assist rate and few turnovers per play',
+      weights: PLAYMAKING,
     },
-    {
-      key: 'threeAndD',
-      label: '3 & D',
-      description: 'Knock down 3s and guard: 3-point shooting with steals and defensive BPM',
-      weights: { fg3Pct: 90, threes: 80, dbpm: 90, stlPct: 70, tovPct: 40 },
-    },
-    DEFENDER,
+    GLASS,
+    RIM_PROTECTOR,
     WINNER,
-  ],
-  SF: [
-    IMPACT,
-    SCORER,
-    {
-      key: 'threeAndD',
-      label: '3 & D',
-      description: 'Knock down 3s and guard: 3-point shooting with steals and defensive BPM',
-      weights: { fg3Pct: 90, threes: 80, dbpm: 90, stlPct: 70, tovPct: 40 },
-    },
-    {
-      key: 'allAround',
-      label: 'Point Forward',
-      description: 'Does it all: points, rebounds and assists, with playmaking rates',
-      weights: { points: 70, rebounds: 80, assists: 90, astPct: 70, trbPct: 60, bpm: 60 },
-    },
-    DEFENDER,
-    WINNER,
-  ],
-  PF: [
-    IMPACT,
-    SCORER,
-    {
-      key: 'stretch',
-      label: 'Stretch Four',
-      description: 'A big who spaces the floor: 3s made and accuracy with rebounding',
-      weights: { threes: 100, fg3Pct: 90, tsPct: 60, trbPct: 60, rebounds: 50 },
-    },
-    {
-      key: 'glass',
-      label: 'Glass Cleaner',
-      description: 'Rebounds: totals and rebound rate, plus efficient finishing',
-      weights: { rebounds: 100, trbPct: 100, fgPct: 60, blocks: 40 },
-    },
-    DEFENDER,
-    WINNER,
+    FANTASY_9CAT,
   ],
   HC: [
     {
       key: 'coachingJob',
       label: 'Coaching Job',
-      description: 'Getting more from a roster than its talent: the coaching lift and wins over point differential',
-      weights: { lift: 100, pythDiff: 60 },
+      description: 'Getting more from a roster than its talent: the Coaching Lift, then close games',
+      weights: { lift: 100, pythDiff: 50 },
+    },
+    {
+      key: 'offense',
+      label: 'Offensive Mind',
+      description: "Scheme on offense: the offense's rank, then the Coaching Lift",
+      weights: { offRank: 100, lift: 60 },
+    },
+    {
+      key: 'defense',
+      label: 'Defensive Mind',
+      description: "Scheme on defense: the defense's rank, then the Coaching Lift",
+      weights: { defRank: 100, lift: 60 },
     },
     {
       key: 'winner',
@@ -151,40 +171,5 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       description: 'Results: the record and playoff wins',
       weights: { winPct: 100, playoffWins: 100 },
     },
-    {
-      key: 'offense',
-      label: 'Offensive Mind',
-      description: 'Scheme on offense: the offense\'s rank first',
-      weights: { offRank: 100, lift: 40 },
-    },
-    {
-      key: 'defense',
-      label: 'Defensive Mind',
-      description: 'Scheme on defense: the defense\'s rank first',
-      weights: { defRank: 100, lift: 40 },
-    },
-  ],
-  C: [
-    IMPACT,
-    {
-      key: 'rimProtector',
-      label: 'Rim Protector',
-      description: 'Protecting the paint: blocks, block rate, defensive BPM and defensive boards',
-      weights: { blocks: 100, blkPct: 100, dbpm: 90, trbPct: 60, rebounds: 50 },
-    },
-    {
-      key: 'glass',
-      label: 'Glass Cleaner',
-      description: 'Rebounds: totals and rebound rate, plus efficient finishing',
-      weights: { rebounds: 100, trbPct: 100, fgPct: 60, blocks: 40 },
-    },
-    {
-      key: 'hub',
-      label: 'Playmaking Big',
-      description: 'The offense runs through him: assists, assist rate and efficient scoring',
-      weights: { assists: 100, astPct: 100, tsPct: 70, points: 60, bpm: 60 },
-    },
-    SCORER,
-    WINNER,
   ],
 };
