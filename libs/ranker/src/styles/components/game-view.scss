@@ -1,5 +1,32 @@
 @use "../variables" as v;
 
+// (a row's hairline under it: the leaders, plays, team stats, fantasy, last five, arsenal)
+$row-rule: 1px solid rgba(255, 255, 255, 0.05);
+
+// (a side's color lightened toward white: its share, then white's. Where the two add up to under 100%
+// (55% + 10%, 70% + 20%) color-mix scales the result's alpha to their sum, so it comes out that see-through:
+// 65%, 90%)
+@function side-tint($side, $pct, $white) {
+  @return color-mix(in srgb, var(--#{$side}-color) $pct, #fff $white);
+}
+
+// (a button with the browser's look taken off: no fill, border or padding; the pointer)
+@mixin plain-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+// (a fact's label: small, faint, bold caps)
+@mixin game-caps-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
 // ===========================================================================
 // The game view (game-view.component): the player card's look (its stylesheet comes first), over it. Its
 // hero is the two teams on their colors with the final between them on the LED board; the Summary, Box
@@ -9,11 +36,11 @@
 
 // (in a player card's place when it was opened from one: the card is set aside until it closes)
 .game-backdrop {
-  z-index: 1002;
+  z-index: v.z(game-backdrop);
 }
 
 .game-card {
-  z-index: 1003;
+  z-index: v.z(game);
 }
 
 // ---- the hero: away on the left, home on the right, each on its own color
@@ -78,18 +105,16 @@
 }
 
 .game-team-name {
-  // (a button: the team's card that season)
-  background: none;
-  border: none;
+  // (a button: the team's card that season; under the pointer lit like every link, below)
+  @include plain-button;
   color: #fff;
-  cursor: pointer;
-  padding: 0;
   @include v.hand(28px);
   line-height: 1.1;
   // (clear of the logo card above it)
   margin-top: 8px;
   text-align: center;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  transition: color v.$t-hover;
 }
 
 .game-team-record {
@@ -124,14 +149,7 @@
   .rank-number {
     --tone: var(--scoreboard-led);
     margin: 8px 0 6px;
-
-    &.won {
-      --tone: rgb(80, 207, 80);
-    }
-
-    &.lost {
-      --tone: #ff3b30;
-    }
+    @include v.led-tones;
   }
 }
 
@@ -169,10 +187,13 @@
   th,
   td {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 14px;
-    font-weight: 800;
     padding: 6px 8px;
     text-align: center;
+  }
+
+  th {
+    font-size: 14px;
+    font-weight: 800;
   }
 
   thead th {
@@ -196,7 +217,7 @@
   }
 
   td {
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 16px;
     font-weight: 400;
   }
@@ -236,14 +257,14 @@
     vector-effect: non-scaling-stroke;
   }
 
-  .wp-fill.home {
-    fill: color-mix(in srgb, var(--home-color) 55%, #fff 10%);
+  .wp-fill {
     opacity: 0.55;
   }
 
-  .wp-fill.away {
-    fill: color-mix(in srgb, var(--away-color) 55%, #fff 10%);
-    opacity: 0.55;
+  @each $side in home, away {
+    .wp-fill.#{$side} {
+      fill: side-tint($side, 55%, 10%);
+    }
   }
 
   .wp-line {
@@ -274,10 +295,6 @@
   }
 }
 
-// (the game time at the chart's head as it draws, wp-moments.ts: in the chart's head beside its key, the
-// time in the hero's small bold caps, the score then lit like the board; "Final" and the replay once it's
-// drawn. Kept in place but unseen until it plays: none for less motion)
-
 // (the pen riding the line's head: the team ahead then, its logo in a ring of its color, the two
 // crossfading as the lead changes; resting on the last point once it's drawn)
 .wp-pen {
@@ -297,7 +314,7 @@
 .wp-pen-team {
   align-items: center;
   background: #15181b;
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow:
     0 0 0 2px var(--team),
     0 1px 4px rgba(0, 0, 0, 0.6);
@@ -306,7 +323,7 @@
   justify-content: center;
   opacity: 0;
   position: absolute;
-  transition: opacity 0.25s ease;
+  transition: opacity v.$t-medium ease;
 
   img {
     height: 14px;
@@ -320,6 +337,9 @@
   }
 }
 
+// (the game time at the chart's head as it draws, wp-moments.ts: in the chart's head beside its key, the
+// time in the hero's small bold caps, the score then lit like the board; "Final" and the replay once it's
+// drawn. Kept in place but unseen until it plays: none for less motion)
 .wp-clock {
   align-items: center;
   align-self: center;
@@ -348,7 +368,7 @@
 
 .wp-score {
   color: var(--scoreboard-led);
-  font-family: "DSEG7", sans-serif;
+  font-family: v.$font-led;
   font-size: 10.5px;
 
   &:empty {
@@ -357,23 +377,18 @@
 }
 
 .wp-replay {
+  @include plain-button;
   align-items: center;
-  background: none;
-  border: none;
   border-radius: 5px;
   color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
   display: flex;
   height: 18px;
   justify-content: center;
-  padding: 0;
   visibility: hidden;
   width: 18px;
 
   mat-icon {
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
+    @include v.icon-size(16px);
   }
 
   &:hover {
@@ -387,19 +402,17 @@
 }
 
 .wp-key {
-  border-radius: 2px;
+  border-radius: v.$radius-xxs;
   display: inline-block;
   height: 10px;
   margin-right: 5px;
   vertical-align: -1px;
   width: 10px;
 
-  &.home {
-    background: var(--home-color);
-  }
-
-  &.away {
-    background: var(--away-color);
+  @each $side in home, away {
+    &.#{$side} {
+      background: var(--#{$side}-color);
+    }
   }
 }
 
@@ -417,7 +430,7 @@
 
 .game-leader {
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   display: grid;
   gap: 10px;
   grid-template-columns: 26px minmax(0, 1fr) auto;
@@ -439,9 +452,7 @@
 
   b {
     font-size: 13px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 }
 
@@ -456,7 +467,7 @@
 
 .game-play {
   align-items: baseline;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   display: flex;
   font-size: 13px;
   gap: 10px;
@@ -468,6 +479,11 @@
       color: #fff;
       font-weight: 700;
     }
+  }
+
+  // (a scoring play with its scorer's headshot: the text centered on the picture)
+  &.with-head {
+    align-items: center;
   }
 }
 
@@ -504,7 +520,7 @@
 
 .game-venue-photo {
   aspect-ratio: 16 / 7;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   display: block;
   margin-bottom: 14px;
   object-fit: cover;
@@ -523,11 +539,7 @@
   }
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+    @include game-caps-label;
   }
 
   b {
@@ -545,6 +557,11 @@
     font-style: normal;
     font-weight: 700;
   }
+
+  // (the line among the game's facts: how it came out in the board's light)
+  .game-bet i {
+    color: var(--scoreboard-led);
+  }
 }
 
 .game-officials {
@@ -556,12 +573,8 @@
   padding-top: 14px;
 
   > small {
-    color: rgba(255, 255, 255, 0.5);
+    @include game-caps-label;
     flex: none;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
   }
 
   > span {
@@ -575,7 +588,7 @@
 
 .game-stat {
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   display: grid;
   gap: 14px;
   grid-template-columns: 90px minmax(0, 1fr) 90px;
@@ -616,7 +629,7 @@
 }
 
 .game-stat-bar {
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   display: flex;
   gap: 2px;
   height: 5px;
@@ -628,12 +641,10 @@
     height: 100%;
   }
 
-  .away {
-    background: color-mix(in srgb, var(--away-color) 70%, #fff 20%);
-  }
-
-  .home {
-    background: color-mix(in srgb, var(--home-color) 70%, #fff 20%);
+  @each $side in away, home {
+    .#{$side} {
+      background: side-tint($side, 70%, 20%);
+    }
   }
 }
 
@@ -666,7 +677,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@include v.down(phablet) {
   // (inset from the sides like the player card's hero; the board, its chip and date up level with the
   // logos, and less room under them)
   .game-hero {
@@ -717,7 +728,7 @@
 
 .game-fantasy-row {
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   display: grid;
   gap: 12px;
   grid-template-columns: 32px 26px minmax(0, 1fr) auto;
@@ -726,8 +737,7 @@
 
 // (the rank on a small LED tile, like the grid's: #1 lit, the rest of the top ten green)
 .game-fantasy-rank {
-  @include v.led-tile;
-  border-radius: 5px;
+  @include v.led-tile($radius: 5px);
   font-size: 11px;
   height: 24px;
   padding-top: 1.5px;
@@ -739,8 +749,8 @@
   }
 
   &.top {
-    color: var(--tint-good, #3ee07a);
-    text-shadow: 0 0 8px rgba(62, 224, 122, 0.6);
+    color: var(--tint-good, #{v.$good-bright});
+    text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 }
 
@@ -764,7 +774,7 @@
 
     // (his team's badge, small: the grid's team badge scaled down, its logo filling it the same way)
     .mini-gem {
-      border-radius: 4px;
+      border-radius: v.$radius-sm;
       height: 16px;
       width: 22px;
 
@@ -784,7 +794,7 @@
 
 .game-fantasy-bar {
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   height: 4px;
   overflow: hidden;
 
@@ -797,13 +807,13 @@
 
 .game-fantasy-points {
   color: var(--scoreboard-led);
-  font-family: "DSEG7", sans-serif;
+  font-family: v.$font-led;
   font-size: 20px;
   min-width: 64px;
   text-align: right;
 
   &.negative {
-    color: #ff3b30;
+    color: v.$led-lost;
   }
 }
 
@@ -825,6 +835,11 @@
 
   &.rink svg {
     max-height: 340px;
+  }
+
+  // (the spray chart: its park's name pinned in it, .park-name)
+  &.diamond {
+    position: relative;
   }
 
   .marks-lines {
@@ -858,24 +873,19 @@
     stroke-width: 1.4px;
     vector-effect: non-scaling-stroke;
 
-    &.away {
-      stroke: color-mix(in srgb, var(--away-color) 65%, #fff 35%);
-    }
-
-    &.home {
-      stroke: color-mix(in srgb, var(--home-color) 65%, #fff 35%);
-    }
-
-    &.made,
-    &.goal,
-    &.hit,
-    &.hr {
-      &.away {
-        fill: color-mix(in srgb, var(--away-color) 65%, #fff 35%);
+    @each $side in away, home {
+      &.#{$side} {
+        stroke: side-tint($side, 65%, 35%);
       }
+    }
 
-      &.home {
-        fill: color-mix(in srgb, var(--home-color) 65%, #fff 35%);
+    // (a hit's and a home run's marks are .made too: the diamond's template)
+    &.made,
+    &.goal {
+      @each $side in away, home {
+        &.#{$side} {
+          fill: side-tint($side, 65%, 35%);
+        }
       }
     }
 
@@ -890,7 +900,7 @@
 
 .mark-key {
   border: 1.5px solid rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   display: inline-block;
   height: 9px;
   margin-right: 5px;
@@ -900,6 +910,14 @@
   &.made {
     background: rgba(255, 255, 255, 0.7);
   }
+
+  // (the spray chart legend's home run, ringed in the board's light)
+  &.hr {
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid var(--scoreboard-led);
+    height: 11px;
+    width: 11px;
+  }
 }
 
 // (drives: a bar per drive across the field, home's end zone on the left; a scoring drive lit)
@@ -908,7 +926,7 @@
     repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(255, 255, 255, 0.07) calc(10% - 1px) 10%),
     v.$chalk-dust;
   border-left: 3px solid color-mix(in srgb, var(--home-color) 70%, transparent);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   border-right: 3px solid color-mix(in srgb, var(--away-color) 70%, transparent);
   padding: 26px 0 8px;
   position: relative;
@@ -932,25 +950,33 @@
 }
 
 .drive-row {
+  cursor: help;
   height: 16px;
   margin: 3px 0;
   position: relative;
+
+  &:hover .drive-bar {
+    filter: brightness(1.3);
+    opacity: 1;
+  }
+
+  &:hover .drive-result {
+    color: #fff;
+  }
 }
 
 .drive-bar {
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   height: 10px;
   // (a scoring drive at full strength, the rest faded)
   opacity: 0.4;
   position: absolute;
   top: 3px;
 
-  &.away {
-    background: color-mix(in srgb, var(--away-color) 70%, #fff 20%);
-  }
-
-  &.home {
-    background: color-mix(in srgb, var(--home-color) 70%, #fff 20%);
+  @each $side in away, home {
+    &.#{$side} {
+      background: side-tint($side, 70%, 20%);
+    }
   }
 
   &.scoring {
@@ -962,7 +988,7 @@
 // it reads over a bar that runs under it)
 .drive-result {
   background: rgba(20, 24, 22, 0.82);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   color: rgba(255, 255, 255, 0.45);
   font-size: 10px;
   font-weight: 800;
@@ -973,11 +999,11 @@
   top: 1px;
 
   &.scoring {
-    color: rgb(80, 207, 80);
+    color: v.$led-won;
   }
 
   &.turnover {
-    color: #ff3b30;
+    color: v.$led-lost;
   }
 }
 
@@ -992,7 +1018,7 @@
   align-items: center;
   background: color-mix(in srgb, var(--zone-color, #888) calc(var(--share, 0) * 55%), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1024,7 +1050,7 @@
   align-self: center;
   background: rgba(255, 255, 255, 0.08);
   border: 1.5px solid var(--scoreboard-led);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   flex: none;
   height: 28px;
   object-fit: cover;
@@ -1033,12 +1059,7 @@
 
 // ---- a game to come: its start on the board, the predictor, the line, each team's last five, injuries
 
-.game-start {
-  --tone: var(--scoreboard-led);
-}
-
 .game-start-half {
-  -webkit-background-clip: text;
   background: radial-gradient(circle, var(--scoreboard-led) 0.8px, transparent 1.05px) 0 0 / 2px 2px;
   background-clip: text;
   color: transparent;
@@ -1067,7 +1088,7 @@
 
   b {
     color: #fff;
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 22px;
     font-weight: 400;
   }
@@ -1091,7 +1112,7 @@
 // (a team's last five: each a row that opens its game)
 .game-form-row {
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   color: #fff;
   display: flex;
   font: inherit;
@@ -1099,7 +1120,6 @@
   gap: 8px;
   padding: 7px 0;
   text-align: left;
-  width: 100%;
 
   img {
     height: 18px;
@@ -1112,7 +1132,6 @@
     font-size: 11px;
     min-width: 16px;
   }
-
 }
 
 // (a last-five game's score: two LED tiles at the row's end, the team's first)
@@ -1129,20 +1148,17 @@
 
 // (its week or day: small bold caps, the game a click away)
 .game-form-when {
-  background: none;
-  border: none;
+  @include plain-button;
   color: var(--scoreboard-led);
-  cursor: pointer;
   flex: none;
   font-family: v.$font-base;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.4px;
   min-width: 76px;
-  padding: 0;
   text-align: left;
   text-transform: uppercase;
-  transition: color 0.15s;
+  transition: color v.$t-hover;
 
   &:hover:not(:disabled) {
     color: #fff;
@@ -1156,7 +1172,7 @@
 
 // (an injured player's status: out red, doubtful orange, questionable gold, the rest grey)
 .game-injury-status {
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   font-size: 10.5px;
   font-weight: 900;
   letter-spacing: 0.4px;
@@ -1167,8 +1183,8 @@
 
   &.s-out,
   &.s-injured-reserve {
-    background: rgba(255, 59, 48, 0.18);
-    color: #ff6b61;
+    background: rgba(v.$led-lost, 0.18);
+    color: v.$bad-coral;
   }
 
   &.s-doubtful {
@@ -1184,7 +1200,7 @@
 
 // (the game log's W/L chip, in the last five)
 .game-form-row .log-outcome {
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   color: #111;
   display: inline-block;
   flex: none;
@@ -1207,7 +1223,6 @@
   }
 }
 
-// (a game to come: its line, under the date)
 // (a preview's line under its date: light, in the board's gold)
 .game-line-note {
   color: var(--scoreboard-led);
@@ -1221,7 +1236,7 @@
   background: var(--team-badge);
   // (an edge that shows on the darkest badge too: every one reads its full size)
   border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
   display: inline-flex;
   flex: none;
@@ -1237,7 +1252,7 @@
   }
 
   &.white-logo img {
-    filter: brightness(0) invert(1);
+    @include v.white-lettering;
   }
 }
 
@@ -1293,7 +1308,7 @@
 }
 
 .arsenal-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: $row-rule;
   display: grid;
   gap: 6px 16px;
   grid-template-columns: 180px minmax(0, 1fr);
@@ -1317,7 +1332,7 @@
 }
 
 .arsenal-bar {
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   display: flex;
   gap: 1px;
   height: 10px;
@@ -1344,7 +1359,7 @@
   }
 
   i {
-    border-radius: 2px;
+    border-radius: v.$radius-xxs;
     display: inline-block;
     height: 8px;
     width: 8px;
@@ -1359,7 +1374,7 @@
 
   span {
     background: #2a302e;
-    border-radius: 4px;
+    border-radius: v.$radius-sm;
     color: rgba(255, 255, 255, 0.7);
     font-size: 9.5px;
     font-weight: 900;
@@ -1373,23 +1388,14 @@
   }
 }
 
-
-// (a scoring play with its scorer's headshot: the text centered on the picture)
-.game-play.with-head {
-  align-items: center;
-}
-
 // (a last five's opponent and score: each its own link)
 .game-form-team {
+  @include plain-button;
   align-items: center;
-  background: none;
-  border: none;
   color: inherit;
-  cursor: pointer;
   display: inline-flex;
   font: inherit;
   gap: 8px;
-  padding: 0;
 
   &:hover:not(:disabled) {
     color: var(--scoreboard-led);
@@ -1400,15 +1406,6 @@
   }
 }
 
-// (a team's name under the pointer: lit like every link, its card a click away)
-.game-team-name {
-  transition: color 0.15s;
-
-  &:hover {
-    color: var(--scoreboard-led);
-  }
-}
-
 // (a dropdown in the pills' row: the same round hide, its caret drawn after it; its list the browser's,
 // in the board's dark)
 .game-select-wrap {
@@ -1416,7 +1413,6 @@
   position: relative;
 
   &::after {
-    color: currentColor;
     content: "▾";
     font-size: 11px;
     pointer-events: none;
@@ -1430,6 +1426,8 @@
 .game-select {
   appearance: none;
   max-width: 240px;
+  // (a dropdown at full strength always: it's a choice, not a filter left off)
+  opacity: 1;
   padding-right: 32px;
   text-overflow: ellipsis;
 
@@ -1440,16 +1438,7 @@
   }
 }
 
-// (a dropdown at full strength always: it's a choice, not a filter left off)
-.game-select {
-  opacity: 1;
-}
-
-// (the spray chart's park, bottom left; the legend's home run ringed in the board's light)
-.game-surface.diamond {
-  position: relative;
-}
-
+// (the spray chart's park, bottom left)
 .park-name {
   bottom: 10px;
   color: rgba(255, 255, 255, 0.55);
@@ -1461,22 +1450,10 @@
   text-transform: uppercase;
 }
 
-.mark-key.hr {
-  background: rgba(255, 255, 255, 0.7);
-  border: 2px solid var(--scoreboard-led);
-  height: 11px;
-  width: 11px;
-}
-
 // (the pitch legend's fill key, set off from the pitch types)
 .pitch-key:first-of-type {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   padding-left: 12px;
-}
-
-// (the line among the game's facts: how it came out in the board's light)
-.game-facts .game-bet i {
-  color: var(--scoreboard-led);
 }
 
 // ---- the charts' hover details: anything with one under the pointer shows the help cursor and lifts (a
@@ -1490,8 +1467,8 @@
   transform-box: fill-box;
   transform-origin: center;
   transition:
-    transform 0.12s ease,
-    filter 0.12s ease;
+    transform v.$t-fast ease,
+    filter v.$t-fast ease;
 
   &:hover {
     filter: brightness(1.3) drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
@@ -1499,22 +1476,9 @@
   }
 }
 
-.drive-row {
-  cursor: help;
-
-  &:hover .drive-bar {
-    filter: brightness(1.3);
-    opacity: 1;
-  }
-
-  &:hover .drive-result {
-    color: #fff;
-  }
-}
-
 .arsenal-bar i {
   cursor: help;
-  transition: filter 0.12s ease;
+  transition: filter v.$t-fast ease;
 
   &:hover {
     filter: brightness(1.35);
@@ -1528,7 +1492,7 @@
 
   rect {
     fill: transparent;
-    transition: fill 0.12s ease;
+    transition: fill v.$t-fast ease;
   }
 
   line {
@@ -1536,7 +1500,7 @@
     stroke: #fff;
     stroke-linecap: round;
     stroke-width: 7px;
-    transition: opacity 0.12s ease;
+    transition: opacity v.$t-fast ease;
     vector-effect: non-scaling-stroke;
   }
 
@@ -1557,8 +1521,8 @@
 .pass-zone {
   cursor: help;
   transition:
-    filter 0.12s ease,
-    background-color 0.12s ease;
+    filter v.$t-fast ease,
+    background-color v.$t-fast ease;
 
   &:hover {
     filter: brightness(1.15);
@@ -1569,8 +1533,8 @@
 .game-linescore td {
   cursor: help;
   transition:
-    color 0.12s ease,
-    background-color 0.12s ease;
+    color v.$t-fast ease,
+    background-color v.$t-fast ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
@@ -1603,7 +1567,7 @@
 .game-video {
   aspect-ratio: 16 / 9;
   background: #000;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   overflow: hidden;
 
   iframe,
@@ -1625,7 +1589,7 @@
     display: block;
     height: 100%;
     object-fit: cover;
-    transition: filter 0.15s;
+    transition: filter v.$t-hover;
     width: 100%;
   }
 
@@ -1638,7 +1602,7 @@
 .game-video-play {
   align-items: center;
   background: rgba(0, 0, 0, 0.72);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: #fff;
   display: flex;
   font-size: 14px;
@@ -1666,28 +1630,25 @@
 }
 
 .game-clip {
-  background: none;
-  border: none;
+  @include plain-button;
   color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   font: inherit;
   gap: 6px;
-  padding: 0;
   text-align: left;
 
   .game-clip-thumb {
     aspect-ratio: 16 / 9;
     background: rgba(0, 0, 0, 0.4);
-    border-radius: 6px;
+    border-radius: v.$radius-md;
     box-shadow: 0 0 0 2px transparent;
     display: block;
     overflow: hidden;
     position: relative;
     transition:
-      box-shadow 0.15s,
-      transform 0.15s;
+      box-shadow v.$t-hover,
+      transform v.$t-hover;
 
     img {
       display: block;
@@ -1698,7 +1659,7 @@
 
     small {
       background: rgba(0, 0, 0, 0.75);
-      border-radius: 3px;
+      border-radius: v.$radius-xs;
       bottom: 4px;
       font-size: 10px;
       font-weight: 800;
@@ -1738,7 +1699,6 @@
 // ---- motion (none for anyone who's asked their system for less): the LED board powers on, the win
 // probability charts the game play by play, a chart's marks and drives come in a quick sweep, the fantasy bars fill
 @media (prefers-reduced-motion: no-preference) {
-  .game-scores .rank-number,
   .game-board .rank-number {
     animation: led-on 0.55s steps(1, end) backwards;
   }
@@ -1757,12 +1717,10 @@
   .pitch {
     animation: mark-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1.4) backwards;
     animation-delay: calc(min(var(--i, 0), 60) * 12ms);
-    transform-box: fill-box;
-    transform-origin: center;
   }
 
   .drive-bar {
-    animation: drive-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    animation: drive-in 0.45s v.$ease-out backwards;
     animation-delay: calc(min(var(--i, 0), 30) * 22ms);
     transform-origin: left center;
 
@@ -1772,8 +1730,22 @@
   }
 
   .game-fantasy-bar i {
-    animation: bar-fill 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    animation: bar-fill 0.35s v.$ease-out backwards;
     transform-origin: left center;
+  }
+
+  // (the team stats' and the predictor's bars: each side fills in from its own end, the two meeting where
+  // they split)
+  .game-stat-bar i {
+    animation: bar-fill 0.4s v.$ease-out backwards;
+
+    &.away {
+      transform-origin: left center;
+    }
+
+    &.home {
+      transform-origin: right center;
+    }
   }
 }
 
@@ -1824,18 +1796,3 @@
   }
 }
 
-// ---- (motion too) the team stats' and the predictor's bars: each side fills in from its own end, the two
-// meeting where they split
-@media (prefers-reduced-motion: no-preference) {
-  .game-stat-bar i {
-    animation: bar-fill 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
-
-    &.away {
-      transform-origin: left center;
-    }
-
-    &.home {
-      transform-origin: right center;
-    }
-  }
-}

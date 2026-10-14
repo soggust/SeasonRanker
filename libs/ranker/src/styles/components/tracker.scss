@@ -1,6 +1,25 @@
 @use "../variables" as v;
 @use "account-kit" as kit;
 
+// (the page's text; a pin's pending rank; the chart's axis labels; the ring around a chart's dot; the toast's
+// fill; a side's fallback badge and face colors)
+$page-text: #eee;
+$pending-tone: #888;
+$axis: #9a9a9a;
+$dot-ring: #1b1d1f;
+$toast-bg: #111;
+$badge-fallback: #555;
+$face-fallback: #333;
+
+// (a move's chip in its color: the color over a faint fill of it, its edge too when it has one)
+@mixin tinted($c, $border: false) {
+  background: color-mix(in srgb, #{$c} 14%, transparent);
+  @if $border {
+    border-color: color-mix(in srgb, #{$c} 45%, transparent);
+  }
+  color: $c;
+}
+
 // ===========================================================================
 // Track Players (#tracker: tracker-page.component), on the app's sheet (app.component's shell scrolls
 // it): the tiles and the pills on a scoreboard strip, and a scoreboard card per pin, folded to its strip and
@@ -21,16 +40,11 @@
 
 .tracker-page {
   box-sizing: border-box;
-  color: #eee;
+  color: $page-text;
   font-family: v.$font-base;
   margin: 0 auto;
   max-width: 1100px;
   padding: 22px 20px 48px;
-}
-
-// (no card of its own: the sheet is the page's card)
-.tracker-desk {
-  display: block;
 }
 
 // ---------------------------------------------------------------------------
@@ -94,14 +108,6 @@
   }
 }
 
-.up {
-  color: var(--good);
-}
-
-.down {
-  color: var(--bad);
-}
-
 .tracker-controls {
   align-items: center;
   display: flex;
@@ -144,7 +150,7 @@
   align-items: center;
   background: none;
   border: none;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   color: rgba(255, 255, 255, 0.65);
   cursor: pointer;
   display: inline-flex;
@@ -152,8 +158,8 @@
   justify-content: center;
   padding: 0;
   transition:
-    color 0.12s,
-    background 0.12s;
+    color v.$t-fast,
+    background v.$t-fast;
   width: 34px;
 
   .mat-icon {
@@ -240,7 +246,9 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 0 14px 12px;
+  // (its side padding, which its head reaches back across: .pin-head)
+  --pin-pad: 14px;
+  padding: 0 var(--pin-pad) 12px;
 
   &.pin-busy {
     opacity: 0.6;
@@ -287,7 +295,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   gap: 8px;
-  margin: 0 -14px;
+  margin: 0 calc(-1 * var(--pin-pad));
   padding: 10px 10px 10px 8px;
 }
 
@@ -297,7 +305,7 @@
   align-self: flex-start;
   background: none;
   border: none;
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
   display: inline-flex;
@@ -307,13 +315,13 @@
   margin-top: 2px;
   padding: 0;
   transition:
-    color 0.12s,
-    background 0.12s;
+    color v.$t-fast,
+    background v.$t-fast;
   width: 30px;
 
   .mat-icon {
     @include v.icon-size(24px);
-    transition: transform 0.15s ease;
+    transition: transform v.$t-hover ease;
   }
 
   &[aria-expanded="true"] .mat-icon {
@@ -351,7 +359,7 @@
 
   i {
     background: var(--side);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
     flex: none;
     height: 9px;
@@ -363,14 +371,11 @@
   color: rgba(255, 255, 255, 0.85);
   font-weight: 700;
   max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include v.ellipsis;
 }
 
 .pin-glance-rank {
-  @include v.led-tile;
-  color: var(--tone, #fff);
+  @include v.led-tile($color: var(--tone, #fff));
   font-size: 12px;
   font-weight: 900;
   height: 22px;
@@ -389,14 +394,7 @@
     @include v.icon-size(14px);
   }
 
-  &.good {
-    color: var(--good);
-  }
-
-  &.bad {
-    color: var(--bad);
-  }
-
+  // (better or worse: .good and .bad, below)
   &.even {
     color: rgba(255, 255, 255, 0.4);
   }
@@ -405,7 +403,7 @@
 // (All: the pin's sport, a small tag; another sport's: when it was last seen)
 .pin-sport {
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   color: rgba(255, 255, 255, 0.8);
   font-size: 9.5px;
   font-weight: 900;
@@ -461,16 +459,14 @@
     @include v.hand(19px);
     line-height: 1.15;
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 }
 
 .pin-title-input {
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid var(--scoreboard-led);
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   box-sizing: border-box;
   color: #fff;
   @include v.hand(17px);
@@ -508,7 +504,7 @@
 .pin-open {
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: #fff;
   display: inline-flex;
   font-size: 11px;
@@ -521,8 +517,8 @@
   text-decoration: none;
   text-transform: uppercase;
   transition:
-    border-color 0.12s,
-    color 0.12s;
+    border-color v.$t-fast,
+    color v.$t-fast;
 
   .mat-icon {
     @include v.icon-size(17px);
@@ -548,10 +544,10 @@
 
 .pin-side {
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--team-badge, #555) 30%, transparent), transparent 62%),
+    linear-gradient(160deg, color-mix(in srgb, var(--team-badge, #{$badge-fallback}) 30%, transparent), transparent 62%),
     rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   box-shadow:
     inset 0 3px 0 var(--side, transparent),
     0 4px 12px rgba(0, 0, 0, 0.3);
@@ -593,9 +589,9 @@
 // (the headshot ringed in the side's color; a team its logo)
 .pin-face {
   align-items: center;
-  background: color-mix(in srgb, var(--team-badge, #333) 65%, #000);
+  background: color-mix(in srgb, var(--team-badge, #{$face-fallback}) 65%, #000);
   border: 2px solid var(--side);
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   box-shadow: 0 0 10px color-mix(in srgb, var(--side) 35%, transparent);
   display: flex;
   flex: none;
@@ -617,7 +613,7 @@
     width: 72%;
 
     &.white-logo {
-      filter: brightness(0) invert(1);
+      @include v.white-lettering;
     }
   }
 
@@ -637,10 +633,8 @@
   color: #fff;
   @include v.hand(17px);
   line-height: 1.08;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include v.ellipsis;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  white-space: nowrap;
 }
 
 .pin-meta {
@@ -648,10 +642,8 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include v.ellipsis;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .pin-standing {
@@ -663,19 +655,19 @@
 
 // (the rank now, on the LED tile in its rank's color)
 .pin-rank {
-  @include v.led-tile;
+  @include v.led-tile(
+    $shadow: (inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 0 6px rgba(0, 0, 0, 0.6)),
+    $color: null,
+    $text-shadow: null
+  );
   @include v.tone-glow(60%, 8px);
-  border-radius: 6px;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    inset 0 0 6px rgba(0, 0, 0, 0.6);
   font-size: 18px;
   height: 36px;
   min-width: 46px;
   padding: 2px 6px 0;
 
   &.pending {
-    --tone: #888;
+    --tone: #{$pending-tone};
     font-size: 14px;
   }
 }
@@ -691,7 +683,7 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: rgba(255, 255, 255, 0.7);
   display: inline-flex;
   font-size: 11px;
@@ -708,15 +700,11 @@
   }
 
   &.good {
-    background: color-mix(in srgb, var(--good) 14%, transparent);
-    border-color: color-mix(in srgb, var(--good) 45%, transparent);
-    color: var(--good);
+    @include tinted(var(--good), true);
   }
 
   &.bad {
-    background: color-mix(in srgb, var(--bad) 14%, transparent);
-    border-color: color-mix(in srgb, var(--bad) 45%, transparent);
-    color: var(--bad);
+    @include tinted(var(--bad), true);
   }
 }
 
@@ -741,17 +729,21 @@
   }
 }
 
+// (a move up or better in green, down or worse in red: the tiles' Climbing and Sliding, a glance's move, a
+// score's)
+.up,
 .good {
   color: var(--good);
 }
 
+.down,
 .bad {
   color: var(--bad);
 }
 
 .pin-final {
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   font-size: 9px;
   letter-spacing: 0.08em;
   margin-left: auto;
@@ -777,7 +769,7 @@
 .pin-trend {
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 10px;
+  border-radius: v.$radius-xl;
   padding: 8px 0 2px;
 }
 
@@ -814,7 +806,7 @@
 
   .trend-x,
   .trend-y {
-    fill: #9a9a9a;
+    fill: $axis;
     font-family: v.$font-base;
     font-size: 11px;
     font-weight: 700;
@@ -831,25 +823,25 @@
     stroke: var(--side);
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 2.4;
+    stroke-width: 2.4px;
   }
 
   .trend-dot {
     cursor: help;
     fill: var(--side);
-    stroke: #1b1d1f;
-    stroke-width: 1.5;
+    stroke: $dot-ring;
+    stroke-width: 1.5px;
 
     &.pinned {
-      fill: #1b1d1f;
+      fill: $dot-ring;
       stroke: var(--side);
-      stroke-width: 2;
+      stroke-width: 2px;
     }
 
     &.now {
       filter: drop-shadow(0 0 5px var(--side));
       stroke: #fff;
-      stroke-width: 2;
+      stroke-width: 2px;
     }
   }
 }
@@ -887,18 +879,14 @@
 
   .pin-col-name {
     display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include v.ellipsis;
   }
 
   tbody th {
     color: rgba(255, 255, 255, 0.8);
     font-weight: 700;
-    overflow: hidden;
+    @include v.ellipsis;
     text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   tbody tr:not(.pin-group) {
@@ -940,7 +928,7 @@
 }
 
 .pin-delta {
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   color: rgba(255, 255, 255, 0.55);
   display: inline-block;
   font-size: 10.5px;
@@ -951,13 +939,11 @@
   text-align: center;
 
   &.good {
-    background: color-mix(in srgb, var(--good) 14%, transparent);
-    color: var(--good);
+    @include tinted(var(--good));
   }
 
   &.bad {
-    background: color-mix(in srgb, var(--bad) 14%, transparent);
-    color: var(--bad);
+    @include tinted(var(--bad));
   }
 }
 
@@ -979,9 +965,7 @@
   color: #fff;
   font-size: 12px;
   font-weight: 800;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include v.ellipsis;
 
   small {
     color: rgba(255, 255, 255, 0.45);
@@ -1037,7 +1021,7 @@
   align-items: center;
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   display: inline-flex;
@@ -1050,8 +1034,8 @@
   padding: 0 11px 0 7px;
   text-transform: uppercase;
   transition:
-    border-color 0.12s,
-    color 0.12s;
+    border-color v.$t-fast,
+    color v.$t-fast;
 
   .mat-icon {
     @include v.icon-size(17px);
@@ -1080,9 +1064,9 @@
 }
 
 .tracker-toast {
-  background: #111;
+  background: $toast-bg;
   border: 1px solid color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   bottom: 24px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
   color: #fff;
@@ -1098,7 +1082,7 @@
 // ---------------------------------------------------------------------------
 // Narrow screens: the tapes two a row (one, alone), the top stacked, the table scrolling sideways
 // ---------------------------------------------------------------------------
-@media (max-width: 760px) {
+@include v.down(tablet) {
   .pin-sides {
     grid-template-columns: repeat(min(var(--sides, 2), 2), minmax(0, 1fr));
   }
@@ -1108,7 +1092,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@include v.down(small) {
   .tracker-page {
     padding: 14px 10px 32px;
   }
@@ -1131,13 +1115,13 @@
   }
 
   .pin-card {
-    padding: 0 10px 10px;
+    --pin-pad: 10px;
+    padding: 0 var(--pin-pad) 10px;
   }
 
   // (phones: the handle, the fold and the actions on top, the name and the glance the whole width under them)
   .pin-head {
     flex-wrap: wrap;
-    margin: 0 -10px;
     row-gap: 2px;
   }
 
@@ -1207,7 +1191,7 @@
 
     th,
     td {
-      padding: 5px 5px;
+      padding: 5px;
     }
   }
 
@@ -1217,8 +1201,8 @@
   }
 
   .pin-log {
-    grid-template-columns: 1fr;
     gap: 4px;
+    grid-template-columns: 1fr;
   }
 
   .pin-footnote {

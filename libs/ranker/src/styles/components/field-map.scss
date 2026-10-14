@@ -5,6 +5,12 @@
 // numbers in the hand; side by side when there's room, one under another on a phone
 // (loaded under player-card: _cards.scss)
 
+// (the turf under the chalk, darkened; the dark edge that keeps a number or a miss readable on it; a miss's
+// red lightened under the pointer)
+$fm-turf: rgb(9, 17, 12);
+$fm-halo: rgb(0, 0, 0);
+$fm-bad-light: rgb(255, 140, 130);
+
 .field-map .group-body {
   padding-bottom: 16px;
   padding-top: 14px;
@@ -18,11 +24,11 @@
 }
 
 .fm-chart {
+  // (one alone: centered in the panel)
+  justify-self: center;
   margin: 0;
   max-width: 440px;
   min-width: 0;
-  // (one alone: centered in the panel)
-  justify-self: center;
   width: 100%;
 
   svg {
@@ -59,7 +65,7 @@
 // ---- the field: the turf darkened, its stripes, the chalk
 
 .fm-shade {
-  fill: rgba(9, 17, 12, 0.76);
+  fill: rgba($fm-turf, 0.76);
 }
 
 .fm-stripe {
@@ -108,10 +114,10 @@
 
 // (the line of scrimmage, a broadcast's blue)
 .fm-los {
+  filter: drop-shadow(0 0 3px rgba(95, 168, 255, 0.6));
   stroke: #5fa8ff;
   stroke-dasharray: 6 4;
   stroke-width: 2px;
-  filter: drop-shadow(0 0 3px rgba(95, 168, 255, 0.6));
 }
 
 .fm-side {
@@ -128,7 +134,7 @@
 .fm-sub {
   paint-order: stroke;
   pointer-events: none;
-  stroke: rgba(0, 0, 0, 0.55);
+  stroke: rgba($fm-halo, 0.55);
   stroke-linejoin: round;
   text-anchor: middle;
 }
@@ -156,8 +162,8 @@
     stroke: rgba(0, 0, 0, 0.28);
     stroke-width: 1px;
     transition:
-      fill 0.25s ease,
-      stroke 0.12s ease;
+      fill v.$t-medium ease,
+      stroke v.$t-fast ease;
   }
 
   &:hover .fm-zone-fill {
@@ -173,7 +179,7 @@
 .fm-bubble {
   stroke: rgba(255, 255, 255, 0.7);
   stroke-width: 1.2px;
-  transition: stroke-width 0.12s ease;
+  transition: stroke-width v.$t-fast ease;
 
   .fm-zone:hover & {
     stroke: #fff;
@@ -198,26 +204,25 @@
     display: inline-flex;
     gap: 5px;
   }
-
 }
 
 .fm-key {
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   display: inline-block;
   height: 10px;
   width: 10px;
 
   &.good {
-    background: rgba(62, 224, 122, 0.7);
+    background: rgba(v.$good-bright, 0.7);
   }
 
   &.bad {
-    background: rgba(255, 90, 79, 0.7);
+    background: rgba(v.$bad, 0.7);
   }
 
   &.bubble {
     border: 1.5px solid rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
+    border-radius: v.$radius-round;
   }
 }
 
@@ -235,15 +240,15 @@
 
 .fm-cell {
   align-items: center;
-  background: linear-gradient(var(--fill), var(--fill)), rgba(9, 17, 12, 0.8);
+  background: linear-gradient(var(--fill), var(--fill)), rgba($fm-turf, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   cursor: help;
   display: flex;
   flex-direction: column;
   gap: 1px;
   padding: 6px 2px 5px;
-  transition: border-color 0.12s ease;
+  transition: border-color v.$t-fast ease;
 
   &:hover {
     border-color: rgba(255, 255, 255, 0.7);
@@ -295,8 +300,8 @@
 
   // (a tight end: not always there)
   &.te {
-    stroke-dasharray: 2.5 2;
     stroke: rgba(255, 255, 255, 0.4);
+    stroke-dasharray: 2.5 2;
   }
 }
 
@@ -311,10 +316,10 @@
 
   .fm-shaft {
     fill: none;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
     stroke-linecap: round;
     stroke-linejoin: round;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
-    transition: filter 0.12s ease;
+    transition: filter v.$t-fast ease;
   }
 
   // (a wider, unseen stroke along it: an easy target for the hover)
@@ -350,7 +355,7 @@
   .fm-ring {
     stroke: rgba(255, 255, 255, 0.35);
     stroke-width: 1px;
-    transition: stroke 0.12s ease;
+    transition: stroke v.$t-fast ease;
   }
 
   &:hover .fm-ring {
@@ -359,8 +364,8 @@
   }
 
   &.empty .fm-ring {
-    stroke-dasharray: 3 3;
     stroke: rgba(255, 255, 255, 0.25);
+    stroke-dasharray: 3 3;
   }
 
   &.empty .fm-main {
@@ -389,33 +394,35 @@
   cursor: help;
 
   path {
-    fill: rgb(255, 90, 79);
+    fill: v.$bad;
     filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.7));
-    stroke: rgba(0, 0, 0, 0.55);
+    stroke: rgba($fm-halo, 0.55);
     stroke-width: 0.8px;
   }
 
-  &[data-kind="blocked"] path {
+  &[data-kind="blocked"] path,
+  &[data-kind="other"] path {
     fill: none;
-    stroke: rgb(255, 90, 79);
+    stroke: v.$bad;
+  }
+
+  &[data-kind="blocked"] path {
     stroke-linecap: round;
     stroke-width: 1.8px;
   }
 
   &[data-kind="other"] path {
-    fill: none;
-    stroke: rgb(255, 90, 79);
     stroke-width: 1.2px;
   }
 
   &:hover path {
-    fill: rgb(255, 140, 130);
+    fill: $fm-bad-light;
   }
 
   &[data-kind="blocked"]:hover path,
   &[data-kind="other"]:hover path {
     fill: none;
-    stroke: rgb(255, 140, 130);
+    stroke: $fm-bad-light;
   }
 }
 
@@ -429,15 +436,9 @@
   font-weight: 800;
   paint-order: stroke;
   pointer-events: none;
-  stroke: rgba(0, 0, 0, 0.6);
+  stroke: rgba($fm-halo, 0.6);
   stroke-linejoin: round;
   stroke-width: 2.2px;
-}
-
-@media (max-width: 575px) {
-  .fm-miss-n {
-    display: none;
-  }
 }
 
 .fm-miss-note {
@@ -452,8 +453,8 @@
 }
 
 .fm-miss-key {
-  background: rgb(255, 90, 79);
-  border-radius: 50%;
+  background: v.$bad;
+  border-radius: v.$radius-round;
   display: inline-block;
   height: 7px;
   width: 7px;
@@ -532,7 +533,7 @@
   font-family: v.$font-hand;
   font-size: 13px;
   paint-order: stroke;
-  stroke: rgba(0, 0, 0, 0.6);
+  stroke: rgba($fm-halo, 0.6);
   stroke-linejoin: round;
   stroke-width: 3px;
 }
@@ -553,7 +554,7 @@
 
   .fm-bar-fill {
     fill: rgba(225, 232, 226, 0.5);
-    transition: filter 0.12s ease;
+    transition: filter v.$t-fast ease;
   }
 
   &:hover .fm-bar-fill {
@@ -569,7 +570,6 @@
 
 .fm-bar-n,
 .fm-bar-label {
-  fill: rgba(255, 255, 255, 0.6);
   font-size: 9px;
   font-weight: 800;
   text-anchor: middle;
@@ -577,6 +577,10 @@
 
 .fm-bar-n {
   fill: #fff;
+}
+
+.fm-bar-label {
+  fill: rgba(255, 255, 255, 0.6);
 }
 
 .fm-chips {
@@ -591,7 +595,7 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   cursor: help;
   display: inline-flex;
   gap: 7px;
@@ -625,7 +629,7 @@
 
 // ---- phone: the charts' own numbers a touch smaller, the strip's tighter
 
-@media (max-width: 575px) {
+@include v.down(phone) {
   .field-map .group-body {
     padding-left: 12px;
     padding-right: 12px;
@@ -645,6 +649,11 @@
     em {
       font-size: 8.5px;
     }
+  }
+
+  // (a miss's count: in its hover instead)
+  .fm-miss-n {
+    display: none;
   }
 }
 
@@ -681,7 +690,6 @@
 
   .fm-lane.empty .fm-shaft {
     animation: fm-fade 0.4s ease backwards;
-    stroke-dasharray: 0.04 0.04;
   }
 
   .fm-head-arrow {
@@ -704,7 +712,7 @@
   }
 
   .fm-bar-fill {
-    animation: fm-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    animation: fm-rise 0.45s v.$ease-out backwards;
     animation-delay: calc(var(--i, 0) * 60ms + 0.2s);
     transform-box: fill-box;
     transform-origin: bottom;
