@@ -7,14 +7,14 @@
 :host {
   inset: 0;
   position: fixed;
-  z-index: 1000;
+  z-index: v.z(modal-backdrop);
 }
 
 // Scrollbars 10px, like the filter menu's and the grid's (their colors are global: _base.scss)
 @include v.scrollbars($corner: false);
 
 .about-backdrop {
-  animation: about-fade 0.15s ease;
+  animation: about-fade v.$t-hover ease;
   // (the page behind softly blurred, as behind the player card)
   backdrop-filter: blur(2px);
   background: rgba(0, 0, 0, 0.6);
@@ -44,7 +44,7 @@
 // ---------------------------------------------------------------------------
 header {
   align-items: center;
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid v.$panel-edge;
   display: flex;
   flex: 0 0 auto;
   gap: 14px;
@@ -83,10 +83,10 @@ header {
     @include v.icon-size(20px);
   }
 
+  // (focused from the keyboard it keeps the site's focus ring too: _base.scss)
   &:hover,
   &:focus-visible {
     color: var(--scoreboard-led);
-    outline: none;
   }
 }
 
@@ -147,6 +147,8 @@ nav {
     linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
     var(--tex-chalk-plays) -500px 260px / 2800px 1440px no-repeat,
     v.$chalk-dust;
+  // (one a layer: the wash, the plays (staying put), then $chalk-dust's noise, its two glows and its
+  // slate; a layer added to $chalk-dust needs one here too)
   background-attachment: local, scroll, local, local, local;
   flex: 1;
   font-size: 15px;
@@ -181,7 +183,7 @@ nav {
 // ---------------------------------------------------------------------------
 // Phones and small tablets: the sections become a scrolling row of chips above the text
 // ---------------------------------------------------------------------------
-@media (max-width: 719px) {
+@include v.down(about) {
   .about-panel {
     height: calc(100vh - 24px);
     height: calc(100dvh - 24px);

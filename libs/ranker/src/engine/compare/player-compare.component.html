@@ -184,7 +184,7 @@
         }
       </div>
       <!-- (always there, so a screen reader hears it when it's said) -->
-      <p class="compare-note" role="status">{{ compare.note }}</p>
+      <p class="cmp-status" role="status">{{ compare.note }}</p>
       <!-- (pinned, or why not: under the pin for a moment, the way to the Tracker in it) -->
       <p class="cmp-pin-note" role="status">
         @if (pinNote) {
@@ -205,7 +205,7 @@
       }
     </nav>
 
-    <div class="card-body compare-body" #body>
+    <div class="card-body" #body>
       @if (!v) {
         <p class="compare-empty">
           Search above, or click rows in the grid to pick them, then compare.

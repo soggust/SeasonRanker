@@ -8,6 +8,46 @@
 // (profile, skill radar, scouting report, similar seasons), every column as a stat tile, and the seasons.
 // ===========================================================================
 
+// The card's own tones (apart from the site's v.$good and v.$bad): the Overview's flags and sections, and the
+// Analysis tab's concerns
+$flag-good: v.$good-bright;
+$flag-mid: #ff9f40;
+$flag-bad: v.$bad-soft;
+$ai-bad: v.$bad-coral;
+
+// Pass and run (the vs Position lean): the WRs' blue, the backs' gold
+$pass: #8ab4e0;
+$run: #e3cb8f;
+
+// The injured-reserve red (the depth chart's IR status and reason)
+$injured-reserve: #a3202b;
+
+// The card's own breakpoints: the vs Position table over its pie, the NBA's six columns squeezed, the
+// Analysis cards' tighter padding
+$bd-stack: v.bp(card-stack);
+$bd-narrow: v.bp(card-narrow);
+$ai-narrow: v.bp(ai-narrow);
+
+// A small label in grey caps (a table's column heads, a stat's name)
+@mixin caps-label($spacing: 0.6px) {
+  color: #bdbdbd;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: $spacing;
+  text-transform: uppercase;
+}
+
+// The Analysis tab's colored badge (the trend's, the next game's outlook): its modifier sets the color
+@mixin ai-badge($pad) {
+  border-radius: v.$radius-sm;
+  color: #111;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  padding: $pad;
+  text-transform: uppercase;
+}
+
 // A section heading: the label in caps with its group's icon, on a line in the group's color
 @mixin group-heading {
   align-items: center;
@@ -24,9 +64,7 @@
 
   .mat-icon {
     color: var(--group-color);
-    font-size: 19px;
-    height: 19px;
-    width: 19px;
+    @include v.icon-size(19px);
   }
 }
 
@@ -45,13 +83,13 @@
   background: rgba(0, 0, 0, 0.6);
   inset: 0;
   position: fixed;
-  z-index: 1000;
+  z-index: v.z(modal-backdrop);
 }
 
 // (the card rising and its backdrop fading in, as it opens: only with motion allowed)
 @media (prefers-reduced-motion: no-preference) {
   .card-backdrop {
-    animation: card-fade 0.15s ease;
+    animation: card-fade v.$t-hover ease;
   }
 
   .player-card {
@@ -64,7 +102,7 @@
   // What the hero's team color eases into
   --card-base: #313836;
   // (the body scrolls over the board, like the rows)
-  background: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, v.$chalk-dust;
+  background: v.$chalkboard;
   border: 1px solid #3a4440;
   border-radius: 14px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
@@ -81,7 +119,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: min(999px, calc(100vw - 32px));
-  z-index: 1001;
+  z-index: v.z(modal);
 
   // Another season loading: the card dims until it swaps
   &.loading {
@@ -90,7 +128,7 @@
     .card-body,
     .card-hero {
       opacity: 0.55;
-      transition: opacity 0.15s ease;
+      transition: opacity v.$t-hover ease;
     }
   }
 }
@@ -123,7 +161,7 @@
 
 // (past a phone: the whole hero 15% smaller, everything in it in proportion, the card's own sections the room;
 // the game view's hero is one too. A phone's is already one compact row)
-@media (min-width: 641px) {
+@include v.up(phablet-up) {
   .card-hero {
     zoom: 0.85;
   }
@@ -138,7 +176,7 @@
   z-index: -1;
 
   img {
-    filter: brightness(0) invert(1);
+    @include v.white-lettering;
     height: 225%;
     opacity: 0.06;
     position: absolute;
@@ -195,7 +233,7 @@
   box-shadow:
     inset 0 -3px 6px rgba(0, 0, 0, 0.35),
     0 2px 5px rgba(0, 0, 0, 0.55);
-  transition: border-color 0.15s ease;
+  transition: border-color v.$t-hover ease;
 }
 
 .hero-logo,
@@ -214,10 +252,14 @@
   opacity: 0.85;
 }
 
+// Headshots keep their own shape: ESPN's cutouts (NFL, NBA) are as wide as the box and fill it, while
+// MLB's and the NHL's are square, so they sit bottom-center in it rather than being stretched wide
 .hero-photo,
 .comp-photo {
   bottom: 0;
   height: var(--shot-h);
+  object-fit: contain;
+  object-position: 50% 100%;
   position: absolute;
   right: calc(var(--hang) * -1);
   width: var(--shot-w);
@@ -245,13 +287,13 @@
     @include v.hand(42px);
     line-height: 1.05;
     margin: 8px 0;
+    opacity: 0.95;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 
     // (a team's name, nothing under it)
     &.alone {
       margin-bottom: 0;
     }
-    opacity: 0.95;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   }
 
   .player-awards {
@@ -282,9 +324,9 @@
 // a glance
 .season-chip {
   align-items: center;
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border: 1px solid var(--scoreboard-led);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
   color: var(--scoreboard-led);
   display: inline-flex;
@@ -339,7 +381,6 @@
   // the words: letters made of lit LED dots (a dot grid clipped to the type), glowing
   .rank-label,
   .rank-of {
-    -webkit-background-clip: text;
     background: radial-gradient(circle, var(--scoreboard-led) 0.8px, transparent 1.05px) 0 0 / 2px 2px;
     background-clip: text;
     color: transparent;
@@ -359,7 +400,7 @@
   // the number: seven-segment digits in the rank's color, over faint unlit 8s
   .rank-number {
     display: grid;
-    font-family: "DSEG7", sans-serif;
+    font-family: v.$font-led;
     font-size: 40px;
     font-weight: 900;
     line-height: 1;
@@ -392,7 +433,7 @@
     align-items: center;
     background: none;
     border: none;
-    border-radius: 8px;
+    border-radius: v.$radius-lg;
     color: #fff;
     cursor: pointer;
     display: flex;
@@ -412,7 +453,7 @@
 // Tabs: like the position bar (the one showing lit in scoreboard yellow along its bottom row of dots)
 // ---------------------------------------------------------------------------
 .card-tabs {
-  background: var(--scoreboard-dots), var(--scoreboard);
+  @include v.scoreboard-face;
   border-bottom: 1px solid #2c2c2c;
   display: flex;
   flex: 0 0 auto;
@@ -514,18 +555,18 @@
 
 .ov-flags {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-  // (the line already drawn over the summary)
-  &.after-summary {
-    border-top: 0;
-    padding-top: 0;
-  }
   display: flex;
   flex-direction: column;
   gap: 8px;
   list-style: none;
   margin: 10px 0 0;
   padding: 10px 0 0;
+
+  // (the line already drawn over the summary)
+  &.after-summary {
+    border-top: 0;
+    padding-top: 0;
+  }
 
   li {
     align-items: center;
@@ -542,22 +583,22 @@
     }
 
     &.good .mat-icon {
-      color: #3ee07a;
+      color: $flag-good;
     }
 
     &.bad .mat-icon {
-      color: #ff7468;
+      color: $flag-bad;
     }
 
     &.info .mat-icon {
-      color: #ff9f40;
+      color: $flag-mid;
     }
   }
 }
 
-// The radar: faint rings (the middle one is the league average, dashed), spokes, last season's shape as
-// a dashed ghost, and this season's filled in yellow with a dot per skill in its rank color; it grows out
-// from its center when the card opens
+// The radar: faint rings (the middle one is the league average, dashed), spokes, and this season's shape
+// filled in yellow with a dot per skill in its rank color; it grows out from its center when the card opens.
+// Its marks say what they are on hover: the help cursor, and the dots lighten and grow
 // (the radar centered down its card: the card stretches to the profile beside it, taller with an AI summary)
 .ov-radar {
   align-items: center;
@@ -586,14 +627,8 @@
     stroke: rgba(255, 255, 255, 0.1);
   }
 
-  .ghost {
-    fill: rgba(255, 255, 255, 0.06);
-    stroke: rgba(255, 255, 255, 0.6);
-    stroke-dasharray: 4 3;
-    stroke-width: 1.5;
-  }
-
   .shape {
+    cursor: help;
     fill: color-mix(in srgb, var(--scoreboard-led) 22%, transparent);
     filter: drop-shadow(0 0 6px color-mix(in srgb, var(--scoreboard-led) 35%, transparent));
     stroke: var(--scoreboard-led);
@@ -602,19 +637,28 @@
   }
 
   .dot {
-    stroke: #121212;
+    cursor: help;
+    stroke: var(--scoreboard);
     stroke-width: 1.5;
+    transition:
+      r v.$t-hover,
+      filter v.$t-hover;
+
+    &:hover {
+      filter: brightness(1.15);
+      r: 5.5;
+    }
   }
 
   .shape,
-  .ghost,
   .dot {
-    animation: radar-grow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: radar-grow 0.35s v.$ease-out both;
     transform-box: view-box;
     transform-origin: 0 0;
   }
 
   .axis-label {
+    cursor: help;
     fill: #ddd;
     font-family: v.$font-base;
     font-size: 12px;
@@ -652,18 +696,12 @@
       border-top: 2px solid var(--scoreboard-led);
     }
 
-    &.prev {
-      border-top: 2px dashed rgba(255, 255, 255, 0.7);
-    }
-
     &.avg {
       border-top: 1px dashed rgba(255, 255, 255, 0.45);
     }
   }
 }
 
-// Scouting report: every skill, strengths first, then average, then weaknesses (two cards a row), and
-// similar seasons last
 // The Overview's sections: cards like the other tabs' (a bar, the sport's sidelines), in their tone
 .ov-section {
   margin-top: 14px;
@@ -674,15 +712,15 @@
   }
 
   &.good {
-    --group-color: #3ee07a;
+    --group-color: #{$flag-good};
   }
 
   &.mid {
-    --group-color: #ff9f40;
+    --group-color: #{$flag-mid};
   }
 
   &.bad {
-    --group-color: #ff7468;
+    --group-color: #{$flag-bad};
   }
 
   .comps-row {
@@ -690,6 +728,8 @@
   }
 }
 
+// Scouting report: every skill, strengths first, then average, then weaknesses (two cards a row), and
+// similar seasons last
 .ov-skills {
   display: grid;
   gap: 10px;
@@ -717,7 +757,7 @@
   color: #fff;
   @include v.hand(14px);
   line-height: 1.1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: v.$hand-shadow;
 }
 
 .skill-standing {
@@ -761,12 +801,14 @@
   grid-template-columns: minmax(0, 500px) minmax(220px, 1fr);
   margin-top: 14px;
 
-  @media (max-width: 720px) {
+  @media (max-width: $bd-stack) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 .bd-table {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
@@ -793,19 +835,18 @@
 .bd-lean-label {
   color: #fff;
   @include v.hand(17px);
-  font-weight: 400;
 
   &.pass {
-    color: #8ab4e0;
+    color: $pass;
   }
 
   &.run {
-    color: #e3cb8f;
+    color: $run;
   }
 }
 
 .bd-lean-bar {
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   display: flex;
   gap: 2px;
   height: 20px;
@@ -820,11 +861,11 @@
     padding: 0 8px;
 
     &.pass {
-      background: color-mix(in srgb, #8ab4e0 55%, #222);
+      background: color-mix(in srgb, $pass 55%, #222);
     }
 
     &.run {
-      background: color-mix(in srgb, #e3cb8f 50%, #222);
+      background: color-mix(in srgb, $run 50%, #222);
       justify-content: flex-end;
     }
   }
@@ -846,11 +887,6 @@
     transform: translateX(-1px);
     width: 2px;
   }
-}
-
-.bd-table {
-  display: flex;
-  flex-direction: column;
 }
 
 .bd-row {
@@ -889,12 +925,8 @@
   padding-top: 0;
 
   > span {
-    color: #bdbdbd;
+    @include caps-label;
     cursor: help;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
   }
 }
 
@@ -903,7 +935,7 @@
   cursor: help;
   margin-left: 14px;
   @include v.hand(15px);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: v.$hand-shadow;
 }
 
 .bd-cell {
@@ -917,8 +949,8 @@
 
 // (six columns or more, the NBA's: on a phone the position's column narrower, the gaps and the numbers
 // smaller, so all of them fit across)
-.bd-wide .bd-row {
-  @media (max-width: 560px) {
+@media (max-width: $bd-narrow) {
+  .bd-wide .bd-row {
     gap: 5px;
     grid-template-columns: 34px 30px repeat(var(--bd-cols, 3), minmax(0, 1fr));
 
@@ -931,10 +963,8 @@
       font-size: 13px;
     }
   }
-}
 
-.bd-wide .bd-head > span {
-  @media (max-width: 560px) {
+  .bd-wide .bd-head > span {
     font-size: 10px;
     letter-spacing: 0;
   }
@@ -942,13 +972,17 @@
 
 // (the rank on a small LED tile, like the game view's fantasy ranks, in its rank color)
 .bd-rank {
-  @include v.led-tile;
+  @include v.led-tile($radius: 5px, $color: null, $text-shadow: null);
   @include v.tone-glow(60%, 8px);
-  border-radius: 5px;
   font-size: 11px;
   height: 24px;
   padding-top: 1.5px;
   width: 34px;
+
+  // (unranked: grey)
+  &.bd-none {
+    --tone: #777;
+  }
 }
 
 .bd-split {
@@ -959,13 +993,9 @@
 }
 
 .bd-split-title {
-  color: #bdbdbd;
+  @include caps-label;
   cursor: help;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
   text-align: center;
-  text-transform: uppercase;
 }
 
 // (the pie centered under the title, its key at the row's right)
@@ -996,11 +1026,11 @@
 
   path {
     cursor: help;
-    stroke: #1f2824;
+    stroke: v.$chalk-slate;
     stroke-width: 0.8;
     transition:
-      filter 0.15s,
-      transform 0.15s;
+      filter v.$t-hover,
+      transform v.$t-hover;
     transform-origin: 50px 50px;
 
     &.on {
@@ -1023,7 +1053,7 @@
 .bd-pop {
   background: #151a18;
   border: 1px solid var(--pop-color);
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   bottom: calc(100% + 8px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   color: #ddd;
@@ -1053,7 +1083,7 @@
 }
 
 .bd-swatch {
-  border-radius: 2px;
+  border-radius: v.$radius-xxs;
   display: inline-block;
   height: 10px;
   width: 10px;
@@ -1077,10 +1107,6 @@
     color: #bdbdbd;
     font-weight: 800;
   }
-}
-
-.bd-rank.bd-none {
-  --tone: #777;
 }
 
 .bd-note {
@@ -1107,7 +1133,7 @@
   gap: 10px;
   padding: 10px 12px;
   text-align: left;
-  transition: border-color 0.15s ease;
+  transition: border-color v.$t-hover ease;
 
   &:hover {
     border-color: var(--scoreboard-led);
@@ -1138,10 +1164,8 @@
 .comp-name {
   @include v.hand(14px);
   line-height: 1.15;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.15s ease;
-  white-space: nowrap;
+  @include v.ellipsis;
+  transition: color v.$t-hover ease;
 }
 
 .comp-match {
@@ -1195,7 +1219,6 @@
   }
 }
 
-
 .card-stats {
   display: grid;
   gap: 10px;
@@ -1219,15 +1242,9 @@
 }
 
 .stat-name {
-  color: #bdbdbd;
-  font-size: 11px;
-  font-weight: 700;
+  @include caps-label;
   grid-area: name;
-  letter-spacing: 0.6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
+  @include v.ellipsis;
 }
 
 .stat-rank {
@@ -1248,7 +1265,7 @@
   @include v.hand(20px);
   grid-area: value;
   line-height: 1.25;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: v.$hand-shadow;
 }
 
 // (recent games: the game log's W/L squares, each opening its game)
@@ -1260,23 +1277,24 @@
 }
 
 .recent-square {
-  // (its letter centered both ways)
+  // (its letter centered both ways: align-items and justify-content)
   align-items: center;
   border: none;
-  display: inline-flex;
-  justify-content: center;
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   color: #111;
   cursor: pointer;
+  display: inline-flex;
   font-family: v.$font-base;
   font-size: 10px;
   font-weight: 900;
   height: 17px;
+  justify-content: center;
   // (Nunito's caps sit high: a pixel down to look centered)
   line-height: 1;
   padding: 1px 0 0;
-  text-align: center;
-  transition: transform 0.12s ease, filter 0.12s ease;
+  transition:
+    transform v.$t-fast ease,
+    filter v.$t-fast ease;
   width: 17px;
 
   &.W {
@@ -1313,16 +1331,16 @@
 // (the fill grows in from the left when the card opens)
 .stat-bar {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   grid-area: bar;
   height: 6px;
   margin: 4px 0 6px;
   position: relative;
 
   i {
-    animation: bar-fill 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: bar-fill 0.35s v.$ease-out both;
     background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 35%, transparent), var(--tone));
-    border-radius: 3px;
+    border-radius: v.$radius-xs;
     box-shadow: 0 0 8px color-mix(in srgb, var(--tone) 50%, transparent);
     inset: 0 auto 0 0;
     min-width: 6px;
@@ -1372,7 +1390,7 @@
   align-items: center;
   background: none;
   border: none;
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -1443,7 +1461,7 @@
   grid-template-columns: 30px 112px 40px repeat(3, minmax(0, 1fr)) 88px;
   padding: 8px 14px;
   text-align: left;
-  transition: border-color 0.15s ease;
+  transition: border-color v.$t-hover ease;
 
   img {
     height: 28px;
@@ -1452,7 +1470,7 @@
 
     // (dark logos the table draws in white, like the Giants', would vanish on the board)
     &.white-logo {
-      filter: brightness(0) invert(1);
+      @include v.white-lettering;
     }
   }
 
@@ -1499,7 +1517,7 @@
       color: #fff;
       @include v.hand(18px);
       line-height: 1.05;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      text-shadow: v.$hand-shadow;
       white-space: nowrap;
     }
 
@@ -1507,7 +1525,7 @@
       background:
         var(--fill) left / calc(var(--share) * 100%) 100% no-repeat,
         rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
+      border-radius: v.$radius-xxs;
       height: 3px;
       max-width: 110px;
     }
@@ -1517,10 +1535,8 @@
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include v.ellipsis;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
     &.tinted {
@@ -1588,7 +1604,7 @@
 .history-row {
   align-items: center;
   background: rgba(0, 0, 0, 0.18);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   display: grid;
   gap: 14px;
   grid-template-columns: 30px 1fr auto;
@@ -1596,7 +1612,7 @@
 }
 
 .history-result {
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   color: #111;
   font-family: v.$font-base;
   font-size: 13px;
@@ -1673,7 +1689,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ov-radar .shape,
-  .ov-radar .ghost,
   .ov-radar .dot,
   .stat-bar i {
     animation: none;
@@ -1684,7 +1699,7 @@
 // Phones: the hero stacks (card, then name, with the rank tile beside the name), one column of skills,
 // the season lines on two rows
 // ---------------------------------------------------------------------------
-@media (max-width: 640px) {
+@include v.down(phablet) {
   // (the whole visible screen, less a small margin)
   .player-card {
     --card-r: 16px;
@@ -1695,7 +1710,6 @@
   // The hero one compact row (on a phone it's the least of what the card is for): a small team card with
   // the player in it, the name and team, and a small rank tile under the card's buttons
   .card-hero {
-    align-items: end;
     gap: 12px;
     grid-template-columns: auto minmax(0, 1fr) auto;
     padding: 14px 12px 12px;
@@ -1725,7 +1739,6 @@
 
   .hero-team {
     font-size: 10.5px;
-    letter-spacing: 0.5px;
   }
 
   // (under the back, next and close buttons)
@@ -1809,17 +1822,6 @@
   }
 }
 
-// The sport's own touches (apps/<sport>/src/theme/_sport-card.scss)
-@include meta.load-css("sport-card");
-
-// Headshots keep their own shape: ESPN's cutouts (NFL, NBA) are as wide as the box and fill it, while
-// MLB's and the NHL's are square, so they sit bottom-center in it rather than being stretched wide
-.hero-photo,
-.comp-photo {
-  object-fit: contain;
-  object-position: 50% 100%;
-}
-
 // ---------------------------------------------------------------------------
 // The Game Log tab: a bar chart of the key stat by game (green wins, red losses; a team's margin above
 // and below a center line), then the table: category headers, the opponent's logo, a result tile, each
@@ -1836,6 +1838,11 @@
   &:first-child {
     margin-top: 0;
   }
+}
+
+.log-chart {
+  --log-seg-0: var(--scoreboard-led);
+  --log-seg-1: #5ab4ff;
 }
 
 .log-chart-head {
@@ -1875,7 +1882,7 @@
   }
 
   i:not(.dot) {
-    border-radius: 2px;
+    border-radius: v.$radius-xxs;
     display: inline-block;
     height: 9px;
     width: 9px;
@@ -1892,25 +1899,20 @@
 
 // a touchdown (green) or a turnover (red)
 .log-chart .dot {
-  border-radius: 50%;
+  border-radius: v.$radius-round;
   display: inline-block;
   height: 6px;
   width: 6px;
 
   &.plus {
     background: v.$good;
-    box-shadow: 0 0 4px rgba(62, 207, 110, 0.6);
+    box-shadow: 0 0 4px rgba(v.$good, 0.6);
   }
 
   &.minus {
     background: v.$bad;
-    box-shadow: 0 0 4px rgba(255, 90, 79, 0.6);
+    box-shadow: 0 0 4px rgba(v.$bad, 0.6);
   }
-}
-
-.log-chart {
-  --log-seg-0: var(--scoreboard-led);
-  --log-seg-1: #5ab4ff;
 }
 
 .log-bars {
@@ -1925,9 +1927,15 @@
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
+  // (each game's details on hover: the help cursor and a lift say so)
+  cursor: help;
   max-width: 64px;
   min-width: 0;
   position: relative;
+
+  &:hover {
+    filter: brightness(1.25);
+  }
 
   &:hover .seg {
     filter: brightness(1.2);
@@ -2065,7 +2073,7 @@
 }
 
 .game-log {
-  border-radius: 8px;
+  border-radius: v.$radius-lg;
   overflow-x: auto;
 
   table {
@@ -2212,7 +2220,7 @@
   }
 
   .log-outcome {
-    border-radius: 3px;
+    border-radius: v.$radius-xs;
     color: #111;
     display: inline-block;
     font-size: 11px;
@@ -2235,7 +2243,6 @@
     }
   }
 
-  // the games to come: dimmer, a line above the first, the time and TV (and the line) across the stats
   // the playoffs: a heading in the sport's light, their rows tinted with it
   tr.log-section th {
     background: color-mix(in srgb, var(--scoreboard-led) 14%, rgba(0, 0, 0, 0.25));
@@ -2252,6 +2259,7 @@
     background: color-mix(in srgb, var(--scoreboard-led) 6%, transparent);
   }
 
+  // the games to come: dimmer, a line above the first, the time and TV (and the line) across the stats
   tr.log-gap td {
     background: none;
     border: none;
@@ -2300,9 +2308,8 @@
 
 // ---------------------------------------------------------------------------
 // The Analysis tab (an AI write-up; its headline and definition head the Overview's profile, .ov-summary): the
-// take, the season's strengths and
-// concerns side by side, the coming game with its line, the rest of the season's ranges, betting angles.
-// Each section a card like the Season groups, in its own color
+// take, the season's strengths and concerns side by side, the coming game with its line, the rest of the
+// season's ranges, betting angles. Each section a card like the Season groups, in its own color
 // ---------------------------------------------------------------------------
 // (when it was written, under the last section)
 .ai-meta {
@@ -2364,7 +2371,7 @@
   }
 
   &.concerns h4 {
-    --group-color: #ff6b61;
+    --group-color: #{$ai-bad};
   }
 
   &.matchups {
@@ -2385,7 +2392,7 @@
   }
 
   .concerns & {
-    --point: #ff6b61;
+    --point: #{$ai-bad};
   }
 
   .matchups & {
@@ -2403,7 +2410,7 @@
 
     &::before {
       background: var(--point, #fff);
-      border-radius: 50%;
+      border-radius: v.$radius-round;
       box-shadow: 0 0 6px color-mix(in srgb, var(--point, #fff) 60%, transparent);
       content: "";
       flex: none;
@@ -2447,7 +2454,7 @@
   align-items: baseline;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
+  border-radius: v.$radius-pill;
   color: rgba(255, 255, 255, 0.8);
   display: inline-flex;
   font-size: 12px;
@@ -2484,14 +2491,8 @@
   margin: 16px 0 0;
 
   b {
-    border-radius: 4px;
-    color: #111;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.8px;
+    @include ai-badge(2px 7px);
     margin-right: 8px;
-    padding: 2px 7px;
-    text-transform: uppercase;
   }
 
   &.rising b {
@@ -2499,7 +2500,7 @@
   }
 
   &.falling b {
-    background: #ff6b61;
+    background: $ai-bad;
   }
 
   &.steady b {
@@ -2520,20 +2521,14 @@
 }
 
 .ai-outlook {
-  border-radius: 4px;
-  color: #111;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.8px;
-  padding: 3px 8px;
-  text-transform: uppercase;
+  @include ai-badge(3px 8px);
 
   &.favorable {
     background: v.$good;
   }
 
   &.tough {
-    background: #ff6b61;
+    background: $ai-bad;
   }
 
   &.neutral {
@@ -2604,7 +2599,7 @@
 .ai-watch {
   align-items: flex-start;
   background: color-mix(in srgb, var(--group-color) 10%, transparent);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   color: rgba(255, 255, 255, 0.85);
   display: flex;
   font-size: 13.5px;
@@ -2647,11 +2642,7 @@
 }
 
 .ai-projection-stat {
-  color: #bdbdbd;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  @include caps-label(0.5px);
 }
 
 .ai-swing {
@@ -2671,7 +2662,7 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 700px) {
+@media (max-width: $ai-narrow) {
   .ai-card .group-body {
     padding: 12px 14px 14px;
   }
@@ -2696,7 +2687,7 @@
   aspect-ratio: 16 / 9;
   // (its yard lines on the panel's scoreboard, no lighter ground of its own)
   background: repeating-linear-gradient(180deg, transparent 0 calc(10% - 1px), rgba(255, 255, 255, 0.04) calc(10% - 1px) 10%);
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   margin: 12px 22px;
   min-height: 340px;
   position: relative;
@@ -2836,16 +2827,19 @@
   > .depth-initial {
     background: #1b1f23;
     border: 2px solid var(--team-badge, var(--scoreboard-led));
-    border-radius: 50%;
+    border-radius: v.$radius-round;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
     height: 100%;
+    transition:
+      transform v.$t-hover ease,
+      border-color v.$t-hover ease;
+    width: 100%;
+  }
+
+  > img {
     object-fit: cover;
     object-position: center top;
-    transition:
-      transform 0.15s ease,
-      border-color 0.15s ease;
-    width: 100%;
   }
 
   > .depth-initial {
@@ -2879,7 +2873,7 @@
 .depth-status,
 .depth-pop em,
 .depth-row-status em {
-  border-radius: 6px;
+  border-radius: v.$radius-md;
   font-size: 9px;
   font-style: normal;
   font-weight: 900;
@@ -2905,7 +2899,7 @@
   &.s-ir,
   &.s-susp,
   &.s-pup {
-    background: #a3202b;
+    background: $injured-reserve;
     color: #fff;
   }
 
@@ -2938,10 +2932,8 @@
 .depth-name {
   @include v.hand(11px);
   max-width: 84px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include v.ellipsis;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  white-space: nowrap;
 }
 
 .depth-snaps {
@@ -3067,7 +3059,7 @@
 
 .depth-change-pos {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   font-size: 11px;
   font-weight: 900;
   min-width: 42px;
@@ -3078,7 +3070,7 @@
 // (why: a tag in its kind's color: hurt in red, out of the picture in purple, the coach's call in blue, a
 // move in gray)
 .depth-reason {
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.4px;
@@ -3088,12 +3080,12 @@
   white-space: nowrap;
 
   &.r-injury {
-    background: rgba(255, 90, 79, 0.2);
+    background: rgba(v.$bad, 0.2);
     color: #ff8a80;
   }
 
   &.r-ir {
-    background: rgba(163, 32, 43, 0.35);
+    background: rgba($injured-reserve, 0.35);
     color: #ff9aa2;
   }
 
@@ -3170,9 +3162,7 @@
 
 .depth-row-name {
   font-weight: 700;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include v.ellipsis;
 
   small {
     color: rgba(255, 255, 255, 0.45);
@@ -3184,7 +3174,7 @@
 
 .depth-bar {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 3px;
+  border-radius: v.$radius-xs;
   height: 6px;
   overflow: hidden;
 
@@ -3212,7 +3202,7 @@
 
 // Phones: a taller field (as wide as the panel: no minimum height pushing it wider), and each chip just
 // its spot and headshot (the names and shares would run together at this width: a tap shows them)
-@media (max-width: 640px) {
+@include v.down(phablet) {
   .depth-field {
     aspect-ratio: 3 / 4;
     margin: 10px 6px;
@@ -3292,8 +3282,6 @@
 // (a pill in the sport's own hide: _sport-kit.scss's menu buttons set its face, edge and text; the one
 // chosen ringed in the accent at full strength, the others a touch faded)
 .game-filter {
-  // (round, whatever corners the sport gives its buttons)
-  border-radius: 999px !important;
   cursor: pointer;
   font: inherit;
   font-size: 12px;
@@ -3302,15 +3290,20 @@
   opacity: 0.72;
   padding: 6px 16px;
   text-transform: uppercase;
-  transition: opacity 0.12s ease;
+  transition: opacity v.$t-fast ease;
+
+  // (round, whatever corners the sport gives its buttons; the chosen one too, since the sports' own
+  // .active button corners are more specific)
+  &,
+  &.active {
+    border-radius: v.$radius-pill !important;
+  }
 
   &:hover {
     opacity: 1;
   }
 
   &.active {
-    // (round still: the sports' own .active button corners are more specific)
-    border-radius: 999px !important;
     opacity: 1;
     outline: 2px solid var(--scoreboard-led);
     outline-offset: 2px;
@@ -3435,7 +3428,7 @@
   gap: 8px;
 
   i {
-    border-radius: 3px;
+    border-radius: v.$radius-xs;
     display: inline-block;
     height: 10px;
     width: 10px;
@@ -3444,7 +3437,7 @@
 
 .arsenal-pitch-bar {
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   height: 8px;
   overflow: hidden;
 
@@ -3475,36 +3468,7 @@
   }
 }
 
-// (the game log chart's bars: each game's details on hover, the help cursor and a lift say so)
-.log-bar {
-  cursor: help;
-
-  &:hover {
-    filter: brightness(1.25);
-  }
-}
-
-// (the card's other charts say what they are on hover: the help cursor, and the mark lightens; the
-// radar's points grow)
-.ov-radar {
-  .dot {
-    cursor: help;
-    transition:
-      r 0.15s,
-      filter 0.15s;
-
-    &:hover {
-      filter: brightness(1.15);
-      r: 5.5;
-    }
-  }
-
-  .shape,
-  .axis-label {
-    cursor: help;
-  }
-}
-
+// (the card's other charts say what they are on hover: the help cursor, and the mark lightens)
 .stat-bar,
 .bd-lean-bar,
 .arsenal-pitch-bar,
@@ -3512,7 +3476,7 @@
 .zone-out,
 .zone-in > span {
   cursor: help;
-  transition: filter 0.15s;
+  transition: filter v.$t-hover;
 
   &:hover {
     filter: brightness(1.15);
@@ -3529,7 +3493,7 @@
 // (in the career arc and the season lines, which open their seasons: the bar just lightens)
 .arc .arc-bar,
 .season-row .readout i {
-  transition: filter 0.15s;
+  transition: filter v.$t-hover;
 }
 
 .arc:hover .arc-bar,
@@ -3541,8 +3505,8 @@
 .face-link {
   cursor: pointer;
   transition:
-    filter 0.15s,
-    transform 0.15s;
+    filter v.$t-hover,
+    transform v.$t-hover;
 
   &:hover {
     filter: brightness(1.12);
@@ -3557,23 +3521,19 @@
 
 // The card's tabs are components (engine/player-card/tabs): their elements lay out as if they weren't there,
 // so a tab's panels sit in the card's body as they always have
-card-stats,
-card-overview,
-card-analysis,
-card-team,
-card-zones,
-card-games,
-card-history,
-card-seasons {
+$card-tab-hosts: card-stats, card-overview, card-analysis, card-team, card-zones, card-games, card-history,
+  card-seasons;
+
+#{$card-tab-hosts} {
   display: contents;
 }
 
 // ---- motion (none for anyone who's asked their system for less): a tab's content eases in when the tab
 // opens (the card's and the game view's: their panels are made new each time)
 @media (prefers-reduced-motion: no-preference) {
-  .card-body > :not(card-stats, card-overview, card-analysis, card-team, card-zones, card-games, card-history, card-seasons),
-  .card-body > :is(card-stats, card-overview, card-analysis, card-team, card-zones, card-games, card-history, card-seasons) > * {
-    animation: tab-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  .card-body > :not(#{$card-tab-hosts}),
+  .card-body > :is(#{$card-tab-hosts}) > * {
+    animation: tab-in 0.22s v.$ease-out backwards;
   }
 }
 
@@ -3600,11 +3560,11 @@ card-seasons {
   }
 
   .bd-lean-bar {
-    animation: lean-fill 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    animation: lean-fill 0.4s v.$ease-out backwards;
   }
 
   .bd-pop {
-    animation: pop-rise 0.15s ease-out;
+    animation: pop-rise v.$t-hover ease-out;
   }
 
   .bd-rank,
@@ -3652,3 +3612,6 @@ card-seasons {
     text-shadow: none;
   }
 }
+
+// The sport's own touches (apps/<sport>/src/theme/_sport-card.scss), last so they come after the shared look
+@include meta.load-css("sport-card");

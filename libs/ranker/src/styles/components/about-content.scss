@@ -45,7 +45,7 @@ a {
 
 code {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
+  border-radius: v.$radius-sm;
   font-size: 13px;
   padding: 1px 5px;
 }
@@ -71,7 +71,7 @@ code {
 }
 
 // Tips: an icon beside each one
-ul.tips {
+.tips {
   list-style: none;
   padding: 0;
 
@@ -105,7 +105,7 @@ dl {
 }
 
 // Glossary: term and meaning side by side on wide screens
-dl.glossary {
+.glossary {
   display: grid;
   gap: 10px 18px;
   grid-template-columns: 150px 1fr;
@@ -134,8 +134,8 @@ dl.glossary {
 }
 
 // Phones and small tablets: the glossary's terms over their meanings
-@media (max-width: 719px) {
-  dl.glossary {
+@include v.down(about) {
+  .glossary {
     gap: 2px;
     grid-template-columns: 1fr;
 
