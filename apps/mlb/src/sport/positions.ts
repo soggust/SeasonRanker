@@ -1,4 +1,4 @@
-import { POSITION_ADJUST_STAT, restWeight, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
+import { POSITION_ADJUST_STAT, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -384,17 +384,16 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   ],
 };
 
-// Default: everything at 50. A preset (skill-presets.ts) sets the stats it's named for, puts every other
-// stat at the rest weight (restWeight: 25 on a small tab like HC, down to 10 on a big one, so what it
-// names leads), and leaves the support grades at 50. The Top 50's Position
-// Adjustment starts at 0 (neutral) unless a preset names it.
+// Default: everything at 50, the support grades too. A preset (skill-presets.ts) is only its theme: it
+// sets the stats it's named for and puts every other stat at 0, the support grades (the lineup, park and
+// defense around him: context, not part of any theme) included. The Top 50's Position Adjustment starts at
+// 0 (neutral) unless a preset names it.
 export function presetWeights(position: SkillPosition, preset: SkillPreset): SkillWeights {
   const def = SKILL_PRESETS[position].find((p) => p.key === preset);
-  const rest = restWeight(SKILL_STATS[position].filter((stat) => !stat.infoOnly && !stat.support && !stat.positionAdjust && !(stat.key in (def?.weights ?? {}))).length);
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = stat.positionAdjust ? 0 : def && !stat.support ? rest : 50;
+    weights[stat.key] = stat.positionAdjust || def ? 0 : 50;
   }
   return { ...weights, ...(def?.weights ?? {}) };
 }

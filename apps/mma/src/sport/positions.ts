@@ -243,16 +243,14 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = Object.fromEntrie
 >;
 
 // Default: everything at 50. A preset (skill-presets.ts) sets the stats it's named for and puts every
-// other stat at 10 (the other sports' rest weight on a big tab: restWeight). Each style preset also sets
-// the results stats low itself (its FLOOR), since behind their boosts (the rating 12x) even 10 would
-// outweigh the style it's named for.
-const MMA_REST = 10;
+// other stat at 0: a preset is only its theme (a style preset ranks on the style alone, no rating or rank
+// behind it). MMA has no support stats: every slider is a ranking stat.
 export function presetWeights(position: SkillPosition, preset: SkillPreset): SkillWeights {
   const def = SKILL_PRESETS[position].find((p) => p.key === preset);
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = def && !stat.support ? MMA_REST : 50;
+    weights[stat.key] = def ? 0 : 50;
   }
   return { ...weights, ...(def?.weights ?? {}) };
 }

@@ -1,18 +1,15 @@
 import type { SkillPosition, SkillWeights } from '@sport/positions';
 
-// Presets for every division, each built around a kind of fighter. A preset sets the stats it's named
-// for (the lead at 100, the rest of its list 40-90); every other stat drops to 10 (positions.ts
-// presetWeights). The style presets also set the results stats low (FLOOR): behind their boosts (the
-// rating 12x and Org Rank 6x in the current lists, career points 6x all-time) even 10 would outweigh the
-// style, yet the results still sort fighters of the same style. Resume is the results alone.
+// Presets for every division, each built around a kind of fighter. A preset is only its theme: it sets
+// the stats it's named for (the lead at 100, the rest of its list 40-90) and every other stat drops to 0
+// (positions.ts presetWeights). So the style presets rank on the style alone (no rating, rank or record
+// behind them), Resume on the results alone, and each list names every stat of its theme.
 export interface SkillPresetDef {
   key: string;
   label: string;
   description: string;
   weights: SkillWeights;
 }
-
-const FLOOR: SkillWeights = { rating: 10, officialRank: 10, winPct: 15, recent: 20, peakRating: 5, careerPoints: 5, titleWins: 5, titleDefenses: 5 };
 
 const PRESETS: SkillPresetDef[] = [
   {
@@ -27,32 +24,32 @@ const PRESETS: SkillPresetDef[] = [
   {
     key: 'striker',
     label: 'Striker',
-    description: 'Winning on the feet: Strike Diff, Strikes / Min, Strike Acc and Strike Def',
-    weights: { ...FLOOR, strDiff: 100, slpm: 80, strAcc: 80, strDef: 60 },
+    description: 'Winning on the feet: Strike Diff, Strikes / Min, Strike Acc, Strike Def, Absorbed / Min, KD / 15 and KD Against',
+    weights: { strDiff: 100, slpm: 80, strAcc: 80, strDef: 70, sapm: 60, kd15: 60, kdAgainst: 50 },
   },
   {
     key: 'knockout',
     label: 'Knockout Artist',
-    description: 'Power: KD / 15, Strikes / Min, Strike Acc and Finish %',
-    weights: { ...FLOOR, kd15: 100, slpm: 60, strAcc: 60, finishRate: 40 },
+    description: 'Power: KD / 15, Strikes / Min and Strike Acc (Finish %, submissions in it, a token 10)',
+    weights: { kd15: 100, slpm: 60, strAcc: 60, finishRate: 10 },
   },
   {
     key: 'wrestler',
     label: 'Wrestler',
     description: 'Taking it down and keeping it there: TD / 15, TD Acc, Adv / 15 and TD Def',
-    weights: { ...FLOOR, td15: 100, tdAcc: 80, adv15: 70, tdDef: 60 },
+    weights: { td15: 100, tdAcc: 80, adv15: 70, tdDef: 60 },
   },
   {
     key: 'grappler',
     label: 'Submission Artist',
-    description: 'Hunting the finish on the mat: Sub Att / 15, Adv / 15, TD / 15 and Finish %',
-    weights: { ...FLOOR, sub15: 100, adv15: 80, td15: 50, finishRate: 40 },
+    description: 'Hunting the finish on the mat: Sub Att / 15 and Adv / 15 (TD / 15 and Finish %, a token 10 each)',
+    weights: { sub15: 100, adv15: 80, td15: 10, finishRate: 10 },
   },
   {
     key: 'durable',
     label: 'Hard to Finish',
     description: 'Defense and durability: Strike Def, KD Against, TD Def and Absorbed / Min',
-    weights: { ...FLOOR, strDef: 100, kdAgainst: 100, tdDef: 90, sapm: 80 },
+    weights: { strDef: 100, kdAgainst: 100, tdDef: 90, sapm: 80 },
   },
 ];
 

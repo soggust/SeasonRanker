@@ -1,8 +1,7 @@
 // The presets (each sport's skill-presets.ts, weighed by its positions.ts presetWeights): DEFAULT is every
-// stat at 50 (no designer bias); a preset sets the stats it names, puts every other one at the rest weight
-// (restWeight: 25 on a small tab, down to 10 on a big one; MMA a flat 10, its style presets setting the
-// results stats low themselves) and leaves the support grades at 50; a Fantasy preset ranks on its own
-// stats alone. Every stat a preset names is on its tab, and the presets the audit cut stay cut.
+// stat at 50 (no designer bias); a preset is only its theme: it sets the stats it names and puts every other
+// one at 0, the support grades, the NFL's rough on/off reads and the Position Adjustment too (the NFL's
+// parent sliders stay at 50, which only scales their parts). Every stat a preset names is on its tab, and the presets the audit cut stay cut.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SPORTS, loadEngine } from './support/engine.mjs';
@@ -18,16 +17,6 @@ const SMALL = new Set(['runBlockEpa', 'passProPct']);
 // Offense and Defense, their ranks: the audit's fix list kept them so)
 const ONE_STAT = new Set(['nfl HC analytics', 'nba TM offense', 'nba TM defense']);
 
-test('the rest weight: 25 up to six unnamed stats, then 25 x 6 / unnamed, never under 10', async () => {
-  const { restWeight } = await engineFor('nfl');
-  for (const n of [0, 1, 3, 6]) assert.equal(restWeight(n), 25);
-  assert.equal(restWeight(7), 21);
-  assert.equal(restWeight(8), 19);
-  assert.equal(restWeight(10), 15);
-  assert.equal(restWeight(12), 13);
-  for (const n of [15, 20, 26, 40]) assert.equal(restWeight(n), 10);
-});
-
 for (const sport of SPORTS) {
   test(`${sport}: DEFAULT is every stat at 50, untouched by the presets`, async () => {
     const { SKILL_STATS, presetWeights } = await engineFor(sport);
@@ -40,8 +29,8 @@ for (const sport of SPORTS) {
     }
   });
 
-  test(`${sport}: a preset sets what it names, the rest weight on the others, support at 50`, async () => {
-    const { SKILL_STATS, SKILL_PRESETS, presetWeights, restWeight } = await engineFor(sport);
+  test(`${sport}: a preset sets what it names and every other stat at 0`, async () => {
+    const { SKILL_STATS, SKILL_PRESETS, presetWeights } = await engineFor(sport);
     for (const [tab, presets] of Object.entries(SKILL_PRESETS)) {
       const stats = SKILL_STATS[tab].filter((stat) => !stat.infoOnly);
       assert.ok(presets.length >= 2, `${tab}: presets`);
@@ -58,13 +47,7 @@ for (const sport of SPORTS) {
         assert.ok(Object.values(named).filter((w) => w > 0).length >= (single ? 1 : 2), `${name}: names one stat`);
         assert.ok(!/\.\s*$/.test(preset.description) && preset.description.length <= 120, `${name}: one line, no closing period`);
         const weights = presetWeights(tab, preset.key);
-        const only = preset.key === 'fantasy';
-        const unnamed = stats.filter((s) => !s.support && !s.positionAdjust && !(sport === 'nfl' && SMALL.has(s.key)) && !(s.key in named));
-        const rest = sport === 'mma' ? 10 : restWeight(unnamed.length);
-        for (const stat of stats) {
-          const expected = stat.key in named ? named[stat.key] : only || stat.positionAdjust ? 0 : stat.support ? 50 : sport === 'nfl' && SMALL.has(stat.key) ? 10 : rest;
-          assert.equal(weights[stat.key], expected, `${name}: ${stat.key}`);
-        }
+        for (const stat of stats) assert.equal(weights[stat.key], named[stat.key] ?? 0, `${name}: ${stat.key}`);
       }
       // (Fantasy, where a tab has one, last)
       const fantasy = presets.findIndex((p) => p.key === 'fantasy');
@@ -73,18 +56,28 @@ for (const sport of SPORTS) {
   });
 }
 
-test('the big tabs rest at 10, the small ones at 25', async () => {
+test('a preset zeroes the support grades and the rough reads, DEFAULT keeps them', async () => {
   const nfl = await engineFor('nfl');
-  // (WR: 19 stats with a rest weight, 5 named: 25 x 6 / 14)
-  assert.equal(nfl.presetWeights('WR', 'deepThreat').yac, 11);
-  assert.equal(nfl.presetWeights('WR', 'deepThreat').runBlockEpa, 10);
-  assert.equal(nfl.presetWeights('K', 'bigLeg').fgPct, 25);
-  assert.equal(nfl.presetWeights('HC', 'winner').atsPct, 21);
+  // (the NFL: a preset is only its theme, the support grades and the rough Run Block EPA at 0 too unless
+  // named; DEFAULT keeps them at 50 and 10; the parent sliders stay at 50, scaling only their parts)
+  assert.equal(nfl.presetWeights('WR', 'deepThreat').yac, 0);
+  assert.equal(nfl.presetWeights('WR', 'deepThreat').runBlockEpa, 0);
+  assert.equal(nfl.presetWeights('WR', 'deepThreat').qbPlay, 0);
+  assert.equal(nfl.presetWeights('WR', 'deepThreat').totalYards, 50);
+  assert.equal(nfl.presetWeights('WR', 'default').runBlockEpa, 10);
+  assert.equal(nfl.presetWeights('WR', 'default').qbPlay, 50);
+  assert.equal(nfl.presetWeights('TE', 'everyDown').runBlockEpa, 75);
+  assert.equal(nfl.presetWeights('K', 'bigLeg').fgPct, 0);
+  assert.equal(nfl.presetWeights('HC', 'winner').atsPct, 0);
+  assert.equal(nfl.presetWeights('HC', 'overachiever').qbPlay, 50);
+  assert.equal(nfl.presetWeights('QB', 'fantasy').totalYards, 0);
   const nba = await engineFor('nba');
-  assert.equal(nba.presetWeights('PG', 'scorer').rebounds, 10);
-  assert.equal(nba.presetWeights('PG', 'scorer').teammates, 50);
+  // (the NBA: a preset is only its theme, the support grades at 0 too; DEFAULT keeps them at 50)
+  assert.equal(nba.presetWeights('PG', 'scorer').rebounds, 0);
+  assert.equal(nba.presetWeights('PG', 'scorer').teammates, 0);
+  assert.equal(nba.presetWeights('PG', 'default').teammates, 50);
   assert.equal(nba.presetWeights('TOP', 'impact').posAdj, 0);
-  assert.equal(nba.presetWeights('HC', 'winner').lift, 25);
+  assert.equal(nba.presetWeights('HC', 'winner').lift, 0);
 });
 
 test('the cuts and merges stay out; the additions are in', async () => {
@@ -101,6 +94,7 @@ test('the cuts and merges stay out; the additions are in', async () => {
   assert.ok(!(await keys('mma', 'LW')).includes('momentum'));
   for (const tab of ['TOP', 'PG', 'SG', 'SF', 'PF', 'C']) assert.equal((await keys('nba', tab)).at(-1), 'fantasy', `nba ${tab}`);
   assert.ok((await keys('nba', 'PF')).includes('pointForward'));
+  for (const tab of ['TOP', 'PG', 'SG', 'SF', 'PF', 'C']) assert.ok((await keys('nba', tab)).includes('rebounder'), 'nba ' + tab + ' Rebounder');
   assert.deepEqual(await keys('mlb', 'DH'), ['war', 'saber', 'slugger', 'onBase', 'classic']);
   assert.ok(!(await keys('mlb', 'C')).includes('speed'));
   // (the Top 50: the shared lenses only, Total Impact first)

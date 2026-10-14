@@ -27,4 +27,3 @@ export { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playi
 export { shareLink, applySharedLink, compareCode, readCompareCode } from '@ranker/engine/share';
 export { SPORT } from '@sport/sport';
 export { POSITIONS, SKILL_STATS, presetWeights, skillGroups, statGroup } from '@sport/positions';
-export { restWeight } from '@ranker/engine/sport';

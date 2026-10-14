@@ -1,9 +1,10 @@
 import type { SkillPosition, SkillWeights } from '@sport/positions';
 
-// Presets for every tab, each built around a kind of player. A preset sets the stats it's named for (the
-// lead at 100, the rest of its list 40-90); every other stat drops to the rest weight (positions.ts
-// presetWeights: 25 on a small tab like Teams, down to 10 on the hitter and pitcher tabs, so what it names
-// leads). The order on every tab: Total Impact, Analytics (the pitchers' Stuff), the archetypes, then Old
+// Presets for every tab, each built around a kind of player and only that: a preset sets the stats it's
+// named for (the lead at 100, the rest of its list 40-90, a stat that's only slightly part of the theme at
+// a token 10) and every other stat, the support grades too, goes to 0 (positions.ts presetWeights), so a
+// Glove list is fielding alone and a Slugger list power alone. Each list names every stat of its theme the
+// tab has. The order on every tab: Total Impact, Analytics (the pitchers' Stuff), the archetypes, then Old
 // School.
 export interface SkillPresetDef {
   key: string;
@@ -36,14 +37,14 @@ const HITTER_PRESETS: SkillPresetDef[] = [
   {
     key: 'onBase',
     label: 'On-Base Machine',
-    description: 'Getting on: OBP, walks, average and few strikeouts, then runs scored',
+    description: 'Getting on: OBP, walks, average and few strikeouts, then the runs it scores',
     weights: { obp: 100, bbPct: 80, avg: 70, kPct: 60, runs: 50 },
   },
   {
     key: 'speed',
     label: 'Speed',
-    description: 'Legs: sprint speed, stolen bases and baserunning, then runs scored',
-    weights: { sprintSpeed: 100, stolenBases: 90, bsr: 90, runs: 50 },
+    description: 'Legs: sprint speed, stolen bases and baserunning (runs scored a touch)',
+    weights: { sprintSpeed: 100, stolenBases: 90, bsr: 90, runs: 10 },
   },
   {
     key: 'glove',
@@ -67,15 +68,17 @@ function hittersWith(copies: SkillPresetDef[], without: string[] = []): SkillPre
 // The two pitching lenses the starters and relievers share, in the same words
 const PITCHER_IMPACT: SkillWeights = { war: 100, ip: 60, fip: 60, era: 60 };
 const PITCHER_IMPACT_TEXT = 'The all-in-one number: WAR, with the innings and run prevention behind it';
-const STUFF_TEXT = 'What the pitches do: whiffs, strikeouts and weak contact (2015 on)';
+// (Stuff counts the strikeout total with the rates, so a full season of dominance counts for more than a
+// few dominant starts or outings)
+const STUFF_TEXT = 'What the pitches do: whiffs, strikeouts (the rate and the total) and weak contact (2015 on)';
 
 export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
   TM: [
     {
       key: 'contender',
       label: 'Contender',
-      description: 'The best teams: run differential, the record and playoff wins',
-      weights: { runDiff: 100, winPct: 90, playoffWins: 70, pythDiff: 0 },
+      description: 'The winners: the record, then a little run differential and playoff wins',
+      weights: { winPct: 100, runDiff: 30, playoffWins: 30 },
     },
     {
       key: 'roster',
@@ -135,7 +138,7 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       key: 'stuff',
       label: 'Stuff',
       description: STUFF_TEXT,
-      weights: { whiffPct: 100, kPct: 90, xera: 70, hardHitAllowed: 70, barrelAllowed: 70 },
+      weights: { whiffPct: 100, kPct: 90, xera: 70, hardHitAllowed: 70, barrelAllowed: 70, strikeOuts: 60 },
     },
     {
       key: 'workhorse',
@@ -146,8 +149,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'runPrevention',
       label: 'Run Prevention',
-      description: 'The results: ERA, WHIP and keeping it in the park',
-      weights: { era: 100, whip: 90, hr9: 60 },
+      description: 'The results: ERA, WHIP and keeping it in the park, over the innings',
+      weights: { era: 100, whip: 90, hr9: 60, ip: 50 },
     },
     {
       key: 'classic',
@@ -167,7 +170,7 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       key: 'stuff',
       label: 'Stuff',
       description: STUFF_TEXT,
-      weights: { whiffPct: 100, kPct: 90, xwobaAllowed: 70, hardHitAllowed: 70 },
+      weights: { whiffPct: 100, kPct: 90, xwobaAllowed: 70, hardHitAllowed: 70, strikeOuts: 50 },
     },
     {
       key: 'closer',
