@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnChanges, inject } from '@angular/core';
-import type { HeatCell, HeatCellShape, HeatMode, HeatStat, HeatSurface, HeatSurfaceId } from './heat-map.model';
+import type { HeatCell, HeatCellShape, HeatMark, HeatMode, HeatShape, HeatStat, HeatSurface, HeatSurfaceId } from './heat-map.model';
 import { heatSurface } from './surfaces';
 import { cellTone, fadeFill, heatPaint, isThin, leanText, pickPair, toneText } from './heat-color';
 
@@ -60,6 +60,11 @@ export class HeatMapComponent implements OnChanges {
   @Input() seasonLabel: string | null = null;
   // (the key's note when what's behind isn't a last season: "Faded: his career")
   @Input() fallbackNote: string | null = null;
+  // (the row's own pieces over the cells, his home park's wall; his marks over those, his home runs; and the
+  // key's word for a mark, "Home run")
+  @Input() layers: HeatShape[] | null = null;
+  @Input() marks: HeatMark[] | null = null;
+  @Input() markKey: string | null = null;
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly id = `hm${next++}`;
@@ -148,9 +153,9 @@ export class HeatMapComponent implements OnChanges {
     return this.stat.countNoun ?? this.stat.noun;
   }
 
-  // (the legend's ends: which way is good for this row)
+  // (the legend's ends: which way is good for this row; a lean's, or a stat's own, "Into damage", "Away from it")
   get ends(): [string, string] {
-    if (this.stat.scale === 'lean' && this.stat.ends) return this.stat.ends;
+    if (this.stat.ends && (this.stat.scale === 'lean' || !this.overlay)) return this.stat.ends;
     if (this.overlay) return ['Tough spot', 'Edge'];
     return this.defense ? ['Leakier', 'Stingier'] : ['Worse', 'Better'];
   }
@@ -241,7 +246,7 @@ export class HeatMapComponent implements OnChanges {
           fill: eff.fill,
           main: empty ? '' : value,
           // (a faded cell's small number its season: whose it is, at a glance)
-          sub: empty ? '' : faded ? last : shownOpp?.n ? `vs ${fmt(shownOpp.value)}` : shown.made !== undefined ? `${shown.made}/${shown.n}` : this.shape?.text?.noun ? `${shown.n} ${stat.noun}` : String(shown.n),
+          sub: empty ? '' : faded ? last : shownOpp?.n ? `vs ${fmt(shownOpp.value)}` : shown.sub !== undefined ? shown.sub : shown.made !== undefined ? `${shown.made}/${shown.n}` : this.shape?.text?.noun ? `${shown.n} ${stat.noun}` : String(shown.n),
         },
         vol: { fill: vol.fill, main: volume ? String(volume) : '', sub: volume ? volumeShare : '' },
         thin: !empty && eff.thin,

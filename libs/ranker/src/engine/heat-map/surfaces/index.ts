@@ -1,7 +1,6 @@
-// The Heat Maps' surfaces by id, each built once from its own geometry file. A sport adding one (a half
-// court, a strike zone, a spray fan, a diamond, a fighter's body) writes surfaces/<id>.ts returning a
-// HeatSurface (its backdrop's pieces, styled by heat-map.scss's hm-* classes, and its cells' outlines) and lists
-// it here; the component draws any of them the same way.
+// The Heat Maps' surfaces by id, each built once from its own geometry file. A sport adding one writes
+// surfaces/<id>.ts returning a HeatSurface (its backdrop's pieces, styled by heat-map.scss's hm-* classes, and its
+// cells' outlines) and lists it here; the component draws any of them the same way.
 
 import type { HeatSurface, HeatSurfaceId } from '../heat-map.model';
 import { downDistanceSurface } from './down-distance';
@@ -12,6 +11,9 @@ import { redZoneSurface } from './red-zone';
 import { rinkSurface } from './rink';
 import { roundClock3Surface, roundClockSurface } from './round-clock';
 import { body3Surface, bodySurface } from './body';
+import { strikeZoneSurface } from './strike-zone';
+import { sprayFanLeftySurface, sprayFanSurface } from './spray-fan';
+import { diamondFieldSurface } from './diamond-field';
 
 const BUILDERS: Partial<Record<HeatSurfaceId, () => HeatSurface>> = {
   field: fieldSurface,
@@ -24,7 +26,10 @@ const BUILDERS: Partial<Record<HeatSurfaceId, () => HeatSurface>> = {
   body: bodySurface,
   'body-3': body3Surface,
   'half-court': halfCourtSurface,
-  // TODO: strike-zone, spray-fan and diamond-field (MLB)
+  'strike-zone': strikeZoneSurface,
+  'spray-fan': sprayFanSurface,
+  'spray-fan-l': sprayFanLeftySurface,
+  'diamond-field': diamondFieldSurface,
 };
 
 const built = new Map<HeatSurfaceId, HeatSurface>();

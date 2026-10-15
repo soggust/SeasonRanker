@@ -95,29 +95,51 @@
           </g>
         }
 
+        <!-- (what sits on top: the surface's own lines and labels, then the row's own pieces, his park's wall) -->
         @if (s.overlay) {
           <g class="hm-top" aria-hidden="true">
             @for (p of s.overlay; track $index) {
-              @switch (p.kind) {
-                @case ('polygon') {
-                  <polygon [attr.class]="p.cls" [attr.points]="p.points" />
-                }
-                @case ('path') {
-                  <path [attr.class]="p.cls" [attr.d]="p.d" />
-                }
-                @case ('rect') {
-                  <rect [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.rx]="p.rx ?? null" />
-                }
-                @case ('circle') {
-                  <circle [attr.class]="p.cls" [attr.cx]="p.cx" [attr.cy]="p.cy" [attr.r]="p.r" />
-                }
-                @case ('text') {
-                  <text [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.transform]="rotate(p)">{{ p.text }}</text>
-                }
-              }
+              <ng-container *ngTemplateOutlet="piece; context: { $implicit: p }" />
             }
           </g>
         }
+        @if (layers?.length) {
+          <g class="hm-top hm-layers" aria-hidden="true">
+            @for (p of layers; track $index) {
+              <ng-container *ngTemplateOutlet="piece; context: { $implicit: p }" />
+            }
+          </g>
+        }
+        <!-- (the row's marks, his home runs: a hover names each; the numbers beside the map say them for a screen
+             reader) -->
+        @if (marks?.length) {
+          <g class="hm-marks" aria-hidden="true">
+            @for (m of marks; track $index) {
+              <circle [attr.class]="'hm-mark ' + (m.cls ?? '')" [attr.cx]="m.x" [attr.cy]="m.y" [attr.r]="m.r ?? 2.6" [style.--i]="$index"><title>{{ m.title }}</title></circle>
+            }
+          </g>
+        }
+
+        <!-- (a piece over the cells: a polygon, a path, a box, a circle or a label) -->
+        <ng-template #piece let-p>
+          @switch (p.kind) {
+            @case ('polygon') {
+              <svg:polygon [attr.class]="p.cls" [attr.points]="p.points" />
+            }
+            @case ('path') {
+              <svg:path [attr.class]="p.cls" [attr.d]="p.d" />
+            }
+            @case ('rect') {
+              <svg:rect [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.rx]="p.rx ?? null" />
+            }
+            @case ('circle') {
+              <svg:circle [attr.class]="p.cls" [attr.cx]="p.cx" [attr.cy]="p.cy" [attr.r]="p.r" />
+            }
+            @case ('text') {
+              <svg:text [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.transform]="rotate(p)">{{ p.text }}</svg:text>
+            }
+          }
+        </ng-template>
       </svg>
 
       <!-- (a cell's popover: where it is, its value against the league's, the sample, the opponent's) -->
@@ -143,6 +165,9 @@
         }
         @if (mode !== 'volume' && stat.minN > 1) {
           <span class="hm-thin-key"><i></i>Under {{ stat.minN }} {{ stat.noun }}</span>
+        }
+        @if (markKey && marks?.length) {
+          <span class="hm-mark-key"><i></i>{{ markKey }}</span>
         }
         @if (faded) {
           <span class="hm-fade-key" [title]="fadeTitle"><i></i>{{ fadeKey }}</span>

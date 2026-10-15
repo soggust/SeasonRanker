@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- A ballpark's mown grass, a tile: a checkerboard cut in two greens, a fine grain over it (the Heat Maps'
+       spray fan and diamond, darkened under their paint) -->
+  <rect width="48" height="48" fill="#2f6b34"/>
+  <path d="M0 0h24v24H0zM24 24h24v24H24z" fill="#367a3b"/>
+  <g stroke="#ffffff" stroke-opacity="0.05" stroke-width="0.6">
+    <path d="M3 5l1 2M11 3l1 2M19 9l1 2M7 15l1 2M15 19l1 2M27 4l1 2M35 11l1 2M43 6l1 2M31 17l1 2M39 21l1 2M5 29l1 2M13 35l1 2M21 31l1 2M9 41l1 2M17 45l1 2M29 30l1 2M37 37l1 2M45 33l1 2M33 43l1 2M41 45l1 2"/>
+  </g>
+</svg>

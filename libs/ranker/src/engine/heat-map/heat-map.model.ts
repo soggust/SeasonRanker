@@ -15,8 +15,8 @@ import type { SkillPlayer } from '@sport/positions';
 
 // ---- the surfaces
 
-// (built: field, red-zone, field-strip, down-distance, rink, round-clock, body, half-court; the rest are named for
-// the sports that will draw them)
+// (built: field, red-zone, field-strip, down-distance, rink, round-clock, body, half-court, strike-zone, spray-fan,
+// diamond-field)
 export type HeatSurfaceId =
   | 'field'
   | 'red-zone'
@@ -26,11 +26,12 @@ export type HeatSurfaceId =
   | 'rink'
   // (the NBA's shot zones: surfaces/half-court.ts)
   | 'half-court'
-  // TODO(MLB): the 3 x 3 zone and its four outside corners (the Zones tab's, folded in)
+  // (MLB's: pitch location, the zone's 3 x 3 and the ring around it, from the catcher's view; batted balls by
+  // direction and type from home plate, a right-handed hitter's pull side on the left ('spray-fan') or a
+  // left-handed one's on the right ('spray-fan-l'); fielding by position on the diamond)
   | 'strike-zone'
-  // TODO(MLB): batted balls by direction and depth
   | 'spray-fan'
-  // TODO(MLB): fielding by position on the diamond
+  | 'spray-fan-l'
   | 'diamond-field'
   // (MMA's: when fights end, round by minute, five rounds or three; strikes by target on a fighter's figure, and
   // by position on three of them: at distance, in the clinch, on the ground)
@@ -94,6 +95,9 @@ export interface HeatCell {
   // (what Volume counts when it isn't the sample: the strikes landed where the sample is the ones thrown, the
   // finishes where it's the fights still going; none: n)
   count?: number;
+  // (the small line under the value when it isn't the sample: a team's fielder there, "Witt Jr."; none: the
+  // sample, or made/n)
+  sub?: string;
   detail?: string[];
 }
 
@@ -110,7 +114,8 @@ export interface HeatStat {
   sd?: number | null;
   minN: number;
   scale?: 'diverging' | 'sequential' | 'lean';
-  // (a lean's ends, low then high: "Runs more", "Passes more")
+  // (a lean's ends, low then high: "Runs more", "Passes more"; a diverging stat's own, bad then good: "Into
+  // damage", "Away from damage")
   ends?: [string, string];
   // (what the sample is: "throws", "targets", "plays"; and a made-over-tried cell's small number, "catches /
   // targets": drawn "8/12" under its value)
@@ -144,6 +149,26 @@ export interface HeatQuery {
   split: string;
   stat: string | null;
   side: string | null;
+  // (the map's own second pick when it has one, HeatMapData.options: a pitcher's pitch type)
+  option?: string | null;
+}
+
+// A map's second picker beside its stat's (a pitcher's pitch types): its name, its items (each with a swatch's
+// color when it has one) and the one showing
+export interface HeatOptions {
+  label: string;
+  items: { key: string; label: string; title?: string; color?: string }[];
+  value: string;
+}
+
+// A mark over a map's cells, the row's own (a hitter's home runs where they landed): its spot in the surface's
+// units, its radius, its class (heat-map.scss) and its hover
+export interface HeatMark {
+  x: number;
+  y: number;
+  r?: number;
+  cls?: string;
+  title: string;
 }
 
 // The same row's last season behind a map's thin cells (HeatFallback below): early in a season most cells are
@@ -178,6 +203,13 @@ export interface HeatMapData extends HeatFallback {
   // (the numbers' heading: "Inside the 20" when there's none, the red zone's)
   chipsTitle?: string;
   lead?: boolean;
+  // (its second picker: a pitcher's pitch types)
+  options?: HeatOptions;
+  // (the row's own pieces drawn over the cells, under the marks: his home park's wall; the marks, his home runs;
+  // and the key's word for them, "Home run")
+  layers?: HeatShape[];
+  marks?: HeatMark[];
+  markKey?: string;
 }
 
 // A number under a map ("31% of the team's red-zone targets"), its tone -1 to 1 against the league's
@@ -206,6 +238,9 @@ export interface HeatMapDef {
   // (numbered maps laid out in a row of their own, their own numbers beside them: MMA's striking, then its
   // finishes. None: every numbered map in the one row, as the NHL's are)
   group?: string;
+  // (false: nothing a Volume switch would change, a team's Outs Above Average; a tab with only such maps has no
+  // Efficiency / Volume switch)
+  volume?: boolean;
   load:(query: HeatQuery) => Promise<HeatMapData | null>;
 }
 

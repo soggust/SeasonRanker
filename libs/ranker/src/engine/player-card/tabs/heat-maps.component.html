@@ -14,7 +14,7 @@
   [sides]="cards.heatSides(c)"
   [side]="cards.heatSide"
   [mode]="cards.heatMode"
-  [showMode]="defs.length > 0"
+  [showMode]="cards.heatHasVolume(c)"
   (seasonChange)="cards.pickHeatSeason(c, $event)"
   (splitChange)="cards.heatSplit = $event"
   (sideChange)="cards.heatSide = $event"
@@ -84,9 +84,11 @@
   }
 }
 
-<!-- A map: its title, count and stat picker (the sport's own small pills), the map and its key -->
+<!-- A map: its title, count and stat picker (the sport's own small pills), its second picker when it has one (a
+     pitcher's pitch types, each with its color), the map and its key -->
 <ng-template #map let-d>
   @let m = cards.heatMap(c, d);
+  @let mode = d.volume === false ? 'efficiency' : cards.heatMode;
   @if (m === 'loading') {
     <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink' || d.surface === 'body'" [class.court]="d.surface === 'half-court'" [style.--hm-aspect]="aspect(d.surface)" aria-hidden="true"></div>
   } @else if (m) {
@@ -94,24 +96,39 @@
       <figcaption class="hm-head">
         <span class="hm-title" [title]="m.help"><b>{{ m.title }}</b><small>{{ m.count }}</small></span>
         @if (m.stats.length > 1) {
-          <span class="hm-stats" [class.quiet]="cards.heatMode === 'volume'" role="group" [attr.aria-label]="m.title + ': the stat'">
+          <span class="hm-stats" [class.quiet]="mode === 'volume'" role="group" [attr.aria-label]="m.title + ': the stat'">
             @for (st of m.stats; track st.key) {
               <button type="button" class="game-filter small hm-stat" [class.active]="st.key === m.stat.key" [attr.aria-pressed]="st.key === m.stat.key" [title]="st.title ?? ''" (click)="cards.pickHeatStat(c, d, st.key)">{{ st.label }}</button>
             }
           </span>
         }
       </figcaption>
+      @if (m.options; as o) {
+        <div class="hm-options" role="group" [attr.aria-label]="m.title + ': ' + o.label">
+          @for (it of o.items; track it.key) {
+            <button type="button" class="game-filter small hm-option" [class.active]="it.key === o.value" [attr.aria-pressed]="it.key === o.value" [title]="it.title ?? ''" (click)="cards.pickHeatOption(d, it.key)">
+              @if (it.color) {
+                <i class="hm-swatch" [style.background]="it.color" aria-hidden="true"></i>
+              }
+              {{ it.label }}
+            </button>
+          }
+        </div>
+      }
       <heat-map
         [surface]="m.surface"
         [cells]="m.cells"
         [stat]="m.stat"
-        [mode]="cards.heatMode"
+        [mode]="mode"
         [defense]="m.defense"
         [label]="m.title"
         [fallback]="m.fallback ?? null"
         [fallbackLabel]="m.fallbackLabel ?? null"
         [seasonLabel]="m.seasonLabel ?? null"
         [fallbackNote]="m.fallbackNote ?? null"
+        [layers]="m.layers ?? null"
+        [marks]="m.marks ?? null"
+        [markKey]="m.markKey ?? null"
       />
     </figure>
   }

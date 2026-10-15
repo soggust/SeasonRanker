@@ -549,6 +549,206 @@ $hm-cuff: rgb(244, 241, 236);
   stroke-width: 1px;
 }
 
+// (MLB's: the park's mown grass darkened under the paint, the warning track and the infield's dirt, the chalk,
+// the bases and the plate in white over the cells; a park's own wall in the scoreboard's amber, its home runs as
+// white balls; the strike zone's board, its chase ring darker than the zone, the zone's edge in chalk, home plate
+// on the dirt under it)
+$hm-grass: rgb(10, 22, 13);
+$hm-dirt: rgb(38, 24, 16);
+$hm-wall: rgb(255, 196, 82);
+
+.hm-park {
+  fill: rgba($hm-grass, 0.74);
+}
+
+.hm-track {
+  fill: rgba($hm-dirt, 0.72);
+}
+
+.hm-infield {
+  fill: rgba($hm-dirt, 0.62);
+}
+
+.hm-infield-grass {
+  fill: rgba($hm-grass, 0.8);
+}
+
+.hm-mound {
+  fill: rgba($hm-dirt, 0.85);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 0.6px;
+}
+
+.hm-chalk {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 1.1px;
+}
+
+.hm-basepath {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 0.8px;
+}
+
+.hm-base,
+.hm-plate {
+  fill: rgba(255, 255, 255, 0.9);
+  stroke: rgba(0, 0, 0, 0.4);
+  stroke-width: 0.4px;
+}
+
+.hm-plate.big {
+  fill: rgba(255, 255, 255, 0.82);
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.6));
+  stroke-width: 0.8px;
+}
+
+.hm-wall {
+  fill: none;
+  stroke-linejoin: round;
+
+  &.standard {
+    stroke: rgba(255, 255, 255, 0.32);
+    stroke-dasharray: 2 3;
+    stroke-width: 1px;
+  }
+
+  &.park {
+    filter: drop-shadow(0 0 2px rgba($hm-wall, 0.45));
+    stroke: rgba($hm-wall, 0.9);
+    stroke-width: 1.6px;
+  }
+}
+
+.hm-park-name {
+  fill: rgba($hm-wall, 0.8);
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-anchor: middle;
+}
+
+// (the bands' names in foul ground, each direction's over the wall; a position's name at its ground's edge)
+.hm-band,
+.hm-dir,
+.hm-pos {
+  dominant-baseline: central;
+  fill: rgba(255, 255, 255, 0.55);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-anchor: middle;
+}
+
+.hm-dir {
+  fill: rgba(255, 255, 255, 0.42);
+  font-size: 6.5px;
+  letter-spacing: 1.6px;
+}
+
+.hm-pos {
+  fill: rgba(255, 255, 255, 0.78);
+  font-size: 7.5px;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 2px;
+}
+
+// (a home run: a ball where it landed, white with a dark seam of shadow; a hover lights it)
+.hm-mark {
+  cursor: help;
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 0.7px;
+  transition:
+    fill v.$t-hover ease,
+    r v.$t-hover ease;
+
+  &:hover {
+    fill: $hm-wall;
+  }
+
+  // (off a left-hander: a ring, not a ball)
+  &.lhp {
+    fill: rgba(255, 255, 255, 0.18);
+    stroke: rgba(255, 255, 255, 0.92);
+    stroke-width: 0.9px;
+  }
+}
+
+.hm-mark-key i {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: v.$radius-round;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+}
+
+.hm-mark-key {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.hm-zone-board {
+  fill: rgba(8, 12, 16, 0.82);
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1px;
+}
+
+.hm-zone-in {
+  fill: rgba(255, 255, 255, 0.04);
+}
+
+.hm-zone-edge {
+  fill: none;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
+  stroke: rgba(255, 255, 255, 0.88);
+  stroke-width: 1.8px;
+}
+
+.hm-dirt {
+  fill: rgba($hm-dirt, 0.8);
+}
+
+.hm-batter {
+  dominant-baseline: central;
+  fill: rgba(255, 255, 255, 0.4);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-anchor: middle;
+}
+
+// (a map's second picker, a pitcher's pitch types: the sport's small pills under its title, each with its
+// pitch's color)
+.hm-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: -2px 0 10px;
+
+  .game-filter.small {
+    align-items: center;
+    display: inline-flex;
+    font-size: 9.5px;
+    gap: 5px;
+    letter-spacing: 0.3px;
+    padding: 3px 9px;
+  }
+}
+
+.hm-swatch {
+  border-radius: v.$radius-round;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  flex: none;
+  height: 7px;
+  width: 7px;
+}
+
 // (what's drawn over the cells, the lines and the labels: a pointer goes through to the cell under it)
 .hm-top {
   pointer-events: none;
@@ -1054,8 +1254,8 @@ $hm-cuff: rgb(244, 241, 236);
   }
 }
 
-// ---- motion (none for anyone who's asked for less): the cells tint in near to far, their numbers after; a
-// popover rises in; a map on its way shimmers
+// ---- motion (none for anyone who's asked for less): the cells tint in near to far, their numbers after, a
+// spray chart's home runs last; a popover rises in; a map on its way shimmers
 
 @media (prefers-reduced-motion: no-preference) {
   .hm-fill {
@@ -1070,6 +1270,12 @@ $hm-cuff: rgb(244, 241, 236);
 
   .hm-pop {
     animation: hm-rise v.$t-hover ease-out;
+  }
+
+  // (a home run lands after the cells have tinted in, one after another)
+  .hm-mark {
+    animation: hm-tint 0.4s ease backwards;
+    animation-delay: calc(500ms + var(--i, 0) * 25ms);
   }
 
   .hm-loading::after {

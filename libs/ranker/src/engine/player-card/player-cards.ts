@@ -248,11 +248,12 @@ export class PlayerCards {
     const sides = this.heatSides(card);
     const side = sides ? this.heatSide : null;
     const stat = this.heatStats[`${def.id}/${split === 'redzone' ? 'rz' : ''}`] ?? null;
-    const key = [this.heatKey(card), def.id, season, split, side, stat].join('/');
+    const option = this.heatOptions[def.id] ?? null;
+    const key = [this.heatKey(card), def.id, season, split, side, stat, option].join('/');
     if (!this.heatLoads.has(key)) {
       this.heatLoads.set(key, 'loading');
       def
-        .load({ player: card.player, position: this.position, season, split, stat, side })
+        .load({ player: card.player, position: this.position, season, split, stat, side, option })
         .then((map) => this.heatLoads.set(key, map))
         .catch(() => this.heatLoads.set(key, 'error'));
     }
@@ -265,6 +266,16 @@ export class PlayerCards {
   }
   pickHeatStat(card: PlayerCard, def: HeatMapDef, stat: string): void {
     this.heatStats = { ...this.heatStats, [`${def.id}/${this.heatSplitOf(card) === 'redzone' ? 'rz' : ''}`]: stat };
+  }
+  // (a map's second pick, HeatMapData.options: a pitcher's pitch type; kept across cards as its stat is, a card
+  // without it showing its first)
+  heatOptions: Record<string, string> = {};
+  pickHeatOption(def: HeatMapDef, option: string): void {
+    this.heatOptions = { ...this.heatOptions, [def.id]: option };
+  }
+  // (whether a Volume switch changes anything on the row's maps: none for a team's Outs Above Average alone)
+  heatHasVolume(card: PlayerCard): boolean {
+    return this.heatDefs(card).some((d) => d.volume !== false);
   }
 
   // The Field Map under the heat maps (the NFL's: the run lanes, the kicks, the punts; its pass zones are the
