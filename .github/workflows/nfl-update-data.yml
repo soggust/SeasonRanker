@@ -72,13 +72,14 @@ jobs:
         run: npm run update-data
 
       # The card's Roster tab: each team's depth chart, who's played and the injury report (nflverse, ESPN)
+      # (a failed season keeps yesterday's files, and says so on the run's page)
       - name: Build depth charts
-        run: node apps/nfl/scripts/build-depth.mjs
+        run: node apps/nfl/scripts/build-depth.mjs || echo "::warning::Depth charts not all built (this step's log says which season and why)"
 
       # The card's Field Map: where each player's throws, targets, runs and kicks went (nflverse's play-by-play;
-      # a failed run keeps yesterday's file)
+      # a failed run keeps yesterday's file, and says so on the run's page)
       - name: Build field maps
-        run: node apps/nfl/scripts/build-field-maps.mjs || echo "field maps skipped"
+        run: node apps/nfl/scripts/build-field-maps.mjs || echo "::warning::Field maps not all built (this step's log says which season and why)"
 
       # (Wikipedia's staffs: a failed fetch keeps yesterday's file)
       - name: Build coaching staffs

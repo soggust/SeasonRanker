@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { fetchRetry } from '../libs/ranker/scripts/fetch.mjs';
+import { cachedDownload, fetchRetry } from '../libs/ranker/scripts/fetch.mjs';
 import { carryForward, previousRows, previousTab, sameSeason } from '../libs/ranker/scripts/carry-forward.mjs';
 import { gameLogPlan } from '../apps/nhl/scripts/game-log-files.mjs';
 
@@ -92,6 +92,28 @@ test('fetchRetry: a 429 is waited out (Retry-After) when rateLimit allows, not c
   const { fetch, calls } = stub(limited, limited, ok('in'));
   assert.equal(await fetchRetry(URL, { fetch, attempts: 1, rateLimit: 2 }), 'in');
   assert.equal(calls.length, 3);
+});
+
+test("cachedDownload: kept and read back while fresh (a past season's for good), asked again once stale, an empty body never kept", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cached-'));
+  try {
+    const file = path.join(dir, 'sub', 'a.csv');
+    let asked = 0;
+    const get = (body) => async () => (asked++, Buffer.from(body));
+    assert.equal(String(await cachedDownload(file, get('one'))), 'one');
+    assert.equal(String(await cachedDownload(file, get('two'))), 'one', 'fresh: the kept bytes');
+    assert.equal(asked, 1);
+    const old = new Date(Date.now() - 7 * 36e5);
+    fs.utimesSync(file, old, old);
+    assert.equal(String(await cachedDownload(file, get('past'), { current: false })), 'one', 'a finished season: kept for good');
+    assert.equal(String(await cachedDownload(file, get('three'))), 'three', 'the season being played: stale after six hours');
+    assert.equal(String(await cachedDownload(file, get(''), { freshHours: 0 })), '');
+    assert.equal(fs.readFileSync(file, 'utf8'), 'three', 'an empty body is not kept');
+    assert.equal(await cachedDownload(path.join(dir, 'none'), async () => null), null);
+    assert.ok(!fs.existsSync(path.join(dir, 'none')));
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('carryForward: the failed columns from the previous rows, by gsisId; nothing else touched', () => {

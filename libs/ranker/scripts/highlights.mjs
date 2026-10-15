@@ -63,7 +63,7 @@ const keep = (g, videos, how) => {
 };
 const isKept = (g) => !!fileFor(g.season).kept[g.id]?.length;
 
-const json = (url) => fetch(url, { headers: UA }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const json = (url) => fetch(url, { headers: UA, signal: AbortSignal.timeout(30_000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 const ymd = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
 
 // Every finished game since then, each with its teams' names (for matching a video's title): ESPN's
@@ -175,7 +175,7 @@ if (CHANNELS[sport] && games.some((g) => !isKept(g))) {
   if (key) {
     videos = await uploads(sport, new Date(oldest));
   } else {
-    const feed = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNELS[sport]}`, { headers: UA }).then((r) => (r.ok ? r.text() : '')).catch(() => '');
+    const feed = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNELS[sport]}`, { headers: UA, signal: AbortSignal.timeout(30_000) }).then((r) => (r.ok ? r.text() : '')).catch(() => '');
     videos = [...feed.matchAll(/<entry>[\s\S]*?<yt:videoId>([^<]+)<\/yt:videoId>[\s\S]*?<title>([^<]+)<\/title>[\s\S]*?<published>([^<]+)<\/published>/g)].map((m) => ({
       id: m[1],
       title: m[2].replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'"),

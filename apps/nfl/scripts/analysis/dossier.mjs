@@ -19,12 +19,13 @@
 // the site's own season archives for the career and the current lists.
 // Writes .cache/analysis/dossiers/<gsisId>.json.
 
-import { createReadStream, existsSync, mkdirSync, statSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
+import { createReadStream, existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { createGunzip } from 'node:zlib';
 import { createInterface } from 'node:readline';
 import path from 'node:path';
 import { espnInjuries, espnLines, kickoffForecast, kickoffIso } from './live.mjs';
 import { currentSeason } from '../../../../libs/ranker/scripts/wiki-staff.mjs';
+import { cachedDownload, fetchRetry } from '../../../../libs/ranker/scripts/fetch.mjs';
 import { DIVISIONS, endedText, resultsOf, roundName, conferenceOf, teamStatus, totalsOf, TOTALS_GLOSSARY } from './season-state.mjs';
 import { asStarterOf, leagueAverageOf, paceOf, perGameOf, qbModeOf, recentOf, startsOf, vsLastSeasonOf, vsLeagueOf } from './qb-sheet.mjs';
 
@@ -71,13 +72,12 @@ const LOGO_TEAM = Object.fromEntries(Object.entries(TEAMS).map(([abbr, name]) =>
 
 // ---- loading
 
+// (kept in .cache/nflverse for 12 hours, every file: libs/ranker/scripts/fetch.mjs cachedDownload; --fresh:
+// download again, whatever the cache has)
 async function download(file, url) {
   const dest = path.join(CACHE, file);
-  // (--fresh: download again, whatever the cache has)
-  if (!process.argv.includes('--fresh') && existsSync(dest) && Date.now() - statSync(dest).mtimeMs < 12 * 3600e3) return dest;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${url}: ${res.status}`);
-  writeFileSync(dest, Buffer.from(await res.arrayBuffer()));
+  const body = await cachedDownload(dest, () => fetchRetry(url, { as: 'buffer', timeout: 300000 }), { current: true, freshHours: process.argv.includes('--fresh') ? 0 : 12 });
+  if (!body?.length) throw new Error(`${url}: empty`);
   return dest;
 }
 

@@ -26,7 +26,7 @@ async function get(url) {
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     lastRequest = Date.now();
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': 'sports-ranker data script' } });
+      const res = await fetch(url, { headers: { 'User-Agent': 'sports-ranker data script' }, signal: AbortSignal.timeout(30_000) });
       if (res.status === 404) return null;
       if (res.status === 429 && attempt < 6) {
         await new Promise((r) => setTimeout(r, (Number(res.headers.get('retry-after')) || 30) * 1000));

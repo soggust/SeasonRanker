@@ -12,7 +12,7 @@ import path from 'node:path';
 const SOURCE = 'https://raw.githubusercontent.com/bdilday/GeomMLBStadiums/master/inst/extdata/mlb_stadia_paths.csv';
 const OUT = path.resolve(import.meta.dirname, '../src/StaticData/parks.json');
 
-const res = await fetch(SOURCE);
+const res = await fetch(SOURCE, { signal: AbortSignal.timeout(30_000) });
 if (!res.ok) throw new Error(`stadium paths: ${res.status}`);
 const rows = (await res.text())
   .trim()

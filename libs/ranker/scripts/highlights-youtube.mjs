@@ -46,7 +46,7 @@ async function call(sport, kind, cost, url) {
   if (!key) return null;
   spend(sport, kind, cost);
   try {
-    const r = await fetch(`${url}&key=${encodeURIComponent(key)}`);
+    const r = await fetch(`${url}&key=${encodeURIComponent(key)}`, { signal: AbortSignal.timeout(30_000) });
     if (!r.ok) {
       const body = await r.text().catch(() => '');
       console.warn(redact(`youtube ${kind} ${r.status}: ${url} ${body.slice(0, 200)}`));

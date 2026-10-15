@@ -13,12 +13,13 @@
 // the regular season's end, or now), and weekly charts with each team's own position labels before that
 // (the final regular-season week's, those labels read into the same slots). Snap counts start in 2012.
 
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import path from 'node:path';
 import { espnInjuries } from './analysis/live.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
 import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
+import { cachedDownload, fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const CACHE = path.join(ROOT, '.cache/nflverse');
@@ -30,17 +31,14 @@ const CURRENT_SEASON = currentSeason(path.join(import.meta.dirname, '..'));
 // (fresh enough: the nightly run downloads the season being played again; a past season's never change)
 const FRESH_HOURS = 6;
 
+// (kept in .cache/nflverse: libs/ranker/scripts/fetch.mjs cachedDownload, its path answered; an optional file
+// that isn't there (a 404) none)
 async function download(file, url, { optional = false, current = true } = {}) {
   const to = path.join(CACHE, file);
-  if (existsSync(to) && (!current || Date.now() - statSync(to).mtimeMs < FRESH_HOURS * 36e5)) return to;
-  const res = await fetch(url);
-  if (!res.ok) {
-    if (optional) return null;
-    throw new Error(`${file}: ${res.status}`);
-  }
-  mkdirSync(CACHE, { recursive: true });
-  writeFileSync(to, Buffer.from(await res.arrayBuffer()));
-  return to;
+  const body = await cachedDownload(to, () => fetchRetry(url, { as: 'buffer', timeout: 300000, ...(optional ? { notFound: null } : {}) }), { current, freshHours: FRESH_HOURS });
+  if (body?.length) return to;
+  if (optional) return null;
+  throw new Error(`${file}: empty`);
 }
 
 // One of nflverse's season files: gzipped where it has that (the recent seasons'), else plain (its older
@@ -312,7 +310,7 @@ async function espnGamesPlayed(season, ids) {
   if (!todo.length) return known;
   const one = async (id) => {
     for (let attempt = 1; attempt <= 6; attempt++) {
-      const res = await fetch(`${ESPN_CORE}/seasons/${season}/types/2/athletes/${id}/statistics`).catch(() => null);
+      const res = await fetch(`${ESPN_CORE}/seasons/${season}/types/2/athletes/${id}/statistics`, { signal: AbortSignal.timeout(30_000) }).catch(() => null);
       if (res?.status === 404) return (known[id] = 0);
       if (res?.ok) {
         const body = await res.json();
@@ -688,6 +686,8 @@ async function main() {
       console.log(`${season}: ${n} teams`);
     } catch (err) {
       console.log(`${season}: FAILED ${err.message}`);
+      // (the others still built, but the run fails: the workflow says so, not a season quietly left out)
+      process.exitCode = 1;
     }
   }
 }

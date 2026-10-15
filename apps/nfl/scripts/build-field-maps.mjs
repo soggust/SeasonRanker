@@ -19,11 +19,11 @@
 // nflverse's pass_location and air_yards start in 2006 (earlier seasons: the zones all empty, the runs
 // and kicks still there).
 
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { cachedDownload, fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
 import { readJson, writeIfChanged } from '../../../libs/ranker/scripts/json-files.mjs';
 import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
@@ -669,15 +669,9 @@ export function parsePlays(text, columns = COLUMNS) {
   return plays;
 }
 
-async function download(file, url, current) {
-  const to = path.join(CACHE, file);
-  if (existsSync(to) && (!current || Date.now() - statSync(to).mtimeMs < FRESH_HOURS * 36e5)) return readFileSync(to);
-  // (the big play-by-play files get longer: libs/ranker/scripts/fetch.mjs)
-  const body = await fetchRetry(url, { as: 'buffer', attempts: 2, timeout: 300000 });
-  mkdirSync(CACHE, { recursive: true });
-  if (body.length) writeFileSync(to, body);
-  return body;
-}
+// (kept in .cache/nflverse: libs/ranker/scripts/fetch.mjs cachedDownload; the big play-by-play files get longer)
+const download = (file, url, current) =>
+  cachedDownload(path.join(CACHE, file), () => fetchRetry(url, { as: 'buffer', attempts: 2, timeout: 300000 }), { current, freshHours: FRESH_HOURS });
 
 
 async function buildSeason(season, current, { espnToGsis, byName }) {
@@ -747,6 +741,8 @@ async function main() {
       console.log(files ? `${season}: ${files.map(said).join(', ')}` : `${season}: no season files, skipped`);
     } catch (err) {
       console.log(`${season}: FAILED ${err.message}`);
+      // (the others still built, but the run fails: the workflow says so, not a season quietly left out)
+      process.exitCode = 1;
     }
   }
 }

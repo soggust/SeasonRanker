@@ -55,10 +55,19 @@ jobs:
       - name: Pull NHL stats
         run: npm run nhl:update-data
 
+      # (MoneyPuck's shots file, ~20 MB, kept between runs: the season being played's is downloaded again after
+      # six hours (build-heat-maps.mjs FRESH_HOURS), not on every run)
+      - name: Restore the MoneyPuck cache
+        uses: actions/cache@v6
+        with:
+          path: .cache/moneypuck
+          key: nhl-moneypuck-${{ github.run_id }}
+          restore-keys: nhl-moneypuck-
+
       # The card's Heat Maps: every shot by zone on the rink (MoneyPuck's shots file; a failed run keeps
-      # yesterday's files)
+      # yesterday's files, and says so on the run's page)
       - name: Build heat maps
-        run: node apps/nhl/scripts/build-heat-maps.mjs || echo "heat maps skipped"
+        run: node apps/nhl/scripts/build-heat-maps.mjs || echo "::warning::Heat maps not all built (this step's log says which season and why)"
 
       # (the highlights' YouTube upload pages and the day's search count, kept between runs: the daily search
       # cap holds across runs, and a run only pages back to what it's seen)

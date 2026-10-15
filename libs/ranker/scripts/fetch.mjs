@@ -14,6 +14,9 @@
 //   rateLimit  how many 429s it waits out (Retry-After's seconds, else 30), on top of the attempts (default 0)
 //   before     awaited before each try (a script's polite pace)
 //   fetch      the fetch to use (tests)
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+
 export const TIMEOUT = 30000;
 
 const sleep = (ms) => (ms > 0 ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve());
@@ -57,4 +60,20 @@ export async function fetchRetry(url, options = {}) {
       await sleep(backoff * attempt);
     }
   }
+}
+
+// A download kept in a cache file (.cache/<source>/<name>, shared by the scripts that read it): a finished
+// season's for good (its files don't change), the season being played's (current) for freshHours; else
+// download() is asked (a Buffer, or null for none) and its bytes kept, an empty body never (asked again next
+// time; freshHours 0: always asked). The bytes, or null.
+//
+//   cachedDownload(path.join(CACHE, 'games.csv'), () => fetchRetry(url, { as: 'buffer' }), { current: true })
+export async function cachedDownload(file, download, { current = true, freshHours = 6 } = {}) {
+  if (existsSync(file) && (!current || (freshHours > 0 && Date.now() - statSync(file).mtimeMs < freshHours * 36e5))) return readFileSync(file);
+  const body = await download();
+  if (body?.length) {
+    mkdirSync(path.dirname(file), { recursive: true });
+    writeFileSync(file, body);
+  }
+  return body;
 }

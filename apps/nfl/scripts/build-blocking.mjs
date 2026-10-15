@@ -17,6 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { gunzipSync } from 'node:zlib';
+import { cachedDownload, fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const SEASONS_DIR = path.join(ROOT, 'src/StaticData/seasons');
@@ -71,16 +72,8 @@ function parseCsv(text, wanted) {
 // (a finished season's files don't change: kept in .cache/nflverse, shared with update-data.mjs)
 const CACHE = path.resolve(ROOT, '../../.cache/nflverse');
 async function fetchText(url, gz) {
-  const cached = path.join(CACHE, url.split('/').pop());
-  let buf;
-  if (fs.existsSync(cached)) buf = fs.readFileSync(cached);
-  else {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`${res.status} for ${url}`);
-    buf = Buffer.from(await res.arrayBuffer());
-    fs.mkdirSync(CACHE, { recursive: true });
-    fs.writeFileSync(cached, buf);
-  }
+  // (libs/ranker/scripts/fetch.mjs cachedDownload, kept for good: the seasons archived only)
+  const buf = await cachedDownload(path.join(CACHE, url.split('/').pop()), () => fetchRetry(url, { as: 'buffer', timeout: 300000 }), { current: false });
   return gz ? gunzipSync(buf).toString() : buf.toString();
 }
 

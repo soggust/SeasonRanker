@@ -25,11 +25,11 @@
 // site adds them into the whole season. A cell is a tuple in fields.cell's order, its trailing zeros
 // dropped, a plain 0 when it's all zeros; a row of sixteen cells is 0 when every one is.
 
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, rmSync } from 'node:fs';
 import { inflateRawSync } from 'node:zlib';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { cachedDownload, fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
 import { readJson, writeIfChanged } from '../../../libs/ranker/scripts/json-files.mjs';
 import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
@@ -283,14 +283,14 @@ export function unzipFirst(buf) {
 
 async function download(season, current) {
   const file = `shots_${season - 1}.zip`;
-  const to = path.join(CACHE, file);
-  if (existsSync(to) && (!current || Date.now() - statSync(to).mtimeMs < FRESH_HOURS * 36e5)) return readFileSync(to);
-  // (a season's file is ~20 MB: a longer limit)
-  const body = await fetchRetry(`${SHOTS}/${file}`, { as: 'buffer', attempts: 3, timeout: 300000, notFound: null, headers: { 'User-Agent': 'sports-ranker data script' } });
-  if (!body?.length) return null;
-  mkdirSync(CACHE, { recursive: true });
-  writeFileSync(to, body);
-  return body;
+  // (kept in .cache/moneypuck: libs/ranker/scripts/fetch.mjs cachedDownload; a season's file is ~20 MB, a
+  // longer limit)
+  const body = await cachedDownload(
+    path.join(CACHE, file),
+    () => fetchRetry(`${SHOTS}/${file}`, { as: 'buffer', attempts: 3, timeout: 300000, notFound: null, headers: { 'User-Agent': 'sports-ranker data script' } }),
+    { current, freshHours: FRESH_HOURS },
+  );
+  return body?.length ? body : null;
 }
 
 // (a team's abbreviation from its logo's file name: "assets/NHL_Icons/WSH_secondary.svg" -> "WSH")
@@ -363,6 +363,8 @@ async function main() {
       console.log(files ? `${season}: ${files.map(said).join(', ')}` : `${season}: no season files or no MoneyPuck shots, skipped`);
     } catch (err) {
       console.log(`${season}: FAILED ${err.message}`);
+      // (the others still built, but the run fails: the workflow says so, not a season quietly left out)
+      process.exitCode = 1;
     }
   }
 }

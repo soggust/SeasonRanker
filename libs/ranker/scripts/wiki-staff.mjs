@@ -15,7 +15,7 @@ export async function wikitext(titles) {
     // (rate limited: wait and ask again, longer each time)
     let res;
     for (let attempt = 0; ; attempt++) {
-      res = await fetch(url, { headers: { 'User-Agent': AGENT } });
+      res = await fetch(url, { headers: { 'User-Agent': AGENT }, signal: AbortSignal.timeout(30_000) });
       if (res.status !== 429 || attempt >= 5) break;
       await new Promise((resolve) => setTimeout(resolve, 5000 * 2 ** attempt));
     }

@@ -70,7 +70,7 @@ function plain(text) {
 
 async function wikitext(title) {
   const url = `https://en.wikipedia.org/w/index.php?title=${encodeURIComponent(title)}&action=raw`;
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT }, signal: AbortSignal.timeout(30_000) });
   if (!res.ok) throw new Error(`${res.status} for ${url}`);
   return res.text();
 }

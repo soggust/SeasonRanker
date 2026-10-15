@@ -106,9 +106,11 @@ function teamLogo(teamName) {
   return `assets/NFL_Icons/${MASCOT_ICONS[mascot] ?? mascot}.png`;
 }
 
-// A download, kept in .cache/nflverse (shared with build-depth.mjs) when building a past season: a file
-// of that season's own for good (a finished season's don't change), the all-seasons files (players,
-// Next Gen Stats, the schedule) for FRESH_HOURS. The season being played always downloads afresh.
+// A download, kept in .cache/nflverse (shared with build-depth.mjs and build-field-maps.mjs): read back when
+// building a past season, a file of that season's own for good (a finished season's don't change), the
+// all-seasons files (players, Next Gen Stats, the schedule) for FRESH_HOURS. The season being played always
+// downloads afresh, and is kept too: the depth charts and field maps after it in the same run read this
+// download (theirs is fresh for FRESH_HOURS), not download the same play-by-play, players and schedule again.
 const DOWNLOAD_CACHE = new URL('../../../.cache/nflverse/', import.meta.url);
 const FRESH_HOURS = 6;
 async function download(url) {
@@ -121,7 +123,7 @@ async function download(url) {
   // get longer)
   const body = await fetchRetry(url, { as: 'buffer', attempts: 1, timeout: 300000 });
   // (an empty download isn't kept: asked again)
-  if (PAST_SEASON && body.length) {
+  if (body.length) {
     await mkdir(DOWNLOAD_CACHE, { recursive: true });
     await writeFile(file, body);
   }

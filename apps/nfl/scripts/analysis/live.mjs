@@ -9,7 +9,7 @@ export const ESPN_ABBR = { WSH: 'WAS', LAR: 'LA' };
 // ---- ESPN: the injury report (everyone not Active, with ESPN's note) by nflverse team
 
 export async function espnInjuries() {
-  const res = await fetch(`${ESPN}/injuries`);
+  const res = await fetch(`${ESPN}/injuries`, { signal: AbortSignal.timeout(30_000) });
   if (!res.ok) throw new Error(`ESPN injuries: ${res.status}`);
   const data = await res.json();
   const byTeam = new Map();
@@ -39,7 +39,7 @@ export async function espnInjuries() {
 export async function espnLines(dates) {
   const lines = new Map();
   for (const d of dates) {
-    const res = await fetch(`${ESPN}/scoreboard?dates=${d.replace(/-/g, '')}`).catch(() => null);
+    const res = await fetch(`${ESPN}/scoreboard?dates=${d.replace(/-/g, '')}`, { signal: AbortSignal.timeout(30_000) }).catch(() => null);
     if (!res?.ok) continue;
     for (const e of (await res.json()).events ?? []) {
       const c = e.competitions?.[0];
@@ -123,7 +123,7 @@ export async function kickoffForecast({ stadiumId, stadium, roof, kickoff }) {
     `https://api.open-meteo.com/v1/forecast?latitude=${at[0]}&longitude=${at[1]}` +
     '&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m,wind_gusts_10m,weather_code' +
     `&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=GMT&start_date=${day(start)}&end_date=${day(end)}`;
-  const res = await fetch(url).catch(() => null);
+  const res = await fetch(url, { signal: AbortSignal.timeout(30_000) }).catch(() => null);
   if (!res?.ok) return null;
   const h = (await res.json()).hourly;
   const hours = (h?.time ?? [])

@@ -41,7 +41,7 @@ async function wikitext(titles) {
   for (let i = 0; i < titles.length; i += 50) {
     const batch = titles.slice(i, i + 50);
     const url = `${API}?action=query&prop=revisions&rvprop=content&rvslots=main&redirects=1&format=json&formatversion=2&titles=${encodeURIComponent(batch.join('|'))}`;
-    const res = await fetch(url, { headers: { 'User-Agent': AGENT } });
+    const res = await fetch(url, { headers: { 'User-Agent': AGENT }, signal: AbortSignal.timeout(30_000) });
     if (!res.ok) throw new Error(`wikipedia: ${res.status}`);
     const json = await res.json();
     const back = new Map(batch.map((t) => [t, t]));
