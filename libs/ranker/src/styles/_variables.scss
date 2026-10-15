@@ -210,10 +210,15 @@ $chalk-dust:
 // player card's body)
 $chalkboard: var(--tex-chalk-plays) -1150px -420px / 2800px 1440px, $chalk-dust;
 
-// A soft diagonal glint that sweeps across a trophy, plaque or award icon (trophy-shine animates it)
+// A soft diagonal glint that sweeps across a trophy, plaque or award icon: the band of light (glint-band, three times
+// the width of what it crosses), and laid as a background at its start (glint: an award icon's, clipped to its glyph,
+// trophy-shine moves it; the others sweep it with a transform, _awards.scss glint-sweep)
+@function glint-band($strength: 0.85) {
+  @return linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, $strength) 50%, transparent 60%);
+}
+
 @function glint($strength: 0.85) {
-  @return linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, $strength) 50%, transparent 60%) 150% 0 /
-    300% 100% no-repeat;
+  @return glint-band($strength) 150% 0 / 300% 100% no-repeat;
 }
 
 // A soft shadow under the hand's lettering on the board

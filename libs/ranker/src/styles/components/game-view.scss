@@ -1724,9 +1724,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
     animation: led-on 0.55s steps(1, end) backwards;
   }
 
-  // (the win probability charts the game: the line and its fills swept open play by play, over 8s)
+  // (the win probability charts the game: the line and its fills swept open play by play, over 8s; each clip's rect
+  // scaled out from the chart's left edge (x 0, the view box's origin) rather than its width grown, so nothing is laid
+  // out again every frame)
   .win-prob-reveal {
     animation: win-prob-reveal 8s linear backwards;
+    transform-box: view-box;
+    transform-origin: 0 0;
   }
 
   // (the replay, once the line's drawn: in softly)
@@ -1794,7 +1798,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 @keyframes win-prob-reveal {
   from {
-    width: 0;
+    transform: scaleX(0);
   }
 }
 

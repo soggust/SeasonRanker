@@ -303,16 +303,20 @@ main {
   @include v.down(laptop) {
     justify-content: center;
 
+    // (shut, it waits a screen's width off to the left; it slides by translate, not left, so the slide is the
+    // compositor's and nothing is laid out again every frame. Open, translate is none: no transform on it then, so
+    // its dialogs stay fixed to the screen)
     .sidebar {
-      left: -100vw;
+      left: 0;
       position: fixed;
-      transition: left 0.3s ease-out;
+      transition: translate 0.3s ease-out;
+      translate: -100vw;
       width: 0;
     }
 
     &.menu-open {
       .sidebar {
-        left: 0;
+        translate: none;
       }
 
       .shade {

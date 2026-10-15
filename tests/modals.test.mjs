@@ -48,6 +48,8 @@ test('the filter menu has no transform: its dialogs are fixed to the screen, not
   for (const [, body] of css.matchAll(/\n\s*\.sidebar \{([^}]*)\}/g)) {
     assert.doesNotMatch(body, /\b(transform|filter|backdrop-filter|will-change|contain|perspective):/);
   }
+  // (a phone's menu slides in by translate, the compositor's; open, it has none, so nothing holds its dialogs)
+  assert.match(css, /&\.menu-open \{\s*\.sidebar \{\s*translate: none;/);
   for (const file of ['libs/ranker/src/styles/components/sidebar.component.scss', 'libs/ranker/src/styles/components/account-presets.scss']) {
     for (const [, selector, body] of read(file).matchAll(/\n(\S[^{\n]*)\{([^}]*)\}/g)) {
       if (/^\.sidebar\s*$|\.filters\s*$|^:host\s*$/.test(selector.trim())) {

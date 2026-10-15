@@ -8,8 +8,29 @@ $gold: v.$metal-gold;
 $silver: v.$metal-silver;
 $bronze: v.$metal-bronze;
 
-// The glint's sweep on a plaque, a cup and the trophy: three times, then still
+// The glint's sweep on a plaque, a cup and the trophy: three times, then still (a cup's glint is its own background,
+// clipped to the glyph: trophy-shine; a plaque's and the trophy's a band moved across them: glint-sweep)
 $shine: trophy-shine 4s ease-in-out 3;
+$sweep: glint-sweep 4s ease-in-out 3;
+
+// A glint swept across an element by a transform (the compositor moves it, no repaint every frame): a band three
+// times its width, from just off its left (translateX(-100%)) to a third of the band past it, as the background
+// it once was moved from 150% to -50%. The element keeps it inside (its overflow: hidden, or its mask) and is its
+// positioned box. At rest (reduced motion, after its runs) it waits off the left edge, unseen, as before.
+@mixin glint-sweep($strength, $animation) {
+  &::after {
+    animation: $animation;
+    background: v.glint-band($strength);
+    bottom: 0;
+    content: "";
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translateX(-100%);
+    width: 300%;
+  }
+}
 
 // Awards by a name (a row's, under the name; the player card's hero): small engraved gold plaques (MVP,
 // OPOY...), icons in a metal (a cup, a star) and the sport's trophy for a champion, catching the light
@@ -54,14 +75,7 @@ $shine: trophy-shine 4s ease-in-out 3;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
       white-space: nowrap;
 
-      &::after {
-        animation: $shine;
-        background: v.glint(0.75);
-        content: "";
-        inset: 0;
-        pointer-events: none;
-        position: absolute;
-      }
+      @include glint-sweep(0.75, $sweep);
 
       @if meta.mixin-exists("metals", "sport-awards") {
         @include sport-awards.metals;
@@ -89,27 +103,27 @@ $shine: trophy-shine 4s ease-in-out 3;
 
     // (always first; a little extra room after it, since it's much narrower than the plaques)
     .award-trophy {
-      animation: $shine;
-      background: v.glint();
       background-color: v.$trophy-gold;
       cursor: help;
       filter: drop-shadow(0 0 3px v.$trophy-glow);
       height: 16px;
       margin-right: 4px;
+      position: relative;
       width: 11px;
+      @include glint-sweep(0.85, $sweep);
     }
 
     @media (prefers-reduced-motion: reduce) {
       .award-badge::after,
       .award-cup,
-      .award-trophy {
+      .award-trophy::after {
         animation: none;
       }
     }
   }
 }
 
-// The glint's beat: a slow 1.6s sweep, then a 2.4s rest (every 4s)
+// The glint's beat: a slow 1.6s sweep, then a 2.4s rest (every 4s): a cup's background, and the swept band
 @mixin trophy-shine {
   @keyframes trophy-shine {
     0% {
@@ -119,6 +133,17 @@ $shine: trophy-shine 4s ease-in-out 3;
     40%,
     100% {
       background-position: -50% 0;
+    }
+  }
+
+  @keyframes glint-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    40%,
+    100% {
+      transform: translateX(calc(100% / 3));
     }
   }
 }
