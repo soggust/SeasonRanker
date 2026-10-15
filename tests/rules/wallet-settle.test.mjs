@@ -2,16 +2,19 @@
 // Admin SDK as the Actions job runs it and ESPN stubbed with made-up games: bets settled from the finals and
 // paid into their wallets, a price not on the board voided with its stake back, a run twice paying nothing
 // twice, a bet from before a reload counted but not paid, the leaderboards (public players only), the lines'
-// snapshots, a deleted account's tally dropped. `npm run test:rules`; without the emulator these skip.
+// snapshots, a deleted account's tally dropped, an older tally filled in. `npm run test:rules`; without the
+// emulator these skip, and with a host that isn't this machine's they refuse to run (never the live project).
 import { after, before, beforeEach, describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initializeApp, deleteApp } from 'firebase-admin/app';
 import { Timestamp, getFirestore } from 'firebase-admin/firestore';
-import { run } from '../../libs/ranker/scripts/accounts/settle.mjs';
+import { boardsDue, run } from '../../libs/ranker/scripts/accounts/settle.mjs';
+import { TALLY_VERSION } from '../../libs/ranker/scripts/accounts/settle-lib.mjs';
 
 const host = process.env.FIRESTORE_EMULATOR_HOST;
 const skip = host ? false : 'no Firestore emulator (npm run test:rules)';
 const PROJECT = 'demo-season-ranker-settle';
+if (host && !/^(localhost|127\.0\.0\.1|\[::1\]):\d+$/.test(host)) throw new Error(`FIRESTORE_EMULATOR_HOST is ${host}: these run against a local emulator only`);
 
 let app;
 let db;
@@ -185,10 +188,14 @@ describe('the settler', { skip }, () => {
     const tally = await get('tallies/ann');
     assert.deepEqual(tally.all, { won: 2, lost: 1, push: 0, void: 1, staked: 161, profit: 52.59 });
     assert.deepEqual(tally.days['2026-10-11'], [2, 1, 0, 161, 52.59]);
+    // (each day's profit by sport, for the wallet's chart; the void out; a new tally at the current version)
+    assert.deepEqual(tally.sports, { '2026-10-11': { nfl: 42.59, nhl: 10 } });
+    assert.equal(tally.v, TALLY_VERSION);
 
     // (the boards: ann public, bob not; the ghost's tally gone)
     const week = await get('leaderboards/week');
     assert.equal(week.label, 'Week of Oct 5');
+    assert.equal(week.tallyVersion, TALLY_VERSION);
     assert.deepEqual(
       week.rows.map((r) => [r.username, r.won, r.lost, r.profit]),
       [['ann', 2, 1, 52.59]],
@@ -294,5 +301,37 @@ describe('the settler', { skip }, () => {
     await run({ db, fetchJson, now: NOW, ledgers, log: quiet });
     assert.equal((await db.doc('users/cy/bets/snap').get()).get('status'), 'won');
     assert.equal((await db.doc('users/cy/bets/late').get()).get('note'), 'price didn’t match the board');
+  });
+
+  test('an older tally (no sports) filled in once from the bets on the next run, its record untouched; the boards due till it is', async () => {
+    // (dee: two settled bets from before the tally kept sports, a void, an open one; her tally as it was then)
+    await seed('dee', {
+      bets: {
+        a: bet({ status: 'won', profit: 92.59, settledAt: at('2026-10-11T21:00Z') }),
+        b: bet({ sport: 'nba', event: '601', matchup: 'BOS @ NYK', start: at('2026-10-10T23:30Z'), status: 'lost', profit: -20, stake: 20, settledAt: at('2026-10-11T03:00Z') }),
+        c: bet({ status: 'void', profit: 0, settledAt: at('2026-10-11T21:00Z') }),
+        d: bet({ event: '403', matchup: 'KC @ DEN', start: at('2026-10-12T23:15Z') }),
+      },
+    });
+    const old = { all: { won: 1, lost: 1, push: 0, void: 1, staked: 120, profit: 72.59 }, days: { '2026-10-11': [1, 0, 0, 100, 92.59], '2026-10-10': [0, 1, 0, 20, -20] } };
+    await db.doc('tallies/dee').set(old);
+    // (boards written before the tallies had a version: due)
+    await db.doc('leaderboards/week').set({ from: '2026-10-05', updatedAt: at('2026-10-12T02:30Z') });
+    assert.equal(await boardsDue(db, { settled: 0, void: 0 }, NOW), true);
+    const logged = [];
+    await run({ db, fetchJson, now: NOW, ledgers, log: (m) => logged.push(m) });
+    const tally = (await db.doc('tallies/dee').get()).data();
+    assert.deepEqual(tally.all, old.all);
+    assert.deepEqual(tally.days, old.days);
+    assert.deepEqual(tally.sports, { '2026-10-11': { nfl: 92.59 }, '2026-10-10': { nba: -20 } });
+    assert.equal(tally.v, TALLY_VERSION);
+    assert.ok(logged.includes(`tallies: 1 filled in to version ${TALLY_VERSION}`));
+    // (once filled in, not again; the boards stand till something settles or a day passes: written, as far as
+    // this test's clock goes, at NOW)
+    await db.doc('leaderboards/week').update({ updatedAt: at(new Date(NOW).toISOString()) });
+    assert.equal(await boardsDue(db, { settled: 0, void: 0 }, NOW + 18e5), false);
+    const again = [];
+    await run({ db, fetchJson, now: NOW + 18e5, ledgers, log: (m) => again.push(m) });
+    assert.equal(again.some((m) => m.startsWith('tallies:')), false);
   });
 });

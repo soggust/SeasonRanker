@@ -3,11 +3,12 @@ import { signedOut } from '../account-helpers';
 import type { DocumentData, Firestore, Query, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account.service';
-import { Leaderboard, ParlayLeg, PlayBet, START, Selection, parlayOdds, parlayProblem, selectionKey, stakeProblem } from './wallet-math';
+import { Leaderboard, ParlayLeg, PlayBet, SETTLED_PAGE, START, Selection, TallyDoc, parlayOdds, parlayProblem, selectionKey, stakeProblem, tallyFrom } from './wallet-math';
+export type { LifetimeTally, TallyDoc } from './wallet-math';
 
-// (the open bets listened to: far more than anyone holds at once; the settled history a page at a time)
+// (the open bets listened to: far more than anyone holds at once; the settled history a page at a time,
+// wallet-math's SETTLED_PAGE)
 const OPEN_MAX = 200;
-const SETTLED_PAGE = 200;
 const SETTLED_STATUSES = ['won', 'lost', 'push', 'void'];
 
 // The wallet (users/{uid}/wallet/main): play money, 1,000 units to start
@@ -17,16 +18,6 @@ export interface Wallet {
   // (how many times it's been reloaded to 1,000: the run a bet belongs to)
   resets: number;
   lastBet?: string;
-}
-
-// (the settler's lifetime tally of a user's settled bets: tallies/{uid}, kept even when the history's cleared)
-export interface LifetimeTally {
-  won: number;
-  lost: number;
-  push: number;
-  void: number;
-  staked: number;
-  profit: number;
 }
 
 // A bet that couldn't be placed, and why
@@ -172,7 +163,9 @@ export class WalletService {
   // (the history's paging: not asked for yet, loading, more to load, or all of it here)
   readonly settledState = signal<'idle' | 'loading' | 'more' | 'all'>('idle');
   readonly bets = computed(() => [...this.openBets(), ...this.settledBets()].sort((a, b) => b.placedAt.localeCompare(a.placedAt)));
-  readonly tally = signal<LifetimeTally | null>(null);
+  // (the settler's tally of the user's settled bets (tallies/{uid}: lifetime, by day, by sport, kept even when
+  // the history's cleared): the wallet's record, profit, ROI and chart, one read however long the history)
+  readonly tally = signal<TallyDoc | null>(null);
   readonly balance = computed(() => this.wallet()?.balance ?? START);
 
   // The slip
@@ -257,6 +250,8 @@ export class WalletService {
           const settled = before.some((b) => !snap.docs.some((d) => d.id === b.id));
           if (settled && !snap.metadata.fromCache) {
             this.hasSettled.set(true);
+            // (the tally took it in with the bet, in the settler's one transaction)
+            void this.loadTally(uid);
             if (this.settledState() !== 'idle') void this.loadSettled(true);
           }
         },
@@ -267,9 +262,18 @@ export class WalletService {
     f.getDocs(f.query(this.settledQuery(f, firestore, uid), f.limit(1)))
       .then((snap) => this.uid === uid && !snap.empty && this.hasSettled.set(true))
       .catch(() => undefined);
-    f.getDoc(f.doc(firestore, 'tallies', uid))
-      .then((snap) => this.uid === uid && this.tally.set(snap.exists() ? ((snap.data()['all'] as LifetimeTally) ?? null) : null))
-      .catch(() => undefined);
+    void this.loadTally(uid);
+  }
+
+  // (the tally: one document)
+  private async loadTally(uid: string): Promise<void> {
+    const [firestore, f] = await firestoreSdk();
+    try {
+      const snap = await f.getDoc(f.doc(firestore, 'tallies', uid));
+      if (this.uid === uid) this.tally.set(snap.exists() ? tallyFrom(snap.data()) : null);
+    } catch {
+      // (not read: the tiles count the bets on hand)
+    }
   }
 
   // The settled history, the latest settled first: its next page (the first, the first time), or with `fresh` its

@@ -535,3 +535,78 @@ test('a parlay on the page: one row (its own group), its legs as bets of their o
   // (a settled parlay's leg never graded (it lost on another first) stays ungraded)
   assert.deepEqual(w.legBets({ ...settled, status: 'lost' }).map((l) => l.status), ['won', 'open']);
 });
+
+// ---------------------------------------------------------------------------
+// The whole record from the settler's tally (tallies/{uid}), not the history's loaded pages
+// ---------------------------------------------------------------------------
+test('the tally on settle: lifetime, by day, by sport (a parlay its own), a void only a void, the version kept', () => {
+  let t = lib.addToTally(null, bet(), { status: 'won', profit: 9.09 });
+  assert.equal(t.v, lib.TALLY_VERSION);
+  t = lib.addToTally(t, bet({ sport: 'nhl', start: '2026-10-11T23:00Z' }), { status: 'lost', profit: -10 });
+  t = lib.addToTally(t, { kind: 'parlay', stake: 5, start: '2026-10-12T17:00Z' }, { status: 'won', profit: 13.2 });
+  t = lib.addToTally(t, bet({ start: '2026-10-12T17:00Z' }), { status: 'void', profit: 0 });
+  assert.deepEqual(t.all, { won: 2, lost: 1, push: 0, void: 1, staked: 25, profit: 12.29 });
+  assert.deepEqual(t.days, { '2026-10-11': [1, 1, 0, 20, -0.91], '2026-10-12': [1, 0, 0, 5, 13.2] });
+  assert.deepEqual(t.sports, { '2026-10-11': { nfl: 9.09, nhl: -10 }, '2026-10-12': { parlay: 13.2 } });
+  // (an older tally keeps its version (1) till the settler fills its sports in: its sports from the bets' documents)
+  const old = lib.addToTally({ all: { won: 1, lost: 0, push: 0, void: 0, staked: 10, profit: 9.09 }, days: { '2026-10-11': [1, 0, 0, 10, 9.09] } }, bet(), { status: 'push', profit: 0 });
+  assert.equal(old.v, 1);
+  assert.deepEqual(lib.addToTally(old, bet(), { status: 'void', profit: 0 }).v, 1);
+  const sports = lib.sportsOfBets([
+    { ...bet(), status: 'won', profit: 9.09 },
+    { ...bet({ sport: 'nba' }), status: 'lost', profit: -10 },
+    { ...bet(), status: 'void', profit: 0 },
+    { kind: 'parlay', start: '2026-10-11T17:00Z', status: 'lost', profit: -5 },
+  ]);
+  assert.deepEqual(sports, { '2026-10-11': { nfl: 9.09, nba: -10, parlay: -5 } });
+});
+
+test('the tiles from the tally: the whole record however few bets are loaded, the open ones from the open bets', () => {
+  const tally = w.tallyFrom({
+    all: { won: 260, lost: 180, push: 10, void: 3, staked: 4500, profit: 312.5 },
+    days: { '2026-09-10': [100, 80, 5, 1850, 120], '2026-10-11': [160, 100, 5, 2650, 192.5] },
+    sports: { '2026-09-10': { nfl: 100, nba: 20 }, '2026-10-11': { nfl: 200, parlay: -7.5 } },
+    v: 2,
+  });
+  // (the latest page on hand: 2 settled, 1 open)
+  const loaded = [
+    { ...bet({ id: 's1' }), status: 'won', profit: 9.09 },
+    { ...bet({ id: 's2' }), status: 'lost', profit: -10 },
+    { ...bet({ id: 'o1', stake: 7 }), status: 'open' },
+  ];
+  const r = w.recordOf(tally, loaded);
+  assert.equal(w.recordText(r), '260-180-10');
+  assert.equal(r.profit, 312.5);
+  assert.equal(r.roi, 312.5 / 4500);
+  assert.deepEqual([r.open, r.atRisk], [1, 7]);
+  assert.equal(w.settledCount(tally), 453);
+  // (no tally yet: the bets on hand, as before)
+  assert.equal(w.recordText(w.recordOf(null, loaded)), '1-1');
+  assert.equal(w.settledCount(null), null);
+  // (the chart: a point a game day, the total from the days, each sport's line from the sports; a parlay day
+  // in the total, not on a sport's line)
+  const c = w.dayCurve(tally);
+  assert.deepEqual(c.totals, [0, 120, 312.5]);
+  assert.equal(c.profit, 312.5);
+  assert.deepEqual(c.lines.map((l) => [l.sport, l.values]), [['nfl', [0, 100, 300]], ['nba', [0, 20, 20]]]);
+  assert.equal(c.solo, null);
+  assert.match(c.spots[2].title, /^Oct 11, 2026: \+192\.50u on 160-100-5, \+312\.50u in all/);
+  // (one sport, no parlays: its line is the total)
+  assert.equal(w.dayCurve(w.tallyFrom({ all: { won: 1 }, days: { '2026-10-11': [1, 0, 0, 10, 9] }, sports: { '2026-10-11': { nhl: 9 } } })).solo, 'nhl');
+  // (an older tally without sports: the total line alone)
+  assert.deepEqual(w.dayCurve(w.tallyFrom({ all: { won: 1 }, days: { '2026-10-11': [1, 0, 0, 10, 9] } })).lines, []);
+  // (you vs the bot: your whole record, the bot's from your first game day on, US Eastern)
+  const ledger = [
+    { status: 'won', start: '2026-09-10T16:00:00Z', units: 1, profit: 0.91, published: true },
+    { status: 'lost', start: '2026-09-09T23:00:00Z', units: 1, profit: -1, published: true },
+    { status: 'lost', start: '2026-10-11T17:00:00Z', units: 2, profit: -2, published: false },
+  ];
+  const v = w.versusDays(tally, ledger);
+  assert.equal(w.recordText(v.you), '260-180-10');
+  assert.equal(v.you.roi, 312.5 / 4500);
+  assert.deepEqual([v.bot.won, v.bot.lost, v.bot.profit], [1, 0, 0.91]);
+  assert.equal(w.versusDays(w.tallyFrom({ all: {}, days: {} }), ledger).from, null);
+  // (a document that isn't a tally)
+  assert.equal(w.tallyFrom(null), null);
+  assert.equal(w.tallyFrom({ days: {} }), null);
+});

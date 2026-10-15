@@ -2,14 +2,18 @@
 // Node): a game's DraftKings lines off ESPN's scoreboard, a bet slip's stakes and payouts, a bet in play
 // settled by the score as the settler will settle it (desk-math's provisional), the wallet's tallies, its
 // curve, and the user's record beside the bot's
-import { Board, Meter, ModelBet, Settled } from '../../bets/desk-model';
-import { UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../bets/desk-math';
+import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../bets/desk-model';
+import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../bets/desk-math';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
 // (the bot's bands as the Bets page names them: bet-why.ts confidenceOf's lock, high, medium, low)
 import type { Tier } from '../../bets/tiers';
 export type { Tier };
+
+// (the settled history's page: the wallet and Closed Bets read it this many at a time, the latest first; the
+// record's tiles come from the settler's tally, not from these)
+export const SETTLED_PAGE = 200;
 
 // (play money: 1,000 units to start, and again on a reload)
 export const START = 1000;
@@ -520,6 +524,146 @@ export const settledOrder = (bets: PlayBet[]): PlayBet[] =>
 export function playCurve(bets: PlayBet[]) {
   const graded = settledOrder(bets).map((b) => ({ ...asDeskBet(b), gradedAt: b.settledAt }));
   return profitCurves(graded, START, (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}`);
+}
+
+// ---------------------------------------------------------------------------
+// The whole record, from the settler's tally (tallies/{uid}: settle-lib.mjs addToTally), not the history's
+// loaded pages: one document however many bets, and kept through a cleared history
+// ---------------------------------------------------------------------------
+export interface LifetimeTally {
+  won: number;
+  lost: number;
+  push: number;
+  void: number;
+  staked: number;
+  profit: number;
+}
+export interface TallyDoc {
+  all: LifetimeTally;
+  // (each game day's [won, lost, push, staked, profit], US Eastern "2026-10-11")
+  days: Record<string, [number, number, number, number, number]>;
+  // (each day's profit by sport, a parlay's 'parlay': version 2 on; an older tally's filled in by the settler)
+  sports?: Record<string, Record<string, number>>;
+  v?: number;
+}
+
+// (a tally document as read: its parts checked, null if it isn't one)
+export function tallyFrom(d: Record<string, unknown> | null | undefined): TallyDoc | null {
+  const all = d?.['all'] as Partial<LifetimeTally> | undefined;
+  if (!all || typeof all !== 'object') return null;
+  const n = (v: unknown) => (Number.isFinite(v) ? (v as number) : 0);
+  return {
+    all: { won: n(all.won), lost: n(all.lost), push: n(all.push), void: n(all.void), staked: n(all.staked), profit: n(all.profit) },
+    days: (d?.['days'] as TallyDoc['days']) ?? {},
+    ...(d?.['sports'] ? { sports: d['sports'] as TallyDoc['sports'] } : {}),
+    ...(d?.['v'] !== undefined ? { v: n(d['v']) } : {}),
+  };
+}
+
+// The wallet's tiles: the settled record from the tally (every bet ever settled), the open ones from the open
+// bets; without a tally (none yet, or not read yet), the bets on hand as before
+export function recordOf(tally: TallyDoc | null, bets: PlayBet[]): PlayTally {
+  const t = playTally(bets);
+  if (!tally) return t;
+  const a = tally.all;
+  return { ...t, won: a.won, lost: a.lost, push: a.push, void: a.void, staked: round2(a.staked), profit: round2(a.profit), roi: a.staked ? a.profit / a.staked : null };
+}
+
+// (how many bets the tally's settled, voids too: the history's count however much of it is loaded)
+export const settledCount = (tally: TallyDoc | null): number | null => (tally ? tally.all.won + tally.all.lost + tally.all.push + tally.all.void : null);
+
+// (a time's day in US Eastern, "2026-10-11": the tally's days')
+export const etDay = (t: string | number | Date): string => {
+  const d = espnDay(t);
+  return `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`;
+};
+
+// The profit by game day from the tally, drawn as the Algorithm's curve is (desk-math profitCurves: each sport's
+// own line once there's more than one, from the tally's sports): a point a day, not a bet, so the whole record
+// is a few hundred points at most
+export function dayCurve(tally: TallyDoc) {
+  const days = Object.keys(tally.days).sort();
+  const sports = SPORTS.filter((s) => days.some((d) => tally.sports?.[d]?.[s] !== undefined));
+  const running: Record<string, number> = Object.fromEntries(sports.map((s) => [s, 0]));
+  let sum = 0;
+  const points = [{ total: 0, by: { ...running } }];
+  for (const d of days) {
+    sum = round2(sum + (tally.days[d]?.[4] ?? 0));
+    for (const s of sports) running[s] = round2(running[s] + (tally.sports?.[d]?.[s] ?? 0));
+    points.push({ total: sum, by: { ...running } });
+  }
+  const lines = sports.length > 1 ? sports : [];
+  const values = points.flatMap((p) => [p.total, ...lines.map((s) => p.by[s])]);
+  const min = Math.min(0, ...values);
+  const max = Math.max(0, ...values);
+  const span = max - min || 1;
+  const last = points.length - 1;
+  const step = CURVE_W / Math.max(1, last);
+  const yOf = (v: number) => 110 - ((v - min) / span) * 100;
+  const pathOf = (vals: number[]) => vals.map((v, i) => `${i ? 'L' : 'M'}${(i * step).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
+  const units = (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}u`;
+  const spots: CurveSpot[] = points.map((p, i) => {
+    const day = days[i - 1];
+    const row = day ? tally.days[day] : null;
+    const split = lines.length ? ` · ${lines.map((s) => `${s.toUpperCase()} ${units(p.by[s])}`).join(', ')}` : '';
+    const date = day ? new Date(`${day}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '';
+    const title = row ? `${date}: ${units(row[4])} on ${recordText({ won: row[0], lost: row[1], push: row[2] })}, ${units(p.total)} in all${split}` : 'Start: 0u';
+    return { x: Math.max(0, i * step - step / 2), w: i === 0 || i === last ? step / 2 : step, px: i * step, y: yOf(p.total), title };
+  });
+  const totals = points.map((p) => p.total);
+  return {
+    totals,
+    path: pathOf(totals),
+    range: { min, max },
+    spots,
+    zeroY: yOf(0),
+    end: spots[last],
+    profit: sum,
+    lines: lines.map((sport): CurveLine => {
+      const values = points.map((p) => p.by[sport]);
+      return { sport, values, path: pathOf(values), profit: running[sport] };
+    }),
+    // (the one sport whose bets these all are, if so (no parlays among them): the total is its line)
+    solo: sports.length === 1 && days.every((d) => Object.keys(tally.sports?.[d] ?? {}).every((s) => s === sports[0])) ? sports[0] : null,
+  };
+}
+
+// You vs the bot from the tally: your whole record from your first game day on, and the bot's published picks
+// settled over the same days (versusBot's, from the bets on hand, when there's no tally)
+export function versusDays(tally: TallyDoc, ledger: Parameters<typeof versusBot>[1]): Versus {
+  const days = Object.keys(tally.days)
+    .filter((d) => tally.days[d][0] + tally.days[d][1] + tally.days[d][2] > 0)
+    .sort();
+  const empty = { won: 0, lost: 0, push: 0, winPct: null, roi: null, profit: 0 };
+  if (!days.length) return { from: null, you: empty, bot: empty };
+  const side = (list: { status: string; stake: number; profit: number }[]) => {
+    const t = { won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
+    for (const b of list) {
+      if (b.status === 'won' || b.status === 'lost' || b.status === 'push') t[b.status]++;
+      t.staked += b.stake;
+      t.profit += b.profit;
+    }
+    return t;
+  };
+  const words = (t: { won: number; lost: number; push: number; staked: number; profit: number }) => ({
+    won: t.won,
+    lost: t.lost,
+    push: t.push,
+    winPct: t.won + t.lost ? t.won / (t.won + t.lost) : null,
+    roi: t.staked ? round2(t.profit) / t.staked : null,
+    profit: round2(t.profit),
+  });
+  const you = { won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
+  for (const d of days) {
+    const [won, lost, push, staked, profit] = tally.days[d];
+    you.won += won;
+    you.lost += lost;
+    you.push += push;
+    you.staked += staked;
+    you.profit += profit;
+  }
+  const bot = ledger.filter((b) => b.published && !b.void && b.status !== 'open' && etDay(b.start) >= days[0]).map((b) => ({ status: b.status, stake: b.units, profit: b.profit }));
+  return { from: `${days[0]}T12:00:00Z`, you: words(you), bot: words(side(bot)) };
 }
 
 // Bets by game, the soonest (or the latest settled) first, each game's bets in the order placed; a parlay a

@@ -18,24 +18,27 @@ import {
   Versus,
   betToWin,
   byGame,
+  dayCurve,
   legBets,
   liveOf,
   oddsText,
   parlayProgress,
   playBySport,
   playCurve,
-  playTally,
   provisionalOf,
+  recordOf,
   recordText,
+  settledCount,
   toWin,
   versusBot,
+  versusDays,
 } from './wallet-math';
 
 type Period = Leaderboard['period'];
 
 // #wallet: the play-money bankroll as the Algorithm desk shows the bot's (balance, record, profit, return,
-// what's at risk, the profit after each settled bet), the open bets (in play, a result as soon as the score
-// decides it, pending settlement: the settler pays it after the game), the settled history by game, the
+// what's at risk, the profit by game day: all of it, from the settler's tally), the open bets (in play, a result
+// as soon as the score decides it, pending settlement: the settler pays it after the game), the settled history by game, the
 // user's record beside the bot's over the same stretch, and the leaderboards; a parlay one row, opening to its
 // legs (each with its own live column, the parlay "2 of 4 hit"). Reload (back to 1,000, a new run) and Clear
 // history (typed to confirm) at the top.
@@ -169,8 +172,16 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (each parlay's legs as bets, by the parlay's id)
   readonly legs = computed(() => new Map(this.wallet.bets().filter((b) => b.kind === 'parlay').map((b) => [b.id, legBets(b)])));
   readonly settled = computed(() => this.wallet.bets().filter((b) => b.status !== 'open'));
-  readonly tally = computed(() => playTally(this.wallet.bets()));
-  readonly curve = computed(() => playCurve(this.wallet.bets()));
+  // (the record, profit, ROI and chart: the whole record, from the settler's tally (one document), not the
+  // history's loaded pages (200 at a time); the bets on hand only until the tally's read, or if there's none.
+  // The open bets' stakes are the open bets' own)
+  readonly tally = computed(() => recordOf(this.wallet.tally(), this.wallet.bets()));
+  readonly curve = computed(() => {
+    const tally = this.wallet.tally();
+    return tally ? dayCurve(tally) : playCurve(this.wallet.bets());
+  });
+  // (the chart's points: a game day each from the tally, else a settled bet each)
+  readonly curveByDay = computed(() => !!this.wallet.tally());
   readonly openGames = computed(() => byGame(this.open()));
   // (the settled bets by sport and game, the latest game first unless the Date column's turned it round)
   readonly latestFirst = signal(true);
@@ -185,6 +196,13 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   readonly settledShown = computed(() => {
     const range = this.range();
     return range === 'all' ? this.settled() : this.settled().filter((b) => inRange(range, b.start));
+  });
+  // (the Settled panel's count: a date range's own bets, all of them loaded; All Time the tally's whole count
+  // while the history's still paging (Show more), the loaded ones once it's all here)
+  readonly settledTotal = computed(() => {
+    const shown = this.settledShown().length;
+    if (this.range() !== 'all' || this.wallet.settledState() === 'all') return shown;
+    return Math.max(shown, settledCount(this.wallet.tally()) ?? 0);
   });
   // (the range's pages still coming: its bets aren't all here yet)
   readonly rangeLoading = computed(() => {
@@ -220,7 +238,9 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   }
   readonly versus = computed<Versus | null>(() => {
     const ledger = this.ledger();
-    return ledger ? versusBot(this.wallet.bets(), ledger) : null;
+    if (!ledger) return null;
+    const tally = this.wallet.tally();
+    return tally ? versusDays(tally, ledger) : versusBot(this.wallet.bets(), ledger);
   });
   // (the run's own profit: the balance against 1,000, the open stakes counted back in)
   readonly runProfit = computed(() => this.wallet.balance() + this.tally().atRisk - START);

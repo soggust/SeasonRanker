@@ -220,7 +220,7 @@
 @if (!settledShown().length) {
   <p class="desk-note wallet-note" role="status">{{ rangeLoading() ? 'Loading…' : 'No settled bets ' + rangeWords(range()) + '.' }}</p>
 } @else {
-<card-panel class="tab-card group-results" [label]="'Settled · ' + settledShown().length" icon="fact_check" [expandable]="!only">
+<card-panel class="tab-card group-results" [label]="'Settled · ' + settledTotal()" icon="fact_check" [expandable]="!only">
   <div class="group-body">
     <table class="desk-table desk-bets wallet-bets wallet-settled desk-cols wallet-cols-settled">
       <colgroup>
@@ -407,11 +407,11 @@
             <small>Balance</small>
             <b [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ wallet.balance() | number: '1.2-2' }}u</b>
           </div>
-          <div class="desk-tile" [title]="'Won, lost and pushed on the settled bets in your history' + (wallet.tally() ? ' (lifetime: ' + recordText(wallet.tally()!) + ', the cleared ones too)' : '')">
+          <div class="desk-tile" title="Won, lost and pushed: every bet you've settled">
             <small>Record</small>
             <b>{{ recordText(tally()) }}</b>
           </div>
-          <div class="desk-tile" title="Units won or lost on the settled bets in your history">
+          <div class="desk-tile" title="Units won or lost on every bet you've settled">
             <small>Profit</small>
             <b [class.up]="tally().profit > 0" [class.down]="tally().profit < 0">{{ units(tally().profit) }}@if (pending().count) {<small [title]="pending().count + ' bets decided in play, pending settlement'">{{ units(pending().profit) }} pending</small>}</b>
           </div>
@@ -477,12 +477,13 @@
       </div>
     }
 
-    <!-- (the profit after each settled bet, in units from 0: every sport's together, and each sport's own) -->
+    <!-- (the profit by game day (the tally's: every bet ever settled), in units from 0: every sport's together, and
+         each sport's own) -->
     @if (curve().totals.length > 1) {
       @let c = curve();
       <div class="desk-curve" [style.--total]="c.solo ? 'var(--line-' + c.solo + ')' : null">
         <div class="desk-curve-head">
-          <span class="log-chart-label">Profit<small>after each settled bet · {{ c.range.min.toFixed(1) }}u to {{ c.range.max.toFixed(1) }}u</small></span>
+          <span class="log-chart-label">Profit<small>{{ curveByDay() ? 'by game day' : 'after each settled bet' }} · {{ c.range.min.toFixed(1) }}u to {{ c.range.max.toFixed(1) }}u</small></span>
           <ul class="desk-legend">
             <li class="total"><i></i>{{ c.solo ? c.solo.toUpperCase() : 'All' }}<b [class.up]="c.profit > 0" [class.down]="c.profit < 0">{{ units(c.profit) }}</b></li>
             @for (l of c.lines; track l.sport) {
@@ -490,7 +491,7 @@
             }
           </ul>
         </div>
-        <svg viewBox="0 0 600 120" preserveAspectRatio="none" role="img" [attr.aria-label]="'Profit after ' + (c.totals.length - 1) + ' settled bets: ' + units(c.profit)">
+        <svg viewBox="0 0 600 120" preserveAspectRatio="none" role="img" [attr.aria-label]="'Profit over ' + (c.totals.length - 1) + (curveByDay() ? ' game days: ' : ' settled bets: ') + units(c.profit)">
           <line class="desk-start" x1="0" [attr.x2]="curveWidth" [attr.y1]="c.zeroY" [attr.y2]="c.zeroY" />
           @for (l of c.lines; track l.path) {
             <path class="desk-line desk-sport-line" [style.--line]="'var(--line-' + l.sport + ')'" [attr.d]="l.path" />

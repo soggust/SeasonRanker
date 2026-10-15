@@ -526,8 +526,8 @@ service cloud.firestore {
       allow delete: if isOwner(uid) && resource.data.status != 'open';
     }
 
-    // tallies/{uid}: the settler's record of a user's settled bets, lifetime and by day (kept through a cleared
-    // history: the leaderboards' source). Admin only
+    // tallies/{uid}: the settler's record of a user's settled bets, lifetime, by day and each day's by sport (kept
+    // through a cleared history: the leaderboards' source, and the wallet's record and chart). Admin only
     match /tallies/{uid} {
       allow read: if canSee(uid, 'betHistory');
       allow write: if false;

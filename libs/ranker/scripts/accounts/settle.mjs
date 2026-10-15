@@ -23,6 +23,7 @@ import { gameOf, linesOf } from '../model/espn.mjs';
 import { statInFinal } from '../model/props.mjs';
 import {
   DAY,
+  TALLY_VERSION,
   addToTally,
   boardObservations,
   botObservations,
@@ -41,6 +42,7 @@ import {
   round2,
   settleParlay,
   settlePlayBet,
+  sportsOfBets,
 } from './settle-lib.mjs';
 
 const PROJECT = 'qbranker2026';
@@ -380,11 +382,44 @@ export async function settleOne(db, ref, result, { start = null, legs = null, pa
 }
 
 // ---------------------------------------------------------------------------
+// The tallies' one-time fill: a tally from before TALLY_VERSION 2 has no sports (each day's profit by sport, the
+// wallet's chart's lines), so they're made from its owner's settled bets' documents, once, and it's marked 2.
+// Each in a transaction with the tally (a bet settling at the same time waits on it, or it on the bet), its
+// all and days left as they are (the record, kept through a cleared history). The settler does it as it writes
+// the boards (boardsDue: due until the week's board says TALLY_VERSION), so production needs no write by hand
+// ---------------------------------------------------------------------------
+export async function upgradeTallies(db, docs, { dry = false, log = console.log } = {}) {
+  const old = docs.filter((t) => (t.get('v') ?? 1) < TALLY_VERSION);
+  if (!old.length) return 0;
+  let done = 0;
+  for (const t of old) {
+    if (dry) {
+      done++;
+      continue;
+    }
+    const upgraded = await db.runTransaction(async (tx) => {
+      const tally = await tx.get(t.ref);
+      if (!tally.exists || (tally.get('v') ?? 1) >= TALLY_VERSION) return false;
+      const bets = await tx.get(db.collection(`users/${t.id}/bets`).where('status', 'in', ['won', 'lost', 'push']));
+      const sports = sportsOfBets(bets.docs.map((d) => ({ ...d.data(), start: iso(d.get('start')) })));
+      tx.update(t.ref, { sports, v: TALLY_VERSION });
+      return true;
+    });
+    if (upgraded) done++;
+  }
+  log(`tallies: ${done} filled in to version ${TALLY_VERSION}${dry ? ' (dry)' : ''}`);
+  return done;
+}
+
+// ---------------------------------------------------------------------------
 // The leaderboards
 // ---------------------------------------------------------------------------
 export async function writeLeaderboards(db, { now = Date.now(), dry = false, log = console.log } = {}) {
   const tallies = await db.collection('tallies').get();
-  const profiles = tallies.empty ? [] : await db.getAll(...tallies.docs.map((t) => db.doc(`users/${t.id}`)));
+  // (the older tallies filled in first, their owners' profiles there: a gone account's is deleted below)
+  const present = tallies.empty ? [] : await db.getAll(...tallies.docs.map((t) => db.doc(`users/${t.id}`)));
+  await upgradeTallies(db, tallies.docs.filter((_, i) => present[i].exists), { dry, log });
+  const profiles = present;
   // (each player's wallet, for the reloads beside their row)
   const wallets = tallies.empty ? [] : await db.getAll(...tallies.docs.map((t) => db.doc(`users/${t.id}/wallet/main`)));
   const entries = [];
@@ -400,7 +435,7 @@ export async function writeLeaderboards(db, { now = Date.now(), dry = false, log
   const boards = {};
   for (const [period, { from, label }] of Object.entries(periods)) {
     boards[period] = { period, label, from, rows: leaderboard(entries, from), updatedAt: new Date(now).toISOString() };
-    if (!dry) await db.doc(`leaderboards/${period}`).set({ ...boards[period], updatedAt: FieldValue.serverTimestamp() });
+    if (!dry) await db.doc(`leaderboards/${period}`).set({ ...boards[period], tallyVersion: TALLY_VERSION, updatedAt: FieldValue.serverTimestamp() });
   }
   log(`leaderboards: ${boards.week.rows.length} this week, ${boards.season.rows.length} this season, ${boards.all.rows.length} all time${dry ? ' (dry)' : ''}`);
   return boards;
@@ -408,11 +443,12 @@ export async function writeLeaderboards(db, { now = Date.now(), dry = false, log
 
 // Whether the boards need writing again: something settled this run (or settling failed, so it can't be told),
 // the week moved on since they were written, or they're a day old (a name, picture or privacy setting changed,
-// an account gone, a reload); else they stand, and every tally, profile and wallet isn't read again each hour
+// an account gone, a reload), or the tallies aren't filled in to TALLY_VERSION yet (upgradeTallies: the next run
+// after this one's deployed); else they stand, and every tally, profile and wallet isn't read again each hour
 export async function boardsDue(db, counts, now = Date.now()) {
   if (!counts || counts.settled + counts.void > 0) return true;
   const week = await db.doc('leaderboards/week').get();
-  if (!week.exists) return true;
+  if (!week.exists || week.get('tallyVersion') !== TALLY_VERSION) return true;
   const written = week.get('updatedAt')?.toMillis?.() ?? 0;
   return week.get('from') !== periodsAt(now).week.from || now - written >= 864e5;
 }

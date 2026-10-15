@@ -480,14 +480,25 @@ export function etDate(t) {
   return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
-// A tally with one more settled bet in it: lifetime (all) and its game's day (days: [won, lost, push, staked,
-// profit]); a void counts only as a void
+// A tally's shape's version: 2 adds `sports` (each day's profit by sport, the wallet's chart's lines). A tally
+// begun at 2 has every bet in its sports; an older one is filled in once by the settler (settle.mjs
+// upgradeTallies, from the bets' documents) and marked 2
+export const TALLY_VERSION = 2;
+
+// (a bet's sport as the tally files it: a parlay's 'parlay')
+const sportOf = (bet) => (bet.kind === 'parlay' ? 'parlay' : bet.sport) || null;
+
+// A tally with one more settled bet in it: lifetime (all), its game's day (days: [won, lost, push, staked,
+// profit]) and that day's profit by its sport (sports: { day: { nfl: 1.5, parlay: -2 } }); a void counts only
+// as a void. (A new tally starts at TALLY_VERSION; an older one keeps its version till it's filled in)
 export function addToTally(tally, bet, result) {
   const all = { won: 0, lost: 0, push: 0, void: 0, staked: 0, profit: 0, ...(tally?.all ?? {}) };
   const days = { ...(tally?.days ?? {}) };
+  const sports = { ...(tally?.sports ?? {}) };
+  const v = tally ? (tally.v ?? 1) : TALLY_VERSION;
   if (result.status === 'void') {
     all.void++;
-    return { all, days };
+    return { all, days, sports, v };
   }
   all[result.status]++;
   all.staked = round2(all.staked + bet.stake);
@@ -498,7 +509,24 @@ export function addToTally(tally, bet, result) {
   d[3] = round2(d[3] + bet.stake);
   d[4] = round2(d[4] + result.profit);
   days[key] = d;
-  return { all, days };
+  const sport = sportOf(bet);
+  if (sport) sports[key] = { ...(sports[key] ?? {}), [sport]: round2((sports[key]?.[sport] ?? 0) + result.profit) };
+  return { all, days, sports, v };
+}
+
+// An older tally's sports, from its owner's settled bets' documents (each bet's profit on its game's day, by its
+// sport; voids out): the one-time fill (settle.mjs upgradeTallies). A bet cleared from the history is in the
+// tally's days but can't be here: the chart's sport lines leave it out, its total line doesn't
+export function sportsOfBets(bets) {
+  const sports = {};
+  for (const bet of bets) {
+    if (!['won', 'lost', 'push'].includes(bet.status)) continue;
+    const sport = sportOf(bet);
+    if (!sport || !bet.start) continue;
+    const key = etDate(bet.start);
+    sports[key] = { ...(sports[key] ?? {}), [sport]: round2((sports[key]?.[sport] ?? 0) + (Number(bet.profit) || 0)) };
+  }
+  return sports;
 }
 
 // The leaderboards' periods at a moment: this week (Monday to Sunday, US Eastern), the season (August 1 on),
