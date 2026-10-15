@@ -1,6 +1,7 @@
-import { Component, Input, OnDestroy, OnInit, computed, effect, isDevMode, signal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, computed, effect, isDevMode, signal, untracked } from '@angular/core';
 import { ModelBet, Settled } from '../../bets/desk-model';
 import { CURVE_W } from '../../bets/desk-math';
+import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../bets/date-range';
 import { hideImage, leagueLogo, teamLogo, headshot } from '../../bets/bet-format';
 import { AccountService } from '../account.service';
 import { ADMIN, canUse } from '../features';
@@ -52,6 +53,18 @@ function botLedger(): Promise<ModelBet[]> {
   ).then((all) => all.flat());
   return ledgerPromise;
 }
+
+// (the settled history's date range, the Algorithm's dropdown: All Time unless picked, the pick remembered on
+// this browser)
+const RANGE_KEY = 'closedRange';
+const readRange = (): DateRange => {
+  try {
+    const saved = localStorage.getItem(RANGE_KEY);
+    return isDateRange(saved) ? saved : 'all';
+  } catch {
+    return 'all';
+  }
+};
 
 // (a game this close to its start, or under way, has its score looked up each minute)
 const NEAR = 15 * 60e3;
@@ -133,6 +146,17 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     });
   }
   private extrasAsked = false;
+  // (a date range picked: the history's next page, and the next, until the range is all here; not again on a
+  // page that brought nothing (a failed one: Show more tries it then))
+  private autoPaged = -1;
+  private readonly rangePages = effect(() => {
+    if (this.only === 'open' || !this.account.user()) return;
+    if (this.wallet.settledState() !== 'more' || !this.rangeLoading()) return;
+    const n = this.wallet.settledBets().length;
+    if (n === this.autoPaged) return;
+    this.autoPaged = n;
+    untracked(() => void this.wallet.loadSettled());
+  });
 
   readonly open = computed(() => this.wallet.bets().filter((b) => b.status === 'open'));
   // (what's in play, game by game: the open straight bets, and the open parlays' legs not graded yet, each a bet
@@ -146,7 +170,38 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   readonly openGames = computed(() => byGame(this.open()));
   // (the settled bets by sport and game, the latest game first unless the Date column's turned it round)
   readonly latestFirst = signal(true);
-  readonly settledSports = computed(() => playBySport(byGame(this.settled(), this.latestFirst())));
+  readonly settledSports = computed(() => playBySport(byGame(this.settledShown(), this.latestFirst())));
+  // (the settled history by its games' dates, the Date column's: Today, Yesterday, This Month, This Year, All
+  // Time, as the Algorithm's dropdown. The history comes a page at a time, the latest settled first, and a bet
+  // settles after its game starts: so a range's every bet is loaded once the oldest loaded settled before the
+  // range began, the pages loaded on their own until then. All Time pages on Show more, as before)
+  readonly ranges = DATE_RANGES;
+  readonly range = signal<DateRange>(readRange());
+  readonly rangeWords = rangeWords;
+  readonly settledShown = computed(() => {
+    const range = this.range();
+    return range === 'all' ? this.settled() : this.settled().filter((b) => inRange(range, b.start));
+  });
+  // (the range's pages still coming: its bets aren't all here yet)
+  readonly rangeLoading = computed(() => {
+    const range = this.range();
+    const state = this.wallet.settledState();
+    if (range === 'all') return false;
+    if (state === 'loading') return true;
+    if (state !== 'more') return false;
+    const loaded = this.wallet.settledBets();
+    return !pastRange(range, loaded[loaded.length - 1]?.settledAt);
+  });
+
+  setRange(range: DateRange): void {
+    this.range.set(range);
+    try {
+      if (range === 'all') localStorage.removeItem(RANGE_KEY);
+      else localStorage.setItem(RANGE_KEY, range);
+    } catch {
+      // (storage off: the choice lasts the visit)
+    }
+  }
   // (folded, as the Algorithm's: a sport's games, and a game's bets, until opened)
   private readonly unfolded = signal(new Set<string>());
 

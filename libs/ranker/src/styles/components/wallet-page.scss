@@ -55,6 +55,11 @@ $gold: casino.$lock-gold;
   }
 }
 
+// (the settled history's date range, over its panel on the left, as the Algorithm's)
+.wallet-range {
+  margin: 0 0 12px;
+}
+
 // (the settled history's next page, under its table)
 .wallet-more {
   display: flex;

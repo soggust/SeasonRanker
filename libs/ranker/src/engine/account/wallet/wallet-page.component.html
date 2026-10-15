@@ -206,7 +206,21 @@
      with more than one bet a row over them, each folded until opened; the latest game first, the Date column's
      header turning it round. The wallet's panel, and the Bets page's Closed Bets tab alone) -->
 <ng-template #settledPanel>
-<card-panel class="tab-card group-results" [label]="'Settled · ' + settled().length" icon="fact_check" [expandable]="!only">
+<!-- (when the games were: Today, Yesterday, This Month, This Year, All Time, the Algorithm's dropdown on the left
+     over the panel; the count, the groups and their totals follow it) -->
+<div class="desk-filters wallet-range">
+  <span class="desk-chip">
+    <select class="desk-game-select desk-range-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
+      @for (r of ranges; track r.value) {
+        <option [value]="r.value">{{ r.label }}</option>
+      }
+    </select>
+  </span>
+</div>
+@if (!settledShown().length) {
+  <p class="desk-note wallet-note" role="status">{{ rangeLoading() ? 'Loading…' : 'No settled bets ' + rangeWords(range()) + '.' }}</p>
+} @else {
+<card-panel class="tab-card group-results" [label]="'Settled · ' + settledShown().length" icon="fact_check" [expandable]="!only">
   <div class="group-body">
     <table class="desk-table desk-bets wallet-bets wallet-settled desk-cols wallet-cols-settled">
       <colgroup>
@@ -331,8 +345,9 @@
         }
       </tbody>
     </table>
-    <!-- (the history a page at a time: the next one on asking) -->
-    @if (wallet.settledState() === 'more' || wallet.settledState() === 'loading') {
+    <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all
+         here) -->
+    @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
       <div class="wallet-more">
         <button type="button" class="app-btn-outline small" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
           {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
@@ -341,6 +356,7 @@
     }
   </div>
 </card-panel>
+}
 </ng-template>
 
 @if (!canUse('bets')) {

@@ -41,6 +41,7 @@ import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
+import { DATE_RANGES, DateRange, inRange } from './date-range';
 
 // The algorithm's admin panel (the Bets page, dev only): the code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), read from each sport's
@@ -97,16 +98,6 @@ const reducedMotion = (): boolean => {
   }
 };
 
-// The Algorithm's date ranges: the bets placed today, yesterday, this month, this year, or ever
-type DeskRange = 'today' | 'yesterday' | 'month' | 'year' | 'all';
-const DESK_RANGES: { value: DeskRange; label: string }[] = [
-  { value: 'today', label: 'Today' },
-  { value: 'yesterday', label: 'Yesterday' },
-  { value: 'month', label: 'This Month' },
-  { value: 'year', label: 'This Year' },
-  { value: 'all', label: 'All Time' },
-];
-
 // A section of a game's bets on the Algorithm's lists: its game bets, or one team's player props
 interface DeskSection {
   key: string;
@@ -149,8 +140,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the bets by when the bot placed them, the dropdown left of the game's: the algorithm changes, so today's
   // bets are today's logic; Today on every visit. The record, tiles, chart and results follow it; the bets
   // still open (Open Bets, In Play) are always all there: they're what's happening now)
-  readonly ranges = DESK_RANGES;
-  range: DeskRange = 'today';
+  readonly ranges = DATE_RANGES;
+  range: DateRange = 'today';
 
   // (the model's epoch, the newest in the sports' states (desk-math.ts deskEpochOf; a sport without one: all its
   // bets), and whether the record is since it (the default) or all time. Display only: the ledgers keep every bet,
@@ -280,7 +271,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.show();
   }
 
-  setRange(range: DeskRange): void {
+  setRange(range: DateRange): void {
     this.range = range;
     this.game = '';
     this.show();
@@ -311,16 +302,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (a bet placed in the range on show, by this browser's calendar: a bet from before placedAt was kept, by its
   // game's start)
   private inRange(b: ModelBet): boolean {
-    if (this.range === 'all') return true;
-    const at = new Date(b.placedAt ?? b.start);
-    const now = new Date();
-    if (Number.isNaN(at.getTime())) return false;
-    // (yesterday by the calendar: the day before today's, across a month's or a year's turn)
-    if (this.range === 'yesterday') now.setDate(now.getDate() - 1);
-    if (at.getFullYear() !== now.getFullYear()) return false;
-    if (this.range === 'year') return true;
-    if (at.getMonth() !== now.getMonth()) return false;
-    return this.range === 'month' || at.getDate() === now.getDate();
+    return inRange(this.range, b.placedAt ?? b.start);
   }
 
   setSport(sport: string | null): void {
