@@ -141,6 +141,39 @@ export function canSpend(feature, cost) {
   return (b.today[feature] ?? 0) + cost <= (b.allowance[feature] ?? 0);
 }
 
+// The anytime touchdown's market (player_anytime_td; props.mjs apiProps asks it with the NFL's props, run.mjs
+// anytimeTracked prices it: TRACKED ONLY, never staked). Billed as every props market is: an event's odds cost the
+// markets it returns times the regions (the docs: "[number of unique markets returned] x [number of regions
+// specified]"; up to 10 bookmakers named are one region, and the desk names WIDE_BOOKS at most), so it adds 1 credit
+// to each NFL props ask whose book posts it, whichever books answer (unique markets, not one a book), none where
+// none does. Measured 2026-10-09 to 10-15 (state.json's odds, the NFL's props asks): the NFL's asks cost about 10
+// credits each (its 10 markets), about 63 asks a week for its 15 or 16 games (each asked when due, near the start
+// and again on news: 4 to 5 asks a game), so the market costs about 63 a week, monthly (MONTHLY_COST) about 280
+// asked on every ask of every game, 70 on one ask a game. On (on) only while the month's projected total
+// (projectedMonth, with it in) stays under cap of MONTHLY; else the asks leave it out and the anytime rows wait
+export const ANYTIME_TD = { market: 'player_anytime_td', on: true, cap: 0.85, monthlyCost: 280 };
+
+// (the cycle's projected total: what the API says is used, plus the live features' (lines, props, other) pace
+// this cycle a day over the days left; history (bought only by run.mjs --backtest, from its own budget, once a
+// snapshot) not carried forward. No cycle yet: what's used)
+export function projectedMonth(b = budget(), now = Date.now()) {
+  const used = Number.isFinite(b.used) ? b.used : MONTHLY - (b.remaining ?? MONTHLY);
+  if (!b.cycleStart) return used;
+  const elapsed = Math.max(1, (now - Date.parse(b.cycleStart)) / 864e5);
+  const live = (b.spent?.lines ?? 0) + (b.spent?.props ?? 0) + (b.spent?.other ?? 0);
+  return Math.round(used + (live / elapsed) * (b.daysLeft ?? 0));
+}
+
+// Whether the anytime touchdown's market is asked now: the setting on, and the cycle's projected total with the
+// market's own monthly cost in it (counted again even once its asks are in the pace: headroom) under cap of
+// MONTHLY. { on, projected, limit, why }
+export function anytimeOn(b = budget(), setting = ANYTIME_TD, now = Date.now()) {
+  const limit = Math.round(setting.cap * MONTHLY);
+  if (!setting.on) return { on: false, projected: null, limit, why: 'off by the setting (oddsapi.mjs ANYTIME_TD)' };
+  const projected = projectedMonth(b, now) + setting.monthlyCost;
+  return projected <= limit ? { on: true, projected, limit, why: null } : { on: false, projected, limit, why: `the month's projected credits ${projected} over ${limit} (${Math.round(setting.cap * 100)}% of ${MONTHLY})` };
+}
+
 // A call: the JSON body (null on any failure, the reason shown with the key taken out), its cost and the
 // balance recorded under the feature
 export async function call(feature, route, params = {}) {

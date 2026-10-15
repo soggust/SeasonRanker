@@ -17,7 +17,8 @@
 // last two minutes of a half) where nflverse has xpass, the side's passes less xpass summed, and how many), ol (each
 // game's [home, away] starters changed), olLast (each team's last five), fields (each stadium's bearing and
 // place), wdir (each outdoor game's wind direction), wx (each outdoor final's [precip, snow], inches over its
-// window: sources.mjs gameWindow; null where the archive had none).
+// window: sources.mjs gameWindow; null where the archive had none), rz (each final's red-zone work by side and by
+// player: redZoneOf below).
 
 import { term } from './terms.mjs';
 import { passFunnel, sideOfPlays } from './matchups.mjs';
@@ -79,8 +80,64 @@ const NEUTRAL = (p) => (p.play_type === 'pass' || p.play_type === 'run') && p.ep
 const FUNNEL = (p) => (p.play_type === 'pass' || p.play_type === 'run') && p.xpass !== '' && p.xpass !== 'NA' && Number(p.wp) >= 0.2 && Number(p.wp) <= 0.8 && Number(p.half_seconds_remaining) > 120;
 const OL = new Set(['T', 'G', 'C', 'OL', 'OT', 'OG']);
 
+// The red zone, from nflverse's play-by-play (the field position the plays above don't keep): each final's
+//   by side  h, a: [trips (drives with a run or pass snapped at the 20 or closer), plays there (runs and
+//            passes, scrambles and sacks among the passes), passes there (nflverse's pass flag: dropbacks)]
+//   by player p: { ESPN id: RZ_FIELDS }, only a player with one of them: his targets and carries snapped at the
+//            20 or closer, at the 10 or closer, at the 5 or closer (each set inside the one before), his targets
+//            thrown to the end zone (air yards as far as the goal line), his touchdowns from inside the 20 and
+//            from outside it (rushing or receiving: nflverse's td_player_id on the play)
+// Two-point tries, kneels, spikes and penalties' no-plays left out. The props' red-zone terms read these
+// (matchups.mjs nflRedZone: passing TDs' rzPass; anytime.mjs: the anytime touchdown's looks), each from the
+// games before the one projected.
+export const RZ_FIELDS = ['tgt20', 'car20', 'tgt10', 'car10', 'tgt5', 'car5', 'ez', 'rzTd', 'longTd'];
+export const RZ_COLUMNS = ['game_id', 'posteam', 'home_team', 'play_type', 'pass', 'yardline_100', 'fixed_drive', 'receiver_player_id', 'rusher_player_id', 'air_yards', 'touchdown', 'td_player_id', 'two_point_attempt', 'qb_kneel', 'qb_spike'];
+const RZ = 20;
+// (a game with this many runs and passes or fewer read is a file still filling in: left for a later read)
+const RZ_MIN_PLAYS = 40;
+export function redZoneOf(plays, espnOfGame, espnOfGsis) {
+  const out = new Map();
+  const trips = new Set();
+  for (const p of plays) {
+    const id = espnOfGame.get(p.game_id);
+    if (!id || (p.play_type !== 'pass' && p.play_type !== 'run') || p.two_point_attempt === '1' || p.qb_kneel === '1' || p.qb_spike === '1') continue;
+    const g = out.get(id) ?? { h: [0, 0, 0], a: [0, 0, 0], p: {}, n: 0 };
+    out.set(id, g);
+    g.n++;
+    const yl = Number(p.yardline_100);
+    const td = p.touchdown === '1' && p.td_player_id && p.td_player_id !== 'NA' ? (espnOfGsis.get(p.td_player_id) ?? null) : null;
+    const me = (pid) => (g.p[pid] ??= RZ_FIELDS.map(() => 0));
+    if (p.yardline_100 === '' || p.yardline_100 === 'NA' || !Number.isFinite(yl)) continue;
+    if (yl > RZ) {
+      if (td) me(td)[8]++;
+      continue;
+    }
+    const side = p.posteam === p.home_team ? g.h : g.a;
+    side[1]++;
+    if (p.pass === '1') side[2]++;
+    const drive = `${id}|${p.posteam}|${p.fixed_drive}`;
+    if (!trips.has(drive)) trips.add(drive), side[0]++;
+    if (td) me(td)[7]++;
+    const target = p.play_type === 'pass' && p.receiver_player_id && p.receiver_player_id !== 'NA' ? (espnOfGsis.get(p.receiver_player_id) ?? null) : null;
+    const carry = p.play_type === 'run' && p.rusher_player_id && p.rusher_player_id !== 'NA' ? (espnOfGsis.get(p.rusher_player_id) ?? null) : null;
+    const who = target ?? carry;
+    if (!who) continue;
+    const k = target ? 0 : 1;
+    const x = me(who);
+    x[k]++;
+    if (yl <= 10) x[2 + k]++;
+    if (yl <= 5) x[4 + k]++;
+    if (target && p.air_yards !== '' && p.air_yards !== 'NA' && Number(p.air_yards) >= yl) x[6]++;
+  }
+  for (const [id, g] of out) {
+    if (g.n <= RZ_MIN_PLAYS) out.delete(id);
+    else delete g.n;
+  }
+  return out;
+}
+
 // The facts above, for every final that doesn't have them yet (the seasons it needs, read once)
-// (part: plays, snaps, fields or precip)
+// (part: plays, rz, snaps, fields or precip)
 export async function gatherFootball(cfg, history, upcoming, facts, live, part) {
   facts.plays ??= {};
   facts.ol ??= {};
@@ -128,6 +185,24 @@ export async function gatherFootball(cfg, history, upcoming, facts, live, part) 
     for (const [id, a] of per) if (a[1] + a[3] > 20 && byId.get(id)?.final) (facts.plays[id] = [Math.round(a[0] * 100) / 100, a[1], Math.round(a[2] * 100) / 100, a[3], a[4], a[5], a[6], a[7], a[8], Math.round(a[9] * 100) / 100, a[10], Math.round(a[11] * 100) / 100, a[12]]), n++;
     if (season < current) for (const g of finals) if (g.season === season && !facts.plays[g.id]) facts.plays[g.id] = null;
     console.log(`nfl: plays for ${n} games of ${season}`);
+  }
+
+  // (the red zone: each final's red-zone work by side and by player (redZoneOf), from the same play-by-play
+  // with its field position; a season's file read only when one of its finals is missing it, a past season's
+  // final the file hasn't tried once: null)
+  facts.rz ??= {};
+  const rzSeasons = part === 'rz' ? [...new Set(finals.filter((g) => missing(facts.rz, g)).map((g) => g.season))].sort() : [];
+  if (rzSeasons.length) {
+    const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id'], 24 * 7);
+    const espnOfGsis = new Map((players ?? []).filter((p) => p.espn_id && p.espn_id !== 'NA').map((p) => [p.gsis_id, String(Number(p.espn_id))]));
+    for (const season of rzSeasons) {
+      const plays = await nflverseRows('pbp', `play_by_play_${season}.csv.gz`, RZ_COLUMNS, season === current ? 12 : 24 * 365);
+      if (!plays) continue;
+      let n = 0;
+      for (const [id, x] of redZoneOf(plays, espnOf, espnOfGsis)) if (byId.get(id)?.final) (facts.rz[id] = x), n++;
+      if (season < current) for (const g of finals) if (g.season === season && !facts.rz[g.id]) facts.rz[g.id] = null;
+      console.log(`nfl: red-zone work for ${n} games of ${season}`);
+    }
   }
 
   // (the line: each team's five offensive linemen with the most snaps, against its last game's five)

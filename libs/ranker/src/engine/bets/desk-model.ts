@@ -73,6 +73,19 @@ export interface ContextTerm {
 
 export type Trust = { trust: number; n: number; fitted: boolean };
 
+// (the NFL's anytime touchdown, tracked only (libs/ranker/scripts/model/anytime.mjs): its fit's params, its held-out
+// check (log loss of the red zone's model, the plain one and the base rate; calibration by band) and whether its
+// market's asked this month (oddsapi.mjs anytimeOn))
+export interface AnytimeFit {
+  key: string;
+  label: string;
+  tracked: boolean;
+  rows: number;
+  params: { kind: 'rz' | 'plain'; D: number; K: number; F: number; L: number; beta: number; a: number; b: number; rho: number[] };
+  check: { cutDay: string; rows: number; scored: number; logLoss: number; rz: number; plain: number; base: number; gain: number; calibration: { band: number; n: number; said: number; was: number }[] };
+  market?: { market: string; on: boolean; projected: number | null; limit: number; why: string | null } | null;
+}
+
 export interface ModelState {
   sport: string;
   label: string;
@@ -85,7 +98,7 @@ export interface ModelState {
   teams: { abbr: string; rating: number }[];
   context?: { lambda: number; terms: ContextTerm[]; test: { games: number; before: TestNumbers; after: TestNumbers } } | null;
   postmortem?: { graded: number; disrupted: number; weight: number; fitted: boolean };
-  props?: { types: PropType[]; lastRun?: { games: number; priced: number; bet: number }; playChance?: PlayChance } | null;
+  props?: { types: PropType[]; lastRun?: { games: number; priced: number; bet: number }; playChance?: PlayChance; anytime?: AnytimeFit | null } | null;
   // (the book it bets, set in leagues.mjs; where this run's lines came from; The Odds API's credits)
   book?: string;
   lines?: string;

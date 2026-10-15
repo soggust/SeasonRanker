@@ -113,7 +113,14 @@ export const GAME_CAP = 5;
 // its own (z 1.5 or more in both; a shuffled-outcome refit let a pure-noise term in at 0.25x with a 0.89x target),
 // and never the flags whose history reads the game's own box score or snap counts (olOut, rb1Out, aheadOut,
 // oppOut, oppD, oppDB, oppFront). Set to the push time.
-export const MODEL_EPOCH = '2026-10-15T12:06:00Z';
+// 2026-10-15, the red zone (the owner's ask): each final's red-zone work read from the play-by-play's field position
+// (football.mjs redZoneOf); a new tracked market, the NFL's anytime touchdown (anytime.mjs: a back's, receiver's or
+// tight end's red-zone looks times their worth, his finishing, his long ones and the game's implied points; held out
+// 0.4018 to 0.3974 against the same model without the red zone), priced and graded, never staked, its market asked
+// with the NFL's props while the month's projected credits stay under 85% (oddsapi.mjs anytimeOn: 1 credit an ask,
+// about 280 a month). The red zone on passing TDs (rzPass) on the gate, left out (held out -0.0013). Set to the push
+// time.
+export const MODEL_EPOCH = '2026-10-15T13:27:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

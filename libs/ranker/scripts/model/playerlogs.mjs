@@ -3,7 +3,8 @@
 // sources when it's lost: a first run asks for everything, later ones only for the finals new since):
 //
 //   NFL  nflverse's weekly player stats (stats_player_week_<season>; a pass-catcher's receiving air yards too,
-//        s.airYds: his depth, matchups.mjs; NA or blank unread, airYdsOf), ESPN ids from nflverse's players file; and
+//        s.airYds: his depth, matchups.mjs; NA or blank unread, airYdsOf; his rushing and receiving touchdowns,
+//        s.rushTd and s.recTd: the anytime touchdown's, anytime.mjs), ESPN ids from nflverse's players file; and
 //        nflverse's snap counts (snap_counts_<season>): each row's offensive snaps (s.snaps), and a row of 0s for
 //        an offensive player who took snaps with no stats (never targeted, never handed the ball: he played),
 //        for the games the weekly stats have (a game only the snap counts have yet isn't in the history: its
@@ -157,7 +158,7 @@ async function nflRows(cfg, history, facts) {
   // (each game's defenders by side, `<game>|<team>` (ESPN's ids): the other side's key defenders out (audit #15,
   // matchups.mjs defenseOut); a game whose snap counts weren't read has none)
   const defense = new Map();
-  const cols = ['player_id', 'player_display_name', 'position', 'season', 'week', 'game_id', 'team', 'opponent_team', 'completions', 'attempts', 'passing_yards', 'passing_tds', 'passing_interceptions', 'carries', 'rushing_yards', 'receptions', 'targets', 'receiving_yards', 'receiving_air_yards'];
+  const cols = ['player_id', 'player_display_name', 'position', 'season', 'week', 'game_id', 'team', 'opponent_team', 'completions', 'attempts', 'passing_yards', 'passing_tds', 'passing_interceptions', 'carries', 'rushing_yards', 'receptions', 'targets', 'receiving_yards', 'receiving_air_yards', 'rushing_tds', 'receiving_tds'];
   for (let season = cfg.deepen ?? current - 1; season <= current; season++) {
     const stats = await nflverseRows('stats_player', `stats_player_week_${season}.csv.gz`, cols, season === current ? 12 : 24 * 365);
     // (each game's offensive snaps by player, nflverse's snap counts: who took the field, a stat or not)
@@ -218,6 +219,9 @@ async function nflRows(cfg, history, facts) {
           targets: n('targets'),
           airYds: airYdsOf(s.receiving_air_yards),
           snaps: Number(snapOf.get(`${s.game_id}|${pid}`)?.offense_snaps) || 0,
+          // (his rushing and receiving touchdowns: the anytime touchdown's (anytime.mjs))
+          rushTd: n('rushing_tds'),
+          recTd: n('receiving_tds'),
         },
       });
     }
@@ -243,7 +247,7 @@ async function nflRows(cfg, history, facts) {
         home,
         draft: draftOf.get(key.split('|')[1]) ?? null,
         born: bornOf.get(key.split('|')[1]) ?? null,
-        s: { passYds: 0, passAtt: 0, passCmp: 0, passTd: 0, passInt: 0, rushYds: 0, rushAtt: 0, recYds: 0, rec: 0, rushRecYds: 0, targets: 0, airYds: 0, snaps: Number(x.offense_snaps) || 0 },
+        s: { passYds: 0, passAtt: 0, passCmp: 0, passTd: 0, passInt: 0, rushYds: 0, rushAtt: 0, recYds: 0, rec: 0, rushRecYds: 0, targets: 0, airYds: 0, snaps: Number(x.offense_snaps) || 0, rushTd: 0, recTd: 0 },
       });
     }
   }

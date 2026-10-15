@@ -39,12 +39,14 @@ import { MODEL_EPOCH } from "./leagues.mjs";
 
 // (bumped by hand when what a saved fit means changes and the files below don't show it)
 export const FIT_VERSION = 1;
-// (the fit's code: the stats and their terms, the search, the model, the matchup tables, the player rows)
+// (the fit's code: the stats and their terms, the search, the model, the matchup tables, the player rows, the NFL's
+// anytime touchdown (its fit kept beside the stats': props.mjs fitProps, ANY_KEY))
 export const FIT_FILES = [
   "project.mjs",
   "props.mjs",
   "matchups.mjs",
   "playerlogs.mjs",
+  "anytime.mjs",
 ];
 // (the fit day starts at 6 AM Central: the West Coast's late games are in by then)
 export const REFIT_HOUR = 6;

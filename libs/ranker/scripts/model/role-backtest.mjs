@@ -500,7 +500,7 @@ async function main() {
   const listed = await nflListed(history, facts, [...new Set(rows.map((x) => x.season))].sort());
   let fitted;
   if (useState) {
-    nflMatchups(rows, facts.plays, { learned: TRY_VL, listed });
+    nflMatchups(rows, facts.plays, { learned: TRY_VL, listed, rz: facts.rz ?? null });
     const sp = stateParams();
     fitted = Object.fromEntries(STATS.nfl.filter((st) => sp[st.key]).map((st) => [st.key, { stat: st, params: sp[st.key] }]));
     // (a saved learned split (vs at a vacLearned index) with it off the search (project.mjs TRY_VL): the matchups

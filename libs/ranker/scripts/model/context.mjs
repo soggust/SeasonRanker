@@ -214,6 +214,9 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
   if (sport === 'mlb') await step('StatsAPI', () => mlbFacts(history, upcoming, facts, live));
   if (sport === 'nfl') for (const part of ['plays', 'snaps', 'fields']) if (want(part)) await step(part, () => gatherFootball(cfg, history, upcoming, facts, live, part));
   if (sport === 'nfl') await step('precip', () => gatherFootball(cfg, history, upcoming, facts, live, 'precip'));
+  // (the NFL's red zone, every run (not optional: the props' red-zone term and the anytime touchdown read it; a
+  // season's play-by-play read only when one of its finals is missing it): football.mjs redZoneOf)
+  if (sport === 'nfl') await step('red zone', () => gatherFootball(cfg, history, upcoming, facts, live, 'rz'));
   if (sport === 'nhl' && want('xg')) await step('xg', () => gatherHockey(history, facts));
   if (sport === 'mlb') for (const part of ['air', 'bullpens']) if (want(part)) await step(part, () => gatherBaseball(history, upcoming, facts, live, part));
   if ((sport === 'nba' || sport === 'nhl') && want('officials')) await step('officials', () => gatherOfficials(sport, cfg, upcoming, live));

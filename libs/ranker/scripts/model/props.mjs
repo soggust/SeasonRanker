@@ -1,6 +1,7 @@
 // Player props: DraftKings' board from ESPN's core API (every coming game's props, a page of up to 1,000 at a
 // time), the main line only (one line a player a stat; no milestone ladders, no first or last scorer, no
-// quarter or half lines, no longest-play lines, no anytime touchdown: it has no line), each priced against
+// quarter or half lines, no longest-play lines, no anytime touchdown on the board: it has no line; the NFL's comes
+// from The Odds API, its own model, tracked only: anytime.mjs), each priced against
 // its projection (project.mjs) and bet like the game markets: with an edge at its Kelly stake, without one
 // tracked, not bet (desk.mjs TRACK, since 2026-10-13: once the 0.5-unit minimum as an action bet; graded for the
 // data all the same: its trust and CLV), unless a guard skips it.
@@ -79,7 +80,7 @@ import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './de
 import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
-import { PROP_BOOKS, SPORT_KEYS, american, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
+import { ANYTIME_TD, PROP_BOOKS, SPORT_KEYS, american, anytimeOn, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
@@ -87,6 +88,7 @@ import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
 import { newsOn } from './news.mjs';
 import { COACH_GAMES } from './football.mjs';
 import { missChance } from './playchance.mjs';
+import { ANY_KEY, anytimeModel, anytimeRows, fitAnytime } from './anytime.mjs';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
 // (no cap a game: every main-line prop that isn't skipped gets a bet, 0.5u at no edge, like the game markets:
@@ -838,9 +840,22 @@ const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 // 0.02, -0.001), proe (not taken anywhere), rbLoad (rushing yards +0.0001, carries +0.0003 with the rest's bias
 // larger, rush+rec yards -0.0003), rbPass (receptions and receiving yards -0.0001, rush+rec yards not taken).
 // Each off the stats' ctx (CTX keeps them for a measure on demand): the props' fit 1349s to 913s for the NFL
-// locally, 276s to 95s for MLB. The red-zone share isn't built: the play-by-play the desk keeps has no field
-// position, and no prop it bets but passing TDs scores on it)
+// locally, 276s to 95s for MLB)
 const RC_PASS = [...PASSING, 'lastGame'];
+// (the red zone on passing TDs (the owner's ask, 2026-10-15: matchups.mjs nflRedZone, from the play-by-play's field
+// position, football.mjs redZoneOf), measured with fitStat as fitProps runs it (held out the last 30%): rzPass (his
+// team's red-zone dropbacks a game, trips times pass rate there, over the league's) was taken at -0.02 on the fit
+// window (more red-zone passing, fewer TDs than his own rate says: the rate already holds the volume, and the
+// volume's high ones regress) and lost held out (0.5912 to 0.5925, -0.0013; the favorites' and the underdogs'
+// bias both larger: SIGNED); on earlier stretches it gained at -0.01 (held out to 2024-10-20: 0.5915 to 0.5898,
+// +0.0017; to 2023-01-08: 0.5678 to 0.5657, +0.0021) but failed the underdogs' bias there (and every player's on
+// the first): not kept, left on the stat's ctx so the gate judges it again each fit (soft if its gain comes back over
+// 0 and the joint check holds). With the other side's defense averaged in (rzPassM): 0, +0.0013, +0.0015, the same
+// fails. The mean-preserving form against the double count (rzGap: his team's passing TDs a game against what its
+// red-zone passes make at the league's rate) cleared the floor on the main stretch at its smallest size (0.005:
+// +0.0004, bias -0.0452 to -0.044) but not on the others (+0.0001; -0.0004 at 0.02): a floor-level keep that didn't
+// hold, off the ctx. CTX keeps rzPassM and rzGap for a measure on demand)
+const RZ_PASS = [...PASSING, 'rzPass'];
 const RC_K = [...PITCHER_CTX, 'lineupK'];
 // (the park and air re-checked, 2026-10-14 (the owner's doubt of round C): the round's park terms were sound in
 // their data (Coors +13%, Petco -9%; the wind toward center from StatsAPI's report, so out and in by the park's
@@ -864,7 +879,7 @@ export const STATS = {
     stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
-    stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: PASSING, ...ROLE_BASE_QB, ...MIDDLE }),
+    stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: RZ_PASS, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...START, ...TEAM }),
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
@@ -1228,6 +1243,12 @@ export const CTX = {
     return m === null || !Number.isFinite(row?.rbRole) || !row.rbRole ? 0 : row.rbRole * 10 * ((-(home ? 1 : -1) * m) / 10);
   },
   lastGame: (info, home, pts, row) => (row?.lastGame === 1 ? 1 : 0),
+  // (the red zone, NFL (matchups.mjs nflRedZone, from the play-by-play's field position, the games before): his
+  // team's red-zone dropbacks a game against the league's (its trips a game and its pass rate there, each over the
+  // league's, as a log), per 10%; rzPassM the same with the other side's defense averaged in; 0 unread)
+  rzPass: (info, home, pts, row) => (Number.isFinite(row?.rzPass) ? row.rzPass * 10 : 0),
+  rzPassM: (info, home, pts, row) => (Number.isFinite(row?.rzPassM) ? row.rzPassM * 10 : 0),
+  rzGap: (info, home, pts, row) => (Number.isFinite(row?.rzGap) ? row.rzGap * 10 : 0),
 };
 // (a game's blowout by its betting lines: the spread either way, per 10 points; 0 without)
 export function blowOf(row) {
@@ -1336,7 +1357,9 @@ export const statRows = (sport, st, rows, market = null, totals = null) =>
 // stat's params.soft by its key (prev), and this run's time in ms (now): project.mjs softStep; reuse: a saved fit's
 // fitStat results by stat key (fitcache.mjs; a null where the stat wasn't fit), searched again only for a stat it
 // lacks: the model made from its params and taught the history as it is now, as a fresh fit's is. What each
-// stat's fitStat gave, fresh or reused, is out.fits (not enumerated), for saving)
+// stat's fitStat gave, fresh or reused, is out.fits (not enumerated), for saving). The NFL's anytime touchdown too
+// (anytime.mjs: its own model on the red zone's looks, tracked only), out.anytime (not enumerated: { params, check,
+// model, rows, reused, seconds }), its fit beside the stats' in out.fits (ANY_KEY), reused the same way
 export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null, soft = null, reuse = null) {
   const out = {};
   const fits = {};
@@ -1345,7 +1368,7 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
   // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
   // (MLB's: each batter's start, slot and platoon edge, each starter's leash and rest, the batters' history's
   // start (STATS played) among them, so they're marked before the rows are picked)
-  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
+  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed, rz: facts?.rz ?? null }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
   if (sport === 'nhl') markStarters(rows, facts);
   for (const st of STATS[sport]) {
     const mine = statRows(sport, st, rows, market, totals);
@@ -1371,6 +1394,16 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
     const values = new Map();
     for (const r of sorted) values.set(r.pid, [...(values.get(r.pid) ?? []), [r.season, Math.max(0, Math.round(r.s[st.key]))]]);
     out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, start: fitted.start ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10, reused };
+  }
+  // (the anytime touchdown, NFL: fit on the red zone's looks (anytime.mjs fitAnytime), or the saved fit's params,
+  // the model taught every final either way; none without the red zone read)
+  if (sport === 'nfl' && facts?.rz) {
+    const t0 = Date.now();
+    const list = anytimeRows(rows, facts.rz, market, expPts);
+    const reused = !!reuse && Object.hasOwn(reuse, ANY_KEY);
+    const any = reused ? reuse[ANY_KEY] : fitAnytime(list);
+    fits[ANY_KEY] = any ?? null;
+    if (any?.params) Object.defineProperty(out, 'anytime', { value: { ...any, model: anytimeModel(list, any.params), rows: list.length, reused, seconds: Math.round((Date.now() - t0) / 100) / 10 }, enumerable: false });
   }
   return out;
 }
@@ -1424,10 +1457,14 @@ export const API_MARKETS = {
 // which alone the other books are asked for (oddsapi.mjs propAsks: they add no market of their own); the
 // markets it returned this time on the result (dkMarkets), the next ask's known. null when it can't be had (its
 // calls failed; one of two failing, the other's, partial). ask and afford: the call and the allowance's word
-// on its most cost (a test's recorded response)
-export async function apiProps(sport, oddsEvent, { known = null, ask = call, afford = (n) => hasKey() && canSpend('props', n) } = {}) {
-  const markets = Object.keys(API_MARKETS[sport]);
-  if (!oddsEvent || !afford(markets.length)) return null;
+// on its most cost (a test's recorded response). anytime: the NFL's anytime touchdown market asked too (oddsapi.mjs
+// ANYTIME_TD: 1 credit more an ask; by default while anytimeOn says the month can pay for it), its Yes and No
+// prices by player on the result (anytime: propsFromBodies)
+export async function apiProps(sport, oddsEvent, { known = null, ask = call, afford = (n) => hasKey() && canSpend('props', n), anytime = null } = {}) {
+  if (!oddsEvent) return null;
+  const any = anytime ?? (sport === 'nfl' && hasKey() && anytimeOn().on);
+  const markets = [...Object.keys(API_MARKETS[sport]), ...(sport === 'nfl' && any ? [ANYTIME_TD.market] : [])];
+  if (!afford(markets.length)) return null;
   // (one of the two calls failing keeps what the other paid for: its prices, and the markets the book returned
   // there; the failed wide call's markets kept as known, so the other books are asked for them again on the
   // next ask and no market is added, the failed own call's left unknown, the book alone asked for them again)
@@ -1447,16 +1484,33 @@ export async function apiProps(sport, oddsEvent, { known = null, ask = call, aff
 }
 
 // (The Odds API's event bodies read: the desk's book's main lines, each with the other books' consensus at its
-// line; dkMarkets, the markets the desk's book returned)
+// line; dkMarkets, the markets the desk's book returned; anytime, the anytime touchdown's (ANYTIME_TD): by
+// player's name, the desk's book's Yes price and its No where it posts one, and the other books' consensus where
+// two or more post both)
 export function propsFromBodies(sport, bodies) {
   // (each book's sides: book -> "player|stat|line" -> { over, under })
   const books = new Map();
   const dkMarkets = new Set();
+  // (each book's anytime touchdown: book -> player -> { yes, no })
+  const anyBooks = new Map();
   for (const body of bodies) {
     for (const b of body?.bookmakers ?? []) {
       const lines = books.get(b.key) ?? new Map();
       books.set(b.key, lines);
       for (const m of b.markets ?? []) {
+        if (m.key === ANYTIME_TD.market) {
+          if (b.key === BOOK) dkMarkets.add(m.key);
+          const mine = anyBooks.get(b.key) ?? new Map();
+          anyBooks.set(b.key, mine);
+          for (const o of m.outcomes ?? []) {
+            const side = String(o.name).toLowerCase();
+            if (!o.description || (side !== 'yes' && side !== 'no') || !Number.isFinite(o.price)) continue;
+            const x = mine.get(o.description) ?? { name: o.description };
+            x[side] = american(o.price);
+            mine.set(o.description, x);
+          }
+          continue;
+        }
         const stat = API_MARKETS[sport][m.key];
         if (!stat) continue;
         if (b.key === BOOK) dkMarkets.add(m.key);
@@ -1477,6 +1531,12 @@ export function propsFromBodies(sport, bodies) {
     main.set(`${x.name}|${x.stat}`, { ...x, consensus: consensusOf(pairs, [x.over, x.under], ['over', 'under']) });
   }
   main.dkMarkets = [...dkMarkets];
+  main.anytime = new Map();
+  for (const [name, x] of anyBooks.get(BOOK) ?? []) {
+    if (!x.yes) continue;
+    const pairs = [...anyBooks].filter(([k]) => k !== BOOK).map(([, m]) => m.get(name)).filter((y) => y?.yes && y?.no).map((y) => [y.yes, y.no]);
+    main.anytime.set(name, { ...x, consensus: consensusOf(pairs, x.no ? [x.yes, x.no] : null, ['over', 'under']) });
+  }
   return main;
 }
 
@@ -2070,6 +2130,9 @@ export async function statInFinal(sport, bet, body, pk, opts = {}) {
         if (s.name === 'passing' && ['passYds', 'passAtt', 'passCmp', 'passTd', 'passInt'].includes(k)) return { passYds: num('YDS'), passAtt: num('C/ATT', 1), passCmp: num('C/ATT', 0), passTd: num('TD'), passInt: num('INT') }[k];
         if (s.name === 'rushing' && (k === 'rushYds' || k === 'rushAtt')) return k === 'rushYds' ? num('YDS') : num('CAR');
         if (s.name === 'receiving' && (k === 'recYds' || k === 'rec')) return k === 'recYds' ? num('YDS') : num('REC');
+        // (the anytime touchdown's parts: his rushing and his receiving touchdowns)
+        if (s.name === 'rushing' && k === 'rushTd') return num('TD');
+        if (s.name === 'receiving' && k === 'recTd') return num('TD');
         continue;
       }
       if (sport === 'nba') return { pts: num('PTS'), reb: num('REB'), ast: num('AST'), fg3: num('3PT'), pra: num('PTS') + num('REB') + num('AST') }[k];
@@ -2092,6 +2155,14 @@ export async function statInFinal(sport, bet, body, pk, opts = {}) {
   if (sport === 'nfl' && bet.propType === 'rushRecYds') {
     const one = (k) => statInFinal(sport, { ...bet, propType: k }, body, pk, opts);
     const [r, c] = [await one('rushYds'), await one('recYds')];
+    if (r === undefined || c === undefined) return undefined;
+    return r === null && c === null ? null : (r ?? 0) + (c ?? 0);
+  }
+  // (the NFL's anytime touchdown (anytime.mjs): his rushing and receiving touchdowns, both tables, either one waiting
+  // holding the bet; graded on its 0.5 line, over: 1 or more wins)
+  if (sport === 'nfl' && bet.propType === ANY_KEY) {
+    const one = (k) => statInFinal(sport, { ...bet, propType: k }, body, pk, opts);
+    const [r, c] = [await one('rushTd'), await one('recTd')];
     if (r === undefined || c === undefined) return undefined;
     return r === null && c === null ? null : (r ?? 0) + (c ?? 0);
   }

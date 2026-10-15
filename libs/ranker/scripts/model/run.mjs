@@ -126,24 +126,25 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
-import { MAX_LAST, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
+import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
 import { adjust, expect, fit, fitContext, gateOf, replay, round } from './ratings.mjs';
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { closeOf, closingLines, clvOf, clvSummary, propCloseOf } from './clv.mjs';
-import { OUTLIER, SPORT_KEYS, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
+import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
+import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, choose, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
@@ -813,6 +814,11 @@ async function fitTheProps(r) {
     }
     const how = reuse ? `rebuilt from the saved fit of ${saved.fit.at} (${saved.fit.finals} finals then, ${finals} now${due.refit ? `; its refit, ${due.why}, waits for the next run: ${Math.round(FIT_SPENT / 1000)}s spent refitting this one` : ''})` : `fit (${due.why})`;
     console.log(`${sport}: props' projections ${how} on ${r.rows.length} player games in ${Math.round(fitMs / 1000)}s (${Math.round((Date.now() - t0) / 1000)}s with the rows)`);
+    // (the anytime touchdown's fit (anytime.mjs, tracked only): the model that prices it, its held-out check against
+    // the plain model and the base rate, its calibration by band)
+    const any = r.props?.anytime;
+    if (any?.check) console.log(`${sport}: anytime TD ${any.reused ? 'rebuilt from the saved fit' : 'fit'} on ${any.rows} player games (${any.seconds}s): the ${any.params.kind === 'rz' ? "red zone's" : 'plain'} model; held out from ${any.check.cutDay} (${any.check.rows} rows, ${Math.round(any.check.scored * 1000) / 10}% scored): log loss ${any.check.rz} red zone, ${any.check.plain} plain, ${any.check.base} the base rate; D ${any.params.D}, K ${any.params.K}, F ${any.params.F}, L ${any.params.L}, beta ${any.params.beta}, a ${any.params.a}, b ${any.params.b}; per look ${any.params.rho?.join('/')}; calibration ${any.check.calibration.map((c) => `${c.band} ${c.n} said ${c.said} was ${c.was}`).join(', ')}`);
+    else if (sport === 'nfl') console.log(`${sport}: anytime TD not fit (no red zone read, or too few rows): not priced this run`);
     // (--fit-check: a fresh fit rebuilt at once from what was saved, on the rows read again, as the next run
     // would, and every stat's numbers and every history row's projection compared)
     if (FIT_CHECK && !reuse) {
@@ -822,6 +828,17 @@ async function fitTheProps(r) {
       const again = back.fit ? fitProps(sport, rows2, r.expPts, info, r.facts, market, totals, listed, soft, back.fit.fits) : null;
       const rebuildMs = Date.now() - t2;
       const diffs = again ? fitDiffs(r.props, again, STATS[sport], (st) => statRows(sport, st, rows2, market, totals)) : [back.why];
+      // (and the anytime touchdown's: its params, and every back's, receiver's and tight end's chance tonight)
+      const a0 = r.props.anytime;
+      const a1 = again?.anytime;
+      if (a0 || a1) {
+        if (JSON.stringify(a0?.params ?? null) !== JSON.stringify(a1?.params ?? null)) diffs.push('anytime TD params');
+        else if (a0 && a1) {
+          const last = new Map(r.rows.filter((x) => ['RB', 'FB', 'WR', 'TE'].includes(x.pos)).map((x) => [x.pid, x]));
+          const off = [...last.values()].filter((x) => { const who = { pid: String(x.pid), pos: x.pos === 'FB' ? 'RB' : x.pos, team: String(x.team), season: x.season, implied: 23 }; return a0.model.project(who)?.p !== a1.model.project(who)?.p; }).length;
+          if (off) diffs.push(`anytime TD: ${off} players' chances`);
+        }
+      }
       console.log(`${sport}: fit check: rebuilt from the saved fit in ${Math.round(rebuildMs / 1000)}s: ${diffs.length ? `DIFFERS: ${diffs.join('; ')}` : 'identical (every stat, every row projected)'}`);
       if (diffs.length) process.exitCode = 1;
     }
@@ -1079,6 +1096,8 @@ async function captureClose(r) {
         if (close) close.source = 'close';
         // (a prop whose board kept no price (the NFL's): the line and price The Odds API gave near the start)
         if (bet.market === 'prop' && close && close.odds === null && bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) < 3 * 36e5) close = { ...bet.seen, source: 'odds api near the start' };
+        // (an anytime touchdown, on no board ESPN shows: the Yes The Odds API gave near the start)
+        else if (bet.propType === ANY_KEY && !close && bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) < 3 * 36e5) close = { ...bet.seen, source: 'odds api near the start' };
         // (none read for 3 days: the last line a run saw; a close read late, the runs having stopped, is kept)
         else if (!close && bet.seen && r.now.getTime() - Date.parse(bet.start) > 3 * DAY) close = { ...bet.seen, source: 'last seen' };
         if (!close) continue;
@@ -1256,7 +1275,8 @@ function replaceOpen(r) {
 function propsAffordable(r, bets) {
   const keep = new Set();
   if (r.sport !== 'nfl' || !hasKey() || !bets.length) return keep;
-  const cost = Object.keys(API_MARKETS.nfl).length;
+  // (the anytime touchdown's market one more while it's asked: oddsapi.mjs anytimeOn)
+  const cost = Object.keys(API_MARKETS.nfl).length + ((r.anytimeMarket ?? anytimeOn()).on ? 1 : 0);
   const asked = read(PROPS_ASKED, {});
   const games = [...new Map(bets.map((b) => [b.event, b.start]))].sort((a, b) => a[1].localeCompare(b[1]));
   let n = 0;
@@ -1603,6 +1623,8 @@ function placeBets(r) {
   let dropped = 0;
   let madeRoom = 0;
   const run = r.propRun;
+  // (an anytime touchdown row is tracked whatever it says: anytime.mjs trackOnly, never staked)
+  for (const x of pending) trackOnly(x.bet);
   for (const [event, mine] of byGame) {
     const standingNow = r.ledger.bets.filter((b) => b.event === event && standing(r, b) && !ids.has(b.id));
     const plan = placeGame(mine, standingNow, sg.used, GAME_CAP, (b) => !b.published && Date.parse(b.start) - Date.now() > REPRICE_BY);
@@ -1673,6 +1695,11 @@ async function betProps(r) {
   const { sport, cfg, state, trust, ledger, at } = r;
   const run = { games: 0, priced: 0, under: 0, even: 0, evenUnder: 0, bet: 0, units: 0 };
   r.propRun = run;
+  // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
+  if (sport === 'nfl') {
+    r.anytimeMarket = { market: ANYTIME_TD.market, ...anytimeOn() };
+    console.log(`${sport}: anytime TD market ${r.anytimeMarket.on ? 'asked' : 'not asked'} with the props (tracked only; the month's projected credits ${r.anytimeMarket.projected ?? 'n/a'} of ${r.anytimeMarket.limit} allowed${r.anytimeMarket.why ? `: ${r.anytimeMarket.why}` : ''})`);
+  }
   // (the open CHECKs evaluated again this run: id -> 'note' or 'reprice', recordChecks' resolved)
   r.reEval = new Map();
   // (the open CHECKs with an owner's note unanswered this run couldn't re-price: id -> why, recordChecks'
@@ -1768,10 +1795,12 @@ async function betProps(r) {
       const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length });
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
       let fresh = false;
+      // (the anytime touchdown's prices this ask (NFL, props.mjs apiProps' anytime): tracked rows, anytimeTracked)
+      let anyApi = null;
       if (why && u.lines.oddsEvent && !DRY) {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
-        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null });
+        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null, anytime: sport === 'nfl' && !!r.anytimeMarket?.on });
         if (api) {
           fresh = true;
           asked[game.id] = times + 1;
@@ -1780,6 +1809,12 @@ async function betProps(r) {
           delete asked[`${game.id}:owed`];
           write(PROPS_ASKED, asked);
           consensusSeen(r, 'props', [...api.values()].map((x) => x.consensus).filter(Boolean), api.size);
+          anyApi = api.anytime?.size ? api.anytime : null;
+          // (an open anytime row's Yes as the stand-in for its close, as the props' below: captureClose)
+          for (const b of open.filter((x) => x.propType === ANY_KEY)) {
+            const p = anyApi && [...anyApi.values()].find((x) => nameKey(x.name) === nameKey(b.player));
+            if (p) b.seen = { at: r.at, line: ANY_LINE, odds: p.yes, fair: Number.isFinite(p.no) ? fairPair(p.yes, p.no) : round(1 / decimal(p.yes), 4) };
+          }
           board_ = withApiPrices(board_, api);
           r.lineRows.push(...propRows(game.id, board_).filter((x) => x.src === 'o'));
           run.api = (run.api ?? 0) + 1;
@@ -1819,6 +1854,8 @@ async function betProps(r) {
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
       const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null);
+      // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
+      if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
@@ -1929,6 +1966,7 @@ async function betProps(r) {
     r.pending.push({ bet, game });
     r.placed.add(id);
   }
+  if (run.anytime) console.log(`${sport}: anytime TD priced ${run.anytime.priced} in ${run.anytime.games} games, ${run.anytime.placed} new tracked rows (never staked)${run.anytime.unmatched ? `; ${run.anytime.unmatched} names not matched` : ''}${run.anytime.out ? `; ${run.anytime.out} listed out` : ''}`);
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
@@ -1997,6 +2035,52 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
   };
   bet.pick = `${bet.player} ${bet.side === 'over' ? 'Over' : 'Under'} ${bet.line} ${bet.statLabel}`;
   return bet;
+}
+
+// The NFL's anytime touchdowns for a game (anytime.mjs; the owner's ask, 2026-10-15): every back, receiver and tight
+// end the desk's book prices Yes on in this run's ask (The Odds API's player_anytime_td: props.mjs apiProps, while
+// oddsapi.mjs anytimeOn says the month can pay for it), matched to his ESPN id by the game's board, else by the
+// history's rows of the two teams (his latest); one listed out, doubtful or on IR not priced. His chance the model's
+// (the props' fit's anytime: his red-zone looks, his finishing, his long touchdowns and the game's implied points
+// over his team's usual), with its spot's live calibration, against the book's (anytime.mjs priceAnytime). TRACKED
+// ONLY: each a tracked row (anytimePlacement: intent 'track', units 0, never staked, whatever its edge), placed once
+// (r.placed), graded as any prop on his rushing and receiving touchdowns (props.mjs statInFinal anyTd), its close
+// the near-start ask's Yes (captureClose). It keeps no inputs: never taken back on news (its re-ask a credit's cost
+// for a row that stakes nothing)
+function anytimeTracked(r, game, prices, board_, exp, live, run) {
+  const fitted = r.props?.anytime;
+  if (!fitted?.model) return;
+  const teams = [String(game.home), String(game.away)];
+  // (the history's backs, receivers and tight ends of the two teams by name, his latest row's team: once a run)
+  if (!r.anyNames) {
+    r.anyNames = new Map();
+    for (const x of r.rows ?? []) if (x.team && ['RB', 'FB', 'WR', 'TE'].includes(x.pos)) r.anyNames.set(`${nameKey(x.name)}|${x.team}`, { pid: String(x.pid), name: x.name, pos: x.pos, team: String(x.team), date: x.date });
+  }
+  const onBoard = new Map(board_.filter((p) => teams.includes(String(p.athlete.team))).map((p) => [nameKey(p.athlete.name), p.athlete]));
+  const whoOf = (name) => {
+    const a = onBoard.get(nameKey(name));
+    const fromRows = teams.map((t) => r.anyNames.get(`${nameKey(name)}|${t}`)).filter(Boolean).sort((x, y) => y.date.localeCompare(x.date))[0] ?? null;
+    if (a) return { pid: String(a.id), name: a.name, pos: fromRows?.pid === String(a.id) ? fromRows.pos : (a.pos ?? fromRows?.pos ?? ''), team: String(a.team) };
+    return fromRows;
+  };
+  const pts = exp.market ?? [exp.homePts, exp.awayPts];
+  const implied = (team) => (team === String(game.home) ? pts[0] : team === String(game.away) ? pts[1] : null);
+  const hurt = new Set(teams.flatMap((t) => (live?.injuries?.get(t) ?? []).filter((x) => x.id && OUT_STATUS.test(x.status ?? '')).map((x) => String(x.id))));
+  const { priced, skipped } = priceAnytime({ prices, whoOf, model: fitted.model, season: game.season, implied, out: (pid) => hurt.has(String(pid)), calib: r.calib ?? null, trust: r.trust?.[`prop:${ANY_KEY}`]?.trust ?? 0.5 });
+  let placed = 0;
+  for (const x of priced) {
+    const id = `${game.id}:prop:${ANY_KEY}:${x.who.pid}`;
+    if (r.placed.has(id) && !DRY) continue;
+    const prop = { stat: { key: ANY_KEY, label: ANY_LABEL }, athlete: { id: x.who.pid, name: x.who.name, team: x.who.team }, line: ANY_LINE, source: 'the odds api', ...(x.consensus ? { consensus: x.consensus } : {}) };
+    const bet = propBet(r, game, { prop, pid: x.who.pid, side: 'over', model: x.model, ...(Math.abs(x.model - x.modelRaw) > 1e-9 ? { modelRaw: x.modelRaw, cal: x.cal } : {}), fair: x.fair, odds: x.yes, otherOdds: x.no, priced: true, p: x.p, ev: x.ev, projection: x.projection, move: null, guard: null }, exp, { id, ...anytimePlacement(), tested: false });
+    delete bet.inputs;
+    bet.pick = `${bet.player} ${ANY_LABEL}`;
+    if (x.fairAssumed) bet.fairAssumed = true;
+    r.pending.push({ bet, game });
+    r.placed.add(id);
+    placed++;
+  }
+  run.anytime = { priced: (run.anytime?.priced ?? 0) + priced.length, placed: (run.anytime?.placed ?? 0) + placed, games: (run.anytime?.games ?? 0) + 1, unmatched: (run.anytime?.unmatched ?? 0) + skipped.unmatched, out: (run.anytime?.out ?? 0) + skipped.out };
 }
 
 // 6c. this run's CHECKs (betGames' and betProps': checks.mjs) on the ledger's list (ledger.checks, apart from
@@ -2136,6 +2220,9 @@ function saveState(r) {
           // quarterback or not and his games missed in a row, as read tonight (no practice: ESPN's report doesn't
           // carry it; measured, not read))
           ...(r.playChance ? { playChance: playChanceSummary(r.playChance) } : {}),
+          // (the NFL's anytime touchdown, tracked only (anytime.mjs): its fit's params and held-out check, and whether
+          // its market's asked (oddsapi.mjs anytimeOn: the month's projected credits against its cap))
+          ...(r.props.anytime ? { anytime: { key: ANY_KEY, label: ANY_LABEL, tracked: true, rows: r.props.anytime.rows, params: r.props.anytime.params, check: r.props.anytime.check, market: r.anytimeMarket ?? null } } : {}),
           types: Object.entries(r.props).map(([key, f]) => ({ key, label: f.stat.label, rows: f.rows, eligible: f.eligible, params: { ...f.params, roleK: Number.isFinite(f.params.roleK) ? f.params.roleK : null }, gains: f.gains, base: f.base, check: f.check, allPlayersBias: f.checkAll?.bias ?? null, trust: trust[`prop:${key}`] ?? null })),
         }
       : (state.props ?? null),

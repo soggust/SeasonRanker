@@ -386,6 +386,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (the tracked rows' record by sport, a unit each as if bet, and all of them)
     const tracked = this.tracked.map(atUnit);
     this.trackedBySport = SPORTS.map((sport) => tally(sport.toUpperCase(), tracked.filter((b) => b.sport === sport))).filter((t) => t.bets || t.open);
+    // (and the NFL's anytime touchdowns on their own row, among the NFL's above: tracked only, never bet)
+    const anytime = tally('NFL · Anytime TD', tracked.filter((b) => b.propType === 'anyTd'));
+    if (anytime.bets || anytime.open) this.trackedBySport.push(anytime);
     this.trackedTotal = this.trackedBySport.length > 1 ? tally('Total', tracked) : null;
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
     // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
@@ -825,6 +828,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       c_rbLoad: "a back's late-season load: his carries a game from his team's 13th game on (NFL)",
       c_rbPass: 'a passing-down back by the game script (his share of touches that are targets, his side the underdog) (NFL)',
       c_lastGame: "his team's last regular-season game: week 18's rest (NFL)",
+      c_rzPass: "his team's red-zone dropbacks a game (its trips inside the 20 times its pass rate there) against the league's (NFL passing TDs)",
+      c_rzPassM: "his team's red-zone dropbacks against the league's, with the other side's red-zone defense averaged in (NFL passing TDs)",
+      c_rzGap: "his team's passing TDs against what its red-zone passes make at the league's rate (NFL passing TDs)",
       ex: "early exit: his chance of a short game (hurt, benched, pulled) shaping the chances around his projection, its average unchanged (NFL receiving yards)",
       a_WR: 'opponent allowed to wide receivers',
       a_TE: 'opponent allowed to tight ends',

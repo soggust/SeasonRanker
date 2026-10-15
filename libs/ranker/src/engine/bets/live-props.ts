@@ -22,6 +22,12 @@ export function liveStat(sport: string, propType: string, athlete: string, body:
     const rec = liveStat(sport, 'recYds', athlete, body);
     return rush === null && rec === null ? null : (rush ?? 0) + (rec ?? 0);
   }
+  // (the anytime touchdown, tracked only: his rushing and receiving touchdowns)
+  if (sport === 'nfl' && propType === 'anyTd') {
+    const rush = liveStat(sport, 'rushTd', athlete, body);
+    const rec = liveStat(sport, 'recTd', athlete, body);
+    return rush === null && rec === null ? null : (rush ?? 0) + (rec ?? 0);
+  }
   for (const team of body.boxscore?.players ?? []) {
     for (const s of team.statistics ?? []) {
       const a = (s.athletes ?? []).find((x) => String(x.athlete?.id) === athlete);
@@ -35,6 +41,8 @@ export function liveStat(sport: string, propType: string, athlete: string, body:
         }
         if (s.name === 'rushing' && (propType === 'rushYds' || propType === 'rushAtt')) return propType === 'rushYds' ? num('YDS') : num('CAR');
         if (s.name === 'receiving' && (propType === 'recYds' || propType === 'rec')) return propType === 'recYds' ? num('YDS') : num('REC');
+        if (s.name === 'rushing' && propType === 'rushTd') return num('TD');
+        if (s.name === 'receiving' && propType === 'recTd') return num('TD');
         continue;
       }
       if (sport === 'nba') return { pts: num('PTS'), reb: num('REB'), ast: num('AST'), fg3: num('3PT'), pra: num('PTS') + num('REB') + num('AST') }[propType] ?? null;

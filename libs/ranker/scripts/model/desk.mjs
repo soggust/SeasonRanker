@@ -280,7 +280,9 @@ export const SAME_GAME_KINDS = ['player', 'game'];
 const sideSign = (b) => (b.side === 'over' ? 1 : b.side === 'under' ? -1 : 0);
 // (a pair's kind: one player's two props, or any other two)
 const kindOf = (a, b) => (a.athlete != null && a.athlete === b.athlete ? 'player' : 'game');
-const gradedProps = (list) => list.filter((b) => b.market === 'prop' && !b.void && (b.status === 'won' || b.status === 'lost') && b.p > 0 && b.p < 1 && sideSign(b) && b.event != null);
+// (the NFL's anytime touchdowns (anytime.mjs: 'anyTd', tracked only) never among them: a market the desk never
+// stakes, so its rows don't move how the staked props are sized together)
+const gradedProps = (list) => list.filter((b) => b.market === 'prop' && b.propType !== 'anyTd' && !b.void && (b.status === 'won' || b.status === 'lost') && b.p > 0 && b.p < 1 && sideSign(b) && b.event != null);
 const missOf = (b) => ((b.status === 'won') - b.p) / Math.sqrt(b.p * (1 - b.p));
 const byEvent = (list) => {
   const out = new Map();

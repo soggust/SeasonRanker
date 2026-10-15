@@ -165,7 +165,9 @@ test('kept where the held-out games bore them out: lineupK on MLB strikeouts, la
   const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
   const { ctxKeys, ROUND_C } = await import('../libs/ranker/scripts/model/project.mjs');
   const on = Object.entries(STATS).flatMap(([sport, list]) => list.flatMap((st) => ctxKeys(st).filter((k) => ROUND_C.includes(`c_${k}`)).map((k) => `${sport} ${st.key} ${k}`)));
-  assert.deepEqual(on, ['nfl passYds lastGame', 'nfl passAtt lastGame', 'mlb k lineupK', 'mlb tb hitEnv']);
+  // (and the red zone on passing TDs (rzPass, 2026-10-15): on its ctx so the gate judges it each fit, left out so far:
+  // tests/model-red-zone)
+  assert.deepEqual(on, ['nfl passYds lastGame', 'nfl passAtt lastGame', 'nfl passTd rzPass', 'mlb k lineupK', 'mlb tb hitEnv']);
   // (the shrinkage tried again with them on MLB strikeouts and total bases: left out, the pull on hits alone)
   assert.ok(!STATS.mlb.find((s) => s.key === 'k').middle && !STATS.mlb.find((s) => s.key === 'tb').middle);
 });

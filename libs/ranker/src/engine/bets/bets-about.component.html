@@ -105,6 +105,7 @@
         <li><b>Funnel and pace</b>: whether a defense pushes teams to pass or run, and how many plays its opponents run.</li>
         <li><b>Expected plays</b> (NFL): how many plays his team should run tonight, from how many plays a game both teams' games usually have and how much of the ball each side usually keeps (its share of the plays, standing in for time of possession), against the games he's played this season. His own team's pace is already in his numbers, so only tonight's difference counts, and it replaces the defense's pace rather than adding to it. It's kept on passing attempts, where it priced the held-out games better; it was tried on the other yardage and catch stats and left out.</li>
         <li><b>Week 18</b> (NFL): a quarterback's passing yards and attempts are trimmed in his team's last regular-season game, when contenders rest starters and others play it out. Kept only because the held-out games (week 18s the model hadn't seen) came out better with it.</li>
+        <li><b>Red zone</b> (NFL passing TDs): how often a quarterback's team gets inside the 20 and how often it throws there, against the league's, from the play-by-play's field position. Measured on games the model hadn't seen, it didn't help: a quarterback's own touchdown rate already carries his team's red-zone volume, and the busiest red-zone passers tend to come back to the pack. Every fit tries it again, so it comes in (at full size, or as a soft term) only once the held-out games are better with it.</li>
         <li><b>Tonight's lineup</b> (MLB): a starting pitcher's strikeouts read the other side's posted lineup, each batter's strikeout rate weighted by how often his slot bats, against the league's. His props (strikeouts and outs) wait for that lineup to post.</li>
         <li><b>Ballpark and weather</b> (MLB): a batter's total bases move with tonight's park against the parks his own numbers came from (Coors up, Petco down; a Rockie's own numbers already carry half a season at Coors), the temperature and the wind blowing out or in, as one adjustment. The game's expected runs already carry some of it; this is what's left. Kept on total bases, where the held-out games came out better; on hits it fell just short, so it isn't used there.</li>
         <li><b>Team allocation</b>: each team's game is projected first (its own total of the stat a game, in some forms against the opponent's allowed or with the betting lines' implied points), then every player's projection is pulled part of the way toward his share of it, so a team's players add up to the team's: its backs' carries to its runs, the NBA's assists to the team's. A starter back from an absence counts in his teammates' total, so his return doesn't lift them. It's kept on NFL carries and NBA assists, where it priced the held-out games better; tried on NFL rushing yards and receiving stats, the NBA's other stats and the NHL's shots and points, it didn't help or pushed the projections' overall lean the wrong way, so it's left out there.</li>
@@ -142,6 +143,16 @@
         minimum) is tracked, not bet. Before then the bot placed it at 0.5 units for the data (an action bet); those
         stay on the record as they were. A tracked market is graded like a bet and still teaches the trust, the
         closing-line value and the self-check, but it's never in the record, the bankroll or the picks.
+      </p>
+
+      <p>
+        <b>Anytime touchdowns</b> (NFL backs, receivers and tight ends): tracked only, never bet. The bot prices DraftKings'
+        "anytime TD scorer" from its own model: a player's red-zone looks a game (targets and carries inside the 20, the
+        10 and the 5, end-zone targets), what a look of each kind is worth in touchdowns league-wide, how well he has
+        finished his own looks, his long touchdowns, and how many points his team is expected to score tonight against
+        its usual. On games the model hadn't seen it beat the same model without the red zone and the base rate, and its
+        chances matched how often players scored. Each one is graded on his rushing and receiving touchdowns and shows
+        with the other tracked markets; it's asked of the odds service only while the month's credits have room.
       </p>
 
       <h4>Trust and CLV</h4>

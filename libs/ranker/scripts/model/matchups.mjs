@@ -366,7 +366,68 @@ export function nflRoundC() {
   };
 }
 
-export function nflMatchups(rows, pbp = null, { learned = false, listed = null } = {}) {
+// The NFL's red zone by team (props.mjs CTX rzPass, passing TDs), read before a game and learned after its day,
+// from football.mjs redZoneOf's sides (rz: the context's facts.rz by game; none, every value 0): a team's red-zone
+// trips a game and its pass rate there, this season's with last season's at half (as proe), each pulled toward
+// the league's running level (RZ_TRIPS_N games' worth, RZ_PASS_N plays'), and the other side's defense's the same
+// (the trips it allows and the pass rate against it). Each row gets
+//   rzPass    log of (his team's trips a game over the league's) times (its red-zone pass rate over the league's):
+//             its red-zone dropbacks a game against an average team's; about 0 over the league (mean-preserving)
+//   rzPassM   the same with the other side's defense in it: the average of his offense's and the defense's
+//   rzTrips, rzRate  the parts, for the log and the projection's words
+// A team with no red zone read yet is the league's (0).
+export const RZ_TRIPS_N = 4;
+export const RZ_PASS_N = 40;
+const RZ_LG_N = 50;
+export function nflRedZone() {
+  const off = new Map();
+  const def = new Map();
+  // (the league's running levels, from priors worth RZ_LG_N team-games (and their plays) so the first games
+  // don't set them alone)
+  const lg = { trips: 3.2, rate: 0.55, n: RZ_LG_N, plays: RZ_LG_N * 9, pass: 5, ptd: 1.5 };
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  const read = (t, season) => {
+    const w = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    const trips = (w * (t?.trips ?? 0) + RZ_TRIPS_N * lg.trips) / (w * (t?.g ?? 0) + RZ_TRIPS_N);
+    const rate = (w * (t?.pass ?? 0) + RZ_PASS_N * lg.rate) / (w * (t?.plays ?? 0) + RZ_PASS_N);
+    // (its passing TDs against what its red-zone passes make at the league's TDs a red-zone pass: its passes a
+    // game and its passing TDs a game, each pulled toward the league's by RZ_TRIPS_N games' worth)
+    const ratio = lg.ptd / lg.pass;
+    const passG = (w * (t?.pass ?? 0) + RZ_TRIPS_N * lg.pass) / (w * (t?.g ?? 0) + RZ_TRIPS_N);
+    const ptdG = (w * (t?.ptd ?? 0) + RZ_TRIPS_N * lg.ptd) / (w * (t?.g ?? 0) + RZ_TRIPS_N);
+    return { trips, rate, v: Math.log(trips / lg.trips) + Math.log(rate / lg.rate), gap: Math.log((ratio * passG) / ptdG) };
+  };
+  const add = (m, id, season, [trips, plays, pass], ptd) => {
+    const t = m.get(id);
+    const keep = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    m.set(id, { season, g: (t?.g ?? 0) * keep + 1, trips: (t?.trips ?? 0) * keep + trips, plays: (t?.plays ?? 0) * keep + plays, pass: (t?.pass ?? 0) * keep + pass, ptd: (t?.ptd ?? 0) * keep + ptd });
+  };
+  return {
+    of: (teamId, oppId, season) => {
+      const o = read(off.get(teamId), season);
+      const d = read(def.get(oppId), season);
+      return { rzPass: r3(o.v), rzPassM: r3((o.v + d.v) / 2), rzGap: r3(o.gap), rzTrips: r3(o.trips), rzRate: r3(o.rate) };
+    },
+    // (a team-game learned: its own side's [trips, plays, passes] and the other side's defense's the same)
+    learn: (g, side) => {
+      if (!Array.isArray(side) || side.length < 3) return;
+      const ptd = (g.rows ?? []).reduce((t, r) => t + (r.s?.passTd ?? 0), 0);
+      add(off, g.team, g.season, side, ptd);
+      add(def, g.opp, g.season, side, ptd);
+      lg.n++;
+      const k = Math.min(lg.n, 2000);
+      lg.trips += (side[0] - lg.trips) / k;
+      lg.pass += (side[2] - lg.pass) / k;
+      lg.ptd += (ptd - lg.ptd) / k;
+      lg.plays += side[1];
+      if (side[1] > 0) lg.rate += ((side[2] / side[1] - lg.rate) * side[1]) / Math.min(lg.plays, 20000);
+    },
+  };
+}
+// (a game's side from football.mjs redZoneOf: the home team's [trips, plays, passes], or the away's)
+export const sideOfRz = (x, home) => (x ? (home ? x.h : x.a) : null) ?? null;
+
+export function nflMatchups(rows, pbp = null, { learned = false, listed = null, rz = null } = {}) {
   const games = new Map();
   for (const r of rows) {
     if (!r.team || !r.opp || !r.game) continue;
@@ -394,6 +455,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null }
   const possOf = (id, season) => decay(poss.get(id) ?? { season, tot: 0, shr: 0, n: 0 }, season);
   const funnel = passFunnel();
   const roundC = nflRoundC();
+  const redZone = nflRedZone();
   // (each team's games this season so far: a row's teamGame is the team's game number tonight, 1 for its first)
   const played_ = new Map();
   const gameNo = (id, season) => (played_.get(id)?.season === season ? played_.get(id).n : 0) + 1;
@@ -841,8 +903,11 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null }
         r.oppDB = dOut?.DB ?? 0;
         r.oppFront = dOut?.FR ?? 0;
         Object.assign(r, roundC.of(r.pid, g.team, g.season, r.pos, r.teamGame));
+        Object.assign(r, redZone.of(g.team, g.opp, g.season));
       }
     }
+    // (the red zone learned from the day's games, after they're read: each team-game once)
+    for (const g of batch) redZone.learn(g, sideOfRz(rz?.[g.game], g.home));
     // (round C's usage and pass rate over expected learned from the day's games, after they're read)
     for (const g of batch) roundC.learn(g, sideOfPlays(pbp?.[g.game], g.home));
     // (each side's defenders in the day's games learned)
@@ -990,7 +1055,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null }
       const p = POS(pos);
       // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
-      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => ({ ...absorb.dump(), read: learned }),

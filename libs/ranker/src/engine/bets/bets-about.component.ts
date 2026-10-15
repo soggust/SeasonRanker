@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AboutSection } from '../about/about-frame.component';
 import { BANDS } from './bet-why';
-import { CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, sameGameText } from './desk-model';
+import { AnytimeFit, CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, sameGameText } from './desk-model';
 import { MARKET_NAMES, SPORTS } from './desk-math';
 
 // The Bets page's About (its header's info button): the shared About frame (about/about-frame.component) with the
@@ -131,6 +131,9 @@ const TERM_NAMES: Record<string, string> = {
   c_rbLoad: "a back's late-season load: his carries a game from his team's 13th game on (NFL)",
   c_rbPass: 'a passing-down back by the game script (his share of touches that are targets, his side the underdog) (NFL)',
   c_lastGame: "his team's last regular-season game: week 18's rest (NFL)",
+  c_rzPass: "his team's red-zone dropbacks a game (its trips inside the 20 times its pass rate there) against the league's (NFL passing TDs)",
+  c_rzPassM: "his team's red-zone dropbacks against the league's, with the other side's red-zone defense averaged in (NFL passing TDs)",
+  c_rzGap: "his team's passing TDs against what its red-zone passes make at the league's rate (NFL passing TDs)",
   ex: "early exit: his chance of a short game (hurt, benched, pulled) shaping the chances around his projection, its average unchanged (NFL receiving yards)",
   c_oppGoalie: 'opposing goalie',
   c_slot: 'batting-order slot',
@@ -237,7 +240,7 @@ export class BetsAboutComponent implements OnInit {
         sizeText: t.kept ? `${signed(t.size)} ${t.unit}` : 'left out',
         gainText: t.gain === null || t.gain === undefined ? '-' : `${signed(t.gain)}%`,
       })),
-      props: props.map((t) => this.propOf(t, trustText(t.trust ?? s.trust?.[`prop:${t.key}`]))),
+      props: [...props.map((t) => this.propOf(t, trustText(t.trust ?? s.trust?.[`prop:${t.key}`]))), ...(s.props?.anytime ? [anytimeView(s.props.anytime)] : [])],
       playChance: playChanceText(s.props?.playChance),
       sameGame: sameGameText(s.sameGame),
       calib: calibText(s.calib),
@@ -294,4 +297,26 @@ export class BetsAboutComponent implements OnInit {
   epochOf(s: SportView): string {
     return s.epoch ?? EPOCH_FALLBACK;
   }
+}
+
+// (the NFL's anytime touchdown as a prop type's row: its held-out check in a line, its settings as its terms;
+// tracked only, so no trust)
+function anytimeView(a: AnytimeFit): PropView {
+  const c = a.check;
+  const p = a.params;
+  const market = a.market ? (a.market.on ? 'asked with the props' : `not asked (${a.market.why ?? 'off'})`) : 'not asked yet';
+  const model = p.kind === 'rz' ? "the red zone's model" : 'the plain model (his touchdowns a game)';
+  const bands = c.calibration.map((x) => `${Math.round(x.said * 100)}% said, ${Math.round(x.was * 100)}% scored (${x.n})`).join('; ');
+  const base = `Tracked only, never bet · ${model} · held out from ${c.cutDay}: log loss ${c.rz} with the red zone, ${c.plain} without, ${c.base} at the base rate (${(c.scored * 100).toFixed(1)}% scored) · calibration ${bands} · market ${market}`;
+  const row = (name: string, value: string): TermRow => ({ name, value, kept: true, gain: null, up: false, down: false });
+  const terms = [
+    row('touchdowns a red-zone look (targets inside the 5, 6 to 10, 11 to 20; carries the same; end-zone targets)', p.rho.join(' · ')),
+    row('recent games: each game back counts this times the one after it', String(p.D)),
+    row('looks pulled toward his position by (games)', String(p.K)),
+    row("finishing (his red-zone touchdowns over what his looks make) pulled toward even by (touchdowns)", String(p.F)),
+    row('long touchdowns (from outside the 20) pulled toward his position by (games)', String(p.L)),
+    row("game script: his team's implied points tonight over its usual, as a power", String(p.beta)),
+    row('recalibration (a + b logit)', `${p.a} · ${p.b}`),
+  ];
+  return { key: a.key, label: `${a.label} (tracked only)`, rows: a.rows, base, terms, trust: '-' };
 }

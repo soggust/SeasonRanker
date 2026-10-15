@@ -772,7 +772,7 @@ const DRAFT_GAIN = 0.0003;
 // whole stat's gate (the air and home signed, each side's bias no larger: SIGNED); the NFL's own line changed,
 // a back's late-season load and the last regular-season game on their own rows' (SUBGROUP), the pass rate over
 // expected on the whole stat's, a passing-down back by the script signed)
-export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame', 'c_parkRel', 'c_hitEnv'];
+export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame', 'c_parkRel', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap'];
 const ROUND_C_GRID = {
   c_lineupK: [0.25, 0.5, 0.75, 1, 1.25],
   c_lineupKd: [0.25, 0.5, 0.75, 1, 1.25],
@@ -790,6 +790,10 @@ const ROUND_C_GRID = {
   c_lastGame: [-0.15, -0.1, -0.05, 0.05],
   c_parkRel: [0.25, 0.5, 0.75, 1],
   c_hitEnv: [0.025, 0.05, 0.075, 0.1],
+  // (the red zone's dropbacks on passing TDs (props.mjs CTX rzPass, rzPassM), per 10% over the league's)
+  c_rzPass: [-0.02, -0.01, 0.01, 0.02, 0.03, 0.05],
+  c_rzPassM: [-0.02, -0.01, 0.01, 0.02, 0.03, 0.05],
+  c_rzGap: [-0.01, 0.005, 0.01, 0.02, 0.03, 0.05],
 };
 // The soft terms (the owner's ask, 2026-10-15: a small real effect kept at a small weight the runs keep re-tuning,
 // not all or nothing at the floor). A late term the gate leaves out on its gain alone (under MIN_GAIN, over 0; or
@@ -950,7 +954,7 @@ const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeas
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
 // every player's, SUBGROUP_N or more each), each one's held-out bias no larger: a size that over-corrects one
 // side and under-corrects the other passes the whole stat's gate alone)
-const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB', 'c_hitEnv']);
+const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap']);
 const SIGNED_AT = 0.3;
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left
