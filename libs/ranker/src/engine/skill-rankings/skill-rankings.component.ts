@@ -15,8 +15,8 @@ import {
 import { AWARD_INFO, AwardWin, awardsFor } from '@sport/awards';
 import { SPORT } from '@sport/sport';
 import { extras, rowTeamNames } from '@ranker/engine/row-fields';
-import { badgeColor, whiteLogo } from '@sport/team-colors';
 import { logoForSeason } from '@sport/logo-eras';
+import { TeamLook, teamLook } from '@ranker/engine/team-look';
 import { SportSetting, SportSettings } from '@ranker/engine/sport';
 import { PositionService, RankerSettings } from '@ranker/engine/position.service';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
@@ -1143,18 +1143,14 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return wins;
   }
 
-  // The team card: its color, the logo as it looked in the table's season, drawn in white for a logo
-  // that's dark lettering (the Giants')
-  teamBadge(unit: { teamLogo: string }): string {
-    return badgeColor(unit.teamLogo);
+  // The team card: the team's look in the table's season (team-look.ts: that era's logo on its chip, drawn
+  // in white for a logo that's lettering, the Giants')
+  teamLook(unit: { teamLogo: string }): TeamLook {
+    return teamLook(SPORT.id, unit.teamLogo, this.season);
   }
 
   seasonLogo(teamLogo: string): string {
     return logoForSeason(teamLogo, this.season);
-  }
-
-  teamLogoWhite(unit: { teamLogo: string }): boolean {
-    return whiteLogo(unit.teamLogo);
   }
 
   // The player's headshot (a cutout on a clear background, sized for the team card; w: its width): the

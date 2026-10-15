@@ -1,0 +1,345 @@
+{
+ "source": "cd20eeecc2ec",
+ "logos": {
+  "ANA.svg": {
+   "hash": "e640b24bceb1",
+   "vis": 0.948,
+   "edge": 1
+  },
+  "ANA_20062007-20122013.svg": {
+   "hash": "e1547fa39af6",
+   "vis": 0.599,
+   "edge": 1
+  },
+  "ANA_20132014-20232024.svg": {
+   "hash": "d8a9bf09445b",
+   "vis": 0.612,
+   "edge": 1
+  },
+  "ARI_20142015-20202021.svg": {
+   "hash": "265a9f179be2",
+   "vis": 0.623,
+   "edge": 1
+  },
+  "ARI_20202021-20232024.svg": {
+   "hash": "31207f944fba",
+   "vis": 0.643,
+   "edge": 1
+  },
+  "ATL_19992000-20102011.svg": {
+   "hash": "4106b498e967",
+   "vis": 0.659,
+   "edge": 1
+  },
+  "BOS.svg": {
+   "hash": "597b57025b7f",
+   "vis": 0.798,
+   "edge": 1
+  },
+  "BOS_20082009-20222023.svg": {
+   "hash": "16ba24abfca2",
+   "vis": 0.493,
+   "edge": 1
+  },
+  "BOS_20232024.svg": {
+   "hash": "b2e0ce154c4c",
+   "vis": 0.798,
+   "edge": 1
+  },
+  "BUF.svg": {
+   "hash": "d399e0ad451d",
+   "vis": 0.388,
+   "edge": 1
+  },
+  "BUF_20062007-20092010.svg": {
+   "hash": "eff69e387605",
+   "vis": 0.753,
+   "edge": 1
+  },
+  "BUF_20102011-20192020.svg": {
+   "hash": "3ced095aef43",
+   "vis": 0.79,
+   "edge": 0.993
+  },
+  "CAR.svg": {
+   "hash": "c75410d5ca94",
+   "vis": 0.713,
+   "edge": 1
+  },
+  "CAR_19992000-20122013.svg": {
+   "hash": "c4fe4e4a80c7",
+   "vis": 0.718,
+   "edge": 1
+  },
+  "CBJ.svg": {
+   "hash": "cf615e61c774",
+   "vis": 0.557,
+   "edge": 0.962
+  },
+  "CGY.svg": {
+   "hash": "c17073ad8669",
+   "vis": 0.312,
+   "edge": 1
+  },
+  "CGY_19941995-20192020.svg": {
+   "hash": "0faa48beaf97",
+   "vis": 0.363,
+   "edge": 1
+  },
+  "CHI.svg": {
+   "hash": "cc96e8d41a90",
+   "vis": 0.951,
+   "edge": 0.988
+  },
+  "CHI_19981999-20242025.svg": {
+   "hash": "b18ab69070b7",
+   "vis": 0.608,
+   "edge": 0.959
+  },
+  "COL.svg": {
+   "hash": "343a5b4ae153",
+   "vis": 0.787,
+   "edge": 1
+  },
+  "DAL.svg": {
+   "hash": "6df05354bd46",
+   "vis": 0.835,
+   "edge": 0
+  },
+  "DAL_19941995-20122013.svg": {
+   "hash": "4a38671ffaf3",
+   "vis": 0.731,
+   "edge": 0.996
+  },
+  "DAL_20122013-20202021.svg": {
+   "hash": "6b8cfdb58000",
+   "vis": 0.828,
+   "edge": 0
+  },
+  "DET.svg": {
+   "hash": "1f8a7dcbbf51",
+   "vis": 1,
+   "edge": 1
+  },
+  "EDM.svg": {
+   "hash": "614834e4a8c2",
+   "vis": 0.491,
+   "edge": 1
+  },
+  "EDM_19971998-20102011.svg": {
+   "hash": "48df6e287459",
+   "vis": 0.518,
+   "edge": 1
+  },
+  "EDM_20112012-20162017.svg": {
+   "hash": "45b96da5e3b5",
+   "vis": 0.493,
+   "edge": 1
+  },
+  "EDM_20172018-20212022.svg": {
+   "hash": "2c36e6be343b",
+   "vis": 0.516,
+   "edge": 1
+  },
+  "FLA.svg": {
+   "hash": "b174801960b1",
+   "vis": 0.852,
+   "edge": 1
+  },
+  "FLA_19992000-20152016.svg": {
+   "hash": "a6c815dba59f",
+   "vis": 0.622,
+   "edge": 0.892
+  },
+  "LAK.svg": {
+   "hash": "ac86750b0f4c",
+   "vis": 0.654,
+   "edge": 1
+  },
+  "LAK_20022003-20092010.svg": {
+   "hash": "9f778520eedf",
+   "vis": 0.684,
+   "edge": 0.743
+  },
+  "LAK_20102011.svg": {
+   "hash": "8ecfe517c2ba",
+   "vis": 0.678,
+   "edge": 0.73
+  },
+  "LAK_20112012-20182019.svg": {
+   "hash": "1e58dc8e4d02",
+   "vis": 0.475,
+   "edge": 1
+  },
+  "LAK_20192020-20232024.svg": {
+   "hash": "240ae1242488",
+   "vis": 0.578,
+   "edge": 1
+  },
+  "MIN.svg": {
+   "hash": "d508d48ce2d9",
+   "vis": 0.437,
+   "edge": 1
+  },
+  "MIN_20002001-20122013.svg": {
+   "hash": "9504df5ce4aa",
+   "vis": 0.484,
+   "edge": 0.996
+  },
+  "MTL.svg": {
+   "hash": "0255420dd2a0",
+   "vis": 0.624,
+   "edge": 1
+  },
+  "NJD.svg": {
+   "hash": "b5c2f1223a68",
+   "vis": 0.563,
+   "edge": 1
+  },
+  "NSH.svg": {
+   "hash": "642ac1990f7f",
+   "vis": 0.801,
+   "edge": 0.292
+  },
+  "NSH_19981999-20102011.svg": {
+   "hash": "78560f1aca04",
+   "vis": 0.855,
+   "edge": 0.6
+  },
+  "NYI.svg": {
+   "hash": "7661b24a2325",
+   "vis": 0.683,
+   "edge": 1
+  },
+  "NYI_19971998-20092010.svg": {
+   "hash": "42c80907bfcf",
+   "vis": 0.646,
+   "edge": 1
+  },
+  "NYR.svg": {
+   "hash": "b4ed6794c25f",
+   "vis": 0.568,
+   "edge": 0.829
+  },
+  "OTT.svg": {
+   "hash": "7963746f04bb",
+   "vis": 0.751,
+   "edge": 1
+  },
+  "OTT_20072008-20192020.svg": {
+   "hash": "40bc4e7a2806",
+   "vis": 0.875,
+   "edge": 1
+  },
+  "PHI.svg": {
+   "hash": "f012862d9efa",
+   "vis": 0.962,
+   "edge": 1
+  },
+  "PHI_19992000-20222023.svg": {
+   "hash": "faed76fc0890",
+   "vis": 0.964,
+   "edge": 1
+  },
+  "PHX_20032004-20132014.svg": {
+   "hash": "265a9f179be2",
+   "vis": 0.623,
+   "edge": 1
+  },
+  "PIT.svg": {
+   "hash": "b3c0b163eb0e",
+   "vis": 0.645,
+   "edge": 1
+  },
+  "PIT_20062007-20152016.svg": {
+   "hash": "6e07676b1230",
+   "vis": 0.624,
+   "edge": 1
+  },
+  "SEA.svg": {
+   "hash": "1549dee10d13",
+   "vis": 0.718,
+   "edge": 1
+  },
+  "SJS.svg": {
+   "hash": "3de6b1b08132",
+   "vis": 0.812,
+   "edge": 0.957
+  },
+  "SJS_20082009-20232024.svg": {
+   "hash": "d4aedfd461e9",
+   "vis": 0.817,
+   "edge": 0.97
+  },
+  "STL.svg": {
+   "hash": "fa4e3a69a28b",
+   "vis": 1,
+   "edge": 1
+  },
+  "STL_20082009-20242025.svg": {
+   "hash": "ee811d801309",
+   "vis": 0.909,
+   "edge": 0.996
+  },
+  "TBL.svg": {
+   "hash": "ef484b9d0420",
+   "vis": 1,
+   "edge": 1
+  },
+  "TBL_20072008-20102011.svg": {
+   "hash": "060c3bd3403a",
+   "vis": 0.777,
+   "edge": 0.98
+  },
+  "TOR.svg": {
+   "hash": "4fca1a9c15bc",
+   "vis": 0.904,
+   "edge": 1
+  },
+  "TOR_19871988-20152016.svg": {
+   "hash": "abbfa1176ea2",
+   "vis": 0.875,
+   "edge": 1
+  },
+  "UTA.svg": {
+   "hash": "a7dd70683bae",
+   "vis": 0.916,
+   "edge": 0.994
+  },
+  "UTA_20242025-20242025.svg": {
+   "hash": "4de241f4b6a8",
+   "vis": 0.964,
+   "edge": 1
+  },
+  "VAN.svg": {
+   "hash": "12271e641ec5",
+   "vis": 0.571,
+   "edge": 1
+  },
+  "VAN_20072008-20182019.svg": {
+   "hash": "ddcc8552a021",
+   "vis": 0.643,
+   "edge": 0.987
+  },
+  "VGK.svg": {
+   "hash": "d0e7329939e2",
+   "vis": 0.499,
+   "edge": 1
+  },
+  "WPG.svg": {
+   "hash": "cef661120992",
+   "vis": 0.549,
+   "edge": 1
+  },
+  "WSH.svg": {
+   "hash": "099467bf69a4",
+   "vis": 0.555,
+   "edge": 1
+  },
+  "WSH_secondary.svg": {
+   "hash": "b4cbdddf80e6",
+   "vis": 0.786,
+   "edge": 1
+  }
+ }
+}

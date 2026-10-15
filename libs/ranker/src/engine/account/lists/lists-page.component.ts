@@ -2,7 +2,7 @@ import { Component, HostListener, effect, inject } from '@angular/core';
 import { goHome, pageHash } from '@ranker/engine/page-url';
 import { SPORT } from '@sport/sport';
 import { SITE_SPORTS } from '@ranker/core/sports';
-import { badgeColor } from '@sport/team-colors';
+import { teamLook } from '@ranker/engine/team-look';
 import { AccountService } from '../account.service';
 import { ListsStore } from './lists.store';
 import { SavedList, listPath, logoUrl, readListHash } from './lists-helpers';
@@ -81,7 +81,7 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
                         <li>
                           <span class="top-rank" [class.first]="i === 0">{{ i + 1 }}</span>
                           @if (row.photo) {
-                            <img class="top-photo" [src]="row.photo" alt="" loading="lazy" [style.--team-badge]="badge(list, row.teamLogo)" />
+                            <img class="top-photo" [src]="row.photo" alt="" loading="lazy" [style]="chip(list, row.teamLogo)" />
                           } @else if (logo(list, row.teamLogo); as src) {
                             <img class="top-logo" [src]="src" alt="" loading="lazy" />
                           } @else {
@@ -159,9 +159,10 @@ export class ListsPageComponent {
     return logoUrl(list.sport, teamLogo);
   }
 
-  // (a headshot on its team's color: this sport's lists, whose teams the colors know)
-  badge(list: SavedList, teamLogo: string | null): string | null {
-    return list.sport === SPORT.id && teamLogo ? badgeColor(teamLogo) : null;
+  // (a headshot on its team's color: team-look.ts, any sport's)
+  chip(list: SavedList, teamLogo: string | null): Record<string, string> | null {
+    const look = teamLook(list.sport, teamLogo, list.season);
+    return look.key ? look.chip : null;
   }
 
   visTitle(list: SavedList): string {

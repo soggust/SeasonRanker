@@ -37,10 +37,10 @@ import {
   toWin,
 } from './desk-math';
 import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, sameGameText } from './desk-model';
-import { SummaryBox, athleteColors, liveStat, meterColor } from './live-props';
+import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { Confidence, confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
-import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
+import { pickTeamColor, splitPick } from './pick-style';
 import { DATE_RANGES, DateRange, inRange } from './date-range';
 
 // The algorithm's admin panel (the Bets page, dev only): the code-only desk's play-money betting
@@ -216,8 +216,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   scores = new Map<string, { text: string; score: string; detail: string; final: boolean }>();
   // (each in-play prop's stat so far, by the bet's id, from its game's box score every minute)
   propNow = new Map<string, number | null>();
-  // (an in-play prop's player's team colors, from the box score: an older prop's color, without its team)
-  private livePropColors = new Map<string, { color?: string; alternateColor?: string }>();
+  // (an in-play prop's player's team, its ESPN id, from the box score: an older prop's color, without its team)
+  private livePropTeams = new Map<string, string>();
   // (each in-play game's score as numbers and whether it's over: the bets settled here as soon as they're
   // decided, pending the next run's official grading)
   private boards = new Map<string, Board>();
@@ -492,8 +492,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       const body = await getJson<SummaryBox>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[mine[0].sport]}/summary?event=${event}`);
       for (const b of mine) {
         this.propNow.set(b.id, liveStat(b.sport, b.propType!, String(b.athlete), body));
-        const colors = athleteColors(String(b.athlete), body);
-        if (colors) this.livePropColors.set(b.id, colors);
+        const team = athleteTeam(String(b.athlete), body);
+        if (team) this.livePropTeams.set(b.id, team);
         if (!b.team) this.pickColors.delete(b.id);
       }
     }
@@ -659,13 +659,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return [away ?? '', home ?? ''];
   }
 
-  // Each sport's teams' colors, once a visit (pick-style.ts)
-  private teamColors: TeamColors = new Map();
-
+  // (each team's abbreviation by its ESPN id, from the sport's teams.json: a prop's player's side)
   private async loadTeams(): Promise<void> {
-    this.teamColors = await loadTeamColors(this.allBets.map((b) => b.sport));
-    this.pickColors.clear();
-    // (each team's abbreviation by its ESPN id, from the same teams.json: a prop's player's side)
     for (const sport of new Set(this.allBets.map((b) => b.sport))) {
       const file = await getJson<{ teams?: Record<string, { id: string }> }>(`/${sport}/data/model/teams.json`);
       for (const [abbr, t] of Object.entries(file?.teams ?? {})) this.teamAbbr.set(`${sport}#${t.id}`, abbr);
@@ -675,7 +670,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (a team's abbreviation by "<sport>#<ESPN id>")
   private teamAbbr = new Map<string, string>();
 
-  // A bet's own color, its team's (never one that reads as a result: live-props.ts meterColor): a prop its
+  // A bet's own color, its team's (never one that reads as a result: pick-style.ts pickTeamColor): a prop its
   // player's team (the one it was placed with, or the box score's once he's playing), a side the team it took;
   // a total, no one's: null, the board's light (as with no team known). Kept, so the template asks once.
   private pickColors = new Map<string, string | null>();
@@ -686,9 +681,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     if (kept !== undefined) return kept;
     const [away, home] = this.teamsOf(b);
     // (an older prop, placed without its player's team: the box score's, once he's playing)
-    const live = b.market === 'prop' && !b.team ? this.livePropColors.get(b.id) : undefined;
+    const live = b.market === 'prop' && !b.team ? this.livePropTeams.get(b.id) : undefined;
     if (b.market === 'prop' && !b.team && !live) return null;
-    const color = live ? meterColor(live) : pickTeamColor(this.teamColors, b.sport, { total: false, teamId: b.team, abbr: b.market === 'prop' ? null : b.side === 'home' ? home : away });
+    const color = pickTeamColor(b.sport, { total: false, teamId: live ?? b.team, abbr: b.market === 'prop' ? null : b.side === 'home' ? home : away });
     this.pickColors.set(b.id, color);
     return color;
   }

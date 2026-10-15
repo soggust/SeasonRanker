@@ -1,7 +1,8 @@
 // The Bets page's and the Algorithm desk's pure modules (libs/ranker/src/engine/bets), bundled for
 // model-desk.test.mjs: no Angular in any of them
 export * from '../../libs/ranker/src/engine/bets/live-props';
-export { contrast, hslOf, lightness, readableOn, teamColor as sharedTeamColor } from '../../libs/ranker/src/engine/colors';
+export { contrast, hslOf, lightness, readableOn } from '../../libs/ranker/src/engine/colors';
+export { teamLook } from '../../libs/ranker/src/engine/team-look';
 export * from '../../libs/ranker/src/engine/bets/pick-style';
 export * from '../../libs/ranker/src/engine/bets/bet-format';
 export * from '../../libs/ranker/src/engine/bets/desk-math';

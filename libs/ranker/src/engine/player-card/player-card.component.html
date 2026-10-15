@@ -9,15 +9,14 @@
     dialogFocus
     [attr.aria-label]="c.name"
     [class.loading]="cards.loading"
-    [style.--team-badge]="c.color"
-    [style.--team-hero]="c.heroColor"
+    [style]="c.look.hero"
   >
     <header class="card-hero">
       <!-- The team logo, huge and faint in white: a texture on the team color -->
       <span class="hero-texture" aria-hidden="true"><img [src]="c.logo" alt="" /></span>
       <!-- The team card, big: the logo behind, the player standing in front and out over the top -->
       <div class="hero-badge" [class.with-photo]="c.photo">
-        <span class="hero-card" [class.white-logo]="c.whiteLogo"><img class="hero-logo" [src]="c.logo" alt="" /></span>
+        <span class="hero-card" [class.white-logo]="c.look.whiteLogo"><img class="hero-logo" [src]="c.logo" alt="" /></span>
         @if (c.photo) {
           <img class="hero-photo" [src]="c.photo" alt="" (error)="c.photo = cards.nextPhoto(c.player, 440)" />
         }

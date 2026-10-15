@@ -68,7 +68,7 @@ that app's partial.
 | `skill-presets.ts` | `SKILL_PRESETS`: the presets dropdown, per tab |
 | `skills.ts` | The card's `SKILLS` (radar axes), `ARCHETYPES`, `VOLUME_VS_EFFICIENCY`, `WINS_VS_PLAY`, `fallbackArchetype` (shapes in `engine/skills.ts`) |
 | `awards.ts` | `AWARD_INFO` (plaques; titles get an `icon`: a cup, gold for the champion, or a flag), `awardsFor` |
-| `team-colors.ts` | `badgeColor`, `whiteLogo`, `teamColors` |
+| `team-colors.ts` | What its team looks are worked out from (`TEAMS`: ESPN's two colors per team, `ERA_COLORS`, `OVERRIDES`): `npm run team-looks` (`scripts/build-team-looks.mjs`) samples every logo into `libs/ranker/src/engine/team-looks/<sport>.json`, which `teamLook` (`engine/team-look.ts`, the one source of team colors) reads |
 | `logo-eras.ts` | `logoForSeason`: a team's logo as it looked that season |
 | `about/` | The About panel's content: its sections, glossary and text (the frame and styles are shared) |
 
@@ -135,7 +135,9 @@ the slider knobs, the dropdowns' list lettering) comes from `_sport-kit.scss`.
    awards and support grades (`curve`). Run it for this season, then `ALL=1` for the past ones.
 3. Rewrite the sport folder: `positions.ts` (tabs and columns), `skill-presets.ts`, `skills.ts`,
    `awards.ts`, `team-colors.ts` (and the team logos in `assets/`), `logo-eras.ts`, `about/`, and
-   `sport.ts` (seasons, names, playing time, headshots, the card's takes).
+   `sport.ts` (seasons, names, playing time, headshots, the card's takes). Add the sport to
+   `scripts/build-team-looks.mjs` (its icons folder) and `engine/team-look.ts` (its JSON), then run
+   `npm run team-looks`.
 4. Rework the theme partials and textures, the favicon and the loading screen (`index.html`).
 5. Set the similar-seasons minimums in `scripts/build-comps.mjs` and run `npm run nhl:build-comps`.
 6. Turn on the nightly schedule in `.github/workflows/nhl-update-data.yml`, with its yearly rollover

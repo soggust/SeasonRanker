@@ -1,6 +1,6 @@
 import { Directive, Input, inject } from '@angular/core';
 import { SPORT } from '@sport/sport';
-import { whiteLogo } from '@sport/team-colors';
+import { teamLook } from '@ranker/engine/team-look';
 import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
 import { rankPct, rankTone } from '@ranker/core/format';
 import { GameViewService } from '../../game-view/game-view.service';
@@ -24,8 +24,10 @@ export abstract class CardTab {
   readonly currentSeason = CURRENT_SEASON;
   readonly rankTone = rankTone;
   readonly rankPct = rankPct;
-  // (logos drawn in white on the board: the Giants')
-  readonly whiteLogo = whiteLogo;
+  // (logos drawn in white on the board, team-look.ts: the Giants' that season)
+  whiteLogo(teamLogo: string, season: number): boolean {
+    return teamLook(SPORT.id, teamLogo, season).whiteLogo;
+  }
   // (a result's class: .won, .lost, .tied)
   readonly resultClass = resultClass;
   readonly scoreClass = scoreClass;

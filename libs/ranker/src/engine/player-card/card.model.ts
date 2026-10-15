@@ -3,6 +3,7 @@ import { SkillPlayer, SkillPosition } from '@sport/positions';
 import { AwardWin } from '@sport/awards';
 import { CardBreakdown, CardFlag } from '@ranker/engine/sport';
 import { CardSkill } from '@ranker/engine/skills';
+import type { TeamLook } from '@ranker/engine/team-look';
 
 export type { CardBreakdown, CardFlag, CardSkill };
 
@@ -71,8 +72,8 @@ export interface CardComp {
   // 0-100
   match: number;
   logo: string;
-  color: string;
-  whiteLogo: boolean;
+  // its team's look that season (team-look.ts)
+  look: TeamLook;
   // The headshot's id, and its URL
   espnId: number | null;
   photo: string | null;
@@ -143,10 +144,8 @@ export interface PlayerCard {
   // The team's own card that season, when the site has it (the hero's team name a link to it)
   teamLink: { position: string; gsisId: string } | null;
   logo: string;
-  color: string;
-  // the hero's background: the team's color as the game view draws it (ESPN's, made to read), once it's in
-  heroColor?: string | null;
-  whiteLogo: boolean;
+  // the team's look that season (team-look.ts): the hero's chip and wash, the panels' accent
+  look: TeamLook;
   photo: string | null;
   rank: number;
   of: number;

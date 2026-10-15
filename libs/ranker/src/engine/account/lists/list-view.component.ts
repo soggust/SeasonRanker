@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import { goTo, pagePath } from '@ranker/engine/page-url';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SPORT } from '@sport/sport';
-import { badgeColor, whiteLogo } from '@sport/team-colors';
+import { TeamLook, teamLook } from '@ranker/engine/team-look';
 import { logoForSeason } from '@sport/logo-eras';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
@@ -204,13 +204,13 @@ export class ListViewComponent implements OnChanges, OnDestroy {
     return `#${i + 1} in this list · #${now} in today’s default ranking`;
   }
 
-  // The team card: the team's color, its logo as it looked that season (this sport's lists only)
-  badge(row: ComparedRow): string | null {
-    return row.saved.teamLogo && !this.elsewhere ? badgeColor(row.saved.teamLogo) : null;
-  }
-
-  whiteLogo(row: ComparedRow): boolean {
-    return !!row.saved.teamLogo && !this.elsewhere && whiteLogo(row.saved.teamLogo);
+  // The team card: the team's look (team-look.ts), its logo as it looked that season (another sport's list:
+  // today's, as its logo is); null for no team
+  look(row: ComparedRow): TeamLook | null {
+    const logo = row.saved.teamLogo;
+    if (!logo || !this.list) return null;
+    const look = teamLook(this.list.sport, logo, this.elsewhere ? null : this.list.season);
+    return look.key ? look : null;
   }
 
   logo(row: ComparedRow): string | null {

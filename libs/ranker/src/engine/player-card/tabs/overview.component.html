@@ -189,9 +189,9 @@
     <div class="group-body">
     <div class="comps-row">
       @for (m of c.comps; track m.season + m.gsisId) {
-        <button type="button" class="comp" [style.--team-badge]="m.color" (click)="cards.openSeason(m.season, m.gsisId)">
+        <button type="button" class="comp" [style]="m.look.chip" (click)="cards.openSeason(m.season, m.gsisId)">
           <span class="similar-badge" [class.with-photo]="m.photo">
-            <span class="similar-card" [class.white-logo]="m.whiteLogo"><img class="similar-logo" [src]="m.logo" alt="" /></span>
+            <span class="similar-card" [class.white-logo]="m.look.whiteLogo"><img class="similar-logo" [src]="m.logo" alt="" /></span>
             @if (m.photo) {
               <img class="similar-photo" [src]="m.photo" alt="" (error)="m.photo = cards.nextPhoto({ id: m.espnId }, 240)" />
             }

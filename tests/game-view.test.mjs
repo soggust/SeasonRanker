@@ -1,6 +1,6 @@
 // The game view read from ESPN's summary (tests/support/card-entry.ts, its fetch stubbed): a tie and how
 // the line came out, two teams in the same color told apart, a game to come with nothing played, a summary
-// missing its parts; and the logos and colors it draws (the Rams' own logo, a dark color lifted to read).
+// missing its parts; and the logos and looks it draws (the Rams' own logo, each team's look by ESPN's id).
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
@@ -59,21 +59,24 @@ test("a tie: no winner, the line's underdog covered and the total under; overtim
   assert.equal(g.winProbability, null);
 });
 
-test('two teams in the same color: the home side takes its alternate, the away side keeps its own', async () => {
+test("two teams in the same color: the home side takes its other color, the away side keeps its own (team-look.ts)", async () => {
   serve({
     header: {
       competitions: [
         {
           status: { type: { completed: true } },
-          competitors: [team('away', 'CAR', 'c8102e', { score: '3' }), team('home', 'FLA', 'c8102e', { score: '2', team: { alternateColor: 'b9975b' } })],
+          competitors: [team('away', 'CAR', 'c8102e', { score: '3' }), team('home', 'FLA', 'c8102e', { score: '2' })],
         },
       ],
     },
   });
   const g = await nfl.loadGame('hockey/nhl', '2');
-  assert.equal(g.away.color, nfl.sharedTeamColor(['c8102e']));
+  // (the Hurricanes' and the Panthers' looks, found by their abbreviations)
+  assert.equal(g.away.look.key, 'CAR.svg');
+  assert.equal(g.home.look.key, 'FLA.svg');
+  assert.equal(g.away.color, g.away.look.accent);
   assert.ok(nfl.distance(g.away.color, g.home.color) >= nfl.TOO_CLOSE, `${g.away.color} and ${g.home.color} look alike`);
-  assert.equal(g.home.color, nfl.sharedTeamColor(['b9975b']), "its alternate, as Compare's sides take it");
+  assert.equal(g.home.color, g.home.look.other, 'its other color');
   assert.deepEqual(g.periodLabels, []);
 });
 
@@ -118,26 +121,19 @@ test("logos: the Rams' ESPN logos swapped for the app's own, everyone else's kep
   assert.equal(ownLogo(''), null);
 });
 
-test("team colors on the dark board (the app's one rule, colors.ts): a dark one lifted, a black swapped for its alternate's color", () => {
-  const { teamColor } = nfl;
-  const light = (hex) => {
-    const [r, g, b] = hex.match(/[0-9a-f]{2}/gi).map((x) => parseInt(x, 16));
-    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  };
-  assert.equal(teamColor('e31837', undefined), nfl.sharedTeamColor(['#e31837']), "Compare's color for it");
-  assert.equal(teamColor('#E31837', undefined), teamColor('e31837', undefined), 'with its # and in capitals');
-  // (the Ravens' purple: lightened until it reads, still a purple)
-  const ravens = teamColor('241773', undefined);
-  assert.ok(light(ravens) >= 0.2, ravens);
-  const [r, g, b] = ravens.match(/[0-9a-f]{2}/gi).map((x) => parseInt(x, 16));
-  assert.ok(b > r && r > g, `${ravens} is no longer purple`);
-  // (the Bruins' black: their gold)
-  assert.equal(teamColor('000000', 'ffb81c'), nfl.sharedTeamColor(['ffb81c']));
-  // (a black with a grey alternate: the black lifted)
-  assert.ok(light(teamColor('000000', '333333')) >= 0.2);
-  // (no colors at all, or ESPN's junk: a grey)
-  assert.equal(teamColor(undefined, undefined), '#8a8f8c');
-  assert.equal(teamColor('nope', undefined), '#8a8f8c');
+test("each team's look by ESPN's id, that season's era (team-look.ts); a team the site doesn't know, a neutral one", () => {
+  const { teamLook } = nfl;
+  // (the Rams by their ESPN id, today's and 2010's: that era's own logo)
+  assert.equal(teamLook('nfl', { id: '14' }).key, 'Rams.png');
+  assert.equal(teamLook('nfl', { id: '14' }, 2010).key, 'eras/Rams-2000.png');
+  assert.equal(teamLook('nfl', { abbr: 'LAR' }).key, 'Rams.png');
+  // (by its logo, as a row has it, and that row's season)
+  assert.equal(teamLook('nfl', 'assets/NFL_Icons/Rams.png', 2010).logo, 'assets/NFL_Icons/eras/Rams-2000.png');
+  const unknown = teamLook('nfl', { id: '999' });
+  assert.equal(unknown.key, null);
+  assert.ok(/^#[0-9a-f]{6}$/.test(unknown.face));
+  // (two the site doesn't know: still told apart)
+  assert.ok(nfl.distance(...nfl.sideColors(unknown, unknown)) >= nfl.TOO_CLOSE);
 });
 
 test("the win probability's game time: each point's play by its id (the NFL's in its drives), the one before's where it's missing, none before the first", async () => {

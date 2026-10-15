@@ -1,12 +1,16 @@
 // The game view's model: one game as the view shows it, shaped the same for every sport (game.ts reads it
 // from ESPN's summary)
+import type { TeamLook } from '../team-look';
 
 export interface GameTeam {
   id: string;
   name: string;
   short: string;
   abbr: string;
+  // ESPN's logo; its look (team-look.ts: the site's logo that season on its chip, the header's wash), and
+  // its color as a side (its accent; the home side's other color when the two are too close)
   logo: string | null;
+  look: TeamLook;
   color: string;
   score: string;
   winner: boolean;

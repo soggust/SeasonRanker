@@ -20,7 +20,8 @@
 //
 // Still by hand afterwards: the NFL's preseason team grades and QB scores (team-grades.json,
 // subjective.json) for the new season, its awards and honors (awards.ts, update-honors.mjs), MLB's
-// World Series result (WORLD_SERIES in awards.ts), and any new team logos (logo-eras.ts).
+// World Series result (WORLD_SERIES in awards.ts), and any new team logos (logo-eras.ts, then npm run
+// team-looks for their chips and colors: tests/team-looks.test.mjs fails until it's run).
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";

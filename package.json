@@ -8,6 +8,7 @@
     "start": "ng serve nfl",
     "build": "ng build nfl && ng build mlb && ng build nba && ng build nhl && ng build mma",
     "rollover": "node scripts/rollover.mjs",
+    "team-looks": "node scripts/build-team-looks.mjs",
     "watch": "ng build nfl --watch --configuration development",
     "test": "node --test \"tests/*.test.mjs\"",
     "test:rules": "firebase emulators:exec --only firestore --project demo-season-ranker \"node --test tests/rules/*.test.mjs\"",

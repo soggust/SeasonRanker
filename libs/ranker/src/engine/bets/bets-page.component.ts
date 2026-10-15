@@ -12,7 +12,7 @@ import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
 import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
-import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
+import { pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
@@ -255,19 +255,12 @@ const BET_SPORTS = SPORT_LINKS.filter((sport) => SPORTS.includes(sport.id));
   standalone: false,
 })
 export class BetsPageComponent implements OnInit, OnDestroy {
-  // Each sport's teams' colors, once a visit (pick-style.ts)
-  private teamColors: TeamColors = new Map();
-  private pickColors = new Map<number, string | null>();
-
-  // (a pick's own color: a prop its player's team's, a side the team it took's; a total, none: the board's)
+  // (a pick's own color, pick-style.ts: a prop its player's team's, a side the team it took's; a total, none:
+  // the board's)
   pickColor(r: BetRow): string | null {
-    const kept = this.pickColors.get(r.id);
-    if (kept !== undefined) return kept;
     const teams = r.game?.teams ?? [];
-    const abbr = r.betType === 'player' ? null : (r.side === 'home' ? teams[1] : teams[0])?.abbr ?? null;
-    const color = pickTeamColor(this.teamColors, r.sport ?? '', { total: r.betType === 'total', teamId: r.betType === 'player' ? r.playerTeam : null, abbr });
-    if (this.teamColors.size) this.pickColors.set(r.id, color);
-    return color;
+    const abbr = r.betType === 'player' ? null : ((r.side === 'home' ? teams[1] : teams[0])?.abbr ?? null);
+    return pickTeamColor(r.sport ?? '', { total: r.betType === 'total', teamId: r.betType === 'player' ? r.playerTeam : null, abbr });
   }
 
   // (a pick split round its one word: a prop's after the player's name, a total's over or under, a side's line)
@@ -361,11 +354,6 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    // (the teams' colors for the picks' words, alongside the picks)
-    loadTeamColors(BET_SPORTS.map((s) => s.id)).then((colors) => {
-      this.teamColors = colors;
-      this.pickColors.clear();
-    });
     const get = (url: string) =>
       fetch(url, { cache: 'no-cache' })
         .then((res) => (res.ok ? res.json() : null))

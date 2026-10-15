@@ -11,7 +11,6 @@
 // percentile among backs and one among receivers don't say who did more.
 import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat } from '@sport/positions';
 import { SPORT } from '@sport/sport';
-import { badgeColor, teamColors, whiteLogo } from '@sport/team-colors';
 import { logoForSeason } from '@sport/logo-eras';
 import { extras } from '@ranker/engine/row-fields';
 import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
@@ -30,18 +29,17 @@ import { archetypeFor, skillsOf } from '@ranker/engine/player-card/overview';
 import { radar } from '@ranker/engine/player-card/radar';
 import type { SharedCompare } from '@ranker/engine/share';
 import * as sideColors from '../colors';
+import { TeamLook, teamLook } from '../team-look';
 
 export const COMPARE_MAX = 4;
 
-// Each side's color is its team's own (colors.ts: its primary, lifted to read on the board, a
+// Each side's color is its team's own (team-look.ts: its accent, lifted to read on the board, a
 // shade apart from the others'); these, in order, where there's no team to go by (a fighter, a team the
 // sport doesn't know) or a team's own are all too close to the others' (soft, like the vs Position pie's: a
 // blue, a gold, a sea green, a lilac; the first two the furthest apart, for the usual pair)
 export const COMPARE_COLORS = ['#8ab4e0', '#e3cb8f', '#7fc8bb', '#c3a6e8'];
 // (a sport without teams: its sides take the palette's)
 const TEAMLESS = SPORT.id === 'mma';
-// (team-colors.ts's neutral greys for a team it doesn't know)
-const UNKNOWN_TEAM = new Set(['#3a3a3a', '#444444', '#222222']);
 
 // The career arcs' faces: each side's headshot (a team's logo) at the end of its line, this big, this far
 // past its last season's point
@@ -90,9 +88,9 @@ export interface CompareSide {
   seasonText: string;
   short: string;
   teamName: string | null;
+  // its team's logo that season (as the cards show it), and its look (team-look.ts)
   logo: string;
-  badge: string;
-  whiteLogo: boolean;
+  look: TeamLook;
   photo: string | null;
   rank: number;
   of: number;
@@ -120,8 +118,7 @@ export interface CompareHit {
   id: string;
   name: string;
   logo: string;
-  badge: string;
-  whiteLogo: boolean;
+  look: TeamLook;
   // Their headshot, small (none: the team card stands in)
   photo: string | null;
   // "2008-2016" (every tab's), and on the tab a pick opens: the season a click adds (their best by the
@@ -243,7 +240,7 @@ export class PlayerCompare {
   // (the arcs' width on screen: the view measures it)
   arcWidth = ARC.width;
   // The sides' colors, by team (colors.ts, and a side's choices: the tests read them)
-  static readonly colors = { ...sideColors, choices: (side: CompareSide) => colorChoices(side) };
+  static readonly colors = { ...sideColors, choices: (side: Pick<CompareSide, 'look'>) => colorChoices(side), lookOf: (teamLogo: string, season: number) => sideLook(teamLogo, season).look };
   // Sides still loading (the add slot shows it)
   loading = 0;
   private uids = 0;
@@ -500,7 +497,7 @@ export class PlayerCompare {
       seasonText: SPORT.careerOnly ? 'Career' : isLiveSeason(season) ? 'Current Season' : `${SPORT.seasonText(season)} Season`,
       short,
       teamName: teamName && teamName !== player.name ? teamName : null,
-      ...teamLook(player.teamLogo, season),
+      ...sideLook(player.teamLogo, season),
       photo: host.headshot(player, 240),
       rank,
       of: list.length,
@@ -809,7 +806,7 @@ export class PlayerCompare {
         key: [...new Set(onTabs.map((t) => normalize(t.name)))].join(' '),
         name: home.name,
         headshotId: photos ? (home.headshotId ?? onTabs.find((t) => t.headshotId)?.headshotId ?? null) : null,
-        ...teamLook(best.logo, best.season),
+        ...sideLook(best.logo, best.season),
         span: SPORT.careerOnly ? '' : first === last ? SPORT.seasonText(first) : `${first}-${last}`,
         best: { season: best.season, rank: best.rank, of: best.of },
         seasons: home.seasons.map((s) => s.season),
@@ -908,18 +905,17 @@ function facesOf(sides: CompareSide[], lines: CompareArcs['lines'], width: numbe
   return ends.map((e) => placed.find((f) => f.key === e.key)!);
 }
 
-// A side's color choices: its team's colors as the board shows them (none: a fighter, or a team the sport
-// doesn't know; the palette's then)
-function colorChoices(side: CompareSide): string[] {
-  if (TEAMLESS) return [];
-  const colors = teamColors(side.player.teamLogo ?? '').filter((c) => !UNKNOWN_TEAM.has(c.toLowerCase()));
-  return sideColors.teamShades(colors);
+// A side's color choices: its team's accent, then its other color (team-look.ts; none: a fighter, or a team
+// the sport doesn't know; the palette's then)
+function colorChoices(side: Pick<CompareSide, 'look'>): string[] {
+  if (TEAMLESS || !side.look.key) return [];
+  return [...new Set([side.look.accent, side.look.other])];
 }
 
-// A team's look that season: its logo (as the cards show it), its badge's color, whether it's drawn white
-function teamLook(teamLogo: string, season: number): { logo: string; badge: string; whiteLogo: boolean } {
+// A team's look that season: its logo (as the cards show it) and its look (team-look.ts: that era's)
+function sideLook(teamLogo: string, season: number): { logo: string; look: TeamLook } {
   const logo = logoForSeason(teamLogo, season);
-  return { logo: SPORT.cardLogo ? SPORT.cardLogo(logo) : logo, badge: badgeColor(teamLogo), whiteLogo: whiteLogo(teamLogo) };
+  return { logo: SPORT.cardLogo ? SPORT.cardLogo(logo) : logo, look: teamLook(SPORT.id, teamLogo, season) };
 }
 
 // "Jamaal Charles ’13" (a career-only sport: just the name)

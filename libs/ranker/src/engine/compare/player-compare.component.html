@@ -52,7 +52,7 @@
               class="compare-chip"
               [class.open]="sheet === s.uid"
               [style.--side]="s.color"
-              [style.--team-badge]="s.badge"
+              [style]="s.look.chip"
               [attr.aria-expanded]="sheet === s.uid"
               [attr.aria-label]="s.label + (s.ur ? ', unranked' : ', #' + s.rank + ' of ' + s.of)"
               (click)="toggle(s.uid)"
@@ -62,7 +62,7 @@
               @if (s.photo) {
                 <img class="chip-photo" [src]="s.photo" alt="" (error)="s.photo = null" />
               } @else {
-                <span class="chip-photo chip-logo" [class.white-logo]="s.whiteLogo"><img [src]="s.logo" alt="" /></span>
+                <span class="chip-photo chip-logo" [class.white-logo]="s.look.whiteLogo"><img [src]="s.logo" alt="" /></span>
               }
               <span class="chip-name">{{ s.tag }}</span>
               <b class="chip-rank" [style.--tone]="rankTone(s.ur ? null : s.pct)">{{ s.ur ? 'UR' : s.rank }}</b>
@@ -80,7 +80,7 @@
         @for (s of sides; track s.uid; let i = $index) {
           <!-- (a side's tape: the card's hero in miniature, a stripe of its color on top; kept by its id, so
                a season switched stays in place, and eased in and out) -->
-          <div class="tape" [class.shown]="sheet === s.uid" [style.--side]="s.color" [style.--team-badge]="s.badge" animate.enter="tape-in" animate.leave="tape-out">
+          <div class="tape" [class.shown]="sheet === s.uid" [style.--side]="s.color" [style]="s.look.chip" animate.enter="tape-in" animate.leave="tape-out">
             <button type="button" class="tape-remove" [attr.aria-label]="'Remove ' + s.label" title="Remove" (click)="remove(i)">
               <mat-icon fontIcon="close"></mat-icon><span class="tape-remove-text">Remove</span>
             </button>
@@ -94,7 +94,7 @@
               @if (s.photo) {
                 <img class="tape-photo" [src]="s.photo" alt="" (error)="s.photo = null" />
               } @else {
-                <img class="tape-photo tape-logo" [class.white-logo]="s.whiteLogo" [src]="s.logo" alt="" />
+                <img class="tape-photo tape-logo" [class.white-logo]="s.look.whiteLogo" [src]="s.logo" alt="" />
               }
               <!-- (the season: any other of theirs, on any tab of their career (another tab's named: "· PF"),
                    from the picker) -->
@@ -159,7 +159,7 @@
                         [id]="'cmp-hit-' + h"
                         [class.active]="h === compare.active"
                         [attr.aria-selected]="h === compare.active"
-                        [style.--team-badge]="hit.badge"
+                        [style]="hit.look.chip"
                         (mouseenter)="compare.active = h"
                         (click)="pick(hit)"
                       >
@@ -167,7 +167,7 @@
                         @if (hit.photo) {
                           <span class="hit-photo"><img [src]="hit.photo" alt="" loading="lazy" (error)="hit.photo = null" /></span>
                         } @else {
-                          <span class="hit-badge" [class.white-logo]="hit.whiteLogo"><img [src]="hit.logo" alt="" /></span>
+                          <span class="hit-badge" [class.white-logo]="hit.look.whiteLogo"><img [src]="hit.logo" alt="" /></span>
                         }
                         <span class="hit-text">
                           <b>{{ hit.name }}</b>
@@ -421,13 +421,13 @@
                     <!-- (each line's face just past its end, tied to it: the headshot ringed in its color (none, or
                          it won't load: the team's logo on its badge), named on a hover) -->
                     @for (f of a.faces; track f.key; let fi = $index) {
-                      <g class="arc-face" [style.--side]="f.side.color" [style.--team-badge]="f.side.badge">
+                      <g class="arc-face" [style.--side]="f.side.color" [style]="f.side.look.chip">
                         <title>{{ f.side.label }}</title>
                         <line class="arc-face-tie" [attr.x1]="f.from.x" [attr.y1]="f.from.y" [attr.x2]="f.x" [attr.y2]="f.y"></line>
                         <clipPath [attr.id]="'cmp-arc-face-' + fi">
                           <circle [attr.cx]="f.x" [attr.cy]="f.y" [attr.r]="f.r"></circle>
                         </clipPath>
-                        <circle class="arc-face-disc" [attr.cx]="f.x" [attr.cy]="f.y" [attr.r]="f.r"></circle>
+                        <circle class="arc-face-disc" [class.logo-disc]="!f.side.photo" [attr.cx]="f.x" [attr.cy]="f.y" [attr.r]="f.r"></circle>
                         @if (f.side.photo) {
                           <image
                             [attr.href]="f.side.photo"
@@ -442,7 +442,7 @@
                         } @else {
                           <image
                             class="arc-face-logo"
-                            [class.white-logo]="f.side.whiteLogo"
+                            [class.white-logo]="f.side.look.whiteLogo"
                             [attr.href]="f.side.logo"
                             [attr.x]="f.x - f.r * 0.7"
                             [attr.y]="f.y - f.r * 0.7"

@@ -115,7 +115,7 @@
         ></mat-icon>
         <div
           class="player-info"
-          [style.--team-badge]="teamBadge(player)"
+          [style]="teamLook(player).chip"
         >
           <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
           <span
@@ -136,7 +136,7 @@
         >
           <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
           <span class="badge-slot card-target" aria-hidden="true" [class.with-photo]="headshot(player)" (click)="openCard(player)"
-            ><span class="team-badge" [class.white-logo]="teamLogoWhite(player)"
+            ><span class="team-badge" [class.white-logo]="teamLook(player).whiteLogo"
               ><img [src]="seasonLogo(player.teamLogo)" class="team-logo" alt=""
             /></span
             >@if (headshot(player); as photo) {<img
@@ -494,7 +494,7 @@
                   [id]="'find-hit-' + h"
                   [class.active]="h === finder.active"
                   [attr.aria-selected]="h === finder.active"
-                  [style.--team-badge]="hit.badge"
+                  [style]="hit.look.chip"
                   (mouseenter)="finder.active = h"
                   (click)="openFound(hit)"
                 >
@@ -502,7 +502,7 @@
                   @if (hit.photo) {
                     <span class="hit-photo"><img [src]="hit.photo" alt="" loading="lazy" (error)="hit.photo = null" /></span>
                   } @else {
-                    <span class="hit-badge" [class.white-logo]="hit.whiteLogo"><img [src]="hit.logo" alt="" /></span>
+                    <span class="hit-badge" [class.white-logo]="hit.look.whiteLogo"><img [src]="hit.logo" alt="" /></span>
                   }
                   <span class="hit-text">
                     <b>{{ hit.name }}</b>

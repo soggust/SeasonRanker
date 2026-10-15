@@ -613,30 +613,25 @@ test('nfl: two backs and a receiver: the backs share their skills, the receiver 
   }
 });
 
-test('side colors: the team its own color (red red, green green), lifted to read on the board, the same team a shade apart', async () => {
+test("side colors: the team's own (team-look.ts: red red, green green), lifted to read on the board, the same team a shade apart", async () => {
   const { PlayerCompare, COMPARE_COLORS } = await engineFor('nfl');
-  const { teamShades, pickColor, distance, hslOf, lightness, TOO_CLOSE } = PlayerCompare.colors;
+  const { pickColor, distance, hslOf, lightness, TOO_CLOSE, choices, lookOf } = PlayerCompare.colors;
   const hueOf = (c) => hslOf(c)[0];
-  const sameHue = (a, b) => Math.min(Math.abs(hueOf(a) - hueOf(b)), 360 - Math.abs(hueOf(a) - hueOf(b))) < 3;
-  // (the primary first, whatever its hue: the Chiefs and the Falcons red, the Jets and the Packers green;
-  // a black's grey after the team's color)
-  for (const [team, colors] of [['Chiefs', ['#e31837', '#ffb612']], ['Falcons', ['#a71930', '#000000']], ['Jets', ['#115740', '#ffffff']], ['Packers', ['#204e32', '#ffb612']]]) {
-    const [first] = teamShades(colors);
-    assert.ok(sameHue(first, colors[0]), `the ${team}: ${first}, the hue of ${colors[0]}`);
+  const near = (a, b, by) => Math.min(Math.abs(a - b), 360 - Math.abs(a - b)) < by;
+  const of = (team) => choices({ look: lookOf(`assets/NFL_Icons/${team}.png`, 2026) });
+  // (its own color first, whatever its hue: the Chiefs and the Falcons red, the Packers green; lifted to read)
+  for (const [team, hue] of [['Chiefs', 0], ['Falcons', 355], ['Packers', 150]]) {
+    const [first] = of(team);
+    assert.ok(near(hueOf(first), hue, 30), `the ${team}: ${first}`);
     assert.ok(lightness(first) >= 50, `the ${team}: ${first} lifted to read`);
   }
-  assert.equal(teamShades(['#000000', '#ffb612'])[0], teamShades(['#ffb612'])[0], 'the Steelers: their gold before their black');
-  // (softened a little: the hue kept, a bit less saturated, lifted to read; a navy lifted, a gold toned down)
-  const [navy] = teamShades(['#0c2340']);
-  const soft = (c, from) => sameHue(c, from) && hslOf(c)[1] < hslOf(from)[1] && hslOf(c)[1] >= 0.5 * hslOf(from)[1] && lightness(c) >= 55;
-  assert.ok(soft(navy, '#0c2340'), navy);
-  const [gold] = teamShades(['#ffb612']);
-  assert.ok(soft(gold, '#ffb612') && gold !== '#ffb612', gold);
+  // (a black team: its second color, the Steelers' gold)
+  assert.ok(near(hueOf(of('Steelers')[0]), 42, 15), of('Steelers')[0]);
   // (deterministic, and four on the same team all told apart)
-  for (const team of [['#e31837', '#ffb612'], ['#0c2340'], ['#000000'], ['#c8102e'], ['#29126f', '#000000'], ['#115740', '#ffffff']]) {
+  for (const team of ['Chiefs', 'Steelers', 'Ravens', 'Jets', 'Raiders', 'Cowboys']) {
     const four = () => {
       const taken = [];
-      for (let i = 0; i < 4; i++) taken.push(pickColor(teamShades(team), taken, COMPARE_COLORS));
+      for (let i = 0; i < 4; i++) taken.push(pickColor(of(team), taken, COMPARE_COLORS));
       return taken;
     };
     const taken = four();
@@ -645,14 +640,9 @@ test('side colors: the team its own color (red red, green green), lifted to read
     for (const c of taken) assert.ok(lightness(c) >= 40, `${team}: ${c}`);
     assert.ok(distance(taken[0], taken[1]) >= TOO_CLOSE, `${team}: the second a shade apart`);
   }
-  // (two teams too close: the second a shade apart; far enough: each its own)
-  const yankees = pickColor(teamShades(['#0c2340']), [], COMPARE_COLORS);
-  const redSox = pickColor(teamShades(['#0c2340']), [yankees], COMPARE_COLORS);
-  assert.ok(redSox !== yankees && distance(redSox, yankees) >= TOO_CLOSE);
-  assert.equal(pickColor(teamShades(['#ffb612']), [yankees], COMPARE_COLORS), gold);
   // (the 49ers' red and the Chiefs' red too close: the Chiefs' second, their gold)
-  const niners = pickColor(teamShades(['#aa0000', '#b3995d']), [], COMPARE_COLORS);
-  assert.equal(pickColor(teamShades(['#e31837', '#ffb612']), [niners], COMPARE_COLORS), gold);
+  const niners = pickColor(of('49ers'), [], COMPARE_COLORS);
+  assert.equal(pickColor(of('Chiefs'), [niners], COMPARE_COLORS), of('Chiefs')[1]);
   // (no team: the palette's first free one)
   assert.equal(pickColor([], [], COMPARE_COLORS), COMPARE_COLORS[0]);
   assert.equal(pickColor([], [COMPARE_COLORS[0]], COMPARE_COLORS), COMPARE_COLORS[1]);
@@ -665,7 +655,7 @@ test('every team in every sport: its own color, light enough for the board; mma:
     const logos = new Set(Object.values(engine.SKILL_UNITS).flatMap((rows) => (rows ?? []).map((r) => r.teamLogo)).filter(Boolean));
     assert.ok(logos.size, `${sport}: teams`);
     for (const teamLogo of logos) {
-      const choices = colors.choices({ player: { teamLogo } });
+      const choices = colors.choices({ look: colors.lookOf(teamLogo, 2026) });
       if (sport === 'mma') {
         assert.deepEqual(choices, [], 'mma: no team colors');
         continue;

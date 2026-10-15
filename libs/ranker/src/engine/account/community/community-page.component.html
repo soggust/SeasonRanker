@@ -65,10 +65,11 @@
             @for (row of rows.slice(0, allRows ? 50 : 15); track row.id; let i = $index) {
               @let info = player(row.id);
               <li class="row">
-                <span class="who" [style.--team-badge]="badge(info)">
+                @let look = this.look(info);
+                <span class="who" [style]="look?.chip">
                   <span [ngClass]="rankClass(i)" class="rank-tile">@if (i === 0) {<span class="trophy" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
                   <span class="badge-slot" [class.with-photo]="photo(row.id, info)" aria-hidden="true">
-                    <span class="team-badge" [class.white-logo]="white(info)" [class.no-color]="!badge(info)">
+                    <span class="team-badge" [class.white-logo]="look?.whiteLogo" [class.no-color]="!look">
                       @if (info.logo; as src) { <img class="team-logo" [src]="src" alt="" /> }
                     </span>
                     @if (photo(row.id, info); as src) { <img class="headshot" [src]="src" alt="" loading="lazy" (error)="noPhoto(row.id)" /> }
@@ -160,7 +161,7 @@
                   <li>
                     <span class="top-rank" [class.first]="i === 0">{{ i + 1 }}</span>
                     @if (photo(id, info); as src) {
-                      <img class="top-photo" [src]="src" alt="" loading="lazy" [style.--team-badge]="badge(info)" (error)="noPhoto(id)" />
+                      <img class="top-photo" [src]="src" alt="" loading="lazy" [style]="look(info)?.chip" (error)="noPhoto(id)" />
                     } @else if (info.logo; as src) {
                       <img class="top-logo" [src]="src" alt="" loading="lazy" />
                     } @else {

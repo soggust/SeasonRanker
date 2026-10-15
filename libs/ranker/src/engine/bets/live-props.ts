@@ -3,7 +3,6 @@
 // play is the one the bet will be graded on. MLB's total bases aren't in ESPN's box score (the grader asks
 // MLB's): no count for them here.
 
-import { teamColor, readableOn } from '../colors';
 
 interface BoxStats {
   name?: string;
@@ -50,22 +49,13 @@ export function liveStat(sport: string, propType: string, athlete: string, body:
   return null;
 }
 
-// A player's team colors in a game under way, from its summary's box score (the team whose table lists him):
-// its main color and its alternate, as ESPN gives them (hex, no #)
-export function athleteColors(athlete: string, body: (SummaryBox & { boxscore?: { players?: { team?: { color?: string; alternateColor?: string } }[] } }) | null): { color?: string; alternateColor?: string } | null {
+// A player's team in a game under way, from its summary's box score (the team whose table lists him): its
+// ESPN id
+export function athleteTeam(athlete: string, body: (SummaryBox & { boxscore?: { players?: { team?: { id?: string | number } }[] } }) | null): string | null {
   for (const team of body?.boxscore?.players ?? []) {
     const listed = (team as { statistics?: BoxStats[] }).statistics?.some((s) => (s.athletes ?? []).some((x) => String(x.athlete?.id) === athlete));
-    if (listed) return { color: team.team?.color, alternateColor: team.team?.alternateColor };
+    if (listed) return team.team?.id === undefined ? null : String(team.team.id);
   }
   return null;
 }
 
-// A meter's color from a team's two (colors.ts teamColor, as everywhere): never one that reads as a result
-// (green, or red: burgundy and maroon too; they're the meter's won and lost), a real color before a grey
-// (Vegas's gold over its slate), lifted if it's too dark for the board; null when neither will do (the
-// board's own light then)
-// (light enough to read as the pick's text on the Bets rows: readableOn)
-export function meterColor(colors: { color?: string; alternateColor?: string } | null): string | null {
-  const color = teamColor([colors?.color, colors?.alternateColor], { noResults: true });
-  return color ? readableOn(color) : null;
-}

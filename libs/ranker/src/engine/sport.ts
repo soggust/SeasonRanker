@@ -101,8 +101,9 @@ export interface StatGroup<Stat extends StatDef = StatDef> {
 
 // What a sport hands the engine (apps/<sport>/src/sport/sport.ts exports one as SPORT). Everything else a
 // sport defines lives beside it in apps/<sport>/src/sport: positions.ts (tabs, stats, groups),
-// skill-presets.ts, skills.ts (the card's skills and archetypes), awards.ts, team-colors.ts,
-// logo-eras.ts and about/ (the About panel's content). The engine imports them as @sport/<file>.
+// skill-presets.ts, skills.ts (the card's skills and archetypes), awards.ts, logo-eras.ts and about/ (the
+// About panel's content). The engine imports them as @sport/<file>. (Its team-colors.ts is what
+// scripts/build-team-looks.mjs works the team looks out from: the engine reads team-looks/<sport>.json.)
 
 // A take on the player card's Overview: what the stats alone don't say
 export interface CardFlag {

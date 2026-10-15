@@ -1,6 +1,5 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AWARD_INFO } from '@sport/awards';
-import { whiteLogo } from '@sport/team-colors';
 import { rankPct, rankTone } from '@ranker/core/format';
 import { possessive } from './hover-text';
 import { PlayerCards } from './player-cards';
@@ -27,8 +26,6 @@ export class PlayerCardComponent {
   readonly awardInfo = AWARD_INFO;
   readonly rankTone = rankTone;
   readonly rankPct = rankPct;
-  // (logos drawn in white on the board: the Giants')
-  readonly whiteLogo = whiteLogo;
   // ("Purdy's", "49ers'": the compare button's hover)
   readonly possessive = possessive;
 

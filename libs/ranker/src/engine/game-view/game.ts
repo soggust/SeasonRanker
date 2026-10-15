@@ -7,17 +7,16 @@
 //
 // The rest of the view is in its own modules: the model (game.model.ts), ESPN's shapes (espn-summary.ts),
 // finding a game (find-game.ts), the chart (game-chart.ts), fantasy points (fantasy.ts), the venue's
-// weather and photo (venue.ts), the teams' colors (team-color.ts) and the win probability's game time
-// (wp-moments.ts).
+// weather and photo (venue.ts) and the win probability's game time (wp-moments.ts); the teams' looks are
+// team-look.ts's.
 
 import { ESPN_API } from '@ranker/core/game-logs';
-import { awayFirst, EspnPlay, EspnSummary, EspnTeamRef, headshotOf, logoOf, numberOf, ownLogo } from './espn-summary';
+import { awayFirst, EspnPlay, EspnSummary, headshotOf, logoOf, numberOf, ownLogo } from './espn-summary';
 import { fantasyPoints } from './fantasy';
 import { gameChart } from './game-chart';
 import { GameBoxGroup, GameLeader, GamePlay, GamePlayGroup, GameTeam, GameTeamStat, GameView } from './game.model';
-import { BLACK_TEAMS, gameColor } from './team-color';
 import { wpMoments } from './wp-moments';
-import { loadTeamColors, pickColor, teamShades } from '../colors';
+import { sideColors, teamLook } from '../team-look';
 
 // The roofed parks and stadiums (no weather): domes and fixed roofs, then the retractable roofs
 const INDOORS = /mercedes-benz stadium|ford field|caesars superdome|superdome|u\.s\. bank stadium|allegiant|sofi stadium|tropicana field|edward jones dome|the dome at america's center|georgia dome|metrodome|rca dome|silverdome|kingdome|olympic stadium/i;
@@ -42,14 +41,9 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
   const comp = s.header?.competitions?.[0];
   if (!comp?.competitors?.length) throw new Error(`game ${eventId}: no teams`);
 
-  // (a team's two colors: the summary's, its alternate from ESPN's team list when the summary leaves it out
-  // (the NHL's), else a black team's own second color)
+  // (each team's look that season, team-look.ts: by ESPN's id, that era's logo and colors)
   const sport = league.split('/').pop()!;
-  const listed = await loadTeamColors([sport]);
-  const colorsOf = (t: EspnTeamRef): [string | undefined, string | undefined] => [
-    t.color,
-    t.alternateColor ?? listed.get(`${sport}#${t.id}`)?.alternateColor ?? BLACK_TEAMS[t.abbreviation ?? ''],
-  ];
+  const season = s.header?.season?.year ?? null;
   const team = (side: 'home' | 'away'): GameTeam => {
     const c = comp.competitors!.find((x) => x.homeAway === side)!;
     return {
@@ -58,7 +52,8 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
       short: c.team.shortDisplayName ?? c.team.name ?? c.team.abbreviation ?? '',
       abbr: c.team.abbreviation ?? '',
       logo: logoOf(c.team),
-      color: gameColor(...colorsOf(c.team)),
+      look: teamLook(sport, { id: c.team.id, abbr: c.team.abbreviation }, season),
+      color: '',
       score: c.score ?? '',
       winner: !!c.winner,
       record: c.record?.find((r) => r.type === 'total')?.summary ?? c.record?.[0]?.summary ?? c.record?.[0]?.displayValue ?? null,
@@ -67,11 +62,9 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
   };
   const away = team('away');
   const home = team('home');
-  // (two teams whose colors look alike, the Panthers' red and the Hurricanes': the home side takes its
-  // next color, or a shade of its own, whichever stands apart from the away side's, as Compare's sides do)
-  const homeTeam = comp.competitors!.find((x) => x.homeAway === 'home')!.team;
-  const homeShades = teamShades(colorsOf(homeTeam));
-  if (homeShades.length) home.color = pickColor([home.color, ...homeShades], [away.color], []);
+  // (each side's color its accent; two that look alike, the Panthers' red and the Hurricanes': the home side
+  // its other color)
+  [away.color, home.color] = sideColors(away.look, home.look);
   const sideOf = (id: string | undefined): 'away' | 'home' | null => (id === away.id ? 'away' : id === home.id ? 'home' : null);
 
   // The periods' names: quarters, periods, innings, then overtime

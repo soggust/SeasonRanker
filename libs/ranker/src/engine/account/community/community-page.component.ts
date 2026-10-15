@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, inject } from '@angular/core';
 import { goTo, pageHash, pagePath } from '@ranker/engine/page-url';
 import { POSITIONS, SkillPlayer, SkillPosition } from '@sport/positions';
 import { SPORT } from '@sport/sport';
-import { badgeColor, whiteLogo } from '@sport/team-colors';
+import { TeamLook, teamLook } from '@ranker/engine/team-look';
 import { logoForSeason } from '@sport/logo-eras';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { CURRENT_SEASON, SEASONS, dataPart, dataSeason, isLiveSeason } from '@ranker/engine/data';
@@ -225,12 +225,10 @@ export class CommunityPageComponent implements OnDestroy {
     return { name: 'Unknown player', teamLogo: null, logo: null, photo: null };
   }
 
-  badge(info: PlayerInfo): string | null {
-    return info.teamLogo ? badgeColor(info.teamLogo) : null;
-  }
-
-  white(info: PlayerInfo): boolean {
-    return !!info.teamLogo && whiteLogo(info.teamLogo);
+  // (the team's look that season, team-look.ts, as the logo shown is; null for no team)
+  look(info: PlayerInfo): TeamLook | null {
+    const look = teamLook(SPORT.id, info.teamLogo, this.season);
+    return look.key ? look : null;
   }
 
   private photoMisses = new Set<string>();

@@ -6,7 +6,7 @@ import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatGroup, hea
 import { awardsFor } from '@sport/awards';
 import { SPORT } from '@sport/sport';
 import { extras, logoFile, rowTeamNames } from '@ranker/engine/row-fields';
-import { badgeColor, whiteLogo } from '@sport/team-colors';
+import { teamLook } from '@ranker/engine/team-look';
 import { logoForSeason } from '@sport/logo-eras';
 import { CardFlag, FlagContext, ValueContext } from '@ranker/engine/sport';
 import { CardSkill } from '@ranker/engine/skills';
@@ -32,7 +32,6 @@ import { GameLogView, gameLogView, splitVs } from './game-log-view';
 import { percentile } from './hover-text';
 import { PlayerAnalysis, analysisIndex, loadAnalysis } from './analysis';
 import { espnTeamNames, espnUpcoming } from '@ranker/core/game-logs';
-import { heroColor } from '../game-view/team-color';
 import { GameViewService, nameKey } from '../game-view/game-view.service';
 
 // What the card needs from the table it opens from
@@ -601,13 +600,6 @@ export class PlayerCards {
     this.loadSeasons(card);
     // (an unranked season has no skills to set against last season's)
     if (!card.ur) this.loadPrevSkills(card);
-    // (the hero in the team's own color, as the game view draws it, once ESPN's list is in)
-    const league = SPORT.gameLog?.league;
-    if (league && card.heroColor === undefined) {
-      heroColor(league, rowTeamNames(card.player))
-        .then((color) => (card.heroColor = color))
-        .catch(() => (card.heroColor = null));
-    }
   }
 
   // ---------------------------------------------------------------------------
@@ -649,8 +641,7 @@ export class PlayerCards {
       teamName: SPORT.teamName ? SPORT.teamName(player, this.position, rows) : (extras(player).teamName ?? null),
       teamLink: this.teamLink(player, rows),
       logo: SPORT.cardLogo ? SPORT.cardLogo(logoForSeason(player.teamLogo, season)) : logoForSeason(player.teamLogo, season),
-      color: badgeColor(player.teamLogo),
-      whiteLogo: whiteLogo(player.teamLogo),
+      look: teamLook(SPORT.id, player.teamLogo, season),
       // The table's headshot, big enough for the card's hero
       photo: this.host.headshot(player, 440),
       rank: ur ? 0 : list.indexOf(player) + 1,
@@ -955,8 +946,7 @@ export class PlayerCards {
           name,
           match,
           logo: logoForSeason(teamLogo, season),
-          color: badgeColor(teamLogo),
-          whiteLogo: whiteLogo(teamLogo),
+          look: teamLook(SPORT.id, teamLogo, season),
           espnId,
           photo: this.host.headshot({ id: espnId }, 240),
         };
@@ -1027,7 +1017,7 @@ export async function careerLines(data: SeasonDataService, tableSeason: number, 
           season,
           position: tab,
           id: tabId,
-          // (the team's logo that season, and the team's own file: whiteLogo reads it)
+          // (the team's logo that season, and the team's own file: its look reads it)
           logo: logoForSeason(teamLogo, season),
           teamLogo,
           games,

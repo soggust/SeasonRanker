@@ -1,11 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, HostListener, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SPORT } from '@sport/sport';
-import { extras } from '@ranker/engine/row-fields';
-import { badgeColor, whiteLogo } from '@sport/team-colors';
-import { logoForSeason } from '@sport/logo-eras';
-import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
-import { isPooled } from '@ranker/engine/pooled-tabs';
+import { logoUrl } from '../account/lists/lists-helpers';
 import { ordinal } from '@ranker/core/format';
 import { pitchColor } from '../player-card/zones';
 import { HOME, TracedPark, fieldSpot, loadTracedParks, tracedPark, wallPath } from './parks';
@@ -91,37 +87,15 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return w && w !== 'loading' ? w : null;
   }
 
-  // A team's card like the grid's: the site's own logo (that season's era, the sharp one where the sport has
-  // it) on its badge color, white where the logo needs it; found by its name among the rows (ESPN's logo,
-  // plain, when the site doesn't know the team)
-  private siteLogos: Map<string, string> | null = null;
-  private cards = new Map<string, { logo: string; badge: string; white: boolean } | null>();
-  siteTeam(team: GameTeam, game: GameView): { logo: string; badge: string; white: boolean } | null {
-    const key = team.name + game.date;
-    if (this.cards.has(key)) return this.cards.get(key)!;
-    if (!this.siteLogos) {
-      this.siteLogos = new Map();
-      for (const [pos, list] of Object.entries(SKILL_UNITS)) {
-        // (a pooled tab's rows, the Top 50's, are copies of the others')
-        if (isPooled(pos)) continue;
-        for (const p of list ?? []) {
-          const name = extras(p).teamName;
-          if (name) this.siteLogos.set(name.toLowerCase(), p.teamLogo);
-          if (SPORT.teamTabs?.includes(pos)) this.siteLogos.set(p.name.toLowerCase(), p.teamLogo);
-        }
-      }
-    }
-    const teamLogo = this.siteLogos.get(team.name.toLowerCase());
-    let card: { logo: string; badge: string; white: boolean } | null = null;
-    if (teamLogo) {
-      // (the season it was played in: the year, or the next for a sport whose seasons end in it)
-      const d = new Date(game.date);
-      const season = d.getFullYear() + (SPORT.seasonText(2026).includes('-') && d.getMonth() >= 7 ? 1 : 0);
-      const logo = logoForSeason(teamLogo, season);
-      card = { logo: SPORT.cardLogo ? SPORT.cardLogo(logo) : logo, badge: badgeColor(teamLogo), white: whiteLogo(teamLogo) };
-    }
-    this.cards.set(key, card);
-    return card;
+  // A team's card like the grid's: the site's own logo that season on its chip (team-look.ts; this sport's the
+  // sharp one where it has it, another sport's from its app), white where the logo needs it; ESPN's logo, on a
+  // plain chip, for a team the site doesn't know
+  teamLogo(team: GameTeam, game: GameView): string | null {
+    const logo = team.look.logo;
+    if (!team.look.key || !logo) return team.logo;
+    const sport = game.league.split('/').pop()!;
+    if (sport !== SPORT.id) return logoUrl(sport, logo);
+    return SPORT.cardLogo ? SPORT.cardLogo(logo) : logo;
   }
 
   readonly currentSeason = SPORT.currentSeason;

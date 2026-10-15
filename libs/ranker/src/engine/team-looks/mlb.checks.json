@@ -1,0 +1,315 @@
+{
+ "source": "92732b3ac163",
+ "logos": {
+  "108.svg": {
+   "hash": "8ad3550dbb92",
+   "vis": 0.589,
+   "edge": 1
+  },
+  "109.svg": {
+   "hash": "c87dab08053b",
+   "vis": 0.503,
+   "edge": 1
+  },
+  "110.svg": {
+   "hash": "f553bf9d2f52",
+   "vis": 0.48,
+   "edge": 0.99
+  },
+  "111.svg": {
+   "hash": "6f01e9bef769",
+   "vis": 1,
+   "edge": 1
+  },
+  "112.svg": {
+   "hash": "978353efb635",
+   "vis": 0.605,
+   "edge": 1
+  },
+  "113.svg": {
+   "hash": "72f7c9cdb056",
+   "vis": 1,
+   "edge": 1
+  },
+  "114.svg": {
+   "hash": "d32843087882",
+   "vis": 1,
+   "edge": 1
+  },
+  "115.svg": {
+   "hash": "ada83c31773b",
+   "vis": 0.677,
+   "edge": 1
+  },
+  "116.svg": {
+   "hash": "3e82029cd5c2",
+   "vis": 1,
+   "edge": 1
+  },
+  "117.svg": {
+   "hash": "91e3d9c55045",
+   "vis": 0.786,
+   "edge": 0.986
+  },
+  "118.svg": {
+   "hash": "4fa762556eb4",
+   "vis": 1,
+   "edge": 1
+  },
+  "119.svg": {
+   "hash": "01aadb7f0252",
+   "vis": 1,
+   "edge": 1
+  },
+  "120.svg": {
+   "hash": "5928bb6aa9ac",
+   "vis": 1,
+   "edge": 1
+  },
+  "121.svg": {
+   "hash": "a7707b11a8c9",
+   "vis": 0.316,
+   "edge": 1
+  },
+  "133.svg": {
+   "hash": "1dba7355dbf8",
+   "vis": 1,
+   "edge": 1
+  },
+  "134.svg": {
+   "hash": "0e5ef2027ede",
+   "vis": 1,
+   "edge": 1
+  },
+  "135.svg": {
+   "hash": "7a68d75e73a9",
+   "vis": 1,
+   "edge": 1
+  },
+  "136.svg": {
+   "hash": "6a6b8fcc1b43",
+   "vis": 0.803,
+   "edge": 0.889
+  },
+  "137.svg": {
+   "hash": "c6f271a1db26",
+   "vis": 1,
+   "edge": 1
+  },
+  "138.svg": {
+   "hash": "7971d8b7b2f3",
+   "vis": 0.341,
+   "edge": 1
+  },
+  "139.svg": {
+   "hash": "121a46af150d",
+   "vis": 1,
+   "edge": 1
+  },
+  "140.svg": {
+   "hash": "eef71d923e16",
+   "vis": 1,
+   "edge": 1
+  },
+  "141.svg": {
+   "hash": "3e56bd104801",
+   "vis": 0.596,
+   "edge": 1
+  },
+  "142.svg": {
+   "hash": "09526558e3ac",
+   "vis": 1,
+   "edge": 1
+  },
+  "143.svg": {
+   "hash": "48860382377d",
+   "vis": 1,
+   "edge": 1
+  },
+  "144.svg": {
+   "hash": "1314a6dca002",
+   "vis": 1,
+   "edge": 1
+  },
+  "145.svg": {
+   "hash": "30902ea17de7",
+   "vis": 1,
+   "edge": 1
+  },
+  "146.svg": {
+   "hash": "2e8b35551851",
+   "vis": 0.744,
+   "edge": 0.886
+  },
+  "147.svg": {
+   "hash": "9745f1dee765",
+   "vis": 1,
+   "edge": 1
+  },
+  "158.svg": {
+   "hash": "1a80c4ebe535",
+   "vis": 0.409,
+   "edge": 1
+  },
+  "eras/108-1997.png": {
+   "hash": "3766921fb848",
+   "vis": 0.719,
+   "edge": 0.981
+  },
+  "eras/109-1998.png": {
+   "hash": "3087f18fe6ed",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/109-2007.png": {
+   "hash": "fdd3fddf71f9",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/109-2016.png": {
+   "hash": "6bef5cec4eff",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/109-2020.png": {
+   "hash": "1bb685cc7f67",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/110-1999.png": {
+   "hash": "5f6fd4a53611",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/113-1999.png": {
+   "hash": "2f3653e0c5a4",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/114-1986.png": {
+   "hash": "4d2490ac327a",
+   "vis": 0.442,
+   "edge": 0.692
+  },
+  "eras/114-2002.png": {
+   "hash": "1e2cbeee6022",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/114-2008.png": {
+   "hash": "2b0c838e4964",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/115-1993.png": {
+   "hash": "97620dbdb5d5",
+   "vis": 0.623,
+   "edge": 1
+  },
+  "eras/117-2000.png": {
+   "hash": "72389ac96ddb",
+   "vis": 0.857,
+   "edge": 0.33
+  },
+  "eras/118-1969.png": {
+   "hash": "0580577bb190",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/118-2002.png": {
+   "hash": "57323488dd7e",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/119-1972.png": {
+   "hash": "f62a8a822702",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/120-1992.png": {
+   "hash": "350dc2066e25",
+   "vis": 0.684,
+   "edge": 0.977
+  },
+  "eras/133-1993.png": {
+   "hash": "31a7d1cc01b2",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/135-1991.png": {
+   "hash": "71119e999e20",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/135-2004.png": {
+   "hash": "00c9af0e4108",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/138-1964.png": {
+   "hash": "db56b2bf2a20",
+   "vis": 0.846,
+   "edge": 1
+  },
+  "eras/139-1998.png": {
+   "hash": "550fd2e36077",
+   "vis": 0.741,
+   "edge": 1
+  },
+  "eras/139-2001.png": {
+   "hash": "dd76c2968906",
+   "vis": 0.617,
+   "edge": 0.598
+  },
+  "eras/139-2004.png": {
+   "hash": "e7be23e6cb63",
+   "vis": 0.946,
+   "edge": 1
+  },
+  "eras/141-1997.png": {
+   "hash": "6905218ede1f",
+   "vis": 0.528,
+   "edge": 0.796
+  },
+  "eras/141-2001.png": {
+   "hash": "fa7fab679c14",
+   "vis": 0.452,
+   "edge": 0.621
+  },
+  "eras/141-2004.png": {
+   "hash": "3119cecbc8b9",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/141-2012.png": {
+   "hash": "324038102a93",
+   "vis": 0.731,
+   "edge": 1
+  },
+  "eras/142-2000.png": {
+   "hash": "bde5d4468ba7",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/144-1987.png": {
+   "hash": "0cd484caf19b",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/146-1993.png": {
+   "hash": "fbb35fdb071a",
+   "vis": 0.844,
+   "edge": 0.941
+  },
+  "eras/146-2012.png": {
+   "hash": "49d2f748a2d1",
+   "vis": 0.691,
+   "edge": 0.691
+  },
+  "eras/158-2000.png": {
+   "hash": "b50988747340",
+   "vis": 0.859,
+   "edge": 0.691
+  }
+ }
+}

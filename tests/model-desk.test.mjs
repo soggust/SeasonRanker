@@ -28,7 +28,7 @@ const BOXES = {
     boxscore: {
       players: [
         {
-          team: { color: '00338d', alternateColor: 'c60c30' },
+          team: { id: '2', color: '00338d', alternateColor: 'c60c30' },
           statistics: [
             { name: 'passing', labels: ['C/ATT', 'YDS', 'AVG', 'TD', 'INT'], athletes: [athlete('1', ['22/31', '287', '9.3', '2', '1'])] },
             { name: 'rushing', labels: ['CAR', 'YDS', 'AVG', 'TD', 'LONG'], athletes: [athlete('1', ['4', '18', '4.5', '0', '9']), athlete('2', ['17', '84', '4.9', '1', '22'])] },
@@ -36,7 +36,7 @@ const BOXES = {
           ],
         },
         {
-          team: { color: '041e42', alternateColor: 'a5acaf' },
+          team: { id: '13', color: '041e42', alternateColor: 'a5acaf' },
           statistics: [{ name: 'rushing', labels: ['CAR', 'YDS'], athletes: [athlete('9', [], { didNotPlay: true })] }],
         },
       ],
@@ -124,10 +124,10 @@ test("the count in play is the grader's: liveStat matches props.mjs statInFinal 
   }
 });
 
-test("athleteColors: the team whose table lists the player", () => {
-  assert.deepEqual(desk.athleteColors('3', BOXES.nfl), { color: '00338d', alternateColor: 'c60c30' });
-  assert.deepEqual(desk.athleteColors('9', BOXES.nfl), { color: '041e42', alternateColor: 'a5acaf' });
-  assert.equal(desk.athleteColors('404', BOXES.nfl), null);
+test("athleteTeam: the team whose table lists the player, its ESPN id", () => {
+  assert.equal(desk.athleteTeam('3', BOXES.nfl), '2');
+  assert.equal(desk.athleteTeam('9', BOXES.nfl), '13');
+  assert.equal(desk.athleteTeam('404', BOXES.nfl), null);
 });
 
 // ---------------------------------------------------------------------------
@@ -143,44 +143,29 @@ const parseHsl = (c) => {
 // (the hue rounded: one just past a band's edge may round onto it)
 const readsAsResult = ([h, s]) => s > 30 && (h < 11 || h > 330 || (h > 80 && h < 165));
 
-test('meterColor: a green or red team color is passed over for its other one; neither, none', () => {
-  // (the Celtics' green: its gold instead)
-  const [h] = parseHsl(desk.meterColor({ color: '007a33', alternateColor: 'ba9653' }));
-  assert.ok(h > 30 && h < 50, `gold's hue ${h}`);
-  assert.equal(desk.meterColor({ color: '007a33', alternateColor: 'c8102e' }), null);
-  assert.equal(desk.meterColor({ color: 'nonsense', alternateColor: undefined }), null);
-  assert.equal(desk.meterColor(null), null);
+test("pickTeamColor: the team's look's safe accent (team-look.ts), by a side's abbreviation or a prop's team id; a total, or a team not known, none", () => {
+  const dal = desk.teamLook('nfl', { abbr: 'DAL' }).accentSafe;
+  assert.equal(desk.pickTeamColor('nfl', { total: false, abbr: 'DAL' }), dal);
+  assert.equal(desk.pickTeamColor('nfl', { total: false, teamId: '6' }), dal);
+  assert.equal(desk.pickTeamColor('nfl', { total: true, abbr: 'DAL' }), null);
+  assert.equal(desk.pickTeamColor('nfl', { total: false, abbr: 'XYZ' }), null);
+  assert.equal(desk.pickTeamColor('nfl', { total: false }), null);
+  // (another sport's own Dallas)
+  assert.equal(desk.pickTeamColor('nba', { total: false, abbr: 'DAL' }), desk.teamLook('nba', { abbr: 'DAL' }).accentSafe);
 });
 
-test('meterColor: a navy or black is lifted to show on the dark board; a gray stays gray', () => {
-  // (how light a color reads: Lab's L*, as colors.ts lifts it)
-  const navy = desk.meterColor({ color: '002244' });
-  assert.ok(desk.lightness(navy) >= 52, `navy ${navy} too dark`);
-  // (a red with a black: the red passed over, the black a grey)
-  assert.equal(parseHsl(desk.meterColor({ color: 'c8102e', alternateColor: '000000' }))[1], 0);
-  // (a real color before a near-gray: Vegas's gold over its slate)
-  const [h] = parseHsl(desk.meterColor({ color: '333f48', alternateColor: 'b4975a' }));
-  assert.ok(h > 30 && h < 50);
-});
-
-test('meterColor never gives a green or a red, and never a dark one, whatever the team colors', () => {
-  let seed = 7;
-  const rand = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
-  const hex = () => Math.floor(rand() * 0xffffff).toString(16).padStart(6, '0');
-  for (let i = 0; i < 3000; i++) {
-    const c = desk.meterColor({ color: hex(), alternateColor: hex() });
-    if (c === null) continue;
-    const hsl = parseHsl(c);
-    assert.ok(!readsAsResult(hsl), `${c} reads as a result`);
-    assert.ok(desk.lightness(c) >= 52, `${c} too dark`);
+test("pickTeamColor never gives a green or a red, and always reads as text on the Bets rows, every team's", () => {
+  for (const sport of ['nfl', 'nba', 'nhl', 'mlb']) {
+    for (const [abbr, t] of Object.entries(JSON.parse(fs.readFileSync(path.join(ROOT, 'apps', sport, 'src/StaticData/model/teams.json'), 'utf8')).teams)) {
+      const c = desk.pickTeamColor(sport, { total: false, abbr });
+      assert.ok(c, `${sport} ${abbr}: no color`);
+      assert.equal(desk.pickTeamColor(sport, { total: false, teamId: t.id }), c, `${sport} ${abbr} by id`);
+      assert.ok(!readsAsResult(parseHsl(c)), `${sport} ${abbr}: ${c} reads as a result`);
+      assert.ok(desk.contrast(c, '#1f2824') >= 4.5, `${sport} ${abbr}: ${c} too dark`);
+    }
   }
-});
-
-test("meterColor is the app's one team color (colors.ts), its greens and reds passed over, lifted to read as text", () => {
-  assert.equal(desk.meterColor({ color: '003594', alternateColor: '869397' }), desk.readableOn(desk.sharedTeamColor(['003594', '869397'])));
-  assert.equal(desk.meterColor({ color: '007a33', alternateColor: 'ba9653' }), desk.readableOn(desk.sharedTeamColor(['ba9653'])));
-  // (4.5:1 at least on the Bets rows' dark, a navy's blue too)
-  assert.ok(desk.contrast(desk.meterColor({ color: '003594', alternateColor: '869397' }), '#1f2824') >= 4.5);
+  // (the Celtics' green and the Chiefs' red: their other color)
+  assert.ok(parseHsl(desk.pickTeamColor('nfl', { total: false, abbr: 'KC' }))[0] > 30);
 });
 
 test('readableOn: a color lightened only until it reads, its hue kept; one that reads already, as it is', () => {
@@ -188,20 +173,6 @@ test('readableOn: a color lightened only until it reads, its hue kept; one that 
   const navy = desk.readableOn('#1d4f91');
   assert.ok(desk.contrast(navy, '#1f2824') >= 4.5);
   assert.ok(Math.abs(desk.hslOf(navy)[0] - desk.hslOf('#1d4f91')[0]) < 3);
-});
-
-test('pickTeamColor: a side by its abbreviation, a prop by its team id, a total by no one', () => {
-  const pair = { color: '003594', alternateColor: '869397' };
-  const colors = new Map([
-    ['nfl:DAL', pair],
-    ['nfl#6', pair],
-  ]);
-  const dal = desk.meterColor(pair);
-  assert.equal(desk.pickTeamColor(colors, 'nfl', { total: false, abbr: 'DAL' }), dal);
-  assert.equal(desk.pickTeamColor(colors, 'nfl', { total: false, teamId: '6' }), dal);
-  assert.equal(desk.pickTeamColor(colors, 'nfl', { total: true, abbr: 'DAL' }), null);
-  assert.equal(desk.pickTeamColor(colors, 'nfl', { total: false, abbr: 'NYG' }), null);
-  assert.equal(desk.pickTeamColor(colors, 'nba', { total: false, abbr: 'DAL' }), null);
 });
 
 test("splitPick: the one word that says what the bet is, a total's first, a side's last", () => {

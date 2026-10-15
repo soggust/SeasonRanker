@@ -1,18 +1,14 @@
 // A bet's pick dressed up, the same on the Algorithm desk and the Bets page: its one word that says what the bet
-// is (a prop's or a total's over or under, a side's line or ML), in its team's color (never a green or a red:
-// live-props.ts meterColor), from each sport's team colors (data/model/teams.json, ESPN's team list as the
-// bettor keeps it, colors.ts loadTeamColors: a browser can't ask ESPN's itself)
-import { TeamColors } from '../colors';
-import { meterColor } from './live-props';
-
-export { type TeamColors, loadTeamColors } from '../colors';
+// is (a prop's or a total's over or under, a side's line or ML), in its team's color (team-look.ts accentSafe:
+// never a green or a red, they're the meters' won and lost; light enough to read on the rows)
+import { teamLook } from '../team-look';
 
 // A pick's color: a prop its player's team's (by his team's ESPN id), a side the team it took's (by its
 // abbreviation); a total, no one's (null: the board's light, as with no team known)
-export function pickTeamColor(colors: TeamColors, sport: string, pick: { total: boolean; teamId?: string | null; abbr?: string | null }): string | null {
-  if (pick.total) return null;
-  const pair = pick.teamId ? colors.get(`${sport}#${pick.teamId}`) : pick.abbr ? colors.get(`${sport}:${pick.abbr}`) : undefined;
-  return pair ? meterColor(pair) : null;
+export function pickTeamColor(sport: string, pick: { total: boolean; teamId?: string | null; abbr?: string | null }): string | null {
+  if (pick.total || (!pick.teamId && !pick.abbr)) return null;
+  const look = teamLook(sport, pick.teamId ? { id: pick.teamId } : { abbr: pick.abbr });
+  return look.key ? look.accentSafe : null;
 }
 
 // A pick split round that word: [before, the word, after]. A prop's text is what follows the player's name

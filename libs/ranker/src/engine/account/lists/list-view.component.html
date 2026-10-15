@@ -107,13 +107,14 @@
       </li>
       @for (row of compared; track row.id; let i = $index) {
         <li class="row" cdkDrag [cdkDragDisabled]="!mine" cdkDragPreviewContainer="parent" [class.gone]="missingToday(row)">
-          <span class="who" [style.--team-badge]="badge(row)">
+          @let look = this.look(row);
+          <span class="who" [style]="look?.chip">
             @if (mine) {
               <mat-icon cdkDragHandle class="grip" aria-hidden="false" aria-label="Drag to reorder" fontIcon="drag_indicator"></mat-icon>
             }
             <span [ngClass]="rankClass(i)" class="rank-tile" [title]="'#' + (i + 1)">@if (i === 0) {<span class="trophy" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
             <span class="badge-slot" [class.with-photo]="photo(row)" aria-hidden="true">
-              <span class="team-badge" [class.white-logo]="whiteLogo(row)" [class.no-color]="!badge(row)">
+              <span class="team-badge" [class.white-logo]="look?.whiteLogo" [class.no-color]="!look">
                 @if (logo(row); as src) { <img class="team-logo" [src]="src" alt="" /> }
               </span>
               @if (photo(row); as src) { <img class="headshot" [src]="src" alt="" loading="lazy" (error)="noPhoto(row)" /> }

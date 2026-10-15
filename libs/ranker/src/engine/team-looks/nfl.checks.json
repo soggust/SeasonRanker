@@ -1,0 +1,455 @@
+{
+ "source": "5a99fb980eb1",
+ "logos": {
+  "49ers.png": {
+   "hash": "a2cf1e34b20a",
+   "vis": 0.586,
+   "edge": 1
+  },
+  "Bears.png": {
+   "hash": "a7e1f26d552b",
+   "vis": 0.608,
+   "edge": 1
+  },
+  "Bengals.png": {
+   "hash": "bf744f7996d5",
+   "vis": 0.544,
+   "edge": 1
+  },
+  "Bills.png": {
+   "hash": "34199078c362",
+   "vis": 0.455,
+   "edge": 1
+  },
+  "Broncos.png": {
+   "hash": "7830e7c4d367",
+   "vis": 0.827,
+   "edge": 1
+  },
+  "Browns.png": {
+   "hash": "468ba9a1b5d7",
+   "vis": 0.879,
+   "edge": 1
+  },
+  "Bucs.png": {
+   "hash": "5fc5a0afab1e",
+   "vis": 0.505,
+   "edge": 1
+  },
+  "Cardinals.png": {
+   "hash": "cc5f7f4b6783",
+   "vis": 0.504,
+   "edge": 1
+  },
+  "Chargers.png": {
+   "hash": "41f075240164",
+   "vis": 0.82,
+   "edge": 1
+  },
+  "Chiefs.png": {
+   "hash": "bc6b8f33e936",
+   "vis": 0.81,
+   "edge": 1
+  },
+  "Colts.png": {
+   "hash": "fb75ad72f2f6",
+   "vis": 1,
+   "edge": 1,
+   "white": 9.99
+  },
+  "Commanders.png": {
+   "hash": "6f2f2283317f",
+   "vis": 0.386,
+   "edge": 1
+  },
+  "Cowboys.png": {
+   "hash": "b13a0781df60",
+   "vis": 0.246,
+   "edge": 0
+  },
+  "Dolphins.png": {
+   "hash": "f20c2f11310c",
+   "vis": 0.674,
+   "edge": 0.988
+  },
+  "Eagles.png": {
+   "hash": "3aed019cf5e8",
+   "vis": 0.758,
+   "edge": 1
+  },
+  "Falcons.png": {
+   "hash": "762749bd64ef",
+   "vis": 0.914,
+   "edge": 1
+  },
+  "Giants.png": {
+   "hash": "1cc5ee5243e7",
+   "vis": 1,
+   "edge": 1,
+   "white": 13.77
+  },
+  "Jaguars.png": {
+   "hash": "da987c824c56",
+   "vis": 0.941,
+   "edge": 1
+  },
+  "Jets.png": {
+   "hash": "e302c6ab0b38",
+   "vis": 1,
+   "edge": 1,
+   "white": 8.53
+  },
+  "Lions.png": {
+   "hash": "200df8c8973f",
+   "vis": 0.373,
+   "edge": 1
+  },
+  "Packers.png": {
+   "hash": "b8d59d12af0f",
+   "vis": 0.59,
+   "edge": 1
+  },
+  "Panthers.png": {
+   "hash": "4de71b63338a",
+   "vis": 0.833,
+   "edge": 0.337
+  },
+  "Patriots.png": {
+   "hash": "9313051d7675",
+   "vis": 0.526,
+   "edge": 1
+  },
+  "Raiders.png": {
+   "hash": "7fe079eddfe8",
+   "vis": 0.422,
+   "edge": 1
+  },
+  "Rams.png": {
+   "hash": "37d7bff88fd4",
+   "vis": 1,
+   "edge": 1
+  },
+  "Ravens.png": {
+   "hash": "08bb1dbfe4e5",
+   "vis": 0.778,
+   "edge": 1
+  },
+  "Saints.png": {
+   "hash": "7d732020d0da",
+   "vis": 0.531,
+   "edge": 1
+  },
+  "Seahawks.png": {
+   "hash": "f2b43f9720a3",
+   "vis": 0.549,
+   "edge": 1
+  },
+  "Steelers.png": {
+   "hash": "2e86e453fb95",
+   "vis": 0.968,
+   "edge": 0.087
+  },
+  "Texans.png": {
+   "hash": "8851907c7ed6",
+   "vis": 0.819,
+   "edge": 1
+  },
+  "Titans.png": {
+   "hash": "3bb27b1c4365",
+   "vis": 0.522,
+   "edge": 1
+  },
+  "Vikings.png": {
+   "hash": "6964fc6ab3f1",
+   "vis": 0.947,
+   "edge": 1
+  },
+  "eras/49ers-1996.png": {
+   "hash": "efd431cd8f67",
+   "vis": 0.586,
+   "edge": 1
+  },
+  "eras/49ers-2002.png": {
+   "hash": "e575c5a5fb33",
+   "vis": 0.587,
+   "edge": 1
+  },
+  "eras/49ers-2005.png": {
+   "hash": "925d13d102e7",
+   "vis": 0.575,
+   "edge": 1
+  },
+  "eras/Bears-1997.png": {
+   "hash": "529d81c2db8f",
+   "vis": 0.846,
+   "edge": 0
+  },
+  "eras/Bears-2002.png": {
+   "hash": "4f8579106d4e",
+   "vis": 0.853,
+   "edge": 0
+  },
+  "eras/Bengals-1997.png": {
+   "hash": "fd1dafbbbbc6",
+   "vis": 0.785,
+   "edge": 1
+  },
+  "eras/Bengals-2002.png": {
+   "hash": "ea618fa13976",
+   "vis": 0.78,
+   "edge": 1
+  },
+  "eras/Bengals-2004.png": {
+   "hash": "b4104cc4488c",
+   "vis": 0.513,
+   "edge": 1
+  },
+  "eras/Broncos-1999.png": {
+   "hash": "5da33888ed47",
+   "vis": 0.824,
+   "edge": 1
+  },
+  "eras/Browns-1999.png": {
+   "hash": "3f8ab3c0ac6d",
+   "vis": 0.399,
+   "edge": 0.924
+  },
+  "eras/Browns-2002.png": {
+   "hash": "3e265441b9f9",
+   "vis": 0.397,
+   "edge": 0.892
+  },
+  "eras/Browns-2006.png": {
+   "hash": "509836c08724",
+   "vis": 0.409,
+   "edge": 0.953
+  },
+  "eras/Browns-2007.png": {
+   "hash": "50e94bc0dcf2",
+   "vis": 0.412,
+   "edge": 0.953
+  },
+  "eras/Browns-2015.png": {
+   "hash": "423fa936d5c8",
+   "vis": 0.976,
+   "edge": 0.917
+  },
+  "eras/Bucs-1997.png": {
+   "hash": "2c221bbdd0b7",
+   "vis": 0.532,
+   "edge": 1
+  },
+  "eras/Bucs-2014.png": {
+   "hash": "3166554bba66",
+   "vis": 0.477,
+   "edge": 1
+  },
+  "eras/Cardinals-1994.png": {
+   "hash": "8e1c47893f08",
+   "vis": 0.414,
+   "edge": 1
+  },
+  "eras/Chargers-1988.png": {
+   "hash": "199812768417",
+   "vis": 0.876,
+   "edge": 1
+  },
+  "eras/Chargers-2002.png": {
+   "hash": "5deb059b2ed1",
+   "vis": 0.857,
+   "edge": 1
+  },
+  "eras/Chargers-2007.png": {
+   "hash": "bb6b26fae6f2",
+   "vis": 0.77,
+   "edge": 1
+  },
+  "eras/Chargers-2017.png": {
+   "hash": "3242b3cfff2c",
+   "vis": 0.693,
+   "edge": 1
+  },
+  "eras/Colts-1997.png": {
+   "hash": "61f742886b73",
+   "vis": 1,
+   "edge": 1,
+   "white": 9.99
+  },
+  "eras/Colts-2002.png": {
+   "hash": "00bbb54e0093",
+   "vis": 1,
+   "edge": 1,
+   "white": 9.99
+  },
+  "eras/Commanders-1983.png": {
+   "hash": "a7f38636eb73",
+   "vis": 0.874,
+   "edge": 1
+  },
+  "eras/Commanders-2020.png": {
+   "hash": "910ca6906ba7",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/Cowboys-1997.png": {
+   "hash": "6ed49bbd932f",
+   "vis": 0.281,
+   "edge": 0
+  },
+  "eras/Dolphins-1997.png": {
+   "hash": "0e71428a7b05",
+   "vis": 0.723,
+   "edge": 1
+  },
+  "eras/Dolphins-2002.png": {
+   "hash": "aad6adaef660",
+   "vis": 0.711,
+   "edge": 1
+  },
+  "eras/Dolphins-2013.png": {
+   "hash": "e5616310a54b",
+   "vis": 0.613,
+   "edge": 1
+  },
+  "eras/Falcons-1989.png": {
+   "hash": "d81ad6291664",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/Jaguars-1995.png": {
+   "hash": "25691b8ea283",
+   "vis": 0.815,
+   "edge": 1
+  },
+  "eras/Jaguars-2002.png": {
+   "hash": "79e95458fa04",
+   "vis": 0.837,
+   "edge": 1
+  },
+  "eras/Jets-1998.png": {
+   "hash": "51eb60a133d1",
+   "vis": 0.83,
+   "edge": 1
+  },
+  "eras/Jets-2019.png": {
+   "hash": "f106eb48f3d9",
+   "vis": 0.74,
+   "edge": 1
+  },
+  "eras/Lions-1997.png": {
+   "hash": "63a4edef2f45",
+   "vis": 1,
+   "edge": 1
+  },
+  "eras/Lions-2002.png": {
+   "hash": "fc06d36f6802",
+   "vis": 0.98,
+   "edge": 1
+  },
+  "eras/Lions-2003.png": {
+   "hash": "871fac166178",
+   "vis": 0.965,
+   "edge": 1
+  },
+  "eras/Lions-2009.png": {
+   "hash": "39899458eb9b",
+   "vis": 0.321,
+   "edge": 1
+  },
+  "eras/Panthers-1995.png": {
+   "hash": "baf13f7017b3",
+   "vis": 0.734,
+   "edge": 1
+  },
+  "eras/Raiders-1995.png": {
+   "hash": "4ea66976fa40",
+   "vis": 0.79,
+   "edge": 1
+  },
+  "eras/Rams-2000.png": {
+   "hash": "e0308979bcb3",
+   "vis": 0.507,
+   "edge": 1
+  },
+  "eras/Rams-2016.png": {
+   "hash": "4f6610fc5d95",
+   "vis": 0.578,
+   "edge": 1
+  },
+  "eras/Rams-2017.png": {
+   "hash": "582b88931146",
+   "vis": 0.573,
+   "edge": 1
+  },
+  "eras/Rams-2020.png": {
+   "hash": "26ca9b34247b",
+   "vis": 0.517,
+   "edge": 1
+  },
+  "eras/Saints-2000.png": {
+   "hash": "975556efd36f",
+   "vis": 0.693,
+   "edge": 1
+  },
+  "eras/Saints-2002.png": {
+   "hash": "53d2d744bfba",
+   "vis": 0.521,
+   "edge": 1
+  },
+  "eras/Saints-2012.png": {
+   "hash": "d49586c31865",
+   "vis": 0.494,
+   "edge": 1
+  },
+  "eras/Seahawks-1976.png": {
+   "hash": "d9d7a3ea4685",
+   "vis": 0.513,
+   "edge": 1
+  },
+  "eras/Seahawks-2002.png": {
+   "hash": "20374d28c279",
+   "vis": 0.431,
+   "edge": 1
+  },
+  "eras/Seahawks-2009.png": {
+   "hash": "9cfa41ae771e",
+   "vis": 0.43,
+   "edge": 1
+  },
+  "eras/Steelers-1969.png": {
+   "hash": "ef8114f1f955",
+   "vis": 0.986,
+   "edge": 1
+  },
+  "eras/Texans-2002.png": {
+   "hash": "385653cce32b",
+   "vis": 0.823,
+   "edge": 1
+  },
+  "eras/Titans-1999.png": {
+   "hash": "516388ad6450",
+   "vis": 0.757,
+   "edge": 1
+  },
+  "eras/Titans-2002.png": {
+   "hash": "60f5e274a0cb",
+   "vis": 0.774,
+   "edge": 1
+  },
+  "eras/Vikings-1997.png": {
+   "hash": "d0ccf0ee4d2f",
+   "vis": 0.611,
+   "edge": 1
+  },
+  "eras/Vikings-2002.png": {
+   "hash": "8320dce0e51f",
+   "vis": 0.611,
+   "edge": 1
+  },
+  "eras/Vikings-2010.png": {
+   "hash": "51fee6297b65",
+   "vis": 0.61,
+   "edge": 1
+  }
+ }
+}

@@ -15,22 +15,31 @@
       </div>
     } @else {
       <!-- The two teams, away on the left, the final between them on the scoreboard -->
-      <header class="card-hero game-hero" [style.--away-color]="g.away.color" [style.--home-color]="g.home.color">
+      <!-- (each half in its own team's hue, lighter at its outer edge, darkening into the seam between them; its
+           logo a big faint watermark) -->
+      <header
+        class="card-hero game-hero"
+        [style.--away-color]="g.away.color"
+        [style.--home-color]="g.home.color"
+        [style.--away-hi]="g.away.look.hi"
+        [style.--away-lo]="g.away.look.lo"
+        [style.--home-hi]="g.home.look.hi"
+        [style.--home-lo]="g.home.look.lo"
+      >
         <span class="hero-texture game-texture" aria-hidden="true">
-          @if (g.away.logo) {
-            <img class="away" [src]="g.away.logo" alt="" />
+          @if (teamLogo(g.away, g); as logo) {
+            <img class="away" [src]="logo" alt="" />
           }
-          @if (g.home.logo) {
-            <img class="home" [src]="g.home.logo" alt="" />
+          @if (teamLogo(g.home, g); as logo) {
+            <img class="home" [src]="logo" alt="" />
           }
         </span>
         @for (side of ['away', 'home']; track side) {
           @let t = side === 'away' ? g.away : g.home;
           <div class="game-team" [ngClass]="side" [class.lost]="!t.winner && (g.away.winner || g.home.winner)">
-            <!-- (the grid's team card: the site's logo on its badge color) -->
-            @let site = siteTeam(t, g);
-            <span class="hero-card game-logo-card" [style.--team-badge]="site?.badge ?? t.color" [class.white-logo]="site?.white">
-              @if (site?.logo ?? t.logo; as logo) {
+            <!-- (the grid's team card: the site's logo on its chip) -->
+            <span class="hero-card game-logo-card" [style]="t.look.chip" [class.white-logo]="t.look.whiteLogo">
+              @if (teamLogo(t, g); as logo) {
                 <img class="hero-logo" [src]="logo" alt="" />
               }
             </span>
@@ -125,11 +134,10 @@
         </span>
       </ng-template>
 
-      <!-- A team's logo, small, on its badge (the grid's gem: the site's logo on its color) -->
+      <!-- A team's logo, small, on its chip (the grid's gem: the site's logo that season) -->
       <ng-template #gem let-t>
-        @let site = siteTeam(t, g);
-        <span class="mini-gem" [style.--team-badge]="site?.badge ?? t.color" [class.white-logo]="site?.white">
-          @if (site?.logo ?? t.logo; as logo) {
+        <span class="mini-gem" [style]="t.look.chip" [class.white-logo]="t.look.whiteLogo">
+          @if (teamLogo(t, g); as logo) {
             <img [src]="logo" alt="" />
           }
         </span>

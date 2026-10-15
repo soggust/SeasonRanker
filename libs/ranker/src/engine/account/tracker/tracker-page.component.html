@@ -196,7 +196,7 @@
             <!-- (the sides: a tape each in its color, where it stands now and where it stood) -->
             <div class="pin-sides" [style.--sides]="card.sides.length">
               @for (s of card.sides; track s.key) {
-                <div class="pin-side" [style.--side]="s.color" [style.--team-badge]="s.badge">
+                <div class="pin-side" [style.--side]="s.color" [style]="s.look.chip">
                   @if (s.logo) {
                     <span class="pin-texture" aria-hidden="true"><img [src]="s.logo" alt="" /></span>
                   }
@@ -205,7 +205,7 @@
                       @if (s.photo) {
                         <img [src]="s.photo" alt="" (error)="s.photo = null" />
                       } @else if (s.logo) {
-                        <img [src]="s.logo" alt="" [class.white-logo]="s.whiteLogo" />
+                        <img [src]="s.logo" alt="" [class.white-logo]="s.look.whiteLogo" />
                       } @else {
                         <mat-icon fontIcon="person" aria-hidden="true"></mat-icon>
                       }

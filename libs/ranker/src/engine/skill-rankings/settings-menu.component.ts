@@ -11,7 +11,7 @@ import { settingText, settingsAt } from '@ranker/engine/setting-options';
 import { SEASON_PARTS, SeasonPart } from '@ranker/engine/data';
 import { TeamFilterService } from '@ranker/engine/team-filter';
 import { logoForSeason } from '@sport/logo-eras';
-import { whiteLogo } from '@sport/team-colors';
+import { teamLook } from '@ranker/engine/team-look';
 
 // A switch in the Display section: one of ours, or the sport's (SPORT.settings)
 interface MenuSwitch {
@@ -149,7 +149,7 @@ export class SettingsMenuComponent {
   }
 
   logoWhite(logo: string): boolean {
-    return whiteLogo(logo);
+    return teamLook(SPORT.id, logo, this.positionService.season).whiteLogo;
   }
 
   private switch(key: 'categoryColors' | 'colorValues' | 'combineStats' | 'showInjured' | 'rookiesOnly' | 'showUnused' | 'showRanks', label: string, title: string): MenuSwitch {

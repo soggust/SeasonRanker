@@ -1,54 +1,60 @@
-// Team badges: each row's team logo sits on a disc of the team's primary color (ESPN's team colors).
-// The logos are the NBA's versions drawn for a dark background, which read on every primary but
-// Toronto's. Keyed by the franchise's code in the logo's file name ("assets/NBA_Icons/BOS.svg" -> BOS).
-const BADGE: Record<string, string> = {
-  ATL: '#c8102e', // Atlanta Hawks
-  BOS: '#008348', // Boston Celtics
-  BRK: '#000000', // Brooklyn Nets
-  CHI: '#ce1141', // Chicago Bulls
-  CHO: '#008ca8', // Charlotte Hornets
-  CLE: '#860038', // Cleveland Cavaliers
-  DAL: '#0064b1', // Dallas Mavericks
-  DEN: '#0e2240', // Denver Nuggets
-  DET: '#1d428a', // Detroit Pistons
-  GSW: '#fdb927', // Golden State Warriors
-  HOU: '#ce0e2d', // Houston Rockets
-  IND: '#0c2340', // Indiana Pacers
-  LAC: '#12173f', // LA Clippers
-  LAL: '#552583', // Los Angeles Lakers
-  MEM: '#5d76a9', // Memphis Grizzlies
-  MIA: '#98002e', // Miami Heat
-  MIL: '#00471b', // Milwaukee Bucks
-  MIN: '#266092', // Minnesota Timberwolves
-  NOP: '#0a2240', // New Orleans Pelicans
-  NYK: '#1d428a', // New York Knicks
-  OKC: '#007ac1', // Oklahoma City Thunder
-  ORL: '#0150b5', // Orlando Magic
-  PHI: '#1d428a', // Philadelphia 76ers
-  PHO: '#29127a', // Phoenix Suns
-  POR: '#e03a3e', // Portland Trail Blazers
-  SAC: '#5a2d81', // Sacramento Kings
-  SAS: '#000000', // San Antonio Spurs
-  TOR: '#000000', // Toronto Raptors (black: the red logo on their red would disappear)
-  UTA: '#4e008e', // Utah Jazz
-  WAS: '#e31837', // Washington Wizards
+// The NBA's team colors: what goes into each logo's look (libs/ranker/src/engine/team-look.ts, the one
+// source of team colors). scripts/build-team-looks.mjs samples every logo, today's and each old era's, and
+// works out its chip, rim, accent and washes from these into libs/ranker/src/engine/team-looks/nba.json:
+// run npm run team-looks after changing this file, a logo or logo-eras.ts (tests/team-looks.test.mjs fails
+// until it's run).
+import type { TeamLookOverride } from '@ranker/engine/team-look';
+
+// Each team's logo (its file's name: the franchise's code) -> [ESPN's abbreviation, ESPN's id, its color,
+// its second color] (ESPN's color and alternateColor; the second is the chip's rim, and its face where the
+// logo doesn't read on the first)
+export const TEAMS: Record<string, [string, string, string, string]> = {
+  ATL: ['ATL', '1', '#c8102e', '#fdb927'], // Atlanta Hawks
+  BOS: ['BOS', '2', '#008348', '#ffffff'], // Boston Celtics
+  BRK: ['BKN', '17', '#000000', '#ffffff'], // Brooklyn Nets
+  CHI: ['CHI', '4', '#ce1141', '#000000'], // Chicago Bulls
+  CHO: ['CHA', '30', '#008ca8', '#1d1060'], // Charlotte Hornets
+  CLE: ['CLE', '5', '#860038', '#bc945c'], // Cleveland Cavaliers
+  DAL: ['DAL', '6', '#0064b1', '#bbc4ca'], // Dallas Mavericks
+  DEN: ['DEN', '7', '#0e2240', '#fec524'], // Denver Nuggets
+  DET: ['DET', '8', '#1d428a', '#c8102e'], // Detroit Pistons
+  GSW: ['GS', '9', '#fdb927', '#1d428a'], // Golden State Warriors
+  HOU: ['HOU', '10', '#ce0e2d', '#000000'], // Houston Rockets
+  IND: ['IND', '11', '#0c2340', '#ffd520'], // Indiana Pacers
+  LAC: ['LAC', '12', '#12173f', '#c8102e'], // LA Clippers
+  LAL: ['LAL', '13', '#552583', '#fdb927'], // Los Angeles Lakers
+  MEM: ['MEM', '29', '#5d76a9', '#12173f'], // Memphis Grizzlies
+  MIA: ['MIA', '14', '#98002e', '#000000'], // Miami Heat
+  MIL: ['MIL', '15', '#00471b', '#eee1c6'], // Milwaukee Bucks
+  MIN: ['MIN', '16', '#266092', '#79bc43'], // Minnesota Timberwolves
+  NOP: ['NO', '3', '#0a2240', '#b4975a'], // New Orleans Pelicans
+  NYK: ['NY', '18', '#1d428a', '#f58426'], // New York Knicks
+  OKC: ['OKC', '25', '#007ac1', '#ef3b24'], // Oklahoma City Thunder
+  ORL: ['ORL', '19', '#0150b5', '#9ca0a3'], // Orlando Magic
+  PHI: ['PHI', '20', '#1d428a', '#e01234'], // Philadelphia 76ers
+  PHO: ['PHX', '21', '#29127a', '#e56020'], // Phoenix Suns
+  POR: ['POR', '22', '#e03a3e', '#000000'], // Portland Trail Blazers
+  SAC: ['SAC', '23', '#5a2d81', '#6a7a82'], // Sacramento Kings
+  SAS: ['SA', '24', '#000000', '#c4ced4'], // San Antonio Spurs
+  TOR: ['TOR', '28', '#d91244', '#000000'], // Toronto Raptors
+  UTA: ['UTAH', '26', '#4e008e', '#79a3dc'], // Utah Jazz
+  WAS: ['WSH', '27', '#e31837', '#002b5c'], // Washington Wizards
 };
 
-// ("assets/NBA_Icons/eras/OKC-2001.png", an old logo, -> OKC)
-const teamKey = (teamLogo: string) => teamLogo.split('/').pop()!.replace(/\.(svg|png)$/, '').replace(/-\d{4}$/, '');
+// Old logos whose own colors their pixels would mislead about, by file: [color, second color] (an era not
+// here takes its own logo's colors where it doesn't use today's)
+export const ERA_COLORS: Record<string, [string, string]> = {
+  // (the Jazz's navy and gold, then navy and light blue; the Rockets' red and silver)
+  'eras/UTA-2017.png': ['#002b5c', '#f9a01b'],
+  'eras/UTA-2005.png': ['#002b5c', '#6caedf'],
+  'eras/HOU-2004.png': ['#ce1141', '#c4ced4'],
+};
 
-// The badge color behind a team's logo (a neutral gray for an unknown team)
-export function badgeColor(teamLogo: string): string {
-  return BADGE[teamKey(teamLogo)] ?? '#3a3a3a';
-}
-
-// [primary, secondary] for anything that wants a pair (both the badge color for now)
-export function teamColors(teamLogo: string): [string, string] {
-  const c = badgeColor(teamLogo);
-  return [c, c];
-}
-
-// The NFL app draws some logos in white on their badge; the NBA's dark-background logos already read
-export function whiteLogo(_teamLogo: string): boolean {
-  return false;
-}
+// What the rules can't decide, checked by eye, by file (face: a color, or 'primary', the team's own toned
+// for the board)
+export const OVERRIDES: Record<string, TeamLookOverride> = {
+  // (white, not the ball's orange)
+  'BOS.svg': { rim: '#e9ecef' },
+  // (a white B on a black disc: a mid charcoal shows both)
+  'BRK.svg': { face: '#4a4f54' },
+};

@@ -8,6 +8,7 @@ import { CURRENT_SEASON } from '@ranker/engine/data';
 import { scoreText } from '@ranker/engine/skill-rankings/rank-why';
 import { gameLogView } from '@ranker/engine/player-card/game-log-view';
 import { COMPARE_COLORS, CompareSide } from '@ranker/engine/compare/player-compare';
+import { TeamLook, teamLook } from '@ranker/engine/team-look';
 import { AccountService } from '../account.service';
 import { Visibility } from '../account-helpers';
 import { TrackerStore } from './tracker.store';
@@ -43,9 +44,9 @@ interface CardSide {
   head: string;
   meta: string;
   color: string;
-  badge: string;
+  // its team's look (team-look.ts; none known yet: a neutral one)
+  look: TeamLook;
   logo: string | null;
-  whiteLogo: boolean;
   photo: string | null;
   track: TrackSide;
   // (now's rank and its tone; the pin's)
@@ -348,9 +349,8 @@ export class TrackerPageComponent implements OnDestroy {
         head: snap.name,
         meta: [snap.tab, side?.teamName, seasonText].filter(Boolean).join(' · '),
         color: side?.color ?? COMPARE_COLORS[i % COMPARE_COLORS.length],
-        badge: side?.badge ?? '#333',
+        look: side?.look ?? teamLook(SPORT.id, null),
         logo: side?.logo ?? null,
-        whiteLogo: !!side?.whiteLogo,
         photo: side?.photo ?? null,
         track,
         rank,

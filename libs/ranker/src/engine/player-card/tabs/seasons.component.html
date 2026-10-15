@@ -44,7 +44,7 @@
           [title]="cards.isShowing(c, s) ? 'Showing this season' : 'Open the ' + seasonText(s.season) + ' card' + (s.position !== cards.tabPosition ? ' (' + sport.positionNames[s.position] + ')' : '')"
           (click)="!cards.isShowing(c, s) && cards.openLine(s)"
         >
-          <img [src]="s.logo" alt="" [class.white-logo]="whiteLogo(s.teamLogo)" />
+          <img [src]="s.logo" alt="" [class.white-logo]="whiteLogo(s.teamLogo, s.season)" />
           <span class="season-year"
             >{{ seasonName(s.season) }}@if (s.position !== cards.tabPosition) {
               <small class="season-pos" [title]="'Played at ' + sport.positionNames[s.position] + ', ranked among them'">{{ s.position }}</small>
