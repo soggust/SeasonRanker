@@ -40,6 +40,12 @@ jobs:
       - name: Pull MMA fights and stats
         run: npm run mma:update-data
 
+      # The card's Heat Maps: every UFC bout's strikes by target and position and its grappling (ESPN's core
+      # API, each bout asked once and kept in scripts/strikes), and when every fight ended, binned by division (a
+      # failure keeps yesterday's files)
+      - name: Build heat maps
+        run: node apps/mma/scripts/build-heat-maps.mjs || echo "heat maps skipped"
+
       # (the data checked before it's committed: a broken file stays out of master and off the site; npm test)
       - name: Install dependencies
         # (npm install, not npm ci: GitHub's npm wants lock entries ours resolves without; the lock is put back
@@ -54,7 +60,7 @@ jobs:
       - name: Commit updated data
         id: commit
         run: |
-          git add apps/mma/src/StaticData apps/mma/scripts/cache.json apps/mma/scripts/fights
+          git add apps/mma/src/StaticData apps/mma/scripts/cache.json apps/mma/scripts/fights apps/mma/scripts/strikes
           if git diff --cached --quiet; then
             echo "No data changes"
             echo "changed=false" >> "$GITHUB_OUTPUT"
