@@ -23,10 +23,10 @@
 // Stat corrections: a final's summary is read once more a day and a half after its start (recheckSummary), and a
 // prop whose count changed is graded again on it (run.mjs).
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { goaliesInOrder, summary } from './espn.mjs';
-import { CACHE, nflverseRows, pool } from './sources.mjs';
+import { CACHE, nflverseRows, pool, writeAtomic } from './sources.mjs';
 import { intentOf } from './desk.mjs';
 
 const REGULATION = { nfl: 4, nba: 4, nhl: 3, mlb: 9 };
@@ -66,8 +66,7 @@ async function readSummary(sport, league, id) {
   const kept = { at: new Date().toISOString(), header: body.header, boxscore: body.boxscore, article: body.article ? { headline: body.article.headline, story: body.article.story, links: body.article.links } : null };
   if (body.header?.competitions?.[0]?.status?.type?.completed) {
     const file = summaryFile(sport, id);
-    mkdirSync(path.dirname(file), { recursive: true });
-    writeFileSync(file, JSON.stringify(kept));
+    writeAtomic(file, JSON.stringify(kept));
   }
   return kept;
 }

@@ -69,6 +69,7 @@ import { gapGuard, intentOf } from './desk.mjs';
 import { skewOnly, unpricedWhy } from './props.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { applyWriteups, factsOf, plainFor, sibOf, stableStringify, validate } from './writeup.mjs';
+import { writeAtomic } from './sources.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const MODEL = 'claude-opus-5-5';
@@ -807,9 +808,9 @@ async function main(argv) {
       }
       client ??= await defaultClient(env);
       // (writeups.json saved after each bet: a step killed mid-sport keeps what it paid for)
-      const t = await writeSport({ sport, data, client, budget, gate, cfg, now, rewrite: flags.has('--rewrite'), onItem: () => writeFileSync(data.files.writeups, JSON.stringify(data.writeups)) });
-      if (t.writeupsChanged) writeFileSync(data.files.writeups, JSON.stringify(data.writeups));
-      if (t.picksChanged) writeFileSync(data.files.picks, JSON.stringify(data.picks));
+      const t = await writeSport({ sport, data, client, budget, gate, cfg, now, rewrite: flags.has('--rewrite'), onItem: () => writeAtomic(data.files.writeups, JSON.stringify(data.writeups)) });
+      if (t.writeupsChanged) writeAtomic(data.files.writeups, JSON.stringify(data.writeups));
+      if (t.picksChanged) writeAtomic(data.files.picks, JSON.stringify(data.picks));
       console.log(runLine(sport, t, budget, cfg));
     } catch (err) {
       // (never the job's failure: the plain text stays)

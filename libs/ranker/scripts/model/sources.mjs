@@ -5,7 +5,7 @@
 // again after a refusal; anything slow kept under .cache/model (gitignored). A source that fails gives null,
 // and whatever it fed is left neutral for that game.
 
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { gunzipSync } from 'node:zlib';
 
@@ -30,17 +30,25 @@ export async function get(url, { text = false } = {}) {
   return null;
 }
 
-// Every item through fn, a few at a time (polite), in order; an item that throws gives null
+// Every item through fn, a few at a time (polite), in order; an item that throws gives null (the throws counted
+// and the first one logged: a bug in fn would otherwise read as a source that gave nothing)
 export async function pool(items, size, fn) {
   const out = new Array(items.length);
   let next = 0;
+  let failed = 0;
+  let first = null;
   const worker = async () => {
     while (next < items.length) {
       const i = next++;
-      out[i] = await fn(items[i], i).catch(() => null);
+      out[i] = await fn(items[i], i).catch((err) => {
+        failed++;
+        first ??= err;
+        return null;
+      });
     }
   };
   await Promise.all(Array.from({ length: Math.min(size, items.length) }, worker));
+  if (failed) console.warn(`pool: ${failed} of ${items.length} items threw (first: ${String(first?.message ?? first).slice(0, 160)})`);
   return out;
 }
 
@@ -53,8 +61,18 @@ export function readJson(file, fallback) {
   }
 }
 export function writeJson(file, data) {
+  writeAtomic(file, JSON.stringify(data));
+}
+
+// A file written whole or not at all: to a temporary file beside it, then moved over it (a rename on the same disk
+// replaces it in one step), so a run killed mid-write (a step's timeout, a cancelled job) leaves the old file,
+// never half of a new one (a cut-off JSON reads back as its fallback: the Odds API's usage, a game's asks reset; a
+// cut-off .gz reads as fresh for hours and fails to unzip). Its folder made
+export function writeAtomic(file, data) {
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, JSON.stringify(data));
+  const tmp = `${file}.${process.pid}.tmp`;
+  writeFileSync(tmp, data);
+  renameSync(tmp, file);
 }
 
 // A time as its UTC day, "2026-10-08"
@@ -67,8 +85,7 @@ export async function cachedText(url, name, hours) {
   if (fresh) return readFileSync(file, 'utf8');
   const body = await get(url, { text: true });
   if (body) {
-    mkdirSync(CACHE, { recursive: true });
-    writeFileSync(file, body);
+    writeAtomic(file, body);
     return body;
   }
   return existsSync(file) ? readFileSync(file, 'utf8') : null;
@@ -229,10 +246,11 @@ export async function nflverseRows(release, file, columns, hours = 12) {
   for (const f of [shared, mine]) if (!buf && fresh(f)) buf = readFileSync(f);
   if (!buf) {
     const res = await fetch(`https://github.com/nflverse/nflverse-data/releases/download/${release}/${file}`, { headers: HEADERS, signal: AbortSignal.timeout(120e3) }).catch(() => null);
-    if (res?.ok) {
-      buf = Buffer.from(await res.arrayBuffer());
-      mkdirSync(CACHE, { recursive: true });
-      writeFileSync(mine, buf);
+    // (the body read under the same timeout: one cut off mid-download falls back to the stale file, as a refusal)
+    const body = res?.ok ? await res.arrayBuffer().catch(() => null) : null;
+    if (body) {
+      buf = Buffer.from(body);
+      writeAtomic(mine, buf);
     } else for (const f of [shared, mine]) if (!buf && existsSync(f)) buf = readFileSync(f);
   }
   if (!buf) return null;

@@ -55,3 +55,7 @@ apps/*/scripts/model/context.json
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# (a file being written whole (libs/ranker/scripts/model/sources.mjs writeAtomic): a run killed mid-write never
+# commits its temporary file)
+*.tmp

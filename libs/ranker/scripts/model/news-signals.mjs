@@ -34,14 +34,14 @@
 //
 // Run: node libs/ranker/scripts/model/news-signals.mjs [sport ...] [--dry]
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { costOf, loadSdk, newsBudget } from './ai-budget.mjs';
 import { teamNames } from './espn.mjs';
 import { LEAGUES } from './leagues.mjs';
 import { teamStoryOf } from './news.mjs';
-import { DAY, get, isoDay, pool } from './sources.mjs';
+import { DAY, get, isoDay, pool, writeAtomic } from './sources.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports';
@@ -171,8 +171,7 @@ export function readLog(file) {
 }
 
 const write = (file, data) => {
-  mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, `${JSON.stringify(data, null, 1)}\n`);
+  writeAtomic(file, `${JSON.stringify(data, null, 1)}\n`);
 };
 
 // (the page's summary: the last PAGE_DAYS days' signals, the newest story first)

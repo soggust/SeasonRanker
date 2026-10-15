@@ -121,7 +121,7 @@
 
 // (the keys: .env on this machine, the repo's secrets on GitHub; first, so every module sees them)
 import '../env.mjs';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
@@ -142,7 +142,7 @@ import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
-import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
+import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
@@ -224,8 +224,7 @@ function writeIfChanged(file, data, { lines = false } = {}) {
   const strip = (x) => (x && !Array.isArray(x) ? { ...x, updated: null, at: null, props: x.props ? { ...x.props, lastRun: null } : x.props } : x);
   const before = readJson(file, null);
   if (before && JSON.stringify(strip(before)) === JSON.stringify(strip(data))) return false;
-  mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, text);
+  writeAtomic(file, text);
   return true;
 }
 
@@ -317,12 +316,12 @@ function logTheLines(r) {
 
 // The league's teams' colors for the desk (ESPN's team list, which a browser can't ask: it sends no CORS
 // header): abbreviation -> { id, color, alt }, written when they change (once a season, about). A failed ask
-// leaves the file as it was
+// leaves the file as it was (asked through sources.mjs get: its timeout and retries, so a hung connection can't
+// hold the run, the first step of every sport, till the job's timeout)
 async function writeTeams(r) {
   try {
-    const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${r.cfg.league}/teams`);
-    if (!res.ok) return;
-    const body = await res.json();
+    const body = await get(`https://site.api.espn.com/apis/site/v2/sports/${r.cfg.league}/teams`);
+    if (!body) return;
     const teams = Object.fromEntries(
       (body?.sports?.[0]?.leagues?.[0]?.teams ?? [])
         .map(({ team }) => [team.abbreviation, { id: String(team.id), color: team.color ?? null, alt: team.alternateColor ?? null }])
@@ -415,7 +414,9 @@ async function loadHistory(r) {
   const kept = readKept(r.files.ledger, { bets: [] });
   const open = [...kept.bets.filter((b) => b.status === 'open'), ...readChecks(r, kept).filter((c) => !c.checkResult)];
   for (const bet of open) {
-    if (Date.parse(bet.start) < now.getTime() - 4 * DAY) days.add(ymd(new Date(bet.start)));
+    // (ESPN's scoreboard dates are US Eastern: a night game's UTC day is the day after the one it's listed on,
+    // so both asked)
+    if (Date.parse(bet.start) < now.getTime() - 4 * DAY) days.add(ymd(new Date(bet.start))).add(etDay(bet.start).replace(/-/g, ''));
   }
   const seen = new Set();
   // (a game's word on it as it is now: one called off and since played loses its off)
@@ -2347,6 +2348,9 @@ const REFIT = process.argv.includes('--refit');
 // (--fit-check: a fresh fit compared with its rebuild from the saved fit, fitTheProps)
 const FIT_CHECK = process.argv.includes('--fit-check');
 let FIT_SPENT = 0;
+// (when this process started, for DESK_DEADLINE_MIN; and where a running sport's mark is kept)
+const STARTED = Date.now();
+const RUNNING = path.join(CACHE, 'running');
 // (the runs' recent gap, hours: set below, before any sport runs; null with too few runs kept)
 let GAP = null;
 // (the owner's notes, read once a process: notes.mjs readDeskNotes)
@@ -2359,11 +2363,27 @@ if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.
   const runs = read(RUNS, []);
   GAP = cadenceOf(Array.isArray(runs) ? runs : []);
   if (!DRY && !PICKS_ONLY) write(RUNS, [...(Array.isArray(runs) ? runs : []), new Date().toISOString()].slice(-24));
+  // (each sport marked running (.cache/model/running/<sport>) till it ends well: a sport that throws, or a run
+  // killed in it (the step's timeout, a cancelled job), leaves its mark, and the workflow puts that sport's
+  // committed files back as they were (model-desk.yml) while the sports that finished are still committed; one
+  // sport's failure no longer costs every sport's bets. A dry run marks nothing)
+  const marks = !DRY && !PICKS_ONLY;
+  if (marks) rmSync(RUNNING, { recursive: true, force: true });
+  // (DESK_DEADLINE_MIN, the workflow's: a sport not started this many minutes into the run waits for the next,
+  // so the run's last sports never start too late to be committed before the job's timeout)
+  const deadline = Number(process.env.DESK_DEADLINE_MIN) > 0 ? STARTED + Number(process.env.DESK_DEADLINE_MIN) * 60e3 : Infinity;
   for (const sport of sports) {
+    if (Date.now() > deadline) {
+      console.warn(`::warning::${sport}: not started, the run ${Math.round((Date.now() - STARTED) / 60e3)} minutes in (past DESK_DEADLINE_MIN ${process.env.DESK_DEADLINE_MIN}): the next run takes it`);
+      continue;
+    }
+    if (marks) writeAtomic(path.join(RUNNING, sport), new Date().toISOString());
     try {
       await runSport(sport);
+      if (marks) rmSync(path.join(RUNNING, sport), { force: true });
     } catch (err) {
       console.error(`${sport}: ${err.stack ?? err}`);
+      console.error(`::error::${sport}: the run failed (${String(err?.message ?? err).slice(0, 160)}): its files put back as committed, the other sports' kept`);
       process.exitCode = 1;
     }
   }

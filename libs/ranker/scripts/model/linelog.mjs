@@ -33,10 +33,10 @@
 //   dry      --dry logs nothing (counted and said, not written): the cache's history stays the bots'
 //   fails    a log that can't be read or written is warned of and skipped: never the run
 
-import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { gunzipSync, gzipSync } from 'node:zlib';
-import { CACHE } from './sources.mjs';
+import { CACHE, writeAtomic } from './sources.mjs';
 
 export const LINES_DIR = path.join(CACHE, 'lines');
 // (a market's last row kept this long past its game's start: the closing board read after it (run.mjs captureClose, a prop's up to props.mjs PROP_WAIT) still compared, not logged again as new)
@@ -150,7 +150,7 @@ export function logLines(sport, rows, { now = Date.now(), starts = new Map(), dr
     if (dry) return fresh.length;
     mkdirSync(dir, { recursive: true });
     if (fresh.length) appendFileSync(monthFile(sport, now, dir), gzipSync(fresh.map((x) => JSON.stringify(x)).join('\n') + '\n'));
-    writeFileSync(lastFile, JSON.stringify(last));
+    writeAtomic(lastFile, JSON.stringify(last));
     return fresh.length;
   } catch (err) {
     console.warn(`${sport}: the line log not written (${err.message})`);

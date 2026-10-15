@@ -25,7 +25,8 @@
 //            DAILY_USD / _MONTHLY_USD, NEWS_SIGNALS_DAILY_USD / _MONTHLY_USD), each held to its ceiling, so a
 //            typo can't open the spend; unset or unreadable, the defaults
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { writeAtomic } from './sources.mjs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -207,8 +208,7 @@ export function aiBudget({ file, floor = null, now = new Date(), caps = { day: D
     save() {
       if (!dirty || dry || broken || !file) return false;
       const from = new Date(now.getTime() - KEEP_DAYS * 864e5).toISOString();
-      mkdirSync(path.dirname(file), { recursive: true });
-      writeFileSync(file, `${JSON.stringify({ entries: entries.filter((e) => e.at >= from) }, null, 1)}\n`);
+      writeAtomic(file, `${JSON.stringify({ entries: entries.filter((e) => e.at >= from) }, null, 1)}\n`);
       dirty = false;
       // (the totals beside it, written only when they changed)
       if (floor) {
@@ -217,8 +217,7 @@ export function aiBudget({ file, floor = null, now = new Date(), caps = { day: D
         const t = { day, dayUsd: Math.round(s1.day * 1e5) / 1e5, month, monthUsd: Math.round(s1.month * 1e5) / 1e5, life: { calls: lf.calls, usd: lf.usd, mean: lf.mean, max: lf.max } };
         if (!floorWas || floorWas.day !== t.day || floorWas.month !== t.month || floorWas.dayUsd !== t.dayUsd || floorWas.monthUsd !== t.monthUsd || floorWas.life?.calls !== t.life.calls || floorWas.life?.usd !== t.life.usd) {
           floorWas = { ...t, at: now.toISOString() };
-          mkdirSync(path.dirname(floor), { recursive: true });
-          writeFileSync(floor, `${JSON.stringify(floorWas, null, 1)}
+          writeAtomic(floor, `${JSON.stringify(floorWas, null, 1)}
 `);
         }
       }
