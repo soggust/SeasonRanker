@@ -15,13 +15,13 @@ import type { SkillPlayer } from '@sport/positions';
 
 // ---- the surfaces
 
-// (built: field, red-zone, field-strip, down-distance; the rest are named for the sports that will draw them)
+// (built: field, red-zone, field-strip, down-distance, rink; the rest are named for the sports that will draw them)
 export type HeatSurfaceId =
   | 'field'
   | 'red-zone'
   | 'field-strip'
   | 'down-distance'
-  // TODO(NHL): the offensive zone, shot locations by area
+  // (the NHL's offensive zone: shot locations by area)
   | 'rink'
   // TODO(NBA): shot zones on a half court
   | 'half-court'
@@ -110,6 +110,10 @@ export interface HeatStat {
   sample?: string;
   // (the hover's line about it: "EPA a target")
   per?: string;
+  // (what a cell's value reads against, in the hover and the key: the league's in the cell ("league", the
+  // default), what the row's own shots were expected to do ("expected"), an average player's on the same
+  // shots ("average"); null: nothing named, the value alone, its comparison in the cell's detail)
+  vs?: string | null;
 }
 
 // ---- what a sport declares (SPORT.heatMaps): the maps each card type shows
@@ -158,6 +162,8 @@ export interface HeatMapData extends HeatFallback {
   cells: HeatCell[];
   defense: boolean;
   chips?: HeatChip[];
+  // (the numbers' heading: "Inside the 20" when there's none, the red zone's)
+  chipsTitle?: string;
   lead?: boolean;
 }
 
@@ -176,9 +182,14 @@ export interface HeatMapDef {
   id: string;
   positions: string[];
   surface: HeatSurfaceId;
-  splits: (season: number) => HeatSplit[];
+  // (the side showing, a team's offense or defense, where a split's name depends on it: a power play's a
+  // penalty kill on defense)
+  splits: (season: number, side?: string | null) => HeatSplit[];
   sides?: (position: string) => HeatSplit[];
   firstSeason?: number;
+  // (its maps carry their numbers (HeatMapData.chips) in every split: laid out with them in a column beside,
+  // as the red zone's are)
+  numbers?: boolean;
   load: (query: HeatQuery) => Promise<HeatMapData | null>;
 }
 

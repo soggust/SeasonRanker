@@ -4,7 +4,7 @@ import { SPORT } from '@sport/sport';
 import { extras, rowTeamNames } from '@ranker/engine/row-fields';
 import { recentWord } from '@ranker/engine/stat-reader';
 import { recentRef } from '../../game-view/game-view.service';
-import { PlayerAnalysis, evidenceText, paragraphs, waysTitle, weekGameText } from '../analysis';
+import { PlayerAnalysis, evidenceText, nextWeekGame, paragraphs, waysTitle, weekGameText } from '../analysis';
 import { PlayerCard } from '../card.model';
 import { GameLogViewRow, splitVs } from '../game-log-view';
 import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
@@ -12,7 +12,7 @@ import { sortFlags } from '../overview';
 import { ZoneStat, ZoneView, pitchColor } from '../zones';
 import { CardTab } from './card-tab';
 import { anyFaded, toneText } from '../../heat-map/heat-color';
-import type { HeatChip, HeatMapDef, HeatMatchup } from '../../heat-map/heat-map.model';
+import type { HeatChip, HeatMapData, HeatMapDef, HeatMatchup } from '../../heat-map/heat-map.model';
 import { isLiveSeason } from '@ranker/engine/data';
 
 // Stats: each group a panel of stat tiles; Recent's W/L squares open their games
@@ -100,6 +100,7 @@ export class CardAnalysisTab extends CardTab {
   readonly evidenceText = evidenceText;
   readonly weekGameText = weekGameText;
   readonly waysTitle = waysTitle;
+  readonly nextWeekGame = nextWeekGame;
 
   // (the matchup maps' shared key: whether any of them shows last season's, and which)
   fadedLabel(maps: HeatMatchup[]): string | null {
@@ -147,13 +148,24 @@ export class CardHeatMapsTab extends CardTab {
     return shown.sort((a, b) => Number(b.m !== 'loading' && !!b.m?.lead) - Number(a.m !== 'loading' && !!a.m?.lead)).map((x) => x.d);
   }
 
-  // ...and its numbers, the first map's that has them (each red-zone map carries the same)
+  // ...and its numbers, the first map's that has them (each red-zone map carries the same), and their heading
   chipsOf(card: PlayerCard, defs: HeatMapDef[]): HeatChip[] {
+    return this.withChips(card, defs)?.chips ?? [];
+  }
+  chipsTitleOf(card: PlayerCard, defs: HeatMapDef[]): string {
+    return this.withChips(card, defs)?.chipsTitle ?? 'Inside the 20';
+  }
+  private withChips(card: PlayerCard, defs: HeatMapDef[]): HeatMapData | null {
     for (const d of defs) {
       const m = this.cards.heatMap(card, d);
-      if (m && m !== 'loading' && m.chips?.length) return m.chips;
+      if (m && m !== 'loading' && m.chips?.length) return m;
     }
-    return [];
+    return null;
+  }
+
+  // (maps laid out with their numbers in a column beside them, whatever the split: the NHL's)
+  withNumbers(defs: HeatMapDef[]): boolean {
+    return defs.some((d) => d.numbers);
   }
 }
 

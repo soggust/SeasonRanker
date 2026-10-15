@@ -305,7 +305,7 @@ test("surfaces: the field's 12 zones, the strip's 10 bands, the grid's 12 cells,
     for (const c of s.cells) assert.ok((c.points || c.d) && c.name && Number.isFinite(c.cx) && Number.isFinite(c.cy), `${s.id} ${c.id}`);
     assert.ok(s.backdrop.length && s.aria);
   }
-  assert.equal(heatSurface('rink'), null, 'not built yet');
+  assert.equal(heatSurface('no-such-surface'), null, 'none built for an unknown id');
   assert.equal(heatSurface('field'), field, 'built once');
 });
 

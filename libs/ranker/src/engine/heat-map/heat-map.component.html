@@ -105,6 +105,12 @@
                 @case ('path') {
                   <path [attr.class]="p.cls" [attr.d]="p.d" />
                 }
+                @case ('rect') {
+                  <rect [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.rx]="p.rx ?? null" />
+                }
+                @case ('circle') {
+                  <circle [attr.class]="p.cls" [attr.cx]="p.cx" [attr.cy]="p.cy" [attr.r]="p.r" />
+                }
                 @case ('text') {
                   <text [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.transform]="rotate(p)">{{ p.text }}</text>
                 }
@@ -133,9 +139,9 @@
         @if (sequential) {
           <span class="hm-ramp-wrap"><small>{{ mode === 'volume' ? 'Fewer' : 'Lower' }}</small><i class="hm-ramp seq"></i><small>{{ mode === 'volume' ? 'More' : 'Higher' }}</small></span>
         } @else {
-          <span class="hm-ramp-wrap"><small>{{ ends[0] }}</small><i class="hm-ramp" [class.lean]="stat.scale === 'lean'" [class.div]="stat.scale !== 'lean'"></i><small>{{ ends[1] }}{{ overlay ? '' : ' than the league' }}</small></span>
+          <span class="hm-ramp-wrap"><small>{{ ends[0] }}</small><i class="hm-ramp" [class.lean]="stat.scale === 'lean'" [class.div]="stat.scale !== 'lean'"></i><small>{{ ends[1] }}{{ endsVs }}</small></span>
         }
-        @if (mode !== 'volume') {
+        @if (mode !== 'volume' && stat.minN > 1) {
           <span class="hm-thin-key"><i></i>Under {{ stat.minN }} {{ stat.noun }}</span>
         }
         @if (faded) {

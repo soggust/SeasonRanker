@@ -1,6 +1,7 @@
 <!-- The Heat Maps tab (SPORT.heatMaps, heat-map/): the bar (season and split, mode, side), each map the row's
      card type shows with its own stat picker and key, and the sport's Field Map (the run lanes, the kicks, the
-     punts) among them. The red zone: its maps side by side, its numbers in a column beside them -->
+     punts) among them. The red zone, and any maps that carry their numbers (the NHL's): the maps side by side,
+     their numbers in a column beside them -->
 
 @let defs = cards.heatDefs(c);
 @let split = cards.heatSplitOf(c);
@@ -20,18 +21,19 @@
   (modeChange)="cards.heatMode = $event"
 />
 
-@if (split === 'redzone') {
+@if (split === 'redzone' || withNumbers(defs)) {
   <!-- (the red zone: its maps, a back's carries first, and its numbers in a column beside them; one under
        another on a phone) -->
   @let shown = maps(c, defs);
   @let chips = chipsOf(c, shown);
-  <div class="hm-maps hm-rz" [class.pair]="shown.length > 1">
+  <div class="hm-maps hm-rz" [class.pair]="shown.length > 1" [class.numbers]="split !== 'redzone'">
     @for (d of shown; track d.id) {
       <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
     }
     @if (chips.length) {
-      <aside class="hm-figure hm-statcol" aria-label="The red zone's numbers">
-        <b class="hm-statcol-title">Inside the 20</b>
+      @let title = chipsTitleOf(c, shown);
+      <aside class="hm-figure hm-statcol" [attr.aria-label]="title">
+        <b class="hm-statcol-title">{{ title }}</b>
         <div class="hm-tiles">
           @for (ch of chips; track ch.label) {
             <span class="hm-tile" [title]="ch.title">
@@ -47,7 +49,7 @@
     }
   </div>
   @if (!shown.length) {
-    <p class="card-note">Nothing charted inside the 20 this season.</p>
+    <p class="card-note">{{ split === 'redzone' ? 'Nothing charted inside the 20 this season.' : split === 'post' ? 'No playoff games this season.' : 'Nothing charted for this season.' }}</p>
   }
 } @else {
   @let fm = cards.heatFieldMap(c);
@@ -83,7 +85,7 @@
 <ng-template #map let-d>
   @let m = cards.heatMap(c, d);
   @if (m === 'loading') {
-    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone'" aria-hidden="true"></div>
+    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink'" aria-hidden="true"></div>
   } @else if (m) {
     <figure class="hm-figure">
       <figcaption class="hm-head">

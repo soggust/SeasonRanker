@@ -302,6 +302,72 @@ $hm-pop-bg: #151a18;
   stroke-width: 1.1px;
 }
 
+// (the rink: the site's ice sheet darkened to a deep rink blue under the paint, the neutral zone fading out
+// under the blue line; its markings over the cells, thin, in the broadcast's red and blue, the boards white)
+$hm-ice: rgb(8, 17, 28);
+$hm-rink-red: rgb(232, 72, 78);
+$hm-rink-blue: rgb(64, 140, 255);
+
+.hm-ice {
+  fill: rgba($hm-ice, 0.86);
+}
+
+@for $k from 0 through 4 {
+  .hm-ice-fade.f#{$k} {
+    fill: rgba($hm-ice, 0.9 - $k * 0.18);
+  }
+}
+
+.hm-crease {
+  fill: rgba($hm-rink-blue, 0.2);
+}
+
+.hm-crease-line {
+  fill: none;
+  stroke: rgba($hm-rink-red, 0.75);
+  stroke-width: 1.2px;
+}
+
+.hm-rink-red {
+  fill: none;
+  stroke: rgba($hm-rink-red, 0.5);
+  stroke-width: 1.1px;
+
+  &.thin {
+    stroke: rgba($hm-rink-red, 0.35);
+    stroke-width: 0.9px;
+  }
+
+  &.goal {
+    stroke: rgba($hm-rink-red, 0.8);
+    stroke-width: 1.6px;
+  }
+}
+
+.hm-rink-dot {
+  fill: rgba($hm-rink-red, 0.7);
+}
+
+.hm-blue-line {
+  fill: rgba($hm-rink-blue, 0.7);
+  filter: drop-shadow(0 0 3px rgba($hm-rink-blue, 0.55));
+}
+
+// (the net: its frame in red, the mesh a faint white)
+.hm-net {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: rgba($hm-rink-red, 0.95);
+  stroke-linejoin: round;
+  stroke-width: 1.8px;
+}
+
+.hm-boards {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-linejoin: round;
+  stroke-width: 1.8px;
+}
+
 // (the red zone's goalposts over the end line, as the kicks' chart draws them)
 .hm-posts {
   fill: none;
@@ -309,6 +375,11 @@ $hm-pop-bg: #151a18;
   stroke: #f5c518;
   stroke-linecap: round;
   stroke-width: 3px;
+}
+
+// (what's drawn over the cells, the lines and the labels: a pointer goes through to the cell under it)
+.hm-top {
+  pointer-events: none;
 }
 
 .hm-cell {
@@ -644,6 +715,17 @@ $hm-pop-bg: #151a18;
 
 .ai-mini-key {
   margin: 4px 0 8px;
+}
+
+// (which game the maps are for, when the panel's a week's: over them, quiet)
+.ai-mini-head {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  margin: 16px 0 -4px;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .ai-mini {

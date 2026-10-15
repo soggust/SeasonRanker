@@ -224,7 +224,8 @@ export class PlayerCards {
   heatSplits(card: PlayerCard): HeatSplit[] {
     const season = this.heatSeasonOf(card);
     const all = new Map<string, HeatSplit>();
-    for (const d of this.heatDefs(card)) for (const s of d.splits(season)) if (!all.has(s.id)) all.set(s.id, s);
+    const side = this.heatSides(card) ? this.heatSide : null;
+    for (const d of this.heatDefs(card)) for (const s of d.splits(season, side)) if (!all.has(s.id)) all.set(s.id, s);
     // (the season being played's playoffs once the table has them)
     if (!all.size && SPORT.seasonParts) for (const s of PLAIN_SPLITS) if (s.id !== 'post' || season !== CURRENT_SEASON || dataPart !== 'regular') all.set(s.id, s);
     return [...all.values()];

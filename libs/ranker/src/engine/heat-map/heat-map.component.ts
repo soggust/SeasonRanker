@@ -141,6 +141,14 @@ export class HeatMapComponent implements OnChanges {
     return this.defense ? ['Leakier', 'Stingier'] : ['Worse', 'Better'];
   }
 
+  // (the key's words after its good end: "than the league", or the stat's own ("than expected", "than
+  // average"); none on a matchup)
+  get endsVs(): string {
+    if (this.overlay) return '';
+    const vs = this.stat.vs === undefined ? 'league' : this.stat.vs;
+    return vs === 'league' ? ' than the league' : vs ? ` than ${vs}` : '';
+  }
+
   get sequential(): boolean {
     return this.mode === 'volume' || this.stat.scale === 'sequential';
   }
@@ -160,6 +168,8 @@ export class HeatMapComponent implements OnChanges {
     const last = this.fallbackLabel ?? 'Last season';
     const now = this.seasonLabel ?? 'This season';
     const none = (id: string): HeatCell => ({ id, n: 0, value: null, league: null });
+    // (what a value reads against: the league's, by default)
+    const vs = stat.vs === undefined ? 'league' : stat.vs;
     return surface.cells.map((shape, i) => {
       const cell = byId.get(shape.id) ?? none(shape.id);
       const opp = this.overlay ? (against.get(shape.id) ?? none(shape.id)) : null;
@@ -180,7 +190,7 @@ export class HeatMapComponent implements OnChanges {
       else {
         const tone = cellTone(shown, stat, this.defense);
         lines.push({
-          text: `${ownLast ? `${last}: ` : ''}${value} ${stat.per ?? stat.label}${shown.league !== null && stat.scale !== 'sequential' ? ` · league ${fmt(shown.league)}` : ''}`,
+          text: `${ownLast ? `${last}: ` : ''}${value} ${stat.per ?? stat.label}${shown.league !== null && stat.scale !== 'sequential' && vs !== null ? ` · ${vs} ${fmt(shown.league)}` : ''}`,
           color: eff.thin || stat.scale === 'sequential' ? undefined : this.textOf(stat.scale === 'lean' ? cellTone(shown, stat) : tone),
         });
         const count = `${shown.made !== undefined ? `${shown.made} of ${shown.n}` : shown.n} ${stat.noun}`;

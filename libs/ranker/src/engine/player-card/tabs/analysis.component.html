@@ -4,6 +4,33 @@
      bets aren't shown. A season's recap (a team whose season is over) is its one section, Recap. Its headline and
      the archetype's definition show on the Overview tab, under the archetype (overview.component.html) -->
 
+<!-- The matchup on the ice or the field, small (SPORT.heatMatchups): his, or the team's, zones against what the
+     next opponent allows there, and the reverse; their one key under them. head: what game it is, when the
+     panel doesn't say (a week's preview) -->
+<ng-template #matchupMaps let-maps let-head="head">
+  @if (maps.length) {
+    @if (head) {
+      <p class="ai-mini-head">{{ head }}</p>
+    }
+    <div class="ai-matchup-maps" [class.pair]="maps.length > 1">
+      @for (m of maps; track m.title) {
+        <figure class="ai-mini">
+          <figcaption><b>{{ m.title }}</b><small>{{ m.caption }}</small></figcaption>
+          <heat-map [surface]="m.surface" [cells]="m.cells" [stat]="m.stat" [overlay]="m.overlay" [overlayLabel]="m.overlayLabel" [defense]="m.defense" [compact]="true" [legend]="false" [label]="m.title" [fallback]="m.fallback ?? null" [overlayFallback]="m.overlayFallback ?? null" [fallbackLabel]="m.fallbackLabel ?? null" [seasonLabel]="m.seasonLabel ?? null" />
+        </figure>
+      }
+    </div>
+    <div class="hm-legend ai-mini-key">
+      <span class="hm-ramp-wrap"><small>Tough spot</small><i class="hm-ramp div"></i><small>Edge</small></span>
+      <span class="hm-thin-key"><i></i>Small sample</span>
+      <!-- (early in a season: a side's own last season behind its thin zones) -->
+      @if (fadedLabel(maps); as last) {
+        <span class="hm-fade-key" title="A zone with too few shots or plays this season shows last season's instead, faded"><i></i>Faded: last season ({{ last }})</span>
+      }
+    </div>
+  }
+</ng-template>
+
 <!-- A point in the analysis: its title, the take, the numbers behind it (their real values and ranks) -->
 <ng-template #aiPoint let-p>
   <div class="ai-point">
@@ -118,25 +145,7 @@
             }
           </div>
           <!-- (the matchup on the field: his, or the team's, zones against what the opponent allows there, small) -->
-          @let maps = cards.matchups(c, a.game.opp);
-          @if (maps.length) {
-            <div class="ai-matchup-maps" [class.pair]="maps.length > 1">
-              @for (m of maps; track m.title) {
-                <figure class="ai-mini">
-                  <figcaption><b>{{ m.title }}</b><small>{{ m.caption }}</small></figcaption>
-                  <heat-map [surface]="m.surface" [cells]="m.cells" [stat]="m.stat" [overlay]="m.overlay" [overlayLabel]="m.overlayLabel" [defense]="m.defense" [compact]="true" [legend]="false" [label]="m.title" [fallback]="m.fallback ?? null" [overlayFallback]="m.overlayFallback ?? null" [fallbackLabel]="m.fallbackLabel ?? null" [seasonLabel]="m.seasonLabel ?? null" />
-                </figure>
-              }
-            </div>
-            <div class="hm-legend ai-mini-key">
-              <span class="hm-ramp-wrap"><small>Tough spot</small><i class="hm-ramp div"></i><small>Edge</small></span>
-              <span class="hm-thin-key"><i></i>Small sample</span>
-              <!-- (early in a season: a side's own last season behind its thin zones) -->
-              @if (fadedLabel(maps); as last) {
-                <span class="hm-fade-key" title="A zone with too few plays this season shows last season's instead, faded"><i></i>Faded: last season ({{ last }})</span>
-              }
-            </div>
-          }
+          <ng-container *ngTemplateOutlet="matchupMaps; context: { $implicit: cards.matchups(c, a.game.opp) }"></ng-container>
           <!-- (an NFL team's: the ways it wins and loses this one; an older report's and a player's: the key matchups) -->
           @if (r.nextGame.waysToWin?.length || r.nextGame.waysToLose?.length) {
             <div class="ai-columns ai-ways">
@@ -185,6 +194,11 @@
               <p>{{ p }}</p>
             }
           </div>
+          <!-- (the week's next game on the ice: the team's chances against the opponent's allowed, and theirs
+               against its own, small) -->
+          @if (nextWeekGame(a.week); as g) {
+            <ng-container *ngTemplateOutlet="matchupMaps; context: { $implicit: cards.matchups(c, g.opp), head: 'Next: ' + weekGameText(g) }"></ng-container>
+          }
           <div class="ai-points matchups">
             @for (p of w.keyMatchups; track $index) {
               <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>

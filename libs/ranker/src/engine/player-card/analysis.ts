@@ -105,6 +105,13 @@ export function weekGameText(game: { date: string; opp: string; at: 'home' | 'aw
   return `${day} ${m}/${d} ${game.at === 'home' ? 'vs' : '@'} ${game.opp}`;
 }
 
+// The week's next game (a team's weekly preview): the first one today or later, by the day as written (the
+// viewer's today); none once they're all played
+export function nextWeekGame<T extends { date: string }>(week: T[] | null | undefined, today = new Date()): T | null {
+  const day = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  return (week ?? []).find((g) => g.date >= day) ?? null;
+}
+
 // An NFL team preview's two lists' headings: "Ways the Ravens win", "Ways the Ravens lose" (the team by its
 // logo's name: its Team, Defense, O-Line and Coach cards alike; none: "Ways to win")
 export function waysTitle(card: { player: { teamLogo?: string } }, way: 'win' | 'lose'): string {
