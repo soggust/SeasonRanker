@@ -102,6 +102,9 @@
 //      start, src 'c'), each market's
 //      row appended only when it's new or its line or a price changed, to .cache/model/lines (a gzip member a
 //      run, a month's file a sport): the lines' history for the fits to come. --dry counts them, writes nothing
+//   (the props' projection fits (2c, fitTheProps): searched once a sport a day, after a slate of new finals or when
+//      the fit's code or MODEL_EPOCH changed, and kept in the cache (fitcache.mjs); the runs between rebuild the
+//      projections from the saved fit on the history as it is now. Everything else above runs every time)
 //
 // What it writes (apps/<sport>/src/StaticData/model/): state.json (the settings, their test numbers, the
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
@@ -109,10 +112,12 @@
 // built from, in .cache/model/context-<sport>.json (gitignored: a cache, rebuilt from the sources when lost).
 // The Bets page's admin panel (dev only) reads state and ledger.
 //
-//   node libs/ranker/scripts/model/run.mjs [nfl nba nhl mlb] [--dry [--paid]] [--replace] [--all-sources]
+//   node libs/ranker/scripts/model/run.mjs [nfl nba nhl mlb] [--dry [--paid]] [--replace] [--all-sources] [--refit] [--fit-check]
 //   (--dry: no bets placed, nothing committed touched (state, ledger, history, picks), a snapshot of what the model made of the coming games
 //   in .cache/model/dry-<sport>.json, priced from ESPN's free board (--paid: The Odds API's too); --replace: open bets on games not started yet taken back and priced
-//   again; --all-sources: every optional source asked, whether its terms are kept or not)
+//   again; --all-sources: every optional source asked, whether its terms are kept or not; --refit: the props' fits
+//   searched again, the saved ones (fitcache.mjs) aside; --fit-check: a fresh fit rebuilt at once from what was saved and
+//   compared, every stat's numbers and every history row's projection)
 
 // (the keys: .env on this machine, the repo's secrets on GitHub; first, so every module sees them)
 import '../env.mjs';
@@ -135,8 +140,9 @@ import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
+import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { BANKROLL, MARKETS, choose, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -243,16 +249,16 @@ async function runSport(sport) {
   };
   // (--picks-only: the picks written from the ledger as it stands, nothing fetched, fit or bet)
   if (PICKS_ONLY) return writePicks(r, true);
-  await writeTeams(r);
+  await timed(r, writeTeams);
   // (the owner's notes on the picks, read once for every sport: none without the secret, quietly)
   r.notes = await (NOTES ??= readDeskNotes());
-  await loadHistory(r);
-  fitRatings(r);
-  await fitTheContext(r);
-  await fitTheProps(r);
-  inactivesNow(r);
-  await runBacktest(r);
-  logContext(r);
+  await timed(r, loadHistory);
+  await timed(r, fitRatings);
+  await timed(r, fitTheContext);
+  await timed(r, fitTheProps);
+  await timed(r, inactivesNow);
+  await timed(r, runBacktest);
+  await timed(r, logContext);
   r.ledger = readKept(r.files.ledger, { sport, bankroll: BANKROLL, bets: [] });
   r.ledger.bankroll = BANKROLL;
   r.ledger.checks = readChecks(r, r.ledger);
@@ -265,22 +271,30 @@ async function runSport(sport) {
   const unlocked = unlock(r.ledger, r.now);
   if (unlocked) console.log(`${sport}: ${unlocked} open bets published before they were locked made shown picks again (priced again on news, or by --replace, till ${REPRICE_BY / 60e3} minutes before the start)`);
   console.log(`${sport}: the runs' recent gap ${GAP === null ? 'unknown (too few runs kept)' : `${round(GAP, 1)}h`}: the last chance ${round(lastChanceOf(sport, GAP), 1)}h before the start, the last call ${round(lastCall(r) / 36e5, 1)}h`);
-  await captureClose(r);
-  refitTrust(r);
-  await gradeBets(r);
-  refitCalib(r);
-  replaceOpen(r);
-  repriceOpen(r);
+  await timed(r, captureClose);
+  await timed(r, refitTrust);
+  await timed(r, gradeBets);
+  await timed(r, refitCalib);
+  await timed(r, replaceOpen);
+  await timed(r, repriceOpen);
   // (the coming games' lines once the run knows which markets are due: The Odds API asked only for those)
-  await liveLines(r);
-  betGames(r);
-  await betProps(r);
-  logTheLines(r);
-  placeBets(r);
-  recordChecks(r);
-  writePicks(r);
-  writeBoard(r);
-  saveState(r);
+  await timed(r, liveLines);
+  await timed(r, betGames);
+  await timed(r, betProps);
+  await timed(r, logTheLines);
+  await timed(r, placeBets);
+  await timed(r, recordChecks);
+  await timed(r, writePicks);
+  await timed(r, writeBoard);
+  await timed(r, saveState);
+  console.log(`${sport}: the run's steps: ${r.steps.map(([name, ms]) => `${name} ${Math.round(ms / 100) / 10}s`).join(', ')}`);
+}
+
+// (a step of the run, its time kept (r.steps) and logged at the run's end)
+async function timed(r, fn) {
+  const t = Date.now();
+  await fn(r);
+  (r.steps ??= []).push([fn.name, Date.now() - t]);
 }
 
 // The line log (linelog.mjs): every line this run saw, the ones new against the last logged appended to the
@@ -770,8 +784,47 @@ async function fitTheProps(r) {
     const listed = sport === 'nfl' ? await nflListed(history, r.facts, [...new Set(r.rows.map((x) => x.season))].sort()) : null;
     // (the soft terms' weights as the last run left them (project.mjs softStep: each moves at most SOFT_DAY a day))
     const soft = { prev: Object.fromEntries((r.state?.props?.types ?? []).map((t) => [t.key, t.params?.soft ?? null])), now: r.now.getTime() };
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null, listed, soft);
-    console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
+    // (the search kept between runs (fitcache.mjs): refit once a day, after a slate, or when the fit's code
+    // changed; else the saved fit's choices, the projections rebuilt on the history as it is now. A refit that
+    // would take this run past FIT_BUDGET refitting waits for the next run (fitPlan): a stale fit reused once
+    // more, an unusable one with no props this run)
+    const finals = history.filter((g) => g.final).length;
+    const saved = REFIT ? null : readFit(sport);
+    const due = refitWhy(saved, { sport, now: r.now, finals, force: REFIT });
+    const plan = fitPlan(saved, due, { sport, spent: FIT_SPENT });
+    if (plan === 'wait') {
+      console.warn(`::warning::${sport}: no props this run: their fit (${due.why}) waits for the next run, ${Math.round(FIT_SPENT / 1000)}s already spent refitting this one`);
+      return;
+    }
+    const reuse = plan === 'reuse' ? saved.fit.fits : null;
+    const totals = sport === 'nhl' ? boxTotals('nhl') : null;
+    const t1 = Date.now();
+    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, totals, listed, soft, reuse);
+    const fitMs = Date.now() - t1;
+    if (reuse) r.propFit = { at: saved.fit.at, day: saved.fit.day, code: saved.fit.code };
+    else {
+      FIT_SPENT += fitMs;
+      r.propFit = { at: r.at, day: fitDay(r.now), code: fitCode() };
+      try {
+        saveFit(sport, { fits: r.props.fits, at: r.now, finals, rows: r.rows.length, seconds: Math.round(fitMs / 1000) });
+      } catch (err) {
+        console.warn(`::warning::${sport}: the props' fit not saved (${err.message ?? err}): the next run refits`);
+      }
+    }
+    const how = reuse ? `rebuilt from the saved fit of ${saved.fit.at} (${saved.fit.finals} finals then, ${finals} now${due.refit ? `; its refit, ${due.why}, waits for the next run: ${Math.round(FIT_SPENT / 1000)}s spent refitting this one` : ''})` : `fit (${due.why})`;
+    console.log(`${sport}: props' projections ${how} on ${r.rows.length} player games in ${Math.round(fitMs / 1000)}s (${Math.round((Date.now() - t0) / 1000)}s with the rows)`);
+    // (--fit-check: a fresh fit rebuilt at once from what was saved, on the rows read again, as the next run
+    // would, and every stat's numbers and every history row's projection compared)
+    if (FIT_CHECK && !reuse) {
+      const back = readFit(sport);
+      const t2 = Date.now();
+      const rows2 = await playerRows(sport, cfg, history, r.facts);
+      const again = back.fit ? fitProps(sport, rows2, r.expPts, info, r.facts, market, totals, listed, soft, back.fit.fits) : null;
+      const rebuildMs = Date.now() - t2;
+      const diffs = again ? fitDiffs(r.props, again, STATS[sport], (st) => statRows(sport, st, rows2, market, totals)) : [back.why];
+      console.log(`${sport}: fit check: rebuilt from the saved fit in ${Math.round(rebuildMs / 1000)}s: ${diffs.length ? `DIFFERS: ${diffs.join('; ')}` : 'identical (every stat, every row projected)'}`);
+      if (diffs.length) process.exitCode = 1;
+    }
     // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports
     // (playchance.mjs); none, or another sport: every questionable one at half, as before. This season the
     // history's latest or the calendar's (an NFL season's from March on: before its first game is in the
@@ -2075,6 +2128,9 @@ function saveState(r) {
           odds: "DraftKings' prices where the board has them (NBA, NHL, MLB); else -110 a side assumed, lines far from the player's usual not bet (NFL)",
           perGame: PER_GAME,
           lastRun: r.propRun,
+          // (the fit that priced the run (fitcache.mjs): when it was searched, its fit day and its code's hash, the
+          // committed fingerprint of the fit kept in the desk's cache; this run's, or the day's saved one rebuilt)
+          fit: r.propFit ?? null,
           // (the NFL's questionable regulars' chance of playing (playchance.mjs): the share who played, the levels
           // kept and their held-out check as read live (each side's; a side at half), and the chance by a
           // quarterback or not and his games missed in a row, as read tonight (no practice: ESPN's report doesn't
@@ -2183,6 +2239,12 @@ const BACKTEST = process.argv.includes('--backtest');
 const PICKS_ONLY = process.argv.includes('--picks-only');
 // (--board-out=<dir>: a dry run's betting board written there, to check: writeBoard)
 const BOARD_OUT = process.argv.find((a) => a.startsWith('--board-out='))?.slice(12) ?? null;
+// (--refit: the props' fits searched again whatever the saved ones (fitcache.mjs); FIT_SPENT: this process's time
+// spent refitting them, against FIT_BUDGET)
+const REFIT = process.argv.includes('--refit');
+// (--fit-check: a fresh fit compared with its rebuild from the saved fit, fitTheProps)
+const FIT_CHECK = process.argv.includes('--fit-check');
+let FIT_SPENT = 0;
 // (the runs' recent gap, hours: set below, before any sport runs; null with too few runs kept)
 let GAP = null;
 // (the owner's notes, read once a process: notes.mjs readDeskNotes)

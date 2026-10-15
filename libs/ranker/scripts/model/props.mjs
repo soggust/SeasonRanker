@@ -1318,15 +1318,29 @@ export function markStarters(rows, facts) {
   return rows;
 }
 
+// (a stat's history rows, as its fit reads them: the games it was played in, each with its game's betting line and
+// total, the eligible marked)
+export const statRows = (sport, st, rows, market = null, totals = null) =>
+  markEligible(
+    sport,
+    st,
+    rows.filter((r) => r.team && r.opp && st.played(r)).map((r) => ({ ...r, mkt: market?.get(r.game) ?? null, mTotal: totals?.get(String(r.game)) ?? null })),
+  );
+
 // Every prop type's projection model fit and checked on the history (the check on the eligible players);
 // the state shows them (facts: the context's, whose play-by-play (facts.plays) gives the NFL's funnel)
 // (market: game id to its betting lines' implied [home, away] points (marketPts), each row's put on it (mkt);
 // the NFL's from nflverse's closing lines, none elsewhere yet; totals: game id to its betting total, the NHL's
 // (playerlogs.mjs boxTotals), each row's put on it (mTotal); listed: the NFL history's injury listings (nflListed:
 // the lead quarterback out as live play reads it), null: from the game logs; soft: the soft terms' last run, each
-// stat's params.soft by its key (prev), and this run's time in ms (now): project.mjs softStep)
-export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null, soft = null) {
+// stat's params.soft by its key (prev), and this run's time in ms (now): project.mjs softStep; reuse: a saved fit's
+// fitStat results by stat key (fitcache.mjs; a null where the stat wasn't fit), searched again only for a stat it
+// lacks: the model made from its params and taught the history as it is now, as a fresh fit's is. What each
+// stat's fitStat gave, fresh or reused, is out.fits (not enumerated), for saving)
+export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null, soft = null, reuse = null) {
   const out = {};
+  const fits = {};
+  Object.defineProperty(out, 'fits', { value: fits, enumerable: false });
   // (each row's role and its defense's funnel, pace and target split, from the games before it: matchups.mjs;
   // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
   // (MLB's: each batter's start, slot and platoon edge, each starter's leash and rest, the batters' history's
@@ -1334,15 +1348,13 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
   const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
   if (sport === 'nhl') markStarters(rows, facts);
   for (const st of STATS[sport]) {
-    const mine = markEligible(
-      sport,
-      st,
-      rows.filter((r) => r.team && r.opp && st.played(r)).map((r) => ({ ...r, mkt: market?.get(r.game) ?? null, mTotal: totals?.get(String(r.game)) ?? null })),
-    );
+    const mine = statRows(sport, st, rows, market, totals);
     const env = envFor(sport, st, expPts, info, mine);
     env.soft = { prev: soft?.prev?.[st.key] ?? null, now: soft?.now ?? null };
     const t0 = Date.now();
-    const fitted = fitStat(st, mine, env);
+    const reused = !!reuse && Object.hasOwn(reuse, st.key);
+    const fitted = reused ? reuse[st.key] : fitStat(st, mine, env);
+    fits[st.key] = fitted ?? null;
     if (!fitted) continue;
     // (the model through every final, for the coming games)
     const sorted = [...mine].sort((a, b) => a.date.localeCompare(b.date));
@@ -1358,7 +1370,7 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
     // (each player's values, by season: his record at a line)
     const values = new Map();
     for (const r of sorted) values.set(r.pid, [...(values.get(r.pid) ?? []), [r.season, Math.max(0, Math.round(r.s[st.key]))]]);
-    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, start: fitted.start ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10 };
+    out[st.key] = { stat: st, env, model, values, matchups, params: fitted.params, gains: fitted.gains, floors: fitted.floors ?? null, rookie: fitted.rookie ?? null, start: fitted.start ?? null, base: fitted.base, check: fitted.check, checkAll: fitted.checkAll, snapGap: rows.snapGap ?? null, rows: mine.length, eligible: mine.filter((r) => r.eligible).length, seconds: Math.round((Date.now() - t0) / 100) / 10, reused };
   }
   return out;
 }
