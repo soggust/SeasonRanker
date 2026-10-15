@@ -57,8 +57,13 @@ let appCheckPromise: Promise<void> | null = null;
 // it, so a signed-out visitor never loads reCAPTCHA). Off with no key, and against the emulators (they
 // don't check tokens). In development against the real project it uses a debug token: the SDK prints it to
 // the console once; add it in the console (App Check → the web app → Manage debug tokens).
+// A production build served anywhere but the live site (a local copy for checks and screenshots) skips it
+// too: reCAPTCHA can't vouch for localhost, so each of its requests counted as "invalid" in the console's
+// metrics and hid how real visitors fare. Without a token they show as unverified, apart from the invalid
+const LIVE_HOSTS = ['www.seasonranker.com', 'seasonranker.com', 'qbranker2026.web.app', 'qbranker2026.firebaseapp.com'];
 function appCheck(firebase: FirebaseApp): Promise<void> {
   if (!APP_CHECK_SITE_KEY || usingEmulators()) return Promise.resolve();
+  if (!isDevMode() && !LIVE_HOSTS.includes(location.hostname)) return Promise.resolve();
   appCheckPromise ??= import('firebase/app-check')
     .then((c) => {
       if (isDevMode()) (self as { FIREBASE_APPCHECK_DEBUG_TOKEN?: boolean | string }).FIREBASE_APPCHECK_DEBUG_TOKEN ??= true;
