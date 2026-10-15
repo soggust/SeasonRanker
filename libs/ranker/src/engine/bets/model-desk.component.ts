@@ -299,10 +299,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return this.inRange(b) && (!this.sinceModel || afterEpoch(b, this.epoch));
   }
 
-  // (a bet placed in the range on show, by this browser's calendar: a bet from before placedAt was kept, by its
-  // game's start)
+  // (a bet whose game is in the range on show, by this browser's calendar, as Closed Bets has it: the bot bets a
+  // day's games that day, so the game's date and the bet's are the same day)
   private inRange(b: ModelBet): boolean {
-    return inRange(this.range, b.placedAt ?? b.start);
+    return inRange(this.range, b.start ?? b.placedAt);
   }
 
   setSport(sport: string | null): void {

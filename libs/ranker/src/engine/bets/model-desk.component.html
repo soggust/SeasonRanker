@@ -176,7 +176,7 @@
   <!-- (what's on show: a game on the left (the Bets page's chip dropdown), the sports' chips on the right; every
        panel, tile and list follows them) -->
   <div class="desk-filters">
-  <!-- (when the bets were placed: Today, Yesterday, This Month, This Year, All Time; the game dropdown lists that range's) -->
+  <!-- (the bets' games by date, as Closed Bets: Today, Yesterday, This Month, This Year, All Time; the game dropdown lists that range's) -->
   <span class="desk-chip">
     <select class="desk-game-select desk-range-select" aria-label="Date range" [ngModel]="range" (ngModelChange)="setRange($event)">
       @for (r of ranges; track r.value) {
