@@ -1,6 +1,7 @@
 import type { CardFlag, FlagContext, HistoryRow, SportConfig } from '@ranker/engine/sport';
 import { WOMENS_DIVISIONS, allTime, womens, type Position } from './positions';
 import { seasonName } from './awards';
+import { mmaHeatMaps } from './heat-maps';
 
 // (head to head counts for meetings since this date)
 const THREE_YEARS_AGO = new Date(Date.now() - 1096 * 864e5).toISOString().slice(0, 10);
@@ -214,6 +215,9 @@ export const SPORT: SportConfig = {
     return n / (n + 4);
   },
   cardHistory: { title: 'Fights', icon: 'sports_mma', rows: (player) => fightRows(player) },
+  // The card's Heat Maps: where his strikes land and he's struck (the UFC's bouts), his grappling, and when his
+  // fights end, against his division's (heat-maps.ts; apps/mma/scripts/build-heat-maps.mjs)
+  heatMaps: mmaHeatMaps(),
   copy: {
     noHolesIcon: 'verified',
     volumeOverEfficiency: 'Throws a lot, lands a low share: volume over precision',
