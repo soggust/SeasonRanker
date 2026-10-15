@@ -964,6 +964,12 @@ $hm-wall: rgb(255, 196, 82);
   &.pair {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(190px, 0.72fr);
   }
+
+  // (a sport's two maps and their numbers, the NHL's: the numbers' column narrower, one tile across, so each
+  // map's four stat pills and its key stay on a line)
+  &.numbers.pair {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(190px, 0.56fr);
+  }
 }
 
 .hm-statcol {
@@ -1026,14 +1032,35 @@ $hm-wall: rgb(255, 196, 82);
     margin-top: 18px;
   }
 
+  // (a tall, narrow map, MMA's body, still wide enough for its stat picker and its key on a line: 300px at
+  // least; a shorter map beside a taller one, its picture in the middle of the height they share, not a
+  // half-empty panel)
   > .hm-figure:not(.hm-statcol) {
-    flex: var(--hm-aspect, 1) 1 calc(var(--hm-aspect, 1) * 280px + 28px);
+    display: flex;
+    flex: var(--hm-aspect, 1) 1 max(calc(var(--hm-aspect, 1) * 280px + 28px), 300px);
+    flex-direction: column;
+
+    > heat-map {
+      margin: auto 0;
+    }
   }
 
   // (the numbers as tall as they are, not stretched to the maps' height: no half-empty panel)
   > .hm-statcol {
     align-self: flex-start;
     flex: 1 1 210px;
+  }
+
+  // (the tiles two to a row as they fit, an odd one out across its row rather than beside an empty slot)
+  .hm-tiles {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .hm-tile {
+    box-sizing: border-box;
+    flex: 1 1 140px;
+    min-width: 0;
   }
 
   .hm-stage {
@@ -1211,7 +1238,8 @@ $hm-wall: rgb(255, 196, 82);
 
 // (narrower: two red-zone maps side by side, their numbers across under them; then one under another)
 @include v.down(medium) {
-  .hm-maps.hm-rz.pair {
+  .hm-maps.hm-rz.pair,
+  .hm-maps.hm-rz.numbers.pair {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
     .hm-statcol {
@@ -1223,6 +1251,7 @@ $hm-wall: rgb(255, 196, 82);
 @include v.down(card-stack) {
   .hm-maps.hm-rz,
   .hm-maps.hm-rz.pair,
+  .hm-maps.hm-rz.numbers.pair,
   .hm-maps.hm-rz.numbers.court.pair {
     grid-template-columns: minmax(0, 1fr);
   }

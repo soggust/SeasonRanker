@@ -38,7 +38,10 @@ const GROUND: Record<DiamondPosition, { r: [number, number | ((deg: number) => n
 };
 // (where a position's numbers sit, feet and angle; and its name, over the cell's edge nearer home)
 // (a position's name: an infielder's in the grass inside his bag, an outfielder's by the warning track)
-const TEXT: Record<DiamondPosition, [number, number]> = { '3B': [132, -34], SS: [140, -12], '2B': [140, 12], '1B': [132, 34], LF: [258, -29], CF: [290, 0], RF: [258, 29] };
+const TEXT: Record<DiamondPosition, [number, number]> = { '3B': [132, -32.5], SS: [140, -12], '2B': [140, 12], '1B': [132, 32.5], LF: [258, -29], CF: [290, 0], RF: [258, 29] };
+// (the corners' ground is a narrow wedge on the line: their numbers, a team's fielder's name under them, a size
+// smaller so a long name, "Pasquantino", stays fair)
+const CORNER = new Set<DiamondPosition>(['3B', '1B']);
 const LABEL: Record<DiamondPosition, [number, number]> = { '3B': [64, -33], SS: [76, -13], '2B': [76, 13], '1B': [64, 33], LF: [326, -33], CF: [374, 0], RF: [326, 33] };
 
 // (a spot in feet, across (x, right-field side positive) and up the field (y), as a spot on the field)
@@ -71,7 +74,7 @@ export function diamondFieldSurface(): HeatSurface {
   const cells: HeatCellShape[] = DIAMOND_POSITIONS.map((pos) => {
     const g = GROUND[pos];
     const [cx, cy] = at(...TEXT[pos]);
-    return { id: pos, points: sector(g.r[0], g.r[1], g.a[0], g.a[1], WARP), cx, cy, name: POSITION_NAMES[pos], short: pos };
+    return { id: pos, points: sector(g.r[0], g.r[1], g.a[0], g.a[1], WARP), cx, cy, name: POSITION_NAMES[pos], short: pos, ...(CORNER.has(pos) ? { fit: 0.85 } : {}) };
   });
   // ---- over the cells: the chalk, the bases and the plate, each position's name
   const [hx, hy] = at(0, 0);

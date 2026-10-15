@@ -29,6 +29,8 @@ const POLITE_MS = 1500;
 // (the season being played: its days of the last few asked again, their batted balls filled in late)
 const RECENT_DAYS = 3;
 const DAY = 864e5;
+// (a progress line every so many days asked: a backfill's or a nightly catch-up's)
+const PROGRESS = 25;
 
 // The columns kept, in the cache's order
 export const COLUMNS = [
@@ -153,24 +155,31 @@ export async function fetchSeason(season, { current = false, today = new Date().
   // (once the regular season's over, nothing's asked again)
   const since = new Date(Date.parse(today) - RECENT_DAYS * DAY).toISOString().slice(0, 10);
   const recent = new Set(current ? dates.filter((d) => d >= since) : []);
+  // (the days to ask for: a run picks up where the last one stopped, every cached day skipped)
+  const todo = dates.filter((d) => !existsSync(dayFile(season, d)) || recent.has(d));
+  if (todo.length) log(`${season}: ${dates.length - todo.length} of ${dates.length} days cached, ${todo.length} to ask for (${todo[0]} on)`);
+  const started = Date.now();
   const missing = [];
   let fetched = 0;
-  for (const date of dates) {
-    const file = dayFile(season, date);
-    if (existsSync(file) && !recent.has(date)) continue;
+  let outOfTime = false;
+  for (const date of todo) {
     if (Date.now() > deadline) {
+      outOfTime = true;
       missing.push(date);
       continue;
     }
     const rows = await fetchDay(season, date);
     if (rows === null) missing.push(date);
     else {
-      writeDay(file, rows);
+      writeDay(dayFile(season, date), rows);
       fetched++;
     }
+    // (progress, every PROGRESS days asked)
+    const asked = fetched + missing.length;
+    if (asked % PROGRESS === 0) log(`  ${season}: ${asked} of ${todo.length} asked, through ${date} (${Math.round((Date.now() - started) / 60000)} min)`);
     await sleep(POLITE_MS);
   }
-  log(`${season}: ${dates.length} days, ${fetched} fetched, ${missing.length} missing`);
+  log(`${season}: ${dates.length} days, ${fetched} fetched, ${missing.length} missing${outOfTime ? ` (out of time: the rest asked for next run, from where this one stopped)` : ''}`);
   return { dates, missing };
 }
 

@@ -83,13 +83,15 @@
               }
             }
             @if (!compact) {
+              <!-- (a narrow cell's numbers smaller and set inward: its shape's fit and anchor) -->
+              @let fit = c.shape.fit ?? 1;
               <g class="hm-text" [class.shown]="mode !== 'volume'">
-                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15" [style.font-size.px]="fontMain">{{ c.eff.main }}</text>
-                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15 + fontSub + 3" [style.font-size.px]="fontSub">{{ c.eff.sub }}</text>
+                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * fit * 0.15" [style.font-size.px]="fontMain * fit" [style.text-anchor]="c.shape.anchor ?? null">{{ c.eff.main }}</text>
+                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + (fontMain * 0.15 + fontSub + 3) * fit" [style.font-size.px]="fontSub * fit" [style.text-anchor]="c.shape.anchor ?? null">{{ c.eff.sub }}</text>
               </g>
               <g class="hm-text" [class.shown]="mode === 'volume'">
-                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15" [style.font-size.px]="fontMain">{{ c.vol.main }}</text>
-                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15 + fontSub + 3" [style.font-size.px]="fontSub">{{ c.vol.sub }}</text>
+                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * fit * 0.15" [style.font-size.px]="fontMain * fit" [style.text-anchor]="c.shape.anchor ?? null">{{ c.vol.main }}</text>
+                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + (fontMain * 0.15 + fontSub + 3) * fit" [style.font-size.px]="fontSub * fit" [style.text-anchor]="c.shape.anchor ?? null">{{ c.vol.sub }}</text>
               </g>
             }
           </g>

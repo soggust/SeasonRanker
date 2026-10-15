@@ -43,7 +43,7 @@ jobs:
       # (Baseball Savant's pitches, a day a file, kept between runs: the heat maps' source, read by the rollover's
       # archive and the night's build; a run that misses it asks Savant again, a day at a time)
       - name: Restore the Statcast cache
-        uses: actions/cache@v6
+        uses: actions/cache/restore@v6
         with:
           path: .cache/savant
           key: mlb-savant-${{ github.run_id }}
@@ -68,6 +68,15 @@ jobs:
       # run, and a season not all in, or a failure, keeps yesterday's files
       - name: Build heat maps
         run: HEAT_MAPS_MINUTES=20 node apps/mlb/scripts/build-heat-maps.mjs || echo "heat maps skipped"
+
+      # (the days fetched tonight kept even when a later step fails: the next run resumes from them rather than
+      # from the last run that got all the way through)
+      - name: Save the Statcast cache
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: .cache/savant
+          key: mlb-savant-${{ github.run_id }}
 
       # (the data checked before it's committed: a broken file stays out of master and off the site; npm test)
       - name: Install dependencies

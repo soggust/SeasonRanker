@@ -60,6 +60,10 @@ export interface HeatCellShape {
   cy: number;
   name: string;
   short?: string;
+  // (a narrow cell, a corner three: its numbers drawn smaller, by this much, and set from cx toward the
+  // inside, 'end' their right edge at cx, so they stay on the surface)
+  fit?: number;
+  anchor?: 'start' | 'end';
 }
 
 export interface HeatSurface {

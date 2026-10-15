@@ -124,16 +124,24 @@ const LABEL: Record<CourtZone, P> = {
   'mid-c': [0, 18.4],
   'mid-rw': [11.6, 14.2],
   'mid-rb': [15.2, 1.6],
-  'c3-l': [-23.5, 2.2],
-  'c3-r': [23.5, 2.2],
+  // (a corner's from just inside the sideline: FIT)
+  'c3-l': [-24.6, 2.2],
+  'c3-r': [24.6, 2.2],
   'atb-l': [-19.6, 21.2],
   'atb-c': [0, 27.3],
   'atb-r': [19.6, 21.2],
 };
 
+// (a corner three is 3 feet wide, narrower than its numbers: drawn smaller and set from the sideline in, over
+// the arc's line, rather than centered and cut off at the court's edge)
+const FIT: Partial<Record<CourtZone, Pick<HeatCellShape, 'fit' | 'anchor'>>> = {
+  'c3-l': { fit: 0.8, anchor: 'start' },
+  'c3-r': { fit: 0.8, anchor: 'end' },
+};
+
 function cell(id: CourtZone, shape: { points?: string; d?: string }): HeatCellShape {
   const [cx, cy] = courtXY(LABEL[id]);
-  return { id, ...shape, cx, cy, name: COURT_WORDS[id].name, short: COURT_WORDS[id].short };
+  return { id, ...shape, cx, cy, name: COURT_WORDS[id].name, short: COURT_WORDS[id].short, ...FIT[id] };
 }
 
 export function halfCourtSurface(): HeatSurface {
