@@ -24,20 +24,30 @@ export class RowGlide {
     return at;
   }
 
-  // Slide each measured row from where it was to where it's drawn now
+  // Slide each measured row from where it was to where it's drawn now. In three passes, each over every
+  // row: a glide still running stopped, then where each row is, then each one's slide. (Row by row, each
+  // row's reads came after the last one's writes: the whole list's style and layout worked out again for
+  // every row, most of a slider's step on a phone.)
   play(list: () => HTMLElement | undefined, from: Map<string, number> | null): void {
     if (!from?.size) return;
     requestAnimationFrame(() => {
       const rows = list();
       if (!rows) return;
-      for (const row of Array.from(rows.querySelectorAll<HTMLElement>(ROWS))) {
-        const was = from.get(row.dataset['id']!);
-        if (was === undefined) continue;
-        row.getAnimations().forEach((a) => a.cancel());
-        const dy = was - row.getBoundingClientRect().top;
-        if (Math.abs(dy) < 1) continue;
-        row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+      const moved = Array.from(rows.querySelectorAll<HTMLElement>(ROWS)).filter((row) => from.has(row.dataset['id']!));
+      if (!moved.length) return;
+      // (every animation on those rows themselves, read once: the list's, filtered to them, not their
+      // children's or their ::before's)
+      const glides = new Set<Element>(moved);
+      for (const a of rows.getAnimations({ subtree: true })) {
+        const effect = a.effect as KeyframeEffect | null;
+        if (effect?.target && !effect.pseudoElement && glides.has(effect.target)) a.cancel();
       }
+      const dys = moved.map((row) => from.get(row.dataset['id']!)! - row.getBoundingClientRect().top);
+      moved.forEach((row, i) => {
+        const dy = dys[i];
+        if (Math.abs(dy) < 1) return;
+        row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+      });
     });
   }
 }

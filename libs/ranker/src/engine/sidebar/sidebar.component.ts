@@ -7,6 +7,7 @@ import { SPORT } from '@sport/sport';
 import { combinedFor, statIsEmpty } from '@ranker/engine/unit-scoring';
 import { isPooled } from '@ranker/engine/pooled-tabs';
 import { statLabel } from '@ranker/engine/stat-reader';
+import { SlideSaver } from './slide-saver';
 import { CURRENT_SEASON, dataSeason } from '@ranker/engine/data';
 import {
   POSITIONS,
@@ -94,7 +95,10 @@ export class SidebarComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private positionService: PositionService) {}
+  constructor(private positionService: PositionService) {
+    // (a slider's save still waiting when the menu goes: saved)
+    this.destroyRef.onDestroy(() => this.slides.flush());
+  }
 
   ngOnInit(): void {
     this.positionService.skillHidden$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((hidden) => {
@@ -221,7 +225,18 @@ export class SidebarComponent implements OnInit {
   }
 
   saveSkillWeights(): void {
+    // (a slider's save still waiting: these sliders, the whole tab's, take its place; another tab's goes first)
+    this.slides.saving(this.position);
     this.positionService.saveWeights(this.position, this.skillWeights);
+  }
+
+  // A slider moved (a drag moves it many times a second): the preset reads Custom at once, and the sliders
+  // are saved, the list ranked again, on the next frame, with the latest of them (slide-saver.ts)
+  private readonly slides = new SlideSaver<Position, SkillWeights>((position, weights) => this.positionService.saveWeights(position, weights));
+
+  slid(): void {
+    this.skillPresets[this.position] = 'custom';
+    this.slides.slid(this.position, this.skillWeights);
   }
 
   skillGroupIsOpen(id: StatGroupId): boolean {

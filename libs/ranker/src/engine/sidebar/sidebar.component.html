@@ -58,7 +58,7 @@
                 [attr.aria-label]="adjust.name"
                 [attr.aria-valuetext]="(skillWeights[adjust.key] ?? 0) + '%'"
                 [(ngModel)]="skillWeights[adjust.key]"
-                (ngModelChange)="skillPresets[skill] = 'custom'; saveSkillWeights()"
+                (ngModelChange)="slid()"
               />
             </mat-slider>
             <span class="slider-value">{{ skillWeights[adjust.key] ?? 0 }}%</span>
@@ -139,7 +139,7 @@
                           [attr.aria-label]="row.label + ' weight'"
                           [attr.aria-valuetext]="(skillWeights[row.key] ?? 50) + '%'"
                           [(ngModel)]="skillWeights[row.key]"
-                          (ngModelChange)="skillPresets[skill] = 'custom'; saveSkillWeights()"
+                          (ngModelChange)="slid()"
                         />
                       </mat-slider>
                       <span class="slider-value">{{ skillWeights[row.key] ?? 50 }}%</span>
@@ -165,7 +165,7 @@
                                 [attr.aria-label]="child.label + ' weight'"
                                 [attr.aria-valuetext]="(skillWeights[child.key] ?? 50) + '%'"
                                 [(ngModel)]="skillWeights[child.key]"
-                                (ngModelChange)="skillPresets[skill] = 'custom'; saveSkillWeights()"
+                                (ngModelChange)="slid()"
                               />
                             </mat-slider>
                             <span class="slider-value">{{ skillWeights[child.key] ?? 50 }}%</span>
@@ -207,7 +207,7 @@
                           [attr.aria-label]="row.label + ' weight'"
                           [attr.aria-valuetext]="(skillWeights[row.key] ?? 50) + '%'"
                           [(ngModel)]="skillWeights[row.key]"
-                          (ngModelChange)="skillPresets[skill] = 'custom'; saveSkillWeights()"
+                          (ngModelChange)="slid()"
                         />
                       </mat-slider>
                       <span class="slider-value">{{ skillWeights[row.key] ?? 50 }}%</span>
