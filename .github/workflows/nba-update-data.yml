@@ -3,7 +3,7 @@ name: NBA - Update Game Data
 on:
   schedule:
     # Nightly at 11:17 UTC (6:17 AM CDT): after the last West Coast games are final and
-    # Basketball-Reference has caught up, and clear of the NFL and MLB updates (they share one queue, see
+    # Basketball-Reference has caught up. (Its own queue, see
     # concurrency). The 13:47 UTC run is a backup for a delayed or dropped one; a run with nothing new
     # (the offseason, or no games that night) is a no-op (no commit, no deploy).
     # Then every hour through the day (11:17 to 17:17 UTC): GitHub drops scheduled runs (2026-10-14 it
@@ -12,9 +12,12 @@ on:
     - cron: "17 11-17 * * *"
   workflow_dispatch:
 
-# One update at a time: a run that starts while another is still going waits for it
+# One update of this sport at a time: a run that starts while another is still going waits for it. Each sport
+# its own queue (update-data-<sport>): GitHub keeps one waiting run a group and a newer one cancels it, so in one
+# queue for every sport a sport's waiting run could be dropped for another's. They write apart (each its own
+# apps/<sport>), their pushes rebase onto each other's, and their deploys wait in one queue (deploy.yml)
 concurrency:
-  group: update-data
+  group: update-data-nba
   cancel-in-progress: false
 
 permissions:
@@ -23,6 +26,8 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     # (a hung source stops the run, not six hours: the runs take 1-15 minutes)
     timeout-minutes: 45
 
@@ -91,6 +96,10 @@ jobs:
           git checkout -- package-lock.json
 
       - name: Check the data
+        # (the live data's quality checks warn here, never block the commit; whether it's whole still does:
+        # tests/support/live.mjs)
+        env:
+          LIVE_DATA_SOFT: "1"
         run: npm test
 
       - name: Commit updated data
@@ -112,19 +121,16 @@ jobs:
               echo "changed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
+            # (a rebase that stopped on a conflict let go of, so the next try starts clean)
+            git rebase --abort 2>/dev/null || true
             sleep $((attempt * 10))
           done
           exit 1
 
-      # Pushes made with GITHUB_TOKEN don't trigger other workflows, so deploy here
-      - name: Build project
-        if: steps.commit.outputs.changed == 'true'
-        run: npm run build
-
-      - name: Install Firebase CLI
-        if: steps.commit.outputs.changed == 'true'
-        run: npm install -g firebase-tools
-
-      - name: Deploy to Firebase
-        if: steps.commit.outputs.changed == 'true'
-        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+  # (the site built and deployed after the commit, one deploy at a time across every workflow: deploy.yml)
+  deploy:
+    needs: update
+    if: needs.update.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

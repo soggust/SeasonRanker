@@ -13,6 +13,7 @@ import path from 'node:path';
 import { applyWriteups, driversOf, factsOf, firstCtxKeyOf, fmt, hashOf, PLAIN_V, plainFor, plainOf, propParamsOf, sibOf, validate } from '../libs/ranker/scripts/model/writeup.mjs';
 import { buildPicks, legacyReasonOf } from '../libs/ranker/scripts/model/picks.mjs';
 import { staticDir } from './support/engine.mjs';
+import { liveTest } from './support/live.mjs';
 
 const SAMPLES = JSON.parse(fs.readFileSync(new URL('./support/writeup-samples.json', import.meta.url), 'utf8'));
 const sample = (id) => SAMPLES.find((s) => s.bet.id.startsWith(id));
@@ -229,7 +230,7 @@ for (const sport of SPORTS) {
 
   // (the live data: its structure checked, its grounding only reported (plainOf falls back to its hook and
   // its price where the validator objects; a new field must never fail the desk's commit))
-  test(`${sport}: every bet's write-up within its lengths, no missing value printed (its grounding reported)`, () => {
+  liveTest(`${sport}: every bet's write-up within its lengths, no missing value printed (its grounding reported)`, () => {
     const problems = [];
     for (const b of all) {
       const { sheet, reason, risk } = render(b, { ledger });
@@ -243,7 +244,7 @@ for (const sport of SPORTS) {
     if (problems.length) console.log(`${sport}: ${problems.length} write-ups to look at:\n  ${problems.slice(0, 10).join('\n  ')}`);
   });
 
-  test(`${sport}: the write-up and its hash the same whatever happens to the bet after it's placed`, () => {
+  liveTest(`${sport}: the write-up and its hash the same whatever happens to the bet after it's placed`, () => {
     for (const b of all) {
       const a = render(b);
       const later = { ...b, ...AFTER };
@@ -255,7 +256,7 @@ for (const sport of SPORTS) {
     }
   });
 
-  test(`${sport}: with any optional field gone, the write-up still whole and grounded`, () => {
+  liveTest(`${sport}: with any optional field gone, the write-up still whole and grounded`, () => {
     for (const b of all.filter((_, i) => i % 7 === 0)) {
       const variants = [...OPTIONAL.map((k) => (({ [k]: _gone, ...rest }) => rest)(b)), ...(b.projection ? OPTIONAL_PROJ.map((k) => ({ ...b, projection: (({ [k]: _gone, ...rest }) => rest)(b.projection) })) : [])];
       for (const v of variants) {
@@ -279,7 +280,7 @@ for (const sport of SPORTS) {
     }
   });
 
-  test(`${sport}: the drivers' product gives the projection back for the props that carry their fit (applied), reported`, () => {
+  liveTest(`${sport}: the drivers' product gives the projection back for the props that carry their fit (applied), reported`, () => {
     const full = ledger.bets.filter((b) => b.market === 'prop' && b.projection?.applied);
     if (!full.length) return;
     const ok = full.filter((b) => driversOf(b).ok).length;

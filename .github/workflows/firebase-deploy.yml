@@ -5,9 +5,14 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
-  deploy:
+  # Nothing deploys unless the test suite passes (the same suite ci.yml runs; ~30 seconds)
+  test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -22,15 +27,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Nothing deploys unless the test suite passes (the same suite ci.yml runs; ~30 seconds)
       - name: Run tests
         run: npm test
 
-      - name: Build project
-        run: npm run build
-
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Deploy to Firebase
-        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+  # (built and deployed in the one queue every workflow's deploy waits in: deploy.yml)
+  deploy:
+    needs: test
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

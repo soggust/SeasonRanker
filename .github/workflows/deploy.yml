@@ -1,0 +1,54 @@
+# The site built and deployed to Firebase from the branch as it is now: called by every workflow that commits
+# what the site shows (the data updates, the model desk, its weekly self-check) and by a push to master
+# (firebase-deploy.yml). Pushes made with GITHUB_TOKEN don't trigger other workflows, so the bots' commits deploy
+# through here.
+# (one deploy at a time across all of them (the firebase-deploy group): two at once, each built from the commit
+# its own workflow had, could finish in either order and leave the site on the older build; queued here, each
+# checks out the branch when it starts, so the last one deploys everything pushed before it. GitHub keeps one
+# waiting run a group, and a newer one replaces it: it would have deployed the same branch, only later)
+name: Deploy
+
+on:
+  workflow_call:
+    secrets:
+      FIREBASE_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: firebase-deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        # (the branch as it is when the job starts, with every commit pushed while it waited)
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      # (the token from the environment, never on the command line: firebase-tools reads FIREBASE_TOKEN)
+      - name: Deploy to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --non-interactive
