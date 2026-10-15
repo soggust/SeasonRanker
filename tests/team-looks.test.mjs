@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, contrast, distance, isResult, readsBy, sha, sourceHash } from '../scripts/team-looks/look.mjs';
+import { OVERRIDES, watermarkDir, watermarkName, watermarkSource } from '../scripts/team-looks/watermark.mjs';
 
 const OUT = path.join(ROOT, 'libs/ranker/src/engine/team-looks');
 const ICONS = { nfl: 'NFL_Icons', nba: 'NBA_Icons', nhl: 'NHL_Icons', mlb: 'MLB_Icons' };
@@ -47,6 +48,34 @@ test('every sport\'s looks are up to date: worked out from today\'s inputs and e
       const hash = sha(fs.readFileSync(path.join(dir, file), file.endsWith('.svg') ? 'utf8' : undefined), file.endsWith('.svg'));
       assert.equal(checks.logos[file].hash, hash, `${sport} ${file} changed: run npm run team-looks`);
     }
+  }
+});
+
+// Each logo's watermark (a hero's big faint logo: scripts/team-looks/watermark.mjs): drawn from the file it's
+// drawn from as that is now (a hand-made one in watermark-overrides/ added, changed or removed, or an NFL
+// logo's hd copy changed, fails), none missing or left over, each small
+test("every logo's watermark is up to date, there, and small", () => {
+  for (const sport of Object.keys(ICONS)) {
+    const checks = read(sport, '.checks');
+    const iconDir = path.join(ROOT, 'apps', sport, 'src/assets', ICONS[sport]);
+    const wmDir = watermarkDir(sport);
+    const want = [];
+    for (const [file, c] of Object.entries(checks.logos)) {
+      const src = watermarkSource(sport, iconDir, file);
+      assert.equal(c.wm, src.hash, `${sport} ${file}'s watermark source changed: run npm run team-looks`);
+      assert.equal(!!c.override, src.asIs, `${sport} ${file}'s watermark override added or removed: run npm run team-looks`);
+      const wm = path.join(wmDir, watermarkName(file));
+      assert.ok(fs.existsSync(wm), `${sport} ${file}: no watermark: run npm run team-looks`);
+      assert.ok(fs.statSync(wm).size < 16_000, `${sport} ${file}'s watermark is over 16 KB`);
+      want.push(watermarkName(file));
+    }
+    const have = ['', 'eras/'].flatMap((sub) => (fs.existsSync(path.join(wmDir, sub)) ? fs.readdirSync(path.join(wmDir, sub)).filter((f) => f.endsWith('.webp')).map((f) => sub + f) : []));
+    assert.deepEqual(have.sort(), want.sort(), `${sport}: watermarks without a logo, or logos without one`);
+    // (an override for no logo: misnamed)
+    const over = path.join(OVERRIDES, sport);
+    const overs = ['', 'eras/'].flatMap((sub) => (fs.existsSync(path.join(over, sub)) ? fs.readdirSync(path.join(over, sub)).filter((f) => f.endsWith('.png')).map((f) => sub + f) : []));
+    const logos = new Set(Object.keys(checks.logos).map((f) => f.replace(/.(png|svg)$/, '.png')));
+    assert.deepEqual(overs.filter((f) => !logos.has(f)), [], `${sport}: watermark overrides named for no logo`);
   }
 });
 

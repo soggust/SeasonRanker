@@ -185,6 +185,6 @@ export function lookOf({ primary, alt, logo, era, over = {} }) {
 // (what a sport's looks are worked out from: the scripts, its team-colors.ts and logo-eras.ts; a change to
 // any of them means running the script again)
 export function sourceHash(sport) {
-  const files = ['scripts/build-team-looks.mjs', 'scripts/team-looks/look.mjs', `apps/${sport}/src/sport/team-colors.ts`, `apps/${sport}/src/sport/logo-eras.ts`];
+  const files = ['scripts/build-team-looks.mjs', 'scripts/team-looks/look.mjs', 'scripts/team-looks/watermark.mjs', `apps/${sport}/src/sport/team-colors.ts`, `apps/${sport}/src/sport/logo-eras.ts`];
   return sha(files.map((f) => path.join(ROOT, f)).filter((f) => fs.existsSync(f)).map((f) => fs.readFileSync(f, 'utf8')).join(''), true);
 }

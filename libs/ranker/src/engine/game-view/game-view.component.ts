@@ -98,6 +98,18 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return SPORT.cardLogo ? SPORT.cardLogo(logo) : logo;
   }
 
+  // A side's big faint logo behind the header: its watermark (team-look.ts; another sport's from its app),
+  // else its logo drawn white (.silhouette)
+  teamWatermark(team: GameTeam, game: GameView): { src: string; silhouette: boolean } | null {
+    const wm = team.look.watermark;
+    if (!team.look.key || !wm) {
+      const logo = this.teamLogo(team, game);
+      return logo ? { src: logo, silhouette: true } : null;
+    }
+    const sport = game.league.split('/').pop()!;
+    return { src: sport === SPORT.id ? wm : logoUrl(sport, wm)!, silhouette: false };
+  }
+
   readonly currentSeason = SPORT.currentSeason;
 
   // "2024", "2024-25"

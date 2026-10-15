@@ -166,7 +166,8 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-// ...the team logo on it, overscaled, a faint white watermark, slightly tilted
+// ...the team logo on it, overscaled, a faint white watermark, slightly tilted: its watermark file, white already
+// (team-look.ts), or a logo the site's looks don't have drawn white
 .hero-texture {
   inset: 0;
   overflow: hidden;
@@ -175,13 +176,16 @@ $ai-narrow: v.bp(ai-narrow);
   z-index: -1;
 
   img {
-    @include v.white-lettering;
     height: 230%;
     opacity: 0.1;
     position: absolute;
     right: -6%;
     top: 50%;
     transform: translateY(-50%) rotate(-8deg);
+
+    &.silhouette {
+      @include v.white-lettering;
+    }
   }
 }
 

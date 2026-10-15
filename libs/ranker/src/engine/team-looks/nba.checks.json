@@ -1,533 +1,639 @@
 {
- "source": "81129bb09f5d",
+ "source": "78074447caa1",
  "logos": {
   "ATL.svg": {
    "hash": "616a1b1f4ca6",
+   "wm": "616a1b1f4ca6",
    "vis": 0.552,
    "edge": 1
   },
   "BOS.svg": {
    "hash": "5f443f575e18",
+   "wm": "5f443f575e18",
    "vis": 0.737,
    "edge": 1
   },
   "BRK.svg": {
    "hash": "ce30de90e6ce",
+   "wm": "ce30de90e6ce",
    "vis": 0.966,
    "edge": 1
   },
   "CHI.svg": {
    "hash": "4945965689f3",
+   "wm": "4945965689f3",
    "vis": 0.828,
    "edge": 0.897
   },
   "CHO.svg": {
    "hash": "4c8140d14580",
+   "wm": "4c8140d14580",
    "vis": 0.901,
    "edge": 1
   },
   "CLE.svg": {
    "hash": "0ae4e4496169",
+   "wm": "0ae4e4496169",
    "vis": 0.528,
    "edge": 1
   },
   "DAL.svg": {
    "hash": "1d0f37661cac",
+   "wm": "1d0f37661cac",
    "vis": 0.734,
    "edge": 0.844
   },
   "DEN.svg": {
    "hash": "8489db6f8943",
+   "wm": "8489db6f8943",
    "vis": 0.509,
    "edge": 1
   },
   "DET.svg": {
    "hash": "ada0b3c32bca",
+   "wm": "ada0b3c32bca",
    "vis": 0.748,
    "edge": 0.982
   },
   "GSW.svg": {
    "hash": "00de94611a94",
+   "wm": "00de94611a94",
    "vis": 0.744,
    "edge": 1
   },
   "HOU.svg": {
    "hash": "43bc1a2c2732",
+   "wm": "43bc1a2c2732",
    "vis": 1,
    "edge": 1
   },
   "IND.svg": {
    "hash": "f86de9c6a87c",
+   "wm": "f86de9c6a87c",
    "vis": 0.44,
    "edge": 1
   },
   "LAC.svg": {
    "hash": "c9de4e5776f7",
+   "wm": "c9de4e5776f7",
    "vis": 0.501,
    "edge": 1
   },
   "LAL.svg": {
    "hash": "10b301443fea",
+   "wm": "10b301443fea",
    "vis": 0.797,
    "edge": 1
   },
   "MEM.svg": {
    "hash": "feeb2fe591d8",
+   "wm": "feeb2fe591d8",
    "vis": 0.428,
    "edge": 1
   },
   "MIA.svg": {
    "hash": "e9c8f34d1e4d",
+   "wm": "e9c8f34d1e4d",
    "vis": 0.488,
    "edge": 0.901
   },
   "MIL.svg": {
    "hash": "2e90b7719170",
+   "wm": "2e90b7719170",
    "vis": 0.397,
    "edge": 1
   },
   "MIN.svg": {
    "hash": "2b4c58300302",
+   "wm": "2b4c58300302",
    "vis": 0.603,
    "edge": 1
   },
   "NOP.svg": {
    "hash": "df7edb01d96f",
+   "wm": "df7edb01d96f",
    "vis": 0.407,
    "edge": 0.885
   },
   "NYK.svg": {
    "hash": "70ea1c952e04",
+   "wm": "70ea1c952e04",
    "vis": 0.7,
    "edge": 1
   },
   "OKC.svg": {
    "hash": "cd9bd1b4b57a",
+   "wm": "cd9bd1b4b57a",
    "vis": 0.858,
    "edge": 0.759
   },
   "ORL.svg": {
    "hash": "79c56821a287",
+   "wm": "79c56821a287",
    "vis": 0.411,
    "edge": 0.631
   },
   "PHI.svg": {
    "hash": "b7851c14619b",
+   "wm": "b7851c14619b",
    "vis": 1,
    "edge": 1
   },
   "PHO.svg": {
    "hash": "0317dec89240",
+   "wm": "0317dec89240",
    "vis": 1,
    "edge": 1
   },
   "POR.svg": {
    "hash": "40af7e7056e3",
+   "wm": "40af7e7056e3",
    "vis": 0.781,
    "edge": 1
   },
   "SAC.svg": {
    "hash": "47c4c74595c7",
+   "wm": "47c4c74595c7",
    "vis": 0.626,
    "edge": 1
   },
   "SAS.svg": {
    "hash": "6d8aeb4d0af5",
+   "wm": "6d8aeb4d0af5",
    "vis": 0.397,
    "edge": 0.994
   },
   "TOR.svg": {
    "hash": "494db5cba71e",
+   "wm": "494db5cba71e",
    "vis": 1,
    "edge": 1
   },
   "UTA.svg": {
    "hash": "b47072c776af",
+   "wm": "b47072c776af",
    "vis": 1,
    "edge": 1
   },
   "WAS.svg": {
    "hash": "66d6aaf4f5bc",
+   "wm": "66d6aaf4f5bc",
    "vis": 0.94,
    "edge": 1
   },
   "eras/ATL-1996.png": {
    "hash": "df8d57e026b7",
+   "wm": "df8d57e026b7",
    "vis": 0.525,
    "edge": 0.659
   },
   "eras/ATL-2008.png": {
    "hash": "7feaa6ef54da",
+   "wm": "7feaa6ef54da",
    "vis": 0.653,
    "edge": 0.895
   },
   "eras/ATL-2016.png": {
    "hash": "468f27ba69be",
+   "wm": "468f27ba69be",
    "vis": 1,
    "edge": 1
   },
   "eras/BRK-1998.png": {
    "hash": "afe3c5ab9026",
+   "wm": "afe3c5ab9026",
    "vis": 0.704,
    "edge": 0.753
   },
   "eras/BRK-2013.png": {
    "hash": "ca86c0d22572",
+   "wm": "ca86c0d22572",
    "vis": 0.746,
    "edge": 1
   },
   "eras/CHO-1989.png": {
    "hash": "58833a5a5d5a",
+   "wm": "58833a5a5d5a",
    "vis": 0.86,
    "edge": 0.971
   },
   "eras/CHO-2005.png": {
    "hash": "a4fb96488610",
+   "wm": "a4fb96488610",
    "vis": 0.735,
    "edge": 1
   },
   "eras/CHO-2008.png": {
    "hash": "9d18adaebb6a",
+   "wm": "9d18adaebb6a",
    "vis": 0.73,
    "edge": 1
   },
   "eras/CHO-2013.png": {
    "hash": "44ad8dc83c8a",
+   "wm": "44ad8dc83c8a",
    "vis": 0.513,
    "edge": 0.993
   },
   "eras/CLE-1995.png": {
    "hash": "aefd5885c89f",
+   "wm": "aefd5885c89f",
    "vis": 0.794,
    "edge": 0.437
   },
   "eras/CLE-2004.png": {
    "hash": "6454ece38325",
+   "wm": "6454ece38325",
    "vis": 0.818,
    "edge": 1
   },
   "eras/CLE-2011.png": {
    "hash": "653df7e668a7",
+   "wm": "653df7e668a7",
    "vis": 0.863,
    "edge": 1
   },
   "eras/CLE-2018.png": {
    "hash": "b87c54dfa8f3",
+   "wm": "b87c54dfa8f3",
    "vis": 0.841,
    "edge": 1
   },
   "eras/DAL-1994.png": {
    "hash": "1113a4dc9d23",
+   "wm": "1113a4dc9d23",
    "vis": 0.692,
    "edge": 0.671
   },
   "eras/DAL-2002.png": {
    "hash": "9809dbe414d1",
+   "wm": "9809dbe414d1",
    "vis": 0.625,
    "edge": 0.669
   },
   "eras/DEN-1994.png": {
    "hash": "299dbd0e4aa6",
+   "wm": "299dbd0e4aa6",
    "vis": 0.756,
    "edge": 1
   },
   "eras/DEN-2004.png": {
    "hash": "975f31b21087",
+   "wm": "975f31b21087",
    "vis": 0.484,
    "edge": 1
   },
   "eras/DEN-2009.png": {
    "hash": "fa648cd1af78",
+   "wm": "fa648cd1af78",
    "vis": 0.829,
    "edge": 1
   },
   "eras/DET-1997.png": {
    "hash": "3238313c6314",
+   "wm": "3238313c6314",
    "vis": 0.704,
    "edge": 0.895
   },
   "eras/DET-2002.png": {
    "hash": "ac50b1d96579",
+   "wm": "ac50b1d96579",
    "vis": 0.434,
    "edge": 0.627
   },
   "eras/DET-2006.png": {
    "hash": "3741366cb81a",
+   "wm": "3741366cb81a",
    "vis": 0.638,
    "edge": 1
   },
   "eras/GSW-1998.png": {
    "hash": "822b6b6573e5",
+   "wm": "822b6b6573e5",
    "vis": 0.56,
    "edge": 1
   },
   "eras/GSW-2011.png": {
    "hash": "5d1673f93cf1",
+   "wm": "5d1673f93cf1",
    "vis": 0.799,
    "edge": 1
   },
   "eras/HOU-1996.png": {
    "hash": "095ab6675e0e",
+   "wm": "095ab6675e0e",
    "vis": 0.646,
    "edge": 1
   },
   "eras/HOU-2004.png": {
    "hash": "00f204d1f7e4",
+   "wm": "00f204d1f7e4",
    "vis": 1,
    "edge": 1
   },
   "eras/HOU-2020.png": {
    "hash": "dc04f75461f1",
+   "wm": "dc04f75461f1",
    "vis": 0.895,
    "edge": 1
   },
   "eras/IND-1991.png": {
    "hash": "76e9ef501cb6",
+   "wm": "76e9ef501cb6",
    "vis": 1,
    "edge": 0.997
   },
   "eras/IND-2006.png": {
    "hash": "10ca7a4818b9",
+   "wm": "10ca7a4818b9",
    "vis": 0.934,
    "edge": 0.457
   },
   "eras/IND-2018.png": {
    "hash": "12f70279e0e2",
+   "wm": "12f70279e0e2",
    "vis": 0.813,
    "edge": 1
   },
   "eras/LAC-1985.png": {
    "hash": "0369d5fdaf4a",
+   "wm": "0369d5fdaf4a",
    "vis": 0.855,
    "edge": 1
   },
   "eras/LAC-2011.png": {
    "hash": "bbdb7b2e6c22",
+   "wm": "bbdb7b2e6c22",
    "vis": 0.865,
    "edge": 1
   },
   "eras/LAC-2016.png": {
    "hash": "7740b1f98cbb",
+   "wm": "7740b1f98cbb",
    "vis": 0.946,
    "edge": 0.848
   },
   "eras/LAC-2019.png": {
    "hash": "191ca4d4a368",
+   "wm": "191ca4d4a368",
    "vis": 0.919,
    "edge": 0.715
   },
   "eras/LAL-2000.png": {
    "hash": "968640a00c21",
+   "wm": "968640a00c21",
    "vis": 0.882,
    "edge": 1
   },
   "eras/LAL-2018.png": {
    "hash": "ff281efb8740",
+   "wm": "ff281efb8740",
    "vis": 0.865,
    "edge": 1
   },
   "eras/MEM-1996.png": {
    "hash": "05192db2bde4",
+   "wm": "05192db2bde4",
    "vis": 0.667,
    "edge": 0.765
   },
   "eras/MEM-2002.png": {
    "hash": "243eccfde122",
+   "wm": "243eccfde122",
    "vis": 0.701,
    "edge": 0.905
   },
   "eras/MEM-2005.png": {
    "hash": "46c8a7db5b63",
+   "wm": "46c8a7db5b63",
    "vis": 0.455,
    "edge": 0.672
   },
   "eras/MIL-1994.png": {
    "hash": "840db63ea8fe",
+   "wm": "840db63ea8fe",
    "vis": 0.724,
    "edge": 0.679
   },
   "eras/MIL-2007.png": {
    "hash": "03fbe023da09",
+   "wm": "03fbe023da09",
    "vis": 0.553,
    "edge": 0.736
   },
   "eras/MIN-1997.png": {
    "hash": "dfddc63b4d64",
+   "wm": "dfddc63b4d64",
    "vis": 0.635,
    "edge": 1
   },
   "eras/MIN-2009.png": {
    "hash": "d71fa1f53e07",
+   "wm": "d71fa1f53e07",
    "vis": 0.825,
    "edge": 0.49
   },
   "eras/MIN-2018.png": {
    "hash": "9b2a9a2f23d0",
+   "wm": "9b2a9a2f23d0",
    "vis": 0.465,
    "edge": 1
   },
   "eras/NOP-2003.png": {
    "hash": "a65eb6c4191d",
+   "wm": "a65eb6c4191d",
    "vis": 0.855,
    "edge": 0.998
   },
   "eras/NOP-2006.png": {
    "hash": "a65eb6c4191d",
+   "wm": "a65eb6c4191d",
    "vis": 0.855,
    "edge": 0.998
   },
   "eras/NOP-2008.png": {
    "hash": "a65eb6c4191d",
+   "wm": "a65eb6c4191d",
    "vis": 0.855,
    "edge": 0.998
   },
   "eras/NOP-2009.png": {
    "hash": "7eefb103b8d5",
+   "wm": "7eefb103b8d5",
    "vis": 0.865,
    "edge": 1
   },
   "eras/NOP-2014.png": {
    "hash": "6c108c35f80a",
+   "wm": "6c108c35f80a",
    "vis": 0.492,
    "edge": 1
   },
   "eras/NYK-1996.png": {
    "hash": "88f6f6dea47e",
+   "wm": "88f6f6dea47e",
    "vis": 0.793,
    "edge": 0.89
   },
   "eras/NYK-2012.png": {
    "hash": "dc42952071e7",
+   "wm": "dc42952071e7",
    "vis": 0.745,
    "edge": 1
   },
   "eras/NYK-2023.png": {
    "hash": "d509a1c6a8be",
+   "wm": "d509a1c6a8be",
    "vis": 0.765,
    "edge": 1
   },
   "eras/OKC-1996.png": {
    "hash": "b598e3249de9",
+   "wm": "b598e3249de9",
    "vis": 0.549,
    "edge": 1
   },
   "eras/OKC-2002.png": {
    "hash": "c29c5d3bb31f",
+   "wm": "c29c5d3bb31f",
    "vis": 1,
    "edge": 1
   },
   "eras/ORL-2001.png": {
    "hash": "b0e8644ab802",
+   "wm": "b0e8644ab802",
    "vis": 0.688,
    "edge": 1
   },
   "eras/ORL-2011.png": {
    "hash": "5215c0a24d0d",
+   "wm": "5215c0a24d0d",
    "vis": 0.532,
    "edge": 1
   },
   "eras/PHI-1998.png": {
    "hash": "f464456de969",
+   "wm": "f464456de969",
    "vis": 0.618,
    "edge": 1
   },
   "eras/PHI-2010.png": {
    "hash": "cc0f2e9e92fa",
+   "wm": "cc0f2e9e92fa",
    "vis": 0.782,
    "edge": 1
   },
   "eras/PHO-2001.png": {
    "hash": "1ba05cd1572e",
+   "wm": "1ba05cd1572e",
    "vis": 0.893,
    "edge": 1
   },
   "eras/POR-1991.png": {
    "hash": "c13191215be8",
+   "wm": "c13191215be8",
    "vis": 0.83,
    "edge": 0.446
   },
   "eras/POR-2003.png": {
    "hash": "a532f8fed853",
+   "wm": "a532f8fed853",
    "vis": 0.783,
    "edge": 0.706
   },
   "eras/POR-2004.png": {
    "hash": "e13d99fcc8a4",
+   "wm": "e13d99fcc8a4",
    "vis": 0.682,
    "edge": 1
   },
   "eras/POR-2005.png": {
    "hash": "787fac66f2f4",
+   "wm": "787fac66f2f4",
    "vis": 0.835,
    "edge": 1
   },
   "eras/SAC-1995.png": {
    "hash": "20aeec55b200",
+   "wm": "20aeec55b200",
    "vis": 0.597,
    "edge": 1
   },
   "eras/SAS-1990.png": {
    "hash": "5d7e6eb24fc1",
+   "wm": "5d7e6eb24fc1",
    "vis": 0.838,
    "edge": 0.992
   },
   "eras/SAS-2003.png": {
    "hash": "ac18521f5feb",
+   "wm": "ac18521f5feb",
    "vis": 0.667,
    "edge": 1
   },
   "eras/TOR-1996.png": {
    "hash": "f7e40c98cca3",
+   "wm": "f7e40c98cca3",
    "vis": 0.864,
    "edge": 1
   },
   "eras/TOR-2009.png": {
    "hash": "1c75c4549c51",
+   "wm": "1c75c4549c51",
    "vis": 0.774,
    "edge": 0.644
   },
   "eras/TOR-2016.png": {
    "hash": "8769afcce81c",
+   "wm": "8769afcce81c",
    "vis": 0.916,
    "edge": 0
   },
   "eras/UTA-1997.png": {
    "hash": "5f6e2b17add8",
+   "wm": "5f6e2b17add8",
    "vis": 0.775,
    "edge": 0.98
   },
   "eras/UTA-2005.png": {
    "hash": "5e7b78533846",
+   "wm": "5e7b78533846",
    "vis": 0.869,
    "edge": 0.932
   },
   "eras/UTA-2011.png": {
    "hash": "ab4667667e7a",
+   "wm": "ab4667667e7a",
    "vis": 0.552,
    "edge": 1
   },
   "eras/UTA-2017.png": {
    "hash": "16149329e385",
+   "wm": "16149329e385",
    "vis": 0.995,
    "edge": 1
   },
   "eras/UTA-2023.png": {
    "hash": "651593c2daa9",
+   "wm": "651593c2daa9",
    "vis": 1,
    "edge": 1
   },
   "eras/WAS-1998.png": {
    "hash": "e9779bcc4087",
+   "wm": "e9779bcc4087",
    "vis": 0.684,
    "edge": 0.689
   },
   "eras/WAS-2008.png": {
    "hash": "a36b0f8ff328",
+   "wm": "a36b0f8ff328",
    "vis": 0.531,
    "edge": 0.715
   },
   "eras/WAS-2012.png": {
    "hash": "f0bdb6d5acfd",
+   "wm": "f0bdb6d5acfd",
    "vis": 0.684,
    "edge": 1
   }

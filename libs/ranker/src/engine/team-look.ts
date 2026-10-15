@@ -19,7 +19,9 @@
 //   hi, lo   a hero's wash: lighter at the outer edge (hi) darkening into the deep version of the same hue
 //            (lo); never grey but for a black team, never another team's color
 //   whiteLogo   the logo drawn in white on its face (the Giants' "ny", the Colts' horseshoe, the Jets')
-//   logo     the logo's file that season (an old era's own; a hero's big faint watermark is it, drawn white)
+//   logo     the logo's file that season (an old era's own)
+//   watermark  a hero's big faint logo: that logo in white, as opaque as it's light, its lettering and inner
+//            shapes kept (assets/watermarks/, drawn by scripts/team-looks/watermark.mjs)
 import { distance, TOO_CLOSE } from './colors';
 import nfl from './team-looks/nfl.json';
 import nba from './team-looks/nba.json';
@@ -32,6 +34,9 @@ export interface TeamLook {
   // sport's looks don't have
   key: string | null;
   logo: string | null;
+  // ("assets/watermarks/eras/Bills-1997.webp"; null for a team the sport's looks don't have, whose logo is
+  // drawn white instead)
+  watermark: string | null;
   face: string;
   rim: string;
   whiteLogo: boolean;
@@ -71,7 +76,7 @@ interface LooksFile {
 const FILES: Record<string, LooksFile> = { nfl, nba, nhl, mlb, mma } as unknown as Record<string, LooksFile>;
 
 // A team the site doesn't know: a quiet charcoal card, a grey rim, the board's light grey for its lines
-type Colors = Omit<TeamLook, 'key' | 'logo' | 'chip' | 'hero'>;
+type Colors = Omit<TeamLook, 'key' | 'logo' | 'watermark' | 'chip' | 'hero'>;
 const NEUTRAL: Colors = {
   face: '#2c3330',
   rim: '#8a8f8c',
@@ -140,7 +145,7 @@ export function teamLook(sport: string, team: string | EspnTeam | null | undefin
   }
   let look = s.cache.get(key);
   if (!look) {
-    look = styled({ key, logo: s.file.dir + key, ...unpack(s.file, s.file.looks[key]) });
+    look = styled({ key, logo: s.file.dir + key, watermark: WATERMARKS + key.replace(/\.(png|svg)$/, '.webp'), ...unpack(s.file, s.file.looks[key]) });
     s.cache.set(key, look);
   }
   return look;
@@ -153,14 +158,17 @@ function unpack(file: LooksFile, row: (string | number)[]): Colors {
   return look as unknown as Colors;
 }
 
-const NEUTRAL_LOOK = styled({ key: null, logo: null, ...NEUTRAL });
+// (each sport's watermarks, beside its logos: scripts/build-team-looks.mjs)
+const WATERMARKS = 'assets/watermarks/';
+
+const NEUTRAL_LOOK = styled({ key: null, logo: null, watermark: null, ...NEUTRAL });
 function neutral(s: SportLooks | null, logo: string | null): TeamLook {
   if (!s) return NEUTRAL_LOOK;
   // (one each: the sport's own, and each logo it doesn't know)
   const kept = s.cache.get(`?${logo}`);
   if (kept) return kept;
   const base = s.file.default ? unpack(s.file, s.file.default) : NEUTRAL;
-  const look = styled({ key: null, logo, ...base });
+  const look = styled({ key: null, logo, watermark: null, ...base });
   s.cache.set(`?${logo}`, look);
   return look;
 }

@@ -27,11 +27,11 @@
         [style.--home-lo]="g.home.look.lo"
       >
         <!-- (each watermark kept to its own half, cut at the seam) -->
-        @if (teamLogo(g.away, g); as logo) {
-          <span class="hero-texture game-texture away" aria-hidden="true"><img [src]="logo" alt="" /></span>
+        @if (teamWatermark(g.away, g); as wm) {
+          <span class="hero-texture game-texture away" aria-hidden="true"><img [src]="wm.src" [class.silhouette]="wm.silhouette" alt="" /></span>
         }
-        @if (teamLogo(g.home, g); as logo) {
-          <span class="hero-texture game-texture home" aria-hidden="true"><img [src]="logo" alt="" /></span>
+        @if (teamWatermark(g.home, g); as wm) {
+          <span class="hero-texture game-texture home" aria-hidden="true"><img [src]="wm.src" [class.silhouette]="wm.silhouette" alt="" /></span>
         }
         @for (side of ['away', 'home']; track side) {
           @let t = side === 'away' ? g.away : g.home;

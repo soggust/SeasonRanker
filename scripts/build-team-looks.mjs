@@ -26,6 +26,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { ROOT, contrast, dominantOf, fromLch, lch, load, lookOf, sha, sourceHash, visibility } from './team-looks/look.mjs';
+import { WATERMARK, watermarkDir, watermarkName, watermarkSource } from './team-looks/watermark.mjs';
 
 const OUT = path.join(ROOT, 'libs/ranker/src/engine/team-looks');
 const ICONS = { nfl: 'NFL_Icons', nba: 'NBA_Icons', nhl: 'NHL_Icons', mlb: 'MLB_Icons' };
@@ -206,7 +207,14 @@ async function buildSport(sport, chrome) {
     });
     looks[file] = [...fields.map((f) => look[f]), look.whiteLogo ? 1 : 0];
     const v = look.whiteLogo ? { vis: 1, edge: 1 } : visibility(logo, look.face);
-    checks.logos[file] = { hash: sha(buf, file.endsWith('.svg')), vis: +v.vis.toFixed(3), edge: +v.edge.toFixed(3), ...(look.whiteLogo ? { white: +contrast('#ffffff', look.face).toFixed(2) } : {}) };
+    // (its watermark: scripts/team-looks/watermark.mjs)
+    const wm = watermarkSource(sport, iconDir, file);
+    const wmUrl = `data:${wm.svg ? 'image/svg+xml' : 'image/png'};base64,${wm.buf.toString('base64')}`;
+    const webp = await chrome.evaluate(`(${WATERMARK})(${JSON.stringify(wmUrl)}, ${wm.asIs})`);
+    const wmFile = path.join(watermarkDir(sport), watermarkName(file));
+    fs.mkdirSync(path.dirname(wmFile), { recursive: true });
+    fs.writeFileSync(wmFile, Buffer.from(webp.slice(webp.indexOf(',') + 1), 'base64'));
+    checks.logos[file] = { hash: sha(buf, file.endsWith('.svg')), wm: wm.hash, ...(wm.asIs ? { override: true } : {}), vis: +v.vis.toFixed(3), edge: +v.edge.toFixed(3), ...(look.whiteLogo ? { white: +contrast('#ffffff', look.face).toFixed(2) } : {}) };
     if (!isEra(file) && /^[^_]+\.(png|svg)$/.test(file)) teams[file] = { ...(abbr ? { abbr } : {}), ...(id ? { id } : {}) };
   }
   // (each team's eras: by logoForSeason, or for the NHL by its logos' names)
