@@ -95,6 +95,22 @@ $ai-narrow: v.bp(ai-narrow);
   .player-card {
     animation: card-rise 0.2s ease;
   }
+
+  // (the rank's segments power on over their unlit 8s as the card lands, a flicker and lit; a game's board has
+  // its own, led-on)
+  .hero-rank:not(.game-board) .rank-lit {
+    animation: led-light 0.45s ease-out 0.16s backwards;
+  }
+}
+
+// (as the card opens: the team's watermark settles in, then the player steps up into his gem; a game's two
+// watermarks too)
+.hero-texture img {
+  @include v.enter(14px, 0.6s);
+}
+
+.hero-photo {
+  @include v.enter(5px, 0.28s, 0.08s);
 }
 
 .player-card {
@@ -439,6 +455,7 @@ $ai-narrow: v.bp(ai-narrow);
     justify-content: center;
     padding: 0;
     width: 30px;
+    @include v.press(0.88);
 
     &:hover {
       background: rgba(255, 255, 255, 0.08);

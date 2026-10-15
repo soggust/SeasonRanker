@@ -948,3 +948,33 @@ section footer .mat-mdc-select.season-select {
     transform: scaleX(0);
   }
 }
+
+// (an entrance, _variables.scss enter: in from --enter-dy below, by the translate property so the element's own
+// transform is kept)
+@keyframes enter-fade {
+  from {
+    opacity: 0;
+    translate: 0 var(--enter-dy, 6px);
+  }
+}
+
+// (a tab lit: its strip of LED dots lights from the middle out, _variables.scss lit-dots)
+@keyframes dots-ignite {
+  from {
+    opacity: 0;
+    transform: scaleX(0.15);
+  }
+}
+
+// (an LED number powering on over its unlit 8s, with a flicker: the card's rank)
+@keyframes led-light {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 0.25;
+  }
+}

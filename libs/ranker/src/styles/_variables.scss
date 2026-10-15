@@ -12,6 +12,46 @@ $t-fast: 0.12s;
 $t-hover: 0.15s;
 $t-medium: 0.25s;
 
+// An entrance: the element fades in from $dy below it (a negative $dy: from above), on the house easing, $stagger
+// later for each step of its --i (a list's items one after another); none for anyone who's asked for less motion.
+// It moves by the translate property (the global keyframes enter-fade, _base.scss), so a transform the element
+// has already (a centering translate, a tilt) is kept, and only opacity and translate change: the compositor's.
+@mixin enter($dy: 6px, $dur: 0.2s, $delay: 0s, $stagger: 0ms, $ease: $ease-out) {
+  @media (prefers-reduced-motion: no-preference) {
+    --enter-dy: #{$dy};
+    animation: enter-fade $dur $ease backwards;
+    @if $stagger == 0ms {
+      animation-delay: $delay;
+    } @else {
+      animation-delay: calc(#{$delay} + var(--i, 0) * #{$stagger});
+    }
+  }
+}
+
+// A chevron that turns as what it opens opens (the open state sets its rotate); a quick turn, none for anyone
+// who's asked for less motion
+@mixin turn($dur: 0.2s) {
+  @media (prefers-reduced-motion: no-preference) {
+    transition: rotate $dur $ease-out;
+  }
+}
+
+// A button pressed: a touch smaller under the finger or the pointer, back as it's let go (the scale property, so
+// its own transform is kept); $also: the button's own transitions, kept alongside
+@mixin press($scale: 0.92, $also: null) {
+  @media (prefers-reduced-motion: no-preference) {
+    @if $also {
+      transition: $also, scale $t-fast $ease-out;
+    } @else {
+      transition: scale $t-fast $ease-out;
+    }
+
+    &:active:not(:disabled) {
+      scale: $scale;
+    }
+  }
+}
+
 // Fonts: the UI's, the headlines' (the card's name, the analysis headlines, the logo, modal titles), and
 // the soft hand the names, values and numbers are written in
 $font-base: "Nunito", sans-serif;
@@ -406,6 +446,11 @@ $team-logo-size: 22px;
     pointer-events: none;
     position: absolute;
     right: 0;
+
+    // (lit as the tab's picked: from the middle out, keyframes dots-ignite in _base.scss)
+    @media (prefers-reduced-motion: no-preference) {
+      animation: dots-ignite 0.24s $ease-out;
+    }
   }
 }
 
