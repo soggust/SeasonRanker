@@ -141,9 +141,12 @@ export function restGuard(restDays, debut, date) {
 //               more), his cut of the work they leave (vacOut: matchups.mjs vacated, a questionable one not
 //               counted) ROLE.vac of his own or more; and a back projected in the role he steps into (project.mjs
 //               rp) on a receiving prop, with no safe side (promoted backs' receiving ran high, not low). Not
-//               where the absence is already in his recent games (settled: settledAbsenceOf below)
-//   snap-jump   his last game's share of his team's offensive snaps ROLE.snapJump over his season's
-//   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
+//               where the absence is already in his recent games (settled: settledAbsenceOf below), nor
+//               the promoted back's receiving
+//   snap-jump   his last game's share of his team's offensive snaps ROLE.snapJump over his season's; not where
+//               his game before was at the new level too (snapSettledOf below)
+//   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing;
+//               not where the absence is settled
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
 //               ROLE.ratioLo times the model's: the market reading a role the model hasn't seen
 //   depth       (none of the above) the depth chart's starter at his spot the model's role has lower, or the
@@ -219,7 +222,7 @@ export function lineupRoleOf({ name = null, pid, usual = null, starters = null }
 // their average, 0 with none) plus SETTLED.share of the work tonight's cut gives him (vacOut times his recent
 // work, 1 at least: the cut's own measure). A new absence (no such recent game), a second regular newly out,
 // or a fill-in who didn't take the work, still a CHECK. ab: matchups.mjs absenceGames' { own, games }
-export const SETTLED = { recent: 2, share: 0.7 };
+export const SETTLED = { recent: 2, share: 0.7, snap: 0.85 };
 export function settledAbsenceOf({ vacOut = 0, ab = null } = {}) {
   if (!(vacOut > 0) || !ab || !Array.isArray(ab.games) || !ab.games.length) return null;
   const recent = ab.games.slice(-SETTLED.recent).filter((g) => g.without);
@@ -232,7 +235,13 @@ export function settledAbsenceOf({ vacOut = 0, ab = null } = {}) {
   if (!(work >= need)) return null;
   return { n: recent.length, work: round(work, 1), pre: round(pre, 1), need: round(need, 1) };
 }
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
+// The snap-jump CHECK's jump already seen: his game before the last at SETTLED.snap of his last game's share or
+// more (snap.prev: matchups.mjs snapOf), two games at the new level, so his recent form has it (Wilson again: 59%
+// of the snaps his last game, his game before it in the new role too). A jump in his last game alone, a CHECK
+export function snapSettledOf(snap) {
+  return !!snap && Number.isFinite(snap.prev) && snap.latest > 0 && snap.prev >= SETTLED.snap * snap.latest;
+}
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, skips = null, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
   // (no usual starter known for his team (no quarterback's passes in its games): any quarterback with a prop is
@@ -252,9 +261,22 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
   if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
   // (group-out only for an absence new to him: one he's already played through in the role it gives him
   // (settled: settledAbsenceOf) is in his recent numbers and the next-man-up terms, so it's not a CHECK)
-  if (vacOut >= ROLE.vac && !settled) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
-  if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
-  if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
+  // (each cause it would have been, skipped as not new, pushed on skips ({ key, why }): the caller's log)
+  if (vacOut >= ROLE.vac) {
+    if (!settled) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
+    skips?.push({ key: 'group-out', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names || 'the regular'} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
+  }
+  // (snap-jump only for a jump new to him: his game before the last at SETTLED.snap of the last's share or more
+  // (snapSettledOf) is two games at the new level, in his recent form already)
+  if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) {
+    if (!snapSettledOf(snap)) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
+    skips?.push({ key: 'snap-jump', why: `jump not new: 2 games at the new level already (${pct(snap.prev)}% then ${pct(snap.latest)}% of the snaps, ${pct(snap.avg)}% this season)` });
+  }
+  // (part-time only where the absence is new to him: settled, he's played through it and took the work)
+  if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) {
+    if (!settled) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
+    skips?.push({ key: 'part-time', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names || 'the regular'} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
+  }
   if (Number.isFinite(implied) && mu > 0) {
     const ratio = implied / mu;
     if (ratio > ROLE.ratioHi || ratio < ROLE.ratioLo) return { key: 'line', safe: ratio > ROLE.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
@@ -1830,15 +1852,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // as the split in proportion here)
       const vs0 = plainVs(prop.stat, f.params.vs);
       const vacOut = f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(0), extra).vacs?.[vs0] ?? 0;
-      // (the absence already in his recent games (settledAbsenceOf): no group-out CHECK, its skip logged once a
-      // player and game, so the CHECKs it clears can be counted)
-      const ab = vacOut >= ROLE.vac ? (f.matchups.absenceGames?.(pid, row.team, game.season, row.pos, missOf(0)) ?? null) : null;
-      const settled = settledAbsenceOf({ vacOut, ab });
-      if (settled && !settledLogged.has(`${game.id}:${pid}`)) {
-        settledLogged.add(`${game.id}:${pid}`);
-        const names = ab.ids.map((id) => idx.name?.(id) ?? id).join(', ');
-        console.log(`${sport}: role CHECK skipped for ${a.name} (${game.id}): absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${names} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed: ${Math.round(SETTLED.share * 100)}% of the cut over his work before)`);
-      }
+      // (the absence already in his recent games (settledAbsenceOf): no group-out, part-time or promoted back's
+      // receiving CHECK; a snap jump already two games old (snapSettledOf): no snap-jump. Each skip logged once a
+      // player, game and cause, so the CHECKs it clears can be counted)
+      const ab = vacOut > 0 ? (f.matchups.absenceGames?.(pid, row.team, game.season, row.pos, missOf(0)) ?? null) : null;
+      const settled0 = settledAbsenceOf({ vacOut, ab });
+      const settled = settled0 ? { ...settled0, names: ab.ids.map((id) => idx.name?.(id) ?? id).join(', ') } : null;
+      const skips = [];
       roleChange = roleChangeOf({
         name: a.name,
         pos: row.pos,
@@ -1847,6 +1867,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         boardQbs: boardQbs.get(String(row.team)) ?? null,
         vacOut,
         settled,
+        skips,
         snap: row.snap ?? null,
         mu,
         // (a quarterback's starts before tonight, all his seasons': a few-start one's a CHECK)
@@ -1860,7 +1881,16 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // ran high there in the role backtest (2026-10-12, promoted backs' receptions -7.2%, held out -9.3% on
       // 39 rows), the other way from group-out's safe over, so neither side is safe: both CHECKs till the rows
       // say otherwise)
-      if (/^RB/.test(p.role ?? '') && row.role && p.role !== row.role && /^rec|^rushRec/.test(prop.stat.key)) {
+      // (not where the absence is settled: he's played through it in the role he steps into, his receiving there
+      // in his recent numbers)
+      const promoted = /^RB/.test(p.role ?? '') && row.role && p.role !== row.role && /^rec|^rushRec/.test(prop.stat.key);
+      if (promoted && settled) skips.push({ key: 'promoted', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
+      for (const k of skips) {
+        if (settledLogged.has(`${game.id}:${pid}:${k.key}`)) continue;
+        settledLogged.add(`${game.id}:${pid}:${k.key}`);
+        console.log(`${sport}: role CHECK (${k.key}) skipped for ${a.name} (${game.id}): ${k.why}`);
+      }
+      if (promoted && !settled) {
         roleChange = { ...(roleChange ?? { key: 'group-out', why: `${a.name || 'he'} stepping up to ${p.role} with the back above him out: a promoted back's receiving` }), safe: null };
       }
       // (the depth chart against the model's role (depthRoleOf, live only: the site's charts, live.depth), where

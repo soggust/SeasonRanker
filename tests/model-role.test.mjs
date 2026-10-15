@@ -83,7 +83,7 @@ test('snap shares: his last game against his season', () => {
   rows.push(...game('a1', '2026-09-01T17:00Z', [['q', 'QB', 0, 0, 30, 60], ['w', 'WR', 0, 2, 0, 18]]));
   rows.push(...game('a2', '2026-09-02T17:00Z', [['q', 'QB', 0, 0, 30, 60], ['w', 'WR', 0, 8, 0, 54]]));
   const snap = nflMatchups(rows).live('w', '1', '2', 'WR', 2026, null).snap;
-  assert.deepEqual(snap, { latest: 0.9, avg: 0.6, n: 2 });
+  assert.deepEqual(snap, { latest: 0.9, avg: 0.6, n: 2, prev: 0.3 });
 });
 
 test("rb1Out: the team's lead back missing, for its quarterback and pass-catchers; a back's own 0; a committee's under LEAD_MIN none", () => {

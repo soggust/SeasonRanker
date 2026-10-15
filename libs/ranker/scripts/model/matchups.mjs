@@ -699,7 +699,9 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
     if (team !== null && String(s0.teams[s0.teams.length - 1]) !== String(team)) return null;
     const s = team === null ? s0 : { list: s0.list.filter((x, i) => String(s0.teams[i]) === String(team)) };
     const avg = s.list.reduce((t, x) => t + x, 0) / s.list.length;
-    return { latest: Math.round(s.list[s.list.length - 1] * 1000) / 1000, avg: Math.round(avg * 1000) / 1000, n: s.list.length };
+    // (prev: his game before the last one's share, null with one game: the role guard's snap-jump reads whether
+    // the jump is new, props.mjs roleChangeOf)
+    return { latest: Math.round(s.list[s.list.length - 1] * 1000) / 1000, avg: Math.round(avg * 1000) / 1000, n: s.list.length, prev: s.list.length >= 2 ? Math.round(s.list[s.list.length - 2] * 1000) / 1000 : null };
   };
   // (the defense's numbers before a game)
   const defense = (id, season, pos) => {
