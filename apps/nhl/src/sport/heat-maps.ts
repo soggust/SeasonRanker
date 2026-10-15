@@ -1,3 +1,5 @@
+import { clampTone, pctText as pct, plural, ratio } from '@ranker/core/format';
+import { heatSeasonFile } from '@ranker/engine/heat-map/heat-files';
 import type { SkillPlayer } from '@sport/positions';
 import { tintScale } from '@ranker/core/value-tint';
 import { pickPair } from '@ranker/engine/heat-map/heat-color';
@@ -152,30 +154,17 @@ export function splitRows(entry: Entry | undefined, split: string): Row[] | unde
 
 // ---- the files, once a season
 
-const files = new Map<string, Promise<unknown>>();
 const loaded = new Map<number, HeatFile | null>();
-// (a file for another season, the one at the top of data/ before the new season's first shots: none)
-function fetchFile<T extends { season: number }>(season: number, current: boolean, name: string, expand: (raw: never) => T): Promise<T | null> {
-  const path = current ? `data/${name}` : `data/seasons/${season}/${name}`;
-  if (!files.has(path)) {
-    files.set(
-      path,
-      fetch(path, { cache: current ? 'no-cache' : 'default' })
-        .then(async (res) => (res.ok ? expand((await res.json()) as never) : null))
-        .then((f) => (f && f.season === season ? f : null))
-        .catch(() => null),
-    );
-  }
-  return files.get(path) as Promise<T | null>;
-}
+// (heat-files.ts: once a visit; another season's file, the one at the top of data/ before the new season's
+// first shots, none)
 export function heatFile(season: number, current: boolean): Promise<HeatFile | null> {
-  return fetchFile(season, current, 'heat-maps.json', expandHeat).then((f) => {
+  return heatSeasonFile(season, current, 'heat-maps.json', expandHeat).then((f) => {
     loaded.set(season, f);
     return f;
   });
 }
 export const skaterFile = (season: number, current: boolean, group: 'forwards' | 'defense'): Promise<SkaterFile | null> =>
-  fetchFile(season, current, `heat-maps.${group}.json`, expandSkaters);
+  heatSeasonFile(season, current, `heat-maps.${group}.json`, expandSkaters);
 
 // ---- what a card's row is on the maps
 
@@ -236,14 +225,12 @@ interface StatSpec {
   onGoal?: boolean;
 }
 
-const ratio = (a: number, b: number) => (b ? a / b : null);
 // (signed, a tenth: "+2.1", "−0.4"; a value that rounds to nothing, "0.0")
 export const signed1 = (v: number) => {
   const r = Math.round(v * 10) / 10;
   return `${r > 0 ? '+' : r < 0 ? '−' : ''}${Math.abs(r).toFixed(1)}`;
 };
 const pct1 = (v: number) => `${(v * 100).toFixed(1)}%`;
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 // (".915", ".094": hockey's way)
 export const thou = (v: number) => (v < 0 ? '−' : '') + Math.abs(v).toFixed(3).replace(/^0/, '');
 const dec2 = (v: number) => v.toFixed(2);
@@ -419,7 +406,6 @@ function kindEntries(src: Source, kind: Kind): Entry[] {
 }
 
 const sumOf = (rows: Row[] | undefined, key: string) => (rows ?? []).reduce((a, r) => a + (r[key] ?? 0), 0);
-const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
 
 function cellsOf(rows: Row[], league: Row[] | undefined, spec: StatSpec, sds: (number | null)[], gp: number, leagueGp: number): HeatCell[] {
   const total = sumOf(rows, 'att');
@@ -679,7 +665,6 @@ export function heatSplitsKnown(season: number): Set<string> | null {
 // ---- the numbers beside the maps: the row's whole split, against the league's
 
 const INSIDE = ['slot', 'crease'].map((id) => ZONE_IDS.indexOf(id));
-const clampTone = (v: number) => Math.max(-1, Math.min(1, v)) || 0;
 export function zoneChips(kind: Kind, built: Pick<Built, 'rows' | 'league' | 'entry'>, split: string, src: Pick<Source, 'part'>, share: number | null = null): HeatChip[] {
   const rows = built.rows;
   const total = sumOf(rows, 'att');

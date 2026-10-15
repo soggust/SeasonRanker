@@ -12,7 +12,8 @@ import {
   unitStat,
 } from '@sport/positions';
 import { dataWeight, newHeadCoach, preseasonCoaching, preseasonOline, preseasonWeapons, responsibilityWhy, teamGamesPlayed } from '@sport/qb-rows';
-import { GradePart, GradeWhy, gradePart, pctText } from '@ranker/engine/grade-why';
+import { GradePart, GradeWhy, gradePart } from '@ranker/engine/grade-why';
+import { pctText } from '@ranker/core/format';
 import { grade as gradeLetter } from '@ranker/core/format';
 
 // The NFL's values worked out in the app (SPORT.computedValue): fantasy points in the chosen scoring,

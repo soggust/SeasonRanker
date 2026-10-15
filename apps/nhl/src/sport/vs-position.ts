@@ -1,3 +1,4 @@
+import { pctText as pct } from '@ranker/core/format';
 import type { CardBreakdown, CardFlag } from '@ranker/engine/sport';
 import { tintFrom, tintScale } from '@ranker/core/value-tint';
 import type { SkillPlayer } from './positions';
@@ -34,7 +35,6 @@ const signed = (v: number, digits = 2) => {
   const text = Math.abs(v).toFixed(digits);
   return `${Number(text) === 0 ? '' : v > 0 ? '+' : '−'}${text}`;
 };
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 // (a regular season's games before the takes: soft against and shuts down)
 const TAKE_GAMES = 10;
 

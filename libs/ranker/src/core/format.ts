@@ -47,3 +47,21 @@ export function rankTone(pct: number | null): string {
   const hue = pct < 0.5 ? pct * 2 * 30 : 30 + (pct - 0.5) * 2 * 95;
   return `hsl(${Math.round(hue)}, 85%, ${Math.round(56 - pct * 6)}%)`;
 }
+
+// ---------------------------------------------------------------------------
+// The small formats every sport's heat maps, breakdowns and grade inputs share
+// ---------------------------------------------------------------------------
+// A share as a whole percent ("43%")
+export const pctText = (share: number) => `${Math.round(share * 100)}%`;
+
+// A count and its noun ("1 shot", "1,204 shots")
+export const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
+
+// One count over another (none with nothing under it)
+export const ratio = (a: number, b: number): number | null => (b ? a / b : null);
+
+// A tone held to -1..1 (0 for no number at all)
+export const clampTone = (v: number) => Math.max(-1, Math.min(1, v)) || 0;
+
+// A signed number with a true minus ("+1.4", "−0.3", "0.0")
+export const signedText = (v: number, digits = 1) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(digits)}`;

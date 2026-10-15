@@ -1,3 +1,4 @@
+import { clampTone as clamp, pctText as pct, plural } from '@ranker/core/format';
 import type { SkillPlayer } from '@sport/positions';
 import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatQuery, HeatSplit, HeatStat, HeatSurfaceId } from '@ranker/engine/heat-map/heat-map.model';
 import { BODY_3_IDS, BODY_IDS, STRIKE_POSITIONS } from '@ranker/engine/heat-map/surfaces/body';
@@ -127,12 +128,9 @@ export const sumOf = (fields: string[], row: number[]): Sum => {
 
 // ---- the stats
 
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 // (a small rate's tenth: "7.1%"; none, "0%")
 const pct1 = (v: number) => `${v > 0 && v < 0.1 ? (v * 100).toFixed(1) : Math.round(v * 100)}%`;
 const dec2 = (v: number) => v.toFixed(2);
-const clamp = (v: number) => Math.max(-1, Math.min(1, v)) || 0;
-const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
 const mmss = (secs: number) => `${Math.floor(secs / 60)}:${String(Math.round(secs % 60)).padStart(2, '0')}`;
 
 // (a rate's chance spread in a cell: the binomial's on the base rate, the base rate held to at least two in its

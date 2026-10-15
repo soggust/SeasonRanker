@@ -1,3 +1,4 @@
+import { pctText as pct } from '@ranker/core/format';
 import type { CardBreakdown, CardFlag } from '@ranker/engine/sport';
 import { tintFrom, tintScale } from '@ranker/core/value-tint';
 import type { SkillPlayer } from './positions';
@@ -45,7 +46,6 @@ const signed = (v: number, digits = 1) => {
   const text = Math.abs(v).toFixed(digits);
   return `${Number(text) === 0 ? '' : v > 0 ? '+' : '−'}${text}`;
 };
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 
 export function nbaVsPositionBreakdown(player: SkillPlayer, position: string, rows: SkillPlayer[]): CardBreakdown | null {
   const vs = position === 'TM' ? nbaVsPosOf(player) : null;

@@ -1,3 +1,4 @@
+import { pctText as pct, signedText as signed } from '@ranker/core/format';
 import type { CardBreakdown, CardFlag } from '@ranker/engine/sport';
 import { tintFrom, tintScale } from '@ranker/core/value-tint';
 import type { SkillPlayer } from './positions';
@@ -57,8 +58,6 @@ const ROLE_INFO: Record<Role, { plural: string; title: string }> = {
 };
 const GROUP_WORDS = { WR: 'wide receivers', TE: 'tight ends', RB: 'backs' };
 
-const signed = (v: number, digits = 1) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(digits)}`;
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 const capital = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 export function vsPositionBreakdown(player: SkillPlayer, position: string, rows: SkillPlayer[]): CardBreakdown | null {

@@ -1,6 +1,6 @@
 import type { SkillPlayer, SkillStat } from '@sport/positions';
 import type { ValueContext } from './sport';
-import { grade as gradeLetter, ordinal } from '@ranker/core/format';
+import { grade as gradeLetter, ordinal, pctText } from '@ranker/core/format';
 
 // What makes a support grade (a grade cell clicked in the grid: SportConfig.gradeWhy). Every grade is
 // built the same way: a few inputs, each on the grade's own 0-12 scale (F to A+) with a weight, adding up
@@ -57,8 +57,6 @@ export function gradePart(part: Omit<GradePart, 'amount' | 'title'> & { title?: 
   const math = `${gradeText(part.grade)} × ${pctText(part.weight)} = ${amount.toFixed(2)} of the score`;
   return { ...part, amount, title: [part.title, math].filter(Boolean).join('\n') };
 }
-
-export const pctText = (share: number) => `${Math.round(share * 100)}%`;
 
 // ---------------------------------------------------------------------------------------------------------------
 // The data scripts' grades (MLB, NBA, NHL): each unit's gradeIn, written beside the grade by the script that

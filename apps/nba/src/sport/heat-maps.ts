@@ -1,3 +1,5 @@
+import { pctText as pct, plural, ratio } from '@ranker/core/format';
+import { heatSeasonFile } from '@ranker/engine/heat-map/heat-files';
 import type { SkillPlayer } from './positions';
 import { tintScale } from '@ranker/core/value-tint';
 import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatQuery, HeatSplit, HeatStat } from '@ranker/engine/heat-map/heat-map.model';
@@ -75,7 +77,6 @@ export interface NbaHeatFile {
 export const FIRST_SEASON = 2004;
 
 export const ZONE_IDS: string[] = [...COURT_ZONES];
-const Z = ZONE_IDS.length;
 const THREES = ZONE_IDS.map((id) => !!COURT_WORDS[id as keyof typeof COURT_WORDS].three);
 
 // ---- the file read back (its zones by the file's own order, put in the surface's)
@@ -121,32 +122,19 @@ export function shotPart(file: NbaHeatFile, split: string): ShotPart | null {
 
 // ---- the files, once a season
 
-const files = new Map<number, Promise<NbaHeatFile | null>>();
 const loaded = new Map<number, NbaHeatFile | null>();
+// (heat-files.ts: once a visit; the top file is the season being played's, one left from the season before
+// a rollover isn't it)
 export function nbaHeatFile(season: number, current: boolean): Promise<NbaHeatFile | null> {
-  let file = files.get(season);
-  if (!file) {
-    const path = current ? 'data/heat-maps.json' : `data/seasons/${season}/heat-maps.json`;
-    file = fetch(path, { cache: current ? 'no-cache' : 'default' })
-      .then(async (res) => (res.ok ? (await res.json()) as PackedNbaHeatFile : null))
-      // (the top file is the season being played's: one left from the season before a rollover isn't it)
-      .then((f) => (f && f.season === season ? expandNbaHeat(f) : null))
-      .catch(() => null)
-      .then((f) => {
-        loaded.set(season, f);
-        return f;
-      });
-    files.set(season, file);
-  }
-  return file;
+  return heatSeasonFile(season, current, 'heat-maps.json', expandNbaHeat).then((f) => {
+    loaded.set(season, f);
+    return f;
+  });
 }
 
 // ---- the stats
 
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 const pct1 = (v: number) => `${(v * 100).toFixed(1)}%`;
-const ratio = (a: number, b: number) => (b ? a / b : null);
-const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
 const sumAtt = (zones: Zone[]) => zones.reduce((a, z) => a + z.att, 0);
 const sumMade = (zones: Zone[]) => zones.reduce((a, z) => a + z.made, 0);
 

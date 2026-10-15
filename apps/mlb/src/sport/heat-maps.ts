@@ -1,3 +1,5 @@
+import { clampTone as clamp, pctText as pct, plural, ratio } from '@ranker/core/format';
+import { heatSeasonFile } from '@ranker/engine/heat-map/heat-files';
 import type { SkillPlayer } from '@sport/positions';
 import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMark, HeatQuery, HeatShape, HeatSplit, HeatStat, HeatSurfaceId } from '@ranker/engine/heat-map/heat-map.model';
 import { IN_ZONE, ZONE_CELL_IDS } from '@ranker/engine/heat-map/surfaces/strike-zone';
@@ -63,29 +65,16 @@ export interface BucketFile<T> {
   rows: Record<string, T>;
 }
 
-const files = new Map<string, Promise<unknown>>();
-function fetchFile<T extends { season: number }>(season: number, current: boolean, name: string): Promise<T | null> {
-  const path = current ? `data/${name}` : `data/seasons/${season}/${name}`;
-  if (!files.has(path)) {
-    files.set(
-      path,
-      fetch(path, { cache: current ? 'no-cache' : 'default' })
-        .then(async (res) => (res.ok ? ((await res.json()) as T) : null))
-        // (a file for another season, the one at the top of data/ before the new season's first pitches: none)
-        .then((f) => (f && f.season === season ? f : null))
-        .catch(() => null),
-    );
-  }
-  return files.get(path) as Promise<T | null>;
-}
-export const mainFile = (season: number, current: boolean): Promise<MainFile | null> => fetchFile<MainFile>(season, current, 'heat-maps.json');
+// (heat-files.ts: once a visit; another season's file, the one at the top of data/ before the new season's
+// first pitches, none)
+export const mainFile = (season: number, current: boolean): Promise<MainFile | null> => heatSeasonFile<MainFile>(season, current, 'heat-maps.json');
 
 // A row's entry: its file the remainder of its MLBAM id over the season's count of them
 export async function entryOf<T>(season: number, current: boolean, kind: 'p' | 'h', id: string | number | null | undefined): Promise<{ main: MainFile; entry: T } | null> {
   const main = await mainFile(season, current);
   const n = Number(id);
   if (!main || !n || n <= 0) return null;
-  const file = await fetchFile<BucketFile<T>>(season, current, `heat-maps.${kind}${n % (main.buckets[kind] || 1)}.json`);
+  const file = await heatSeasonFile<BucketFile<T>>(season, current, `heat-maps.${kind}${n % (main.buckets[kind] || 1)}.json`);
   const entry = file?.rows[String(n)];
   return entry ? { main, entry } : null;
 }
@@ -129,15 +118,11 @@ export function leagueZone(main: MainFile, stands: ('L' | 'R')[], throws: ('L' |
 
 // ---- formats
 
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 const pct1 = (v: number) => `${v > 0 && v < 0.1 ? (v * 100).toFixed(1) : Math.round(v * 100)}%`;
 export const dec3 = (v: number) => v.toFixed(3).replace(/^0\./, '.').replace(/^-0\./, '-.');
 const dec1 = (v: number) => v.toFixed(1);
 export const signed = (v: number) => (v > 0 ? `+${Math.round(v)}` : v < 0 ? `−${Math.abs(Math.round(v))}` : '0');
 const signedPct = (v: number) => (v > 0 ? `+${Math.round(v * 100)}%` : v < 0 ? `−${Math.abs(Math.round(v * 100))}%` : '0%');
-const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
-const clamp = (v: number) => Math.max(-1, Math.min(1, v)) || 0;
-const ratio = (a: number, b: number): number | null => (b ? a / b : null);
 
 // (a cell's spread: the real differences among players (between) and the chance in its sample (within, per
 // trial), so a big sample's lean reads stronger than a small one's, and neither past what players differ by)

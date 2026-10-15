@@ -1,3 +1,4 @@
+import { pctText as pct, plural, ratio } from '@ranker/core/format';
 import type { SkillPlayer } from '@sport/positions';
 import { tintScale } from '@ranker/core/value-tint';
 import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatQuery, HeatSplit, HeatStat } from '@ranker/engine/heat-map/heat-map.model';
@@ -127,8 +128,6 @@ export function heatPart(file: HeatFile, split: string): HeatPart | null {
 // ("+.21": EPA a play, the way the analysts write it; "+3.1"; "64%")
 export const epaText = (v: number) => `${v > 0 ? '+' : v < 0 ? '-' : ''}${Math.abs(v).toFixed(2).replace(/^0\./, '.')}`;
 const signed1 = (v: number) => `${v > 0 ? '+' : v < 0 ? '-' : ''}${Math.abs(v).toFixed(1)}`;
-const pct = (v: number) => `${Math.round(v * 100)}%`;
-const ratio = (a: number, b: number) => (b ? a / b : null);
 
 type Role = 'QB' | 'RB' | 'WR' | 'TE' | 'DEF' | 'TM';
 // (what a card's row is on the heat maps: a team's other cards, its line and coach, read as the team)
@@ -342,7 +341,6 @@ const SPLITS: HeatSplit[] = [
   { id: 'post', label: 'POST', title: 'The playoffs' },
   { id: 'redzone', label: 'Red zone', title: 'Snaps inside the 20 (the whole season)' },
 ];
-const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString('en-US')} ${n === 1 ? one : many}`;
 const sum = (rows: Row[] | undefined, key: string) => (rows ?? []).reduce((a, r) => a + (r[key] ?? 0), 0);
 const SIDES_OF_A_TEAM: HeatSplit[] = [
   { id: 'offense', label: 'Offense', title: 'Its offense' },
