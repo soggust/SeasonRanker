@@ -725,6 +725,23 @@ export class PlayerCompare {
     await this.add(line.position, line.season, line.id);
   }
 
+  // The search's names worked out ahead, while the page is idle, once its box is in focus: the first letters
+  // typed then finds them ready instead of waiting on every tab's files and the season's ranking. Called
+  // outside Angular (the box's focus is listened for there), so the loads and the work set off no change
+  // detection; one that fails is asked for again by the next keystroke, as before
+  warm(): void {
+    if (this.index) return;
+    const build = () => {
+      if (this.index) return;
+      const index = (this.index = this.entries());
+      index.catch(() => {
+        if (this.index === index) this.index = null;
+      });
+    };
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(build, { timeout: 2000 });
+    else setTimeout(build, 300);
+  }
+
   private clearSearch(query = ''): void {
     this.query = query;
     this.hits = [];

@@ -24,6 +24,7 @@ import { ScrolledSidewaysDirective } from '@ranker/core/scrolled-sideways.direct
 import { RecentPrimeDirective } from './skill-rankings/recent-prime.directive';
 import { COLUMN_MOVER, ColumnDragDirective } from '@ranker/core/column-drag.directive';
 import { SelectOriginDirective } from '@ranker/core/select-origin.directive';
+import { PausedWhileDirective } from '@ranker/core/paused-while.directive';
 import { A11Y_DIRECTIVES } from '@ranker/core/a11y.directives';
 import { MatMenuModule } from '@angular/material/menu';
 import { AboutComponent } from '@sport/about/about.component';
@@ -52,6 +53,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
     RecentPrimeDirective,
     ColumnDragDirective,
     SelectOriginDirective,
+    PausedWhileDirective,
     ...A11Y_DIRECTIVES,
     AboutComponent,
     AboutFrameComponent,

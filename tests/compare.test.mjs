@@ -349,6 +349,24 @@ test('nfl: the career arcs, by career year or by season, the compared season rin
   assert.equal(compare.arcBy, null);
 });
 
+test('nfl: the search worked out ahead (the box in focus) finds what a cold search finds, its files asked for once', async () => {
+  const engine = await engineFor('nfl');
+  const cold = harness(engine, 'nfl', 'WR');
+  const warm = harness(engine, 'nfl', 'WR');
+  warm.compare.warm();
+  warm.compare.warm();
+  // (at idle: no window here, so after a moment)
+  for (let i = 0; i < 200 && !warm.asked.length; i++) await new Promise((r) => setTimeout(r, 10));
+  const asked = warm.asked.length;
+  assert.ok(asked > 0, 'the names asked for before anything is typed');
+  for (const query of ['john', 'brown antonio']) {
+    await cold.compare.search(query);
+    await warm.compare.search(query);
+    assert.deepEqual(warm.compare.hits, cold.compare.hits, query);
+  }
+  assert.equal(warm.asked.length, asked, 'each file once');
+});
+
 test('nfl: the search ranks names starting with what is typed first, then the table tab', async () => {
   const engine = await engineFor('nfl');
   const { compare, host } = harness(engine, 'nfl', 'WR');

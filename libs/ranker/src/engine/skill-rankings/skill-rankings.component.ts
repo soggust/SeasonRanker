@@ -191,6 +191,10 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
     // (a click anywhere: outside Angular unless a breakdown or the search is open to shut)
     quietListener<MouseEvent>(this.zone, this.destroyRef, document, 'click', () => !!(this.why || this.gradeWhy || this.finding), (event) => this.clickOff(event));
+    // (the search box in focus: its names worked out at idle, ahead of the first letter; outside Angular)
+    const warm = (event: FocusEvent) => event.target === this.findBox?.nativeElement && this.finder.warm();
+    this.zone.runOutsideAngular(() => document.addEventListener('focusin', warm));
+    this.destroyRef.onDestroy(() => document.removeEventListener('focusin', warm));
 
     // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change (each one, a preset
     // too, ending an isolated look: back to the ranking)

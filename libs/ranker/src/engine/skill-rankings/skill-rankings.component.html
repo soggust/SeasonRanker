@@ -6,305 +6,309 @@
   <!-- (isolation: said to screen readers as it starts and ends) -->
   <div class="visually-hidden" role="status" aria-live="polite">{{ isoNote }}</div>
   <ul #rankingsList id="rankings" tabindex="-1" aria-label="Rankings" [class.isolating]="!!isoStat" cdkDropList (cdkDropListDropped)="drop($event)" columnHighlight scrolledSideways>
-    <!-- Column headers (stat groups switch on / off with the sidebar eyes) -->
-    <li class="player header-row">
-      <mat-icon fontIcon="drag_indicator" class="drag-indicator"></mat-icon>
-      <div class="player-info">
-        <!-- One label over the rank and name (the rank tiles, team cards and names read as one column); while
-             isolated, what the rows are sorted by in its place (over the tiles that show the places by it),
-             with an X back to the ranking (phones have no Esc): in the pinned header, so it covers no row -->
-        @if (isoStat; as iso) {
-          <span class="isolate-chip">
-            <mat-icon class="isolate-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
-            <span class="isolate-chip-text"><span class="isolate-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="isolate-chip-hint"> · Esc to clear</span></span>
-            <button type="button" class="isolate-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
-              <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
-            </button>
-          </span>
-        } @else {
-          <p class="stat-label header-name">{{ rowHeader }}</p>
-        }
-      </div>
-      @for (group of groups; track group.id) {
-        <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
-          <!-- Each group's icon sits in the slot at the start of its first cell; hover shows the group's name,
-               a click collapses the group to a strip of just the icon (and opens it again) -->
-          @if (isCollapsed(group.id)) {
-            <div class="collapsed-strip">
-              <!-- (the "…": there's more to open) -->
-              <span class="collapsed-more" aria-hidden="true">…</span>
-              <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
-            </div>
-          } @else if (group.id === 'support') {
-            <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
-              <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
-              @for (stat of group.stats; track stat.key) {
-                @let can = canIsolate(stat);
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
-                </div>
-              }
-            </div>
+    <!-- (behind an open player card, the list is left as it's drawn: its cells unchecked until the card
+         closes, paused-while.directive.ts) -->
+    <ng-container *pausedWhile="!!cards.card">
+      <!-- Column headers (stat groups switch on / off with the sidebar eyes) -->
+      <li class="player header-row">
+        <mat-icon fontIcon="drag_indicator" class="drag-indicator"></mat-icon>
+        <div class="player-info">
+          <!-- One label over the rank and name (the rank tiles, team cards and names read as one column); while
+               isolated, what the rows are sorted by in its place (over the tiles that show the places by it),
+               with an X back to the ranking (phones have no Esc): in the pinned header, so it covers no row -->
+          @if (isoStat; as iso) {
+            <span class="isolate-chip">
+              <mat-icon class="isolate-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
+              <span class="isolate-chip-text"><span class="isolate-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="isolate-chip-hint"> · Esc to clear</span></span>
+              <button type="button" class="isolate-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
+                <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
+              </button>
+            </span>
           } @else {
-            @for (stat of group.stats; track stat.key; let first = $first) {
-              @let can = canIsolate(stat);
-              @if (stat.format === 'recent') {
-                <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
-                  @if (first) {
-                    <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
-                  }
-                  <div class="last-five">
-                    <div></div>
-                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
-                  </div>
-                </div>
-              } @else {
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
-                  @if (first) {
-                    <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
-                  }
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
-                </div>
-              }
-            }
+            <p class="stat-label header-name">{{ rowHeader }}</p>
           }
         </div>
-      }
-      <!-- The grid's closing line: an empty cell after the last group, in its color, drawn like a group's
-           opening line (each sport's own: the NFL's hash marks, MLB's chalk...) -->
-      @if (groups.length) {
-        <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
-      }
-    </li>
-    <!-- Nobody listed (every row filtered out by the settings) -->
-    @if (!gridRows.length) {
-      <li class="empty-list">{{ sport.copy.noneFound ?? 'No Players Found' }}</li>
-    }
-    @for (player of gridRows; track player.gsisId; let i = $index) {
-      <!-- (a UR row, under Min Games: below the ranked ones, UR in its tile, read by urReader: its values
-           never colored or placed against the list; it doesn't drag) -->
-      @let ur = i >= rankedShown;
-      @let r = ur ? urReader : reader;
-      <!-- (a ranked row's league rank: its place in the whole list, also with one team's rows shown) -->
-      @let n = ur ? i : leagueAt(player, i);
-      <!-- (isolated: a ranked row's place by the stat, in its tile while it lasts; null: no value) -->
-      @let isoAt = isoStat && !ur ? isoPlace(player) : null;
-      <!-- (a click on a row, off its name and links, picks it for Compare; so does C on its name) -->
-      <li
-        cdkDrag
-        [cdkDragDisabled]="ur || teamPicked || !!isoStat"
-        [class.unranked]="ur"
-        [class.first-unranked]="ur && i === rankedShown"
-        [class.past-cut]="pastCut(n, ur)"
-        [attr.data-cut]="pastCut(n, ur) ? sport.tabNames[position] : null"
-        cdkDragPreviewContainer="parent"
-        class="player"
-        [class.picked]="picked.includes(player.gsisId)"
-        [attr.data-id]="player.gsisId"
-        [attr.data-rank]="ur ? null : isoStat ? (isoAt ?? '-') : n + 1"
-        (cdkDragEnded)="rowDropped()"
-        (click)="pickRow(player, $event)"
-        (keydown)="pickKey(player, $event)"
-      >
-        <mat-icon
-          cdkDragHandle
-          aria-hidden="false"
-          aria-label="drag icon"
-          fontIcon="drag_indicator"
-          class="drag-indicator"
-        ></mat-icon>
-        <div
-          class="player-info"
-          [style]="teamLook(player).chip"
-        >
-          <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
-          <span
-            [ngClass]="ur ? 'count unranked' : isoStat ? 'count isolate-place' : rankClasses(n)"
-            class="rank-tile"
-            [class.open]="why?.id === player.gsisId"
-            role="button"
-            tabindex="0"
-            aria-haspopup="dialog"
-            [attr.aria-expanded]="why?.id === player.gsisId"
-            [attr.aria-label]="ur ? player.name + ': unranked (UR)' : (isoStat ? (isoAt === null ? 'No value' : '#' + isoAt) + ' by ' + reader.name(isoStat) + ', #' + (n + 1) + ' overall' : '#' + (n + 1)) + ': why ' + player.name + ' ranks here'"
-            [title]="rankTitle(player, n, i)"
-            (click)="toggleWhy(player, n, $event)"
-            (keydown.enter)="toggleWhy(player, n, $event)"
-            (keydown.space)="toggleWhy(player, n, $event)"
-          >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
-            ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
-        >
-          <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
-          <span class="badge-slot card-target" aria-hidden="true" [class.with-photo]="headshot(player)" (click)="openCard(player)"
-            ><span class="team-badge" [class.white-logo]="teamLook(player).whiteLogo"
-              ><img [src]="seasonLogo(player.teamLogo)" class="team-logo" alt=""
-            /></span
-            >@if (headshot(player); as photo) {<img
-                class="headshot"
-                [src]="photo"
-                alt=""
-                loading="lazy"
-                (error)="noHeadshot(player)"
-              />}</span
-          >
-          <!-- The badge through the end of the name opens the player card (the rest of the cell picks the row) -->
-          <p class="player-name">
-            <strong class="card-link card-target" role="button" (click)="openCard(player)" tabindex="0" aria-keyshortcuts="C" [attr.aria-label]="picked.includes(player.gsisId) ? player.name + ', picked for Compare' : null" [attr.data-name]="player.name" (keydown.enter)="openCard(player)" (keydown.space)="$event.preventDefault(); openCard(player)">{{ player.name }}</strong>
-            @if (statsBehind(player); as n) {
-              <!-- His stats don't cover every game in his record yet (the data source catching up) -->
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Stats catching up"
-                fontIcon="sync_problem"
-                class="stats-behind-icon"
-                [title]="'Stats through ' + (player.games - n) + ' of ' + player.games + ' games: ESPN hasn\'t added the latest yet'"
-              ></mat-icon>
-            }
-            @if (player.injured) {
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Injury Icon"
-                fontIcon="healing"
-                class="injury-icon"
-                [title]="injuryTitle(player)"
-              ></mat-icon>
-            }
-            <!-- The season's awards: the trophy (the NFL's Lombardi), icons in a metal (a gold cup for the
-                 champion, a silver cup or flag for the league titles, a bronze star for an All-Star: the
-                 sport's AWARD_INFO) and plaques for the rest; hover one for the award written out -->
-            @if (awards(player); as won) {
-              @if (won.length) {
-                <span class="player-awards">
-                  @for (award of won; track award.id) {
-                    @if (awardInfo[award.id].icon?.name === 'trophy') {
-                      <span class="trophy award-trophy" [title]="award.title"></span
-                      ><span class="visually-hidden">{{ awardInfo[award.id].short }}</span>
-                    } @else if (awardInfo[award.id].icon; as icon) {
-                      <mat-icon class="award-cup" [ngClass]="'award-' + (icon.metal ?? 'silver')" [fontIcon]="icon.name" [title]="award.title"></mat-icon
-                      ><span class="visually-hidden">{{ awardInfo[award.id].short }}</span>
-                    } @else {
-                      <span class="award-badge" [ngClass]="'award-' + award.id" [title]="award.title"
-                        >{{ awardInfo[award.id].short }}</span
-                      >
-                    }
-                  }
-                </span>
-              }
-            }
-          </p>
-        </div>
-
         @for (group of groups; track group.id) {
           <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
+            <!-- Each group's icon sits in the slot at the start of its first cell; hover shows the group's name,
+                 a click collapses the group to a strip of just the icon (and opens it again) -->
             @if (isCollapsed(group.id)) {
-              <!-- A collapsed group: its line and an empty strip -->
-              <div class="collapsed-strip"></div>
+              <div class="collapsed-strip">
+                <!-- (the "…": there's more to open) -->
+                <span class="collapsed-more" aria-hidden="true">…</span>
+                <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
+              </div>
             } @else if (group.id === 'support') {
-              <!-- Support grades share a dark box -->
               <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
+                <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
                 @for (stat of group.stats; track stat.key) {
-                  @if (stat.format === 'grade' && r.value(player, stat) !== null) {
-                    <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
-                    <div
-                      class="grade-tile"
-                      [class.isolated]="isolatedKey === stat.key"
-                      [class.open]="isGradeOpen(player, stat)"
-                      [style.--label-w]="columnWidth(stat)"
-                      role="button"
-                      tabindex="0"
-                      aria-haspopup="dialog"
-                      [attr.aria-expanded]="isGradeOpen(player, stat)"
-                      [attr.aria-label]="r.label(stat) + ' ' + r.cellText(player, stat) + ': what makes ' + player.name + '\'s grade'"
-                      (click)="toggleGrade(player, stat, $event)"
-                      (keydown.enter)="toggleGrade(player, stat, $event)"
-                      (keydown.space)="toggleGrade(player, stat, $event)"
-                    >
-                      <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
-                      <p class="stat-label" [title]="gradeTitle(player, stat)">{{ r.label(stat) }}</p>
-                    </div>
-                  } @else {
-                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
-                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
-                    </div>
-                  }
+                  @let can = canIsolate(stat);
+                  <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
+                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+                  </div>
                 }
               </div>
             } @else {
-              @for (stat of group.stats; track stat.key) {
+              @for (stat of group.stats; track stat.key; let first = $first) {
+                @let can = canIsolate(stat);
                 @if (stat.format === 'recent') {
-                  <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
-                       played yet. The pointer resting on them loads the team's scores for their hovers -->
-                  <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <div class="last-five" [class.many]="manyRecent" [recentPrime]="player" [recentSeason]="season">
-                      <div>
-                        @for (result of r.lastFive(player); track $index) {
-                          <p
-                            [ngClass]="scoreClass(result)"
-                            [class.ot]="recentOt(player, $index)"
-                            [class.game-link]="games.available"
-                            [title]="dotTitle(player, $index)"
-                            (click)="openRecent(player, $index, $event)"
-                          >
-                            {{ result === 1 ? 'W' : result === 0.5 ? 'T' : 'L' }}
-                          </p>
-                        }
-                        @for (slot of unplayed(player); track $index) {
-                          <p class="unplayed">-</p>
-                        }
-                      </div>
-                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                  <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
+                    @if (first) {
+                      <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
+                    }
+                    <div class="last-five">
+                      <div></div>
+                      @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                     </div>
                   </div>
-                } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
-                  <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
-                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p class="rank-value"><span class="trophy rank-champ" title="Champion"></span></p>
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
-                  </div>
-                } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
-                  <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
-                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p class="rank-value" [style.color]="r.valueColor(player, stat)"
-                      ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
-                    >
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
-                  </div>
-                } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
-                  <!-- Show Ranks: the value's place in the list, styled like a rank column -->
-                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
-                      ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
-                    >
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
-                  </div>
                 } @else {
-                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
-                    <p class="stat-label" [title]="valueTitle(player, stat)">
-                      {{ r.label(stat) }}
-                    </p>
+                  <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
+                    @if (first) {
+                      <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
+                    }
+                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                   </div>
                 }
               }
             }
           </div>
         }
+        <!-- The grid's closing line: an empty cell after the last group, in its color, drawn like a group's
+             opening line (each sport's own: the NFL's hash marks, MLB's chalk...) -->
         @if (groups.length) {
           <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
         }
       </li>
-    }
-    <!-- A pooled tab's ranking past its cap (the Top 50's): the rest a click away, ranked as they stand (a
-         line under the last place in the top 50); for the visit only -->
-    @if (listCap; as cap) {
-      <li class="show-all">
-        <button type="button" [title]="showsAll ? 'Back to the top ' + cap : 'Everyone ranked here, past the top ' + cap + ' (Min Games still decides who is listed)'" (click)="toggleShowAll()">
-          <mat-icon aria-hidden="true" [fontIcon]="showsAll ? 'expand_less' : 'expand_more'"></mat-icon>
-          {{ showsAll ? 'Show the top ' + cap : 'Show all ' + rankedCount }}
-        </button>
-      </li>
-    }
+      <!-- Nobody listed (every row filtered out by the settings) -->
+      @if (!gridRows.length) {
+        <li class="empty-list">{{ sport.copy.noneFound ?? 'No Players Found' }}</li>
+      }
+      @for (player of gridRows; track player.gsisId; let i = $index) {
+        <!-- (a UR row, under Min Games: below the ranked ones, UR in its tile, read by urReader: its values
+             never colored or placed against the list; it doesn't drag) -->
+        @let ur = i >= rankedShown;
+        @let r = ur ? urReader : reader;
+        <!-- (a ranked row's league rank: its place in the whole list, also with one team's rows shown) -->
+        @let n = ur ? i : leagueAt(player, i);
+        <!-- (isolated: a ranked row's place by the stat, in its tile while it lasts; null: no value) -->
+        @let isoAt = isoStat && !ur ? isoPlace(player) : null;
+        <!-- (a click on a row, off its name and links, picks it for Compare; so does C on its name) -->
+        <li
+          cdkDrag
+          [cdkDragDisabled]="ur || teamPicked || !!isoStat"
+          [class.unranked]="ur"
+          [class.first-unranked]="ur && i === rankedShown"
+          [class.past-cut]="pastCut(n, ur)"
+          [attr.data-cut]="pastCut(n, ur) ? sport.tabNames[position] : null"
+          cdkDragPreviewContainer="parent"
+          class="player"
+          [class.picked]="picked.includes(player.gsisId)"
+          [attr.data-id]="player.gsisId"
+          [attr.data-rank]="ur ? null : isoStat ? (isoAt ?? '-') : n + 1"
+          (cdkDragEnded)="rowDropped()"
+          (click)="pickRow(player, $event)"
+          (keydown)="pickKey(player, $event)"
+        >
+          <mat-icon
+            cdkDragHandle
+            aria-hidden="false"
+            aria-label="drag icon"
+            fontIcon="drag_indicator"
+            class="drag-indicator"
+          ></mat-icon>
+          <div
+            class="player-info"
+            [style]="teamLook(player).chip"
+          >
+            <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
+            <span
+              [ngClass]="ur ? 'count unranked' : isoStat ? 'count isolate-place' : rankClasses(n)"
+              class="rank-tile"
+              [class.open]="why?.id === player.gsisId"
+              role="button"
+              tabindex="0"
+              aria-haspopup="dialog"
+              [attr.aria-expanded]="why?.id === player.gsisId"
+              [attr.aria-label]="ur ? player.name + ': unranked (UR)' : (isoStat ? (isoAt === null ? 'No value' : '#' + isoAt) + ' by ' + reader.name(isoStat) + ', #' + (n + 1) + ' overall' : '#' + (n + 1)) + ': why ' + player.name + ' ranks here'"
+              [title]="rankTitle(player, n, i)"
+              (click)="toggleWhy(player, n, $event)"
+              (keydown.enter)="toggleWhy(player, n, $event)"
+              (keydown.space)="toggleWhy(player, n, $event)"
+            >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
+              ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
+          >
+            <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
+            <span class="badge-slot card-target" aria-hidden="true" [class.with-photo]="headshot(player)" (click)="openCard(player)"
+              ><span class="team-badge" [class.white-logo]="teamLook(player).whiteLogo"
+                ><img [src]="seasonLogo(player.teamLogo)" class="team-logo" alt=""
+              /></span
+              >@if (headshot(player); as photo) {<img
+                  class="headshot"
+                  [src]="photo"
+                  alt=""
+                  loading="lazy"
+                  (error)="noHeadshot(player)"
+                />}</span
+            >
+            <!-- The badge through the end of the name opens the player card (the rest of the cell picks the row) -->
+            <p class="player-name">
+              <strong class="card-link card-target" role="button" (click)="openCard(player)" tabindex="0" aria-keyshortcuts="C" [attr.aria-label]="picked.includes(player.gsisId) ? player.name + ', picked for Compare' : null" [attr.data-name]="player.name" (keydown.enter)="openCard(player)" (keydown.space)="$event.preventDefault(); openCard(player)">{{ player.name }}</strong>
+              @if (statsBehind(player); as n) {
+                <!-- His stats don't cover every game in his record yet (the data source catching up) -->
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Stats catching up"
+                  fontIcon="sync_problem"
+                  class="stats-behind-icon"
+                  [title]="'Stats through ' + (player.games - n) + ' of ' + player.games + ' games: ESPN hasn\'t added the latest yet'"
+                ></mat-icon>
+              }
+              @if (player.injured) {
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Injury Icon"
+                  fontIcon="healing"
+                  class="injury-icon"
+                  [title]="injuryTitle(player)"
+                ></mat-icon>
+              }
+              <!-- The season's awards: the trophy (the NFL's Lombardi), icons in a metal (a gold cup for the
+                   champion, a silver cup or flag for the league titles, a bronze star for an All-Star: the
+                   sport's AWARD_INFO) and plaques for the rest; hover one for the award written out -->
+              @if (awards(player); as won) {
+                @if (won.length) {
+                  <span class="player-awards">
+                    @for (award of won; track award.id) {
+                      @if (awardInfo[award.id].icon?.name === 'trophy') {
+                        <span class="trophy award-trophy" [title]="award.title"></span
+                        ><span class="visually-hidden">{{ awardInfo[award.id].short }}</span>
+                      } @else if (awardInfo[award.id].icon; as icon) {
+                        <mat-icon class="award-cup" [ngClass]="'award-' + (icon.metal ?? 'silver')" [fontIcon]="icon.name" [title]="award.title"></mat-icon
+                        ><span class="visually-hidden">{{ awardInfo[award.id].short }}</span>
+                      } @else {
+                        <span class="award-badge" [ngClass]="'award-' + award.id" [title]="award.title"
+                          >{{ awardInfo[award.id].short }}</span
+                        >
+                      }
+                    }
+                  </span>
+                }
+              }
+            </p>
+          </div>
+
+          @for (group of groups; track group.id) {
+            <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
+              @if (isCollapsed(group.id)) {
+                <!-- A collapsed group: its line and an empty strip -->
+                <div class="collapsed-strip"></div>
+              } @else if (group.id === 'support') {
+                <!-- Support grades share a dark box -->
+                <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
+                  @for (stat of group.stats; track stat.key) {
+                    @if (stat.format === 'grade' && r.value(player, stat) !== null) {
+                      <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
+                      <div
+                        class="grade-tile"
+                        [class.isolated]="isolatedKey === stat.key"
+                        [class.open]="isGradeOpen(player, stat)"
+                        [style.--label-w]="columnWidth(stat)"
+                        role="button"
+                        tabindex="0"
+                        aria-haspopup="dialog"
+                        [attr.aria-expanded]="isGradeOpen(player, stat)"
+                        [attr.aria-label]="r.label(stat) + ' ' + r.cellText(player, stat) + ': what makes ' + player.name + '\'s grade'"
+                        (click)="toggleGrade(player, stat, $event)"
+                        (keydown.enter)="toggleGrade(player, stat, $event)"
+                        (keydown.space)="toggleGrade(player, stat, $event)"
+                      >
+                        <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                        <p class="stat-label" [title]="gradeTitle(player, stat)">{{ r.label(stat) }}</p>
+                      </div>
+                    } @else {
+                      <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                        <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                        <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                      </div>
+                    }
+                  }
+                </div>
+              } @else {
+                @for (stat of group.stats; track stat.key) {
+                  @if (stat.format === 'recent') {
+                    <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
+                         played yet. The pointer resting on them loads the team's scores for their hovers -->
+                    <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <div class="last-five" [class.many]="manyRecent" [recentPrime]="player" [recentSeason]="season">
+                        <div>
+                          @for (result of r.lastFive(player); track $index) {
+                            <p
+                              [ngClass]="scoreClass(result)"
+                              [class.ot]="recentOt(player, $index)"
+                              [class.game-link]="games.available"
+                              [title]="dotTitle(player, $index)"
+                              (click)="openRecent(player, $index, $event)"
+                            >
+                              {{ result === 1 ? 'W' : result === 0.5 ? 'T' : 'L' }}
+                            </p>
+                          }
+                          @for (slot of unplayed(player); track $index) {
+                            <p class="unplayed">-</p>
+                          }
+                        </div>
+                        <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                      </div>
+                    </div>
+                  } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
+                    <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
+                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <p class="rank-value"><span class="trophy rank-champ" title="Champion"></span></p>
+                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                    </div>
+                  } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
+                    <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
+                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <p class="rank-value" [style.color]="r.valueColor(player, stat)"
+                        ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
+                      >
+                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                    </div>
+                  } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
+                    <!-- Show Ranks: the value's place in the list, styled like a rank column -->
+                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
+                        ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
+                      >
+                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                    </div>
+                  } @else {
+                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                      <p class="stat-label" [title]="valueTitle(player, stat)">
+                        {{ r.label(stat) }}
+                      </p>
+                    </div>
+                  }
+                }
+              }
+            </div>
+          }
+          @if (groups.length) {
+            <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
+          }
+        </li>
+      }
+      <!-- A pooled tab's ranking past its cap (the Top 50's): the rest a click away, ranked as they stand (a
+           line under the last place in the top 50); for the visit only -->
+      @if (listCap; as cap) {
+        <li class="show-all">
+          <button type="button" [title]="showsAll ? 'Back to the top ' + cap : 'Everyone ranked here, past the top ' + cap + ' (Min Games still decides who is listed)'" (click)="toggleShowAll()">
+            <mat-icon aria-hidden="true" [fontIcon]="showsAll ? 'expand_less' : 'expand_more'"></mat-icon>
+            {{ showsAll ? 'Show the top ' + cap : 'Show all ' + rankedCount }}
+          </button>
+        </li>
+      }
+    </ng-container>
   </ul>
 
   <!-- Why a row ranks where it does (its rank tile clicked): its score split by stat, each stat's standard

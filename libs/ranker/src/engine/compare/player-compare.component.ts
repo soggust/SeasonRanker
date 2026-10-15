@@ -52,6 +52,10 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
     const destroyRef = inject(DestroyRef);
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', () => this.sheet !== null, (event) => this.outside(event));
     quietListener<KeyboardEvent>(zone, destroyRef, document, 'keydown', (event) => event.key === 'Escape' && !!this.compare?.open && !this.games.game, (event) => this.keys(event));
+    // (the search box in focus: its names worked out at idle, ahead of the first letter; outside Angular)
+    const warm = (event: FocusEvent) => event.target === this.searchBox?.nativeElement && this.compare.warm();
+    zone.runOutsideAngular(() => document.addEventListener('focusin', warm));
+    destroyRef.onDestroy(() => document.removeEventListener('focusin', warm));
   }
 
   // Pinned to the Tracker (signed in: the comparison as it is, its snapshot the baseline; signed out: the
