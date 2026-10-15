@@ -139,10 +139,19 @@ async function main() {
   run([scriptFile], { SEASON: String(current) });
 
   // (the finished season's other files, by the sport's builders that keep one per season: the NFL's depth
-  // charts, field maps and staffs, the NBA's and MLB's staffs, the NHL's game logs and heat maps)
+  // charts, field maps and staffs, the NBA's and MLB's staffs, the NHL's game logs, the NHL's and MLB's heat maps;
+  // a heat map's failure (a source down, MLB's Statcast days not all in) only warns: the rollover goes on (MLB's
+  // nightly run builds a finished season's heat maps that aren't there yet; the NHL's, by hand))
   for (const builder of ["build-depth.mjs", "build-field-maps.mjs", "build-coaches.mjs", "backfill-game-logs.mjs", "build-heat-maps.mjs"]) {
     const file = path.join(ROOT, "apps", sport, "scripts", builder);
-    if (existsSync(file)) run([file, String(current)]);
+    if (!existsSync(file)) continue;
+    if (builder !== "build-heat-maps.mjs") run([file, String(current)]);
+    else
+      try {
+        run([file, String(current)]);
+      } catch (err) {
+        console.warn(`  heat maps for ${current} not built: ${err.message} (MLB's nightly run tries again)`);
+      }
   }
 
   // 3. Similar seasons and careers (esbuild: the packages)
