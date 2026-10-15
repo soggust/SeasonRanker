@@ -6,3 +6,4 @@ export { SlideSaver } from '@ranker/engine/sidebar/slide-saver';
 export { findEspnTeamId, espnTeamId } from '@ranker/core/game-logs';
 export { columnWidth } from '@ranker/engine/skill-rankings/column-fit';
 export { combinedFor } from '@ranker/engine/unit-scoring';
+export { drawRowsInView, rowsInView } from '@ranker/engine/skill-rankings/rows-in-view';

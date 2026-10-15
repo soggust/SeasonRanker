@@ -2,7 +2,8 @@
 // the page shows. The page-wide listeners stay outside Angular until they act; a slider's moves are saved once
 // a frame, the latest of them, without losing or reordering a save; and the lookups now kept (a tab's combined
 // pairs, a team's ESPN id, a column's width, a column's label, name and cells) give what they gave before and
-// follow the sliders, the settings, the list and the tab when those change.
+// follow the sliders, the settings, the list and the tab when those change. A re-rank's rows on screen are
+// drawn at once (rows off screen skip being drawn), and let go after.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
@@ -237,4 +238,118 @@ test("a column's label, name and cells follow the settings, the list and the tab
   t.rank();
   const passYards = engine.SKILL_STATS.QB.find((s) => s.key === 'passYards');
   assert.equal(t.reader.label(passYards), passYards.label);
+});
+
+test('rowsInView: the rows on screen at a scroll, a row either side more, and the top screenful', async () => {
+  const { rowsInView } = await loadEngine('nfl', { entry });
+  const range = (a, b) => Array.from({ length: b - a }, (_, i) => a + i);
+  // (300px on screen, 44px rows under a 42px header: 7 rows and a part on screen)
+  const view = { top: 0, height: 300, first: 42, row: 44 };
+  assert.deepEqual(rowsInView(view, 50), range(0, 10));
+  assert.deepEqual(rowsInView({ ...view, top: 1000 }, 50), [...range(0, 8), ...range(20, 30)]);
+  assert.deepEqual(rowsInView({ ...view, top: 2000 }, 48), [...range(0, 8), ...range(43, 48)], 'never past the last row');
+  assert.deepEqual(rowsInView(view, 5), range(0, 5));
+  assert.deepEqual(rowsInView({ ...view, row: 0 }, 50), [], 'nothing laid out yet');
+});
+
+test("drawRowsInView: a re-rank's rows on screen drawn at once and let go two frames on; the scroll read only when scrolled down", async () => {
+  const { drawRowsInView, rowsInView } = await loadEngine('nfl', { entry });
+  const style = () => ({
+    props: {},
+    setProperty(k, v) {
+      this.props[k] = v;
+    },
+    removeProperty(k) {
+      delete this.props[k];
+    },
+  });
+  // (a list of 44px rows under a 42px header, 300px of it on screen; its scroll counted as it's read)
+  let rows = Array.from({ length: 50 }, (_, i) => ({ id: i, offsetTop: 42 + i * 44, offsetHeight: 44, style: style() }));
+  const listeners = new Map();
+  let scroll = 0;
+  let reads = 0;
+  const list = {
+    get scrollTop() {
+      reads++;
+      return scroll;
+    },
+    clientHeight: 300,
+    querySelector: () => rows[0] ?? null,
+    querySelectorAll: () => rows,
+    addEventListener: (type, fn) => listeners.set(type, fn),
+    removeEventListener: (type) => listeners.delete(type),
+  };
+  const observers = [];
+  const real = globalThis.MutationObserver;
+  globalThis.MutationObserver = class {
+    constructor(run) {
+      this.run = run;
+      this.on = false;
+      observers.push(this);
+    }
+    observe() {
+      this.on = true;
+    }
+    disconnect() {
+      this.on = false;
+    }
+  };
+  try {
+    const f = frames();
+    const stop = drawRowsInView(list, f.frame, f.cancel);
+    const move = () => observers[0].run();
+    const drawn = () => rows.filter((r) => r.style.props['content-visibility'] === 'visible').map((r) => r.id);
+    const view = { top: 0, height: 300, first: 42, row: 44 };
+
+    // (before the list is first seen, nothing held)
+    move();
+    assert.deepEqual(drawn(), []);
+    f.tick();
+
+    // (a re-rank at the top: the rows on screen and the top screenful, the scroll not read as the rows move)
+    reads = 0;
+    move();
+    assert.deepEqual(drawn(), rowsInView(view, 50));
+    assert.equal(reads, 0, 'at the top, nothing laid out early');
+    f.tick();
+    assert.notDeepEqual(drawn(), [], 'still held a frame on');
+    f.tick();
+    assert.deepEqual(drawn(), [], 'let go two frames on');
+
+    // (scrolled down: the scroll read as the rows move, where the browser has taken it)
+    scroll = 1000;
+    listeners.get('scroll')();
+    scroll = 712;
+    reads = 0;
+    move();
+    assert.equal(reads, 1);
+    assert.deepEqual(drawn(), rowsInView({ ...view, top: 712 }, 50));
+    f.tick();
+    f.tick();
+    assert.deepEqual(drawn(), []);
+
+    // (a slider dragged: the rows reorder every frame; those at the places held now held, the rest let go)
+    scroll = 0;
+    listeners.get('scroll')();
+    move();
+    const places = rowsInView(view, 50);
+    for (let k = 0; k < 3; k++) {
+      rows = [...rows.slice(25), ...rows.slice(0, 25)];
+      move();
+      assert.deepEqual(drawn().sort((a, b) => a - b), places.map((i) => rows[i].id).sort((a, b) => a - b));
+      f.tick();
+    }
+    f.tick();
+    assert.deepEqual(drawn(), [], 'let go two frames after the last move');
+
+    // (gone with the list: nothing held, nothing waiting, nothing listening)
+    move();
+    stop();
+    assert.deepEqual(drawn(), []);
+    assert.equal(f.pending, 0);
+    assert.equal(observers[0].on, false);
+    assert.equal(listeners.size, 0);
+  } finally {
+    globalThis.MutationObserver = real;
+  }
 });

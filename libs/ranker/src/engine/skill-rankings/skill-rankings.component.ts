@@ -34,6 +34,7 @@ import { RANK_EVERYONE } from '@ranker/engine/playing-time';
 import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
 import type { LinkedCard } from '@ranker/engine/card-link';
 import { RowGlide } from './row-glide';
+import { drawRowsInView } from './rows-in-view';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
@@ -257,6 +258,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   ngAfterViewInit(): void {
     const stop = this.zone.runOutsideAngular(() => watchColumns(this.rankingsList.nativeElement));
     this.destroyRef.onDestroy(stop);
+    // (a re-rank's rows on screen drawn at once, never an empty row for a frame: rows-in-view.ts)
+    this.destroyRef.onDestroy(this.zone.runOutsideAngular(() => drawRowsInView(this.rankingsList.nativeElement)));
     // (the list scrolling: a breakdown open over it shuts; otherwise nothing to do, so no change detection
     // for every scroll event)
     quietListener(this.zone, this.destroyRef, this.rankingsList.nativeElement, 'scroll', () => !!(this.why || this.gradeWhy), () => this.listMoved(), { passive: true });

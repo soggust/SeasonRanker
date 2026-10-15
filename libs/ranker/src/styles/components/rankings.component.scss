@@ -1646,17 +1646,16 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
 // After the sport's touches (these win over them)
 // ---------------------------------------------------------------------------
 // Rows off screen skip layout and paint (they keep their height, so the scrollbar and dragging are
-// unchanged): re-ranking while a slider moves only redraws the rows you can see. That also clips a row's
-// painting to its own box, so a row is always as wide as all its columns. Touch screens don't skip any:
-// there the sideways scroll is what you do most, and phones' browsers clipped rows anyway.
+// unchanged): re-ranking while a slider moves, switching tabs or sorting only redraws the rows you can see,
+// on a phone most of all. That also clips a row's painting to its own box, so a row is always as wide as all
+// its columns (scrolled sideways to the last stats, nothing cut off). Every row is set at --row-h tall, so a
+// row not drawn yet holds its exact height (and the list's). The browser draws rows well past the list's
+// edges (more than a phone screen's worth each way), so a fast fling has rows drawn before they come in; a
+// re-rank's rows on screen are drawn at once (skill-rankings/rows-in-view.ts).
 section ul li.player:not(.header-row) {
   content-visibility: auto;
   contain-intrinsic-block-size: auto var(--row-h);
   min-width: max-content;
-
-  @media (pointer: coarse) {
-    content-visibility: visible;
-  }
 
   // Headshots keep their own shape: ESPN's cutouts (NFL, NBA) fill the box, while MLB's and the NHL's are
   // square, so they sit bottom-center in it rather than being stretched wide
