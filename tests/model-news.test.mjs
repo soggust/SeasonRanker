@@ -1,5 +1,6 @@
 // The teams' news (libs/ranker/scripts/model/news.mjs): a story on a change of play-caller, coordinator or head
-// coach (or a benching) flags its team's unit for its next 2 games: the unit's props CHECKs either side (cause
+// coach (or a benching, the QB out) flags its team's unit for its next 2 games (a coaching change or the QB out
+// the next game alone; a recap, a feature or talk none, logged with why): the unit's props CHECKs either side (cause
 // 'news', props.mjs), the game's lines at the minimum stake (run.mjs), an open bet priced again (timing.mjs
 // inputsOf); an owner's note with no player, reason news, on a team the same (notes.mjs teamNotes). And a new head coach's
 // first games as context (football.mjs newCoach, coachMid; props.mjs CTX newCoach).
@@ -8,7 +9,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { NEWS_DAYS, NEWS_GAMES, REREAD_HOURS, flagsFor, keepStories, newsFlags, newsOn, newsWords, readNews, storyOf, unitOf } from '../libs/ranker/scripts/model/news.mjs';
+import { NEWS_DAYS, NEWS_GAMES, NEW_GAMES, REREAD_HOURS, flagsFor, gamesOf, keepStories, readHeadline, newsFlags, newsOn, newsWords, readNews, storyOf, unitOf } from '../libs/ranker/scripts/model/news.mjs';
 import { teamNotes } from '../libs/ranker/scripts/model/notes.mjs';
 import { inputChanges, inputsOf } from '../libs/ranker/scripts/model/timing.mjs';
 import { CHECK_KINDS, checkOf, checkSummary } from '../libs/ranker/scripts/model/checks.mjs';
@@ -70,7 +71,7 @@ test('unitOf: play-calling, coordinators, a head coach fired or interim, benchin
 
 test("storyOf: the team's own story (two teams tagged at most, its name in it), news or a story, not a recap or a video", () => {
   const a = { id: 1, type: 'HeadlineNews', published: '2026-10-08T23:08:17Z', headline: "Sean Payton says he's taking over playcalling for Broncos' offense", categories: [{ type: 'team', teamId: 7 }] };
-  assert.deepEqual(storyOf('nfl', a, DEN), { id: '1', unit: 'offense', headline: a.headline, at: '2026-10-08T23:08:17.000Z' });
+  assert.deepEqual(storyOf('nfl', a, DEN), { id: '1', unit: 'offense', kind: 'coach', why: 'the play-caller changed', headline: a.headline, at: '2026-10-08T23:08:17.000Z' });
   assert.equal(storyOf('nfl', { ...a, type: 'Media' }, DEN), null);
   assert.equal(storyOf('nfl', { ...a, type: 'Recap' }, DEN), null);
   assert.equal(storyOf('nfl', { ...a, categories: [7, 1, 2].map((teamId) => ({ type: 'team', teamId })) }, DEN), null);
@@ -81,12 +82,49 @@ test("storyOf: the team's own story (two teams tagged at most, its name in it), 
 const day = (d, h = 17) => Date.parse(`2026-10-${String(d).padStart(2, '0')}T${String(h).padStart(2, '0')}:00:00Z`);
 const iso = (t) => new Date(t).toISOString();
 
-test("flagsFor: a unit's next NEWS_GAMES games, counted from the episode's first story; a later story the same news till that many games pass", () => {
+test("the owner's rule (2026-10-15): news CHECKs a unit only on a player's availability or role, or a change new for the game; a team-wide story (a recap, a feature, talk) logged with why, no CHECK", () => {
+  // (the two stories that held every SEA @ DEN prop on 2026-10-15)
+  const payton = readHeadline('nfl', "Broncos beat Chargers in Sean Payton's return to playcalling");
+  assert.deepEqual([payton.unit, payton.why], [null, "a game's recap"]);
+  const fleury = readHeadline('nfl', "Is Seahawks OC Brian Fleury a 'home run' hire? How the rookie playcaller is faring");
+  assert.deepEqual([fleury.unit, fleury.why], [null, 'a question or a feature']);
+  for (const h of ['Bears coach Ben Johnson not ready to name QB starter', 'LaFleur: 1-4 Cardinals not planning to change playcallers', 'Bears RB Monangai out, QB Williams now questionable vs. Packers', 'Seahawks rule out LB Thomas, RB Charbonnet for Thursday night game vs. Broncos', "Bears QB Caleb Williams 'close' to returning, Ben Johnson says"])
+    assert.equal(unitOf('nfl', h), null, h);
+  // (the QB out: the offense's)
+  assert.deepEqual(readHeadline('nfl', 'Broncos QB Bo Nix ruled out vs. Seahawks with ankle injury'), { unit: 'offense', kind: 'injury', why: 'the QB out' });
+  assert.equal(readHeadline('nfl', 'Bears QB Caleb Williams placed on IR with knee injury').kind, 'injury');
+  assert.equal(readHeadline('nfl', 'Eagles QB Jalen Hurts ruled out vs. Panthers with blood clot in calf').kind, 'injury');
+  assert.equal(readHeadline('nfl', 'Ravens QB Lamar Jackson out; Huntley to start SNF vs. Falcons').kind, 'injury');
+  // (out on another player's clause, not the QB's; the QB named only as the opponent's)
+  assert.equal(unitOf('nfl', 'Buccaneers put WR McMillan on IR, add QB Rypien to practice squad'), null);
+  const bagent = { id: 9, type: 'HeadlineNews', published: '2026-10-05T18:00:00Z', headline: 'Ben Johnson: Tyson Bagent will start at QB for Bears vs. Packers', categories: [{ type: 'team', teamId: 3 }, { type: 'team', teamId: 9 }] };
+  assert.equal(storyOf('nfl', bagent, { id: '3', nick: 'Bears', name: 'Chicago Bears' })?.kind, 'starter');
+  assert.equal(storyOf('nfl', bagent, { id: '9', nick: 'Packers', name: 'Green Bay Packers' }), null);
+  // (a QB change: the offense's, for NEWS_GAMES games)
+  assert.deepEqual(readHeadline('nfl', 'Ben Johnson: Tyson Bagent will start at QB for Bears vs. Packers'), { unit: 'offense', kind: 'starter', why: 'a QB named to start' });
+  assert.equal(readHeadline('nfl', 'Giants bench Daniel Jones for Tommy DeVito').kind, 'starter');
+  assert.equal(gamesOf('starter'), NEWS_GAMES);
+  assert.equal(gamesOf('coach'), NEW_GAMES);
+  assert.equal(gamesOf('injury'), NEW_GAMES);
+  // (a play-caller's change flags the next game alone: Payton took over on the 8th, played the 12th; the
+  // 16th's game not flagged by it, nor by the recap after)
+  const starts = [day(4), day(12), day(16)];
+  const took = { id: 'p', unit: 'offense', headline: "Sean Payton says he's taking over playcalling for Broncos' offense", at: iso(day(8)) };
+  assert.deepEqual(flagsFor([took], starts, day(12)).map((x) => [x.id, x.kind]), [['p', 'coach']]);
+  assert.deepEqual(flagsFor([took], starts, day(16)), []);
+  assert.deepEqual(keepStories('nfl', [took, { id: 'r', unit: 'offense', headline: "Broncos beat Chargers in Sean Payton's return to playcalling", at: iso(day(13)) }], day(14)).map((s) => s.id), ['p']);
+  // (a QB change for the offense: its props CHECKs, the next two games)
+  const qb = { id: 'q', unit: 'offense', headline: 'Ben Johnson: Tyson Bagent will start at QB for Bears vs. Packers', at: iso(day(9)) };
+  assert.equal(flagsFor([qb], starts, day(12)).length, 1);
+  assert.equal(flagsFor([qb], starts, day(16)).length, 1);
+});
+
+test("flagsFor: a unit's next games (a starter's change NEWS_GAMES), counted from the episode's first story; a later story the same news till that many games pass", () => {
   assert.equal(NEWS_GAMES, 2);
   const starts = [day(4), day(11), day(19), day(26)];
   const stories = [
-    { id: 'a', unit: 'offense', headline: 'Payton taking over playcalling', at: iso(day(8)) },
-    { id: 'b', unit: 'offense', headline: "Broncos beat Chargers in Payton's return to playcalling", at: iso(day(12, 2)) },
+    { id: 'a', unit: 'offense', headline: 'Giants bench Daniel Jones for Tommy DeVito', at: iso(day(8)) },
+    { id: 'b', unit: 'offense', headline: 'Giants bench Daniel Jones again', at: iso(day(12, 2)) },
   ];
   // (the game on the 11th its first, the 19th its second (the story after the 11th's game the same news), the
   // 26th past it)
@@ -105,7 +143,7 @@ test("newsFlags and newsOn: a coming game's flags on its live facts; the offense
   const game = { id: 'g', date: iso(day(19)), home: '7', away: '24', homeAbbr: 'DEN', awayAbbr: 'LAC' };
   const live = new Map([['g', { newsRead: true }]]);
   const news = new Map([
-    ['7', [{ id: 'a', unit: 'offense', headline: 'Payton taking over playcalling', at: iso(day(8)) }]],
+    ['7', [{ id: 'a', unit: 'offense', headline: 'Payton taking over playcalling', at: iso(day(12)) }]],
     ['24', []],
   ]);
   const history = [{ id: 'h1', date: iso(day(11)), home: '7', away: '24' }];
@@ -211,6 +249,8 @@ test('readNews: each team read once a UTC day, its flagged stories kept by id; a
   const news = await readNews('nfl', { league: 'football/nfl' }, { now, teams: [DEN], file, fetchJson, log: quiet });
   assert.equal(asks, 1);
   assert.deepEqual(news.get('7').map((s) => s.id), ['1']);
+  // (every story read logged with why, flagged or not)
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')).teams['7'].seen.map((x) => [x.id, x.unit, x.why]), [['1', 'offense', 'the play-caller changed'], ['2', null, 'a question or a feature']]);
   await readNews('nfl', { league: 'football/nfl' }, { now, teams: [DEN], file, fetchJson, log: quiet });
   assert.equal(asks, 1);
   // (the next day, the feed failing: what was read kept)
@@ -240,11 +280,12 @@ test('readNews: each team read once a UTC day, its flagged stories kept by id; a
 
 test("keepStories: a cached story read again by today's words (none, gone); a unit's episode kept whole while its latest is recent, so its count doesn't start again from a later story", () => {
   const t = day(30);
-  const old = { id: 'a', unit: 'offense', headline: 'Payton taking over playcalling', at: iso(day(1)) };
-  const mid = { id: 'b', unit: 'offense', headline: "Broncos beat Chargers in Payton's return to playcalling", at: iso(day(16)) };
+  const old = { id: 'a', unit: 'offense', headline: 'Giants bench Daniel Jones for Tommy DeVito', at: iso(day(1)) };
+  const mid = { id: 'b', unit: 'offense', headline: 'Giants bench Daniel Jones again', at: iso(day(16)) };
   const deny = { id: 'c', unit: 'offense', headline: "Broncos' Payton: Concerned about details, not playcalling", at: iso(day(20)) };
-  const kept = keepStories('nfl', [old, mid, deny], t);
-  assert.deepEqual(kept.map((s) => s.id), ['a', 'b']);
+  const recap = { id: 'd', unit: 'offense', headline: "Broncos beat Chargers in Payton's return to playcalling", at: iso(day(21)) };
+  const kept = keepStories('nfl', [old, mid, deny, recap], t);
+  assert.deepEqual(kept.map((s) => [s.id, s.kind]), [['a', 'starter'], ['b', 'starter']]);
   assert.ok(t - Date.parse(old.at) > NEWS_DAYS * 86400e3);
   // (the episode from its first story (one game between the two, a bye): the game on the 26th not flagged
   // again; from the later story alone it would be)

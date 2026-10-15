@@ -683,7 +683,9 @@ async function noteInjuries(r) {
 
 // 2b. the teams' news (news.mjs: ESPN's per-team feed, read once a UTC day a team, a team with a game within
 // SOON_HOURS every REREAD_HOURS, cached): a story on a change of play-caller, coordinator or head coach (or a
-// benching) flags its team's unit for its next games, each coming game's flags on its live facts (l.news):
+// benching, a QB named to start, the QB out) flags its team's unit for its next games (a coaching change or the
+// QB out the next game alone: new for it; a recap, a feature or talk nothing, logged with why for the teams
+// playing soon: "news read, no CHECK"), each coming game's flags on its live facts (l.news):
 // its props of that unit held as CHECKs either side (props.mjs, cause 'news'), its game lines at the minimum
 // stake (bet), its inputs priced again when a story lands (timing.mjs inputsOf). Then the owner's notes on a
 // team (notes.mjs teamNotes: no player, reason news) the same way. Any failure: no flags, the desk as it was
@@ -693,7 +695,16 @@ async function teamNews(r) {
     const soon = new Set((r.upcoming ?? []).filter(({ game }) => Date.parse(game.date) - t <= SOON_HOURS * 3600e3).flatMap(({ game }) => [String(game.home), String(game.away)]));
     const news = await readNews(r.sport, r.cfg, { now: r.now, soon });
     if (news) for (const l of r.live.values()) l.newsRead = true;
-    newsFlags(news, r.live, r.history, r.upcoming);
+    newsFlags(news, r.live, r.history, r.upcoming, r.sport);
+    // (the teams playing soon: each story of the last 7 days on a coach, the play-calling or a QB that CHECKs
+    // nothing, and why: a recap, a feature, talk; a change not new for this game)
+    const abbrOf = new Map((r.upcoming ?? []).flatMap(({ game }) => [[String(game.home), game.homeAbbr], [String(game.away), game.awayAbbr]]));
+    const flaggedUnits = new Set([...r.live.values()].flatMap((l) => (l.news ?? []).map((x) => `${x.team}:${x.unit}`)));
+    const notes = [...soon].flatMap((team) => [
+      ...(news?.seen?.get(team) ?? []).filter((x) => !x.unit && t - Date.parse(x.at) <= 7 * 86400e3 && !/^no change/.test(x.why) && /play[- ]?call|coordinator|\b[OD]C\b|coach|\bQB|quarterback|bench|starter/i.test(x.headline)).map((x) => `${abbrOf.get(team) ?? team}: ${x.headline} (${x.why})`),
+      ...(news?.get(team) ?? []).filter((x) => !flaggedUnits.has(`${team}:${x.unit}`) && t - Date.parse(x.at) <= 7 * 86400e3).map((x) => `${abbrOf.get(team) ?? team}: ${x.headline} (${x.why ?? x.kind}: not new for this game)`),
+    ]);
+    if (notes.length) console.log(`${r.sport}: news read, no CHECK: ${notes.join('; ')}`);
   } catch (err) {
     console.warn(`${r.sport}: teams' news not applied (${err.message})`);
   }

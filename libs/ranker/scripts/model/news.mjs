@@ -23,7 +23,17 @@
 //            coach's); else offense. Not: talk or a denial ("not playcalling", "not benched", won't, denies),
 //            fire's other senses (on fire, fired up, fires back), a position coach, an assistant or the front
 //            office fired, the play-calling mentioned with no verb of change by it (its praise, its critics)
-//   when     a story's unit flagged for the team's next NEWS_GAMES games (2): its games after the story
+//   kind     what a flagging headline is (readHeadline, each with its why): 'starter' a starter's change (a
+//            benching, a starter named, a QB named to start or taking over), 'injury' the NFL's QB out (ruled
+//            out, IR, to miss, suspended), 'coach' a change of play-caller, coordinator or head coach. Not a
+//            CHECK, logged with why (the owner's rule, 2026-10-15: news forces a CHECK only on a player's
+//            availability or role, or a change new for the game): a game's recap ("Broncos beat Chargers in
+//            Sean Payton's return to playcalling"), a question or a feature ("Is Seahawks OC Brian Fleury a
+//            'home run' hire? How the rookie playcaller is faring"), talk, a denial or a decision not made ("not
+//            ready to name QB starter"). Every story of a team read kept with its why (the cache's seen)
+//   when     a story's unit flagged for the team's next games: a 'starter' story's NEWS_GAMES (2), a 'coach' or
+//            an 'injury' one's NEW_GAMES (1: new for that game; a play-caller who took over before the last
+//            game isn't news for the next); its games after the story
 //            counted from the first story of the episode (a story with fewer than NEWS_GAMES games of the team
 //            since the last one on the same unit is the same news, still: a "returns to play-calling" piece
 //            after the game doesn't start the count again), NEWS_DAYS (21) at most
@@ -84,6 +94,23 @@ const TALK = /\bcalls? for\b|\bhot seat\b|\bshould\b|\bcould\b|\bwould\b|\bif\b|
 const DENY = /\bden(?:y|ies|ied|ying)\b|\bwon['\u2019]t\b|\bwill not\b|\bno plans?\b|\bno change\b|\bnot (?:be |being |getting |a |expected to |going to )?(?:play[- ]?call\w*|bench\w*|fir\w*|replac\w*|chang\w*|tak\w* over|demot\w*|happening|expected|the (?:issue|problem))|\brules? out\b|\bshoots? down\b|\bdismiss(?:es|ed)? (?:talk|reports?|rumou?rs?|idea|speculation)\b/i;
 const DEFENSE = /\bdefens\w*|\bDC\b|\bcornerback\b|\bCB\b|\bsafety\b|\blinebacker\b|\bpass rusher\b/i;
 const sideOf = (h) => (DEFENSE.test(h) ? 'defense' : 'offense');
+// (a decision not made: not ready to name, undecided, yet to)
+const UNDECIDED = /\bnot (?:yet )?(?:ready|planning|set|prepared|going) to\b|\bundecided\b|\byet to\b|\bno decision\b|\bnot (?:yet )?decided\b/i;
+// (a game's recap: a result, or a change seen in a game played ("in Payton's return to playcalling"))
+const RECAP = /\b(?:beat|beats|rout(?:s|ed)?|edg(?:e|es|ed)|outlast\w*|holds? off|held off|rall(?:y|ies|ied) past|defeat\w*|wins? over|victory|loss to|los(?:e|es) to|lost to|falls? to|fell to|blows? out|blew out|cruis(?:e|es|ed) past)\b|\bin (?:[\w.'\u2019-]+ ){0,3}(?:return|debut)\b/i;
+// (a question or a feature: how, why, what, grades, rankings)
+const FEATURE = /\?|\bhow\b|\bwhy\b|\bwhat\b|\bfaring\b|\bgrades?\b|\branking\w*|\btakeaways?\b|\bpreview\w*|\boverreaction\w*|\bhot seat\b/i;
+// (the NFL's QB out: ruled out, on or to IR, to miss, suspended, won't play; a QB ruled out. Not: questionable,
+// doubtful, a maybe, expected to play, cleared, a return)
+const QB = /\b(?:QB|quarterback)s?\b/i;
+const OUT = /\bruled out\b|\bout (?:for|vs\.?|against|with|indefinitely|\d|Sunday|Monday|Thursday|Saturday|this week)\b|\b(?:on|to|placed on|lands on|heads to) (?:IR|injured reserve)\b|\b(?:will|to|expected to) miss\b|\bmiss(?:es)? (?:game|start|week|\d)|\bsidelined\b|\bsuspend\w*|\bwon['\u2019]t play\b|\bwill not play\b|\binactive\b|\bseason-ending\b|\bout for (?:the )?season\b|\bdone for (?:the )?season\b/i;
+// (the out words on the QB's own clause: "Bucs put WR McMillan on IR, add QB Rypien" not; "Ravens QB Lamar
+// Jackson out; Huntley to start" so)
+const qbOut = (h) => [...h.matchAll(/\b(?:QB|quarterback)s?\b[^,;:]*/gi)].some(([c]) => OUT.test(c) || /\bout\s*$/i.test(c));
+const RULE_OUT_QB =/\brul(?:e|es|ed|ing) out (?:QB|quarterback)\b/i;
+const NOT_OUT = /\bquestionable\b|\bdoubtful\b|\bif\b|\bcould\b|\bmight\b|\bmay\b|\bexpected to play\b|\bwill play\b|\bcleared\b|\breturn\w*|\bback from\b|\bnot ruled out\b|\bavoid\w*|\?/i;
+// (a QB named to start: will start, to start, expected to start, start QB X)
+const QB_START = /\b(?:will|to|expected to|set to|gets? the) start\b.*\b(?:QB|quarterback)\b|\bstart(?:s|ing)? (?:at )?(?:QB|quarterback)\b|\b(?:QB|quarterback)\b.*\b(?:will|to|expected to|set to) start\b/i;
 
 // What a headline flags: 'offense', 'defense', 'team' or null. sport: the NFL's every keyword; the others'
 // a head coach's (a manager's) change alone. Read in order: talk or a denial none (fire's other senses taken
@@ -92,37 +119,73 @@ const sideOf = (h) => (DEFENSE.test(h) ? 'defense' : 'offense');
 // role named ("Raiders fire Pete Carroll", ESPN's usual words) the head coach's, the front office's none; then
 // the play-calling changed (a verb of change by it: a mention alone none), a head coach named or out, a
 // coordinator's change, a benching, a starter named, a takeover of a role
-export function unitOf(sport, headline) {
+export const unitOf = (sport, headline) => readHeadline(sport, headline).unit;
+
+// What a headline flags and why: { unit, kind, why }, unit and kind null where it flags nothing (its why then
+// what kept it out). Read in order: the NFL's QB out ('injury'); a game's recap, a question or a feature, talk,
+// a denial or a decision not made none; then unitOf's rules ('coach' a play-caller's, coordinator's or head
+// coach's change, 'starter' a benching, a starter named, a QB named to start or taking over)
+export function readHeadline(sport, headline) {
   const raw = String(headline ?? '');
-  if (!raw || TALK.test(raw) || DENY.test(raw)) return null;
-  const h = raw.replace(IDIOM, ' ');
+  const none = (why) => ({ unit: null, kind: null, why });
+  if (!raw) return none('no headline');
   const nfl = sport === 'nfl';
+  if (nfl && QB.test(raw) && !NOT_OUT.test(raw) && (RULE_OUT_QB.test(raw) || qbOut(raw))) return { unit: 'offense', kind: 'injury', why: 'the QB out' };
+  if (nfl && (OUT.test(raw) || /\brul(?:e|es|ed|ing) out\b/i.test(raw)) && !QB.test(raw) && !/\bcoach\w*|\bcoordinator\b|\bplay[- ]?call\w*/i.test(raw)) return none("a player out, not the QB: his and his teammates' props through the injury report");
+  if (RECAP.test(raw)) return none("a game's recap");
+  if (FEATURE.test(raw)) return none('a question or a feature');
+  if (TALK.test(raw) || DENY.test(raw) || UNDECIDED.test(raw)) return none('talk, a denial or no decision');
+  const unit = coachOrStarter(nfl, raw.replace(IDIOM, ' '));
+  return unit ? { unit: unit[0], kind: unit[1], why: unit[2] } : none('no change of play-caller, coach or starter named');
+}
+
+// ([unit, kind, why] or null: the play-caller's, coach's and starter's rules on a headline past the recap,
+// feature and talk checks)
+function coachOrStarter(nfl, h) {
   const coordO = COORD_O.test(h);
   const coordD = COORD_D.test(h);
   const coord = coordO || coordD ? (coordD && !coordO ? 'defense' : 'offense') : null;
   const pos = POS_COACH.test(h);
   const change = CHANGE.test(h);
   if (FIRED.test(h)) {
-    if (HEAD.test(h) || (/\b[Cc]oach [A-Z]/.test(h) && !pos)) return 'team';
-    if (coord) return nfl ? coord : null;
+    if (HEAD.test(h) || (/\b[Cc]oach [A-Z]/.test(h) && !pos)) return ['team', 'coach', 'the head coach fired or interim'];
+    if (coord) return nfl ? [coord, 'coach', 'a coordinator fired'] : null;
     if (pos || /\bcoach(?:es|ing)?\b|\bcoordinator\b|\bstaff\b/i.test(h)) return null;
-    if (FIRE_ACT.test(h) && !FRONT.test(h)) return 'team';
+    if (FIRE_ACT.test(h) && !FRONT.test(h)) return ['team', 'coach', 'the head coach fired'];
   }
-  if (!nfl) return HEAD.test(h) && change ? 'team' : null;
-  if (PLAYCALL.test(h) && (change || PC_CHANGE.test(h))) return sideOf(h);
-  if (HEAD.test(h) && change) return 'team';
-  if (coord && change) return coord;
-  if (BENCHED.test(h) || BENCH.test(h)) return sideOf(h);
-  if (STARTER.test(h)) return sideOf(h);
-  if (TAKES.test(h) && ROLE.test(h)) return sideOf(h);
+  if (!nfl) return HEAD.test(h) && change ? ['team', 'coach', 'a head coach changed'] : null;
+  if (PLAYCALL.test(h) && (change || PC_CHANGE.test(h))) return [sideOf(h), 'coach', 'the play-caller changed'];
+  if (HEAD.test(h) && change) return ['team', 'coach', 'a head coach changed'];
+  if (coord && change) return [coord, 'coach', 'a coordinator changed'];
+  if (BENCHED.test(h) || BENCH.test(h)) return [sideOf(h), 'starter', 'a benching'];
+  if (STARTER.test(h)) return [sideOf(h), 'starter', 'a starter named'];
+  if (QB_START.test(h)) return ['offense', 'starter', 'a QB named to start'];
+  if (TAKES.test(h) && ROLE.test(h)) return /\b(?:play[- ]?call\w*|coach\w*|coordinator)\b/i.test(h) ? [sideOf(h), 'coach', 'a coaching role taken over'] : [sideOf(h), 'starter', 'a starter taking over'];
   return null;
 }
+
+// (a story's kind: its own, else its headline's read now)
+export const kindOf = (sport, s) => s?.kind ?? readHeadline(sport, s?.headline).kind ?? 'starter';
+// (how many of the team's games a kind of story flags: a starter's change NEWS_GAMES, a coaching change or the
+// QB out NEW_GAMES (new for the next game alone))
+export const NEW_GAMES = 1;
+export const gamesOf = (kind) => (kind === 'starter' ? NEWS_GAMES : NEW_GAMES);
 
 // (a story's teams, by ESPN's tags)
 const teamsOf = (a) => [...new Set((a?.categories ?? []).filter((c) => c?.type === 'team').map((c) => String(c.teamId ?? c.team?.id ?? '')).filter(Boolean))];
 
+// (a headline naming the team only after vs., against, at or over: the other team's news)
+const escRe = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export function opponentOnly(headline, names) {
+  const h = String(headline ?? '');
+  const any = names.filter((n) => new RegExp(`\\b${escRe(n)}\\b`, 'i').test(h));
+  if (!any.length) return false;
+  return any.every((n) => !new RegExp(`\\b${escRe(n)}\\b`, 'i').test(h.replace(new RegExp(`\\b(?:vs\\.?|versus|against|at|over|to) (?:the )?${escRe(n)}\\b`, 'gi'), ' ')));
+}
+
 // A story as a flag for team (ESPN's { id, nick, name }), or null: its kind, its tags (the team's among two at
-// most), the team named in its headline or summary, a flagging headline
+// most), the team named in its headline or summary (on two teams' tags, named not only as the opponent), a
+// flagging headline
 export function storyOf(sport, a, team) {
   if (!a || !KINDS.has(a.type)) return null;
   const tags = teamsOf(a);
@@ -130,10 +193,13 @@ export function storyOf(sport, a, team) {
   const text = `${a.headline ?? ''} ${a.description ?? ''}`;
   const names = [team.nick, team.name].filter((x) => typeof x === 'string' && x.length >= 3);
   if (names.length && !names.some((n) => text.toLowerCase().includes(n.toLowerCase()))) return null;
-  const unit = unitOf(sport, a.headline);
+  const { unit, kind, why } = readHeadline(sport, a.headline);
   const at = Date.parse(a.published ?? a.lastModified ?? '');
   if (!unit || !Number.isFinite(at)) return null;
-  return { id: String(a.id ?? a.dataSourceIdentifier ?? `${at}:${a.headline}`), unit, headline: String(a.headline).slice(0, 200), at: new Date(at).toISOString() };
+  // (a story on two teams naming this one only as the opponent: "Tyson Bagent will start at QB for Bears vs.
+  // Packers" the Bears' news, not the Packers')
+  if (tags.length > 1 && opponentOnly(a.headline, names)) return null;
+  return { id: String(a.id ?? a.dataSourceIdentifier ?? `${at}:${a.headline}`), unit, kind, why, headline: String(a.headline).slice(0, 200), at: new Date(at).toISOString() };
 }
 
 // A story as the news signals read it (news-signals.mjs), or null: the same kinds, tags and team naming as a
@@ -190,11 +256,19 @@ export async function readNews(sport, cfg, { now = new Date(), teams = null, soo
       const body = await fetchJson(`${ESPN}/${cfg.league}/news?team=${team.id}&limit=50`);
       if (!Array.isArray(body?.articles)) return;
       const kept = new Map((cache.teams[team.id]?.stories ?? []).map((s) => [s.id, s]));
+      // (every story of the team's read, flagged or not, with why: what the selfcheck and later fits measure)
+      const seen = new Map((cache.teams[team.id]?.seen ?? []).map((s) => [s.id, s]));
       for (const a of body.articles) {
         const s = storyOf(sport, a, team);
         if (s) kept.set(s.id, s);
+        const r = teamStoryOf(a, team);
+        if (r) {
+          const h = readHeadline(sport, r.headline);
+          seen.set(r.id, { id: r.id, at: r.at, type: String(a.type ?? ''), headline: r.headline, unit: h.unit, kind: h.kind, why: h.why, athletes: r.athletes.map((x) => x.name) });
+        }
       }
-      cache.teams[team.id] = { day: today, readAt: now.toISOString(), stories: [...kept.values()] };
+      const fresh = [...seen.values()].filter((x) => t - Date.parse(x.at) <= NEWS_DAYS * DAY);
+      cache.teams[team.id] = { day: today, readAt: now.toISOString(), stories: [...kept.values()], seen: fresh };
       read++;
     });
     let changed = false;
@@ -206,7 +280,10 @@ export async function readNews(sport, cfg, { now = new Date(), teams = null, soo
     if (stale.length || changed) writeJson(file, cache);
     if (stale.length && !read) log.warn?.(`${sport}: teams' news not read (${stale.length} feeds failed)`);
     if (!Object.keys(cache.teams).length) return null;
-    return new Map(Object.entries(cache.teams).map(([id, v]) => [String(id), v.stories ?? []]));
+    const out = new Map(Object.entries(cache.teams).map(([id, v]) => [String(id), v.stories ?? []]));
+    // (and every story read, with why: team id -> [{ id, at, type, headline, unit, kind, why }])
+    out.seen = new Map(Object.entries(cache.teams).map(([id, v]) => [String(id), v.seen ?? []]));
+    return out;
   } catch (err) {
     log.warn?.(`${sport}: teams' news not read (${String(err?.message ?? err).slice(0, 120)})`);
     return null;
@@ -217,9 +294,9 @@ export async function readNews(sport, cfg, { now = new Date(), teams = null, soo
 // its latest is NEWS_DAYS old or less, NEWS_KEEP days at most)
 export function keepStories(sport, stories, t) {
   const now = (stories ?? []).flatMap((s) => {
-    const unit = unitOf(sport, s?.headline);
+    const { unit, kind, why } = readHeadline(sport, s?.headline);
     const at = Date.parse(s?.at ?? '');
-    return unit && Number.isFinite(at) && t - at <= NEWS_KEEP * DAY ? [unit === s.unit ? s : { ...s, unit }] : [];
+    return unit && Number.isFinite(at) && t - at <= NEWS_KEEP * DAY ? [unit === s.unit && kind === s.kind && why === s.why ? s : { ...s, unit, kind, why }] : [];
   });
   const latest = new Map();
   for (const s of now) latest.set(s.unit, Math.max(latest.get(s.unit) ?? -Infinity, Date.parse(s.at)));
@@ -243,8 +320,9 @@ function startsOf(games) {
 
 // The flags in force for a team's game starting at start: each unit's episode (its stories, a new one only
 // after NEWS_GAMES games of the team without one) whose first story came before the game with fewer than
-// NEWS_GAMES of the team's games between them, NEWS_DAYS at most. The latest story of each its headline
-export function flagsFor(stories, starts, start) {
+// its games (gamesOf: a starter's change NEWS_GAMES, a coaching change or the QB out NEW_GAMES, the episode's
+// longest) of the team's games between them, NEWS_DAYS at most. The latest story of each its headline
+export function flagsFor(stories, starts, start, sport = 'nfl') {
   const out = [];
   const between = (a, b) => starts.filter((t) => t > a && t < b).length;
   for (const unit of UNITS) {
@@ -253,16 +331,17 @@ export function flagsFor(stories, starts, start) {
     let first = mine[0];
     for (let i = 1; i < mine.length; i++) if (between(Date.parse(mine[i - 1].at), Date.parse(mine[i].at)) >= NEWS_GAMES) first = mine[i];
     const t0 = Date.parse(first.at);
-    if (start - t0 > NEWS_DAYS * DAY || between(t0, start) >= NEWS_GAMES) continue;
+    const games = Math.max(...mine.filter((s) => s.at >= first.at).map((s) => gamesOf(kindOf(sport, s))));
+    if (start - t0 > NEWS_DAYS * DAY || between(t0, start) >= games) continue;
     const last = mine[mine.length - 1];
-    out.push({ unit, headline: last.headline, at: last.at, id: last.id, since: first.at });
+    out.push({ unit, headline: last.headline, at: last.at, id: last.id, since: first.at, kind: kindOf(sport, last) });
   }
   return out;
 }
 
 // Each coming game's flags put on its live facts (l.news: [{ team, unit, headline, at, id, from: 'espn' }]);
 // news: readNews's (null: none, the desk as it was). history and upcoming ({ game }): the games counted
-export function newsFlags(news, live, history, upcoming) {
+export function newsFlags(news, live, history, upcoming, sport = 'nfl') {
   let n = 0;
   if (!news || !live) return n;
   const starts = startsOf([...(history ?? []), ...(upcoming ?? []).map((u) => u.game)]);
