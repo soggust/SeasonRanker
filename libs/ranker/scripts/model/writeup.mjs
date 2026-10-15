@@ -910,6 +910,9 @@ export function plainOf(sheet) {
     const safe = floors.flatMap((r) => [[r, risk], [r, plainRisk]]).find(([r, k]) => r.length <= REASON_MAX && !validate(`${r} ${k}`, sheet).length);
     if (safe) [reason, risk] = safe;
   }
+  // (never over the length, whatever a live reason carries: a long headline in a CHECK's reason once failed the
+  // desk's tests and lost a run's commit with its props' prices (2026-10-14); cut at the last word that fits)
+  if (reason.length > REASON_MAX) reason = `${reason.slice(0, REASON_MAX - 1).replace(/\s+\S*$/, '')}…`;
   return { reason, risk };
 }
 
