@@ -191,10 +191,10 @@ header {
     border-color: var(--scoreboard-led);
   }
 
-  &:focus-visible {
+  // (the keyboard's focus: lit as on hover)
+  @include v.focus-lit {
+    background: linear-gradient(180deg, #2e2e2e, #1d1d1d);
     border-color: var(--scoreboard-led);
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 2px;
   }
 
   &[disabled] {

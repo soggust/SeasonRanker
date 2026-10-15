@@ -788,7 +788,8 @@ html .mat-mdc-slide-toggle {
   color: #fff !important;
 }
 
-.sidebar .mat-mdc-select:hover .mat-mdc-select-arrow {
+.sidebar .mat-mdc-select:hover .mat-mdc-select-arrow,
+.sidebar .mat-mdc-select:focus-visible .mat-mdc-select-arrow {
   color: var(--scoreboard-led) !important;
 }
 
@@ -798,7 +799,8 @@ html .mat-mdc-slide-toggle {
   text-transform: uppercase;
 }
 
-// The year: white text on the left, a white caret on the right, both in the accent on hover
+// The year: white text on the left, a white caret on the right, both in the accent on hover (and on the
+// keyboard's focus)
 section footer .mat-mdc-select.season-select {
   .mat-mdc-select-trigger {
     width: 100%;
@@ -815,7 +817,9 @@ section footer .mat-mdc-select.season-select {
   }
 
   &:hover .mat-mdc-select-value-text,
-  &:hover .mat-mdc-select-arrow {
+  &:hover .mat-mdc-select-arrow,
+  &:focus-visible .mat-mdc-select-value-text,
+  &:focus-visible .mat-mdc-select-arrow {
     color: var(--scoreboard-led) !important;
   }
 }
@@ -844,10 +848,11 @@ section footer .mat-mdc-select.season-select {
   }
 }
 
-// The focus ring: on every control focused from the keyboard (never on a click), in the page's light, over any
-// component's own outline (a hover-alike color change tells a keyboard user nothing; Material's controls set
-// theirs to none), so a new rule's `outline: none` can't take it away
-:is(
+// Keyboard focus (docs/accessibility.md): only a Tab's (:focus-visible; a mouse click or a tap shows nothing
+// new), and minimal: a control lights as its hover does (v.focus-lit: its text, icon or edge in the page's
+// light, no ring). This is the fallback for any control without a focus of its own: the thin soft ring, at no
+// weight (:where), so a component's own focus always wins
+:where(
     button,
     a[href],
     input,
@@ -862,15 +867,41 @@ section footer .mat-mdc-select.season-select {
     [role="switch"],
     .mat-mdc-select
   ):focus-visible {
-  outline: 2px solid var(--scoreboard-led) !important;
-  outline-offset: 2px !important;
+  @include v.focus-ring;
 }
 
-// (the player searches, the rankings' and Compare's: no ring on their boxes (too tight in the rankings' bar;
-// Compare's keeps its own 1px border))
-.find-bar .find-input:focus-visible,
-.tape-search:focus-visible {
-  outline: none !important;
+// (Material's own controls set their outline to none, which outweighs the fallback: a select's text and caret
+// light as on hover; a switch, a ball with no color to change, the thin ring)
+.mat-mdc-select:focus-visible {
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-placeholder,
+  .mat-mdc-select-arrow {
+    color: var(--scoreboard-led);
+  }
+}
+
+.mat-mdc-slide-toggle .mdc-switch:focus-visible {
+  @include v.focus-ring(3px);
+}
+
+// (a menu's items: Material marks the one the keyboard is on (.cdk-keyboard-focused; not a click's, nor the
+// first item a menu opened by the mouse focuses): a light wash, where a hover only presses it in)
+.mat-mdc-menu-item.cdk-keyboard-focused {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+// (the grid's toolbar buttons: the icon lit as when its panel is open; the filter menu's Reset and Clear All and
+// a preset's buttons, their lettering. The themes letter them white, !important)
+#{kit.$footer-buttons},
+.sidebar footer button,
+#{kit.$preset-buttons} {
+  @include v.focus-lit {
+    color: var(--scoreboard-led) !important;
+
+    .mat-icon {
+      color: var(--scoreboard-led) !important;
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

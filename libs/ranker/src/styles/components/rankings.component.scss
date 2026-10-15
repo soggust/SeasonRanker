@@ -188,6 +188,11 @@ section.rankings-wrapper > footer {
     min-width: 0;
     padding: 0 4px 0 10px;
     position: relative;
+
+    // (its box focused: the bar's edge lit in the page's light, no ring)
+    &:has(.find-input:focus-visible) {
+      border-color: var(--scoreboard-led);
+    }
   }
 
   .find-icon {
@@ -197,7 +202,7 @@ section.rankings-wrapper > footer {
     text-shadow: var(--scoreboard-glow);
   }
 
-  // (focused: no ring and no line (the global ring too tight in the bar; the open bar is focus enough); a margin
+  // (focused: no ring and no line (a ring's too tight in the bar): the bar's edge lights instead, above; a margin
   // keeping the box where it sat)
   .find-input {
     background: none;
@@ -243,6 +248,7 @@ section.rankings-wrapper > footer {
     &:focus-visible {
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
+      outline: none;
     }
   }
 
@@ -508,6 +514,15 @@ section ul li.player:not(.header-row) {
   // Hover: the same light wash as the column band, so the crosshair still shows
   &:hover {
     box-shadow: inset 0 0 0 100vmax $row-wash;
+  }
+
+  // (the keyboard on the row (Enter picks it): the hover's wash, and its name lit as when the name has the focus)
+  @include v.focus-lit {
+    box-shadow: inset 0 0 0 100vmax $row-wash;
+
+    .card-link {
+      color: var(--scoreboard-led) !important;
+    }
   }
 
   &:not(.cdk-drag-preview) {
@@ -818,6 +833,11 @@ section ul li.player:not(.header-row) {
   .player-info {
     .card-link {
       transition: color v.$t-hover ease;
+
+      // (its keyboard focus: the name and the badge's ring lit, below; no ring)
+      &:focus-visible {
+        outline: none;
+      }
     }
 
     &:has(.card-target:hover),
@@ -1313,6 +1333,12 @@ section ul li.player.header-row:hover {
         transform: translateY(-50%) scale(1.18);
       }
 
+      // (the keyboard on it: brighter and glowing as on hover, without the lift)
+      @include v.focus-lit {
+        filter: brightness(1.3);
+        text-shadow: 0 0 8px color-mix(in srgb, var(--group-color) 70%, transparent);
+      }
+
       @media (prefers-reduced-motion: reduce) {
         transition: none;
       }
@@ -1328,7 +1354,8 @@ section ul li.player.header-row:hover {
     }
 
     // (a collapsed strip's "…" lights up with its icon)
-    &.collapsed-strip:has(> .group-icon:hover) .collapsed-more {
+    &.collapsed-strip:has(> .group-icon:hover) .collapsed-more,
+    &.collapsed-strip:has(> .group-icon:focus-visible) .collapsed-more {
       filter: brightness(1.3);
     }
   }
@@ -1389,6 +1416,18 @@ section ul li.player.header-row .column-draggable {
   }
 }
 
+// A label that isolates its stat (Enter): lit on the keyboard's focus as a draggable one is on hover; the one
+// isolated, lit already, goes white
+section ul li.player.header-row .stat-label[role="button"] {
+  @include v.focus-lit {
+    color: var(--scoreboard-led) !important;
+  }
+}
+
+section ul li.player.header-row .iso-on .stat-label[role="button"]:focus-visible {
+  color: #fff !important;
+}
+
 // ---------------------------------------------------------------------------
 // Category colors (settings menu, on by default): a sideline in each stat group's color before the
 // group's first cell, the full row tall, with hash marks off its right side like a football field's:
@@ -1424,7 +1463,8 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
 
   &::after {
     background: color-mix(in srgb, var(--group-color) 25%, transparent);
-    bottom: calc(50% - 29.5px);
+    // (on the row's bottom edge at any row height: 59px, a phone's 44px)
+    bottom: calc(50% - var(--row-h) / 2);
     content: "";
     height: 0.5px;
     left: 0;
@@ -1537,6 +1577,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     &:hover,
     &:focus-visible {
       background: color-mix(in srgb, var(--scoreboard-led) 16%, transparent);
+      outline: none;
     }
   }
 
@@ -1560,6 +1601,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     &:hover,
     &:focus-visible {
       color: #fff;
+      outline: none;
     }
   }
 
@@ -1801,6 +1843,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
   &:focus-visible,
   &.open {
     border-color: var(--scoreboard-led);
+    outline: none;
   }
 }
 
@@ -1893,6 +1936,7 @@ section ul li.player:not(.header-row) .count.rank-tile {
   &:hover,
   &:focus-visible {
     color: #fff;
+    outline: none;
   }
 }
 
@@ -2135,16 +2179,12 @@ section ul li.show-all {
       @include v.icon-size(18px);
     }
 
-    // (an expand control: it lightens, never the yellow accent; focus keeps a ring of its own)
+    // (an expand control: it lightens, never the yellow accent, on hover and on the keyboard's focus; no ring)
     &:hover,
     &:focus-visible {
       border-color: rgba(255, 255, 255, 0.45);
       color: rgba(255, 255, 255, 0.9);
-    }
-
-    &:focus-visible {
-      outline: 2px solid rgba(255, 255, 255, 0.6);
-      outline-offset: 2px;
+      outline: none;
     }
   }
 }
@@ -2280,6 +2320,7 @@ section ul li.player.header-row:hover {
     &:focus-visible {
       filter: brightness(1.25);
       opacity: 1;
+      outline: none;
     }
   }
 
@@ -2307,6 +2348,7 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
   &.open {
     border-color: var(--scoreboard-led);
     border-style: solid;
+    outline: none;
   }
 }
 
@@ -2389,6 +2431,7 @@ section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
   &:focus-visible {
     background: rgba(255, 255, 255, 0.12);
     color: #fff;
+    outline: none;
   }
 
   // (touch: a thumb-sized target around the small button, past the chip's edge)

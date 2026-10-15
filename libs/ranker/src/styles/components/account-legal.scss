@@ -32,6 +32,7 @@
 
     &:hover,
     &:focus-visible {
+      outline: none;
       text-decoration-color: var(--scoreboard-led);
     }
   }
@@ -68,9 +69,13 @@
       @include v.lit-tab;
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--scoreboard-led);
-      outline-offset: -3px;
+    // (the keyboard's focus: shaded as on hover, the other page's name lit)
+    @include v.focus-lit {
+      background: rgba(0, 0, 0, 0.15);
+
+      &:not(.active) {
+        color: var(--scoreboard-led);
+      }
     }
   }
 }

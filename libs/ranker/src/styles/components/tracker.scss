@@ -171,9 +171,9 @@ $face-fallback: #333;
     color: #fff;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 1px;
+  @include v.focus-lit {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
   }
 
   // (unpin asked once: press again)
@@ -333,9 +333,10 @@ $face-fallback: #333;
     color: #fff;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 1px;
+  // (a chevron: it lightens, never the accent)
+  @include v.focus-lit {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
   }
 }
 
@@ -429,6 +430,7 @@ $face-fallback: #333;
 
   &:hover,
   &:focus-visible {
+    outline: none;
     text-decoration: underline;
   }
 }
@@ -474,6 +476,11 @@ $face-fallback: #333;
   outline: none;
   padding: 3px 10px;
   width: 100%;
+
+  // (its edge is lit already: focused, a soft glow round it in the page's light, as the account fields')
+  &:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--scoreboard-led) 22%, transparent);
+  }
 }
 
 .pin-when {
@@ -529,9 +536,9 @@ $face-fallback: #333;
     color: var(--scoreboard-led);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 2px;
+  @include v.focus-lit {
+    border-color: var(--scoreboard-led);
+    color: var(--scoreboard-led);
   }
 }
 
@@ -1051,9 +1058,9 @@ $face-fallback: #333;
     color: #fff;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 2px;
+  @include v.focus-lit {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
   }
 }
 

@@ -446,6 +446,11 @@ $ai-narrow: v.bp(ai-narrow);
       background: rgba(255, 255, 255, 0.08);
       color: var(--scoreboard-led);
     }
+
+    @include v.focus-lit {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--scoreboard-led);
+    }
   }
 }
 
@@ -483,6 +488,12 @@ $ai-narrow: v.bp(ai-narrow);
 
     &.active {
       @include v.lit-tab;
+    }
+
+    // (the keyboard's focus: shaded and lit as on hover; the tab showing, lit already, shaded)
+    @include v.focus-lit {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--scoreboard-led);
     }
   }
 }
@@ -1146,6 +1157,18 @@ $ai-narrow: v.bp(ai-narrow);
       border-color: var(--scoreboard-led);
     }
   }
+
+  @include v.focus-lit {
+    border-color: var(--scoreboard-led);
+
+    .comp-name {
+      color: var(--scoreboard-led);
+    }
+
+    .comp-card {
+      border-color: var(--scoreboard-led);
+    }
+  }
 }
 
 .comp-text {
@@ -1323,6 +1346,11 @@ $ai-narrow: v.bp(ai-narrow);
     transform: scale(1.15);
   }
 
+  // (a result's color, nothing to light: the thin ring)
+  &:focus-visible {
+    @include v.focus-ring(1px);
+  }
+
   &:disabled {
     cursor: default;
   }
@@ -1426,6 +1454,17 @@ $ai-narrow: v.bp(ai-narrow);
 
   &:hover:not(.active) .arc-year {
     color: var(--scoreboard-led);
+  }
+
+  // (the keyboard's focus: its year lit as on hover; the season showing, lit already, its year white)
+  @include v.focus-lit {
+    .arc-year {
+      color: var(--scoreboard-led);
+    }
+
+    &.active .arc-year {
+      color: #fff;
+    }
   }
 
   &.active {
@@ -1570,6 +1609,18 @@ $ai-narrow: v.bp(ai-narrow);
   // Like the tabs: hover lightens it and lights the year; the season showing is lit along its bottom
   // row of dots
   &:hover:not(.active) {
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
+      var(--scoreboard-dots),
+      var(--scoreboard);
+
+    .season-year {
+      color: var(--scoreboard-led);
+    }
+  }
+
+  // (the keyboard's focus: lightened and its year lit as on hover, the season showing too)
+  @include v.focus-lit {
     background:
       linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
       var(--scoreboard-dots),
@@ -2161,6 +2212,7 @@ $ai-narrow: v.bp(ai-narrow);
 
     &:hover:not(:disabled),
     &:focus-visible {
+      outline: none;
       @include v.link-lit;
     }
 
@@ -2808,6 +2860,14 @@ $ai-narrow: v.bp(ai-narrow);
     border-color: #fff;
     transform: scale(1.06);
   }
+
+  // (the keyboard's focus: the face's ring white as on hover, without the lift)
+  @include v.focus-lit {
+    .depth-head > img,
+    .depth-head > .depth-initial {
+      border-color: #fff;
+    }
+  }
 }
 
 // the spot, in chalk
@@ -2869,11 +2929,14 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-// the injury report's flag: Q yellow, D orange, O red, IR deep red
+// the injury report's flag: Q and DTD yellow, D orange, O red, IR (IL, NFI) deep red; any other code the
+// report sends a plain gray chip, never bare letters on the photo
 .depth-status,
 .depth-pop em,
 .depth-row-status em {
+  background: #555;
   border-radius: v.$radius-md;
+  color: #fff;
   font-size: 9px;
   font-style: normal;
   font-weight: 900;
@@ -2881,7 +2944,8 @@ $ai-narrow: v.bp(ai-narrow);
   line-height: 1;
   padding: 2px 4px;
 
-  &.s-q {
+  &.s-q,
+  &.s-dtd {
     background: v.$caution;
     color: #1a1a1a;
   }
@@ -2897,6 +2961,8 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   &.s-ir,
+  &.s-il,
+  &.s-nfi,
   &.s-susp,
   &.s-pup {
     background: $injured-reserve;
@@ -3258,6 +3324,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   &:hover:not(:disabled),
   &:focus-visible {
+    outline: none;
     @include v.link-lit;
   }
 }
@@ -3307,6 +3374,17 @@ $ai-narrow: v.bp(ai-narrow);
     opacity: 1;
     outline: 2px solid var(--scoreboard-led);
     outline-offset: 2px;
+  }
+
+  // (keyboard focus: the chosen one's ring turns white; another, in the sport's hide with nothing to light,
+  // full strength and the thin ring)
+  &:focus-visible:not(.active) {
+    opacity: 1;
+    @include v.focus-ring;
+  }
+
+  &.active:focus-visible {
+    outline-color: #fff;
   }
 
   // (small, on a panel's bar: a thinner edge and a closer, finer ring, in step with its size)

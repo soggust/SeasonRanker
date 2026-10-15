@@ -457,6 +457,25 @@ $gunmetal-edge: #4a525a;
     text-shadow $t-hover;
 }
 
+// Keyboard focus, kept minimal (WCAG 2.4.7, AA, asks only that it shows; docs/accessibility.md). Only a Tab's
+// focus (:focus-visible: a mouse click or a tap shows nothing new): the control lights the way its hover
+// does, its text, icon or edge (@content: what lights), and no ring
+@mixin focus-lit {
+  &:focus-visible {
+    outline: none;
+    @content;
+  }
+}
+
+// ...and where there's no color to change (an icon on a picture, a colored chip, a lever): a thin soft ring,
+// light, never the accent (the global fallback's too, _base.scss, for any control without a focus of its own)
+$focus-ring: 1px solid rgba(255, 255, 255, 0.75);
+
+@mixin focus-ring($offset: 2px) {
+  outline: $focus-ring;
+  outline-offset: $offset;
+}
+
 // A number on the scoreboard's LED tile (a rank): the lit dots, sunk in, digits in the segment font. A tile
 // can pass its own corner, shadow, color, display and glow; null leaves one out (a tile whose tone-glow sets
 // its color and glow)
@@ -538,6 +557,7 @@ $gunmetal-edge: #4a525a;
   &:focus-visible {
     background: rgba(255, 255, 255, 0.08);
     box-shadow: inset 2px 0 0 var(--scoreboard-led);
+    outline: none;
   }
 }
 

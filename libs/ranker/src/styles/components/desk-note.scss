@@ -114,8 +114,9 @@
     color: rgba(255, 255, 255, 0.4);
   }
 
+  // (focused: the edge white, not the page's gold on the felt's gold seam)
   &:focus-visible {
-    border-color: var(--scoreboard-led, #{chip.$check-light});
+    border-color: #fff;
     outline: none;
   }
 }
@@ -175,6 +176,7 @@
   &:hover,
   &:focus-visible {
     color: #fff;
+    outline: none;
   }
 }
 

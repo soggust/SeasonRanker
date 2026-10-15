@@ -96,6 +96,32 @@
     opacity: 0.5;
     pointer-events: none;
   }
+
+  // (Upload: a label round its hidden file input, lit as a focused button is while the input has the
+  // keyboard's focus)
+  &:is(label) {
+    position: relative;
+  }
+
+  &:has(input:focus-visible) {
+    @include kit.primary-button-focus;
+  }
+
+  // (Team logo while its logos are open: pressed in, its edge in the page's light)
+  &.open {
+    border-color: var(--scoreboard-led);
+    box-shadow:
+      inset 0 2px 5px rgba(0, 0, 0, 0.35),
+      0 0 0 1px var(--scoreboard-led);
+  }
+}
+
+// (the picture's buttons and the sign-in methods' the column's width, one under another; a phone's side by
+// side, each its own width)
+.photo-actions .tan-btn,
+.providers .tan-btn,
+.sign-in > .tan-btn {
+  width: 100%;
 }
 
 // ---------------------------------------------------------------------------
@@ -484,6 +510,10 @@ card-panel.account-panel {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+
+    .tan-btn {
+      width: auto;
+    }
   }
 
   .privacy-row {

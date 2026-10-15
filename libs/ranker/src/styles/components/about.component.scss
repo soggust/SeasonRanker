@@ -87,6 +87,7 @@ header {
   &:hover,
   &:focus-visible {
     color: var(--scoreboard-led);
+    outline: none;
   }
 }
 

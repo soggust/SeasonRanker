@@ -40,9 +40,9 @@
     color: var(--scoreboard-led);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: -4px;
+  @include v.focus-lit {
+    background: rgba(0, 0, 0, 0.15);
+    color: var(--scoreboard-led);
   }
 }
 

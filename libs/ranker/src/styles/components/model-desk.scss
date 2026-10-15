@@ -392,6 +392,13 @@ card-panel {
     color: #fff;
   }
 
+  // (the keyboard's focus: lit as on hover; the sorted one, white already, underlined)
+  @include v.focus-lit {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   mat-icon {
     @include v.icon-size(13px);
   }
@@ -1022,6 +1029,7 @@ card-panel {
   .desk-group:hover &,
   &:focus-visible {
     color: #fff;
+    outline: none;
   }
 
   .shut & mat-icon {
@@ -1058,10 +1066,9 @@ card-panel {
     font-weight: 800;
   }
 
-  .desk-group-toggle {
-    .desk-subgroup:hover & {
-      color: #fff;
-    }
+  // (its chevron lightens with the row, as a game's does)
+  &:hover .desk-group-toggle {
+    color: #fff;
   }
 }
 

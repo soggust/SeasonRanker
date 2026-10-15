@@ -45,9 +45,15 @@
       cursor: default;
     }
 
-    &:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 2px;
+    // (keyboard focus: the chosen one's ring turns white; another, in the sport's hide with nothing to light,
+    // full strength and the thin ring)
+    &:focus-visible:not(.active) {
+      opacity: 1;
+      @include v.focus-ring;
+    }
+
+    &.active:focus-visible {
+      outline-color: #fff;
     }
   }
 }
@@ -232,9 +238,8 @@
       text-decoration: underline;
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--scoreboard-led);
-      outline-offset: 2px;
+    @include v.focus-lit {
+      text-decoration: underline;
     }
   }
 
@@ -367,6 +372,7 @@
   &:hover,
   &:focus-visible {
     color: var(--scoreboard-led);
+    outline: none;
   }
 }
 
@@ -513,6 +519,12 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   }
 }
 
+// (a filled button's keyboard focus (below), for a control that stands in for one too: Settings' Upload label)
+@mixin primary-button-focus {
+  border-color: #fff;
+  filter: brightness(1.07);
+}
+
 // (each in an accent: the app's sand by default; kit.buttons passes the page's light)
 @mixin primary-button($accent: var(--app-sand, #d8b98a)) {
   @include app-button-base;
@@ -526,8 +538,14 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   &:hover:not([disabled]) {
     filter: brightness(1.07);
   }
+
+  // (keyboard focus: its lettering can't light on the sand, so its edge does, white, and the face as on hover)
+  @include v.focus-lit {
+    @include primary-button-focus;
+  }
 }
 
+// (an outline or danger button: keyboard focus lights it as the pointer does)
 @mixin outline-button($accent: var(--app-sand, #d8b98a)) {
   @include app-button-base;
   background: color-mix(in srgb, #{$accent} 6%, transparent);
@@ -535,6 +553,11 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   color: #{$accent};
 
   &:hover:not([disabled]) {
+    background: color-mix(in srgb, #{$accent} 14%, transparent);
+    border-color: #{$accent};
+  }
+
+  @include v.focus-lit {
     background: color-mix(in srgb, #{$accent} 14%, transparent);
     border-color: #{$accent};
   }
@@ -547,6 +570,12 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   color: var(--app-red-bright, #e0384f);
 
   &:hover:not([disabled]) {
+    background: var(--app-red, #c8102e);
+    border-color: var(--app-red, #c8102e);
+    color: #fff;
+  }
+
+  @include v.focus-lit {
     background: var(--app-red, #c8102e);
     border-color: var(--app-red, #c8102e);
     color: #fff;
@@ -607,9 +636,17 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
     color: $app-sand-ink;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--app-sand, #d8b98a);
-    outline-offset: 2px;
+  // (keyboard focus: lit as on hover; the chosen one, already sand, its edge white)
+  @include v.focus-lit {
+    border-color: var(--app-sand, #d8b98a);
+
+    &:not(.active, [aria-pressed="true"], [aria-checked="true"]) {
+      color: var(--app-sand, #d8b98a);
+    }
+
+    &:is(.active, [aria-pressed="true"], [aria-checked="true"]) {
+      border-color: #fff;
+    }
   }
 }
 
@@ -697,9 +734,17 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
     color: $app-sand-ink !important;
   }
 
+  // (keyboard focus: lit as the app's pills are)
   .game-filter:focus-visible {
-    outline: 2px solid var(--app-sand, #d8b98a) !important;
-    outline-offset: 2px !important;
+    border-color: var(--app-sand, #d8b98a) !important;
+  }
+
+  .game-filter:focus-visible:not(.active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) {
+    color: var(--app-sand, #d8b98a) !important;
+  }
+
+  .game-filter:focus-visible:is(.active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) {
+    border-color: #fff !important;
   }
 
   // Card panels: a pewter box, the bar a warm scoreboard, no sport edges on the body (not the wallet's: the

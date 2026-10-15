@@ -50,6 +50,7 @@
   &:hover:not([disabled]),
   &:focus-visible {
     color: v.$bad;
+    outline: none;
   }
 }
 

@@ -97,10 +97,6 @@
     }
   }
 
-  &:is(a):focus-visible {
-    box-shadow: 0 0 0 2px var(--scoreboard-led);
-  }
-
   &.gone {
     opacity: 0.55;
   }

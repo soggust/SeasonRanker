@@ -148,10 +148,8 @@ $circle-gap: 12px;
     @include v.icon-size(18px);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: 2px;
-  }
+  // (its focus lights it white and opens its list, below: no ring)
+  @include v.focus-lit;
 
   &:hover,
   &:focus {
@@ -354,6 +352,15 @@ $circle-gap: 12px;
   transition: filter v.$t-hover ease;
 
   &:hover {
+    filter: brightness(1.12);
+
+    .bet-chevron {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  // (the keyboard's focus: lit as on hover; the panel round it would clip a ring)
+  @include v.focus-lit {
     filter: brightness(1.12);
 
     .bet-chevron {
@@ -734,9 +741,9 @@ $hub-y: 154px;
     top: calc(50% - #{$hub-y});
     width: 64px;
 
+    // (a lever, nothing on it to light: the thin ring)
     &:focus-visible {
-      outline: 2px solid var(--scoreboard-led);
-      outline-offset: 4px;
+      @include v.focus-ring(4px);
     }
   }
 
@@ -1181,6 +1188,7 @@ $hub-y: 154px;
     &:hover,
     &:focus-visible {
       color: #fff;
+      outline: none;
     }
   }
 
@@ -1405,7 +1413,8 @@ $hub-y: 154px;
   }
 }
 
-// (none for anyone who's asked for less: the handle's pull, the reels, the open section's unfold, the popover)
+// (none for anyone who's asked for less: the handle's pull, the reels, the open section's unfold, the popover,
+// its phone sheet and its rise above the tile too, whose own rules outweigh the plain .bet-why)
 @media (prefers-reduced-motion: reduce) {
   .slot-handle.pulling .slot-lever,
   .slot-handle.pulling .slot-knob,
@@ -1413,6 +1422,8 @@ $hub-y: 154px;
   .bets-list.spinning .bet-rank,
   .bet-reasons,
   .bet-why,
+  .bet-why.above,
+  .bet-why.sheet,
   .bet-why .why-bar i {
     animation: none;
   }

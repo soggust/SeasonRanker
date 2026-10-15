@@ -396,6 +396,11 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--scoreboard-led);
   }
 
+  @include v.focus-lit {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--scoreboard-led);
+  }
+
   .wp-done & {
     visibility: visible;
   }
@@ -1549,11 +1554,15 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(255, 255, 255, 0.12);
 }
 
-// (the game view's links: the same hover as every link, the glow included)
+// (the game view's links: the same hover as every link, the glow included; the keyboard's focus the same)
 .game-form-team,
 .game-form-when,
 .game-team-name {
   &:hover:not(:disabled) {
+    @include v.link-lit;
+  }
+
+  @include v.focus-lit {
     @include v.link-lit;
   }
 }
@@ -1596,6 +1605,11 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   &:hover img,
   &:focus-visible img {
     filter: brightness(1.15);
+  }
+
+  // (a picture: brighter on the keyboard's focus too (above), and the thin ring, inside the board's rounded clip)
+  &:focus-visible {
+    @include v.focus-ring(-3px);
   }
 }
 
@@ -1685,6 +1699,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   &:hover .game-clip-title {
     @include v.link-lit;
+  }
+
+  // (the keyboard's focus: its title lit as on hover)
+  @include v.focus-lit {
+    .game-clip-title {
+      @include v.link-lit;
+    }
   }
 
   &.active .game-clip-thumb {

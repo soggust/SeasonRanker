@@ -160,9 +160,10 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
     transform: translateY(-1px);
   }
 
-  &:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
+  // (the keyboard's focus: lit as on hover, without the lift)
+  @include v.focus-lit {
+    border-color: var(--scoreboard-led);
+    filter: brightness(1.18);
   }
 
   &[disabled] {
@@ -344,10 +345,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
     white-space: nowrap;
   }
 
-  &:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 1px;
-  }
+  // (the keyboard's focus: its chevron lightens as on hover, no ring)
+  @include v.focus-lit;
 
   &:hover .props-chevron,
   &:focus-visible .props-chevron {

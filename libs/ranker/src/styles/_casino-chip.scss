@@ -251,6 +251,12 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   &:hover:not([disabled]) {
     filter: brightness(1.15);
   }
+
+  // (the keyboard's focus: brighter as on hover, the gold edge white)
+  @include v.focus-lit {
+    border-color: #fff;
+    filter: brightness(1.15);
+  }
 }
 
 // ...a dropdown of it (the Bets page's game picker, the Algorithm's): the felt, its caret, a gold edge
@@ -283,8 +289,10 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     outline: none;
   }
 
+  // (the keyboard's focus: the edge white; the page's light is the felt's own gold on the Bets page)
   &:focus-visible {
-    border-color: var(--scoreboard-led);
+    border-color: #fff;
+    outline: none;
   }
 
   // (a native select's open list; a Material one ($native: false) opens its own in an overlay)

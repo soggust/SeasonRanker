@@ -200,9 +200,9 @@ $gold: casino.$lock-gold;
     filter: brightness(1.12);
   }
 
+  // (a chip, its clay nothing to light: the thin ring)
   &:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 3px;
+    @include v.focus-ring(3px);
   }
 
   &:active:not([disabled]) {
@@ -490,6 +490,7 @@ $gold: casino.$lock-gold;
 
   &:hover,
   &:focus-visible {
+    outline: none;
     @include v.link-lit;
   }
 }
@@ -521,6 +522,7 @@ $gold: casino.$lock-gold;
 
   &:hover,
   &:focus-visible {
+    outline: none;
     text-decoration: underline;
   }
 }

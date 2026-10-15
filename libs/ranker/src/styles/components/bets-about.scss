@@ -85,6 +85,15 @@
     color: rgba(255, 255, 255, 0.9);
   }
 
+  // (the keyboard's focus: the chevron lightens as on hover, the title white)
+  @include v.focus-lit {
+    color: #fff;
+
+    .fold-chevron {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
   &[aria-expanded="true"] .fold-chevron {
     transform: rotate(90deg);
   }
