@@ -33,8 +33,8 @@ export class RowGlide {
     requestAnimationFrame(() => {
       const rows = list();
       if (!rows) return;
-      const moved = Array.from(rows.querySelectorAll<HTMLElement>(ROWS)).filter((row) => from.has(row.dataset['id']!));
-      if (!moved.length) return;
+      const all = Array.from(rows.querySelectorAll<HTMLElement>(ROWS));
+      const moved = all.filter((row) => from.has(row.dataset['id']!));
       // (every animation on those rows themselves, read once: the list's, filtered to them, not their
       // children's or their ::before's)
       const glides = new Set<Element>(moved);
@@ -43,11 +43,19 @@ export class RowGlide {
         if (effect?.target && !effect.pseudoElement && glides.has(effect.target)) a.cancel();
       }
       const dys = moved.map((row) => from.get(row.dataset['id']!)! - row.getBoundingClientRect().top);
+      // (and the rows on screen now that weren't near it before, from far down the list or new to it: they
+      // fade up into their places rather than appear from nowhere; read with the rest, before any slide starts)
+      const top = rows.scrollTop - 60;
+      const bottom = rows.scrollTop + rows.clientHeight;
+      const arrived = all.filter((row) => !from.has(row.dataset['id']!) && row.offsetTop > top && row.offsetTop < bottom);
       moved.forEach((row, i) => {
         const dy = dys[i];
         if (Math.abs(dy) < 1) return;
         row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
       });
+      for (const row of arrived) {
+        row.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+      }
     });
   }
 }
