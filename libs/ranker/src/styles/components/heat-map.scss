@@ -52,14 +52,21 @@ $hm-pop-bg: #151a18;
 }
 
 // (the season: the sport's dropdown, sized for the bar as the compare view's arcs dropdown is)
+// (in the grid's year dropdown lettering: capitals, spaced, a soft shadow; room after it before the split)
 .hm-season-select {
   align-items: center;
   box-sizing: border-box;
   display: inline-flex;
+  font-family: v.$font-base;
   font-size: 12px;
+  font-weight: 500;
   height: 30px;
+  letter-spacing: 1.5px;
+  margin-right: 8px;
   padding: 0 10px 0 14px;
-  width: 152px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  width: 172px;
 }
 
 // ---- the maps: side by side when there's room (a strip across the whole width), each on the board

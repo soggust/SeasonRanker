@@ -329,7 +329,7 @@ test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares,
     assert.ok(z.stats.some((s) => s.key === 'cpoe') && !z.stats.some((s) => s.key === 'yac'), "a QB's layers");
     assert.equal(z.defense, false);
     const rz = await zones.load(q(allen, 'QB', { split: 'redzone' }));
-    assert.equal(rz.stat.key, 'td', "the red zone's TD rate first");
+    assert.equal(rz.stat.key, 'epa', 'every map starts on EPA, the red zone too');
     assert.equal(rz.surface, 'red-zone');
     assert.deepEqual(rz.cells.map((c) => c.id), RZ_SPOT_IDS);
     assert.ok(rz.cells.filter((c) => c.id.startsWith('ez-')).reduce((n, c) => n + c.n, 0) > 10, 'his end-zone throws');

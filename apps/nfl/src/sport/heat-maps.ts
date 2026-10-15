@@ -354,11 +354,11 @@ export interface NflHeatContext {
   current: (season: number) => boolean;
 }
 
-// ---- the red zone's runs: by lane and where they started (its own stats: TD rate first, EPA, success, yards)
+// ---- the red zone's runs: by lane and where they started (its own stats: EPA first, as every map starts on EPA, then TD rate, success, yards)
 
 const RUN_STATS: StatSpec[] = [
-  { key: 'td', label: 'TD rate', per: 'TD rate', title: 'Touchdowns a carry', value: (r) => ratio(r['td'], att(r)), n: att, made: (r) => r['td'], sample: 'TDs / carries', format: pct, sd: 0.14 },
   { key: 'epa', label: 'EPA', per: 'EPA a carry', title: 'Expected points added a carry', value: (r) => ratio(r['epa'], att(r)), n: att, format: epaText, sd: 0.35 },
+  { key: 'td', label: 'TD rate', per: 'TD rate', title: 'Touchdowns a carry', value: (r) => ratio(r['td'], att(r)), n: att, made: (r) => r['td'], sample: 'TDs / carries', format: pct, sd: 0.14 },
   { key: 'success', label: 'Success', per: 'success rate', title: 'Share of carries with positive EPA', value: (r) => ratio(r['success'], att(r)), n: att, format: pct, sd: 0.12 },
   { key: 'ypc', label: 'Yds', per: 'yards a carry', title: 'Yards a carry', value: (r) => ratio(r['yds'], att(r)), n: att, format: (v) => v.toFixed(1), sd: 1.2 },
 ];
@@ -418,7 +418,7 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
       const { entry, kind, defense } = subject(file, part, q.player, role, q.side);
       const receiving = kind === 'skill';
       const specs = zoneStats(role === 'TM' && defense ? 'DEF' : role, red);
-      const spec = specs.find((s) => s.key === q.stat) ?? specs.find((s) => s.key === (red ? 'td' : 'epa'))!;
+      const spec = specs.find((s) => s.key === q.stat) ?? specs.find((s) => s.key === 'epa') ?? specs[0];
       // (a team's sample floor a little higher: more plays to go round; a receiver's a little lower)
       const minN = red ? (kind === 'def' || kind === 'off' ? 6 : 4) : kind === 'def' || kind === 'off' ? 12 : kind === 'skill' ? 8 : 10;
       const statN = spec.key === 'yac' ? Math.ceil(minN * 0.6) : minN;
@@ -519,7 +519,7 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
       const { role, file, part } = got;
       const { kind, defense } = subject(file, part, q.player, role, q.side);
       const specs = id === 'strip' ? STRIP_STATS : downStats(role === 'TM' && defense ? 'DEF' : role);
-      const spec = specs.find((s) => s.key === q.stat) ?? specs[0];
+      const spec = specs.find((s) => s.key === q.stat) ?? specs.find((s) => s.key === 'epa') ?? specs[0];
       const unit = kind === 'def' || kind === 'off';
       const minN = unit ? 15 : id === 'strip' ? 10 : 8;
       const statN = spec.scale === 'sequential' ? 5 : minN;
