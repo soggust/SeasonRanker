@@ -21,7 +21,6 @@ import { CareerIndex, CareerNames, careerIndex } from '@ranker/engine/career-ind
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
-import type { ZoneView } from './zones';
 import type { FieldMapPart, FieldMapView } from './field-map';
 import type { HeatMapData, HeatMapDef, HeatMatchup, HeatMode, HeatSplit } from '../heat-map/heat-map.model';
 import { CardOverview, CardSeason, CardStat, CardTab, CareerSeason, PlayerCard, SeasonContext } from './card.model';
@@ -129,7 +128,7 @@ export class PlayerCards {
     return this.onTable ? this.host.stats : SKILL_STATS[this.position];
   }
 
-  // The card's tabs: Overview, Analysis (when written up), Team, Stats, Zones, Game Log and Seasons or
+  // The card's tabs: Overview, Analysis (when written up), Team, Stats, Heat Maps, Game Log and Seasons or
   // History (a team's, a defense's or a line's; the sport's own history tab when it has one: MMA's fights)
   tabsFor(card: PlayerCard): { id: CardTab; title: string }[] {
     const [overview, stats, seasons] = TABS;
@@ -138,9 +137,8 @@ export class PlayerCards {
     // (a team's Team tab: its depth chart, staff and roster, before its Stats)
     if (SPORT.depthChart?.has(card.player, this.position, card.season)) tabs.push({ id: 'depth', title: 'Team' });
     tabs.push(stats);
-    // (MLB's season by zone: a pitcher's, a hitter's)
-    if (SPORT.zones?.has(card.player, this.position, card.season)) tabs.push({ id: 'zones', title: SPORT.zones.title(this.position) });
-    // (the sport's heat maps: the NFL's zones, field position, down & distance, and its Field Map)
+    // (the sport's heat maps: the NFL's zones, field position, down & distance, and its Field Map; MLB's pitch
+    // location, spray chart and defense)
     if (this.hasHeatMaps(card)) tabs.push({ id: 'heatmaps', title: 'Heat Maps' });
     if (this.hasGameLog(card)) tabs.push({ id: 'games', title: 'Game Log' });
     if (!SPORT.careerOnly && (!card.seasons || card.seasons.length > 1)) tabs.push({ ...seasons, title: this.careerTitle });
@@ -171,17 +169,9 @@ export class PlayerCards {
     return this.analysisLoads.get(file)!;
   }
 
-  // The Zones tab: the season by zone (loaded the first time the tab asks, then kept), and the stat showing
-  private zoneLoads = new Map<string, ZoneView | 'loading' | 'error'>();
-  zoneStat: string | null = null;
-  zones(card: PlayerCard): ZoneView | 'loading' | 'error' {
-    const zones = SPORT.zones;
-    return this.loadOnce(this.zoneLoads, card, zones && (() => zones.load(card.player, this.position, card.season)));
-  }
-
   // ---- The Heat Maps tab (heat-map/: SPORT.heatMaps, the maps each card type shows, and the Field Map under
   // them): the season picked in it (the card's until another is), the split, the side (a team's offense or
-  // defense), the mode and each map's stat (kept across cards, as the Zones tab's stat is)
+  // defense), the mode and each map's stat (kept across cards)
 
   // (the card a season was picked on, and the season: another card starts at its own)
   private heatPick: { key: string; season: number } | null = null;
@@ -304,8 +294,8 @@ export class PlayerCards {
     return Array.isArray(got) ? got : [];
   }
 
-  // A tab's view of a card (its season by zone, its game log, its depth chart), loaded the first time the tab
-  // asks, then kept: the view, or still loading, or failed (and failed for a sport without one: no load)
+  // A tab's view of a card (its game log, its depth chart), loaded the first time the tab asks, then kept: the
+  // view, or still loading, or failed (and failed for a sport without one: no load)
   private loadOnce<T>(cache: Map<string, T | 'loading' | 'error'>, card: PlayerCard, load: (() => Promise<T>) | undefined, part = ''): T | 'loading' | 'error' {
     const key = `${this.position}/${card.player.gsisId}/${card.season}${part ? '/' + part : ''}`;
     if (!cache.has(key) && load) {

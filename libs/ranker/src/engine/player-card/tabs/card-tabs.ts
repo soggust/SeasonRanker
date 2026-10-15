@@ -7,9 +7,8 @@ import { recentRef } from '../../game-view/game-view.service';
 import { PlayerAnalysis, evidenceText, nextWeekGame, paragraphs, waysTitle, weekGameText } from '../analysis';
 import { PlayerCard } from '../card.model';
 import { GameLogViewRow, splitVs } from '../game-log-view';
-import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
+import { leanShares, leanTitle, statTitle } from '../hover-text';
 import { sortFlags } from '../overview';
-import { ZoneStat, ZoneView, pitchColor } from '../zones';
 import { CardTab } from './card-tab';
 import { anyFaded, toneText } from '../../heat-map/heat-color';
 import type { HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatSurfaceId } from '../../heat-map/heat-map.model';
@@ -119,20 +118,6 @@ export class CardTeamTab extends CardTab {
   }
 }
 
-// Zones (MLB's): the season by zone, the arsenal
-@Component({ selector: 'card-zones', templateUrl: './zones.component.html', standalone: false })
-export class CardZonesTab extends CardTab {
-  readonly pitchColor = pitchColor;
-
-  // The stat showing (the first until another is picked)
-  zoneStat(view: ZoneView): ZoneStat {
-    return view.stats.find((st) => st.key === this.cards.zoneStat) ?? view.stats[0];
-  }
-
-  // (a box's hover: "Slugging, low left: .512 (catcher's view)")
-  readonly zoneTitle = zoneTitle;
-}
-
 // Heat Maps: the sport's maps for the row (SPORT.heatMaps: the NFL's zones, field position, down & distance),
 // the bar over them, each map's stat, the red zone's numbers, and the Field Map under them
 @Component({ selector: 'card-heat-maps', templateUrl: './heat-maps.component.html', standalone: false })
@@ -214,4 +199,4 @@ export class CardHistoryTab extends CardTab {
 @Component({ selector: 'card-seasons', templateUrl: './seasons.component.html', standalone: false })
 export class CardSeasonsTab extends CardTab {}
 
-export const CARD_TABS = [CardStatsTab, CardOverviewTab, CardAnalysisTab, CardTeamTab, CardZonesTab, CardHeatMapsTab, CardGamesTab, CardHistoryTab, CardSeasonsTab];
+export const CARD_TABS = [CardStatsTab, CardOverviewTab, CardAnalysisTab, CardTeamTab, CardHeatMapsTab, CardGamesTab, CardHistoryTab, CardSeasonsTab];

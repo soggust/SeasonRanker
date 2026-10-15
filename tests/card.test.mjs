@@ -44,27 +44,14 @@ test("hover words: a name's possessive, a rank in its list", () => {
   assert.equal(rankText(3, 32, true), 'T-3 of 32');
 });
 
-test("hover words: a skill's, a stat tile's and a zone's", () => {
-  const { skillTitle, statTitle, zoneTitle, zoneWhere } = nfl;
+test("hover words: a skill's and a stat tile's", () => {
+  const { skillTitle, statTitle } = nfl;
   assert.equal(skillTitle({ name: 'Accuracy', standing: 'Top 8%', pct: 0.92 }), 'Accuracy: Top 8% · 92nd percentile');
   assert.equal(skillTitle(undefined), '');
   const tile = { name: 'Passing Yds', display: '4,183', rank: 3, tied: false, of: 32, avg: '3,610' };
   assert.equal(statTitle(tile), 'Passing Yds: 4,183 (#3 of 32) · Avg 3,610');
   assert.equal(statTitle({ ...tile, tied: true }), 'Passing Yds: 4,183 (T-3 of 32) · Avg 3,610');
   assert.equal(statTitle({ ...tile, rank: null, avg: null, display: '' }), 'Passing Yds');
-  // (the catcher's view: 1-9 across and down, 11-14 the corners outside)
-  assert.deepEqual(['01', '03', '05', '07', '08', '11', '14'].map(zoneWhere), [
-    'high left',
-    'high right',
-    'middle of the zone',
-    'low left',
-    'low middle',
-    'outside the zone, high left',
-    'outside the zone, low right',
-  ]);
-  const slugging = { key: 'slg', label: 'Slugging', zones: { '07': { value: '.512', color: '#f00' } } };
-  assert.equal(zoneTitle(slugging, '07'), "Slugging, low left: .512 (catcher's view)");
-  assert.equal(zoneTitle(slugging, '09'), "Slugging, low right: none (catcher's view)");
 });
 
 test("hover words: the lean bar's pass and run shares always add up to 100", () => {

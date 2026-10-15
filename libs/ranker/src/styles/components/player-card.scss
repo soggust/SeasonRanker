@@ -3340,7 +3340,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // ---------------------------------------------------------------------------
-// Selectable pills (the Zones tab's stats; the game view's filters): in the sport's own hide (_sport-kit.scss's menu
+// Selectable pills (the game view's filters): in the sport's own hide (_sport-kit.scss's menu
 // buttons), round, the one chosen ringed in the accent
 // ---------------------------------------------------------------------------
 .game-play-filters {
@@ -3403,159 +3403,10 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-// ---------------------------------------------------------------------------
-// The Zones tab (MLB's): the four corners outside the zone as quadrants behind it, the strike zone's nine
-// boxes over them, each in its hot or cold color with its value; the arsenal as bars in each pitch's color
-// ---------------------------------------------------------------------------
-.zone-grid {
-  aspect-ratio: 5 / 6;
-  margin: 8px auto 4px;
-  max-width: 280px;
-  position: relative;
-}
-
-.zone-out {
-  border: 1px solid rgba(0, 0, 0, 0.35);
-  // (its padding inside its half: the four meet exactly, no band where their colors overlap)
-  box-sizing: border-box;
-  display: flex;
-  height: 50%;
-  padding: 10px 12px;
-  position: absolute;
-  width: 50%;
-
-  &.z11 {
-    left: 0;
-    top: 0;
-  }
-
-  &.z12 {
-    justify-content: flex-end;
-    right: 0;
-    top: 0;
-  }
-
-  &.z13 {
-    align-items: flex-end;
-    bottom: 0;
-    left: 0;
-  }
-
-  &.z14 {
-    align-items: flex-end;
-    bottom: 0;
-    justify-content: flex-end;
-    right: 0;
-  }
-}
-
-.zone-in {
-  // (a solid base under its colors: the corners' edges don't show through)
-  background: #1d2220;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  inset: 20% 20%;
-  position: absolute;
-
-  > span {
-    align-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-  }
-}
-
-.zone-out b,
-.zone-in b {
-  color: #fff;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-  font-weight: 900;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-.zone-arsenal {
-  margin-top: 12px;
-}
-
-.arsenal-pitch {
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  display: grid;
-  font-size: 13px;
-  gap: 12px;
-  grid-template-columns: 150px minmax(0, 1fr) 54px 76px 40px;
-  padding: 7px 0;
-
-  b {
-    text-align: right;
-  }
-
-  small {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 11px;
-    font-weight: 700;
-    text-align: right;
-  }
-}
-
-.arsenal-pitch-name {
-  align-items: center;
-  display: flex;
-  font-weight: 700;
-  gap: 8px;
-
-  i {
-    border-radius: v.$radius-xs;
-    display: inline-block;
-    height: 10px;
-    width: 10px;
-  }
-}
-
-.arsenal-pitch-bar {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: v.$radius-sm;
-  height: 8px;
-  overflow: hidden;
-
-  i {
-    display: block;
-    height: 100%;
-  }
-}
-
-.arsenal-pitch-mph {
-  color: rgba(255, 255, 255, 0.75);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  text-align: right;
-}
-
-// (home plate under the zone grid, from the catcher's side)
-.zone-plate {
-  display: block;
-  margin: 6px auto 2px;
-  width: 64px;
-
-  path {
-    fill: rgba(255, 255, 255, 0.14);
-    stroke: rgba(255, 255, 255, 0.5);
-    stroke-width: 1px;
-    vector-effect: non-scaling-stroke;
-  }
-}
-
 // (the card's other charts say what they are on hover: the help cursor, and the mark lightens)
 .stat-bar,
 .breakdown-lean-bar,
-.arsenal-pitch-bar,
-.depth-bar,
-.zone-out,
-.zone-in > span {
+.depth-bar {
   cursor: help;
   transition: filter v.$t-hover;
 
@@ -3566,8 +3417,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (a stat bar's track lightens under the pointer too)
 .stat-bar:hover,
-.depth-bar:hover,
-.arsenal-pitch-bar:hover {
+.depth-bar:hover {
   background: rgba(255, 255, 255, 0.14);
 }
 
@@ -3602,7 +3452,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // The card's tabs are components (engine/player-card/tabs): their elements lay out as if they weren't there,
 // so a tab's panels sit in the card's body as they always have
-$card-tab-hosts: card-stats, card-overview, card-analysis, card-team, card-zones, card-games, card-history,
+$card-tab-hosts: card-stats, card-overview, card-analysis, card-team, card-games, card-history,
   card-seasons;
 
 #{$card-tab-hosts} {

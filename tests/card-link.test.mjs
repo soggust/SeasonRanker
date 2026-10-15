@@ -59,7 +59,7 @@ for (const sport of SPORTS) {
     // Every card tab by its word in the link and by its own id; the Overview leaves it out
     const [tab] = tabs;
     const row = SKILL_UNITS[tab][0];
-    const words = { overview: null, analysis: 'analysis', depth: 'team', stats: 'stats', zones: 'zones', games: 'gamelog', seasons: 'career', history: 'history' };
+    const words = { overview: null, analysis: 'analysis', depth: 'team', stats: 'stats', games: 'gamelog', seasons: 'career', history: 'history' };
     for (const [cardTab, word] of Object.entries(words)) {
       setAddress(page);
       const link = new URL(new PositionService().cardLink({ position: tab, season: CURRENT_SEASON, id: row.gsisId, name: row.name, tab: cardTab }));

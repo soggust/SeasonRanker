@@ -3,7 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SPORT } from '@sport/sport';
 import { logoUrl } from '../account/lists/lists-helpers';
 import { ordinal } from '@ranker/core/format';
-import { pitchColor } from '../player-card/zones';
+import { pitchColor } from './pitch-colors';
 import { HOME, TracedPark, fieldSpot, loadTracedParks, tracedPark, wallPath } from './parks';
 import { GameArsenal, GameChart, GameFantasy, GameMark, GameMoment, GamePitch, GameTeam, GameView } from './game.model';
 import { GameWeather } from './venue';

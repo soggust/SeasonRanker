@@ -3,7 +3,7 @@
 // injury report, highlights, logos and team looks, the sport's vs Position breakdown (bundle it with the NFL's
 // or the NHL's tsconfig: @sport/vs-position is that sport's), the NFL's Field Map read from its file, and
 // the Team tab's formations by the injury report (who's playing now, or the chart's starters)
-export { percentile, percentileText, rankText, possessive, skillTitle, statTitle, zoneTitle, zoneWhere, leanShares, leanTitle } from '@ranker/engine/player-card/hover-text';
+export { percentile, percentileText, rankText, possessive, skillTitle, statTitle, leanShares, leanTitle } from '@ranker/engine/player-card/hover-text';
 export { gameLogView, columnLooks, splitVs } from '@ranker/engine/player-card/game-log-view';
 export { formWhen, injuryReport, returnDay, loadGame } from '@ranker/engine/game-view/game';
 export { lineHead, momentLabel, wpMoments } from '@ranker/engine/game-view/wp-moments';

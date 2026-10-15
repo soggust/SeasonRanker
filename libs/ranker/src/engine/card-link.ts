@@ -23,7 +23,6 @@ const CARD_TABS: Record<CardTab, string> = {
   analysis: 'analysis',
   depth: 'team',
   stats: 'stats',
-  zones: 'zones',
   heatmaps: 'heatmaps',
   games: 'gamelog',
   seasons: 'career',
@@ -52,7 +51,8 @@ function tabOf<T extends string>(tabs: Record<T, string>, text: string | null): 
   return hit ? hit[0] : null;
 }
 
-export const cardTabOf = (text: string | null): CardTab | null => tabOf(CARD_TABS, text);
+// (MLB's old Zones tab's links open the Heat Maps, where its zones and arsenal went)
+export const cardTabOf = (text: string | null): CardTab | null => tabOf(CARD_TABS, text) ?? (word(text ?? '') === 'zones' ? 'heatmaps' : null);
 export const gameTabOf = (text: string | null): GameTab | null => tabOf(GAME_TABS, text);
 
 // The live site's address for a page link (its path and query kept; a local server's swapped out)

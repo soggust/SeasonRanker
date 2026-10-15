@@ -4,7 +4,6 @@ import type { CardSkill } from './skills';
 import type { RosterGrade } from './roster-grades';
 import type { GradeWhy } from './grade-why';
 import type { DepthLoadContext, DepthView } from './player-card/depth-chart';
-import type { ZoneView } from './player-card/zones';
 import type { FieldMapPart, FieldMapView } from './player-card/field-map';
 import type { HeatMapDef, HeatMatchup } from './heat-map/heat-map.model';
 
@@ -413,13 +412,6 @@ export interface SportConfig {
     has: (player: SkillPlayer, position: string, season: number) => boolean;
     load: (player: SkillPlayer, position: string, season: number, context: DepthLoadContext) => Promise<DepthView>;
   };
-  // The card's Zones tab (MLB's: a pitcher's or hitter's season by zone, a pitcher's arsenal): whether a
-  // row has it for a season, its tab's name, and its zones (player-card/zones.ts)
-  zones?: {
-    has: (player: SkillPlayer, position: string, season: number) => boolean;
-    title: (position: string) => string;
-    load: (player: SkillPlayer, position: string, season: number) => Promise<ZoneView>;
-  };
   // The card's Field Map, under its heat maps in the Heat Maps tab (the NFL's: a season by where on the field
   // it happened, player-card/field-map.ts: the run lanes, the kicks, the punts): whether a row can have one,
   // and its view for a season and split (the regular season, the playoffs, both, or the red zone; null: none)
@@ -428,8 +420,8 @@ export interface SportConfig {
     load: (player: SkillPlayer, position: string, season: number, part: FieldMapPart) => Promise<FieldMapView | null>;
   };
   // The card's Heat Maps tab (heat-map/: the <heat-map> component and its surfaces): the maps each card type
-  // shows (the NFL's zones, field-position strip and down & distance grid), each loaded for the season, split,
-  // stat and side picked. The tab shows when a row has one of these or a Field Map.
+  // shows (the NFL's zones, field-position strip and down & distance grid; MLB's pitch location, spray chart and
+  // defense), each loaded for the season, split, stat and side picked. The tab shows when a row has one of these or a Field Map.
   heatMaps?: HeatMapDef[];
   // ...and the compact matchup maps on its AI preview (the analysis's next opponent, by the sport's key: the
   // NFL's "KC")
