@@ -43,18 +43,22 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   z-index: v.z(game);
 }
 
-// ---- the hero: away on the left, home on the right, each on its own color
+// ---- the hero: away on the left, home on the right, each half in its own team's hue (team-look.ts: lighter
+// at the outer edge, darkening into the deep version of the same hue), meeting at a crisp angled seam with a
+// thin light line; a soft diagonal sheen and a faint texture over both
 
 .game-hero {
   align-items: center;
   background:
-    radial-gradient(ellipse at 0% 110%, color-mix(in srgb, var(--away-color) 55%, transparent), transparent 60%),
-    radial-gradient(ellipse at 100% 110%, color-mix(in srgb, var(--home-color) 55%, transparent), transparent 60%),
+    linear-gradient(115deg, rgba(255, 255, 255, 0.06), transparent 35%),
+    v.$team-wash-texture,
     linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--away-color) 45%, var(--card-base)),
-      var(--card-base) 50%,
-      color-mix(in srgb, var(--home-color) 45%, var(--card-base))
+      102deg,
+      var(--away-hi) 0%,
+      var(--away-lo) 49.6%,
+      rgba(255, 255, 255, 0.35) 49.6% 49.9%,
+      var(--home-lo) 49.9%,
+      var(--home-hi) 100%
     );
   grid-template-columns: 1fr auto 1fr;
   padding: 40px 28px 24px;
@@ -63,21 +67,27 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-hero-empty {
   --away-color: #555;
   --home-color: #555;
+  --away-hi: #5f6362;
+  --away-lo: #1b1b1b;
+  --home-hi: #5f6362;
+  --home-lo: #1b1b1b;
   min-height: 120px;
 }
 
-// (both teams' logos, huge and faint, at the two ends)
+// (each team's logo, a big faint white watermark in its own half)
 .game-texture img {
-  height: 200%;
-  opacity: 0.05;
+  height: 260%;
+  opacity: 0.1;
+  top: -80%;
+  transform: rotate(-8deg);
 
   &.away {
-    left: -6%;
+    left: 16%;
     right: auto;
   }
 
   &.home {
-    right: -6%;
+    right: 16%;
   }
 }
 
@@ -1235,14 +1245,11 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   margin-top: -4px;
 }
 
-// (a team's logo, small, on its badge: the grid's team badge in miniature)
+// (a team's logo, small, on its chip: the grid's team card in miniature)
 .mini-gem {
+  @include v.team-chip;
   align-items: center;
-  background: var(--team-badge);
-  // (an edge that shows on the darkest badge too: every one reads its full size)
-  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: v.$radius-md;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
   display: inline-flex;
   flex: none;
   height: 22px;

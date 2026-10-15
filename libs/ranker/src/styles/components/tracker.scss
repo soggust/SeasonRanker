@@ -550,7 +550,7 @@ $face-fallback: #333;
 
 .pin-side {
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--team-badge, #{$badge-fallback}) 30%, transparent), transparent 62%),
+    linear-gradient(160deg, color-mix(in srgb, var(--team-tint, #{$badge-fallback}) 30%, transparent), transparent 62%),
     rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: v.$radius-xl;
@@ -595,7 +595,7 @@ $face-fallback: #333;
 // (the headshot ringed in the side's color; a team its logo)
 .pin-face {
   align-items: center;
-  background: color-mix(in srgb, var(--team-badge, #{$face-fallback}) 65%, #000);
+  background: color-mix(in srgb, var(--team-tint, #{$face-fallback}) 65%, #000);
   border: 2px solid var(--side);
   border-radius: v.$radius-round;
   box-shadow: 0 0 10px color-mix(in srgb, var(--side) 35%, transparent);
@@ -611,6 +611,11 @@ $face-fallback: #333;
     object-fit: cover;
     object-position: top;
     width: 100%;
+  }
+
+  // (a team: its logo on its chip's face)
+  &.logo-face {
+    background: var(--team-badge, #{$face-fallback});
   }
 
   &.logo-face img {

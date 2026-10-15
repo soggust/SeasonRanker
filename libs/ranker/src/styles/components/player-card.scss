@@ -141,14 +141,13 @@ $ai-narrow: v.bp(ai-narrow);
 
 .card-hero {
   align-items: end;
-  // The team color, bright behind the card, easing into the slate (never down to black)
+  // The team's own hue (team-look.ts: --team-hi to --team-lo), lighter at the outer edge, darkening into a deep
+  // version of the same hue (never grey but for a black team's charcoal, never another team's color); a soft
+  // diagonal sheen and a faint texture over it
   background:
-    radial-gradient(ellipse at 12% 110%, color-mix(in srgb, var(--team-hero, var(--team-badge)) 60%, transparent), transparent 65%),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--team-hero, var(--team-badge)) 62%, #4a524f),
-      color-mix(in srgb, var(--team-hero, var(--team-badge)) 22%, var(--card-base)) 75%
-    );
+    linear-gradient(115deg, rgba(255, 255, 255, 0.07), transparent 42%),
+    v.$team-wash-texture,
+    linear-gradient(100deg, var(--team-hi, #5f6362) 0%, var(--team-lo, #1b1b1b) 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: grid;
   flex: 0 0 auto;
@@ -167,7 +166,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-// ...the team logo on it, overscaled, in faint white: a texture on the gradient
+// ...the team logo on it, overscaled, a faint white watermark, slightly tilted
 .hero-texture {
   inset: 0;
   overflow: hidden;
@@ -177,8 +176,8 @@ $ai-narrow: v.bp(ai-narrow);
 
   img {
     @include v.white-lettering;
-    height: 225%;
-    opacity: 0.06;
+    height: 230%;
+    opacity: 0.1;
     position: absolute;
     right: -6%;
     top: 50%;
@@ -220,19 +219,14 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .hero-card {
-  @include v.team-card(3px);
-  @include v.team-card-gloss(6px, 46%, 0.5, 0.1);
-  box-shadow:
-    inset 0 -6px 14px rgba(0, 0, 0, 0.35),
-    inset 0 2px 4px rgba(255, 255, 255, 0.45),
-    0 8px 20px rgba(0, 0, 0, 0.55);
+  @include v.team-card(3.5px);
+  @include v.team-card-gloss(6px, 46%);
+  box-shadow: v.team-card-shadow(0 8px 20px rgba(0, 0, 0, 0.55), 16px);
 }
 
 .similar-card {
-  @include v.team-card;
-  box-shadow:
-    inset 0 -3px 6px rgba(0, 0, 0, 0.35),
-    0 2px 5px rgba(0, 0, 0, 0.55);
+  @include v.team-card(2px);
+  box-shadow: v.team-card-shadow(0 2px 5px rgba(0, 0, 0, 0.55), 6px);
   transition: border-color v.$t-hover ease;
 }
 
@@ -1201,17 +1195,11 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-// The card's team accent: the team's own color (--team-badge, set on the card), its lightness kept in a
-// range that reads on the dark panels (a navy or a black lifted, its hue kept); the sport's accent
-// without one, or where the browser can't work it out
+// The card's team accent: the team's own color made to read on the dark panels, never a red or a green
+// (team-look.ts accentSafe, set on the card: the panels hold values colored won and lost); the sport's accent
+// without one
 .player-card {
-  --team-accent: var(--team-badge, var(--scoreboard-led));
-}
-
-@supports (color: oklch(from red l c h)) {
-  .player-card {
-    --team-accent: oklch(from var(--team-badge, var(--scoreboard-led)) clamp(0.68, l, 0.86) c h);
-  }
+  --team-accent: var(--scoreboard-led);
 }
 
 .card-career {
@@ -2901,7 +2889,7 @@ $ai-narrow: v.bp(ai-narrow);
   > img,
   > .depth-initial {
     background: #1b1f23;
-    border: 2px solid var(--team-badge, var(--scoreboard-led));
+    border: 2px solid var(--team-accent, var(--scoreboard-led));
     border-radius: v.$radius-round;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
