@@ -6,7 +6,7 @@ import { CardSkill } from '@ranker/engine/skills';
 
 export type { CardBreakdown, CardFlag, CardSkill };
 
-export type CardTab = 'overview' | 'analysis' | 'stats' | 'seasons' | 'history' | 'games' | 'depth' | 'zones';
+export type CardTab = 'overview' | 'analysis' | 'stats' | 'seasons' | 'history' | 'games' | 'depth' | 'zones' | 'heatmaps';
 
 // A stat's value, where it ranks in the list and how that compares
 export interface CardStat {

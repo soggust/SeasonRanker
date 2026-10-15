@@ -1,0 +1,630 @@
+@use "../variables" as v;
+
+// The Heat Maps (heat-map/: <heat-map> and its bar, the card's Heat Maps tab, the AI preview's matchup maps):
+// each surface on the turf, darkened under the chalk as the Field Map's (field-map.scss); its cells tinted
+// (inline: heat-color.ts, never past 0.85 alpha), their numbers in the hand; a cell's popover in the card's
+// popover look (the vs Position pie's); the key under each map. The cells tint in near to far, a mode switch
+// crossfades their paint and numbers; none of it for anyone who's asked for less motion.
+// (loaded under player-card: _cards.scss)
+
+// (the turf under the chalk, darkened; the dark edge that keeps a number readable on it; a greyed cell's grey)
+$hm-turf: rgb(9, 17, 12);
+$hm-halo: rgb(0, 0, 0);
+$hm-grey: rgb(160, 166, 172);
+$hm-volume: rgb(95, 168, 255);
+$hm-lean-low: rgb(240, 172, 72);
+$hm-lean-high: rgb(138, 120, 236);
+$hm-pop-bg: #151a18;
+
+// ---- the bar: season, split, side, mode, the opponent
+
+.hm-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 14px;
+}
+
+.hm-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hm-visually-hidden {
+  @include v.visually-hidden;
+}
+
+// (the season: a plain select on the board, its chevron drawn in)
+.hm-season select {
+  appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ccc' stroke-width='1.6'/%3E%3C/svg%3E")
+      right 9px center no-repeat,
+    rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: v.$radius-md;
+  color: #fff;
+  cursor: pointer;
+  font-family: v.$font-heading;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+  padding: 4px 26px 4px 10px;
+  transition: border-color v.$t-hover;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  @include v.focus-lit {
+    border-color: #fff;
+  }
+
+  option {
+    background: #1b1f1d;
+  }
+}
+
+// (the opponent's overlay: a pill like the rest, its name in the hand)
+.hm-vs {
+  font-weight: 800;
+}
+
+// ---- the maps: side by side when there's room (a strip across the whole width), each on the board
+
+.hm-maps {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  // (auto-fill: a column alone keeps its width, never stretched across the card)
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+.hm-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.hm-figure {
+  @include v.scoreboard-panel;
+  margin: 0;
+  min-width: 0;
+  padding: 12px 14px 12px;
+
+  // (a map on its way: the board's panel, a soft shimmer across it)
+  &.hm-loading {
+    min-height: 220px;
+    position: relative;
+
+    &.tall {
+      min-height: 480px;
+    }
+
+    &::after {
+      background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%) 0 0 / 250% 100%;
+      border-radius: inherit;
+      content: "";
+      inset: 0;
+      position: absolute;
+    }
+  }
+}
+
+.hm-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.hm-title {
+  align-items: baseline;
+  cursor: help;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+
+  b {
+    color: #fff;
+    @include v.hand(15px);
+  }
+
+  small {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+// (a map's stat: quiet words, the one showing lit)
+.hm-stats {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.hm-stat {
+  background: none;
+  border: none;
+  border-radius: v.$radius-pill;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  font-family: v.$font-base;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  transition:
+    color v.$t-hover,
+    background-color v.$t-hover;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  // (by volume a map's stat doesn't color it: its picker quieter)
+  .quiet > & {
+    opacity: 0.55;
+  }
+
+  @include v.focus-lit {
+    color: #fff;
+  }
+}
+
+// (the Field Map's charts in among them, on the board too: one column's chart, never stretched)
+.hm-field .fm-charts {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+// ---- a map: the surface, the cells, a cell's popover
+
+.hm {
+  min-width: 0;
+}
+
+.hm-stage {
+  position: relative;
+
+  svg {
+    display: block;
+    overflow: visible;
+    width: 100%;
+  }
+}
+
+// (the field's turf and chalk, as the Field Map draws them)
+.hm-shade {
+  fill: rgba($hm-turf, 0.76);
+}
+
+.hm-stripe {
+  fill: rgba(255, 255, 255, 0.035);
+}
+
+.hm-endzone {
+  fill: rgba(0, 0, 0, 0.32);
+}
+
+.hm-edge {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 1.6px;
+}
+
+.hm-yard {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1px;
+
+  &.band {
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 1.3px;
+  }
+}
+
+.hm-hash {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 0.9px;
+}
+
+.hm-goal {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2px;
+}
+
+.hm-num {
+  dominant-baseline: central;
+  fill: rgba(255, 255, 255, 0.28);
+  font-family: v.$font-heading;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-anchor: middle;
+
+  &.flat {
+    dominant-baseline: auto;
+    fill: rgba(255, 255, 255, 0.45);
+    font-size: 9px;
+  }
+}
+
+.hm-los {
+  filter: drop-shadow(0 0 3px rgba($hm-volume, 0.6));
+  stroke: #5fa8ff;
+  stroke-dasharray: 6 4;
+  stroke-width: 2px;
+}
+
+.hm-side,
+.hm-ez-text {
+  fill: rgba(255, 255, 255, 0.55);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-anchor: middle;
+}
+
+.hm-ez-text {
+  dominant-baseline: central;
+  fill: rgba(255, 255, 255, 0.4);
+}
+
+// (the grid's headings: the distances over the columns, the downs down the side)
+.hm-axis {
+  fill: rgba(255, 255, 255, 0.62);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-anchor: middle;
+
+  &.sub {
+    fill: rgba(255, 255, 255, 0.38);
+    font-size: 8px;
+    letter-spacing: 0.4px;
+  }
+
+  &.down {
+    fill: rgba(255, 255, 255, 0.78);
+    font-family: v.$font-hand;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+}
+
+// (a small sample's hatch)
+.hm-hatch-bg {
+  fill: rgba($hm-grey, 0.12);
+}
+
+.hm-hatch-line {
+  stroke: rgba($hm-grey, 0.22);
+  stroke-width: 2px;
+}
+
+.hm-cell {
+  cursor: pointer;
+  outline: none;
+
+  .hm-fill {
+    stroke: rgba(0, 0, 0, 0.3);
+    stroke-width: 1px;
+    transition:
+      fill 0.35s v.$ease-out,
+      stroke v.$t-fast ease,
+      stroke-width v.$t-fast ease;
+  }
+
+  &:hover .hm-fill,
+  &.on .hm-fill {
+    stroke: rgba(255, 255, 255, 0.85);
+    stroke-width: 1.6px;
+  }
+
+  @include v.focus-lit {
+    .hm-fill {
+      stroke: #fff;
+      stroke-width: 1.8px;
+    }
+  }
+
+  &.thin .hm-main {
+    fill: rgba(255, 255, 255, 0.42);
+  }
+}
+
+// (a cell's numbers: the value in the hand, the sample under it; each mode's, the one showing faded in)
+.hm-text {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.shown {
+    opacity: 1;
+  }
+}
+
+.hm-main,
+.hm-sub {
+  paint-order: stroke;
+  stroke: rgba($hm-halo, 0.55);
+  stroke-linejoin: round;
+  text-anchor: middle;
+}
+
+.hm-main {
+  fill: #fff;
+  font-family: v.$font-hand;
+  stroke-width: 3px;
+}
+
+.hm-sub {
+  fill: rgba(255, 255, 255, 0.72);
+  font-weight: 800;
+  stroke-width: 2.5px;
+}
+
+// (a cell's popover: over it, or under it near the top; kept off the map's edges)
+.hm-pop {
+  --tx: -50%;
+  --ty: calc(-100% - 12px);
+  background: $hm-pop-bg;
+  border: 1px solid var(--pop-color);
+  border-radius: v.$radius-lg;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  gap: 3px;
+  line-height: 1.4;
+  max-width: 240px;
+  padding: 8px 11px;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(var(--tx), var(--ty));
+  width: max-content;
+  z-index: 5;
+
+  &.below {
+    --ty: 16px;
+  }
+
+  &[data-align="start"] {
+    --tx: -18%;
+  }
+
+  &[data-align="end"] {
+    --tx: -82%;
+  }
+
+  b {
+    color: #fff;
+    font-weight: 800;
+  }
+}
+
+// ---- the key under a map
+
+.hm-legend {
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 11px;
+  font-weight: 700;
+  gap: 6px 16px;
+  justify-content: center;
+  margin-top: 10px;
+
+  small {
+    font-size: 10.5px;
+  }
+}
+
+.hm-ramp-wrap,
+.hm-thin-key,
+.hm-read {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.hm-ramp {
+  border-radius: v.$radius-pill;
+  display: inline-block;
+  height: 8px;
+  width: 64px;
+
+  &.div {
+    background: linear-gradient(90deg, rgba(v.$bad, 0.85), rgba(255, 255, 255, 0.1) 50%, rgba(v.$good-bright, 0.85));
+  }
+
+  &.seq {
+    background: linear-gradient(90deg, rgba($hm-volume, 0.12), rgba($hm-volume, 0.85));
+  }
+
+  &.lean {
+    background: linear-gradient(90deg, rgba($hm-lean-low, 0.85), rgba(255, 255, 255, 0.1) 50%, rgba($hm-lean-high, 0.85));
+  }
+}
+
+.hm-thin-key i {
+  background: repeating-linear-gradient(45deg, rgba($hm-grey, 0.32) 0 2px, rgba($hm-grey, 0.1) 2px 5px);
+  border-radius: v.$radius-xxs;
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+}
+
+.hm-read {
+  b {
+    color: #fff;
+    @include v.hand(12px);
+  }
+
+  small {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// ---- the red zone's numbers under its zones
+
+.hm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.hm-chip {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: v.$radius-pill;
+  cursor: help;
+  display: inline-flex;
+  gap: 7px;
+  padding: 4px 12px 4px 10px;
+
+  b {
+    @include v.hand(15px);
+  }
+
+  > span {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  small {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 10px;
+    margin-left: 5px;
+  }
+}
+
+// ---- a compact map (the AI preview's matchup): no numbers, a short key
+
+.hm.compact {
+  .hm-hatch-line {
+    stroke: rgba($hm-grey, 0.12);
+  }
+
+  .hm-cell .hm-fill {
+    stroke-width: 0.8px;
+  }
+}
+
+// (two side by side, a phone's too: small maps, their one key under them)
+.ai-matchup-maps {
+  display: grid;
+  gap: 10px 22px;
+  grid-template-columns: minmax(0, 230px);
+  justify-content: center;
+  margin: 14px 0 0;
+
+  &.pair {
+    grid-template-columns: repeat(2, minmax(0, 230px));
+  }
+}
+
+.ai-mini-key {
+  margin: 4px 0 8px;
+}
+
+.ai-mini {
+  margin: 0;
+  min-width: 0;
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+
+    b {
+      color: #fff;
+      @include v.hand(13px);
+    }
+
+    small {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+  }
+}
+
+// ---- phone: a touch tighter
+
+@include v.down(phone) {
+  .hm-controls {
+    gap: 6px 8px;
+  }
+
+  .hm-figure {
+    padding: 10px 10px 10px;
+  }
+
+  .hm-pop {
+    max-width: 200px;
+  }
+}
+
+// ---- motion (none for anyone who's asked for less): the cells tint in near to far, their numbers after; a
+// popover rises in; a map on its way shimmers
+
+@media (prefers-reduced-motion: no-preference) {
+  .hm-fill {
+    animation: hm-tint 0.5s ease backwards;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+
+  .hm-text.shown {
+    animation: hm-tint 0.35s ease backwards;
+    animation-delay: calc(var(--i, 0) * 35ms + 220ms);
+  }
+
+  .hm-pop {
+    animation: hm-rise v.$t-hover ease-out;
+  }
+
+  .hm-loading::after {
+    animation: hm-shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes hm-tint {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hm-rise {
+  from {
+    opacity: 0;
+    transform: translate(var(--tx), calc(var(--ty) + 4px));
+  }
+}
+
+@keyframes hm-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}

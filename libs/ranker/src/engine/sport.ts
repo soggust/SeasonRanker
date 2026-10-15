@@ -5,7 +5,8 @@ import type { RosterGrade } from './roster-grades';
 import type { GradeWhy } from './grade-why';
 import type { DepthLoadContext, DepthView } from './player-card/depth-chart';
 import type { ZoneView } from './player-card/zones';
-import type { FieldMapView } from './player-card/field-map';
+import type { FieldMapPart, FieldMapView } from './player-card/field-map';
+import type { HeatMapDef, HeatMatchup, HeatOpponent } from './heat-map/heat-map.model';
 
 // How a stat's value reads (every sport's SkillStat.format is one of these): int, dec1, dec2; avg3, a
 // batting-average style rate (".287"); ip, innings (175.1); pct, a 0-1 share as a whole percent;
@@ -418,12 +419,21 @@ export interface SportConfig {
     title: (position: string) => string;
     load: (player: SkillPlayer, position: string, season: number) => Promise<ZoneView>;
   };
-  // The card's Field Map on its Overview (the NFL's: a season by where on the field it happened,
-  // player-card/field-map.ts): whether a row can have one, and its view for a season and part (null: none)
+  // The card's Field Map, under its heat maps in the Heat Maps tab (the NFL's: a season by where on the field
+  // it happened, player-card/field-map.ts: the run lanes, the kicks, the punts): whether a row can have one,
+  // and its view for a season and split (the regular season, the playoffs, both, or the red zone; null: none)
   fieldMap?: {
     has: (player: SkillPlayer, position: string, season: number) => boolean;
-    load: (player: SkillPlayer, position: string, season: number, part: 'regular' | 'post' | 'all') => Promise<FieldMapView | null>;
+    load: (player: SkillPlayer, position: string, season: number, part: FieldMapPart) => Promise<FieldMapView | null>;
   };
+  // The card's Heat Maps tab (heat-map/: the <heat-map> component and its surfaces): the maps each card type
+  // shows (the NFL's zones, field-position strip and down & distance grid), each loaded for the season, split,
+  // stat, side and opponent picked. The tab shows when a row has one of these or a Field Map.
+  heatMaps?: HeatMapDef[];
+  // ...the row's next opponent, for the zones' overlay (the current season's; null: none known), and the
+  // compact matchup maps on its AI preview (the analysis's next opponent, by the sport's key: the NFL's "KC")
+  heatOpponent?: (player: SkillPlayer, position: string, season: number) => Promise<HeatOpponent | null>;
+  heatMatchups?: (player: SkillPlayer, position: string, season: number, opponent: string) => Promise<HeatMatchup[]>;
   // The card's big hero logo when the sport has a sharper one than the grid's icon (the NFL's, 256px)
   cardLogo?: (logo: string) => string;
   // The card's Analysis tab: the sport publishes AI write-ups (data/analysis: player-card/analysis.ts)

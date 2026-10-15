@@ -1,6 +1,6 @@
 @use "../variables" as v;
 
-// The Field Map (the Overview's panel, player-card/field-map.component.html): each chart on the turf, darkened
+// The Field Map (in the Heat Maps tab, player-card/field-map.component.html): each chart on the turf, darkened
 // under the chalk; its zones, lanes, rings and bars tinted green or red against the league's (inline), their
 // numbers in the hand; side by side when there's room, one under another on a phone
 // (loaded under player-card: _cards.scss)
@@ -10,11 +10,6 @@
 $fm-turf: rgb(9, 17, 12);
 $fm-halo: rgb(0, 0, 0);
 $fm-bad-light: rgb(255, 140, 130);
-
-.field-map .group-body {
-  padding-bottom: 16px;
-  padding-top: 14px;
-}
 
 .fm-charts {
   align-items: start;
@@ -618,27 +613,9 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-// ---- the switch on the bar: Efficiency or Volume
-
-// (the Efficiency / Volume switch: the sport's own pills, small (.game-filter.small, dressed by each theme: the
-// NFL's leather, MLB's hide))
-.fm-modes {
-  gap: 6px !important;
-  margin-right: 8px;
-}
-
 // ---- phone: the charts' own numbers a touch smaller, the strip's tighter
 
 @include v.down(phone) {
-  .field-map .group-body {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .fm-modes .game-filter {
-    padding: 4px 9px;
-  }
-
   .fm-cell {
     padding: 5px 0 4px;
 

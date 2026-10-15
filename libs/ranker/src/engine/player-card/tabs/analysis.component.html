@@ -117,6 +117,22 @@
               <p>{{ p }}</p>
             }
           </div>
+          <!-- (the matchup on the field: his, or the team's, zones against what the opponent allows there, small) -->
+          @let maps = cards.matchups(c, a.game.opp);
+          @if (maps.length) {
+            <div class="ai-matchup-maps" [class.pair]="maps.length > 1">
+              @for (m of maps; track m.title) {
+                <figure class="ai-mini">
+                  <figcaption><b>{{ m.title }}</b><small>{{ m.caption }}</small></figcaption>
+                  <heat-map [surface]="m.surface" [cells]="m.cells" [stat]="m.stat" [overlay]="m.overlay" [overlayLabel]="m.overlayLabel" [defense]="m.defense" [compact]="true" [legend]="false" [label]="m.title" />
+                </figure>
+              }
+            </div>
+            <div class="hm-legend ai-mini-key">
+              <span class="hm-ramp-wrap"><small>Tough spot</small><i class="hm-ramp div"></i><small>Edge</small></span>
+              <span class="hm-thin-key"><i></i>Small sample</span>
+            </div>
+          }
           <div class="ai-points matchups">
             @for (p of r.nextGame.keyMatchups; track $index) {
               <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>

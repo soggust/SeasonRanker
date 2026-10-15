@@ -1,0 +1,141 @@
+<!-- A heat map (heat-map.component.ts): the surface's backdrop, its cells painted by the stat (both modes'
+     paint and numbers kept, the one showing faded in), what sits on top (the line of scrimmage, the goal lines),
+     a cell's popover, and the key -->
+@if (shape; as s) {
+  <div class="hm" [class.compact]="compact" [class.volume]="mode === 'volume'" [class.overlaid]="!!overlay">
+    <div class="hm-stage" (mouseleave)="hover = null">
+      <svg [attr.viewBox]="box" role="group" [attr.aria-label]="aria" [style.--hm-thin]="url('hatch')">
+        <defs>
+          @for (p of s.backdrop; track $index) {
+            @if (p.kind === 'texture') {
+              <pattern [attr.id]="id + '-tex' + $index" patternUnits="userSpaceOnUse" [attr.width]="p.tile" [attr.height]="p.tile">
+                <image [attr.href]="p.href" [attr.width]="p.tile" [attr.height]="p.tile" />
+              </pattern>
+            }
+          }
+          <!-- (a small sample's cell: a faint grey, hatched) -->
+          <pattern [attr.id]="id + '-hatch'" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+            <rect class="hm-hatch-bg" width="6" height="6" />
+            <line class="hm-hatch-line" x1="0" y1="0" x2="0" y2="6" />
+          </pattern>
+        </defs>
+
+        <g class="hm-backdrop" aria-hidden="true">
+          @for (p of s.backdrop; track $index) {
+            @switch (p.kind) {
+              @case ('texture') {
+                <polygon [attr.points]="p.points" [attr.fill]="url('tex' + $index)" />
+              }
+              @case ('polygon') {
+                <polygon [attr.class]="p.cls" [attr.points]="p.points" />
+              }
+              @case ('path') {
+                <path [attr.class]="p.cls" [attr.d]="p.d" />
+              }
+              @case ('rect') {
+                <rect [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.rx]="p.rx ?? null" />
+              }
+              @case ('circle') {
+                <circle [attr.class]="p.cls" [attr.cx]="p.cx" [attr.cy]="p.cy" [attr.r]="p.r" />
+              }
+              @case ('text') {
+                <text [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.transform]="rotate(p)">{{ p.text }}</text>
+              }
+            }
+          }
+        </g>
+
+        @let fontMain = s.text?.main ?? 14;
+        @let fontSub = s.text?.sub ?? 9.5;
+        @for (c of view; track c.id) {
+          <g
+            class="hm-cell"
+            [class.thin]="c.thin"
+            [class.on]="active?.id === c.id"
+            [style.--i]="c.i"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="c.aria"
+            [attr.aria-expanded]="pinned === c.id"
+            (mouseenter)="hover = c.id"
+            (focus)="hover = c.id"
+            (blur)="hover === c.id ? (hover = null) : null"
+            (click)="pin(c.id)"
+            (keydown.enter)="pin(c.id)"
+            (keydown.space)="$event.preventDefault(); pin(c.id)"
+          >
+            @if (c.shape.points) {
+              <polygon class="hm-fill" [attr.points]="c.shape.points" [style.fill]="mode === 'volume' ? c.vol.fill : c.eff.fill" />
+            } @else {
+              <path class="hm-fill" [attr.d]="c.shape.d" [style.fill]="mode === 'volume' ? c.vol.fill : c.eff.fill" />
+            }
+            @if (!compact) {
+              <g class="hm-text" [class.shown]="mode !== 'volume'">
+                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15" [style.font-size.px]="fontMain">{{ c.eff.main }}</text>
+                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15 + fontSub + 3" [style.font-size.px]="fontSub">{{ c.eff.sub }}</text>
+              </g>
+              <g class="hm-text" [class.shown]="mode === 'volume'">
+                <text class="hm-main" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15" [style.font-size.px]="fontMain">{{ c.vol.main }}</text>
+                <text class="hm-sub" [attr.x]="c.shape.cx" [attr.y]="c.shape.cy + fontMain * 0.15 + fontSub + 3" [style.font-size.px]="fontSub">{{ c.vol.sub }}</text>
+              </g>
+            }
+          </g>
+        }
+
+        @if (s.overlay) {
+          <g class="hm-top" aria-hidden="true">
+            @for (p of s.overlay; track $index) {
+              @switch (p.kind) {
+                @case ('polygon') {
+                  <polygon [attr.class]="p.cls" [attr.points]="p.points" />
+                }
+                @case ('path') {
+                  <path [attr.class]="p.cls" [attr.d]="p.d" />
+                }
+                @case ('text') {
+                  <text [attr.class]="p.cls" [attr.x]="p.x" [attr.y]="p.y" [attr.transform]="rotate(p)">{{ p.text }}</text>
+                }
+              }
+            }
+          </g>
+        }
+      </svg>
+
+      <!-- (a cell's popover: where it is, its value against the league's, the sample, the opponent's) -->
+      @if (active; as c) {
+        @let at = tipAt(c);
+        <div class="hm-pop" role="tooltip" [class.below]="at.below" [attr.data-align]="at.align" [style.left.%]="at.left" [style.top.%]="at.top" [style.--pop-color]="tipColor(c)">
+          <b>{{ c.tip.title }}</b>
+          @for (l of c.tip.lines; track $index) {
+            <span [style.color]="l.color ?? null">{{ l.text }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- The key: which way the color runs (diverging: the bad end to the good; one hue: less to more), the
+         greyed cells, and how a cell's numbers read -->
+    @if (legend) {
+      <div class="hm-legend">
+        @if (sequential) {
+          <span class="hm-ramp-wrap"><small>{{ mode === 'volume' ? 'Fewer' : 'Lower' }}</small><i class="hm-ramp seq"></i><small>{{ mode === 'volume' ? 'More' : 'Higher' }}</small></span>
+        } @else {
+          <span class="hm-ramp-wrap"><small>{{ ends[0] }}</small><i class="hm-ramp" [class.lean]="stat.scale === 'lean'" [class.div]="stat.scale !== 'lean'"></i><small>{{ ends[1] }}{{ overlay ? '' : ' than the league' }}</small></span>
+        }
+        @if (mode !== 'volume') {
+          <span class="hm-thin-key"><i></i>Under {{ stat.minN }} {{ stat.noun }}</span>
+        }
+        @if (!compact) {
+          <!-- (how a cell's numbers read: the big one, then the small one under it) -->
+          <span class="hm-read">
+            @if (mode === 'volume') {
+              <b>{{ stat.noun }}</b><small>· their share under it</small>
+            } @else {
+              <b>{{ stat.per ?? stat.label }}</b><small>· {{ overlay ? (defense ? 'theirs' : 'what they allow') : (stat.sample ?? stat.noun) }} under it</small>
+            }
+          </span>
+        }
+      </div>
+    }
+  </div>
+}

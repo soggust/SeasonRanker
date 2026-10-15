@@ -15,12 +15,20 @@ export function tintScale(values: (number | null)[]): TintScale | null {
   return sd ? { mean, sd } : null;
 }
 
+// How far a value sits from the scale's mean in its spread, capped 2 spreads out: -1 (the bad end) to 1 (the
+// good end), flipped for a lower-is-better stat; 0 with nothing to compare. tintFrom's strength, and the Heat
+// Maps' diverging scale (engine/heat-map/heat-color.ts)
+export function tintStrength(value: number | null, scale: TintScale | null, lowerIsBetter = false): number {
+  if (value === null || !scale) return 0;
+  const z = (value - scale.mean) / scale.sd;
+  return Math.max(-2, Math.min(2, lowerIsBetter ? -z : z)) / 2 || 0;
+}
+
 // Tint for one value against a column's precomputed scale (compute the scale once per column)
 export function tintFrom(value: number | null, scale: TintScale | null, lowerIsBetter = false): string | null {
   if (value === null || !scale) return null;
-  let z = (value - scale.mean) / scale.sd;
-  if (lowerIsBetter) z = -z;
-  const strength = Math.round((Math.min(Math.abs(z), 2) / 2) * 85);
+  const z = tintStrength(value, scale, lowerIsBetter);
+  const strength = Math.round(Math.abs(z) * 85);
   // The row's surface can set its own good / bad colors and the neutral the tint fades toward (light
   // text on dark rows by default; a light surface would fade toward dark instead)
   const hue = z >= 0 ? 'var(--tint-good, #3ee07a)' : 'var(--tint-bad, #ff5a4f)';

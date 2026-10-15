@@ -10,9 +10,10 @@ game-view {
   @include meta.load-css("components/player-card");
 }
 
-// (the Overview's Field Map: field-map.scss)
+// (the Heat Maps tab: its maps, heat-map.scss, and the Field Map under them, field-map.scss)
 player-card {
   @include meta.load-css("components/field-map");
+  @include meta.load-css("components/heat-map");
 }
 
 player-compare {

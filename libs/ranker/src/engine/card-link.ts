@@ -24,6 +24,7 @@ const CARD_TABS: Record<CardTab, string> = {
   depth: 'team',
   stats: 'stats',
   zones: 'zones',
+  heatmaps: 'heatmaps',
   games: 'gamelog',
   seasons: 'career',
   history: 'history',

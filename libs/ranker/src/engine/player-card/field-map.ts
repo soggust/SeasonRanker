@@ -1,14 +1,19 @@
-// The card's Field Map (the NFL's, on the Overview: SPORT.fieldMap): a season by where on the field it
+// The card's Field Map (the NFL's, in its Heat Maps tab: SPORT.fieldMap): a season by where on the field it
 // happened, from field-maps.json (apps/nfl/scripts/build-field-maps.mjs). A passer's throws, a catcher's
 // targets and what a defense allowed by zone (three across, four deep, looking downfield from behind the
 // offense); a runner's carries and what a defense allowed by lane; a kicker's field goals by distance (his
 // misses by how they missed, marked round the rings); a punter's punts down the field. Each part tinted
 // against the league's in the same file (every team's plays pooled), green the good side for the card's own
 // row (a defense's weak spot red). Plain functions and the charts' geometry (no Angular), so the tests read
-// them as the card does.
+// them as the card does. The pass field's geometry is the Heat Maps' field surface's (heat-map/surfaces/field.ts).
 
-export type FieldDepth = 'behind' | 'short' | 'mid' | 'deep';
-export type FieldSide = 'left' | 'middle' | 'right';
+import { DEPTHS, DEPTH_WORDS, FieldDepth, FieldSide, SIDES, pts, r1, zoneName, zoneShape } from '../heat-map/surfaces/field';
+
+export type { FieldDepth, FieldSide, PassField } from '../heat-map/surfaces/field';
+export { PASS_BOX, PASS_FIELD, zoneName } from '../heat-map/surfaces/field';
+
+// (the part of a season a map shows: the regular season, the playoffs, both, or the red zone of both)
+export type FieldMapPart = 'regular' | 'post' | 'all' | 'redzone';
 
 // A zone (always 12: behind-left, behind-middle, behind-right, short-left, ... deep-right): its throws or
 // targets, the catches, yards, touchdowns, picks and EPA a throw
@@ -196,20 +201,6 @@ const signed = (v: number, places = 2) => `${v > 0 ? '+' : v < 0 ? '-' : ''}${Ma
 const pct = (n: number, of: number) => (of ? `${Math.round((n / of) * 100)}%` : '-');
 const plural = (n: number, one: string, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 
-const DEPTHS: FieldDepth[] = ['behind', 'short', 'mid', 'deep'];
-const SIDES: FieldSide[] = ['left', 'middle', 'right'];
-const DEPTH_WORDS: Record<FieldDepth, { name: string; range: string }> = {
-  behind: { name: 'Behind the line', range: 'behind the line of scrimmage' },
-  short: { name: 'Short', range: '0-9 air yds' },
-  mid: { name: 'Intermediate', range: '10-19 air yds' },
-  deep: { name: 'Deep', range: '20+ air yds' },
-};
-
-// "Deep middle", "Behind the line, left"
-export function zoneName(depth: FieldDepth, side: FieldSide): string {
-  return depth === 'behind' ? `Behind the line, ${side}` : `${DEPTH_WORDS[depth].name} ${side}`;
-}
-
 export const LANES = ['left end', 'left tackle', 'left guard', 'middle', 'right guard', 'right tackle', 'right end'];
 // (the lanes named by their gaps, a runner's and a defense's alike, not by the offense's linemen: up the middle
 // the A gaps, off a guard the B gap, off a tackle the C, outside them the edge; left and right as drawn)
@@ -222,82 +213,7 @@ function shortOf(total: number, grid: number | undefined, noun: string): string 
   return grid !== undefined && grid > total ? `\n${total} of ${grid} ${noun} charted: plays logged without a direction can't be placed` : '';
 }
 
-// ---- the pass map: a field segment looking downfield, the line of scrimmage near the bottom, wider at the
-// near end (a touch of perspective); 8 yards behind the line up to 36 past it
-
-export const PASS_BOX = { x: -4, y: -18, w: 308, h: 304 };
-const V_MIN = -8;
-const V_MAX = 36;
-const Y_BOTTOM = 282;
-const Y_YARD = (Y_BOTTOM - 8) / (V_MAX - V_MIN);
-// (each depth's yards: behind the line, 0-9, 10-19, 20 on)
-const BAND_YARDS: Record<FieldDepth, [number, number]> = { behind: [V_MIN, 0], short: [0, 10], mid: [10, 20], deep: [20, V_MAX] };
-
-const fy = (v: number) => Y_BOTTOM - (v - V_MIN) * Y_YARD;
-const halfWidth = (v: number) => 150 - (v - V_MIN) * 0.92;
-// A spot on the field: u across it (0 the left sideline, 1 the right), v yards past the line
-const spot = (u: number, v: number): [number, number] => [r1(150 + (u - 0.5) * 2 * halfWidth(v)), r1(fy(v))];
-const r1 = (n: number) => Math.round(n * 10) / 10;
-const pts = (list: [number, number][]) => list.map(([x, y]) => `${x},${y}`).join(' ');
-
-// The field itself: its outline, the turf's mowed stripes (every 5 yards), the yard lines, the hash marks,
-// the numbers at the 10s along both sidelines, the line of scrimmage
-export interface PassField {
-  outline: string;
-  stripes: string[];
-  lines: { d: string; band: boolean }[];
-  hashes: string;
-  numbers: { x: number; y: number; text: string; rotate: number }[];
-  los: { x1: number; x2: number; y: number };
-  sides: { x: number; y: number; text: string }[];
-}
-
-function passField(): PassField {
-  const stripes: string[] = [];
-  for (let v = V_MIN; v < V_MAX; v += 5) {
-    const top = Math.min(v + 5, V_MAX);
-    if (((v - V_MIN) / 5) % 2 === 0) stripes.push(pts([spot(0, v), spot(1, v), spot(1, top), spot(0, top)]));
-  }
-  const lines: { d: string; band: boolean }[] = [];
-  for (let v = -5; v < V_MAX; v += 5) {
-    if (v === 0) continue;
-    const [x1, y] = spot(0, v);
-    const [x2] = spot(1, v);
-    lines.push({ d: `M${x1} ${y}H${x2}`, band: v === 10 || v === 20 });
-  }
-  // (a tick every yard at the hashes and in from each sideline)
-  let hashes = '';
-  for (let v = V_MIN + 1; v < V_MAX; v++) {
-    if (v % 5 === 0) continue;
-    for (const u of [0.025, 0.44, 0.56, 0.975]) {
-      const [x, y] = spot(u, v);
-      hashes += `M${r1(x - 2.2)} ${y}h4.4`;
-    }
-  }
-  const numbers: PassField['numbers'] = [];
-  for (const v of [10, 20, 30]) {
-    for (const [u, rotate] of [
-      [0.075, 90],
-      [0.925, -90],
-    ] as const) {
-      const [x, y] = spot(u, v);
-      numbers.push({ x, y, text: String(v), rotate });
-    }
-  }
-  const [losL, losY] = spot(0, 0);
-  const [losR] = spot(1, 0);
-  return {
-    outline: pts([spot(0, V_MIN), spot(1, V_MIN), spot(1, V_MAX), spot(0, V_MAX)]),
-    stripes,
-    lines,
-    hashes,
-    numbers,
-    los: { x1: losL, x2: losR, y: losY },
-    sides: SIDES.map((s, i) => ({ x: spot((i + 0.5) / 3, V_MAX)[0], y: r1(fy(V_MAX) - 7), text: s.toUpperCase() })),
-  };
-}
-
-export const PASS_FIELD = passField();
+// ---- the pass map: the Heat Maps' field surface (heat-map/surfaces/field.ts), each zone tinted or bubbled
 
 export type PassKind = 'pass' | 'targets' | 'allowed';
 
@@ -346,9 +262,7 @@ function passMap(kind: PassKind, zones: FieldZone[], league: FieldZone[], spread
       const i = DEPTHS.indexOf(depth) * 3 + s;
       const z = zones.find((x) => x.depth === depth && x.side === side) ?? { depth, side, att: 0, comp: 0, yds: 0, td: 0, int: 0, epa: 0 };
       const lg = league.find((x) => x.depth === depth && x.side === side);
-      const [v0, v1] = BAND_YARDS[depth];
-      const [u0, u1] = [s / 3, (s + 1) / 3];
-      const [cx, cy] = spot((u0 + u1) / 2, (v0 + v1) / 2);
+      const { points, cx, cy } = zoneShape(depth, s);
       const t = lg ? tone(z.epa, lg.epa, spreads[i] ?? 0.4, z.att, SETTLE.zone, flip) : 0;
       const empty = !z.att;
       const where = `${zoneName(depth, side)} (${DEPTH_WORDS[depth].range})`;
@@ -362,7 +276,7 @@ function passMap(kind: PassKind, zones: FieldZone[], league: FieldZone[], spread
         key: `${depth}-${side}`,
         depth,
         side,
-        points: pts([spot(u0, v0), spot(u1, v0), spot(u1, v1), spot(u0, v1)]),
+        points,
         cx,
         cy,
         fill: toneFill(t),

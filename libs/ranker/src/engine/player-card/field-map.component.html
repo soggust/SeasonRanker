@@ -66,28 +66,14 @@
       </div>
 
       <!-- (a defense's run lanes: a strip under its pass map, each lane's yards a carry allowed) -->
-      @if (v.strip; as s) {
-        <div class="fm-strip" role="img" [attr.aria-label]="s.aria">
-          <div class="fm-head" [title]="s.help">
-            <b>{{ s.title }}</b><small>{{ s.count }}</small>
-          </div>
-          <div class="fm-strip-cells">
-            @for (l of s.lanes; track l.key; let i = $index) {
-              <span class="fm-cell" [class.empty]="l.empty" [style.--fill]="l.fill" [style.--i]="i" [title]="l.title">
-                <small>{{ l.short }}</small>
-                <!-- (by efficiency its yards a carry big, its carries under; by volume the other way round) -->
-                @if (mode === 'volume') {
-                  <b>{{ l.sub }}</b>
-                  <em>{{ l.main ? l.main + ' ypc' : '' }}</em>
-                } @else {
-                  <b>{{ l.main }}</b>
-                  <em>{{ l.sub ? l.sub + ' car' : '' }}</em>
-                }
-              </span>
-            }
-          </div>
-        </div>
-      }
+      <ng-container *ngTemplateOutlet="strip"></ng-container>
+    </figure>
+  }
+
+  <!-- (the strip alone, its pass map shown elsewhere: the Heat Maps' zones) -->
+  @if (v.strip && !v.pass) {
+    <figure class="fm-chart fm-strip-only">
+      <ng-container *ngTemplateOutlet="strip"></ng-container>
     </figure>
   }
 
@@ -273,5 +259,31 @@
         <span><i class="fm-key bad"></i>Worse</span>
       </div>
     </figure>
+  }
+</ng-template>
+
+<!-- A defense's run lanes: a strip of seven cells, left edge to right edge, each its yards a carry allowed -->
+<ng-template #strip>
+  @if (v.strip; as s) {
+    <div class="fm-strip" role="img" [attr.aria-label]="s.aria">
+      <div class="fm-head" [title]="s.help">
+        <b>{{ s.title }}</b><small>{{ s.count }}</small>
+      </div>
+      <div class="fm-strip-cells">
+        @for (l of s.lanes; track l.key; let i = $index) {
+          <span class="fm-cell" [class.empty]="l.empty" [style.--fill]="l.fill" [style.--i]="i" [title]="l.title">
+            <small>{{ l.short }}</small>
+            <!-- (by efficiency its yards a carry big, its carries under; by volume the other way round) -->
+            @if (mode === 'volume') {
+              <b>{{ l.sub }}</b>
+              <em>{{ l.main ? l.main + ' ypc' : '' }}</em>
+            } @else {
+              <b>{{ l.main }}</b>
+              <em>{{ l.sub ? l.sub + ' car' : '' }}</em>
+            }
+          </span>
+        }
+      </div>
+    </div>
   }
 </ng-template>

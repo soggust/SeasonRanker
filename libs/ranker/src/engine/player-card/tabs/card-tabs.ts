@@ -11,6 +11,7 @@ import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
 import { sortFlags } from '../overview';
 import { ZoneStat, ZoneView, pitchColor } from '../zones';
 import { CardTab } from './card-tab';
+import { toneText } from '../../heat-map/heat-color';
 
 // Stats: each group a panel of stat tiles; Recent's W/L squares open their games
 @Component({ selector: 'card-stats', templateUrl: './stats.component.html', standalone: false })
@@ -121,6 +122,13 @@ export class CardZonesTab extends CardTab {
   readonly zoneTitle = zoneTitle;
 }
 
+// Heat Maps: the sport's maps for the row (SPORT.heatMaps: the NFL's zones, field position, down & distance),
+// the bar over them, each map's stat, the red zone's numbers, and the Field Map under them
+@Component({ selector: 'card-heat-maps', templateUrl: './heat-maps.component.html', standalone: false })
+export class CardHeatMapsTab extends CardTab {
+  readonly toneText = toneText;
+}
+
 // Game Log: the season's games (a result opens its game) and the games to come
 @Component({ selector: 'card-games', templateUrl: './games.component.html', standalone: false })
 export class CardGamesTab extends CardTab {
@@ -151,4 +159,4 @@ export class CardHistoryTab extends CardTab {
 @Component({ selector: 'card-seasons', templateUrl: './seasons.component.html', standalone: false })
 export class CardSeasonsTab extends CardTab {}
 
-export const CARD_TABS = [CardStatsTab, CardOverviewTab, CardAnalysisTab, CardTeamTab, CardZonesTab, CardGamesTab, CardHistoryTab, CardSeasonsTab];
+export const CARD_TABS = [CardStatsTab, CardOverviewTab, CardAnalysisTab, CardTeamTab, CardZonesTab, CardHeatMapsTab, CardGamesTab, CardHistoryTab, CardSeasonsTab];
