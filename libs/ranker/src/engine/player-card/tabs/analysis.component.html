@@ -133,11 +133,29 @@
               <span class="hm-thin-key"><i></i>Small sample</span>
             </div>
           }
-          <div class="ai-points matchups">
-            @for (p of r.nextGame.keyMatchups; track $index) {
-              <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
-            }
-          </div>
+          <!-- (an NFL team's: the ways it wins and loses this one; an older report's and a player's: the key matchups) -->
+          @if (r.nextGame.waysToWin?.length || r.nextGame.waysToLose?.length) {
+            <div class="ai-columns ai-ways">
+              <div class="ai-points strengths">
+                <h4><mat-icon fontIcon="trending_up"></mat-icon>{{ waysTitle(c, 'win') }}</h4>
+                @for (p of r.nextGame.waysToWin; track $index) {
+                  <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+                }
+              </div>
+              <div class="ai-points concerns">
+                <h4><mat-icon fontIcon="trending_down"></mat-icon>{{ waysTitle(c, 'lose') }}</h4>
+                @for (p of r.nextGame.waysToLose; track $index) {
+                  <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="ai-points matchups">
+              @for (p of r.nextGame.keyMatchups; track $index) {
+                <ng-container *ngTemplateOutlet="aiPoint; context: { $implicit: p }"></ng-container>
+              }
+            </div>
+          }
           <p class="ai-watch"><mat-icon fontIcon="visibility"></mat-icon><span><b>Watch:</b> {{ r.nextGame.watch }}</span></p>
         </div>
       </card-panel>

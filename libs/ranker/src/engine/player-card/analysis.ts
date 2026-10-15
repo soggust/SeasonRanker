@@ -57,7 +57,17 @@ export interface PlayerAnalysis {
     strengths?: AnalysisPoint[];
     concerns?: AnalysisPoint[];
     trend?: { direction: 'rising' | 'falling' | 'steady' | 'volatile'; note: string };
-    nextGame?: { outlook: 'favorable' | 'tough' | 'neutral'; headline: string; body: string; keyMatchups: AnalysisPoint[]; watch: string };
+    // (an NFL team's: the ways it wins and the ways it loses this game, in place of the key matchups an older
+    // report and a player's have)
+    nextGame?: {
+      outlook: 'favorable' | 'tough' | 'neutral';
+      headline: string;
+      body: string;
+      keyMatchups?: AnalysisPoint[];
+      waysToWin?: AnalysisPoint[];
+      waysToLose?: AnalysisPoint[];
+      watch: string;
+    };
     weekAhead?: AnalysisWeek;
     restOfSeason?: { body: string; projections: { stat: string; low: number; high: number }[]; swingFactors: string[] };
     recap?: AnalysisRecap;
@@ -93,6 +103,13 @@ export function weekGameText(game: { date: string; opp: string; at: 'home' | 'aw
   const [y, m, d] = game.date.split('-').map(Number);
   const day = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'short' });
   return `${day} ${m}/${d} ${game.at === 'home' ? 'vs' : '@'} ${game.opp}`;
+}
+
+// An NFL team preview's two lists' headings: "Ways the Ravens win", "Ways the Ravens lose" (the team by its
+// logo's name: its Team, Defense, O-Line and Coach cards alike; none: "Ways to win")
+export function waysTitle(card: { player: { teamLogo?: string } }, way: 'win' | 'lose'): string {
+  const team = /([^/]+)\.png$/.exec(card.player.teamLogo ?? '')?.[1];
+  return team ? `Ways the ${team} ${way}` : `Ways to ${way}`;
 }
 
 export const paragraphs = (text: string): string[] =>

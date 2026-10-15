@@ -112,7 +112,9 @@ Think like a football analyst, not a spreadsheet. Before calling anything a stre
 
 The archetype: the established way fans and analysts describe this kind of team, optionally with a short qualifier in parentheses for its style ("Playoff Team (defense-first)"). Pick from: Super Bowl Contender, Playoff Team, Fringe Contender, Pretender (record ahead of its play), Better Than Its Record, Retooling, Rebuilding — or an equally standard term if none fits. Define it in one sentence for this team.
 
-Evidence: every strength, concern and key matchup cites 1-3 numbers from the dossier by JSON path (dot notation from the dossier root, array indexes as numbers: "season.team.netEpa", "season.defense.pressureRate", "gameLog.2.box.rushYds", "nextGame.oppSeason.playByPlay.defRushEpa"). The site shows the real value from that path, so the path must exist exactly. The label is a 1-4 word name for the number.
+The coming game: its preview's two lists are the ways this team wins it (nextGame.waysToWin) and the ways it loses it (nextGame.waysToLose). Each way is one concrete path to that result against this opponent: a matchup or an edge it can lean on, a weakness the opponent can hit, a game script, the availability that swings it. Most likely first; the two lists are about this game, not a restatement of the season's strengths and concerns, and the same rule on numbers holds.
+
+Evidence: every strength, concern and way to win or lose cites 1-3 numbers from the dossier by JSON path (dot notation from the dossier root, array indexes as numbers: "season.team.netEpa", "season.defense.pressureRate", "gameLog.2.box.rushYds", "nextGame.oppSeason.playByPlay.defRushEpa"). The site shows the real value from that path, so the path must exist exactly. The label is a 1-4 word name for the number.
 
 Projections: per-game or season ranges for the rest of the season (e.g. "Final wins", "Points scored / game", "Points allowed / game").
 
@@ -310,11 +312,38 @@ export const RECAP_SCHEMA = {
 };
 export const PREVIEW_SCHEMA = SCHEMA;
 
+// A team's preview: the same, its coming game's key matchups as two lists, the ways it wins and the ways it
+// loses (the site heads them "Ways the Ravens win" / "Ways the Ravens lose"; a report from before them still
+// shows its key matchups)
+export const TEAM_PREVIEW_SCHEMA = {
+  ...SCHEMA,
+  properties: {
+    ...SCHEMA.properties,
+    nextGame: {
+      type: 'object',
+      description: 'the coming game (when the dossier has one)',
+      properties: {
+        outlook: SCHEMA.properties.nextGame.properties.outlook,
+        headline: SCHEMA.properties.nextGame.properties.headline,
+        body: { type: 'string', description: '2 paragraphs, separated by a blank line: how the two teams meet, and the availability that matters on both sides' },
+        waysToWin: { type: 'array', description: '2-3 ways this team wins this game, most likely first: each one concrete path (a matchup or edge it can lean on, a game script)', items: point },
+        waysToLose: { type: 'array', description: '2-3 ways this team loses this game, most likely first: each one concrete path (an edge the opponent has, a weakness of its own this opponent can hit, a game script gone wrong)', items: point },
+        watch: SCHEMA.properties.nextGame.properties.watch,
+      },
+      required: ['outlook', 'headline', 'body', 'waysToWin', 'waysToLose', 'watch'],
+      additionalProperties: false,
+    },
+  },
+};
+
+// The schema a dossier's report takes: a recap's, a team preview's, or a player's preview
+export const schemaFor = (dossier) => (dossier.mode === 'recap' ? RECAP_SCHEMA : dossier.kind === 'team' ? TEAM_PREVIEW_SCHEMA : SCHEMA);
+
 const MAX_TOKENS = 20000;
 export const params = (dossier) => ({
   model: MODEL,
   max_tokens: MAX_TOKENS,
-  output_config: { effort: EFFORT, format: { type: 'json_schema', schema: dossier.mode === 'recap' ? RECAP_SCHEMA : SCHEMA } },
+  output_config: { effort: EFFORT, format: { type: 'json_schema', schema: schemaFor(dossier) } },
   system: systemPrompt(dossier),
   messages: [{ role: 'user', content: `Dossier:\n${JSON.stringify(dossier)}` }],
 });
@@ -345,7 +374,12 @@ export function numbersIn(obj, out = new Set()) {
   else if (obj && typeof obj === 'object') for (const v of Object.values(obj)) numbersIn(v, out);
   return out;
 }
-export const points = (r) => (r.recap ? [...r.recap.highlights, ...r.recap.lowlights] : [...r.strengths, ...r.concerns, ...(r.nextGame?.keyMatchups ?? [])]);
+// (a preview's points: its season's, then its coming game's: a player's key matchups, a team's ways to win and
+// to lose, an older team report's key matchups)
+export const points = (r) =>
+  r.recap
+    ? [...r.recap.highlights, ...r.recap.lowlights]
+    : [...r.strengths, ...r.concerns, ...(r.nextGame?.keyMatchups ?? []), ...(r.nextGame?.waysToWin ?? []), ...(r.nextGame?.waysToLose ?? [])];
 const proseOf = (r) =>
   r.recap
     ? [r.headline, r.recap.finish, r.recap.body, r.recap.arc.note, r.recap.nextYear, ...points(r).map((p) => p.body)]

@@ -4,7 +4,7 @@ import { SPORT } from '@sport/sport';
 import { extras, rowTeamNames } from '@ranker/engine/row-fields';
 import { recentWord } from '@ranker/engine/stat-reader';
 import { recentRef } from '../../game-view/game-view.service';
-import { PlayerAnalysis, evidenceText, paragraphs, weekGameText } from '../analysis';
+import { PlayerAnalysis, evidenceText, paragraphs, waysTitle, weekGameText } from '../analysis';
 import { PlayerCard } from '../card.model';
 import { GameLogViewRow, splitVs } from '../game-log-view';
 import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
@@ -97,6 +97,7 @@ export class CardAnalysisTab extends CardTab {
   readonly paragraphs = paragraphs;
   readonly evidenceText = evidenceText;
   readonly weekGameText = weekGameText;
+  readonly waysTitle = waysTitle;
 }
 
 // Team: the depth chart, special teams, coaches, changes, everyone who's played

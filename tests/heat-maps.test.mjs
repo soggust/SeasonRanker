@@ -3,13 +3,14 @@
 // shares, the field-position bands, the down & distance grid), every committed file against its contract, the
 // colors (the diverging scale against the league's, capped and never past 0.85; a defense's flipped; small
 // samples greyed; the volume's one hue; a matchup's two together), the surfaces' cells, the NFL's maps read
-// from a real season.
+// from a real season, and the AI team preview's ways to win and lose (its schema, its points, its headings).
 import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine, readJson, staticDir } from './support/engine.mjs';
 import { BAND_NAMES, DOWN_NAMES, HEAT_FIELDS, bandIndex, downIndex, heatSection, inRedZone, intoEndZone } from '../apps/nfl/scripts/build-field-maps.mjs';
+import { check, params, points, schemaFor, systemPrompt, NUMBERS_RULE, PREVIEW_SCHEMA, TEAM_PREVIEW_SCHEMA } from '../apps/nfl/scripts/analysis/analyze.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'heat-entry.ts');
 let h;
@@ -302,5 +303,47 @@ test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares,
     assert.equal((await heatMatchups(allen, 'QB', 2025, 'MIA', false)).length, 1);
   } finally {
     globalThis.fetch = realFetch;
+  }
+});
+
+// ---- the AI team preview: the ways it wins and loses
+
+test("AI team preview: ways to win and to lose in its schema, its points checked, the old key matchups still a player's", () => {
+  assert.deepEqual(TEAM_PREVIEW_SCHEMA.properties.nextGame.required, ['outlook', 'headline', 'body', 'waysToWin', 'waysToLose', 'watch']);
+  assert.ok(!('keyMatchups' in TEAM_PREVIEW_SCHEMA.properties.nextGame.properties));
+  assert.deepEqual(TEAM_PREVIEW_SCHEMA.required, PREVIEW_SCHEMA.required, 'the rest of the report as it was');
+  assert.ok(PREVIEW_SCHEMA.properties.nextGame.required.includes('keyMatchups'), "a player's preview keeps its key matchups");
+  assert.equal(schemaFor({ kind: 'team' }), TEAM_PREVIEW_SCHEMA);
+  assert.equal(schemaFor({ kind: 'player' }), PREVIEW_SCHEMA);
+  assert.equal(schemaFor({ kind: 'team', mode: 'recap' }).properties.recap !== undefined, true);
+  assert.equal(params({ kind: 'team', team: { name: 'X' } }).output_config.format.schema, TEAM_PREVIEW_SCHEMA);
+  // (the prompt asks for them, and keeps the rule on numbers)
+  const prompt = systemPrompt({ kind: 'team' });
+  assert.match(prompt, /waysToWin/);
+  assert.match(prompt, /waysToLose/);
+  assert.ok(prompt.includes(NUMBERS_RULE));
+  // (their evidence checked like every point's)
+  const point = (path) => ({ title: 't', body: 'b', evidence: [{ label: 'l', path }] });
+  const report = { headline: 'h', take: 't', strengths: [], concerns: [], trend: { note: '' }, restOfSeason: { body: '', projections: [] }, nextGame: { body: '', watch: '', waysToWin: [point('a.b')], waysToLose: [point('nope')] } };
+  assert.equal(points(report).length, 2);
+  assert.deepEqual(check(report, { a: { b: 3 } }), ['bad path: nope']);
+});
+
+test('the ways headings: the team by its logo, every team card alike', () => {
+  const { waysTitle } = h;
+  assert.equal(waysTitle({ player: { teamLogo: 'assets/NFL_Icons/Ravens.png' } }, 'win'), 'Ways the Ravens win');
+  assert.equal(waysTitle({ player: { teamLogo: 'assets/NFL_Icons/49ers.png' } }, 'lose'), 'Ways the 49ers lose');
+  assert.equal(waysTitle({ player: {} }, 'win'), 'Ways to win');
+});
+
+// ---- the published previews from before the change still read (their key matchups kept)
+
+test('published team previews: the old key matchups or the new ways, one or the other', () => {
+  const dir = path.join(ROOT, 'analysis');
+  for (const f of fs.readdirSync(dir).filter((x) => x.startsWith('team-'))) {
+    const a = readJson(path.join(dir, f));
+    const g = a.report.nextGame;
+    if (!g) continue;
+    assert.ok(Array.isArray(g.keyMatchups) || (Array.isArray(g.waysToWin) && Array.isArray(g.waysToLose)), f);
   }
 });
