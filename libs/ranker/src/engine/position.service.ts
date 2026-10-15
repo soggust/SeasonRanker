@@ -276,7 +276,6 @@ export class PositionService {
   // Which games the stats count (data.ts SeasonPart: the regular season, the playoffs or both), the
   // settings menu's Length
   private seasonPartSubject = new BehaviorSubject<SeasonPart>(dataPart);
-  public seasonPart$ = this.seasonPartSubject.asObservable();
   // (whether the season on screen has its playoffs built: Length is greyed out until it does)
   seasonPartsAvailable = false;
   private checkSeasonParts(season: number): void {

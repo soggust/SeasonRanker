@@ -419,13 +419,4 @@ export class WalletPageComponent implements OnInit, OnDestroy {
       this.busy = false;
     }
   }
-
-  async openWallet(): Promise<void> {
-    this.busy = true;
-    try {
-      await this.wallet.ensureWallet();
-    } finally {
-      this.busy = false;
-    }
-  }
 }

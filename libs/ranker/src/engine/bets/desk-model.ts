@@ -283,6 +283,11 @@ export interface PropType {
   trust: Trust | null;
 }
 
+// (a prop type's fitted terms by their keys: its params carry every term the fit kept, past the ones named
+// above, and its soft terms' weights (project.mjs softWeight))
+export const propTerms = (t: PropType) => t.params as unknown as Record<string, number | null | undefined>;
+export const softTerms = (t: PropType): Record<string, { w: number }> => (t.params as unknown as { soft?: Record<string, { w: number }> }).soft ?? {};
+
 // (the NFL's questionable players' chance of playing (the bettor's playchance.mjs): the share of past seasons'
 // questionable regulars who played, the levels its held-out seasons kept, the check (as read live) against the
 // flat half it replaced, each side's (a side that doesn't beat it read at half: half), and the chance as read

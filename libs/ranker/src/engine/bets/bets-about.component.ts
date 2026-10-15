@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AboutSection } from '../about/about-frame.component';
 import { BANDS } from './bet-why';
-import { AnytimeFit, CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, sameGameText } from './desk-model';
+import { AnytimeFit, CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
 import { MARKET_NAMES, SPORTS } from './desk-math';
 
 // The Bets page's About (its header's info button): the shared About frame (about/about-frame.component) with the
@@ -271,13 +271,13 @@ export class BetsAboutComponent implements OnInit {
   // (a prop type: its base terms in a line, its matchup and context terms each with its fitted size or "left
   // out" and its held-out gain (the line's log loss without it less with it))
   private propOf(t: PropType, trust: string): PropView {
-    const p = t.params as unknown as Record<string, number | null | undefined>;
+    const p = propTerms(t);
     const base = ['K', 'w', 'a', 'b']
       .filter((k) => p[k] !== undefined)
       .map((k) => `${termName(k)} ${p[k]}`)
       .join(' · ');
     // (the soft terms: a term in at part of its size, its weight (project.mjs softWeight))
-    const soft = (t.params as unknown as { soft?: Record<string, { w: number }> }).soft ?? {};
+    const soft = softTerms(t);
     const terms = Object.entries(t.gains ?? {}).map(([k, g]): TermRow => {
       const v = p[k];
       // (a size that can be 0 and still kept: the role split's, an opponent group's own power)

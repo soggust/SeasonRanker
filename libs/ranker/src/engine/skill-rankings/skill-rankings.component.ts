@@ -195,6 +195,11 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     const warm = (event: FocusEvent) => event.target === this.findBox?.nativeElement && this.finder.warm();
     this.zone.runOutsideAngular(() => document.addEventListener('focusin', warm));
     this.destroyRef.onDestroy(() => document.removeEventListener('focusin', warm));
+    // (the toasts' timers, let go with the page)
+    this.destroyRef.onDestroy(() => {
+      clearTimeout(this.toastTimer);
+      clearTimeout(this.savedTimer);
+    });
 
     // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change (each one, a preset
     // too, ending an isolated look: back to the ranking)

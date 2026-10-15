@@ -16,7 +16,6 @@ import { PRIVACY_HASH } from '../account-page.component';
   standalone: false,
 })
 export class FriendsPageComponent implements OnDestroy {
-  readonly searchMin = SEARCH_MIN;
   readonly profilePath = profilePath;
   readonly privacyHash = PRIVACY_HASH;
 

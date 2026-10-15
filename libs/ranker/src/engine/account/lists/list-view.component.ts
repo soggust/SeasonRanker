@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
-import { goTo, pagePath } from '@ranker/engine/page-url';
+import { goTo } from '@ranker/engine/page-url';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SPORT } from '@sport/sport';
 import { TeamLook, teamLook } from '@ranker/engine/team-look';
@@ -322,10 +322,6 @@ export class ListViewComponent implements OnChanges, OnDestroy {
 
   get boardName(): string {
     return this.list ? `${sportLabel(this.list.sport)} ${listWhere(this.list)}` : '';
-  }
-
-  get boardHref(): string {
-    return this.list ? pagePath(`#community/${this.list.tab}/${this.list.season}`, this.list.sport) : '/community';
   }
 
   async submit(): Promise<void> {

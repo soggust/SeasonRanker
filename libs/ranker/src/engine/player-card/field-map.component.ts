@@ -27,7 +27,6 @@ export class FieldMapComponent {
   readonly puntBox = box(PUNT_BOX);
   readonly runWidth = RUN_BOX.w;
   readonly runHeight = RUN_BOX.h;
-  readonly puntWidth = PUNT_BOX.w;
 
   // (the turf under every chart: the theme's, darkened under the chalk)
   readonly turf = 'assets/textures/turf.webp';

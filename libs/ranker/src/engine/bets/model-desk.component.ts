@@ -36,9 +36,9 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, sameGameText } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
-import { Confidence, confidenceOf, kellyOf } from './bet-why';
+import { confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
 import { pickTeamColor, splitPick } from './pick-style';
 import { DATE_RANGES, DateRange, inRange } from './date-range';
@@ -335,14 +335,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.startTick();
   }
 
-  // (the Self-check panel's name, with the week it covers; open to begin with when a sport has a flag)
+  // (the Self-check panel's name, with the week it covers)
   get selfTitle(): string {
     const week = this.selfChecks.find((v) => v.week)?.week;
     return week ? `Self-check · week of ${week}` : 'Self-check';
-  }
-
-  get selfLoud(): boolean {
-    return this.selfChecks.some((v) => v.counts.some((c) => c.status === 'flag'));
   }
 
   // (a self-check's row, or a sport's folded checks, opened or closed: by its key)
@@ -867,13 +863,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     };
     return Object.entries(t.gains ?? {})
       .map(([k, g]) => {
-        const v = (t.params as unknown as Record<string, number | null>)[k];
+        const P = propTerms(t);
+        const v = P[k];
         const on = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
-        const P = t.params as unknown as Record<string, number | null>;
         const pg = P['pg'] ?? 0;
         // (a soft term (project.mjs softWeight): in at part of its size, its weight)
-        const soft = (t.params as unknown as { soft?: Record<string, { w: number }> }).soft?.[k];
+        const soft = softTerms(t)[k];
         return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'ep' ? `${v}, form ${P['eg'] ?? 1}` : k === 'tr' ? `${v}, form ${P['tf'] ?? 1}` : k === 'pc' && P['ep'] ? `${v}, replaced by expected plays` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'}${on && soft ? `, soft ${soft.w}x` : ''} (${gain})`;
       })
       .join(' · ');
