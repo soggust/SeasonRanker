@@ -148,8 +148,8 @@ test("the sheet's totals: runs for and against from the scores, the differential
     { score: '2-6', result: 'L' },
     { score: '4-4', result: 'T' },
   ];
-  const t = totalsOf({ played, stats: { wins: 1, pythDiff: -0.4 }, groups: { rotation: { players: 2, ip: '10.1' } }, cfg: SPORTS.mlb });
-  assert.deepEqual(t.regularSeason, { games: 3, runsScored: 11, runsAllowed: 13, differential: -2, scoredPerGame: 3.67, allowedPerGame: 4.33, winsByDifferential: 1.4 });
+  const t = totalsOf({ played, stats: { wins: 1, pythDiff: -0.4 }, groups: { rotation: { players: 2, ip: '10.1' } }, cfg: SPORTS.mlb, over: true });
+  assert.deepEqual(t.regularSeason, { games: 3, runsScored: 11, runsAllowed: 13, differential: -2, scoredPerGame: 3.67, allowedPerGame: 4.33, differentialPerGame: -0.67, winsByDifferential: 1.4, seasonGames: 162 });
   assert.deepEqual(t.groups, { rotation: { players: 2, ip: '10.1' } });
   assert.equal(t.postseason, undefined);
   // (the NHL's: goals and the standings points, 2 a win and 1 an overtime loss; a postseason when played)

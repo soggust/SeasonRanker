@@ -13,7 +13,12 @@
 //   - totals: the plain season totals of those numbers that reports want and the site's rows don't hold
 //     (runs / points / goals for and against from the Game Log's scores, the differential, the wins its
 //     margin implies; each listed roster group's combined innings, WAR, points...), so the model quotes
-//     them instead of adding sheet numbers up itself
+//     them instead of adding sheet numbers up itself; and worked out the same way: scored, allowed and the
+//     differential a game ranked across the league, the league's average a game and the gap to it, the
+//     games left and the pace over a full season, the last 5 and 10 games against the season
+//   - each team stat's league average and the gap to it (season.vsLeague); the NHL's finishing (shooting %,
+//     save %, PDO, all situations, and shots a game, from the players' rows: season.finishing), its goalies'
+//     save % together and each past season's standings points; the NBA's ORtg and DRtg (season.ratings)
 // The engine is bundled with esbuild (site-engine.ts, through the sport's tsconfig) so labels, ranks and
 // grades come out exactly as the site computes them.
 //
@@ -34,18 +39,23 @@ export const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // one its tab shows), the final's name, and the record's shape (the NHL's overtime losses)
 export const SPORTS = {
   mlb: {
-    name: 'MLB', espn: 'baseball/mlb', game: 'baseball', label: (y) => String(y), keep: { hitters: 9, rotation: 5, bullpen: 5 }, final: 'World Series', scoring: 'runs',
+    name: 'MLB', espn: 'baseball/mlb', game: 'baseball', label: (y) => String(y), keep: { hitters: 9, rotation: 5, bullpen: 5 }, final: 'World Series', scoring: 'runs', seasonGames: 162, periods: 9,
     groupTotals: { hitters: ['war', 'pa', 'homeRuns', 'rbi', 'stolenBases'], rotation: ['war', 'ip', 'strikeOuts'], bullpen: ['war', 'ip', 'saves', 'holds'] },
     stats: { SP: ['war', 'ip', 'era', 'fip', 'whip', 'kPct', 'bbPct', 'strikeOuts'], RP: ['war', 'ip', 'era', 'fip', 'saves', 'holds', 'kPct', 'bbPct'], hitter: ['war', 'pa', 'avg', 'obp', 'slg', 'homeRuns', 'rbi', 'stolenBases', 'wrcPlus', 'defRuns'] },
   },
   nba: {
-    name: 'NBA', espn: 'basketball/nba', game: 'basketball', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { backcourt: 4, wings: 3, frontcourt: 5 }, final: 'NBA Finals', scoring: 'points',
+    name: 'NBA', espn: 'basketball/nba', game: 'basketball', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { backcourt: 4, wings: 3, frontcourt: 5 }, final: 'NBA Finals', scoring: 'points', seasonGames: 82, periods: 4,
+    // (the ratings behind the Teams tab's Net Rtg, ranked and set against the league in the sheet)
+    ratings: [
+      { key: 'ortg', label: 'ORtg', name: 'Offensive Rating', description: 'points scored per 100 possessions' },
+      { key: 'drtg', label: 'DRtg', name: 'Defensive Rating', description: 'points allowed per 100 possessions', negative: true },
+    ],
     groupTotals: { any: ['minutes', 'points', 'rebounds', 'assists', 'threes', 'ws'] },
     stats: { any: ['minutes', 'points', 'rebounds', 'assists', 'threes', 'tsPct', 'usgPct', 'bpm', 'ws', 'onOff'] },
   },
   nhl: {
-    name: 'NHL', espn: 'hockey/nhl', game: 'hockey', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { forwards: 9, blueline: 6, goaltending: 2 }, final: 'Stanley Cup Final', ties: true, scoring: 'goals',
-    groupTotals: { goaltending: ['gamesStarted', 'shutouts'], any: ['goals', 'assists', 'points', 'ppPoints', 'shots'] },
+    name: 'NHL', espn: 'hockey/nhl', game: 'hockey', label: (y) => `${y - 1}-${String(y).slice(2)}`, keep: { forwards: 9, blueline: 6, goaltending: 2 }, final: 'Stanley Cup Final', ties: true, scoring: 'goals', seasonGames: 82, periods: 3, finishing: true,
+    groupTotals: { goaltending: ['gamesStarted', 'shutouts', 'saves'], any: ['goals', 'assists', 'points', 'ppPoints', 'shots'] },
     stats: { G: ['gamesStarted', 'savePct', 'gaa', 'gsax', 'shutouts'], any: ['toi', 'goals', 'assists', 'points', 'plusMinus', 'ppPoints', 'shots', 'xgfPct', 'gameScore'] },
   },
 };
@@ -61,11 +71,13 @@ export function innings(value) {
 const shown = (key, v) => (key === 'ip' ? innings(v) : r(v));
 
 // A site file as published: origin/master's copy (what the live site shows; the data bots commit there),
-// else this checkout's. null when neither has it.
+// else this checkout's. null when neither has it. (ANALYSIS_REF reads another commit's instead: a past
+// run's sheets rebuilt from the data it had, to measure a change against its reports)
+const SITE_REF = process.env.ANALYSIS_REF || 'origin/master';
 export function siteFile(sport, rel) {
   const repoPath = `apps/${sport}/src/StaticData/${rel}`;
   try {
-    return JSON.parse(execFileSync('git', ['show', `origin/master:${repoPath}`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 29, stdio: ['ignore', 'pipe', 'ignore'] }));
+    return JSON.parse(execFileSync('git', ['show', `${SITE_REF}:${repoPath}`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 29, stdio: ['ignore', 'pipe', 'ignore'] }));
   } catch {
     const file = path.join(ROOT, repoPath);
     return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
@@ -108,6 +120,36 @@ function ranker(values, low) {
   return (v) => (v === null || v === undefined || !Number.isFinite(v) ? null : [r(v), sorted.indexOf(v) + 1, sorted.length]);
 }
 
+// Goalies' saves and the shots they faced (each one's saves over his save %, to the shot): { saves, shots }
+export function savesOf(goalies) {
+  let saves = 0;
+  let shots = 0;
+  for (const g of goalies) {
+    const sv = g.stats?.saves;
+    const pct = g.stats?.savePct;
+    if (!Number.isFinite(sv) || !Number.isFinite(pct) || pct <= 0) continue;
+    saves += sv;
+    shots += Math.round(sv / pct);
+  }
+  return { saves, shots };
+}
+
+// The league's average of a stat (the teams' mean); null for none, or for a stat centered on 0 (a
+// differential, a luck stat: its gap to the league is its value)
+export function leagueAverage(values) {
+  const vals = values.filter((v) => v !== null && v !== undefined && Number.isFinite(v));
+  if (!vals.length) return null;
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  return Math.abs(avg) < 0.5 && vals.some((v) => v < 0) ? null : avg;
+}
+// A team's value against the league's average: { league, gap } (gap = team minus league), to a tenth for
+// a stat in the tens or more (a rating, a PDO), else to the thousandth (a fraction, a rate)
+export function gapTo(value, avg) {
+  if (value === null || value === undefined || !Number.isFinite(value) || !Number.isFinite(avg)) return null;
+  const d = Math.abs(avg) >= 10 ? 1 : 3;
+  return { league: r(avg, d), gap: r(value - avg, d) };
+}
+
 // A stat's line in the sheet's glossary: its column label, its long name, what it means
 const glossaryLine = (stat) => `${stat.label}${stat.name && stat.name !== stat.label ? ` (${stat.name})` : ''}: ${stat.description}${stat.negative ? ' [lower is better]' : ''}`;
 
@@ -122,8 +164,9 @@ function espnTeamOf(name, espnTeams) {
 // A game's day in the US (Eastern): ESPN's times are UTC, so a night game is the next day's there
 export const dayOf = (iso) => new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
-// A game from one team's side: { date, opp, at, score, result } (score: ours-theirs)
-function sideOf(g, id, abbrOf) {
+// A game from one team's side: { date, opp, at, score, result, ot } (score: ours-theirs; ot: past
+// regulation, the periods or innings the sport plays, when ESPN says)
+function sideOf(g, id, abbrOf, periods = null) {
   const opp = g.teams.find((t) => t !== id);
   const us = g.score[id];
   const them = g.score[opp];
@@ -131,7 +174,7 @@ function sideOf(g, id, abbrOf) {
     date: dayOf(g.date),
     opp: abbrOf(opp),
     at: g.home === id ? 'home' : 'away',
-    ...(g.completed ? { score: `${us}-${them}`, result: us > them ? 'W' : us < them ? 'L' : 'T' } : {}),
+    ...(g.completed ? { score: `${us}-${them}`, result: us > them ? 'W' : us < them ? 'L' : 'T', ...(periods && g.periods > periods ? { ot: true } : {}) } : {}),
     ...(g.round && g.type === POSTSEASON ? { round: g.round } : {}),
   };
 }
@@ -174,7 +217,8 @@ function results(played) {
 //   standings  ESPN's teams (their ids, abbreviations, divisions)
 //   games      the postseason games so far (postseasonGames)
 //   only       team keys to build (all when left out)
-export async function buildDossiers(sport, { season, status, standings, games, only = null, log = () => {} }) {
+//   asOf       a time (ms): the sheets as they were then, the games played by it (a past run's, rebuilt)
+export async function buildDossiers(sport, { season, status, standings, games, only = null, asOf = null, log = () => {} }) {
   const cfg = SPORTS[sport];
   const regular = siteFile(sport, 'skill-players.json');
   if (!regular) throw new Error(`${sport}: no skill-players.json`);
@@ -277,6 +321,11 @@ export async function buildDossiers(sport, { season, status, standings, games, o
             const sum = vals.reduce((a, b) => a + b, 0);
             out[k] = k === 'ip' ? innings(sum) : r(sum, 1);
           }
+          // (the goalies' save % together: their saves over the shots they faced)
+          if (key === 'goaltending' && cfg.finishing) {
+            const sv = savesOf(list.map(({ u }) => u));
+            if (sv.shots) out.savePct = r(sv.saves / sv.shots);
+          }
           return [key, out];
         }),
     );
@@ -286,6 +335,66 @@ export async function buildDossiers(sport, { season, status, standings, games, o
   const siteRank = new Map((grid.TM ?? []).map((t, i, all) => [t.teamLogo, [i + 1, all.length]]));
   const vsPos = new Map(teams.map((t) => [t.teamLogo, t.vsPos ?? (regular.HC ?? []).find((c) => c.teamLogo === t.teamLogo && c.vsPos)?.vsPos ?? null]));
   const lineOf = new Map(teams.map((t) => [t.teamLogo, teamLine(t)]));
+
+  // ---- worked out across the league, so a report quotes them rather than computing them
+  // the NHL's finishing and goaltending, all situations, from the players' rows: the skaters' goals over
+  // their shots, the goalies' saves over the shots they faced, the two added up (PDO, 100 x), and the shots
+  // a game for and against
+  const extraStats = [];
+  const extraOf = new Map(teams.map((t) => [t.teamLogo, {}]));
+  if (cfg.finishing) {
+    const skaterPositions = gradeDefs.flatMap((d) => d.positions).filter((p) => p !== 'G');
+    for (const t of teams) {
+      const skaters = skaterPositions.flatMap((pos) => (units[pos] ?? []).filter((u) => u.teamLogo === t.teamLogo));
+      const goals = skaters.reduce((a, u) => a + (E.unitStat(u, 'goals') ?? 0), 0);
+      const shots = skaters.reduce((a, u) => a + (E.unitStat(u, 'shots') ?? 0), 0);
+      const sv = savesOf((units.G ?? []).filter((u) => u.teamLogo === t.teamLogo));
+      const sh = shots ? goals / shots : null;
+      const svPct = sv.shots ? sv.saves / sv.shots : null;
+      Object.assign(extraOf.get(t.teamLogo), {
+        shPct: r(sh),
+        svPct: r(svPct),
+        pdoAll: sh !== null && svPct !== null ? r(100 * (sh + svPct), 1) : null,
+        shotsForPerGame: t.games ? r(shots / t.games, 1) : null,
+        shotsAgainstPerGame: t.games && sv.shots ? r(sv.shots / t.games, 1) : null,
+      });
+    }
+    extraStats.push(
+      { key: 'shPct', label: 'Shooting %', description: "goals over shots on goal, all situations (the skaters' rows added up; a fraction: .105 is 10.5%)" },
+      { key: 'svPct', label: 'Save %', description: "saves over shots faced, all situations (the goalies' rows added up)" },
+      { key: 'pdoAll', label: 'PDO (all situations)', description: "shooting % plus save %, all situations, x 100 (empty-net goals lift the league's a little over 100: its average is in season.vsLeague; well above tends to fade; the Teams tab's PDO is 5-on-5)" },
+      { key: 'shotsForPerGame', label: 'Shots / GP', description: 'shots on goal a game' },
+      { key: 'shotsAgainstPerGame', label: 'Shots Against / GP', description: 'shots on goal allowed a game', negative: true },
+    );
+  }
+  // the NBA's offensive and defensive ratings behind its Net Rtg
+  for (const s of cfg.ratings ?? []) {
+    for (const t of teams) extraOf.get(t.teamLogo)[s.key] = r(E.unitStat(t, s.key) ?? t.stats?.[s.key] ?? null, 1);
+    extraStats.push(s);
+  }
+  const extraRank = Object.fromEntries(extraStats.map((s) => [s.key, ranker(teams.map((t) => extraOf.get(t.teamLogo)[s.key]), !!s.negative)]));
+  const extraLine = (logo) => {
+    const out = {};
+    for (const s of extraStats) {
+      const v = extraOf.get(logo)[s.key];
+      if (v !== null && v !== undefined) out[s.key] = extraRank[s.key](v);
+    }
+    return out;
+  };
+  for (const s of extraStats) glossary[s.key] ??= glossaryLine(s);
+  // the league's average of each of the team's ranked stats (the teams' mean) and the team's gap to it
+  // (team minus league: positive is more, whichever way is better)
+  const averaged = [...teamStats.filter((s) => !['grade', 'rank', 'record'].includes(s.format) && s.key !== 'playoffWins'), ...extraStats];
+  const valueOf = (t, key) => (key in (extraOf.get(t.teamLogo) ?? {}) ? extraOf.get(t.teamLogo)[key] : E.unitStat(t, key));
+  const leagueAvg = Object.fromEntries(averaged.map((s) => [s.key, leagueAverage(teams.map((t) => valueOf(t, s.key)))]).filter(([, v]) => v !== null));
+  const vsLeagueOf = (t) => {
+    const out = {};
+    for (const [key, avg] of Object.entries(leagueAvg)) {
+      const line = gapTo(valueOf(t, key), avg);
+      if (line) out[key] = line;
+    }
+    return out;
+  };
 
   // ---- the postseason's table (its own rows), once it has any
   let postTeams = new Map();
@@ -322,7 +431,9 @@ export async function buildDossiers(sport, { season, status, standings, games, o
         if (!u) return null;
         const c = (careers[gsisId] ?? []).find((e) => e[0] === Number(y));
         const keep = Object.fromEntries(Object.entries(u.stats).filter(([k, v]) => v !== null && !['wins', 'losses', 'ties', 'winPct'].includes(k) && glossary[k]));
-        return { season: cfg.label(Number(y)), record: recordOf(u.stats), ...(c && c[3] ? { siteRank: [c[3], c[4]] } : {}), ...keep };
+        // (the NHL's standings points that season, 2 a win and 1 an overtime loss)
+        const points = cfg.ties ? { standingsPoints: 2 * (u.stats.wins ?? 0) + (u.stats.ties ?? 0) } : {};
+        return { season: cfg.label(Number(y)), record: recordOf(u.stats), ...points, ...(c && c[3] ? { siteRank: [c[3], c[4]] } : {}), ...keep };
       })
       .filter(Boolean);
 
@@ -343,8 +454,36 @@ export async function buildDossiers(sport, { season, status, standings, games, o
   };
   const coachIds = (t) => (regular.HC ?? []).filter((c) => c.teamLogo === t.teamLogo).map((c) => c.gsisId);
 
+  // every team's regular season from ESPN (the league's per-game ranks and average need them all), the
+  // games played by asOf when a past run's sheets are rebuilt (a game counts once it would have ended)
+  const now = asOf ?? Date.now();
+  const done = (g) => g.completed && (!asOf || Date.parse(g.date) + 4 * 3600e3 < asOf);
+  const schedules = new Map(
+    await Promise.all(teams.filter((t) => byLogo.has(t.teamLogo)).map(async (t) => [t.teamLogo, await teamSchedule(cfg.espn, byLogo.get(t.teamLogo).id, season, REGULAR)])),
+  );
+  const playedOf = new Map([...schedules].map(([logo, s]) => [logo, s.filter(done).map((g) => sideOf(g, byLogo.get(logo).id, abbrOf, cfg.periods))]));
+  const perGame = { scored: new Map(), allowed: new Map(), differential: new Map() };
+  let leagueScored = 0;
+  let leagueGames = 0;
+  for (const [logo, played] of playedOf) {
+    if (!played.length) continue;
+    const s = stretchOf(played, cfg);
+    perGame.scored.set(logo, s.scoredPerGame);
+    perGame.allowed.set(logo, s.allowedPerGame);
+    perGame.differential.set(logo, s.differentialPerGame);
+    leagueScored += s[`${cfg.scoring}Scored`];
+    leagueGames += played.length;
+  }
+  const leaguePerGame = {
+    rank: {
+      scoredPerGame: ranker([...perGame.scored.values()], false),
+      allowedPerGame: ranker([...perGame.allowed.values()], true),
+      differentialPerGame: ranker([...perGame.differential.values()], false),
+    },
+    average: leagueGames ? r(leagueScored / leagueGames, 2) : null,
+  };
+
   const out = new Map();
-  const now = Date.now();
   for (const t of teams) {
     const key = keyOf(t.teamLogo);
     if (only && !only.includes(key)) continue;
@@ -352,11 +491,11 @@ export async function buildDossiers(sport, { season, status, standings, games, o
     if (!espn) continue;
     const st = status.get(espn.id) ?? { over: false };
     const mode = st.over ? 'recap' : 'preview';
-    const schedule = await teamSchedule(cfg.espn, espn.id, season, REGULAR);
+    const schedule = schedules.get(t.teamLogo);
     // (the postseason's games from the scoreboards, which name the round; the ones to come from its schedule)
     const postSchedule = !st.over && games.some((g) => g.teams.includes(espn.id)) ? await teamSchedule(cfg.espn, espn.id, season, POSTSEASON).catch(() => []) : [];
-    const played = schedule.filter((g) => g.completed).map((g) => sideOf(g, espn.id, abbrOf));
-    const postPlayed = games.filter((g) => g.type === POSTSEASON && g.completed && g.teams.includes(espn.id)).map((g) => sideOf(g, espn.id, abbrOf));
+    const played = playedOf.get(t.teamLogo);
+    const postPlayed = games.filter((g) => g.type === POSTSEASON && done(g) && g.teams.includes(espn.id)).map((g) => sideOf(g, espn.id, abbrOf, cfg.periods));
     const division = standings.filter((x) => x.division === espn.division);
     const standingsRows = division
       .map((x) => {
@@ -379,7 +518,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
       s.result = `${w}-${s.games.length - w}`;
     }
     const upcoming = [...schedule, ...postSchedule]
-      .filter((g) => !g.completed && Date.parse(g.date) >= now - 6 * 3600e3 && Date.parse(g.date) < now + 8 * 864e5)
+      .filter((g) => !done(g) && Date.parse(g.date) >= now - 6 * 3600e3 && Date.parse(g.date) < now + 8 * 864e5)
       .sort((a, b) => a.date.localeCompare(b.date))
       .map((g) => sideOf(g, espn.id, abbrOf));
     // (each opponent of the week once: its record, place and season line, what its defense allows)
@@ -389,7 +528,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
       const oppLogo = logoOfEspn.get(oppId);
       const oppRow = teams.find((u) => u.teamLogo === oppLogo);
       if (!oppRow || opponents[g.opp]) continue;
-      opponents[g.opp] = { name: oppRow.teamName ?? oppRow.name, record: recordOf(oppRow.stats), siteRank: siteRank.get(oppLogo) ?? null, season: lineOf.get(oppLogo), ...(vsPos.get(oppLogo) ? { vsPosition: vsPos.get(oppLogo) } : {}) };
+      opponents[g.opp] = { name: oppRow.teamName ?? oppRow.name, record: recordOf(oppRow.stats), siteRank: siteRank.get(oppLogo) ?? null, season: { ...lineOf.get(oppLogo), ...extraLine(oppLogo) }, ...(vsPos.get(oppLogo) ? { vsPosition: vsPos.get(oppLogo) } : {}) };
     }
     const ended = st.over
       ? st.champion
@@ -397,7 +536,7 @@ export async function buildDossiers(sport, { season, status, standings, games, o
         : `${st.why[0].toUpperCase()}${st.why.slice(1)}${st.by ? ` to ${abbrOf(st.by)}` : ''}`
       : null;
     const regularResults = results(played);
-    const totals = totalsOf({ played, postPlayed, stats: t.stats, groups: regularGroupTotals.get(t.teamLogo), postGroups: postGroupTotals.get(t.teamLogo) ?? null, cfg });
+    const totals = totalsOf({ played, postPlayed, stats: t.stats, groups: regularGroupTotals.get(t.teamLogo), postGroups: postGroupTotals.get(t.teamLogo) ?? null, cfg, league: leaguePerGame, over: st.over });
     const dossier = {
       kind: 'team',
       sport: cfg.name,
@@ -416,6 +555,9 @@ export async function buildDossiers(sport, { season, status, standings, games, o
       season: {
         label: cfg.label(season),
         team: lineOf.get(t.teamLogo),
+        ...(cfg.finishing ? { finishing: extraLine(t.teamLogo) } : {}),
+        ...(cfg.ratings ? { ratings: extraLine(t.teamLogo) } : {}),
+        vsLeague: vsLeagueOf(t),
         ...(vsPos.get(t.teamLogo) ? { vsPosition: vsPos.get(t.teamLogo) } : {}),
       },
       roster: regularRosters.get(t.teamLogo),
@@ -460,11 +602,79 @@ const totalsGlossary = (cfg) => ({
     ? { standingsPoints: 'Standings points: 2 a win, 1 an overtime or shootout loss' }
     : { winsByDifferential: `Wins by differential: the wins its ${cfg.scoring} differential implies (its wins minus W vs ${cfg.name === 'MLB' ? 'Run' : 'Pt'} Diff)` }),
   groups: "Each roster group's listed players (roster.<group>) combined: the sum of their season totals",
+  scoredPerGame: `${upper(cfg.scoring)} scored a game, ranked across the league (in totals.regularSeason)`,
+  allowedPerGame: `${upper(cfg.scoring)} allowed a game, ranked across the league (1 = fewest) [lower is better]`,
+  differentialPerGame: `${upper(cfg.scoring)} scored minus allowed a game, ranked across the league`,
+  seasonGames: 'Games in a regular season',
+  gamesLeft: 'Regular-season games still to play',
+  pace: `The season's rates carried over ${cfg.seasonGames} games, rounded: wins${cfg.ties ? ', standings points' : ''} and the ${cfg.scoring} differential (while the regular season is on)`,
+  vsLeague: `The team against the league: in totals.regularSeason, leaguePerGame = the league's ${cfg.scoring} a game (for and against alike) and the gaps (team minus league; for allowed, positive is worse); in season.vsLeague, each stat's league average (the teams' mean) and the gap (team minus league: positive is more, whichever way is better)`,
+  recent: `totals.recent.last5 and last10: the last 5 and 10 games (once more than that are played): from and to (dates), the record${cfg.ties ? ' (W-L-OTL) and standings points (pointsPct = points over the most possible)' : ' and winPct'}, ${cfg.scoring} scored and allowed, the differential, a game's averages, and vsSeason = the stretch minus the whole season (positive: more lately; for allowedPerGame, worse)`,
+  ...(cfg.periods ? { ot: cfg.name === 'MLB' ? 'ot: went to extra innings' : 'ot: went to overtime (or a shootout)' } : {}),
 });
+
+// A stretch of games' line: the record (the NHL's W-L-OTL, an overtime loss by its ot), scored and
+// allowed, the differential, a game's averages, the win % (the NHL's points %)
+export function stretchOf(games, cfg) {
+  let w = 0;
+  let l = 0;
+  let otl = 0;
+  let t = 0;
+  let scored = 0;
+  let allowed = 0;
+  for (const g of games) {
+    const [us, them] = g.score.split('-').map(Number);
+    scored += us;
+    allowed += them;
+    if (g.result === 'W') w++;
+    else if (g.result === 'T') t++;
+    else if (cfg.ties && g.ot) otl++;
+    else l++;
+  }
+  const n = games.length;
+  const points = 2 * w + otl + t;
+  return {
+    games: n,
+    from: games[0]?.date ?? null,
+    to: games.at(-1)?.date ?? null,
+    record: cfg.ties ? `${w}-${l}-${otl}` : `${w}-${l}${t ? `-${t}` : ''}`,
+    ...(cfg.ties ? { standingsPoints: points, pointsPct: n ? r(points / (2 * n)) : null } : { winPct: n ? r((w + t / 2) / n) : null }),
+    [`${cfg.scoring}Scored`]: scored,
+    [`${cfg.scoring}Allowed`]: allowed,
+    differential: scored - allowed,
+    scoredPerGame: n ? r(scored / n, 2) : null,
+    allowedPerGame: n ? r(allowed / n, 2) : null,
+    differentialPerGame: n ? r((scored - allowed) / n, 2) : null,
+  };
+}
+
+// The last 5 and 10 games against the season: each stretch's line and vsSeason, the stretch minus the
+// whole season (its per-game averages, its win % or points %), once more games than that are played
+export function recentOf(played, cfg, sizes = [5, 10]) {
+  const season = stretchOf(played, cfg);
+  const out = {};
+  for (const n of sizes) {
+    if (played.length <= n) continue;
+    const s = stretchOf(played.slice(-n), cfg);
+    const pct = cfg.ties ? 'pointsPct' : 'winPct';
+    out[`last${n}`] = {
+      ...s,
+      vsSeason: {
+        [pct]: r(s[pct] - season[pct]),
+        scoredPerGame: r(s.scoredPerGame - season.scoredPerGame, 2),
+        allowedPerGame: r(s.allowedPerGame - season.allowedPerGame, 2),
+        differentialPerGame: r(s.differentialPerGame - season.differentialPerGame, 2),
+      },
+    };
+  }
+  return out;
+}
 
 // A team's totals block: the plain season totals of the sheet's own numbers (results, the record, the
 // roster groups), so a report quotes them instead of adding them up
-export function totalsOf({ played, postPlayed = [], stats = {}, groups = {}, postGroups = null, cfg }) {
+//   league   the league's per-game ranks ({ rank: { scoredPerGame... } }) and average (a game's scoring)
+//   over     the regular season done for it: no games left, no pace
+export function totalsOf({ played, postPlayed = [], stats = {}, groups = {}, postGroups = null, cfg, league = null, over = false }) {
   const sum = (games) => {
     let scored = 0;
     let allowed = 0;
@@ -484,10 +694,37 @@ export function totalsOf({ played, postPlayed = [], stats = {}, groups = {}, pos
     };
   };
   const regular = sum(played);
+  const n = played.length;
+  regular.differentialPerGame = n ? r(regular.differential / n, 2) : null;
+  // (each a game, ranked across the league; the league's average and the gap to it)
+  if (n && Number.isFinite(league?.average)) {
+    regular.vsLeague = {
+      leaguePerGame: league.average,
+      scoredPerGame: r(regular.scoredPerGame - league.average, 2),
+      allowedPerGame: r(regular.allowedPerGame - league.average, 2),
+    };
+  }
+  for (const k of ['scoredPerGame', 'allowedPerGame', 'differentialPerGame']) if (league?.rank?.[k] && regular[k] !== null) regular[k] = league.rank[k](regular[k]) ?? regular[k];
   if (cfg.ties) regular.standingsPoints = 2 * (stats.wins ?? 0) + (stats.ties ?? 0);
   else if (Number.isFinite(stats.pythDiff) && Number.isFinite(stats.wins)) regular.winsByDifferential = r(stats.wins - stats.pythDiff, 1);
+  // (the season's length, the games left and the pace over a full season, while it's on)
+  if (cfg.seasonGames) {
+    regular.seasonGames = cfg.seasonGames;
+    const gp = (stats.wins ?? 0) + (stats.losses ?? 0) + (stats.ties ?? 0) || n;
+    if (!over && gp && gp < cfg.seasonGames) {
+      regular.gamesLeft = cfg.seasonGames - gp;
+      const per = (v, games) => Math.round((v / games) * cfg.seasonGames);
+      regular.pace = {
+        wins: per(stats.wins ?? 0, gp),
+        ...(cfg.ties ? { standingsPoints: per(regular.standingsPoints, gp) } : {}),
+        ...(n ? { differential: per(regular.differential, n) } : {}),
+      };
+    }
+  }
+  const recent = recentOf(played, cfg);
   return {
     regularSeason: regular,
+    ...(Object.keys(recent).length ? { recent } : {}),
     groups,
     ...(postPlayed.length ? { postseason: { ...sum(postPlayed), ...(postGroups ? { groups: postGroups } : {}) } } : {}),
   };

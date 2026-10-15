@@ -59,7 +59,20 @@ const SPORT_NOTES = {
 - season.vsPosition (and the opponents'): what the defense allowed a game to centers (C), wingers (W), defensemen (D) and all forwards (F): goals, pts, shots; exp = those players' expected points from their own averages; vs = pts minus exp; rank (1 = held furthest under); share = the share of the points against it by role (s) against the league's (lg).`,
 };
 
-const common = (sport) => `You get one team's sheet as JSON. It is your only source. Every number in it is one the site shows its readers or a plain season total of them, and you may only state numbers that are in it. Cite only numbers in the sheet: don't add up, subtract, average or round sheet numbers yourself (no season totals summed from months, no combined innings, WAR or plate appearances of a few players, no records over a stretch of months, no differentials you work out). The totals block already has the totals worth quoting; if a total or a comparison you want isn't in the sheet, describe it in words ("most of the innings", "a losing record after May") rather than with a number. Use no outside knowledge of players, teams, injuries, trades, contracts, coaches or results beyond what the sheet says. If something you'd want to know isn't there, don't guess.
+// The arithmetic the sheet has done (dossier.mjs), for the prompt to point at
+const WORKED = (sport) => {
+  const cfg = SPORTS[sport];
+  return `- Worked out for you (quote these instead of computing): totals.regularSeason (scoredPerGame, allowedPerGame and differentialPerGame as [value, rank, of] across the league; vsLeague: leaguePerGame, the league's ${SCORING[sport]} a game, and the team's gap to it, team minus league; seasonGames, gamesLeft, and pace: its wins${cfg.ties ? ', standings points' : ''} and ${SCORING[sport]} differential carried over a full ${cfg.seasonGames}-game season, while the regular season is on); totals.recent.last5 and last10 (its last 5 and 10 games, once it has played more: the dates, the record${cfg.ties ? ' (W-L-OTL), standings points and points %' : ' and win %'}, ${SCORING[sport]} scored and allowed, the differential, a game's averages, and vsSeason = the stretch minus the whole season, so positive means more lately); season.vsLeague (each team stat's league average, the teams' mean, and the gap, team minus league: positive is more, whichever way is better)${
+    sport === 'nhl'
+      ? "; season.finishing (all situations, from the players' rows, each [value, rank, of]: shPct, the skaters' shooting %; svPct, the goalies' save %; pdoAll, the two added up x 100; shotsForPerGame and shotsAgainstPerGame), totals.groups.goaltending.savePct (the listed goalies' save % together) and history.N.standingsPoints (each past season's points)"
+      : sport === 'nba'
+        ? '; season.ratings (ortg and drtg, the offensive and defensive ratings behind Net Rtg, each [value, rank, of])'
+        : ''
+  }. A game in results.last10 past regulation carries ot.`;
+};
+const SHARP = `That rule is about arithmetic, not about thinking: be as sharp as ever. Set numbers side by side (the last few games against the season, this year against last, the team against the league, one group against another), say what produces them, follow the trend, and take a clear position; just quote the sheet's numbers for it.`;
+
+const common = (sport) => `You get one team's sheet as JSON. It is your only source. Every number in it is one the site shows its readers or one worked out from them, and you may only state numbers that are in it. Cite only numbers in the sheet: don't add up, subtract, average or round sheet numbers yourself (no season totals summed from months, no combined innings, WAR or plate appearances of a few players, no records over a stretch of months, no differentials, gaps, per-game rates or paces you work out, no thresholds of your own like "everyone above 60%"). The totals block and the worked-out blocks below have the totals and comparisons worth quoting; if one you want isn't in the sheet, describe it in words ("most of the innings", "a losing record after May", "well below the league") rather than with a number. The one exception is a preview's restOfSeason.projections, your own estimates, which its restOfSeason body may quote. ${SHARP} Use no outside knowledge of players, teams, injuries, trades, contracts, coaches or results beyond what the sheet says. If something you'd want to know isn't there, don't guess.
 
 How to read the sheet:
 - [value, rank, of]: the value and its rank among the league's teams this season (1 = best; for stats where less is better, ERA or goals against, rank 1 is the fewest). A plain number is shown as it is.
@@ -71,7 +84,8 @@ ${SPORT_NOTES[sport]}
 - results: the regular season by month (record, scored, allowed, scored and allowed per game, recordThrough = the record at the month's end), the longest winning and losing streaks, the last 10 games (score: this team's first).
 - postseason (when it played in it): the postseason table's line (ranked among the postseason teams), each series and its games, and its players' postseason lines.
 - history: its recent seasons, each with the record, its site rank that season and its stats.
-- totals: season totals added up from the site's numbers, for you to quote as they are: totals.regularSeason (games; the season's ${SCORING[sport]} scored and allowed, from the Game Log's scores; the differential, scored minus allowed; scored and allowed per game; ${sport === 'nhl' ? 'standingsPoints' : 'winsByDifferential, the wins the margin implies (wins minus the W vs differential stat)'}), totals.groups (each roster group's listed players combined: players = how many are listed, and the sum of their season totals${sport === 'mlb' ? ', innings in the same notation' : ''}), and totals.postseason the same for its postseason games when it played some.
+- totals: season totals added up from the site's numbers, for you to quote as they are: totals.regularSeason (games; the season's ${SCORING[sport]} scored and allowed, from the Game Log's scores; the differential, scored minus allowed; ${sport === 'nhl' ? 'standingsPoints' : 'winsByDifferential, the wins the margin implies (wins minus the W vs differential stat)'}), totals.groups (each roster group's listed players combined: players = how many are listed, and the sum of their season totals${sport === 'mlb' ? ', innings in the same notation' : ''}), and totals.postseason the same for its postseason games when it played some.
+${WORKED(sport)}
 Early in a season samples are small: weigh them honestly and say so when it matters, without hedging everything.
 
 Think like an analyst, not a spreadsheet. Before calling anything a strength or a weakness, ask what produces it and judge the cause: a record built on close wins (luck that tends to regress, the W vs differential stat) versus one built on the margin; a stretch that lines up with who was playing; a group grade carried by one player; numbers against a soft or hard run of opponents. Check history before calling anything new.
@@ -229,8 +243,12 @@ export const params = (sport, dossier) => ({
 // ---- checking a report against its sheet
 
 const walk = (obj, p) => p.split('.').reduce((o, k) => (o === null || o === undefined ? undefined : o[/^\d+$/.test(k) ? Number(k) : k]), obj);
-// (a player's stat cited without its .stats, "roster.rotation.4.fip", read as roster.rotation.4.stats.fip)
-const at = (obj, p) => walk(obj, p) ?? walk(obj, p.replace(/^((?:postseason\.)?roster\.\w+\.\d+)\.(?!stats$)(\w+)$/, '$1.stats.$2'));
+// (a player's stat cited without its .stats, "roster.rotation.4.fip", read as roster.rotation.4.stats.fip;
+// a team stat without its block, "season.pdo", from season.team, season.finishing or season.ratings)
+const at = (obj, p) =>
+  walk(obj, p) ??
+  walk(obj, p.replace(/^((?:postseason\.)?roster\.\w+\.\d+)\.(?!stats$)(\w+)$/, '$1.stats.$2')) ??
+  (/^season\.\w+$/.test(p) ? ['team', 'finishing', 'ratings'].map((b) => walk(obj, p.replace(/^season\./, `season.${b}.`))).find((v) => v !== undefined) : undefined);
 // The value an evidence path shows: a ranked [value, rank, of] reads as its value and its rank; a short
 // text (a record, a grade) as itself
 export function resolve(dossier, p) {
@@ -273,9 +291,13 @@ const proseOf = (r) =>
 export function check(report, dossier) {
   const problems = [];
   for (const e of pointsOf(report).flatMap((p) => p.evidence)) if (!resolve(dossier, e.path)) problems.push(`bad path: ${e.path}`);
-  // numbers in the prose that aren't in the sheet (small counts aren't checked)
+  // numbers in the prose that aren't in the sheet (small counts aren't checked; the report's own
+  // projections, its forecast, are its to quote; a decade or a band, "the 2020s", "the mid-70s", isn't a
+  // figure of the sheet's)
   const known = numbersIn(dossier);
+  for (const p of report.restOfSeason?.projections ?? []) numbersIn([p.low, p.high], known);
   for (const m of proseOf(report).join(' ').matchAll(/-?\d{1,3}(?:,\d{3})+(?:\.\d+)?|-?\d*\.?\d+/g)) {
+    if (/^s\b/.test(m.input.slice(m.index + m[0].length))) continue;
     const n = Math.abs(Number(m[0].replace(/,/g, '')));
     if (Number.isInteger(n) && n <= 20) continue;
     if (!known.has(n)) problems.push(`unmatched number: ${m[0]}`);

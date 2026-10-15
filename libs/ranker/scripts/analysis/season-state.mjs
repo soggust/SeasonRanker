@@ -78,6 +78,8 @@ export function gameOf(e) {
     teams,
     home: String((c.competitors ?? []).find((x) => x.homeAway === 'home')?.id ?? ''),
     completed: !!c.status?.type?.completed,
+    // (the periods played: a hockey game past its third went to overtime or a shootout)
+    periods: Number(c.status?.period ?? 0) || null,
     winner: winner ? String(winner.id ?? winner.team?.id) : null,
     score: Object.fromEntries((c.competitors ?? []).map((x) => [String(x.id ?? x.team?.id), Number(x.score?.value ?? x.score ?? 0)])),
     round: headline.split(' - ')[0] || null,
