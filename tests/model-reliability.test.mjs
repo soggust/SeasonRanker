@@ -54,3 +54,14 @@ test('liveTest: a failure fails the test, but with LIVE_DATA_SOFT=1 (the bots\' 
   assert.match(soft.stdout, /::warning::live data, not failed \(LIVE_DATA_SOFT\): too long: reason 451 chars/);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// (the late terms' floor judged on the unrounded held-out gain, project.mjs fitStat: rounded to 4 places first, a
+// gain of 0.00025 read 0.0003 and passed DRAFT_GAIN's 0.0003 (NFL receiving yards' nt at z 0.57, 2026-10-15). The
+// rounded gains are only shown: no gate may compare them with a floor again)
+test('project.mjs: no floor gate compares a rounded gain', () => {
+  const src = fs.readFileSync(new URL('../libs/ranker/scripts/model/project.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /gains(\.\w+|\[key\])\s*>=\s*(MIN_GAIN|DRAFT_GAIN)/);
+  assert.match(src, /\(key === 'sp' \? spRaw : raw\) >= MIN_GAIN\[key\]/);
+  for (const k of ["dp", "hl"]) assert.ok(src.includes(`gains.${k} = Math.round(raw * 10000) / 10000`), k);
+  assert.match(src, /csRaw >= DRAFT_GAIN/);
+});

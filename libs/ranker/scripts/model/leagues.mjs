@@ -120,7 +120,10 @@ export const GAME_CAP = 5;
 // with the NFL's props while the month's projected credits stay under 85% (oddsapi.mjs anytimeOn: 1 credit an ask,
 // about 280 a month). The red zone on passing TDs (rzPass) on the gate, left out (held out -0.0013). Set to the push
 // time.
-export const MODEL_EPOCH = '2026-10-15T13:27:00Z';
+// 2026-10-15 audit: the late terms' floor (MIN_GAIN, DRAFT_GAIN: 0.0003) and the draft prior's, the recency
+// weight's and the recalibration by side's judged on the unrounded held-out gain (project.mjs fitStat). Rounded to 4
+// places first, a gain of 0.00025 read 0.0003 and passed (NFL receiving yards' nt at z 0.57). Set to the push time.
+export const MODEL_EPOCH = '2026-10-15T20:23:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

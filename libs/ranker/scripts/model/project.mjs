@@ -2711,16 +2711,20 @@ export function fitStat(stat, rows, env) {
     const tryP = { ...params, ...v, r: sBest.r };
     tryP.scale = given ? params.scale : scaleOf(tryP);
     const tried = heldOut(tryP, sub, sides, given);
-    gains[key] = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+    // (the gain judged unrounded, shown to 4 places: rounded first, a held-out gain of 0.00025 read 0.0003 and
+    // passed the floor (NFL receiving yards' nt, at z 0.57, 2026-10-15))
+    const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
+    gains[key] = Math.round(raw * 10000) / 10000;
     // (the start-of-season prior's gain is its early games' (sp: the check's own lines need 3 of this season's
     // games, so it barely sees them): their log loss at the early lines without it less with it, SUBGROUP_N lines
     // each or not measured; the whole stat's held-out log loss no worse beside it)
     const whole = gains[key];
-    if (key === 'sp') gains.sp = off.early?.lines >= SUBGROUP_N && tried.early?.lines >= SUBGROUP_N ? Math.round((off.early.logLoss - tried.early.logLoss) * 10000) / 10000 : null;
+    const spRaw = off.early?.lines >= SUBGROUP_N && tried.early?.lines >= SUBGROUP_N ? off.early.logLoss - tried.early.logLoss : null;
+    if (key === 'sp') gains.sp = spRaw === null ? null : Math.round(spRaw * 10000) / 10000;
     const fine = (a, b, tol = 0) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) + tol ? null : 'larger');
     const fails = [];
     if (key === 'sp' && gains.sp === null) fails.push('its early lines not measured');
-    else if (!(gains[key] >= MIN_GAIN[key])) fails.push('gain');
+    else if (!((key === 'sp' ? spRaw : raw) >= MIN_GAIN[key])) fails.push('gain');
     if (key === 'sp' && whole < 0) fails.push("the whole stat's log loss");
     if (sub) {
       const [o, t] = [off.parts, tried.parts];
@@ -2863,10 +2867,11 @@ export function fitStat(stat, rows, env) {
       const tryP = { ...params, dp: draftTaken, r: dBest.r };
       tryP.scale = scaleOf(tryP);
       const tried = heldOut(tryP);
-      gains.dp = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+      const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
+      gains.dp = Math.round(raw * 10000) / 10000;
       const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
       const fails = [];
-      if (!(gains.dp >= DRAFT_GAIN)) fails.push('gain');
+      if (!(raw >= DRAFT_GAIN)) fails.push('gain');
       if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
       if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
       ['rookies', 'first two'].forEach((name, y) => {
@@ -2958,9 +2963,10 @@ export function fitStat(stat, rows, env) {
       tried = heldOut(tryP, null, null, scaled(k), { wOf: w, all: true });
       ks = [k0, k];
       rs = [r0, r];
-      gains.hl = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
+      const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
+      gains.hl = Math.round(raw * 10000) / 10000;
       const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
-      if (!(gains.hl >= DRAFT_GAIN)) fails.push('gain');
+      if (!(raw >= DRAFT_GAIN)) fails.push('gain');
       if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
       if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
       if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
@@ -2978,11 +2984,12 @@ export function fitStat(stat, rows, env) {
   if (!TRY_CS) floors.cs = { size: null, fails: ['not tried'], bias: [current.check?.bias ?? null, null], allBias: [current.all?.bias ?? null, null], bySide: [current.check?.bySide ?? null, null], skew: [current.check?.skew ?? null, null] };
   else {
     const sided = heldOut({ ...params, cs: 1 });
-    gains.cs = sided.calSide ? Math.round(((current.check?.logLoss ?? 0) - (sided.check?.logLoss ?? 0)) * 10000) / 10000 : null;
+    const csRaw = sided.calSide ? (current.check?.logLoss ?? 0) - (sided.check?.logLoss ?? 0) : null;
+    gains.cs = csRaw === null ? null : Math.round(csRaw * 10000) / 10000;
     const fails = [];
     if (!sided.calSide) fails.push('too few lines');
     else {
-      if (!(gains.cs >= DRAFT_GAIN)) fails.push('gain');
+      if (!(csRaw >= DRAFT_GAIN)) fails.push('gain');
       [0, 1].forEach((i) => {
         const [a, b] = [sided.check?.bySide?.[i], current.check?.bySide?.[i]];
         const name = i ? 'over the line' : 'under the line';
