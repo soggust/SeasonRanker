@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "34",
+   "abbr": "HOU",
+   "athlete": "4432708",
+   "player": "Marvin Harrison Jr",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.85,
+   "headline": "Marvin Harrison Jr. will play for Texans on Sunday in London, coach says",
+   "at": "2026-10-14T23:04:26.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "4360423",
+   "player": "Michael Penix Jr",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Falcons QB Michael Penix on track to start vs. Bears if no setbacks, coach says",
+   "at": "2026-10-14T21:11:05.000Z"
+  },
+  {
+   "team": "17",
+   "abbr": "NE",
+   "athlete": "4686772",
+   "player": "Christian Gonzalez",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Patriots CB Gonzalez says he's 'ready to go'; WR Brown returns to practice",
+   "at": "2026-10-14T21:05:47.000Z"
+  },
+  {
    "team": "14",
    "abbr": "LAR",
    "athlete": "4036135",
@@ -45,18 +78,7 @@
    "confidence": 0.9,
    "headline": "Bears DE Montez Sweat suspended two games for violating NFL's PED policy",
    "at": "2026-10-13T22:02:40.000Z"
-  },
-  {
-   "team": "25",
-   "abbr": "SF",
-   "athlete": "3916903",
-   "player": "Dre Greenlaw",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "49ers' Dre Greenlaw suspended one game for head-butting helmetless Seahawks LB",
-   "at": "2026-10-13T00:25:40.000Z"
   }
  ],
- "at": "2026-10-14T23:57:13.007Z"
+ "at": "2026-10-15T02:00:29.719Z"
 }

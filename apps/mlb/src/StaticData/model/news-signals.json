@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4345076",
+   "player": "Gavin Williams",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Guardians start Gavin Williams vs. Rays' Griffin Jax in Game 3",
+   "at": "2026-10-14T23:33:10.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "LAD",
+   "athlete": "39832",
+   "player": "Shohei Ohtani",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Shohei Ohtani dropped to sixth in Dodgers' lineup against Brewers in NLCS Game 3",
+   "at": "2026-10-14T23:10:13.000Z"
+  },
+  {
+   "team": "18",
+   "abbr": "HOU",
+   "athlete": null,
+   "player": "Joe Espada",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Astros will not renew contract of manager Joe Espada",
+   "at": "2026-10-14T15:48:39.000Z"
+  },
+  {
    "team": "22",
    "abbr": "PHI",
    "athlete": null,
@@ -25,5 +58,5 @@
    "at": "2026-10-13T14:38:04.000Z"
   }
  ],
- "at": "2026-10-14T15:40:02.495Z"
+ "at": "2026-10-15T02:00:29.719Z"
 }
