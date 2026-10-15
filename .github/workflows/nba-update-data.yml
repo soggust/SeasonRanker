@@ -40,14 +40,25 @@ jobs:
           node-version: "22"
           cache: "npm"
 
+      # (the Heat Maps' shots, each game's kept compactly between runs: the night reads only the new finals'
+      # off the box scores' summaries, and a lost cache reads the season's again, about 1,300 requests;
+      # apps/nba/scripts/shot-zones.mjs. Before the rollover, which builds the finished season's file from them)
+      - name: Restore the shots cache
+        uses: actions/cache@v6
+        with:
+          path: apps/nba/scripts/.cache/shots
+          key: nba-shots-${{ github.run_id }}
+          restore-keys: nba-shots-
+
       # A new season that has begun (yesterday's games on ESPN) becomes current before the night's
       # update: the finished one is archived as a past season (scripts/rollover.mjs)
       - name: Roll over to a new season
         run: node scripts/rollover.mjs nba --if-due
 
       # (the regular season, and once the playoffs have begun the playoffs and both too:
-      # skill-players.post.json and .all.json; before then any old ones are removed; and ESPN's box scores of the
-      # games since the last run, for each team's vs Position: apps/nba/scripts/box-scores.mjs)
+      # skill-players.post.json and .all.json; before then any old ones are removed; ESPN's box scores of the
+      # games since the last run, for each team's vs Position: apps/nba/scripts/box-scores.mjs; and the Heat Maps'
+      # heat-maps.json from the same games' shots: apps/nba/scripts/shot-zones.mjs)
       - name: Pull stats from Basketball-Reference and ESPN
         run: npm run nba:update-data
 

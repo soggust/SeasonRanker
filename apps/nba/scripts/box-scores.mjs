@@ -72,7 +72,9 @@ export function boxLines(side) {
 }
 
 // A season's box scores brought up to date (and saved when anything's new): the kept file's games
-export async function updateBoxes(season, { dir = BOX_DIR, fetch, log = console.log, today = todayET(), pace = PACE, desk = DESK_LINES } = {}) {
+// (onSummary: handed each new final's summary as it's read, with its kept game, for another reader of the same
+// plays: shot-zones.mjs's shots, so the night asks ESPN once a game)
+export async function updateBoxes(season, { dir = BOX_DIR, fetch, log = console.log, today = todayET(), pace = PACE, desk = DESK_LINES, onSummary } = {}) {
   const kept = readBoxes(season, dir);
   kept.missing ??= [];
   // (a finished season: every day of its calendar in, and past July (the calendar of a season under way ends
@@ -131,6 +133,7 @@ export async function updateBoxes(season, { dir = BOX_DIR, fetch, log = console.
           continue;
         }
         kept.games[e.id] = { d: day, t: type, h: siteCode(home.team.abbreviation), a: siteCode(away.team.abbreviation), p: { h, a } };
+        if (body && onSummary) onSummary(e.id, body, kept.games[e.id]);
         // (a long first run saved as it goes: a stop keeps what it has)
         if (++added % 100 === 0) save();
       }

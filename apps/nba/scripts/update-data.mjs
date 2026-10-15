@@ -9,6 +9,7 @@
 //        PARTS=post,all ...                      only those parts' files (default: all three)
 //        BOXES=1 SEASON=2019 ...                 an older season's vs Position too (its box scores fetched,
 //                                                about 1,550 ESPN requests the first time)
+//        SHOTS=1 SEASON=2019 ...                 an older season's Heat Maps too (shot-zones.mjs; 2004 on)
 //
 // A season is named for the year it ends in, like Basketball-Reference and ESPN do: 2025 is 2024-25.
 //
@@ -29,7 +30,8 @@ import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
-import { boxFile, updateBoxes } from './box-scores.mjs';
+import { BOX_DIR, boxFile, updateBoxes } from './box-scores.mjs';
+import { FIRST_SEASON as FIRST_SHOTS, shotFile, updateShots, writeHeat } from './shot-zones.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
 
 const CURRENT_SEASON = 2026;
@@ -512,7 +514,17 @@ async function buildSeason(season, write) {
   // ESPN request leaves what's kept, the rest asked for next run). Only the current season, a season already
   // kept (box-scores/<season>.json) or BOXES=1: any other is about 1,550 requests the first time, and ALL=1
   // would crawl every season since 2001; without them, no vs Position
-  const boxes = current || existsSync(boxFile(season)) || process.env.BOXES ? await updateBoxes(season) : null;
+  const boxesWanted = current || existsSync(boxFile(season)) || process.env.BOXES;
+  // (and the Heat Maps' shots, read off the same summaries: shot-zones.mjs, its heat-maps.json beside the season's
+  // files. The current season, a season whose shots are kept (apps/nba/scripts/.cache/shots) or SHOTS=1: any other
+  // is about 1,300 requests the first time)
+  const shotsWanted = season >= FIRST_SHOTS && (current || existsSync(shotFile(season)) || process.env.SHOTS);
+  let boxes = null;
+  if (shotsWanted) {
+    const got = await updateShots(season, boxesWanted ? { boxDir: BOX_DIR } : {});
+    if (boxesWanted) boxes = got.boxes;
+    writeHeat(got.kept, path.join(current ? STATIC : path.join(STATIC, 'seasons', String(season)), 'heat-maps.json'));
+  } else if (boxesWanted) boxes = await updateBoxes(season);
   let regularPositions = new Map();
 
   await mkdir(dir, { recursive: true });
