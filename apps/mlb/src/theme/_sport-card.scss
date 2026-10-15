@@ -8,7 +8,7 @@
   --hang: 9px;
 }
 
-.comp-badge {
+.similar-badge {
   --shot-w: var(--shot-h);
   --hang: 4px;
 }
@@ -21,6 +21,6 @@
 
 // MLB: the square headshots fade out on the left instead of ending in a hard line across the jersey
 .hero-photo,
-.comp-photo {
+.similar-photo {
   mask-image: sport.$headshot-fade;
 }

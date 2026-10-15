@@ -36,6 +36,7 @@ import { RowGlide } from './row-glide';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
+import { scoreClass } from '@ranker/engine/result-class';
 import { Breakdown, barWidths } from '@ranker/core/breakdown';
 import { GradePart, GradeWhy, gradeText, pctText } from '@ranker/engine/grade-why';
 import { grade, gradeColor } from '@ranker/core/format';
@@ -427,7 +428,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // A header clicked (a press, not a drag: a drag never clicks): that stat alone, or back if it's the one
   isolate(stat: SkillStat, event: Event): void {
     // (the group's icon in the cell collapses the group instead)
-    if ((event.target as Element | null)?.closest('.group-icon, .iso-tools')) return;
+    if ((event.target as Element | null)?.closest('.group-icon, .isolate-tools')) return;
     event.preventDefault();
     if (this.isolatedKey === stat.key) {
       this.endIsolation();
@@ -695,14 +696,14 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return SPORT.rowHeader?.(this.position) ?? 'Player';
   }
 
-  // Gold for #1 (the top-5 class, with the trophy), green for 2-10 (top-10), red for the bottom 10
-  // (bottom-5), white for the rest
+  // Gold for #1 (the rank-first class, with the trophy), green for 2-10 (rank-top), red for the bottom 10
+  // (rank-bottom), white for the rest
   rankClasses(i: number): string {
-    if (i === 0) return 'count top-5';
+    if (i === 0) return 'count rank-first';
     // (the top 10 keep their green if the list is ever that short)
-    if (i < 10) return 'count top-10';
+    if (i < 10) return 'count rank-top';
     // (a pooled tab's: the whole ranking's bottom ten, none among its top 50)
-    if (i >= (isPooled(this.position) ? this.rankedCount : this.playerList.length) - 10) return 'count bottom-5';
+    if (i >= (isPooled(this.position) ? this.rankedCount : this.playerList.length) - 10) return 'count rank-bottom';
     return 'count';
   }
 
@@ -772,6 +773,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return this.gradePopover.shown;
   }
   readonly signedScore = signedScore;
+  // (a recent game's class in the last five: .won, .lost, .tied)
+  readonly scoreClass = scoreClass;
   // (every row's score, as the list last scored it: the rank tile's hover)
   private totals = new Map<SkillPlayer, number>();
 

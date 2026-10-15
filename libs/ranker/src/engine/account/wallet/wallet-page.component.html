@@ -29,13 +29,13 @@
     <b>{{ b.pick }}</b>
   </span>
   <!-- (phones: the game under the pick, its own column gone) -->
-  <small class="w-phone-game">{{ b.matchup }} · {{ b.start | date: 'EEE MMM d' }}</small>
+  <small class="wallet-phone-game">{{ b.matchup }} · {{ b.start | date: 'EEE MMM d' }}</small>
 </ng-template>
 
 <!-- (the bot's tag on a bet it picked too, in a column of its own: its band, with its Kelly score) -->
 <ng-template #tierCell let-b>
   @if (b.tier) {
-    <span class="w-tier" [ngClass]="b.tier" [title]="b.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + b.tier + (b.kelly !== null && b.kelly !== undefined ? ', Kelly ' + b.kelly : '')">@if (b.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ b.tier }}</span>
+    <span class="wallet-tier" [ngClass]="b.tier" [title]="b.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + b.tier + (b.kelly !== null && b.kelly !== undefined ? ', Kelly ' + b.kelly : '')">@if (b.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ b.tier }}</span>
   }
 </ng-template>
 
@@ -53,7 +53,7 @@
         <span class="desk-meter" [class.won]="lv.state === 'won'" [class.lost]="lv.state === 'lost'" [class.under]="b.side === 'under'" aria-hidden="true">
           @if (m.pips) {
             @for (pip of m.pips; track $index) {
-              <span class="pip" [class.on]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
+              <span class="pip" [class.active]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
             }
             @if (m.extra) {
               <span class="pip-extra">+{{ m.extra }}</span>
@@ -64,17 +64,17 @@
         </span>
       }
       <b>{{ lv.text }}</b>
-      <small class="w-phone-game">{{ gameState(b).text }}</small>
+      <small class="wallet-phone-game">{{ gameState(b).text }}</small>
     </td>
   } @else {
     <!-- (the score under it on phones, where the game's column goes) -->
-    <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}<small class="w-phone-game">{{ gameState(b).text }}</small></td>
+    <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}<small class="wallet-phone-game">{{ gameState(b).text }}</small></td>
   }
 </ng-template>
 
 <!-- (a parlay's own badge in the sport column: its legs linked) -->
 <ng-template #parlayBadge>
-  <span class="w-parlay-badge" title="Parlay" aria-hidden="true"><mat-icon fontIcon="link"></mat-icon></span>
+  <span class="wallet-parlay-badge" title="Parlay" aria-hidden="true"><mat-icon fontIcon="link"></mat-icon></span>
 </ng-template>
 
 <!-- (the open bets, by game: the wallet's panel, and the Bets page's Open Bets tab alone) -->
@@ -98,7 +98,7 @@
             <th>Sport</th>
             <th class="desk-left">Game</th>
             <th class="desk-left">Pick</th>
-            <th class="w-bot" title="The bot's pick too: its band">Bot</th>
+            <th class="wallet-bot" title="The bot's pick too: its band">Bot</th>
             <th>Odds</th>
             <th>Stake</th>
             <th title="What it pays on top of the stake if it wins; decided in play, what it came to, pending settlement">To win</th>
@@ -112,7 +112,7 @@
               <tr class="desk-group">
                 <th><img class="desk-league" [src]="leagueLogo(g.sport)" [alt]="g.sport.toUpperCase()" /></th>
                 <td class="desk-left"><span class="desk-group-game"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g, when: 'EEE h:mm a' }"></ng-container></span></span></td>
-                <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="w-phone-game">{{ g.matchup }} · {{ g.start | date: 'EEE MMM d' }}</small></td>
+                <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="wallet-phone-game">{{ g.matchup }} · {{ g.start | date: 'EEE MMM d' }}</small></td>
                 <td></td>
                 <td></td>
                 <td>{{ stakeOf(g.bets) }}</td>
@@ -131,20 +131,20 @@
                   <th><ng-container *ngTemplateOutlet="parlayBadge"></ng-container></th>
                   <td class="desk-left"><span class="desk-group-game">
                     <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shutP" [attr.aria-label]="(shutP ? 'Show ' : 'Hide ') + 'the parlay’s ' + b.legs!.length + ' legs'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                    <span class="desk-game-stack"><b class="w-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE h:mm a' }}</small></span>
+                    <span class="desk-game-stack"><b class="wallet-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE h:mm a' }}</small></span>
                   </span></td>
-                  <td class="desk-left"><b>{{ b.pick }}</b><small class="w-phone-game">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE MMM d' }}</small></td>
-                  <td class="w-bot"></td>
+                  <td class="desk-left"><b>{{ b.pick }}</b><small class="wallet-phone-game">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE MMM d' }}</small></td>
+                  <td class="wallet-bot"></td>
                   <td>{{ oddsText(b.odds) }}</td>
                   <td>{{ b.stake }}@if (oldRun(b)) {<small title="Placed before a reload: it settles and counts in your record, its payout stays with that run">run {{ b.run + 1 }}</small>}</td>
                   @if (d) {
-                    <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash w-paid" title="Decided by its legs: the settler pays it once their games are final">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
+                    <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash wallet-paid" title="Decided by its legs: the settler pays it once their games are final">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
                   } @else {
-                    <td class="up w-paid">{{ units(betToWin(b)) }}</td>
+                    <td class="up wallet-paid">{{ units(betToWin(b)) }}</td>
                   }
-                  <td class="desk-score w-parlay-hits" [class.up]="d?.status === 'won'" [class.down]="d?.status === 'lost'" title="Legs hit so far (graded, or decided by the score)">
+                  <td class="desk-score wallet-parlay-hits" [class.up]="d?.status === 'won'" [class.down]="d?.status === 'lost'" title="Legs hit so far (graded, or decided by the score)">
                     @if (pr) {
-                      <span class="w-legs" aria-hidden="true">
+                      <span class="wallet-legs" aria-hidden="true">
                         @for (l of legs().get(b.id) ?? []; track l.id; let i = $index) {
                           @let st = l.status !== 'open' ? l.status : (decided().get(l.id)?.status ?? null);
                           <i [class.won]="st === 'won'" [class.lost]="st === 'lost'" [class.out]="st === 'push' || st === 'void'"></i>
@@ -161,11 +161,11 @@
                       <th><img class="desk-league" [src]="leagueLogo(l.sport)" [alt]="l.sport.toUpperCase()" /></th>
                       <td class="desk-left"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: l, when: 'EEE h:mm a' }"></ng-container></span></td>
                       <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: l }"></ng-container></td>
-                      <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
+                      <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
                       <td>{{ oddsText(l.odds) }}</td>
                       <td></td>
                       @if (ld) {
-                        <td [class.up]="ld.status === 'won'" [class.down]="ld.status === 'lost'" class="w-paid" [title]="l.status !== 'open' ? legResult(l) : 'Decided by the score'"><small>{{ ld.status === 'won' ? 'hit' : ld.status === 'lost' ? 'missed' : ld.status }}{{ l.status === 'open' ? ' · pending' : '' }}</small></td>
+                        <td [class.up]="ld.status === 'won'" [class.down]="ld.status === 'lost'" class="wallet-paid" [title]="l.status !== 'open' ? legResult(l) : 'Decided by the score'"><small>{{ ld.status === 'won' ? 'hit' : ld.status === 'lost' ? 'missed' : ld.status }}{{ l.status === 'open' ? ' · pending' : '' }}</small></td>
                       } @else {
                         <td></td>
                       }
@@ -183,13 +183,13 @@
                 <!-- (a game's one bet: its game as a game row's, its time or score under its teams) -->
                 <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container></span>}</td>
                 <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
+                <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
                 <td>{{ oddsText(b.odds) }}</td>
                 <td>{{ b.stake }}@if (oldRun(b)) {<small title="Placed before a reload: it settles and counts in your record, its payout stays with that run">run {{ b.run + 1 }}</small>}</td>
                 @if (d) {
-                  <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash w-paid" title="Decided by the score: the settler pays it after the game">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
+                  <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash wallet-paid" title="Decided by the score: the settler pays it after the game">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
                 } @else {
-                  <td class="up w-paid">{{ units(toWin(b.stake, b.odds)) }}</td>
+                  <td class="up wallet-paid">{{ units(toWin(b.stake, b.odds)) }}</td>
                 }
                 <ng-container *ngTemplateOutlet="liveCell; context: { $implicit: b }"></ng-container>
               </tr>
@@ -241,7 +241,7 @@
             <button type="button" class="desk-sort sorted" (click)="latestFirst.set(!latestFirst())" [title]="latestFirst() ? 'Latest first: the oldest first instead' : 'Oldest first: the latest first instead'">Date<mat-icon aria-hidden="true" [fontIcon]="latestFirst() ? 'arrow_downward' : 'arrow_upward'"></mat-icon></button>
           </th>
           <th class="desk-left">Pick</th>
-          <th class="w-bot" title="The bot's pick too: its band">Bot</th>
+          <th class="wallet-bot" title="The bot's pick too: its band">Bot</th>
           <th>Odds</th>
           <th>Stake</th>
           <th>Result</th>
@@ -274,8 +274,8 @@
                     <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' bets on ' + g.matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                     <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g }"></ng-container></span>
                   </span></td>
-                  <td class="w-date">{{ g.start | date: 'MMM d' }}</td>
-                  <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="w-phone-game">{{ g.matchup }}</small></td>
+                  <td class="wallet-date">{{ g.start | date: 'MMM d' }}</td>
+                  <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="wallet-phone-game">{{ g.matchup }}</small></td>
                   <td></td>
                   <td></td>
                   <td>{{ stakeOf(g.bets) }}</td>
@@ -291,11 +291,11 @@
                       <th>@if (!sg.header) {<ng-container *ngTemplateOutlet="parlayBadge"></ng-container>}</th>
                       <td class="desk-left"><span class="desk-group-game">
                         <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shutP" [attr.aria-label]="(shutP ? 'Show ' : 'Hide ') + 'the parlay’s ' + b.legs!.length + ' legs'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                        <span class="desk-game-stack"><b class="w-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games</small></span>
+                        <span class="desk-game-stack"><b class="wallet-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games</small></span>
                       </span></td>
-                      <td class="w-date">{{ b.start | date: 'MMM d' }}</td>
-                      <td class="desk-left"><b>{{ b.pick }}</b><small class="w-phone-game">{{ b.legs!.length }} games · {{ b.start | date: 'MMM d' }}</small></td>
-                      <td class="w-bot"></td>
+                      <td class="wallet-date">{{ b.start | date: 'MMM d' }}</td>
+                      <td class="desk-left"><b>{{ b.pick }}</b><small class="wallet-phone-game">{{ b.legs!.length }} games · {{ b.start | date: 'MMM d' }}</small></td>
+                      <td class="wallet-bot"></td>
                       <td>{{ oddsText(b.odds) }}@if (b.paidOdds !== undefined && b.paidOdds !== b.odds) {<small title="A leg pushed or void dropped out: the rest's price">paid {{ oddsText(b.paidOdds) }}</small>}</td>
                       <td>{{ b.stake }}</td>
                       <td [class.up]="b.status === 'won'" [class.down]="b.status === 'lost'" [title]="resultTitle(b)">
@@ -311,9 +311,9 @@
                         <tr class="desk-grouped wallet-leg">
                           <th><img class="desk-league" [src]="leagueLogo(l.sport)" [alt]="l.sport.toUpperCase()" /></th>
                           <td class="desk-left"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: l }"></ng-container></span></td>
-                          <td class="w-date">{{ l.start | date: 'MMM d' }}</td>
+                          <td class="wallet-date">{{ l.start | date: 'MMM d' }}</td>
                           <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: l }"></ng-container></td>
-                          <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
+                          <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
                           <td>{{ oddsText(l.odds) }}</td>
                           <td></td>
                           <td [class.up]="l.status === 'won'" [class.down]="l.status === 'lost'" [title]="legResult(l)"><small>{{ legResult(l) }}</small></td>
@@ -324,9 +324,9 @@
                   <tr [class.desk-grouped]="many">
                     <th>@if (!many && !sg.header) {<img class="desk-league" [src]="leagueLogo(b.sport)" [alt]="b.sport.toUpperCase()" />}</th>
                     <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b }"></ng-container></span>}</td>
-                    <td class="w-date">@if (!many) {{{ b.start | date: 'MMM d' }}}</td>
+                    <td class="wallet-date">@if (!many) {{{ b.start | date: 'MMM d' }}}</td>
                     <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                    <td class="w-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
+                    <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
                     <td>{{ oddsText(b.odds) }}</td>
                     <td>{{ b.stake }}</td>
                     <td [class.up]="b.status === 'won'" [class.down]="b.status === 'lost'" [title]="resultTitle(b)">
@@ -368,7 +368,7 @@
   } @else if (!account.user()) {
     <!-- Signed out: what the wallet is, and the way in -->
     <section class="model-desk wallet-intro">
-      <div class="wallet-intro-chips" aria-hidden="true"><i class="c100"></i><i class="c25"></i><i class="c5"></i></div>
+      <div class="wallet-intro-chips" aria-hidden="true"><i class="chip-100"></i><i class="chip-25"></i><i class="chip-5"></i></div>
       <h2>Play along with the bot</h2>
       <p>{{ start | number }} play units to start. Bet any game's lines from the Bets page, the bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
       <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>

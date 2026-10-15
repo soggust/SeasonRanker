@@ -123,7 +123,7 @@
                   <span class="depth-initial">{{ starter?.name?.[0] ?? '?' }}</span>
                 }
                 @if (starter?.status; as status) {
-                  <span class="depth-status" [ngClass]="'s-' + status.toLowerCase()" [title]="starter!.statusText + (starter!.injury ? ' (' + starter!.injury + ')' : '')">{{ status }}</span>
+                  <span class="depth-status" [ngClass]="'status-' + status.toLowerCase()" [title]="starter!.statusText + (starter!.injury ? ' (' + starter!.injury + ')' : '')">{{ status }}</span>
                 }
               </span>
               <span class="depth-name">{{ starter?.short ?? 'Open' }}</span>
@@ -143,7 +143,7 @@
                     <i>{{ $index + 1 }}</i>
                     @if (p.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + p.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ p.name }}</button>} @else {<span>{{ p.name }}</span>}
                     @if (p.status) {
-                      <em [ngClass]="'s-' + p.status.toLowerCase()">{{ p.status }}</em>
+                      <em [ngClass]="'status-' + p.status.toLowerCase()">{{ p.status }}</em>
                     }
                     <small>{{ p.snaps != null ? (p.snaps | percent: '1.0-0') : '—' }}</small>
                   </span>
@@ -176,7 +176,7 @@
                 <span class="depth-initial">{{ sp?.name?.[0] ?? '?' }}</span>
               }
               @if (sp?.status; as status) {
-                <span class="depth-status" [ngClass]="'s-' + status.toLowerCase()" [title]="sp!.statusText + (sp!.injury ? ' (' + sp!.injury + ')' : '')">{{ status }}</span>
+                <span class="depth-status" [ngClass]="'status-' + status.toLowerCase()" [title]="sp!.statusText + (sp!.injury ? ' (' + sp!.injury + ')' : '')">{{ status }}</span>
               }
             </span>
             <span class="depth-name">{{ sp?.short ?? 'Open' }}</span>
@@ -221,7 +221,7 @@
               <b>@if (ch.to.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + ch.to.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ ch.to.name }}</button>} @else {<span>{{ ch.to.name }}</span>}</b>
               <!-- (why: a tag in its color, the detail beside it) -->
               @if (ch.tag) {
-                <span class="depth-reason" [ngClass]="'r-' + ch.reason">{{ ch.tag }}</span>
+                <span class="depth-reason" [ngClass]="'reason-' + ch.reason">{{ ch.tag }}</span>
               }
               @if (ch.note) {
                 <small class="depth-change-note">{{ ch.note }}</small>
@@ -252,9 +252,9 @@
             <span class="depth-row-games">{{ p.games }}G</span>
             <span class="depth-row-status">
               @if (p.status) {
-                <em [ngClass]="'s-' + p.status.toLowerCase()" [title]="p.statusText + (p.injury ? ' (' + p.injury + ')' : '')">{{ p.status }}</em>
+                <em [ngClass]="'status-' + p.status.toLowerCase()" [title]="p.statusText + (p.injury ? ' (' + p.injury + ')' : '')">{{ p.status }}</em>
               } @else if (!p.onChart) {
-                <em class="s-gone" title="Not on the depth chart now">Off chart</em>
+                <em class="status-gone" title="Not on the depth chart now">Off chart</em>
               }
             </span>
           </div>

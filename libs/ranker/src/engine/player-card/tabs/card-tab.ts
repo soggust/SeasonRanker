@@ -7,6 +7,7 @@ import { GameViewService } from '../../game-view/game-view.service';
 import { PlayerCard } from '../card.model';
 import { percentileText, possessive, rankText, skillTitle } from '../hover-text';
 import { PlayerCards } from '../player-cards';
+import { resultClass, scoreClass } from '../../result-class';
 
 // What every tab of the player card has: the card it's showing (c, as the card's own template calls it),
 // the cards (their state and actions), the game view, and the helpers their templates share. A tab's host
@@ -25,6 +26,9 @@ export abstract class CardTab {
   readonly rankPct = rankPct;
   // (logos drawn in white on the board: the Giants')
   readonly whiteLogo = whiteLogo;
+  // (a result's class: .won, .lost, .tied)
+  readonly resultClass = resultClass;
+  readonly scoreClass = scoreClass;
 
   // The hover words (hover-text.ts): "88th percentile", "#3 of 32", "Purdy's", a skill's
   readonly pctText = percentileText;

@@ -685,7 +685,7 @@ section ul li.player:not(.header-row) {
 
   // (the segment font sits high in its line box: a little room on top centers the digits; #1 is the
   // trophy)
-  .count:not(.top-5) {
+  .count:not(.rank-first) {
     padding-top: 2.5px;
 
     @include v.down(phone) {
@@ -693,12 +693,12 @@ section ul li.player:not(.header-row) {
     }
   }
 
-  .count.top-10 {
+  .count.rank-top {
     color: var(--tint-good, #{v.$good-bright});
     text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 
-  .count.bottom-5 {
+  .count.rank-bottom {
     color: v.$bad-soft;
     text-shadow: 0 0 8px rgba(v.$bad-soft, 0.7);
   }
@@ -711,7 +711,7 @@ section ul li.player:not(.header-row) {
   }
 
   // #1's trophy, green like the 2-10 digits, catching the light now and then (the glint is inside its mask)
-  .count .lombardi {
+  .count .trophy {
     animation: trophy-shine 4s ease-in-out infinite;
     background: v.glint();
     background-color: var(--tint-good, #{v.$good-bright});
@@ -1000,24 +1000,24 @@ section ul li.player {
         text-shadow: none;
         width: 13px;
 
-        &.green {
+        &.won {
           background: v.$good;
         }
 
-        &.red {
+        &.lost {
           background: v.$bad;
         }
 
-        &.tie {
+        &.tied {
           background: v.$neutral;
         }
 
         // (decided in overtime or a shootout: the same result, lighter)
-        &.green.ot {
+        &.won.ot {
           background: v.$good-ot;
         }
 
-        &.red.ot {
+        &.lost.ot {
           background: v.$bad-ot;
         }
 
@@ -1408,7 +1408,7 @@ section ul li.player.header-row .stat-label[role="button"] {
   }
 }
 
-section ul li.player.header-row .iso-on .stat-label[role="button"]:focus-visible {
+section ul li.player.header-row .isolated .stat-label[role="button"]:focus-visible {
   color: #fff !important;
 }
 
@@ -2001,15 +2001,15 @@ section ul li.player {
 }
 
 section ul.isolating li.player {
-  > .col-group > div:not(.iso-on):not(.support-box),
-  > .col-group > div.recent-box:not(.iso-on),
-  > .col-group > .support-box:not(.recent-box) > div:not(.iso-on),
+  > .col-group > div:not(.isolated):not(.support-box),
+  > .col-group > div.recent-box:not(.isolated),
+  > .col-group > .support-box:not(.recent-box) > div:not(.isolated),
   > .col-group > .support-box:not(.recent-box) > .group-icon {
     opacity: 0.14;
   }
 
   // (a dimmed header still clicks: lit back up under the pointer or the keyboard)
-  &.header-row > .col-group .iso-can:not(.iso-on):is(:hover, :has(.stat-label:focus-visible)) {
+  &.header-row > .col-group .isolatable:not(.isolated):is(:hover, :has(.stat-label:focus-visible)) {
     opacity: 0.6;
   }
 
@@ -2023,7 +2023,7 @@ section ul.isolating li.player {
 // The column sorted by: one strip down it, a plain light shade edged in the rank tiles' dashed line (its
 // sides on every row, its top on the first and its bottom on the last; drawn as backgrounds, the cells'
 // ::before and ::after being taken), its header lit and underlined
-section ul.isolating li.player:not(.header-row) .iso-on {
+section ul.isolating li.player:not(.header-row) .isolated {
   // (the full row's height, past the row's 0.25em padding top and bottom, so the strip runs unbroken from
   // row to row; the value still centered in it)
   align-self: stretch;
@@ -2038,7 +2038,7 @@ section ul.isolating li.player:not(.header-row) .iso-on {
     rgba(255, 255, 255, 0.06);
 }
 
-section ul.isolating li.player.header-row + li.player .iso-on {
+section ul.isolating li.player.header-row + li.player .isolated {
   background:
     var(--iso-dash-h) left top / 100% 1px no-repeat,
     var(--iso-dash-v) left top / 1px 100% no-repeat,
@@ -2046,7 +2046,7 @@ section ul.isolating li.player.header-row + li.player .iso-on {
     rgba(255, 255, 255, 0.06);
 }
 
-section ul.isolating li.player:not(.header-row):last-of-type .iso-on {
+section ul.isolating li.player:not(.header-row):last-of-type .isolated {
   background:
     var(--iso-dash-h) left bottom / 100% 1px no-repeat,
     var(--iso-dash-v) left top / 1px 100% no-repeat,
@@ -2056,8 +2056,8 @@ section ul.isolating li.player:not(.header-row):last-of-type .iso-on {
 
 section ul li.player.header-row,
 section ul li.player.header-row:hover {
-  .iso-on .stat-label,
-  .iso-on:hover .stat-label {
+  .isolated .stat-label,
+  .isolated:hover .stat-label {
     color: var(--scoreboard-led);
     opacity: 1;
     text-decoration: underline 1px;
@@ -2066,12 +2066,12 @@ section ul li.player.header-row:hover {
   }
 
   // (the isolated header's direction: a small arrow at its right, in the board's light, lighter on hover)
-  .iso-on {
+  .isolated {
     position: relative;
   }
 
   // (the arrow, then an X back to the ranking beside it: the chip isn't the only way out)
-  .iso-tools {
+  .isolate-tools {
     align-items: center;
     display: flex;
     gap: 1px;
@@ -2081,7 +2081,7 @@ section ul li.player.header-row:hover {
     transform: translateY(-50%);
   }
 
-  .iso-dir {
+  .isolate-dir {
     align-items: center;
     background: none;
     border: none;
@@ -2104,21 +2104,21 @@ section ul li.player.header-row:hover {
   }
 
   // (the X: the header's white, a touch quieter than the arrow)
-  .iso-close {
+  .isolate-close {
     color: #fff;
     opacity: 0.6;
   }
 
   // (a header that sorts: the pointer says it clicks, its hover still has the stat's name; past the header
   // label's own help cursor on hover)
-  div.iso-can .stat-label,
-  div.iso-can .stat-label:hover {
+  div.isolatable .stat-label,
+  div.isolatable .stat-label:hover {
     cursor: pointer;
   }
 }
 
 // A row's place by the stat: white digits in a dashed edge of the board's light (solid on hover, as any tile)
-section ul li.player:not(.header-row) .count.rank-tile.iso-place {
+section ul li.player:not(.header-row) .count.rank-tile.isolate-place {
   border-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
   border-style: dashed;
 
@@ -2133,7 +2133,7 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
 
 // The chip: what it's sorted by and an X back (phones have no Esc), in the header's name cell in place of
 // its label (over the rank tiles showing the places by it): in the pinned header, so it covers no row
-.iso-chip {
+.isolate-chip {
   align-items: center;
   @include v.scoreboard-panel(999px, 0 4px 14px rgba(0, 0, 0, 0.55));
   box-sizing: border-box;
@@ -2152,7 +2152,7 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
   white-space: nowrap;
 
   @media (prefers-reduced-motion: no-preference) {
-    animation: iso-chip-in 0.18s ease-out;
+    animation: isolate-chip-in 0.18s ease-out;
   }
 
   b {
@@ -2160,34 +2160,34 @@ section ul li.player:not(.header-row) .count.rank-tile.iso-place {
   }
 }
 
-.iso-chip-icon {
+.isolate-chip-icon {
   color: var(--scoreboard-led);
   @include v.icon-size(15px);
 }
 
-.iso-chip-text {
+.isolate-chip-text {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 // (scrolled sideways: kept to the pinned strip, the stats passing under the rest; just the stat's name)
-section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
+section ul.scrolled-x li.player.header-row > div.player-info .isolate-chip {
   max-width: 11em;
 
-  .iso-chip-by,
-  .iso-chip-hint {
+  .isolate-chip-by,
+  .isolate-chip-hint {
     display: none;
   }
 }
 
 // (touch: no Esc to mention)
 @media (hover: none) {
-  .iso-chip-hint {
+  .isolate-chip-hint {
     display: none;
   }
 }
 
-.iso-chip-close {
+.isolate-chip-close {
   align-items: center;
   background: none;
   border: none;
@@ -2225,7 +2225,7 @@ section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
   }
 }
 
-@keyframes iso-chip-in {
+@keyframes isolate-chip-in {
   from {
     opacity: 0;
     transform: translateY(-4px);

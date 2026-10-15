@@ -168,7 +168,7 @@ $hm-rim: #ff7a1a;
 }
 
 // (the Field Map's charts in among them, on the board too: one column's chart, never stretched)
-.hm-field .fm-charts {
+.hm-field .field-map-charts {
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -574,7 +574,7 @@ $hm-cuff: rgb(244, 241, 236);
   }
 
   &:hover .hm-fill,
-  &.on .hm-fill {
+  &.active .hm-fill {
     stroke: rgba(255, 255, 255, 0.85);
     stroke-width: 1.6px;
   }
@@ -868,11 +868,11 @@ $hm-cuff: rgb(244, 241, 236);
 }
 
 @include v.up(tablet) {
-  .hm-maps.solo .fm-charts {
+  .hm-maps.solo .field-map-charts {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .hm-maps.solo :is(.fm-kicks, .fm-punts) {
+  .hm-maps.solo :is(.field-map-kicks, .field-map-punts) {
     align-items: center;
     column-gap: 32px;
     display: grid;
@@ -889,25 +889,25 @@ $hm-cuff: rgb(244, 241, 236);
       grid-row: 2 / span 2;
     }
 
-    > :is(.fm-note, .fm-chips) {
+    > :is(.field-map-note, .field-map-chips) {
       grid-column: 2;
       justify-content: flex-start;
       text-align: left;
     }
 
     // (a kicker's two lines in the middle of the chart's height, a size up: his makes, then his misses)
-    > .fm-note {
+    > .field-map-note {
       align-self: end;
       font-size: 14px;
       grid-row: 2;
     }
 
-    > .fm-note + .fm-note {
+    > .field-map-note + .field-map-note {
       align-self: start;
       grid-row: 3;
     }
 
-    > .fm-chips {
+    > .field-map-chips {
       align-content: center;
       grid-row: 2 / span 2;
     }

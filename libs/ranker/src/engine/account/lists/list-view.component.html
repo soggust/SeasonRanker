@@ -111,7 +111,7 @@
             @if (mine) {
               <mat-icon cdkDragHandle class="grip" aria-hidden="false" aria-label="Drag to reorder" fontIcon="drag_indicator"></mat-icon>
             }
-            <span [ngClass]="rankClass(i)" class="rank-tile" [title]="'#' + (i + 1)">@if (i === 0) {<span class="lombardi" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
+            <span [ngClass]="rankClass(i)" class="rank-tile" [title]="'#' + (i + 1)">@if (i === 0) {<span class="trophy" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
             <span class="badge-slot" [class.with-photo]="photo(row)" aria-hidden="true">
               <span class="team-badge" [class.white-logo]="whiteLogo(row)" [class.no-color]="!badge(row)">
                 @if (logo(row); as src) { <img class="team-logo" [src]="src" alt="" /> }
@@ -167,7 +167,7 @@
           <textarea name="note" rows="4" [(ngModel)]="note" placeholder="Why this order? (optional)" [attr.aria-invalid]="!!noteError"></textarea>
           @if (noteError; as p) { <span class="field-error">{{ p }}</span> }
         </label>
-        <div class="vis-row">
+        <div class="visibility-row">
           <span class="field-label" id="edit-vis">Who can see it</span>
           <visibility-pills labelledby="edit-vis" [value]="editVisibility" (picked)="editVisibility = $event"></visibility-pills>
           <span class="field-hint">{{ hints[editVisibility] }}</span>

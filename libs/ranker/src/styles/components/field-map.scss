@@ -11,14 +11,14 @@ $fm-turf: rgb(9, 17, 12);
 $fm-halo: rgb(0, 0, 0);
 $fm-bad-light: rgb(255, 140, 130);
 
-.fm-charts {
+.field-map-charts {
   align-items: start;
   display: grid;
   gap: 18px 28px;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
-.fm-chart {
+.field-map-chart {
   // (one alone: centered in the panel)
   justify-self: center;
   margin: 0;
@@ -33,12 +33,12 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 
   // (the punts' field runs long: more room across)
-  &.fm-punts {
+  &.field-map-punts {
     max-width: 540px;
   }
 }
 
-.fm-head {
+.field-map-head {
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
@@ -59,21 +59,21 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- the field: the turf darkened, its stripes, the chalk
 
-.fm-shade {
+.field-map-shade {
   fill: rgba($fm-turf, 0.76);
 }
 
-.fm-stripe {
+.field-map-stripe {
   fill: rgba(255, 255, 255, 0.035);
 }
 
-.fm-edge {
+.field-map-edge {
   fill: none;
   stroke: rgba(255, 255, 255, 0.75);
   stroke-width: 1.6px;
 }
 
-.fm-yard {
+.field-map-yard {
   fill: none;
   stroke: rgba(255, 255, 255, 0.22);
   stroke-width: 1px;
@@ -85,14 +85,14 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-hash {
+.field-map-hash {
   fill: none;
   stroke: rgba(255, 255, 255, 0.3);
   stroke-width: 0.9px;
 }
 
 // (the yard numbers painted along the sidelines)
-.fm-num {
+.field-map-num {
   dominant-baseline: central;
   fill: rgba(255, 255, 255, 0.28);
   font-family: v.$font-heading;
@@ -108,14 +108,14 @@ $fm-bad-light: rgb(255, 140, 130);
 }
 
 // (the line of scrimmage, a broadcast's blue)
-.fm-los {
+.field-map-los {
   filter: drop-shadow(0 0 3px rgba(95, 168, 255, 0.6));
   stroke: #5fa8ff;
   stroke-dasharray: 6 4;
   stroke-width: 2px;
 }
 
-.fm-side {
+.field-map-side {
   fill: rgba(255, 255, 255, 0.55);
   font-size: 9px;
   font-weight: 800;
@@ -125,8 +125,8 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- a part's numbers: the value in the hand, what it's out of under it
 
-.fm-main,
-.fm-sub {
+.field-map-main,
+.field-map-sub {
   paint-order: stroke;
   pointer-events: none;
   stroke: rgba($fm-halo, 0.55);
@@ -134,14 +134,14 @@ $fm-bad-light: rgb(255, 140, 130);
   text-anchor: middle;
 }
 
-.fm-main {
+.field-map-main {
   fill: #fff;
   font-family: v.$font-hand;
   font-size: 14px;
   stroke-width: 3px;
 }
 
-.fm-sub {
+.field-map-sub {
   fill: rgba(255, 255, 255, 0.75);
   font-size: 9.5px;
   font-weight: 800;
@@ -150,10 +150,10 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- the zones
 
-.fm-zone {
+.field-map-zone {
   cursor: help;
 
-  .fm-zone-fill {
+  .field-map-zone-fill {
     stroke: rgba(0, 0, 0, 0.28);
     stroke-width: 1px;
     transition:
@@ -161,22 +161,22 @@ $fm-bad-light: rgb(255, 140, 130);
       stroke v.$t-fast ease;
   }
 
-  &:hover .fm-zone-fill {
+  &:hover .field-map-zone-fill {
     stroke: rgba(255, 255, 255, 0.85);
     stroke-width: 1.6px;
   }
 
-  &.empty .fm-main {
+  &.empty .field-map-main {
     fill: rgba(255, 255, 255, 0.35);
   }
 }
 
-.fm-bubble {
+.field-map-bubble {
   stroke: rgba(255, 255, 255, 0.7);
   stroke-width: 1.2px;
   transition: stroke-width v.$t-fast ease;
 
-  .fm-zone:hover & {
+  .field-map-zone:hover & {
     stroke: #fff;
     stroke-width: 2px;
   }
@@ -184,7 +184,7 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- the keys under a chart
 
-.fm-legend {
+.field-map-legend {
   color: rgba(255, 255, 255, 0.6);
   display: flex;
   flex-wrap: wrap;
@@ -201,7 +201,7 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-key {
+.field-map-key {
   border-radius: v.$radius-xs;
   display: inline-block;
   height: 10px;
@@ -223,17 +223,17 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- a defense's run lanes: a strip of seven cells, left end to right end
 
-.fm-strip {
+.field-map-strip {
   margin-top: 16px;
 }
 
-.fm-strip-cells {
+.field-map-strip-cells {
   display: grid;
   gap: 4px;
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
-.fm-cell {
+.field-map-cell {
   align-items: center;
   background: linear-gradient(var(--fill), var(--fill)), rgba($fm-turf, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -278,7 +278,7 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- the run lanes
 
-.fm-yd {
+.field-map-yd {
   fill: rgba(255, 255, 255, 0.3);
   font-size: 8px;
   font-weight: 800;
@@ -288,7 +288,7 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-lineman {
+.field-map-lineman {
   fill: rgba(0, 0, 0, 0.25);
   stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 1.4px;
@@ -300,16 +300,16 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-back {
+.field-map-back {
   fill: rgba(255, 255, 255, 0.85);
   stroke: rgba(0, 0, 0, 0.4);
   stroke-width: 1px;
 }
 
-.fm-lane {
+.field-map-lane {
   cursor: help;
 
-  .fm-shaft {
+  .field-map-shaft {
     fill: none;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
     stroke-linecap: round;
@@ -318,64 +318,64 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 
   // (a wider, unseen stroke along it: an easy target for the hover)
-  .fm-shaft-hit {
+  .field-map-shaft-hit {
     fill: none;
     stroke: transparent;
     stroke-width: 14px;
   }
 
-  &:hover .fm-shaft,
-  &:hover .fm-head-arrow {
+  &:hover .field-map-shaft,
+  &:hover .field-map-head-arrow {
     filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7));
   }
 
-  &.empty .fm-shaft {
+  &.empty .field-map-shaft {
     stroke-dasharray: 0.04 0.04;
   }
 
-  &.empty .fm-main {
+  &.empty .field-map-main {
     fill: rgba(255, 255, 255, 0.35);
   }
 }
 
 // ---- the kicks
 
-.fm-band {
+.field-map-band {
   cursor: help;
 
-  .fm-ring-turf {
+  .field-map-ring-turf {
     opacity: 0.55;
   }
 
-  .fm-ring {
+  .field-map-ring {
     stroke: rgba(255, 255, 255, 0.35);
     stroke-width: 1px;
     transition: stroke v.$t-fast ease;
   }
 
-  &:hover .fm-ring {
+  &:hover .field-map-ring {
     stroke: rgba(255, 255, 255, 0.9);
     stroke-width: 1.6px;
   }
 
-  &.empty .fm-ring {
+  &.empty .field-map-ring {
     stroke: rgba(255, 255, 255, 0.25);
     stroke-dasharray: 3 3;
   }
 
-  &.empty .fm-main {
+  &.empty .field-map-main {
     fill: rgba(255, 255, 255, 0.35);
   }
 }
 
-.fm-band-label {
+.field-map-band-label {
   fill: rgba(255, 255, 255, 0.5);
   font-size: 9px;
   font-weight: 800;
 }
 
 // (the uprights in their yellow)
-.fm-posts path {
+.field-map-posts path {
   fill: none;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
   stroke: #f5c518;
@@ -385,7 +385,7 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // (a kicker's misses: in the red the rings' bad side has, edged dark on the turf; a blocked one a cross, the
 // rest of other kinds hollow; their counts in the hover on a phone)
-.fm-miss {
+.field-map-miss {
   cursor: help;
 
   path {
@@ -421,11 +421,11 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-miss-hit {
+.field-map-miss-hit {
   fill: transparent;
 }
 
-.fm-miss-n {
+.field-map-miss-n {
   fill: rgb(255, 150, 140);
   font-size: 8px;
   font-weight: 800;
@@ -436,7 +436,7 @@ $fm-bad-light: rgb(255, 140, 130);
   stroke-width: 2.2px;
 }
 
-.fm-miss-note {
+.field-map-miss-note {
   margin-top: 4px;
 
   span {
@@ -447,7 +447,7 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-miss-key {
+.field-map-miss-key {
   background: v.$bad;
   border-radius: v.$radius-round;
   display: inline-block;
@@ -455,7 +455,7 @@ $fm-bad-light: rgb(255, 140, 130);
   width: 7px;
 }
 
-.fm-note {
+.field-map-note {
   align-items: baseline;
   color: rgba(255, 255, 255, 0.6);
   display: flex;
@@ -478,20 +478,20 @@ $fm-bad-light: rgb(255, 140, 130);
 
 // ---- the punts
 
-.fm-inside20 {
+.field-map-inside20 {
   fill: rgba(245, 197, 24, 0.08);
 }
 
-.fm-endzone {
+.field-map-endzone {
   fill: rgba(0, 0, 0, 0.28);
 }
 
-.fm-league-tick {
+.field-map-league-tick {
   cursor: help;
   fill: rgba(255, 255, 255, 0.55);
 }
 
-.fm-arc {
+.field-map-arc {
   fill: none;
   stroke: rgba(255, 255, 255, 0.85);
   stroke-dasharray: 0.012 0.012;
@@ -499,18 +499,18 @@ $fm-bad-light: rgb(255, 140, 130);
   stroke-width: 1.6px;
 }
 
-.fm-ball {
+.field-map-ball {
   fill: #8a4b23;
   stroke: #fff;
   stroke-width: 0.9px;
 }
 
-.fm-flight,
-.fm-return {
+.field-map-flight,
+.field-map-return {
   cursor: help;
 }
 
-.fm-return {
+.field-map-return {
   line {
     stroke: rgba(255, 255, 255, 0.55);
     stroke-dasharray: 3 2.5;
@@ -523,7 +523,7 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 }
 
-.fm-mark {
+.field-map-mark {
   cursor: help;
   font-family: v.$font-hand;
   font-size: 13px;
@@ -533,52 +533,52 @@ $fm-bad-light: rgb(255, 140, 130);
   stroke-width: 3px;
 }
 
-.fm-mark-unit {
+.field-map-mark-unit {
   fill: rgba(255, 255, 255, 0.65);
   font-family: v.$font-base;
   font-size: 9px;
   font-weight: 800;
 }
 
-.fm-bar {
+.field-map-bar {
   cursor: help;
 
-  .fm-bar-bg {
+  .field-map-bar-bg {
     fill: rgba(255, 255, 255, 0.04);
   }
 
-  .fm-bar-fill {
+  .field-map-bar-fill {
     fill: rgba(225, 232, 226, 0.5);
     transition: filter v.$t-fast ease;
   }
 
-  &:hover .fm-bar-fill {
+  &:hover .field-map-bar-fill {
     filter: brightness(1.25);
   }
 }
 
-.fm-bar-league {
+.field-map-bar-league {
   stroke: rgba(255, 255, 255, 0.8);
   stroke-dasharray: 2 2;
   stroke-width: 1.2px;
 }
 
-.fm-bar-n,
-.fm-bar-label {
+.field-map-bar-n,
+.field-map-bar-label {
   font-size: 9px;
   font-weight: 800;
   text-anchor: middle;
 }
 
-.fm-bar-n {
+.field-map-bar-n {
   fill: #fff;
 }
 
-.fm-bar-label {
+.field-map-bar-label {
   fill: rgba(255, 255, 255, 0.6);
 }
 
-.fm-chips {
+.field-map-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -586,7 +586,7 @@ $fm-bad-light: rgb(255, 140, 130);
   margin-top: 10px;
 }
 
-.fm-chip {
+.field-map-chip {
   align-items: center;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -616,7 +616,7 @@ $fm-bad-light: rgb(255, 140, 130);
 // ---- phone: the charts' own numbers a touch smaller, the strip's tighter
 
 @include v.down(phone) {
-  .fm-cell {
+  .field-map-cell {
     padding: 5px 0 4px;
 
     b {
@@ -629,7 +629,7 @@ $fm-bad-light: rgb(255, 140, 130);
   }
 
   // (a miss's count: in its hover instead)
-  .fm-miss-n {
+  .field-map-miss-n {
     display: none;
   }
 }
@@ -638,84 +638,84 @@ $fm-bad-light: rgb(255, 140, 130);
 // arrows draw out of the backfield, the rings step out from the posts, the punt flies, the bars rise
 
 @media (prefers-reduced-motion: no-preference) {
-  .fm-zone-fill,
-  .fm-cell,
-  .fm-band {
-    animation: fm-fade 0.45s ease backwards;
+  .field-map-zone-fill,
+  .field-map-cell,
+  .field-map-band {
+    animation: field-map-fade 0.45s ease backwards;
     animation-delay: calc(var(--i, 0) * 45ms);
   }
 
-  .fm-zone text,
-  .fm-band text,
-  .fm-lane text {
-    animation: fm-fade 0.3s ease backwards;
+  .field-map-zone text,
+  .field-map-band text,
+  .field-map-lane text {
+    animation: field-map-fade 0.3s ease backwards;
     animation-delay: calc(var(--i, 0) * 45ms + 250ms);
   }
 
-  .fm-bubble {
-    animation: fm-pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.3) backwards;
+  .field-map-bubble {
+    animation: field-map-pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.3) backwards;
     animation-delay: calc(var(--i, 0) * 40ms);
     transform-box: fill-box;
     transform-origin: center;
   }
 
-  .fm-lane .fm-shaft {
-    animation: fm-draw 0.6s cubic-bezier(0.3, 0.7, 0.3, 1) backwards;
+  .field-map-lane .field-map-shaft {
+    animation: field-map-draw 0.6s cubic-bezier(0.3, 0.7, 0.3, 1) backwards;
     animation-delay: calc(var(--i, 0) * 60ms);
     stroke-dasharray: 1;
   }
 
-  .fm-lane.empty .fm-shaft {
-    animation: fm-fade 0.4s ease backwards;
+  .field-map-lane.empty .field-map-shaft {
+    animation: field-map-fade 0.4s ease backwards;
   }
 
-  .fm-head-arrow {
-    animation: fm-fade 0.2s ease backwards;
+  .field-map-head-arrow {
+    animation: field-map-fade 0.2s ease backwards;
     animation-delay: calc(var(--i, 0) * 60ms + 0.5s);
   }
 
-  .fm-arc {
-    animation: fm-fade 0.7s ease backwards;
+  .field-map-arc {
+    animation: field-map-fade 0.7s ease backwards;
   }
 
-  .fm-ball {
-    animation: fm-pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.3) 0.45s backwards;
+  .field-map-ball {
+    animation: field-map-pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.3) 0.45s backwards;
     transform-box: fill-box;
     transform-origin: center;
   }
 
-  .fm-return {
-    animation: fm-fade 0.35s ease 0.75s backwards;
+  .field-map-return {
+    animation: field-map-fade 0.35s ease 0.75s backwards;
   }
 
-  .fm-bar-fill {
-    animation: fm-rise 0.45s v.$ease-out backwards;
+  .field-map-bar-fill {
+    animation: field-map-rise 0.45s v.$ease-out backwards;
     animation-delay: calc(var(--i, 0) * 60ms + 0.2s);
     transform-box: fill-box;
     transform-origin: bottom;
   }
 }
 
-@keyframes fm-fade {
+@keyframes field-map-fade {
   from {
     opacity: 0;
   }
 }
 
-@keyframes fm-pop {
+@keyframes field-map-pop {
   from {
     opacity: 0;
     transform: scale(0);
   }
 }
 
-@keyframes fm-draw {
+@keyframes field-map-draw {
   from {
     stroke-dashoffset: 1;
   }
 }
 
-@keyframes fm-rise {
+@keyframes field-map-rise {
   from {
     transform: scaleY(0);
   }

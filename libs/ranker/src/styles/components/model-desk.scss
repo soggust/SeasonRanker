@@ -713,7 +713,7 @@ card-panel {
       box-shadow 0.4s ease;
     width: 10px;
 
-    &.on {
+    &.active {
       background: var(--meter);
       border-color: transparent;
       box-shadow: 0 0 6px color-mix(in srgb, var(--meter) 70%, transparent);
@@ -860,7 +860,7 @@ card-panel {
     transform-origin: left center;
   }
 
-  .pip.on {
+  .pip.active {
     animation: desk-pip 0.35s ease-out both;
     animation-delay: calc(min(var(--i, 0), 12) * 45ms);
   }
@@ -917,7 +917,7 @@ card-panel {
   .desk-curve .desk-area,
   .desk-curve .desk-now,
   .desk-meter .fill,
-  .desk-meter .pip.on,
+  .desk-meter .pip.active,
   .desk-table td.desk-flash {
     animation: none;
   }
@@ -1121,7 +1121,7 @@ card-panel {
       text-overflow: ellipsis;
     }
 
-    td.w-paid small {
+    td.wallet-paid small {
       white-space: normal;
     }
   }

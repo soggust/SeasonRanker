@@ -51,12 +51,12 @@ tokens (the audit's "alpha ladder") so the floor is set once.
 | `components/rankings.component.scss` `.drag-indicator` | the row's drag grip (an icon) | 30% opacity, ~2.5:1 | 3:1 | 45% |
 | `components/rankings.component.scss` header `.label-tag`, `.compare-count` | 8px label tags, the 9px compare count | small | 10px | 10px |
 | `components/compare.scss` search placeholder, skill-bar numbers | Compare's search hint and bar numbers | white 45% | 4.5:1 | 60% |
-| `components/game-view.scss` caps labels, table heads, `.wp-edge`, `.drive-result`, `.game-play-clock`, `.log-vs`, several `small` | game view fine print, 10-11.5px | white 45-50% | 4.5:1 | 60% |
+| `components/game-view.scss` caps labels, table heads, `.win-prob-edge`, `.drive-result`, `.game-play-clock`, `.log-vs`, several `small` | game view fine print, 10-11.5px | white 45-50% | 4.5:1 | 60% |
 | `components/model-desk.scss` table `small`, `dt` | Algorithm fine print, 10.5-11px | white 45-50% | 4.5:1 | 60% |
 | `components/tracker.scss` `.pin-when`, `.pin-footnote`, `small` | Track Players dates and footnotes, 10-11px | white 35-50% (footnote ~3.2:1) | 4.5:1 | 60% |
 | `components/wallet-lines.scss` `.lines-when`, table heads, `.preview-moved`, `.lines-foot`, `.price-kelly` | wallet lines fine print, 9.5-11.5px | white 40-55% | 4.5:1 | 60%, 10px |
-| `components/wallet-slip.scss` `.slip-fine`, `.slip-game`; `components/wallet-page.scss` `.wallet-fine`, `.w-phone-game` | slip and wallet fine print, 10.5-11.5px | white 45-50% | 4.5:1 | 60% |
-| `components/account-lists.scss` `.of`, `.section-foot`, `.m-lists`; `components/account-profile.scss` `.bet-when`, stat labels | list footers, profile labels, 9.5-11.5px | white 50% on pewter, ~5.0:1 or less | 4.5:1 | 60%, 10px |
+| `components/wallet-slip.scss` `.slip-fine`, `.slip-game`; `components/wallet-page.scss` `.wallet-fine`, `.wallet-phone-game` | slip and wallet fine print, 10.5-11.5px | white 45-50% | 4.5:1 | 60% |
+| `components/account-lists.scss` `.of`, `.section-foot`, `.maker-lists`; `components/account-profile.scss` `.bet-when`, stat labels | list footers, profile labels, 9.5-11.5px | white 50% on pewter, ~5.0:1 or less | 4.5:1 | 60%, 10px |
 | `components/login-dialog.scss` `.login-or`; `components/field-map.scss` legend `small` | "or" divider, field map legend, 10-11px | white 45-50% | 4.5:1 | 60% |
 
 The list comes from the CSS audit (white at 50% or less, or `#777`, at 11.5px or under); about 37 more

@@ -31,8 +31,8 @@
     <!-- (Straight or Parlay: a switch once there's more than one) -->
     @if (wallet.slip().length >= 2) {
       <div class="slip-mode" role="group" aria-label="Bet type">
-        <button type="button" [class.on]="!wallet.asParlay()" [attr.aria-pressed]="!wallet.asParlay()" (click)="mode('straight')">Straight</button>
-        <button type="button" [class.on]="wallet.asParlay()" [attr.aria-pressed]="wallet.asParlay()" (click)="mode('parlay')">Parlay<b>{{ wallet.slip().length }}</b></button>
+        <button type="button" [class.active]="!wallet.asParlay()" [attr.aria-pressed]="!wallet.asParlay()" (click)="mode('straight')">Straight</button>
+        <button type="button" [class.active]="wallet.asParlay()" [attr.aria-pressed]="wallet.asParlay()" (click)="mode('parlay')">Parlay<b>{{ wallet.slip().length }}</b></button>
       </div>
     }
 
@@ -63,7 +63,7 @@
               </label>
               <div class="slip-chips" role="group" [attr.aria-label]="'Add chips to the stake on ' + s.pick">
                 @for (c of chips; track c) {
-                  <button type="button" class="stake-chip" [ngClass]="c < 1 ? 'c-half' : 'c' + c" [attr.aria-label]="'Add ' + c" [disabled]="room(s) - s.stake < c" (click)="chip(s, c)">
+                  <button type="button" class="stake-chip" [ngClass]="c < 1 ? 'chip-half' : 'chip-' + c" [attr.aria-label]="'Add ' + c" [disabled]="room(s) - s.stake < c" (click)="chip(s, c)">
                     {{ c < 1 ? '½' : c }}
                     <svg class="chip-rim" aria-hidden="true"><rect pathLength="48" /></svg>
                   </button>
@@ -97,7 +97,7 @@
             </label>
             <div class="slip-chips" role="group" aria-label="Add chips to the parlay's stake">
               @for (c of chips; track c) {
-                <button type="button" class="stake-chip" [ngClass]="c < 1 ? 'c-half' : 'c' + c" [attr.aria-label]="'Add ' + c" [disabled]="wallet.balance() - stake < c" (click)="parlayChip(c)">
+                <button type="button" class="stake-chip" [ngClass]="c < 1 ? 'chip-half' : 'chip-' + c" [attr.aria-label]="'Add ' + c" [disabled]="wallet.balance() - stake < c" (click)="parlayChip(c)">
                   {{ c < 1 ? '½' : c }}
                   <svg class="chip-rim" aria-hidden="true"><rect pathLength="48" /></svg>
                 </button>

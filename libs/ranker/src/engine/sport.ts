@@ -184,7 +184,7 @@ export interface SportSetting {
   // Garbage Time), among the Display switches (before Injured Players), at the bottom of the menu, or (a
   // choice) as the footer's dropdown in the year selector's place (MMA's Current / All-Time)
   slot: 'formatTop' | 'formatMid' | 'formatEnd' | 'display' | 'displayEnd' | 'footer';
-  // Its menu icon (a cycled choice): a Material icon, or a class the styles draw ('lombardi')
+  // Its menu icon (a cycled choice): a Material icon, or a class the styles draw ('trophy')
   icon?: string;
   iconClass?: string;
 }

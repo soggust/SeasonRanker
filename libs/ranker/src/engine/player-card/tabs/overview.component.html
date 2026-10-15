@@ -6,15 +6,15 @@
 <!-- (a card with an AI analysis: its headline under the archetype, and the archetype's definition under the
      line as a short summary, over the flags; until it's in, or without one, the take) -->
 @let ai = aiReport(c);
-<div class="ov-top">
-  <div class="ov-profile">
-    <h3 class="ov-archetype">{{ o.archetype }}</h3>
-    <p class="ov-blurb">{{ ai ? ai.headline : o.blurb }}</p>
+<div class="overview-top">
+  <div class="overview-profile">
+    <h3 class="overview-archetype">{{ o.archetype }}</h3>
+    <p class="overview-blurb">{{ ai ? ai.headline : o.blurb }}</p>
     @if (ai) {
-      <p class="ov-summary">{{ ai.archetype.definition }}</p>
+      <p class="overview-summary">{{ ai.archetype.definition }}</p>
     }
     @if (flags.length) {
-      <ul class="ov-flags" [class.after-summary]="ai">
+      <ul class="overview-flags" [class.after-summary]="ai">
         @for (f of flags; track f.text) {
           <li [ngClass]="f.tone"><mat-icon [fontIcon]="f.icon"></mat-icon><span>{{ f.text }}</span></li>
         }
@@ -23,7 +23,7 @@
   </div>
 
   @if (o.skills.length >= 3) {
-    <div class="ov-radar">
+    <div class="overview-radar">
       <svg viewBox="-215 -140 430 285" role="img" [attr.aria-label]="'Skill profile of ' + c.name">
         @for (ring of o.radar.rings; track $index) {
           <polygon class="ring" [class.avg]="$index === 1" [attr.points]="ring"></polygon>
@@ -40,7 +40,7 @@
           <text class="axis-label" [attr.x]="a.lx" [attr.y]="a.ly" [attr.text-anchor]="a.anchor"><title>{{ skillTitle(o.skills[$index]) }}</title>{{ a.label }}</text>
         }
       </svg>
-      <div class="ov-legend">
+      <div class="overview-legend">
         <span><i class="key now"></i>{{ sport.careerOnly ? 'Career' : seasonName(c.season) }}</span>
         <span><i class="key avg"></i>League Avg</span>
       </div>
@@ -53,49 +53,49 @@
      which way offenses lean -->
 @if (c.breakdown; as b) {
   <!-- (folds like the scouting report's sections; starts shut) -->
-  <card-panel class="ov-section tab-card breakdown" [label]="b.title" [icon]="b.icon">
+  <card-panel class="overview-section tab-card breakdown" [label]="b.title" [icon]="b.icon">
     <div class="group-body">
       @if (b.lean; as l) {
         <!-- (which way offenses lean against it: its pass and run shares as a bar, the tick their usual) -->
-        <div class="bd-lean" [title]="l.help">
-          <div class="bd-lean-head">
-            <b class="bd-lean-label" [class.pass]="l.tone === 'pass'" [class.run]="l.tone === 'run'">{{ l.label }}</b>
+        <div class="breakdown-lean" [title]="l.help">
+          <div class="breakdown-lean-head">
+            <b class="breakdown-lean-label" [class.pass]="l.tone === 'pass'" [class.run]="l.tone === 'run'">{{ l.label }}</b>
             <span>{{ l.text }}</span>
           </div>
           @let shares = leanShares(l.pass);
-          <div class="bd-lean-bar" [title]="leanTitle(l.pass, l.usual)">
+          <div class="breakdown-lean-bar" [title]="leanTitle(l.pass, l.usual)">
             <i class="pass" [style.flex-grow]="l.pass"><b>Pass {{ shares.pass }}%</b></i>
             <i class="run" [style.flex-grow]="1 - l.pass"><b>Run {{ shares.run }}%</b></i>
             @if (l.usual !== null) {
-              <s class="bd-lean-tick" [style.left.%]="l.usual * 100" [title]="'Usually ' + leanShares(l.usual).pass + '% pass'"></s>
+              <s class="breakdown-lean-tick" [style.left.%]="l.usual * 100" [title]="'Usually ' + leanShares(l.usual).pass + '% pass'"></s>
             }
           </div>
         </div>
       }
       <!-- (the table, and the pie at its right when there's room, under it when not) -->
-      <div class="bd-main">
+      <div class="breakdown-main">
         <!-- (six columns or more, the NBA's: kept tighter on a phone) -->
-        <div class="bd-table" role="table" [class.bd-wide]="b.columns.length > 4" [attr.aria-label]="b.title" [title]="b.help" [style.--bd-cols]="b.columns.length">
-          <div class="bd-row bd-head" role="row">
+        <div class="breakdown-table" role="table" [class.breakdown-wide]="b.columns.length > 4" [attr.aria-label]="b.title" [title]="b.help" [style.--bd-cols]="b.columns.length">
+          <div class="breakdown-row breakdown-head" role="row">
             <span role="columnheader" [title]="b.rankTitle ?? 'Where the defense ranks, by what it allowed against the players\' own averages (#1 the stingiest)'">Rank</span>
-            <span class="bd-pos" role="columnheader" [title]="b.rowHeader?.title ?? 'Each offense\'s player in that role (by his share of its targets, or a back\'s of its carries)'">{{ b.rowHeader?.label ?? 'Target' }}</span>
+            <span class="breakdown-pos" role="columnheader" [title]="b.rowHeader?.title ?? 'Each offense\'s player in that role (by his share of its targets, or a back\'s of its carries)'">{{ b.rowHeader?.label ?? 'Target' }}</span>
             @for (col of b.columns; track col.label) {
               <span role="columnheader" [title]="col.title">{{ col.label }}</span>
             }
           </div>
           @for (r of b.rows; track r.label) {
-            <div class="bd-row" role="row">
+            <div class="breakdown-row" role="row">
               <span role="cell">
                 @if (r.rank !== null) {
-                  <span class="bd-rank" [style.--tone]="rankTone(rankPct(r.rank, r.of))" [title]="rankText(r.rank, r.of)">{{ r.rank }}</span>
+                  <span class="breakdown-rank" [style.--tone]="rankTone(rankPct(r.rank, r.of))" [title]="rankText(r.rank, r.of)">{{ r.rank }}</span>
                 } @else {
-                  <span class="bd-rank bd-none" title="Not enough games to rank">-</span>
+                  <span class="breakdown-rank breakdown-none" title="Not enough games to rank">-</span>
                 }
               </span>
-              <span class="bd-label" role="rowheader" [title]="r.title" [style.color]="r.group !== undefined && r.group >= 0 ? pieColor(r.group) : null">{{ r.label }}</span>
+              <span class="breakdown-label" role="rowheader" [title]="r.title" [style.color]="r.group !== undefined && r.group >= 0 ? pieColor(r.group) : null">{{ r.label }}</span>
               @for (cell of r.cells; track $index) {
                 <span
-                  class="bd-cell"
+                  class="breakdown-cell"
                   role="cell"
                   [class.toned]="cell.tone !== undefined && cell.tone !== null"
                   [style.--tone]="cell.tone !== undefined && cell.tone !== null ? rankTone(cell.tone) : null"
@@ -108,40 +108,40 @@
           }
         </div>
         @if (b.split; as sp) {
-          <div class="bd-split">
-            <span class="bd-split-title" [title]="sp.help">{{ sp.title }}</span>
+          <div class="breakdown-split">
+            <span class="breakdown-split-title" [title]="sp.help">{{ sp.title }}</span>
             <!-- (each part's share of the targets a slice of the pie, centered under the title, its share inside
                  it, the rest (the league's share, yards a target) in a popover on hover; the key at the right) -->
             @let slices = pieSlices(sp.parts);
-            <div class="bd-pie-row">
-              <div class="bd-pie">
+            <div class="breakdown-pie-row">
+              <div class="breakdown-pie">
                 <svg viewBox="0 0 100 100" role="img" [attr.aria-label]="sp.title">
                   <!-- (the slices drawn through a ring that sweeps round from the top as the pie comes in: its
                        stroke covers the pie and a slice grown on hover; still, it shows all of it) -->
                   <defs>
                     <mask id="bd-pie-sweep" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120">
-                      <circle class="bd-sweep" cx="50" cy="50" r="30" fill="none" stroke="#fff" stroke-width="60" pathLength="1" transform="rotate(-90 50 50)" />
+                      <circle class="breakdown-sweep" cx="50" cy="50" r="30" fill="none" stroke="#fff" stroke-width="60" pathLength="1" transform="rotate(-90 50 50)" />
                     </mask>
                   </defs>
                   <g mask="url(#bd-pie-sweep)">
                     @for (s of slices; track $index) {
-                      <path [attr.d]="s.d" [attr.fill]="s.color" [class.on]="pieHover === $index" (mouseenter)="pieHover = $index" (mouseleave)="pieHover = null" (click)="pieHover = pieHover === $index ? null : $index" />
+                      <path [attr.d]="s.d" [attr.fill]="s.color" [class.active]="pieHover === $index" (mouseenter)="pieHover = $index" (mouseleave)="pieHover = null" (click)="pieHover = pieHover === $index ? null : $index" />
                     }
                   </g>
                 </svg>
                 @for (s of slices; track $index) {
-                  <span class="bd-pie-pct" [style.left.%]="s.x" [style.top.%]="s.y">{{ s.pct }}</span>
+                  <span class="breakdown-pie-pct" [style.left.%]="s.x" [style.top.%]="s.y">{{ s.pct }}</span>
                 }
                 @if (pieHover !== null && sp.parts[pieHover]; as p) {
-                  <div class="bd-pop" role="tooltip" [style.--pop-color]="pieColor(pieHover)">
+                  <div class="breakdown-pop" role="tooltip" [style.--pop-color]="pieColor(pieHover)">
                     <b>{{ p.label }} <em>{{ (p.share * 100).toFixed(0) }}%</em></b>
                     <span>{{ p.title }}</span>
                   </div>
                 }
               </div>
-              <div class="bd-parts">
+              <div class="breakdown-parts">
                 @for (p of sp.parts; track p.label; let i = $index) {
-                  <span class="bd-part" (mouseenter)="pieHover = i" (mouseleave)="pieHover = null"><i class="bd-swatch" [style.background]="pieColor(i)"></i><b>{{ p.label }}</b></span>
+                  <span class="breakdown-part" (mouseenter)="pieHover = i" (mouseleave)="pieHover = null"><i class="breakdown-swatch" [style.background]="pieColor(i)"></i><b>{{ p.label }}</b></span>
                 }
               </div>
             </div>
@@ -149,7 +149,7 @@
         }
       </div>
       @if (b.note) {
-        <p class="bd-note">{{ b.note }}</p>
+        <p class="breakdown-note">{{ b.note }}</p>
       }
     </div>
   </card-panel>
@@ -160,9 +160,9 @@
 @for (side of o.report; track side.title) {
   @if (side.list.length) {
     <!-- (each folds; all start shut) -->
-    <card-panel class="ov-section tab-card" [ngClass]="side.tone" [label]="side.title" [icon]="side.icon">
+    <card-panel class="overview-section tab-card" [ngClass]="side.tone" [label]="side.title" [icon]="side.icon">
       <div class="group-body">
-      <div class="ov-skills">
+      <div class="overview-skills">
         @for (s of side.list; track s.id) {
           <div class="skill-card" [style.--pct]="s.pct" [style.--tone]="rankTone(s.pct)">
             <div class="skill-head">
@@ -185,22 +185,22 @@
 
 <!-- The three closest seasons by anyone else, 2000 on (finished seasons only); folds, starting shut -->
 @if (c.season !== currentSeason && c.comps?.length) {
-  <card-panel class="ov-section similar tab-card" label="Similar Seasons" icon="compare_arrows">
+  <card-panel class="overview-section similar tab-card" label="Similar Seasons" icon="compare_arrows">
     <div class="group-body">
     <div class="comps-row">
       @for (m of c.comps; track m.season + m.gsisId) {
         <button type="button" class="comp" [style.--team-badge]="m.color" (click)="cards.openSeason(m.season, m.gsisId)">
-          <span class="comp-badge" [class.with-photo]="m.photo">
-            <span class="comp-card" [class.white-logo]="m.whiteLogo"><img class="comp-logo" [src]="m.logo" alt="" /></span>
+          <span class="similar-badge" [class.with-photo]="m.photo">
+            <span class="similar-card" [class.white-logo]="m.whiteLogo"><img class="similar-logo" [src]="m.logo" alt="" /></span>
             @if (m.photo) {
-              <img class="comp-photo" [src]="m.photo" alt="" (error)="m.photo = cards.nextPhoto({ id: m.espnId }, 240)" />
+              <img class="similar-photo" [src]="m.photo" alt="" (error)="m.photo = cards.nextPhoto({ id: m.espnId }, 240)" />
             }
           </span>
-          <span class="comp-text">
-            <span class="comp-season">{{ seasonText(m.season) }}</span>
-            <span class="comp-name">{{ m.name }}</span>
+          <span class="similar-text">
+            <span class="similar-season">{{ seasonText(m.season) }}</span>
+            <span class="similar-name">{{ m.name }}</span>
           </span>
-          <span class="comp-match" [style.--tone]="rankTone((m.match - 60) / 40)" [title]="m.match + '% alike'">{{ m.match }}<small>%</small></span>
+          <span class="similar-match" [style.--tone]="rankTone((m.match - 60) / 40)" [title]="m.match + '% alike'">{{ m.match }}<small>%</small></span>
         </button>
       }
     </div>

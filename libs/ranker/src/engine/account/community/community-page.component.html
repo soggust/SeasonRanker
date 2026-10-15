@@ -66,7 +66,7 @@
               @let info = player(row.id);
               <li class="row">
                 <span class="who" [style.--team-badge]="badge(info)">
-                  <span [ngClass]="rankClass(i)" class="rank-tile">@if (i === 0) {<span class="lombardi" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
+                  <span [ngClass]="rankClass(i)" class="rank-tile">@if (i === 0) {<span class="trophy" aria-hidden="true"></span><span class="visually-hidden">1</span>} @else {{{ i + 1 }}}</span>
                   <span class="badge-slot" [class.with-photo]="photo(row.id, info)" aria-hidden="true">
                     <span class="team-badge" [class.white-logo]="white(info)" [class.no-color]="!badge(info)">
                       @if (info.logo; as src) { <img class="team-logo" [src]="src" alt="" /> }
@@ -103,17 +103,17 @@
           <ol class="makers-list">
             @for (maker of makers; track maker.owner; let i = $index) {
               <li>
-                <span class="m-rank" [class.first]="i === 0">{{ i + 1 }}</span>
+                <span class="maker-rank" [class.first]="i === 0">{{ i + 1 }}</span>
                 <account-avatar [photo]="makerProfile(maker)?.photo" [name]="maker.name" [size]="26"></account-avatar>
-                <span class="m-name">
+                <span class="maker-name">
                   @if (makerProfile(maker)?.username; as username) {
                     <a [href]="'/u/' + username">{{ maker.name }}</a>
                   } @else {
                     {{ maker.name }}
                   }
-                  <span class="m-lists">{{ maker.lists }} {{ maker.lists === 1 ? 'list' : 'lists' }}</span>
+                  <span class="maker-lists">{{ maker.lists }} {{ maker.lists === 1 ? 'list' : 'lists' }}</span>
                 </span>
-                <span class="m-score" [class.pos]="maker.score > 0" [class.neg]="maker.score < 0">{{ maker.score > 0 ? '+' : '' }}{{ maker.score }}</span>
+                <span class="maker-score" [class.pos]="maker.score > 0" [class.neg]="maker.score < 0">{{ maker.score > 0 ? '+' : '' }}{{ maker.score }}</span>
               </li>
             }
           </ol>
@@ -144,11 +144,11 @@
                   @if (mine) { <span class="you-chip">You</span> }
                 </span>
                 <span class="entry-votes" role="group" [attr.aria-label]="'Votes for ' + card.entry.title">
-                  <button type="button" class="vote up" [class.on]="card.tally.mine === 1" [disabled]="mine || voting === card.entry.owner" [attr.aria-pressed]="card.tally.mine === 1" [title]="mine ? 'Your own list' : 'Vote up'" aria-label="Vote up" (click)="vote(card, 1)">
+                  <button type="button" class="vote up" [class.active]="card.tally.mine === 1" [disabled]="mine || voting === card.entry.owner" [attr.aria-pressed]="card.tally.mine === 1" [title]="mine ? 'Your own list' : 'Vote up'" aria-label="Vote up" (click)="vote(card, 1)">
                     <mat-icon aria-hidden="true" fontIcon="arrow_drop_up"></mat-icon>
                   </button>
                   <span class="vote-score" [class.pos]="card.tally.score > 0" [class.neg]="card.tally.score < 0" [title]="card.tally.up + ' up, ' + card.tally.down + ' down'">{{ card.tally.score }}</span>
-                  <button type="button" class="vote down" [class.on]="card.tally.mine === -1" [disabled]="mine || voting === card.entry.owner" [attr.aria-pressed]="card.tally.mine === -1" [title]="mine ? 'Your own list' : 'Vote down'" aria-label="Vote down" (click)="vote(card, -1)">
+                  <button type="button" class="vote down" [class.active]="card.tally.mine === -1" [disabled]="mine || voting === card.entry.owner" [attr.aria-pressed]="card.tally.mine === -1" [title]="mine ? 'Your own list' : 'Vote down'" aria-label="Vote down" (click)="vote(card, -1)">
                     <mat-icon aria-hidden="true" fontIcon="arrow_drop_down"></mat-icon>
                   </button>
                 </span>
@@ -158,15 +158,15 @@
                 @for (id of open.has(card.entry.owner) ? card.entry.ids : card.entry.ids.slice(0, 5); track $index; let i = $index) {
                   @let info = player(id, card, i);
                   <li>
-                    <span class="t-rank" [class.first]="i === 0">{{ i + 1 }}</span>
+                    <span class="top-rank" [class.first]="i === 0">{{ i + 1 }}</span>
                     @if (photo(id, info); as src) {
-                      <img class="t-photo" [src]="src" alt="" loading="lazy" [style.--team-badge]="badge(info)" (error)="noPhoto(id)" />
+                      <img class="top-photo" [src]="src" alt="" loading="lazy" [style.--team-badge]="badge(info)" (error)="noPhoto(id)" />
                     } @else if (info.logo; as src) {
-                      <img class="t-logo" [src]="src" alt="" loading="lazy" />
+                      <img class="top-logo" [src]="src" alt="" loading="lazy" />
                     } @else {
-                      <span class="t-logo"></span>
+                      <span class="top-logo"></span>
                     }
-                    <span class="t-name">{{ info.name }}</span>
+                    <span class="top-name">{{ info.name }}</span>
                   </li>
                 }
               </ol>

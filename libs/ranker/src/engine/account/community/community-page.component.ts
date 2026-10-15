@@ -244,8 +244,8 @@ export class CommunityPageComponent implements OnDestroy {
   }
 
   rankClass(i: number): string {
-    if (i === 0) return 'count top-5';
-    if (i < 10) return 'count top-10';
+    if (i === 0) return 'count rank-first';
+    if (i < 10) return 'count rank-top';
     return 'count';
   }
 

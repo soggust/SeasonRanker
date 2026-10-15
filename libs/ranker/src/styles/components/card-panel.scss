@@ -1,7 +1,7 @@
 @use "sass:meta";
 @use "../variables" as v;
 @use "sport-panel";
-@use "../casino-chip" as casino;
+@use "../casino-chip" as chip;
 
 // (a panel's corners; a depth chart's bar and body round theirs inside its 1px border)
 $panel-radius: v.$panel-radius;
@@ -10,10 +10,10 @@ $panel-radius: v.$panel-radius;
 // green, not each category's color. First in the file, at a class's weight (.wallet-page, the wallet's own column):
 // where a panel's own rule below weighs the same, the panel's wins, as it did over the wallet's own styles)
 .wallet-page card-panel {
-  @include casino.panel;
+  @include chip.panel;
 
   &[class] {
-    --group-color: #{casino.$felt-light};
+    --group-color: #{chip.$felt-light};
   }
 }
 
@@ -147,13 +147,13 @@ card-panel {
 // (the Bets page's and the Algorithm's: the casino's card table, the same from every sport)
 bets-page card-panel,
 model-desk card-panel {
-  @include casino.panel;
+  @include chip.panel;
 }
 
 // (the Algorithm's: the same tables, their bars the felt's green, not each category's color; .stat-group,
 // the class every card-panel carries, so it outweighs the .group-* classes that set the category's color)
 model-desk card-panel.stat-group {
-  --group-color: #{casino.$felt-light};
+  --group-color: #{chip.$felt-light};
 }
 
 // (the Algorithm's and the wallet's grid of panels: each panel its own height, its body filling it, the sport's

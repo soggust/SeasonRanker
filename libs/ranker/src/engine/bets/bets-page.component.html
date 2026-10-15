@@ -101,7 +101,7 @@
               type="button"
               class="kind-chip"
               [ngClass]="k.kind"
-              [class.on]="kinds.has(k.kind)"
+              [class.active]="kinds.has(k.kind)"
               [attr.aria-pressed]="kinds.has(k.kind)"
               [title]="k.name"
               (click)="toggleKind(k.kind)"
@@ -370,16 +370,16 @@
           <div class="why-research">
             <p class="why-research-head">
               <span>News research</span>
-              <b class="rs-status" [class]="'rs-status ' + rs.tone">{{ rs.status }}</b>
+              <b class="research-status" [class]="'research-status ' + rs.tone">{{ rs.status }}</b>
             </p>
             @if (rs.player || rs.reason) {
-              <p class="rs-who">{{ rs.player ?? '' }}{{ rs.player && rs.reason ? ' · ' : '' }}{{ rs.reason ?? '' }}</p>
+              <p class="research-who">{{ rs.player ?? '' }}{{ rs.player && rs.reason ? ' · ' : '' }}{{ rs.reason ?? '' }}</p>
             }
             @if (rs.summary) {
-              <p class="rs-summary">{{ rs.summary }}</p>
+              <p class="research-summary">{{ rs.summary }}</p>
             }
             @if (rs.sources.length) {
-              <p class="rs-sources">
+              <p class="research-sources">
                 @for (s of rs.sources; track s.url) {
                   <a [href]="s.url" target="_blank" rel="noopener noreferrer nofollow">{{ s.host }}</a>
                 }

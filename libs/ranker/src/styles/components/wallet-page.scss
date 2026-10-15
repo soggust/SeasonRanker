@@ -1,5 +1,5 @@
 @use "../variables" as v;
-@use "../casino-chip" as casino;
+@use "../casino-chip" as chip;
 @use "account-kit" as kit;
 
 // ===========================================================================
@@ -8,7 +8,7 @@
 // and Clear history (an admin's), the confirmations, the leaderboard with each row's reloads, the bot's chips
 // ===========================================================================
 
-$gold: casino.$lock-gold;
+$gold: chip.$lock-gold;
 
 // (inside the app's sheet (app.component's shell: it scrolls, its pewter look around it); the sport's light
 // lights the controls)
@@ -114,17 +114,17 @@ $gold: casino.$lock-gold;
     width: 30px;
   }
 
-  .c100 {
+  .chip-100 {
     --c: #{v.$panel-dark};
   }
 
-  .c25 {
-    --c: #{casino.$chip-green};
+  .chip-25 {
+    --c: #{chip.$chip-green};
     transform: translateY(-6px);
   }
 
-  .c5 {
-    --c: #{casino.$chip-red};
+  .chip-5 {
+    --c: #{chip.$chip-red};
   }
 }
 
@@ -174,7 +174,7 @@ $gold: casino.$lock-gold;
   transition:
     filter v.$t-hover ease,
     transform 0.1s ease;
-  @include casino.dropdown-rim;
+  @include chip.dropdown-rim;
 
   // (the spots on the rim itself, its 4px border, as on the dropdown, not inside it on the face)
   .chip-rim {
@@ -231,7 +231,7 @@ $gold: casino.$lock-gold;
   }
 
   &.blue {
-    --clay: #{casino.$chip-blue-reload};
+    --clay: #{chip.$chip-blue-reload};
   }
 
   // (.red: the default clay above)
@@ -310,13 +310,13 @@ $gold: casino.$lock-gold;
 
 // (the bot's band beside a pick it made: the Bets page's chip, small)
 // (in the Bot column, a cell of its own, centered under its header: a size up from the pick's old tag)
-.wallet-bets .w-bot {
+.wallet-bets .wallet-bot {
   text-align: center;
   white-space: nowrap;
 }
 
-.w-tier {
-  @include casino.tier-tag(10px, 3px 6px, 0.05em);
+.wallet-tier {
+  @include chip.tier-tag(10px, 3px 6px, 0.05em);
   display: inline-block;
 }
 
@@ -328,7 +328,7 @@ $gold: casino.$lock-gold;
 // A parlay: a gold chip with its legs linked in the sport column, "Parlay" in the game's, and in the Result column
 // a pip a leg (green hit, red missed, dim pushed or void, empty still to come) over "2 of 4 hit"; its legs under
 // it, opened, on a gold rail
-.w-parlay-badge {
+.wallet-parlay-badge {
   align-items: center;
   background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #{$gold} 85%, #fff), #{$gold} 60%, color-mix(in srgb, #{$gold} 70%, #000));
   border: 2px dashed rgba(0, 0, 0, 0.35);
@@ -348,13 +348,13 @@ $gold: casino.$lock-gold;
   }
 }
 
-.w-parlay-name {
+.wallet-parlay-name {
   color: $gold;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.w-legs {
+.wallet-legs {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 3px;
@@ -533,12 +533,12 @@ $gold: casino.$lock-gold;
 }
 
 // (the settled history's date: the game's day, the column that orders it, in the game's type)
-.wallet-settled .w-date {
+.wallet-settled .wallet-date {
   white-space: nowrap;
 }
 
 // (the game under a pick: phones only, where the game's column goes; over the tables' block smalls)
-.wallet-bets .w-phone-game {
+.wallet-bets .wallet-phone-game {
   display: none;
 }
 
@@ -603,7 +603,7 @@ $gold: casino.$lock-gold;
       display: none;
     }
 
-    .w-phone-game {
+    .wallet-phone-game {
       color: rgba(255, 255, 255, 0.5);
       display: block;
       font-size: 10.5px;
@@ -611,12 +611,12 @@ $gold: casino.$lock-gold;
       margin: 2px 0 0 36px;
     }
 
-    .desk-group-count .w-phone-game {
+    .desk-group-count .wallet-phone-game {
       margin-left: 0;
     }
 
     // (the live column's score under its count or its side's words)
-    .desk-score .w-phone-game {
+    .desk-score .wallet-phone-game {
       margin-left: 0;
       white-space: normal;
     }
@@ -624,20 +624,20 @@ $gold: casino.$lock-gold;
 
   .wallet-bets {
     // (a game's own bets under its row: the game said once, above them)
-    .desk-grouped .w-phone-game {
+    .desk-grouped .wallet-phone-game {
       display: none;
     }
 
     // (a result's words wrap under its amount: the last column's, or the open bets' To win, the live column after it)
     td:last-child,
     td:last-child small,
-    td.w-paid,
-    td.w-paid small {
+    td.wallet-paid,
+    td.wallet-paid small {
       white-space: normal;
     }
 
     td:last-child small,
-    td.w-paid small {
+    td.wallet-paid small {
       display: block;
       max-width: 96px;
       margin-left: auto;

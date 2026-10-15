@@ -112,10 +112,10 @@ function readColumns(header: HTMLElement): Column[] {
     const grouped = inner.filter((child) => child.querySelector('.stat-label'));
     if (grouped.length > 1) {
       grouped.forEach((child) =>
-        columns.push({ label: labelOf(child), path: [i, inner.indexOf(child)], iso: child.classList.contains('iso-on') }),
+        columns.push({ label: labelOf(child), path: [i, inner.indexOf(child)], iso: child.classList.contains('isolated') }),
       );
     } else {
-      columns.push({ label: labelOf(cell), path: [i], iso: cell.classList.contains('iso-on') });
+      columns.push({ label: labelOf(cell), path: [i], iso: cell.classList.contains('isolated') });
     }
   });
   return columns;

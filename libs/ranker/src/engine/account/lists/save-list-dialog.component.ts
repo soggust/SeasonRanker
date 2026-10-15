@@ -54,13 +54,13 @@ export const VISIBILITY_HINTS: Record<Visibility, string> = {
           <ol class="save-preview" aria-label="The list's top five">
             @for (id of draft.ids.slice(0, 5); track id; let i = $index) {
               <li>
-                <span class="p-rank">{{ i + 1 }}</span>
+                <span class="preview-rank">{{ i + 1 }}</span>
                 @if (logo(id); as src) { <img [src]="src" alt="" /> }
-                <span class="p-name">{{ draft.snapshot[id].name }}</span>
+                <span class="preview-name">{{ draft.snapshot[id].name }}</span>
               </li>
             }
             @if (draft.ids.length > 5) {
-              <li class="p-more">and {{ draft.ids.length - 5 }} more</li>
+              <li class="preview-more">and {{ draft.ids.length - 5 }} more</li>
             }
           </ol>
           <label class="field">
@@ -73,7 +73,7 @@ export const VISIBILITY_HINTS: Record<Visibility, string> = {
             <textarea name="note" rows="3" [(ngModel)]="note" placeholder="Why this order? (optional)" [attr.aria-invalid]="!!noteError"></textarea>
             @if (noteError; as p) { <span class="field-error">{{ p }}</span> }
           </label>
-          <div class="vis-row">
+          <div class="visibility-row">
             <span class="field-label" id="save-vis">Who can see it</span>
             <visibility-pills sport labelledby="save-vis" [value]="visibility" (picked)="visibility = $event"></visibility-pills>
             <span class="field-hint">{{ hints[visibility] }}</span>

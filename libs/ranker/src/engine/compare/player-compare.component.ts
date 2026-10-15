@@ -209,7 +209,7 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
   outside(event: MouseEvent): void {
     if (this.sheet === null) return;
     const target = event.target as Element | null;
-    if (target?.isConnected && !target.closest('.cmp-chips, .tapes, .cdk-overlay-container')) this.sheet = null;
+    if (target?.isConnected && !target.closest('.compare-chips, .tapes, .cdk-overlay-container')) this.sheet = null;
   }
 
   readonly max = COMPARE_MAX;

@@ -14,10 +14,10 @@
              isolated, what the rows are sorted by in its place (over the tiles that show the places by it),
              with an X back to the ranking (phones have no Esc): in the pinned header, so it covers no row -->
         @if (isoStat; as iso) {
-          <span class="iso-chip">
-            <mat-icon class="iso-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
-            <span class="iso-chip-text"><span class="iso-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="iso-chip-hint"> · Esc to clear</span></span>
-            <button type="button" class="iso-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
+          <span class="isolate-chip">
+            <mat-icon class="isolate-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
+            <span class="isolate-chip-text"><span class="isolate-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="isolate-chip-hint"> · Esc to clear</span></span>
+            <button type="button" class="isolate-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
               <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
             </button>
           </span>
@@ -40,8 +40,8 @@
               <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
               @for (stat of group.stats; track stat.key) {
                 @let can = canIsolate(stat);
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="iso-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="iso-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="iso-dir iso-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
+                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                 </div>
               }
             </div>
@@ -49,21 +49,21 @@
             @for (stat of group.stats; track stat.key; let first = $first) {
               @let can = canIsolate(stat);
               @if (stat.format === 'recent') {
-                <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
+                <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
                   @if (first) {
                     <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
                   }
                   <div class="last-five">
                     <div></div>
-                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="iso-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="iso-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="iso-dir iso-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+                    @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                   </div>
                 </div>
               } @else {
-                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.iso-on]="isolatedKey === stat.key" [class.iso-can]="can" (click)="isolate(stat, $event)">
+                <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
                   @if (first) {
                     <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
                   }
-                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="iso-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="iso-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="iso-dir iso-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+                  @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                 </div>
               }
             }
@@ -119,7 +119,7 @@
         >
           <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
           <span
-            [ngClass]="ur ? 'count unranked' : isoStat ? 'count iso-place' : rankClasses(n)"
+            [ngClass]="ur ? 'count unranked' : isoStat ? 'count isolate-place' : rankClasses(n)"
             class="rank-tile"
             [class.open]="why?.id === player.gsisId"
             role="button"
@@ -131,7 +131,7 @@
             (click)="toggleWhy(player, n, $event)"
             (keydown.enter)="toggleWhy(player, n, $event)"
             (keydown.space)="toggleWhy(player, n, $event)"
-          >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="lombardi" aria-hidden="true"></span
+          >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
             ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
         >
           <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
@@ -177,7 +177,7 @@
                 <span class="player-awards">
                   @for (award of won; track award.id) {
                     @if (awardInfo[award.id].icon?.name === 'trophy') {
-                      <span class="lombardi award-trophy" [title]="award.title"></span
+                      <span class="trophy award-trophy" [title]="award.title"></span
                       ><span class="visually-hidden">{{ awardInfo[award.id].short }}</span>
                     } @else if (awardInfo[award.id].icon; as icon) {
                       <mat-icon class="award-cup" [ngClass]="'award-' + (icon.metal ?? 'silver')" [fontIcon]="icon.name" [title]="award.title"></mat-icon
@@ -207,7 +207,7 @@
                     <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
                     <div
                       class="grade-tile"
-                      [class.iso-on]="isolatedKey === stat.key"
+                      [class.isolated]="isolatedKey === stat.key"
                       [class.open]="isGradeOpen(player, stat)"
                       [style.--label-w]="columnWidth(stat)"
                       role="button"
@@ -223,7 +223,7 @@
                       <p class="stat-label" [title]="gradeTitle(player, stat)">{{ r.label(stat) }}</p>
                     </div>
                   } @else {
-                    <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                    <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
                       <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
                       <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                     </div>
@@ -235,12 +235,12 @@
                 @if (stat.format === 'recent') {
                   <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
                        played yet. The pointer resting on them loads the team's scores for their hovers -->
-                  <div class="box support-box recent-box" [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                  <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
                     <div class="last-five" [class.many]="manyRecent" (mouseenter)="games.primeSoon(recentTeam(player), season)" (mouseleave)="games.cancelPrime()">
                       <div>
                         @for (result of r.lastFive(player); track $index) {
                           <p
-                            [ngClass]="result === 1 ? 'green' : result === 0.5 ? 'tie' : 'red'"
+                            [ngClass]="scoreClass(result)"
                             [class.ot]="recentOt(player, $index)"
                             [class.game-link]="games.available"
                             [title]="dotTitle(player, $index)"
@@ -258,13 +258,13 @@
                   </div>
                 } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
                   <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
-                  <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p class="rank-value"><span class="lombardi rank-champ" title="Champion"></span></p>
+                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                    <p class="rank-value"><span class="trophy rank-champ" title="Champion"></span></p>
                     <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
                 } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
                   <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
-                  <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
                     <p class="rank-value" [style.color]="r.valueColor(player, stat)"
                       ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
                     >
@@ -272,14 +272,14 @@
                   </div>
                 } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
                   <!-- Show Ranks: the value's place in the list, styled like a rank column -->
-                  <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
                     <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
                       ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
                     >
                     <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                   </div>
                 } @else {
-                  <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                  <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
                     <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
                     <p class="stat-label" [title]="valueTitle(player, stat)">
                       {{ r.label(stat) }}

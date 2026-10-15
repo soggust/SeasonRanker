@@ -70,7 +70,7 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
                   <span class="card-bar">
                     <span class="sport-led">{{ sportLabel(list.sport) }}</span>
                     <span class="card-where">{{ listWhere(list) }}</span>
-                    <span class="vis-chip" [ngClass]="'vis-' + list.visibility" [title]="visTitle(list)">
+                    <span class="visibility-chip" [ngClass]="'visibility-' + list.visibility" [title]="visTitle(list)">
                       <mat-icon aria-hidden="true" [fontIcon]="list.visibility === 'public' ? 'public' : list.visibility === 'friends' ? 'group' : 'lock'"></mat-icon>
                     </span>
                   </span>
@@ -79,15 +79,15 @@ import { dateText, listWhere, sportLabel } from './list-view.component';
                     @for (id of list.ids.slice(0, 5); track id; let i = $index) {
                       @if (list.snapshot[id]; as row) {
                         <li>
-                          <span class="t-rank" [class.first]="i === 0">{{ i + 1 }}</span>
+                          <span class="top-rank" [class.first]="i === 0">{{ i + 1 }}</span>
                           @if (row.photo) {
-                            <img class="t-photo" [src]="row.photo" alt="" loading="lazy" [style.--team-badge]="badge(list, row.teamLogo)" />
+                            <img class="top-photo" [src]="row.photo" alt="" loading="lazy" [style.--team-badge]="badge(list, row.teamLogo)" />
                           } @else if (logo(list, row.teamLogo); as src) {
-                            <img class="t-logo" [src]="src" alt="" loading="lazy" />
+                            <img class="top-logo" [src]="src" alt="" loading="lazy" />
                           } @else {
-                            <span class="t-logo"></span>
+                            <span class="top-logo"></span>
                           }
-                          <span class="t-name">{{ row.name }}</span>
+                          <span class="top-name">{{ row.name }}</span>
                         </li>
                       }
                     }

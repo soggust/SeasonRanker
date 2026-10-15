@@ -189,7 +189,7 @@ $ai-narrow: v.bp(ai-narrow);
 // The team cards: the hero's big one, and the similar seasons' at 1.2x the rows' (the player standing
 // flush with the right and bottom edges, head out over the top; the logo off to the left behind them)
 .hero-badge,
-.comp-badge {
+.similar-badge {
   --shot-w: calc(var(--shot-h) * 1.379);
   height: var(--h);
   position: relative;
@@ -203,7 +203,7 @@ $ai-narrow: v.bp(ai-narrow);
   --hang: 40px;
 }
 
-.comp-badge {
+.similar-badge {
   --w: 58px;
   --h: 39px;
   --card-r: 10px;
@@ -213,7 +213,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .hero-card,
-.comp-card {
+.similar-card {
   border-radius: var(--card-r);
   inset: 0;
   position: absolute;
@@ -228,7 +228,7 @@ $ai-narrow: v.bp(ai-narrow);
     0 8px 20px rgba(0, 0, 0, 0.55);
 }
 
-.comp-card {
+.similar-card {
   @include v.team-card;
   box-shadow:
     inset 0 -3px 6px rgba(0, 0, 0, 0.35),
@@ -237,17 +237,17 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .hero-logo,
-.comp-logo {
+.similar-logo {
   @include v.team-card-logo(var(--h));
 }
 
 .hero-card.white-logo .hero-logo,
-.comp-card.white-logo .comp-logo {
+.similar-card.white-logo .similar-logo {
   @include v.white-logo(var(--h));
 }
 
 .hero-badge.with-photo .hero-logo,
-.comp-badge.with-photo .comp-logo {
+.similar-badge.with-photo .similar-logo {
   left: 30%;
   opacity: 0.85;
 }
@@ -255,7 +255,7 @@ $ai-narrow: v.bp(ai-narrow);
 // Headshots keep their own shape: ESPN's cutouts (NFL, NBA) are as wide as the box and fill it, while
 // MLB's and the NHL's are square, so they sit bottom-center in it rather than being stretched wide
 .hero-photo,
-.comp-photo {
+.similar-photo {
   bottom: 0;
   height: var(--shot-h);
   object-fit: contain;
@@ -272,7 +272,7 @@ $ai-narrow: v.bp(ai-narrow);
   filter: drop-shadow(-6px 2px 8px rgba(0, 0, 0, 0.55));
 }
 
-.comp-photo {
+.similar-photo {
   clip-path: inset(-50% var(--hang) 0 0 round 0 0 var(--card-r) 0);
   filter: drop-shadow(-3px 1px 3px rgba(0, 0, 0, 0.55));
 }
@@ -523,23 +523,23 @@ $ai-narrow: v.bp(ai-narrow);
 // ---------------------------------------------------------------------------
 // Overview: the profile (archetype, take, flags) beside the skill radar, then the scouting report
 // ---------------------------------------------------------------------------
-.ov-top {
+.overview-top {
   display: grid;
   gap: 16px;
   grid-template-columns: minmax(0, 1fr) 400px;
 }
 
-.ov-profile,
-.ov-radar,
+.overview-profile,
+.overview-radar,
 .skill-card {
   @include v.scoreboard-panel;
 }
 
-.ov-profile {
+.overview-profile {
   padding: 16px 18px;
 }
 
-.ov-archetype {
+.overview-archetype {
   color: var(--scoreboard-led);
   @include v.headline(28px);
   line-height: 1.1;
@@ -547,7 +547,7 @@ $ai-narrow: v.bp(ai-narrow);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-.ov-blurb {
+.overview-blurb {
   color: #eee;
   font-size: 14px;
   line-height: 1.5;
@@ -555,7 +555,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // (a card's AI analysis: the archetype's definition under the line, a short summary over the flags)
-.ov-summary {
+.overview-summary {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.78);
   font-size: 13.5px;
@@ -564,7 +564,7 @@ $ai-narrow: v.bp(ai-narrow);
   padding: 10px 0 0;
 }
 
-.ov-flags {
+.overview-flags {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
@@ -611,7 +611,7 @@ $ai-narrow: v.bp(ai-narrow);
 // filled in yellow with a dot per skill in its rank color; it grows out from its center when the card opens.
 // Its marks say what they are on hover: the help cursor, and the dots lighten and grow
 // (the radar centered down its card: the card stretches to the profile beside it, taller with an AI summary)
-.ov-radar {
+.overview-radar {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -680,7 +680,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // (at the bottom of the panel, not tucked under the chart)
-.ov-legend {
+.overview-legend {
   color: v.$grey-soft;
   display: flex;
   flex-wrap: wrap;
@@ -714,11 +714,11 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // The Overview's sections: cards like the other tabs' (a bar, the sport's sidelines), in their tone
-.ov-section {
+.overview-section {
   margin-top: 14px;
 
   // (the first, more room off the archetype and radar panels above)
-  :not(.ov-section) + & {
+  :not(.overview-section) + & {
     margin-top: 26px;
   }
 
@@ -741,7 +741,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // Scouting report: every skill, strengths first, then average, then weaknesses (two cards a row), and
 // similar seasons last
-.ov-skills {
+.overview-skills {
   display: grid;
   gap: 10px;
   grid-template-columns: 1fr 1fr;
@@ -804,7 +804,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (the table across the panel and the pie apart at its right, the pie dropping under the table on a narrow
 // card; both clear of the headline)
-.bd-main {
+.breakdown-main {
   align-items: start;
   display: grid;
   gap: 20px 48px;
@@ -817,7 +817,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-table {
+.breakdown-table {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -825,7 +825,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (the headline: which way offenses lean against it, its pass and run shares as a bar, the tick their usual;
 // pass in the WRs' blue, run in the backs' gold)
-.bd-lean {
+.breakdown-lean {
   cursor: help;
   display: flex;
   flex-direction: column;
@@ -833,7 +833,7 @@ $ai-narrow: v.bp(ai-narrow);
   margin: 0.5em 0;
 }
 
-.bd-lean-head {
+.breakdown-lean-head {
   color: #ddd;
   font-size: 13px;
   line-height: 1.45;
@@ -843,7 +843,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-lean-label {
+.breakdown-lean-label {
   color: #fff;
   @include v.hand(17px);
 
@@ -856,7 +856,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-lean-bar {
+.breakdown-lean-bar {
   border-radius: v.$radius-sm;
   display: flex;
   gap: 2px;
@@ -889,7 +889,7 @@ $ai-narrow: v.bp(ai-narrow);
     white-space: nowrap;
   }
 
-  .bd-lean-tick {
+  .breakdown-lean-tick {
     background: #fff;
     bottom: 0;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
@@ -900,7 +900,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-row {
+.breakdown-row {
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: grid;
@@ -917,12 +917,12 @@ $ai-narrow: v.bp(ai-narrow);
     text-align: right;
   }
 
-  > .bd-label,
-  > .bd-pos {
+  > .breakdown-label,
+  > .breakdown-pos {
     text-align: left;
   }
 
-  > .bd-pos {
+  > .breakdown-pos {
     margin-left: 14px;
   }
 
@@ -932,7 +932,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-head {
+.breakdown-head {
   padding-top: 0;
 
   > span {
@@ -941,7 +941,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-label {
+.breakdown-label {
   color: #fff;
   cursor: help;
   margin-left: 14px;
@@ -949,7 +949,7 @@ $ai-narrow: v.bp(ai-narrow);
   text-shadow: v.$hand-shadow;
 }
 
-.bd-cell {
+.breakdown-cell {
   color: #ddd;
   @include v.hand(15px);
 
@@ -961,28 +961,28 @@ $ai-narrow: v.bp(ai-narrow);
 // (six columns or more, the NBA's: on a phone the position's column narrower, the gaps and the numbers
 // smaller, so all of them fit across)
 @media (max-width: $bd-narrow) {
-  .bd-wide .bd-row {
+  .breakdown-wide .breakdown-row {
     gap: 5px;
     grid-template-columns: 34px 30px repeat(var(--bd-cols, 3), minmax(0, 1fr));
 
-    > .bd-label,
-    > .bd-pos {
+    > .breakdown-label,
+    > .breakdown-pos {
       margin-left: 2px;
     }
 
-    > .bd-cell {
+    > .breakdown-cell {
       font-size: 13px;
     }
   }
 
-  .bd-wide .bd-head > span {
+  .breakdown-wide .breakdown-head > span {
     font-size: 10px;
     letter-spacing: 0;
   }
 }
 
 // (the rank on a small LED tile, like the game view's fantasy ranks, in its rank color)
-.bd-rank {
+.breakdown-rank {
   @include v.led-tile($radius: 5px, $color: null, $text-shadow: null);
   @include v.tone-glow(60%, 8px);
   font-size: 11px;
@@ -991,38 +991,38 @@ $ai-narrow: v.bp(ai-narrow);
   width: 34px;
 
   // (unranked: grey)
-  &.bd-none {
+  &.breakdown-none {
     --tone: #777;
   }
 }
 
-.bd-split {
+.breakdown-split {
   align-items: center;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.bd-split-title {
+.breakdown-split-title {
   @include caps-label;
   cursor: help;
   text-align: center;
 }
 
 // (the pie centered under the title, its key at the row's right)
-.bd-pie-row {
+.breakdown-pie-row {
   align-items: center;
   align-self: stretch;
   display: grid;
   gap: 12px;
   grid-template-columns: 1fr auto 1fr;
 
-  > .bd-pie {
+  > .breakdown-pie {
     grid-column: 2;
   }
 }
 
-.bd-pie {
+.breakdown-pie {
   height: 124px;
   position: relative;
   width: 124px;
@@ -1044,7 +1044,7 @@ $ai-narrow: v.bp(ai-narrow);
       transform v.$t-hover;
     transform-origin: 50px 50px;
 
-    &.on {
+    &.active {
       filter: brightness(1.12);
       transform: scale(1.05);
     }
@@ -1052,7 +1052,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // (a slice's share, inside it)
-.bd-pie-pct {
+.breakdown-pie-pct {
   color: v.$chip-ink;
   @include v.hand(13px);
   pointer-events: none;
@@ -1061,7 +1061,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // (a slice's popover: its part, its share, the league's and yards a target)
-.bd-pop {
+.breakdown-pop {
   background: v.$slate-panel;
   border: 1px solid var(--pop-color);
   border-radius: v.$radius-lg;
@@ -1093,20 +1093,20 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-swatch {
+.breakdown-swatch {
   border-radius: v.$radius-xxs;
   display: inline-block;
   height: 10px;
   width: 10px;
 }
 
-.bd-parts {
+.breakdown-parts {
   display: flex;
   flex-direction: column;
   gap: 6px;
   justify-self: end;
 
-  .bd-part {
+  .breakdown-part {
     align-items: center;
     cursor: help;
     display: inline-flex;
@@ -1120,7 +1120,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 }
 
-.bd-note {
+.breakdown-note {
   color: v.$grey-dim;
   font-size: 12px;
   margin: 0;
@@ -1149,11 +1149,11 @@ $ai-narrow: v.bp(ai-narrow);
   &:hover {
     border-color: var(--scoreboard-led);
 
-    .comp-name {
+    .similar-name {
       color: var(--scoreboard-led);
     }
 
-    .comp-card {
+    .similar-card {
       border-color: var(--scoreboard-led);
     }
   }
@@ -1161,37 +1161,37 @@ $ai-narrow: v.bp(ai-narrow);
   @include v.focus-lit {
     border-color: var(--scoreboard-led);
 
-    .comp-name {
+    .similar-name {
       color: var(--scoreboard-led);
     }
 
-    .comp-card {
+    .similar-card {
       border-color: var(--scoreboard-led);
     }
   }
 }
 
-.comp-text {
+.similar-text {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-width: 0;
 }
 
-.comp-season {
+.similar-season {
   color: var(--scoreboard-led);
   @include v.hand(12px);
   letter-spacing: 0.5px;
 }
 
-.comp-name {
+.similar-name {
   @include v.hand(14px);
   line-height: 1.15;
   @include v.ellipsis;
   transition: color v.$t-hover ease;
 }
 
-.comp-match {
+.similar-match {
   flex: 0 0 auto;
   @include v.hand(17px);
   @include v.tone-glow(45%);
@@ -1320,24 +1320,24 @@ $ai-narrow: v.bp(ai-narrow);
     filter v.$t-fast ease;
   width: 17px;
 
-  &.W {
+  &.won {
     background: v.$good;
   }
 
-  &.L {
+  &.lost {
     background: v.$bad;
   }
 
-  &.T {
+  &.tied {
     background: v.$neutral;
   }
 
   // (decided in overtime or a shootout: the same result, lighter)
-  &.W.ot {
+  &.won.ot {
     background: v.$good-ot;
   }
 
-  &.L.ot {
+  &.lost.ot {
     background: v.$bad-ot;
   }
 
@@ -1686,15 +1686,15 @@ $ai-narrow: v.bp(ai-narrow);
   line-height: 26px;
   text-align: center;
 
-  &.win {
+  &.won {
     background: v.$good;
   }
 
-  &.loss {
+  &.lost {
     background: v.$bad;
   }
 
-  &.draw {
+  &.tied {
     background: v.$neutral;
   }
 }
@@ -1754,8 +1754,8 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ov-radar .shape,
-  .ov-radar .dot,
+  .overview-radar .shape,
+  .overview-radar .dot,
   .stat-bar i {
     animation: none;
   }
@@ -1842,12 +1842,12 @@ $ai-narrow: v.bp(ai-narrow);
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 
-  .ov-top,
-  .ov-skills {
+  .overview-top,
+  .overview-skills {
     grid-template-columns: 1fr;
   }
 
-  .ov-archetype {
+  .overview-archetype {
     font-size: 26px;
   }
 
@@ -2064,13 +2064,13 @@ $ai-narrow: v.bp(ai-narrow);
   border-radius: 3px 3px 0 0;
 }
 
-.log-bar.single.W .seg-0,
-.log-chart.diverging .log-bar.W .seg-0 {
+.log-bar.single.won .seg-0,
+.log-chart.diverging .log-bar.won .seg-0 {
   --log-seg-0: #{v.$good};
 }
 
-.log-bar.single.L .seg-0,
-.log-chart.diverging .log-bar.L .seg-0 {
+.log-bar.single.lost .seg-0,
+.log-chart.diverging .log-bar.lost .seg-0 {
   --log-seg-0: #{v.$bad};
 }
 
@@ -2083,11 +2083,11 @@ $ai-narrow: v.bp(ai-narrow);
   margin-top: 3px;
   width: 100%;
 
-  &.W {
+  &.won {
     background: v.$good;
   }
 
-  &.L {
+  &.lost {
     background: v.$bad;
   }
 }
@@ -2297,15 +2297,15 @@ $ai-narrow: v.bp(ai-narrow);
     text-align: center;
     width: 17px;
 
-    &.W {
+    &.won {
       background: v.$good;
     }
 
-    &.L {
+    &.lost {
       background: v.$bad;
     }
 
-    &.T {
+    &.tied {
       background: v.$neutral;
     }
   }
@@ -2374,7 +2374,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 // ---------------------------------------------------------------------------
-// The Analysis tab (an AI write-up; its headline and definition head the Overview's profile, .ov-summary): the
+// The Analysis tab (an AI write-up; its headline and definition head the Overview's profile, .overview-summary): the
 // take, the season's strengths and concerns side by side, the coming game with its line, the rest of the
 // season's ranges, betting angles. Each section a card like the Season groups, in its own color
 // ---------------------------------------------------------------------------
@@ -2959,32 +2959,32 @@ $ai-narrow: v.bp(ai-narrow);
   line-height: 1;
   padding: 2px 4px;
 
-  &.s-q,
-  &.s-dtd {
+  &.status-q,
+  &.status-dtd {
     background: v.$caution;
     color: v.$chip-ink;
   }
 
-  &.s-d {
+  &.status-d {
     background: v.$doubtful;
     color: v.$chip-ink;
   }
 
-  &.s-o {
+  &.status-o {
     background: v.$bad;
     color: #fff;
   }
 
-  &.s-ir,
-  &.s-il,
-  &.s-nfi,
-  &.s-susp,
-  &.s-pup {
+  &.status-ir,
+  &.status-il,
+  &.status-nfi,
+  &.status-susp,
+  &.status-pup {
     background: $injured-reserve;
     color: #fff;
   }
 
-  &.s-gone {
+  &.status-gone {
     background: rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.75);
   }
@@ -3160,30 +3160,30 @@ $ai-narrow: v.bp(ai-narrow);
   text-transform: uppercase;
   white-space: nowrap;
 
-  &.r-injury {
+  &.reason-injury {
     background: rgba(v.$bad, 0.2);
     color: v.$bad-light;
   }
 
-  &.r-ir {
+  &.reason-ir {
     background: rgba($injured-reserve, 0.35);
     color: #ff9aa2;
   }
 
-  &.r-released,
-  &.r-traded,
-  &.r-retired {
+  &.reason-released,
+  &.reason-traded,
+  &.reason-retired {
     background: rgba(179, 136, 255, 0.2);
     color: #c9b2ff;
   }
 
-  &.r-coach {
+  &.reason-coach {
     background: rgba(91, 157, 255, 0.2);
     color: #9cc3ff;
   }
 
-  &.r-moved,
-  &.r-inactive {
+  &.reason-moved,
+  &.reason-inactive {
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.75);
   }
@@ -3563,7 +3563,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (the card's other charts say what they are on hover: the help cursor, and the mark lightens)
 .stat-bar,
-.bd-lean-bar,
+.breakdown-lean-bar,
 .arsenal-pitch-bar,
 .depth-bar,
 .zone-out,
@@ -3642,31 +3642,31 @@ $card-tab-hosts: card-stats, card-overview, card-analysis, card-team, card-zones
 // lean bar fills from the left, its tick after; a slice's popover rises in; the rank and score tiles'
 // digits warm up like the board's lamps, the ranks a row after another
 @media (prefers-reduced-motion: no-preference) {
-  .bd-sweep {
+  .breakdown-sweep {
     animation: pie-sweep 0.4s cubic-bezier(0.3, 0.7, 0.3, 1) backwards;
     stroke-dasharray: 1 1;
   }
 
-  .bd-pie-pct,
-  .bd-lean-tick {
+  .breakdown-pie-pct,
+  .breakdown-lean-tick {
     animation: card-fade 0.2s ease 0.3s backwards;
   }
 
-  .bd-lean-bar {
+  .breakdown-lean-bar {
     animation: lean-fill 0.4s v.$ease-out backwards;
   }
 
-  .bd-pop {
+  .breakdown-pop {
     animation: pop-rise v.$t-hover ease-out;
   }
 
-  .bd-rank,
+  .breakdown-rank,
   .log-led {
     animation: led-warm 0.35s ease-out backwards;
   }
 
   @for $i from 2 through 8 {
-    .bd-row:nth-child(#{$i}) .bd-rank {
+    .breakdown-row:nth-child(#{$i}) .breakdown-rank {
       animation-delay: ($i - 2) * 40ms;
     }
   }

@@ -205,13 +205,13 @@
     </select>
   </span>
   <div class="desk-sports" role="group" aria-label="Sport">
-    <button type="button" class="desk-sport all" [class.on]="!sport" [attr.aria-pressed]="!sport" title="Every sport" (click)="setSport(null)">
+    <button type="button" class="desk-sport all" [class.active]="!sport" [attr.aria-pressed]="!sport" title="Every sport" (click)="setSport(null)">
       <span class="sport-label">All</span>
       <span class="sport-count">{{ openCount(null) }}</span>
       <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
     </button>
     @for (s of sports; track s) {
-      <button type="button" class="desk-sport" [ngClass]="s" [class.on]="sport === s" [attr.aria-pressed]="sport === s" [title]="s.toUpperCase() + ': ' + openCount(s) + ' open bets'" [attr.aria-label]="s.toUpperCase() + ', ' + openCount(s) + ' open bets'" (click)="setSport(s)">
+      <button type="button" class="desk-sport" [ngClass]="s" [class.active]="sport === s" [attr.aria-pressed]="sport === s" [title]="s.toUpperCase() + ': ' + openCount(s) + ' open bets'" [attr.aria-label]="s.toUpperCase() + ', ' + openCount(s) + ' open bets'" (click)="setSport(s)">
         <img [src]="leagueLogo(s)" alt="" />
         <span class="sport-count">{{ openCount(s) }}</span>
         <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
@@ -598,7 +598,7 @@
                         <span class="desk-meter" [class.won]="state === 'won'" [class.lost]="state === 'lost'" [class.under]="b.side === 'under'" [style.--meter]="state === 'won' || state === 'lost' ? null : pickColor(b)" aria-hidden="true">
                           @if (m.pips) {
                             @for (pip of m.pips; track $index) {
-                              <span class="pip" [class.on]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
+                              <span class="pip" [class.active]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
                             }
                             @if (m.extra) {
                               <span class="pip-extra">+{{ m.extra }}</span>

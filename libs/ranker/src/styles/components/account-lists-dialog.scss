@@ -163,7 +163,7 @@ list-modal {
   }
 
   // Who'll see it: the three pills, and what the choice means under them
-  .vis-row {
+  .visibility-row {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -189,7 +189,7 @@ list-modal {
       min-width: 0;
     }
 
-    .p-rank {
+    .preview-rank {
       @include kit.sand-lit;
       flex: 0 0 22px;
       font-family: v.$font-led;
@@ -204,12 +204,12 @@ list-modal {
       width: 22px;
     }
 
-    .p-name {
+    .preview-name {
       font-family: v.$font-hand;
       @include v.ellipsis;
     }
 
-    .p-more {
+    .preview-more {
       color: rgba(255, 255, 255, 0.5);
       font-size: 12px;
       padding-left: 32px;

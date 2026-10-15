@@ -55,7 +55,7 @@
           <span class="player-awards">
             @for (award of c.awards; track award.id) {
               @if (awardInfo[award.id].icon?.name === 'trophy') {
-                <span class="lombardi award-trophy" [title]="award.title"></span>
+                <span class="trophy award-trophy" [title]="award.title"></span>
               } @else if (awardInfo[award.id].icon; as icon) {
                 <mat-icon class="award-cup" [ngClass]="'award-' + (icon.metal ?? 'silver')" [fontIcon]="icon.name" [title]="award.title"></mat-icon>
               } @else {

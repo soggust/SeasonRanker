@@ -246,7 +246,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 
   // (on the slip: a gold ring, like a chip set down on the line)
-  &.on {
+  &.active {
     --edge: #{$lock-gold};
     --wash: rgba(255, 207, 74, 0.2);
     box-shadow:

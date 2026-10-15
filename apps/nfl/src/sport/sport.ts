@@ -246,7 +246,7 @@ export const SPORT: SportConfig = {
       options: { ppr: FANTASY_SCORING_LABELS.ppr, half: FANTASY_SCORING_LABELS.half, std: FANTASY_SCORING_LABELS.std },
       default: 'ppr',
       slot: 'formatTop',
-      iconClass: 'lombardi',
+      iconClass: 'trophy',
     },
     {
       key: 'rankBasis',

@@ -7,8 +7,8 @@
     <header class="compare-hero">
       <!-- (different positions: said once in the top strip, how they line up in a popover on hover or focus) -->
       @if (v?.mixed) {
-        <p class="cmp-mixed" tabindex="0" aria-describedby="cmp-mixed-pop"
-          ><mat-icon fontIcon="info" aria-hidden="true"></mat-icon>Different positions<span class="cmp-mixed-pop" id="cmp-mixed-pop" role="tooltip"
+        <p class="compare-mixed" tabindex="0" aria-describedby="compare-mixed-pop"
+          ><mat-icon fontIcon="info" aria-hidden="true"></mat-icon>Different positions<span class="compare-mixed-pop" id="compare-mixed-pop" role="tooltip"
             >Each skill is where he stood among his own position, so each position's skills are their own rows, tagged with it, and only players at
             that position lead them. A stat column they share goes to the bigger number; the bar under each value is where he stood among his own
             position.</span
@@ -26,7 +26,7 @@
         @if (sides.length) {
           <button
             type="button"
-            class="cmp-pin"
+            class="compare-pin"
             [class.pinned]="pinned"
             [disabled]="pinning"
             [attr.aria-label]="pinned ? 'Pinned to Track Players: pin again' : 'Pin to Track Players'"
@@ -45,11 +45,11 @@
       <!-- (on a phone: a chip a side in a row, its color, face, name and rank; one tapped opens its tape in a
            sheet over the board, the + chip the search. Wider screens: hidden, every tape shown) -->
       @if (sides.length) {
-        <div class="cmp-chips">
+        <div class="compare-chips">
           @for (s of sides; track s.uid) {
             <button
               type="button"
-              class="cmp-chip"
+              class="compare-chip"
               [class.open]="sheet === s.uid"
               [style.--side]="s.color"
               [style.--team-badge]="s.badge"
@@ -69,7 +69,7 @@
             </button>
           }
           @if (sides.length < max) {
-            <button type="button" class="cmp-chip chip-add" [class.open]="sheet === 'add'" [attr.aria-expanded]="sheet === 'add'" aria-label="Add someone" title="Add someone" (click)="toggle('add')">
+            <button type="button" class="compare-chip chip-add" [class.open]="sheet === 'add'" [attr.aria-expanded]="sheet === 'add'" aria-label="Add someone" title="Add someone" (click)="toggle('add')">
               <mat-icon [class.spin]="compare.loading" [fontIcon]="compare.loading ? 'autorenew' : 'add'"></mat-icon>
             </button>
           }
@@ -185,11 +185,11 @@
         }
       </div>
       <!-- (always there, so a screen reader hears it when it's said) -->
-      <p class="cmp-status" role="status">{{ compare.note }}</p>
+      <p class="compare-status" role="status">{{ compare.note }}</p>
       <!-- (pinned, or why not: under the pin for a moment, the way to the Tracker in it) -->
-      <p class="cmp-pin-note" role="status">
+      <p class="compare-pin-note" role="status">
         @if (pinNote) {
-          <span class="cmp-pin-toast" animate.enter="share-in"
+          <span class="compare-pin-toast" animate.enter="share-in"
             >{{ pinNote.text }}@if (pinNote.link) {
               · <a [href]="trackerPath">Open</a>
             }</span
@@ -215,9 +215,9 @@
         @switch (compare.tab) {
           @case ('overview') {
             <!-- Skills: every side's shape on one radar (the skills they share), and each skill's bars -->
-            <div class="cmp-top">
+            <div class="compare-top">
               @if (v.radar; as r) {
-                <div class="ov-radar cmp-radar">
+                <div class="overview-radar compare-radar">
                   <svg viewBox="-215 -140 430 285" role="img" aria-label="Skill profiles, overlaid">
                     @for (ring of r.base.rings; track $index) {
                       <polygon class="ring" [class.avg]="$index === 1" [attr.points]="ring"></polygon>
@@ -226,14 +226,14 @@
                       <line class="spoke" x1="0" y1="0" [attr.x2]="a.x" [attr.y2]="a.y"></line>
                     }
                     @for (shape of r.shapes; track shape.color; let si = $index) {
-                      <polygon class="cmp-shape" [attr.points]="shape.points" [style.--side]="shape.color">
+                      <polygon class="compare-shape" [attr.points]="shape.points" [style.--side]="shape.color">
                         <title>{{ sides[si].label }}</title>
                       </polygon>
                     }
                     <!-- (each point says whose it is, the skill and the percentile) -->
                     @for (shape of r.shapes; track shape.color; let si = $index) {
                       @for (d of shape.dots; track $index; let j = $index) {
-                        <circle class="cmp-dot" r="3.2" [attr.cx]="d.x" [attr.cy]="d.y" [style.--side]="shape.color">
+                        <circle class="compare-dot" r="3.2" [attr.cx]="d.x" [attr.cy]="d.y" [style.--side]="shape.color">
                           <title>{{ sides[si].label }} · {{ r.base.axes[j].label }}: {{ percentileText(d.pct) }}&#10;{{ r.abouts[j] }}</title>
                         </circle>
                       }
@@ -242,23 +242,23 @@
                       <text class="axis-label" [attr.x]="a.lx" [attr.y]="a.ly" [attr.text-anchor]="a.anchor"><title>{{ r.abouts[$index] }}</title>{{ a.label }}</text>
                     }
                   </svg>
-                  <div class="ov-legend cmp-legend">
+                  <div class="overview-legend compare-legend">
                     @for (s of sides; track s.key) {
-                      <span><i class="cmp-key" [style.--side]="s.color"></i>{{ s.label }}</span>
+                      <span><i class="compare-key" [style.--side]="s.color"></i>{{ s.label }}</span>
                     }
                     <span><i class="key avg"></i>League Avg</span>
                   </div>
                 </div>
               }
               <!-- (each bar grows in, its number ticking up with it) -->
-              <div class="cmp-skills">
+              <div class="compare-skills">
                 @for (sk of v.skills; track sk.id) {
-                  <div class="cmp-skill">
-                    <span class="cmp-skill-name" [title]="sk.name + ': ' + sk.about">{{ sk.name }}@if (sk.tab) {<small class="cmp-skill-tab">{{ sk.tab }}</small>}</span>
-                    <div class="cmp-bars">
+                  <div class="compare-skill">
+                    <span class="compare-skill-name" [title]="sk.name + ': ' + sk.about">{{ sk.name }}@if (sk.tab) {<small class="compare-skill-tab">{{ sk.tab }}</small>}</span>
+                    <div class="compare-bars">
                       @for (p of sk.pcts; track $index) {
-                        <div class="cmp-bar" [class.lead]="sk.leaders.includes($index)" [style.--side]="sides[$index].color" [title]="sides[$index].label + ': ' + (p === null ? '-' : percentileText(p)) + '\n' + sk.name + ': ' + sk.about">
-                          <span class="cmp-track"><i [style.width.%]="p === null ? 0 : 4 + p * 96"></i></span>
+                        <div class="compare-bar" [class.lead]="sk.leaders.includes($index)" [style.--side]="sides[$index].color" [title]="sides[$index].label + ': ' + (p === null ? '-' : percentileText(p)) + '\n' + sk.name + ': ' + sk.about">
+                          <span class="compare-track"><i [style.width.%]="p === null ? 0 : 4 + p * 96"></i></span>
                           @if (p === null) {
                             <b>-</b>
                           } @else {
@@ -274,16 +274,16 @@
 
             @if (sides.length > 1) {
               <!-- Edges: where each one is clearly the best of them (folded, like the card's sections) -->
-              <card-panel class="ov-section tab-card cmp-panel" label="Edges" icon="bolt">
-                <p class="cmp-help">Where each one is clearly the best of them: his percentile at a skill (where he stood that season, 100 the top) minus the best of the others', 10 points or more</p>
-                <div class="group-body cmp-edges" [style.--sides]="sides.length">
+              <card-panel class="overview-section tab-card compare-panel" label="Edges" icon="bolt">
+                <p class="compare-help">Where each one is clearly the best of them: his percentile at a skill (where he stood that season, 100 the top) minus the best of the others', 10 points or more</p>
+                <div class="group-body compare-edges" [style.--sides]="sides.length">
                   @for (s of sides; track s.key; let i = $index) {
-                    <div class="cmp-edge" [style.--side]="s.color">
-                      <span class="cmp-edge-who">{{ s.label }}</span>
+                    <div class="compare-edge" [style.--side]="s.color">
+                      <span class="compare-edge-who">{{ s.label }}</span>
                       @for (e of v.edges[i]; track e.skill) {
-                        <span class="cmp-edge-item" [title]="s.label + ' stood ' + e.by + ' percentile points higher at ' + e.skill + ' than the best of the others'"><b>{{ e.skill }}</b><em>+{{ e.by }}</em></span>
+                        <span class="compare-edge-item" [title]="s.label + ' stood ' + e.by + ' percentile points higher at ' + e.skill + ' than the best of the others'"><b>{{ e.skill }}</b><em>+{{ e.by }}</em></span>
                       } @empty {
-                        <span class="cmp-edge-none">No clear edge</span>
+                        <span class="compare-edge-none">No clear edge</span>
                       }
                     </div>
                   }
@@ -291,16 +291,16 @@
               </card-panel>
 
               <!-- How alike: each pair's skill shapes -->
-              <card-panel class="ov-section tab-card cmp-panel" label="How Alike" icon="join_inner">
-                <p class="cmp-help">How alike two players' skill shapes are: 100 minus the average gap between their skill percentiles, so 100% is the same profile</p>
-                <div class="group-body cmp-pairs">
+              <card-panel class="overview-section tab-card compare-panel" label="How Alike" icon="join_inner">
+                <p class="compare-help">How alike two players' skill shapes are: 100 minus the average gap between their skill percentiles, so 100% is the same profile</p>
+                <div class="group-body compare-pairs">
                   @for (p of v.pairs; track $index) {
-                    <div class="cmp-pair" title="One minus the average gap between their skill percentiles">
-                      <span class="cmp-pair-who"
-                        ><i [style.--side]="sides[p.a].color"></i>{{ sides[p.a].label }}<span class="cmp-amp">&amp;</span><i [style.--side]="sides[p.b].color"></i>{{ sides[p.b].label }}</span
+                    <div class="compare-pair" title="One minus the average gap between their skill percentiles">
+                      <span class="compare-pair-who"
+                        ><i [style.--side]="sides[p.a].color"></i>{{ sides[p.a].label }}<span class="compare-amp">&amp;</span><i [style.--side]="sides[p.b].color"></i>{{ sides[p.b].label }}</span
                       >
-                      <span class="cmp-pair-meter"><i [style.width.%]="p.alike"></i></span>
-                      <b class="cmp-pair-pct tick pct" [style.--tone]="rankTone((p.alike - 50) / 50)" [style.--to]="p.alike"><span class="tick-text">{{ p.alike }}%</span></b>
+                      <span class="compare-pair-meter"><i [style.width.%]="p.alike"></i></span>
+                      <b class="compare-pair-pct tick pct" [style.--tone]="rankTone((p.alike - 50) / 50)" [style.--to]="p.alike"><span class="tick-text">{{ p.alike }}%</span></b>
                     </div>
                   }
                 </div>
@@ -317,13 +317,13 @@
             <!-- The summary on the scoreboard: what each one is best at, then the columns he leads, a line each in
                  his color -->
             @if (v.summary; as lines) {
-              <ul class="cmp-summary">
+              <ul class="compare-summary">
                 @for (s of sides; track s.key; let i = $index) {
                   @let line = lines[i];
                   <li [style.--side]="s.color">
                     <i aria-hidden="true"></i>
                     <span
-                      ><b class="cmp-summary-who">{{ s.tag }}</b>
+                      ><b class="compare-summary-who">{{ s.tag }}</b>
                       @if (line.best) {
                         Best at <strong>{{ line.best }}</strong> · {{ line.leads }}
                       } @else {
@@ -334,34 +334,34 @@
                 }
               </ul>
             }
-            <div class="cmp-stats" [style.--sides]="sides.length">
-              <div class="cmp-row cmp-head">
+            <div class="compare-stats" [style.--sides]="sides.length">
+              <div class="compare-row compare-head">
                 <span></span>
                 @for (s of sides; track s.key; let i = $index) {
-                  <span class="cmp-col-head" [style.--side]="s.color" [title]="s.label + (led ? ': leads ' + v.wins[i] + ' of the ' + v.contested + ' columns with a leader' : '')"
+                  <span class="compare-col-head" [style.--side]="s.color" [title]="s.label + (led ? ': leads ' + v.wins[i] + ' of the ' + v.contested + ' columns with a leader' : '')"
                     >{{ s.surname }} <small>{{ s.short }}</small>
                     @if (led) {
-                      <em class="cmp-wins"><b class="tick" [style.--to]="v.wins[i]"><span class="tick-text">{{ v.wins[i] }}</span></b>/{{ v.contested }}</em>
+                      <em class="compare-wins"><b class="tick" [style.--to]="v.wins[i]"><span class="tick-text">{{ v.wins[i] }}</span></b>/{{ v.contested }}</em>
                     }
                   </span>
                 }
               </div>
               @for (g of v.groups; track g.id) {
-                <card-panel class="tab-card cmp-group" [ngClass]="'group-' + g.id" [label]="g.title" [icon]="g.icon" [startOpen]="true">
+                <card-panel class="tab-card compare-group" [ngClass]="'group-' + g.id" [label]="g.title" [icon]="g.icon" [startOpen]="true">
                   <div class="group-body">
                     @for (row of g.rows; track row.key) {
-                      <div class="cmp-row">
-                        <span class="cmp-label" [title]="row.name">{{ row.label }}</span>
+                      <div class="compare-row">
+                        <span class="compare-label" [title]="row.name">{{ row.label }}</span>
                         @for (cell of row.cells; track $index) {
                           <span
-                            class="cmp-cell"
+                            class="compare-cell"
                             [class.lead]="row.leaders.includes($index)"
                             [style.--side]="sides[$index].color"
                             [title]="sides[$index].label + (cell.rank ? ': #' + cell.rank + ' of ' + cell.of + ' in ' + sides[$index].seasonText : '')"
                           >
                             <b [style.color]="cell.tint">{{ cell.text }}</b>
                             @if (cell.pct !== null) {
-                              <i class="cmp-cell-bar"><i [style.width.%]="4 + cell.pct * 96"></i></i>
+                              <i class="compare-cell-bar"><i [style.width.%]="4 + cell.pct * 96"></i></i>
                             }
                           </span>
                         }
@@ -376,7 +376,7 @@
           @case ('career') {
             <!-- Career arcs: every season's standing (the default sliders), the compared one ringed -->
             @if (compare.arcs; as a) {
-              <card-panel class="ov-section tab-card cmp-panel" [label]="compare.teamsOnly ? 'Team Arcs' : 'Career Arcs'" icon="show_chart" [expandable]="false">
+              <card-panel class="overview-section tab-card compare-panel" [label]="compare.teamsOnly ? 'Team Arcs' : 'Career Arcs'" icon="show_chart" [expandable]="false">
                 <!-- (along the bottom: their years in the league, or the seasons themselves; teams alone, the seasons) -->
                 @if (!compare.teamsOnly) {
                 <mat-select panel-actions class="arc-by" [panelWidth]="null" [value]="a.byYear ? 'year' : 'season'" aria-label="Along the bottom" title="Along the bottom: their years in the league, or the seasons themselves" (valueChange)="compare.setArcBy($event)">
@@ -392,7 +392,7 @@
                 }
                 <div class="group-body">
                   <div class="arc-box" #arcBox>
-                  <svg #arcSvg class="cmp-arcs" [attr.viewBox]="'0 0 ' + a.width + ' ' + a.height" role="img" aria-label="Career arcs">
+                  <svg #arcSvg class="compare-arcs" [attr.viewBox]="'0 0 ' + a.width + ' ' + a.height" role="img" aria-label="Career arcs">
                     @for (t of a.yTicks; track t.label) {
                       <line class="arc-grid" [class.mid]="t.label === '50%'" [attr.x1]="a.left" [attr.x2]="a.width - a.right" [attr.y1]="t.y" [attr.y2]="t.y"></line>
                       <text class="arc-y" [attr.x]="a.left - 6" [attr.y]="t.y + 3.5" text-anchor="end">{{ t.label }}</text>
@@ -456,12 +456,12 @@
                     }
                   </svg>
                   </div>
-                  <div class="ov-legend cmp-legend">
+                  <div class="overview-legend compare-legend">
                     @for (l of a.lines; track l.key) {
-                      <span><i class="cmp-key" [style.--side]="l.color"></i>{{ l.name }}</span>
+                      <span><i class="compare-key" [style.--side]="l.color"></i>{{ l.name }}</span>
                     }
                   </div>
-                  <p class="cmp-note">
+                  <p class="compare-note">
                     {{ a.byYear ? 'Their years in the league along the bottom' : 'The seasons along the bottom' }}; each season's rank with the default sliders against that
                     year's league, the season compared ringed
                   </p>

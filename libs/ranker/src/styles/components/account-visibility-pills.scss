@@ -9,12 +9,12 @@
   gap: 8px;
 }
 
-.vis-pill {
+.visibility-pill {
   @include kit.app-pill;
 }
 
 // (a change saving: dimmed, not acting)
-.vis-pill.busy {
+.visibility-pill.busy {
   cursor: progress;
   opacity: 0.5;
 }

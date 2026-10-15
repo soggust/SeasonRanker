@@ -21,7 +21,7 @@
     </div>
     <div class="log-bars">
       @for (bar of chart.bars; track $index) {
-        <span class="log-bar" [ngClass]="bar.outcome" [class.negative]="bar.negative" [class.single]="chart.legend.length === 0" [title]="bar.title">
+        <span class="log-bar" [ngClass]="resultClass(bar.outcome)" [class.negative]="bar.negative" [class.single]="chart.legend.length === 0" [title]="bar.title">
           <span class="log-pile">
             @if (!chart.diverging && chart.bars.length <= 24) {
               <span class="log-dots">
@@ -45,7 +45,7 @@
             }
           </span>
           @if (!chart.diverging) {
-            <span class="log-outcome-tick" [ngClass]="bar.outcome"></span>
+            <span class="log-outcome-tick" [ngClass]="resultClass(bar.outcome)"></span>
           }
         </span>
       }
@@ -101,7 +101,7 @@
               <!-- (the result: a team's just its W or L, its scores on their tiles; a player's the score too) -->
               <td class="log-result">
                 @if (g.outcome) {
-                  <span class="log-outcome" [ngClass]="g.outcome">{{ g.outcome }}</span>
+                  <span class="log-outcome" [ngClass]="resultClass(g.outcome)">{{ g.outcome }}</span>
                 }
                 @if (!log.scoreboard || !g.outcome) {
                   {{ g.score }}

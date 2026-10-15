@@ -15,7 +15,7 @@
           <button
             type="button"
             class="recent-square"
-            [ngClass]="d === 1 ? 'W' : d === 0.5 ? 'T' : 'L'"
+            [ngClass]="scoreClass(d)"
             [class.ot]="recentOt(c, i)"
             [disabled]="!games.available"
             [title]="recentTitle(c, d, i)"

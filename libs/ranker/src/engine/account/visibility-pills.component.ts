@@ -11,7 +11,7 @@ import { VISIBILITY_CHOICES, Visibility } from './account-helpers';
       <button
         type="button"
         role="radio"
-        [class.vis-pill]="!sport"
+        [class.visibility-pill]="!sport"
         [class.game-filter]="sport"
         [class.small]="sport"
         [class.active]="value === choice.value"

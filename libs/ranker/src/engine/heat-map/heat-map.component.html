@@ -56,7 +56,7 @@
             class="hm-cell"
             [class.thin]="c.thin"
             [class.faded]="c.faded && mode !== 'volume'"
-            [class.on]="active?.id === c.id"
+            [class.active]="active?.id === c.id"
             [style.--i]="c.i"
             tabindex="0"
             role="button"

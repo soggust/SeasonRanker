@@ -386,7 +386,7 @@ $gold: chip.$lock-gold;
     opacity: 0.35;
   }
 
-  &.c1 {
+  &.chip-1 {
     --clay: #{chip.$chip-cream};
     color: v.$chip-ink;
     text-shadow: none;
@@ -396,7 +396,7 @@ $gold: chip.$lock-gold;
     }
   }
 
-  &.c5 {
+  &.chip-5 {
     --clay: #{chip.$chip-red};
   }
 
@@ -404,12 +404,12 @@ $gold: chip.$lock-gold;
     --clay: #{chip.$chip-blue};
   }
 
-  &.c25 {
+  &.chip-25 {
     --clay: #{chip.$chip-green};
   }
 
   // (the half: the casino's pink)
-  &.c-half {
+  &.chip-half {
     --clay: #d94f86;
   }
 }
@@ -567,7 +567,7 @@ $gold: chip.$lock-gold;
       color: #fff;
     }
 
-    &.on {
+    &.active {
       @include v.scoreboard-face;
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--scoreboard-led) 70%, transparent);
       color: var(--scoreboard-led);

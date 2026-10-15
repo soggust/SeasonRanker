@@ -10,7 +10,7 @@
   <div class="history-list">
     @for (r of rows; track $index) {
       <div class="history-row">
-        <span class="history-result" [ngClass]="r.result === 'W' ? 'win' : r.result === 'L' ? 'loss' : 'draw'">{{ r.result }}</span>
+        <span class="history-result" [ngClass]="r.result === 'W' ? 'won' : r.result === 'L' ? 'lost' : 'tied'">{{ r.result }}</span>
         <span class="history-main">{{ r.main }}<small>{{ r.sub }}</small></span>
         <span class="history-detail">{{ r.detail }}</span>
       </div>

@@ -67,7 +67,7 @@ $bar-h: 30px;
   letter-spacing: 1px;
 }
 
-.vis-chip,
+.visibility-chip,
 .community-chip {
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -89,7 +89,7 @@ $bar-h: 30px;
     color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
   }
 
-  &.vis-public .mat-icon {
+  &.visibility-public .mat-icon {
     color: kit.app(sand);
   }
 }
@@ -279,7 +279,7 @@ $bar-h: 30px;
     @include v.ellipsis;
   }
 
-  .vis-chip {
+  .visibility-chip {
     border: none;
     padding: 0;
   }
@@ -315,7 +315,7 @@ $bar-h: 30px;
     min-width: 0;
   }
 
-  .t-rank {
+  .top-rank {
     @include v.led-tile;
     flex: 0 0 26px;
     font-size: 11px;
@@ -327,15 +327,15 @@ $bar-h: 30px;
     }
   }
 
-  .t-logo,
-  .t-photo {
+  .top-logo,
+  .top-photo {
     flex: 0 0 26px;
     height: 26px;
     object-fit: contain;
     width: 26px;
   }
 
-  .t-photo {
+  .top-photo {
     background:
       radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.3), transparent 60%),
       var(--team-badge, rgba(255, 255, 255, 0.08));
@@ -346,7 +346,7 @@ $bar-h: 30px;
     object-position: 50% 15%;
   }
 
-  .t-name {
+  .top-name {
     font-family: v.$font-hand;
     font-size: 14px;
     @include v.ellipsis;
@@ -708,16 +708,16 @@ $bar-h: 30px;
   padding-top: 2px;
   width: 46px;
 
-  &.top-5 {
+  &.rank-first {
     @include kit.sand-lit;
   }
 
-  &.top-10 {
+  &.rank-top {
     color: var(--tint-good, #{v.$good-bright});
     text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
   }
 
-  .lombardi {
+  .trophy {
     background-color: var(--tint-good, #{v.$good-bright});
     filter: drop-shadow(0 0 4px rgba(v.$good-bright, 0.55));
     height: 1.3em;
@@ -983,7 +983,7 @@ $bar-h: 30px;
     }
   }
 
-  .m-rank {
+  .maker-rank {
     @include v.led-tile;
     flex: 0 0 24px;
     font-size: 11px;
@@ -994,7 +994,7 @@ $bar-h: 30px;
     }
   }
 
-  .m-name {
+  .maker-name {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -1014,13 +1014,13 @@ $bar-h: 30px;
     }
   }
 
-  .m-lists {
+  .maker-lists {
     color: rgba(255, 255, 255, 0.5);
     font-size: 11px;
     font-weight: 700;
   }
 
-  .m-score {
+  .maker-score {
     color: rgba(255, 255, 255, 0.7);
     font-family: v.$font-led;
     font-size: 13px;
@@ -1117,13 +1117,13 @@ $bar-h: 30px;
     outline: none;
   }
 
-  &.up.on {
+  &.up.active {
     background: rgba(v.$good, 0.14);
     border-color: rgba(v.$good, 0.6);
     color: v.$good;
   }
 
-  &.down.on {
+  &.down.active {
     background: rgba(v.$bad, 0.14);
     border-color: rgba(v.$bad, 0.6);
     color: v.$bad;

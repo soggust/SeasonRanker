@@ -13,6 +13,7 @@ import { GameArsenal, GameChart, GameFantasy, GameMark, GameMoment, GamePitch, G
 import { GameWeather } from './venue';
 import { videoPlay, youtubeThumb, youtubeWatch } from './highlights';
 import { lineHead } from './wp-moments';
+import { resultClass } from '../result-class';
 import { PositionService } from '../position.service';
 
 import { GameTab, GameViewService } from './game-view.service';
@@ -44,6 +45,8 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
 
   // How a clip plays (the NFL's open on YouTube), its page and its picture
   readonly videoPlay = videoPlay;
+  // (a result's class: .won, .lost, .tied)
+  readonly resultClass = resultClass;
   readonly youtubeWatch = youtubeWatch;
   readonly youtubeThumb = youtubeThumb;
 
@@ -250,7 +253,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return spots;
   }
 
-  // The win probability's game time, played along with its draw (the CSS's wp-reveal, its line and fills
+  // The win probability's game time, played along with its draw (the CSS's win-prob-reveal, its line and fills
   // sweeping open together, followed by its own clock): each frame the chart's head (lineHead) picks its
   // play's moment for the readout ("Q3 8:42" and the score then) and takes the pen there, the logo of the
   // team ahead then; at its end the pen rests on the last point, "Final" and the replay. Written straight
@@ -294,7 +297,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     cancelAnimationFrame(this.wpFrame);
     const chart = this.wpChart?.nativeElement;
     if (!chart || !this.wpLine || !this.wpGame()) return;
-    chart.classList.remove('wp-playing', 'wp-done');
+    chart.classList.remove('win-prob-playing', 'win-prob-done');
     this.wpHead?.nativeElement.classList.remove('home', 'away');
     if (!restart || !this.wpAnims.length) this.wpAnims = chart.querySelector('svg')!.getAnimations({ subtree: true });
     // (the reveals all keep the same time: the first)
@@ -306,7 +309,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
         a.play();
       }
     }
-    chart.classList.add('wp-playing');
+    chart.classList.add('win-prob-playing');
     this.wpShown = -1;
     this.zone.runOutsideAngular(() => (this.wpFrame = requestAnimationFrame(() => this.wpTick(draw))));
   }
@@ -327,7 +330,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
       head.classList.toggle('away', at.y > 100);
     }
     if (progress >= 1) {
-      chart.classList.replace('wp-playing', 'wp-done');
+      chart.classList.replace('win-prob-playing', 'win-prob-done');
       // (a game still on: where it is now)
       const final = /^final/i.test(game.status);
       this.wpWrite(final ? { when: game.status, away: Number(game.away.score), home: Number(game.home.score) } : (game.winMoments?.at(-1) ?? null));
@@ -345,7 +348,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     if (this.wpWhen) this.wpWhen.nativeElement.textContent = m?.when ?? '';
     const score = m && m.away !== null && m.home !== null && !Number.isNaN(m.away + m.home) ? `${m.away}-${m.home}` : '';
     if (this.wpScore) this.wpScore.nativeElement.textContent = score;
-    this.wpChart?.nativeElement.classList.toggle('wp-blank', !m);
+    this.wpChart?.nativeElement.classList.toggle('win-prob-blank', !m);
   }
 
   // The chart tab's name: a shot chart (basketball, hockey), a spray chart (baseball), drives (football)

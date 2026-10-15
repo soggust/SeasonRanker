@@ -28,7 +28,7 @@ export function fitColumns(list: HTMLElement): void {
     const key = cell.dataset['col'];
     if (!label || !key) continue;
     // (the arrow and the X sit at the cell's right, the label centered: their room on both sides)
-    const arrow = cell.querySelector<HTMLElement>('.iso-tools');
+    const arrow = cell.querySelector<HTMLElement>('.isolate-tools');
     let width = textWidth(label) + 1;
     if (arrow) width += 2 * (arrow.offsetWidth + ARROW_GAP);
     // (Recent: its dots, too, the same in every row)
