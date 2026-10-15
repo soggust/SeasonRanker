@@ -21,6 +21,7 @@ import { HeatMapModule } from './heat-map/heat-map.module';
 import { GameViewComponent } from './game-view/game-view.component';
 import { ColumnHighlightDirective } from '@ranker/core/column-highlight.directive';
 import { ScrolledSidewaysDirective } from '@ranker/core/scrolled-sideways.directive';
+import { RecentPrimeDirective } from './skill-rankings/recent-prime.directive';
 import { COLUMN_MOVER, ColumnDragDirective } from '@ranker/core/column-drag.directive';
 import { SelectOriginDirective } from '@ranker/core/select-origin.directive';
 import { A11Y_DIRECTIVES } from '@ranker/core/a11y.directives';
@@ -48,6 +49,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
     GameViewComponent,
     ColumnHighlightDirective,
     ScrolledSidewaysDirective,
+    RecentPrimeDirective,
     ColumnDragDirective,
     SelectOriginDirective,
     ...A11Y_DIRECTIVES,

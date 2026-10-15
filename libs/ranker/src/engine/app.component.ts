@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, HostListener, NgZone, ViewChild, inject } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PositionService } from '@ranker/engine/position.service';
 import { POSITIONS, Position } from '@sport/positions';
@@ -101,12 +102,19 @@ export class AppComponent {
 
   // A link to one of the pages this app shows (href="/lists", "/bets", "/u/name", or an old "#lists"): the
   // address changes with no reload, which would lose the grid's tab and season and the app's state. A page of
-  // another sport's (/community/mlb) loads that sport's app.
-  @HostListener('document:click', ['$event'])
+  // another sport's (/community/mlb) loads that sport's app. (Listened for in the constructor: quietListener)
   onPageLink(event: MouseEvent): void {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const hash = this.pageLinkHash(event);
+    if (hash === null) return;
+    event.preventDefault();
+    goTo(hash);
+  }
+
+  // (the page a click on a link goes to, by its hash; null: not one of this app's pages, the browser's to follow)
+  private pageLinkHash(event: MouseEvent): string | null {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return null;
     const link = (event.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
-    if (!link || (link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+    if (!link || (link.target && link.target !== '_self') || link.hasAttribute('download')) return null;
     const href = link.getAttribute('href')!;
     let hash: string | null = null;
     // (a bare # is the rankings; any other hash not a page's (#rankings, the skip link) is the page's own anchor)
@@ -116,9 +124,7 @@ export class AppComponent {
       const page = url.origin === location.origin ? readPagePath(url.pathname) : null;
       if (page && (!page.sport || page.sport === SPORT.id)) hash = page.hash;
     }
-    if (hash === null) return;
-    event.preventDefault();
-    goTo(hash);
+    return hash;
   }
 
   // (back and forward between the pages: pushState's entries, which no hashchange announces)
@@ -199,6 +205,12 @@ export class AppComponent {
     private positionService: PositionService,
     readonly account: AccountService,
   ) {
+    // (a click or a press anywhere: outside Angular, unless it's a link to one of the app's pages or it shuts
+    // the filter menu)
+    const zone = inject(NgZone);
+    const destroyRef = inject(DestroyRef);
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.pageLinkHash(event) !== null, (event) => this.onPageLink(event));
+    quietListener<PointerEvent>(zone, destroyRef, document, 'pointerdown', (event) => this.outsideFilters(event), () => this.closeFilters());
     this.markBetsView();
     // A setting that shows new tabs (MMA's women's divisions) opens the first of them; one that
     // hides the open tab goes back to the first tab
@@ -229,12 +241,9 @@ export class AppComponent {
   }
 
   // A click outside the filter menu closes it: not one in its dropdowns' lists (they open over the page)
-  // or on the filter button (that toggles it)
-  @HostListener('document:pointerdown', ['$event'])
-  closeOnOutsideClick(event: PointerEvent): void {
-    if (!this.positionService.filtersOpen) return;
-    if ((event.target as Element | null)?.closest('.sidebar-shell, .cdk-overlay-container, .filter-toggle')) return;
-    this.closeFilters();
+  // or on the filter button (that toggles it). (Listened for in the constructor: quietListener)
+  private outsideFilters(event: PointerEvent): boolean {
+    return this.positionService.filtersOpen && !(event.target as Element | null)?.closest('.sidebar-shell, .cdk-overlay-container, .filter-toggle');
   }
 
   closeFilters(): void {

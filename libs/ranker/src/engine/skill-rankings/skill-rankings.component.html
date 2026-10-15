@@ -5,7 +5,7 @@
   <ng-content></ng-content>
   <!-- (isolation: said to screen readers as it starts and ends) -->
   <div class="visually-hidden" role="status" aria-live="polite">{{ isoNote }}</div>
-  <ul #rankingsList id="rankings" tabindex="-1" aria-label="Rankings" [class.isolating]="!!isoStat" (scroll)="listMoved()" cdkDropList (cdkDropListDropped)="drop($event)" columnHighlight scrolledSideways>
+  <ul #rankingsList id="rankings" tabindex="-1" aria-label="Rankings" [class.isolating]="!!isoStat" cdkDropList (cdkDropListDropped)="drop($event)" columnHighlight scrolledSideways>
     <!-- Column headers (stat groups switch on / off with the sidebar eyes) -->
     <li class="player header-row">
       <mat-icon fontIcon="drag_indicator" class="drag-indicator"></mat-icon>
@@ -236,7 +236,7 @@
                   <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
                        played yet. The pointer resting on them loads the team's scores for their hovers -->
                   <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <div class="last-five" [class.many]="manyRecent" (mouseenter)="games.primeSoon(recentTeam(player), season)" (mouseleave)="games.cancelPrime()">
+                    <div class="last-five" [class.many]="manyRecent" [recentPrime]="player" [recentSeason]="season">
                       <div>
                         @for (result of r.lastFive(player); track $index) {
                           <p

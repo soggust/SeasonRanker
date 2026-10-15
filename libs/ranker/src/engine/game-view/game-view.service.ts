@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { SPORT } from '@sport/sport';
 import { espnTeamId, findEspnTeamId } from '@ranker/core/game-logs';
 import { TeamResult, findGame, findGameOn, nthMeeting, teamResults } from './find-game';
@@ -127,10 +127,12 @@ export class GameViewService {
 
   // (the grid's: once the pointer stays on a row's squares a moment, so a sweep down the list doesn't ask
   // for every team it passes; leaving them before then asks for none)
+  // (asked from outside Angular, the grid's hover: the load itself runs inside, so its scores show once in)
   private primeTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly zone = inject(NgZone);
   primeSoon(team: (string | undefined)[], season: number): void {
     this.cancelPrime();
-    this.primeTimer = setTimeout(() => this.primeRecent(team, season), 150);
+    this.primeTimer = setTimeout(() => this.zone.run(() => this.primeRecent(team, season)), 150);
   }
 
   cancelPrime(): void {

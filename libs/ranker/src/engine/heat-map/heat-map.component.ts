@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, ElementRef, HostListener, Input, NgZone, OnChanges, inject } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import type { HeatCell, HeatCellShape, HeatMark, HeatMode, HeatShape, HeatStat, HeatSurface, HeatSurfaceId } from './heat-map.model';
 import { heatSurface } from './surfaces';
 import { cellTone, fadeFill, heatPaint, isThin, leanText, pickPair, toneText } from './heat-color';
@@ -67,7 +68,17 @@ export class HeatMapComponent implements OnChanges {
   @Input() markKey: string | null = null;
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
   readonly id = `hm${next++}`;
+
+  constructor() {
+    // (a tap anywhere: outside Angular unless it shuts this one's pinned cell; a tab of heat maps listened
+    // for it once each)
+    quietListener<PointerEvent>(inject(NgZone), inject(DestroyRef), document, 'pointerdown', (event) => !!this.pinned && !this.host.nativeElement.contains(event.target as Node), (event) => {
+      this.outside(event);
+      this.cdr.markForCheck();
+    });
+  }
 
   shape: HeatSurface | null = null;
   box = '';
@@ -123,8 +134,7 @@ export class HeatMapComponent implements OnChanges {
     } else this.pinned = id;
   }
 
-  // (a tap anywhere else shuts it)
-  @HostListener('document:pointerdown', ['$event'])
+  // (a tap anywhere else shuts it: listened for in the constructor)
   outside(event: PointerEvent): void {
     if (this.pinned && !this.host.nativeElement.contains(event.target as Node)) this.pinned = null;
   }

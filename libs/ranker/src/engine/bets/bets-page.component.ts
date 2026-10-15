@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
+import { Component, DestroyRef, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import { tierLabel, tierOf, unranked } from './tiers';
 import { CheckResolved, NotePlayer, byBand, notePlayers } from './desk-notes';
 import { CheckResearchView, researchView } from './check-research';
@@ -293,6 +294,16 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the page's About: its header's info button; an admin's has the Algorithm too)
   aboutOpen = false;
   private readonly wallet = inject(WalletService);
+
+  constructor() {
+    // (a click anywhere, the list scrolling: outside Angular unless a breakdown is open to shut; the list's
+    // scroll caught on its way down to it. The window resizing stays a HostListener: the page's layout follows it)
+    const zone = inject(NgZone);
+    const destroyRef = inject(DestroyRef);
+    const open = () => !!(this.why || this.checkWhy);
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank'), (event) => this.clickOff(event));
+    quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('bets-list'), () => this.closeWhy(), { capture: true, passive: true });
+  }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
   readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;
   // (Closed Bets: only with bets of the user's settled)
@@ -803,8 +814,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
 
   // (a click anywhere off it and its tile shuts it; so does the list scrolling out from under it, or the
-  // screen changing size)
-  @HostListener('document:click', ['$event'])
+  // screen changing size: the first two listened for outside Angular, quietListener, so with nothing open
+  // neither sets off change detection)
   clickOff(event: MouseEvent): void {
     if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank')) this.closeWhy();
   }

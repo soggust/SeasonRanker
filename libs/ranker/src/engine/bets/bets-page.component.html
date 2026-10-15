@@ -131,7 +131,7 @@
       <p class="bets-note">No picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
     } @else {
       @let locks = lockCount(shown);
-      <ol class="bets-list" [class.spinning]="spinning" (scroll)="closeWhy()">
+      <ol class="bets-list" [class.spinning]="spinning">
         <!-- (a game chosen: its every line on top, to bet any of them) -->
         @if (game && boardFor(game); as gb) {
           <li class="bet-board">

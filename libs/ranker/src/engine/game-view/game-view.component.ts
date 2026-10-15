@@ -1,4 +1,5 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, DestroyRef, ElementRef, Input, NgZone, OnDestroy, ViewChild, inject } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SPORT } from '@sport/sport';
 import { logoUrl } from '../account/lists/lists-helpers';
@@ -37,7 +38,9 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     private positions: PositionService,
     private sanitizer: DomSanitizer,
     private zone: NgZone,
-  ) {}
+  ) {
+    quietListener<KeyboardEvent>(zone, inject(DestroyRef), document, 'keydown', (event) => event.key === 'Escape' && !!this.games.game, (event) => this.keys(event));
+  }
 
   // How a clip plays (the NFL's open on YouTube), its page and its picture
   readonly videoPlay = videoPlay;
@@ -474,7 +477,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return this.games.scoringOnly ? group.plays.filter((p) => p.scoring) : group.plays;
   }
 
-  @HostListener('document:keydown', ['$event'])
+  // (listened for outside Angular, quietListener: with no game open, a key sets off no change detection)
   keys(event: KeyboardEvent): void {
     if (event.key !== 'Escape' || !this.games.game) return;
     this.games.close();

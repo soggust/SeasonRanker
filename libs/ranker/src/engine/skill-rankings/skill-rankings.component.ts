@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, HostListener, Input, NgZone, OnChanges, ViewChild, inject } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -159,6 +160,10 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   @ViewChild('toolButton') toolButton?: ElementRef<HTMLButtonElement>;
 
   private readonly glide = new RowGlide();
+  // (the columns' widths from the header's labels, kept up as it changes: column-fit.ts; the page-wide
+  // listeners: quietListener)
+  private readonly zone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
 
   // "List copied" under the copy button (and a link's note: CARD_MISSING)
   toastVisible = false;
@@ -183,6 +188,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     // (the game view's names and teams open cards)
     this.cards.connectGames(games);
     const service = this.positionService;
+
+    // (a click anywhere: outside Angular unless a breakdown or the search is open to shut)
+    quietListener<MouseEvent>(this.zone, this.destroyRef, document, 'click', () => !!(this.why || this.gradeWhy || this.finding), (event) => this.clickOff(event));
 
     // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change (each one, a preset
     // too, ending an isolated look: back to the ranking)
@@ -237,13 +245,12 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     });
   }
 
-  // The columns' widths from the header's labels, kept up as it changes (column-fit.ts)
-  private readonly zone = inject(NgZone);
-  private readonly destroyRef = inject(DestroyRef);
-
   ngAfterViewInit(): void {
     const stop = this.zone.runOutsideAngular(() => watchColumns(this.rankingsList.nativeElement));
     this.destroyRef.onDestroy(stop);
+    // (the list scrolling: a breakdown open over it shuts; otherwise nothing to do, so no change detection
+    // for every scroll event)
+    quietListener(this.zone, this.destroyRef, this.rankingsList.nativeElement, 'scroll', () => !!(this.why || this.gradeWhy), () => this.listMoved(), { passive: true });
   }
 
   ngOnChanges(): void {
@@ -887,8 +894,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.gradePopover.close(refocus);
   }
 
-  // (a click anywhere off it and its tile shuts it; so does the list scrolling out from under it)
-  @HostListener('document:click', ['$event'])
+  // (a click anywhere off it and its tile shuts it; so does the list scrolling out from under it: listened for
+  // in the constructor and ngAfterViewInit, quietListener. The window resizing stays a HostListener: its change
+  // detection is the one that moves the page between its phone and wide layouts, app.component's menuOpen)
   clickOff(event: MouseEvent): void {
     const target = event.target as Element | null;
     if (this.why && !target?.closest('.rank-why, .rank-tile')) this.rankPop.close();
@@ -1144,13 +1152,23 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   }
 
   // The team card: the team's look in the table's season (team-look.ts: that era's logo on its chip, drawn
-  // in white for a logo that's lettering, the Giants')
+  // in white for a logo that's lettering, the Giants'), and its logo that season; each team's once a season
+  // (every row asks on every check)
+  private looks = new Map<string, { look: TeamLook; logo: string }>();
+
+  private seasonTeam(teamLogo: string): { look: TeamLook; logo: string } {
+    const key = `${this.season}|${teamLogo}`;
+    let team = this.looks.get(key);
+    if (!team) this.looks.set(key, (team = { look: teamLook(SPORT.id, teamLogo, this.season), logo: logoForSeason(teamLogo, this.season) }));
+    return team;
+  }
+
   teamLook(unit: { teamLogo: string }): TeamLook {
-    return teamLook(SPORT.id, unit.teamLogo, this.season);
+    return this.seasonTeam(unit.teamLogo).look;
   }
 
   seasonLogo(teamLogo: string): string {
-    return logoForSeason(teamLogo, this.season);
+    return this.seasonTeam(teamLogo).logo;
   }
 
   // The player's headshot (a cutout on a clear background, sized for the team card; w: its width): the

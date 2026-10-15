@@ -1,4 +1,5 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, DestroyRef, DoCheck, ElementRef, Input, NgZone, OnDestroy, ViewChild, inject } from '@angular/core';
+import { quietListener } from '@ranker/core/quiet-listener';
 import { SPORT } from '@sport/sport';
 import { pagePath } from '@ranker/engine/page-url';
 import { rankTone } from '@ranker/core/format';
@@ -47,7 +48,11 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
     private readonly cdr: ChangeDetectorRef,
     readonly account: AccountService,
     private readonly tracker: TrackerStore,
-  ) {}
+  ) {
+    const destroyRef = inject(DestroyRef);
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', () => this.sheet !== null, (event) => this.outside(event));
+    quietListener<KeyboardEvent>(zone, destroyRef, document, 'keydown', (event) => event.key === 'Escape' && !!this.compare?.open && !this.games.game, (event) => this.keys(event));
+  }
 
   // Pinned to the Tracker (signed in: the comparison as it is, its snapshot the baseline; signed out: the
   // sign-in first), a note under the hero for a moment, with the way to the Tracker
@@ -204,8 +209,8 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
   }
 
   // A tap outside the chips and the sheet puts the sheet away (a season's picker opens in an overlay: not
-  // outside)
-  @HostListener('document:click', ['$event'])
+  // outside). (This and the keys are listened for outside Angular, quietListener: closed, or with no sheet
+  // out, an event sets off no change detection)
   outside(event: MouseEvent): void {
     if (this.sheet === null) return;
     const target = event.target as Element | null;
@@ -261,7 +266,6 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
     event.preventDefault();
   }
 
-  @HostListener('document:keydown', ['$event'])
   keys(event: KeyboardEvent): void {
     if (!this.compare.open || this.games.game || event.key !== 'Escape') return;
     if (this.compare.query) this.compare.search('');
