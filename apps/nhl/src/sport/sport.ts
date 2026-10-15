@@ -48,6 +48,7 @@ import { DATA, dataPart } from '@ranker/engine/data';
 import { nhlVsPosOf, nhlVsPositionBreakdown } from './vs-position';
 import type { SkillPlayer } from './positions';
 import { seasonName } from './awards';
+import { heatMatchups, nhlHeatMaps } from './heat-maps';
 
 // The Teams tab's rows, from the head coach rows: the coaches' records and goals added up (goal
 // differential per game, weighted by their games), the team's season stats (every coach row carries
@@ -253,6 +254,12 @@ export const SPORT: SportConfig = {
       };
     },
   },
+  // The Heat Maps tab: shots by zone on the rink for skaters, goalies and teams (their coaches' cards read as
+  // the team), from MoneyPuck's shots (data/heat-maps.json and its skaters' files beside it, the season being
+  // played's at the top of data/, earlier ones' in data/seasons/<year>/: scripts/build-heat-maps.mjs); and the
+  // AI preview's matchup maps against the next opponent
+  heatMaps: nhlHeatMaps({ current: (season) => season === SPORT.currentSeason }),
+  heatMatchups: (player, position, season, opponent) => heatMatchups(player as SkillPlayer, position, season, opponent, season === SPORT.currentSeason),
   // (the Teams tab's Recent: the last 7 games)
   // The card's Analysis tab: the teams' weekly AI write-ups (libs/ranker/scripts/analysis)
   analysis: true,
