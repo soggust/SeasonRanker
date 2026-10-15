@@ -4993,7 +4993,7 @@
 {"id":"401908023","date":"2026-10-13T00:00Z","season":2026,"type":3,"home":"30","away":"5","homeAbbr":"TB","awayAbbr":"CLE","neutral":false,"final":true,"hs":3,"as":7,"venue":"St. Petersburg|Florida|","indoor":true},
 {"id":"401908024","date":"2026-10-14T00:00Z","season":2026,"type":3,"home":"30","away":"5","homeAbbr":"TB","awayAbbr":"CLE","neutral":false,"final":true,"hs":3,"as":1,"venue":"St. Petersburg|Florida|","indoor":true},
 {"id":"401908032","date":"2026-10-15T00:00Z","season":2026,"type":3,"home":"19","away":"8","homeAbbr":"LAD","awayAbbr":"MIL","neutral":false,"final":true,"hs":2,"as":6,"venue":"Los Angeles|California|","indoor":false},
-{"id":"401908025","date":"2026-10-15T17:00Z","season":2026,"type":3,"home":"5","away":"30","homeAbbr":"CLE","awayAbbr":"TB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Cleveland|Ohio|","indoor":false},
+{"id":"401908025","date":"2026-10-15T17:00Z","season":2026,"type":3,"home":"5","away":"30","homeAbbr":"CLE","awayAbbr":"TB","neutral":false,"final":true,"hs":3,"as":2,"venue":"Cleveland|Ohio|","indoor":false},
 {"id":"401908033","date":"2026-10-16T00:00Z","season":2026,"type":3,"home":"19","away":"8","homeAbbr":"LAD","awayAbbr":"MIL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Los Angeles|California|","indoor":false},
 {"id":"401908026","date":"2026-10-16T22:00Z","season":2026,"type":3,"home":"5","away":"30","homeAbbr":"CLE","awayAbbr":"TB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Cleveland|Ohio|","indoor":false},
 {"id":"401908034","date":"2026-10-17T01:00Z","season":2026,"type":3,"home":"19","away":"8","homeAbbr":"LAD","awayAbbr":"MIL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Los Angeles|California|","indoor":false},
