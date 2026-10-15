@@ -111,3 +111,49 @@ export function heatPaint(
   const tone = opponent ? edgeTone(cell, opponent, stat, defense) : cellTone(cell, stat, defense);
   return { fill: divergingFill(tone), tone, thin: false };
 }
+
+// ---- last season behind a thin cell (the HeatFallback inputs): early in a season most cells are under the
+// stat's sample; where this season's is and the same row's last season had enough, last season's is painted
+// instead, turned down (faded) and hatched over, and the hover says which season it is. Once this season's
+// sample is enough, this season's, as usual. Never anyone else's: no league average stands in for him
+
+// (how far a faded cell's paint is turned down)
+export const HEAT_FADE = 0.36;
+
+export interface HeatPick {
+  cell: HeatCell;
+  faded: boolean;
+}
+
+// The cell to paint: this season's, or last season's when this one's is under the sample (none at all
+// included) and last season's isn't
+export function pickCell(cell: HeatCell, fallback: HeatCell | null | undefined, stat: Pick<HeatStat, 'minN'>): HeatPick {
+  if (!isThin(cell, stat) || !fallback || isThin(fallback, stat) || fallback.value === null) return { cell, faded: false };
+  return { cell: fallback, faded: true };
+}
+
+// A fill turned down (an rgba's alpha times k; the neutral chalk and a pattern as they are)
+export function fadeFill(fill: string, k = HEAT_FADE): string {
+  const m = /^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/.exec(fill);
+  return m ? `rgba(${m[1]}, ${m[2]}, ${m[3]}, ${(Number(m[4]) * k).toFixed(3)})` : fill;
+}
+
+// A cell's pick with the opponent's over it (none: no overlay): faded when either side is last season's and
+// neither side, as picked, is still under the sample (then it's greyed, as any thin cell)
+export function pickPair(cell: HeatCell, fallback: HeatCell | null | undefined, stat: Pick<HeatStat, 'minN'>, opponent?: HeatCell | null, opponentFallback?: HeatCell | null): { own: HeatPick; opp: HeatPick | null; faded: boolean } {
+  const own = pickCell(cell, fallback, stat);
+  const opp = opponent ? pickCell(opponent, opponentFallback, stat) : null;
+  const thin = isThin(own.cell, stat) || (!!opp && isThin(opp.cell, stat));
+  return { own, opp, faded: (own.faded || !!opp?.faded) && !thin };
+}
+
+// Whether a map has any cell drawn from last season (its key's "Faded" note; the AI preview's shared key)
+export function anyFaded(cells: HeatCell[], fallback: HeatCell[] | null | undefined, stat: Pick<HeatStat, 'minN'>, overlay?: HeatCell[] | null, overlayFallback?: HeatCell[] | null): boolean {
+  if (!fallback?.length && !overlayFallback?.length) return false;
+  const byId = (list: HeatCell[] | null | undefined) => new Map((list ?? []).map((c) => [c.id, c]));
+  const [own, mine, opp, theirs] = [byId(cells), byId(fallback), byId(overlay), byId(overlayFallback)];
+  const none = (id: string): HeatCell => ({ id, n: 0, value: null, league: null });
+  return [...new Set([...own.keys(), ...mine.keys()])].some(
+    (id) => pickPair(own.get(id) ?? none(id), mine.get(id), stat, overlay ? (opp.get(id) ?? none(id)) : null, theirs.get(id)).faded,
+  );
+}

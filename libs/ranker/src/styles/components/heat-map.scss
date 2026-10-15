@@ -16,14 +16,29 @@ $hm-lean-low: rgb(240, 172, 72);
 $hm-lean-high: rgb(138, 120, 236);
 $hm-pop-bg: #151a18;
 
-// ---- the bar: season, split, side, mode, the opponent
+// ---- the bar: in groups (the season and the split; the mode; a team's side), a faint rule between them;
+// the season the sport's own dropdown (_sport-kit.scss's $dropdowns), the rest its pills (.game-filter)
 
 .hm-controls {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 10px 0;
   margin-bottom: 14px;
+}
+
+.hm-cluster {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+
+  // (the rule before each group after the first: room, a hairline, room)
+  & + & {
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    margin-left: 16px;
+    padding-left: 16px;
+  }
 }
 
 .hm-group {
@@ -36,39 +51,15 @@ $hm-pop-bg: #151a18;
   @include v.visually-hidden;
 }
 
-// (the season: a plain select on the board, its chevron drawn in)
-.hm-season select {
-  appearance: none;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ccc' stroke-width='1.6'/%3E%3C/svg%3E")
-      right 9px center no-repeat,
-    rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: v.$radius-md;
-  color: #fff;
-  cursor: pointer;
-  font-family: v.$font-heading;
-  font-size: 12.5px;
-  letter-spacing: 0.4px;
-  padding: 4px 26px 4px 10px;
-  transition: border-color v.$t-hover;
-
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.45);
-  }
-
-  @include v.focus-lit {
-    border-color: #fff;
-  }
-
-  option {
-    background: #1b1f1d;
-  }
-}
-
-// (the opponent's overlay: a pill like the rest, its name in the hand)
-.hm-vs {
-  font-weight: 800;
+// (the season: the sport's dropdown, sized for the bar as the compare view's arcs dropdown is)
+.hm-season-select {
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  font-size: 12px;
+  height: 30px;
+  padding: 0 10px 0 14px;
+  width: 152px;
 }
 
 // ---- the maps: side by side when there's room (a strip across the whole width), each on the board
@@ -141,43 +132,21 @@ $hm-pop-bg: #151a18;
   }
 }
 
-// (a map's stat: quiet words, the one showing lit)
+// (a map's stat: the sport's small pills, a size down, on the map's bar)
 .hm-stats {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 2px;
-}
+  gap: 5px;
 
-.hm-stat {
-  background: none;
-  border: none;
-  border-radius: v.$radius-pill;
-  color: rgba(255, 255, 255, 0.55);
-  cursor: pointer;
-  font-family: v.$font-base;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 3px 8px;
-  transition:
-    color v.$t-hover,
-    background-color v.$t-hover;
-
-  &:hover {
-    color: #fff;
-  }
-
-  &.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+  .game-filter.small {
+    font-size: 9.5px;
+    letter-spacing: 0.3px;
+    padding: 3px 9px;
   }
 
   // (by volume a map's stat doesn't color it: its picker quieter)
-  .quiet > & {
-    opacity: 0.55;
-  }
-
-  @include v.focus-lit {
-    color: #fff;
+  &.quiet .game-filter {
+    opacity: 0.45;
   }
 }
 
@@ -312,6 +281,29 @@ $hm-pop-bg: #151a18;
   stroke-width: 2px;
 }
 
+// (a cell from last season: a lighter hatch over its faded paint, no grey, and a dotted edge)
+.hm-fade-line {
+  stroke: rgba(0, 0, 0, 0.32);
+  stroke-width: 1.6px;
+}
+
+.hm-fade {
+  pointer-events: none;
+  stroke: rgba(255, 255, 255, 0.42);
+  stroke-dasharray: 1.5 3;
+  stroke-linecap: round;
+  stroke-width: 1.1px;
+}
+
+// (the red zone's goalposts over the end line, as the kicks' chart draws them)
+.hm-posts {
+  fill: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  stroke: #f5c518;
+  stroke-linecap: round;
+  stroke-width: 3px;
+}
+
 .hm-cell {
   cursor: pointer;
   outline: none;
@@ -340,6 +332,18 @@ $hm-pop-bg: #151a18;
 
   &.thin .hm-main {
     fill: rgba(255, 255, 255, 0.42);
+  }
+
+  // (last season's numbers: quieter than this season's, its year under them)
+  &.faded {
+    .hm-main {
+      fill: rgba(255, 255, 255, 0.62);
+    }
+
+    .hm-sub {
+      fill: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+    }
   }
 }
 
@@ -434,6 +438,7 @@ $hm-pop-bg: #151a18;
 
 .hm-ramp-wrap,
 .hm-thin-key,
+.hm-fade-key,
 .hm-read {
   align-items: center;
   display: inline-flex;
@@ -467,6 +472,22 @@ $hm-pop-bg: #151a18;
   width: 10px;
 }
 
+// (last season's swatch: a faded green, hatched, its edge dotted)
+.hm-fade-key {
+  cursor: help;
+
+  i {
+    background:
+      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.32) 0 1.5px, transparent 1.5px 5px),
+      rgba(v.$good-bright, 0.3);
+    border: 1px dotted rgba(255, 255, 255, 0.55);
+    border-radius: v.$radius-xxs;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+  }
+}
+
 .hm-read {
   b {
     color: #fff;
@@ -478,40 +499,114 @@ $hm-pop-bg: #151a18;
   }
 }
 
-// ---- the red zone's numbers under its zones
+// ---- the red zone: its maps side by side, its numbers in a column beside them (a single map and the column
+// splitting the panel, two maps and a narrower column across it); one under another on a phone
 
-.hm-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 12px;
+.hm-maps.hm-rz {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+
+  &.pair {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(190px, 0.72fr);
+  }
 }
 
-.hm-chip {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: v.$radius-pill;
+.hm-statcol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hm-statcol-title {
+  color: #fff;
+  @include v.hand(15px);
+}
+
+// (each number a tile: the value big, in its tone against the league's; what it is; its count)
+.hm-tiles {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.hm-tile {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: v.$radius-md;
   cursor: help;
-  display: inline-flex;
-  gap: 7px;
-  padding: 4px 12px 4px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px 9px;
 
   b {
-    @include v.hand(15px);
+    @include v.hand(22px);
+    line-height: 1.1;
   }
 
   > span {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
   }
 
   small {
     color: rgba(255, 255, 255, 0.45);
     font-size: 10px;
-    margin-left: 5px;
+    font-weight: 700;
+  }
+}
+
+// ---- a row with the Field Map alone (a kicker's, a punter's): across the panel, its chart on the left and
+// its numbers beside it, not a half-empty panel
+
+.hm-maps.solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@include v.up(tablet) {
+  .hm-maps.solo .fm-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hm-maps.solo :is(.fm-kicks, .fm-punts) {
+    align-items: center;
+    column-gap: 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 440px) minmax(200px, 1fr);
+    justify-self: stretch;
+    max-width: none;
+
+    > figcaption {
+      grid-column: 1 / -1;
+    }
+
+    > svg {
+      grid-column: 1;
+      grid-row: 2 / span 2;
+    }
+
+    > :is(.fm-note, .fm-chips) {
+      grid-column: 2;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    // (a kicker's two lines in the middle of the chart's height, a size up: his makes, then his misses)
+    > .fm-note {
+      align-self: end;
+      font-size: 14px;
+      grid-row: 2;
+    }
+
+    > .fm-note + .fm-note {
+      align-self: start;
+      grid-row: 3;
+    }
+
+    > .fm-chips {
+      align-content: center;
+      grid-row: 2 / span 2;
+    }
   }
 }
 
@@ -568,11 +663,35 @@ $hm-pop-bg: #151a18;
   }
 }
 
-// ---- phone: a touch tighter
+// (narrower: two red-zone maps side by side, their numbers across under them; then one under another)
+@include v.down(medium) {
+  .hm-maps.hm-rz.pair {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    .hm-statcol {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+@include v.down(card-stack) {
+  .hm-maps.hm-rz,
+  .hm-maps.hm-rz.pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// ---- phone: a touch tighter; the bar's groups wrap, so no rule between them
 
 @include v.down(phone) {
   .hm-controls {
-    gap: 6px 8px;
+    gap: 8px 12px;
+  }
+
+  .hm-cluster + .hm-cluster {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .hm-figure {

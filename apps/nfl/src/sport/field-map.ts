@@ -1,6 +1,5 @@
 import type { SkillPlayer } from '@sport/positions';
 import { FieldMapPart, FieldMapRole, FieldMapView, FieldMapsFile, PackedFieldMaps, expandFieldMaps, fieldMapView } from '@ranker/engine/player-card/field-map';
-import { heatFile, redZoneSection } from './heat-maps';
 
 // The card's Field Map (SPORT.fieldMap): field-maps.json, a season's throws, targets, runs, kicks and punts
 // by where on the field they went (scripts/build-field-maps.mjs: data/field-maps.json for the season being
@@ -26,9 +25,8 @@ function fieldMapsFile(season: number, current: boolean): Promise<FieldMapsFile 
 // The rows that have one: a QB, a back, a receiver, a kicker, a punter, a defense
 export const hasFieldMap = (player: SkillPlayer, position: string): boolean => ROLES.includes(position as FieldMapRole) && !!player.gsisId;
 
-// (the red zone's: the run lanes inside the 20, from the Heat Maps' file)
 export async function loadFieldMap(player: SkillPlayer, position: string, season: number, part: FieldMapPart, current: boolean): Promise<FieldMapView | null> {
-  const section = part === 'redzone' ? await heatFile(season, current).then((f) => f && redZoneSection(f)) : (await fieldMapsFile(season, current))?.[part];
+  const section = (await fieldMapsFile(season, current))?.[part];
   // (a QB's row is keyed by his ESPN id)
   const stats = player.stats as Record<string, number | null | undefined>;
   const count = (key: string) => (typeof stats?.[key] === 'number' ? (stats[key] as number) : undefined);

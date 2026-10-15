@@ -1,61 +1,89 @@
-<!-- The Heat Maps tab (SPORT.heatMaps, heat-map/): the bar (season, split, side, mode, the next opponent's
-     overlay), each map the row's card type shows with its own stat picker and key, a red zone's numbers under its
-     zones, and the sport's Field Map (the run lanes, the kicks, the punts) under them all -->
+<!-- The Heat Maps tab (SPORT.heatMaps, heat-map/): the bar (season and split, mode, side), each map the row's
+     card type shows with its own stat picker and key, and the sport's Field Map (the run lanes, the kicks, the
+     punts) among them. The red zone: its maps side by side, its numbers in a column beside them -->
 
 @let defs = cards.heatDefs(c);
 @let split = cards.heatSplitOf(c);
 <heat-map-controls
   [seasons]="cards.heatSeasons(c)"
   [season]="cards.heatSeasonOf(c)"
-  [seasonText]="seasonText"
+  [seasonText]="heatSeasonText"
   [splits]="cards.heatSplits(c)"
   [split]="split"
   [sides]="cards.heatSides(c)"
   [side]="cards.heatSide"
   [mode]="cards.heatMode"
   [showMode]="defs.length > 0"
-  [opponent]="cards.heatOpponentOf(c)"
-  [overlay]="cards.heatOverlay"
   (seasonChange)="cards.pickHeatSeason(c, $event)"
   (splitChange)="cards.heatSplit = $event"
   (sideChange)="cards.heatSide = $event"
   (modeChange)="cards.heatMode = $event"
-  (overlayChange)="cards.heatOverlay = $event"
 />
 
-@let fm = cards.heatFieldMap(c);
-<!-- (two columns when there's room: the first map and the Field Map's charts under it, the rest beside them;
-     one under another on a phone) -->
-<div class="hm-maps">
-  <div class="hm-col">
-    @for (d of defs.slice(0, 1); track d.id) {
+@if (split === 'redzone') {
+  <!-- (the red zone: its maps, a back's carries first, and its numbers in a column beside them; one under
+       another on a phone) -->
+  @let shown = maps(c, defs);
+  @let chips = chipsOf(c, shown);
+  <div class="hm-maps hm-rz" [class.pair]="shown.length > 1">
+    @for (d of shown; track d.id) {
       <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
     }
-    <!-- (the Field Map's own charts: the run lanes, a defense's lane strip, the kicks, the punts) -->
-    @if (fm) {
-      <div class="hm-figure hm-field">
-        <card-field-map [view]="fm" [mode]="cards.heatMode" />
+    @if (chips.length) {
+      <aside class="hm-figure hm-statcol" aria-label="The red zone's numbers">
+        <b class="hm-statcol-title">Inside the 20</b>
+        <div class="hm-tiles">
+          @for (ch of chips; track ch.label) {
+            <span class="hm-tile" [title]="ch.title">
+              <b [style.color]="toneText(ch.tone)">{{ ch.value }}</b>
+              <span>{{ ch.label }}</span>
+              @if (ch.sub) {
+                <small>{{ ch.sub }}</small>
+              }
+            </span>
+          }
+        </div>
+      </aside>
+    }
+  </div>
+  @if (!shown.length) {
+    <p class="card-note">Nothing charted inside the 20 this season.</p>
+  }
+} @else {
+  @let fm = cards.heatFieldMap(c);
+  <!-- (two columns when there's room: the first map and the Field Map's charts under it, the rest beside them;
+       one under another on a phone. A row with the Field Map alone, a kicker's or a punter's: across the panel,
+       its numbers beside its chart) -->
+  <div class="hm-maps" [class.solo]="!defs.length">
+    <div class="hm-col">
+      @for (d of defs.slice(0, 1); track d.id) {
+        <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
+      }
+      <!-- (the Field Map's own charts: the run lanes, a defense's lane strip, the kicks, the punts) -->
+      @if (fm) {
+        <div class="hm-figure hm-field">
+          <card-field-map [view]="fm" [mode]="cards.heatMode" />
+        </div>
+      }
+    </div>
+    @if (defs.length > 1) {
+      <div class="hm-col">
+        @for (d of defs.slice(1); track d.id) {
+          <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
+        }
       </div>
     }
   </div>
-  @if (defs.length > 1) {
-    <div class="hm-col">
-      @for (d of defs.slice(1); track d.id) {
-        <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
-      }
-    </div>
+  @if (!fm && defs.length && cards.heatQuiet(c, defs)) {
+    <p class="card-note">{{ split === 'post' ? 'No playoff plays this season.' : 'Nothing charted for this season.' }}</p>
   }
-</div>
-
-@if (!fm && defs.length && cards.heatQuiet(c, defs)) {
-  <p class="card-note">{{ split === 'post' ? 'No playoff plays this season.' : 'Nothing charted for this season.' }}</p>
 }
 
-<!-- A map: its title, count and stat picker, the map, a red zone's numbers under it -->
+<!-- A map: its title, count and stat picker (the sport's own small pills), the map and its key -->
 <ng-template #map let-d>
   @let m = cards.heatMap(c, d);
   @if (m === 'loading') {
-    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field'" aria-hidden="true"></div>
+    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone'" aria-hidden="true"></div>
   } @else if (m) {
     <figure class="hm-figure">
       <figcaption class="hm-head">
@@ -63,7 +91,7 @@
         @if (m.stats.length > 1) {
           <span class="hm-stats" [class.quiet]="cards.heatMode === 'volume'" role="group" [attr.aria-label]="m.title + ': the stat'">
             @for (st of m.stats; track st.key) {
-              <button type="button" class="hm-stat" [class.active]="st.key === m.stat.key" [attr.aria-pressed]="st.key === m.stat.key" [title]="st.title ?? ''" (click)="cards.pickHeatStat(c, d, st.key)">{{ st.label }}</button>
+              <button type="button" class="game-filter small hm-stat" [class.active]="st.key === m.stat.key" [attr.aria-pressed]="st.key === m.stat.key" [title]="st.title ?? ''" (click)="cards.pickHeatStat(c, d, st.key)">{{ st.label }}</button>
             }
           </span>
         }
@@ -73,22 +101,12 @@
         [cells]="m.cells"
         [stat]="m.stat"
         [mode]="cards.heatMode"
-        [overlay]="cards.heatOverlay ? m.overlay : null"
-        [overlayLabel]="m.overlayLabel"
         [defense]="m.defense"
         [label]="m.title"
+        [fallback]="m.fallback ?? null"
+        [fallbackLabel]="m.fallbackLabel ?? null"
+        [seasonLabel]="m.seasonLabel ?? null"
       />
-      <!-- (the red zone's numbers: his shares of the team's looks, a passer's TD rate, a defense's allowed) -->
-      @if (m.chips?.length) {
-        <div class="hm-chips">
-          @for (ch of m.chips; track ch.label) {
-            <span class="hm-chip" [title]="ch.title">
-              <b [style.color]="toneText(ch.tone)">{{ ch.value }}</b>
-              <span>{{ ch.label }}@if (ch.sub) {<small>{{ ch.sub }}</small>}</span>
-            </span>
-          }
-        </div>
-      }
     </figure>
   }
 </ng-template>

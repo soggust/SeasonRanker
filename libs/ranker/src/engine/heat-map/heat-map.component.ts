@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnChanges, inject } from '@angular/core';
 import type { HeatCell, HeatCellShape, HeatMode, HeatStat, HeatSurface, HeatSurfaceId } from './heat-map.model';
 import { heatSurface } from './surfaces';
-import { cellTone, heatPaint, isThin, leanText, toneText } from './heat-color';
+import { cellTone, fadeFill, heatPaint, isThin, leanText, pickPair, toneText } from './heat-color';
 
 // (each map's pattern ids its own: two maps on a card never share one)
 let next = 0;
@@ -15,6 +15,8 @@ export interface HeatCellView {
   eff: { fill: string; main: string; sub: string };
   vol: { fill: string; main: string; sub: string };
   thin: boolean;
+  // (painted from last season: this season's under the sample, the row's own last season's enough)
+  faded: boolean;
   tone: number;
   tip: { title: string; lines: { text: string; color?: string }[] };
   aria: string;
@@ -25,7 +27,10 @@ export interface HeatCellView {
 // (diverging, green the good side for the row; a defense's flipped), by volume by each cell's share of the sample
 // (one hue). A cell short of the stat's sample is greyed. With overlay cells (an opponent's, the same ids) it's
 // the matchup: the row's cells as an offense's, the overlay's as the defense's allowed, together. Its numbers in
-// the cells (none on a compact one), a hover or a tap opens a cell's popover, and its key under it.
+// the cells (none on a compact one), a hover or a tap opens a cell's popover, and its key under it. With a
+// fallback (the same row's last season, the same ids; the opponent's too, under an overlay) a cell under the
+// sample this season shows last season's instead, faded and hatched over, the hover naming the season; once this
+// season's sample is enough, this season's (heat-color.ts's pickCell).
 @Component({
   selector: 'heat-map',
   templateUrl: './heat-map.component.html',
@@ -47,6 +52,12 @@ export class HeatMapComponent implements OnChanges {
   @Input() legend = true;
   // (what the map is, for a screen reader: "Targets by zone")
   @Input() label = '';
+  // (the row's last season behind its thin cells, and the opponent's behind the overlay's; which season that is,
+  // "2025", and this one, "2026": the key's note and the hover's)
+  @Input() fallback: HeatCell[] | null = null;
+  @Input() overlayFallback: HeatCell[] | null = null;
+  @Input() fallbackLabel: string | null = null;
+  @Input() seasonLabel: string | null = null;
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly id = `hm${next++}`;
@@ -55,6 +66,8 @@ export class HeatMapComponent implements OnChanges {
   box = '';
   view: HeatCellView[] = [];
   aria = '';
+  // (any cell from last season: the key's note)
+  faded = false;
   // (the cell under the pointer or the keyboard's focus, and the one tapped open: it stays till another tap)
   hover: string | null = null;
   pinned: string | null = null;
@@ -68,6 +81,7 @@ export class HeatMapComponent implements OnChanges {
     const b = this.shape.viewBox;
     this.box = `${b.x} ${b.y} ${b.w} ${b.h}`;
     this.view = this.build(this.shape);
+    this.faded = this.mode !== 'volume' && this.view.some((c) => c.faded);
     this.aria = this.summary();
     if (this.pinned && !this.view.some((c) => c.id === this.pinned)) this.pinned = null;
   }
@@ -114,6 +128,12 @@ export class HeatMapComponent implements OnChanges {
     this.hover = null;
   }
 
+  // (the key's note, in full on a hover)
+  get fadeTitle(): string {
+    const last = this.fallbackLabel ? `${this.fallbackLabel}'s` : "last season's";
+    return `A cell under ${this.stat.minN} ${this.stat.noun} this season shows ${last} instead, faded, till this season has enough`;
+  }
+
   // (the legend's ends: which way is good for this row)
   get ends(): [string, string] {
     if (this.stat.scale === 'lean' && this.stat.ends) return this.stat.ends;
@@ -128,47 +148,75 @@ export class HeatMapComponent implements OnChanges {
   private build(surface: HeatSurface): HeatCellView[] {
     const byId = new Map(this.cells.map((c) => [c.id, c]));
     const against = new Map((this.overlay ?? []).map((c) => [c.id, c]));
+    const mine = new Map((this.fallback ?? []).map((c) => [c.id, c]));
+    const theirs = new Map((this.overlayFallback ?? []).map((c) => [c.id, c]));
     const total = this.cells.reduce((a, c) => a + c.n, 0);
     const most = Math.max(0, ...this.cells.map((c) => c.n));
-    const top = Math.max(0, ...this.cells.filter((c) => !isThin(c, this.stat)).map((c) => c.value ?? 0));
+    const topOf = (list: HeatCell[]) => Math.max(0, ...list.filter((c) => !isThin(c, this.stat)).map((c) => c.value ?? 0));
+    const top = topOf(this.cells);
+    const lastTop = topOf(this.fallback ?? []);
     const { stat } = this;
     const fmt = (v: number | null | undefined) => (v === null || v === undefined ? '–' : stat.format(v));
+    const last = this.fallbackLabel ?? 'Last season';
+    const now = this.seasonLabel ?? 'This season';
+    const none = (id: string): HeatCell => ({ id, n: 0, value: null, league: null });
     return surface.cells.map((shape, i) => {
-      const cell = byId.get(shape.id) ?? { id: shape.id, n: 0, value: null, league: null };
-      const opp = this.overlay ? (against.get(shape.id) ?? { id: shape.id, n: 0, value: null, league: null }) : null;
-      const eff = heatPaint(cell, { stat, mode: 'efficiency', defense: this.defense, opponent: opp, top });
+      const cell = byId.get(shape.id) ?? none(shape.id);
+      const opp = this.overlay ? (against.get(shape.id) ?? none(shape.id)) : null;
+      // (this season's, or the row's own last season's where this one's is thin: the paint, the numbers, the hover)
+      const pick = pickPair(cell, mine.get(shape.id), stat, opp, theirs.get(shape.id));
+      const faded = pick.faded;
+      const shown = faded ? pick.own.cell : cell;
+      const shownOpp = faded ? (pick.opp?.cell ?? null) : opp;
+      const paint = heatPaint(shown, { stat, mode: 'efficiency', defense: this.defense, opponent: shownOpp, top: pick.own.faded && faded ? lastTop : top });
+      const eff = faded ? { ...paint, fill: fadeFill(paint.fill) } : paint;
       const vol = heatPaint(cell, { stat, mode: 'volume', most });
       const share = total ? `${Math.round((cell.n / total) * 100)}%` : '';
-      const empty = !cell.n;
-      const value = cell.label ?? fmt(cell.value);
+      const empty = !cell.n && !faded;
+      const value = shown.label ?? fmt(shown.value);
+      const ownLast = faded && pick.own.faded;
       const lines: HeatCellView['tip']['lines'] = [];
-      if (!empty) {
-        const tone = cellTone(cell, stat, this.defense);
+      if (!shown.n) lines.push({ text: `No ${stat.noun}` });
+      else {
+        const tone = cellTone(shown, stat, this.defense);
         lines.push({
-          text: `${value} ${stat.per ?? stat.label}${cell.league !== null && stat.scale !== 'sequential' ? ` · league ${fmt(cell.league)}` : ''}`,
-          color: eff.thin || stat.scale === 'sequential' ? undefined : this.textOf(stat.scale === 'lean' ? cellTone(cell, stat) : tone),
+          text: `${ownLast ? `${last}: ` : ''}${value} ${stat.per ?? stat.label}${shown.league !== null && stat.scale !== 'sequential' ? ` · league ${fmt(shown.league)}` : ''}`,
+          color: eff.thin || stat.scale === 'sequential' ? undefined : this.textOf(stat.scale === 'lean' ? cellTone(shown, stat) : tone),
         });
-        lines.push({ text: `${cell.made !== undefined ? `${cell.made} of ${cell.n}` : cell.n} ${stat.noun}${share ? ` · ${share} of the ${stat.noun}` : ''}` });
-      } else lines.push({ text: `No ${stat.noun}` });
-      if (opp) {
+        const count = `${shown.made !== undefined ? `${shown.made} of ${shown.n}` : shown.n} ${stat.noun}`;
+        lines.push({ text: ownLast ? `${count} in ${last}` : `${count}${share ? ` · ${share} of the ${stat.noun}` : ''}` });
+      }
+      if (shownOpp) {
         // (the opponent's in the row's terms: a defense's allowed, softer the greener for an offense; an
         // offense's, weaker the greener for a defense)
-        const who = this.overlayLabel ?? 'Opponent';
+        const who = `${this.overlayLabel ?? 'Opponent'}${faded && pick.opp?.faded ? ` (${last})` : ''}`;
         const allowed = this.defense ? '' : ' allowed';
         lines.push({
-          text: opp.n ? `${who}: ${fmt(opp.value)}${allowed}${opp.league !== null ? ` · league ${fmt(opp.league)}` : ''} (${opp.n} ${stat.noun})` : `${who}: none here`,
-          color: opp.n && !isThin(opp, stat) ? toneText(cellTone(opp, stat, this.defense)) : undefined,
+          text: shownOpp.n ? `${who}: ${fmt(shownOpp.value)}${allowed}${shownOpp.league !== null ? ` · league ${fmt(shownOpp.league)}` : ''} (${shownOpp.n} ${stat.noun})` : `${who}: none here`,
+          color: shownOpp.n && !isThin(shownOpp, stat) ? toneText(cellTone(shownOpp, stat, this.defense)) : undefined,
         });
       }
-      for (const d of cell.detail ?? []) lines.push({ text: d });
-      if (!empty && eff.thin) lines.push({ text: `Small sample: under ${stat.minN} ${stat.noun}${opp && isThin(opp, stat) && !isThin(cell, stat) ? ' against them' : ''}`, color: 'rgba(255, 255, 255, 0.5)' });
+      for (const d of shown.detail ?? []) lines.push({ text: d });
+      if (faded) {
+        // (this season's so far, under the sample: the side drawn from last season)
+        const so = ownLast ? cell : opp!;
+        const whose = ownLast ? '' : `${this.overlayLabel ?? 'Opponent'}, `;
+        const sofar = so.n ? `${so.label ?? fmt(so.value)} on ${so.n} ${stat.noun}` : `no ${stat.noun} yet`;
+        lines.push({ text: `${whose}${now}: ${sofar} (under ${stat.minN})`, color: 'rgba(255, 255, 255, 0.5)' });
+      } else if (!empty && eff.thin) lines.push({ text: `Small sample: under ${stat.minN} ${stat.noun}${opp && isThin(opp, stat) && !isThin(cell, stat) ? ' against them' : ''}`, color: 'rgba(255, 255, 255, 0.5)' });
       return {
         id: shape.id,
         i,
         shape,
-        eff: { fill: eff.fill, main: empty ? '' : value, sub: empty ? '' : opp?.n ? `vs ${fmt(opp.value)}` : cell.made !== undefined ? `${cell.made}/${cell.n}` : String(cell.n) },
-        vol: { fill: vol.fill, main: empty ? '' : String(cell.n), sub: empty ? '' : share },
+        eff: {
+          fill: eff.fill,
+          main: empty ? '' : value,
+          // (a faded cell's small number its season: whose it is, at a glance)
+          sub: empty ? '' : faded ? last : shownOpp?.n ? `vs ${fmt(shownOpp.value)}` : shown.made !== undefined ? `${shown.made}/${shown.n}` : this.shape?.text?.noun ? `${shown.n} ${stat.noun}` : String(shown.n),
+        },
+        vol: { fill: vol.fill, main: cell.n ? String(cell.n) : '', sub: cell.n ? share : '' },
         thin: !empty && eff.thin,
+        faded,
         tone: eff.tone,
         tip: { title: shape.name, lines },
         aria: `${shape.name}: ${lines.map((l) => l.text).join('; ')}`,

@@ -56,7 +56,7 @@ export function downDistanceSurface(): HeatSurface {
     viewBox: { x: 0, y: 0, w: W, h: H + 2 },
     backdrop,
     cells,
-    text: { main: 14, sub: 9.5 },
+    text: { main: 14, sub: 9.5, noun: true },
     aria: 'Down and distance: the four downs by short, medium and long to go',
   };
 }

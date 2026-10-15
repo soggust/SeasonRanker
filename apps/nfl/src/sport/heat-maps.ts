@@ -1,22 +1,25 @@
 import type { SkillPlayer } from '@sport/positions';
 import { tintScale } from '@ranker/core/value-tint';
-import { espnUpcoming } from '@ranker/core/game-logs';
-import { rowTeamNames } from '@ranker/engine/row-fields';
-import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatOpponent, HeatQuery, HeatSplit, HeatStat } from '@ranker/engine/heat-map/heat-map.model';
+import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatQuery, HeatSplit, HeatStat } from '@ranker/engine/heat-map/heat-map.model';
 import { DEPTHS, SIDES } from '@ranker/engine/heat-map/surfaces/field';
+import { RZ_SPOT_IDS } from '@ranker/engine/heat-map/surfaces/red-zone';
+import { pickPair } from '@ranker/engine/heat-map/heat-color';
 import { DISTANCES, DOWNS } from '@ranker/engine/heat-map/surfaces/down-distance';
-import type { FieldLane, FieldMapSection, FieldPunt } from '@ranker/engine/player-card/field-map';
 
 // The NFL's Heat Maps (SPORT.heatMaps, the card's Heat Maps tab), from heat-maps.json (build-field-maps.mjs:
 // data/heat-maps.json for the season being played, data/seasons/<year>/heat-maps.json before it): a QB's, a
 // receiver's, a back's, a defense's and a team's
 //   zones           the Field Map's twelve pass zones, by EPA, completion (catch) %, CPOE, YAC a catch, success
-//                   and TD rate; the red zone's too (snaps inside the 20), with a player's share of his team's
-//                   red-zone targets and carries, inside the 10 and the 5, under it
+//                   and TD rate
+//   red zone        snaps inside the 20 on its own surface, the 20 to the back of the end zone: the throws by
+//                   where the ball went (the end zone when it went as far as the goal line), the runs by lane and
+//                   where they started; beside them a player's share of his team's red-zone targets and carries,
+//                   inside the 10 and the 5, his end-zone targets and touchdowns (a unit's TD rates)
 //   field position  ten 10-yard bands from his own goal line to theirs: EPA, success and TD rate
 //   down & distance downs 1-4 by short, medium and long: target and carry shares, pass rate, success, EPA
-// each against the league's in the same cell, and the zones under the next opponent's (the overlay; the AI
-// preview's matchup maps). The file keeps sums (EPA, CPOE, YAC added up), the regular season's and the
+// each against the league's in the same cell; and the AI preview's matchup maps (the zones under the next
+// opponent's). Early in the season being played, a cell under its sample shows the same row's own
+// last season behind it, faded (the component's fallback). The file keeps sums (EPA, CPOE, YAC added up), the regular season's and the
 // playoffs', so the whole season is the two added up.
 
 type Row = Record<string, number>;
@@ -58,7 +61,7 @@ interface PackedPart {
 }
 export interface PackedHeatFile {
   season: number;
-  fields: { zone: string[]; rzZone: string[]; lane: string[]; band: string[]; down: string[]; share: string[] };
+  fields: { zone: string[]; rzZone: string[]; rzRun: string[]; band: string[]; down: string[]; share: string[] };
   teams?: Record<string, string>;
   regular: PackedPart | null;
   post: PackedPart | null;
@@ -75,14 +78,14 @@ export function expandHeat(file: PackedHeatFile): HeatFile {
   const f = file.fields;
   const zone = named(f.zone);
   const rzZone = named(f.rzZone);
-  const lane = named(f.lane);
+  const rzRun = named(f.rzRun);
   const band = named(f.band);
   const down = named(f.down);
   const share = named(f.share);
   const entry = (e: PackedEntry): HeatEntry => ({
     pass: e.pass?.map(zone),
     targets: e.targets?.map(zone),
-    rz: e.rz && { pass: e.rz.pass?.map(rzZone), targets: e.rz.targets?.map(rzZone), runs: e.rz.runs?.map(lane), share: e.rz.share && share(e.rz.share) },
+    rz: e.rz && { pass: e.rz.pass?.map(rzZone), targets: e.rz.targets?.map(rzZone), runs: e.rz.runs?.map(rzRun), share: e.rz.share && share(e.rz.share) },
     band: e.band?.map(band),
     down: e.down?.map(down),
   });
@@ -187,7 +190,8 @@ const STRIP_STATS: StatSpec[] = [
 ];
 
 function downStats(role: Role): StatSpec[] {
-  const list: StatSpec[] = [];
+  // (EPA first, the default: how the plays went in each spot; then success, then his shares or the pass rate)
+  const list: StatSpec[] = [STRIP_STATS[0], STRIP_STATS[1]];
   const targetShare: StatSpec = {
     key: 'targets',
     label: 'Target share',
@@ -233,7 +237,6 @@ function downStats(role: Role): StatSpec[] {
       scale: 'lean',
       ends: ['Runs more', 'Passes more'],
     });
-  list.push(STRIP_STATS[1], STRIP_STATS[0]);
   return list;
 }
 
@@ -351,7 +354,25 @@ export interface NflHeatContext {
   current: (season: number) => boolean;
 }
 
+// ---- the red zone's runs: by lane and where they started (its own stats: TD rate first, EPA, success, yards)
+
+const RUN_STATS: StatSpec[] = [
+  { key: 'td', label: 'TD rate', per: 'TD rate', title: 'Touchdowns a carry', value: (r) => ratio(r['td'], att(r)), n: att, made: (r) => r['td'], sample: 'TDs / carries', format: pct, sd: 0.14 },
+  { key: 'epa', label: 'EPA', per: 'EPA a carry', title: 'Expected points added a carry', value: (r) => ratio(r['epa'], att(r)), n: att, format: epaText, sd: 0.35 },
+  { key: 'success', label: 'Success', per: 'success rate', title: 'Share of carries with positive EPA', value: (r) => ratio(r['success'], att(r)), n: att, format: pct, sd: 0.12 },
+  { key: 'ypc', label: 'Yds', per: 'yards a carry', title: 'Yards a carry', value: (r) => ratio(r['yds'], att(r)), n: att, format: (v) => v.toFixed(1), sd: 1.2 },
+];
+// (a player's carries map only with a few carries in there: a receiver's odd one says nothing)
+const RUN_MAP_MIN = 5;
+
 // ---- the maps
+
+// A map's cells from one season's file and their sample: the season showing's, and the same row's last
+// season's behind its thin cells
+interface Built {
+  cells: HeatCell[] | null;
+  total: number;
+}
 
 export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
   const load = async (q: HeatQuery) => {
@@ -360,6 +381,17 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
     const part = file ? heatPart(file, q.split) : null;
     return role && file && part ? { role, file, part } : null;
   };
+  // (last season's file and part for the season being played's: its regular season for REG, else the whole of
+  // it, the red zone's in it; none for the playoffs or a past season, whose cells are what they'll be)
+  const lastSeason = async (q: HeatQuery) => {
+    if (!current(q.season) || q.split === 'post') return null;
+    const file = await heatFile(q.season - 1, current(q.season - 1));
+    const part = file ? heatPart(file, q.split === 'regular' ? 'regular' : 'all') : null;
+    return file && part ? { file, part } : null;
+  };
+  // (the fallback's fields on a map: last season's cells and its label, when there are any)
+  const fallbackOf = (q: HeatQuery, last: Built | null): Pick<HeatMapData, 'fallback' | 'fallbackLabel' | 'seasonLabel'> =>
+    last?.cells ? { fallback: last.cells, fallbackLabel: String(q.season - 1), seasonLabel: String(q.season) } : {};
   const teamSides = (position: string) => (roleOf(position) === 'TM' ? SIDES_OF_A_TEAM : []);
   // (the splits a season's file has: with no playoff games (the season being played's till its file says so)
   // the season is its regular season, Season alone, no REG or POST)
@@ -368,14 +400,15 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
     const playoffs = known ? known.has('post') : !current(season);
     return all.filter((s) => playoffs || (s.id !== 'post' && s.id !== 'regular'));
   };
+  const ALL = ['QB', 'RB', 'WR', 'TE', 'DEF', 'TM', 'OL', 'HC'];
 
+  // The pass zones (the red zone's on its own surface): a QB's throws, a catcher's targets, a unit's
   const zones: HeatMapDef = {
     id: 'zones',
-    positions: ['QB', 'RB', 'WR', 'TE', 'DEF', 'TM', 'OL', 'HC'],
+    positions: ALL,
     surface: 'field',
     splits: splits(SPLITS),
     sides: teamSides,
-    overlay: true,
     firstSeason: 2006,
     load: async (q) => {
       const got = await load(q);
@@ -384,58 +417,98 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
       const red = q.split === 'redzone';
       const { entry, kind, defense } = subject(file, part, q.player, role, q.side);
       const receiving = kind === 'skill';
-      const pick = (e: HeatEntry | undefined) => (red ? (receiving ? e?.rz?.targets : e?.rz?.pass) : receiving ? e?.targets : e?.pass);
-      const rows = pick(entry);
-      if (!rows || !sum(rows, 'att')) return null;
       const specs = zoneStats(role === 'TM' && defense ? 'DEF' : role, red);
       const spec = specs.find((s) => s.key === q.stat) ?? specs.find((s) => s.key === (red ? 'td' : 'epa'))!;
       // (a team's sample floor a little higher: more plays to go round; a receiver's a little lower)
       const minN = red ? (kind === 'def' || kind === 'off' ? 6 : 4) : kind === 'def' || kind === 'off' ? 12 : kind === 'skill' ? 8 : 10;
       const statN = spec.key === 'yac' ? Math.ceil(minN * 0.6) : minN;
-      const kindRowsOf = (k: Kind) => kindRows(part, k).map((e) => (red ? (k === 'skill' ? e.rz?.targets : e.rz?.pass) : k === 'skill' ? e.targets : e.pass));
-      const sds = spreads(part, `zones/${kind}/${red}/${spec.key}`, kindRowsOf(kind), spec, statN);
-      const leagueRows = red ? part.league.rz?.pass : part.league.pass;
-      const noun = receiving ? 'targets' : 'throws';
-      const cells = cellsOf(rows, leagueRows, ZONE_IDS, spec, sds);
-      // (the opponent over it: an offense's zones under its defense, a defense's under its offense)
-      let overlay: HeatCell[] | null = null;
-      let overlayLabel: string | null = null;
-      if (q.opponent) {
-        const oppKind: Kind = defense ? 'off' : 'def';
-        const opp = defense ? offenseOf(file, part, q.opponent) : part.defenses[`DEF-${q.opponent}`];
-        const oppRows = red ? opp?.rz?.pass : opp?.pass;
-        if (oppRows) {
-          const oppSds = spreads(part, `zones/${oppKind}/${red}/${spec.key}`, kindRowsOf(oppKind), spec, statN * 2);
-          overlay = cellsOf(oppRows, leagueRows, ZONE_IDS, spec, oppSds);
-          overlayLabel = defense ? `${q.opponent}'s offense` : `${q.opponent}'s D`;
-        }
-      }
-      const total = sum(rows, 'att');
+      const ids = red ? RZ_SPOT_IDS : ZONE_IDS;
+      const pick = (e: HeatEntry | undefined, k: Kind) => (red ? (k === 'skill' ? e?.rz?.targets : e?.rz?.pass) : k === 'skill' ? e?.targets : e?.pass);
+      const build = (f: HeatFile, p: HeatPart): Built => {
+        const own = subject(f, p, q.player, role, q.side).entry;
+        const rows = pick(own, kind);
+        const kindRowsOf = (k: Kind) => kindRows(p, k).map((e) => pick(e, k));
+        const leagueRows = red ? p.league.rz?.pass : p.league.pass;
+        const cells = rows ? cellsOf(rows, leagueRows, ids, spec, spreads(p, `zones/${kind}/${red}/${spec.key}`, kindRowsOf(kind), spec, statN)) : null;
+        return { cells, total: sum(rows, 'att') };
+      };
+      const now = build(file, part);
+      const prior = await lastSeason(q);
+      const last = prior ? build(prior.file, prior.part) : null;
+      // (nothing this season: last season's alone, faded, while it's the season being played)
+      if (!now.total && !last?.total) return null;
+      const total = now.total;
       const what = defense ? 'Pass Defense' : receiving ? 'Targets' : 'Passing';
-      const stat = toStat(spec, statN, noun);
+      const noun = receiving ? 'targets' : 'throws';
       return {
-        surface: 'field',
-        title: `${red ? 'Red Zone ' : ''}${what} by Zone`,
+        surface: red ? 'red-zone' : 'field',
+        title: red ? `Red Zone ${defense ? 'Pass Defense' : receiving ? 'Targets' : 'Passing'}` : `${what} by Zone`,
         count: defense ? `${plural(total, 'throw')} against it` : plural(total, receiving ? 'target' : 'throw'),
-        help:
-          (defense ? 'What it allowed, by where the ball went' : receiving ? 'Where he was thrown to' : 'Where the throws went') +
-          ' (air yards past the line, looking downfield from behind the offense)' +
-          (red ? ', on snaps inside the 20' : '') +
-          ". Each zone against the league's there; a zone short of the sample greyed",
+        help: red
+          ? `${defense ? 'What it allowed inside the 20' : receiving ? 'Where he was thrown to inside the 20' : 'Where his throws went inside the 20'}: where on the field the ball went (the snap's spot less its air yards; the end zone when it went as far as the goal line), looking at the goal from behind the offense. Each spot against the league's there; a spot short of the sample greyed`
+          : (defense ? 'What it allowed, by where the ball went' : receiving ? 'Where he was thrown to' : 'Where the throws went') +
+            " (air yards past the line, looking downfield from behind the offense). Each zone against the league's there; a zone short of the sample greyed",
         stats: specs.map((s) => ({ key: s.key, label: s.label, title: s.title })),
-        stat,
-        cells,
-        overlay,
-        overlayLabel,
+        stat: toStat(spec, statN, noun),
+        cells: now.cells ?? ids.map((id) => ({ id, n: 0, value: null, league: null })),
         defense,
         chips: red ? redZoneChips(entry, part, role, kind, defense) : undefined,
+        ...fallbackOf(q, last),
+      } satisfies HeatMapData;
+    },
+  };
+
+  // The red zone's runs: by lane and where they started (a back's, a QB's designed runs, a unit's); a back's
+  // drawn first, his carries his red zone
+  const redZoneRuns: HeatMapDef = {
+    id: 'rz-runs',
+    positions: ALL,
+    surface: 'red-zone',
+    splits: () => SPLITS.filter((s) => s.id === 'redzone'),
+    sides: teamSides,
+    firstSeason: 2000,
+    load: async (q) => {
+      if (q.split !== 'redzone') return null;
+      const got = await load(q);
+      if (!got) return null;
+      const { role, file, part } = got;
+      const { entry, kind, defense } = subject(file, part, q.player, role, q.side);
+      const unit = kind === 'def' || kind === 'off';
+      const spec = RUN_STATS.find((s) => s.key === q.stat) ?? RUN_STATS[0];
+      const minN = unit ? 6 : 4;
+      const build = (f: HeatFile, p: HeatPart): Built => {
+        const rows = subject(f, p, q.player, role, q.side).entry?.rz?.runs;
+        const kindRowsOf = (k: Kind) => kindRows(p, k).map((e) => e.rz?.runs);
+        const league = p.league.rz?.runs;
+        const cells = rows ? cellsOf(rows, league, RZ_SPOT_IDS, spec, spreads(p, `rz-runs/${kind}/${spec.key}`, kindRowsOf(kind), spec, minN)) : null;
+        return { cells, total: sum(rows, 'att') };
+      };
+      const now = build(file, part);
+      const prior = await lastSeason(q);
+      const last = prior ? build(prior.file, prior.part) : null;
+      // (a player's only with a few carries in there, this season's or, early on, last season's)
+      if (!unit && Math.max(now.total, last?.total ?? 0) < RUN_MAP_MIN) return null;
+      if (!now.total && !last?.total) return null;
+      const total = now.total;
+      return {
+        surface: 'red-zone',
+        title: defense ? 'Red Zone Run Defense' : unit ? 'Red Zone Runs' : 'Red Zone Carries',
+        count: defense ? `${plural(total, 'carry', 'carries')} against it` : plural(total, 'carry', 'carries'),
+        help: `${defense ? 'The designed runs it faced inside the 20' : unit ? 'Its designed runs inside the 20' : 'His designed runs inside the 20'}, by lane (left, middle, right) and where they started: the 20 to the 10, the 10 to the 5, inside the 5 (none starts in the end zone). Each against the league's there; a spot short of the sample greyed`,
+        stats: RUN_STATS.map((s) => ({ key: s.key, label: s.label, title: s.title })),
+        stat: toStat(spec, minN, 'carries'),
+        cells: now.cells ?? RZ_SPOT_IDS.map((id) => ({ id, n: 0, value: null, league: null })),
+        defense,
+        chips: redZoneChips(entry, part, role, kind, defense),
+        lead: role === 'RB',
+        ...fallbackOf(q, last),
       } satisfies HeatMapData;
     },
   };
 
   const unitMap = (id: 'strip' | 'downs'): HeatMapDef => ({
     id,
-    positions: ['QB', 'RB', 'WR', 'TE', 'DEF', 'TM', 'OL', 'HC'],
+    positions: ALL,
     surface: id === 'strip' ? 'field-strip' : 'down-distance',
     splits: splits(SPLITS.filter((s) => s.id !== 'redzone')),
     sides: teamSides,
@@ -444,19 +517,24 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
       const got = await load(q);
       if (!got) return null;
       const { role, file, part } = got;
-      const { entry, kind, defense } = subject(file, part, q.player, role, q.side);
-      const rows = id === 'strip' ? entry?.band : entry?.down;
-      if (!rows || !sum(rows, 'plays')) return null;
+      const { kind, defense } = subject(file, part, q.player, role, q.side);
       const specs = id === 'strip' ? STRIP_STATS : downStats(role === 'TM' && defense ? 'DEF' : role);
       const spec = specs.find((s) => s.key === q.stat) ?? specs[0];
       const unit = kind === 'def' || kind === 'off';
       const minN = unit ? 15 : id === 'strip' ? 10 : 8;
       const statN = spec.scale === 'sequential' ? 5 : minN;
-      const sds = spreads(part, `${id}/${kind}/${spec.key}`, kindRows(part, kind).map((e) => (id === 'strip' ? e.band : e.down)), spec, statN);
       const ids = id === 'strip' ? BAND_IDS : DOWN_IDS;
-      const cells = cellsOf(rows, id === 'strip' ? part.league.band : part.league.down, ids, spec, sds);
-      const total = sum(rows, 'plays');
-      const noun = 'plays';
+      const build = (f: HeatFile, p: HeatPart): Built => {
+        const own = subject(f, p, q.player, role, q.side).entry;
+        const rows = id === 'strip' ? own?.band : own?.down;
+        const sds = spreads(p, `${id}/${kind}/${spec.key}`, kindRows(p, kind).map((e) => (id === 'strip' ? e.band : e.down)), spec, statN);
+        return { cells: rows ? cellsOf(rows, id === 'strip' ? p.league.band : p.league.down, ids, spec, sds) : null, total: sum(rows, 'plays') };
+      };
+      const now = build(file, part);
+      const prior = await lastSeason(q);
+      const last = prior ? build(prior.file, prior.part) : null;
+      if (!now.total && !last?.total) return null;
+      const total = now.total;
       return {
         surface: id === 'strip' ? 'field-strip' : 'down-distance',
         title: id === 'strip' ? 'Field Position' : 'Down & Distance',
@@ -466,16 +544,15 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
             ? `${defense ? 'What it allowed' : kind === 'skill' ? 'His plays (targets and carries)' : kind === 'qb' ? 'His dropbacks and runs' : 'Its plays'} by where on the field the snap was, his own goal line on the left to theirs on the right, each 10-yard band against the league's there`
             : `${defense ? 'What it allowed' : kind === 'skill' ? 'His plays' : kind === 'qb' ? 'His dropbacks and runs' : 'Its plays'} by down and distance to go: short 1-3, medium 4-7, long 8+, each against the league's there (a share: his of the team's, in his games)`,
         stats: specs.map((s) => ({ key: s.key, label: s.label, title: s.title })),
-        stat: toStat(spec, statN, noun),
-        cells,
-        overlay: null,
-        overlayLabel: null,
+        stat: toStat(spec, statN, 'plays'),
+        cells: now.cells ?? ids.map((cell) => ({ id: cell, n: 0, value: null, league: null })),
         defense,
+        ...fallbackOf(q, last),
       } satisfies HeatMapData;
     },
   });
 
-  return [zones, unitMap('strip'), unitMap('downs')];
+  return [zones, redZoneRuns, unitMap('strip'), unitMap('downs')];
 }
 
 // (the splits a season's file has, once it's in: POST only with playoff games)
@@ -485,9 +562,9 @@ export function heatSplitsKnown(season: number): Set<string> | null {
   return new Set(SPLITS.map((s) => s.id).filter((id) => id !== 'post' || !!file?.post));
 }
 
-// ---- the red zone's numbers under its zones: a player's share of his team's looks there (inside the 20, the
-// 10, the 5), his end-zone targets and touchdowns; a passer's throws, end-zone throws and TD rate; a defense's
-// TD rate allowed
+// ---- the red zone's numbers beside its maps: a player's share of his team's looks there (inside the 20, the
+// 10, the 5), his end-zone targets and touchdowns; a passer's throws, end-zone throws and TD rate; a unit's TD
+// rates (a defense's allowed)
 
 function redZoneChips(entry: HeatEntry | undefined, part: HeatPart, role: Role, kind: Kind, defense: boolean): HeatChip[] {
   const chips: HeatChip[] = [];
@@ -514,19 +591,21 @@ function redZoneChips(entry: HeatEntry | undefined, part: HeatPart, role: Role, 
     return chips;
   }
   const throws = sum(passRows, 'att');
-  if (!throws) return chips;
-  const td = sum(passRows, 'td');
-  const ez = sum(passRows, 'endZone');
-  const rate = td / throws;
-  const tone = leagueTd ? Math.max(-1, Math.min(1, ((rate - leagueTd) / 0.12 / 2) * (defense ? -1 : 1))) : 0;
-  chips.push({
-    label: defense ? 'TD rate allowed' : 'TD rate',
-    value: pct(rate),
-    sub: `${td} of ${throws} throws`,
-    tone,
-    title: `Touchdowns a throw inside the 20${leagueTd !== null ? ` · league ${pct(leagueTd)}` : ''}`,
-  });
-  chips.push({ label: defense ? 'End-zone throws against' : 'End-zone throws', value: String(ez), sub: `${pct(ez / throws)} of them`, tone: 0, title: 'Throws into the end zone from inside the 20' });
+  if (throws) {
+    const td = sum(passRows, 'td');
+    // (the end zone: the far row, its three spots)
+    const ez = sum(passRows?.filter((_, i) => RZ_SPOT_IDS[i]?.startsWith('ez-')), 'att');
+    const rate = td / throws;
+    const tone = leagueTd ? Math.max(-1, Math.min(1, ((rate - leagueTd) / 0.12 / 2) * (defense ? -1 : 1))) : 0;
+    chips.push({
+      label: defense ? 'TD rate allowed' : 'TD rate',
+      value: pct(rate),
+      sub: `${td} of ${throws} throws`,
+      tone,
+      title: `Touchdowns a throw inside the 20${leagueTd !== null ? ` · league ${pct(leagueTd)}` : ''}`,
+    });
+    chips.push({ label: defense ? 'End-zone throws against' : 'End-zone throws', value: String(ez), sub: `${pct(ez / throws)} of them`, tone: 0, title: 'Throws into the end zone from inside the 20' });
+  }
   const runs = entry?.rz?.runs;
   const carries = sum(runs, 'att');
   if (carries && kind !== 'qb') {
@@ -545,81 +624,73 @@ function redZoneChips(entry: HeatEntry | undefined, part: HeatPart, role: Role, 
   return chips;
 }
 
-// ---- the Field Map's red zone: the run lanes inside the 20 as a Field Map section (the card's run arrows and
-// a defense's lane strip read it as they read a season's)
-
-const EMPTY_PUNT: FieldPunt = { n: 0, gross: 0, net: 0, inside20: 0, touchbacks: 0, fairCatches: 0, blocked: 0, bands: [] };
-const LANE_NAMES = ['left end', 'left tackle', 'left guard', 'middle', 'right guard', 'right tackle', 'right end'];
-const lanes = (rows: Row[] | undefined): FieldLane[] | undefined =>
-  rows?.map((r, i) => ({ lane: LANE_NAMES[i], att: r['att'], yds: r['yds'], td: r['td'], epa: r['att'] ? r['epa'] / r['att'] : 0, success: r['att'] ? r['success'] / r['att'] : 0 }));
-
-const RED_ZONE = new WeakMap<HeatPart, FieldMapSection>();
-export function redZoneSection(file: HeatFile): FieldMapSection | null {
-  const part = heatPart(file, 'all');
-  if (!part) return null;
-  if (!RED_ZONE.has(part)) {
-    const runsOf = (rows: Record<string, HeatEntry>) => Object.fromEntries(Object.entries(rows).flatMap(([id, e]) => (e.rz?.runs ? [[id, { runs: lanes(e.rz.runs) }]] : [])));
-    RED_ZONE.set(part, {
-      league: { pass: [], runs: lanes(part.league.rz?.runs) ?? [], fg: [], punt: EMPTY_PUNT },
-      players: runsOf(part.players),
-      defenses: runsOf(part.defenses),
-    });
-  }
-  return RED_ZONE.get(part)!;
-}
-
-// ---- the overlay's opponent, and the AI preview's matchup maps
-
-// ESPN's abbreviations where nflverse's differ
-const FROM_ESPN: Record<string, string> = { LAR: 'LA', WSH: 'WAS' };
-
-export async function nextOpponent(player: SkillPlayer, position: string, season: number): Promise<HeatOpponent | null> {
-  if (!roleOf(position)) return null;
-  const [game] = await espnUpcoming('football/nfl', rowTeamNames(player), season, 1).catch(() => []);
-  const abbr = game?.vs?.split(' ').pop();
-  if (!abbr) return null;
-  const key = FROM_ESPN[abbr] ?? abbr;
-  const [y, m, d] = game.date.split('-').map(Number);
-  const day = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'short' });
-  return { key, label: key, when: `${day} ${m}/${d} ${game.vs}` };
-}
+// ---- the AI preview's matchup maps
 
 // The compact matchup maps on a card's AI preview (the season's whole file, by EPA): a QB's throws, a
 // receiver's or a back's targets, against the opponent's pass defense; a team's two (its passing against
-// theirs, and theirs against its pass defense)
+// theirs, and theirs against its pass defense). In the season being played, each side's own last season
+// behind its thin zones, faded, so the maps show from the first weeks
 export async function heatMatchups(player: SkillPlayer, position: string, season: number, opponent: string, current: boolean): Promise<HeatMatchup[]> {
   const role = roleOf(position);
   const file = role ? await heatFile(season, current) : null;
   const part = file && heatPart(file, 'all');
   if (!role || !file || !part) return [];
+  const lastFile = current ? await heatFile(season - 1, false) : null;
+  const lastPart = lastFile && heatPart(lastFile, 'all');
   const spec = zoneStats('QB', false)[0];
-  const oppDef = part.defenses[`DEF-${opponent}`];
-  const oppOff = offenseOf(file, part, opponent);
-  // (a map only when it has something to say: at least 4 zones with a sample on both sides; a back's targets,
-  // nearly all short, never do)
-  const make = (title: string, caption: string, rows: Row[] | undefined, kind: Kind, against: Row[] | undefined, againstKind: Kind, defense: boolean, receiving = false): HeatMatchup | null => {
-    if (!rows || !against || !sum(rows, 'att')) return null;
-    const minN = kind === 'def' || kind === 'off' ? 12 : 8;
-    const rowsOf = (k: Kind) => kindRows(part, k).map((e) => (k === 'skill' ? e.targets : e.pass));
-    const cells = cellsOf(rows, part.league.pass, ZONE_IDS, spec, spreads(part, `zones/${kind}/false/epa`, rowsOf(kind), spec, minN));
-    const overlay = cellsOf(against, part.league.pass, ZONE_IDS, spec, spreads(part, `zones/${againstKind}/false/epa`, rowsOf(againstKind), spec, 12));
-    if (cells.filter((c, i) => c.n >= minN && overlay[i].n >= minN).length < 4) return null;
-    const stat = { ...toStat(spec, minN, receiving ? 'targets' : 'throws'), per: receiving ? 'EPA a target' : 'EPA a throw' };
-    return { title, caption, cells, overlay, overlayLabel: defense ? `${opponent}'s offense` : `${opponent}'s D`, surface: 'field', stat, defense };
+  // (a side's zones: the team's offense or defense, the opponent's, a player's)
+  type Side = { rows: (f: HeatFile, p: HeatPart) => Row[] | undefined; kind: Kind };
+  const cellsFor = (side: Side, f: HeatFile, p: HeatPart, minN: number) => {
+    const rows = side.rows(f, p);
+    const rowsOf = (k: Kind) => kindRows(p, k).map((e) => (k === 'skill' ? e.targets : e.pass));
+    return rows && sum(rows, 'att') ? cellsOf(rows, p.league.pass, ZONE_IDS, spec, spreads(p, `zones/${side.kind}/false/epa`, rowsOf(side.kind), spec, minN)) : null;
   };
+  // (a map only when it has something to say: at least 4 zones with a sample on both sides, last season's where
+  // this one's is thin; a back's targets, nearly all short, never do)
+  const make = (title: string, caption: string, own: Side, against: Side, defense: boolean, receiving = false): HeatMatchup | null => {
+    const minN = own.kind === 'def' || own.kind === 'off' ? 12 : 8;
+    const cells = cellsFor(own, file, part, minN);
+    const overlay = cellsFor(against, file, part, 12);
+    const fallback = lastFile && lastPart ? cellsFor(own, lastFile, lastPart, minN) : null;
+    const overlayFallback = lastFile && lastPart ? cellsFor(against, lastFile, lastPart, 12) : null;
+    if ((!cells && !fallback) || (!overlay && !overlayFallback)) return null;
+    const none = ZONE_IDS.map((id) => ({ id, n: 0, value: null, league: null }));
+    const mine = cells ?? none;
+    const theirs = overlay ?? none;
+    const stat = { ...toStat(spec, minN, receiving ? 'targets' : 'throws'), per: receiving ? 'EPA a target' : 'EPA a throw' };
+    const shown = mine.filter((c, i) => {
+      const p = pickPair(c, fallback?.[i], stat, theirs[i], overlayFallback?.[i]);
+      return p.own.cell.n >= minN && !!p.opp && p.opp.cell.n >= minN;
+    });
+    if (shown.length < 4) return null;
+    return {
+      title,
+      caption,
+      cells: mine,
+      overlay: theirs,
+      overlayLabel: defense ? `${opponent}'s offense` : `${opponent}'s D`,
+      surface: 'field',
+      stat,
+      defense,
+      ...(fallback || overlayFallback ? { fallback, overlayFallback, fallbackLabel: String(season - 1), seasonLabel: String(season) } : {}),
+    };
+  };
+  const oppDef: Side = { rows: (_, p) => p.defenses[`DEF-${opponent}`]?.pass, kind: 'def' };
+  const oppOff: Side = { rows: (f, p) => offenseOf(f, p, opponent)?.pass, kind: 'off' };
   if (role === 'TM' || role === 'DEF') {
     const abbr = teamAbbr(file, player);
     const nick = abbr ? file.teams[abbr] : null;
-    const off = offenseOf(file, part, abbr);
-    const def = abbr ? part.defenses[`DEF-${abbr}`] : undefined;
     const oppName = file.teams[opponent] ?? opponent;
+    const off: Side = { rows: (f, p) => offenseOf(f, p, abbr)?.pass, kind: 'off' };
+    const def: Side = { rows: (_, p) => (abbr ? p.defenses[`DEF-${abbr}`]?.pass : undefined), kind: 'def' };
     return [
-      make(`${nick ?? 'Its'} passing vs ${oppName} pass D`, `Where its throws go, against what ${opponent} allows there`, off?.pass, 'off', oppDef?.pass, 'def', false),
-      make(`${oppName} passing vs ${nick ?? 'its'} pass D`, `What it allows, against where ${opponent} throws`, def?.pass, 'def', oppOff?.pass, 'off', true),
+      make(`${nick ?? 'Its'} passing vs ${oppName} pass D`, `Where its throws go, against what ${opponent} allows there`, off, oppDef, false),
+      make(`${oppName} passing vs ${nick ?? 'its'} pass D`, `What it allows, against where ${opponent} throws`, def, oppOff, true),
     ].filter((m): m is HeatMatchup => !!m);
   }
-  const { entry, kind } = subject(file, part, player, role, null);
+  const { kind } = subject(file, part, player, role, null);
   const receiving = kind === 'skill';
-  const m = make(receiving ? `His targets vs ${opponent}'s pass D` : `His throws vs ${opponent}'s pass D`, `Where he ${receiving ? 'is thrown to' : 'throws'}, against what ${opponent} allows there`, receiving ? entry?.targets : entry?.pass, kind, oppDef?.pass, 'def', false, receiving);
+  const own: Side = { rows: (f, p) => (receiving ? subject(f, p, player, role, null).entry?.targets : subject(f, p, player, role, null).entry?.pass), kind };
+  const m = make(receiving ? `His targets vs ${opponent}'s pass D` : `His throws vs ${opponent}'s pass D`, `Where he ${receiving ? 'is thrown to' : 'throws'}, against what ${opponent} allows there`, own, oppDef, false, receiving);
   return m ? [m] : [];
 }

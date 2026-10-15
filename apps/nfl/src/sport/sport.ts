@@ -22,7 +22,7 @@ import { OLINE_LEAN, computedValue, connectTeamGrades, fromOtherTabs, gradeWhy, 
 import { blockingExtras } from './blocking';
 import { loadDepthChart } from './depth-chart';
 import { hasFieldMap, loadFieldMap } from './field-map';
-import { heatMatchups, nextOpponent, nflHeatMaps } from './heat-maps';
+import { heatMatchups, nflHeatMaps } from './heat-maps';
 import { vsPositionBreakdown } from './vs-position';
 
 // NFL: what the engine needs to know about football (the rest is beside this file: positions,
@@ -218,9 +218,8 @@ export const SPORT: SportConfig = {
   },
   // The Heat Maps tab: the zones (red zone too), field position and down & distance, for QBs, backs,
   // receivers, defenses and teams (data/heat-maps.json, data/seasons/<year>/heat-maps.json: build-field-maps.mjs),
-  // the next opponent's defense over the zones, and the AI preview's matchup maps
+  // and the AI preview's matchup maps
   heatMaps: nflHeatMaps({ current: (season) => season === SPORT.currentSeason }),
-  heatOpponent: (player, position, season) => (season === SPORT.currentSeason ? nextOpponent(player, position, season) : Promise.resolve(null)),
   heatMatchups: (player, position, season, opponent) => heatMatchups(player, position, season, opponent, season === SPORT.currentSeason),
   cardFlagsLast: castFlags,
   cardExtras: blockingExtras,

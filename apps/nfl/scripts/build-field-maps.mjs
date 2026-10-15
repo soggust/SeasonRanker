@@ -297,9 +297,9 @@ export function section(plays, { keys = null, qbs = new Map(), teams = null } = 
 }
 
 // ---- the Heat Maps (heat-maps.json, beside field-maps.json: the card's Heat Maps tab). The same zones with
-// more layers (success, CPOE, yards after the catch); the red zone (snaps inside the 20: its zones, lanes and
-// end-zone throws, and a player's share of his team's targets and carries there, inside the 10 and inside the
-// 5, in the games he played); the field-position strip (ten 10-yard bands, his own goal line to theirs); and
+// more layers (success, CPOE, yards after the catch); the red zone (snaps inside the 20: its throws by where on
+// the field the ball went, the 20 to the end zone, and its runs by lane and where they started; and a player's
+// share of his team's targets and carries there, inside the 10 and inside the 5, in the games he played); the field-position strip (ten 10-yard bands, his own goal line to theirs); and
 // the down & distance grid (downs 1-4 by short 1-3, medium 4-7, long 8+ to go). Every number a sum, not a
 // rate (EPA, CPOE and YAC added up), so the regular season and the playoffs add up to the whole season on the
 // site: only those two parts are kept. Plays: passes (sacks and scrambles counted as dropbacks) and runs,
@@ -334,9 +334,35 @@ export const intoEndZone = (airYards, yardline100) => {
   return a !== null && y !== null && a >= y;
 };
 
+// The red zone's spots, near to far (the 20 to the 10, the 10 to the 5, the 5 to the goal line, the end zone),
+// three across (left, middle, right): a throw's where the ball went, its target spot (the snap's yards to go
+// less its air yards; as far as the goal line or past it, the end zone); a designed run's where it started, in
+// its lane (nflverse's run_location: no run starts in the end zone)
+export const RZ_ROWS = ['i20', 'i10', 'i5', 'ez'];
+export const RZ_SPOTS = RZ_ROWS.flatMap((r) => SIDES.map((s) => `${r}-${s}`));
+// (a spot's row from its yards to the goal line: none or less the end zone, 1-5, 6-10, 11 on; a throw behind the
+// line from the 18 lands in the 20-to-10 row)
+export function rzRow(toGo) {
+  return toGo <= 0 ? 3 : toGo <= 5 ? 2 : toGo <= 10 ? 1 : 0;
+}
+export function rzPassSpot(airYards, yardline100, location) {
+  const ay = num(airYards);
+  const side = SIDES.indexOf(location);
+  if (ay === null || side < 0 || !inRedZone(yardline100)) return -1;
+  return rzRow(num(yardline100) - ay) * 3 + side;
+}
+export function rzRunSpot(yardline100, location) {
+  const side = SIDES.indexOf(location);
+  if (side < 0 || !inRedZone(yardline100)) return -1;
+  return rzRow(num(yardline100)) * 3 + side;
+}
+
 export const HEAT_FIELDS = {
   zone: ['att', 'comp', 'td', 'int', 'epa', 'success', 'cpoe', 'yac'],
-  rzZone: ['att', 'comp', 'td', 'int', 'epa', 'success', 'endZone'],
+  // (the red zone's throws and runs by spot: rzSpots's order)
+  rzZone: ['att', 'comp', 'td', 'int', 'epa', 'success'],
+  rzRun: ['att', 'yds', 'td', 'epa', 'success'],
+  rzSpots: RZ_SPOTS,
   lane: ['att', 'yds', 'td', 'epa', 'success'],
   band: ['plays', 'epa', 'success', 'td'],
   // (a player's, the team's targets and carries beside his own in that spot, in his games: his shares)
@@ -418,7 +444,9 @@ export function heatTally(plays) {
     const receiver = thrown ? id(play.receiver_player_id) : null;
     const rusher = id(play.rusher_player_id);
     const z = thrown ? zoneIndex(play.air_yards, play.pass_location) : -1;
-    const l = designed ? laneIndex(play.run_location, play.run_gap) : -1;
+    // (inside the 20: a throw's target spot, a designed run's lane and start)
+    const rzPass = thrown && rz ? rzPassSpot(play.air_yards, yl, play.pass_location) : -1;
+    const rzRun = designed && rz ? rzRunSpot(yl, play.run_location) : -1;
     const ez = thrown && intoEndZone(play.air_yards, yl);
     const gameKey = `${play.game_id}|${off}`;
 
@@ -448,13 +476,9 @@ export function heatTally(plays) {
         const zone = (u.pass ??= rows(12, 8))[z];
         addZone(zone, play, epa);
         addLayers(zone, play);
-        if (rz) {
-          const r = (u.rz.pass ??= rows(12, 7))[z];
-          addZone(r, play, epa);
-          if (ez) r[6]++;
-        }
       }
-      if (rz && l >= 0) addLane((u.rz.runs ??= rows(7, 5))[l], play, epa);
+      if (rzPass >= 0) addZone((u.rz.pass ??= rows(12, 6))[rzPass], play, epa);
+      if (rzRun >= 0) addLane((u.rz.runs ??= rows(12, 5))[rzRun], play, epa);
     }
 
     // (each player on it once: the passer, the target, the runner)
@@ -470,23 +494,15 @@ export function heatTally(plays) {
         const zone = (p.pass ??= rows(12, 8))[z];
         addZone(zone, play, epa);
         addLayers(zone, play);
-        if (rz) {
-          const r = (p.rz.pass ??= rows(12, 7))[z];
-          addZone(r, play, epa);
-          if (ez) r[6]++;
-        }
       }
       if (pid === receiver && z >= 0) {
         const zone = (p.targets ??= rows(12, 8))[z];
         addZone(zone, play, epa);
         addLayers(zone, play);
-        if (rz) {
-          const r = (p.rz.targets ??= rows(12, 7))[z];
-          addZone(r, play, epa);
-          if (ez) r[6]++;
-        }
       }
-      if (rz && pid === rusher && l >= 0) addLane((p.rz.runs ??= rows(7, 5))[l], play, epa);
+      if (pid === passer && rzPass >= 0) addZone((p.rz.pass ??= rows(12, 6))[rzPass], play, epa);
+      if (pid === receiver && rzPass >= 0) addZone((p.rz.targets ??= rows(12, 6))[rzPass], play, epa);
+      if (pid === rusher && rzRun >= 0) addLane((p.rz.runs ??= rows(12, 5))[rzRun], play, epa);
       // (his red-zone looks: targets, carries, end-zone targets, inside the 10 and the 5, touchdowns)
       if (rz) {
         const s = p.rz.share;

@@ -1,15 +1,16 @@
 // The Heat Maps (libs/ranker/src/engine/heat-map, apps/nfl/src/sport/heat-maps.ts, build-field-maps.mjs's
-// heat-maps.json): the binning on hand-made plays (the red zone, end-zone throws and the inside-10 and -5
-// shares, the field-position bands, the down & distance grid), every committed file against its contract, the
-// colors (the diverging scale against the league's, capped and never past 0.85; a defense's flipped; small
-// samples greyed; the volume's one hue; a matchup's two together), the surfaces' cells, the NFL's maps read
-// from a real season, and the AI team preview's ways to win and lose (its schema, its points, its headings).
+// heat-maps.json): the binning on hand-made plays (the red zone's spots: a throw's target spot, the end zone, a
+// run's lane and start; the inside-10 and -5 shares, the field-position bands, the down & distance grid), every
+// committed file against its contract and its size, the colors (the diverging scale against the league's, capped
+// and never past 0.85; a defense's flipped; small samples greyed; the volume's one hue; a matchup's two
+// together), last season behind a thin cell (when it shows, faded, and which season it's from), the surfaces'
+// cells, the NFL's maps read from real seasons, and the AI team preview's ways to win and lose.
 import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine, readJson, staticDir } from './support/engine.mjs';
-import { BAND_NAMES, DOWN_NAMES, HEAT_FIELDS, bandIndex, downIndex, heatSection, inRedZone, intoEndZone } from '../apps/nfl/scripts/build-field-maps.mjs';
+import { BAND_NAMES, DOWN_NAMES, HEAT_FIELDS, RZ_SPOTS, bandIndex, downIndex, heatSection, inRedZone, intoEndZone, rzPassSpot, rzRow, rzRunSpot } from '../apps/nfl/scripts/build-field-maps.mjs';
 import { check, params, points, schemaFor, systemPrompt, NUMBERS_RULE, PREVIEW_SCHEMA, TEAM_PREVIEW_SCHEMA } from '../apps/nfl/scripts/analysis/analyze.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'heat-entry.ts');
@@ -39,6 +40,26 @@ test('bands, the grid and the red zone: where a snap lands', () => {
   assert.equal(intoEndZone('12', '12'), true, 'as far in the air as the goal line: into the end zone');
   assert.equal(intoEndZone('11', '12'), false);
   assert.equal(intoEndZone('NA', '5'), false);
+});
+
+test("the red zone's spots: a throw where the ball went, a run where it started", () => {
+  const at = (i) => RZ_SPOTS[i];
+  // (rows near to far: the 20 to the 10, the 10 to the 5, inside the 5, the end zone)
+  assert.deepEqual([12, 11, 10, 6, 5, 1, 0, -4].map(rzRow), [0, 0, 1, 1, 2, 2, 3, 3]);
+  // the target spot: the snap's yards to go less the air yards
+  assert.equal(at(rzPassSpot('15', '15', 'left')), 'ez-left', 'as far as the goal line: the end zone');
+  assert.equal(at(rzPassSpot('22', '15', 'right')), 'ez-right', 'past it: the end zone too');
+  assert.equal(at(rzPassSpot('14', '15', 'middle')), 'i5-middle', 'a yard short: inside the 5');
+  assert.equal(at(rzPassSpot('3', '8', 'middle')), 'i5-middle', 'from the 8, 3 in the air: the 5');
+  assert.equal(at(rzPassSpot('5', '16', 'left')), 'i20-left', 'from the 16, 5 in the air: the 11, between the 20 and the 10');
+  assert.equal(at(rzPassSpot('9', '16', 'left')), 'i10-left', 'to the 7');
+  assert.equal(at(rzPassSpot('-3', '18', 'right')), 'i20-right', 'behind the line from the 18: the far row it can reach');
+  assert.deepEqual([rzPassSpot('5', '25', 'left'), rzPassSpot('NA', '10', 'left'), rzPassSpot('5', '10', 'NA')], [-1, -1, -1], 'outside the 20, or unplaced');
+  // a run: its lane and where it started (never the end zone)
+  assert.equal(at(rzRunSpot('4', 'middle')), 'i5-middle');
+  assert.equal(at(rzRunSpot('10', 'left')), 'i10-left');
+  assert.equal(at(rzRunSpot('20', 'right')), 'i20-right');
+  assert.deepEqual([rzRunSpot('21', 'left'), rzRunSpot('5', 'NA')], [-1, -1]);
 });
 
 const play = (fields) => ({ season_type: 'REG', game_id: 'G1', posteam: 'KC', defteam: 'OAK', two_point_attempt: '0', sack: '0', qb_kneel: '0', qb_spike: '0', qb_scramble: '0', down: '1', ydstogo: '10', ...fields });
@@ -72,8 +93,10 @@ test('a Heat Maps section tallies hand-made plays: the red zone, the bands, the 
   assert.equal(qb.pass.reduce((n, z) => n + zone(z).att, 0), 4, 'four charted throws: the sack, the kneel and the two-point try left out');
   const rz = qb.rz.pass.map((t) => row(HEAT_FIELDS.rzZone, t));
   assert.equal(rz.reduce((n, z) => n + z.att, 0), 3, 'his three red-zone throws');
-  assert.deepEqual([rz[6].att, rz[6].td, rz[6].endZone], [1, 1, 1], 'the 15-yard throw from the 15: mid left, into the end zone, a touchdown');
-  assert.deepEqual([rz[4].att, rz[4].endZone], [1, 0], 'short middle from the 8: not into the end zone');
+  const spot = (id) => rz[RZ_SPOTS.indexOf(id)];
+  assert.deepEqual([spot('ez-left').att, spot('ez-left').td], [2, 1], 'the 15-yard throw from the 15 (a touchdown) and the 5-yard one from the 5: the end zone, left');
+  assert.equal(spot('i5-middle').att, 1, 'the 3-yard throw from the 8: caught at the 5');
+  assert.equal(spot('i20-left').att + spot('i10-left').att, 0);
   // (the strip: his dropbacks and his scramble by where the snap was; a touchdown counted where it started)
   const band = qb.band.map((t) => row(HEAT_FIELDS.band, t));
   assert.equal(band[8].plays, 1);
@@ -94,8 +117,10 @@ test('a Heat Maps section tallies hand-made plays: the red zone, the bands, the 
   // a back's carries inside the 20, the 10 and the 5, his red-zone runs by lane
   const rb = row(HEAT_FIELDS.share, s.players.RB1.rz.share);
   assert.deepEqual([rb.carries, rb.carries10, rb.carries5, rb.td, rb.teamCarries, rb.teamCarries5], [2, 1, 1, 1, 2, 1]);
-  const lanes = s.players.RB1.rz.runs.map((t) => row(HEAT_FIELDS.lane, t));
-  assert.deepEqual([lanes[3].att, lanes[3].td, lanes[0].att], [1, 1, 1]);
+  const runs = s.players.RB1.rz.runs.map((t) => row(HEAT_FIELDS.rzRun, t));
+  const run = (id) => runs[RZ_SPOTS.indexOf(id)];
+  assert.deepEqual([run('i5-middle').att, run('i5-middle').td, run('i20-left').att, run('i20-left').yds], [1, 1, 1, 3], 'from the 4 up the middle (a touchdown), from the 18 to the left');
+  assert.ok(RZ_SPOTS.every((id, i) => !id.startsWith('ez-') || runs[i].att === 0), 'no run starts in the end zone');
   // (a target share in the grid: his targets beside the team's in that spot, in his games)
   const wr1Down = s.players.WR1.down.map((t) => row(HEAT_FIELDS.down, t));
   assert.deepEqual([wr1Down[2].pass, wr1Down[2].teamTargets], [1, 1], '1st & 10: his one of the team\'s one in G1 (G2\'s left out)');
@@ -121,7 +146,7 @@ for (const dir of seasonDirs) {
   test(`NFL heat maps ${name}: the contract, the sizes, the league's sums`, () => {
     const file = path.join(dir, 'heat-maps.json');
     assert.ok(fs.existsSync(file), `${name}: no heat-maps.json`);
-    assert.ok(fs.statSync(file).size < 500_000, `${name}: heat-maps.json over 500 KB`);
+    assert.ok(fs.statSync(file).size < 450_000, `${name}: heat-maps.json over 450 KB`);
     const heat = readJson(file);
     assert.deepEqual(heat.fields, HEAT_FIELDS);
     assert.ok(Object.keys(heat.teams).length >= 31, `${name}: every team's name`);
@@ -141,7 +166,10 @@ for (const dir of seasonDirs) {
           if (e.band) width(e.band, 10, HEAT_FIELDS.band.length, `${what} band`);
           if (e.down) width(e.down, 12, kind === 'players' ? HEAT_FIELDS.down.length : 4, `${what} down`);
           if (e.rz?.pass) width(e.rz.pass, 12, HEAT_FIELDS.rzZone.length, `${what} rz pass`);
-          if (e.rz?.runs) width(e.rz.runs, 7, HEAT_FIELDS.lane.length, `${what} rz runs`);
+          if (e.rz?.runs) {
+            width(e.rz.runs, 12, HEAT_FIELDS.rzRun.length, `${what} rz runs`);
+            assert.ok(e.rz.runs.slice(9).every((t) => t === 0), `${what}: a run started in the end zone`);
+          }
           if (e.rz?.share) {
             const sh = row(HEAT_FIELDS.share, e.rz.share);
             assert.ok(sh.targets <= sh.teamTargets && sh.carries <= sh.teamCarries && sh.targets5 <= sh.targets10 && sh.targets10 <= sh.targets, `${what} shares: ${e.rz.share}`);
@@ -159,10 +187,18 @@ for (const dir of seasonDirs) {
         const att = plays(s.league.pass);
         const rzAtt = plays(s.league.rz?.pass);
         assert.ok(att > 0 && rzAtt > 0 && rzAtt < att / 4, `${name} ${part}: ${rzAtt} red-zone throws of ${att}`);
+        // (the end zone the busiest row inside the 20, by far: most red-zone throws go there)
+        const row4 = (k) => (s.league.rz.pass ?? []).slice(k * 3, k * 3 + 3).reduce((n, t) => n + (t ? t[0] : 0), 0);
+        if (part === 'regular' && name !== 'current') assert.ok(row4(3) > row4(0) && row4(3) > row4(1), `${name}: end-zone throws ${row4(3)}`);
       }
     }
   });
 }
+
+test('NFL heat maps: the files together under 11 MB', () => {
+  const total = seasonDirs.reduce((n, dir) => n + fs.statSync(path.join(dir, 'heat-maps.json')).size, 0);
+  assert.ok(total < 11_000_000, `${(total / 1e6).toFixed(1)} MB`);
+});
 
 // ---- the colors
 
@@ -221,6 +257,32 @@ test('colors: small samples greyed (hatched), an empty cell plain, volume one hu
   assert.equal(edgeTone(cell(-0.3), { ...cell(-0.3), id: 'x' }, STAT, true), 1);
 });
 
+// ---- last season behind a thin cell
+
+test("fallback: last season's own cell, faded, only where this season's is thin and last season's isn't", () => {
+  const { pickCell, pickPair, fadeFill, anyFaded, heatPaint } = h;
+  const now = (n, value = 0.4) => ({ id: 'x', n, value, league: 0.1 });
+  const last = (n, value = -0.2) => ({ id: 'x', n, value, league: 0.05 });
+  assert.deepEqual(pickCell(now(3), last(40), STAT), { cell: last(40), faded: true }, 'thin this season: last season\'s');
+  assert.deepEqual(pickCell(now(0, null), last(40), STAT), { cell: last(40), faded: true }, 'none yet: last season\'s');
+  assert.deepEqual(pickCell(now(10), last(40), STAT), { cell: now(10), faded: false }, "enough this season: this season's, as usual");
+  assert.equal(pickCell(now(3), last(5), STAT).faded, false, 'last season thin too: greyed, no fallback');
+  assert.equal(pickCell(now(3), undefined, STAT).faded, false, 'no last season (a rookie): greyed');
+  assert.equal(pickCell(now(3), { ...last(40), value: null }, STAT).faded, false);
+  // (a matchup: either side from last season; still thin on one side, greyed)
+  assert.equal(pickPair(now(20), null, STAT, now(3), last(40)).faded, true, "the opponent's side from last season");
+  assert.equal(pickPair(now(3), last(40), STAT, now(3), null).faded, false, 'the other side still thin: greyed');
+  assert.equal(pickPair(now(20), last(40), STAT, now(20), last(40)).faded, false);
+  // (its paint: the same colors, turned down)
+  const fill = heatPaint(last(40), { stat: STAT, mode: 'efficiency' }).fill;
+  const alpha = (x) => Number(/,\s*([\d.]+)\)$/.exec(x)?.[1]);
+  assert.ok(alpha(fadeFill(fill)) < alpha(fill) / 2 + 0.01 && alpha(fadeFill(fill)) > 0, fadeFill(fill));
+  assert.equal(fadeFill('var(--hm-thin)'), 'var(--hm-thin)');
+  assert.equal(anyFaded([now(3)], [last(40)], STAT), true);
+  assert.equal(anyFaded([now(30)], [last(40)], STAT), false);
+  assert.equal(anyFaded([now(3)], null, STAT), false);
+});
+
 // ---- the surfaces
 
 test("surfaces: the field's 12 zones, the strip's 10 bands, the grid's 12 cells, each with an outline and a name", () => {
@@ -231,9 +293,14 @@ test("surfaces: the field's 12 zones, the strip's 10 bands, the grid's 12 cells,
   const strip = heatSurface('field-strip');
   assert.deepEqual(strip.cells.map((c) => c.id), Array.from({ length: 10 }, (_, k) => `b${k}`));
   assert.ok(strip.cells.every((c, k) => k === 0 || c.cx > strip.cells[k - 1].cx), 'own goal line on the left to theirs on the right');
+  const rz = heatSurface('red-zone');
+  assert.deepEqual(rz.cells.map((c) => c.id), RZ_SPOTS, "the red zone's spots, the file's order");
+  assert.ok(rz.cells[9].cy < rz.cells[0].cy, 'the end zone at the top, the 20 at the bottom');
+  assert.equal(rz.cells[0].name, 'The 20 to the 10, left');
+  assert.equal(rz.cells[11].name, 'End zone, right');
   const grid = heatSurface('down-distance');
   assert.deepEqual(grid.cells.map((c) => c.id).slice(0, 4), ['1-short', '1-medium', '1-long', '2-short']);
-  for (const s of [field, strip, grid]) {
+  for (const s of [field, rz, strip, grid]) {
     assert.equal(new Set(s.cells.map((c) => c.id)).size, s.cells.length);
     for (const c of s.cells) assert.ok((c.points || c.d) && c.name && Number.isFinite(c.cx) && Number.isFinite(c.cy), `${s.id} ${c.id}`);
     assert.ok(s.backdrop.length && s.aria);
@@ -244,16 +311,16 @@ test("surfaces: the field's 12 zones, the strip's 10 bands, the grid's 12 cells,
 
 // ---- the NFL's maps read from a real season
 
-test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares, a defense flipped, the overlay, the whole season the two parts added up", async () => {
+test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares, a back's carries, a defense flipped, the whole season the two parts added up", async () => {
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
     const file = path.join(ROOT, String(url).replace(/^data\//, ''));
     return fs.existsSync(file) ? { ok: true, json: async () => readJson(file) } : { ok: false, json: async () => null };
   };
   try {
-    const { nflHeatMaps, heatMatchups, expandHeat, heatPart, ZONE_IDS } = h;
-    const [zones, strip, downs] = nflHeatMaps({ current: () => false });
-    const q = (player, position, extra = {}) => ({ player, position, season: 2025, split: 'regular', stat: null, side: null, opponent: null, ...extra });
+    const { nflHeatMaps, heatMatchups, expandHeat, heatPart, ZONE_IDS, RZ_SPOT_IDS } = h;
+    const [zones, rzRuns, strip, downs] = nflHeatMaps({ current: () => false });
+    const q = (player, position, extra = {}) => ({ player, position, season: 2025, split: 'regular', stat: null, side: null, ...extra });
     const allen = { id: 3918298, gsisId: 'QB-3918298', name: 'Josh Allen', teamLogo: 'assets/NFL_Icons/Bills.png' };
     const z = await zones.load(q(allen, 'QB'));
     assert.equal(z.surface, 'field');
@@ -263,6 +330,10 @@ test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares,
     assert.equal(z.defense, false);
     const rz = await zones.load(q(allen, 'QB', { split: 'redzone' }));
     assert.equal(rz.stat.key, 'td', "the red zone's TD rate first");
+    assert.equal(rz.surface, 'red-zone');
+    assert.deepEqual(rz.cells.map((c) => c.id), RZ_SPOT_IDS);
+    assert.ok(rz.cells.filter((c) => c.id.startsWith('ez-')).reduce((n, c) => n + c.n, 0) > 10, 'his end-zone throws');
+    assert.equal(rz.fallback, undefined, 'a past season: no fallback');
     assert.ok(rz.cells.reduce((n, c) => n + c.n, 0) < z.cells.reduce((n, c) => n + c.n, 0) / 3);
     assert.ok(rz.chips.some((c) => c.label === 'TD rate'));
     // (a receiver's red zone: his shares of the team's looks)
@@ -270,37 +341,81 @@ test("NFL maps from 2025's file: a QB's zones and red zone, a receiver's shares,
     const wr = await zones.load(q(chase, 'WR', { split: 'redzone' }));
     const share = wr.chips.find((c) => c.label === 'Target share');
     assert.ok(share && /^\d+%$/.test(share.value), JSON.stringify(wr.chips));
+    assert.equal(await rzRuns.load(q(chase, 'WR', { split: 'redzone' })), null, "a receiver's odd carry: no carries map");
+    assert.equal(await rzRuns.load(q(chase, 'WR')), null, 'the red zone only');
+    // (a back: his carries by lane and start, first; the same numbers beside them)
+    const bijan = { id: 4430807, gsisId: '00-0038542', name: 'Bijan Robinson', teamLogo: 'assets/NFL_Icons/Falcons.png' };
+    const runs = await rzRuns.load(q(bijan, 'RB', { split: 'redzone' }));
+    assert.equal(runs.lead, true);
+    assert.equal(runs.title, 'Red Zone Carries');
+    assert.ok(runs.cells.reduce((n, c) => n + c.n, 0) > 20);
+    assert.ok(runs.cells.filter((c) => c.id.startsWith('ez-')).every((c) => c.n === 0));
+    assert.ok(runs.chips.some((c) => c.label === 'Carry share'));
     // (the whole season: the regular season and the playoffs added up)
     const file = expandHeat(readJson(path.join(ROOT, 'seasons/2025/heat-maps.json')));
     const sumAtt = (p) => p.players['3918298'].pass.reduce((n, r) => n + r.att, 0);
     assert.equal(sumAtt(heatPart(file, 'all')), sumAtt(file.regular) + (file.post?.players['3918298'] ? sumAtt(file.post) : 0));
-    // (a defense: what it allowed, flipped; its opponent's offense over it)
+    // (a defense: what it allowed, flipped)
     const ravensD = { id: null, gsisId: 'DEF-BAL', name: 'Baltimore Ravens', teamLogo: 'assets/NFL_Icons/Ravens.png' };
-    const d = await zones.load(q(ravensD, 'DEF', { opponent: 'KC' }));
+    const d = await zones.load(q(ravensD, 'DEF'));
     assert.equal(d.defense, true);
-    assert.equal(d.overlay.length, 12);
-    assert.equal(d.overlayLabel, "KC's offense");
+    assert.equal((await rzRuns.load(q(ravensD, 'DEF', { split: 'redzone' }))).title, 'Red Zone Run Defense');
     // (a team: its offense, or its defense on that side)
     const ravens = { id: null, gsisId: 'TM-Ravens', name: 'Baltimore Ravens', teamLogo: 'assets/NFL_Icons/Ravens.png' };
     assert.equal((await zones.load(q(ravens, 'TM'))).defense, false);
     assert.equal((await zones.load(q(ravens, 'TM', { side: 'defense' }))).defense, true);
-    const o = await zones.load(q(allen, 'QB', { opponent: 'KC' }));
-    assert.equal(o.overlayLabel, "KC's D");
     // (the strip and the grid; the grid's shares one hue)
     const s = await strip.load(q(allen, 'QB'));
     assert.equal(s.cells.length, 10);
     assert.equal(await strip.load(q(allen, 'QB', { split: 'redzone' })), null, 'no strip in the red zone');
-    const g = await downs.load(q(chase, 'WR'));
+    assert.equal((await downs.load(q(chase, 'WR'))).stat.key, 'epa', "down & distance: EPA first");
+    const g = await downs.load(q(chase, 'WR', { stat: 'targets' }));
     assert.equal(g.stat.key, 'targets');
     assert.equal(g.stat.scale, 'sequential');
     assert.ok(g.cells.every((c) => c.value === null || (c.value >= 0 && c.value <= 1)));
-    const tg = await downs.load(q(ravens, 'TM'));
+    const tg = await downs.load(q(ravens, 'TM', { stat: 'pass' }));
     assert.equal(tg.stat.scale, 'lean', "a team's pass rate: neither side good");
     // (the AI preview's matchups: a team's two, a QB's one)
     const team = await heatMatchups(ravens, 'TM', 2025, 'PIT', false);
     assert.equal(team.length, 2);
     assert.equal(team[1].defense, true);
     assert.equal((await heatMatchups(allen, 'QB', 2025, 'MIA', false)).length, 1);
+    assert.ok(team.every((m) => !m.fallback), 'a past season: no fallback');
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("NFL maps in the season being played: last season's own cells behind them, labelled", async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const file = path.join(ROOT, String(url).replace(/^data\//, ''));
+    return fs.existsSync(file) ? { ok: true, json: async () => readJson(file) } : { ok: false, json: async () => null };
+  };
+  try {
+    const { nflHeatMaps, heatMatchups, ZONE_IDS, pickCell } = h;
+    const now = readJson(path.join(ROOT, 'heat-maps.json')).season;
+    const [zones, , strip] = nflHeatMaps({ current: (s) => s === now });
+    const ravens = { id: null, gsisId: 'TM-Ravens', name: 'Baltimore Ravens', teamLogo: 'assets/NFL_Icons/Ravens.png' };
+    const q = (extra = {}) => ({ player: ravens, position: 'TM', season: now, split: 'all', stat: null, side: null, ...extra });
+    const z = await zones.load(q());
+    assert.equal(z.fallbackLabel, String(now - 1));
+    assert.equal(z.seasonLabel, String(now));
+    assert.deepEqual(z.fallback.map((c) => c.id), ZONE_IDS, "the same team's zones, last season");
+    assert.ok(z.fallback.reduce((n, c) => n + c.n, 0) > 400, 'a whole season of its throws');
+    // (each cell: this season's when it's enough, last season's when it isn't)
+    for (const [i, c] of z.cells.entries()) assert.equal(pickCell(c, z.fallback[i], z.stat).faded, c.n < z.stat.minN && z.fallback[i].n >= z.stat.minN && z.fallback[i].value !== null);
+    // (the strip and the red zone too; the defense side its defense's own)
+    assert.equal((await strip.load(q())).fallback.length, 10);
+    const rz = await zones.load(q({ split: 'redzone' }));
+    assert.equal(rz.fallback.length, 12);
+    const d = await zones.load(q({ side: 'defense' }));
+    assert.equal(d.defense, true);
+    assert.notDeepEqual(d.fallback.map((c) => c.n), z.fallback.map((c) => c.n), "its defense's last season, not its offense's");
+    // (the AI preview's matchups: both sides' last seasons behind them)
+    const team = await heatMatchups(ravens, 'TM', now, 'CLE', true);
+    assert.equal(team.length, 2);
+    assert.ok(team.every((m) => m.fallback?.length === 12 && m.overlayFallback?.length === 12 && m.fallbackLabel === String(now - 1)));
   } finally {
     globalThis.fetch = realFetch;
   }

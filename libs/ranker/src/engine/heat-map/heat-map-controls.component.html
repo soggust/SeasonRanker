@@ -1,46 +1,35 @@
-<!-- The heat maps' bar: season, split, side, mode, and the opponent's overlay -->
+<!-- The heat maps' bar, in groups with a rule between them: the season and the split, the mode, the side -->
 <div class="hm-controls">
-  @if (seasons.length > 1) {
-    <label class="hm-season">
-      <span class="hm-visually-hidden">Season</span>
-      <select [value]="season" (change)="pickSeason($any($event.target).value)">
-        @for (s of seasons; track s) {
-          <option [value]="s" [selected]="s === season">{{ seasonText(s) }}</option>
-        }
-      </select>
-    </label>
-  }
-  @if (splits.length > 1) {
-    <span class="hm-group" role="group" aria-label="Split">
-      @for (sp of splits; track sp.id) {
-        <button type="button" class="game-filter small" [class.active]="sp.id === split" [attr.aria-pressed]="sp.id === split" [title]="sp.title ?? ''" (click)="splitChange.emit(sp.id)">{{ sp.label }}</button>
+  @if (seasons.length > 1 || splits.length > 1) {
+    <span class="hm-cluster" role="group" aria-label="What's showing">
+      @if (seasons.length > 1) {
+        <mat-select class="hm-season-select" [panelWidth]="null" [value]="season" aria-label="Season" (valueChange)="seasonChange.emit($event)">
+          @for (s of seasons; track s) {
+            <mat-option [value]="s">{{ seasonText(s) }}</mat-option>
+          }
+        </mat-select>
       }
-    </span>
-  }
-  @if (sides && sides.length > 1) {
-    <span class="hm-group" role="group" aria-label="Side of the ball">
-      @for (sd of sides; track sd.id) {
-        <button type="button" class="game-filter small" [class.active]="sd.id === side" [attr.aria-pressed]="sd.id === side" [title]="sd.title ?? ''" (click)="sideChange.emit(sd.id)">{{ sd.label }}</button>
+      @if (splits.length > 1) {
+        <span class="hm-group" role="group" aria-label="Split">
+          @for (sp of splits; track sp.id) {
+            <button type="button" class="game-filter small" [class.active]="sp.id === split" [attr.aria-pressed]="sp.id === split" [title]="sp.title ?? ''" (click)="splitChange.emit(sp.id)">{{ sp.label }}</button>
+          }
+        </span>
       }
     </span>
   }
   @if (showMode) {
-    <span class="hm-group" role="group" aria-label="Color by">
+    <span class="hm-cluster hm-group" role="group" aria-label="Color by">
       @for (m of modes; track m.id) {
         <button type="button" class="game-filter small" [class.active]="m.id === mode" [attr.aria-pressed]="m.id === mode" [title]="m.title" (click)="modeChange.emit(m.id)">{{ m.label }}</button>
       }
     </span>
   }
-  @if (opponent) {
-    <button
-      type="button"
-      class="game-filter small hm-vs"
-      [class.active]="overlay"
-      [attr.aria-pressed]="overlay"
-      [title]="overlayTitle"
-      (click)="overlayChange.emit(!overlay)"
-    >
-      vs {{ opponent.label }}
-    </button>
+  @if (sides && sides.length > 1) {
+    <span class="hm-cluster hm-group" role="group" aria-label="Side of the ball">
+      @for (sd of sides; track sd.id) {
+        <button type="button" class="game-filter small" [class.active]="sd.id === side" [attr.aria-pressed]="sd.id === side" [title]="sd.title ?? ''" (click)="sideChange.emit(sd.id)">{{ sd.label }}</button>
+      }
+    </span>
   }
 </div>

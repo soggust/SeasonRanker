@@ -18,6 +18,10 @@
             <rect class="hm-hatch-bg" width="6" height="6" />
             <line class="hm-hatch-line" x1="0" y1="0" x2="0" y2="6" />
           </pattern>
+          <!-- (a cell from last season: its own paint, faded, under a lighter hatch with no grey) -->
+          <pattern [attr.id]="id + '-fade'" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+            <line class="hm-fade-line" x1="0" y1="0" x2="0" y2="6" />
+          </pattern>
         </defs>
 
         <g class="hm-backdrop" aria-hidden="true">
@@ -51,6 +55,7 @@
           <g
             class="hm-cell"
             [class.thin]="c.thin"
+            [class.faded]="c.faded && mode !== 'volume'"
             [class.on]="active?.id === c.id"
             [style.--i]="c.i"
             tabindex="0"
@@ -68,6 +73,14 @@
               <polygon class="hm-fill" [attr.points]="c.shape.points" [style.fill]="mode === 'volume' ? c.vol.fill : c.eff.fill" />
             } @else {
               <path class="hm-fill" [attr.d]="c.shape.d" [style.fill]="mode === 'volume' ? c.vol.fill : c.eff.fill" />
+            }
+            <!-- (last season's: hatched over, a dotted edge) -->
+            @if (c.faded && mode !== 'volume') {
+              @if (c.shape.points) {
+                <polygon class="hm-fade" [attr.points]="c.shape.points" [style.fill]="url('fade')" />
+              } @else {
+                <path class="hm-fade" [attr.d]="c.shape.d" [style.fill]="url('fade')" />
+              }
             }
             @if (!compact) {
               <g class="hm-text" [class.shown]="mode !== 'volume'">
@@ -124,6 +137,9 @@
         }
         @if (mode !== 'volume') {
           <span class="hm-thin-key"><i></i>Under {{ stat.minN }} {{ stat.noun }}</span>
+        }
+        @if (faded) {
+          <span class="hm-fade-key" [title]="fadeTitle"><i></i>Faded: last season{{ fallbackLabel ? ' (' + fallbackLabel + ')' : '' }}</span>
         }
         @if (!compact) {
           <!-- (how a cell's numbers read: the big one, then the small one under it) -->

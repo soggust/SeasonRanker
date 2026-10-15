@@ -15,9 +15,10 @@ import type { SkillPlayer } from '@sport/positions';
 
 // ---- the surfaces
 
-// (built: field, field-strip, down-distance; the rest are named for the sports that will draw them)
+// (built: field, red-zone, field-strip, down-distance; the rest are named for the sports that will draw them)
 export type HeatSurfaceId =
   | 'field'
+  | 'red-zone'
   | 'field-strip'
   | 'down-distance'
   // TODO(NHL): the offensive zone, shot locations by area
@@ -62,8 +63,9 @@ export interface HeatSurface {
   // (drawn over the cells: the line of scrimmage, the goal lines, labels that sit on top)
   overlay?: HeatShape[];
   cells: HeatCellShape[];
-  // (how big a cell's numbers are drawn: a roomy field's 14, a grid's 13; and whether a sub line fits)
-  text?: { main: number; sub: number };
+  // (how big a cell's numbers are drawn: a roomy field's 14, a grid's 13; and whether a cell's count says
+  // what it counts, "128 plays": room for it, and no picture of the field to say it)
+  text?: { main: number; sub: number; noun?: boolean };
   // what the surface is, for a screen reader ("Pass zones, looking downfield")
   aria: string;
 }
@@ -120,7 +122,7 @@ export interface HeatSplit {
 }
 
 // What a map is asked for: the card's row, its tab, the season and split picked, the stat (layer), the
-// side (a team's offense or defense), and the opponent whose cells overlay it (none: no overlay)
+// side (a team's offense or defense)
 export interface HeatQuery {
   player: SkillPlayer;
   position: string;
@@ -128,13 +130,25 @@ export interface HeatQuery {
   split: string;
   stat: string | null;
   side: string | null;
-  opponent: string | null;
 }
 
-// A map ready to draw: its surface, title and count, the stats it can show (the one showing), its cells and
-// the overlay's (an opponent's, the same ids), what the overlay is ("vs CLE's pass D"), whether the cells are
-// a defense's (what it allowed: less is better), and lines under it (a red zone's shares)
-export interface HeatMapData {
+// The same row's last season behind a map's thin cells (HeatFallback below): early in a season most cells are
+// under the stat's sample, so where this season's is, last season's is drawn instead, faded, hatched over and
+// named in the hover; once this season's sample is enough, this season's as usual. Only the row's own: no
+// league average stands in for it. Its cells the map's ids, its overlay's the opponent's own last season
+export interface HeatFallback {
+  // (the same row's cells last season, the map's ids; and the opponent's, under an overlay)
+  fallback?: HeatCell[] | null;
+  overlayFallback?: HeatCell[] | null;
+  // (which season it is, "2025", in the key and the hover; and this one's, "2026", in the hover)
+  fallbackLabel?: string | null;
+  seasonLabel?: string | null;
+}
+
+// A map ready to draw: its surface, title and count, the stats it can show (the one showing), its cells,
+// whether they're a defense's (what it allowed: less is better), the numbers beside it (a red zone's shares), last season's
+// behind its thin cells, and whether it leads its tab (drawn first: a back's red-zone carries)
+export interface HeatMapData extends HeatFallback {
   surface: HeatSurfaceId;
   title: string;
   count: string;
@@ -142,10 +156,9 @@ export interface HeatMapData {
   stats: { key: string; label: string; title?: string }[];
   stat: HeatStat;
   cells: HeatCell[];
-  overlay: HeatCell[] | null;
-  overlayLabel: string | null;
   defense: boolean;
   chips?: HeatChip[];
+  lead?: boolean;
 }
 
 // A number under a map ("31% of the team's red-zone targets"), its tone -1 to 1 against the league's
@@ -157,30 +170,22 @@ export interface HeatChip {
   title: string;
 }
 
-// A map a sport shows: its id, the card types that show it, the surface, the splits and sides it has, whether
-// it can take an opponent's overlay, the first season with data, and its load (null: nothing for this row)
+// A map a sport shows: its id, the card types that show it, the surface, the splits and sides it has, the first
+// season with data, and its load (null: nothing for this row)
 export interface HeatMapDef {
   id: string;
   positions: string[];
   surface: HeatSurfaceId;
   splits: (season: number) => HeatSplit[];
   sides?: (position: string) => HeatSplit[];
-  overlay?: boolean;
   firstSeason?: number;
   load: (query: HeatQuery) => Promise<HeatMapData | null>;
 }
 
-// The row's next opponent for the overlay (the current season's): its key in the sport's data (the NFL's
-// "DEF-KC"), its name on the toggle ("KC") and when ("Sun 10/19")
-export interface HeatOpponent {
-  key: string;
-  label: string;
-  when?: string;
-}
-
 // A compact matchup map for a card's AI preview: a title and a line under it, the row's cells and the
-// opponent's over them (an offense's under the defense's allowed; a defense's, defense, under the offense's)
-export interface HeatMatchup {
+// opponent's over them (an offense's under the defense's allowed; a defense's, defense, under the offense's),
+// and both sides' last seasons behind their thin cells (early in a season, so the maps show at all)
+export interface HeatMatchup extends HeatFallback {
   title: string;
   caption: string;
   cells: HeatCell[];

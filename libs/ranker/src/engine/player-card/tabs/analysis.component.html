@@ -124,13 +124,17 @@
               @for (m of maps; track m.title) {
                 <figure class="ai-mini">
                   <figcaption><b>{{ m.title }}</b><small>{{ m.caption }}</small></figcaption>
-                  <heat-map [surface]="m.surface" [cells]="m.cells" [stat]="m.stat" [overlay]="m.overlay" [overlayLabel]="m.overlayLabel" [defense]="m.defense" [compact]="true" [legend]="false" [label]="m.title" />
+                  <heat-map [surface]="m.surface" [cells]="m.cells" [stat]="m.stat" [overlay]="m.overlay" [overlayLabel]="m.overlayLabel" [defense]="m.defense" [compact]="true" [legend]="false" [label]="m.title" [fallback]="m.fallback ?? null" [overlayFallback]="m.overlayFallback ?? null" [fallbackLabel]="m.fallbackLabel ?? null" [seasonLabel]="m.seasonLabel ?? null" />
                 </figure>
               }
             </div>
             <div class="hm-legend ai-mini-key">
               <span class="hm-ramp-wrap"><small>Tough spot</small><i class="hm-ramp div"></i><small>Edge</small></span>
               <span class="hm-thin-key"><i></i>Small sample</span>
+              <!-- (early in a season: a side's own last season behind its thin zones) -->
+              @if (fadedLabel(maps); as last) {
+                <span class="hm-fade-key" title="A zone with too few plays this season shows last season's instead, faded"><i></i>Faded: last season ({{ last }})</span>
+              }
             </div>
           }
           <!-- (an NFL team's: the ways it wins and loses this one; an older report's and a player's: the key matchups) -->

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 import { HeatMapComponent } from './heat-map.component';
 import { HeatMapControlsComponent } from './heat-map-controls.component';
 
@@ -7,7 +8,7 @@ import { HeatMapControlsComponent } from './heat-map-controls.component';
 // app's module imports it. Their look: styles/components/heat-map.scss (loaded under player-card).
 @NgModule({
   declarations: [HeatMapComponent, HeatMapControlsComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, MatSelectModule],
   exports: [HeatMapComponent, HeatMapControlsComponent],
 })
 export class HeatMapModule {}

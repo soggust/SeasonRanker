@@ -11,7 +11,9 @@ import { leanShares, leanTitle, statTitle, zoneTitle } from '../hover-text';
 import { sortFlags } from '../overview';
 import { ZoneStat, ZoneView, pitchColor } from '../zones';
 import { CardTab } from './card-tab';
-import { toneText } from '../../heat-map/heat-color';
+import { anyFaded, toneText } from '../../heat-map/heat-color';
+import type { HeatChip, HeatMapDef, HeatMatchup } from '../../heat-map/heat-map.model';
+import { isLiveSeason } from '@ranker/engine/data';
 
 // Stats: each group a panel of stat tiles; Recent's W/L squares open their games
 @Component({ selector: 'card-stats', templateUrl: './stats.component.html', standalone: false })
@@ -98,6 +100,12 @@ export class CardAnalysisTab extends CardTab {
   readonly evidenceText = evidenceText;
   readonly weekGameText = weekGameText;
   readonly waysTitle = waysTitle;
+
+  // (the matchup maps' shared key: whether any of them shows last season's, and which)
+  fadedLabel(maps: HeatMatchup[]): string | null {
+    const m = maps.find((x) => anyFaded(x.cells, x.fallback, x.stat, x.overlay, x.overlayFallback));
+    return m ? (m.fallbackLabel ?? 'last season') : null;
+  }
 }
 
 // Team: the depth chart, special teams, coaches, changes, everyone who's played
@@ -128,6 +136,25 @@ export class CardZonesTab extends CardTab {
 @Component({ selector: 'card-heat-maps', templateUrl: './heat-maps.component.html', standalone: false })
 export class CardHeatMapsTab extends CardTab {
   readonly toneText = toneText;
+
+  // (the season dropdown's words: "Current Season" while it's being played, as the compare view's; the
+  // sport's own else, "2025", "2024-25")
+  readonly heatSeasonText = (season: number): string => (isLiveSeason(season) ? 'Current Season' : SPORT.seasonText(season));
+
+  // The red zone's maps with something to draw (or on their way), the one that leads first (a back's carries)
+  maps(card: PlayerCard, defs: HeatMapDef[]): HeatMapDef[] {
+    const shown = defs.map((d) => ({ d, m: this.cards.heatMap(card, d) })).filter((x) => x.m !== null);
+    return shown.sort((a, b) => Number(b.m !== 'loading' && !!b.m?.lead) - Number(a.m !== 'loading' && !!a.m?.lead)).map((x) => x.d);
+  }
+
+  // ...and its numbers, the first map's that has them (each red-zone map carries the same)
+  chipsOf(card: PlayerCard, defs: HeatMapDef[]): HeatChip[] {
+    for (const d of defs) {
+      const m = this.cards.heatMap(card, d);
+      if (m && m !== 'loading' && m.chips?.length) return m.chips;
+    }
+    return [];
+  }
 }
 
 // Game Log: the season's games (a result opens its game) and the games to come

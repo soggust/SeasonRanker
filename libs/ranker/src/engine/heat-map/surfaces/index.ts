@@ -7,10 +7,12 @@ import type { HeatSurface, HeatSurfaceId } from '../heat-map.model';
 import { downDistanceSurface } from './down-distance';
 import { fieldSurface } from './field';
 import { fieldStripSurface } from './field-strip';
+import { redZoneSurface } from './red-zone';
 
 const BUILDERS: Partial<Record<HeatSurfaceId, () => HeatSurface>> = {
   field: fieldSurface,
   'field-strip': fieldStripSurface,
+  'red-zone': redZoneSurface,
   'down-distance': downDistanceSurface,
   // TODO: rink (NHL), half-court (NBA), strike-zone, spray-fan and diamond-field (MLB), body (MMA)
 };

@@ -23,7 +23,7 @@ import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
 import type { ZoneView } from './zones';
 import type { FieldMapPart, FieldMapView } from './field-map';
-import type { HeatMapData, HeatMapDef, HeatMatchup, HeatMode, HeatOpponent, HeatSplit } from '../heat-map/heat-map.model';
+import type { HeatMapData, HeatMapDef, HeatMatchup, HeatMode, HeatSplit } from '../heat-map/heat-map.model';
 import { CardOverview, CardSeason, CardStat, CardTab, CareerSeason, PlayerCard, SeasonContext } from './card.model';
 import { archetypeFor, overviewBlurb, profileFlags, scoutingReport, skillScores, skillsOf } from './overview';
 import { careerHistory } from './career-history';
@@ -64,6 +64,8 @@ const TABS: { id: CardTab; title: string }[] = [
 
 const POSITION_NAMES = SPORT.positionNames as Record<SkillPosition, string>;
 
+// (the parts a Field Map has)
+const FIELD_MAP_PARTS: FieldMapPart[] = ['regular', 'post', 'all'];
 // (the Heat Maps tab's splits for a row with a Field Map alone: a kicker's, a punter's)
 const PLAIN_SPLITS: HeatSplit[] = [
   { id: 'all', label: 'Season', title: 'The regular season and the playoffs' },
@@ -180,17 +182,15 @@ export class PlayerCards {
 
   // ---- The Heat Maps tab (heat-map/: SPORT.heatMaps, the maps each card type shows, and the Field Map under
   // them): the season picked in it (the card's until another is), the split, the side (a team's offense or
-  // defense), the mode, the opponent's overlay and each map's stat (kept across cards, as the Zones tab's stat is)
+  // defense), the mode and each map's stat (kept across cards, as the Zones tab's stat is)
 
   // (the card a season was picked on, and the season: another card starts at its own)
   private heatPick: { key: string; season: number } | null = null;
   heatSplit: string | null = null;
   heatSide = 'offense';
   heatMode: HeatMode = 'efficiency';
-  heatOverlay = false;
   heatStats: Record<string, string> = {};
   private heatLoads = new Map<string, HeatMapData | null | 'loading' | 'error'>();
-  private heatOpponents = new Map<string, HeatOpponent | null | 'loading' | 'error'>();
   private fieldMaps = new Map<string, FieldMapView | null | 'loading' | 'error'>();
 
   private heatKey(card: PlayerCard): string {
@@ -239,14 +239,6 @@ export class PlayerCards {
     return sides.length > 1 ? sides : null;
   }
 
-  // The row's next opponent (the season being played's), for the overlay: null till it's known
-  heatOpponentOf(card: PlayerCard): HeatOpponent | null {
-    const find = SPORT.heatOpponent;
-    if (!find || this.heatSeasonOf(card) !== CURRENT_SEASON) return null;
-    const got = this.loadOnce(this.heatOpponents, card, () => find(card.player, this.position, card.season), 'next');
-    return got === 'loading' || got === 'error' ? null : got;
-  }
-
   // A map for what's picked (loaded once for each pick, then kept): the map, null (nothing for this row
   // there), or still loading
   heatMap(card: PlayerCard, def: HeatMapDef): HeatMapData | null | 'loading' {
@@ -255,13 +247,12 @@ export class PlayerCards {
     const split = this.heatSplitOf(card);
     const sides = this.heatSides(card);
     const side = sides ? this.heatSide : null;
-    const opponent = def.overlay && this.heatOverlay ? (this.heatOpponentOf(card)?.key ?? null) : null;
     const stat = this.heatStats[`${def.id}/${split === 'redzone' ? 'rz' : ''}`] ?? null;
-    const key = [this.heatKey(card), def.id, season, split, side, stat, opponent].join('/');
+    const key = [this.heatKey(card), def.id, season, split, side, stat].join('/');
     if (!this.heatLoads.has(key)) {
       this.heatLoads.set(key, 'loading');
       def
-        .load({ player: card.player, position: this.position, season, split, stat, side, opponent })
+        .load({ player: card.player, position: this.position, season, split, stat, side })
         .then((map) => this.heatLoads.set(key, map))
         .catch(() => this.heatLoads.set(key, 'error'));
     }
@@ -283,10 +274,14 @@ export class PlayerCards {
     if (!map?.has(card.player, this.position, card.season)) return null;
     const season = this.heatSeasonOf(card);
     const split = this.heatSplitOf(card) as FieldMapPart;
+    // (a split the Field Map hasn't, the red zone: the heat maps alone)
+    if (!FIELD_MAP_PARTS.includes(split)) return null;
     const view = this.loadOnce(this.fieldMaps, { ...card, season }, () => map.load(card.player, this.position, season, split), split);
     if (view === 'loading' || view === 'error' || !view) return null;
-    // (a row whose heat maps have its zones: the Field Map's pass chart left out, its defense's lane strip kept)
-    return this.heatDefs(card).length ? { ...view, pass: null } : view;
+    // (a row whose heat maps have its zones: the Field Map's pass chart left out, its defense's lane strip kept;
+    // none at all when that leaves nothing, a receiver's)
+    const shown = this.heatDefs(card).length ? { ...view, pass: null } : view;
+    return shown.pass || shown.runs || shown.strip || shown.kicks || shown.punts ? shown : null;
   }
 
   // The compact matchup maps on the AI preview (the next game's opponent), loaded once: none till they're in

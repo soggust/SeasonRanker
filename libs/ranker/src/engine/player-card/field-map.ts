@@ -12,8 +12,8 @@ import { DEPTHS, DEPTH_WORDS, FieldDepth, FieldSide, SIDES, pts, r1, zoneName, z
 export type { FieldDepth, FieldSide, PassField } from '../heat-map/surfaces/field';
 export { PASS_BOX, PASS_FIELD, zoneName } from '../heat-map/surfaces/field';
 
-// (the part of a season a map shows: the regular season, the playoffs, both, or the red zone of both)
-export type FieldMapPart = 'regular' | 'post' | 'all' | 'redzone';
+// (the part of a season a map shows: the regular season, the playoffs, or both)
+export type FieldMapPart = 'regular' | 'post' | 'all';
 
 // A zone (always 12: behind-left, behind-middle, behind-right, short-left, ... deep-right): its throws or
 // targets, the catches, yards, touchdowns, picks and EPA a throw

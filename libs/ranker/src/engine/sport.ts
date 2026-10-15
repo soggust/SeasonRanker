@@ -6,7 +6,7 @@ import type { GradeWhy } from './grade-why';
 import type { DepthLoadContext, DepthView } from './player-card/depth-chart';
 import type { ZoneView } from './player-card/zones';
 import type { FieldMapPart, FieldMapView } from './player-card/field-map';
-import type { HeatMapDef, HeatMatchup, HeatOpponent } from './heat-map/heat-map.model';
+import type { HeatMapDef, HeatMatchup } from './heat-map/heat-map.model';
 
 // How a stat's value reads (every sport's SkillStat.format is one of these): int, dec1, dec2; avg3, a
 // batting-average style rate (".287"); ip, innings (175.1); pct, a 0-1 share as a whole percent;
@@ -428,11 +428,10 @@ export interface SportConfig {
   };
   // The card's Heat Maps tab (heat-map/: the <heat-map> component and its surfaces): the maps each card type
   // shows (the NFL's zones, field-position strip and down & distance grid), each loaded for the season, split,
-  // stat, side and opponent picked. The tab shows when a row has one of these or a Field Map.
+  // stat and side picked. The tab shows when a row has one of these or a Field Map.
   heatMaps?: HeatMapDef[];
-  // ...the row's next opponent, for the zones' overlay (the current season's; null: none known), and the
-  // compact matchup maps on its AI preview (the analysis's next opponent, by the sport's key: the NFL's "KC")
-  heatOpponent?: (player: SkillPlayer, position: string, season: number) => Promise<HeatOpponent | null>;
+  // ...and the compact matchup maps on its AI preview (the analysis's next opponent, by the sport's key: the
+  // NFL's "KC")
   heatMatchups?: (player: SkillPlayer, position: string, season: number, opponent: string) => Promise<HeatMatchup[]>;
   // The card's big hero logo when the sport has a sharper one than the grid's icon (the NFL's, 256px)
   cardLogo?: (logo: string) => string;
