@@ -58,6 +58,8 @@ export class HeatMapComponent implements OnChanges {
   @Input() overlayFallback: HeatCell[] | null = null;
   @Input() fallbackLabel: string | null = null;
   @Input() seasonLabel: string | null = null;
+  // (the key's note when what's behind isn't a last season: "Faded: his career")
+  @Input() fallbackNote: string | null = null;
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly id = `hm${next++}`;
@@ -131,7 +133,19 @@ export class HeatMapComponent implements OnChanges {
   // (the key's note, in full on a hover)
   get fadeTitle(): string {
     const last = this.fallbackLabel ? `${this.fallbackLabel}'s` : "last season's";
+    // (something other than a last season behind it: "under 10 attempts in his last 5 shows his career's")
+    if (this.fallbackNote) return `A cell under ${this.stat.minN} ${this.stat.noun}${this.seasonLabel ? ` (${this.seasonLabel})` : ''} shows ${last} instead, faded`;
     return `A cell under ${this.stat.minN} ${this.stat.noun} this season shows ${last} instead, faded, till this season has enough`;
+  }
+
+  // (the key's note: whose cells are faded in)
+  get fadeKey(): string {
+    return this.fallbackNote ?? `Faded: last season${this.fallbackLabel ? ` (${this.fallbackLabel})` : ''}`;
+  }
+
+  // (what Volume counts: the stat's count when a cell's isn't its sample, "strikes landed"; else the sample)
+  get countNoun(): string {
+    return this.stat.countNoun ?? this.stat.noun;
   }
 
   // (the legend's ends: which way is good for this row)
@@ -159,7 +173,10 @@ export class HeatMapComponent implements OnChanges {
     const mine = new Map((this.fallback ?? []).map((c) => [c.id, c]));
     const theirs = new Map((this.overlayFallback ?? []).map((c) => [c.id, c]));
     const total = this.cells.reduce((a, c) => a + c.n, 0);
-    const most = Math.max(0, ...this.cells.map((c) => c.n));
+    // (what Volume counts: a cell's count, its sample when it has none)
+    const count = (c: HeatCell) => c.count ?? c.n;
+    const counted = this.cells.reduce((a, c) => a + count(c), 0);
+    const most = Math.max(0, ...this.cells.map(count));
     const topOf = (list: HeatCell[]) => Math.max(0, ...list.filter((c) => !isThin(c, this.stat)).map((c) => c.value ?? 0));
     const top = topOf(this.cells);
     const lastTop = topOf(this.fallback ?? []);
@@ -182,6 +199,8 @@ export class HeatMapComponent implements OnChanges {
       const eff = faded ? { ...paint, fill: fadeFill(paint.fill) } : paint;
       const vol = heatPaint(cell, { stat, mode: 'volume', most });
       const share = total ? `${Math.round((cell.n / total) * 100)}%` : '';
+      const volume = count(cell);
+      const volumeShare = counted ? `${Math.round((volume / counted) * 100)}%` : '';
       const empty = !cell.n && !faded;
       const value = shown.label ?? fmt(shown.value);
       const ownLast = faded && pick.own.faded;
@@ -224,7 +243,7 @@ export class HeatMapComponent implements OnChanges {
           // (a faded cell's small number its season: whose it is, at a glance)
           sub: empty ? '' : faded ? last : shownOpp?.n ? `vs ${fmt(shownOpp.value)}` : shown.made !== undefined ? `${shown.made}/${shown.n}` : this.shape?.text?.noun ? `${shown.n} ${stat.noun}` : String(shown.n),
         },
-        vol: { fill: vol.fill, main: cell.n ? String(cell.n) : '', sub: cell.n ? share : '' },
+        vol: { fill: vol.fill, main: volume ? String(volume) : '', sub: volume ? volumeShare : '' },
         thin: !empty && eff.thin,
         faded,
         tone: eff.tone,

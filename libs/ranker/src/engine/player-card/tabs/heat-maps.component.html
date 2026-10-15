@@ -23,32 +23,35 @@
 
 @if (split === 'redzone' || withNumbers(defs)) {
   <!-- (the red zone: its maps, a back's carries first, and its numbers in a column beside them; one under
-       another on a phone) -->
-  @let shown = maps(c, defs);
-  @let chips = chipsOf(c, shown);
-  <div class="hm-maps hm-rz" [class.pair]="shown.length > 1" [class.numbers]="split !== 'redzone'">
-    @for (d of shown; track d.id) {
-      <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
-    }
-    @if (chips.length) {
-      @let title = chipsTitleOf(c, shown);
-      <aside class="hm-figure hm-statcol" [attr.aria-label]="title">
-        <b class="hm-statcol-title">{{ title }}</b>
-        <div class="hm-tiles">
-          @for (ch of chips; track ch.label) {
-            <span class="hm-tile" [title]="ch.title">
-              <b [style.color]="toneText(ch.tone)">{{ ch.value }}</b>
-              <span>{{ ch.label }}</span>
-              @if (ch.sub) {
-                <small>{{ ch.sub }}</small>
-              }
-            </span>
-          }
-        </div>
-      </aside>
-    }
-  </div>
-  @if (!shown.length) {
+       another on a phone. A sport's groups (MMA's striking, then its finishes): a row each, its maps at their
+       surfaces' shapes so they stand the same height, its own numbers beside them) -->
+  @for (row of heatRows(defs); track row.id) {
+    @let shown = maps(c, row.defs);
+    @let chips = chipsOf(c, shown);
+    <div class="hm-maps" [class.hm-rz]="row.id === null" [class.hm-row]="row.id !== null" [class.pair]="shown.length > 1" [class.numbers]="split !== 'redzone'">
+      @for (d of shown; track d.id) {
+        <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
+      }
+      @if (chips.length) {
+        @let title = chipsTitleOf(c, shown);
+        <aside class="hm-figure hm-statcol" [attr.aria-label]="title">
+          <b class="hm-statcol-title">{{ title }}</b>
+          <div class="hm-tiles">
+            @for (ch of chips; track ch.label) {
+              <span class="hm-tile" [title]="ch.title">
+                <b [style.color]="toneText(ch.tone)">{{ ch.value }}</b>
+                <span>{{ ch.label }}</span>
+                @if (ch.sub) {
+                  <small>{{ ch.sub }}</small>
+                }
+              </span>
+            }
+          </div>
+        </aside>
+      }
+    </div>
+  }
+  @if (!maps(c, defs).length) {
     <p class="card-note">{{ split === 'redzone' ? 'Nothing charted inside the 20 this season.' : split === 'post' ? 'No playoff games this season.' : 'Nothing charted for this season.' }}</p>
   }
 } @else {
@@ -85,9 +88,9 @@
 <ng-template #map let-d>
   @let m = cards.heatMap(c, d);
   @if (m === 'loading') {
-    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink'" aria-hidden="true"></div>
+    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink' || d.surface === 'body'" [style.--hm-aspect]="aspect(d.surface)" aria-hidden="true"></div>
   } @else if (m) {
-    <figure class="hm-figure">
+    <figure class="hm-figure" [style.--hm-aspect]="aspect(m.surface)">
       <figcaption class="hm-head">
         <span class="hm-title" [title]="m.help"><b>{{ m.title }}</b><small>{{ m.count }}</small></span>
         @if (m.stats.length > 1) {
@@ -108,6 +111,7 @@
         [fallback]="m.fallback ?? null"
         [fallbackLabel]="m.fallbackLabel ?? null"
         [seasonLabel]="m.seasonLabel ?? null"
+        [fallbackNote]="m.fallbackNote ?? null"
       />
     </figure>
   }

@@ -377,6 +377,107 @@ $hm-rink-blue: rgb(64, 140, 255);
   stroke-width: 3px;
 }
 
+// (MMA's: the octagon's canvas darkened to a warm near-black under the paint, the cage's red rail around each
+// board; the fighter's figure a soft charcoal under his cells, outlined over them, his gloves and waistband in
+// the cage's red with a white cuff; the clock's minutes and the championship rounds' label in the grid's hand)
+$hm-mat: rgb(17, 14, 13);
+$hm-cage-red: rgb(214, 26, 31);
+$hm-figure: rgb(44, 40, 38);
+$hm-cuff: rgb(244, 241, 236);
+
+.hm-mat {
+  fill: rgba($hm-mat, 0.88);
+}
+
+.hm-cage {
+  fill: none;
+  stroke: rgba($hm-cage-red, 0.7);
+  stroke-linejoin: round;
+  stroke-width: 1.6px;
+}
+
+.hm-tick {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.32);
+  stroke-width: 1px;
+}
+
+.hm-axis.clock {
+  font-size: 8.5px;
+  letter-spacing: 0.6px;
+}
+
+.hm-title-rule {
+  fill: none;
+  stroke: rgba($hm-cage-red, 0.55);
+  stroke-width: 1px;
+}
+
+.hm-axis.title-rounds {
+  fill: rgba(255, 255, 255, 0.5);
+  font-size: 7.5px;
+  letter-spacing: 1.8px;
+}
+
+.hm-figure-base {
+  fill: $hm-figure;
+}
+
+.hm-figure-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-linejoin: round;
+  stroke-width: 1px;
+}
+
+.hm-shadow {
+  fill: rgba(0, 0, 0, 0.45);
+}
+
+.hm-glove {
+  fill: rgba($hm-cage-red, 0.92);
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.8px;
+}
+
+.hm-glove-cuff {
+  fill: rgba($hm-cuff, 0.85);
+}
+
+.hm-waistband {
+  fill: rgba($hm-cage-red, 0.9);
+}
+
+.hm-divide {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-dasharray: 2 4;
+  stroke-width: 1px;
+}
+
+// (the targets named down the side, a dotted lead to each; a position's name under its figure)
+.hm-part {
+  fill: rgba(255, 255, 255, 0.62);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+
+  &.under {
+    fill: rgba(255, 255, 255, 0.7);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-anchor: middle;
+  }
+}
+
+.hm-lead {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-dasharray: 1.2 2.6;
+  stroke-linecap: round;
+  stroke-width: 1px;
+}
+
 // (what's drawn over the cells, the lines and the labels: a pointer goes through to the cell under it)
 .hm-top {
   pointer-events: none;
@@ -631,6 +732,54 @@ $hm-rink-blue: rgb(64, 140, 255);
     color: rgba(255, 255, 255, 0.45);
     font-size: 10px;
     font-weight: 700;
+  }
+}
+
+// ---- maps in rows of their own (a sport's groups: MMA's striking, then its finishes), side by side at their
+// surfaces' shapes (--hm-aspect, the surface's width over its height) so they stand the same height, their
+// numbers beside them; wrapping one under another as the card narrows, each map's picture held to a sensible
+// height, centered
+
+.hm-maps.hm-row {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+
+  + .hm-maps {
+    margin-top: 18px;
+  }
+
+  > .hm-figure:not(.hm-statcol) {
+    flex: var(--hm-aspect, 1) 1 calc(var(--hm-aspect, 1) * 280px + 28px);
+  }
+
+  // (the numbers as tall as they are, not stretched to the maps' height: no half-empty panel)
+  > .hm-statcol {
+    align-self: flex-start;
+    flex: 1 1 210px;
+  }
+
+  .hm-stage {
+    margin: 0 auto;
+    max-width: calc(var(--hm-aspect, 1) * 470px);
+  }
+
+  .hm-loading {
+    min-height: 300px;
+  }
+}
+
+// (one under another: each across the panel, a tall figure held shorter)
+@include v.down(card-stack) {
+  .hm-maps.hm-row {
+    > .hm-figure:not(.hm-statcol),
+    > .hm-statcol {
+      flex-basis: 100%;
+    }
+
+    .hm-stage {
+      max-width: calc(var(--hm-aspect, 1) * 380px);
+    }
   }
 }
 

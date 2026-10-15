@@ -12,7 +12,8 @@ import { sortFlags } from '../overview';
 import { ZoneStat, ZoneView, pitchColor } from '../zones';
 import { CardTab } from './card-tab';
 import { anyFaded, toneText } from '../../heat-map/heat-color';
-import type { HeatChip, HeatMapData, HeatMapDef, HeatMatchup } from '../../heat-map/heat-map.model';
+import type { HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatSurfaceId } from '../../heat-map/heat-map.model';
+import { heatSurface } from '../../heat-map/surfaces';
 import { isLiveSeason } from '@ranker/engine/data';
 
 // Stats: each group a panel of stat tiles; Recent's W/L squares open their games
@@ -166,6 +167,20 @@ export class CardHeatMapsTab extends CardTab {
   // (maps laid out with their numbers in a column beside them, whatever the split: the NHL's)
   withNumbers(defs: HeatMapDef[]): boolean {
     return defs.some((d) => d.numbers);
+  }
+
+  // The rows the maps are laid out in: one for all of them (the red zone's, the NHL's), or a row a group (MMA's
+  // striking, then its finishes), each with its own numbers beside it
+  heatRows(defs: HeatMapDef[]): { id: string | null; defs: HeatMapDef[] }[] {
+    const ids = [...new Set(defs.map((d) => d.group ?? null))];
+    return ids.map((id) => ({ id, defs: defs.filter((d) => (d.group ?? null) === id) }));
+  }
+
+  // (a map's shape, its surface's width over its height: a grouped row sizes its maps by it, so they stand the
+  // same height side by side)
+  aspect(surface: HeatSurfaceId): number {
+    const box = heatSurface(surface)?.viewBox;
+    return box ? Math.round((box.w / box.h) * 1000) / 1000 : 1;
   }
 }
 

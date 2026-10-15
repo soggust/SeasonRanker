@@ -15,7 +15,8 @@ import type { SkillPlayer } from '@sport/positions';
 
 // ---- the surfaces
 
-// (built: field, red-zone, field-strip, down-distance, rink; the rest are named for the sports that will draw them)
+// (built: field, red-zone, field-strip, down-distance, rink, round-clock, body; the rest are named for the sports
+// that will draw them)
 export type HeatSurfaceId =
   | 'field'
   | 'red-zone'
@@ -31,8 +32,12 @@ export type HeatSurfaceId =
   | 'spray-fan'
   // TODO(MLB): fielding by position on the diamond
   | 'diamond-field'
-  // TODO(MMA): strikes landed and absorbed by target (head, body, legs)
-  | 'body';
+  // (MMA's: when fights end, round by minute, five rounds or three; strikes by target on a fighter's figure, and
+  // by position on three of them: at distance, in the clinch, on the ground)
+  | 'round-clock'
+  | 'round-clock-3'
+  | 'body'
+  | 'body-3';
 
 // A backdrop's pieces, drawn in order under the cells (each a class from heat-map.scss: hm-turf, hm-shade,
 // hm-chalk, hm-line, hm-num...; a texture is an image tiled inside an outline)
@@ -86,6 +91,9 @@ export interface HeatCell {
   sd?: number | null;
   // (the number drawn in the cell when it isn't the value formatted: "7/9")
   label?: string;
+  // (what Volume counts when it isn't the sample: the strikes landed where the sample is the ones thrown, the
+  // finishes where it's the fights still going; none: n)
+  count?: number;
   detail?: string[];
 }
 
@@ -110,6 +118,8 @@ export interface HeatStat {
   sample?: string;
   // (the hover's line about it: "EPA a target")
   per?: string;
+  // (what Volume counts when a cell's count isn't its sample (HeatCell.count): "strikes landed"; none: noun)
+  countNoun?: string;
   // (what a cell's value reads against, in the hover and the key: the league's in the cell ("league", the
   // default), what the row's own shots were expected to do ("expected"), an average player's on the same
   // shots ("average"); null: nothing named, the value alone, its comparison in the cell's detail)
@@ -147,6 +157,9 @@ export interface HeatFallback {
   // (which season it is, "2025", in the key and the hover; and this one's, "2026", in the hover)
   fallbackLabel?: string | null;
   seasonLabel?: string | null;
+  // (the key's note when what's behind isn't a last season: "Faded: his career", MMA's last five fights on his
+  // whole career; none: "Faded: last season (2025)")
+  fallbackNote?: string | null;
 }
 
 // A map ready to draw: its surface, title and count, the stats it can show (the one showing), its cells,
@@ -190,7 +203,10 @@ export interface HeatMapDef {
   // (its maps carry their numbers (HeatMapData.chips) in every split: laid out with them in a column beside,
   // as the red zone's are)
   numbers?: boolean;
-  load: (query: HeatQuery) => Promise<HeatMapData | null>;
+  // (numbered maps laid out in a row of their own, their own numbers beside them: MMA's striking, then its
+  // finishes. None: every numbered map in the one row, as the NHL's are)
+  group?: string;
+  load:(query: HeatQuery) => Promise<HeatMapData | null>;
 }
 
 // A compact matchup map for a card's AI preview: a title and a line under it, the row's cells and the

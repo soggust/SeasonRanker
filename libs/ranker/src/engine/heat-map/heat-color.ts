@@ -93,8 +93,10 @@ export function heatPaint(
   { stat, mode, defense = false, opponent, most = 1, top = 1 }: { stat: HeatStat; mode: HeatMode; defense?: boolean; opponent?: HeatCell | null; most?: number; top?: number },
 ): HeatPaint {
   if (mode === 'volume') {
-    const share = most > 0 ? cell.n / most : 0;
-    return { fill: cell.n ? sequentialFill(share) : HEAT_NEUTRAL, tone: 0, thin: false };
+    // (a cell's count when its count isn't its sample: the strikes landed of the ones thrown)
+    const count = cell.count ?? cell.n;
+    const share = most > 0 ? count / most : 0;
+    return { fill: count ? sequentialFill(share) : HEAT_NEUTRAL, tone: 0, thin: false };
   }
   // (nothing there at all: the surface's own, no hatch)
   if (!cell.n) return { fill: HEAT_NEUTRAL, tone: 0, thin: false };

@@ -145,13 +145,13 @@
           <span class="hm-thin-key"><i></i>Under {{ stat.minN }} {{ stat.noun }}</span>
         }
         @if (faded) {
-          <span class="hm-fade-key" [title]="fadeTitle"><i></i>Faded: last season{{ fallbackLabel ? ' (' + fallbackLabel + ')' : '' }}</span>
+          <span class="hm-fade-key" [title]="fadeTitle"><i></i>{{ fadeKey }}</span>
         }
         @if (!compact) {
           <!-- (how a cell's numbers read: the big one, then the small one under it) -->
           <span class="hm-read">
             @if (mode === 'volume') {
-              <b>{{ stat.noun }}</b><small>· their share under it</small>
+              <b>{{ countNoun }}</b><small>· their share under it</small>
             } @else {
               <b>{{ stat.per ?? stat.label }}</b><small>· {{ overlay ? (defense ? 'theirs' : 'what they allow') : (stat.sample ?? stat.noun) }} under it</small>
             }
