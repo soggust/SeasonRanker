@@ -155,12 +155,12 @@ test("od: the defense tables' latest games count most (a side's sums times 1 - o
   assert.ok(a > 1 && b > a, `${b} against ${a}: its two latest games weigh more`);
 });
 
-test('as measured: the tables\' recency searched on NBA rebounds alone (its mark), the defenders-out terms on no stat\'s ctx', async () => {
+test('as measured: the tables\' recency searched on no stat (rebounds\' keep not held on other stretches, 2026-10-14), the defenders-out terms on no stat\'s ctx', async () => {
   const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
   const { searched } = await import('../libs/ranker/scripts/model/project.mjs');
   for (const [sport, list] of Object.entries(STATS)) {
     for (const st of list) {
-      assert.equal(searched(st, 'od'), sport === 'nba' && st.key === 'reb', `${sport} ${st.key}`);
+      assert.equal(searched(st, 'od'), false, `${sport} ${st.key}`);
       const ctx = Array.isArray(st.ctx) ? st.ctx : st.ctx ? [st.ctx] : [];
       for (const k of ['oppOut', 'oppD', 'oppDB', 'oppFront']) assert.ok(!ctx.includes(k), `${sport} ${st.key} ${k}`);
     }

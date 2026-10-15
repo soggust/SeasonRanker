@@ -366,7 +366,7 @@ export function nflRoundC() {
   };
 }
 
-export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
+export function nflMatchups(rows, pbp = null, { learned = false, listed = null } = {}) {
   const games = new Map();
   for (const r of rows) {
     if (!r.team || !r.opp || !r.game) continue;
@@ -575,9 +575,11 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
   // Kept only past its floor: project.mjs MIN_GAIN. Its { v, miss }: miss how surely he's missing alone (1 out, a
   // questionable one his chance of missing it: playchance.mjs), the write-up's words (v is under 1 for an out
   // starter once he's missed a game))
-  // (the history's missing is any lead quarterback not in the game's logs, a benching or an unlisted inactive
-  // too, where live play reads the report and the roster alone: the role backtest's qb1Out table has the
-  // history's rows by whether the reports listed him)
+  // (the history's missing: listed Out or Doubtful by the game's injury report, or on his team's reserve list
+  // that week and not in the game (nflMatchups' listed: props.mjs nflListed), as live play reads the report and
+  // the roster; a game whose season has no report read, not in the game's logs. Before 2026-10-14 the history
+  // read the logs alone: a benching or an unlisted inactive too, more than half its rows, at par, where the
+  // listed ones ran 12% under on receiving yards (the role backtest's qb1Out table))
   const QB_LEAD = 15;
   const qb1Out = (teamId, season, pid, pos, missOf) => {
     if (!POS(pos) || POS(pos) === 'QB') return { v: 0, miss: 0 };
@@ -820,7 +822,10 @@ export function nflMatchups(rows, pbp = null, { learned = false } = {}) {
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
         r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
-        const q1 = qb1Out(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        // (the lead quarterback missing as live play sees it where the history has the game's report (listed: his
+        // team's Out and Doubtful, and its reserve list for one not in the game); without one, not in the logs)
+        const seen = listed ? listed(g.game, g.team) : null;
+        const q1 = qb1Out(g.team, g.season, r.pid, r.pos, seen ? (id) => (seen.get(String(id)) === 'report' || (seen.has(String(id)) && !playing.has(id)) ? 1 : 0) : (id) => (playing.has(id) ? 0 : 1));
         r.qb1Out = q1.v;
         r.qb1Miss = q1.miss;
         r.dep = depthOf(r.pid, g.season, r.pos);

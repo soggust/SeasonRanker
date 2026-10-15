@@ -95,7 +95,16 @@ export const GAME_CAP = 5;
 // ballpark against the parks his own rate was made in, plus the temperature and the wind out; 0.025, held out
 // 0.632 to 0.6317, +0.0003, bias -0.0198 to -0.012). Left out on hits (+0.0002) and every term alone. Set to the
 // push time.
-export const MODEL_EPOCH = '2026-10-14T14:40:00Z';
+// 2026-10-15, re-check of A/B/C terms (every family looked at again with the park re-check's lens: double counting,
+// related terms one at a time, a real effect too small for the floor; each keep checked on other held-out stretches,
+// the gate unchanged): the NBA's team allocation kept on points, rebounds, threes and pts+reb+ast (its every-player
+// bias read in two parts, the eligible players' and the rest's, which had cancelled pooled: +0.0024 to +0.0052);
+// NFL rush+rec yards' team allocation kept mean-preserving (0.1/3, +0.0012); the NFL history's lead QB out read from
+// the injury reports and reserve list, as live play reads it (qbDeep refit on it: rush+rec yards -0.4, receptions
+// -0.2; next man up off receptions as a knock-on). Removed as floor-level keeps that didn't hold on other
+// stretches: NBA points' bench back-to-back, NBA rebounds' defense-table recency. The recency weight's floor now
+// 0.0003 like every late term. Set to the push time.
+export const MODEL_EPOCH = '2026-10-15T06:12:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

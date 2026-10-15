@@ -822,7 +822,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       ps: 'NBA positions (guards, forwards, centers): the opponent allowed and the prior by position (2: the role split by it too)',
       po: "NBA pace (tonight's expected possessions, against the league's or his own games'; form 0: the other side's over the league's, 2: the game's expected over his games' average, 3: the other side's over his games' average)",
       ep: "NFL expected plays tonight (his team's own pace and the other side's, or the game's total and its share of the ball, against his games this season, leaning on last season's early on; form 1: the expected over his games' expected, 2: over the plays his team ran in them, 3: the game's total times its share over his games', 4: that over the plays run; in place of the defense's pace)",
-      tr: "team allocation: the team's game first (its own total of the stat a game, by the opponent's allowed), each player's projection shrunk toward his share of it so his team's players add up, as its backs' carries to its runs (form 1: the team's games and the opponent's; 2 and 3: with the betting lines' implied points, half or in full; 4: the team's games alone)",
+      tr: "team allocation: the team's game first (its own total of the stat a game, by the opponent's allowed), each player's projection shrunk toward his share of it so his team's players add up, as its backs' carries to its runs (form 1: the team's games and the opponent's; 2 and 3: with the betting lines' implied points, half or in full; 4: the team's games alone; on NFL rush+rec yards scaled so it moves yards between players and games without moving the stat's overall level)",
       c_oppShots: 'opponent shots',
       c_ppLean: "his share of his team's power-play time lately against his season's (NHL: a top unit's spot won or lost)",
       c_teamShots: "his team's expected shots tonight (NHL)",
@@ -880,7 +880,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       mk: "game script from the betting lines (the market's implied team points, not the desk's own)",
       c_mSpread: 'favored or underdog by the betting lines (spread)',
       cs: 'over/under chance calibrated separately above and below the projection',
-      hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better and no more biased)",
+      hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better by the floor, 0.03% of log loss, and no more biased)",
     };
     return Object.entries(t.gains ?? {})
       .map(([k, g]) => {

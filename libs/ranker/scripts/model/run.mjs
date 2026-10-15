@@ -135,7 +135,7 @@ import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, isoSecond, readJson, writeJson } from './sources.mjs';
 import { BANKROLL, MARKETS, choose, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
@@ -765,7 +765,10 @@ async function fitTheProps(r) {
     // boxMarket: read by the blowout by role, a measure on demand); none elsewhere. The NHL's totals alone, its
     // finals' summaries' too (boxTotals: the skaters' market total, props.mjs CTX mTotal))
     const market = sport === 'nfl' ? await nflMarket(history) : sport === 'nba' ? boxMarket('nba') : null;
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null);
+    // (the NFL history's injury listings: its lead quarterback out as live play reads it, the report and the roster
+    // (nflListed); none, from the game logs)
+    const listed = sport === 'nfl' ? await nflListed(history, r.facts, [...new Set(r.rows.map((x) => x.season))].sort()) : null;
+    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null, listed);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports
     // (playchance.mjs); none, or another sport: every questionable one at half, as before. This season the

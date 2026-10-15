@@ -36,7 +36,8 @@ test("an NBA player's own back-to-back by his role: a starter's or a bench playe
 test("the stats' back-to-backs: the NBA's bench one in place of the one size, the NHL's on a goalie's saves", () => {
   for (const st of STATS.nba) {
     if (st.key === 'pra') continue;
-    assert.ok(ctxKeys(st).includes('b2bB'), st.key);
+    // (points without it: its keep at the floor didn't hold on other windows (props.mjs PTS_CTX, 2026-10-14))
+    assert.equal(ctxKeys(st).includes('b2bB'), st.key !== 'pts', st.key);
     assert.ok(!ctxKeys(st).includes('b2b') && !ctxKeys(st).includes('b2bAll') && !ctxKeys(st).includes('b2bS') && !ctxKeys(st).includes('oppB2b'), st.key);
   }
   // (pts+reb+ast keeps the one size in the main search, its old place in the order: b2bB isn't kept there)

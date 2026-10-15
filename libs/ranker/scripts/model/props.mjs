@@ -436,6 +436,19 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // rush+rec yards -5.9% (-8.9%), receiving yards -11.4% (-14.2%); the short ones -4.2% (+2.5%), -5.6% (-1.8%),
 // -5.3% (-1.7%); the backs -7.3% (-7.7%), -2.4% (-2.0%), -15.9% (-18.2%). The flagged rows over their
 // projections are the unlisted ones (a benching: live never flags them), so the under stays the safe side)
+// (Re-checked 2026-10-14 with the history's flag from the injury reports (nflListed, below: the game's Out and
+// Doubtful, its team's reserve list for one not in the game; matchups.mjs nflMatchups' listed), the flag live
+// play reads, in place of the logs' (half its rows benchings). The flagged rows 2122 to 1047 held out. Against
+// the committed model the listed rows still ran under held out (receiving yards -3.4%, the eligible's -7.5%;
+// receptions +0.8%, -0.2%; rush+rec yards -1.7%, -1.0%), the logs-only ones over (+4.1%, +4.7%). Kept on rush+rec
+// yards (-0.075: held out 0.6527 to 0.6512 with qbDeep refit on the same flag; its rows +1.70 to -0.12, the
+// eligible's +2.26 to -0.43; cuts [0.4, 0.8] (the last 20% held out) -0.1 kept, +0.0008; cuts [0.2, 0.55]
+// (the last 45% held out) +0.0004 with its eligible rows overshot); receiving yards +0.0011 (+0.0014, +0.0006 on the other
+// stretches) but -0.2 overshoots its rows every time (+0.90 to -2.33): left out; receptions, rushing yards and
+// carries no gain. Rush+rec yards' keep then failed a second re-check on held-out windows apart from those: the
+// 2024 season alone (fit 2018-2023) +0.0008 at -0.1 but its rows overshot (+0.64 to -1.79), the 2022 and 2023
+// seasons (fit 2017-2021) -0.0002 (its rows already at par, +0.03): kept on 2 of 5 windows, the two sharing most
+// of their held-out games, so taken off rush+rec yards' ctx (RUSH_REC) as not a steady effect)
 // (his team in its first COACH_GAMES games under a new head coach (newCoach, football.mjs: the schedule's
 // coaches, a hire or an interim), on every stat: kept only where the held-out games are better by
 // project.mjs MIN_GAIN with the bias no worse, a 0-or-1 flag on a few hundred team-games)
@@ -492,7 +505,14 @@ const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // yards -13.3% to -5.3%, held out -16.7% to -8.7%), the unlisted ones' put over (held out +0.8%, +10.9%): a
 // blend that under-sizes the listed absence, the conservative way for the unders, till the history reads the
 // injury reports (the backlog))
+// (Refit 2026-10-14 on the reports' flag (nflListed): receptions -0.2 (+0.0004; the other stretches +0.0005
+// each, [0.2, 0.55] kept at -0.3, [0.4, 0.8] its rows just overshot), rush+rec yards -0.3 (+0.0004). On
+// receiving yards' ctx again it took -0.4, +0.0008, but +0.0005 overshooting its rows on [0.4, 0.8] and +0.0003
+// on [0.2, 0.55]: not steady past the floor, kept off it)
 const CATCHING = [...CARRYING, 'qbDeep'];
+// (rush+rec yards' own: qb1Out off (re-checked 2026-10-15, above: its keep not steady across held-out windows),
+// qbDeep on)
+const RUSH_REC = CATCHING.filter((k) => k !== 'qb1Out');
 // (the team's lead back out (rb1Out, matchups.mjs leadBack; a back's own 0, his group's work the vacated
 // term's) measured and left off every stat (2026-10-12). Receptions fit +0.025 (2.5% more catches) but held out
 // only +0.0001, the rounding's floor (0.6168 to 0.6167), with the bias worse (eligible -0.051 to -0.054, all
@@ -565,7 +585,12 @@ const NBA_POS_PACE = { positions: nbaPos, pace: true };
 // assists (+0); NHL shots (0.1 with the opponent's power a 0.5 where it was 0: +0.0002, the bias larger), points
 // and every NFL stat not taken on the fit window. The mark back on a stat to try it again. Rebounds' gain is a hair
 // over the floor (DRAFT_GAIN 0.0003) and picked from about 20 stats tried, so the hourly fit dropping it (od 0)
-// is to be expected, not a fault)
+// is to be expected, not a fault. Re-checked 2026-10-14 on other stretches (the same gate, held out elsewhere): it
+// didn't hold. Held out the last 45% (fit 20-55%): od 0.2 with a 0.5, +0.0003, the eligible players' bias -0.0074
+// to -0.0231 (left out); the last 20% (fit 40-80%): not taken on the fit window; the middle (fit 15-45%, held out
+// 45-70%): 0.1, -0.0001. A one-stretch pick from many, so the mark's off rebounds too (on no stat now; held out the
+// last 30% without it 0.6267, with it 0.6263). Points' +0.0009 (0.05) reproduced, left out on every player's bias
+// (0.0598 to 0.1183), threes' +0.0003 the same (0.0105 to 0.0115), assists +0)
 const RECENCY = { recency: true };
 // (the early exit searched (project.mjs ex, a late term on the whole stat's gate, the low lines' log loss no worse too):
 // the stats whose rows read his share of the work (the NFL's snaps, the NBA's minutes). Not the NHL's skaters: their
@@ -598,6 +623,11 @@ const EXIT = { exit: true };
 // and the eligible rest's bias, oppFront +0.0001; interceptions +0.0001 each; carries oppFront +0.0002 (n 1432);
 // the NHL's oppD on shots not taken, points -0.0001 (n 1900): none taken, as before)
 const NBA_CTX = ['usage', 'blowout', 'b2bB'];
+// (points without b2bB: kept at 0.05 by a hair (+0.0005, held out the last 30%), re-checked 2026-10-14 on other
+// windows: held out the last 20% +0.0002 (the floor not met), fit 20-55% the size picked the other way (-0.07,
+// -0.001). Noise at the floor, as the early exit's points; raw, a bench player's minutes on the second night ran
+// 5% to 7% over expected on both windows, but his points' miss after the term moved from window to window)
+const PTS_CTX = ['usage', 'blowout'];
 const PRA_CTX = ['usage', 'b2bAll', 'blowout'];
 // (the NHL's back-to-backs (audit #6): his side's (b2b) and the other side's (oppB2b), late flags each on its own
 // rows' gate (project.mjs MIN_GAIN, SUBGROUP). Before them (2026-10-12; the eligible players, actual over
@@ -635,6 +665,23 @@ const NHL_VAC = { vacated: true, vacSplits: 6 };
 // points' search though never taken there: off it, the main search's path moved and points held out 0.5471
 // against 0.5469 with it (review of 2026-10-13: the work missing taken, vc 0.25 +0.0003, on a start 0.0005
 // worse), so its replays buy back 0.0002)
+// (re-checked 2026-10-14, the round C re-check's lens; held out the last 30%, eligible players, actual over
+// projected): points with his power-play share down (ppLean -0.3 or less, n 551) -17.3% against -5.2% in the
+// middle, up (0.3 or more, n 662) +6.7%, the same sign on the fit window (-15.7%, +4.5%): the lean on points,
+// 0.1 +0.0004 on the gate as it stands (bias 0.0354 to 0.0359, every player's 0.0723 to 0.0706), points held
+// out 0.5529 to 0.5525, but LEFT OUT on the skeptic's other windows (2026-10-14): held out from 45% (warm-up
+// to 45%, held out from 75%) 0 (0.2 tried); the regular season alone (to 2026-04-18, 30%/70%, playoffs and
+// 2026-27 out) +0.0002 with the bias 0.0113 to 0.0122; Nov-Jan alone (to 2026-01-25, 30%/65%) 0. It clears the
+// floor only on windows running to the end of the history (playoffs and the new season held out); on other splits (warm-up, held out from) 25%/60% 0.1 +0.0004, 35%/85% 0.2 +0.0011,
+// 40%/80% 0.1 +0.0005, 20%/55% +0.0002 (under the floor). teamShots on the edge of every player's bias held
+// strict (its gain +0.0004 to +0.0013 on every split, the bias rising 0.0001 to 0.0003 on all but 20%/55%): left
+// out at 0.0723 to 0.0724, kept two finals later (0.25 +0.0006, points held out 0.5514); the review's rule
+// (project.mjs, the minutes' fix (4)) kept, so the hourly refit decides it run by run. Left out still: the power-play share (ppShare 0.25 after the
+// lean +0.0001, bias larger), the minutes base on points (sn not taken), a rest edge (the other side on a
+// back-to-back less his own: shots 0.03 +0.0002, points 0; raw held out, shots +11.5% / -4.4% against -3.0%
+// with neither), the other side's top-four out (oppD: held out shots +5.6% against -3.0%, on the fit window
+// +0.8% against -0.1%, so no size is picked there), the team allocation on shots (tr 0.25 +0.0006 on the
+// tolerance, the 20-55% split's bias past it, 40-80% 0) and on points (-0.0002)
 const NHL_SOG_CTX = ['ppLean'];
 const NHL_PTS_CTX = ['pp', 'oppGoalie', 'teamShots'];
 // (the NBA's other side's production missing a game, per 10, about its average (2025-26: 3.3; props.mjs CTX
@@ -738,8 +785,45 @@ const PLAYS = { plays: true };
 // stat), the gate judging them again each refit; NFL receiving yards (0.25/3, +0.0025; -0.7693
 // to -1.2745), receptions (0.25/2, +0.001; -0.053 to -0.0748) and rush+rec yards (0.1/3, +0.001; -1.2037 to -1.4028)
 // and NHL points (0.1/1, -0.0002): unmarked, their search off (the NFL's three about 15s a run); the mark back on a
-// stat to try it again)
+// stat to try it again. Re-checked 2026-10-15: the NBA four kept on a gate that reads every player's bias in its
+// two parts (NBA_TEAM, below); rush+rec yards kept in a mean-preserving form (TEAM_NORM, below))
 const TEAM = { team: true };
+// (the team allocation mean-preserving (project.mjs TR_NORM, trn): its factor over the running mean of the ones
+// before the day, so the lines' implied points and the team's expected total move the receivers' projections
+// between players and games without moving the stat's level. The re-check of the market's terms (2026-10-14): the
+// market's team total over the game model's, past the live projection, held out, receiving yards -5.0% (the lines
+// 8% or more under the model) to +7.1% (8% or more over), rush+rec yards -2.1% to +6.0%; the plain allocation's
+// gain there (receiving yards +0.0025 on 2026-10-13) was left out on the bias, its mean moving the held-out level.
+// Mean-preserving, on the same gate (held out the last 30%): kept on receiving yards (tr 0.25/tf 3, +0.0016; the
+// eligible players' bias -0.7389 to -0.6186, every player's -0.1574 to -0.0928; since left out, below) and rush+rec yards (0.1/3,
+// +0.0012; -1.0954 to -1.0473, every player's -0.7296 to -0.699); left out on receptions (0.25/2, +0.0009, every
+// player's bias 0.035 to 0.0413), unmarked. The full dry run (2026-10-15): receiving yards +0.0032 (0.25/3, bias
+// -0.7693 to -0.6443), rush+rec yards +0.0012 (0.1/3, -1.2037 to -1.1554). Other stretches: held out the last 20%
+// (cuts 0.4/0.8) kept on both (+0.0018, +0.0014); held out the middle (0.45-0.7) receiving yards +0.0004 (every
+// player's bias -0.0368 to -0.1199) and rush+rec yards +0.0001, under the floor there. The skeptic's re-check
+// (2026-10-15, the same gate): receiving yards' gain one season's, 2025's (held out the last 30%, by season: 2023
+// -0.0002, 2024 +0.0006, 2025 +0.0041, 2026 -0.0031); held out the 2024 season alone -0.0004, the 2025 season
+// alone +0.0037 with both biases larger (0.644 to 0.6554, every player's 0.2391 to 0.251), 55-80% +0.0002: left
+// out, unmarked. Rush+rec yards' gain every season of the last 30% (2023 +0.0003, 2024 +0.0009, 2025 +0.0021, 2026
+// +0.0007); held out the 2024 season alone kept (+0.001, -1.7909 to -1.682, every player's -0.923 to -0.8497), the
+// 2025 season alone +0.0022 (every player's bias 0.1967 to 0.1974), 55-80% -0.0001: kept, the hourly refit's gate
+// judging it each run)
+const TEAM_NORM = { team: true, trNorm: true };
+// (the NBA's: its gate (project.mjs fitStat, tr on a stat marked teamWhole) a factor on every row's, as the minutes
+// base's and the pace's (WHOLE_TOL: the eligible players' bias within SUBGROUP_TOL of the budget's), and every
+// player's bias read in its two parts, the eligible players' and the rest's (the rest's no larger), not pooled.
+// Re-checked 2026-10-14 (2025-26, held out March to the Finals): the held-out eligible players ran under their
+// projections (points -0.2658 a game) and the rest over (+0.9938), so the pooled bias (+0.0595) was each part's
+// cancelling the other's; tr 0.25/2 shrank both (-0.2423, +0.9694) and the pooled one grew (0.0707) only as the
+// eligible players' under stopped cancelling the rest's over. Points' raw read (eligible, held out, actual over
+// projected without it): the team's own expected total over the players' sum (T0 / S) under 0.85 -13.8%, 0.93 to
+// 0.97 -2.5%, 1.15 and over +8.8% (with it -6.6%, +1.7%, +4.0%); by month March +2.9% to +2.3%, April +3.0% to
+// +2.2%, May -4.2% to -1.2%. Kept (dry run, held out the last 30%): points 0.6471 to 0.642 (+0.0051, b2bB off: PTS_CTX), rebounds
+// 0.6263 to 0.623 (+0.0033; the eligible players' bias 0.0138 to 0.0219, inside the budget), threes 0.5608 to
+// 0.5584 (+0.0024), pts+reb+ast 0.644 to 0.6388 (+0.0052); assists as before (+0.0028). On other windows (held
+// out the last 20%; the fit 20-55%, held out 55-100%) the gain held on every stat (+0.0018 to +0.0082); on the
+// second the rest's bias grew by about 1% on points, assists and threes (assists' tr the same, kept since round B))
+const NBA_TEAM = { ...TEAM, teamWhole: true };
 const PITCHER_CTX = ['leash', 'restSp', 'ump'];
 // (audit round C, measured 2026-10-14 with every candidate on the stats it could move (held out the last 30%), each a
 // late term on project.mjs's gate (ROUND_C): kept, the last regular-season game on NFL passing yards (lastGame
@@ -786,14 +870,14 @@ export const STATS = {
     stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT, ...START }),
     stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
-    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: CATCHING, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...START }),
+    stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: RUSH_REC, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...START, ...TEAM_NORM }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...TEAM }),
-    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...RECENCY, ...START, ...TEAM }),
-    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...TEAM }),
-    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...TEAM }),
-    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...TEAM }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: PTS_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
+    stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
+    stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
+    stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
+    stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
   ],
   nhl: [
     stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: NHL_SOG_CTX, ...NHL_VAC, ...NHL_MINUTES, ...TEAM }),
@@ -867,6 +951,74 @@ export async function nflMarket(history) {
     return marketOf(history, await nflverseGames());
   } catch (err) {
     console.warn(`nfl: the betting lines' history not read (${err.message})`);
+    return null;
+  }
+}
+
+// The NFL history's injury listings as live play reads them (matchups.mjs nflMatchups' listed: the lead
+// quarterback out, qb1Out and qbDeep): each game and team's players listed Out or Doubtful on nflverse's weekly
+// injury report ('report'), and on its weekly roster's reserve list ('reserve': IR, PUP, NFI, suspended; read
+// out only where he isn't in the game), by ESPN's ids (nflverse's players file maps the report's). listed(game,
+// team): a Map of pid to its kind, empty with none listed; null for a game nflverse's schedule doesn't have or a
+// season with no report read (that game's flag from its logs, as before). Any failure: null (every game from its
+// logs, as before 2026-10-14)
+export async function nflListed(history, facts, seasons) {
+  try {
+    const games = new Map(history.map((g) => [String(g.id), g]));
+    const codeOf = new Map();
+    for (const x of facts?.nfl?.values() ?? []) {
+      const g = games.get(String(x.espn));
+      if (!g) continue;
+      codeOf.set(`${x.season}|${g.home}`, x.home_team);
+      codeOf.set(`${x.season}|${g.away}`, x.away_team);
+    }
+    if (!codeOf.size || !seasons.length) return null;
+    const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id'], 24 * 7);
+    const espnOf = new Map((players ?? []).filter((p) => p.espn_id && p.espn_id !== 'NA').map((p) => [p.gsis_id, String(Number(p.espn_id))]));
+    if (!espnOf.size) return null;
+    const file = async (release, base, cols, hours) => {
+      for (const f of [`${base}.csv.gz`, `${base}.csv`]) {
+        const rows = await nflverseRows(release, f, cols, hours).catch(() => null);
+        if (rows?.length) return rows;
+      }
+      return [];
+    };
+    const out = new Map();
+    const put = (season, week, code, pid, kind) => {
+      const key = `${season}|${Number(week)}|${code}`;
+      if (!out.has(key)) out.set(key, new Map());
+      const m = out.get(key);
+      if (m.get(pid) !== 'report') m.set(pid, kind);
+    };
+    const read = new Set();
+    const now = Math.max(...seasons);
+    for (const season of seasons) {
+      // (a past season's files kept a year; this one's read again twice a day)
+      const hours = season === now ? 12 : 24 * 365;
+      const inj = await file('injuries', `injuries_${season}`, ['team', 'week', 'gsis_id', 'report_status'], hours);
+      if (!inj.length) continue;
+      read.add(Number(season));
+      for (const x of inj) {
+        const pid = espnOf.get(x.gsis_id);
+        if (pid && (x.report_status === 'Out' || x.report_status === 'Doubtful')) put(season, x.week, x.team, pid, 'report');
+      }
+      const ros = await file('weekly_rosters', `roster_weekly_${season}`, ['team', 'week', 'status', 'gsis_id', 'espn_id'], hours);
+      for (const x of ros) {
+        if (x.status !== 'RES') continue;
+        const pid = x.espn_id && x.espn_id !== 'NA' ? String(Number(x.espn_id)) : espnOf.get(x.gsis_id);
+        if (pid) put(season, x.week, x.team, pid, 'reserve');
+      }
+    }
+    const missed = seasons.filter((s) => !read.has(Number(s)));
+    console.log(`nfl: the history's injury listings read for ${read.size} of ${seasons.length} seasons${missed.length ? ` (none for ${missed.join(', ')}: their quarterback out from the logs)` : ''}`);
+    return (game, team) => {
+      const x = facts.nfl.get(game);
+      if (!x || !read.has(Number(x.season))) return null;
+      const code = codeOf.get(`${x.season}|${team}`);
+      return code ? (out.get(`${x.season}|${Number(x.week)}|${code}`) ?? new Map()) : null;
+    };
+  } catch (err) {
+    console.warn(`nfl: the history's injury listings not read (${err.message}): the quarterback out from the logs`);
     return null;
   }
 }
@@ -1170,14 +1322,15 @@ export function markStarters(rows, facts) {
 // the state shows them (facts: the context's, whose play-by-play (facts.plays) gives the NFL's funnel)
 // (market: game id to its betting lines' implied [home, away] points (marketPts), each row's put on it (mkt);
 // the NFL's from nflverse's closing lines, none elsewhere yet; totals: game id to its betting total, the NHL's
-// (playerlogs.mjs boxTotals), each row's put on it (mTotal))
-export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null) {
+// (playerlogs.mjs boxTotals), each row's put on it (mTotal); listed: the NFL history's injury listings (nflListed:
+// the lead quarterback out as live play reads it), null: from the game logs)
+export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null) {
   const out = {};
   // (each row's role and its defense's funnel, pace and target split, from the games before it: matchups.mjs;
   // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
   // (MLB's: each batter's start, slot and platoon edge, each starter's leash and rest, the batters' history's
   // start (STATS played) among them, so they're marked before the rows are picked)
-  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
+  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
   if (sport === 'nhl') markStarters(rows, facts);
   for (const st of STATS[sport]) {
     const mine = markEligible(
@@ -1502,7 +1655,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const missNow = missOf(qMiss);
     const S = f.params.tr && f.stat.team ? squadSum(f.model.squadMates?.(row.team, game.season) ?? null, pid, mu0 / (f.params.scale ?? 1), squadIn((x) => 1 - missNow(x.pid), (x) => (onBoard.has(String(x.pid)) ? 1 - missNow(x.pid) : 0))) : null;
     const sq = S ? { S, T: f.model.squad(row), T0: f.model.squad(row, true), m: squadMkt(row, f.env) } : null;
-    const sqF = squadF(f.params, sq);
+    const sqF0 = squadF(f.params, sq);
+    // (mean-preserving where the fit is (project.mjs trn): over the history's latest mean of the factor, trNow)
+    const sqF = sqF0 !== 1 && f.params.trn ? sqF0 / (f.params.trNow ?? 1) : sqF0;
     const mu = Math.max(0.05, mu0 * sqF);
     // (a weather term the fit kept, at an outdoor game whose forecast failed: the projection can't see it)
     const weatherBlind = !!info?.weather?.missing && ctxKeysOf.some((k) => WEATHER_CTX.has(k) && f.params[`c_${k}`]);

@@ -163,7 +163,7 @@ test("the self-check's C21: each spot's shift and rows, the week's said against 
   assert.match(c.headline, /pts\|over\|0\.5/);
 });
 
-test('the recency weight: tried on every stat, its half-lives 3, 2, 1 seasons; kept only with a held-out gain and no larger bias, else the stat as without it', () => {
+test('the recency weight: tried on every stat, its half-lives 3, 2, 1 seasons; kept only with a held-out gain of DRAFT_GAIN (0.0003) or more and no larger bias, else the stat as without it', () => {
   assert.equal(TRY_HL, true);
   assert.deepEqual(HL, [3, 2, 1]);
   // (three seasons, every player's level rising each season: the league's drift)
@@ -182,7 +182,7 @@ test('the recency weight: tried on every stat, its half-lives 3, 2, 1 seasons; k
   assert.ok(Number.isFinite(h.seconds));
   if (fit.params.hl) {
     assert.ok(HL.includes(fit.params.hl));
-    assert.ok(fit.gains.hl > 0);
+    assert.ok(fit.gains.hl >= 0.0003);
     assert.ok(Math.abs(h.bias[1]) <= Math.abs(h.bias[0]));
     assert.ok(Math.abs(h.allBias[1]) <= Math.abs(h.allBias[0]));
     assert.equal(fit.params.scale, h.scale[1]);

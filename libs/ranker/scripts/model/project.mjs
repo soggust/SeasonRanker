@@ -276,7 +276,8 @@
 //            RECENCY): each table's sums, last season's carried part too, times 1 - od at each new game of its
 //            side, so its latest games count most; where the opponent's power is 0 on every group, tried with a at
 //            OD_A. Measured 2026-10-13 on every NFL, NBA and NHL stat: kept on NBA rebounds (0.05, held out +0.0004,
-//            both biases smaller); points, threes and pts+reb+ast gained (+0.0003 to +0.0012) with every player's
+//            both biases smaller; re-checked 2026-10-14 on three other stretches, not held, so off it too: props.mjs
+//            RECENCY on no stat); points, threes and pts+reb+ast gained (+0.0003 to +0.0012) with every player's
 //            bias larger, the rest not taken (props.mjs RECENCY). The other side's key defenders out tonight (its
 //            production missing, its top-four defensemen, its secondary and front seven: props.mjs CTX oppOut,
 //            oppD, oppDB, oppFront, matchups.mjs) measured the same day as late flags and kept on none
@@ -400,8 +401,10 @@
 //            once the rest is fit, taken out (fit again once the held-out games leave a term out)
 //   recency  every stat's (hl, tried after the rest as fit, 2026-10-14, the owner's): newer games counting more in
 //            the lean, the dispersion r and the recalibration fit on the fit window, by a half-life of HL seasons
-//            (3, 2, 1), picked inside the fit window and kept only with a held-out gain and both biases no larger
-//            (fitStat: floors.hl); live, nothing new to read: the scale, r and cal it fit
+//            (3, 2, 1), picked inside the fit window and kept only with a held-out gain of DRAFT_GAIN or more (the
+//            floor every late term clears; it was any gain over 0 till 2026-10-14, which kept NFL passing attempts
+//            at +0.0001) and both biases no larger (fitStat: floors.hl); live, nothing new to read: the scale, r and
+//            cal it fit
 //   middle  every stat's (sl, a late term on the whole stat's gate, tried after the rest as fit): the projection
 //            pulled toward the stat's typical one (rm: the eligible players' average on the fit window) by sl on
 //            its log, x (x / rm)^-sl (held to SL_CAP either way), the lean fit again with it. The factors
@@ -425,7 +428,16 @@
 //            from one end to the other can pass: MLB hits' highest fifths went from over-projected (-0.1%, -4.1%)
 //            to under (+3.2%, +2.4%), the pull overshooting there (0.2 the next try). The draft's prior (dp) is
 //            tried after it and refits the lean, so a stat with both keeps the fifths run.mjs logs as final
-//            (the check as fit) beside the gate's
+//            (the check as fit) beside the gate's. Re-checked 2026-10-14 (the bias drops: the pull moves the
+//            stat's mean as well as its shape, so the bias test partly measured that): a mean-preserving form, each
+//            day's eligible projections summed as without it (no outcome read), passed on NFL passing yards (0.15,
+//            +0.0029, both biases equal or smaller) and MLB outs (0.15, +0.0041; held out the last 45% +0.0045,
+//            the last 20% +0.0050 (0.1), the middle -0.0033, its fit window picking -0.1); on passing TDs,
+//            interceptions and receptions it gained (+0.0031, +0.0023, +0.0006) with every player's bias 0.0003
+//            larger; a trailing 20 days' form (readable live) left outs out on the bias (0.0355 to 0.0447). Not
+//            taken here: the day's form needs a slate's projections together live, the integrator's call. MLB
+//            hits' +0.0005 held on other stretches (the last 20% +0.0006, kept; the middle +0.0007, left out on
+//            the bias)
 // A term's held-out gain is the log loss without it less with it, the others as they stand: an a_<group>'s
 // against the stat's a as the search left it (with every group's set, a's first pass value: nothing read it
 // after); a group left out, a is searched again (fitStat).
@@ -795,7 +807,12 @@ const CS_MIN = 300;
 export const SKEW_MIN_LINE = 5;
 // (the recalibration by side tried at all: kept on no stat on 2026-10-12, and its gate a full held-out replay
 // on every stat each hourly run, so off: its check numbers (each side's log loss, the skew rows) still logged
-// from the fit as it stands (floors.cs); true to try it again)
+// from the fit as it stands (floors.cs); true to try it again. Re-checked 2026-10-14 against the stats as they
+// stand (the pull toward the middle settled): NFL receiving yards +0.0008 and rush+rec yards +0.0010, the over
+// side's log loss worse on both (their standing under-projection, not a side's shape); passing TDs +0.0012, the
+// under side too few lines; NHL shots +0.0007 with both sides no worse, but not held on two other stretches
+// (the last 20%: +0.0004, the over side worse; the middle: +0.0002); NHL saves +0.0006, the under side too few;
+// every NBA and MLB stat and NHL points +0.0001 or less)
 const TRY_CS = false;
 // (the carryover's: the late terms tried after the next man up and the injury return, in this order. sk and rx
 // were left out on every stat they were tried on (2026-10-12), and the carryover's search cost the NFL props'
@@ -933,6 +950,32 @@ const TF_MKT = { 1: 0, 2: 0.5, 3: 1, 4: 0 };
 const TR_K = 4;
 export const TR_MIN = 2;
 const TR_CAP = 2;
+// (the team allocation mean-preserving (a stat marked trNorm, params.trn): its factor over the running mean of the
+// factors before the day, their last TR_NORM rows, so it moves projections between players and games, never the
+// level the lean was fit at. The plain factor's held-out level moved with its mean, the lean refit on the fit window
+// not following it (receiving yards' eligible bias -0.7389 to -1.2602 a game at tr 0.25/tf 3, the stat left out on
+// it); and it reads the lines' implied points over their average (squadMkt, tf 2 and 3) without that average's
+// level mattering. Measured 2026-10-14 (props.mjs TEAM_NORM). Live, the history's latest mean (params.trNow))
+export const TR_NORM = 3000;
+export const trNormBuf = () => ({ cs: [0], pend: [], day: null });
+// (a factor over the running mean of the ones before its day (nb: trNormBuf), its log lf then counted)
+export function trNormOf(nb, day, lf, n) {
+  if (nb.day !== day) {
+    for (const y of nb.pend) nb.cs.push(nb.cs[nb.cs.length - 1] + y);
+    nb.pend = [];
+    nb.day = day;
+  }
+  nb.pend.push(lf);
+  const len = nb.cs.length - 1;
+  const k = Math.min(len, n);
+  return k ? Math.exp((nb.cs[len] - nb.cs[len - k]) / k) : 1;
+}
+// (the latest mean, live's: the last n factors the history leaves, its last day's with them)
+export function trNowOf(nb, n) {
+  if (!nb) return 1;
+  const all = [...nb.cs.slice(1).map((c, i) => c - nb.cs[i]), ...nb.pend].slice(-n);
+  return all.length ? Math.exp(all.reduce((t, y) => t + y, 0) / all.length) : 1;
+}
 // (who's likely to play tonight (makeModel's squadMates): each of the team's players of the stat by how many of its
 // last SQUAD_N games this season he played in; a regular, SQUAD_REG of them or more: his not playing an absence
 // known before the game, as the history counts it)
@@ -1908,7 +1951,8 @@ function squadUp(list, batch, params, env, m) {
     const base = mates?.length ? squadBase(mates, inOf) : null;
     for (const x of xs) {
       x.p.squad = { S: squadSum(mates, x.row.pid, x.p.mu / scale, inOf, base), T, T0, m: mk, sum };
-      const f = squadF(params, x.p.squad);
+      let f = squadF(params, x.p.squad);
+      if (params.trn && f !== 1) f /= trNormOf((m.trNorm ??= trNormBuf()), row.date.slice(0, 10), Math.log(f), params.trn);
       if (f !== 1) (x.p.preTr = x.p.mu), (x.p.mu = Math.max(0.05, x.p.mu * f));
     }
   }
@@ -2208,7 +2252,7 @@ export function fitStat(stat, rows, env) {
   // with them); without, nothing to fit, the stat as before)
   const ctxs = env.ctx ? fitCtxs(stat, env) : [];
   const aPos = aKeys(stat);
-  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps || stat.minutes ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), mk: 0 };
+  let params = { K: 4, w: 0.2, a: 0.5, b: 0.5, ...OPTIONAL, ...Object.fromEntries(aPos.map((k) => [k, null])), ...Object.fromEntries(ctxs.map((k) => [k, 0])), ...(stat.vacated ? { vs: 0 } : {}), ...(stat.snaps || stat.minutes ? { sr: 0 } : {}), ...(stat.perTarget ? { yk: 40 } : {}), ...(stat.trNorm ? { trn: TR_NORM } : {}), mk: 0 };
   // (the draft's prior (dp) apart: tried last, on top of the rest as fit (below))
   // (and the context flags with a floor of their own (MIN_GAIN: a new head coach's first games) the same way,
   // tried after the rest: searched with them, a flag left out still moved the others' sizes)
@@ -2326,7 +2370,7 @@ export function fitStat(stat, rows, env) {
       const a = allOf(o);
       parts = { ...(parts ?? {}), sides: sides.map((f) => biasOf(a.filter(f))) };
     }
-    return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, parts, early: has(stat, 'sp') ? earlyOf(o, pc) : null };
+    return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, nonElig: biasOf(allOf(o).filter((x) => x.row.eligible === false)), parts, early: has(stat, 'sp') ? earlyOf(o, pc) : null };
   };
   let current = heldOut(params);
   const gains = {};
@@ -2425,7 +2469,16 @@ export function fitStat(stat, rows, env) {
     const o = replayStat(stat, sorted, { ...params, tr: 0, trRead: true, scale: 1 }, env, cuts).out;
     const fitE = o.filter((x) => x.win === 1 && x.row.eligible !== false);
     const at = (t) => {
-      const f = (x) => x.p.mu * squadF(t, x.p.squad);
+      // (mean-preserving where the stat's marked (params.trn): each factor over the running mean before its day)
+      const nf = new Map();
+      if (params.trn) {
+        const nb = trNormBuf();
+        for (const x of o) {
+          const g = squadF(t, x.p.squad);
+          if (g !== 1) nf.set(x, trNormOf(nb, x.row.date.slice(0, 10), Math.log(g), params.trn));
+        }
+      }
+      const f = (x) => (x.p.mu * squadF(t, x.p.squad)) / (nf.get(x) ?? 1);
       const sum = fitE.reduce((s, x) => s + f(x), 0);
       const k = sum > 0 ? fitE.reduce((s, x) => s + x.v, 0) / sum : 1;
       return o.map((x) => ({ ...x, p: { mu: Math.max(0.05, k * f(x)) } }));
@@ -2587,11 +2640,20 @@ export function fitStat(stat, rows, env) {
       // other term's); every other term's no larger at all. The hourly refit judges it again each run, so a
       // bias grown past the tolerance as the season comes in drops it)
       // (WHOLE_TOL's against the bias before the first of them, wholeBase: the budget shared, not one a term)
-      if (WHOLE_TOL.has(key)) wholeBase ??= off.check ?? null;
-      const eb = WHOLE_TOL.has(key) ? fine(tried.check?.bias, wholeBase?.bias, SUBGROUP_TOL * (wholeBase?.mean ?? 0)) : fine(tried.check?.bias, off.check?.bias);
+      // (and the NBA's team allocation (tr on a stat marked teamWhole, props.mjs NBA_TEAM) the same: a factor on every
+      // row, the lean refit with it; its every player's bias read in two parts below (splitAll))
+      const teamWhole = key === 'tr' && !!stat.teamWhole;
+      const wholeTol = WHOLE_TOL.has(key) || teamWhole;
+      if (wholeTol) wholeBase ??= off.check ?? null;
+      const eb = wholeTol ? fine(tried.check?.bias, wholeBase?.bias, SUBGROUP_TOL * (wholeBase?.mean ?? 0)) : fine(tried.check?.bias, off.check?.bias);
       if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
-      const ab = fine(tried.all?.bias, off.all?.bias);
-      if (ab) fails.push(ab === 'larger' ? "all players' bias" : "all players' bias not measured");
+      // (every player's bias in its two parts where the pooled one cancels (teamWhole): the eligible players' (eb
+      // above) and the rest's (nonElig), the rest's no larger; pooled, a term that shrank both could read larger, the
+      // eligible players' under no longer cancelling the rest's over (NBA points 2026-10-14: -0.2658 to -0.2423 and
+      // +0.9938 to +0.9694, pooled 0.0595 to 0.0707))
+      const splitAll = teamWhole;
+      const ab = splitAll ? fine(tried.nonElig?.bias, off.nonElig?.bias) : fine(tried.all?.bias, off.all?.bias);
+      if (ab) fails.push(ab === 'larger' ? (splitAll ? "the other players' bias" : "all players' bias") : "all players' bias not measured");
       // (the pull toward the middle's own point: the held-out fifths by projection missing less (each one's
       // actual over projected, off 0, summed), the eligible players')
       // (the early exit's own point: the low lines' held-out log loss (LOW_LINE or under) no worse, where each
@@ -2624,7 +2686,7 @@ export function fitStat(stat, rows, env) {
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(key === 'tr' ? { nonElig: [off.nonElig?.bias ?? null, tried.nonElig?.bias ?? null] } : {}), ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
   }
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
@@ -2691,8 +2753,8 @@ export function fitStat(stat, rows, env) {
   // multiple of every projection: scaled from it, as the pull toward the middle's search does). The half-life
   // picked inside the fit window (its first INNER_FIT fit at each, its last games scored unweighted: the one that
   // scores best, better than none; none, not tried), then judged on the held-out games against none the same way
-  // (the lean, r and recalibration fit unweighted): kept only with a held-out gain and the eligible players' and
-  // every player's bias no larger. Left out: the stat exactly as it was. Its numbers: floors.hl)
+  // (the lean, r and recalibration fit unweighted): kept only with a held-out gain of DRAFT_GAIN or more, the late
+  // terms' floor, and the eligible players' and every player's bias no larger. Left out: the stat exactly as it was. Its numbers: floors.hl)
   gains.hl = null;
   if (TRY_HL) {
     const hlT0 = Date.now();
@@ -2753,7 +2815,7 @@ export function fitStat(stat, rows, env) {
       rs = [r0, r];
       gains.hl = Math.round(((off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0)) * 10000) / 10000;
       const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
-      if (!(gains.hl > 0)) fails.push('gain');
+      if (!(gains.hl >= DRAFT_GAIN)) fails.push('gain');
       if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
       if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
       if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
@@ -2787,6 +2849,8 @@ export function fitStat(stat, rows, env) {
     if (!fails.length) (params = { ...params, cs: 1, calSide: sided.calSide, cal: sided.cal }), (current = sided);
   }
   const finalRun = replayStat(stat, sorted, params, env, cuts);
+  // (the mean-preserving allocation's latest mean, live's (params.trn: trNow))
+  if (params.trn && params.tr) params.trNow = Math.round(trNowOf(finalRun.model.trNorm, params.trn) * 10000) / 10000;
   const final = finalRun.out;
   // (the start-of-season prior's table as the history leaves it (sp: learned whether or not it's kept), for the
   // log)

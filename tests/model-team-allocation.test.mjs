@@ -4,12 +4,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { STATS } from '../libs/ranker/scripts/model/props.mjs';
-import { SQUAD_N, SQUAD_REG, TR_MIN, makeModel, replayStat, searched, squadBase, squadF, squadIn, squadMkt, squadSum } from '../libs/ranker/scripts/model/project.mjs';
+import { SQUAD_N, SQUAD_REG, TR_MIN, makeModel, replayStat, searched, squadBase, squadF, squadIn, squadMkt, squadSum, trNormBuf, trNormOf, trNowOf } from '../libs/ranker/scripts/model/project.mjs';
 
 const day = (d) => `2025-${String(9 + Math.floor((d - 1) / 28)).padStart(2, '0')}-${String(((d - 1) % 28) + 1).padStart(2, '0')}`;
 
 test('searched on the stats a team splits among its players where it was kept or came close: the NFL rushing, the NBA, the NHL shots', () => {
-  assert.deepEqual(STATS.nfl.filter((s) => searched(s, 'tr')).map((s) => s.key), ['rushYds', 'rushAtt']);
+  assert.deepEqual(STATS.nfl.filter((s) => searched(s, 'tr')).map((s) => s.key), ['rushYds', 'rushAtt', 'rushRecYds']);
+  // (rush+rec yards' mean-preserving (trNorm: project.mjs TR_NORM), the rushing's plain; receiving yards' left out on other stretches)
+  assert.deepEqual(STATS.nfl.filter((s) => s.trNorm).map((s) => s.key), ['rushRecYds']);
   assert.deepEqual(STATS.nba.filter((s) => searched(s, 'tr')).map((s) => s.key), ['pts', 'reb', 'ast', 'fg3', 'pra']);
   assert.deepEqual(STATS.nhl.filter((s) => searched(s, 'tr')).map((s) => s.key), ['sog']);
   // (a quarterback's passing, a goalie's saves, a pitcher's: his team's alone, nothing to allocate)
@@ -231,4 +233,19 @@ test('priceProps: the live sum by the same rule (an Out regular none, a question
   const own = run({ tr: 0.5, tf: 4 });
   assert.equal(own.projection.squad.team, 20);
   assert.ok(Math.abs(own.projection.mean - mu0 * Math.sqrt(20 / S)) < 0.011);
+});
+
+test("mean-preserving (trNorm): a factor over the running mean of the ones before its day, the day's own not read; live, the last n's", () => {
+  const nb = trNormBuf();
+  // (the first day: nothing before it, 1)
+  assert.equal(trNormOf(nb, 'd1', Math.log(1.2), 3), 1);
+  assert.equal(trNormOf(nb, 'd1', Math.log(0.9), 3), 1);
+  // (the next: the first day's two, their geometric mean)
+  assert.ok(Math.abs(trNormOf(nb, 'd2', Math.log(1.5), 3) - Math.sqrt(1.2 * 0.9)) < 1e-12);
+  assert.ok(Math.abs(trNormOf(nb, 'd2', Math.log(1.1), 3) - Math.sqrt(1.2 * 0.9)) < 1e-12);
+  // (the third: the last 3 before it)
+  assert.ok(Math.abs(trNormOf(nb, 'd3', 0, 3) - Math.cbrt(0.9 * 1.5 * 1.1)) < 1e-12);
+  // (live's: the last 3 the history leaves, its last day's with them)
+  assert.ok(Math.abs(trNowOf(nb, 3) - Math.cbrt(1.5 * 1.1 * 1)) < 1e-12);
+  assert.equal(trNowOf(null, 3), 1);
 });

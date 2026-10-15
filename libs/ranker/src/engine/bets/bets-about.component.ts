@@ -51,7 +51,7 @@ const TERM_NAMES: Record<string, string> = {
   po: "NBA pace: how many possessions tonight's game should have, as a power",
   ep: "NFL expected plays tonight: how many plays his team should run (its own pace and the other side's, or the game's expected total and its share of the ball), against the games he's played this season, as a power; used in place of the defense's pace",
   eg: "NFL expected plays' form (1: his team's expected plays from its own pace and the other side's, over their average in his games this season; 2: the same over the plays his team actually ran in his games; 3: the game's expected total times his team's share of it (its time of possession, measured by its share of the plays), over its average in his games; 4: that over the plays actually run)",
-  tr: "team allocation: each team's game projected first (its own total of the stat a game, against the opponent's allowed), then each player's projection pulled toward his share of it, so a team's players add up to the team's (its backs' carries and rushing yards to its runs, the NBA's assists to the team's); a starter back from an absence counted in his teammates' total, so his return doesn't lift them",
+  tr: "team allocation: each team's game projected first (its own total of the stat a game, against the opponent's allowed), then each player's projection pulled toward his share of it, so a team's players add up to the team's (its backs' carries and rushing yards to its runs, the NBA's assists to the team's); a starter back from an absence counted in his teammates' total, so his return doesn't lift them; on NFL rush+rec yards scaled so it moves yards between players and games without moving the stat's overall level",
   tf: "team allocation's form (1: the team's own games and the opponent's alone; 2: with the betting lines' implied points for his side, at half; 3: in full; 4: the team's own games alone, the opponent not read again)",
   pg: "NBA pace's form (0: the other side's possessions over the league's; 2: the game's expected possessions over their average in his games this season; 3: the other side's over its average in his games this season; 1, off the search: the game's expected over the league's)",
   sr: "expected share: last game's weight (NBA, NHL: his last three games' minutes)",
@@ -88,7 +88,7 @@ const TERM_NAMES: Record<string, string> = {
   mk: "game script from the betting lines (the market's implied team points, not the desk's own)",
   c_mSpread: 'favored or underdog by the betting lines (spread)',
   cs: 'over/under chance calibrated separately above and below the projection',
-  hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better and no more biased)",
+  hl: "recency weight: newer games count more in the projection's final lean, spread and calibration (its half-life in seasons; kept only where the held-out games came out better by the floor, 0.03% of log loss, and no more biased)",
 
   rk: 'spread grows with projection',
   c_wind: 'wind',
