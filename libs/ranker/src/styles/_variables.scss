@@ -81,7 +81,7 @@ $breakpoints: (
 
 // The page's stacking layers (z-index), each at its value today: the find box's hits, the bet slip's tab and
 // the slip, a list's toast; then the modals (the backdrop or the dialog's host; the player card and the
-// popovers over it), the game view (opened from a card, over it) and the toasts beside it, and the skip
+// popovers over it), the game view (opened from a card, over it), the toasts over all of them, and the skip
 // link over everything. (A component's own stacking inside it, 1 to 20, stays local.)
 $z-layers: (
   find-hits: 40,
@@ -92,8 +92,9 @@ $z-layers: (
   modal: 1001,
   popover: 1001,
   game-backdrop: 1002,
-  toast: 1002,
   game: 1003,
+  // (over the game view too: its Share button's "Link copied")
+  toast: 1004,
   skip-link: 10000,
 );
 
