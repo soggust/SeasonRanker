@@ -6,6 +6,17 @@
 // (a panel's corners; a depth chart's bar and body round theirs inside its 1px border)
 $panel-radius: v.$panel-radius;
 
+// (the Betting Wallet's panels, chip-rimmed as on the Bets page and the Algorithm (below), their bars the felt's
+// green, not each category's color. First in the file, at a class's weight (.wallet-page, the wallet's own column):
+// where a panel's own rule below weighs the same, the panel's wins, as it did over the wallet's own styles)
+.wallet-page card-panel {
+  @include casino.panel;
+
+  &[class] {
+    --group-color: #{casino.$felt-light};
+  }
+}
+
 // The panels (card-panel.component.ts): global (no view encapsulation), so these reach the bar the
 // component draws; scoped to card-panel. The spacing between panels and their content's look stay the
 // page's own (player-card.scss .stat-group).
@@ -78,7 +89,9 @@ card-panel {
       align-items: center;
       display: flex;
       flex: 0 0 auto;
-      gap: 2px;
+      // (a page whose controls want more room sets --panel-actions-gap on them: the Team tab's and the Field
+      // Map's mode pills)
+      gap: var(--panel-actions-gap, 2px);
       padding-right: 8px;
     }
   }
@@ -141,6 +154,12 @@ model-desk card-panel {
 // the class every card-panel carries, so it outweighs the .group-* classes that set the category's color)
 model-desk card-panel.stat-group {
   --group-color: #{casino.$felt-light};
+}
+
+// (the Algorithm's and the wallet's grid of panels: each panel its own height, its body filling it, the sport's
+// edges, the NFL's end zone, all the way down; model-desk.scss lays the panels out)
+.desk-grid card-panel > .panel-body {
+  flex: 1;
 }
 
 // (on the player card, and the game view: a little more room each side of the bar, the title in the hand;

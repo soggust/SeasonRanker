@@ -18,23 +18,17 @@ $gold: casino.$lock-gold;
 
 @include kit.app-buttons;
 
-// (the desk's panels, chip-rimmed as on the Bets page and the Algorithm: card-panel.scss gives them to those two)
-:host ::ng-deep card-panel {
-  @include casino.panel;
-
-  // (their bars the felt's green, not each category's color)
-  &[class] {
-    --group-color: #{casino.$felt-light};
-  }
-}
+// (the desk's panels, chip-rimmed as on the Bets page and the Algorithm, their bars the felt's green:
+// card-panel.scss, the panels' own styles, .wallet-page card-panel)
 
 .wallet-page {
-  margin: 0 auto;
-  max-width: 1100px;
-  padding: 22px 20px 90px;
+  // (on the app's sheet, which brings the top and side room: room under the last panel, the slip's to clear)
+  padding: 0 0 90px;
 
-  // (the Bets page's Open Bets tab: level with the other tabs' panels, no slip to clear at the foot)
+  // (the Bets page's Open Bets tab: centered, level with the other tabs' panels, no slip to clear at the foot)
   &.only-open {
+    margin: 0 auto;
+    max-width: 1100px;
     padding: 0 0 16px;
   }
 }
@@ -550,10 +544,6 @@ $gold: casino.$lock-gold;
 
 // Phones (in one block, after every rule it overrides)
 @include v.down(small) {
-  .wallet-page {
-    padding: 14px 10px 90px;
-  }
-
   .wallet-leaders li {
     gap: 6px;
     grid-template-columns: 24px 26px minmax(0, 1fr) auto 64px;

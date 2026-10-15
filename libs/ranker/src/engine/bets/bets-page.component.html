@@ -328,10 +328,10 @@
         role="dialog"
         tabindex="-1"
         [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
-        [style.top.px]="c.at.top"
-        [style.bottom.px]="c.at.bottom"
-        [style.left.px]="c.at.left"
-        [style.max-height.px]="c.at.room"
+        [style.--why-top.px]="c.at.top"
+        [style.--why-bottom.px]="c.at.bottom"
+        [style.--why-left.px]="c.at.left"
+        [style.--why-room.px]="c.at.room"
       >
         <div class="why-head">
           <p class="why-title">
@@ -400,10 +400,10 @@
         role="dialog"
         tabindex="-1"
         [attr.aria-label]="'How ' + w.name + '’s score is built: ' + w.place"
-        [style.top.px]="w.at.top"
-        [style.bottom.px]="w.at.bottom"
-        [style.left.px]="w.at.left"
-        [style.max-height.px]="w.at.room"
+        [style.--why-top.px]="w.at.top"
+        [style.--why-bottom.px]="w.at.bottom"
+        [style.--why-left.px]="w.at.left"
+        [style.--why-room.px]="w.at.room"
       >
         <div class="why-head">
           <p class="why-title">

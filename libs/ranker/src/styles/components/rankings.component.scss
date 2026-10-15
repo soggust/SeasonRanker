@@ -365,30 +365,8 @@ section.rankings-wrapper > footer {
   }
 }
 
-// The More menu (phones): its rows each an icon in the sport's light and a label, lit up when hovered
-// (the panel is in Material's overlay, outside this component: the scoreboard look is _base.scss's)
-::ng-deep .mat-mdc-menu-panel.more-menu {
-  min-width: 190px;
-
-  .mat-mdc-menu-item {
-    min-height: 44px;
-
-    .mat-icon {
-      color: var(--scoreboard-led);
-      margin-right: 14px;
-      @include v.icon-size(20px);
-    }
-
-    span {
-      font-weight: 700;
-    }
-
-    &:hover span,
-    &.cdk-keyboard-focused span {
-      color: var(--scoreboard-led) !important;
-    }
-  }
-}
+// (the More menu (phones) it opens is in Material's overlay, outside this component: its look is global,
+// _overlays.scss)
 
 @include v.up(desktop) {
   section footer {
@@ -445,7 +423,7 @@ section ul {
   // the bottom) is hidden until the drop. On drop the rows snap into place (a transition there made them
   // jump a row and slide back).
   &.cdk-drop-list-dragging {
-    overflow-x: hidden !important;
+    overflow-x: hidden;
 
     li.player:not(.cdk-drag-placeholder) {
       transition: transform 0.2s ease;
@@ -518,11 +496,12 @@ section ul li.player:not(.header-row) {
   }
 
   // (the keyboard on the row (Enter picks it): the hover's wash, and its name lit as when the name has the focus)
+  // (.player-info: so it outweighs the name's own white, below)
   @include v.focus-lit {
     box-shadow: inset 0 0 0 100vmax $row-wash;
 
-    .card-link {
-      color: var(--scoreboard-led) !important;
+    .player-info .card-link {
+      color: var(--scoreboard-led);
     }
   }
 
@@ -557,7 +536,7 @@ section ul li.player.cdk-drag-preview:hover {
   box-sizing: border-box;
   cursor: grabbing;
   margin: 0;
-  overflow: hidden !important;
+  overflow: hidden;
   z-index: 10;
 }
 
@@ -844,7 +823,7 @@ section ul li.player:not(.header-row) {
     &:has(.card-target:hover),
     &:has(.card-link:focus-visible) {
       .card-link {
-        color: var(--scoreboard-led) !important;
+        color: var(--scoreboard-led);
       }
 
       .team-badge {
@@ -853,19 +832,20 @@ section ul li.player:not(.header-row) {
     }
   }
 
-  // The name in DynaPuff (a soft, rounded hand) at its lightest, a touch see-through to soften it
+  // The name in DynaPuff (a soft, rounded hand) at its lightest, a touch see-through to soften it (lit, above,
+  // where the pointer or the keyboard is on it: those rules outweigh this one)
   .player-name strong {
-    color: #fff !important;
-    font-family: v.$font-hand !important;
-    font-size: 15px !important;
+    color: #fff;
+    font-family: v.$font-hand;
+    font-size: 15px;
     font-synthesis: none;
-    font-weight: 400 !important;
-    letter-spacing: normal !important;
+    font-weight: 400;
+    letter-spacing: normal;
     opacity: 0.95;
     text-shadow:
       0 1px 2px rgba(0, 0, 0, 0.95),
       0 0 6px rgba(0, 0, 0, 0.7),
-      0 0 2px rgba(255, 255, 255, 0.3) !important;
+      0 0 2px rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -964,8 +944,8 @@ section ul li.player {
     }
 
     // A letter grade: a pill tinted by its own grade color, every pill the same width (A+ / B+ match
-    // single letters)
-    p > span,
+    // single letters; not a header label's parenthetical, .label-tag, below)
+    p > span:where(:not(.label-tag)),
     p[style*="color"] {
       background: color-mix(in srgb, currentColor 20%, rgba(0, 0, 0, 0.45));
       border-radius: 0.4em;
@@ -1366,16 +1346,19 @@ section ul li.player.header-row:hover {
 // box's header: "O-Line (Pass)"), sitting 1px low: centered, the small text read as high. In a grade
 // box's header the label sits differently, so there it goes up.
 section ul li.player.header-row div .stat-label .label-tag {
-  background: none !important;
-  border-radius: 0 !important;
   font-size: 8px;
-  padding: 0 !important;
   transform: translateY(1px);
   white-space: pre;
 }
 
+// (in a grade box's header it sits in a grade pill's box, as wide, without the pill)
 section ul li.player.header-row div.box .stat-label .label-tag {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  text-shadow: none;
   transform: translateY(-0.5px);
+  width: 38px;
 }
 
 // Draggable column headers (reorder within a stat group): a grab cursor, lit on hover, the dragged
@@ -1762,7 +1745,7 @@ section ul li.player > div.player-info .player-name {
     margin-bottom: 8px;
 
     &.finding > :not(.find-bar, .toast) {
-      display: none !important;
+      display: none;
     }
 
     .find-bar {

@@ -13,7 +13,7 @@ import { Photo, initials } from './account-helpers';
     }
   `,
   styleUrls: ['../../styles/components/account-avatar.scss'],
-  host: { '[style.--size]': "size + 'px'", '[class.has-logo]': "photo?.kind === 'logo' && !broken" },
+  host: { '[style.--avatar-size]': "size + 'px'", '[class.has-logo]': "photo?.kind === 'logo' && !broken" },
   standalone: false,
 })
 export class AccountAvatarComponent {

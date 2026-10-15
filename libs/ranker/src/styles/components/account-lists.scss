@@ -1177,7 +1177,7 @@ $bar-h: 30px;
 @include v.down(phablet) {
   .lists-page {
     gap: 12px;
-    padding: 14px 12px 40px;
+    padding: 0 0 40px;
   }
 
   .list-hero {

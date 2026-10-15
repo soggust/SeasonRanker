@@ -258,15 +258,10 @@ card-panel {
   }
 
   // (each panel its own height: one folded beside an open one stays a bar; a panel's body fills it, the
-  // sport's edges, the NFL's end zone, all the way down)
+  // sport's edges, the NFL's end zone, all the way down: card-panel.scss, the body being the panel's own)
   card-panel {
     display: flex;
     flex-direction: column;
-
-    // (the panel's own element: past this component's scoped styles)
-    ::ng-deep > .panel-body {
-      flex: 1;
-    }
 
     // (a table wider than its half of the row scrolls sideways rather than running past the edge)
     .group-body {

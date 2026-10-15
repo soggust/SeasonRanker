@@ -1,0 +1,11 @@
+@use "components/account-kit" as kit;
+
+// ===========================================================================
+// The app's sheet (app.component's .app-page: Settings, the lists, the tracker, the wallet, friends, a profile,
+// the legal pages): nothing on it wears a sport, the same look on every sport's app (_account-kit.scss agnostic).
+// Global, loaded after the theme it answers (each app's styles.scss), at the weight app.component's own style
+// had (:root weighs what its host did), so it reaches every page's components inside the sheet.
+// ===========================================================================
+:root .app-page {
+  @include kit.agnostic;
+}

@@ -42,9 +42,8 @@ $face-fallback: #333;
   box-sizing: border-box;
   color: $page-text;
   font-family: v.$font-base;
-  margin: 0 auto;
-  max-width: 1100px;
-  padding: 22px 20px 48px;
+  // (the sheet brings the top and side room: app.component's shell)
+  padding: 0 0 48px;
 }
 
 // ---------------------------------------------------------------------------
@@ -117,11 +116,11 @@ $face-fallback: #333;
   justify-content: space-between;
 }
 
-// (Copy link: the app's primary button, the icon alone, the pills' height)
-.tracker-copy {
+// (Copy link: the app's primary button, small (its 32px height), the icon alone, the pills' height; .small too, so it
+// weighs what the small button's own rule does and, after it, wins)
+.tracker-copy.small {
   height: 32px;
-  min-height: 32px !important;
-  padding: 0 !important;
+  padding: 0;
   width: 32px;
 
   .mat-icon {
@@ -1101,7 +1100,7 @@ $face-fallback: #333;
 
 @include v.down(small) {
   .tracker-page {
-    padding: 14px 10px 32px;
+    padding: 0 0 32px;
   }
 
   .tracker-top {
@@ -1224,7 +1223,4 @@ $face-fallback: #333;
   }
 }
 
-// (a pin's menu opens in the overlay, outside the page: its icons lit to read on the dark panel)
-::ng-deep .tracker-menu .mat-mdc-menu-item:not([disabled]) .mat-icon {
-  color: rgba(255, 255, 255, 0.75);
-}
+// (a pin's menu opens in the overlay, outside the page: its icons' light is global, _overlays.scss)

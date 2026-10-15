@@ -2,3 +2,7 @@
 @use "base";
 @use "sport-global";
 @use "cards";
+// (the app's sheet: nothing on it wears a sport, _app-sheet.scss)
+@use "app-sheet";
+// (the menus that open in Material's overlay: last, as the components' own styles they were)
+@use "overlays";

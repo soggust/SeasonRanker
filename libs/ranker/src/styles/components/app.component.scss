@@ -467,16 +467,7 @@ main {
   }
 }
 
-// (and a page's own outer column: no side padding, no top padding, no centered max-width of its own; its
-// bottom padding stays, room under the last panel)
-:host ::ng-deep .app-sheet-body > * > :is(.account-page, .lists-page, .tracker-page, .wallet-page, .legal) {
-  margin-inline: 0;
-  max-width: none;
-  padding-inline: 0;
-  padding-top: 0;
-}
+// (a page's own outer column on the sheet: no side or top padding, no centered max-width of its own, only its
+// bottom room under the last panel: each page's own root rule, the sheet being where it shows)
 
-// (nothing on the sheet wears a sport: the same look on every sport's app; _account-kit.scss agnostic)
-:host ::ng-deep .app-page {
-  @include kit.agnostic;
-}
+// (nothing on the sheet wears a sport: the same look on every sport's app; global, _app-sheet.scss)

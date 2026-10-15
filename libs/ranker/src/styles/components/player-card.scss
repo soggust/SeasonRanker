@@ -3000,7 +3000,7 @@ $ai-narrow: v.bp(ai-narrow);
 // (the Team tab's Current / Starters knob: the sport's own small pills, .game-filter.small below; a past
 // season's off, on its starters, its hover saying why)
 .depth-modes {
-  gap: 6px !important;
+  --panel-actions-gap: 6px;
   margin-right: 8px;
 
   .game-filter.off,

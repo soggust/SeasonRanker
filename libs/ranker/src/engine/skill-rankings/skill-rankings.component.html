@@ -317,10 +317,10 @@
       role="dialog"
       tabindex="-1"
       [attr.aria-label]="w.ur ? w.name + ': unranked' : 'Why ' + w.name + ' ranks #' + w.rank"
-      [style.top.px]="w.at.top"
-      [style.bottom.px]="w.at.bottom"
-      [style.left.px]="w.at.left"
-      [style.max-height.px]="w.at.room"
+      [style.--why-top.px]="w.at.top"
+      [style.--why-bottom.px]="w.at.bottom"
+      [style.--why-left.px]="w.at.left"
+      [style.--why-room.px]="w.at.room"
     >
       <div class="why-head">
         <p class="why-title">
@@ -392,10 +392,10 @@
       role="dialog"
       tabindex="-1"
       [attr.aria-label]="'What makes ' + g.name + '\'s ' + g.label + ' grade: ' + g.letter"
-      [style.top.px]="g.at.top"
-      [style.bottom.px]="g.at.bottom"
-      [style.left.px]="g.at.left"
-      [style.max-height.px]="g.at.room"
+      [style.--why-top.px]="g.at.top"
+      [style.--why-bottom.px]="g.at.bottom"
+      [style.--why-left.px]="g.at.left"
+      [style.--why-room.px]="g.at.room"
     >
       <div class="why-head">
         <p class="why-title">

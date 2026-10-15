@@ -1,8 +1,11 @@
 @use "../variables" as v;
 @use "account-kit" as kit;
 
-// A user's picture: a circle (--size), ringed faintly; initials in the sport's light when there's no picture
+// A user's picture: a circle (--size: the size it's given, --avatar-size, set on it by the component; a page can set
+// --size over it, as a profile's hero does on a phone), ringed faintly; initials in the sport's light when there's no
+// picture
 :host {
+  --size: var(--avatar-size);
   border-radius: v.$radius-round;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.18),

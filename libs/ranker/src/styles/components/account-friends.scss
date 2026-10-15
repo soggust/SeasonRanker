@@ -210,9 +210,10 @@ card-panel.requests-panel {
 }
 
 // (the eye to the Privacy settings, on Your friends' bar: the app's filled sand button, square, sized for a bar)
-.privacy-slot {
+// ([panel-actions] too: so it outweighs the bar's own 8px for its actions, card-panel.scss)
+.privacy-slot[panel-actions] {
   // (clear of the bar's right edge)
-  padding-right: 12px !important;
+  padding-right: 12px;
 }
 
 .privacy-link {

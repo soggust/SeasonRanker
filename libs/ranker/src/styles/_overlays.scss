@@ -1,0 +1,140 @@
+@use "sass:meta";
+@use "variables" as v;
+@use "components/account-kit" as kit;
+
+// ===========================================================================
+// The menus that open in Material's overlay, outside their components (so global, here, loaded last in each
+// app's styles.scss, after _base.scss and the theme: where a component's styles used to reach them with
+// ::ng-deep): the account menu, the grid's More menu on phones and a tracked player's menu. Each one's
+// selectors are the same as before; the panel's scoreboard look is _base.scss's.
+// ===========================================================================
+
+// ---------------------------------------------------------------------------
+// The account menu (account-menu.scss: the sport bar's entry that opens it): the app's tokens and its
+// sport-agnostic look, who's signed in, then the rows (an icon in the page's light and a label)
+// ---------------------------------------------------------------------------
+.mat-mdc-menu-panel.account-menu {
+  @include kit.app-tokens;
+  @include kit.agnostic;
+  min-width: 230px;
+
+  .account-who {
+    align-items: center;
+    border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 40%, transparent);
+    cursor: default;
+    display: flex;
+    gap: 12px;
+    margin: 4px 14px 6px;
+    padding: 8px 0 12px;
+  }
+
+  .account-who-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+
+    span {
+      @include v.ellipsis;
+    }
+  }
+
+  // (over the menu's own span color, _base.scss's .mat-mdc-menu-panel span: these outweigh it)
+  .account-who-name {
+    color: #fff;
+    font-family: v.$font-base;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .account-who-user {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: v.$font-base;
+    font-size: 12px;
+  }
+
+  // (the menu in the app's Nunito, not Material's own type)
+  .mat-mdc-menu-item {
+    --mat-menu-item-label-text-font: #{meta.inspect(v.$font-base)};
+    font-family: v.$font-base;
+    min-height: 42px;
+
+    .mat-icon {
+      color: var(--scoreboard-led);
+      margin-right: 14px;
+      @include v.icon-size(20px);
+    }
+
+    span {
+      font-weight: 700;
+    }
+
+    // (a hovered row's label is lit by _base.scss's menu rows already; the keyboard's row and the page you're
+    // on, lit the same)
+    &:hover span,
+    &.cdk-keyboard-focused span,
+    &.current span {
+      color: var(--scoreboard-led);
+    }
+  }
+
+  .account-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin: 6px 14px;
+  }
+}
+
+// (the Admin badge: a small lit tag, in the account menu and on the settings page's hero)
+.admin-badge {
+  border: 1px solid var(--scoreboard-led);
+  border-radius: v.$radius-pill;
+  color: var(--scoreboard-led);
+  flex: 0 0 auto;
+  font-family: v.$font-base;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  text-shadow: var(--scoreboard-glow);
+  text-transform: uppercase;
+}
+
+// (in the menu: over the menu's own span color and shadow, _base.scss's .mat-mdc-menu-panel span)
+.mat-mdc-menu-panel .admin-badge {
+  color: var(--scoreboard-led);
+  text-shadow: var(--scoreboard-glow);
+}
+
+// ---------------------------------------------------------------------------
+// The grid's More menu (phones; rankings.component.scss: the toolbar that opens it): its rows each an icon in
+// the sport's light and a label, lit up when hovered (_base.scss's menu rows) or the keyboard's
+// ---------------------------------------------------------------------------
+.mat-mdc-menu-panel.more-menu {
+  min-width: 190px;
+
+  .mat-mdc-menu-item {
+    min-height: 44px;
+
+    .mat-icon {
+      color: var(--scoreboard-led);
+      margin-right: 14px;
+      @include v.icon-size(20px);
+    }
+
+    span {
+      font-weight: 700;
+    }
+
+    &:hover span,
+    &.cdk-keyboard-focused span {
+      color: var(--scoreboard-led);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// A tracked player's menu (tracker.scss: the page with the pins): its icons lit to read on the dark panel
+// ---------------------------------------------------------------------------
+.tracker-menu .mat-mdc-menu-item:not([disabled]) .mat-icon {
+  color: rgba(255, 255, 255, 0.75);
+}

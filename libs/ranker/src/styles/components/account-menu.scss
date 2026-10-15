@@ -1,4 +1,3 @@
-@use "sass:meta";
 @use "../variables" as v;
 @use "account-kit" as kit;
 
@@ -95,88 +94,5 @@
   }
 }
 
-// ---------------------------------------------------------------------------
-// The menu (in Material's overlay, outside this component)
-// ---------------------------------------------------------------------------
-::ng-deep .mat-mdc-menu-panel.account-menu {
-  @include kit.app-tokens;
-  @include kit.agnostic;
-  min-width: 230px;
-
-  .account-who {
-    align-items: center;
-    border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 40%, transparent);
-    cursor: default;
-    display: flex;
-    gap: 12px;
-    margin: 4px 14px 6px;
-    padding: 8px 0 12px;
-  }
-
-  .account-who-text {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-width: 0;
-
-    span {
-      @include v.ellipsis;
-    }
-  }
-
-  .account-who-name {
-    color: #fff !important;
-    font-family: v.$font-base;
-    font-size: 15px;
-    font-weight: 800;
-  }
-
-  .account-who-user {
-    color: rgba(255, 255, 255, 0.6) !important;
-    font-family: v.$font-base;
-    font-size: 12px;
-  }
-
-  // (the menu in the app's Nunito, not Material's own type)
-  .mat-mdc-menu-item {
-    --mat-menu-item-label-text-font: #{meta.inspect(v.$font-base)};
-    font-family: v.$font-base;
-    min-height: 42px;
-
-    .mat-icon {
-      color: var(--scoreboard-led);
-      margin-right: 14px;
-      @include v.icon-size(20px);
-    }
-
-    span {
-      font-weight: 700;
-    }
-
-    &:hover span,
-    &.cdk-keyboard-focused span,
-    &.current span {
-      color: var(--scoreboard-led) !important;
-    }
-  }
-
-  .account-divider {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    margin: 6px 14px;
-  }
-}
-
-// (the Admin badge: a small lit tag, here and on the settings page)
-::ng-deep .admin-badge {
-  border: 1px solid var(--scoreboard-led);
-  border-radius: v.$radius-pill;
-  color: var(--scoreboard-led) !important;
-  flex: 0 0 auto;
-  font-family: v.$font-base;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  padding: 2px 8px;
-  text-shadow: var(--scoreboard-glow) !important;
-  text-transform: uppercase;
-}
+// (the menu it opens is in Material's overlay, outside this component: its look, and the Admin badge's, are
+// global: _overlays.scss)
