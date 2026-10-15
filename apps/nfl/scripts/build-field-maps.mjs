@@ -7,6 +7,8 @@
 // defense's, what it allowed by zone and lane. The league's pooled the same way, what "average" is. One
 // file per season: StaticData/field-maps.json for the season being played, StaticData/seasons/<year>/ for
 // past ones, each with the regular season, the playoffs (null until they've begun) and both. Free: no AI.
+// Beside each, heat-maps.json: the card's Heat Maps tab (the zones' more layers, the red zone, the field-position
+// strip, the down & distance grid: heatSection below), from the same play-by-play.
 //
 //   node apps/nfl/scripts/build-field-maps.mjs              (the season being played: nightly, after update-data)
 //   node apps/nfl/scripts/build-field-maps.mjs 2000-2025    (past seasons: once; a finished season doesn't change)
@@ -47,6 +49,8 @@ export const COLUMNS = [
   'receiver_player_id', 'rusher_player_id', 'run_location', 'run_gap', 'rushing_yards', 'rush_touchdown', 'qb_scramble',
   'qb_kneel', 'field_goal_result', 'kick_distance', 'kicker_player_id', 'extra_point_result', 'punter_player_id',
   'punt_inside_twenty', 'touchback', 'punt_fair_catch', 'punt_blocked', 'return_yards', 'desc',
+  // (and the Heat Maps': heat-maps.json)
+  'game_id', 'yardline_100', 'down', 'ydstogo', 'pass', 'qb_spike', 'cpoe', 'yards_after_catch',
 ];
 
 const num = (v) => (v === undefined || v === null || v === '' || v === 'NA' ? null : Number(v));
@@ -292,6 +296,301 @@ export function section(plays, { keys = null, qbs = new Map(), teams = null } = 
   };
 }
 
+// ---- the Heat Maps (heat-maps.json, beside field-maps.json: the card's Heat Maps tab). The same zones with
+// more layers (success, CPOE, yards after the catch); the red zone (snaps inside the 20: its zones, lanes and
+// end-zone throws, and a player's share of his team's targets and carries there, inside the 10 and inside the
+// 5, in the games he played); the field-position strip (ten 10-yard bands, his own goal line to theirs); and
+// the down & distance grid (downs 1-4 by short 1-3, medium 4-7, long 8+ to go). Every number a sum, not a
+// rate (EPA, CPOE and YAC added up), so the regular season and the playoffs add up to the whole season on the
+// site: only those two parts are kept. Plays: passes (sacks and scrambles counted as dropbacks) and runs,
+// not two-point tries, kneels or spikes.
+
+// (a band's place, 0 his own 1 to 10 up to 9 their 10 to the goal line, from the play's yards to go to score)
+export function bandIndex(yardline100) {
+  const y = num(yardline100);
+  if (y === null || y <= 0 || y > 100) return -1;
+  return Math.min(9, Math.floor((100 - y) / 10));
+}
+export const BAND_NAMES = Array.from({ length: 10 }, (_, k) => (k < 5 ? `own ${k * 10}-${k * 10 + 10}` : `opp ${100 - k * 10}-${90 - k * 10}`));
+
+// (a down and distance's place in the 12: down-major, then short (1-3 to go), medium (4-7), long (8+))
+export const DISTANCES = ['short', 'medium', 'long'];
+export function downIndex(down, togo) {
+  const d = num(down);
+  const t = num(togo);
+  if (!d || d < 1 || d > 4 || t === null || t < 1) return -1;
+  return (d - 1) * 3 + (t <= 3 ? 0 : t <= 7 ? 1 : 2);
+}
+export const DOWN_NAMES = [1, 2, 3, 4].flatMap((d) => DISTANCES.map((k) => `${d}-${k}`));
+
+// (inside the 20; and a throw into the end zone: as far in the air as the goal line is away)
+export const inRedZone = (yardline100) => {
+  const y = num(yardline100);
+  return y !== null && y > 0 && y <= 20;
+};
+export const intoEndZone = (airYards, yardline100) => {
+  const a = num(airYards);
+  const y = num(yardline100);
+  return a !== null && y !== null && a >= y;
+};
+
+export const HEAT_FIELDS = {
+  zone: ['att', 'comp', 'td', 'int', 'epa', 'success', 'cpoe', 'yac'],
+  rzZone: ['att', 'comp', 'td', 'int', 'epa', 'success', 'endZone'],
+  lane: ['att', 'yds', 'td', 'epa', 'success'],
+  band: ['plays', 'epa', 'success', 'td'],
+  // (a player's, the team's targets and carries beside his own in that spot, in his games: his shares)
+  down: ['plays', 'pass', 'success', 'epa', 'teamTargets', 'teamCarries'],
+  share: ['targets', 'carries', 'endZone', 'targets10', 'carries10', 'targets5', 'carries5', 'td', 'teamTargets', 'teamCarries', 'teamTargets10', 'teamCarries10', 'teamTargets5', 'teamCarries5'],
+  zones: FIELDS.zones,
+  lanes: LANES,
+  bands: BAND_NAMES,
+  downs: DOWN_NAMES,
+};
+
+const rows = (n, width) => Array.from({ length: n }, () => new Array(width).fill(0));
+
+// A unit's or a player's tallies: the zones (a passer's throws, a catcher's targets: their own), the red
+// zone's, the strip, the grid
+const newHeat = (player = false) => ({
+  pass: null,
+  targets: null,
+  rz: { pass: null, targets: null, runs: null, share: player ? new Array(8).fill(0) : null },
+  band: rows(10, 4),
+  down: rows(12, player ? 6 : 4),
+  games: player ? new Set() : null,
+});
+
+// (a throw: tried, caught, a touchdown, picked, its EPA, a success)
+function addZone(z, play, epa) {
+  z[0]++;
+  if (yes(play.complete_pass)) z[1]++;
+  if (yes(play.pass_touchdown)) z[2]++;
+  if (yes(play.interception)) z[3]++;
+  z[4] += epa;
+  if (epa > 0) z[5]++;
+}
+// (the whole field's: its CPOE, added up over the throws (nflverse's, every charted throw has one), and the
+// yards after the catch on a catch)
+function addLayers(z, play) {
+  z[6] += num(play.cpoe) ?? 0;
+  if (yes(play.complete_pass)) z[7] += num(play.yards_after_catch) ?? 0;
+}
+function addLane(l, play, epa) {
+  l[0]++;
+  l[1] += num(play.rushing_yards) ?? num(play.yards_gained) ?? 0;
+  if (yes(play.rush_touchdown)) l[2]++;
+  l[3] += epa;
+  if (epa > 0) l[4]++;
+}
+
+// A part's plays tallied for the Heat Maps: the league's, each player's (by gsis id), each defense's and each
+// offense's (by abbreviation)
+export function heatTally(plays) {
+  const league = newHeat();
+  const players = new Map();
+  const defenses = new Map();
+  const offenses = new Map();
+  // (each team's targets and carries in each game: in each down and distance, and in the red zone, inside the
+  // 10 and the 5; a player's shares are his against his team's in the games he played)
+  const teamGames = new Map();
+  const of = (map, key, make) => {
+    if (!map.has(key)) map.set(key, make());
+    return map.get(key);
+  };
+  for (const play of plays) {
+    const type = play.play_type;
+    if ((type !== 'pass' && type !== 'run') || yes(play.two_point_attempt) || yes(play.qb_kneel) || yes(play.qb_spike)) continue;
+    const epa = num(play.epa);
+    if (epa === null) continue;
+    const off = MOVED_TEAMS[play.posteam] ?? id(play.posteam);
+    const def = MOVED_TEAMS[play.defteam] ?? id(play.defteam);
+    const yl = num(play.yardline_100);
+    const b = bandIndex(yl);
+    const d = downIndex(play.down, play.ydstogo);
+    const rz = inRedZone(yl);
+    const scramble = yes(play.qb_scramble);
+    const dropback = play.pass === undefined || play.pass === '' ? type === 'pass' || scramble : yes(play.pass);
+    const thrown = type === 'pass' && yes(play.pass_attempt) && !yes(play.sack);
+    const designed = type === 'run' && !scramble;
+    const td = yes(play.pass_touchdown) || yes(play.rush_touchdown);
+    const passer = id(play.passer_player_id);
+    const receiver = thrown ? id(play.receiver_player_id) : null;
+    const rusher = id(play.rusher_player_id);
+    const z = thrown ? zoneIndex(play.air_yards, play.pass_location) : -1;
+    const l = designed ? laneIndex(play.run_location, play.run_gap) : -1;
+    const ez = thrown && intoEndZone(play.air_yards, yl);
+    const gameKey = `${play.game_id}|${off}`;
+
+    if (off && play.game_id) {
+      const tg = of(teamGames, gameKey, () => ({ down: rows(12, 2), rz: new Array(6).fill(0) }));
+      const target = !!receiver;
+      const carry = designed && !!rusher;
+      if (d >= 0) {
+        if (target) tg.down[d][0]++;
+        if (carry) tg.down[d][1]++;
+      }
+      if (rz && (target || carry)) {
+        const k = target ? 0 : 1;
+        tg.rz[k]++;
+        if (yl <= 10) tg.rz[2 + k]++;
+        if (yl <= 5) tg.rz[4 + k]++;
+      }
+    }
+
+    // (the league, the defense on the field, the offense: every play)
+    const units = [league, def ? of(defenses, def, () => newHeat()) : null, off ? of(offenses, off, () => newHeat()) : null];
+    for (const u of units) {
+      if (!u) continue;
+      if (b >= 0) addBand(u.band[b], epa, td);
+      if (d >= 0) addDown(u.down[d], epa, dropback);
+      if (z >= 0) {
+        const zone = (u.pass ??= rows(12, 8))[z];
+        addZone(zone, play, epa);
+        addLayers(zone, play);
+        if (rz) {
+          const r = (u.rz.pass ??= rows(12, 7))[z];
+          addZone(r, play, epa);
+          if (ez) r[6]++;
+        }
+      }
+      if (rz && l >= 0) addLane((u.rz.runs ??= rows(7, 5))[l], play, epa);
+    }
+
+    // (each player on it once: the passer, the target, the runner)
+    for (const pid of new Set([passer, receiver, rusher])) {
+      if (!pid) continue;
+      const p = of(players, pid, () => newHeat(true));
+      if (play.game_id && off) p.games.add(gameKey);
+      // (his own pass plays: his dropbacks, a QB's scrambles too, or his targets)
+      const own = pid === passer || pid === receiver || (pid === rusher && scramble);
+      if (b >= 0) addBand(p.band[b], epa, td);
+      if (d >= 0) addDown(p.down[d], epa, own);
+      if (pid === passer && z >= 0) {
+        const zone = (p.pass ??= rows(12, 8))[z];
+        addZone(zone, play, epa);
+        addLayers(zone, play);
+        if (rz) {
+          const r = (p.rz.pass ??= rows(12, 7))[z];
+          addZone(r, play, epa);
+          if (ez) r[6]++;
+        }
+      }
+      if (pid === receiver && z >= 0) {
+        const zone = (p.targets ??= rows(12, 8))[z];
+        addZone(zone, play, epa);
+        addLayers(zone, play);
+        if (rz) {
+          const r = (p.rz.targets ??= rows(12, 7))[z];
+          addZone(r, play, epa);
+          if (ez) r[6]++;
+        }
+      }
+      if (rz && pid === rusher && l >= 0) addLane((p.rz.runs ??= rows(7, 5))[l], play, epa);
+      // (his red-zone looks: targets, carries, end-zone targets, inside the 10 and the 5, touchdowns)
+      if (rz) {
+        const s = p.rz.share;
+        const k = pid === receiver ? 0 : designed && pid === rusher ? 1 : -1;
+        if (k >= 0) {
+          s[k]++;
+          if (yl <= 10) s[3 + k]++;
+          if (yl <= 5) s[5 + k]++;
+          if (k === 0 && ez) s[2]++;
+          if (td) s[7]++;
+        }
+      }
+    }
+  }
+  return { league, players, defenses, offenses, teamGames };
+}
+
+function addBand(t, epa, td) {
+  t[0]++;
+  t[1] += epa;
+  if (epa > 0) t[2]++;
+  if (td) t[3]++;
+}
+function addDown(t, epa, pass) {
+  t[0]++;
+  if (pass) t[1]++;
+  if (epa > 0) t[2]++;
+  t[3] += epa;
+}
+
+// ---- packed: sums to 1dp, a tuple of nothing but zeros a plain 0, a list of them left out
+const pack = (t) => (t.every((v) => !v) ? 0 : t.map((v) => (Number.isInteger(v) ? v : round(v, 1))));
+const packRows = (list) => (list && list.some((t) => t.some((v) => v)) ? list.map(pack) : undefined);
+
+function finishHeat(h, teamGames) {
+  const out = {};
+  if (h.games) {
+    // (his team's targets and carries in his games, beside his own: the grid's cells and the red zone)
+    const team = { down: rows(12, 2), rz: new Array(6).fill(0) };
+    for (const g of h.games) {
+      const tg = teamGames.get(g);
+      if (!tg) continue;
+      tg.down.forEach((c, i) => {
+        team.down[i][0] += c[0];
+        team.down[i][1] += c[1];
+      });
+      tg.rz.forEach((v, i) => (team.rz[i] += v));
+    }
+    h.down.forEach((c, i) => {
+      c[4] = team.down[i][0];
+      c[5] = team.down[i][1];
+    });
+    if (h.rz.share.some((v) => v)) out.share = [...h.rz.share, ...team.rz];
+  }
+  const pass = packRows(h.pass);
+  const targets = packRows(h.targets);
+  if (pass) out.pass = pass;
+  if (targets) out.targets = targets;
+  const rz = {};
+  for (const k of ['pass', 'targets', 'runs']) {
+    const r = packRows(h.rz[k]);
+    if (r) rz[k] = r;
+  }
+  if (out.share) {
+    rz.share = out.share;
+    delete out.share;
+  }
+  if (Object.keys(rz).length) out.rz = rz;
+  const band = packRows(h.band);
+  const down = packRows(h.down);
+  if (band) out.band = band;
+  if (down) out.down = down;
+  return out;
+}
+
+// A part's Heat Maps section, keyed as the Field Map's (keys, qbs, teams as section's); offenses by their
+// Teams-tab row ("TM-Ravens": nicknames, abbreviation -> the logo's name)
+export function heatSection(plays, { keys = null, qbs = new Map(), teams = null, nicknames = new Map() } = {}) {
+  const t = heatTally(plays);
+  const players = {};
+  for (const [gsis, p] of t.players) {
+    const espn = qbs.get(gsis);
+    if (keys && !keys.has(gsis) && !espn) continue;
+    const e = finishHeat(p, t.teamGames);
+    if (!Object.keys(e).length) continue;
+    if (!keys || keys.has(gsis)) players[gsis] = e;
+    if (espn) players[espn] = e;
+  }
+  const units = (map, key) =>
+    Object.fromEntries(
+      [...map]
+        .filter(([team]) => !teams || teams.has(team))
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([team, u]) => [key(team), finishHeat(u, t.teamGames)])
+        .filter(([k]) => k),
+    );
+  return {
+    league: finishHeat(t.league, t.teamGames),
+    players,
+    defenses: units(t.defenses, (team) => `DEF-${team}`),
+    offenses: units(t.offenses, (team) => (nicknames.get(team) ? `TM-${nicknames.get(team)}` : null)),
+  };
+}
+
 // ---- reading the play-by-play: only the columns above (a season's file is ~370 columns, 50,000 plays)
 export function parsePlays(text, columns = COLUMNS) {
   let i = 0;
@@ -373,13 +672,20 @@ async function buildSeason(season, current, { espnToGsis, byName }) {
   const keys = new Set();
   const teams = new Set();
   const qbs = new Map();
+  const nicknames = new Map();
   // (a QB whose ESPN id players.csv has another of, Shaun Hill's: by his name, among the season's passers)
   const passers = new Set(plays.map((p) => p.passer_player_id));
   const gsisOf = (row) => espnToGsis.get(Number(row.id)) ?? (byName.get(row.name) ?? []).find((g) => passers.has(g));
   for (const suffix of ['', '.post', '.all']) {
     const skill = readJson(path.join(dir, `skill-players${suffix}.json`));
     for (const pos of ['RB', 'WR', 'TE', 'K', 'P']) for (const row of skill?.[pos] ?? []) if (row.gsisId) keys.add(row.gsisId);
-    for (const row of skill?.DEF ?? []) teams.add(row.gsisId.replace(/^DEF-/, ''));
+    for (const row of skill?.DEF ?? []) {
+      const team = row.gsisId.replace(/^DEF-/, '');
+      teams.add(team);
+      // (its offense keyed as its Teams-tab row: "TM-" and its logo's name)
+      const nick = /([^/]+)\.png$/.exec(row.teamLogo ?? '')?.[1];
+      if (nick) nicknames.set(team, nick);
+    }
     for (const row of readJson(path.join(dir, `games${suffix}.json`)) ?? []) {
       const gsis = gsisOf(row);
       if (gsis) qbs.set(gsis, String(row.id));
@@ -396,8 +702,21 @@ async function buildSeason(season, current, { espnToGsis, byName }) {
     post: post.length ? section(post, opts) : null,
     all: section(plays, opts),
   };
-  const file = path.join(dir, 'field-maps.json');
-  // (nothing new: the file as it was, its "updated" too, so a quiet night commits nothing)
+  // (the Heat Maps': the regular season and the playoffs, the site adds them up for the whole season)
+  const heat = {
+    season,
+    fields: HEAT_FIELDS,
+    updated: out.updated,
+    // (each team's Teams-tab name by its abbreviation: an opponent's offense, "KC" -> "TM-Chiefs")
+    teams: Object.fromEntries([...nicknames].sort(([a], [b]) => a.localeCompare(b))),
+    regular: heatSection(regular, { ...opts, nicknames }),
+    post: post.length ? heatSection(post, { ...opts, nicknames }) : null,
+  };
+  return [write(path.join(dir, 'field-maps.json'), out), write(path.join(dir, 'heat-maps.json'), heat)];
+}
+
+// (nothing new: the file as it was, its "updated" too, so a quiet night commits nothing)
+function write(file, out) {
   const old = readJson(file);
   if (old && JSON.stringify({ ...old, updated: null }) === JSON.stringify({ ...out, updated: null })) return { file, size: statSync(file).size, same: true };
   writeFileSync(file, JSON.stringify(out));
@@ -418,8 +737,9 @@ async function main() {
   for (const p of players) if (id(p.gsis_id) && p.display_name) byName.set(p.display_name, [...(byName.get(p.display_name) ?? []), p.gsis_id]);
   for (const season of seasons) {
     try {
-      const r = await buildSeason(season, season === CURRENT_SEASON, { espnToGsis, byName });
-      console.log(r ? `${season}: ${r.same ? 'unchanged' : 'written'} (${Math.round(r.size / 1024)} KB)` : `${season}: no season files, skipped`);
+      const files = await buildSeason(season, season === CURRENT_SEASON, { espnToGsis, byName });
+      const said = (r) => `${path.basename(r.file)} ${r.same ? 'unchanged' : 'written'} (${Math.round(r.size / 1024)} KB)`;
+      console.log(files ? `${season}: ${files.map(said).join(', ')}` : `${season}: no season files, skipped`);
     } catch (err) {
       console.log(`${season}: FAILED ${err.message}`);
     }
