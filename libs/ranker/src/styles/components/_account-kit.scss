@@ -1,4 +1,37 @@
+@use "sass:map";
 @use "../variables" as v;
+
+// The app's palette (its tokens, app-tokens below, set from it): Sass constants for what's drawn with them at
+// build time (the backdrop), and app(name) for a token with its own value as the fallback, so a page (or the
+// list dialog over a sport's page, where the tokens aren't set) never falls back to a different color
+$app-pewter-light: #5a5249;
+$app-pewter: #4a443d;
+$app-pewter-dark: #3d3935;
+$app-sheet-edge: #4f4840;
+$app-sand: #d8b98a;
+$app-red: #c8102e;
+// (the dark brown lettering on the sand: a filled button, a lit pill, a sand chip)
+$app-sand-ink: #2a1f14;
+$app-palette: (
+  pewter-light: $app-pewter-light,
+  pewter: $app-pewter,
+  pewter-deep: #24211e,
+  pewter-ink: #171513,
+  sheet-edge: $app-sheet-edge,
+  text: #f1ece6,
+  text-muted: #b8ada1,
+  sand: $app-sand,
+  sand-deep: #c9a574,
+  red: $app-red,
+  red-bright: #e0384f,
+);
+
+@function app($name) {
+  @if not map.has-key($app-palette, $name) {
+    @error "Unknown app color #{$name}";
+  }
+  @return var(--app-#{$name}, #{map.get($app-palette, $name)});
+}
 
 // The account pieces' shared controls and states (the login dialog, the settings page, every account page):
 // text fields on the scoreboard, the sport's pills, the lit main button, a plain button, a spinner; a page
@@ -385,13 +418,7 @@
 // tokens, so a page inside just uses them: var(--app-pewter), var(--app-red)...
 // ===========================================================================
 
-// (some of the tokens' values as Sass constants too, for what's drawn with them at build time: the backdrop)
-$app-pewter-light: #5a5249;
-$app-pewter: #4a443d;
-$app-pewter-dark: #3d3935;
-$app-sheet-edge: #4f4840;
-// (the dark brown lettering on the sand: a filled button, a lit pill, a sand chip)
-$app-sand-ink: #2a1f14;
+// (the palette's Sass constants, $app-palette and app(), are at the top of this file)
 
 // The tokens (custom properties: they reach every page inside the shell; the login dialog sets its own)
 @mixin app-tokens {
@@ -399,8 +426,8 @@ $app-sand-ink: #2a1f14;
   // $app-pewter-dark, is drawn at build time only)
   --app-pewter-light: #{$app-pewter-light};
   --app-pewter: #{$app-pewter};
-  --app-pewter-deep: #24211e;
-  --app-pewter-ink: #171513;
+  --app-pewter-deep: #{map.get($app-palette, pewter-deep)};
+  --app-pewter-ink: #{map.get($app-palette, pewter-ink)};
   // (the sheet: a warm scoreboard black, a touch see-through so the backdrop's art shows faintly)
   --app-sheet: rgba(22, 20, 18, 0.86);
   --app-sheet-edge: #{$app-sheet-edge};
@@ -408,22 +435,22 @@ $app-sand-ink: #2a1f14;
   --app-well: rgba(0, 0, 0, 0.28);
   // (hairlines and quiet text, warm)
   --app-line: rgba(255, 238, 220, 0.09);
-  --app-text: #f1ece6;
-  --app-text-muted: #b8ada1;
+  --app-text: #{map.get($app-palette, text)};
+  --app-text-muted: #{map.get($app-palette, text-muted)};
   // (the light: sand tan, the pages' --scoreboard-led; a deeper tone for edges, its glow for lit text)
-  --app-sand: #d8b98a;
-  --app-sand-deep: #c9a574;
-  --app-sand-glow: 0 0 6px rgba(216, 185, 138, 0.5);
+  --app-sand: #{$app-sand};
+  --app-sand-deep: #{map.get($app-palette, sand-deep)};
+  --app-sand-glow: 0 0 6px #{rgba($app-sand, 0.5)};
   --scoreboard-led: var(--app-sand);
   --scoreboard-glow: var(--app-sand-glow);
   // (the red: danger and alerts only)
-  --app-red: #c8102e;
-  --app-red-bright: #e0384f;
+  --app-red: #{$app-red};
+  --app-red-bright: #{map.get($app-palette, red-bright)};
 }
 
 // (lit text in the sand: a count, a name, a lit tile)
 @mixin sand-lit {
-  color: var(--app-sand, #d8b98a);
+  color: app(sand);
   text-shadow: var(--app-sand-glow, none);
 }
 
@@ -526,7 +553,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 }
 
 // (each in an accent: the app's sand by default; kit.buttons passes the page's light)
-@mixin primary-button($accent: var(--app-sand, #d8b98a)) {
+@mixin primary-button($accent: app(sand)) {
   @include app-button-base;
   background: linear-gradient(180deg, color-mix(in srgb, #{$accent} 75%, #fff), #{$accent} 55%, color-mix(in srgb, #{$accent} 92%, #000));
   border: 1px solid color-mix(in srgb, #{$accent} 70%, #000);
@@ -546,7 +573,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 }
 
 // (an outline or danger button: keyboard focus lights it as the pointer does)
-@mixin outline-button($accent: var(--app-sand, #d8b98a)) {
+@mixin outline-button($accent: app(sand)) {
   @include app-button-base;
   background: color-mix(in srgb, #{$accent} 6%, transparent);
   border: 1px solid color-mix(in srgb, #{$accent} 70%, transparent);
@@ -566,18 +593,18 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 @mixin danger-button {
   @include app-button-base;
   background: rgba(200, 16, 46, 0.06);
-  border: 1px solid color-mix(in srgb, var(--app-red-bright, #e0384f) 75%, transparent);
-  color: var(--app-red-bright, #e0384f);
+  border: 1px solid color-mix(in srgb, app(red-bright) 75%, transparent);
+  color: app(red-bright);
 
   &:hover:not([disabled]) {
-    background: var(--app-red, #c8102e);
-    border-color: var(--app-red, #c8102e);
+    background: app(red);
+    border-color: app(red);
     color: #fff;
   }
 
   @include v.focus-lit {
-    background: var(--app-red, #c8102e);
-    border-color: var(--app-red, #c8102e);
+    background: app(red);
+    border-color: app(red);
     color: #fff;
   }
 }
@@ -612,9 +639,9 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 
 @mixin app-pill {
   background: rgba(255, 238, 220, 0.04);
-  border: 1px solid var(--app-sheet-edge, #4f4840);
+  border: 1px solid app(sheet-edge);
   border-radius: v.$radius-pill;
-  color: var(--app-text-muted, #b8ada1);
+  color: app(text-muted);
   cursor: pointer;
   font-family: v.$font-base;
   font-size: 11.5px;
@@ -624,24 +651,24 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   text-transform: uppercase;
 
   &:hover:not([disabled], .active) {
-    border-color: var(--app-sand, #d8b98a);
-    color: var(--app-sand, #d8b98a);
+    border-color: app(sand);
+    color: app(sand);
   }
 
   &.active,
   &[aria-pressed="true"],
   &[aria-checked="true"] {
-    background: var(--app-sand, #d8b98a);
-    border-color: var(--app-sand, #d8b98a);
+    background: app(sand);
+    border-color: app(sand);
     color: $app-sand-ink;
   }
 
   // (keyboard focus: lit as on hover; the chosen one, already sand, its edge white)
   @include v.focus-lit {
-    border-color: var(--app-sand, #d8b98a);
+    border-color: app(sand);
 
     &:not(.active, [aria-pressed="true"], [aria-checked="true"]) {
-      color: var(--app-sand, #d8b98a);
+      color: app(sand);
     }
 
     &:is(.active, [aria-pressed="true"], [aria-checked="true"]) {
@@ -686,15 +713,15 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
 @mixin agnostic {
   // (the tokens the sport kit draws with: leather, its texture, the chalkboard plays and grain, the
   // category colors; the switches' and sliders' light)
-  --leather: var(--app-pewter, #4a443d);
+  --leather: #{app(pewter)};
   --tex-leather: linear-gradient(transparent, transparent);
   --tex-chalk-plays: linear-gradient(transparent, transparent);
   --tex-chalk-noise: linear-gradient(transparent, transparent);
-  --group-color: var(--app-sand, #d8b98a);
+  --group-color: #{app(sand)};
 
   // (the wallet's aside: its panels the Bets page's card tables, _casino-chip.scss)
   :is(.group-results, .group-box, .group-advanced, .group-support, card-panel):not(wallet-page *) {
-    --group-color: var(--app-sand, #d8b98a) !important;
+    --group-color: #{app(sand)} !important;
   }
 
   // The theme's pills, as the app's
@@ -703,11 +730,11 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   .game-filter.active {
     background: rgba(255, 238, 220, 0.04) !important;
     background-blend-mode: normal !important;
-    border: 1px solid var(--app-sheet-edge, #4f4840) !important;
+    border: 1px solid app(sheet-edge) !important;
     border-radius: v.$radius-pill !important;
     box-shadow: none !important;
     clip-path: none !important;
-    color: var(--app-text-muted, #b8ada1) !important;
+    color: app(text-muted) !important;
     filter: none !important;
     font-weight: 800 !important;
     opacity: 1 !important;
@@ -721,26 +748,26 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   }
 
   .game-filter:hover:not([disabled], .active) {
-    border-color: var(--app-sand, #d8b98a) !important;
-    color: var(--app-sand, #d8b98a) !important;
+    border-color: app(sand) !important;
+    color: app(sand) !important;
   }
 
   .game-filter.active,
   .game-filter[aria-pressed="true"],
   .game-filter[aria-checked="true"],
   .game-filter[aria-selected="true"] {
-    background: var(--app-sand, #d8b98a) !important;
-    border-color: var(--app-sand, #d8b98a) !important;
+    background: app(sand) !important;
+    border-color: app(sand) !important;
     color: $app-sand-ink !important;
   }
 
   // (keyboard focus: lit as the app's pills are)
   .game-filter:focus-visible {
-    border-color: var(--app-sand, #d8b98a) !important;
+    border-color: app(sand) !important;
   }
 
   .game-filter:focus-visible:not(.active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) {
-    color: var(--app-sand, #d8b98a) !important;
+    color: app(sand) !important;
   }
 
   .game-filter:focus-visible:is(.active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) {
@@ -750,13 +777,13 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   // Card panels: a pewter box, the bar a warm scoreboard, no sport edges on the body (not the wallet's: the
   // Bets page's card tables, the scoreboard bar over the felt)
   card-panel:not(wallet-page *) {
-    border: 1px solid var(--app-sheet-edge, #4f4840) !important;
+    border: 1px solid app(sheet-edge) !important;
     border-radius: v.$radius-xl !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 
     > .group-bar {
       --bar-tint: rgba(216, 185, 138, 0.07) !important;
-      background: linear-gradient(var(--bar-tint), var(--bar-tint)), var(--app-pewter-ink, #171513) !important;
+      background: linear-gradient(var(--bar-tint), var(--bar-tint)), app(pewter-ink) !important;
       border-radius: 0 !important;
       box-shadow: none !important;
 
@@ -771,7 +798,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
     }
 
     &:not(.closed) > .group-bar {
-      border-bottom-color: var(--app-sheet-edge, #4f4840) !important;
+      border-bottom-color: app(sheet-edge) !important;
     }
 
     > .panel-body {
@@ -791,7 +818,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   ::-webkit-scrollbar-thumb,
   ::-webkit-scrollbar-thumb:vertical,
   ::-webkit-scrollbar-thumb:horizontal {
-    background: var(--app-pewter-light, #5a5249) !important;
+    background: app(pewter-light) !important;
     background-clip: padding-box !important;
     border: 2px solid transparent !important;
     border-radius: v.$radius-pill !important;
@@ -801,7 +828,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   ::-webkit-scrollbar-thumb:vertical:hover,
   ::-webkit-scrollbar-thumb:horizontal:hover,
   ::-webkit-scrollbar-thumb:active {
-    background: var(--app-sand-deep, #c9a574) !important;
+    background: app(sand-deep) !important;
     background-clip: padding-box !important;
   }
 

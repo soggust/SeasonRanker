@@ -24,7 +24,7 @@ list-modal {
 
   // (Cancel beside a Delete: neutral, so only the Delete reads as the destructive one; MMA's light is red)
   .modal-actions:has(.danger) .secondary {
-    @include kit.outline-button(var(--app-text-muted, #b8ada1));
+    @include kit.outline-button(kit.app(text-muted));
   }
 
   .modal-backdrop {
@@ -99,7 +99,7 @@ list-modal {
 
     &:hover,
     &:focus-visible {
-      color: var(--app-sand, #d8b98a);
+      color: kit.app(sand);
       outline: none;
     }
   }
@@ -143,8 +143,8 @@ list-modal {
   }
 
   .form-error {
-    background: rgba(255, 90, 79, 0.12);
-    border: 1px solid rgba(255, 90, 79, 0.45);
+    background: rgba(v.$bad, 0.12);
+    border: 1px solid rgba(v.$bad, 0.45);
     border-radius: v.$radius-lg;
     color: v.$bad-pale;
     font-size: 13px;

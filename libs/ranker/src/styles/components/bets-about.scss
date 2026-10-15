@@ -43,7 +43,7 @@
   }
 
   &.pass {
-    background: #8a8a8a;
+    background: v.$grey-dim;
   }
 }
 
@@ -144,7 +144,7 @@ table {
   }
 
   .down {
-    color: #ff7a7a;
+    color: v.$bad-soft;
   }
 }
 

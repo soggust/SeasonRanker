@@ -64,7 +64,7 @@
   }
 
   .why-score {
-    color: #bbb;
+    color: v.$grey-soft;
     font-size: 11px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -89,7 +89,7 @@
   .why-close {
     background: none;
     border: none;
-    color: #999;
+    color: v.$grey-mid;
     cursor: pointer;
     display: flex;
     padding: 2px;
@@ -117,7 +117,7 @@
   .why-note {
     background: rgba(255, 255, 255, 0.06);
     border-left: 2px solid var(--scoreboard-led);
-    color: #ccc;
+    color: v.$grey-light;
     margin-top: 6px;
     padding: 3px 7px;
   }
@@ -175,7 +175,7 @@
   }
 
   .why-drivers {
-    color: #bbb;
+    color: v.$grey-soft;
     display: flex;
     flex-wrap: wrap;
     gap: 2px 10px;
@@ -193,7 +193,7 @@
     }
 
     span {
-      color: #bbb;
+      color: v.$grey-soft;
     }
 
     b {
@@ -238,7 +238,7 @@
     }
 
     .why-empty {
-      color: #999;
+      color: v.$grey-mid;
       grid-column: 1 / -1;
     }
   }

@@ -134,7 +134,7 @@ card-panel.account-panel {
   ::ng-deep > .panel-body {
     background:
       linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)),
-      var(--app-pewter-deep, #24211e);
+      kit.app(pewter-deep);
   }
 }
 
@@ -347,8 +347,8 @@ card-panel.account-panel {
 
 .provider.linked {
   align-items: center;
-  background: rgba(62, 207, 110, 0.1);
-  border: 1px solid rgba(62, 207, 110, 0.35);
+  background: rgba(v.$good, 0.1);
+  border: 1px solid rgba(v.$good, 0.35);
   border-radius: v.$radius-xl;
   box-sizing: border-box;
   color: #fff;

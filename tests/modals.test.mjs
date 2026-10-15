@@ -87,7 +87,7 @@ test("a sport's own dialogs use the sport's buttons, the account pages' the app'
   // (MMA's octagon cut clips the focus ring away: its buttons and dropdowns light their edge instead)
   assert.match(read('apps/mma/src/theme/_sport-global.scss'), /@mixin octagon[\s\S]*?&:focus-visible \{\s*background: \$white-text !important;/);
   // (a Cancel beside a Delete: neutral, not the sport's light (MMA's is red, beside the red Delete))
-  assert.match(read('libs/ranker/src/styles/components/account-lists-dialog.scss'), /\.modal-actions:has\(\.danger\) \.secondary \{\s*@include kit\.outline-button\(var\(--app-text-muted/);
+  assert.match(read('libs/ranker/src/styles/components/account-lists-dialog.scss'), /\.modal-actions:has\(\.danger\) \.secondary \{\s*@include kit\.outline-button\(kit\.app\(text-muted\)/);
   // (My Lists, an account page: its dialogs stay the app's own)
   assert.match(read(`${engine}/account/lists/list-view.component.html`), /<list-modal[\s\S]*class="app-btn-primary"/);
 });

@@ -1021,7 +1021,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 .pass-zone {
   align-items: center;
-  background: color-mix(in srgb, var(--zone-color, #888) calc(var(--share, 0) * 55%), rgba(255, 255, 255, 0.04));
+  background: color-mix(in srgb, var(--zone-color, #{v.$grey-dim}) calc(var(--share, 0) * 55%), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: v.$radius-md;
   display: flex;
@@ -1189,12 +1189,12 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   &.s-out,
   &.s-injured-reserve {
     background: rgba(v.$led-lost, 0.18);
-    color: v.$bad-coral;
+    color: v.$bad-soft;
   }
 
   &.s-doubtful {
     background: rgba(255, 149, 0, 0.18);
-    color: #ffab40;
+    color: v.$doubtful;
   }
 
   &.s-questionable {

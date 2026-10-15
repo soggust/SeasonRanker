@@ -10,7 +10,7 @@
   // (a result's two colors, everywhere on the desk: a win the site's green; a loss the red of the Bets page's
   // chips and the slot's knob (their clay, #b0202b), lifted to read on the board)
   --win: #{v.$good};
-  --loss: #f03a4b;
+  --loss: #{v.$led-lost};
   border: 1px solid;
   border-radius: v.$radius-xl;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
@@ -1272,7 +1272,7 @@ card-panel {
 // yellow)
 .desk-self-panel {
   --sc-flag: var(--loss);
-  --sc-watch: #ff9a3c;
+  --sc-watch: #{v.$doubtful};
   --sc-muted: rgba(255, 255, 255, 0.55);
   --sc-grey: rgba(255, 255, 255, 0.38);
 }
@@ -1472,7 +1472,7 @@ card-panel {
   padding-top: 6px;
 
   small {
-    color: #999;
+    color: v.$grey-mid;
     margin-left: 6px;
   }
 }

@@ -192,7 +192,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
     --edge: #{v.$good};
     // (no green over the green felt: it washed it out)
     --wash: transparent;
-    box-shadow: 0 0 10px rgba(62, 207, 110, 0.25);
+    box-shadow: 0 0 10px rgba(v.$good, 0.25);
   }
 
   // (a Like: its yellow round it; a Like and a Love on the felt)
@@ -236,7 +236,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 
   // (already bet and still open: a check in its corner, so it isn't bet twice by mistake)
   .price-placed {
-    color: #6fe39a;
+    color: v.$good-mint;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
     // (top left: the bot's chip has the top right)
     left: 3px;

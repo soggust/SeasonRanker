@@ -187,13 +187,13 @@ header {
   }
 
   &:hover:not([disabled]) {
-    background: linear-gradient(180deg, #2e2e2e, #1d1d1d);
+    background: linear-gradient(180deg, v.$panel-rule, v.$panel-dark);
     border-color: var(--scoreboard-led);
   }
 
   // (the keyboard's focus: lit as on hover)
   @include v.focus-lit {
-    background: linear-gradient(180deg, #2e2e2e, #1d1d1d);
+    background: linear-gradient(180deg, v.$panel-rule, v.$panel-dark);
     border-color: var(--scoreboard-led);
   }
 
@@ -258,8 +258,8 @@ header {
 }
 
 .login-error {
-  background: rgba(255, 90, 79, 0.12);
-  border: 1px solid rgba(255, 90, 79, 0.45);
+  background: rgba(v.$bad, 0.12);
+  border: 1px solid rgba(v.$bad, 0.45);
   color: v.$bad-pale;
 
   .mat-icon {
@@ -268,8 +268,8 @@ header {
 }
 
 .login-notice {
-  background: rgba(62, 207, 110, 0.1);
-  border: 1px solid rgba(62, 207, 110, 0.4);
+  background: rgba(v.$good, 0.1);
+  border: 1px solid rgba(v.$good, 0.4);
   color: #c4f2d3;
 
   .mat-icon {

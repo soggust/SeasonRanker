@@ -130,11 +130,33 @@ $scrollbar-size: 10px;
 // (and the track's and thumb's corners on the page's scrollbars: _base.scss)
 $scrollbar-radius: 8px;
 
-// The scoreboard's frames: the menus' and dropdown lists' edge, and the track inside the menus
+// The scoreboard's black (--scoreboard, _base.scss; and what's laid over the board in it: Compare's and the
+// tracker's toasts, the card's scoreboard tiles)
+$scoreboard-black: #121212;
+
+// The dark surfaces, each one shade where there were near-twins: the slate of what drops over the chalkboard
+// (Compare's hits, popover and sheet, the grid's find hits, the card's similar seasons, a list's panel), a raised
+// dark panel (the filter menu's, the login provider's foot, the wallet's dark chip, the avatar's disc), and the
+// hairline rule under a panel's header (and the top of the login provider)
+$slate-panel: #161b19;
+$panel-dark: #1d1d1d;
+$panel-rule: #2c2c2c;
+
+// The scoreboard's frames: the menus' and dropdown lists' edge, and the track inside the menus (the panels'
+// rule)
 $scoreboard-frame: #333;
-$menu-track: #2e2e2e;
+$menu-track: $panel-rule;
 // (and a scoreboard panel's own frame: scoreboard-panel, the dialogs' rules, the avatar's disc)
 $panel-edge: #3a3a3a;
+
+// The greys, light to dim (lettering and fills on the dark boards; one shade where there were near-twins)
+$grey-light: #ccc;
+$grey-soft: #bbb;
+$grey-mid: #9a9a9a;
+$grey-dim: #8a8a8a;
+
+// Dark lettering on a lit chip (an injury flag, the slip's stake and lit chips, the wallet's)
+$chip-ink: #1a1a1a;
 
 // The football's brown (the sliders' handle color: sidebar.component.scss)
 $football-brown: #a8602f;
@@ -148,14 +170,21 @@ $good-ot: color-mix(in srgb, $good 55%, #fff);
 $bad-ot: color-mix(in srgb, $bad 55%, #fff);
 // (and in between: a lean, a medium edge, questionable, volatile; the same yellow in every sport)
 $caution: #ffcd00;
-// (a score's LED: the winner's lit green, the loser's red: score-led)
+// (a score's LED: the winner's lit green, the loser's red: score-led; the loser's red is also the model desk's
+// loss)
 $led-won: rgb(80, 207, 80);
 $led-lost: #ff3b30;
-// (the brighter green and the softer red the rank grid, the lists and a bet's reasons paint a result in, and
-// the AI's coral: the same meanings, each named at the shade it's painted in today)
+// (the brighter green and the softer red the rank grid, the lists, a bet's reasons, the AI's concerns and the
+// game view's Out tag paint a result in; a pale mint for money won, the wallet's and the Bets page's)
 $good-bright: #3ee07a;
 $bad-soft: #ff7468;
-$bad-coral: #ff6b61;
+$good-mint: #6fe39a;
+// (a lighter red for a problem named in a line of text: a roster move's injury, the slip's error, a note's
+// problem)
+$bad-light: #ff8a80;
+// (doubtful, in orange: an injury tag, the Overview's middling flag, a check to watch; and Compare's "different
+// positions")
+$doubtful: #ff9a3c;
 // (a message about something gone wrong, in a pale red that reads on the dark panels: a form's error, a
 // list's failure)
 $bad-pale: #ffb4ae;

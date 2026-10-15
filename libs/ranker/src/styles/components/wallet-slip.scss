@@ -82,7 +82,7 @@ $gold: chip.$lock-gold;
   align-items: center;
   background: $gold;
   border-radius: v.$radius-pill;
-  color: #1a1a1a;
+  color: v.$chip-ink;
   display: inline-flex;
   font-size: 12px;
   height: 22px;
@@ -388,7 +388,7 @@ $gold: chip.$lock-gold;
 
   &.c1 {
     --clay: #{chip.$chip-cream};
-    color: #1a1a1a;
+    color: v.$chip-ink;
     text-shadow: none;
 
     rect {
@@ -431,7 +431,7 @@ $gold: chip.$lock-gold;
 }
 
 .slip-problem {
-  color: #ff8a80;
+  color: v.$bad-light;
   font-size: 12px;
   font-weight: 700;
   margin: 8px 0 0;
@@ -581,7 +581,7 @@ $gold: chip.$lock-gold;
     b {
       background: $gold;
       border-radius: v.$radius-pill;
-      color: #1b1b1b;
+      color: v.$chip-ink;
       font-size: 10.5px;
       line-height: 1;
       padding: 3px 6px;

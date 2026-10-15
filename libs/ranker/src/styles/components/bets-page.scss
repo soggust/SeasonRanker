@@ -483,7 +483,7 @@ $circle-gap: 12px;
 // (a pick already bet, still open: its stake in green after the price)
 .bet-placed {
   align-items: center;
-  color: #6fe39a;
+  color: v.$good-mint;
   display: inline-flex;
   font-weight: 800;
   gap: 3px;
@@ -600,7 +600,7 @@ $circle-gap: 12px;
     margin-top: 10px;
 
     b {
-      color: #ff9a3c;
+      color: v.$doubtful;
       font-weight: 800;
     }
   }
@@ -1083,7 +1083,7 @@ $hub-y: 154px;
   .why-pass {
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: v.$radius-sm;
-    color: #ccc;
+    color: v.$grey-light;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.06em;
@@ -1142,7 +1142,7 @@ $hub-y: 154px;
     }
 
     &.low {
-      color: #bbb;
+      color: v.$grey-soft;
     }
   }
 
@@ -1156,7 +1156,7 @@ $hub-y: 154px;
       justify-content: space-between;
 
       span {
-        color: #bbb;
+        color: v.$grey-soft;
       }
     }
 
@@ -1176,7 +1176,7 @@ $hub-y: 154px;
       }
 
       &.none {
-        color: #bbb;
+        color: v.$grey-soft;
       }
     }
 
@@ -1185,7 +1185,7 @@ $hub-y: 154px;
     }
 
     .rs-summary {
-      color: #ccc;
+      color: v.$grey-light;
       line-height: 1.4;
     }
 

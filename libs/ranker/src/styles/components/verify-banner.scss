@@ -7,10 +7,10 @@
 
 .verify {
   align-items: center;
-  background: color-mix(in srgb, var(--app-sand, #d8b98a) 12%, rgba(0, 0, 0, 0.3));
-  border: 1px solid color-mix(in srgb, var(--app-sand, #d8b98a) 45%, transparent);
+  background: color-mix(in srgb, kit.app(sand) 12%, rgba(0, 0, 0, 0.3));
+  border: 1px solid color-mix(in srgb, kit.app(sand) 45%, transparent);
   border-radius: v.$radius-xl;
-  color: var(--app-text, #f1ece6);
+  color: kit.app(text);
   display: flex;
   flex-wrap: wrap;
   font-family: v.$font-base;
@@ -33,7 +33,7 @@
 }
 
 .verify-note {
-  color: var(--app-text-muted, #b8ada1);
+  color: kit.app(text-muted);
   flex-basis: 100%;
   font-size: 12.5px;
 }

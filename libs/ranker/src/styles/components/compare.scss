@@ -18,14 +18,14 @@ $z: (
 );
 
 // (different positions: the hero's word, its popover's edge and a skill's position)
-$mixed-orange: #ffa74d;
+$mixed-orange: v.$doubtful;
 
 // (the grounds of what drops over the board: the hits, the pin's toast, the different-positions popover and
 // a phone's floating sheet)
-$hits-ground: #161b19;
-$toast-ground: #111;
-$pop-ground: #151a18;
-$sheet-ground: #171c1a;
+$hits-ground: v.$slate-panel;
+$toast-ground: v.$scoreboard-black;
+$pop-ground: v.$slate-panel;
+$sheet-ground: v.$slate-panel;
 
 // (a team's color, darkened: the disc behind a face)
 @function team-shade($pct: 70%) {
@@ -101,7 +101,7 @@ $sheet-ground: #171c1a;
 // (on the scoreboard, like the tabs under it; its controls in a strip along the top)
 .compare-hero {
   @include v.scoreboard-face;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid v.$panel-rule;
   flex: 0 0 auto;
   // (its side padding: the top strip's word and a phone's chips line up with it)
   --hero-pad-x: 22px;
@@ -536,7 +536,7 @@ $sheet-ground: #171c1a;
 // Body
 // ---------------------------------------------------------------------------
 .compare-empty {
-  color: #9a9a9a;
+  color: v.$grey-mid;
   font-size: 14px;
   font-weight: 700;
   margin: 0;
@@ -832,7 +832,7 @@ $sheet-ground: #171c1a;
 
 // (a panel's line on how to read it, over its body)
 .cmp-help {
-  color: #9a9a9a;
+  color: v.$grey-mid;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.45;
@@ -884,7 +884,7 @@ $sheet-ground: #171c1a;
 }
 
 .cmp-edge-none {
-  color: #8a8a8a;
+  color: v.$grey-dim;
   font-size: 12px;
   font-style: italic;
 }
@@ -921,7 +921,7 @@ $sheet-ground: #171c1a;
 }
 
 .cmp-amp {
-  color: #8a8a8a;
+  color: v.$grey-dim;
   margin: 0 10px;
 }
 
@@ -1007,7 +1007,7 @@ $sheet-ground: #171c1a;
 }
 
 .cmp-label {
-  color: #cfcfcf;
+  color: v.$grey-light;
   cursor: help;
   font-size: 12.5px;
   font-weight: 700;
@@ -1073,7 +1073,7 @@ $sheet-ground: #171c1a;
   // (drawn a pixel a unit (the view measures the box): the card's chart labels' size)
   .arc-x,
   .arc-y {
-    fill: #9a9a9a;
+    fill: v.$grey-mid;
     font-family: v.$font-base;
     font-size: 11px;
     font-weight: 700;
@@ -1144,7 +1144,7 @@ $sheet-ground: #171c1a;
 }
 
 .cmp-note {
-  color: #8a8a8a;
+  color: v.$grey-dim;
   font-size: 12px;
   margin: 10px 0 0;
   text-align: center;

@@ -38,8 +38,8 @@
   }
 
   &.friends {
-    background: rgba(62, 207, 110, 0.1);
-    border-color: rgba(62, 207, 110, 0.4);
+    background: rgba(v.$good, 0.1);
+    border-color: rgba(v.$good, 0.4);
     color: v.$good;
   }
 }

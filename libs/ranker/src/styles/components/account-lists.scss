@@ -90,17 +90,17 @@ $bar-h: 30px;
   }
 
   &.vis-public .mat-icon {
-    color: var(--app-sand, #d8b98a);
+    color: kit.app(sand);
   }
 }
 
 .community-chip {
-  border-color: color-mix(in srgb, var(--app-sand, #d8b98a) 50%, transparent);
-  color: var(--app-sand, #d8b98a);
+  border-color: color-mix(in srgb, kit.app(sand) 50%, transparent);
+  color: kit.app(sand);
 
   &:is(a):hover,
   &:is(a):focus-visible {
-    background: color-mix(in srgb, var(--app-sand, #d8b98a) 12%, transparent);
+    background: color-mix(in srgb, kit.app(sand) 12%, transparent);
     outline: none;
   }
 
@@ -173,7 +173,7 @@ $bar-h: 30px;
 .bar-select {
   align-items: center;
   background: var(--app-well, rgba(0, 0, 0, 0.3));
-  border: 1px solid var(--app-sheet-edge, #4a4a4a);
+  border: 1px solid kit.app(sheet-edge);
   border-radius: v.$radius-pill;
   box-sizing: border-box;
   display: inline-flex;
@@ -182,7 +182,7 @@ $bar-h: 30px;
   padding: 0 4px 0 14px;
 
   &:focus-within {
-    border-color: var(--app-sand, #d8b98a);
+    border-color: kit.app(sand);
   }
 
   .bar-select-label {
@@ -197,7 +197,7 @@ $bar-h: 30px;
   select {
     background: transparent;
     border: none;
-    color: var(--app-text, #fff);
+    color: kit.app(text);
     cursor: pointer;
     font-family: v.$font-base;
     font-size: 12.5px;
@@ -240,15 +240,15 @@ $bar-h: 30px;
 
   &:hover,
   &:focus-visible {
-    border-color: var(--app-sand, #d8b98a);
+    border-color: kit.app(sand);
     box-shadow:
       0 10px 24px rgba(0, 0, 0, 0.5),
-      0 0 0 1px var(--app-sand, #d8b98a);
+      0 0 0 1px kit.app(sand);
     outline: none;
     transform: translateY(-2px);
 
     .card-title {
-      color: var(--app-sand, #d8b98a);
+      color: kit.app(sand);
     }
   }
 
@@ -356,7 +356,7 @@ $bar-h: 30px;
 
 .card-foot {
   align-items: center;
-  background: #161a18;
+  background: v.$slate-panel;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.6);
   display: flex;
@@ -417,13 +417,13 @@ $bar-h: 30px;
 
   a.hero-owner:hover,
   a.hero-owner:focus-visible {
-    color: var(--app-sand, #d8b98a);
+    color: kit.app(sand);
     outline: none;
   }
 }
 
 .hero-note {
-  border-left: 3px solid color-mix(in srgb, var(--app-sand, #d8b98a) 70%, transparent);
+  border-left: 3px solid color-mix(in srgb, kit.app(sand) 70%, transparent);
   color: rgba(255, 255, 255, 0.85);
   font-size: 14px;
   line-height: 1.5;
@@ -464,7 +464,7 @@ $bar-h: 30px;
 
   &.danger-btn {
     align-items: center;
-    background: rgba(255, 90, 79, 0.08);
+    background: rgba(v.$bad, 0.08);
     border: 1px solid color-mix(in srgb, #{v.$bad} 70%, transparent);
     border-radius: v.$radius-xl;
     box-sizing: border-box;
@@ -515,14 +515,14 @@ $bar-h: 30px;
 .reorder-bar {
   align-items: center;
   @include v.scoreboard-panel(10px, 0 4px 14px rgba(0, 0, 0, 0.4));
-  border-color: color-mix(in srgb, var(--app-sand, #d8b98a) 55%, transparent);
+  border-color: color-mix(in srgb, kit.app(sand) 55%, transparent);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   padding: 8px 12px;
 
   > .mat-icon {
-    color: var(--app-sand, #d8b98a);
+    color: kit.app(sand);
     @include v.icon-size(20px);
   }
 
@@ -870,7 +870,7 @@ $bar-h: 30px;
 }
 
 .row.header-row .cell.now-rank {
-  color: var(--app-sand, #d8b98a);
+  color: kit.app(sand);
 }
 
 // ---------------------------------------------------------------------------
@@ -1008,7 +1008,7 @@ $bar-h: 30px;
 
       &:hover,
       &:focus-visible {
-        color: var(--app-sand, #d8b98a);
+        color: kit.app(sand);
         outline: none;
       }
     }
@@ -1043,7 +1043,7 @@ $bar-h: 30px;
   }
 
   &.mine {
-    border-color: color-mix(in srgb, var(--app-sand, #d8b98a) 45%, #{v.$panel-edge});
+    border-color: color-mix(in srgb, kit.app(sand) 45%, #{v.$panel-edge});
   }
 
   .card-title {
@@ -1051,7 +1051,7 @@ $bar-h: 30px;
 
     &:hover,
     &:focus-visible {
-      color: var(--app-sand, #d8b98a);
+      color: kit.app(sand);
       outline: none;
     }
   }
@@ -1074,7 +1074,7 @@ $bar-h: 30px;
 
     &:hover,
     &:focus-visible {
-      color: var(--app-sand, #d8b98a);
+      color: kit.app(sand);
       outline: none;
     }
   }
@@ -1118,14 +1118,14 @@ $bar-h: 30px;
   }
 
   &.up.on {
-    background: rgba(62, 207, 110, 0.14);
-    border-color: rgba(62, 207, 110, 0.6);
+    background: rgba(v.$good, 0.14);
+    border-color: rgba(v.$good, 0.6);
     color: v.$good;
   }
 
   &.down.on {
-    background: rgba(255, 90, 79, 0.14);
-    border-color: rgba(255, 90, 79, 0.6);
+    background: rgba(v.$bad, 0.14);
+    border-color: rgba(v.$bad, 0.6);
     color: v.$bad;
   }
 
@@ -1144,19 +1144,19 @@ $bar-h: 30px;
 
   &.pos {
     color: v.$good;
-    text-shadow: 0 0 6px rgba(62, 207, 110, 0.6);
+    text-shadow: 0 0 6px rgba(v.$good, 0.6);
   }
 
   &.neg {
     color: v.$bad;
-    text-shadow: 0 0 6px rgba(255, 90, 79, 0.6);
+    text-shadow: 0 0 6px rgba(v.$bad, 0.6);
   }
 }
 
 .you-chip {
-  border: 1px solid color-mix(in srgb, var(--app-sand, #d8b98a) 55%, transparent);
+  border: 1px solid color-mix(in srgb, kit.app(sand) 55%, transparent);
   border-radius: v.$radius-pill;
-  color: var(--app-sand, #d8b98a);
+  color: kit.app(sand);
   flex: 0 0 auto;
   font-size: 9.5px;
   font-weight: 900;

@@ -101,7 +101,7 @@ header {
 // The section list, styled like the position tabs
 // ---------------------------------------------------------------------------
 nav {
-  border-right: 1px solid #2c2c2c;
+  border-right: 1px solid v.$panel-rule;
   display: flex;
   flex: 0 0 232px;
   flex-direction: column;
@@ -204,7 +204,7 @@ nav {
   }
 
   nav {
-    border-bottom: 1px solid #2c2c2c;
+    border-bottom: 1px solid v.$panel-rule;
     border-right: none;
     flex: 0 0 auto;
     flex-direction: row;

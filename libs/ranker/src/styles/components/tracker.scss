@@ -4,10 +4,10 @@
 // (the page's text; a pin's pending rank; the chart's axis labels; the ring around a chart's dot; the toast's
 // fill; a side's fallback badge and face colors)
 $page-text: #eee;
-$pending-tone: #888;
-$axis: #9a9a9a;
+$pending-tone: v.$grey-dim;
+$axis: v.$grey-mid;
 $dot-ring: #1b1d1f;
-$toast-bg: #111;
+$toast-bg: v.$scoreboard-black;
 $badge-fallback: #555;
 $face-fallback: #333;
 
@@ -74,7 +74,7 @@ $face-fallback: #333;
   min-width: 0;
 
   b {
-    color: var(--app-text, #fff);
+    color: kit.app(text);
     font-weight: 800;
     margin-right: 4px;
   }

@@ -256,7 +256,7 @@ section.rankings-wrapper > footer {
   // (the compare view's list of hits, hung from the bar)
   .find-hits,
   .find-none {
-    background: #161b19;
+    background: v.$slate-panel;
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: v.$radius-xl;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
@@ -2209,7 +2209,7 @@ section ul.scrolled-x li.player.header-row > div.player-info .iso-chip {
   background: none;
   border: none;
   border-radius: v.$radius-round;
-  color: #ccc;
+  color: v.$grey-light;
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;

@@ -42,7 +42,7 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
 
   // Scoreboard panels (the tables, menus and tabs) and their lit accent (each sport's own: its
   // sport-settings $accent, glowing at its $glow-alpha)
-  --scoreboard: #121212;
+  --scoreboard: #{v.$scoreboard-black};
   --scoreboard-led: #{sport.$accent};
   --scoreboard-glow: 0 0 6px #{rgba(sport.$accent, sport.$glow-alpha)};
   --scoreboard-dots: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.3px) 0 0 / 4px 4px;

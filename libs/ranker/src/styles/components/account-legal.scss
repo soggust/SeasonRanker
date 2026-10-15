@@ -12,7 +12,7 @@
 
 .legal {
   box-sizing: border-box;
-  color: var(--app-text, #eee);
+  color: kit.app(text);
   font-family: v.$font-base;
   font-size: 14.5px;
   line-height: 1.6;
@@ -89,7 +89,7 @@ h2 {
 }
 
 .legal-updated {
-  color: var(--app-text-muted, #aaa);
+  color: kit.app(text-muted);
   font-size: 12px;
   letter-spacing: 0.5px;
   margin: 4px 0 16px;
@@ -133,7 +133,7 @@ ol {
   }
 
   li::marker {
-    color: var(--app-text-muted, #aaa);
+    color: kit.app(text-muted);
   }
 }
 

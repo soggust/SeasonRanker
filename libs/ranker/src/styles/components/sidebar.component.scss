@@ -115,7 +115,7 @@
   }
 
   .preset-row > .mat-mdc-select {
-    background: #1e1e1e;
+    background: v.$panel-dark;
     border: 1px solid v.$panel-edge;
     border-radius: 0.175em;
     box-sizing: border-box;
@@ -262,7 +262,7 @@
   }
 
   span.slider-value {
-    color: #9a9a9a;
+    color: v.$grey-mid;
     font-family: v.$font-led;
     font-size: 0.65em;
     font-weight: 700;
@@ -398,7 +398,7 @@
   }
 
   .row-drag.cdk-drag-preview {
-    background: var(--scoreboard-dots), #1d1d1d;
+    background: var(--scoreboard-dots), v.$panel-dark;
     border-radius: v.$radius-md;
   }
 }

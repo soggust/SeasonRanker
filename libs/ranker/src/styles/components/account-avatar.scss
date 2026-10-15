@@ -40,7 +40,7 @@ img {
   align-items: center;
   background:
     radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.16), transparent 60%),
-    color-mix(in srgb, var(--scoreboard-led) 26%, #1a1a1a);
+    color-mix(in srgb, var(--scoreboard-led) 26%, v.$panel-dark);
   color: var(--scoreboard-led);
   display: flex;
   font-family: v.$font-heading;
