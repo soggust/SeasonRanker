@@ -109,8 +109,11 @@ export const GAME_CAP = 5;
 // gained), moving at most 0.25 a day from the last run's (params.soft), kept only while the held-out log loss is
 // lower with the set and the eligible players' and every player's bias no larger. Live on its first night: NFL
 // receiving yards' and rush+rec yards' carryover (pl 0.25) at 0.25x (targets 0.73x and 0.95x); none elsewhere.
-// Set to the push time.
-export const MODEL_EPOCH = '2026-10-15T08:10:00Z';
+// 2026-10-15 skeptic's review of the soft terms: a weight over 0.25 only where each held-out half shows the term on
+// its own (z 1.5 or more in both; a shuffled-outcome refit let a pure-noise term in at 0.25x with a 0.89x target),
+// and never the flags whose history reads the game's own box score or snap counts (olOut, rb1Out, aheadOut,
+// oppOut, oppD, oppDB, oppFront). Set to the push time.
+export const MODEL_EPOCH = '2026-10-15T12:06:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

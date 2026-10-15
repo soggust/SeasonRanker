@@ -807,14 +807,26 @@ const ROUND_C_GRID = {
 // that's off at 0 and grows smoothly from it) are ever soft; the ones off the search for a leak or look-ahead
 // (mk, the market's view; vl, vcM, ps, cs) never, nor ones whose off isn't 0 of a size (ex, ep, od, rp, ij, ro,
 // sn) or not one of the whole stat's (its own rows' bias, the fifths, a side's: SOFT_FAILS); (d) a term the gate
-// keeps is in at its size as before (a soft term with strong evidence: weight 1)
+// keeps is in at its size as before (a soft term with strong evidence: weight 1); (e) a weight over SOFT_CAP only where
+// each half of the held-out games shows it alone, z SOFT_HALF_Z or more in both (the skeptic's review, 2026-10-15:
+// with the outcomes shuffled within each season, 14 NFL refits of receiving yards and rush+rec yards, a pure-noise
+// term got a target of 0.89 once (c_newCoach, z 2.99, its halves' gains 0.000085 and 0.000026) and passed the joint
+// check at 0.25x, two more tried and turned back by it; the hourly refit judges again on nearly the same held-out
+// games, so it isn't fresh evidence. A noise term's two halves rarely both clear 1.5 (under 1% of the time), a
+// real one's do as its games come in: pl on rush+rec yards, z 3.77, halves about 2.5 each. Under it the weight
+// stays at SOFT_CAP or less, the cost of a wrong one bounded); (f) never the flags whose history reads the game's
+// own box score or snap counts (who played, the line's starters: SOFT_NEVER), a gain there may be what's known only
+// once the game starts
 export const SOFT_Z = 1;
 export const SOFT_DAY = 0.25;
+export const SOFT_CAP = 0.25;
+export const SOFT_HALF_Z = 1.5;
+const SOFT_NEVER = new Set(['c_olOut', 'c_rb1Out', 'c_aheadOut', 'c_oppOut', 'c_oppD', 'c_oppDB', 'c_oppFront']);
 const SOFT_ON = new Set(['sp', 'pl', 'sk', 'rx', 'sl', 'ot', 'ab', 'nt', 'tr', 'po']);
 // (the form keys a soft term's size may carry, as taken, unscaled)
 const SOFT_FORMS = { tr: ['tf'], po: ['pg'] };
 const SOFT_FAILS = new Set(['gain', 'bias', "all players' bias", "the other players' bias", "the rest's bias", "the eligible rest's bias"]);
-export const softable = (key) => key.startsWith('c_') || SOFT_ON.has(key);
+export const softable = (key) => !SOFT_NEVER.has(key) && (key.startsWith('c_') || SOFT_ON.has(key));
 // (a late term the gate left out, soft-eligible: softable, its size as taken one of its own (and its form), every
 // fail one the joint check judges again)
 export const softEligible = (key, v, fails) => softable(key) && !!v && Object.keys(v).every((k) => k === key || (SOFT_FORMS[key] ?? []).includes(k)) && Number.isFinite(v[key]) && fails.every((f) => SOFT_FAILS.has(f));
@@ -832,10 +844,17 @@ export function softWeight(off, on, min = SUBGROUP_N) {
   const z = se > 0 ? mean / se : 0;
   const h = Math.floor(n / 2);
   const halves = [d.slice(0, h), d.slice(h)].map((p) => p.reduce((t, x) => t + x, 0) / p.length);
+  // (each half's own z: its mean over its own standard error)
+  const halfZ = [d.slice(0, h), d.slice(h)].map((p, j) => {
+    const sd = Math.sqrt(p.reduce((t, x) => t + (x - halves[j]) ** 2, 0) / (p.length - 1) / p.length);
+    return sd > 0 ? halves[j] / sd : 0;
+  });
   const r = (x, k = 1e6) => Math.round(x * k) / k;
   const steady = halves.every((x) => x > 0);
-  const w = z > SOFT_Z && steady ? Math.round((1 - (SOFT_Z / z) ** 2) * 1000) / 1000 : 0;
-  return { n, gain: r(mean), z: r(z, 100), halves: halves.map((x) => r(x)), w, why: w ? null : z <= SOFT_Z ? 'z 1 or under' : 'a half lost' };
+  const full = z > SOFT_Z && steady ? Math.round((1 - (SOFT_Z / z) ** 2) * 1000) / 1000 : 0;
+  const capped = full > SOFT_CAP && !halfZ.every((x) => x >= SOFT_HALF_Z);
+  const w = capped ? SOFT_CAP : full;
+  return { n, gain: r(mean), z: r(z, 100), halves: halves.map((x) => r(x)), halfZ: halfZ.map((x) => r(x, 100)), w, why: capped ? `held to ${SOFT_CAP}: a half under z ${SOFT_HALF_Z}` : w ? null : z <= SOFT_Z ? 'z 1 or under' : 'a half lost' };
 }
 // (this run's weight: the last run's moved toward the target by at most SOFT_DAY a day since it (days: a first
 // run's, one))

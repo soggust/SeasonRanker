@@ -5,7 +5,7 @@
 // is lower with it and the eligible players' and every player's bias no larger, else the hard-gated model alone.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { SOFT_DAY, SOFT_Z, fitStat, softEligible, softFrom, softJoint, softSize, softStep, softWeight, softable } from '../libs/ranker/scripts/model/project.mjs';
+import { SOFT_CAP, SOFT_DAY, SOFT_HALF_Z, SOFT_Z, fitStat, softEligible, softFrom, softJoint, softSize, softStep, softWeight, softable } from '../libs/ranker/scripts/model/project.mjs';
 
 // (mulberry32: a deterministic stream of 0..1)
 const rng = (seed) => () => {
@@ -38,7 +38,9 @@ test('the shrink: no evidence, none; a weak steady effect a small weight; a stro
   const weak = softWeight(...pairs(4000, 0.00022, 0.01));
   assert.ok(weak.z > 1 && weak.z < 2.5, `z ${weak.z}`);
   assert.ok(weak.w > 0 && weak.w < 0.85, `w ${weak.w}`);
-  assert.ok(Math.abs(weak.w - (1 - 1 / weak.z ** 2)) < 0.01);
+  // (its halves alone under SOFT_HALF_Z: held to SOFT_CAP, not the full shrink's 1 - 1/z^2)
+  assert.ok(weak.halfZ.some((x) => x < SOFT_HALF_Z));
+  assert.equal(weak.w, Math.min(SOFT_CAP, Math.round((1 - 1 / weak.z ** 2) * 1000) / 1000));
   // (the same effect on four times the lines: z doubles, the weight grows)
   const more = softWeight(...pairs(16000, 0.00022, 0.01));
   assert.ok(more.w > weak.w);
@@ -162,4 +164,79 @@ test("fitStat's soft stage: a term soft last run fades by the step (SOFT_DAY a d
     assert.ok(!fit.params.pl);
     assert.equal(fit.check.logLoss, plain.check.logLoss);
   }
+});
+
+// (three seasons where every player's level turns over each season: last season's carryover (pl) misleads)
+function flipRows() {
+  const day = (season, g) => new Date(Date.UTC(season, 8, 1 + g * 7)).toISOString().replace('.000Z', 'Z');
+  const r = rng(29);
+  const rows = [];
+  for (let i = 0; i < 30; i++) {
+    for (const [k, season] of [2023, 2024, 2025].entries()) {
+      const lvl = 2 + ((i + k * 3) % 6) * (k % 2 ? -1 : 1) + (k % 2 ? 7 : 0);
+      for (let g = 0; g < 16; g++) rows.push({ pid: `p${i}`, pos: 'WR', season, date: day(season, g), opp: `o${g % 4}`, team: `t${i % 8}`, game: `p${i}-${season}-${g}`, eligible: true, s: { rec: Math.max(0, Math.round(lvl + (r() - 0.5) * 4)) } });
+    }
+  }
+  return rows.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+test("the joint fallback is enforced: a soft term that hurts the held-out games is dropped, the stat exactly the hard-gated model's, nothing soft saved", () => {
+  const rows = flipRows();
+  const now = Date.parse('2026-10-15T12:00:00Z');
+  const plain = fitStat({ key: 'rec', carry: true }, rows, {});
+  assert.ok(!plain.params.pl, 'the gate leaves the misleading carryover out');
+  // (pl soft at full weight a day ago: this run fades it a step (to 0.75) and tries it; it hurts, so it's out)
+  const prev = { pl: { w: 1, target: 1, z: 3, size: { pl: 0.75 }, at: new Date(now - 864e5).toISOString() } };
+  const fit = fitStat({ key: 'rec', carry: true }, rows, { soft: { prev, now } });
+  const e = fit.floors.soft.terms.find((x) => x.key === 'pl');
+  assert.equal(e.tried, 0.75);
+  assert.equal(e.kept, false);
+  assert.ok(e.fails.includes('log loss'), e.fails.join(', '));
+  assert.deepEqual(fit.floors.soft.joint.fails, ['none kept']);
+  assert.equal(fit.params.soft, undefined);
+  assert.ok(!fit.params.pl);
+  assert.equal(fit.check.logLoss, plain.check.logLoss);
+  assert.equal(fit.check.bias, plain.check.bias);
+});
+
+test('the cap: over SOFT_CAP only where each held-out half shows it alone; pure noise rarely gets a weight and never past the cap', () => {
+  assert.equal(SOFT_CAP, 0.25);
+  assert.equal(SOFT_HALF_Z, 1.5);
+  // (z about 2, each half about 1.4: the full shrink would say 0.75, held to the cap)
+  const mid = softWeight(...pairs(4000, 0.00032, 0.01));
+  assert.ok(mid.z > 1.8 && mid.z < 2.3, `z ${mid.z}`);
+  assert.equal(mid.w, SOFT_CAP);
+  assert.match(mid.why, /held to 0.25/);
+  // (z about 4, each half about 2.8: the full shrink)
+  const real = softWeight(...pairs(4000, 0.00063, 0.01));
+  assert.ok(real.halfZ.every((x) => x >= SOFT_HALF_Z));
+  assert.equal(real.w, Math.round((1 - 1 / real.z ** 2) * 1000) / 1000);
+  assert.ok(real.w > 0.9);
+  // (pure noise, 400 tries: some cross z 1 (the gate's joint check is what turns most back), none past the cap but
+  // by a rare chance of both halves at 1.5)
+  const r = rng(11);
+  let some = 0;
+  let over = 0;
+  for (let t = 0; t < 400; t++) {
+    const off = new Map();
+    const on = new Map();
+    for (let i = 0; i < 3000; i++) {
+      const row = { i };
+      off.set(row, 0.65);
+      on.set(row, 0.65 - (r() - 0.5) * 0.01);
+    }
+    const w = softWeight(off, on).w;
+    if (w > 0) some++;
+    if (w > SOFT_CAP) over++;
+  }
+  assert.ok(some > 10 && some < 100, `${some} of 400`);
+  assert.ok(over <= 6, `${over} of 400 over the cap`);
+});
+
+test('never soft: the flags whose history reads the game itself (who played, the line that started)', () => {
+  for (const k of ['c_olOut', 'c_rb1Out', 'c_aheadOut', 'c_oppOut', 'c_oppD', 'c_oppDB', 'c_oppFront']) {
+    assert.ok(!softable(k), k);
+    assert.ok(!softEligible(k, { [k]: 0.05 }, ['gain']), k);
+  }
+  assert.ok(softable('c_newCoach') && softable('c_qb1Out') && softable('c_mSpread'));
 });
