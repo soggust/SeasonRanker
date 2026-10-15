@@ -22,6 +22,7 @@ import { OLINE_LEAN, computedValue, connectTeamGrades, fromOtherTabs, gradeWhy, 
 import { blockingExtras } from './blocking';
 import { loadDepthChart } from './depth-chart';
 import { hasFieldMap, loadFieldMap } from './field-map';
+import { heatMatchups, nextOpponent, nflHeatMaps } from './heat-maps';
 import { vsPositionBreakdown } from './vs-position';
 
 // NFL: what the engine needs to know about football (the rest is beside this file: positions,
@@ -209,12 +210,18 @@ export const SPORT: SportConfig = {
     has: (player, position, season) => TEAM_LOGS.includes(position) && season >= 2001 && !!logoName(player),
     load: (player, position, season) => loadDepthChart(logoName(player)!, position, season, season === SPORT.currentSeason),
   },
-  // The Field Map on a QB's, a back's, a receiver's, a kicker's, a punter's and a defense's Overview
-  // (data/field-maps.json, data/seasons/<year>/field-maps.json: build-field-maps.mjs)
+  // The Field Map in a QB's, a back's, a receiver's, a kicker's, a punter's and a defense's Heat Maps tab, under
+  // the heat maps (data/field-maps.json, data/seasons/<year>/field-maps.json: build-field-maps.mjs)
   fieldMap: {
     has: hasFieldMap,
     load: (player, position, season, part) => loadFieldMap(player, position, season, part, season === SPORT.currentSeason),
   },
+  // The Heat Maps tab: the zones (red zone too), field position and down & distance, for QBs, backs,
+  // receivers, defenses and teams (data/heat-maps.json, data/seasons/<year>/heat-maps.json: build-field-maps.mjs),
+  // the next opponent's defense over the zones, and the AI preview's matchup maps
+  heatMaps: nflHeatMaps({ current: (season) => season === SPORT.currentSeason }),
+  heatOpponent: (player, position, season) => (season === SPORT.currentSeason ? nextOpponent(player, position, season) : Promise.resolve(null)),
+  heatMatchups: (player, position, season, opponent) => heatMatchups(player, position, season, opponent, season === SPORT.currentSeason),
   cardFlagsLast: castFlags,
   cardExtras: blockingExtras,
   // (a defense's vs Position: what it allowed to each WR1, WR2, WR3, TE1 and RB1, its funnel, where the targets go)
