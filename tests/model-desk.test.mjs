@@ -500,6 +500,18 @@ test('TableSorts: a number column biggest first, text A first, again the other w
   assert.deepEqual(sorts.sorted('t', rows, value).map((r) => r.s), ['a', 'b', 'c']);
 });
 
+test('TableSorts: the same rows in the same order the same list (kept for the template), sorted again on a new list or a click', () => {
+  const sorts = new desk.TableSorts({ t: { key: 'n', dir: -1 } });
+  const rows = [{ n: 2 }, { n: 5 }];
+  const value = (r) => r.n;
+  const first = sorts.sorted('t', rows, value);
+  assert.equal(sorts.sorted('t', rows, value), first);
+  const more = [...rows, { n: 9 }];
+  assert.deepEqual(sorts.sorted('t', more, value).map((r) => r.n), [9, 5, 2]);
+  sorts.sortBy('t', 'n');
+  assert.deepEqual(sorts.sorted('t', more, value).map((r) => r.n), [2, 5, 9]);
+});
+
 test("the column readers: a tally's record by its share won, a bet's CLV by its EV, an unknown column none", () => {
   const t = desk.tally('x', [bet({ status: 'won', profit: 1 }), bet({ status: 'lost', profit: -1 }), bet({ status: 'lost', profit: -1 })]);
   assert.ok(Math.abs(desk.tallyValue(t, 'record') - 1 / 3) < 1e-12);

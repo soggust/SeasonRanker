@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { TIERS } from './tiers';
 import { americanOdds, headshot, hideImage, leagueLogo, num, pct, signed, teamLogo, units } from './bet-format';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
@@ -227,19 +227,25 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the tiles' count-up: 0 to 1 as they tick, 1 once they've landed)
   tick = 1;
   private tickFrame = 0;
+  private zone = inject(NgZone);
+  private cd = inject(ChangeDetectorRef);
 
   async ngOnInit(): Promise<void> {
+    // (every sport's files asked at once, not each sport's one after another)
     const files = await Promise.all(
-      SPORTS.map(async (sport) => ({
-        ledger: await getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
-        state: await getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
-        // (none before the bettor's first CHECK file: no CHECK row)
-        checks: await getJson<{ checks?: CheckEntry[] }>(`/${sport}/data/model/checks.json`, { cache: 'no-cache' }),
-        // (none before the weekly self-check's first run: the panel says so)
-        selfcheck: await getJson<SelfCheckFile>(`/${sport}/data/model/selfcheck.json`, { cache: 'no-cache' }),
-        // (none till the news signals run (NEWS_SIGNALS=1): no panel)
-        news: await getJson<NewsSignalsFile>(`/${sport}/data/model/news-signals.json`, { cache: 'no-cache' }),
-      })),
+      SPORTS.map(async (sport) => {
+        const [ledger, state, checks, selfcheck, news] = await Promise.all([
+          getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
+          getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
+          // (none before the bettor's first CHECK file: no CHECK row)
+          getJson<{ checks?: CheckEntry[] }>(`/${sport}/data/model/checks.json`, { cache: 'no-cache' }),
+          // (none before the weekly self-check's first run: the panel says so)
+          getJson<SelfCheckFile>(`/${sport}/data/model/selfcheck.json`, { cache: 'no-cache' }),
+          // (none till the news signals run (NEWS_SIGNALS=1): no panel)
+          getJson<NewsSignalsFile>(`/${sport}/data/model/news-signals.json`, { cache: 'no-cache' }),
+        ]);
+        return { ledger, state, checks, selfcheck, news };
+      }),
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
     this.allNewsSignals = files.map((f) => f.news);
@@ -257,7 +263,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.loadTeams();
     // (not if the desk closed while its files loaded: nothing would stop it)
-    if (!this.closed) this.scoreTimer = setInterval(() => this.loadScores(), 60_000);
+    // (not while the page is out of view: ESPN asked for nothing no one sees)
+    if (!this.closed) this.scoreTimer = setInterval(() => !document.hidden && this.loadScores(), 60_000);
   }
 
   ngOnDestroy(): void {
@@ -520,14 +527,16 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       this.tick = 1;
       return;
     }
+    // (its frames outside Angular, each checking the desk alone: not a whole-page pass sixty times a second)
     const t0 = performance.now();
     const step = (t: number) => {
       const x = Math.min(1, (t - t0) / TICK_MS);
       this.tick = 1 - (1 - x) ** 3;
+      if (!this.closed) this.cd.detectChanges();
       if (x < 1) this.tickFrame = requestAnimationFrame(step);
     };
     this.tick = 0;
-    this.tickFrame = requestAnimationFrame(step);
+    this.zone.runOutsideAngular(() => (this.tickFrame = requestAnimationFrame(step)));
   }
 
   // (a tile's number as it ticks: a count whole, anything else as it goes)
@@ -664,6 +673,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       const file = await getJson<{ teams?: Record<string, { id: string }> }>(`/${sport}/data/model/teams.json`);
       for (const [abbr, t] of Object.entries(file?.teams ?? {})) this.teamAbbr.set(`${sport}#${t.id}`, abbr);
     }
+    // (the props' sections are by team: built again with the teams known)
+    this.sectionMemo = new WeakMap();
   }
 
   // (a team's abbreviation by "<sport>#<ESPN id>")
@@ -880,8 +891,19 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // under it, folded until it's opened (In Play's too: it bets a lot of games at once)
   // ---------------------------------------------------------------------------
 
-  readonly byGame = byGame;
-  readonly gamesBySport = gamesBySport;
+  // (a bet list in its order, by game, by sport: kept till its rows, its order or the sport filter change, as the
+  // template asks on every check)
+  private gamesMemo = new Map<string, { rows: ModelBet[]; all: boolean; out: SportGroup[] }>();
+
+  gamesOf(table: string, rows: ModelBet[]): SportGroup[] {
+    const sorted = this.sorted(table, rows, this.betValue);
+    const all = !this.sport;
+    const kept = this.gamesMemo.get(table);
+    if (kept && kept.rows === sorted && kept.all === all) return kept.out;
+    const out = gamesBySport(byGame(sorted), all);
+    this.gamesMemo.set(table, { rows: sorted, all, out });
+    return out;
+  }
   // (with every sport listed, each sport a row of its own over its games, folded till it's opened)
   private sportsOpen = new Map<string, boolean>();
 
@@ -905,7 +927,17 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // A game's bets in their sections: its game bets (the total, the moneyline, the spread, in that order), then
   // each team's player props (the away side's, the home side's, any whose team isn't known last), each props
   // section folded till it's opened
+  private sectionMemo = new WeakMap<BetGroup, DeskSection[]>();
+
   sectionsOf(g: BetGroup): DeskSection[] {
+    const kept = this.sectionMemo.get(g);
+    if (kept) return kept;
+    const out = this.sectionsFor(g);
+    this.sectionMemo.set(g, out);
+    return out;
+  }
+
+  private sectionsFor(g: BetGroup): DeskSection[] {
     const game = g.bets.filter((b) => b.market !== 'prop').sort((a, b) => (MARKET_ORDER[a.market] ?? 9) - (MARKET_ORDER[b.market] ?? 9));
     const props = g.bets.filter((b) => b.market === 'prop');
     const out: DeskSection[] = game.length ? [{ key: `${g.key}|game`, props: false, team: '', bets: game }] : [];

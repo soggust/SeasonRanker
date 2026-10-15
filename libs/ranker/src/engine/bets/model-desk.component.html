@@ -522,7 +522,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (sg of gamesBySport(byGame(sorted('live', live, betValue)), !sport); track sg.sport) {
+              @for (sg of gamesOf('live', live); track sg.sport) {
               @if (sg.header) {
                 <!-- (every sport listed: each sport once, its games under it, folded or not) -->
                 @let sportShut = !sportOpen('live', sg);
@@ -654,7 +654,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (sg of gamesBySport(byGame(sorted('open', open, betValue)), !sport); track sg.sport) {
+              @for (sg of gamesOf('open', open); track sg.sport) {
               @if (sg.header) {
                 <!-- (every sport listed: each sport once, its games under it, folded or not) -->
                 @let sportShut = !sportOpen('open', sg);
@@ -759,7 +759,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (sg of gamesBySport(byGame(sorted('recent', recent, betValue)), !sport); track sg.sport) {
+              @for (sg of gamesOf('recent', recent); track sg.sport) {
               @if (sg.header) {
                 <!-- (every sport listed: each sport once, its games under it, folded or not) -->
                 @let sportShut = !sportOpen('recent', sg);

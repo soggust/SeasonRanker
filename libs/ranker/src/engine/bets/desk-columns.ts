@@ -32,11 +32,19 @@ export class TableSorts {
     return s?.key === key ? (s.dir === 1 ? 'ascending' : 'descending') : null;
   }
 
+  // (each table's last sort, kept: a template asks on every check, and its rows and order seldom change. The
+  // desk builds a new list whenever what's in one changes, so the same list in the same order is the same answer)
+  private memo = new Map<string, { rows: unknown[]; key: string; dir: Dir; value: unknown; out: unknown[] }>();
+
   // (a table's rows in its order: as given until a header's clicked)
   sorted<T>(table: string, rows: T[], value: ValueOf<T>): T[] {
     const s = this.sorts[table];
     if (!s) return rows;
-    return [...rows].sort((a, b) => compareValues(value(a, s.key), value(b, s.key), s.dir));
+    const kept = this.memo.get(table);
+    if (kept && kept.rows === rows && kept.key === s.key && kept.dir === s.dir && kept.value === value) return kept.out as T[];
+    const out = [...rows].sort((a, b) => compareValues(value(a, s.key), value(b, s.key), s.dir));
+    this.memo.set(table, { rows, key: s.key, dir: s.dir, value, out });
+    return out;
   }
 }
 
