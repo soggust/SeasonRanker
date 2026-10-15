@@ -50,6 +50,11 @@ jobs:
       - name: Pull NHL stats
         run: npm run nhl:update-data
 
+      # The card's Heat Maps: every shot by zone on the rink (MoneyPuck's shots file; a failed run keeps
+      # yesterday's files)
+      - name: Build heat maps
+        run: node apps/nhl/scripts/build-heat-maps.mjs || echo "heat maps skipped"
+
       # (the highlights' YouTube upload pages and the day's search count, kept between runs: the daily search
       # cap holds across runs, and a run only pages back to what it's seen)
       - name: Restore the highlights cache
