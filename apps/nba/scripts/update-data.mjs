@@ -25,7 +25,7 @@
 import { existsSync } from 'node:fs';
 import { writeFile, readFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
-import { curve } from '../../../libs/ranker/scripts/grades.mjs';
+import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
@@ -748,11 +748,17 @@ async function buildPart(season, part, src, { champion, runnerUp, coachRows, coy
   //   curved over every player
   // - Coaching: his team's coaching lift (above), curved over the teams
   const everyone = TABS.flatMap((tab) => out[tab]);
-  const cast = curve(new Map(everyone.map((u) => [u.gsisId, u._cast ?? NaN])));
+  const castScores = new Map(everyone.map((u) => [u.gsisId, u._cast ?? NaN]));
+  const cast = curve(castScores);
   const coaching = curve(lift);
+  // (and what each was curved on, for the grade's breakdown on the site: grades.mjs keepGradeInput)
+  const castPlaces = curvePlaces(castScores);
+  const coachingPlaces = curvePlaces(lift);
   for (const unit of everyone) {
     unit.stats.teammates = cast.get(unit.gsisId) ?? null;
     unit.stats.coaching = coaching.get(unit._team) ?? null;
+    keepGradeInput(unit, 'teammates', unit._cast, castPlaces.get(unit.gsisId));
+    keepGradeInput(unit, 'coaching', lift.get(unit._team), coachingPlaces.get(unit._team));
     delete unit._cast;
     delete unit._team;
   }

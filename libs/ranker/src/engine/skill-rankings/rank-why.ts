@@ -2,6 +2,7 @@ import type { SkillPlayer, SkillStat, SkillWeights } from '@sport/positions';
 import type { SportSettings } from '@ranker/engine/sport';
 import { SPORT } from '@sport/sport';
 import { ordinal } from '@ranker/core/format';
+import { barWidths, signedAmount } from '@ranker/core/breakdown';
 
 // Why a row ranks where it does (its rank tile clicked): its score split by stat, and what separates it
 // from the rows beside it. The numbers are the list's own (TabRanker.scores: each stat's standard score
@@ -98,14 +99,15 @@ export function rankWhy(
 
   // Its parts, biggest first (a stat that added nothing isn't one)
   const all = [...own].filter(([, amount]) => amount !== 0).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
-  const largest = Math.abs(all[0]?.[1] ?? 0);
-  const parts = all.map(([key, amount]) => {
-    const stat = statOf.get(key)!;
-    const value = valueText(player, stat, reader);
-    const at = stat.format === 'rank' || stat.format === 'recent' ? null : reader.listRank(player, stat);
-    const place = at ? `${at.tied ? 'T-' : ''}${ordinal(at.rank)}` : null;
-    return { key, label: label(key), value, place, amount, width: largest ? (Math.abs(amount) / largest) * 100 : 0, title: partTitle(player, stat, value, amount) };
-  });
+  const parts = barWidths(
+    all.map(([key, amount]) => {
+      const stat = statOf.get(key)!;
+      const value = valueText(player, stat, reader);
+      const at = stat.format === 'rank' || stat.format === 'recent' ? null : reader.listRank(player, stat);
+      const place = at ? `${at.tied ? 'T-' : ''}${ordinal(at.rank)}` : null;
+      return { key, label: label(key), value, place, amount, title: partTitle(player, stat, value, amount) };
+    }),
+  );
 
   const score = total(player);
   const scoreRank = 1 + list.filter((other) => total(other) > score).length;
@@ -172,9 +174,6 @@ export function scoreText(score: number): string {
   return (Number(score.toFixed(2)) + 0).toFixed(2).replace('-', '−');
 }
 
-// A share of the score, signed ("+0.12", "−0.08"; to three places when it's under a hundredth)
-export function signedScore(amount: number): string {
-  const digits = Math.abs(amount) < 0.01 && amount !== 0 ? 3 : 2;
-  const text = Math.abs(amount).toFixed(digits);
-  return Number(text) === 0 ? text : `${amount < 0 ? '−' : '+'}${text}`;
-}
+// A share of the score, signed ("+0.12", "−0.08"; to three places when it's under a hundredth): the
+// breakdowns' shared signedAmount
+export const signedScore = signedAmount;

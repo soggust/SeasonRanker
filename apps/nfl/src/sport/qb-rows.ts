@@ -140,8 +140,13 @@ function blendScore(preseason: number, fromData: number | undefined, games: numb
 // Preseason coaching grade per team; the app blends it with the Head Coaches rankings. A first-year
 // head coach has no track record, so he starts at a neutral C (6) whatever the team's grade says.
 export function preseasonCoaching(teamLogo: string): number {
-  if (dataGrades().teams[teamKey(teamLogo)]?.newCoach) return 6;
+  if (newHeadCoach(teamLogo)) return 6;
   return (teamGrades()[teamKey(teamLogo)] ?? { coaching: 6 }).coaching;
+}
+
+// A first-year head coach (his preseason coaching grade a C)
+export function newHeadCoach(teamLogo: string): boolean {
+  return !!dataGrades().teams[teamKey(teamLogo)]?.newCoach;
 }
 
 // Preseason weapons grade per team; the app blends it with the RB, WR and TE rankings
@@ -207,6 +212,47 @@ function qbData(): StaticPlayerData[] {
   const last = Math.max(ranked.length - 1, 1);
   ranked.forEach((qb, rank) => (qb.responsibility = Math.round(12 * (1 - rank / last))));
   return qbs;
+}
+
+// What a QB's Responsibility is made of (its breakdown: team-grades.ts gradeWhy): his preseason score and
+// this season's stats grade (from his shares of the plays and the yards), the stats' weight by his games,
+// the blend, and its place among the season's QBs (qbData's curve: the same scores, the same sort). null:
+// not one of the season's QBs.
+export interface ResponsibilityWhy {
+  preseason: number;
+  // (none: no stats grade yet)
+  fromData: number | null;
+  games: number;
+  weight: number;
+  metrics: { playShare?: number | null; yardShare?: number | null } | null;
+  score: number;
+  rank: number;
+  of: number;
+}
+
+export function responsibilityWhy(id: number | string | null | undefined): ResponsibilityWhy | null {
+  const grades = dataGrades();
+  const all = games().map((game) => {
+    const preseason = (scores()[game.id] ?? { responsibility: 6 }).responsibility;
+    const qbStats = grades.qbs[game.id] as (DataGrades['qbs'][string] & { metrics?: ResponsibilityWhy['metrics'] }) | undefined;
+    return { id: game.id, preseason, qbStats, score: blendScore(preseason, qbStats?.responsibility, qbStats?.games ?? 0) };
+  });
+  const ranked = [...all].sort((a, b) => b.score - a.score);
+  const at = ranked.findIndex((qb) => String(qb.id) === String(id));
+  if (at < 0) return null;
+  const { preseason, qbStats, score } = ranked[at];
+  const fromData = qbStats?.responsibility ?? null;
+  const played = qbStats?.games ?? 0;
+  return {
+    preseason,
+    fromData,
+    games: played,
+    weight: fromData === null ? 0 : dataWeight(played),
+    metrics: qbStats?.metrics ?? null,
+    score,
+    rank: at + 1,
+    of: ranked.length,
+  };
 }
 
 // The QBs as rows of the shared rankings table (the same shape as every other tab's units): ESPN box

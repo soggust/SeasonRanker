@@ -130,7 +130,13 @@ export class StatReader {
   }
 
   private rawValue(player: SkillPlayer, stat: SkillStat): number | null {
-    const context: ValueContext = {
+    return statValue(player, stat, this.valueContext());
+  }
+
+  // What a value worked out in the app gets (SPORT.computedValue, and a support grade's breakdown:
+  // SPORT.gradeWhy): this list's tab, settings, rows and season
+  valueContext(): ValueContext {
+    return {
       position: this.position,
       settings: this.source.settings.sport,
       rows: this.source.rows,
@@ -138,7 +144,6 @@ export class StatReader {
       defaults: false,
       weights: this.source.weights,
     };
-    return statValue(player, stat, context);
   }
 
   // The shown value: for volume stats, per game or at a full season's pace as the Stat Base setting says

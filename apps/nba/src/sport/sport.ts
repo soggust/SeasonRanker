@@ -1,4 +1,5 @@
 import type { CardFlag, FlagContext, SportConfig } from '@ranker/engine/sport';
+import { gradeWhy } from './grade-inputs';
 import { espnGameLog, espnTeamGameLog } from '@ranker/core/game-logs';
 import { teamRowsFromCoaches } from '@ranker/engine/team-rows';
 import { DATA, dataPart } from '@ranker/engine/data';
@@ -159,6 +160,7 @@ export const SPORT: SportConfig = {
   pooledTabs: { TOP: { tabs: ['PG', 'SG', 'SF', 'PF', 'C'] } },
   listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each spot by your rankings, weighted by minutes
+  gradeWhy,
   rosterGrades: [
     { key: 'backcourt', positions: ['PG', 'SG'], usage: (p) => p.stats.minutes ?? 0 },
     { key: 'wings', positions: ['SF'], usage: (p) => p.stats.minutes ?? 0 },

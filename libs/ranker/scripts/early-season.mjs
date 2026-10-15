@@ -54,6 +54,9 @@ export async function blendWithLastSeason({ staticDir, season, rows, keys, fullA
       const blended = Math.round((before(unit.teamLogo, key) + (now - before(unit.teamLogo, key)) * share) * 10) / 10;
       if (blended !== now) changed++;
       unit.stats[key] = blended;
+      // (and beside its inputs, grades.mjs keepGradeInput: last season's grade and this season's share)
+      const input = unit.gradeIn?.[key];
+      if (input) unit.gradeIn[key] = [...input.slice(0, 3), Math.round(before(unit.teamLogo, key) * 100) / 100, Math.round(share * 1000) / 1000];
     }
   }
   const shares = [...games.values()].map((g) => seasonShare(g, fullAt));

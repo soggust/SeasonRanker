@@ -36,6 +36,9 @@ import { RowGlide } from './row-glide';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
+import { Breakdown, barWidths } from '@ranker/core/breakdown';
+import { GradePart, GradeWhy, gradeText, pctText } from '@ranker/engine/grade-why';
+import { grade, gradeColor } from '@ranker/core/format';
 import { copyIsolatedShown, isolateRows, isolatedCopyText, isolatedTeam, lowerIsBetter, recentText, shownValue } from './isolate';
 import { ListDraft } from '@ranker/engine/account/lists/lists.store';
 import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
@@ -45,6 +48,21 @@ import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } 
 
 // (a card's link naming nobody in that season's rows)
 const CARD_MISSING = "Couldn't find that player";
+
+// A support grade's breakdown as its popover shows it (grade-why.ts): the row and the stat, the grade's
+// letter and color, each part's bar (red under a C: it pulls the grade down) and weight, how the parts come
+// together, the grade's place in this list and its slider here
+interface GradeView extends GradeWhy {
+  id: string;
+  name: string;
+  label: string;
+  letter: string;
+  color: string;
+  parts: (GradePart & { width: number; hurts: boolean; weightText: string })[];
+  combine: string;
+  listPlace: string | null;
+  slider: string | null;
+}
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
@@ -740,11 +758,19 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   }
 
   // ---------------------------------------------------------------------------
-  // Why a row ranks where it does: its rank tile clicked (or Enter / Space on it) opens its breakdown
+  // The breakdowns (core/breakdown.ts, one look with the Bets page's): why a row ranks where it does (its
+  // rank tile clicked, or Enter / Space on it), and what makes a support grade (its cell). One open at a time.
   // ---------------------------------------------------------------------------
-  why: (RankWhy & { ur?: boolean; at: { top: number | null; bottom: number | null; left: number; room: number } }) | null = null;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
-  private whyTile: HTMLElement | null = null;
+  @ViewChild('gradePop') gradePop?: ElementRef<HTMLElement>;
+  private readonly rankPop = new Breakdown<RankWhy & { ur?: boolean }>(() => this.whyPop?.nativeElement);
+  private readonly gradePopover = new Breakdown<GradeView>(() => this.gradePop?.nativeElement);
+  get why() {
+    return this.rankPop.shown;
+  }
+  get gradeWhy() {
+    return this.gradePopover.shown;
+  }
   readonly signedScore = signedScore;
   // (every row's score, as the list last scored it: the rank tile's hover)
   private totals = new Map<SkillPlayer, number>();
@@ -769,28 +795,18 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   toggleWhy(player: SkillPlayer, index: number, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    if (this.why?.id === player.gsisId) {
+    if (this.rankPop.isOpen(player.gsisId)) {
       this.closeWhy(true);
       return;
     }
-    const tile = event.currentTarget as HTMLElement;
+    this.closeWhy();
     // (an unranked row: no score or place, just what UR means)
     const ur = this.isUr(player);
     const empty: RankWhy = { id: player.gsisId, name: player.name, rank: 0, of: this.playerList.length, score: 0, scoreRank: 0, manual: false, movedByHeadToHead: false, parts: [], vs: [] };
     // (the list's own scoring, each stat's share kept: the same rows, sliders and filters as sortPlayers)
     const why = ur ? empty : this.rankedWhy(index);
-    // (hung under the tile, or over it when there's more room above; inside the screen's edges, no taller
-    // than the room it has: its list of stats scrolls)
-    const rect = tile.getBoundingClientRect();
-    const below = innerHeight - rect.bottom;
-    const left = Math.max(8, Math.min(rect.left, innerWidth - 348));
-    const at =
-      below >= 560 || below >= rect.top
-        ? { top: rect.bottom + 6, bottom: null, left, room: below - 14 }
-        : { top: null, bottom: innerHeight - rect.top + 6, left, room: rect.top - 14 };
-    this.why = { ...why, ur, at };
-    this.whyTile = tile;
-    setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
+    // (hung under the tile, or over it when there's more room above: its list of stats scrolls)
+    this.rankPop.open({ ...why, ur }, event.currentTarget as HTMLElement);
   }
 
   private rankedWhy(index: number): RankWhy {
@@ -802,18 +818,78 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return rankWhy(this.playerList, index, { totals, counted, parts, weights, strengths }, this.reader, { manual, settings: this.sportSettings });
   }
 
+  // A support grade's cell: its hover says it opens, a click (or Enter / Space) opens what makes it
+  gradeTitle(player: SkillPlayer, stat: SkillStat): string {
+    return `${this.valueTitle(player, stat)} · click for what makes this grade`;
+  }
+
+  toggleGrade(player: SkillPlayer, stat: SkillStat, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const id = `${player.gsisId}|${stat.key}`;
+    if (this.gradePopover.isOpen(id)) {
+      this.closeWhy(true);
+      return;
+    }
+    const view = this.gradeView(player, stat, id);
+    if (!view) return;
+    this.closeWhy();
+    this.gradePopover.open(view, event.currentTarget as HTMLElement);
+  }
+
+  isGradeOpen(player: SkillPlayer, stat: SkillStat): boolean {
+    return this.gradePopover.isOpen(`${player.gsisId}|${stat.key}`);
+  }
+
+  // A grade's breakdown as the popover shows it: the sport's (SPORT.gradeWhy: its inputs, weights and
+  // curve), or without one (inputs not kept for that season) its place in this list; then its slider here
+  private gradeView(player: SkillPlayer, stat: SkillStat, id: string): GradeView | null {
+    const shown = this.reader.value(player, stat);
+    if (shown === null) return null;
+    const why: GradeWhy = SPORT.gradeWhy?.(player, stat, shown, this.reader.valueContext()) ?? {
+      grade: shown,
+      score: shown,
+      parts: [],
+      curve: null,
+      facts: [],
+      notes: ["This season's file doesn't carry the inputs behind this grade (each data update writes them from now on): its place in this list is what there is"],
+      foot: stat.description,
+    };
+    const place = this.reader.listRank(player, stat);
+    const weight = this.weights?.[stat.key as keyof SkillWeights];
+    // (a support grade counts at a fifth of a stat's strength, against him: more help, less credit; or for
+    // him, supportHelps)
+    const slider = weight === undefined ? null : weight ? `${Math.round(weight)}%, ${stat.supportHelps ? 'for him' : 'against him'}` : '0%: not counted';
+    const curve = why.curve;
+    return {
+      ...why,
+      id,
+      name: player.name,
+      label: this.reader.label(stat),
+      letter: grade(why.grade),
+      color: gradeColor(why.grade),
+      parts: barWidths(why.parts).map((part) => ({ ...part, hurts: part.grade < 6, weightText: pctText(part.weight) })),
+      // (how they come together: the parts' score, then the curve or straight to the grade)
+      combine:
+        curve?.on === 'score'
+          ? `${why.score.toFixed(2)}, #${curve.rank} of ${curve.of} ${curve.among}: ${gradeText(why.grade)}`
+          : `${why.score.toFixed(2)}: ${gradeText(why.grade)}`,
+      listPlace: place ? `#${place.rank}${place.tied ? ' (tied)' : ''} of ${this.playerList.length}` : null,
+      slider,
+    };
+  }
+
   closeWhy(refocus = false): void {
-    if (!this.why) return;
-    this.why = null;
-    if (refocus) this.whyTile?.focus({ preventScroll: true });
-    this.whyTile = null;
+    this.rankPop.close(refocus);
+    this.gradePopover.close(refocus);
   }
 
   // (a click anywhere off it and its tile shuts it; so does the list scrolling out from under it)
   @HostListener('document:click', ['$event'])
   clickOff(event: MouseEvent): void {
     const target = event.target as Element | null;
-    if (this.why && !target?.closest('.rank-why, .rank-tile')) this.closeWhy();
+    if (this.why && !target?.closest('.rank-why, .rank-tile')) this.rankPop.close();
+    if (this.gradeWhy && !target?.closest('.grade-why, .grade-tile')) this.gradePopover.close();
     // (and the search, folded back into its button: what's typed is kept for the next time)
     if (this.finding && !target?.closest('.find-bar, .compare-toggle')) this.finding = false;
   }
@@ -833,7 +909,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // click that ends a text selection): picked, or unpicked
   pickRow(player: SkillPlayer, event: MouseEvent): void {
     const target = event.target as Element | null;
-    if (target?.closest('.card-target, .rank-tile, .last-five, .drag-indicator, .group-icon, button, a')) return;
+    if (target?.closest('.card-target, .rank-tile, .grade-tile, .last-five, .drag-indicator, .group-icon, button, a')) return;
     if (Date.now() - this.dragEnded < 300 || getSelection()?.toString()) return;
     this.togglePick(player, event.currentTarget as HTMLElement);
   }
@@ -864,7 +940,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   @HostListener('document:keydown.escape', ['$event'])
   clearPicks(event: Event): void {
     // (an open breakdown shuts first, focus back on its tile)
-    if (this.why) {
+    if (this.why || this.gradeWhy) {
       this.closeWhy(true);
       return;
     }

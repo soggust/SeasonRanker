@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "../variables" as v;
+@use "../breakdown" as bd;
 @use "../casino-chip" as chip;
 
 // (a lock's color: chocolate)
@@ -1062,99 +1063,16 @@ $hub-y: 154px;
   font-weight: 900;
 }
 
-// (a section of the popover under a line across it: the facts, the bets beside it, a CHECK's research)
-@mixin why-section($gap) {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  gap: $gap;
-  margin-top: 9px;
-  padding-top: 8px;
-}
-
 // ---------------------------------------------------------------------------
 // How a bet's score is built: its rank tile clicked opens it on a scoreboard panel hung from the tile, as the
-// grid's rank tile does (phones: a sheet along the bottom of the screen)
+// grid's rank tile does, in the breakdowns' one look (_breakdown.scss; phones: a sheet along the bottom of the
+// screen). Its own: the parts' layout (the value in the label), the score's red, the facts' colors, a CHECK's
+// news research.
 // ---------------------------------------------------------------------------
 .bet-why {
-  --why-good: var(--tint-good, #{v.$good-bright});
-  --why-bad: #{v.$bad-soft};
-  @include v.scoreboard-panel(8px, 0 8px 24px rgba(0, 0, 0, 0.6));
-  box-sizing: border-box;
-  color: #ddd;
-  // (a column: the score on top and the rest stay put, the parts between them scroll)
-  display: flex;
-  flex-direction: column;
+  @include bd.popover;
   font-family: v.$font-base;
-  font-size: 12px;
-  line-height: 1.35;
   overflow-y: auto;
-  padding: 10px 12px 9px;
-  position: fixed;
-  width: 340px;
-  z-index: v.z(popover);
-  // (a quick slide in from the tile's side, the bars filling from the left: outside a media query, where
-  // Angular rewrites the keyframes' scoped names)
-  animation: bet-why-drop 0.14s ease-out;
-  @include v.scrollbars(false);
-
-  &.above {
-    animation-name: bet-why-rise;
-  }
-
-  &.sheet {
-    animation: bet-why-sheet 0.2s ease-out;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  > * {
-    flex-shrink: 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .hurts {
-    color: var(--why-bad);
-  }
-
-  .why-head {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .why-title {
-    align-items: baseline;
-    display: flex;
-    gap: 10px;
-  }
-
-  .why-score {
-    color: #bbb;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-
-    b {
-      color: #fff;
-      font-size: 17px;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      letter-spacing: 0;
-      margin-left: 4px;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
-    }
-  }
-
-  .why-place {
-    color: #fff;
-    font-weight: 700;
-  }
 
   // (a score of 0 or under: red, and said)
   .why-score b.neg {
@@ -1173,33 +1091,7 @@ $hub-y: 154px;
     text-transform: uppercase;
   }
 
-  .why-close {
-    background: none;
-    border: none;
-    color: #999;
-    cursor: pointer;
-    display: flex;
-    padding: 2px;
-
-    mat-icon {
-      @include v.icon-size(18px);
-    }
-
-    &:hover,
-    &:focus-visible {
-      color: #fff;
-      outline: none;
-    }
-  }
-
-  .why-name {
-    color: #fff;
-    font-weight: 700;
-    margin-top: 2px;
-    @include v.ellipsis;
-  }
-
-  // One part a line: its bar (green adding, red taking away; the largest the full width), name and value, points
+  // One part a line: its bar, name and value, points
   .why-parts {
     display: flex;
     flex-direction: column;
@@ -1221,50 +1113,6 @@ $hub-y: 154px;
     }
   }
 
-  .why-bar {
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: v.$radius-xxs;
-    height: 7px;
-    overflow: hidden;
-
-    i {
-      animation: bet-why-fill 0.3s v.$ease-out backwards;
-      background: var(--why-good);
-      border-radius: v.$radius-xxs;
-      box-shadow: 0 0 5px color-mix(in srgb, var(--why-good) 50%, transparent);
-      display: block;
-      height: 100%;
-      transform-origin: left;
-    }
-  }
-
-  .why-part.hurts .why-bar i {
-    background: var(--why-bad);
-    box-shadow: 0 0 5px color-mix(in srgb, var(--why-bad) 50%, transparent);
-  }
-
-  .why-stat {
-    min-width: 0;
-    @include v.ellipsis;
-  }
-
-  .why-part.hurts .why-stat {
-    color: #ddd;
-  }
-
-  .why-amount {
-    color: var(--why-good);
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .why-part.hurts .why-amount,
-  .why-amount.hurts {
-    color: var(--why-bad);
-  }
-
   // Its confidence (in its band's color) and its price's return, a line each
   // (the expected return, its most telling number: in the value colors, an edge green, none red)
   .why-return {
@@ -1280,68 +1128,27 @@ $hub-y: 154px;
     }
   }
 
-  .why-facts {
-    @include why-section(3px);
-
-    p {
-      display: flex;
-      gap: 8px;
-      justify-content: space-between;
+  .why-facts b {
+    &.lock {
+      color: color-mix(in srgb, #{$lock} 70%, #fff);
     }
 
-    span {
+    &.high {
+      color: color-mix(in srgb, #{v.$good} 75%, #fff);
+    }
+
+    &.medium {
+      color: color-mix(in srgb, #{v.$caution} 75%, #fff);
+    }
+
+    &.low {
       color: #bbb;
     }
-
-    b {
-      color: #fff;
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-
-      &.lock {
-        color: color-mix(in srgb, #{$lock} 70%, #fff);
-      }
-
-      &.high {
-        color: color-mix(in srgb, #{v.$good} 75%, #fff);
-      }
-
-      &.medium {
-        color: color-mix(in srgb, #{v.$caution} 75%, #fff);
-      }
-
-      &.low {
-        color: #bbb;
-      }
-    }
-  }
-
-  // The bets beside it: the gap, and the parts making it
-  .why-vs {
-    @include why-section(6px);
-
-    b {
-      color: #fff;
-    }
-  }
-
-  .why-drivers {
-    color: #bbb;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px 10px;
-    margin-top: 1px;
-  }
-
-  .why-foot {
-    color: #777;
-    font-size: 10.5px;
-    margin-top: 8px;
   }
 
   // A CHECK's news research (research.mjs): its status, who and why, the summary, the reports' sites
   .why-research {
-    @include why-section(4px);
+    @include bd.section(4px);
 
     .why-research-head {
       display: flex;
@@ -1400,58 +1207,17 @@ $hub-y: 154px;
   }
 }
 
-// (phones: along the bottom, the screen's width)
-@include v.down(phone) {
-  .bet-why {
-    border-radius: 12px 12px 0 0;
-    bottom: 0 !important;
-    left: 0 !important;
-    max-height: 80dvh !important;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    top: auto !important;
-    width: 100%;
-  }
-}
+@include bd.sheet(".bet-why");
+@include bd.motion(".bet-why");
 
-// (none for anyone who's asked for less: the handle's pull, the reels, the open section's unfold, the popover,
-// its phone sheet and its rise above the tile too, whose own rules outweigh the plain .bet-why)
+// (none for anyone who's asked for less: the handle's pull, the reels, the open section's unfold; the
+// popover's own is in bd.motion)
 @media (prefers-reduced-motion: reduce) {
   .slot-handle.pulling .slot-lever,
   .slot-handle.pulling .slot-knob,
   .bets-list.spinning .bet-row > *,
   .bets-list.spinning .bet-rank,
-  .bet-reasons,
-  .bet-why,
-  .bet-why.above,
-  .bet-why.sheet,
-  .bet-why .why-bar i {
+  .bet-reasons {
     animation: none;
-  }
-}
-
-@keyframes bet-why-drop {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes bet-why-rise {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-}
-
-@keyframes bet-why-sheet {
-  from {
-    opacity: 0;
-    transform: translateY(30%);
-  }
-}
-
-@keyframes bet-why-fill {
-  from {
-    transform: scaleX(0);
   }
 }

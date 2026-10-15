@@ -19,8 +19,8 @@ const templates = (dir) =>
     return /\.component\.(html|ts)$/.test(entry.name) ? [file] : [];
   });
 
-// (the dialogs that leave the page usable: a rank tile's why, a bet's why, the bet slip's drawer)
-const NOT_MODAL = new Set(['rank-why', 'bet-why', 'slip']);
+// (the dialogs that leave the page usable: a rank tile's why, a support grade's, a bet's why, the bet slip's drawer)
+const NOT_MODAL = new Set(['rank-why', 'grade-why', 'bet-why', 'slip']);
 
 test('every modal dialog is aria-modal, so the sport bar goes under it', () => {
   const css = read('libs/ranker/src/styles/_base.scss');

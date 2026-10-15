@@ -26,7 +26,7 @@
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { curve } from '../../../libs/ranker/scripts/grades.mjs';
+import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, previousTab, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
@@ -730,13 +730,23 @@ async function buildRows(src, part, { season, current, awards, injured, parks, t
   const defense = curve(teamDef);
   const hitterPark = curve(parks);
   const pitcherPark = curve(new Map([...parks].map(([team, v]) => [team, -v])));
+  // (and what each was curved on, for the grade's breakdown on the site: grades.mjs keepGradeInput; a
+  // pitcher's park by its factor as is, ranked lowest first)
+  const lineupPlaces = curvePlaces(lineupScore);
+  const defensePlaces = curvePlaces(teamDef);
+  const hitterParkPlaces = curvePlaces(parks);
+  const pitcherParkPlaces = curvePlaces(new Map([...parks].map(([team, v]) => [team, -v])));
   for (const unit of hitters) {
     unit.stats.lineup = lineup.get(unit.gsisId) ?? null;
     unit.stats.park = hitterPark.get(teamOf(unit)) ?? null;
+    keepGradeInput(unit, 'lineup', lineupScore.get(unit.gsisId), lineupPlaces.get(unit.gsisId));
+    keepGradeInput(unit, 'park', parks.get(teamOf(unit)), hitterParkPlaces.get(teamOf(unit)));
   }
   for (const unit of [...out.SP, ...out.RP]) {
     unit.stats.defense = defense.get(teamOf(unit)) ?? null;
     unit.stats.park = pitcherPark.get(teamOf(unit)) ?? null;
+    keepGradeInput(unit, 'defense', teamDef.get(teamOf(unit)), defensePlaces.get(teamOf(unit)));
+    keepGradeInput(unit, 'park', parks.get(teamOf(unit)), pitcherParkPlaces.get(teamOf(unit)));
   }
   // (early in the season, Lineup and Defense start from the team's last season: libs/ranker/scripts/early-season;
   // the Stadium is a three-year park factor already)

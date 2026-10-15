@@ -203,10 +203,31 @@
               <!-- Support grades share a dark box -->
               <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
                 @for (stat of group.stats; track stat.key) {
-                  <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                    <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
-                    <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
-                  </div>
+                  @if (stat.format === 'grade' && r.value(player, stat) !== null) {
+                    <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
+                    <div
+                      class="grade-tile"
+                      [class.iso-on]="isolatedKey === stat.key"
+                      [class.open]="isGradeOpen(player, stat)"
+                      [style.--label-w]="columnWidth(stat)"
+                      role="button"
+                      tabindex="0"
+                      aria-haspopup="dialog"
+                      [attr.aria-expanded]="isGradeOpen(player, stat)"
+                      [attr.aria-label]="r.label(stat) + ' ' + r.cellText(player, stat) + ': what makes ' + player.name + '\'s grade'"
+                      (click)="toggleGrade(player, stat, $event)"
+                      (keydown.enter)="toggleGrade(player, stat, $event)"
+                      (keydown.space)="toggleGrade(player, stat, $event)"
+                    >
+                      <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                      <p class="stat-label" [title]="gradeTitle(player, stat)">{{ r.label(stat) }}</p>
+                    </div>
+                  } @else {
+                    <div [class.iso-on]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
+                      <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
+                    </div>
+                  }
                 }
               </div>
             } @else {
@@ -357,6 +378,65 @@
       }
       <p class="why-foot">Each stat: how far from the list's average it is (in standard deviations), times its slider</p>
       }
+    </div>
+  }
+
+  <!-- What makes a support grade (its cell clicked): its inputs a line each (its value, what it is with its
+       weight, what it adds: its grade times its weight), adding up to the score; how the score becomes the
+       grade; its place in this list and its slider here (grade-why.ts, the sport's gradeWhy) -->
+  @if (gradeWhy; as g) {
+    <div
+      #gradePop
+      class="grade-why"
+      [class.above]="g.at.top === null"
+      role="dialog"
+      tabindex="-1"
+      [attr.aria-label]="'What makes ' + g.name + '\'s ' + g.label + ' grade: ' + g.letter"
+      [style.top.px]="g.at.top"
+      [style.bottom.px]="g.at.bottom"
+      [style.left.px]="g.at.left"
+      [style.max-height.px]="g.at.room"
+    >
+      <div class="why-head">
+        <p class="why-title">
+          <span class="why-score">{{ g.label }} <b class="grade-letter" [style.--grade-color]="g.color">{{ g.letter }}</b></span>
+          @if (g.curve; as c) {
+            <span class="why-place" [title]="c.on === 'score' ? 'The score\'s place among the ' + c.among + '\'s, curved into the grade' : 'The input\'s place among the ' + c.among + '\'s, curved into this season\'s grade'">#{{ c.rank }} of {{ c.of }} {{ c.among }}</span>
+          }
+        </p>
+        <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
+      </div>
+      <p class="why-name">{{ g.name }}</p>
+      @for (note of g.notes; track $index) {
+        <p class="why-note">{{ note }}</p>
+      }
+      @if (g.parts.length) {
+      <div class="why-parts" role="list">
+        @for (part of g.parts; track part.key) {
+          <div role="listitem" class="why-part" [class.hurts]="part.hurts" [title]="part.title + (part.hurts ? '\nUnder a C: it pulls the grade down' : '')">
+            <span class="why-bar" aria-hidden="true"><i [style.width.%]="part.width"></i></span>
+            <strong class="why-value">{{ part.value }}</strong>
+            <span class="why-stat">{{ part.label }} <small>({{ part.place ? part.place + ', ' : '' }}× {{ part.weightText }})</small></span>
+            <span class="why-amount">{{ part.amount.toFixed(2) }}</span>
+          </div>
+        }
+      </div>
+      }
+      <div class="why-facts">
+        @if (g.parts.length) {
+          <p title="The parts added up, and how that becomes the grade"><span>Score</span> <b>{{ g.combine }}</b></p>
+        }
+        @for (fact of g.facts; track fact.label) {
+          <p [title]="fact.title ?? ''"><span>{{ fact.label }}</span> <b>{{ fact.value }}</b></p>
+        }
+        @if (g.listPlace) {
+          <p title="Its place in this list on this grade"><span>In this list</span> <b>{{ g.listPlace }}</b></p>
+        }
+        @if (g.slider) {
+          <p title="Its slider on this tab: a support grade counts at a fifth of a stat's strength, against him (more help, less credit) or, for a few, for him"><span>Slider here</span> <b>{{ g.slider }}</b></p>
+        }
+      </div>
+      <p class="why-foot">{{ g.foot }}</p>
     </div>
   }
 

@@ -2,6 +2,7 @@ import type { Observable } from 'rxjs';
 import type { SkillPlayer, SkillStat, SkillWeights } from '@sport/positions';
 import type { CardSkill } from './skills';
 import type { RosterGrade } from './roster-grades';
+import type { GradeWhy } from './grade-why';
 import type { DepthLoadContext, DepthView } from './player-card/depth-chart';
 import type { ZoneView } from './player-card/zones';
 import type { FieldMapView } from './player-card/field-map';
@@ -480,6 +481,9 @@ export interface SportConfig {
   // What a stat counts as in the ranking when that isn't the number shown (the UFC's rank: the champion
   // as 0, an unranked fighter as 16th); undefined: the shown value
   scoreValue?: (player: SkillPlayer, stat: SkillStat, shown: number | null, settings: SportSettings) => number | null | undefined;
+  // What makes a support grade (its cell clicked in the grid: the inputs, their weights, the curve;
+  // engine/grade-why.ts), from where the grade is worked out; null: nothing more to say than its place
+  gradeWhy?: (player: SkillPlayer, stat: SkillStat, shown: number, context: ValueContext) => GradeWhy | null;
   // Stats worked out from the table's season's other tabs: left off another season's card
   tableSeasonOnly?: (stat: SkillStat) => boolean;
   // Called once at startup with the engine's rankings (for grades from other tabs); what it returns

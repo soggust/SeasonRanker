@@ -1,4 +1,5 @@
 import type { CardFlag, FlagContext, SportConfig } from '@ranker/engine/sport';
+import { gradeWhy } from './grade-inputs';
 import { espnTeamGameLog, mlbGameLog } from '@ranker/core/game-logs';
 import { loadTeamRoster } from './team-roster';
 import { PITCHERS, loadZones } from './zones';
@@ -114,6 +115,7 @@ export const SPORT: SportConfig = {
   careerId: (_position, id) => id.replace(/^[HP]-/, ''),
   listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each group by your rankings, weighted by playing time
+  gradeWhy,
   rosterGrades: [
     { key: 'hitters', positions: ['C', '1B', '2B', '3B', 'SS', 'OF', 'DH'], usage: (p) => p.stats.pa ?? 0 },
     { key: 'rotation', positions: ['SP'], usage: (p) => p.stats.ip ?? 0 },

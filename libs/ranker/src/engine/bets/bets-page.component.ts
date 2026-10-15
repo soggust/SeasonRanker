@@ -11,6 +11,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
 import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
+import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { TeamColors, loadTeamColors, pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
 
@@ -693,7 +694,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // Why a bet ranks where it does: its rank tile clicked (or Enter / Space on it) opens how its score is
   // built (bet-why.ts), as the grid's rank tile does
   // ---------------------------------------------------------------------------
-  why: (BetWhy & { at: { top: number | null; bottom: number | null; left: number; room: number }; sheet: boolean }) | null = null;
+  why: (BetWhy & { at: PopoverAt; sheet: boolean }) | null = null;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
   private whyTile: HTMLElement | null = null;
   readonly signedPoints = signedPoints;
@@ -704,7 +705,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   checkWhy: {
     id: number;
     name: string;
-    at: { top: number | null; bottom: number | null; left: number; room: number };
+    at: PopoverAt;
     sheet: boolean;
     kelly: number | null;
     model: number | null;
@@ -773,15 +774,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     }
     const tile = event.currentTarget as HTMLElement;
     // (hung under the tile, or over it when there's more room above; inside the screen's edges, no taller
-    // than the room it has; phones: a sheet along the bottom)
-    const rect = tile.getBoundingClientRect();
-    const below = innerHeight - rect.bottom;
-    const left = Math.max(8, Math.min(rect.left, innerWidth - 348));
-    const at =
-      below >= 420 || below >= rect.top
-        ? { top: rect.bottom + 6, bottom: null, left, room: below - 14 }
-        : { top: null, bottom: innerHeight - rect.top + 6, left, room: rect.top - 14 };
-    const sheet = matchMedia('(max-width: 575px)').matches;
+    // than the room it has; phones: a sheet along the bottom: the breakdowns' shared placing, core/breakdown.ts)
+    const at = popoverAt(tile, 420);
+    const sheet = phoneSheet();
     // (a CHECK's: no rank to build, its disagreement instead)
     if (row.check) {
       this.why = null;

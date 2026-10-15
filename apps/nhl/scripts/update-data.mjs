@@ -27,7 +27,7 @@
 import { writeFile, mkdir, access, readFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { curve } from '../../../libs/ranker/scripts/grades.mjs';
+import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { coachesFor } from './coaches.mjs';
@@ -510,14 +510,21 @@ async function buildSeason(season, part = 'regular') {
   // - Defense (goalies): the shot quality he faced, expected goals against per 60, lower is better,
   //   curved over the goalies
   const skaterRows = ['C', 'LW', 'RW', 'D'].flatMap((tab) => out[tab]);
-  const linemates = curve(new Map(skaterRows.map((u) => [u.gsisId, u._offIce ?? NaN])));
+  // (and what each was curved on, for the grade's breakdown on the site: grades.mjs keepGradeInput)
+  const offIce = new Map(skaterRows.map((u) => [u.gsisId, u._offIce ?? NaN]));
+  const linemates = curve(offIce);
+  const linematesPlaces = curvePlaces(offIce);
   for (const u of skaterRows) {
     u.stats.linemates = linemates.get(u.gsisId) ?? null;
+    keepGradeInput(u, 'linemates', u._offIce, linematesPlaces.get(u.gsisId));
     delete u._offIce;
   }
-  const defense = curve(new Map(out.G.filter((g) => g.games >= 5).map((g) => [g.gsisId, g._faced === null ? NaN : -g._faced])));
+  const faced = new Map(out.G.filter((g) => g.games >= 5).map((g) => [g.gsisId, g._faced === null ? NaN : -g._faced]));
+  const defense = curve(faced);
+  const defensePlaces = curvePlaces(faced);
   for (const g of out.G) {
     g.stats.defense = defense.get(g.gsisId) ?? null;
+    keepGradeInput(g, 'defense', g._faced, defensePlaces.get(g.gsisId));
     delete g._faced;
   }
 
@@ -539,8 +546,10 @@ async function buildSeason(season, part = 'regular') {
     share,
   });
   const coaching = curve(coached.lift);
+  const coachingPlaces = curvePlaces(coached.lift);
   for (const u of [...skaterRows, ...out.G]) {
     u.stats.coaching = coaching.get(u._team) ?? null;
+    keepGradeInput(u, 'coaching', coached.lift.get(u._team), coachingPlaces.get(u._team));
     delete u._team;
   }
   // (each team's last seven games, newest first, from its season schedule: the Teams tab's Recent; the

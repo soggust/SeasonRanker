@@ -1,4 +1,5 @@
 import type { CardFlag, FlagContext, SportConfig } from '@ranker/engine/sport';
+import { gradeWhy } from './grade-inputs';
 import { espnTeamGameLog } from '@ranker/core/game-logs';
 import { loadTeamRoster } from './team-roster';
 
@@ -192,6 +193,7 @@ export const SPORT: SportConfig = {
   pooledTabs: { TOP: { tabs: ['C', 'LW', 'RW', 'D'], group: (tab) => (tab === 'LW' || tab === 'RW' ? 'W' : tab) } },
   listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each spot by your rankings, weighted by ice time (a goalie by games)
+  gradeWhy,
   rosterGrades: [
     { key: 'forwards', positions: ['C', 'LW', 'RW'], usage: (p) => (p.stats.toi ?? 0) * p.games },
     { key: 'blueline', positions: ['D'], usage: (p) => (p.stats.toi ?? 0) * p.games },

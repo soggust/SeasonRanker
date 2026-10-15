@@ -1,3 +1,4 @@
+import { barWidths, signedAmount } from '../../core/breakdown';
 import { Confidence, tierLabel, unranked } from './tiers';
 // Why a bet ranks where it does on the Bets page (its rank tile clicked): its score split into what makes it,
 // and what separates it from the bets beside it. The score is its Kelly score (picks.mjs scoreParts): how much
@@ -130,12 +131,9 @@ export function betScoreText(score: number): string {
   return Number(text) === 0 ? text : `${score < 0 ? '−' : '+'}${text}`;
 }
 
-// A part of the score, signed ("+4.63", "−0.08"; to three places when it's under a hundredth)
-export function signedPoints(amount: number): string {
-  const digits = Math.abs(amount) < 0.01 && amount !== 0 ? 3 : 2;
-  const text = Math.abs(amount).toFixed(digits);
-  return Number(text) === 0 ? text : `${amount < 0 ? '−' : '+'}${text}`;
-}
+// A part of the score, signed ("+4.63", "−0.08"; to three places when it's under a hundredth): the
+// breakdowns' shared signedAmount
+export const signedPoints = signedAmount;
 
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 const odds = (a: number) => (a > 0 ? `+${a}` : `${a}`.replace('-', '−'));
@@ -232,8 +230,7 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
   const row = list[index];
   const score = row.sureness * 100;
   const { parts: raw, partial } = partsOf(row);
-  const largest = Math.max(0, ...raw.map((p) => Math.abs(p.amount)));
-  const parts = raw.map((p) => ({ ...p, width: largest ? (Math.abs(p.amount) / largest) * 100 : 0 }));
+  const parts = barWidths(raw);
 
   // Its chance to win: the trusted one, the book's fair chance moved toward the model's
   const chance = Number.isFinite(row.p) ? pct(row.p!) : Number.isFinite(row.chance) ? `${row.chance}%` : null;
