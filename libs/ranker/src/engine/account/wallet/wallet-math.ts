@@ -13,7 +13,7 @@ export type { Tier };
 
 // (the settled history's page: the wallet and Closed Bets read it this many at a time, the latest first; the
 // record's tiles come from the settler's tally, not from these)
-export const SETTLED_PAGE = 200;
+export const SETTLED_PAGE = 50;
 
 // (play money: 1,000 units to start, and again on a reload)
 export const START = 1000;
