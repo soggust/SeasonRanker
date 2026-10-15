@@ -8,14 +8,16 @@ export function heatSeasonFile<T extends { season: number }>(season: number, cur
 export function heatSeasonFile<P extends { season: number }, T>(season: number, current: boolean, name: string, expand: (packed: P) => T): Promise<T | null>;
 export function heatSeasonFile<P extends { season: number }, T>(season: number, current: boolean, name: string, expand?: (packed: P) => T): Promise<T | P | null> {
   const path = current ? `data/${name}` : `data/seasons/${season}/${name}`;
-  if (!files.has(path)) {
+  // (kept by the season asked too: the top of data/ is checked against the season it was asked for)
+  const key = `${season}:${path}`;
+  if (!files.has(key)) {
     files.set(
-      path,
+      key,
       fetch(path, { cache: current ? 'no-cache' : 'default' })
         .then(async (res) => (res.ok ? ((await res.json()) as P) : null))
         .then((f) => (f && f.season === season ? (expand ? expand(f) : f) : null))
         .catch(() => null),
     );
   }
-  return files.get(path) as Promise<T | P | null>;
+  return files.get(key) as Promise<T | P | null>;
 }

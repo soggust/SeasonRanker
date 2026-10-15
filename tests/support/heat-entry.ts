@@ -6,3 +6,4 @@ export { tintStrength, tintFrom } from '@ranker/core/value-tint';
 export { addEntries, expandHeat, heatPart, heatMatchups, nflHeatMaps, ZONE_IDS } from '@sport/heat-maps';
 export { waysTitle } from '@ranker/engine/player-card/analysis';
 export { RZ_SPOT_IDS } from '@ranker/engine/heat-map/surfaces/red-zone';
+export { heatFile } from '@sport/heat-maps';

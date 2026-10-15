@@ -1,4 +1,5 @@
 import { pctText as pct, plural, ratio } from '@ranker/core/format';
+import { heatSeasonFile } from '@ranker/engine/heat-map/heat-files';
 import type { SkillPlayer } from '@sport/positions';
 import { tintScale } from '@ranker/core/value-tint';
 import type { HeatCell, HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatQuery, HeatSplit, HeatStat } from '@ranker/engine/heat-map/heat-map.model';
@@ -267,23 +268,15 @@ function kindRows(part: HeatPart, kind: Kind): HeatEntry[] {
 
 // ---- the files, once a season
 
-const files = new Map<number, Promise<HeatFile | null>>();
 // (a season whose file is in, for the splits it has: no playoffs, no POST)
 const loaded = new Map<number, HeatFile | null>();
+// (heat-files.ts: once a visit; another season's file, the one left at the top of data/ before the new season's
+// first build, none)
 export function heatFile(season: number, current: boolean): Promise<HeatFile | null> {
-  let file = files.get(season);
-  if (!file) {
-    const path = current ? 'data/heat-maps.json' : `data/seasons/${season}/heat-maps.json`;
-    file = fetch(path, { cache: current ? 'no-cache' : 'default' })
-      .then(async (res) => (res.ok ? expandHeat((await res.json()) as PackedHeatFile) : null))
-      .catch(() => null)
-      .then((f) => {
-        loaded.set(season, f);
-        return f;
-      });
-    files.set(season, file);
-  }
-  return file;
+  return heatSeasonFile(season, current, 'heat-maps.json', expandHeat).then((f) => {
+    loaded.set(season, f);
+    return f;
+  });
 }
 
 // ---- a row's entries

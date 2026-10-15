@@ -462,3 +462,25 @@ test('published team previews: the old key matchups or the new ways, one or the 
     assert.ok(Array.isArray(g.keyMatchups) || (Array.isArray(g.waysToWin) && Array.isArray(g.waysToLose)), f);
   }
 });
+
+test("NFL heat-map file at the rollover: last season's file still at the top of data/ isn't the new season's", async () => {
+  const realFetch = globalThis.fetch;
+  const asked = [];
+  globalThis.fetch = async (url) => {
+    asked.push(String(url));
+    const file = path.join(ROOT, String(url).replace(/^data\//, ''));
+    return fs.existsSync(file) ? { ok: true, json: async () => readJson(file) } : { ok: false, json: async () => null };
+  };
+  try {
+    const now = readJson(path.join(ROOT, 'heat-maps.json')).season;
+    // (the new season asked for before its first build: the top file is still the season before's)
+    assert.equal(await h.heatFile(now + 1, true), null);
+    assert.ok(asked.includes('data/heat-maps.json'));
+    // (the season it is: read, once for the visit)
+    const file = await h.heatFile(now, true);
+    assert.equal(file?.season, now);
+    assert.equal(await h.heatFile(now, true), file);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
