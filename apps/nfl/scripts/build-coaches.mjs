@@ -10,7 +10,7 @@
 
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
-import { currentSeason, writeStaff } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { currentSeason, seasonRange, writeStaff } from '../../../libs/ranker/scripts/wiki-staff.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const DATA = path.join(ROOT, 'apps/nfl/src/StaticData');
@@ -121,11 +121,4 @@ async function build(season) {
   console.log(`${season}: ${Object.keys(out).length} teams${missing.length ? ` (none for ${missing.join(', ')})` : ''}`);
 }
 
-const arg = process.argv[2];
-const seasons = arg
-  ? (() => {
-      const [a, b] = arg.split('-').map(Number);
-      return Array.from({ length: (b ?? a) - a + 1 }, (_, i) => a + i);
-    })()
-  : [CURRENT_SEASON];
-for (const season of seasons) await build(season);
+for (const season of seasonRange(process.argv[2], CURRENT_SEASON)) await build(season);

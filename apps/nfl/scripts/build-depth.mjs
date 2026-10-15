@@ -18,6 +18,7 @@ import { gunzipSync } from 'node:zlib';
 import path from 'node:path';
 import { espnInjuries } from './analysis/live.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const CACHE = path.join(ROOT, '.cache/nflverse');
@@ -679,11 +680,7 @@ async function buildSeason(season, players) {
 
 async function main() {
   const arg = process.argv[2];
-  const seasons = !arg
-    ? [CURRENT_SEASON]
-    : arg.includes('-')
-      ? (([a, b]) => Array.from({ length: b - a + 1 }, (_, i) => a + i))(arg.split('-').map(Number))
-      : arg.split(',').map(Number);
+  const seasons = seasonsArg(arg, CURRENT_SEASON);
   const players = readCsv(await download('players.csv.gz', `${NFLVERSE}/players/players.csv.gz`));
   for (const season of seasons) {
     try {

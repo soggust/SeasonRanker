@@ -31,6 +31,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { readJson, writeIfChanged } from '../../../libs/ranker/scripts/json-files.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const CACHE = path.join(ROOT, '.cache/moneypuck');
@@ -291,7 +293,6 @@ async function download(season, current) {
   return body;
 }
 
-const readJson = (file) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null);
 // (a team's abbreviation from its logo's file name: "assets/NHL_Icons/WSH_secondary.svg" -> "WSH")
 export const logoAbbr = (logo) => /([A-Z]{2,3})[^/]*\.svg$/.exec(logo ?? '')?.[1] ?? null;
 
@@ -346,27 +347,15 @@ async function buildSeason(season, current) {
   const head = { season, fields: { cell: CELL, zones: ZONE_IDS, types: TYPES }, updated: new Date().toISOString().replace(/\.\d+Z$/, 'Z') };
   return [
     // (each team's name by its abbreviation, "BOS" -> "Boston Bruins": a matchup map's title)
-    write(path.join(dir, 'heat-maps.json'), { ...head, teams: Object.fromEntries([...keys.names].sort(([a], [b]) => a.localeCompare(b))), regular: regular?.main ?? null, post: post?.main ?? null }),
-    ...Object.values(GROUPS).map((g) => write(path.join(dir, `heat-maps.${g}.json`), { ...head, regular: regular?.[g] ?? null, post: post?.[g] ?? null })),
+    writeIfChanged(path.join(dir, 'heat-maps.json'), { ...head, teams: Object.fromEntries([...keys.names].sort(([a], [b]) => a.localeCompare(b))), regular: regular?.main ?? null, post: post?.main ?? null }),
+    ...Object.values(GROUPS).map((g) => writeIfChanged(path.join(dir, `heat-maps.${g}.json`), { ...head, regular: regular?.[g] ?? null, post: post?.[g] ?? null })),
   ];
-}
-
-// (nothing new: the file as it was, its "updated" too, so a quiet night commits nothing)
-function write(file, out) {
-  const old = readJson(file);
-  if (old && JSON.stringify({ ...old, updated: null }) === JSON.stringify({ ...out, updated: null })) return { file, size: statSync(file).size, same: true };
-  writeFileSync(file, JSON.stringify(out));
-  return { file, size: statSync(file).size, same: false };
 }
 
 async function main() {
   const CURRENT_SEASON = currentSeason(path.join(import.meta.dirname, '..'));
   const arg = process.argv[2];
-  const seasons = !arg
-    ? [CURRENT_SEASON]
-    : arg.includes('-')
-      ? (([a, b]) => Array.from({ length: b - a + 1 }, (_, i) => a + i))(arg.split('-').map(Number))
-      : arg.split(',').map(Number);
+  const seasons = seasonsArg(arg, CURRENT_SEASON);
   for (const season of seasons.filter((s) => s >= FIRST_SEASON)) {
     try {
       const files = await buildSeason(season, season === CURRENT_SEASON);

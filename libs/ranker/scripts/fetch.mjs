@@ -18,6 +18,16 @@ export const TIMEOUT = 30000;
 
 const sleep = (ms) => (ms > 0 ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve());
 
+// A polite pace for fetchRetry's before: each request at least ms after the one before it started
+export function pacer(ms) {
+  let last = 0;
+  return async () => {
+    const wait = last + ms - Date.now();
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    last = Date.now();
+  };
+}
+
 export async function fetchRetry(url, options = {}) {
   const { as = 'text', headers, attempts = 3, backoff = 1500, timeout = TIMEOUT, rateLimit = 0, before, fetch: fetchIt = globalThis.fetch } = options;
   let waited = 0;

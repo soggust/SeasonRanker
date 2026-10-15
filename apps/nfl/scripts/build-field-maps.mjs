@@ -25,6 +25,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { readJson, writeIfChanged } from '../../../libs/ranker/scripts/json-files.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const CACHE = path.join(ROOT, '.cache/nflverse');
@@ -677,7 +679,6 @@ async function download(file, url, current) {
   return body;
 }
 
-const readJson = (file) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null);
 
 async function buildSeason(season, current, { espnToGsis, byName }) {
   const dir = current ? DATA : path.join(DATA, 'seasons', String(season));
@@ -728,25 +729,13 @@ async function buildSeason(season, current, { espnToGsis, byName }) {
     regular: heatSection(regular, { ...opts, nicknames }),
     post: post.length ? heatSection(post, { ...opts, nicknames }) : null,
   };
-  return [write(path.join(dir, 'field-maps.json'), out), write(path.join(dir, 'heat-maps.json'), heat)];
-}
-
-// (nothing new: the file as it was, its "updated" too, so a quiet night commits nothing)
-function write(file, out) {
-  const old = readJson(file);
-  if (old && JSON.stringify({ ...old, updated: null }) === JSON.stringify({ ...out, updated: null })) return { file, size: statSync(file).size, same: true };
-  writeFileSync(file, JSON.stringify(out));
-  return { file, size: statSync(file).size, same: false };
+  return [writeIfChanged(path.join(dir, 'field-maps.json'), out), writeIfChanged(path.join(dir, 'heat-maps.json'), heat)];
 }
 
 async function main() {
   const CURRENT_SEASON = currentSeason(path.join(import.meta.dirname, '..'));
   const arg = process.argv[2];
-  const seasons = !arg
-    ? [CURRENT_SEASON]
-    : arg.includes('-')
-      ? (([a, b]) => Array.from({ length: b - a + 1 }, (_, i) => a + i))(arg.split('-').map(Number))
-      : arg.split(',').map(Number);
+  const seasons = seasonsArg(arg, CURRENT_SEASON);
   const players = parsePlays(gunzipSync(await download('players.csv.gz', `${NFLVERSE}/players/players.csv.gz`, true)).toString(), ['gsis_id', 'espn_id', 'display_name']);
   const espnToGsis = new Map(players.filter((p) => id(p.espn_id) && id(p.gsis_id)).map((p) => [Number(p.espn_id), p.gsis_id]));
   const byName = new Map();

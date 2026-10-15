@@ -49,7 +49,7 @@ test('the data scripts fetch through libs/ranker/scripts/fetch.mjs, with its tim
     const file = path.join(ROOT, script);
     if (!fs.existsSync(file)) continue;
     const source = fs.readFileSync(file, 'utf8');
-    assert.match(source, /import \{ fetchRetry \} from '\.\.\/\.\.\/\.\.\/libs\/ranker\/scripts\/fetch\.mjs';/, `${script}: not on the shared fetch`);
+    assert.match(source, /import \{ fetchRetry(, \w+)* \} from '\.\.\/\.\.\/\.\.\/libs\/ranker\/scripts\/fetch\.mjs';/, `${script}: not on the shared fetch`);
     assert.doesNotMatch(source, /(^|[^.\w])fetch\(/m, `${script}: a bare fetch()`);
   }
 });

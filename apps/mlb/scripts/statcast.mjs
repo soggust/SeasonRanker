@@ -16,6 +16,7 @@ import { gunzipSync, gzipSync } from 'node:zlib';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 export const CACHE = process.env.SAVANT_CACHE ? path.resolve(process.env.SAVANT_CACHE) : path.join(ROOT, '.cache/savant');
@@ -192,9 +193,6 @@ export function readSeason(season) {
     .sort()
     .flatMap((f) => readDay(path.join(dir, f)));
 }
-
-export const seasonsArg = (arg, fallback) =>
-  !arg ? [fallback] : arg.includes('-') ? (([a, b]) => Array.from({ length: b - a + 1 }, (_, i) => a + i))(arg.split('-').map(Number)) : arg.split(',').map(Number);
 
 if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.url)) === '') {
   const started = Date.now();

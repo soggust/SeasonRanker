@@ -29,7 +29,7 @@ import path from 'node:path';
 import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
 import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scripts/carry-forward.mjs';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { BOX_DIR, boxFile, updateBoxes } from './box-scores.mjs';
 import { FIRST_SEASON as FIRST_SHOTS, shotFile, updateShots, writeHeat } from './shot-zones.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
@@ -122,7 +122,7 @@ async function teamRecent(season, keep, teams, postTeams) {
 // read from the cache when it's there, a whole page only (one cut off or empty is asked again, not kept
 // for good); every page is fetched once a run. A page it hasn't (a 404) is '' and noted in missing: its
 // own answer, unlike a failure (which throws)
-let lastRequest = 0;
+const pace = pacer(3200);
 const fetched = new Map();
 const missing = new Set();
 const whole = (html) => html.includes('</html>');
@@ -133,11 +133,6 @@ async function page(url, keep = false) {
     const html = await readFile(file, 'utf8').catch(() => null);
     if (html && whole(html)) return fetched.set(url, html).get(url);
   }
-  const pace = async () => {
-    const wait = lastRequest + 3200 - Date.now();
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-    lastRequest = Date.now();
-  };
   const html = await fetchRetry(url, { headers: { 'User-Agent': UA }, backoff: 20000, notFound: null, before: pace });
   if (html === null) {
     missing.add(url);

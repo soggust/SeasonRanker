@@ -39,7 +39,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
-import { CACHE, FIRST_SEASON, fetchSeason, readSeason, seasonsArg, splitCsvLine } from './statcast.mjs';
+import { readJson, writeIfChanged } from '../../../libs/ranker/scripts/json-files.mjs';
+import { CACHE, FIRST_SEASON, fetchSeason, readSeason, splitCsvLine } from './statcast.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../..');
 const DATA = path.join(ROOT, 'apps/mlb/src/StaticData');
@@ -429,7 +431,6 @@ export function defenseOf(def) {
 
 // ---- the season's rows: who gets a key (the season's files' players, every part's)
 
-const readJson = (file) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null);
 const HITTER_TABS = ['C', '1B', '2B', '3B', 'SS', 'OF', 'DH'];
 const PITCHER_TABS = ['SP', 'RP'];
 
@@ -494,14 +495,6 @@ export function buildFiles(season, pitches, { keys = {}, defense = null, parks =
   return { main, pitchers: pFiles, hitters: hFiles };
 }
 
-// (nothing new: the file as it was, its "updated" too, so a quiet night commits nothing)
-function write(file, out) {
-  const old = readJson(file);
-  if (old && JSON.stringify({ ...old, updated: null }) === JSON.stringify({ ...out, updated: null })) return { file, size: statSync(file).size, same: true };
-  writeFileSync(file, JSON.stringify(out));
-  return { file, size: statSync(file).size, same: false };
-}
-
 const mainFiles = (dir) => (existsSync(dir) ? readdirSync(dir).filter((name) => /^heat-maps(.[ph]d+)?.json$/.test(name)) : []);
 
 async function buildSeason(season, current, { deadline }) {
@@ -524,9 +517,9 @@ async function buildSeason(season, current, { deadline }) {
   if (!built) return null;
   const updated = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
   const written = [
-    write(path.join(dir, 'heat-maps.json'), { ...built.main, updated }),
-    ...built.pitchers.map((f, k) => write(path.join(dir, `heat-maps.p${k}.json`), f)),
-    ...built.hitters.map((f, k) => write(path.join(dir, `heat-maps.h${k}.json`), f)),
+    writeIfChanged(path.join(dir, 'heat-maps.json'), { ...built.main, updated }),
+    ...built.pitchers.map((f, k) => writeIfChanged(path.join(dir, `heat-maps.p${k}.json`), f)),
+    ...built.hitters.map((f, k) => writeIfChanged(path.join(dir, `heat-maps.h${k}.json`), f)),
   ];
   // (fewer buckets than before: the old ones beyond them gone)
   for (const name of readdirSync(dir)) {

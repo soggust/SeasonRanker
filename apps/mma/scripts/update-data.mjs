@@ -25,7 +25,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { allFights } from './fights.mjs';
 import { shareRows } from '../../../libs/ranker/scripts/shared-rows.mjs';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { PARAMS, cautious, deviationOn, history, rate, tabOf, weightOf } from './rating.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -112,12 +112,7 @@ const RANKING_DIVISIONS = {
 };
 
 // A polite pace (a few requests a second at most), with retries (libs/ranker/scripts/fetch.mjs; a 404: null)
-let lastRequest = 0;
-const pace = async () => {
-  const wait = lastRequest + 300 - Date.now();
-  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-  lastRequest = Date.now();
-};
+const pace = pacer(300);
 function get(url, as = 'json') {
   return fetchRetry(url, { as, headers: { 'User-Agent': 'Mozilla/5.0 (sports-ranker data script)' }, backoff: 3000, notFound: null, before: pace });
 }

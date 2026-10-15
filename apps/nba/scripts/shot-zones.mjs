@@ -40,7 +40,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { BOX_DIR, boxFile, siteCode, updateBoxes } from './box-scores.mjs';
 
 export const FIRST_SEASON = 2004;
@@ -189,12 +189,7 @@ export async function updateShots(season, { fetch, log = console.log, pace = PAC
     } else if (!kept.missing.includes(id)) kept.missing.push(id);
   };
   const boxes = await updateBoxes(season, { dir: boxesAt, fetch, log, pace, ...(today ? { today } : {}), onSummary: take });
-  let last = 0;
-  const before = async () => {
-    const wait = last + pace - Date.now();
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-    last = Date.now();
-  };
+  const before = pacer(pace);
   // (and the finals box-scores.mjs left out for an empty box score: ESPN has their plays all the same, about 170
   // games a season in 2012-13 through 2017-18; their day, part and teams from the summary itself)
   const left = [...Object.entries(boxes.games ?? {}), ...(boxes.missing ?? []).map((id) => [id, null])].filter(([id]) => !kept.games[id] && !kept.missing.includes(id));

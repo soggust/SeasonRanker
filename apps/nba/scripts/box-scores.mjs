@@ -21,7 +21,7 @@
 // before they went: libs/ranker/scripts/model/playerlogs.mjs); else it's missing.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 
 export const BOX_DIR = path.join(import.meta.dirname, 'box-scores');
 const API = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba';
@@ -80,12 +80,7 @@ export async function updateBoxes(season, { dir = BOX_DIR, fetch, log = console.
   // (a finished season: every day of its calendar in, and past July (the calendar of a season under way ends
   // with the regular season until the playoffs are set, so it's asked for again each run))
   if (kept.last && kept.through === kept.last && today > `${season}0731`) return kept;
-  let last = 0;
-  const before = async () => {
-    const wait = last + pace - Date.now();
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-    last = Date.now();
-  };
+  const before = pacer(pace);
   const get = (url, notFound) => fetchRetry(url, { as: 'json', before, fetch, ...(notFound !== undefined ? { notFound } : {}) });
   const daysAgo = (day) => (Date.parse(`${today.slice(0, 4)}-${today.slice(4, 6)}-${today.slice(6)}`) - Date.parse(`${day.slice(0, 4)}-${day.slice(4, 6)}-${day.slice(6)}`)) / 864e5;
   const save = () => {

@@ -34,6 +34,7 @@ import { gunzipSync } from 'node:zlib';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
+import { parseCsv } from '../../../libs/ranker/scripts/csv.mjs';
 
 export const VS_ROLES = ['WR1', 'WR2', 'WR3', 'TE1', 'RB1'];
 const GROUPS = ['WR', 'TE', 'RB'];
@@ -446,34 +447,6 @@ const SEASONS_DIR = new URL('seasons/', STATIC_DIR);
 // (the current season, as update-data.mjs's CURRENT_SEASON: its files are StaticData/'s own)
 const CURRENT_SEASON = currentSeason(path.join(import.meta.dirname, '..'));
 
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let field = '';
-  let quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') {
-        field += '"';
-        i++;
-      } else if (c === '"') quoted = false;
-      else field += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ',') {
-      row.push(field);
-      field = '';
-    } else if (c === '\n') {
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = '';
-    } else if (c !== '\r') field += c;
-  }
-  if (field || row.length) rows.push([...row, field]);
-  const header = rows.shift();
-  return rows.map((r) => Object.fromEntries(header.map((key, i) => [key, r[i]])));
-}
 const readCsvGz = async (name) => parseCsv(gunzipSync(await readFile(new URL(name, CACHE))).toString());
 
 async function backfill(seasons) {
