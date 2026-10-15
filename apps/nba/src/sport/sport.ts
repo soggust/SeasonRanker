@@ -5,6 +5,7 @@ import { teamRowsFromCoaches } from '@ranker/engine/team-rows';
 import { DATA, dataPart } from '@ranker/engine/data';
 import type { SkillPlayer } from './positions';
 import { seasonName } from './awards';
+import { nbaHeatMatchups, nbaHeatMaps } from './heat-maps';
 import { loadTeamRoster } from './team-roster';
 import { nbaVsPosOf, nbaVsPositionBreakdown } from './vs-position';
 
@@ -120,6 +121,9 @@ export function cardFlags({ player, position, current, ordinal, innings }: FlagC
   return flags;
 }
 
+// (the season being played, under way: its maps show last season's behind their thin zones)
+const liveSeason = (season: number) => season === SPORT.currentSeason && Date.now() < new Date(`${SPORT.currentSeasonEnds}T00:00:00`).getTime();
+
 export const SPORT: SportConfig = {
   id: 'nba',
   // (a season is named for the year it ends in: 2026 is 2025-26)
@@ -201,6 +205,11 @@ export const SPORT: SportConfig = {
     load: (player, position, season, context) => loadTeamRoster(player as SkillPlayer, season, season === SPORT.currentSeason, context),
   },
   // (the Teams tab's Recent: the last 7 games)
+  // The card's Heat Maps tab: every shot from the floor in the standard zones on a half court, a player's shot
+  // chart and assist map, a team's shots and what it allowed (data/heat-maps.json, data/seasons/<year>/:
+  // scripts/shot-zones.mjs, from 2003-04), and the AI preview's matchup maps (its week's first opponent)
+  heatMaps: nbaHeatMaps({ current: (season) => season === SPORT.currentSeason, live: (season) => liveSeason(season) }),
+  heatMatchups: (player, position, season, opponent) => nbaHeatMatchups(player, position, season, opponent, season === SPORT.currentSeason, liveSeason(season)),
   // The card's Analysis tab: the teams' weekly AI write-ups (libs/ranker/scripts/analysis)
   analysis: true,
   recentGames: (position) => (position === 'TM' ? 7 : 5),
