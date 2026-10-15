@@ -28,7 +28,7 @@
   @for (row of heatRows(defs); track row.id) {
     @let shown = maps(c, row.defs);
     @let chips = chipsOf(c, shown);
-    <div class="hm-maps" [class.hm-rz]="row.id === null" [class.hm-row]="row.id !== null" [class.pair]="shown.length > 1" [class.numbers]="split !== 'redzone'">
+    <div class="hm-maps" [class.hm-rz]="row.id === null" [class.hm-row]="row.id !== null" [class.pair]="shown.length > 1" [class.numbers]="split !== 'redzone'" [class.court]="split !== 'redzone' && row.defs[0]?.surface === 'half-court'">
       @for (d of shown; track d.id) {
         <ng-container *ngTemplateOutlet="map; context: { $implicit: d }"></ng-container>
       }
@@ -88,7 +88,7 @@
 <ng-template #map let-d>
   @let m = cards.heatMap(c, d);
   @if (m === 'loading') {
-    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink' || d.surface === 'body'" [style.--hm-aspect]="aspect(d.surface)" aria-hidden="true"></div>
+    <div class="hm-figure hm-loading" [class.tall]="d.surface === 'field' || d.surface === 'red-zone' || d.surface === 'rink' || d.surface === 'body'" [class.court]="d.surface === 'half-court'" [style.--hm-aspect]="aspect(d.surface)" aria-hidden="true"></div>
   } @else if (m) {
     <figure class="hm-figure" [style.--hm-aspect]="aspect(m.surface)">
       <figcaption class="hm-head">

@@ -15,8 +15,8 @@ import type { SkillPlayer } from '@sport/positions';
 
 // ---- the surfaces
 
-// (built: field, red-zone, field-strip, down-distance, rink, round-clock, body; the rest are named for the sports
-// that will draw them)
+// (built: field, red-zone, field-strip, down-distance, rink, round-clock, body, half-court; the rest are named for
+// the sports that will draw them)
 export type HeatSurfaceId =
   | 'field'
   | 'red-zone'
@@ -24,7 +24,7 @@ export type HeatSurfaceId =
   | 'down-distance'
   // (the NHL's offensive zone: shot locations by area)
   | 'rink'
-  // TODO(NBA): shot zones on a half court
+  // (the NBA's shot zones: surfaces/half-court.ts)
   | 'half-court'
   // TODO(MLB): the 3 x 3 zone and its four outside corners (the Zones tab's, folded in)
   | 'strike-zone'

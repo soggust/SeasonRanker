@@ -7,6 +7,7 @@ import type { HeatSurface, HeatSurfaceId } from '../heat-map.model';
 import { downDistanceSurface } from './down-distance';
 import { fieldSurface } from './field';
 import { fieldStripSurface } from './field-strip';
+import { halfCourtSurface } from './half-court';
 import { redZoneSurface } from './red-zone';
 import { rinkSurface } from './rink';
 import { roundClock3Surface, roundClockSurface } from './round-clock';
@@ -22,7 +23,8 @@ const BUILDERS: Partial<Record<HeatSurfaceId, () => HeatSurface>> = {
   'round-clock-3': roundClock3Surface,
   body: bodySurface,
   'body-3': body3Surface,
-  // TODO: half-court (NBA), strike-zone, spray-fan and diamond-field (MLB)
+  'half-court': halfCourtSurface,
+  // TODO: strike-zone, spray-fan and diamond-field (MLB)
 };
 
 const built = new Map<HeatSurfaceId, HeatSurface>();

@@ -15,6 +15,12 @@ $hm-volume: rgb(95, 168, 255);
 $hm-lean-low: rgb(240, 172, 72);
 $hm-lean-high: rgb(138, 120, 236);
 $hm-pop-bg: #151a18;
+// (the half court's: the floor's honey (the NBA page's own), the dark stain over it, the painted lines' warm white,
+// the rim's orange)
+$hm-honey: #e8b27a;
+$hm-stain: rgb(14, 10, 8);
+$hm-court-paint: #f4ecdf;
+$hm-rim: #ff7a1a;
 
 // ---- the bar: in groups (the season and the split; the mode; a team's side), a faint rule between them;
 // the season the sport's own dropdown (_sport-kit.scss's $dropdowns), the rest its pills (.game-filter)
@@ -99,6 +105,10 @@ $hm-pop-bg: #151a18;
 
     &.tall {
       min-height: 480px;
+    }
+
+    &.court {
+      min-height: 360px;
     }
 
     &::after {
@@ -276,6 +286,67 @@ $hm-pop-bg: #151a18;
     font-size: 13px;
     letter-spacing: 0;
   }
+}
+
+// (the half court: the maple warmed to the floor's honey (multiplied, as the page's is), then stained dark so
+// the zones' colors carry; the lane a shade deeper; the lines painted over the zones, the arc a touch bolder, the
+// free-throw circle dashed inside the lane, the restricted area finer; the backboard and an orange rim)
+.hm-honey {
+  fill: $hm-honey;
+  mix-blend-mode: multiply;
+}
+
+.hm-stain {
+  fill: rgba($hm-stain, 0.8);
+}
+
+.hm-lane {
+  fill: rgba($hm-stain, 0.32);
+}
+
+.hm-court-line {
+  fill: none;
+  stroke: rgba($hm-court-paint, 0.62);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3px;
+
+  &.edge {
+    stroke: rgba($hm-court-paint, 0.8);
+    stroke-width: 1.8px;
+  }
+
+  &.three {
+    stroke: rgba($hm-court-paint, 0.82);
+    stroke-width: 1.7px;
+  }
+
+  &.thin {
+    stroke: rgba($hm-court-paint, 0.5);
+    stroke-width: 1px;
+  }
+
+  &.dashed {
+    stroke-dasharray: 3 4;
+  }
+}
+
+.hm-board {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-linecap: round;
+  stroke-width: 2.4px;
+
+  &.neck {
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 1.4px;
+  }
+}
+
+.hm-rim {
+  fill: none;
+  filter: drop-shadow(0 0 2px rgba($hm-rim, 0.55));
+  stroke: $hm-rim;
+  stroke-width: 1.8px;
 }
 
 // (a small sample's hatch)
@@ -486,6 +557,12 @@ $hm-cuff: rgb(244, 241, 236);
 .hm-cell {
   cursor: pointer;
   outline: none;
+
+  // (a cell with a hole in it, the paint around the restricted area, drawn even-odd)
+  .hm-fill,
+  .hm-fade {
+    fill-rule: evenodd;
+  }
 
   .hm-fill {
     stroke: rgba(0, 0, 0, 0.3);
@@ -901,6 +978,37 @@ $hm-cuff: rgb(244, 241, 236);
   }
 }
 
+// (the half court's maps (the NBA's shot chart and assist map) with their numbers: the two side by side, the
+// profile's eight numbers across under them in two rows; one map, its numbers beside it as tall as it, two to a row)
+.hm-maps.hm-rz.numbers.court {
+  &.pair {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    .hm-statcol {
+      grid-column: 1 / -1;
+    }
+
+    .hm-tiles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  // (one map: its numbers as tall as it, their rows sharing the height)
+  &:not(.pair) {
+    align-items: stretch;
+
+    .hm-tiles {
+      flex: 1;
+      grid-auto-rows: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hm-tile {
+      justify-content: center;
+    }
+  }
+}
+
 // (narrower: two red-zone maps side by side, their numbers across under them; then one under another)
 @include v.down(medium) {
   .hm-maps.hm-rz.pair {
@@ -914,7 +1022,8 @@ $hm-cuff: rgb(244, 241, 236);
 
 @include v.down(card-stack) {
   .hm-maps.hm-rz,
-  .hm-maps.hm-rz.pair {
+  .hm-maps.hm-rz.pair,
+  .hm-maps.hm-rz.numbers.court.pair {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -934,6 +1043,10 @@ $hm-cuff: rgb(244, 241, 236);
 
   .hm-figure {
     padding: 10px 10px 10px;
+  }
+
+  .hm-maps.hm-rz.numbers.court.pair .hm-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hm-pop {
