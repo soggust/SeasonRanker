@@ -104,7 +104,13 @@ export const GAME_CAP = 5;
 // -0.2; next man up off receptions as a knock-on). Removed as floor-level keeps that didn't hold on other
 // stretches: NBA points' bench back-to-back, NBA rebounds' defense-table recency. The recency weight's floor now
 // 0.0003 like every late term. Set to the push time.
-export const MODEL_EPOCH = '2026-10-15T06:12:00Z';
+// 2026-10-15 later, the soft terms (project.mjs softWeight): a late term the gate leaves out on its gain or the
+// whole stat's bias alone now comes in at a weight from its held-out evidence (1 - 1/z^2, none unless both halves
+// gained), moving at most 0.25 a day from the last run's (params.soft), kept only while the held-out log loss is
+// lower with the set and the eligible players' and every player's bias no larger. Live on its first night: NFL
+// receiving yards' and rush+rec yards' carryover (pl 0.25) at 0.25x (targets 0.73x and 0.95x); none elsewhere.
+// Set to the push time.
+export const MODEL_EPOCH = '2026-10-15T08:10:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

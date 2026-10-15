@@ -768,7 +768,9 @@ async function fitTheProps(r) {
     // (the NFL history's injury listings: its lead quarterback out as live play reads it, the report and the roster
     // (nflListed); none, from the game logs)
     const listed = sport === 'nfl' ? await nflListed(history, r.facts, [...new Set(r.rows.map((x) => x.season))].sort()) : null;
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null, listed);
+    // (the soft terms' weights as the last run left them (project.mjs softStep: each moves at most SOFT_DAY a day))
+    const soft = { prev: Object.fromEntries((r.state?.props?.types ?? []).map((t) => [t.key, t.params?.soft ?? null])), now: r.now.getTime() };
+    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, sport === 'nhl' ? boxTotals('nhl') : null, listed, soft);
     console.log(`${sport}: props' projections fit on ${r.rows.length} player games in ${Math.round((Date.now() - t0) / 1000)}s`);
     // (the NFL: a questionable player's chance of playing, from the seasons before this one's injury reports
     // (playchance.mjs); none, or another sport: every questionable one at half, as before. This season the
@@ -793,6 +795,11 @@ async function fitTheProps(r) {
       // (and its held-out check: the eligible players' log loss at lines at their median, the bias a game
       // (projected less actual) theirs and every player's)
       if (f.check) kept.push(`held out: log loss ${f.check.logLoss}, bias ${f.check.bias}, all players' bias ${f.checkAll?.bias ?? 'n/a'}`);
+      // (the soft terms (project.mjs softWeight): each one's weight from the last run's to this one's, its target and its
+      // evidence (z, its held-out halves' gains), why it's out where it is, and the joint check: the hard-gated model's
+      // held-out log loss and biases against the soft set's)
+      const so = f.floors?.soft;
+      if (so?.terms?.length) kept.push(`soft terms: ${so.terms.map((e) => `${e.key} ${e.size} at ${e.w0} to ${e.w}x (target ${e.target}${e.z !== null ? `, z ${e.z}, halves ${e.halves?.join('/') ?? 'n/a'}` : ''}${e.why ? `, ${e.why}` : ''}${e.fails?.length ? `, out: ${e.fails.join(', ')}` : ''})`).join('; ')}${so.joint ? `; joint: log loss ${so.joint.hard.logLoss} to ${so.joint.soft.logLoss}, bias ${so.joint.hard.bias} to ${so.joint.soft.bias}, all players' ${so.joint.hard.allBias} to ${so.joint.soft.allBias}${so.joint.fails.length ? `, the hard-gated model alone: ${so.joint.fails.join(', ')}` : ''}` : ''}`);
       // (the held-out fifths by projection, lowest first: actual over projected less 1, without the pull toward
       // the middle (sl) and with it where it was tried, then the check as fit (the draft's prior after it); and the
       // recalibration by side's (cs): each side's log loss

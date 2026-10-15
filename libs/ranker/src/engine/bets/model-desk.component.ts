@@ -871,7 +871,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         const gain = g === null ? 'never fit in' : `held-out ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`;
         const P = t.params as unknown as Record<string, number | null>;
         const pg = P['pg'] ?? 0;
-        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'ep' ? `${v}, form ${P['eg'] ?? 1}` : k === 'tr' ? `${v}, form ${P['tf'] ?? 1}` : k === 'pc' && P['ep'] ? `${v}, replaced by expected plays` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'} (${gain})`;
+        // (a soft term (project.mjs softWeight): in at part of its size, its weight)
+        const soft = (t.params as unknown as { soft?: Record<string, { w: number }> }).soft?.[k];
+        return `${names[k] ?? k} ${on ? (k === 'roleK' ? `k ${v}` : k === 'po' ? `${v}, form ${pg}` : k === 'ep' ? `${v}, form ${P['eg'] ?? 1}` : k === 'tr' ? `${v}, form ${P['tf'] ?? 1}` : k === 'pc' && P['ep'] ? `${v}, replaced by expected plays` : k === 'vl' ? `size ${P['vc'] ?? 0}` : v) : 'left out'}${on && soft ? `, soft ${soft.w}x` : ''} (${gain})`;
       })
       .join(' · ');
   }

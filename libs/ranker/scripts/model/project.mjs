@@ -791,6 +791,81 @@ const ROUND_C_GRID = {
   c_parkRel: [0.25, 0.5, 0.75, 1],
   c_hitEnv: [0.025, 0.05, 0.075, 0.1],
 };
+// The soft terms (the owner's ask, 2026-10-15: a small real effect kept at a small weight the runs keep re-tuning,
+// not all or nothing at the floor). A late term the gate leaves out on its gain alone (under MIN_GAIN, over 0; or
+// on the whole stat's bias, which the joint check below judges again) comes in at a weight w on its size as the
+// search took it (softSize: the size times w, its form as taken), w from the strength of its evidence on the
+// held-out lines (softWeight): each line's log loss without it less with it, paired; z, their mean over its
+// standard error; w = 1 - (SOFT_Z / z)^2 (James-Stein's shrink: z 1 or under, none; z 2, 0.75; z 3, 0.89), and
+// none unless both halves of the held-out games (by date) gained. So a weak but steady effect comes in small and
+// grows as its games come in (z grows with the root of their count); a term that hurts or flips shrinks to 0.
+// Safety: (a) the soft set is added one term at a time, the surest first, each kept only if the held-out log loss
+// falls with it and the eligible players' and every player's bias are no larger than the hard-gated model's
+// (softJoint), and the set as a whole judged the same at the end, else the hard-gated model alone; (b) a weight
+// moves at most SOFT_DAY a day (softStep, from the last run's: state.json's params.soft, at the hours since it),
+// so one night can't swing it; (c) only the late terms the search tries (softable: a context flag or a blend
+// that's off at 0 and grows smoothly from it) are ever soft; the ones off the search for a leak or look-ahead
+// (mk, the market's view; vl, vcM, ps, cs) never, nor ones whose off isn't 0 of a size (ex, ep, od, rp, ij, ro,
+// sn) or not one of the whole stat's (its own rows' bias, the fifths, a side's: SOFT_FAILS); (d) a term the gate
+// keeps is in at its size as before (a soft term with strong evidence: weight 1)
+export const SOFT_Z = 1;
+export const SOFT_DAY = 0.25;
+const SOFT_ON = new Set(['sp', 'pl', 'sk', 'rx', 'sl', 'ot', 'ab', 'nt', 'tr', 'po']);
+// (the form keys a soft term's size may carry, as taken, unscaled)
+const SOFT_FORMS = { tr: ['tf'], po: ['pg'] };
+const SOFT_FAILS = new Set(['gain', 'bias', "all players' bias", "the other players' bias", "the rest's bias", "the eligible rest's bias"]);
+export const softable = (key) => key.startsWith('c_') || SOFT_ON.has(key);
+// (a late term the gate left out, soft-eligible: softable, its size as taken one of its own (and its form), every
+// fail one the joint check judges again)
+export const softEligible = (key, v, fails) => softable(key) && !!v && Object.keys(v).every((k) => k === key || (SOFT_FORMS[key] ?? []).includes(k)) && Number.isFinite(v[key]) && fails.every((f) => SOFT_FAILS.has(f));
+// (the weight's evidence: off and on, each held-out line's log loss by its row (check's lossBy), in date order)
+export function softWeight(off, on, min = SUBGROUP_N) {
+  const d = [];
+  for (const [row, l0] of off ?? []) {
+    const l1 = on?.get(row);
+    if (Number.isFinite(l0) && Number.isFinite(l1)) d.push(l0 - l1);
+  }
+  const n = d.length;
+  if (n < min) return { n, gain: null, z: null, halves: null, w: 0, why: 'too few lines' };
+  const mean = d.reduce((t, x) => t + x, 0) / n;
+  const se = Math.sqrt(d.reduce((t, x) => t + (x - mean) ** 2, 0) / (n - 1) / n);
+  const z = se > 0 ? mean / se : 0;
+  const h = Math.floor(n / 2);
+  const halves = [d.slice(0, h), d.slice(h)].map((p) => p.reduce((t, x) => t + x, 0) / p.length);
+  const r = (x, k = 1e6) => Math.round(x * k) / k;
+  const steady = halves.every((x) => x > 0);
+  const w = z > SOFT_Z && steady ? Math.round((1 - (SOFT_Z / z) ** 2) * 1000) / 1000 : 0;
+  return { n, gain: r(mean), z: r(z, 100), halves: halves.map((x) => r(x)), w, why: w ? null : z <= SOFT_Z ? 'z 1 or under' : 'a half lost' };
+}
+// (this run's weight: the last run's moved toward the target by at most SOFT_DAY a day since it (days: a first
+// run's, one))
+export function softStep(w0, target, days = 1) {
+  const cap = SOFT_DAY * Math.min(1, Math.max(0, Number.isFinite(days) ? days : 1));
+  const w = (w0 ?? 0) + Math.max(-cap, Math.min(cap, target - (w0 ?? 0)));
+  return Math.round(Math.max(0, Math.min(1, w)) * 1000) / 1000;
+}
+// (a soft term's size at a weight: its own size times w, its form as taken)
+export const softSize = (key, v, w) => ({ ...v, [key]: Math.round(v[key] * w * 1e5) / 1e5 });
+// (the last run's weight on this run's size: the same form, the same sign, its size as a share of this one's (the
+// grid's size moved); else 0)
+export function softFrom(prev, key, v) {
+  if (!prev?.size || !(prev.w > 0) || !Number.isFinite(prev.size[key]) || !Number.isFinite(v?.[key]) || !v[key]) return 0;
+  if ((SOFT_FORMS[key] ?? []).some((k) => prev.size[k] !== v[k])) return 0;
+  const w = (prev.w * prev.size[key]) / v[key];
+  return w > 0 ? Math.min(1, w) : 0;
+}
+// (the joint check: with the soft terms (t) the held-out log loss lower than without the last one (prev), and the
+// eligible players' and every player's bias no larger than the hard-gated model's (base); its fails)
+export function softJoint(base, t, prev = base) {
+  const fails = [];
+  const [a, b] = [t?.check?.llRaw, prev?.check?.llRaw];
+  if (!(Number.isFinite(a) && Number.isFinite(b))) fails.push('log loss not measured');
+  else if (!(a < b)) fails.push('log loss');
+  const no = (x, y) => Number.isFinite(x) && Number.isFinite(y) && Math.abs(x) <= Math.abs(y);
+  if (!no(t?.check?.bias, base?.check?.bias)) fails.push('bias');
+  if (!no(t?.all?.bias, base?.all?.bias)) fails.push("all players' bias");
+  return fails;
+}
 const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
@@ -2528,6 +2603,11 @@ export function fitStat(stat, rows, env) {
   };
   // (the eligible held-out bias before the first WHOLE_TOL term judged: their one budget)
   let wholeBase = null;
+  // (the soft terms' candidates (softEligible: left out on its gain or the whole stat's bias alone, its gain over 0),
+  // the late terms the gate kept, and the ones it left out for a reason of their own rows (never soft this run))
+  const softCands = [];
+  const softHard = [];
+  const softOut = new Set();
   for (const key of late) {
     // (the role order reads nowhere without the role's opponent table (roleK) or the next man up (rp): nothing
     // to try)
@@ -2688,7 +2768,49 @@ export function fitStat(stat, rows, env) {
     }
     floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(key === 'tr' ? { nonElig: [off.nonElig?.bias ?? null, tried.nonElig?.bias ?? null] } : {}), ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
+    if (!softable(key)) continue;
+    if (!fails.length) softHard.push(key);
+    else if (gains[key] > 0 && softEligible(key, v, fails)) softCands.push({ key, v, sw: softWeight(off.check?.lossBy, tried.check?.lossBy) });
+    else if (!fails.every((f) => SOFT_FAILS.has(f))) softOut.add(key);
   }
+  // (the soft terms (SOFT_Z above): each candidate's target weight from its evidence, this run's moved toward it
+  // from the last run's (env.soft.prev: state.json's params.soft) by SOFT_DAY a day at most, and a term soft last
+  // run and not a candidate now (not taken, or its gain 0 or under) fading toward 0 the same way at its last size;
+  // then added one at a time, the heaviest first, each kept only on the joint check (softJoint), the set judged
+  // again at the end: failing, the hard-gated model alone. Its numbers: floors.soft; the live weights:
+  // params.soft (each term's size as taken, its weight, target and z, and when)
+  const prevSoft = env.soft?.prev ?? null;
+  const nowMs = env.soft?.now ?? null;
+  const daysOf = (at) => (Number.isFinite(nowMs) && at ? (nowMs - Date.parse(at)) / 864e5 : 1);
+  const softTerms = softCands.map((c) => ({ key: c.key, v: c.v, sw: c.sw, target: c.sw.w, w0: softFrom(prevSoft?.[c.key], c.key, c.v), days: daysOf(prevSoft?.[c.key]?.at) }));
+  for (const [k, p] of Object.entries(prevSoft ?? {})) {
+    if (softTerms.some((e) => e.key === k) || softHard.includes(k) || softOut.has(k) || !late.includes(k) || !softable(k) || !(p?.w > 0) || !p.size) continue;
+    softTerms.push({ key: k, v: p.size, sw: null, target: 0, w0: p.w, days: daysOf(p.at), fade: true });
+  }
+  for (const e of softTerms) e.w = softStep(e.w0, e.target, e.days);
+  let softJ = null;
+  if (softTerms.some((e) => e.w > 0)) {
+    const hardAt = current;
+    let accP = params;
+    let acc = current;
+    for (const e of [...softTerms].filter((x) => x.w > 0).sort((a, b) => b.w - a.w)) {
+      const tryP = { ...accP, ...softSize(e.key, e.v, e.w) };
+      tryP.scale = scaleOf(tryP);
+      const t = heldOut(tryP);
+      e.fails = softJoint(hardAt, t, acc);
+      e.kept = !e.fails.length;
+      if (e.kept) (accP = { ...tryP, cal: t.cal }), (acc = t);
+    }
+    const jointFails = acc === hardAt ? ['none kept'] : softJoint(hardAt, acc);
+    const brief = (h) => ({ logLoss: h.check?.llRaw === null || h.check?.llRaw === undefined ? null : Math.round(h.check.llRaw * 1e5) / 1e5, bias: h.check?.bias ?? null, allBias: h.all?.bias ?? null });
+    softJ = { hard: brief(hardAt), soft: brief(acc), fails: jointFails };
+    if (!jointFails.length) (params = accP), (current = acc);
+    else for (const e of softTerms) e.kept = false;
+  }
+  const softAt = Number.isFinite(nowMs) ? new Date(nowMs).toISOString() : null;
+  const softLive = softTerms.filter((e) => e.kept && e.w > 0);
+  if (softLive.length) params.soft = Object.fromEntries(softLive.map((e) => [e.key, { w: e.w, target: e.target, z: e.sw?.z ?? null, size: e.v, at: softAt }]));
+  floors.soft = { terms: softTerms.map((e) => ({ key: e.key, size: sizeOf(e.key, e.v), w0: Math.round(e.w0 * 1000) / 1000, target: e.target, w: e.kept ? e.w : 0, tried: e.w, z: e.sw?.z ?? null, n: e.sw?.n ?? null, halves: e.sw?.halves ?? null, why: e.sw?.why ?? (e.fade ? 'fading: not a candidate this run' : null), fails: e.fails ?? null, kept: !!e.kept })), hard: softHard, out: [...softOut], joint: softJ };
   // (the draft's prior, tried last on top of the rest as fit and left as they are (searched with them it
   // steered the veterans' terms: on 2026-10-12 passing yards' precipitation and passing attempts' kd moved with
   // it, and stayed moved where it was left out), so left out the stat is as it was without it: its size
@@ -2916,6 +3038,8 @@ function check(list, params) {
   // (and the rows its mixture leans on hardest (exitHigh: a short last game, a first game back, a chance of
   // EXIT_HIGH or more): their log loss and their over's chance said against what happened)
   const high = { lines: 0, ll: 0, said: 0, was: 0 };
+  // (each line's log loss by its row, for the soft terms' paired test (softWeight); kept off the saved check)
+  const lossBy = new Map();
   for (const x of list.sort((a, b) => a.row.date.localeCompare(b.row.date))) {
     mae += Math.abs(x.p.mu - x.v);
     sumMu += x.p.mu;
@@ -2943,6 +3067,7 @@ function check(list, params) {
         skew.was += (p > 0.5) === !!over ? 1 : 0;
       }
       ll -= Math.log(over ? p : 1 - p);
+      lossBy.set(x.row, -Math.log(over ? p : 1 - p));
       if (line <= LOW_LINE) (low.lines++), (low.ll -= Math.log(over ? p : 1 - p));
       if (exitHigh(x.p)) (high.lines++), (high.ll -= Math.log(over ? p : 1 - p)), (high.said += p), (high.was += over);
       brier += (p - over) ** 2;
@@ -2964,7 +3089,7 @@ function check(list, params) {
     hist.set(x.row.pid, [...(hist.get(x.row.pid) ?? []), { season: x.row.season, v: x.v }]);
   }
   const r4 = (v) => Math.round(v * 10000) / 10000;
-  return {
+  const out = {
     n: list.length,
     mae: r4(mae / list.length),
     bias: r4((sumMu - sumV) / list.length),
@@ -2986,6 +3111,11 @@ function check(list, params) {
     skew: { n: skew.n, said: skew.n ? r4(skew.said / skew.n) : null, was: skew.n ? r4(skew.was / skew.n) : null },
     fifths: fifthsOf(list),
   };
+  // (the lines' losses and the unrounded log loss, not enumerable: the soft terms read them, the state never
+  // saves them)
+  Object.defineProperty(out, 'lossBy', { value: lossBy, enumerable: false });
+  Object.defineProperty(out, 'llRaw', { value: nLine ? ll / nLine : null, enumerable: false });
+  return out;
 }
 
 // A season's snap shares with a game cut short left out: one under half the median of the others (he left it

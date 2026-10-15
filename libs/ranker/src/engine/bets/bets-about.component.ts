@@ -273,13 +273,15 @@ export class BetsAboutComponent implements OnInit {
       .filter((k) => p[k] !== undefined)
       .map((k) => `${termName(k)} ${p[k]}`)
       .join(' · ');
+    // (the soft terms: a term in at part of its size, its weight (project.mjs softWeight))
+    const soft = (t.params as unknown as { soft?: Record<string, { w: number }> }).soft ?? {};
     const terms = Object.entries(t.gains ?? {}).map(([k, g]): TermRow => {
       const v = p[k];
       // (a size that can be 0 and still kept: the role split's, an opponent group's own power)
       const kept = k === 'roleK' || k.startsWith('a_') ? v !== null && v !== undefined : !!v;
       return {
         name: termName(k),
-        value: kept ? String(v) : 'left out',
+        value: kept ? (soft[k] ? `${v} · soft ${soft[k].w}x` : String(v)) : 'left out',
         kept,
         gain: g === null || g === undefined ? 'never fit in' : `${signed(g * 100)}%`,
         up: kept && (g ?? 0) > 0,

@@ -1323,8 +1323,9 @@ export function markStarters(rows, facts) {
 // (market: game id to its betting lines' implied [home, away] points (marketPts), each row's put on it (mkt);
 // the NFL's from nflverse's closing lines, none elsewhere yet; totals: game id to its betting total, the NHL's
 // (playerlogs.mjs boxTotals), each row's put on it (mTotal); listed: the NFL history's injury listings (nflListed:
-// the lead quarterback out as live play reads it), null: from the game logs)
-export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null) {
+// the lead quarterback out as live play reads it), null: from the game logs; soft: the soft terms' last run, each
+// stat's params.soft by its key (prev), and this run's time in ms (now): project.mjs softStep)
+export function fitProps(sport, rows, expPts, info, facts = null, market = null, totals = null, listed = null, soft = null) {
   const out = {};
   // (each row's role and its defense's funnel, pace and target split, from the games before it: matchups.mjs;
   // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
@@ -1339,6 +1340,7 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
       rows.filter((r) => r.team && r.opp && st.played(r)).map((r) => ({ ...r, mkt: market?.get(r.game) ?? null, mTotal: totals?.get(String(r.game)) ?? null })),
     );
     const env = envFor(sport, st, expPts, info, mine);
+    env.soft = { prev: soft?.prev?.[st.key] ?? null, now: soft?.now ?? null };
     const t0 = Date.now();
     const fitted = fitStat(st, mine, env);
     if (!fitted) continue;
