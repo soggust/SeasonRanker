@@ -2,7 +2,7 @@
 // for the visit. A failed fetch is forgotten, so the next ask tries again.
 import { Injectable } from '@angular/core';
 import { SkillPlayer, SkillPosition } from '@sport/positions';
-import { AppData, CURRENT_SEASON, DATA, SeasonPart, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
+import { AppData, CURRENT_SEASON, DATA, SeasonPart, UNRANKED_KEY, dataPart, dataSeason, fetchSeason, fetchSeasonFile } from '@ranker/engine/data';
 import { unitsForSeason } from '@ranker/engine/unit-scoring';
 import { CareersFile, CompsFile } from '@ranker/engine/player-card/card.model';
 import { SPORT } from '@sport/sport';
@@ -56,8 +56,10 @@ export class SeasonDataService {
   // those; a part with no file (no playoffs played, or none built) has none
   unranked(season: number, part: SeasonPart = season === dataSeason ? dataPart : 'regular'): Promise<Partial<Record<SkillPosition, SkillPlayer[]>>> {
     if (!SPORT.unrankedSeasons) return Promise.resolve({});
+    // (the table's own season and part: the file it loaded with them (data.ts loadData), not fetched again)
+    const loaded = season === dataSeason && part === dataPart ? (DATA as Record<string, unknown>)[UNRANKED_KEY] : undefined;
     return this.once(`ur.${season}.${part}`, () =>
-      fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, urFile(part))
+      (loaded ? Promise.resolve(loaded as Partial<Record<SkillPosition, SkillPlayer[]>>) : fetchSeasonFile<Partial<Record<SkillPosition, SkillPlayer[]>>>(season, urFile(part)))
         .then((tabs) => {
           const merged = (DATA.skillPlayers ?? {}) as Record<string, unknown>;
           const apart = Object.fromEntries(Object.entries(tabs ?? {}).filter(([tab]) => !(tab in merged))) as Partial<Record<SkillPosition, SkillPlayer[]>>;

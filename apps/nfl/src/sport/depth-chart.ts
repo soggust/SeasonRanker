@@ -106,16 +106,28 @@ function shortName(name: string): string {
   return `${parts[0][0]}. ${parts.slice(1).join(' ')}${suffix ? ' ' + suffix : ''}`;
 }
 
+// (each file read once a visit: the Team tab opened again, or another of the team's cards, asks for nothing; one
+// that failed, or isn't there, is asked for again next time)
+const depthFiles = new Map<string, Promise<unknown>>();
+function depthFile<T>(url: string, cache: RequestCache, load: (res: Response) => Promise<T>): Promise<T> {
+  let file = depthFiles.get(url) as Promise<T> | undefined;
+  if (!file) {
+    file = fetch(url, { cache }).then(load);
+    depthFiles.set(url, file);
+    file.then((f) => f ?? depthFiles.delete(url)).catch(() => depthFiles.delete(url));
+  }
+  return file;
+}
+
 export async function loadDepthChart(logo: string, position: string, season: number, current: boolean): Promise<DepthView> {
   const dir = current ? 'data/depth' : `data/seasons/${season}/depth`;
   const cache: RequestCache = current ? 'no-cache' : 'default';
   // (the staffs alongside: none when the file isn't there)
-  const staffs = fetch(`${dir}/coaches.json`, { cache })
-    .then((r) => (r.ok ? (r.json() as Promise<CoachesFile>) : null))
-    .catch(() => null);
-  const res = await fetch(`${dir}/${logo}.json`, { cache });
-  if (!res.ok) throw new Error(`depth chart ${logo} ${season}: ${res.status}`);
-  const file = (await res.json()) as DepthFile;
+  const staffs = depthFile(`${dir}/coaches.json`, cache, (r) => (r.ok ? (r.json() as Promise<CoachesFile>) : Promise.resolve(null))).catch(() => null);
+  const file = await depthFile(`${dir}/${logo}.json`, cache, (res) => {
+    if (!res.ok) throw new Error(`depth chart ${logo} ${season}: ${res.status}`);
+    return res.json() as Promise<DepthFile>;
+  });
 
   const player = (id: string, side: 'offense' | 'defense' | 'special'): DepthPlayer => {
     const p = file.players[id];

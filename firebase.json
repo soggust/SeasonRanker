@@ -120,6 +120,15 @@
         ]
       },
       {
+        "regex": "^/[a-z]+/assets/.+\\.(png|jpg|jpeg|webp|svg|gif)$",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=86400, stale-while-revalidate=604800"
+          }
+        ]
+      },
+      {
         "source": "**/*.html",
         "headers": [
           {

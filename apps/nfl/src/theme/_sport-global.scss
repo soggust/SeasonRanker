@@ -10,12 +10,14 @@
   --trophy-mask: url("../assets/lombardi.svg");
 }
 
-// Real turf photo texture (CC0, ambientCG Grass005), with a soft vignette for depth
+// Real turf photo texture (CC0, ambientCG Grass005), with a soft vignette for depth. By its own address (root
+// relative: left as is by the build, not copied under a hashed name), the one the heat maps' and the field map's
+// turf use (heat-map/surfaces/field.ts TURF): the 250 KB photo downloaded once, not twice
 body {
   background-color: #3d7a24;
   background-image:
     kit.vignette(),
-    url("../assets/textures/turf.webp");
+    url("/nfl/assets/textures/turf.webp");
   background-size: cover, 512px;
 }
 
