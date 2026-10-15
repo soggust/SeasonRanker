@@ -131,7 +131,7 @@
                         (click)="toggleSkillRow(row.key)"
                       >
                         {{ row.label }}
-                        <mat-icon [fontIcon]="skillRowIsOpen(row.key) ? 'expand_less' : 'expand_more'"></mat-icon>
+                        <mat-icon fontIcon="expand_more"></mat-icon>
                       </button>
                       <mat-slider min="0" max="100" step="5" color="accent" [style.--knob-roll]="(skillWeights[row.key] ?? 0) * 12 + 'deg'">
                         <input

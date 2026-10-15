@@ -1368,5 +1368,13 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.toastVisible = true;
     clearTimeout(this.toastTimer);
     this.toastTimer = setTimeout(() => (this.toastVisible = false), 2200);
+    // (the button that copied it pops as the note shows: done. Its icon's scale only, once; none for anyone
+    // who's asked for less motion)
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      button.querySelector('.mat-icon')?.animate([{ scale: '1' }, { scale: '1.3', offset: 0.35 }, { scale: '1' }], {
+        duration: 380,
+        easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+      });
+    }
   }
 }

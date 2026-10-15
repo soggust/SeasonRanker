@@ -303,7 +303,7 @@
       @if (listCap; as cap) {
         <li class="show-all">
           <button type="button" [title]="showsAll ? 'Back to the top ' + cap : 'Everyone ranked here, past the top ' + cap + ' (Min Games still decides who is listed)'" (click)="toggleShowAll()">
-            <mat-icon aria-hidden="true" [fontIcon]="showsAll ? 'expand_less' : 'expand_more'"></mat-icon>
+            <mat-icon aria-hidden="true" fontIcon="expand_more" [class.flipped]="showsAll"></mat-icon>
             {{ showsAll ? 'Show the top ' + cap : 'Show all ' + rankedCount }}
           </button>
         </li>

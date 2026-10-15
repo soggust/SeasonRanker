@@ -83,6 +83,8 @@ section footer {
     margin: 0;
     padding: 0;
     width: $bar-tile;
+    // (pressed in under the finger)
+    @include v.press(0.94);
 
     .mat-icon {
       color: #fff;
@@ -268,6 +270,8 @@ section.rankings-wrapper > footer {
     top: calc(100% + 6px);
     width: max(100%, min(380px, calc(100vw - 32px)));
     z-index: v.z(find-hits);
+    // (dropping from the bar as the first letters find someone, as Compare's hits do)
+    @include v.enter(-4px, 0.14s);
   }
 
   .find-none {
@@ -755,6 +759,9 @@ section ul li.player:not(.header-row) {
       right: calc(var(--shot-hang) * -1);
       width: var(--shot-w);
       z-index: 1;
+      @media (prefers-reduced-motion: no-preference) {
+        transition: translate v.$t-hover v.$ease-out;
+      }
     }
   }
 
@@ -826,6 +833,13 @@ section ul li.player:not(.header-row) {
 
       .team-badge {
         border-color: var(--scoreboard-led);
+      }
+
+      // (the player steps up in his gem, the card his to open)
+      @media (prefers-reduced-motion: no-preference) {
+        .headshot {
+          translate: 0 -2px;
+        }
       }
     }
   }
@@ -1482,8 +1496,17 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
   // (over the compare view too: its share button's)
   z-index: v.z(toast);
 
+  // (it rises the last few pixels as it fades in; by translate, so its centering transform is kept)
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      opacity 0.35s ease-in-out,
+      translate 0.3s v.$ease-out;
+    translate: 0 6px;
+  }
+
   &.show {
     opacity: 1;
+    translate: none;
     visibility: visible;
   }
 
@@ -1954,6 +1977,11 @@ section ul li.show-all {
 
     .mat-icon {
       @include v.icon-size(18px);
+      @include v.turn;
+
+      &.flipped {
+        rotate: 180deg;
+      }
     }
 
     // (an expand control: it lightens, never the yellow accent, on hover and on the keyboard's focus; no ring)

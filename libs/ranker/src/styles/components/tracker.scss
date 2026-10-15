@@ -1088,6 +1088,8 @@ $face-fallback: #333;
   position: fixed;
   transform: translateX(-50%);
   z-index: 20;
+  // (up from the bottom edge as it shows, as the save toast does)
+  @include v.enter(12px, v.$t-medium);
 }
 
 // ---------------------------------------------------------------------------

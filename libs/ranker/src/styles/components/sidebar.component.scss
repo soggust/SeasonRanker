@@ -244,11 +244,16 @@
     .mat-icon {
       @include v.em-icon(1.6em);
       color: var(--scoreboard-led);
+      @include v.turn;
     }
 
     &:hover,
     &.open {
       color: var(--scoreboard-led);
+    }
+
+    &.open .mat-icon {
+      rotate: 180deg;
     }
   }
 
@@ -335,6 +340,8 @@
   border-left: 2px solid color-mix(in srgb, var(--scoreboard-led) 35%, transparent);
   margin: 0 0 0.35em 1.4em;
   padding: 0 0 0 1.5em;
+  // (opened: down out of its row)
+  @include v.enter(-5px, 0.2s);
 
   .slider-row {
     padding-left: calc(0.7em + 24px);
