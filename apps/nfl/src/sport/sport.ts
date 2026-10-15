@@ -152,6 +152,9 @@ export const SPORT: SportConfig = {
   },
   coachTab: 'HC',
   teamTabs: ['TM', 'DEF', 'OL'],
+  // (the QBs' rows go by ESPN's id, "QB-<id>": the same man's rows on the other tabs by that headshot id,
+  // so Taysom Hill's passing seasons and his tight end ones are one career)
+  careerId: (position, id) => (position === 'QB' && id.startsWith('QB-') ? Number(id.slice(3)) : id),
   rowHeader: (position) => ({ TM: 'Team', DEF: 'Defense', OL: 'O-Line', HC: 'Coach' } as Record<string, string>)[position] ?? 'Player',
   roleWord: (position) => (['K', 'P'].includes(position) ? 'specialist' : 'starter'),
   playingTime: {

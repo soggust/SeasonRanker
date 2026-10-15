@@ -17,6 +17,7 @@ import { RANK_EVERYONE, underMin } from '@ranker/engine/playing-time';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { currentGrid } from '@ranker/engine/skill-rankings/grid-rankings';
 import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
+import { CareerIndex, CareerNames, careerIndex } from '@ranker/engine/career-index';
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
@@ -704,6 +705,7 @@ export class PlayerCards {
       card.seasons = seasons;
       if (this.tab === 'seasons' && seasons.length < 2) this.tab = 'overview';
       if (this.tab === 'seasons') this.rankCareer(card);
+      this.loadLinked(card);
       // (an unranked season: no career history, blocking skills or similar seasons; it has no standing)
       if (card.ur) return;
       if (!partRow) this.loadHistory(card);
@@ -714,9 +716,31 @@ export class PlayerCards {
     if (card.season !== CURRENT_SEASON && !partRow && !card.ur) this.loadComps(card);
   }
 
-  // A line per season they're in (careerLines)
+  // A line per season they're in, on every tab of their career (careerLines)
   private seasonLines(id: string): Promise<CardSeason[]> {
     return careerLines(this.data, this.host.season, this.position, id);
+  }
+
+  // His other careers (MLB: Ohtani's pitching beside his hitting), for the Career tab's links
+  private async loadLinked(card: PlayerCard): Promise<void> {
+    try {
+      const linked = await linkedCareers(this.data, this.host.season, this.position, card.player.gsisId);
+      if (this.card === card) card.linked = linked;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // A season on the Career tab (or a linked career) opened: that season's card on the tab he played it on
+  // (the card's own tab: as a season link; another: as a roster's link opens it, the grid where it is)
+  openLine(line: { season: number; position: SkillPosition; id: string }): Promise<boolean> {
+    if (line.position === this.position) return this.openSeason(line.season, line.id);
+    return this.openLinked({ position: line.position, gsisId: line.id }, line.season);
+  }
+
+  // The season on the card is this line's (its year and its tab)
+  isShowing(card: PlayerCard, line: CardSeason): boolean {
+    return line.season === card.season && line.position === this.position;
   }
 
   // The Seasons tab: re-rank every season with the current sliders (a season dragged by hand this visit
@@ -733,8 +757,8 @@ export class PlayerCards {
   private async rankSeasonLine(card: PlayerCard, line: CardSeason): Promise<void> {
     // (an unranked season stays UR)
     if (line.ur) return;
-    const { list, context } = await this.rankedSeason(line.season);
-    const at = list.findIndex((p) => p.gsisId === card.player.gsisId);
+    const { list, context } = await this.rankedSeason(line.season, line.position);
+    const at = list.findIndex((p) => p.gsisId === line.id);
     // (under the Min Games setting that year, or hidden as injured: the default rank stays)
     if (at < 0 || this.card !== card) return;
     line.rank = at + 1;
@@ -742,12 +766,15 @@ export class PlayerCards {
     line.pct = rankPct(line.rank, line.of);
     line.yours = true;
     // Each headline stat by where it stood in that year's list (per game, like the table): the bar's
-    // length, and with Color-Coded Values on, its color on the card's red-orange-green scale
+    // length, and with Color-Coded Values on, its color on the card's red-orange-green scale (a season on
+    // another tab: the stat as that tab has it, when it has it)
     const reader = this.host.readerFor(context);
-    headlineStats(this.position).forEach((stat, i) => {
+    const own = headlineStats(line.position);
+    headlineStats(this.position).forEach((shown, i) => {
+      const stat = line.position === this.position ? shown : own.find((s) => s.key === shown.key);
       const readout = line.stats[i];
-      const mine = reader.rate(list[at], stat);
-      if (!readout || mine === null) return;
+      const mine = stat ? reader.rate(list[at], stat) : null;
+      if (!stat || !readout || mine === null) return;
       const values = list.map((p) => reader.rate(p, stat)).filter((v): v is number => v !== null);
       if (values.length < 2) return;
       const above = values.filter((v) => (stat.negative ? v < mine : v > mine)).length;
@@ -757,24 +784,26 @@ export class PlayerCards {
     });
   }
 
-  // A season's list ranked with the current sliders: the table's own, or another's (null context: the table's)
-  private async rankedSeason(season: number): Promise<{ list: SkillPlayer[]; context: SeasonContext | null }> {
-    if (season === this.host.season && this.onTable) return { list: this.host.playerList, context: null };
-    const rows = season === CURRENT_SEASON ? (await this.data.rows(CURRENT_SEASON))[this.position] : await this.data.tabRows(season, this.position);
-    const context = this.host.seasonContext(season, { [this.position]: rows } as Record<SkillPosition, SkillPlayer[]>, this.position);
+  // A season's list on a tab (the card's, or another of his career's) ranked with the current sliders: the
+  // table's own, or another's (null context: the table's)
+  private async rankedSeason(season: number, position = this.position): Promise<{ list: SkillPlayer[]; context: SeasonContext | null }> {
+    if (season === this.host.season && position === this.host.position) return { list: this.host.playerList, context: null };
+    const rows = season === CURRENT_SEASON ? (await this.data.rows(CURRENT_SEASON))[position] : await this.data.tabRows(season, position);
+    const context = this.host.seasonContext(season, { [position]: rows } as Record<SkillPosition, SkillPlayer[]>, position);
     return { list: context.list, context };
   }
 
-  // The Overview's career history: this season and the ones before it. Players and coaches only: a
-  // defense or O-line turns over too much year to year.
+  // The Overview's career history: this season and the ones before it, on every tab of the career (a
+  // season on two tabs counted once). Players and coaches only: a defense or O-line turns over too much
+  // year to year.
   private async loadHistory(card: PlayerCard): Promise<void> {
     if (SPORT.teamTabs?.includes(this.position) || !card.seasons) return;
-    const upTo = card.seasons.filter((s) => s.season <= card.season);
+    const upTo = seasonByYear(card.seasons, this.position).filter((s) => s.season <= card.season);
     try {
       // (every season played counts toward where they are in their career; the unranked ones have no standing)
       const ranked = upTo.filter((s) => !s.ur);
-      const entries = (await Promise.all(ranked.map((s) => this.careerSeason(card, s.season)))).filter((e): e is CareerSeason => !!e);
-      if (this.card !== card || !entries.length) return;
+      const entries = (await Promise.all(ranked.map((s) => this.careerSeason(card, s)))).filter((e): e is CareerSeason => !!e);
+      if (this.card !== card || !entries.some((e) => e.season === card.season)) return;
       const played = upTo.map((s) => s.season);
       card.overview.flags = [
         ...card.overview.flags,
@@ -785,18 +814,20 @@ export class PlayerCards {
     }
   }
 
-  // One season of a career: where they ranked (current sliders) and their skills, or null when they're
-  // not in that year's list (under Min Games, or hidden as injured)
-  private async careerSeason(card: PlayerCard, season: number): Promise<CareerSeason | null> {
-    if (season === card.season) {
+  // One season of a career: where they ranked (current sliders, on the tab he played it on) and their
+  // skills, or null when they're not in that year's list (under Min Games, or hidden as injured)
+  private async careerSeason(card: PlayerCard, line: CardSeason): Promise<CareerSeason | null> {
+    const { season, position } = line;
+    if (season === card.season && position === this.position) {
       return { season, rank: card.rank, of: card.of, pct: rankPct(card.rank, card.of), skills: card.overview.skills, archetype: card.overview.archetype };
     }
-    const { list, context } = await this.rankedSeason(season);
-    const at = list.findIndex((p) => p.gsisId === card.player.gsisId);
+    const { list, context } = await this.rankedSeason(season, position);
+    const at = list.findIndex((p) => p.gsisId === line.id);
     if (at < 0) return null;
-    const skills = this.skillsFor(this.host.readerFor(context), list[at], list);
+    const reader = this.host.readerFor(context);
+    const skills = position === this.position ? this.skillsFor(reader, list[at], list) : skillsOf(position, SKILL_STATS[position], reader, list[at], list);
     const pct = rankPct(at + 1, list.length);
-    return { season, rank: at + 1, of: list.length, pct, skills, archetype: archetypeFor(this.position, skills, pct, list[at]) };
+    return { season, rank: at + 1, of: list.length, pct, skills, archetype: archetypeFor(position, skills, pct, list[at]) };
   }
 
   // The three closest seasons by anyone else (finished seasons only)
@@ -863,41 +894,62 @@ export class PlayerCards {
 
 // A line per season someone's in (the card's Career tab and history, the compare view's arcs), ranked with
 // the default sliders as the grid first shows each season (careers/<tab>.json for the finished seasons, this season from its rows: currentGrid), each headline stat's best finished season lit (lowest for a
-// stat that counts against them; a few games into this season, a hot start would take it)
+// stat that counts against them; a few games into this season, a hot start would take it). Every tab of
+// his career is in it (career-index.ts: LeBron's SG, SF, PF, PG and C seasons), each season ranked on the
+// tab he played it on and marked with that tab (position, and his id there); the headline stats are the
+// card's tab's, a season on another tab showing the ones it shares (by key), the rest "-". Oldest first,
+// a season on two tabs (Taysom Hill's QB and TE) the card's tab first.
 export async function careerLines(data: SeasonDataService, tableSeason: number, position: SkillPosition, id: string): Promise<CardSeason[]> {
-  const current = tableSeason === CURRENT_SEASON ? SKILL_UNITS : await data.rows(CURRENT_SEASON);
+  const { current, index } = await careerIndexFor(data, tableSeason);
   const headline = headlineStats(position);
-  // (rank 0: an unranked season, UR)
-  const line = (season: number, teamLogo: string, games: number, rank: number, of: number, stats: (number | null)[]): CardSeason => ({
-    season,
-    // (the team's logo that season, and the team's own file: whiteLogo reads it)
-    logo: logoForSeason(teamLogo, season),
-    teamLogo,
-    games,
-    rank,
-    of,
-    pct: rank > 0 ? rankPct(rank, of) : 0,
-    ...(rank > 0 ? {} : { ur: true }),
-    stats: headline.map((stat, i) => ({ text: totalText(stat, stats[i] ?? null), label: stat.label, value: stats[i] ?? null, share: 0, best: false })),
-  });
-  const seasons = ((await data.careers(position))[id] ?? []).map(([season, logo, games, rank, of, stats]) =>
-    line(season, SPORT.teamLogo(logo), games, rank, of, stats),
-  );
-  const now = (current[position] ?? []).find((p) => p.gsisId === id);
-  // (not ranked this season: played outside the list, UR)
-  const unranked = now ? undefined : await data.unrankedRow(CURRENT_SEASON, position, id);
-  const context: ValueContext = { position, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
-  if (now) {
-    // (as the grid first shows this season's tab: its own ranking at the default settings, the grades from
-    // other tabs counted, as the careers' finished seasons are)
-    const ranked = (await currentGrid(data, current))[position] ?? [];
-    const stats = headline.map((stat) => statValue(now, stat, context));
-    // (rank everyone: under the default Min Games, UR)
-    const rank = ranked.indexOf(now) + 1;
-    seasons.push(line(CURRENT_SEASON, now.teamLogo, now.games, rank, rank ? ranked.length : 0, stats));
-  } else if (unranked) {
-    seasons.push(line(CURRENT_SEASON, unranked.teamLogo, unranked.games, 0, 0, headline.map((stat) => statValue(unranked, stat, context))));
-  }
+  const tabs = index.career(position, id);
+  const grid = tabs.some((t) => (current[t.position] ?? []).some((p) => p.gsisId === t.id)) ? await currentGrid(data, current) : null;
+  const seasons = (
+    await Promise.all(
+      tabs.map(async ({ position: tab, id: tabId }) => {
+        // (the tab's headline stats by the card's: where each of the card's is in the tab's, -1 if it hasn't it)
+        const own = headlineStats(tab);
+        const at = headline.map((stat) => own.findIndex((s) => s.key === stat.key));
+        // (rank 0: an unranked season, UR)
+        const line = (season: number, teamLogo: string, games: number, rank: number, of: number, stats: (number | null)[]): CardSeason => ({
+          season,
+          position: tab,
+          id: tabId,
+          // (the team's logo that season, and the team's own file: whiteLogo reads it)
+          logo: logoForSeason(teamLogo, season),
+          teamLogo,
+          games,
+          rank,
+          of,
+          pct: rank > 0 ? rankPct(rank, of) : 0,
+          ...(rank > 0 ? {} : { ur: true }),
+          stats: headline.map((stat, i) => {
+            const value = at[i] < 0 ? null : (stats[at[i]] ?? null);
+            return { text: totalText(stat, value), label: stat.label, value, share: 0, best: false };
+          }),
+        });
+        const lines = ((await data.careers(tab))[tabId] ?? []).map(([season, logo, games, rank, of, stats]) => line(season, SPORT.teamLogo(logo), games, rank, of, stats));
+        const now = (current[tab] ?? []).find((p) => p.gsisId === tabId);
+        // (not ranked this season: played outside the list, UR)
+        const unranked = now ? undefined : await data.unrankedRow(CURRENT_SEASON, tab, tabId);
+        const context: ValueContext = { position: tab, settings: DEFAULT_SPORT_SETTINGS, rows: current, tableSeason: false, defaults: true };
+        if (now) {
+          // (as the grid first shows this season's tab: its own ranking at the default settings, the grades from
+          // other tabs counted, as the careers' finished seasons are)
+          const ranked = grid?.[tab] ?? [];
+          const stats = own.map((stat) => statValue(now, stat, context));
+          // (rank everyone: under the default Min Games, UR)
+          const rank = ranked.indexOf(now) + 1;
+          lines.push(line(CURRENT_SEASON, now.teamLogo, now.games, rank, rank ? ranked.length : 0, stats));
+        } else if (unranked) {
+          lines.push(line(CURRENT_SEASON, unranked.teamLogo, unranked.games, 0, 0, own.map((stat) => statValue(unranked, stat, context))));
+        }
+        return lines;
+      }),
+    )
+  )
+    .flat()
+    .sort((a, b) => a.season - b.season || (b.position === position ? 1 : 0) - (a.position === position ? 1 : 0));
   // (a career best is a ranked season's: a handful of plays outside the list would take the rates)
   const finished = seasons.filter((s) => !isLiveSeason(s.season) && !s.ur);
   headline.forEach((stat, i) => {
@@ -910,6 +962,40 @@ export async function careerLines(data: SeasonDataService, tableSeason: number, 
     }
   });
   return seasons;
+}
+
+// Who played on which tabs (career-index.ts): the careers' names and this season's rows, ranked and not
+async function careerIndexFor(data: SeasonDataService, tableSeason: number): Promise<{ current: Record<SkillPosition, SkillPlayer[]>; index: CareerIndex }> {
+  const current = tableSeason === CURRENT_SEASON ? SKILL_UNITS : await data.rows(CURRENT_SEASON);
+  const [names, unranked] = await Promise.all([
+    SPORT.careerOnly ? ({} as CareerNames) : data.careerNames().catch(() => ({}) as CareerNames),
+    data.unranked(CURRENT_SEASON).catch(() => ({})),
+  ]);
+  return { current, index: careerIndex(names, current, unranked) };
+}
+
+// His other careers, kept apart from this one (SPORT.careerGroup: Ohtani's pitching, from his hitting card):
+// each one's name, the tab he played last there, his id and that season
+export async function linkedCareers(
+  data: SeasonDataService,
+  tableSeason: number,
+  position: SkillPosition,
+  id: string,
+): Promise<{ label: string; position: SkillPosition; id: string; season: number }[]> {
+  if (!SPORT.careerGroup || SPORT.careerOnly) return [];
+  const { index } = await careerIndexFor(data, tableSeason);
+  return index.linked(position, id).map((e) => ({ label: e.group, position: e.position, id: e.id, season: e.last }));
+}
+
+// One line a season (the career arcs, the history's seasons): a season on two tabs (Taysom Hill's QB and
+// TE) as the tab given has it, else the one he ranked better on
+export function seasonByYear(lines: CardSeason[], position: SkillPosition): CardSeason[] {
+  const out = new Map<number, CardSeason>();
+  for (const l of lines) {
+    const known = out.get(l.season);
+    if (!known || (known.position !== position && (l.position === position || (!l.ur && (known.ur || l.pct > known.pct))))) out.set(l.season, l);
+  }
+  return [...out.values()].sort((a, b) => a.season - b.season);
 }
 
 // A headline stat on the Seasons tab: a season's total, formatted like the table ("4,183")

@@ -96,12 +96,13 @@
               } @else {
                 <img class="tape-photo tape-logo" [class.white-logo]="s.whiteLogo" [src]="s.logo" alt="" />
               }
-              <!-- (the season: any other of theirs on that tab, from the picker) -->
+              <!-- (the season: any other of theirs, on any tab of their career (another tab's named: "· PF"),
+                   from the picker) -->
               @if (!careerOnly && (s.career?.length ?? 0) > 1) {
-                <mat-select class="tape-season" [panelWidth]="null" [value]="s.season" [attr.aria-label]="'Season for ' + s.name" title="Another of their seasons" (valueChange)="compare.add(s.position, $event, s.gsisId, i)" (openedChange)="$event && compare.rankCareer(s)">
+                <mat-select class="tape-season" [panelWidth]="null" [value]="pickKey(s)" [attr.aria-label]="'Season for ' + s.name" title="Another of their seasons" (valueChange)="compare.switchSeason(i, $event)" (openedChange)="$event && compare.rankCareer(s)">
                   <mat-select-trigger>{{ s.seasonText }}</mat-select-trigger>
-                  @for (line of s.career; track line.season) {
-                    <mat-option [value]="line.season">{{ seasonText(line.season) }} · {{ line.ur ? 'UR' : '#' + line.rank }}</mat-option>
+                  @for (line of s.career; track pickKey(line)) {
+                    <mat-option [value]="pickKey(line)">{{ seasonText(line.season) }}{{ line.position !== s.position ? ' · ' + line.position : '' }} · {{ line.ur ? 'UR' : '#' + line.rank }}</mat-option>
                   }
                 </mat-select>
               } @else {

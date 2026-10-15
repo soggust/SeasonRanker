@@ -101,6 +101,8 @@ export const SPORT: SportConfig = {
     WSW: "W Strawweight",
   },
   coachTab: null,
+  // (a fighter's divisions are one career; the pound-for-pound lists are the divisions' fighters again)
+  careerGroup: (position) => (position === 'P4P' || position === 'WP4P' ? null : 'Fighter'),
   rowHeader: () => 'Fighter',
   roleWord: () => 'fighter',
   playingTime: {

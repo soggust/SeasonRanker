@@ -452,6 +452,15 @@ export interface SportConfig {
   // Position Adjustment (none: its own tab). A pooled row's card, compare side and career are his own
   // tab's; no careers file is built for a pooled tab.
   pooledTabs?: Record<string, { tabs: string[]; group?: (tab: string) => string }>;
+  // One career across the position tabs (career-index.ts): someone's seasons on every tab he played are
+  // one career, one search hit and one Career tab, each season ranked on its own tab. careerGroup splits
+  // the player tabs into careers kept apart but linked (MLB: Hitting and Pitching, so Ohtani has both),
+  // or null for a tab that's a list of other tabs' players rather than anyone's own (MMA's
+  // pound-for-pound); none: every player tab one career. careerId: the id that ties his rows on different
+  // tabs together when a tab's ids aren't the others' (MLB's "H-"/"P-" prefixes off); a number, the
+  // headshot id to find him by on the other tabs (the NFL's QBs go by ESPN's id, "QB-<id>")
+  careerGroup?: (position: string) => string | null;
+  careerId?: (position: string, id: string) => string | number;
   // The sport's own settings (settings menu)
   settings?: SportSetting[];
   // Settings-menu switches a sport has no use for (MMA: no injury report, no rookie seasons), left out

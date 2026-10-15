@@ -31,6 +31,8 @@ libs/ranker/
     data.ts, season-data.service.ts                loading a season's JSON; other seasons' files
     team-rows.ts                                   a Teams tab built from the head coach rows
     skills.ts, awards.ts                           shapes a sport's skills and awards follow
+    career-index.ts                                one career across the position tabs: who played
+                                                   which tabs (the search's one hit, the card's Career)
   src/styles/     the look
     _base.scss                    global styles (the app imports it first)
     _variables.scss, _theme.scss  fonts, mixins (lit dots, panels, team cards, award plaques), the

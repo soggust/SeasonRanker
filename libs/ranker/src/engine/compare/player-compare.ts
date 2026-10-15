@@ -18,11 +18,12 @@ import { CURRENT_SEASON, isLiveSeason } from '@ranker/engine/data';
 import { SKILL_UNITS } from '@ranker/engine/unit-scoring';
 import { StatReader } from '@ranker/engine/stat-reader';
 import { underMin } from '@ranker/engine/playing-time';
-import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
+import { homeTab } from '@ranker/engine/pooled-tabs';
+import { CareerNames, TAB_ORDER, careerGroup, careerIndex, tabsLabel } from '@ranker/engine/career-index';
 import { CardSkill } from '@ranker/engine/skills';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { rankPct } from '@ranker/core/format';
-import { CardHost, careerLines } from '@ranker/engine/player-card/player-cards';
+import { CardHost, careerLines, seasonByYear } from '@ranker/engine/player-card/player-cards';
 import { currentGrid } from '@ranker/engine/skill-rankings/grid-rankings';
 import { CardRadar, CardSeason, CareersFile, SeasonContext } from '@ranker/engine/player-card/card.model';
 import { archetypeFor, skillsOf } from '@ranker/engine/player-card/overview';
@@ -49,10 +50,13 @@ const FACE = { r: 11, gap: 16 };
 // An edge: a skill a side is better at than the best of the rest by this much (percentile points)
 export const EDGE = 10;
 
-// (not a pooled tab, the Top 50: its players are on their own tabs, so the search lists each once)
-const TABS = (Object.keys(SKILL_STATS) as SkillPosition[]).filter((tab) => !isPooled(tab));
+// (not a pooled tab, the Top 50, or MMA's pound-for-pound: its players are on their own tabs, so the search
+// lists each once)
+const TABS = (Object.keys(SKILL_STATS) as SkillPosition[]).filter((tab) => careerGroup(tab) !== null);
 const isTeamTab = (position: SkillPosition) => !!SPORT.teamTabs?.includes(position);
 const keyOf = (position: SkillPosition, season: number, id: string) => `${position}/${season}/${id}`;
+// (a season in a side's picker: its tab and year, "PF/2013")
+export const pickKey = (l: { position: string; season: number }) => `${l.position}/${l.season}`;
 
 export type CompareTab = 'overview' | 'stats' | 'career';
 export type ArcBy = 'year' | 'season';
@@ -105,9 +109,13 @@ export interface CompareSide {
   context: SeasonContext | null;
 }
 
-// A search hit: someone a tab has had, any season
+// A search hit: someone the sport has had, any season, once however many tabs he played (career-index.ts:
+// LeBron James is one hit, "SF/PF/PG/SG/C")
 export interface CompareHit {
+  // The tab a pick opens him on, and his id there: the one he plays now (this season's, the one he ranked
+  // best on if two), or retired, the one he played most (the better one on a tie)
   position: SkillPosition;
+  // His tabs, the one he played most first ("SF/PF"; a team's or a coach's: its name)
   tabLabel: string;
   id: string;
   name: string;
@@ -116,12 +124,15 @@ export interface CompareHit {
   whiteLogo: boolean;
   // Their headshot, small (none: the team card stands in)
   photo: string | null;
-  // "2008-2016", the season a click adds (their best by the default sliders), and every season they have
+  // "2008-2016" (every tab's), and on the tab a pick opens: the season a click adds (their best by the
+  // default sliders), and every season they have there
   span: string;
   best: { season: number; rank: number; of: number };
   seasons: number[];
-  // (the seasons he was ranked in, oldest first: none for a player with unranked (UR) seasons alone)
+  // (the seasons he was ranked in there, oldest first: none for a player with unranked (UR) seasons alone)
   ranked: number[];
+  // Every season of his career on every tab, oldest first (a season on two tabs twice)
+  lines: { position: SkillPosition; id: string; season: number; rank: number; of: number }[];
 }
 
 export interface CompareCell {
@@ -217,8 +228,8 @@ export interface CompareFace {
 const ARC = { width: 640, left: 40, right: FACE.gap + FACE.r + 6, top: 14, bottom: 28 };
 const arcHeight = (width: number) => Math.round(Math.min(300, Math.max(180, width * 0.3)));
 
-type SearchEntry = Omit<CompareHit, 'photo'> & { key: string; headshotId: number | null };
-type CareerNames = Awaited<ReturnType<SeasonDataService['careerNames']>>;
+// (and his best season on any tab, 0-1, for the order: none ranked, 0)
+type SearchEntry = Omit<CompareHit, 'photo'> & { key: string; headshotId: number | null; peak: number };
 
 export class PlayerCompare {
   open = false;
@@ -336,7 +347,8 @@ export class PlayerCompare {
       side.uid = old ? old.uid : ++this.uids;
       if (old) this.sides[i] = side;
       else this.sides.push(side);
-      if (old?.position === position && old.gsisId === gsisId && old.career) side.career = old.career;
+      // (the same man: his career, every tab of it, is the same)
+      if (old?.career?.some((l) => l.position === position && l.id === gsisId)) side.career = old.career;
       this.build();
       // (the career kept from the season switched)
       if (side.career) return;
@@ -350,7 +362,7 @@ export class PlayerCompare {
         .then((career) => {
           // (the season it's on ranked as its tile is, with your sliders; the rest with them once the
           // picker's opened: rankCareer)
-          side.career = career.map((l) => (l.season === side.season && !side.ur ? { ...l, rank: side.rank, of: side.of, pct: side.pct } : l));
+          side.career = career.map((l) => (l.season === side.season && l.position === side.position && !side.ur ? { ...l, rank: side.rank, of: side.of, pct: side.pct } : l));
           this.arcs = this.buildArcs();
         });
     } catch (err) {
@@ -374,17 +386,18 @@ export class PlayerCompare {
         // a finished season at the default one)
         if (l.ur) return l;
         const ur = { ...l, rank: 0, of: 0, pct: 0, ur: true };
-        if (l.season === side.season) return side.ur ? ur : { ...l, rank: side.rank, of: side.of, pct: side.pct };
+        if (l.season === side.season && l.position === side.position) return side.ur ? ur : { ...l, rank: side.rank, of: side.of, pct: side.pct };
         try {
           let list: SkillPlayer[] = host.playerList;
           // (the table's own tab and season: his row in its list; one it leaves out, under its Min Games or
-          // filtered, is read below as any other season's, so under Min Games he's UR as the grid shows him)
-          let player = l.season === host.season && side.position === host.position ? list.find((p) => p.gsisId === side.gsisId) : undefined;
+          // filtered, is read below as any other season's, so under Min Games he's UR as the grid shows him.
+          // Each season on the tab he played it on, by his id there)
+          let player = l.season === host.season && l.position === host.position ? list.find((p) => p.gsisId === l.id) : undefined;
           if (!player) {
             const rows = l.season === host.season ? SKILL_UNITS : await this.data.rows(l.season);
-            player = rows[side.position]?.find((p) => p.gsisId === side.gsisId);
+            player = rows[l.position]?.find((p) => p.gsisId === l.id);
             if (!player) return l;
-            const context = host.seasonContext(l.season, rows, side.position);
+            const context = host.seasonContext(l.season, rows, l.position);
             if (underMin(player, context)) return ur;
             list = context.list.includes(player) ? context.list : context.manual ? [...context.list, player] : host.rankedIn(context, [...context.list, player]);
           }
@@ -400,6 +413,12 @@ export class PlayerCompare {
       side.career = lines;
       this.arcs = this.buildArcs();
     }
+  }
+
+  // A season picked from a side's picker (by pickKey: a season on any tab of his career), in its place
+  async switchSeason(i: number, pick: string): Promise<void> {
+    const line = this.sides[i]?.career?.find((l) => pickKey(l) === pick);
+    if (line) await this.add(line.position, line.season, line.id, i);
   }
 
   remove(i: number): void {
@@ -622,14 +641,16 @@ export class PlayerCompare {
     return out;
   }
 
-  // Every side's seasons on its tab (the default sliders' rank in each, the careers file's), its year in
-  // the league along the bottom (teams alone: the seasons themselves), the compared season ringed
+  // Every side's seasons on every tab of his career (the default sliders' rank in each, the careers file's;
+  // a season on two tabs once, as the side's tab has it), its year in the league along the bottom (teams
+  // alone: the seasons themselves), the compared season ringed
   private buildArcs(): CompareArcs | null {
     const sides = this.sides.filter((s) => s.career?.length);
     if (!sides.length || SPORT.careerOnly) return null;
     const byYear = !this.teamsOnly && this.arcBy !== 'season';
-    const xOf = (side: CompareSide, line: CardSeason) => (byYear ? side.career!.indexOf(line) + 1 : line.season);
-    const xs = sides.flatMap((s) => s.career!.map((c) => xOf(s, c)));
+    const careers = new Map(sides.map((s) => [s, seasonByYear(s.career!, s.position)]));
+    const xOf = (side: CompareSide, line: CardSeason) => (byYear ? careers.get(side)!.indexOf(line) + 1 : line.season);
+    const xs = sides.flatMap((s) => careers.get(s)!.map((c) => xOf(s, c)));
     const lo = Math.min(...xs);
     const hi = Math.max(...xs, lo + 1);
     const { left, right, top, bottom } = ARC;
@@ -644,12 +665,12 @@ export class PlayerCompare {
     for (let x = lo; x <= hi; x += step) xTicks.push({ x: px(x), label: byYear ? `Yr ${x}` : `’${String(x).slice(-2)}` });
     const yTicks = [1, 0.75, 0.5, 0.25, 0].map((p) => ({ y: py(p), label: p === 1 ? 'Top' : p === 0 ? 'Last' : `${p * 100}%` }));
     const lines = sides.map((side) => {
-      const dots = side.career!.map((c) => ({
+      const dots = careers.get(side)!.map((c) => ({
         x: px(xOf(side, c)),
         y: py(c.ur ? 0 : c.pct),
         now: c.season === side.season,
         ...(c.ur ? { ur: true } : {}),
-        title: `${side.name}, ${SPORT.seasonText(c.season)}: ${c.ur ? 'unranked (UR)' : `#${c.rank} of ${c.of}`}${byYear ? ` (year ${xOf(side, c)})` : ''}`,
+        title: `${side.name}, ${SPORT.seasonText(c.season)}${c.position !== side.position ? ` (${c.position})` : ''}: ${c.ur ? 'unranked (UR)' : `#${c.rank} of ${c.of}`}${byYear ? ` (year ${xOf(side, c)})` : ''}`,
       }));
       const ranked = dots.filter((d) => !d.ur);
       return { key: `${side.key}/${byYear ? 'year' : 'season'}`, name: side.name, color: side.color, points: ranked.map((d) => `${d.x},${d.y}`).join(' '), dots };
@@ -674,33 +695,37 @@ export class PlayerCompare {
       return this.say("Couldn't load the names");
     }
     if (query !== this.query) return;
-    // (a name starting with what's typed first, then the table's own tab, then the better careers)
+    // (a name starting with what's typed first, then someone who played the table's own tab, then the
+    // better careers: his best season on any tab)
     const score = (e: SearchEntry) =>
       (e.key.split(' ').some((part) => part.startsWith(words[0])) ? 2 : 0) +
-      (e.position === this.host.position ? 1 : 0) +
+      (e.lines.some((l) => l.position === this.host.position) ? 1 : 0) +
       // (never ranked: unranked seasons alone, last)
-      (e.best.rank > 0 ? rankPct(e.best.rank, e.best.of) : 0) / 2;
+      e.peak / 2;
     this.hits = entries
       .filter((e) => words.every((w) => e.key.includes(w)))
       .map((e) => ({ e, score: score(e) }))
       .sort((a, b) => b.score - a.score)
       .slice(0, 8)
-      .map(({ e: { headshotId, ...hit } }) => ({ ...hit, photo: headshotId ? this.host.headshot({ id: headshotId }, 96) : null }));
+      .map(({ e: { headshotId, peak: _, ...hit } }) => ({ ...hit, photo: headshotId ? this.host.headshot({ id: headshotId }, 96) : null }));
     this.active = 0;
     this.searched = true;
   }
 
-  // A hit picked: an active player's current season in, anyone else's best; that one's in already, the next
-  // one down (then up) that isn't
+  // A hit picked: on the tab it opens on (CompareHit.position), an active player's current season in, anyone
+  // else's best; that one's in already, the next one down (then up) that isn't, then his seasons on his
+  // other tabs, newest first
   async pick(hit: CompareHit): Promise<void> {
     this.clearSearch();
-    const taken = (season: number) => this.sides.some((s) => s.key === keyOf(hit.position, season, hit.id));
+    const taken = (l: CompareHit['lines'][number]) => this.sides.some((s) => s.key === keyOf(l.position, l.season, l.id));
     const start = hit.seasons.includes(CURRENT_SEASON) ? CURRENT_SEASON : hit.best.season;
-    const below = hit.seasons.filter((s) => s < start).reverse();
-    const above = hit.seasons.filter((s) => s > start);
-    const season = [start, ...below, ...above].find((s) => !taken(s));
-    if (season === undefined) return this.say('Every one of their seasons is already in');
-    await this.add(hit.position, season, hit.id);
+    const home = hit.lines.filter((l) => l.position === hit.position);
+    const below = home.filter((l) => l.season < start).reverse();
+    const above = home.filter((l) => l.season > start);
+    const others = hit.lines.filter((l) => l.position !== hit.position).reverse();
+    const line = [home.find((l) => l.season === start), ...below, ...above, ...others].find((l) => l && !taken(l));
+    if (!line) return this.say('Every one of their seasons is already in');
+    await this.add(line.position, line.season, line.id);
   }
 
   private clearSearch(query = ''): void {
@@ -712,7 +737,8 @@ export class PlayerCompare {
 
   // Everyone on every tab: the careers files' finished seasons (named by careers/names.json: only the tabs
   // it names have a file; a career-only sport has none) and the season being played, ranked with the
-  // default sliders like them (its unranked rows too: rank 0, UR)
+  // default sliders like them (its unranked rows too: rank 0, UR). One entry a career, however many tabs
+  // it spans (career-index.ts: LeBron's SG, SF, PF, PG and C seasons are one LeBron James, "SF/PF/PG/SG/C")
   private async entries(): Promise<SearchEntry[]> {
     const [names, current, unranked] = await Promise.all([
       SPORT.careerOnly ? ({} as CareerNames) : this.data.careerNames(),
@@ -722,14 +748,15 @@ export class PlayerCompare {
     // (this season as the grid first shows each tab, as the card's Career line has it)
     const grid = await currentGrid(this.data, current);
     const careers = await Promise.all(TABS.map((tab): Promise<CareersFile> | CareersFile => (names[tab] ? this.data.careers(tab).catch(() => ({})) : {})));
-    type Line = { season: number; logo: string; rank: number; of: number };
-    return TABS.flatMap((position, t) => {
-      // (a team's or a coach's: no headshot)
-      const photos = !isTeamTab(position) && position !== SPORT.coachTab;
-      const byId = new Map<string, { name: string; headshotId: number | null; seasons: Line[] }>();
+    type Line = CompareHit['lines'][number] & { logo: string };
+    type OnTab = { position: SkillPosition; id: string; name: string; headshotId: number | null; seasons: Line[] };
+    const tabs = TABS.flatMap((position, t) => {
+      const byId = new Map<string, OnTab>();
       for (const [id, lines] of Object.entries(careers[t])) {
         const [name, headshotId] = names[position]?.[id] ?? [];
-        if (name && lines.length) byId.set(id, { name, headshotId: headshotId ?? null, seasons: lines.map(([season, logo, , rank, of]) => ({ season, logo: SPORT.teamLogo(logo), rank, of })) });
+        if (name && lines.length) {
+          byId.set(id, { position, id, name, headshotId: headshotId ?? null, seasons: lines.map(([season, logo, , rank, of]) => ({ position, id, season, logo: SPORT.teamLogo(logo), rank, of })) });
+        }
       }
       const rows = current[position] ?? [];
       const ranked = grid[position] ?? [];
@@ -740,30 +767,56 @@ export class PlayerCompare {
         ...(unranked[position] ?? []).map((row) => ({ row, rank: 0, of: 0 })),
       ];
       for (const { row, rank, of } of lines) {
-        const line = { season: CURRENT_SEASON, logo: row.teamLogo, rank, of };
+        const line = { position, id: row.gsisId, season: CURRENT_SEASON, logo: row.teamLogo, rank, of };
         const known = byId.get(row.gsisId);
-        if (!known) byId.set(row.gsisId, { name: row.name, headshotId: row.id ?? null, seasons: [line] });
+        if (!known) byId.set(row.gsisId, { position, id: row.gsisId, name: row.name, headshotId: row.id ?? null, seasons: [line] });
         else if (!known.seasons.some((s) => s.season === CURRENT_SEASON)) known.seasons.push(line);
       }
-      return [...byId].map(([id, { name, headshotId, seasons }]): SearchEntry => {
-        seasons.sort((a, b) => a.season - b.season);
-        // (their best ranked season; none ranked, the latest)
-        const best = seasons.reduce<Line | null>((b, s) => (s.rank > 0 && (!b || rankPct(s.rank, s.of) > rankPct(b.rank, b.of)) ? s : b), null) ?? seasons.at(-1)!;
-        const [first, last] = [seasons[0].season, seasons.at(-1)!.season];
-        return {
-          position,
-          tabLabel: tabLabel(position),
-          id,
-          key: normalize(name),
-          name,
-          headshotId: photos ? headshotId : null,
-          ...teamLook(best.logo, best.season),
-          span: SPORT.careerOnly ? '' : first === last ? SPORT.seasonText(first) : `${first}-${last}`,
-          best: { season: best.season, rank: best.rank, of: best.of },
-          seasons: seasons.map((s) => s.season),
-          ranked: seasons.filter((s) => s.rank > 0).map((s) => s.season),
-        };
-      });
+      return [...byId.values()];
+    });
+    // (each tab's entries by the career they're in: one player, however many tabs)
+    const index = careerIndex(names, current, unranked);
+    const people = new Map<string, OnTab[]>();
+    for (const tab of tabs) {
+      const key = index.key(tab.position, tab.id);
+      const known = people.get(key);
+      if (known) known.push(tab);
+      else people.set(key, [tab]);
+    }
+    const pct = (l: Line) => (l.rank > 0 ? rankPct(l.rank, l.of) : 0);
+    // (a tab's best ranked season; none ranked, the latest)
+    const bestOf = (seasons: Line[]) => seasons.reduce<Line | null>((b, s) => (s.rank > 0 && (!b || pct(s) > pct(b)) ? s : b), null) ?? seasons.at(-1)!;
+    return [...people.values()].map((onTabs): SearchEntry => {
+      for (const tab of onTabs) tab.seasons.sort((a, b) => a.season - b.season);
+      const all = onTabs.flatMap((t) => t.seasons).sort((a, b) => a.season - b.season || TAB_ORDER.indexOf(a.position) - TAB_ORDER.indexOf(b.position));
+      // (his tabs, the one he played most first: the better one, then the tab bar's order, on a tie)
+      const byUse = [...onTabs].sort(
+        (a, b) => b.seasons.length - a.seasons.length || pct(bestOf(b.seasons)) - pct(bestOf(a.seasons)) || TAB_ORDER.indexOf(a.position) - TAB_ORDER.indexOf(b.position),
+      );
+      // (the tab a pick opens on: the one he plays now, the one he ranks best on if two; retired, the one he
+      // played most)
+      const now = all.filter((l) => l.season === CURRENT_SEASON).sort((a, b) => pct(b) - pct(a))[0];
+      const home = (now && onTabs.find((t) => t.position === now.position)) || byUse[0];
+      const best = bestOf(home.seasons);
+      const [first, last] = [all[0].season, all.at(-1)!.season];
+      // (a team's or a coach's: no headshot)
+      const photos = !isTeamTab(home.position) && home.position !== SPORT.coachTab;
+      return {
+        position: home.position,
+        tabLabel: onTabs.length > 1 ? tabsLabel(byUse.map((t) => t.position)) : tabLabel(home.position),
+        id: home.id,
+        // (every name he's gone by: "Terrelle Pryor Sr." as a QB, "Terrelle Pryor" as a receiver)
+        key: [...new Set(onTabs.map((t) => normalize(t.name)))].join(' '),
+        name: home.name,
+        headshotId: photos ? (home.headshotId ?? onTabs.find((t) => t.headshotId)?.headshotId ?? null) : null,
+        ...teamLook(best.logo, best.season),
+        span: SPORT.careerOnly ? '' : first === last ? SPORT.seasonText(first) : `${first}-${last}`,
+        best: { season: best.season, rank: best.rank, of: best.of },
+        seasons: home.seasons.map((s) => s.season),
+        ranked: home.seasons.filter((s) => s.rank > 0).map((s) => s.season),
+        lines: all.map(({ position, id, season, rank, of }) => ({ position, id, season, rank, of })),
+        peak: Math.max(...all.map(pct)),
+      };
     });
   }
 

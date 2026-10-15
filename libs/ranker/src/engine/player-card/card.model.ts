@@ -81,6 +81,9 @@ export interface CardComp {
 // A season on the Seasons tab: team, games, rank with the default sliders, headline stats
 export interface CardSeason {
   season: number;
+  // The tab he played it on, and his id there (careerLines: a career spans every tab he played)
+  position: SkillPosition;
+  id: string;
   // The team's logo as it looked that season, and the team's own logo path (its key)
   logo: string;
   teamLogo: string;
@@ -125,6 +128,9 @@ export interface PlayerCard {
   context: SeasonContext | null;
   // Every season they're in (null while loading), and their similar seasons (null: not for this season)
   seasons: CardSeason[] | null;
+  // His other careers, kept apart from this one (MLB: a two-way player's pitching, from his hitting card),
+  // each opening his latest season there
+  linked?: { label: string; position: SkillPosition; id: string; season: number }[];
   // The Seasons tab's re-ranking has started
   careerRanked?: boolean;
   comps: CardComp[] | null;

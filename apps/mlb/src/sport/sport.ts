@@ -108,6 +108,10 @@ export const SPORT: SportConfig = {
   // hitters' stats (pooled-tabs.ts), its top 50 shown (the rest one click away). The Position
   // Adjustment measures each stat partly within his own tab (outfielders already one).
   pooledTabs: { TOP: { tabs: ['C', '1B', '2B', '3B', 'SS', 'OF', 'DH'] } },
+  // A hitter's career across the fielding tabs and DH, a pitcher's across SP and RP: two careers, linked
+  // (Ohtani's hitting and his pitching), the rows' "H-" and "P-" ids the same player underneath
+  careerGroup: (position) => (position === 'SP' || position === 'RP' ? 'Pitching' : 'Hitting'),
+  careerId: (_position, id) => id.replace(/^[HP]-/, ''),
   listLimit: (position) => (position === 'TOP' ? 50 : undefined),
   // The Teams tab's roster grades: each group by your rankings, weighted by playing time
   rosterGrades: [

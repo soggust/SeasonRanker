@@ -1518,6 +1518,21 @@ $ai-narrow: v.bp(ai-narrow);
     white-space: nowrap;
   }
 
+  // (a season on another tab than the card's: that tab, a small chip after the year, "PF")
+  .season-pos {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: v.$radius-xxs;
+    color: #cfcfcf;
+    font-family: v.$font-base;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    padding: 1px 4px;
+    text-shadow: none;
+    vertical-align: 3px;
+  }
+
   .season-rank {
     @include v.hand(19px);
     @include v.tone-glow;

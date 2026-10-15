@@ -3,7 +3,7 @@ import { SPORT } from '@sport/sport';
 import { pagePath } from '@ranker/engine/page-url';
 import { rankTone } from '@ranker/core/format';
 import { percentileText } from '@ranker/engine/player-card/hover-text';
-import { COMPARE_MAX, CompareHit, CompareTab, PlayerCompare } from './player-compare';
+import { COMPARE_MAX, CompareHit, CompareTab, PlayerCompare, pickKey } from './player-compare';
 import { GameViewService } from '../game-view/game-view.service';
 import { ARC_DRAW_MS, arcDraw } from './arc-draw';
 import { AccountService } from '../account/account.service';
@@ -217,6 +217,8 @@ export class PlayerCompareComponent implements DoCheck, AfterViewChecked, OnDest
   // ("92nd percentile", the card's words)
   readonly percentileText = percentileText;
   readonly seasonText = SPORT.seasonText;
+  // (a season in a side's picker, by its tab and year)
+  readonly pickKey = pickKey;
   readonly careerOnly = !!SPORT.careerOnly;
   // (the Tracker's address, this sport's: /tracker/mlb)
   readonly trackerPath = pagePath('#tracker', SPORT.id);

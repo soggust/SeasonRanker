@@ -1,4 +1,5 @@
-<!-- Every season they're in: each opens that season's card (the table stays as it is) -->
+<!-- Every season they're in, on every tab they played (a season on another tab than the card's marked with
+     it, "PF", and ranked there): each opens that season's card on its own tab (the table stays as it is) -->
 
 @if (c.seasons) {
   <!-- Career arc: a bar per season, as tall as where they ranked (first = full height) -->
@@ -7,16 +8,16 @@
       <span class="log-chart-label">Rank<small>by season</small></span>
     </div>
     <div class="career-chart" [style.--count]="c.seasons!.length">
-      @for (s of c.seasons; track s.season) {
+      @for (s of c.seasons; track s.position + s.season) {
         <button
           type="button"
           class="arc"
-          [class.active]="s.season === c.season"
+          [class.active]="cards.isShowing(c, s)"
           [class.pending]="!s.yours && !s.ur"
           [style.--pct]="s.pct"
           [style.--tone]="rankTone(s.ur ? null : s.pct)"
-          [title]="seasonText(s.season) + ' · ' + (s.ur ? 'Unranked (UR)' : rankText(s.rank, s.of))"
-          (click)="s.season !== c.season && cards.openSeason(s.season, c.player.gsisId)"
+          [title]="seasonText(s.season) + (s.position !== cards.tabPosition ? ' · ' + s.position : '') + ' · ' + (s.ur ? 'Unranked (UR)' : rankText(s.rank, s.of))"
+          (click)="!cards.isShowing(c, s) && cards.openLine(s)"
         >
           <span class="arc-rank">{{ s.ur ? 'UR' : '#' + s.rank }}</span>
           <span class="arc-bar"></span>
@@ -33,18 +34,22 @@
   } @else {
     <!-- A line per season, newest first: each opens that season's card -->
     <div class="season-list">
-      @for (s of c.seasons.slice().reverse(); track s.season) {
+      @for (s of c.seasons.slice().reverse(); track s.position + s.season) {
         <button
           type="button"
           class="season-row"
-          [class.active]="s.season === c.season"
+          [class.active]="cards.isShowing(c, s)"
           [class.pending]="!s.yours && !s.ur"
           [style.--tone]="rankTone(s.ur ? null : s.pct)"
-          [title]="s.season === c.season ? 'Showing this season' : 'Open the ' + seasonText(s.season) + ' card'"
-          (click)="s.season !== c.season && cards.openSeason(s.season, c.player.gsisId)"
+          [title]="cards.isShowing(c, s) ? 'Showing this season' : 'Open the ' + seasonText(s.season) + ' card' + (s.position !== cards.tabPosition ? ' (' + sport.positionNames[s.position] + ')' : '')"
+          (click)="!cards.isShowing(c, s) && cards.openLine(s)"
         >
           <img [src]="s.logo" alt="" [class.white-logo]="whiteLogo(s.teamLogo)" />
-          <span class="season-year">{{ seasonName(s.season) }}</span>
+          <span class="season-year"
+            >{{ seasonName(s.season) }}@if (s.position !== cards.tabPosition) {
+              <small class="season-pos" [title]="'Played at ' + sport.positionNames[s.position] + ', ranked among them'">{{ s.position }}</small>
+            }</span
+          >
           <span class="season-games">{{ s.games }} G</span>
           <!-- Headline stats as readouts: value, a bar against their best season, label; best lit -->
           @for (h of s.stats; track h.label) {
@@ -70,6 +75,14 @@
         </button>
       }
     </div>
+    <!-- (his other careers, kept apart from this one: a two-way player's pitching from his hitting card) -->
+    @for (l of c.linked ?? []; track l.position) {
+      <p class="card-note career-linked">
+        <mat-icon aria-hidden="true" fontIcon="link"></mat-icon>
+        His {{ l.label | lowercase }} career, apart from this one:
+        <button type="button" class="depth-link" [title]="'Open his ' + seasonText(l.season) + ' ' + sport.positionNames[l.position] + ' card'" (click)="cards.openLine(l)">{{ seasonName(l.season) }} {{ l.position }}</button>
+      </p>
+    }
   }
   </div>
 </card-panel>
