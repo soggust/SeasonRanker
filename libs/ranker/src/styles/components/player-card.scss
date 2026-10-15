@@ -98,7 +98,7 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .player-card {
-  --card-r: 22px;
+  --card-r: 19px;
   // What the hero's team color eases into
   --card-base: #313836;
   // (the body scrolls over the board, like the rows)
@@ -196,18 +196,18 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .hero-badge {
-  --w: 200px;
-  --h: 134px;
-  --shot-h: 164px;
-  --hang: 40px;
+  --w: 176px;
+  --h: 118px;
+  --shot-h: 144px;
+  --hang: 35px;
 }
 
 .similar-badge {
-  --w: 58px;
-  --h: 39px;
-  --card-r: 10px;
-  --shot-h: 50px;
-  --hang: 12px;
+  --w: 51px;
+  --h: 34px;
+  --card-r: 9px;
+  --shot-h: 44px;
+  --hang: 11px;
   flex: 0 0 auto;
 }
 
@@ -219,13 +219,13 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .hero-card {
-  @include v.team-card(3.5px);
+  @include v.team-card(2.5px);
   @include v.team-card-gloss(6px, 46%);
   box-shadow: v.team-card-shadow(0 8px 20px rgba(0, 0, 0, 0.55), 16px);
 }
 
 .similar-card {
-  @include v.team-card(2px);
+  @include v.team-card(1px);
   box-shadow: v.team-card-shadow(0 2px 5px rgba(0, 0, 0, 0.55), 6px);
   transition: border-color v.$t-hover ease;
 }
@@ -262,12 +262,12 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (cut off flush with the card on the right, bottom and left: only the head rises out, over the top)
 .hero-photo {
-  clip-path: inset(-50% var(--hang) 0 max(0px, calc(var(--shot-w) - var(--w) - var(--hang))) round 0 0 var(--card-r) 0);
+  @include v.headshot-in-gem(var(--w), var(--hang), var(--shot-w), var(--card-r), 2.5px);
   filter: drop-shadow(-6px 2px 8px rgba(0, 0, 0, 0.55));
 }
 
 .similar-photo {
-  clip-path: inset(-50% var(--hang) 0 0 round 0 0 var(--card-r) 0);
+  @include v.headshot-in-gem(var(--w), var(--hang), var(--shot-w), var(--card-r), 1px);
   filter: drop-shadow(-3px 1px 3px rgba(0, 0, 0, 0.55));
 }
 
@@ -1756,7 +1756,7 @@ $ai-narrow: v.bp(ai-narrow);
 @include v.down(phablet) {
   // (the whole visible screen, less a small margin)
   .player-card {
-    --card-r: 16px;
+    --card-r: 14px;
     height: calc(100dvh - 12px);
     width: calc(100vw - 16px);
   }
@@ -1770,10 +1770,10 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   .hero-badge {
-    --w: 82px;
-    --h: 56px;
-    --shot-h: 70px;
-    --hang: 14px;
+    --w: 72px;
+    --h: 49px;
+    --shot-h: 62px;
+    --hang: 12px;
   }
 
   .hero-kicker {

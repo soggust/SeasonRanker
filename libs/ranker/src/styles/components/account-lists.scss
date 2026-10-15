@@ -726,12 +726,12 @@ $bar-h: 30px;
 }
 
 .badge-slot {
-  --card-w: 58px;
-  --card-h: 39px;
-  --card-r: 9px;
-  --shot-h: 50px;
+  --card-w: 51px;
+  --card-h: 34px;
+  --card-r: 8px;
+  --shot-h: 44px;
   --shot-w: calc(var(--shot-h) * 1.379);
-  --shot-hang: 12px;
+  --shot-hang: 11px;
   display: inline-flex;
   flex: 0 0 auto;
   height: var(--card-h);
@@ -741,7 +741,7 @@ $bar-h: 30px;
 
   .headshot {
     bottom: 0;
-    clip-path: inset(-50% var(--shot-hang) 0 0 round 0 0 var(--card-r) 0);
+    @include v.headshot-in-gem(var(--card-w), var(--shot-hang), var(--shot-w), var(--card-r), 1.5px);
     filter: drop-shadow(-3px 1px 3px rgba(0, 0, 0, 0.55));
     height: var(--shot-h);
     object-fit: contain;
@@ -1222,11 +1222,11 @@ $bar-h: 30px;
   }
 
   .badge-slot {
-    --card-w: 44px;
-    --card-h: 30px;
-    --card-r: 7px;
-    --shot-h: 38px;
-    --shot-hang: 9px;
+    --card-w: 39px;
+    --card-h: 26px;
+    --card-r: 6px;
+    --shot-h: 33px;
+    --shot-hang: 8px;
     margin-right: 8px;
   }
 

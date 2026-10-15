@@ -74,20 +74,33 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   min-height: 120px;
 }
 
-// (each team's logo, a big faint white watermark in its own half)
-.game-texture img {
-  height: 260%;
-  opacity: 0.1;
-  top: -80%;
-  transform: rotate(-8deg);
-
+// (each team's logo, a big faint white watermark in its own half: centered toward its outer side, away from
+// the seam, and cut off at the seam by the hero's own gradient (102deg, at 49.6% and 49.9%), so the two never
+// overlap whatever the width)
+.game-texture {
   &.away {
-    left: 16%;
-    right: auto;
+    mask-image: linear-gradient(102deg, #000 49.6%, transparent 49.6%);
   }
 
   &.home {
-    right: 16%;
+    mask-image: linear-gradient(102deg, transparent 49.9%, #000 49.9%);
+  }
+
+  img {
+    height: 260%;
+    opacity: 0.1;
+    top: -80%;
+    transform: translateX(-50%) rotate(-8deg);
+  }
+
+  &.away img {
+    left: 22%;
+    right: auto;
+  }
+
+  &.home img {
+    left: 78%;
+    right: auto;
   }
 }
 
@@ -105,13 +118,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 // (the hero's team card, smaller: one for each team)
 .game-logo-card {
-  --card-r: 18px;
-  --h: 96px;
+  --card-r: 16px;
+  --h: 84px;
   height: var(--h);
   // (the hero card in flow, not pinned over a badge)
   inset: auto;
   position: relative;
-  width: 144px;
+  width: 127px;
 }
 
 .game-team-name {
@@ -704,9 +717,15 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: -14px;
   }
 
+  // (the date on two lines under the board rather than one wide one, so it doesn't squeeze the teams' columns)
+  .game-when {
+    max-width: 190px;
+    text-align: center;
+  }
+
   .game-logo-card {
-    --h: 52px;
-    width: 78px;
+    --h: 46px;
+    width: 69px;
   }
 
   // (sized to its column, a third of the hero less the board: "Avalanche" fits a 390 phone, and a long

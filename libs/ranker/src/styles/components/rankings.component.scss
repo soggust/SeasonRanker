@@ -730,13 +730,13 @@ section ul li.player:not(.header-row) {
   // behind them; a team, unit or coach (or a player with no photo) gets the logo big in the middle. Same
   // size either way, so the names line up.
   .badge-slot {
-    --card-w: 61px;
-    --card-h: 41px;
-    --card-r: 10px;
+    --card-w: 54px;
+    --card-h: 36px;
+    --card-r: 9px;
     // The headshot: taller than the card by how far the head pops out, hanging off its right side
-    --shot-h: 52px;
+    --shot-h: 46px;
     --shot-w: calc(var(--shot-h) * 1.379);
-    --shot-hang: 13px;
+    --shot-hang: 11px;
     display: inline-flex;
     flex: 0 0 auto;
     height: var(--card-h);
@@ -746,8 +746,8 @@ section ul li.player:not(.header-row) {
 
     .headshot {
       bottom: 0;
-      // Cut off flush with the card's right side and bottom (with its rounded corner), open above it
-      clip-path: inset(-50% var(--shot-hang) 0 0 round 0 0 var(--card-r) 0);
+      // Standing in the card, inside its rim (its rounded corners kept), open above it
+      @include v.headshot-in-gem(var(--card-w), var(--shot-hang), var(--shot-w), var(--card-r), 1.5px);
       filter: drop-shadow(-3px 1px 3px rgba(0, 0, 0, 0.55));
       height: var(--shot-h);
       pointer-events: none;
@@ -1801,11 +1801,11 @@ section ul li.player > div.player-info .player-name {
   }
 
   section ul li.player:not(.header-row) .badge-slot {
-    --card-w: 50px;
-    --card-h: 34px;
-    --card-r: 8px;
-    --shot-h: 43px;
-    --shot-hang: 11px;
+    --card-w: 44px;
+    --card-h: 30px;
+    --card-r: 7px;
+    --shot-h: 38px;
+    --shot-hang: 10px;
     margin-right: 1.2em;
   }
 }

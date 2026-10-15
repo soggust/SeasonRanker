@@ -26,14 +26,13 @@
         [style.--home-hi]="g.home.look.hi"
         [style.--home-lo]="g.home.look.lo"
       >
-        <span class="hero-texture game-texture" aria-hidden="true">
-          @if (teamLogo(g.away, g); as logo) {
-            <img class="away" [src]="logo" alt="" />
-          }
-          @if (teamLogo(g.home, g); as logo) {
-            <img class="home" [src]="logo" alt="" />
-          }
-        </span>
+        <!-- (each watermark kept to its own half, cut at the seam) -->
+        @if (teamLogo(g.away, g); as logo) {
+          <span class="hero-texture game-texture away" aria-hidden="true"><img [src]="logo" alt="" /></span>
+        }
+        @if (teamLogo(g.home, g); as logo) {
+          <span class="hero-texture game-texture home" aria-hidden="true"><img [src]="logo" alt="" /></span>
+        }
         @for (side of ['away', 'home']; track side) {
           @let t = side === 'away' ? g.away : g.home;
           <div class="game-team" [ngClass]="side" [class.lost]="!t.winner && (g.away.winner || g.home.winner)">
