@@ -26,6 +26,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import path from 'node:path';
 import { currentSeason } from '../../../../libs/ranker/scripts/wiki-staff.mjs';
 import { isRecapOf } from './season-state.mjs';
+import { describe, staleOf } from '../../../../libs/ranker/scripts/analysis/prune.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the season the reports are for: the data's, or --season's finished one, kept apart and never published)
@@ -462,55 +463,66 @@ export function recapDone({ siteDir = SITE, reportsDir = REPORTS, id, file, seas
   return isRecapOf(readJson(path.join(siteDir, `${file}.json`)), season) || isRecapOf(readJson(path.join(reportsDir, `${id}.json`)), season);
 }
 
-export function publish({ siteDir = SITE, reportsDir = REPORTS, base = BASE, season = SEASON } = {}) {
+// Publishing merges this checkout's reports into what's out, never the other way round: a published file
+// newer than the kept report stays (another checkout wrote it), this season's recap stays over any preview,
+// and a file this checkout has no report for stays as it was. Then the stale ones are taken down, by the
+// published files' own metadata (libs/ranker/scripts/analysis/prune.mjs): a preview of a subject the
+// pipeline doesn't write (only teams and QBs), another season's, or one whose game is played and that the
+// latest run didn't replace. Recaps are never taken down: last season's stays until this season's first
+// report for the row replaces it. Returns the stale files taken down.
+export const NFL_COVERS = (file) => /^(team-|QB-)/.test(file);
+
+export function publish({ siteDir = SITE, reportsDir = REPORTS, base = BASE, season = SEASON, now = new Date(), log = console.log } = {}) {
   const players = readJson(path.join(base, 'index.json')) ?? [];
   const teams = readJson(path.join(base, 'team-index.json')) ?? [];
   const siteIds = new Map([...players.map((p) => [p.gsis, [p.siteId]]), ...teams.map((t) => [`team-${t.team}`, t.siteIds])]);
-  // (this season's recaps already out stay, whatever this checkout keeps: the season's last word)
-  const recaps = new Map();
-  if (existsSync(siteDir))
-    for (const f of readdirSync(siteDir)) {
-      const kept = f === 'index.json' ? null : readJson(path.join(siteDir, f));
-      if (isRecapOf(kept, season)) recaps.set(f, kept);
-    }
-  rmSync(siteDir, { recursive: true, force: true });
+  const byFile = new Map([...players.map((p) => [siteFileOf(p.gsis, p.siteId), [p.siteId]]), ...teams.map((t) => [`team-${t.team}`, t.siteIds])]);
   mkdirSync(siteDir, { recursive: true });
-  const listed = {};
+  // what's out: each file, and the rows its index lists it under
+  const out = new Map();
+  const rows = new Map();
+  for (const f of readdirSync(siteDir)) if (f.endsWith('.json') && f !== 'index.json') out.set(f.slice(0, -5), readJson(path.join(siteDir, f)));
+  for (const [id, file] of Object.entries(readJson(path.join(siteDir, 'index.json')) ?? {})) rows.set(file, [...(rows.get(file) ?? []), id]);
+  const written = new Set();
   for (const f of existsSync(reportsDir) ? readdirSync(reportsDir) : []) {
     const kept = readJson(path.join(reportsDir, f));
     const ids = kept && siteIds.get(kept.id);
     if (!ids || !(kept.report.take || kept.report.recap)) continue;
+    // (another season's reports aren't this one's: last season's recaps out stay as they are)
+    if (String(kept.season ?? season) !== String(season)) continue;
     // (a recap's evidence as it was resolved when written; an older report's against its dossier now)
     if (!kept.site && !existsSync(dossierFile(kept.id))) continue;
+    const file = siteFileOf(kept.id, ids[0]);
+    const cur = out.get(file);
+    // (this season's recap out stays over any preview; a newer file out stays)
+    if (isRecapOf(cur, season) && kept.mode !== 'recap') continue;
+    if (cur?.at && cur.at > kept.at) continue;
     const dossier = kept.site ? null : load(kept.id);
     const r = kept.site ?? forSite(kept.report, dossier);
     const next = kept.mode === 'recap' ? null : (dossier ?? (existsSync(dossierFile(kept.id)) ? load(kept.id) : null))?.nextGame;
-    const file = siteFileOf(kept.id, ids[0]);
-    // (a newer recap already out stays)
-    if (recaps.has(`${file}.json`) && kept.mode !== 'recap') continue;
-    if (recaps.has(`${file}.json`) && recaps.get(`${file}.json`).at > kept.at) continue;
-    recaps.delete(`${file}.json`);
-    writeFileSync(
-      path.join(siteDir, `${file}.json`),
-      JSON.stringify({
-        at: kept.at,
-        model: kept.model,
-        ...(kept.mode === 'recap' ? { mode: 'recap', season: kept.season, ended: kept.ended ?? null } : { mode: 'preview', season: kept.season ?? String(season) }),
-        game: next ? { week: next.week, date: next.date, opp: next.opp, at: next.at, line: next.line ?? null } : null,
-        report: r,
-      }),
-    );
-    for (const id of ids) listed[id] = file;
+    out.set(file, {
+      at: kept.at,
+      model: kept.model,
+      ...(kept.mode === 'recap' ? { mode: 'recap', season: kept.season, ended: kept.ended ?? null } : { mode: 'preview', season: kept.season ?? String(season) }),
+      game: next ? { week: next.week, date: next.date, opp: next.opp, at: next.at, line: next.line ?? null } : null,
+      report: r,
+    });
+    rows.set(file, ids);
+    written.add(file);
   }
-  // (the recaps out that this checkout has no report for, as they were)
-  const byFile = new Map([...players.map((p) => [siteFileOf(p.gsis, p.siteId), [p.siteId]]), ...teams.map((t) => [`team-${t.team}`, t.siteIds])]);
-  for (const [f, kept] of recaps) {
-    const file = f.replace(/\.json$/, '');
-    writeFileSync(path.join(siteDir, f), JSON.stringify(kept));
-    for (const id of byFile.get(file) ?? kept.siteIds ?? []) listed[id] = file;
+  // (the stale ones taken down, files and index rows)
+  const stale = staleOf(out, { season, now, covers: NFL_COVERS });
+  for (const s of stale) {
+    out.delete(s.file);
+    rmSync(path.join(siteDir, `${s.file}.json`), { force: true });
+    log(`took down ${describe(s)}`);
   }
+  for (const file of written) if (out.has(file)) writeFileSync(path.join(siteDir, `${file}.json`), JSON.stringify(out.get(file)));
+  const listed = {};
+  for (const [file, kept] of out) for (const id of rows.get(file) ?? byFile.get(file) ?? kept?.siteIds ?? []) listed[id] = file;
   writeFileSync(path.join(siteDir, 'index.json'), JSON.stringify(listed));
-  console.log(`published ${new Set(Object.values(listed)).size} analyses (${Object.keys(listed).length} rows)`);
+  log(`published ${new Set(Object.values(listed)).size} analyses (${Object.keys(listed).length} rows)`);
+  return stale;
 }
 
 // The jobs the command line asks for: --qbs (every QB), --teams (every team), --team=BAL, and names; a row

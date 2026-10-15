@@ -20,6 +20,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { describe, staleOf } from './prune.mjs';
 import path from 'node:path';
 import { ROOT, SPORTS } from './dossier.mjs';
 
@@ -367,35 +368,49 @@ function save(sport, job, message, batch) {
 }
 
 // The site's copies for a season: one file a team (its latest report), and the index of row ids -> file
-// (the Teams tab's row and its coaches'). Another season's files are taken down.
-export function publish(sport, seasonLabel) {
-  const dir = path.join(cacheDir(sport), 'reports');
-  const site = siteDir(sport);
-  mkdirSync(site, { recursive: true });
-  for (const f of readdirSync(site)) {
-    if (!f.startsWith('team-')) continue;
-    const kept = JSON.parse(readFileSync(path.join(site, f), 'utf8'));
-    if (kept.season !== seasonLabel) rmSync(path.join(site, f));
+// (the Teams tab's row and its coaches'). This checkout's reports merge into what's out: a newer file out
+// stays (another checkout wrote it), and this season's recap stays over any preview. Then the stale ones
+// are taken down by the published files' own metadata (prune.mjs): another season's previews, and a
+// preview whose week is played that the latest run didn't replace. A recap is never taken down: last
+// season's stays until this season's first report for the team replaces it. Returns the stale files.
+const readJson = (file) => {
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return null;
   }
+};
+export const TEAM_COVERS = (file) => file.startsWith('team-');
+
+export function publish(sport, seasonLabel, { site = siteDir(sport), dir = path.join(cacheDir(sport), 'reports'), now = new Date(), log = console.log } = {}) {
+  mkdirSync(site, { recursive: true });
   for (const f of existsSync(dir) ? readdirSync(dir) : []) {
-    const kept = JSON.parse(readFileSync(path.join(dir, f), 'utf8'));
-    if (kept.season !== seasonLabel || !kept.site) continue;
+    const kept = readJson(path.join(dir, f));
+    if (!kept || kept.season !== seasonLabel || !kept.site) continue;
     const file = path.join(site, `team-${kept.key}.json`);
-    // (a published report newer than the kept one stays: another checkout wrote it)
-    if (existsSync(file) && JSON.parse(readFileSync(file, 'utf8')).at > kept.at) continue;
+    const cur = readJson(file);
+    // (a published report newer than the kept one stays: another checkout wrote it; this season's recap
+    // stays over a preview)
+    if (cur?.at && cur.at > kept.at) continue;
+    if (cur?.mode === 'recap' && cur.season === seasonLabel && kept.mode !== 'recap') continue;
     writeFileSync(
       file,
       JSON.stringify({ at: kept.at, model: kept.model, mode: kept.mode, season: kept.season, siteIds: kept.siteIds, game: null, ...(kept.mode === 'recap' ? { ended: kept.ended } : { week: kept.week }), report: kept.site }),
     );
   }
-  const index = {};
-  for (const f of readdirSync(site)) {
-    if (!f.startsWith('team-')) continue;
-    const kept = JSON.parse(readFileSync(path.join(site, f), 'utf8'));
-    for (const id of kept.siteIds ?? []) index[id] = f.replace(/\.json$/, '');
+  const out = new Map();
+  for (const f of readdirSync(site)) if (f.endsWith('.json') && f !== 'index.json') out.set(f.slice(0, -5), readJson(path.join(site, f)));
+  const stale = staleOf(out, { season: seasonLabel, now, covers: TEAM_COVERS });
+  for (const s of stale) {
+    out.delete(s.file);
+    rmSync(path.join(site, `${s.file}.json`), { force: true });
+    log(`${SPORTS[sport]?.name ?? sport}: took down ${describe(s)}`);
   }
+  const index = {};
+  for (const [file, kept] of out) for (const id of kept?.siteIds ?? []) index[id] = file;
   writeFileSync(path.join(site, 'index.json'), JSON.stringify(index));
-  console.log(`${SPORTS[sport].name}: published ${new Set(Object.values(index)).size} analyses (${Object.keys(index).length} rows)`);
+  log(`${SPORTS[sport]?.name ?? sport}: published ${new Set(Object.values(index)).size} analyses (${Object.keys(index).length} rows)`);
+  return stale;
 }
 
 // A team's published report this season: { mode, at } or null
