@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TIMING, LEAGUES } from '../libs/ranker/scripts/model/leagues.mjs';
-import { cadenceOf, inputChanges, inputsOf, lastChanceOf, newsMissing, phaseOf, propAsk } from '../libs/ranker/scripts/model/timing.mjs';
+import { cadenceOf, inputChanges, inputsOf, lastChanceOf, lostAsk, newsMissing, phaseOf, propAsk } from '../libs/ranker/scripts/model/timing.mjs';
 import { fitTrust } from '../libs/ranker/scripts/model/desk.mjs';
 
 const H = 36e5;
@@ -164,4 +164,19 @@ test('propAsk: first, owed only on an unpriced board, near once with props open 
   assert.equal(propAsk({ times: 1, max: 4, open: 2, until: h }), 'near');
   assert.equal(propAsk({ times: 2, max: 4, open: 2, until: h, nearAsked: true }), null);
   assert.equal(propAsk({ times: 1, max: 4, open: 0, until: h }), null);
+});
+
+test('lostAsk: an ask the book answered whose board never published is owed again; published, priced, open or unanswered, not', () => {
+  const markets = ['player_pass_yds', 'player_reception_yds'];
+  const lost = { times: 1, dk: ['player_pass_yds', 'player_anytime_td'], markets, published: 0, boardPriced: false, open: 0 };
+  assert.equal(lostAsk(lost), true);
+  assert.equal(propAsk({ times: 1, max: 6, owed: lostAsk(lost), boardPriced: false, until: 5 * H }), 'owed');
+  assert.equal(lostAsk({ ...lost, times: 0 }), false);
+  assert.equal(lostAsk({ ...lost, published: 50 }), false);
+  assert.equal(lostAsk({ ...lost, boardPriced: true }), false);
+  assert.equal(lostAsk({ ...lost, open: 2 }), false);
+  // (the book returned none of the props' markets (none posted yet, or the anytime touchdown's alone): not lost)
+  assert.equal(lostAsk({ ...lost, dk: [] }), false);
+  assert.equal(lostAsk({ ...lost, dk: ['player_anytime_td'] }), false);
+  assert.equal(lostAsk({ ...lost, dk: undefined }), false);
 });

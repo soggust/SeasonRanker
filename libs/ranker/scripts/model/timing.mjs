@@ -98,6 +98,18 @@ export function phaseOf(sport, kind, until, gap = null) {
 // (the widest window, hours: how far ahead The Odds API is asked about)
 export const reach = (sport) => Math.max(TIMING[sport]?.lines ?? 96, TIMING[sport]?.props ?? 96);
 
+// A game's props ask whose run never landed: asked before (times), the book returning prop markets on it (dk:
+// the markets it returned, the anytime touchdown's not counted), and yet the published board (the repo's, the last
+// run that committed) shows none of its props, its board has no prices now and no prop bet of it is open. The
+// asks are counted in the desk's cache, saved before the commit, so a run whose commit failed (2026-10-14's: the
+// write-ups' tests) spent the ask and lost its prices, bets and tracked rows; with no prices of its own (the
+// NFL's board) the game's props were then never priced again (SEA @ DEN, 2026-10-15: 57 priced at an assumed
+// -110 all day, none tracked). Owed an ask again (propAsk's 'owed'), at most PROP_ASKS in all as any
+export function lostAsk({ times, dk = [], markets = null, published = 0, boardPriced = false, open = 0 }) {
+  if (!(times > 0) || boardPriced || open > 0 || published > 0) return false;
+  return (dk ?? []).some((m) => (markets ? markets.includes(m) : true));
+}
+
 // Why The Odds API is asked for a game's props this run, or null: 'first' (never asked: its props are due),
 // 'owed' (its props were taken back, on news or by --replace, and its board has no prices of its own (the
 // NFL's): without a new ask they'd never be bet again; kept across runs till an ask succeeds), 'near' (within

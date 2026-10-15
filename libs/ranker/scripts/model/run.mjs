@@ -126,7 +126,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
-import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
+import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
 import { adjust, expect, fit, fitContext, gateOf, replay, round } from './ratings.mjs';
@@ -1801,7 +1801,11 @@ async function betProps(r) {
       // (asked once its props are due, once more near the start for the open ones' last line (the NFL's
       // close), and again when its props were taken back and its board has no prices (owed), at most
       // PROP_ASKS times a game: timing.mjs propAsk)
-      const owed = !!asked[`${game.id}:owed`];
+      // (an ask whose run never published (timing.mjs lostAsk): owed again, its board the repo's last)
+      const published = ((r.lastBoard ??= readJson(r.files.board, null))?.games ?? []).find((g) => String(g.id) === String(game.id))?.p?.length ?? 0;
+      const lost = !asked[`${game.id}:owed`] && lostAsk({ times, dk: asked[`${game.id}:dk`], markets: Object.keys(API_MARKETS[sport] ?? {}), published, boardPriced: board_.some((p) => p.prices), open: open.length });
+      if (lost) console.log(`${sport}: props of game ${game.id} asked before, but no board of them ever published (that run's commit lost): asked again`);
+      const owed = !!asked[`${game.id}:owed`] || lost;
       const boardPriced = board_.some((p) => p.prices);
       const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length });
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
