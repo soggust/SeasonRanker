@@ -140,7 +140,8 @@ export function restGuard(restDays, debut, date) {
 //   group-out   a regular at his position missing (out, doubtful, IR, off the roster, absent two games or
 //               more), his cut of the work they leave (vacOut: matchups.mjs vacated, a questionable one not
 //               counted) ROLE.vac of his own or more; and a back projected in the role he steps into (project.mjs
-//               rp) on a receiving prop, with no safe side (promoted backs' receiving ran high, not low)
+//               rp) on a receiving prop, with no safe side (promoted backs' receiving ran high, not low). Not
+//               where the absence is already in his recent games (settled: settledAbsenceOf below)
 //   snap-jump   his last game's share of his team's offensive snaps ROLE.snapJump over his season's
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing
 //   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
@@ -208,7 +209,30 @@ export function lineupRoleOf({ name = null, pid, usual = null, starters = null }
   if (isUsual && !inFive) return { key: 'lineup-bench', safe: 'under', why: `${name || 'he'} not in tonight's posted starting five, one of his team's usual starters: a smaller role` };
   return null;
 }
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
+// The group-out CHECK's absence already seen (null: new to him, or not known). It's for a role the model hasn't
+// seen yet; one he's already played through in the role it gives him is in his recent numbers and the
+// next-man-up terms (project.mjs nu, rp, ab), and its CHECK caught nothing new (Emanuel Wilson, GB, 2026-10-18:
+// every prop a CHECK with the lead back out two games and 20-plus carries in each). Settled: of his last
+// SETTLED.recent games for his team, one or more with every regular at his position missing tonight missing it
+// too (without: matchups.mjs absenceGames), and his work in those (their average: touches, a back's carries and
+// targets, a receiver's or tight end's targets) at least his work in his games with none of them missing (pre:
+// their average, 0 with none) plus SETTLED.share of the work tonight's cut gives him (vacOut times his recent
+// work, 1 at least: the cut's own measure). A new absence (no such recent game), a second regular newly out,
+// or a fill-in who didn't take the work, still a CHECK. ab: matchups.mjs absenceGames' { own, games }
+export const SETTLED = { recent: 2, share: 0.7 };
+export function settledAbsenceOf({ vacOut = 0, ab = null } = {}) {
+  if (!(vacOut > 0) || !ab || !Array.isArray(ab.games) || !ab.games.length) return null;
+  const recent = ab.games.slice(-SETTLED.recent).filter((g) => g.without);
+  if (!recent.length) return null;
+  const mean = (a) => a.reduce((t, g) => t + (g.work ?? 0), 0) / a.length;
+  const before = ab.games.filter((g) => g.none);
+  const pre = before.length ? mean(before) : 0;
+  const work = mean(recent);
+  const need = pre + SETTLED.share * vacOut * Math.max(ab.own ?? 0, 1);
+  if (!(work >= need)) return null;
+  return { n: recent.length, work: round(work, 1), pre: round(pre, 1), need: round(need, 1) };
+}
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
   // (no usual starter known for his team (no quarterback's passes in its games): any quarterback with a prop is
@@ -226,7 +250,9 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
   if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
-  if (vacOut >= ROLE.vac) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
+  // (group-out only for an absence new to him: one he's already played through in the role it gives him
+  // (settled: settledAbsenceOf) is in his recent numbers and the next-man-up terms, so it's not a CHECK)
+  if (vacOut >= ROLE.vac && !settled) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
   if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
   if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
   if (Number.isFinite(implied) && mu > 0) {
@@ -1619,6 +1645,8 @@ export function rowsIndex(sport, rows) {
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
 export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null) {
   const priced = [];
+  // (the role guard's settled absences logged, by game and player: once each)
+  const settledLogged = new Set();
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
   // role guard: a change at quarterback))
   const onBoard = new Set();
@@ -1802,6 +1830,15 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // as the split in proportion here)
       const vs0 = plainVs(prop.stat, f.params.vs);
       const vacOut = f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(0), extra).vacs?.[vs0] ?? 0;
+      // (the absence already in his recent games (settledAbsenceOf): no group-out CHECK, its skip logged once a
+      // player and game, so the CHECKs it clears can be counted)
+      const ab = vacOut >= ROLE.vac ? (f.matchups.absenceGames?.(pid, row.team, game.season, row.pos, missOf(0)) ?? null) : null;
+      const settled = settledAbsenceOf({ vacOut, ab });
+      if (settled && !settledLogged.has(`${game.id}:${pid}`)) {
+        settledLogged.add(`${game.id}:${pid}`);
+        const names = ab.ids.map((id) => idx.name?.(id) ?? id).join(', ');
+        console.log(`${sport}: role CHECK skipped for ${a.name} (${game.id}): absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${names} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed: ${Math.round(SETTLED.share * 100)}% of the cut over his work before)`);
+      }
       roleChange = roleChangeOf({
         name: a.name,
         pos: row.pos,
@@ -1809,6 +1846,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         qb1: qb1 ? { ...qb1, name: idx.name?.(qb1.id) ?? null, missing: missOf(0)(qb1.id) } : null,
         boardQbs: boardQbs.get(String(row.team)) ?? null,
         vacOut,
+        settled,
         snap: row.snap ?? null,
         mu,
         // (a quarterback's starts before tonight, all his seasons': a few-start one's a CHECK)

@@ -1057,6 +1057,22 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
       return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
+    // (the role guard's absence already seen (props.mjs settledAbsenceOf): the regulars at his position surely
+    // missing tonight (missOf over 0, recent work 1.5 a game or more: vacated's), and his games this season for
+    // this team in order, each its work (touches: a back's carries and targets, a receiver's or tight end's
+    // targets), whether every one of them was missing it (without; a game whose snap counts weren't read never:
+    // who was out isn't known) and whether none was (none); own, his recent work now (vacated's cut is over it,
+    // 1 at least). null for a quarterback or a position without the work, or none of them missing)
+    absenceGames: (pid, teamId, season, pos, missOf) => {
+      const p = POS(pos);
+      if (!p || p === 'QB') return null;
+      const w = workOf(teamId, season).p;
+      const ids = [...w].filter(([id, x]) => String(id) !== String(pid) && x.pos === p && x.v >= 1.5 && clamp01(missOf(id)) > 0).map(([id]) => String(id));
+      if (!ids.length) return null;
+      const h = games_.get(pid);
+      const list = h && h.season === season ? h.games.filter((g) => String(g.team) === String(teamId)) : [];
+      return { ids, own: w.get(pid)?.v ?? 0, games: list.map((g) => ({ work: g.work, without: g.read !== false && ids.every((id) => g.missing.has(id)), none: !ids.some((id) => g.missing.has(id)) })) };
+    },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => ({ ...absorb.dump(), read: learned }),
     // (a team's quarterback now: the one with the most passes a game, recent games counting most ({ id, v });
