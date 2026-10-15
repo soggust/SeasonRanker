@@ -758,7 +758,10 @@ export class PlayerCompare {
       const rows = current[position] ?? [];
       const ranked = grid[position] ?? [];
       // (rank everyone: a row under the default Min Games is UR, 0 of 0)
-      const rankOf = (row: SkillPlayer) => ranked.indexOf(row) + 1;
+      // (each row's place, looked up: a long tab's rows each searched the ranking for themselves)
+      const places = new Map<SkillPlayer, number>();
+      ranked.forEach((row, i) => places.has(row) || places.set(row, i + 1));
+      const rankOf = (row: SkillPlayer) => places.get(row) ?? 0;
       const lines = [
         ...rows.map((row) => ({ row, rank: rankOf(row), of: rankOf(row) ? ranked.length : 0 })),
         ...(unranked[position] ?? []).map((row) => ({ row, rank: 0, of: 0 })),

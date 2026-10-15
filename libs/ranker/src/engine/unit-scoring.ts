@@ -1,5 +1,5 @@
 import { AppData, DATA, UNRANKED_KEY, dataVersion, withSeason } from '@ranker/engine/data';
-import type { SportSettings, ValueContext } from '@ranker/engine/sport';
+import type { CombinedStat, SportSettings, ValueContext } from '@ranker/engine/sport';
 import { extras } from '@ranker/engine/row-fields';
 import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStat, SkillStatKey, SkillWeights, unitStat } from '@sport/positions';
 import { SPORT } from '@sport/sport';
@@ -84,9 +84,13 @@ export function recencyScore(lastFive: number[] = [], count = 5): number {
   return (earned / possible) * weights.reduce((a, b) => a + b, 0);
 }
 
-// The combined pairs (SPORT.combined) a tab has
+// The combined pairs (SPORT.combined) a tab has (worked out once a tab: every value read asks, a re-rank
+// thousands of times)
+const combinedByTab = new Map<string, CombinedStat[]>();
 export function combinedFor(position: string) {
-  return SPORT.combined?.stats(position) ?? [];
+  let pairs = combinedByTab.get(position);
+  if (!pairs) combinedByTab.set(position, (pairs = SPORT.combined?.stats(position) ?? []));
+  return pairs;
 }
 
 // A tab's stats with each combined pair (the Combine setting, on by default) as its one total column, where

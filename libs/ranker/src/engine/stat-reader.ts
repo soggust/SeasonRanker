@@ -101,18 +101,25 @@ export class StatReader {
   private raws = new Map<SkillPlayer, Map<SkillStat, number | null>>();
   private texts = new Map<SkillPlayer, Map<SkillStat, string>>();
   private colors = new Map<SkillPlayer, Map<SkillStat, string | null>>();
+  private cells = new Map<SkillPlayer, Map<SkillStat, string>>();
+  // (and each column's label and name, the same in every row)
+  private labels = new Map<SkillStat, string>();
+  private names = new Map<SkillStat, string>();
 
   private fresh(): void {
     const s = this.source;
     const known = this.scalesFor;
-    if (known && known[0] === s.list && known[1] === s.version && known[2] === s.settings && known[3] === s.weights) return;
+    if (known && known[0] === s.list && known[1] === s.version && known[2] === s.settings && known[3] === s.weights && known[4] === s.position) return;
     this.scales.clear();
     this.rankValues.clear();
     this.rankCounts.clear();
     this.raws.clear();
     this.texts.clear();
     this.colors.clear();
-    this.scalesFor = [s.list, s.version, s.settings, s.weights];
+    this.cells.clear();
+    this.labels.clear();
+    this.names.clear();
+    this.scalesFor = [s.list, s.version, s.settings, s.weights, s.position];
   }
 
   private remember<T>(cache: Map<SkillPlayer, Map<SkillStat, T>>, player: SkillPlayer, stat: SkillStat, work: () => T): T {
@@ -236,6 +243,13 @@ export class StatReader {
 
   // The column's label, switched to its per-game name (or tagged with the pace, "162G") when it shows rates
   label(stat: SkillStat): string {
+    this.fresh();
+    let label = this.labels.get(stat);
+    if (label === undefined) this.labels.set(stat, (label = this.labelOf(stat)));
+    return label;
+  }
+
+  private labelOf(stat: SkillStat): string {
     const label = statLabel(stat, this.source.settings.sport, this.position);
     if (!this.showsPerGame(stat)) return label;
     return this.basis === 'pace17' ? `${label} (${PACE_GAMES[this.position]}G)` : (PER_GAME_LABELS[stat.key] ?? `${label} / Game`);
@@ -243,6 +257,13 @@ export class StatReader {
 
   // The stat written out in full
   name(stat: SkillStat): string {
+    this.fresh();
+    let name = this.names.get(stat);
+    if (name === undefined) this.names.set(stat, (name = this.nameOf(stat)));
+    return name;
+  }
+
+  private nameOf(stat: SkillStat): string {
     const name = SPORT.statName?.(stat, this.position, this.source.settings.sport) ?? stat.name ?? STAT_NAMES[stat.key] ?? stat.label;
     if (!this.showsPerGame(stat)) return name;
     return this.basis === 'pace17' ? `${name} (${PACE_GAMES[this.position]}-game pace)` : `${name} per Game`;
@@ -307,6 +328,10 @@ export class StatReader {
   // A grid cell's text: the value, or with Show Ranks its place ("#3"). No tie mark: in the grade boxes it
   // doesn't fit (a rank's "(tied)" stays in its hover)
   cellText(player: SkillPlayer, stat: SkillStat): string {
+    return this.remember(this.cells, player, stat, () => this.cellTextOf(player, stat));
+  }
+
+  private cellTextOf(player: SkillPlayer, stat: SkillStat): string {
     if (!this.showsRank(stat)) return this.format(player, stat).replace(/ \(tied\)$/, '');
     const r = this.listRank(player, stat);
     return r ? `#${r.rank}` : '-';

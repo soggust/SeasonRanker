@@ -11,7 +11,13 @@ const ARROW_GAP = 3;
 // (a stat key as a variable name: letters, digits, - and _ only)
 const cssKey = (key: string) => key.replace(/[^\w-]/g, '_');
 
-export const columnWidth = (key: string) => `var(--lw-${cssKey(key)})`;
+// (each column's, made once: every cell of every row asks on every check)
+const widthVars = new Map<string, string>();
+export const columnWidth = (key: string) => {
+  let width = widthVars.get(key);
+  if (width === undefined) widthVars.set(key, (width = `var(--lw-${cssKey(key)})`));
+  return width;
+};
 
 // A grade box: as wide as its columns' labels, at least its own minimum (em per column)
 export const boxWidth = (group: string, columns: number) => `max(${columns * 7.5}em, var(--lw-box-${cssKey(group)}, 0px))`;

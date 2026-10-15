@@ -339,8 +339,17 @@ export function espnTeamId(league: string, names: (string | undefined)[]): strin
   return id;
 }
 
-// (null when none matches: for the places that just do without)
+// (null when none matches: for the places that just do without. Each set of names looked up once: the
+// grid's Recent squares ask for every square on every check)
+const foundIds = new Map<string, string | null>();
 export function findEspnTeamId(league: string, names: (string | undefined)[]): string | null {
+  const key = [league, ...names.map((n) => n ?? '')].join('|');
+  let id = foundIds.get(key);
+  if (id === undefined) foundIds.set(key, (id = lookUpEspnTeamId(league, names)));
+  return id;
+}
+
+function lookUpEspnTeamId(league: string, names: (string | undefined)[]): string | null {
   const teams = ESPN_TEAMS[league] ?? [];
   const wanted = names.filter((n): n is string => !!n).map((n) => NICKNAMES[n.toLowerCase()] ?? n.toLowerCase());
   for (const name of wanted) {
