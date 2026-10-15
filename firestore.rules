@@ -117,7 +117,9 @@ service cloud.firestore {
     // users/{uid}: the public profile
     // -------------------------------------------------------------------------
     match /users/{uid} {
-      allow read: if true;
+      // (one profile at a time, by anyone; never the whole collection listed: no page lists profiles, and a
+      // script listing them all would be thousands of reads, each up to a 60 KB photo, billed to the site)
+      allow get: if true;
 
       // (made with its username's claim, in the same transaction)
       allow create: if isOwner(uid)
@@ -157,7 +159,9 @@ service cloud.firestore {
     // its owner, once their profile no longer uses it (renamed or deleted)
     // -------------------------------------------------------------------------
     match /usernames/{name} {
-      allow read: if true;
+      // (a name looked up by anyone; listed only a page at a time, as the friends search asks: SEARCH_LIMIT, 12)
+      allow get: if true;
+      allow list: if request.query.limit <= 12;
 
       allow create: if signedIn()
         && name.matches('^[a-z0-9_]{3,20}$')

@@ -60,10 +60,11 @@ export class TrackerStore {
     const read = await this.reader.read(spec);
     if (!read) throw new Error('Nothing to pin');
     const { f, ref } = await this.pinsRef(user.uid);
-    // (first: an order below every other; a full tracker turns it away)
-    const pins = await f.getDocs(f.query(ref, f.orderBy('order'), f.limit(PINS_MAX)));
-    if (pins.size >= PINS_MAX) throw Object.assign(new Error('full'), { code: 'full' });
-    const order = pins.empty ? 0 : Number(pins.docs[0].data()['order'] ?? 0) - 1;
+    // (first: an order below every other; a full tracker turns it away. The count and the first pin alone, two
+    // reads, not every pin (each with its history) for one number)
+    const [count, first] = await Promise.all([f.getCountFromServer(ref), f.getDocs(f.query(ref, f.orderBy('order'), f.limit(1)))]);
+    if (count.data().count >= PINS_MAX) throw Object.assign(new Error('full'), { code: 'full' });
+    const order = first.empty ? 0 : Number(first.docs[0].data()['order'] ?? 0) - 1;
     const doc = f.doc(ref);
     await f.setDoc(doc, {
       title: defaultTitle(sides),

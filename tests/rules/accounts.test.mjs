@@ -5,7 +5,7 @@ import { after, before, beforeEach, describe, test } from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { assertFails, assertSucceeds, initializeTestEnvironment } from '@firebase/rules-unit-testing';
-import { deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
+import { collection, deleteDoc, doc, documentId, getDoc, getDocs, limit, query, serverTimestamp, setDoc, updateDoc, where, writeBatch } from 'firebase/firestore';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const host = process.env.FIRESTORE_EMULATOR_HOST;
@@ -47,6 +47,20 @@ function signUp(db, uid, username, extra = {}) {
 const as = (uid, claims = {}) => env.authenticatedContext(uid, claims).firestore();
 
 describe('accounts rules', { skip }, () => {
+  test('a profile and a name read one at a time by anyone; never every profile listed, the names a page of 12 at most', async () => {
+    await signUp(as('alice'), 'alice', 'Alice');
+    const anon = env.unauthenticatedContext().firestore();
+    await assertSucceeds(getDoc(doc(anon, 'users', 'alice')));
+    await assertSucceeds(getDoc(doc(anon, 'usernames', 'alice')));
+    await assertFails(getDocs(collection(anon, 'users')));
+    await assertFails(getDocs(query(collection(as('bob'), 'users'), limit(5))));
+    // (the friends search: a prefix of the names, 12 at most)
+    const search = (n) => getDocs(query(collection(as('bob'), 'usernames'), where(documentId(), '>=', 'al'), where(documentId(), '<', 'am'), limit(n)));
+    await assertSucceeds(search(12));
+    await assertFails(search(13));
+    await assertFails(getDocs(collection(anon, 'usernames')));
+  });
+
   test('a username is claimed once, with the profile that uses it', async () => {
     await assertSucceeds(signUp(as('alice'), 'alice', 'Ace_1'));
     // (someone else can't take it, in any capitals)

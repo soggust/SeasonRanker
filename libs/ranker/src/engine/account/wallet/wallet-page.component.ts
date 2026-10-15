@@ -135,14 +135,18 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     });
     // (once someone's signed in: the settled history where it shows (the wallet, Closed Bets), and the
     // leaderboards and the bot's ledgers on the wallet itself only: Open and Closed Bets show neither)
+    // (its first page only, untracked: loadSettled reads the history's state, and tracked, each page landing asked
+    // for the next, the whole history read, a read a bet. Show more and a date range page on from there)
     effect(() => {
       if (!this.account.user()) return;
-      if (this.only !== 'open') void this.wallet.loadSettled();
-      if (!this.only && !this.extrasAsked) {
-        this.extrasAsked = true;
-        void this.loadBoards();
-        void botLedger().then((bets) => this.ledger.set(bets));
-      }
+      untracked(() => {
+        if (this.only !== 'open' && this.wallet.settledState() === 'idle') void this.wallet.loadSettled();
+        if (!this.only && !this.extrasAsked) {
+          this.extrasAsked = true;
+          void this.loadBoards();
+          void botLedger().then((bets) => this.ledger.set(bets));
+        }
+      });
     });
   }
   private extrasAsked = false;
