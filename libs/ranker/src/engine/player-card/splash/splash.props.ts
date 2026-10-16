@@ -150,7 +150,7 @@ export function pickProps(f: Facts): string[] {
   if (hand) return hand.slice(0, 3);
   const has = (id: string) => f.awards.includes(id);
   const trophies = f.awards.map((a) => AWARD_PROP[`${f.sport}:${a}`]).filter(Boolean);
-  const title = has(TITLE_AWARD[f.sport]) ? TITLE[f.sport] : undefined;
+  const title = has(TITLE_AWARD[f.sport]) || (f.team && f.tier === 'champion') ? TITLE[f.sport] : undefined;
   const gear = (GEAR[f.sport] ?? []).filter((g) => !g.includes('game-ball') || f.gameBall);
 
   if (f.sport === 'mma') return unique([has('champ') && 'title-belt', 'fight-gloves', f.plaques && 'honors-plaques']);

@@ -20,6 +20,8 @@ export interface Outcome {
   lastGame?: { round: string; opp: string; home: boolean; score: string; won?: boolean; date?: string; venue?: string };
   // a round it won on the way
   roundWon?: { round: string; result: string };
+  confChamp?: boolean; // won its conference (reached the final)
+  gameBall?: { title: string; line: string; tip: string }; // a champion's title game
 }
 
 // One piece as the stage draws it: its drawing, its words, its height (px, desktop), its name, its options
@@ -212,7 +214,7 @@ function fieldsOf(s: SceneInput): Record<string, string | undefined> {
 
 // (a props' conference trophy, by the conference it won)
 function confProp(s: SceneInput, f: Record<string, string | undefined>): string | undefined {
-  if (!s.awards.some((a) => a.id === 'conf' || a.id === 'pennant')) return undefined;
+  if (!s.awards.some((a) => a.id === 'conf' || a.id === 'pennant') && !s.outcome?.confChamp) return undefined;
   if (s.sport === 'nfl') return f['conf'] === 'AFC' ? 'nfl-afc-trophy' : 'nfl-nfc-trophy';
   if (s.sport === 'nhl') return f['confName'] === 'Western' ? 'nhl-campbell-bowl' : 'nhl-wales-trophy';
   if (s.sport === 'nba') return 'nba-conf-trophy';

@@ -55,6 +55,11 @@ jobs:
       - name: Pull NHL stats
         run: npm run nhl:update-data
 
+      # The Overview's splash: how each team's season ended, each player's number and best game
+      # (apps/nhl/scripts/build-splash.mjs; a failed run keeps yesterday's files, and says so on the run's page)
+      - name: Build the splash's data
+        run: node apps/nhl/scripts/build-splash.mjs || echo "::warning::Splash data not built (this step's log says why)"
+
       # (MoneyPuck's shots file, ~20 MB, kept between runs: the season being played's is downloaded again after
       # six hours (build-heat-maps.mjs FRESH_HOURS), not on every run)
       - name: Restore the MoneyPuck cache

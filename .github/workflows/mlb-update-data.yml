@@ -63,6 +63,11 @@ jobs:
       - name: Pull stats from the MLB Stats API and Baseball Savant
         run: npm run mlb:update-data
 
+      # The Overview's splash: how each team's season ended, each player's number and best game, the season's milestones
+      # (apps/mlb/scripts/build-splash.mjs; a failed run keeps yesterday's files, and says so on the run's page)
+      - name: Build the splash's data
+        run: node apps/mlb/scripts/build-splash.mjs || echo "::warning::Splash data not built (this step's log says why)"
+
       # (Wikipedia's coaching staffs: a failed fetch keeps yesterday's file)
       - name: Build coaching staffs
         run: node apps/mlb/scripts/build-coaches.mjs || echo "coaches skipped"

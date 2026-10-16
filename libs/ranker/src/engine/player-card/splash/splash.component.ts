@@ -14,7 +14,7 @@ import type { DepthPlayer, DepthView } from '../depth-chart';
 import { SplashPiece } from './splash-piece.component';
 import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
-import { HELMETS, KitColors, SIGNATURE_SHOES, uniformFor } from './splash.uniforms';
+import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
 
 type Kit = 'home' | 'away' | 'alt';
 type Cut = 'football' | 'basketball' | 'baseball';
@@ -46,7 +46,7 @@ export class CardSplash implements OnDestroy {
 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly host = inject(ElementRef<HTMLElement>);
-  private data = new Map<number, SplashData | 'loading'>();
+  private data = new Map<string, SplashData | 'loading'>();
   private built: Built | null = null;
   tip: { text: string; x: number; y: number } | null = null;
   private tipTimer: ReturnType<typeof setTimeout> | null = null;
@@ -93,13 +93,14 @@ export class CardSplash implements OnDestroy {
     return this.built.scene;
   }
 
-  // (a season's splash data, read once; the card drawn again when it's in)
+  // (a season's splash data for the card's tab, read once; the card drawn again when it's in)
   private seasonData(season: number): SplashData | null {
-    const got = this.data.get(season);
+    const key = `${season}/${this.tab}`;
+    const got = this.data.get(key);
     if (got === undefined) {
-      this.data.set(season, 'loading');
-      splashData(season).then((d) => {
-        this.data.set(season, d);
+      this.data.set(key, 'loading');
+      splashData(season, this.tab).then((d) => {
+        this.data.set(key, d);
         this.cdr.markForCheck();
       });
       return null;
@@ -129,7 +130,7 @@ export class CardSplash implements OnDestroy {
       awards: c.awards,
       outcome: data?.outcomes[key] ?? null,
       number: data?.numbers[id] ?? null,
-      bestGame: data?.bestGames[id] ?? null,
+      bestGame: data?.bestGames[id] ?? (team ? data?.outcomes[key]?.gameBall : null) ?? null,
       milestone: data?.milestones[id] ?? null,
       // (his line on the tape: a fighter's record, else his card's first two headline stats)
       tape: fighter ? `${raw['wins'] ?? 0}–${raw['losses'] ?? 0} · ${raw['finishes'] ?? 0} finishes` : stats.slice(0, 2).map((s) => `${s.display} ${s.label}`).join(' · '),
@@ -137,7 +138,7 @@ export class CardSplash implements OnDestroy {
       roster: depth ? rosterOf(depth, this.tab, data?.numbers ?? {}) : undefined,
       division: fighter ? SPORT.positionNames[this.tab] : undefined,
       record: fighter ? `${raw['wins'] ?? 0}–${raw['losses'] ?? 0}` : undefined,
-      helmet: HELMETS[key],
+      helmet: helmetFor(key, c.season),
     };
   }
 

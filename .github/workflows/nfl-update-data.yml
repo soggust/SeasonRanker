@@ -71,6 +71,11 @@ jobs:
       - name: Pull game results from ESPN
         run: npm run update-data
 
+      # The Overview's splash: how each team's season ended, each player's number and best game
+      # (apps/nfl/scripts/build-splash.mjs; a failed run keeps yesterday's files, and says so on the run's page)
+      - name: Build the splash's data
+        run: node apps/nfl/scripts/build-splash.mjs || echo "::warning::Splash data not built (this step's log says why)"
+
       # The card's Roster tab: each team's depth chart, who's played and the injury report (nflverse, ESPN)
       # (a failed season keeps yesterday's files, and says so on the run's page)
       - name: Build depth charts

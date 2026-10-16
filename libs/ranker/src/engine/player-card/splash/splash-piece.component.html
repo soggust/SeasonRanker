@@ -241,15 +241,15 @@
       <defs>
         <clipPath id="sp-shell-clip"><path [attr.d]="shell" /></clipPath>
         <linearGradient id="sp-helmet-fade" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
-          <stop offset="0" stop-color="#0b0b0b" />
-          <stop offset="0.45" stop-color="#101418" />
-          <stop offset="1" style="stop-color: var(--c1)" />
+          <stop offset="0" [attr.stop-color]="hm().fadeColors?.[0] ?? '#0b0b0b'" />
+          <stop offset="0.45" [attr.stop-color]="hm().fadeColors?.[0] ?? '#101418'" />
+          <stop offset="1" [style.stop-color]="hm().fadeColors?.[1] ?? 'var(--c1)'" />
         </linearGradient>
       </defs>
       <ellipse cx="84" cy="118" rx="62" ry="4.5" fill="#000" opacity="0.5" />
       <path d="M131 56 L114 61 C107 70 107 80 113 88 L121 104 L140 104 L142 60 Z" fill="#121212" />
       <path d="M118 66 C114 74 114 82 118 88" fill="none" stroke="#2e2e2e" stroke-width="5" stroke-linecap="round" />
-      <path [attr.d]="shell" [attr.fill]="hm().fade ? 'url(#sp-helmet-fade)' : 'url(#sp-team)'" />
+      <path [attr.d]="shell" [attr.fill]="hm().fade ? 'url(#sp-helmet-fade)' : hm().shell ?? 'url(#sp-team)'" />
       <g clip-path="url(#sp-shell-clip)" stroke-linecap="round" stroke-linejoin="round">
         @for (s of stripes(); track $index) {
           <path d="M30 40 C52 10 104 6 132 34" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w" [attr.transform]="'translate(0 ' + s.dy + ')'" />

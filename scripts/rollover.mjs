@@ -142,10 +142,18 @@ async function main() {
   // charts, field maps and staffs, the NBA's and MLB's staffs, the NHL's game logs, the NHL's and MLB's heat maps;
   // a heat map's failure (a source down, MLB's Statcast days not all in) only warns: the rollover goes on (MLB's
   // nightly run builds a finished season's heat maps that aren't there yet; the NHL's, by hand))
-  for (const builder of ["build-depth.mjs", "build-field-maps.mjs", "build-coaches.mjs", "backfill-game-logs.mjs", "build-heat-maps.mjs"]) {
+  // (and the Overview splash's files, build-splash.mjs, after the game logs it reads; its failure only warns too:
+  // a past season's again by hand, node apps/<sport>/scripts/build-splash.mjs <season>)
+  for (const builder of ["build-depth.mjs", "build-field-maps.mjs", "build-coaches.mjs", "backfill-game-logs.mjs", "build-heat-maps.mjs", "build-splash.mjs"]) {
     const file = path.join(ROOT, "apps", sport, "scripts", builder);
     if (!existsSync(file)) continue;
-    if (builder !== "build-heat-maps.mjs") run([file, String(current)]);
+    if (builder === "build-splash.mjs")
+      try {
+        run([file, String(current)]);
+      } catch (err) {
+        console.warn(`  splash data for ${current} not built: ${err.message}`);
+      }
+    else if (builder !== "build-heat-maps.mjs") run([file, String(current)]);
     else
       try {
         run([file, String(current)]);
