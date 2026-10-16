@@ -94,7 +94,7 @@ export class SplashGallery {
           stage: 'locker',
           items: [],
           lead: 0,
-          mark: team.replace(/^.*\s/, ''),
+          mark: abbr,
           stalls: kits.map((kit, i) => ({ jersey: { name: abbr, num: String(12 + i * 33), kit }, plate: kit.toUpperCase(), star: i === 0, tip: `${team} ${kit}` })),
           label: `${team} ${season}`,
         };
@@ -129,7 +129,7 @@ export class SplashGallery {
     const team = Object.keys(TEAMS)[1] ?? Object.keys(TEAMS)[0] ?? 'Team';
     const season = new Date().getFullYear();
     const scene = buildScene({
-      sport: SPORT.id, tab: 'QB', id: 'x', season, seasonLabel: String(season), current: true, team: false, name: 'Pat Player', teamName: team,
+      sport: SPORT.id, tab: 'QB', id: 'x', season, seasonLabel: String(season), current: true, team: false, name: 'Pat Player', teamName: TEAMS[team]?.[0] ?? team,
       abbr: TEAMS[team]?.[0] ?? team, awards: [], number: '15', bestGame: { title: '412 YDS', line: '5 TD vs KC', tip: 'Week 9 vs KC' },
       milestone: { big: '40', small: 'HOME RUNS', tip: '40 home runs' }, tape: '3,100 yds · 24 TD', shoe: SPORT.id === 'nba' ? { line: 'lebron', name: 'the LeBron line' } : null,
       division: SPORT.id === 'mma' ? 'Lightweight' : undefined, record: SPORT.id === 'mma' ? '24–3' : undefined, helmet: helmetFor(team, season),
@@ -141,7 +141,7 @@ export class SplashGallery {
   private office(): Section {
     const team = Object.keys(TEAMS)[2] ?? Object.keys(TEAMS)[0] ?? 'Team';
     const season = new Date().getFullYear();
-    const base = { sport: SPORT.id, tab: SPORT.coachTab ?? 'HC', id: 'x', team: false, coach: true, name: 'Pat Coach', teamName: team, abbr: TEAMS[team]?.[0] ?? team };
+    const base = { sport: SPORT.id, tab: SPORT.coachTab ?? 'HC', id: 'x', team: false, coach: true, name: 'Pat Coach', teamName: TEAMS[team]?.[0] ?? team, abbr: TEAMS[team]?.[0] ?? team };
     const now = buildScene({ ...base, season, seasonLabel: String(season), current: true, awards: [], record: '5-1' });
     const title = SPORT.id === 'nhl' ? 'cup' : SPORT.id === 'nba' ? 'champ' : 'sb';
     const then = buildScene({
