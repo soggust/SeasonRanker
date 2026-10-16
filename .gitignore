@@ -59,3 +59,4 @@ ui-debug.log
 # (a file being written whole (libs/ranker/scripts/model/sources.mjs writeAtomic): a run killed mid-write never
 # commits its temporary file)
 *.tmp
+test-run.log
