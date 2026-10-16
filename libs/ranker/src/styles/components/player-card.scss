@@ -467,6 +467,13 @@ $ai-narrow: v.bp(ai-narrow);
       color: var(--scoreboard-led);
     }
   }
+
+  // (Share's icon a size down from the others: the card's and the game view's)
+  .card-share .mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
 }
 
 // ---------------------------------------------------------------------------
