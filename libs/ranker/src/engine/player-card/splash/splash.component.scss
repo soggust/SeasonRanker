@@ -1177,21 +1177,8 @@ card-splash {
     animation: sp-flicker 0.5s steps(1) 0.1s backwards;
   }
 
-  .sp-col.star .sp-art {
-    mask-image: none;
-
-    &::after {
-      animation: sp-glint 1.4s ease-in-out 0.9s 1 backwards;
-      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.55) 50%, transparent 60%);
-      content: "";
-      inset: 0;
-      mix-blend-mode: overlay;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      transform: translateX(-120%);
-    }
-  }
+  // (the glint that crossed the centerpiece is gone: a band swept over the whole box, not the trophy, and read
+  // as a broken sheen on the wall behind it; the lamps' warm-up is the one motion)
 }
 
 @keyframes sp-warm {
@@ -1917,4 +1904,423 @@ card-splash {
 .sp-col[data-tip],
 .sp-art[data-tip] {
   cursor: help;
+}
+
+// ===========================================================================================================
+// Round 2 (the art pass): the jerseys' cuts and letterforms, a player's gear in his own stall, the office.
+// ===========================================================================================================
+
+// ---- the numbers' letterforms (uniform-eras.ts numberFont / nameFont): the athletic block (Oswald), a rounded
+// sans (Nunito, the site's), a serifed block (Cinzel), a varsity block with its second outline
+.sp-jersey.nf-rounded .sp-j-num,
+.sp-jersey.nf-rounded .sp-j-tv,
+.sp-jersey.nf-rounded .sp-j-front {
+  font-family: "Nunito", "Arial Rounded MT Bold", sans-serif;
+  font-weight: 900;
+}
+
+.sp-jersey.nf-rounded .sp-j-num {
+  font-size: 54px;
+}
+
+.sp-jersey.nf-serif .sp-j-num,
+.sp-jersey.nf-serif .sp-j-tv,
+.sp-jersey.nf-serif .sp-j-front {
+  font-family: var(--f-engrave);
+  font-weight: 700;
+}
+
+.sp-jersey.nf-serif .sp-j-num {
+  font-size: 55px;
+}
+
+.sp-jersey.nf-varsity .sp-j-num {
+  stroke-width: 2.6px;
+
+  &.outer {
+    stroke-width: 8px;
+  }
+}
+
+.sp-jersey.nm-rounded .sp-j-name,
+.sp-jersey.nm-rounded .sp-j-mark {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+}
+
+.sp-jersey.nm-serif .sp-j-name,
+.sp-jersey.nm-serif .sp-j-mark {
+  font-family: var(--f-engrave);
+}
+
+// (the TV numbers on a football jersey's shoulders; a baseball jersey's wordmark and its front number)
+.sp-j-tv {
+  font-family: var(--f-block);
+  font-size: 11px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke-linejoin: round;
+  stroke-width: 1.4px;
+  text-anchor: middle;
+}
+
+.sp-j-mark {
+  font-family: var(--f-block);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  paint-order: stroke;
+  stroke-linejoin: round;
+  stroke-width: 1.6px;
+  text-anchor: middle;
+}
+
+.sp-j-front {
+  font-family: var(--f-block);
+  font-size: 22px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke-linejoin: round;
+  stroke-width: 1.6px;
+  text-anchor: middle;
+}
+
+// ---- a player's own stall: a top shelf for his helmet, cap, glove or puck; the hook and his jersey under it;
+// his bats or stick leaning in the corner; his shoes and the game ball on the floor
+.sp-lockers .sp-stall.mine {
+  flex-basis: 250px !important;
+
+  .sp-stall-frame {
+    overflow: visible;
+    padding-top: 22px;
+  }
+
+  // (the top shelf: a plank across the stall near the top, what sits on it standing on the plank)
+  .sp-top-shelf {
+    align-items: flex-end;
+    display: flex;
+    gap: calc(10px * var(--s));
+    height: calc(64px * var(--s));
+    justify-content: center;
+    left: 4%;
+    padding-bottom: calc(6px * var(--s));
+    position: absolute;
+    right: 4%;
+    top: calc(26px * var(--s));
+    z-index: 3;
+
+    &::after {
+      background:
+        linear-gradient(180deg, rgba(255, 235, 200, 0.35), transparent 40%),
+        linear-gradient(180deg, #6b4a2e, #3a2614);
+      border-radius: 1px;
+      bottom: 0;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+      content: "";
+      height: calc(6px * var(--s));
+      left: -2%;
+      position: absolute;
+      right: -2%;
+    }
+
+    .sp-art::before {
+      bottom: -3px;
+      height: 8px;
+    }
+  }
+
+  &.has-shelf .sp-hanging {
+    margin-top: calc(84px * var(--s)) !important;
+  }
+
+  // (under the top shelf the jersey hangs smaller, its hem clear of the ledge; the tape goes under the plank)
+  &.has-shelf .sp-art > svg.sp-jersey {
+    --jh: 128px;
+  }
+
+  &.has-shelf .sp-tape {
+    top: calc(92px * var(--s));
+  }
+
+  .sp-corner {
+    bottom: calc(10px * var(--s));
+    position: absolute;
+    right: calc(10px * var(--s));
+    transform: rotate(7deg);
+    transform-origin: 50% 100%;
+    z-index: 1;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // (the floor: his things stand to the sides, never in front of his number)
+  .sp-floor {
+    align-items: flex-end;
+    bottom: calc(8px * var(--s));
+    display: flex;
+    gap: calc(8px * var(--s));
+    justify-content: space-between;
+    left: 5%;
+    position: absolute;
+    right: 5%;
+    z-index: 4;
+  }
+
+  .sp-hanging {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// ---- the office: the whiteboard on the wall, the framed logo over the credenza (a low bookcase, his honors on
+// it), the desk in front with its nameplate; two lamps, one over each
+.mood-office {
+  --warm: 255, 244, 225;
+  --beam: 0.26;
+}
+
+.mood-office .sp-wall {
+  background:
+    radial-gradient(ellipse 75% 95% at 50% -10%, color-mix(in srgb, var(--team-hi) 40%, transparent), transparent 72%),
+    linear-gradient(180deg, #2b2622, #1a1612 70%, #110e0b);
+}
+
+.sp-office {
+  display: block;
+  padding: 0;
+
+  .sp-lamp,
+  .sp-beam {
+    &.left {
+      left: 25%;
+    }
+
+    &.right {
+      left: 74%;
+    }
+  }
+
+  .sp-beam {
+    width: 260px;
+  }
+
+  // (the whiteboard, hung on the left wall: an aluminum frame, the play on it)
+  .sp-board {
+    left: 6%;
+    position: absolute;
+    top: calc(22px * var(--s) + 14px);
+    z-index: 2;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .sp-credenza {
+    bottom: var(--shelf);
+    position: absolute;
+    right: 6%;
+    width: calc(250px * var(--s));
+    z-index: 2;
+  }
+
+  .sp-frame {
+    left: 50%;
+    position: absolute;
+    top: calc(-176px * var(--s));
+    transform: translateX(-50%);
+    z-index: 1;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // (his honors stand on the credenza's top, spaced)
+  .sp-honors {
+    align-items: flex-end;
+    bottom: calc(60px * var(--s));
+    display: flex;
+    gap: calc(14px * var(--s));
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 3;
+  }
+
+  // (the credenza: a walnut top, two doors, a row of books behind glass)
+  .sp-credenza-body {
+    background:
+      linear-gradient(180deg, rgba(255, 235, 200, 0.2), transparent 10%),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 7px),
+      linear-gradient(180deg, #5c3d24, #3a2514);
+    border-radius: 2px;
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 230, 190, 0.25);
+    height: calc(62px * var(--s));
+    position: relative;
+
+    // (two doors with brass pulls; the books on the shelf above them)
+    i {
+      background:
+        linear-gradient(90deg, #8a2b1c 0 9%, #1f3a6e 9% 16%, #d9a520 16% 20%, #2f5a2e 20% 30%, #1b1b1b 30% 36%, #a33b2b 36% 47%, #345d8a 47% 52%, #e0c068 52% 58%, #4a3b7a 58% 69%, #2d2d2d 69% 73%, #8a4b1c 73% 84%, #1f3a6e 84% 90%, #b7442c 90% 100%),
+        #0e0a07;
+      border-bottom: 2px solid #2a1a0d;
+      display: block;
+      height: calc(22px * var(--s));
+      left: 5%;
+      position: absolute;
+      right: 5%;
+      top: calc(8px * var(--s));
+
+      &::after {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.22));
+        content: "";
+        inset: 0;
+        position: absolute;
+      }
+    }
+
+    i + i {
+      background: linear-gradient(90deg, #3a2514 0 49%, #1a0f08 49% 51%, #3a2514 51%);
+      border: 0;
+      bottom: calc(4px * var(--s));
+      height: calc(24px * var(--s));
+      top: auto;
+
+      &::after {
+        background:
+          radial-gradient(circle at 45% 50%, #d9a520 0 2px, transparent 2.5px),
+          radial-gradient(circle at 55% 50%, #d9a520 0 2px, transparent 2.5px);
+        inset: 0;
+      }
+    }
+  }
+
+  // (the desk, in front of everything, its front edge at the bottom of the stage)
+  .sp-desk {
+    bottom: 0;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    width: calc(560px * var(--s));
+    z-index: 5;
+  }
+
+  .sp-desk-top {
+    background:
+      linear-gradient(180deg, rgba(255, 240, 210, 0.25), transparent 30%),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 9px),
+      linear-gradient(180deg, #7a5436, #5a3b22);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.5);
+    height: calc(26px * var(--s));
+    position: relative;
+  }
+
+  .sp-desk-front {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 25%),
+      linear-gradient(180deg, #4a2f1a, #2c1b0e);
+    display: flex;
+    height: calc(44px * var(--s));
+    justify-content: center;
+    position: relative;
+  }
+
+  .sp-desk-plate {
+    align-self: flex-start;
+    background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
+    border-radius: 2px;
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    color: #2b1a05;
+    font-family: var(--f-block);
+    font-size: calc(13px * var(--s));
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    margin-top: calc(-13px * var(--s));
+    padding: 2px 16px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  // (on the desk: a mug in the team's color, a binder, a pen)
+  .sp-mug {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 85%, #fff), var(--c1) 70%, color-mix(in srgb, var(--c1) 60%, #000));
+    border-radius: 2px 2px 4px 4px;
+    bottom: calc(14px * var(--s));
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
+    height: calc(22px * var(--s));
+    position: absolute;
+    right: 14%;
+    width: calc(18px * var(--s));
+
+    &::after {
+      border: 3px solid var(--c1);
+      border-left: 0;
+      border-radius: 0 6px 6px 0;
+      content: "";
+      height: 50%;
+      position: absolute;
+      right: -6px;
+      top: 20%;
+      width: 6px;
+    }
+  }
+
+  .sp-binder {
+    background: linear-gradient(90deg, #111 0 8%, color-mix(in srgb, var(--c2) 70%, #000) 8% 12%, #1c1c1c 12%);
+    border-radius: 2px;
+    bottom: calc(10px * var(--s));
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.55);
+    height: calc(10px * var(--s));
+    left: 14%;
+    position: absolute;
+    transform: skewX(-30deg);
+    width: calc(64px * var(--s));
+  }
+
+  .sp-pen {
+    background: linear-gradient(90deg, #ccc 0 10%, #1a1a1a 10%);
+    border-radius: 2px;
+    bottom: calc(8px * var(--s));
+    height: 3px;
+    left: 30%;
+    position: absolute;
+    transform: rotate(-12deg);
+    width: calc(40px * var(--s));
+  }
+}
+
+@media (max-width: 640px) {
+  .sp-lockers .sp-stall.mine {
+    flex-basis: 170px !important;
+  }
+
+  .sp-office {
+    .sp-board {
+      --h: 100px !important;
+      left: 3%;
+    }
+
+    .sp-credenza {
+      right: 3%;
+      width: calc(230px * var(--s));
+    }
+
+    .sp-desk {
+      width: calc(520px * var(--s));
+    }
+
+    .sp-lamp.right,
+    .sp-beam.right {
+      left: 76%;
+    }
+  }
 }

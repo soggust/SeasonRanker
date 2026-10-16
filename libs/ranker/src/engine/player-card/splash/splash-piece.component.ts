@@ -139,4 +139,9 @@ export class SplashPiece {
   line(i: number): string {
     return this.it.lines?.[i] ?? '';
   }
+
+  // (a line that is a year: "2024", "2023–24" reads as its first year; 0 when it isn't one)
+  year(i: number): number {
+    return Number((this.line(i).match(/\d{4}/) ?? [0])[0]);
+  }
 }

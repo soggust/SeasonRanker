@@ -31,7 +31,9 @@
   }
 </nav>
 
-@if (view === 'bets') {
+@if (gallery) {
+  <splash-gallery-host></splash-gallery-host>
+} @else if (view === 'bets') {
   <bets-page></bets-page>
 } @else if (onSheet) {
   <!-- The account pages (and Privacy, Data deletion): the app's own pewter backdrop and one scoreboard sheet

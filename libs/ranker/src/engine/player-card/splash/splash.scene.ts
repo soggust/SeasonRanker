@@ -1,11 +1,27 @@
 // A card's splash, as data: from the card's season (its awards, how it ended, still being played or not) to its
 // stage and props. No Angular here (the tests load it as it is); splash.component.ts gathers the input.
 //
-// Two stages, the same in every scene; only the props change. A season still being played is the LOCKER: a
-// team's key players' lockers, each with his jersey, or a player's own locker beside his gear. A finished one
-// is the SHELF: up to three props, the most meaningful in the middle, each at its real height (none taller than
-// the one in the middle).
-import { PROPS, Tier, centered, isPlaque, pickProps } from './splash.props';
+// Three stages, the same in every scene; only the props change. A season still being played is the LOCKER: a
+// team's key players' lockers, each with his jersey, or a player's own stall with his jersey and his gear in it
+// (the helmet, cap, glove or puck on its top shelf, the bats or stick leaning in the corner, the shoes and the
+// game ball on the floor: PROPS[..].stall). A finished one is the SHELF: up to three props, the most meaningful
+// in the middle, each at its real height (none taller than the one in the middle). A head coach's card, any
+// season, is the OFFICE: his desk and nameplate, the whiteboard behind it (his record on it), the team's framed
+// logo, the bookshelf; a finished season's honors (up to three) standing on the credenza.
+//
+// ---- The office's contract (SceneInput, a coach's card: coach: true)
+//   name         the coach's, on the desk's nameplate
+//   teamName     the framed logo's team (the logo itself is the card's)
+//   record       his record that season ("10-7", "41-31-10": the card's wins, losses and ties), on the
+//                whiteboard; a season being played shows it so far
+//   seasonLabel  on the whiteboard's corner
+//   awards       his: 'coy' (Coach of the Year, the Jack Adams) becomes the coach-of-year plaque; a title ('sb',
+//                'cup', 'champ') the title trophy and its ring box; 'conf' the conference trophy
+//   outcome      his team's (outcomes.json by the team's logo name): a champion's title when the awards don't
+//                say so, the division banner, the playoff plaque, else the season plaque
+//   current      a season being played: the room alone (no honors yet)
+// Output: Scene { stage: 'office', items: his honors (lead first), office: { plate, team, record, board, frame } }
+import { PROPS, Tier, centered, isPlaque, pickProps, stallPlace } from './splash.props';
 import { HelmetLook } from './splash.uniforms';
 
 // ---- What a season's outcome file says about a team (outcomes.json, a season's folder: by the team's logo name)
@@ -37,11 +53,15 @@ export interface Piece {
   helmet?: HelmetLook;
 }
 
-// A stall in the locker room: a jersey hung in it (a team's player, or the card's own player), or a prop standing
-// in it; its brass plate, its tape
+// A stall in the locker room: a jersey hung in it (a team's player, or the card's own player), or a prop hung on
+// its hook (a fighter's belt); a player's own stall holds his gear too: on its top shelf, on its floor, leaning
+// in its corner; its brass plate, its tape
 export interface Stall {
   jersey?: { name: string; num: string; kit: 'home' | 'away' | 'alt' };
   item?: Piece;
+  shelf?: Piece[];
+  floor?: Piece[];
+  corner?: Piece;
   plate?: string;
   num?: string;
   tape?: string;
@@ -51,11 +71,22 @@ export interface Stall {
   tip: string;
 }
 
+// A coach's office: the desk's nameplate, the whiteboard (his record), the framed logo
+export interface Office {
+  plate: string;
+  team: string;
+  record: string;
+  board: Piece;
+  frame: Piece;
+}
+
 export interface Scene {
-  stage: 'shelf' | 'locker';
-  items: Piece[]; // the shelf's props, in their places (the lead in the middle)
+  stage: 'shelf' | 'locker' | 'office';
+  items: Piece[]; // the shelf's props, in their places (the lead in the middle); the office's honors
   lead: number;
   stalls: Stall[];
+  office?: Office;
+  mark?: string; // the team's short name: a baseball jersey's wordmark across the chest
   label: string; // the splash's words for a screen reader
 }
 
@@ -73,6 +104,7 @@ export interface SceneInput {
   seasonLabel: string; // "2023", "2023–24"
   current: boolean;
   team: boolean;
+  coach?: boolean; // a head coach's card: the office
   name: string;
   teamName: string;
   abbr: string;
@@ -95,6 +127,8 @@ const FILLERS: Record<string, string[]> = { nfl: ['nfl-helmet'], nhl: ['puck'], 
 // How tall the tallest prop stands (px, desktop): on the shelf, and inside a stall; and the most a real inch gets
 const SHELF_MAX = 222;
 const STALL_MAX = 150;
+// (a coach's honors stand on the credenza, under the framed logo: a low shelf)
+const OFFICE_MAX = 120;
 const PX_PER_IN = 11;
 // The shelf's hero (its lead, in the middle) is always its tallest prop: one beside it stands at most this much of
 // the hero's height, whatever its own (a division banner, a golf bag, a Stanley Cup beside a Selke), and the scale
@@ -171,6 +205,9 @@ function fieldsOf(s: SceneInput): Record<string, string | undefined> {
   };
   const [a1, a1sub] = plaque(0);
   const [a2, a2sub] = plaque(1);
+  // (the coaches' award, by the name the sport gives it: "Coach of the Year", "Jack Adams Award")
+  const coy = s.awards.find((a) => a.id === 'coy');
+  const coyName = coy ? coy.title.replace(/^\S+\s+/, '').replace(/\s*\(.*$/, '') : undefined;
   const lg = o?.lastGame;
   const lostRound = lg && !lg.won ? lg.round : undefined;
   const match = lg ? `${s.teamName.split(' ').pop()} ${vsAt(lg.home, lg.neutral)} ${lg.opp}` : undefined;
@@ -189,6 +226,9 @@ function fieldsOf(s: SceneInput): Record<string, string | undefined> {
     conf: confShort,
     confShort,
     confName: /West/.test(confText) ? 'Western' : /East/.test(confText) ? 'Eastern' : confShort,
+    // (the NBA's conference trophies by name: the Bob Cousy and Oscar Robertson trophies from 2022)
+    confTrophy: s.sport === 'nba' ? (s.season >= 2022 ? (/West/.test(confText) ? 'the Oscar Robertson Trophy' : 'the Bob Cousy Trophy') : 'the conference trophy') : undefined,
+    coyName,
     league,
     final,
     confFinal: undefined,
@@ -242,6 +282,7 @@ export function buildScene(s: SceneInput): Scene | null {
     season: s.season,
     current: s.current,
     team: s.team,
+    coach: s.coach,
     tier: o?.result,
     awards: awardIds,
     conf: confProp(s, f),
@@ -253,22 +294,38 @@ export function buildScene(s: SceneInput): Scene | null {
     gameBall: !!s.bestGame,
     plaques: awardIds.some((a) => isPlaque(s.sport, a)),
   });
-  const locker = s.current || s.sport === 'mma';
+  const locker = !s.coach && (s.current || s.sport === 'mma');
   // (a prop whose words the data doesn't have yet is left out: a hand-set list then filled from the rules)
   const ok = (id: string) => !!PROPS[id] && (!PROPS[id].needs || !!f[PROPS[id].needs!]);
   const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => PROPS[id]);
   const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO) : d.inches));
-  const scale = Math.min(PX_PER_IN, (locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
-  const pieces: Piece[] = defs.map((d, i) => ({
+  const scale = Math.min(PX_PER_IN, (s.coach ? OFFICE_MAX : locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
+  const piece = (d: (typeof defs)[number], h: number): Piece => ({
     t: d.piece,
     lines: d.lines?.map((l) => fill(l, f)),
     tip: fill(d.tip, f),
-    h: Math.round(inches[i] * scale),
+    h,
     wide: d.wide,
     line: s.shoe?.line,
     num: s.number ?? undefined,
     helmet: s.helmet,
-  }));
+  });
+  const pieces: Piece[] = defs.map((d, i) => piece(d, Math.round(inches[i] * scale)));
+
+  if (s.coach) {
+    // ---- the office
+    const record = o?.record ?? s.record ?? '';
+    const board = piece(PROPS['whiteboard'], 150);
+    const frame = piece(PROPS['team-frame'], 70);
+    return {
+      stage: 'office',
+      items: pieces,
+      lead: 0,
+      stalls: [],
+      office: { plate: s.name, team: s.teamName, record, board, frame },
+      label: `${s.name}'s office, ${s.seasonLabel}: ${[record && `${record} on the whiteboard`, ...pieces.map((p) => p.tip)].filter(Boolean).join('; ')}`,
+    };
+  }
 
   if (!locker) {
     if (!pieces.length) return null;
@@ -288,22 +345,32 @@ export function buildScene(s: SceneInput): Scene | null {
     const leadAt = order.indexOf(roster[0]);
     stalls = order.map((p, i) => ({
       jersey: { name: last(p.name), num: p.num ?? '', kit: i === leadAt ? 'home' : (i - leadAt) % 3 === 1 || (leadAt - i) % 3 === 2 ? 'away' : 'home' },
-      plate: p.pos,
+      // (a baseball jersey is drawn from the front, its wordmark on the chest: his name goes on the plate)
+      plate: s.sport === 'mlb' ? `${p.pos} · ${last(p.name)}` : p.pos,
       star: i === leadAt,
       wide: Math.abs(i - leadAt) >= 3,
       tip: [p.name, p.pos, p.num ? `No. ${p.num}` : ''].filter(Boolean).join(' · '),
     }));
   } else {
-    // (his stall: his jersey; a fighter's holds the belt, or his gloves; his other things either side)
+    // (his own stall: his jersey on the hook, or a fighter's belt or gloves; his gear where each belongs, the
+    // top shelf, the floor, the corner, at the stall's sizes: props.ts stall)
     const fighter = s.sport === 'mma';
     const mine: Stall = fighter
       ? { item: pieces[0], plate: last(s.name), tape: s.tape, mine: true, tip: pieces[0]?.tip ?? s.name }
       : { jersey: { name: last(s.name), num: s.number ?? '', kit: 'home' }, plate: last(s.name), num: s.number ?? undefined, tape: s.tape, mine: true, tip: s.name };
-    const rest = (fighter ? pieces.slice(1) : pieces).map((it) => ({ item: it, tip: it.tip ?? '' }) as Stall);
-    stalls = [rest[0], mine, ...rest.slice(1)].filter(Boolean);
+    const gear = ids.filter(ok).filter((id) => !(fighter && PROPS[id].piece === pieces[0]?.t));
+    for (const id of gear) {
+      const at = stallPlace(id);
+      const it = piece(PROPS[id], at.h);
+      if (at.place === 'shelf') (mine.shelf ??= []).push(it);
+      else if (at.place === 'corner') mine.corner ??= it;
+      else if (at.place === 'hook' && !mine.jersey && !mine.item) mine.item = it;
+      else (mine.floor ??= []).push(it);
+    }
+    stalls = [mine];
   }
   const label = s.team
     ? `${s.teamName} locker room, ${s.seasonLabel}: ${stalls.map((st) => st.tip).join('; ')}`
     : `${s.name}'s locker, ${s.seasonLabel}: ${stalls.map((st) => st.tip).join('; ')}`;
-  return { stage: 'locker', items: [], lead: 0, stalls, label };
+  return { stage: 'locker', items: [], lead: 0, stalls, mark: s.teamName.split(' ').pop(), label };
 }

@@ -17,11 +17,48 @@ export interface KitColors {
   body: string; // the jersey
   num: string; // the numbers' fill
   outline: string; // the numbers' outline (the fill again when they have none)
-  name: string; // the name over the numbers (or, MLB and NBA, the wordmark across the chest)
+  name: string; // the name over the numbers (or, MLB, the wordmark across the chest)
   collar: string;
   sleeve: 'stripes' | 'none'; // stripes round the sleeves (or the NBA's armholes, MLB's sleeve piping)
   stripe?: string; // their color (else the outline's)
   stripe2?: string; // a second, inner stripe color
+
+  // ---- the cut's details (all optional; a kit without them draws as before). Each sport's jersey is drawn
+  // in its own cut (the splash: football, basketball tank, hockey sweater, baseball button-front), and these
+  // fill in what that cut can show. Colors are hexes; a field left out draws nothing (or the plain default).
+  //
+  //   bands       the sleeve stripes as an explicit list, top to bottom (a hockey sweater's 1-3 arm bands, a
+  //               football sleeve's stripe set): overrides stripe/stripe2 when given ['#fff', '#c00', '#fff']
+  //   hem         hem stripes, top to bottom (a hockey sweater's; a basketball tank's hem trim is one band)
+  //   yoke        a shoulder yoke in another color (hockey's; football's shoulder/sleeve-cap color when the
+  //               sleeves are a solid block rather than striped: Broncos, Falcons)
+  //   cap         football: the sleeve ends in a solid color block (a sleeve cap) instead of stripes
+  //   panel       a side panel down the body in another color (basketball tanks, modern football cuts)
+  //   piping      thin piping along the edges: a tank's armholes and neck, a baseball placket and collar, a
+  //               panel's edge
+  //   pinstripe   pinstripes in this color over the body (baseball; a few basketball tanks)
+  //   placket     baseball: 'buttons' (the default button-front), 'pullover' (a V-neck pullover, no buttons),
+  //               'vest' (a sleeveless vest over an undershirt in `under`)
+  //   under       baseball vest: the undershirt's color (the sleeves showing under the vest)
+  //   tv          football: TV numbers on the shoulders (default true); false for a kit without them
+  //   collarStyle 'round' (the default crew), 'v' (a V-neck), 'lace' (a hockey lace-up collar),
+  //               'stripe' (a contrasting collar band, football's old style)
+  //   numberFont  the numbers' letterforms: 'block' (the default athletic block), 'rounded' (a rounded
+  //               sans), 'serif' (a serifed block), 'varsity' (a heavy block with a second outline)
+  //   nameFont    the nameplate's letterforms: as numberFont (default 'block')
+  bands?: string[];
+  hem?: string[];
+  yoke?: string;
+  cap?: string;
+  panel?: string;
+  piping?: string;
+  pinstripe?: string;
+  placket?: 'buttons' | 'pullover' | 'vest';
+  under?: string;
+  tv?: boolean;
+  collarStyle?: 'round' | 'v' | 'lace' | 'stripe';
+  numberFont?: 'block' | 'rounded' | 'serif' | 'varsity';
+  nameFont?: 'block' | 'rounded' | 'serif' | 'varsity';
 }
 
 export interface UniformEra {

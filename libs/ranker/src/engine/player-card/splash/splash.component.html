@@ -78,8 +78,12 @@
           <stop offset="0" stop-color="#7a2a16" />
           <stop offset="1" stop-color="#3a1007" />
         </linearGradient>
+        <!-- wood grain: long wavering lines, a knot now and then -->
         <pattern id="sp-grain" width="64" height="9" patternUnits="userSpaceOnUse">
           <path d="M0 3 Q16 1 32 3.5 T64 3 M0 7 Q20 8.5 40 6.5 T64 7.2" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" />
+        </pattern>
+        <pattern id="sp-grain-v" width="9" height="64" patternUnits="userSpaceOnUse">
+          <path d="M3 0 Q1 16 3.5 32 T3 64 M7 0 Q8.5 20 6.5 40 T7.2 64" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.7" />
         </pattern>
         <!-- cloth: folds across, the light from above -->
         <linearGradient id="sp-cloth" x1="0" x2="1">
@@ -97,6 +101,20 @@
           <stop offset="0" stop-color="#fff" stop-opacity="0.24" />
           <stop offset="0.4" stop-color="#fff" stop-opacity="0.02" />
           <stop offset="1" stop-color="#000" stop-opacity="0.42" />
+        </linearGradient>
+        <!-- (a hung jersey's folds: the cloth gathers under the hanger's ends and falls in soft vertical waves) -->
+        <linearGradient id="sp-folds" x1="0" x2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.22" />
+          <stop offset="0.08" stop-color="#fff" stop-opacity="0.06" />
+          <stop offset="0.2" stop-color="#000" stop-opacity="0.1" />
+          <stop offset="0.28" stop-color="#fff" stop-opacity="0.08" />
+          <stop offset="0.4" stop-color="#000" stop-opacity="0.05" />
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0.09" />
+          <stop offset="0.62" stop-color="#000" stop-opacity="0.06" />
+          <stop offset="0.72" stop-color="#fff" stop-opacity="0.07" />
+          <stop offset="0.84" stop-color="#000" stop-opacity="0.1" />
+          <stop offset="0.92" stop-color="#fff" stop-opacity="0.05" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.24" />
         </linearGradient>
         <linearGradient id="sp-ribbon" x1="0" x2="1">
           <stop offset="0" stop-color="#000" stop-opacity="0.35" />
@@ -122,8 +140,9 @@
           <stop offset="0.5" stop-color="#fff" stop-opacity="0" />
           <stop offset="1" stop-color="#000" stop-opacity="0.5" />
         </linearGradient>
-        <pattern id="sp-mesh" width="1.6" height="1.6" patternUnits="userSpaceOnUse">
-          <circle cx="0.8" cy="0.8" r="0.3" fill="#000" fill-opacity="0.1" />
+        <!-- (the jersey's mesh: a faint, fine weave, never a visible dot screen) -->
+        <pattern id="sp-mesh" width="2" height="2" patternUnits="userSpaceOnUse">
+          <path d="M0 1 h2 M1 0 v2" stroke="#000" stroke-opacity="0.045" stroke-width="0.4" />
         </pattern>
         <pattern id="sp-pinstripe" width="9" height="10" patternUnits="userSpaceOnUse">
           <rect x="4" width="0.9" height="10" fill="#fff" fill-opacity="0.6" />
@@ -152,6 +171,11 @@
         <pattern id="sp-tape" width="9" height="5" patternUnits="userSpaceOnUse">
           <rect width="9" height="5" fill="#141414" />
           <path d="M0 4 L9 0" stroke="#3a3a3a" stroke-width="1.2" />
+        </pattern>
+        <!-- (white athletic tape, its weave) -->
+        <pattern id="sp-tape-white" width="3" height="3" patternUnits="userSpaceOnUse">
+          <rect width="3" height="3" fill="#ece7db" />
+          <path d="M0 1.5 h3" stroke="#d5cfbf" stroke-width="0.6" />
         </pattern>
         <radialGradient id="sp-leather" cx="0.4" cy="0.32" r="0.8">
           <stop offset="0" stop-color="#b9703a" />
@@ -238,6 +262,15 @@
           <stop offset="0.86" stop-color="#ffcf98" stop-opacity="0.14" />
           <stop offset="1" stop-color="#000" stop-opacity="0.28" />
         </linearGradient>
+        <!-- (chrome: a hard horizon line across a mirror finish, sky above, floor below) -->
+        <linearGradient id="sp-chrome" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#f7fafc" />
+          <stop offset="0.38" stop-color="#b9c2ca" />
+          <stop offset="0.5" stop-color="#2b3137" />
+          <stop offset="0.56" stop-color="#6c757e" />
+          <stop offset="0.8" stop-color="#d8dee3" />
+          <stop offset="1" stop-color="#4a525a" />
+        </linearGradient>
         <!-- fine grain for wood, leather and lacquer (a noise tile, drawn once) -->
         <pattern id="sp-noise" width="96" height="96" patternUnits="userSpaceOnUse">
           <image href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 -0.12'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)'/%3E%3C/svg%3E" width="96" height="96" />
@@ -248,6 +281,14 @@
         </pattern>
         <pattern id="sp-chase" width="6" height="6" patternUnits="userSpaceOnUse">
           <path d="M0 3 q1.5 -3 3 0 q1.5 3 3 0" fill="none" stroke="#2c3238" stroke-opacity="0.45" stroke-width="0.6" />
+        </pattern>
+        <!-- (a glove's woven web: strips over and under) -->
+        <pattern id="sp-weave" width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="#7a560a" />
+          <rect x="0" y="0" width="3.6" height="3.6" rx="0.6" fill="#d9a83a" />
+          <rect x="4" y="4" width="3.6" height="3.6" rx="0.6" fill="#d9a83a" />
+          <rect x="4" y="0" width="3.6" height="3.6" rx="0.6" fill="#b98a24" />
+          <rect x="0" y="4" width="3.6" height="3.6" rx="0.6" fill="#b98a24" />
         </pattern>
         <radialGradient id="sp-disc" cx="0.4" cy="0.32" r="0.8">
           <stop offset="0" stop-color="#2c2c2c" />
@@ -278,12 +319,18 @@
           <stop offset="0.5" stop-color="#4e120b" />
           <stop offset="1" stop-color="#2a0905" />
         </linearGradient>
+        <linearGradient id="sp-velvet" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#2a2a30" />
+          <stop offset="1" stop-color="#0c0c10" />
+        </linearGradient>
         <linearGradient id="sp-team" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" style="stop-color: var(--c1)" />
           <stop offset="1" style="stop-color: var(--c3)" />
         </linearGradient>
         <path id="sp-name-arc" d="M24 41 Q60 31 96 41" fill="none" />
         <path id="sp-name-arc-bb" d="M28 47 Q60 39 92 47" fill="none" />
+        <path id="sp-name-arc-hk" d="M22 44 Q60 35 98 44" fill="none" />
+        <path id="sp-mark-arc" d="M14 74 Q60 58 106 70" fill="none" />
         <linearGradient id="sp-flap-shade" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stop-color="#000" stop-opacity="0.5" />
           <stop offset="0.22" stop-color="#000" stop-opacity="0.05" />
@@ -291,14 +338,23 @@
           <stop offset="0.5" stop-color="#000" stop-opacity="0.22" />
           <stop offset="1" stop-color="#000" stop-opacity="0.4" />
         </linearGradient>
+        <!-- the four cuts, each its own silhouette, hung on the same hanger (the sleeves and the hem differ: a
+             football jersey's short set-in sleeves and shoulders; a tank's armholes; a sweater's long sleeves
+             hanging beside the body to its hem; a baseball jersey's cap sleeves and straight hem) -->
         <clipPath id="sp-cut-football">
           <path d="M40 10 C48 17 72 17 80 10 L101 15 C108 22 114 34 119 47 L101 56 L100 140 C80 144 40 144 20 140 L19 56 L1 47 C6 34 12 22 19 15 Z" />
         </clipPath>
         <clipPath id="sp-cut-baseball">
-          <path d="M41 9 C49 15 71 15 79 9 L99 14 C107 22 113 36 117 52 L100 58 L100 140 C80 143 40 143 20 140 L20 58 L3 52 C7 36 13 22 21 14 Z" />
+          <path d="M41 9 C49 15 71 15 79 9 L99 14 C107 22 113 36 117 52 L100 58 L100 140 C80 142 40 142 20 140 L20 58 L3 52 C7 36 13 22 21 14 Z" />
         </clipPath>
         <clipPath id="sp-cut-basketball">
           <path d="M37 8 C44 30 76 30 83 8 L97 10 C96 32 100 46 108 54 L106 140 C80 144 40 144 14 140 L12 54 C20 46 24 32 23 10 Z" />
+        </clipPath>
+        <clipPath id="sp-cut-hockey">
+          <path d="M40 10 C48 18 72 18 80 10 L102 14 C114 36 124 76 124 118 L100 122 L97 72 L97 140 C78 144 42 144 23 140 L23 72 L20 122 L-4 118 C-4 76 6 36 18 14 Z" />
+        </clipPath>
+        <clipPath id="sp-cut-vest">
+          <path d="M41 9 C49 15 71 15 79 9 L99 14 L100 58 L100 140 C80 142 40 142 20 140 L20 58 L21 14 Z" />
         </clipPath>
       </defs>
     </svg>
@@ -316,12 +372,39 @@
           </div>
         }
       </div>
+    } @else if (v.stage === 'office' && v.office; as o) {
+      <!-- THE OFFICE: a head coach's. The whiteboard on the wall (the play, his record), the team's framed logo
+           over the credenza (a low bookcase, his honors standing on it), his desk in front with its nameplate -->
+      <div class="sp-stage sp-office">
+        <span class="sp-lamp left"></span><span class="sp-beam left"></span>
+        <span class="sp-lamp right"></span><span class="sp-beam right"></span>
+        <div class="sp-board sp-art" [style.--h.px]="o.board.h" [title]="o.board.tip" [attr.data-tip]="o.board.tip">
+          <splash-piece [it]="o.board" [logo]="logo"></splash-piece>
+        </div>
+        <div class="sp-credenza">
+          <div class="sp-frame sp-art" [style.--h.px]="o.frame.h" [title]="o.frame.tip" [attr.data-tip]="o.frame.tip">
+            <splash-piece [it]="o.frame" [logo]="logo"></splash-piece>
+          </div>
+          <div class="sp-honors">
+            @for (it of v.items; track $index) {
+              <div class="sp-art" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                <splash-piece [it]="it" [logo]="logo"></splash-piece>
+              </div>
+            }
+          </div>
+          <div class="sp-credenza-body"><i></i><i></i></div>
+        </div>
+        <div class="sp-desk" [title]="o.plate" [attr.data-tip]="o.plate + ' · ' + o.team">
+          <div class="sp-desk-top"><span class="sp-mug"></span><span class="sp-binder"></span><span class="sp-pen"></span></div>
+          <div class="sp-desk-front"><span class="sp-desk-plate">{{ o.plate }}</span></div>
+        </div>
+      </div>
     } @else {
       <!-- THE LOCKER: a season still being played. A team's key players' lockers, each with his jersey; a player's
-           own locker beside his gear's -->
+           own stall with his jersey and his gear: on the top shelf, leaning in the corner, on the floor -->
       <div class="sp-stage sp-lockers">
         @for (st of v.stalls; track $index) {
-          <div class="sp-col sp-stall" [class.mine]="st.mine" [class.star]="st.star" [class.wide]="st.wide" [title]="st.tip" [attr.data-tip]="st.tip">
+          <div class="sp-col sp-stall" [class.mine]="st.mine" [class.star]="st.star" [class.wide]="st.wide" [class.has-shelf]="!!st.shelf?.length" [title]="st.tip" [attr.data-tip]="st.tip">
             <span class="sp-lamp"></span><span class="sp-beam"></span>
             <div class="sp-stall-frame">
               @if (st.plate) {
@@ -335,15 +418,38 @@
               @if (st.tape) {
                 <div class="sp-tape">{{ st.tape }}</div>
               }
+              @if (st.shelf?.length) {
+                <div class="sp-top-shelf">
+                  @for (it of st.shelf; track $index) {
+                    <div class="sp-art sp-on-shelf" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                      <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                    </div>
+                  }
+                </div>
+              }
+              @if (st.corner; as it) {
+                <div class="sp-art sp-corner" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                  <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                </div>
+              }
               <div class="sp-hook"></div>
               @if (st.jersey; as j) {
                 <div class="sp-art sp-hanging">
-                  <ng-container *ngTemplateOutlet="jersey; context: { $implicit: j.name, num: j.num, k: kit(j.kit), cut: cut }"></ng-container>
+                  <ng-container *ngTemplateOutlet="jersey; context: { $implicit: j.name, num: j.num, k: kit(j.kit), cut: cut, mark: v.mark }"></ng-container>
                 </div>
               }
               @if (st.item; as it) {
                 <div class="sp-art sp-in-stall" [class]="'t-' + it.t" [style.--h.px]="it.h">
                   <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                </div>
+              }
+              @if (st.floor?.length) {
+                <div class="sp-floor">
+                  @for (it of st.floor; track $index) {
+                    <div class="sp-art sp-on-floor" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                      <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                    </div>
+                  }
                 </div>
               }
             </div>
@@ -360,52 +466,172 @@
   </section>
 }
 
-<!-- A jersey, from the back: tackle-twill name and number, sleeve stripes, its seams stitched, the mesh of the
-     cloth, its folds and the light on it -->
-<ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-pin="pin">
-  <svg class="sp-jersey" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
+<!-- A jersey on its hanger, in its sport's cut (the kit's colors and details: uniform-eras.ts KitColors).
+     Football, basketball and hockey from the back (the name arched over the number); baseball from the front
+     (the wordmark across the chest, the button placket, a front number). Tackle-twill numbers with their trim
+     and their shadow on the cloth, the seams stitched, the cloth's faint mesh, its folds and the light on it -->
+<ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-mark="mark">
+  <svg class="sp-jersey" [class]="'sp-jersey cut-' + cut + ' nf-' + (k.numberFont || 'block') + ' nm-' + (k.nameFont || 'block')" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
     <path class="sp-hanger-hook" d="M60 -16 q6 0 6 5 q0 5 -6 6 v8" />
     <path class="sp-hanger" d="M26 13 L60 1 L94 13" />
-    <g [attr.clip-path]="'url(#sp-cut-' + cut + ')'">
+    <g [attr.clip-path]="'url(#sp-cut-' + (cut === 'baseball' && k.placket === 'vest' ? 'vest' : cut) + ')'">
       <rect x="-4" y="0" width="128" height="150" [attr.fill]="k.body" />
-      @if (pin) {
-        <rect x="-4" y="0" width="128" height="150" fill="url(#sp-pinstripe)" opacity="0.55" />
+      <!-- pinstripes (baseball's, a few tanks'): a line every 8, in the kit's color -->
+      @if (k.pinstripe) {
+        <g [attr.stroke]="k.pinstripe" stroke-width="0.9">
+          @for (x of pins; track x) {
+            <line [attr.x1]="x" y1="0" [attr.x2]="x" y2="150" />
+          }
+        </g>
       }
       <rect x="-4" y="0" width="128" height="150" fill="url(#sp-mesh)" />
+
+      <!-- ================= FOOTBALL: shoulders, a yoke or sleeve caps or sleeve stripes, TV numbers, the collar -->
       @if (cut === 'football') {
-        @if (k.sleeve === 'stripes') {
-          <g [attr.stroke]="k.stripe" stroke-width="3.2">
-            <line x1="124" y1="40" x2="100" y2="52" />
-            <line x1="124" y1="34.5" x2="100" y2="46.5" />
-            <line x1="-4" y1="40" x2="20" y2="52" />
-            <line x1="-4" y1="34.5" x2="20" y2="46.5" />
-          </g>
-          @if (k.stripe2) {
-            <g [attr.stroke]="k.stripe2" stroke-width="2">
-              <line x1="124" y1="37.25" x2="100" y2="49.25" />
-              <line x1="-4" y1="37.25" x2="20" y2="49.25" />
+        @if (k.yoke) {
+          <path d="M-4 0 H124 V30 C100 40 80 42 60 42 C40 42 20 40 -4 30 Z" [attr.fill]="k.yoke" />
+          <path d="M-4 30 C20 40 40 42 60 42 C80 42 100 40 124 30" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+        }
+        @if (k.cap) {
+          <path d="M100 44 L124 33 L124 62 L100 62 Z M20 44 L-4 33 L-4 62 L20 62 Z" [attr.fill]="k.cap" />
+          <path d="M100 44 L124 33 M20 44 L-4 33" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+        } @else if (k.sleeve === 'stripes') {
+          <!-- (the bands round each sleeve, following its slant: top to bottom as the kit lists them, else the
+               classic set: the stripe color either side of a second color) -->
+          @for (b of bands(k); track $index) {
+            <g [attr.stroke]="b.color" [attr.stroke-width]="b.w">
+              <line x1="124" [attr.y1]="b.y" x2="100" [attr.y2]="b.y + 12" />
+              <line x1="-4" [attr.y1]="b.y" x2="20" [attr.y2]="b.y + 12" />
             </g>
           }
         }
-        <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+        @if (k.panel) {
+          <path d="M20 56 L31 58 L31 140 L20 140 Z M100 56 L89 58 L89 140 L100 140 Z" [attr.fill]="k.panel" />
+          <path d="M31 58 L31 140 M89 58 L89 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
+        }
+        @if (k.tv !== false && num) {
+          <text class="sp-j-tv" x="24" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+          <text class="sp-j-tv" x="96" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+        }
+        @if (k.collarStyle === 'v') {
+          <path d="M40 10 L60 24 L80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
+        } @else if (k.collarStyle === 'stripe') {
+          <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="7" />
+          <path d="M41 12.5 C49 19 71 19 79 12.5" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1.2" />
+        } @else {
+          <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+        }
+        <!-- seams: the sleeves set in, the sides, the hem -->
+        <path d="M20 56 L20 140 M100 56 L100 140 M19 15 L20 56 M101 15 L100 56 M22 137 C50 140 70 140 98 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
       }
+
+      <!-- ================= BASKETBALL: the tank's armholes and neck trimmed, side panels, piping, the hem -->
       @if (cut === 'basketball') {
-        <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.collar" stroke-width="5" />
-        <rect x="-4" y="131" width="128" height="4" [attr.fill]="k.stripe" />
+        @if (k.panel) {
+          <path d="M12 54 L24 56 L24 140 L14 140 Z M108 54 L96 56 L96 140 L106 140 Z" [attr.fill]="k.panel" />
+          <path d="M24 56 L24 140 M96 56 L96 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
+        }
+        @if (k.sleeve === 'stripes' || k.stripe) {
+          <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="5" />
+          @if (k.stripe2) {
+            <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.6" transform="translate(0 3)" />
+          }
+        } @else {
+          <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.collar" stroke-width="3.5" />
+        }
+        @if (k.piping) {
+          <path d="M39 12 C45 33 75 33 81 12 M94 14 C93 34 97 48 105 56 M26 14 C27 34 23 48 15 56" fill="none" [attr.stroke]="k.piping" stroke-width="1" />
+        }
+        @for (h of hems(k, 'basketball'); track $index) {
+          <rect x="-4" [attr.y]="h.y" width="128" [attr.height]="h.h" [attr.fill]="h.color" />
+        }
+        <!-- seams: the armholes bound, the sides, a hem -->
+        <path d="M14 58 L15 140 M106 58 L105 140 M18 137 C50 141 70 141 102 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
       }
+
+      <!-- ================= HOCKEY: the sweater's shoulder yoke, its arm bands, hem stripes, lace or V collar -->
+      @if (cut === 'hockey') {
+        @if (k.yoke) {
+          <path d="M-4 0 H124 V34 C104 46 86 50 60 50 C34 50 16 46 -4 34 Z" [attr.fill]="k.yoke" />
+          <path d="M-4 34 C16 46 34 50 60 50 C86 50 104 46 124 34" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+        }
+        @for (b of hockeyBands(k); track $index) {
+          <rect x="-4" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
+          <rect x="98" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
+        }
+        @for (h of hems(k, 'hockey'); track $index) {
+          <rect x="22" [attr.y]="h.y" width="76" [attr.height]="h.h" [attr.fill]="h.color" />
+        }
+        <!-- the sleeves hang beside the body: a seam and a shadow where they meet, the cuffs -->
+        <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="2.2" />
+        <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.7" transform="translate(-1.4 0)" />
+        <path d="M-4 116 L20 120 M100 120 L124 116" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1.2" />
+        <path d="M18 14 L23 72 M102 14 L97 72 M25 137 C50 141 70 141 95 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+        @if (k.collarStyle === 'lace') {
+          <path d="M44 10 L60 32 L76 10" fill="none" [attr.stroke]="k.collar" stroke-width="2.6" stroke-linejoin="round" />
+          <path d="M51 15 L69 19 M51 20 L69 24 M53 25 L67 29" fill="none" stroke="#f3f2ee" stroke-width="1.1" stroke-linecap="round" />
+          <circle cx="51" cy="15" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="19" r="0.9" fill="#f3f2ee" /><circle cx="51" cy="20" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="24" r="0.9" fill="#f3f2ee" />
+        } @else if (k.collarStyle === 'v') {
+          <path d="M42 10 L60 26 L78 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
+        } @else {
+          <path d="M40 10 C48 18 72 18 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+        }
+      }
+
+      <!-- ================= BASEBALL (the front): the placket and its buttons, the piping, the sleeves' ends,
+           the wordmark across the chest, a front number -->
       @if (cut === 'baseball') {
-        <path d="M41 9 C49 15 71 15 79 9" fill="none" [attr.stroke]="k.collar" stroke-width="2" />
+        @if (k.placket === 'vest' && k.under) {
+          <path d="M99 14 C107 22 113 36 117 52 L100 58 L100 14 Z M21 14 C13 22 7 36 3 52 L20 58 L20 14 Z" [attr.fill]="k.under" />
+        }
+        @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
+          <path d="M117 52 L100 58 M3 52 L20 58" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="3" />
+          @if (k.stripe2) {
+            <path d="M116 48 L100 54 M4 48 L20 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.4" />
+          }
+        }
+        @if (k.placket !== 'pullover') {
+          <!-- the placket: a strip down the front, piped, its buttons -->
+          <rect x="56.5" y="28" width="7" height="114" [attr.fill]="k.body" />
+          <path d="M56.5 30 V140 M63.5 30 V140" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
+          @if (k.piping) {
+            <path d="M56 30 V140 M64 30 V140" fill="none" [attr.stroke]="k.piping" stroke-width="1.2" />
+          }
+          @for (y of buttons; track y) {
+            <circle cx="60" [attr.cy]="y" r="1.7" fill="#f6f2e8" stroke="#8a847a" stroke-width="0.4" />
+            <circle cx="60" [attr.cy]="y" r="0.5" fill="#8a847a" />
+          }
+        }
+        <!-- the neck: a V opening, its collar piped -->
+        <path d="M44 9 L60 30 L76 9" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
+        @if (k.piping && k.piping !== k.collar) {
+          <path d="M45 12 L60 32.5 L75 12" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" />
+        }
+        <path d="M60 30 L60 34" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.8" />
+        <!-- seams: the sleeves set in (raglan when there's a yoke color), the sides, the hem's vents -->
+        <path d="M21 14 L20 58 M99 14 L100 58 M20 58 L20 140 M100 58 L100 140 M22 138 C50 141 70 141 98 138" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+        <!-- the wordmark across the chest, the front number -->
+        @if (mark) {
+          <text class="sp-j-mark" [attr.fill]="k.name" [attr.stroke]="k.outline" [style.font-size.px]="markSize(mark)"><textPath href="#sp-mark-arc" startOffset="50%">{{ mark }}</textPath></text>
+        }
+        @if (num) {
+          <text class="sp-j-front" x="37" y="112" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+        }
       }
-      <path d="M20 56 L20 140 M100 56 L100 140 M19 15 L20 56 M101 15 L100 56 M22 137 C50 140 70 140 98 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
-      <path d="M42 13 C50 19 70 19 78 13" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="0.6" stroke-dasharray="1.4 1.2" />
+
       <!-- the name arched over the number, as sewn; the number about 37% of the back's height, its trim and its
            shadow on the cloth (an athletic condensed block, never squeezed: a long name gets smaller letters) -->
-      <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name)"><textPath [attr.href]="cut === 'basketball' ? '#sp-name-arc-bb' : '#sp-name-arc'" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
-      <text class="sp-j-num shadow" x="60.8" [attr.y]="(cut === 'basketball' ? 104 : 99) + 1.4">{{ num }}</text>
-      <text class="sp-j-num outer" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.outline" [attr.stroke]="k.outline">{{ num }}</text>
-      <text class="sp-j-num" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.num" [attr.stroke]="k.body">{{ num }}</text>
-      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth)" />
+      @if (cut !== 'baseball') {
+        <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name)"><textPath [attr.href]="cut === 'basketball' ? '#sp-name-arc-bb' : cut === 'hockey' ? '#sp-name-arc-hk' : '#sp-name-arc'" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+        <text class="sp-j-num shadow" x="60.8" [attr.y]="(cut === 'basketball' ? 104 : 99) + 1.4">{{ num }}</text>
+        <text class="sp-j-num outer" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.outline" [attr.stroke]="k.outline">{{ num }}</text>
+        <text class="sp-j-num" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.num" [attr.stroke]="k.body">{{ num }}</text>
+      }
+      <!-- the folds and the light: the cloth gathers under the hanger and falls in soft waves -->
+      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-folds)" />
       <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth-v)" />
+      <path d="M30 20 C34 60 30 100 34 138 M90 20 C86 60 90 100 86 138" fill="none" stroke="#000" stroke-opacity="0.07" stroke-width="5" />
+      <path d="M46 22 C48 50 46 90 48 136 M74 22 C72 50 74 90 72 136" fill="none" stroke="#fff" stroke-opacity="0.06" stroke-width="4" />
     </g>
   </svg>
 </ng-template>

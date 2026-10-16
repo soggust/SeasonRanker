@@ -103,25 +103,29 @@
       </g>
     </svg>
   }
-  @case ('medal') {
-    <!-- The playoff berth: a gold medallion with the team's mark, on a ribbon in its colors, hung on a stand -->
-    <svg viewBox="0 0 120 196">
-      <rect x="58" y="4" width="4" height="184" fill="url(#sp-walnut)" />
-      <rect x="34" y="0" width="52" height="6" rx="2" fill="url(#sp-gold)" />
-      <path d="M26 186 h68 l3 8 h-74 z" fill="url(#sp-lacquer)" />
-      <path d="M44 3 L60 3 L67 86 L54 92 Z" fill="url(#sp-team)" />
-      <path d="M60 3 L76 3 L66 92 L53 86 Z" style="fill: var(--c2)" />
-      <path d="M44 3 L60 3 L67 86 L54 92 Z M60 3 L76 3 L66 92 L53 86 Z" fill="url(#sp-ribbon)" />
-      <circle cx="60" cy="130" r="45" fill="#000" opacity="0.35" transform="translate(2 3)" />
-      <circle cx="60" cy="128" r="45" fill="url(#sp-gold-ball)" />
-            <circle cx="60" cy="128" r="40.5" fill="none" stroke="#fff3c4" stroke-opacity="0.6" stroke-width="0.8" />
-      <circle cx="60" cy="128" r="33" fill="url(#sp-gold-dish)" stroke="#7a560f" stroke-width="1" />
-      <path id="sp-medal-arc" d="M24.5 128 A35.5 35.5 0 0 1 95.5 128" fill="none" />
-      <path id="sp-medal-arc2" d="M22 128 A38 38 0 0 0 98 128" fill="none" />
-      <text class="sp-ring"><textPath href="#sp-medal-arc" startOffset="50%">{{ line(0) }}</textPath></text>
-      <text class="sp-ring"><textPath href="#sp-medal-arc2" startOffset="50%">{{ line(1) }}</textPath></text>
-      <image [attr.href]="logo" x="42" y="110" width="36" height="36" opacity="0.92" />
-      <path d="M30 104 A40 40 0 0 1 72 89" fill="none" stroke="#fff" stroke-opacity="0.65" stroke-width="2" stroke-linecap="round" />
+@case ('roundel') {
+    <!-- A playoff berth: a round walnut plaque, a brass ring, the team's mark on its colors, the playoffs round the
+         top and the season round the bottom; the seed on a small brass plate -->
+    <svg viewBox="0 0 140 142" data-trophy="roundel">
+      <ellipse cx="70" cy="139" rx="40" ry="2.5" fill="#000" opacity="0.5" />
+      <circle cx="70" cy="70" r="68" fill="url(#sp-walnut)" />
+      <circle cx="70" cy="70" r="68" fill="url(#sp-grain-v)" />
+      <circle cx="70" cy="70" r="68" fill="url(#sp-noise)" />
+      <path d="M8 60 A62 62 0 0 1 70 4" fill="none" stroke="#f0c48a" stroke-opacity="0.3" stroke-width="1.2" />
+      <circle cx="70" cy="70" r="58" fill="none" stroke="url(#sp-gold)" stroke-width="5" />
+      <circle cx="70" cy="70" r="55" fill="none" stroke="#3d2804" stroke-opacity="0.5" stroke-width="0.6" />
+      <circle cx="70" cy="70" r="54" fill="url(#sp-team)" />
+      <circle cx="70" cy="70" r="54" fill="url(#sp-felt)" />
+      <circle cx="70" cy="70" r="54" fill="url(#sp-env-v)" opacity="0.5" />
+      <image [attr.href]="logo" x="48" y="46" width="44" height="44" />
+      <path id="sp-roundel-top" d="M27 70 A43 43 0 0 1 113 70" fill="none" />
+      <path id="sp-roundel-bot" d="M30 70 A40 40 0 0 0 110 70" fill="none" />
+      <text class="sp-ring light"><textPath href="#sp-roundel-top" startOffset="50%">{{ line(0) }}</textPath></text>
+      <text class="sp-ring light"><textPath href="#sp-roundel-bot" startOffset="50%">{{ line(1) }}</textPath></text>
+      @if (line(2)) {
+        <rect x="50" y="98" width="40" height="9" rx="1" fill="url(#sp-gold)" />
+        <text x="70" y="104.3" [style.font-size.px]="fs(line(2), 36, 4.6)" class="sp-engr dark hi" dy="0.3">{{ line(2) }}</text><text x="70" y="104.3" [style.font-size.px]="fs(line(2), 36, 4.6)" class="sp-engr dark">{{ line(2) }}</text>
+      }
     </svg>
   }
   @case ('plaque') {
@@ -196,20 +200,24 @@
       </div>
     </div>
   }
-  @case ('gameball') {
+@case ('gameball') {
     <!-- A game ball, the NFL's: a regulation shape (11" long, 22" round the middle: seen side-on its depth is about
          0.62 of its length, the ends full and rounded to a slight point), dark pebbled leather, no stripes; its four
-         panels' seams running tip to tip, one row of eight laces through stitch holes on the top seam; the game
-         painted on the panel in white serif capitals; everything clipped to the ball. A gold cradle, a black stand. -->
+         panels' seams running tip to tip, one row of eight laces through stitch holes on the top seam; nothing
+         painted on it. A gold cradle, a black stand with the game on its brass placard. -->
     <svg viewBox="0 0 150 106" data-trophy="gameball">
       <defs>
         <clipPath id="sp-ball-clip"><path [attr.d]="ball" /></clipPath>
       </defs>
-      <ellipse cx="75" cy="97" rx="52" ry="4.5" fill="#000" opacity="0.5" />
+      <ellipse cx="75" cy="101" rx="52" ry="4" fill="#000" opacity="0.5" />
       <path d="M46 80 q29 10 58 0 l6 7 h-70 z" fill="url(#sp-gold)" />
       <path d="M30 87 h90 l3 15 h-96 z" fill="url(#sp-lacquer)" />
       <path d="M30 87 h90 l3 15 h-96 z" fill="url(#sp-noise)" />
       <path d="M30 87 h90" stroke="#fff" stroke-opacity="0.25" />
+      <path d="M43 90 h64 v10.5 h-64 z" fill="url(#sp-gold)" />
+      <path d="M43 90 h64 v10.5 h-64 z" fill="url(#sp-brushed)" />
+      <text x="75" y="94.6" [style.font-size.px]="fs(line(0), 60, 4.6)" class="sp-engr dark hi" dy="0.35">{{ line(0) }}</text><text x="75" y="94.6" [style.font-size.px]="fs(line(0), 60, 4.6)" class="sp-engr dark">{{ line(0) }}</text>
+      <text x="75" y="99.3" [style.font-size.px]="fs(line(1), 60, 4)" class="sp-engr dark hi" dy="0.35">{{ line(1) }}</text><text x="75" y="99.3" [style.font-size.px]="fs(line(1), 60, 4)" class="sp-engr dark">{{ line(1) }}</text>
       <g transform="rotate(-5 75 44)">
         <path [attr.d]="ball" fill="url(#sp-leather-nfl)" />
         <g clip-path="url(#sp-ball-clip)" stroke-linecap="round" stroke-linejoin="round">
@@ -217,6 +225,7 @@
           <rect x="10" y="0" width="130" height="90" fill="url(#sp-noise)" />
           <path d="M20 44 C44 24 106 24 130 44" fill="none" stroke="#160801" stroke-opacity="0.75" stroke-width="1.5" />
           <path d="M20 44.9 C44 24.9 106 24.9 130 44.9" fill="none" stroke="#c98a5a" stroke-opacity="0.3" stroke-width="0.8" />
+          <path d="M20 44 C44 60 106 60 130 44" fill="none" stroke="#160801" stroke-opacity="0.35" stroke-width="1" />
           <path [attr.d]="laceRun" fill="none" stroke="#efe9dd" stroke-width="1.8" />
           @for (l of laces; track $index) {
             <circle [attr.cx]="l.x1" [attr.cy]="l.y1" r="0.8" fill="#120600" />
@@ -225,8 +234,6 @@
           }
           <ellipse cx="68" cy="20" rx="40" ry="12" fill="url(#sp-sheen)" />
           <ellipse cx="75" cy="80" rx="60" ry="16" fill="#000" opacity="0.28" />
-          <text x="75" y="44.5" class="sp-painted" [style.font-size.px]="fs(line(0), 84, 8.4)">{{ line(0) }}</text>
-          <text x="75" y="54" class="sp-painted" [style.font-size.px]="fs(line(1), 74, 7.4)">{{ line(1) }}</text>
         </g>
       </g>
     </svg>
@@ -432,17 +439,29 @@
   }
 
   <!-- ================================ NHL ================================ -->
-  @case ('puck') {
-    <!-- A series won: its puck on an acrylic stand, the round and result printed on it -->
-    <svg viewBox="0 0 90 84">
-      <ellipse cx="45" cy="80" rx="38" ry="3" fill="#000" opacity="0.5" />
-      <path d="M18 56 h54 l8 22 h-70 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.3" />
-      <ellipse cx="45" cy="44" rx="34" ry="10" fill="#090909" />
-      <rect x="11" y="24" width="68" height="20" fill="url(#sp-rubber)" />
-      <path d="M11 26 h68 M11 42 h68" stroke="#fff" stroke-opacity="0.08" stroke-dasharray="1 1.5" />
-      <ellipse cx="45" cy="24" rx="34" ry="10" fill="#242424" />
-      <ellipse cx="45" cy="24" rx="34" ry="10" fill="none" stroke="#fff" stroke-opacity="0.12" />
-      <text x="45" y="38" class="sp-puck-t big">{{ line(1) }}</text>
+@case ('puck') {
+    <!-- A puck (1" tall, 3" across, drawn at that scale: 10 units an inch) lying in a clear acrylic holder on a
+         black base; the team and the season on the brass placard, never on the puck -->
+    <svg viewBox="0 0 70 62" data-trophy="puck">
+      <ellipse cx="35" cy="59" rx="30" ry="2.5" fill="#000" opacity="0.5" />
+      <path d="M8 48 h54 l3 10 h-60 z" fill="url(#sp-lacquer)" />
+      <path d="M8 48 h54" stroke="#fff" stroke-opacity="0.25" />
+      <path d="M16 50 h38 v7 h-38 z" fill="url(#sp-gold)" />
+      <path d="M16 50 h38 v7 h-38 z" fill="url(#sp-brushed)" />
+      <text x="35" y="55.1" [style.font-size.px]="fs(line(0) + ' · ' + line(1), 36, 3.6)" class="sp-engr dark hi" dy="0.3">{{ line(0) }} · {{ line(1) }}</text><text x="35" y="55.1" [style.font-size.px]="fs(line(0) + ' · ' + line(1), 36, 3.6)" class="sp-engr dark">{{ line(0) }} · {{ line(1) }}</text>
+      <!-- the holder: a clear block, its top and right faces catching the light -->
+      <path d="M14 18 l7 -7 h42 l-7 7 z" fill="#fff" fill-opacity="0.14" />
+      <path d="M56 18 l7 -7 v30 l-7 7 z" fill="#fff" fill-opacity="0.07" />
+      <path d="M14 18 h42 v30 h-42 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.35" stroke-width="0.6" />
+      <!-- the puck, flat: its side, its top with the team's mark -->
+      <ellipse cx="35" cy="43" rx="15" ry="5" fill="#070707" />
+      <rect x="20" y="33" width="30" height="10" fill="url(#sp-rubber)" />
+      <path d="M20 35 h30 M20 41 h30" stroke="#fff" stroke-opacity="0.08" stroke-dasharray="0.8 1.2" stroke-width="0.6" />
+      <ellipse cx="35" cy="33" rx="15" ry="5" fill="#262626" />
+      <ellipse cx="35" cy="33" rx="15" ry="5" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.6" />
+      <image [attr.href]="logo" x="-7" y="-7" width="14" height="14" transform="translate(35 33) scale(1 0.42)" opacity="0.9" />
+      <path d="M22 30.5 q6 -3 13 -2.5" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="0.8" />
+      <path d="M14 18 l7 -7" stroke="#fff" stroke-opacity="0.5" stroke-width="0.6" />
     </svg>
   }
   @case ('stanley') {
@@ -635,25 +654,39 @@
       <path d="M14 20 q10 -14 26 -16" fill="none" stroke="#fffbe6" stroke-opacity="0.85" stroke-width="2.4" stroke-linecap="round" />
     </svg>
   }
-  @case ('mjmvp') {
-    <!-- The Michael Jordan Trophy (the MVP's; measured: H/W 2.6; a faceted crystal ball 7% at the top of a raised
-         hand; a slim gold figure rising and reaching up; a rocky gold mound 16%; a black five-sided base angled at
-         15°, 21%, with a six-sided nameplate). Stylized: a faceted gold figure, not a likeness. -->
+@case ('mjmvp') {
+    <!-- The Michael Jordan Trophy (the MVP's; measured: H/W 2.6): a faceted crystal ball at the top of a raised hand;
+         a slim gold figure breaking out of a rocky gold mound, rising and reaching up, the other arm down; a black
+         five-sided base angled at 15 degrees, a six-sided nameplate. Stylized: a faceted figure, not a likeness. -->
     <svg viewBox="0 0 92 240" class="sp-metal" data-trophy="mjmvp">
       <path d="M4 206 L30 190 L82 186 L90 198 L88 236 L2 240 Z" fill="url(#sp-lacquer)" />
       <path d="M4 206 L30 190 L82 186 L90 198 Z" fill="#3a3a3a" />
       <path d="M4 206 L90 198" stroke="#fff" stroke-opacity="0.18" />
       <path d="M36 222 l5 -4 h12 l5 4 l-5 4 h-12 z" fill="url(#sp-silver)" />
-      <path d="M22 204 L28 178 L38 166 L52 162 L64 170 L70 186 L66 202 L44 208 Z" fill="url(#sp-gold)" />
-      <path d="M28 178 L44 186 L52 162 M44 186 L66 202 M44 186 L40 206 M38 166 L44 186 L64 170" fill="none" stroke="#5c3f08" stroke-opacity="0.5" stroke-width="0.7" />
-      <path d="M45 172 C44 158 45 146 46 134 C46 126 45 120 46 114 C44 106 43 96 45 88 C46 82 47 78 49 74 L50 32 C50 29 51 26 53 26 L55 26 C56 28 56 31 55.5 33 L54.5 72 C58 73 62 76 64 80 C67 88 68 98 68 108 L70 122 L66 123 L63 108 C62 104 61 100 60 98 C60 106 58 112 56 116 C57 128 56 142 54 156 L53 172 Z" fill="url(#sp-gold)" />
-      <path d="M45 172 C44 158 45 146 46 134 C46 126 45 120 46 114 C44 106 43 96 45 88 C46 82 47 78 49 74 L50 32 C50 29 51 26 53 26 L55 26 C56 28 56 31 55.5 33 L54.5 72 C58 73 62 76 64 80 C67 88 68 98 68 108 L70 122 L66 123 L63 108 C62 104 61 100 60 98 C60 106 58 112 56 116 C57 128 56 142 54 156 L53 172 Z" fill="url(#sp-env-v)" />
-      <ellipse cx="60" cy="67" rx="5.6" ry="6.6" fill="url(#sp-gold-ball)" />
-      <path d="M52 34 L51.5 72 M47 90 L60 84 L57 112 M47 116 L56 116 M50 118 L49 168" fill="none" stroke="#5c3f08" stroke-opacity="0.4" stroke-width="0.7" stroke-linecap="round" />
-      <path d="M51 36 L50.5 70" stroke="#fffbe6" stroke-opacity="0.7" stroke-width="1" stroke-linecap="round" />
-      <path d="M51 26 L53 18 L57 19 L56 26 Z" fill="url(#sp-gold-ball)" />
-      <path d="M52 0 L61 3 L64 11 L60 19 L50 20 L45 13 L46 4 Z" fill="url(#sp-crystal)" />
-      <path d="M52 0 L54 10 L61 3 M54 10 L64 11 M54 10 L60 19 M54 10 L50 20 M54 10 L45 13 M54 10 L46 4" stroke="#fff" stroke-opacity="0.75" stroke-width="0.5" fill="none" />
+      <!-- the rock: faceted gold, light from the upper left -->
+      <path d="M20 204 L26 180 L36 168 L50 164 L64 170 L72 186 L70 202 L46 208 Z" fill="url(#sp-gold)" />
+      <path d="M26 180 L36 168 L44 184 Z" fill="#fff3c4" fill-opacity="0.35" />
+      <path d="M50 164 L64 170 L54 182 Z" fill="#fff3c4" fill-opacity="0.2" />
+      <path d="M44 184 L54 182 L72 186 L70 202 L46 208 Z" fill="#000" fill-opacity="0.22" />
+      <path d="M20 204 L44 184 L46 208 Z" fill="#000" fill-opacity="0.1" />
+      <path d="M26 180 L44 184 L54 182 M44 184 L46 208 M36 168 L44 184 L64 170 M54 182 L72 186" fill="none" stroke="#5c3f08" stroke-opacity="0.55" stroke-width="0.7" />
+      <!-- the figure: legs out of the rock, a tapered torso, the head, one arm straight up to the ball, the other down -->
+      <path d="M38 180 C36 164 38 150 42 134 L48 134 C46 150 46 166 46 180 Z" fill="url(#sp-gold)" />
+      <path d="M46 180 C46 166 48 150 48 134 L54 134 C58 150 60 164 58 180 Z" fill="url(#sp-gold)" />
+      <path d="M40 134 C36 118 38 102 44 92 L56 92 C62 102 62 118 58 134 Z" fill="url(#sp-gold)" />
+      <path d="M42 92 C42 84 48 80 50 80 L50 72 L54 72 L54 80 C58 80 62 84 62 92 Z" fill="url(#sp-gold)" />
+      <path d="M57 92 C58 72 60 52 60 32 L66 32 C66 52 65 72 63 94 Z" fill="url(#sp-gold)" />
+      <path d="M43 94 C38 102 36 112 36 124 L40 125 C40 113 42 104 47 96 Z" fill="url(#sp-gold)" />
+      <circle cx="52" cy="66" r="5.6" fill="url(#sp-gold-ball)" />
+      <!-- facets and shade -->
+      <path d="M38 180 C36 164 38 150 42 134 L48 134 C46 150 46 166 46 180 Z M46 180 C46 166 48 150 48 134 L54 134 C58 150 60 164 58 180 Z M40 134 C36 118 38 102 44 92 L56 92 C62 102 62 118 58 134 Z M57 92 C58 72 60 52 60 32 L66 32 C66 52 65 72 63 94 Z" fill="url(#sp-env-v)" />
+      <path d="M48 134 L46 180 M50 92 L50 134 M60 92 L60 32 M42 134 L58 134 M44 92 L56 92" fill="none" stroke="#5c3f08" stroke-opacity="0.45" stroke-width="0.7" />
+      <path d="M41 136 L39 178 M44 96 L41 130 M58 40 L57 90" fill="none" stroke="#fffbe6" stroke-opacity="0.7" stroke-width="0.9" stroke-linecap="round" />
+      <!-- the hand, and the crystal ball in it: 23 points, faceted -->
+      <path d="M58 32 L68 32 L67 24 L59 24 Z" fill="url(#sp-gold-ball)" />
+      <path d="M63 2 L71 5 L74 13 L70 20 L63 22 L56 20 L52 13 L55 5 Z" fill="url(#sp-crystal)" />
+      <path d="M63 2 L63 12 L71 5 M63 12 L74 13 M63 12 L70 20 M63 12 L56 20 M63 12 L52 13 M63 12 L55 5" stroke="#fff" stroke-opacity="0.8" stroke-width="0.5" fill="none" />
+      <path d="M57 7 L62 4" stroke="#fff" stroke-width="1.2" stroke-linecap="round" />
     </svg>
   }
   @case ('shoe') {
@@ -712,17 +745,25 @@
       </g>
     </svg>
   }
-  @case ('bball') {
-    <svg viewBox="0 0 110 106">
-      <ellipse cx="55" cy="102" rx="40" ry="3" fill="#000" opacity="0.5" />
+@case ('bball') {
+    <!-- A game ball, the NBA's: pebbled orange leather, its black channels; on a black stand, the game on the
+         stand's brass placard, nothing written on the ball -->
+    <svg viewBox="0 0 110 108" data-trophy="bball">
+      <ellipse cx="55" cy="104" rx="40" ry="3" fill="#000" opacity="0.5" />
+      <path d="M32 80 h46 l6 8 h-58 z" fill="url(#sp-acrylic)" />
+      <path d="M22 88 h66 l3 15 h-72 z" fill="url(#sp-lacquer)" />
+      <path d="M22 88 h66" stroke="#fff" stroke-opacity="0.25" />
+      <path d="M31 91 h48 v9.5 h-48 z" fill="url(#sp-gold)" />
+      <path d="M31 91 h48 v9.5 h-48 z" fill="url(#sp-brushed)" />
+      <text x="55" y="95.2" [style.font-size.px]="fs(line(0), 44, 4.2)" class="sp-engr dark hi" dy="0.35">{{ line(0) }}</text><text x="55" y="95.2" [style.font-size.px]="fs(line(0), 44, 4.2)" class="sp-engr dark">{{ line(0) }}</text>
+      <text x="55" y="99.4" [style.font-size.px]="fs(line(1), 44, 3.6)" class="sp-engr dark hi" dy="0.35">{{ line(1) }}</text><text x="55" y="99.4" [style.font-size.px]="fs(line(1), 44, 3.6)" class="sp-engr dark">{{ line(1) }}</text>
       <circle cx="55" cy="44" r="38" fill="url(#sp-orange)" />
       <circle cx="55" cy="44" r="38" fill="url(#sp-pebble)" />
+      <path d="M17 44 h76 M55 6 v76 M28 16 q18 28 0 56 M82 16 q-18 28 0 56" fill="none" stroke="#2b1405" stroke-width="2" />
+      <path d="M17 44 h76 M55 6 v76 M28 16 q18 28 0 56 M82 16 q-18 28 0 56" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="3.2" />
       <path d="M17 44 h76 M55 6 v76 M28 16 q18 28 0 56 M82 16 q-18 28 0 56" fill="none" stroke="#2b1405" stroke-width="1.8" />
       <path d="M30 22 q12 -12 30 -12" fill="none" stroke="#ffd9b0" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round" />
-      <text x="55" y="40" class="sp-marker dark" [style.font-size.px]="fs(line(0), 58, 11, 0.6)">{{ line(0) }}</text>
-      <text x="55" y="56" class="sp-marker dark small" [style.font-size.px]="fs(line(1), 52, 9, 0.6)">{{ line(1) }}</text>
-      <path d="M32 80 h46 l6 8 h-58 z" fill="url(#sp-acrylic)" />
-      <path d="M22 88 h66 l3 14 h-72 z" fill="url(#sp-lacquer)" />
+      <ellipse cx="55" cy="70" rx="30" ry="10" fill="#000" opacity="0.2" />
     </svg>
   }
 
@@ -793,18 +834,26 @@
       <ellipse cx="60" cy="74" rx="18" ry="10" fill="#000" fill-opacity="0.18" />
     </svg>
   }
-  @case ('baseball') {
-    <svg viewBox="0 0 100 114">
-      <ellipse cx="50" cy="110" rx="34" ry="3" fill="#000" opacity="0.5" />
-      <path d="M20 66 h60 v40 h-60 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.3" />
-      <path d="M20 66 l8 -8 h60 l-8 8 z" fill="#fff" fill-opacity="0.12" />
-      <circle cx="54" cy="40" r="30" fill="url(#sp-ball-white)" />
-      <path d="M32 18 C44 30 44 50 32 62 M76 18 C64 30 64 50 76 62" fill="none" stroke="#c8102e" stroke-width="0.9" />
-      <path d="M32 18 C44 30 44 50 32 62 M76 18 C64 30 64 50 76 62" fill="none" stroke="#c8102e" stroke-width="2.6" stroke-dasharray="0.8 2.6" transform="translate(-1.5 0)" />
-      <path d="M32 18 C44 30 44 50 32 62 M76 18 C64 30 64 50 76 62" fill="none" stroke="#c8102e" stroke-width="2.6" stroke-dasharray="0.8 2.6" transform="translate(1.5 0)" />
-      <text x="54" y="44" class="sp-marker blue" [style.font-size.px]="fs(line(0), 44, 14, 0.6)">{{ line(0) }}</text>
-      <text x="54" y="56" class="sp-marker blue small">{{ line(1) }}</text>
-      <path d="M33 30 q8 -4 6 -10" fill="none" stroke="#1d3d8f" stroke-width="1.2" />
+@case ('baseball') {
+    <!-- A milestone ball: the ball in a clear cube on a black base, the mark on the base's brass placard; the
+         ball itself plain but for its red stitching -->
+    <svg viewBox="0 0 100 116" data-trophy="baseball">
+      <ellipse cx="50" cy="113" rx="34" ry="2.5" fill="#000" opacity="0.5" />
+      <path d="M18 98 h64 l3 13 h-70 z" fill="url(#sp-lacquer)" />
+      <path d="M18 98 h64" stroke="#fff" stroke-opacity="0.25" />
+      <path d="M26 100.5 h48 v9.5 h-48 z" fill="url(#sp-gold)" />
+      <path d="M26 100.5 h48 v9.5 h-48 z" fill="url(#sp-brushed)" />
+      <text x="50" y="104.8" [style.font-size.px]="fs(line(0), 44, 4.4)" class="sp-engr dark hi" dy="0.35">{{ line(0) }}</text><text x="50" y="104.8" [style.font-size.px]="fs(line(0), 44, 4.4)" class="sp-engr dark">{{ line(0) }}</text>
+      <text x="50" y="109" [style.font-size.px]="fs(line(1), 44, 3.4)" class="sp-engr dark hi" dy="0.35">{{ line(1) }}</text><text x="50" y="109" [style.font-size.px]="fs(line(1), 44, 3.4)" class="sp-engr dark">{{ line(1) }}</text>
+      <path d="M20 40 l8 -8 h60 l-8 8 z" fill="#fff" fill-opacity="0.12" />
+      <path d="M80 40 l8 -8 v58 l-8 8 z" fill="#fff" fill-opacity="0.06" />
+      <ellipse cx="52" cy="92" rx="26" ry="4" fill="#000" opacity="0.3" />
+      <circle cx="52" cy="66" r="26" fill="url(#sp-ball-white)" />
+      <path d="M33 47 C43 57 43 75 33 85 M71 47 C61 57 61 75 71 85" fill="none" stroke="#c8102e" stroke-width="0.8" />
+      <path d="M33 47 C43 57 43 75 33 85 M71 47 C61 57 61 75 71 85" fill="none" stroke="#c8102e" stroke-width="2.4" stroke-dasharray="0.8 2.4" transform="translate(-1.4 0)" />
+      <path d="M33 47 C43 57 43 75 33 85 M71 47 C61 57 61 75 71 85" fill="none" stroke="#c8102e" stroke-width="2.4" stroke-dasharray="0.8 2.4" transform="translate(1.4 0)" />
+      <path d="M38 52 q6 -5 10 -8" fill="none" stroke="#fff" stroke-opacity="0.8" stroke-width="2" stroke-linecap="round" />
+      <path d="M20 40 h60 v58 h-60 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.35" stroke-width="0.6" />
     </svg>
   }
 
@@ -827,10 +876,10 @@
       <path d="M22 38 Q30 26 40 18" fill="none" stroke="#fffbe6" stroke-opacity="0.85" stroke-width="2.4" stroke-linecap="round" />
     </svg>
   }
-  @case ('cyyoung') {
+@case ('cyyoung') {
     <!-- The Cy Young Award (measured from the photo: H/W 1.15): a black shield-shaped plaque with notched top
-         corners; a silver arched banner, CY YOUNG AWARD; a silver hand gripping a ball rising out of a silver V
-         over a diamond; two silver nameplates below -->
+         corners; a silver arched banner, CY YOUNG AWARD; a silver hand gripping a ball (the fingers over its top,
+         the thumb at its side) rising out of a silver V over a diamond; two silver nameplates below -->
     <svg viewBox="0 0 160 184" data-trophy="cyyoung">
       <path d="M14 2 H146 Q146 12 158 12 V128 Q158 150 146 166 Q140 182 120 182 H40 Q20 182 14 166 Q2 150 2 128 V12 Q14 12 14 2 Z" fill="url(#sp-lacquer)" />
       <path d="M14 2 H146 Q146 12 158 12 V128 Q158 150 146 166 Q140 182 120 182 H40 Q20 182 14 166 Q2 150 2 128 V12 Q14 12 14 2 Z" fill="url(#sp-noise)" />
@@ -842,15 +891,30 @@
       <path d="M46 110 L80 94 L114 110 L80 126 Z" fill="url(#sp-silver)" />
       <path d="M58 108 L80 98 L102 108 L80 119 Z" fill="#1c2024" opacity="0.45" />
       <path d="M77 98 h6 v4 h-6 z M104 106 h4 v4 h-4 z M52 106 h4 v4 h-4 z" fill="#f2f4f6" />
-      <path d="M70 116 C70 104 71 94 71 86 C67 80 64 72 65 64 L95 64 C96 72 93 80 89 86 C89 96 90 106 90 116 Z" fill="url(#sp-silver)" />
-      <path d="M70 116 C70 104 71 94 71 86 C67 80 64 72 65 64 L95 64 C96 72 93 80 89 86 C89 96 90 106 90 116 Z" fill="url(#sp-env-v)" />
-      <circle cx="80" cy="55" r="17" fill="url(#sp-silver-ball)" />
-      <path d="M69 44 q9 9 4 22 M92 44 q-9 9 -4 22" fill="none" stroke="#59616a" stroke-opacity="0.6" stroke-width="0.7" stroke-dasharray="1.2 1" />
-      <ellipse cx="70" cy="44" rx="6" ry="5.2" fill="url(#sp-silver-ball)" />
-      <ellipse cx="78" cy="39" rx="6" ry="5.2" fill="url(#sp-silver-ball)" />
-      <ellipse cx="87" cy="39.5" rx="5.8" ry="5" fill="url(#sp-silver-ball)" />
-      <path d="M62 50 C60 60 62 70 70 74 C76 76 86 76 92 72 C96 68 98 60 97 52 C95 62 88 68 80 68 C72 68 64 62 62 50 Z" fill="url(#sp-silver)" />
-      <path d="M95 50 C101 52 103 60 99 66 C97 62 95 58 93 56 Z" fill="url(#sp-silver)" />
+      <!-- the hand: its back and wrist behind the ball, the ball, then the fingers curled over it and the thumb up its side -->
+      <path d="M66 118 C64 102 65 90 69 80 L91 80 C95 90 96 102 94 118 Z" fill="url(#sp-silver)" />
+      <path d="M66 118 C64 102 65 90 69 80 L91 80 C95 90 96 102 94 118 Z" fill="url(#sp-env-v)" />
+      <path d="M72 84 C70 94 70 106 72 116" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="0.9" />
+      <circle cx="80" cy="56" r="17" fill="url(#sp-silver-ball)" />
+      <path d="M69 45 q9 9 4 22 M92 45 q-9 9 -4 22" fill="none" stroke="#59616a" stroke-opacity="0.65" stroke-width="0.7" stroke-dasharray="1.2 1" />
+      <g fill="none" stroke-linecap="round" stroke="url(#sp-silver)">
+        <path d="M63 54 C65 40 74 34 85 37" stroke-width="7" />
+        <path d="M67 64 C67 48 78 40 90 44" stroke-width="7.5" />
+        <path d="M74 70 C76 58 86 52 95 56" stroke-width="6.5" />
+        <path d="M81 74 C85 66 91 62 97 64" stroke-width="5.5" />
+        <path d="M67 90 C57 80 55 66 61 56" stroke-width="7.5" />
+      </g>
+      <g fill="none" stroke-linecap="round" stroke="#fff" stroke-opacity="0.6" stroke-width="0.8">
+        <path d="M64 52 C66 40 74 35 84 37.5 M68 62 C68 48 78 41 89 44.5 M75 68 C77 58 86 53 94 56.5 M58 70 C57 62 59 58 62 56" />
+      </g>
+      <g fill="none" stroke="#3a4046" stroke-opacity="0.5" stroke-width="0.7">
+        <path d="M70 48 l3 -1 M72 58 l3 -1 M78 65 l3 -1 M84 70 l3 -1" />
+      </g>
+      <ellipse cx="85.5" cy="37" rx="2.6" ry="2" fill="#eef2f5" transform="rotate(20 85.5 37)" />
+      <ellipse cx="90.5" cy="44" rx="2.6" ry="2" fill="#eef2f5" transform="rotate(20 90.5 44)" />
+      <ellipse cx="95.5" cy="56" rx="2.3" ry="1.8" fill="#eef2f5" transform="rotate(20 95.5 56)" />
+      <ellipse cx="97" cy="64" rx="2" ry="1.6" fill="#eef2f5" transform="rotate(20 97 64)" />
+      <ellipse cx="61.5" cy="56" rx="2.6" ry="2" fill="#eef2f5" transform="rotate(-60 61.5 56)" />
       <path d="M22 40 Q80 6 138 40 L134 49 Q80 17 26 49 Z" fill="url(#sp-silver)" />
       <path d="M22 40 Q80 6 138 40" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="0.8" />
       <path id="sp-cy-arc" d="M27 45.5 Q80 13.5 133 45.5" fill="none" />
@@ -858,14 +922,9 @@
       <text class="sp-engr dark arc"><textPath href="#sp-cy-arc" startOffset="50%">CY YOUNG AWARD</textPath></text>
       <rect x="54" y="137" width="52" height="15" rx="1.5" fill="url(#sp-silver)" />
       <rect x="42" y="154" width="76" height="22" rx="1.5" fill="url(#sp-silver)" />
-      <path d="M62.0 141.5 h36.0" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M66.0 144.5 h28.0" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M62.0 147.5 h36.0" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M52.1 158.5 h55.8" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M58.3 161.5 h43.4" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M52.1 164.5 h55.8" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M58.3 167.5 h43.4" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
-      <path d="M52.1 170.5 h55.8" stroke="#23282d" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="2.2 0.9 3.4 0.9 1.6 0.9" />
+      <text x="80" y="146.5" [style.font-size.px]="fs(line(0), 48, 5.8)" class="sp-engr dark hi" dy="0.4">{{ line(0) }}</text><text x="80" y="146.5" [style.font-size.px]="fs(line(0), 48, 5.8)" class="sp-engr dark">{{ line(0) }}</text>
+      <text x="80" y="163" [style.font-size.px]="fs(line(1), 70, 5.6)" class="sp-engr dark hi" dy="0.4">{{ line(1) }}</text><text x="80" y="163" [style.font-size.px]="fs(line(1), 70, 5.6)" class="sp-engr dark">{{ line(1) }}</text>
+      <text x="80" y="171.5" [style.font-size.px]="fs(line(2), 70, 5.6)" class="sp-engr dark hi" dy="0.4">{{ line(2) }}</text><text x="80" y="171.5" [style.font-size.px]="fs(line(2), 70, 5.6)" class="sp-engr dark">{{ line(2) }}</text>
     </svg>
   }
   @case ('mlbmvp') {
@@ -1061,15 +1120,16 @@
     </svg>
   }
   @case ('goldglove') {
-    <!-- The Gold Glove Award (after the photo: H/W 1.07): a gold glove tilted back, its palm and woven web toward us,
-         the fingers laced; set on an angled stand, a black front with a clear acrylic plate (GOLD GLOVE AWARD) and a
-         stitched red patch, its cherry-wood side; a wide oval base, cherry on top and black lacquer round the edge,
-         two gold baseballs with black stitching in small cups, a brass plaque on the front -->
+    <!-- The Gold Glove Award (after the photo: H/W 1.07): a gold glove tilted back, its palm toward us, the thumb at
+         the right, four laced fingers rising at the left, the woven web between the index finger and the thumb; set
+         on an angled stand, a black front with a clear acrylic plate (GOLD GLOVE AWARD) and a stitched red patch,
+         its cherry-wood side; a wide oval base, cherry on top and black lacquer round the edge, two gold baseballs
+         with black stitching in small cups, a brass plaque on the front -->
     <svg viewBox="0 0 190 204" data-trophy="goldglove">
-      <!-- the base: the oval's top in cherry, its black edge, the brass plaque -->
-      <ellipse cx="95" cy="196" rx="92" ry="6" fill="#000" opacity="0.5" />
+      <ellipse cx="95" cy="198" rx="92" ry="5" fill="#000" opacity="0.5" />
       <path d="M3 148 C3 132 44 122 95 122 C146 122 187 132 187 148 L187 178 C187 192 146 200 95 200 C44 200 3 192 3 178 Z" fill="url(#sp-lacquer)" />
       <path d="M3 148 C3 132 44 122 95 122 C146 122 187 132 187 148 C187 164 146 172 95 172 C44 172 3 164 3 148 Z" fill="url(#sp-cherry)" />
+      <path d="M3 148 C3 132 44 122 95 122 C146 122 187 132 187 148 C187 164 146 172 95 172 C44 172 3 164 3 148 Z" fill="url(#sp-grain)" opacity="0.6" />
       <path d="M3 148 C3 132 44 122 95 122 C146 122 187 132 187 148 C187 164 146 172 95 172 C44 172 3 164 3 148 Z" fill="url(#sp-noise)" />
       <path d="M8 146 C14 132 56 125 95 125" fill="none" stroke="#ffd2b0" stroke-opacity="0.3" stroke-width="1.2" />
       <path d="M22 174 C50 182 140 182 168 174 L166 194 C140 200 50 200 24 194 Z" fill="url(#sp-gold)" />
@@ -1084,34 +1144,40 @@
       }
       <!-- the stand: its cherry side, its black front, the acrylic plate and the patch -->
       <path d="M118 98 L136 104 L138 160 L120 158 Z" fill="url(#sp-cherry)" />
+      <path d="M118 98 L136 104 L138 160 L120 158 Z" fill="url(#sp-grain-v)" opacity="0.5" />
       <path d="M56 104 L118 98 L120 158 L58 162 Z" fill="url(#sp-lacquer)" />
       <path d="M61 106 L114 101 L115 127 L62 131 Z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.55" stroke-width="0.8" />
+      <path d="M62 107 L113 102" stroke="#fff" stroke-opacity="0.5" stroke-width="0.6" />
       <text x="88" y="113" class="sp-engr light" transform="rotate(-5 88 113)" style="font-size: 6.6px">GOLD</text>
       <text x="88" y="120" class="sp-engr light" transform="rotate(-5 88 120)" style="font-size: 6.6px">GLOVE</text>
       <text x="88" y="126.5" class="sp-engr light" transform="rotate(-5 88 126.5)" style="font-size: 4.8px">AWARD</text>
       <path d="M68 137 L110 134 L111 151 L69 154 Z" fill="#a51424" />
       <path d="M70 138.5 L108.6 135.6 L109.4 149.6 L70.8 152.4 Z" fill="none" stroke="#f2f2f2" stroke-opacity="0.7" stroke-width="0.7" stroke-dasharray="1.2 0.8" />
-      <!-- the glove: tilted back, the palm toward us; the thumb at the left, the woven web, four fingers round the top
-           right, laced at their seams -->
-      <g transform="rotate(-10 98 52)">
-        <path d="M60 92 C54 70 52 40 58 20 C60 12 66 10 70 12 L98 6 C102 0 112 0 114 6 C118 4 126 8 127 14 C132 14 138 22 137 30 C142 34 144 46 140 56 C140 72 134 86 124 96 C108 104 82 104 60 92 Z" fill="url(#sp-gold)" />
-        <path d="M60 92 C54 70 52 40 58 20 C60 12 66 10 70 12 L98 6 C102 0 112 0 114 6 C118 4 126 8 127 14 C132 14 138 22 137 30 C142 34 144 46 140 56 C140 72 134 86 124 96 C108 104 82 104 60 92 Z" fill="url(#sp-env-v)" />
-        <path d="M66 16 L98 10 L102 44 L70 50 Z" fill="#7a560a" />
-        @for (r of [0, 1, 2, 3, 4]; track r) {
-          @for (c of [0, 1, 2, 3]; track c) {
-            @if ((r + c) % 2 === 0) {
-              <rect [attr.x]="68 + c * 8" [attr.y]="15 + r * 7" width="7" height="6" rx="1.2" fill="url(#sp-gold-ball)" />
-            }
-          }
+      <!-- the glove: palm toward us, tilted back; the thumb right, the fingers left, the web between -->
+      <g transform="translate(96 60) rotate(-8)">
+        <path d="M-46 40 C-56 20 -54 -10 -44 -30 C-40 -40 -30 -42 -26 -32 L-24 -36 C-20 -48 -8 -48 -6 -36 L-4 -36 C0 -50 14 -48 12 -34 L12 -30 C16 -42 30 -40 28 -26 L26 -10 C34 -22 52 -22 50 -8 C48 10 36 30 18 42 C-4 54 -30 54 -46 40 Z" fill="url(#sp-gold)" />
+        <path d="M-46 40 C-56 20 -54 -10 -44 -30 C-40 -40 -30 -42 -26 -32 L-24 -36 C-20 -48 -8 -48 -6 -36 L-4 -36 C0 -50 14 -48 12 -34 L12 -30 C16 -42 30 -40 28 -26 L26 -10 C34 -22 52 -22 50 -8 C48 10 36 30 18 42 C-4 54 -30 54 -46 40 Z" fill="url(#sp-env-v)" />
+        <!-- the palm's pocket, the heel pad -->
+        <ellipse cx="-10" cy="14" rx="26" ry="18" fill="#6e4c08" opacity="0.32" />
+        <path d="M-40 34 C-20 48 4 48 20 40" fill="none" stroke="#6e4c08" stroke-width="2.4" />
+        <path d="M-38 32 C-20 44 2 44 18 36" fill="none" stroke="#fff6cf" stroke-opacity="0.35" stroke-width="1" />
+        <!-- the fingers' seams, their stitching -->
+        <path d="M-26 -32 L-28 14 M-6 -36 L-8 14 M12 -30 L10 14" fill="none" stroke="#6e4c08" stroke-width="1.4" />
+        <path d="M-26 -32 L-28 14 M-6 -36 L-8 14 M12 -30 L10 14" fill="none" stroke="#fff3c4" stroke-opacity="0.6" stroke-width="0.6" stroke-dasharray="1.2 1.4" transform="translate(-1 0)" />
+        <!-- the web: woven strips between the index finger and the thumb, laced round its edge -->
+        <path d="M14 -28 L30 -22 L46 -8 L30 10 L12 -4 Z" fill="url(#sp-weave)" />
+        <path d="M14 -28 L30 -22 L46 -8 L30 10 L12 -4 Z" fill="none" stroke="#6e4c08" stroke-width="1.2" />
+        @for (s of [[16, -20], [20, -12], [16, -3], [36, -16], [42, -8], [38, 2], [24, 6], [30, -24]]; track $index) {
+          <path [attr.d]="'M' + (s[0] - 2.2) + ' ' + (s[1] - 1.6) + ' l4.4 3.2 m0 -3.2 l-4.4 3.2'" stroke="#fff3c4" stroke-width="1.2" stroke-linecap="round" />
         }
-        <ellipse cx="96" cy="72" rx="24" ry="18" fill="#6e4c08" opacity="0.3" />
-        <ellipse cx="90" cy="66" rx="10" ry="6" fill="#fff6cf" opacity="0.35" />
-        <path d="M114 6 C112 24 110 42 108 58 M127 14 C125 32 122 48 119 62 M137 30 C134 44 131 56 128 66" fill="none" stroke="#6e4c08" stroke-width="1.4" stroke-linecap="round" />
-        @for (s of [[113, 14], [111.5, 28], [110, 42], [126, 22], [124, 36], [122, 50], [135, 38], [132.5, 50]]; track $index) {
-          <path [attr.d]="'M' + (s[0] - 2.4) + ' ' + (s[1] - 1.6) + ' l4.8 3.2 m0 -3.2 l-4.8 3.2'" stroke="#fff3c4" stroke-width="1.3" stroke-linecap="round" />
+        <!-- lacing along the finger tops -->
+        @for (s of [[-40, -30], [-32, -40], [-16, -44], [2, -45], [20, -38], [-24, -38], [-10, -42]]; track $index) {
+          <path [attr.d]="'M' + (s[0] - 2) + ' ' + (s[1] - 1.4) + ' l4 2.8 m0 -2.8 l-4 2.8'" stroke="#fff3c4" stroke-width="1.1" stroke-linecap="round" />
         }
-        <path d="M62 92 C80 102 106 102 124 96" fill="none" stroke="#6e4c08" stroke-width="2.6" />
-        <path d="M60 40 C58 28 62 16 70 13" fill="none" stroke="#fffbe6" stroke-opacity="0.8" stroke-width="2.2" stroke-linecap="round" />
+        <!-- the thumb's crease, the light along the left edge -->
+        <path d="M30 -10 C36 -4 40 6 36 20" fill="none" stroke="#6e4c08" stroke-width="1.3" />
+        <path d="M-48 20 C-52 0 -50 -20 -42 -32" fill="none" stroke="#fffbe6" stroke-opacity="0.8" stroke-width="2.2" stroke-linecap="round" />
+        <ellipse cx="-20" cy="-20" rx="10" ry="6" fill="#fff6cf" opacity="0.3" />
       </g>
     </svg>
   }
@@ -1240,6 +1306,194 @@
           <path d="M-24 35 h3 v2 h-3 z" fill="#1d3d8f" /><path d="M-20.6 35 h3 v2 h-3 z" fill="#f2f2f2" /><path d="M-17.2 35 h3 v2 h-3 z" fill="#c8102e" />
         </g>
       }
+    </svg>
+  }
+  @case ('nbaconf') {
+    <!-- The conference trophies, sterling silver (never the O'Brien's gold). From 2022 the Bob Cousy (East) and Oscar
+         Robertson (West) trophies, 15.6": a silver ball held in two raised rings on a drum base, the ball marked in
+         four quarters (the playoffs' four steps); before 2022, Tiffany's silver ball on a tall column, a black base.
+         The conference's name on the base -->
+    <svg viewBox="0 0 90 187" class="sp-metal" data-trophy="nbaconf">
+      @if (year(1) >= 2022) {
+        <path d="M14 150 h62 l4 7 v25 h-70 v-25 z" fill="url(#sp-silver)" />
+        <path d="M14 150 h62 l4 7 v25 h-70 v-25 z" fill="url(#sp-env-v)" />
+        <ellipse cx="45" cy="150" rx="31" ry="4" fill="url(#sp-silver)" />
+        <path d="M10 160 h70 v9 h-70 z" fill="url(#sp-silver)" />
+        <path d="M10 160 h70 M10 169 h70" stroke="#3a4046" stroke-opacity="0.5" />
+        <text x="45" y="166.6" [style.font-size.px]="fs(line(0) + ' CONFERENCE', 64, 5.4)" class="sp-engr dark hi" dy="0.35">{{ line(0) }} CONFERENCE</text><text x="45" y="166.6" [style.font-size.px]="fs(line(0) + ' CONFERENCE', 64, 5.4)" class="sp-engr dark">{{ line(0) }} CONFERENCE</text>
+        <text x="45" y="177" class="sp-engr dark hi" dy="0.35" style="font-size: 4.6px">CHAMPIONS {{ line(1) }}</text><text x="45" y="177" class="sp-engr dark" style="font-size: 4.6px">CHAMPIONS {{ line(1) }}</text>
+        <!-- the two rings: the back halves behind the ball -->
+        <path d="M45 148 C20 140 10 100 22 70 C30 50 38 42 45 42" fill="none" stroke="url(#sp-silver)" stroke-width="6" stroke-linecap="round" />
+        <path d="M45 148 C70 140 80 100 68 70 C60 50 52 42 45 42" fill="none" stroke="url(#sp-silver)" stroke-width="6" stroke-linecap="round" />
+        <path d="M14 112 C24 92 66 92 76 112" fill="none" stroke="url(#sp-silver)" stroke-width="5" stroke-linecap="round" />
+        <!-- the ball, in quarters -->
+        <circle cx="45" cy="72" r="26" fill="url(#sp-silver-ball)" />
+        <path d="M19 72 h52 M45 46 v52" fill="none" stroke="#4a525a" stroke-width="1.6" />
+        <path d="M26 54 q19 10 0 36 M64 54 q-19 10 0 36" fill="none" stroke="#4a525a" stroke-opacity="0.6" stroke-width="1" />
+        <path d="M28 60 q8 -10 20 -11" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="2.4" stroke-linecap="round" />
+        <!-- the rings' front halves, over the ball -->
+        <path d="M14 112 C24 130 66 130 76 112" fill="none" stroke="url(#sp-silver)" stroke-width="5" stroke-linecap="round" />
+        <path d="M14 112 C24 130 66 130 76 112" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="0.8" transform="translate(0 -1.6)" />
+        <path d="M22 70 C14 90 18 128 45 148" fill="none" stroke="#fff" stroke-opacity="0.5" stroke-width="0.9" transform="translate(-1.5 0)" />
+      } @else {
+        <path d="M10 160 h70 v22 h-70 z" fill="url(#sp-lacquer)" />
+        <path d="M10 160 h70" stroke="#fff" stroke-opacity="0.25" />
+        <text x="45" y="168.5" [style.font-size.px]="fs(line(0) + ' CONFERENCE', 64, 5.2)" class="sp-engr light" dy="0.35">{{ line(0) }} CONFERENCE</text>
+        <text x="45" y="176.5" class="sp-engr light" style="font-size: 4.6px">CHAMPIONS {{ line(1) }}</text>
+        <path d="M18 152 h54 l6 8 h-66 z" fill="url(#sp-silver)" />
+        <path d="M36 58 h18 l6 94 h-30 z" fill="url(#sp-silver)" />
+        <path d="M36 58 h18 l6 94 h-30 z" fill="url(#sp-env-v)" />
+        <path d="M40 60 L36 150" stroke="#fff" stroke-opacity="0.8" stroke-width="1" />
+        <path d="M32 100 h26 M31 104 h28 M30 108 h30" stroke="#2c3238" stroke-opacity="0.3" stroke-width="0.6" />
+        <ellipse cx="45" cy="58" rx="12" ry="3" fill="url(#sp-silver)" />
+        <circle cx="45" cy="32" r="25" fill="url(#sp-silver-ball)" />
+        <path d="M20 32 h50 M45 7 v50 M27 15 q18 10 0 34 M63 15 q-18 10 0 34" fill="none" stroke="#4a525a" stroke-width="1.4" />
+        <path d="M28 20 q8 -10 20 -11" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="2.4" stroke-linecap="round" />
+      }
+    </svg>
+  }
+<!-- ================================ gear, and the office ================================ -->
+  @case ('cap') {
+    <!-- His cap: the crown in the team's color, its panels seamed, a button on top, the brim curved; the team's mark
+         on the front panel -->
+    <svg viewBox="0 0 90 62" data-trophy="cap">
+      <ellipse cx="46" cy="58" rx="38" ry="3" fill="#000" opacity="0.5" />
+      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" style="fill: var(--c1)" />
+      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-roll-v)" opacity="0.6" />
+      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-mesh)" />
+      <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="0.9" />
+      <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.5" transform="translate(0.8 0)" />
+      <circle cx="37" cy="20" r="1" fill="#000" fill-opacity="0.35" /><circle cx="53" cy="20" r="1" fill="#000" fill-opacity="0.35" />
+      <circle cx="45" cy="7" r="2.4" style="fill: var(--c1)" stroke="#000" stroke-opacity="0.35" stroke-width="0.6" />
+      <image [attr.href]="logo" x="35" y="18" width="20" height="20" opacity="0.95" />
+      <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" style="fill: var(--c1)" />
+      <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" fill="url(#sp-roll-y)" opacity="0.7" />
+      <path d="M8 42 C30 36 60 36 86 44" fill="none" stroke="#000" stroke-opacity="0.4" stroke-width="0.8" />
+      <path d="M12 44 C30 39 60 39 82 46" fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="0.8" stroke-dasharray="1 1.4" />
+      <path d="M20 14 q10 -8 20 -6" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
+    </svg>
+  }
+  @case ('stick') {
+    <!-- His stick: a black composite shaft, tape at the knob, the blade taped where it meets the ice -->
+    <svg viewBox="0 0 64 300" data-trophy="stick">
+      <ellipse cx="40" cy="297" rx="22" ry="2.5" fill="#000" opacity="0.5" />
+      <path d="M8 4 L16 4 L34 262 L26 264 Z" fill="#161616" />
+      <path d="M10 6 L28 262" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="1" />
+      <path d="M14 6 L32 262" fill="none" style="stroke: var(--c1)" stroke-opacity="0.9" stroke-width="1.2" />
+      <path d="M7 0 L17 0 L18 16 L8 16 Z" fill="url(#sp-tape-white)" />
+      <path d="M8 4 L17 4 M8 8 L17 8 M8 12 L17 12" stroke="#000" stroke-opacity="0.12" stroke-width="0.6" />
+      <path d="M22 256 L36 258 C50 262 58 272 61 290 C61 296 57 300 51 299 L28 292 C20 288 18 272 22 256 Z" fill="#161616" />
+      <path d="M26 262 L38 263 L52 294 L40 292 Z" fill="url(#sp-tape-white)" />
+      <path d="M28 266 L46 268 M30 272 L48 275 M33 279 L50 282 M36 286 L52 289" stroke="#000" stroke-opacity="0.12" stroke-width="0.7" />
+      <path d="M24 258 L36 260" stroke="#fff" stroke-opacity="0.25" stroke-width="0.8" />
+      <path d="M36 258 C50 262 58 272 61 290" fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="0.8" />
+    </svg>
+  }
+  @case ('coyplaque') {
+    <!-- Coach of the Year (the NFL's, the NBA's; the NHL's Jack Adams): a walnut plaque, a gold clipboard with the
+         play drawn on it and a whistle on its cord, the award's name, the season and his on the brass plate -->
+    <svg viewBox="0 0 130 160" data-trophy="coyplaque">
+      <ellipse cx="65" cy="157" rx="48" ry="2.5" fill="#000" opacity="0.5" />
+      <rect x="6" y="2" width="118" height="152" rx="6" fill="url(#sp-walnut)" />
+      <rect x="6" y="2" width="118" height="152" rx="6" fill="url(#sp-grain-v)" />
+      <rect x="6" y="2" width="118" height="152" rx="6" fill="url(#sp-noise)" />
+      <path d="M12 2.5 h106" stroke="#f0c48a" stroke-opacity="0.35" />
+      <rect x="12" y="8" width="106" height="140" rx="3" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="1.6" />
+      <!-- the clipboard: gold, its clip, the play in black -->
+      <rect x="40" y="22" width="40" height="52" rx="3" fill="url(#sp-gold)" />
+      <rect x="40" y="22" width="40" height="52" rx="3" fill="url(#sp-env-v)" />
+      <rect x="52" y="17" width="16" height="9" rx="2" fill="url(#sp-silver)" />
+      <rect x="44" y="30" width="32" height="40" rx="1" fill="#f6f1e6" />
+      <g fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round">
+        <path d="M48 60 h24" />
+        <circle cx="50" cy="56" r="1.6" /><circle cx="55" cy="56" r="1.6" /><circle cx="60" cy="56" r="1.6" /><circle cx="65" cy="56" r="1.6" /><circle cx="70" cy="56" r="1.6" />
+        <path d="M48 46 l3 3 m0 -3 l-3 3 M54 46 l3 3 m0 -3 l-3 3 M60 44 l3 3 m0 -3 l-3 3 M66 46 l3 3 m0 -3 l-3 3" />
+        <path d="M70 54 C72 46 70 40 64 36 M50 54 C46 46 48 40 54 38" />
+        <path d="M64 36 l-3 1 l2 3 M54 38 l3 1 l-2 3" />
+        <path d="M60 62 v4" stroke-dasharray="1 1" />
+      </g>
+      <!-- the whistle on its cord -->
+      <path d="M86 24 C94 40 96 56 88 70" fill="none" stroke="#1a1a1a" stroke-width="1" />
+      <rect x="82" y="68" width="14" height="8" rx="3" fill="url(#sp-silver)" />
+      <circle cx="90" cy="78" r="5.5" fill="url(#sp-silver)" />
+      <circle cx="90" cy="78" r="2" fill="#2b3138" />
+      <!-- the plate -->
+      <rect x="18" y="86" width="94" height="56" rx="2" fill="url(#sp-gold)" />
+      <rect x="18" y="86" width="94" height="56" rx="2" fill="url(#sp-brushed)" />
+      <rect x="20" y="88" width="90" height="52" rx="1.5" fill="none" stroke="#3d2804" stroke-opacity="0.4" stroke-width="0.6" />
+      <text x="65" y="102" [style.font-size.px]="fs(line(0), 84, 7.4)" class="sp-engr dark hi" dy="0.4">{{ line(0) }}</text><text x="65" y="102" [style.font-size.px]="fs(line(0), 84, 7.4)" class="sp-engr dark">{{ line(0) }}</text>
+      <text x="65" y="116" [style.font-size.px]="fs(line(1), 84, 7)" class="sp-engr dark hi" dy="0.4">{{ line(1) }}</text><text x="65" y="116" [style.font-size.px]="fs(line(1), 84, 7)" class="sp-engr dark">{{ line(1) }}</text>
+      <path d="M36 123 h58" stroke="#3d2804" stroke-opacity="0.45" stroke-width="0.7" />
+      <text x="65" y="133" [style.font-size.px]="fs(line(2), 84, 7)" class="sp-engr dark hi" dy="0.4">{{ line(2) }}</text><text x="65" y="133" [style.font-size.px]="fs(line(2), 84, 7)" class="sp-engr dark">{{ line(2) }}</text>
+    </svg>
+  }
+  @case ('ringbox') {
+    <!-- A championship ring in its open box: the lid up, white satin inside, the ring standing in its slot, a cluster
+         of stones on a gold band -->
+    <svg viewBox="0 0 80 46" data-trophy="ringbox">
+      <ellipse cx="40" cy="44" rx="30" ry="2" fill="#000" opacity="0.5" />
+      <path d="M12 2 h56 a3 3 0 0 1 3 3 v16 h-62 v-16 a3 3 0 0 1 3 -3 z" fill="url(#sp-velvet)" />
+      <path d="M14 4 h52 a1.5 1.5 0 0 1 1.5 1.5 v14.5 h-55 v-14.5 a1.5 1.5 0 0 1 1.5 -1.5 z" fill="#f1ede6" />
+      <path d="M14 4 h52 a1.5 1.5 0 0 1 1.5 1.5 v14.5 h-55 v-14.5 a1.5 1.5 0 0 1 1.5 -1.5 z" fill="url(#sp-cloth)" opacity="0.5" />
+      <text x="40" y="14" class="sp-engr dark" style="font-size: 4px">{{ line(0) }} CHAMPIONS</text>
+      <path d="M8 21 h64 l2 20 h-68 z" fill="url(#sp-velvet)" />
+      <path d="M8 21 h64" stroke="#fff" stroke-opacity="0.2" />
+      <path d="M14 24 h52 l1 14 h-54 z" fill="#1c1c22" />
+      <path d="M30 26 h20 l0.5 10 h-21 z" fill="#0a0a0d" />
+      <!-- the ring -->
+      <ellipse cx="40" cy="26" rx="9" ry="10" fill="none" stroke="url(#sp-gold)" stroke-width="3.6" />
+      <path d="M32 20 C36 14 44 14 48 20" fill="none" stroke="#fffbe6" stroke-opacity="0.7" stroke-width="0.8" />
+      <path d="M31 19 L49 19 L46 12 L34 12 Z" fill="url(#sp-gold)" />
+      <circle cx="40" cy="14.5" r="3.6" fill="url(#sp-stone)" />
+      <circle cx="35" cy="16" r="1.3" fill="url(#sp-stone)" /><circle cx="45" cy="16" r="1.3" fill="url(#sp-stone)" />
+      <path d="M36.5 11.5 L39 10 L41 10 L43.5 11.5" fill="none" stroke="#fff" stroke-opacity="0.8" stroke-width="0.6" />
+    </svg>
+  }
+  @case ('whiteboard') {
+    <!-- The whiteboard in a coach's office: an aluminum frame, a play drawn in marker (the X's, the O's, the routes),
+         his record big in the corner, the season small; markers and an eraser on the tray -->
+    <svg viewBox="0 0 300 150" data-trophy="whiteboard">
+      <rect x="0" y="0" width="300" height="150" rx="3" fill="#b4babf" />
+      <rect x="0" y="0" width="300" height="150" rx="3" fill="url(#sp-chrome)" opacity="0.35" />
+      <rect x="6" y="6" width="288" height="124" fill="#f8f9f7" />
+      <path d="M6 6 L120 6 L40 130 L6 130 Z" fill="#fff" fill-opacity="0.5" />
+      <path d="M6 6 h288 M6 130 h288" stroke="#000" stroke-opacity="0.12" />
+      <!-- the tray -->
+      <rect x="6" y="132" width="288" height="12" rx="1" fill="#9aa1a7" />
+      <rect x="6" y="132" width="288" height="3" fill="#c9cfd4" />
+      <rect x="22" y="136" width="30" height="6" rx="2" fill="#1b3f8a" /><rect x="56" y="136" width="30" height="6" rx="2" fill="#c0252d" /><rect x="90" y="136" width="30" height="6" rx="2" fill="#1a1a1a" />
+      <rect x="230" y="134" width="40" height="9" rx="1.5" fill="#2a2a2a" /><rect x="232" y="139" width="36" height="3" fill="#d9d4c8" />
+      <!-- the play: the defense's X's, the offense's O's, two routes and a handoff -->
+      <g fill="none" stroke="#1b3f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+        <circle cx="72" cy="86" r="5" /><circle cx="90" cy="86" r="5" /><circle cx="108" cy="86" r="5" /><circle cx="126" cy="86" r="5" /><circle cx="144" cy="86" r="5" />
+        <circle cx="108" cy="104" r="5" /><circle cx="132" cy="108" r="5" /><circle cx="46" cy="90" r="5" /><circle cx="176" cy="90" r="5" />
+        <path d="M46 84 C44 66 50 50 64 40 l-7 1 M64 40 l0 7" />
+        <path d="M176 84 C178 70 170 58 158 50 l7 -1 M158 50 l0 7" />
+        <path d="M144 80 C150 66 160 60 170 58" stroke-dasharray="3 3" />
+        <path d="M108 98 C96 92 90 86 84 76" stroke-dasharray="2 3" />
+      </g>
+      <g fill="none" stroke="#c0252d" stroke-width="2" stroke-linecap="round" opacity="0.9">
+        <path d="M66 58 l8 8 m0 -8 l-8 8 M86 54 l8 8 m0 -8 l-8 8 M104 50 l8 8 m0 -8 l-8 8 M122 54 l8 8 m0 -8 l-8 8 M142 58 l8 8 m0 -8 l-8 8 M62 30 l8 8 m0 -8 l-8 8 M170 32 l8 8 m0 -8 l-8 8" />
+        <ellipse cx="108" cy="104" rx="10" ry="8" stroke-dasharray="3 2" />
+      </g>
+      <!-- the record, the season, the team -->
+      <text x="246" y="94" class="sp-marker blue board" [style.font-size.px]="fs(line(0), 92, 34, 0.56)">{{ line(0) }}</text>
+      <text x="246" y="112" class="sp-marker board small">{{ line(1) }}</text>
+      <text x="14" y="22" class="sp-marker board small" text-anchor="start">{{ line(2) }}</text>
+      <path d="M200 100 h92" stroke="#1b3f8a" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  }
+  @case ('frame') {
+    <!-- The team's logo, framed: a black frame, a cream mat, a glass sheen -->
+    <svg viewBox="0 0 90 90" data-trophy="frame">
+      <rect x="0" y="0" width="90" height="90" rx="1.5" fill="#1a1a1a" />
+      <rect x="2" y="2" width="86" height="86" fill="none" stroke="#3a3a3a" stroke-width="1" />
+      <rect x="8" y="8" width="74" height="74" fill="#f1ede3" />
+      <rect x="8" y="8" width="74" height="74" fill="none" stroke="#000" stroke-opacity="0.12" stroke-width="1.5" />
+      <rect x="18" y="18" width="54" height="54" fill="#f7f5ef" />
+      <image [attr.href]="logo" x="23" y="23" width="44" height="44" />
+      <path d="M8 8 L50 8 L8 50 Z" fill="#fff" fill-opacity="0.22" />
+      <path d="M8 8 L82 82" stroke="#fff" stroke-opacity="0.1" stroke-width="6" />
     </svg>
   }
 }

@@ -91,6 +91,8 @@ export class AppComponent {
   // The sport bar across the top: each sport is its own app on the same site (apps/<sport>, served at
   // /<sport>/); this one is lit
   readonly sport = SPORT.id;
+  // (?gallery=1: the splash art's gallery in place of the page, for checking it)
+  readonly gallery = typeof location !== 'undefined' && /[?&]gallery=/.test(location.search);
   readonly siteSports = SITE_SPORTS;
   // (the page's name, for its heading: "NFL")
   readonly sportName = SITE_SPORTS.find((s) => s.id === SPORT.id)?.label ?? SPORT.id.toUpperCase();

@@ -10,7 +10,11 @@
 //   lines     its engraving or printed words
 //   tip       its name on hover (and on a tap)
 //   wide      a phone shows it only when there's room
+//   stall     where it sits in a player's own locker (the gear): on the top shelf, on the floor, leaning in the
+//             corner, or hung on the hook; and its height there (px, desktop: the stall is a small room, so
+//             real heights don't hold; a helmet is about the jersey's shoulder width)
 
+export type StallPlace = 'shelf' | 'floor' | 'corner' | 'hook';
 export interface PropDef {
   piece: string;
   inches: number;
@@ -18,6 +22,7 @@ export interface PropDef {
   tip: string;
   wide?: boolean;
   needs?: string; // a field it can't go without (the prop is left out until the data has it)
+  stall?: { place: StallPlace; h: number };
 }
 
 export const PROPS: Record<string, PropDef> = {
@@ -26,9 +31,10 @@ export const PROPS: Record<string, PropDef> = {
   'nfl-afc-trophy': { piece: 'conf', inches: 17, lines: ['AFC', 'AFC'], tip: 'AFC champions · the Lamar Hunt Trophy · {confFinal}' },
   'nfl-nfc-trophy': { piece: 'conf', inches: 17, lines: ['NFC', 'NFC'], tip: 'NFC champions · the George Halas Trophy · {confFinal}' },
   'nfl-honors': { piece: 'honors', inches: 21, lines: ['{award}', '{season}'], tip: '{awardName} · {name}, {season}' },
-  'nfl-helmet': { piece: 'helmet', inches: 16, tip: '{teamName} helmet · {seasonLabel}' },
-  'deflated-football': { piece: 'deflated', inches: 13, tip: 'A football, a little under 12.5 PSI' },
-  'game-ball': { piece: 'gameball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle' },
+  'nfl-helmet': { piece: 'helmet', inches: 16, tip: '{teamName} helmet · {seasonLabel}', stall: { place: 'shelf', h: 58 } },
+  'deflated-football': { piece: 'deflated', inches: 13, tip: 'A football, a little under 12.5 PSI', stall: { place: 'floor', h: 44 } },
+  // (a game ball's words go on the placard under it, never on the ball)
+  'game-ball': { piece: 'gameball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 48 } },
   // ---- NHL
   'nhl-stanley-cup': { piece: 'stanley', inches: 35.25, lines: ['{teamShort} {seasonEnd}'], tip: 'Stanley Cup champions · {final}' },
   'nhl-wales-trophy': { piece: 'wales', inches: 30, tip: 'Eastern Conference champions · the Prince of Wales Trophy · {confFinal}' },
@@ -39,13 +45,17 @@ export const PROPS: Record<string, PropDef> = {
   'nhl-calder': { piece: 'calder', inches: 26, tip: 'Calder Trophy (rookie of the year) · {name}' },
   'nhl-vezina': { piece: 'vezina', inches: 28, tip: 'Vezina Trophy (goaltender) · {name}' },
   'nhl-norris': { piece: 'norris', inches: 32, tip: 'Norris Trophy (defenseman) · {name}' },
-  'puck': { piece: 'puck', inches: 8, lines: ['', '{seasonShort}'], tip: '{teamName} · {seasonLabel}' },
+  // (a puck is 1" by 3": drawn at that scale in a small acrylic holder, its placard under it)
+  'puck': { piece: 'puck', inches: 6, lines: ['{teamShort}', '{seasonShort}'], tip: '{teamName} · {seasonLabel}', stall: { place: 'shelf', h: 42 } },
+  'hockey-stick': { piece: 'stick', inches: 58, tip: 'His stick', stall: { place: 'corner', h: 190 } },
   // ---- NBA
   'nba-obrien': { piece: 'obrien', inches: 24, lines: ['{seasonEnd} Champions'], tip: "NBA champions · the Larry O'Brien Trophy · {final}" },
   'nba-jordan-mvp': { piece: 'mjmvp', inches: 23.6, tip: 'NBA MVP · the Michael Jordan Trophy · {seasonLabel}' },
-  'nba-conf-trophy': { piece: 'obrien', inches: 20, lines: ['{confName} Champions'], tip: '{confName} Conference champions · {confFinal}' },
-  'signature-shoe': { piece: 'shoe', inches: 9, tip: '{shoeTip}' },
-  'nba-game-ball': { piece: 'bball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle' },
+  // (the conference trophies: a silver ball, never the O'Brien's gold one; from 2022 the Bob Cousy and Oscar
+  // Robertson trophies, 15.6", the ball held in two raised rings; before, Tiffany's silver ball on a column)
+  'nba-conf-trophy': { piece: 'nbaconf', inches: 17, lines: ['{confName}', '{seasonEnd}'], tip: '{confName} Conference champions · {confTrophy} · {confFinal}' },
+  'signature-shoe': { piece: 'shoe', inches: 9, tip: '{shoeTip}', stall: { place: 'floor', h: 44 } },
+  'nba-game-ball': { piece: 'bball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 50 } },
   // ---- MLB
   'mlb-commissioners-trophy': { piece: 'commish', inches: 24, lines: ['{season}'], tip: "World Series champions · the Commissioner's Trophy · {final}" },
   'mlb-pennant': { piece: 'pennant', inches: 14, lines: ['{league} Champions', '{season}'], tip: '{league} pennant · {confFinal}' },
@@ -53,15 +63,22 @@ export const PROPS: Record<string, PropDef> = {
   'mlb-cy-young': { piece: 'cyyoung', inches: 17, lines: ['{name}', '{league}', '{season}'], tip: 'Cy Young Award · {name}, {season}' },
   'mlb-gold-glove': { piece: 'goldglove', inches: 16, tip: 'Gold Glove · {name}, {season}' },
   'mlb-silver-slugger': { piece: 'silverslugger', inches: 40, tip: 'Silver Slugger · {name}, {season}' },
-  'milestone-ball': { piece: 'baseball', inches: 10, lines: ['{mbBig}', '{mbSmall}'], tip: '{mbTip}', needs: 'mbBig' },
-  'bats': { piece: 'bats', inches: 34, tip: 'His bats' },
-  'fielders-glove': { piece: 'glove', inches: 12, tip: 'His glove' },
+  'milestone-ball': { piece: 'baseball', inches: 10, lines: ['{mbBig}', '{mbSmall}'], tip: '{mbTip}', needs: 'mbBig', stall: { place: 'shelf', h: 44 } },
+  'bats': { piece: 'bats', inches: 34, tip: 'His bats', stall: { place: 'corner', h: 170 } },
+  'fielders-glove': { piece: 'glove', inches: 12, tip: 'His glove', stall: { place: 'shelf', h: 44 } },
+  'ball-cap': { piece: 'cap', inches: 5, tip: 'His cap', stall: { place: 'shelf', h: 34 } },
   // ---- MMA
-  'title-belt': { piece: 'belt', inches: 11, tip: '{division} champion' },
-  'fight-gloves': { piece: 'gloves', inches: 10, tip: 'His gloves · {record}' },
+  'title-belt': { piece: 'belt', inches: 11, tip: '{division} champion', stall: { place: 'hook', h: 120 } },
+  'fight-gloves': { piece: 'gloves', inches: 10, tip: 'His gloves · {record}', stall: { place: 'shelf', h: 46 } },
+  // ---- a head coach's office: his honors, and the room's own pieces (the scene places these two itself)
+  'coach-of-year': { piece: 'coyplaque', inches: 14, lines: ['{coyName}', '{seasonLabel}', '{name}'], tip: '{coyName} · {name}, {seasonLabel}', needs: 'coyName' },
+  'ring-box': { piece: 'ringbox', inches: 4, lines: ['{seasonEnd}'], tip: 'Championship ring · {seasonLabel}' },
+  'whiteboard': { piece: 'whiteboard', inches: 36, lines: ['{record}', '{seasonLabel}', '{teamShort}'], tip: '{teamName} · {record}' },
+  'team-frame': { piece: 'frame', inches: 14, tip: '{teamName}' },
   // ---- every sport: honors on plaques (All-Pro, All-NBA, All-Star, P4P...), a playoff run, where it ended
   'honors-plaques': { piece: 'plaques', inches: 13, lines: ['{a1}', '{a1sub}', '{a2}', '{a2sub}'], tip: '{plaquesTip}', needs: 'a1' },
-  'playoff-medal': { piece: 'medal', inches: 15, lines: ['{confShort} Playoffs', '{seasonShort}'], tip: 'Made the playoffs · {seasonLabel}' },
+  // (a playoff berth: a round wall plaque, the team's mark in a brass ring)
+  'playoff-medal': { piece: 'roundel', inches: 14, lines: ['{confShort} Playoffs', '{seasonShort}', '{seed}'], tip: 'Made the playoffs · {seed} · {seasonLabel}' },
   'round-plaque': { piece: 'plaque', inches: 16, lines: ['{round}', '{roundResult}'], tip: 'Won the {round} round · {roundResult}', needs: 'round' },
   'division-banner': { piece: 'banner', inches: 28, lines: ['{division}', 'Champions', '{seasonShort}'], tip: '{division} champions · {record}', needs: 'division' },
   'ticket-stub': { piece: 'stub', inches: 15, lines: ['{lostRound}', '{lostMatch}', '{lostWhere}', '{lostScore}'], tip: 'Where it ended · {lostRound}, {lostScore}', needs: 'lostRound' },
@@ -92,6 +109,7 @@ export interface Facts {
   season: number;
   current: boolean; // still being played: the locker
   team: boolean; // a team's card (its own tab: TM, DEF, OL)
+  coach?: boolean; // a head coach's card: the office
   tier?: Tier; // how a finished team season ended (the outcomes data; the title and conference from awards)
   awards: string[]; // its awards by the sport's ids, as the card has them
   conf?: string; // the conference trophy's prop, when it won its conference
@@ -127,19 +145,30 @@ export const AWARD_PROP: Record<string, string> = {
   'mlb:cy': 'mlb-cy-young',
   'mlb:ss': 'mlb-silver-slugger',
   'mlb:gg': 'mlb-gold-glove',
+  // (the coaches' award: the NFL's and NBA's Coach of the Year, the NHL's Jack Adams)
+  'nfl:coy': 'coach-of-year',
+  'nba:coy': 'coach-of-year',
+  'nhl:coy': 'coach-of-year',
 };
 // (honors that go on the plaques: a sport's all-league teams, all-stars, the smaller awards)
 export const PLAQUE_AWARDS = new Set(['ap1', 'ap2', 'pb', 'nba1', 'nba2', 'nba3', 'def1', 'def2', 'as', 'roy', 'smoy', 'mip', 'lindsay', 'rocket', 'artross']);
 export const isPlaque = (sport: string, award: string) => PLAQUE_AWARDS.has(award) || (sport === 'nba' && (award === 'dpoy' || award === 'cpoy')) || /^p4p\d+$/.test(award);
 
 // Each sport's gear: a player's own things (his locker's, and a finished season's filler)
+// (in his own stall each sits where PROPS[..].stall says: the helmet, cap, glove and puck on the top shelf, the
+// bats and stick leaning in the corner, the shoes and the game ball on the floor)
 const GEAR: Record<string, string[]> = {
   nfl: ['nfl-helmet', 'game-ball'],
   nba: ['signature-shoe', 'nba-game-ball'],
-  mlb: ['bats', 'fielders-glove'],
-  nhl: ['puck'],
+  mlb: ['ball-cap', 'fielders-glove', 'bats'],
+  nhl: ['puck', 'hockey-stick'],
   mma: ['fight-gloves'],
 };
+
+// Where a piece sits in a player's own stall (PROPS[..].stall), else on the floor
+export function stallPlace(id: string): { place: StallPlace; h: number } {
+  return PROPS[id]?.stall ?? { place: 'floor', h: 44 };
+}
 
 const unique = (ids: (string | false | null | undefined)[], max = 3) => [...new Set(ids.filter((x): x is string => !!x))].slice(0, max);
 
@@ -168,6 +197,7 @@ export function propRank(id: string, f: Pick<Facts, 'sport' | 'awards'>): number
   if (awards.length) return awards.some((a) => MVP_AWARDS.has(a)) ? 2 : awards.some((a) => FINAL_MVP_AWARDS.has(a)) ? 2.1 : 3;
   if (id === 'honors-plaques') return f.awards.some((a) => isPlaque(f.sport, a) && !MINOR_PLAQUES.has(a)) ? 3.1 : 6.1;
   if (CONF_PROPS.has(id)) return 4;
+  if (id === 'ring-box') return 4.5;
   if (PLAYOFF_PROPS.has(id)) return 5;
   if (FUN_PROPS.has(id)) return 6;
   return 7;
@@ -196,6 +226,16 @@ export function pickProps(f: Facts): string[] {
     // (his stall holds the belt, or his gloves when he has none; his honors beside it)
     const own = has('champ') ? 'title-belt' : 'fight-gloves';
     return unique([own, ...ranked([f.plaques && 'honors-plaques', 'fight-gloves'], f)]);
+  }
+  if (f.coach) {
+    // (his office: a season being played shows the room alone, his record on the whiteboard; a finished one
+    // his honors: the title and its ring when his team won, Coach of the Year, the conference, the division,
+    // the playoffs; else the season's plaque)
+    if (f.current) return [];
+    const tier: Tier = title ? 'champion' : f.conf ? 'finalist' : f.tier ?? 'unknown';
+    const won = ranked([title, ...trophies, f.conf, title && 'ring-box'], f).filter((id) => propRank(id, f) < 5);
+    const ended = tier === 'champion' || tier === 'finalist' || tier === 'playoffs' ? [f.division && 'division-banner', 'playoff-medal'] : ['season-plaque'];
+    return ranked([...won, ...ended], f).slice(0, 3);
   }
   if (f.current) return f.team ? [] : unique(gear);
 

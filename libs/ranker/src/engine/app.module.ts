@@ -36,6 +36,7 @@ import { BetsAboutComponent } from './bets/bets-about.component';
 import { ModelDeskComponent } from './bets/model-desk.component';
 import { DeskNoteComponent } from './bets/desk-note.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
+import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
   providers: [{ provide: COLUMN_MOVER, useExisting: PositionService }],
   imports: [
     BrowserModule,
+    SplashGalleryHost,
     BrowserAnimationsModule,
     MatSliderModule,
     MatSelectModule,
