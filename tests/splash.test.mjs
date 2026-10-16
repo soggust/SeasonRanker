@@ -91,7 +91,7 @@ test("a team locker's key player in the middle", () => {
 
 test("a player's finished season: his top award leads", () => {
   assert.equal(pickProps({ ...base, tab: 'QB', team: false, awards: ['mvp', 'ap1', 'pb'], plaques: true })[0], 'nfl-honors');
-  assert.equal(pickProps({ ...base, sport: 'nba', tab: 'PG', team: false, awards: ['champ', 'mvp'] })[0], 'nba-jordan-mvp');
+  assert.deepEqual(pickProps({ ...base, sport: 'nba', tab: 'PG', team: false, awards: ['champ', 'mvp'] }).slice(0, 2), ['nba-obrien', 'nba-jordan-mvp'], 'the title over the MVP');
   assert.equal(pickProps({ ...base, sport: 'mlb', tab: 'OF', team: false, awards: ['mvp', 'ss'] }).slice(0, 2).join(), 'mlb-mvp,mlb-silver-slugger');
 });
 
@@ -136,6 +136,45 @@ test("the shelf's hero, in the middle, is always its tallest prop (the 2023 49er
     }
   }
   assert.ok(checked > 40, `${checked} shelves`);
+});
+
+// The owner's order, every sport and card: the title, the MVP (the final's just under), the major awards, the
+// conference title, the playoffs, then the balls and fun props; the shelf's lead (first) in the middle
+test("the owner's order: title, MVP, major awards, conference, playoffs, balls", () => {
+  const order = (s) => (s.items.length === 3 ? [s.items[1], s.items[0], s.items[2]] : s.items).map((i) => i.tip);
+  const nhl = { sport: 'nhl', tab: 'C', team: false, seasonLabel: '2023–24' };
+  // Barkov 2024: the Stanley Cup in the middle, the Selke beside it, then the Wales
+  const barkov = scene({ ...nhl, id: '8477493', season: 2024, name: 'Aleksander Barkov', teamName: 'Florida Panthers', abbr: 'FLA', awards: [{ id: 'cup', title: '2023-24 Stanley Cup Champion' }, { id: 'conf', title: '2023-24 Eastern Conference Champion (Prince of Wales Trophy)' }, { id: 'selke', title: '2023-24 Selke Trophy' }] });
+  assert.equal(barkov.items[barkov.lead].t, 'stanley');
+  assert.deepEqual(barkov.items.map((i) => i.t), ['selke', 'stanley', 'wales']);
+  // Lamar 2023: the MVP in the middle, his All-Pro beside it
+  const lamar = scene({ tab: 'QB', id: 'QB-3916387', team: false, name: 'Lamar Jackson', teamName: 'Baltimore Ravens', abbr: 'BAL', awards: [{ id: 'mvp', title: '2023 Most Valuable Player' }, { id: 'ap1', title: '2023 AP First-Team All-Pro' }, { id: 'pb', title: '2023 Pro Bowl' }], bestGame: { title: 'G', line: 'L', tip: 'T' } });
+  assert.equal(lamar.items[lamar.lead].t, 'honors');
+  assert.deepEqual(lamar.items[lamar.lead].lines, ['MVP', '2023']);
+  assert.deepEqual(lamar.items.map((i) => i.t), ['plaques', 'honors', 'gameball']);
+  // the 2023 Chiefs: the Lombardi, the Lamar Hunt, the division banner
+  const kc = scene({ awards: [{ id: 'sb', title: '2023 Super Bowl Champion' }, { id: 'conf', title: '2023 AFC Champion (Lamar Hunt Trophy)' }], outcome: { result: 'champion', confChamp: true, conference: 'AFC', division: 'AFC West', record: '11-6', lastGame: { round: 'Super Bowl', opp: 'SF', home: true, neutral: true, score: '25-22', won: true }, gameBall: { title: 'Super Bowl LVIII', line: '25-22 OT', tip: 'T' } }, bestGame: { title: 'Super Bowl LVIII', line: '25-22 OT', tip: 'T' } });
+  assert.equal(kc.items[kc.lead].t, 'lombardi');
+  assert.deepEqual(kc.items.map((i) => i.t), ['conf', 'lombardi', 'banner']);
+  // Mahomes 2023: the Lombardi, the Super Bowl MVP, the Lamar Hunt
+  const mahomes = scene({ tab: 'QB', id: 'QB-3139477', team: false, name: 'Patrick Mahomes', awards: [{ id: 'sb', title: '2023 Super Bowl Champion' }, { id: 'conf', title: '2023 AFC Champion (Lamar Hunt Trophy)' }, { id: 'sbmvp', title: '2023 Super Bowl MVP' }, { id: 'pb', title: '2023 Pro Bowl' }], bestGame: { title: 'G', line: 'L', tip: 'T' } });
+  assert.equal(mahomes.items[mahomes.lead].t, 'lombardi');
+  assert.deepEqual(order(mahomes).map((t) => t.split(' · ')[0]), ['Super Bowl LVIII champions', 'Super Bowl MVP', 'AFC champions']);
+  // the 2023 49ers: the Halas, then the ticket stub
+  const niners = pickProps({ ...base, id: 'TM-49ers', awards: ['conf'], conf: 'nfl-nfc-trophy', tier: 'finalist', lostGame: true, division: true });
+  assert.deepEqual(niners, ['nfl-nfc-trophy', 'ticket-stub', 'division-banner']);
+  // Judge 2022: the MVP, the Silver Slugger, the 62nd home run's ball (over his All-Star plaque)
+  const judge = pickProps({ ...base, sport: 'mlb', tab: 'OF', id: 'H-592450', season: 2022, team: false, awards: ['mvp', 'ss', 'as'], plaques: true, milestone: true });
+  assert.deepEqual(judge, ['mlb-mvp', 'mlb-silver-slugger', 'milestone-ball']);
+  // the league MVP over the final's; a major award over a conference title; a title over everything
+  assert.deepEqual(pickProps({ ...base, sport: 'nhl', team: false, tab: 'C', awards: ['conn', 'hart'] }).slice(0, 2), ['nhl-hart', 'nhl-conn-smythe']);
+  assert.deepEqual(pickProps({ ...base, sport: 'nhl', team: false, tab: 'C', awards: ['conf', 'selke'], conf: 'nhl-wales-trophy' }).slice(0, 2), ['nhl-selke', 'nhl-wales-trophy']);
+  assert.equal(pickProps({ ...base, sport: 'mlb', team: false, tab: 'SP', awards: ['cy', 'ws'] })[0], 'mlb-commissioners-trophy');
+  // the kits only when nothing from the first five tiers is there: a defense's DPOY over Cancún
+  assert.equal(pickProps({ ...base, tab: 'DEF', awards: ['dpoy'], tier: 'missed' })[0], 'nfl-honors');
+  assert.equal(pickProps({ ...base, tier: 'missed' })[0], 'boarding-pass');
+  // a hand-set season still wins exactly as written
+  assert.deepEqual(pickProps({ ...base, tab: 'QB', id: 'QB-2330', season: 2015, team: false, awards: ['mvp', 'sb'] }), SCENE_OVERRIDES['nfl:QB:QB-2330:2015']);
 });
 
 test('every prop is drawn by a piece, sized by a real height', () => {

@@ -143,9 +143,47 @@ const GEAR: Record<string, string[]> = {
 
 const unique = (ids: (string | false | null | undefined)[], max = 3) => [...new Set(ids.filter((x): x is string => !!x))].slice(0, max);
 
-// The rules: a season's 1-3 props, the most meaningful first (it stands in the middle). A hand-set season wins;
-// a fighter shows his belt and gloves; a season still being played has his gear and no trophies (a team's
-// locker is its players' jerseys); a finished one shows how it ended.
+// ---- The order props are picked (and centered) in, every sport and card: the owner's ranking.
+//   1 the title (the Lombardi, the Stanley Cup, the Larry O'Brien, the Commissioner's Trophy, a fighter's belt)
+//   2 the MVP (the league's, then the final's: the Super Bowl MVP, the Conn Smythe)
+//   3 the major personal awards (OPOY, DPOY, the rookies', Cy Young, Selke, Norris, Vezina, Calder, Gold
+//     Glove, Silver Slugger), then the plaques when they hold one (All-Pro, All-NBA, the Art Ross...)
+//   4 the conference title (the Lamar Hunt and Halas, the Wales and Campbell, the NBA's, the pennant)
+//   5 the playoffs (the division banner, the ticket stub, a won round's plaque, the medal)
+//   6 the game ball, a milestone ball (and the plaques when they hold only a Pro Bowl or All-Star)
+//   7 his gear (a helmet, bats, a shoe, a puck, his gloves): a filler
+// Within a tier, the order they come in. The kits (Cancún, the golf course) only when nothing from 1-5 is there.
+const MVP_AWARDS = new Set(['mvp', 'hart']);
+const FINAL_MVP_AWARDS = new Set(['sbmvp', 'conn']);
+const MINOR_PLAQUES = new Set(['pb', 'as']);
+const PLAYOFF_PROPS = new Set(['division-banner', 'ticket-stub', 'round-plaque', 'playoff-medal', 'season-plaque']);
+const CONF_PROPS = new Set(['nfl-afc-trophy', 'nfl-nfc-trophy', 'nhl-wales-trophy', 'nhl-campbell-bowl', 'nba-conf-trophy', 'mlb-pennant']);
+const FUN_PROPS = new Set(['game-ball', 'nba-game-ball', 'milestone-ball', 'deflated-football']);
+
+// (a prop's rank: its tier, a tenth below for the final's MVP and for plaques after the trophies)
+export function propRank(id: string, f: Pick<Facts, 'sport' | 'awards'>): number {
+  if (id === TITLE[f.sport] || id === 'title-belt') return 1;
+  // (the trophy an award is drawn as; the NFL's one Honors award reads the season's first, so ranks by its best)
+  const awards = f.awards.filter((a) => AWARD_PROP[`${f.sport}:${a}`] === id);
+  if (awards.length) return awards.some((a) => MVP_AWARDS.has(a)) ? 2 : awards.some((a) => FINAL_MVP_AWARDS.has(a)) ? 2.1 : 3;
+  if (id === 'honors-plaques') return f.awards.some((a) => isPlaque(f.sport, a) && !MINOR_PLAQUES.has(a)) ? 3.1 : 6.1;
+  if (CONF_PROPS.has(id)) return 4;
+  if (PLAYOFF_PROPS.has(id)) return 5;
+  if (FUN_PROPS.has(id)) return 6;
+  return 7;
+}
+
+// (the candidates in the owner's order: stable, so a tier keeps the order they came in)
+const ranked = (ids: (string | false | null | undefined)[], f: Facts) =>
+  unique(ids, 99)
+    .map((id, i) => ({ id, i, r: propRank(id, f) }))
+    .sort((a, b) => a.r - b.r || a.i - b.i)
+    .map((x) => x.id);
+
+// The rules: a season's 1-3 props, the most meaningful first (it stands in the middle), in the owner's order
+// (propRank). A hand-set season wins as written; a fighter's stall holds his belt, or his gloves; a season still
+// being played has his gear and no trophies (a team's locker is its players' jerseys); a finished one shows what
+// it won, then how it ended.
 export function pickProps(f: Facts): string[] {
   const hand = SCENE_OVERRIDES[`${f.sport}:${f.tab}:${f.id}:${f.season}`];
   if (hand) return hand.slice(0, 3);
@@ -154,28 +192,36 @@ export function pickProps(f: Facts): string[] {
   const title = has(TITLE_AWARD[f.sport]) || (f.team && f.tier === 'champion') ? TITLE[f.sport] : undefined;
   const gear = (GEAR[f.sport] ?? []).filter((g) => !g.includes('game-ball') || f.gameBall);
 
-  if (f.sport === 'mma') return unique([has('champ') && 'title-belt', 'fight-gloves', f.plaques && 'honors-plaques']);
+  if (f.sport === 'mma') {
+    // (his stall holds the belt, or his gloves when he has none; his honors beside it)
+    const own = has('champ') ? 'title-belt' : 'fight-gloves';
+    return unique([own, ...ranked([f.plaques && 'honors-plaques', 'fight-gloves'], f)]);
+  }
   if (f.current) return f.team ? [] : unique(gear);
 
+  // what the season won (tiers 1-4), and then how it ended (5) or his things (6-7)
+  const honors = [title, ...trophies, f.plaques && 'honors-plaques', f.conf];
   if (f.team) {
     const tier: Tier = title ? 'champion' : f.conf ? 'finalist' : f.tier ?? 'unknown';
+    const won = ranked(honors, f).filter((id) => propRank(id, f) < 5);
     switch (tier) {
       case 'champion':
-        return unique([title, f.conf, trophies[0], f.gameBall && 'game-ball', f.division && 'division-banner', 'playoff-medal']);
+        return ranked([...won, f.division && 'division-banner', 'playoff-medal', f.gameBall && 'game-ball'], f).slice(0, 3);
       case 'finalist':
-        return unique([f.conf, trophies[0], f.lostGame ? 'ticket-stub' : 'playoff-medal', f.division && 'division-banner']);
+        return ranked([...won, f.lostGame ? 'ticket-stub' : 'playoff-medal', f.division && 'division-banner'], f).slice(0, 3);
       case 'playoffs':
-        return unique([f.division ? 'division-banner' : f.lostGame ? 'ticket-stub' : 'playoff-medal', f.lostGame && 'ticket-stub', f.roundWon && 'round-plaque', 'playoff-medal']);
+        return ranked([...won, f.division ? 'division-banner' : f.lostGame ? 'ticket-stub' : 'playoff-medal', f.lostGame && 'ticket-stub', f.roundWon && 'round-plaque', 'playoff-medal'], f).slice(0, 3);
       case 'bubble':
-        return ['scorecard', 'golf-bag', 'golf-ball'];
+        return won.length ? ranked([...won, 'season-plaque'], f).slice(0, 3) : ['scorecard', 'golf-bag', 'golf-ball'];
       case 'missed':
-        return ['boarding-pass', 'beach-towel', 'sunscreen'];
+        return won.length ? ranked([...won, 'season-plaque'], f).slice(0, 3) : ['boarding-pass', 'beach-towel', 'sunscreen'];
       default:
-        return unique([trophies[0], 'season-plaque', f.sport === 'nfl' ? 'nfl-helmet' : f.sport === 'nhl' && 'puck']);
+        return ranked([...won, 'season-plaque', f.sport === 'nfl' ? 'nfl-helmet' : f.sport === 'nhl' && 'puck'], f).slice(0, 3);
     }
   }
-  // a player's finished season: his top trophy, the title if his team won it, his plaques, then his gear
-  return unique([trophies[0], title, trophies[1], f.milestone && 'milestone-ball', f.plaques && 'honors-plaques', f.shoe && 'signature-shoe', ...gear]);
+  // a player's finished season: the title if his team won it, his trophies, his plaques, his conference's, then
+  // his milestone, his game ball and his gear
+  return ranked([...honors, f.milestone && 'milestone-ball', f.shoe && 'signature-shoe', ...gear], f).slice(0, 3);
 }
 
 // The stage's order: the lead in the middle, the next either side (one or two props: as they come)

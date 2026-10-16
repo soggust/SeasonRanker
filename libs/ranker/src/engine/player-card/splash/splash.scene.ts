@@ -111,7 +111,7 @@ export function roman(n: number): string {
   return out;
 }
 
-const AWARD_SHORT: Record<string, string> = { mvp: 'MVP', opoy: 'OPOY', dpoy: 'DPOY', oroy: 'OROY', droy: 'DROY', cpoy: 'CPOY', sbmvp: 'SB MVP' };
+const AWARD_SHORT: Record<string, string> = { mvp: 'MVP', sbmvp: 'SB MVP', opoy: 'OPOY', dpoy: 'DPOY', oroy: 'OROY', droy: 'DROY', cpoy: 'CPOY' };
 const PLAQUE: Record<string, [string, string?]> = {
   ap1: ['All-Pro', '1st Team'],
   ap2: ['All-Pro', '2nd Team'],
@@ -158,7 +158,8 @@ function fieldsOf(s: SceneInput): Record<string, string | undefined> {
   const confText = o?.conference ?? conf?.title ?? '';
   const confShort = /\bAFC\b/.test(confText) ? 'AFC' : /\bNFC\b/.test(confText) ? 'NFC' : /West/.test(confText) ? 'West' : /East/.test(confText) ? 'East' : /American|\bAL\b/.test(confText) ? 'AL' : /National|\bNL\b/.test(confText) ? 'NL' : '';
   const league = s.sport === 'mlb' ? (AL.has(s.id.replace(/\D/g, '')) || AL.has(s.abbr) || confShort === 'AL' ? 'American League' : confShort === 'NL' || conf ? 'National League' : 'American League') : undefined;
-  const honor = s.awards.find((a) => AWARD_SHORT[a.id]);
+  // (the NFL Honors award reads his best, as props.ts ranks it: the MVP, the Super Bowl MVP, then the rest)
+  const honor = Object.keys(AWARD_SHORT).map((id) => s.awards.find((a) => a.id === id)).find(Boolean);
   const plaques = s.awards.filter((a) => isPlaque(s.sport, a.id));
   const plaque = (i: number) => {
     const a = plaques[i];
