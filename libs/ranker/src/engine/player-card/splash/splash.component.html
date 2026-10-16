@@ -305,7 +305,7 @@
 
     <div class="sp-wall"></div>
     @if (v.stage === 'shelf') {
-      <!-- THE SHELF: a finished season, up to three props, evenly spaced, each at its real height -->
+      <!-- THE SHELF: a finished season, up to three props, evenly spaced, each at its real height (none over the middle one) -->
       <div class="sp-stage">
         @for (it of v.items; track $index) {
           <div class="sp-col" [class.star]="$index === v.lead" [class.wide]="it.wide" [class]="'t-' + it.t">

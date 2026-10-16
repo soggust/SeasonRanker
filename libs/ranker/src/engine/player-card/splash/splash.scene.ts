@@ -3,7 +3,8 @@
 //
 // Two stages, the same in every scene; only the props change. A season still being played is the LOCKER: a
 // team's key players' lockers, each with his jersey, or a player's own locker beside his gear. A finished one
-// is the SHELF: up to three props, the most meaningful in the middle, each at its real height.
+// is the SHELF: up to three props, the most meaningful in the middle, each at its real height (none taller than
+// the one in the middle).
 import { PROPS, Tier, centered, isPlaque, pickProps } from './splash.props';
 import { HelmetLook } from './splash.uniforms';
 
@@ -15,9 +16,9 @@ export interface Outcome {
   division?: string | null; // the division it won ("AFC South")
   conference?: string; // its conference or league ("AFC", "Western", "AL")
   missedBy?: string; // "a game", "a tiebreaker"
-  // the game it went out in (or won the title in): its round, the opponent, home or away, the score (its own
-  // first), where and when
-  lastGame?: { round: string; opp: string; home: boolean; score: string; won?: boolean; date?: string; venue?: string };
+  // the game it went out in (or won the title in): its round, the opponent, home or away (or at a neutral site:
+  // a Super Bowl), the score (its own first), where and when
+  lastGame?: { round: string; opp: string; home: boolean; neutral?: boolean; score: string; won?: boolean; date?: string; venue?: string };
   // a round it won on the way
   roundWon?: { round: string; result: string };
   confChamp?: boolean; // won its conference (reached the final)
@@ -95,8 +96,14 @@ const FILLERS: Record<string, string[]> = { nfl: ['nfl-helmet'], nhl: ['puck'], 
 const SHELF_MAX = 222;
 const STALL_MAX = 150;
 const PX_PER_IN = 11;
+// The shelf's hero (its lead, in the middle) is always its tallest prop: one beside it stands at most this much of
+// the hero's height, whatever its own (a division banner, a golf bag, a Stanley Cup beside a Selke), and the scale
+// is set by the hero, so it gets the room
+const BESIDE_HERO = 0.85;
 
 // ---- the words
+// ("vs" at home and at a neutral site, a Super Bowl's "49ers vs KC"; "at" only on the road)
+export const vsAt = (home: boolean | undefined, neutral?: boolean) => (home || neutral ? 'vs' : 'at');
 const ROMAN: [number, string][] = [[50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']];
 export function roman(n: number): string {
   let out = '';
@@ -165,8 +172,8 @@ function fieldsOf(s: SceneInput): Record<string, string | undefined> {
   const [a2, a2sub] = plaque(1);
   const lg = o?.lastGame;
   const lostRound = lg && !lg.won ? lg.round : undefined;
-  const match = lg ? (lg.home ? `${s.teamName.split(' ').pop()} vs ${lg.opp}` : `${s.teamName.split(' ').pop()} at ${lg.opp}`) : undefined;
-  const final = lg && (o?.result === 'champion' || o?.result === 'finalist') ? `${lg.won ? 'W' : 'L'} ${lg.score} ${lg.home ? 'vs' : 'at'} ${lg.opp}` : undefined;
+  const match = lg ? `${s.teamName.split(' ').pop()} ${vsAt(lg.home, lg.neutral)} ${lg.opp}` : undefined;
+  const final = lg && (o?.result === 'champion' || o?.result === 'finalist') ? `${lg.won ? 'W' : 'L'} ${lg.score} ${vsAt(lg.home, lg.neutral)} ${lg.opp}` : undefined;
   return {
     season: String(s.season),
     seasonLabel: s.seasonLabel,
@@ -249,12 +256,13 @@ export function buildScene(s: SceneInput): Scene | null {
   // (a prop whose words the data doesn't have yet is left out: a hand-set list then filled from the rules)
   const ok = (id: string) => !!PROPS[id] && (!PROPS[id].needs || !!f[PROPS[id].needs!]);
   const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => PROPS[id]);
-  const scale = Math.min(PX_PER_IN, (locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...defs.map((d) => d.inches)));
-  const pieces: Piece[] = defs.map((d) => ({
+  const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO) : d.inches));
+  const scale = Math.min(PX_PER_IN, (locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
+  const pieces: Piece[] = defs.map((d, i) => ({
     t: d.piece,
     lines: d.lines?.map((l) => fill(l, f)),
     tip: fill(d.tip, f),
-    h: Math.round(d.inches * scale),
+    h: Math.round(inches[i] * scale),
     wide: d.wide,
     line: s.shoe?.line,
     num: s.number ?? undefined,

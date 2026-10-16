@@ -2,12 +2,13 @@
 // season the site has (named for the year it ends in):
 //   outcomes.json         each team's season, from ESPN (libs/ranker/scripts/analysis/season-state.mjs: the
 //                         league's season, its postseason and play-in games and their series), the standings
-//                         (record, seed, division) and each team's schedule (the last game of one that missed)
+//                         (record, seed, division) and each team's schedule (the last game of one that missed);
+//                         a neutral site's games: ESPN's neutralSite, and the 2020 bubble's
 //   numbers.json          each player's number (Basketball-Reference's team roster pages, its "No." column)
 //   best-games.<TAB>.json each player's best game, regular season or playoffs (ESPN's player game logs:
 //                         best-game.mjs's Game Score)
 //
-// Usage: node apps/nba/scripts/build-splash.mjs            the current season
+// Usage: node apps/nba/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json)
 //        node apps/nba/scripts/build-splash.mjs 2016       a past one ("2001-2025", "2019,2021", or all)
 // A run asks again only what it lacks: a team's roster page when one of its players has no number yet, a
 // player's game log when his games outnumber his best game's file's count (Basketball-Reference allows 20
@@ -46,6 +47,9 @@ const CONF_OF_DIVISION = { Atlantic: 'East', Central: 'East', Southeast: 'East',
 const ROUND_NAMES = { 1: 'First Round', 2: 'Semifinals', 3: 'Finals', 4: 'NBA Finals' };
 const roundName = (round) => (conf) => (round === 4 ? 'NBA Finals' : conf ? `${conf === 'East' ? 'Eastern' : 'Western'} Conference ${ROUND_NAMES[round]}` : ROUND_NAMES[round] === 'First Round' ? 'First Round' : `Conference ${ROUND_NAMES[round]}`);
 
+// (the 2020 restart's bubble at Walt Disney World: every game at a neutral site; ESPN doesn't mark them)
+const bubble = (date) => date >= '2020-07-30' && date <= '2020-10-11';
+
 // ---- outcomes
 async function outcomes(season) {
   const root = await espn(`https://site.api.espn.com/apis/v2/sports/${LEAGUE}/standings?season=${season}&level=3`);
@@ -65,7 +69,10 @@ async function outcomes(season) {
   const regDone = season < CURRENT || [POSTSEASON, PLAY_IN, 4].includes(now?.type) || (now?.year ?? 0) > season;
   const abbr = Object.fromEntries(teams.map((t) => [t.key, t.abbr]));
   const games = regDone ? await postseasonGames(LEAGUE, season) : [];
-  const asGame = (g) => ({ date: new Date(Date.parse(g.date) - 5 * 36e5).toISOString().slice(0, 10), teams: g.teams.map((id) => keyOf(id, season)), home: keyOf(g.home, season), score: Object.fromEntries(Object.entries(g.score).map(([id, v]) => [keyOf(id, season), v])), final: g.completed });
+  const asGame = (g) => {
+    const date = new Date(Date.parse(g.date) - 5 * 36e5).toISOString().slice(0, 10);
+    return { date, teams: g.teams.map((id) => keyOf(id, season)), home: keyOf(g.home, season), score: Object.fromEntries(Object.entries(g.score).map(([id, v]) => [keyOf(id, season), v])), final: g.completed, ...(g.neutral || bubble(date) ? { neutral: true } : {}) };
+  };
   const playIn = games.filter((g) => g.type === PLAY_IN && g.completed).map(asGame);
   // (the series: Basketball-Reference's playoffs page, whole for every season; ESPN's older postseasons are missing games)
   const series = regDone ? await bbrefSeries(season) : [];
@@ -115,7 +122,8 @@ export function parsePlayoffSeries(html) {
     for (const g of body.matchAll(/\/boxscores\/(\d{4})(\d\d)(\d\d)0([A-Z]{3})\.html[\s\S]*?<td>[^<]*<\/td>\s*<td>([^<]*)<\/td>\s*<td>(\d+)<\/td><td>@ ([^<]*)<\/td>\s*<td>(\d+)<\/td>/g)) {
       const home = BBREF_FRANCHISE[g[4]] ?? g[4];
       const away = teams.find((k) => k !== home);
-      games.push({ date: `${g[1]}-${g[2]}-${g[3]}`, home, score: { [away]: Number(g[6]), [home]: Number(g[8]) } });
+      const date = `${g[1]}-${g[2]}-${g[3]}`;
+      games.push({ date, home, score: { [away]: Number(g[6]), [home]: Number(g[8]) }, ...(bubble(date) ? { neutral: true } : {}) });
     }
     const wins = Object.fromEntries(teams.map((k) => [k, games.filter((g) => g.score[k] > g.score[teams.find((x) => x !== k)]).length]));
     out.push({ round, roundName: roundName(round), teams, wins, winner: over ? teams[0] : null, games });
@@ -226,6 +234,11 @@ async function main() {
     }
     const { out: o } = await outcomes(season);
     const written = [writeIfChanged(path.join(dir, 'outcomes.json'), sortKeys(o))];
+    // (ONLY=outcomes: the outcomes alone, the players' files left as they are)
+    if (process.env.ONLY === 'outcomes') {
+      console.log(`NBA ${season}: outcomes (champion ${Object.entries(o).find(([, v]) => v.result === 'champion')?.[0] ?? 'none yet'})`);
+      continue;
+    }
     const p = await players(season, dir, siteRows(dir));
     if (Object.keys(p.jerseys).length) written.push(writeIfChanged(path.join(dir, 'numbers.json'), sortKeys(p.jerseys)));
     written.push(...writeBestGames(dir, p.best));

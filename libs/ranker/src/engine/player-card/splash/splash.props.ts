@@ -1,6 +1,7 @@
 // The splash's props, and which a season gets. A prop is any one object on the stage (a trophy, a plaque, a
 // ball, the beach kit). Each is drawn by a piece (splash-piece.component.html, by its `piece`) and sized by its
-// real height, so props stand in true proportion to each other; its words and its hover are templates over the
+// real height, so props stand in true proportion to each other (but none over the shelf's hero, the one in
+// the middle: scene.ts BESIDE_HERO); its words and its hover are templates over the
 // scene's fields ({season}, {final}, ...; scene.ts fills them). No Angular here: the tests load it as it is.
 //
 //   piece     the drawing (one per real object; several props can share one: the two conference trophies)

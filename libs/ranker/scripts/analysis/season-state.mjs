@@ -77,6 +77,7 @@ export function gameOf(e) {
     type: Number(e.season?.type ?? c.type?.id ?? 0),
     teams,
     home: String((c.competitors ?? []).find((x) => x.homeAway === 'home')?.id ?? ''),
+    neutral: !!c.neutralSite,
     completed: !!c.status?.type?.completed,
     // (the periods played: a hockey game past its third went to overtime or a shootout)
     periods: Number(c.status?.period ?? 0) || null,

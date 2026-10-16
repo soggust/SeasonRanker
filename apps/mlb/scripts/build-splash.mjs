@@ -1,7 +1,8 @@
 // MLB's files for the Overview's splash (libs/ranker/scripts/splash/files.mjs says what each holds), for a
 // season the site has, from the MLB Stats API (statsapi.mlb.com, free, no key):
 //   outcomes.json         each team's season: the postseason's series (wild card, division, championship, World
-//                         Series), the standings (record, division, its title, the wild card)
+//                         Series), the standings (record, division, its title, the wild card); a game away
+//                         from its home team's park that season at a neutral site
 //   numbers.json          each player's number (each team's full-season roster: jerseyNumber)
 //   best-games.<TAB>.json each player's best regular-season game (his game log: best-game.mjs's measures)
 //   milestones.json       the season's notable marks: { <card id>: [{ mark, big, small, tip, date?, opp? }] },
@@ -36,6 +37,7 @@ async function outcomes(season) {
       teams.push({
         key: String(t.team.id),
         abbr: t.team.abbreviation,
+        venue: t.team.venue?.id ?? null,
         conf: LEAGUE[rec.league?.id ?? t.team.league?.id],
         division: DIVISION[rec.division?.id] ?? null,
         divRank: Number(t.divisionRank) || null,
@@ -49,6 +51,13 @@ async function outcomes(season) {
     }
   }
   const abbr = Object.fromEntries(teams.map((t) => [t.key, t.abbr]));
+  // (a game away from its home team's park that season was at a neutral site: 2020's postseason bubble, a
+  // London or Tokyo series; the API has no flag for it)
+  const park = Object.fromEntries(teams.map((t) => [t.key, t.venue]));
+  const neutral = (g) => {
+    const home = park[String(g.teams.home.team.id)];
+    return home && g.venue?.id && g.venue.id !== home ? { neutral: true } : {};
+  };
   const confOf = Object.fromEntries(teams.map((t) => [t.key, t.conf]));
   // the postseason's series (the tiebreaker games, R, aren't)
   const post = regDone ? await get(`${API}/schedule/postseason/series?season=${season}&sportId=1`) : null;
@@ -83,7 +92,7 @@ async function outcomes(season) {
       winner,
       // (a one-game wild card is a game: its score, like the NFL's)
       single: length === 1,
-      games: done.map((g) => ({ date: g.officialDate, home: String(g.teams.home.team.id), score: { [String(g.teams.home.team.id)]: g.teams.home.score, [String(g.teams.away.team.id)]: g.teams.away.score } })),
+      games: done.map((g) => ({ date: g.officialDate, home: String(g.teams.home.team.id), score: { [String(g.teams.home.team.id)]: g.teams.home.score, [String(g.teams.away.team.id)]: g.teams.away.score }, ...neutral(g) })),
     });
   }
   // the seeds: 2022 on (and 2020's eight a league), the division winners first, by record; earlier seasons had
@@ -117,7 +126,7 @@ async function outcomes(season) {
       for (const g of d.games ?? []) {
         if (g.status?.abstractGameState !== 'Final' || g.teams.home.score === undefined) continue;
         const [h, a] = [String(g.teams.home.team.id), String(g.teams.away.team.id)];
-        const game = { date: g.officialDate, home: h, score: { [h]: g.teams.home.score, [a]: g.teams.away.score } };
+        const game = { date: g.officialDate, home: h, score: { [h]: g.teams.home.score, [a]: g.teams.away.score }, ...neutral(g) };
         for (const k of [h, a]) if (!lastGames[k] || lastGames[k].date <= game.date) lastGames[k] = gameFor(game, k, (x) => abbr[x] ?? x);
       }
     }

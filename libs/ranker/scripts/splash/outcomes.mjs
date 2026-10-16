@@ -23,16 +23,18 @@
 //   gamesBack  (missed teams) how far it missed by: games behind the last team in its conference's field (MLB's
 //              wild card; the NHL's in points)
 //   playIn     the NBA's play-in: played in it (a play-in loser missed the playoffs)
-//   playoffs   its playoff rounds in order: [{ round, roundName, opp, oppTeam, won, score, date, home?, ot? }]
-//              (date: the series' last game; home: the NFL's games)
-//   lastGame   its last game: { date, opp, oppTeam, home, result 'W'|'L'|'T', score (its first), ot? }
+//   playoffs   its playoff rounds in order: [{ round, roundName, opp, oppTeam, won, score, date, home?, neutral?, ot? }]
+//              (date: the series' last game; home: the NFL's games; neutral: every game of it at a neutral site,
+//              a Super Bowl, the 2020 bubbles)
+//   lastGame   its last game: { date, opp, oppTeam, home, neutral?, result 'W'|'L'|'T', score (its first), ot? }
+//              (neutral: at a neutral site, where home only says which side the league listed it on)
 
 // A season's outcomes.
 //   teams    [{ key, abbr, conf, division, divRank, seed, seedLabel, record, divChamp, gamesBack }]
 //   series   the playoff rounds' series (an NFL game is a series of one): [{ round, roundName (or a function
 //            of the team's conference), teams: [keyA, keyB], wins: { key: n }, winner (key, or null while
 //            being played), games: [{ date, home (key), score: { key: n }, ot }] }]
-//            round: 1 for the season's first round; totalRounds the final
+//            round: 1 for the season's first round; totalRounds the final. A game at a neutral site: neutral
 //   totalRounds  the rounds in the season's bracket (the NFL's 4; MLB's 3 before 2012)
 //   playIn   the NBA's play-in games: [{ date, home, score, teams }]
 //   lastGames  { key: lastGame } for teams whose last game isn't a playoff one (the regular season's last)
@@ -57,6 +59,7 @@ export function buildOutcomes({ teams, series = [], totalRounds, playIn = [], la
         score,
         date: last?.date ?? null,
         ...(single && last ? { home: last.home === t.key } : {}),
+        ...(s.games.length && s.games.every((g) => g.neutral) ? { neutral: true } : {}),
         ...(single && last?.ot ? { ot: true } : {}),
       };
     });
@@ -107,6 +110,7 @@ export function gameFor(g, key, abbrOf = (k) => k) {
     opp: abbrOf(opp),
     oppTeam: opp,
     home: g.home === key,
+    ...(g.neutral ? { neutral: true } : {}),
     result: us > them ? 'W' : us < them ? 'L' : 'T',
     score: `${us}-${them}`,
     ...(g.ot ? { ot: true } : {}),
@@ -134,7 +138,7 @@ export function seriesOf(games, { needed, decided } = {}) {
     const need = needed ? needed(list) : null;
     let winner = decided ? decided(list, wins) : null;
     if (!winner && need) winner = teams.find((k) => wins[k] >= need) ?? null;
-    return { teams, wins, winner, games: list.map(({ date, home, score, ot }) => ({ date, home, score, ...(ot ? { ot: true } : {}) })), first: list[0].date };
+    return { teams, wins, winner, games: list.map(({ date, home, score, ot, neutral }) => ({ date, home, score, ...(ot ? { ot: true } : {}), ...(neutral ? { neutral: true } : {}) })), first: list[0].date };
   });
 }
 

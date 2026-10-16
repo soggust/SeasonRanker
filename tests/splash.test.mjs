@@ -100,6 +100,44 @@ test('a fighter: the belt when a champion, and his gloves', () => {
   assert.deepEqual(pickProps({ ...base, sport: 'mma', tab: 'WW', team: false, awards: [] }), ['fight-gloves']);
 });
 
+test("the shelf's hero, in the middle, is always its tallest prop (the 2023 49ers: the Halas trophy over the division banner)", () => {
+  const niners = scene({ id: 'TM-49ers', name: 'San Francisco 49ers', teamName: 'San Francisco 49ers', abbr: 'SF', awards: [{ id: 'conf', title: '2023 NFC Champion' }], outcome: { result: 'finalist', confChamp: true, conference: 'NFC', division: 'NFC West', record: '12-5', lastGame: { round: 'Super Bowl LVIII', opp: 'KC', home: false, neutral: true, score: '22-25 OT', won: false } } });
+  assert.deepEqual(niners.items.map((i) => i.t), ['stub', 'conf', 'banner']);
+  const [stub, conf, banner] = niners.items;
+  assert.ok(conf.h > banner.h && conf.h > stub.h, `the trophy ${conf.h}px, the banner ${banner.h}px`);
+  assert.equal(conf.h, 17 * 11, 'the trophy at full scale');
+  // every sport, every way a season ends, every award: nothing beside the hero stands taller than it
+  const outcomes = [
+    { result: 'champion', confChamp: true, conference: 'AFC', division: 'D', roundWon: { round: 'R', result: 'W' }, lastGame: { round: 'F', opp: 'O', home: true, score: '1-0', won: true } },
+    { result: 'finalist', confChamp: true, conference: 'West', division: 'D', lastGame: { round: 'F', opp: 'O', home: false, score: '0-1', won: false } },
+    { result: 'playoffs', division: 'D', roundWon: { round: 'R', result: 'W' }, lastGame: { round: 'R2', opp: 'O', home: false, score: '0-1', won: false } },
+    { result: 'playoffs', lastGame: { round: 'R1', opp: 'O', home: false, score: '0-1', won: false } },
+    { result: 'bubble', record: '9-8', missedBy: 'a game' },
+    { result: 'missed', record: '4-13' },
+  ];
+  const awards = { nfl: ['mvp', 'ap1'], nhl: ['hart', 'selke', 'conn', 'norris'], nba: ['mvp', 'nba1'], mlb: ['mvp', 'cy', 'ss', 'gg'] };
+  const title = { nfl: 'sb', nhl: 'cup', nba: 'champ', mlb: 'ws' };
+  let checked = 0;
+  for (const sport of ['nfl', 'nhl', 'nba', 'mlb']) {
+    const shelves = [
+      ...outcomes.map((outcome) => ({ outcome, awards: outcome.result === 'champion' ? [{ id: title[sport], title: 'Champion' }, { id: 'conf', title: 'Conf' }] : outcome.confChamp ? [{ id: 'conf', title: 'Conf' }] : [] })),
+      ...awards[sport].flatMap((a) => [
+        { team: false, tab: 'X', awards: [{ id: a, title: `2023 ${a}` }] },
+        { team: false, tab: 'X', awards: [{ id: a, title: `2023 ${a}` }, { id: title[sport], title: 'Champion' }] },
+        { team: false, tab: 'X', awards: [{ id: title[sport], title: 'Champion' }, { id: a, title: `2023 ${a}` }] },
+      ]),
+    ];
+    for (const over of shelves) {
+      const s = scene({ sport, ...over, shoe: { line: 'L', name: 'N' }, bestGame: { title: 'G', line: 'L', tip: 'T' }, milestone: { big: 'B', small: 's', tip: 't' } });
+      if (!s || s.stage !== 'shelf') continue;
+      const hero = s.items[s.lead];
+      for (const it of s.items) if (it !== hero) assert.ok(it.h < hero.h, `${sport} ${JSON.stringify(over).slice(0, 90)}: ${it.t} ${it.h}px beside ${hero.t} ${hero.h}px`);
+      checked++;
+    }
+  }
+  assert.ok(checked > 40, `${checked} shelves`);
+});
+
 test('every prop is drawn by a piece, sized by a real height', () => {
   for (const [id, p] of Object.entries(PROPS)) {
     assert.ok(p.piece, id);

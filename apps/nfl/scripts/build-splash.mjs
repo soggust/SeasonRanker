@@ -1,12 +1,13 @@
 // The NFL's files for the Overview's splash (libs/ranker/scripts/splash/files.mjs says what each holds), for a
 // season the site has, from nflverse (free, no key):
-//   outcomes.json         each team's season: its schedule's playoff games (nfldata's games.csv), its seed,
+//   outcomes.json         each team's season: its schedule's playoff games (nfldata's games.csv; its location
+//                         'Neutral': a Super Bowl, an international game, a game moved), its seed,
 //                         record and division place (nfldata's standings.csv, 2002 on; 2000 and 2001 below by
 //                         hand); a season being played reads who's out as season-state.mjs's teamStatus does
 //   numbers.json          each player's number (nflverse's season roster, jersey_number)
 //   best-games.<TAB>.json each player's best game (nflverse's weekly player stats, PPR points: best-game.mjs)
 //
-// Usage: node apps/nfl/scripts/build-splash.mjs            the current season
+// Usage: node apps/nfl/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json)
 //        node apps/nfl/scripts/build-splash.mjs 2023       a past one ("2000-2025", "2019,2021", or all)
 // nflverse's downloads are kept in .cache/nflverse (shared with update-data.mjs): a finished season's for good.
 import path from 'node:path';
@@ -68,7 +69,7 @@ const recordText = (w, l, t) => `${w}-${l}${t ? `-${t}` : ''}`;
 function outcomes(season, schedule, standings) {
   const games = schedule.filter((g) => Number(g.season) === season);
   const played = (g) => num(g.home_score) !== null && num(g.away_score) !== null;
-  const asGame = (g) => ({ date: g.gameday, home: g.home_team, score: { [g.home_team]: num(g.home_score), [g.away_team]: num(g.away_score) }, ot: g.overtime === '1' });
+  const asGame = (g) => ({ date: g.gameday, home: g.home_team, score: { [g.home_team]: num(g.home_score), [g.away_team]: num(g.away_score) }, ot: g.overtime === '1', ...(g.location === 'Neutral' ? { neutral: true } : {}) });
   const reg = games.filter((g) => g.game_type === 'REG');
   // the teams: nfldata's standings (2002 on), else worked out from the games
   let rows = standings.filter((r) => Number(r.season) === season);
@@ -216,6 +217,11 @@ async function main() {
     }
     const o = outcomes(season, schedule, standings);
     const written = [writeIfChanged(path.join(dir, 'outcomes.json'), sortKeys(o))];
+    // (ONLY=outcomes: the outcomes alone, the players' files left as they are)
+    if (process.env.ONLY === 'outcomes') {
+      console.log(`NFL ${season}: outcomes (champion ${Object.entries(o).find(([, v]) => v.result === 'champion')?.[0] ?? 'none yet'})`);
+      continue;
+    }
     const p = await players(season, siteRows(dir), gamesById, playersCsv);
     if (Object.keys(p.jerseys).length) written.push(writeIfChanged(path.join(dir, 'numbers.json'), sortKeys(p.jerseys)));
     written.push(...writeBestGames(dir, p.best));

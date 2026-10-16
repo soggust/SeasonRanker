@@ -1,12 +1,13 @@
 // The NHL's files for the Overview's splash (libs/ranker/scripts/splash/files.mjs says what each holds), for a
 // season the site has, from the NHL's own API (api-web.nhle.com, free, no key) and the site's game logs:
 //   outcomes.json         each team's season: the playoff bracket (its rounds, seeds and series), each series'
-//                         games, the standings on the regular season's last day (record, division, place)
+//                         games (neutralSite: 2020's hub cities, a Global Series game), the standings on the
+//                         regular season's last day (record, division, place)
 //   numbers.json          each player's number (the team's roster that season: sweaterNumber)
 //   best-games.<TAB>.json each player's best game, from the site's own game logs (src/StaticData/game-logs/:
 //                         best-game.mjs's game score)
 //
-// Usage: node apps/nhl/scripts/build-splash.mjs            the current season
+// Usage: node apps/nhl/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json)
 //        node apps/nhl/scripts/build-splash.mjs 2024       a past one ("2009-2026", "2019,2021", or all)
 // Paced like the nightly update (a request every 350 ms, a 429's Retry-After honored).
 import { readFileSync } from 'node:fs';
@@ -85,6 +86,7 @@ async function outcomes(season) {
         home: abbrOf(g.homeTeam),
         score: { [abbrOf(g.homeTeam)]: g.homeTeam.score, [abbrOf(g.awayTeam)]: g.awayTeam.score },
         ot: g.gameOutcome?.lastPeriodType && g.gameOutcome.lastPeriodType !== 'REG',
+        neutral: !!g.neutralSite,
       }));
     const [made] = games.length ? seriesOf(games) : [{ teams: [top, bottom], wins: { [top]: 0, [bottom]: 0 }, games: [] }];
     const winner = s.winningTeamId ? (s.winningTeamId === s.topSeedTeam.id ? top : bottom) : null;
@@ -124,7 +126,7 @@ async function outcomes(season) {
   for (const t of teams.filter((x) => !field.has(x.key))) {
     const sched = await get(`${WEB}/club-schedule-season/${t.key}/${seasonId(season)}`);
     const g = (sched?.games ?? []).filter((x) => x.gameType === 2 && ['OFF', 'FINAL'].includes(x.gameState)).at(-1);
-    if (g) lastGames[t.key] = gameFor({ date: g.gameDate, home: abbrOf(g.homeTeam), score: { [abbrOf(g.homeTeam)]: g.homeTeam.score, [abbrOf(g.awayTeam)]: g.awayTeam.score }, ot: g.gameOutcome?.lastPeriodType && g.gameOutcome.lastPeriodType !== 'REG' }, t.key);
+    if (g) lastGames[t.key] = gameFor({ date: g.gameDate, home: abbrOf(g.homeTeam), score: { [abbrOf(g.homeTeam)]: g.homeTeam.score, [abbrOf(g.awayTeam)]: g.awayTeam.score }, ot: g.gameOutcome?.lastPeriodType && g.gameOutcome.lastPeriodType !== 'REG', neutral: !!g.neutralSite }, t.key);
   }
   const out = buildOutcomes({ teams, series, totalRounds, lastGames, fieldSet: regDone && list.length > 0 });
   // (points behind, in the NHL: the file's gamesBack)
@@ -208,6 +210,11 @@ async function main() {
     }
     const o = await outcomes(season);
     const written = [writeIfChanged(path.join(dir, 'outcomes.json'), sortKeys(o))];
+    // (ONLY=outcomes: the outcomes alone, the players' files left as they are)
+    if (process.env.ONLY === 'outcomes') {
+      console.log(`NHL ${season}: outcomes (champion ${Object.entries(o).find(([, v]) => v.result === 'champion')?.[0] ?? 'none yet'})`);
+      continue;
+    }
     // (the numbers already found from box scores: kept, not asked again each night)
     const known = (() => { try { return JSON.parse(readFileSync(path.join(dir, 'numbers.json'), 'utf8')); } catch { return {}; } })();
     const p = await players(season, siteRows(dir), Object.keys(o), known);

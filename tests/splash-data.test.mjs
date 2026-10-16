@@ -77,6 +77,28 @@ test('a season still being played: the furthest each has got, nothing over yet; 
   assert.equal(final.A.score, null);
 });
 
+test('a game at a neutral site: its round and its last game say so; home still says which side it was listed on', () => {
+  const sb = { date: '2024-02-11', teams: ['KC', 'SF'], home: 'KC', score: { KC: 25, SF: 22 }, neutral: true };
+  const [made] = seriesOf([sb], { needed: () => 1 });
+  assert.equal(made.games[0].neutral, true);
+  const out = buildOutcomes({
+    teams: [{ key: 'KC' }, { key: 'SF' }, { key: 'X' }],
+    series: [{ round: 1, roundName: 'Super Bowl', teams: ['KC', 'SF'], wins: { KC: 1, SF: 0 }, winner: 'KC', single: true, games: [sb] }],
+    totalRounds: 1,
+    lastGames: { X: { date: '2024-01-07', opp: 'Y', oppTeam: 'Y', home: false, result: 'L', score: '1-2' } },
+  });
+  assert.equal(out.SF.playoffs[0].neutral, true);
+  assert.equal(out.SF.playoffs[0].home, false);
+  assert.equal(out.SF.lastGame.neutral, true);
+  assert.equal(out.SF.lastGame.home, false);
+  assert.equal(out.KC.lastGame.neutral, true);
+  assert.equal(out.X.lastGame.neutral, undefined);
+  // (a home game is no neutral one)
+  const home = buildOutcomes({ teams: [{ key: 'A' }, { key: 'B' }], series: [{ round: 1, roundName: 'F', teams: ['A', 'B'], wins: { A: 1, B: 0 }, winner: 'A', single: true, games: [{ ...sb, teams: ['A', 'B'], home: 'A', score: { A: 2, B: 1 }, neutral: false }] }], totalRounds: 1 });
+  assert.equal(home.B.playoffs[0].neutral, undefined);
+  assert.equal(home.B.lastGame.neutral, undefined);
+});
+
 // ---- the built files: facts
 test('NFL outcomes: the 2023 Chiefs champion over the 49ers, the 49ers finalist, the 2024 Jaguars missed', () => {
   const o23 = outcomesOf('nfl', 2023);
@@ -89,6 +111,12 @@ test('NFL outcomes: the 2023 Chiefs champion over the 49ers, the 49ers finalist,
   assert.equal(o23.Chiefs.confChamp, true);
   assert.equal(o23['49ers'].result, 'finalist');
   assert.equal(o23['49ers'].seed, 1);
+  // (Super Bowl LVIII, Las Vegas: a neutral site, the Chiefs listed at home)
+  assert.equal(o23['49ers'].lastGame.neutral, true);
+  assert.equal(o23['49ers'].lastGame.home, false);
+  assert.equal(o23['49ers'].playoffs.at(-1).neutral, true);
+  assert.equal(o23.Chiefs.lastGame.neutral, true);
+  assert.equal(o23['49ers'].playoffs[0].neutral, undefined, 'the divisional round at home');
   assert.equal(o23.Ravens.result, 'semis');
   assert.equal(o23.Ravens.roundName, 'AFC Championship');
   assert.equal(o23.Texans.result, 'playoffs');
@@ -268,12 +296,55 @@ test('the uniform tables: every team key, eras oldest first and contiguous, the 
   }
 });
 
+test('neutral sites in every sport: Super Bowls and a moved wild card, 2020 bubbles, the 2020 World Series', () => {
+  for (const season of siteSeasons('nfl')) {
+    const o = outcomesOf('nfl', season);
+    const champ = Object.values(o).find((t) => t.result === 'champion');
+    if (champ) assert.equal(champ.lastGame.neutral, true, `${season}: the Super Bowl`);
+  }
+  // (the 2024 Rams' wild card against the Vikings, moved to Glendale by the fires)
+  assert.equal(outcomesOf('nfl', 2024).Vikings.lastGame.neutral, true);
+  assert.equal(outcomesOf('nfl', 2024).Rams.playoffs[0].neutral, true);
+  assert.equal(outcomesOf('nfl', 2024).Rams.lastGame.neutral, undefined, 'the divisional round at PHI');
+  // (the NHL's 2020 hubs, the NBA's bubble, MLB's 2020 World Series in Arlington)
+  assert.equal(outcomesOf('nhl', 2020).TBL.lastGame.neutral, true);
+  assert.equal(outcomesOf('nhl', 2020).TBL.playoffs.at(-1).neutral, true);
+  const nba20 = Object.values(outcomesOf('nba', 2020)).find((t) => t.result === 'champion');
+  assert.equal(nba20.lastGame.neutral, true);
+  assert.equal(nba20.playoffs.at(-1).neutral, true);
+  const mlb20 = Object.values(outcomesOf('mlb', 2020)).find((t) => t.result === 'champion');
+  assert.equal(mlb20.lastGame.neutral, true);
+  // (and an ordinary final at home is not)
+  assert.equal(Object.values(outcomesOf('nhl', 2024)).find((t) => t.result === 'champion').lastGame.neutral, undefined);
+  assert.equal(Object.values(outcomesOf('nba', 2024)).find((t) => t.result === 'champion').lastGame.neutral, undefined);
+  assert.equal(Object.values(outcomesOf('mlb', 2024)).find((t) => t.result === 'champion').lastGame.neutral, undefined);
+});
+
+test('the 2023 49ers\' Super Bowl stub reads "49ers vs KC", not "at": a neutral site', async () => {
+  const { sceneOutcome } = await loadTs(path.resolve(import.meta.dirname, '../libs/ranker/src/engine/player-card/splash/splash.outcome.ts'));
+  const out = path.join(os.tmpdir(), `splash-data-scene-${process.pid}.mjs`);
+  await build({ entryPoints: [path.resolve(import.meta.dirname, '../libs/ranker/src/engine/player-card/splash/splash.scene.ts')], bundle: true, format: 'esm', platform: 'node', outfile: out, logLevel: 'silent' });
+  const { buildScene, vsAt } = await import(pathToFileURL(out).href);
+  rmSync(out, { force: true });
+  assert.equal(vsAt(false, true), 'vs');
+  assert.equal(vsAt(true), 'vs');
+  assert.equal(vsAt(false), 'at');
+  const niners = sceneOutcome(outcomesOf('nfl', 2023)['49ers'], 'nfl', 2023);
+  assert.equal(niners.lastGame.neutral, true);
+  const s = buildScene({ sport: 'nfl', tab: 'TM', id: 'TM-49ers', season: 2023, seasonLabel: '2023', current: false, team: true, name: 'San Francisco 49ers', teamName: 'San Francisco 49ers', abbr: 'SF', awards: [{ id: 'conf', title: '2023 NFC Champion' }], outcome: niners });
+  const stub = s.items.find((i) => i.t === 'stub');
+  assert.ok(stub, 'the ticket stub of the game it ended in');
+  assert.equal(stub.lines[1], '49ers vs KC');
+  // (the Chiefs' game ball: W ... vs SF)
+  assert.match(sceneOutcome(outcomesOf('nfl', 2023).Chiefs, 'nfl', 2023).gameBall.tip, /^W 25-22 OT vs SF/);
+});
+
 // ---- the card's reading of the files (libs/ranker/src/engine/player-card/splash/splash.outcome.ts)
 test('the scene reads outcomes: a champion its title game, a finalist its stub, a near miss the bubble', async () => {
   const { sceneOutcome } = await loadTs(path.resolve(import.meta.dirname, '../libs/ranker/src/engine/player-card/splash/splash.outcome.ts'));
   const chiefs = sceneOutcome(outcomesOf('nfl', 2023).Chiefs, 'nfl', 2023);
   assert.equal(chiefs.result, 'champion');
-  assert.deepEqual(chiefs.lastGame, { round: 'Super Bowl LVIII', opp: 'SF', home: true, score: '25-22 OT', won: true, date: 'Feb 11, 2024' });
+  assert.deepEqual(chiefs.lastGame, { round: 'Super Bowl LVIII', opp: 'SF', home: true, neutral: true, score: '25-22 OT', won: true, date: 'Feb 11, 2024' });
   assert.equal(chiefs.gameBall.title, 'Super Bowl LVIII');
   assert.equal(chiefs.division, 'AFC West');
   assert.deepEqual(chiefs.roundWon, { round: 'AFC Championship', result: 'W 17-10 at BAL' });

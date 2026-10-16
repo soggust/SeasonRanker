@@ -1,6 +1,6 @@
 // The splash's data files as the scripts write them (libs/ranker/scripts/splash: outcomes.mjs, best-game.mjs,
 // milestones.mjs), and a team's outcome as the scene reads it. No Angular here (tests/splash-data.test.mjs loads it).
-import type { Outcome } from './splash.scene';
+import { type Outcome, vsAt } from './splash.scene';
 
 export interface PlayoffRound {
   round: number;
@@ -11,6 +11,7 @@ export interface PlayoffRound {
   score: string | null; // the series' wins, its own first ("4-2"), or an NFL game's score
   date: string | null;
   home?: boolean;
+  neutral?: boolean; // every game of it at a neutral site (a Super Bowl, the 2020 bubbles)
   ot?: boolean;
 }
 export interface OutcomeFile {
@@ -33,7 +34,7 @@ export interface OutcomeFile {
   gamesBack: number | null; // a missed team's: games behind the field's last team (the NHL's: points)
   playIn?: boolean;
   playoffs: PlayoffRound[];
-  lastGame: { date: string; opp: string; oppTeam: string; home: boolean; result: 'W' | 'L' | 'T'; score: string; ot?: boolean } | null;
+  lastGame: { date: string; opp: string; oppTeam: string; home: boolean; neutral?: boolean; result: 'W' | 'L' | 'T'; score: string; ot?: boolean } | null;
 }
 export interface BestGame {
   date: string;
@@ -81,7 +82,7 @@ export function sceneOutcome(o: OutcomeFile | undefined, sport: string, season: 
   const last = o.playoffs.at(-1);
   const lg = o.lastGame;
   const short = (name: string) => name.replace(/\s+round$/i, '');
-  const wonText = (p: PlayoffRound) => (p.home !== undefined ? `W ${p.score} ${p.home ? 'vs' : 'at'} ${p.opp}` : `beat ${p.opp} ${p.score}`);
+  const wonText = (p: PlayoffRound) => (p.home !== undefined ? `W ${p.score} ${vsAt(p.home, p.neutral)} ${p.opp}` : `beat ${p.opp} ${p.score}`);
   // (the last round it won before the one it ended in)
   const won = o.playoffs.filter((p) => p.won && p !== last).at(-1);
   return {
@@ -94,15 +95,15 @@ export function sceneOutcome(o: OutcomeFile | undefined, sport: string, season: 
     confChamp: o.confChamp,
     lastGame:
       last && lg
-        ? { round: roundOf(last.roundName), opp: last.opp, home: lg.home, score: `${lg.score}${lg.ot ? ' OT' : ''}`, won: !!last.won, date: longDate(lg.date) }
+        ? { round: roundOf(last.roundName), opp: last.opp, home: lg.home, neutral: !!lg.neutral, score: `${lg.score}${lg.ot ? ' OT' : ''}`, won: !!last.won, date: longDate(lg.date) }
         : lg
-          ? { round: 'Regular season', opp: lg.opp, home: lg.home, score: lg.score, won: lg.result === 'W', date: longDate(lg.date) }
+          ? { round: 'Regular season', opp: lg.opp, home: lg.home, neutral: !!lg.neutral, score: lg.score, won: lg.result === 'W', date: longDate(lg.date) }
           : undefined,
     roundWon: won ? { round: short(won.roundName), result: wonText(won) } : undefined,
     // (an NFL champion's game ball: the title game; the other sports' game-ball prop is a football)
     gameBall:
       sport === 'nfl' && o.result === 'champion' && last && lg
-        ? { title: roundOf(last.roundName), line: `${lg.score}${lg.ot ? ' OT' : ''}`, tip: `W ${lg.score}${lg.ot ? ' OT' : ''} ${lg.home ? 'vs' : 'at'} ${lg.opp} · ${longDate(lg.date)}` }
+        ? { title: roundOf(last.roundName), line: `${lg.score}${lg.ot ? ' OT' : ''}`, tip: `W ${lg.score}${lg.ot ? ' OT' : ''} ${vsAt(lg.home, lg.neutral)} ${lg.opp} · ${longDate(lg.date)}` }
         : undefined,
   };
 }
