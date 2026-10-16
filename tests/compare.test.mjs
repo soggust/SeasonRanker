@@ -420,7 +420,10 @@ test('nfl: removing and switching sides keeps the colors, and one added takes it
   assert.equal(compare.view.wins.length, 2);
   await compare.add('RB', host.season, host.playerList[3].gsisId);
   assert.deepEqual(compare.sides.slice(0, 2).map((s) => s.color), [colors[0], colors[2]], 'one added: the others keep theirs');
-  assert.equal(compare.sides[2].color, teamColorsOf(engine, compare.sides)[2], "its team's, clear of the two in");
+  // (picked clear of the two kept sides' own colors, not of colors worked out afresh: the side that moved up
+  // keeps the color it had, which a fresh pick in the new order can differ from)
+  const { colors: pick } = engine.PlayerCompare;
+  assert.equal(compare.sides[2].color, pick.pickColor(pick.choices(compare.sides[2]), [compare.sides[0].color, compare.sides[1].color], engine.COMPARE_COLORS), "its team's, clear of the two in");
   checkColors(engine, compare.sides);
 
   // (a season switched while another side is removed: it's still that side that's switched)

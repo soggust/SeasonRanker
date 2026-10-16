@@ -45,7 +45,8 @@ function commonFields(rows) {
 }
 
 // Fields a row has only sometimes: an injury (a playoff list may have nobody hurt)
-const OPTIONAL = new Set(['injured', 'injuryStatus']);
+// (a grade's inputs, gradeIn: written where a data run read them, so a part's row a run didn't refit can lack them)
+const OPTIONAL = new Set(['injured', 'injuryStatus', 'gradeIn']);
 // Recent form, which a finished season's regular-season file leaves out (the app shows Recent for the
 // season being played only) and its playoff files keep
 const RECENT = /^(team)?[lL]astFive(Vs|Ot)?$/;
