@@ -834,13 +834,6 @@ section ul li.player:not(.header-row) {
       .team-badge {
         border-color: var(--scoreboard-led);
       }
-
-      // (the player steps up in his gem, the card his to open)
-      @media (prefers-reduced-motion: no-preference) {
-        .headshot {
-          translate: 0 -2px;
-        }
-      }
     }
   }
 
