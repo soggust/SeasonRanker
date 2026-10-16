@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "20",
+   "abbr": "PHI",
+   "athlete": "3059318",
+   "player": "Joel Embiid",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Maxey: Healthy Embiid 'changes everything' for Sixers",
+   "at": "2026-10-15T21:43:26.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "SA",
+   "athlete": null,
+   "player": null,
+   "kind": "role",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Spurs debut three-guard lineup of Fox, Harper, Castle in preseason win",
+   "at": "2026-10-15T13:34:59.000Z"
+  },
+  {
    "team": "13",
    "abbr": "LAL",
    "athlete": "4433136",
@@ -14,5 +36,5 @@
    "at": "2026-10-14T07:06:18.000Z"
   }
  ],
- "at": "2026-10-15T18:07:31.028Z"
+ "at": "2026-10-16T00:07:06.785Z"
 }

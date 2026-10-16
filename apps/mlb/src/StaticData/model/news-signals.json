@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "22",
+   "abbr": "PHI",
+   "athlete": null,
+   "player": "Don Mattingly",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Don Mattingly, Phillies get to work on offseason changes",
+   "at": "2026-10-15T20:03:25.000Z"
+  },
+  {
    "team": "5",
    "abbr": "CLE",
    "athlete": "4345076",
@@ -47,5 +58,5 @@
    "at": "2026-10-14T14:32:09.000Z"
   }
  ],
- "at": "2026-10-15T15:22:32.548Z"
+ "at": "2026-10-16T00:07:06.785Z"
 }
