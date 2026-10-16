@@ -1,0 +1,1920 @@
+// The Overview's splash. A dark wood wall in the team's hue, lamps over each piece, a lit shelf.
+// Everything vector: sizes by --s (1 on a desktop, smaller on a phone), colors by --c1/--c2/--c3 and the
+// card's own team look (--team-hi, --team-lo, --team-accent).
+
+card-splash {
+  display: block;
+}
+
+.splash {
+  --s: 1;
+  --shelf: 34px;
+  --warm: 255, 238, 205;
+  --beam: 0.34;
+  background: #120e0b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 300px;
+  isolation: isolate;
+  // edge to edge in the card's body, flush under the tabs
+  margin: -18px -28px 18px;
+  overflow: hidden;
+  position: relative;
+
+  &.mood-gold {
+    --warm: 255, 226, 160;
+    --beam: 0.4;
+  }
+
+  &.mood-sunset {
+    --warm: 255, 196, 150;
+  }
+
+  &.mood-cool {
+    --warm: 225, 236, 255;
+    --beam: 0.3;
+  }
+}
+
+.sp-defs {
+  position: absolute;
+}
+
+// ---- the wall: dark vertical boards, the team's hue washing down from the top, a vignette
+.sp-wall {
+  background:
+    radial-gradient(ellipse 75% 95% at 50% -10%, color-mix(in srgb, var(--team-hi) 55%, transparent), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0 2px, rgba(255, 255, 255, 0.04) 2px 3px, transparent 3px 58px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.012' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.03 0 0 0 0 0.02 0 0 0 0 0.01 1.5 0 0 0 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 256px 256px,
+    linear-gradient(180deg, #33261b, #1b140f 70%, #110c09);
+  inset: 0;
+  position: absolute;
+
+  // (the vignette, and a crown molding along the top)
+  &::after {
+    background:
+      linear-gradient(180deg, #0a0806 0 9px, rgba(255, 255, 255, 0.12) 9px 10px, rgba(0, 0, 0, 0.5) 10px 14px, transparent 30px),
+      radial-gradient(ellipse 85% 120% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.6));
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+}
+
+.mood-sunset .sp-wall {
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 110%, rgba(255, 140, 70, 0.28), transparent 70%),
+    radial-gradient(ellipse 75% 95% at 50% -10%, color-mix(in srgb, var(--team-hi) 45%, transparent), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0 2px, rgba(255, 255, 255, 0.025) 2px 3px, transparent 3px 58px),
+    linear-gradient(180deg, #2a1f17, #17110d 70%, #0f0b08);
+}
+
+// (the team's color glowing up the wall from behind the shelf: an LED strip)
+.sp-backlight {
+  background: linear-gradient(0deg, color-mix(in srgb, var(--team-accent) 55%, transparent), transparent);
+  bottom: var(--shelf);
+  filter: blur(2px);
+  height: 70px;
+  left: 0;
+  opacity: 0.55;
+  position: absolute;
+  right: 0;
+}
+
+// ---- the header: a small brass plate hung from the molding
+.sp-header {
+  align-items: baseline;
+  background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
+  border-radius: 0 0 6px 6px;
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #2b1a05;
+  display: flex;
+  font-family: var(--f-block);
+  gap: 8px;
+  left: 50%;
+  max-width: calc(100% - 24px);
+  padding: 3px 14px 4px;
+  position: absolute;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  top: 9px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 3;
+
+  b {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+
+  span {
+    font-size: 11.5px;
+    font-weight: 500;
+    opacity: 0.85;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &::before {
+      content: "· ";
+    }
+  }
+}
+
+// ---- the stage: one column per piece, each with its own lamp and beam from the top
+.sp-stage {
+  display: flex;
+  gap: 4px;
+  inset: 0;
+  justify-content: center;
+  padding: 0 24px;
+  position: absolute;
+  z-index: 2;
+}
+
+.sp-col {
+  align-items: center;
+  display: flex;
+  flex: 0 1 150px;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  padding-bottom: calc(var(--shelf) - 3px);
+  position: relative;
+
+  &.star {
+    flex-basis: 190px;
+  }
+}
+
+// (a lamp: a small dark can, its lit lens)
+.sp-lamp {
+  background: linear-gradient(180deg, #2b2b2b, #0e0e0e);
+  border-radius: 0 0 9px 9px;
+  height: 7px;
+  left: 50%;
+  position: absolute;
+  top: 10px;
+  transform: translateX(-50%);
+  width: 30px;
+  z-index: 2;
+
+  &::after {
+    background: rgb(var(--warm));
+    border-radius: 50%;
+    bottom: -2px;
+    box-shadow:
+      0 0 10px 3px rgba(var(--warm), 0.9),
+      0 0 26px 8px rgba(var(--warm), 0.35);
+    content: "";
+    height: 4px;
+    left: 5px;
+    position: absolute;
+    right: 5px;
+  }
+}
+
+// the shelf's header sits where a middle lamp would: no lamp under it
+.sp-col.star:nth-child(1) .sp-lamp {
+  top: 10px;
+}
+
+.sp-beam {
+  // (the light falls off with distance: bright at the lamp, most of it gone by the shelf)
+  background: linear-gradient(
+    180deg,
+    rgba(var(--warm), var(--beam)),
+    rgba(var(--warm), calc(var(--beam) * 0.55)) 18%,
+    rgba(var(--warm), calc(var(--beam) * 0.3)) 45%,
+    rgba(var(--warm), calc(var(--beam) * 0.14)) 75%,
+    rgba(var(--warm), 0.03)
+  );
+  bottom: calc(var(--shelf) - 6px);
+  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+  filter: blur(5px);
+  left: 50%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  position: absolute;
+  top: 14px;
+  transform: translateX(-50%);
+  width: 200px;
+  z-index: 1;
+
+  // (the pool of light it leaves on the shelf)
+  &::after {
+    background: radial-gradient(ellipse at 50% 100%, rgba(var(--warm), 0.5), transparent 65%);
+    bottom: -6px;
+    content: "";
+    height: 30px;
+    left: 15%;
+    position: absolute;
+    right: 15%;
+  }
+}
+
+.sp-col:not(.star) .sp-beam {
+  opacity: 0.72;
+}
+
+// the piece itself: drawn to its height, standing on the shelf, a soft shadow at its foot
+.sp-art {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+
+  // (contact shadow and the darker ring of ambient occlusion where it meets the shelf)
+  &::before {
+    background:
+      radial-gradient(closest-side, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.35) 45%, transparent),
+      radial-gradient(closest-side, rgba(0, 0, 0, 0.3), transparent);
+    background-size: 70% 8px, 100% 18px;
+    background-position: 50% 100%, 50% 100%;
+    background-repeat: no-repeat;
+    bottom: -7px;
+    content: "";
+    height: 18px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: -1;
+  }
+
+  > svg,
+  > splash-piece > svg {
+    display: block;
+    height: calc(var(--h, 120px) * var(--s));
+    max-width: 100%;
+    overflow: visible;
+  }
+}
+
+.kind-shelf {
+  --s: 1;
+}
+
+// ---- the shelf: a lit top face and a dark front edge
+.sp-shelf {
+  bottom: 0;
+  height: var(--shelf);
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+
+  .top {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='64'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.5' numOctaves='3' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.02 0 0 0 0 0.01 1.6 0 0 0 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 256px 64px,
+      linear-gradient(180deg, #7a5638, #4e3522);
+    box-shadow: inset 0 -1px 0 rgba(255, 235, 200, 0.45);
+    display: block;
+    height: 8px;
+  }
+
+  .front {
+    background:
+      linear-gradient(180deg, rgba(255, 220, 170, 0.18), transparent 3px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='64'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.5' numOctaves='3' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.02 0 0 0 0 0.01 1.6 0 0 0 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 256px 64px,
+      linear-gradient(180deg, #45301d, #24170d);
+    border-top: 1px solid rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.35);
+    display: block;
+    height: calc(var(--shelf) - 8px);
+  }
+}
+
+// a brass plate on the shelf's edge under each piece
+.sp-plate {
+  background: linear-gradient(180deg, #f3dc98, #c29330 60%, #94691d);
+  border-radius: 2px;
+  bottom: 4px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  color: #2b1a05;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--f-block);
+  left: 50%;
+  line-height: 1.05;
+  max-width: calc(100% - 6px);
+  padding: 2px 8px 2px;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 3;
+
+  b {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+  }
+
+  span {
+    font-size: 10px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// ---- the jersey wall: a rail along the top, the jerseys hung from it, the leader's lower and bigger
+.sp-rail {
+  background: linear-gradient(180deg, #d5dbe0, #7d868f 60%, #3c4248);
+  border-radius: 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+  height: 5px;
+  left: 18px;
+  position: absolute;
+  right: 18px;
+  top: 52px;
+  z-index: 2;
+}
+
+.kind-wall {
+  .sp-stage {
+    gap: 0;
+  }
+
+  .sp-col {
+    flex-basis: 128px;
+    justify-content: flex-start;
+    padding-top: 40px;
+
+    &.star {
+      flex-basis: 150px;
+    }
+  }
+
+  .sp-lamp {
+    top: 14px;
+  }
+
+  .sp-beam {
+    top: 18px;
+  }
+}
+
+.sp-hanging {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.kind-wall .sp-col.star {
+  z-index: 3;
+}
+
+.sp-art > svg.sp-jersey {
+  --jh: 200px;
+  display: block;
+  flex: none;
+  height: calc(var(--jh) * var(--s));
+  overflow: visible;
+  max-width: none;
+  width: calc(var(--jh) * var(--s) * 0.78);
+}
+
+.star .sp-art > svg.sp-jersey {
+  --jh: 226px;
+}
+
+.sp-hanger {
+  fill: none;
+  stroke: #6b4a2b;
+  stroke-linecap: round;
+  stroke-width: 4;
+}
+
+.sp-hanger-hook {
+  fill: none;
+  stroke: #b9c0c8;
+  stroke-width: 2;
+}
+
+.sp-j-name {
+  font-family: var(--f-block);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-anchor: middle;
+}
+
+.sp-j-num {
+  font-family: var(--f-block);
+  font-size: 58px;
+  paint-order: stroke;
+  stroke-linejoin: round;
+  stroke-width: 2.4px;
+  text-anchor: middle;
+
+  // (the trim around the number, then its shadow on the cloth)
+  &.outer {
+    stroke-width: 7.5px;
+  }
+
+  &.shadow {
+    fill: #000;
+    opacity: 0.28;
+    stroke: #000;
+    stroke-width: 8px;
+  }
+}
+
+// ---- engraved and printed words on the pieces
+.sp-engr {
+  fill: #2b1d08;
+
+  &.dark {
+    fill: #1e2328;
+    fill-opacity: 0.85;
+  }
+
+  &.light {
+    fill: #d9dee3;
+  }
+
+  font-family: var(--f-block);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.small {
+    font-size: 6.5px;
+    font-weight: 600;
+  }
+}
+
+.sp-ring {
+  fill: #4d3405;
+  font-family: var(--f-block);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+.sp-banner-t {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.big {
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  &.yr {
+    fill: var(--c2);
+    font-family: var(--f-block);
+    font-size: 15px;
+  }
+}
+
+.sp-label {
+  fill: #c04a00;
+  font-family: var(--f-block);
+  font-size: 7px;
+  font-weight: 800;
+  text-anchor: middle;
+
+  &.small {
+    font-size: 4.2px;
+    letter-spacing: 0.4px;
+  }
+}
+
+.sp-tent {
+  fill: #7a1020;
+  font-family: var(--f-block);
+  font-size: 6.4px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-anchor: middle;
+
+  &.small {
+    fill: #555;
+    font-size: 4.4px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+}
+
+.sp-ghost {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-dasharray: 4 4;
+  stroke-width: 1.2;
+}
+
+.sp-puck-t {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.big {
+    font-size: 11px;
+    font-weight: 800;
+  }
+}
+
+.sp-pennant-t {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.small {
+    fill: var(--c2);
+    font-size: 10px;
+  }
+}
+
+.sp-marker {
+  fill: #f8f4ea;
+  font-family: var(--f-marker);
+  font-size: 11px;
+  text-anchor: middle;
+
+  &.dark {
+    fill: #1a0d03;
+  }
+
+  &.blue {
+    fill: #1d3d8f;
+    font-size: 14px;
+  }
+
+  &.small {
+    font-size: 9px;
+  }
+}
+
+.sp-belt-t {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-anchor: middle;
+
+  &.small {
+    font-size: 4.6px;
+  }
+}
+
+// ---- a placard: the season's last word, engraved
+.sp-endplate {
+  align-items: center;
+  background: linear-gradient(180deg, #2c2c2c, #0d0d0d);
+  border: 2px solid #b48a2c;
+  border-radius: 4px;
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 3px #111,
+    inset 0 0 0 4px rgba(255, 220, 140, 0.35);
+  color: #f1d58a;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--f-block);
+  gap: 2px;
+  margin-bottom: 2px;
+  padding: calc(12px * var(--s)) calc(14px * var(--s));
+  text-align: center;
+  transform: perspective(300px) rotateX(8deg);
+
+  small {
+    font-size: calc(9px * var(--s));
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    text-transform: uppercase;
+  }
+
+  b {
+    font-size: calc(16px * var(--s));
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  span {
+    color: #fff;
+    font-size: calc(11.5px * var(--s));
+    font-weight: 600;
+  }
+}
+
+// ---- the boarding pass (the season that ended early)
+.sp-pass-stack {
+  margin-bottom: 4px;
+  position: relative;
+  transform: rotate(-3deg);
+}
+
+.sp-pass {
+  background: #fbf9f3;
+  border-radius: 6px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+  color: #1b1b1b;
+  font-family: var(--f-block);
+  overflow: hidden;
+  position: relative;
+  width: calc(290px * var(--s));
+
+  &.behind {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 70%, #000) 0 18px, #e9e4d8 18px);
+    height: 100%;
+    left: 14px;
+    position: absolute;
+    top: -12px;
+    transform: rotate(5deg);
+  }
+
+  small {
+    color: #777;
+    display: block;
+    font-size: calc(7px * var(--s));
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
+.sp-pass-head {
+  background: linear-gradient(90deg, var(--c1), color-mix(in srgb, var(--c1) 60%, #000));
+  color: #fff;
+  display: flex;
+  font-size: calc(9px * var(--s));
+  font-weight: 700;
+  justify-content: space-between;
+  letter-spacing: 1.2px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+
+  span:last-child {
+    color: var(--c2);
+  }
+}
+
+.sp-pass-body {
+  display: flex;
+}
+
+.sp-pass-main {
+  flex: 1;
+  padding: 6px 10px 8px;
+
+  .who {
+    display: block;
+    font-size: calc(12px * var(--s));
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .route {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin: 3px 0;
+
+    b {
+      font-family: var(--f-block);
+      font-size: calc(22px * var(--s));
+      line-height: 1;
+    }
+
+    .plane {
+      color: var(--c1);
+      font-size: calc(14px * var(--s));
+    }
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+
+    span {
+      font-size: calc(10px * var(--s));
+      font-weight: 700;
+    }
+  }
+}
+
+.sp-pass-stub {
+  border-left: 2px dashed #c9c2b2;
+  padding: 6px 8px;
+  width: calc(64px * var(--s));
+
+  small {
+    color: var(--c1);
+    font-size: calc(8px * var(--s));
+    font-weight: 800;
+  }
+
+  .code {
+    align-items: stretch;
+    display: flex;
+    gap: 1px;
+    height: calc(46px * var(--s));
+    margin-top: 6px;
+
+    i {
+      background: #1b1b1b;
+      display: block;
+    }
+  }
+}
+
+.sp-stamp {
+  border: 2.5px solid #c81e2e;
+  border-radius: 4px;
+  bottom: 6%;
+  color: #c81e2e;
+  font-family: var(--f-block);
+  font-size: calc(15px * var(--s));
+  letter-spacing: 2px;
+  opacity: 0.85;
+  padding: 1px 8px;
+  position: absolute;
+  right: 6%;
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+}
+
+// ---- the scorecard (the season that just missed)
+.sp-scorecard {
+  background: #fbfaf5;
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+  color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--f-block);
+  margin-bottom: 4px;
+  padding: 0 0 8px;
+  text-align: center;
+  transform: rotate(2deg);
+  width: calc(190px * var(--s));
+
+  .head {
+    background: #1f5a2e;
+    color: #fff;
+    font-size: calc(9px * var(--s));
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px;
+    text-transform: uppercase;
+  }
+
+  .grid {
+    border-bottom: 1px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    margin: 0 8px 4px;
+
+    span {
+      border-right: 1px solid #ddd;
+      color: #777;
+      font-size: calc(8px * var(--s));
+      padding: 2px 0;
+    }
+  }
+
+  b {
+    font-family: var(--f-marker);
+    font-size: calc(28px * var(--s));
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  small {
+    font-size: calc(9.5px * var(--s));
+    font-weight: 600;
+  }
+
+  em {
+    color: #c81e2e;
+    font-family: var(--f-marker);
+    font-size: calc(12px * var(--s));
+    font-style: normal;
+  }
+}
+
+// ---- the locker: his stall in the middle, framed, the pieces to each side
+.kind-locker,
+.kind-tcard {
+  .sp-header {
+    display: none;
+  }
+}
+
+.kind-locker {
+  .sp-col.side {
+    flex-basis: 150px;
+  }
+}
+
+.sp-stall {
+  flex: 0 0 calc(250px * var(--s)) !important;
+
+  .sp-beam {
+    width: 280px;
+  }
+}
+
+.sp-stall-frame {
+  align-items: center;
+  margin-top: 30px !important;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(var(--warm), 0.12), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 24px),
+    linear-gradient(180deg, #1e1610, #0e0a07);
+  border: calc(10px * var(--s)) solid #4a3220;
+  border-bottom: 0;
+  border-image: linear-gradient(180deg, #7a5536, #3f2a19) 1;
+  box-shadow:
+    inset 0 18px 30px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 30px);
+  justify-content: flex-start;
+
+  position: relative;
+  width: 100%;
+
+  .sp-hanging {
+    margin-top: calc(34px * var(--s));
+    width: 82%;
+  }
+
+  .sp-art > svg.sp-jersey {
+    --jh: 184px;
+  }
+}
+
+.sp-nameplate {
+  align-items: center;
+  background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  color: #2b1a05;
+  display: flex;
+  font-family: var(--f-block);
+  font-size: calc(14px * var(--s));
+  gap: 8px;
+  letter-spacing: 1.5px;
+  padding: 2px 12px;
+  position: absolute;
+  text-transform: uppercase;
+  top: calc(-24px * var(--s));
+  z-index: 3;
+
+  i {
+    font-style: normal;
+    opacity: 0.75;
+  }
+}
+
+// (white athletic tape across the frame, his best line in marker)
+.sp-tape {
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg, #f7f5ee, #e6e1d4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+  clip-path: polygon(1% 0, 99% 6%, 100% 50%, 98.5% 100%, 0.5% 94%, 0 45%);
+  color: #14110c;
+  font-family: var(--f-marker);
+  font-size: calc(13px * var(--s));
+  padding: 3px 14px 2px;
+  position: absolute;
+  top: calc(14px * var(--s));
+  transform: rotate(-2deg);
+  white-space: nowrap;
+  z-index: 4;
+}
+
+.sp-hook {
+  display: none;
+}
+
+// ---- the trading card: front and back on an acrylic stand
+.sp-tcards {
+  flex-basis: 600px !important;
+}
+
+.sp-cards {
+  display: flex;
+  gap: 26px;
+  margin-bottom: 6px;
+  perspective: 900px;
+}
+
+.sp-tc {
+  border-radius: 10px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+  height: calc(222px * var(--s));
+  overflow: hidden;
+  position: relative;
+  width: calc(160px * var(--s));
+
+  &.front {
+    background:
+      conic-gradient(from 200deg, #ffe27a, #ff9ad5, #7ad7ff, #a5ffb0, #ffe27a, #ff9ad5, #7ad7ff, #ffe27a);
+    padding: 6px;
+    transform: rotateY(12deg) rotate(-2deg);
+  }
+
+  &.back {
+    background: linear-gradient(180deg, #f2ead6, #ddd0ae);
+    border: 5px solid var(--c1);
+    color: #1b1b1b;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--f-block);
+    padding: 8px 10px;
+    transform: rotateY(-12deg) rotate(2deg);
+  }
+}
+
+.sp-tc-photo {
+  background:
+    radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--team-hi) 80%, #fff 10%), var(--team-lo));
+  border-radius: 6px;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.sp-tc-watermark {
+  height: 120%;
+  left: -20%;
+  opacity: 0.18;
+  position: absolute;
+  top: -5%;
+}
+
+.sp-tc-player {
+  bottom: 30px;
+  height: 78%;
+  left: 50%;
+  object-fit: contain;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.sp-tc-logo {
+  height: calc(30px * var(--s));
+  left: 12px;
+  position: absolute;
+  top: 12px;
+}
+
+.sp-tc-badge {
+  background: linear-gradient(180deg, #ffe27a, #d9a520 55%, #b8860b);
+  border-radius: 3px;
+  color: #2b1a05;
+  font-family: var(--f-block);
+  font-size: calc(10px * var(--s));
+  font-weight: 800;
+  padding: 1px 6px;
+  position: absolute;
+  right: 12px;
+  top: 14px;
+}
+
+.sp-tc-name {
+  background: linear-gradient(90deg, var(--c1), color-mix(in srgb, var(--c1) 55%, #000));
+  border-top: 2px solid var(--c2);
+  bottom: 6px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--f-block);
+  left: 6px;
+  padding: 4px 8px 5px;
+  position: absolute;
+  right: 6px;
+
+  b {
+    font-size: calc(13px * var(--s));
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  span {
+    font-size: calc(8.5px * var(--s));
+    opacity: 0.85;
+  }
+}
+
+.sp-tc-year {
+  background: var(--c2);
+  border-radius: 50%;
+  bottom: 38px;
+  color: #111;
+  display: grid;
+  font-family: var(--f-block);
+  font-size: calc(9px * var(--s));
+  height: calc(34px * var(--s));
+  place-items: center;
+  position: absolute;
+  right: 12px;
+  width: calc(34px * var(--s));
+}
+
+.sp-tc-back-head {
+  border-bottom: 2px solid var(--c1);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+
+  b {
+    font-size: calc(12px * var(--s));
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  span {
+    color: #555;
+    font-size: calc(9px * var(--s));
+  }
+}
+
+.sp-tc.back dl {
+  display: grid;
+  gap: 4px 8px;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+
+  dt {
+    color: #666;
+    font-size: calc(7.5px * var(--s));
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+
+  dd {
+    font-family: var(--f-block);
+    font-size: calc(15px * var(--s));
+    margin: 0;
+  }
+}
+
+.sp-tc.back p {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  color: #666;
+  font-size: calc(7.5px * var(--s));
+  margin: auto 0 0;
+  padding-top: 4px;
+}
+
+// ---- a phone: the splash shorter, the pieces smaller, only the middle ones
+@media (max-width: 640px) {
+  .splash {
+    --s: 0.66;
+    --shelf: 28px;
+    height: 236px;
+    margin: -14px -14px 14px;
+  }
+
+  .sp-col.wide {
+    display: none;
+  }
+
+  .kind-shelf {
+    --s: 0.7;
+  }
+
+  .sp-stage {
+    padding: 0 6px;
+  }
+
+  .sp-header {
+    padding: 2px 10px 3px;
+
+    b {
+      font-size: 10.5px;
+      letter-spacing: 1px;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .sp-plate {
+    padding: 1px 4px;
+
+    b {
+      font-size: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    span {
+      font-size: 7.5px;
+    }
+  }
+
+  .sp-beam {
+    width: 130px;
+  }
+
+  .kind-wall .sp-col {
+    flex-basis: 90px;
+
+    &.star {
+      flex-basis: 104px;
+    }
+  }
+
+  .sp-rail {
+    top: 44px;
+  }
+
+  .sp-stall-frame {
+    height: calc(100% - 38px);
+    margin-top: 38px;
+  }
+
+  .sp-tc.back {
+    display: none;
+  }
+}
+
+// ---- motion: the lamps warm up as the card opens, once; a glint crosses the star piece, once. Nothing loops.
+@media (prefers-reduced-motion: no-preference) {
+  .sp-beam {
+    animation: sp-warm 0.9s ease-out 0.15s backwards;
+  }
+
+  .sp-lamp::after {
+    animation: sp-flicker 0.5s steps(1) 0.1s backwards;
+  }
+
+  .sp-col.star .sp-art {
+    mask-image: none;
+
+    &::after {
+      animation: sp-glint 1.4s ease-in-out 0.9s 1 backwards;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.55) 50%, transparent 60%);
+      content: "";
+      inset: 0;
+      mix-blend-mode: overlay;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      transform: translateX(-120%);
+    }
+  }
+}
+
+@keyframes sp-warm {
+  from {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.5;
+  }
+  45% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes sp-flicker {
+  0% {
+    opacity: 0.2;
+  }
+  30% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  70% {
+    opacity: 1;
+  }
+}
+
+@keyframes sp-glint {
+  from {
+    opacity: 1;
+    transform: translateX(-120%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(120%);
+  }
+}
+
+.sp-col.t-pass {
+  flex-basis: 330px !important;
+}
+
+.t-towel .sp-art {
+  transform: translateX(10px);
+}
+
+// (the cards' acrylic stand)
+.sp-cards::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.05));
+  border-radius: 3px;
+  bottom: calc(var(--shelf) - 6px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+  content: '';
+  height: 14px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: calc(400px * var(--s));
+}
+
+.sp-shoe-num {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-size: 13px;
+  text-anchor: middle;
+}
+
+// (his shoe: the showpiece, given room)
+.sp-col.t-shoe {
+  flex-basis: 280px !important;
+
+  .sp-beam {
+    width: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sp-col.t-shoe {
+    flex-basis: 170px !important;
+  }
+
+  .kind-locker .sp-col.side {
+    flex-basis: 110px;
+  }
+}
+
+// ---- more words on the pieces
+.sp-mark {
+  fill: #2b3138;
+  font-family: var(--f-block);
+  font-size: 15px;
+  text-anchor: middle;
+}
+
+.sp-shield-t {
+  fill: #6b4a0c;
+  font-family: var(--f-block);
+  font-size: 17px;
+  letter-spacing: -0.5px;
+  paint-order: stroke;
+  stroke: #ffe9a8;
+  stroke-width: 0.6px;
+  text-anchor: middle;
+}
+
+// ---- the ticket stub (the game the season ended in)
+.sp-stub {
+  background:
+    radial-gradient(circle at 0 50%, transparent 5px, #f6f1e3 5.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent 5px, #f6f1e3 5.5px) right / 51% 100% no-repeat;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(0 0, 100% 0, 100% 96%, 94% 100%, 86% 96%, 78% 100%, 70% 96%, 62% 100%, 54% 96%, 46% 100%, 38% 96%, 30% 100%, 22% 96%, 14% 100%, 6% 96%, 0 100%);
+  color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--f-block);
+  margin-bottom: 6px;
+  padding: 0 0 calc(10px * var(--s));
+  text-align: center;
+  transform: rotate(4deg);
+  width: calc(170px * var(--s));
+
+  .sp-stub-head {
+    background: linear-gradient(90deg, var(--c1), color-mix(in srgb, var(--c1) 60%, #000));
+    border-bottom: 2px solid var(--c2);
+    color: #fff;
+    font-size: calc(8.5px * var(--s));
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+    padding: 4px 6px;
+    text-transform: uppercase;
+  }
+
+  > b {
+    font-family: var(--f-block);
+    font-size: calc(15px * var(--s));
+    font-weight: 400;
+  }
+
+  > span {
+    color: #666;
+    font-size: calc(8.5px * var(--s));
+    font-weight: 600;
+  }
+
+  .sp-stub-final {
+    align-items: baseline;
+    border-top: 1px dashed #bbb;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 6px 10px 4px;
+    padding-top: 4px;
+
+    small {
+      color: #777;
+      font-size: calc(8px * var(--s));
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    b {
+      color: #b0121f;
+      font-family: var(--f-block);
+      font-size: calc(18px * var(--s));
+      font-weight: 400;
+    }
+  }
+
+  .sp-stub-code {
+    display: flex;
+    gap: 1px;
+    height: calc(14px * var(--s));
+    justify-content: center;
+
+    i {
+      background: #1b1b1b;
+      display: block;
+    }
+  }
+}
+
+.sp-hanging::before {
+  display: none;
+}
+
+.sp-engr.tiny {
+  font-size: 5.6px;
+  font-weight: 600;
+}
+
+.sp-engr.micro {
+  font-size: 4.4px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.sp-mark.small {
+  font-size: 9px;
+}
+
+
+// (the belt lies long: room for its strap)
+.sp-col.t-belt {
+  flex-basis: 320px !important;
+}
+
+@media (max-width: 640px) {
+  .sp-col.t-belt {
+    flex-basis: 230px !important;
+  }
+}
+
+// ===========================================================================================================
+// Type: one small system. An engraved serif (trophies, plaques, the title plate), a condensed athletic block
+// (jerseys, nameplates, belts, labels), a ticket mono (the pass, the stub, the scorecard) and a marker (the tape,
+// signed balls). Self-hosted, subset (assets/fonts/splash/faces.css). Nothing squeezed: lines too long for their
+// plate are set smaller (SplashPiece.fs), and anything that would render under ~6 px is engraved rules instead.
+// ===========================================================================================================
+.splash {
+  --f-engrave: "Cinzel", "Trajan Pro", Georgia, serif;
+  --f-block: "Oswald", "Arial Narrow", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --f-marker: "Permanent Marker", cursive;
+}
+
+.sp-header {
+  b {
+    font-family: var(--f-engrave);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  span {
+    font-family: var(--f-block);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+.sp-j-name {
+  font-family: var(--f-block);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-anchor: middle;
+}
+
+.sp-j-num {
+  font-family: var(--f-block);
+  font-size: 57px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  stroke-width: 1.6px;
+
+  &.outer {
+    stroke-width: 5px;
+  }
+
+  &.shadow {
+    stroke-width: 6px;
+  }
+}
+
+.sp-engr {
+  font-family: var(--f-engrave);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  &.small {
+    font-size: 6.2px;
+  }
+
+  &.dark {
+    fill: #20252a;
+    fill-opacity: 0.9;
+  }
+
+  &.light {
+    fill: #e4e8eb;
+  }
+
+  &.arc {
+    font-size: 8.4px;
+    letter-spacing: 0.14em;
+  }
+
+  &.ring-t {
+    fill: #dfe3e7;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  // (the cut's lit lower edge under dark lettering; a shadow under light lettering)
+  &.hi {
+    fill: #fff;
+    fill-opacity: 0.5;
+  }
+
+  &.light.hi,
+  &.ring-t.hi {
+    fill: #000;
+    fill-opacity: 0.85;
+  }
+}
+
+.sp-mark {
+  font-family: var(--f-engrave);
+  font-weight: 700;
+}
+
+.sp-shield-t {
+  font-family: var(--f-engrave);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.sp-ring {
+  font-family: var(--f-engrave);
+  font-size: 6.8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.sp-banner-t {
+  font-family: var(--f-engrave);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+
+  &.yr {
+    font-family: var(--f-block);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+  }
+}
+
+.sp-label {
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sp-tent {
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+
+  &.small {
+    font-size: 4.8px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+}
+
+.sp-puck-t.big {
+  font-family: var(--f-block);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sp-pennant-t {
+  font-family: var(--f-block);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  &.small {
+    font-weight: 600;
+  }
+}
+
+.sp-marker {
+  font-family: var(--f-marker);
+}
+
+.sp-shoe-num {
+  font-family: var(--f-block);
+  font-weight: 700;
+}
+
+// (the belt's UFC, recessed in the raised bar: a heavy oblique block)
+.sp-ufc {
+  fill: #7a560a;
+  font-family: var(--f-block);
+  font-size: 25px;
+
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-anchor: middle;
+
+  &.hi {
+    fill: #fff3c4;
+    fill-opacity: 0.75;
+  }
+
+  &.small {
+    fill: #d9a520;
+    font-size: 7px;
+  }
+}
+
+.sp-cond {
+  fill: #6e4c08;
+  font-family: var(--f-block);
+  font-size: 6.2px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-anchor: middle;
+}
+
+.sp-nameplate {
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.sp-tape {
+  font-family: var(--f-marker);
+}
+
+.sp-pass,
+.sp-scorecard,
+.sp-stub {
+  font-family: var(--f-mono);
+}
+
+.sp-pass-head,
+.sp-stub .sp-stub-head,
+.sp-scorecard .head {
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.sp-pass-main .who {
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sp-pass-main .route b,
+.sp-stub > b,
+.sp-stub .sp-stub-final b {
+  font-family: var(--f-mono);
+  font-weight: 700;
+}
+
+.sp-stamp {
+  font-family: var(--f-block);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.sp-plane {
+  display: inline-block;
+  height: 1em;
+  vertical-align: -0.12em;
+  width: 1em;
+}
+
+.sp-tc,
+.sp-tc-name,
+.sp-tc-badge,
+.sp-tc-year,
+.sp-tc.back dd {
+  font-family: var(--f-block);
+}
+
+// (the back wall a touch soft, as a lens focused on the shelf would see it)
+.sp-wall {
+  filter: blur(0.6px);
+}
+
+// (engravings too fine for a phone's size: the pieces keep their engraved rules, the small letters go)
+@media (max-width: 640px) {
+  .sp-engr.small,
+  .sp-engr.tiny,
+  .sp-engr.micro {
+    display: none;
+  }
+}
+
+// (a game ball's lettering: painted on its panel in white serif capitals)
+.sp-painted {
+  fill: #f6f1e6;
+  fill-opacity: 0.94;
+  font-family: var(--f-engrave);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+.sp-cond.side {
+  fill: #d9a520;
+  font-size: 4.2px;
+  letter-spacing: 0.12em;
+}
+
+// ===========================================================================================================
+// The two stages. Both: the same wall, lamps, title band and wooden ledge. The shelf spaces its 1-3 props evenly;
+// the locker stands a row of stalls on the ledge.
+// ===========================================================================================================
+.stage-shelf .sp-stage {
+  gap: 0;
+  padding: 0 7%;
+
+  .sp-col {
+    flex: 1 1 0 !important;
+    max-width: 340px;
+  }
+}
+
+.sp-lockers {
+  align-items: stretch;
+  gap: 10px;
+  padding: 0 18px;
+
+  .sp-stall {
+    flex: 0 0 128px !important;
+    justify-content: flex-start;
+    padding-bottom: calc(var(--shelf) - 3px);
+
+    &.mine {
+      flex-basis: 232px !important;
+    }
+
+    &:not(.mine):has(.sp-in-stall) {
+      flex-basis: 196px !important;
+    }
+  }
+
+  .sp-stall-frame {
+    flex: 1 1 auto;
+    height: auto;
+    justify-content: flex-start;
+    margin-top: 44px !important;
+    padding-top: 22px;
+  }
+
+  .sp-nameplate {
+    font-size: 11px;
+    padding: 1px 10px;
+    top: 4px;
+  }
+
+  .mine .sp-nameplate {
+    font-size: 13px;
+  }
+
+  .sp-tape {
+    top: 30px;
+  }
+
+  .sp-hanging {
+    margin-top: 0 !important;
+    width: 100%;
+  }
+
+  .mine .sp-hanging {
+    margin-top: 30px !important;
+  }
+
+  .sp-art > svg.sp-jersey {
+    --jh: 178px;
+  }
+
+  .sp-in-stall {
+    margin-top: auto;
+    padding-bottom: 6px;
+  }
+
+  // (a stall's floor: a ledge inside it the props stand on)
+  .sp-stall-frame::after {
+    background: linear-gradient(180deg, #5a3d26, #2c1c10);
+    bottom: 0;
+    content: "";
+    height: 6px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .stage-shelf .sp-stage {
+    padding: 0 4px;
+  }
+
+  .sp-lockers {
+    gap: 5px;
+    padding: 0 6px;
+
+    .sp-stall {
+      flex-basis: 76px !important;
+
+      &.mine {
+        flex-basis: 150px !important;
+      }
+
+      &:not(.mine):has(.sp-in-stall) {
+        flex-basis: 100px !important;
+      }
+    }
+
+    .sp-stall-frame {
+      margin-top: 38px !important;
+      padding-top: 16px;
+    }
+
+    .sp-nameplate {
+      font-size: 8.5px;
+      padding: 1px 6px;
+    }
+
+    .mine .sp-nameplate {
+      font-size: 10px;
+    }
+
+    .sp-tape {
+      font-size: 9px;
+      top: 22px;
+    }
+
+    .mine .sp-hanging {
+      margin-top: 22px !important;
+    }
+  }
+}
+
+// (a stall keeps to the room's height: its contents never push its frame down past the ledge)
+.sp-lockers .sp-stall-frame {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sp-lockers .mine .sp-hanging {
+  margin-top: 20px !important;
+}
+
+.sp-lockers .mine .sp-art > svg.sp-jersey {
+  --jh: 170px;
+}
+
+// (round 9: the title band and the tinted fade along the foot gone; the stalls start near the top)
+.sp-header,
+.sp-backlight {
+  display: none;
+}
+
+.mood-sunset .sp-wall {
+  background:
+    radial-gradient(ellipse 75% 95% at 50% -10%, color-mix(in srgb, var(--team-hi) 45%, transparent), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0 2px, rgba(255, 255, 255, 0.025) 2px 3px, transparent 3px 58px),
+    linear-gradient(180deg, #2a1f17, #17110d 70%, #0f0b08);
+}
+
+.sp-lockers .sp-stall-frame {
+  margin-top: 26px !important;
+}
+
+// (the shelf's columns all one width, so the props' centres are evenly spaced about the middle)
+.stage-shelf .sp-stage {
+  gap: 24px;
+  justify-content: center;
+  padding: 0 24px;
+
+  .sp-col {
+    flex: 0 1 290px !important;
+    max-width: 290px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sp-lockers .sp-stall-frame {
+    margin-top: 22px !important;
+  }
+
+  .stage-shelf .sp-stage {
+    gap: 4px;
+    padding: 0 4px;
+
+    .sp-col {
+      flex: 0 1 33% !important;
+    }
+  }
+}
+
+// (no blur on the wall: a filter over the whole stage is the costliest thing to raster on a phone)
+.sp-wall {
+  filter: none;
+}
+
+// (a tapped prop's name, over it, for a few seconds)
+.sp-tip {
+  background: rgba(12, 12, 12, 0.92);
+  border: 1px solid rgba(255, 220, 150, 0.45);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  color: #f1e6cc;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  line-height: 1.3;
+  max-width: min(320px, 90%);
+  padding: 5px 9px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.sp-col[data-tip],
+.sp-art[data-tip] {
+  cursor: help;
+}

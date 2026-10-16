@@ -6,6 +6,7 @@
 <!-- (a card with an AI analysis: its headline under the archetype, and the archetype's definition under the
      line as a short summary, over the flags; until it's in, or without one, the take) -->
 @let ai = aiReport(c);
+<card-splash-host [card]="c" [cards]="cards"></card-splash-host>
 <div class="overview-top">
   <div class="overview-profile">
     <h3 class="overview-archetype">{{ o.archetype }}</h3>

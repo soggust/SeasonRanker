@@ -18,6 +18,7 @@ import { CARD_TABS } from '@ranker/engine/player-card/tabs/card-tabs';
 import { CardPanelComponent } from './player-card/card-panel.component';
 import { FieldMapComponent } from './player-card/field-map.component';
 import { HeatMapModule } from './heat-map/heat-map.module';
+import { CardSplashHost } from './player-card/splash/splash-host.component';
 import { GameViewComponent } from './game-view/game-view.component';
 import { ColumnHighlightDirective } from '@ranker/core/column-highlight.directive';
 import { ScrolledSidewaysDirective } from '@ranker/core/scrolled-sideways.directive';
@@ -78,6 +79,7 @@ import { ACCOUNT_COMPONENTS } from './account/account-components';
     MatMenuModule,
     MatSlideToggleModule,
     HeatMapModule,
+    CardSplashHost,
   ],
 })
 export class AppModule {}

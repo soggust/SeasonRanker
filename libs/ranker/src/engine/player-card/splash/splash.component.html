@@ -1,0 +1,411 @@
+@if (view; as v) {
+  <section [class]="'splash stage-' + v.stage + ' mood-' + mood" [style]="vars" role="img" [attr.aria-label]="v.label" (click)="tap($event)">
+    <!-- the metals, woods, cloths and textures every piece shares -->
+    <svg class="sp-defs" width="0" height="0" aria-hidden="true">
+      <defs>
+        <!-- polished silver: bands of sky and room reflected down its length, a hot specular line -->
+        <linearGradient id="sp-silver" x1="0" x2="1">
+          <stop offset="0" stop-color="#2f353b" />
+          <stop offset="0.1" stop-color="#8d969f" />
+          <stop offset="0.2" stop-color="#e3e8ec" />
+          <stop offset="0.3" stop-color="#6b747d" />
+          <stop offset="0.42" stop-color="#f4f7f9" />
+          <stop offset="0.46" stop-color="#ffffff" />
+          <stop offset="0.56" stop-color="#b3bbc3" />
+          <stop offset="0.74" stop-color="#4f575f" />
+          <stop offset="0.88" stop-color="#9aa3ac" />
+          <stop offset="1" stop-color="#2a2f34" />
+        </linearGradient>
+        <radialGradient id="sp-silver-ball" cx="0.34" cy="0.28" r="0.8">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="0.18" stop-color="#eef2f5" />
+          <stop offset="0.45" stop-color="#9aa3ac" />
+          <stop offset="0.7" stop-color="#4c545c" />
+          <stop offset="0.86" stop-color="#7c858e" />
+          <stop offset="1" stop-color="#3a4046" />
+        </radialGradient>
+        <linearGradient id="sp-gold" x1="0" x2="1">
+          <stop offset="0" stop-color="#3d2804" />
+          <stop offset="0.1" stop-color="#9c7016" />
+          <stop offset="0.2" stop-color="#f2d27a" />
+          <stop offset="0.3" stop-color="#8a6210" />
+          <stop offset="0.42" stop-color="#ffefb8" />
+          <stop offset="0.46" stop-color="#fffbe6" />
+          <stop offset="0.56" stop-color="#d9a83a" />
+          <stop offset="0.74" stop-color="#6e4c08" />
+          <stop offset="0.88" stop-color="#b98a24" />
+          <stop offset="1" stop-color="#3a2604" />
+        </linearGradient>
+        <linearGradient id="sp-gold-v" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#fff0b8" />
+          <stop offset="0.45" stop-color="#d9a520" />
+          <stop offset="1" stop-color="#7a560a" />
+        </linearGradient>
+        <radialGradient id="sp-gold-ball" cx="0.34" cy="0.28" r="0.8">
+          <stop offset="0" stop-color="#fffbe6" />
+          <stop offset="0.18" stop-color="#ffe08a" />
+          <stop offset="0.45" stop-color="#c8921c" />
+          <stop offset="0.7" stop-color="#6e4c08" />
+          <stop offset="0.86" stop-color="#a87a1a" />
+          <stop offset="1" stop-color="#4a3205" />
+        </radialGradient>
+        <radialGradient id="sp-gold-dish" cx="0.5" cy="0.45" r="0.6">
+          <stop offset="0" stop-color="#b07e18" />
+          <stop offset="0.75" stop-color="#e0b445" />
+          <stop offset="1" stop-color="#7a560a" />
+        </radialGradient>
+        <linearGradient id="sp-bronze" x1="0" x2="1">
+          <stop offset="0" stop-color="#2a1606" />
+          <stop offset="0.5" stop-color="#7a4a1c" />
+          <stop offset="1" stop-color="#3a2210" />
+        </linearGradient>
+        <linearGradient id="sp-lacquer" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#3c3c3c" />
+          <stop offset="0.08" stop-color="#1c1c1c" />
+          <stop offset="0.7" stop-color="#0b0b0b" />
+          <stop offset="1" stop-color="#2a1d12" />
+        </linearGradient>
+        <linearGradient id="sp-walnut" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#6e4526" />
+          <stop offset="1" stop-color="#2e1a0c" />
+        </linearGradient>
+        <linearGradient id="sp-mahogany" x1="0" x2="1">
+          <stop offset="0" stop-color="#2a0c06" />
+          <stop offset="0.5" stop-color="#5a1c0e" />
+          <stop offset="1" stop-color="#220904" />
+        </linearGradient>
+        <linearGradient id="sp-mahogany-front" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#7a2a16" />
+          <stop offset="1" stop-color="#3a1007" />
+        </linearGradient>
+        <pattern id="sp-grain" width="64" height="9" patternUnits="userSpaceOnUse">
+          <path d="M0 3 Q16 1 32 3.5 T64 3 M0 7 Q20 8.5 40 6.5 T64 7.2" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" />
+        </pattern>
+        <!-- cloth: folds across, the light from above -->
+        <linearGradient id="sp-cloth" x1="0" x2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.5" />
+          <stop offset="0.12" stop-color="#000" stop-opacity="0.08" />
+          <stop offset="0.3" stop-color="#fff" stop-opacity="0.1" />
+          <stop offset="0.38" stop-color="#000" stop-opacity="0.12" />
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0.12" />
+          <stop offset="0.66" stop-color="#000" stop-opacity="0.06" />
+          <stop offset="0.76" stop-color="#fff" stop-opacity="0.06" />
+          <stop offset="0.9" stop-color="#000" stop-opacity="0.14" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.55" />
+        </linearGradient>
+        <linearGradient id="sp-cloth-v" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.24" />
+          <stop offset="0.4" stop-color="#fff" stop-opacity="0.02" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.42" />
+        </linearGradient>
+        <linearGradient id="sp-ribbon" x1="0" x2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.35" />
+          <stop offset="0.35" stop-color="#fff" stop-opacity="0.22" />
+          <stop offset="0.5" stop-color="#000" stop-opacity="0.1" />
+          <stop offset="0.7" stop-color="#fff" stop-opacity="0.18" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.35" />
+        </linearGradient>
+        <linearGradient id="sp-roll" x1="0" x2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.45" />
+          <stop offset="0.3" stop-color="#fff" stop-opacity="0.18" />
+          <stop offset="0.45" stop-color="#fff" stop-opacity="0.05" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.5" />
+        </linearGradient>
+        <linearGradient id="sp-roll-v" x1="0" x2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.3" />
+          <stop offset="0.3" stop-color="#fff" stop-opacity="0.25" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.35" />
+        </linearGradient>
+        <linearGradient id="sp-roll-y" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.3" />
+          <stop offset="0.28" stop-color="#fff" stop-opacity="0.25" />
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.5" />
+        </linearGradient>
+        <pattern id="sp-mesh" width="1.6" height="1.6" patternUnits="userSpaceOnUse">
+          <circle cx="0.8" cy="0.8" r="0.3" fill="#000" fill-opacity="0.1" />
+        </pattern>
+        <pattern id="sp-pinstripe" width="9" height="10" patternUnits="userSpaceOnUse">
+          <rect x="4" width="0.9" height="10" fill="#fff" fill-opacity="0.6" />
+        </pattern>
+        <pattern id="sp-terry" width="2.4" height="2.4" patternUnits="userSpaceOnUse">
+          <circle cx="1.2" cy="1.2" r="0.6" fill="#000" fill-opacity="0.12" />
+        </pattern>
+        <pattern id="sp-felt" width="4" height="4" patternUnits="userSpaceOnUse">
+          <path d="M0 4 L4 0" stroke="#fff" stroke-opacity="0.05" />
+        </pattern>
+        <pattern id="sp-knit" width="4" height="3" patternUnits="userSpaceOnUse">
+          <path d="M0 1.5 h4" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
+        </pattern>
+        <pattern id="sp-pebble" width="2.6" height="2.6" patternUnits="userSpaceOnUse">
+          <circle cx="1.3" cy="1.3" r="0.7" fill="#000" fill-opacity="0.16" />
+        </pattern>
+        <pattern id="sp-dimple" width="3.5" height="3.5" patternUnits="userSpaceOnUse">
+          <circle cx="1.75" cy="1.75" r="0.9" fill="#000" fill-opacity="0.08" />
+        </pattern>
+        <pattern id="sp-names" width="11" height="4" patternUnits="userSpaceOnUse">
+          <rect x="0.5" y="1.4" width="8" height="0.7" fill="#000" fill-opacity="0.2" />
+        </pattern>
+        <pattern id="sp-engrave" width="6" height="3" patternUnits="userSpaceOnUse">
+          <rect width="6" height="0.8" fill="#000" fill-opacity="0.16" />
+        </pattern>
+        <pattern id="sp-tape" width="9" height="5" patternUnits="userSpaceOnUse">
+          <rect width="9" height="5" fill="#141414" />
+          <path d="M0 4 L9 0" stroke="#3a3a3a" stroke-width="1.2" />
+        </pattern>
+        <radialGradient id="sp-leather" cx="0.4" cy="0.32" r="0.8">
+          <stop offset="0" stop-color="#b9703a" />
+          <stop offset="0.5" stop-color="#7e3f17" />
+          <stop offset="0.85" stop-color="#4a210a" />
+          <stop offset="1" stop-color="#2e1305" />
+        </radialGradient>
+        <radialGradient id="sp-leather-nfl" cx="0.42" cy="0.3" r="0.85">
+          <stop offset="0" stop-color="#8a4a22" />
+          <stop offset="0.45" stop-color="#5e2c10" />
+          <stop offset="0.8" stop-color="#3a1806" />
+          <stop offset="1" stop-color="#220c02" />
+        </radialGradient>
+        <radialGradient id="sp-sheen">
+          <stop offset="0" stop-color="#ffd9b0" stop-opacity="0.32" />
+          <stop offset="1" stop-color="#ffd9b0" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="sp-hide" cx="0.4" cy="0.35" r="0.8">
+          <stop offset="0" stop-color="#e0aa70" />
+          <stop offset="0.55" stop-color="#a5652d" />
+          <stop offset="1" stop-color="#4f2a0d" />
+        </radialGradient>
+        <radialGradient id="sp-ball-white" cx="0.36" cy="0.3" r="0.78">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="0.55" stop-color="#eee9de" />
+          <stop offset="0.85" stop-color="#bdb5a4" />
+          <stop offset="1" stop-color="#8d8573" />
+        </radialGradient>
+        <radialGradient id="sp-orange" cx="0.36" cy="0.3" r="0.78">
+          <stop offset="0" stop-color="#f7ab66" />
+          <stop offset="0.55" stop-color="#d4661c" />
+          <stop offset="0.85" stop-color="#8f3f0b" />
+          <stop offset="1" stop-color="#5a2505" />
+        </radialGradient>
+        <radialGradient id="sp-bowl-in" cx="0.5" cy="0.2" r="0.9">
+          <stop offset="0" stop-color="#1f2428" />
+          <stop offset="1" stop-color="#6d757e" />
+        </radialGradient>
+        <linearGradient id="sp-crystal" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0.85" />
+          <stop offset="0.35" stop-color="#bfe3ff" stop-opacity="0.45" />
+          <stop offset="0.6" stop-color="#ffffff" stop-opacity="0.7" />
+          <stop offset="1" stop-color="#7fb2d9" stop-opacity="0.5" />
+        </linearGradient>
+        <linearGradient id="sp-acrylic" x1="0" x2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.3" />
+          <stop offset="0.3" stop-color="#fff" stop-opacity="0.06" />
+          <stop offset="0.8" stop-color="#fff" stop-opacity="0.04" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0.24" />
+        </linearGradient>
+        <linearGradient id="sp-rubber" x1="0" x2="1">
+          <stop offset="0" stop-color="#050505" />
+          <stop offset="0.35" stop-color="#2a2a2a" />
+          <stop offset="1" stop-color="#050505" />
+        </linearGradient>
+        <linearGradient id="sp-strap" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#2c2c2c" />
+          <stop offset="0.5" stop-color="#121212" />
+          <stop offset="1" stop-color="#050505" />
+        </linearGradient>
+        <linearGradient id="sp-ash" x1="0" x2="1">
+          <stop offset="0" stop-color="#7a4b20" />
+          <stop offset="0.4" stop-color="#e6bf86" />
+          <stop offset="0.55" stop-color="#d1a061" />
+          <stop offset="1" stop-color="#6a3f18" />
+        </linearGradient>
+        <radialGradient id="sp-shell" cx="0.35" cy="0.25" r="0.8">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.35" />
+          <stop offset="0.4" stop-color="#fff" stop-opacity="0.05" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.45" />
+        </radialGradient>
+        <radialGradient id="sp-bowl-shade" cx="0.4" cy="0.45" r="0.65">
+          <stop offset="0.55" stop-color="#000" stop-opacity="0" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.45" />
+        </radialGradient>
+        <!-- a room reflected down a polished body: the lamps' light at the top, the dark of the room across the
+             middle, the shelf's warm light at the foot -->
+        <linearGradient id="sp-env-v" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.28" />
+          <stop offset="0.12" stop-color="#fff" stop-opacity="0" />
+          <stop offset="0.48" stop-color="#000" stop-opacity="0.08" />
+          <stop offset="0.6" stop-color="#000" stop-opacity="0.32" />
+          <stop offset="0.68" stop-color="#000" stop-opacity="0.05" />
+          <stop offset="0.86" stop-color="#ffcf98" stop-opacity="0.14" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.28" />
+        </linearGradient>
+        <!-- fine grain for wood, leather and lacquer (a noise tile, drawn once) -->
+        <pattern id="sp-noise" width="96" height="96" patternUnits="userSpaceOnUse">
+          <image href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 -0.12'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)'/%3E%3C/svg%3E" width="96" height="96" />
+        </pattern>
+        <pattern id="sp-brushed" width="40" height="1.6" patternUnits="userSpaceOnUse">
+          <path d="M0 0.4 h40" stroke="#fff" stroke-opacity="0.12" stroke-width="0.4" />
+          <path d="M0 1.2 h40" stroke="#000" stroke-opacity="0.08" stroke-width="0.4" />
+        </pattern>
+        <pattern id="sp-chase" width="6" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0 3 q1.5 -3 3 0 q1.5 3 3 0" fill="none" stroke="#2c3238" stroke-opacity="0.45" stroke-width="0.6" />
+        </pattern>
+        <radialGradient id="sp-disc" cx="0.4" cy="0.32" r="0.8">
+          <stop offset="0" stop-color="#2c2c2c" />
+          <stop offset="0.6" stop-color="#121212" />
+          <stop offset="1" stop-color="#050505" />
+        </radialGradient>
+        <radialGradient id="sp-dark-ball" cx="0.34" cy="0.28" r="0.8">
+          <stop offset="0" stop-color="#c9d0d6" />
+          <stop offset="0.25" stop-color="#5b636b" />
+          <stop offset="0.7" stop-color="#1a1d20" />
+          <stop offset="1" stop-color="#3a4046" />
+        </radialGradient>
+        <radialGradient id="sp-stone" cx="0.35" cy="0.3" r="0.8">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="0.5" stop-color="#cfe6ff" />
+          <stop offset="1" stop-color="#6d7f93" />
+        </radialGradient>
+        <linearGradient id="sp-oak" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#d79b56" />
+          <stop offset="1" stop-color="#9a6025" />
+        </linearGradient>
+        <linearGradient id="sp-oak-top" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#e8b170" />
+          <stop offset="1" stop-color="#b57631" />
+        </linearGradient>
+        <linearGradient id="sp-cherry" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#7a2418" />
+          <stop offset="0.5" stop-color="#4e120b" />
+          <stop offset="1" stop-color="#2a0905" />
+        </linearGradient>
+        <linearGradient id="sp-team" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" style="stop-color: var(--c1)" />
+          <stop offset="1" style="stop-color: var(--c3)" />
+        </linearGradient>
+        <path id="sp-name-arc" d="M24 41 Q60 31 96 41" fill="none" />
+        <path id="sp-name-arc-bb" d="M28 47 Q60 39 92 47" fill="none" />
+        <linearGradient id="sp-flap-shade" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.5" />
+          <stop offset="0.22" stop-color="#000" stop-opacity="0.05" />
+          <stop offset="0.36" stop-color="#fff" stop-opacity="0.2" />
+          <stop offset="0.5" stop-color="#000" stop-opacity="0.22" />
+          <stop offset="1" stop-color="#000" stop-opacity="0.4" />
+        </linearGradient>
+        <clipPath id="sp-cut-football">
+          <path d="M40 10 C48 17 72 17 80 10 L101 15 C108 22 114 34 119 47 L101 56 L100 140 C80 144 40 144 20 140 L19 56 L1 47 C6 34 12 22 19 15 Z" />
+        </clipPath>
+        <clipPath id="sp-cut-baseball">
+          <path d="M41 9 C49 15 71 15 79 9 L99 14 C107 22 113 36 117 52 L100 58 L100 140 C80 143 40 143 20 140 L20 58 L3 52 C7 36 13 22 21 14 Z" />
+        </clipPath>
+        <clipPath id="sp-cut-basketball">
+          <path d="M37 8 C44 30 76 30 83 8 L97 10 C96 32 100 46 108 54 L106 140 C80 144 40 144 14 140 L12 54 C20 46 24 32 23 10 Z" />
+        </clipPath>
+      </defs>
+    </svg>
+
+    <div class="sp-wall"></div>
+    @if (v.stage === 'shelf') {
+      <!-- THE SHELF: a finished season, up to three props, evenly spaced, each at its real height -->
+      <div class="sp-stage">
+        @for (it of v.items; track $index) {
+          <div class="sp-col" [class.star]="$index === v.lead" [class.wide]="it.wide" [class]="'t-' + it.t">
+            <span class="sp-lamp"></span><span class="sp-beam"></span>
+            <div class="sp-art" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+              <splash-piece [it]="it" [logo]="logo"></splash-piece>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- THE LOCKER: a season still being played. A team's key players' lockers, each with his jersey; a player's
+           own locker beside his gear's -->
+      <div class="sp-stage sp-lockers">
+        @for (st of v.stalls; track $index) {
+          <div class="sp-col sp-stall" [class.mine]="st.mine" [class.star]="st.star" [class.wide]="st.wide" [title]="st.tip" [attr.data-tip]="st.tip">
+            <span class="sp-lamp"></span><span class="sp-beam"></span>
+            <div class="sp-stall-frame">
+              @if (st.plate) {
+                <div class="sp-nameplate">
+                  @if (st.num) {
+                    <i>{{ st.num }}</i>
+                  }
+                  {{ st.plate }}
+                </div>
+              }
+              @if (st.tape) {
+                <div class="sp-tape">{{ st.tape }}</div>
+              }
+              <div class="sp-hook"></div>
+              @if (st.jersey; as j) {
+                <div class="sp-art sp-hanging">
+                  <ng-container *ngTemplateOutlet="jersey; context: { $implicit: j.name, num: j.num, k: kit(j.kit), cut: cut }"></ng-container>
+                </div>
+              }
+              @if (st.item; as it) {
+                <div class="sp-art sp-in-stall" [class]="'t-' + it.t" [style.--h.px]="it.h">
+                  <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="sp-shelf"><i class="top"></i><i class="front"></i></div>
+    <!-- (a tap's name for what was tapped: a touch screen has no hover) -->
+    @if (tip; as t) {
+      <div class="sp-tip" [style.left.px]="t.x" [style.top.px]="t.y">{{ t.text }}</div>
+    }
+  </section>
+}
+
+<!-- A jersey, from the back: tackle-twill name and number, sleeve stripes, its seams stitched, the mesh of the
+     cloth, its folds and the light on it -->
+<ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-pin="pin">
+  <svg class="sp-jersey" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
+    <path class="sp-hanger-hook" d="M60 -16 q6 0 6 5 q0 5 -6 6 v8" />
+    <path class="sp-hanger" d="M26 13 L60 1 L94 13" />
+    <g [attr.clip-path]="'url(#sp-cut-' + cut + ')'">
+      <rect x="-4" y="0" width="128" height="150" [attr.fill]="k.body" />
+      @if (pin) {
+        <rect x="-4" y="0" width="128" height="150" fill="url(#sp-pinstripe)" opacity="0.55" />
+      }
+      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-mesh)" />
+      @if (cut === 'football') {
+        @if (k.sleeve === 'stripes') {
+          <g [attr.stroke]="k.stripe" stroke-width="3.2">
+            <line x1="124" y1="40" x2="100" y2="52" />
+            <line x1="124" y1="34.5" x2="100" y2="46.5" />
+            <line x1="-4" y1="40" x2="20" y2="52" />
+            <line x1="-4" y1="34.5" x2="20" y2="46.5" />
+          </g>
+          @if (k.stripe2) {
+            <g [attr.stroke]="k.stripe2" stroke-width="2">
+              <line x1="124" y1="37.25" x2="100" y2="49.25" />
+              <line x1="-4" y1="37.25" x2="20" y2="49.25" />
+            </g>
+          }
+        }
+        <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+      }
+      @if (cut === 'basketball') {
+        <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.collar" stroke-width="5" />
+        <rect x="-4" y="131" width="128" height="4" [attr.fill]="k.stripe" />
+      }
+      @if (cut === 'baseball') {
+        <path d="M41 9 C49 15 71 15 79 9" fill="none" [attr.stroke]="k.collar" stroke-width="2" />
+      }
+      <path d="M20 56 L20 140 M100 56 L100 140 M19 15 L20 56 M101 15 L100 56 M22 137 C50 140 70 140 98 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+      <path d="M42 13 C50 19 70 19 78 13" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="0.6" stroke-dasharray="1.4 1.2" />
+      <!-- the name arched over the number, as sewn; the number about 37% of the back's height, its trim and its
+           shadow on the cloth (an athletic condensed block, never squeezed: a long name gets smaller letters) -->
+      <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name)"><textPath [attr.href]="cut === 'basketball' ? '#sp-name-arc-bb' : '#sp-name-arc'" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+      <text class="sp-j-num shadow" x="60.8" [attr.y]="(cut === 'basketball' ? 104 : 99) + 1.4">{{ num }}</text>
+      <text class="sp-j-num outer" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.outline" [attr.stroke]="k.outline">{{ num }}</text>
+      <text class="sp-j-num" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.num" [attr.stroke]="k.body">{{ num }}</text>
+      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth)" />
+      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth-v)" />
+    </g>
+  </svg>
+</ng-template>
