@@ -90,7 +90,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.reason != '' }}
         env:
           REASON: ${{ inputs.reason }}
-        run: echo "Started by hand or by a kick: $REASON"
+        run: 'echo "Started by hand or by a kick: $REASON"'
 
       - name: Checkout repository
         uses: actions/checkout@v7
