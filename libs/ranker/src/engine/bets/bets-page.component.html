@@ -331,7 +331,7 @@
 
       @let locks = lockCount(shown);
       @let n = shown.length;
-      <ol class="bets-list" [class.spinning]="spinning">
+      <ol class="bets-list">
         <!-- (a game chosen: its every line on top, to bet any of them) -->
         @if (game && boardFor(game); as gb) {
           <li class="bet-board">

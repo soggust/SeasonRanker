@@ -996,17 +996,5 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   blurb(r: BetRow): string {
     return r.headline ?? r.reason;
   }
-
-  // The slot handle: pulled, it swings down and springs back, and as it lands the rows spin in like reels
-  pulling = false;
-  spinning = false;
-  pull(): void {
-    if (this.pulling) return;
-    this.closeWhy();
-    this.pulling = true;
-    setTimeout(() => (this.spinning = true), 280);
-    setTimeout(() => (this.pulling = false), 700);
-    setTimeout(() => (this.spinning = false), 2400);
-  }
 }
 
