@@ -526,48 +526,56 @@
       <a class="hero-link" href="/bets" (click)="toBets()">Place bets</a>
     </header>
 
-    <div class="model-desk desk-top">
-      <header class="desk-head">
-        <div class="desk-tiles">
-          <div class="desk-tile" title="Play money on hand, the open bets' stakes out of it">
-            <small>Balance</small>
-            <b [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ wallet.balance() | number: '1.2-2' }}u</b>
+    <div class="wallet-row">
+    <!-- Your chips: the balance in segments with the sand glow, the run it's on, what's out on open tickets; the
+         balance again as stacks of chips on a leather rail (decorative: the figure's in the text) -->
+    <section class="wp-panel" aria-label="Your chips">
+      <div class="wp-bar"><h3>Your chips</h3><span class="wp-bar-note">Run #{{ runNo() }}</span></div>
+      <div class="wp-body chips-body">
+        <div class="chips-head">
+          <div class="chips-balance">
+            <span class="wp-key">Balance</span>
+            <span class="chips-led" title="Play money on hand, the open bets' stakes out of it">{{ wallet.balance() | number: '1.1-2' }}</span>
+            <span class="chips-line">units · started this run at {{ start | number }} · <b [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ runProfit() >= 0 ? '+' : '' }}{{ (runProfit() / start) | percent: '1.1-1' }}</b>@if (currentRun()?.peak; as peak) { · peak {{ peak | number: '1.1-1' }}}</span>
           </div>
-          <div class="desk-tile" title="Won, lost and pushed: every bet you've settled">
-            <small>Record</small>
-            <b>{{ recordText(tally()) }}</b>
-          </div>
-          <div class="desk-tile" title="Units won or lost on every bet you've settled">
-            <small>Profit</small>
-            <b [class.up]="tally().profit > 0" [class.down]="tally().profit < 0">{{ units(tally().profit) }}@if (pending().count) {<small [title]="pending().count + ' bets decided in play, pending settlement'">{{ units(pending().profit) }} pending</small>}</b>
-          </div>
-          <div class="desk-tile" title="Return on what was staked: profit over the settled stakes">
-            <small>ROI</small>
-            <b [class.up]="(tally().roi ?? 0) > 0" [class.down]="(tally().roi ?? 0) < 0">{{ pct(tally().roi) }}</b>
-          </div>
-          <div class="desk-tile" title="The open bets' stakes">
-            <small>At risk</small>
-            <b>{{ tally().atRisk }}u<small>{{ tally().open }} bets</small></b>
-          </div>
-          <div class="desk-tile" [title]="'Reloads to ' + start + ' units so far; this run’s profit, open stakes counted back in: ' + units(runProfit())">
-            <small>Run</small>
-            <b>#{{ (wallet.wallet()?.resets ?? 0) + 1 }}<small [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ units(runProfit()) }}</small></b>
+          <div class="chips-open">
+            @if (open().length) {
+              <a href="/bets" (click)="toOpen()" title="Your open tickets on the Bets page"><b>{{ tally().atRisk | number: '1.1-1' }}u</b> on {{ open().length }} open {{ open().length === 1 ? 'ticket' : 'tickets' }}</a>
+              <span>could pay <b class="up">{{ openToWin() | number: '1.1-1' }}u</b></span>
+            } @else {
+              <span>no open tickets</span>
+            }
           </div>
         </div>
-      </header>
+        @let rk = rack();
+        <div class="chip-rack" aria-hidden="true">
+          @for (sk of rk.stacks; track $index) {
+            <div class="chip-stack" [ngClass]="sk.key" [title]="sk.count + ' × ' + sk.denom">
+              @for (c of sk.chips; track c) {
+                <span class="stack-chip"></span>
+              }
+              <span class="stack-label">{{ sk.denom }}</span>
+            </div>
+          }
+          <div class="chip-rail"></div>
+        </div>
+        <div class="chip-legend" aria-hidden="true">
+          @for (l of rk.legend; track l.key) {
+            <span><i [ngClass]="l.key"></i>{{ l.count }} × {{ l.denom }}</span>
+          }
+        </div>
+      </div>
+    </section>
 
-      <!-- (casino chips, as the Algorithm's game dropdown: the way to the Bets page in sand, Reload Chips in blue,
-           Clear history in the dropdown's red; Reload and Clear each confirmed first) -->
+    <!-- Rebuy: back to 1,000 and a new run (the chip's confirm in the next phase), and an admin's Clear history -->
+    <section class="wp-panel" aria-label="Rebuy">
+      <div class="wp-bar"><h3>Rebuy</h3><span class="wp-bar-note">Play money · no cash in or out, ever</span></div>
+      <div class="wp-body">
       <div class="wallet-actions">
-        <a class="wallet-chip sand" href="/bets" (click)="toBets()"><mat-icon aria-hidden="true" fontIcon="casino"></mat-icon>Place bets<svg class="chip-rim" aria-hidden="true"><rect pathLength="220" /></svg></a>
-        <button type="button" class="wallet-chip blue" [class.open]="confirming === 'reload'" [attr.aria-expanded]="confirming === 'reload'" (click)="confirming = confirming === 'reload' ? null : 'reload'; message = ''">
-          <mat-icon aria-hidden="true" fontIcon="restart_alt"></mat-icon>Reload Chips<svg class="chip-rim" aria-hidden="true"><rect pathLength="220" /></svg>
-        </button>
+        <button type="button" class="app-btn-primary" [attr.aria-expanded]="confirming === 'reload'" (click)="confirming = confirming === 'reload' ? null : 'reload'; message = ''">Reload chips</button>
         <!-- (an admin's only: a record anyone could wipe isn't much of one) -->
         @if (admin()) {
-          <button type="button" class="wallet-chip red" [class.open]="confirming === 'clear'" [attr.aria-expanded]="confirming === 'clear'" [disabled]="!settled().length" (click)="confirming = confirming === 'clear' ? null : 'clear'; message = ''">
-            <mat-icon aria-hidden="true" fontIcon="delete_sweep"></mat-icon>Clear history<svg class="chip-rim" aria-hidden="true"><rect pathLength="220" /></svg>
-          </button>
+          <button type="button" class="app-btn-danger" [attr.aria-expanded]="confirming === 'clear'" [disabled]="!settled().length" (click)="confirming = confirming === 'clear' ? null : 'clear'; message = ''">Clear history</button>
         }
       </div>
       @if (confirming === 'reload') {
@@ -594,12 +602,14 @@
       @if (message) {
         <p class="wallet-message" role="status">{{ message }}</p>
       }
+      </div>
+    </section>
     </div>
 
     @if (wallet.loaded() && !wallet.openBets().length && !wallet.hasSettled()) {
       <div class="wallet-empty">
         <p><b>Your wallet's ready:</b> {{ start | number }} play units. Open any game's lines on the Bets page and tap a price to bet it.</p>
-        <a class="wallet-chip sand" href="/bets" (click)="toBets()"><mat-icon aria-hidden="true" fontIcon="casino"></mat-icon>Go to Bets<svg class="chip-rim" aria-hidden="true"><rect pathLength="220" /></svg></a>
+        <a class="app-btn-primary" href="/bets" (click)="toBets()">Go to Bets</a>
       </div>
     }
 

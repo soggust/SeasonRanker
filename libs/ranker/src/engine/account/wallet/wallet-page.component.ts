@@ -35,6 +35,7 @@ import {
   versusBot,
   versusDays,
 } from './wallet-math';
+import { chipStacks, runCards } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -117,6 +118,9 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   @Input() only: 'open' | 'closed' | null = null;
   // (a link to the Bets page lands on its Place Bets, not the Algorithm or Open Bets)
   readonly toBets = (): void => chooseBetsView('bets');
+  // (...and its Open and Cashed tabs: the open tickets, every ticket cashed)
+  readonly toOpen = (): void => chooseBetsView('open');
+  readonly toClosed = (): void => chooseBetsView('closed');
   // (Settings, its Privacy panel open: where bet history goes public)
   readonly privacyHash = PRIVACY_HASH;
 
@@ -249,6 +253,19 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   });
   // (the run's own profit: the balance against 1,000, the open stakes counted back in)
   readonly runProfit = computed(() => this.wallet.balance() + this.tally().atRisk - START);
+
+  // ---------------------------------------------------------------------------
+  // The redesign's own pictures (wallet-view.ts: every one read off what the wallet already holds)
+  // ---------------------------------------------------------------------------
+  // (the run's number: the reloads so far, plus one)
+  readonly runNo = computed(() => (this.wallet.wallet()?.resets ?? 0) + 1);
+  // (the balance as stacks of chips on the rail, and the legend under them)
+  readonly rack = computed(() => chipStacks(this.wallet.balance()));
+  // (the whole history's loaded: every page in)
+  readonly fullHistory = computed(() => this.wallet.settledState() === 'all');
+  // (the runs: every one once the history's all here, else the current one)
+  readonly runs = computed(() => runCards(this.wallet.settledBets(), this.wallet.wallet()?.resets ?? 0, this.wallet.balance(), this.fullHistory()));
+  readonly currentRun = computed(() => this.runs().find((r) => r.current) ?? null);
 
   // (a bet decided in play: its result before the settler pays it)
   readonly decided = computed(() => {
