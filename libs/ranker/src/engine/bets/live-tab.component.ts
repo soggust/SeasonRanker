@@ -173,7 +173,8 @@ export class LiveTabComponent implements OnInit, OnDestroy {
     }
     const picks = this.boards.get(`${g.sport}|${g.matchup}`)?.betPicks ?? [];
     const read2 = botRead(picks);
-    const noBets = rows.length ? null : g.state === 'pre' ? (read2 ? `Bot: ${read2}` : 'Bot: no pick') : `No tickets · bot: ${read2 ?? 'no pick'}`;
+    // (the bot's read when it has one; nothing at all when it has no pick (the owner: no "Bot: no pick" line))
+    const noBets = rows.length || !read2 ? null : g.state === 'pre' ? `Bot: ${read2}` : `No tickets · bot: ${read2}`;
     const info = this.places.get(`${g.sport}|${g.matchup}`);
     return {
       key: `${g.sport}|${g.event}`,
