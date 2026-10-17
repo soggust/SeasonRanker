@@ -135,24 +135,34 @@ The existing **leaderboards** (`board`, `periods`), restyled:
   - Phoenix: bust a run, then finish the next one up
   - Iron Stomach: 50 bets in one week
 
-### 7. On the wall + your tells (new, last row)
+### 7. On the wall, then your tells (new, two full-width panels)
 
-- **On the wall**: two paper tickets in gold-metal frames (`chip.$felt-gold` gradient, 10px matte, a deep
-  shadow), slightly tilted (−1.5° and 1.2°), each with a stamp:
-  - BIGGEST CASH: the settled bet with the largest profit, stamped CASHED in green
-  - WORST BEAT: the most painful loss, stamped BAD BEAT in red. That's the parlay with the most legs hit before
-    a loss, or else the largest losing stake. Don't invent margins: show "lost by half a point" only if the
-    bet's final score and line show it.
-- **Your tells** (a panel with the green bar): six habit lines derived from settled bets, each a label and a
-  value (green or red where it's a result):
-  - favourite sport (share of bets)
-  - best market by units
-  - worst market by units
-  - typical stake
-  - average price
-  - "Bets placed after 10 PM" record and units, from `placedAt`
+**On the wall**: **one** full-width panel with the green bar ("ON THE WALL", and on the right "Your
+biggest cash and your worst beat, pinned for posterity"). It holds both tickets side by side on the panel's
+own scoreboard face, with a faint sand glow from the top. There are **no** separate headers per ticket and
+**no** gold frames. Each ticket is the slip's paper, up to 400px wide, tilted slightly (−1.5° and 1.2°), with
+a deep drop shadow and a sand **push-pin** at its top centre. A small caption sits under each, a coloured
+dot and a label: BIGGEST CASH in green, WORST BEAT in red.
 
-  End with a link, "Every ticket you've cashed →", to the Bets page's Cashed tab.
+- **Biggest cash**: the settled bet with the largest profit, stamped CASHED in green.
+- **Worst beat**: the most painful loss, stamped BAD BEAT in red. That's the parlay with the most legs hit
+  before a loss, or else the largest losing stake. Don't invent margins: show "lost by half a point" only if
+  the bet's final score and line show it.
+
+The two sit in `repeat(auto-fit, minmax(min(100%, 340px), 1fr))`, so they stack on phones. Hide a ticket
+that has nothing to show, and the whole panel if both are empty.
+
+**Your tells**: a full-width panel with the green bar ("YOUR TELLS", and on the right the link "Every ticket
+you've cashed →" to the Bets page's Cashed tab). The body is a grid of six tiles (3 × 2 on desktop, one
+column on phones), separated by 1px hairlines. Each tile has a small-caps label and a value in Outfit 17px,
+green or red where it's a result. All six are derived from settled bets:
+
+- favourite sport (share of bets)
+- best market by units
+- worst market by units
+- typical stake
+- average price
+- "Bets placed after 10 PM" record and units, from `placedAt`
 
 ### 8. What happened to the open bets and history tables
 
