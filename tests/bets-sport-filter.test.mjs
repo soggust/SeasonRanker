@@ -147,3 +147,10 @@ test("faces: a game's two teams before its name in the name's order, a fight's f
   assert.equal(fight.name, 'A vs B');
   assert.deepEqual(fight.faces.map((f) => f.abbr), ['A', 'B']);
 });
+
+test("playerCardHref: a prop's player's card is his sport's page with his name on the link; a side or a total, none", () => {
+  assert.equal(bets.playerCardHref({ sport: 'nfl', betType: 'player', player: 'Drake Maye' }), '/nfl/?name=Drake+Maye');
+  assert.equal(bets.playerCardHref({ sport: 'nhl', betType: 'player', player: 'Logan Stanley' }), '/nhl/?name=Logan+Stanley');
+  assert.equal(bets.playerCardHref({ sport: 'nfl', betType: 'spread', player: null }), null);
+  assert.equal(bets.playerCardHref({ sport: 'nfl', betType: 'player', player: '' }), null);
+});

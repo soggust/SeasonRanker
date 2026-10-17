@@ -121,16 +121,13 @@ $page-gutter: 16px;
 
 // The views (The board, Open, Cashed, an admin's Algorithm): a scoreboard bar like the sport pages' position
 // bar, equal tabs, the one showing lit on the dots
-// (on the Bets page the views bar casts no shadow and sits narrower than the sport pages' position bar: the
-// owner's note; it still grows to fit its tabs and shrinks on a phone)
 .bets-views {
-  @include v.scoreboard-panel(v.$tab-r, none);
+  @include v.scoreboard-panel(v.$tab-r, 0 2px 6px rgba(0, 0, 0, 0.35));
   box-sizing: border-box;
   display: flex;
-  flex: 0 1 auto;
+  flex: 1 1 420px;
   height: 44px;
-  max-width: 480px;
-  min-width: 0;
+  max-width: 640px;
   overflow: hidden;
 
   button {
@@ -171,7 +168,8 @@ $page-gutter: 16px;
 
 // (the About button: a round felt chip, the page's About)
 // (the About button: the bankroll card's and the game pill's black-to-gold face with the gold edge, round, the
-// "i" in gold; hover as theirs)
+// "i" in gold; hover as theirs. It sits at the row's right end, just left of the bankroll card when there is one
+// (signed in), alone at the right without it: the owner's note, 2026-10-17)
 .bets-info {
   @include chip.player-card(v.$radius-round);
   align-items: center;
@@ -183,6 +181,7 @@ $page-gutter: 16px;
   flex: none;
   height: 44px;
   justify-content: center;
+  margin-left: auto;
   padding: 0;
   transition:
     filter v.$t-hover ease,
@@ -203,7 +202,8 @@ $page-gutter: 16px;
   }
 }
 
-// The bankroll: a player's card at the row's right, the whole card the way to the wallet: a lock-chocolate chip,
+// The bankroll: a player's card at the row's right (after the About button, which takes the row's spare room), the
+// whole card the way to the wallet: a lock-chocolate chip,
 // BANKROLL and what's in play over the balance (big, lit) and the record with its return
 .bankroll {
   @include chip.player-card(v.$radius-xl);
@@ -215,7 +215,6 @@ $page-gutter: 16px;
   flex: none;
   gap: v.$space-2 v.$space-12;
   grid-template-columns: auto 1fr;
-  margin-left: auto;
   padding: 10px 14px;
   text-decoration: none;
   transition:
@@ -345,11 +344,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // The game dropdown's open list: the page's own listbox under the pill (bets-page.component.html), the bankroll
 // card's black fade in a gold edge, 420px tall at most with a gold scrollbar. Best bets · every game on top (a
-// trophy, its count), each day a gold dot-matrix band, each sport a 44px row (its icon and name in gold caps, a
-// left accent in its league's colour, its count in a pill, lifted on hover), its games 40px rows indented under it
-// (the two teams' faces, the matchup, the start in the ticket's mono, a small count pill or a faint "lines"). The
-// lit row (the pointer's or the arrows') a faint light; the chosen one washed gold, its words gold, the lit dots
-// along its foot. A phone's the full width under the pill
+// gold trophy, white words, its count in a pill; never washed, it's the home choice: the owner's notes), each day a
+// gold dot-matrix band, each sport a 44px row (the league's mark in its own colours (MMA its gloves in gold), its
+// name in white caps, its count in a pill, lifted on hover; no sport-coloured accent), its games 40px rows indented
+// under it (the two teams' faces in 22px slots 8px apart, the matchup wrapping to a second line when it's long (a
+// fight's two names), the start in the ticket's mono and the small count pill or a faint "lines" on the first
+// line). The lit row (the pointer's or the arrows') a faint light; the chosen sport or game washed gold, its words
+// gold, the lit dots along its foot. A phone's the full width under the pill
 .bets-game-wrap {
   display: inline-flex;
   max-width: calc(100vw - 2 * #{$page-gutter});
@@ -370,7 +371,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   box-sizing: border-box;
   left: 0;
   max-height: 420px;
-  max-width: calc(100vw - 32px);
+  max-width: min(440px, calc(100vw - 32px));
   min-width: 380px;
   outline: none;
   overflow-x: hidden;
@@ -425,6 +426,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   .game-icon {
     @include v.icon-size(20px);
     color: chip.$gold-led;
+  }
+
+  // (a league's mark: its own colours, 20px)
+  .game-mark {
+    height: 20px;
+    object-fit: contain;
+    width: 20px;
   }
 
   .game-label {
@@ -486,30 +494,37 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// (Best bets · every game: 44px, a trophy, its words in the larger type)
+// (Best Bets: 44px, the trophy in gold, its words white in the larger type; no wash and no dots even when it's the
+// choice (the owner's note): the home row reads plain, its count pill alone)
 .game-all {
   height: 44px;
 
   .game-label {
     font-size: v.$fs-14;
   }
+
+  &.chosen {
+    background: none;
+
+    &::after {
+      display: none;
+    }
+
+    .game-label {
+      color: #fff;
+      text-shadow: none;
+    }
+  }
 }
 
-// (a sport's row: 44px, its icon and name in gold caps, the accent down its left in its league's colour (MMA
-// the house's gold), lifted a touch when lit)
+// (a sport's row: 44px, the league's mark (MMA's gloves in gold) and its name in white caps, lifted a touch when
+// lit; no accent in the sport's colour, the owner's note)
 .game-sport {
-  --sport-accent: #{chip.$gold-led};
-  box-shadow: inset 3px 0 0 var(--sport-accent);
   height: 44px;
   margin-top: 2px;
 
-  .game-icon {
-    color: var(--sport-accent);
-    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--sport-accent) 60%, transparent));
-  }
-
   .game-sport-name {
-    @include glow;
+    color: #fff;
     font-size: v.$fs-14;
     font-weight: 600;
     letter-spacing: 2px;
@@ -517,27 +532,28 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   &.active {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--sport-accent) 30%, transparent), rgba(255, 255, 255, 0.09) 65%);
+    background: rgba(255, 255, 255, 0.09);
     transform: translateY(-1px);
-  }
-
-  @each $sport, $line in chip.$sport-line {
-    &.sport-#{$sport} {
-      --sport-accent: #{$line};
-    }
   }
 }
 
-// (a game's row: 40px, indented under its sport, the two faces before the matchup)
+// (a game's row: 40px, taller when its name wraps, indented under its sport; the two faces each in a 22px slot, 8px
+// apart, before the matchup, which wraps to a second line when it's long (a fight's two names) while the start
+// and the count stay on the first line, at the right)
 .game-row {
+  align-items: start;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
-  height: 40px;
+  height: auto;
+  min-height: 40px;
+  padding-bottom: 8px;
   padding-left: 28px;
+  padding-top: 8px;
 
   .game-faces {
     align-items: center;
     display: inline-flex;
     flex: none;
+    gap: 8px;
     height: 24px;
   }
 
@@ -546,14 +562,29 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 50%;
     box-sizing: border-box;
-    height: 24px;
+    height: 22px;
     object-fit: contain;
     padding: 2px;
-    width: 24px;
+    width: 22px;
+  }
 
-    & + .game-face {
-      margin-left: -5px;
-    }
+  .game-label {
+    align-items: center;
+    display: flex;
+    line-height: 1.25;
+    min-height: 24px;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .game-when,
+  .game-lines {
+    line-height: 24px;
+  }
+
+  .game-pill {
+    margin-top: 4px;
   }
 
   // (no logo: the three letters, small)
@@ -668,11 +699,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // wide screen. From 1000px the page stands still: the board fills what's left of the height and scrolls inside,
 // the right column on its own; narrower, everything stacks and the page scrolls as usual
 // ---------------------------------------------------------------------------
+// (the board column no wider than 880px, the right column its 340 to 390px, the pair centred in any spare room: the
+// owner's note, 2026-10-17)
 .book-work {
   align-items: stretch;
   display: flex;
   flex-wrap: wrap;
   gap: v.$space-24;
+  justify-content: center;
   width: 100%;
 }
 
@@ -681,6 +715,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   flex: 999 1 640px;
   flex-direction: column;
   gap: v.$space-12;
+  max-width: 880px;
   min-width: 0;
 }
 
@@ -885,13 +920,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
-// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
+// The board: a dot-matrix scoreboard in its 1px edge alone (the dark ring and the shadow, "the box effect", gone:
+// the owner's note, 2026-10-17), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
 .board {
-  @include v.scoreboard-panel(v.$radius-lg, (0 0 0 5px v.$panel-dark, 0 0 0 6px v.$panel-edge, 0 10px 30px rgba(0, 0, 0, 0.55)));
+  @include v.scoreboard-panel(v.$radius-lg, none);
   display: flex;
   flex-direction: column;
-  margin: 6px;
+  margin: 0;
   overflow: hidden;
   position: relative;
 }
@@ -1129,7 +1164,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // The rank: a scoreboard tile with segment digits, like the rankings grid's: the top 10 green, the rest white;
 // a lock's padlock a light chocolate, a CHECK's "?" lavender, each glowing like the digits. A click opens how its
-// score is built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear)
+// score is built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear); the
+// popover open, the tile stays as it is (the meter's open state is the cue: the owner's note, 2026-10-17)
 .bet-rank {
   @include v.led-tile;
   border: 2px solid transparent;
@@ -1143,8 +1179,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   width: 46px;
 
   &:hover,
-  &:focus-visible,
-  &.open {
+  &:focus-visible {
     border-color: var(--scoreboard-led);
     outline: none;
   }
@@ -1175,7 +1210,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // The circle: a prop's player's face in a ring of his team's color on the dark, a side's team's logo in its
-// color, a total's arrow (up green, down red)
+// color, a total's arrow (up green, down red). A prop's face is a link to the player's card (a new tab): lit on
+// hover
 .bet-circle {
   align-items: center;
   background: v.$panel-rule;
@@ -1200,6 +1236,21 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     object-fit: cover;
     object-position: 50% 15%;
     width: 100%;
+  }
+
+  &.bet-card-link {
+    cursor: pointer;
+    transition:
+      border-color v.$t-hover ease,
+      filter v.$t-hover ease;
+
+    &:hover {
+      filter: brightness(1.2);
+    }
+
+    &:focus-visible {
+      @include v.focus-ring(2px);
+    }
   }
 
   // (a fight's circle: the gloves sit under the face; a face ESPN doesn't have hides itself and leaves them)
@@ -1258,6 +1309,25 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     letter-spacing: 0.3px;
     line-height: 1.2;
     @include v.ellipsis;
+
+    // (a prop's player's name: a link to his card (a new tab), as the name reads until it's hovered, then
+    // lighter and underlined)
+    .bet-player {
+      color: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color v.$t-hover ease;
+
+      &:hover {
+        color: chip.$gold-led;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      &:focus-visible {
+        @include v.focus-ring(2px);
+      }
+    }
   }
 
   .bet-sub {
@@ -1298,7 +1368,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // The model-vs-book meter: the model's chance in green on the left, the book's faint on the right, then a 6px
 // track with a green fill to the model's and a white tick at the book's. A button (the owner's note, 2026-10-17):
-// it opens the why popover as the rank tile does; hovered or open, the book's words lighten and the track is rimmed
+// it opens the why popover as the rank tile does; hovered or open it says it's clickable: the words go white, the
+// track and its fill brighten, and a green glow sits under the track (the owner's note, 2026-10-17)
 .bet-meter {
   background: none;
   border: none;
@@ -1315,14 +1386,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   &:hover,
   &.open {
-    filter: brightness(1.2);
-
+    .meter-model,
     .meter-book {
-      color: v.$text-soft;
+      color: #fff;
     }
 
     .meter-track {
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+      box-shadow: 0 2px 6px rgba(v.$good-bright, 0.6);
+      filter: brightness(1.2);
     }
   }
 
@@ -1339,6 +1410,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     font-family: v.$font-heading;
     font-size: v.$fs-12;
     justify-content: space-between;
+
+    span {
+      transition: color v.$t-hover ease;
+    }
   }
 
   .meter-model {
@@ -1354,6 +1429,9 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     border-radius: v.$radius-pill;
     height: 6px;
     position: relative;
+    transition:
+      box-shadow v.$t-hover ease,
+      filter v.$t-hover ease;
   }
 
   .meter-fill {
@@ -2202,7 +2280,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     border-radius: v.$radius-lg;
     display: flex;
     gap: v.$space-8;
-    margin-left: auto;
     padding: 7px 12px;
     width: auto;
 
@@ -2222,10 +2299,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
-  .bets-info {
-    order: 2;
-  }
-
   .book-controls {
     gap: v.$space-8;
   }
@@ -2243,6 +2316,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     width: auto;
   }
 
+  // (the chips centred on a phone (the owner's note, 2026-10-17): auto margins on the row's ends, not
+  // justify-content: center, so a row too wide for the screen still scrolls from its first chip)
   .bets-kinds {
     flex-wrap: nowrap;
     margin: 0 -4px;
@@ -2250,6 +2325,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     padding: 6px 4px;
     width: calc(100% + 8px);
     @include chip.gold-scrollbar;
+
+    .kind-chip:first-child {
+      margin-left: auto;
+    }
+
+    .kind-chip:last-child {
+      margin-right: auto;
+    }
   }
 
   .kind-chip {

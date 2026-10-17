@@ -14,9 +14,9 @@ import { RecentForm, recentForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
-import { americanOdds, headshot } from './bet-format';
+import { americanOdds, headshot, leagueLogo } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, sportRows, sumRecords } from './bets-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, sportRows, sumRecords } from './bets-rows';
 // (the rows' types, for the page's other parts: bets-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
@@ -145,6 +145,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   headshot(r: BetRow): string {
     return headshot(r.sport, r.athleteId);
   }
+
+  // (a prop's player's card, his sport's app by his name: bets-rows.ts playerCardHref; the face and the name link it)
+  readonly cardHref = playerCardHref;
 
   hide(event: Event): void {
     (event.target as HTMLElement).style.visibility = 'hidden';
@@ -563,6 +566,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // bets (''); and what it chose: a sport's heading, a game, or Best bets · every game (both filters off)
   readonly sportChoice = sportChoice;
   readonly dayBand = dayBand;
+  // (a sport row's mark in the list: the league's own logo (bet-format.ts leagueLogo, ESPN's, as the wallet's and
+  // the desk's tables show it) for the four leagues; MMA keeps its gloves icon)
+  leagueMark(sport: string): string | null {
+    return ['nfl', 'nhl', 'nba', 'mlb'].includes(sport) ? leagueLogo(sport) : null;
+  }
   readonly optId = menuOptionId;
   get choice(): string {
     return this.game || (this.sport ? sportChoice(this.sport) : '');

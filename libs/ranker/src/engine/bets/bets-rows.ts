@@ -6,9 +6,20 @@
 import { byBand, CheckResolved } from './desk-notes';
 import { Confidence, PickWhy, confidenceOf, kellyOf } from './bet-why';
 import { americanOdds } from './bet-format';
+import { CARD_NAME_PARAM } from '../card-link';
 
 // A game as the picks name it
 export type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
+
+// A prop's player's card: his sport's page with his name on the link (card-link.ts CARD_NAME_PARAM: the sport's app
+// finds him by name across its player tabs, findLinkedCard; the picks carry no position), "/nfl/?name=Drake+Maye".
+// Not a prop, or no player on it: none
+export function playerCardHref(r: { sport: string; betType: BetKind; player?: string | null }): string | null {
+  if (r.betType !== 'player' || !r.player) return null;
+  const q = new URLSearchParams();
+  q.set(CARD_NAME_PARAM, r.player);
+  return `/${r.sport}/?${q}`;
+}
 
 // One of the algorithm's picks as the page shows it
 export interface BetRow {

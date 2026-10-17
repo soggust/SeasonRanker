@@ -119,7 +119,7 @@
               <span class="bets-game-label">{{ s.label }}</span>
               <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="bets-game-label">Best bets · every game</span>
+              <span class="bets-game-label">Best Bets</span>
               <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
             <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -145,7 +145,7 @@
               (click)="pick('')"
             >
               <mat-icon class="game-icon" aria-hidden="true" fontIcon="emoji_events"></mat-icon>
-              <span class="game-label">Best bets · every game</span>
+              <span class="game-label">Best Bets</span>
               <span class="game-pill">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             </div>
             @for (d of gameMenu; track d.day) {
@@ -163,7 +163,13 @@
                   (mouseenter)="active = sportChoice(s.sport)"
                   (click)="pick(sportChoice(s.sport))"
                 >
-                  <mat-icon class="game-icon" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
+                  <!-- (the league's own mark where the site has one (bet-format.ts leagueLogo: ESPN's, the wallet's and the
+                       desk's tables' league logos); MMA its gloves) -->
+                  @if (leagueMark(s.sport); as mark) {
+                    <img class="game-icon game-mark" [src]="mark" alt="" />
+                  } @else {
+                    <mat-icon class="game-icon" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
+                  }
                   <span class="game-sport-name">{{ s.name }}</span>
                   @if (sportCount(s.sport)) {
                     <span class="game-pill">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
@@ -257,7 +263,6 @@
               <button
                 type="button"
                 class="bet-rank check"
-                [class.open]="checkWhy?.id === r.id"
                 aria-haspopup="dialog"
                 [attr.aria-expanded]="checkWhy?.id === r.id"
                 aria-label="CHECK: why it isn't bet"
@@ -270,7 +275,6 @@
                 class="bet-rank"
                 [class.top]="i - locks < 10 && grade(r) !== 'pass'"
                 [class.lock]="r.confidence === 'lock'"
-                [class.open]="why?.id === r.id"
                 aria-haspopup="dialog"
                 [attr.aria-expanded]="why?.id === r.id"
                 [attr.aria-label]="(r.confidence === 'lock' ? 'Lock' : '#' + (i + 1 - locks)) + ': how its score is built'"
@@ -286,7 +290,13 @@
             }
             <!-- (the circle: a prop's player's face, a total's arrow, a side's team's logo; a fade, none) -->
             @if (r.betType === 'player' && r.athleteId) {
-              <span class="bet-circle player" aria-hidden="true" [style.border-color]="pickColor(r)"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></span>
+              <!-- (a prop's face: a link to the player's card, in a new tab (the card lives in his sport's app); the
+                   owner's ask, 2026-10-17) -->
+              @if (cardHref(r); as href) {
+                <a class="bet-circle player bet-card-link" [href]="href" target="_blank" rel="noopener" [attr.aria-label]="'Open ' + r.player + '\'s card'" [style.border-color]="pickColor(r)" (click)="$event.stopPropagation()"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></a>
+              } @else {
+                <span class="bet-circle player" aria-hidden="true" [style.border-color]="pickColor(r)"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></span>
+              }
             } @else if (r.betType === 'total') {
               <span class="bet-circle total" [class.over]="r.side !== 'under'" aria-hidden="true"><mat-icon [fontIcon]="r.side === 'under' ? 'arrow_downward' : 'arrow_upward'"></mat-icon></span>
             } @else if (r.sport === 'mma') {
@@ -313,7 +323,7 @@
                 <small class="bet-sub">{{ insteadText(r.pick) }}</small>
               } @else {
                 @let parts = pickParts(r);
-                <b class="bet-pick">@if (r.betType === 'player' && r.player) {{{ r.player }}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
+                <b class="bet-pick">@if (r.betType === 'player' && r.player) {@if (cardHref(r); as href) {<a class="bet-player" [href]="href" target="_blank" rel="noopener" (click)="$event.stopPropagation()">{{ r.player }}</a>} @else {{{ r.player }}}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
                 <small class="bet-sub">
                   @if (subLine(r); as line) {<span class="bet-sub-game">{{ line.name }}@if (line.when) {<span class="bet-sub-when"> · {{ line.when }}</span>}</span>}
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
