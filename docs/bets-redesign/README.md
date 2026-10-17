@@ -1,5 +1,12 @@
 # Bets page redesign: "The Book"
 
+> **Status (2026-10-17):** built and live on master. The page is The Book: the felt, the views bar (The
+> board · Open · Cashed · Algorithm, drawn only when there's more than the board to show), the bankroll
+> card, the board with its bands and meter, the ticket (a stub on phones). Where the live page and this
+> brief differ, the page and its About (`libs/ranker/src/engine/bets/bets-about.component.html`) are
+> current; this file is kept as the design record. The wallet's own redesign is a separate pull request,
+> not live.
+
 The owner signed off on a new look for the Bets page (`/bets`). This is the brief for building it. The two
 design files beside this one are the approved designs as standalone HTML, with every colour, size and layout
 value exact: `Main.dc.html` (desktop, 1440 wide) and `Phone.dc.html` (390 × 844). Their markup is a design

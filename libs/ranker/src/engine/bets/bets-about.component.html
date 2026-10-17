@@ -1,19 +1,21 @@
 <!-- The Bets page's About: the shared frame, its sections for everyone, and an admin's Algorithm and Live Model -->
-<about-frame heading="About Bets" [sections]="sections" (closed)="closed.emit()" #frame>
+<about-frame heading="About The Book" [sections]="sections" (closed)="closed.emit()" #frame>
   @switch (frame.active) {
     @case ('page') {
       <h3>Play money, real numbers</h3>
       <p>
-        The Bets page is a sportsbook for fun. Every account gets a <b>1,000-unit wallet</b> of play money to bet with:
-        no real money goes in or comes out, ever. The lines and prices are the real ones from DraftKings, and the
-        picks come from our betting bot, a model that prices every game and prop on its own.
+        The Book, Season Ranker's Bets page, is a sportsbook for fun. Every account gets a <b>1,000-unit wallet</b>
+        of play money to bet with: no real money goes in or comes out, ever. The lines and prices are the real ones
+        from DraftKings, and the picks come from our betting bot, a model that prices every game and prop on its own,
+        in the NFL, NBA, NHL and MLB and on UFC fights.
       </p>
-      <h4>Best Bets or a game</h4>
+      <h4>Best Bets, a sport or a game</h4>
       <ul>
         <li><b>Best Bets</b> (the dropdown's first choice) is the bot's best picks across every sport, the biggest edge first.</li>
-        <li><b>Choose a game</b> from the dropdown to see that game's whole betting board. Games the bot has no pick on are listed at the bottom, lines only, so you can still bet them.</li>
-        <li>The <b>chips</b> on the right filter by type of bet: spreads, totals, moneylines and props.</li>
-        <li><b>Click a pick</b> to open its reasoning: the bot's chance, the market's, and how its score adds up.</li>
+        <li><b>Choose a sport</b> from the dropdown for its picks alone, or <b>a game</b> to see that game's whole betting board. Games the bot has no pick on are listed at the bottom, lines only, so you can still bet them.</li>
+        <li>The <b>chips</b> filter by kind of bet: <b>ATS</b> (the spread), <b>O/U</b> (the total), <b>TT</b> (team totals), <b>ML</b> (moneylines), <b>PROP</b> (player props) and <b>TEAM</b> (team stats).</li>
+        <li>Every pick shows its <b>band</b> and a <b>meter</b> of the bot's chance against the book's; <b>click</b> either for the reasoning: the bot's chance, the market's, and how its score adds up.</li>
+        <li><b>Click a price</b> to put it on your <b>ticket</b> (on a phone, the ticket folds to a stub at the bottom; tap Expand to see it). Set a stake and place it.</li>
       </ul>
     }
     @case ('board') {
@@ -57,12 +59,12 @@
     @case ('bets') {
       <h3>Your bets and your wallet</h3>
       <ul>
-        <li><b>Place Bets</b> is the board. Add a price to the slip, choose a stake and place it.</li>
-        <li><b>Open Bets</b> lists the bets still to be decided, with a live results column while the games are on: the score, or a prop's count against its line.</li>
-        <li><b>Closed Bets</b> lists the decided ones: won, lost or pushed, and what each paid.</li>
-        <li>The <b>Bankroll</b> line under the dropdown shows what's on hand and what's out; it opens your wallet. Bets settle automatically after the games.</li>
+        <li><b>The board</b> is the betting board. Add a price to the ticket, choose a stake and place it (placing asks you to sign in; looking doesn't).</li>
+        <li><b>Open</b> lists the bets still to be decided, with a live results column while the games are on: the score, or a prop's count against its line.</li>
+        <li><b>Cashed</b> lists the decided ones: won, lost or pushed, and what each paid.</li>
+        <li>The <b>Bankroll</b> card at the top right shows what's on hand and what's out; it opens your wallet. Bets settle automatically after the games. (The Open and Cashed tabs appear once you have bets; without them the board stands alone.)</li>
       </ul>
-      <div class="callout">It's all play money. If the wallet runs dry, you can reset it and start over.</div>
+      <div class="callout">It's all play money: 1,000 units to start, no real money, ever. If the wallet runs dry, you can reset it and start over.</div>
     }
     @case ('writeups') {
       <h3>The write-ups</h3>
@@ -90,7 +92,9 @@
         ratings move, how they revert between seasons. Context terms adjust each game's margin or total (rest, travel
         and the rest; the Live Model lists each one, kept only if held-out games are better with it). Margins are
         priced on a fitted distribution with the sport's key numbers (the NFL's 3s and 7s), so a spread's chance
-        knows that -3 and -3.5 are very different bets.
+        knows that -3 and -3.5 are very different bets. Five leagues: the NFL, NBA, NHL and MLB with their lines and
+        props, and MMA, where UFC bouts' moneylines are priced by a fight model of its own (fights-model.mjs) and
+        guarded like the other leagues' moneylines.
       </p>
 
       <h4>The props projection</h4>

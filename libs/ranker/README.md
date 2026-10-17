@@ -22,6 +22,13 @@ libs/ranker/
                                                    career history and radar, and the component
     sidebar/                                        the filter menu (presets, sliders, groups)
     about/                                          the About panel's frame (each sport fills it)
+    player-card/splash/                             the Overview's splash: lockers, shelves and the
+                                                   coach's office drawn from each season's uniforms
+    heat-map/                                       the card's Heat Maps tab and its surfaces
+    account/                                        accounts: sign-in, profile, lists, presets, Track
+                                                   Players, friends, community, the play-money wallet
+    bets/                                           The Book (/bets): the board, bands, ticket, the
+                                                   admin's Algorithm desk and the page's About
     position.service.ts                            sliders, settings, orders, the current tab
     stat-reader.ts                                 a season's values as the settings show them,
                                                    their labels, averages and colors
@@ -91,6 +98,9 @@ Everything here is off unless a sport's `SPORT` sets it; the NFL uses all of it.
 | `cardFlagsLast`, `cardExtras` | Card takes after the engine's own, and more for the card once it's open (a skill on the radar, takes, an archetype; the NFL reads run blocking from a file per season) |
 | `teamTabs`, `rowHeader`, `teamName` | Tabs whose rows are teams, the name column's header per tab, and the card's team name |
 | `playingTime.seasonLength`, `playingTime.everyone` | What the Min setting's share is of, and tabs with no minimum |
+| `tabFamilies`, `tabGroups`, `landingTab` | The position bar's families (the NFL: Offense, Defense and Special Teams, each a team tab whose positions open under it as an accordion), the settings' grouping of tabs, and the tab the page lands on (Teams everywhere) |
+| `heatMaps`, `heatMatchups` | The card's Heat Maps tab (`engine/heat-map/`): the sport's surfaces and files per season (NFL zones and the field map, NBA shot charts, NHL shots and saves, MLB hot zones and fielding, MMA striking), and a matchup's read against tonight's opponent |
+| `analysis` | The card's Analysis tab: the weekly AI write-up (`libs/ranker/scripts/analysis/`; the NFL's teams and QBs), one Recap once the season ends |
 | `careerOnly` | One career table rather than seasons (MMA): no season dropdown, the card reads "Career", no seasons tab or similar seasons |
 | `tabVisible` | Tabs a sport setting shows or hides (MMA's women's divisions) |
 | `cardHistory` | A history tab on the card (MMA's fights): a result, what it was, where and when, and a detail per line |
