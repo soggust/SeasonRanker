@@ -9,7 +9,7 @@ import { SportSettings } from '@ranker/engine/sport';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { canUse } from '@ranker/engine/account/features';
 import { forwardOldLink, goTo, pageHash, readPagePath, rememberSport } from '@ranker/engine/page-url';
-import { BarCell, barCells, familyMemory, familyOf, familyOpensTo, litTab, selectGroups, subTabs } from '@ranker/engine/tab-families';
+import { BarCell, barCells, familyOf, familyOpensTo, litTab, selectGroups, subTabs } from '@ranker/engine/tab-families';
 
 // The page showing, by its hash (page-url.ts reads it off the page's own address, /wallet, /u/<username>):
 // the rankings (no hash), the Bets page (#bets), or an account page (#account, #lists, #community, #tracker,
@@ -228,11 +228,10 @@ export class AppComponent {
     return familyOf(SPORT.tabFamilies, position)?.label ?? '';
   }
 
-  // A shut family's tab clicked: it opens to the member this session last showed in it, else its first
-  private readonly familyMemory = familyMemory(SPORT.id);
+  // A shut family's tab clicked: it opens to its first member, the team's tab
   openFamily(parent: string): void {
     const family = familyOf(SPORT.tabFamilies, parent);
-    this.selectPosition(family ? (familyOpensTo(family, this.positions, this.familyMemory.get(parent)) ?? parent) : parent);
+    this.selectPosition(family ? (familyOpensTo(family, this.positions) ?? parent) : parent);
   }
 
   // The phone's dropdown in the sport's groups (SPORT.tabGroups; a tab in no group lists first, ungrouped)
@@ -255,12 +254,6 @@ export class AppComponent {
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.pageLinkHash(event) !== null, (event) => this.onPageLink(event));
     quietListener<PointerEvent>(zone, destroyRef, document, 'pointerdown', (event) => this.outsideFilters(event), () => this.closeFilters());
     this.markBetsView();
-    // Every tab shown is remembered in its family (a link's, the landing tab's, a click's): the tab the
-    // family's own tab opens to next time this session
-    this.position$.pipe(takeUntilDestroyed()).subscribe((position) => {
-      const family = familyOf(SPORT.tabFamilies, position);
-      if (family) this.familyMemory.set(family.parent, position);
-    });
     // A setting that shows new tabs (MMA's women's divisions) opens the first of them; one that
     // hides the open tab goes back to the first tab
     let shown = this.positions;

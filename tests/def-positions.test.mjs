@@ -57,10 +57,10 @@ test('nfl: every tab in POSITIONS has its names, pace, stats and presets, the fi
   for (const tab of POSITIONS) assert.equal(PACE_GAMES[tab], 17, `${tab}: pace`);
   assert.deepEqual(DEF_PLAYER_TABS, DEF_TABS);
   for (const tab of DEF_TABS) for (const stat of SKILL_STATS[tab]) assert.ok(STAT_NAMES[stat.key] || stat.name, `${tab} ${stat.key}: a full name`);
-  // The bar: the five sit under DEF in its sub-row, Team D first; the phone's groups name every tab once
+  // The bar: the five sit under DEF in its sub-row, Team Def first; the phone's groups name every tab once
   const family = SPORT.tabFamilies.find((f) => f.parent === 'DEF');
   assert.deepEqual(Object.keys(family.names), ['DEF', ...DEF_TABS]);
-  assert.equal(family.names.DEF, 'Team D');
+  assert.equal(family.names.DEF, 'Team Def');
   assert.equal(family.label, 'Defense position');
   const grouped = SPORT.tabGroups.flatMap((g) => g.tabs);
   assert.deepEqual([...grouped].sort(), [...POSITIONS].sort(), 'tabGroups name every tab once');

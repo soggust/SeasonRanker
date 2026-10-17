@@ -64,41 +64,10 @@ export function barCells(families: TabFamily[] | undefined, shown: string[], pos
   });
 }
 
-// The tab a collapsed family opens to: the member last shown in it this session (familyMemory), else its
-// first member (Team O, Team D, Team ST: the parent lists first)
-export function familyOpensTo(family: TabFamily, shown: string[], remembered: string | null): string | null {
-  const members = familyMembers(family, shown).map((m) => m.tab);
-  if (remembered && members.includes(remembered)) return remembered;
-  return members[0] ?? null;
-}
-
-// What this session last showed in each family: sessionStorage, a key a sport (none where storage is
-// out of reach: a private window, a test)
-export function familyMemory(sport: string): { get(parent: string): string | null; set(parent: string, tab: string): void } {
-  const key = (parent: string) => `ranker.${sport}.family.${parent}`;
-  const storage = (): Storage | null => {
-    try {
-      return typeof sessionStorage === 'undefined' ? null : sessionStorage;
-    } catch {
-      return null;
-    }
-  };
-  return {
-    get: (parent) => {
-      try {
-        return storage()?.getItem(key(parent)) ?? null;
-      } catch {
-        return null;
-      }
-    },
-    set: (parent, tab) => {
-      try {
-        storage()?.setItem(key(parent), tab);
-      } catch {
-        // (storage full or refused: the family opens to its first member)
-      }
-    },
-  };
+// The tab a collapsed family opens to: its first member, the team's tab (Team Off, Team Def, Team ST: the parent
+// lists first). The owner wants the team first every time, so nothing is remembered between clicks
+export function familyOpensTo(family: TabFamily, shown: string[]): string | null {
+  return familyMembers(family, shown)[0]?.tab ?? null;
 }
 
 // The phone's dropdown in the sport's groups (SportConfig.tabGroups; a tab in no group lists first,

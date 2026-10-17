@@ -170,8 +170,8 @@ export const SPORT: SportConfig = {
   // The bar: TM · OFF · DEF · ST · HC, the three families opening to their members (the team tab first:
   // Team O, Team D, Team ST); the phone's dropdown in the same groups, the team tabs named in full there
   tabFamilies: [
-    { parent: 'OFF', label: 'Offense position', names: { OFF: 'Team O', QB: 'QB', RB: 'RB', WR: 'WR', TE: 'TE', OL: 'OL' } },
-    { parent: 'DEF', label: 'Defense position', names: { DEF: 'Team D', EDGE: 'Edge', DL: 'DL', LB: 'LB', CB: 'CB', S: 'S' } },
+    { parent: 'OFF', label: 'Offense position', names: { OFF: 'Team Off', QB: 'QB', RB: 'RB', WR: 'WR', TE: 'TE', OL: 'OL' } },
+    { parent: 'DEF', label: 'Defense position', names: { DEF: 'Team Def', EDGE: 'Edge', DL: 'DL', LB: 'LB', CB: 'CB', S: 'S' } },
     { parent: 'ST', label: 'Special teams position', names: { ST: 'Team ST', K: 'K', P: 'P' } },
   ],
   tabGroups: [
