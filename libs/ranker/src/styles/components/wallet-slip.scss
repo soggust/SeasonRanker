@@ -1,352 +1,305 @@
 @use "../variables" as v;
 @use "../casino-chip" as chip;
-@use "account-kit" as kit;
 
-// The bet slip: shut, a stack of chips in the corner (its count on a gold marker); open, a drawer from the
-// corner, a sheet along the bottom on phones: a scoreboard header with the wallet's balance, each bet on the
-// gunmetal with its stake set in casino chips (white 1, red 5, blue 10, green 25, black 100: the denominations'
-// colors), and at the bottom the chip tray: a felt-lined rail with the totals and Place.
+// The bet slip as a printed ticket (The Book): cream thermal paper with scalloped top and bottom edges, ink
+// lettering in IBM Plex Mono, docked in the right column on a wide screen (its host the column's); on a phone a
+// stub along the bottom of the screen, and the ticket as a sheet over it when it's opened. Each bet in caps with
+// its game line and band tag, the odds, a remove, RISK and WIN with the stake chips, "clear"; the totals, Place in
+// the player's card's black-to-gold fade with gold lettering, "tear up ticket", a barcode, the fine print.
 
-$gold: chip.$lock-gold;
+$paper: linear-gradient(180deg, #f4efe3, #ece5d4);
+$ink: #1a1a1a;
+$ink-soft: #4a4a4a;
+$ink-faint: rgba(26, 26, 26, 0.35);
+$font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
-@include kit.buttons;
-
-// (the shut slip: a stack of three chips, "Bet slip", the count)
-.slip-tab {
-  @include v.gunmetal;
-  align-items: center;
-  animation: slip-in v.$t-medium v.$ease-out;
-  border: 1px solid v.$gunmetal-edge;
-  border-radius: v.$radius-pill;
-  bottom: 20px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 8px 22px rgba(0, 0, 0, 0.55);
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-family: v.$font-base;
-  font-size: v.$fs-13;
-  font-weight: 900;
-  gap: v.$space-10;
-  letter-spacing: 0.06em;
-  padding: 8px 10px 8px 12px;
-  position: fixed;
-  right: 20px;
-  text-transform: uppercase;
-  z-index: v.z(slip-tab);
-
-  &:hover {
-    border-color: var(--scoreboard-led);
-  }
-
-  @include v.focus-lit {
-    border-color: var(--scoreboard-led);
-  }
+:host {
+  display: block;
 }
 
-// (three chips stacked, seen from the side: red on blue on green)
-.slip-stack {
-  display: flex;
-  flex-direction: column-reverse;
-  height: 22px;
-  justify-content: flex-start;
-  width: 26px;
-
-  i {
-    background: repeating-linear-gradient(90deg, var(--c) 0 4px, #f4efe3 4px 6px);
-    border-radius: v.$radius-round;
-    box-shadow:
-      inset 0 -2px 0 rgba(0, 0, 0, 0.3),
-      0 1px 1px rgba(0, 0, 0, 0.5);
-    display: block;
-    height: 9px;
-    margin-top: -3px;
-    width: 26px;
-  }
-
-  i:nth-child(1) {
-    --c: #{chip.$chip-green};
-  }
-
-  i:nth-child(2) {
-    --c: #{chip.$chip-blue};
-  }
-
-  i:nth-child(3) {
-    --c: #{chip.$chip-red};
-  }
-}
-
-.slip-count {
-  align-items: center;
-  background: $gold;
-  border-radius: v.$radius-pill;
-  color: v.$chip-ink;
-  display: inline-flex;
-  font-size: v.$fs-12;
-  height: 22px;
-  justify-content: center;
-  min-width: 22px;
-  padding: 0 6px;
-}
-
-// The drawer
-.slip {
-  @include v.gunmetal;
-  animation: slip-in v.$t-medium v.$ease-out;
-  border: 1px solid v.$gunmetal-edge;
-  border-radius: 14px;
-  bottom: 16px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 18px 48px rgba(0, 0, 0, 0.65);
+// The ticket
+.ticket {
+  background: $paper;
   box-sizing: border-box;
-  color: #fff;
+  color: $ink;
   display: flex;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.5));
   flex-direction: column;
-  max-height: calc(100vh - var(--sport-bar-height, 48px) - 32px);
-  max-height: calc(100dvh - var(--sport-bar-height, 48px) - 32px);
-  outline: none;
-  overflow: hidden;
-  position: fixed;
-  right: 16px;
-  width: 380px;
-  z-index: v.z(slip);
-}
+  font-family: $font-ticket;
+  font-size: v.$fs-12;
+  gap: v.$space-12;
+  mask:
+    radial-gradient(circle 7px at 50% 0, transparent 98%, #000) top / 18px 51% repeat-x,
+    radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) bottom / 18px 51% repeat-x;
+  padding: 26px 22px 30px;
+  position: relative;
 
-.slip-head {
-  align-items: center;
-  @include v.scoreboard-face;
-  border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-  display: flex;
-  gap: v.$space-10;
-  padding: 10px 10px 10px 16px;
+  &:focus {
+    outline: none;
+  }
 
-  h2 {
-    @include v.headline(17px);
-    flex: 1;
-    letter-spacing: 0.3px;
+  p {
     margin: 0;
   }
+
+  // (phones only: the sheet's close)
+  .ticket-close {
+    display: none;
+  }
 }
 
-// (the wallet's balance: an LED tile, a link to #wallet)
-.slip-balance {
-  @include v.led-tile;
+.ticket-head {
+  align-items: center;
+  display: flex;
   flex-direction: column;
-  padding: 3px 10px;
-  text-decoration: none;
+  gap: v.$space-2;
+  text-align: center;
 
-  small {
-    color: v.$text-faint;
-    font-family: v.$font-base;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+  .ticket-brand {
+    font-size: v.$fs-15;
+    font-weight: 700;
+    letter-spacing: 3px;
     text-transform: uppercase;
   }
 
-  b {
-    font-family: v.$font-base;
-    font-size: v.$fs-14;
-    font-weight: 900;
-  }
-
-  &:hover,
-  &:focus-visible {
-    box-shadow: 0 0 0 2px var(--scoreboard-led);
-    outline: none;
+  .ticket-sub {
+    color: $ink-soft;
+    font-size: v.$fs-10;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 }
 
-.slip-close,
-.slip-remove {
-  align-items: center;
-  background: none;
+// (a perforation)
+.perf {
   border: none;
-  border-radius: v.$radius-round;
-  color: v.$text-faint;
-  cursor: pointer;
-  display: inline-flex;
-  height: 32px;
-  justify-content: center;
-  padding: 0;
-  width: 32px;
+  border-top: 2px dashed rgba(26, 26, 26, 0.25);
+  margin: 0;
+}
 
-  .mat-icon {
-    @include v.icon-size(20px);
-  }
+// (signed out: the play-money note and the way in)
+.ticket-signin {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-  }
-
-  @include v.focus-lit {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+  p {
+    font-size: v.$fs-12;
+    line-height: 1.5;
   }
 }
 
-.slip-remove {
-  height: 26px;
-  margin: -4px -6px -4px 0;
-  width: 26px;
+// Straight or Parlay: a two-way toggle outlined in ink, the one on filled
+.ticket-mode {
+  border: 1.5px solid $ink;
+  border-radius: v.$radius-xs;
+  display: flex;
+  overflow: hidden;
 
-  .mat-icon {
-    @include v.icon-size(17px);
+  button {
+    background: none;
+    border: none;
+    color: $ink;
+    cursor: pointer;
+    flex: 1;
+    font-family: inherit;
+    font-size: v.$fs-12;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 7px;
+    text-transform: uppercase;
+
+    &.active {
+      background: $ink;
+      color: #f4efe3;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $ink;
+      outline-offset: -4px;
+    }
   }
 }
 
-.slip-signin {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+.ticket-legs {
   display: flex;
   flex-direction: column;
   gap: v.$space-10;
-  padding: 12px 16px 14px;
-
-  p {
-    color: v.$text-strong;
-    font-size: v.$fs-13;
-    line-height: 1.5;
-    margin: 0;
-  }
-}
-
-.slip-list {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: v.$space-8;
   list-style: none;
   margin: 0;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 12px;
+  padding: 0;
 }
 
-.slip-item {
-  // (each bet on the scoreboard)
-  @include v.scoreboard-face;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: v.$radius-xl;
-  flex-shrink: 0;
-  padding: 10px 12px;
-
-  &.bot {
-    border-color: rgba(255, 207, 74, 0.3);
-  }
-}
-
-.slip-pick {
-  align-items: center;
+// One bet: the pick in caps and its odds, the remove, its game line and tag; then RISK (typed, or chips) and WIN
+.leg {
+  border-bottom: 1px dotted $ink-faint;
   display: flex;
-  gap: v.$space-8;
-}
+  flex-direction: column;
+  gap: v.$space-6;
+  padding-bottom: 10px;
 
-.slip-words {
-  @include v.headline(15.5px);
-  flex: 1;
-  min-width: 0;
-  @include v.ellipsis;
-}
-
-.slip-odds {
-  font-size: v.$fs-14;
-  font-variant-numeric: tabular-nums;
-  font-weight: 900;
-}
-
-// (a preview prop's price: assumed, none posted)
-.slip-assumed {
-  font-size: v.$fs-10;
-  font-style: italic;
-  font-weight: 700;
-  opacity: 0.6;
-}
-
-// (the bot's band on its pick, as the Bets page's rows have it)
-.slip-tier {
-  @include chip.tier-tag(9px, 2px 5px, 0.08em);
-}
-
-.slip-game {
-  color: v.$text-faint;
-  display: block;
-  font-size: v.$fs-12;
-  font-weight: 700;
-  margin-top: 2px;
-}
-
-.slip-stake {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-8 v.$space-10;
-  margin-top: 10px;
-}
-
-// (the stake typed: an LED-ish box)
-.slip-amount {
-  align-items: center;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid v.$gunmetal-edge;
-  border-radius: v.$radius-lg;
-  display: inline-flex;
-  padding: 0 8px 0 0;
-
-  &:focus-within {
-    border-color: var(--scoreboard-led);
+  .leg-top {
+    align-items: flex-start;
+    display: flex;
+    gap: v.$space-8;
   }
 
-  input {
-    appearance: textfield;
-    background: none;
-    border: none;
-    color: #fff;
-    font-family: v.$font-base;
-    font-size: v.$fs-16;
-    font-variant-numeric: tabular-nums;
-    font-weight: 900;
-    outline: none;
-    padding: 7px 4px 7px 10px;
-    text-align: right;
-    width: 64px;
+  .leg-words {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: v.$space-2;
+    min-width: 0;
+  }
 
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+  .leg-pick {
+    font-size: v.$fs-13;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .leg-game {
+    color: $ink-soft;
+    font-size: v.$fs-11;
+  }
+
+  .leg-tag {
+    text-transform: uppercase;
+
+    &.lock {
+      color: #a84d10;
+      font-weight: 700;
     }
 
-    &::placeholder {
-      color: v.$text-faint;
-      font-size: v.$fs-13;
+    &.love {
+      color: #1d8a4e;
+      font-weight: 700;
+    }
+
+    &.like {
+      color: #8a6a00;
+      font-weight: 700;
+    }
+
+    &.check {
+      color: #4a3f8e;
       font-weight: 700;
     }
   }
 
-  span {
-    color: v.$text-faint;
+  .leg-assumed {
+    font-style: italic;
+  }
+
+  .leg-odds {
+    font-size: v.$fs-13;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .leg-remove {
+    background: none;
+    border: none;
+    color: $ink-soft;
+    cursor: pointer;
+    display: flex;
+    margin: -5px -8px 0 0;
+    padding: 6px;
+
+    mat-icon {
+      @include v.icon-size(16px);
+    }
+
+    &:hover {
+      color: $ink;
+    }
+
+    &:focus-visible {
+      color: $ink;
+      outline: 1px solid $ink;
+      outline-offset: 1px;
+    }
+  }
+
+  .leg-risk {
+    align-items: center;
+    display: flex;
     font-size: v.$fs-12;
-    font-weight: 800;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+
+  // (the stake: typed in a box drawn in ink, or stacked on with the chips)
+  .leg-stake {
+    align-items: center;
+    display: inline-flex;
+    gap: v.$space-4;
+
+    input {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid $ink-faint;
+      border-radius: v.$radius-xxs;
+      color: $ink;
+      font-family: inherit;
+      font-size: v.$fs-12;
+      font-weight: 700;
+      padding: 2px 4px;
+      text-align: right;
+      width: 52px;
+
+      &:focus {
+        border-color: $ink;
+        outline: none;
+      }
+    }
+  }
+
+  .leg-win b {
+    font-weight: 700;
+  }
+
+  .leg-chips {
+    align-items: center;
+    display: flex;
+    gap: v.$space-8;
+  }
+
+  .leg-clear {
+    background: none;
+    border: none;
+    color: $ink-soft;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: v.$fs-11;
+    margin-left: auto;
+    padding: 4px 0;
+    text-decoration: underline;
+
+    &:hover {
+      color: $ink;
+    }
+
+    &:focus-visible {
+      color: $ink;
+      outline: 1px solid $ink;
+      outline-offset: 2px;
+    }
   }
 }
 
-.slip-chips {
-  display: flex;
-  gap: v.$space-6;
+// (the parlay: under its legs, no rule under it)
+.ticket-parlay {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 // A stake chip: a real casino chip, its denomination's color, always lit; a click stacks it on the stake
 .stake-chip {
   @include chip.chip(34px);
   border-width: 4px;
+  filter: none;
   font-size: v.$fs-11;
   font-weight: 900;
-  // (lit, not the filter chips' dim until picked: a stake chip is never "on")
-  filter: none;
 
   .chip-rim {
     height: calc(100% + 8px);
@@ -376,9 +329,10 @@ $gold: chip.$lock-gold;
     transform: translateY(1px);
   }
 
-  // (a chip of color: nothing to light, so the thin ring)
+  // (a chip of color: nothing to light, so the thin ring, in ink on the paper)
   &:focus-visible {
-    @include v.focus-ring;
+    outline: 1px solid $ink;
+    outline-offset: 2px;
   }
 
   &[disabled] {
@@ -386,263 +340,304 @@ $gold: chip.$lock-gold;
     opacity: 0.35;
   }
 
-  &.chip-1 {
-    --clay: #{chip.$chip-cream};
-    color: v.$chip-ink;
-    text-shadow: none;
+  &.chip-half {
+    --clay: #8a8a8a;
+  }
 
-    rect {
-      stroke: chip.$chip-blue;
-    }
+  &.chip-1 {
+    --clay: #{chip.$chip-blue};
   }
 
   &.chip-5 {
     --clay: #{chip.$chip-red};
   }
 
-  &.c10 {
-    --clay: #{chip.$chip-blue};
-  }
-
-  &.chip-25 {
+  &.chip-10 {
     --clay: #{chip.$chip-green};
   }
 
-  // (the half: the casino's pink)
-  &.chip-half {
-    --clay: #d94f86;
+  &.chip-25 {
+    --clay: #1a1a1a;
   }
 }
 
-.slip-pays {
-  color: v.$text-faint;
+.ticket-problem {
+  color: #c62828;
+  font-size: v.$fs-11;
+  line-height: 1.4;
+}
+
+.ticket-empty {
+  color: #3a3a3a;
   font-size: v.$fs-12;
-  font-weight: 700;
-  margin: 8px 0 0;
-
-  b {
-    color: #fff;
-    font-variant-numeric: tabular-nums;
-  }
-
-  b:first-child {
-    color: v.$good;
-  }
+  line-height: 1.6;
+  padding: 14px 0;
+  text-align: center;
+  text-transform: uppercase;
 }
 
-.slip-problem {
-  color: v.$bad-soft;
-  font-size: v.$fs-12;
-  font-weight: 700;
-  margin: 8px 0 0;
-}
-
-.slip-empty,
-.slip-done {
-  color: v.$text-dim;
-  font-size: v.$fs-13;
-  margin: 0;
-  padding: 18px 16px;
-}
-
-.slip-done {
+.ticket-done {
   align-items: center;
+  color: $ink;
   display: flex;
-  flex-wrap: wrap;
+  font-size: v.$fs-12;
   gap: v.$space-6;
+  line-height: 1.4;
 
-  .mat-icon {
-    color: v.$good;
+  mat-icon {
+    @include v.icon-size(16px);
+    color: #1d8a4e;
   }
 
   a {
-    color: var(--scoreboard-led);
-    font-weight: 800;
+    color: $ink;
+    text-decoration: underline;
   }
 }
 
-// The chip tray: a dark wooden rail, a felt groove along it holding the totals, then Place
-.slip-tray {
-  // (the tray on the scoreboard, as the slip's cards)
-  @include v.scoreboard-face;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.5);
-  flex-shrink: 0;
-  padding: 10px 12px;
-}
-
-.slip-totals {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.08), transparent 70%),
-    #0d3a26;
-  border-radius: v.$radius-pill;
-  box-shadow:
-    inset 0 3px 6px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.08);
+// The foot: the totals, Place, tear up, the barcode and the fine print
+.ticket-foot {
   display: flex;
-  justify-content: space-around;
-  padding: 6px 12px;
+  flex-direction: column;
+  gap: v.$space-8;
+}
 
-  span {
-    align-items: center;
+.ticket-totals {
+  display: flex;
+  flex-direction: column;
+  font-size: v.$fs-13;
+  gap: v.$space-4;
+  text-transform: uppercase;
+
+  > div {
     display: flex;
-    flex-direction: column;
-  }
-
-  small {
-    color: v.$text-faint;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    justify-content: space-between;
   }
 
   b {
-    font-size: v.$fs-15;
-    font-variant-numeric: tabular-nums;
-    font-weight: 900;
+    font-weight: 700;
+  }
 
-    &.up {
-      color: v.$good;
-    }
+  .pays {
+    font-size: v.$fs-16;
+    font-weight: 700;
+    padding-top: 4px;
   }
 }
 
-.slip-actions {
+// (Place: the player's card's black-to-gold fade with gold lettering)
+.ticket-place {
+  @include chip.player-card(v.$radius-md);
   align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  color: chip.$gold-led;
+  cursor: pointer;
   display: flex;
-  gap: v.$space-12;
-  justify-content: space-between;
-  margin-top: 10px;
+  font-family: v.$font-heading;
+  font-size: v.$fs-15;
+  font-weight: 700;
+  gap: v.$space-8;
+  justify-content: center;
+  letter-spacing: 2px;
+  margin-top: 4px;
+  padding: 14px;
+  text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+  text-transform: uppercase;
+  transition: filter v.$t-hover ease;
+
+  &:hover:not([disabled]) {
+    filter: brightness(1.18);
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .spinner {
+    animation: ticket-spin 0.8s linear infinite;
+    border: 2px solid rgba(chip.$gold-led, 0.35);
+    border-radius: v.$radius-round;
+    border-top-color: chip.$gold-led;
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+  }
 }
 
-// (Clear: the app's outline, as tall as Place)
-.slip-clear {
-  @include kit.outline-button;
-  flex: none;
-  min-width: 96px;
+@keyframes ticket-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.slip-place {
-  flex: 1;
-}
-
-.slip-fine {
-  color: v.$text-faint;
+.ticket-tear {
+  align-self: center;
+  background: none;
+  border: none;
+  color: $ink-soft;
+  cursor: pointer;
+  font-family: inherit;
   font-size: v.$fs-11;
-  line-height: 1.4;
-  margin: 8px 2px 0;
-}
+  padding: 4px;
+  text-decoration: underline;
 
-// (Straight or Parlay: two chips' worth of switch under the header, the one on lit in the LED's color; the
-// parlay's leg count on a gold marker)
-.slip-mode {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid v.$gunmetal-edge;
-  border-radius: v.$radius-pill;
-  display: flex;
-  flex-shrink: 0;
-  margin: 12px 12px 0;
-  padding: 3px;
+  &:hover {
+    color: $ink;
+  }
 
-  button {
-    align-items: center;
-    background: none;
-    border: 0;
-    border-radius: v.$radius-pill;
-    color: v.$text-dim;
-    cursor: pointer;
-    display: inline-flex;
-    flex: 1;
-    font: inherit;
-    font-size: v.$fs-13;
-    font-weight: 900;
-    gap: v.$space-6;
-    justify-content: center;
-    letter-spacing: 0.06em;
-    padding: 6px 10px;
-    text-transform: uppercase;
-
-    &:hover {
-      color: #fff;
-    }
-
-    &.active {
-      @include v.scoreboard-face;
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--scoreboard-led) 70%, transparent);
-      color: var(--scoreboard-led);
-    }
-
-    // (the keyboard's focus: lightened as on hover, the one on too)
-    @include v.focus-lit {
-      color: #fff;
-    }
-
-    b {
-      background: $gold;
-      border-radius: v.$radius-pill;
-      color: v.$chip-ink;
-      font-size: v.$fs-11;
-      line-height: 1;
-      padding: 3px 6px;
-    }
+  &:focus-visible {
+    color: $ink;
+    outline: 1px solid $ink;
+    outline-offset: 1px;
   }
 }
 
-// (a parlay's legs: each a slimmer card, a gold rail down their left joining them)
-.slip-legs {
-  padding-bottom: 4px;
-
-  .slip-item.slip-leg {
-    border-left: 3px solid rgba(255, 207, 74, 0.55);
-    padding: 8px 12px;
-  }
+.ticket-barcode {
+  background: repeating-linear-gradient(90deg, #1a1a1a 0 2px, transparent 2px 4px, #1a1a1a 4px 5px, transparent 5px 8px, #1a1a1a 8px 11px, transparent 11px 12px);
+  display: block;
+  height: 30px;
+  margin-top: 2px;
+  opacity: 0.85;
 }
 
-// (the parlay's own card under its legs: the combined price, one stake, what it'd pay)
-.slip-parlay {
-  border-color: rgba(255, 207, 74, 0.45);
-  margin: 0 12px 12px;
-
-  .slip-words {
-    text-transform: uppercase;
-  }
-
-  .slip-odds {
-    color: $gold;
-  }
+.ticket-fine {
+  color: $ink-soft;
+  font-size: v.$fs-10;
+  line-height: 1.45;
 }
 
-@keyframes slip-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
+// The phone's stub: hidden on a wide screen, where the ticket is docked
+.ticket-stub {
+  display: none;
 }
 
-// (phones: a sheet along the bottom, the stack of chips a little in)
-@include v.down(phone) {
-  .slip {
-    border-radius: 16px 16px 0 0;
+// Phones and tablets under the docking width: the ticket is a sheet along the bottom of the screen when it's
+// open (shut, it isn't there), the stub along the bottom while it's shut
+@media (max-width: #{v.bp(wide-menu) - 1px}) {
+  .ticket {
     bottom: 0;
+    display: none;
+    filter: drop-shadow(0 -6px 14px rgba(0, 0, 0, 0.5));
     left: 0;
-    max-height: 82vh;
+    mask: radial-gradient(circle 6px at 50% 0, transparent 98%, #000) top / 16px 100% repeat-x;
+    max-height: 80dvh;
+    overflow-y: auto;
+    padding: 22px 18px calc(24px + env(safe-area-inset-bottom));
+    position: fixed;
     right: 0;
-    width: auto;
+    z-index: v.z(slip);
+
+    &.open {
+      display: flex;
+    }
+
+    .ticket-close {
+      background: none;
+      border: none;
+      color: $ink-soft;
+      cursor: pointer;
+      display: flex;
+      height: 44px;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      position: absolute;
+      right: 6px;
+      top: 8px;
+      width: 44px;
+
+      mat-icon {
+        @include v.icon-size(20px);
+      }
+
+      &:focus-visible {
+        outline: 1px solid $ink;
+        outline-offset: -4px;
+      }
+    }
   }
 
-  .slip-tab {
-    bottom: 14px;
-    right: 14px;
+  .ticket-stub {
+    background: $paper;
+    bottom: 0;
+    box-sizing: border-box;
+    color: $ink;
+    display: flex;
+    filter: drop-shadow(0 -6px 14px rgba(0, 0, 0, 0.5));
+    flex-direction: column;
+    font-family: $font-ticket;
+    gap: v.$space-10;
+    left: 10px;
+    mask: radial-gradient(circle 6px at 50% 0, transparent 98%, #000) top / 16px 100% repeat-x;
+    padding: 20px 16px calc(22px + env(safe-area-inset-bottom));
+    position: fixed;
+    right: 10px;
+    z-index: v.z(slip-tab);
+
+    p {
+      margin: 0;
+    }
+
+    .stub-top {
+      align-items: baseline;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stub-title {
+      font-size: v.$fs-12;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .stub-review {
+      background: none;
+      border: none;
+      color: $ink-soft;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: v.$fs-11;
+      min-height: 44px;
+      margin: -14px -8px -14px 0;
+      padding: 0 8px;
+      text-decoration: underline;
+
+      &:hover {
+        color: $ink;
+      }
+
+      &:focus-visible {
+        color: $ink;
+        outline: 1px solid $ink;
+        outline-offset: -6px;
+      }
+    }
+
+    .stub-sums {
+      display: flex;
+      font-size: v.$fs-12;
+      justify-content: space-between;
+      text-transform: uppercase;
+
+      b {
+        font-weight: 700;
+      }
+    }
+
+    .ticket-place {
+      margin-top: 0;
+      padding: 13px;
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slip,
-  .slip-tab {
-    animation: none;
-  }
-
   .stake-chip {
     transition: none;
 
@@ -650,5 +645,10 @@ $gold: chip.$lock-gold;
     &:active:not([disabled]) {
       transform: none;
     }
+  }
+
+  .ticket-place .spinner {
+    animation: none;
+    border-top-color: rgba(chip.$gold-led, 0.35);
   }
 }

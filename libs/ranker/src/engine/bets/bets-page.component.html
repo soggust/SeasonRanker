@@ -1,7 +1,7 @@
 <!-- The algorithm's top picks for every sport, one row per bet, the biggest edge first, each with its chance
      to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
      their write-up the disagreement, and a note to the bot -->
-<div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'">
+<div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'" [class.has-ticket]="wallet.slip().length > 0">
   <!-- The Book's header, one row (it wraps on small screens): the title (a black chip and THE BOOK in the
        tables' gold), the views as a scoreboard bar like the sport pages' position bar (the board to bet, the
        user's open bets and the ones cashed (when they have some), or, an admin's, the code-only model desk's
@@ -238,7 +238,7 @@
                 @let parts = pickParts(r);
                 <b class="bet-pick">@if (r.betType === 'player' && r.player) {{{ r.player }}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
                 <small class="bet-sub">
-                  <span class="bet-sub-game">{{ r.sport.toUpperCase() }}@if (r.game) { · {{ r.game.matchup }}@if (r.game.kickoff) {<span class="bet-sub-when"> · {{ r.game.kickoff | date: 'EEE h:mm a' }}</span>}}</span>
+                  <span class="bet-sub-game"><span class="bet-sub-sport">{{ r.sport.toUpperCase() }}@if (r.game) { · }</span>@if (r.game) {{{ r.game.matchup }}@if (r.game.kickoff) {<span class="bet-sub-when"> · {{ r.game.kickoff | date: 'EEE h:mm a' }}</span>}}</span>
                   <span class="bet-sub-read"> — {{ blurb(r) }}</span>
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
@@ -512,11 +512,11 @@
     }
   </section>
   </div>
-  </div>
-  }
-  <!-- (the bet slip: the prices clicked on the games' lines, staked and placed with play money; on the Bets
-       view only: the Algorithm is the bot's alone, nothing of the user's on it) -->
-  @if (view === 'bets') {
+  <!-- The right column: the ticket (the bet slip: the prices clicked on the board, staked and placed with play
+       money), and the recent form under it. On a phone the ticket is a stub along the bottom instead -->
+  <aside class="book-side" aria-label="Bet ticket and recent form">
     <bet-slip></bet-slip>
+  </aside>
+  </div>
   }
 </div>

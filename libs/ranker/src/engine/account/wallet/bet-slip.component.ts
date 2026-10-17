@@ -5,8 +5,8 @@ import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, pa
 
 // The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
-// drawer from the corner (a sheet along the bottom on phones) styled as a chip tray; a stack of chips with
-// the count shows while it's shut. With 2 selections or more, Straight or Parlay: a parlay the selections as one
+// printed ticket (The Book), docked in the page's right column on a wide screen; on a phone a stub along the
+// bottom with the totals and Place while it's shut, and a sheet when it's opened (slipOpen). With 2 selections or more, Straight or Parlay: a parlay the selections as one
 // bet (2 to 10 legs, one a game: no same-game parlays), one stake at their combined price. Play money only:
 // signed out, it asks for a sign-in first.
 @Component({
@@ -23,6 +23,8 @@ export class BetSlipComponent {
   readonly toWin = toWin;
   readonly payout = payout;
   readonly parlayMax = PARLAY_MAX;
+  // (the ticket's date, printed on its head)
+  readonly today = new Date();
   error = '';
   @ViewChild('panel') panel?: ElementRef<HTMLElement>;
 

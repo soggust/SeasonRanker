@@ -442,6 +442,39 @@ $page-gutter: 16px;
   }
 }
 
+// The right column: the ticket and the recent form, 340 to 390px, scrolling on its own on a wide screen if it's
+// taller than the screen
+.book-side {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 340px;
+  flex-direction: column;
+  gap: v.$space-16;
+  max-width: 390px;
+  min-width: 0;
+  padding: 2px 4px 8px;
+}
+
+@include v.up(wide-menu) {
+  .book-side {
+    height: 100%;
+    overflow-y: auto;
+    @include chip.gold-scrollbar;
+  }
+}
+
+// (under the docking width the column is no column: the ticket is the phone's stub along the bottom and its sheet,
+// the recent form flows under the board; the board leaves room above the stub while there are bets on it)
+@media (max-width: #{v.bp(wide-menu) - 1px}) {
+  .book-side {
+    display: contents;
+  }
+
+  .bets-page.has-ticket .board-scroll {
+    padding-bottom: 130px;
+  }
+}
+
 // The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
 // edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
 .board {
@@ -1066,7 +1099,8 @@ $page-gutter: 16px;
 
   .bet-main .bet-sub {
     .bet-sub-read,
-    .bet-sub-when {
+    .bet-sub-when,
+    .bet-sub-sport {
       display: none;
     }
 

@@ -329,7 +329,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly canUse = canUse;
   // (the page's About: its header's info button; an admin's has the Algorithm too)
   aboutOpen = false;
-  private readonly wallet = inject(WalletService);
+  readonly wallet = inject(WalletService);
 
   constructor() {
     // (a click anywhere, the list scrolling: outside Angular unless a breakdown is open to shut; the list's
