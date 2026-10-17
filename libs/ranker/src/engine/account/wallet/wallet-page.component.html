@@ -719,12 +719,16 @@
           </div>
         </div>
         <div class="heads-rows">
-          <span class="heads-val">{{ recordText(h.you) }}</span>
-          <span class="heads-k" title="Won, lost, pushed">Record</span>
-          <span class="heads-val">{{ recordText(h.bot) }}</span>
-          <span class="heads-val" [class.up]="(h.you.roi ?? 0) > 0" [class.down]="(h.you.roi ?? 0) < 0">{{ pct(h.you.roi) }}</span>
-          <span class="heads-k" title="Profit over what was staked: the fair comparison (the bot stakes 0.5 to 3 units a bet)">ROI</span>
-          <span class="heads-val" [class.up]="(h.bot.roi ?? 0) > 0" [class.down]="(h.bot.roi ?? 0) < 0">{{ pct(h.bot.roi) }}</span>
+          <div class="heads-row">
+            <span class="heads-val">{{ recordText(h.you) }}</span>
+            <span class="heads-k" title="Won, lost, pushed">Record</span>
+            <span class="heads-val">{{ recordText(h.bot) }}</span>
+          </div>
+          <div class="heads-row">
+            <span class="heads-val" [class.up]="(h.you.roi ?? 0) > 0" [class.down]="(h.you.roi ?? 0) < 0">{{ pct(h.you.roi) }}</span>
+            <span class="heads-k" title="Profit over what was staked: the fair comparison (the bot stakes 0.5 to 3 units a bet)">ROI</span>
+            <span class="heads-val" [class.up]="(h.bot.roi ?? 0) > 0" [class.down]="(h.bot.roi ?? 0) < 0">{{ pct(h.bot.roi) }}</span>
+          </div>
         </div>
         @let sp = split();
         @if (sp.tail.bets || sp.own.bets || sp.fade.bets) {
