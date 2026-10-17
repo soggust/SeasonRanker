@@ -7,13 +7,13 @@ import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { Selection, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
-import { botSelection } from '../account/wallet/game-lines.component';
+import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SPORT_LINKS } from '@ranker/core/sports';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
-import { BetWhy, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
+import { BetWhy, BetWhyRow, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
@@ -817,6 +817,38 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     }
     const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;
+  }
+
+  // A price's K score button on the game view: the bot's pick, its own popover (its row's, as the rank tile opens
+  // it); any other price, the popover built from what the board has on it (bet-why.ts betWhy over the one bet: its
+  // Kelly score, its chance and its price; no neighbors, no parts beyond the edge on the price)
+  priceWhy(at: PriceWhy, event: Event): void {
+    const shown = this.shown;
+    const index = at.bot ? shown.findIndex((r) => r.pickId === at.bot!.pickId && r.side === at.bot!.side) : -1;
+    if (index >= 0) {
+      this.toggleWhy(index, event);
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    const id = -1;
+    if (this.why?.id === id) {
+      this.closeWhy(true);
+      return;
+    }
+    const tile = event.currentTarget as HTMLElement;
+    const confidence: Confidence | null = at.tier === 'lock' ? 'lock' : at.tier === 'check' ? 'check' : at.tier === 'love' ? 'high' : at.tier === 'like' ? 'medium' : at.tier === 'pass' ? 'low' : null;
+    const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0 };
+    this.checkWhy = null;
+    this.why = { ...betWhy([row], 0), at: popoverAt(tile, 420), sheet: phoneSheet() };
+    this.whyTile = tile;
+    setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  // (where the chosen game is played, for the game view's header: its picks' venue, where they carry one)
+  venueOf(b: GameBoardPicks): string | null {
+    const info = this.places.get(`${b.sport}|${b.matchup}`);
+    return info?.stadium ?? info?.city ?? null;
   }
 
   toggleWhy(index: number, event: Event): void {

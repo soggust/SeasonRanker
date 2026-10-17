@@ -317,7 +317,7 @@
               @if (!game && boards.get(gameKey(r)); as gb) {
                 <div class="bet-lines">
                   @for (one of [gb]; track one.sport + '|' + one.event) {
-                    <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)"></game-lines>
+                    <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)" [compact]="true"></game-lines>
                   }
                 </div>
               } @else if (game && boards.get(gameKey(r)); as gb) {
@@ -333,15 +333,12 @@
       @let locks = lockCount(shown);
       @let n = shown.length;
       <ol class="bets-list">
-        <!-- (a game chosen: its every line on top, to bet any of them) -->
+        <!-- (a game chosen: its full menu on top, every line to bet, its picks under it) -->
         @if (game && boardFor(game); as gb) {
           <li class="bet-board">
             <!-- (made again for each game chosen: a panel keeps the game it first loaded) -->
             @for (one of [gb]; track one.sport + '|' + one.event) {
-              <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)"></game-lines>
-            }
-            @if (!shown.length) {
-              <p class="bets-note">The bot has no pick on this game: its lines are above to bet.</p>
+              <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)" [venue]="venueOf(one)" [kinds]="kinds" (back)="chooseGame('')" (why)="priceWhy($event.at, $event.event)"></game-lines>
             }
           </li>
         }

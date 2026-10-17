@@ -1,121 +1,135 @@
-<!-- A game's every line at DraftKings, both sides: a row a team, a column a market; under it every prop the bot
-     priced, a team's folded till it's opened; every price with the bot's band chip and Kelly score, its picks lit
-     in their band's color; a price clicked goes on the bet slip -->
+<!-- A game's full menu at DraftKings (The Book's game view): a sticky header (the way back to Best bets, the
+     matchup, its start and venue, and a key), then collapsible sections, GAME LINES (the spread, the total and the
+     moneyline, a row a team), PLAYER PROPS (over and under per player, folded at first) and, for a game the bot
+     hasn't priced props on yet, PREVIEW PROPS. Every price is a tile and every price is bettable: its line over its
+     odds on felt, under it a strip with the bot's band tag and its Kelly score, a button that opens the why
+     popover for that price; the bot's own picks ringed in gold. A price clicked goes on the bet slip; one on the
+     slip is solid gold. The bet-type chips filter the sections. Compact (an open row's board on the Best bets
+     view): the game lines' grid alone, small tiles; one pick alone (only): its market's two sides -->
 
-<!-- (one price: its line over its odds; the bot's band chip in its corner and its Kelly score under (a CHECK's, no
-     Kelly score: the bot questions it, it didn't bet it), lit in its band where it's the bot's pick; lit gold while
-     it's on the slip) -->
-<ng-template #priceCell let-price let-label="label">
+<!-- (one game price as a tile: its line (a moneyline "ML") over its odds; the strip under it with the bot's band
+     tag (none without a band) and its Kelly score, which opens the popover; lit gold while it's on the slip) -->
+<ng-template #priceCell let-price let-label="label" let-top="top">
   @if (price && price.odds !== null) {
     @let c = call(price);
-    @let bot = c.bot;
     @let t = c.tier;
-    <button
-      type="button"
-      class="price"
-      [ngClass]="t ?? ''"
-      [class.bot]="!!bot"
-      [class.active]="wallet.slipKeys().has(keyOf(price))"
-      [class.placed]="wallet.openStakes().has(keyOf(price))"
-      [attr.aria-pressed]="wallet.slipKeys().has(keyOf(price))"
-      [attr.aria-label]="label + ' ' + oddsText(price.odds) + (bot ? ', the bot’s pick (' + t + ')' : '')"
-      [title]="priceTitle(price, c)"
-      [disabled]="!open"
-      (click)="take(price)"
-    >
-      @if (wallet.openStakes().get(keyOf(price)); as staked) {
-        <!-- (already bet, still open: so it isn't bet twice by mistake) -->
-        <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+    <div class="tile" [class.bot]="!!c.bot && t !== 'pass'" [class.on]="wallet.slipKeys().has(keyOf(price))" [class.shut]="!open">
+      <button
+        type="button"
+        class="tile-price"
+        [attr.aria-pressed]="wallet.slipKeys().has(keyOf(price))"
+        [attr.aria-label]="(wallet.slipKeys().has(keyOf(price)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + label + ' ' + oddsText(price.odds) + (c.bot ? ', the bot’s pick (' + t + ')' : '')"
+        [title]="priceTitle(price, c)"
+        [disabled]="!open"
+        (click)="take(price)"
+      >
+        @if (wallet.openStakes().get(keyOf(price)); as staked) {
+          <!-- (already bet, still open: so it isn't bet twice by mistake) -->
+          <mat-icon class="tile-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+        }
+        <b class="tile-top">{{ top }}</b>
+        <span class="tile-odds">{{ oddsText(price.odds) }}</span>
+      </button>
+      @if (!compact) {
+        <div class="tile-foot">
+          <span class="tile-tag" [ngClass]="t ?? 'none'" [attr.aria-hidden]="t ? null : 'true'">{{ t === 'check' ? '?' : (t ?? '·') }}</span>
+          @if (c.kelly !== null) {
+            <button type="button" class="tile-k" [ngClass]="kTone(c.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(c.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: c.bot, kelly: c.kelly, chance: c.chance, odds: price.odds, tier: t, words: label, market: price.market, side: price.side }, $event)">K {{ kellyText(c.kelly) }}</button>
+          }
+        </div>
       }
-      <!-- (no word of the bot's on it: no edge on it, a pass) -->
-      <span class="price-chip" [ngClass]="t ?? 'pass'" aria-hidden="true">@if (t === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ t ?? 'pass' }}</span>
-      @if (price.market !== 'ml') {
-        <b class="price-line">{{ price.market === 'total' ? (price.side === 'over' ? 'O ' : 'U ') + price.line : lineText(price.line) }}</b>
-      }
-      <span class="price-odds">{{ oddsText(price.odds) }}</span>
-      @if (c.kelly !== null) {
-        <small class="price-kelly">K {{ kellyText(c.kelly) }}</small>
-      }
-    </button>
+    </div>
   } @else {
-    <span class="price none" title="No price on the board">–</span>
+    <span class="tile none" title="No price on the board">–</span>
   }
 </ng-template>
 
-<!-- (a prop's row: the player's face and name on his first stat, the stat and its line, over then under, each
-     side's price with the bot's band chip and Kelly score, the bot's side lit in its band) -->
+<!-- (a prop's row: the player's face in a ring, his name, his team and the stat at its line, then over and under as
+     tiles, the bot's side ringed in gold) -->
 <ng-template #propRow let-r>
-  <div class="prop" [class.first]="r.first" role="listitem">
-    @if (r.first) {
-      <img class="prop-face" [src]="face(r)" alt="" (error)="hideImage($event)" />
-    } @else {
-      <span aria-hidden="true"></span>
-    }
-    <span class="prop-words">@if (r.first) {<b>{{ r.player }}</b>}<small>{{ r.label }} {{ r.line }}</small></span>
+  <div class="prop" role="listitem">
+    <div class="prop-who">
+      <span class="disc player" aria-hidden="true" [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="face(r)" alt="" (error)="hideImage($event)" /></span>
+      <span class="prop-words"><b>{{ r.player }}</b><small>{{ teamAbbr(r.team) }}{{ teamAbbr(r.team) ? ' · ' : '' }}{{ r.label }} {{ r.line }}</small></span>
+    </div>
     @for (s of r.sides; track s.side) {
       @if (s.odds !== null) {
-        <button
-          type="button"
-          class="price"
-          [ngClass]="s.bot ? (s.tier ?? '') : ''"
-          [class.bot]="s.bot"
-          [class.active]="wallet.slipKeys().has(propKey(r, s.side))"
-          [class.placed]="wallet.openStakes().has(propKey(r, s.side))"
-          [attr.aria-pressed]="wallet.slipKeys().has(propKey(r, s.side))"
-          [attr.aria-label]="sideWords(r, s) + ' ' + oddsText(s.odds) + (s.tier ? ', ' + s.tier : '') + (s.bot ? ', the bot’s pick' : '')"
-          [title]="propTitle(r, s)"
-          [disabled]="!open"
-          (click)="takeProp(r, s)"
-        >
-          @if (wallet.openStakes().get(propKey(r, s.side)); as staked) {
-            <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
-          }
-          @if (s.tier) {
-            <span class="price-chip" [ngClass]="s.tier" aria-hidden="true">@if (s.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ s.tier }}</span>
-          }
-          <b class="price-line">{{ s.side === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
-          <span class="price-odds">{{ oddsText(s.odds) }}</span>
-          @if (s.kelly !== null) {
-            <small class="price-kelly">K {{ kellyText(s.kelly) }}</small>
-          }
-        </button>
+        <div class="tile" [class.bot]="s.bot && s.tier !== 'pass'" [class.on]="wallet.slipKeys().has(propKey(r, s.side))" [class.shut]="!open">
+          <button
+            type="button"
+            class="tile-price"
+            [attr.aria-pressed]="wallet.slipKeys().has(propKey(r, s.side))"
+            [attr.aria-label]="(wallet.slipKeys().has(propKey(r, s.side)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + sideWords(r, s) + ' ' + oddsText(s.odds) + (s.tier ? ', ' + s.tier : '') + (s.bot ? ', the bot’s pick' : '')"
+            [title]="propTitle(r, s)"
+            [disabled]="!open"
+            (click)="takeProp(r, s)"
+          >
+            @if (wallet.openStakes().get(propKey(r, s.side)); as staked) {
+              <mat-icon class="tile-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+            }
+            <b class="tile-top">{{ s.side === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
+            <span class="tile-odds">{{ oddsText(s.odds) }}</span>
+          </button>
+          <div class="tile-foot">
+            <span class="tile-tag" [ngClass]="s.tier ?? 'none'" [attr.aria-hidden]="s.tier ? null : 'true'">{{ s.tier === 'check' ? '?' : (s.tier ?? '·') }}</span>
+            @if (s.kelly !== null) {
+              <button type="button" class="tile-k" [ngClass]="kTone(s.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(s.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: s.bot ? r.pick : null, kelly: s.kelly, chance: r.chance === null ? null : s.side === 'over' ? r.chance : 1 - r.chance, odds: s.odds, tier: s.tier, words: sideWords(r, s), market: 'prop', side: s.side }, $event)">K {{ kellyText(s.kelly) }}</button>
+            }
+          </div>
+        </div>
       } @else {
-        <span class="price none" title="No price on this side">–</span>
+        <span class="tile none" title="No price on this side">–</span>
       }
     }
   </div>
 </ng-template>
 
-<section class="lines" [class.closed]="!open" [class.only]="!!onlyPick()" [attr.aria-label]="(onlyPick() ? 'This bet: ' : 'All lines: ') + matchupText">
-  @if (!onlyPick()) {
-  <header class="lines-head">
-    <span class="lines-title"><span class="lines-crown" title="DraftKings"></span>All lines</span>
-    @if (board; as b) {
-      @if (b.state === 'pre') {
-        <small class="lines-when">{{ b.start | date: 'EEE MMM d · h:mm a' }}</small>
-      } @else {
-        <small class="lines-when live">
-          {{ b.away.abbr }} {{ b.away.score ?? '' }} · {{ b.home.abbr }} {{ b.home.score ?? '' }} · {{ b.detail }} · betting closed
-        </small>
-      }
-    }
-  </header>
+<!-- (a section's header: a button that folds it, the chevron, the title in gold, its count) -->
+<ng-template #sectionHead let-key let-title="title" let-count="count">
+  <button type="button" class="section-head" [attr.aria-expanded]="sectionOpen(key)" (click)="toggleSection(key)">
+    <span class="section-chev" aria-hidden="true"><svg class="chev" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+    <span class="section-title">{{ title }}</span>
+    <span class="section-count">{{ count }}</span>
+  </button>
+</ng-template>
 
+<section class="lines" [class.closed]="!open" [class.only]="!!onlyPick()" [class.compact]="compact" [attr.aria-label]="(onlyPick() ? 'This bet: ' : 'All lines: ') + matchupText">
+  @if (!onlyPick() && !compact) {
+    <header class="lines-head">
+      <button type="button" class="lines-back" (click)="back.emit()">← Best bets</button>
+      <span class="lines-title">
+        @if (board; as b) {<img [src]="logo(b.away.abbr)" alt="" (error)="hideImage($event)" />}
+        {{ matchupText }}
+        @if (board; as b) {<img [src]="logo(b.home.abbr)" alt="" (error)="hideImage($event)" />}
+      </span>
+      @if (board; as b) {
+        @if (b.state === 'pre') {
+          <span class="lines-when">{{ b.start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
+        } @else {
+          <span class="lines-when live">{{ b.away.abbr }} {{ b.away.score ?? '' }} · {{ b.home.abbr }} {{ b.home.score ?? '' }} · {{ b.detail }} · betting closed</span>
+        }
+      } @else {
+        <span class="lines-when">{{ start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
+      }
+      <span class="lines-space"></span>
+      <span class="lines-key"><i class="key-ring" aria-hidden="true"></i>the bot’s pick · <b>K</b> = Kelly score, tap it for the math</span>
+    </header>
   }
+
   @if (onlyPick()) {
     <!-- (one pick alone: its market's two sides; a prop's below, with the props) -->
     @if (onlyMarket; as m) {
       @if (board; as b) {
         <div class="lines-pair">
           @if (m === 'total') {
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.over, label: 'Over ' + (b.total?.over?.line ?? '') }"></ng-container>
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.under, label: 'Under ' + (b.total?.under?.line ?? '') }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.over, label: 'Over ' + (b.total?.over?.line ?? ''), top: 'O ' + (b.total?.over?.line ?? '') }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.under, label: 'Under ' + (b.total?.under?.line ?? ''), top: 'U ' + (b.total?.under?.line ?? '') }"></ng-container>
           } @else if (m === 'spread') {
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.away, label: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null) }"></ng-container>
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.home, label: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null) }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.away, label: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null), top: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null) }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.home, label: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null), top: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null) }"></ng-container>
           } @else {
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.away, label: b.away.abbr + ' to win' }"></ng-container>
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.home, label: b.home.abbr + ' to win' }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.away, label: b.away.abbr + ' to win', top: b.away.abbr + ' ML' }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.home, label: b.home.abbr + ' to win', top: b.home.abbr + ' ML' }"></ng-container>
           }
         </div>
       } @else if (loading()) {
@@ -126,130 +140,103 @@
     <p class="lines-note" role="status">Reading the board…</p>
   } @else if (!board || (!board.spread && !board.total && !board.ml)) {
     <p class="lines-note">No DraftKings lines on ESPN's board for this game yet.</p>
-  } @else {
+  } @else if (showLines()) {
     @let b = board!;
-    <table class="lines-grid">
-      <thead>
-        <tr>
-          <th scope="col"><span class="visually-hidden">Team</span></th>
-          <th scope="col">Spread</th>
-          <th scope="col">Total</th>
-          <th scope="col">Money</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">
-            <span class="lines-team"><img [src]="logo(b.away.abbr)" alt="" (error)="hideImage($event)" />{{ b.away.abbr }}</span>
-          </th>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.away, label: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null) }"></ng-container></td>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.over, label: 'Over ' + (b.total?.over?.line ?? '') }"></ng-container></td>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.away, label: b.away.abbr + ' to win' }"></ng-container></td>
-        </tr>
-        <tr>
-          <th scope="row">
-            <span class="lines-team"><img [src]="logo(b.home.abbr)" alt="" (error)="hideImage($event)" />{{ b.home.abbr }}</span>
-          </th>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.home, label: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null) }"></ng-container></td>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.under, label: 'Under ' + (b.total?.under?.line ?? '') }"></ng-container></td>
-          <td><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.ml?.home, label: b.home.abbr + ' to win' }"></ng-container></td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- GAME LINES: a row a team (its logo, its name, Away or Home), the spread, the total and the moneyline across -->
+    @if (!compact) {
+      <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'lines', title: 'Game lines', count: linesCount(b) + ' bets' }"></ng-container>
+    }
+    @if (compact || sectionOpen('lines')) {
+      <div class="section-body lines-grid" role="table" aria-label="Game lines">
+        <div class="grid-heads" role="row">
+          <span class="grid-head" role="columnheader"><span class="visually-hidden">Team</span></span>
+          <span class="grid-head" role="columnheader">Spread</span>
+          <span class="grid-head" role="columnheader">Total</span>
+          <span class="grid-head" role="columnheader">{{ compact ? 'Money' : 'Moneyline' }}</span>
+        </div>
+        @for (side of ['away', 'home']; track side) {
+          @let team = side === 'away' ? b.away : b.home;
+          <div class="grid-row" role="row">
+            <div class="grid-team" role="rowheader">
+              <span class="disc team" aria-hidden="true" [style.border-color]="teamColor(team.abbr)"><img [src]="logo(team.abbr)" alt="" (error)="hideImage($event)" /></span>
+              <span class="team-words"><b>{{ compact ? team.abbr : team.name || team.abbr }}</b>@if (!compact) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
+            </div>
+            <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
+            <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? ''), top: (side === 'away' ? 'O ' : 'U ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') }"></ng-container></div>
+            <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.ml?.away : b.ml?.home, label: team.abbr + ' to win', top: 'ML' }"></ng-container></div>
+          </div>
+        }
+      </div>
+    }
   }
 
-  <!-- (every prop the bot priced on the game: a team's under a row of its own, folded till it's opened (its count and
-       the bot's picks in it); one pick alone, its row) -->
+  <!-- PLAYER PROPS: every prop the bot priced on the game (a player's stats together, his team's first), folded
+       till it's opened; one pick alone, its row -->
   @if (onlyPick()) {
     @if (onlyProp(); as r) {
       <div class="lines-props" role="list" aria-label="This prop">
         <ng-container *ngTemplateOutlet="propRow; context: { $implicit: r }"></ng-container>
       </div>
     }
-  } @else if (propTeams().length) {
-    <div class="lines-props">
-      @for (team of propTeams(); track team.id) {
-        @let shown = teamOpen(team.id);
-        <div class="props-team" [class.shut]="!shown">
-          <button type="button" class="props-team-bar" [attr.aria-expanded]="shown" (click)="toggleTeam(team.id)">
-            <mat-icon class="props-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>
-            @if (team.abbr) {<img [src]="logo(team.abbr)" alt="" (error)="hideImage($event)" />}
-            <b>{{ team.abbr ? team.abbr + ' ' : '' }}Player Props</b>
-            <small class="props-team-count">{{ team.rows.length }} {{ team.rows.length === 1 ? 'prop' : 'props' }}@if (team.picks) { · {{ team.picks }} {{ team.picks === 1 ? 'pick' : 'picks' }}}</small>
-          </button>
-          @if (shown) {
-            <div class="props-team-rows" role="list" [attr.aria-label]="(team.abbr ? team.abbr + ' ' : '') + 'player props'">
-              @for (r of team.rows; track r.key) {
-                <ng-container *ngTemplateOutlet="propRow; context: { $implicit: r }"></ng-container>
-              }
-            </div>
-          }
-        </div>
-      }
-    </div>
+  } @else if (!compact && showProps() && propRows().length) {
+    <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'props', title: 'Player props', count: propsCount(propRows()) }"></ng-container>
+    @if (sectionOpen('props')) {
+      <div class="section-body lines-props" role="list" aria-label="Player props">
+        <div class="props-heads" aria-hidden="true"><span></span><span>Over</span><span>Under</span></div>
+        @for (r of propRows(); track r.key) {
+          <ng-container *ngTemplateOutlet="propRow; context: { $implicit: r }"></ng-container>
+        }
+      </div>
+    }
   }
 
-  <!-- (no props of the bot's on the game yet: DraftKings' lines off ESPN as preview props, a team's folded till
-       it's opened, each side at an assumed -110: no band, no Kelly score) -->
-  @if (previewTeams().length) {
-    <div class="lines-props preview-props" aria-label="Preview props">
-      <p class="preview-note">
-        <b>Preview props</b> · DraftKings' lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
-        No band or Kelly score: the bot hasn't priced them.
-        @if (previewWindow; as w) {
-          It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
-        }
-      </p>
-      @for (team of previewTeams(); track team.id) {
-        @let shown = teamOpen('pv:' + team.id);
-        <div class="props-team" [class.shut]="!shown">
-          <button type="button" class="props-team-bar" [attr.aria-expanded]="shown" (click)="toggleTeam('pv:' + team.id)">
-            <mat-icon class="props-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>
-            @if (team.abbr) {<img [src]="logo(team.abbr)" alt="" (error)="hideImage($event)" />}
-            <b>{{ team.abbr ? team.abbr + ' ' : '' }}Preview Props</b>
-            <small class="props-team-count">{{ team.rows.length }} {{ team.rows.length === 1 ? 'line' : 'lines' }}</small>
-          </button>
-          @if (shown) {
-            <div class="props-team-rows" role="list" [attr.aria-label]="(team.abbr ? team.abbr + ' ' : '') + 'preview props'">
-              @for (r of team.rows; track r.key) {
-                <div class="prop" [class.first]="r.first" role="listitem">
-                  @if (r.first) {
-                    <img class="prop-face" [src]="previewFace(r)" alt="" (error)="hideImage($event)" />
-                  } @else {
-                    <span aria-hidden="true"></span>
-                  }
-                  <span class="prop-words">
-                    @if (r.first) {<b>{{ r.player }}</b>}
-                    <small>{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small>
-                  </span>
-                  @for (sd of previewSides; track sd) {
-                    <button
-                      type="button"
-                      class="price preview"
-                      [class.active]="wallet.slipKeys().has(previewKey(r, sd))"
-                      [class.placed]="wallet.openStakes().has(previewKey(r, sd))"
-                      [attr.aria-pressed]="wallet.slipKeys().has(previewKey(r, sd))"
-                      [attr.aria-label]="previewWords(r, sd) + ' ' + oddsText(previewOdds) + ', assumed price'"
-                      [title]="previewTitle(r, sd)"
-                      [disabled]="!open"
-                      (click)="takePreview(r, sd)"
-                    >
-                      @if (wallet.openStakes().get(previewKey(r, sd)); as staked) {
-                        <mat-icon class="price-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
-                      }
-                      <b class="price-line">{{ sd === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
-                      <span class="price-odds">{{ oddsText(previewOdds) }}</span>
-                      <small class="price-kelly">assumed</small>
-                    </button>
-                  }
+  <!-- PREVIEW PROPS (no props of the bot's on the game yet): DraftKings' lines off ESPN, each side at an assumed
+       -110, no band and no Kelly score, folded till it's opened -->
+  @if (!compact && showProps() && previewTeams().length) {
+    <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'preview', title: 'Preview props', count: previewCount(previewTeams()) }"></ng-container>
+    @if (sectionOpen('preview')) {
+      <div class="section-body lines-props preview-props" role="list" aria-label="Preview props">
+        <p class="preview-note">
+          <b>Preview props</b> · DraftKings' lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
+          No band or Kelly score: the bot hasn't priced them.
+          @if (previewWindow; as w) {
+            It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
+          }
+        </p>
+        <div class="props-heads" aria-hidden="true"><span></span><span>Over</span><span>Under</span></div>
+        @for (team of previewTeams(); track team.id) {
+          @for (r of team.rows; track r.key) {
+            <div class="prop" role="listitem">
+              <div class="prop-who">
+                <span class="disc player" aria-hidden="true" [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="previewFace(r)" alt="" (error)="hideImage($event)" /></span>
+                <span class="prop-words"><b>{{ r.player }}</b><small>{{ r.team }}{{ r.team ? ' · ' : '' }}{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small></span>
+              </div>
+              @for (sd of previewSides; track sd) {
+                <div class="tile preview" [class.on]="wallet.slipKeys().has(previewKey(r, sd))" [class.shut]="!open">
+                  <button
+                    type="button"
+                    class="tile-price"
+                    [attr.aria-pressed]="wallet.slipKeys().has(previewKey(r, sd))"
+                    [attr.aria-label]="previewWords(r, sd) + ' ' + oddsText(previewOdds) + ', assumed price'"
+                    [title]="previewTitle(r, sd)"
+                    [disabled]="!open"
+                    (click)="takePreview(r, sd)"
+                  >
+                    @if (wallet.openStakes().get(previewKey(r, sd)); as staked) {
+                      <mat-icon class="tile-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+                    }
+                    <b class="tile-top">{{ sd === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
+                    <span class="tile-odds">{{ oddsText(previewOdds) }}</span>
+                  </button>
+                  <div class="tile-foot"><span class="tile-assumed">assumed</span></div>
                 </div>
               }
             </div>
           }
-        </div>
-      }
-    </div>
-  } @else if (previewLoading() && !onlyPick()) {
+        }
+      </div>
+    }
+  } @else if (!compact && previewLoading() && !onlyPick()) {
     <p class="lines-note" role="status">Reading DraftKings' prop lines…</p>
   }
 

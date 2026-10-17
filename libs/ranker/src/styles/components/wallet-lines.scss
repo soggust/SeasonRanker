@@ -1,121 +1,72 @@
 @use "../variables" as v;
 @use "../casino-chip" as chip;
 
-// A game's every line (the Bets page: a row's open section, or on top when a game's chosen): a sportsbook's
-// board sunk into the felt, a row a team, a column a market, each price a little tile; the bot's pick on each
-// market lit in its band's color with its chip (Lock the casino's red and gold, Love green, Bet yellow, Pass an
-// outline, as the rows' own chips), and the prices on the slip ringed in gold.
+// A game's full menu on The Book (the Bets page's game view, and the open row's compact board): a sticky header
+// (the way back, the matchup, its start and venue, a key), then collapsible sections, GAME LINES (a row a team,
+// the spread, the total and the moneyline across), PLAYER PROPS and PREVIEW PROPS (a row a player's stat, over and
+// under), every price a tile: its line over its odds on felt, under it a strip with the bot's band tag and its
+// Kelly score as a button (green at 0.5 or more, grey over 0, red at 0 or under); the bot's own picks ringed in
+// gold with a soft glow, a price on the slip solid gold. Compact: the grid alone, small tiles, no strips.
 
-// (a lock's padlock gold; bets-page.scss's)
-$lock-gold: chip.$lock-gold;
-
-// (a price's tile: green felt, the Bets page's controls, under its band's wash; the bot's and a pass's a gray
-// one; a mixin, not a variable: the felt's "0 0 / 140px" would read as a division)
-@mixin felt-tile {
+// (the felt a tile sits on: the Bets page's controls' felt; a mixin, not a variable: the felt's "0 0 / 140px"
+// would read as a division)
+@mixin felt-face {
   background:
-    linear-gradient(var(--wash), var(--wash)),
-    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.08), transparent 70%),
-    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35)),
+    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.07), transparent 70%),
     #{chip.$felt-nap} 0 0 / 140px,
     #{chip.$felt};
 }
-
-$grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 
 :host {
   display: block;
 }
 
-// (a scoreboard card on the open bet's felt, as every panel's bar is)
 .lines {
-  @include v.scoreboard-face;
-  border: 1px solid rgba(255, 236, 196, 0.16);
-  border-radius: v.$radius-xl;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
   color: #fff;
-  margin-top: 14px;
-  padding: 10px 12px 8px;
+  font-family: v.$font-base;
 }
 
+// The header: sticky to the top of the board's scroller, the scoreboard's black under it
 .lines-head {
-  align-items: baseline;
+  align-items: center;
+  background: var(--scoreboard-dots), var(--scoreboard);
+  border-bottom: 1px solid v.$panel-rule;
   display: flex;
   flex-wrap: wrap;
-  gap: v.$space-4 v.$space-12;
-  justify-content: space-between;
-  margin-bottom: 6px;
+  gap: v.$space-6 v.$space-14;
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.lines-back {
+  background: none;
+  border: none;
+  color: chip.$gold-led;
+  cursor: pointer;
+  font-family: v.$font-base;
+  font-size: v.$fs-12;
+  font-weight: 700;
+  padding: 0;
+
+  &:hover {
+    color: #fff;
+  }
+
+  @include v.focus-lit {
+    color: #fff;
+  }
 }
 
 .lines-title {
   align-items: center;
-  color: v.$text-strong;
   display: inline-flex;
-  font-size: v.$fs-11;
-  font-weight: 900;
-  gap: v.$space-6;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.lines-crown {
-  @include v.book-crown(13px);
-}
-
-.lines-when {
-  color: v.$text-faint;
-  font-size: v.$fs-12;
-  font-weight: 700;
-
-  &.live {
-    color: #ffc864;
-  }
-}
-
-.lines-note {
-  color: v.$text-faint;
-  font-size: v.$fs-13;
-  margin: 6px 0;
-}
-
-// The board: the team on the left, Spread, Total and Money across
-.lines-grid {
-  border-collapse: separate;
-  border-spacing: 6px 6px;
-  margin: 0 -6px;
-  table-layout: fixed;
-  width: calc(100% + 12px);
-
-  thead th {
-    color: v.$text-faint;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    padding: 0;
-    text-align: center;
-    text-transform: uppercase;
-
-    &:first-child {
-      width: 78px;
-    }
-  }
-
-  tbody th {
-    padding: 0;
-    text-align: left;
-  }
-
-  td {
-    padding: 0;
-  }
-}
-
-.lines-team {
-  align-items: center;
-  color: #fff;
-  display: flex;
-  font-size: v.$fs-14;
-  font-weight: 900;
-  gap: v.$space-6;
+  font-family: v.$font-heading;
+  font-size: v.$fs-17;
+  font-weight: 600;
+  gap: v.$space-8;
+  letter-spacing: 0.5px;
 
   img {
     height: 22px;
@@ -124,293 +75,392 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 }
 
-// One price: its line over its odds on a dark tile; lit on hover, gold-ringed on the slip
-.price {
-  --edge: #{chip.$felt-seam};
-  --wash: transparent;
+.lines-when {
+  color: v.$text-faint;
+  font-size: v.$fs-12;
+
+  &.live {
+    color: #ffc864;
+  }
+}
+
+.lines-space {
+  flex: 1;
+}
+
+// (the key: a little gold-ringed tile for the bot's pick, K for the score)
+.lines-key {
   align-items: center;
-  // (green felt, the Bets page's controls, under its band's wash)
-  @include felt-tile;
-  border: 1px solid var(--edge);
-  border-radius: v.$radius-lg;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 1px 2px rgba(0, 0, 0, 0.4);
+  color: v.$text-dim;
+  display: inline-flex;
+  font-size: v.$fs-11;
+  gap: v.$space-6;
+
+  .key-ring {
+    border-radius: v.$radius-xs;
+    box-shadow: 0 0 0 1.5px chip.$gold-led;
+    display: inline-block;
+    height: 10px;
+    width: 14px;
+  }
+
+  b {
+    color: v.$good-bright;
+    font-family: v.$font-heading;
+  }
+}
+
+.lines-note {
+  color: v.$text-faint;
+  font-size: v.$fs-13;
+  margin: 0;
+  padding: 14px 16px;
+}
+
+// A section's header: a button that folds it, the chevron in the rows' chevron column, the title in gold with the
+// scoreboard's glow, the count faint; a faint gold wash from the left
+.section-head {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(chip.$gold-led, 0.1), transparent 60%);
+  border: none;
+  border-bottom: 1px solid v.$panel-rule;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-family: v.$font-base;
+  gap: v.$space-12;
+  padding: 12px 16px;
+  text-align: left;
+  transition: filter v.$t-hover ease;
+  width: 100%;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
+  @include v.focus-lit {
+    filter: brightness(1.15);
+  }
+
+  .section-chev {
+    color: chip.$gold-led;
+    display: flex;
+    flex: none;
+    justify-content: center;
+    width: 30px;
+  }
+
+  &[aria-expanded="true"] .chev {
+    rotate: 90deg;
+  }
+
+  .section-title {
+    color: chip.$gold-led;
+    font-family: v.$font-heading;
+    font-size: v.$fs-13;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+    text-transform: uppercase;
+  }
+
+  .section-count {
+    color: v.$grey-light;
+    font-size: v.$fs-12;
+  }
+}
+
+.chev {
+  @include v.turn;
+}
+
+.section-body {
+  border-bottom: 1px solid v.$panel-rule;
+  padding: 12px 16px 16px 60px;
+}
+
+// The game lines: a grid, the team's column then three markets; the heads over them
+.lines-grid {
+  display: grid;
+  gap: v.$space-8;
+  grid-template-columns: minmax(160px, 1.3fr) repeat(3, minmax(0, 1fr));
+
+  .grid-heads,
+  .grid-row {
+    display: contents;
+  }
+
+  .grid-head {
+    color: v.$text-faint;
+    font-family: v.$font-heading;
+    font-size: v.$fs-10;
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
+// (a row's team: its logo on a disc, its name and Away or Home)
+.grid-team {
+  align-items: center;
+  display: flex;
+  gap: v.$space-10;
+  min-width: 0;
+
+  .team-words {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+
+    b {
+      font-family: v.$font-heading;
+      font-size: v.$fs-14;
+      font-weight: 500;
+      @include v.ellipsis;
+    }
+
+    small {
+      color: v.$text-faint;
+      font-size: v.$fs-11;
+    }
+  }
+}
+
+// (a disc: a team's logo, or a player's face, in a ring of the team's color on the dark)
+.disc {
+  align-items: center;
+  background: v.$panel-rule;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: v.$radius-round;
   box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  height: 28px;
+  justify-content: center;
+  overflow: hidden;
+  width: 28px;
+
+  img {
+    height: 18px;
+    object-fit: contain;
+    width: 18px;
+  }
+
+  .disc-face {
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+    width: 100%;
+  }
+
+  &.team {
+    background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.25), transparent 60%), v.$panel-rule;
+  }
+}
+
+// A tile: the price button (its line over its odds) on felt in a thin gold seam, and the strip under it (the band
+// tag, the K score). The bot's pick: a 1.5px gold ring and a soft gold glow round the whole tile. On the slip:
+// solid gold, dark lettering
+.tile {
+  border-radius: v.$radius-md;
+  box-shadow: 0 0 0 1px rgba(222, 186, 106, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &.bot {
+    box-shadow:
+      0 0 0 1.5px chip.$gold-led,
+      0 0 12px rgba(chip.$gold-led, 0.35);
+  }
+
+  &.none {
+    align-items: center;
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.3);
+    justify-content: center;
+    min-height: 46px;
+  }
+
+  // (a game begun: its prices the last ones, dimmed)
+  &.shut {
+    opacity: 0.55;
+  }
+}
+
+.tile-price {
+  @include felt-face;
+  align-items: center;
+  border: none;
   color: #fff;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   font-family: v.$font-base;
   gap: 1px;
-  justify-content: center;
-  min-height: 46px;
-  padding: 6px 4px;
+  padding: 8px 6px 6px;
   position: relative;
-  transition:
-    border-color v.$t-fast ease,
-    filter v.$t-fast ease,
-    transform v.$t-fast ease,
-    box-shadow v.$t-fast ease;
+  transition: filter v.$t-fast ease;
   width: 100%;
 
   &:hover:not([disabled]) {
-    border-color: var(--scoreboard-led);
     filter: brightness(1.18);
-    transform: translateY(-1px);
   }
 
-  // (the keyboard's focus: lit as on hover, without the lift)
   @include v.focus-lit {
-    border-color: var(--scoreboard-led);
     filter: brightness(1.18);
   }
 
   &[disabled] {
     cursor: default;
-    opacity: 0.45;
   }
 
-  &.none {
-    color: rgba(255, 255, 255, 0.3);
-    cursor: default;
+  .tile-top {
+    font-family: v.$font-heading;
+    font-size: v.$fs-14;
+    font-weight: 600;
+    line-height: 1.1;
   }
 
-  // (the bot's pick: its band's color round it and washed in, on the dark tile, not the felt)
-  &.bot {
-    --edge: #{v.$neutral};
-    background: linear-gradient(var(--wash), var(--wash)), $grey-tile;
-  }
-
-  &.lock {
-    --edge: #{chip.$lock-edge};
-    --wash: rgba(210, 105, 30, 0.06);
-    box-shadow: 0 0 10px rgba(224, 122, 48, 0.4);
-  }
-
-  &.love {
-    --edge: #{v.$good};
-    // (no green over the green felt: it washed it out)
-    --wash: transparent;
-    box-shadow: 0 0 10px rgba(v.$good, 0.25);
-  }
-
-  // (a Like: its yellow round it; a Like and a Love on the felt)
-  &.like {
-    --edge: #{v.$caution};
-    --wash: rgba(255, 205, 0, 0.08);
-  }
-
-  // (a CHECK: the bot questioning the market, not betting it: a lavender edge and a soft lavender sheen on the
-  // dark tile, either side as good to take)
-  &.check {
-    --edge: #{chip.$check-edge};
-    background:
-      linear-gradient(180deg, rgba(205, 196, 255, 0.16), rgba(169, 156, 240, 0.05) 60%),
-      radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.07), transparent 70%),
-      linear-gradient(180deg, #3d3a52, #2b2940);
-    box-shadow: 0 0 10px rgba(154, 140, 242, 0.32);
-  }
-
-  &.lock,
-  &.like,
-  &.love {
-    @include felt-tile;
-  }
-
-  // (a pass, marked or not: a price the bot has no edge on is one, so it sits back, a quiet gray tile, the
-  // picks standing out; full on hover, to bet it anyway)
-  &.pass,
-  &:not(.bot, .none) {
-    --edge: rgba(255, 255, 255, 0.16);
-    background: $grey-tile;
-    box-shadow: none;
-    color: v.$text-faint;
-    filter: saturate(0.55) brightness(0.78);
-
-    &:hover:not([disabled]) {
-      color: #fff;
-      filter: none;
-    }
+  .tile-odds {
+    color: v.$text-soft;
+    font-size: v.$fs-11;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    line-height: 1.1;
   }
 
   // (already bet and still open: a check in its corner, so it isn't bet twice by mistake)
-  .price-placed {
+  .tile-placed {
     color: v.$good-bright;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-    // (top left: the bot's chip has the top right)
     left: 3px;
     position: absolute;
     top: 3px;
     @include v.icon-size(14px);
   }
+}
 
-  // (on the slip: a gold ring, like a chip set down on the line)
-  &.active {
-    --edge: #{$lock-gold};
-    --wash: rgba(255, 207, 74, 0.2);
-    box-shadow:
-      0 0 0 2px $lock-gold,
-      0 0 14px rgba(255, 207, 74, 0.45);
-    color: #fff;
-    filter: none;
+.tile.on .tile-price {
+  background: chip.$gold-led;
+  color: v.$chip-ink;
+
+  .tile-odds {
+    color: v.$chip-ink;
+  }
+
+  .tile-placed {
+    color: #1d8a4e;
   }
 }
 
-.price-line {
-  @include v.headline(15px);
-  letter-spacing: 0.2px;
-  line-height: 1.1;
+// The strip under the price: the band tag at the left (LOCK chocolate, CHECK lavender, LOVE green, LIKE yellow,
+// PASS an outline; none: a dot hidden), the K score at the right
+.tile-foot {
+  align-items: center;
+  background: chip.$felt-deep;
+  display: flex;
+  gap: v.$space-4;
+  justify-content: space-between;
+  padding: 4px 6px;
 }
 
-.price-odds {
-  color: v.$text-soft;
-  font-size: v.$fs-13;
-  font-variant-numeric: tabular-nums;
-  font-weight: 800;
-  line-height: 1.1;
+.tile-tag {
+  @include chip.tier-tag(9px, 2px 5px, 0.8px, 3px);
+  box-sizing: border-box;
+
+  &.none {
+    visibility: hidden;
+  }
+
+  // (a CHECK's "?" alone: its tag's lavender)
+  &.check {
+    min-width: 18px;
+    text-align: center;
+  }
 }
 
-// (a moneyline's price alone: as big as a line)
-.price .price-odds:first-child,
-.price .price-chip + .price-odds {
-  color: #fff;
-  font-size: v.$fs-15;
+// (the K score: a small LED-dark button, its tone by the score; opens the why popover for the price)
+.tile-k {
+  background: var(--scoreboard);
+  border: none;
+  border-radius: v.$radius-xs;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+  color: v.$grey-light;
+  cursor: pointer;
+  font-family: v.$font-heading;
+  font-size: v.$fs-11;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 2px 6px;
+  white-space: nowrap;
+
+  &.good {
+    color: v.$good-bright;
+  }
+
+  &.bad {
+    color: v.$bad-soft;
+  }
+
+  &:hover {
+    box-shadow:
+      inset 0 0 4px rgba(0, 0, 0, 0.6),
+      0 0 0 1px chip.$gold-led;
+  }
+
+  @include v.focus-lit {
+    box-shadow:
+      inset 0 0 4px rgba(0, 0, 0, 0.6),
+      0 0 0 1px chip.$gold-led;
+  }
 }
 
-.price-kelly {
+// (a preview prop's strip: "assumed" where the band and the score would be)
+.tile-assumed {
   color: v.$text-faint;
   font-size: v.$fs-10;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-style: italic;
 }
 
-// (the bot's chip on its pick: the rows' Lock / Love / Like / Pass, small, over the tile's corner)
-.price-chip {
-  @include chip.tier-tag(8.5px, 2px 4px, 0.08em, $pass-fill: #2a2f34);
-  position: absolute;
-  right: 5px;
-  top: -7px;
-}
-
-// (one pick alone, under its row: its market's two sides side by side, no frame of its own)
-.lines-pair {
-  display: grid;
-  gap: v.$space-10;
-  grid-template-columns: repeat(2, minmax(0, 140px));
-}
-
-.lines.only .lines-props {
-  border-top: 0;
-  margin-top: 0;
-  padding-top: 0;
-}
-
-// The props: a team's under a bar of its own, folded till it's opened; a row a player's stat, his face and name on
-// his first, over and under
+// The props: a row a player's stat (his face, his name, his team and the stat at its line), over and under
 .lines-props {
-  border-top: 1px dashed rgba(255, 236, 196, 0.16);
   display: flex;
   flex-direction: column;
   gap: v.$space-8;
-  margin-top: 6px;
-  padding-top: 10px;
-}
 
-// (a team's bar: the chevron, its logo, "SEA Player Props", its count; the chevron lightens on hover, never the
-// accent, and turns down open)
-.props-team-bar {
-  align-items: center;
-  background: none;
-  border: 0;
-  border-radius: v.$radius-md;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-family: v.$font-base;
-  gap: v.$space-6;
-  padding: 4px 2px;
-  text-align: left;
-  width: 100%;
-
-  img {
-    height: 20px;
-    object-fit: contain;
-    width: 20px;
+  .props-heads {
+    color: v.$text-faint;
+    display: grid;
+    font-family: v.$font-heading;
+    font-size: v.$fs-10;
+    gap: v.$space-8;
+    grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-transform: uppercase;
   }
-
-  b {
-    font-size: v.$fs-14;
-    font-weight: 900;
-    white-space: nowrap;
-  }
-
-  // (the keyboard's focus: its chevron lightens as on hover, no ring)
-  @include v.focus-lit;
-
-  &:hover .props-chevron,
-  &:focus-visible .props-chevron {
-    color: #fff;
-  }
-}
-
-.props-chevron {
-  color: v.$text-faint;
-  flex: none;
-  transform: rotate(90deg);
-  transition:
-    color v.$t-hover,
-    transform v.$t-hover;
-  @include v.icon-size(18px);
-
-  .shut & {
-    transform: none;
-  }
-}
-
-.props-team-count {
-  color: v.$text-faint;
-  font-size: v.$fs-12;
-  font-weight: 700;
-  margin-left: auto;
-  white-space: nowrap;
-}
-
-.props-team-rows {
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-8;
-  padding: 8px 0 6px;
 }
 
 .prop {
   align-items: center;
   display: grid;
-  gap: v.$space-10;
-  grid-template-columns: 34px minmax(0, 1fr) 92px 92px;
-
-  // (a player's next stat: close under his first)
-  &:not(.first) {
-    margin-top: -2px;
-  }
-
-  .price {
-    min-height: 42px;
-  }
+  gap: v.$space-8;
+  grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));
 }
 
-.prop-face {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: v.$radius-round;
-  height: 34px;
-  object-fit: cover;
-  object-position: top;
-  width: 34px;
+.prop-who {
+  align-items: center;
+  display: flex;
+  gap: v.$space-10;
+  min-width: 0;
 }
 
 .prop-words {
   display: flex;
   flex-direction: column;
+  gap: 1px;
   min-width: 0;
 
   b,
@@ -419,24 +469,24 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 
   b {
+    font-family: v.$font-heading;
     font-size: v.$fs-14;
-    font-weight: 900;
+    font-weight: 500;
   }
 
   small {
     color: v.$text-faint;
-    font-size: v.$fs-12;
-    font-weight: 700;
+    font-size: v.$fs-11;
   }
 }
 
-// (preview props: DraftKings' lines off ESPN the bot hasn't priced, at an assumed -110; their note, a line's move
-// from its open, and their tiles' "assumed" where the Kelly score would be)
+// (preview props: DraftKings' lines off ESPN the bot hasn't priced, at an assumed -110: their note, a line's move
+// from its open)
 .preview-note {
   color: v.$text-faint;
   font-size: v.$fs-12;
   line-height: 1.45;
-  margin: 0 0 2px;
+  margin: 0 0 4px;
 
   b {
     color: v.$text-strong;
@@ -450,75 +500,179 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   margin-left: 6px;
 }
 
-.price.preview .price-kelly {
-  font-style: italic;
-  letter-spacing: 0.02em;
-}
-
 .lines-foot {
   color: v.$text-faint;
   font-size: v.$fs-11;
   font-weight: 600;
   line-height: 1.4;
-  margin: 4px 0 0;
+  margin: 0;
+  padding: 10px 16px;
 }
 
-// (phones: the team column narrower, the tiles a little shorter)
-@include v.down(phone) {
-  .lines {
-    padding: 8px 8px 6px;
+// One pick alone, under its row when the game's lines are on top: its market's two sides side by side
+.lines-pair {
+  display: grid;
+  gap: v.$space-10;
+  grid-template-columns: repeat(2, minmax(0, 140px));
+  padding: 4px 0;
+}
+
+.lines.only .lines-props {
+  padding: 4px 0;
+}
+
+// Compact (an open row's board on the Best bets view): the grid alone, small tiles with the line over the odds
+.lines.compact {
+  .section-body {
+    border: none;
+    padding: 0;
   }
 
   .lines-grid {
-    border-spacing: 4px 6px;
-    margin: 0 -4px;
-    width: calc(100% + 8px);
-
-    thead th:first-child {
-      width: 58px;
-    }
-  }
-
-  .lines-team {
-    font-size: v.$fs-13;
     gap: v.$space-4;
+    grid-template-columns: 40px repeat(3, minmax(0, 1fr));
+  }
 
-    img {
-      height: 18px;
-      width: 18px;
+  .grid-head {
+    font-family: v.$font-base;
+    font-size: v.$fs-11;
+    letter-spacing: 0.3px;
+    text-transform: none;
+  }
+
+  .grid-team .disc {
+    display: none;
+  }
+
+  .grid-team .team-words b {
+    color: v.$grey-light;
+    font-size: v.$fs-12;
+  }
+
+  .tile {
+    border-radius: v.$radius-sm;
+    box-shadow: 0 0 0 1px rgba(222, 186, 106, 0.35);
+
+    &.bot {
+      box-shadow:
+        0 0 0 1.5px chip.$gold-led,
+        0 0 8px rgba(chip.$gold-led, 0.3);
     }
   }
 
-  // (a prop's sides narrower, its face smaller)
-  .prop {
+  .tile-price {
+    padding: 5px 4px;
+
+    .tile-top {
+      font-family: v.$font-base;
+      font-size: v.$fs-12;
+      font-weight: 700;
+    }
+
+    .tile-odds {
+      font-size: v.$fs-10;
+      font-weight: 600;
+    }
+  }
+}
+
+// (phones: the sections' bodies to the edge, a row's team or player over its tiles)
+@include v.down(ai-narrow) {
+  .lines-head {
+    padding: 10px 12px;
+  }
+
+  .lines-title {
+    font-size: v.$fs-16;
+  }
+
+  .lines-key {
+    display: none;
+  }
+
+  .section-head {
+    gap: v.$space-8;
+    padding: 11px 10px;
+
+    .section-chev {
+      width: 22px;
+    }
+
+    .section-title {
+      font-size: v.$fs-12;
+      letter-spacing: 2px;
+    }
+
+    .section-count {
+      font-size: v.$fs-11;
+    }
+  }
+
+  .section-body {
+    padding: 10px 12px 12px;
+  }
+
+  .lines-grid {
     gap: v.$space-6;
-    grid-template-columns: 26px minmax(0, 1fr) 72px 72px;
+    grid-template-columns: minmax(0, 1fr);
+
+    .grid-heads {
+      display: none;
+    }
+
+    .grid-row {
+      display: grid;
+      gap: v.$space-6;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      .grid-team {
+        grid-column: 1 / -1;
+      }
+    }
   }
 
-  .prop-face {
-    height: 26px;
-    width: 26px;
+  .lines-props .props-heads {
+    display: none;
   }
 
-  // (a player's whole name, on two lines where it needs them)
-  .prop-words b {
-    line-height: 1.15;
-    white-space: normal;
+  .prop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .prop-who {
+      grid-column: 1 / -1;
+    }
   }
 
-  .price-line,
-  .price .price-odds:first-child,
-  .price .price-chip + .price-odds {
-    font-size: v.$fs-14;
+  .disc {
+    height: 24px;
+    width: 24px;
+  }
+
+  .tile-price {
+    padding: 7px 4px 5px;
+
+    .tile-top {
+      font-size: v.$fs-13;
+    }
+  }
+
+  .tile-foot {
+    padding: 3px 4px;
+  }
+
+  .tile-tag {
+    font-size: 8px;
+    letter-spacing: 0.6px;
+    padding: 2px 4px;
+  }
+
+  .tile-k {
+    min-height: 22px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .price {
+  .tile-price {
     transition: none;
-
-    &:hover:not([disabled]) {
-      transform: none;
-    }
   }
 }

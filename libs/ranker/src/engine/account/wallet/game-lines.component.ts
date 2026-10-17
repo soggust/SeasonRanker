@@ -1,7 +1,8 @@
-import { Component, Input, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, computed, signal } from '@angular/core';
 import { Confidence, tierOf } from '../../bets/tiers';
 import { betScoreText, confidenceOf, kellyOf } from '../../bets/bet-why';
 import { headshot, hideImage, teamLogo } from '../../bets/bet-format';
+import { pickTeamColor } from '../../bets/pick-style';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
 import { WalletService } from './wallet.service';
@@ -32,6 +33,19 @@ export interface PriceCall {
   // (the Kelly score as a fraction; null where there's none to show: no price of the bot's, or a CHECK)
   kelly: number | null;
   chance: number | null;
+}
+
+// (a price's K score button clicked: what the page needs to open the why popover for it: the bot's pick where it's
+// one (the page has its row), else the board's Kelly score, chance and price with the bet's words)
+export interface PriceWhy {
+  bot: BotPick | null;
+  kelly: number;
+  chance: number | null;
+  odds: number;
+  tier: Tier | null;
+  words: string;
+  market: PlayMarket;
+  side: string;
 }
 
 // (one side of a prop on the board: its price, the bot's Kelly score and band on it, the bot's side or not)
@@ -151,11 +165,69 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     this.onlyPick.set(p ?? null);
   }
 
+  // The look's inputs (The Book): where the game's played, for the header; the bet-type chips on, which filter the
+  // sections (none on: every section); compact, an open row's board on the Best bets view (the game lines' grid
+  // alone, small tiles, no strip under them)
+  @Input() venue: string | null = null;
+  @Input() set kinds(set: Set<string> | null | undefined) {
+    this.kindsOn.set(set ? new Set(set) : new Set());
+  }
+  @Input() compact = false;
+  // (the header's way back to Best bets; a K score button clicked: the page opens the why popover for the price)
+  @Output() readonly back = new EventEmitter<void>();
+  @Output() readonly why = new EventEmitter<{ at: PriceWhy; event: Event }>();
+  private readonly kindsOn = signal(new Set<string>());
+  readonly showLines = computed(() => {
+    const k = this.kindsOn();
+    return !k.size || k.has('spread') || k.has('total') || k.has('moneyline');
+  });
+  readonly showProps = computed(() => !this.kindsOn().size || this.kindsOn().has('player'));
+  // (the sections open: the game lines; the props and the preview props folded at first)
+  private readonly sections = signal<Record<string, boolean>>({ lines: true, props: false, preview: false });
+  sectionOpen(key: string): boolean {
+    return !!this.sections()[key];
+  }
+  toggleSection(key: string): void {
+    this.sections.update((o) => ({ ...o, [key]: !o[key] }));
+  }
+  // (the sections' counts: the prices on the game lines; the props' players and their sides with a price)
+  linesCount(b: GameBoard): number {
+    return [b.spread?.away, b.spread?.home, b.total?.over, b.total?.under, b.ml?.away, b.ml?.home].filter((p) => p && p.odds !== null).length;
+  }
+  propsCount(rows: PropRow[]): string {
+    const players = new Set(rows.map((r) => r.athlete)).size;
+    const bets = rows.reduce((t, r) => t + r.sides.filter((s) => s.odds !== null).length, 0);
+    return `${players} ${players === 1 ? 'player' : 'players'} · ${bets} ${bets === 1 ? 'bet' : 'bets'}`;
+  }
+  previewCount(teams: PreviewTeam[]): string {
+    const rows = teams.flatMap((t) => t.rows);
+    const players = new Set(rows.map((r) => r.athlete)).size;
+    return `${players} ${players === 1 ? 'player' : 'players'} · ${rows.length * 2} bets`;
+  }
+  // (a K score's tone: green at 0.5 or more, grey over 0, red at 0 or under; in points, as kellyText writes it)
+  kTone(kelly: number): 'good' | 'flat' | 'bad' {
+    const points = kelly * 100;
+    return points >= 0.5 ? 'good' : points > 0 ? 'flat' : 'bad';
+  }
+  // (a team's color for its disc's ring, by its abbreviation or its ESPN id; none known, the default ring)
+  teamColor(team: string): string | null {
+    if (!team) return null;
+    return /^d+$/.test(team) ? pickTeamColor(this.sport, { total: false, teamId: team }) : pickTeamColor(this.sport, { total: false, abbr: team });
+  }
+  // (a prop's team as its abbreviation, from the board's teams; its id, or nothing, where the board doesn't know it)
+  teamAbbr(team: string): string {
+    const g = this.model();
+    if (g && team === String(g.a[1])) return g.a[0];
+    if (g && team === String(g.h[1])) return g.h[0];
+    return /^d+$/.test(team) ? '' : team;
+  }
+  askWhy(at: PriceWhy, event: Event): void {
+    this.why.emit({ at, event });
+  }
+
   private readonly botPicks = signal<BotPick[]>([]);
   readonly onlyPick = signal<BotPick | null>(null);
   readonly loading = signal(true);
-  // (the teams whose props are open: none at first)
-  readonly openTeams = signal(new Set<string>());
   private timer: ReturnType<typeof setInterval> | null = null;
   private closed = false;
   readonly lineText = lineText;
@@ -507,17 +579,6 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   private propType(p: BotPick): string {
     return p.pickId?.split(':')[2] ?? p.market;
-  }
-
-  // (a team's props: open or folded)
-  teamOpen(id: string): boolean {
-    return this.openTeams().has(id);
-  }
-
-  toggleTeam(id: string): void {
-    const next = new Set(this.openTeams());
-    if (!next.delete(id)) next.add(id);
-    this.openTeams.set(next);
   }
 
   // A price clicked: onto the slip (or off it)
