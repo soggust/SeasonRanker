@@ -180,8 +180,8 @@ export const SPORT: SportConfig = {
     { label: 'Special Teams', tabs: ['ST', 'K', 'P'], names: { ST: 'Team Special Teams' } },
     { label: 'Teams', tabs: ['TM', 'HC'] },
   ],
-  // (the page lands on the quarterbacks: the Offense family open, QB lit)
-  landingTab: 'QB',
+  // (the page lands on the Teams, the first tab, as every sport does (the owner, 2026-10-17); QB is a click)
+  landingTab: 'TM',
   coachTab: 'HC',
   teamTabs: ['TM', 'OFF', 'DEF', 'ST', 'OL'],
   // (the QBs' rows go by ESPN's id, "QB-<id>": the same man's rows on the other tabs by that headshot id,

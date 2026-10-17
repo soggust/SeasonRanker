@@ -2,7 +2,7 @@
 // TM · OFF · DEF · ST · HC, each family a top-row tab whose members open from it (Team O · QB · RB · WR · TE · OL
 // under OFF, Team D and the five defensive tabs under DEF, Team ST · K · P under ST). Every member is in
 // exactly one family, its family's tab is the one lit for it, a shut family opens to its first member or the
-// one this session last showed, the page lands on QB with the Offense family open, and old links keep
+// one this session last showed, the page lands on the Teams tab (no family open), and old links keep
 // their tab (?pos=def the team defenses). The phone's dropdown names every tab once in its groups and has
 // no sub-row under it; the sub-row shows only on the tablet widths that can't hold the open family in the
 // row. A sport without families gets exactly the bar it had: a plain tab for each of its tabs.
@@ -63,7 +63,7 @@ test('nfl: the bar is TM · OFF · DEF · ST · HC, every member in one family, 
   assert.deepEqual(subTabs(SPORT.tabFamilies, POSITIONS, 'RB').map((m) => m.tab), ['OFF', 'QB', 'RB', 'WR', 'TE', 'OL']);
 });
 
-test('nfl: a shut family opens to its first member, or the one last shown; the page lands on QB', async () => {
+test('nfl: a shut family opens to its first member, or the one last shown; the page lands on the Teams', async () => {
   const { SPORT, POSITIONS, familyOpensTo } = await engineFor('nfl');
   const [off, def, st] = SPORT.tabFamilies;
   assert.equal(familyOpensTo(off, POSITIONS, null), 'OFF');
@@ -73,8 +73,9 @@ test('nfl: a shut family opens to its first member, or the one last shown; the p
   // (a memory that isn't one of its members, or a tab the settings hide: the first)
   assert.equal(familyOpensTo(off, POSITIONS, 'CB'), 'OFF');
   assert.equal(familyOpensTo(st, ['ST', 'K'], 'P'), 'ST');
-  assert.equal(SPORT.landingTab, 'QB');
-  assert.ok('QB' in off.names, 'the landing tab is in the Offense family');
+  // (the page lands on the Teams tab like every sport (the owner): a tab outside every family, no family open)
+  assert.equal(SPORT.landingTab, 'TM');
+  assert.ok(!SPORT.tabFamilies.some((f) => 'TM' in f.names), 'the landing tab is outside the families');
 });
 
 test('nfl: the phone dropdown names every tab once in its groups, the team tabs in full', async () => {
