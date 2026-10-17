@@ -699,6 +699,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return [...byGame.values()];
   }
 
+  // (how many bets Best bets shows, for the dropdown's face: the list's bets, the top 40 at most)
+  get bestCount(): number {
+    return Math.min(this.limit, this.listed.filter((r) => !r.check).length);
+  }
+
   // (a game picked from the dropdown, or Best Bets (''): the list's filter, as before)
   chooseGame(key: string): void {
     this.game = key;

@@ -317,11 +317,13 @@ html body .mat-mdc-select-panel.preset-options {
   }
 }
 
-// The Bets page's game dropdown (bets-page.component.html): white lettering on its felt, the felt's own caret for
-// Material's. Its open list the same felt from every sport (past the sports' own lists: html body and the panel's
-// class): each day in the rail's gold, under it each sport's icon and name, under that its games indented, the bets
-// each shows in parentheses, a lines-only game a quiet "LINES" tag. Hovered or picked, a lighter felt (never the
-// gold); taller than Material's 275px, on a phone no wider than the screen
+// The Bets page's game dropdown (bets-page.component.html, The Book's): white lettering on its player's card, no
+// caret of Material's (the page draws its own). Its open list the card's black fade in a gold edge from every
+// sport (past the sports' own lists: html body and the panel's class): Best bets on top with its count, then
+// each day in small faint caps over a gold hairline, under it each sport's icon and name in gold, under that
+// its games indented: the matchup, its start faint, and how many picks it shows in gold, a lines-only game a
+// quiet "lines". Hovered a faint light; the one picked washed in gold with a gold edge down its left. Taller
+// than Material's 275px (420), on a phone no wider than the screen; a gold scrollbar thumb
 html body bets-page .bets-game {
   .mat-mdc-select-trigger {
     height: auto;
@@ -331,6 +333,7 @@ html body bets-page .bets-game {
   .mat-mdc-select-value-text {
     color: #fff !important;
     font: inherit;
+    overflow: visible;
   }
 
   .mat-mdc-select-arrow-wrapper {
@@ -340,66 +343,102 @@ html body bets-page .bets-game {
 
 html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
   background:
-    radial-gradient(ellipse 90% 70% at 50% 20%, rgba(255, 255, 255, 0.06), transparent 70%),
-    #{chip.$felt-nap} 0 0 / 140px,
-    #{chip.$felt-deep} !important;
+    radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.14), transparent 45%),
+    linear-gradient(160deg, #1d1d1d, #121212 60%, #1a1a1a) !important;
   background-blend-mode: normal !important;
-  border: 1px solid #{chip.$felt-seam} !important;
-  border-radius: 12px !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55) !important;
-  max-height: min(70vh, 520px);
+  border: 1px solid #b38a3c !important;
+  border-radius: v.$radius-xl !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6) !important;
+  max-height: 420px;
   max-width: calc(100vw - 32px);
-  min-width: 240px;
-  padding: 0 0 6px;
-  --mat-pseudo-checkbox-minimal-selected-checkmark-color: #{chip.$gold-led};
-  @include kit.list-scrollbar(rgba(0, 0, 0, 0.35), chip.$felt-thumb, chip.$felt-light);
+  min-width: 340px;
+  padding: 6px 0;
+  @include chip.gold-scrollbar;
+
+  // (no checkmark on the one picked: its gold wash and edge say so)
+  .mat-pseudo-checkbox {
+    display: none;
+  }
 
   .mat-mdc-option {
     min-height: 36px;
+    padding: 8px 14px;
 
     &,
     span {
       color: #fff !important;
-      @include v.heading-input;
+      font-family: v.$font-heading !important;
       font-size: v.$fs-13 !important;
-      font-weight: 800 !important;
-      text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6) !important;
+      font-weight: 400 !important;
+      text-shadow: none !important;
       text-transform: none !important;
+    }
+
+    .mdc-list-item__primary-text {
+      align-items: center;
+      display: grid;
+      gap: v.$space-10;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      width: 100%;
     }
 
     &:not(.mdc-list-item--disabled):hover,
     &:focus-visible,
-    &.mat-mdc-option-active,
-    &.mdc-list-item--selected {
-      background: rgba(255, 255, 255, 0.1) !important;
+    &.mat-mdc-option-active {
+      background: rgba(255, 255, 255, 0.07) !important;
+    }
 
-      span {
-        color: #fff !important;
-      }
+    &.mdc-list-item--selected {
+      background: rgba(chip.$gold-led, 0.12) !important;
+      box-shadow: inset 2px 0 0 chip.$gold-led;
+    }
+
+    span.game-when {
+      color: v.$text-faint !important;
+      font-family: v.$font-base !important;
+      font-size: v.$fs-11 !important;
     }
 
     span.game-count {
-      opacity: 0.7;
+      color: chip.$gold-led !important;
+      font-family: v.$font-base !important;
+      font-size: v.$fs-11 !important;
+      font-weight: 700 !important;
+      min-width: 38px;
+      text-align: right;
     }
 
     span.game-lines {
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: v.$radius-pill;
-      color: v.$text-dim !important;
-      font-size: v.$fs-10 !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.8px !important;
-      margin-left: 4px;
-      padding: 1px 6px;
-      text-shadow: none !important;
-      text-transform: uppercase !important;
-      vertical-align: 1px;
+      color: v.$text-faint !important;
+      font-family: v.$font-base !important;
+      font-size: v.$fs-11 !important;
+      min-width: 38px;
+      text-align: right;
+    }
+
+    // (Best bets: its words and its count alone, in the larger type)
+    &.game-all {
+      padding: 10px 14px;
+
+      .mdc-list-item__primary-text {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      span {
+        font-size: v.$fs-14 !important;
+      }
+
+      span.game-count {
+        font-family: v.$font-base !important;
+        font-size: v.$fs-12 !important;
+        min-width: 0;
+      }
     }
   }
 
   // (a game's line under its sport, indented past the sport's icon)
   .mat-mdc-optgroup .mat-mdc-option {
-    padding-left: 38px;
+    padding-left: 36px;
   }
 
   .mat-mdc-optgroup-label {
@@ -412,34 +451,34 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     }
   }
 
-  // (the day: in the rail's gold, a rule over it)
+  // (the day: small faint caps over a gold hairline)
   .day-first .game-day {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    color: #{chip.$gold-led};
+    border-top: 1px solid rgba(222, 186, 106, 0.2);
+    color: v.$text-faint;
     display: block;
-    font-family: v.$font-heading;
-    font-size: v.$fs-12;
+    font-family: v.$font-base;
+    font-size: v.$fs-10;
     font-weight: 800;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-    padding: 10px 16px 2px;
-    text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1.5px;
+    padding: 10px 14px 4px;
+    text-transform: uppercase;
   }
 
+  // (the sport: its icon and its name in gold)
   .game-sport {
     align-items: center;
-    color: v.$text-dim;
+    color: chip.$gold-led;
     display: flex;
-    font-family: v.$font-heading;
-    font-size: v.$fs-11;
+    font-family: v.$font-base;
+    font-size: v.$fs-10;
     font-weight: 800;
-    gap: v.$space-6;
-    letter-spacing: 1px;
-    padding: 6px 16px 0;
+    gap: v.$space-8;
+    letter-spacing: 1.5px;
+    padding: 6px 14px 2px;
     text-transform: uppercase;
 
     mat-icon {
-      @include v.icon-size(16px);
+      @include v.icon-size(14px);
     }
   }
 }

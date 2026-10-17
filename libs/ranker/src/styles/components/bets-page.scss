@@ -294,43 +294,98 @@ $circle-gap: 12px;
   position: relative;
 }
 
-// One row: the game dropdown on the left, the update time on the right
-// (the machine's top: the scoreboard, out to the panel's edges)
-.bets-head {
+// ---------------------------------------------------------------------------
+// The controls row over the board: the game dropdown on the left, the filter chips on the right
+// ---------------------------------------------------------------------------
+.book-controls {
   align-items: center;
-  @include v.scoreboard-face;
-  border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
-  border-radius: 11px 11px 0 0;
   display: flex;
+  flex: none;
   flex-wrap: wrap;
-  gap: v.$space-10;
+  gap: v.$space-10 v.$space-16;
   justify-content: space-between;
-  margin: -18px -20px 14px;
-  padding: 18px 20px 14px;
 }
 
-// The filter chips, a row of their own under the dropdown: round casino chips in each type's color (a
-// thick rim with cream spots, an inlay ring), the type's short label and its count; dim until they're on.
-// A key (the info icon) says what the labels mean.
+// The game dropdown: a player's card pill (the bankroll card's black fade in its gold rail), 44px tall, the
+// sport's icon, the game or Best bets, the count of picks lit, and a gold caret that turns while it's open; its
+// open list is in the overlay, styled in _base.scss (bets-game-options). A Material select: its own lettering
+// (heading-input) and the caret's hiding are _base.scss's too
+.bets-game {
+  @include chip.player-card(v.$radius-pill);
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: v.$font-heading;
+  font-size: v.$fs-14;
+  height: 44px;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  max-width: calc(100vw - 2 * #{$page-gutter});
+  min-width: 260px;
+  padding: 0 16px 0 18px;
+  transition: filter v.$t-hover ease;
+  width: auto;
+
+  &:hover {
+    filter: brightness(1.18);
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  &[aria-expanded="true"] .bets-game-caret {
+    rotate: 180deg;
+  }
+}
+
+.bets-game-face {
+  align-items: center;
+  display: inline-flex;
+  gap: v.$space-10;
+  min-width: 0;
+  width: 100%;
+
+  mat-icon {
+    @include v.icon-size(20px);
+    flex: none;
+  }
+
+  .bets-game-label {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+    @include v.ellipsis;
+  }
+
+  .bets-game-count {
+    @include glow;
+    flex: none;
+    font-size: v.$fs-12;
+  }
+
+  .bets-game-caret {
+    color: chip.$gold-led;
+    flex: none;
+    @include v.turn;
+  }
+}
+
+// The filter chips: round casino chips in each type's color (a thick rim with cream spots, an inlay ring), the
+// type's short label and its count; dim until they're on. What the label means is on each one's hover (title)
 .bets-kinds {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: v.$space-10;
-  justify-content: flex-end;
-  margin: 4px 0;
-}
-
-// (the header's left: the dropdown, and when it was updated under it)
-.bets-head-left {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-10;
+  padding: 6px 4px;
 }
 
 .kind-chip {
-  @include chip.chip;
+  @include chip.chip(54px);
 
   .kind-label {
     font-size: v.$fs-12;
@@ -353,120 +408,9 @@ $circle-gap: 12px;
       --clay: #{$clay};
     }
   }
-}
 
-// The chips' key: an info icon, its list on hover or focus (a tap on a phone)
-.kinds-key {
-  color: v.$text-faint;
-  cursor: help;
-  display: inline-flex;
-  position: relative;
-
-  .mat-icon {
-    @include v.icon-size(18px);
-  }
-
-  // (its focus lights it white and opens its list, below: no ring)
-  @include v.focus-lit;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-
-    .kinds-key-pop {
-      display: flex;
-    }
-  }
-}
-
-.kinds-key-pop {
-  @include v.scoreboard-panel(8px);
-  display: none;
-  flex-direction: column;
-  gap: v.$space-6;
-  // (it opens leftward: the key sits at the panel's right edge)
-  padding: 10px 12px;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  white-space: nowrap;
-  z-index: 5;
-
-  span {
-    color: v.$text-strong;
-    font-size: v.$fs-12;
-    font-weight: 600;
-  }
-
-  b {
-    border-radius: v.$radius-sm;
-    color: #fff;
-    display: inline-block;
-    font-size: v.$fs-11;
-    font-weight: 900;
-    margin-right: 6px;
-    min-width: 34px;
-    padding: 2px 5px;
-    text-align: center;
-
-    // (the team total's a shade lighter than its chip's clay)
-    @each $kind, $clay in map.merge($kind-clay, (team_total: #3a3a3a)) {
-      &.#{$kind} {
-        background: $clay;
-      }
-    }
-  }
-}
-
-.bets-updated {
-  color: v.$text-faint;
-  font-size: v.$fs-12;
-  font-weight: 600;
-  padding-left: 8px;
-}
-
-// ...and under it, the bankroll: a link to the wallet, its amount lit
-.bets-bankroll {
-  color: v.$text-dim;
-  display: block;
-  margin-top: 4px;
-  text-decoration: none;
-
-  b {
-    color: var(--scoreboard-led);
-    font-weight: 800;
-  }
-
-  &:hover {
-    color: #fff;
-  }
-}
-
-// (the game dropdown's wrapper: the felt dropdown itself is .bets-game)
-.bets-chip {
-  display: inline-flex;
-}
-
-// (a Material dropdown in the felt: as wide as its words (Best Bets, or the game chosen with its sport's icon), on a
-// phone no wider than the screen; its own caret and lettering inside are styles/_base.scss's, the open list's too)
-.bets-game {
-  // (a mat-select: its options open in an overlay, not under it)
-  @include chip.felt-dropdown(false);
-  align-items: center;
-  box-sizing: border-box;
-  display: inline-flex;
-  line-height: 1.2;
-  max-width: calc(100vw - #{2 * $page-gutter});
-  width: auto;
-}
-
-.bets-game-face {
-  align-items: center;
-  display: inline-flex;
-  gap: v.$space-6;
-
-  mat-icon {
-    @include v.icon-size(16px);
+  &:focus-visible {
+    @include v.focus-ring(3px);
   }
 }
 
@@ -1244,11 +1188,6 @@ $hub-y: 154px;
 .bets-page.wallet-view,
 .bets-page.desk-view {
   max-width: 1240px;
-}
-
-// (the book the picks are priced at: DraftKings' crown, once, in the updated line)
-.bet-crown {
-  @include v.book-crown(13px);
 }
 
 // A pick led by a circle (a prop's player's headshot, a total's arrow, a side's team's logo) beside its two lines:

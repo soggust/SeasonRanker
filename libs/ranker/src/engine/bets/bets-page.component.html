@@ -83,98 +83,80 @@
   } @else if (view === 'closed') {
     <wallet-page only="closed"></wallet-page>
   } @else {
-  <div class="bets-panel">
-    <!-- The game dropdown on the left (when it was updated under it), the filter chips on the right -->
-    <div class="bets-head">
-      <!-- (the left: the game dropdown, and when the sheet was updated under it) -->
-      <div class="bets-head-left">
-        <!-- (the game dropdown: Best Bets, then each day's games under their sport's icon, early to late, the ones with
-             bets with how many, the rest their lines only (game-menu.ts); there whenever there's a game to bet, picked
-             or not) -->
-        @if (gameMenu.length) {
-          <span class="bets-chip">
-            <mat-select
-              class="bets-game"
-              panelClass="bets-game-options"
-              [panelWidth]="null"
-              aria-label="Game"
-              [value]="game"
-              (valueChange)="chooseGame($event)"
-            >
-              <mat-select-trigger>
-                @if (chosenGame; as g) {
-                  <span class="bets-game-face"><mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>{{ g.label }}</span>
-                } @else {
-                  Best Bets
-                }
-              </mat-select-trigger>
-              <mat-option value="">Best Bets</mat-option>
-              @for (d of gameMenu; track d.day) {
-                @for (s of d.sports; track s.sport; let first = $first) {
-                  <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only) -->
-                  <mat-optgroup label="" [class.day-first]="first">
-                    <span class="game-day" [class.visually-hidden]="!first">{{ d.day }}<span class="visually-hidden">, </span></span>
-                    <span class="game-sport"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
-                    @for (g of s.games; track g.key) {
-                      <mat-option [value]="g.key">
-                        {{ g.label }}
-                        @if (g.count === null) {
-                          <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
-                        } @else {
-                          <span class="game-count">({{ g.count }}<span class="visually-hidden"> {{ g.count === 1 ? 'bet' : 'bets' }}</span>)</span>
-                        }
-                      </mat-option>
-                    }
-                  </mat-optgroup>
-                }
-              }
-            </mat-select>
-          </span>
-        }
-        @if (updated) {
-          <span class="bets-updated">
-            Updated {{ updated | date: 'EEE MMM d, h:mm a' }} · <span class="bet-crown" title="DraftKings"></span> odds
-            <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand, what's out,
-                 the wallet a click away) -->
-            @if (bankroll(); as b) {
-              <a class="bets-bankroll" href="/wallet" title="Your Betting Wallet">
-                Bankroll <b>{{ b.balance | number: '1.0-2' }}u</b>@if (b.open) { · {{ b.atRisk | number: '1.0-2' }}u on {{ b.open }} open}
-              </a>
+  <!-- The controls row over the board: the game dropdown on the left, the filter chips on the right -->
+  <div class="book-controls">
+    <!-- (the game dropdown, a player's card pill: Best bets, then each day's games under their sport's icon, early to
+         late, the ones with bets with how many, the rest their lines only (game-menu.ts); there whenever there's a
+         game to bet, picked or not. When the sheet was updated, and whose odds, on its hover) -->
+    @if (gameMenu.length) {
+      <mat-select
+        class="bets-game"
+        panelClass="bets-game-options"
+        [panelWidth]="null"
+        aria-label="Game"
+        [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · DraftKings odds' : null"
+        [value]="game"
+        (valueChange)="chooseGame($event)"
+      >
+        <mat-select-trigger>
+          <span class="bets-game-face">
+            @if (chosenGame; as g) {
+              <mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>
+              <span class="bets-game-label">{{ g.label }}</span>
+              <span class="bets-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
+            } @else {
+              <span class="bets-game-label">Best bets · every game</span>
+              <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
+            <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
+        </mat-select-trigger>
+        <mat-option value="" class="game-all"><span class="game-label">Best bets · every game</span><span class="game-count">{{ bestCount }}</span></mat-option>
+        @for (d of gameMenu; track d.day) {
+          @for (s of d.sports; track s.sport; let first = $first) {
+            <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only) -->
+            <mat-optgroup label="" [class.day-first]="first">
+              <span class="game-day" [class.visually-hidden]="!first">{{ d.day }}<span class="visually-hidden">, </span></span>
+              <span class="game-sport"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
+              @for (g of s.games; track g.key) {
+                <mat-option [value]="g.key">
+                  <span class="game-label">{{ g.matchup }}</span>
+                  <span class="game-when">{{ g.time ?? '' }}</span>
+                  @if (g.count === null) {
+                    <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
+                  } @else {
+                    <span class="game-count">{{ g.count }} {{ g.count === 1 ? 'pick' : 'picks' }}</span>
+                  }
+                </mat-option>
+              }
+            </mat-optgroup>
+          }
+        }
+      </mat-select>
+    }
+    <!-- The filter chips: a type of bet each, in its own chip color; on, only those (none: all); what the label
+         means on its hover -->
+    @if (kindChips.length > 1) {
+      <div class="bets-kinds" role="group" aria-label="Bet types">
+        @for (k of kindChips; track k.kind) {
+          <button
+            type="button"
+            class="kind-chip"
+            [ngClass]="k.kind"
+            [class.active]="kinds.has(k.kind)"
+            [attr.aria-pressed]="kinds.has(k.kind)"
+            [title]="k.name"
+            (click)="toggleKind(k.kind)"
+          >
+            <span class="kind-label">{{ k.label }}</span>
+            <span class="kind-count">{{ k.count }}</span>
+            <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+          </button>
         }
       </div>
-      <!-- The filter chips: a type of bet each, in its own chip color; on, only those (none: all) -->
-      @if (kindChips.length > 1) {
-        <div class="bets-kinds" role="group" aria-label="Bet types">
-          @for (k of kindChips; track k.kind) {
-            <button
-              type="button"
-              class="kind-chip"
-              [ngClass]="k.kind"
-              [class.active]="kinds.has(k.kind)"
-              [attr.aria-pressed]="kinds.has(k.kind)"
-              [title]="k.name"
-              (click)="toggleKind(k.kind)"
-            >
-              <span class="kind-label">{{ k.label }}</span>
-              <span class="kind-count">{{ k.count }}</span>
-              <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
-            </button>
-          }
-          <!-- (the key: what each chip's short label means, on hover or tap) -->
-          <span class="kinds-key" tabindex="0" role="button" aria-label="What the chips mean" aria-describedby="kinds-key-pop">
-            <mat-icon aria-hidden="true" fontIcon="info_outline"></mat-icon>
-            <span class="kinds-key-pop" id="kinds-key-pop" role="tooltip">
-              @for (k of kindChips; track k.kind) {
-                <span><b [ngClass]="k.kind">{{ k.label }}</b> {{ k.name }}</span>
-              }
-              <span><b>#</b> The list runs by Kelly: the edge on the price, scaled by what it pays (click a rank for its makings). Like: any edge on the price, the least the bot bets. Pass: no edge (an older bet the bot made for the data; since Oct 13, 2026 tracked, not bet)</span>
-            </span>
-          </span>
-        </div>
-      }
-    </div>
+    }
+  </div>
+  <div class="bets-panel">
 
     @if (rows === null) {
       <p class="bets-note">Loading…</p>
