@@ -54,7 +54,7 @@ test("betPlayer and pickName: a prop's player, a fight's fighter; his name split
 const ENGINE = path.join(import.meta.dirname, '..', 'libs', 'ranker', 'src', 'engine');
 const TEMPLATES = {
   'account/wallet/game-lines.component.html': { faces: 3, names: 3 },
-  'account/wallet/wallet-page.component.html': { faces: 2, picks: 3 },
+  'account/wallet/wallet-page.component.html': { picks: 2 },
   'account/wallet/bet-slip.component.html': { picks: 1 },
   'account/profile/user-profile.component.html': { picks: 1 },
   'game-view/game-view.component.html': { picks: 1 },

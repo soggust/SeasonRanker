@@ -85,6 +85,14 @@ const NEAR = 15 * 60e3;
 export class WalletPageComponent implements OnInit, OnDestroy {
   // (a bet's player: his name and face link his card, player-link.ts)
   readonly betPlayer = betPlayer;
+
+  // (a pinned ticket's slight tilt on the corkboard, -2.4 to 2.4 degrees: random-looking but steady per ticket, from
+  // its id, so a ticket doesn't swing as the scores tick)
+  tilt(b: { id: string }): number {
+    let h = 2166136261;
+    for (let i = 0; i < b.id.length; i++) h = Math.imul(h ^ b.id.charCodeAt(i), 16777619);
+    return Math.round((((h >>> 0) % 97) / 96 - 0.5) * 48) / 10;
+  }
   readonly canUse = canUse;
   readonly start = START;
   readonly oddsText = oddsText;

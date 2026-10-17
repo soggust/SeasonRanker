@@ -179,3 +179,41 @@ test('the wallet: Rebuy and the periods are the standard buttons, not chips', as
   assert.match(html, /class="tcase-btn"/);
   assert.match(html, /class="chip-rack"/);
 });
+
+// The owner (2026-10-17): the Book's Open tickets and Cashed, and the wallet's open and settled bets, are panels whose
+// body is the corkboard, the tickets pinned to it (a push-pin each, a steady slight tilt); no table is left
+test('the boards: open and settled tickets pinned to a corkboard panel, on the Bets page and in the wallet', async () => {
+  const fs = await import('node:fs');
+  const root = path.join(import.meta.dirname, '..', 'libs/ranker/src');
+  const html = fs.readFileSync(path.join(root, 'engine/account/wallet/wallet-page.component.html'), 'utf8');
+  const board = (name) => html.match(new RegExp(`<ng-template #${name}[\\s\\S]*?</ng-template>`))?.[0] ?? '';
+  for (const name of ['openBoard', 'cashedBoard']) {
+    const b = board(name);
+    assert.match(b, /<section class="wp-panel book-board"/, name);
+    assert.match(b, /<div class="wp-bar">\s*<h3>/, name);
+    assert.match(b, /<div class="cork cork-board">/, name);
+    assert.match(b, /<div class="board-pinned" \[style\.rotate\.deg\]="tilt\(b\)">\s*<span class="pin" aria-hidden="true"><\/span>\s*<article class="ticket"/, name);
+    assert.match(b, /<pick-text \[pick\]="l\.pick" \[player\]="betPlayer\(l\)">/, name);
+  }
+  assert.match(board('openBoard'), /ticket-status live[\s\S]*leg-meter[\s\S]*pending settlement/);
+  assert.match(board('cashedBoard'), /class="ticket-stamp" \[ngClass\]="res\.tone"[\s\S]*wallet\.loadSettled\(\)/);
+  assert.match(html, /only === 'closed'\) \{[\s\S]*?ngTemplateOutlet="cashedBoard; context: \{ title: 'Cashed' \}"/);
+  assert.match(html, /only === 'open'\) \{[\s\S]*?ngTemplateOutlet="openBoard"/);
+  assert.match(html, /ngTemplateOutlet="cashedBoard; context: \{ title: 'Settled' \}"/);
+  assert.equal((html.match(/ngTemplateOutlet="openBoard"/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /<table|openPanel|settledPanel/);
+  assert.match(html, /class="desk-curve"/, 'the profit curve stays');
+});
+
+test('tilt: steady per ticket, within a few degrees', async () => {
+  const src = (await import('node:fs')).readFileSync(path.join(import.meta.dirname, '..', 'libs/ranker/src/engine/account/wallet/wallet-page.component.ts'), 'utf8');
+  const body = src.match(/tilt\(b: \{ id: string \}\): number \{([\s\S]*?)\n  \}/)[1];
+  const tilt = new Function('b', body);
+  const ids = Array.from({ length: 200 }, (_, i) => 'bet' + i);
+  for (const id of ids) {
+    const t = tilt({ id });
+    assert.equal(t, tilt({ id }));
+    assert.ok(Math.abs(t) <= 2.4, `${id}: ${t}`);
+  }
+  assert.ok(new Set(ids.map((id) => tilt({ id }))).size > 10, 'the tickets lean different ways');
+});
