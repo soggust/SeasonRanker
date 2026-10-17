@@ -189,3 +189,12 @@ test("the Book's words and bars: Best Bets, the views bar only with more than th
   for (const k of Object.keys(none)) assert.equal(bets.viewsShown({ ...none, [k]: true }), true, k);
   assert.equal(bets.gamePicksHead(3), "The bot's picks · 3");
 });
+
+test("rowClickToggles: a click on the row toggles it, not one on its controls or inside its open content", () => {
+  // (a stand-in element: closest answers whether the target sits inside one of the ignored kinds)
+  const el = (inside) => ({ closest: (sel) => (inside && sel === bets.ROW_CLICK_IGNORES ? {} : null) });
+  assert.equal(bets.rowClickToggles(el(false)), true);
+  assert.equal(bets.rowClickToggles(el(true)), false);
+  assert.equal(bets.rowClickToggles(null), false);
+  for (const k of ['button', 'a', '[role="button"]', 'input', '.bet-reasons']) assert.ok(bets.ROW_CLICK_IGNORES.includes(k), k);
+});

@@ -16,7 +16,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot, leagueLogo } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, sportRows, sumRecords } from './bets-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, rowClickToggles, sportRows, sumRecords } from './bets-rows';
 // (the rows' types, for the page's other parts: bets-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
@@ -733,6 +733,12 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the locks and CHECKs shown: above the ranks, the first bet under them #1)
   lockCount(rows: BetRow[]): number {
     return rows.filter((r) => unranked(r.confidence)).length;
+  }
+
+  // (a click on the row itself, not one of its controls nor its open content: the chevron's toggle; bets-rows.ts
+  // rowClickToggles)
+  rowClick(id: number, event: MouseEvent): void {
+    if (rowClickToggles(event.target as Element | null)) this.toggle(id);
   }
 
   toggle(id: number): void {

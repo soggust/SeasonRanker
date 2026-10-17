@@ -336,3 +336,12 @@ export function sumRecords(files: Iterable<readonly [string, ByLevel | null | un
   }
   return out;
 }
+
+// A click on a board row toggles it open or shut, as its chevron does, unless it lands on one of the row's own
+// controls (the meter, the price, the rank tile, a player's link, the desk note: anything a button, a link, a
+// [role=button] or a field) or inside the open content (the owner's note, 2026-10-17). The chevron stays the
+// keyboard's control; the row adds no tab stop
+export const ROW_CLICK_IGNORES = 'button, a, [role="button"], input, select, textarea, label, .bet-reasons';
+export function rowClickToggles(target: { closest?: (sel: string) => unknown } | null): boolean {
+  return !!target && typeof target.closest === 'function' && !target.closest(ROW_CLICK_IGNORES);
+}

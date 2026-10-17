@@ -1242,6 +1242,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // owner's note, 2026-10-17)
 .bet-row {
   align-items: center;
+  // (the whole row opens and shuts it, as its chevron does; its own controls keep their clicks: rowClick)
+  cursor: pointer;
   display: grid;
   gap: v.$space-14;
   grid-template-columns: 64px 34px minmax(0, 1fr) 170px 96px;

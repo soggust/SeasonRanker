@@ -272,7 +272,7 @@
            meter, and its price, a button that writes it on the ticket. Open, its reasoning under the row -->
       <ng-template #betRow let-r let-i="i" let-locks="locks" let-n="n">
         <li class="bet" [ngClass]="level(r)" [class.open]="open.has(r.id)" [class.fade]="r.strength === 'fade'" [style.--i]="i">
-          <div class="bet-row">
+          <div class="bet-row" (click)="rowClick(r.id, $event)">
             <!-- (the lead: the chevron and the rank tile side by side, the chevron in the band header's own column) -->
             <div class="bet-lead">
             <button type="button" class="bet-chevron" (click)="toggle(r.id)" [attr.aria-expanded]="open.has(r.id)" [attr.aria-label]="'Why ' + r.pick">
