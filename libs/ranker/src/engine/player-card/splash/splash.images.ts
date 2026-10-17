@@ -24,7 +24,7 @@
 //                 value the test prints
 
 export const PROPS_VERSION = 'bd205fc6';
-export const FONTS_VERSION = '0c760a15-a76d2da3';
+export const FONTS_VERSION = '66d6d784-acbe4a06';
 
 export const PROP_IMAGES: Record<string, number> = {
   'nfl-lombardi': 0.406,

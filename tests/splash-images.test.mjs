@@ -96,11 +96,14 @@ test('a piece finds its photo by its prop id (the NBA conference trophy by its c
 // (the site caches an asset for a day and a stylesheet for a year under its name: a redone file under the same
 // name is drawn stale, stretched into its new box, unless the version on the URL changes with it)
 test('the props and fonts versions are the folders’ content hash: a changed file needs its bump', () => {
+  // (a stylesheet is hashed with LF line endings: a Windows checkout with autocrlf would otherwise hash it
+  // differently from CI's Linux one, and the two would never agree on the version)
   const hashOf = (dir, keep) => {
     const h = crypto.createHash('sha256');
     for (const f of fs.readdirSync(dir).filter(keep).sort()) {
       h.update(f);
-      h.update(fs.readFileSync(path.join(dir, f)));
+      const b = fs.readFileSync(path.join(dir, f));
+      h.update(f.endsWith('.css') ? b.toString('utf8').replace(/\r\n/g, '\n') : b);
     }
     return h.digest('hex').slice(0, 8);
   };
