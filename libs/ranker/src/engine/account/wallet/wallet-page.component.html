@@ -567,26 +567,30 @@
       </div>
     </section>
 
-    <!-- Rebuy: back to 1,000 and a new run (the chip's confirm in the next phase), and an admin's Clear history -->
+    <!-- Rebuy: a casino chip, BUY BACK IN; the first tap turns it red, SURE?, the second calls the existing reload()
+         (back to 1,000, a new run); a click anywhere else keeps the run. Then the runs as paper tickets, and an
+         admin's Clear history -->
     <section class="wp-panel" aria-label="Rebuy">
       <div class="wp-bar"><h3>Rebuy</h3><span class="wp-bar-note">Play money · no cash in or out, ever</span></div>
       <div class="wp-body">
-      <div class="wallet-actions">
-        <button type="button" class="app-btn-primary" [attr.aria-expanded]="confirming === 'reload'" (click)="confirming = confirming === 'reload' ? null : 'reload'; message = ''">Reload chips</button>
-        <!-- (an admin's only: a record anyone could wipe isn't much of one) -->
-        @if (admin()) {
-          <button type="button" class="app-btn-danger" [attr.aria-expanded]="confirming === 'clear'" [disabled]="!settled().length" (click)="confirming = confirming === 'clear' ? null : 'clear'; message = ''">Clear history</button>
-        }
-      </div>
-      @if (confirming === 'reload') {
-        <div class="wallet-confirm" role="group" aria-label="Reload the wallet">
-          <p>Back to <b>{{ start | number }}</b> units and a fresh run. Nothing's voided: your history stays, and open bets still settle and count in your record (their payouts stay with the run they were placed in).</p>
-          <div class="wallet-confirm-actions">
-            <button type="button" class="app-btn-outline small" (click)="confirming = null">Cancel</button>
-            <button type="button" class="app-btn-primary small" [disabled]="busy" (click)="reload()">Reload to {{ start | number }}</button>
-          </div>
+      @let sure = confirming === 'reload';
+      <div class="rebuy-head">
+        <button type="button" class="rebuy-chip" [class.sure]="sure" [disabled]="busy" [attr.aria-label]="(sure ? 'Confirm: buy back in at ' : 'Buy back in at ') + (start | number)" (click)="tapRebuy()">
+          @if (sure) { SURE? } @else { BUY<br />BACK IN }
+          <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+        </button>
+        <div class="rebuy-words" aria-live="polite">
+          <span class="rebuy-title">{{ sure ? 'Tap the red chip to buy back in' : 'Buy back in at ' + (start | number) }}</span>
+          <span class="rebuy-text">{{ sure ? 'Your bankroll goes back to ' + (start | number) + ' and run #' + (runNo() + 1) + ' starts. Every ticket and record stays; open tickets still settle and count (their payouts stay with this run). Tap anywhere else to keep playing this run.' : 'Down bad, or just want a clean slate? A rebuy resets your chips to ' + (start | number) + ' and starts a new run. Your history and records stay.' }}</span>
         </div>
-      } @else if (confirming === 'clear' && admin()) {
+      </div>
+      <!-- (an admin's only: a record anyone could wipe isn't much of one) -->
+      @if (admin()) {
+        <div class="wallet-actions">
+          <button type="button" class="app-btn-danger small" [attr.aria-expanded]="confirming === 'clear'" [disabled]="!settled().length" (click)="confirming = confirming === 'clear' ? null : 'clear'; message = ''">Clear history</button>
+        </div>
+      }
+      @if (confirming === 'clear' && admin()) {
         <div class="wallet-confirm danger-zone" role="group" aria-label="Clear the history">
           <p>Deletes your {{ settled().length }} settled bet{{ settled().length === 1 ? '' : 's' }} for good (open bets stay). Type <b>CLEAR</b> to confirm.</p>
           <div class="wallet-confirm-actions">
@@ -602,6 +606,32 @@
       @if (message) {
         <p class="wallet-message" role="status">{{ message }}</p>
       }
+      <!-- Your runs: a paper ticket each (its dates, the balance across it, its peak, how it ended, a BUST or REBUY
+           stamp on a finished one); every run once the whole history's loaded, the current one till then -->
+      <div class="runs">
+        <span class="wp-key">Your runs</span>
+        <div class="runs-grid">
+          @for (r of runs(); track r.n) {
+            <div class="run-ticket" [class.bust]="r.bust" [class.now]="r.current">
+              <span class="run-no">Run #{{ r.n }}</span>
+              <span class="run-dates">{{ r.from ? (r.from | date: 'MMM d') : 'Today' }} – {{ r.current ? 'now' : (r.to | date: 'MMM d') }}</span>
+              @if (r.spark) {
+                <svg class="run-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path [attr.d]="r.spark" vector-effect="non-scaling-stroke" /></svg>
+              }
+              @if (r.peak !== null) {
+                <span class="run-line"><span>Peak</span><b>{{ r.peak | number: '1.1-1' }}</b></span>
+              }
+              <span class="run-line"><span>{{ r.current ? 'Now' : r.bust ? 'Ended' : 'Bought back at' }}</span><b>{{ r.end | number: '1.1-1' }}</b></span>
+              @if (!r.current) {
+                <span class="run-stamp" aria-hidden="true">{{ r.bust ? 'Bust' : 'Rebuy' }}</span>
+              }
+            </div>
+          }
+        </div>
+        @if (!fullHistory() && settled().length) {
+          <span class="wallet-fine">Earlier runs show once the whole history's loaded (Show more, under Settled).</span>
+        }
+      </div>
       </div>
     </section>
     </div>

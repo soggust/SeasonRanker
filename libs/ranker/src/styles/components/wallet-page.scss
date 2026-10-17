@@ -9,6 +9,11 @@
 // ===========================================================================
 
 $gold: chip.$lock-gold;
+// (the tickets' paper and ink: the slip's, the Book's tickets', the runs' and the wall's)
+$paper: linear-gradient(180deg, #f4efe3, #ece5d4);
+$ink: #1a1a1a;
+$ink-soft: #4a4a4a;
+$font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 // (inside the app's sheet (app.component's shell: it scrolls, its pewter look around it); the sport's light
 // lights the controls)
@@ -536,6 +541,181 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   gap: v.$space-12;
 }
 
+// ---------------------------------------------------------------------------
+// Rebuy: the chip (casino-chip.scss's, 76px, the reload blue; red once it asks SURE?), its words beside it; the runs
+// as paper tickets
+// ---------------------------------------------------------------------------
+.rebuy-head {
+  align-items: center;
+  display: grid;
+  gap: v.$space-14;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.rebuy-chip {
+  @include chip.chip(76px);
+  --clay: #{chip.$chip-blue-reload};
+  border-width: 7px;
+  filter: none;
+  font-size: v.$fs-11;
+  font-weight: 900;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+
+  .chip-rim {
+    height: calc(100% + 14px);
+    left: -7px;
+    top: -7px;
+    width: calc(100% + 14px);
+  }
+
+  rect {
+    stroke-width: 7px;
+  }
+
+  &:hover:not([disabled]) {
+    filter: brightness(1.1);
+  }
+
+  @include v.focus-lit {
+    box-shadow:
+      inset 0 0 0 2px var(--clay),
+      inset 0 0 0 3px rgba(chip.$inlay, 0.7),
+      0 0 0 2px #fff,
+      0 4px 10px rgba(0, 0, 0, 0.55);
+  }
+
+  &.sure {
+    --clay: #{chip.$chip-red};
+  }
+
+  &[disabled] {
+    cursor: default;
+    filter: saturate(0.5) brightness(0.7);
+  }
+}
+
+.rebuy-words {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+}
+
+.rebuy-title {
+  font-family: v.$font-heading;
+  font-size: v.$fs-15;
+  font-weight: 600;
+}
+
+.rebuy-text {
+  color: #ccc;
+  font-size: v.$fs-12;
+  line-height: 1.45;
+}
+
+.runs {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
+}
+
+.runs-grid {
+  display: grid;
+  gap: v.$space-14;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  padding: v.$space-4 v.$space-2 v.$space-10;
+}
+
+// (the paper: cream, the slip's mono, scalloped top and bottom)
+@mixin paper {
+  background: $paper;
+  color: $ink;
+  font-family: $font-ticket;
+  mask:
+    radial-gradient(circle 6px at 50% 0, transparent 98%, #000) top / 16px 51% repeat-x,
+    radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) bottom / 16px 51% repeat-x;
+}
+
+.run-ticket {
+  --ink: #{chip.$chip-green};
+  @include paper;
+  display: flex;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  flex-direction: column;
+  gap: v.$space-6;
+  min-width: 0;
+  padding: 16px 12px 18px;
+  position: relative;
+
+  // (a finished run's ink grey, a bust's red)
+  &:not(.now) {
+    --ink: #{$ink-soft};
+  }
+
+  &.bust {
+    --ink: #{chip.$chip-red};
+  }
+
+  .run-no {
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .run-dates {
+    color: $ink-soft;
+    font-size: v.$fs-10;
+    text-transform: uppercase;
+  }
+
+  .run-spark {
+    height: 30px;
+    margin: 2px 0;
+    width: 100%;
+
+    path {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 1.6px;
+    }
+  }
+
+  .run-line {
+    display: flex;
+    font-size: v.$fs-11;
+    justify-content: space-between;
+    text-transform: uppercase;
+
+    b {
+      font-weight: 700;
+    }
+
+    &:last-of-type b {
+      color: var(--ink);
+    }
+  }
+
+  // (the rubber stamp over its top right: BUST in red, REBUY in grey)
+  .run-stamp {
+    border: 2.5px solid currentColor;
+    border-radius: v.$radius-xs;
+    color: var(--ink);
+    font-size: v.$fs-12;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    mix-blend-mode: multiply;
+    opacity: 0.82;
+    padding: 3px 6px;
+    position: absolute;
+    right: 8px;
+    rotate: -12deg;
+    text-transform: uppercase;
+    top: 12px;
+  }
+}
+
 // A confirmation, under the actions
 .wallet-confirm {
   background: rgba(0, 0, 0, 0.35);
@@ -958,10 +1138,6 @@ $bar-line: rgba(chip.$felt-light, 0.4);
 // on a dot-matrix panel, then the bets as printed tickets (the slip's paper, scalloped edges, IBM Plex Mono) in a
 // grid, one column on phones; a cashed ticket rubber-stamped
 // ===========================================================================
-$paper: linear-gradient(180deg, #f4efe3, #ece5d4);
-$ink: #1a1a1a;
-$ink-soft: #4a4a4a;
-$font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 .book-tickets {
   color: #fff;
