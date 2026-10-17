@@ -21,7 +21,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSp
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace } from './game-menu';
+import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace, viewsShown } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
 
@@ -703,6 +703,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       storeSport('');
     }
     this.game = key;
+    this.gamePicksOpen = false;
     this.closeWhy();
   }
 
@@ -997,6 +998,16 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // band's badge), and whether the off-the-board rows are unfolded)
   readonly closedBands = new Set<string>(['check']);
   offBoardOpen = false;
+  // (a chosen game's picks: its own bordered section above the game's menu, folded shut each time a game is chosen,
+  // its header saying how many)
+  gamePicksOpen = false;
+  readonly bestBetsLabel = BEST_BETS_LABEL;
+  gamePicksHead(n: number): string {
+    return gamePicksHead(n);
+  }
+  get viewsShown(): boolean {
+    return viewsShown({ desk: !!this.desk(), open: !!this.hasOpen(), closed: !!this.hasClosed(), live: !!this.hasLive() });
+  }
   bandOpen(band: string): boolean {
     return !this.closedBands.has(band);
   }

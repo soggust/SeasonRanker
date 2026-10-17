@@ -13,7 +13,7 @@
       <h1>The Book</h1>
     </div>
     <!-- (the views, when there's more than one: the bar) -->
-    @if (desk() || hasOpen() || hasClosed() || hasLive()) {
+    @if (viewsShown) {
       <nav class="bets-views" aria-label="View">
         <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The board</button>
         <!-- (Live: the day's games as they're played, with how many are on now and a blinking dot while any are; just
@@ -130,7 +130,7 @@
               <span class="bets-game-label">{{ s.label }}</span>
               <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="bets-game-label">Best Bets</span>
+              <span class="bets-game-label">{{ bestBetsLabel }}</span>
               <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
             <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -156,7 +156,7 @@
               (click)="pick('')"
             >
               <mat-icon class="game-icon" aria-hidden="true" fontIcon="emoji_events"></mat-icon>
-              <span class="game-label">Best Bets</span>
+              <span class="game-label">{{ bestBetsLabel }}</span>
               <span class="game-pill">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             </div>
             @for (d of gameMenu; track d.day) {
@@ -454,15 +454,33 @@
       @let locks = lockCount(shown);
       @let n = shown.length;
       <ol class="bets-list">
-        <!-- (a game chosen: its full menu on top, every line to bet, its picks under it) -->
+        <!-- (a game chosen (the game view; Best Bets as it was): on top a compact bordered section of the bot's picks
+             in that game, folded shut with its count showing; under it the game's full menu, every line to bet, open) -->
         @if (game && boardFor(game); as gb) {
+          @if (sections.length || offBoard.length) {
+            <li class="game-picks" [class.open]="gamePicksOpen">
+              <button type="button" class="game-picks-head" [attr.aria-expanded]="gamePicksOpen" (click)="gamePicksOpen = !gamePicksOpen; closeWhy()">
+                <span class="band-chev" aria-hidden="true"><svg class="chev" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                <span class="game-picks-name">{{ gamePicksHead(n) }}</span>
+              </button>
+              @if (gamePicksOpen) {
+                <ol class="game-picks-rows">
+                  <ng-container *ngTemplateOutlet="bandList; context: { locks: locks, n: n }"></ng-container>
+                </ol>
+              }
+            </li>
+          }
           <li class="bet-board">
             <!-- (made again for each game chosen: a panel keeps the game it first loaded) -->
             @for (one of [gb]; track one.sport + '|' + one.event) {
               <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)" [venue]="venueOf(one)" [kinds]="kinds" (back)="chooseGame('')" (why)="priceWhy($event.at, $event.event)"></game-lines>
             }
           </li>
+        } @else {
+          <ng-container *ngTemplateOutlet="bandList; context: { locks: locks, n: n }"></ng-container>
         }
+      </ol>
+      <ng-template #bandList let-locks="locks" let-n="n">
         <!-- (the bands: each a header and its rows) -->
         @for (s of sections; track s.band) {
           <li class="band" [ngClass]="s.tier">
@@ -505,7 +523,7 @@
             }
           </li>
         }
-      </ol>
+      </ng-template>
     }
     </div>
 

@@ -222,3 +222,18 @@ export function menuKey(key: string, values: string[], active: string): MenuKeyA
 export function menuOptionId(value: string): string {
   return `bets-game-opt-${value.replace(/[^A-Za-z0-9]+/g, '-') || 'all'}`;
 }
+
+// The dropdown's first row and its pill's words with nothing chosen: "Best Bets", capital B, nothing after it
+// (the owner's note, 2026-10-17: no "· every game")
+export const BEST_BETS_LABEL = 'Best Bets';
+
+// The views bar is drawn only when there's more than the board to show: an admin's Algorithm, the user's Open or
+// Cashed bets, or the day's Live games; the board alone, no bar
+export function viewsShown(v: { desk: boolean; open: boolean; closed: boolean; live: boolean }): boolean {
+  return v.desk || v.open || v.closed || v.live;
+}
+
+// A chosen game's picks section's header: "The bot's picks · 3"
+export function gamePicksHead(n: number): string {
+  return `The bot's picks · ${n}`;
+}

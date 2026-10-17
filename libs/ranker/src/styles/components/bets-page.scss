@@ -994,11 +994,80 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   padding: 0;
 }
 
-// (a game's every line on top when it's chosen: the lines board in the panel's padding; restyled with the game
+// (a chosen game's full menu under its picks: the lines board in the panel's padding, full width, open; restyled with the game
 // view next)
 .bet-board {
   border-bottom: 1px solid v.$panel-rule;
   padding: 12px 16px 14px;
+}
+
+// A chosen game's picks (the game view's top, the owner's note, 2026-10-17): a compact bordered section, folded shut
+// by default with its count in its header ("The bot's picks · 3"), the game's band rows inside it when opened; the
+// bands' headers in it scroll with it (not sticky: the section's own header is the one in view). The game's full
+// menu under it, full width, open
+.game-picks {
+  border: 1px solid v.$panel-rule;
+  border-radius: 6px;
+  margin: 12px 16px 0;
+  overflow: hidden;
+
+  .band-head {
+    position: static;
+  }
+}
+
+.game-picks-head {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(chip.$gold-led, 0.12), transparent 70%), var(--scoreboard-dots), var(--scoreboard);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-family: v.$font-base;
+  font-size: v.$fs-13;
+  font-weight: 700;
+  gap: v.$space-6;
+  letter-spacing: 0.06em;
+  padding: 10px 16px 10px 0;
+  text-align: left;
+  text-transform: uppercase;
+  transition: filter v.$t-hover ease;
+  width: 100%;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid chip.$gold-led;
+    outline-offset: -2px;
+  }
+
+  .band-chev {
+    color: chip.$gold-led;
+    display: flex;
+    flex: none;
+    justify-content: center;
+    width: 30px;
+  }
+
+  .chev {
+    transition: transform v.$t-hover ease;
+  }
+
+  &[aria-expanded="true"] .chev {
+    transform: rotate(90deg);
+  }
+}
+
+.game-picks.open .game-picks-head {
+  border-bottom: 1px solid v.$panel-rule;
+}
+
+.game-picks-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 // A band's header: a button that folds its rows, sticky to the top of the scroller while they pass: the

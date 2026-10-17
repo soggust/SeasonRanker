@@ -181,3 +181,11 @@ test("playerCardHref: a prop's player's card is his sport's page with his name o
   assert.equal(bets.playerCardHref({ sport: 'nfl', betType: 'spread', player: null }), null);
   assert.equal(bets.playerCardHref({ sport: 'nfl', betType: 'player', player: '' }), null);
 });
+
+test("the Book's words and bars: Best Bets, the views bar only with more than the board, a game's picks header", () => {
+  assert.equal(bets.BEST_BETS_LABEL, 'Best Bets');
+  const none = { desk: false, open: false, closed: false, live: false };
+  assert.equal(bets.viewsShown(none), false);
+  for (const k of Object.keys(none)) assert.equal(bets.viewsShown({ ...none, [k]: true }), true, k);
+  assert.equal(bets.gamePicksHead(3), "The bot's picks · 3");
+});
