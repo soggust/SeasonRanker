@@ -296,6 +296,79 @@ test('the uniform tables: every team key, eras oldest first and contiguous, the 
   }
 });
 
+test('known designs: the Bruins\' yoke and laces, the Rangers\' bands, the Steelers\' stripes, the Cowboys\' numbers, the Jaguars\' plain helmet', async () => {
+  const hex = /^#[0-9a-f]{6}$/;
+  const { UNIFORM_ERAS: NHL } = await loadTs(path.resolve(import.meta.dirname, '../apps/nhl/src/sport/uniform-eras.ts'));
+  const { UNIFORM_ERAS: NFL, HELMET_ERAS } = await loadTs(path.resolve(import.meta.dirname, '../apps/nfl/src/sport/uniform-eras.ts'));
+  const era = (eras, season) => eras.find((e) => season >= e.from && season <= (e.to ?? 9999));
+
+  // every hockey sweater says how it's cut: arm bands (or none), a hem, a collar style, a number font
+  for (const [team, eras] of Object.entries(NHL)) {
+    for (const e of eras) {
+      for (const kit of [e.home, e.away, e.alt].filter(Boolean)) {
+        const where = `${team} ${e.from}`;
+        assert.ok(Array.isArray(kit.bands) || kit.sleeve === 'none', `${where}: bands`);
+        for (const c of [...(kit.bands ?? []), ...(kit.hem ?? [])]) assert.match(c, hex, where);
+        assert.ok(['v', 'lace', 'round'].includes(kit.collarStyle), `${where}: collar`);
+        assert.ok(['block', 'rounded', 'serif', 'varsity'].includes(kit.numberFont), `${where}: font`);
+        if (kit.yoke) assert.match(kit.yoke, hex, where);
+      }
+    }
+  }
+  // the Bruins: a black yoke and a lace collar on the white, laces on the black too, gold-and-white bands
+  const bos = era(NHL.BOS, 2019);
+  assert.equal(bos.away.yoke, '#111111');
+  assert.equal(bos.away.collarStyle, 'lace');
+  assert.equal(bos.home.collarStyle, 'lace');
+  assert.equal(bos.home.yoke, undefined);
+  assert.ok(bos.home.bands.includes('#ffb81c') && bos.home.hem.includes('#ffb81c'));
+  // the Rangers: no yoke (the diagonal wordmark leaves the chest clear), red-white-red arm and hem bands,
+  // white numbers trimmed red on the blue
+  const nyr = era(NHL.NYR, 2022);
+  assert.equal(nyr.home.yoke, undefined);
+  assert.deepEqual(nyr.home.bands, ['#ce1126', '#f3f2ee', '#ce1126']);
+  assert.deepEqual(nyr.home.hem, ['#ce1126', '#f3f2ee', '#ce1126']);
+  assert.equal(nyr.home.num, '#f3f2ee');
+  assert.equal(nyr.home.outline, '#ce1126');
+  // the Canadiens' white: a red yoke; the Leafs' white: a blue one, laces since 2011; the Flyers: wings as a yoke
+  assert.equal(era(NHL.MTL, 2015).away.yoke, '#af1e2d');
+  assert.equal(era(NHL.TOR, 2015).away.yoke, '#00205b');
+  assert.equal(era(NHL.TOR, 2015).away.collarStyle, 'lace');
+  assert.equal(era(NHL.TOR, 2010).away.collarStyle, 'v');
+  assert.equal(era(NHL.PHI, 2015).home.yoke, '#f3f2ee');
+  assert.equal(era(NHL.PHI, 2015).home.sleeve, 'none');
+
+  // the Steelers: gold-black-gold sleeve stripes on the black (black-gold-black on the white), untrimmed white
+  // numbers; the gold numbers only on the Color Rush alternate
+  const pit = era(NFL.Steelers, 2023);
+  assert.deepEqual(pit.home.bands, ['#ffb612', '#000000', '#ffb612']);
+  assert.deepEqual(pit.away.bands, ['#000000', '#ffb612', '#000000']);
+  assert.equal(pit.home.num, '#ffffff');
+  assert.equal(pit.home.outline, '#ffffff');
+  assert.equal(pit.alt.num, '#ffb612');
+  assert.equal(era(NFL.Steelers, 2010).alt, undefined);
+  // the Cowboys: blue numbers trimmed navy on the white home; the Thanksgiving throwback navy with white
+  // shoulders and no TV numbers
+  const dal = era(NFL.Cowboys, 2023);
+  assert.equal(dal.home.body, '#f3f2ee');
+  assert.equal(dal.home.num, '#003594');
+  assert.equal(dal.home.outline, '#041e42');
+  assert.equal(dal.alt.body, '#041e42');
+  assert.equal(dal.alt.yoke, '#ffffff');
+  assert.equal(dal.alt.tv, false);
+  assert.equal(era(NFL.Cowboys, 2016).alt, undefined);
+  // the Jaguars: a helmet with no stripe in every era; the 2013-17 black with teal sleeve caps
+  for (const e of HELMET_ERAS.Jaguars) assert.equal(e.stripe, 'none');
+  assert.equal(era(NFL.Jaguars, 2015).home.cap, '#006778');
+  // the Bengals' 2004-20 set had no TV numbers; the Giants' blue is plain; the Panthers' helmet stripe is black
+  // in blue; the Lions' 2024 helmet has a blue mask; the Football Team kept its stripes
+  assert.equal(era(NFL.Bengals, 2010).home.tv, false);
+  assert.equal(era(NFL.Giants, 2010).home.sleeve, 'none');
+  assert.deepEqual(era(HELMET_ERAS.Panthers, 2020).colors, ['#101820', '#0085ca']);
+  assert.equal(era(HELMET_ERAS.Lions, 2024).mask, '#0076b6');
+  assert.equal(era(HELMET_ERAS.Commanders, 2021).stripe, 'triple');
+});
+
 test('neutral sites in every sport: Super Bowls and a moved wild card, 2020 bubbles, the 2020 World Series', () => {
   for (const season of siteSeasons('nfl')) {
     const o = outcomesOf('nfl', season);

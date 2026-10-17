@@ -1,7 +1,9 @@
 // The NFL's primary helmets, 2000 to today: each team's eras (a new era at every major helmet change: a new
 // shell color or finish, a stripe change, a facemask color change, a new logo), oldest first, the last one
 // open-ended. Alternates, throwbacks and Color Rush helmets are left out. Keyed as team-colors.ts is. A `?` in
-// `note` marks something the sources didn't settle.
+// `note` marks something the sources didn't settle. (The helmet piece draws each team's primary logo as the
+// side decal; the Browns' plain shell, the Bengals' tiger stripes, the Eagles' wings, the Rams' and Vikings'
+// horns and the Football Team's player number need a decal field the table doesn't have yet.)
 //
 // Sources: the Wikipedia "Logos and uniforms of the <team>" articles (or the team article's "Logos and uniforms"
 // section), sportslogos.net's helmet histories (https://www.sportslogos.net/logos/list_by_team/<id>/, each era's
@@ -32,7 +34,7 @@ export const HELMET_ERAS: HelmetTable = {
   Bills: [
     { from: 2000, to: 2001, shell: '#c60c30', stripe: 'triple', colors: ['#00338d', '#ffffff'], mask: '#ffffff', logo: '#00338d', note: 'red shell, blue and white stripes; stripe order (blue center?)' },
     { from: 2002, to: 2010, shell: '#c60c30', stripe: 'triple', colors: ['#0d254c', '#a5acaf'], mask: '#ffffff', logo: '#00338d', note: 'navy, nickel, royal and white stripes; simplified to center + trim?' },
-    { from: 2011, to: 2020, shell: '#ffffff', stripe: 'triple', colors: ['#c60c30', '#00338d'], mask: '#0d254c', logo: '#00338d', note: 'white shell, red/royal/navy stripes; mask navy? (sportslogos says grey)' },
+    { from: 2011, to: 2020, shell: '#ffffff', stripe: 'triple', colors: ['#c60c30', '#00338d'], mask: GREY_MASK, logo: '#00338d', note: 'white shell, red/royal/navy stripes, grey facemask (sportslogos and the 2021 change "from grey to white")' },
     { from: 2021, shell: '#ffffff', stripe: 'triple', colors: ['#c60c30', '#00338d'], mask: '#ffffff', logo: '#00338d', note: 'white facemask from 2021' },
   ],
   // Wikipedia (Logos and uniforms of the Denver Broncos: navy masks from 1997, 2024 Mile High Collection);
@@ -80,8 +82,9 @@ export const HELMET_ERAS: HelmetTable = {
   // /6741 (Washington Football Team), /6832 (Commanders)
   Commanders: [
     { from: 2000, to: 2019, shell: '#5a1414', stripe: 'triple', colors: ['#ffb612', '#ffffff'], mask: '#ffb612', logo: '#ffb612', note: 'Redskins: white, burgundy and gold stripes (order?); logo the feathered head in a gold-ringed circle' },
-    { from: 2020, to: 2021, shell: '#5a1414', stripe: 'none', mask: '#ffb612', logo: '#ffb612', note: 'Washington Football Team: no logo, gold player number on the side' },
-    { from: 2022, shell: '#5a1414', stripe: 'single', colors: ['#ffb612'], mask: '#ffb612', logo: '#ffb612', note: 'Commanders: gold W, single gold stripe; mask gold? (sportslogos says burgundy, Wikipedia gold since 1978)' },
+    { from: 2020, to: 2021, shell: '#5a1414', stripe: 'triple', colors: ['#ffb612', '#ffffff'], mask: '#ffb612', logo: '#ffb612', note: 'Washington Football Team: the Redskins helmet with the logo swapped for the gold player number; the gold/white stripes stayed' },
+    { from: 2022, to: 2025, shell: '#5a1414', stripe: 'single', colors: ['#ffb612'], mask: '#5a1414', logo: '#ffb612', note: 'Commanders: satin burgundy, gold W, single gold stripe, burgundy facemask' },
+    { from: 2026, shell: '#5a1414', stripe: 'single', colors: ['#ffb612'], mask: '#ffb612', logo: '#ffb612', note: '2026 glossy burgundy helmet, gold facemask back; stripe pattern (single gold or the classic gold/white)?' },
   ],
   // Wikipedia (Logos and uniforms of the Dallas Cowboys: "Metallic Silver Blue", blue/white/blue stripe);
   // sportslogos.net /list_by_team/165
@@ -104,7 +107,8 @@ export const HELMET_ERAS: HelmetTable = {
   Falcons: [
     { from: 2000, to: 2002, shell: '#101820', stripe: 'none', mask: '#000000', logo: '#a71930', note: 'old falcon logo: main color red or black?' },
     { from: 2003, to: 2019, shell: '#101820', stripe: 'none', mask: '#000000', logo: '#a71930', note: 'new F-shaped falcon' },
-    { from: 2020, shell: '#101820', finish: 'matte', stripe: 'none', mask: '#a5acaf', logo: '#a71930', note: 'matte shell, chrome-like silver facemask' },
+    { from: 2020, to: 2025, shell: '#101820', finish: 'matte', stripe: 'none', mask: '#a5acaf', logo: '#a71930', note: 'matte shell, chrome-like silver facemask' },
+    { from: 2026, shell: '#101820', finish: 'gloss', stripe: 'none', mask: GREY_MASK, logo: '#a71930', note: '2026 set: low-gloss black shell, grey facemask' },
   ],
   // Wikipedia (Logos and uniforms of the New York Giants); sportslogos.net /list_by_team/166 ("Metallic blue helmet
   // with red stripe")
@@ -130,7 +134,8 @@ export const HELMET_ERAS: HelmetTable = {
     { from: 2000, to: 2002, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#ffffff'], mask: '#0076b6', logo: '#0076b6', note: 'blue and white stripes (order?); mask blue?' },
     { from: 2003, to: 2008, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#000000'], mask: '#0076b6', logo: '#0076b6', note: 'black added to the stripes; mask blue?' },
     { from: 2009, to: 2016, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#000000'], mask: '#000000', logo: '#0076b6', note: 'new lion logo, black facemask' },
-    { from: 2017, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#ffffff'], mask: '#a5acaf', logo: '#0076b6', note: 'black dropped; chrome-silver facemask; stripe pattern?' },
+    { from: 2017, to: 2023, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#ffffff'], mask: '#a5acaf', logo: '#0076b6', note: 'black dropped; chrome-silver facemask; stripe pattern?' },
+    { from: 2024, shell: '#b0b7bc', stripe: 'triple', colors: ['#0076b6', '#ffffff'], mask: '#0076b6', logo: '#0076b6', note: '2024 set: blue and white stripes to match the sleeves, Honolulu blue facemask (as 1984-2002)' },
   ],
   // sportslogos.net /list_by_team/171 (1980-: "Yellow with green facemask, and green and white stripes")
   Packers: [
@@ -139,8 +144,8 @@ export const HELMET_ERAS: HelmetTable = {
   // Wikipedia (Carolina Panthers: logo blue darkened 2012); sportslogos.net /list_by_team/174 (1995-2011: "Silver
   // with black facemask, black and lightblue curved stripes")
   Panthers: [
-    { from: 2000, to: 2011, shell: '#bfc0bf', finish: 'metallic', stripe: 'triple', colors: ['#0085ca', '#101820'], mask: '#101820', logo: '#0085ca', note: 'black and blue stripes (pattern/order?)' },
-    { from: 2012, shell: '#bfc0bf', finish: 'metallic', stripe: 'triple', colors: ['#0085ca', '#101820'], mask: '#101820', logo: '#0085ca', note: 'revised logo with darker blue; stripe unchanged?' },
+    { from: 2000, to: 2011, shell: '#bfc0bf', finish: 'metallic', stripe: 'triple', colors: ['#101820', '#0085ca'], mask: '#101820', logo: '#0085ca', note: 'black center stripe outlined in blue (the reverse of the jersey trim)' },
+    { from: 2012, shell: '#bfc0bf', finish: 'metallic', stripe: 'triple', colors: ['#101820', '#0085ca'], mask: '#101820', logo: '#0085ca', note: 'revised logo with darker blue; stripe unchanged' },
   ],
   // sportslogos.net /list_by_team/151 (2000-: "Silver helmet, navy logo, red facemask")
   Patriots: [
@@ -186,7 +191,7 @@ export const HELMET_ERAS: HelmetTable = {
   Titans: [
     { from: 2000, to: 2017, shell: '#ffffff', stripe: 'triple', colors: ['#0c2340', '#c8102e'], mask: '#0c2340', logo: '#4b92db', note: 'navy tapered stripes (red trim?)' },
     { from: 2018, to: 2025, shell: '#0c2340', stripe: 'single', colors: ['#8a8d8f'], mask: '#8a8d8f', logo: '#4b92db', note: 'silver sword-shaped center stripe, metallic grey facemask' },
-    { from: 2026, shell: '#ffffff', stripe: 'single', colors: ['#c8102e'], mask: '#ffffff', logo: '#4b92db', note: 'Shield logo, white facemask; red "6-string" stripe on the helmet? (stripe pattern unconfirmed)' },
+    { from: 2026, shell: '#ffffff', stripe: 'single', colors: ['#c8102e'], mask: '#ffffff', logo: '#4b92db', note: 'Shield logo, white facemask; the red "six-string" center stripe (thin navy lines inside it) drawn as a single red stripe' },
   ],
   // Wikipedia (Logos and uniforms of the Minnesota Vikings); sportslogos.net /list_by_team/172
   Vikings: [
