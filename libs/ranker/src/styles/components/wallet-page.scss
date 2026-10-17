@@ -915,8 +915,11 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
       height: 7px;
       width: 7px;
 
-      @media (prefers-reduced-motion: no-preference) {
-        animation: ticket-blink 1.4s ease-in-out infinite;
+      // (set outside a media query: Angular doesn't rewrite a scoped keyframe's name under a nested @media)
+      animation: ticket-blink 1.4s ease-in-out infinite;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
       }
     }
   }

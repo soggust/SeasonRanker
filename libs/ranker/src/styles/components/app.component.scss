@@ -461,10 +461,13 @@ main {
       overflow: hidden;
 
       // (the members unfold from the label, each a step after the last; none for anyone who's asked for
-      // less motion)
-      @media (prefers-reduced-motion: no-preference) {
-        animation: family-open 0.2s v.$ease-out backwards;
-        animation-delay: calc(var(--i, 0) * 20ms);
+      // less motion. Set outside a media query: Angular doesn't rewrite a scoped keyframe's name under a
+      // nested @media, tests/scoped-animations.test.mjs)
+      animation: family-open 0.2s v.$ease-out backwards;
+      animation-delay: calc(var(--i, 0) * 20ms);
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
       }
     }
   }

@@ -1327,9 +1327,13 @@ $page-gutter: 16px;
   line-height: 1;
   white-space: nowrap;
   width: max-content;
+  // (declared here, not inside a media query: Angular scopes a component's @keyframes name but doesn't
+  // rewrite an `animation` set under a nested @media, so the strip pointed at a keyframe that didn't exist
+  // and never moved on the live site. Anyone asking for less motion gets it stopped below)
+  animation: ticker-slide 45s linear infinite;
 
-  @media (prefers-reduced-motion: no-preference) {
-    animation: ticker-slide 45s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }
 

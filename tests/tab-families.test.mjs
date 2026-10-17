@@ -101,9 +101,10 @@ test('the bar: no sub-row on phones, the sub-row only on the tablet widths, the 
   assert.match(styles, /@media \(min-width: v\.bp\(phone-up\)\) and \(max-width: #\{v\.bp\(medium\) - 1px\}\) \{\s*main \.content\.with-sub-row \{\s*--position-bar-space: 86px;/);
   assert.doesNotMatch(styles, /--position-bar-space: 100px/, 'no desktop room for a sub-row');
   // The accordion: the open family's members show from medium, unfolding only for those who haven't asked for
-  // less motion (the one motion in the bar)
+  // less motion (the one motion in the bar). The animation is set outside any @media (Angular doesn't rename a
+  // scoped keyframe under one: tests/scoped-animations.test.mjs) and stopped under reduce
   assert.match(styles, /@keyframes family-open/);
-  assert.match(styles, /\.member \{[\s\S]*?@media \(prefers-reduced-motion: no-preference\) \{\s*animation: family-open 0\.2s/);
+  assert.match(styles, /\.member \{[\s\S]*?animation: family-open 0\.2s[\s\S]*?@media \(prefers-reduced-motion: reduce\) \{\s*animation: none;/);
   // No chevrons anywhere in the bar, and nothing styles a shut family apart from a plain tab: the only rules on
   // button.family are the lit one for the open family's tab on the sub-row widths, and the one that hides that
   // tab inside the open group on the accordion widths (the owner: the members alone are the group)

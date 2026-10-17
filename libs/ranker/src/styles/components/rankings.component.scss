@@ -2169,8 +2169,11 @@ section ul li.player:not(.header-row) .count.rank-tile.isolate-place {
   pointer-events: auto;
   white-space: nowrap;
 
-  @media (prefers-reduced-motion: no-preference) {
-    animation: isolate-chip-in 0.18s ease-out;
+  // (set outside a media query: Angular doesn't rewrite a scoped keyframe's name under a nested @media)
+  animation: isolate-chip-in 0.18s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 
   b {
