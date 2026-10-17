@@ -676,3 +676,24 @@
     transition: none;
   }
 }
+
+// (phones: the K score's hit area reaches past its small face, 44px with the strip's)
+@include v.down(ai-narrow) {
+  .tile-k {
+    position: relative;
+
+    &::before {
+      content: "";
+      inset: -11px -8px;
+      position: absolute;
+    }
+  }
+
+  .section-head {
+    min-height: 44px;
+  }
+
+  .lines-back {
+    min-height: 44px;
+  }
+}

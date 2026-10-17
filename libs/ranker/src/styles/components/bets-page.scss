@@ -1797,3 +1797,142 @@ $page-gutter: 16px;
     animation: none;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Phones and small tablets (700px and under), the phone design: the header THE BOOK and the bankroll as a small
+// pill, the views' bar under them full width at 40px, the game dropdown full width, the chips 44px in one row
+// that scrolls sideways, the page's padding closer; every control a 44px touch target (the small ones' hit areas
+// reach past their edges)
+// ---------------------------------------------------------------------------
+@include v.down(ai-narrow) {
+  .bets-page {
+    gap: v.$space-10;
+    padding: 14px 14px 20px;
+  }
+
+  .book-head {
+    gap: v.$space-10;
+  }
+
+  .book-chip {
+    display: none;
+  }
+
+  .book-title h1 {
+    font-size: v.$fs-22;
+    letter-spacing: 2.5px;
+  }
+
+  .bets-views {
+    flex: 1 1 100%;
+    height: 40px;
+    max-width: none;
+    order: 3;
+
+    button {
+      padding: 0 0.6em;
+    }
+  }
+
+  // (the bankroll: a pill, BANKROLL and the balance; the play, the record and the chip wait for the wallet)
+  .bankroll {
+    align-items: baseline;
+    border-radius: v.$radius-lg;
+    display: flex;
+    gap: v.$space-8;
+    margin-left: auto;
+    padding: 7px 12px;
+    width: auto;
+
+    .bankroll-chip,
+    .bankroll-play,
+    .bankroll-record {
+      display: none;
+    }
+
+    .bankroll-label {
+      font-size: 9px;
+      letter-spacing: 1.2px;
+    }
+
+    .bankroll-balance {
+      font-size: v.$fs-16;
+    }
+  }
+
+  .bets-info {
+    order: 2;
+  }
+
+  .book-controls {
+    gap: v.$space-8;
+  }
+
+  .bets-game {
+    max-width: none;
+    width: 100%;
+  }
+
+  .bets-kinds {
+    flex-wrap: nowrap;
+    margin: 0 -4px;
+    overflow-x: auto;
+    padding: 6px 4px;
+    width: calc(100% + 8px);
+    @include chip.gold-scrollbar;
+  }
+
+  .kind-chip {
+    border-width: 5px;
+    flex: none;
+    height: 44px;
+    width: 44px;
+
+    .kind-label {
+      font-size: v.$fs-11;
+    }
+
+    .chip-rim {
+      height: calc(100% + 10px);
+      left: -5px;
+      top: -5px;
+      width: calc(100% + 10px);
+    }
+
+    rect {
+      height: calc(100% - 5px);
+      stroke-width: 5px;
+      width: calc(100% - 5px);
+      x: 2.5px;
+      y: 2.5px;
+    }
+  }
+
+  .board {
+    margin: 4px;
+  }
+
+  // (the touch targets: the row's chevron as tall as the row, the rank tile's and the band header's reach past
+  // their edges)
+  .bet-chevron {
+    height: 44px;
+  }
+
+  .bet-rank {
+    position: relative;
+
+    &::before {
+      content: "";
+      inset: -6px -4px;
+      position: absolute;
+    }
+  }
+
+  .band-head {
+    min-height: 44px;
+  }
+
+  .bet-price {
+    min-height: 44px;
+  }
+}
