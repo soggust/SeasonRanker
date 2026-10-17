@@ -110,9 +110,9 @@ $page-gutter: 16px;
   }
 }
 
-// (the title's chip: the site's gold, blank: no letters on it (the owner))
+// (the title's chip: the bankroll chip's orange clay, blank: no letters on it (the owner))
 .book-chip {
-  --clay: #{chip.$gold-led};
+  --clay: #{chip.$lock};
   height: 46px;
   width: 46px;
 }
