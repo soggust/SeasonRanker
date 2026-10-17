@@ -14,6 +14,7 @@ import { anyFaded, toneText } from '../../heat-map/heat-color';
 import type { HeatChip, HeatMapData, HeatMapDef, HeatMatchup, HeatSurfaceId } from '../../heat-map/heat-map.model';
 import { heatSurface } from '../../heat-map/surfaces';
 import { isLiveSeason } from '@ranker/engine/data';
+import { DepthRank, depthRankClass, depthRankText, depthRankTitle } from '../depth-ranks';
 
 // Stats: each group a panel of stat tiles; Recent's W/L squares open their games
 @Component({ selector: 'card-stats', templateUrl: './stats.component.html', standalone: false })
@@ -115,6 +116,26 @@ export class CardTeamTab extends CardTab {
   // A headshot whose player the site has: his card (like his name)
   openLink(link: { position: string; gsisId: string } | null | undefined, season: number): void {
     if (link) this.cards.openLinked(link, season);
+  }
+
+  // The rank gems (depth-ranks.ts): a player's rank at his own tab, in the rank column's digits, its colors
+  // and its hover ("No. 3 of 32 Quarterbacks this season"); a click opens his card (on the chip, which
+  // toggles the slot, the gem's click is told apart from the chip's)
+  rank(link: { position: string; gsisId: string } | null | undefined): DepthRank | null {
+    return this.cards.depthRank(this.c, link);
+  }
+  readonly rankDigits = depthRankText;
+  readonly rankClass = depthRankClass;
+  rankTitle(rank: DepthRank, link: { position: string }, season: number): string {
+    return depthRankTitle(rank, this.cards.depthRankTab(link), isLiveSeason(season) ? 'this season' : `in ${SPORT.seasonText(season)}`);
+  }
+  chipClick(event: Event, key: string, link: { position: string; gsisId: string } | null | undefined, season: number): void {
+    if ((event.target as Element | null)?.closest('.depth-rank')) {
+      event.stopPropagation();
+      this.openLink(link, season);
+      return;
+    }
+    this.cards.toggleDepthSlot(key);
   }
 }
 

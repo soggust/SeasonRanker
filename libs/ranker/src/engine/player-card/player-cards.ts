@@ -21,6 +21,7 @@ import { CareerIndex, CareerNames, careerIndex } from '@ranker/engine/career-ind
 import { NUMBER, grade, innings, ordinal, rankPct, rankTone } from '@ranker/core/format';
 import type { DepthPlayer, DepthSide, DepthView } from './depth-chart';
 import { DepthMode, Formation, SlotLineup, sideFormation, slotLineup } from './depth-lineup';
+import { DepthRank, TabPlaces, depthRank, tabPlaces } from './depth-ranks';
 import type { FieldMapPart, FieldMapView } from './field-map';
 import type { HeatMapData, HeatMapDef, HeatMatchup, HeatMode, HeatSplit } from '../heat-map/heat-map.model';
 import { CardOverview, CardSeason, CardStat, CardTab, CareerSeason, PlayerCard, SeasonContext } from './card.model';
@@ -47,6 +48,9 @@ export interface CardHost {
   // tab's, for a card opened on it)
   seasonContext(season: number, rows: Record<SkillPosition, SkillPlayer[]>, position?: SkillPosition): SeasonContext;
   rankedIn(context: SeasonContext, players: SkillPlayer[]): SkillPlayer[];
+  // Counts up each time the table ranks again (the sliders, the eyes, the settings menu, a row dragged): a
+  // ranking kept from before it is stale (the depth chart's rank gems)
+  readonly rankVersion: number;
   // The stat groups with columns showing, for that reader's season
   shownGroups(reader: StatReader, position?: SkillPosition): SkillStatGroup[];
   headshot(unit: { id?: number | null }, w?: number): string | null;
@@ -384,6 +388,75 @@ export class PlayerCards {
         co.link = row && coachTab ? { position: coachTab, gsisId: row.gsisId } : null;
       }
     }
+  }
+
+  // The depth chart's rank gems (depth-ranks.ts): a linked player's rank at his own tab for the card's season,
+  // under the user's settings for that tab (the rank his card opens to), or UR; none for a team unit's tab,
+  // or while the tab's ranking is on its way. Each tab is ranked once per season and kept (places, the
+  // template asks for every gem on every check), and let go when the table ranks again (host.rankVersion:
+  // the sliders, the eyes, the settings menu, a drag); a ranking that lands after that is dropped. The tabs
+  // a draw asks for are ranked together in one turn a frame later (pending: the chart draws first, then
+  // every gem lights at once; a dozen tabs each in its own turn cost a change check and a layout apiece).
+  private places = new Map<string, TabPlaces | 'loading' | 'error'>();
+  private placesVersion = -1;
+  private pending: { key: string; season: number; position: SkillPosition }[] = [];
+  depthRank(card: PlayerCard, link: { position: string; gsisId: string } | null | undefined): DepthRank | null {
+    return depthRank(link, (position) => this.tabPlaces(card.season, position as SkillPosition), SPORT.teamTabs ?? []);
+  }
+
+  private tabPlaces(season: number, position: SkillPosition): TabPlaces | null {
+    const version = this.host.rankVersion;
+    if (version !== this.placesVersion) {
+      this.places.clear();
+      this.pending.length = 0;
+      this.placesVersion = version;
+    }
+    const key = `${season}/${position}`;
+    const got = this.places.get(key);
+    if (got === undefined) {
+      this.places.set(key, 'loading');
+      // (the turn after the next frame has painted, so the chart shows before the ranking runs; a page not
+      // showing, whose frames don't come, after a moment)
+      if (!this.pending.length) {
+        const turn = () => void this.rankPending(version);
+        if (typeof requestAnimationFrame === 'function' && !document.hidden) requestAnimationFrame(() => setTimeout(turn));
+        else setTimeout(turn, 100);
+      }
+      this.pending.push({ key, season, position });
+      return null;
+    }
+    return typeof got === 'string' ? null : got;
+  }
+
+  // The tabs asked for since the last turn, ranked: each tab's list for its season as the table would rank
+  // it now (the table's own season's rows, else rankedSeason's), and the rest of its rows UR under the Min
+  // Games cutoff, else ranked where he'd fall, as his card opens
+  private async rankPending(version: number): Promise<void> {
+    const batch = this.pending.splice(0);
+    const rowsOf = (season: number, position: SkillPosition) =>
+      season === this.host.season ? Promise.resolve(SKILL_UNITS[position]) : season === CURRENT_SEASON ? this.data.rows(CURRENT_SEASON).then((rows) => rows[position]) : this.data.tabRows(season, position);
+    const rows = await Promise.all(batch.map((b) => rowsOf(b.season, b.position).catch((err) => (console.error(err), null))));
+    // (the table ranked again meanwhile: these were let go, and the next draw asks again)
+    if (this.host.rankVersion !== version) return;
+    batch.forEach(({ key, season, position }, i) => {
+      const tab = rows[i];
+      if (!tab) {
+        this.places.set(key, 'error');
+        return;
+      }
+      try {
+        const context = this.host.seasonContext(season, { [position]: tab } as Record<SkillPosition, SkillPlayer[]>, position);
+        this.places.set(key, tabPlaces(context.list, tab, (player) => underMin(player, context), (players) => this.host.rankedIn(context, players)));
+      } catch (err) {
+        console.error(err);
+        this.places.set(key, 'error');
+      }
+    });
+  }
+
+  // A gem's hover: "No. 3 of 32 Quarterbacks this season" (a past season: "in 2024"), or what UR means
+  depthRankTab(link: { position: string }): string {
+    return SPORT.tabNames[link.position as SkillPosition] ?? POSITION_NAMES[link.position as SkillPosition] ?? link.position;
   }
 
   // A roster's player (or the hero's team) opened: their card for that season, on their own tab, ranked

@@ -110,6 +110,8 @@ export class PinReader {
       season: dataSeason,
       playerList: [],
       stats: SKILL_STATS[first],
+      // (ranked once, for this read)
+      rankVersion: 0,
       colorValues: settings.colorValues,
       get reader(): StatReader {
         return readerOf(host.seasonContext(dataSeason, SKILL_UNITS, first));

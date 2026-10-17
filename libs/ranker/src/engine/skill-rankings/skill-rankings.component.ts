@@ -84,6 +84,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   playerList: SkillPlayer[] = [];
   stats: SkillStat[] = [];
+  // Counts up each time the list is ranked again or dragged (CardHost: the card's kept rankings go stale)
+  rankVersion = 0;
   // This position's stat groups, which are switched off (eye / header chip), and its slider weights
   groups: SkillStatGroup[] = [];
   hidden: Partial<Record<StatGroupId, boolean>> = {};
@@ -204,21 +206,23 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     });
 
     // Re-rank when the sliders, the group eyes, the settings menu or the stat eyes change (each one, a preset
-    // too, ending an isolated look: back to the ranking)
+    // too, ending an isolated look: back to the ranking; and the card's kept rankings let go, rankVersion)
     service.weights$.pipe(takeUntilDestroyed()).subscribe((weights) => {
+      this.rankVersion++;
       if (!this.position) return;
       this.leaveIsolation();
       this.weights = weights[this.position];
       this.sortPlayers();
     });
     service.skillHidden$.pipe(takeUntilDestroyed()).subscribe((hidden) => {
+      this.rankVersion++;
       if (!this.position) return;
       this.leaveIsolation();
       this.hidden = hidden[this.position] ?? {};
       this.sortPlayers();
     });
-    service.settings$.pipe(takeUntilDestroyed()).subscribe(() => this.position && (this.leaveIsolation(), this.sortPlayers()));
-    service.statHidden$.pipe(takeUntilDestroyed()).subscribe(() => this.position && (this.leaveIsolation(), this.sortPlayers()));
+    service.settings$.pipe(takeUntilDestroyed()).subscribe(() => (this.rankVersion++, this.position && (this.leaveIsolation(), this.sortPlayers())));
+    service.statHidden$.pipe(takeUntilDestroyed()).subscribe(() => (this.rankVersion++, this.position && (this.leaveIsolation(), this.sortPlayers())));
 
     // Another season from the year dropdown (or its playoffs, Length): its rows from the top, in
     // that season's order for this tab (dragged or not) if it has one, otherwise sorted by the sliders
@@ -227,6 +231,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
       this.season = season;
       this.seasonPart = service.seasonPart;
       if (changed) this.picked = [];
+      if (changed) this.rankVersion++;
       if (changed && this.position) this.ngOnChanges();
     });
     service.seasonLoading$.pipe(takeUntilDestroyed()).subscribe((loading) => (this.seasonLoading = loading));
@@ -338,6 +343,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // A row dragged to another place: the order is kept, by hand, until the tab re-sorts
   drop(event: CdkDragDrop<string[]>): void {
     this.closeWhy();
+    this.rankVersion++;
     // (the ranked rows only: an unranked row doesn't drag, and none goes below them)
     moveItemInArray(this.playerList, event.previousIndex, Math.min(event.currentIndex, this.playerList.length - 1));
     this.showUnranked(this.unrankedList);
