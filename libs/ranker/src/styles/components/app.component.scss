@@ -17,7 +17,8 @@
   box-shadow: inset 0 0 1em rgba(0, 0, 0, 0.4);
   display: flex;
   height: var(--sport-bar-height);
-  padding: 0 calc(1em + 1px);
+  // (a touch more room at the bar's ends: the owner; the links' own padding unchanged)
+  padding: 0 calc(1em + 1px + #{v.$space-8});
   position: relative;
   z-index: 5;
   // (never wider than the screen: on the narrowest phones its links scroll within it, the page doesn't)
