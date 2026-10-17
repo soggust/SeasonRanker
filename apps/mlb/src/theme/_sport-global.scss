@@ -8,6 +8,8 @@
 // sliders, and the baseball's cream as the accent
 // ===========================================================================
 :root {
+  // The ground's own markings under the light, zoomed in (faint, in the SVG)
+  --tex-ground-paint: url("../assets/textures/ground-paint.svg");
   // This sport's chalkboard plays (the grid, card and About backgrounds) and #1 trophy
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
   --trophy-mask: url("../assets/lombardi.svg");
@@ -18,12 +20,17 @@
 // Infield clay: a real dirt photo (CC0, ambientCG Ground088), warmed to clay by multiplying it over the
 // clay color, with the same soft vignette as the turf
 body {
-  background-blend-mode: normal, multiply;
+  background-blend-mode: normal, normal, multiply;
   background-color: #c9814c;
   background-image:
     kit.vignette(),
+    var(--tex-ground-paint),
     url("../assets/textures/dirt.webp");
-  background-size: cover, 512px;
+  background-size: cover, cover, 512px;
+  // (the MLB ground's markings, zoomed right in (a chalked foul line, faint): covering the page from the top
+  // right like the Bets felt's print, so they stretch across a wide screen)
+  background-position: center, right top, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat;
 }
 
 $seam-red: #c8102e;

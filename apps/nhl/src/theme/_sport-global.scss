@@ -5,6 +5,8 @@
 // puck rubber on the buttons and inputs, and ice blue (the glowing puck's halo) as the accent
 // ===========================================================================
 :root {
+  // The ground's own markings under the light, zoomed in (faint, in the SVG)
+  --tex-ground-paint: url("../assets/textures/ground-paint.svg");
   // This sport's chalkboard plays (the grid, card and About backgrounds: hockey diagrams) and #1
   // trophy (the Stanley Cup)
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
@@ -20,8 +22,13 @@ body {
   background-image:
     kit.vignette(45%, rgba(10, 30, 50, 0.32)),
     kit.arena-lights(rgba(255, 255, 255, 0.35)),
+    var(--tex-ground-paint),
     url("../assets/textures/ice.svg");
-  background-size: cover, cover, 800px;
+  background-size: cover, cover, cover, 800px;
+  // (the NHL ground's markings, zoomed right in (the lines under the ice: red, blue, a faceoff dot): covering
+  // the page from the top right like the Bets felt's print, so they stretch across a wide screen)
+  background-position: center, center, right top, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
 }
 
 // ---------------------------------------------------------------------------

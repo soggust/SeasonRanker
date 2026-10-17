@@ -5,6 +5,8 @@
 // switches, octagon-cut buttons and inputs, and fight-night red as the accent
 // ===========================================================================
 :root {
+  // The ground's own markings under the light, zoomed in (faint, in the SVG)
+  --tex-ground-paint: url("../assets/textures/ground-paint.svg");
   // This sport's board texture (the grid, card and About backgrounds: the cage's chain-link fence, in
   // place of the chalk plays) and #1 trophy (a championship belt)
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
@@ -20,8 +22,13 @@ body {
   background-image:
     kit.vignette(45%, rgba(40, 20, 10, 0.32)),
     kit.arena-lights(rgba(255, 255, 255, 0.3)),
+    var(--tex-ground-paint),
     url("../assets/textures/canvas.svg");
-  background-size: cover, cover, 600px;
+  background-size: cover, cover, cover, 600px;
+  // (the MMA ground's markings, zoomed right in (a sponsor's worn print and old blood stains, at the edges):
+  // covering the page from the top right like the Bets felt's print, so they stretch across a wide screen)
+  background-position: center, center, right top, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
 }
 
 $red: #d61a1f;
