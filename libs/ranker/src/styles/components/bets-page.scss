@@ -699,17 +699,22 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // wide screen. From 1000px the page stands still: the board fills what's left of the height and scrolls inside,
 // the right column on its own; narrower, everything stacks and the page scrolls as usual
 // ---------------------------------------------------------------------------
+// (the page's content edges in one line, the owner's note (2026-10-17): the board's panel flush with the title chip
+// and the ticker's left edge, the ticket flush with the header's right edge (the bankroll card, the About button)
+// and the ticker's; the board takes the room between (flex 1 1 auto), the ticket column its fixed width, the gap
+// between them 30px (the board's ring sits in it, so what shows is as it was))
 .book-work {
   align-items: stretch;
   display: flex;
   flex-wrap: wrap;
-  gap: v.$space-24;
+  gap: v.$space-24 30px;
   width: 100%;
 }
 
 .book-main {
   display: flex;
-  flex: 999 1 640px;
+  // (a zero basis: the board never asks for its rows' width, so the ticket docks beside it from 1000px up)
+  flex: 1 1 0;
   flex-direction: column;
   gap: v.$space-12;
   min-width: 0;
@@ -744,15 +749,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// The right column: the ticket and the recent form, 340 to 390px, scrolling on its own on a wide screen if it's
-// taller than the screen
+// The right column: the ticket and the recent form, 390px, scrolling on its own on a wide screen if it's taller
+// than the screen. Its 4px side padding keeps the cards' shadows inside its scroller; the column is that much
+// wider and pulled 4px past the row's right edge, so the ticket's own edge is the header's
 .book-side {
   box-sizing: border-box;
   display: flex;
-  flex: 1 1 340px;
+  flex: 0 0 398px;
   flex-direction: column;
   gap: v.$space-16;
-  max-width: 390px;
+  margin-right: -4px;
   min-width: 0;
   padding: 2px 4px 8px;
 }
@@ -917,12 +923,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
-// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
+// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb. Its panel's edge is the
+// column's (the ring draws outside it, in the gap and the gutter), so it lines up with the chip and the ticker
 .board {
   @include v.scoreboard-panel(v.$radius-lg, (0 0 0 5px v.$panel-dark, 0 0 0 6px v.$panel-edge, 0 10px 30px rgba(0, 0, 0, 0.55)));
   display: flex;
   flex-direction: column;
-  margin: 6px;
+  margin: 6px 0;
   overflow: hidden;
   position: relative;
 }
