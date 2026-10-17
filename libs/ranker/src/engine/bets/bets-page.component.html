@@ -52,8 +52,9 @@
   </header>
   <!-- The ticker: a scoreboard strip of every game on the boards the page has read, scrolling sideways forever
        (the list twice, the second copy for the screen reader's sake hidden): finals, the games under way with
-       their clock, then the ones to come with their start. Nothing on the boards: none -->
-  @if (tickerItems.length) {
+       their clock, then the ones to come with their start. On the board, the open tickets and the cashed ones, not
+       the Algorithm's desk. Nothing on the boards: none -->
+  @if (tickerItems.length && view !== 'desk') {
     <div class="book-ticker" role="marquee" aria-label="Scores and start times">
       <div class="ticker-track">
         @for (copy of [0, 1]; track copy) {
