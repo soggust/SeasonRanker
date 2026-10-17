@@ -2,26 +2,54 @@
      to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
      their write-up the disagreement, and a note to the bot -->
 <div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'">
-  <!-- (the bets to place, the user's open bets (when they have some), or, an admin's, the code-only model desk's
-       play-money betting, its record and its changes to itself; one at a time) -->
-  <!-- (the views, when there's more than one, and the info button: the page's About, an admin's with the Algorithm) -->
-  <nav class="bets-views" [class.info-only]="!(desk() || hasOpen() || hasClosed())" aria-label="View">
+  <!-- The Book's header, one row (it wraps on small screens): the title (a black chip and THE BOOK in the
+       tables' gold), the views as a scoreboard bar like the sport pages' position bar (the board to bet, the
+       user's open bets and the ones cashed (when they have some), or, an admin's, the code-only model desk's
+       play-money betting, its record and its changes to itself; one at a time), the About button, and the
+       user's player's card: their bankroll, a link to the wallet -->
+  <header class="book-head">
+    <div class="book-title">
+      <span class="kind-chip still book-chip" aria-hidden="true">SR<svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg></span>
+      <h1>The Book</h1>
+    </div>
+    <!-- (the views, when there's more than one: the bar) -->
     @if (desk() || hasOpen() || hasClosed()) {
-      <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">Place Bets</button>
-      @if (hasOpen()) {
-        <button type="button" [class.active]="view === 'open'" [attr.aria-current]="view === 'open' ? 'page' : null" (click)="view = 'open'">Open Bets</button>
-      }
-      @if (hasClosed()) {
-        <button type="button" [class.active]="view === 'closed'" [attr.aria-current]="view === 'closed' ? 'page' : null" (click)="view = 'closed'">Closed Bets</button>
-      }
-      @if (desk()) {
-        <button type="button" [class.active]="view === 'desk'" [attr.aria-current]="view === 'desk' ? 'page' : null" (click)="view = 'desk'">Algorithm</button>
-      }
+      <nav class="bets-views" aria-label="View">
+        <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The board</button>
+        @if (hasOpen()) {
+          <button type="button" [class.active]="view === 'open'" [attr.aria-current]="view === 'open' ? 'page' : null" (click)="view = 'open'">Open · {{ openCount() }}</button>
+        }
+        @if (hasClosed()) {
+          <button type="button" [class.active]="view === 'closed'" [attr.aria-current]="view === 'closed' ? 'page' : null" (click)="view = 'closed'">Cashed</button>
+        }
+        @if (desk()) {
+          <button type="button" [class.active]="view === 'desk'" [attr.aria-current]="view === 'desk' ? 'page' : null" (click)="view = 'desk'">Algorithm</button>
+        }
+      </nav>
     }
     <button type="button" class="bets-info" aria-label="About Bets" title="About Bets" (click)="aboutOpen = true">
       <mat-icon aria-hidden="true" fontIcon="info"></mat-icon>
     </button>
-  </nav>
+    <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand, what's out, the
+         record and its return; the whole card the way to the wallet. None signed out: bankroll() is null) -->
+    @if (bankroll(); as b) {
+      <a class="bankroll pcard" href="/wallet" [attr.aria-label]="'Bankroll ' + (b.balance | number: '1.0-1') + ' units: open your wallet'" title="Your Betting Wallet">
+        <span class="kind-chip still bankroll-chip" aria-hidden="true"><svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg></span>
+        <span class="bankroll-top">
+          <span class="bankroll-label">Bankroll</span>
+          @if (b.open) {
+            <span class="bankroll-play">{{ b.atRisk | number: '1.0-1' }}u in play</span>
+          }
+        </span>
+        <span class="bankroll-main">
+          <span class="bankroll-balance">{{ b.balance | number: '1.0-1' }}u</span>
+          @if (b.record) {
+            <span class="bankroll-record">{{ b.record }}@if (b.roi !== null) { · <b [class.down]="b.roi < 0">{{ b.roi >= 0 ? '+' : '' }}{{ b.roi * 100 | number: '1.1-1' }}%</b>}</span>
+          }
+        </span>
+      </a>
+    }
+  </header>
   @if (aboutOpen) {
     <bets-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></bets-about>
   }

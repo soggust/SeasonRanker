@@ -6,6 +6,7 @@ import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
+import { recordOf, recordText } from '../account/wallet/wallet-math';
 import { SPORT_LINKS } from '@ranker/core/sports';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
@@ -310,12 +311,18 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (already bet and still open: the stake, so the same bet isn't placed twice by mistake)
   // (by the pick's id and its side: the wallet's openOnPick)
   readonly placedOn = (r: BetRow): number => (r.pickId ? (this.wallet.openOnPick().get(`${r.pickId}|${r.side}`) ?? 0) : 0);
-  // (the signed-in user's play money: on hand, and what's out on open bets; none signed out or before it loads)
-  readonly bankroll = (): { balance: number; atRisk: number; open: number } | null => {
+  // (the signed-in user's play money: on hand, and what's out on open bets; their settled record and its return
+  // (the settler's tally, as the wallet's tiles read it: wallet-math recordOf), none before a bet's settled; none
+  // at all signed out or before the wallet loads)
+  readonly bankroll = (): { balance: number; atRisk: number; open: number; record: string | null; roi: number | null } | null => {
     if (!canUse('bets') || !this.wallet.loaded() || !this.wallet.wallet()) return null;
     const open = this.wallet.openBets();
-    return { balance: this.wallet.balance(), atRisk: open.reduce((t, b) => t + b.stake, 0), open: open.length };
+    const t = recordOf(this.wallet.tally(), this.wallet.bets());
+    const settled = t.won + t.lost + t.push > 0;
+    return { balance: this.wallet.balance(), atRisk: open.reduce((t, b) => t + b.stake, 0), open: open.length, record: settled ? recordText(t) : null, roi: settled ? t.roi : null };
   };
+  // (the Open tab's count: the user's bets not yet settled)
+  readonly openCount = (): number => this.wallet.openBets().length;
   readonly hasClosed = (): boolean => canUse('bets') && this.wallet.hasSettled();
   // (Place Bets first; Open Bets (with the wallet) or the Algorithm (development only) once chosen in this
   // visit: bets-view.ts)

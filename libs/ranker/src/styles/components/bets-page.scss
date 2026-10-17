@@ -25,22 +25,23 @@ $row-gap: 12px;
 $circle: 34px;
 $circle-gap: 12px;
 
-// The Bets page: one scoreboard panel down the middle of the page, a row per call, most
-// confident first; like green, fade red (as on the card's Analysis tab).
+// The Bets page, "The Book": a sportsbook on a card table. The header (the title, the views' bar, the bankroll
+// card), a ticker of scores and start times, then the board (a dot-matrix scoreboard, a row per pick in its
+// band's section) with the ticket and the recent form down its right.
 
-// The page on a card-room table: blue speed cloth (a tight crosshatch weave and a fine fiber over a soft
-// mottle, a warm light pooled in the middle, the edges falling off into shadow)
+// The page on a card-room table: green felt (a tight crosshatch weave and a fine fiber over a soft mottle, a
+// warm light pooled in the middle, the edges falling off into shadow)
 // (its light the tables' gold, the same from every sport: the tabs, the chips' and the digits' accents)
 :host {
   --scoreboard-led: #{chip.$gold-led};
   background:
     radial-gradient(ellipse 60% 50% at 50% 30%, rgba(255, 236, 200, 0.1), transparent 70%),
-    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 35%, rgba(0, 0, 0, 0.72) 100%),
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 35%, rgba(0, 0, 0, 0.6) 100%),
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 50% 30%, #1a63a8, #0e3f70 55%, #072443);
+    radial-gradient(ellipse at 50% 30%, #1d7a4f, #155a3a 55%, #0b3322);
   // (the mottle stretched over the whole table, so it never repeats; the fiber's tile seamless)
   background-size: auto, auto, auto, auto, 512px, cover, auto;
   display: block;
@@ -48,16 +49,232 @@ $circle-gap: 12px;
   overflow: hidden;
 }
 
-// The page doesn't scroll: the panel reaches the bottom of the screen at most (like the grid), its header
-// staying put while the list scrolls inside it
+// The page doesn't scroll (on a wide screen): the header, the ticker and the controls stay put, the board fills
+// the rest of the height and scrolls inside
 .bets-page {
   box-sizing: border-box;
+  color: #fff;
   display: flex;
   flex-direction: column;
+  font-family: v.$font-base;
+  font-size: v.$fs-13;
+  gap: v.$space-14;
   height: 100%;
   margin: 0 auto;
-  max-width: 980px;
-  padding: 26px $page-gutter;
+  max-width: 1400px;
+  padding: 18px clamp(16px, 3vw, 36px) 20px;
+}
+
+// (a word in the tables' gold with the scoreboard's glow: the title, a balance, a count)
+@mixin glow {
+  color: chip.$gold-led;
+  text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+}
+
+// ---------------------------------------------------------------------------
+// The header: the title, the views' bar, the About button and the bankroll card, one row (wrapping on small
+// screens)
+// ---------------------------------------------------------------------------
+.book-head {
+  align-items: center;
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: v.$space-14 v.$space-24;
+  width: 100%;
+}
+
+// (THE BOOK after a black chip)
+.book-title {
+  align-items: center;
+  display: flex;
+  gap: v.$space-12;
+
+  h1 {
+    @include glow;
+    font-family: v.$font-heading;
+    font-size: v.$fs-26;
+    font-weight: 600;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+  }
+}
+
+// (a chip that's a mark, not a control: the title's and the bankroll card's, full color, no hover)
+.kind-chip.still {
+  cursor: default;
+  filter: none;
+
+  &:hover {
+    filter: none;
+
+    rect {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+.book-chip {
+  --clay: #1a1a1a;
+  font-size: v.$fs-12;
+  font-weight: 900;
+  height: 46px;
+  width: 46px;
+}
+
+// The views (The board, Open, Cashed, an admin's Algorithm): a scoreboard bar like the sport pages' position
+// bar, equal tabs, the one showing lit on the dots
+.bets-views {
+  @include v.scoreboard-panel(v.$tab-r, 0 2px 6px rgba(0, 0, 0, 0.35));
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 420px;
+  height: 44px;
+  max-width: 640px;
+  overflow: hidden;
+
+  button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    flex: 1;
+    font-family: v.$font-base;
+    font-size: v.$fs-11;
+    font-weight: 800;
+    height: 100%;
+    letter-spacing: 1.5px;
+    padding: 0 1.1em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    transition:
+      color v.$t-hover ease,
+      box-shadow v.$t-hover ease;
+    white-space: nowrap;
+
+    // (pressed in, a faint dark shade)
+    &:hover:not(.active) {
+      box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.1);
+      color: var(--scoreboard-led);
+    }
+
+    @include v.focus-lit {
+      box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.1);
+      color: var(--scoreboard-led);
+    }
+
+    &.active {
+      @include v.lit-tab;
+    }
+  }
+}
+
+// (the About button: a round felt chip, the page's About)
+.bets-info {
+  @include chip.felt-control;
+  align-items: center;
+  border-radius: v.$radius-round;
+  cursor: pointer;
+  display: inline-flex;
+  flex: none;
+  height: 30px;
+  justify-content: center;
+  padding: 0;
+  width: 30px;
+
+  .mat-icon {
+    @include v.icon-size(18px);
+  }
+}
+
+// The bankroll: a player's card at the row's right, the whole card the way to the wallet: a lock-chocolate chip,
+// BANKROLL and what's in play over the balance (big, lit) and the record with its return
+.bankroll {
+  @include chip.player-card(v.$radius-xl);
+  align-items: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  color: #fff;
+  display: grid;
+  flex: none;
+  gap: v.$space-2 v.$space-12;
+  grid-template-columns: auto 1fr;
+  margin-left: auto;
+  padding: 10px 14px;
+  text-decoration: none;
+  transition:
+    filter v.$t-hover ease,
+    translate v.$t-hover ease;
+  width: 268px;
+
+  &:hover {
+    filter: brightness(1.15);
+    translate: 0 -1px;
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  .bankroll-chip {
+    --clay: #{chip.$lock};
+    border-width: 4px;
+    grid-row: span 2;
+    height: 34px;
+    width: 34px;
+
+    rect {
+      stroke-width: 4px;
+    }
+  }
+
+  .bankroll-top,
+  .bankroll-main {
+    align-items: baseline;
+    display: flex;
+    gap: v.$space-8;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .bankroll-label {
+    color: v.$text-dim;
+    font-size: v.$fs-10;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .bankroll-play {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .bankroll-balance {
+    @include glow;
+    font-family: v.$font-heading;
+    font-size: v.$fs-24;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .bankroll-record {
+    color: v.$grey-light;
+    font-size: v.$fs-12;
+    white-space: nowrap;
+
+    b {
+      color: v.$good-bright;
+
+      &.down {
+        color: v.$bad-soft;
+      }
+    }
+  }
 }
 
 // The panel a slot machine: its top a scoreboard (the header), the rest dark brushed gunmetal, and on
@@ -923,65 +1140,6 @@ $hub-y: 154px;
   }
   to {
     clip-path: inset(0);
-  }
-}
-
-// (dev only) The view switch over the panel: the bets or the model desk, two pills; the desk scrolls on
-// its own (the page itself never does)
-.bets-views {
-  align-self: center;
-  display: flex;
-  flex: none;
-  flex-wrap: wrap;
-  gap: v.$space-8;
-  justify-content: center;
-  max-width: 100%;
-  margin-bottom: 14px;
-
-  // (felt pills; the open one ringed in the page's gold)
-  button {
-    @include chip.felt-control;
-    border-radius: v.$radius-pill;
-    color: v.$text-soft;
-    cursor: pointer;
-    font: inherit;
-    font-size: v.$fs-12;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    padding: 6px 16px;
-    text-transform: uppercase;
-    transition:
-      color v.$t-hover,
-      background v.$t-hover;
-
-    &:hover {
-      color: #fff;
-    }
-
-    &.active {
-      color: var(--scoreboard-led);
-      outline: 2px solid var(--scoreboard-led);
-      outline-offset: 2px;
-    }
-  }
-
-  // (the info button: a round felt chip, the page's About)
-  .bets-info {
-    align-items: center;
-    display: inline-flex;
-    justify-content: center;
-    padding: 0;
-    height: 30px;
-    width: 30px;
-
-    .mat-icon {
-      @include v.icon-size(18px);
-    }
-  }
-
-  // (no views to switch: the info button alone, at the right)
-  &.info-only {
-    align-self: flex-end;
   }
 }
 
