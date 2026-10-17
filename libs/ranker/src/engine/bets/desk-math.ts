@@ -292,26 +292,38 @@ export function gameDaysOf(bets: ModelBet[], sport: string | null, now: number):
 
 // The model's epoch (leagues.mjs MODEL_EPOCH, each sport's state.json epoch: its latest major change, when its
 // trust restarted): the desk's record shows the bets since it by default, the full history kept for All Time.
-// The newest across the sports' states, and the sports whose state has one (a sport without: all its bets)
+// Each sport's own (bySport), the newest across them (at) and the sports whose state has one (a sport without:
+// all its bets). A bet is judged against ITS sport's epoch: the newest one applied to every sport threw out
+// every NFL, NHL and MLB bet placed before MMA's league started (2026-10-16, its own stamp), and the owner
+// read 0-1 "since this model" over a 7-7 record
 export interface DeskEpoch {
   at: string;
   sports?: string[];
+  bySport?: Record<string, string>;
 }
 export function deskEpochOf(states: { sport: string; epoch?: string | null }[]): DeskEpoch | null {
   const dated = states.filter((s) => typeof s.epoch === 'string' && !Number.isNaN(Date.parse(s.epoch)));
   if (!dated.length) return null;
   const at = dated.map((s) => s.epoch as string).sort((a, b) => Date.parse(b) - Date.parse(a))[0];
-  return { at, sports: dated.map((s) => s.sport) };
+  return { at, sports: dated.map((s) => s.sport), bySport: Object.fromEntries(dated.map((s) => [s.sport, s.epoch as string])) };
 }
 
-// (a bet placed at or after the epoch, by when it was placed (an older bet without placedAt, its game's start),
-// as run.mjs's trust evidence; true with no epoch, or for a sport the epoch doesn't cover)
+// (the epoch a sport's bets are judged by: its own, else the newest; none for a sport without one)
+export function epochFor(epoch: DeskEpoch | null, sport: string): string | null {
+  if (!epoch) return null;
+  if (epoch.bySport) return epoch.bySport[sport] ?? null;
+  return !epoch.sports || epoch.sports.includes(sport) ? epoch.at : null;
+}
+
+// (a bet placed at or after its sport's epoch, by when it was placed (an older bet without placedAt, its game's
+// start), as run.mjs's trust evidence; true with no epoch, or for a sport the epoch doesn't cover)
 export function afterEpoch(b: { sport: string; placedAt?: string; start: string }, epoch: DeskEpoch | string | null): boolean {
   if (!epoch) return true;
   const e: DeskEpoch = typeof epoch === 'string' ? { at: epoch } : epoch;
-  if (e.sports && !e.sports.includes(b.sport)) return true;
+  const since = e.bySport || e.sports ? epochFor(e, b.sport) : e.at;
+  if (!since) return true;
   const at = Date.parse(b.placedAt || b.start);
-  return !Number.isNaN(at) && at >= Date.parse(e.at);
+  return !Number.isNaN(at) && at >= Date.parse(since);
 }
 
 // The bets placed since the epoch (every one with none)

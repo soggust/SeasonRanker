@@ -186,8 +186,8 @@
   </span>
   <!-- (the record since the model's latest change (its epoch: when its trust restarted), the default, or all time;
        the bets still open always shown) -->
-  <span class="desk-chip" [title]="help['epoch']">
-    <select class="desk-game-select desk-range-select" aria-label="Results since" [title]="help['epoch']" [ngModel]="sinceModel" (ngModelChange)="setSince($event)">
+  <span class="desk-chip" [title]="epochTitle">
+    <select class="desk-game-select desk-range-select" aria-label="Results since" [title]="epochTitle" [ngModel]="sinceModel" (ngModelChange)="setSince($event)">
       <option [ngValue]="true">{{ epochText }}</option>
       <option [ngValue]="false">All time</option>
     </select>

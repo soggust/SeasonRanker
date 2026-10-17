@@ -15,6 +15,7 @@ import {
   atUnit,
   DeskEpoch,
   afterEpoch,
+  epochFor,
   calibrationOf,
   countNowOf,
   deskEpochOf,
@@ -296,9 +297,23 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.show();
   }
 
-  // (the toggle's words: "Since this model (Oct 14, 6:00 AM)")
+  // (the toggle's words: "Since this model (Oct 14, 6:00 AM)": the sport on show's epoch, or the one every sport
+  // shares; when the sports' epochs differ (a league started later), "per sport", each sport's date in the
+  // chip's title)
   get epochText(): string {
-    return this.epoch ? `Since this model (${epochLabel(this.epoch.at)})` : 'Since this model';
+    if (!this.epoch) return 'Since this model';
+    const own = this.sport ? epochFor(this.epoch, this.sport) : null;
+    const stamps = new Set(Object.values(this.epoch.bySport ?? {}));
+    const at = own ?? (stamps.size <= 1 ? this.epoch.at : null);
+    return at ? `Since this model (${epochLabel(at)})` : 'Since this model (per sport)';
+  }
+
+  get epochTitle(): string {
+    const by = this.epoch?.bySport;
+    if (!by) return this.help['epoch'];
+    return `${this.help['epoch']}\n${Object.entries(by)
+      .map(([sport, at]) => `${sport.toUpperCase()}: ${epochLabel(at)}`)
+      .join(' · ')}`;
   }
 
   // (a bet on the record on show: in the date range, and since the model's epoch unless All Time's picked)
