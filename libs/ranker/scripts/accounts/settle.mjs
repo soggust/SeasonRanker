@@ -5,7 +5,9 @@
 // twice). A parlay's legs each graded the same way (settle-lib.mjs settleParlay: a leg lost loses it at once, a
 // pushed or void leg drops out, its legs graded so far kept on it while it's open). Then the leaderboards (leaderboards/{week|season|all}: the public players' records) from each user's
 // tally (tallies/{uid}, kept here). And each run, the next three days' lines snapshotted (lines/{sport}_{event}),
-// so a bet's price can be checked against the board it was placed from.
+// so a bet's price can be checked against the board it was placed from. A UFC bout's bet (sport 'mma', a
+// moneyline or a round total, straight or a parlay's leg) settled from the bout as the MMA desk grades it
+// (settle-lib.mjs settleMmaBet: ESPN's UFC scoreboard and the desk's kept bouts, mmaBouts).
 //
 //   node libs/ranker/scripts/accounts/settle.mjs [--dry]
 //
@@ -21,8 +23,10 @@ import { FieldValue, Timestamp, getFirestore } from 'firebase-admin/firestore';
 import { get } from '../model/sources.mjs';
 import { gameOf, linesOf } from '../model/espn.mjs';
 import { statInFinal } from '../model/props.mjs';
+import { FILES as MMA_FILES, boutsOf, mergeBouts } from '../model/mma-desk.mjs';
 import {
   DAY,
+  boutFor,
   TALLY_VERSION,
   addToTally,
   boardObservations,
@@ -50,6 +54,10 @@ const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const SITE = 'https://site.api.espn.com/apis/site/v2/sports';
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
 export const LEAGUES = { nfl: 'football/nfl', nba: 'basketball/nba', nhl: 'hockey/nhl', mlb: 'baseball/mlb' };
+// (UFC bouts too: settled from the MMA desk's bouts (settle-lib.mjs settleMmaBet), not a game's summary; no
+// lines' snapshots, their prices checked against the bettor's MMA bets and its board's)
+const MMA = 'mma';
+const SETTLED = [...Object.keys(LEAGUES), MMA];
 // (how many snapshots a game keeps: an hourly run's worth for a week and more)
 const SNAPS = 240;
 
@@ -74,7 +82,7 @@ function adminApp() {
 // too (checks.mjs: their own file, checks.json, or an older ledger's checks), for the price check alone)
 export function readLedgers(root = ROOT) {
   const out = {};
-  for (const sport of Object.keys(LEAGUES)) {
+  for (const sport of SETTLED) {
     const dir = path.join(root, 'apps', sport, 'src/StaticData/model');
     try {
       const ledger = JSON.parse(fs.readFileSync(path.join(dir, 'ledger.json'), 'utf8'));
@@ -96,7 +104,7 @@ export function readLedgers(root = ROOT) {
 // its board showed, for the price check; none read, none)
 export function readBoards(root = ROOT) {
   const out = {};
-  for (const sport of Object.keys(LEAGUES)) {
+  for (const sport of SETTLED) {
     try {
       const seen = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'scripts/model/board-seen.json'), 'utf8'));
       out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.o ?? {}]));
@@ -122,6 +130,34 @@ async function gameAndBox(fetchJson, sport, event) {
   const h = body?.header;
   const c = h?.competitions?.[0];
   return { game: c ? gameOf({ ...h, date: c.date, status: c.status }, { innings: sport === 'mlb' }) : null, body };
+}
+
+// (the MMA desk's kept bouts (apps/mma/scripts/model/games.json, written by its run just before this one: each
+// bout's result, and off when it was cancelled or a fighter replaced); none read, none)
+export function readMmaKept(file = MMA_FILES.games) {
+  try {
+    const kept = JSON.parse(fs.readFileSync(file, 'utf8'));
+    return Array.isArray(kept) ? kept : [];
+  } catch {
+    return [];
+  }
+}
+
+// (a UTC day as ESPN's MMA scoreboard takes it, as the desk asks: "20261017")
+const utcDay = (t) => new Date(t).toISOString().slice(0, 10).replace(/-/g, '');
+
+// The bouts the due MMA bets are on: ESPN's UFC scoreboard over their days (the desk's own source, read as it
+// reads it: mma-desk.mjs boutsOf), brought into the desk's kept bouts (mergeBouts: a bout gone from its card
+// cancelled, its fighters changed replaced); the kept alone when ESPN can't be read. One ask a run, a month back
+// at most
+export async function mmaBouts(fetchJson, starts, { kept = readMmaKept(), now = Date.now() } = {}) {
+  const t = starts.map((s) => Date.parse(s)).filter(Number.isFinite);
+  if (!t.length) return [];
+  const from = Math.max(Math.min(...t) - DAY, now - 30 * DAY);
+  const to = Math.min(Math.max(...t) + DAY, now + DAY);
+  const body = await fetchJson(`${SITE}/mma/ufc/scoreboard?dates=${utcDay(from)}-${utcDay(to)}&limit=100`);
+  const board = body ? boutsOf(body) : [];
+  return board.length ? mergeBouts(kept, board, new Date(now)) : kept;
 }
 
 // ---------------------------------------------------------------------------
@@ -202,7 +238,7 @@ export async function snapshotLines(db, { fetchJson = get, now = Date.now(), dry
 // ---------------------------------------------------------------------------
 // Settling
 // ---------------------------------------------------------------------------
-export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), dry = false, log = console.log } = {}) {
+export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), mmaKept, dry = false, log = console.log } = {}) {
   const snap = await db.collectionGroup('bets').where('status', '==', 'open').get();
   const users = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users');
   // (a deleted account's open bets: the browser can't delete an open bet (firestore.rules), so they go here,
@@ -239,8 +275,20 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     })();
     return g.board;
   };
-  // (what settlePlayBet takes for a bet or a parlay's leg: its game, what was on the board, a prop's count)
+  // (the UFC bouts the due MMA bets and legs are on: read once a run, the first time one's needed)
+  let bouts = null;
+  const boutsDue = () => {
+    const starts = due.flatMap((d) => (d.get('kind') === 'parlay' ? (d.get('legs') ?? []) : [d.data()])).filter((b) => b.sport === MMA && b.start).map((b) => iso(b.start)).filter((s) => s <= nowIso);
+    bouts ??= mmaBouts(fetchJson, starts, { kept: mmaKept ?? readMmaKept(), now });
+    return bouts;
+  };
+  // (what settlePlayBet takes for a bet or a parlay's leg: its game, what was on the board, a prop's count; a
+  // bout's: the bout, and the bettor's bets on it and every price its MMA board showed)
   const inputsFor = async (bet) => {
+    if (bet.sport === MMA) {
+      const mine = (ledgers[MMA] ?? []).filter((b) => String(b.event) === String(bet.event));
+      return { game: boutFor(bet, await boutsDue()), observations: [...botObservations(mine), ...boardObservations(seen[MMA]?.[String(bet.event)])] };
+    }
     const g = await gameFor(bet.sport, bet.event);
     const observations = g.game?.final && bet.market !== 'prop' ? [...g.observations, ...(await finalBoard(bet.sport, bet.event, g))] : g.observations;
     let propValue;
@@ -273,7 +321,7 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
   // (the straight bets, a game's together)
   const straight = due.filter((d) => d.get('kind') !== 'parlay').sort((a, b) => `${a.get('sport')}|${a.get('event')}`.localeCompare(`${b.get('sport')}|${b.get('event')}`));
   for (const d of straight) {
-    if (!LEAGUES[d.get('sport')]) continue;
+    if (!SETTLED.includes(d.get('sport'))) continue;
     const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
     const inputs = await inputsFor(bet);
     const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, previewLines: inputs.previewLines, now });
@@ -291,7 +339,7 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     try {
       const legs = (d.get('legs') ?? []).map((l) => ({ ...l, start: iso(l.start) }));
       const parlay = { ...d.data(), id: d.id, legs, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
-      const inputs = await Promise.all(legs.map((l) => (LEAGUES[l.sport] && !legProblem(l) && l.start <= nowIso && (!l.status || l.status === 'open') ? inputsFor(l) : null)));
+      const inputs = await Promise.all(legs.map((l) => (SETTLED.includes(l.sport) && !legProblem(l) && l.start <= nowIso && (!l.status || l.status === 'open') ? inputsFor(l) : null)));
       const { result, legs: graded } = settleParlay(parlay, inputs, { now });
       if (!result) {
         counts.waiting++;
@@ -455,7 +503,7 @@ export async function boardsDue(db, counts, now = Date.now()) {
 
 // The whole run: settle, then the boards (when they're due), then the lines' snapshots (each part on its own: one
 // failing doesn't stop the others)
-export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, seen, dry = false, log = console.log } = {}) {
+export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, seen, mmaKept, dry = false, log = console.log } = {}) {
   let failed = false;
   const step = async (name, fn) => {
     try {
@@ -466,7 +514,7 @@ export async function run({ db = getFirestore(adminApp()), fetchJson = get, now 
       return null;
     }
   };
-  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers: ledgers ?? readLedgers(), seen: seen ?? readBoards(), dry, log }));
+  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers: ledgers ?? readLedgers(), seen: seen ?? readBoards(), mmaKept, dry, log }));
   const boards = await step('Leaderboards', async () => ((await boardsDue(db, counts, now)) ? writeLeaderboards(db, { now, dry, log }) : null));
   const lines = await step('Lines', () => snapshotLines(db, { fetchJson, now, dry, log }));
   return { counts, boards, lines, failed };

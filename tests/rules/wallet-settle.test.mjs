@@ -334,4 +334,93 @@ describe('the settler', { skip }, () => {
     await run({ db, fetchJson, now: NOW + 18e5, ledgers, log: (m) => again.push(m) });
     assert.equal(again.some((m) => m.startsWith('tallies:')), false);
   });
+
+  test('UFC bouts: a moneyline and a round total settled from ESPN’s UFC scoreboard as the MMA desk grades, a replaced fighter void, a parlay with a bout’s leg; a dry run writes nothing', async () => {
+    // (ESPN's UFC scoreboard, made up: bout 901 Jourdain over Cuamba at 2:30 of the third (exactly the Over 2.5's
+    // line: Under), bout 902 a no contest in the first, bout 903 now Smith vs Diaz (the desk kept it as Smith vs
+    // Lee, the pairing the bet is on: a fighter replaced))
+    const comp = (id, date, home, away, { winner = 'home', period = 3, clock = 150 } = {}) => ({
+      id,
+      date,
+      type: { abbreviation: 'Bantamweight' },
+      format: { regulation: { periods: 3 } },
+      status: { type: { name: 'STATUS_FINAL', completed: true }, period, clock },
+      competitors: [
+        { id: home[0], order: 1, winner: winner === 'home', athlete: { displayName: home[1] } },
+        { id: away[0], order: 2, winner: winner === 'away', athlete: { displayName: away[1] } },
+      ],
+    });
+    const ufc = {
+      events: [
+        {
+          id: '600',
+          name: 'UFC Fight Night',
+          competitions: [
+            comp('901', '2026-10-11T23:30Z', ['11', 'Louis Jourdain'], ['12', 'Timmy Cuamba']),
+            comp('902', '2026-10-11T23:00Z', ['21', 'Ana Silva'], ['22', 'Bea Croft'], { winner: null, period: 1, clock: 60 }),
+            comp('903', '2026-10-11T22:30Z', ['31', 'Sam Smith'], ['33', 'Dan Diaz']),
+          ],
+        },
+      ],
+    };
+    const asked = [];
+    const mmaFetch = async (url) => {
+      if (url.includes('mma/ufc/scoreboard')) {
+        asked.push(url);
+        return ufc;
+      }
+      return fetchJson(url);
+    };
+    const kept = [{ id: '903', card: '600', date: '2026-10-11T22:30Z', rounds: 3, home: { id: '31', name: 'Sam Smith' }, away: { id: '32', name: 'Lee Lee' }, final: false, winner: null, off: null, key: '903:31-32' }];
+    // (the MMA board's prices seen, the day before)
+    const shown = [Date.parse('2026-10-10T12:00Z'), Date.parse('2026-10-11T22:00Z')];
+    const seen = {
+      mma: {
+        901: { 'ml|home||-150||': shown, 'ml|away||125||': shown, 'total|over|2.5|-145||': shown, 'total|under|2.5|114||': shown },
+        902: { 'ml|home||-200||': shown, 'ml|away||165||': shown },
+        903: { 'ml|home||-120||': shown, 'ml|away||100||': shown },
+      },
+    };
+    const fight = (over = {}) => bet({ sport: 'mma', event: '901', matchup: 'Timmy Cuamba @ Louis Jourdain', start: at('2026-10-11T23:30Z'), market: 'ml', side: 'home', line: null, odds: -150, pick: 'Louis Jourdain ML', stake: 30, ...over });
+    const under = fight({ market: 'total', side: 'under', line: 2.5, odds: 114, pick: 'Under 2.5 rounds', stake: 10 });
+    const nc = fight({ event: '902', matchup: 'Bea Croft @ Ana Silva', start: at('2026-10-11T23:00Z'), odds: -200, pick: 'Ana Silva ML', stake: 20 });
+    const swapped = fight({ event: '903', matchup: 'Lee Lee @ Sam Smith', start: at('2026-10-11T22:30Z'), odds: -120, pick: 'Sam Smith ML', stake: 15 });
+    const leg = (over = {}) => {
+      const { stake: _s, run: _r, placedAt: _p, status: _st, ...l } = bet(over);
+      return l;
+    };
+    const { stake: _s, run: _r, placedAt: _p, status: _st, ...boutLeg } = fight();
+    const parlay = { kind: 'parlay', legs: [leg(), boutLeg], games: ['nfl_401', 'mma_901'], start: at('2026-10-11T17:00Z'), odds: 999, stake: 10, pick: '2-leg parlay', run: 0, placedAt: at('2026-10-10T15:00Z'), status: 'open' };
+    await seed('eve', { balance: 500, bets: { ml: fight(), under, nc, swapped, parlay } });
+    const opts = { db, fetchJson: mmaFetch, now: NOW, ledgers: { ...ledgers, mma: [] }, seen, mmaKept: kept, log: quiet };
+    // (a dry run: read and reported, nothing written)
+    const dry = await run({ ...opts, dry: true });
+    assert.deepEqual(dry.counts, { settled: 3, void: 2, waiting: 0 });
+    assert.equal((await db.doc('users/eve/bets/ml').get()).get('status'), 'open');
+    assert.equal((await db.doc('users/eve/wallet/main').get()).get('balance'), 500);
+    const first = await run(opts);
+    assert.deepEqual(first.counts, { settled: 3, void: 2, waiting: 0 });
+    // (the UFC scoreboard asked once a run, over the bouts' days)
+    assert.equal(asked.length, 2);
+    assert.match(asked[1], /dates=20261010-20261012/);
+    const get = async (p) => (await db.doc(`users/eve/bets/${p}`).get()).data();
+    const ml = await get('ml');
+    assert.deepEqual([ml.status, ml.profit, ml.final], ['won', 20, 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won']);
+    const u = await get('under');
+    assert.deepEqual([u.status, u.profit, u.final], ['won', 11.4, 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won, R3 2:30']);
+    assert.deepEqual([(await get('nc')).status, (await get('nc')).note], ['void', 'a draw or a no contest']);
+    assert.deepEqual([(await get('swapped')).status, (await get('swapped')).note], ['void', 'a fighter was replaced']);
+    // (the parlay: NE -3.5 at -108 and Jourdain at -150, +221)
+    const p = await get('parlay');
+    assert.deepEqual([p.status, p.profit, p.paidOdds, p.final], ['won', 22.1, 221, '2 of 2 hit']);
+    assert.deepEqual(p.legs.map((l) => l.status), ['won', 'won']);
+    // (500 + 50 + 21.4 + 20 + 15 + 32.1)
+    assert.equal((await db.doc('users/eve/wallet/main').get()).get('balance'), 638.5);
+    const tally = (await db.doc('tallies/eve').get()).data();
+    assert.deepEqual(tally.sports['2026-10-11'], { mma: 31.4, parlay: 22.1 });
+    // (again: nothing paid twice)
+    const second = await run({ ...opts, now: NOW + 36e5 });
+    assert.deepEqual(second.counts, { settled: 0, void: 0, waiting: 0 });
+    assert.equal((await db.doc('users/eve/wallet/main').get()).get('balance'), 638.5);
+  });
 });

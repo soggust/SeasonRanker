@@ -25,6 +25,7 @@
 
 import { outcomeOf, settle as settleGame, voidOf } from '../model/desk.mjs';
 import { PROP_WAIT, settleProp } from '../model/props.mjs';
+import { boutVoid, nameKey, settleBout } from '../model/mma-desk.mjs';
 
 export const START = 1000;
 export const DAY = 864e5;
@@ -310,6 +311,8 @@ const voided = (why, final = null) => ({ status: 'void', profit: 0, note: why, .
 // or null while it waits. A preview prop (preview: true) by its lines seen (previewLines: previewSeen's) in place of
 // the price check
 export function settlePlayBet(bet, game, { observations = [], propValue, previewLines, now = Date.now() } = {}) {
+  // (a UFC bout: by the MMA desk's own grading, settleMmaBet; game is the bout)
+  if (bet.sport === 'mma') return settleMmaBet(bet, game, { observations, now });
   const start = Date.parse(bet.start);
   if (!game) return now - start > GIVE_UP ? voided('game not found') : null;
   if (`${game.awayAbbr} @ ${game.homeAbbr}` !== bet.matchup) return voided('not this game');
@@ -342,6 +345,55 @@ export function settlePlayBet(bet, game, { observations = [], propValue, preview
   // (a run line or total on an MLB game cut short: void, the bettor's own rule)
   if (r.void) return voided(r.why.replace(/^Void: /, ''), r.final);
   return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final };
+}
+
+// ---------------------------------------------------------------------------
+// UFC bouts (sport 'mma'): a bet on a bout (its event the bout's ESPN id, its matchup the fighters' names "away @
+// home" as the MMA board writes them, mma-desk.mjs buildMmaBoard), a moneyline or a round total, graded by the
+// MMA desk's own rules (mma-desk.mjs boutVoid and settleBout, fights-totals.mjs settleTotal) from the bout in the
+// desk's shape (mma-desk.mjs boutsOf and mergeBouts: its winner, its last round and the clock into it, off when
+// cancelled or a fighter replaced). A moneyline: the picked fighter won; a draw or a no contest void. A round
+// total: Over N.5 wins only past the middle of round N+1 (Over 2.5 past 2:30 of the third; a finish at 2:30 of it
+// exactly is Under), a no contest or a draw before the line void. A fighter replaced or the bout cancelled: void.
+// Its price checked as any bet's (checkPrice: the bettor's bets on the bout and every price its MMA board showed)
+// ---------------------------------------------------------------------------
+
+// (a bet's matchup as its fighters' names' keys, away then home; null when it isn't two names)
+const matchupKeys = (matchup) => {
+  const parts = String(matchup ?? '').split(' @ ');
+  return parts.length === 2 && parts[0] && parts[1] ? parts.map(nameKey) : null;
+};
+const sameFighters = (bet, bout) => {
+  const keys = matchupKeys(bet.matchup);
+  return !!keys && keys[0] === nameKey(bout.away?.name) && keys[1] === nameKey(bout.home?.name);
+};
+
+// The bout a bet is on, from the bouts known (the desk's kept ones and ESPN's scoreboard, merged: mergeBouts): the
+// one with its id and its fighters, else (the bout's fighters changed since) the one with its id alone; null when
+// none has its id. Its date the start the board showed (the Odds API's, else ESPN's), as the bet's start was
+export function boutFor(bet, bouts) {
+  const mine = (bouts ?? []).filter((b) => String(b.id) === String(bet.event));
+  const bout = mine.find((b) => sameFighters(bet, b)) ?? mine.find((b) => !b.off) ?? mine[0];
+  return bout ? { ...bout, date: bout.start ?? bout.date } : null;
+}
+
+// A user's bet on a bout: its result ({ status: won | lost | void, profit, final, note? }) or null while it waits
+export function settleMmaBet(bet, bout, { observations = [], now = Date.now() } = {}) {
+  const start = Date.parse(bet.start);
+  if (!bout) return now - start > GIVE_UP ? voided('bout not found') : null;
+  // (the bout's fighters as the bet names them; another pairing on its id: a fighter replaced, boutVoid's rule)
+  const fighters = sameFighters(bet, bout) ? { home: bout.home, away: bout.away } : { home: { id: null }, away: { id: null } };
+  const off = boutVoid({ ...bet, fighters }, bout, now);
+  if (off) return voided(off.why.replace(/^Void: /, ''), off.final);
+  if (Date.parse(bet.placedAt) >= Date.parse(bout.date)) return voided('placed after the start');
+  if (!bout.final) return now - start > GIVE_UP ? voided('bout not finished') : null;
+  const price = checkPrice(bet, observations);
+  if (!price.ok) return voided(price.why);
+  const r = settleBout({ ...bet, units: bet.stake, fighters }, bout, now);
+  // (a total whose bout's length ESPN hasn't given: waits, then void)
+  if (!r) return now - start > GIVE_UP ? voided('couldn’t read how long it went') : null;
+  if (r.void) return voided(r.why.replace(/^Void: /, ''), r.final);
+  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : -bet.stake, final: r.final };
 }
 
 // ---------------------------------------------------------------------------
@@ -384,12 +436,15 @@ export function parlayOutcome(stake, legs) {
 // Why a parlay's leg isn't a bet the page could have placed, if it isn't (firestore.rules checks a straight bet's
 // market, side, line and price, but a parlay's ten legs can't all be checked inside the rules' limit, so the
 // settler checks them here): its sport, its market and side, its line, an American price, a prop's player and stat
-export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb'];
+export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
 export function legProblem(l) {
   const num = (v) => typeof v === 'number' && Number.isFinite(v);
   // (a game's id, a string as the page writes it, with no leading zero: ESPN takes a padded id as the game's own)
   if (!SPORTS.includes(l.sport) || typeof l.event !== 'string' || !/^[1-9][0-9]{0,19}$/.test(l.event)) return 'not a game';
-  if (typeof l.matchup !== 'string' || !/^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$/.test(l.matchup)) return 'not a game';
+  // (a bout's matchup its fighters' names, firestore.rules' shape; a moneyline or a round total only)
+  const mma = l.sport === 'mma';
+  if (typeof l.matchup !== 'string' || !(mma ? /^[^<>@]{1,48} @ [^<>@]{1,48}$/ : /^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$/).test(l.matchup)) return 'not a game';
+  if (mma && l.market !== 'ml' && l.market !== 'total') return 'not a market';
   if (!Number.isInteger(l.odds) || Math.abs(l.odds) < 100 || Math.abs(l.odds) > 50000) return 'not a price';
   const sides = l.market === 'spread' || l.market === 'ml' ? ['home', 'away'] : l.market === 'total' || l.market === 'prop' ? ['over', 'under'] : [];
   if (!sides.includes(l.side)) return 'not a market';

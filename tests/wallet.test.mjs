@@ -477,7 +477,8 @@ test('settling a parlay: each leg graded as a straight bet (its price checked), 
   assert.equal(lib.legProblem(leg({ market: 'parlay' })), 'not a market');
   assert.equal(lib.legProblem(leg({ side: 'over' })), 'not a market');
   assert.equal(lib.legProblem(leg({ odds: 50 })), 'not a price');
-  assert.equal(lib.legProblem(leg({ sport: 'mma' })), 'not a game');
+  assert.equal(lib.legProblem(leg({ sport: 'mma' })), 'not a market');
+  assert.equal(lib.legProblem(leg({ sport: 'nascar' })), 'not a game');
   assert.equal(lib.legProblem(leg({ market: 'ml', line: -3.5 })), 'not a line');
   assert.equal(lib.legProblem(leg({ market: 'prop', side: 'over', line: 24.5 })), 'not a prop');
   r = lib.settleParlay(parlay([leg({ market: 'parlay' }), nyj]), [g1, g2], { now });
@@ -509,6 +510,91 @@ test('settling a parlay: each leg graded as a straight bet (its price checked), 
   // (in the tally: one bet, its result)
   const t = lib.addToTally(null, { stake: 10, start: '2026-10-11T17:00Z' }, { status: 'won', profit: 19.96 });
   assert.deepEqual(t.all, { won: 1, lost: 0, push: 0, void: 0, staked: 10, profit: 19.96 });
+});
+
+test('settling a UFC bout: the moneyline by the winner, a round total by how long it went (Over 2.5 past 2:30 of the third), a draw, a no contest, a replaced fighter or a cancelled bout void', () => {
+  // (a bout as the MMA desk keeps it, mma-desk.mjs boutsOf: Louis Jourdain (home, ESPN's first) and Timmy Cuamba)
+  const bout = (over = {}) => ({
+    id: '401909783',
+    card: '600060773',
+    date: '2026-10-17T21:00Z',
+    start: '2026-10-18T00:45:00Z',
+    rounds: 3,
+    home: { id: '4877916', name: 'Louis Jourdain' },
+    away: { id: '5123311', name: 'Timmy Cuamba' },
+    final: true,
+    winner: 'home',
+    period: 2,
+    clock: 95,
+    off: null,
+    ...over,
+  });
+  const fight = (over = {}) => ({ sport: 'mma', event: '401909783', matchup: 'Timmy Cuamba @ Louis Jourdain', start: '2026-10-18T00:45:00Z', placedAt: '2026-10-17T20:00:00.000Z', market: 'ml', side: 'home', line: null, odds: -150, stake: 10, pick: 'Louis Jourdain ML', run: 0, ...over });
+  const over = (o = {}) => fight({ market: 'total', side: 'over', line: 2.5, odds: -145, pick: 'Over 2.5 rounds', ...o });
+  const under = (o = {}) => over({ side: 'under', odds: 114, pick: 'Under 2.5 rounds', ...o });
+  const seenAt = [Date.parse('2026-10-17T18:00Z'), Date.parse('2026-10-18T00:30Z')];
+  const observations = lib.boardObservations({ 'ml|home||-150||': seenAt, 'ml|away||125||': seenAt, 'total|over|2.5|-145||': seenAt, 'total|under|2.5|114||': seenAt });
+  const at = Date.parse('2026-10-18T03:00Z');
+  const opts = { observations, now: at };
+  const settle = (b, x = bout()) => lib.settlePlayBet(b, lib.boutFor(b, [x]), opts);
+  // (the moneyline: won, lost)
+  assert.deepEqual(settle(fight()), { status: 'won', profit: 6.67, final: 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won' });
+  assert.deepEqual(settle(fight({ side: 'away', odds: 125, pick: 'Timmy Cuamba ML' })), { status: 'lost', profit: -10, final: 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won' });
+  // (a draw, a no contest: void, the stake back)
+  assert.equal(settle(fight(), bout({ winner: null, period: 3, clock: 300 })).note, 'a draw or a no contest');
+  assert.equal(settle(fight(), bout({ winner: null, period: 1, clock: 40 })).status, 'void');
+  // (the round total at the line's edge: a finish at 2:30 of the third exactly is Under; a second past, Over)
+  assert.deepEqual(settle(over(), bout({ period: 3, clock: 150 })), { status: 'lost', profit: -10, final: 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won, R3 2:30' });
+  assert.deepEqual(settle(under(), bout({ period: 3, clock: 150 })), { status: 'won', profit: 11.4, final: 'Louis Jourdain vs Timmy Cuamba: Louis Jourdain won, R3 2:30' });
+  assert.equal(settle(over(), bout({ period: 3, clock: 151 })).status, 'won');
+  assert.equal(settle(under(), bout()).status, 'won');
+  // (the distance, a decision: Over; a draw that went the distance is past the line, graded too)
+  assert.equal(settle(over(), bout({ period: 3, clock: 300 })).status, 'won');
+  assert.equal(settle(over(), bout({ winner: null, period: 3, clock: 300 })).status, 'won');
+  // (a no contest before the line: void; after it, graded)
+  assert.equal(settle(under(), bout({ winner: null, period: 2, clock: 10 })).note, 'a no contest or a draw before the line');
+  assert.equal(settle(over(), bout({ winner: null, period: 3, clock: 200 })).status, 'won');
+  // (a final without its round yet: a total waits, then void)
+  assert.equal(settle(over(), bout({ period: null, clock: null })), null);
+  assert.equal(lib.settlePlayBet(over(), lib.boutFor(over(), [bout({ period: null, clock: null })]), { observations, now: at + 4 * lib.DAY }).note, 'couldn’t read how long it went');
+  // (a fighter replaced: the bout's id with another pairing, or the desk's old pairing marked replaced)
+  assert.equal(settle(fight(), bout({ away: { id: '9', name: 'Someone Else' } })).note, 'a fighter was replaced');
+  const replaced = [bout({ off: 'replaced', final: false, winner: null }), bout({ away: { id: '9', name: 'Someone Else' } })];
+  assert.equal(lib.settlePlayBet(fight(), lib.boutFor(fight(), replaced), opts).note, 'a fighter was replaced');
+  // (the bout cancelled; the price not on the board; placed after the bout's start, the card's earlier start no matter)
+  assert.equal(settle(fight(), bout({ off: 'cancelled', final: false, winner: null })).note, 'bout cancelled');
+  assert.equal(settle(fight({ odds: 200 })).note, 'price didn’t match the board');
+  assert.equal(settle(fight({ placedAt: '2026-10-18T00:50:00Z' })).note, 'placed after the start');
+  assert.equal(settle(fight({ placedAt: '2026-10-17T22:00:00Z' })).status, 'won');
+  // (names as ESPN writes them, accents and spacing aside)
+  assert.equal(settle(fight({ matchup: 'Timmy  Cuamba @ Louis Jourdáin' })).status, 'won');
+  // (not over: waits, then void after three days; no such bout: waits, then void)
+  assert.equal(settle(fight(), bout({ final: false, winner: null, period: null })), null);
+  assert.equal(lib.settlePlayBet(fight(), lib.boutFor(fight(), [bout({ final: false, winner: null })]), { observations, now: at + 4 * lib.DAY }).note, 'bout not finished');
+  assert.equal(lib.settlePlayBet(fight(), lib.boutFor(fight(), []), opts), null);
+  assert.equal(lib.settlePlayBet(fight(), null, { observations, now: at + 4 * lib.DAY }).note, 'bout not found');
+
+  // (a parlay with a bout's legs: each graded by the same rule, the NFL leg as before)
+  const nfl = { sport: 'nfl', event: '401', matchup: 'LV @ NE', start: '2026-10-11T17:00Z', market: 'spread', side: 'home', line: -3.5, odds: -108, pick: 'NE -3.5' };
+  const leg = (b) => ({ sport: 'mma', event: b.event, matchup: b.matchup, start: b.start, market: b.market, side: b.side, line: b.line, odds: b.odds, pick: b.pick });
+  const parlay = (legs) => ({ id: 'p', kind: 'parlay', legs, stake: 10, placedAt: '2026-10-10T12:00:00.000Z', start: '2026-10-11T17:00Z', status: 'open' });
+  // (placed days before the board showed the bout: its prices checked against the bout's close)
+  const g = { game: lib.boutFor(fight(), [bout()]), observations: lib.observationsOf({ ml: { home: -150, away: 125 }, total: { line: 2.5, over: -145, under: 114 } }, 'close') };
+  const nflGame = { game: game(), observations: board };
+  let r = lib.settleParlay(parlay([nfl, leg(fight())]), [nflGame, g], { now: at });
+  assert.deepEqual(r.result, { status: 'won', profit: 22.1, final: '2 of 2 hit', odds: 221 });
+  assert.deepEqual(r.legs.map((l) => [l.status, l.date]), [['won', '2026-10-11T17:00Z'], ['won', '2026-10-18T00:45:00Z']]);
+  // (its total leg lost: the parlay lost)
+  r = lib.settleParlay(parlay([nfl, leg(over())]), [nflGame, g], { now: at });
+  assert.deepEqual([r.result.status, r.legs[1].status], ['lost', 'lost']);
+  // (a draw: that leg void, the other paid straight)
+  r = lib.settleParlay(parlay([nfl, leg(fight())]), [nflGame, { ...g, game: lib.boutFor(fight(), [bout({ winner: null, period: 3, clock: 300 })]) }], { now: at });
+  assert.deepEqual([r.legs[1].status, r.result.status, r.result.odds], ['void', 'won', -108]);
+  // (a bout's leg the page couldn't place: a spread, a name with markup)
+  assert.equal(lib.legProblem(leg(fight())), null);
+  assert.equal(lib.legProblem(leg(over())), null);
+  assert.equal(lib.legProblem({ ...leg(fight()), market: 'spread', line: -1.5 }), 'not a market');
+  assert.equal(lib.legProblem({ ...leg(fight()), matchup: '<b>Timmy</b> @ Louis Jourdain' }), 'not a game');
 });
 
 test('a parlay on the page: one row (its own group), its legs as bets of their own, "2 of 4 hit", one bet in the record', () => {
