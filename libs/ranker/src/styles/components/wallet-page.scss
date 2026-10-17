@@ -38,20 +38,213 @@ $gold: chip.$lock-gold;
   }
 }
 
-// (the desk without a card of its own: the sheet is the page's card; the tiles on a scoreboard strip, as the
-// Track Players's)
-.wallet-page > .model-desk:not(.wallet-intro) {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
+// ===========================================================================
+// The wallet (docs/wallet-redesign/README.md): the account pages' hero, then panels on the sheet in rows, each a
+// scoreboard face under a bar in the wallet's felt green (chip.$felt-light at 16% over the dots, a felt-light line
+// under it), its title in the sand with the sand glow
+// ===========================================================================
+$bar-tint: rgba(chip.$felt-light, 0.16);
+$bar-line: rgba(chip.$felt-light, 0.4);
 
-  > .desk-top {
-    border: 1px solid var(--app-line, rgba(255, 255, 255, 0.08));
-    border-bottom-color: color-mix(in srgb, var(--scoreboard-led) 55%, transparent);
-    border-radius: 12px;
-    margin: 0 0 18px;
+.wallet {
+  color: var(--app-text, #f1ece6);
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-20;
+}
+
+// Who's signed in and what this is: the avatar ringed in sand, Wallet, the username, and the way to the board
+.wallet-hero {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-12 v.$space-16;
+
+  account-avatar {
+    border-radius: v.$radius-round;
+    box-shadow: 0 0 0 2px kit.app(sand);
+    flex: none;
   }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-4;
+    min-width: 0;
+  }
+
+  h2 {
+    color: #fff;
+    @include v.headline(v.$fs-22);
+    line-height: 1;
+    margin: 0;
+  }
+
+  .hero-user {
+    @include kit.sand-lit;
+    font-size: v.$fs-14;
+    font-weight: 700;
+  }
+
+  .hero-link {
+    @include kit.primary-button;
+    margin-left: auto;
+  }
+}
+
+// Two panels side by side, one under the other below 1120px
+.wallet-row {
+  align-items: stretch;
+  display: grid;
+  gap: v.$space-20;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+}
+
+// A panel: the scoreboard face, its edge, the small drop shadow; its bar, body and notes
+.wp-panel {
+  @include v.scoreboard-panel(v.$radius-xl);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.wp-bar {
+  align-items: center;
+  background:
+    linear-gradient($bar-tint, $bar-tint),
+    var(--scoreboard-dots),
+    var(--scoreboard);
+  border-bottom: 1px solid $bar-line;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-10 v.$space-12;
+  justify-content: space-between;
+  padding: v.$space-14 v.$space-20;
+
+  h3 {
+    @include kit.sand-lit;
+    font-family: v.$font-heading;
+    font-size: v.$fs-15;
+    font-weight: 700;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+  }
+}
+
+.wp-bar-note {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+
+  b {
+    color: #fff;
+  }
+}
+
+.wp-bar-tools {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-10 v.$space-14;
+}
+
+.wp-body {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-14;
+  padding: v.$space-16 v.$space-20;
+}
+
+// (the bets' tables inside a panel)
+.wp-panel > .group-body {
+  padding: v.$space-10 v.$space-14 v.$space-14;
+}
+
+.wp-note {
+  color: v.$text-faint;
+  font-size: v.$fs-12;
+  margin: 0;
+  padding: v.$space-14 v.$space-20;
+}
+
+// A pill switch (the periods): the one on filled sand, dark lettering
+.wp-seg {
+  border: 1px solid v.$panel-edge;
+  border-radius: v.$radius-pill;
+  display: flex;
+  overflow: hidden;
+
+  button {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-family: v.$font-base;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 1px;
+    min-height: 28px;
+    padding: 0 v.$space-12;
+    text-transform: uppercase;
+    transition:
+      background v.$t-fast ease,
+      color v.$t-fast ease;
+
+    &:hover {
+      color: #fff;
+    }
+
+    &[aria-pressed="true"] {
+      background: kit.app(sand);
+      color: kit.$app-sand-ink;
+    }
+
+    @include v.focus-lit {
+      box-shadow: inset 0 0 0 1px #fff;
+      color: #fff;
+    }
+  }
+}
+
+// A dropdown in a bar (the settled history's date range): a dark pill, its caret in the sand
+.wp-select {
+  appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23d8b98a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 10px center / 12px no-repeat,
+    rgba(0, 0, 0, 0.35);
+  border: 1px solid v.$panel-edge;
+  border-radius: v.$radius-pill;
+  color: #fff;
+  cursor: pointer;
+  font-family: v.$font-base;
+  font-size: v.$fs-11;
+  font-weight: 700;
+  height: 28px;
+  letter-spacing: 0.5px;
+  padding: 0 28px 0 12px;
+
+  &:hover {
+    border-color: #777;
+  }
+
+  @include v.focus-lit {
+    border-color: #fff;
+  }
+
+  option {
+    background: #1a1a1a;
+    color: #fff;
+  }
+}
+
+// (the tiles on a scoreboard strip, till the chips take their place)
+.wallet > .desk-top {
+  border: 1px solid var(--app-line, rgba(255, 255, 255, 0.08));
+  border-bottom-color: color-mix(in srgb, var(--scoreboard-led) 55%, transparent);
+  border-radius: 12px;
+  margin: 0;
 }
 
 // (the settled history's date range, over its panel on the left, as the Algorithm's)
