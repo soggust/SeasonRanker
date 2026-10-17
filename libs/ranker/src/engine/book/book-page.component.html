@@ -686,29 +686,37 @@
        money), and the recent form under it. On a phone the ticket is a stub along the bottom instead -->
   <aside class="book-side" aria-label="Bet ticket and recent form">
     <bet-slip></bet-slip>
-    <!-- Recent form: the user's last seven days (record, units, streak) and their last five settled bets, from the
-         wallet's tally and the history it has on hand; none signed out or with nothing settled -->
-    @if (form; as f) {
+    <!-- Recent form: the last seven days (record, units, streak) and the last five settled bets, the user's (the
+         wallet's tally and the history it has on hand) or the bot's (the picks files' recent blocks), a You / The
+         Bot switch between them; shown when either has its form, the side without one saying so -->
+    @if (form; as card) {
       <section class="recent-form" aria-label="Recent form">
         <div class="form-head">
           <h2>Recent form</h2>
-          <span class="form-who">You</span>
+          <div class="form-who" role="group" aria-label="Whose form">
+            <button type="button" [class.on]="card.side === 'you'" [attr.aria-pressed]="card.side === 'you'" (click)="chooseForm('you')">You</button>
+            <button type="button" [class.on]="card.side === 'bot'" [attr.aria-pressed]="card.side === 'bot'" (click)="chooseForm('bot')">The Bot</button>
+          </div>
         </div>
-        <div class="form-stats">
-          <div><span class="form-label">Last 7 days</span><span class="form-value">{{ f.record }}</span></div>
-          <div><span class="form-label">Units</span><span class="form-value units" [class.down]="!f.up">{{ f.units }}</span></div>
-          <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
-        </div>
-        @if (f.last.length) {
-          <ol class="form-list">
-            @for (b of f.last; track $index) {
-              <li class="form-bet" [ngClass]="b.res">
-                <span class="form-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
-                <span class="form-words"><b><pick-text [pick]="b.pick" [player]="b.who"></pick-text></b> · {{ b.game }}</span>
-                <span class="form-units">{{ b.units }}</span>
-              </li>
-            }
-          </ol>
+        @if (card.f; as f) {
+          <div class="form-stats">
+            <div><span class="form-label">Last 7 days</span><span class="form-value">{{ f.record }}</span></div>
+            <div><span class="form-label">Units</span><span class="form-value units" [class.down]="!f.up">{{ f.units }}</span></div>
+            <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
+          </div>
+          @if (f.last.length) {
+            <ol class="form-list">
+              @for (b of f.last; track $index) {
+                <li class="form-bet" [ngClass]="b.res">
+                  <span class="form-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
+                  <span class="form-words"><b><pick-text [pick]="b.pick" [player]="b.who"></pick-text></b> · {{ b.game }}</span>
+                  <span class="form-units">{{ b.units }}</span>
+                </li>
+              }
+            </ol>
+          }
+        } @else {
+          <p class="form-none">{{ card.side === 'you' ? 'No settled bets of yours yet.' : 'The bot has nothing settled yet.' }}</p>
         }
       </section>
     }

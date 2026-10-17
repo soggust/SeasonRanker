@@ -7,6 +7,7 @@ import { byBand, CheckResolved } from './desk-notes';
 import { Confidence, PickWhy, confidenceOf, kellyOf } from './bet-why';
 import { americanOdds } from './bet-format';
 import { PlayerRef, playerCardPath } from '../player-link';
+import type { BotRecent } from './recent-form';
 
 // A game as the picks name it
 export type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
@@ -202,6 +203,8 @@ export interface Picks {
   checkRule?: { kelly: number } | null;
   // (its record on the picks it has graded, by band: the board's band headers read it)
   record?: { byLevel?: ByLevel } | null;
+  // (its recent form on its graded placed bets: the Recent form card's The Bot side, recent-form.ts botForm)
+  recent?: BotRecent | null;
 }
 
 // A team as the schedule names it (the sportsbook's WSH and LAR are its WAS and LA)

@@ -75,3 +75,60 @@ test('recentForm: none without a tally, or with nothing settled this week and no
   assert.equal(bets.recentForm(null, [bet('17', 'won')], NOW), null);
   assert.equal(bets.recentForm({ all: tally.all, days: {} }, [], NOW), null);
 });
+
+// The bot's side (recent-form.ts botForm): the five sports' recent blocks from their picks.json (picks.mjs recentOf)
+// joined: the days summed over the page's own seven Eastern days, the streaks joined across the sports, the newest
+// five settled; and whose side the card opens on (formSide)
+const block = (over = {}) => ({ days: {}, streak: null, streakAt: [], brokeAt: null, last: [], ...over });
+const settledBet = (sport, res, at, over = {}) => ({ sport, pick: 'Over 6.5', matchup: 'NYR @ BOS', market: 'total', player: null, res, units: res === 'W' ? 0.91 : res === 'L' ? -1 : 0, at, ...over });
+
+test('botForm: the sports\' days summed over this week (an older day left out), the newest five across the sports', () => {
+  const nhl = block({
+    days: { '2026-10-17': [2, 0, 0, 2, 1.82], '2026-10-09': [9, 0, 0, 9, 8] },
+    streak: 'W2',
+    streakAt: ['2026-10-17T03:00:00Z', '2026-10-16T03:00:00Z'],
+    brokeAt: '2026-10-15T03:00:00Z',
+    last: [settledBet('nhl', 'W', '2026-10-17T03:00:00Z'), settledBet('nhl', 'W', '2026-10-16T03:00:00Z'), settledBet('nhl', 'L', '2026-10-15T03:00:00Z')],
+  });
+  const nfl = block({
+    days: { '2026-10-16': [1, 2, 1, 4, -1.1] },
+    streak: 'W1',
+    streakAt: ['2026-10-16T05:00:00Z'],
+    brokeAt: '2026-10-14T05:00:00Z',
+    last: [settledBet('nfl', 'W', '2026-10-16T05:00:00Z', { market: 'prop', player: 'Garrett Wilson', pick: 'Garrett Wilson Over 4.5 Receptions', matchup: 'NYJ @ NE' }), settledBet('nfl', 'P', '2026-10-15T05:00:00Z'), settledBet('nfl', 'L', '2026-10-14T05:00:00Z')],
+  });
+  const f = bets.botForm([nhl, null, nfl, undefined], NOW);
+  assert.equal(f.record, '3–2–1');
+  assert.equal(f.units, '+0.72u');
+  assert.equal(f.up, true);
+  // (the newest decided bet a win: the NHL's two and the NFL's one, all after the latest loss in either)
+  assert.equal(f.streak, 'W3');
+  assert.deepEqual(
+    f.last.map((b) => `${b.res} ${b.game} ${b.units}`),
+    ['W NHL · NYR @ BOS +0.91u', 'W NFL · NYJ @ NE +0.91u', 'W NHL · NYR @ BOS +0.91u', 'P NFL · NYR @ BOS 0.00u', 'L NHL · NYR @ BOS −1.00u'],
+  );
+  assert.deepEqual(f.last[1].who, { sport: 'nfl', name: 'Garrett Wilson' });
+  assert.equal(f.last[0].who, null);
+});
+
+test('botForm: a streak cut at the other result in another sport, a losing week, none with nothing', () => {
+  const mlb = block({ days: { '2026-10-15': [0, 3, 0, 3, -3] }, streak: 'L3', streakAt: ['2026-10-17T02:00:00Z', '2026-10-16T02:00:00Z', '2026-10-15T02:00:00Z'], brokeAt: '2026-10-10T02:00:00Z', last: [settledBet('mlb', 'L', '2026-10-17T02:00:00Z')] });
+  // (the NBA's win on the 16th, 03:00: it ends the run of losses there, so only the MLB's loss since counts)
+  const nba = block({ streak: 'W1', streakAt: ['2026-10-16T03:00:00Z'], brokeAt: null, last: [settledBet('nba', 'W', '2026-10-16T03:00:00Z')] });
+  const f = bets.botForm([mlb, nba], NOW);
+  assert.equal(f.streak, 'L1');
+  assert.equal(f.record, '0–3');
+  assert.equal(f.units, '−3.00u');
+  assert.equal(f.up, false);
+  assert.equal(bets.botForm([block(), null], NOW), null);
+  assert.equal(bets.botForm([], NOW), null);
+});
+
+test('formSide: the viewer\'s pick, else theirs once they have any, else the bot\'s; none with neither', () => {
+  const some = { record: '1–0', units: '+0.91u', up: true, streak: 'W1', last: [] };
+  assert.equal(bets.formSide(null, null, some), 'bot');
+  assert.equal(bets.formSide(null, some, some), 'you');
+  assert.equal(bets.formSide('bot', some, null), 'bot');
+  assert.equal(bets.formSide('you', null, some), 'you');
+  assert.equal(bets.formSide(null, null, null), null);
+});

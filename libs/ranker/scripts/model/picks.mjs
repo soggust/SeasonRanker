@@ -112,6 +112,68 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // being the model's own number on a role it reads poorly)
 export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.context?.roleBet && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
 
+// The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded
+// placed bets (a tracked row never, an open or void one never), each US Eastern day's [won, lost, push, staked,
+// profit] for the last RECENT_DAYS days (the user's tally's shape, so the page sums the five sports' days the way
+// it sums the user's, against its own clock), the week's record and units, the current streak (the settled times
+// of its bets, newest first, and the time of the bet that broke it: so the page can join the sports' streaks), and
+// the last RECENT_LAST settled bets, the latest first, a push among them (pick, game, result, units, settled time)
+export const RECENT_DAYS = 7;
+export const RECENT_LAST = 5;
+const STREAK_CAP = 60;
+const ET_DAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
+const etDayOf = (t) => ET_DAY.format(new Date(t));
+const settledAt = (b) => b.gradedAt ?? b.start;
+// (a ledger market as the wallet names it, so the page links a prop's player or a fight's fighter: betPlayer)
+const WALLET_MARKET = { ml: 'moneyline', prop: 'prop', spread: 'spread', total: 'total' };
+export function recentOf(sport, bets, now) {
+  const graded = bets
+    .filter((b) => !b.void && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.profit))
+    .sort((x, y) => String(settledAt(y)).localeCompare(String(settledAt(x))) || String(y.start).localeCompare(String(x.start)) || String(y.id).localeCompare(String(x.id)));
+  const t = now.getTime();
+  const window = new Set(Array.from({ length: RECENT_DAYS }, (_, i) => etDayOf(t - i * 864e5)));
+  const days = {};
+  const week = { won: 0, lost: 0, push: 0, profit: 0 };
+  for (const b of graded) {
+    const at = Date.parse(settledAt(b));
+    if (!Number.isFinite(at) || at > t) continue;
+    const day = etDayOf(at);
+    if (!window.has(day)) continue;
+    const d = (days[day] ??= [0, 0, 0, 0, 0]);
+    d[b.status === 'won' ? 0 : b.status === 'lost' ? 1 : 2]++;
+    d[3] = round(d[3] + (b.units ?? 0), 2);
+    d[4] = round(d[4] + b.profit, 2);
+    week[b.status]++;
+    week.profit += b.profit;
+  }
+  week.profit = round(week.profit, 2);
+  const decided = graded.filter((b) => b.status !== 'push');
+  let n = 0;
+  while (n < decided.length && decided[n].status === decided[0].status) n++;
+  const last = graded.slice(0, RECENT_LAST).map((b) => {
+    const market = WALLET_MARKET[b.market] ?? b.market;
+    const s = b.sport ?? sport;
+    return {
+      sport: s,
+      pick: b.pick,
+      matchup: b.matchup,
+      market,
+      player: market === 'prop' || (s === 'mma' && market === 'moneyline') ? (b.player ?? b.fighters?.[b.side]?.name ?? null) : null,
+      res: b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P',
+      units: round(b.profit, 2),
+      at: settledAt(b),
+    };
+  });
+  return {
+    days,
+    week,
+    streak: decided.length ? `${decided[0].status === 'won' ? 'W' : 'L'}${n}` : null,
+    streakAt: decided.slice(0, Math.min(n, STREAK_CAP)).map(settledAt),
+    brokeAt: decided[n] ? settledAt(decided[n]) : null,
+    last,
+  };
+}
+
 // A bet's score (see above): its EV, half for a market whose trust is still the untested start
 export function scoreOf(bet, trust) {
   const key = bet.market === 'prop' ? `prop:${bet.propType}` : bet.market;
@@ -363,7 +425,7 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   }
   const published = ledger.bets.filter((b) => b.published && !isTracked(b));
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: checkRows };
+  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, recent: recentOf(sport, ledger.bets, now), picks, checks: checkRows };
 }
 
 // (a prop CHECK's numbers for the page: the model's mean, the book's implied one, his record at the line (his

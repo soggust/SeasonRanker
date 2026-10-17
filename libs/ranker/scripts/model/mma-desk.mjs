@@ -53,7 +53,7 @@ import { TERMS, TOTAL_TERMS, backtest, boutSeconds, buildModel, fitRows, totalsT
 import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictTotal, settleTotal, totalLinesOf, totalPickFor, totalReasonOf, totalRows } from './fights-totals.mjs';
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { BANKROLL, chanceAt, decimal, fairPair, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
-import { BANDS, TOP, edgeLevel, kellyOf, levelOf, scoreParts } from './picks.mjs';
+import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
 import { buildBoard, seenUpdate } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
@@ -509,7 +509,7 @@ export function buildFightPicks(ledger, trust, bouts, now) {
     return { bets: r.bets, won: r.won, lost: r.lost, push: r.push, staked: r.staked, profit: r.profit, roi: r.roi, open: list.filter((b) => b.status === 'open').length };
   };
   const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport: SPORT, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, picks, checks: [] };
+  return { sport: SPORT, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, recent: recentOf(SPORT, ledger.bets, now), picks, checks: [] };
 }
 
 // The state the desk component reads (desk-model.ts ModelState: a fights league has no teams, no team params)

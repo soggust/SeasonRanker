@@ -10,7 +10,7 @@ import { Selection, recordOf, recordText, selectionKey } from '../account/wallet
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { betSports } from './bet-sports';
-import { RecentForm, recentForm } from './recent-form';
+import { FormSide, RecentForm, botForm, formSide, recentForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
@@ -334,6 +334,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   private readFiles(): void {
     this.updated = null;
     this.records = new Map();
+    // (the bot's recent form, the five sports' recent blocks joined: the Recent form card's The Bot side)
+    this.botForm = botForm([...this.files.values()].map((p) => p?.recent));
     for (const [sport, picks] of this.files) {
       if (!picks?.picks?.length && !picks?.checks?.length) continue;
       if (!this.updated || picks.at > this.updated) this.updated = picks.at;
@@ -1088,12 +1090,24 @@ export class BookPageComponent implements OnInit, OnDestroy {
     this.wallet.toggle(sel);
   }
 
-  // The recent form card (recent-form.ts): the user's last seven days from the settler's tally the wallet holds,
-  // their streak and their last five settled bets where the history's on hand; none signed out, or with nothing
-  // settled. The bot's recent form isn't on the page: no switch, the card the user's
-  get form(): RecentForm | null {
+  // The recent form card (recent-form.ts), a You / The Bot switch: the user's last seven days from the settler's
+  // tally the wallet holds, their streak and their last five settled bets where the history's on hand (none signed
+  // out, or with nothing settled); the bot's from the recent blocks of the picks files the page has read (botForm,
+  // in readFiles). The card shows when either side has its form, on the viewer's pick of the switch, else theirs,
+  // else the bot's (formSide); the side without one says so
+  botForm: RecentForm | null = null;
+  formChoice: FormSide | null = null;
+  get yourForm(): RecentForm | null {
     if (!canUse('book') || !this.wallet.loaded()) return null;
     return recentForm(this.wallet.tally(), this.wallet.settledBets());
+  }
+  get form(): { side: FormSide; f: RecentForm | null } | null {
+    const you = this.yourForm;
+    const side = formSide(this.formChoice, you, this.botForm);
+    return side ? { side, f: side === 'you' ? you : this.botForm } : null;
+  }
+  chooseForm(side: FormSide): void {
+    this.formChoice = side;
   }
 
   // (the closed row's line under the pick: its game and its start, "NYJ @ NE · Sun 12:00 PM" (game-menu.ts

@@ -879,17 +879,48 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
-  // (whose: the user's; the bot's recent form isn't on the page, so no switch)
+  // (whose: a pill of two, You and The Bot, the one shown lit in gold)
   .form-who {
     border: 1px solid v.$panel-edge;
     border-radius: v.$radius-pill;
-    color: v.$grey-light;
-    font-size: v.$fs-11;
-    font-weight: 700;
-    letter-spacing: 1px;
-    line-height: 1;
-    padding: 5px 12px;
-    text-transform: uppercase;
+    display: flex;
+    overflow: hidden;
+
+    button {
+      background: none;
+      border: 0;
+      color: v.$text-faint;
+      cursor: pointer;
+      font: inherit;
+      font-size: v.$fs-11;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1;
+      padding: 5px 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+
+      &:hover {
+        color: v.$grey-light;
+      }
+
+      &:focus-visible {
+        outline: 1px solid v.$panel-edge;
+        outline-offset: -2px;
+      }
+
+      &.on {
+        @include glow;
+        background: rgba(255, 255, 255, 0.06);
+        cursor: default;
+      }
+    }
+  }
+
+  .form-none {
+    color: v.$text-faint;
+    font-size: v.$fs-12;
+    margin: 0;
   }
 
   .form-stats {
