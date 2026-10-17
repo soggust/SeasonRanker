@@ -1,0 +1,93 @@
+<!-- The Live card: its bar (the state's dot and title, the sweat summary over the user's bets on the games under
+     way, the All games / My bets pill; quiet, when the first game tips off), and its chalkboard body, a card per
+     game, each a button that opens the game's modal -->
+<section class="live-card" [attr.aria-label]="title">
+  <div class="live-bar" [class.quiet]="state !== 'live'">
+    <h2 class="live-title">
+      <span class="live-dot" [class.on]="state === 'live'" [class.up]="state === 'upcoming'" [class.off]="state === 'done'" aria-hidden="true"></span>
+      {{ title }}
+    </h2>
+    @if (state === 'live' && canFilter) {
+      @let s = sweat;
+      <span class="live-sweat" aria-label="Your bets on the games under way">
+        <span class="sweat-one"><i class="sweat-dot good" aria-hidden="true"></i><b>{{ s.winning }}</b> winning</span>
+        <span class="sweat-one"><i class="sweat-dot close" aria-hidden="true"></i><b>{{ s.close }}</b> close</span>
+        <span class="sweat-one"><i class="sweat-dot bad" aria-hidden="true"></i><b>{{ s.losing }}</b> losing</span>
+      </span>
+    }
+    <span class="live-space"></span>
+    @if (state === 'live') {
+      @if (canFilter) {
+        <div class="live-seg" role="group" aria-label="Show">
+          <button type="button" [attr.aria-pressed]="show === 'all'" (click)="show = 'all'">All games</button>
+          <button type="button" [attr.aria-pressed]="show === 'mine'" (click)="show = 'mine'">My bets</button>
+        </div>
+      }
+    } @else if (note; as n) {
+      <span class="live-note">{{ n.text }}@if (n.time) {<b class="live-time">{{ n.time }}</b>}</span>
+    }
+  </div>
+
+  <div class="live-board" [class.one]="cards.length === 1">
+    @for (c of cards; track c.key) {
+      <button type="button" class="live-game" [class.live]="c.live" [attr.aria-label]="c.aria" (click)="open(c)">
+        <span class="game-top">
+          <span class="game-caps">{{ c.sport.toUpperCase() }}@if (c.where) { · {{ c.where }}}</span>
+          <span class="game-clock" [class.live]="c.live">@if (c.live) {<i class="live-dot on" aria-hidden="true"></i>}{{ c.clock }}</span>
+        </span>
+        <span class="game-teams">
+          @for (t of c.teams; track t.abbr) {
+            <span class="game-team">
+              <span class="mini-gem game-gem" [style]="t.chip" [class.white-logo]="t.whiteLogo" aria-hidden="true">
+                @if (t.logo) {
+                  <img [src]="t.logo" alt="" loading="lazy" (error)="fallback($event, t.espnLogo)" />
+                }
+              </span>
+              <span class="game-name"><span class="game-name-word">{{ t.name }}</span>@if (t.record) {<span class="game-record">{{ t.record }}</span>}</span>
+              @if (t.score !== '') {
+                <span class="game-led" [class.lead]="t.lead"><span class="led-unlit" aria-hidden="true">{{ t.unlit }}</span><span class="led-lit">{{ t.score }}</span></span>
+              }
+            </span>
+          }
+        </span>
+        @if (c.spark) {
+          <span class="game-spark" aria-hidden="true">
+            <svg viewBox="0 0 300 26" preserveAspectRatio="none"><line x1="0" y1="13" x2="300" y2="13" vector-effect="non-scaling-stroke" /><path [attr.d]="c.spark" vector-effect="non-scaling-stroke" /></svg>
+          </span>
+        }
+        @if (c.last; as last) {
+          <span class="game-last" [class.good]="last.tone === 'good'" [class.bad]="last.tone === 'bad'">
+            @if (last.clock) {<span class="last-clock">{{ last.clock }}</span>}
+            <span class="last-text">{{ last.text }}</span>
+          </span>
+        }
+        <span class="game-space"></span>
+        <span class="game-bets">
+          @for (b of c.bets; track b.key) {
+            <span class="game-bet" [ngClass]="b.w.tone">
+              <span class="bet-short">{{ b.short }}</span>
+              <span class="bet-meter" aria-hidden="true">
+                <i class="bet-fill" [style.width.%]="b.w.fill"></i>
+                <i class="bet-tick" [style.left]="'calc(' + b.w.tick + '% - 1px)'"></i>
+              </span>
+              <span class="bet-status">{{ b.w.status }}</span>
+            </span>
+          }
+          @if (c.noBets) {
+            <span class="game-nobets">{{ c.noBets }}</span>
+          }
+        </span>
+      </button>
+    } @empty {
+      <p class="live-empty">
+        @if (state === 'live') {
+          No tickets on tonight's games. Switch to All games to watch them all.
+        } @else if (state === 'upcoming') {
+          Today's games haven't started.
+        } @else {
+          Nothing to watch tonight.
+        }
+      </p>
+    }
+  </div>
+</section>

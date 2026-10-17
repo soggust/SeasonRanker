@@ -35,6 +35,7 @@ import { BetsPageComponent } from './bets/bets-page.component';
 import { BetsAboutComponent } from './bets/bets-about.component';
 import { ModelDeskComponent } from './bets/model-desk.component';
 import { DeskNoteComponent } from './bets/desk-note.component';
+import { LiveTabComponent } from './bets/live-tab.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
 import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.component';
 
@@ -63,6 +64,7 @@ import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.comp
     BetsAboutComponent,
     ModelDeskComponent,
     DeskNoteComponent,
+    LiveTabComponent,
     ...ACCOUNT_COMPONENTS,
   ],
   bootstrap: [AppComponent],

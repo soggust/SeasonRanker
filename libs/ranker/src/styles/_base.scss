@@ -71,6 +71,8 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   // from its theme
   --tex-leather: url("../assets/textures/leather.jpg");
   --tex-chalk-noise: url("../assets/textures/chalk-noise.svg");
+  // (the Book's chalked betting art: dice, cards, chips, a ticket, the edge; the Live tab's board)
+  --tex-chalk-bets: url("../assets/textures/chalk-bets.svg");
 
   // The sportsbook's crown (DraftKings'), inlined once for every app (v.book-crown draws it)
   --book-crown: #{v.$book-crown-image};

@@ -23,6 +23,7 @@ import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, gameLine, gameMenu, menuKey, menuOptionId, menuValues, sportChoice, sportFace } from './game-menu';
 import { teamLook } from '../team-look';
+import { LiveService } from './live.service';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -39,7 +40,7 @@ import { teamLook } from '../team-look';
 // take a note too (the same deskNotes/{pick id}: a player's news re-prices the game's open bets).
 
 // (a game the bot has picks on: its board's key facts, its picks (the CHECKs among them) and its bets alone)
-type GameBoardPicks = { sport: string; event: string; start: string; matchup: string; picks: BetRow[]; betPicks: BetRow[] };
+export type GameBoardPicks = { sport: string; event: string; start: string; matchup: string; picks: BetRow[]; betPicks: BetRow[] };
 
 // (the game dropdown's chosen game, for its closed face: its words and its sport's icon)
 type ChosenGame = MenuGame & { icon: string };
@@ -192,10 +193,17 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the Open tab's count: the user's bets not yet settled)
   readonly openCount = (): number => this.wallet.openBets().length;
   readonly hasClosed = (): boolean => canUse('bets') && this.wallet.hasSettled();
+  // (Live: the day's games as they're played (live-tab.component.ts, live.service.ts), the tab there whenever the
+  // day has games on or still to come; and while it's the view showing with games on the card at all, so it
+  // doesn't vanish under the viewer as the last game ends (ALL DONE TONIGHT). Its count: the games on now)
+  readonly liveTab = inject(LiveService);
+  readonly hasLive = (): boolean => this.liveTab.hasGames() || (betsView() === 'live' && this.liveTab.games().length > 0);
+  readonly liveCount = (): number => this.liveTab.liveCount();
   // (Place Bets first; Open Bets (with the wallet) or the Algorithm (development only) once chosen in this
   // visit: bets-view.ts)
   get view(): BetsView {
     const view = betsView();
+    if (view === 'live') return this.hasLive() ? view : 'bets';
     if (view === 'desk') return this.desk() ? view : 'bets';
     if (view === 'open') return this.hasOpen() ? view : 'bets';
     if (view === 'closed') return this.hasClosed() ? view : 'bets';

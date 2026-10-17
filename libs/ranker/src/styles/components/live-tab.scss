@@ -1,0 +1,556 @@
+@use "../variables" as v;
+@use "../casino-chip" as chip;
+
+// The Book's Live tab (live-tab.component.ts): one card with the wallet's gold rail, full width; its bar on the
+// felt's green tint over the scoreboard with the gold seam under it; its body the chalkboard with the Book's
+// chalked betting art (--tex-chalk-bets) over the chalk dust, a grid of game cards on the scoreboard. The
+// design: docs/bets-redesign/Live.dc.html (LivePhone.dc.html on phones)
+
+// (the tones: winning green, close gold, losing red)
+$good: v.$good-bright;
+$close: chip.$gold-led;
+$bad: v.$bad-soft;
+$orange: #e8913a;
+$grey: #7a7a7a;
+
+// (on a wide screen the page stands still: the tab scrolls on its own, a gold thumb; narrower the page scrolls)
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+@include v.up(wide-menu) {
+  :host {
+    flex: 1;
+    overflow-y: auto;
+    @include chip.gold-scrollbar;
+  }
+}
+
+.live-card {
+  @include chip.panel(false);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// ---- the bar: one line (the dot and title, the sweat, the pill or the quiet note)
+
+.live-bar {
+  align-items: center;
+  background: linear-gradient(rgba(chip.$felt-light, 0.16), rgba(chip.$felt-light, 0.16)), var(--scoreboard-dots), var(--scoreboard);
+  border-bottom: 1px solid chip.$felt-seam;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-10 18px;
+  min-height: 50px;
+  padding: v.$space-8 v.$space-16;
+}
+
+.live-title {
+  align-items: center;
+  color: #fff;
+  display: inline-flex;
+  font-family: v.$font-base;
+  font-size: v.$fs-13;
+  font-weight: 800;
+  gap: 9px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+// The dots: live green (blinking, still for reduced motion), upcoming orange with a soft glow, done flat grey
+.live-dot {
+  border-radius: v.$radius-round;
+  display: inline-block;
+  flex: none;
+  height: 7px;
+  width: 7px;
+
+  &.on {
+    background: $good;
+    box-shadow: 0 0 6px $good;
+  }
+
+  &.up {
+    background: $orange;
+    box-shadow: 0 0 6px rgba($orange, 0.8);
+  }
+
+  &.off {
+    background: $grey;
+  }
+}
+
+// (the live dot blinks; still for anyone who's asked for less motion)
+.live-dot.on {
+  animation: live-blink 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot.on {
+    animation: none;
+  }
+}
+
+@keyframes live-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-sweat {
+  align-items: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  color: v.$grey-light;
+  display: inline-flex;
+  font-size: v.$fs-12;
+  gap: v.$space-16;
+  line-height: 1;
+  padding-left: 18px;
+
+  b {
+    color: #fff;
+  }
+}
+
+.sweat-one {
+  align-items: center;
+  display: inline-flex;
+  gap: v.$space-6;
+}
+
+.sweat-dot {
+  border-radius: v.$radius-xxs;
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+
+  &.good {
+    background: $good;
+    box-shadow: 0 0 6px $good;
+  }
+
+  &.close {
+    background: $close;
+    box-shadow: 0 0 6px $close;
+  }
+
+  &.bad {
+    background: $bad;
+    box-shadow: 0 0 6px $bad;
+  }
+}
+
+.live-space {
+  flex: 1;
+}
+
+// (All games / My bets: a segmented pill, the one on in gold with dark lettering)
+.live-seg {
+  background: v.$scoreboard-black;
+  border: 1px solid v.$panel-edge;
+  border-radius: v.$radius-pill;
+  display: flex;
+  overflow: hidden;
+
+  button {
+    background: none;
+    border: none;
+    color: v.$grey-light;
+    cursor: pointer;
+    font-family: v.$font-base;
+    font-size: v.$fs-10;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    line-height: 1;
+    // (44px tall to the touch: the pill's 8px and the line make 26; the rest is the bar's own height around it)
+    min-height: 28px;
+    padding: 8px 13px;
+    text-transform: uppercase;
+    transition: color v.$t-hover ease;
+
+    &:hover {
+      color: #fff;
+    }
+
+    @include v.focus-lit {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    &[aria-pressed="true"] {
+      background: $close;
+      color: v.$chip-ink;
+    }
+  }
+}
+
+.live-note {
+  color: v.$grey-light;
+  font-size: v.$fs-12;
+  line-height: 1;
+}
+
+.live-time {
+  color: $close;
+  text-shadow: var(--scoreboard-glow);
+}
+
+// ---- the body: the chalkboard with the chalked betting art, the game cards in three columns (two under 1100px,
+// one on phones)
+
+.live-board {
+  background: var(--tex-chalk-bets) 50% 35% / 1400px 720px no-repeat, v.$chalk-dust;
+  display: grid;
+  gap: v.$space-16;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 18px;
+}
+
+@media (max-width: 1100px) {
+  .live-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.live-empty {
+  color: v.$text-dim;
+  font-size: v.$fs-13;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: v.$space-8 v.$space-4 v.$space-12;
+}
+
+// A game's card: a button on the scoreboard, a thin frame, lifting on hover; no colored left edge
+.live-game {
+  @include v.scoreboard-panel(v.$radius-xl, 0 3px 8px rgba(0, 0, 0, 0.45));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: v.$font-base;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  transition:
+    translate v.$t-hover ease,
+    border-color v.$t-hover ease,
+    box-shadow v.$t-hover ease;
+
+  &:hover {
+    border-color: rgba($close, 0.6);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+    translate: 0 -2px;
+  }
+
+  @include v.focus-lit {
+    border-color: $close;
+  }
+}
+
+.game-top {
+  align-items: center;
+  display: flex;
+  gap: v.$space-8;
+  justify-content: space-between;
+  line-height: 1;
+  padding: 11px 14px 0;
+}
+
+.game-caps {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  @include v.ellipsis;
+}
+
+// (the clock: green with the live dot while it's on; a start time in gold)
+.game-clock {
+  align-items: center;
+  color: $close;
+  display: inline-flex;
+  flex: none;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  gap: v.$space-6;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+
+  &.live {
+    color: $good;
+  }
+}
+
+.game-teams {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
+  padding: 10px 14px;
+}
+
+.game-team {
+  align-items: center;
+  display: grid;
+  gap: v.$space-10;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+}
+
+// (the gem: the team's little chip, as the game view's mini-gem (the team's chip color, team-look.ts), round and
+// 30px here, its logo on it)
+.live-game .mini-gem {
+  @include v.team-chip;
+  align-items: center;
+  border-radius: v.$radius-round;
+  display: inline-flex;
+  flex: none;
+  height: 30px;
+  justify-content: center;
+  overflow: hidden;
+  width: 30px;
+
+  img {
+    height: 22px;
+    object-fit: contain;
+    width: 22px;
+  }
+
+  &.white-logo img {
+    @include v.white-lettering;
+  }
+}
+
+.game-name {
+  align-items: baseline;
+  display: flex;
+  gap: v.$space-8;
+  min-width: 0;
+}
+
+.game-name-word {
+  font-family: v.$font-heading;
+  font-size: v.$fs-16;
+  font-weight: 600;
+  line-height: 1;
+  @include v.ellipsis;
+}
+
+.game-record {
+  color: v.$text-faint;
+  flex: none;
+  font-size: v.$fs-11;
+}
+
+// (the score on LED digits, the unlit eights behind; the leader's in gold)
+.game-led {
+  display: grid;
+  font-family: v.$font-led;
+  font-size: v.$fs-22;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+
+  > span {
+    grid-area: 1 / 1;
+    text-align: right;
+  }
+
+  .led-unlit {
+    color: rgba(255, 255, 255, 0.06);
+  }
+
+  &.lead .led-lit {
+    color: $close;
+    text-shadow: 0 0 8px rgba($close, 0.5);
+  }
+}
+
+// (the sparkline: gold, over a dashed middle line, as far as the game has gone)
+.game-spark {
+  display: block;
+  padding: 0 14px;
+
+  svg {
+    display: block;
+    height: 26px;
+    width: 100%;
+  }
+
+  line {
+    stroke: v.$scoreboard-frame;
+    stroke-dasharray: 2 3;
+  }
+
+  path {
+    fill: none;
+    opacity: 0.85;
+    stroke: $close;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+}
+
+// (the last play: its clock and text on one line; tinted green or red when it moved one of the user's bets)
+.game-last {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 5px;
+  color: v.$grey-light;
+  display: flex;
+  font-size: v.$fs-12;
+  gap: v.$space-8;
+  line-height: 1.3;
+  margin: 8px 14px 0;
+  padding: 7px 10px;
+
+  &.good {
+    background: rgba($good, 0.12);
+    color: #d9f7e4;
+  }
+
+  &.bad {
+    background: rgba($bad, 0.12);
+    color: #ffe0dc;
+  }
+}
+
+.last-clock {
+  color: v.$text-faint;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.last-text {
+  flex: 1;
+  min-width: 0;
+  @include v.ellipsis;
+}
+
+.game-space {
+  flex: 1;
+}
+
+// The bets on the game, under a hairline: a row each, the short pick, a small meter (the fill to where it stands,
+// a white tick at the line) and its status tag, the row washed faintly in its tone
+.game-bets {
+  border-top: 1px solid rgba(38, 38, 38, 0.5);
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.game-bet {
+  --tone: #{$close};
+  align-items: center;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 8%, transparent), transparent 70%);
+  border-bottom: 1px solid rgba(29, 29, 29, 0.5);
+  display: grid;
+  gap: v.$space-10;
+  grid-template-columns: minmax(0, 1fr) 70px auto;
+  padding: 8px 14px;
+
+  &.good {
+    --tone: #{$good};
+  }
+
+  &.bad {
+    --tone: #{$bad};
+  }
+
+  &.wait {
+    --tone: #{v.$grey-mid};
+  }
+}
+
+.bet-short {
+  font-size: v.$fs-12;
+  font-weight: 700;
+  @include v.ellipsis;
+}
+
+.bet-meter {
+  background: v.$panel-rule;
+  border-radius: v.$radius-pill;
+  display: block;
+  height: 6px;
+  position: relative;
+}
+
+.bet-fill {
+  background: var(--tone);
+  border-radius: v.$radius-pill;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--tone) 50%, transparent);
+  display: block;
+  inset: 0 auto 0 0;
+  position: absolute;
+}
+
+.bet-tick {
+  background: #fff;
+  display: block;
+  height: 12px;
+  position: absolute;
+  top: -3px;
+  width: 2px;
+}
+
+.bet-status {
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+  border-radius: v.$radius-xs;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 50%, transparent);
+  color: var(--tone);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  line-height: 1;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.game-nobets {
+  color: v.$text-faint;
+  font-size: v.$fs-12;
+  padding: 9px 14px;
+}
+
+// ---- phones: the card 10px in from the edges (the page's own gutter), the bar wrapping (the title and the pill on
+// the first line, the sweat on its own line under a hairline), the cards one column over the art placed higher
+
+@include v.down(ai-narrow) {
+  .live-board {
+    background: var(--tex-chalk-bets) 50% 0 / 1100px 566px no-repeat, v.$chalk-dust;
+    gap: v.$space-10;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .live-bar {
+    gap: v.$space-10 v.$space-12;
+    min-height: 0;
+    padding: 10px 12px;
+  }
+
+  .live-sweat {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-basis: 100%;
+    order: 3;
+    padding-left: 0;
+    padding-top: 9px;
+  }
+
+  .live-note {
+    flex-basis: 100%;
+    line-height: 1.3;
+    order: 3;
+  }
+}

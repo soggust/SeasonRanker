@@ -64,10 +64,16 @@ export class GameViewService {
     return this.game && this.game !== 'loading' && this.game !== 'error' && this.current && 'event' in this.current ? this.current.event : null;
   }
 
-  // tab: the one to open on (a shared link's), when the game has it; else the Summary, or a game to come's Preview
-  async open(ref: GameRef, tab: GameTab | null = null): Promise<void> {
-    const league = SPORT.gameLog?.league;
+  // (whether the game open is this sport's own: another sport's game (the Bets page's Live tab opens any sport's)
+  // has no team or player cards here to link to)
+  private own = true;
+  readonly ownGame = (): boolean => this.own;
+
+  // tab: the one to open on (a shared link's), when the game has it; else the Summary, or a game to come's Preview.
+  // league: ESPN's, for another sport's game (the Bets page's Live tab: "basketball/nba"); this sport's own otherwise
+  async open(ref: GameRef, tab: GameTab | null = null, league: string | null = SPORT.gameLog?.league ?? null): Promise<void> {
     if (!league) return;
+    this.own = league === SPORT.gameLog?.league;
     const ticket = ++this.opened;
     this.game = 'loading';
     this.tab = 'summary';
@@ -87,11 +93,13 @@ export class GameViewService {
       if (ticket !== this.opened) return;
       this.current = { event: id };
       this.game = game;
-      // (the players the site has that season, for the names' links)
+      // (the players the site has that season, for the names' links: this sport's own games alone)
       this.players = null;
-      this.findPlayers?.(game.seasonYear ?? new Date(game.date).getFullYear())
-        .then((map) => ticket === this.opened && (this.players = map))
-        .catch(() => null);
+      if (this.own) {
+        this.findPlayers?.(game.seasonYear ?? new Date(game.date).getFullYear())
+          .then((map) => ticket === this.opened && (this.players = map))
+          .catch(() => null);
+      }
       // (a game to come opens on its preview)
       this.tab = tab && hasTab(game, tab) ? tab : game.preview ? 'preview' : 'summary';
       // (the Plays tab's first group open, the rest shut)
@@ -170,14 +178,14 @@ export class GameViewService {
   // A player or team opened from the game: the game closes (its card's back arrow reopens it)
   toPlayer(name: string, season: number): void {
     const link = this.link(name);
-    if (!link || !this.openPlayer) return;
+    if (!link || !this.openPlayer || !this.own) return;
     this.backTo = this.current;
     this.close();
     this.openPlayer(link, season);
   }
 
   toTeam(abbreviation: string, season: number): void {
-    if (!this.openTeam) return;
+    if (!this.openTeam || !this.own) return;
     this.backTo = this.current;
     this.openTeam(abbreviation, season);
   }

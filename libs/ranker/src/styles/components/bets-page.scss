@@ -2391,3 +2391,38 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     min-height: 44px;
   }
 }
+
+// (the Live tab on the views bar: its count's blinking green dot before the word while any game's on (still for
+// anyone who's asked for less motion); the card itself is live-tab.scss's)
+.bets-views .live-view {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+
+  .live-dot {
+    background: v.$good-bright;
+    border-radius: v.$radius-round;
+    box-shadow: 0 0 6px v.$good-bright;
+    display: inline-block;
+    flex: none;
+    height: 7px;
+    width: 7px;
+  }
+}
+
+.bets-views .live-view .live-dot {
+  animation: live-tab-blink 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bets-views .live-view .live-dot {
+    animation: none;
+  }
+}
+
+@keyframes live-tab-blink {
+  50% {
+    opacity: 0.35;
+  }
+}

@@ -13,9 +13,16 @@
       <h1>The Book</h1>
     </div>
     <!-- (the views, when there's more than one: the bar) -->
-    @if (desk() || hasOpen() || hasClosed()) {
+    @if (desk() || hasOpen() || hasClosed() || hasLive()) {
       <nav class="bets-views" aria-label="View">
         <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The board</button>
+        <!-- (Live: the day's games as they're played, with how many are on now and a blinking dot while any are; just
+             Live with none on; there whenever the day has games on or to come) -->
+        @if (hasLive()) {
+          <button type="button" class="live-view" [class.active]="view === 'live'" [attr.aria-current]="view === 'live' ? 'page' : null" (click)="view = 'live'">
+            @if (liveCount()) {<i class="live-dot" aria-hidden="true"></i>}Live@if (liveCount()) { · {{ liveCount() }}}
+          </button>
+        }
         @if (hasOpen()) {
           <button type="button" [class.active]="view === 'open'" [attr.aria-current]="view === 'open' ? 'page' : null" (click)="view = 'open'">Open · {{ openCount() }}</button>
         }
@@ -54,7 +61,7 @@
        (the list twice, the second copy for the screen reader's sake hidden): finals, the games under way with
        their clock, then the ones to come with their start. On the board, the open tickets and the cashed ones, not
        the Algorithm's desk. Nothing on the boards: none -->
-  @if (tickerItems.length && view !== 'desk') {
+  @if (tickerItems.length && view !== 'desk' && view !== 'live') {
     <div class="book-ticker" role="marquee" aria-label="Scores and start times">
       <div class="ticker-track">
         @for (copy of [0, 1]; track copy) {
@@ -79,6 +86,10 @@
   }
   @if (view === 'desk') {
     <model-desk></model-desk>
+  } @else if (view === 'live') {
+    <!-- (Live: one card, the day's games as they're played; the bot's read on a game from the board's picks, each
+         game's venue from the picks' places) -->
+    <live-tab [boards]="boards" [places]="places"></live-tab>
   } @else if (view === 'open') {
     <wallet-page only="open"></wallet-page>
   } @else if (view === 'closed') {
@@ -648,3 +659,6 @@
   </div>
   }
 </div>
+<!-- The game modal (the existing game view, over the page): a game opened from the Live tab's cards, this sport's
+     or another's (game-view.service.ts open's league); the rankings mount their own, with a share link -->
+<game-view></game-view>
