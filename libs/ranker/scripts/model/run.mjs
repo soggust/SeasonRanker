@@ -141,10 +141,10 @@ import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, lineGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
@@ -1714,6 +1714,19 @@ async function betProps(r) {
   const { sport, cfg, state, trust, ledger, at } = r;
   const run = { games: 0, priced: 0, under: 0, even: 0, evenUnder: 0, bet: 0, units: 0 };
   r.propRun = run;
+  // (the CHECK bar by cause (props.mjs roleGateOf): a role cause whose graded CHECKs pay on the model's side is bet at
+  // the untested cap's half, the rest CHECKs; read from the CHECKs as graded so far (check-learn.mjs). And the props'
+  // CLV gate by stat (desk.mjs propGate): a stat whose closing-line value over its last 200 graded is negative is
+  // tracked, not bet, till it's positive. Each kept for the state and the Algorithm tab)
+  try {
+    r.roleGate = roleGateOf(checkLearning(ledger.checks ?? []));
+  } catch (err) {
+    console.warn(`${sport}: the role gate skipped (${err.message}): every role cause a CHECK`);
+    r.roleGate = null;
+  }
+  for (const g of Object.values(r.roleGate ?? {})) if (g.on) console.log(`${sport}: ${g.why}`);
+  r.propGate = propGate(ledger.bets ?? [], sport);
+  for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props tracked only this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
   if (sport === 'nfl') {
     r.anytimeMarket = { market: ANYTIME_TD.market, ...anytimeOn() };
@@ -1876,7 +1889,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null);
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
       if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
@@ -1973,6 +1986,9 @@ async function betProps(r) {
     // tracked row stakes nothing: no exposure); a tracked one counts every row, as the action bets did)
     // (a flagged one (a guard's cut) with an edge: bet at the minimum, as the game markets; the owner's)
     const edge = x.ev > 0;
+    // (the stat's CLV gate (r.propGate): off, tracked, not bet, the gate's word on the row)
+    const gate = r.propGate?.[x.prop.stat.key] ?? null;
+    if (gate && !gate.on) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} tracked only: ${gate.why}`].filter(Boolean).join('; ') };
     if (x.guard) x.units = 0.5;
     const mine = [...ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && !b.void && b.id !== id && (!DRY || b.published)), ...pendingProps(game.id)].filter((b) => !edge || !isTracked(b));
     if (r.placed.has(id) && !DRY) continue;
@@ -1984,7 +2000,7 @@ async function betProps(r) {
     if (caps.perPlayer !== null && caps.perPlayer !== undefined && mine.filter((b) => String(b.athlete) === String(x.prop.athlete.id)).length >= caps.perPlayer) continue;
     x.units = Math.min(x.units, caps.maxUnits);
     if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
-    const bet = propBet(r, game, x, exp, { id, ...placement(edge, x.units), tested });
+    const bet = propBet(r, game, x, exp, { id, ...placement(edge && !(gate && !gate.on), x.units), tested });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -2050,7 +2066,7 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     ...(x.prop.stored ? { priceAt: x.prop.stored.at } : intent === 'check' && x.prop.source === 'the odds api' ? { priceAt: new Date().toISOString() } : {}),
     projection: x.projection,
     tested,
-    context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
+    context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(x.roleBet ? { roleBet: `${x.roleBet.key}: ${x.roleBet.why}; ${x.roleBet.gate}` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
     status: 'open',
     profit: 0,
     // (the inputs it was priced on, and the bet it replaces when priced again on news: repriceOpen)
@@ -2262,6 +2278,10 @@ function saveState(r) {
     tracked: trackedRecord(ledger.bets),
     // (the game lines' CLV gate (desk.mjs lineGate): whether this sport's lines are bet or tracked only, and why)
     lineGate: lineGate(ledger.bets, r.sport),
+    // (the props' CLV gate by stat (desk.mjs propGate) and the CHECK bar by cause (props.mjs roleGateOf), as this run
+    // read them)
+    propGate: r.propGate ?? propGate(ledger.bets, r.sport),
+    roleGate: r.roleGate ?? null,
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)
     // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)
@@ -2391,7 +2411,7 @@ if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.
       // (a fights league (leagues.mjs mma): its own run, mma-desk.mjs, on the desk's shared parts; --picks-only
       // and --replace don't apply to it: its picks are rebuilt every run, and nothing of its is priced again)
       if (LEAGUES[sport]?.fights) {
-        if (!PICKS_ONLY) await runMma({ dry: DRY, gap: GAP });
+        if (!PICKS_ONLY) await runMma({ dry: DRY, gap: GAP, boardOut: BOARD_OUT });
       } else await runSport(sport);
       if (marks) rmSync(path.join(RUNNING, sport), { force: true });
     } catch (err) {

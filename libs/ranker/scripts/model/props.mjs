@@ -85,7 +85,7 @@ import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { BOOK } from './leagues.mjs';
 import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
-import { newsOn } from './news.mjs';
+import { kindOf, newsOn } from './news.mjs';
 import { COACH_GAMES } from './football.mjs';
 import { missChance } from './playchance.mjs';
 import { ANY_KEY, anytimeModel, anytimeRows, fitAnytime } from './anytime.mjs';
@@ -168,6 +168,31 @@ export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, rati
 // the market's reading points away from; a change at quarterback, either way: neither. The safe side bets as
 // any prop; only the other is a CHECK (priceProps))
 export const ROLE_SAFE = { 'group-out': 'over', 'snap-jump': 'over', 'part-time': 'over', 'qb1-out': 'under', 'backup-qb': 'over', 'qb-change': null, 'minutes-back': 'under', 'lineup-start': 'over', 'lineup-bench': 'under', 'ice-jump': 'under' };
+// The CHECK bar by cause (round E, 2026-10-17, the owner's: "fix every logic you can"): a role cause's risky side is
+// bet, not CHECKed, once the graded CHECKs of that cause (check-learn.mjs checkLearning, byRole: the model's side as
+// if bet) say the model's side pays: ROLE_BET_N graded or more (never under 40 a cause, the owner's rule), their
+// profit a unit over 0 and their hit rate over their break-even. Only the causes whose error is a role growing the
+// model projects low (ROLE_BET: snap-jump, group-out, part-time; graded 2026-10-11 to 10-16: snap-jump 62% / +0.18u
+// a unit, group-out 56% / +0.04u, part-time 58%); the rest stay CHECKs whatever their record (qb1-out 41% / -0.23u
+// and a backup's or few-start passer's rows the model's blind spots, qb-change and the line's read neither side's,
+// the depth chart's unfit). A bet so made stakes at most ROLE_BET_UNITS (the untested cap's half: a LIKE), its
+// context naming the cause and the record it was bet on (run.mjs propBet roleBet). roleGateOf(learning): the gate by
+// cause from the state's checks.learning (byRole), { on, n, hitRate, breakEven, perUnit, why }; none, every cause a
+// CHECK as before. The gate is read again every run, so a cause whose record turns goes back to CHECKs by itself
+export const ROLE_BET = new Set(['snap-jump', 'group-out', 'part-time']);
+export const ROLE_BET_N = 40;
+export const ROLE_BET_UNITS = 0.5;
+export function roleGateOf(learning) {
+  const out = {};
+  for (const key of ROLE_BET) {
+    const t = learning?.byRole?.[key] ?? null;
+    const n = t?.decided ?? 0;
+    const pays = n >= ROLE_BET_N && Number.isFinite(t?.perUnit) && t.perUnit > 0 && Number.isFinite(t?.hitRate) && Number.isFinite(t?.breakEven) && t.hitRate > t.breakEven;
+    const rec = t ? `${t.won}-${t.lost} (${Math.round((t.hitRate ?? 0) * 100)}%, ${t.perUnit >= 0 ? '+' : ''}${t.perUnit}u a unit, break-even ${Math.round((t.breakEven ?? 0) * 100)}%)` : 'none graded';
+    out[key] = { on: pays, n, hitRate: t?.hitRate ?? null, breakEven: t?.breakEven ?? null, perUnit: t?.perUnit ?? null, why: pays ? `${key} bet on the model's side at the untested cap: ${n} graded CHECKs ${rec}` : n < ROLE_BET_N ? `${key} a CHECK: ${n} graded, under ${ROLE_BET_N}` : `${key} a CHECK: ${n} graded ${rec}, the model's side not paying` };
+  }
+  return out;
+}
 
 // The NBA's minutes base (project.mjs sn, mode 'minutes') with teammates back (null: none): his last three
 // games' minutes MIN_BACK.jump times his season's or more, and the work his team was missing in the games his
@@ -1692,7 +1717,7 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
-export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null) {
+export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null, roleGate = null) {
   const priced = [];
   // (the role guard's settled absences logged, by game and player: once each)
   const settledLogged = new Set();
@@ -1873,8 +1898,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const status = statusOf(sport, prop, live, home, game);
     // (the NFL: his role changing (roleChangeOf): kept as a CHECK on the model's side, never bet either way)
     let roleChange = null;
+    // (how surely his team's lead quarterback is missing tonight (0 to 1): the news dedupe below)
+    let qb1Missing = 0;
     if (sport === 'nfl' && f.matchups) {
       const qb1 = f.matchups.qb1?.(row.team, game.season) ?? null;
+      qb1Missing = qb1 ? Number(missOf(0)(qb1.id)) || 0 : 0;
       // (his position's work alone, the guard's words: the learned split (project.mjs vl, across positions) read
       // as the split in proportion here)
       const vs0 = plainVs(prop.stat, f.params.vs);
@@ -1961,7 +1989,18 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // model's own side, the one a CHECK keeps (checks.mjs; past the gap the lean is tapered to nothing, so the
     // better return is only the cheaper vig); else the better return)
     // (and his unit flagged by the news (news.mjs newsOn): a CHECK either side, the same way)
-    const newsFlag = newsOn(sport, live, row.team, row.pos);
+    // (round E, 2026-10-17: an injury headline (news.mjs kind 'injury': the QB ruled out) whose quarterback the official
+    // report already has out (qb1Missing 1) is nothing the model hasn't read: the projection carries it (matchups.mjs
+    // qb1Out, project.mjs c_qb1Out / c_qbDeep, the backup's starts base) and the role guard's qb1-out and backup-qb
+    // hold the risky side; the headline alone made every offense prop a news CHECK on top of them (the Pierce rows
+    // of the 10-17 audit). Not a news flag then; logged once a player and game)
+    const newsFlag0 = newsOn(sport, live, row.team, row.pos);
+    const newsDup = !!newsFlag0 && kindOf(sport, newsFlag0) === 'injury' && qb1Missing >= 1;
+    if (newsDup && !settledLogged.has(`${game.id}:${pid}:news`)) {
+      settledLogged.add(`${game.id}:${pid}:news`);
+      console.log(`${sport}: news CHECK skipped for ${a.name} (${game.id}): the QB out is on the official report already (the projection and the role guard carry it): ${newsFlag0.headline}`);
+    }
+    const newsFlag = newsDup ? null : newsFlag0;
     const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) || roleChange || newsFlag ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
     const pick = gapSide ?? (sides[0].ev >= sides[1].ev ? sides[0] : sides[1]);
     const { side, model, ev, odds, fair, raw: modelRaw, cal: calShift } = pick;
@@ -2057,7 +2096,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // CHECKs are graded only at prices that can be known)
     // (only the risky side: the one the model's known error there could be making (ROLE_SAFE); its safe side
     // bets as any prop would)
-    else if (roleChange && (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side) {
+    // (a cause the graded CHECKs say pays on the model's side (roleGateOf: ROLE_BET, 40 graded or more): not a CHECK,
+    // bet at the untested cap's half (roleBet, below), the other guards still read)
+    else if (roleChange && (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side && !roleGate?.[roleChange.key]?.on) {
       const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
@@ -2111,6 +2152,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // implies at its line (impliedMean), beside the model's on the page and in its write-up; at an assumed -110
     // none)
     const implied = (guard?.kind === 'gap' || guard?.kind === 'role' || guard?.kind === 'news') && prop.prices ? impliedNow : null;
+    // (a role bet (the CHECK bar by cause, roleGateOf): the risky side of a cause whose graded CHECKs pay, bet at most
+    // ROLE_BET_UNITS; its cause and the record it rests on ride on the bet (run.mjs propBet context.roleBet))
+    const riskySide = roleChange ? (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side : false;
+    const roleBet = roleChange && riskySide && roleGate?.[roleChange.key]?.on && !guard?.skip ? { key: roleChange.key, why: roleChange.why, gate: roleGate[roleChange.key].why } : null;
     priced.push({
       prop,
       pid,
@@ -2125,8 +2170,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       priced: !!prop.prices,
       p: pTrusted,
       ev,
-      units: guard ? 0.5 : stakeFor(ev, evScale, odds),
+      units: guard ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : stakeFor(ev, evScale, odds),
       guard,
+      ...(roleBet ? { roleBet } : {}),
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
       projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), ...(sqF !== 1 ? { squad: { sum: round(sq.S * (f.params.scale ?? 1), 2), team: round(f.params.tf === 4 ? sq.T0 : sq.T, 2), factor: round(sqF, 3), tr: f.params.tr, tf: f.params.tf } } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), ...(mix ? { exit: { q: round(mix.q, 3), f: round(mix.f, 2) } } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },

@@ -107,7 +107,10 @@ export const EDGE_ROUND = 0.0005;
 export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, p) === 'low' ? 'medium' : level(kelly, p));
 // (a bet's band: its Kelly score's if it has an edge, LIKE at the least; else low: a favorite at a short price
 // isn't a strong bet (an older action bet; a tracked row is never a pick))
-export const levelOf = (b, kelly, p = b.p) => (intentOf(b) === 'edge' ? edgeLevel(kelly, p) : 'low');
+// (a role bet (props.mjs roleGateOf: a role cause's risky side bet on its graded CHECKs' record, at the untested cap's
+// half; its context's roleBet) a LIKE at most, whatever its Kelly: the owner's (round E, 2026-10-17), the score there
+// being the model's own number on a role it reads poorly)
+export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.context?.roleBet && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
 
 // A bet's score (see above): its EV, half for a market whose trust is still the untested start
 export function scoreOf(bet, trust) {
