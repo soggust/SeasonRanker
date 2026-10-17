@@ -86,7 +86,7 @@ $bar-h: 30px;
   // (who sees it, quietly: public in the page's light (the app's sand), friends and only me muted)
   .mat-icon {
     @include v.icon-size(14px);
-    color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
+    color: var(--app-text-muted, v.$text-faint);
   }
 
   &.visibility-public .mat-icon {
@@ -186,7 +186,7 @@ $bar-h: 30px;
   }
 
   .bar-select-label {
-    color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
+    color: var(--app-text-muted, v.$text-faint);
     font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 1.2px;

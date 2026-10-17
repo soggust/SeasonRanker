@@ -1563,6 +1563,8 @@ card-panel {
     }
   }
 
+  // (a gain green and a loss red over the tile's own lettering, the balance's gold included: !important outranks the
+  // first-child rule above)
   .up {
     color: v.$good-bright !important;
   }

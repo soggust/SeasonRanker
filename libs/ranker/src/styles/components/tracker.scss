@@ -65,7 +65,7 @@ $face-fallback: #333;
 // (someone else's: whose it is)
 .tracker-owner {
   align-items: center;
-  color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
+  color: var(--app-text-muted, v.$text-faint);
   display: flex;
   flex-basis: 100%;
   font-size: v.$fs-13;

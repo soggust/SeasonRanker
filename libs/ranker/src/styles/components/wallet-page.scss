@@ -693,6 +693,8 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
     text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
   }
 
+  // (a gain green and a loss red over the strip's own lettering, the gold .glow included: !important outranks the rule
+  // above)
   .up {
     color: v.$good-bright !important;
   }

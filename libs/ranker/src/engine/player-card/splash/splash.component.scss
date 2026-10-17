@@ -69,48 +69,6 @@ card-splash {
     linear-gradient(180deg, #2a1f17, #17110d 70%, #0f0b08);
 }
 
-// ---- the header: a small brass plate hung from the molding
-.sp-header {
-  align-items: baseline;
-  background: linear-gradient(180deg, #dcc484, #a9842f 50%, #6a4b15 82%, #8a6a24);
-  border-radius: 0 0 6px 6px;
-  box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  color: #2b1a05;
-  display: flex;
-  font-family: var(--f-block);
-  gap: 8px;
-  left: 50%;
-  max-width: calc(100% - 24px);
-  padding: 3px 14px 4px;
-  position: absolute;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
-  top: 9px;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  z-index: 3;
-
-  b {
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-  }
-
-  span {
-    font-size: 11.5px;
-    font-weight: 500;
-    opacity: 0.85;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &::before {
-      content: "· ";
-    }
-  }
-}
-
 // ---- the stage: one column per piece, each with its own lamp and beam from the top
 .sp-stage {
   display: flex;
@@ -233,7 +191,6 @@ card-splash {
     max-width: 100%;
     overflow: visible;
   }
-
 }
 
 // (a banner or a pennant hangs on the back wall behind the shelf line, its foot clear of the shelf, behind
@@ -245,10 +202,6 @@ card-splash {
   &::before {
     display: none;
   }
-}
-
-.kind-shelf {
-  --s: 1;
 }
 
 // ---- the shelf: a lit top face and a dark front edge
@@ -321,51 +274,10 @@ card-splash {
   }
 }
 
-// ---- the jersey wall: a rail along the top, the jerseys hung from it, the leader's lower and bigger
-.sp-rail {
-  background: linear-gradient(180deg, #d5dbe0, #7d868f 60%, #3c4248);
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
-  height: 5px;
-  left: 18px;
-  position: absolute;
-  right: 18px;
-  top: 52px;
-  z-index: 2;
-}
-
-.kind-wall {
-  .sp-stage {
-    gap: 0;
-  }
-
-  .sp-col {
-    flex-basis: 128px;
-    justify-content: flex-start;
-    padding-top: 40px;
-
-    &.star {
-      flex-basis: 150px;
-    }
-  }
-
-  .sp-lamp {
-    top: 14px;
-  }
-
-  .sp-beam {
-    top: 18px;
-  }
-}
-
 .sp-hanging {
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-.kind-wall .sp-col.star {
-  z-index: 3;
 }
 
 .sp-art > svg.sp-jersey {
@@ -521,21 +433,6 @@ card-splash {
   stroke-width: 1.2;
 }
 
-.sp-puck-t {
-  fill: #fff;
-  font-family: var(--f-block);
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-anchor: middle;
-  text-transform: uppercase;
-
-  &.big {
-    font-size: 11px;
-    font-weight: 800;
-  }
-}
-
 .sp-pennant-t {
   fill: #fff;
   font-family: var(--f-block);
@@ -568,62 +465,6 @@ card-splash {
 
   &.small {
     font-size: 9px;
-  }
-}
-
-.sp-belt-t {
-  fill: #fff;
-  font-family: var(--f-block);
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.6px;
-  text-anchor: middle;
-
-  &.small {
-    font-size: 4.6px;
-  }
-}
-
-// ---- a placard: the season's last word, engraved
-.sp-endplate {
-  align-items: center;
-  background: linear-gradient(180deg, #2c2c2c, #0d0d0d);
-  border: 2px solid #b48a2c;
-  border-radius: 4px;
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 3px #111,
-    inset 0 0 0 4px rgba(255, 220, 140, 0.35);
-  color: #f1d58a;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--f-block);
-  gap: 2px;
-  margin-bottom: 2px;
-  padding: calc(12px * var(--s)) calc(14px * var(--s));
-  text-align: center;
-  transform: perspective(300px) rotateX(8deg);
-
-  small {
-    font-size: calc(9px * var(--s));
-    font-weight: 600;
-    letter-spacing: 2px;
-    opacity: 0.8;
-    text-transform: uppercase;
-  }
-
-  b {
-    font-size: calc(16px * var(--s));
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    line-height: 1.1;
-    text-transform: uppercase;
-  }
-
-  span {
-    color: #fff;
-    font-size: calc(11.5px * var(--s));
-    font-weight: 600;
   }
 }
 
@@ -824,18 +665,6 @@ card-splash {
 }
 
 // ---- the locker: his stall in the middle, framed, the pieces to each side
-.kind-locker,
-.kind-tcard {
-  .sp-header {
-    display: none;
-  }
-}
-
-.kind-locker {
-  .sp-col.side {
-    flex-basis: 150px;
-  }
-}
 
 .sp-stall {
   flex: 0 0 calc(250px * var(--s)) !important;
@@ -921,180 +750,6 @@ card-splash {
   display: none;
 }
 
-// ---- the trading card: front and back on an acrylic stand
-.sp-tcards {
-  flex-basis: 600px !important;
-}
-
-.sp-cards {
-  display: flex;
-  gap: 26px;
-  margin-bottom: 6px;
-  perspective: 900px;
-}
-
-.sp-tc {
-  border-radius: 10px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
-  height: calc(222px * var(--s));
-  overflow: hidden;
-  position: relative;
-  width: calc(160px * var(--s));
-
-  &.front {
-    background:
-      conic-gradient(from 200deg, #ffe27a, #ff9ad5, #7ad7ff, #a5ffb0, #ffe27a, #ff9ad5, #7ad7ff, #ffe27a);
-    padding: 6px;
-    transform: rotateY(12deg) rotate(-2deg);
-  }
-
-  &.back {
-    background: linear-gradient(180deg, #f2ead6, #ddd0ae);
-    border: 5px solid var(--c1);
-    color: #1b1b1b;
-    display: flex;
-    flex-direction: column;
-    font-family: var(--f-block);
-    padding: 8px 10px;
-    transform: rotateY(-12deg) rotate(2deg);
-  }
-}
-
-.sp-tc-photo {
-  background:
-    radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--team-hi) 80%, #fff 10%), var(--team-lo));
-  border-radius: 6px;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.sp-tc-watermark {
-  height: 120%;
-  left: -20%;
-  opacity: 0.18;
-  position: absolute;
-  top: -5%;
-}
-
-.sp-tc-player {
-  bottom: 30px;
-  height: 78%;
-  left: 50%;
-  object-fit: contain;
-  position: absolute;
-  transform: translateX(-50%);
-}
-
-.sp-tc-logo {
-  height: calc(30px * var(--s));
-  left: 12px;
-  position: absolute;
-  top: 12px;
-}
-
-.sp-tc-badge {
-  background: linear-gradient(180deg, #d4b86c, #a07d2a 55%, #5c4312);
-  border-radius: 3px;
-  color: #2b1a05;
-  font-family: var(--f-block);
-  font-size: calc(10px * var(--s));
-  font-weight: 800;
-  padding: 1px 6px;
-  position: absolute;
-  right: 12px;
-  top: 14px;
-}
-
-.sp-tc-name {
-  background: linear-gradient(90deg, var(--c1), color-mix(in srgb, var(--c1) 55%, #000));
-  border-top: 2px solid var(--c2);
-  bottom: 6px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--f-block);
-  left: 6px;
-  padding: 4px 8px 5px;
-  position: absolute;
-  right: 6px;
-
-  b {
-    font-size: calc(13px * var(--s));
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-
-  span {
-    font-size: calc(8.5px * var(--s));
-    opacity: 0.85;
-  }
-}
-
-.sp-tc-year {
-  background: var(--c2);
-  border-radius: 50%;
-  bottom: 38px;
-  color: #111;
-  display: grid;
-  font-family: var(--f-block);
-  font-size: calc(9px * var(--s));
-  height: calc(34px * var(--s));
-  place-items: center;
-  position: absolute;
-  right: 12px;
-  width: calc(34px * var(--s));
-}
-
-.sp-tc-back-head {
-  border-bottom: 2px solid var(--c1);
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 6px;
-  padding-bottom: 4px;
-
-  b {
-    font-size: calc(12px * var(--s));
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  span {
-    color: #555;
-    font-size: calc(9px * var(--s));
-  }
-}
-
-.sp-tc.back dl {
-  display: grid;
-  gap: 4px 8px;
-  grid-template-columns: 1fr 1fr;
-  margin: 0;
-
-  dt {
-    color: #666;
-    font-size: calc(7.5px * var(--s));
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-  }
-
-  dd {
-    font-family: var(--f-block);
-    font-size: calc(15px * var(--s));
-    margin: 0;
-  }
-}
-
-.sp-tc.back p {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-  color: #666;
-  font-size: calc(7.5px * var(--s));
-  margin: auto 0 0;
-  padding-top: 4px;
-}
-
 // ---- a phone: the splash shorter, the pieces smaller, only the middle ones
 @media (max-width: 640px) {
   .splash {
@@ -1108,25 +763,8 @@ card-splash {
     display: none;
   }
 
-  .kind-shelf {
-    --s: 0.7;
-  }
-
   .sp-stage {
     padding: 0 6px;
-  }
-
-  .sp-header {
-    padding: 2px 10px 3px;
-
-    b {
-      font-size: 10.5px;
-      letter-spacing: 1px;
-    }
-
-    span {
-      display: none;
-    }
   }
 
   .sp-plate {
@@ -1146,25 +784,9 @@ card-splash {
     width: 130px;
   }
 
-  .kind-wall .sp-col {
-    flex-basis: 90px;
-
-    &.star {
-      flex-basis: 104px;
-    }
-  }
-
-  .sp-rail {
-    top: 44px;
-  }
-
   .sp-stall-frame {
     height: calc(100% - 38px);
     margin-top: 38px;
-  }
-
-  .sp-tc.back {
-    display: none;
   }
 }
 
@@ -1228,20 +850,6 @@ card-splash {
   transform: translateX(10px);
 }
 
-// (the cards' acrylic stand)
-.sp-cards::after {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.05));
-  border-radius: 3px;
-  bottom: calc(var(--shelf) - 6px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
-  content: '';
-  height: 14px;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: calc(400px * var(--s));
-}
-
 .sp-shoe-num {
   fill: #fff;
   font-family: var(--f-block);
@@ -1261,10 +869,6 @@ card-splash {
 @media (max-width: 640px) {
   .sp-col.t-shoe {
     flex-basis: 170px !important;
-  }
-
-  .kind-locker .sp-col.side {
-    flex-basis: 110px;
   }
 }
 
@@ -1375,16 +979,9 @@ card-splash {
   font-weight: 600;
 }
 
-.sp-engr.micro {
-  font-size: 4.4px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
 .sp-mark.small {
   font-size: 9px;
 }
-
 
 // (the belt lies long: room for its strap)
 .sp-col.t-belt {
@@ -1408,23 +1005,6 @@ card-splash {
   --f-block: "Oswald", "Arial Narrow", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, monospace;
   --f-marker: "Permanent Marker", cursive;
-}
-
-.sp-header {
-  b {
-    font-family: var(--f-engrave);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-  }
-
-  span {
-    font-family: var(--f-block);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
 }
 
 .sp-j-name {
@@ -1544,13 +1124,6 @@ card-splash {
   }
 }
 
-.sp-puck-t.big {
-  font-family: var(--f-block);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
 .sp-pennant-t {
   font-family: var(--f-block);
   font-weight: 700;
@@ -1650,33 +1223,12 @@ card-splash {
   width: 1em;
 }
 
-.sp-tc,
-.sp-tc-name,
-.sp-tc-badge,
-.sp-tc-year,
-.sp-tc.back dd {
-  font-family: var(--f-block);
-}
-
-
 // (engravings too fine for a phone's size: the pieces keep their engraved rules, the small letters go)
 @media (max-width: 640px) {
   .sp-engr.small,
-  .sp-engr.tiny,
-  .sp-engr.micro {
+  .sp-engr.tiny {
     display: none;
   }
-}
-
-// (a game ball's lettering: painted on its panel in white serif capitals)
-.sp-painted {
-  fill: #f6f1e6;
-  fill-opacity: 0.94;
-  font-family: var(--f-engrave);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-anchor: middle;
-  text-transform: uppercase;
 }
 
 .sp-cond.side {
@@ -1838,12 +1390,6 @@ card-splash {
 
 .sp-lockers .mine .sp-art > svg.sp-jersey {
   --jh: 170px;
-}
-
-// (round 9: the title band and the tinted fade along the foot gone; the stalls start near the top)
-.sp-header,
-.sp-backlight {
-  display: none;
 }
 
 .mood-sunset .sp-wall {
