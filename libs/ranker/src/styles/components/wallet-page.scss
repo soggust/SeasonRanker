@@ -239,12 +239,214 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   }
 }
 
-// (the tiles on a scoreboard strip, till the chips take their place)
-.wallet > .desk-top {
-  border: 1px solid var(--app-line, rgba(255, 255, 255, 0.08));
-  border-bottom-color: color-mix(in srgb, var(--scoreboard-led) 55%, transparent);
-  border-radius: 12px;
-  margin: 0;
+// (a small-caps key over a figure: BALANCE, YOUR RUNS, a scoreboard's period)
+.wp-key {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+// (a gain and a loss, wherever a figure's a result)
+.wallet .up {
+  color: v.$good-bright;
+}
+
+.wallet .down {
+  color: v.$bad-soft;
+}
+
+// ---------------------------------------------------------------------------
+// Your chips: the balance in segments, the run's line under it, the open tickets on the right; the rack
+// ---------------------------------------------------------------------------
+.chips-head {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-8 v.$space-16;
+  justify-content: space-between;
+}
+
+.chips-balance {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+}
+
+.chips-led {
+  @include kit.sand-lit;
+  font-family: v.$font-led;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.chips-line {
+  color: #ccc;
+  font-size: v.$fs-12;
+
+  b {
+    font-weight: 800;
+  }
+}
+
+.chips-open {
+  align-items: flex-end;
+  color: #ccc;
+  display: flex;
+  flex-direction: column;
+  font-size: v.$fs-12;
+  gap: v.$space-4;
+
+  b {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  a {
+    color: #ccc;
+    text-decoration: none;
+    @include v.link-fade;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      @include v.link-lit;
+
+      b {
+        color: inherit;
+      }
+    }
+  }
+}
+
+// The rack: stacks of side-view chips (76 × 12px each, cream edge stripes, a top highlight and a bottom shade) on a
+// leather rail (30px, rounded, sunk), each stack's denomination under it; a stack lifts 4px under the pointer
+.chip-rack {
+  align-items: flex-end;
+  display: flex;
+  gap: v.$space-12;
+  height: 168px;
+  justify-content: center;
+  padding: 0 v.$space-16;
+  position: relative;
+}
+
+.chip-stack {
+  --c: #1a1a1a;
+  align-items: center;
+  display: flex;
+  flex-direction: column-reverse;
+  padding-bottom: 22px;
+  position: relative;
+  transition: translate 0.2s v.$ease-pop;
+  z-index: 1;
+
+  &:hover {
+    translate: 0 -4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      translate: none;
+    }
+  }
+
+  // (the chips' clays, the slip's and the Bets page's: 100s black, 25s green, 5s red, 1s blue, halves grey)
+  &.d25 {
+    --c: #{chip.$chip-green};
+  }
+
+  &.d5 {
+    --c: #{chip.$chip-red};
+  }
+
+  &.d1 {
+    --c: #{chip.$chip-blue};
+  }
+
+  &.dhalf {
+    --c: #8a8a8a;
+  }
+}
+
+.stack-chip {
+  background: repeating-linear-gradient(90deg, var(--c) 0 11px, chip.$rim-cream 11px 16px);
+  border-radius: 4px / 3px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 1px 0 rgba(0, 0, 0, 0.4);
+  flex: none;
+  height: 12px;
+  width: 76px;
+}
+
+.stack-label {
+  color: #ccc;
+  font-family: v.$font-heading;
+  font-size: v.$fs-11;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.chip-rail {
+  --leather: #6b4e38;
+  @include v.leather;
+  border-radius: v.$radius-lg;
+  bottom: 0;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.35),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  height: 30px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.chip-legend {
+  color: v.$text-dim;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: v.$fs-11;
+  gap: v.$space-6 v.$space-16;
+  justify-content: center;
+
+  span {
+    align-items: center;
+    display: inline-flex;
+    gap: v.$space-6;
+    line-height: 1;
+  }
+
+  i {
+    --c: #1a1a1a;
+    background: var(--c);
+    border-radius: v.$radius-round;
+    box-shadow: 0 0 0 2px chip.$rim-cream;
+    height: 10px;
+    width: 10px;
+
+    &.d25 {
+      --c: #{chip.$chip-green};
+    }
+
+    &.d5 {
+      --c: #{chip.$chip-red};
+    }
+
+    &.d1 {
+      --c: #{chip.$chip-blue};
+    }
+
+    &.dhalf {
+      --c: #8a8a8a;
+    }
+  }
 }
 
 // (the settled history's date range, over its panel on the left, as the Algorithm's)
@@ -326,113 +528,12 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   }
 }
 
-// The actions under the tiles: casino chips, as the Algorithm's game dropdown (casino-chip.scss: its clay, speckle,
-// sheen and cream inlay; the rim's cream spots an SVG rect's dashes, turning two spots on hover and focus),
-// sized as buttons. The way to the Bets page in sand (the account pages' light, dark text), Reload Chips in
-// blue, Clear history in the dropdown's red.
+// Reload chips and Clear history (an admin's) in the Rebuy panel, each confirmed first
 .wallet-actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: v.$space-12;
-  justify-content: center;
-}
-
-.wallet-chip {
-  // (its own declarations before the rim's mixin, whose nested rules would otherwise come between them)
-  --clay: #b0202b;
-  --ink: #fff;
-  align-items: center;
-  background:
-    radial-gradient(ellipse at 30% 0%, rgba(255, 255, 255, 0.22), transparent 65%) padding-box,
-    linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.2)) padding-box,
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E") 0 0 / 120px padding-box,
-    linear-gradient(var(--clay), var(--clay)) border-box;
-  border: 4px solid transparent;
-  border-radius: v.$radius-pill;
-  box-shadow:
-    inset 0 0 0 3px var(--clay),
-    inset 0 0 0 4px rgba(255, 236, 196, 0.55),
-    0 2px 6px rgba(0, 0, 0, 0.45);
-  box-sizing: border-box;
-  color: var(--ink);
-  cursor: pointer;
-  font-family: v.$font-base;
-  font-size: v.$fs-13;
-  font-weight: 900;
-  gap: v.$space-8;
-  justify-content: center;
-  letter-spacing: 0.06em;
-  // (the dropdown's height, so its rim and spots are the same chip)
-  height: 52px;
-  padding: 0 22px;
-  text-decoration: none;
-  text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
-  text-transform: uppercase;
-  transition:
-    filter v.$t-hover ease,
-    transform 0.1s ease;
-  @include chip.dropdown-rim;
-
-  // (the spots on the rim itself, its 4px border, as on the dropdown, not inside it on the face)
-  .chip-rim {
-    height: calc(100% + 8px);
-    inset: -4px;
-    width: calc(100% + 8px);
-  }
-
-  rect {
-    // (round ends, as the dropdown's: the 52px chip less its 4px stroke, halved; both radii, or an over-long one
-    // is drawn as half the WIDTH and the ring goes oval; the rim's rect already sets rx)
-    ry: 24px;
-  }
-
-  .mat-icon {
-    @include v.icon-size(18px);
-  }
-
-  &:hover,
-  &:focus-visible,
-  &.open {
-    filter: brightness(1.12);
-  }
-
-  // (a chip, its clay nothing to light: the thin ring)
-  &:focus-visible {
-    @include v.focus-ring(3px);
-  }
-
-  &:active:not([disabled]) {
-    filter: brightness(0.95);
-    transform: translateY(1px);
-  }
-
-  // (a confirmation open under it: its spots turned as a picked chip's)
-  &.open rect {
-    stroke-dashoffset: -40;
-  }
-
-  &[disabled] {
-    cursor: default;
-    filter: saturate(0.4) brightness(0.8);
-    opacity: 0.6;
-
-    rect {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  &.sand {
-    --clay: #{kit.app(sand)};
-    --ink: #{kit.$app-sand-ink};
-    text-shadow: 0 1px 0 rgba(255, 245, 230, 0.35);
-  }
-
-  &.blue {
-    --clay: #{chip.$chip-blue-reload};
-  }
-
-  // (.red: the default clay above)
 }
 
 // A confirmation, under the actions
