@@ -183,28 +183,17 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   padding: v.$space-14 v.$space-20;
 }
 
-// A pill switch (the periods): the one on filled sand, dark lettering
+// The periods: the settings sheet's pills (_account-kit.scss app-pill), the chosen one on filled sand
 .wp-seg {
-  border: 1px solid v.$panel-edge;
-  border-radius: v.$radius-pill;
   display: flex;
-  overflow: hidden;
+  flex-wrap: wrap;
+  gap: v.$space-6;
 
-  button {
-    background: none;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    font-family: v.$font-base;
-    font-size: v.$fs-11;
-    font-weight: 700;
-    letter-spacing: 1px;
-    min-height: 28px;
-    padding: 0 v.$space-12;
+  .app-pill {
     position: relative;
-    text-transform: uppercase;
     transition:
       background v.$t-fast ease,
+      border-color v.$t-fast ease,
       color v.$t-fast ease;
 
     // (a 44px touch target on a 28px pill)
@@ -212,20 +201,6 @@ $bar-line: rgba(chip.$felt-light, 0.4);
       content: "";
       inset: -8px 0;
       position: absolute;
-    }
-
-    &:hover {
-      color: #fff;
-    }
-
-    &[aria-pressed="true"] {
-      background: kit.app(sand);
-      color: kit.$app-sand-ink;
-    }
-
-    @include v.focus-lit {
-      box-shadow: inset 0 0 0 1px #fff;
-      color: #fff;
     }
   }
 }
@@ -550,7 +525,7 @@ $bar-line: rgba(chip.$felt-light, 0.4);
 }
 
 // ---------------------------------------------------------------------------
-// Rebuy: the chip (casino-chip.scss's, 76px, the reload blue; red once it asks SURE?), its words beside it; the runs
+// Rebuy: the standard button (_account-kit.scss's primary, the danger one once it asks Sure?), its words beside it; the runs
 // as paper tickets
 // ---------------------------------------------------------------------------
 .rebuy-head {
@@ -560,48 +535,10 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   grid-template-columns: auto minmax(0, 1fr);
 }
 
-.rebuy-chip {
-  @include chip.chip(76px);
-  --clay: #{chip.$chip-blue-reload};
-  border-width: 7px;
-  filter: none;
-  font-size: v.$fs-11;
-  font-weight: 900;
-  line-height: 1.1;
-  text-align: center;
-  text-transform: uppercase;
-
-  .chip-rim {
-    height: calc(100% + 14px);
-    left: -7px;
-    top: -7px;
-    width: calc(100% + 14px);
-  }
-
-  rect {
-    stroke-width: 7px;
-  }
-
-  &:hover:not([disabled]) {
-    filter: brightness(1.1);
-  }
-
-  @include v.focus-lit {
-    box-shadow:
-      inset 0 0 0 2px var(--clay),
-      inset 0 0 0 3px rgba(chip.$inlay, 0.7),
-      0 0 0 2px #fff,
-      0 4px 10px rgba(0, 0, 0, 0.55);
-  }
-
-  &.sure {
-    --clay: #{chip.$chip-red};
-  }
-
-  &[disabled] {
-    cursor: default;
-    filter: saturate(0.5) brightness(0.7);
-  }
+// (the settings sheet's buttons: primary, then danger while it asks Sure?; a set width so the words beside it
+// don't shift between the two)
+.rebuy-btn {
+  min-width: 140px;
 }
 
 .rebuy-words {
@@ -1585,9 +1522,8 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 // Reduced motion: the chips, rows and pills don't ease (the rim's spots are casino-chip.scss's, still already)
 @media (prefers-reduced-motion: reduce) {
   .tchip,
-  .rebuy-chip,
   .roller,
-  .wp-seg button {
+  .wp-seg .app-pill {
     transition: none;
   }
 }
@@ -1612,7 +1548,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     padding: v.$space-12 v.$space-14;
   }
 
-  .wp-seg button {
+  .wp-seg .app-pill {
     min-height: 44px;
 
     &::after {

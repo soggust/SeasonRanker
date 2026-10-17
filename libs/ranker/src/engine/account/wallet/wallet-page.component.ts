@@ -546,7 +546,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   clickAway(ev: Event): void {
-    if (this.confirming === 'reload' && !(ev.target as Element | null)?.closest?.('.rebuy-chip')) this.confirming = null;
+    if (this.confirming === 'reload' && !(ev.target as Element | null)?.closest?.('.rebuy-btn')) this.confirming = null;
   }
 
   @HostListener('document:keydown.escape')
