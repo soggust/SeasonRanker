@@ -67,7 +67,9 @@ A one-line scoreboard strip (dot-matrix panel, 1px `$panel-edge`, radius 4px) th
 (`translateX(-50%)` over 45s on a doubled list; **still** for `prefers-reduced-motion`). Each item: the
 sport in small caps, away team, away score, home team, home score, then the state: `FINAL` (60% white),
 live clock like `3RD 4:12` (green `$good-bright`), or a start time like `7:00 PM` (light grey) for games not
-started. Outfit 12px, 1px letter-spacing, scores in gold.
+started. Outfit 12px, 1px letter-spacing, scores in gold. The strip is 30px tall and every item is
+**vertically centred** in it (flex `align-items: center`, `line-height: 1` on the items, no top/bottom padding),
+including the smaller 10px sport label.
 
 **Data**: use only what the page already loads, which is the game list behind the game dropdown (start
 times) plus any live or final scores already loaded for Open Bets. Do not add a scores feed. If there is
