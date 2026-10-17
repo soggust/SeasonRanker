@@ -116,7 +116,7 @@
           aria-label="Game or sport"
           [attr.aria-expanded]="menuOpen"
           [attr.aria-controls]="menuOpen ? 'bets-game-list' : null"
-          [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · DraftKings odds' : null"
+          [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · market odds' : null"
           (click)="toggleMenu()"
           (keydown)="pillKey($event)"
         >
