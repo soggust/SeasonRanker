@@ -134,9 +134,20 @@ const SPORT_CHOICE = 'sport:';
 export function sportChoice(sport: string): string {
   return `${SPORT_CHOICE}${sport}`;
 }
-// (the sport a select value names, or null for a game's key or Best bets)
+// (the sport a value names (a heading's own value carries its day too, groupKey), or null for a game's key or
+// Best Bets)
 export function chosenSport(value: string): string | null {
-  return value.startsWith(SPORT_CHOICE) ? value.slice(SPORT_CHOICE.length) : null;
+  return value.startsWith(SPORT_CHOICE) ? value.slice(SPORT_CHOICE.length).split('|')[0] : null;
+}
+// A sport's heading under one day, the list's own value for it (the same sport on two days is two rows, each
+// folding its own games): "sport:nhl|Saturday, Oct 17". Chosen, it's the sport (chosenSport)
+export function groupKey(day: string, sport: string): string {
+  return `${sportChoice(sport)}|${day}`;
+}
+// (the heading a game's key sits under, or null)
+export function groupOf(days: MenuDay[], key: string): string | null {
+  for (const d of days) for (const s of d.sports) if (s.games.some((g) => g.key === key)) return groupKey(d.day, s.sport);
+  return null;
 }
 // (the closed dropdown's words with a sport chosen: "NFL · best bets")
 export function sportFace(sport: string, sports: MenuSports): string {
@@ -158,19 +169,31 @@ export function dayBand(day: string): string {
   return day.replace(', ', ' · ').toUpperCase();
 }
 
-// The list's choices in the order they're laid out (the keyboard's path through them): Best bets · every game
-// (''), then under each day each sport's heading (sportChoice) and its games' keys. A sport's heading is on the
-// list once each day it has a game, each the same choice
-export function menuValues(days: MenuDay[]): string[] {
-  return ['', ...days.flatMap((d) => d.sports.flatMap((s) => [sportChoice(s.sport), ...s.games.map((g) => g.key)]))];
+// The list's choices in the order they're laid out (the keyboard's path through them): Best Bets (''), then under
+// each day each sport's heading (groupKey: the sport, that day) and, unless the heading is folded (closed), its
+// games' keys
+export function menuValues(days: MenuDay[], closed: ReadonlySet<string> = new Set()): string[] {
+  return ['', ...days.flatMap((d) => d.sports.flatMap((s) => (closed.has(groupKey(d.day, s.sport)) ? [groupKey(d.day, s.sport)] : [groupKey(d.day, s.sport), ...s.games.map((g) => g.key)])))];
 }
 
-// A key pressed with the list open, the lit choice `active`: the arrows walk the list (held at its ends), Home
-// and End jump to them, PageUp and PageDown move eight, Enter and Space take the lit choice, Escape and Tab
-// shut the list (Tab going on its way); any other key, nothing
-export type MenuKeyAction = { kind: 'move'; value: string } | { kind: 'choose' } | { kind: 'close' } | null;
+// The headings folded shut when the list opens: none on a quiet day (BUSY games or fewer in all); on a busy one
+// every heading but the chosen game's and the chosen sport's
+export const BUSY = 12;
+export function defaultClosed(days: MenuDay[], game: string, sport: string): Set<string> {
+  const groups = days.flatMap((d) => d.sports.map((s) => ({ key: groupKey(d.day, s.sport), sport: s.sport, games: s.games })));
+  if (groups.reduce((n, g) => n + g.games.length, 0) <= BUSY) return new Set();
+  return new Set(groups.filter((g) => !(sport && g.sport === sport) && !g.games.some((x) => x.key === game)).map((g) => g.key));
+}
+
+// A key pressed with the list open, the lit choice `active`: the up and down arrows walk the list (held at its
+// ends), Home and End jump to them, PageUp and PageDown move eight, Right and Left unfold and fold (a sport's
+// heading; the page decides what they do on a game), Enter and Space take the lit choice, Escape and Tab shut the
+// list (Tab going on its way); any other key, nothing
+export type MenuKeyAction = { kind: 'move'; value: string } | { kind: 'choose' } | { kind: 'close' } | { kind: 'expand' } | { kind: 'collapse' } | null;
 export function menuKey(key: string, values: string[], active: string): MenuKeyAction {
   if (key === 'Escape' || key === 'Tab') return { kind: 'close' };
+  if (key === 'ArrowRight') return { kind: 'expand' };
+  if (key === 'ArrowLeft') return { kind: 'collapse' };
   if (!values.length) return null;
   const at = Math.max(0, values.indexOf(active));
   const to = (i: number): MenuKeyAction => ({ kind: 'move', value: values[Math.min(values.length - 1, Math.max(0, i))] });

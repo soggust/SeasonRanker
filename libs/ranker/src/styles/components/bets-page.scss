@@ -518,10 +518,39 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (a sport's row: 44px, the league's mark (MMA's gloves in gold) and its name in white caps, lifted a touch when
-// lit; no accent in the sport's colour, the owner's note)
+// lit; no accent in the sport's colour, the owner's note. At its end the fold chevron, a 44px button of its own:
+// down with the games shown, up with them folded)
 .game-sport {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   height: 44px;
   margin-top: 2px;
+
+  .game-fold {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: v.$radius-sm;
+    color: v.$text-faint;
+    cursor: pointer;
+    display: inline-flex;
+    height: 44px;
+    justify-content: center;
+    margin: 0 -12px 0 -4px;
+    padding: 0;
+    width: 44px;
+
+    svg {
+      @include v.turn;
+    }
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &.folded .game-fold svg {
+    rotate: 180deg;
+  }
 
   .game-sport-name {
     color: #fff;
@@ -608,15 +637,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     text-align: center;
   }
 
-  // (lines only, nothing picked: greyed)
-  &.lines {
+  // (a game the bot picked: its name in gold and a hair of gold round its faces; a lines-only game plain white with
+  // its "lines" note, nothing muted: the owner's note)
+  &.picked {
     .game-label {
-      color: v.$text-faint;
-      font-weight: 400;
+      color: chip.$gold-led;
     }
 
-    .game-faces {
-      opacity: 0.6;
+    .game-face {
+      border-color: rgba(chip.$gold-led, 0.7);
+      border-width: 0.5px;
     }
   }
 }
@@ -927,29 +957,22 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // chip.$felt-gold on a ::before masked to a frame, as chip.player-card draws it, here inside the box since the
 // board clips its scroller), no ring and no shadow: "just to see", the owner's note (2026-10-17), a commit of its
 // own. Its edge is the column's, so it lines up with the chip and the ticker
+// (the rail drawn as the border itself: the face on the padding box, the gold on the border box behind it, no
+// pseudo-element to be clipped or to miss the scrollbar's side, so it's an even 1px all round; the board is a
+// wrapper that doesn't scroll, its list (.board-scroll) scrolling inside the edge)
 .board {
   @include v.scoreboard-panel(v.$radius-lg, none);
-  border-color: transparent;
+  // (the face's colour as a gradient: a plain colour may only end a background list)
+  background:
+    var(--scoreboard-dots) padding-box,
+    linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
+    chip.$felt-gold border-box;
+  border: 1px solid transparent;
   display: flex;
   flex-direction: column;
   margin: 6px 0;
   overflow: hidden;
   position: relative;
-
-  &::before {
-    background: chip.$felt-gold;
-    border-radius: inherit;
-    content: "";
-    inset: -1px;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    padding: 2px;
-    pointer-events: none;
-    position: absolute;
-    z-index: 2;
-  }
 }
 
 .board-scroll {
@@ -1143,17 +1166,24 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   border-bottom: 1px solid v.$panel-rule;
 }
 
+// (the lead cell: the chevron in the band header's own 30px column and the rank tile right after it, no gap; the
+// owner's note, 2026-10-17)
 .bet-row {
   align-items: center;
   display: grid;
   gap: v.$space-14;
-  grid-template-columns: 30px 34px 34px minmax(0, 1fr) 170px 96px;
+  grid-template-columns: 64px 34px minmax(0, 1fr) 170px 96px;
   padding: 11px 16px;
   transition: background-color v.$t-hover ease;
 
   &:hover {
     background-color: rgba(chip.$gold-led, 0.035);
   }
+}
+
+.bet-lead {
+  align-items: center;
+  display: flex;
 }
 
 // (the chevron: a button that opens the row's reasoning; lightens under the pointer, turns down open)
@@ -1191,20 +1221,22 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // open, the tile stays as it is (the meter's open state is the cue)
 .bet-rank {
   @include v.led-tile(v.$radius-md, none);
-  border: 2px solid transparent;
+  border: none;
   cursor: pointer;
+  flex: none;
   font-size: v.$fs-14;
   font-weight: 700;
   height: 34px;
   line-height: 1;
   padding: 2px 0 0;
-  transition: border-color v.$t-hover ease;
+  transition: outline-color v.$t-hover ease;
   width: 34px;
 
+  // (lit: a 2px line in the board's light inside its edge, no border kept for it)
   &:hover,
   &:focus-visible {
-    border-color: var(--scoreboard-led);
-    outline: none;
+    outline: 2px solid var(--scoreboard-led);
+    outline-offset: -2px;
   }
 
   &.top {
@@ -1570,12 +1602,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // Open: the reasoning under the row, past the rank and the circle: the read, the devil's advocate, a meta line
 // (the edge, the Kelly score, the venue and weather, whose analysis), a note to the bot on an admin's CHECK; the
 // game's lines beside it. It unfolds down from its row
+// (the open row's content starts where the pick's words do: the row's padding, the lead cell, the circle and their
+// gaps; no gutter past that: the owner's note, 2026-10-17)
 .bet-reasons {
   animation: bet-unfold 0.24s v.$ease-out;
   display: grid;
   gap: v.$space-14 v.$space-28;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  padding: 0 16px 16px 168px;
+  padding: 0 16px 16px 142px;
 
   .bet-words {
     display: flex;
@@ -1673,7 +1707,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 @include v.down(ai-narrow) {
   .bet-row {
     gap: v.$space-8;
-    grid-template-columns: 22px 30px 30px minmax(0, 1fr) 70px;
+    grid-template-columns: 52px 30px minmax(0, 1fr) 70px;
     padding: 10px;
   }
 

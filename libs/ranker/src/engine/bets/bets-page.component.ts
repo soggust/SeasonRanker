@@ -21,7 +21,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSp
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, gameLine, gameMenu, menuKey, menuOptionId, menuValues, sportChoice, sportFace } from './game-menu';
+import { MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
 
@@ -574,6 +574,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // bets (''); and what it chose: a sport's heading, a game, or Best bets · every game (both filters off)
   readonly sportChoice = sportChoice;
   readonly dayBand = dayBand;
+  readonly groupKey = groupKey;
   // (a sport row's mark in the list: the league's own logo (bet-format.ts leagueLogo, ESPN's, as the wallet's and
   // the desk's tables show it) for the four leagues; MMA keeps its gloves icon)
   leagueMark(sport: string): string | null {
@@ -592,6 +593,16 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // back when the keyboard shut it
   menuOpen = false;
   active = '';
+  // (the sport headings folded shut, by groupKey (folded: the page's closed is its lifetime flag): a busy list opens with every sport shut but the chosen game's
+  // and the chosen sport's (game-menu.ts defaultClosed); the heading's chevron, or Right and Left, folds one)
+  folded = new Set<string>();
+  isOpen(day: string, sport: string): boolean {
+    return !this.folded.has(groupKey(day, sport));
+  }
+  toggleGroup(key: string): void {
+    if (this.folded.has(key)) this.folded.delete(key);
+    else this.folded.add(key);
+  }
   @ViewChild('gamePill') gamePill?: ElementRef<HTMLElement>;
   @ViewChild('gameList') gameList?: ElementRef<HTMLElement>;
   toggleMenu(): void {
@@ -600,7 +611,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
   openMenu(): void {
     this.menuOpen = true;
-    this.active = this.choice;
+    this.folded = defaultClosed(this.gameMenu, this.game, this.sport);
+    // (the lit row: the chosen game, or the chosen sport's first heading, or Best Bets)
+    this.active = this.game || (this.sport ? (menuValues(this.gameMenu, this.folded).find((v) => chosenSport(v) === this.sport) ?? '') : '');
     // (the list is in the DOM on the next check: then the focus and the lit row into view)
     setTimeout(() => {
       this.gameList?.nativeElement.focus({ preventScroll: true });
@@ -621,7 +634,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     }
   }
   listKey(event: KeyboardEvent): void {
-    const action = menuKey(event.key, menuValues(this.gameMenu), this.active);
+    const action = menuKey(event.key, menuValues(this.gameMenu, this.folded), this.active);
     if (!action) return;
     if (event.key !== 'Tab') event.preventDefault();
     // (Escape here alone: the board's own Escape (the why popover's) stays out of it)
@@ -630,7 +643,19 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       this.active = action.value;
       this.showActive();
     } else if (action.kind === 'choose') this.pick(this.active, true);
-    else this.closeMenu(event.key === 'Escape');
+    else if (action.kind === 'expand' || action.kind === 'collapse') {
+      // (on a heading: unfold or fold its games; Left on a game: up to its heading)
+      if (chosenSport(this.active) !== null) {
+        if (action.kind === 'expand') this.folded.delete(this.active);
+        else this.folded.add(this.active);
+      } else if (action.kind === 'collapse') {
+        const heading = groupOf(this.gameMenu, this.active);
+        if (heading) {
+          this.active = heading;
+          this.showActive();
+        }
+      }
+    } else this.closeMenu(event.key === 'Escape');
   }
   // (a choice taken from the list, by a click or Enter: chosen, the list shut)
   pick(value: string, refocus = false): void {

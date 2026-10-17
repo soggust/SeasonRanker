@@ -101,28 +101,55 @@ const MENU = bets.gameMenu(
   TZ,
 );
 
-test('menuValues: Best bets first, then each day its sports (the heading before its games) in the list\'s order', () => {
-  assert.deepEqual(bets.menuValues(MENU), ['', 'sport:nhl', 'nhl|CAR @ WPG', 'nhl|VAN @ TB', 'sport:mma', 'mma|B @ A', 'sport:nfl', 'nfl|NYJ @ NE']);
+const SAT = 'Saturday, Oct 17';
+const SUN = 'Sunday, Oct 18';
+const NHL = bets.groupKey(SAT, 'nhl');
+const MMA = bets.groupKey(SAT, 'mma');
+const NFL = bets.groupKey(SUN, 'nfl');
+
+test("menuValues: Best Bets first, then each day its sports (the heading, its own by day, before its games) in the list's order; a folded heading keeps its games out", () => {
+  assert.deepEqual(bets.menuValues(MENU), ['', NHL, 'nhl|CAR @ WPG', 'nhl|VAN @ TB', MMA, 'mma|B @ A', NFL, 'nfl|NYJ @ NE']);
+  assert.deepEqual(bets.menuValues(MENU, new Set([NHL, NFL])), ['', NHL, MMA, 'mma|B @ A', NFL]);
   assert.deepEqual(bets.menuValues([]), ['']);
+  // (a heading's value is still its sport when chosen; a game's and Best Bets' none)
+  assert.equal(bets.chosenSport(NHL), 'nhl');
+  assert.equal(bets.chosenSport('sport:nhl'), 'nhl');
+  assert.equal(bets.groupOf(MENU, 'mma|B @ A'), MMA);
+  assert.equal(bets.groupOf(MENU, 'nhl|gone'), null);
+});
+
+test('defaultClosed: a quiet list opens every sport; a busy one (more than 12 games) folds every sport but the chosen game\'s and the chosen sport\'s', () => {
+  assert.deepEqual([...bets.defaultClosed(MENU, '', '')], []);
+  const busy = bets.gameMenu(
+    [...Array(13).keys()].map((i) => menuGame(i < 7 ? 'nhl' : 'nba', `A${i} @ B${i}`, i < 7 ? '2026-10-17T19:30:00Z' : '2026-10-18T19:30:00Z', i % 3 ? null : 1)),
+    [...SPORTS, { id: 'nba', label: 'NBA' }],
+    TZ,
+  );
+  assert.deepEqual([...bets.defaultClosed(busy, '', '')], [bets.groupKey(SAT, 'nhl'), bets.groupKey(SUN, 'nba')]);
+  assert.deepEqual([...bets.defaultClosed(busy, 'nba|A8 @ B8', '')], [bets.groupKey(SAT, 'nhl')]);
+  assert.deepEqual([...bets.defaultClosed(busy, '', 'nhl')], [bets.groupKey(SUN, 'nba')]);
 });
 
 test('menuKey: the arrows walk the list and hold at its ends, Home/End and PageUp/PageDown jump, Enter and Space take, Escape and Tab shut', () => {
   const values = bets.menuValues(MENU);
-  assert.deepEqual(bets.menuKey('ArrowDown', values, ''), { kind: 'move', value: 'sport:nhl' });
+  assert.deepEqual(bets.menuKey('ArrowDown', values, ''), { kind: 'move', value: NHL });
   assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|CAR @ WPG'), { kind: 'move', value: 'nhl|VAN @ TB' });
-  assert.deepEqual(bets.menuKey('ArrowUp', values, 'sport:nhl'), { kind: 'move', value: '' });
+  assert.deepEqual(bets.menuKey('ArrowUp', values, NHL), { kind: 'move', value: '' });
+  // (Right and Left: unfold and fold, the page's to apply to a heading)
+  assert.deepEqual(bets.menuKey('ArrowRight', values, NHL), { kind: 'expand' });
+  assert.deepEqual(bets.menuKey('ArrowLeft', values, 'nhl|CAR @ WPG'), { kind: 'collapse' });
   // (held at the ends, no wrap)
   assert.deepEqual(bets.menuKey('ArrowUp', values, ''), { kind: 'move', value: '' });
   assert.deepEqual(bets.menuKey('ArrowDown', values, 'nfl|NYJ @ NE'), { kind: 'move', value: 'nfl|NYJ @ NE' });
   assert.deepEqual(bets.menuKey('End', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
-  assert.deepEqual(bets.menuKey('Home', values, 'sport:mma'), { kind: 'move', value: '' });
+  assert.deepEqual(bets.menuKey('Home', values, MMA), { kind: 'move', value: '' });
   assert.deepEqual(bets.menuKey('PageDown', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
   assert.deepEqual(bets.menuKey('PageUp', values, 'nfl|NYJ @ NE'), { kind: 'move', value: '' });
   // (a lit choice gone from the list (a game dropped): the walk starts from the top)
-  assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|gone'), { kind: 'move', value: 'sport:nhl' });
-  assert.deepEqual(bets.menuKey('Enter', values, 'sport:nhl'), { kind: 'choose' });
-  assert.deepEqual(bets.menuKey(' ', values, 'sport:nhl'), { kind: 'choose' });
-  assert.deepEqual(bets.menuKey('Escape', values, 'sport:nhl'), { kind: 'close' });
+  assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|gone'), { kind: 'move', value: NHL });
+  assert.deepEqual(bets.menuKey('Enter', values, NHL), { kind: 'choose' });
+  assert.deepEqual(bets.menuKey(' ', values, NHL), { kind: 'choose' });
+  assert.deepEqual(bets.menuKey('Escape', values, NHL), { kind: 'close' });
   assert.deepEqual(bets.menuKey('Tab', values, ''), { kind: 'close' });
   assert.deepEqual(bets.menuKey('Escape', [], ''), { kind: 'close' });
   // (any other key: nothing)

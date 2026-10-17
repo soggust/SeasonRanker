@@ -152,7 +152,7 @@
               [attr.aria-selected]="choice === ''"
               [class.active]="active === ''"
               [class.chosen]="choice === ''"
-              (mouseenter)="active = ''"
+              (mousemove)="active = ''"
               (click)="pick('')"
             >
               <mat-icon class="game-icon" aria-hidden="true" fontIcon="emoji_events"></mat-icon>
@@ -162,16 +162,21 @@
             @for (d of gameMenu; track d.day) {
               <div class="game-day" role="presentation">{{ dayBand(d.day) }}</div>
               @for (s of d.sports; track s.sport) {
+                <!-- (a sport's row: the row chooses the sport (its best bets, every day's); the chevron at its end folds
+                     its games, Right and Left on the keyboard the same; a busy list opens with every sport folded) -->
+                @let gk = groupKey(d.day, s.sport);
                 <div
                   class="game-opt game-sport"
                   [ngClass]="'sport-' + s.sport"
                   role="option"
-                  [id]="optId(sportChoice(s.sport))"
+                  [id]="optId(gk)"
                   [attr.aria-selected]="choice === sportChoice(s.sport)"
-                  [class.active]="active === sportChoice(s.sport)"
+                  [attr.aria-expanded]="isOpen(d.day, s.sport)"
+                  [class.active]="active === gk"
                   [class.chosen]="choice === sportChoice(s.sport)"
+                  [class.folded]="!isOpen(d.day, s.sport)"
                   [title]="'Every ' + s.name + ' pick, every day'"
-                  (mouseenter)="active = sportChoice(s.sport)"
+                  (mousemove)="active = gk"
                   (click)="pick(sportChoice(s.sport))"
                 >
                   <!-- (the league's own mark where the site has one (bet-format.ts leagueLogo: ESPN's, the wallet's and the
@@ -187,8 +192,11 @@
                   } @else {
                     <span class="game-lines" title="Lines only: the bot has no pick in it">lines</span>
                   }
+                  <button type="button" class="game-fold" tabindex="-1" [attr.aria-label]="(isOpen(d.day, s.sport) ? 'Hide ' : 'Show ') + s.name + '\'s games'" (click)="toggleGroup(gk); $event.stopPropagation()">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </button>
                 </div>
-                @for (g of s.games; track g.key) {
+                @for (g of isOpen(d.day, s.sport) ? s.games : []; track g.key) {
                   <div
                     class="game-opt game-row"
                     role="option"
@@ -197,7 +205,8 @@
                     [class.active]="active === g.key"
                     [class.chosen]="choice === g.key"
                     [class.lines]="g.count === null"
-                    (mouseenter)="active = g.key"
+                    [class.picked]="g.count !== null"
+                    (mousemove)="active = g.key"
                     (click)="pick(g.key)"
                   >
                     <span class="game-faces" aria-hidden="true">
@@ -264,6 +273,8 @@
       <ng-template #betRow let-r let-i="i" let-locks="locks" let-n="n">
         <li class="bet" [ngClass]="level(r)" [class.open]="open.has(r.id)" [class.fade]="r.strength === 'fade'" [style.--i]="i">
           <div class="bet-row">
+            <!-- (the lead: the chevron and the rank tile side by side, the chevron in the band header's own column) -->
+            <div class="bet-lead">
             <button type="button" class="bet-chevron" (click)="toggle(r.id)" [attr.aria-expanded]="open.has(r.id)" [attr.aria-label]="'Why ' + r.pick">
               <svg class="chev" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </button>
@@ -299,6 +310,7 @@
                 }
               </button>
             }
+            </div>
             <!-- (the circle: a prop's player's face, a total's arrow, a side's team's logo; a fade, none) -->
             @if (r.betType === 'player' && r.athleteId) {
               <!-- (a prop's face: a link to the player's card, in a new tab (the card lives in his sport's app); the

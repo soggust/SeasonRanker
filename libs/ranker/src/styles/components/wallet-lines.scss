@@ -519,12 +519,14 @@
     padding: 0;
   }
 
+  // (the names' column as wide as the names (a fight's two full names, not a team's three letters), the prices
+  // sharing the rest; a moneyline alone no wider than a tile needs: the owner's bug report, 2026-10-17)
   .lines-grid {
     gap: v.$space-4;
-    grid-template-columns: 40px repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(40px, max-content) repeat(3, minmax(0, 1fr));
 
     &.ml-only {
-      grid-template-columns: 40px minmax(0, 1fr);
+      grid-template-columns: minmax(40px, max-content) minmax(0, 160px);
     }
   }
 
