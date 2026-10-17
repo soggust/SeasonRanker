@@ -30,13 +30,22 @@
 //      skipped. One bet a bout. Inside the last call with no API price: ESPN BET's line, tracked only
 //   6. the picks (the page's rows: the open edge bets by their Kelly score, published once locked), the state
 //      and the ledger written when changed (--dry: nothing committed touched, a snapshot in .cache/model)
+//   7. the betting board (the owner, 2026-10-17: "I should still be able to place bets on all the fights"): every
+//      bout on a card not started, each side's moneyline with the book's price, the model's chance, Kelly score and
+//      band, in board.mjs's shape (buildMmaBoard, the team sports' run.mjs writeBoard), written when it changes
+//      to apps/mma/src/StaticData/model/board.json (the Bets page's game view, lines.service.ts) with the prices
+//      seen (board-seen.json: the play-money settler's). The prices are what the run already asked (the credit
+//      rule: no ask for the board's sake): this run's Odds API lines where a bout was due, else the last board's
+//      DraftKings price, else ESPN BET's line (free, marked src 'espn bet'). A bout gone from it once it starts,
+//      or off. --dry with --board-out=<dir>: written there as board-mma.json, nothing committed touched
 import path from 'node:path';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { BOOK, LEAGUES, TIMING } from './leagues.mjs';
 import { TERMS, backtest, buildModel, fitRows } from './fights-model.mjs';
 import { BANKROLL, chanceAt, decimal, fairPair, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
-import { BANDS, TOP, kellyOf, levelOf, scoreParts } from './picks.mjs';
+import { BANDS, TOP, edgeLevel, kellyOf, levelOf, scoreParts } from './picks.mjs';
+import { buildBoard, seenUpdate } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { LINE_BOOKS, SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
 import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
@@ -73,6 +82,8 @@ export const FILES = {
   state: path.join(ROOT, 'apps/mma/src/StaticData/model/state.json'),
   ledger: path.join(ROOT, 'apps/mma/src/StaticData/model/ledger.json'),
   picks: path.join(ROOT, 'apps/mma/src/StaticData/model/picks.json'),
+  board: path.join(ROOT, 'apps/mma/src/StaticData/model/board.json'),
+  boardSeen: path.join(ROOT, 'apps/mma/scripts/model/board-seen.json'),
   rest: path.join(CACHE, 'lines-rest-mma.json'),
 };
 
@@ -296,6 +307,66 @@ export function reasonOf(bet) {
 }
 
 // ---------------------------------------------------------------------------------------------------------
+// The betting board (board.mjs's shape: the Bets page's game view lists every priced bout, the picks only the
+// bot's suggestions). A bout's moneyline as the board's two sides [home, away]: each at the book's price (o), the
+// bot's trusted chance (c: desk.mjs chanceAt, as pickFor prices it), its Kelly score (ks) and band (b: the picks'
+// bands, LIKE at the least with an edge, PASS (low) without one or past the gap guard, as boardMarkets'); src
+// 'espn bet' where the price is ESPN BET's line (no DraftKings price asked or kept), else none (DraftKings').
+// lines: { odds: { home, away }, fair (the home side's) }; chance: the model's chance of the home side
+export function boardSidesOf(lines, chance, trust, src = null) {
+  const gap = gapGuard('ml', chance, lines.fair);
+  return ['home', 'away'].map((side) => {
+    const fair = side === 'home' ? lines.fair : 1 - lines.fair;
+    const m = side === 'home' ? chance : 1 - chance;
+    const odds = lines.odds[side];
+    const p = chanceAt('ml', fair, m, trust);
+    const ev = p * decimal(odds) - 1;
+    const ks = kellyOf(odds, p);
+    return { s: side, l: null, o: odds, c: round(p, 3), ks, b: gap || !(ev > 0) ? 'low' : edgeLevel(ks, p), ...(src ? { src } : {}) };
+  });
+}
+// (the last board's DraftKings prices for a bout (its ml sides, neither ESPN BET's): { odds, fair }, else null)
+export function boardLinesOf(prev, boutId) {
+  const g = (prev?.games ?? []).find((x) => String(x.id) === String(boutId));
+  const home = g?.k?.ml?.find((s) => s.s === 'home');
+  const away = g?.k?.ml?.find((s) => s.s === 'away');
+  if (!home?.o || !away?.o || home.src || away.src) return null;
+  return { odds: { home: home.o, away: away.o }, fair: fairPair(home.o, away.o), fairFrom: 'its own prices' };
+}
+// The board from the bouts coming (not final, not off, not started), each priced from what the run has: lines
+// (by the bout's key: { lines, src }) this run's, else the last board's DraftKings price (boardLinesOf), else
+// nothing (no tile); chance(bout): the model's chance of the home side; trust: the moneyline's; bets: the ledger's
+// (the bot's open side marked, as buildBoard marks it); prev: the last board (a bout no longer coming dropped)
+export function buildMmaBoard({ bouts, lines, chance, trust, bets = [], prev = null, now = new Date() }) {
+  const at = now.toISOString();
+  const coming = bouts.filter((b) => !b.final && !b.off && Date.parse(b.start ?? b.date) > now.getTime());
+  const ids = new Set(coming.map((b) => String(b.id)));
+  const games = new Map();
+  for (const bout of coming) {
+    const mine = lines?.get?.(bout.key) ?? null;
+    const l = mine?.lines ?? boardLinesOf(prev, bout.id);
+    if (!l?.odds?.home || !l?.odds?.away) continue;
+    const src = mine ? mine.src ?? null : null;
+    const start = bout.start ?? bout.date;
+    const p = chance(bout, Date.parse(start));
+    if (!Number.isFinite(p)) continue;
+    // (the fighters as the board's teams: [name, ESPN id, his headshot], the first ESPN lists the home side)
+    const game = { date: start, awayAbbr: bout.away.name, homeAbbr: bout.home.name, away: bout.away.id, home: bout.home.id };
+    games.set(String(bout.id), { game, markets: { ml: boardSidesOf(l, p, trust, src) }, at });
+  }
+  const kept = prev ? { ...prev, games: (prev.games ?? []).filter((g) => ids.has(String(g.id))) } : null;
+  const board = buildBoard(SPORT, { prev: kept, games, bets, checks: [], now });
+  for (const g of board.games) {
+    const bout = coming.find((b) => String(b.id) === g.id);
+    if (!bout) continue;
+    g.a = [bout.away.name, bout.away.id, headshot(bout.away.id)];
+    g.h = [bout.home.name, bout.home.id, headshot(bout.home.id)];
+    g.card = bout.cardName;
+  }
+  return board;
+}
+
+// ---------------------------------------------------------------------------------------------------------
 // The run
 
 function changelog(state, at, what, from, to, why) {
@@ -428,7 +499,7 @@ export function seedFiles(model, bt, now) {
   writeAtomic(FILES.picks, JSON.stringify(buildFightPicks(ledger, trust, new Map(), now)));
 }
 
-export async function runMma({ dry = false, gap = null, now = new Date(), log = console } = {}) {
+export async function runMma({ dry = false, gap = null, now = new Date(), log = console, boardOut = null } = {}) {
   const at = now.toISOString();
   const cfg = LEAGUES.mma;
   const t0 = Date.now();
@@ -522,6 +593,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   }
   const pending = [];
   const unmatched = [];
+  // (the prices this run read, by the bout's key: the board's (buildMmaBoard), no ask for its sake)
+  const linesNow = new Map();
   for (const bout of due) {
     const until = Date.parse(bout.date) - now.getTime();
     const open = openOn.get(bout.key);
@@ -537,6 +610,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       } else unmatched.push(`${bout.home.name} vs ${bout.away.name} (${bout.cardName})`);
     }
     const start = bout.start ?? bout.date;
+    if (lines) linesNow.set(bout.key, { lines, src: apiPrice ? null : 'espn bet' });
     // (an open bet: its latest price kept for the close, nothing else)
     if (open) {
       if (lines) open.seen = { at, odds: lines.odds[open.side], fair: open.side === 'home' ? lines.fair : 1 - lines.fair };
@@ -545,6 +619,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     if (!lines && until <= LAST_CALL) {
       const espn = await espnOdds(bout).catch(() => null);
       if (espn) lines = { ...espn, start };
+      if (lines) linesNow.set(bout.key, { lines, src: 'espn bet' });
     }
     if (!lines) {
       if (Array.isArray(events) || !hasKey()) rest[bout.key] = at;
@@ -618,17 +693,38 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const boutsById = new Map(bouts.map((b) => [b.id, b]));
   const picks = buildFightPicks(ledger, trust, boutsById, now);
   const out = stateOf(state, { model, bt, trust, ledger, now, lines: linesSource, odds: hasKey() ? usageSummary() : null });
+  // 7. the betting board: every bout coming, priced from what the run has; a bout with no DraftKings price this run or
+  // on the last board takes ESPN BET's line (free, src 'espn bet'), read again each run till a DraftKings price comes
+  const prevBoard = readJson(FILES.board, null);
+  for (const bout of coming) {
+    if (linesNow.has(bout.key) || boardLinesOf(prevBoard, bout.id)) continue;
+    const espn = await espnOdds(bout).catch(() => null);
+    if (espn) linesNow.set(bout.key, { lines: espn, src: 'espn bet' });
+  }
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => model.chance(b.home.id, b.away.id, day, { rounds: b.rounds }).p, trust: trust.ml.trust, bets: ledger.bets, prev: prevBoard, now });
+  const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
+  const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
+  log.log(`${SPORT}${dry ? ' (dry)' : ''}: board of ${mmaBoard.games.length} bouts (${espnPriced} at ESPN BET's line) of ${coming.length} coming`);
   if (dry) {
     log.log(`${SPORT} (dry): ${picks.picks.length} picks: ${picks.picks.map((p) => `${p.level} ${p.pick} ${p.odds} (${p.score})`).join(' | ') || 'none'}`);
     mkdirSync(CACHE, { recursive: true });
     writeJson(path.join(CACHE, 'dry-mma.json'), { terms: model.fit.terms, trust, backtest: bt.all, due: due.map((b) => `${b.home.name} vs ${b.away.name}`), unmatched, pending });
     log.log(`${SPORT} (dry): snapshot in .cache/model/dry-mma.json; nothing committed touched`);
+    if (boardOut) {
+      const dir = path.resolve(boardOut);
+      mkdirSync(dir, { recursive: true });
+      writeAtomic(path.join(dir, 'board-mma.json'), JSON.stringify(mmaBoard));
+      writeAtomic(path.join(dir, 'board-seen-mma.json'), JSON.stringify(seen));
+      log.log(`${SPORT} (dry): board of ${mmaBoard.games.length} bouts, ${JSON.stringify(mmaBoard).length} bytes, in ${dir}`);
+    }
   } else {
     mkdirSync(path.dirname(FILES.games), { recursive: true });
     writeAtomic(FILES.games, JSON.stringify(bouts));
     writeIfChanged(FILES.state, out, dry);
     writeIfChanged(FILES.ledger, ledger, dry);
     writeIfChanged(FILES.picks, picks, dry);
+    writeIfChanged(FILES.board, mmaBoard, dry);
+    writeIfChanged(FILES.boardSeen, seen, dry);
   }
   log.log(`${SPORT}: ${graded} graded, ${newBets} placed, ${pending.length - newBets} tracked; record ${out.record.won}-${out.record.lost}-${out.record.push}, ${out.record.profit >= 0 ? '+' : ''}${out.record.profit}u; ${Math.round((Date.now() - t0) / 100) / 10}s`);
   return { graded, newBets, tracked: pending.length - newBets, unmatched, due: due.length };
