@@ -922,16 +922,34 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
-// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb. Its panel's edge is the
-// column's (the ring draws outside it, in the gap and the gutter), so it lines up with the chip and the ticker
+// The board: a dot-matrix scoreboard, no title and no column headers; its rows scroll inside it, a gold scrollbar
+// thumb. Its edge is the Book's gold rail (the bankroll card's, the game pill's and the price buttons': 1px of
+// chip.$felt-gold on a ::before masked to a frame, as chip.player-card draws it, here inside the box since the
+// board clips its scroller), no ring and no shadow: "just to see", the owner's note (2026-10-17), a commit of its
+// own. Its edge is the column's, so it lines up with the chip and the ticker
 .board {
-  @include v.scoreboard-panel(v.$radius-lg, (0 0 0 5px v.$panel-dark, 0 0 0 6px v.$panel-edge, 0 10px 30px rgba(0, 0, 0, 0.55)));
+  @include v.scoreboard-panel(v.$radius-lg, none);
+  border-color: transparent;
   display: flex;
   flex-direction: column;
   margin: 6px 0;
   overflow: hidden;
   position: relative;
+
+  &::before {
+    background: chip.$felt-gold;
+    border-radius: inherit;
+    content: "";
+    inset: -1px;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    padding: 2px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
 }
 
 .board-scroll {
