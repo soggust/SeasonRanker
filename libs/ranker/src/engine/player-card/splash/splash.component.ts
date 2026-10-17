@@ -14,10 +14,11 @@ import * as teamColors from '@sport/team-colors';
 import { isLiveSeason } from '@ranker/engine/data';
 import type { PlayerCard } from '../card.model';
 import type { PlayerCards } from '../player-cards';
-import type { DepthPlayer, DepthView } from '../depth-chart';
+import type { DepthView } from '../depth-chart';
 import { SplashPiece } from './splash-piece.component';
 import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
+import { rosterOf } from './splash.roster';
 import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
 
 type Kit = 'home' | 'away' | 'alt';
@@ -166,7 +167,7 @@ export class CardSplash implements OnDestroy {
       // (his line on the tape: a fighter's record, else his card's first two headline stats)
       tape: fighter ? `${raw['wins'] ?? 0}–${raw['losses'] ?? 0} · ${raw['finishes'] ?? 0} finishes` : stats.slice(0, 2).map((s) => `${s.display} ${s.label}`).join(' · '),
       shoe: SPORT.id === 'nba' ? SIGNATURE_SHOES[c.name] ?? null : null,
-      roster: depth ? rosterOf(depth, this.tab, data?.numbers ?? {}) : undefined,
+      roster: depth ? rosterOf(SPORT.id, depth, this.tab, data?.numbers ?? {}, data?.lockers[key] ?? null) : undefined,
       division: fighter ? SPORT.positionNames[this.tab] : undefined,
       record: fighter ? `${raw['wins'] ?? 0}–${raw['losses'] ?? 0}` : wl,
       helmet: helmetFor(key, c.season),
@@ -291,30 +292,3 @@ export function cutOf(sport: string): Cut {
   return sport === 'nba' ? 'basketball' : sport === 'mlb' ? 'baseball' : sport === 'nhl' ? 'hockey' : 'football';
 }
 
-// A team locker's players, from its depth chart: the side the card is about (the defense's, the five linemen,
-// else the first: the offense, a lineup), each slot's starter, the key one first (a quarterback; else the most
-// used), each with his number when the season's numbers have him
-function rosterOf(view: DepthView, tab: string, numbers: Record<string, string>): RosterPlayer[] {
-  const side = tab === 'DEF' ? view.sides.find((s) => /def/i.test(s.id + s.title)) ?? view.sides[1] : view.sides[0];
-  let slots = (side?.slots ?? []).filter((s) => !s.sub && s.depth[0]);
-  if (tab === 'OL') {
-    const line = ['C', 'RG', 'LG', 'RT', 'LT'];
-    slots = slots.filter((s) => line.includes(s.label)).sort((a, b) => line.indexOf(a.label) - line.indexOf(b.label));
-  } else if (SPORT.id === 'nfl' && tab === 'TM') {
-    // (a team's offense leaders: the quarterback, the backs and receivers, the tight end; not the line)
-    const order = ['QB', 'RB', 'WR', 'TE', 'FB'];
-    const rank = (s: { label: string; group?: string }) => order.findIndex((o) => (s.group ?? s.label).startsWith(o));
-    slots = slots.filter((s) => rank(s) >= 0).sort((a, b) => rank(a) - rank(b) || (b.depth[0].snaps ?? 0) - (a.depth[0].snaps ?? 0));
-  } else {
-    slots = [...slots].sort((a, b) => (b.depth[0].snaps ?? 0) - (a.depth[0].snaps ?? 0));
-  }
-  const seen = new Set<string>();
-  const out: RosterPlayer[] = [];
-  for (const s of slots) {
-    const p: DepthPlayer = s.depth[0];
-    if (seen.has(p.id)) continue;
-    seen.add(p.id);
-    out.push({ name: p.name, pos: tab === 'OL' ? s.label : s.group ?? s.label, num: numbers[p.link?.gsisId ?? p.id] ?? numbers[p.id] ?? null });
-  }
-  return out.slice(0, 7);
-}

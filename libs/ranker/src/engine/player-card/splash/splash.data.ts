@@ -6,16 +6,23 @@
 //   numbers.json             each player's jersey number that season, by his card id
 //   best-games.<TAB>.json    each player's best game that season, by his card id (BestGame), one file a tab
 //   milestones.json          the season's notable marks (MLB's), by his card id, the rarest first
+//   lockers.json             the NFL's team lockers: each team's roster that season by its logo name, each man's
+//                            number and popularity (apps/nfl/scripts/build-splash.mjs lockersOf); read for the
+//                            team tabs alone, whose lockers hang the depth chart's starters (the other sports'
+//                            charts are the site's own rows, whose numbers are in numbers.json)
 import { isLiveSeason } from '@ranker/engine/data';
 import { SPORT } from '@sport/sport';
 import type { Outcome } from './splash.scene';
 import { sceneOutcome, type BestGame, type Milestone, type OutcomeFile } from './splash.outcome';
+
+export type LockerRoster = Record<string, [num: string, popularity: number]>;
 
 export interface SplashData {
   outcomes: Record<string, Outcome>;
   numbers: Record<string, string>;
   bestGames: Record<string, { title: string; line: string; tip: string }>;
   milestones: Record<string, { big: string; small: string; tip: string }>;
+  lockers: Record<string, LockerRoster>;
 }
 
 const seasons = new Map<string, Promise<SplashData>>();
@@ -37,7 +44,8 @@ export function splashData(season: number, tab: string): Promise<SplashData> {
       read<Record<string, string>>('numbers.json'),
       read<Record<string, BestGame>>(`best-games.${tab}.json`),
       read<Record<string, Milestone[] | Milestone>>('milestones.json'),
-    ]).then(([outcomes, numbers, bestGames, milestones]) => ({
+      SPORT.id === 'nfl' && SPORT.teamTabs?.includes(tab) ? read<Record<string, LockerRoster>>('lockers.json') : Promise.resolve({} as Record<string, LockerRoster>),
+    ]).then(([outcomes, numbers, bestGames, milestones, lockers]) => ({
       outcomes: Object.fromEntries(
         Object.entries(outcomes).flatMap(([k, o]) => {
           const out = sceneOutcome(o, SPORT.id, season);
@@ -53,6 +61,7 @@ export function splashData(season: number, tab: string): Promise<SplashData> {
           return first ? [[k, first]] : [];
         }),
       ),
+      lockers,
     }));
     seasons.set(key, got);
   }

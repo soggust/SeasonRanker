@@ -2,7 +2,9 @@
 // stage and props. No Angular here (the tests load it as it is); splash.component.ts gathers the input.
 //
 // Three stages, the same in every scene; only the props change. A season still being played is the LOCKER: a
-// team's key players' lockers, each with his jersey, or a player's own stall with his jersey and his gear in it
+// team's key players' lockers (splash.roster.ts picks them from the depth chart and the season's roster: the
+// most popular on offense and defense, the first named in the middle; at least three, or no splash), each with
+// his jersey, or a player's own stall with his jersey and his gear in it
 // (the helmet, cap, glove or puck on its top shelf, the bats or stick leaning in the corner, the shoes and the
 // game ball on the floor: PROPS[..].stall). A finished one is the SHELF: up to three props, the most meaningful
 // in the middle, each at its real height (none taller than the one in the middle). A head coach's card, any
@@ -314,7 +316,9 @@ export function buildScene(s: SceneInput): Scene | null {
 
   if (s.coach) {
     // ---- the office
-    const record = o?.record ?? s.record ?? '';
+    // (his own record first, the coach's row's: a man hired in midseason owns only his games; the team's when
+    // the row has none)
+    const record = s.record ?? o?.record ?? '';
     const board = piece(PROPS['whiteboard'], 150);
     const frame = piece(PROPS['team-frame'], 70);
     return {
@@ -330,15 +334,16 @@ export function buildScene(s: SceneInput): Scene | null {
   if (!locker) {
     if (!pieces.length) return null;
     const items = centered(pieces);
-    return { stage: 'shelf', items, lead: pieces.length === 3 ? 1 : 0, stalls: [], label: `${s.teamName || s.name}, ${s.seasonLabel}: ${pieces.map((p) => p.tip).join('; ')}` };
+    return { stage: 'shelf', items, lead: pieces.length === 3 ? 1 : 0, stalls: [], label: `${s.team ? s.teamName || s.name : s.name}, ${s.seasonLabel}: ${pieces.map((p) => p.tip).join('; ')}` };
   }
 
   // ---- the locker
   const last = (name: string) => name.split(' ').slice(1).join(' ') || name;
   let stalls: Stall[];
   if (s.team) {
+    // (a room with fewer than three jerseys isn't a locker room: no splash until the data fills it)
     const roster = (s.roster ?? []).slice(0, 7);
-    if (!roster.length) return null;
+    if (roster.length < 3) return null;
     // (the first named, the key one, in the middle; the rest either side, the outermost on wide screens only)
     const order: RosterPlayer[] = [];
     roster.forEach((p, i) => (i % 2 ? order.push(p) : order.unshift(p)));
