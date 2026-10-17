@@ -16,6 +16,7 @@ import {
   DeskEpoch,
   afterEpoch,
   epochFor,
+  epochShared,
   calibrationOf,
   countNowOf,
   deskEpochOf,
@@ -299,15 +300,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.show();
   }
 
-  // (the toggle's words: "Since this model (Oct 14, 6:00 AM)": the sport on show's epoch, or the one every sport
-  // shares; when the sports' epochs differ (a league started later), "per sport", each sport's date in the
-  // chip's title)
+  // (the toggle's words: "Since this model (Oct 14, 6:00 AM)": the sport on show's epoch, else the one most
+  // sports share (desk-math.ts epochShared; a league that started later keeps its own, which the chip's title
+  // lists with every sport's date). Each sport's bets are still judged by its own epoch)
   get epochText(): string {
     if (!this.epoch) return 'Since this model';
-    const own = this.sport ? epochFor(this.epoch, this.sport) : null;
-    const stamps = new Set(Object.values(this.epoch.bySport ?? {}));
-    const at = own ?? (stamps.size <= 1 ? this.epoch.at : null);
-    return at ? `Since this model (${epochLabel(at)})` : 'Since this model (per sport)';
+    const at = (this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch);
+    return at ? `Since this model (${epochLabel(at)})` : 'Since this model';
   }
 
   get epochTitle(): string {

@@ -381,6 +381,14 @@ test("since the model's epoch: each sport by its own, a sport without one all ti
   assert.equal(desk.epochFor(e, 'nfl'), '2026-10-13T08:33:00Z');
   assert.equal(desk.epochFor(e, 'mlb'), null);
   assert.equal(desk.epochFor(null, 'nfl'), null);
+  // (the chip's date: the epoch most sports share, the newest on a tie (three different here); a league that
+  // started later with its own stamp doesn't turn the chip into "per sport")
+  assert.equal(desk.epochShared(e), '2026-10-14T06:00:00Z');
+  assert.equal(
+    desk.epochShared(desk.deskEpochOf([{ sport: 'nfl', epoch: '2026-10-17T08:30:00Z' }, { sport: 'nhl', epoch: '2026-10-17T08:30:00Z' }, { sport: 'mlb', epoch: '2026-10-17T08:30:00Z' }, { sport: 'mma', epoch: '2026-10-16T00:00:00Z' }])),
+    '2026-10-17T08:30:00Z',
+  );
+  assert.equal(desk.epochShared(null), null);
   assert.equal(desk.deskEpochOf([{ sport: 'nfl' }, { sport: 'nba', epoch: 'soon' }]), null);
   assert.equal(desk.deskEpochOf([]), null);
   const bets = [

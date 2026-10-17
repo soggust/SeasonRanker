@@ -308,6 +308,18 @@ export function deskEpochOf(states: { sport: string; epoch?: string | null }[]):
   return { at, sports: dated.map((s) => s.sport), bySport: Object.fromEntries(dated.map((s) => [s.sport, s.epoch as string])) };
 }
 
+// (the model's epoch as the chip names it: the one most sports share (the desk's MODEL_EPOCH; a league that
+// started later keeps its own start), the newest on a tie; the owner reads the model's date here, not a
+// "per sport" shrug)
+export function epochShared(epoch: DeskEpoch | null): string | null {
+  if (!epoch) return null;
+  const stamps = Object.values(epoch.bySport ?? {});
+  if (!stamps.length) return epoch.at;
+  const count = new Map<string, number>();
+  for (const at of stamps) count.set(at, (count.get(at) ?? 0) + 1);
+  return [...count.entries()].sort((a, b) => b[1] - a[1] || Date.parse(b[0]) - Date.parse(a[0]))[0][0];
+}
+
 // (the epoch a sport's bets are judged by: its own, else the newest; none for a sport without one)
 export function epochFor(epoch: DeskEpoch | null, sport: string): string | null {
   if (!epoch) return null;
