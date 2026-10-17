@@ -743,7 +743,7 @@
       </section>
     }
 
-    <div class="wallet-row">
+    <div class="wallet-row loose">
       @if (periods().length) {
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
@@ -823,6 +823,70 @@
         }
       </section>
     </div>
+
+    <!-- On the wall: a corkboard in a dark wood frame, the biggest cash and the worst beat pinned up as tickets
+         (wallet-view.ts wallPicks: the settled bet with the largest profit, stamped CASHED; the lost parlay with the
+         most legs hit, else the largest stake lost, stamped BAD BEAT), a caption pill under each; a ticket with
+         nothing to show isn't pinned, and the panel goes when both are empty -->
+    @let wl = wall();
+    @if (wl.biggest || wl.worst) {
+      <section class="wp-panel" aria-label="On the wall">
+        <div class="wp-bar"><h3>On the wall</h3><span class="wp-bar-note">Your biggest cash and your worst beat, pinned up for posterity</span></div>
+        <div class="cork">
+          @for (w of [wl.biggest, wl.worst]; track $index) {
+            @if (w) {
+              @let beat = $index === 1;
+              @let wb = w.bet;
+              @let miss = beat && wb.kind === 'parlay' ? missedLeg(wb) : null;
+              <figure class="pinned" [class.beat]="beat">
+                <div class="pinned-ticket">
+                  <span class="pin" aria-hidden="true"></span>
+                  <div class="wall-ticket">
+                    <div class="wall-top"><span class="wall-brand">The Book</span><span class="wall-no">{{ ticketNo(wb) }} · {{ wb.placedAt | date: 'EEE MMM d' }}</span></div>
+                    <hr class="perf" />
+                    @if (wb.kind === 'parlay') {
+                      <span class="wall-pick">{{ wb.legs!.length }}-leg parlay · {{ oddsText(wb.paidOdds ?? wb.odds) }}</span>
+                      <span class="wall-game">{{ w.hits !== null ? w.hits + ' of ' + wb.legs!.length + ' legs hit' : 'every leg hit' }}@if (miss) { · {{ miss.pick }} missed}</span>
+                      @if (miss?.final || (!beat && wb.final)) {
+                        <span class="wall-final" [class.beat]="beat">Final · {{ miss?.final ?? wb.final }}</span>
+                      }
+                    } @else {
+                      <span class="wall-pick">{{ wb.pick }}</span>
+                      <span class="wall-game">{{ wb.sport.toUpperCase() }} · {{ wb.matchup }} · {{ wb.tier ?? 'your call' }} · {{ oddsText(wb.odds) }}</span>
+                      @if (wb.final) {
+                        <span class="wall-final" [class.beat]="beat">Final · {{ wb.final }}</span>
+                      }
+                    }
+                    <div class="wall-sums"><span>{{ beat ? 'Would have paid' : 'Paid' }}</span><span>{{ (beat ? betToWin(wb) : (wb.profit ?? 0)) | number: '1.1-1' }}u on {{ wb.stake | number: '1.1-1' }}u</span></div>
+                    <span class="wall-stamp" aria-hidden="true">{{ beat ? 'Bad beat' : 'Cashed' }}</span>
+                  </div>
+                </div>
+                <figcaption><i aria-hidden="true"></i>{{ beat ? 'Worst beat' : 'Biggest cash' }}</figcaption>
+              </figure>
+            }
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Your tells: six habits read off the loaded bets (wallet-view.ts tells), tiles 3 × 2, a result's value green or
+         red; the bar's link goes to the Bets page's Cashed tab -->
+    @if (tellsList().length) {
+      <section class="wp-panel" aria-label="Your tells">
+        <div class="wp-bar"><h3>Your tells</h3><a class="wp-bar-link" href="/bets" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
+        <div class="tells">
+          @for (t of tellsList(); track t.key) {
+            <div class="tell">
+              <span class="wp-key">{{ t.key }}</span>
+              <span class="tell-val" [class.up]="t.tone === 'good'" [class.down]="t.tone === 'bad'">{{ t.value }}</span>
+            </div>
+          }
+        </div>
+        @if (historyNote()) {
+          <p class="wp-note">Read off {{ historyNote() }} and the open ones.</p>
+        }
+      </section>
+    }
 
     <!-- (the open bets, by game: in play, a result as soon as the score decides it, pending settlement) -->
     @if (open().length) {

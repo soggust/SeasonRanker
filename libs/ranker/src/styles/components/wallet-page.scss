@@ -107,6 +107,11 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   display: grid;
   gap: v.$space-20;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+
+  // (the leaderboard and the trophy case: each its own height)
+  &.loose {
+    align-items: start;
+  }
 }
 
 // A panel: the scoreboard face, its edge, the small drop shadow; its bar, body and notes
@@ -1057,6 +1062,203 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     color: v.$good-bright;
     text-shadow: none;
   }
+}
+
+// ---------------------------------------------------------------------------
+// On the wall: a corkboard (assets/textures/cork.svg, a warm light from the top, a brown vignette) in a dark wood
+// frame drawn as inset shadows; each ticket the slip's paper, tilted, deep-shadowed, a red push-pin at its top, a
+// caption pill under it
+// ---------------------------------------------------------------------------
+.cork {
+  background:
+    radial-gradient(ellipse 70% 90% at 50% -10%, rgba(255, 224, 180, 0.16), transparent 60%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 45%, rgba(30, 16, 6, 0.55) 100%),
+    url("../../assets/textures/cork.svg") 0 0 / 220px 220px;
+  box-shadow:
+    inset 0 0 0 12px #3b2616,
+    inset 0 0 0 13px #1c120a,
+    inset 1px 1px 0 13px rgba(255, 220, 180, 0.08),
+    inset 0 18px 22px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: v.$space-32 v.$space-48;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  padding: 44px 40px 34px;
+}
+
+.pinned {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-14;
+  margin: 0;
+  min-width: 0;
+
+  figcaption {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: v.$radius-pill;
+    color: v.$good-bright;
+    display: inline-flex;
+    font-size: v.$fs-10;
+    font-weight: 800;
+    gap: v.$space-8;
+    letter-spacing: 2px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+
+    i {
+      background: currentColor;
+      border-radius: v.$radius-round;
+      height: 8px;
+      width: 8px;
+    }
+  }
+
+  &.beat figcaption {
+    color: v.$bad-soft;
+  }
+}
+
+.pinned-ticket {
+  position: relative;
+  rotate: -1.5deg;
+  width: min(100%, 400px);
+
+  .beat & {
+    rotate: 1.2deg;
+  }
+}
+
+.pin {
+  background: radial-gradient(circle at 35% 30%, #ff9b8f, chip.$chip-red 50%, #7a1414);
+  border-radius: v.$radius-round;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.55);
+  height: 16px;
+  left: 50%;
+  position: absolute;
+  top: -6px;
+  translate: -50% 0;
+  width: 16px;
+  z-index: 2;
+}
+
+.wall-ticket {
+  @include paper;
+  display: flex;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.55));
+  flex-direction: column;
+  gap: 7px;
+  padding: 22px 16px;
+  position: relative;
+  text-transform: uppercase;
+
+  .wall-top {
+    display: flex;
+    gap: v.$space-8;
+    justify-content: space-between;
+  }
+
+  .wall-brand {
+    font-size: v.$fs-12;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+  }
+
+  .wall-no {
+    color: $ink-soft;
+    font-size: v.$fs-10;
+  }
+
+  .perf {
+    border: none;
+    border-top: 2px dashed rgba(26, 26, 26, 0.25);
+    margin: 2px 0;
+  }
+
+  .wall-pick {
+    font-size: v.$fs-13;
+    font-weight: 700;
+  }
+
+  .wall-game {
+    color: $ink-soft;
+    font-size: v.$fs-11;
+  }
+
+  .wall-final {
+    color: #1d8a4e;
+    font-size: v.$fs-11;
+    font-weight: 700;
+
+    &.beat {
+      color: chip.$chip-red;
+    }
+  }
+
+  .wall-sums {
+    display: flex;
+    font-size: v.$fs-13;
+    font-weight: 700;
+    justify-content: space-between;
+  }
+
+  // (the rubber stamp: CASHED in green, BAD BEAT in red)
+  .wall-stamp {
+    border: 3px solid currentColor;
+    border-radius: v.$radius-sm;
+    color: #1d8a4e;
+    font-size: v.$fs-15;
+    font-weight: 700;
+    letter-spacing: 2px;
+    mix-blend-mode: multiply;
+    opacity: 0.82;
+    padding: 4px 8px;
+    position: absolute;
+    right: 14px;
+    rotate: -12deg;
+    top: 34px;
+    white-space: nowrap;
+  }
+}
+
+.beat .wall-ticket .wall-stamp {
+  color: chip.$chip-red;
+}
+
+// Your tells: six tiles on hairlines
+.wp-bar-link {
+  color: kit.app(sand);
+  font-size: v.$fs-12;
+  font-weight: 700;
+  text-decoration: none;
+  @include v.link-fade;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    outline: none;
+  }
+}
+
+.tells {
+  background: v.$panel-rule;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+.tell {
+  background: var(--scoreboard);
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+  padding: v.$space-14 v.$space-20;
+}
+
+.tell-val {
+  font-family: v.$font-heading;
+  font-size: v.$fs-17;
+  font-weight: 600;
 }
 
 // A confirmation, under the actions
