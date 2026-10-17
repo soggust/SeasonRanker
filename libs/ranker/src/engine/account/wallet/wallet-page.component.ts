@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, computed, effect, signal, untracked } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, computed, effect, signal, untracked } from '@angular/core';
 import { ModelBet, Settled } from '../../bets/desk-model';
 import { CURVE_W } from '../../bets/desk-math';
 import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../bets/date-range';
@@ -492,6 +492,24 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
   // Reload and Clear history
   // ---------------------------------------------------------------------------
+  // (the rebuy chip: the first tap turns it red and asks, the second calls reload(); a click anywhere else, or
+  // Escape, keeps the run)
+  tapRebuy(): void {
+    this.message = '';
+    if (this.confirming === 'reload') void this.reload();
+    else this.confirming = 'reload';
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickAway(ev: Event): void {
+    if (this.confirming === 'reload' && !(ev.target as Element | null)?.closest?.('.rebuy-chip')) this.confirming = null;
+  }
+
+  @HostListener('document:keydown.escape')
+  escape(): void {
+    if (this.confirming === 'reload') this.confirming = null;
+  }
+
   async reload(): Promise<void> {
     this.busy = true;
     this.message = '';
