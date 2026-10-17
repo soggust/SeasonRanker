@@ -1721,7 +1721,11 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // with (the owner's notes, 2026-10-17), chalk-white; the collapsed row as it is)
 .bet-reasons {
   animation: bet-unfold 0.24s v.$ease-out;
-  background: var(--tex-chalk-bets) 50% 35% / 1400px 720px no-repeat, v.$chalk-dust;
+  // (the chalk drawings toned well down under a veil of the slate itself, so they never fight the words: the owner)
+  background:
+    linear-gradient(rgba(v.$chalk-slate, 0.72), rgba(v.$chalk-slate, 0.72)),
+    var(--tex-chalk-bets) 50% 35% / 1400px 720px no-repeat,
+    v.$chalk-dust;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   display: grid;
   gap: v.$space-14 v.$space-28;
