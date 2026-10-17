@@ -285,7 +285,7 @@ class Component extends DCLogic {
     const isOpen = s.view === 'open', isCashed = s.view === 'cashed';
     const tickets = (isOpen ? open : isCashed ? cashed : []).map((t) => {
       const stamp = t.res === 'W' ? 'CASHED +' + f(t.win) + 'U' : t.res === 'L' ? 'LOST −' + f(t.risk) + 'U' : t.res === 'P' ? 'PUSH · 0U' : '';
-      return Object.assign({}, t, { risk: f(t.risk), win: f(t.win), pays: f(t.res === 'L' ? 0 : t.res === 'P' ? t.risk : t.risk + t.win), winLabel: t.res ? (t.res === 'W' ? 'WON' : t.res === 'L' ? 'WOULD HAVE WON' : 'RETURNED') : 'TO WIN', isLive: !!t.live,
+      return Object.assign({}, t, { risk: f(t.risk), win: f(t.res === 'P' ? 0 : t.win), pays: f(t.res === 'L' ? 0 : t.res === 'P' ? t.risk : t.risk + t.win), winLabel: t.res ? (t.res === 'W' ? 'WON' : t.res === 'L' ? 'WOULD HAVE WON' : 'RETURNED') : 'TO WIN', isLive: !!t.live,
         statusTxt: t.res ? 'SETTLED' : t.live ? 'LIVE' : t.start, statusStyle: t.live ? 'background: #1a1a1a; color: #3ee07a;' : 'border: 1.5px solid #1a1a1a; color: #1a1a1a;',
         hasStamp: !!stamp, stamp, stampStyle: t.res === 'W' ? 'color: #1d8a4e;' : t.res === 'L' ? 'color: #c62828;' : 'color: #4a4a4a;' });
     });

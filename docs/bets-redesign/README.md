@@ -218,7 +218,10 @@ border in `currentColor` over the ticket, multiply blend at about 82%. It reads 
 **LOST −x U** in `#c62828`, or **PUSH** in `#4a4a4a`. The totals read WON, WOULD HAVE WON or RETURNED, and the
 live line becomes the final score.
 
-**Algorithm** (the model desk, admin only, `desk()`): restyle only. **Every panel, number and calculation stays
+**Algorithm** (the model desk, admin only, `desk()`): restyle only. **No ticker on this tab** (it stays on The board, Open
+tickets and Cashed). Its panels are plain scoreboard panels (`v.scoreboard-panel`: dots, 1px `$panel-edge`, the
+small drop shadow), **not** the board's ringed panel. The ringed board style is the Best-bets board's alone, and
+its `flex: 1` would squash the profit curve. **Every panel, number and calculation stays
 the model desk's own.**
 
 - **The six scoreboard tiles** in a row: Balance, Record, Profit, ROI, At risk, Beat the close. Each is a
