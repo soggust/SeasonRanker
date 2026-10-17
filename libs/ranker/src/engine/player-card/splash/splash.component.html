@@ -487,10 +487,12 @@
 }
 
 <!-- The caption on the shelf's edge under a prop or a stall: an engraved brass band set into the lip, the words
-     (one or two lines, never under 11 px) cut at two lines; the full text stays on the hover and the tap -->
+     (one or two lines, never under 11 px). The second line's parts ("RB · No. 23") are dropped from the end
+     when they don't fit (splash-caption.directive.ts); the first line is cut with an ellipsis only once it
+     stands alone; the full text stays on the hover and the tap -->
 <ng-template #caption let-lines let-tip="tip">
   @if (lines?.length) {
-    <div class="sp-cap" [title]="tip" [attr.data-tip]="tip"><span><b>{{ lines[0] }}</b>@if (lines[1]) {<i> · </i>{{ lines[1] }}}</span></div>
+    <div class="sp-cap" [spCapFit]="lines" [title]="tip" [attr.data-tip]="tip"><span><b>{{ lines[0] }}</b>@for (p of capParts(lines[1]); track $index) {<span class="sp-cap-p"><i> · </i>{{ p }}</span>}</span></div>
   }
 </ng-template>
 

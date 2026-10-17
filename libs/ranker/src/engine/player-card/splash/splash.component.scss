@@ -1751,6 +1751,13 @@ card-splash {
 
   .sp-art > svg.sp-jersey {
     --jh: 178px;
+
+    // (a football jersey's sleeves run to the edges of its picture, with the TV numbers on them: it is never
+    // wider than the stall's opening, so a cuff and its number are not cut by the wall. The sweater, its
+    // sleeves spread wide, keeps its size and tucks its sleeves behind the walls, as before)
+    &.cut-football {
+      max-width: 100%;
+    }
   }
 
   .sp-in-stall {
@@ -1876,7 +1883,9 @@ card-splash {
 
 // ---- the captions: an engraved brass band set into the shelf's front edge under each prop, each stall and
 // each of a coach's honors, carrying its words (the result, the stat line, the seed): one typeface everywhere,
-// never under 11 px, two lines at most and cut with an ellipsis past them (the hover and the tap keep the rest)
+// never under 11 px, two lines at most. Words that don't fit lose the second line's parts from the end first
+// (splash-caption.directive.ts hides .sp-cap-p); only a first line alone is cut with an ellipsis (the hover and
+// the tap keep the rest)
 .sp-cap {
   background: linear-gradient(180deg, #dcc583, #ab8630 46%, #6f5017 84%, #8c6c26);
   border-radius: 2px;
@@ -1901,12 +1910,16 @@ card-splash {
   width: max-content;
   z-index: 4;
 
-  span {
+  > span {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     display: -webkit-box;
     overflow: hidden;
     overflow-wrap: anywhere;
+  }
+
+  .sp-cap-p[hidden] {
+    display: none;
   }
 
   b {
@@ -1935,7 +1948,7 @@ card-splash {
     max-width: calc(200% + 28px);
     top: calc(100% + 3px);
 
-    span {
+    > span {
       -webkit-line-clamp: 1;
     }
   }

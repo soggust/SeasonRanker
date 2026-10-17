@@ -362,8 +362,9 @@ export function buildScene(s: SceneInput): Scene | null {
     const order: RosterPlayer[] = [];
     roster.forEach((p, i) => (i % 2 ? order.push(p) : order.unshift(p)));
     const leadAt = order.indexOf(roster[0]);
+    // (one room, one kit: every stall hangs the home jersey, as a locker room does the night before a game)
     stalls = order.map((p, i) => ({
-      jersey: { name: last(p.name), num: p.num ?? '', kit: i === leadAt ? 'home' : (i - leadAt) % 3 === 1 || (leadAt - i) % 3 === 2 ? 'away' : 'home' },
+      jersey: { name: last(p.name), num: p.num ?? '', kit: 'home' },
       // (a baseball jersey is drawn from the front, its wordmark on the chest: his name goes on the plate)
       plate: p.pos,
       star: i === leadAt,

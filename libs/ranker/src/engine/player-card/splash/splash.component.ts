@@ -16,6 +16,7 @@ import type { PlayerCard } from '../card.model';
 import type { PlayerCards } from '../player-cards';
 import type { DepthView } from '../depth-chart';
 import { SplashPiece } from './splash-piece.component';
+import { SplashCaptionFit } from './splash-caption.directive';
 import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
 import { rosterOf } from './splash.roster';
@@ -53,7 +54,7 @@ interface Built {
 @Component({
   selector: 'card-splash',
   standalone: true,
-  imports: [NgTemplateOutlet, SplashPiece],
+  imports: [NgTemplateOutlet, SplashPiece, SplashCaptionFit],
   templateUrl: './splash.component.html',
   styleUrl: './splash.component.scss',
   // (its pieces are their own component, drawn with these styles; every class is sp-)
@@ -248,6 +249,16 @@ export class CardSplash implements OnDestroy {
   get jerseyBase(): string {
     return propHref('jersey-' + this.cut, HI_DPI);
   }
+  // A caption's second line in its parts ("RB · No. 23": the position, the number), each one dropped from the
+  // end when the band hasn't the room (splash-caption.directive.ts); built once per line
+  private readonly partsOf = new Map<string, string[]>();
+  capParts(line: string | undefined): string[] {
+    if (!line) return [];
+    let parts = this.partsOf.get(line);
+    if (!parts) this.partsOf.set(line, (parts = line.split(' · ').filter(Boolean)));
+    return parts;
+  }
+
   // (the office's brass desk nameplate, photographed face on: splash.component.scss .sp-desk-plate; his name
   // flat on the plate's box, NAMEPLATE, as big as it holds)
   readonly deskPlate = propHref('desk-nameplate', HI_DPI);

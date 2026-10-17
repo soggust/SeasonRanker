@@ -187,13 +187,15 @@ export interface JerseyBase {
 export const JERSEY_BASES: Record<string, JerseyBase> = {
   // (810 x 621: the sleeves run out to the edges, their cuffs the near-vertical outer ends between y 0.16 and
   // 0.3; the yoke seam at 0.17 across the shoulders; the torso 0.222-0.774 from 0.4 down to the hem at the
-  // bottom edge)
+  // bottom edge. The cloth at the TV numbers' row begins 0.015 in from each edge, and a team locker's stall
+  // wall covers the first 0.04 of the picture: each number's box sits from 0.07 to 0.18, clear of both and of
+  // the torso, so its digits are never cut)
   football: {
     top: 0, bottom: 1, cx: 0.498, body: [0.222, 0.774], seamY: 0.17,
     neck: 'M0.42 0 C0.45 0.045 0.55 0.045 0.58 0',
     sleeves: [{ x0: -0.02, x1: 0.225, y0: 0.1, y1: 0.4 }, { x0: 0.775, x1: 1.02, y0: 0.1, y1: 0.4 }],
-    tv: [[0.115, 0.235], [0.885, 0.235]],
-    tvBox: [0.13, 0.12],
+    tv: [[0.125, 0.235], [0.875, 0.235]],
+    tvBox: [0.11, 0.11],
     yoke: 'M-0.02 -0.02 L1.02 -0.02 L1.02 0.42 L0.775 0.42 L0.775 0.17 Q0.5 0.21 0.225 0.17 L0.225 0.42 L-0.02 0.42 Z',
     panels: [[0.222, 0.262], [0.734, 0.774]], panelY: 0.4,
   },

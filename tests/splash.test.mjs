@@ -89,6 +89,8 @@ test("a team locker's key player in the middle", () => {
   const mid = s.stalls.findIndex((st) => st.star);
   assert.equal(s.stalls[mid].plate, 'QB');
   assert.equal(mid, Math.floor(s.stalls.length / 2));
+  // (one room, one kit: every stall hangs the home jersey)
+  assert.ok(s.stalls.every((st) => st.jersey.kit === 'home'), 'every stall in the home kit');
 });
 
 test("a player's finished season: his top award leads", () => {

@@ -160,8 +160,11 @@ test('a jersey base lands in the drawing space flat: the collar at 10, the photo
       assert.ok(s.dir > 0 ? s.cuff < s.x + s.w / 2 : s.cuff > s.x + s.w / 2, `${cut}: the cuff at the sleeve's outer end`);
     }
     for (const t of a.tv ?? []) {
-      assert.ok(t.x + t.w < a.bodyX[0] || t.x > a.bodyX[1], `${cut}: TV number on a sleeve`);
+      assert.ok(t.x + t.w < a.bodyX[0] - 3 || t.x > a.bodyX[1] + 3, `${cut}: TV number on a sleeve, clear of the torso`);
       inside(t, a.img, `${cut}: TV number inside the photo`);
+      // (clear of the cloth's edge and of a stall's wall, which covers the first 4% of the picture: the box
+      // starts at least 6% of the picture's width in from its edge)
+      assert.ok(t.x >= a.img.x + 0.06 * a.img.w && t.x + t.w <= a.img.x + 0.94 * a.img.w, `${cut}: TV number clear of the sleeve's edge`);
     }
     for (const p of a.panels ?? []) inside(p, a.img, `${cut}: panel inside the photo`);
     // (nothing leans: no transform on any anchor)
