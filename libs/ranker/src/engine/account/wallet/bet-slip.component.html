@@ -13,9 +13,11 @@
   </header>
   <hr class="perf" />
 
-  @if (!account.signedIn()) {
+  <!-- (signed out with an empty ticket: the play-money line and Sign in; with bets on it, the place button below
+       the totals is the one Sign in) -->
+  @if (!account.signedIn() && !wallet.slip().length) {
     <div class="ticket-signin">
-      <p>Play along with the bot: <b>{{ start | number }} play units</b> to start, no real money. Sign in to place these.</p>
+      <p>Play along with the bot: <b>{{ start | number }} play units</b> to start, no real money.</p>
       <button type="button" class="ticket-place" (click)="account.openLogin()">Sign in</button>
     </div>
   }
@@ -136,7 +138,7 @@
           }
         </button>
       } @else {
-        <button type="button" class="ticket-place" (click)="account.openLogin()">Sign in to place</button>
+        <button type="button" class="ticket-place" (click)="account.openLogin()">Sign in</button>
       }
       <button type="button" class="ticket-tear" (click)="wallet.clearSlip()">tear up ticket</button>
       <span class="ticket-barcode" aria-hidden="true"></span>
