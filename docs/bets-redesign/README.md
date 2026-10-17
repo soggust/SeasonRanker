@@ -355,7 +355,9 @@ are. Add only:
 `Board / Live · N / Open · N / Cashed`. The card sits 10px in from the screen edges. Its header bar wraps:
 ON NOW and the All games / My bets pill on the first line, and the sweat summary on its own line under a hairline.
 The game cards go one column. The modal is the game view's existing phone layout (`v.down(phablet)`: small
-logo cards, the board's text wrapping, tabs scrolling sideways). In it, Your Bets and Game Leaders stack.
+logo cards, the board's text wrapping, tabs scrolling sideways). The tab bar scrolls by drag or swipe with
+**no visible scrollbar**. `.card-tabs` already has `scrollbar-width: none`; add `&::-webkit-scrollbar { display: none; }`
+beside it so older iOS Safari hides it too. In it, Your Bets and Game Leaders stack.
 
 ### 11. Removed
 
