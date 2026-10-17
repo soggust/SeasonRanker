@@ -60,3 +60,51 @@ test('gameMenu: a UFC card\'s bouts group under the card\'s day like a game day,
   // (the key keeps the bettor's matchup: the page filters by it)
   assert.equal(days[0].sports[0].games[1].matchup, 'Pereira @ Jones');
 });
+
+// The admin flag arriving after the picks (bets-rows.ts): MMA's rows join the page once, the sports already on it
+// untouched; the flag gone, MMA's rows go
+const pick = (sport, matchup, pick, score, extra = {}) => ({
+  id: `${sport}:${matchup}:${pick}`, sport, score, chance: 60, level: 'high', kind: 'spread', market: 'Spread', pick, line: -3, odds: -110, book: 'DraftKings',
+  start: '2026-10-18T20:00:00Z', matchup, teams: [], where: null, reason: 'why', p: 0.6, edge: true, why: { price: -110 }, ...extra,
+});
+const NFL = { at: '2026-10-17T10:00:00Z', picks: [pick('nfl', 'CHI @ GB', 'GB -3', 0.05), pick('nfl', 'DAL @ PHI', 'PHI -4', 0.02)], checks: [], record: { byLevel: { high: { wins: 3, losses: 1 } } } };
+const MMA = { at: '2026-10-17T12:00:00Z', picks: [pick('mma', 'Pereira @ Jones', 'Jones', 0.03, { kind: 'moneyline', market: 'Moneyline' })], checks: [pick('mma', 'A @ B', 'B', 0, { level: 'check', gap: 8 })] };
+
+test('mergeSportRows: a dev-only sport\'s rows join the page once, after the flag flips, the loaded sports\' rows as they were', () => {
+  const places = new Map();
+  let rows = bets.mergeSportRows([], 'nfl', bets.fileRows('nfl', NFL, places));
+  assert.deepEqual(rows.map((r) => r.pickId), ['nfl:CHI @ GB:GB -3', 'nfl:DAL @ PHI:PHI -4']);
+  const nflIds = rows.map((r) => r.id);
+  // (the flag flips: MMA's file read and joined)
+  rows = bets.mergeSportRows(rows, 'mma', bets.fileRows('mma', MMA, places));
+  assert.deepEqual(rows.map((r) => r.sport).sort(), ['mma', 'mma', 'nfl', 'nfl']);
+  // (the NFL's rows keep their ids (an open row stays open), MMA's come after them, every id its own)
+  assert.deepEqual(rows.filter((r) => r.sport === 'nfl').map((r) => r.id), nflIds);
+  assert.equal(new Set(rows.map((r) => r.id)).size, 4);
+  assert.ok(rows.filter((r) => r.sport === 'mma').every((r) => r.id > Math.max(...nflIds)));
+  // (the board's order: the CHECK under the LOCKs and over the bets)
+  assert.deepEqual(rows.map((r) => r.confidence), ['lock', 'check', 'high', 'high']);
+  assert.equal(rows[1].check, true);
+  // (the same file again (the flag or the page asking twice): no doubles)
+  const again = bets.mergeSportRows(rows, 'mma', bets.fileRows('mma', MMA, places));
+  assert.deepEqual(again.map((r) => r.pickId).sort(), rows.map((r) => r.pickId).sort());
+  assert.equal(again.length, 4);
+});
+
+test('dropSportRows: the flag gone, the sport\'s rows go and the rest stay', () => {
+  const places = new Map();
+  const rows = bets.mergeSportRows(bets.mergeSportRows([], 'nfl', bets.fileRows('nfl', NFL, places)), 'mma', bets.fileRows('mma', MMA, places));
+  const left = bets.dropSportRows(rows, 'mma');
+  assert.deepEqual(left.map((r) => r.sport), ['nfl', 'nfl']);
+  // (an unread file: nothing joins)
+  assert.equal(bets.mergeSportRows(left, 'mlb', bets.fileRows('mlb', null, places)).length, 2);
+});
+
+test('gameMenu: a late sport\'s bouts reach the dropdown once its rows are on the page', () => {
+  const places = new Map();
+  const rows = bets.mergeSportRows(bets.mergeSportRows([], 'nfl', bets.fileRows('nfl', NFL, places)), 'mma', bets.fileRows('mma', MMA, places));
+  const games = rows.filter((r) => !r.check).map((r) => ({ key: `${r.sport}|${r.game.matchup}`, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff, count: 1 }));
+  const days = bets.gameMenu(games, SITE, 'America/Chicago');
+  assert.deepEqual(days.flatMap((d) => d.sports.map((s) => s.name)), ['NFL', 'MMA']);
+  assert.deepEqual(days[0].sports[1].games.map((g) => g.name), ['Jones vs Pereira']);
+});

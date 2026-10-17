@@ -1,7 +1,7 @@
 import { Component, DestroyRef, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
 import { quietListener } from '@ranker/core/quiet-listener';
 import { tierLabel, tierOf, unranked } from './tiers';
-import { CheckResolved, NotePlayer, byBand, notePlayers } from './desk-notes';
+import { NotePlayer, notePlayers } from './desk-notes';
 import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
@@ -15,7 +15,10 @@ import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
-import { BetWhy, BetWhyRow, BetWhyVs, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
+import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
+import { BET_KINDS, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows } from './bets-rows';
+// (the rows' types, for the page's other parts: bets-rows.ts)
+export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
@@ -73,202 +76,6 @@ interface TickerItem {
 // (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
 const linesKey = (g: { sport: string; matchup: string; event: string }): string => `${g.sport}|${g.matchup}|${g.event}`;
 
-// A game as the picks name it
-type BetGame = { week: number; date: string; kickoff?: string | null; matchup: string; teams?: { abbr: string; logo: string | null }[]; line: { line: string; overUnder: number | null } | null };
-
-// One of the algorithm's picks as the page shows it
-export interface BetRow {
-  id: number;
-  sport: string;
-  game: BetGame | null;
-  // (its market's words: "Spread", "Passing Yards")
-  market: string;
-  // (always a like: the bot never fades)
-  strength: 'like' | 'fade';
-  reason: string;
-  // (the most likely way it loses: the pick's own write-up's (picks.mjs))
-  risk?: string;
-  // (Claude's analysis where the pick has one (writeups.mjs): its headline above the reason, who wrote the
-  // text ('claude' or 'plain') and Claude's own read of the case, apart from the band)
-  headline?: string;
-  by?: string;
-  read?: string;
-  // (its band, picks.mjs: LOCK (5% Kelly and a 55% chance), LOVE (2%), LIKE (any edge), PASS)
-  confidence: Confidence | null;
-  // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
-  side?: string | null;
-  player?: string | null;
-  athleteId?: string | number | null;
-  playerTeam?: string | null;
-  // (its chance to win, a whole percent)
-  chance?: number;
-  pick: string;
-  // (its price at DraftKings, under the pick)
-  odds?: string;
-  // (the call it makes: pickKey)
-  key: string;
-  // (the order: its Kelly score)
-  sureness: number;
-  // its type, for the filter chips
-  betType: BetKind;
-  // (its score's makings, for the rank tile's breakdown (bet-why.ts): whether it has an edge, the model's and
-  // the book's chances, the trusted one, its expected return and stake, its price, and the parts picks.mjs
-  // split the score into; older picks files carry only some)
-  edge?: boolean;
-  model?: number;
-  fair?: number;
-  p?: number;
-  ev?: number;
-  units?: number;
-  price?: number;
-  // (a prop's other side's price, where the bettor kept it)
-  otherPrice?: number | null;
-  book?: string;
-  why?: PickWhy | null;
-  // (its line, and its id in the bettor's ledger: "<ESPN event>:<market>", a prop "<event>:prop:<type>:<athlete>")
-  line?: number | null;
-  pickId?: string;
-  // (a CHECK, not a bet the bot made: an admin's alone; its gap from the book, signed for its side, and why the
-  // bot didn't bet it; checkCause 'role' for one kept for his role changing (props.mjs roleChangeOf), 'news' for
-  // the news on his unit (news.mjs: the headline in checkReason), 'gap' an older one's (the gap's are PASSes now))
-  check?: boolean;
-  gap?: number | null;
-  checkReason?: string | null;
-  checkCause?: 'gap' | 'role' | 'news' | null;
-  roleReason?: string | null;
-  newsUnit?: string | null;
-  // (the numbers its popover leads with (picks.json's): the model's own Kelly, the model's mean and the one the
-  // book's price implies, his record at the line (his over share and the weighted games it's from))
-  modelKelly?: number | null;
-  mean?: number | null;
-  implied?: number | null;
-  lineRecord?: { over: number; n: number } | null;
-  // (its last re-evaluation, still a CHECK (picks.json's: checks.mjs resolveChecks): its note answered once after it)
-  resolved?: CheckResolved | null;
-  // (its news research, where it has one (picks.json's: research.mjs, a label only))
-  research?: CheckResearch | null;
-}
-
-// A CHECK's news research (picks.json's research: research.mjs findingOf, picks.mjs researchRow): what Claude found
-// in the news for the gap, the player it's about, a summary and the reports it relied on. A label: never a bet
-export interface CheckResearch {
-  status: 'out' | 'questionable' | 'active' | 'unknown';
-  reason: string;
-  player: string | null;
-  summary: string;
-  sources: string[];
-  at: string | null;
-  applied?: boolean;
-}
-
-// A game's venue and kickoff weather (a pick's where: picks.mjs)
-interface Forecast {
-  roof: 'outdoors' | 'retractable' | 'indoors';
-  tempF?: number | null;
-  windMph?: number | null;
-  gustMph?: number | null;
-  precipChance?: number | null;
-  sky?: string;
-}
-interface GameInfo {
-  city: string | null;
-  stadium: string | null;
-  weather: Forecast | null;
-}
-// The types of bet, for the filter chips under the game dropdown: each a chip of its own color, like
-// casino chips' denominations
-export type BetKind = 'spread' | 'total' | 'team_total' | 'moneyline' | 'player' | 'team_stat';
-// (each chip's short label, and what it means: the chips' key)
-export const BET_KINDS: { kind: BetKind; label: string; name: string }[] = [
-  { kind: 'spread', label: 'ATS', name: 'Against the spread' },
-  { kind: 'total', label: 'O/U', name: 'Over/under (the game total)' },
-  { kind: 'team_total', label: 'TT', name: 'Team total' },
-  { kind: 'moneyline', label: 'ML', name: 'Moneyline (to win)' },
-  { kind: 'player', label: 'PROP', name: 'Player prop' },
-  { kind: 'team_stat', label: 'TEAM', name: "Team stat (a team's own numbers)" },
-];
-
-// The algorithm's picks file (picks.mjs): its top picks on the games not started, each with its confidence
-// score and level, and its record on the picks it has shown
-interface Pick {
-  id: string;
-  sport: string;
-  // (its side, and a prop's player, his ESPN id and his team's: picks written before carry none)
-  side?: string | null;
-  player?: string | null;
-  athlete?: string | number | null;
-  team?: string | null;
-  score: number;
-  // its chance to win, a whole percent (the band its level)
-  chance: number;
-  level: Confidence;
-  kind: BetKind;
-  market: string;
-  pick: string;
-  line: number | null;
-  odds: number;
-  // (a prop's other side's price: picks written before carry none)
-  otherOdds?: number | null;
-  book: string;
-  start: string;
-  matchup: string;
-  teams: { abbr: string; logo: string | null }[];
-  where: GameInfo | null;
-  reason: string;
-  // (its write-up's risk line, the row's Devil's Advocate: files before the write-ups carry none)
-  risk?: string;
-  // (Claude's analysis, in place of the plain text in the same slots: its headline, 'claude' or 'plain', and
-  // its read: strong, fair or thin. Files before it carry none)
-  headline?: string;
-  by?: string;
-  read?: string;
-  // (its score's makings: older files carry the chances without the parts)
-  edge?: boolean;
-  model?: number;
-  fair?: number;
-  p?: number;
-  ev?: number;
-  units?: number;
-  why?: PickWhy;
-  // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; its cause 'role'
-  // where it's kept for a role changing (picks.mjs; none on an older file or a gap's))
-  gap?: number | null;
-  checkReason?: string | null;
-  checkCause?: string | null;
-  roleReason?: string | null;
-  newsUnit?: string | null;
-  modelKelly?: number | null;
-  mean?: number | null;
-  implied?: number | null;
-  lineRecord?: { over: number; n: number } | null;
-  resolved?: CheckResolved | null;
-  research?: CheckResearch | null;
-}
-interface Picks {
-  at: string;
-  picks: Pick[];
-  // (the CHECKs, level 'check': files before them carry none)
-  checks?: Pick[];
-  // (the CHECK rule (checks.mjs CHECK_RULE): a role's CHECK only at this model Kelly or more)
-  checkRule?: { kelly: number } | null;
-  // (its record on the picks it has graded, by band: the board's band headers read it)
-  record?: { byLevel?: Record<string, { wins?: number; losses?: number; pushes?: number; profit?: number }> } | null;
-}
-
-// A team as the schedule names it (the sportsbook's WSH and LAR are its WAS and LA)
-const team = (abbr: string) => ({ WSH: 'WAS', LAR: 'LA' })[abbr] ?? abbr;
-
-// The call a pick makes, the same whoever makes it: a game total's side, a team's side of the spread or
-// the moneyline, or a player bet as written ("nfl|TB @ DAL|total|under")
-function pickKey(sport: string, matchup: string, kind: BetKind, pick: string): string {
-  const [away, home] = matchup.split(' @ ').map(team);
-  const game = `${sport}|${away} @ ${home}`;
-  if (kind === 'total') return `${game}|total|${/^over/i.test(pick) ? 'over' : 'under'}`;
-  const side = pick.match(/^([A-Z]{2,4})\b/)?.[1];
-  if ((kind === 'spread' || kind === 'moneyline') && side) return `${game}|${kind}|${team(side)}`;
-  return `${game}|${kind}|${pick.toLowerCase()}`;
-}
-
 // (a line alarm's cause in a few plain words: props.mjs lineAlarmOf's keys)
 const LINE_CAUSE: Record<string, string> = {
   'line-questionable': 'he is questionable',
@@ -281,7 +88,8 @@ const LINE_CAUSE: Record<string, string> = {
 };
 
 // (the sports the bettor covers, as the site names them (bet-sports.ts): MMA, not ready for everyone, for someone
-// who can use the experimental features alone, the Algorithm tab's gate; read when the page opens)
+// who can use the experimental features alone, the Algorithm tab's gate; read when the page opens and again when the
+// admin flag lands: syncSports)
 const betSportsNow = () => betSports(SITE_SPORTS, SPORTS, canUse('experimental'));
 
 @Component({
@@ -410,103 +218,82 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
+    // every sport's algorithm picks (each sport's file together, not one after another)
+    await this.syncSports();
+    // (the started games dropped each minute: the picks file is only rewritten hourly. Not if the page closed while
+    // its files loaded: nothing would stop it)
+    if (!this.closed) this.ticker = setInterval(() => this.dropStarted(), 60_000);
+  }
+
+  // The sports on the page, kept to the list the viewer may see: the admin flag (features.ts ADMIN) lands when
+  // Firebase's auth resolves, after the picks have loaded, and MMA is an admin's alone, so the owner's page learns
+  // it should show the UFC picks after it has drawn the rest. The flag flipped on: the sports it hasn't read, read
+  // and joined to the rows (bets-rows.ts mergeSportRows: the others' rows kept as they are); off: that sport's
+  // rows dropped. Each file read once, however many times the flag and the page's own start ask
+  private readonly adminWatch = effect(() => {
+    ADMIN();
+    untracked(() => void this.syncSports());
+  });
+  // (the sports whose files the page has read, or is reading)
+  private readonly loaded = new Set<string>();
+  private reading = 0;
+  private async syncSports(): Promise<void> {
+    const sports = betSportsNow();
+    this.betSports = sports;
+    const wanted = new Set(sports.map((s) => s.id));
+    for (const sport of [...this.loaded].filter((s) => !wanted.has(s))) this.dropSport(sport);
+    const fresh = sports.filter((s) => !this.loaded.has(s.id));
+    if (!fresh.length) {
+      // (nothing to read, nothing on its way: the page has its (empty) list)
+      if (!this.reading) this.rows ??= [];
+      return;
+    }
+    for (const s of fresh) this.loaded.add(s.id);
+    this.reading++;
     const get = (url: string) =>
       fetch(url, { cache: 'no-cache' })
         .then((res) => (res.ok ? res.json() : null))
         .catch(() => null);
-    // every sport's algorithm picks (each sport's file together, not one after another)
-    this.betSports = betSportsNow();
-    const files = await Promise.all(this.betSports.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
-    const algoRows: BetRow[] = [];
-    const checkRows: BetRow[] = [];
-    // (a pick as a row; a CHECK's band its own, its gap and why it wasn't bet kept)
-    const rowOf = (sport: string, p: Pick, id: number, check: boolean): BetRow => ({
-      sport,
-      game: { week: 0, date: p.start.slice(0, 10), kickoff: p.start, matchup: p.matchup, teams: p.teams, line: null },
-      market: p.market,
-      strength: 'like',
-      reason: p.reason,
-      ...(p.risk ? { risk: p.risk } : {}),
-      ...(p.headline ? { headline: p.headline } : {}),
-      ...(p.by ? { by: p.by } : {}),
-      ...(p.read ? { read: p.read } : {}),
-      confidence: p.level,
-      id,
-      key: pickKey(sport, p.matchup, p.kind, p.pick),
-      pick: p.pick,
-      odds: americanOdds(p.odds),
-      // (the order: its Kelly score, the file's, or worked out from its chance and price for a file from
-      // before it ranked by one; its chance shows, its band colors it)
-      sureness: Number.isFinite(p.why?.price) ? p.score : (kellyOf(p.p, p.odds) ?? p.score),
-      chance: p.chance,
-      betType: p.kind,
-      side: p.side ?? null,
-      player: p.player ?? null,
-      athleteId: p.athlete ?? null,
-      playerTeam: p.team ?? null,
-      edge: p.edge,
-      model: p.model,
-      fair: p.fair,
-      p: p.p,
-      ev: p.ev,
-      units: p.units,
-      price: p.odds,
-      otherPrice: p.otherOdds ?? null,
-      book: p.book,
-      why: p.why ?? null,
-      line: p.line,
-      pickId: p.id,
-      ...(check
-        ? {
-            check: true,
-            confidence: 'check' as const,
-            gap: p.gap ?? null,
-            checkReason: p.checkReason ?? null,
-            // (an older file's without a cause: the gap's)
-            checkCause: p.checkCause === 'role' || p.checkCause === 'news' ? p.checkCause : ('gap' as const),
-            roleReason: p.roleReason ?? null,
-            newsUnit: p.newsUnit ?? null,
-            modelKelly: Number.isFinite(p.modelKelly) ? p.modelKelly! : null,
-            mean: Number.isFinite(p.mean) ? p.mean! : null,
-            implied: Number.isFinite(p.implied) ? p.implied! : null,
-            lineRecord: p.lineRecord && Number.isFinite(p.lineRecord.over) && Number.isFinite(p.lineRecord.n) ? p.lineRecord : null,
-            resolved: p.resolved ?? null,
-            research: p.research && typeof p.research === 'object' ? p.research : null,
-          }
-        : {}),
-    });
-    for (const { sport, picks } of files) {
-      // The algorithm's picks
-      if (picks?.picks?.length || picks?.checks?.length) {
-        if (!this.updated || picks.at > this.updated) this.updated = picks.at;
-        // (the CHECK rule as the bettor publishes it: the page's words read from it, never a copy of its own)
-        if (Number.isFinite(picks.checkRule?.kelly)) this.checkBar = picks.checkRule!.kelly;
-        // (the bands' seasons, for the board's band headers)
-        this.addRecord(picks.record?.byLevel);
-        for (const p of picks.picks ?? []) {
-          // (a CHECK left in picks by an older file: picks.mjs keeps them in their own list now; never a bet here)
-          if (p.level === 'check') continue;
-          if (p.where) this.places.set(`${sport}|${p.matchup}`, p.where);
-          algoRows.push(rowOf(sport, p, algoRows.length, false));
-        }
-        // (the CHECKs, apart: never banded again; an admin's alone)
-        for (const p of picks.checks ?? []) {
-          if (p.where && !this.places.has(`${sport}|${p.matchup}`)) this.places.set(`${sport}|${p.matchup}`, p.where);
-          checkRows.push(rowOf(sport, p, -1, true));
-        }
-      }
-    }
-    // (each one's band from its score; all sports' picks together, the locks above the rest, then the best Kelly
-    // score first)
-    for (const a of algoRows) a.confidence = confidenceOf(a.sureness, a.p ?? (a.chance != null ? a.chance / 100 : null), a.edge);
-    // (the CHECKs' ids after the bets': each row's own)
-    checkRows.forEach((c, i) => (c.id = algoRows.length + i));
-    // (the LOCKs, then the CHECKs (the biggest gap first), then the rest by the Kelly score: desk-notes.ts byBand)
-    this.rows = [...algoRows, ...checkRows].sort(byBand);
+    const files = await Promise.all(fresh.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
+    this.reading--;
+    if (this.closed) return;
+    // (not a sport the flag dropped while its file loaded)
+    for (const f of files) if (this.loaded.has(f.sport)) this.takeFile(f.sport, f.picks);
+    this.rows ??= [];
     this.dropStarted();
-    // (not if the page closed while its files loaded: nothing would stop it)
-    if (!this.closed) this.ticker = setInterval(() => this.dropStarted(), 60_000);
     this.buildBoards();
+  }
+
+  // One sport's picks file onto the page: its rows joined to the others' (an open row stays open), its venues and
+  // weather, the CHECK rule as the bettor publishes it (the page's words read from it, never a copy of its own),
+  // its bands' seasons for the board's band headers, and when it was written
+  private readonly files = new Map<string, Picks | null>();
+  private takeFile(sport: string, picks: Picks | null): void {
+    this.files.set(sport, picks);
+    if (Number.isFinite(picks?.checkRule?.kelly)) this.checkBar = picks!.checkRule!.kelly;
+    this.rows = mergeSportRows(this.rows ?? [], sport, fileRows(sport, picks, this.places));
+    this.readFiles();
+  }
+  // (a sport the viewer may no longer see: its rows, venues and file gone; the dropdown and its chosen game follow
+  // the rows (dropGone), the boards rebuilt)
+  private dropSport(sport: string): void {
+    this.loaded.delete(sport);
+    this.files.delete(sport);
+    for (const key of [...this.places.keys()].filter((k) => k.startsWith(`${sport}|`))) this.places.delete(key);
+    this.rows = dropSportRows(this.rows ?? [], sport);
+    this.readFiles();
+    this.dropStarted();
+    this.buildBoards();
+  }
+  // (what the page says of its files as a whole, from the files it has: the latest write, the bands' seasons summed)
+  private readFiles(): void {
+    this.updated = null;
+    this.bandRecords.clear();
+    for (const picks of this.files.values()) {
+      if (!picks?.picks?.length && !picks?.checks?.length) continue;
+      if (!this.updated || picks.at > this.updated) this.updated = picks.at;
+      this.addRecord(picks.record?.byLevel);
+    }
   }
 
   // Play betting: each game's every line (<game-lines>, ESPN's DraftKings board, the bot's picks lit), its
@@ -515,7 +302,10 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly lines = inject(LinesService);
   // (each board's picks, the CHECKs among them, and its bets alone (betPicks): an admin's lines light the CHECKs too)
   boards = new Map<string, GameBoardPicks>();
+  // (built again from the rows whenever they change for a sport joining or leaving: a lines-only board, made on
+  // demand (boardFor), is made again the same way; the players cache (playersFor) goes by the rows' ids, kept)
   private buildBoards(): void {
+    this.boards = new Map();
     for (const r of this.rows ?? []) {
       const event = r.pickId?.split(':')[0];
       if (!r.game || !event) continue;
@@ -981,7 +771,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The bands' seasons (picks.json's record.byLevel, every sport's summed: the same read as the picks), for the
   // band headers: wins, losses, pushes and units. A band no file has graded has none
   readonly bandRecords = new Map<Confidence, { wins: number; losses: number; pushes: number; profit: number }>();
-  private addRecord(byLevel: Record<string, { wins?: number; losses?: number; pushes?: number; profit?: number } | undefined> | undefined): void {
+  private addRecord(byLevel: ByLevel | undefined): void {
     for (const level of ['lock', 'high', 'medium', 'low'] as const) {
       const r = byLevel?.[level];
       if (!r) continue;
