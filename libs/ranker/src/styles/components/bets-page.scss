@@ -120,13 +120,16 @@ $page-gutter: 16px;
 
 // The views (The board, Open, Cashed, an admin's Algorithm): a scoreboard bar like the sport pages' position
 // bar, equal tabs, the one showing lit on the dots
+// (on the Bets page the views bar casts no shadow and sits narrower than the sport pages' position bar: the
+// owner's note; it still grows to fit its tabs and shrinks on a phone)
 .bets-views {
-  @include v.scoreboard-panel(v.$tab-r, 0 2px 6px rgba(0, 0, 0, 0.35));
+  @include v.scoreboard-panel(v.$tab-r, none);
   box-sizing: border-box;
   display: flex;
-  flex: 1 1 420px;
+  flex: 0 1 auto;
   height: 44px;
-  max-width: 640px;
+  max-width: 480px;
+  min-width: 0;
   overflow: hidden;
 
   button {
