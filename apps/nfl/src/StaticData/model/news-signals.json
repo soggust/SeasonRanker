@@ -3,6 +3,94 @@
  "days": 2,
  "signals": [
   {
+   "team": "7",
+   "abbr": "DEN",
+   "athlete": "4040608",
+   "player": "Jonathon Cooper",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.85,
+   "headline": "Broncos' Jonathon Cooper off commissioner exempt list, could return Week 7",
+   "at": "2026-10-16T23:56:38.000Z"
+  },
+  {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "4241478",
+   "player": "DeVonta Smith",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Eagles' Saquon Barkley ruled out; DeVonta Smith likely to return",
+   "at": "2026-10-16T23:42:25.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4047365",
+   "player": "Josh Jacobs",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Packers' Josh Jacobs eligible to return next week amid probe",
+   "at": "2026-10-16T21:47:44.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Seahawks sticking with Sam Darnold as starter despite INTs",
+   "at": "2026-10-16T19:33:47.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "4360423",
+   "player": "Michael Penix Jr",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Falcons' Michael Penix Jr. (ribs) cleared to play vs. Bears",
+   "at": "2026-10-16T18:46:05.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "4035671",
+   "player": "Tyler Huntley",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Ravens rule out QB Lamar Jackson; Tyler Huntley to start vs. Browns",
+   "at": "2026-10-16T18:45:28.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4870653",
+   "player": "KC Concepcion",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Browns WR KC Concepcion clears concussion protocol, will play vs. Ravens",
+   "at": "2026-10-16T18:33:53.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4723820",
+   "player": "Omar Cooper Jr",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Jets rookie WR Omar Cooper Jr. to return vs. Patriots; RB Hall, WR Mitchell out",
+   "at": "2026-10-16T18:23:12.000Z"
+  },
+  {
    "team": "3",
    "abbr": "CHI",
    "athlete": "4431611",
@@ -23,40 +111,7 @@
    "confidence": 0.3,
    "headline": "Patriots star WR A.J. Brown says status 'still up in the air' for game vs. Jets",
    "at": "2026-10-15T19:48:48.000Z"
-  },
-  {
-   "team": "34",
-   "abbr": "HOU",
-   "athlete": "4432708",
-   "player": "Marvin Harrison Jr",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.85,
-   "headline": "Marvin Harrison Jr. will play for Texans on Sunday in London, coach says",
-   "at": "2026-10-14T23:04:26.000Z"
-  },
-  {
-   "team": "1",
-   "abbr": "ATL",
-   "athlete": "4360423",
-   "player": "Michael Penix Jr",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.7,
-   "headline": "Falcons QB Michael Penix on track to start vs. Bears if no setbacks, coach says",
-   "at": "2026-10-14T21:11:05.000Z"
-  },
-  {
-   "team": "17",
-   "abbr": "NE",
-   "athlete": "4686772",
-   "player": "Christian Gonzalez",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.4,
-   "headline": "Patriots CB Gonzalez says he's 'ready to go'; WR Brown returns to practice",
-   "at": "2026-10-14T21:05:47.000Z"
   }
  ],
- "at": "2026-10-16T02:07:39.237Z"
+ "at": "2026-10-17T00:24:43.275Z"
 }

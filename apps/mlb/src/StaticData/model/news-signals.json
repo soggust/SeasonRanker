@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "33499",
+   "player": "Shawn Armstrong",
+   "kind": "role",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Guardians to open with Armstrong; Rays start Martinez in ALCS Game 4",
+   "at": "2026-10-16T16:18:37.000Z"
+  },
+  {
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "33372",
+   "player": "Nick Martinez",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Guardians to open with Armstrong; Rays start Martinez in ALCS Game 4",
+   "at": "2026-10-16T16:18:37.000Z"
+  },
+  {
    "team": "22",
    "abbr": "PHI",
    "athlete": null,
@@ -12,29 +34,7 @@
    "confidence": 0.9,
    "headline": "Don Mattingly, Phillies get to work on offseason changes",
    "at": "2026-10-15T20:03:25.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "4345076",
-   "player": "Gavin Williams",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Guardians start Gavin Williams vs. Rays' Griffin Jax in Game 3",
-   "at": "2026-10-14T23:33:10.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "LAD",
-   "athlete": "39832",
-   "player": "Shohei Ohtani",
-   "kind": "role",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Shohei Ohtani dropped to sixth in Dodgers' lineup against Brewers in NLCS Game 3",
-   "at": "2026-10-14T23:10:13.000Z"
   }
  ],
- "at": "2026-10-16T16:07:09.434Z"
+ "at": "2026-10-17T00:24:43.275Z"
 }
