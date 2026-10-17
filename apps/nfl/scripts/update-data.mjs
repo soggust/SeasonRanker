@@ -54,6 +54,7 @@ import { gunzipSync } from 'node:zlib';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { parseCsv } from '../../../libs/ranker/scripts/csv.mjs';
 import { defenseSplits } from './defense-splits.mjs';
+import { secondaryLabel, secondaryTab } from './secondary-position.mjs';
 import { defenseVsPosition } from './defense-vs-position.mjs';
 
 const CURRENT_SEASON = 2026;
@@ -197,6 +198,8 @@ const PFR_SEASON_COLUMNS = {
     pfr_player_id: 'pfr_id', team: 'tm', def_pressures: 'prss', def_missed_tackles: 'm_tkl', def_tackles_combined: 'comb',
     def_ints: 'int', def_targets: 'tgt', def_completions_allowed: 'cmp', def_yards_allowed: 'yds', def_receiving_td_allowed: 'td',
     def_times_blitzed: 'bltz', def_times_hurried: 'hrry', def_times_hitqb: 'qbkd', def_sacks: 'sk',
+    // (and his position: a DB's corner or safety, secondaryInputs)
+    def_position: 'pos',
   },
 };
 
@@ -261,6 +264,7 @@ async function loadNflverse(shared) {
   }
   // (the loaders' rows already read today's abbreviations; the schedule's and PFR's season totals get them here)
   for (const rows of [schedule, pfrPass, pfrRush, pfrRec, pfrDef]) sameTeamAbbrs(rows);
+  const maps = playerMaps(players);
 
   return {
     seasonPbp: pbp,
@@ -269,7 +273,8 @@ async function loadNflverse(shared) {
     ngsRows: { pass: ngsPass, rush: ngsRush, rec: ngsRec },
     pfrRows: { pass: pfrPass, rush: pfrRush, rec: pfrRec, def: pfrDef, weekly: pfrWeekly },
     snaps,
-    ...playerMaps(players),
+    ...maps,
+    secondary: await secondaryInputs(shared, { partStats, snaps, pfrDef, ...maps }),
     // Everyone who was a head coach in an earlier season (a coach not in here is in his first year)
     pastCoaches: new Set(
       schedule.filter((game) => Number(game.season) < SEASON).flatMap((game) => [game.home_coach, game.away_coach])
@@ -1478,8 +1483,10 @@ function skillPlayers(nflverse) {
 // on one tab a season, by the position he's listed at. Pro Football Focus's position in the player list
 // (pff_position: ED, DI, LB, CB, S) decides where it's known, since it tells a 3-4 outside linebacker
 // (an edge rusher) from an off-ball one, which the roster's "LB" doesn't; otherwise the season's roster
-// position (DE and OLB are edge rushers, DT and NT linemen, LB, ILB and MLB linebackers, CB and DB
-// corners, S, FS, SS and SAF safeties), then the player list's. A roster LB or OLB without a PFF position
+// position (DE and OLB are edge rushers, DT and NT linemen, LB, ILB and MLB linebackers, CB corners, S,
+// FS, SS and SAF safeties), then the player list's. A plain "DB" (most of the 2000s' secondaries) is a corner
+// or a safety by secondaryTab (secondary-position.mjs): the season's roster or snap label, PFR's, his
+// career's, his tackles per pass defended. A roster LB or OLB without a PFF position
 // is an edge rusher when his sacks and QB hits are a pass rusher's share of his tackles (a 2005 Merriman
 // over a Briggs). The ranked list is the tab's most-used (defensive snaps; tackles, passes defended and
 // sacks where the snap counts don't reach, before 2012) plus its leaders, like the offensive tabs; the
@@ -1497,10 +1504,18 @@ function defenseUsage(s) {
 }
 const PFF_TABS = { ED: 'EDGE', DI: 'DL', LB: 'LB', CB: 'CB', S: 'S' };
 const ROSTER_TABS = { DE: 'EDGE', OLB: 'EDGE', DT: 'DL', NT: 'DL', DL: 'DL', LB: 'LB', ILB: 'LB', MLB: 'LB', CB: 'CB', DB: 'CB', S: 'S', FS: 'S', SS: 'S', SAF: 'S' };
+// (the position he's listed at, when PFF has none: the player stats' own, else the player list's)
+const listedPosition = (row, maps) => (ROSTER_TABS[row.position] ? row.position : maps.positionOf.get(row.player_id));
+// (a "DB" with no PFF position, a corner or a safety by secondaryTab: secondary-position.mjs)
+const unsureBack = (row, maps) => !PFF_TABS[maps.pffPositionOf.get(row.player_id)] && listedPosition(row, maps) === 'DB';
 function defenseTab(row, stats, nflverse) {
   const pff = PFF_TABS[nflverse.pffPositionOf.get(row.player_id)];
   if (pff) return pff;
-  const listed = ROSTER_TABS[row.position] ? row.position : nflverse.positionOf.get(row.player_id);
+  const listed = listedPosition(row, nflverse);
+  if (listed === 'DB') {
+    const known = nflverse.secondary?.get(row.player_id) ?? {};
+    return secondaryTab({ ...known, tackles: stats.tackles, passesDefended: stats.passesDefended });
+  }
   const tab = ROSTER_TABS[listed];
   if (!tab) return null;
   if (listed === 'LB' || listed === 'OLB') {
@@ -1508,6 +1523,38 @@ function defenseTab(row, stats, nflverse) {
     return rush >= 3 && rush >= 0.15 * Math.max(stats.tackles, 1) ? 'EDGE' : 'LB';
   }
   return tab;
+}
+
+// What secondaryTab reads for each of the season's "DB"s (unsureBack), by gsis id: his labels in the season's
+// roster (depth chart position, then position) and snap counts, PFR's position (its season totals: none in the
+// weekly files), and for those none of those name, his career's: the other seasons' rosters (1999 on, read
+// only when someone needs them) and the player list's position
+const loadRoster = (shared, year) =>
+  once(shared, `roster-${year}`, () => getCsv(`${NFLVERSE}/rosters/roster_${year}.csv`).catch(() => []));
+async function secondaryInputs(shared, { partStats, snaps, pfrDef, ...maps }) {
+  const ids = new Set(partStats.flat().filter((row) => unsureBack(row, maps)).map((row) => row.player_id));
+  const out = new Map([...ids].map((id) => [id, { season: [], pfr: null, career: [] }]));
+  if (!ids.size) return out;
+  for (const row of await loadRoster(shared, SEASON)) out.get(row.gsis_id)?.season.push(row.depth_chart_position, row.position);
+  for (const row of snaps) out.get(maps.gsisByPfr.get(row.pfr_player_id))?.season.push(row.position);
+  for (const row of pfrDef) {
+    const known = out.get(maps.gsisByPfr.get(row.pfr_player_id));
+    if (known && !known.pfr && secondaryLabel(row.def_position)) known.pfr = row.def_position;
+  }
+  const unsure = [...out].filter(([, k]) => !k.season.some(secondaryLabel) && !secondaryLabel(k.pfr));
+  if (unsure.length) {
+    const years = Array.from({ length: CURRENT_SEASON - 1998 }, (_, i) => 1999 + i).filter((year) => year !== SEASON);
+    const rosters = await Promise.all(years.map((year) => loadRoster(shared, year)));
+    const want = new Map(unsure);
+    for (const row of rosters.flat()) want.get(row.gsis_id)?.career.push(row.depth_chart_position, row.position);
+    for (const [id, known] of want) known.career.push(maps.positionOf.get(id));
+  }
+  const by = { season: 0, career: 0, tilt: 0 };
+  for (const known of out.values()) {
+    by[known.season.some(secondaryLabel) || secondaryLabel(known.pfr) ? 'season' : known.career.some(secondaryLabel) ? 'career' : 'tilt']++;
+  }
+  console.log(`Defensive backs listed "DB": ${out.size} (${by.season} by the season's labels, ${by.career} by their careers', ${by.tilt} by tackles per pass defended)`);
+  return out;
 }
 
 // A defender's season: nflverse's box stats (combined tackles are solo + shared + assisted, as PFR counts
@@ -2082,11 +2129,13 @@ async function defenseOnly() {
   ]);
   const weekly = pfrDefWeekly.length > 0;
   const pfrDef = weekly ? pfrDefWeekly : sameTeamAbbrs(await pfrSeasonRows('def', new Map()));
+  const maps = playerMaps(players);
   const season = {
     playerStatsByPart: Object.fromEntries(PARTS.map((part, i) => [part, partStats[i]])),
     pfrRows: { def: pfrDef, weekly },
     snaps,
-    ...playerMaps(players),
+    ...maps,
+    secondary: await secondaryInputs(shared, { partStats, snaps, pfrDef, ...maps }),
   };
   console.log(
     `Season ${SEASON}: defensive players from nflverse (${pfrDef.length ? `PFR ${weekly ? 'weekly' : 'season'} charting, ` : 'no PFR charting, '}${snaps.length ? 'snap counts' : 'no snap counts'})`,
