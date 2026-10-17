@@ -8,15 +8,6 @@
 // Kelly score as a button (green at 0.5 or more, grey over 0, red at 0 or under); the bot's own picks ringed in
 // gold with a soft glow, a price on the slip solid gold. Compact: the grid alone, small tiles, no strips.
 
-// (the felt a tile sits on: the Bets page's controls' felt; a mixin, not a variable: the felt's "0 0 / 140px"
-// would read as a division)
-@mixin felt-face {
-  background:
-    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 255, 255, 0.07), transparent 70%),
-    #{chip.$felt-nap} 0 0 / 140px,
-    #{chip.$felt};
-}
-
 :host {
   display: block;
 }
@@ -259,12 +250,13 @@
   }
 }
 
-// A tile: the price button (its line over its odds) on felt in a thin gold seam, and the strip under it (the band
-// tag, the K score). The bot's pick: a 1.5px gold ring and a soft gold glow round the whole tile. On the slip:
-// solid gold, dark lettering
+// A tile: the price button (its line over its odds) on the player's card's black-to-gold face in its gold edge (the
+// Book's game pill's and price buttons' face: the owner's note, 2026-10-17), and the strip under it (the band tag,
+// the K score). The bot's pick: a 1.5px gold ring and a soft gold glow round the whole tile. On the slip: solid
+// gold, dark lettering
 .tile {
   border-radius: v.$radius-md;
-  box-shadow: 0 0 0 1px rgba(222, 186, 106, 0.3);
+  box-shadow: 0 0 0 1px #b38a3c;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -290,7 +282,7 @@
 }
 
 .tile-price {
-  @include felt-face;
+  @include chip.player-card-face;
   align-items: center;
   border: none;
   color: #fff;
@@ -305,11 +297,11 @@
   width: 100%;
 
   &:hover:not([disabled]) {
-    filter: brightness(1.18);
+    filter: brightness(1.15);
   }
 
   @include v.focus-lit {
-    filter: brightness(1.18);
+    filter: brightness(1.15);
   }
 
   &[disabled] {
@@ -323,8 +315,9 @@
     line-height: 1.1;
   }
 
+  // (the odds in gold, the line over them white)
   .tile-odds {
-    color: v.$text-soft;
+    color: chip.$gold-led;
     font-size: v.$fs-11;
     font-variant-numeric: tabular-nums;
     font-weight: 700;

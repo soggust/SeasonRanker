@@ -115,3 +115,28 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
   }
   return days;
 }
+
+// A sport chosen in the dropdown instead of a game (its heading, selectable): the board is that sport's best
+// bets, every day's. Its value in the select, "sport:nfl", beside the games' keys and Best bets' ''
+const SPORT_CHOICE = 'sport:';
+export function sportChoice(sport: string): string {
+  return `${SPORT_CHOICE}${sport}`;
+}
+// (the sport a select value names, or null for a game's key or Best bets)
+export function chosenSport(value: string): string | null {
+  return value.startsWith(SPORT_CHOICE) ? value.slice(SPORT_CHOICE.length) : null;
+}
+// (the closed dropdown's words with a sport chosen: "NFL · best bets")
+export function sportFace(sport: string, sports: MenuSports): string {
+  return `${sports.find((s) => s.id === sport)?.label ?? sport.toUpperCase()} · best bets`;
+}
+
+// A collapsed row's line under its pick: the game and its start, "NYJ @ NE · Sun 12:00 PM" (a fight "A vs B ·
+// Sat 9:00 PM"), the two apart so a phone can keep the game alone; no kickoff, the game alone. Not the sport
+// (the row's circle and the open row say it) and not the reason (the open row's paragraph)
+export function gameLine(sport: string, matchup: string, kickoff: string | null | undefined, timeZone?: string): { name: string; when: string | null; text: string } {
+  const name = matchupName(sport, matchup);
+  const t = kickoff ? new Date(kickoff) : null;
+  const when = t && !isNaN(t.getTime()) ? t.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone }).replace(',', '') : null;
+  return { name, when, text: when ? `${name} · ${when}` : name };
+}

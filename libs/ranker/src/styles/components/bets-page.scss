@@ -172,7 +172,8 @@ $page-gutter: 16px;
   @include chip.player-card(v.$radius-round);
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
-  color: chip.$gold-led;
+  // (the "i" itself white on the black-to-gold face: the owner's note, 2026-10-17)
+  color: v.$lettering;
   cursor: pointer;
   display: inline-flex;
   flex: none;
@@ -1010,10 +1011,6 @@ $page-gutter: 16px;
     letter-spacing: 0.3px;
     @include v.ellipsis;
 
-    .bet-sub-read {
-      color: v.$grey-light;
-    }
-
     .bet-sub-meter {
       display: none;
 
@@ -1094,12 +1091,15 @@ $page-gutter: 16px;
 
 // The price: a 46px button, the odds over "+ TICKET" on felt in a gold seam; on the ticket, solid gold with dark
 // lettering, "ON TICKET", and a gold glow. A click writes the bet on the ticket, or takes it off
+// (the price button wears the player's card's face, as the game pill and the About button do (the owner's note,
+// 2026-10-17): the black-to-gold fade in the gold rail, the odds in gold, "+ TICKET" white, the pill's lift on
+// hover; on the ticket, solid gold with dark lettering, as before)
 .bet-price {
-  @include chip.felt-control;
+  @include chip.player-card(v.$radius-md);
   align-items: center;
-  border-radius: v.$radius-md;
   box-shadow: none;
   box-sizing: border-box;
+  color: v.$lettering;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -1109,9 +1109,19 @@ $page-gutter: 16px;
   justify-content: center;
   padding: 0 4px;
   text-shadow: none;
+  transition: filter v.$t-hover ease;
   width: 100%;
 
+  &:hover:not([disabled]) {
+    filter: brightness(1.15);
+  }
+
+  @include v.focus-lit {
+    filter: brightness(1.15);
+  }
+
   b {
+    color: chip.$gold-led;
     font-family: v.$font-heading;
     font-size: v.$fs-16;
     font-weight: 600;
@@ -1119,7 +1129,7 @@ $page-gutter: 16px;
   }
 
   small {
-    color: v.$text-soft;
+    color: v.$lettering;
     font-size: v.$fs-10;
     letter-spacing: 0.5px;
     line-height: 1;
@@ -1133,6 +1143,7 @@ $page-gutter: 16px;
     color: v.$chip-ink;
 
     b {
+      color: v.$chip-ink;
       font-weight: 700;
     }
 
@@ -1149,6 +1160,10 @@ $page-gutter: 16px;
     box-shadow: none;
     cursor: default;
 
+    &::before {
+      display: none;
+    }
+
     &:hover {
       filter: none;
     }
@@ -1158,6 +1173,10 @@ $page-gutter: 16px;
     background: none;
     border: none;
     box-shadow: none;
+
+    &::before {
+      display: none;
+    }
   }
 }
 
@@ -1203,6 +1222,12 @@ $page-gutter: 16px;
     color: v.$text-faint;
     font-size: v.$fs-11;
     line-height: 1.5;
+
+    // (the sport, first: the closed row's line no longer says it)
+    .bet-meta-sport {
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
   }
 
   .bet-where {
@@ -1286,9 +1311,7 @@ $page-gutter: 16px;
   }
 
   .bet-main .bet-sub {
-    .bet-sub-read,
-    .bet-sub-when,
-    .bet-sub-sport {
+    .bet-sub-when {
       display: none;
     }
 

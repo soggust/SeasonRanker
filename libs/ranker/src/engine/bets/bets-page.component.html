@@ -90,18 +90,20 @@
   <div class="book-main">
   <!-- The controls row over the board: the game dropdown on the left, the filter chips on the right -->
   <div class="book-controls">
-    <!-- (the game dropdown, a player's card pill: Best bets, then each day's games under their sport's icon, early to
+    <!-- (the game dropdown, a player's card pill: Best bets, then each day's games under their sport's heading, early to
          late, the ones with bets with how many, the rest their lines only (game-menu.ts); there whenever there's a
-         game to bet, picked or not. When the sheet was updated, and whose odds, on its hover) -->
+         game to bet, picked or not. A sport's heading is a choice of its own: that sport's best bets, every day's
+         (the pill "NFL · best bets"); Best bets · every game clears it. When the sheet was updated, and whose odds,
+         on its hover) -->
     @if (gameMenu.length) {
       <mat-select
         class="bets-game"
         panelClass="bets-game-options"
         [panelWidth]="null"
-        aria-label="Game"
+        aria-label="Game or sport"
         [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · DraftKings odds' : null"
-        [value]="game"
-        (valueChange)="chooseGame($event)"
+        [value]="choice"
+        (valueChange)="choose($event)"
       >
         <mat-select-trigger>
           <span class="bets-game-face">
@@ -109,6 +111,10 @@
               <mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>
               <span class="bets-game-label">{{ g.label }}</span>
               <span class="bets-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
+            } @else if (chosenSport; as s) {
+              <mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
+              <span class="bets-game-label">{{ s.label }}</span>
+              <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
               <span class="bets-game-label">Best bets · every game</span>
               <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
@@ -119,10 +125,15 @@
         <mat-option value="" class="game-all"><span class="game-label">Best bets · every game</span><span class="game-count">{{ bestCount }}</span></mat-option>
         @for (d of gameMenu; track d.day) {
           @for (s of d.sports; track s.sport; let first = $first) {
-            <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only) -->
+            <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only; the
+                 sport's heading an option of its own (the same one under every day): its best bets, every day's,
+                 with how many) -->
             <mat-optgroup label="" [class.day-first]="first">
               <span class="game-day" [class.visually-hidden]="!first">{{ d.day }}<span class="visually-hidden">, </span></span>
-              <span class="game-sport"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
+              <mat-option [value]="sportChoice(s.sport)" class="game-sport" [title]="'Every ' + s.name + ' pick, every day'">
+                <span class="game-sport-name"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
+                <span class="game-count">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
+              </mat-option>
               @for (g of s.games; track g.key) {
                 <mat-option [value]="g.key">
                   <span class="game-label">{{ g.name }}</span>
@@ -170,8 +181,8 @@
     <div class="board-scroll">
     @if (rows === null) {
       <p class="bets-note">Loading…</p>
-    } @else if (!listed.length && !game) {
-      <p class="bets-note">No picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
+    } @else if (!inGame.length && !game) {
+      <p class="bets-note">No @if (chosenSport; as s) {{{ s.name }} }picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
     } @else {
       <!-- One row: the chevron that opens it, its rank tile (a button of its own: how its score is built), its circle
            (a prop's player, a total's arrow, a side's team), the pick with its one line under it, the model-vs-book
@@ -237,7 +248,8 @@
               </span>
             }
             <!-- (the pick: its one word that says what the bet is in its team's color (the board's gold without one);
-                 under it the sport, the game, its start and the read in one line; already bet and still open, said) -->
+                 under it the game and its start in one line, "NYJ @ NE · Sun 12:00 PM" (the sport and the reason are
+                 the open row's); already bet and still open, said) -->
             <div class="bet-main">
               @if (r.strength === 'fade') {
                 <b class="bet-pick">{{ r.market }}</b>
@@ -246,8 +258,7 @@
                 @let parts = pickParts(r);
                 <b class="bet-pick">@if (r.betType === 'player' && r.player) {{{ r.player }}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
                 <small class="bet-sub">
-                  <span class="bet-sub-game"><span class="bet-sub-sport">{{ r.sport.toUpperCase() }}@if (r.game) { · }</span>@if (r.game) {{{ r.game.matchup }}@if (r.game.kickoff) {<span class="bet-sub-when"> · {{ r.game.kickoff | date: 'EEE h:mm a' }}</span>}}</span>
-                  <span class="bet-sub-read"> — {{ blurb(r) }}</span>
+                  @if (subLine(r); as line) {<span class="bet-sub-game">{{ line.name }}@if (line.when) {<span class="bet-sub-when"> · {{ line.when }}</span>}</span>}
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
                 </small>
@@ -307,9 +318,10 @@
                     }
                   </p>
                 }
-                <!-- (the meta line: the edge in chance points, the Kelly score, where it's played and the weather then
-                     (the wind in amber when it could matter), and whose the analysis is) -->
+                <!-- (the meta line: the sport, the edge in chance points, the Kelly score, where it's played and the
+                     weather then (the wind in amber when it could matter), and whose the analysis is) -->
                 <p class="bet-meta">
+                  <span class="bet-meta-sport">{{ r.sport.toUpperCase() }}</span> ·
                   @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The model’s chance less the book’s' : 'The model’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
                   <span [title]="r.check ? 'The model’s own Kelly score' : 'Its Kelly score: the edge on the price, scaled by what it pays; the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
                   @if (where(r); as w) { · <span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}

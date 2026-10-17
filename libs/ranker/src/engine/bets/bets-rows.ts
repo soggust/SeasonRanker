@@ -297,3 +297,31 @@ export function mergeSportRows(rows: readonly BetRow[], sport: string, added: re
 export function dropSportRows(rows: readonly BetRow[], sport: string): BetRow[] {
   return rows.filter((r) => r.sport !== sport);
 }
+
+// The page's rows with a sport chosen in the dropdown (game-menu.ts sportChoice): that sport's alone; none
+// chosen (''), every one
+export function sportRows(rows: readonly BetRow[], sport: string): BetRow[] {
+  return sport ? rows.filter((r) => r.sport === sport) : [...rows];
+}
+
+// The bands' seasons for the board's band headers: each sport's picks.json record.byLevel (the file's grades of
+// its own picks), summed over the sports on the board: a sport chosen, its file alone; none, every file's.
+// A band no file has graded isn't in the map
+export type BandTally = { wins: number; losses: number; pushes: number; profit: number };
+export function sumRecords(files: Iterable<readonly [string, ByLevel | null | undefined]>, sport: string): Map<string, BandTally> {
+  const out = new Map<string, BandTally>();
+  for (const [id, byLevel] of files) {
+    if ((sport && id !== sport) || !byLevel) continue;
+    for (const level of ['lock', 'high', 'medium', 'low']) {
+      const r = byLevel[level];
+      if (!r) continue;
+      const t = out.get(level) ?? { wins: 0, losses: 0, pushes: 0, profit: 0 };
+      t.wins += r.wins ?? 0;
+      t.losses += r.losses ?? 0;
+      t.pushes += r.pushes ?? 0;
+      t.profit += r.profit ?? 0;
+      out.set(level, t);
+    }
+  }
+  return out;
+}

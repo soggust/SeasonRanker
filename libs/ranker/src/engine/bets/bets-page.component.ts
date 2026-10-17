@@ -16,12 +16,12 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
-import { BET_KINDS, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows } from './bets-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, sportRows, sumRecords } from './bets-rows';
 // (the rows' types, for the page's other parts: bets-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
+import { MenuDay, MenuGame, MenuGameIn, chosenSport, gameLine, gameMenu, sportChoice, sportFace } from './game-menu';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -91,6 +91,24 @@ const LINE_CAUSE: Record<string, string> = {
 // who can use the experimental features alone, the Algorithm tab's gate; read when the page opens and again when the
 // admin flag lands: syncSports)
 const betSportsNow = () => betSports(SITE_SPORTS, SPORTS, canUse('experimental'));
+
+// (the sport filter this visit chose, sessionStorage; none where storage is out of reach: a private window, a test)
+const SPORT_KEY = 'ranker.bets.sport';
+function storedSport(): string {
+  try {
+    return typeof sessionStorage === 'undefined' ? '' : (sessionStorage.getItem(SPORT_KEY) ?? '');
+  } catch {
+    return '';
+  }
+}
+function storeSport(sport: string): void {
+  try {
+    if (sport) sessionStorage.setItem(SPORT_KEY, sport);
+    else sessionStorage.removeItem(SPORT_KEY);
+  } catch {
+    // (nothing to keep it in)
+  }
+}
 
 @Component({
   selector: 'bets-page',
@@ -187,6 +205,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   private betSports = betSportsNow();
   // the filter: all games (the top 40 bets), or one game (its top 15, from all of its bets), by its matchup
   game = '';
+  // (or one sport's best bets, every day's: the dropdown's sport heading chosen (game-menu.ts sportChoice); kept
+  // for the visit in sessionStorage, as a game isn't (a game is gone by the next visit; a sport isn't). A game
+  // chosen inside it opens that game, the sport still under it (the game's back is that sport's board); a game
+  // of another sport, or Best bets · every game, clears it)
+  sport = storedSport();
   readonly limit = 40;
   readonly gameLimit = 15;
   // (the CHECKs an admin's All Games shows, the biggest gaps first, over the 40 bets)
@@ -241,6 +264,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const sports = betSportsNow();
     this.betSports = sports;
     const wanted = new Set(sports.map((s) => s.id));
+    // (a sport filter the viewer may not see (MMA's, signed out of an admin's account): Best bets)
+    if (this.sport && !wanted.has(this.sport)) this.chooseSport('');
     for (const sport of [...this.loaded].filter((s) => !wanted.has(s))) this.dropSport(sport);
     const fresh = sports.filter((s) => !this.loaded.has(s.id));
     if (!fresh.length) {
@@ -285,14 +310,15 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     this.dropStarted();
     this.buildBoards();
   }
-  // (what the page says of its files as a whole, from the files it has: the latest write, the bands' seasons summed)
+  // (what the page says of its files as a whole, from the files it has: the latest write, and each sport's bands'
+  // seasons for the band headers (summed over the sports on the board when asked: bandRecord))
   private readFiles(): void {
     this.updated = null;
-    this.bandRecords.clear();
-    for (const picks of this.files.values()) {
+    this.records = new Map();
+    for (const [sport, picks] of this.files) {
       if (!picks?.picks?.length && !picks?.checks?.length) continue;
       if (!this.updated || picks.at > this.updated) this.updated = picks.at;
-      this.addRecord(picks.record?.byLevel);
+      this.records.set(sport, picks.record?.byLevel);
     }
   }
 
@@ -325,14 +351,15 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // The ticker under the header: every game on the boards the page has already read (ESPN's scoreboards for
   // today and tomorrow, lines.games above: nothing fetched for it), finals first, then the games under way with
-  // their clock, then the ones to come with their start; built again only when the boards change. Empty, the
-  // strip hides
-  private tickerFor: { boards: unknown; items: TickerItem[] } | null = null;
+  // their clock, then the ones to come with their start; a sport chosen, its games alone; built again only when
+  // the boards or the sport change. Empty, the strip hides
+  private tickerFor: { boards: unknown; sport: string; items: TickerItem[] } | null = null;
   get tickerItems(): TickerItem[] {
     const boards = this.lines.boards();
-    if (this.tickerFor?.boards !== boards) {
+    const sport = this.sport;
+    if (this.tickerFor?.boards !== boards || this.tickerFor.sport !== sport) {
       const order = { post: 0, in: 1, pre: 2 };
-      const games = [...boards.values()].filter((g) => g.away.abbr && g.home.abbr).sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start));
+      const games = [...boards.values()].filter((g) => g.away.abbr && g.home.abbr && (!sport || g.sport === sport)).sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start));
       const items = games.slice(0, 30).map((g): TickerItem => ({
         key: `${g.sport}|${g.event}`,
         sport: g.sport.toUpperCase(),
@@ -345,7 +372,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
         text: g.state === 'pre' ? null : (g.detail || (g.state === 'post' ? 'Final' : 'Live')).toUpperCase(),
         start: g.start,
       }));
-      this.tickerFor = { boards, items };
+      this.tickerFor = { boards, sport, items };
     }
     return this.tickerFor.items;
   }
@@ -431,10 +458,11 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return rows.filter((r) => (r.check ? checks++ < checkLimit : bets++ < limit));
   }
 
-  // The bets in the chosen game (all of them for All Games)
-  private get inGame(): BetRow[] {
+  // The bets in the chosen game; none chosen, the chosen sport's (bets-rows.ts sportRows); neither, all of them.
+  // The chips, the bands, their counts and the off-the-board line all run from these
+  get inGame(): BetRow[] {
     const rows = this.listed;
-    return this.game ? rows.filter((r) => this.gameKey(r) === this.game) : rows;
+    return this.game ? rows.filter((r) => this.gameKey(r) === this.game) : sportRows(rows, this.sport);
   }
 
   // The rows this viewer sees: an admin's every one, the CHECKs among them; anyone else's the bets alone (kept till
@@ -516,13 +544,52 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return [...byGame.values()];
   }
 
-  // (how many bets Best bets shows, for the dropdown's face: the list's bets, the top 40 at most)
+  // (how many bets Best bets shows, for the dropdown's face: the list's bets, the top 40 at most; a sport's
+  // heading, its own)
   get bestCount(): number {
-    return Math.min(this.limit, this.listed.filter((r) => !r.check).length);
+    return this.sportCount('');
+  }
+  sportCount(sport: string): number {
+    return Math.min(this.limit, sportRows(this.listed, sport).filter((r) => !r.check).length);
   }
 
-  // (a game picked from the dropdown, or Best Bets (''): the list's filter, as before)
+  // The dropdown's value: the chosen game's key, else the chosen sport (game-menu.ts sportChoice), else Best
+  // bets (''); and what it chose: a sport's heading, a game, or Best bets · every game (both filters off)
+  readonly sportChoice = sportChoice;
+  get choice(): string {
+    return this.game || (this.sport ? sportChoice(this.sport) : '');
+  }
+  choose(value: string): void {
+    const sport = chosenSport(value);
+    if (sport !== null) this.chooseSport(sport);
+    else if (value) this.chooseGame(value);
+    else {
+      this.chooseSport('');
+      this.chooseGame('');
+    }
+  }
+  // (the closed dropdown's words with a sport chosen: "NFL · best bets", with its icon)
+  get chosenSport(): { label: string; icon: string; name: string } | null {
+    if (!this.sport) return null;
+    const s = this.menu().days.flatMap((d) => d.sports).find((x) => x.sport === this.sport);
+    return { label: sportFace(this.sport, this.betSports), icon: s?.icon ?? 'sports', name: this.betSports.find((x) => x.id === this.sport)?.label ?? this.sport.toUpperCase() };
+  }
+  chooseSport(sport: string): void {
+    if (sport !== this.sport) {
+      this.sport = sport;
+      storeSport(sport);
+    }
+    this.game = '';
+    this.closeWhy();
+  }
+
+  // (a game picked from the dropdown, or no game (''): the list's filter, as before; a game of another sport than
+  // the one chosen drops the sport filter)
   chooseGame(key: string): void {
+    if (key && this.sport && !key.startsWith(`${this.sport}|`)) {
+      this.sport = '';
+      storeSport('');
+    }
     this.game = key;
     this.closeWhy();
   }
@@ -768,20 +835,15 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The board's look (The Book): the rows in their bands' sections, each with its model-vs-book meter and a price
   // button for the slip; the look's own state, nothing of the list's order or limits
   // ---------------------------------------------------------------------------
-  // The bands' seasons (picks.json's record.byLevel, every sport's summed: the same read as the picks), for the
-  // band headers: wins, losses, pushes and units. A band no file has graded has none
-  readonly bandRecords = new Map<Confidence, { wins: number; losses: number; pushes: number; profit: number }>();
-  private addRecord(byLevel: ByLevel | undefined): void {
-    for (const level of ['lock', 'high', 'medium', 'low'] as const) {
-      const r = byLevel?.[level];
-      if (!r) continue;
-      const t = this.bandRecords.get(level) ?? { wins: 0, losses: 0, pushes: 0, profit: 0 };
-      t.wins += r.wins ?? 0;
-      t.losses += r.losses ?? 0;
-      t.pushes += r.pushes ?? 0;
-      t.profit += r.profit ?? 0;
-      this.bandRecords.set(level, t);
-    }
+  // The bands' seasons (each sport's picks.json record.byLevel, the same read as the picks; readFiles), for the
+  // band headers: wins, losses, pushes and units, summed over the sports on the board (a sport chosen, its file
+  // alone: bets-rows.ts sumRecords; summed again only when the files or the sport change). A band no file has
+  // graded has none
+  private records = new Map<string, ByLevel | undefined>();
+  private sumsFor: { records: unknown; sport: string; sums: Map<string, BandTally> } | null = null;
+  get bandRecords(): Map<string, BandTally> {
+    if (this.sumsFor?.records !== this.records || this.sumsFor.sport !== this.sport) this.sumsFor = { records: this.records, sport: this.sport, sums: sumRecords(this.records, this.sport) };
+    return this.sumsFor.sums;
   }
   // (a band's season as its header says it: "23–9 · +18.4u"; none till a bet in it is graded)
   bandRecord(band: Confidence): { record: string; units: string; up: boolean } | null {
@@ -876,9 +938,10 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return recentForm(this.wallet.tally(), this.wallet.settledBets());
   }
 
-  // (the row's one-line read under the pick: Claude's headline where the pick has one, else its reason)
-  blurb(r: BetRow): string {
-    return r.headline ?? r.reason;
+  // (the closed row's line under the pick: its game and its start, "NYJ @ NE · Sun 12:00 PM" (game-menu.ts
+  // gameLine); the sport and the reason are the open row's)
+  subLine(r: BetRow): { name: string; when: string | null; text: string } | null {
+    return r.game ? gameLine(r.sport, r.game.matchup, r.game.kickoff) : null;
   }
 }
 

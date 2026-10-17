@@ -262,10 +262,14 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 // The Book's player's card (the Bets page's bankroll card, its game dropdown and the ticket's Place button): a
 // black fade with a warm light at its top right, inside a 1px rail of the tables' gold ($felt-gold, drawn on a
 // ::before so the fade keeps its own corners). $radius: its corner (the ::before follows it)
-@mixin player-card($radius: v.$radius-xl) {
+@mixin player-card-face {
   background:
     radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.18), transparent 55%),
     linear-gradient(135deg, #1d1d1d, #121212 60%, #1a1a1a);
+}
+
+@mixin player-card($radius: v.$radius-xl) {
+  @include player-card-face;
   border: 1px solid transparent;
   border-radius: $radius;
   position: relative;

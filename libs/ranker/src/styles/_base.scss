@@ -464,21 +464,30 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     text-transform: uppercase;
   }
 
-  // (the sport: its icon and its name in gold)
-  .game-sport {
-    align-items: center;
-    color: chip.$gold-led;
-    display: flex;
-    font-family: v.$font-base;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    gap: v.$space-8;
-    letter-spacing: 1.5px;
-    padding: 6px 14px 2px;
-    text-transform: uppercase;
+  // (the sport's heading, an option of its own (that sport's best bets, every day's): its icon and its name in
+  // gold small caps at the group's edge, not indented like its games, its count at the right)
+  .mat-mdc-optgroup .mat-mdc-option.game-sport {
+    min-height: 0;
+    padding: 6px 14px 4px;
 
-    mat-icon {
-      @include v.icon-size(14px);
+    .mdc-list-item__primary-text {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    span.game-sport-name {
+      align-items: center;
+      color: chip.$gold-led !important;
+      display: flex;
+      font-family: v.$font-base !important;
+      font-size: v.$fs-10 !important;
+      font-weight: 800 !important;
+      gap: v.$space-8;
+      letter-spacing: 1.5px;
+      text-transform: uppercase !important;
+
+      mat-icon {
+        @include v.icon-size(14px);
+      }
     }
   }
 }
