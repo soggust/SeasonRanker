@@ -10,11 +10,12 @@
 //                         strikeouts; then the season's 50 or 40 homers, 200 hits, 40 steals, a .340 average,
 //                         20 wins, 200 or 300 strikeouts, 40 saves, an ERA under 2.00
 //
-// Usage: node apps/mlb/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json)
+// Usage: node apps/mlb/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json;
+//                                                        ONLY=numbers: the rosters alone, no game logs)
 //        node apps/mlb/scripts/build-splash.mjs 2022       a past one ("2000-2025", "2019,2021", or all)
 import path from 'node:path';
 import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
-import { currentSeason, seasonDir, seasonsAsked, siteRows, sortKeys, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
+import { cacheRoster, currentSeason, seasonDir, seasonsAsked, siteRows, sortKeys, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
 import { buildOutcomes, gameFor } from '../../../libs/ranker/scripts/splash/outcomes.mjs';
 import { bestOf, dayTitle, mlbHittingGame, mlbPitchingGame } from '../../../libs/ranker/scripts/splash/best-game.mjs';
 import { milestonesOf } from '../../../libs/ranker/scripts/splash/milestones.mjs';
@@ -142,8 +143,11 @@ async function players(season, rows, teamKeys, abbr) {
   const numbers = new Map();
   for (const team of teamKeys) {
     const roster = await get(`${API}/teams/${team}/roster?season=${season}&rosterType=fullSeason`);
-    for (const p of roster?.roster ?? []) if (/^d{1,2}$/.test(p.jerseyNumber ?? '')) (numbers.get(String(p.person.id)) ?? numbers.set(String(p.person.id), []).get(String(p.person.id))).push({ team, num: String(p.jerseyNumber) });
+    for (const p of roster?.roster ?? []) if (/^\d{1,2}$/.test(p.jerseyNumber ?? '')) (numbers.get(String(p.person.id)) ?? numbers.set(String(p.person.id), []).get(String(p.person.id))).push({ team, num: String(p.jerseyNumber) });
   }
+  cacheRoster('mlb', season, numbers);
+  // (ONLY=numbers: the rosters alone, no game logs)
+  const numbersOnly = process.env.ONLY === 'numbers';
   // every player's game log, fifty to a request
   const ids = new Map();
   for (const [tab, list] of Object.entries(rows)) {
@@ -155,7 +159,7 @@ async function players(season, rows, teamKeys, abbr) {
     }
   }
   const logs = new Map();
-  for (const group of ['hitting', 'pitching']) {
+  for (const group of numbersOnly ? [] : ['hitting', 'pitching']) {
     const want = [...new Set([...ids.values()].filter((x) => (x.kind === 'P') === (group === 'pitching')).map((x) => x.id))];
     for (const part of chunks(want, 50)) {
       const res = await get(`${API}/people?personIds=${part.join(',')}&hydrate=stats(group=[${group}],type=[gameLog],season=${season})`);
@@ -168,6 +172,7 @@ async function players(season, rows, teamKeys, abbr) {
   for (const [cardId, { tab, kind, id, row }] of ids) {
     const nums = numbers.get(id);
     if (nums?.length) jerseys[cardId] = (nums.find((x) => x.team === row.team) ?? nums.at(-1)).num;
+    if (numbersOnly) continue;
     const splits = logs.get(cardId) ?? [];
     const scored = splits.flatMap((sp) => {
       const s = (kind === 'P' ? mlbPitchingGame : mlbHittingGame)(sp.stat ?? {});
@@ -202,6 +207,10 @@ async function main() {
     }
     const p = await players(season, siteRows(dir), Object.keys(o), abbr);
     if (Object.keys(p.jerseys).length) written.push(writeIfChanged(path.join(dir, 'numbers.json'), sortKeys(p.jerseys)));
+    if (process.env.ONLY === 'numbers') {
+      console.log(`MLB ${season}: ${Object.keys(p.jerseys).length} numbers; ` + written.map((w) => `${path.basename(w.file)} ${(w.size / 1024).toFixed(1)} KB${w.same ? ' (same)' : ''}`).join(', '));
+      continue;
+    }
     written.push(...writeBestGames(dir, p.best));
     written.push(writeIfChanged(path.join(dir, 'milestones.json'), sortKeys(p.milestones)));
     const champ = Object.entries(o).find(([, v]) => v.result === 'champion')?.[0] ?? 'none yet';

@@ -12,7 +12,7 @@
 // Paced like the nightly update (a request every 350 ms, a 429's Retry-After honored).
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { currentSeason, seasonDir, seasonsAsked, siteRows, sortKeys, staticDir, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
+import { cacheRoster, currentSeason, seasonDir, seasonsAsked, siteRows, sortKeys, staticDir, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
 import { buildOutcomes, gameFor, seriesOf } from '../../../libs/ranker/scripts/splash/outcomes.mjs';
 import { bestOf, dayTitle, nhlGoalieGame, nhlSkaterGame } from '../../../libs/ranker/scripts/splash/best-game.mjs';
 import { readLogFiles } from './game-log-files.mjs';
@@ -142,6 +142,7 @@ async function players(season, rows, teamKeys, known = {}) {
       for (const p of roster?.[group] ?? []) if (p.sweaterNumber !== undefined && p.sweaterNumber !== null) (numbers.get(String(p.id)) ?? numbers.set(String(p.id), []).get(String(p.id))).push({ team, num: String(p.sweaterNumber) });
     }
   }
+  cacheRoster('nhl', season, numbers);
   const { logs, playoffs } = readLogFiles(path.join(staticDir('nhl'), 'game-logs'), season);
   // ("Apr 30" in a season's log: October to December the year before; 2020's playoffs ran in August and September)
   const MONTH = { Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12 };

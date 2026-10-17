@@ -5,17 +5,20 @@
 //                         record and division place (nfldata's standings.csv, 2002 on; 2000 and 2001 below by
 //                         hand); a season being played reads who's out as season-state.mjs's teamStatus does
 //   numbers.json          each player's number (nflverse's season roster, jersey_number)
+//   lockers.json          each team's roster that season, numbers and popularity, for the team lockers (lockersOf)
 //   best-games.<TAB>.json each player's best game (nflverse's weekly player stats, PPR points: best-game.mjs)
 //
 // Usage: node apps/nfl/scripts/build-splash.mjs            the current season (ONLY=outcomes: just outcomes.json)
 //        node apps/nfl/scripts/build-splash.mjs 2023       a past one ("2000-2025", "2019,2021", or all)
 // nflverse's downloads are kept in .cache/nflverse (shared with update-data.mjs): a finished season's for good.
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { cachedDownload, fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { parseCsv } from '../../../libs/ranker/scripts/csv.mjs';
 import { ROOT, currentSeason, seasonDir, seasonsAsked, siteRows, sortKeys, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
 import { buildOutcomes, gameFor } from '../../../libs/ranker/scripts/splash/outcomes.mjs';
+import { NFL_LOGO, NFL_NOW } from '../../../libs/ranker/scripts/splash/nfl-teams.mjs';
 import { bestOf, nflGame, nflRoundName, nflTitle } from '../../../libs/ranker/scripts/splash/best-game.mjs';
 import { teamStatus } from './analysis/season-state.mjs';
 
@@ -40,15 +43,10 @@ async function csv(url, season, { optional = false } = {}) {
   }
 }
 
-// nflverse's abbreviations, every era's, -> the team's logo name
-const LOGO = {
-  ARI: 'Cardinals', ATL: 'Falcons', BAL: 'Ravens', BUF: 'Bills', CAR: 'Panthers', CHI: 'Bears', CIN: 'Bengals', CLE: 'Browns', DAL: 'Cowboys',
-  DEN: 'Broncos', DET: 'Lions', GB: 'Packers', HOU: 'Texans', IND: 'Colts', JAX: 'Jaguars', KC: 'Chiefs', LA: 'Rams', LAR: 'Rams', STL: 'Rams',
-  LAC: 'Chargers', SD: 'Chargers', LV: 'Raiders', OAK: 'Raiders', MIA: 'Dolphins', MIN: 'Vikings', NE: 'Patriots', NO: 'Saints', NYG: 'Giants',
-  NYJ: 'Jets', PHI: 'Eagles', PIT: 'Steelers', SEA: 'Seahawks', SF: '49ers', TB: 'Bucs', TEN: 'Titans', WAS: 'Commanders', WSH: 'Commanders',
-};
-// (today's abbreviation for season-state.mjs's divisions)
-const NOW = { STL: 'LA', SD: 'LAC', OAK: 'LV', LAR: 'LA', WSH: 'WAS' };
+// nflverse's abbreviations, every era's, -> the team's logo name; today's abbreviation for season-state.mjs's
+// divisions (nfl-teams.mjs: the roster tests read the same table)
+const LOGO = NFL_LOGO;
+const NOW = NFL_NOW;
 
 // 2000 and 2001, before nfldata's standings begin (and before the 2002 realignment): the divisions and the
 // playoff seeds (Pro Football Reference's 2000 and 2001 standings; three division winners seeded 1-3 a
@@ -146,6 +144,84 @@ function outcomes(season, schedule, standings) {
   return buildOutcomes({ teams, series, totalRounds: 4, lastGames, fieldSet, abbrOf: (k) => abbrOfKey[k] ?? k });
 }
 
+// ---- the team lockers' players (lockers.json): who a team's locker room may show, with his number and how
+// popular he is. The Team, Defense and O-Line cards' lockers hang the jerseys of the depth chart's starters
+// (data/depth: build-depth.mjs), and the chart knows no numbers and has no stat lines; this file, by the
+// team's logo name, gives every man on its roster that season (nflverse's season roster: a player is on the
+// team it lists him with, so a traded man is his new team's alone and the chart's old entry for him is passed
+// over) his number and his POPULARITY, by which the scene picks the few it hangs (splash.component.ts rosterOf):
+//   {"Chiefs": {"00-0033873": ["15", 312], ...}}
+// Popularity is the season's stat line (nflverse's weekly rows, regular season and playoffs together), scored
+// about like fantasy points so a 4,000-yard passer, a 1,200-yard receiver and a 12-sack edge rusher land in
+// the same range, with the season's honors on top:
+//   passing                 yards / 25 + 4 a TD - 2 an interception
+//   rushing and receiving   yards / 10 + 6 a TD + 0.5 a catch
+//   defense                 6 a sack + 8 an interception + 4 a forced fumble + 1.5 a tackle for loss
+//                           + 1 a pass defended + 0.5 a solo tackle + 6 a TD
+//   kicking                 3 a field goal + 1 a PAT; punting 0.5 a punt
+//   honors                  AP first-team All-Pro +60, second team +40, Pro Bowl +25 (the site's tables, by
+//                           name: all-pro.json, pro-bowl.json); Defensive Player or Rookie of the Year +60
+//                           (awards.ts)
+// Linemen have no stat line (0): the O-line locker takes the chart's five in their order. The file holds every
+// man on the team that season (its active roster and reserve lists, and anyone who played for it and was cut or
+// moved on since), so a chart's starter who isn't in it was never the team's that season.
+const SKILL = new Set(['QB', 'RB', 'WR', 'TE', 'FB', 'HB']);
+const LINE = new Set(['OL', 'T', 'G', 'C', 'OT', 'OG', 'LT', 'RT', 'LG', 'RG']);
+const DEFENSE = new Set(['DE', 'DT', 'NT', 'DL', 'EDGE', 'LB', 'ILB', 'OLB', 'MLB', 'CB', 'S', 'SS', 'FS', 'DB', 'SAF']);
+const KICKERS = new Set(['K', 'P', 'PK', 'LS']);
+const nameKey = (name) => String(name ?? '').toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b\.?/g, '').replace(/[^a-z]/g, '');
+
+// The season's honors by name: the All-Pro teams and Pro Bowls the site's tables have, the defensive awards
+function honors(season) {
+  const sportDir = path.join(ROOT, 'apps', 'nfl', 'src', 'sport');
+  const bonus = new Map();
+  const add = (name, pts) => bonus.set(nameKey(name), Math.max(bonus.get(nameKey(name)) ?? 0, pts));
+  const allPro = JSON.parse(readFileSync(path.join(sportDir, 'all-pro.json'), 'utf8'))[season] ?? {};
+  for (const byName of Object.values(allPro)) for (const [name, team] of Object.entries(byName)) add(name, team === 1 ? 60 : 40);
+  const proBowl = JSON.parse(readFileSync(path.join(sportDir, 'pro-bowl.json'), 'utf8'))[season] ?? {};
+  for (const names of Object.values(proBowl)) for (const name of names) if (!bonus.has(nameKey(name))) add(name, 25);
+  // (awards.ts: the season's block, its dpoy: ['Name', 'Team'] and droy)
+  const text = readFileSync(path.join(sportDir, 'awards.ts'), 'utf8');
+  const block = text.match(new RegExp(`^  ${season}: \\{[\\s\\S]*?^  \\},`, 'm'))?.[0] ?? '';
+  for (const m of block.matchAll(/d(?:p|r)oy: \['([^']+)'/g)) add(m[1], 60);
+  return bonus;
+}
+
+function lockersOf(season, roster, weeks) {
+  const n = (v) => Number(v) || 0;
+  const bonus = honors(season);
+  const pop = new Map();
+  for (const [id, list] of weeks) {
+    let s = 0;
+    for (const w of list) {
+      s += n(w.passing_yards) / 25 + 4 * n(w.passing_tds) - 2 * n(w.passing_interceptions);
+      s += (n(w.rushing_yards) + n(w.receiving_yards)) / 10 + 6 * (n(w.rushing_tds) + n(w.receiving_tds)) + 0.5 * n(w.receptions);
+      s += 6 * n(w.def_sacks) + 8 * n(w.def_interceptions) + 4 * n(w.def_fumbles_forced) + 1.5 * n(w.def_tackles_for_loss) + n(w.def_pass_defended) + 0.5 * n(w.def_tackles_solo) + 6 * n(w.def_tds);
+      s += 3 * n(w.fg_made) + n(w.pat_made) + 0.5 * n(w.pt_att);
+    }
+    pop.set(id, s);
+  }
+  const byTeam = {};
+  for (const r of roster) {
+    const team = LOGO[r.team];
+    if (!team || !r.gsis_id || r.jersey_number === '' || r.jersey_number === 'NA') continue;
+    const pos = r.position;
+    const group = SKILL.has(pos) ? 'skill' : LINE.has(pos) ? 'line' : DEFENSE.has(pos) ? 'defense' : KICKERS.has(pos) ? 'kickers' : null;
+    if (!group) continue;
+    const score = Math.round((pop.get(r.gsis_id) ?? 0) + (bonus.get(nameKey(r.full_name)) ?? 0));
+    // (the team's men: its active roster, its reserve lists and its inactives; not the practice squad, the cut
+    // and the retired, unless the man played for it)
+    ((byTeam[team] ??= {})[group] ??= []).push({ id: r.gsis_id, num: String(Number(r.jersey_number)), score, active: ['ACT', 'RES', 'INA'].includes(r.status) });
+  }
+  const out = {};
+  for (const [team, groups] of Object.entries(byTeam)) {
+    const kept = {};
+    for (const list of Object.values(groups)) for (const p of list) if (p.active || p.score > 0) kept[p.id] = [p.num, p.score];
+    out[team] = sortKeys(kept);
+  }
+  return out;
+}
+
 // ---- jerseys and best games
 async function players(season, rows, gamesById, playersCsv) {
   const roster = await csv(`${NFLVERSE}/rosters/roster_${season}.csv`, season, { optional: true });
@@ -161,6 +237,7 @@ async function players(season, rows, gamesById, playersCsv) {
   }
   const weeks = new Map();
   for (const w of weekly) (weeks.get(w.player_id) ?? weeks.set(w.player_id, []).get(w.player_id)).push(w);
+  const lockers = roster.length ? lockersOf(season, roster, weeks) : {};
 
   const jerseys = {};
   const best = {};
@@ -197,7 +274,7 @@ async function players(season, rows, gamesById, playersCsv) {
       if (top) (best[tab] ??= {})[row.cardId] = { ...top, games: scored.length };
     }
   }
-  return { jerseys, best, roster: roster.length, weekly: weekly.length };
+  return { jerseys, best, lockers, roster: roster.length, weekly: weekly.length };
 }
 const CONF_OF = { AFC: ['BAL', 'BUF', 'CIN', 'CLE', 'DEN', 'HOU', 'IND', 'JAX', 'KC', 'LAC', 'LV', 'MIA', 'NE', 'NYJ', 'PIT', 'TEN'], NFC: ['ARI', 'ATL', 'CAR', 'CHI', 'DAL', 'DET', 'GB', 'LA', 'MIN', 'NO', 'NYG', 'PHI', 'SEA', 'SF', 'TB', 'WAS'] };
 
@@ -224,10 +301,11 @@ async function main() {
     }
     const p = await players(season, siteRows(dir), gamesById, playersCsv);
     if (Object.keys(p.jerseys).length) written.push(writeIfChanged(path.join(dir, 'numbers.json'), sortKeys(p.jerseys)));
+    if (Object.keys(p.lockers).length) written.push(writeIfChanged(path.join(dir, 'lockers.json'), sortKeys(p.lockers)));
     written.push(...writeBestGames(dir, p.best));
     const champ = Object.entries(o).find(([, v]) => v.result === 'champion')?.[0] ?? 'none yet';
     console.log(
-      `NFL ${season}: ${Object.keys(o).length} teams (champion ${champ}), ${Object.keys(p.jerseys).length} numbers, ` +
+      `NFL ${season}: ${Object.keys(o).length} teams (champion ${champ}), ${Object.keys(p.jerseys).length} numbers, ${Object.keys(p.lockers).length} lockers, ` +
         `${Object.values(p.best).reduce((s, x) => s + Object.keys(x).length, 0)} best games; ` +
         written.map((w) => `${path.basename(w.file)} ${(w.size / 1024).toFixed(1)} KB${w.same ? ' (same)' : ''}`).join(', '),
     );

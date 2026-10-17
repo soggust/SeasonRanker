@@ -6,10 +6,12 @@
 //   numbers.json              each player's number that season: { <card id>: "16" }
 //   best-games.<TAB>.json     each player's best game that season, one file per tab (best-game.mjs)
 //   milestones.json           the season's notable marks (MLB: 40 HR, 200 K, a cycle, a no-hitter...)
+//   lockers.json              the NFL's team lockers: each team's roster that season by its logo name, each man's
+//                             number and popularity (apps/nfl/scripts/build-splash.mjs lockersOf)
 //
 // A card id is the row's gsisId, as the card's link keys it (the NFL's GSIS id or "QB-<ESPN id>", the NBA's
 // Basketball-Reference id, the NHL's id, MLB's "H-<id>" / "P-<id>"); a team is its logo's name (team-colors.ts).
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 export const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -130,6 +132,21 @@ export function teamTable(sport) {
     if (m.index > block.indexOf('};')) break;
   }
   return out;
+}
+
+// The roster source a build read, kept for the tests (tests/splash-roster.test.mjs checks the numbers files and
+// the team lockers against it, no network): .cache/<sport>/rosters/<season>.json, each player's teams that
+// season and the number he wore with each: { <player id>: [[<team key>, "16"], ...] }. The NFL's source is
+// nflverse's roster CSV, kept in .cache/nflverse as it is.
+export function cacheRoster(sport, season, numbers) {
+  const dir = path.join(ROOT, '.cache', sport, 'rosters');
+  mkdirSync(dir, { recursive: true });
+  const out = {};
+  for (const [id, list] of numbers) out[id] = list.map((x) => [String(x.team), String(x.num)]);
+  writeFileSync(path.join(dir, `${season}.json`), JSON.stringify(sortKeys(out)));
+}
+export function cachedRoster(sport, season) {
+  return readJson(path.join(ROOT, '.cache', sport, 'rosters', `${season}.json`));
 }
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
