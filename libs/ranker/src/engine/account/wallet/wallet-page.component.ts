@@ -400,6 +400,11 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     return `${v >= 0 ? '+' : ''}${v.toFixed(2)}u`;
   }
 
+  // (the redesign's figures: to a tenth)
+  units1(v: number): string {
+    return `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(1)}u`;
+  }
+
   pct(v: number | null | undefined, digits = 1): string {
     return v === null || v === undefined ? '-' : `${(v * 100).toFixed(digits)}%`;
   }
