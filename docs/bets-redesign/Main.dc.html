@@ -42,9 +42,14 @@ a{color:#ebc56c}a:hover{color:#fff}
 .perf{border:none;border-top:2px dashed rgba(26,26,26,.25);margin:0}
 .pcard{background:radial-gradient(ellipse at 85% 0%,rgba(255,226,122,.18),transparent 55%),linear-gradient(135deg,#1d1d1d,#121212 60%,#1a1a1a);border:1px solid transparent;background-clip:padding-box;position:relative}
 .pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.livedot{animation:blink 1.4s ease-in-out infinite}}
+@keyframes blink{50%{opacity:.35}}
 .cardlink{transition:filter .15s,translate .15s}
 .cardlink:hover{filter:brightness(1.15);translate:0 -1px}
 .ddpill:hover,.placebtn:hover{filter:brightness(1.18)}
+.ddpill{line-height:1}
+.apanel{border:1px solid #3a3a3a;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.ddpill>span,.ddpill>svg{display:block}
 .scroll{scrollbar-width:thin;scrollbar-color:#d9a520 rgba(0,0,0,.25)}
 .track{display:flex;align-items:center;gap:36px;white-space:nowrap;width:max-content;line-height:1}
 .track>span{line-height:1}
@@ -62,10 +67,10 @@ a{color:#ebc56c}a:hover{color:#fff}
 <h1 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 600; font-size: 26px; line-height: 1; letter-spacing: 3px; text-transform: uppercase;" class="glow">The Book</h1>
 </div>
 <nav class="posbar dots" aria-label="Bets sections" style="flex: 1 1 420px; max-width: 640px; height: 44px; display: flex; border: 1px solid #3a3a3a; border-radius: 9.1px; box-shadow: 0 2px 6px rgba(0,0,0,.35); overflow: hidden;">
-<button class="btn lit" aria-current="page">The board</button>
-<button class="btn">Open · 2</button>
-<button class="btn">Cashed</button>
-<button class="btn">Algorithm</button>
+<button class="btn {{tabs.board}}" onClick="{{goBoard}}" aria-current="{{tabs.boardCur}}">The board</button>
+<button class="btn {{tabs.open}}" onClick="{{goOpen}}" aria-current="{{tabs.openCur}}">Open · {{openCount}}</button>
+<button class="btn {{tabs.cashed}}" onClick="{{goCashed}}" aria-current="{{tabs.cashedCur}}">Cashed</button>
+<button class="btn {{tabs.algo}}" onClick="{{goAlgo}}" aria-current="{{tabs.algoCur}}">Algorithm</button>
 </nav>
 <span style="flex: 1;"></span>
 <a class="pcard cardlink" href="#wallet" aria-label="Bankroll 120.0 units: open your wallet" style="width: 268px; border-radius: 10px; padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; align-items: center; box-shadow: 0 6px 14px rgba(0,0,0,.45); color: #fff; text-decoration: none;">
@@ -75,6 +80,7 @@ a{color:#ebc56c}a:hover{color:#fff}
 </a>
 </header>
 
+<sc-if value="{{showTicker}}" hint-placeholder-val="{{true}}">
 <div class="dots" role="marquee" aria-label="Scores and start times" style="max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 4px; overflow: hidden; height: 30px; display: flex; align-items: center; font-family: Outfit, sans-serif; font-size: 12px; letter-spacing: 1px;">
 <div class="track">
 <sc-for list="{{tickerTwice}}" as="tk" hint-placeholder-count="10">
@@ -82,7 +88,131 @@ a{color:#ebc56c}a:hover{color:#fff}
 </sc-for>
 </div>
 </div>
+</sc-if>
 
+<sc-if value="{{isTickets}}" hint-placeholder-val="{{false}}">
+<div class="work" style="max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
+<div class="dots" style="flex: none; border: 1px solid #3a3a3a; border-radius: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; padding: 12px 18px;">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 3px;" class="glow">{{tv.title}}</h2>
+<sc-for list="{{tv.stats}}" as="st" hint-placeholder-count="4"><span style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">{{st.k}}</span><span style="font-family: Outfit, sans-serif; font-size: 18px; font-weight: 600; {{st.tone}}">{{st.v}}</span></span></sc-for>
+<span style="flex: 1;"></span>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">{{tv.note}}</span>
+</div>
+<div class="scroll col" style="flex: 1; min-height: 0; overflow-y: auto; padding: 6px 6px 24px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 26px 24px; align-items: start;">
+<sc-for list="{{tv.tickets}}" as="t" hint-placeholder-count="4">
+<article class="ticket" aria-label="Ticket {{t.no}}" style="position: relative; padding: 24px 18px 26px; display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 700; font-size: 13px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; letter-spacing: .5px; color: #4a4a4a;">TICKET {{t.no}} · {{t.placed}}</span></div>
+<span style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 7px; border-radius: 3px; white-space: nowrap; {{t.statusStyle}}"><sc-if value="{{t.isLive}}" hint-placeholder-val="{{false}}"><span class="livedot" aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #3ee07a; box-shadow: 0 0 6px #3ee07a;"></span></sc-if>{{t.statusTxt}}</span>
+</div>
+<hr class="perf">
+<span style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">{{t.kind}}</span>
+<sc-for list="{{t.legs}}" as="l" hint-placeholder-count="1">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 9px; border-bottom: 1px dotted rgba(26,26,26,.35);">
+<div style="display: flex; gap: 8px; align-items: baseline;"><span style="flex: 1; font-size: 13px; font-weight: 700; text-transform: uppercase;">{{l.pick}}</span><span style="font-size: 13px; font-weight: 700;">{{l.odds}}</span></div>
+<span style="font-size: 11px; color: #4a4a4a;">{{l.game}} · {{l.tag}}</span>
+<sc-if value="{{l.hasMeter}}" hint-placeholder-val="{{false}}">
+<div aria-hidden="true" style="height: 6px; border-radius: 999px; background: rgba(26,26,26,.14); overflow: hidden; margin-top: 2px;"><div style="height: 100%; border-radius: 999px; background: #1d8a4e; {{l.meterW}}"></div></div>
+</sc-if>
+<span style="font-size: 11px; font-weight: 700; {{l.liveStyle}}">{{l.live}}</span>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;">
+<div style="display: flex; justify-content: space-between;"><span>RISK</span><span>{{t.risk}}U</span></div>
+<div style="display: flex; justify-content: space-between;"><span>{{t.winLabel}}</span><span style="font-weight: 700;">{{t.win}}U</span></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700;"><span>PAYS</span><span>{{t.pays}}U</span></div>
+</div>
+<span aria-hidden="true" style="height: 26px; background: repeating-linear-gradient(90deg, #1a1a1a 0 2px, transparent 2px 4px, #1a1a1a 4px 5px, transparent 5px 8px, #1a1a1a 8px 11px, transparent 11px 12px); opacity: .85;"></span>
+<sc-if value="{{t.hasStamp}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; right: 12px; top: 54px; rotate: -14deg; padding: 6px 10px; border: 3px solid currentColor; border-radius: 4px; font-size: 17px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply; box-shadow: inset 0 0 0 2px rgba(244,239,227,.5); pointer-events: none; {{t.stampStyle}}">{{t.stamp}}</span>
+</sc-if>
+</article>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{isAlgo}}" hint-placeholder-val="{{false}}">
+<div class="work scroll" style="max-width: 1400px; width: 100%; margin: 0 auto; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 0 4px 24px; box-sizing: border-box;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+<sc-for list="{{al.tiles}}" as="ti" hint-placeholder-count="6">
+<div class="dots" style="border: 1px solid #3a3a3a; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,.4); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">{{ti.k}}</span>
+<span style="font-family: DSEG7, Outfit, sans-serif; font-size: 20px; font-weight: 700; line-height: 1.2; {{ti.tone}}">{{ti.v}}</span>
+<span style="font-size: 11px; color: #ccc;">{{ti.sub}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px;">
+<button class="btn pcard ddpill" style="height: 40px; padding: 0 16px; border-radius: 999px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 13px; color: #fff;">Last 30 days <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+<button class="btn pcard ddpill" style="height: 40px; padding: 0 16px; border-radius: 999px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 13px; color: #fff;">Every game <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+<span style="flex: 1;"></span>
+<div role="group" aria-label="Sport" style="display: flex; gap: 10px; padding: 4px;">
+<sc-for list="{{al.sports}}" as="sp" hint-placeholder-count="5">
+<button class="btn kchip {{sp.on}}" onClick="{{sp.pick}}" aria-pressed="{{sp.pressed}}" style="--clay: {{sp.clay}}; width: 50px; height: 50px; border-width: 5px;"><span style="font-size: 11px; font-weight: 900; line-height: 1;">{{sp.label}}</span><svg aria-hidden="true"><rect pathLength="80"></rect></svg></button>
+</sc-for>
+</div>
+</div>
+<section class="dots apanel" aria-label="Profit curve" style="flex: none; border-radius: 8px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; line-height: 1;">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 13px; line-height: 1; letter-spacing: 2.5px;" class="glow">PROFIT</h2>
+<sc-for list="{{al.legend}}" as="lg" hint-placeholder-count="5"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 1; color: #ccc;"><span style="width: 14px; height: 3px; border-radius: 2px; background: {{lg.c}};"></span>{{lg.k}} <b style="color: {{lg.c}};">{{lg.v}}</b></span></sc-for>
+</div>
+<svg role="img" aria-label="Profit over the last 30 days by sport" viewBox="0 0 800 220" preserveAspectRatio="none" style="width: 100%; height: 220px; display: block;">
+<line x1="0" y1="{{al.zeroY}}" x2="800" y2="{{al.zeroY}}" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"></line>
+<path d="{{al.area}}" fill="rgba(235,197,108,.12)"></path>
+<sc-for list="{{al.lines}}" as="pl" hint-placeholder-count="4"><path d="{{pl.d}}" fill="none" stroke="{{pl.c}}" stroke-width="{{pl.w}}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></path></sc-for>
+</svg>
+<div style="display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.6);"><span>SEP 17</span><span>OCT 1</span><span>TODAY</span></div>
+</section>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 14px; align-items: start;">
+<sc-for list="{{al.panels}}" as="pn" hint-placeholder-count="6">
+<section class="dots apanel" aria-label="{{pn.title}}" style="border-radius: 8px; overflow: hidden;">
+<button class="btn bandhead" onClick="{{pn.toggle}}" aria-expanded="{{pn.open}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; text-align: left; background: linear-gradient(90deg, rgba(235,197,108,.1), transparent 60%); border-bottom: 1px solid #2c2c2c;">
+<svg class="chev" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="rotate: {{pn.rot}};"><path d="M9 6l6 6-6 6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span style="font-family: Outfit, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2.5px;" class="glow">{{pn.title}}</span>
+<span style="flex: 1;"></span>
+<span style="font-size: 12px; color: #ccc;">{{pn.sum}}</span>
+</button>
+<sc-if value="{{pn.open}}" hint-placeholder-val="{{false}}">
+<div style="padding: 10px 16px 14px;">
+<sc-if value="{{pn.isTable}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; gap: 0 12px; align-items: center; font-size: 12px; {{pn.cols}}">
+<sc-for list="{{pn.head}}" as="h" hint-placeholder-count="5"><span style="padding: 6px 0; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; color: rgba(255,255,255,.6); text-align: {{h.a}}; border-bottom: 1px solid #2c2c2c;">{{h.t}}</span></sc-for>
+<sc-for list="{{pn.cells}}" as="c" hint-placeholder-count="15"><span style="padding: 8px 0; border-bottom: 1px solid #1d1d1d; text-align: {{c.a}}; font-variant-numeric: tabular-nums; {{c.s}}">{{c.t}}</span></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{pn.isCal}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 9px;">
+<sc-for list="{{pn.cal}}" as="cb" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 92px; align-items: center; gap: 10px; font-size: 12px;">
+<span style="color: #ccc;">{{cb.b}}</span>
+<div aria-hidden="true" style="position: relative; height: 10px; border-radius: 999px; background: #2c2c2c;"><div style="position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: #3ee07a; {{cb.actW}}"></div><div style="position: absolute; top: -3px; width: 2px; height: 16px; background: #fff; {{cb.predL}}"></div></div>
+<span style="text-align: right; color: #ccc;"><b style="color: #3ee07a;">{{cb.act}}</b> vs {{cb.pred}}</span>
+</div>
+</sc-for>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">Green: how often bets in that band actually won. White tick: what the model said.</span>
+</div>
+</sc-if>
+<sc-if value="{{pn.isChecks}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column;">
+<sc-for list="{{pn.checks}}" as="ck" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #1d1d1d; font-size: 12px;">
+<span style="justify-self: start; font-size: 10px; font-weight: 900; letter-spacing: 1px; padding: 3px 6px; border-radius: 3px; {{ck.s}}">{{ck.st}}</span>
+<span style="color: #ccc;"><b style="color: #fff;">{{ck.k}}</b> · {{ck.v}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</section>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{isBoardView}}" hint-placeholder-val="{{true}}">
 <div class="work" style="display: flex; flex-wrap: wrap; gap: 22px; align-items: stretch; max-width: 1400px; width: 100%; margin: 0 auto;">
 
 <main class="col" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
@@ -360,13 +490,14 @@ a{color:#ebc56c}a:hover{color:#fff}
 </aside>
 
 </div>
+</sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { kinds: [], game: 'all', dd: false, open: null, closed: [], slip: [1, 3], stakes: { 1: 2, 3: 1 }, mode: 'straight', pStake: 1, form: 'you', why: null, secOpen: { lines: true, tt: true, props: false } };
+    this.state = { kinds: [], game: 'all', dd: false, open: null, closed: [], slip: [1, 3], stakes: { 1: 2, 3: 1 }, mode: 'straight', pStake: 1, form: 'you', why: null, view: 'board', secOpen: { lines: true, tt: true, props: false } };
   }
   data() {
     return [
@@ -415,6 +546,70 @@ class Component extends DCLogic {
         tt: [], props: [] };
     });
     return G;
+  }
+  ticketsView(s) {
+    const f = (x) => (Math.round(x * 100) / 100).toFixed(2).replace(/0$/, '');
+    const ink = { good: 'color: #1d8a4e;', bad: 'color: #c62828;', even: 'color: #1a1a1a;', wait: 'color: #4a4a4a;' };
+    const L = (pick, odds, game, tag, live, tone, meter) => ({ pick, odds, game, tag, live, liveStyle: ink[tone], hasMeter: !!meter, meterW: meter ? 'width: ' + Math.round(meter * 100) + '%;' : '' });
+    const open = [
+      { no: '0417-0021', placed: 'SAT 5:52 PM', kind: 'STRAIGHT', live: true, start: '', legs: [L('Under 221.5', '−108', 'NBA · BOS @ NYK', 'LOVE', 'BOS 61 – NYK 58 · 3RD 4:12 · PACE 212, UNDER BY 9.5', 'good')], risk: 1, win: 0.93 },
+      { no: '0417-0022', placed: 'SAT 6:40 PM', kind: 'STRAIGHT', live: true, start: '', legs: [L('Auston Matthews over 3.5 shots', '−125', 'NHL · TOR @ MTL', 'LOVE', '2 OF 4 SHOTS · 2ND 11:40 · NEEDS 2 MORE', 'even', 0.5)], risk: 1, win: 0.8 },
+      { no: '0417-0023', placed: 'SAT 3:12 PM', kind: '2-LEG PARLAY · +191', live: false, start: 'SUN 3:05 PM', legs: [L('Kenneth Walker III over 68.5 rush yds', '−115', 'NFL · SEA @ LAR', 'LOCK', 'KICKS OFF SUN 3:05 PM', 'wait'), L('Chiefs to win', '−180', 'NFL · KC @ LV', 'LOVE', 'KICKS OFF SUN 3:25 PM', 'wait')], risk: 1, win: 1.91 },
+      { no: '0417-0024', placed: 'SAT 3:14 PM', kind: 'STRAIGHT', live: false, start: 'SUN 7:20 PM', legs: [L('Lions −2.5', '−110', 'NFL · DET @ MIN', 'LOCK', 'KICKS OFF SUN 7:20 PM', 'wait')], risk: 2, win: 1.82 }
+    ];
+    const cashed = [
+      { no: '0416-0018', placed: 'FRI 9:58 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Over 6.5', '−110', 'NHL · NYR @ BOS', 'LOVE', 'FINAL/OT · NYR 4 – BOS 3', 'good')], risk: 1, win: 0.91 },
+      { no: '0415-0016', placed: 'THU 10:41 PM', kind: 'STRAIGHT', res: 'L', legs: [L('Suns to win', '+105', 'NBA · PHX @ DEN', 'LIKE', 'FINAL · PHX 104 – DEN 112', 'bad')], risk: 1, win: 1.05 },
+      { no: '0413-0012', placed: 'MON 11:20 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Lions −3', '−110', 'NFL · DET @ GB', 'LOCK', 'FINAL · DET 27 – GB 20 · COVERED BY 4', 'good')], risk: 1.1, win: 1 },
+      { no: '0412-0009', placed: 'SUN 3:48 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Josh Allen 2+ TDs', '+210', 'NFL · BUF @ NE', 'YOUR CALL', 'FINAL · ALLEN 2 TDS', 'good')], risk: 1, win: 2.1 },
+      { no: '0412-0008', placed: 'SUN 3:46 PM', kind: 'STRAIGHT', res: 'P', legs: [L('Under 44', '−110', 'NFL · SF @ ARI', 'LIKE', 'FINAL · SF 24 – ARI 20 · LANDED ON 44', 'even')], risk: 1, win: 0.91 }
+    ];
+    const isOpen = s.view === 'open', isCashed = s.view === 'cashed';
+    const tickets = (isOpen ? open : isCashed ? cashed : []).map((t) => {
+      const stamp = t.res === 'W' ? 'CASHED +' + f(t.win) + 'U' : t.res === 'L' ? 'LOST −' + f(t.risk) + 'U' : t.res === 'P' ? 'PUSH · 0U' : '';
+      return Object.assign({}, t, { risk: f(t.risk), win: f(t.res === 'P' ? 0 : t.win), pays: f(t.res === 'L' ? 0 : t.res === 'P' ? t.risk : t.risk + t.win), winLabel: t.res ? (t.res === 'W' ? 'WON' : t.res === 'L' ? 'WOULD HAVE WON' : 'RETURNED') : 'TO WIN', isLive: !!t.live,
+        statusTxt: t.res ? 'SETTLED' : t.live ? 'LIVE' : t.start, statusStyle: t.live ? 'background: #1a1a1a; color: #3ee07a;' : 'border: 1.5px solid #1a1a1a; color: #1a1a1a;',
+        hasStamp: !!stamp, stamp, stampStyle: t.res === 'W' ? 'color: #1d8a4e;' : t.res === 'L' ? 'color: #c62828;' : 'color: #4a4a4a;' });
+    });
+    const tv = isOpen
+      ? { title: 'OPEN TICKETS', note: 'Live tickets first · updates every minute', stats: [{ k: 'IN PLAY', v: '5.0u', tone: 'color: #fff;' }, { k: 'TO WIN', v: '5.5u', tone: 'color: #3ee07a;' }, { k: 'LIVE', v: '2', tone: 'color: #3ee07a;' }, { k: 'PENDING', v: '2', tone: 'color: #ccc;' }], tickets }
+      : { title: 'CASHED', note: 'Last 7 days, newest first', stats: [{ k: 'RECORD', v: '6–3', tone: 'color: #fff;' }, { k: 'UNITS', v: '+4.2u', tone: 'color: #3ee07a;' }, { k: 'STREAK', v: 'W3', tone: 'color: #ebc56c;' }], tickets };
+    const tab = (k) => (s.view === k ? 'lit' : '');
+    return { tv, showTicker: s.view !== 'algo', isTickets: isOpen || isCashed, isBoardView: s.view === 'board', isAlgo: s.view === 'algo', al: this.algoView(s), openCount: open.length,
+      tabs: { board: tab('board'), open: tab('open'), cashed: tab('cashed'), algo: tab('algo'), boardCur: s.view === 'board' ? 'page' : 'false', openCur: isOpen ? 'page' : 'false', cashedCur: isCashed ? 'page' : 'false', algoCur: s.view === 'algo' ? 'page' : 'false' },
+      goBoard: () => this.setState({ view: 'board' }), goOpen: () => this.setState({ view: 'open', dd: false, why: null }), goCashed: () => this.setState({ view: 'cashed', dd: false, why: null }), goAlgo: () => this.setState({ view: 'algo', dd: false, why: null }) };
+  }
+  algoView(s) {
+    const sp = s.algoSport || 'all', closed = s.algoClosed || ['sport', 'stake', 'tracked', 'inplay', 'latest', 'checks2', 'news', 'changed', 'context', 'backtest', 'settings'];
+    const G = 'color: #3ee07a;', R = 'color: #ff7468;', W = 'color: #fff;', D = 'color: #ccc;';
+    const tiles = [{ k: 'BALANCE', v: '1284.6', sub: 'units · started at 1200', tone: 'color: #ebc56c; text-shadow: 0 0 8px rgba(235,197,108,.5);' }, { k: 'RECORD', v: '98-72', sub: '57.6% · streak W5', tone: W }, { k: 'PROFIT', v: '+84.6', sub: '+6.0u pending', tone: G }, { k: 'ROI', v: '7.1', sub: '% on 1,191u staked', tone: G }, { k: 'AT RISK', v: '12.0', sub: 'units on 9 open bets', tone: W }, { k: 'BEAT THE CLOSE', v: '58', sub: '% of bets, +1.4¢ a bet', tone: G }];
+    const sdefs = [['all', 'ALL', '#b38a3c'], ['nfl', 'NFL', '#1f3f7a'], ['nba', 'NBA', '#b8322a'], ['nhl', 'NHL', '#262626'], ['mlb', 'MLB', '#1d8a4e']];
+    const sports = sdefs.map(([k, label, clay]) => ({ label, clay, on: sp === k ? 'on' : '', pressed: sp === k ? 'true' : 'false', pick: () => this.setState({ algoSport: k }) }));
+    const series = { nfl: [0, 1.2, 0.4, 2.8, 4.1, 3.0, 5.6, 7.9, 6.2, 8.8, 10.4, 9.1, 12.6, 14.0, 13.2, 15.8, 17.1, 16.0, 18.9, 21.3, 20.1, 22.4, 24.8, 23.9, 26.2, 27.0, 28.4, 27.6, 30.1, 31.4], nba: [0, -0.8, 0.3, -1.2, -0.4, 1.1, 0.6, 2.2, 1.4, 3.0, 2.1, 3.9, 5.2, 4.4, 6.0, 7.3, 6.1, 7.8, 9.0, 8.2, 9.9, 11.3, 10.5, 12.0, 13.4, 12.9, 14.1, 15.0, 14.2, 15.6], nhl: [0, 0.9, 1.6, 0.8, 2.4, 3.3, 2.1, 1.0, 2.6, 3.9, 3.1, 4.6, 5.8, 4.9, 6.2, 5.4, 6.9, 8.1, 7.0, 8.4, 9.6, 8.7, 10.2, 11.0, 10.1, 11.8, 12.6, 11.9, 13.0, 14.2], mlb: [0, 1.4, 2.6, 2.0, 3.8, 5.1, 4.6, 6.2, 7.4, 6.8, 8.6, 9.9, 9.1, 10.8, 12.0, 11.2, 12.9, 14.3, 13.5, 15.0, 16.2, 15.6, 17.4, 18.1, 17.3, 19.2, 20.4, 21.0, 22.3, 23.4] };
+    const total = series.nfl.map((_, i) => series.nfl[i] + series.nba[i] + series.nhl[i] + series.mlb[i]);
+    const keys = sp === 'all' ? ['nfl', 'nba', 'nhl', 'mlb'] : [sp];
+    const shown = sp === 'all' ? total : series[sp];
+    const max = Math.max(...shown, ...keys.map((k) => Math.max(...series[k]))) * 1.08, min = Math.min(0, ...keys.map((k) => Math.min(...series[k]))) - 2;
+    const X = (i) => (i / 29) * 800, Y = (v) => 210 - ((v - min) / (max - min)) * 200;
+    const path = (arr) => arr.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const colors = { nfl: '#6d9cff', nba: '#f0604c', nhl: '#c5ccd4', mlb: '#3ec47e' };
+    const lines = keys.map((k) => ({ d: path(series[k]), c: colors[k], w: sp === 'all' ? 1.6 : 2.6 }));
+    if (sp === 'all') lines.push({ d: path(total), c: '#ebc56c', w: 2.8 });
+    const area = path(shown) + ' L800 ' + Y(0).toFixed(1) + ' L0 ' + Y(0).toFixed(1) + ' Z';
+    const legend = (sp === 'all' ? [['All', total[29], '#ebc56c']] : []).concat(keys.map((k) => [k.toUpperCase(), series[k][29], colors[k]])).map(([k, v, c]) => ({ k, v: '+' + v.toFixed(1) + 'u', c }));
+    const T = (t, a, st) => ({ t, a: a || 'right', s: st || D });
+    const tog = (key, open) => () => this.setState({ algoClosed: open ? closed.concat(key) : closed.filter((x) => x !== key) });
+    const P = (key, title, sum, body) => { const open = closed.indexOf(key) < 0; return Object.assign({ title, sum, open, rot: open ? '90deg' : '0deg', toggle: tog(key, open), isTable: false, isCal: false, isChecks: false, cols: '', head: [], cells: [], cal: [], checks: [] }, body); };
+    const conf = [['LOCK', '#f0a060', 41, '23–9', '71.9%', '+18.4u', '+14.2%'], ['LOVE', '#3ee07a', 58, '31–22', '58.5%', '+7.9u', '+6.8%'], ['LIKE', '#ffcd00', 89, '44–41', '51.8%', '+2.1u', '+1.9%'], ['PASS', '#9a9a9a', 212, '102–104', '49.5%', 'tracked', '—']];
+    const mk = [['Spread', 42, '24–17', '+6.9u', G], ['Total', 38, '21–16', '+4.1u', G], ['Team total', 17, '9–8', '+0.4u', G], ['Moneyline', 29, '15–14', '−1.2u', R], ['Props', 44, '29–17', '+11.8u', G]];
+    const panels = [
+      P('conf', 'BY CONFIDENCE', 'locks +14.2% ROI', { isTable: true, cols: 'grid-template-columns: 1fr repeat(5, auto);', head: [T('BAND', 'left'), T('BETS'), T('RECORD'), T('WIN %'), T('UNITS'), T('ROI')], cells: [].concat(...conf.map(([b, c, n, rec, wp, u, roi]) => [T(b, 'left', 'font-weight: 900; letter-spacing: 1.5px; color: ' + c + ';'), T(String(n)), T(rec, 'right', W), T(wp), T(u, 'right', u[0] === '+' ? G : D), T(roi, 'right', roi[0] === '+' ? G : D)])) }),
+      P('cal', 'CALIBRATION', 'within 2 points', { isCal: true, cal: [['50–55%', 53, 52], ['55–60%', 56, 58], ['60–65%', 62, 61], ['65–70%', 67, 69], ['70%+', 74, 72]].map(([b, pred, act]) => ({ b, pred: pred + '%', act: act + '%', actW: 'width: ' + act + '%;', predL: 'left: calc(' + pred + '% - 1px);' })) }),
+      P('market', 'BY MARKET', 'props lead +11.8u', { isTable: true, cols: 'grid-template-columns: 1fr repeat(3, auto);', head: [T('MARKET', 'left'), T('BETS'), T('RECORD'), T('UNITS')], cells: [].concat(...mk.map(([m, n, rec, u, tone]) => [T(m, 'left', W), T(String(n)), T(rec, 'right', W), T(u, 'right', tone)])) }),
+      P('checks', 'SELF-CHECKS', '5 ok · 1 to watch', { isChecks: true, checks: [['OK', 'Data fresh', 'every sport pulled in the last 6 hours'], ['OK', 'Lines matched', '412 of 414 prices matched to a game'], ['WATCH', 'NHL game lines', 'tracked, not bet: CLV −0.035 over 185'], ['OK', 'Calibration', 'every band within 3 points'], ['OK', 'Stake sizing', 'no bet over 3% of the bankroll'], ['OK', 'News', 'injury reports read for 38 of 38 picks']].map(([st, k, v]) => ({ st, k, v, s: st === 'OK' ? 'background: #1d8a4e; color: #fff;' : st === 'WATCH' ? 'background: #ff9a3c; color: #1a1a1a;' : 'background: #c62828; color: #fff;' })) }),
+      P('sport', 'BY SPORT', 'NFL +31.4u'), P('stake', 'BY STAKE', '1u bets best'), P('tracked', 'TRACKED', '214 not bet'), P('inplay', 'IN PLAY', '9 bets · 12.0u'), P('latest', 'LATEST RESULTS', 'W5'), P('checks2', 'CHECKS', '3 open'), P('news', 'NEWS SIGNALS', '6 graded'), P('changed', 'WHAT IT’S CHANGED', '3 this week'), P('context', 'CONTEXT', '11 terms'), P('backtest', 'BACKTEST', '2019–2025'), P('settings', 'MODEL SETTINGS', 'epoch 14')
+    ];
+    return { tiles, sports, lines, area, legend, zeroY: Y(0).toFixed(1), panels };
   }
   whyOf(it, rankOf, all) {
     const K = parseFloat(it.kelly), p = it.model, q = it.book, ev = ((p / 100) * this.profit(it.o) - (1 - p / 100)) * 100;
@@ -558,6 +753,7 @@ class Component extends DCLogic {
       empty: isBest && groups.length === 0, reset: () => this.setState({ kinds: [], game: 'all' }),
       isBest, isGame: !isBest, gv, backToBest: () => this.setState({ game: 'all', why: null }),
       whyOpen: !!w, w: w || { k: '', kTone: '', title: '', sub: '', parts: [], p: 0, q: 0, ev: '', evTone: '', note: '', modelW: '', bookL: '' }, closeWhy: () => this.setState({ why: null }),
+      ...this.ticketsView(s),
       anyPop: s.dd || !!w, closeAll: () => this.setState({ dd: false, why: null }),
       slipCount: n, slipEmpty: n === 0, slipFull: n > 0, multi: n > 1,
       isStraight: parlayMode ? 'false' : 'true', isParlay: parlayMode ? 'true' : 'false',

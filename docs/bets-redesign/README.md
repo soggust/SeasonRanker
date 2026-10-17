@@ -190,12 +190,63 @@ units and streak, and then the last five settled bets: a W/L/P tile, the pick, t
 comes from the wallet's settled bets. "The Bot" uses the bot's settled results if the page already has them
 (otherwise hide the switch). It defaults to The Bot for a user with no settled bets.
 
-### 9. Removed
+### 9. Open tickets, Cashed and Algorithm (the other three tabs)
+
+The tabs switch views in place, as today. In the designs, click the tabs on either artboard to see each one.
+
+**Open tickets** (today's Open Bets tab, `hasOpen()`): a summary strip (dot-matrix panel: "OPEN TICKETS" in gold,
+then IN PLAY, TO WIN, LIVE and PENDING counts), then the user's open bets **as printed tickets**, the same paper as
+the slip, in a grid (`repeat(auto-fill, minmax(290px, 1fr))`, gap 26px × 24px; one column on phones). Live
+tickets come first. Each ticket shows:
+
+- "THE BOOK", the ticket number and when it was placed
+- a status tag: a black **LIVE** tag with a blinking green dot (still for reduced motion), or the start time
+  outlined
+- STRAIGHT, or "N-LEG PARLAY · odds"
+- every leg: the pick in caps and its odds, "SPORT · matchup · band tag", and a live line: the score and clock
+  with how the bet stands ("PACE 212, UNDER BY 9.5" in green, "2 OF 4 SHOTS · NEEDS 2 MORE" in ink), or
+  "KICKS OFF SUN 3:05 PM" in grey. Props get a thin green progress meter.
+- RISK, TO WIN and PAYS, and the barcode
+
+The data is the wallet's open bets and the live scores and progress the Open Bets table already shows (its
+score and progress-meter columns). Grouping by game is no longer needed, because each ticket names its game.
+
+**Cashed** (today's Closed Bets tab, `hasClosed()`): the same tickets for settled bets, newest first, under a
+strip with the last 7 days' RECORD, UNITS and STREAK. Each ticket carries a rubber stamp rotated −14°, set in the top-right corner (about 54px from the top on desktop, 38px on phones; the designs have it exact)
+so it overlaps the SETTLED tag and the ticket number and time, **never the result line or the totals**: a 3px
+border in `currentColor` over the ticket, multiply blend at about 82%. It reads **CASHED +x U** in `#1d8a4e`,
+**LOST −x U** in `#c62828`, or **PUSH** in `#4a4a4a`. The totals read WON, WOULD HAVE WON or RETURNED, and the
+live line becomes the final score.
+
+**Algorithm** (the model desk, admin only, `desk()`): restyle only. **No ticker on this tab** (it stays on The board, Open
+tickets and Cashed). Its panels are plain scoreboard panels (`v.scoreboard-panel`: dots, 1px `$panel-edge`, the
+small drop shadow), **not** the board's ringed panel. The ringed board style is the Best-bets board's alone, and
+its `flex: 1` would squash the profit curve. **Every panel, number and calculation stays
+the model desk's own.**
+
+- **The six scoreboard tiles** in a row: Balance, Record, Profit, ROI, At risk, Beat the close. Each is a
+  dot-matrix tile with a small caps label, the value in DSEG7 (gold for Balance, green for gains) and a
+  one-line note.
+- **The date-range and game selects** as the black-to-gold pills.
+- **The sport chips** as the house's casino chips, using `$sport-clay` with All in gold. They now pick one
+  sport at a time; check how they behave today, and if they're multi-select, keep that.
+- **The profit curve** on a board panel: one line per sport in `$sport-line`, the total in gold over a soft
+  gold area, a dashed zero line, and the legend with each sport's units.
+- **The panels** become collapsible board panels with the gold header bar (chevron, title, and a one-line
+  summary on the right) in a two-column grid. By Confidence, Calibration, By Market and Self-checks start
+  open; the rest start closed. Tables get 10px caps heads and tabular numbers. Self-check statuses are word
+  tags (OK green, WATCH orange, FAIL red), never colour alone.
+
+### 10. Removed
 
 The slot-machine handle and reel spin (`pull`, `pulling`, `spinning`) aren't in the design. **Ask the owner
 before deleting them.** If they say remove, take out the markup, styles and the three members together. Also
 drop: the paragraph-long chip key tooltip, the duplicate lines board that showed on top when a game was
 chosen, and the six-material clutter (gunmetal panel, gold rail, blue cloth).
+
+**Vertical centring, everywhere**: every pill, dropdown, tab, chip label and header row centres its contents
+with flex `align-items: center` and `line-height: 1` on the text, never baseline alignment (the ticker, the
+dropdown pills and the Algorithm's PROFIT header row with its legend in particular).
 
 ## Phases (commit and check after each)
 
@@ -208,7 +259,8 @@ chosen, and the six-material clutter (gunmetal panel, gold rail, blue cloth).
 6. The why popover restyle and outside-click closing.
 7. The ticket (desktop dock, phone stub and sheet).
 8. Recent form.
-9. Phone pass against `Phone.dc.html` (≤700px), and the reduced-motion and keyboard check: every control is
+9. Open tickets and Cashed as tickets; the Algorithm restyle (restyle only).
+10. Phone pass against `Phone.dc.html` (≤700px), and the reduced-motion and keyboard check: every control is
    a real button or link, focus uses `v.focus-lit` / `v.focus-ring`, and touch targets are at least 44px.
 
 ## Done when

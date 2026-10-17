@@ -43,12 +43,40 @@ body{margin:0;background:#0b3322}
 </a>
 </header>
 <nav class="posbar dots" aria-label="Bets sections" style="margin: 0 14px; height: 40px; display: flex; border: 1px solid #3a3a3a; border-radius: 9.1px; overflow: hidden;">
-<button class="btn lit" aria-current="page">Board</button>
-<button class="btn">Open · 2</button>
-<button class="btn">Cashed</button>
+<button class="btn {{tabs.board}}" onClick="{{goBoard}}" aria-current="{{tabs.boardCur}}">Board</button>
+<button class="btn {{tabs.open}}" onClick="{{goOpen}}" aria-current="{{tabs.openCur}}">Open · {{openCount}}</button>
+<button class="btn {{tabs.cashed}}" onClick="{{goCashed}}" aria-current="{{tabs.cashedCur}}">Cashed</button>
 </nav>
+<sc-if value="{{isTickets}}" hint-placeholder-val="{{false}}">
+<div class="dots" style="margin: 0 14px; border: 1px solid #3a3a3a; border-radius: 6px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding: 10px 12px;">
+<sc-for list="{{tv.stats}}" as="st" hint-placeholder-count="4"><span style="display: flex; align-items: baseline; gap: 6px;"><span style="font-size: 9px; font-weight: 800; letter-spacing: 1.2px; color: rgba(255,255,255,.6);">{{st.k}}</span><span style="font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600; {{st.tone}}">{{st.v}}</span></span></sc-for>
+</div>
+<div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; padding: 6px 18px 28px; display: flex; flex-direction: column; gap: 22px;">
+<sc-for list="{{tv.tickets}}" as="t" hint-placeholder-count="3">
+<article class="ticket" aria-label="Ticket {{t.no}}" style="position: relative; flex: none; padding: 22px 16px 24px; display: flex; flex-direction: column; gap: 9px; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); -webkit-mask: radial-gradient(circle 6px at 50% 0, transparent 98%, #000) top/16px 51% repeat-x, radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) bottom/16px 51% repeat-x; mask: radial-gradient(circle 6px at 50% 0, transparent 98%, #000) top/16px 51% repeat-x, radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) bottom/16px 51% repeat-x;">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 700; font-size: 12px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; color: #4a4a4a;">TICKET {{t.no}} · {{t.placed}}</span></div>
+<span style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 7px; border-radius: 3px; white-space: nowrap; {{t.statusStyle}}"><sc-if value="{{t.isLive}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #3ee07a;"></span></sc-if>{{t.statusTxt}}</span>
+</div>
+<hr style="border: none; border-top: 2px dashed rgba(26,26,26,.25); margin: 0;">
+<span style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">{{t.kind}}</span>
+<sc-for list="{{t.legs}}" as="l" hint-placeholder-count="1">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 8px; border-bottom: 1px dotted rgba(26,26,26,.35);">
+<div style="display: flex; gap: 8px; align-items: baseline;"><span style="flex: 1; font-size: 12px; font-weight: 700; text-transform: uppercase;">{{l.pick}}</span><span style="font-size: 12px; font-weight: 700;">{{l.odds}}</span></div>
+<span style="font-size: 10px; color: #4a4a4a;">{{l.game}} · {{l.tag}}</span>
+<sc-if value="{{l.hasMeter}}" hint-placeholder-val="{{false}}"><div aria-hidden="true" style="height: 6px; border-radius: 999px; background: rgba(26,26,26,.14); overflow: hidden;"><div style="height: 100%; border-radius: 999px; background: #1d8a4e; {{l.meterW}}"></div></div></sc-if>
+<span style="font-size: 10px; font-weight: 700; {{l.liveStyle}}">{{l.live}}</span>
+</div>
+</sc-for>
+<div style="display: flex; justify-content: space-between; font-size: 12px;"><span>RISK {{t.risk}}U</span><span>{{t.winLabel}} <b>{{t.win}}U</b></span></div>
+<sc-if value="{{t.hasStamp}}" hint-placeholder-val="{{false}}"><span style="position: absolute; right: 10px; top: 38px; rotate: -14deg; padding: 5px 9px; border: 3px solid currentColor; border-radius: 4px; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply; pointer-events: none; {{t.stampStyle}}">{{t.stamp}}</span></sc-if>
+</article>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isBoardView}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 14px;">
-<button class="btn pcard" onClick="{{toggleDd}}" aria-haspopup="listbox" aria-expanded="{{ddOpen}}" style="height: 44px; border-radius: 999px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 14px; color: #fff;">
+<button class="btn pcard" onClick="{{toggleDd}}" aria-haspopup="listbox" aria-expanded="{{ddOpen}}" style="height: 44px; border-radius: 999px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 14px; line-height: 1; color: #fff;">
 <sc-if value="{{gameIcon}}" hint-placeholder-val="{{false}}"><img src="{{gameIcon}}" alt="" style="width: 18px; height: 18px;"></sc-if>
 <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{gameLabel}}</span><span class="glow" style="font-size: 12px;">{{gameCount}}</span>
 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -135,6 +163,7 @@ body{margin:0;background:#0b3322}
 <div style="display: flex; justify-content: space-between; font-size: 12px;"><span>RISK {{totStake}}U</span><span>WIN <b>{{totWin}}U</b></span><span>PAYS {{totPays}}U</span></div>
 <button class="btn pcard" style="padding: 13px; border-radius: 6px; font-family: Outfit, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; color: #ebc56c; text-shadow: 0 0 6px rgba(235,197,108,.55);">{{placeLabel}}</button>
 </div>
+</sc-if>
 
 <sc-if value="{{anyPop}}" hint-placeholder-val="{{false}}"><button class="btn" onClick="{{closeAll}}" aria-label="Close" tabindex="-1" style="position: absolute; inset: 0; z-index: 8; background: rgba(0,0,0,.55); cursor: default;"></button></sc-if>
 
@@ -186,7 +215,7 @@ body{margin:0;background:#0b3322}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { kinds: [], game: 'all', dd: false, open: null, closed: [], slip: [1, 3], stakes: { 1: 2, 3: 1 }, mode: 'straight', pStake: 1, form: 'you', why: null, secOpen: { lines: true, tt: true, props: false } };
+    this.state = { kinds: [], game: 'all', dd: false, open: null, closed: [], slip: [1, 3], stakes: { 1: 2, 3: 1 }, mode: 'straight', pStake: 1, form: 'you', why: null, view: 'board', secOpen: { lines: true, tt: true, props: false } };
   }
   data() {
     return [
@@ -235,6 +264,70 @@ class Component extends DCLogic {
         tt: [], props: [] };
     });
     return G;
+  }
+  ticketsView(s) {
+    const f = (x) => (Math.round(x * 100) / 100).toFixed(2).replace(/0$/, '');
+    const ink = { good: 'color: #1d8a4e;', bad: 'color: #c62828;', even: 'color: #1a1a1a;', wait: 'color: #4a4a4a;' };
+    const L = (pick, odds, game, tag, live, tone, meter) => ({ pick, odds, game, tag, live, liveStyle: ink[tone], hasMeter: !!meter, meterW: meter ? 'width: ' + Math.round(meter * 100) + '%;' : '' });
+    const open = [
+      { no: '0417-0021', placed: 'SAT 5:52 PM', kind: 'STRAIGHT', live: true, start: '', legs: [L('Under 221.5', '−108', 'NBA · BOS @ NYK', 'LOVE', 'BOS 61 – NYK 58 · 3RD 4:12 · PACE 212, UNDER BY 9.5', 'good')], risk: 1, win: 0.93 },
+      { no: '0417-0022', placed: 'SAT 6:40 PM', kind: 'STRAIGHT', live: true, start: '', legs: [L('Auston Matthews over 3.5 shots', '−125', 'NHL · TOR @ MTL', 'LOVE', '2 OF 4 SHOTS · 2ND 11:40 · NEEDS 2 MORE', 'even', 0.5)], risk: 1, win: 0.8 },
+      { no: '0417-0023', placed: 'SAT 3:12 PM', kind: '2-LEG PARLAY · +191', live: false, start: 'SUN 3:05 PM', legs: [L('Kenneth Walker III over 68.5 rush yds', '−115', 'NFL · SEA @ LAR', 'LOCK', 'KICKS OFF SUN 3:05 PM', 'wait'), L('Chiefs to win', '−180', 'NFL · KC @ LV', 'LOVE', 'KICKS OFF SUN 3:25 PM', 'wait')], risk: 1, win: 1.91 },
+      { no: '0417-0024', placed: 'SAT 3:14 PM', kind: 'STRAIGHT', live: false, start: 'SUN 7:20 PM', legs: [L('Lions −2.5', '−110', 'NFL · DET @ MIN', 'LOCK', 'KICKS OFF SUN 7:20 PM', 'wait')], risk: 2, win: 1.82 }
+    ];
+    const cashed = [
+      { no: '0416-0018', placed: 'FRI 9:58 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Over 6.5', '−110', 'NHL · NYR @ BOS', 'LOVE', 'FINAL/OT · NYR 4 – BOS 3', 'good')], risk: 1, win: 0.91 },
+      { no: '0415-0016', placed: 'THU 10:41 PM', kind: 'STRAIGHT', res: 'L', legs: [L('Suns to win', '+105', 'NBA · PHX @ DEN', 'LIKE', 'FINAL · PHX 104 – DEN 112', 'bad')], risk: 1, win: 1.05 },
+      { no: '0413-0012', placed: 'MON 11:20 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Lions −3', '−110', 'NFL · DET @ GB', 'LOCK', 'FINAL · DET 27 – GB 20 · COVERED BY 4', 'good')], risk: 1.1, win: 1 },
+      { no: '0412-0009', placed: 'SUN 3:48 PM', kind: 'STRAIGHT', res: 'W', legs: [L('Josh Allen 2+ TDs', '+210', 'NFL · BUF @ NE', 'YOUR CALL', 'FINAL · ALLEN 2 TDS', 'good')], risk: 1, win: 2.1 },
+      { no: '0412-0008', placed: 'SUN 3:46 PM', kind: 'STRAIGHT', res: 'P', legs: [L('Under 44', '−110', 'NFL · SF @ ARI', 'LIKE', 'FINAL · SF 24 – ARI 20 · LANDED ON 44', 'even')], risk: 1, win: 0.91 }
+    ];
+    const isOpen = s.view === 'open', isCashed = s.view === 'cashed';
+    const tickets = (isOpen ? open : isCashed ? cashed : []).map((t) => {
+      const stamp = t.res === 'W' ? 'CASHED +' + f(t.win) + 'U' : t.res === 'L' ? 'LOST −' + f(t.risk) + 'U' : t.res === 'P' ? 'PUSH · 0U' : '';
+      return Object.assign({}, t, { risk: f(t.risk), win: f(t.res === 'P' ? 0 : t.win), pays: f(t.res === 'L' ? 0 : t.res === 'P' ? t.risk : t.risk + t.win), winLabel: t.res ? (t.res === 'W' ? 'WON' : t.res === 'L' ? 'WOULD HAVE WON' : 'RETURNED') : 'TO WIN', isLive: !!t.live,
+        statusTxt: t.res ? 'SETTLED' : t.live ? 'LIVE' : t.start, statusStyle: t.live ? 'background: #1a1a1a; color: #3ee07a;' : 'border: 1.5px solid #1a1a1a; color: #1a1a1a;',
+        hasStamp: !!stamp, stamp, stampStyle: t.res === 'W' ? 'color: #1d8a4e;' : t.res === 'L' ? 'color: #c62828;' : 'color: #4a4a4a;' });
+    });
+    const tv = isOpen
+      ? { title: 'OPEN TICKETS', note: 'Live tickets first · updates every minute', stats: [{ k: 'IN PLAY', v: '5.0u', tone: 'color: #fff;' }, { k: 'TO WIN', v: '5.5u', tone: 'color: #3ee07a;' }, { k: 'LIVE', v: '2', tone: 'color: #3ee07a;' }, { k: 'PENDING', v: '2', tone: 'color: #ccc;' }], tickets }
+      : { title: 'CASHED', note: 'Last 7 days, newest first', stats: [{ k: 'RECORD', v: '6–3', tone: 'color: #fff;' }, { k: 'UNITS', v: '+4.2u', tone: 'color: #3ee07a;' }, { k: 'STREAK', v: 'W3', tone: 'color: #ebc56c;' }], tickets };
+    const tab = (k) => (s.view === k ? 'lit' : '');
+    return { tv, isTickets: isOpen || isCashed, isBoardView: s.view === 'board', isAlgo: s.view === 'algo', al: this.algoView(s), openCount: open.length,
+      tabs: { board: tab('board'), open: tab('open'), cashed: tab('cashed'), algo: tab('algo'), boardCur: s.view === 'board' ? 'page' : 'false', openCur: isOpen ? 'page' : 'false', cashedCur: isCashed ? 'page' : 'false', algoCur: s.view === 'algo' ? 'page' : 'false' },
+      goBoard: () => this.setState({ view: 'board' }), goOpen: () => this.setState({ view: 'open', dd: false, why: null }), goCashed: () => this.setState({ view: 'cashed', dd: false, why: null }), goAlgo: () => this.setState({ view: 'algo', dd: false, why: null }) };
+  }
+  algoView(s) {
+    const sp = s.algoSport || 'all', closed = s.algoClosed || ['sport', 'stake', 'tracked', 'inplay', 'latest', 'checks2', 'news', 'changed', 'context', 'backtest', 'settings'];
+    const G = 'color: #3ee07a;', R = 'color: #ff7468;', W = 'color: #fff;', D = 'color: #ccc;';
+    const tiles = [{ k: 'BALANCE', v: '1284.6', sub: 'units · started at 1200', tone: 'color: #ebc56c; text-shadow: 0 0 8px rgba(235,197,108,.5);' }, { k: 'RECORD', v: '98-72', sub: '57.6% · streak W5', tone: W }, { k: 'PROFIT', v: '+84.6', sub: '+6.0u pending', tone: G }, { k: 'ROI', v: '7.1', sub: '% on 1,191u staked', tone: G }, { k: 'AT RISK', v: '12.0', sub: 'units on 9 open bets', tone: W }, { k: 'BEAT THE CLOSE', v: '58', sub: '% of bets, +1.4¢ a bet', tone: G }];
+    const sdefs = [['all', 'ALL', '#b38a3c'], ['nfl', 'NFL', '#1f3f7a'], ['nba', 'NBA', '#b8322a'], ['nhl', 'NHL', '#262626'], ['mlb', 'MLB', '#1d8a4e']];
+    const sports = sdefs.map(([k, label, clay]) => ({ label, clay, on: sp === k ? 'on' : '', pressed: sp === k ? 'true' : 'false', pick: () => this.setState({ algoSport: k }) }));
+    const series = { nfl: [0, 1.2, 0.4, 2.8, 4.1, 3.0, 5.6, 7.9, 6.2, 8.8, 10.4, 9.1, 12.6, 14.0, 13.2, 15.8, 17.1, 16.0, 18.9, 21.3, 20.1, 22.4, 24.8, 23.9, 26.2, 27.0, 28.4, 27.6, 30.1, 31.4], nba: [0, -0.8, 0.3, -1.2, -0.4, 1.1, 0.6, 2.2, 1.4, 3.0, 2.1, 3.9, 5.2, 4.4, 6.0, 7.3, 6.1, 7.8, 9.0, 8.2, 9.9, 11.3, 10.5, 12.0, 13.4, 12.9, 14.1, 15.0, 14.2, 15.6], nhl: [0, 0.9, 1.6, 0.8, 2.4, 3.3, 2.1, 1.0, 2.6, 3.9, 3.1, 4.6, 5.8, 4.9, 6.2, 5.4, 6.9, 8.1, 7.0, 8.4, 9.6, 8.7, 10.2, 11.0, 10.1, 11.8, 12.6, 11.9, 13.0, 14.2], mlb: [0, 1.4, 2.6, 2.0, 3.8, 5.1, 4.6, 6.2, 7.4, 6.8, 8.6, 9.9, 9.1, 10.8, 12.0, 11.2, 12.9, 14.3, 13.5, 15.0, 16.2, 15.6, 17.4, 18.1, 17.3, 19.2, 20.4, 21.0, 22.3, 23.4] };
+    const total = series.nfl.map((_, i) => series.nfl[i] + series.nba[i] + series.nhl[i] + series.mlb[i]);
+    const keys = sp === 'all' ? ['nfl', 'nba', 'nhl', 'mlb'] : [sp];
+    const shown = sp === 'all' ? total : series[sp];
+    const max = Math.max(...shown, ...keys.map((k) => Math.max(...series[k]))) * 1.08, min = Math.min(0, ...keys.map((k) => Math.min(...series[k]))) - 2;
+    const X = (i) => (i / 29) * 800, Y = (v) => 210 - ((v - min) / (max - min)) * 200;
+    const path = (arr) => arr.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const colors = { nfl: '#6d9cff', nba: '#f0604c', nhl: '#c5ccd4', mlb: '#3ec47e' };
+    const lines = keys.map((k) => ({ d: path(series[k]), c: colors[k], w: sp === 'all' ? 1.6 : 2.6 }));
+    if (sp === 'all') lines.push({ d: path(total), c: '#ebc56c', w: 2.8 });
+    const area = path(shown) + ' L800 ' + Y(0).toFixed(1) + ' L0 ' + Y(0).toFixed(1) + ' Z';
+    const legend = (sp === 'all' ? [['All', total[29], '#ebc56c']] : []).concat(keys.map((k) => [k.toUpperCase(), series[k][29], colors[k]])).map(([k, v, c]) => ({ k, v: '+' + v.toFixed(1) + 'u', c }));
+    const T = (t, a, st) => ({ t, a: a || 'right', s: st || D });
+    const tog = (key, open) => () => this.setState({ algoClosed: open ? closed.concat(key) : closed.filter((x) => x !== key) });
+    const P = (key, title, sum, body) => { const open = closed.indexOf(key) < 0; return Object.assign({ title, sum, open, rot: open ? '90deg' : '0deg', toggle: tog(key, open), isTable: false, isCal: false, isChecks: false, cols: '', head: [], cells: [], cal: [], checks: [] }, body); };
+    const conf = [['LOCK', '#f0a060', 41, '23–9', '71.9%', '+18.4u', '+14.2%'], ['LOVE', '#3ee07a', 58, '31–22', '58.5%', '+7.9u', '+6.8%'], ['LIKE', '#ffcd00', 89, '44–41', '51.8%', '+2.1u', '+1.9%'], ['PASS', '#9a9a9a', 212, '102–104', '49.5%', 'tracked', '—']];
+    const mk = [['Spread', 42, '24–17', '+6.9u', G], ['Total', 38, '21–16', '+4.1u', G], ['Team total', 17, '9–8', '+0.4u', G], ['Moneyline', 29, '15–14', '−1.2u', R], ['Props', 44, '29–17', '+11.8u', G]];
+    const panels = [
+      P('conf', 'BY CONFIDENCE', 'locks +14.2% ROI', { isTable: true, cols: 'grid-template-columns: 1fr repeat(5, auto);', head: [T('BAND', 'left'), T('BETS'), T('RECORD'), T('WIN %'), T('UNITS'), T('ROI')], cells: [].concat(...conf.map(([b, c, n, rec, wp, u, roi]) => [T(b, 'left', 'font-weight: 900; letter-spacing: 1.5px; color: ' + c + ';'), T(String(n)), T(rec, 'right', W), T(wp), T(u, 'right', u[0] === '+' ? G : D), T(roi, 'right', roi[0] === '+' ? G : D)])) }),
+      P('cal', 'CALIBRATION', 'within 2 points', { isCal: true, cal: [['50–55%', 53, 52], ['55–60%', 56, 58], ['60–65%', 62, 61], ['65–70%', 67, 69], ['70%+', 74, 72]].map(([b, pred, act]) => ({ b, pred: pred + '%', act: act + '%', actW: 'width: ' + act + '%;', predL: 'left: calc(' + pred + '% - 1px);' })) }),
+      P('market', 'BY MARKET', 'props lead +11.8u', { isTable: true, cols: 'grid-template-columns: 1fr repeat(3, auto);', head: [T('MARKET', 'left'), T('BETS'), T('RECORD'), T('UNITS')], cells: [].concat(...mk.map(([m, n, rec, u, tone]) => [T(m, 'left', W), T(String(n)), T(rec, 'right', W), T(u, 'right', tone)])) }),
+      P('checks', 'SELF-CHECKS', '5 ok · 1 to watch', { isChecks: true, checks: [['OK', 'Data fresh', 'every sport pulled in the last 6 hours'], ['OK', 'Lines matched', '412 of 414 prices matched to a game'], ['WATCH', 'NHL game lines', 'tracked, not bet: CLV −0.035 over 185'], ['OK', 'Calibration', 'every band within 3 points'], ['OK', 'Stake sizing', 'no bet over 3% of the bankroll'], ['OK', 'News', 'injury reports read for 38 of 38 picks']].map(([st, k, v]) => ({ st, k, v, s: st === 'OK' ? 'background: #1d8a4e; color: #fff;' : st === 'WATCH' ? 'background: #ff9a3c; color: #1a1a1a;' : 'background: #c62828; color: #fff;' })) }),
+      P('sport', 'BY SPORT', 'NFL +31.4u'), P('stake', 'BY STAKE', '1u bets best'), P('tracked', 'TRACKED', '214 not bet'), P('inplay', 'IN PLAY', '9 bets · 12.0u'), P('latest', 'LATEST RESULTS', 'W5'), P('checks2', 'CHECKS', '3 open'), P('news', 'NEWS SIGNALS', '6 graded'), P('changed', 'WHAT IT’S CHANGED', '3 this week'), P('context', 'CONTEXT', '11 terms'), P('backtest', 'BACKTEST', '2019–2025'), P('settings', 'MODEL SETTINGS', 'epoch 14')
+    ];
+    return { tiles, sports, lines, area, legend, zeroY: Y(0).toFixed(1), panels };
   }
   whyOf(it, rankOf, all) {
     const K = parseFloat(it.kelly), p = it.model, q = it.book, ev = ((p / 100) * this.profit(it.o) - (1 - p / 100)) * 100;
@@ -378,6 +471,7 @@ class Component extends DCLogic {
       empty: isBest && groups.length === 0, reset: () => this.setState({ kinds: [], game: 'all' }),
       isBest, isGame: !isBest, gv, backToBest: () => this.setState({ game: 'all', why: null }),
       whyOpen: !!w, w: w || { k: '', kTone: '', title: '', sub: '', parts: [], p: 0, q: 0, ev: '', evTone: '', note: '', modelW: '', bookL: '' }, closeWhy: () => this.setState({ why: null }),
+      ...this.ticketsView(s),
       betWord: n === 1 ? 'BET' : 'BETS',
       anyPop: s.dd || !!w, closeAll: () => this.setState({ dd: false, why: null }),
       slipCount: n, slipEmpty: n === 0, slipFull: n > 0, multi: n > 1,
