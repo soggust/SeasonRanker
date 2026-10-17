@@ -3100,7 +3100,8 @@ $ai-narrow: v.bp(ai-narrow);
       inset 0 0 3px rgba(0, 0, 0, 0.7),
       0 1px 3px rgba(0, 0, 0, 0.6);
     height: 40%;
-    left: -5%;
+    // (hung well off the circle's left edge so it stands clear of the face: the owner)
+    left: -22%;
     min-width: 40%;
     padding: 1px 3px 0;
     position: absolute;

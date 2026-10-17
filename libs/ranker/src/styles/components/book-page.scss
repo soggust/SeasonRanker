@@ -2064,11 +2064,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     // (the digits a touch apart, 6px off the team's name: the owner's note, 2026-10-17)
     letter-spacing: 1px;
     margin-left: -2px;
+    margin-right: v.$space-4;
   }
 
   .tick-state {
     color: v.$grey-light;
-    font-size: v.$fs-11;
+    font-size: v.$fs-10;
   }
 
   &.post .tick-state {
