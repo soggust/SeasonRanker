@@ -8,7 +8,7 @@
 // in the same range), the season's honors on top. The other sports' charts are the site's own rows, and a
 // man's popularity there is his USAGE, the chart's share of the minutes, the ice or the plate appearances (a
 // goalie's weighted to four tenths, he starts most nights while the top line and pair skate a third of the game,
-// and a starting pitcher's to six tenths: a skater or a hitter leads, and they still hang near the middle).
+// and a starting pitcher's to eight tenths: a skater or a hitter leads, and the ace and the goalie still hang).
 //   TM (the NFL)   the quarterback; the two most popular skill players (backs, receivers, tight ends); the three
 //                  most popular defenders; then the next best of either side, the seventh (wide screens only)
 //   DEF            the defense's starters by popularity
@@ -41,7 +41,7 @@ export function rosterOf(sport: string, view: DepthView, tab: string, numbers: R
         const p = s.depth.find(onRoster);
         if (!p) return [];
         const pos = posOf(s);
-        const pop = lockers ? (lockers[p.id]?.[1] ?? 0) : (p.snaps ?? 0) * (pos === 'G' ? 0.4 : /^(SP|P)$/.test(pos) ? 0.6 : 1);
+        const pop = lockers ? (lockers[p.id]?.[1] ?? 0) : (p.snaps ?? 0) * (pos === 'G' ? 0.4 : /^(SP|P)$/.test(pos) ? 0.8 : 1);
         return [{ p, pos, pop }];
       });
   const byPop = (list: Pick[]) => [...list].sort((a, b) => b.pop - a.pop);
