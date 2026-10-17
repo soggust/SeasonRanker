@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Cage — your wallet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Nunito:wght@400;500;600;700;800;900&amp;family=IBM+Plex+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#3d3935}
+a{color:#d8b98a}a:hover{color:#fff}
+.appbg{background:url("/_blob/14d9902899bc024d4861b93f6bf8967c") 0 0/220px 220px,url("/_blob/6e41dd060f97d7342deb2c4ad4a26a7d") 0 0/900px 900px,radial-gradient(ellipse 120% 90% at 50% 35%,transparent 45%,rgba(0,0,0,.55) 100%),url("/_blob/4e5f2f6b606b50f3a3753fba986a96f1") center/cover no-repeat,linear-gradient(160deg,#4f4840 0%,#3d3935 45%,#2a2623 100%);background-color:#3d3935}
+.sheet{background:radial-gradient(rgba(255,238,220,.045) 1px,transparent 1.3px) 0 0/4px 4px,rgba(22,20,18,.86);border:1px solid #4f4840;border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,238,220,.06),0 10px 30px rgba(0,0,0,.45)}
+.sportbar{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;box-shadow:inset 0 0 1em rgba(0,0,0,.4)}
+.sportbar a{display:flex;align-items:center;padding:0 14px;font:400 12px/1 Nunito,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-decoration:none}
+.sportbar a:hover{color:#d8b98a}
+.pbar{background:linear-gradient(rgba(63,163,107,.16),rgba(63,163,107,.16)),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border-bottom:1px solid rgba(63,163,107,.4) !important}
+.sandbtn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:10px;box-sizing:border-box;font:800 13px/1 Nunito,sans-serif;letter-spacing:1px;text-transform:uppercase;text-decoration:none;color:#2a1f14;background:linear-gradient(180deg,#e8d5b9,#d8b98a 55%,#c6a87e);border:1px solid #977f5f}
+.sandbtn:hover{filter:brightness(1.07);color:#2a1f14}
+.dots{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212}
+.apanel{border:1px solid #3a3a3a;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.glow{color:#d8b98a;text-shadow:0 0 6px rgba(216,185,138,.55)}
+.btn{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0}
+.btn:focus-visible{outline:1px solid rgba(255,255,255,.75);outline-offset:2px}
+.posbar button,.posbar a{flex:1;height:100%;display:flex;align-items:center;justify-content:center;font:800 11px/1 Nunito,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.4);padding:0 1.1em;white-space:nowrap;transition:color .15s}
+.posbar a:hover:not(.lit),.posbar a:focus-visible{color:#d8b98a;outline:none}
+.lit{position:relative;box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.2);color:#d8b98a !important;text-shadow:0 0 6px rgba(216,185,138,.55) !important}
+.lit::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:radial-gradient(#d8b98a 1px,transparent 1.3px) 0 100%/4px 4px;filter:drop-shadow(0 0 1.5px #d8b98a);pointer-events:none}
+.kchip{--clay:#555;position:relative;width:54px;height:54px;border-radius:50%;box-sizing:border-box;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),transparent 60%),linear-gradient(180deg,transparent 45%,rgba(0,0,0,.22)),var(--clay);border:6px solid var(--clay);box-shadow:inset 0 0 0 2px var(--clay),inset 0 0 0 3px rgba(255,236,196,.45),0 2px 4px rgba(0,0,0,.45);color:#fff;font-family:Nunito,sans-serif;text-shadow:0 1px 1.5px rgba(0,0,0,.6);transition:filter .15s,transform .15s}
+.kchip svg.rim{position:absolute;left:-6px;top:-6px;width:calc(100% + 12px);height:calc(100% + 12px);overflow:visible;pointer-events:none}
+.kchip rect{fill:none;x:3px;y:3px;width:calc(100% - 6px);height:calc(100% - 6px);rx:999px;stroke:#f4efe3;stroke-dasharray:5 5;stroke-width:6px;transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.3,1)}
+button.kchip:hover rect{stroke-dashoffset:-20}
+.kchip.locked{filter:grayscale(1) brightness(.35)}
+.kchip.sel{transform:translateY(-3px);box-shadow:inset 0 0 0 2px var(--clay),inset 0 0 0 3px rgba(255,236,196,.7),0 0 0 2px #d8b98a,0 6px 14px rgba(0,0,0,.55)}
+.pcard{background:radial-gradient(ellipse at 85% 0%,rgba(255,226,122,.18),transparent 55%),linear-gradient(135deg,#1d1d1d,#121212 60%,#1a1a1a);border:1px solid transparent;background-clip:padding-box;position:relative}
+.pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.pcard:hover{filter:brightness(1.12)}
+.ticket{background:linear-gradient(180deg,#f4efe3,#ece5d4);color:#1a1a1a;font-family:"IBM Plex Mono",monospace;-webkit-mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) top/16px 51% repeat-x,radial-gradient(circle 6px at 50% 100%,transparent 98%,#000) bottom/16px 51% repeat-x;mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) top/16px 51% repeat-x,radial-gradient(circle 6px at 50% 100%,transparent 98%,#000) bottom/16px 51% repeat-x}
+.leather{background:radial-gradient(ellipse at 35% 20%,rgba(255,255,255,.18),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.25)),url("/_blob/ea5555ef8dc1a15269fcb06daa4fcfb1") center/96px,#6b4e38;background-blend-mode:normal,normal,soft-light,normal}
+.stackchip{width:76px;height:12px;flex:none;border-radius:4px/3px;background:repeating-linear-gradient(90deg,var(--c) 0 11px,#f4efe3 11px 16px);box-shadow:inset 0 -2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.28),0 1px 0 rgba(0,0,0,.4)}
+.stack{transition:translate .2s cubic-bezier(.3,1.6,.5,1)}
+.stack:hover{translate:0 -4px}
+.bars{background:repeating-linear-gradient(90deg,transparent 0 22px,#b38a3c 22px 25px,#f1d58c 25px 26px,#7a5a1e 26px 28px)}
+.seg{display:flex;border:1px solid #3a3a3a;border-radius:999px;overflow:hidden}
+.seg button{padding:6px 12px;font:700 11px/1 Nunito,sans-serif;letter-spacing:1px;color:#ccc}
+.seg button[aria-pressed="true"]{background:#d8b98a;color:#1a1a1a}
+.row:hover{background:rgba(216,185,138,.04)}
+.frame{background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);padding:10px;border-radius:4px;box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 2px rgba(0,0,0,.25)}
+.scroll{scrollbar-width:thin;scrollbar-color:#d9a520 rgba(0,0,0,.25)}
+@media (prefers-reduced-motion:reduce){.stack,.kchip{transition:none}}
+</style>
+</helmet>
+<div class="appbg" style="min-height: 100vh; font-family: Nunito, sans-serif; font-size: 13px; color: #f1ece6; display: flex; flex-direction: column;">
+<nav class="sportbar" aria-label="Sports" style="height: 38px; display: flex; align-items: stretch; padding: 0 15px; position: relative; z-index: 5;">
+<a href="#">NFL</a><a href="#">MLB</a><a href="#">NBA</a><a href="#">NHL</a><a href="Main.dc.html">Bets</a>
+<span style="flex: 1;"></span>
+<button class="btn" aria-haspopup="menu" aria-label="Account menu for soggust" style="display: flex; align-items: center; gap: 8px; padding: 0 10px;"><span style="width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #4a443d; box-shadow: 0 0 0 1.5px #d8b98a; font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; color: #d8b98a;">SO</span><span style="font-size: 13px; font-weight: 700; color: #d8b98a; text-shadow: 0 0 6px rgba(216,185,138,.5);">soggust</span><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#d8b98a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+</nav>
+<div style="flex: 1; padding: 1em 2em 2em; display: flex; justify-content: center;">
+<div class="sheet" style="width: 100%; max-width: 1240px; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column; gap: 20px;">
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px;">
+<span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #4a443d; box-shadow: 0 0 0 2px #d8b98a; font-family: Outfit, sans-serif; font-size: 16px; font-weight: 700; color: #d8b98a;">SO</span>
+<div style="display: flex; flex-direction: column; gap: 3px;"><h1 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 500; font-size: 22px; line-height: 1;">Wallet</h1><span style="font-size: 14px; font-weight: 700; color: #d8b98a; text-shadow: 0 0 6px rgba(216,185,138,.5);">soggust · play money</span></div>
+<span style="flex: 1;"></span>
+<a class="sandbtn" href="Main.dc.html">Place bets</a>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 18px; align-items: stretch;">
+
+<section class="dots apanel" aria-label="Your chips" style="border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+<div class="pbar" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;"><h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">YOUR CHIPS</h2><span style="font-size: 11px; color: rgba(255,255,255,.6);">Run #{{run}}</span></div>
+<div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px;">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.6);">BALANCE</span>
+<span style="font-family: DSEG7, Outfit, sans-serif; font-size: 44px; font-weight: 700; line-height: 1;" class="glow">{{balanceTxt}}</span>
+<span style="font-size: 12px; color: #ccc;">units · started this run at 1,000 · <b style="color: #3ee07a;">+14.8%</b> · peak 1,201.0</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 12px; color: #ccc;">
+<span><b style="color: #fff;">5.0u</b> on 4 open tickets</span>
+<span>could pay <b style="color: #3ee07a;">10.5u</b></span>
+</div>
+</div>
+<div aria-hidden="true" style="position: relative; height: 168px; display: flex; align-items: flex-end; justify-content: center; gap: 12px; padding: 0 18px;">
+<sc-for list="{{stacks}}" as="sk" hint-placeholder-count="6">
+<div class="stack" title="{{sk.title}}" style="display: flex; flex-direction: column-reverse; align-items: center; gap: 0; padding-bottom: 22px; position: relative; z-index: 1;">
+<sc-for list="{{sk.chips}}" as="c" hint-placeholder-count="5"><span class="stackchip" style="--c: {{sk.clay}};"></span></sc-for>
+<span style="margin-bottom: 6px; font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; color: #ccc;">{{sk.label}}</span>
+</div>
+</sc-for>
+<div class="leather" style="position: absolute; left: 0; right: 0; bottom: 0; height: 30px; border-radius: 8px; box-shadow: inset 0 2px 0 rgba(255,255,255,.15), inset 0 -6px 10px rgba(0,0,0,.35), 0 4px 10px rgba(0,0,0,.5);"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; font-size: 11px; color: rgba(255,255,255,.7);">
+<sc-for list="{{legendStacks}}" as="sk" hint-placeholder-count="5"><span style="display: inline-flex; align-items: center; gap: 6px; line-height: 1;"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{sk.clay}}; box-shadow: 0 0 0 2px #f4efe3;"></span>{{sk.count}} × {{sk.denom}}</span></sc-for>
+</div>
+</div>
+</section>
+
+<section class="dots apanel" aria-label="Rebuy" style="border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+<div class="pbar" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">REBUY</h2>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">Play money · no cash in or out, ever</span>
+</div>
+<div style="padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 14px;">
+<div style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center;">
+<sc-if value="{{confirming}}" hint-placeholder-val="{{false}}">
+<button class="btn kchip" onClick="{{reload}}" aria-label="Confirm: buy back in at 1,000" style="--clay: #c62828; width: 76px; height: 76px; border-width: 7px; font-weight: 900; font-size: 11px; line-height: 1.1;">SURE?<svg class="rim" aria-hidden="true"><rect pathLength="80" style="stroke-width: 7px;"></rect></svg></button>
+</sc-if>
+<sc-if value="{{notConfirming}}" hint-placeholder-val="{{true}}">
+<button class="btn kchip" onClick="{{askReload}}" aria-label="Buy back in at 1,000" style="--clay: #1f5fae; width: 76px; height: 76px; border-width: 7px; font-weight: 900; font-size: 11px; line-height: 1.1; text-align: center;">BUY<br>BACK IN<svg class="rim" aria-hidden="true"><rect pathLength="80" style="stroke-width: 7px;"></rect></svg></button>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600;">{{cageTitle}}</span>
+<span style="font-size: 12px; line-height: 1.45; color: #ccc;">{{cageText}}</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.6);">YOUR RUNS</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; padding: 4px 2px 10px;">
+<sc-for list="{{runs}}" as="rn" hint-placeholder-count="3">
+<div class="ticket" style="min-width: 0; position: relative; padding: 16px 12px 18px; display: flex; flex-direction: column; gap: 5px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.45));">
+<span style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">RUN #{{rn.n}}</span>
+<span style="font-size: 10px; color: #4a4a4a;">{{rn.dates}}</span>
+<svg aria-hidden="true" viewBox="0 0 100 30" preserveAspectRatio="none" style="width: 100%; height: 30px; margin: 2px 0;"><path d="{{rn.spark}}" fill="none" stroke="{{rn.ink}}" stroke-width="1.6" vector-effect="non-scaling-stroke"></path></svg>
+<div style="display: flex; justify-content: space-between; font-size: 11px;"><span>PEAK</span><b>{{rn.peak}}</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 11px;"><span>{{rn.endLabel}}</span><b style="color: {{rn.ink}};">{{rn.end}}</b></div>
+<sc-if value="{{rn.stamped}}" hint-placeholder-val="{{false}}"><span style="position: absolute; right: 8px; top: 12px; rotate: -12deg; padding: 3px 6px; border: 2.5px solid currentColor; border-radius: 3px; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; opacity: .82; mix-blend-mode: multiply; {{rn.stampStyle}}">{{rn.stamp}}</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<section class="dots apanel" aria-label="You against the bot" style="border-radius: 10px; padding: 0; overflow: hidden;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 20px;" class="pbar">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">HEADS UP</h2>
+<div class="seg" role="group" aria-label="Period"><sc-for list="{{hPeriods}}" as="hp" hint-placeholder-count="3"><button class="btn" onClick="{{hp.pick}}" aria-pressed="{{hp.on}}">{{hp.t}}</button></sc-for></div>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 260px minmax(0, 1fr); align-items: stretch;">
+<div style="padding: 18px 22px; display: flex; flex-direction: column; align-items: center; gap: 6px; background: linear-gradient(180deg, rgba(216,185,138,.08), transparent);">
+<span style="font-family: Outfit, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #fff;">YOU</span>
+<span style="font-family: DSEG7, Outfit, sans-serif; font-size: 52px; font-weight: 700; line-height: 1; {{h.youTone}}">{{h.you.u}}</span>
+<span style="font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,.6);">UNITS</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 18px; border-left: 1px solid #2c2c2c; border-right: 1px solid #2c2c2c; box-sizing: border-box;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.6);">{{h.period}}</span>
+<span style="font-family: Outfit, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-align: center; {{h.leadTone}}">{{h.lead}}</span>
+<div aria-hidden="true" style="display: flex; gap: 3px;"><sc-for list="{{h.dots}}" as="d" hint-placeholder-count="10"><span style="width: 6px; height: 6px; border-radius: 50%; {{d}}"></span></sc-for></div>
+<span style="font-size: 10px; color: rgba(255,255,255,.6);">last 10 days, who won each</span>
+</div>
+<div style="padding: 18px 22px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+<span style="font-family: Outfit, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #fff;">THE BOT</span>
+<span style="font-family: DSEG7, Outfit, sans-serif; font-size: 52px; font-weight: 700; line-height: 1; {{h.botTone}}">{{h.bot.u}}</span>
+<span style="font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,.6);">UNITS</span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 260px minmax(0, 1fr); border-top: 1px solid #2c2c2c;">
+<sc-for list="{{h.rows}}" as="hr" hint-placeholder-count="3">
+<span style="padding: 9px 22px; text-align: center; font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600; border-bottom: 1px solid #1d1d1d; {{hr.youTone}}">{{hr.you}}</span>
+<span style="padding: 9px 18px; box-sizing: border-box; text-align: center; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.6); border-bottom: 1px solid #1d1d1d; border-left: 1px solid #2c2c2c; border-right: 1px solid #2c2c2c; display: flex; align-items: center; justify-content: center;">{{hr.k}}</span>
+<span style="padding: 9px 22px; text-align: center; font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600; border-bottom: 1px solid #1d1d1d; {{hr.botTone}}">{{hr.bot}}</span>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: #2c2c2c; border-top: 1px solid #2c2c2c;">
+<div style="background: #121212; padding: 12px 20px; display: flex; align-items: center; gap: 12px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">TAILING THE BOT</span><span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600;">31–19</span><b style="color: #3ee07a;">+22.4u</b></div>
+<div style="background: #121212; padding: 12px 20px; display: flex; align-items: center; gap: 12px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">YOUR OWN CALLS</span><span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600;">21–22</span><b style="color: #ff7468;">−1.3u</b></div>
+<div style="background: #121212; padding: 12px 20px; display: flex; align-items: center; gap: 12px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">FADING THE BOT</span><span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600;">2–5</span><b style="color: #ff7468;">−3.4u</b></div>
+</div>
+</section>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 18px; align-items: start;">
+
+<section class="dots apanel" aria-label="High rollers" style="border-radius: 10px; overflow: hidden;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px;" class="pbar">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">HIGH ROLLERS</h2>
+<div class="seg" role="group" aria-label="Leaderboard period"><sc-for list="{{lPeriods}}" as="lp" hint-placeholder-count="3"><button class="btn" onClick="{{lp.pick}}" aria-pressed="{{lp.on}}">{{lp.t}}</button></sc-for></div>
+</div>
+<div style="display: flex; flex-direction: column;">
+<sc-for list="{{board}}" as="p" hint-placeholder-count="8">
+<div class="row" style="display: grid; grid-template-columns: 46px 34px minmax(0, 1fr) 84px 70px 52px; align-items: center; gap: 12px; padding: 9px 18px; border-bottom: 1px solid #1d1d1d; {{p.rowStyle}}">
+<span style="width: 46px; height: 32px; box-sizing: border-box; padding-top: 2px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: #121212; box-shadow: inset 0 0 6px rgba(0,0,0,.7), 0 0 0 1px #2c2c2c; font-family: DSEG7, Outfit, sans-serif; font-size: 14px; font-weight: 700; {{p.rankTone}}">{{p.rank}}</span>
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Outfit, sans-serif; font-size: 12px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); {{p.avatar}}">{{p.ini}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{p.name}}</span><span style="font-size: 11px; color: rgba(255,255,255,.6);">{{p.fav}}</span></span>
+<span style="text-align: right; font-family: Outfit, sans-serif; font-size: 16px; font-weight: 700; {{p.uTone}}">{{p.u}}</span>
+<span style="text-align: right; color: #ccc; font-variant-numeric: tabular-nums;">{{p.rec}}</span>
+<span style="text-align: right; font-size: 12px; font-weight: 700; {{p.stTone}}">{{p.st}}</span>
+</div>
+</sc-for>
+</div>
+<div style="padding: 10px 18px; font-size: 11px; color: rgba(255,255,255,.6);">Public players only. Make your wallet public in your profile to show up here.</div>
+</section>
+
+<section class="dots apanel" aria-label="Trophy case" style="border-radius: 10px; overflow: hidden;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px;" class="pbar">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">THE TROPHY CASE</h2>
+<span style="font-size: 12px; color: #ccc;"><b style="color: #fff;">{{earned}}</b> of {{trophyCount}} chips collected</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 10px; padding: 20px 18px 14px; background: radial-gradient(ellipse at 50% 0%, rgba(216,185,138,.08), transparent 60%);">
+<sc-for list="{{trophies}}" as="tr" hint-placeholder-count="8">
+<button class="btn" onClick="{{tr.pick}}" aria-pressed="{{tr.sel}}" aria-label="{{tr.name}}: {{tr.state}}" style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+<span class="kchip {{tr.cls}}" style="--clay: {{tr.clay}}; width: 64px; height: 64px; border-width: 6px;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{tr.icon}}"></path></svg><svg class="rim" aria-hidden="true"><rect pathLength="80"></rect></svg></span>
+<span style="font-family: Outfit, sans-serif; font-size: 12px; font-weight: 600; line-height: 1.15; {{tr.nameTone}}">{{tr.name}}</span>
+<span style="font-size: 10px; color: rgba(255,255,255,.6);">{{tr.state}}</span>
+</button>
+</sc-for>
+</div>
+<div style="margin: 0 18px 16px; padding: 12px 14px; border-radius: 6px; background: rgba(255,255,255,.04); border: 1px solid #2c2c2c; display: flex; align-items: center; gap: 12px;">
+<span class="kchip {{tSel.cls}}" aria-hidden="true" style="--clay: {{tSel.clay}}; width: 40px; height: 40px; border-width: 4px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="{{tSel.icon}}"></path></svg><svg class="rim"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+<span style="font-family: Outfit, sans-serif; font-size: 14px; font-weight: 600;">{{tSel.name}}</span>
+<span style="font-size: 12px; color: #ccc;">{{tSel.how}}</span>
+<sc-if value="{{tSel.hasProg}}" hint-placeholder-val="{{false}}"><div aria-hidden="true" style="height: 5px; border-radius: 999px; background: #2c2c2c; overflow: hidden; margin-top: 3px;"><div style="height: 100%; background: #d8b98a; border-radius: 999px; {{tSel.progW}}"></div></div></sc-if>
+</div>
+<span style="font-size: 11px; font-weight: 700; {{tSel.stateTone}}">{{tSel.state}}</span>
+</div>
+</section>
+</div>
+
+<section aria-label="On the wall" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 26px; align-items: start; padding: 6px 4px 0;">
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.7);">ON THE WALL · BIGGEST CASH</span>
+<div class="frame" style="rotate: -1.5deg; width: min(100%, 340px); box-sizing: border-box;">
+<div class="ticket" style="padding: 20px 16px 22px; display: flex; flex-direction: column; gap: 7px; position: relative;">
+<div style="display: flex; justify-content: space-between;"><span style="font-weight: 700; font-size: 12px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; color: #4a4a4a;">0412-0009 · SUN OCT 12</span></div>
+<hr style="border: none; border-top: 2px dashed rgba(26,26,26,.25); margin: 2px 0;">
+<span style="font-size: 13px; font-weight: 700;">JOSH ALLEN 2+ TDS</span>
+<span style="font-size: 11px; color: #4a4a4a;">NFL · BUF @ NE · YOUR CALL · +210</span>
+<span style="font-size: 11px; font-weight: 700; color: #1d8a4e;">FINAL · ALLEN 2 TDS, THE 2ND WITH 0:41 LEFT</span>
+<div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;"><span>PAID</span><span>3.1U ON 1.0U</span></div>
+<span style="position: absolute; right: 12px; top: 10px; rotate: -12deg; padding: 4px 8px; border: 3px solid #1d8a4e; color: #1d8a4e; border-radius: 4px; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply;">CASHED</span>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: rgba(255,255,255,.7);">ON THE WALL · WORST BEAT</span>
+<div class="frame" style="rotate: 1.2deg; width: min(100%, 340px); box-sizing: border-box; filter: saturate(.75);">
+<div class="ticket" style="padding: 20px 16px 22px; display: flex; flex-direction: column; gap: 7px; position: relative;">
+<div style="display: flex; justify-content: space-between;"><span style="font-weight: 700; font-size: 12px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; color: #4a4a4a;">0405-0002 · SUN OCT 5</span></div>
+<hr style="border: none; border-top: 2px dashed rgba(26,26,26,.25); margin: 2px 0;">
+<span style="font-size: 13px; font-weight: 700;">3-LEG PARLAY · +596</span>
+<span style="font-size: 11px; color: #4a4a4a;">2 LEGS HIT · THE 3RD LOST BY HALF A POINT</span>
+<span style="font-size: 11px; font-weight: 700; color: #c62828;">FINAL · OVER 47.5 LANDED ON 47</span>
+<div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;"><span>WOULD HAVE PAID</span><span>7.0U ON 1.0U</span></div>
+<span style="position: absolute; right: 12px; top: 10px; rotate: -12deg; padding: 4px 8px; border: 3px solid #c62828; color: #c62828; border-radius: 4px; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply;">BAD BEAT</span>
+</div>
+</div>
+</div>
+<div class="dots apanel" style="border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-self: stretch;">
+<div class="pbar" style="padding: 14px 18px;"><h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">YOUR TELLS</h2></div>
+<div style="padding: 6px 18px 14px; display: flex; flex-direction: column; gap: 6px;">
+<sc-for list="{{tells}}" as="tl" hint-placeholder-count="5">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid #1d1d1d;"><span style="color: #ccc;">{{tl.k}}</span><span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600; text-align: right; {{tl.tone}}">{{tl.v}}</span></div>
+</sc-for>
+<a href="Main.dc.html" style="align-self: flex-start; font-size: 12px; font-weight: 700;">Every ticket you’ve cashed →</a>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { confirm: false, run: 3, bal: 1147.5, hp: 'season', lp: 'week', trophy: 'heater' }; }
+  renderVals() {
+    const s = this.state;
+    const denoms = [['100', '#1a1a1a', 100], ['25', '#1d8a4e', 25], ['5', '#c62828', 5], ['1', '#1f5fbf', 1], ['½', '#8a8a8a', 0.5]];
+    let left = s.bal; const counts = denoms.map(([, , v]) => { const n = Math.floor(left / v + 1e-9); left -= n * v; return n; });
+    const stacks = [];
+    denoms.forEach(([d, clay], i) => {
+      let n = counts[i];
+      if (!n) return;
+      while (n > 0) { const take = Math.min(n, 6); stacks.push({ denom: d, label: d, clay, count: take, title: take + ' × ' + d, chips: Array.from({ length: take }, (_, j) => j) }); n -= take; }
+    });
+    const legend = {};
+    stacks.forEach((sk) => { legend[sk.denom] = (legend[sk.denom] || 0) + sk.count; });
+    const legendStacks = denoms.filter(([d]) => legend[d]).map(([d, clay]) => ({ denom: d, count: legend[d], clay }));
+    const fmt = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const spark = (arr) => { const mx = Math.max(...arr), mn = Math.min(...arr); return arr.map((v, i) => (i ? 'L' : 'M') + (i / (arr.length - 1) * 100).toFixed(1) + ' ' + (28 - (v - mn) / ((mx - mn) || 1) * 26).toFixed(1)).join(' '); };
+    const runs = [
+      { n: 1, dates: 'SEP 2 – SEP 19', peak: '1,310.0', endLabel: 'ENDED', end: '0.0', ink: '#c62828', stamped: true, stamp: 'BUST', stampStyle: 'color: #c62828;', spark: spark([1000, 1080, 1190, 1310, 1240, 1020, 760, 410, 180, 0]) },
+      { n: 2, dates: 'SEP 19 – OCT 3', peak: '1,180.0', endLabel: 'BOUGHT BACK AT', end: '640.0', ink: '#4a4a4a', stamped: true, stamp: 'REBUY', stampStyle: 'color: #4a4a4a;', spark: spark([1000, 1110, 1180, 1050, 900, 820, 700, 640]) },
+      { n: s.run, dates: s.run === 3 ? 'OCT 3 – NOW' : 'TODAY – NOW', peak: s.run === 3 ? '1,201.0' : '1,000.0', endLabel: 'NOW', end: fmt(s.bal), ink: '#1d8a4e', stamped: false, stamp: '', stampStyle: '', spark: s.run === 3 ? spark([1000, 1040, 1010, 1095, 1150, 1201, 1120, 1147.5]) : spark([1000, 1000]) }
+    ];
+    if (s.run > 3) runs.splice(2, 0, { n: 3, dates: 'OCT 3 – OCT 17', peak: '1,201.0', endLabel: 'BOUGHT BACK AT', end: '1,147.5', ink: '#4a4a4a', stamped: true, stamp: 'REBUY', stampStyle: 'color: #4a4a4a;', spark: spark([1000, 1040, 1010, 1095, 1150, 1201, 1120, 1147.5]) });
+    const P = (k, t, cur, set) => ({ t, on: cur === k ? 'true' : 'false', pick: () => this.setState(set(k)) });
+    const hData = {
+      week: { period: 'THIS WEEK', you: { u: '+4.2' }, bot: { u: '+9.6' }, rows: [['6–3', 'RECORD', '19–12'], ['+11.8%', 'ROI', '+8.1%'], ['56%', 'BEAT THE CLOSE', '61%']] },
+      month: { period: 'LAST 30 DAYS', you: { u: '+38.7' }, bot: { u: '+52.3' }, rows: [['27–19', 'RECORD', '71–52'], ['+9.6%', 'ROI', '+7.4%'], ['55%', 'BEAT THE CLOSE', '59%']] },
+      season: { period: 'SINCE YOUR FIRST BET', you: { u: '+147.5' }, bot: { u: '+84.6' }, rows: [['54–46', 'RECORD', '98–72'], ['+8.4%', 'ROI', '+7.1%'], ['54%', 'BEAT THE CLOSE', '58%']] }
+    }[s.hp];
+    const yu = parseFloat(hData.you.u), bu = parseFloat(hData.bot.u), diff = Math.abs(yu - bu).toFixed(1);
+    const G = 'color: #3ee07a; text-shadow: 0 0 10px rgba(62,224,122,.4);', Y = '#d8b98a', Wh = 'color: #fff;';
+    const h = Object.assign({}, hData, {
+      youTone: yu >= bu ? 'color: #d8b98a; text-shadow: 0 0 12px rgba(216,185,138,.55);' : Wh, botTone: bu > yu ? 'color: #d8b98a; text-shadow: 0 0 12px rgba(216,185,138,.55);' : Wh,
+      lead: yu >= bu ? 'YOU LEAD BY ' + diff + 'U' : 'THE BOT LEADS BY ' + diff + 'U', leadTone: yu >= bu ? G : 'color: #ccc;',
+      dots: [1, 0, 1, 1, 0, 1, 1, 0, 1, 1].map((w) => (w ? 'background: ' + Y + '; box-shadow: 0 0 5px ' + Y + ';' : 'background: #555;')),
+      rows: hData.rows.map(([you, k, bot]) => ({ you, k, bot, youTone: Wh, botTone: Wh }))
+    });
+    const boards = {
+      week: [['mbreezy', 'NBA unders', '+31.2', '14–6', 'W4'], ['the_sharp_end', 'NFL sides', '+22.8', '11–5', 'W2'], ['puckluck', 'NHL props', '+17.5', '12–8', 'L1'], ['you', 'tails the bot', '+4.2', '6–3', 'W3'], ['kelce_my_heart', 'NFL props', '+3.9', '7–6', 'W1'], ['overunder_kid', 'totals', '+1.1', '5–5', 'L2'], ['lockjaw', 'locks only', '−2.6', '3–4', 'L1'], ['fadeking', 'fades the bot', '−8.4', '4–9', 'L3']],
+      month: [['the_sharp_end', 'NFL sides', '+64.0', '41–27', 'W2'], ['mbreezy', 'NBA unders', '+58.3', '39–24', 'W4'], ['you', 'tails the bot', '+38.7', '27–19', 'W3'], ['puckluck', 'NHL props', '+30.1', '33–25', 'L1'], ['lockjaw', 'locks only', '+12.2', '14–9', 'L1'], ['kelce_my_heart', 'NFL props', '+6.0', '18–17', 'W1'], ['overunder_kid', 'totals', '−4.7', '20–23', 'L2'], ['fadeking', 'fades the bot', '−21.9', '15–28', 'L3']],
+      season: [['you', 'tails the bot', '+147.5', '54–46', 'W3'], ['the_sharp_end', 'NFL sides', '+139.2', '88–61', 'W2'], ['mbreezy', 'NBA unders', '+101.7', '70–52', 'W4'], ['puckluck', 'NHL props', '+77.0', '64–51', 'L1'], ['lockjaw', 'locks only', '+40.3', '29–18', 'L1'], ['kelce_my_heart', 'NFL props', '+11.4', '40–38', 'W1'], ['overunder_kid', 'totals', '−18.0', '41–47', 'L2'], ['fadeking', 'fades the bot', '−55.6', '31–52', 'L3']]
+    }[s.lp];
+    const hues = ['#1f3f7a', '#b8322a', '#262626', '#1d8a4e', '#6b3fa0', '#d0601c', '#12807e', '#555'];
+    const board = boards.map(([name, fav, u, rec, st], i) => { const me = name === 'you'; return { rank: i + 1, name: me ? 'You' : name, ini: me ? 'YOU' : name.slice(0, 2).toUpperCase(), fav, u: u + 'u', rec, st,
+      rowStyle: me ? 'background: linear-gradient(90deg, rgba(216,185,138,.16), rgba(216,185,138,.04)); box-shadow: inset 2px 0 0 #d8b98a;' : '',
+      rankTone: i === 0 ? 'color: #d8b98a; text-shadow: 0 0 8px rgba(216,185,138,.55);' : i < 3 ? 'color: #3ee07a; text-shadow: 0 0 6px rgba(62,224,122,.45);' : 'color: #fff;',
+      avatar: me ? 'background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.25), transparent 60%), #b38a3c; box-shadow: 0 0 0 2px #d8b98a;' : 'background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.2), transparent 60%), ' + hues[i] + ';',
+      uTone: u[0] === '+' ? 'color: #3ee07a;' : 'color: #ff7468;', stTone: st[0] === 'W' ? 'color: #3ee07a;' : 'color: #ff7468;' }; });
+    const tdefs = [
+      ['first', 'First Blood', '#c62828', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', 'Cash your first ticket.', 1, 1, 'Sep 3'],
+      ['heater', 'Heater', '#d0601c', 'M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-3 2-4 2-6 1 1 2 2 3 2 0-2 0-4 0-6z', 'Win 5 tickets in a row.', 5, 5, 'Oct 15'],
+      ['longshot', 'Longshot', '#6b3fa0', 'M3 21l7-7M14 4h6v6M20 4L10 14', 'Cash a ticket at +300 or longer.', 1, 1, 'Sep 28'],
+      ['sharp', 'Sharp', '#1f3f7a', 'M4 20L20 4M8 4h12v12', 'Beat the closing line 25 times.', 18, 25, ''],
+      ['tail', 'Tailgater', '#1d8a4e', 'M4 12h12M12 6l6 6-6 6M4 6v12', 'Win 20 bets the bot picked.', 20, 20, 'Oct 9'],
+      ['parlay', 'Parlay Prince', '#b38a3c', 'M5 8h14M5 12h14M5 16h14', 'Cash a parlay of 3 legs or more.', 0, 1, ''],
+      ['phoenix', 'Phoenix', '#ff7468', 'M12 21c-4-3-7-6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4-3 7-7 10z', 'Bust a run, then finish the next one up.', 0, 1, ''],
+      ['iron', 'Iron Stomach', '#262626', 'M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5', 'Bet 50 games in a single week.', 31, 50, '']
+    ];
+    const trophies = tdefs.map(([k, name, clay, icon, how, have, need, when]) => { const got = have >= need; return { k, name, clay, icon, how, cls: (got ? '' : 'locked ') + (s.trophy === k ? 'sel' : ''), sel: s.trophy === k ? 'true' : 'false', state: got ? 'Earned ' + when : have + ' of ' + need, nameTone: got ? 'color: #fff;' : 'color: rgba(255,255,255,.6);', got, have, need, pick: () => this.setState({ trophy: k }) }; });
+    const t = trophies.find((x) => x.k === s.trophy);
+    const tSel = Object.assign({}, t, { cls: t.got ? '' : 'locked', hasProg: !t.got, progW: 'width: ' + Math.round(t.have / t.need * 100) + '%;', stateTone: t.got ? 'color: #3ee07a;' : 'color: #d8b98a;' });
+    const tells = [
+      { k: 'Favourite sport', v: 'NFL · 46% of your bets', tone: 'color: #fff;' },
+      { k: 'Best market', v: 'Props · +19.6u', tone: 'color: #3ee07a;' },
+      { k: 'Worst market', v: 'Moneylines · −6.2u', tone: 'color: #ff7468;' },
+      { k: 'Typical stake', v: '1.0u (3 bets in 4)', tone: 'color: #fff;' },
+      { k: 'Average price', v: '−108', tone: 'color: #fff;' },
+      { k: 'Bets placed after 10 PM', v: '3–8 · −5.1u', tone: 'color: #ff7468;' }
+    ];
+    return {
+      run: s.run, balanceTxt: fmt(s.bal), stacks: stacks.length ? stacks : [], legendStacks,
+      confirming: s.confirm, notConfirming: !s.confirm,
+      cageTitle: s.confirm ? 'Tap the red chip to buy back in' : (s.run > 3 ? 'Fresh stack: 1,000 units' : 'Buy back in at 1,000'),
+      cageText: s.confirm ? 'Your bankroll goes back to 1,000 and run #' + (s.run + 1) + ' starts. Every ticket and record stays; open tickets still settle. Tap anywhere else to keep playing this run.' : 'Down bad, or just want a clean slate? A rebuy resets your chips to 1,000 and starts a new run. Your history and records stay.',
+      askReload: () => this.setState({ confirm: true }), reload: () => this.setState({ confirm: false, run: s.run + 1, bal: 1000 }),
+      runs, h,
+      hPeriods: [P('week', 'WEEK', s.hp, (k) => ({ hp: k })), P('month', '30 DAYS', s.hp, (k) => ({ hp: k })), P('season', 'ALL', s.hp, (k) => ({ hp: k }))],
+      lPeriods: [P('week', 'WEEK', s.lp, (k) => ({ lp: k })), P('month', 'MONTH', s.lp, (k) => ({ lp: k })), P('season', 'SEASON', s.lp, (k) => ({ lp: k }))],
+      board, trophies, tSel, earned: trophies.filter((x) => x.got).length, trophyCount: trophies.length, tells
+    };
+  }
+}
+</script>
+</body>
+</html>
