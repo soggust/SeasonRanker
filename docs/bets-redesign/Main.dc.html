@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Book — Season Ranker bets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Nunito:wght@400;500;600;700;800;900&amp;family=IBM+Plex+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0b3322}
+a{color:#ebc56c}a:hover{color:#fff}
+.felt{background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(255,236,200,.1),transparent 70%),radial-gradient(ellipse 120% 90% at 50% 40%,transparent 35%,rgba(0,0,0,.6) 100%),repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px),url("/_blob/ea09a0f17708196482df889c85d5a853") 0 0/512px,url("/_blob/a46d7d38b6096bfd5349709a665ab682") center/cover,radial-gradient(ellipse at 50% 30%,#1d7a4f,#155a3a 55%,#0b3322)}
+.board{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border:1px solid #3a3a3a;box-shadow:0 0 0 5px #1d1d1d,0 0 0 6px #3a3a3a,0 10px 30px rgba(0,0,0,.55)}
+.dots{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212}
+.glow{color:#ebc56c;text-shadow:0 0 6px rgba(235,197,108,.55)}
+.btn{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0}
+.btn:focus-visible{outline:1px solid rgba(255,255,255,.75);outline-offset:2px}
+.posbar button{flex:1;height:100%;font:800 11px/1 Nunito,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);padding:0 1.1em;white-space:nowrap;transition:color .15s,box-shadow .15s}
+.posbar button:hover:not(.lit),.posbar button:focus-visible{color:#ebc56c;box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.1);outline:none}
+.lit{position:relative;box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.2);color:#ebc56c !important;text-shadow:0 0 6px rgba(235,197,108,.55) !important}
+.lit::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:radial-gradient(#ebc56c 1px,transparent 1.3px) 0 100%/4px 4px;filter:drop-shadow(0 0 1.5px #ebc56c);pointer-events:none}
+.kchip{--clay:#555;position:relative;width:54px;height:54px;border-radius:50%;box-sizing:border-box;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),transparent 60%),linear-gradient(180deg,transparent 45%,rgba(0,0,0,.22)),var(--clay);border:6px solid var(--clay);box-shadow:inset 0 0 0 2px var(--clay),inset 0 0 0 3px rgba(255,236,196,.45),0 2px 4px rgba(0,0,0,.45);color:#fff;font-family:Nunito,sans-serif;text-shadow:0 1px 1.5px rgba(0,0,0,.6);filter:saturate(.5) brightness(.62);transition:filter .15s,transform .15s,box-shadow .15s}
+.kchip:hover{filter:saturate(.85) brightness(.88)}
+.kchip.on{filter:none;transform:translateY(-2px);box-shadow:inset 0 0 0 2px var(--clay),inset 0 0 0 3px rgba(255,236,196,.7),0 4px 10px rgba(0,0,0,.55)}
+.kchip.still{filter:none;cursor:default}
+.kchip svg{position:absolute;left:-6px;top:-6px;width:calc(100% + 12px);height:calc(100% + 12px);overflow:visible;pointer-events:none}
+.kchip rect{fill:none;x:3px;y:3px;width:calc(100% - 6px);height:calc(100% - 6px);rx:999px;stroke:#f4efe3;stroke-dasharray:5 5;stroke-width:6px;transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.3,1)}
+.kchip:hover rect{stroke-dashoffset:-20}
+.kchip.on rect{stroke-dashoffset:-40}
+.feltpill{background:radial-gradient(ellipse 90% 70% at 50% 35%,rgba(255,255,255,.07),transparent 70%),#155a3a;border:1px solid rgba(222,186,106,.55);box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.feltpill:hover{filter:brightness(1.12)}
+.opt:hover,.opt:focus-visible{background:rgba(255,255,255,.07);outline:none}
+.price{transition:filter .15s}
+.price:hover{filter:brightness(1.18)}
+.row:hover{background-color:rgba(235,197,108,.035)}
+.bandhead:hover{filter:brightness(1.15)}
+.chev{transition:rotate .2s cubic-bezier(.2,.8,.2,1)}
+.ticket{background:linear-gradient(180deg,#f4efe3,#ece5d4);color:#1a1a1a;font-family:"IBM Plex Mono",monospace;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5));-webkit-mask:radial-gradient(circle 7px at 50% 0,transparent 98%,#000) top/18px 51% repeat-x,radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) bottom/18px 51% repeat-x;mask:radial-gradient(circle 7px at 50% 0,transparent 98%,#000) top/18px 51% repeat-x,radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) bottom/18px 51% repeat-x}
+.perf{border:none;border-top:2px dashed rgba(26,26,26,.25);margin:0}
+.pcard{background:radial-gradient(ellipse at 85% 0%,rgba(255,226,122,.18),transparent 55%),linear-gradient(135deg,#1d1d1d,#121212 60%,#1a1a1a);border:1px solid transparent;background-clip:padding-box;position:relative}
+.pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.cardlink{transition:filter .15s,translate .15s}
+.cardlink:hover{filter:brightness(1.15);translate:0 -1px}
+.ddpill:hover,.placebtn:hover{filter:brightness(1.18)}
+.scroll{scrollbar-width:thin;scrollbar-color:#3a3a3a transparent}
+.track{display:flex;gap:36px;white-space:nowrap;width:max-content}
+@media (prefers-reduced-motion:no-preference){.track{animation:tick 45s linear infinite}}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (min-width:1000px){.shell{height:100vh;overflow:hidden}.work{flex:1;min-height:0}.col{min-height:0;height:100%}.board{flex:1;min-height:0}.boardscroll{overflow-y:auto}.side{height:100%;overflow-y:auto}}
+</style>
+</helmet>
+<div class="felt shell" style="min-height: 100vh; box-sizing: border-box; padding: 18px clamp(16px, 3vw, 36px) 20px; font-family: Nunito, sans-serif; font-size: 13px; color: #fff; display: flex; flex-direction: column; gap: 14px;">
+
+<sc-if value="{{anyPop}}" hint-placeholder-val="{{false}}"><button class="btn" onClick="{{closeAll}}" aria-label="Close" tabindex="-1" style="position: fixed; inset: 0; z-index: 4; cursor: default;"></button></sc-if>
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; max-width: 1400px; width: 100%; margin: 0 auto;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<span class="kchip still" aria-hidden="true" style="--clay: #1a1a1a; width: 46px; height: 46px; font-weight: 900; font-size: 12px;">SR<svg><rect pathLength="80"></rect></svg></span>
+<h1 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 600; font-size: 26px; line-height: 1; letter-spacing: 3px; text-transform: uppercase;" class="glow">The Book</h1>
+</div>
+<nav class="posbar dots" aria-label="Bets sections" style="flex: 1 1 420px; max-width: 640px; height: 44px; display: flex; border: 1px solid #3a3a3a; border-radius: 9.1px; box-shadow: 0 2px 6px rgba(0,0,0,.35); overflow: hidden;">
+<button class="btn lit" aria-current="page">The board</button>
+<button class="btn">Open · 2</button>
+<button class="btn">Cashed</button>
+<button class="btn">Algorithm</button>
+</nav>
+<span style="flex: 1;"></span>
+<a class="pcard cardlink" href="#wallet" aria-label="Bankroll 120.0 units: open your wallet" style="width: 268px; border-radius: 10px; padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; align-items: center; box-shadow: 0 6px 14px rgba(0,0,0,.45); color: #fff; text-decoration: none;">
+<span class="kchip still" aria-hidden="true" style="--clay: #d2691e; width: 34px; height: 34px; border-width: 4px; grid-row: span 2;"><svg><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></span>
+<div style="display: flex; align-items: baseline; justify-content: space-between;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.7);">BANKROLL</span><span style="font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.6);">5u in play</span></div>
+<div style="display: flex; align-items: baseline; justify-content: space-between;"><span style="font-family: Outfit, sans-serif; font-size: 24px; font-weight: 600; line-height: 1.1;" class="glow">120.0u</span><span style="font-size: 12px; color: #ccc;">41–33 · <b style="color: #3ee07a;">+6.2%</b></span></div>
+</a>
+</header>
+
+<div class="dots" role="marquee" aria-label="Scores and start times" style="max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 4px; overflow: hidden; padding: 7px 0; font-family: Outfit, sans-serif; font-size: 12px; letter-spacing: 1px;">
+<div class="track">
+<sc-for list="{{tickerTwice}}" as="tk" hint-placeholder-count="10">
+<span style="display: inline-flex; align-items: center; gap: 8px;"><span style="font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">{{tk.sport}}</span><span style="color: #fff;">{{tk.away}}</span><span class="glow">{{tk.as}}</span><span style="color: #fff;">{{tk.home}}</span><span class="glow">{{tk.hs}}</span><span style="{{tk.stateStyle}}">{{tk.state}}</span></span>
+</sc-for>
+</div>
+</div>
+
+<div class="work" style="display: flex; flex-wrap: wrap; gap: 22px; align-items: stretch; max-width: 1400px; width: 100%; margin: 0 auto;">
+
+<main class="col" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;">
+<div style="position: relative; z-index: 6;">
+<button class="btn pcard ddpill" onClick="{{toggleDd}}" aria-expanded="{{ddOpen}}" aria-haspopup="listbox" style="height: 44px; min-width: 260px; padding: 0 16px 0 18px; border-radius: 999px; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,.45); display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 14px; letter-spacing: .5px;">
+<sc-if value="{{gameIcon}}" hint-placeholder-val="{{false}}"><img src="{{gameIcon}}" alt="" style="width: 20px; height: 20px;"></sc-if>
+<span style="flex: 1; text-align: left;">{{gameLabel}}</span>
+<span style="font-size: 12px;" class="glow">{{gameCount}}</span>
+<svg class="chev" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="rotate: {{ddRot}};"><path d="M6 9l6 6 6-6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+<sc-if value="{{ddOpen}}" hint-placeholder-val="{{false}}">
+<div role="listbox" aria-label="Games" class="scroll" style="position: absolute; top: 50px; left: 0; width: 340px; max-height: 420px; overflow-y: auto; background: radial-gradient(ellipse at 85% 0%, rgba(255,226,122,.14), transparent 45%), linear-gradient(160deg, #1d1d1d, #121212 60%, #1a1a1a); border: 1px solid #b38a3c; border-radius: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.6); padding: 6px 0;">
+<button class="btn opt" role="option" onClick="{{pickAll}}" aria-selected="{{allSel}}" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-family: Outfit, sans-serif; font-size: 14px; text-align: left;"><span style="flex: 1;">Best bets · every game</span><span class="glow" style="font-size: 12px;">8</span></button>
+<sc-for list="{{days}}" as="day" hint-placeholder-count="2">
+<div style="padding: 10px 14px 4px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6); border-top: 1px solid rgba(222,186,106,.2);">{{day.label}}</div>
+<sc-for list="{{day.sports}}" as="sp" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 8px; padding: 6px 14px 2px;"><img src="{{sp.icon}}" alt="" style="width: 14px; height: 14px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: #ebc56c;">{{sp.name}}</span></div>
+<sc-for list="{{sp.games}}" as="g" hint-placeholder-count="3">
+<button class="btn opt" role="option" onClick="{{g.pick}}" aria-selected="{{g.sel}}" style="width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 8px 14px 8px 36px; text-align: left; {{g.selStyle}}">
+<span style="font-family: Outfit, sans-serif; font-size: 13px;">{{g.label}}</span>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">{{g.when}}</span>
+<span style="min-width: 38px; text-align: right; font-size: 11px; {{g.countStyle}}">{{g.countTxt}}</span>
+</button>
+</sc-for>
+</sc-for>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div role="group" aria-label="Bet types" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 6px 4px;">
+<sc-for list="{{kinds}}" as="k" hint-placeholder-count="5">
+<button class="btn kchip {{k.on}}" onClick="{{k.toggle}}" aria-pressed="{{k.pressed}}" title="{{k.name}}" style="--clay: {{k.clay}};"><span style="font-size: 12px; font-weight: 900; letter-spacing: .3px; line-height: 1;">{{k.label}}</span><span style="font-size: 10px; font-weight: 800; line-height: 1; margin-top: 2px; opacity: .9;">{{k.count}}</span><svg aria-hidden="true"><rect pathLength="80"></rect></svg></button>
+</sc-for>
+</div>
+</div>
+
+<section class="board" aria-label="The board" style="border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+<div class="boardscroll scroll" style="flex: 1; min-height: 0;">
+<sc-if value="{{isBest}}" hint-placeholder-val="{{true}}">
+<sc-for list="{{groups}}" as="grp" hint-placeholder-count="3">
+<button class="btn bandhead" onClick="{{grp.toggle}}" aria-expanded="{{grp.open}}" style="width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 12px 16px; text-align: left; border-bottom: 1px solid {{grp.edge}}; background: linear-gradient(90deg, {{grp.wash}}, transparent 70%); position: sticky; top: 0; z-index: 1;">
+<span aria-hidden="true" style="width: 30px; flex: none; display: flex; justify-content: center;"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" style="rotate: {{grp.rot}};"><path d="M9 6l6 6-6 6" fill="none" stroke="{{grp.color}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{grp.color}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{grp.icon}}"></path></svg>
+<span style="font-family: Outfit, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 3px; color: {{grp.color}}; text-shadow: 0 0 8px {{grp.glow}};">{{grp.tag}}</span>
+<span style="font-size: 12px; color: #ccc;">{{grp.count}} · {{grp.blurb}}</span>
+<span style="flex: 1;"></span>
+<span style="font-size: 12px; color: #ccc;">This season <b style="color: #fff;">{{grp.record}}</b> · <b style="color: #3ee07a;">{{grp.units}}</b></span>
+<span aria-hidden="true" style="display: flex; gap: 3px;"><sc-for list="{{grp.form}}" as="f" hint-placeholder-count="5"><span style="width: 8px; height: 8px; border-radius: 2px; {{f}}"></span></sc-for></span>
+</button>
+<sc-if value="{{grp.open}}" hint-placeholder-val="{{true}}">
+<sc-for list="{{grp.rows}}" as="r" hint-placeholder-count="3">
+<article class="row" style="border-bottom: 1px solid #2c2c2c; transition: background-color .15s;">
+<div style="display: grid; grid-template-columns: 30px 46px 34px minmax(0, 1fr) 170px 96px; align-items: center; gap: 14px; padding: 11px 16px;">
+<button class="btn" onClick="{{r.toggle}}" aria-expanded="{{r.open}}" aria-label="Why {{r.who}} {{r.what}}" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px;"><svg class="chev" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="rotate: {{r.rot}};"><path d="M9 6l6 6-6 6" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+<button class="btn dots" onClick="{{r.openWhy}}" aria-label="Rank {{r.rank}}: how its Kelly score is made" style="width: 46px; height: 36px; box-sizing: border-box; padding-top: 2.5px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 6px rgba(0,0,0,.6), 0 1px 3px rgba(0,0,0,.35); font-family: DSEG7, Outfit, sans-serif; font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 700; line-height: 1; {{r.rankTone}}">{{r.rank}}</button>
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: Outfit, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .5px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); box-shadow: 0 1px 3px rgba(0,0,0,.5); {{r.icStyle}}">
+<sc-if value="{{r.isPlayer}}" hint-placeholder-val="{{true}}"><svg width="30" height="30" viewBox="0 0 30 30" style="margin-top: 6px;"><circle cx="15" cy="10" r="5.5" fill="#9a9a9a"></circle><path d="M4 30c0-6.5 5-11 11-11s11 4.5 11 11z" fill="#9a9a9a"></path></svg></sc-if>
+<sc-if value="{{r.isTeam}}" hint-placeholder-val="{{false}}">{{r.ab}}</sc-if>
+<sc-if value="{{r.isTotal}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" style="rotate: {{r.arrowRot}};"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="{{r.arrowC}}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+</span>
+<div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+<span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 500; line-height: 1.2; letter-spacing: .3px;">{{r.who}} <span class="glow">{{r.what}}</span></span>
+<span style="font-size: 11px; letter-spacing: .3px; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{r.sport}} · {{r.game}} · {{r.when}} — <span style="color: #ccc;">{{r.line}}</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 5px;">
+<div style="display: flex; justify-content: space-between; font-family: Outfit, sans-serif; font-size: 12px;"><span style="color: #3ee07a;">Model {{r.model}}%</span><span style="color: rgba(255,255,255,.6);">Book {{r.book}}%</span></div>
+<div aria-hidden="true" style="position: relative; height: 6px; border-radius: 999px; background: #2c2c2c;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: #3ee07a; box-shadow: 0 0 6px rgba(62,224,122,.45); {{r.modelW}}"></div>
+<div style="position: absolute; top: -3px; width: 2px; height: 12px; background: #fff; {{r.bookL}}"></div>
+</div>
+</div>
+<sc-if value="{{r.onSlip}}" hint-placeholder-val="{{false}}">
+<button class="btn price" onClick="{{r.add}}" aria-pressed="true" aria-label="Take {{r.who}} {{r.what}} off the ticket" style="height: 46px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: #ebc56c; color: #1a1a1a; box-shadow: 0 0 12px rgba(235,197,108,.45);">
+<span style="font-family: Outfit, sans-serif; font-size: 16px; font-weight: 700;">{{r.odds}}</span><span style="font-size: 10px; font-weight: 800; letter-spacing: .5px;">ON TICKET</span>
+</button>
+</sc-if>
+<sc-if value="{{r.offSlip}}" hint-placeholder-val="{{true}}">
+<button class="btn price feltpill" onClick="{{r.add}}" aria-pressed="false" aria-label="Add {{r.who}} {{r.what}} at {{r.odds}} to the ticket" style="height: 46px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: none;">
+<span style="font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600;">{{r.odds}}</span><span style="font-size: 10px; letter-spacing: .5px; color: rgba(255,255,255,.8);">+ TICKET</span>
+</button>
+</sc-if>
+</div>
+<sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px 28px; padding: 0 16px 16px 182px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<p style="margin: 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.9);">{{r.why}}</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.8);"><b style="color: #ff9a3c;">Devil’s advocate:</b> {{r.risk}}</p>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">Edge +{{r.edge}} · Kelly {{r.kelly}} · {{r.venue}} · Analysis by Claude</span>
+</div>
+<div style="display: grid; grid-template-columns: 40px repeat(3, minmax(0, 1fr)); gap: 4px; font-size: 11px; align-items: center; align-self: start;">
+<span></span><span style="color: rgba(255,255,255,.6); text-align: center;">Spread</span><span style="color: rgba(255,255,255,.6); text-align: center;">Total</span><span style="color: rgba(255,255,255,.6); text-align: center;">Money</span>
+<sc-for list="{{r.lines}}" as="ln" hint-placeholder-count="2">
+<span style="font-family: Outfit, sans-serif; font-size: 12px; color: #ccc;">{{ln.team}}</span>
+<button class="btn price feltpill" style="box-shadow: none; border-color: rgba(222,186,106,.35); border-radius: 4px; padding: 5px 4px; display: flex; flex-direction: column; align-items: center;"><span style="font-size: 12px; font-weight: 700;">{{ln.s}}</span><span style="font-size: 10px; color: rgba(255,255,255,.7);">{{ln.so}}</span></button>
+<button class="btn price feltpill" style="box-shadow: none; border-color: rgba(222,186,106,.35); border-radius: 4px; padding: 5px 4px; display: flex; flex-direction: column; align-items: center;"><span style="font-size: 12px; font-weight: 700;">{{ln.t}}</span><span style="font-size: 10px; color: rgba(255,255,255,.7);">{{ln.to}}</span></button>
+<button class="btn price feltpill" style="box-shadow: none; border-color: rgba(222,186,106,.35); border-radius: 4px; padding: 5px 4px; display: flex; flex-direction: column; align-items: center;"><span style="font-size: 12px; font-weight: 700;">{{ln.m}}</span><span style="font-size: 10px; color: rgba(255,255,255,.7);">ML</span></button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</article>
+</sc-for>
+</sc-if>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<div style="padding: 28px; text-align: center; color: #ccc;">Nothing on the board for that. <button class="btn" onClick="{{reset}}" style="color: #ebc56c; text-decoration: underline;">Show the whole board</button></div>
+</sc-if>
+<button class="btn" style="width: 100%; padding: 12px 16px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.6); text-align: left; font-size: 12px;">
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Off the board: 12 passes and 3 fades where the model sees no edge</span>
+</button>
+</sc-if>
+<sc-if value="{{isGame}}" hint-placeholder-val="{{false}}">
+<div style="position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 12px 16px; background: #121212; border-bottom: 1px solid #2c2c2c;">
+<button class="btn" onClick="{{backToBest}}" style="font-size: 12px; font-weight: 700; color: #ebc56c;">← Best bets</button>
+<span style="font-family: Outfit, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: .5px;">{{gv.title}}</span>
+<span style="font-size: 12px; color: rgba(255,255,255,.6);">{{gv.when}} · {{gv.venue}}</span>
+<span style="flex: 1;"></span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,.7);"><span style="width: 14px; height: 10px; border-radius: 3px; box-shadow: 0 0 0 1.5px #ebc56c;"></span>the bot’s pick · <b style="color: #3ee07a; font-family: Outfit, sans-serif;">K</b> = Kelly score, tap it for the math</span>
+</div>
+<sc-for list="{{gv.sections}}" as="sec" hint-placeholder-count="3">
+<button class="btn bandhead" onClick="{{sec.toggle}}" aria-expanded="{{sec.open}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; text-align: left; border-bottom: 1px solid #2c2c2c; background: linear-gradient(90deg, rgba(235,197,108,.1), transparent 60%);">
+<span aria-hidden="true" style="width: 30px; flex: none; display: flex; justify-content: center;"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" style="rotate: {{sec.rot}};"><path d="M9 6l6 6-6 6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+<span style="font-family: Outfit, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2.5px;" class="glow">{{sec.title}}</span>
+<span style="font-size: 12px; color: #ccc;">{{sec.count}}</span>
+</button>
+<sc-if value="{{sec.open}}" hint-placeholder-val="{{true}}">
+<div style="padding: 12px 16px 16px 60px; border-bottom: 1px solid #2c2c2c; display: grid; gap: 8px; align-items: center; {{sec.cols}}">
+<sc-for list="{{sec.heads}}" as="h" hint-placeholder-count="4"><span style="font-family: Outfit, sans-serif; font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,.6); text-align: {{h.align}};">{{h.t}}</span></sc-for>
+<sc-for list="{{sec.rows}}" as="row" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+<span aria-hidden="true" style="width: 28px; height: 28px; flex: none; border-radius: 50%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-family: Outfit, sans-serif; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); {{row.disc}}">{{row.ab}}</span>
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0;"><span style="font-family: Outfit, sans-serif; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{row.label}}</span><span style="font-size: 11px; color: rgba(255,255,255,.6);">{{row.sub}}</span></span>
+</div>
+<sc-for list="{{row.cells}}" as="c" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; {{c.ring}}">
+<button class="btn price" onClick="{{c.add}}" aria-pressed="{{c.pressed}}" aria-label="{{c.aria}}" style="padding: 8px 6px 6px; display: flex; flex-direction: column; align-items: center; gap: 1px; {{c.face}}">
+<span style="font-family: Outfit, sans-serif; font-size: 14px; font-weight: 600;">{{c.top}}</span>
+<span style="font-size: 11px; font-weight: 700; {{c.oddsTone}}">{{c.odds}}</span>
+</button>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 4px 6px; background: #0f3f29;">
+<span style="font-size: 9px; font-weight: 900; letter-spacing: .8px; padding: 2px 5px; border-radius: 3px; box-sizing: border-box; {{c.tagStyle}}">{{c.tag}}</span>
+<button class="btn" onClick="{{c.openWhy}}" aria-label="Kelly score {{c.kTxt}}: how it’s made" style="font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 3px; background: #121212; box-shadow: inset 0 0 4px rgba(0,0,0,.6); {{c.kTone}}">K {{c.kTxt}}</button>
+</div>
+</div>
+</sc-for>
+</sc-for>
+</div>
+</sc-if>
+</sc-for>
+</sc-if>
+</div>
+<sc-if value="{{whyOpen}}" hint-placeholder-val="{{false}}">
+<div role="dialog" aria-label="How the Kelly score is made" class="dots" style="position: absolute; right: 16px; top: 52px; width: 350px; max-width: calc(100% - 32px); box-sizing: border-box; border: 1px solid #ebc56c; border-radius: 8px; box-shadow: 0 14px 34px rgba(0,0,0,.7), 0 0 16px rgba(235,197,108,.15); padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px; z-index: 5;">
+<div style="display: flex; align-items: flex-start; gap: 12px;">
+<span style="min-width: 58px; height: 44px; box-sizing: border-box; padding: 3px 8px 0; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: #121212; box-shadow: inset 0 0 6px rgba(0,0,0,.8), 0 0 0 1px #3a3a3a; font-family: DSEG7, Outfit, sans-serif; font-size: 20px; font-weight: 700; {{w.kTone}}">{{w.k}}</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">KELLY SCORE</span>
+<span style="font-family: Outfit, sans-serif; font-size: 15px; font-weight: 600; line-height: 1.25;">{{w.title}}</span>
+<span style="font-size: 11px; color: rgba(255,255,255,.6);">{{w.sub}}</span>
+</div>
+<button class="btn" onClick="{{closeWhy}}" aria-label="Close" style="width: 28px; height: 28px; margin: -6px -8px 0 0; font-size: 18px; color: rgba(255,255,255,.7);">×</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 7px;">
+<sc-for list="{{w.parts}}" as="pt" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 112px minmax(0, 1fr) 40px; align-items: center; gap: 8px; font-size: 12px;">
+<span style="color: #ccc;">{{pt.label}}</span>
+<div aria-hidden="true" style="height: 8px; border-radius: 999px; background: #2c2c2c; overflow: hidden;"><div style="height: 100%; border-radius: 999px; {{pt.bar}}"></div></div>
+<span style="text-align: right; font-weight: 700; {{pt.tone}}">{{pt.val}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 5px; padding-top: 10px; border-top: 1px solid #2c2c2c;">
+<div style="display: flex; justify-content: space-between; font-family: Outfit, sans-serif; font-size: 12px;"><span style="color: #3ee07a;">Model {{w.p}}% to win</span><span style="color: rgba(255,255,255,.6);">Book {{w.q}}%</span></div>
+<div aria-hidden="true" style="position: relative; height: 6px; border-radius: 999px; background: #2c2c2c;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: #3ee07a; box-shadow: 0 0 6px rgba(62,224,122,.45); {{w.modelW}}"></div>
+<div style="position: absolute; top: -3px; width: 2px; height: 12px; background: #fff; {{w.bookL}}"></div>
+</div>
+<span style="font-size: 12px; color: #ccc;">Expected return <b style="{{w.evTone}}">{{w.ev}}</b> a unit</span>
+</div>
+<p style="margin: 0; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,.9);">{{w.note}}</p>
+<span style="font-size: 11px; line-height: 1.45; color: rgba(255,255,255,.6);">The Kelly score is how much of the bankroll the model would stake, scaled 0 to 5. Under 0.5 stays off the board.</span>
+</div>
+</sc-if>
+</section>
+</main>
+
+<aside class="side scroll" aria-label="Bet ticket and recent form" style="flex: 1 1 340px; max-width: 390px; display: flex; flex-direction: column; gap: 16px; padding: 2px 4px 8px;">
+<div class="ticket" style="padding: 26px 22px 30px; display: flex; flex-direction: column; gap: 12px; flex: none;">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;">
+<span style="font-weight: 700; font-size: 15px; letter-spacing: 3px;">THE BOOK</span>
+<span style="font-size: 10px; letter-spacing: 1px; color: #4a4a4a;">SEASON RANKER · PLAY MONEY</span>
+<span style="font-size: 10px; letter-spacing: 1px; color: #4a4a4a;">SAT OCT 17 · TICKET 0417-0023</span>
+</div>
+<hr class="perf">
+<sc-if value="{{multi}}" hint-placeholder-val="{{true}}">
+<div role="group" aria-label="Ticket type" style="display: flex; border: 1.5px solid #1a1a1a; border-radius: 3px; overflow: hidden;">
+<button class="btn" onClick="{{straight}}" aria-pressed="{{isStraight}}" style="flex: 1; padding: 7px; font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; {{straightStyle}}">STRAIGHT</button>
+<button class="btn" onClick="{{parlay}}" aria-pressed="{{isParlay}}" style="flex: 1; padding: 7px; font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; {{parlayStyle}}">PARLAY</button>
+</div>
+</sc-if>
+<sc-if value="{{slipEmpty}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; padding: 14px 0; font-size: 12px; line-height: 1.6; text-align: center; color: #3a3a3a;">NO BETS YET.<br>TAP A PRICE ON THE BOARD TO WRITE IT ON THE TICKET.</p>
+</sc-if>
+<sc-for list="{{legs}}" as="leg" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px dotted rgba(26,26,26,.35);">
+<div style="display: flex; align-items: flex-start; gap: 8px;">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 13px; font-weight: 700; text-transform: uppercase;">{{leg.who}} {{leg.what}}</span>
+<span style="font-size: 11px; color: #4a4a4a;">{{leg.sport}} · {{leg.game}} · {{leg.when}} · {{leg.tag}}</span>
+</div>
+<span style="font-size: 13px; font-weight: 700;">{{leg.odds}}</span>
+<button class="btn" onClick="{{leg.remove}}" aria-label="Remove {{leg.who}} {{leg.what}}" style="width: 28px; height: 28px; margin: -5px -8px 0 0; font-size: 16px; color: #4a4a4a;">×</button>
+</div>
+<sc-if value="{{leg.showStake}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; justify-content: space-between; font-size: 12px;"><span>RISK {{leg.stake}}U</span><span>WIN <b>{{leg.toWin}}U</b></span></div>
+<div style="display: flex; gap: 8px; align-items: center;">
+<button class="btn kchip on" onClick="{{leg.addHalf}}" aria-label="Add half a unit" style="--clay: #8a8a8a; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">½<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<button class="btn kchip on" onClick="{{leg.add1}}" aria-label="Add 1 unit" style="--clay: #1f5fbf; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">1<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<button class="btn kchip on" onClick="{{leg.add5}}" aria-label="Add 5 units" style="--clay: #c62828; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">5<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<button class="btn kchip on" onClick="{{leg.add10}}" aria-label="Add 10 units" style="--clay: #1d8a4e; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">10<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<span style="flex: 1;"></span>
+<button class="btn" onClick="{{leg.clear}}" style="font-family: inherit; font-size: 11px; text-decoration: underline; color: #4a4a4a;">clear</button>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{isParlayShown}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;"><span>{{slipCount}}-LEG PARLAY</span><span>{{parlayOdds}}</span></div>
+<div style="display: flex; gap: 8px; align-items: center;">
+<span style="font-size: 12px;">RISK {{parlayStake}}U</span><span style="flex: 1;"></span>
+<button class="btn kchip on" onClick="{{pAdd1}}" aria-label="Add 1 unit" style="--clay: #1f5fbf; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">1<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<button class="btn kchip on" onClick="{{pAdd5}}" aria-label="Add 5 units" style="--clay: #c62828; width: 34px; height: 34px; border-width: 4px; font-weight: 900; font-size: 11px; transform: none;">5<svg aria-hidden="true"><rect pathLength="80" style="stroke-width: 4px;"></rect></svg></button>
+<button class="btn" onClick="{{pClear}}" style="font-family: inherit; font-size: 11px; text-decoration: underline; color: #4a4a4a;">clear</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{slipFull}}" hint-placeholder-val="{{true}}">
+<hr class="perf">
+<div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px;">
+<div style="display: flex; justify-content: space-between;"><span>TOTAL RISK</span><span>{{totStake}}U</span></div>
+<div style="display: flex; justify-content: space-between;"><span>TO WIN</span><span style="font-weight: 700;">{{totWin}}U</span></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; padding-top: 4px;"><span>PAYS</span><span>{{totPays}}U</span></div>
+</div>
+<button class="btn pcard placebtn" style="margin-top: 4px; padding: 14px; border-radius: 6px; font-family: Outfit, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; color: #ebc56c; text-shadow: 0 0 6px rgba(235,197,108,.55); box-shadow: 0 4px 10px rgba(0,0,0,.35);">{{placeLabel}}</button>
+<button class="btn" onClick="{{clearAll}}" style="align-self: center; font-family: inherit; font-size: 11px; text-decoration: underline; color: #4a4a4a;">tear up ticket</button>
+<span aria-hidden="true" style="height: 30px; margin-top: 2px; background: repeating-linear-gradient(90deg, #1a1a1a 0 2px, transparent 2px 4px, #1a1a1a 4px 5px, transparent 5px 8px, #1a1a1a 8px 11px, transparent 11px 12px); opacity: .85;"></span>
+</sc-if>
+</div>
+
+<div class="dots" style="flex: none; border: 1px solid #3a3a3a; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+<h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 2px;" class="glow">RECENT FORM</h2>
+<div role="group" aria-label="Whose bets" style="display: flex; border: 1px solid #3a3a3a; border-radius: 999px; overflow: hidden;">
+<button class="btn" onClick="{{formYou}}" aria-pressed="{{youOn}}" style="padding: 5px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; {{youStyle}}">YOU</button>
+<button class="btn" onClick="{{formBot}}" aria-pressed="{{botOn}}" style="padding: 5px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; {{botStyle}}">THE BOT</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+<div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.6);">LAST 7 DAYS</span><span style="font-family: Outfit, sans-serif; font-size: 20px; font-weight: 600;">{{f.rec}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.6);">UNITS</span><span style="font-family: Outfit, sans-serif; font-size: 20px; font-weight: 600; color: #3ee07a;">{{f.units}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.6);">STREAK</span><span style="font-family: Outfit, sans-serif; font-size: 20px; font-weight: 600;" class="glow">{{f.streak}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column;">
+<sc-for list="{{f.last}}" as="b" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid #2c2c2c; font-size: 12px;">
+<span style="height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: Outfit, sans-serif; font-weight: 700; font-size: 12px; background: #121212; box-shadow: inset 0 0 6px rgba(0,0,0,.6); {{b.tone}}">{{b.res}}</span>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc;"><span style="color: #fff;">{{b.pick}}</span> · {{b.game}}</span>
+<span style="font-weight: 700; {{b.tone}}">{{b.u}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</aside>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { kinds: [], game: 'all', dd: false, open: null, closed: [], slip: [1, 3], stakes: { 1: 2, 3: 1 }, mode: 'straight', pStake: 1, form: 'you', why: null, secOpen: { lines: true, tt: true, props: false } };
+  }
+  data() {
+    return [
+      { id: 1, band: 'lock', type: 'prop', sport: 'NFL', game: 'SEA @ LAR', g: 'sea', when: 'Sun 3:05 PM', who: 'Kenneth Walker III', what: 'over 68.5 rush yds', odds: '−115', o: -115, model: 62, book: 53, kelly: '4.1', line: '18+ carries three straight; Rams allow 5.1 a carry', why: 'Seattle leans on the run when it leads, and the model has them ahead most of the second half. Walker has cleared 68.5 in five of six games with this volume, and the Rams lost their run-stopping tackle on Thursday.', risk: 'If Seattle falls behind early the carries go to the passing game, and a goal-line vulture caps the yards.', venue: 'SoFi Stadium · indoors' },
+      { id: 2, band: 'lock', type: 'spread', sport: 'NFL', game: 'DET @ MIN', g: 'det', when: 'Sun 7:20 PM', who: 'Lions', what: '−2.5', odds: '−110', o: -110, model: 61, book: 52, kelly: '3.6', line: 'Detroit’s pass rush vs a backup left tackle', why: 'Minnesota starts a backup left tackle against the league’s best pressure rate, and the model makes this closer to Lions by 5.', risk: 'Division road games run close, and a field goal decides a 2.5 more often than most numbers.', venue: 'U.S. Bank Stadium · indoors' },
+      { id: 3, band: 'love', type: 'total', sport: 'NBA', game: 'BOS @ NYK', g: 'bos', when: 'Sat 6:30 PM', who: 'Under', what: '221.5', odds: '−108', o: -108, model: 58, book: 52, kelly: '2.4', line: 'Two top-five defenses; Boston on a back-to-back', why: 'Both teams sit in the top five in half-court defense and Boston is on the second night of a back-to-back; the model lands at 214.', risk: 'Three-point variance: a hot night from deep clears this alone.', venue: 'Madison Square Garden' },
+      { id: 4, band: 'love', type: 'ml', sport: 'NFL', game: 'KC @ LV', g: 'kc', when: 'Sun 3:25 PM', who: 'Chiefs', what: 'to win', odds: '−180', o: -180, model: 71, book: 64, kelly: '2.1', line: 'Las Vegas down its starting quarterback', why: 'With the backup quarterback starting, the model has Kansas City winning 71 times in 100 against a 64% price.', risk: 'A short price: one bad bounce costs nearly twice what it wins.', venue: 'Allegiant Stadium · indoors' },
+      { id: 5, band: 'love', type: 'prop', sport: 'NHL', game: 'TOR @ MTL', g: 'tor', when: 'Sat 7:00 PM', who: 'Auston Matthews', what: 'over 3.5 shots', odds: '−125', o: -125, model: 60, book: 56, kelly: '1.8', line: 'Montreal allows the third-most shots a game', why: 'Matthews averages 4.6 shots against teams that allow as many as Montreal does, on top-line power-play time.', risk: 'Blocked shots don’t count, and Montreal blocks a lot of them.', venue: 'Bell Centre' },
+      { id: 6, band: 'like', type: 'team', sport: 'NFL', game: 'SEA @ LAR', g: 'sea', when: 'Sun 3:05 PM', who: 'Rams', what: 'over 21.5 pts', odds: '−105', o: -105, model: 55, book: 51, kelly: '1.2', line: 'Indoors; Seattle’s secondary banged up', why: 'The model projects the Rams at 23.4 points with two Seattle cornerbacks questionable.', risk: 'If Seattle controls the clock, the Rams get fewer drives.', venue: 'SoFi Stadium · indoors' },
+      { id: 7, band: 'like', type: 'ml', sport: 'NHL', game: 'TOR @ MTL', g: 'tor', when: 'Sat 7:00 PM', who: 'Canadiens', what: '+135', odds: '+135', o: 135, model: 45, book: 43, kelly: '0.9', line: 'A small edge at a plus price at home', why: 'Home ice and a rested goalie put Montreal a touch above the price.', risk: 'A small edge: expect to lose this more often than not.', venue: 'Bell Centre' },
+      { id: 8, band: 'like', type: 'prop', sport: 'NFL', game: 'DET @ MIN', g: 'det', when: 'Sun 7:20 PM', who: 'Amon-Ra St. Brown', what: 'over 6.5 rec', odds: '+100', o: 100, model: 53, book: 50, kelly: '0.8', line: 'Nine targets a game with the No. 2 receiver out', why: 'His target share climbs with the second receiver out; the model has him at 7.1 catches.', risk: 'Indoors helps, but a blowout script could sit the starters.', venue: 'U.S. Bank Stadium · indoors' }
+    ];
+  }
+  profit(o) { return o < 0 ? 100 / -o : o / 100; }
+  fmt(x) { return (Math.round(x * 10) / 10).toFixed(1); }
+  amer(o) { return o > 0 ? '+' + o : '−' + (-o); }
+  implied(o) { return o < 0 ? -o / (-o + 100) : 100 / (o + 100); }
+  gameDefs() {
+    const G = {
+      sea: { sport: 'NFL', away: 'SEA', home: 'LAR', an: 'Seahawks', hn: 'Rams', ac: '#69be28', hc: '#003594', when: 'Sun 3:05 PM', venue: 'SoFi Stadium · indoors',
+        lines: [['SEA', [['+1.5', -110, 0.3, 'PASS'], ['O 44.5', -108, -0.4], ['+102', 102, 0.6]]], ['LAR', [['−1.5', -110, -0.8], ['U 44.5', -112, 0.2], ['−122', -122, -1.1, 'FADE']]]],
+        tt: [['SEA', [['O 22.5', -110, -0.2], ['U 22.5', -110, 0.1]]], ['LAR', [['O 21.5', -105, 1.2, '', 6], ['U 21.5', -115, -1.5]]]],
+        props: [['SEA', 'Kenneth Walker III', 'Rush yds', '68.5', [[-115, 4.1, '', 1], [-105, -3.2]]], ['SEA', 'Jaxon Smith-Njigba', 'Rec yds', '71.5', [[-110, 0.4], [-110, -0.6]]], ['LAR', 'Puka Nacua', 'Receptions', '6.5', [[100, 0.3, 'PASS'], [-120, -0.9]]], ['LAR', 'Kyren Williams', 'Rush yds', '74.5', [[-110, -1.1], [-110, 0.8]]]] },
+      det: { sport: 'NFL', away: 'DET', home: 'MIN', an: 'Lions', hn: 'Vikings', ac: '#0076b6', hc: '#4f2683', when: 'Sun 7:20 PM', venue: 'U.S. Bank Stadium · indoors',
+        lines: [['DET', [['−2.5', -110, 3.6, '', 2], ['O 48.5', -110, 0.2], ['−142', -142, 1.4]]], ['MIN', [['+2.5', -110, -3.9, 'FADE'], ['U 48.5', -110, -0.3], ['+120', 120, -2.2]]]],
+        tt: [['DET', [['O 25.5', -115, 0.9], ['U 25.5', -105, -1.2]]], ['MIN', [['O 22.5', -110, -0.7], ['U 22.5', -110, 0.4]]]],
+        props: [['DET', 'Amon-Ra St. Brown', 'Receptions', '6.5', [[100, 0.8, '', 8], [-120, -1.0]]], ['DET', 'Jahmyr Gibbs', 'Rush yds', '64.5', [[-110, 0.4], [-110, -0.6]]], ['MIN', 'Justin Jefferson', 'Rec yds', '84.5', [[-110, -0.5], [-110, 0.2]]]] },
+      bos: { sport: 'NBA', away: 'BOS', home: 'NYK', an: 'Celtics', hn: 'Knicks', ac: '#007a33', hc: '#f58426', when: 'Sat 6:30 PM', venue: 'Madison Square Garden',
+        lines: [['BOS', [['−3.5', -110, -0.6], ['O 221.5', -112, -2.6, 'FADE'], ['−160', -160, -0.4]]], ['NYK', [['+3.5', -110, 0.5, 'PASS'], ['U 221.5', -108, 2.4, '', 3], ['+136', 136, 0.3]]]],
+        tt: [['BOS', [['O 112.5', -110, -1.0], ['U 112.5', -110, 0.9]]], ['NYK', [['O 108.5', -110, -0.8], ['U 108.5', -110, 0.6]]]],
+        props: [['BOS', 'Jaylen Brown', 'Points', '24.5', [[-115, -0.4], [-105, 0.3]]], ['NYK', 'Jalen Brunson', 'Points', '26.5', [[-110, 0.2], [-110, -0.4]]], ['NYK', 'Karl-Anthony Towns', 'Rebounds', '11.5', [[-120, 0.6], [100, -0.9]]]] },
+      kc: { sport: 'NFL', away: 'KC', home: 'LV', an: 'Chiefs', hn: 'Raiders', ac: '#e31837', hc: '#555555', when: 'Sun 3:25 PM', venue: 'Allegiant Stadium · indoors',
+        lines: [['KC', [['−3.5', -115, 0.7], ['O 42.5', -110, -0.3], ['−180', -180, 2.1, '', 4]]], ['LV', [['+3.5', -105, -1.0], ['U 42.5', -110, 0.2], ['+152', 152, -2.4]]]],
+        tt: [['KC', [['O 23.5', -110, 0.5], ['U 23.5', -110, -0.7]]], ['LV', [['O 18.5', -110, -0.9], ['U 18.5', -110, 0.6]]]],
+        props: [['KC', 'Patrick Mahomes', 'Pass yds', '254.5', [[-110, 0.3], [-110, -0.5]]], ['LV', 'Brock Bowers', 'Receptions', '5.5', [[-130, -0.2], [110, 0.1]]]] },
+      tor: { sport: 'NHL', away: 'TOR', home: 'MTL', an: 'Maple Leafs', hn: 'Canadiens', ac: '#00205b', hc: '#af1e2d', when: 'Sat 7:00 PM', venue: 'Bell Centre',
+        lines: [['TOR', [['−1.5', 170, -0.5], ['O 6.5', -105, 0.1], ['−155', -155, -1.0]]], ['MTL', [['+1.5', -205, 0.2], ['U 6.5', -115, -0.3], ['+135', 135, 0.9, '', 7]]]],
+        tt: [['TOR', [['O 3.5', 110, 0.2], ['U 3.5', -130, -0.4]]], ['MTL', [['O 2.5', -150, 0.4], ['U 2.5', 125, -0.6]]]],
+        props: [['TOR', 'Auston Matthews', 'Shots', '3.5', [[-125, 1.8, '', 5], [105, -2.0]]], ['TOR', 'William Nylander', 'Points', '0.5', [[-160, 0.3], [130, -0.5]]], ['MTL', 'Nick Suzuki', 'Points', '0.5', [[-140, -0.2], [115, 0.1]]]] }
+    };
+    const gen = [['mia', 'NBA', 'MIA', 'ORL', 'Heat', 'Magic', '#98002e', '#0077c0', 'Sat 6:00 PM', 'Kia Center', '221.5'], ['den', 'NBA', 'DEN', 'OKC', 'Nuggets', 'Thunder', '#0e2240', '#007ac1', 'Sat 7:00 PM', 'Paycom Center', '229.5'], ['gsw', 'NBA', 'GSW', 'SAC', 'Warriors', 'Kings', '#1d428a', '#5a2d81', 'Sat 9:00 PM', 'Golden 1 Center', '231.5'], ['lal', 'NBA', 'LAL', 'PHX', 'Lakers', 'Suns', '#552583', '#e56020', 'Sat 9:30 PM', 'Footprint Center', '224.5'], ['nyr', 'NHL', 'NYR', 'BOS', 'Rangers', 'Bruins', '#0038a8', '#a07d00', 'Sat 6:00 PM', 'TD Garden', '5.5'], ['col', 'NHL', 'COL', 'DAL', 'Avalanche', 'Stars', '#6f263d', '#006847', 'Sat 7:00 PM', 'American Airlines Center', '6.5'], ['edm', 'NHL', 'EDM', 'VAN', 'Oilers', 'Canucks', '#ff4c00', '#00205b', 'Sat 9:00 PM', 'Rogers Arena', '6.5'], ['phi', 'NFL', 'PHI', 'NYG', 'Eagles', 'Giants', '#004c54', '#0b2265', 'Sun 12:00 PM', 'MetLife Stadium', '41.5'], ['cin', 'NFL', 'CIN', 'CLE', 'Bengals', 'Browns', '#fb4f14', '#311d00', 'Sun 12:00 PM', 'Huntington Bank Field', '43.5'], ['buf', 'NFL', 'BUF', 'MIA', 'Bills', 'Dolphins', '#00338d', '#008e97', 'Sun 12:00 PM', 'Hard Rock Stadium', '47.5']];
+    gen.forEach(([k, sport, away, home, an, hn, ac, hc, when, venue, tot]) => {
+      const sp = sport === 'NHL' ? '1.5' : '3.5';
+      G[k] = { sport, away, home, an, hn, ac, hc, when, venue,
+        lines: [[away, [['−' + sp, sport === 'NHL' ? 165 : -110, -0.3], ['O ' + tot, -110, 0.2], ['−170', -170, -0.4]]], [home, [['+' + sp, sport === 'NHL' ? -200 : -110, 0.1], ['U ' + tot, -110, -0.4], ['+145', 145, 0.3]]]],
+        tt: [], props: [] };
+    });
+    return G;
+  }
+  whyOf(it, rankOf, all) {
+    const K = parseFloat(it.kelly), p = it.model, q = it.book, ev = ((p / 100) * this.profit(it.o) - (1 - p / 100)) * 100;
+    const r = (x) => Math.round(x * 10) / 10, e = r(K * 0.72), c = r(K * 0.16), l = r(K * 0.14), j = r(K - e - c - l);
+    const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1);
+    const parts = [['Edge vs the book', e], ['Confidence', c], ['Line value', l], ['Juice', j]].map(([label, v]) => ({ label, val: sign(v), bar: 'width: ' + Math.min(100, Math.abs(v) / 5 * 100) + '%; background: ' + (v >= 0 ? '#3ee07a' : '#ff7468') + ';', tone: 'color: ' + (v >= 0 ? '#3ee07a' : '#ff7468') + ';' }));
+    let note;
+    const rk = rankOf[it.id];
+    if (rk) {
+      const next = all.find((d) => rankOf[d.id] === rk + 1);
+      note = 'Ranked #' + rk + ' of 41 on the board.' + (next ? ' It edges #' + (rk + 1) + ' (' + next.who + ' ' + next.what + ', Kelly ' + next.kelly + ') on ' + ((p - q) >= (next.model - next.book) ? 'a bigger gap between the model and the book.' : 'confidence: the model trusts this read more.') : '');
+    } else if (it.flag === 'PASS') note = 'The bot passed: there’s an edge, but it’s too thin to trust at this price.';
+    else if (it.flag === 'FADE') note = 'The bot fades this: the model makes the other side the better bet.';
+    else if (K >= 0.5) note = 'Clears the bar, but the bot already has a stronger bet on this game.';
+    else if (K > 0) note = 'Under 0.5: too small an edge to make the board. Still yours to bet.';
+    else note = 'Negative: the book’s price beats the model’s chance. Bet it and you’re paying the juice.';
+    return { k: (K < 0 ? '−' : '') + Math.abs(K).toFixed(1), kTone: K >= 0.5 ? 'color: #3ee07a; text-shadow: 0 0 8px rgba(62,224,122,.5);' : K > 0 ? 'color: #fff;' : 'color: #ff7468;', title: it.who + ' ' + it.what + ' ' + it.odds, sub: it.sport + ' · ' + it.game + ' · ' + it.when, parts, p, q, ev: (ev >= 0 ? '+' : '−') + Math.abs(ev).toFixed(1) + '%', evTone: ev >= 0 ? 'color: #3ee07a;' : 'color: #ff7468;', note, modelW: 'width: ' + p + '%;', bookL: 'left: calc(' + q + '% - 1px);' };
+  }
+  renderVals() {
+    const s = this.state, all = this.data(), byId = {};
+    all.forEach((d) => { byId[d.id] = d; });
+    const rankOf = {};
+    let rc = 0;
+    ['lock', 'love', 'like'].forEach((b) => all.filter((d) => d.band === b).forEach((d) => { rc += 1; rankOf[d.id] = rc; }));
+    const GD = this.gameDefs();
+    const addTo = (id) => () => { const on = s.slip.indexOf(id) >= 0; const slip = on ? s.slip.filter((x) => x !== id) : s.slip.concat(id); const stakes = Object.assign({}, s.stakes); if (!on && !stakes[id]) stakes[id] = 1; this.setState({ slip, stakes }); };
+    const mkItem = (gk, gd, id, who, what, o, K, flag, pid) => {
+      if (pid) return byId[pid];
+      const book = Math.round(this.implied(o) * 100 - 2);
+      const it = { id, sport: gd.sport, game: gd.away + ' @ ' + gd.home, g: gk, when: gd.when, who, what, odds: this.amer(o), o, model: book + Math.round(K * 2.2), book, kelly: K.toFixed(1), band: null, flag: flag || '' };
+      byId[id] = it;
+      return it;
+    };
+    const tagStyles = { LOCK: 'background: #d2691e; color: #fff;', LOVE: 'background: #1d8a4e; color: #fff;', LIKE: 'background: #ffcd00; color: #1a1a1a;', PASS: 'border: 1px solid #9a9a9a; color: #ccc;', FADE: 'border: 1px solid #ff7468; color: #ff7468;' };
+    const cell = (it, top) => {
+      const on = s.slip.indexOf(it.id) >= 0, pick = !!it.band, K = parseFloat(it.kelly);
+      const tag = pick ? it.band.toUpperCase() : it.flag;
+      return { top, odds: it.odds, pressed: on ? 'true' : 'false', aria: (on ? 'Take off the ticket: ' : 'Add to the ticket: ') + it.who + ' ' + it.what + ' at ' + it.odds,
+        face: on ? 'background: #ebc56c; color: #1a1a1a;' : 'background: radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255,255,255,.07), transparent 70%), #155a3a;',
+        oddsTone: on ? 'color: #1a1a1a;' : 'color: rgba(255,255,255,.8);',
+        ring: pick ? 'box-shadow: 0 0 0 1.5px #ebc56c, 0 0 12px rgba(235,197,108,.35);' : 'box-shadow: 0 0 0 1px rgba(222,186,106,.3);',
+        tag: tag || '·', tagStyle: tag ? tagStyles[tag] : 'visibility: hidden;',
+        kTxt: (K < 0 ? '−' : '') + Math.abs(K).toFixed(1), kTone: K >= 0.5 ? 'color: #3ee07a;' : K > 0 ? 'color: #ccc;' : 'color: #ff7468;',
+        add: addTo(it.id), openWhy: () => this.setState({ why: it.id }) };
+    };
+    const buildGame = (gk) => {
+      const gd = GD[gk], secs = [], disc = (t) => 'background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.25), transparent 60%), ' + (t === gd.away ? gd.ac : gd.hc) + ';';
+      secs.push({ kinds: ['spread', 'total', 'ml'], cols: 'grid-template-columns: minmax(160px, 1.3fr) repeat(3, minmax(0, 1fr));', heads: [{ t: 'GAME LINES', align: 'left' }, { t: 'SPREAD', align: 'center' }, { t: 'TOTAL', align: 'center' }, { t: 'MONEYLINE', align: 'center' }],
+        rows: gd.lines.map(([team, cs], i) => ({ ab: team, disc: disc(team), label: team === gd.away ? gd.an : gd.hn, sub: team === gd.away ? 'Away' : 'Home', cells: cs.map(([top, o, K, flag, pid], j) => cell(mkItem(gk, gd, gk + ':l' + i + j, j === 1 ? (top[0] === 'O' ? 'Over' : 'Under') : team, j === 0 ? top : j === 1 ? top.slice(2) : 'ML', o, K, flag, pid), top)) })) });
+      if (gd.tt.length) secs.push({ kinds: ['team'], cols: 'grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));', heads: [{ t: 'TEAM TOTALS', align: 'left' }, { t: 'OVER', align: 'center' }, { t: 'UNDER', align: 'center' }],
+        rows: gd.tt.map(([team, cs], i) => ({ ab: team, disc: disc(team), label: team === gd.away ? gd.an : gd.hn, sub: 'Points', cells: cs.map(([top, o, K, flag, pid], j) => cell(mkItem(gk, gd, gk + ':t' + i + j, team, (top[0] === 'O' ? 'over ' : 'under ') + top.slice(2) + ' pts', o, K, flag, pid), top)) })) });
+      if (gd.props.length) secs.push({ kinds: ['prop'], cols: 'grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));', heads: [{ t: 'PLAYER PROPS', align: 'left' }, { t: 'OVER', align: 'center' }, { t: 'UNDER', align: 'center' }],
+        rows: gd.props.map(([team, player, market, line, cs], i) => ({ ab: player.split(' ').map((w) => w[0]).slice(0, 2).join(''), disc: 'background: #2c2c2c; border: 2px solid ' + (team === gd.away ? gd.ac : gd.hc) + ';', label: player, sub: team + ' · ' + market + ' ' + line, cells: cs.map(([o, K, flag, pid], j) => cell(mkItem(gk, gd, gk + ':p' + i + j, player, (j === 0 ? 'over ' : 'under ') + line + ' ' + market.toLowerCase(), o, K, flag, pid), (j === 0 ? 'O ' : 'U ') + line)) })) });
+      const keys = ['lines', 'tt', 'props'], titles = { lines: 'GAME LINES', tt: 'TEAM TOTALS', props: 'PLAYER PROPS' };
+      secs.forEach((sec) => {
+        const key = sec.kinds[0] === 'team' ? 'tt' : sec.kinds[0] === 'prop' ? 'props' : 'lines', open = !!s.secOpen[key];
+        sec.heads[0].t = '';
+        Object.assign(sec, { title: titles[key], open, rot: open ? '90deg' : '0deg', count: key === 'props' ? sec.rows.length + ' players · ' + sec.rows.length * 2 + ' bets' : sec.rows.length * sec.rows[0].cells.length + ' bets',
+          toggle: () => { const so = Object.assign({}, s.secOpen); so[key] = !open; this.setState({ secOpen: so }); } });
+      });
+      return { title: gd.an + ' @ ' + gd.hn, when: gd.when, venue: gd.venue, sections: secs.filter((sec) => s.kinds.length === 0 || sec.kinds.some((k) => s.kinds.indexOf(k) >= 0)) };
+    };
+    const built = {};
+    Object.keys(GD).forEach((k) => { built[k] = buildGame(k); });
+    const isBest = s.game === 'all', gv = isBest ? { title: '', when: '', venue: '', sections: [] } : built[s.game];
+    const w = s.why && byId[s.why] ? this.whyOf(byId[s.why], rankOf, all) : null;
+    const nfl = '/_blob/7258ba2ed7599b9190ecdcddc0d59fc7', nba = '/_blob/aaf89f7c7907ada78d96164fffc723a7', nhl = '/_blob/24caa35abf22795b9301f3f5d434ed8d';
+    const lines = {
+      sea: [{ team: 'SEA', s: '+1.5', so: '−110', t: 'O 44.5', to: '−108', m: '+102' }, { team: 'LAR', s: '−1.5', so: '−110', t: 'U 44.5', to: '−112', m: '−122' }],
+      det: [{ team: 'DET', s: '−2.5', so: '−110', t: 'O 48.5', to: '−110', m: '−142' }, { team: 'MIN', s: '+2.5', so: '−110', t: 'U 48.5', to: '−110', m: '+120' }],
+      bos: [{ team: 'BOS', s: '−3.5', so: '−110', t: 'O 221.5', to: '−112', m: '−160' }, { team: 'NYK', s: '+3.5', so: '−110', t: 'U 221.5', to: '−108', m: '+136' }],
+      kc: [{ team: 'KC', s: '−3.5', so: '−115', t: 'O 42.5', to: '−110', m: '−180' }, { team: 'LV', s: '+3.5', so: '−105', t: 'U 42.5', to: '−110', m: '+152' }],
+      tor: [{ team: 'TOR', s: '−1.5', so: '+170', t: 'O 6.5', to: '−105', m: '−155' }, { team: 'MTL', s: '+1.5', so: '−205', t: 'U 6.5', to: '−115', m: '+135' }]
+    };
+    const sched = [
+      ['SATURDAY OCT 17', [['NBA', nba, [['bos', 'BOS @ NYK', '6:30 PM'], ['mia', 'MIA @ ORL', '6:00 PM'], ['den', 'DEN @ OKC', '7:00 PM'], ['gsw', 'GSW @ SAC', '9:00 PM'], ['lal', 'LAL @ PHX', '9:30 PM']]], ['NHL', nhl, [['tor', 'TOR @ MTL', '7:00 PM'], ['nyr', 'NYR @ BOS', '6:00 PM'], ['col', 'COL @ DAL', '7:00 PM'], ['edm', 'EDM @ VAN', '9:00 PM']]]]],
+      ['SUNDAY OCT 18', [['NFL', nfl, [['sea', 'SEA @ LAR', '3:05 PM'], ['kc', 'KC @ LV', '3:25 PM'], ['phi', 'PHI @ NYG', '12:00 PM'], ['cin', 'CIN @ CLE', '12:00 PM'], ['buf', 'BUF @ MIA', '12:00 PM'], ['det', 'DET @ MIN', '7:20 PM']]]]]
+    ];
+    let gameLabel = 'Best bets · every game', gameIcon = null;
+    const days = sched.map(([label, sports]) => ({ label, sports: sports.map(([name, icon, gs]) => ({ name, icon, games: gs.map(([k, gl, when]) => {
+      const n = all.filter((d) => d.g === k).length, sel = s.game === k;
+      if (sel) { gameLabel = gl + ' · ' + when; gameIcon = icon; }
+      return { label: gl, when, sel: sel ? 'true' : 'false', selStyle: sel ? 'background: rgba(235,197,108,.12); box-shadow: inset 2px 0 0 #ebc56c;' : '', countTxt: n ? n + (n === 1 ? ' pick' : ' picks') : 'lines', countStyle: n ? 'color: #ebc56c; font-weight: 700;' : 'color: rgba(255,255,255,.6);', pick: () => this.setState({ game: k, dd: false }) };
+    }) })) }));
+    const inGame = all.filter((d) => s.game === 'all' || d.g === s.game);
+    const kindDefs = [['spread', 'ATS', 'Against the spread', '#1f5fbf'], ['total', 'O/U', 'Over / under', '#1d8a4e'], ['team', 'TT', 'Team total', '#262626'], ['ml', 'ML', 'Moneyline', '#6b3fa0'], ['prop', 'PROP', 'Player prop', '#d0601c']];
+    const kinds = kindDefs.map(([k, label, name, clay]) => { const on = s.kinds.indexOf(k) >= 0; return { label, name, clay, count: inGame.filter((d) => d.type === k).length, on: on ? 'on' : '', pressed: on ? 'true' : 'false', toggle: () => this.setState({ kinds: on ? s.kinds.filter((x) => x !== k) : s.kinds.concat(k) }) }; });
+    const shown = inGame.filter((d) => s.kinds.length === 0 || s.kinds.indexOf(d.type) >= 0);
+    const W = 'background: #3ee07a;', L = 'background: #ff7468;';
+    const bandDefs = {
+      lock: { tag: 'LOCKS', color: '#f0a060', glow: 'rgba(210,105,30,.6)', wash: 'rgba(210,105,30,.28)', edge: 'rgba(210,105,30,.5)', blurb: 'the model’s strongest edges', record: '23–9', units: '+18.4u', form: [W, W, L, W, W], icon: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4' },
+      love: { tag: 'LOVES', color: '#3ee07a', glow: 'rgba(62,224,122,.5)', wash: 'rgba(29,138,78,.3)', edge: 'rgba(62,224,122,.4)', blurb: 'clear edges at a fair price', record: '31–22', units: '+7.9u', form: [W, L, W, W, L], icon: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z' },
+      like: { tag: 'LIKES', color: '#ffcd00', glow: 'rgba(255,205,0,.45)', wash: 'rgba(255,205,0,.16)', edge: 'rgba(255,205,0,.35)', blurb: 'small edges, smaller stakes', record: '44–41', units: '+2.1u', form: [L, W, W, L, W], icon: 'M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h5a2 2 0 0 1 2 2.3l-1.3 6A2 2 0 0 1 16.7 20H7' }
+    };
+    let rank = 0;
+    const groups = [];
+    ['lock', 'love', 'like'].forEach((k) => {
+      const def = bandDefs[k], open = s.closed.indexOf(k) < 0;
+      const rows = all.filter((d) => d.band === k).map((d) => { rank += 1; return { d, rk: rank }; }).filter(({ d }) => shown.indexOf(d) >= 0).map(({ d, rk }) => {
+        const on = s.slip.indexOf(d.id) >= 0, isOpen = s.open === d.id;
+        const icon = { 1: ['player', '', '#69be28'], 2: ['team', 'DET', '#0076b6'], 3: ['total', 'down'], 4: ['team', 'KC', '#e31837'], 5: ['player', '', '#4c7bd9'], 6: ['total', 'up'], 7: ['team', 'MTL', '#af1e2d'], 8: ['player', '', '#0076b6'] }[d.id];
+        const icStyle = icon[0] === 'player' ? 'background: #2c2c2c; border: 2px solid ' + icon[2] + ';' : icon[0] === 'team' ? 'background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.25), transparent 60%), ' + icon[2] + '; border: 1.5px solid rgba(255,255,255,.35);' : 'background: #1d1d1d; border: 1.5px solid ' + (icon[1] === 'up' ? 'rgba(62,224,122,.6)' : 'rgba(255,116,104,.6)') + ';';
+        return Object.assign({}, d, {
+          isPlayer: icon[0] === 'player', isTeam: icon[0] === 'team', isTotal: icon[0] === 'total', ab: icon[1], icStyle, arrowRot: icon[1] === 'up' ? '0deg' : '180deg', arrowC: icon[1] === 'up' ? '#3ee07a' : '#ff7468',
+          rank: rk, rankTxt: rk < 10 ? '0' + rk : '' + rk, open: isOpen, rot: isOpen ? '90deg' : '0deg', onSlip: on, offSlip: !on, edge: d.model - d.book, lines: lines[d.g],
+          rankTone: rk <= 3 ? 'color: #3ee07a; text-shadow: 0 0 8px rgba(62,224,122,.5);' : 'color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,.25);',
+          modelW: 'width: ' + d.model + '%;', bookL: 'left: calc(' + d.book + '% - 1px);',
+          toggle: () => this.setState({ open: isOpen ? null : d.id }), openWhy: () => this.setState({ why: d.id }),
+          add: () => { const slip = on ? s.slip.filter((x) => x !== d.id) : s.slip.concat(d.id); const stakes = Object.assign({}, s.stakes); if (!on && !stakes[d.id]) stakes[d.id] = 1; this.setState({ slip, stakes }); }
+        });
+      });
+      if (rows.length) groups.push(Object.assign({}, def, { rows, open, rot: open ? '90deg' : '0deg', count: rows.length + (rows.length === 1 ? ' pick' : ' picks'), toggle: () => this.setState({ closed: open ? s.closed.concat(k) : s.closed.filter((x) => x !== k) }) }));
+    });
+    const parlayMode = s.mode === 'parlay' && s.slip.length > 1;
+    const setStake = (id, v) => { const stakes = Object.assign({}, s.stakes); stakes[id] = Math.max(0, v); this.setState({ stakes }); };
+    let totStake = 0, totWin = 0;
+    const legs = s.slip.map((id) => {
+      const d = byId[id], st = s.stakes[id] || 0, win = st * this.profit(d.o);
+      if (!parlayMode) { totStake += st; totWin += win; }
+      return Object.assign({}, d, { tag: d.band && bandDefs[d.band] ? bandDefs[d.band].tag.slice(0, -1) : 'YOUR CALL', showStake: !parlayMode, stake: this.fmt(st), toWin: this.fmt(win),
+        remove: () => this.setState({ slip: s.slip.filter((x) => x !== id) }),
+        addHalf: () => setStake(id, st + 0.5), add1: () => setStake(id, st + 1), add5: () => setStake(id, st + 5), add10: () => setStake(id, st + 10), clear: () => setStake(id, 0) });
+    });
+    let mult = 1;
+    s.slip.forEach((id) => { mult *= 1 + this.profit(byId[id].o); });
+    const pd = mult - 1, pOdds = pd >= 1 ? '+' + Math.round(pd * 100) : '−' + Math.round(100 / pd);
+    if (parlayMode) { totStake = s.pStake; totWin = s.pStake * pd; }
+    const n = s.slip.length;
+    const G = 'color: #3ee07a;', R = 'color: #ff7468;', P = 'color: #ccc;';
+    const forms = {
+      you: { rec: '6–3', units: '+4.2u', streak: 'W3', last: [['W', 'Lions −3', 'DET @ GB', '+1.0u', G], ['W', 'Over 6.5', 'NYR @ BOS', '+0.9u', G], ['W', 'J. Allen o1.5 TD', 'BUF @ NE', '+2.1u', G], ['L', 'Suns ML', 'PHX @ DEN', '−1.0u', R], ['P', 'Under 44', 'SF @ ARI', '0.0u', P]] },
+      bot: { rec: '19–12', units: '+9.6u', streak: 'W5', last: [['W', 'PHI −2.5', 'PHI @ DAL', '+0.9u', G], ['W', 'HOU ML', 'HOU @ SEA', '+1.4u', G], ['W', 'Under 224.5', 'LAL @ PHX', '+0.9u', G], ['W', 'Lions −3', 'DET @ GB', '+1.0u', G], ['W', 'Over 6.5', 'NYR @ BOS', '+0.9u', G]] }
+    };
+    const fm = forms[s.form], f = { rec: fm.rec, units: fm.units, streak: fm.streak, last: fm.last.map(([res, pick, game, u, tone]) => ({ res, pick, game, u, tone })) };
+    const onS = 'background: #ebc56c; color: #1a1a1a;', offS = 'color: #ccc;';
+    const ticker = [['NFL', 'PHI', '27', 'DAL', '24', 'FINAL'], ['NBA', 'LAL', '58', 'PHX', '61', '3RD 4:12'], ['NHL', 'NYR', '3', 'BOS', '2', 'FINAL/OT'], ['MLB', 'HOU', '4', 'SEA', '1', 'FINAL'], ['NBA', 'MIA', '', 'ORL', '', '6:00 PM'], ['NBA', 'BOS', '', 'NYK', '', '6:30 PM'], ['NHL', 'TOR', '', 'MTL', '', '7:00 PM'], ['NBA', 'DEN', '', 'OKC', '', '7:00 PM'], ['NHL', 'COL', '', 'DAL', '', '7:00 PM'], ['NFL', 'SEA', '', 'LAR', '', 'SUN 3:05 PM']].map(([sport, away, as, home, hs, state]) => ({ sport, away, as, home, hs, state, stateStyle: state.indexOf('FINAL') === 0 ? 'color: rgba(255,255,255,.6);' : (as ? 'color: #3ee07a;' : 'color: #ccc;') }));
+    return {
+      tickerTwice: ticker.concat(ticker), kinds, groups, legs, days, f,
+      ddOpen: s.dd, ddRot: s.dd ? '180deg' : '0deg', toggleDd: () => this.setState({ dd: !s.dd }), pickAll: () => this.setState({ game: 'all', dd: false }), allSel: s.game === 'all' ? 'true' : 'false',
+      gameLabel, gameIcon, gameCount: inGame.length + (inGame.length === 1 ? ' pick' : ' picks'),
+      empty: isBest && groups.length === 0, reset: () => this.setState({ kinds: [], game: 'all' }),
+      isBest, isGame: !isBest, gv, backToBest: () => this.setState({ game: 'all', why: null }),
+      whyOpen: !!w, w: w || { k: '', kTone: '', title: '', sub: '', parts: [], p: 0, q: 0, ev: '', evTone: '', note: '', modelW: '', bookL: '' }, closeWhy: () => this.setState({ why: null }),
+      anyPop: s.dd || !!w, closeAll: () => this.setState({ dd: false, why: null }),
+      slipCount: n, slipEmpty: n === 0, slipFull: n > 0, multi: n > 1,
+      isStraight: parlayMode ? 'false' : 'true', isParlay: parlayMode ? 'true' : 'false',
+      straightStyle: parlayMode ? 'color: #1a1a1a;' : 'background: #1a1a1a; color: #f4efe3;', parlayStyle: parlayMode ? 'background: #1a1a1a; color: #f4efe3;' : 'color: #1a1a1a;',
+      straight: () => this.setState({ mode: 'straight' }), parlay: () => this.setState({ mode: 'parlay' }),
+      isParlayShown: parlayMode, parlayOdds: pOdds, parlayStake: this.fmt(s.pStake),
+      pAdd1: () => this.setState({ pStake: s.pStake + 1 }), pAdd5: () => this.setState({ pStake: s.pStake + 5 }), pClear: () => this.setState({ pStake: 0 }),
+      totStake: this.fmt(totStake), totWin: this.fmt(totWin), totPays: this.fmt(totStake + totWin),
+      placeLabel: parlayMode ? 'PLACE PARLAY' : 'PLACE ' + n + (n === 1 ? ' BET' : ' BETS'),
+      clearAll: () => this.setState({ slip: [] }),
+      youOn: s.form === 'you' ? 'true' : 'false', botOn: s.form === 'bot' ? 'true' : 'false', youStyle: s.form === 'you' ? onS : offS, botStyle: s.form === 'bot' ? onS : offS,
+      formYou: () => this.setState({ form: 'you' }), formBot: () => this.setState({ form: 'bot' })
+    };
+  }
+}
+</script>
+</body>
+</html>
