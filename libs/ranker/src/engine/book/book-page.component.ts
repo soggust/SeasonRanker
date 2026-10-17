@@ -14,7 +14,8 @@ import { RecentForm, recentForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
-import { TickerSide, americanOdds, headshot, leagueLogo, tickerSide } from './bet-format';
+import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
+import { GameViewService } from '../game-view/game-view.service';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
@@ -73,6 +74,9 @@ interface TickerItem {
   state: 'pre' | 'in' | 'post';
   text: string | null;
   start: string;
+  // (what a click opens: tickerTarget; and its words, "Open Lions at Packers")
+  target: TickerTarget;
+  aria: string;
 }
 
 // (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
@@ -388,6 +392,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
         // (a final as ESPN says it, "FINAL" or "FINAL/OT"; a game under way its clock, "4:12 - 3RD")
         text: g.state === 'pre' ? null : (g.detail || (g.state === 'post' ? 'Final' : 'Live')).toUpperCase(),
         start: g.start,
+        target: tickerTarget(g),
+        aria: tickerAria(tickerSide(g.sport, g.away), tickerSide(g.sport, g.home)),
       }));
       this.tickerFor = { boards, sport, items };
     }
@@ -453,6 +459,22 @@ export class BookPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.closed = true;
     if (this.ticker) clearInterval(this.ticker);
+  }
+
+  // A ticker game clicked: a team sport's game view on its state's tab (tickerTarget), over the page; a UFC
+  // bout chosen in the game dropdown (its key there, if it has one; else the MMA games), on Place Bets
+  readonly gameView = inject(GameViewService);
+  openTick(t: TickerItem): void {
+    const to = t.target;
+    if (to.kind === 'game') {
+      void this.gameView.open({ event: to.event }, to.tab, to.league);
+      return;
+    }
+    this.view = 'bets';
+    const games = this.menu().games;
+    const key = to.keys.find((k) => games.has(k));
+    if (key) this.chooseGame(key);
+    else this.chooseSport('mma');
   }
 
   // (a ticker logo ESPN hasn't: the dark one falls back to the plain one, then the side's words take its place)

@@ -53,6 +53,19 @@ export function tickerSide(sport: string, t: { abbr: string; name: string; short
   return { label: t.short || t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
 }
 
+// (a ticker game clicked: a team sport's opens the game view (game-view.service.ts open, by ESPN's league): one
+// under way on its Summary (the live view), a final on its box score, one to come on its Preview; a UFC bout has
+// no ESPN game summary, so it's chosen in the Book's game dropdown instead: its key there, the bot's picked game
+// ("mma|A @ B") or the lines-only one ("mma|A @ B|event"), whichever the dropdown has. The owner's note, 2026-10-17)
+const TICK_LEAGUES: Record<string, string> = { nfl: 'football/nfl', nba: 'basketball/nba', nhl: 'hockey/nhl', mlb: 'baseball/mlb' };
+export type TickerTarget = { kind: 'game'; event: string; league: string | null; tab: 'summary' | 'box' | 'preview' } | { kind: 'bout'; keys: string[] };
+export function tickerTarget(g: { sport: string; event: string; matchup: string; state: 'pre' | 'in' | 'post' }): TickerTarget {
+  if (g.sport === 'mma') return { kind: 'bout', keys: [`${g.sport}|${g.matchup}`, `${g.sport}|${g.matchup}|${g.event}`] };
+  return { kind: 'game', event: g.event, league: TICK_LEAGUES[g.sport] ?? null, tab: g.state === 'pre' ? 'preview' : g.state === 'in' ? 'summary' : 'box' };
+}
+
+// (a ticker game's words for a screen reader: "Open Lions at Packers")
+export const tickerAria = (away: { label: string }, home: { label: string }): string => `Open ${away.label} at ${home.label}`;
 // (a game view's market columns: only the markets with a price posted, in the board's order; a fight with round
 // totals but no spread shows Total and Moneyline, no empty Spread column: the owner's note, 2026-10-17)
 type Side = { odds: number | null } | null | undefined;

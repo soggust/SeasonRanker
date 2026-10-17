@@ -2009,14 +2009,35 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (one game: its pieces 8px apart (a logo 5px from its name), 40px to the next game with a faint dot on the
-// gap's middle: a margin, not a gap, so the two copies are the same width and the slide wraps without a jump)
+// gap's middle: 20px of padding each side, not a gap, so the two copies are the same width and the slide wraps
+// without a jump, and the game's button reaches from dot to dot (the owner's note, 2026-10-17: a click anywhere
+// in it opens the game). A button with none of a button's own look; hovered, its names a touch gold; a key's
+// focus a ring inside it)
 .tick {
   align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
   display: inline-flex;
+  font: inherit;
   gap: v.$space-8;
+  height: 28px;
+  letter-spacing: inherit;
   line-height: 1;
-  margin-right: 40px;
+  margin: 0;
+  padding: 0 20px;
   position: relative;
+
+  &:hover .tick-team {
+    color: chip.$gold-led;
+  }
+
+  &:focus-visible {
+    border-radius: v.$radius-sm;
+    outline: 1px solid chip.$gold-led;
+    outline-offset: -3px;
+  }
 
   &::after {
     background: rgba(255, 255, 255, 0.22);
@@ -2024,7 +2045,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     content: "";
     height: 3px;
     position: absolute;
-    right: -21.5px;
+    right: -1.5px;
     top: calc(50% - 1.5px);
     width: 3px;
   }

@@ -107,6 +107,32 @@ test('the ticker shows a team logo or a fighter\'s face, the words behind it', (
   assert.deepEqual(bets.tickerSide('mma', { abbr: 'Malott', name: '', logo: null }), { label: 'Malott', pic: null, face: true });
 });
 
+// A ticker game clicked (bet-format.ts tickerTarget; the owner's note, 2026-10-17): a team sport's game view by
+// ESPN's league, under way on its Summary, a final on its box score, one to come on its Preview; a UFC bout (no
+// ESPN game summary) chosen in the game dropdown, by its picked key or its lines-only one. Each game a real
+// button from dot to dot, in both copies of the strip (the second out of the tab order), named "Open A at B"
+test("a ticker game opens its game view on its state's tab, a bout its place in the dropdown", () => {
+  const g = (sport, state) => bets.tickerTarget({ sport, event: '401', matchup: 'DET @ GB', state });
+  assert.deepEqual(g('nfl', 'in'), { kind: 'game', event: '401', league: 'football/nfl', tab: 'summary' });
+  assert.deepEqual(g('nba', 'post'), { kind: 'game', event: '401', league: 'basketball/nba', tab: 'box' });
+  assert.deepEqual(g('nhl', 'pre'), { kind: 'game', event: '401', league: 'hockey/nhl', tab: 'preview' });
+  assert.equal(g('mlb', 'post').league, 'baseball/mlb');
+  for (const state of ['pre', 'in', 'post']) {
+    assert.deepEqual(bets.tickerTarget({ sport: 'mma', event: '77', matchup: 'Buckley @ Malott', state }), { kind: 'bout', keys: ['mma|Buckley @ Malott', 'mma|Buckley @ Malott|77'] });
+  }
+  assert.equal(bets.tickerAria({ label: 'Lions' }, { label: 'Packers' }), 'Open Lions at Packers');
+  const root = path.join(import.meta.dirname, '..');
+  const html = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.html'), 'utf8');
+  const strip = html.slice(html.indexOf('class="book-ticker"'), html.indexOf('#tickSide'));
+  assert.ok(strip.includes('<button type="button" class="tick" [ngClass]="t.state" [attr.aria-label]="t.aria" [attr.tabindex]="copy ? -1 : null" (click)="openTick(t)">'), 'each game a button');
+  assert.ok(strip.indexOf('@for (copy of [0, 1]') < strip.indexOf('<button'), 'both copies draw the buttons');
+  const ts = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.ts'), 'utf8');
+  assert.ok(ts.includes('this.gameView.open({ event: to.event }, to.tab, to.league)'), 'a team game opens the game view');
+  assert.ok(ts.includes('if (key) this.chooseGame(key)'), 'a bout is chosen in the dropdown');
+  const scss = fs.readFileSync(path.join(root, 'libs/ranker/src/styles/components/book-page.scss'), 'utf8');
+  assert.ok(scss.includes('.book-ticker:focus-within .ticker-track'), 'focus pauses the strip');
+});
+
 // A game view's columns (bet-format.ts boardColumns) and a fight's round totals (totalTop on the tile, legWords on the ticket): the
 // owner's notes, 2026-10-17
 test("a game shows only its priced markets, and a fight's total reads Over 2.5 on its tile, its rounds on the ticket", () => {
