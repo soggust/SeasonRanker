@@ -116,7 +116,7 @@ export class SplashGallery {
       const group = ids.slice(i, i + 3);
       const defs = group.map((id) => PROPS[id]);
       const scale = Math.min(PX_PER_IN, SHELF_MAX / Math.max(1, ...defs.map((d) => d.inches)));
-      const items: Piece[] = defs.map((d) => ({ t: d.piece, lines: d.lines?.map(fill), tip: fill(d.tip), h: Math.round(d.inches * scale), wide: d.wide, helmet: helmetFor(team, 2024), line: 'lebron' }));
+      const items: Piece[] = defs.map((d, j) => ({ t: d.piece, id: group[j], lines: d.lines?.map(fill), tip: fill(d.tip), h: Math.round(d.inches * scale), wide: d.wide, helmet: helmetFor(team, 2024), line: 'lebron' }));
       // (the tallest in the middle, as the shelf has it)
       const lead = items.reduce((b, it, j) => ((it.h ?? 0) > (items[b].h ?? 0) ? j : b), 0);
       presets.push({ title: group.join(' · '), preset: this.preset(team, 2024, { stage: 'shelf', items, lead, stalls: [], label: group.join(', ') }) });
@@ -158,7 +158,7 @@ export class SplashGallery {
   // The O'Brien between the two conference trophies (today's, and the older column)
   private nbaConf(): Section {
     const team = 'BOS';
-    const mk = (id: string, lines: string[]): Piece => ({ t: PROPS[id].piece, lines, tip: fill(PROPS[id].tip), h: Math.round(PROPS[id].inches * 9) });
+    const mk = (id: string, lines: string[]): Piece => ({ t: PROPS[id].piece, id, lines, tip: fill(PROPS[id].tip), h: Math.round(PROPS[id].inches * 9) });
     const items = [mk('nba-conf-trophy', ['Eastern', '2024']), mk('nba-obrien', ['2024 Champions']), mk('nba-conf-trophy', ['Western', '2019'])];
     return { id: 'conf', title: "The conference trophies beside the O'Brien", presets: [{ title: 'Cousy (2022–) · O’Brien · the older column (pre-2022)', preset: this.preset(team, 2024, { stage: 'shelf', items, lead: 1, stalls: [], label: 'trophies' }) }] };
   }

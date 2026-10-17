@@ -107,7 +107,7 @@ test("the shelf's hero, in the middle, is always its tallest prop (the 2023 49er
   assert.deepEqual(niners.items.map((i) => i.t), ['stub', 'conf', 'banner']);
   const [stub, conf, banner] = niners.items;
   assert.ok(conf.h > banner.h && conf.h > stub.h, `the trophy ${conf.h}px, the banner ${banner.h}px`);
-  assert.equal(conf.h, 17 * 11, 'the trophy at full scale');
+  assert.equal(conf.h, 16 * 11, 'the trophy at full scale (the Halas is 16 inches)');
   // every sport, every way a season ends, every award: nothing beside the hero stands taller than it
   const outcomes = [
     { result: 'champion', confChamp: true, conference: 'AFC', division: 'D', roundWon: { round: 'R', result: 'W' }, lastGame: { round: 'F', opp: 'O', home: true, score: '1-0', won: true } },

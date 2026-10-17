@@ -83,11 +83,11 @@ card-splash {
 // ---- the header: a small brass plate hung from the molding
 .sp-header {
   align-items: baseline;
-  background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
+  background: linear-gradient(180deg, #dcc484, #a9842f 50%, #6a4b15 82%, #8a6a24);
   border-radius: 0 0 6px 6px;
   box-shadow:
     0 3px 10px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   color: #2b1a05;
   display: flex;
   font-family: var(--f-block);
@@ -288,12 +288,12 @@ card-splash {
 
 // a brass plate on the shelf's edge under each piece
 .sp-plate {
-  background: linear-gradient(180deg, #f3dc98, #c29330 60%, #94691d);
+  background: linear-gradient(180deg, #d8bf7c, #a07c2a 55%, #634612 85%, #80621f);
   border-radius: 2px;
   bottom: 4px;
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   color: #2b1a05;
   display: flex;
   flex-direction: column;
@@ -877,7 +877,7 @@ card-splash {
 
 .sp-nameplate {
   align-items: center;
-  background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
+  background: linear-gradient(180deg, #dcc484, #a9842f 50%, #6a4b15 82%, #8a6a24);
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   color: #2b1a05;
@@ -993,7 +993,7 @@ card-splash {
 }
 
 .sp-tc-badge {
-  background: linear-gradient(180deg, #ffe27a, #d9a520 55%, #b8860b);
+  background: linear-gradient(180deg, #d4b86c, #a07d2a 55%, #5c4312);
   border-radius: 3px;
   color: #2b1a05;
   font-family: var(--f-block);
@@ -1484,7 +1484,7 @@ card-splash {
   // (the cut's lit lower edge under dark lettering; a shadow under light lettering)
   &.hi {
     fill: #fff;
-    fill-opacity: 0.5;
+    fill-opacity: 0.38;
   }
 
   &.light.hi,
@@ -1580,12 +1580,12 @@ card-splash {
   text-anchor: middle;
 
   &.hi {
-    fill: #fff3c4;
-    fill-opacity: 0.75;
+    fill: #f1e3b8;
+    fill-opacity: 0.5;
   }
 
   &.small {
-    fill: #d9a520;
+    fill: #b8933a;
     font-size: 7px;
   }
 }
@@ -1683,7 +1683,7 @@ card-splash {
 }
 
 .sp-cond.side {
-  fill: #d9a520;
+  fill: #b8933a;
   font-size: 4.2px;
   letter-spacing: 0.12em;
 }
@@ -2232,20 +2232,18 @@ card-splash {
     position: relative;
   }
 
+  // (the photographed brass nameplate on its walnut base, assets/props/desk-nameplate; his name on the plate's
+  // face, the padding keeping it there)
   .sp-desk-plate {
     align-self: flex-start;
-    background: linear-gradient(180deg, #f6e3a6, #c99a3a 55%, #8e6620);
-    border-radius: 2px;
-    box-shadow:
-      0 2px 6px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    background: center / 100% 100% no-repeat;
     color: #2b1a05;
     font-family: var(--f-block);
     font-size: calc(13px * var(--s));
     font-weight: 600;
     letter-spacing: 0.16em;
     margin-top: calc(-13px * var(--s));
-    padding: 2px 16px;
+    padding: 5% 12% 24% 10%;
     text-transform: uppercase;
     white-space: nowrap;
   }

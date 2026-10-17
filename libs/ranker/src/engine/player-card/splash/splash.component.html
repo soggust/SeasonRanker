@@ -25,34 +25,35 @@
           <stop offset="1" stop-color="#3a4046" />
         </radialGradient>
         <linearGradient id="sp-gold" x1="0" x2="1">
-          <stop offset="0" stop-color="#3d2804" />
-          <stop offset="0.1" stop-color="#9c7016" />
-          <stop offset="0.2" stop-color="#f2d27a" />
-          <stop offset="0.3" stop-color="#8a6210" />
-          <stop offset="0.42" stop-color="#ffefb8" />
-          <stop offset="0.46" stop-color="#fffbe6" />
-          <stop offset="0.56" stop-color="#d9a83a" />
-          <stop offset="0.74" stop-color="#6e4c08" />
-          <stop offset="0.88" stop-color="#b98a24" />
-          <stop offset="1" stop-color="#3a2604" />
+          <!-- (real brass: a dark base, one soft highlight, dark reflections; never a saturated yellow) -->
+          <stop offset="0" stop-color="#2a1c06" />
+          <stop offset="0.1" stop-color="#6b4f17" />
+          <stop offset="0.22" stop-color="#b2903f" />
+          <stop offset="0.36" stop-color="#7d5f1c" />
+          <stop offset="0.46" stop-color="#d9c07c" />
+          <stop offset="0.52" stop-color="#e4cf93" />
+          <stop offset="0.62" stop-color="#a9842f" />
+          <stop offset="0.78" stop-color="#5a4011" />
+          <stop offset="0.9" stop-color="#8f6f28" />
+          <stop offset="1" stop-color="#271a06" />
         </linearGradient>
         <linearGradient id="sp-gold-v" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="#fff0b8" />
-          <stop offset="0.45" stop-color="#d9a520" />
-          <stop offset="1" stop-color="#7a560a" />
+          <stop offset="0" stop-color="#dcc484" />
+          <stop offset="0.45" stop-color="#a9842f" />
+          <stop offset="1" stop-color="#55400f" />
         </linearGradient>
         <radialGradient id="sp-gold-ball" cx="0.34" cy="0.28" r="0.8">
-          <stop offset="0" stop-color="#fffbe6" />
-          <stop offset="0.18" stop-color="#ffe08a" />
-          <stop offset="0.45" stop-color="#c8921c" />
-          <stop offset="0.7" stop-color="#6e4c08" />
-          <stop offset="0.86" stop-color="#a87a1a" />
+          <stop offset="0" stop-color="#efe2b8" />
+          <stop offset="0.18" stop-color="#d2b566" />
+          <stop offset="0.45" stop-color="#9a7a28" />
+          <stop offset="0.7" stop-color="#4e3810" />
+          <stop offset="0.86" stop-color="#7d6122" />
           <stop offset="1" stop-color="#4a3205" />
         </radialGradient>
         <radialGradient id="sp-gold-dish" cx="0.5" cy="0.45" r="0.6">
-          <stop offset="0" stop-color="#b07e18" />
-          <stop offset="0.75" stop-color="#e0b445" />
-          <stop offset="1" stop-color="#7a560a" />
+          <stop offset="0" stop-color="#8c6f24" />
+          <stop offset="0.75" stop-color="#bb9d4c" />
+          <stop offset="1" stop-color="#4e3810" />
         </radialGradient>
         <linearGradient id="sp-bronze" x1="0" x2="1">
           <stop offset="0" stop-color="#2a1606" />
@@ -396,7 +397,7 @@
         </div>
         <div class="sp-desk" [title]="o.plate" [attr.data-tip]="o.plate + ' · ' + o.team">
           <div class="sp-desk-top"><span class="sp-mug"></span><span class="sp-binder"></span><span class="sp-pen"></span></div>
-          <div class="sp-desk-front"><span class="sp-desk-plate">{{ o.plate }}</span></div>
+          <div class="sp-desk-front"><span class="sp-desk-plate" [style.background-image]="'url(' + deskPlate + ')'">{{ o.plate }}</span></div>
         </div>
       </div>
     } @else {
@@ -472,166 +473,297 @@
      and their shadow on the cloth, the seams stitched, the cloth's faint mesh, its folds and the light on it -->
 <ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-mark="mark">
   <svg class="sp-jersey" [class]="'sp-jersey cut-' + cut + ' nf-' + (k.numberFont || 'block') + ' nm-' + (k.nameFont || 'block')" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
-    <path class="sp-hanger-hook" d="M60 -16 q6 0 6 5 q0 5 -6 6 v8" />
-    <path class="sp-hanger" d="M26 13 L60 1 L94 13" />
-    <g [attr.clip-path]="'url(#sp-cut-' + (cut === 'baseball' && k.placket === 'vest' ? 'vest' : cut) + ')'">
-      <rect x="-4" y="0" width="128" height="150" [attr.fill]="k.body" />
-      <!-- pinstripes (baseball's, a few tanks'): a line every 8, in the kit's color -->
-      @if (k.pinstripe) {
-        <g [attr.stroke]="k.pinstripe" stroke-width="0.9">
-          @for (x of pins; track x) {
-            <line [attr.x1]="x" y1="0" [attr.x2]="x" y2="150" />
+    @if (ja; as a) {
+      <!-- The photographed white base of this cut (splash.images.ts JERSEY_BASES), placed by its landmarks and
+           tinted with the kit's body color; the kit's details drawn at the base's anchors (the sleeves' bands up
+           from each cuff, the yoke, the hem, the panels, the placket, the name and the number), everything
+           clipped to the photo's own outline, and the photo multiplied over it all so its cloth and light shade
+           the details too. The photo's hanger serves -->
+      <defs>
+        <mask [attr.id]="'sp-jb-' + cut" mask-type="alpha" maskUnits="userSpaceOnUse" x="-4" y="-18" width="128" height="164">
+          <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" />
+        </mask>
+        <path [attr.id]="'sp-jp-name-' + cut" [attr.d]="a.nameArc" fill="none" />
+        @if (a.markArc) {
+          <path [attr.id]="'sp-jp-mark-' + cut" [attr.d]="a.markArc" fill="none" />
+        }
+      </defs>
+      <g [attr.mask]="'url(#sp-jb-' + cut + ')'" style="isolation: isolate">
+        <rect [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" [attr.fill]="k.body" />
+        @if (k.pinstripe) {
+          <g [attr.stroke]="k.pinstripe" stroke-width="0.9">
+            @for (x of a.pins; track x) {
+              <line [attr.x1]="x" [attr.y1]="a.img.y" [attr.x2]="x" [attr.y2]="a.hemY" />
+            }
+          </g>
+        }
+
+        @if (cut === 'football') {
+          @if (k.yoke && a.yoke) {
+            <path [attr.d]="a.yoke" [attr.fill]="k.yoke" />
+            <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
           }
-        </g>
-      }
-      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-mesh)" />
-
-      <!-- ================= FOOTBALL: shoulders, a yoke or sleeve caps or sleeve stripes, TV numbers, the collar -->
-      @if (cut === 'football') {
-        @if (k.yoke) {
-          <path d="M-4 0 H124 V30 C100 40 80 42 60 42 C40 42 20 40 -4 30 Z" [attr.fill]="k.yoke" />
-          <path d="M-4 30 C20 40 40 42 60 42 C80 42 100 40 124 30" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
-        }
-        @if (k.cap) {
-          <path d="M100 44 L124 33 L124 62 L100 62 Z M20 44 L-4 33 L-4 62 L20 62 Z" [attr.fill]="k.cap" />
-          <path d="M100 44 L124 33 M20 44 L-4 33" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
-        } @else if (k.sleeve === 'stripes') {
-          <!-- (the bands round each sleeve, following its slant: top to bottom as the kit lists them, else the
-               classic set: the stripe color either side of a second color) -->
-          @for (b of bands(k); track $index) {
-            <g [attr.stroke]="b.color" [attr.stroke-width]="b.w">
-              <line x1="124" [attr.y1]="b.y" x2="100" [attr.y2]="b.y + 12" />
-              <line x1="-4" [attr.y1]="b.y" x2="20" [attr.y2]="b.y + 12" />
-            </g>
+          @for (b of photoBands(k, a); track $index) {
+            <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
           }
-        }
-        @if (k.panel) {
-          <path d="M20 56 L31 58 L31 140 L20 140 Z M100 56 L89 58 L89 140 L100 140 Z" [attr.fill]="k.panel" />
-          <path d="M31 58 L31 140 M89 58 L89 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
-        }
-        @if (k.tv !== false && num) {
-          <text class="sp-j-tv" x="24" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
-          <text class="sp-j-tv" x="96" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
-        }
-        @if (k.collarStyle === 'v') {
-          <path d="M40 10 L60 24 L80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
-        } @else if (k.collarStyle === 'stripe') {
-          <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="7" />
-          <path d="M41 12.5 C49 19 71 19 79 12.5" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1.2" />
-        } @else {
-          <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
-        }
-        <!-- seams: the sleeves set in, the sides, the hem -->
-        <path d="M20 56 L20 140 M100 56 L100 140 M19 15 L20 56 M101 15 L100 56 M22 137 C50 140 70 140 98 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
-      }
-
-      <!-- ================= BASKETBALL: the tank's armholes and neck trimmed, side panels, piping, the hem -->
-      @if (cut === 'basketball') {
-        @if (k.panel) {
-          <path d="M12 54 L24 56 L24 140 L14 140 Z M108 54 L96 56 L96 140 L106 140 Z" [attr.fill]="k.panel" />
-          <path d="M24 56 L24 140 M96 56 L96 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
-        }
-        @if (k.sleeve === 'stripes' || k.stripe) {
-          <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="5" />
-          @if (k.stripe2) {
-            <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.6" transform="translate(0 3)" />
+          @if (k.panel && a.panels) {
+            @for (p of a.panels; track $index) {
+              <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.panel" />
+            }
           }
-        } @else {
-          <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.collar" stroke-width="3.5" />
-        }
-        @if (k.piping) {
-          <path d="M39 12 C45 33 75 33 81 12 M94 14 C93 34 97 48 105 56 M26 14 C27 34 23 48 15 56" fill="none" [attr.stroke]="k.piping" stroke-width="1" />
-        }
-        @for (h of hems(k, 'basketball'); track $index) {
-          <rect x="-4" [attr.y]="h.y" width="128" [attr.height]="h.h" [attr.fill]="h.color" />
-        }
-        <!-- seams: the armholes bound, the sides, a hem -->
-        <path d="M14 58 L15 140 M106 58 L105 140 M18 137 C50 141 70 141 102 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
-      }
-
-      <!-- ================= HOCKEY: the sweater's shoulder yoke, its arm bands, hem stripes, lace or V collar -->
-      @if (cut === 'hockey') {
-        @if (k.yoke) {
-          <path d="M-4 0 H124 V34 C104 46 86 50 60 50 C34 50 16 46 -4 34 Z" [attr.fill]="k.yoke" />
-          <path d="M-4 34 C16 46 34 50 60 50 C86 50 104 46 124 34" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
-        }
-        @for (b of hockeyBands(k); track $index) {
-          <rect x="-4" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
-          <rect x="98" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
-        }
-        @for (h of hems(k, 'hockey'); track $index) {
-          <rect x="22" [attr.y]="h.y" width="76" [attr.height]="h.h" [attr.fill]="h.color" />
-        }
-        <!-- the sleeves hang beside the body: a seam and a shadow where they meet, the cuffs -->
-        <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="2.2" />
-        <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.7" transform="translate(-1.4 0)" />
-        <path d="M-4 116 L20 120 M100 120 L124 116" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1.2" />
-        <path d="M18 14 L23 72 M102 14 L97 72 M25 137 C50 141 70 141 95 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
-        @if (k.collarStyle === 'lace') {
-          <path d="M44 10 L60 32 L76 10" fill="none" [attr.stroke]="k.collar" stroke-width="2.6" stroke-linejoin="round" />
-          <path d="M51 15 L69 19 M51 20 L69 24 M53 25 L67 29" fill="none" stroke="#f3f2ee" stroke-width="1.1" stroke-linecap="round" />
-          <circle cx="51" cy="15" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="19" r="0.9" fill="#f3f2ee" /><circle cx="51" cy="20" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="24" r="0.9" fill="#f3f2ee" />
-        } @else if (k.collarStyle === 'v') {
-          <path d="M42 10 L60 26 L78 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
-        } @else {
-          <path d="M40 10 C48 18 72 18 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
-        }
-      }
-
-      <!-- ================= BASEBALL (the front): the placket and its buttons, the piping, the sleeves' ends,
-           the wordmark across the chest, a front number -->
-      @if (cut === 'baseball') {
-        @if (k.placket === 'vest' && k.under) {
-          <path d="M99 14 C107 22 113 36 117 52 L100 58 L100 14 Z M21 14 C13 22 7 36 3 52 L20 58 L20 14 Z" [attr.fill]="k.under" />
-        }
-        @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
-          <path d="M117 52 L100 58 M3 52 L20 58" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="3" />
-          @if (k.stripe2) {
-            <path d="M116 48 L100 54 M4 48 L20 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.4" />
+          @if (k.tv !== false && num && a.tv) {
+            <text class="sp-j-tv" [attr.x]="a.tv[0].x" [attr.y]="a.tv[0].y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+            <text class="sp-j-tv" [attr.x]="a.tv[1].x" [attr.y]="a.tv[1].y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+          }
+          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'stripe' ? 6 : 4" />
+          @if (k.collarStyle === 'stripe') {
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1.2" transform="translate(0 2)" />
           }
         }
-        @if (k.placket !== 'pullover') {
-          <!-- the placket: a strip down the front, piped, its buttons -->
-          <rect x="56.5" y="28" width="7" height="114" [attr.fill]="k.body" />
-          <path d="M56.5 30 V140 M63.5 30 V140" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
+
+        @if (cut === 'basketball') {
+          @if (k.panel && a.panels) {
+            @for (p of a.panels; track $index) {
+              <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.panel" />
+            }
+          }
+          @if (k.sleeve === 'stripes' || k.stripe) {
+            <path [attr.d]="a.armholes + ' ' + a.neck" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="5" />
+            @if (k.stripe2) {
+              <path [attr.d]="a.armholes + ' ' + a.neck" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.6" transform="translate(0 3)" />
+            }
+          } @else {
+            <path [attr.d]="a.armholes + ' ' + a.neck" fill="none" [attr.stroke]="k.collar" stroke-width="3.5" />
+          }
           @if (k.piping) {
-            <path d="M56 30 V140 M64 30 V140" fill="none" [attr.stroke]="k.piping" stroke-width="1.2" />
+            <path [attr.d]="a.armholes + ' ' + a.neck" fill="none" [attr.stroke]="k.piping" stroke-width="1" transform="translate(0 4)" />
           }
-          @for (y of buttons; track y) {
-            <circle cx="60" [attr.cy]="y" r="1.7" fill="#f6f2e8" stroke="#8a847a" stroke-width="0.4" />
-            <circle cx="60" [attr.cy]="y" r="0.5" fill="#8a847a" />
+          @for (h of photoHems(k, cut, a); track $index) {
+            <rect [attr.x]="a.bodyX[0] - 6" [attr.y]="h.y" [attr.width]="a.bodyW + 12" [attr.height]="h.h" [attr.fill]="h.color" />
           }
         }
-        <!-- the neck: a V opening, its collar piped -->
-        <path d="M44 9 L60 30 L76 9" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
-        @if (k.piping && k.piping !== k.collar) {
-          <path d="M45 12 L60 32.5 L75 12" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" />
-        }
-        <path d="M60 30 L60 34" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.8" />
-        <!-- seams: the sleeves set in (raglan when there's a yoke color), the sides, the hem's vents -->
-        <path d="M21 14 L20 58 M99 14 L100 58 M20 58 L20 140 M100 58 L100 140 M22 138 C50 141 70 141 98 138" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
-        <!-- the wordmark across the chest, the front number -->
-        @if (mark) {
-          <text class="sp-j-mark" [attr.fill]="k.name" [attr.stroke]="k.outline" [style.font-size.px]="markSize(mark)"><textPath href="#sp-mark-arc" startOffset="50%">{{ mark }}</textPath></text>
-        }
-        @if (num) {
-          <text class="sp-j-front" x="37" y="112" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
-        }
-      }
 
-      <!-- the name arched over the number, as sewn; the number about 37% of the back's height, its trim and its
-           shadow on the cloth (an athletic condensed block, never squeezed: a long name gets smaller letters) -->
-      @if (cut !== 'baseball') {
-        <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name)"><textPath [attr.href]="cut === 'basketball' ? '#sp-name-arc-bb' : cut === 'hockey' ? '#sp-name-arc-hk' : '#sp-name-arc'" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
-        <text class="sp-j-num shadow" x="60.8" [attr.y]="(cut === 'basketball' ? 104 : 99) + 1.4">{{ num }}</text>
-        <text class="sp-j-num outer" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.outline" [attr.stroke]="k.outline">{{ num }}</text>
-        <text class="sp-j-num" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.num" [attr.stroke]="k.body">{{ num }}</text>
-      }
-      <!-- the folds and the light: the cloth gathers under the hanger and falls in soft waves -->
-      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-folds)" />
-      <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth-v)" />
-      <path d="M30 20 C34 60 30 100 34 138 M90 20 C86 60 90 100 86 138" fill="none" stroke="#000" stroke-opacity="0.07" stroke-width="5" />
-      <path d="M46 22 C48 50 46 90 48 136 M74 22 C72 50 74 90 72 136" fill="none" stroke="#fff" stroke-opacity="0.06" stroke-width="4" />
-    </g>
+        @if (cut === 'hockey') {
+          @if (k.yoke && a.yoke) {
+            <path [attr.d]="a.yoke" [attr.fill]="k.yoke" />
+            <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+          }
+          @for (b of photoArmBands(k, a); track $index) {
+            <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" [attr.fill]="b.color" />
+          }
+          @for (h of photoHems(k, cut, a); track $index) {
+            <rect [attr.x]="a.bodyX[0] - 2" [attr.y]="h.y" [attr.width]="a.bodyW + 4" [attr.height]="h.h" [attr.fill]="h.color" />
+          }
+          @if (k.collarStyle === 'lace') {
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" stroke-width="2.6" stroke-linejoin="round" />
+          } @else {
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
+          }
+        }
+
+        @if (cut === 'baseball') {
+          @if (k.placket === 'vest' && k.under && a.under) {
+            <path [attr.d]="a.under[0]" [attr.fill]="k.under" />
+            <path [attr.d]="a.under[1]" [attr.fill]="k.under" />
+          }
+          @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
+            @for (b of photoBands(k, a, true); track $index) {
+              <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
+            }
+          }
+          @if (k.placket !== 'pullover' && a.placket; as p) {
+            <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.body" />
+            <path [attr.d]="'M' + p.x + ' ' + (p.y + 2) + ' V' + (p.y + p.h) + ' M' + (p.x + p.w) + ' ' + (p.y + 2) + ' V' + (p.y + p.h)" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
+            @if (k.piping) {
+              <path [attr.d]="'M' + (p.x - 0.5) + ' ' + (p.y + 2) + ' V' + (p.y + p.h) + ' M' + (p.x + p.w + 0.5) + ' ' + (p.y + 2) + ' V' + (p.y + p.h)" fill="none" [attr.stroke]="k.piping" stroke-width="1.2" />
+            }
+            @for (y of a.buttons; track y) {
+              <circle [attr.cx]="p.x + p.w / 2" [attr.cy]="y" r="1.7" fill="#f6f2e8" stroke="#8a847a" stroke-width="0.4" />
+              <circle [attr.cx]="p.x + p.w / 2" [attr.cy]="y" r="0.5" fill="#8a847a" />
+            }
+          }
+          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
+          @if (k.piping && k.piping !== k.collar) {
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" transform="translate(0 2.5)" />
+          }
+          @if (mark) {
+            <text class="sp-j-mark" [attr.fill]="k.name" [attr.stroke]="k.outline" [style.font-size.px]="markSize(mark) * a.markK"><textPath [attr.href]="'#sp-jp-mark-' + cut" startOffset="50%">{{ mark }}</textPath></text>
+          }
+          @if (num && a.front) {
+            <text class="sp-j-front" [attr.x]="a.front.x" [attr.y]="a.front.y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+          }
+        }
+
+        @if (cut !== 'baseball') {
+          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name) * a.nameK"><textPath [attr.href]="'#sp-jp-name-' + cut" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+          <text class="sp-j-num shadow" [attr.x]="a.num.x + 0.8" [attr.y]="a.num.y + 1.4" [style.font-size.px]="a.num.size">{{ num }}</text>
+          <text class="sp-j-num outer" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.outline" [attr.stroke]="k.outline" [style.font-size.px]="a.num.size">{{ num }}</text>
+          <text class="sp-j-num" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.num" [attr.stroke]="k.body" [style.font-size.px]="a.num.size">{{ num }}</text>
+        }
+        <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
+      </g>
+    } @else {
+      <path class="sp-hanger-hook" d="M60 -16 q6 0 6 5 q0 5 -6 6 v8" />
+      <path class="sp-hanger" d="M26 13 L60 1 L94 13" />
+      <g [attr.clip-path]="'url(#sp-cut-' + (cut === 'baseball' && k.placket === 'vest' ? 'vest' : cut) + ')'">
+        <rect x="-4" y="0" width="128" height="150" [attr.fill]="k.body" />
+        <!-- pinstripes (baseball's, a few tanks'): a line every 8, in the kit's color -->
+        @if (k.pinstripe) {
+          <g [attr.stroke]="k.pinstripe" stroke-width="0.9">
+            @for (x of pins; track x) {
+              <line [attr.x1]="x" y1="0" [attr.x2]="x" y2="150" />
+            }
+          </g>
+        }
+        <rect x="-4" y="0" width="128" height="150" fill="url(#sp-mesh)" />
+
+        <!-- ================= FOOTBALL: shoulders, a yoke or sleeve caps or sleeve stripes, TV numbers, the collar -->
+        @if (cut === 'football') {
+          @if (k.yoke) {
+            <path d="M-4 0 H124 V30 C100 40 80 42 60 42 C40 42 20 40 -4 30 Z" [attr.fill]="k.yoke" />
+            <path d="M-4 30 C20 40 40 42 60 42 C80 42 100 40 124 30" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+          }
+          @if (k.cap) {
+            <path d="M100 44 L124 33 L124 62 L100 62 Z M20 44 L-4 33 L-4 62 L20 62 Z" [attr.fill]="k.cap" />
+            <path d="M100 44 L124 33 M20 44 L-4 33" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+          } @else if (k.sleeve === 'stripes') {
+            <!-- (the bands round each sleeve, following its slant: top to bottom as the kit lists them, else the
+                 classic set: the stripe color either side of a second color) -->
+            @for (b of bands(k); track $index) {
+              <g [attr.stroke]="b.color" [attr.stroke-width]="b.w">
+                <line x1="124" [attr.y1]="b.y" x2="100" [attr.y2]="b.y + 12" />
+                <line x1="-4" [attr.y1]="b.y" x2="20" [attr.y2]="b.y + 12" />
+              </g>
+            }
+          }
+          @if (k.panel) {
+            <path d="M20 56 L31 58 L31 140 L20 140 Z M100 56 L89 58 L89 140 L100 140 Z" [attr.fill]="k.panel" />
+            <path d="M31 58 L31 140 M89 58 L89 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
+          }
+          @if (k.tv !== false && num) {
+            <text class="sp-j-tv" x="24" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+            <text class="sp-j-tv" x="96" y="46" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+          }
+          @if (k.collarStyle === 'v') {
+            <path d="M40 10 L60 24 L80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
+          } @else if (k.collarStyle === 'stripe') {
+            <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="7" />
+            <path d="M41 12.5 C49 19 71 19 79 12.5" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1.2" />
+          } @else {
+            <path d="M40 10 C48 17 72 17 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+          }
+          <!-- seams: the sleeves set in, the sides, the hem -->
+          <path d="M20 56 L20 140 M100 56 L100 140 M19 15 L20 56 M101 15 L100 56 M22 137 C50 140 70 140 98 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+        }
+
+        <!-- ================= BASKETBALL: the tank's armholes and neck trimmed, side panels, piping, the hem -->
+        @if (cut === 'basketball') {
+          @if (k.panel) {
+            <path d="M12 54 L24 56 L24 140 L14 140 Z M108 54 L96 56 L96 140 L106 140 Z" [attr.fill]="k.panel" />
+            <path d="M24 56 L24 140 M96 56 L96 140" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
+          }
+          @if (k.sleeve === 'stripes' || k.stripe) {
+            <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="5" />
+            @if (k.stripe2) {
+              <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.6" transform="translate(0 3)" />
+            }
+          } @else {
+            <path d="M37 8 C44 30 76 30 83 8 M97 10 C96 32 100 46 108 54 M23 10 C24 32 20 46 12 54" fill="none" [attr.stroke]="k.collar" stroke-width="3.5" />
+          }
+          @if (k.piping) {
+            <path d="M39 12 C45 33 75 33 81 12 M94 14 C93 34 97 48 105 56 M26 14 C27 34 23 48 15 56" fill="none" [attr.stroke]="k.piping" stroke-width="1" />
+          }
+          @for (h of hems(k, 'basketball'); track $index) {
+            <rect x="-4" [attr.y]="h.y" width="128" [attr.height]="h.h" [attr.fill]="h.color" />
+          }
+          <!-- seams: the armholes bound, the sides, a hem -->
+          <path d="M14 58 L15 140 M106 58 L105 140 M18 137 C50 141 70 141 102 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+        }
+
+        <!-- ================= HOCKEY: the sweater's shoulder yoke, its arm bands, hem stripes, lace or V collar -->
+        @if (cut === 'hockey') {
+          @if (k.yoke) {
+            <path d="M-4 0 H124 V34 C104 46 86 50 60 50 C34 50 16 46 -4 34 Z" [attr.fill]="k.yoke" />
+            <path d="M-4 34 C16 46 34 50 60 50 C86 50 104 46 124 34" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+          }
+          @for (b of hockeyBands(k); track $index) {
+            <rect x="-4" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
+            <rect x="98" [attr.y]="b.y" width="26" [attr.height]="b.h" [attr.fill]="b.color" />
+          }
+          @for (h of hems(k, 'hockey'); track $index) {
+            <rect x="22" [attr.y]="h.y" width="76" [attr.height]="h.h" [attr.fill]="h.color" />
+          }
+          <!-- the sleeves hang beside the body: a seam and a shadow where they meet, the cuffs -->
+          <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="2.2" />
+          <path d="M23 72 L20 122 M97 72 L100 122" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.7" transform="translate(-1.4 0)" />
+          <path d="M-4 116 L20 120 M100 120 L124 116" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1.2" />
+          <path d="M18 14 L23 72 M102 14 L97 72 M25 137 C50 141 70 141 95 137" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+          @if (k.collarStyle === 'lace') {
+            <path d="M44 10 L60 32 L76 10" fill="none" [attr.stroke]="k.collar" stroke-width="2.6" stroke-linejoin="round" />
+            <path d="M51 15 L69 19 M51 20 L69 24 M53 25 L67 29" fill="none" stroke="#f3f2ee" stroke-width="1.1" stroke-linecap="round" />
+            <circle cx="51" cy="15" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="19" r="0.9" fill="#f3f2ee" /><circle cx="51" cy="20" r="0.9" fill="#f3f2ee" /><circle cx="69" cy="24" r="0.9" fill="#f3f2ee" />
+          } @else if (k.collarStyle === 'v') {
+            <path d="M42 10 L60 26 L78 10" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
+          } @else {
+            <path d="M40 10 C48 18 72 18 80 10" fill="none" [attr.stroke]="k.collar" stroke-width="4.5" />
+          }
+        }
+
+        <!-- ================= BASEBALL (the front): the placket and its buttons, the piping, the sleeves' ends,
+             the wordmark across the chest, a front number -->
+        @if (cut === 'baseball') {
+          @if (k.placket === 'vest' && k.under) {
+            <path d="M99 14 C107 22 113 36 117 52 L100 58 L100 14 Z M21 14 C13 22 7 36 3 52 L20 58 L20 14 Z" [attr.fill]="k.under" />
+          }
+          @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
+            <path d="M117 52 L100 58 M3 52 L20 58" fill="none" [attr.stroke]="k.stripe || k.collar" stroke-width="3" />
+            @if (k.stripe2) {
+              <path d="M116 48 L100 54 M4 48 L20 54" fill="none" [attr.stroke]="k.stripe2" stroke-width="1.4" />
+            }
+          }
+          @if (k.placket !== 'pullover') {
+            <!-- the placket: a strip down the front, piped, its buttons -->
+            <rect x="56.5" y="28" width="7" height="114" [attr.fill]="k.body" />
+            <path d="M56.5 30 V140 M63.5 30 V140" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
+            @if (k.piping) {
+              <path d="M56 30 V140 M64 30 V140" fill="none" [attr.stroke]="k.piping" stroke-width="1.2" />
+            }
+            @for (y of buttons; track y) {
+              <circle cx="60" [attr.cy]="y" r="1.7" fill="#f6f2e8" stroke="#8a847a" stroke-width="0.4" />
+              <circle cx="60" [attr.cy]="y" r="0.5" fill="#8a847a" />
+            }
+          }
+          <!-- the neck: a V opening, its collar piped -->
+          <path d="M44 9 L60 30 L76 9" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
+          @if (k.piping && k.piping !== k.collar) {
+            <path d="M45 12 L60 32.5 L75 12" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" />
+          }
+          <path d="M60 30 L60 34" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.8" />
+          <!-- seams: the sleeves set in (raglan when there's a yoke color), the sides, the hem's vents -->
+          <path d="M21 14 L20 58 M99 14 L100 58 M20 58 L20 140 M100 58 L100 140 M22 138 C50 141 70 141 98 138" fill="none" stroke="#000" stroke-opacity="0.2" stroke-width="0.7" stroke-dasharray="1.6 1.2" />
+          <!-- the wordmark across the chest, the front number -->
+          @if (mark) {
+            <text class="sp-j-mark" [attr.fill]="k.name" [attr.stroke]="k.outline" [style.font-size.px]="markSize(mark)"><textPath href="#sp-mark-arc" startOffset="50%">{{ mark }}</textPath></text>
+          }
+          @if (num) {
+            <text class="sp-j-front" x="37" y="112" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+          }
+        }
+
+        <!-- the name arched over the number, as sewn; the number about 37% of the back's height, its trim and its
+             shadow on the cloth (an athletic condensed block, never squeezed: a long name gets smaller letters) -->
+        @if (cut !== 'baseball') {
+          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name)"><textPath [attr.href]="cut === 'basketball' ? '#sp-name-arc-bb' : cut === 'hockey' ? '#sp-name-arc-hk' : '#sp-name-arc'" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+          <text class="sp-j-num shadow" x="60.8" [attr.y]="(cut === 'basketball' ? 104 : 99) + 1.4">{{ num }}</text>
+          <text class="sp-j-num outer" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.outline" [attr.stroke]="k.outline">{{ num }}</text>
+          <text class="sp-j-num" x="60" [attr.y]="cut === 'basketball' ? 104 : 99" [attr.fill]="k.num" [attr.stroke]="k.body">{{ num }}</text>
+        }
+        <!-- the folds and the light: the cloth gathers under the hanger and falls in soft waves -->
+        <rect x="-4" y="0" width="128" height="150" fill="url(#sp-folds)" />
+        <rect x="-4" y="0" width="128" height="150" fill="url(#sp-cloth-v)" />
+        <path d="M30 20 C34 60 30 100 34 138 M90 20 C86 60 90 100 86 138" fill="none" stroke="#000" stroke-opacity="0.07" stroke-width="5" />
+        <path d="M46 22 C48 50 46 90 48 136 M74 22 C72 50 74 90 72 136" fill="none" stroke="#fff" stroke-opacity="0.06" stroke-width="4" />
+      </g>
+    }
   </svg>
 </ng-template>

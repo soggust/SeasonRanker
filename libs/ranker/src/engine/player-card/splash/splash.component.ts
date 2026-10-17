@@ -20,6 +20,7 @@ import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
 import { rosterOf } from './splash.roster';
 import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
+import { HI_DPI, JerseyAnchors, jerseyAnchors, propHref } from './splash.images';
 
 type Kit = 'home' | 'away' | 'alt';
 export type Cut = 'football' | 'basketball' | 'baseball' | 'hockey';
@@ -204,6 +205,53 @@ export class CardSplash implements OnDestroy {
   // Each sport's jersey cut: football, the basketball tank, the hockey sweater, the baseball button-front
   get cut(): Cut {
     return this.preset?.cut ?? cutOf(SPORT.id);
+  }
+
+  // The cut's photographed white base (splash.images.ts): its anchors in the jersey's drawing space, and its
+  // file; none when the cut has no base (the vector jersey then)
+  private anchorsFor: { cut: string; a: JerseyAnchors | null } | null = null;
+  get ja(): JerseyAnchors | null {
+    const cut = this.cut;
+    if (this.anchorsFor?.cut !== cut) this.anchorsFor = { cut, a: jerseyAnchors(cut) };
+    return this.anchorsFor.a;
+  }
+  get jerseyBase(): string {
+    return propHref('jersey-' + this.cut, HI_DPI);
+  }
+  // (the office's brass desk nameplate, photographed: splash.component.scss .sp-desk-plate)
+  readonly deskPlate = propHref('desk-nameplate', HI_DPI);
+
+  // The bands on a photographed jersey's sleeves: each a line parallel to the cuff, up the sleeve from it (top
+  // to bottom as the kit lists them; a football's solid sleeve cap first, a baseball sleeve's one or two)
+  photoBands(k: FullKit, a: JerseyAnchors, baseball = false): { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] {
+    if (!a.cuffs) return [];
+    const out: { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] = [];
+    const list = baseball ? (k.stripe2 ? [k.stripe || k.collar, k.stripe2] : [k.stripe || k.collar]) : k.cap ? [] : k.sleeve === 'stripes' ? this.bands(k).map((b) => b.color) : [];
+    const w = baseball ? 3 : Math.min(3.4, 11 / Math.max(1, list.length));
+    const gap = list.length > 2 ? 0.5 : 2.2;
+    for (const c of a.cuffs) {
+      const at = (o: number, color: string, width: number) => {
+        const ex = (c.x2 - c.x1) * 0.4, ey = (c.y2 - c.y1) * 0.4;
+        out.push({ x1: +(c.x1 - ex + c.dx * o).toFixed(2), y1: +(c.y1 - ey + c.dy * o).toFixed(2), x2: +(c.x2 + ex + c.dx * o).toFixed(2), y2: +(c.y2 + ey + c.dy * o).toFixed(2), color, w: width });
+      };
+      if (k.cap && !baseball) at(7, k.cap, 14);
+      list.forEach((color, i) => at(4 + (list.length - 1 - i) * (w + gap) + w / 2, color, w));
+    }
+    return out;
+  }
+
+  // A photographed sweater's arm bands: the kit's, centered on each forearm
+  photoArmBands(k: FullKit, a: JerseyAnchors): { x: number; y: number; w: number; h: number; color: string }[] {
+    if (!a.arms) return [];
+    return a.arms.flatMap((arm) => this.hockeyBands(k).map((b) => ({ x: arm.x, y: +(b.y - 96 + arm.y).toFixed(2), w: arm.w, h: b.h, color: b.color })));
+  }
+
+  // A photographed jersey's hem stripes: the kit's, stacked up from its hem
+  photoHems(k: FullKit, cut: Cut, a: JerseyAnchors): { color: string; y: number; h: number }[] {
+    const list = this.hems(k, cut);
+    if (!list.length) return [];
+    const dy = a.hemY - 3 - Math.max(...list.map((l) => l.y + l.h));
+    return list.map((l) => ({ ...l, y: +(l.y + dy).toFixed(2) }));
   }
 
   // A jersey's colors and details: what the team wore that season (UNIFORM_ERAS), else from its colors: home

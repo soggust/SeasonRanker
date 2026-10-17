@@ -2,6 +2,7 @@
 // marks), the season's things (a ticket, a towel, a game ball). Its gradients are the splash's (#sp-*).
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { HelmetLook, SHOE_LINES } from './splash.uniforms';
+import { GEAR_BASES, HI_DPI, INFO_CARD, PROP_IMAGES, TINTED, TextBaseArt, propHref, propImage, textBaseArt } from './splash.images';
 import type { Piece } from './splash.scene';
 export type { Piece } from './splash.scene';
 
@@ -44,6 +45,25 @@ function laces() {
   });
 }
 
+// A ball's info card: the placard's photo under it, its words set on the plate
+interface Card {
+  href: string;
+  x: number;
+  w: number;
+  h: number;
+  texts: { text: string; size: number; y: number }[];
+}
+// (the props whose words go on an info card: the game balls, the milestone ball, the puck)
+const CARDED = new Set(['game-ball', 'nba-game-ball', 'milestone-ball', 'puck']);
+
+interface GearArt {
+  shell: string;
+  stripe: string;
+  decal: { x: number; y: number; w: number; h: number };
+  upper: number;
+  num: { x: number; y: number };
+}
+
 @Component({
   selector: 'splash-piece',
   standalone: true,
@@ -56,6 +76,80 @@ export class SplashPiece {
   @Input() logo = '';
 
   readonly leaf = 'M' + LEAF.map(([x, y]) => `${x} ${y}`).join(' L') + ' Z';
+
+  // ---- The prop's photo (splash.images.ts), when its prop has one and it isn't a tinted base (those draw
+  // themselves): the file, its box (100 tall, its aspect wide, a plate's 12 under it when it has words), the
+  // plate's place and its words
+  img(): { href: string; w: number; h: number; plate: { x: number; w: number; lines: string[] } | null; card: Card | null } | null {
+    const key = propImage(this.it.id, this.line(0));
+    if (!key || TINTED.has(key)) return null;
+    const w = +(PROP_IMAGES[key] * 100).toFixed(2);
+    const lines = this.plateLines();
+    if (lines.length && CARDED.has(key)) {
+      // (a ball's or a puck's words on a photographed info card under it, 30 tall; the ball above it)
+      const ca = PROP_IMAGES[INFO_CARD.key] ?? 1.5;
+      const ch = 30, cw = +(ca * ch).toFixed(2);
+      const box = INFO_CARD.boxes[0];
+      const texts = lines.slice(0, 2).map((text, i, all) => {
+        const row = (box.h * ch) / all.length;
+        const size = +Math.min(box.max ?? 10, row * 0.82, (box.w * cw) / (Math.max(1, text.length) * 0.84)).toFixed(2);
+        return { text, size, y: +(100 + box.y * ch + row * i + row / 2 + size * 0.35).toFixed(2) };
+      });
+      return { href: propHref(key, HI_DPI), w: Math.max(w, cw), h: 100 + ch, plate: null, card: { href: propHref(INFO_CARD.key, HI_DPI), x: +((Math.max(w, cw) - cw) / 2).toFixed(2), w: cw, h: ch, texts } };
+    }
+    const pw = Math.min(70, Math.max(30, +(w * 0.85).toFixed(2)));
+    return { href: propHref(key, HI_DPI), w, h: lines.length ? 112 : 100, plate: lines.length ? { x: +((w - pw) / 2).toFixed(2), w: pw, lines } : null, card: null };
+  }
+
+  // The brass plate's words under a photographed prop: the engraving the vector put on the object (two lines at
+  // most; the Lombardi's and the conference trophies' read as one line)
+  plateLines(): string[] {
+    const l = (this.it.lines ?? []).filter((x) => !!x && x.trim());
+    if (!l.length) return [];
+    switch (this.it.t) {
+      case 'lombardi':
+        return ['Super Bowl ' + l[0]];
+      case 'conf':
+        return [l[0] + ' Champions'];
+      default:
+        return l.slice(0, 2);
+    }
+  }
+
+  // The piece's blank base and its words on it (splash.images.ts TEXT_BASES), when it has one: the file and
+  // everything placed, built once per piece and its words
+  private tbCache: { k: string; art: (TextBaseArt & { href: string }) | null } | null = null;
+  tbase(): (TextBaseArt & { href: string }) | null {
+    const lines = this.it.lines ?? [];
+    const k = this.it.t + '|' + (this.it.id ?? '') + '|' + lines.join('|');
+    if (this.tbCache?.k === k) return this.tbCache.art;
+    const art = textBaseArt(this.it.t, this.it.id, lines);
+    this.tbCache = { k, art: art ? { ...art, href: propHref(art.key, HI_DPI) } : null };
+    return this.tbCache.art;
+  }
+
+  // A tinted base's photo (the helmet, the cap, the sneaker): the file and its box, 100 tall
+  base(key: string): { href: string; w: number } | null {
+    const aspect = PROP_IMAGES[key];
+    return aspect ? { href: propHref(key, HI_DPI), w: +(aspect * 100).toFixed(2) } : null;
+  }
+
+  // The gear bases' anchors (fractions of the photo's box) in the box's units, for this piece's base
+  private gearCache: { w: number; art: GearArt } | null = null;
+  gear(w: number): GearArt {
+    if (this.gearCache?.w === w) return this.gearCache.art;
+    const f = (d: string) => d.replace(/(-?[\d.]+) (-?[\d.]+)/g, (_, x, y) => `${(+x * w).toFixed(2)} ${(+y * 100).toFixed(2)}`);
+    const box = (b: { x: number; y: number; w: number; h: number }) => ({ x: +(b.x * w).toFixed(2), y: b.y * 100, w: +(b.w * w).toFixed(2), h: b.h * 100 });
+    const g = GEAR_BASES;
+    const art: GearArt =
+      this.it.t === 'helmet'
+        ? { shell: f(g.helmet.shell), stripe: f(g.helmet.stripe), decal: box(g.helmet.decal), upper: 100, num: { x: 0, y: 0 } }
+        : this.it.t === 'cap'
+          ? { shell: '', stripe: '', decal: box(g.cap.decal), upper: 100, num: { x: 0, y: 0 } }
+          : { shell: '', stripe: '', decal: { x: 0, y: 0, w: 0, h: 0 }, upper: g.shoe.upper * 100, num: { x: +(g.shoe.num.x * w).toFixed(2), y: g.shoe.num.y * 100 } };
+    this.gearCache = { w, art };
+    return art;
+  }
   readonly crown = crown(10, 160, 20, 6, 8);
   readonly crownBeads = Array.from({ length: 8 }, (_, i) => 10 + (150 / 8) * (i + 0.5));
 

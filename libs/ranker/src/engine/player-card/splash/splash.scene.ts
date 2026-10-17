@@ -46,6 +46,7 @@ export interface Outcome {
 // One piece as the stage draws it: its drawing, its words, its height (px, desktop), its name, its options
 export interface Piece {
   t: string;
+  id?: string; // the prop's id in the registry (its photo, when it has one: splash.images.ts)
   lines?: string[];
   tip?: string;
   h?: number;
@@ -299,11 +300,12 @@ export function buildScene(s: SceneInput): Scene | null {
   const locker = !s.coach && (s.current || s.sport === 'mma');
   // (a prop whose words the data doesn't have yet is left out: a hand-set list then filled from the rules)
   const ok = (id: string) => !!PROPS[id] && (!PROPS[id].needs || !!f[PROPS[id].needs!]);
-  const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => PROPS[id]);
+  const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => ({ ...PROPS[id], id }));
   const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO) : d.inches));
   const scale = Math.min(PX_PER_IN, (s.coach ? OFFICE_MAX : locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
   const piece = (d: (typeof defs)[number], h: number): Piece => ({
     t: d.piece,
+    id: d.id,
     lines: d.lines?.map((l) => fill(l, f)),
     tip: fill(d.tip, f),
     h,
@@ -319,8 +321,8 @@ export function buildScene(s: SceneInput): Scene | null {
     // (his own record first, the coach's row's: a man hired in midseason owns only his games; the team's when
     // the row has none)
     const record = s.record ?? o?.record ?? '';
-    const board = piece(PROPS['whiteboard'], 150);
-    const frame = piece(PROPS['team-frame'], 70);
+    const board = piece({ ...PROPS['whiteboard'], id: 'whiteboard' }, 150);
+    const frame = piece({ ...PROPS['team-frame'], id: 'team-frame' }, 70);
     return {
       stage: 'office',
       items: pieces,
@@ -366,7 +368,7 @@ export function buildScene(s: SceneInput): Scene | null {
     const gear = ids.filter(ok).filter((id) => !(fighter && PROPS[id].piece === pieces[0]?.t));
     for (const id of gear) {
       const at = stallPlace(id);
-      const it = piece(PROPS[id], at.h);
+      const it = piece({ ...PROPS[id], id }, at.h);
       if (at.place === 'shelf') (mine.shelf ??= []).push(it);
       else if (at.place === 'corner') mine.corner ??= it;
       else if (at.place === 'hook' && !mine.jersey && !mine.item) mine.item = it;

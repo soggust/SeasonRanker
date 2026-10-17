@@ -1,3 +1,85 @@
+@if (img(); as im) {
+  <!-- The prop's photo (splash.images.ts: the real object, cut out), in a box 100 tall and its aspect wide, so
+       the slot is sized before the file arrives; its contact shadow; its words (the engraving the vector put on
+       the trophy itself) on a brass plate under it when it has any -->
+  <svg [attr.viewBox]="'0 0 ' + im.w + ' ' + im.h" class="sp-photo" [attr.data-trophy]="it.t">
+    <ellipse [attr.cx]="im.w / 2" [attr.cy]="im.h - 1.5" [attr.rx]="im.w * 0.42" ry="2.5" fill="#000" opacity="0.5" />
+    <image [attr.href]="im.href" x="0" y="0" [attr.width]="im.w" height="100" preserveAspectRatio="xMidYMax meet" loading="lazy" decoding="async" />
+    @if (im.card; as c) {
+      <image [attr.href]="c.href" [attr.x]="c.x" y="100" [attr.width]="c.w" [attr.height]="c.h" preserveAspectRatio="none" decoding="async" />
+      @for (t of c.texts; track $index) {
+        <text [attr.x]="im.w / 2" [attr.y]="t.y" [style.font-size.px]="t.size" class="sp-engr dark hi" dy="0.4">{{ t.text }}</text><text [attr.x]="im.w / 2" [attr.y]="t.y" [style.font-size.px]="t.size" class="sp-engr dark">{{ t.text }}</text>
+      }
+    }
+    @if (im.plate; as p) {
+      <path [attr.d]="'M' + p.x + ' 101.5 h' + p.w + ' l1.5 9.5 h-' + (p.w + 3) + ' z'" fill="url(#sp-lacquer)" />
+      <path [attr.d]="'M' + p.x + ' 101.5 h' + p.w" stroke="#fff" stroke-opacity="0.25" />
+      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="6.5" fill="url(#sp-gold)" />
+      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="6.5" fill="url(#sp-brushed)" />
+      @if (p.lines.length === 1) {
+        <text [attr.x]="im.w / 2" y="108.2" [style.font-size.px]="fs(p.lines[0], p.w - 7, 4)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="108.2" [style.font-size.px]="fs(p.lines[0], p.w - 7, 4)" class="sp-engr dark">{{ p.lines[0] }}</text>
+      } @else {
+        <text [attr.x]="im.w / 2" y="106.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="106.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3)" class="sp-engr dark">{{ p.lines[0] }}</text>
+        <text [attr.x]="im.w / 2" y="109.5" [style.font-size.px]="fs(p.lines[1], p.w - 7, 2.6)" class="sp-engr dark hi" dy="0.3">{{ p.lines[1] }}</text><text [attr.x]="im.w / 2" y="109.5" [style.font-size.px]="fs(p.lines[1], p.w - 7, 2.6)" class="sp-engr dark">{{ p.lines[1] }}</text>
+      }
+    }
+  </svg>
+} @else if (tbase(); as tb) {
+  <!-- A piece drawn on a photographed blank base (splash.images.ts TEXT_BASES): the base (tinted with the team's
+       color when it's a white felt), the team's mark in its box, the piece's words in their boxes (engraved dark
+       on brass, light on a dark band), a whiteboard's play in marker; the vector piece stays the fallback -->
+  <svg [attr.viewBox]="'0 0 ' + tb.w + ' 100'" class="sp-photo" [attr.data-trophy]="it.t">
+    @if (!tb.noShadow) {
+      <ellipse [attr.cx]="tb.w / 2" cy="98.5" [attr.rx]="tb.w * 0.42" ry="2.5" fill="#000" opacity="0.5" />
+    }
+    @if (tb.tint) {
+      <defs>
+        <mask [attr.id]="'sp-tb-' + tb.key" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" [attr.width]="tb.w" height="100">
+          @for (im of tb.imgs; track $index) {
+            <image [attr.href]="tb.href" [attr.x]="im.x" [attr.y]="im.y" [attr.width]="im.w" [attr.height]="im.h" preserveAspectRatio="none" />
+          }
+        </mask>
+      </defs>
+      <g [attr.mask]="'url(#sp-tb-' + tb.key + ')'" style="isolation: isolate">
+        <rect x="0" y="0" [attr.width]="tb.w" height="100" style="fill: var(--c1)" />
+        @for (im of tb.imgs; track $index) {
+          <image [attr.href]="tb.href" [attr.x]="im.x" [attr.y]="im.y" [attr.width]="im.w" [attr.height]="im.h" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
+        }
+      </g>
+    } @else {
+      @for (im of tb.imgs; track $index) {
+        <image [attr.href]="tb.href" [attr.x]="im.x" [attr.y]="im.y" [attr.width]="im.w" [attr.height]="im.h" preserveAspectRatio="none" loading="lazy" decoding="async" />
+      }
+    }
+    @for (l of tb.logos; track $index) {
+      <image [attr.href]="logo" [attr.x]="l.x" [attr.y]="l.y" [attr.width]="l.w" [attr.height]="l.h" preserveAspectRatio="xMidYMid meet" />
+    }
+    @if (it.t === 'whiteboard') {
+      <!-- the play, in marker: the defense's X's, the offense's O's, two routes and a handoff -->
+      <g [attr.transform]="tb.play">
+        <g fill="none" stroke="#1b3f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+          <circle cx="72" cy="86" r="5" /><circle cx="90" cy="86" r="5" /><circle cx="108" cy="86" r="5" /><circle cx="126" cy="86" r="5" /><circle cx="144" cy="86" r="5" />
+          <circle cx="108" cy="104" r="5" /><circle cx="132" cy="108" r="5" /><circle cx="46" cy="90" r="5" /><circle cx="176" cy="90" r="5" />
+          <path d="M46 84 C44 66 50 50 64 40 l-7 1 M64 40 l0 7" />
+          <path d="M176 84 C178 70 170 58 158 50 l7 -1 M158 50 l0 7" />
+          <path d="M144 80 C150 66 160 60 170 58" stroke-dasharray="3 3" />
+          <path d="M108 98 C96 92 90 86 84 76" stroke-dasharray="2 3" />
+        </g>
+        <g fill="none" stroke="#c0252d" stroke-width="2" stroke-linecap="round" opacity="0.9">
+          <path d="M66 58 l8 8 m0 -8 l-8 8 M86 54 l8 8 m0 -8 l-8 8 M104 50 l8 8 m0 -8 l-8 8 M122 54 l8 8 m0 -8 l-8 8 M142 58 l8 8 m0 -8 l-8 8 M62 30 l8 8 m0 -8 l-8 8 M170 32 l8 8 m0 -8 l-8 8" />
+          <ellipse cx="108" cy="104" rx="10" ry="8" stroke-dasharray="3 2" />
+        </g>
+        <path d="M200 100 h92" stroke="#1b3f8a" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" />
+      </g>
+    }
+    @for (t of tb.texts; track $index) {
+      @if (t.hi) {
+        <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [attr.text-anchor]="t.anchor" dy="0.4" [attr.transform]="t.transform">{{ t.text }}</text>
+      }
+      <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [attr.text-anchor]="t.anchor" [attr.transform]="t.transform">{{ t.text }}</text>
+    }
+  </svg>
+} @else {
 @switch (it.t) {
   <!-- ================================ NFL ================================ -->
   @case ('lombardi') {
@@ -239,54 +321,81 @@
     </svg>
   }
   @case ('helmet') {
-    <!-- His helmet, side profile facing right (after a Riddell-style shell): the shell in the team's helmet colors
-         (a solid shell, or the Jaguars' black-to-teal fade), its stripe pattern from the team's helmet table (none,
-         single, double, triple), the ear hole, the jaw flap; the logo decal covering most of the side; a gloss streak;
-         a modern facemask: a cage of bars of one thickness (the brow bar, two side bars, the chin bar, the vertical
-         centre bars at the front), fixed by clips at the brow and the jaw -->
-    <svg viewBox="0 0 166 124" data-trophy="helmet">
-      <defs>
-        <clipPath id="sp-shell-clip"><path [attr.d]="shell" /></clipPath>
-        <linearGradient id="sp-helmet-fade" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
-          <stop offset="0" [attr.stop-color]="hm().fadeColors?.[0] ?? '#0b0b0b'" />
-          <stop offset="0.45" [attr.stop-color]="hm().fadeColors?.[0] ?? '#101418'" />
-          <stop offset="1" [style.stop-color]="hm().fadeColors?.[1] ?? 'var(--c1)'" />
-        </linearGradient>
-      </defs>
-      <ellipse cx="84" cy="118" rx="62" ry="4.5" fill="#000" opacity="0.5" />
-      <path d="M131 56 L114 61 C107 70 107 80 113 88 L121 104 L140 104 L142 60 Z" fill="#121212" />
-      <path d="M118 66 C114 74 114 82 118 88" fill="none" stroke="#2e2e2e" stroke-width="5" stroke-linecap="round" />
-      <path [attr.d]="shell" [attr.fill]="hm().fade ? 'url(#sp-helmet-fade)' : hm().shell ?? 'url(#sp-team)'" />
-      <g clip-path="url(#sp-shell-clip)" stroke-linecap="round" stroke-linejoin="round">
-        @for (s of stripes(); track $index) {
-          <path d="M30 40 C52 10 104 6 132 34" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w" [attr.transform]="'translate(0 ' + s.dy + ')'" />
-        }
-        <path [attr.d]="shell" fill="url(#sp-shell)" />
-        <path d="M86 92 C98 98 110 102 121 104" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="1.6" />
-        <path d="M40 36 C58 20 86 16 108 22" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4" />
-        <ellipse cx="66" cy="27" rx="9" ry="3" fill="#fff" opacity="0.45" transform="rotate(-14 66 27)" />
-        <path d="M30 101 C40 107 52 107 64 104 L80 106 C92 112 110 112 122 104" fill="none" stroke="#0e0e0e" stroke-width="5" />
-      </g>
-      <!-- the decal: most of the side, between the crown and the ear hole -->
-      <image [attr.href]="logo" x="30" y="26" width="64" height="64" preserveAspectRatio="xMidYMid meet" />
-      <ellipse cx="96" cy="82" rx="5" ry="7" fill="#0a0a0a" />
-      <!-- the facemask: a cage, back to front -->
-      <g fill="none" stroke-linecap="round" stroke-linejoin="round" [style.stroke]="hm().mask">
-        <path d="M124 57 C136 55 148 58 154 66" stroke-width="4" />
-        <path d="M116 72 L156 74" stroke-width="4" />
-        <path d="M117 87 L155 88" stroke-width="4" />
-        <path d="M120 101 C130 109 146 108 154 100" stroke-width="4" />
-        <path d="M154 66 C157 76 157 90 154 100" stroke-width="4" />
-        <path d="M144 59 C146 74 146 92 143 106" stroke-width="3.6" />
-        <path d="M124 57 C121 66 120 74 117 87" stroke-width="3.6" />
-      </g>
-      <g fill="none" stroke-linecap="round" stroke="#fff" stroke-opacity="0.55" stroke-width="1.2">
-        <path d="M124 56 C136 54 147 57 153 65 M116 71 L155.5 73 M117 86 L154.5 87 M143 60 C145 74 145 92 142 105 M153.4 67 C156.2 76 156.2 90 153.4 99" />
-      </g>
-      <rect x="119" y="52" width="9" height="8" rx="2" fill="#c9ced3" />
-      <rect x="112" y="68" width="7" height="8" rx="2" fill="#c9ced3" />
-      <rect x="115" y="97" width="8" height="8" rx="2" fill="#c9ced3" />
-    </svg>
+    @if (base('nfl-helmet'); as b) {
+      <!-- His helmet, the photographed white shell (splash.images.ts GEAR_BASES.helmet; it faces left) tinted
+           with the team's helmet color (its shell alone: the mask and the chin strap keep their own), its stripe
+           over the crown and its decal on the side drawn under the photo, which multiplies its shading onto them -->
+      <svg [attr.viewBox]="'0 0 ' + b.w + ' 100'" data-trophy="helmet">
+        <defs>
+          <mask id="sp-helmet-alpha" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" [attr.width]="b.w" height="100">
+            <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" />
+          </mask>
+          <linearGradient id="sp-helmet-fade" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
+            <stop offset="0" [attr.stop-color]="hm().fadeColors?.[0] ?? '#0b0b0b'" />
+            <stop offset="0.45" [attr.stop-color]="hm().fadeColors?.[0] ?? '#101418'" />
+            <stop offset="1" [style.stop-color]="hm().fadeColors?.[1] ?? 'var(--c1)'" />
+          </linearGradient>
+        </defs>
+        <ellipse [attr.cx]="b.w * 0.55" cy="98" [attr.rx]="b.w * 0.4" ry="3" fill="#000" opacity="0.5" />
+        <g mask="url(#sp-helmet-alpha)" style="isolation: isolate">
+          <path [attr.d]="gear(b.w).shell" [attr.fill]="hm().fade ? 'url(#sp-helmet-fade)' : hm().shell ?? 'url(#sp-team)'" />
+          @for (s of stripes(); track $index) {
+            <path [attr.d]="gear(b.w).stripe" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w * 0.8" [attr.transform]="'translate(' + (s.dy * 0.5) + ' ' + (s.dy * 0.6) + ')'" />
+          }
+          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" />
+          <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
+        </g>
+      </svg>
+    } @else {
+      <!-- His helmet, side profile facing right (after a Riddell-style shell): the shell in the team's helmet colors
+           (a solid shell, or the Jaguars' black-to-teal fade), its stripe pattern from the team's helmet table (none,
+           single, double, triple), the ear hole, the jaw flap; the logo decal covering most of the side; a gloss streak;
+           a modern facemask: a cage of bars of one thickness (the brow bar, two side bars, the chin bar, the vertical
+           centre bars at the front), fixed by clips at the brow and the jaw -->
+      <svg viewBox="0 0 166 124" data-trophy="helmet">
+        <defs>
+          <clipPath id="sp-shell-clip"><path [attr.d]="shell" /></clipPath>
+          <linearGradient id="sp-helmet-fade" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
+            <stop offset="0" [attr.stop-color]="hm().fadeColors?.[0] ?? '#0b0b0b'" />
+            <stop offset="0.45" [attr.stop-color]="hm().fadeColors?.[0] ?? '#101418'" />
+            <stop offset="1" [style.stop-color]="hm().fadeColors?.[1] ?? 'var(--c1)'" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="84" cy="118" rx="62" ry="4.5" fill="#000" opacity="0.5" />
+        <path d="M131 56 L114 61 C107 70 107 80 113 88 L121 104 L140 104 L142 60 Z" fill="#121212" />
+        <path d="M118 66 C114 74 114 82 118 88" fill="none" stroke="#2e2e2e" stroke-width="5" stroke-linecap="round" />
+        <path [attr.d]="shell" [attr.fill]="hm().fade ? 'url(#sp-helmet-fade)' : hm().shell ?? 'url(#sp-team)'" />
+        <g clip-path="url(#sp-shell-clip)" stroke-linecap="round" stroke-linejoin="round">
+          @for (s of stripes(); track $index) {
+            <path d="M30 40 C52 10 104 6 132 34" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w" [attr.transform]="'translate(0 ' + s.dy + ')'" />
+          }
+          <path [attr.d]="shell" fill="url(#sp-shell)" />
+          <path d="M86 92 C98 98 110 102 121 104" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="1.6" />
+          <path d="M40 36 C58 20 86 16 108 22" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4" />
+          <ellipse cx="66" cy="27" rx="9" ry="3" fill="#fff" opacity="0.45" transform="rotate(-14 66 27)" />
+          <path d="M30 101 C40 107 52 107 64 104 L80 106 C92 112 110 112 122 104" fill="none" stroke="#0e0e0e" stroke-width="5" />
+        </g>
+        <!-- the decal: most of the side, between the crown and the ear hole -->
+        <image [attr.href]="logo" x="30" y="26" width="64" height="64" preserveAspectRatio="xMidYMid meet" />
+        <ellipse cx="96" cy="82" rx="5" ry="7" fill="#0a0a0a" />
+        <!-- the facemask: a cage, back to front -->
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round" [style.stroke]="hm().mask">
+          <path d="M124 57 C136 55 148 58 154 66" stroke-width="4" />
+          <path d="M116 72 L156 74" stroke-width="4" />
+          <path d="M117 87 L155 88" stroke-width="4" />
+          <path d="M120 101 C130 109 146 108 154 100" stroke-width="4" />
+          <path d="M154 66 C157 76 157 90 154 100" stroke-width="4" />
+          <path d="M144 59 C146 74 146 92 143 106" stroke-width="3.6" />
+          <path d="M124 57 C121 66 120 74 117 87" stroke-width="3.6" />
+        </g>
+        <g fill="none" stroke-linecap="round" stroke="#fff" stroke-opacity="0.55" stroke-width="1.2">
+          <path d="M124 56 C136 54 147 57 153 65 M116 71 L155.5 73 M117 86 L154.5 87 M143 60 C145 74 145 92 142 105 M153.4 67 C156.2 76 156.2 90 153.4 99" />
+        </g>
+        <rect x="119" y="52" width="9" height="8" rx="2" fill="#c9ced3" />
+        <rect x="112" y="68" width="7" height="8" rx="2" fill="#c9ced3" />
+        <rect x="115" y="97" width="8" height="8" rx="2" fill="#c9ced3" />
+      </svg>
+    }
   }
 
   <!-- ================================ the missed season ================================ -->
@@ -708,61 +817,80 @@
     </svg>
   }
   @case ('shoe') {
-    @let sh = shoe();
-    <svg viewBox="0 0 250 150">
-      <path d="M20 122 h210 l10 24 h-230 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.3" />
-      <path d="M20 122 l12 -6 h186 l12 6 z" fill="#fff" fill-opacity="0.14" />
-      <ellipse cx="125" cy="122" rx="100" ry="4" fill="#000" opacity="0.5" />
-      <g transform="translate(6 6)">
-        <path d="M12 104 C12 112 18 116 28 116 L210 116 C224 116 232 110 232 102 L230 98 L14 98 Z" style="fill: var(--c2)" />
-        <path d="M18 108 h196" stroke="#000" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="3 4" />
-        <path d="M12 100 C10 88 14 82 26 82 L198 80 C220 80 232 88 232 100 Z" fill="#f4f4f0" />
-        <path d="M12 100 C10 88 14 82 26 82 L198 80 C220 80 232 88 232 100 Z" fill="url(#sp-roll-v)" opacity="0.5" />
-        <path
-          [attr.d]="sh.cut === 'high'
-            ? 'M22 84 C16 60 18 24 30 8 C38 2 52 0 64 4 L78 8 C82 26 90 40 104 46 C134 54 172 56 198 64 C218 70 230 78 230 88 L22 88 Z'
-            : sh.cut === 'low'
-            ? 'M22 84 C18 66 22 48 32 40 C40 36 52 34 64 36 L78 38 C84 46 92 50 104 52 C134 58 172 60 198 66 C218 70 230 78 230 88 L22 88 Z'
-            : 'M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z'"
-          style="fill: var(--c1)" />
-        <path d="M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z" fill="url(#sp-knit)" />
-        <path d="M182 62 C210 66 230 76 230 88 L180 88 C176 78 176 70 182 62 Z" fill="#000" fill-opacity="0.22" />
-        <path d="M22 84 C17 62 20 46 26 36 L50 40 C46 56 46 72 52 88 L22 88 Z" style="fill: var(--c2)" />
-        @switch (sh.detail) {
-          @case ('waves') {
-            @for (x of [58, 88, 118, 148]; track x) {
-              <path [attr.d]="'M' + x + ' 92 C' + (x + 2) + ' 70 ' + (x + 22) + ' 62 ' + (x + 30) + ' 70 C' + (x + 34) + ' 76 ' + (x + 30) + ' 86 ' + (x + 26) + ' 92'" style="fill: var(--c2)" />
-              <path [attr.d]="'M' + (x + 4) + ' 88 C' + (x + 6) + ' 72 ' + (x + 20) + ' 66 ' + (x + 27) + ' 72'" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2" />
+    @if (base('signature-shoe'); as b) {
+      <!-- His shoe: the photographed white sneaker (it faces left), its upper tinted with the team's color, the
+           sole left white, his number on the heel -->
+      <svg [attr.viewBox]="'0 0 ' + b.w + ' 100'" data-trophy="shoe">
+        <defs>
+          <mask id="sp-shoe-alpha" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" [attr.width]="b.w" height="100">
+            <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" />
+          </mask>
+        </defs>
+        <ellipse [attr.cx]="b.w * 0.5" cy="97" [attr.rx]="b.w * 0.45" ry="3" fill="#000" opacity="0.5" />
+        <g mask="url(#sp-shoe-alpha)" style="isolation: isolate">
+          <rect x="0" y="0" [attr.width]="b.w" [attr.height]="gear(b.w).upper" style="fill: var(--c1)" />
+          <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
+        </g>
+        <text [attr.x]="gear(b.w).num.x" [attr.y]="gear(b.w).num.y" class="sp-shoe-num">{{ it.num }}</text>
+      </svg>
+    } @else {
+      @let sh = shoe();
+      <svg viewBox="0 0 250 150">
+        <path d="M20 122 h210 l10 24 h-230 z" fill="url(#sp-acrylic)" stroke="#fff" stroke-opacity="0.3" />
+        <path d="M20 122 l12 -6 h186 l12 6 z" fill="#fff" fill-opacity="0.14" />
+        <ellipse cx="125" cy="122" rx="100" ry="4" fill="#000" opacity="0.5" />
+        <g transform="translate(6 6)">
+          <path d="M12 104 C12 112 18 116 28 116 L210 116 C224 116 232 110 232 102 L230 98 L14 98 Z" style="fill: var(--c2)" />
+          <path d="M18 108 h196" stroke="#000" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="3 4" />
+          <path d="M12 100 C10 88 14 82 26 82 L198 80 C220 80 232 88 232 100 Z" fill="#f4f4f0" />
+          <path d="M12 100 C10 88 14 82 26 82 L198 80 C220 80 232 88 232 100 Z" fill="url(#sp-roll-v)" opacity="0.5" />
+          <path
+            [attr.d]="sh.cut === 'high'
+              ? 'M22 84 C16 60 18 24 30 8 C38 2 52 0 64 4 L78 8 C82 26 90 40 104 46 C134 54 172 56 198 64 C218 70 230 78 230 88 L22 88 Z'
+              : sh.cut === 'low'
+              ? 'M22 84 C18 66 22 48 32 40 C40 36 52 34 64 36 L78 38 C84 46 92 50 104 52 C134 58 172 60 198 66 C218 70 230 78 230 88 L22 88 Z'
+              : 'M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z'"
+            style="fill: var(--c1)" />
+          <path d="M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z" fill="url(#sp-knit)" />
+          <path d="M182 62 C210 66 230 76 230 88 L180 88 C176 78 176 70 182 62 Z" fill="#000" fill-opacity="0.22" />
+          <path d="M22 84 C17 62 20 46 26 36 L50 40 C46 56 46 72 52 88 L22 88 Z" style="fill: var(--c2)" />
+          @switch (sh.detail) {
+            @case ('waves') {
+              @for (x of [58, 88, 118, 148]; track x) {
+                <path [attr.d]="'M' + x + ' 92 C' + (x + 2) + ' 70 ' + (x + 22) + ' 62 ' + (x + 30) + ' 70 C' + (x + 34) + ' 76 ' + (x + 30) + ' 86 ' + (x + 26) + ' 92'" style="fill: var(--c2)" />
+                <path [attr.d]="'M' + (x + 4) + ' 88 C' + (x + 6) + ' 72 ' + (x + 20) + ' 66 ' + (x + 27) + ' 72'" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2" />
+              }
+            }
+            @case ('strap') {
+              <path d="M58 30 L126 52 L118 70 L52 50 Z" style="fill: var(--c2)" />
+            }
+            @case ('cage') {
+              <path d="M44 86 L76 36 M64 86 L100 50 M88 86 L124 56 M114 86 L150 60 M140 86 L172 64" fill="none" style="stroke: var(--c2)" stroke-width="4" stroke-linecap="round" />
+            }
+            @case ('panels') {
+              <path d="M60 86 C70 60 100 54 130 58 L126 86 Z M134 86 L138 60 C160 62 176 66 182 74 L180 86 Z" style="fill: var(--c2)" opacity="0.9" />
+            }
+            @case ('swirl') {
+              <path d="M60 80 C80 50 120 50 130 70 C138 86 110 90 104 76" fill="none" style="stroke: var(--c2)" stroke-width="6" stroke-linecap="round" />
+            }
+            @default {
+              <path d="M58 80 C90 60 140 58 192 70" fill="none" style="stroke: var(--c2)" stroke-width="8" stroke-linecap="round" />
             }
           }
-          @case ('strap') {
-            <path d="M58 30 L126 52 L118 70 L52 50 Z" style="fill: var(--c2)" />
+          <path d="M24 86 C20 64 22 40 31 27" fill="none" stroke="#fff" stroke-opacity="0.5" stroke-dasharray="2 2" />
+          <path d="M66 18 C70 6 82 2 90 8 L98 44" style="fill: var(--c1)" />
+          <path d="M66 18 C70 6 82 2 90 8 L98 44" fill="#fff" fill-opacity="0.15" />
+          @for (i of [0, 1, 2, 3, 4]; track i) {
+            <path [attr.d]="'M' + (80 + i * 14) + ' ' + (24 + i * 6) + ' l10 6 m0 -6 l-10 6'" stroke="#fff" stroke-width="2.4" stroke-linecap="round" />
           }
-          @case ('cage') {
-            <path d="M44 86 L76 36 M64 86 L100 50 M88 86 L124 56 M114 86 L150 60 M140 86 L172 64" fill="none" style="stroke: var(--c2)" stroke-width="4" stroke-linecap="round" />
-          }
-          @case ('panels') {
-            <path d="M60 86 C70 60 100 54 130 58 L126 86 Z M134 86 L138 60 C160 62 176 66 182 74 L180 86 Z" style="fill: var(--c2)" opacity="0.9" />
-          }
-          @case ('swirl') {
-            <path d="M60 80 C80 50 120 50 130 70 C138 86 110 90 104 76" fill="none" style="stroke: var(--c2)" stroke-width="6" stroke-linecap="round" />
-          }
-          @default {
-            <path d="M58 80 C90 60 140 58 192 70" fill="none" style="stroke: var(--c2)" stroke-width="8" stroke-linecap="round" />
-          }
-        }
-        <path d="M24 86 C20 64 22 40 31 27" fill="none" stroke="#fff" stroke-opacity="0.5" stroke-dasharray="2 2" />
-        <path d="M66 18 C70 6 82 2 90 8 L98 44" style="fill: var(--c1)" />
-        <path d="M66 18 C70 6 82 2 90 8 L98 44" fill="#fff" fill-opacity="0.15" />
-        @for (i of [0, 1, 2, 3, 4]; track i) {
-          <path [attr.d]="'M' + (80 + i * 14) + ' ' + (24 + i * 6) + ' l10 6 m0 -6 l-10 6'" stroke="#fff" stroke-width="2.4" stroke-linecap="round" />
-        }
-        <path d="M30 24 C40 14 54 14 66 18" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round" />
-        <path d="M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z" fill="url(#sp-cloth-v)" />
-        <text x="33" y="70" class="sp-shoe-num">{{ it.num }}</text>
-      </g>
-    </svg>
+          <path d="M30 24 C40 14 54 14 66 18" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round" />
+          <path d="M22 84 C17 62 20 36 30 24 C38 16 52 14 64 18 L78 22 C82 34 90 42 104 48 C134 56 172 58 198 65 C218 70 230 78 230 88 L22 88 Z" fill="url(#sp-cloth-v)" />
+          <text x="33" y="70" class="sp-shoe-num">{{ it.num }}</text>
+        </g>
+      </svg>
+    }
   }
+
 @case ('bball') {
     <!-- A game ball, the NBA's: pebbled orange leather, its black channels; on a black stand, the game on the
          stand's brass placard, nothing written on the ball -->
@@ -1383,25 +1511,43 @@
   }
 <!-- ================================ gear, and the office ================================ -->
   @case ('cap') {
-    <!-- His cap: the crown in the team's color, its panels seamed, a button on top, the brim curved; the team's mark
-         on the front panel -->
-    <svg viewBox="0 0 90 62" data-trophy="cap">
-      <ellipse cx="46" cy="58" rx="38" ry="3" fill="#000" opacity="0.5" />
-      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" style="fill: var(--c1)" />
-      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-roll-v)" opacity="0.6" />
-      <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-mesh)" />
-      <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="0.9" />
-      <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.5" transform="translate(0.8 0)" />
-      <circle cx="37" cy="20" r="1" fill="#000" fill-opacity="0.35" /><circle cx="53" cy="20" r="1" fill="#000" fill-opacity="0.35" />
-      <circle cx="45" cy="7" r="2.4" style="fill: var(--c1)" stroke="#000" stroke-opacity="0.35" stroke-width="0.6" />
-      <image [attr.href]="logo" x="35" y="18" width="20" height="20" opacity="0.95" />
-      <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" style="fill: var(--c1)" />
-      <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" fill="url(#sp-roll-y)" opacity="0.7" />
-      <path d="M8 42 C30 36 60 36 86 44" fill="none" stroke="#000" stroke-opacity="0.4" stroke-width="0.8" />
-      <path d="M12 44 C30 39 60 39 82 46" fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="0.8" stroke-dasharray="1 1.4" />
-      <path d="M20 14 q10 -8 20 -6" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
-    </svg>
+    @if (base('ball-cap'); as b) {
+      <!-- His cap: the photographed white cap tinted with the team's color, its mark on the front panel -->
+      <svg [attr.viewBox]="'0 0 ' + b.w + ' 100'" data-trophy="cap">
+        <defs>
+          <mask id="sp-cap-alpha" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" [attr.width]="b.w" height="100">
+            <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" />
+          </mask>
+        </defs>
+        <ellipse [attr.cx]="b.w * 0.5" cy="97" [attr.rx]="b.w * 0.42" ry="3" fill="#000" opacity="0.5" />
+        <g mask="url(#sp-cap-alpha)" style="isolation: isolate">
+          <rect x="0" y="0" [attr.width]="b.w" height="100" style="fill: var(--c1)" />
+          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" opacity="0.95" />
+          <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
+        </g>
+      </svg>
+    } @else {
+      <!-- His cap: the crown in the team's color, its panels seamed, a button on top, the brim curved; the team's mark
+           on the front panel -->
+      <svg viewBox="0 0 90 62" data-trophy="cap">
+        <ellipse cx="46" cy="58" rx="38" ry="3" fill="#000" opacity="0.5" />
+        <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" style="fill: var(--c1)" />
+        <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-roll-v)" opacity="0.6" />
+        <path d="M12 42 C12 18 30 7 45 7 C60 7 78 18 78 42 Z" fill="url(#sp-mesh)" />
+        <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="0.9" />
+        <path d="M45 7 L45 42 M31 10 L26 42 M59 10 L64 42" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.5" transform="translate(0.8 0)" />
+        <circle cx="37" cy="20" r="1" fill="#000" fill-opacity="0.35" /><circle cx="53" cy="20" r="1" fill="#000" fill-opacity="0.35" />
+        <circle cx="45" cy="7" r="2.4" style="fill: var(--c1)" stroke="#000" stroke-opacity="0.35" stroke-width="0.6" />
+        <image [attr.href]="logo" x="35" y="18" width="20" height="20" opacity="0.95" />
+        <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" style="fill: var(--c1)" />
+        <path d="M8 42 C30 36 60 36 86 44 C72 52 26 52 8 42 Z" fill="url(#sp-roll-y)" opacity="0.7" />
+        <path d="M8 42 C30 36 60 36 86 44" fill="none" stroke="#000" stroke-opacity="0.4" stroke-width="0.8" />
+        <path d="M12 44 C30 39 60 39 82 46" fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="0.8" stroke-dasharray="1 1.4" />
+        <path d="M20 14 q10 -8 20 -6" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
+      </svg>
+    }
   }
+
   @case ('stick') {
     <!-- His stick: a black composite shaft, tape at the knob, the blade taped where it meets the ice -->
     <svg viewBox="0 0 64 300" data-trophy="stick">
@@ -1525,4 +1671,5 @@
       <path d="M8 8 L82 82" stroke="#fff" stroke-opacity="0.1" stroke-width="6" />
     </svg>
   }
+}
 }

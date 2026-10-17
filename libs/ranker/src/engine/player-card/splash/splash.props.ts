@@ -5,8 +5,10 @@
 // scene's fields ({season}, {final}, ...; scene.ts fills them). No Angular here: the tests load it as it is.
 //
 //   piece     the drawing (one per real object; several props can share one: the two conference trophies)
-//   inches    its height as it stands: the real object's (the Stanley Cup 35.25", the Lombardi 22"); paper and
-//             small things as displayed (a ticket stub in its frame, a ball on its stand)
+//   inches    its height as it stands: the real object's (the Stanley Cup 35.25", the Lombardi 22", a helmet 10",
+//             a baseball 3" on its stand); paper and small things as displayed (a ticket stub in its frame, a
+//             ball on its stand with its plate under it). Every prop, drawn or photographed (splash.images.ts),
+//             stands on this one scale, so a baseball is never bigger than a jersey
 //   lines     its engraving or printed words
 //   tip       its name on hover (and on a tap)
 //   wide      a phone shows it only when there's room
@@ -28,34 +30,34 @@ export interface PropDef {
 export const PROPS: Record<string, PropDef> = {
   // ---- NFL
   'nfl-lombardi': { piece: 'lombardi', inches: 22, lines: ['{sb}'], tip: 'Super Bowl {sb} champions · the Vince Lombardi Trophy · {final}' },
-  'nfl-afc-trophy': { piece: 'conf', inches: 17, lines: ['AFC', 'AFC'], tip: 'AFC champions · the Lamar Hunt Trophy · {confFinal}' },
-  'nfl-nfc-trophy': { piece: 'conf', inches: 17, lines: ['NFC', 'NFC'], tip: 'NFC champions · the George Halas Trophy · {confFinal}' },
+  'nfl-afc-trophy': { piece: 'conf', inches: 16, lines: ['AFC', 'AFC'], tip: 'AFC champions · the Lamar Hunt Trophy · {confFinal}' },
+  'nfl-nfc-trophy': { piece: 'conf', inches: 16, lines: ['NFC', 'NFC'], tip: 'NFC champions · the George Halas Trophy · {confFinal}' },
   'nfl-honors': { piece: 'honors', inches: 21, lines: ['{award}', '{season}'], tip: '{awardName} · {name}, {season}' },
-  'nfl-helmet': { piece: 'helmet', inches: 16, tip: '{teamName} helmet · {seasonLabel}', stall: { place: 'shelf', h: 58 } },
-  'deflated-football': { piece: 'deflated', inches: 13, tip: 'A football, a little under 12.5 PSI', stall: { place: 'floor', h: 44 } },
+  'nfl-helmet': { piece: 'helmet', inches: 10, tip: '{teamName} helmet · {seasonLabel}', stall: { place: 'shelf', h: 58 } },
+  'deflated-football': { piece: 'deflated', inches: 9, tip: 'A football, a little under 12.5 PSI', stall: { place: 'floor', h: 44 } },
   // (a game ball's words go on the placard under it, never on the ball)
-  'game-ball': { piece: 'gameball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 48 } },
+  'game-ball': { piece: 'gameball', inches: 9, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 48 } },
   // ---- NHL
   'nhl-stanley-cup': { piece: 'stanley', inches: 35.25, lines: ['{teamShort} {seasonEnd}'], tip: 'Stanley Cup champions · {final}' },
   'nhl-wales-trophy': { piece: 'wales', inches: 30, tip: 'Eastern Conference champions · the Prince of Wales Trophy · {confFinal}' },
   'nhl-campbell-bowl': { piece: 'campbell', inches: 28, tip: 'Western Conference champions · the Clarence Campbell Bowl · {confFinal}' },
   'nhl-hart': { piece: 'hart', inches: 30, tip: 'Hart Trophy (MVP) · {name}' },
   'nhl-selke': { piece: 'selke', inches: 18, tip: 'Selke Trophy (best defensive forward) · {name}' },
-  'nhl-conn-smythe': { piece: 'smythe', inches: 26, tip: 'Conn Smythe Trophy (playoff MVP) · {name}' },
+  'nhl-conn-smythe': { piece: 'smythe', inches: 16, tip: 'Conn Smythe Trophy (playoff MVP) · {name}' },
   'nhl-calder': { piece: 'calder', inches: 26, tip: 'Calder Trophy (rookie of the year) · {name}' },
   'nhl-vezina': { piece: 'vezina', inches: 28, tip: 'Vezina Trophy (goaltender) · {name}' },
   'nhl-norris': { piece: 'norris', inches: 32, tip: 'Norris Trophy (defenseman) · {name}' },
-  // (a puck is 1" by 3": drawn at that scale in a small acrylic holder, its placard under it)
-  'puck': { piece: 'puck', inches: 6, lines: ['{teamShort}', '{seasonShort}'], tip: '{teamName} · {seasonLabel}', stall: { place: 'shelf', h: 42 } },
+  // (a puck is 1" by 3": drawn at that scale, upright in a small acrylic holder, its placard under it)
+  'puck': { piece: 'puck', inches: 5, lines: ['{teamShort}', '{seasonShort}'], tip: '{teamName} · {seasonLabel}', stall: { place: 'shelf', h: 42 } },
   'hockey-stick': { piece: 'stick', inches: 58, tip: 'His stick', stall: { place: 'corner', h: 190 } },
   // ---- NBA
   'nba-obrien': { piece: 'obrien', inches: 24, lines: ['{seasonEnd} Champions'], tip: "NBA champions · the Larry O'Brien Trophy · {final}" },
   'nba-jordan-mvp': { piece: 'mjmvp', inches: 23.6, tip: 'NBA MVP · the Michael Jordan Trophy · {seasonLabel}' },
   // (the conference trophies: a silver ball, never the O'Brien's gold one; from 2022 the Bob Cousy and Oscar
-  // Robertson trophies, 15.6", the ball held in two raised rings; before, Tiffany's silver ball on a column)
-  'nba-conf-trophy': { piece: 'nbaconf', inches: 17, lines: ['{confName}', '{seasonEnd}'], tip: '{confName} Conference champions · {confTrophy} · {confFinal}' },
-  'signature-shoe': { piece: 'shoe', inches: 9, tip: '{shoeTip}', stall: { place: 'floor', h: 44 } },
-  'nba-game-ball': { piece: 'bball', inches: 13, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 50 } },
+  // Robertson trophies, 23", the ball on a twisting silver stand; before, Tiffany's silver ball on a column)
+  'nba-conf-trophy': { piece: 'nbaconf', inches: 23, lines: ['{confName}', '{seasonEnd}'], tip: '{confName} Conference champions · {confTrophy} · {confFinal}' },
+  'signature-shoe': { piece: 'shoe', inches: 8, tip: '{shoeTip}', stall: { place: 'floor', h: 44 } },
+  'nba-game-ball': { piece: 'bball', inches: 12, lines: ['{gbTitle}', '{gbLine}'], tip: 'Game ball · {gbTip}', needs: 'gbTitle', stall: { place: 'floor', h: 50 } },
   // ---- MLB
   'mlb-commissioners-trophy': { piece: 'commish', inches: 24, lines: ['{season}'], tip: "World Series champions · the Commissioner's Trophy · {final}" },
   'mlb-pennant': { piece: 'pennant', inches: 14, lines: ['{league} Champions', '{season}'], tip: '{league} pennant · {confFinal}' },
@@ -63,16 +65,16 @@ export const PROPS: Record<string, PropDef> = {
   'mlb-cy-young': { piece: 'cyyoung', inches: 17, lines: ['{name}', '{league}', '{season}'], tip: 'Cy Young Award · {name}, {season}' },
   'mlb-gold-glove': { piece: 'goldglove', inches: 16, tip: 'Gold Glove · {name}, {season}' },
   'mlb-silver-slugger': { piece: 'silverslugger', inches: 40, tip: 'Silver Slugger · {name}, {season}' },
-  'milestone-ball': { piece: 'baseball', inches: 10, lines: ['{mbBig}', '{mbSmall}'], tip: '{mbTip}', needs: 'mbBig', stall: { place: 'shelf', h: 44 } },
+  'milestone-ball': { piece: 'baseball', inches: 6, lines: ['{mbBig}', '{mbSmall}'], tip: '{mbTip}', needs: 'mbBig', stall: { place: 'shelf', h: 44 } },
   'bats': { piece: 'bats', inches: 34, tip: 'His bats', stall: { place: 'corner', h: 170 } },
   'fielders-glove': { piece: 'glove', inches: 12, tip: 'His glove', stall: { place: 'shelf', h: 44 } },
   'ball-cap': { piece: 'cap', inches: 5, tip: 'His cap', stall: { place: 'shelf', h: 34 } },
   // ---- MMA
-  'title-belt': { piece: 'belt', inches: 11, tip: '{division} champion', stall: { place: 'hook', h: 120 } },
-  'fight-gloves': { piece: 'gloves', inches: 10, tip: 'His gloves · {record}', stall: { place: 'shelf', h: 46 } },
+  'title-belt': { piece: 'belt', inches: 12, tip: '{division} champion', stall: { place: 'hook', h: 120 } },
+  'fight-gloves': { piece: 'gloves', inches: 8, tip: 'His gloves · {record}', stall: { place: 'shelf', h: 46 } },
   // ---- a head coach's office: his honors, and the room's own pieces (the scene places these two itself)
   'coach-of-year': { piece: 'coyplaque', inches: 14, lines: ['{coyName}', '{seasonLabel}', '{name}'], tip: '{coyName} · {name}, {seasonLabel}', needs: 'coyName' },
-  'ring-box': { piece: 'ringbox', inches: 4, lines: ['{seasonEnd}'], tip: 'Championship ring · {seasonLabel}' },
+  'ring-box': { piece: 'ringbox', inches: 5, lines: ['{seasonEnd}'], tip: 'Championship ring · {seasonLabel}' },
   'whiteboard': { piece: 'whiteboard', inches: 36, lines: ['{record}', '{seasonLabel}', '{teamShort}'], tip: '{teamName} · {record}' },
   'team-frame': { piece: 'frame', inches: 14, tip: '{teamName}' },
   // ---- every sport: honors on plaques (All-Pro, All-NBA, All-Star, P4P...), a playoff run, where it ended
@@ -86,10 +88,10 @@ export const PROPS: Record<string, PropDef> = {
   // ---- the season that ended early
   'boarding-pass': { piece: 'pass', inches: 18, lines: ['{teamName}', '{abbr}', 'CUN', '{departs}', '{record}'], tip: 'Missed the playoffs · {record}' },
   'beach-towel': { piece: 'towel', inches: 7, tip: 'Beach towel, packed early', wide: true },
-  'sunscreen': { piece: 'sunscreen', inches: 12, tip: 'SPF 50, off-season formula' },
+  'sunscreen': { piece: 'sunscreen', inches: 7, tip: 'SPF 50, off-season formula' },
   'scorecard': { piece: 'scorecard', inches: 16, lines: ['{teamName}', '{record}', 'Eliminated on the final weekend', 'Missed by {missedBy}'], tip: 'Missed the playoffs by {missedBy} · {record}' },
-  'golf-bag': { piece: 'golfbag', inches: 34, tip: 'First team out · {record}' },
-  'golf-ball': { piece: 'golfball', inches: 7, tip: 'Tee time · {departs}', wide: true },
+  'golf-bag': { piece: 'golfbag', inches: 44, tip: 'First team out · {record}' },
+  'golf-ball': { piece: 'golfball', inches: 4, tip: 'Tee time · {departs}', wide: true },
 };
 
 // ---- Hand-set props for one season: an easter egg, a moment the data can't see. Keyed
