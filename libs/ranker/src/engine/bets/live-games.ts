@@ -165,27 +165,22 @@ export function todayGames<T extends LiveGameIn>(boards: Iterable<T>, now: numbe
 }
 
 // The card's state from today's games: games on now, none on but some to come, or none left at all; and the
-// first start still to come (for "First tip-off at")
+// first start still to come (for "First tip-off at"). A UFC bout counts as on only while it's under way (walkouts,
+// a round, between rounds): between bouts the card is upcoming or done like any day of games
 export function cardState(games: LiveGameIn[]): { state: 'live' | 'upcoming' | 'done'; firstStart: string | null } {
-  const live = games.some((g) => g.state === 'in') || fightNight(games);
+  const live = games.some((g) => g.state === 'in');
   const pre = games.filter((g) => g.state === 'pre').sort((a, b) => a.start.localeCompare(b.start));
   return { state: live ? 'live' : pre.length ? 'upcoming' : 'done', firstStart: pre[0]?.start ?? null };
 }
 
-// (a UFC card under way: a bout on, or one over and another to come (the card on between bouts as during one))
-export function fightNight(games: LiveGameIn[]): boolean {
-  const mma = games.filter((g) => g.sport === 'mma');
-  return mma.some((g) => g.state === 'in') || (mma.some((g) => g.state === 'post') && mma.some((g) => g.state === 'pre'));
-}
-
-// The games the card shows: those on now, and while a UFC card's on every bout of it (over, on, to come: the
-// night's card in one place); nothing on, today's still to come; none left, none
+// The games the card shows: those on now (a bout only while it's under way, a finished one gone as a finished
+// game is); nothing on, today's games still to come (a bout to come is no card: it counts in the bar's
+// "First tip-off at" only); none left, none
 export function livePool<T extends LiveGameIn>(games: T[]): T[] {
   const state = cardState(games).state;
-  if (state === 'upcoming') return games.filter((g) => g.state === 'pre');
+  if (state === 'upcoming') return games.filter((g) => g.state === 'pre' && g.sport !== 'mma');
   if (state === 'done') return [];
-  const night = fightNight(games);
-  return games.filter((g) => g.state === 'in' || (night && g.sport === 'mma'));
+  return games.filter((g) => g.state === 'in');
 }
 
 // The win-probability sparkline: the home team's chance after each play (0-1) as a path across a 300 by 26

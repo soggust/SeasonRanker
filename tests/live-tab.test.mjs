@@ -205,7 +205,7 @@ test('a side watched: covering, down, level; the sweat summary and the panel’s
 
 // A UFC card: ESPN's MMA scoreboard is one event with the bouts as its competitions (live-mma.ts), each bout a
 // board of its own by the competition's id, in mixed states (support/espn-mma-scoreboard.json)
-const { mmaBouts, fightWords, fightWatch, fightRounds, fightMethod, tonightBouts, livePool, fightNight } = live;
+const { mmaBouts, fightWords, fightWatch, fightRounds, fightMethod, tonightBouts, livePool } = live;
 const CARD = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'support', 'espn-mma-scoreboard.json'), 'utf8'));
 
 test('a UFC card read into its bouts: fighters, headshots, states, the board lending matchup and start', () => {
@@ -235,11 +235,21 @@ test('a UFC card read into its bouts: fighters, headshots, states, the board len
   // (rounds gone: R2 3:14 is 1.65; a decision the distance)
   assert.ok(Math.abs(fightRounds(on) - (1 + 194 / 300)) < 1e-9);
   assert.equal(fightRounds(dec), 3);
-  // (the Live board: a card under way shows every bout of it; between bouts it's still on)
-  assert.equal(fightNight(bouts), true);
-  assert.equal(fightNight(bouts.filter((b) => b.state !== 'in')), true);
-  assert.equal(cardState(bouts.filter((b) => b.state !== 'in')).state, 'live');
-  assert.equal(livePool(bouts).length, 5);
+  // (the Live board: only a bout under way is a card; the finished ones go as finished games do, the one to come
+  // is no card; between bouts nothing's on, the bout to come counting only for the bar's first start)
+  assert.deepEqual(livePool(bouts).map((b) => b.event), [on.event]);
+  const between = bouts.filter((b) => b.state !== 'in');
+  assert.deepEqual(cardState(between), { state: 'upcoming', firstStart: next.start });
+  assert.deepEqual(livePool(between), []);
+  const game = { sport: 'nfl', event: '1', state: 'pre', start: '2026-10-18T17:00:00Z' };
+  assert.deepEqual(livePool([...between, game]), [game]);
+  assert.deepEqual(livePool([...bouts, game]).map((b) => b.event), [on.event]);
+  // (walkouts or a break between rounds read as under way though ESPN's state says pre)
+  const walk = structuredClone(CARD);
+  const comp = walk.events[0].competitions.find((c) => String(c.id) === '401914039');
+  comp.status.type = { name: 'STATUS_WALKOUTS', state: 'pre', completed: false, detail: 'Walkouts', shortDetail: 'Walkouts' };
+  assert.equal(mmaBouts(walk).find((b) => b.event === '401914039').state, 'in');
+  assert.equal(livePool(mmaBouts(walk)).length, 2);
   assert.equal(tonightBouts(bouts, NOW).length, 5);
   // (a card days old, nothing of it on, is gone)
   assert.equal(tonightBouts(bouts.filter((b) => b.state !== 'in'), Date.parse('2026-10-20T23:00:00Z')).length, 0);

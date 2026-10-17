@@ -80,7 +80,9 @@ export function mmaBouts(body: EspnMmaScoreboard | null | undefined, boards: Rea
       const away = cs.find((x) => x !== home)!;
       const st = c.status?.type ?? {};
       const off = /postponed|cancel/i.test(st.name ?? '');
-      const state: GameBoard['state'] = st.state === 'in' ? 'in' : st.state === 'post' || off ? 'post' : 'pre';
+      // (ESPN's walkouts or a break between rounds read as under way even if a status says pre)
+      const active = st.state === 'in' || (st.state !== 'post' && /walk|end of round|between rounds/i.test(`${st.name ?? ''} ${st.detail ?? ''} ${st.shortDetail ?? ''}`));
+      const state: GameBoard['state'] = active && !off ? 'in' : st.state === 'post' || off ? 'post' : 'pre';
       const model = boards.get(String(c.id));
       const side = (x: EspnMmaCompetitor, m: GameBoard['away'] | undefined) => {
         const name = x.athlete?.displayName ?? x.athlete?.fullName ?? m?.name ?? '';
