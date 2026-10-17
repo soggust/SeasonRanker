@@ -142,8 +142,20 @@ export const GAME_CAP = 5;
 // absence). Every other own-rows fail stands: the NFL's run past the tolerance or under the gain (rushing yards' ab
 // -2.62 to -2.82, ij 0.29 to -4.62; receiving yards' c_qb1Out 1.45 to -1.87; the NBA's rebounds' c_b2bB 0.09 to 0.39,
 // assists' -0.03 to 0.06 under the floor), and the NHL's and MLB's late terms are judged on the whole stat. Set to the
-// push time.
-export const MODEL_EPOCH = '2026-10-17T08:30:00Z';
+// push time. 2026-10-17 evening, round E (the CHECK audit's drops, the owner's "fix every logic you can"): the QB-out
+// headline deduped from the injury report (props.mjs: no news CHECK where the lead quarterback is already Out on the
+// report, the projection and the role guard's qb1-out carry it); the CHECK bar by cause (ROLE_BET, roleGateOf: a role
+// cause's risky side bet at the untested cap's half and a LIKE at most once 40 graded CHECKs of it pay on the model's
+// side; snap-jump 28-15 +0.232u and group-out 35-29 +0.036u on, part-time 19-7 a CHECK till 40, the rest CHECKs); the
+// props' CLV gate by stat (desk.mjs propGate: tracked while a stat's last 200 graded run negative, none at 40 yet); the
+// backup quarterback's base (project.mjs bq: his team's attempts times his own rate per attempt) measured held out from
+// 2016 and left at 0 (passing yards -0.0023, attempts +0.0004, completions +0.0003, TDs -0.0006: the gate took it
+// nowhere, judged again each fit); the snap-jump reaction (sr 1 against the fit's 0.5 / 0.75, --state --set, the
+// backtest's snap-jump bucket held out: receptions' log loss 2.128 to 2.118 but rushing yards' 4.4405 to 4.4473 and
+// carries' 2.7894 to 2.7905 worse, the whole stats' within 0.0006 either way) kept as fit; the depth chart not a fit
+// input (the history's charts before 2025 unstamped, 2025 on past the fit window); the news signals 6 matched rows
+// since 10-14, logged only. Set to the push time.
+export const MODEL_EPOCH = '2026-10-17T20:30:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
