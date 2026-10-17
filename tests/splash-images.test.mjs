@@ -23,7 +23,7 @@ const loadTs = async (file) => {
   fs.rmSync(o, { force: true });
   return m;
 };
-const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, GEAR_BASES, FACES, FACE_IDS, PROPS_VERSION, FONTS_VERSION, propImage, propHref, jerseyAnchors, textBaseArt, numberSize, nameSize } = await loadTs('splash.images.ts');
+const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, GEAR_BASES, FACES, FACE_IDS, PROPS_VERSION, FONTS_VERSION, propImage, propHref, jerseyAnchors, textBaseArt, numberSize, nameSize, nameArc } = await loadTs('splash.images.ts');
 const { PROPS } = await loadTs('splash.props.ts');
 const { buildScene } = await loadTs('splash.scene.ts');
 
@@ -166,10 +166,23 @@ test('a jersey base lands in the drawing space flat: the collar at 10, the photo
     assert.ok(a.num.x > a.bodyX[0] && a.num.x + a.num.w < a.bodyX[1], `${cut}: number inside the torso`);
     assert.ok(a.num.y > a.img.y + 0.15 * a.bodyH && a.num.y + a.num.h < a.img.y + 0.7 * a.bodyH, `${cut}: number box ${a.num.y} ${a.num.h}`);
     inside(a.num, a.img, `${cut}: number inside the photo`);
-    // the name's arc between the collar and the number, inside the torso
+    // the name's arc on the nameplate just over the number (the number's own top in the face, not its box's:
+    // a wide face stands shorter in the box and the name follows it down), inside the torso, under the collar
+    // and off the yoke seam in the block face, with a gentle rise; in every face the same rule
     const [, nx, ny] = a.nameArc.match(/^M([-\d.]+) ([-\d.]+)/).map(Number);
-    assert.ok(ny < a.num.y && ny > a.img.y + 0.1 * a.bodyH, `${cut}: name over the number`);
+    const blockTop = a.num.y + a.num.h - numberSize('block', a.num.w, a.num.h) * FACES.block.capH;
+    assert.ok(ny < blockTop && ny > blockTop - 0.1 * a.bodyH, `${cut}: name just over the number ${ny} ${blockTop}`);
+    assert.ok(ny > a.img.y + 0.25 * a.bodyH, `${cut}: name off the yoke seam ${ny}`);
     assert.ok(nx > a.bodyX[0] && a.nameRun < a.bodyW, `${cut}: name inside the torso`);
+    assert.equal(nameArc(a, 'block'), a.nameArc);
+    for (const face of FACE_IDS) {
+      const d = nameArc(a, face);
+      const [, x0, y0, qx, qy, x1, y1] = d.match(/^M([-\d.]+) ([-\d.]+) Q([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)$/).map(Number);
+      const top = a.num.y + a.num.h - numberSize(face, a.num.w, a.num.h) * FACES[face].capH;
+      assert.ok(y0 === y1 && y0 < top && y0 > top - 0.12 * a.bodyH, `${cut} ${face}: baseline just over the number`);
+      assert.ok(Math.abs(qx - (x0 + x1) / 2) < 0.02 && y0 - qy > 0 && y0 - qy < 0.15 * (x1 - x0), `${cut} ${face}: a gentle arch`);
+      assert.ok(qy - a.nameCap > a.img.y + 0.05 * a.bodyH, `${cut} ${face}: the name under the collar`);
+    }
     // the hem band region at the bottom of the torso, under the number
     assert.ok(a.hemH > 0 && a.hemY - a.hemH > a.num.y + a.num.h && a.hemY <= a.img.y + a.img.h + 0.01, `${cut}: hem region`);
     // the sleeves (where the cut has them) clear of the torso, each cuff at its outer end; TV numbers on them
@@ -178,11 +191,17 @@ test('a jersey base lands in the drawing space flat: the collar at 10, the photo
       assert.ok(s.dir > 0 ? s.cuff < s.x + s.w / 2 : s.cuff > s.x + s.w / 2, `${cut}: the cuff at the sleeve's outer end`);
     }
     for (const t of a.tv ?? []) {
-      assert.ok(t.x + t.w < a.bodyX[0] - 3 || t.x > a.bodyX[1] + 3, `${cut}: TV number on a sleeve, clear of the torso`);
+      // (off the torso's mid-height line; the shoulder seam runs outward of it at the sleeve cap's height)
+      assert.ok(t.x + t.w < a.bodyX[0] - 0.5 || t.x > a.bodyX[1] + 0.5, `${cut}: TV number on a sleeve, clear of the torso`);
       inside(t, a.img, `${cut}: TV number inside the photo`);
       // (clear of the cloth's edge and of a stall's wall, which covers the first 4% of the picture: the box
       // starts at least 6% of the picture's width in from its edge)
       assert.ok(t.x >= a.img.x + 0.06 * a.img.w && t.x + t.w <= a.img.x + 0.94 * a.img.w, `${cut}: TV number clear of the sleeve's edge`);
+      // (on the sleeve cap, inward of the bands, which run 10.5 units in from the cuff at most, inside its
+      // sleeve's rectangle)
+      const s = a.sleeves.find((s) => (s.dir > 0 ? t.x < a.bodyX[0] : t.x > a.bodyX[1]));
+      assert.ok(s.dir > 0 ? t.x >= s.cuff + 10.5 : t.x + t.w <= s.cuff - 10.5, `${cut}: TV number above the bands`);
+      inside(t, s, `${cut}: TV number inside its sleeve`);
     }
     for (const p of a.panels ?? []) inside(p, a.img, `${cut}: panel inside the photo`);
     // (nothing leans: no transform on any anchor)
@@ -196,6 +215,27 @@ test('a jersey base lands in the drawing space flat: the collar at 10, the photo
   assert.equal(jerseyAnchors('baseball').under.length, 2);
   assert.ok(jerseyAnchors('hockey').sleeves.length === 2 && jerseyAnchors('hockey').yoke);
   assert.equal(jerseyAnchors('football').tv.length, 2);
+  // (the football base's cloth, measured column by column on the picture (scratchpad flat-gen/measure.mjs: the
+  // alpha over 200): each TV number's box, and its corners when the number leans 8 degrees with the shoulder,
+  // lie on the sleeve's cloth, under its top edge and over the underarm)
+  {
+    const a = jerseyAnchors('football');
+    const cloth = { 0.125: [0.114, 0.372], 0.175: [0.1, 0.362], 0.225: [0.071, 0.998], 0.775: [0.069, 0.998], 0.825: [0.098, 0.362], 0.875: [0.114, 0.372] };
+    const fx = (x) => (x - a.img.x) / a.img.w;
+    const fy = (y) => (y - a.img.y) / a.img.h;
+    const spanAt = (x) => cloth[Object.keys(cloth).map(Number).sort((p, q) => Math.abs(p - x) - Math.abs(q - x))[0]];
+    for (const t of a.tv) {
+      const cx = t.x + t.w / 2;
+      const cy = t.y + t.h / 2;
+      const rad = (8 * Math.PI) / 180;
+      for (const [dx, dy] of [[-t.w / 2, -t.h / 2], [t.w / 2, -t.h / 2], [-t.w / 2, t.h / 2], [t.w / 2, t.h / 2]]) {
+        const px = cx + dx * Math.cos(rad) - dy * Math.sin(rad);
+        const py = cy + dx * Math.sin(rad) + dy * Math.cos(rad);
+        const [top, bottom] = spanAt(fx(px));
+        assert.ok(fy(py) > top + 0.02 && fy(py) < bottom - 0.02, `TV corner on the cloth: ${fx(px).toFixed(3)} ${fy(py).toFixed(3)} in ${top}-${bottom}`);
+      }
+    }
+  }
   assert.ok(jerseyAnchors('basketball').armholes && !jerseyAnchors('basketball').sleeves);
   // (the sweater, its sleeves spread, fits the width and stands short; the tank fits the height)
   assert.ok(jerseyAnchors('hockey').img.w > 150 && jerseyAnchors('hockey').img.h < 90 && jerseyAnchors('hockey').vb === '-18 -18 156 164');

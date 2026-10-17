@@ -19,7 +19,43 @@ async function loadTs(file, tag) {
 const { uniformFor } = await loadTs(path.join(ROOT, 'libs/ranker/src/engine/uniform-eras.ts'), 'types');
 const MLB = (await loadTs(path.join(ROOT, 'apps/mlb/src/sport/uniform-eras.ts'), 'mlb')).UNIFORM_ERAS;
 const NBA = (await loadTs(path.join(ROOT, 'apps/nba/src/sport/uniform-eras.ts'), 'nba')).UNIFORM_ERAS;
+const NFL = (await loadTs(path.join(ROOT, 'apps/nfl/src/sport/uniform-eras.ts'), 'nfl')).UNIFORM_ERAS;
 const kits = (table) => Object.values(table).flatMap((eras) => eras.flatMap((e) => [e.home, e.away, e.alt].filter(Boolean)));
+
+test('the 49ers: scarlet, gold and white; black only in the 1996-2008 set; plain white numbers and white stripes from 2009, three-two-three', () => {
+  const black = (k) => [k.num, k.outline, k.name, k.collar, k.stripe, k.stripe2, ...(k.bands ?? [])].includes('#000000');
+  for (const season of [2000, 2008]) {
+    assert.equal(uniformFor(NFL, '49ers', season, 'home').body, '#8f0d1c', `${season} cardinal`);
+    assert.ok(black(uniformFor(NFL, '49ers', season, 'home')), `${season}: the black trim of the 1996 set`);
+    assert.equal(uniformFor(NFL, '49ers', season, 'home').outline, '#b3995d', `${season}: gold trim`);
+  }
+  for (const season of [2009, 2016, 2017, 2021, 2022, 2026]) {
+    for (const kit of ['home', 'away', 'alt']) {
+      const k = uniformFor(NFL, '49ers', season, kit);
+      assert.ok(!black(k), `${season} ${kit}: no black`);
+      assert.ok([k.body, k.num, k.name].every((c) => ['#aa0000', '#ffffff', '#f3f2ee'].includes(c)), `${season} ${kit}: scarlet and white ${JSON.stringify(k)}`);
+      assert.equal(k.outline, k.num, `${season} ${kit}: untrimmed numbers`);
+      assert.equal(k.sleeve, 'stripes', `${season} ${kit}: sleeve stripes`);
+    }
+    const home = uniformFor(NFL, '49ers', season, 'home');
+    assert.equal(home.body, '#aa0000', `${season}: scarlet`);
+    assert.equal(home.bands.length, season >= 2017 && season <= 2021 ? 2 : 3, `${season}: the stripes' count`);
+    assert.ok(home.bands.every((b) => b === '#ffffff'), `${season}: white stripes on the scarlet`);
+    assert.ok(uniformFor(NFL, '49ers', season, 'away').bands.every((b) => b === '#aa0000'), `${season}: scarlet stripes on the white`);
+  }
+});
+
+test('the Jets of 2019-23: plain white numbers on the Gotham green, plain green on the white; black trim only on the black alternate', () => {
+  for (const season of [2019, 2023]) {
+    const home = uniformFor(NFL, 'Jets', season, 'home');
+    const away = uniformFor(NFL, 'Jets', season, 'away');
+    assert.equal(home.body, '#115740');
+    assert.equal(home.outline, '#ffffff');
+    assert.equal(away.outline, '#115740');
+    assert.equal(uniformFor(NFL, 'Jets', season, 'alt').body, '#000000');
+    assert.equal(uniformFor(NFL, 'Jets', season, 'alt').outline, '#115740');
+  }
+});
 
 test('the Yankees: navy home pinstripes, no name on the back; the road gray outlined white through 2023, plain after', () => {
   const home = uniformFor(MLB, '147', 2009, 'home');

@@ -513,7 +513,7 @@
         <mask [attr.id]="'sp-jb-' + cut" mask-type="alpha" maskUnits="userSpaceOnUse" x="-40" y="-18" width="200" height="164">
           <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" />
         </mask>
-        <path [attr.id]="'sp-jp-name-' + cut" [attr.d]="a.nameArc" fill="none" />
+        <path [attr.id]="nameArcId(k, cut)" [attr.d]="nameArcFor(k, a)" fill="none" />
         @if (a.sleeves) {
           <!-- (each sleeve's own rectangle, measured on the photo: a band is clipped to it, never onto the body) -->
           <clipPath [attr.id]="'sp-js-' + cut">
@@ -548,9 +548,11 @@
               <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.panel" />
             }
           }
+          <!-- (the TV numbers on the sleeve caps, above the bands: upright like the back number, leaning
+               8 degrees with the shoulder's slope) -->
           @if (k.tv !== false && num && a.tv) {
             @for (t of a.tv; track $index) {
-              <text class="sp-j-tv" [attr.x]="t.x + t.w / 2" [attr.y]="t.y + t.h" [attr.fill]="k.num" [attr.stroke]="k.outline" [style.font-size.px]="tvSize(k, t)" [style.stroke-width.px]="tvSize(k, t) * 0.07">{{ num }}</text>
+              <text class="sp-j-tv" [attr.x]="t.x + t.w / 2" [attr.y]="tvY(k, t)" [attr.transform]="tvTilt(t, $index)" [attr.fill]="k.num" [attr.stroke]="k.outline" [style.font-size.px]="tvSize(k, t)" [style.stroke-width.px]="tvSize(k, t) * 0.07">{{ num }}</text>
             }
           }
           <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'stripe' ? 5 : 3.5" />
@@ -621,7 +623,7 @@
              the kit's face, two digits filling the measured box: its shadow on the cloth, a second outline on
              the varsity faces where the kit has one, its trim -->
         @if (k.names !== false) {
-          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="photoNameSize(k, name, a)"><textPath [attr.href]="'#sp-jp-name-' + cut" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="photoNameSize(k, name, a)"><textPath [attr.href]="'#' + nameArcId(k, cut)" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
         }
         <text class="sp-j-num shadow" [attr.x]="numX(a) + 0.8" [attr.y]="numY(a) + 1.2" [style.font-size.px]="numSize(k, a)" [style.stroke-width.px]="numSize(k, a) * 0.12">{{ num }}</text>
         @if (outlined(k)) {

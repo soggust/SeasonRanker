@@ -21,7 +21,7 @@ import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
 import { rosterOf } from './splash.roster';
 import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
-import { Box, HI_DPI, JerseyAnchors, NAMEPLATE, OUTLINED_FACES, PROP_IMAGES, Sleeve, jerseyAnchors, nameSize, numberSize, propHref } from './splash.images';
+import { Box, HI_DPI, JerseyAnchors, NAMEPLATE, OUTLINED_FACES, PROP_IMAGES, Sleeve, faceOf, jerseyAnchors, nameArc, nameSize, numberSize, propHref } from './splash.images';
 import { loadSplashFonts } from './splash-fonts';
 
 type Kit = 'home' | 'away' | 'alt';
@@ -288,13 +288,30 @@ export class CardSplash implements OnDestroy {
   outlined(k: FullKit): boolean {
     return OUTLINED_FACES.has(k.numberFont ?? '') && !!k.outline && k.outline !== k.num;
   }
+  // The name's arc: on the nameplate just above the number as the kit's face sizes it (splash.images.ts
+  // nameArc); its path's id carries the face, since every jersey of a cut and a face shares one arc and a
+  // page's inline SVGs share one id space
+  nameArcFor(k: FullKit, a: JerseyAnchors): string {
+    return this.memo(k, 'arc', () => nameArc(a, k.numberFont));
+  }
+  nameArcId(k: FullKit, cut: string): string {
+    return `sp-jp-name-${cut}-${k.numberFont ?? 'block'}`;
+  }
   // The name's size: its capitals the arc's share of the body, smaller to fit the arc in the kit's face
   photoNameSize(k: FullKit, name: string, a: JerseyAnchors): number {
     return nameSize(k.nameFont ?? k.numberFont, name.toUpperCase(), a.nameRun, a.nameCap);
   }
-  // A TV number's size: two digits filling its box on the sleeve cap
+  // A TV number's size: two digits filling its box on the sleeve cap; its baseline, the digits centred in
+  // the box; its tilt, 8 degrees with the shoulder's slope (down toward the cuff: the left sleeve's leans
+  // left, the right's right), never rotated along the arm
   tvSize(k: FullKit, box: Box): number {
     return numberSize(k.numberFont, box.w, box.h);
+  }
+  tvY(k: FullKit, box: Box): number {
+    return +(box.y + box.h / 2 + (this.tvSize(k, box) * faceOf(k.numberFont).capH) / 2).toFixed(2);
+  }
+  tvTilt(box: Box, i: number): string {
+    return `rotate(${i === 0 ? -8 : 8} ${+(box.x + box.w / 2).toFixed(2)} ${+(box.y + box.h / 2).toFixed(2)})`;
   }
 
   // The bands on a photographed jersey's sleeves: vertical bands inward from each cuff, the sleeves being
@@ -307,9 +324,11 @@ export class CardSplash implements OnDestroy {
     if (!a.sleeves) return [];
     const out: (Box & { color: string })[] = [];
     const list = baseball ? (k.stripe2 ? [k.stripe || k.collar, k.stripe2] : [k.stripe || k.collar]) : k.cap ? [] : k.sleeve === 'stripes' ? this.bands(k).map((b) => b.color) : [];
-    const w = baseball ? 3 : Math.min(3.4, 11 / Math.max(1, list.length));
-    const gap = baseball ? 1.2 : list.length > 2 ? 0.5 : 2.2;
-    const start = baseball ? 1.5 : 3.5;
+    // (a football's bands end within 9.6 units of the cuff, a unit or two short of the TV number's box, which
+    // starts 10.8 units in)
+    const w = baseball ? 3 : Math.min(3, 6 / Math.max(1, list.length));
+    const gap = baseball ? 1.2 : list.length > 2 ? 0.5 : 1.6;
+    const start = baseball ? 1.5 : 2;
     for (const s of a.sleeves) {
       if (k.cap && !baseball) out.push(this.band(s, 0, 13, k.cap));
       list.forEach((color, i) => out.push(this.band(s, start + (list.length - 1 - i) * (w + gap), w, color)));

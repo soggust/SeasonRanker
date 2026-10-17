@@ -161,13 +161,15 @@ export function nameSize(face: string | undefined, text: string, run: number, ca
 // span at mid height (body), the yoke seam (seamY), each sleeve's rectangle (its cuff is its outer edge), the
 // neckline's path, the yoke's shape, the side panels, a tank's armholes, a vest's undershirt. The lettering is
 // placed by rule from these: the number box centred on the torso from 22% to 62% of the body's height below the
-// collar and 60% of the torso wide; the name arched over it between the yoke seam and the number; TV numbers
-// and sleeve bands inside the sleeves only (clipped by each sleeve's rectangle and the photo's alpha); hem bands
-// in the bottom 12% of the torso.
+// collar and 60% of the torso wide (two digits fill it in the kit's face, so a wide face stands shorter in it);
+// the name on its nameplate just above the number, its baseline a quarter of the number's cap height over the
+// number's own top (nameArc); TV numbers on the sleeve caps, above the sleeve bands, inside the sleeves only
+// (the bands clipped by each sleeve's rectangle and the photo's alpha); hem bands in the bottom 12% of the torso.
 //
 // The base is placed in the jersey's drawing space (viewBox -4 -18 128 164, the collar's top at y 10, the
 // body centred on x 60) to fit its width (128) and its height (132): the spread sleeves set the scale, so a
-// sweater stands shorter in its stall than a tank.
+// sweater stands shorter in its stall than a tank. Each cut's number box starts low enough (numY) that the
+// name over a number in the tallest face still clears the collar.
 export interface SleeveBox {
   x0: number;
   x1: number;
@@ -191,23 +193,26 @@ export interface JerseyBase {
   under?: [string, string]; // a vest's undershirt sleeves, closed paths in fractions
   numY?: [number, number]; // the number box's top and bottom, as fractions of the body's height (default 0.22, 0.62)
   numW?: number; // its width over the torso's (default 0.6)
-  nameY?: number; // the name's baseline (the arc's ends) as a fraction of the body's height (default 0.19)
   fit?: number; // the width of the drawing space the image fits (default 128: a sweater with its sleeves spread takes a wider viewBox, and its stall gives it the room)
 }
 export const JERSEY_BASES: Record<string, JerseyBase> = {
   // (810 x 621: the sleeves run out to the edges, their cuffs the near-vertical outer ends between y 0.16 and
   // 0.3; the yoke seam at 0.17 across the shoulders; the torso 0.222-0.774 from 0.4 down to the hem at the
-  // bottom edge. The cloth at the TV numbers' row begins 0.015 in from each edge, and a team locker's stall
-  // wall covers the first 0.04 of the picture: each number's box sits from 0.07 to 0.18, clear of both and of
-  // the torso, so its digits are never cut)
+  // bottom edge. A sleeve's cloth spans y 0.11-0.37 at x 0.125 and 0.1-0.36 at x 0.175 (measured column by
+  // column); the sleeve bands run in from the cuff to about x 0.11, and each TV number's box sits inward of
+  // them on the sleeve cap, x 0.115-0.215 by y 0.165-0.265: clear of the bands and of the shoulder seam (which
+  // runs outward of the torso's mid-height line up there), and well clear of a team locker's stall wall over
+  // the first 0.04 of the picture. The number box starts at 0.28 of the body, so the tallest faces leave the
+  // name its room under the yoke seam)
   football: {
     top: 0, bottom: 1, cx: 0.498, body: [0.222, 0.774], seamY: 0.17,
     neck: 'M0.42 0 C0.45 0.045 0.55 0.045 0.58 0',
     sleeves: [{ x0: -0.02, x1: 0.225, y0: 0.1, y1: 0.4 }, { x0: 0.775, x1: 1.02, y0: 0.1, y1: 0.4 }],
-    tv: [[0.125, 0.235], [0.875, 0.235]],
-    tvBox: [0.11, 0.11],
+    tv: [[0.165, 0.215], [0.835, 0.215]],
+    tvBox: [0.1, 0.1],
     yoke: 'M-0.02 -0.02 L1.02 -0.02 L1.02 0.42 L0.775 0.42 L0.775 0.17 Q0.5 0.21 0.225 0.17 L0.225 0.42 L-0.02 0.42 Z',
     panels: [[0.222, 0.262], [0.734, 0.774]], panelY: 0.4,
+    numY: [0.28, 0.62],
   },
   // (519 x 780: a tank; the straps 0.17-0.3 and 0.7-0.83, the armholes curving out to the body's full width
   // at 0.4; the inside of the front shows through the neck, so the neckline is read off the picture)
@@ -216,7 +221,7 @@ export const JERSEY_BASES: Record<string, JerseyBase> = {
     neck: 'M0.3 0 C0.36 0.165 0.64 0.165 0.7 0',
     armholes: 'M0.19 0 C0.16 0.15 0.12 0.3 0.02 0.42 M0.81 0 C0.84 0.15 0.88 0.3 0.98 0.42',
     panels: [[0.02, 0.07], [0.93, 0.98]], panelY: 0.42,
-    numY: [0.3, 0.64], numW: 0.5, nameY: 0.26,
+    numY: [0.3, 0.64], numW: 0.5,
   },
   // (962 x 509: the sweater, its sleeves straight out to the edges, the cuffs at the ends between y 0.2 and
   // 0.37; the yoke seam at 0.17; the torso 0.299-0.693, the hem's curve bottoming at the edge)
@@ -225,6 +230,7 @@ export const JERSEY_BASES: Record<string, JerseyBase> = {
     neck: 'M0.44 0 C0.47 0.05 0.53 0.05 0.56 0',
     sleeves: [{ x0: -0.02, x1: 0.3, y0: 0, y1: 0.4 }, { x0: 0.7, x1: 1.02, y0: 0, y1: 0.4 }],
     yoke: 'M-0.02 -0.02 L1.02 -0.02 L1.02 0.22 L0.72 0.3 L0.72 0.17 Q0.5 0.22 0.28 0.17 L0.28 0.3 L-0.02 0.22 Z',
+    numY: [0.28, 0.65],
     fit: 156,
   },
   // (747 x 569: a back, cap sleeves to the edges with the cuffs at the ends between y 0.14 and 0.27; the torso
@@ -234,9 +240,22 @@ export const JERSEY_BASES: Record<string, JerseyBase> = {
     neck: 'M0.42 0 C0.46 0.055 0.54 0.055 0.58 0',
     sleeves: [{ x0: -0.02, x1: 0.21, y0: 0.06, y1: 0.42 }, { x0: 0.79, x1: 1.02, y0: 0.06, y1: 0.42 }],
     under: ['M-0.02 0.04 L0.215 0.1 L0.215 0.4 L-0.02 0.3 Z', 'M1.02 0.04 L0.785 0.1 L0.785 0.4 L1.02 0.3 Z'],
-    numY: [0.2, 0.58],
+    numY: [0.26, 0.6],
   },
 };
+
+// The name's arc over the number, as sewn on a nameplate: its ends on the baseline a quarter of the number's
+// cap height above the number's own top (the number fills its box in the given face, so a wide face stands
+// shorter in it and the name follows it down), its middle risen an eighth of its half width (a gentle arch),
+// its chord 92% of the torso
+const NAME_HALF = 0.46;
+export function nameArc(a: { bodyX: [number, number]; bodyW: number; num: Box }, face?: string): string {
+  const cap = numberSize(face, a.num.w, a.num.h) * faceOf(face).capH;
+  const y = r2(a.num.y + a.num.h - cap * 1.25);
+  const cx = (a.bodyX[0] + a.bodyX[1]) / 2;
+  const half = r2(a.bodyW * NAME_HALF);
+  return `M${r2(cx - half)} ${y} Q${r2(cx)} ${r2(y - half * 0.125)} ${r2(cx + half)} ${y}`;
+}
 
 // A base resolved to the jersey's drawing units: the photo's box, and every anchor as a box, a point or a path
 export interface Box {
@@ -255,7 +274,7 @@ export interface JerseyAnchors {
   bodyX: [number, number];
   bodyW: number;
   bodyH: number; // the collar's top to the hem
-  nameArc: string;
+  nameArc: string; // the name's arc in the block face (nameArc gives a kit's own face its arc)
   nameRun: number; // the arc's length, about
   nameCap: number; // the name's capitals' height
   num: Box; // the number's box (two digits fill it)
@@ -298,10 +317,6 @@ export function jerseyAnchors(cut: string): JerseyAnchors | null {
   const bodyH = (b.bottom - b.top) * h;
   const cx = (bodyX[0] + bodyX[1]) / 2;
   const hemY = pt(0, b.bottom)[1];
-  // the name: an arc over the number, its ends on the baseline, its middle risen a fifth of its half width
-  const half = r2(bodyW * 0.46);
-  const nameY = r2(pt(0, b.top)[1] + (b.nameY ?? 0.19) * bodyH);
-  const nameArc = `M${r2(cx - half)} ${nameY} Q${r2(cx)} ${r2(nameY - half * 0.2)} ${r2(cx + half)} ${nameY}`;
   // the number: centred on the torso, from 22% to 62% of the body's height, 60% of the torso wide
   const [n0, n1] = b.numY ?? [0.22, 0.62];
   const numW = bodyW * (b.numW ?? 0.6);
@@ -314,8 +329,8 @@ export function jerseyAnchors(cut: string): JerseyAnchors | null {
     bodyX,
     bodyW: r2(bodyW),
     bodyH: r2(bodyH),
-    nameArc,
-    nameRun: r2(2 * half * 1.02),
+    nameArc: nameArc({ bodyX, bodyW, num }),
+    nameRun: r2(2 * NAME_HALF * bodyW * 1.02),
     nameCap: r2(bodyH * 0.062),
     num,
     tv: b.tv && b.tvBox ? b.tv.map(([fx, fy]) => box(fx - b.tvBox![0] / 2, fy - b.tvBox![1] / 2, b.tvBox![0], b.tvBox![1])) : undefined,

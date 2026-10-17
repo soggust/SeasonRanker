@@ -172,20 +172,39 @@ const FACES: FaceTable = {
 
 export const UNIFORM_ERAS: UniformTable = withFaces(
   {
-  // Logos and uniforms of the San Francisco 49ers (Wikipedia); gridiron-uniforms.com
+  // Logos and uniforms of the San Francisco 49ers (Wikipedia, with its uniform diagram); the 2009 unveiling's
+  // coverage (49ers.com "49ers unveil classic uniforms", NBC Bay Area, Bleacher Report): "plain, white player
+  // numerals ... exactly like in the old days", the black drop shadow and the black trim dropped from the
+  // primary set, three plain white sleeve stripes (two 2017-21, three again from 2022). The 49ers' colors are
+  // scarlet, metallic gold and white: black belongs to the 1996-2008 set alone (and to the alternates left out,
+  // the black 2015-17 jersey and the 1994 throwbacks from 2018)
   '49ers': [
     {
       from: 2000,
       to: 2008,
       home: d(kit(SF_CARDINAL, W, SF_GOLD, W, SF_CARDINAL, W, BLACK), { numberFont: 'varsity' }),
       away: d(kit(WHITE, SF_CARDINAL, SF_GOLD, SF_CARDINAL, SF_CARDINAL, SF_CARDINAL, BLACK), { numberFont: 'varsity' }),
-      note: '1996 set: deep cardinal red, serif numbers with gold trim and a black block shadow, sleeve stripes trimmed in black (stripe colors ?)',
+      note: '1996 set: deep cardinal red, serif numbers with gold trim and a black block shadow, three white sleeve stripes trimmed in black (drawn white-black-white)',
     },
     {
       from: 2009,
-      home: kit(SF_RED, W, BLACK, W, SF_RED, W, BLACK),
-      away: kit(WHITE, SF_RED, BLACK, SF_RED, SF_RED, SF_RED, BLACK),
-      note: 'Classic redesign: brighter red, truncated sleeve stripes (two from 2017, three again from 2022); number trim black ?; alternates (black 2015-17, 1994 throwbacks 2018+) left out',
+      to: 2016,
+      home: d(kit(SF_RED, W, W, W, SF_RED, W), { bands: [W, W, W] }),
+      away: d(kit(WHITE, SF_RED, SF_RED, SF_RED, SF_RED, SF_RED), { bands: [SF_RED, SF_RED, SF_RED] }),
+      note: 'Classic redesign: scarlet, plain white block numbers (no trim, no shadow), three plain white sleeve stripes cut short on the sleeve; no black',
+    },
+    {
+      from: 2017,
+      to: 2021,
+      home: kit(SF_RED, W, W, W, SF_RED, W),
+      away: kit(WHITE, SF_RED, SF_RED, SF_RED, SF_RED, SF_RED),
+      note: '2017 tailoring: two thicker sleeve stripes, the rest unchanged',
+    },
+    {
+      from: 2022,
+      home: d(kit(SF_RED, W, W, W, SF_RED, W), { bands: [W, W, W] }),
+      away: d(kit(WHITE, SF_RED, SF_RED, SF_RED, SF_RED, SF_RED), { bands: [SF_RED, SF_RED, SF_RED] }),
+      note: '2022 update: the third sleeve stripe back, the saloon-font wordmark; plain numbers still',
     },
   ],
   // Chicago Bears, "Logos and uniforms" (Wikipedia); gridiron-uniforms.com
@@ -593,10 +612,10 @@ export const UNIFORM_ERAS: UniformTable = withFaces(
     {
       from: 2019,
       to: 2023,
-      home: d(kit(NYJ_GOTHAM, W, BLACK, W, NYJ_GOTHAM), { collarStyle: 'v' }),
-      away: d(kit(WHITE, NYJ_GOTHAM, BLACK, NYJ_GOTHAM, NYJ_GOTHAM), { collarStyle: 'v' }),
+      home: d(kit(NYJ_GOTHAM, W, W, W, NYJ_GOTHAM), { collarStyle: 'v' }),
+      away: d(kit(WHITE, NYJ_GOTHAM, NYJ_GOTHAM, NYJ_GOTHAM, NYJ_GOTHAM), { collarStyle: 'v' }),
       alt: d(kit(BLACK, W, NYJ_GOTHAM, W, BLACK), { collarStyle: 'v' }),
-      note: '2019 set: Gotham green, no sleeve stripes, black "Stealth" alternate; number trims ? (the green and white may be untrimmed)',
+      note: '2019 set: Gotham green, no sleeve stripes, plain white numbers on the green and plain green on the white (the Wikipedia diagram); black trim only on the black "Stealth" alternate, its white numbers trimmed green',
     },
     {
       from: 2024,
