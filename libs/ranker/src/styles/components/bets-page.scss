@@ -1143,6 +1143,93 @@ $hub-y: 154px;
   }
 }
 
+// ---------------------------------------------------------------------------
+// The ticker: a one-line scoreboard strip under the header, its games sliding by forever (the list twice, the
+// track moving half its width over 45 seconds and starting again; still for anyone who's asked for less
+// motion). Each game: its sport small, the away team and its score, the home team and its score, then its
+// state: FINAL faint, a clock in the win's green, a start time in light grey. Everything on the strip's middle
+// ---------------------------------------------------------------------------
+.book-ticker {
+  @include v.scoreboard-panel(v.$radius-sm, none);
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  font-family: v.$font-heading;
+  font-size: v.$fs-12;
+  height: 30px;
+  letter-spacing: 1px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ticker-track {
+  align-items: center;
+  display: flex;
+  line-height: 1;
+  white-space: nowrap;
+  width: max-content;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ticker-slide 45s linear infinite;
+  }
+}
+
+.ticker-copy {
+  align-items: center;
+  display: inline-flex;
+}
+
+// (one game: its pieces 8px apart, 36px to the next game: a margin, not a gap, so the two copies are the same
+// width and the slide wraps without a jump)
+.tick {
+  align-items: center;
+  display: inline-flex;
+  gap: v.$space-8;
+  line-height: 1;
+  margin-right: 36px;
+
+  .tick-sport {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+    letter-spacing: 1.5px;
+  }
+
+  .tick-team {
+    color: #fff;
+  }
+
+  .tick-score {
+    @include glow;
+    font-weight: 500;
+  }
+
+  .tick-state {
+    color: v.$grey-light;
+  }
+
+  &.post .tick-state {
+    color: v.$text-faint;
+  }
+
+  &.in .tick-state {
+    color: v.$good-bright;
+  }
+}
+
+@keyframes ticker-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+// (phones: no strip (the phone design gives the board its room))
+@include v.down(ai-narrow) {
+  .book-ticker {
+    display: none;
+  }
+}
+
 // (Open Bets: the wallet's open-bets panel, and the desk, scrolling inside the page)
 .bets-page wallet-page,
 .bets-page.desk-view model-desk {

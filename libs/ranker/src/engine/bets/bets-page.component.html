@@ -50,6 +50,29 @@
       </a>
     }
   </header>
+  <!-- The ticker: a scoreboard strip of every game on the boards the page has read, scrolling sideways forever
+       (the list twice, the second copy for the screen reader's sake hidden): finals, the games under way with
+       their clock, then the ones to come with their start. Nothing on the boards: none -->
+  @if (tickerItems.length) {
+    <div class="book-ticker" role="marquee" aria-label="Scores and start times">
+      <div class="ticker-track">
+        @for (copy of [0, 1]; track copy) {
+          <span class="ticker-copy" [attr.aria-hidden]="copy ? 'true' : null">
+            @for (t of tickerItems; track t.key) {
+              <span class="tick" [ngClass]="t.state">
+                <span class="tick-sport">{{ t.sport }}</span>
+                <span class="tick-team">{{ t.away }}</span>
+                @if (t.awayScore !== null) {<b class="tick-score">{{ t.awayScore }}</b>}
+                <span class="tick-team">{{ t.home }}</span>
+                @if (t.homeScore !== null) {<b class="tick-score">{{ t.homeScore }}</b>}
+                <span class="tick-state">{{ t.text ?? (t.start | date: 'h:mm a') }}</span>
+              </span>
+            }
+          </span>
+        }
+      </div>
+    </div>
+  }
   @if (aboutOpen) {
     <bets-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></bets-about>
   }

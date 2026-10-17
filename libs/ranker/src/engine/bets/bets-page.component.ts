@@ -37,6 +37,20 @@ type GameBoardPicks = { sport: string; event: string; start: string; matchup: st
 // (the game dropdown's chosen game, for its closed face: its words and its sport's icon)
 type ChosenGame = MenuGame & { icon: string };
 
+// (one game on the ticker: the sport, the teams and their scores (none before it starts), its state, and its
+// clock or final as words, or its start when it hasn't begun)
+interface TickerItem {
+  key: string;
+  sport: string;
+  away: string;
+  home: string;
+  awayScore: number | null;
+  homeScore: number | null;
+  state: 'pre' | 'in' | 'post';
+  text: string | null;
+  start: string;
+}
+
 // (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
 const linesKey = (g: { sport: string; matchup: string; event: string }): string => `${g.sport}|${g.matchup}|${g.event}`;
 
@@ -490,6 +504,33 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const now = Date.now();
     const days = [now, now + 24 * 3600e3].map((t) => new Date(t).toISOString());
     void this.lines.games([...this.boards.values(), ...SPORTS.flatMap((sport) => days.map((start) => ({ sport, start })))]);
+  }
+
+  // The ticker under the header: every game on the boards the page has already read (ESPN's scoreboards for
+  // today and tomorrow, lines.games above: nothing fetched for it), finals first, then the games under way with
+  // their clock, then the ones to come with their start; built again only when the boards change. Empty, the
+  // strip hides
+  private tickerFor: { boards: unknown; items: TickerItem[] } | null = null;
+  get tickerItems(): TickerItem[] {
+    const boards = this.lines.boards();
+    if (this.tickerFor?.boards !== boards) {
+      const order = { post: 0, in: 1, pre: 2 };
+      const games = [...boards.values()].filter((g) => g.away.abbr && g.home.abbr).sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start));
+      const items = games.slice(0, 30).map((g): TickerItem => ({
+        key: `${g.sport}|${g.event}`,
+        sport: g.sport.toUpperCase(),
+        away: g.away.abbr,
+        home: g.home.abbr,
+        awayScore: g.state === 'pre' ? null : g.away.score,
+        homeScore: g.state === 'pre' ? null : g.home.score,
+        state: g.state,
+        // (a final as ESPN says it, "FINAL" or "FINAL/OT"; a game under way its clock, "4:12 - 3RD")
+        text: g.state === 'pre' ? null : (g.detail || (g.state === 'post' ? 'Final' : 'Live')).toUpperCase(),
+        start: g.start,
+      }));
+      this.tickerFor = { boards, items };
+    }
+    return this.tickerFor.items;
   }
 
   // (the games on ESPN's boards, not begun, with DraftKings' lines, that the bot has no pick on: in the dropdown
