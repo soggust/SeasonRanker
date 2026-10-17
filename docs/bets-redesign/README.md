@@ -100,8 +100,8 @@ and M fades…") that expands to show them as today.
 - **Band header** (a `<button aria-expanded>`, sticky to the top of the scroller while its rows scroll):
   a 30px chevron slot (rotates 90° open) **aligned with the rows' chevron column**, the band icon (padlock /
   heart / thumbs-up as stroke SVG), the name in Outfit 700, 16px, 3px letter-spacing in the band colour with
-  a glow (LOCK `chip.$lock-light` `#f0a060`, LOVE `$good-bright`, LIKE `$caution`), "N picks · blurb", and
-  on the right the band's **season record, units and last-five results** as five small squares. The
+  a glow (LOCK `chip.$lock-light` `#f0a060`, LOVE `$good-bright`, LIKE `$caution`) — **no pick count and no
+  description after the name** — and on the right the band's **season record, units and last-five results** as five small squares. The
   background is a left-to-right wash of the band colour fading out by 70%, and the bottom edge is the band
   colour at about 45%. Record data: use the per-confidence results the page or the desk already loads. If
   the public page doesn't have them, show the header without the record and tell the owner.
@@ -140,6 +140,10 @@ existing `game-lines` component with all its data, restyled:
   nothing) and a **K score button** (green ≥ 0.5, grey above 0, red at or below 0) that opens the why
   popover for that price. The bot's picks get a 1.5px gold ring and a soft gold glow. A bet the user adds
   that the bot didn't pick goes on the ticket tagged "YOUR CALL".
+
+**Scrollbars** on this page (the board, the right column, the game dropdown's list, the sheets) have **gold
+thumbs**: `scrollbar-color: #d9a520 rgba(0,0,0,.25)` with `scrollbar-width: thin` (the page's own scrollbar
+mixin otherwise: 10px, `$scrollbar-radius`).
 
 ### 6. The why popover ("how the sausage is made")
 
