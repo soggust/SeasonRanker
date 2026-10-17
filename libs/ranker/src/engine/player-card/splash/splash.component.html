@@ -365,11 +365,12 @@
       <!-- THE SHELF: a finished season, up to three props, evenly spaced, each at its real height (none over the middle one) -->
       <div class="sp-stage">
         @for (it of v.items; track $index) {
-          <div class="sp-col" [class.star]="$index === v.lead" [class.wide]="it.wide" [class]="'t-' + it.t">
+          <div class="sp-col" [class.star]="$index === v.lead" [class.wide]="it.wide" [class.hangs]="it.hangs" [class]="'t-' + it.t">
             <span class="sp-lamp"></span><span class="sp-beam"></span>
-            <div class="sp-art" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+            <div class="sp-art" [style.--h.px]="it.h" [style.--hn]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
               <splash-piece [it]="it" [logo]="logo"></splash-piece>
             </div>
+            <ng-container *ngTemplateOutlet="caption; context: { $implicit: it.caption, tip: it.tip }"></ng-container>
           </div>
         }
       </div>
@@ -379,17 +380,20 @@
       <div class="sp-stage sp-office">
         <span class="sp-lamp left"></span><span class="sp-beam left"></span>
         <span class="sp-lamp right"></span><span class="sp-beam right"></span>
-        <div class="sp-board sp-art" [style.--h.px]="o.board.h" [title]="o.board.tip" [attr.data-tip]="o.board.tip">
+        <div class="sp-board sp-art" [style.--h.px]="o.board.h" [style.--hn]="o.board.h" [title]="o.board.tip" [attr.data-tip]="o.board.tip">
           <splash-piece [it]="o.board" [logo]="logo"></splash-piece>
         </div>
         <div class="sp-credenza">
-          <div class="sp-frame sp-art" [style.--h.px]="o.frame.h" [title]="o.frame.tip" [attr.data-tip]="o.frame.tip">
+          <div class="sp-frame sp-art" [style.--h.px]="o.frame.h" [style.--hn]="o.frame.h" [title]="o.frame.tip" [attr.data-tip]="o.frame.tip">
             <splash-piece [it]="o.frame" [logo]="logo"></splash-piece>
           </div>
           <div class="sp-honors">
             @for (it of v.items; track $index) {
-              <div class="sp-art" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
-                <splash-piece [it]="it" [logo]="logo"></splash-piece>
+              <div class="sp-honor">
+                <div class="sp-art" [class]="'sp-art t-' + it.t" [style.--h.px]="it.h" [style.--hn]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                  <splash-piece [it]="it" [logo]="logo"></splash-piece>
+                </div>
+                <ng-container *ngTemplateOutlet="caption; context: { $implicit: it.caption, tip: it.tip }"></ng-container>
               </div>
             }
           </div>
@@ -397,7 +401,18 @@
         </div>
         <div class="sp-desk" [title]="o.plate" [attr.data-tip]="o.plate + ' · ' + o.team">
           <div class="sp-desk-top"><span class="sp-mug"></span><span class="sp-binder"></span><span class="sp-pen"></span></div>
-          <div class="sp-desk-front"><span class="sp-desk-plate" [style.background-image]="'url(' + deskPlate + ')'">{{ o.plate }}</span></div>
+          <!-- (the photographed brass nameplate; his name on an SVG layer projected onto the plate's face as the
+               photo keystones it: splash.images.ts NAMEPLATE) -->
+          <div class="sp-desk-front">
+            <span class="sp-desk-plate" [style.background-image]="'url(' + deskPlate + ')'">
+              @if (plateArt(o.plate); as pa) {
+                <svg class="sp-over" [attr.viewBox]="'0 0 ' + pa.w + ' ' + pa.h" [style.width.px]="pa.w" [style.height.px]="pa.h" [style.transform]="pa.m3d" aria-hidden="true">
+                  <text [attr.x]="pa.w / 2" [attr.y]="pa.y" [style.font-size.px]="pa.size" class="sp-plate-t hi" dy="0.5">{{ o.plate }}</text>
+                  <text [attr.x]="pa.w / 2" [attr.y]="pa.y" [style.font-size.px]="pa.size" class="sp-plate-t">{{ o.plate }}</text>
+                </svg>
+              }
+            </span>
+          </div>
         </div>
       </div>
     } @else {
@@ -416,20 +431,17 @@
                   {{ st.plate }}
                 </div>
               }
-              @if (st.tape) {
-                <div class="sp-tape">{{ st.tape }}</div>
-              }
               @if (st.shelf?.length) {
                 <div class="sp-top-shelf">
                   @for (it of st.shelf; track $index) {
-                    <div class="sp-art sp-on-shelf" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                    <div class="sp-art sp-on-shelf" [class]="'t-' + it.t" [style.--h.px]="it.h" [style.--hn]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
                       <splash-piece [it]="it" [logo]="logo"></splash-piece>
                     </div>
                   }
                 </div>
               }
               @if (st.corner; as it) {
-                <div class="sp-art sp-corner" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                <div class="sp-art sp-corner" [class]="'t-' + it.t" [style.--h.px]="it.h" [style.--hn]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
                   <splash-piece [it]="it" [logo]="logo"></splash-piece>
                 </div>
               }
@@ -440,20 +452,21 @@
                 </div>
               }
               @if (st.item; as it) {
-                <div class="sp-art sp-in-stall" [class]="'t-' + it.t" [style.--h.px]="it.h">
+                <div class="sp-art sp-in-stall" [class]="'t-' + it.t" [style.--h.px]="it.h" [style.--hn]="it.h">
                   <splash-piece [it]="it" [logo]="logo"></splash-piece>
                 </div>
               }
               @if (st.floor?.length) {
                 <div class="sp-floor">
                   @for (it of st.floor; track $index) {
-                    <div class="sp-art sp-on-floor" [class]="'t-' + it.t" [style.--h.px]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
+                    <div class="sp-art sp-on-floor" [class]="'t-' + it.t" [style.--h.px]="it.h" [style.--hn]="it.h" [title]="it.tip" [attr.data-tip]="it.tip">
                       <splash-piece [it]="it" [logo]="logo"></splash-piece>
                     </div>
                   }
                 </div>
               }
             </div>
+            <ng-container *ngTemplateOutlet="caption; context: { $implicit: st.caption, tip: st.tip }"></ng-container>
           </div>
         }
       </div>
@@ -465,12 +478,27 @@
       <div class="sp-tip" [style.left.px]="t.x" [style.top.px]="t.y">{{ t.text }}</div>
     }
   </section>
+} @else if (waiting) {
+  <!-- (the season's data a moment behind the card: the stage stands empty and lit, the props land with it) -->
+  <section class="splash stage-wait mood-cool" [style]="vars" aria-hidden="true">
+    <div class="sp-wall"></div>
+    <div class="sp-shelf"><i class="top"></i><i class="front"></i></div>
+  </section>
 }
 
-<!-- A jersey on its hanger, in its sport's cut (the kit's colors and details: uniform-eras.ts KitColors).
-     Football, basketball and hockey from the back (the name arched over the number); baseball from the front
-     (the wordmark across the chest, the button placket, a front number). Tackle-twill numbers with their trim
-     and their shadow on the cloth, the seams stitched, the cloth's faint mesh, its folds and the light on it -->
+<!-- The caption on the shelf's edge under a prop or a stall: an engraved brass band set into the lip, the words
+     (one or two lines, never under 11 px) cut at two lines; the full text stays on the hover and the tap -->
+<ng-template #caption let-lines let-tip="tip">
+  @if (lines?.length) {
+    <div class="sp-cap" [title]="tip" [attr.data-tip]="tip"><span><b>{{ lines[0] }}</b>@if (lines[1]) {<i> · </i>{{ lines[1] }}}</span></div>
+  }
+</ng-template>
+
+<!-- A jersey on its hanger, in its sport's cut (the kit's colors and details: uniform-eras.ts KitColors), seen
+     from the BACK: the name arched over the number; the sleeves' bands, the yoke and the hem where the kit has
+     them, pinstripes. (The vector fallback draws a baseball jersey from the front, with its placket and wordmark.)
+     Tackle-twill numbers with their trim and their shadow on the cloth, the seams stitched, the cloth's faint
+     mesh, its folds and the light on it -->
 <ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-mark="mark">
   <svg class="sp-jersey" [class]="'sp-jersey cut-' + cut + ' nf-' + (k.numberFont || 'block') + ' nm-' + (k.nameFont || 'block')" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
     @if (ja; as a) {
@@ -484,8 +512,12 @@
           <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" />
         </mask>
         <path [attr.id]="'sp-jp-name-' + cut" [attr.d]="a.nameArc" fill="none" />
-        @if (a.markArc) {
-          <path [attr.id]="'sp-jp-mark-' + cut" [attr.d]="a.markArc" fill="none" />
+        @if (a.sleeves) {
+          <!-- (each sleeve's own region, measured on the photo: a band is clipped to it, never onto the body) -->
+          <clipPath [attr.id]="'sp-js-' + cut">
+            <path [attr.d]="a.sleeves[0]" />
+            <path [attr.d]="a.sleeves[1]" />
+          </clipPath>
         }
       </defs>
       <g [attr.mask]="'url(#sp-jb-' + cut + ')'" style="isolation: isolate">
@@ -503,17 +535,19 @@
             <path [attr.d]="a.yoke" [attr.fill]="k.yoke" />
             <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
           }
-          @for (b of photoBands(k, a); track $index) {
-            <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
-          }
+          <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
+            @for (b of photoBands(k, a); track $index) {
+              <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
+            }
+          </g>
           @if (k.panel && a.panels) {
             @for (p of a.panels; track $index) {
               <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.panel" />
             }
           }
           @if (k.tv !== false && num && a.tv) {
-            <text class="sp-j-tv" [attr.x]="a.tv[0].x" [attr.y]="a.tv[0].y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
-            <text class="sp-j-tv" [attr.x]="a.tv[1].x" [attr.y]="a.tv[1].y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
+            <text class="sp-j-tv" [attr.x]="a.tv[0].x" [attr.y]="a.tv[0].y" [attr.fill]="k.num" [attr.stroke]="k.outline" [attr.transform]="a.tv[0].transform">{{ num }}</text>
+            <text class="sp-j-tv" [attr.x]="a.tv[1].x" [attr.y]="a.tv[1].y" [attr.fill]="k.num" [attr.stroke]="k.outline" [attr.transform]="a.tv[1].transform">{{ num }}</text>
           }
           <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'stripe' ? 6 : 4" />
           @if (k.collarStyle === 'stripe') {
@@ -548,9 +582,11 @@
             <path [attr.d]="a.yoke" [attr.fill]="k.yoke" />
             <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
           }
-          @for (b of photoArmBands(k, a); track $index) {
-            <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" [attr.fill]="b.color" />
-          }
+          <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
+            @for (b of photoArmBands(k, a); track $index) {
+              <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" [attr.fill]="b.color" />
+            }
+          </g>
           @for (h of photoHems(k, cut, a); track $index) {
             <rect [attr.x]="a.bodyX[0] - 2" [attr.y]="h.y" [attr.width]="a.bodyW + 4" [attr.height]="h.h" [attr.fill]="h.color" />
           }
@@ -562,44 +598,33 @@
         }
 
         @if (cut === 'baseball') {
+          <!-- (the back of a baseball jersey: a vest's undershirt sleeves, the sleeves' bands, the collar; the
+               placket, the wordmark and the front number are the front's) -->
           @if (k.placket === 'vest' && k.under && a.under) {
             <path [attr.d]="a.under[0]" [attr.fill]="k.under" />
             <path [attr.d]="a.under[1]" [attr.fill]="k.under" />
           }
           @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
-            @for (b of photoBands(k, a, true); track $index) {
-              <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
-            }
-          }
-          @if (k.placket !== 'pullover' && a.placket; as p) {
-            <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="k.body" />
-            <path [attr.d]="'M' + p.x + ' ' + (p.y + 2) + ' V' + (p.y + p.h) + ' M' + (p.x + p.w) + ' ' + (p.y + 2) + ' V' + (p.y + p.h)" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="0.8" />
-            @if (k.piping) {
-              <path [attr.d]="'M' + (p.x - 0.5) + ' ' + (p.y + 2) + ' V' + (p.y + p.h) + ' M' + (p.x + p.w + 0.5) + ' ' + (p.y + 2) + ' V' + (p.y + p.h)" fill="none" [attr.stroke]="k.piping" stroke-width="1.2" />
-            }
-            @for (y of a.buttons; track y) {
-              <circle [attr.cx]="p.x + p.w / 2" [attr.cy]="y" r="1.7" fill="#f6f2e8" stroke="#8a847a" stroke-width="0.4" />
-              <circle [attr.cx]="p.x + p.w / 2" [attr.cy]="y" r="0.5" fill="#8a847a" />
-            }
+            <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
+              @for (b of photoBands(k, a, true); track $index) {
+                <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
+              }
+            </g>
           }
           <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
           @if (k.piping && k.piping !== k.collar) {
             <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" transform="translate(0 2.5)" />
           }
-          @if (mark) {
-            <text class="sp-j-mark" [attr.fill]="k.name" [attr.stroke]="k.outline" [style.font-size.px]="markSize(mark) * a.markK"><textPath [attr.href]="'#sp-jp-mark-' + cut" startOffset="50%">{{ mark }}</textPath></text>
-          }
-          @if (num && a.front) {
-            <text class="sp-j-front" [attr.x]="a.front.x" [attr.y]="a.front.y" [attr.fill]="k.num" [attr.stroke]="k.outline">{{ num }}</text>
-          }
         }
 
-        @if (cut !== 'baseball') {
+        <!-- the name arched over the number (a kit without names, the Yankees' home, has none), the number's
+             trim and its shadow on the cloth -->
+        @if (k.names !== false) {
           <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name) * a.nameK"><textPath [attr.href]="'#sp-jp-name-' + cut" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
-          <text class="sp-j-num shadow" [attr.x]="a.num.x + 0.8" [attr.y]="a.num.y + 1.4" [style.font-size.px]="a.num.size">{{ num }}</text>
-          <text class="sp-j-num outer" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.outline" [attr.stroke]="k.outline" [style.font-size.px]="a.num.size">{{ num }}</text>
-          <text class="sp-j-num" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.num" [attr.stroke]="k.body" [style.font-size.px]="a.num.size">{{ num }}</text>
         }
+        <text class="sp-j-num shadow" [attr.x]="a.num.x + 0.8" [attr.y]="a.num.y + 1.4" [style.font-size.px]="a.num.size">{{ num }}</text>
+        <text class="sp-j-num outer" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.outline" [attr.stroke]="k.outline" [style.font-size.px]="a.num.size">{{ num }}</text>
+        <text class="sp-j-num" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.num" [attr.stroke]="k.body" [style.font-size.px]="a.num.size">{{ num }}</text>
         <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
       </g>
     } @else {

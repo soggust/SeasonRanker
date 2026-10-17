@@ -25,7 +25,7 @@ const WHITE = '#f3f2ee'; // home whites
 const GRAY = '#b9bcbf'; // road grays
 const CREAM = '#ece4d0'; // cream homes / alternates
 
-type Detail = Partial<Pick<KitColors, 'piping' | 'stripe' | 'stripe2' | 'pinstripe' | 'placket' | 'under' | 'numberFont' | 'nameFont'>>;
+type Detail = Partial<Pick<KitColors, 'piping' | 'stripe' | 'stripe2' | 'pinstripe' | 'placket' | 'under' | 'numberFont' | 'nameFont' | 'names'>>;
 
 // A kit: its body, the chest wordmark, the numbers (fill, trim), then its details. The collar is the piping's color
 // when the jersey is piped (the collar and placket are piped together), else the body's; sleeve 'stripes' when the
@@ -133,26 +133,26 @@ export const UNIFORM_ERAS: UniformTable = {
   '111': [
     {
       from: 2000, to: 2002,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
       away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
     },
     {
       from: 2003, to: 2008,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
       away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
       alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340', numberFont: 'serif', nameFont: 'rounded' }),
       note: 'red home alternate (blue piping) added',
     },
     {
       from: 2009, to: 2013,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
       away: kit(GRAY, '#0c2340', '#0c2340', '#bd3039', { numberFont: 'serif', nameFont: 'serif' }),
       alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'serif', nameFont: 'rounded' }),
       note: 'road lettering navy; red alt loses piping; a navy road alt (BOSTON red outlined white) also ran 2009-2024',
     },
     {
       from: 2014,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
       away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
       alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'serif', nameFont: 'rounded' }),
       note: 'road lettering back to red',
@@ -231,13 +231,13 @@ export const UNIFORM_ERAS: UniformTable = {
   '116': [
     {
       from: 2000, to: 2025,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { piping: '#0c2340', nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340', nameFont: 'serif' }),
       away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340', nameFont: 'rounded' }),
       note: 'Old English D at home, navy "Detroit" (orange/white trim) on the road; both navy piping',
     },
     {
       from: 2026,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { piping: '#0c2340', nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340', nameFont: 'serif' }),
       away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340', nameFont: 'rounded' }),
       alt: kit('#fa4616', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340', nameFont: 'rounded' }),
       note: 'orange Friday home alternate added (navy road alt too); alt piping ?',
@@ -833,20 +833,20 @@ export const UNIFORM_ERAS: UniformTable = {
   '147': [
     {
       from: 2000, to: 2023,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#ffffff', { stripe: '#0c2340', stripe2: '#ffffff', nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#ffffff', { names: false, stripe: '#0c2340', stripe2: '#ffffff', nameFont: 'serif' }),
       note: 'navy pinstripes and the interlocking NY at home; road "NEW YORK" and numbers navy outlined white, navy-white-navy cuff stripes; no alternate',
     },
     {
       from: 2024, to: 2025,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false, nameFont: 'serif' }),
       note: 'road outlines and sleeve trim removed: solid navy lettering on the gray',
     },
     {
       from: 2026,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false, nameFont: 'serif' }),
       alt: kit('#0c2340', '#ffffff', '#ffffff', '#ffffff', { nameFont: 'serif' }),
       note: 'navy road tops designated the official alternate for 2026 (not yet worn in a regular-season game at the source\'s writing)',
     },

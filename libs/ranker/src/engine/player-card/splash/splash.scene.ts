@@ -24,6 +24,7 @@
 //   current      a season being played: the room alone (no honors yet)
 // Output: Scene { stage: 'office', items: his honors (lead first), office: { plate, team, record, board, frame } }
 import { PROPS, Tier, centered, isPlaque, pickProps, stallPlace } from './splash.props';
+import { aspectOf } from './splash.images';
 import { HelmetLook } from './splash.uniforms';
 
 // ---- What a season's outcome file says about a team (outcomes.json, a season's folder: by the team's logo name)
@@ -48,6 +49,8 @@ export interface Piece {
   t: string;
   id?: string; // the prop's id in the registry (its photo, when it has one: splash.images.ts)
   lines?: string[];
+  caption?: string[]; // its words on the shelf's edge under it (one or two lines)
+  hangs?: boolean; // hung on the back wall behind the shelf line (a banner, a pennant), not standing on it
   tip?: string;
   h?: number;
   wide?: boolean;
@@ -67,7 +70,8 @@ export interface Stall {
   corner?: Piece;
   plate?: string;
   num?: string;
-  tape?: string;
+  tape?: string; // his line (the stats so far): on the shelf's edge under the stall
+  caption?: string[]; // the shelf's edge under the stall: his name and number, or his line
   mine?: boolean;
   star?: boolean;
   wide?: boolean;
@@ -301,15 +305,21 @@ export function buildScene(s: SceneInput): Scene | null {
   // (a prop whose words the data doesn't have yet is left out: a hand-set list then filled from the rules)
   const ok = (id: string) => !!PROPS[id] && (!PROPS[id].needs || !!f[PROPS[id].needs!]);
   const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => ({ ...PROPS[id], id }));
-  const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO) : d.inches));
+  // (beside the hero, a prop's footprint is capped in both directions, its aspect kept: a wide ticket never
+  // outgrows a narrow trophy)
+  const heroW = defs.length ? defs[0].inches * aspectOf(defs[0].id, defs[0].piece) : 0;
+  const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO, (heroW * BESIDE_HERO) / aspectOf(d.id, d.piece)) : d.inches));
   const scale = Math.min(PX_PER_IN, (s.coach ? OFFICE_MAX : locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
+  // (its caption: the prop's own, else the tip's first two parts; a line the data can't fill is dropped)
   const piece = (d: (typeof defs)[number], h: number): Piece => ({
     t: d.piece,
     id: d.id,
     lines: d.lines?.map((l) => fill(l, f)),
+    caption: (d.caption ?? fill(d.tip, f).split(' · ').slice(0, 2)).map((l) => fill(l, f)).filter(Boolean),
     tip: fill(d.tip, f),
     h,
     wide: d.wide,
+    hangs: d.hangs,
     line: s.shoe?.line,
     num: s.number ?? undefined,
     helmet: s.helmet,
@@ -353,18 +363,21 @@ export function buildScene(s: SceneInput): Scene | null {
     stalls = order.map((p, i) => ({
       jersey: { name: last(p.name), num: p.num ?? '', kit: i === leadAt ? 'home' : (i - leadAt) % 3 === 1 || (leadAt - i) % 3 === 2 ? 'away' : 'home' },
       // (a baseball jersey is drawn from the front, its wordmark on the chest: his name goes on the plate)
-      plate: s.sport === 'mlb' ? `${p.pos} · ${last(p.name)}` : p.pos,
+      plate: p.pos,
       star: i === leadAt,
       wide: Math.abs(i - leadAt) >= 3,
+      caption: [p.name, [p.pos, p.num ? `No. ${p.num}` : ''].filter(Boolean).join(' · ')],
       tip: [p.name, p.pos, p.num ? `No. ${p.num}` : ''].filter(Boolean).join(' · '),
     }));
   } else {
     // (his own stall: his jersey on the hook, or a fighter's belt or gloves; his gear where each belongs, the
     // top shelf, the floor, the corner, at the stall's sizes: props.ts stall)
     const fighter = s.sport === 'mma';
+    // (his line, "5-0 record · 11% pressure → sack", goes on the shelf's edge under the stall, a part a line)
+    const caption = (s.tape ?? '').split(' · ').filter(Boolean).slice(0, 2);
     const mine: Stall = fighter
-      ? { item: pieces[0], plate: last(s.name), tape: s.tape, mine: true, tip: pieces[0]?.tip ?? s.name }
-      : { jersey: { name: last(s.name), num: s.number ?? '', kit: 'home' }, plate: last(s.name), num: s.number ?? undefined, tape: s.tape, mine: true, tip: s.name };
+      ? { item: pieces[0], plate: last(s.name), tape: s.tape, caption, mine: true, tip: pieces[0]?.tip ?? s.name }
+      : { jersey: { name: last(s.name), num: s.number ?? '', kit: 'home' }, plate: last(s.name), num: s.number ?? undefined, tape: s.tape, caption, mine: true, tip: s.name };
     const gear = ids.filter(ok).filter((id) => !(fighter && PROPS[id].piece === pieces[0]?.t));
     for (const id of gear) {
       const at = stallPlace(id);

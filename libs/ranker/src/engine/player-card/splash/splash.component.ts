@@ -7,7 +7,7 @@
 //
 // A `preset` draws a scene given to it instead of a card's (the gallery, ?gallery=: every jersey, prop and
 // stage, for checking the art).
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, ViewEncapsulation, inject } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { SPORT } from '@sport/sport';
 import * as teamColors from '@sport/team-colors';
@@ -20,9 +20,12 @@ import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
 import { rosterOf } from './splash.roster';
 import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
-import { HI_DPI, JerseyAnchors, jerseyAnchors, propHref } from './splash.images';
+import { HI_DPI, JerseyAnchors, NAMEPLATE, PROP_IMAGES, homography, jerseyAnchors, planeBox, propHref } from './splash.images';
+import { loadSplashFonts } from './splash-fonts';
 
 type Kit = 'home' | 'away' | 'alt';
+// (how long the stage waits for the season's data before drawing without it)
+const WAIT_MS = 1500;
 export type Cut = 'football' | 'basketball' | 'baseball' | 'hockey';
 export type FullKit = KitColors & { stripe: string };
 
@@ -37,8 +40,6 @@ export interface SplashPreset {
   hero?: Record<string, string>;
   cut?: Cut;
 }
-
-let fontsAdded = false;
 
 // (each sport's team colors, by the team's logo name: [abbreviation, ESPN id, color, second color]; MMA has none)
 const TEAMS = (Object.entries(teamColors).find(([name]) => name === 'TEAMS')?.[1] ?? {}) as Record<string, [string, string, string, string]>;
@@ -57,6 +58,9 @@ interface Built {
   styleUrl: './splash.component.scss',
   // (its pieces are their own component, drawn with these styles; every class is sp-)
   encapsulation: ViewEncapsulation.None,
+  // (drawn again only when its card changes, its season's data lands (markForCheck) or a tap: never on the
+  // page's other events; and what the template reads is built once per scene, below)
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardSplash implements OnDestroy {
   @Input() card!: PlayerCard;
@@ -67,6 +71,10 @@ export class CardSplash implements OnDestroy {
   private readonly host = inject(ElementRef<HTMLElement>);
   private data = new Map<string, SplashData | 'loading'>();
   private built: Built | null = null;
+  // (the kits and their drawn bands, once each: a team locker reads them for seven jerseys every check)
+  private kits = new Map<string, FullKit>();
+  private bandArt = new WeakMap<FullKit, Map<string, unknown>>();
+  private varsFor: { key: string; vars: Record<string, string> } | null = null;
   tip: { text: string; x: number; y: number } | null = null;
   private tipTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -75,19 +83,13 @@ export class CardSplash implements OnDestroy {
   readonly buttons = [40, 56, 72, 88, 104, 120, 136];
 
   constructor() {
-    if (!fontsAdded && typeof document !== 'undefined') {
-      fontsAdded = true;
-      // (the splash's own type, subset to the characters it uses and self-hosted: an engraved serif, a
-      // condensed block, a ticket mono and a marker; about 80 KB, fetched with the splash)
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'assets/fonts/splash/faces.css';
-      document.head.appendChild(link);
-    }
+    // (the splash's type: usually in already, fetched at idle with the chunk; the gallery comes here first)
+    loadSplashFonts();
   }
 
   ngOnDestroy(): void {
     if (this.tipTimer) clearTimeout(this.tipTimer);
+    if (this.waitTimer) clearTimeout(this.waitTimer);
   }
 
   private get tab(): string {
@@ -107,7 +109,9 @@ export class CardSplash implements OnDestroy {
     return isLiveSeason(this.card.season);
   }
 
-  // The scene for the card as it is now (its season's data, or a team's roster, may still be on its way)
+  // The scene for the card as it is now. Its season's data (and a team's roster) is usually a moment behind
+  // the card: until it's in, the stage stands empty (`waiting`: the wall and the shelf, lit) rather than drawn
+  // once without it and again with it; a fetch that takes longer than WAIT_MS draws what it has
   get view(): Scene | null {
     if (this.preset) return this.preset.scene;
     const c = this.card;
@@ -118,9 +122,23 @@ export class CardSplash implements OnDestroy {
     if (c.ur) return null;
     const data = this.seasonData(c.season);
     const depth = team && this.current && SPORT.depthChart?.has(c.player, tab, c.season) ? this.cards.depthChart(c) : null;
+    this.waiting = (data === null || depth === 'loading') && !this.waitedOut();
+    if (this.waiting) return null;
     const key = [tab, c.player.gsisId, c.season, data ? 1 : 0, typeof depth === 'object' && depth ? 1 : 0].join('/');
     if (this.built?.key !== key) this.built = { key, scene: buildScene(this.input(team, coach, data, typeof depth === 'object' ? depth : null)) };
     return this.built.scene;
+  }
+  waiting = false;
+  private waitFrom = 0;
+  private waitTimer: ReturnType<typeof setTimeout> | null = null;
+  private waitedOut(): boolean {
+    const now = Date.now();
+    if (!this.waitFrom) {
+      this.waitFrom = now;
+      // (drawn again when the wait is up, with or without the data)
+      this.waitTimer = setTimeout(() => this.cdr.markForCheck(), WAIT_MS + 20);
+    }
+    return now - this.waitFrom > WAIT_MS;
   }
 
   // (a season's splash data for the card's tab, read once; the card drawn again when it's in)
@@ -187,7 +205,17 @@ export class CardSplash implements OnDestroy {
   get vars(): Record<string, string> {
     const [c1, c2, c3] = this.colors;
     const hero = this.preset ? this.preset.hero ?? { '--team-hi': c1, '--team-lo': c3, '--team-accent': c1 } : this.card.look.hero;
-    return { ...hero, '--c1': c1, '--c2': c2, '--c3': c3 };
+    const key = [c1, c2, c3, ...Object.values(hero)].join('|');
+    if (this.varsFor?.key !== key) this.varsFor = { key, vars: { ...hero, '--c1': c1, '--c2': c2, '--c3': c3 } };
+    return this.varsFor.vars;
+  }
+
+  // (a kit's drawn details, by the kit and the drawing: built once)
+  private memo<T>(k: FullKit, key: string, build: () => T): T {
+    let m = this.bandArt.get(k);
+    if (!m) this.bandArt.set(k, (m = new Map()));
+    if (!m.has(key)) m.set(key, build());
+    return m.get(key) as T;
   }
 
   get mood(): string {
@@ -212,18 +240,37 @@ export class CardSplash implements OnDestroy {
   private anchorsFor: { cut: string; a: JerseyAnchors | null } | null = null;
   get ja(): JerseyAnchors | null {
     const cut = this.cut;
-    if (this.anchorsFor?.cut !== cut) this.anchorsFor = { cut, a: jerseyAnchors(cut) };
+    // (the baseball base is a photographed FRONT, its placket and buttons showing through a light kit: until it
+    // is shot again flat and from the back, a baseball jersey is the vector cut, from the front with its
+    // wordmark, which the owner had before)
+    if (this.anchorsFor?.cut !== cut) this.anchorsFor = { cut, a: cut === 'baseball' ? null : jerseyAnchors(cut) };
     return this.anchorsFor.a;
   }
   get jerseyBase(): string {
     return propHref('jersey-' + this.cut, HI_DPI);
   }
-  // (the office's brass desk nameplate, photographed: splash.component.scss .sp-desk-plate)
+  // (the office's brass desk nameplate, photographed: splash.component.scss .sp-desk-plate; his name on the
+  // plate's face, projected as the photo keystones it: NAMEPLATE's quad, the name as big as the face holds)
   readonly deskPlate = propHref('desk-nameplate', HI_DPI);
+  private plateFor: { name: string; art: { w: number; h: number; y: number; size: number; m3d: string } } | null = null;
+  plateArt(name: string): { w: number; h: number; y: number; size: number; m3d: string } {
+    if (this.plateFor?.name !== name) {
+      const iw = (PROP_IMAGES['desk-nameplate'] ?? 1.5) * 100;
+      const box = planeBox(NAMEPLATE, iw);
+      const w = +box.pw.toFixed(2), h = +box.ph.toFixed(2);
+      // (the condensed block, as a nameplate is engraved: about 0.58 em a letter with its spacing)
+      const size = +Math.min(h * 0.46, (w * 0.88) / (Math.max(1, name.length) * 0.58)).toFixed(2);
+      this.plateFor = { name, art: { w, h, y: +(h / 2 + size * 0.35).toFixed(2), size, m3d: box.quad ? homography(w, h, box.quad) : '' } };
+    }
+    return this.plateFor.art;
+  }
 
   // The bands on a photographed jersey's sleeves: each a line parallel to the cuff, up the sleeve from it (top
   // to bottom as the kit lists them; a football's solid sleeve cap first, a baseball sleeve's one or two)
   photoBands(k: FullKit, a: JerseyAnchors, baseball = false): { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] {
+    return this.memo(k, 'bands' + (baseball ? '-bb' : ''), () => this.buildPhotoBands(k, a, baseball));
+  }
+  private buildPhotoBands(k: FullKit, a: JerseyAnchors, baseball: boolean): { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] {
     if (!a.cuffs) return [];
     const out: { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] = [];
     const list = baseball ? (k.stripe2 ? [k.stripe || k.collar, k.stripe2] : [k.stripe || k.collar]) : k.cap ? [] : k.sleeve === 'stripes' ? this.bands(k).map((b) => b.color) : [];
@@ -242,21 +289,31 @@ export class CardSplash implements OnDestroy {
 
   // A photographed sweater's arm bands: the kit's, centered on each forearm
   photoArmBands(k: FullKit, a: JerseyAnchors): { x: number; y: number; w: number; h: number; color: string }[] {
-    if (!a.arms) return [];
-    return a.arms.flatMap((arm) => this.hockeyBands(k).map((b) => ({ x: arm.x, y: +(b.y - 96 + arm.y).toFixed(2), w: arm.w, h: b.h, color: b.color })));
+    return this.memo(k, 'arms', () => {
+      if (!a.arms) return [];
+      return a.arms.flatMap((arm) => this.hockeyBands(k).map((b) => ({ x: arm.x, y: +(b.y - 96 + arm.y).toFixed(2), w: arm.w, h: b.h, color: b.color })));
+    });
   }
 
   // A photographed jersey's hem stripes: the kit's, stacked up from its hem
   photoHems(k: FullKit, cut: Cut, a: JerseyAnchors): { color: string; y: number; h: number }[] {
-    const list = this.hems(k, cut);
-    if (!list.length) return [];
-    const dy = a.hemY - 3 - Math.max(...list.map((l) => l.y + l.h));
-    return list.map((l) => ({ ...l, y: +(l.y + dy).toFixed(2) }));
+    return this.memo(k, 'hems-' + cut, () => {
+      const list = this.hems(k, cut);
+      if (!list.length) return [];
+      const dy = a.hemY - 3 - Math.max(...list.map((l) => l.y + l.h));
+      return list.map((l) => ({ ...l, y: +(l.y + dy).toFixed(2) }));
+    });
   }
 
   // A jersey's colors and details: what the team wore that season (UNIFORM_ERAS), else from its colors: home
-  // the team color, away white, the alternate its dark one
+  // the team color, away white, the alternate its dark one (each built once per team, season and kit)
   kit(kit: Kit): FullKit {
+    const key = `${this.teamKey}/${this.season}/${kit}/${this.colors.join()}`;
+    let k = this.kits.get(key);
+    if (!k) this.kits.set(key, (k = this.buildKit(kit)));
+    return k;
+  }
+  private buildKit(kit: Kit): FullKit {
     const worn = uniformFor(this.teamKey, this.season, kit);
     if (worn) return { ...worn, stripe: worn.stripe ?? worn.outline };
     const [c1, c2, c3] = this.colors;

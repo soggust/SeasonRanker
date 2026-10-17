@@ -31,11 +31,18 @@ test('the Yankees: navy home pinstripes, no name on the back; the road gray outl
   assert.equal(uniformFor(MLB, '147', 2024, 'away').outline, '#0c2340');
   assert.equal(uniformFor(MLB, '147', 2024, 'away').sleeve, 'none');
   assert.equal(uniformFor(MLB, '147', 2010, 'alt').body, home.body, 'no alternate: the alt falls back to the home');
-  // the baseball cut is drawn from the front: the arched name and back number are only drawn for the other cuts
+  // (no names on the back, home or road, in any era; the photographed back is drawn without the arched name)
+  for (const season of [2000, 2009, 2023, 2026]) for (const kit of ['home', 'away']) assert.equal(uniformFor(MLB, '147', season, kit).names, false, `${season} ${kit}`);
+  assert.equal(uniformFor(MLB, '111', 2018, 'home').names, false, 'the Red Sox at home');
+  assert.notEqual(uniformFor(MLB, '111', 2018, 'away').names, false, 'the Red Sox on the road');
+  assert.equal(uniformFor(MLB, '116', 2018, 'home').names, false, 'the Tigers at home');
   const tpl = readFileSync(path.join(ROOT, 'libs/ranker/src/engine/player-card/splash/splash.component.html'), 'utf8');
   const nameBlock = tpl.indexOf('class="sp-j-name"');
-  const guard = tpl.lastIndexOf("@if (cut !== 'baseball')", nameBlock);
-  assert.ok(guard > 0 && nameBlock - guard < 200, 'the back name is guarded against the baseball cut');
+  const guard = tpl.lastIndexOf('@if (k.names !== false)', nameBlock);
+  assert.ok(guard > 0 && nameBlock - guard < 200, 'the back name is guarded by the kit');
+  // (the photographed bases are all backs: no placket, wordmark or front number drawn on them)
+  const photo = tpl.slice(tpl.indexOf('@if (ja; as a)'), tpl.indexOf('} @else {', tpl.indexOf('@if (ja; as a)')));
+  for (const front of ['a.placket', 'sp-j-mark', 'sp-j-front', 'a.buttons']) assert.ok(!photo.includes(front), `${front} on a photographed back`);
 });
 
 test('the Dodgers: blue script, a red front number, plain white; the Reds of 2003 a pinstriped vest', () => {

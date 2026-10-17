@@ -8,7 +8,8 @@ card-splash {
 
 .splash {
   --s: 1;
-  --shelf: 34px;
+  // (the shelf: its lit top, and a front deep enough for the captions set into it)
+  --shelf: 44px;
   --warm: 255, 238, 205;
   --beam: 0.34;
   background: #120e0b;
@@ -66,18 +67,6 @@ card-splash {
     radial-gradient(ellipse 75% 95% at 50% -10%, color-mix(in srgb, var(--team-hi) 45%, transparent), transparent 72%),
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0 2px, rgba(255, 255, 255, 0.025) 2px 3px, transparent 3px 58px),
     linear-gradient(180deg, #2a1f17, #17110d 70%, #0f0b08);
-}
-
-// (the team's color glowing up the wall from behind the shelf: an LED strip)
-.sp-backlight {
-  background: linear-gradient(0deg, color-mix(in srgb, var(--team-accent) 55%, transparent), transparent);
-  bottom: var(--shelf);
-  filter: blur(2px);
-  height: 70px;
-  left: 0;
-  opacity: 0.55;
-  position: absolute;
-  right: 0;
 }
 
 // ---- the header: a small brass plate hung from the molding
@@ -181,19 +170,13 @@ card-splash {
 }
 
 .sp-beam {
-  // (the light falls off with distance: bright at the lamp, most of it gone by the shelf)
-  background: linear-gradient(
-    180deg,
-    rgba(var(--warm), var(--beam)),
-    rgba(var(--warm), calc(var(--beam) * 0.55)) 18%,
-    rgba(var(--warm), calc(var(--beam) * 0.3)) 45%,
-    rgba(var(--warm), calc(var(--beam) * 0.14)) 75%,
-    rgba(var(--warm), 0.03)
-  );
+  // (a cone from the lamp with soft edges, drawn as a conic gradient; the light falls off with distance, bright
+  // at the lamp and most of it gone by the shelf: a mask down it. No blur filter: a filtered layer per lamp was
+  // the costliest raster on a phone, and this reads the same)
+  background: conic-gradient(from 158deg at 50% 0, transparent 0deg, rgba(var(--warm), var(--beam)) 10deg, rgba(var(--warm), var(--beam)) 34deg, transparent 44deg);
   bottom: calc(var(--shelf) - 6px);
-  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
-  filter: blur(5px);
   left: 50%;
+  mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.55) 18%, rgba(0, 0, 0, 0.3) 45%, rgba(0, 0, 0, 0.14) 75%, rgba(0, 0, 0, 0.08));
   mix-blend-mode: screen;
   pointer-events: none;
   position: absolute;
@@ -225,13 +208,14 @@ card-splash {
   position: relative;
   z-index: 2;
 
-  // (contact shadow and the darker ring of ambient occlusion where it meets the shelf)
+  // (contact shadow and the darker ring of ambient occlusion where it meets the shelf; the key light is from
+  // the upper left, so the shadow sits a little to the right of the foot)
   &::before {
     background:
       radial-gradient(closest-side, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.35) 45%, transparent),
       radial-gradient(closest-side, rgba(0, 0, 0, 0.3), transparent);
     background-size: 70% 8px, 100% 18px;
-    background-position: 50% 100%, 50% 100%;
+    background-position: 62% 100%, 58% 100%;
     background-repeat: no-repeat;
     bottom: -7px;
     content: "";
@@ -248,6 +232,43 @@ card-splash {
     height: calc(var(--h, 120px) * var(--s));
     max-width: 100%;
     overflow: visible;
+  }
+
+  // (a photographed base with words projected onto a keystoned face: the box holds the photo and, over it,
+  // each face's flat SVG layer, drawn at one CSS px a unit and zoomed to the piece's size, so the base's
+  // matrix3d, computed once in units, lands the words on the face at any size)
+  > splash-piece > .sp-ph {
+    display: block;
+    height: calc(var(--h, 120px) * var(--s));
+    position: relative;
+
+    > svg.sp-photo {
+      display: block;
+      height: 100%;
+      overflow: visible;
+      width: 100%;
+    }
+  }
+}
+
+.sp-over {
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform-origin: 0 0;
+  zoom: calc(var(--hn, 120) * var(--s) / 100);
+}
+
+// (a banner or a pennant hangs on the back wall behind the shelf line, its foot clear of the shelf, behind
+// whatever stands in front; no contact shadow on the shelf)
+.sp-col.hangs .sp-art {
+  transform: translateY(calc(-26px * var(--s)));
+  z-index: 1;
+
+  &::before {
+    display: none;
   }
 }
 
@@ -1098,7 +1119,7 @@ card-splash {
 @media (max-width: 640px) {
   .splash {
     --s: 0.66;
-    --shelf: 28px;
+    --shelf: 40px;
     height: 236px;
     margin: -14px -14px 14px;
   }
@@ -1657,10 +1678,6 @@ card-splash {
   font-family: var(--f-block);
 }
 
-// (the back wall a touch soft, as a lens focused on the shelf would see it)
-.sp-wall {
-  filter: blur(0.6px);
-}
 
 // (engravings too fine for a phone's size: the pieces keep their engraved rules, the small letters go)
 @media (max-width: 640px) {
@@ -1877,9 +1894,154 @@ card-splash {
   }
 }
 
-// (no blur on the wall: a filter over the whole stage is the costliest thing to raster on a phone)
-.sp-wall {
-  filter: none;
+// ---- the captions: an engraved brass band set into the shelf's front edge under each prop, each stall and
+// each of a coach's honors, carrying its words (the result, the stat line, the seed): one typeface everywhere,
+// never under 11 px, two lines at most and cut with an ellipsis past them (the hover and the tap keep the rest)
+.sp-cap {
+  background: linear-gradient(180deg, #dcc583, #ab8630 46%, #6f5017 84%, #8c6c26);
+  border-radius: 2px;
+  bottom: 4px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  color: #2b1a05;
+  font-family: var(--f-engrave);
+  font-size: 11px;
+  font-weight: 700;
+  left: 50%;
+  letter-spacing: 0.02em;
+  line-height: 13px;
+  max-width: calc(100% - 4px);
+  padding: 2px 8px 2px;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.42);
+  transform: translateX(-50%);
+  width: max-content;
+  z-index: 4;
+
+  span {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  b {
+    font-weight: 700;
+  }
+
+  i {
+    font-style: normal;
+    opacity: 0.55;
+  }
+}
+
+// (a coach's honors stand on the credenza: their captions on its front, one line each, under each honor)
+.sp-honor {
+  position: relative;
+
+  .sp-cap {
+    bottom: auto;
+    max-width: max(calc(100% + 8px), 96px);
+    top: calc(100% + 3px);
+
+    span {
+      -webkit-line-clamp: 1;
+    }
+  }
+}
+
+// ---- the words on the photographed paper, felt and brass (splash.images.ts TEXT_BASES): the sewn felt block
+// capitals of the banner and the pennant (a shadow under them), the ticket mono and the printed block labels
+// of the stub, the pass and the scorecard (flat ink), a rubber stamp
+.sp-felt {
+  fill: #fff;
+  font-family: var(--f-block);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.yr {
+    fill: var(--c2);
+  }
+
+  &.hi {
+    fill: #000;
+    fill-opacity: 0.35;
+  }
+}
+
+.sp-mono {
+  fill: #1f1b17;
+  font-family: var(--f-mono);
+  font-weight: 700;
+  text-anchor: middle;
+
+  &.dim {
+    fill: #6b655c;
+    font-weight: 500;
+  }
+
+  &.red {
+    fill: #b0121f;
+  }
+}
+
+.sp-print {
+  fill: #2a2622;
+  font-family: var(--f-block);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-anchor: middle;
+  text-transform: uppercase;
+
+  &.light {
+    fill: #fff;
+  }
+
+  &.dim {
+    fill: #8a8378;
+  }
+
+  &.bold {
+    fill: #1b1b1b;
+    letter-spacing: 0.04em;
+  }
+
+  &.green {
+    fill: #1f5a2e;
+  }
+
+  &.c1 {
+    fill: var(--c1);
+  }
+
+  &.c2 {
+    fill: var(--c2);
+  }
+}
+
+.sp-stamp-t {
+  fill: #c81e2e;
+  font-family: var(--f-block);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.85;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+.sp-marker.red {
+  fill: #c81e2e;
+}
+
+// (the stage waiting on its season's data: the wall and the shelf alone)
+.stage-wait .sp-shelf {
+  z-index: 1;
 }
 
 // (a tapped prop's name, over it, for a few seconds)
@@ -2232,20 +2394,33 @@ card-splash {
     position: relative;
   }
 
-  // (the photographed brass nameplate on its walnut base, assets/props/desk-nameplate; his name on the plate's
-  // face, the padding keeping it there)
+  // (the photographed brass nameplate on its walnut base, assets/props/desk-nameplate, 66 px tall on a desktop:
+  // its 100 units at 0.66 px each, which is the zoom its name's layer takes; the name itself sits on the SVG
+  // layer projected onto the plate's face)
   .sp-desk-plate {
+    --hn: 84;
     align-self: flex-start;
+    aspect-ratio: 1.526;
     background: center / 100% 100% no-repeat;
-    color: #2b1a05;
+    display: block;
+    height: calc(84px * var(--s));
+    margin-top: calc(-26px * var(--s));
+    position: relative;
+  }
+
+  // (the name engraved in the condensed block, dark on the brass, its lit edge under it)
+  .sp-plate-t {
+    fill: #2b1a05;
     font-family: var(--f-block);
-    font-size: calc(13px * var(--s));
     font-weight: 600;
-    letter-spacing: 0.16em;
-    margin-top: calc(-13px * var(--s));
-    padding: 5% 12% 24% 10%;
+    letter-spacing: 0.14em;
+    text-anchor: middle;
     text-transform: uppercase;
-    white-space: nowrap;
+
+    &.hi {
+      fill: #fff;
+      fill-opacity: 0.4;
+    }
   }
 
   // (on the desk: a mug in the team's color, a binder, a pen)

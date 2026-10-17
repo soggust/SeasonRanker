@@ -1,6 +1,6 @@
 // One piece on the splash, drawn in vector: the real trophies' shapes (stylized, no traced
 // marks), the season's things (a ticket, a towel, a game ball). Its gradients are the splash's (#sp-*).
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { HelmetLook, SHOE_LINES } from './splash.uniforms';
 import { GEAR_BASES, HI_DPI, INFO_CARD, PROP_IMAGES, TINTED, TextBaseArt, propHref, propImage, textBaseArt } from './splash.images';
 import type { Piece } from './splash.scene';
@@ -45,13 +45,15 @@ function laces() {
   });
 }
 
-// A ball's info card: the placard's photo under it, its words set on the plate
+// A ball's info card: the placard's photo under it, its words set on the plate (the base art, 100 tall, drawn
+// at the card's scale k)
 interface Card {
   href: string;
   x: number;
   w: number;
   h: number;
-  texts: { text: string; size: number; y: number }[];
+  k: number;
+  art: TextBaseArt;
 }
 // (the props whose words go on an info card: the game balls, the milestone ball, the puck)
 const CARDED = new Set(['game-ball', 'nba-game-ball', 'milestone-ball', 'puck']);
@@ -70,6 +72,8 @@ interface GearArt {
   templateUrl: './splash-piece.component.html',
   encapsulation: ViewEncapsulation.None,
   host: { style: 'display: contents' },
+  // (a piece's inputs are the scene's objects: it draws again only when they change)
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplashPiece {
   @Input() it!: Piece;
@@ -79,26 +83,29 @@ export class SplashPiece {
 
   // ---- The prop's photo (splash.images.ts), when its prop has one and it isn't a tinted base (those draw
   // themselves): the file, its box (100 tall, its aspect wide, a plate's 12 under it when it has words), the
-  // plate's place and its words
-  img(): { href: string; w: number; h: number; plate: { x: number; w: number; lines: string[] } | null; card: Card | null } | null {
+  // plate's place and its words (built once per piece and its words)
+  private imgCache: { k: string; art: ReturnType<SplashPiece['buildImg']> } | null = null;
+  img(): ReturnType<SplashPiece['buildImg']> {
+    const k = (this.it.id ?? '') + '|' + (this.it.lines ?? []).join('|');
+    if (this.imgCache?.k !== k) this.imgCache = { k, art: this.buildImg() };
+    return this.imgCache.art;
+  }
+  private buildImg(): { href: string; w: number; h: number; plate: { x: number; w: number; lines: string[] } | null; card: Card | null } | null {
     const key = propImage(this.it.id, this.line(0));
     if (!key || TINTED.has(key)) return null;
     const w = +(PROP_IMAGES[key] * 100).toFixed(2);
     const lines = this.plateLines();
     if (lines.length && CARDED.has(key)) {
       // (a ball's or a puck's words on a photographed info card under it, 30 tall; the ball above it)
-      const ca = PROP_IMAGES[INFO_CARD.key] ?? 1.5;
-      const ch = 30, cw = +(ca * ch).toFixed(2);
-      const box = INFO_CARD.boxes[0];
-      const texts = lines.slice(0, 2).map((text, i, all) => {
-        const row = (box.h * ch) / all.length;
-        const size = +Math.min(box.max ?? 10, row * 0.82, (box.w * cw) / (Math.max(1, text.length) * 0.84)).toFixed(2);
-        return { text, size, y: +(100 + box.y * ch + row * i + row / 2 + size * 0.35).toFixed(2) };
-      });
-      return { href: propHref(key, HI_DPI), w: Math.max(w, cw), h: 100 + ch, plate: null, card: { href: propHref(INFO_CARD.key, HI_DPI), x: +((Math.max(w, cw) - cw) / 2).toFixed(2), w: cw, h: ch, texts } };
+      const ch = 30;
+      const art = textBaseArt('card', undefined, lines.slice(0, 2), 0.84, INFO_CARD);
+      if (art) {
+        const k = ch / 100, cw = +(art.w * k).toFixed(2);
+        return { href: propHref(key, HI_DPI), w: Math.max(w, cw), h: 100 + ch, plate: null, card: { href: propHref(INFO_CARD.key, HI_DPI), x: +((Math.max(w, cw) - cw) / 2).toFixed(2), w: cw, h: ch, k, art } };
+      }
     }
     const pw = Math.min(70, Math.max(30, +(w * 0.85).toFixed(2)));
-    return { href: propHref(key, HI_DPI), w, h: lines.length ? 112 : 100, plate: lines.length ? { x: +((w - pw) / 2).toFixed(2), w: pw, lines } : null, card: null };
+    return { href: propHref(key, HI_DPI), w, h: lines.length ? 115 : 100, plate: lines.length ? { x: +((w - pw) / 2).toFixed(2), w: pw, lines } : null, card: null };
   }
 
   // The brass plate's words under a photographed prop: the engraving the vector put on the object (two lines at
@@ -121,9 +128,10 @@ export class SplashPiece {
   private tbCache: { k: string; art: (TextBaseArt & { href: string }) | null } | null = null;
   tbase(): (TextBaseArt & { href: string }) | null {
     const lines = this.it.lines ?? [];
-    const k = this.it.t + '|' + (this.it.id ?? '') + '|' + lines.join('|');
+    const k = this.it.t + '|' + (this.it.id ?? '') + '|' + (this.it.h ?? '') + '|' + lines.join('|');
     if (this.tbCache?.k === k) return this.tbCache.art;
-    const art = textBaseArt(this.it.t, this.it.id, lines);
+    // (a line that would set under about 6 px at the piece's desktop height is left to the shelf's caption)
+    const art = textBaseArt(this.it.t, this.it.id, lines, 0.84, undefined, 6 / ((this.it.h ?? 100) / 100));
     this.tbCache = { k, art: art ? { ...art, href: propHref(art.key, HI_DPI) } : null };
     return this.tbCache.art;
   }

@@ -6,21 +6,28 @@
     <ellipse [attr.cx]="im.w / 2" [attr.cy]="im.h - 1.5" [attr.rx]="im.w * 0.42" ry="2.5" fill="#000" opacity="0.5" />
     <image [attr.href]="im.href" x="0" y="0" [attr.width]="im.w" height="100" preserveAspectRatio="xMidYMax meet" loading="lazy" decoding="async" />
     @if (im.card; as c) {
-      <image [attr.href]="c.href" [attr.x]="c.x" y="100" [attr.width]="c.w" [attr.height]="c.h" preserveAspectRatio="none" decoding="async" />
-      @for (t of c.texts; track $index) {
-        <text [attr.x]="im.w / 2" [attr.y]="t.y" [style.font-size.px]="t.size" class="sp-engr dark hi" dy="0.4">{{ t.text }}</text><text [attr.x]="im.w / 2" [attr.y]="t.y" [style.font-size.px]="t.size" class="sp-engr dark">{{ t.text }}</text>
-      }
+      <!-- (the card's words engraved on its plate as the easel tilts it: the same base art, drawn at the card's size) -->
+      <g [attr.transform]="'translate(' + c.x + ' 100) scale(' + c.k + ')'">
+        <image [attr.href]="c.href" x="0" y="0" [attr.width]="c.art.w" height="100" preserveAspectRatio="none" decoding="async" />
+        @for (t of c.art.texts; track $index) {
+          @if (t.hi) {
+            <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [style.text-anchor]="t.anchor" [attr.dx]="t.hiDx" [attr.dy]="t.hiDy" [attr.transform]="t.transform">{{ t.text }}</text>
+          }
+          <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [style.text-anchor]="t.anchor" [attr.transform]="t.transform">{{ t.text }}</text>
+        }
+      </g>
     }
     @if (im.plate; as p) {
-      <path [attr.d]="'M' + p.x + ' 101.5 h' + p.w + ' l1.5 9.5 h-' + (p.w + 3) + ' z'" fill="url(#sp-lacquer)" />
+      <!-- (the brass plate on the stand's front: one line engraved big, or two) -->
+      <path [attr.d]="'M' + p.x + ' 101.5 h' + p.w + ' l1.5 12.5 h-' + (p.w + 3) + ' z'" fill="url(#sp-lacquer)" />
       <path [attr.d]="'M' + p.x + ' 101.5 h' + p.w" stroke="#fff" stroke-opacity="0.25" />
-      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="6.5" fill="url(#sp-gold)" />
-      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="6.5" fill="url(#sp-brushed)" />
+      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="9" fill="url(#sp-gold)" />
+      <rect [attr.x]="p.x + 2" y="103.5" [attr.width]="p.w - 4" height="9" fill="url(#sp-brushed)" />
       @if (p.lines.length === 1) {
-        <text [attr.x]="im.w / 2" y="108.2" [style.font-size.px]="fs(p.lines[0], p.w - 7, 4)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="108.2" [style.font-size.px]="fs(p.lines[0], p.w - 7, 4)" class="sp-engr dark">{{ p.lines[0] }}</text>
+        <text [attr.x]="im.w / 2" y="109.9" [style.font-size.px]="fs(p.lines[0], p.w - 7, 5.4)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="109.9" [style.font-size.px]="fs(p.lines[0], p.w - 7, 5.4)" class="sp-engr dark">{{ p.lines[0] }}</text>
       } @else {
-        <text [attr.x]="im.w / 2" y="106.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="106.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3)" class="sp-engr dark">{{ p.lines[0] }}</text>
-        <text [attr.x]="im.w / 2" y="109.5" [style.font-size.px]="fs(p.lines[1], p.w - 7, 2.6)" class="sp-engr dark hi" dy="0.3">{{ p.lines[1] }}</text><text [attr.x]="im.w / 2" y="109.5" [style.font-size.px]="fs(p.lines[1], p.w - 7, 2.6)" class="sp-engr dark">{{ p.lines[1] }}</text>
+        <text [attr.x]="im.w / 2" y="107.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3.9)" class="sp-engr dark hi" dy="0.3">{{ p.lines[0] }}</text><text [attr.x]="im.w / 2" y="107.6" [style.font-size.px]="fs(p.lines[0], p.w - 7, 3.9)" class="sp-engr dark">{{ p.lines[0] }}</text>
+        <text [attr.x]="im.w / 2" y="111.6" [style.font-size.px]="fs(p.lines[1], p.w - 7, 3.4)" class="sp-engr dark hi" dy="0.3">{{ p.lines[1] }}</text><text [attr.x]="im.w / 2" y="111.6" [style.font-size.px]="fs(p.lines[1], p.w - 7, 3.4)" class="sp-engr dark">{{ p.lines[1] }}</text>
       }
     }
   </svg>
@@ -28,6 +35,9 @@
   <!-- A piece drawn on a photographed blank base (splash.images.ts TEXT_BASES): the base (tinted with the team's
        color when it's a white felt), the team's mark in its box, the piece's words in their boxes (engraved dark
        on brass, light on a dark band), a whiteboard's play in marker; the vector piece stays the fallback -->
+  <!-- (a keystoned face's words ride an HTML layer over the photo, projected onto the face by the base's
+       matrix3d: the box holds the photo and the layers, sized as the photo alone would be) -->
+  <div class="sp-ph" [class.sp-ph-plain]="!tb.overlays.length" [style.aspect-ratio]="tb.w + ' / 100'">
   <svg [attr.viewBox]="'0 0 ' + tb.w + ' 100'" class="sp-photo" [attr.data-trophy]="it.t">
     @if (!tb.noShadow) {
       <ellipse [attr.cx]="tb.w / 2" cy="98.5" [attr.rx]="tb.w * 0.42" ry="2.5" fill="#000" opacity="0.5" />
@@ -72,13 +82,56 @@
         <path d="M200 100 h92" stroke="#1b3f8a" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" />
       </g>
     }
+    <!-- the words: each on its surface (the plane's transform), its relief under it (the lit edge of an
+         engraving, the shadow of a sewn felt letter; printed ink has none); a line along an arc runs on its own
+         path -->
     @for (t of tb.texts; track $index) {
-      @if (t.hi) {
-        <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [attr.text-anchor]="t.anchor" dy="0.4" [attr.transform]="t.transform">{{ t.text }}</text>
+      @if (t.arc) {
+        <path [attr.id]="'sp-arc-' + tb.key + '-' + $index" [attr.d]="t.arc" fill="none" [attr.transform]="t.transform" />
+        @if (t.hi) {
+          <text [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [attr.dx]="t.hiDx" [attr.dy]="t.hiDy"><textPath [attr.href]="'#sp-arc-' + tb.key + '-' + $index" startOffset="50%" text-anchor="middle">{{ t.text }}</textPath></text>
+        }
+        <text [style.font-size.px]="t.size" [attr.class]="t.cls"><textPath [attr.href]="'#sp-arc-' + tb.key + '-' + $index" startOffset="50%" text-anchor="middle">{{ t.text }}</textPath></text>
+      } @else {
+        <!-- (the anchor as a style: a class's own text-anchor would beat the attribute) -->
+        @if (t.hi) {
+          <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [style.text-anchor]="t.anchor" [attr.dx]="t.hiDx" [attr.dy]="t.hiDy" [attr.transform]="t.transform">{{ t.text }}</text>
+        }
+        <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [style.text-anchor]="t.anchor" [attr.transform]="t.transform">{{ t.text }}</text>
       }
-      <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [attr.text-anchor]="t.anchor" [attr.transform]="t.transform">{{ t.text }}</text>
+    }
+    <!-- the printed marks: a barcode's bars, the airline's plane, the rubber stamp -->
+    @for (m of tb.marks; track $index) {
+      <g [attr.transform]="m.transform">
+        @switch (m.kind) {
+          @case ('barcode') {
+            @for (r of m.rects; track $index) {
+              <rect [attr.x]="r.x" [attr.y]="r.y" [attr.width]="r.w" [attr.height]="r.h" fill="#1b1b1b" fill-opacity="0.88" />
+            }
+          }
+          @case ('plane') {
+            <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" style="fill: var(--c1)" [attr.transform]="'scale(' + m.h / 24 + ') rotate(90 12 12)'" />
+          }
+          @case ('stamp') {
+            <rect x="0" y="0" [attr.width]="m.w" [attr.height]="m.h" [attr.rx]="m.h * 0.12" fill="none" stroke="#c81e2e" [attr.stroke-width]="m.h * 0.1" opacity="0.8" />
+            <text [attr.x]="m.w / 2" [attr.y]="m.h / 2 + m.size! * 0.36" [style.font-size.px]="m.size" class="sp-stamp-t">{{ m.text }}</text>
+          }
+        }
+      </g>
     }
   </svg>
+  <!-- (the keystoned faces' words: each layer its own flat SVG, projected onto the face) -->
+  @for (ov of tb.overlays; track $index) {
+    <svg class="sp-over" [attr.viewBox]="'0 0 ' + ov.w + ' ' + ov.h" [style.width.px]="ov.w" [style.height.px]="ov.h" [style.transform]="ov.m3d" aria-hidden="true">
+      @for (t of ov.texts; track $index) {
+        @if (t.hi) {
+          <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [style.text-anchor]="t.anchor" [attr.dx]="t.hiDx" [attr.dy]="t.hiDy">{{ t.text }}</text>
+        }
+        <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [style.text-anchor]="t.anchor">{{ t.text }}</text>
+      }
+    </svg>
+  }
+  </div>
 } @else {
 @switch (it.t) {
   <!-- ================================ NFL ================================ -->
@@ -342,7 +395,9 @@
           @for (s of stripes(); track $index) {
             <path [attr.d]="gear(b.w).stripe" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w * 0.8" [attr.transform]="'translate(' + (s.dy * 0.5) + ' ' + (s.dy * 0.6) + ')'" />
           }
-          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" />
+          <!-- (the decal on the shell's side, which curves away from the lens: squashed a little and leaned
+               with the shell, so it reads as wrapped on, not pasted flat) -->
+          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" [attr.transform]="'translate(' + (gear(b.w).decal.x + gear(b.w).decal.w / 2) + ' ' + (gear(b.w).decal.y + gear(b.w).decal.h / 2) + ') matrix(0.86 -0.1 0.06 0.96 0 0) translate(' + -(gear(b.w).decal.x + gear(b.w).decal.w / 2) + ' ' + -(gear(b.w).decal.y + gear(b.w).decal.h / 2) + ')'" />
           <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
         </g>
       </svg>
@@ -948,8 +1003,8 @@
       <path d="M9 10 L166 48 L9 86 Z" fill="url(#sp-felt)" />
       <path d="M9 10 L166 48 L9 86 Z" fill="url(#sp-cloth-v)" />
       <path d="M9 10 L166 48 L9 86" fill="none" style="stroke: var(--c2)" stroke-width="3" />
-      <text x="66" y="50" class="sp-pennant-t" [style.font-size.px]="fs(line(0), 110, 13, 0.56)">{{ line(0) }}</text>
-      <text x="70" y="62" class="sp-pennant-t small">{{ line(1) }}</text>
+      <text x="66" y="50" class="sp-pennant-t" [style.font-size.px]="fs(line(0) + ' ' + line(1), 110, 13, 0.56)">{{ line(0) }} {{ line(1) }}</text>
+      <text x="70" y="62" class="sp-pennant-t small">{{ line(2) }}</text>
     </svg>
   }
   @case ('bats') {

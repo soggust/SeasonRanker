@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, REMOVE_STYLES_ON_COMPONENT_DESTROY } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -67,7 +67,13 @@ import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.comp
   ],
   bootstrap: [AppComponent],
   // (the column headers' drag and drop reorders columns through the position service)
-  providers: [{ provide: COLUMN_MOVER, useExisting: PositionService }],
+  providers: [
+    { provide: COLUMN_MOVER, useExisting: PositionService },
+    // (a lazily drawn component's styles stay in the document once added: Angular's default pulls them out when
+    // its last instance goes and puts them back on the next, and each put-back restyles the whole page, 100-350
+    // ms of a throttled phone's main thread every time a card opened its splash)
+    { provide: REMOVE_STYLES_ON_COMPONENT_DESTROY, useValue: false },
+  ],
   imports: [
     BrowserModule,
     SplashGalleryHost,

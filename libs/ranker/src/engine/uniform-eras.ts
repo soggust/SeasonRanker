@@ -46,7 +46,9 @@ export interface KitColors {
   //   numberFont  the numbers' letterforms: 'block' (the default athletic block), 'rounded' (a rounded
   //               sans), 'serif' (a serifed block), 'varsity' (a heavy block with a second outline)
   //   nameFont    the nameplate's letterforms: as numberFont (default 'block')
+  //   names       false for a kit with no names on the back (the Yankees', the Red Sox' and Tigers' home)
   bands?: string[];
+  names?: boolean;
   hem?: string[];
   yoke?: string;
   cap?: string;
