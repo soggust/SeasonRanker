@@ -138,6 +138,7 @@ describe('wallet rules', { skip }, () => {
       playBet({ odds: 7.5 }),
       playBet({ run: 1 }),
       playBet({ sport: 'mma' }),
+      playBet({ sport: 'nascar' }),
       playBet({ market: 'parlay' }),
       playBet({ side: 'over' }),
       playBet({ market: 'ml', line: -3.5 }),
@@ -153,6 +154,23 @@ describe('wallet rules', { skip }, () => {
     await assertSucceeds(place(db, 'ann', 'a-like', playBet({ tier: 'like', stake: 0.5 })));
     await assertSucceeds(place(db, 'ann', 'all-in', playBet({ stake: 999.5 })));
     await assertFails(place(db, 'ann', 'more', playBet({ stake: 1 })));
+  });
+
+  test('a UFC bout: its own start, not the card’s; the fighters’ names its matchup; a moneyline or a total', async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    const bout = (over = {}) => playBet({ sport: 'mma', event: '401908380', matchup: 'Chelsea Chandler @ Melissa Croden', market: 'ml', side: 'away', line: null, odds: 275, pick: 'Chelsea Chandler ML', tier: 'bet', ref: '401908380:ml', stake: 10, ...over });
+    // (the card's first bout begun an hour ago: a later bout, its own start ahead, still takes a bet)
+    await assertSucceeds(place(db, 'ann', 'later-bout', bout({ start: later(2) })));
+    await assertSucceeds(place(db, 'ann', 'bout-total', bout({ market: 'total', side: 'over', line: 2.5, odds: -120, pick: 'Over 2.5 rounds', start: later(3) })));
+    await assertSucceeds(place(db, 'ann', 'accents', bout({ matchup: "Jean-Pierre O'Néill @ José Aldo Jr.", start: later(1) })));
+    // (a bout begun, a spread or a prop on one, a matchup that isn't two names, a long name)
+    await assertFails(place(db, 'ann', 'begun', bout({ start: later(-1) })));
+    await assertFails(place(db, 'ann', 'spread', bout({ market: 'spread', side: 'home', line: -1.5 })));
+    await assertFails(place(db, 'ann', 'tags', bout({ matchup: '<b> @ <i>' })));
+    await assertFails(place(db, 'ann', 'one', bout({ matchup: 'Chelsea Chandler' })));
+    await assertFails(place(db, 'ann', 'long', bout({ matchup: `${'A'.repeat(60)} @ B` })));
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 970);
   });
 
   test("a CHECK's side (its tier check, not the bot's pick: an admin's alone), and a prop's other side with the pick's id in its ref", async () => {

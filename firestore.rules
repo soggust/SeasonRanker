@@ -389,10 +389,14 @@ service cloud.firestore {
 
     // (what a bet is on, a straight bet's or a parlay leg's: its game, its market and side, its price, the bot's
     // tag on it)
+    // (a UFC bout's matchup its fighters' names, "A @ B" as the MMA board writes them (mma-desk.mjs), each bout
+    // with its own start, not the card's; a bout a moneyline or a round total, never a spread or a prop)
     function validPlayPick(d) {
-      return d.sport in ['nfl', 'nba', 'nhl', 'mlb']
+      return d.sport in ['nfl', 'nba', 'nhl', 'mlb', 'mma']
         && d.event is string && d.event.matches('^[0-9]{1,20}$')
-        && d.matchup is string && d.matchup.matches('^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$')
+        && d.matchup is string
+        && ((d.sport != 'mma' && d.matchup.matches('^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$'))
+          || (d.sport == 'mma' && d.matchup.matches('^[^<>@]{1,48} @ [^<>@]{1,48}$') && d.market in ['ml', 'total']))
         && d.start is timestamp && d.start > request.time && d.start < request.time + duration.value(15, 'd')
         && d.odds is int && ((d.odds >= 100 && d.odds <= 50000) || (d.odds <= -100 && d.odds >= -50000))
         && d.pick is string && d.pick.size() > 0 && d.pick.size() <= 80
