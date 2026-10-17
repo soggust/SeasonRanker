@@ -28,7 +28,7 @@ body{margin:0;background:#0b3322}
 .pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .ticket{background:linear-gradient(180deg,#f4efe3,#ece5d4);color:#1a1a1a;font-family:"IBM Plex Mono",monospace;-webkit-mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) top/16px 100% repeat-x;mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) top/16px 100% repeat-x;filter:drop-shadow(0 -6px 14px rgba(0,0,0,.5))}
 .chev{transition:rotate .2s cubic-bezier(.2,.8,.2,1)}
-.scroll{scrollbar-width:none}
+.scroll{scrollbar-width:thin;scrollbar-color:#d9a520 transparent}
 .sheet{animation:up .22s cubic-bezier(.2,.8,.2,1)}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 @keyframes up{from{translate:0 40px;opacity:0}}
@@ -66,7 +66,6 @@ body{margin:0;background:#0b3322}
 <button class="btn" onClick="{{grp.toggle}}" aria-expanded="{{grp.open}}" style="width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 10px; text-align: left; border-bottom: 1px solid {{grp.edge}}; background: linear-gradient(90deg, {{grp.wash}}, transparent 75%); position: sticky; top: 0; z-index: 1; background-color: #121212;">
 <span aria-hidden="true" style="width: 40px; flex: none; display: flex; justify-content: center;"><svg class="chev" width="12" height="12" viewBox="0 0 24 24" style="rotate: {{grp.rot}};"><path d="M9 6l6 6-6 6" fill="none" stroke="{{grp.color}}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
 <span style="font-family: Outfit, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2.5px; color: {{grp.color}}; text-shadow: 0 0 8px {{grp.glow}};">{{grp.tag}}</span>
-<span style="font-size: 11px; color: #ccc;">{{grp.count}}</span>
 <span style="flex: 1;"></span>
 <span style="font-size: 11px; color: #ccc;"><b style="color: #fff;">{{grp.record}}</b> · <b style="color: #3ee07a;">{{grp.units}}</b></span>
 </button>
