@@ -46,7 +46,8 @@ a{color:#ebc56c}a:hover{color:#fff}
 .cardlink:hover{filter:brightness(1.15);translate:0 -1px}
 .ddpill:hover,.placebtn:hover{filter:brightness(1.18)}
 .scroll{scrollbar-width:thin;scrollbar-color:#d9a520 rgba(0,0,0,.25)}
-.track{display:flex;gap:36px;white-space:nowrap;width:max-content}
+.track{display:flex;align-items:center;gap:36px;white-space:nowrap;width:max-content;line-height:1}
+.track>span{line-height:1}
 @media (prefers-reduced-motion:no-preference){.track{animation:tick 45s linear infinite}}
 @keyframes tick{to{transform:translateX(-50%)}}
 @media (min-width:1000px){.shell{height:100vh;overflow:hidden}.work{flex:1;min-height:0}.col{min-height:0;height:100%}.board{flex:1;min-height:0}.boardscroll{overflow-y:auto}.side{height:100%;overflow-y:auto}}
@@ -74,7 +75,7 @@ a{color:#ebc56c}a:hover{color:#fff}
 </a>
 </header>
 
-<div class="dots" role="marquee" aria-label="Scores and start times" style="max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 4px; overflow: hidden; padding: 7px 0; font-family: Outfit, sans-serif; font-size: 12px; letter-spacing: 1px;">
+<div class="dots" role="marquee" aria-label="Scores and start times" style="max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 4px; overflow: hidden; height: 30px; display: flex; align-items: center; font-family: Outfit, sans-serif; font-size: 12px; letter-spacing: 1px;">
 <div class="track">
 <sc-for list="{{tickerTwice}}" as="tk" hint-placeholder-count="10">
 <span style="display: inline-flex; align-items: center; gap: 8px;"><span style="font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,.6);">{{tk.sport}}</span><span style="color: #fff;">{{tk.away}}</span><span class="glow">{{tk.as}}</span><span style="color: #fff;">{{tk.home}}</span><span class="glow">{{tk.hs}}</span><span style="{{tk.stateStyle}}">{{tk.state}}</span></span>
