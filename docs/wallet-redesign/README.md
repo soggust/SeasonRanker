@@ -70,8 +70,9 @@ existing `toBets`).
 ### 3. Rebuy (right half)
 
 - **Bar**: "REBUY", with "Play money · no cash in or out, ever" on the right.
-- **Rebuy button**: a 76px casino chip (`chip.chip`, `$chip-blue-reload`) reading "BUY BACK IN". The first tap
-  turns it red (`$chip-red`) and changes it to "SURE?", with text explaining what happens. The second tap calls
+- **Rebuy button**: the site's standard settings button (`_account-kit.scss` primary; the owner, 2026-10-17:
+  "the standard settings buttons, not chips") reading "Buy back in". The first tap turns it the danger button
+  reading "Sure?", with text explaining what happens. The second tap calls
   **the existing `reload()`**. Clicking anywhere else cancels. Keep whatever confirm the page has today if it's
   stricter.
 - **Your runs**: one paper ticket per run (the slip's paper: cream, IBM Plex Mono, scalloped edges) in a grid

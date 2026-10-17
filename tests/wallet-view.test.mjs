@@ -162,3 +162,20 @@ test('on the wall: the biggest cash, the worst beat; the tells', () => {
   assert.equal(tells['Bets placed after 10 PM'], '1–1 · −1.9u');
   assert.deepEqual(w.tells([]), []);
 });
+
+// The owner (2026-10-17): the wallet's buttons are the settings sheet's standard ones, not chips; the trophy
+// chips and the rack stay as pictures
+test('the wallet: Rebuy and the periods are the standard buttons, not chips', async () => {
+  const fs = await import('node:fs');
+  const root = path.join(import.meta.dirname, '..', 'libs/ranker/src');
+  const html = fs.readFileSync(path.join(root, 'engine/account/wallet/wallet-page.component.html'), 'utf8');
+  const scss = fs.readFileSync(path.join(root, 'styles/components/wallet-page.scss'), 'utf8');
+  const rebuy = html.match(/<button[^>]*class="rebuy-btn"[^>]*>/)?.[0] ?? '';
+  assert.match(rebuy, /\[class\.app-btn-primary\]="!sure"/);
+  assert.match(rebuy, /\[class\.app-btn-danger\]="sure"/);
+  assert.match(html, /sure \? 'Sure\?' : 'Buy back in'/);
+  assert.doesNotMatch(html + scss, /rebuy-chip/);
+  for (const m of html.matchAll(/<div class="wp-seg"[\s\S]*?<\/div>/g)) assert.match(m[0], /<button type="button" class="app-pill"/);
+  assert.match(html, /class="tcase-btn"/);
+  assert.match(html, /class="chip-rack"/);
+});

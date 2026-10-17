@@ -567,7 +567,7 @@
       </div>
     </section>
 
-    <!-- Rebuy: a casino chip, BUY BACK IN; the first tap turns it red, SURE?, the second calls the existing reload()
+    <!-- Rebuy: the site's standard button, Buy back in; the first tap turns it the danger button, Sure?, the second calls the existing reload()
          (back to 1,000, a new run); a click anywhere else keeps the run. Then the runs as paper tickets, and an
          admin's Clear history -->
     <section class="wp-panel" aria-label="Rebuy">
@@ -575,12 +575,11 @@
       <div class="wp-body">
       @let sure = confirming === 'reload';
       <div class="rebuy-head">
-        <button type="button" class="rebuy-chip" [class.sure]="sure" [disabled]="busy" [attr.aria-label]="(sure ? 'Confirm: buy back in at ' : 'Buy back in at ') + (start | number)" (click)="tapRebuy()">
-          @if (sure) { SURE? } @else { BUY<br />BACK IN }
-          <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+        <button type="button" class="rebuy-btn" [class.app-btn-primary]="!sure" [class.app-btn-danger]="sure" [disabled]="busy" [attr.aria-label]="(sure ? 'Confirm: buy back in at ' : 'Buy back in at ') + (start | number)" (click)="tapRebuy()">
+          {{ sure ? 'Sure?' : 'Buy back in' }}
         </button>
         <div class="rebuy-words" aria-live="polite">
-          <span class="rebuy-title">{{ sure ? 'Tap the red chip to buy back in' : 'Buy back in at ' + (start | number) }}</span>
+          <span class="rebuy-title">{{ sure ? 'Tap Sure? to buy back in' : 'Buy back in at ' + (start | number) }}</span>
           <span class="rebuy-text">{{ sure ? 'Your bankroll goes back to ' + (start | number) + ' and run #' + (runNo() + 1) + ' starts. Every ticket and record stays; open tickets still settle and count (their payouts stay with this run). Tap anywhere else to keep playing this run.' : 'Down bad, or just want a clean slate? A rebuy resets your chips to ' + (start | number) + ' and starts a new run. Your history and records stay.' }}</span>
         </div>
       </div>
@@ -691,7 +690,7 @@
           @if (wallet.tally()) {
             <div class="wp-seg" role="group" aria-label="Period">
               @for (p of headsPeriods; track p.id) {
-                <button type="button" [attr.aria-pressed]="headsPeriod() === p.id" (click)="headsPeriod.set(p.id)">{{ p.label }}</button>
+                <button type="button" class="app-pill" [attr.aria-pressed]="headsPeriod() === p.id" (click)="headsPeriod.set(p.id)">{{ p.label }}</button>
               }
             </div>
           }
@@ -757,7 +756,7 @@
           @if (periods().length > 1) {
             <div class="wp-seg" role="group" aria-label="Leaderboard period">
               @for (p of periods(); track p.id) {
-                <button type="button" [attr.aria-pressed]="period() === p.id" (click)="period.set(p.id)">{{ p.label }}</button>
+                <button type="button" class="app-pill" [attr.aria-pressed]="period() === p.id" (click)="period.set(p.id)">{{ p.label }}</button>
               }
             </div>
           }
