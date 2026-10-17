@@ -707,6 +707,26 @@ export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => 
 // the Algorithm tab's Tracked panel
 export const LINE_GATE_N = 200;
 export const LINE_GATE_MIN = 40;
+// The props gated by CLV, by stat (round E, 2026-10-17, the brief's #7: the line gate's twin): a stat's props (its
+// propType, e.g. recYds) are tracked, not bet, while the closing-line value of its last LINE_GATE_N graded prop bets
+// with a close is negative, and bet again once it's positive; under LINE_GATE_MIN graded with a close, too few to
+// judge, bet as before. { [stat]: { on, n, ev, beat, why } } for the stats with any graded prop; a stat not in it
+// isn't gated (none graded). state.json's propGate, the Algorithm tab's Tracked panel
+export function propGate(bets, sport) {
+  const out = {};
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType);
+  const by = new Map();
+  for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
+  for (const [stat, list] of by) {
+    const last = list.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
+    const n = last.length;
+    const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
+    const beat = round(last.filter((b) => b.clv.beat).length / n, 4);
+    const on = n < LINE_GATE_MIN || ev >= 0;
+    out[stat] = { on, n, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close: under ${LINE_GATE_MIN}, bet as before` : `CLV ${ev >= 0 ? '+' : ''}${ev} over the last ${n} graded ${stat} props: bet`) : `CLV ${ev} over the last ${n} graded ${stat} props: tracked, not bet, till it's positive` };
+  }
+  return out;
+}
 export function lineGate(bets, sport) {
   const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev));
   const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
