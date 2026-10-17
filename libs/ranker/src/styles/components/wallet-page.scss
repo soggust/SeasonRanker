@@ -1079,8 +1079,14 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
+// (a push-pin in its ticket's colour (--pin, wallet-page.component.ts pinColor), lit at its top-left, deep at its foot)
 .pin {
-  background: radial-gradient(circle at 35% 30%, #ff9b8f, chip.$chip-red 50%, #7a1414);
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--pin, #{chip.$chip-red}) 45%, #fff),
+    var(--pin, #{chip.$chip-red}) 50%,
+    color-mix(in srgb, var(--pin, #{chip.$chip-red}) 55%, #000)
+  );
   border-radius: v.$radius-round;
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.55);
   height: 16px;

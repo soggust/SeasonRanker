@@ -75,6 +75,16 @@ const readRange = (): DateRange => {
 // (a game this close to its start, or under way, has its score looked up each minute)
 const NEAR = 15 * 60e3;
 
+// (a pin box's colours for the corkboards' push-pins: red, blue, green, yellow, purple, orange, white)
+const PIN_COLORS = ['#d23a2e', '#2f6fd6', '#2e9e57', '#e2b72b', '#8a4fd1', '#e6782a', '#e9e4da'];
+
+// (a ticket id's hash, FNV-1a: the tilt and the pin colour read it, steady per ticket)
+function pinHash(id: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+
 @Component({
   selector: 'wallet-page',
   host: { role: 'main' },
@@ -89,9 +99,13 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (a pinned ticket's slight tilt on the corkboard, -2.4 to 2.4 degrees: random-looking but steady per ticket, from
   // its id, so a ticket doesn't swing as the scores tick)
   tilt(b: { id: string }): number {
-    let h = 2166136261;
-    for (let i = 0; i < b.id.length; i++) h = Math.imul(h ^ b.id.charCodeAt(i), 16777619);
-    return Math.round((((h >>> 0) % 97) / 96 - 0.5) * 48) / 10;
+    return Math.round(((pinHash(b.id) % 97) / 96 - 0.5) * 48) / 10;
+  }
+
+  // (a pinned ticket's push-pin colour: one of a pin box's colours, steady per ticket, from its id (the owner:
+  // not just red))
+  pinColor(b: { id: string }): string {
+    return PIN_COLORS[(pinHash(b.id) >>> 7) % PIN_COLORS.length];
   }
   readonly canUse = canUse;
   readonly start = START;

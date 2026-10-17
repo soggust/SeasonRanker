@@ -25,7 +25,7 @@
           @let d = decided().get(b.id);
           @let live = ticketLive(b);
           <div class="board-pinned" [style.rotate.deg]="tilt(b)">
-            <span class="pin" aria-hidden="true"></span>
+            <span class="pin" aria-hidden="true" [style.--pin]="pinColor(b)"></span>
             <article class="ticket" [class.live]="live" [attr.aria-label]="'Ticket ' + ticketNo(b) + (live ? ', live' : '')">
               <div class="ticket-top">
                 <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
@@ -104,7 +104,7 @@
         @for (b of settledTickets(); track b.id) {
           @let res = stampOf(b);
           <div class="board-pinned" [style.rotate.deg]="tilt(b)">
-            <span class="pin" aria-hidden="true"></span>
+            <span class="pin" aria-hidden="true" [style.--pin]="pinColor(b)"></span>
             <article class="ticket" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
               <div class="ticket-top">
                 <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
@@ -499,7 +499,7 @@
               @let miss = beat && wb.kind === 'parlay' ? missedLeg(wb) : null;
               <figure class="pinned" [class.beat]="beat">
                 <div class="pinned-ticket">
-                  <span class="pin" aria-hidden="true"></span>
+                  <span class="pin" aria-hidden="true" [style.--pin]="pinColor(wb)"></span>
                   <div class="wall-ticket">
                     <div class="wall-top"><span class="wall-brand">The Book</span><span class="wall-no">{{ ticketNo(wb) }} · {{ wb.placedAt | date: 'EEE MMM d' }}</span></div>
                     <hr class="perf" />
