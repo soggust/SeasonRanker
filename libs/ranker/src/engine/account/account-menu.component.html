@@ -41,6 +41,21 @@
       </a>
     }
     <div class="account-divider" role="separator"></div>
+    <!-- (development against the emulators alone: stage this user as an admin, or back to a plain user; the
+         claim is set on the Auth emulator and read back from the token, as production reads it) -->
+    @if (stageable) {
+      <button
+        mat-menu-item
+        type="button"
+        class="stage-admin"
+        role="menuitemcheckbox"
+        [attr.aria-checked]="user.admin"
+        [disabled]="staging"
+        (click)="stageAdmin(!user.admin)"
+      >
+        <mat-icon aria-hidden="true" [fontIcon]="user.admin ? 'check_box' : 'check_box_outline_blank'"></mat-icon><span>Stage as admin</span>
+      </button>
+    }
     <button mat-menu-item type="button" (click)="signOut()">
       <mat-icon aria-hidden="true" fontIcon="logout"></mat-icon><span>Sign Out</span>
     </button>

@@ -33,8 +33,9 @@ export function usingEmulators(): boolean {
 }
 
 // The emulators' ports, for a dev run that needs its own (localStorage.emulatorPorts =
-// "<auth>,<firestore>", e.g. "9101,8101"); the defaults otherwise
-function emulatorPorts(): { auth: number; firestore: number } {
+// "<auth>,<firestore>", e.g. "9101,8101"); the defaults otherwise (exported for the account menu's "Stage as
+// admin", which talks to the Auth emulator itself: engine/account/dev-admin.ts)
+export function emulatorPorts(): { auth: number; firestore: number } {
   try {
     const [auth, firestore] = (localStorage.getItem('emulatorPorts') ?? '').split(',').map(Number);
     return { auth: auth || 9099, firestore: firestore || 8080 };

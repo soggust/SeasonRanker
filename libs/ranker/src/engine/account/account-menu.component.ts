@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 import { SPORT } from '@sport/sport';
+import { FIREBASE_CONFIG, emulatorPorts, usingEmulators } from '@ranker/core/firebase';
 import { goHome, pageHash, pagePath } from '@ranker/engine/page-url';
 import { AccountService } from './account.service';
 import { errorMessage } from './account-helpers';
+import { showStageAdmin, stageEmulatorAdmin } from './dev-admin';
 import { canUse } from './features';
 
 // The sport bar's account entry, on the far right: signed out, a small Sign in (the brand after it);
 // signed in, in the brand's place, the user's display name then their avatar (phones: the avatar alone),
 // opening their menu: the account pages (at their own addresses: page-url.ts), Settings and Sign out. A faint
-// circle while a returning user's sign-in is restored.
+// circle while a returning user's sign-in is restored. On the dev server against the emulators, a "Stage as
+// admin" checkbox above Sign out (dev-admin.ts), so an admin and a plain user can both be tried on localhost.
 @Component({
   selector: 'account-menu',
   templateUrl: './account-menu.component.html',
@@ -46,6 +49,26 @@ export class AccountMenuComponent {
   isOpen(hash: string): boolean {
     const here = pageHash();
     return here === hash || here.startsWith(hash + '/');
+  }
+
+  // (the switch: the dev server with the emulators on, never a build and never the live project)
+  readonly stageable = showStageAdmin(isDevMode(), usingEmulators());
+  staging = false;
+
+  // Sets (or clears) the signed-in emulator user's admin claim on the Auth emulator, then reads the token again
+  // so ADMIN comes from the claim exactly as production's does (never an override the rules couldn't see)
+  async stageAdmin(admin: boolean): Promise<void> {
+    const uid = this.account.user()?.uid;
+    if (!uid || this.staging) return;
+    this.staging = true;
+    try {
+      await stageEmulatorAdmin((url, init) => fetch(url, init), { projectId: FIREBASE_CONFIG.projectId, port: emulatorPorts().auth, uid, admin });
+      await this.account.refreshAdmin();
+    } catch (error) {
+      alert(errorMessage(error));
+    } finally {
+      this.staging = false;
+    }
   }
 
   async signOut(): Promise<void> {

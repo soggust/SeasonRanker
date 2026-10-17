@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, computed, effect, isDevMode, signal, untracked } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, computed, effect, signal, untracked } from '@angular/core';
 import { ModelBet, Settled } from '../../bets/desk-model';
 import { CURVE_W } from '../../bets/desk-math';
 import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../bets/date-range';
@@ -107,8 +107,9 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   ];
   readonly periods = computed(() => this.allPeriods.filter((p) => this.boards()?.[p.id]?.rows?.length));
   readonly board = computed(() => this.boards()?.[this.period()] ?? null);
-  // (Clear history: an admin's (the token's claim), and in development for testing)
-  readonly admin = (): boolean => isDevMode() || ADMIN();
+  // (Clear history: an admin's (the token's claim) alone, in development too: stage one with the account menu's
+  // "Stage as admin" against the emulators)
+  readonly admin = (): boolean => ADMIN();
   // (the Bets page's Open Bets or Closed Bets tab: those bets alone, no tiles, the rest or the slip)
   @Input() only: 'open' | 'closed' | null = null;
   // (a link to the Bets page lands on its Place Bets, not the Algorithm or Open Bets)

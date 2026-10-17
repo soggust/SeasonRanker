@@ -157,15 +157,7 @@ export class AccountService {
     this.known.set(true);
 
     // (admin: a custom claim on the token; a fresh token, so a claim set since the last visit applies now)
-    user
-      .getIdTokenResult(true)
-      .then((token) => {
-        const admin = token.claims['admin'] === true;
-        ADMIN.set(admin);
-        this.patch(user.uid, { admin });
-      })
-      .catch(() => undefined)
-      .finally(() => this.adminKnown.set(true));
+    this.readAdmin(user).finally(() => this.adminKnown.set(true));
 
     const [firestore, { doc, onSnapshot }] = await firestoreSdk();
     // (signed out or someone else since: their listener, not this one)
@@ -183,6 +175,24 @@ export class AccountService {
       },
       (error) => console.error('Profile', error),
     );
+  }
+
+  // The admin flag from a fresh token's claim: the one way it's ever set (production and the emulators alike)
+  private readAdmin(user: User): Promise<void> {
+    return user
+      .getIdTokenResult(true)
+      .then((token) => {
+        const admin = token.claims['admin'] === true;
+        ADMIN.set(admin);
+        this.patch(user.uid, { admin });
+      })
+      .catch(() => undefined);
+  }
+
+  // Reads the signed-in user's admin claim again, after it was changed on the server (the account menu's
+  // dev-only "Stage as admin" against the Auth emulator: dev-admin.ts)
+  async refreshAdmin(): Promise<void> {
+    await this.readAdmin(await this.me());
   }
 
   private patch(uid: string, change: Partial<AccountUser>): void {
