@@ -93,8 +93,8 @@ export interface SkillPlayer {
   statFights?: number;
   // The division the row's belt is for (his own, or the one he holds, on pound-for-pound)
   division?: string;
-  // No UFC fight in the last year (fighting elsewhere, or out of the UFC's rankings for the layoff: no
-  // rank counts as average)
+  // No UFC fight in the last year (fighting elsewhere, or out of the UFC's rankings for the layoff: unranked,
+  // a UFC fighter counts as #12 on Org Rank, one fighting elsewhere as average: sport.ts scoreValue)
   inactive?: boolean;
   // Pound-for-pound rows: what his rank counts as in the ranking, 0-16 (the P4P top 15, then his
   // division rank behind them; null: neither)
@@ -190,16 +190,19 @@ export type SkillPreset = string;
 // (and not shown there: shownWhen)
 const careerTotal = (allTimeBoost: number) => (settings: SportSettings) => (allTime(settings) ? allTimeBoost : 0);
 
-// The striking and grappling stats' weight: in full in the current lists, half all-time (where a career
-// is judged on its results; the style behind them a tiebreaker)
-const BOX_ALLTIME = 0.5;
-const boxBoost = (settings: SportSettings) => (allTime(settings) ? BOX_ALLTIME : 1);
+// The striking and grappling stats' weight: half behind their sliders, in the current lists as in the all-time
+// ones. Twelve rates that read a style rather than results: at full strength the twelve together outweighed
+// the results and pushed the current lists away from the sport's own rankings (the 2026-10-17 audit: the men's
+// divisions' rank correlation with the UFC's top 15s 0.79 at full, 0.81 at half, Org Rank off). The sliders
+// are still the user's weights: a stat at 100 counts twice what it does at 50.
+const BOX_BOOST = 0.5;
+const boxBoost = () => BOX_BOOST;
 
 // Every division has the same columns; the presets (skill-presets.ts) weigh them
 const MMA_STATS: SkillStat[] = [
   { key: 'winPct', label: 'Record', description: 'His whole pro record, wins-losses-draws, the regional fights before the big promotions too (ranked on win percentage; 3x behind its slider all-time)', kind: 'efficiency', format: 'record', boost: (settings) => (allTime(settings) ? 3 : 1) },
   { key: 'recent', label: 'Recent', description: 'His last five fights, newest first (ranked on a recency-weighted win rate); counts double behind its slider in the current lists, not at all in the all-time ones', kind: 'efficiency', format: 'recent', boost: (settings) => (allTime(settings) ? 0 : 2), shownWhen: (settings) => !allTime(settings) },
-  { key: 'officialRank', label: 'Org Rank', description: "His promotion's official rank in his division, or pound-for-pound on those tabs: UFC.com's top 15 for a UFC fighter, the PFL's top 10 for a PFL one (counting five places below the UFC's, its field shallower: its champion as the UFC's #5, its #10 as #15). A champion is #0, above #1; an unranked fighter counts as #16; one fighting elsewhere (no rankings), or retired, as average. With UFC Fighters Only on, it's the UFC's rank. Counts 6x behind its slider among current fighters, 1x in the all-time lists", kind: 'efficiency', format: 'rank', noTies: true, negative: true, missingIsAverage: true, scale: [0, 16], settled: true, boost: (settings) => (allTime(settings) ? 1 : 6), shownWhen: (settings) => !allTime(settings) },
+  { key: 'officialRank', label: 'Org Rank', description: "His promotion's official rank in his division, or pound-for-pound on those tabs: UFC.com's top 15 for a UFC fighter, the PFL's top 10 for a PFL one (counting five places below the UFC's, its field shallower: its champion as the UFC's #5, its #10 as #15). A champion is #0, above #1; an unranked fighter counts as #16, or #12 when he's had no UFC fight in a year (dropped from the rankings for the layoff, not beaten out of them: between the ranked and the rest); one fighting elsewhere (no rankings), or retired, as average. With UFC Fighters Only on, it's the UFC's rank. Counts 6x behind its slider among current fighters, 1x in the all-time lists", kind: 'efficiency', format: 'rank', noTies: true, negative: true, missingIsAverage: true, scale: [0, 16], settled: true, boost: (settings) => (allTime(settings) ? 1 : 6), shownWhen: (settings) => !allTime(settings) },
   { key: 'peakRank', label: 'Peak Rank', description: "The best he ranked in his division in any month of his career, by the rating across every promotion (the same monthly rankings career points come from): the top spot as the belt, the next as #1, and so on (#16: never that high). The all-time lists' rank, in the current ones' Org Rank place; counts 1x behind its slider", kind: 'efficiency', format: 'rank', noTies: true, negative: true, scale: [0, 16], settled: true, shownWhen: (settings) => allTime(settings) },
   // (the title ones count double and triple behind their sliders all-time, the rating 12x in the current lists and career points 6x all-time: the clearest marks of an elite career.
   // The career totals (titles, quality wins) don't count in the current lists, where form leads: careerTotal)
@@ -207,7 +210,7 @@ const MMA_STATS: SkillStat[] = [
   { key: 'titleWins', label: 'Title Wins', description: 'Title fight wins in the UFC, PRIDE, Strikeforce, the WEC, Bellator and the PFL: winning a belt and each defense (a Bellator or PFL title counts half, an interim one half again); counts double behind its slider all-time, not at all in the current lists; scored in proportion, 0 to 10', kind: 'volume', format: 'int', boost: careerTotal(3), scale: [10, 0], shownWhen: (settings) => allTime(settings) },
   // (the competition ones: results weighed by whom they came against. The rating leads the current
   // lists and career points the all-time ones: each counts many times over behind its slider there)
-  { key: 'rating', label: 'Rating', description: "The MMA rating: every pro fight since 1997 across the promotions covered, each moving it by how surprising the result was (beating a highly rated opponent is worth far more than beating a low one; a finish counts fully, a split decision for less), shown cautiously (less its uncertainty, which grows while he's out). On pound-for-pound tabs, against his own division's best. Counts 12x behind its slider in the current lists, not at all in the all-time ones (a career is judged by its points and peak, not where it stands today)", kind: 'efficiency', format: 'int', settled: true, boost: (settings) => (allTime(settings) ? 0 : 12), shownWhen: (settings) => !allTime(settings) },
+  { key: 'rating', label: 'Rating', description: "The MMA rating: every pro fight since 1997 across the promotions covered, each moving it by how surprising the result was (beating a highly rated opponent is worth far more than beating a low one; a finish counts fully, a split decision for less), shown cautiously (less its uncertainty, which grows while he's out). On pound-for-pound tabs, against his own division's best. Counts 12x behind its slider in the current lists, not at all in the all-time ones (a career is judged by its points and peak, not where it stands today); scored in proportion, 1600 to 2400, like Peak (against the list, a division's elite would all cap out alike and tie)", kind: 'efficiency', format: 'int', scale: [2400, 1600], settled: true, boost: (settings) => (allTime(settings) ? 0 : 12), shownWhen: (settings) => !allTime(settings) },
   { key: 'careerPoints', label: 'Career Pts', description: 'Points for every month he was ranked in his division by the rating (across every promotion): the most for #1, fewer down to #15, full points only when the division was deep; his whole career, in every division. Counts 6x behind its slider all-time, not at all in the current lists; scored in proportion, 0 to 12 (most fighters have next to none, so against the list every great career would score alike)', kind: 'volume', format: 'dec1', scale: [12, 0], boost: (settings) => (allTime(settings) ? 6 : 0), shownWhen: (settings) => allTime(settings) },
   { key: 'peakRating', label: 'Peak', description: 'His best MMA rating at any point (shown cautiously, after 3+ fights); counts 8x behind its slider all-time, where it leads (how good he was at his best); scored in proportion, 1600 to 2400 (against the list every great peak would score alike)', kind: 'efficiency', format: 'int', scale: [2400, 1600], settled: true, boost: (settings) => (allTime(settings) ? 8 : 1) },
   { key: 'bestWin', label: 'Best Win', description: 'The rating of the best opponent he beat, going into the fight', kind: 'efficiency', format: 'int', missingIsAverage: true, settled: true },

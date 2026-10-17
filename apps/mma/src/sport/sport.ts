@@ -5,6 +5,8 @@ import { mmaHeatMaps } from './heat-maps';
 
 // (head to head counts for meetings since this date)
 const THREE_YEARS_AGO = new Date(Date.now() - 1096 * 864e5).toISOString().slice(0, 10);
+// (what an unranked UFC fighter a year or more out of the cage counts as on Org Rank)
+const INACTIVE_RANK = 12;
 
 // MMA: what the engine needs to know about fighting (the rest is beside this file: positions,
 // skill-presets, skills, awards, team-colors, logo-eras, about/). A career table rather than seasons:
@@ -171,9 +173,10 @@ export const SPORT: SportConfig = {
   // division, so the UFC fighters keep their order)
   rowShown: (player, settings) => !settings['ufcOnly'] || (allTime(settings) ? !!player.ufcCareer : player.promotion === 'UFC'),
   // His promotion's rank in the ranking (the PFL's stretched to the UFC's scale in the data: rankScore): a
-  // division's champion as #0 (above #1), an unranked fighter as #16
-  // (just past the top 15). Unknown (average) for a retired fighter, and for one unranked without a UFC
-  // fight in a year (fighting elsewhere, or dropped from the UFC's rankings for the layoff): that says
+  // division's champion as #0 (above #1), an unranked fighter as #16 (just past the top 15), or as #12 for a
+  // UFC fighter without a fight there in a year (dropped from the UFC's rankings for the layoff, not beaten
+  // out of them: between the ranked and the rest, the 2026-10-17 audit's call). Unknown (average) for a
+  // retired fighter, and for one unranked whose last fight was elsewhere (no rankings to read): that says
   // nothing about how good he is.
   scoreValue: (player, stat, shown) => {
     // (never in a monthly top 15: past the end of it)
@@ -185,8 +188,10 @@ export const SPORT: SportConfig = {
     if (player.titleHolder) return 0;
     // (pound-for-pound: the P4P top 15, then the division ranks behind them)
     const rank = player.rankScore !== undefined ? player.rankScore : shown;
-    if (rank == null && (player.retired || player.inactive)) return null;
-    return rank ?? 16;
+    if (rank != null) return rank;
+    if (player.retired) return null;
+    if (player.inactive) return player.promotion === 'UFC' ? INACTIVE_RANK : null;
+    return 16;
   },
   // The pound-for-pound tabs: the top 30
   listLimit: (position) => (position === 'P4P' || position === 'WP4P' ? 30 : undefined),
