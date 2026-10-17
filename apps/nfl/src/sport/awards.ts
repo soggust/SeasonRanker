@@ -267,7 +267,7 @@ export function awardsFor(unit: SkillPlayer, position: SkillPosition, season: nu
   // conference too)
   if (awards.sb === team) wins.push(win('sb'));
   if (awards.sb === team || SB_RUNNER_UP[season] === team) wins.push({ id: 'conf', title: conferenceTitle(season, team) });
-  if (position === 'HC' || position === 'DEF' || position === 'OL') {
+  if (position === 'HC' || position === 'DEF' || position === 'OL' || position === 'OFF' || position === 'ST') {
     if (position === 'HC' && awards.coy === team) wins.push(win('coy', COY_NOTES[season]));
     if (position === 'DEF' && awards.dpoy[1] === team) wins.push(win('dpoy', awards.dpoy[0]));
     if (position === 'DEF' && awards.droy[1] === team) wins.push(win('droy', awards.droy[0]));

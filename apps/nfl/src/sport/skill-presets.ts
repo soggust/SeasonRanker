@@ -250,6 +250,34 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       weights: { fairCatchPct: 100, netAvg: 80, epaPerPunt: 80 },
     },
   ],
+  // Team offenses: one side of the ball each, scoring, and holding the ball (the ranks a smaller part, the
+  // EPA leading; sacks taken a token beside the passing, turnovers' pair)
+  OFF: [
+    {
+      key: 'passing',
+      label: 'Passing',
+      description: 'The passing game: pass EPA, passing yards and the passing rank, then a little for sacks taken',
+      weights: { passEpa: 100, passYdsPerGame: 80, passOffRank: 60, sacksAllowed: 10 },
+    },
+    {
+      key: 'rushing',
+      label: 'Rushing',
+      description: 'The ground game: rush EPA, rushing yards and the rushing rank',
+      weights: { rushEpa: 100, rushYdsPerGame: 80, rushOffRank: 60 },
+    },
+    {
+      key: 'scoring',
+      label: 'Scoring',
+      description: 'Points on the board: points per game, Red Zone TD % and the offense rank, then a little 3rd Down %',
+      weights: { ptsPerGame: 100, redZoneTdPct: 90, offRank: 60, thirdDownPct: 10 },
+    },
+    {
+      key: 'ballSecurity',
+      label: 'Ball Security',
+      description: 'Keeps the ball: few turnovers and sacks taken, then a little Success %',
+      weights: { giveaways: 100, sacksAllowed: 60, successRate: 10 },
+    },
+  ],
   DEF: [
     // The rush itself; pass EPA allowed (coverage as much as rush) only a token
     {
@@ -340,6 +368,33 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       label: 'Coverage',
       description: 'Holding up in coverage: passer rating, Comp % and Yds / Target allowed, few TDs allowed',
       weights: { passerRatingAllowed: 100, compPctAllowed: 80, yardsPerTargetAllowed: 80, tdsAllowed: 60 },
+    },
+  ],
+  // Team special teams: one phase each (the coverage's punt EPA a token: a punt's EPA is half coverage)
+  ST: [
+    {
+      key: 'kicking',
+      label: 'Kicking',
+      description: 'The kicker: FG %, kick EPA, field goals made and XP %',
+      weights: { fgPct: 100, fgEpa: 90, fgMade: 70, patPct: 60 },
+    },
+    {
+      key: 'punting',
+      label: 'Punting',
+      description: 'The punter: net average, punt EPA and In-20 %',
+      weights: { netAvg: 100, puntEpa: 90, inside20Pct: 80 },
+    },
+    {
+      key: 'returns',
+      label: 'Returns',
+      description: 'The return game: return EPA, kick and punt return averages, return touchdowns',
+      weights: { returnEpa: 100, kickReturnAvg: 90, puntReturnAvg: 90, returnTds: 70 },
+    },
+    {
+      key: 'coverage',
+      label: 'Coverage',
+      description: "The coverage units: opponents' return average and kickoff EPA, then a little punt EPA",
+      weights: { oppReturnAvg: 100, kickoffEpa: 90, puntEpa: 10 },
     },
   ],
   OL: [

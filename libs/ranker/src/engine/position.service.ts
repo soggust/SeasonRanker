@@ -72,10 +72,13 @@ export const DEFAULT_SETTINGS: RankerSettings = {
   sport: DEFAULT_SPORT_SETTINGS,
 };
 
+// The tab the page lands on without a link (SPORT.landingTab, else the first tab)
+const LANDING: Position = (POSITIONS.find((position) => position === SPORT.landingTab) ?? POSITIONS[0]) as Position;
+
 // Open the tab from a shared link, e.g. ?pos=SS
 function linkedPosition(): Position {
   const linked = new URLSearchParams(location.search).get('pos')?.toUpperCase();
-  return POSITIONS.find((position) => position === linked) ?? POSITIONS[0];
+  return POSITIONS.find((position) => position === linked) ?? LANDING;
 }
 
 // A card from a link (card-link.ts: ?card=<the row's id>&cardTab=, or the Algorithm's ?card=<his ESPN id>&name=):
@@ -489,7 +492,7 @@ export class PositionService {
     this.positionSubject.next(position);
 
     const url = new URL(location.href);
-    if (position === POSITIONS[0]) url.searchParams.delete('pos');
+    if (position === LANDING) url.searchParams.delete('pos');
     else url.searchParams.set('pos', position);
     history.replaceState(null, '', url);
   }

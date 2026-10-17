@@ -1011,7 +1011,7 @@ async function main() {
       glossary: TOTALS_GLOSSARY,
     };
     writeFileSync(path.join(TEAM_OUT, `${t}.json`), JSON.stringify(dossier));
-    teamIndex.push({ team: t, name: TEAMS[t], mode, siteIds: [`TM-${nickname}`, `DEF-${t}`, `OL-${t}`, ...(coach ? [coach.gsisId] : [])] });
+    teamIndex.push({ team: t, name: TEAMS[t], mode, siteIds: [`TM-${nickname}`, `OFF-${t}`, `DEF-${t}`, `ST-${t}`, `OL-${t}`, ...(coach ? [coach.gsisId] : [])] });
   }
   writeFileSync(path.join(BASE, 'team-index.json'), JSON.stringify(teamIndex));
   console.log(`${teamIndex.length} team dossiers (${teamIndex.filter((x) => x.mode === 'recap').length} recaps)`);

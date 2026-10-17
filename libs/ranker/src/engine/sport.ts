@@ -398,14 +398,19 @@ export interface SportConfig {
   rowShown?: (player: SkillPlayer, settings: SportSettings) => boolean;
   // A tab the sport's settings can hide (MMA's women's divisions, until switched on)
   tabVisible?: (position: string, settings: SportSettings) => boolean;
-  // Tabs grouped under one of the bar's (the NFL's Edge, DL, LB, CB and S under DEF): the bar keeps the
-  // parent alone, lit while any of the family is open, and a slimmer sub-row under it shows the family (its
-  // names, in order, the parent's among them: "Team D") while one of them is open. label: the sub-row's name
-  // for screen readers ("Defense position")
+  // Tabs grouped under one of the bar's (the NFL's Offense: Team O, QB, RB, WR, TE and OL under OFF; its
+  // Defense and Special Teams the same): the bar keeps the parent alone, lit while any of the family is
+  // open, and the family's members open from it (tab-families.ts: an accordion in the row on desktops and
+  // tablets, a sub-row under it where they don't fit; the phone's dropdown has them in its groups). names:
+  // the members in order, each with its short name, the parent's among them ("Team D"). label: the
+  // family's name for screen readers ("Offense position")
   tabFamilies?: { parent: string; label: string; names: Record<string, string> }[];
-  // The phone's dropdown in named groups (the NFL's Offense / Defense / Special Teams / Team): a tab in
-  // none of them lists at the top, ungrouped
-  tabGroups?: { label: string; tabs: string[] }[];
+  // The phone's dropdown in named groups (the NFL's Offense / Defense / Special Teams / Teams): a tab in
+  // none of them lists at the top, ungrouped; names: an option's own wording where the tab's name won't do
+  // ("Team Offense" for the OFF tab, among the quarterbacks and backs)
+  tabGroups?: { label: string; tabs: string[]; names?: Record<string, string> }[];
+  // The tab the page lands on without ?pos= (the first tab otherwise); its own link has no ?pos=
+  landingTab?: string;
   // The card's Game Log tab: whether a row has one for a season (that season's games only),
   // and loading it when the tab opens
   gameLog?: {

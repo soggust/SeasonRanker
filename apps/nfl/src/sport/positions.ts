@@ -3,16 +3,18 @@ import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
 
-export type Position = 'TM' | 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'K' | 'P' | 'DEF' | 'EDGE' | 'DL' | 'LB' | 'CB' | 'S' | 'HC';
+export type Position = 'TM' | 'OFF' | 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'DEF' | 'EDGE' | 'DL' | 'LB' | 'CB' | 'S' | 'ST' | 'K' | 'P' | 'HC';
 // Every tab uses the same config-driven table, sidebar and scoring below (TM rows are teams, built in
-// the app from the head coach rows; OL rows are team offensive lines, DEF rows team defenses and HC
-// rows head coaches; EDGE, DL, LB, CB and S rows are the defensive players, by the position they're
-// listed at that season)
+// the app from the head coach rows; OFF rows are team offenses, OL rows team offensive lines, DEF rows
+// team defenses, ST rows team special teams and HC rows head coaches; EDGE, DL, LB, CB and S rows are
+// the defensive players, by the position they're listed at that season)
 export type SkillPosition = Position;
 
-export const POSITIONS: Position[] = ['TM', 'QB', 'RB', 'WR', 'TE', 'OL', 'K', 'P', 'DEF', 'EDGE', 'DL', 'LB', 'CB', 'S', 'HC'];
+// (the bar's order: Teams, then the Offense family, the Defense family, the Special Teams family, the coaches;
+// sport.ts tabFamilies puts each family's members under its team tab)
+export const POSITIONS: Position[] = ['TM', 'OFF', 'QB', 'RB', 'WR', 'TE', 'OL', 'DEF', 'EDGE', 'DL', 'LB', 'CB', 'S', 'ST', 'K', 'P', 'HC'];
 
-// The defensive player tabs: under DEF in the position bar (its sub-row, with Team D: sport.ts tabFamilies)
+// The defensive player tabs: under DEF in the position bar (its family, with Team D: sport.ts tabFamilies)
 export const DEF_PLAYER_TABS: Position[] = ['EDGE', 'DL', 'LB', 'CB', 'S'];
 
 // Keys of the stats object in skill-players.json
@@ -129,6 +131,27 @@ export type SkillStatKey =
   | 'yardsAllowedPerGame'
   | 'stEpaPerGame'
   | 'topPerGame'
+  // Team offenses (update-data.mjs offenseUnits: the defenses' mirror, from the same plays)
+  | 'passEpa'
+  | 'rushEpa'
+  | 'passYdsPerGame'
+  | 'rushYdsPerGame'
+  | 'passTdsPerGame'
+  | 'rushTdsPerGame'
+  | 'giveaways'
+  | 'playsPerGame'
+  // Team special teams (update-data.mjs specialTeamsUnits: the play-by-play's kicks, punts and returns)
+  | 'kickReturnAvg'
+  | 'puntReturnAvg'
+  | 'returnTds'
+  | 'oppReturnAvg'
+  | 'blocksMade'
+  | 'kicksBlocked'
+  | 'stEpaPerPlay'
+  | 'kickoffEpa'
+  | 'puntEpa'
+  | 'fgEpa'
+  | 'returnEpa'
   // Defensive players (nflverse box stats; snaps from the snap counts, 2012 on; pressures, hurries, missed
   // tackles and the coverage "allowed" stats from Pro Football Reference's charting, 2018 on)
   | 'tackles'
@@ -168,7 +191,10 @@ export type SkillColumnKey =
   | 'offRank'
   | 'defRank'
   | 'passDefRank'
-  | 'runDefRank';
+  | 'runDefRank'
+  | 'passOffRank'
+  | 'rushOffRank'
+  | 'stRank';
 
 export type FantasyScoring = 'std' | 'half' | 'ppr';
 
@@ -193,7 +219,7 @@ export const STAT_BASIS_LABELS: Record<StatBasis, string> = {
 
 // A full season's games, for the 17-Game Pace (every tab)
 export const PACE_GAMES: Record<Position, number> = {
-  TM: 17, QB: 17, RB: 17, WR: 17, TE: 17, OL: 17, K: 17, P: 17, DEF: 17, EDGE: 17, DL: 17, LB: 17, CB: 17, S: 17, HC: 17,
+  TM: 17, OFF: 17, QB: 17, RB: 17, WR: 17, TE: 17, OL: 17, DEF: 17, EDGE: 17, DL: 17, LB: 17, CB: 17, S: 17, ST: 17, K: 17, P: 17, HC: 17,
 };
 
 export const RANK_BASIS_LABELS: Record<RankBasis, string> = {
@@ -209,21 +235,33 @@ export function statLabelFor(stat: SkillStat, rankBasis: RankBasis): string {
 }
 
 // The stat each rank uses, and whether higher is better
-// (the DEF tab's Pass D and Run D Rank: points aren't split by play type, so touchdowns stand in for them)
-export const RANK_METRICS: Record<'offRank' | 'defRank' | 'passDefRank' | 'runDefRank', Record<RankBasis, [SkillStatKey, boolean]>> = {
+// (the DEF and OFF tabs' pass and run ranks: points aren't split by play type, so touchdowns stand in for
+// them; the special teams' rank goes by their EPA per play whatever the setting, there being no points or
+// yards of their own to rank)
+export const RANK_METRICS: Record<
+  'offRank' | 'defRank' | 'passDefRank' | 'runDefRank' | 'passOffRank' | 'rushOffRank' | 'stRank',
+  Record<RankBasis, [SkillStatKey, boolean]>
+> = {
   offRank: { points: ['ptsPerGame', true], yards: ['yardsPerGame', true] },
   defRank: { points: ['ptsAllowedPerGame', false], yards: ['yardsAllowedPerGame', false] },
   passDefRank: { points: ['passTdsAllowedPerGame', false], yards: ['passYdsAllowedPerGame', false] },
   runDefRank: { points: ['rushTdsAllowedPerGame', false], yards: ['rushYdsAllowedPerGame', false] },
+  passOffRank: { points: ['passTdsPerGame', true], yards: ['passYdsPerGame', true] },
+  rushOffRank: { points: ['rushTdsPerGame', true], yards: ['rushYdsPerGame', true] },
+  stRank: { points: ['stEpaPerPlay', true], yards: ['stEpaPerPlay', true] },
 };
-const TD_RANKS = new Set<SkillColumnKey>(['passDefRank', 'runDefRank']);
+const TD_RANKS = new Set<SkillColumnKey>(['passDefRank', 'runDefRank', 'passOffRank', 'rushOffRank']);
+const EPA_RANKS = new Set<SkillColumnKey>(['stRank']);
 
-// What a rank goes by, short ("Pts", "TDs", "Yds") and in full ("Points", "Touchdowns", "Yards")
+// What a rank goes by, short ("Pts", "TDs", "Yds", "EPA") and in full ("Points", "Touchdowns", "Yards",
+// "EPA per Play")
 export function rankBasisShort(key: SkillColumnKey, rankBasis: RankBasis): string {
+  if (EPA_RANKS.has(key)) return 'EPA';
   if (rankBasis === 'yards') return 'Yds';
   return TD_RANKS.has(key) ? 'TDs' : 'Pts';
 }
 export function rankBasisLabel(key: SkillColumnKey, rankBasis: RankBasis): string {
+  if (EPA_RANKS.has(key)) return 'EPA per Play';
   return rankBasis === 'points' && TD_RANKS.has(key) ? 'Touchdowns' : RANK_BASIS_LABELS[rankBasis];
 }
 
@@ -385,6 +423,23 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   tdsAllowed: 'Touchdowns Allowed in Coverage',
   passerRatingAllowed: 'Passer Rating Allowed When Targeted',
   splashPlays: 'Splash Plays (Sacks + Interceptions + Forced Fumbles + Passes Defended)',
+  passEpa: 'Expected Points Added per Pass Play',
+  rushEpa: 'Expected Points Added per Run Play',
+  giveaways: 'Turnovers (Interceptions + Fumbles Lost)',
+  playsPerGame: 'Offensive Plays per Game',
+  passYdsPerGame: 'Passing Yards per Game',
+  rushYdsPerGame: 'Rushing Yards per Game',
+  kickReturnAvg: 'Kickoff Return Average',
+  puntReturnAvg: 'Punt Return Average',
+  returnTds: 'Kickoff and Punt Return Touchdowns',
+  oppReturnAvg: "Opponents' Return Average",
+  blocksMade: 'Opponent Kicks Blocked',
+  kicksBlocked: 'Own Kicks Blocked',
+  stEpaPerPlay: 'Special Teams EPA per Play',
+  kickoffEpa: 'EPA per Kickoff Kicked',
+  puntEpa: 'EPA per Punt',
+  fgEpa: 'EPA per Field Goal and Extra Point Try',
+  returnEpa: 'EPA per Kickoff and Punt Received',
 };
 
 // Short labels for volume stats when Stat Base is on Per Game (yards read as YPG, points as PPG)
@@ -432,6 +487,10 @@ export const PER_GAME_LABELS: Partial<Record<SkillColumnKey, string>> = {
   yardsAllowed: 'Yds Allowed / Game',
   tdsAllowed: 'TDs Allowed / Game',
   splashPlays: 'Splash / Game',
+  giveaways: 'TOs / Game',
+  returnTds: 'Ret TDs / Game',
+  blocksMade: 'Blocks / Game',
+  kicksBlocked: 'Blocked / Game',
 };
 
 export type SkillWeights = Partial<Record<SkillColumnKey, number>>;
@@ -1182,6 +1241,56 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
       format: 'pct',
     },
   ],
+  // Team offenses: the defenses' mirror (update-data.mjs offenseUnits). Turnovers and sacks taken count
+  // against it; the ranks are there to read, the EPA columns already rank it
+  OFF: [
+    GAMES_STAT,
+    { key: 'playsPerGame', label: 'Plays / Game', description: "Passes and runs per game: the offense's pace (for context; not part of the ranking)", kind: 'efficiency', format: 'dec1', infoOnly: true },
+    { key: 'topPerGame', label: 'TOP / Game', name: 'Time of Possession per Game', description: "The offense's time with the ball per game (for context; not part of the ranking)", kind: 'efficiency', format: 'mmss', infoOnly: true },
+    {
+      key: 'offRank',
+      label: 'Off Rank',
+      name: 'Offense Rank',
+      description: "The offense's league rank (1 = best), by the Rank Base setting: points per game (the scoring offense rank) or yards per game",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+    },
+    {
+      key: 'passOffRank',
+      label: 'Pass O Rank',
+      name: 'Passing Offense Rank',
+      description:
+        "The offense's league rank through the air (1 = best), by the Rank Base setting. Yards: passing yards per game, sacks taken off. Points: passing touchdowns per game (points aren't split by pass and run, so touchdowns stand in)",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+    },
+    {
+      key: 'rushOffRank',
+      label: 'Run O Rank',
+      name: 'Rushing Offense Rank',
+      description:
+        "The offense's league rank on the ground (1 = best), by the Rank Base setting. Yards: rushing yards per game, QB scrambles included. Points: rushing touchdowns per game (points aren't split by pass and run, so touchdowns stand in)",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+    },
+    { key: 'epaPerPlay', label: 'EPA / Play', description: 'Expected Points Added per play', kind: 'efficiency', format: 'dec2' },
+    { key: 'passEpa', label: 'Pass EPA', description: 'EPA per pass play', kind: 'efficiency', format: 'dec2' },
+    { key: 'rushEpa', label: 'Rush EPA', description: 'EPA per run play', kind: 'efficiency', format: 'dec2' },
+    { key: 'successRate', label: 'Success %', description: 'Share of plays that gained positive EPA', kind: 'efficiency', format: 'pct' },
+    { key: 'ptsPerGame', label: 'Pts / Game', description: 'Points scored per game', kind: 'efficiency', format: 'dec1' },
+    { key: 'yardsPerGame', label: 'Yds / Game', description: 'Yards from scrimmage per game', kind: 'efficiency', format: 'dec1' },
+    { key: 'passYdsPerGame', label: 'Pass Yds / G', description: 'Passing yards per game (sacks taken off, as the league counts them)', kind: 'efficiency', format: 'dec1' },
+    { key: 'rushYdsPerGame', label: 'Rush Yds / G', description: 'Rushing yards per game (QB scrambles included)', kind: 'efficiency', format: 'dec1' },
+    { key: 'redZoneTdPct', label: 'Red Zone TD %', description: 'Share of its red-zone drives ending in a touchdown', kind: 'efficiency', format: 'pct' },
+    { key: 'thirdDownPct', label: '3rd Down %', description: 'Third-down conversion rate', kind: 'efficiency', format: 'pct' },
+    { key: 'giveaways', label: 'Turnovers', description: 'Interceptions thrown + fumbles lost (lower is better)', kind: 'volume', format: 'int', negative: true },
+    { key: 'sacksAllowed', label: 'Sacks Taken', description: 'Sacks taken (lower is better)', kind: 'volume', format: 'int', negative: true },
+    DEFENSE_STAT,
+    COACHING_STAT,
+  ],
   // Lower is better for everything "allowed", so those count against the defense
   DEF: [
     GAMES_STAT,
@@ -1316,6 +1425,43 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   ],
   EDGE: FRONT_STATS,
   DL: FRONT_STATS,
+  // Team special teams (update-data.mjs specialTeamsUnits): the kicking, the punting, the returns and the
+  // coverage, each with its EPA; opponents' returns and its own kicks blocked count against it
+  ST: [
+    GAMES_STAT,
+    {
+      key: 'stRank',
+      label: 'ST Rank',
+      name: 'Special Teams Rank',
+      description: "The unit's league rank (1 = best) by special-teams EPA per play, its kicks, punts and returns together (the Rank Base setting doesn't apply: special teams have no points or yards of their own)",
+      kind: 'efficiency',
+      format: 'rank',
+      negative: true,
+    },
+    {
+      key: 'stEpaPerPlay',
+      label: 'ST EPA / Play',
+      description: "Expected Points Added per special-teams play from the team's side: its kickoffs and punts, its field goal and extra point tries, its returns",
+      kind: 'efficiency',
+      format: 'dec2',
+    },
+    { key: 'fgMade', label: 'FG Made', description: 'Field goals made', kind: 'volume', format: 'int' },
+    { key: 'fgPct', label: 'FG %', description: 'Field goal percentage', kind: 'efficiency', format: 'pct' },
+    { key: 'patPct', label: 'XP %', description: 'Extra point percentage', kind: 'efficiency', format: 'pct' },
+    { key: 'fgEpa', label: 'Kick EPA', description: 'EPA per field goal and extra point try', kind: 'efficiency', format: 'dec2' },
+    { key: 'netAvg', label: 'Net Punt', name: 'Net Punting Average', description: "Net yards per punt (the punt's distance less the return, a touchback 20)", kind: 'efficiency', format: 'dec1' },
+    { key: 'inside20Pct', label: 'In-20 %', description: 'Share of punts downed inside the 20', kind: 'efficiency', format: 'pct' },
+    { key: 'puntEpa', label: 'Punt EPA', description: 'EPA per punt, the coverage included', kind: 'efficiency', format: 'dec2' },
+    { key: 'kickReturnAvg', label: 'KR Avg', description: 'Yards per kickoff return', kind: 'efficiency', format: 'dec1' },
+    { key: 'puntReturnAvg', label: 'PR Avg', description: 'Yards per punt return', kind: 'efficiency', format: 'dec1' },
+    { key: 'returnTds', label: 'Return TDs', description: 'Kickoff and punt return touchdowns', kind: 'volume', format: 'int' },
+    { key: 'returnEpa', label: 'Return EPA', description: 'EPA per kickoff and punt received: the returns, the fair catches and the touchbacks', kind: 'efficiency', format: 'dec2' },
+    { key: 'kickoffEpa', label: 'Kickoff EPA', description: 'EPA per kickoff kicked: the kick and its coverage', kind: 'efficiency', format: 'dec2' },
+    { key: 'oppReturnAvg', label: 'Opp Ret Avg', description: "Opponents' yards per return on its kickoffs and punts (lower is better)", kind: 'efficiency', format: 'dec1', negative: true },
+    { key: 'blocksMade', label: 'Blocks', description: 'Opponent field goals, extra points and punts it blocked', kind: 'volume', format: 'int' },
+    { key: 'kicksBlocked', label: 'Blocked', description: 'Its own field goals, extra points and punts blocked (lower is better)', kind: 'volume', format: 'int', negative: true },
+    COACHING_STAT,
+  ],
   // Linebackers do everything: the tackling, the blitz, the coverage and the takeaways
   LB: [
     GAMES_STAT,
@@ -1547,6 +1693,9 @@ const RESULTS_STATS = new Set<SkillColumnKey>([
   'defRank',
   'passDefRank',
   'runDefRank',
+  'passOffRank',
+  'rushOffRank',
+  'stRank',
 ]);
 
 const ADVANCED_STATS = new Set<SkillColumnKey>([
@@ -1600,6 +1749,14 @@ const ADVANCED_STATS = new Set<SkillColumnKey>([
   'yardsPerTargetAllowed',
   'tdsAllowed',
   'passerRatingAllowed',
+  // (the team offenses' and special teams' EPA)
+  'passEpa',
+  'rushEpa',
+  'stEpaPerPlay',
+  'kickoffEpa',
+  'puntEpa',
+  'fgEpa',
+  'returnEpa',
   // Fantasy points close out each Advanced Stats group
   'fantasy',
 ]);

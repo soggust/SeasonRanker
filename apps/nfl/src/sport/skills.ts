@@ -67,6 +67,21 @@ export const SKILLS: Record<SkillPosition, SkillDef[]> = {
     { id: 'hang', name: 'Limiting Returns', short: 'Returns', parts: [['fairCatchPct', 1]] },
     { id: 'value', name: 'Field Flipping', short: 'Value', parts: [['epaPerPunt', 1]] },
   ],
+  OFF: [
+    { id: 'overall', name: 'Down-to-Down Offense', short: 'Overall', parts: [['epaPerPlay', 1], ['successRate', 1]] },
+    { id: 'pass', name: 'Passing Game', short: 'Passing', parts: [['passEpa', 1], ['passYdsPerGame', 1]] },
+    { id: 'run', name: 'Running Game', short: 'Rushing', parts: [['rushEpa', 1], ['rushYdsPerGame', 1]] },
+    { id: 'scoring', name: 'Putting Points Up', short: 'Scoring', parts: [['ptsPerGame', 1], ['redZoneTdPct', 1]] },
+    { id: 'thirdDown', name: 'Staying on the Field', short: '3rd Down', parts: [['thirdDownPct', 1]] },
+    { id: 'security', name: 'Ball Security', short: 'Security', parts: [['giveaways', -1], ['sacksAllowed', -1]] },
+  ],
+  ST: [
+    { id: 'kicking', name: 'Kicking', short: 'Kicking', parts: [['fgPct', 1], ['fgEpa', 1], ['patPct', 1]] },
+    { id: 'punting', name: 'Punting', short: 'Punting', parts: [['netAvg', 1], ['puntEpa', 1], ['inside20Pct', 1]] },
+    { id: 'returns', name: 'Return Game', short: 'Returns', parts: [['returnEpa', 1], ['kickReturnAvg', 1], ['puntReturnAvg', 1]] },
+    { id: 'coverage', name: 'Coverage', short: 'Coverage', parts: [['oppReturnAvg', -1], ['kickoffEpa', 1]] },
+    { id: 'blocks', name: 'Blocked Kicks', short: 'Blocks', parts: [['blocksMade', 1], ['kicksBlocked', -1]] },
+  ],
   DEF: [
     { id: 'overall', name: 'Down-to-Down Defense', short: 'Overall', parts: [['epaAllowed', -1], ['successAllowed', -1]] },
     { id: 'pass', name: 'Pass Defense', short: 'Pass D', parts: [['passEpaAllowed', -1]] },
@@ -276,6 +291,23 @@ export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
     { name: 'Coffin-Corner Specialist', test: (s) => s['placement'] >= 0.8 },
     { name: 'Field Flipper', test: (s) => s['value'] >= 0.8 },
   ],
+  OFF: [
+    { name: 'Juggernaut', test: (s) => s['overall'] >= 0.85 && s['scoring'] >= 0.75 },
+    { name: 'Air Raid', test: (s) => s['pass'] >= 0.85 && s['run'] <= 0.5 },
+    { name: 'Ground and Pound', test: (s) => s['run'] >= 0.85 && s['pass'] <= 0.5 },
+    { name: 'Balanced Attack', test: (s) => s['pass'] >= 0.7 && s['run'] >= 0.7 },
+    { name: 'Red Zone Machine', test: (s) => s['scoring'] >= 0.85 },
+    { name: 'Turnover Prone', test: (s) => s['security'] <= 0.2 },
+    { name: 'Sputtering Offense', test: (s) => s['overall'] <= 0.2 },
+  ],
+  ST: [
+    { name: 'Complete Special Teams', test: (s) => s['kicking'] >= 0.7 && s['punting'] >= 0.7 && s['returns'] >= 0.7 },
+    { name: 'Automatic Kicker', test: (s) => s['kicking'] >= 0.85 },
+    { name: 'Field Position Weapon', test: (s) => s['punting'] >= 0.85 },
+    { name: 'Return Threat', test: (s) => s['returns'] >= 0.85 },
+    { name: 'Lockdown Coverage', test: (s) => s['coverage'] >= 0.85 },
+    { name: 'Leaky Coverage', test: (s) => s['coverage'] <= 0.2 },
+  ],
   DEF: [
     { name: 'Brick Wall', test: (s) => s['overall'] >= 0.85 && s['scoring'] >= 0.75 },
     { name: 'Ballhawks', test: (s) => s['takeaways'] >= 0.85 },
@@ -351,6 +383,8 @@ export function fallbackArchetype(position: SkillPosition, overall: number, _pla
   if (position === 'TM') return overall >= 0.75 ? 'Playoff Favorite' : overall >= 0.45 ? 'Playoff Team' : overall >= 0.25 ? 'Bubble Team' : 'Retooling';
   const noun: Record<SkillPosition, string> = {
     TM: 'Team',
+    OFF: 'Offense',
+    ST: 'Special Teams',
     QB: 'Starter',
     RB: 'Back',
     WR: 'Receiver',

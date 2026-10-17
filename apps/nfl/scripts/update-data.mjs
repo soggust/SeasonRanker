@@ -27,6 +27,10 @@
 //                                          skill-players files and their unranked ones as they are: the
 //                                          backfill of those tabs; no play-by-play, ESPN only for the season
 //                                          being played's injury report; see defenseOnly)
+//        OFFST_ONLY=1                     (only the Team Offense and Team Special Teams tabs, OFF and ST,
+//                                          written into the season's skill-players files as they are: the
+//                                          backfill of those tabs from the play-by-play and the schedule
+//                                          alone, no ESPN; see offenseSpecialOnly)
 //
 // Each run writes three parts of the season (the app's Stats From setting): the regular season
 // (skill-players.json, games.json, data-grades.json), the playoffs (skill-players.post.json,
@@ -77,6 +81,7 @@ const SCHEDULE_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/
 // ESPN's season types (2 the regular season, 3 the playoffs) and nflverse's REG or not
 const UR_ONLY = process.env.UR_ONLY === '1';
 const DEF_ONLY = process.env.DEF_ONLY === '1';
+const OFFST_ONLY = process.env.OFFST_ONLY === '1';
 const PARTS = (process.env.PART ?? 'regular,post,all').split(',').map((part) => part.trim());
 const PART_NAMES = { regular: 'regular season', post: 'playoffs', all: 'regular season and playoffs' };
 for (const part of PARTS) if (!PART_NAMES[part]) throw new Error(`Unknown PART "${part}" (regular, post or all)`);
@@ -751,6 +756,146 @@ function olineUnits({ pbp, games, pfr, ngs }) {
   });
 }
 
+// ---------------------------------------------------------------------------------------------------
+// Team offenses (the OFF tab, Team O): the mirror of the defenses, from the same plays. EPA per play and
+// its pass and run halves, success rate, points and yards per game, the yards and touchdowns by pass and
+// run (the app's Pass O Rank and Run O Rank, by the Rank Base setting; the same split as the defenses':
+// sacks with the passes, scrambles with the runs), red-zone and third-down rates, giveaways and sacks
+// taken (against it), and for context the plays and the time of possession a game.
+// ---------------------------------------------------------------------------------------------------
+const avg = (sum, n, digits) => (n ? round(sum / n, digits) : null);
+
+function offenseSplits(plays, team, games) {
+  let passYds = 0, rushYds = 0, passTds = 0, rushTds = 0;
+  for (const play of plays) {
+    if (play.posteam !== team || (play.pass !== '1' && play.rush !== '1')) continue;
+    const run = play.rush === '1' || play.qb_scramble === '1';
+    const yds = num(play.yards_gained) ?? 0;
+    const td = play.touchdown === '1' && play.td_team === team;
+    if (run) {
+      rushYds += yds;
+      if (td) rushTds++;
+    } else {
+      passYds += yds;
+      if (td) passTds++;
+    }
+  }
+  return {
+    passYdsPerGame: avg(passYds, games, 1),
+    rushYdsPerGame: avg(rushYds, games, 1),
+    passTdsPerGame: avg(passTds, games, 2),
+    rushTdsPerGame: avg(rushTds, games, 2),
+  };
+}
+
+function offenseUnits({ pbp, games }) {
+  return seasonTeams(games).map((team) => {
+    const offPlays = pbp.filter((play) => play.posteam === team);
+    const scrimmage = offPlays.filter(EPA_PLAY);
+    const epa = (plays) => mean(plays.map((play) => num(play.epa))) ?? 0;
+    const count = (test) => offPlays.filter(test).length;
+    const played = teamGames(games, team);
+    const scored = played.map((g) => g.pointsFor);
+    const thirdDowns = offPlays.filter((play) => play.third_down_converted === '1' || play.third_down_failed === '1');
+    const redZone = new Map();
+    for (const play of offPlays) {
+      if (play.drive_inside20 === '1') redZone.set(`${play.game_id}-${play.fixed_drive}`, play.fixed_drive_result);
+    }
+    return {
+      id: null,
+      gsisId: `OFF-${team}`,
+      name: TEAM_NAMES[team],
+      teamLogo: teamIcon(team),
+      games: played.length,
+      stats: {
+        epaPerPlay: epa(scrimmage),
+        passEpa: epa(scrimmage.filter((play) => play.pass === '1')),
+        rushEpa: epa(scrimmage.filter((play) => play.rush === '1')),
+        successRate: mean(scrimmage.map((play) => num(play.success))) ?? 0,
+        ptsPerGame: avg(scored.reduce((a, b) => a + b, 0), scored.length, 1),
+        yardsPerGame: avg(scrimmageYards(offPlays, 'posteam', team), played.length, 1),
+        ...offenseSplits(offPlays, team, played.length),
+        thirdDownPct: ratio(thirdDowns.filter((play) => play.third_down_converted === '1').length, thirdDowns.length),
+        redZoneTdPct: ratio([...redZone.values()].filter((result) => result === 'Touchdown').length, redZone.size),
+        giveaways: count((play) => play.interception === '1' || play.fumble_lost === '1'),
+        sacksAllowed: count((play) => play.sack === '1'),
+        // (pace and the time with the ball: context, not ranked)
+        playsPerGame: avg(count((play) => play.pass === '1' || play.rush === '1'), played.length, 1),
+        topPerGame: topPerGame(pbp, team, played.length),
+      },
+    };
+  });
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Team special teams (the ST tab, Team ST), from the play-by-play's kicks, punts and returns alone (1999
+// on). The kicking: FG made and FG %, XP %. The punting: net average (the distance less the return and a
+// touchback's 20), the share inside the 20. The returns: kick and punt return averages (a return a
+// returner is named on), return touchdowns. The coverage: the opponents' return average on its kicks and
+// punts (against it). The blocks: kicks it blocked, its own blocked (against it). EPA per special-teams
+// play from the team's side, and by phase: its kickoffs (coverage), its punts, its FG and XP tries, its
+// returns. nflverse's EPA is the possession team's, and on a kickoff the possession team is the one
+// RECEIVING it (the kicking team is defteam): the kicking team's share is the EPA negated, the receiving
+// team's is as it is; a punt's possession team is the punting team.
+// ---------------------------------------------------------------------------------------------------
+function specialTeamsUnits({ pbp, games }) {
+  const st = pbp.filter((play) => ['kickoff', 'punt', 'field_goal', 'extra_point'].includes(play.play_type));
+  const sum = (values) => values.reduce((a, b) => a + b, 0);
+  return seasonTeams(games).map((team) => {
+    const played = teamGames(games, team).length;
+    const mine = (plays) => plays.filter((play) => play.posteam === team);
+    const theirs = (plays) => plays.filter((play) => play.defteam === team);
+    const kickoffs = st.filter((play) => play.play_type === 'kickoff');
+    const punts = st.filter((play) => play.play_type === 'punt');
+    const fgs = mine(st.filter((play) => play.play_type === 'field_goal'));
+    const xps = mine(st.filter((play) => play.play_type === 'extra_point' && ['good', 'failed', 'blocked'].includes(play.extra_point_result)));
+    // The kicking side: a kickoff's kicker is defteam, a punt's posteam
+    const myKickoffs = theirs(kickoffs);
+    const myPunts = mine(punts);
+    // The receiving side, and the returns a returner was named on
+    const returned = (plays, who) => plays.filter((play) => play[who] && play[who] !== 'NA' && num(play.return_yards) !== null);
+    const myKickReturns = returned(mine(kickoffs), 'kickoff_returner_player_id');
+    const myPuntReturns = returned(theirs(punts), 'punt_returner_player_id');
+    const oppReturns = [...returned(myKickoffs, 'kickoff_returner_player_id'), ...returned(myPunts, 'punt_returner_player_id')];
+    const yards = (plays) => sum(plays.map((play) => num(play.return_yards) ?? 0));
+    const fgMade = fgs.filter((play) => play.field_goal_result === 'made').length;
+    const puntsKicked = myPunts.filter((play) => num(play.kick_distance) !== null);
+    const net = sum(puntsKicked.map((play) => num(play.kick_distance) - (num(play.return_yards) ?? 0) - (play.touchback === '1' ? 20 : 0)));
+    const blockedKick = (play) => play.field_goal_result === 'blocked' || play.extra_point_result === 'blocked' || play.punt_blocked === '1';
+    const epaOf = (plays, sign) => plays.map((play) => num(play.epa)).filter((v) => v !== null).map((v) => sign * v);
+    const kickoffEpa = epaOf(myKickoffs, -1);
+    const puntEpa = epaOf(myPunts, 1);
+    const fgEpa = epaOf([...fgs, ...xps], 1);
+    const returnEpa = [...epaOf(mine(kickoffs), 1), ...epaOf(theirs(punts), -1)];
+    const all = [...kickoffEpa, ...puntEpa, ...fgEpa, ...returnEpa];
+    return {
+      id: null,
+      gsisId: `ST-${team}`,
+      name: TEAM_NAMES[team],
+      teamLogo: teamIcon(team),
+      games: played,
+      stats: {
+        fgMade,
+        fgPct: avg(fgMade, fgs.length, 3),
+        patPct: avg(xps.filter((play) => play.extra_point_result === 'good').length, xps.length, 3),
+        netAvg: avg(net, puntsKicked.length, 1),
+        inside20Pct: avg(myPunts.filter((play) => play.punt_inside_twenty === '1').length, myPunts.length, 3),
+        kickReturnAvg: avg(yards(myKickReturns), myKickReturns.length, 1),
+        puntReturnAvg: avg(yards(myPuntReturns), myPuntReturns.length, 1),
+        returnTds: [...kickoffs, ...punts].filter((play) => play.return_touchdown === '1' && play.td_team === team).length,
+        oppReturnAvg: avg(yards(oppReturns), oppReturns.length, 1),
+        blocksMade: theirs(st.filter((play) => play.play_type !== 'kickoff')).filter(blockedKick).length,
+        kicksBlocked: [...fgs, ...mine(st.filter((play) => play.play_type === 'extra_point')), ...myPunts].filter(blockedKick).length,
+        stEpaPerPlay: avg(sum(all), all.length, 3),
+        kickoffEpa: avg(sum(kickoffEpa), kickoffEpa.length, 3),
+        puntEpa: avg(sum(puntEpa), puntEpa.length, 3),
+        fgEpa: avg(sum(fgEpa), fgEpa.length, 3),
+        returnEpa: avg(sum(returnEpa), returnEpa.length, 3),
+      },
+    };
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Data grades: O-line and weapons per team, responsibility per QB, from this season's stats.
 // Each is the average z-score of a few stats, ranked into 0-12 like the preseason grades
@@ -1211,6 +1356,7 @@ const competitivePlay = (play) => {
 const COMPETITIVE_KEYS = {
   DEF: ['epaAllowed', 'passEpaAllowed', 'rushEpaAllowed', 'successAllowed', 'sacks', 'qbHitRate', 'takeaways', 'thirdDownPct', 'redZoneTdPct'],
   HC: ['netEpa', 'offEpa', 'defEpaAllowed'],
+  OFF: ['epaPerPlay', 'passEpa', 'rushEpa', 'successRate', 'thirdDownPct', 'redZoneTdPct', 'giveaways', 'sacksAllowed'],
   OL: ['sacksAllowed', 'qbHitRate', 'sackRate', 'ypc', 'stuffRate', 'runEpa', 'runSuccess', 'shortYardagePct', 'linePenaltiesPerGame'],
   QB: ['epaPerPlay', 'cpoe', 'successRate'],
 };
@@ -1300,6 +1446,9 @@ function skillPlayers(nflverse) {
     DEF: units(defenseUnits, COMPETITIVE_KEYS.DEF),
     HC: units(coachUnits, COMPETITIVE_KEYS.HC),
     OL: units(olineUnits, COMPETITIVE_KEYS.OL),
+    OFF: units(offenseUnits, COMPETITIVE_KEYS.OFF),
+    // (special teams aren't a garbage-time matter: no competitive copy)
+    ST: specialTeamsUnits(nflverse).sort((a, b) => a.name.localeCompare(b.name)),
   };
   // Each defense against the offense's WR1, WR2, WR3, TE1 and RB1, its funnel and where the targets go
   // (defense-vs-position.mjs: every play counts, garbage time too)
@@ -1900,6 +2049,7 @@ async function main() {
   await mkdir(DATA_DIR, { recursive: true });
   if (UR_ONLY) return unrankedOnly();
   if (DEF_ONLY) return defenseOnly();
+  if (OFFST_ONLY) return offenseSpecialOnly();
   const shared = {};
   for (const part of PARTS) {
     const held = await updatePart(part, shared);
@@ -1957,6 +2107,34 @@ async function defenseOnly() {
     await writeFile(partFile(SKILL_FILE, part), JSON.stringify(ranked));
     await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
     console.log(`Season ${SEASON}${label}: wrote the defensive tabs: ${counts.join(', ')}`);
+  }
+}
+
+// OFFST_ONLY: the Team Offense and Team Special Teams tabs alone (offenseUnits, specialTeamsUnits), each
+// part's, written into the season's ranked files as they are (every other tab untouched): the backfill of
+// the two tabs over the seasons the site has. It reads the season's play-by-play and the schedule, nothing
+// else (no ESPN), so a season takes the download and a few seconds. A part with no ranked file (no
+// playoffs played) gets nothing.
+async function offenseSpecialOnly() {
+  const shared = {};
+  const [pbp, schedule] = await Promise.all([getCsvGz(`${NFLVERSE}/pbp/play_by_play_${SEASON}.csv.gz`), loadSchedule(shared)]);
+  sameTeamAbbrs(pbp);
+  sameTeamAbbrs(schedule);
+  const byName = (a, b) => a.name.localeCompare(b.name);
+  for (const part of PARTS) {
+    const label = part === 'regular' ? '' : ` (${PART_NAMES[part]})`;
+    const ranked = JSON.parse(await readFile(partFile(SKILL_FILE, part), 'utf8').catch(() => 'null'));
+    if (!ranked) {
+      console.log(`Season ${SEASON}${label}: no ranked rows, the team offense and special teams tabs left as they are`);
+      continue;
+    }
+    const games = schedule.filter((game) => game.season === String(SEASON) && inPart(part, game.game_type) && num(game.result) !== null);
+    const partPbp = pbp.filter((play) => inPart(part, play.season_type));
+    ranked.OFF = withCompetitive(offenseUnits({ pbp: partPbp, games }), offenseUnits({ pbp: partPbp.filter(competitivePlay), games }), COMPETITIVE_KEYS.OFF).sort(byName);
+    ranked.ST = specialTeamsUnits({ pbp: partPbp, games }).sort(byName);
+    await writeFile(partFile(SKILL_FILE, part), JSON.stringify(ranked));
+    const thin = Object.keys(ranked.ST[0]?.stats ?? {}).filter((key) => ranked.ST.filter((unit) => unit.stats[key] === null).length > ranked.ST.length / 2);
+    console.log(`Season ${SEASON}${label}: wrote ${ranked.OFF.length} OFF and ${ranked.ST.length} ST rows${thin.length ? ` (mostly empty: ${thin.join(', ')})` : ''}`);
   }
 }
 

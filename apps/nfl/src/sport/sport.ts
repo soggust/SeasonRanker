@@ -32,7 +32,7 @@ import { vsPositionBreakdown } from './vs-position';
 // grades each tab gets from the others) and blocking (the card's run blocking))
 
 // The defenses, offensive lines and head coaches: rows that are a whole team's
-const TEAM_TABS = ['TM', 'DEF', 'OL', 'HC'];
+const TEAM_TABS = ['TM', 'OFF', 'DEF', 'ST', 'OL', 'HC'];
 
 // The Teams tab's rows: the season's head coach rows (one per team, its whole season), named for the
 // team (its defense's row has the team's name)
@@ -114,7 +114,7 @@ const headshot = espnHeadshot('nfl');
 
 // A row's logo file name (the team's nickname: "Ravens"); the rows with their team's games as their log
 const logoName = (p: { teamLogo?: string | null }) => p.teamLogo?.match(/([^/]+)\.\w+$/)?.[1];
-const TEAM_LOGS = ['TM', 'DEF', 'OL', 'HC'];
+const TEAM_LOGS = ['TM', 'OFF', 'DEF', 'ST', 'OL', 'HC'];
 const PLAYER_LOGS = ['QB', 'RB', 'WR', 'TE', 'K', 'P'];
 // The Game Log's chart: each game's total yards (passing and rushing, or from scrimmage), one plain bar
 const TOTAL_YARDS = { label: 'Total yards', stack: ['Passing YDS', 'Rushing YDS', 'Receiving YDS'], combine: true };
@@ -131,6 +131,7 @@ export const SPORT: SportConfig = {
   seasonText: String,
   positionNames: {
     TM: 'Team',
+    OFF: 'Offense',
     QB: 'Quarterback',
     RB: 'Running Back',
     WR: 'Wide Receiver',
@@ -144,10 +145,12 @@ export const SPORT: SportConfig = {
     LB: 'Linebacker',
     CB: 'Cornerback',
     S: 'Safety',
+    ST: 'Special Teams',
     HC: 'Head Coach',
   },
   tabNames: {
     TM: 'Teams',
+    OFF: 'Offenses',
     QB: 'Quarterbacks',
     RB: 'Running Backs',
     WR: 'Wide Receivers',
@@ -161,23 +164,30 @@ export const SPORT: SportConfig = {
     LB: 'Linebackers',
     CB: 'Cornerbacks',
     S: 'Safeties',
+    ST: 'Special Teams',
     HC: 'Head Coaches',
   },
-  // The defensive players under DEF in the bar: its sub-row, Team D (the defenses) first; and the phone's
-  // dropdown in groups
-  tabFamilies: [{ parent: 'DEF', label: 'Defense position', names: { DEF: 'Team D', EDGE: 'Edge', DL: 'DL', LB: 'LB', CB: 'CB', S: 'S' } }],
-  tabGroups: [
-    { label: 'Offense', tabs: ['QB', 'RB', 'WR', 'TE', 'OL'] },
-    { label: 'Defense', tabs: ['DEF', 'EDGE', 'DL', 'LB', 'CB', 'S'] },
-    { label: 'Special Teams', tabs: ['K', 'P'] },
-    { label: 'Team', tabs: ['TM', 'HC'] },
+  // The bar: TM · OFF · DEF · ST · HC, the three families opening to their members (the team tab first:
+  // Team O, Team D, Team ST); the phone's dropdown in the same groups, the team tabs named in full there
+  tabFamilies: [
+    { parent: 'OFF', label: 'Offense position', names: { OFF: 'Team O', QB: 'QB', RB: 'RB', WR: 'WR', TE: 'TE', OL: 'OL' } },
+    { parent: 'DEF', label: 'Defense position', names: { DEF: 'Team D', EDGE: 'Edge', DL: 'DL', LB: 'LB', CB: 'CB', S: 'S' } },
+    { parent: 'ST', label: 'Special teams position', names: { ST: 'Team ST', K: 'K', P: 'P' } },
   ],
+  tabGroups: [
+    { label: 'Offense', tabs: ['OFF', 'QB', 'RB', 'WR', 'TE', 'OL'], names: { OFF: 'Team Offense' } },
+    { label: 'Defense', tabs: ['DEF', 'EDGE', 'DL', 'LB', 'CB', 'S'], names: { DEF: 'Team Defense' } },
+    { label: 'Special Teams', tabs: ['ST', 'K', 'P'], names: { ST: 'Team Special Teams' } },
+    { label: 'Teams', tabs: ['TM', 'HC'] },
+  ],
+  // (the page lands on the quarterbacks: the Offense family open, QB lit)
+  landingTab: 'QB',
   coachTab: 'HC',
-  teamTabs: ['TM', 'DEF', 'OL'],
+  teamTabs: ['TM', 'OFF', 'DEF', 'ST', 'OL'],
   // (the QBs' rows go by ESPN's id, "QB-<id>": the same man's rows on the other tabs by that headshot id,
   // so Taysom Hill's passing seasons and his tight end ones are one career)
   careerId: (position, id) => (position === 'QB' && id.startsWith('QB-') ? Number(id.slice(3)) : id),
-  rowHeader: (position) => ({ TM: 'Team', DEF: 'Defense', OL: 'O-Line', HC: 'Coach' } as Record<string, string>)[position] ?? 'Player',
+  rowHeader: (position) => ({ TM: 'Team', OFF: 'Offense', DEF: 'Defense', ST: 'Special Teams', OL: 'O-Line', HC: 'Coach' } as Record<string, string>)[position] ?? 'Player',
   roleWord: (position) => (['K', 'P'].includes(position) ? 'specialist' : 'starter'),
   playingTime: {
     label: 'Games',
@@ -228,9 +238,10 @@ export const SPORT: SportConfig = {
             fumblesLost: YARDS_CHART[position] ? 'Rushing' : undefined,
           }),
   },
-  // The Roster tab on the team rows' cards, 2001 on (data/depth, data/seasons/<year>/depth: build-depth.mjs)
+  // The Roster tab on the team rows' cards, 2001 on (data/depth, data/seasons/<year>/depth: build-depth.mjs);
+  // not the special teams', whose men the charts only name as the kicker, punter and returners
   depthChart: {
-    has: (player, position, season) => TEAM_LOGS.includes(position) && season >= 2001 && !!logoName(player),
+    has: (player, position, season) => TEAM_LOGS.includes(position) && position !== 'ST' && season >= 2001 && !!logoName(player),
     load: (player, position, season) => loadDepthChart(logoName(player)!, position, season, season === SPORT.currentSeason),
   },
   // The Field Map in a QB's, a back's, a receiver's, a kicker's, a punter's and a defense's Heat Maps tab, under
@@ -274,7 +285,7 @@ export const SPORT: SportConfig = {
     {
       key: 'rankBasis',
       label: 'Rank Base',
-      title: "Click to switch what the rank columns rank on: points per game or yards per game. The head coaches' Off Rank and Def Rank, and the defenses' Def Rank, Pass D Rank and Run D Rank (the last two by touchdowns for Points: points aren't split by pass and run). EPA per play has its own columns in Advanced Stats",
+      title: "Click to switch what the rank columns rank on: points per game or yards per game. The head coaches' Off Rank and Def Rank, the offenses' Off Rank, Pass O Rank and Run O Rank and the defenses' Def Rank, Pass D Rank and Run D Rank (the pass and run ranks by touchdowns for Points: points aren't split by pass and run). The special teams' ST Rank goes by their EPA per play either way. EPA per play has its own columns in Advanced Stats",
       options: RANK_BASIS_LABELS,
       default: 'points',
       slot: 'formatTop',

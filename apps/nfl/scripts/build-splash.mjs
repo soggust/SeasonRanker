@@ -242,7 +242,7 @@ async function players(season, rows, gamesById, playersCsv) {
   const jerseys = {};
   const best = {};
   for (const [tab, list] of Object.entries(rows)) {
-    if (['DEF', 'OL', 'HC'].includes(tab)) continue;
+    if (['DEF', 'OL', 'HC', 'OFF', 'ST'].includes(tab)) continue;
     for (const row of list) {
       const gsis = gsisOf(row);
       if (!gsis) continue;

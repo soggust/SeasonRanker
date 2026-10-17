@@ -131,9 +131,10 @@ export const epaText = (v: number) => `${v > 0 ? '+' : v < 0 ? '-' : ''}${Math.a
 const signed1 = (v: number) => `${v > 0 ? '+' : v < 0 ? '-' : ''}${Math.abs(v).toFixed(1)}`;
 
 type Role = 'QB' | 'RB' | 'WR' | 'TE' | 'DEF' | 'TM';
-// (what a card's row is on the heat maps: a team's other cards, its line and coach, read as the team)
+// (what a card's row is on the heat maps: a team's other cards, its offense, its line and coach, read as the
+// team; its special teams have none)
 const roleOf = (position: string): Role | null =>
-  (['QB', 'RB', 'WR', 'TE', 'DEF', 'TM'] as string[]).includes(position) ? (position as Role) : position === 'OL' || position === 'HC' ? 'TM' : null;
+  (['QB', 'RB', 'WR', 'TE', 'DEF', 'TM'] as string[]).includes(position) ? (position as Role) : position === 'OL' || position === 'HC' || position === 'OFF' ? 'TM' : null;
 // (which rows a cell's spread is measured across: the QBs', the skill players', the defenses', the offenses')
 type Kind = 'qb' | 'skill' | 'def' | 'off';
 
@@ -391,7 +392,7 @@ export function nflHeatMaps({ current }: NflHeatContext): HeatMapDef[] {
     const playoffs = known ? known.has('post') : !current(season);
     return all.filter((s) => playoffs || (s.id !== 'post' && s.id !== 'regular'));
   };
-  const ALL = ['QB', 'RB', 'WR', 'TE', 'DEF', 'TM', 'OL', 'HC'];
+  const ALL = ['QB', 'RB', 'WR', 'TE', 'DEF', 'TM', 'OL', 'HC', 'OFF'];
 
   // The pass zones (the red zone's on its own surface): a QB's throws, a catcher's targets, a unit's
   const zones: HeatMapDef = {

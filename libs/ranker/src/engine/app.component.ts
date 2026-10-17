@@ -9,6 +9,7 @@ import { SportSettings } from '@ranker/engine/sport';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { canUse } from '@ranker/engine/account/features';
 import { forwardOldLink, goTo, pageHash, readPagePath, rememberSport } from '@ranker/engine/page-url';
+import { BarCell, barCells, familyMemory, familyOf, familyOpensTo, litTab, selectGroups, subTabs } from '@ranker/engine/tab-families';
 
 // The page showing, by its hash (page-url.ts reads it off the page's own address, /wallet, /u/<username>):
 // the rankings (no hash), the Bets page (#bets), or an account page (#account, #lists, #community, #tracker,
@@ -78,11 +79,6 @@ const VIEW_TITLES: Record<Exclude<View, 'rankings'>, string> = {
 // The tabs the sport's settings show (SPORT.tabVisible: MMA's divisions, men's or women's)
 function visibleTabs(settings: SportSettings): Position[] {
   return POSITIONS.filter((tab) => SPORT.tabVisible?.(tab, settings) ?? true);
-}
-
-// The family a tab belongs to (SPORT.tabFamilies), its parent included; none for a tab of its own
-function familyOf(tab: string): { parent: string; label: string; names: Record<string, string> } | null {
-  return SPORT.tabFamilies?.find((family) => family.parent === tab || tab in family.names) ?? null;
 }
 
 // The page: the sport bar, the filter menu, the position tabs and the rankings, and About when it's open
@@ -204,41 +200,43 @@ export class AppComponent {
     return visibleTabs(this.positionService.settings.sport);
   }
 
-  // The bar's own row: every tab but the ones grouped under another (SPORT.tabFamilies: the NFL's Edge, DL,
-  // LB, CB and S sit in DEF's sub-row, not the bar)
-  get mainTabs(): Position[] {
-    return this.positions.filter((tab) => {
-      const family = familyOf(tab);
-      return !family || family.parent === tab;
-    });
+  // The bar's row (tab-families.ts): its tabs in order, a family (SPORT.tabFamilies: the NFL's Offense,
+  // Defense and Special Teams) one tab with a chevron while it's shut, and the showing tab's family open in
+  // place, its caption then its members as tabs. A sport without families: a plain tab for each of its tabs.
+  barCells(position: Position): BarCell[] {
+    return barCells(SPORT.tabFamilies, this.positions, position);
   }
 
   // The bar's tab lit for a position: its own, or its family's parent (DEF while a CB list is open)
   litTab(position: Position): Position {
-    return (familyOf(position)?.parent as Position | undefined) ?? position;
+    return litTab(SPORT.tabFamilies, position) as Position;
   }
 
-  // The sub-row under the bar while a family's tab is open: its tabs and their names (none otherwise)
+  // Whether the showing tab is in a family (the row is the accordion, or the sub-row shows under it)
+  inFamily(position: Position): boolean {
+    return !!familyOf(SPORT.tabFamilies, position);
+  }
+
+  // The sub-row under the bar while a family's tab is open (the narrow tablets, where the row can't hold the
+  // open family): its tabs and their names (none otherwise)
   subTabs(position: Position): { tab: Position; name: string }[] | null {
-    const family = familyOf(position);
-    if (!family) return null;
-    const shown = this.positions;
-    return Object.entries(family.names)
-      .filter(([tab]) => shown.includes(tab as Position))
-      .map(([tab, name]) => ({ tab: tab as Position, name }));
+    return subTabs(SPORT.tabFamilies, this.positions, position) as { tab: Position; name: string }[] | null;
   }
 
   subRowLabel(position: Position): string {
-    return familyOf(position)?.label ?? '';
+    return familyOf(SPORT.tabFamilies, position)?.label ?? '';
+  }
+
+  // A shut family's tab clicked: it opens to the member this session last showed in it, else its first
+  private readonly familyMemory = familyMemory(SPORT.id);
+  openFamily(parent: string): void {
+    const family = familyOf(SPORT.tabFamilies, parent);
+    this.selectPosition(family ? (familyOpensTo(family, this.positions, this.familyMemory.get(parent)) ?? parent) : parent);
   }
 
   // The phone's dropdown in the sport's groups (SPORT.tabGroups; a tab in no group lists first, ungrouped)
-  get selectGroups(): { label: string | null; tabs: Position[] }[] {
-    const shown = this.positions;
-    const groups = (SPORT.tabGroups ?? []).map((group) => ({ label: group.label, tabs: group.tabs.filter((tab) => shown.includes(tab as Position)) as Position[] }));
-    const grouped = new Set(groups.flatMap((group) => group.tabs));
-    const loose = shown.filter((tab) => !grouped.has(tab));
-    return [...(loose.length ? [{ label: null, tabs: loose }] : []), ...groups.filter((group) => group.tabs.length)];
+  get selectGroups(): { label: string | null; tabs: { tab: Position; name: string }[] }[] {
+    return selectGroups(SPORT.tabGroups, this.positions, (tab) => this.positionNames[tab as Position]) as { label: string | null; tabs: { tab: Position; name: string }[] }[];
   }
 
   // Below 1200px the filters are a slide-out menu (menu-open); above, a sidebar that collapses. Both
@@ -256,6 +254,12 @@ export class AppComponent {
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.pageLinkHash(event) !== null, (event) => this.onPageLink(event));
     quietListener<PointerEvent>(zone, destroyRef, document, 'pointerdown', (event) => this.outsideFilters(event), () => this.closeFilters());
     this.markBetsView();
+    // Every tab shown is remembered in its family (a link's, the landing tab's, a click's): the tab the
+    // family's own tab opens to next time this session
+    this.position$.pipe(takeUntilDestroyed()).subscribe((position) => {
+      const family = familyOf(SPORT.tabFamilies, position);
+      if (family) this.familyMemory.set(family.parent, position);
+    });
     // A setting that shows new tabs (MMA's women's divisions) opens the first of them; one that
     // hides the open tab goes back to the first tab
     let shown = this.positions;
@@ -302,8 +306,9 @@ export class AppComponent {
     document.querySelector<HTMLElement>('.filter-toggle')?.focus();
   }
 
-  selectPosition(position: Position): void {
-    this.positionService.setPosition(position);
+  // (the bar's cells name their tabs as strings: tab-families.ts)
+  selectPosition(position: string): void {
+    this.positionService.setPosition(position as Position);
   }
 
   closeAbout(): void {

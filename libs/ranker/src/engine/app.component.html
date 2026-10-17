@@ -93,24 +93,79 @@
     <!-- Rankings: every tab is the same config-driven table (see positions.ts) -->
     @if (position) {
       <skill-rankings class="rankings" [position]="position">
-        <!-- Position tabs: shown between the rankings' button bar and the grid, as wide as the grid. A tab
-             grouped under another (the NFL's defensive players under DEF) isn't on the bar: its family's
-             parent is lit while it's open, and the sub-row under the bar names the family -->
-        <nav class="position-bar" [class.has-sub-row]="!!subTabList" role="tablist" aria-label="Position">
-          @for (tab of mainTabs; track tab) {
-            <button
-              type="button"
-              role="tab"
-              [class.active]="tab === litTab(position)"
-              [attr.aria-selected]="tab === litTab(position)"
-              (click)="selectPosition(tab)"
-            >
-              <span class="full">{{ positionNames[tab] }}</span>
-              <span class="short">{{ tab }}</span>
-            </button>
+        <!-- Position tabs: shown between the rankings' button bar and the grid, as wide as the grid. One row, an
+             accordion (tab-families.ts): a family of tabs (the NFL's Offense, Defense, Special Teams) is one tab
+             with a chevron while it's shut, and the showing tab's family is open in place, a short caption then
+             its members as tabs, the showing one lit. Narrow tablets, where the open family doesn't fit the row:
+             the family's tab alone, lit, with its members on the sub-row under the bar (the styles pick by width) -->
+        <nav class="position-bar" [class.has-sub-row]="inFamily(position)" role="tablist" aria-label="Position">
+          @for (cell of barCells(position); track cell.tab) {
+            @switch (cell.kind) {
+              @case ('open') {
+                <!-- (the open family: its caption, then its members; its own tab stands in on the sub-row widths) -->
+                <button
+                  type="button"
+                  role="tab"
+                  class="family active family-tab open"
+                  aria-expanded="true"
+                  [attr.aria-selected]="true"
+                  [attr.aria-label]="cell.label"
+                  (click)="openFamily(cell.tab)"
+                >
+                  <span class="full">{{ positionNames[cell.tab] }}</span>
+                  <span class="short">{{ cell.tab }}</span>
+                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <span class="family-caption" [attr.aria-label]="cell.label">
+                  <span class="full">{{ positionNames[cell.tab] }}</span>
+                  <span class="short">{{ cell.tab }}</span>
+                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+                </span>
+                @for (member of cell.members; track member.tab; let i = $index) {
+                  <button
+                    type="button"
+                    role="tab"
+                    class="member"
+                    [style.--i]="i"
+                    [class.active]="member.tab === position"
+                    [attr.aria-selected]="member.tab === position"
+                    (click)="selectPosition(member.tab)"
+                  >
+                    {{ member.name }}
+                  </button>
+                }
+              }
+              @case ('family') {
+                <button
+                  type="button"
+                  role="tab"
+                  class="family"
+                  aria-expanded="false"
+                  [attr.aria-selected]="false"
+                  [attr.aria-label]="cell.label"
+                  (click)="openFamily(cell.tab)"
+                >
+                  <span class="full">{{ positionNames[cell.tab] }}</span>
+                  <span class="short">{{ cell.tab }}</span>
+                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+              }
+              @default {
+                <button
+                  type="button"
+                  role="tab"
+                  [class.active]="cell.tab === position"
+                  [attr.aria-selected]="cell.tab === position"
+                  (click)="selectPosition(cell.tab)"
+                >
+                  <span class="full">{{ positionNames[cell.tab] }}</span>
+                  <span class="short">{{ cell.tab }}</span>
+                </button>
+              }
+            }
           }
-          <!-- Phones: one dropdown instead of eight pills (native, so it opens the phone's own picker), in the
-               sport's groups where it has them -->
+          <!-- Phones: one dropdown instead of the tabs (native, so it opens the phone's own picker), in the
+               sport's groups where it has them; no sub-row under it -->
           <select
             class="position-select"
             aria-label="Position"
@@ -120,20 +175,20 @@
             @for (group of selectGroups; track group.label) {
               @if (group.label) {
                 <optgroup [label]="group.label">
-                  @for (tab of group.tabs; track tab) {
-                    <option [value]="tab" [selected]="tab === position">{{ positionNames[tab] }}</option>
+                  @for (option of group.tabs; track option.tab) {
+                    <option [value]="option.tab" [selected]="option.tab === position">{{ option.name }}</option>
                   }
                 </optgroup>
               } @else {
-                @for (tab of group.tabs; track tab) {
-                  <option [value]="tab" [selected]="tab === position">{{ positionNames[tab] }}</option>
+                @for (option of group.tabs; track option.tab) {
+                  <option [value]="option.tab" [selected]="option.tab === position">{{ option.name }}</option>
                 }
               }
             }
           </select>
         </nav>
-        <!-- The sub-row: the family's tabs (Team D · Edge · DL · LB · CB · S), a second tab list, slimmer, the one
-             showing lit like the bar's -->
+        <!-- The sub-row: the open family's members (Team O · QB · RB · WR · TE · OL), a second tab list, slimmer,
+             the one showing lit like the bar's; only on the tablet widths where the row can't hold them -->
         @if (subTabList) {
           <nav class="position-sub-row" role="tablist" [attr.aria-label]="subRowLabel(position)">
             @for (sub of subTabList; track sub.tab) {

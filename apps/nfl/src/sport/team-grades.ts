@@ -21,8 +21,9 @@ import { grade as gradeLetter } from '@ranker/core/format';
 // better O-line on the Offensive Lines tab is a better O-line grade on every tab).
 
 // ---------------------------------------------------------------------------
-// League ranks (1 = best) for the head coaches' offense and defense, and the defenses' against the pass
-// and the run, on the stat the Rank Base setting picks. Ties share a rank; a missing value has none (a
+// League ranks (1 = best) for the head coaches' offense and defense, the defenses' against the pass and
+// the run, the offenses' through the air and on the ground, on the stat the Rank Base setting picks, and
+// the special teams' by their EPA per play. Ties share a rank; a missing value has none (a
 // season written before the pass and run splits: "-"). Worked out once per season's rows and setting.
 // ---------------------------------------------------------------------------
 export type UnitRankKey = keyof typeof RANK_METRICS;
@@ -289,6 +290,9 @@ export function computedValue(player: SkillPlayer, stat: SkillStat, context: Val
     case 'defRank':
     case 'passDefRank':
     case 'runDefRank':
+    case 'passOffRank':
+    case 'rushOffRank':
+    case 'stRank':
       return rankOf(player, stat.key, context.rows[context.position] ?? [], settings);
   }
   if (!fromOtherTabs(stat)) return undefined;
