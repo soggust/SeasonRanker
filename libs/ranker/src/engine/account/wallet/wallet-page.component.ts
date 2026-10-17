@@ -35,7 +35,7 @@ import {
   versusBot,
   versusDays,
 } from './wallet-math';
-import { HeadsPeriod, HeadsUp, botSplit, chipStacks, headsUp, runCards } from './wallet-view';
+import { HeadsPeriod, HeadsUp, Trophy, botSplit, chipStacks, headsUp, runCards, trophies } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -287,6 +287,15 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   }
   // (the settled straight bets tailing the bot, your own, and fading it: the loaded history's)
   readonly split = computed(() => botSplit(this.wallet.settledBets(), this.ledger() ?? []));
+  // The trophy case: chips earned from the bets and the tally; the one picked, its detail under the grid
+  readonly trophies = computed(() => trophies(this.wallet.bets(), this.wallet.tally(), this.fullHistory() ? this.runs() : null, this.fullHistory()));
+  readonly trophy = signal('first');
+  readonly picked = computed(() => this.trophies().find((t) => t.key === this.trophy()) ?? this.trophies()[0] ?? null);
+  readonly earnedCount = computed(() => this.trophies().filter((t) => t.earned).length);
+  trophyState(t: Trophy): string {
+    if (!t.earned) return `${t.have} of ${t.need}`;
+    return t.when ? `Earned ${new Date(t.when).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : 'Earned';
+  }
   // (a figure from the loaded history alone, while it's still paging: its caption says how much)
   readonly historyNote = computed(() => (this.fullHistory() ? null : `the last ${this.wallet.settledBets().length} settled bets`));
 

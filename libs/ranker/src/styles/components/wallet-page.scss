@@ -879,6 +879,186 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   padding: v.$space-10 v.$space-20 v.$space-12;
 }
 
+// ---------------------------------------------------------------------------
+// The trophy case: a grid of 64px chips (casino-chip.scss's, each its own clay), the locked ones greyed and dark,
+// the picked one lifted in a sand ring; the detail strip under them with a sand progress bar
+// ---------------------------------------------------------------------------
+.trophies {
+  background: radial-gradient(ellipse at 50% 0%, rgba(kit.$app-sand, 0.08), transparent 60%);
+  display: grid;
+  gap: v.$space-16 v.$space-10;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  padding: v.$space-20 v.$space-16 v.$space-14;
+}
+
+.tcase-btn {
+  align-items: center;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: v.$font-base;
+  gap: v.$space-8;
+  padding: v.$space-4 0;
+  text-align: center;
+
+  &:hover .tchip rect {
+    stroke-dashoffset: -20;
+  }
+
+  @include v.focus-lit {
+    .tchip {
+      box-shadow:
+        inset 0 0 0 2px var(--clay),
+        inset 0 0 0 3px rgba(chip.$inlay, 0.7),
+        0 0 0 2px #fff,
+        0 6px 14px rgba(0, 0, 0, 0.55);
+    }
+  }
+}
+
+.tchip {
+  @include chip.chip(64px);
+  cursor: inherit;
+  filter: none;
+
+  &:hover {
+    filter: none;
+  }
+
+  &.first {
+    --clay: #{chip.$chip-red};
+  }
+
+  &.heater {
+    --clay: #d0601c;
+  }
+
+  &.longshot {
+    --clay: #6b3fa0;
+  }
+
+  &.tail {
+    --clay: #{chip.$chip-green};
+  }
+
+  &.parlay {
+    --clay: #b38a3c;
+  }
+
+  &.phoenix {
+    --clay: #{v.$bad-soft};
+  }
+
+  &.iron {
+    --clay: #262626;
+  }
+
+  &.locked {
+    filter: grayscale(1) brightness(0.35);
+  }
+
+  &.sel {
+    box-shadow:
+      inset 0 0 0 2px var(--clay),
+      inset 0 0 0 3px rgba(chip.$inlay, 0.7),
+      0 0 0 2px kit.app(sand),
+      0 6px 14px rgba(0, 0, 0, 0.55);
+    transform: translateY(-3px);
+  }
+
+  &.small {
+    border-width: 4px;
+    height: 40px;
+    width: 40px;
+
+    .chip-rim {
+      height: calc(100% + 8px);
+      left: -4px;
+      top: -4px;
+      width: calc(100% + 8px);
+    }
+
+    rect {
+      stroke-width: 4px;
+    }
+  }
+}
+
+.trophy-name {
+  font-family: v.$font-heading;
+  font-size: v.$fs-12;
+  font-weight: 600;
+  line-height: 1.15;
+
+  &.dim {
+    color: v.$text-faint;
+  }
+}
+
+.trophy-state {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+}
+
+.trophy-detail {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid v.$panel-rule;
+  border-radius: v.$radius-md;
+  display: flex;
+  gap: v.$space-12;
+  margin: 0 v.$space-16 v.$space-16;
+  padding: v.$space-12 v.$space-14;
+}
+
+.trophy-words {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: v.$space-4;
+  min-width: 0;
+}
+
+.trophy-title {
+  font-family: v.$font-heading;
+  font-size: v.$fs-14;
+  font-weight: 600;
+}
+
+.trophy-how {
+  color: #ccc;
+  font-size: v.$fs-12;
+}
+
+.trophy-bar {
+  background: v.$panel-rule;
+  border-radius: v.$radius-pill;
+  height: 5px;
+  margin-top: v.$space-2;
+  overflow: hidden;
+
+  > div {
+    background: kit.app(sand);
+    border-radius: v.$radius-pill;
+    height: 100%;
+  }
+}
+
+.trophy-status {
+  @include kit.sand-lit;
+  font-size: v.$fs-11;
+  font-weight: 700;
+  white-space: nowrap;
+
+  &.earned {
+    color: v.$good-bright;
+    text-shadow: none;
+  }
+}
+
 // A confirmation, under the actions
 .wallet-confirm {
   background: rgba(0, 0, 0, 0.35);
