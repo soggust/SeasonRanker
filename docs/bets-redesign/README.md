@@ -9,7 +9,8 @@
 
 The owner signed off on a new look for the Bets page (`/bets`). This is the brief for building it. The two
 design files beside this one are the approved designs as standalone HTML, with every colour, size and layout
-value exact: `Main.dc.html` (desktop, 1440 wide) and `Phone.dc.html` (390 × 844). Their markup is a design
+value exact: `Main.dc.html` (desktop, 1440 wide) and `Phone.dc.html` (390 × 844), plus the Live tab's
+`Live.dc.html`, `LiveOpen.dc.html` and `LiveQuiet.dc.html` (section 10). Their markup is a design
 tool's format (`{{holes}}`, `<sc-if>`, `<sc-for>`); read them for values and structure, not as code to paste.
 The sample picks, odds, records and write-ups in them are made up.
 
@@ -247,7 +248,112 @@ the model desk's own.**
   Backtest, Model Settings, In Play. By Market is gone. Tables get 10px caps heads and tabular numbers. Self-check statuses are word
   tags (OK green, WATCH orange, FAIL red), never colour alone.
 
-### 10. Removed
+### 10. Live (a new tab)
+
+Designs: `Live.dc.html` (games on now; click a game), `LiveOpen.dc.html` (a game opened) and
+`LiveQuiet.dc.html` (nothing on yet). All three are the same file in different starting states. The sample
+games, plays and box scores in them are made up.
+
+**The tab.** Add **Live · N** to the tab bar, second, after The board: `The board / Live · N / Open · N / Cashed
+/ Algorithm`. N is the number of games in progress, with a small blinking green dot before it while any are on
+(still for reduced motion). Show the tab whenever the day has games, live or still to come, and hide it
+otherwise. The header (chip, title, tabs, bankroll card) must be **exactly** The board's: same widths, same
+bankroll card, nothing moving or disappearing when you switch to Live. **No ticker on this tab.**
+
+**The page is one card.** It uses the panel recipe the wallet's panels use (`chip.panel`: 2px gold rail, radius
+12px, the scoreboard dots inside) and is full width. Its header bar has the felt-green tint and the gold seam under
+it, all on **one line**:
+
+- a green live dot and **ON NOW** (no count after it)
+- then a divider and the sweat summary: a coloured square and count each for **winning** (green), **close**
+  (gold) and **losing** (red), across the user's bets on live games
+- on the right, the **All games / My bets** segmented pill. My bets shows only games the user has a bet on.
+
+The body is the scoreboard (dots), not felt. It holds a 3-column grid of game cards (2 under ~1100px, 1 on
+phones). Games with the user's bets come first. Each game card is a button that opens the game, with a 1px
+`$panel-edge` border, radius 10px, a 2.5% white fill and the hover lift, and **no coloured left edge**. Each
+card holds:
+
+- the sport and venue in small caps, and on the right the clock in green with the live dot (`3RD 4:12`)
+- two team rows: logo gem, team name, record in faint text, and the score on LED digits (unlit 8s behind),
+  the leader's score gold
+- a thin win-probability sparkline in gold, drawn only as far as the game has gone
+- the last play on one line (clock and text, ellipsised). Tint it green or red (12% fill, **no edge bar**)
+  when that play helped or hurt one of the user's bets.
+- under a hairline (50% transparent), one row per bet on that game: a short pick, a small meter (fill up
+  to the current value, a white tick at the line) and a status tag (WINNING, ON PACE, NEEDS 2, DOWN 9.5) in
+  green, gold or red. With no bets: "No tickets · bot: <the bot's read>" in faint text.
+
+**Finished games are not listed.** When nothing is live, the card's title becomes **COMING UP** and the bar
+says "Nothing on right now. First tip-off at <time>". The card then lists today's games still to come, each
+with its start time in gold, the user's pending ticket, or "Bot: <pick · band>".
+
+**Data.** Use only what the app already loads. Today's games, states, clocks and scores come from the ESPN
+scoreboard `lines.service.ts` already fetches. Bets come from the wallet's open bets. The bot's read comes from
+the board's picks. While the Live tab is showing, re-ask for that scoreboard every 30 seconds, and stop when
+the user leaves the tab. If `lines.service` caches the day with no way to refresh, ask the owner before
+changing it. The sparkline and last play come from the game's ESPN summary (below). Fetch it only for games the
+user has bets on, and on the same 30-second beat. Other games show the card without those two rows.
+
+**Opening a game opens the existing game modal** (`game-view`, via `GameViewService.open({ event })`). **Do not
+build a second modal.** The live gamecenter is the game log modal with a few additions, so nothing changes
+when the game goes final except the live dot going out. Keep its hero, LED board, tabs and panels exactly as they
+are. Add only:
+
+1. **Live state on the LED board.** While the game is in progress, the board's label shows the period and clock
+   (`3RD QTR · 4:12`) in green with the live dot, and the modal re-fetches the summary every 30 seconds while
+   open. Scores, line score, plays, win probability and box score all update from that.
+2. **Your Bets** (Summary tab, a `card-panel` with the gold diamond): shown only when the user has a bet on this
+   game. It goes **in one row with Game Leaders**, as a two-column grid under the win probability chart, Your
+   Bets on the left. In the half width, Game Leaders stacks the away team's leaders over the home team's.
+   Each bet row has:
+   - the pick and its odds, and under it the stake, the band and "the bot's pick" or YOUR CALL
+   - the status tag at the right of that line
+   - full width under it, the meter: fill to the current value (green / gold / red), a white tick at the line,
+     and for props a dashed outline to the projected finish
+   - the left caption ("On pace for 214", "20 pts · needs 5 more") and the right caption in the status colour
+     ("Under by 7.2", "On pace for 27")
+
+   The panel's header shows "N of M on track". **Pace** is the current value over the share of the game played.
+   Hide pace before 10% of the game.
+3. **Important Plays** (Summary tab, full width, under that row): the latest six plays that are either
+   **scoring plays** or **plays that moved one of the user's bets**, newest first. Each play shows the clock with
+   the period ("Q3 4:12", "P2 11:40"), the text (bold for scoring), the score after it in gold, and for a bet
+   play a tag under the text, for example "▼ UNDER 221.5 · pace up to 214". The tag is green with ▲ when the play
+   helped and red with ▼ when it hurt, and the row gets a faint matching tint. The header has an
+   **ALL PLAYS →** link that switches to the Plays tab. Be sparing with anything else: don't add turnovers,
+   knockdowns and the like now, and ask the owner first if you think a sport needs one. The order of the
+   Summary tab is:
+   1. line score
+   2. win probability
+   3. Your Bets and Game Leaders, side by side
+   4. Important Plays
+
+   Without bets, Game Leaders is full width as today, and Important Plays shows scoring plays only.
+4. **Plays tab:** keep its All Plays / Scoring pills and period panels. Add a third pill, **My Bets** (only when
+   the user has a bet on this game), and the same green/red tag and tint on bet plays in every view. These stay
+   after the final, so the recap keeps the user's story.
+5. **Box Score:** unchanged, except the row of a player the user has a prop on gets a faint gold wash.
+   Game Leaders also gets a small gold **YOUR BET** tag next to that player's name.
+
+**Which plays moved a bet.** Put this in a pure function in its own file with unit tests, for example
+`bet-impact.ts`: `(play, bet, stateBefore, stateAfter) => 'good' | 'bad' | null`.
+
+- **Player prop:** a play that adds to the player's stat is good for an over and bad for an under. Also tag
+  that player's turnovers and blocked shots on a shots prop (bad for an over), nothing else.
+- **Total:** in hockey, soccer and baseball, every goal or run (good for an over, bad for an under). In
+  basketball and football, only scoring plays that move the projected total by a point or more, or that start
+  or extend a run of 6 or more unanswered points. Optionally, a scoreless stretch of 2 minutes or more in
+  basketball counts as one good-for-the-under event.
+- **Spread and moneyline:** only scoring plays that change whether the bet is winning (covering ↔ not, a lead
+  change, a tie), plus the final play.
+- **Tag text:** the bet in caps, a dot, then what changed: "J. BROWN O24.5 · 20 pts, needs 5" or "UNDER 221.5 ·
+  pace up to 214".
+
+**Phones:** the game cards go one column, the card's header bar wraps (sweat summary on its own line), and the
+modal is the game view's existing phone layout. In it, Your Bets and Game Leaders stack.
+
+### 11. Removed
 
 The slot-machine handle and reel spin (`pull`, `pulling`, `spinning`) aren't in the design. **Ask the owner
 before deleting them.** If they say remove, take out the markup, styles and the three members together. Also
@@ -272,6 +378,12 @@ dropdown pills and the Algorithm's PROFIT header row with its legend in particul
 9. Open tickets and Cashed as tickets; the Algorithm restyle (restyle only).
 10. Phone pass against `Phone.dc.html` (≤700px), and the reduced-motion and keyboard check: every control is
    a real button or link, focus uses `v.focus-lit` / `v.focus-ring`, and touch targets are at least 44px.
+11. Live tab and page: the tab, the one card (sweat bar, filter, game cards, Coming up), the 30-second
+    refresh while it's showing.
+12. `bet-impact.ts` and its tests.
+13. Game modal additions: live LED state and refresh, Your Bets + Game Leaders row, Important Plays, the My
+    Bets pill and bet tags on the Plays tab, the YOUR BET marks. Check that a final game's recap looks the same
+    as before for a user with no bets.
 
 ## Done when
 
@@ -280,5 +392,8 @@ dropdown pills and the Algorithm's PROFIT header row with its legend in particul
 - signed-out users see no bankroll card or ticket actions, as today
 - admins still see CHECK rows, desk notes and the Algorithm tab
 - nothing outside the files this page owns has changed, apart from the font import
+- the game log modal opened from anywhere else in the app (a team's schedule, a player's game log) looks and
+  works exactly as before when the user has no bet on that game
+- the Live tab's polling stops when the user leaves the tab or closes the modal
 - the owner gets a list of anything hidden for lack of data (band records, the bot's recent form, live
   scores)
