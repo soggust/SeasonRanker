@@ -1,0 +1,48 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='720' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.05'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11' result='t'/><feDisplacementMap in='SourceGraphic' in2='t' scale='2.6'/></filter><g filter='url(#c)'>
+<!-- Two dice, tumbling -->
+<g transform='rotate(-14 120 150)'><rect x='75' y='105' width='90' height='90' rx='14'/><circle cx='97' cy='127' r='6'/><circle cx='120' cy='150' r='6'/><circle cx='143' cy='173' r='6'/></g>
+<g transform='rotate(18 230 120)'><rect x='190' y='80' width='80' height='80' rx='12'/><circle cx='210' cy='100' r='5'/><circle cx='250' cy='100' r='5'/><circle cx='210' cy='140' r='5'/><circle cx='250' cy='140' r='5'/><circle cx='230' cy='120' r='5'/></g>
+<path d='M150 230 c20 -6 40 -4 60 6' stroke-dasharray='6 8'/><path d='M206 228 l8 10 l-12 2'/>
+<!-- A fan of three cards, a spade on the top one -->
+<g transform='rotate(-16 420 300)'><rect x='365' y='120' width='110' height='160' rx='10'/></g>
+<g transform='rotate(-2 430 300)'><rect x='375' y='118' width='110' height='160' rx='10'/></g>
+<g transform='rotate(13 440 300)'><rect x='388' y='120' width='110' height='160' rx='10'/>
+<path d='M443 168 C425 188 412 200 420 214 C428 226 440 220 443 212 C446 220 458 226 466 214 C474 200 461 188 443 168 Z'/><path d='M443 212 L436 232 H450 Z'/>
+<path d='M398 132 v18 M394 140 h8'/><path d='M488 266 v-18 M484 258 h8'/></g>
+<!-- A big chip -->
+<circle cx='160' cy='520' r='82'/><circle cx='160' cy='520' r='56'/><circle cx='160' cy='520' r='40' stroke-dasharray='4 7'/>
+<path d='M160 438 v20 M160 582 v20 M78 520 h20 M222 520 h20 M102 462 l14 14 M204 564 l14 14 M218 462 l-14 14 M116 564 l-14 14'/>
+<!-- A tally of wins and losses -->
+<path d='M330 430 v54 M346 430 v54 M362 430 v54 M378 430 v54 M322 476 L388 438'/>
+<path d='M410 430 v54 M426 430 v54 M442 430 v54 M458 430 v54 M402 476 L468 438'/>
+<path d='M490 430 v54 M506 430 v54'/>
+<path d='M330 520 v40 M346 520 v40 M362 520 v40'/><path d='M322 512 C340 506 370 506 380 512'/>
+<!-- A pick sheet: boxes, checks and an X -->
+<rect x='560' y='90' width='26' height='26' rx='3'/><path d='M564 104 l8 9 l16 -22'/><path d='M604 103 H700'/>
+<rect x='560' y='136' width='26' height='26' rx='3'/><path d='M564 150 l8 9 l16 -22'/><path d='M604 149 H680'/>
+<rect x='560' y='182' width='26' height='26' rx='3'/><path d='M566 188 l14 14 M580 188 l-14 14'/><path d='M604 195 H690'/>
+<rect x='560' y='228' width='26' height='26' rx='3'/><path d='M564 242 l8 9 l16 -22'/><path d='M604 241 H660'/>
+<ellipse cx='640' cy='149' rx='96' ry='24' transform='rotate(-4 640 149)'/>
+<!-- The edge: the model's curve against the book's, the gap between them shaded -->
+<path d='M560 640 H900'/><path d='M560 640 V420'/>
+<path d='M570 636 C640 630 670 470 720 470 C770 470 800 630 890 636'/>
+<path d='M590 636 C650 630 700 500 750 500 C800 500 830 630 890 636' stroke-dasharray='8 8'/>
+<path d='M720 470 V636 M750 500 V636' stroke-dasharray='3 6'/><path d='M724 452 L746 452 M740 446 l6 6 l-6 6'/>
+<!-- A roulette wheel -->
+<circle cx='1170' cy='170' r='118'/><circle cx='1170' cy='170' r='92'/><circle cx='1170' cy='170' r='34'/><circle cx='1170' cy='170' r='10'/>
+<path d='M1170 52 V78 M1170 262 V288 M1052 170 H1078 M1262 170 H1288 M1087 87 l18 18 M1235 235 l18 18 M1253 87 l-18 18 M1105 235 l-18 18'/>
+<path d='M1170 136 V80 M1170 204 V260 M1136 170 H1080 M1204 170 H1260 M1146 146 L1105 105 M1194 194 L1235 235 M1194 146 L1235 105 M1146 194 L1105 235'/>
+<circle cx='1222' cy='104' r='8'/><path d='M1290 60 C1320 90 1322 140 1300 180' stroke-dasharray='8 8'/><path d='M1292 168 l8 14 l8 -14'/>
+<!-- A chip stack -->
+<ellipse cx='980' cy='620' rx='54' ry='15'/><path d='M926 620 v-22 M1034 620 v-22'/><ellipse cx='980' cy='598' rx='54' ry='15'/>
+<path d='M926 598 v-22 M1034 598 v-22'/><ellipse cx='980' cy='576' rx='54' ry='15'/><path d='M926 576 v-22 M1034 576 v-22'/><ellipse cx='980' cy='554' rx='54' ry='15'/>
+<path d='M950 554 h-6 M1010 554 h6 M980 541 v-4 M980 567 v4'/>
+<ellipse cx='1068' cy='630' rx='44' ry='12'/><path d='M1024 630 v-20 M1112 630 v-20'/><ellipse cx='1068' cy='610' rx='44' ry='12'/>
+<!-- The bankroll climbing -->
+<path d='M1110 520 V340 M1110 520 H1340'/>
+<path d='M1118 500 L1150 480 L1172 492 L1202 452 L1226 462 L1258 410 L1284 420 L1326 360'/><path d='M1310 362 L1328 358 L1324 376'/>
+<path d='M1118 470 H1330' stroke-dasharray='4 8'/>
+<!-- A ticket, torn at the stub -->
+<path d='M780 300 H960 V390 H780 Z'/><path d='M920 300 V390' stroke-dasharray='5 6'/>
+<path d='M796 318 H880 M796 336 H860 M796 354 H890'/><path d='M934 316 v58 M940 316 v58 M948 316 v58 M952 316 v58 M958 316 v58'/>
+</g></svg>

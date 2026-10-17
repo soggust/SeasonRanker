@@ -257,22 +257,31 @@ games, plays and box scores in them are made up.
 
 **The tab.** Add **Live · N** to the tab bar, second, after The board: `The board / Live · N / Open · N / Cashed
 / Algorithm`. N is the number of games in progress, with a small blinking green dot before it while any are on
-(still for reduced motion). Show the tab whenever the day has games, live or still to come, and hide it
+(still for reduced motion). With nothing in progress it reads just **Live**, never "Live · 0". Show the tab whenever the day has games, live or still to come, and hide it
 otherwise. The header (chip, title, tabs, bankroll card) must be **exactly** The board's: same widths, same
 bankroll card, nothing moving or disappearing when you switch to Live. **No ticker on this tab.**
 
-**The page is one card.** It uses the panel recipe the wallet's panels use (`chip.panel`: 2px gold rail, radius
-12px, the scoreboard dots inside) and is full width. Its header bar has the felt-green tint and the gold seam under
+**The page is one card.** It has the gold rail of the wallet's panels (`chip.panel`: 2px `$felt-gold` rail, radius
+12px) and is full width. Its header bar has the felt-green tint and the gold seam under
 it, all on **one line**:
 
-- a green live dot and **ON NOW** (no count after it)
+- a dot and the title, with no count after it. The three states:
+  - **ON NOW**, with the blinking green live dot
+  - **UPCOMING**, with a steady orange dot (`#e8913a`, soft glow)
+  - **ALL DONE TONIGHT**, with a flat grey dot (`#7a7a7a`)
 - then a divider and the sweat summary: a coloured square and count each for **winning** (green), **close**
   (gold) and **losing** (red), across the user's bets on live games
 - on the right, the **All games / My bets** segmented pill. My bets shows only games the user has a bet on.
 
-The body is the scoreboard (dots), not felt. It holds a 3-column grid of game cards (2 under ~1100px, 1 on
-phones). Games with the user's bets come first. Each game card is a button that opens the game, with a 1px
-`$panel-edge` border, radius 10px, a 2.5% white fill and the hover lift, and **no coloured left edge**. Each
+**The body is chalkboard with chalked betting art**, the way each sport's chalkboard carries its chalked plays.
+Add `libs/ranker/src/assets/textures/chalk-bets.svg` (it is in this folder; copy it there) and expose it as a
+texture variable beside `--tex-chalk-noise` in `_base.scss`, for example `--tex-chalk-bets`. Lay it over the
+existing chalk slate (`$chalk-dust` / `$chalk-slate`):
+`var(--tex-chalk-bets) 50% 35% / 1400px 720px no-repeat, $chalk-dust` (on phones `50% 0 / 1100px 566px`).
+The SVG carries its own opacity (5%) and the same chalk-wobble filter as the sports' `chalk-plays.svg`. It
+holds a 3-column grid of game cards (2 under ~1100px, 1 on
+phones). Games with the user's bets come first. Each game card is a button that opens the game, on the **scoreboard**
+(`v.scoreboard-face`: dots on `--scoreboard`), with a 1px `$panel-edge` border, radius 10px and the hover lift, and **no coloured left edge**. Each
 card holds:
 
 - the sport and venue in small caps, and on the right the clock in green with the live dot (`3RD 4:12`)
@@ -285,9 +294,12 @@ card holds:
   to the current value, a white tick at the line) and a status tag (WINNING, ON PACE, NEEDS 2, DOWN 9.5) in
   green, gold or red. With no bets: "No tickets · bot: <the bot's read>" in faint text.
 
-**Finished games are not listed.** When nothing is live, the card's title becomes **COMING UP** and the bar
-says "Nothing on right now. First tip-off at <time>". The card then lists today's games still to come, each
-with its start time in gold, the user's pending ticket, or "Bot: <pick · band>".
+**Finished games are not listed.** When nothing is live, the card's title becomes **UPCOMING** and the bar
+says "Nothing on right now. First tip-off at <time>" (the time in gold). The card then lists today's games
+still to come, each with its start time in gold, the user's pending ticket, or "Bot: <pick · band>". When
+there are no games left at all, the title is **ALL DONE TONIGHT** with the grey dot and "No games left.
+Tomorrow's board opens at <time>". Use whatever the board's real next-update time is, and if there isn't one,
+leave the second sentence out.
 
 **Data.** Use only what the app already loads. Today's games, states, clocks and scores come from the ESPN
 scoreboard `lines.service.ts` already fetches. Bets come from the wallet's open bets. The bot's read comes from
