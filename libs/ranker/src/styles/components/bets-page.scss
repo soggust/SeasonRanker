@@ -34,10 +34,12 @@ $page-gutter: 16px;
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    // (a blackjack table's printing under the weave: its gold lines and betting circles, faint, the words off the top)
+    var(--tex-felt-print) center top / cover no-repeat,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),
     radial-gradient(ellipse at 50% 30%, #1d7a4f, #155a3a 55%, #0b3322);
   // (the mottle stretched over the whole table, so it never repeats; the fiber's tile seamless)
-  background-size: auto, auto, auto, auto, 512px, cover, auto;
+  background-size: auto, auto, auto, auto, 512px, cover, cover, auto;
   display: block;
   height: calc(100% - var(--sport-bar-height));
   overflow: hidden;

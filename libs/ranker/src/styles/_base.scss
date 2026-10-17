@@ -73,6 +73,8 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   --tex-chalk-noise: url("../assets/textures/chalk-noise.svg");
   // (the Book's chalked betting art: dice, cards, chips, a ticket, the edge; the Live tab's board)
   --tex-chalk-bets: url("../assets/textures/chalk-bets.svg");
+  // (the Bets page's felt: a blackjack table's printing, zoomed in so only its gold lines and betting circles show)
+  --tex-felt-print: url("../assets/textures/felt-table-print.svg");
 }
 
 // Phones: a slimmer sport bar and shorter grid rows, so more of the list fits on screen
