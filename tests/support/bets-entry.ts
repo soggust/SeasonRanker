@@ -17,3 +17,4 @@ export * from '../../libs/ranker/src/engine/bets/recent-form';
 export { CHECK_CAUSE_LABELS, checkPanelOf } from '../../libs/ranker/src/engine/bets/desk-model';
 export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/src/engine/bets/desk-model';
 export * from '../../libs/ranker/src/engine/bets/bets-rows';
+export * from '../../libs/ranker/src/engine/player-link';

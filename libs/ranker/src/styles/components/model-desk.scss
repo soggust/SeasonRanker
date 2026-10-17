@@ -610,16 +610,6 @@ card-panel {
   width: 30px;
 }
 
-.desk-player {
-  color: inherit;
-  text-decoration: none;
-  @include v.link-fade;
-
-  &:hover {
-    @include v.link-lit;
-  }
-}
-
 // (a pick's circle when it isn't a player: a side's team logo, a total's arrow; the headshot's size and ring)
 .desk-badge {
   align-items: center;

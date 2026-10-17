@@ -6,7 +6,7 @@ import { connectRosterGrades } from '@ranker/engine/roster-grades';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
 import { defaultMin } from '@ranker/engine/playing-time';
 import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
-import { CardLink, GAME_PARAM, LinkedCard, cardLink, clearCardParams, clearGameParams, findLinkedCard, gameLink, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
+import { CardAsk, CardLink, GAME_PARAM, LinkedCard, cardLink, clearCardParams, clearGameParams, findLinkedCard, gameLink, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
 import type { GameTab } from '@ranker/engine/game-view/game-view.service';
 import { COMPARE_PARAM, SharedCompare, SharedSide, applySharedLink, compareCode, readCompareCode, shareLink } from '@ranker/engine/share';
 import type { EngineHost, SportSettings } from '@ranker/engine/sport';
@@ -92,15 +92,20 @@ function linkedCard(): LinkedCard | { missing: true } | null {
   history.replaceState(null, '', url);
   // (a season the site doesn't have: data.ts loaded the current one instead, so not him)
   if (ask.season && Number(ask.season) !== dataSeason) return { missing: true };
+  return findCard(ask) ?? { missing: true };
+}
+
+// The row a card's ask names in this season's rows (findLinkedCard): a link's, or a player link's
+// (player-link.ts: his name, and his tab where the page knows it). Null: nobody by that id or name
+export function findCard(ask: CardAsk): LinkedCard | null {
   const all = POSITIONS as string[];
-  const found = findLinkedCard(ask, SKILL_UNITS as Record<string, SkillPlayer[]>, {
+  return findLinkedCard(ask, SKILL_UNITS as Record<string, SkillPlayer[]>, {
     all,
     // (his own tab: not a team's, nor a pooled one, the Top 50, where he'd be found first)
     players: all.filter((position) => !SPORT.teamTabs?.includes(position) && !isPooled(position)),
     pooled: isPooled,
     home: homeTab,
   });
-  return found ?? { missing: true };
 }
 
 // A game from a link (?game=<ESPN's event id>&gameTab=), taken out of the address

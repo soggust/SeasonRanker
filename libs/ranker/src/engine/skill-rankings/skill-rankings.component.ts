@@ -20,7 +20,8 @@ import { extras, rowTeamNames } from '@ranker/engine/row-fields';
 import { logoForSeason } from '@sport/logo-eras';
 import { TeamLook, teamLook } from '@ranker/engine/team-look';
 import { SportSetting, SportSettings } from '@ranker/engine/sport';
-import { PositionService, RankerSettings } from '@ranker/engine/position.service';
+import { PositionService, RankerSettings, findCard } from '@ranker/engine/position.service';
+import { setCardOpener } from '@ranker/engine/player-link';
 import { SeasonDataService } from '@ranker/engine/season-data.service';
 import { CURRENT_SEASON, SEASONS, SeasonPart, dataPart, dataSeason, dataVersion, isLiveSeason } from '@ranker/engine/data';
 import { SKILL_UNITS, emptyIn, recentCount, statIsEmpty } from '@ranker/engine/unit-scoring';
@@ -191,6 +192,17 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.finder = new PlayerCompare(this, seasonData);
     // (the game view's names and teams open cards)
     this.cards.connectGames(games);
+    // (a player's name or face elsewhere on the page, the game modal's lines: his card in place, the game
+    // closing under it with its back arrow; player-link.ts)
+    this.destroyRef.onDestroy(
+      setCardOpener(({ name, pos, id }) => {
+        const found = findCard({ pos, id, name, tab: null, season: null });
+        if (!found) return false;
+        games.leaveForCard();
+        void this.cards.openLinked({ position: found.position, gsisId: found.gsisId }, dataSeason);
+        return true;
+      }),
+    );
     const service = this.positionService;
 
     // (a click anywhere: outside Angular unless a breakdown or the search is open to shut)

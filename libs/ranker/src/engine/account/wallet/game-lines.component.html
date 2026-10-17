@@ -49,8 +49,9 @@
 <ng-template #propRow let-r>
   <div class="prop" role="listitem">
     <div class="prop-who">
-      <span class="disc player" aria-hidden="true" [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="face(r)" alt="" (error)="hideImage($event)" /></span>
-      <span class="prop-words"><b>{{ r.player }}</b><small>{{ teamAbbr(r.team) }}{{ teamAbbr(r.team) ? ' · ' : '' }}{{ r.label }} {{ r.line }}</small></span>
+      <!-- (his face and his name: links to his card, player-link.ts) -->
+      <a class="disc player" [playerLink]="{ sport, name: r.player }" playerLinkFace [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="face(r)" alt="" (error)="hideImage($event)" /></a>
+      <span class="prop-words"><b><a [playerLink]="{ sport, name: r.player }">{{ r.player }}</a></b><small>{{ teamAbbr(r.team) }}{{ teamAbbr(r.team) ? ' · ' : '' }}{{ r.label }} {{ r.line }}</small></span>
     </div>
     @for (s of r.sides; track s.side) {
       @if (s.odds !== null) {
@@ -164,8 +165,13 @@
           @let team = side === 'away' ? b.away : b.home;
           <div class="grid-row" role="row">
             <div class="grid-team" role="rowheader">
-              <span class="disc team" [class.player]="!teams" aria-hidden="true" [style.border-color]="teamColor(team.abbr)"><img [class.disc-face]="!teams" [src]="pic(team)" alt="" (error)="hideImage($event)" /></span>
-              <span class="team-words"><b>{{ compact ? team.abbr : team.name || team.abbr }}</b>@if (!compact && teams) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
+              @if (teams) {
+                <span class="disc team" aria-hidden="true" [style.border-color]="teamColor(team.abbr)"><img [src]="pic(team)" alt="" (error)="hideImage($event)" /></span>
+              } @else {
+                <!-- (a fight's fighter: his face and his name link his card, player-link.ts) -->
+                <a class="disc team player" [playerLink]="{ sport, name: team.name || team.abbr }" playerLinkFace [style.border-color]="teamColor(team.abbr)"><img class="disc-face" [src]="pic(team)" alt="" (error)="hideImage($event)" /></a>
+              }
+              <span class="team-words"><b>@if (teams) {{{ compact ? team.abbr : team.name || team.abbr }}} @else {<a [playerLink]="{ sport, name: team.name || team.abbr }">{{ compact ? team.abbr : team.name || team.abbr }}</a>}</b>@if (!compact && teams) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
             </div>
             @if (!mlAlone) {
               <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
@@ -216,8 +222,8 @@
           @for (r of team.rows; track r.key) {
             <div class="prop" role="listitem">
               <div class="prop-who">
-                <span class="disc player" aria-hidden="true" [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="previewFace(r)" alt="" (error)="hideImage($event)" /></span>
-                <span class="prop-words"><b>{{ r.player }}</b><small>{{ r.team }}{{ r.team ? ' · ' : '' }}{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small></span>
+                <a class="disc player" [playerLink]="{ sport, name: r.player }" playerLinkFace [style.border-color]="teamColor(r.team)"><img class="disc-face" [src]="previewFace(r)" alt="" (error)="hideImage($event)" /></a>
+                <span class="prop-words"><b><a [playerLink]="{ sport, name: r.player }">{{ r.player }}</a></b><small>{{ r.team }}{{ r.team ? ' · ' : '' }}{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small></span>
               </div>
               @for (sd of previewSides; track sd) {
                 <div class="tile preview" [class.on]="wallet.slipKeys().has(previewKey(r, sd))" [class.shut]="!open">

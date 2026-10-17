@@ -9,6 +9,7 @@ import { Access, BetRecord, accessAll, betRecord, hiddenNote, money, oddsText, r
 import { listPath } from '../lists/lists-helpers';
 import { BetSummary, ListSummary, PinSummary, PresetSummary, loadBalance, loadBets, loadLists, loadPins, loadPresets } from './profile-data';
 import { pagePath } from '@ranker/engine/page-url';
+import { betPlayer } from '../../player-link';
 
 type Load<T> = { state: 'loading' } | { state: 'ready'; value: T } | { state: 'error'; message: string };
 
@@ -24,6 +25,8 @@ type Load<T> = { state: 'loading' } | { state: 'ready'; value: T } | { state: 'e
   standalone: false,
 })
 export class UserProfileComponent {
+  // (a bet's player: his name and face link his card, player-link.ts)
+  readonly betPlayer = betPlayer;
   readonly canUse = canUse;
   readonly money = money;
   readonly oddsText = oddsText;

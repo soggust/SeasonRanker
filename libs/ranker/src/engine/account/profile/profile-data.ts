@@ -34,6 +34,9 @@ export interface BetSummary extends BetLike {
   sport: string;
   matchup: string;
   pick: string;
+  // (a straight bet's market and a prop's player: his name links his card, player-link.ts betPlayer)
+  market: string | null;
+  player: string | null;
   odds: number | null;
   stake: number;
   profit: number | null;
@@ -104,6 +107,8 @@ function bet(d: { id: string; data: () => Record<string, unknown> }): BetSummary
     sport: legs ? (sports.length === 1 ? sports[0] : 'parlay') : text(x['sport']),
     matchup: legs ? legs.map((l) => text(l['pick'])).join(' · ') : text(x['matchup']),
     pick: text(x['pick']),
+    market: legs ? null : text(x['market']) || null,
+    player: legs ? null : text(x['player']) || null,
     // (a parlay's price from its legs' own, as the settler pays it (wallet.service betFrom): the figure the
     // browser wrote is only what it showed)
     odds: legs && legs.length >= 2 && legs.every((l) => num(l['odds']) !== null) ? parlayOdds(legs.map((l) => ({ odds: l['odds'] as number }))) : num(x['odds']),

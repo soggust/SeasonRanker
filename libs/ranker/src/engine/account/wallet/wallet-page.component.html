@@ -19,14 +19,18 @@
 <!-- (a bet's pick, led by its circle: a prop's player, a total's arrow, a side's team; the bot's pick its chip) -->
 <ng-template #pickCell let-b>
   <span class="desk-pick">
+    <!-- (a prop's player or a fight's fighter: his face and his name link his card, player-link.ts) -->
+    @let who = betPlayer(b);
     @if (b.market === 'prop') {
-      <img class="desk-face" [src]="face(b)" alt="" (error)="hideImage($event)" />
+      <a [playerLink]="who" playerLinkFace><img class="desk-face" [src]="face(b)" alt="" (error)="hideImage($event)" /></a>
     } @else if (b.market === 'total') {
       <span class="desk-badge" [class.over]="b.side === 'over'" [class.under]="b.side === 'under'" aria-hidden="true"><mat-icon [fontIcon]="b.side === 'over' ? 'arrow_upward' : 'arrow_downward'"></mat-icon></span>
+    } @else if (who) {
+      <a class="desk-badge" [playerLink]="who" playerLinkFace><img [src]="logo(b.sport, teams(b)[b.side === 'home' ? 1 : 0])" alt="" (error)="hideImage($event)" /></a>
     } @else {
       <span class="desk-badge" aria-hidden="true"><img [src]="logo(b.sport, teams(b)[b.side === 'home' ? 1 : 0])" alt="" (error)="hideImage($event)" /></span>
     }
-    <b>{{ b.pick }}</b>
+    <b><pick-text [pick]="b.pick" [player]="who"></pick-text></b>
   </span>
   <!-- (phones: the game under the pick, its own column gone) -->
   <small class="wallet-phone-game">{{ b.matchup }} · {{ b.start | date: 'EEE MMM d' }}</small>
@@ -407,7 +411,7 @@
               <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}</span>
               @for (l of ticketLegs(b); track l.id) {
                 <div class="ticket-leg">
-                  <div class="leg-line"><span class="leg-pick">{{ l.pick }}</span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
+                  <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
                   <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span></span>
                   <span class="leg-live" [ngClass]="l.status === 'won' ? 'good' : l.status === 'lost' ? 'bad' : 'ink'">{{ finalLine(l) }}</span>
                 </div>
@@ -472,7 +476,7 @@
               @for (l of ticketLegs(b); track l.id) {
                 @let ll = legLine(l);
                 <div class="ticket-leg">
-                  <div class="leg-line"><span class="leg-pick">{{ l.pick }}</span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
+                  <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
                   <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span>@if (l.preview) { · assumed}</span>
                   @if (ll.meter !== null) {
                     <span class="leg-meter" aria-hidden="true"><i [style.width.%]="ll.meter"></i></span>

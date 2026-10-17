@@ -368,7 +368,7 @@
                     @for (r of rows; track r.bet.id) {
                       <div class="your-bet" [ngClass]="r.w.tone">
                         <span class="your-bet-main">
-                          <span class="your-bet-pick">{{ r.pick }} <span class="your-bet-odds">{{ r.odds }}</span></span>
+                          <span class="your-bet-pick"><pick-text [pick]="r.pick" [player]="betPlayer(r.bet)"></pick-text> <span class="your-bet-odds">{{ r.odds }}</span></span>
                           <span class="your-bet-sub">{{ r.sub }}</span>
                         </span>
                         <span class="your-bet-status">{{ r.w.status }}</span>

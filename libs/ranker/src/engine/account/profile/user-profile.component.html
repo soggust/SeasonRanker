@@ -255,7 +255,7 @@
       <li class="bet" [class.won]="bet.status === 'won'" [class.lost]="bet.status === 'lost'">
         <span class="bet-main">
           <span class="bet-pick">
-            {{ bet.pick }}
+            <pick-text [pick]="bet.pick" [player]="betPlayer(bet)"></pick-text>
             @if (bet.odds !== null) { <span class="bet-odds">{{ oddsText(bet.odds) }}</span> }
             @if (bet.botPick) { <span class="bot-tag" title="The Algorithm’s pick">Bot pick</span> }
           </span>

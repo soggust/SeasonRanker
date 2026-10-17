@@ -849,3 +849,38 @@ section footer .mat-mdc-select.season-select {
     opacity: 0.25;
   }
 }
+
+// A player's name or face as a link to his card (player-link.directive.ts, everywhere outside the grid and the
+// card): the name reads as the text around it until it's hovered, then lit and underlined; a face lightens
+.player-link {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  @include v.link-fade;
+
+  &:hover {
+    @include v.link-lit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  &.player-link-face {
+    transition: filter v.$t-hover ease;
+
+    &:hover {
+      filter: brightness(1.2);
+      text-decoration: none;
+      text-shadow: none;
+    }
+  }
+}
+
+// (a face's link keeps the face's own box: no line box under it; any class of its own sets its display)
+:where(a.player-link-face) {
+  display: inline-flex;
+  flex: none;
+}

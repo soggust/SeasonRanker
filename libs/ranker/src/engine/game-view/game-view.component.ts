@@ -20,6 +20,7 @@ import { PlayAt, betsByGame, gameReadOf, impactBetOf, impactPlaysOf, propNowOf, 
 import { PlayImpacts, importantPlays, walkPlays } from '../bets/bet-impact';
 
 import { GameTab, GameViewService, nameKey, phoneModal } from './game-view.service';
+import { betPlayer } from '../player-link';
 
 // (a bet on the game, as the Your Bets panel shows it: the pick and its odds, the stake, band and whose pick it
 // was, and its watch (live-bets.ts): status, meter and captions)
@@ -52,6 +53,8 @@ interface PlayTags {
   standalone: false,
 })
 export class GameViewComponent implements AfterViewChecked, OnDestroy {
+  // (a bet's player: his name and face link his card, player-link.ts)
+  readonly betPlayer = betPlayer;
   // (the hero's share button: a link to this game, on its tab)
   @Input() share: ((button: HTMLElement) => void) | null = null;
 

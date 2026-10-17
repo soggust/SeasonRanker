@@ -10,6 +10,7 @@ import { recentForm } from '../../bets/recent-form';
 import { PRIVACY_HASH } from '../account-page.component';
 import { LinesService } from './lines.service';
 import { WalletService } from './wallet.service';
+import { betPlayer } from '../../player-link';
 import {
   Leaderboard,
   PlayBet,
@@ -81,6 +82,8 @@ const NEAR = 15 * 60e3;
   standalone: false,
 })
 export class WalletPageComponent implements OnInit, OnDestroy {
+  // (a bet's player: his name and face link his card, player-link.ts)
+  readonly betPlayer = betPlayer;
   readonly canUse = canUse;
   readonly start = START;
   readonly oddsText = oddsText;

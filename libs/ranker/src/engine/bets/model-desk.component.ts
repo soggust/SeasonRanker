@@ -44,6 +44,7 @@ import { confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
 import { pickTeamColor, splitPick } from './pick-style';
 import { DATE_RANGES, DateRange, inRange } from './date-range';
+import type { PlayerRef } from '../player-link';
 
 // The algorithm's admin panel (the Bets page, dev only): the code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), read from each sport's
@@ -737,14 +738,14 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   leagueLogo = leagueLogo;
   hide = hideImage;
 
-  // (a prop's player: his ESPN headshot, and his card in the site's own app for his sport: ?card= opens his
-  // tab and his card there)
+  // (a prop's player: his ESPN headshot, and his card in his sport's app (player-link.ts: ?card= his ESPN id
+  // finds him there, his name if it doesn't)
   headshot(b: ModelBet): string {
     return headshot(b.sport, b.athlete);
   }
 
-  playerLink(b: ModelBet): string {
-    return `/${b.sport}/?card=${b.athlete}&name=${encodeURIComponent(b.player ?? '')}`;
+  playerRef(b: ModelBet): PlayerRef {
+    return { sport: b.sport, name: b.player, id: b.athlete ?? null };
   }
 
   // ---------------------------------------------------------------------------

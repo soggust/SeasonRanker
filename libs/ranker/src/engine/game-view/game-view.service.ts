@@ -196,6 +196,14 @@ export class GameViewService {
     this.openPlayer(link, season);
   }
 
+  // A card opened over the game from one of its links (player-link.ts: a prop tile's player): the game closes,
+  // the card's back arrow reopens it; nothing open, nothing to do
+  leaveForCard(): void {
+    if (!this.game) return;
+    this.backTo = this.current;
+    this.close();
+  }
+
   toTeam(abbreviation: string, season: number): void {
     if (!this.openTeam || !this.own) return;
     this.backTo = this.current;
