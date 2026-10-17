@@ -374,28 +374,135 @@
       <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
     </section>
   } @else if (only === 'closed') {
-  <!-- (the Bets page's Closed Bets tab: the settled history alone) -->
-  <section class="model-desk wallet-open-only" aria-label="Closed Bets">
-    @if (settled().length) {
-      <ng-container *ngTemplateOutlet="settledPanel"></ng-container>
-    } @else if (wallet.settledState() === 'all') {
-      <p class="desk-note wallet-note" role="status">No settled bets yet.</p>
+  <!-- The Book's Cashed tab: the settled bets as printed tickets, newest first, under a strip with the last seven
+       days' record, units and streak (recent-form.ts, from the tally and the history on hand); each ticket rubber-
+       stamped CASHED, LOST or PUSH. The date range stays the settled history's (the Algorithm's dropdown) -->
+  <section class="book-tickets" aria-label="Cashed">
+    <div class="tickets-strip">
+      <h2>Cashed</h2>
+      @if (form(); as f) {
+        <span class="strip-stat"><span class="strip-key">Record</span><b>{{ f.record }}</b></span>
+        <span class="strip-stat"><span class="strip-key">Units</span><b [class.up]="f.up" [class.down]="!f.up">{{ f.units }}</b></span>
+        <span class="strip-stat"><span class="strip-key">Streak</span><b class="glow">{{ f.streak }}</b></span>
+      }
+      <span class="strip-space"></span>
+      <select class="book-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
+        @for (r of ranges; track r.value) {
+          <option [value]="r.value">{{ r.label }}</option>
+        }
+      </select>
+      <span class="strip-note">Last 7 days · settled from the final score</span>
+    </div>
+    @if (settledShown().length) {
+      <div class="tickets-scroll">
+        <div class="tickets-grid">
+          @for (b of settledTickets(); track b.id) {
+            @let res = stampOf(b);
+            <article class="ticket" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
+              <div class="ticket-top">
+                <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
+                <span class="ticket-status">Settled</span>
+              </div>
+              <hr class="perf" />
+              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}</span>
+              @for (l of ticketLegs(b); track l.id) {
+                <div class="ticket-leg">
+                  <div class="leg-line"><span class="leg-pick">{{ l.pick }}</span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
+                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span></span>
+                  <span class="leg-live" [ngClass]="l.status === 'won' ? 'good' : l.status === 'lost' ? 'bad' : 'ink'">{{ finalLine(l) }}</span>
+                </div>
+              }
+              <div class="ticket-sums">
+                <div><span>Risk</span><span>{{ b.stake }}u</span></div>
+                <div><span>{{ res.winLabel }}</span><b>{{ res.win | number: '1.2-2' }}u</b></div>
+                <div class="pays"><span>Pays</span><span>{{ res.pays | number: '1.2-2' }}u</span></div>
+              </div>
+              <span class="ticket-barcode" aria-hidden="true"></span>
+              <span class="ticket-stamp" [ngClass]="res.tone" aria-hidden="true">{{ res.stamp }}</span>
+            </article>
+          }
+        </div>
+        <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all here) -->
+        @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
+          <div class="tickets-more">
+            <button type="button" class="book-more" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
+              {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
+            </button>
+          </div>
+        }
+      </div>
+    } @else if (wallet.settledState() === 'all' || (settled().length && !rangeLoading())) {
+      <p class="tickets-note" role="status">No settled bets {{ rangeWords(range()) }}.</p>
     } @else {
-      <p class="desk-note wallet-note" role="status">Loading…</p>
+      <p class="tickets-note" role="status">Loading…</p>
     }
   </section>
   } @else if (only === 'open') {
-  <!-- (the Bets page's Open Bets tab: the open bets alone) -->
-  <section class="model-desk wallet-open-only" aria-label="Open Bets">
+  <!-- The Book's Open tickets tab: the open bets as printed tickets, the live ones first, under a strip with what's
+       in play, what they'd win, how many are live and how many are decided pending settlement; each leg with its
+       score and clock and how it stands (the Open Bets table's live column), a prop's thin progress meter, or its
+       start -->
+  <section class="book-tickets" aria-label="Open tickets">
+    <div class="tickets-strip">
+      <h2>Open tickets</h2>
+      <span class="strip-stat"><span class="strip-key">In play</span><b>{{ tally().atRisk | number: '1.0-2' }}u</b></span>
+      <span class="strip-stat"><span class="strip-key">To win</span><b class="up">{{ openToWin() | number: '1.2-2' }}u</b></span>
+      <span class="strip-stat"><span class="strip-key">Live</span><b class="glow">{{ liveCount() }}</b></span>
+      <span class="strip-stat"><span class="strip-key">Pending</span><b>{{ pending().count }}</b></span>
+      <span class="strip-space"></span>
+      <span class="strip-note">Scores every minute · settled after the final</span>
+    </div>
     @if (open().length) {
-      <ng-container *ngTemplateOutlet="openPanel"></ng-container>
+      <div class="tickets-scroll">
+        <div class="tickets-grid">
+          @for (b of openTickets(); track b.id) {
+            @let d = decided().get(b.id);
+            @let live = ticketLive(b);
+            <article class="ticket" [class.live]="live" [attr.aria-label]="'Ticket ' + ticketNo(b) + (live ? ', live' : '')">
+              <div class="ticket-top">
+                <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
+                @if (live) {
+                  <span class="ticket-status live"><i class="livedot" aria-hidden="true"></i>Live</span>
+                } @else {
+                  <span class="ticket-status">{{ b.start | date: 'EEE h:mm a' }}</span>
+                }
+              </div>
+              <hr class="perf" />
+              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.odds) : 'Straight' }}@if (oldRun(b)) { · run {{ b.run + 1 }}}</span>
+              @for (l of ticketLegs(b); track l.id) {
+                @let ll = legLine(l);
+                <div class="ticket-leg">
+                  <div class="leg-line"><span class="leg-pick">{{ l.pick }}</span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
+                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span>@if (l.preview) { · assumed}</span>
+                  @if (ll.meter !== null) {
+                    <span class="leg-meter" aria-hidden="true"><i [style.width.%]="ll.meter"></i></span>
+                  }
+                  <span class="leg-live" [ngClass]="ll.tone" [attr.title]="ll.title">{{ ll.text ?? ('Kicks off ' + (l.start | date: 'EEE h:mm a')) }}</span>
+                </div>
+              }
+              <div class="ticket-sums">
+                <div><span>Risk</span><span>{{ b.stake }}u</span></div>
+                @if (d) {
+                  <div><span>{{ d.status === 'won' ? 'Won' : d.status === 'lost' ? 'Would have won' : 'Returned' }}</span><b [class.good]="d.status === 'won'" [class.bad]="d.status === 'lost'">{{ (d.status === 'won' ? d.profit : betToWin(b)) | number: '1.2-2' }}u</b></div>
+                  <div class="pays"><span>Pays</span><span>{{ (d.status === 'won' ? b.stake + d.profit : d.status === 'lost' ? 0 : b.stake) | number: '1.2-2' }}u</span></div>
+                  <span class="ticket-pending">{{ d.status }} · pending settlement</span>
+                } @else {
+                  <div><span>To win</span><b>{{ betToWin(b) | number: '1.2-2' }}u</b></div>
+                  <div class="pays"><span>Pays</span><span>{{ b.stake + betToWin(b) | number: '1.2-2' }}u</span></div>
+                }
+              </div>
+              <span class="ticket-barcode" aria-hidden="true"></span>
+            </article>
+          }
+        </div>
+      </div>
     } @else if (wallet.loaded()) {
-      <div class="wallet-empty">
-        <p><b>No open bets.</b> Open any game's lines on Place Bets and tap a price to bet it.</p>
-        <button type="button" class="wallet-chip sand" (click)="toBets()"><mat-icon aria-hidden="true" fontIcon="casino"></mat-icon>Place Bets<svg class="chip-rim" aria-hidden="true"><rect pathLength="220" /></svg></button>
+      <div class="tickets-empty">
+        <p><b>No open tickets.</b> Tap a price on the board to write one.</p>
+        <button type="button" class="book-more" (click)="toBets()">The board</button>
       </div>
     } @else {
-      <p class="desk-note wallet-note" role="status">Loading…</p>
+      <p class="tickets-note" role="status">Loading…</p>
     }
   </section>
   } @else {

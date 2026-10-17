@@ -1397,11 +1397,11 @@ $page-gutter: 16px;
   overflow-y: auto;
 }
 
-// (Open Bets and Closed Bets: their tables up to the grid's width, like the Algorithm's, so they fit without a
-// sideways scroll on a wide screen)
-.bets-page.wallet-view,
-.bets-page.desk-view {
-  max-width: 1240px;
+// (Open tickets, Cashed and the Algorithm: the page's width, as the board's)
+.bets-page.wallet-view wallet-page {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
 }
 
 // ---------------------------------------------------------------------------

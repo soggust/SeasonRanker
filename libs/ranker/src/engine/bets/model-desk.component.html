@@ -274,7 +274,7 @@
 
     <div class="desk-grid">
       <!-- (By Sport across the top, open to begin with, the self-check under it; the rest folded) -->
-      <card-panel class="tab-card group-results desk-wide" label="By Sport" icon="sports" [startOpen]="true">
+      <card-panel class="tab-card group-results desk-wide" label="By Sport" icon="sports" [startOpen]="false">
         <div class="group-body">
           <table class="desk-table">
             <thead>
@@ -314,7 +314,7 @@
       <!-- (the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
            sport's flags, watches and partial checks in plain words, the rest folded under a line of counts;
            the panel itself folded to begin with) -->
-      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="false">
+      <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="true">
         <div class="group-body">
           @if (!selfChecks.length) {
             <p class="desk-note">No self-check yet (runs Monday mornings)</p>
@@ -377,7 +377,7 @@
       <!-- (the chance it gave its picks against how often they won: close together is honest; once there are
            graded bets; the tracked rows' too, graded like bets) -->
       @if (calibration.length) {
-      <card-panel class="tab-card group-support" label="Calibration" icon="tune">
+      <card-panel class="tab-card group-support" label="Calibration" icon="tune" [startOpen]="true">
         <div class="group-body">
             <table class="desk-table">
               <thead>
@@ -407,7 +407,7 @@
            LIKE or PASS (no edge, or a small one); and all of them, the total under. CHECK under LOCK: the markets it
            questioned, at a unit as if bet, not in the total) -->
       @if (byConfidence.length) {
-      <card-panel class="tab-card group-results" label="By Confidence" icon="local_fire_department">
+      <card-panel class="tab-card group-results" label="By Confidence" icon="local_fire_department" [startOpen]="true">
         <div class="group-body">
           <table class="desk-table">
             <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'confidence' }"></ng-container></thead>
@@ -424,7 +424,7 @@
       </card-panel>
       }
 
-      <card-panel class="tab-card group-box" label="By Market" icon="category">
+      <card-panel class="tab-card group-box" label="By Market" icon="category" [startOpen]="true">
         <div class="group-body">
           <table class="desk-table">
             <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'market' }"></ng-container></thead>

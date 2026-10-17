@@ -144,16 +144,27 @@ card-panel {
   }
 }
 
-// (the Bets page's and the Algorithm's: the casino's card table, the same from every sport)
+// (The Book's, the Bets page's and the Algorithm's: plain scoreboard panels (the dots, a 1px edge, the small drop
+// shadow; not the board's ringed panel), their bars gold, the same from every sport)
 bets-page card-panel,
 model-desk card-panel {
-  @include chip.panel;
+  @include v.scoreboard-panel(v.$radius-lg);
+  --group-color: #{chip.$gold-led};
+
+  > .group-bar {
+    background: linear-gradient(90deg, rgba(chip.$gold-led, 0.1), transparent 60%), var(--scoreboard-dots), var(--scoreboard);
+    border-radius: 0;
+  }
+
+  > .panel-body {
+    background: none;
+  }
 }
 
 // (the Algorithm's: the same tables, their bars the felt's green, not each category's color; .stat-group,
 // the class every card-panel carries, so it outweighs the .group-* classes that set the category's color)
 model-desk card-panel.stat-group {
-  --group-color: #{chip.$felt-light};
+  --group-color: #{chip.$gold-led};
 }
 
 // (the Algorithm's and the wallet's grid of panels: each panel its own height, its body filling it, the sport's

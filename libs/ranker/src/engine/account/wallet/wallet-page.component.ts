@@ -6,6 +6,7 @@ import { hideImage, leagueLogo, teamLogo, headshot } from '../../bets/bet-format
 import { AccountService } from '../account.service';
 import { ADMIN, canUse } from '../features';
 import { chooseBetsView } from '../../bets/bets-view';
+import { recentForm } from '../../bets/recent-form';
 import { PRIVACY_HASH } from '../account-page.component';
 import { LinesService } from './lines.service';
 import { WalletService } from './wallet.service';
@@ -409,6 +410,62 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (a game's bets' profit together)
   stakeProfit(list: PlayBet[]): number {
     return Math.round(list.reduce((t, b) => t + (b.profit ?? 0), 0) * 100) / 100;
+  }
+
+  // ---------------------------------------------------------------------------
+  // The Book's Open tickets and Cashed tabs (only = 'open' | 'closed'): the same open and settled bets, the same
+  // live scores, progress meters and decided results the tables show, as printed tickets. The look's own helpers
+  // ---------------------------------------------------------------------------
+  // (a ticket's legs: a straight bet itself, a parlay's legs as bets)
+  ticketLegs(b: PlayBet): PlayBet[] {
+    return b.kind === 'parlay' ? (this.legs().get(b.id) ?? []) : [b];
+  }
+  // (live: a leg's game under way)
+  ticketLive(b: PlayBet): boolean {
+    return this.ticketLegs(b).some((l) => l.status === 'open' && this.gameState(l).live);
+  }
+  // (the open tickets, the live ones first, then by their start)
+  readonly openTickets = computed(() => {
+    const live = (b: PlayBet) => (this.ticketLive(b) ? 0 : 1);
+    return [...this.open()].sort((a, b) => live(a) - live(b) || a.start.localeCompare(b.start));
+  });
+  // (the cashed tickets: the date range's settled bets, the latest settled first)
+  readonly settledTickets = computed(() => [...this.settledShown()].sort((a, b) => (b.settledAt ?? b.start).localeCompare(a.settledAt ?? a.start)));
+  // (what the open bets would win together, the decided ones at what they came to)
+  readonly openToWin = computed(() => Math.round(this.open().reduce((t, b) => t + (this.decided().get(b.id)?.profit ?? betToWin(b)), 0) * 100) / 100);
+  readonly liveCount = computed(() => this.open().filter((b) => this.ticketLive(b)).length);
+  // (the strip's last seven days on Cashed: recent-form.ts, from the tally and the history on hand)
+  readonly form = computed(() => recentForm(this.wallet.tally(), this.wallet.settledBets()));
+  // (a ticket's number: the tail of its id, as the settler names it)
+  ticketNo(b: PlayBet): string {
+    return b.id.slice(-6).toUpperCase();
+  }
+  // A leg's line in play: its score and clock with how it stands (a side where it stands at the score, a prop's or
+  // a total's count against the line: the live column's words), green ahead, red behind; a prop's meter as a share
+  // of the line; before the start, nothing (the template says when it kicks off); a leg graded, its final
+  legLine(l: PlayBet): { text: string | null; title: string | null; tone: 'good' | 'bad' | 'ink' | 'wait'; meter: number | null } {
+    if (l.status !== 'open') return { text: this.finalLine(l), title: null, tone: l.status === 'won' ? 'good' : l.status === 'lost' ? 'bad' : 'ink', meter: null };
+    const g = this.gameState(l);
+    if (!g.text) return { text: null, title: null, tone: 'wait', meter: null };
+    const lv = this.live().get(l.id);
+    const d = this.decided().get(l.id);
+    const state = d?.status ?? lv?.state ?? null;
+    const tone = state === 'won' ? 'good' : state === 'lost' ? 'bad' : 'ink';
+    const m = lv?.meter;
+    const meter = !m ? null : m.pips ? Math.round((100 * m.pips.filter((p) => p.on).length) / Math.max(1, m.pips.length)) : (m.fill ?? null);
+    return { text: `${g.text}${lv?.text ? ` · ${lv.text}` : ''}`, title: lv?.title ?? null, tone, meter: meter === null || meter === undefined ? null : Math.max(0, Math.min(100, meter)) };
+  }
+  // (a settled leg's final: the final score or the note, else its status)
+  finalLine(l: PlayBet): string {
+    const base = l.status === 'won' ? 'Hit' : l.status === 'lost' ? 'Missed' : l.status === 'push' ? 'Push' : l.status === 'void' ? 'Void' : 'Not graded';
+    return `${base}${l.final ? ' · ' + l.final : l.note ? ' · ' + l.note : ''}`;
+  }
+  // (a cashed ticket's stamp and sums: CASHED +x U, LOST −x U, PUSH or VOID; WON, WOULD HAVE WON or RETURNED)
+  stampOf(b: PlayBet): { stamp: string; tone: 'good' | 'bad' | 'even'; winLabel: string; win: number; pays: number } {
+    const profit = b.profit ?? 0;
+    if (b.status === 'won') return { stamp: `Cashed +${profit.toFixed(2)}u`, tone: 'good', winLabel: 'Won', win: profit, pays: b.stake + profit };
+    if (b.status === 'lost') return { stamp: `Lost −${b.stake.toFixed(2)}u`, tone: 'bad', winLabel: 'Would have won', win: betToWin(b), pays: 0 };
+    return { stamp: b.status === 'void' ? 'Void' : 'Push', tone: 'even', winLabel: 'Returned', win: 0, pays: b.stake };
   }
 
   // ---------------------------------------------------------------------------

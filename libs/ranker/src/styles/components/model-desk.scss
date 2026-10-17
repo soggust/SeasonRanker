@@ -1477,3 +1477,283 @@ card-panel {
   font-size: 0.9em;
   margin-top: 2px;
 }
+
+// ===========================================================================
+// The Book (the Bets page's Algorithm tab, 2026-10-17): the desk restyled, every panel, number and calculation its
+// own. No card of its own on the felt: the six tiles in a row of dot-matrix tiles (a small caps label, the value in
+// the scoreboard's digits, gold for the balance and green for a gain, a note under it); the date-range, since and
+// game selects as the player's card pills; the sport chips the house's casino chips at 50px; the profit curve on a
+// plain scoreboard panel (each sport's line in its color, the total in gold over a soft gold area, a dashed zero
+// line, the legend with each sport's units on the title's line); the panels plain scoreboard panels with gold
+// header bars in a two-column grid (card-panel.scss), their tables with 10px caps heads and tabular numbers, the
+// self-checks' statuses word tags. Scoped to the Bets page: the wallet's own page keeps the desk's look
+// ===========================================================================
+:host-context(bets-page) {
+  .model-desk {
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    max-width: none;
+    padding: 0 4px 24px;
+  }
+
+  .desk-top {
+    background: none;
+    border: none;
+    border-radius: 0;
+    margin: 0 0 14px;
+    padding: 0;
+  }
+
+  .desk-head {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  // The six tiles in a row
+  .desk-tiles {
+    display: grid;
+    gap: v.$space-10;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .desk-tile {
+    @include v.scoreboard-panel(v.$radius-md);
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-4;
+    min-width: 0;
+    padding: 10px 12px;
+    text-shadow: none;
+
+    > small {
+      color: v.$text-faint;
+      font-size: v.$fs-10;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    b {
+      align-items: baseline;
+      display: flex;
+      flex-wrap: wrap;
+      font-family: v.$font-led;
+      font-size: v.$fs-20;
+      font-weight: 700;
+      gap: v.$space-2 v.$space-8;
+      line-height: 1.2;
+
+      // (the note under the number: the open bets' count, a pending profit, the streak)
+      small {
+        color: v.$grey-light;
+        font-family: v.$font-base;
+        font-size: v.$fs-11;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+    }
+
+    // (the balance in gold)
+    &:first-child b {
+      color: chip.$gold-led;
+      text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+    }
+  }
+
+  .up {
+    color: v.$good-bright !important;
+  }
+
+  .down {
+    color: v.$bad-soft !important;
+  }
+
+  // The selects as the player's card pills, a gold caret; the sport chips 50px
+  .desk-filters {
+    gap: v.$space-12 v.$space-20;
+  }
+
+  .desk-game-select {
+    @include chip.player-card(v.$radius-pill);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23ebc56c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.18), transparent 55%),
+      linear-gradient(135deg, #1d1d1d, #121212 60%, #1a1a1a);
+    background-position:
+      right 14px center,
+      0 0,
+      0 0;
+    background-repeat: no-repeat;
+    background-size:
+      14px,
+      auto,
+      auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+    font-family: v.$font-heading;
+    font-size: v.$fs-13;
+    font-weight: 500;
+    height: 40px;
+    line-height: 1;
+    min-width: 0;
+    padding: 0 36px 0 16px;
+    text-shadow: none;
+
+    &:hover,
+    &:focus {
+      filter: brightness(1.18);
+    }
+
+    option,
+    optgroup {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    optgroup {
+      color: chip.$gold-led;
+    }
+  }
+
+  .desk-sports {
+    padding: 4px;
+  }
+
+  .desk-sport {
+    border-width: 5px;
+    height: 50px;
+    width: 50px;
+
+    img {
+      height: 22px;
+      width: 22px;
+    }
+
+    .chip-rim {
+      height: calc(100% + 10px);
+      left: -5px;
+      top: -5px;
+      width: calc(100% + 10px);
+    }
+
+    rect {
+      height: calc(100% - 5px);
+      stroke-width: 5px;
+      width: calc(100% - 5px);
+      x: 2.5px;
+      y: 2.5px;
+    }
+
+    &.all {
+      --clay: #9a7b22;
+    }
+  }
+
+  // The profit curve on a plain scoreboard panel: PROFIT and the legend on one line, the lines in each sport's
+  // color, the total gold over a soft gold area, a dashed zero line
+  .desk-curve {
+    --total: #{chip.$gold-led};
+    @include v.scoreboard-panel(v.$radius-lg);
+    margin: 14px 0 0;
+    padding: 14px 16px 12px;
+
+    .desk-curve-head {
+      align-items: center;
+      gap: v.$space-6 v.$space-20;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .log-chart-label {
+      color: chip.$gold-led;
+      font-family: v.$font-heading;
+      font-size: v.$fs-13;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      line-height: 1;
+      text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+      text-transform: uppercase;
+
+      small {
+        color: v.$text-faint;
+        font-family: v.$font-base;
+        font-size: v.$fs-11;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+    }
+
+    .desk-legend li {
+      color: v.$grey-light;
+      font-size: v.$fs-12;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .desk-area {
+      fill: rgba(chip.$gold-led, 0.12);
+    }
+
+    .desk-start {
+      stroke: v.$panel-edge;
+      stroke-dasharray: 4 4;
+    }
+  }
+
+  // The panels: two columns on a wide screen, 14px apart; their tables with small caps heads and tabular numbers
+  card-panel {
+    margin-top: 14px;
+  }
+
+  .desk-grid {
+    gap: 0 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+
+    .desk-wide {
+      width: 100%;
+    }
+  }
+
+  .desk-table {
+    th {
+      color: v.$text-faint;
+      font-size: v.$fs-10;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    td {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  // The self-checks' statuses: word tags, OK green, WATCH orange, FLAG red, never color alone
+  .desk-self-chip {
+    border-radius: v.$radius-xs;
+    font-size: v.$fs-10;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    text-transform: uppercase;
+
+    &.is-ok {
+      border-color: v.$good-bright;
+      color: v.$good-bright;
+    }
+
+    &.is-watch {
+      border-color: v.$doubtful;
+      color: v.$doubtful;
+    }
+
+    &.is-flag {
+      background: none;
+      border-color: v.$bad-soft;
+      color: v.$bad-soft;
+    }
+  }
+}
