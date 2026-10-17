@@ -49,6 +49,7 @@ button.kchip:hover rect{stroke-dashoffset:-20}
 .seg button[aria-pressed="true"]{background:#d8b98a;color:#1a1a1a}
 .row:hover{background:rgba(216,185,138,.04)}
 .frame{background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);padding:10px;border-radius:4px;box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 2px rgba(0,0,0,.25)}
+.brickwall{background:radial-gradient(ellipse 70% 90% at 50% -10%,rgba(255,214,160,.2),transparent 60%),radial-gradient(ellipse 120% 100% at 50% 50%,transparent 40%,rgba(0,0,0,.55) 100%),url("/_blob/97766caae51ce39db5713046a0c89607") 0 0/240px 112px;box-shadow:inset 0 10px 18px rgba(0,0,0,.5)}
 .scroll{scrollbar-width:thin;scrollbar-color:#d9a520 rgba(0,0,0,.25)}
 @media (prefers-reduced-motion:reduce){.stack,.kchip{transition:none}}
 </style>
@@ -222,11 +223,11 @@ button.kchip:hover rect{stroke-dashoffset:-20}
 </div>
 
 <section class="dots apanel" aria-label="On the wall" style="border-radius: 10px; overflow: hidden;">
-<div class="pbar" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;"><h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">ON THE WALL</h2><span style="font-size: 11px; color: rgba(255,255,255,.6);">Your biggest cash and your worst beat, pinned for posterity</span></div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px 48px; padding: 34px 32px 26px; background: radial-gradient(ellipse at 50% 0%, rgba(216,185,138,.07), transparent 65%);">
+<div class="pbar" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;"><h2 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: 3px;" class="glow">ON THE WALL</h2><span style="font-size: 11px; color: rgba(255,255,255,.6);">Your biggest cash and your worst beat, taped up for posterity</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px 48px; padding: 38px 32px 28px;" class="brickwall">
 <figure style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; min-width: 0;">
 <div style="position: relative; width: min(100%, 400px); rotate: -1.5deg;">
-<span aria-hidden="true" style="position: absolute; top: -7px; left: 50%; translate: -50% 0; z-index: 2; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff3dc, #d8b98a 45%, #8c7351); box-shadow: 0 3px 4px rgba(0,0,0,.6);"></span>
+<span aria-hidden="true" style="position: absolute; top: -10px; left: 50%; translate: -50% 0; rotate: -3deg; z-index: 2; width: 88px; height: 24px; background: linear-gradient(180deg, rgba(242,232,206,.78), rgba(222,208,174,.72)); box-shadow: 0 1px 3px rgba(0,0,0,.35); clip-path: polygon(2% 6%, 98% 0, 100% 94%, 0 100%);"></span>
 <div class="ticket" style="position: relative; padding: 22px 16px 22px; display: flex; flex-direction: column; gap: 7px; filter: drop-shadow(0 10px 16px rgba(0,0,0,.55));">
 <div style="display: flex; justify-content: space-between;"><span style="font-weight: 700; font-size: 12px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; color: #4a4a4a;">0412-0009 · SUN OCT 12</span></div>
 <hr style="border: none; border-top: 2px dashed rgba(26,26,26,.25); margin: 2px 0;">
@@ -236,11 +237,11 @@ button.kchip:hover rect{stroke-dashoffset:-20}
 <span style="position: absolute; right: 14px; top: 34px; rotate: -12deg; padding: 4px 8px; border: 3px solid #1d8a4e; color: #1d8a4e; border-radius: 4px; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply;">CASHED</span>
 </div>
 </div>
-<figcaption style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #3ee07a;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3ee07a;"></span>BIGGEST CASH</figcaption>
+<figcaption style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #3ee07a; padding: 5px 10px; border-radius: 999px; background: rgba(0,0,0,.55);"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3ee07a;"></span>BIGGEST CASH</figcaption>
 </figure>
 <figure style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; min-width: 0;">
 <div style="position: relative; width: min(100%, 400px); rotate: 1.2deg;">
-<span aria-hidden="true" style="position: absolute; top: -7px; left: 50%; translate: -50% 0; z-index: 2; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff3dc, #d8b98a 45%, #8c7351); box-shadow: 0 3px 4px rgba(0,0,0,.6);"></span>
+<span aria-hidden="true" style="position: absolute; top: -10px; left: 50%; translate: -50% 0; rotate: -3deg; z-index: 2; width: 88px; height: 24px; background: linear-gradient(180deg, rgba(242,232,206,.78), rgba(222,208,174,.72)); box-shadow: 0 1px 3px rgba(0,0,0,.35); clip-path: polygon(2% 6%, 98% 0, 100% 94%, 0 100%);"></span>
 <div class="ticket" style="position: relative; padding: 22px 16px 22px; display: flex; flex-direction: column; gap: 7px; filter: drop-shadow(0 10px 16px rgba(0,0,0,.55));">
 <div style="display: flex; justify-content: space-between;"><span style="font-weight: 700; font-size: 12px; letter-spacing: 2.5px;">THE BOOK</span><span style="font-size: 10px; color: #4a4a4a;">0405-0002 · SUN OCT 5</span></div>
 <hr style="border: none; border-top: 2px dashed rgba(26,26,26,.25); margin: 2px 0;">
@@ -250,7 +251,7 @@ button.kchip:hover rect{stroke-dashoffset:-20}
 <span style="position: absolute; right: 14px; top: 34px; rotate: -12deg; padding: 4px 8px; border: 3px solid #c62828; color: #c62828; border-radius: 4px; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: .82; mix-blend-mode: multiply;">BAD BEAT</span>
 </div>
 </div>
-<figcaption style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #ff7468;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ff7468;"></span>WORST BEAT</figcaption>
+<figcaption style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #ff7468; padding: 5px 10px; border-radius: 999px; background: rgba(0,0,0,.55);"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ff7468;"></span>WORST BEAT</figcaption>
 </figure>
 </div>
 </section>

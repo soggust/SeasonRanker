@@ -138,10 +138,14 @@ The existing **leaderboards** (`board`, `periods`), restyled:
 ### 7. On the wall, then your tells (new, two full-width panels)
 
 **On the wall**: **one** full-width panel with the green bar ("ON THE WALL", and on the right "Your
-biggest cash and your worst beat, pinned for posterity"). It holds both tickets side by side on the panel's
-own scoreboard face, with a faint sand glow from the top. There are **no** separate headers per ticket and
+biggest cash and your worst beat, taped up for posterity"). Below the bar the panel's body is **a brick wall**, not the scoreboard. It's a muted brick tile:
+`docs/wallet-redesign/brick.svg`, 240 × 112px, dark mortar, bricks in warm browns with a little noise.
+Copy it into the shared assets as a file, not a data URI. Over it go a warm sand light from the top
+(`radial-gradient(ellipse 70% 90% at 50% -10%, rgba(255,214,160,.2), transparent 60%)`), a dark vignette
+at the edges, and an inset shadow under the bar. Both tickets sit side by side on it. There are **no** separate headers per ticket and
 **no** gold frames. Each ticket is the slip's paper, up to 400px wide, tilted slightly (−1.5° and 1.2°), with
-a deep drop shadow and a sand **push-pin** at its top centre. A small caption sits under each, a coloured
+a deep drop shadow and a strip of **masking tape** across its top centre (88 × 24px, cream at about 75%,
+rotated −3°, ragged ends via `clip-path`). Under each ticket is a caption pill (black at 55%) with a coloured
 dot and a label: BIGGEST CASH in green, WORST BEAT in red.
 
 - **Biggest cash**: the settled bet with the largest profit, stamped CASHED in green.
