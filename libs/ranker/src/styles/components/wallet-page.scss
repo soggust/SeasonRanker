@@ -1943,7 +1943,9 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     display: flex;
     gap: v.$space-8;
 
+    // (the pick itself in a dark oxblood, so it stands out on the cork-pinned tickets: the owner)
     .leg-pick {
+      color: #7a1f14;
       flex: 1;
       font-size: v.$fs-13;
       font-weight: 700;

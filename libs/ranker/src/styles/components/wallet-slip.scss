@@ -152,7 +152,9 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
     min-width: 0;
   }
 
+  // (the pick in the same dark oxblood as the pinned tickets')
   .leg-pick {
+    color: #7a1f14;
     font-size: v.$fs-13;
     font-weight: 700;
     text-transform: uppercase;
