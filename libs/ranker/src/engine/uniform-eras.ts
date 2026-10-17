@@ -43,8 +43,11 @@ export interface KitColors {
   //   tv          football: TV numbers on the shoulders (default true); false for a kit without them
   //   collarStyle 'round' (the default crew), 'v' (a V-neck), 'lace' (a hockey lace-up collar),
   //               'stripe' (a contrasting collar band, football's old style)
-  //   numberFont  the numbers' letterforms: 'block' (the default athletic block), 'rounded' (a rounded
-  //               sans), 'serif' (a serifed block), 'varsity' (a heavy block with a second outline)
+  //   numberFont  the numbers' letterforms, one of the jersey faces (assets/fonts/jersey, Face below): 'block'
+  //               (the default, Jersey 716), 'varsity' (Jersey M54, a heavy block with its own outline),
+  //               'college' (Freshman), 'tuscan' (the baseball serif), 'rounded' (Octin Sports), 'wide'
+  //               (Sports World), 'sharp', 'slim', or a team's own: 'broncos', 'chargers', 'jaguars',
+  //               'packers', 'astros', 'bruins', 'ducks', 'flames', 'sabres', 'wild'
   //   nameFont    the nameplate's letterforms: as numberFont (default 'block')
   //   names       false for a kit with no names on the back (the Yankees', the Red Sox' and Tigers' home)
   bands?: string[];
@@ -59,8 +62,60 @@ export interface KitColors {
   under?: string;
   tv?: boolean;
   collarStyle?: 'round' | 'v' | 'lace' | 'stripe';
-  numberFont?: 'block' | 'rounded' | 'serif' | 'varsity';
-  nameFont?: 'block' | 'rounded' | 'serif' | 'varsity';
+  numberFont?: Face;
+  nameFont?: Face;
+}
+
+// The jersey faces (libs/ranker/src/assets/fonts/jersey/<id>.woff2, the family "J-<id>"; their metrics in
+// splash.images.ts FACES)
+export type Face =
+  | 'block'
+  | 'varsity'
+  | 'college'
+  | 'tuscan'
+  | 'rounded'
+  | 'wide'
+  | 'sharp'
+  | 'slim'
+  | 'broncos'
+  | 'chargers'
+  | 'jaguars'
+  | 'packers'
+  | 'astros'
+  | 'bruins'
+  | 'ducks'
+  | 'flames'
+  | 'sabres'
+  | 'wild';
+export const FACES_LIST: Face[] = ['block', 'varsity', 'college', 'tuscan', 'rounded', 'wide', 'sharp', 'slim', 'broncos', 'chargers', 'jaguars', 'packers', 'astros', 'bruins', 'ducks', 'flames', 'sabres', 'wild'];
+
+// A team's lettering by era: the face its jerseys carried from a season on (and to one, where it was dropped);
+// a bare face for the whole table
+export type FaceSpan = [from: number, face: Face, to?: number];
+export type FaceTable = Record<string, Face | FaceSpan[]>;
+
+// The table with each team's lettering set on every kit of its eras: a listed team's face for the eras in its
+// spans (by the era's first season), `rest` for every kit not covered when given, else the kit's own. The name
+// takes the number's face unless the kit names its own.
+export function withFaces(table: UniformTable, faces: FaceTable, rest?: Face): UniformTable {
+  for (const [team, eras] of Object.entries(table)) {
+    const spec = faces[team];
+    for (const era of eras) {
+      const span = Array.isArray(spec) ? spec.filter((s) => era.from >= s[0] && era.from <= (s[2] ?? 9999)).pop() : undefined;
+      const face: Face | undefined = typeof spec === 'string' ? spec : span ? span[1] : rest;
+      for (const kit of [era.home, era.away, era.alt]) {
+        if (!kit) continue;
+        if (face) {
+          kit.numberFont = face;
+          kit.nameFont = face;
+        } else {
+          kit.numberFont ??= 'block';
+          kit.nameFont ??= kit.numberFont;
+        }
+      }
+    }
+  }
+  return table;
 }
 
 export interface UniformEra {

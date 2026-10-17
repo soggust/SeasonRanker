@@ -35,9 +35,6 @@
   <!-- A piece drawn on a photographed blank base (splash.images.ts TEXT_BASES): the base (tinted with the team's
        color when it's a white felt), the team's mark in its box, the piece's words in their boxes (engraved dark
        on brass, light on a dark band), a whiteboard's play in marker; the vector piece stays the fallback -->
-  <!-- (a keystoned face's words ride an HTML layer over the photo, projected onto the face by the base's
-       matrix3d: the box holds the photo and the layers, sized as the photo alone would be) -->
-  <div class="sp-ph" [class.sp-ph-plain]="!tb.overlays.length" [style.aspect-ratio]="tb.w + ' / 100'">
   <svg [attr.viewBox]="'0 0 ' + tb.w + ' 100'" class="sp-photo" [attr.data-trophy]="it.t">
     @if (!tb.noShadow) {
       <ellipse [attr.cx]="tb.w / 2" cy="98.5" [attr.rx]="tb.w * 0.42" ry="2.5" fill="#000" opacity="0.5" />
@@ -60,6 +57,9 @@
       @for (im of tb.imgs; track $index) {
         <image [attr.href]="tb.href" [attr.x]="im.x" [attr.y]="im.y" [attr.width]="im.w" [attr.height]="im.h" preserveAspectRatio="none" loading="lazy" decoding="async" />
       }
+    }
+    @for (p of tb.papers; track $index) {
+      <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="p.w" [attr.height]="p.h" [attr.fill]="p.color" />
     }
     @for (l of tb.logos; track $index) {
       <image [attr.href]="logo" [attr.x]="l.x" [attr.y]="l.y" [attr.width]="l.w" [attr.height]="l.h" preserveAspectRatio="xMidYMid meet" />
@@ -120,18 +120,6 @@
       </g>
     }
   </svg>
-  <!-- (the keystoned faces' words: each layer its own flat SVG, projected onto the face) -->
-  @for (ov of tb.overlays; track $index) {
-    <svg class="sp-over" [attr.viewBox]="'0 0 ' + ov.w + ' ' + ov.h" [style.width.px]="ov.w" [style.height.px]="ov.h" [style.transform]="ov.m3d" aria-hidden="true">
-      @for (t of ov.texts; track $index) {
-        @if (t.hi) {
-          <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls + ' hi'" [style.text-anchor]="t.anchor" [attr.dx]="t.hiDx" [attr.dy]="t.hiDy">{{ t.text }}</text>
-        }
-        <text [attr.x]="t.x" [attr.y]="t.y" [style.font-size.px]="t.size" [attr.class]="t.cls" [style.text-anchor]="t.anchor">{{ t.text }}</text>
-      }
-    </svg>
-  }
-  </div>
 } @else {
 @switch (it.t) {
   <!-- ================================ NFL ================================ -->
@@ -395,9 +383,9 @@
           @for (s of stripes(); track $index) {
             <path [attr.d]="gear(b.w).stripe" fill="none" [style.stroke]="s.color" [attr.stroke-width]="s.w * 0.8" [attr.transform]="'translate(' + (s.dy * 0.5) + ' ' + (s.dy * 0.6) + ')'" />
           }
-          <!-- (the decal on the shell's side, which curves away from the lens: squashed a little and leaned
-               with the shell, so it reads as wrapped on, not pasted flat) -->
-          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" [attr.transform]="'translate(' + (gear(b.w).decal.x + gear(b.w).decal.w / 2) + ' ' + (gear(b.w).decal.y + gear(b.w).decal.h / 2) + ') matrix(0.86 -0.1 0.06 0.96 0 0) translate(' + -(gear(b.w).decal.x + gear(b.w).decal.w / 2) + ' ' + -(gear(b.w).decal.y + gear(b.w).decal.h / 2) + ')'" />
+          <!-- (the decal flat on the shell's side, in its measured box; the photo's shading, multiplied over
+               it, wraps it on) -->
+          <image [attr.href]="logo" [attr.x]="gear(b.w).decal.x" [attr.y]="gear(b.w).decal.y" [attr.width]="gear(b.w).decal.w" [attr.height]="gear(b.w).decal.h" preserveAspectRatio="xMidYMid meet" />
           <image [attr.href]="b.href" x="0" y="0" [attr.width]="b.w" height="100" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
         </g>
       </svg>

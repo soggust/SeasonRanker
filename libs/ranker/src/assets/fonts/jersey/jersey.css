@@ -1,0 +1,147 @@
+/* The jersey lettering (libs/ranker/src/engine/player-card/splash/splash-fonts.ts loads this; splash.component.scss .nf-<id> / .nm-<id>):
+   one family a face, subset to the digits, the capitals, the space, the apostrophe, the hyphen and the period
+   (fonts-gen/subset.mjs). Sources and licences: SOURCES.md. */
+@font-face {
+  font-family: "J-block";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(block.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-varsity";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(varsity.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-college";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(college.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-tuscan";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(tuscan.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-rounded";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(rounded.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-wide";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(wide.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-sharp";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(sharp.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-slim";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(slim.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-broncos";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(broncos.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-chargers";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(chargers.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-jaguars";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(jaguars.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-packers";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(packers.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-astros";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(astros.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-bruins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(bruins.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-ducks";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(ducks.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-flames";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(flames.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-sabres";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(sabres.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}
+@font-face {
+  font-family: "J-wild";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(wild.woff2) format("woff2");
+  unicode-range: U+20, U+27, U+2D-2E, U+30-39, U+41-5A;
+}

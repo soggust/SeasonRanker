@@ -401,12 +401,12 @@
         </div>
         <div class="sp-desk" [title]="o.plate" [attr.data-tip]="o.plate + ' · ' + o.team">
           <div class="sp-desk-top"><span class="sp-mug"></span><span class="sp-binder"></span><span class="sp-pen"></span></div>
-          <!-- (the photographed brass nameplate; his name on an SVG layer projected onto the plate's face as the
-               photo keystones it: splash.images.ts NAMEPLATE) -->
+          <!-- (the photographed brass nameplate, face on; his name flat on the plate's box: splash.images.ts NAMEPLATE) -->
           <div class="sp-desk-front">
-            <span class="sp-desk-plate" [style.background-image]="'url(' + deskPlate + ')'">
+            <span class="sp-desk-plate">
               @if (plateArt(o.plate); as pa) {
-                <svg class="sp-over" [attr.viewBox]="'0 0 ' + pa.w + ' ' + pa.h" [style.width.px]="pa.w" [style.height.px]="pa.h" [style.transform]="pa.m3d" aria-hidden="true">
+                <svg [attr.viewBox]="'0 0 ' + pa.w + ' ' + pa.h" aria-hidden="true">
+                  <image [attr.href]="deskPlate" x="0" y="0" [attr.width]="pa.w" [attr.height]="pa.h" preserveAspectRatio="none" decoding="async" />
                   <text [attr.x]="pa.w / 2" [attr.y]="pa.y" [style.font-size.px]="pa.size" class="sp-plate-t hi" dy="0.5">{{ o.plate }}</text>
                   <text [attr.x]="pa.w / 2" [attr.y]="pa.y" [style.font-size.px]="pa.size" class="sp-plate-t">{{ o.plate }}</text>
                 </svg>
@@ -496,27 +496,28 @@
 
 <!-- A jersey on its hanger, in its sport's cut (the kit's colors and details: uniform-eras.ts KitColors), seen
      from the BACK: the name arched over the number; the sleeves' bands, the yoke and the hem where the kit has
-     them, pinstripes. (The vector fallback draws a baseball jersey from the front, with its placket and wordmark.)
+     them, pinstripes. (The vector fallback, drawn when a cut has no photo, draws a baseball jersey from the front.)
      Tackle-twill numbers with their trim and their shadow on the cloth, the seams stitched, the cloth's faint
      mesh, its folds and the light on it -->
 <ng-template #jersey let-name let-num="num" let-k="k" let-cut="cut" let-mark="mark">
-  <svg class="sp-jersey" [class]="'sp-jersey cut-' + cut + ' nf-' + (k.numberFont || 'block') + ' nm-' + (k.nameFont || 'block')" viewBox="-4 -18 128 164" preserveAspectRatio="xMidYMin meet" role="img">
+  <svg class="sp-jersey" [class]="'sp-jersey cut-' + cut + ' nf-' + (k.numberFont || 'block') + ' nm-' + (k.nameFont || 'block')" [attr.viewBox]="ja?.vb ?? '-4 -18 128 164'" preserveAspectRatio="xMidYMin meet" role="img">
     @if (ja; as a) {
-      <!-- The photographed white base of this cut (splash.images.ts JERSEY_BASES), placed by its landmarks and
-           tinted with the kit's body color; the kit's details drawn at the base's anchors (the sleeves' bands up
-           from each cuff, the yoke, the hem, the panels, the placket, the name and the number), everything
-           clipped to the photo's own outline, and the photo multiplied over it all so its cloth and light shade
-           the details too. The photo's hanger serves -->
+      <!-- The photographed white base of this cut (splash.images.ts JERSEY_BASES), flat and face on, placed by
+           its measured landmarks and tinted with the kit's body color; the kit's details drawn flat at the base's
+           anchors (vertical bands inward from each cuff, each clipped to its sleeve's rectangle, the yoke, the
+           hem, the panels, the name and the number in the kit's face), everything clipped to the photo's own
+           outline, and the photo multiplied over it all so its cloth and light shade the details too -->
       <defs>
-        <mask [attr.id]="'sp-jb-' + cut" mask-type="alpha" maskUnits="userSpaceOnUse" x="-4" y="-18" width="128" height="164">
+        <mask [attr.id]="'sp-jb-' + cut" mask-type="alpha" maskUnits="userSpaceOnUse" x="-40" y="-18" width="200" height="164">
           <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" />
         </mask>
         <path [attr.id]="'sp-jp-name-' + cut" [attr.d]="a.nameArc" fill="none" />
         @if (a.sleeves) {
-          <!-- (each sleeve's own region, measured on the photo: a band is clipped to it, never onto the body) -->
+          <!-- (each sleeve's own rectangle, measured on the photo: a band is clipped to it, never onto the body) -->
           <clipPath [attr.id]="'sp-js-' + cut">
-            <path [attr.d]="a.sleeves[0]" />
-            <path [attr.d]="a.sleeves[1]" />
+            @for (s of a.sleeves; track $index) {
+              <rect [attr.x]="s.x" [attr.y]="s.y" [attr.width]="s.w" [attr.height]="s.h" />
+            }
           </clipPath>
         }
       </defs>
@@ -537,7 +538,7 @@
           }
           <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
             @for (b of photoBands(k, a); track $index) {
-              <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
+              <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" [attr.fill]="b.color" />
             }
           </g>
           @if (k.panel && a.panels) {
@@ -546,12 +547,13 @@
             }
           }
           @if (k.tv !== false && num && a.tv) {
-            <text class="sp-j-tv" [attr.x]="a.tv[0].x" [attr.y]="a.tv[0].y" [attr.fill]="k.num" [attr.stroke]="k.outline" [attr.transform]="a.tv[0].transform">{{ num }}</text>
-            <text class="sp-j-tv" [attr.x]="a.tv[1].x" [attr.y]="a.tv[1].y" [attr.fill]="k.num" [attr.stroke]="k.outline" [attr.transform]="a.tv[1].transform">{{ num }}</text>
+            @for (t of a.tv; track $index) {
+              <text class="sp-j-tv" [attr.x]="t.x + t.w / 2" [attr.y]="t.y + t.h" [attr.fill]="k.num" [attr.stroke]="k.outline" [style.font-size.px]="tvSize(k, t)" [style.stroke-width.px]="tvSize(k, t) * 0.07">{{ num }}</text>
+            }
           }
-          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'stripe' ? 6 : 4" />
+          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'stripe' ? 5 : 3.5" />
           @if (k.collarStyle === 'stripe') {
-            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1.2" transform="translate(0 2)" />
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping || k.body" stroke-width="1" transform="translate(0 1.6)" />
           }
         }
 
@@ -580,7 +582,7 @@
         @if (cut === 'hockey') {
           @if (k.yoke && a.yoke) {
             <path [attr.d]="a.yoke" [attr.fill]="k.yoke" />
-            <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1.2" />
+            <path [attr.d]="a.yoke" fill="none" [attr.stroke]="k.piping || 'none'" stroke-width="1" />
           }
           <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
             @for (b of photoArmBands(k, a); track $index) {
@@ -590,11 +592,7 @@
           @for (h of photoHems(k, cut, a); track $index) {
             <rect [attr.x]="a.bodyX[0] - 2" [attr.y]="h.y" [attr.width]="a.bodyW + 4" [attr.height]="h.h" [attr.fill]="h.color" />
           }
-          @if (k.collarStyle === 'lace') {
-            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" stroke-width="2.6" stroke-linejoin="round" />
-          } @else {
-            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" stroke-width="4" stroke-linejoin="round" />
-          }
+          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collarStyle === 'lace' ? 2 : 3" stroke-linejoin="round" />
         }
 
         @if (cut === 'baseball') {
@@ -607,24 +605,29 @@
           @if (k.sleeve === 'stripes' && k.placket !== 'vest') {
             <g [attr.clip-path]="'url(#sp-js-' + cut + ')'">
               @for (b of photoBands(k, a, true); track $index) {
-                <line [attr.x1]="b.x1" [attr.y1]="b.y1" [attr.x2]="b.x2" [attr.y2]="b.y2" [attr.stroke]="b.color" [attr.stroke-width]="b.w" />
+                <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" [attr.fill]="b.color" />
               }
             </g>
           }
-          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.6 : 3" stroke-linejoin="round" />
+          <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.collar" [attr.stroke-width]="k.collar === k.body ? 1.4 : 2.6" stroke-linejoin="round" />
           @if (k.piping && k.piping !== k.collar) {
-            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping" stroke-width="1" stroke-linejoin="round" transform="translate(0 2.5)" />
+            <path [attr.d]="a.neck" fill="none" [attr.stroke]="k.piping" stroke-width="0.9" stroke-linejoin="round" transform="translate(0 2)" />
           }
         }
 
-        <!-- the name arched over the number (a kit without names, the Yankees' home, has none), the number's
-             trim and its shadow on the cloth -->
+        <!-- the name arched over the number (a kit without names, the Yankees' home, has none), the number in
+             the kit's face, two digits filling the measured box: its shadow on the cloth, a second outline on
+             the varsity faces where the kit has one, its trim -->
         @if (k.names !== false) {
-          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="nameSize(name) * a.nameK"><textPath [attr.href]="'#sp-jp-name-' + cut" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
+          <text class="sp-j-name" [attr.fill]="k.name" [style.font-size.px]="photoNameSize(k, name, a)"><textPath [attr.href]="'#sp-jp-name-' + cut" startOffset="50%">{{ name.toUpperCase() }}</textPath></text>
         }
-        <text class="sp-j-num shadow" [attr.x]="a.num.x + 0.8" [attr.y]="a.num.y + 1.4" [style.font-size.px]="a.num.size">{{ num }}</text>
-        <text class="sp-j-num outer" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.outline" [attr.stroke]="k.outline" [style.font-size.px]="a.num.size">{{ num }}</text>
-        <text class="sp-j-num" [attr.x]="a.num.x" [attr.y]="a.num.y" [attr.fill]="k.num" [attr.stroke]="k.body" [style.font-size.px]="a.num.size">{{ num }}</text>
+        <text class="sp-j-num shadow" [attr.x]="numX(a) + 0.8" [attr.y]="numY(a) + 1.2" [style.font-size.px]="numSize(k, a)" [style.stroke-width.px]="numSize(k, a) * 0.12">{{ num }}</text>
+        @if (outlined(k)) {
+          <text class="sp-j-num outer" [attr.x]="numX(a)" [attr.y]="numY(a)" [attr.fill]="k.outline" [attr.stroke]="k.outline" [style.font-size.px]="numSize(k, a)" [style.stroke-width.px]="numSize(k, a) * 0.14">{{ num }}</text>
+          <text class="sp-j-num" [attr.x]="numX(a)" [attr.y]="numY(a)" [attr.fill]="k.num" [attr.stroke]="k.body" [style.font-size.px]="numSize(k, a)" [style.stroke-width.px]="numSize(k, a) * 0.05">{{ num }}</text>
+        } @else {
+          <text class="sp-j-num" [attr.x]="numX(a)" [attr.y]="numY(a)" [attr.fill]="k.num" [attr.stroke]="k.outline" [style.font-size.px]="numSize(k, a)" [style.stroke-width.px]="numSize(k, a) * 0.07">{{ num }}</text>
+        }
         <image [attr.href]="jerseyBase" [attr.x]="a.img.x" [attr.y]="a.img.y" [attr.width]="a.img.w" [attr.height]="a.img.h" preserveAspectRatio="none" style="mix-blend-mode: multiply" decoding="async" />
       </g>
     } @else {

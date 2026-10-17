@@ -137,10 +137,12 @@ const STALL_MAX = 150;
 // (a coach's honors stand on the credenza, under the framed logo: a low shelf)
 const OFFICE_MAX = 120;
 const PX_PER_IN = 11;
-// The shelf's hero (its lead, in the middle) is always its tallest prop: one beside it stands at most this much of
-// the hero's height, whatever its own (a division banner, a golf bag, a Stanley Cup beside a Selke), and the scale
-// is set by the hero, so it gets the room
+// The shelf's hero (its lead, in the middle) is always its biggest prop: one beside it stands at most this much of
+// the hero's height, whatever its own (a division banner, a golf bag, a Stanley Cup beside a Selke), and takes at
+// most this much of the hero's footprint (its height times its width: so a wide ticket or a squat trophy is held
+// by its area, not shrunk to the width of a narrow trophy), and the scale is set by the hero, so it gets the room
 const BESIDE_HERO = 0.85;
+const BESIDE_AREA = 0.6;
 
 // ---- the words
 // ("vs" at home and at a neutral site, a Super Bowl's "49ers vs KC"; "at" only on the road)
@@ -305,10 +307,10 @@ export function buildScene(s: SceneInput): Scene | null {
   // (a prop whose words the data doesn't have yet is left out: a hand-set list then filled from the rules)
   const ok = (id: string) => !!PROPS[id] && (!PROPS[id].needs || !!f[PROPS[id].needs!]);
   const defs = [...new Set([...ids.filter(ok), ...ids.filter((id) => !ok(id)).length ? FILLERS[s.sport] ?? [] : []])].filter(ok).slice(0, 3).map((id) => ({ ...PROPS[id], id }));
-  // (beside the hero, a prop's footprint is capped in both directions, its aspect kept: a wide ticket never
-  // outgrows a narrow trophy)
-  const heroW = defs.length ? defs[0].inches * aspectOf(defs[0].id, defs[0].piece) : 0;
-  const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO, (heroW * BESIDE_HERO) / aspectOf(d.id, d.piece)) : d.inches));
+  // (beside the hero, a prop is capped by height and by area, its aspect kept: a prop's height for a given
+  // share of the hero's footprint is the hero's times the root of that share over the aspects' ratio)
+  const heroArea = defs.length ? defs[0].inches * defs[0].inches * aspectOf(defs[0].id, defs[0].piece) : 0;
+  const inches = defs.map((d, i) => (!locker && i > 0 ? Math.min(d.inches, defs[0].inches * BESIDE_HERO, Math.sqrt((heroArea * BESIDE_AREA) / aspectOf(d.id, d.piece))) : d.inches));
   const scale = Math.min(PX_PER_IN, (s.coach ? OFFICE_MAX : locker ? STALL_MAX : SHELF_MAX) / Math.max(1, ...inches));
   // (its caption: the prop's own, else the tip's first two parts; a line the data can't fill is dropped)
   const piece = (d: (typeof defs)[number], h: number): Piece => ({

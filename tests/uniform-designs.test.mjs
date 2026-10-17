@@ -50,7 +50,8 @@ test('the Dodgers: blue script, a red front number, plain white; the Reds of 200
   assert.equal(home.name, '#005a9c');
   assert.equal(home.num, '#ef3e42');
   assert.equal(home.pinstripe, undefined);
-  assert.equal(home.nameFont, 'rounded');
+  assert.equal(home.numberFont, 'tuscan');
+  assert.equal(home.nameFont, 'tuscan');
   const reds = uniformFor(MLB, '113', 2003, 'home');
   assert.equal(reds.placket, 'vest');
   assert.equal(reds.under, '#c6011f');

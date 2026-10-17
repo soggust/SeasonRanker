@@ -310,7 +310,7 @@ test('known designs: the Bruins\' yoke and laces, the Rangers\' bands, the Steel
         assert.ok(Array.isArray(kit.bands) || kit.sleeve === 'none', `${where}: bands`);
         for (const c of [...(kit.bands ?? []), ...(kit.hem ?? [])]) assert.match(c, hex, where);
         assert.ok(['v', 'lace', 'round'].includes(kit.collarStyle), `${where}: collar`);
-        assert.ok(['block', 'rounded', 'serif', 'varsity'].includes(kit.numberFont), `${where}: font`);
+        assert.ok(['block', 'rounded', 'varsity', 'bruins', 'ducks', 'flames', 'sabres', 'wild'].includes(kit.numberFont), `${where}: font`);
         if (kit.yoke) assert.match(kit.yoke, hex, where);
       }
     }

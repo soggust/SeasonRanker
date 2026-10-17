@@ -20,7 +20,7 @@
 // (hex values), team and league uniform-reveal coverage (NFL.com, SportsLogos.net, team sites) for the
 // 2020-2026 sets, and the splash audit of 2026-10-16 (scratchpad splash-round2/audit-nfl.json). Trim colors are
 // the least certain part: a `?` in a note marks a color or a range the sources didn't settle.
-import type { KitColors, UniformTable } from '@ranker/engine/uniform-eras';
+import { KitColors, UniformTable, type FaceTable, withFaces } from '@ranker/engine/uniform-eras';
 
 const WHITE = '#f3f2ee'; // a white jersey's cloth
 const W = '#ffffff'; // white numbers, stripes, lettering
@@ -152,14 +152,33 @@ const DAL_THROWBACK = d(kit(DAL_NAVY, W, W, W, W), { yoke: W, tv: false, collarS
 // The Steelers' black Color Rush (2016 on): gold numbers on black
 const PIT_RUSH = d(kit(BLACK, PIT_GOLD, PIT_GOLD, PIT_GOLD, BLACK, PIT_GOLD, BLACK), { numberFont: 'rounded' });
 
-export const UNIFORM_ERAS: UniformTable = {
+// The lettering (libs/ranker/src/engine/uniform-eras.ts withFaces): the teams whose numbers are their own face
+// (the Broncos' from 1997, the Chargers' from 2007, the Jaguars' from 2009, the Packers'), the modern custom
+// sets drawn with the nearest face (the Seahawks' and Rams' rounded, the Titans', Falcons', Vikings' and
+// 2014-19 Bucs' sharp), the Bengals' plain block from 2021; every other kit keeps the face its era says.
+const FACES: FaceTable = {
+  Broncos: [[1997, 'broncos']],
+  Chargers: [[2007, 'chargers']],
+  Jaguars: [[2009, 'jaguars']],
+  Packers: 'packers',
+  Seahawks: [[2012, 'rounded']],
+  Titans: [[2018, 'sharp']],
+  Falcons: [[2020, 'sharp']],
+  Vikings: [[2013, 'sharp']],
+  Rams: [[2020, 'rounded']],
+  Bucs: [[2014, 'sharp', 2019]],
+  Bengals: [[2021, 'block']],
+};
+
+export const UNIFORM_ERAS: UniformTable = withFaces(
+  {
   // Logos and uniforms of the San Francisco 49ers (Wikipedia); gridiron-uniforms.com
   '49ers': [
     {
       from: 2000,
       to: 2008,
-      home: d(kit(SF_CARDINAL, W, SF_GOLD, W, SF_CARDINAL, W, BLACK), { numberFont: 'serif' }),
-      away: d(kit(WHITE, SF_CARDINAL, SF_GOLD, SF_CARDINAL, SF_CARDINAL, SF_CARDINAL, BLACK), { numberFont: 'serif' }),
+      home: d(kit(SF_CARDINAL, W, SF_GOLD, W, SF_CARDINAL, W, BLACK), { numberFont: 'varsity' }),
+      away: d(kit(WHITE, SF_CARDINAL, SF_GOLD, SF_CARDINAL, SF_CARDINAL, SF_CARDINAL, BLACK), { numberFont: 'varsity' }),
       note: '1996 set: deep cardinal red, serif numbers with gold trim and a black block shadow, sleeve stripes trimmed in black (stripe colors ?)',
     },
     {
@@ -850,27 +869,29 @@ export const UNIFORM_ERAS: UniformTable = {
     {
       from: 2013,
       to: 2015,
-      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'serif', collarStyle: 'v' }),
-      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'serif', collarStyle: 'v' }),
+      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'varsity', collarStyle: 'v' }),
+      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'varsity', collarStyle: 'v' }),
       note: '2013 set: gold and white cuff stripes, curved-serif numbers; number trim and road stripes ?',
     },
     {
       from: 2016,
       to: 2022,
-      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'serif', collarStyle: 'v' }),
-      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'serif', collarStyle: 'v' }),
-      alt: d(kit(MIN_PURPLE, MIN_GOLD, MIN_GOLD, MIN_GOLD, MIN_PURPLE), { numberFont: 'serif', collarStyle: 'v' }),
+      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'varsity', collarStyle: 'v' }),
+      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'varsity', collarStyle: 'v' }),
+      alt: d(kit(MIN_PURPLE, MIN_GOLD, MIN_GOLD, MIN_GOLD, MIN_PURPLE), { numberFont: 'varsity', collarStyle: 'v' }),
       note: 'All-purple Color Rush (gold numbers) the alternate, worn about 2016-18 and kept on the books through 2022 ?',
     },
     {
       from: 2023,
-      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'serif', collarStyle: 'v' }),
-      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'serif', collarStyle: 'v' }),
+      home: d(kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, MIN_GOLD, W), { bands: [MIN_GOLD, W], numberFont: 'varsity', collarStyle: 'v' }),
+      away: d(kit(WHITE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE, MIN_PURPLE, MIN_GOLD, MIN_PURPLE), { bands: [MIN_PURPLE, MIN_GOLD], numberFont: 'varsity', collarStyle: 'v' }),
       alt: kit(MIN_PURPLE, W, MIN_GOLD, W, MIN_PURPLE, W, MIN_GOLD),
       note: 'The 1960s "Classic" throwback (white numbers trimmed gold, gold/white sleeve stripes, matte purple helmet) the alternate from 2023; the all-white Winter Warrior left out',
     },
   ],
-};
+  },
+  FACES,
+);
 
 // (its helmets: helmets.ts)
 export { HELMET_ERAS } from './helmets';

@@ -23,7 +23,7 @@
 // Rbk EDGE review (Lightning); the splash audit of 2026-10-16 (scratchpad splash-round2/audit-nhl.json).
 // Hexes are the teams' published palette values (teamcolorcodes.com-style); where a jersey's own shade isn't
 // known, the team's standard one.
-import type { KitColors, HelmetTable, UniformTable } from '@ranker/engine/uniform-eras';
+import { KitColors, HelmetTable, UniformTable, type FaceTable, withFaces } from '@ranker/engine/uniform-eras';
 
 const WHITE = '#f3f2ee';
 const BLACK = '#111111';
@@ -333,7 +333,19 @@ const WSH_W = d(k(WSH_NV, WHITE, WSH_R, WHITE, WSH_NV, WHITE, WSH_R), { yoke: WH
 const WSH_EAGLE_BLK = d(k(BLACK, WHITE, '#b87333', WHITE, BLACK, '#00205b', '#b87333'), { bands: ['#00205b', '#b87333', '#00205b'], hem: ['#00205b', '#b87333', '#00205b'] });
 const WSH_EAGLE_RED = d(k(WSH_R, WHITE, WSH_NV, WHITE, WSH_R, WSH_NV, SILVER), { yoke: WHITE, bands: [WSH_NV, SILVER], hem: [WSH_NV, SILVER], numberFont: 'varsity' });
 
-export const UNIFORM_ERAS: UniformTable = {
+// The lettering (libs/ranker/src/engine/uniform-eras.ts withFaces): the Bruins', Ducks', Flames', Sabres' and
+// Wild's own faces, the Rangers' varsity; every other kit keeps the face its era says.
+const FACES: FaceTable = {
+  BOS: 'bruins',
+  ANA: 'ducks',
+  CGY: 'flames',
+  BUF: 'sabres',
+  MIN: 'wild',
+  NYR: 'varsity',
+};
+
+export const UNIFORM_ERAS: UniformTable = withFaces(
+  {
   // Wikipedia "Anaheim Ducks" (Uniforms 2006-2014, 2014-2024, 2024-present)
   ANA: [
     { from: 2009, to: 2010, home: ANA_H1, away: ANA_A1, note: 'Rbk Edge "Ducks" wordmark set; number trim gold/orange?' },
@@ -626,7 +638,9 @@ export const UNIFORM_ERAS: UniformTable = {
     { from: 2025, to: 2025, home: WSH_H, away: WSH_A, alt: WSH_EAGLE_BLK, note: 'black screaming-eagle third (blue and copper); trims?' },
     { from: 2026, home: WSH_H, away: WSH_A, alt: WSH_EAGLE_RED, note: 'red screaming-eagle third, white yoke, navy and silver accents' },
   ],
-};
+  },
+  FACES,
+);
 
 // (helmets: the NFL's alone)
 export const HELMET_ERAS: HelmetTable = {};

@@ -234,31 +234,6 @@ card-splash {
     overflow: visible;
   }
 
-  // (a photographed base with words projected onto a keystoned face: the box holds the photo and, over it,
-  // each face's flat SVG layer, drawn at one CSS px a unit and zoomed to the piece's size, so the base's
-  // matrix3d, computed once in units, lands the words on the face at any size)
-  > splash-piece > .sp-ph {
-    display: block;
-    height: calc(var(--h, 120px) * var(--s));
-    position: relative;
-
-    > svg.sp-photo {
-      display: block;
-      height: 100%;
-      overflow: visible;
-      width: 100%;
-    }
-  }
-}
-
-.sp-over {
-  left: 0;
-  overflow: visible;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  transform-origin: 0 0;
-  zoom: calc(var(--hn, 120) * var(--s) / 100);
 }
 
 // (a banner or a pennant hangs on the back wall behind the shelf line, its foot clear of the shelf, behind
@@ -401,6 +376,11 @@ card-splash {
   overflow: visible;
   max-width: none;
   width: calc(var(--jh) * var(--s) * 0.78);
+
+  // (a sweater, its sleeves spread, takes a wider box: its viewBox is 156 wide to the others' 128)
+  &.cut-hockey {
+    width: calc(var(--jh) * var(--s) * 0.95);
+  }
 }
 
 .star .sp-art > svg.sp-jersey {
@@ -421,14 +401,14 @@ card-splash {
 }
 
 .sp-j-name {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-size: 11px;
   letter-spacing: 1.2px;
   text-anchor: middle;
 }
 
 .sp-j-num {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-size: 58px;
   paint-order: stroke;
   stroke-linejoin: round;
@@ -1448,16 +1428,16 @@ card-splash {
 }
 
 .sp-j-name {
-  font-family: var(--f-block);
-  font-weight: 500;
+  font-family: "J-block";
+  font-weight: 400;
   letter-spacing: 0.12em;
   text-anchor: middle;
 }
 
 .sp-j-num {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-size: 57px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.01em;
   stroke-width: 1.6px;
 
@@ -1939,18 +1919,29 @@ card-splash {
   }
 }
 
-// (a coach's honors stand on the credenza: their captions on its front, one line each, under each honor)
+// (a coach's honors stand on the credenza: their captions on its front, one line each, under each honor. Each
+// honor holds a slot at least 64 px wide for its band, and the bands of neighbours sit a row apart, the even
+// ones a row lower, so two never collide beside a narrow medal)
 .sp-honor {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: calc(64px * var(--s));
   position: relative;
 
   .sp-cap {
     bottom: auto;
-    max-width: max(calc(100% + 8px), 96px);
+    max-width: calc(200% + 28px);
     top: calc(100% + 3px);
 
     span {
       -webkit-line-clamp: 1;
     }
+  }
+
+  &:nth-child(even) .sp-cap {
+    top: calc(100% + 20px);
   }
 }
 
@@ -2072,54 +2063,32 @@ card-splash {
 // Round 2 (the art pass): the jerseys' cuts and letterforms, a player's gear in his own stall, the office.
 // ===========================================================================================================
 
-// ---- the numbers' letterforms (uniform-eras.ts numberFont / nameFont): the athletic block (Oswald), a rounded
-// sans (Nunito, the site's), a serifed block (Cinzel), a varsity block with its second outline
-.sp-jersey.nf-rounded .sp-j-num,
-.sp-jersey.nf-rounded .sp-j-tv,
-.sp-jersey.nf-rounded .sp-j-front {
-  font-family: "Nunito", "Arial Rounded MT Bold", sans-serif;
-  font-weight: 900;
-}
+// ---- the lettering (uniform-eras.ts numberFont / nameFont): the real jersey faces, assets/fonts/jersey
+// (splash-fonts.ts loads jersey.css; splash.images.ts FACES has their metrics), one family a face, single
+// weight, never faux bold; the number's size and its strokes are set inline per face so two digits fill the
+// measured box whatever the face
+$jersey-faces: block, varsity, college, tuscan, rounded, wide, sharp, slim, broncos, chargers, jaguars, packers, astros, bruins, ducks, flames, sabres, wild;
 
-.sp-jersey.nf-rounded .sp-j-num {
-  font-size: 54px;
-}
-
-.sp-jersey.nf-serif .sp-j-num,
-.sp-jersey.nf-serif .sp-j-tv,
-.sp-jersey.nf-serif .sp-j-front {
-  font-family: var(--f-engrave);
-  font-weight: 700;
-}
-
-.sp-jersey.nf-serif .sp-j-num {
-  font-size: 55px;
-}
-
-.sp-jersey.nf-varsity .sp-j-num {
-  stroke-width: 2.6px;
-
-  &.outer {
-    stroke-width: 8px;
+@each $f in $jersey-faces {
+  .sp-jersey.nf-#{$f} .sp-j-num,
+  .sp-jersey.nf-#{$f} .sp-j-tv,
+  .sp-jersey.nf-#{$f} .sp-j-front {
+    font-family: "J-#{$f}";
+    font-weight: 400;
   }
-}
 
-.sp-jersey.nm-rounded .sp-j-name,
-.sp-jersey.nm-rounded .sp-j-mark {
-  font-family: "Nunito", sans-serif;
-  font-weight: 800;
-}
-
-.sp-jersey.nm-serif .sp-j-name,
-.sp-jersey.nm-serif .sp-j-mark {
-  font-family: var(--f-engrave);
+  .sp-jersey.nm-#{$f} .sp-j-name,
+  .sp-jersey.nm-#{$f} .sp-j-mark {
+    font-family: "J-#{$f}";
+    font-weight: 400;
+  }
 }
 
 // (the TV numbers on a football jersey's shoulders; a baseball jersey's wordmark and its front number)
 .sp-j-tv {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   paint-order: stroke;
   stroke-linejoin: round;
   stroke-width: 1.4px;
@@ -2127,9 +2096,9 @@ card-splash {
 }
 
 .sp-j-mark {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-style: italic;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.04em;
   paint-order: stroke;
   stroke-linejoin: round;
@@ -2138,9 +2107,9 @@ card-splash {
 }
 
 .sp-j-front {
-  font-family: var(--f-block);
+  font-family: "J-block";
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 400;
   paint-order: stroke;
   stroke-linejoin: round;
   stroke-width: 1.6px;
@@ -2323,7 +2292,7 @@ card-splash {
     box-shadow:
       0 8px 18px rgba(0, 0, 0, 0.6),
       inset 0 2px 0 rgba(255, 230, 190, 0.25);
-    height: calc(62px * var(--s));
+    height: calc(50px * var(--s));
     position: relative;
 
     // (two doors with brass pulls; the books on the shelf above them)
@@ -2394,18 +2363,22 @@ card-splash {
     position: relative;
   }
 
-  // (the photographed brass nameplate on its walnut base, assets/props/desk-nameplate, 66 px tall on a desktop:
-  // its 100 units at 0.66 px each, which is the zoom its name's layer takes; the name itself sits on the SVG
-  // layer projected onto the plate's face)
+  // (the photographed brass nameplate on its walnut base, assets/props/desk-nameplate, face on, 62 px tall on
+  // a desktop; the name flat on the plate's box)
   .sp-desk-plate {
-    --hn: 84;
     align-self: flex-start;
-    aspect-ratio: 1.526;
-    background: center / 100% 100% no-repeat;
+    aspect-ratio: 2.4107;
     display: block;
-    height: calc(84px * var(--s));
-    margin-top: calc(-26px * var(--s));
+    height: calc(62px * var(--s));
+    margin-top: calc(-20px * var(--s));
     position: relative;
+
+    > svg {
+      display: block;
+      height: 100%;
+      overflow: visible;
+      width: 100%;
+    }
   }
 
   // (the name engraved in the condensed block, dark on the brass, its lit edge under it)

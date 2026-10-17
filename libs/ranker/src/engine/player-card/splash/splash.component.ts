@@ -20,7 +20,7 @@ import { RosterPlayer, Scene, SceneInput, buildScene } from './splash.scene';
 import { SplashData, splashData } from './splash.data';
 import { rosterOf } from './splash.roster';
 import { KitColors, SIGNATURE_SHOES, helmetFor, uniformFor } from './splash.uniforms';
-import { HI_DPI, JerseyAnchors, NAMEPLATE, PROP_IMAGES, homography, jerseyAnchors, planeBox, propHref } from './splash.images';
+import { Box, HI_DPI, JerseyAnchors, NAMEPLATE, OUTLINED_FACES, PROP_IMAGES, Sleeve, jerseyAnchors, nameSize, numberSize, propHref } from './splash.images';
 import { loadSplashFonts } from './splash-fonts';
 
 type Kit = 'home' | 'away' | 'alt';
@@ -242,68 +242,112 @@ export class CardSplash implements OnDestroy {
   private anchorsFor: { cut: string; a: JerseyAnchors | null } | null = null;
   get ja(): JerseyAnchors | null {
     const cut = this.cut;
-    // (the baseball base is a photographed FRONT, its placket and buttons showing through a light kit: until it
-    // is shot again flat and from the back, a baseball jersey is the vector cut, from the front with its
-    // wordmark, which the owner had before)
-    if (this.anchorsFor?.cut !== cut) this.anchorsFor = { cut, a: cut === 'baseball' ? null : jerseyAnchors(cut) };
+    if (this.anchorsFor?.cut !== cut) this.anchorsFor = { cut, a: jerseyAnchors(cut) };
     return this.anchorsFor.a;
   }
   get jerseyBase(): string {
     return propHref('jersey-' + this.cut, HI_DPI);
   }
-  // (the office's brass desk nameplate, photographed: splash.component.scss .sp-desk-plate; his name on the
-  // plate's face, projected as the photo keystones it: NAMEPLATE's quad, the name as big as the face holds)
+  // (the office's brass desk nameplate, photographed face on: splash.component.scss .sp-desk-plate; his name
+  // flat on the plate's box, NAMEPLATE, as big as it holds)
   readonly deskPlate = propHref('desk-nameplate', HI_DPI);
-  private plateFor: { name: string; art: { w: number; h: number; y: number; size: number; m3d: string } } | null = null;
-  plateArt(name: string): { w: number; h: number; y: number; size: number; m3d: string } {
+  private plateFor: { name: string; art: { w: number; h: number; y: number; size: number } } | null = null;
+  plateArt(name: string): { w: number; h: number; y: number; size: number } {
     if (this.plateFor?.name !== name) {
-      const iw = (PROP_IMAGES['desk-nameplate'] ?? 1.5) * 100;
-      const box = planeBox(NAMEPLATE, iw);
-      const w = +box.pw.toFixed(2), h = +box.ph.toFixed(2);
+      const w = +((PROP_IMAGES['desk-nameplate'] ?? 1.5) * 100).toFixed(2), h = 100;
+      const bw = NAMEPLATE.w * w, bh = NAMEPLATE.h * h;
       // (the condensed block, as a nameplate is engraved: about 0.58 em a letter with its spacing)
-      const size = +Math.min(h * 0.46, (w * 0.88) / (Math.max(1, name.length) * 0.58)).toFixed(2);
-      this.plateFor = { name, art: { w, h, y: +(h / 2 + size * 0.35).toFixed(2), size, m3d: box.quad ? homography(w, h, box.quad) : '' } };
+      const size = +Math.min(bh * 0.62, (bw * 0.92) / (Math.max(1, name.length) * 0.58)).toFixed(2);
+      this.plateFor = { name, art: { w, h, y: +((NAMEPLATE.y + NAMEPLATE.h / 2) * h + size * 0.35).toFixed(2), size } };
     }
     return this.plateFor.art;
   }
 
-  // The bands on a photographed jersey's sleeves: each a line parallel to the cuff, up the sleeve from it (top
-  // to bottom as the kit lists them; a football's solid sleeve cap first, a baseball sleeve's one or two)
-  photoBands(k: FullKit, a: JerseyAnchors, baseball = false): { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] {
+  // The number's size on a photographed jersey: two digits fill the measured box in the kit's face
+  numSize(k: FullKit, a: JerseyAnchors): number {
+    return this.memo(k, 'num', () => numberSize(k.numberFont, a.num.w, a.num.h));
+  }
+  numX(a: JerseyAnchors): number {
+    return +(a.num.x + a.num.w / 2).toFixed(2);
+  }
+  numY(a: JerseyAnchors): number {
+    return +(a.num.y + a.num.h).toFixed(2);
+  }
+  // (the varsity faces carry their own serifs: their second outline only where the kit has an outline color)
+  outlined(k: FullKit): boolean {
+    return OUTLINED_FACES.has(k.numberFont ?? '') && !!k.outline && k.outline !== k.num;
+  }
+  // The name's size: its capitals the arc's share of the body, smaller to fit the arc in the kit's face
+  photoNameSize(k: FullKit, name: string, a: JerseyAnchors): number {
+    return nameSize(k.nameFont ?? k.numberFont, name.toUpperCase(), a.nameRun, a.nameCap);
+  }
+  // A TV number's size: two digits filling its box on the sleeve cap
+  tvSize(k: FullKit, box: Box): number {
+    return numberSize(k.numberFont, box.w, box.h);
+  }
+
+  // The bands on a photographed jersey's sleeves: vertical bands inward from each cuff, the sleeves being
+  // spread flat (top to bottom as the kit lists them, the outermost nearest the cuff; a football's solid
+  // sleeve cap first, a baseball sleeve's one or two); each is clipped to its sleeve's rectangle
+  photoBands(k: FullKit, a: JerseyAnchors, baseball = false): Box[] & { color?: string }[] {
     return this.memo(k, 'bands' + (baseball ? '-bb' : ''), () => this.buildPhotoBands(k, a, baseball));
   }
-  private buildPhotoBands(k: FullKit, a: JerseyAnchors, baseball: boolean): { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] {
-    if (!a.cuffs) return [];
-    const out: { x1: number; y1: number; x2: number; y2: number; color: string; w: number }[] = [];
+  private buildPhotoBands(k: FullKit, a: JerseyAnchors, baseball: boolean): (Box & { color: string })[] {
+    if (!a.sleeves) return [];
+    const out: (Box & { color: string })[] = [];
     const list = baseball ? (k.stripe2 ? [k.stripe || k.collar, k.stripe2] : [k.stripe || k.collar]) : k.cap ? [] : k.sleeve === 'stripes' ? this.bands(k).map((b) => b.color) : [];
     const w = baseball ? 3 : Math.min(3.4, 11 / Math.max(1, list.length));
-    const gap = list.length > 2 ? 0.5 : 2.2;
-    for (const c of a.cuffs) {
-      const at = (o: number, color: string, width: number) => {
-        const ex = (c.x2 - c.x1) * 0.4, ey = (c.y2 - c.y1) * 0.4;
-        out.push({ x1: +(c.x1 - ex + c.dx * o).toFixed(2), y1: +(c.y1 - ey + c.dy * o).toFixed(2), x2: +(c.x2 + ex + c.dx * o).toFixed(2), y2: +(c.y2 + ey + c.dy * o).toFixed(2), color, w: width });
-      };
-      if (k.cap && !baseball) at(7, k.cap, 14);
-      list.forEach((color, i) => at(4 + (list.length - 1 - i) * (w + gap) + w / 2, color, w));
+    const gap = baseball ? 1.2 : list.length > 2 ? 0.5 : 2.2;
+    const start = baseball ? 1.5 : 3.5;
+    for (const s of a.sleeves) {
+      if (k.cap && !baseball) out.push(this.band(s, 0, 13, k.cap));
+      list.forEach((color, i) => out.push(this.band(s, start + (list.length - 1 - i) * (w + gap), w, color)));
     }
     return out;
   }
+  // (a band on a sleeve: from `from` to `from + w` in from the cuff, the sleeve's full height)
+  private band(s: Sleeve, from: number, w: number, color: string): Box & { color: string } {
+    const x = s.dir > 0 ? s.cuff + from : s.cuff - from - w;
+    return { x: +x.toFixed(2), y: s.y, w: +w.toFixed(2), h: s.h, color };
+  }
 
-  // A photographed sweater's arm bands: the kit's, centered on each forearm
-  photoArmBands(k: FullKit, a: JerseyAnchors): { x: number; y: number; w: number; h: number; color: string }[] {
+  // A photographed sweater's arm bands: the kit's, in the lower third of each sleeve from the cuff
+  photoArmBands(k: FullKit, a: JerseyAnchors): (Box & { color: string })[] {
     return this.memo(k, 'arms', () => {
-      if (!a.arms) return [];
-      return a.arms.flatMap((arm) => this.hockeyBands(k).map((b) => ({ x: arm.x, y: +(b.y - 96 + arm.y).toFixed(2), w: arm.w, h: b.h, color: b.color })));
+      if (!a.sleeves) return [];
+      const bands = this.hockeyBands(k);
+      if (!bands.length) return [];
+      const total = bands.reduce((t, b) => t + b.h, 0) + (bands.length - 1) * 1.6;
+      const out: (Box & { color: string })[] = [];
+      for (const s of a.sleeves) {
+        // (the run from 2.5 units in from the cuff to a third of the sleeve: the kit's bands scaled into it)
+        const room = Math.max(4, s.w * 0.36 - 2.5);
+        const k2 = Math.min(1, room / total);
+        let at = 2.5;
+        for (const b of bands) {
+          out.push(this.band(s, at, b.h * k2, b.color));
+          at += (b.h + 1.6) * k2;
+        }
+      }
+      return out;
     });
   }
 
-  // A photographed jersey's hem stripes: the kit's, stacked up from its hem
+  // A photographed jersey's hem stripes: the kit's, laid in the hem's region (the bottom 12% of the torso),
+  // the lowest a unit above the hem
   photoHems(k: FullKit, cut: Cut, a: JerseyAnchors): { color: string; y: number; h: number }[] {
     return this.memo(k, 'hems-' + cut, () => {
       const list = this.hems(k, cut);
       if (!list.length) return [];
-      const dy = a.hemY - 3 - Math.max(...list.map((l) => l.y + l.h));
-      return list.map((l) => ({ ...l, y: +(l.y + dy).toFixed(2) }));
+      const gap = 1;
+      const room = a.hemH - 1;
+      const h = Math.min(list[0].h, (room - (list.length - 1) * gap) / list.length);
+      let y = a.hemY - 1 - list.length * h - (list.length - 1) * gap;
+      return list.map((l) => {
+        const band = { color: l.color, y: +y.toFixed(2), h: +h.toFixed(2) };
+        y += h + gap;
+        return band;
+      });
     });
   }
 

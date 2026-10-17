@@ -8,7 +8,7 @@
 // wore one. Per kit: name = the chest script/wordmark color, num = the numbers' fill, outline = their trim, piping =
 // the collar/placket piping (none when left out), stripe (+ stripe2) = the sleeve ends' piping, pinstripe = the
 // pinstripes' color, placket 'buttons' (every regular MLB jersey since 2000) or 'vest' (under = the undershirt).
-// numberFont/nameFont: 'serif' for the serifed blocks (Yankees road, Giants, Twins to 2009), 'varsity' for the
+// numberFont/ for the serifed blocks (Yankees road, Giants, Twins to 2009), 'varsity' for the
 // drop-shadowed heavy blocks (Mets to 2011, Royals 2002-21, Rangers 2001-13, Reds), 'rounded' for scripts and the
 // modern rounded faces (Rays, Marlins 2012-18). Names on back are not drawn (the front is), so the clubs without
 // them (Yankees, Red Sox and Tigers at home, Giants at home to 2020) need no flag. Throwbacks, City Connect and
@@ -19,13 +19,13 @@
 // 2026-10 audit's reference notes (scratchpad splash-round2/audit-mlb/refs); the rest from memory of the sets,
 // flagged with a `?` in `note` where the colors or the years weren't confirmed.
 
-import type { HelmetTable, KitColors, UniformTable } from '@ranker/engine/uniform-eras';
+import { HelmetTable, KitColors, UniformTable, type FaceTable, withFaces } from '@ranker/engine/uniform-eras';
 
 const WHITE = '#f3f2ee'; // home whites
 const GRAY = '#b9bcbf'; // road grays
 const CREAM = '#ece4d0'; // cream homes / alternates
 
-type Detail = Partial<Pick<KitColors, 'piping' | 'stripe' | 'stripe2' | 'pinstripe' | 'placket' | 'under' | 'numberFont' | 'nameFont' | 'names'>>;
+type Detail = Partial<Pick<KitColors, 'piping' | 'stripe' | 'stripe2' | 'pinstripe' | 'placket' | 'under' | 'numberFont' | 'names'>>;
 
 // A kit: its body, the chest wordmark, the numbers (fill, trim), then its details. The collar is the piping's color
 // when the jersey is piped (the collar and placket are piped together), else the body's; sleeve 'stripes' when the
@@ -35,27 +35,46 @@ function kit(body: string, name: string, num: string, outline: string, d: Detail
   return Object.assign(k, d);
 }
 
-export const UNIFORM_ERAS: UniformTable = {
+// The lettering (libs/ranker/src/engine/uniform-eras.ts withFaces): the Tuscan serif of the Cardinals, Cubs,
+// Dodgers, Phillies, Giants and Nationals, the Astros' own face from 2013, the plain block of the Yankees,
+// Orioles, Pirates, Rangers and Tigers; every other club the varsity block (the name in the number's face).
+const FACES: FaceTable = {
+  '138': 'tuscan', // Cardinals
+  '112': 'tuscan', // Cubs
+  '119': 'tuscan', // Dodgers
+  '143': 'tuscan', // Phillies
+  '137': 'tuscan', // Giants
+  '120': 'tuscan', // Nationals
+  '117': [[2013, 'astros']], // Astros
+  '147': 'block', // Yankees
+  '110': 'block', // Orioles
+  '134': 'block', // Pirates
+  '140': 'block', // Rangers
+  '116': 'block', // Tigers
+};
+
+export const UNIFORM_ERAS: UniformTable = withFaces(
+  {
   // Angels -- Wikipedia (Los Angeles Angels: uniforms); teamcolorcodes. No red before 2002.
   '108': [
     {
       from: 2000, to: 2001,
-      home: kit(WHITE, '#003263', '#003263', '#6f8fcf', { pinstripe: '#003263', nameFont: 'rounded' }),
-      away: kit(GRAY, '#003263', '#003263', '#6f8fcf', { nameFont: 'rounded' }),
-      alt: kit('#003263', '#ffffff', '#ffffff', '#6f8fcf', { piping: '#6f8fcf', nameFont: 'rounded' }),
+      home: kit(WHITE, '#003263', '#003263', '#6f8fcf', { pinstripe: '#003263' }),
+      away: kit(GRAY, '#003263', '#003263', '#6f8fcf', { }),
+      alt: kit('#003263', '#ffffff', '#ffffff', '#6f8fcf', { piping: '#6f8fcf' }),
       note: 'Disney set: navy script and numbers with periwinkle trim on a navy-pinstriped faux vest, "Anaheim" road; navy alt periwinkle/white',
     },
     {
       from: 2002, to: 2006,
-      home: kit(WHITE, '#ba0021', '#ba0021', '#003263', { numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#ba0021', '#ba0021', '#003263', { numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#ba0021', '#ba0021', '#003263', { numberFont: 'tuscan' }),
+      away: kit(GRAY, '#ba0021', '#ba0021', '#003263', { numberFont: 'tuscan' }),
       note: 'red "Big A" set; road read "Anaheim" to 2004, "Angels" from 2005; no regular colored alt (a white vest alt 2005-06)',
     },
     {
       from: 2007,
-      home: kit(WHITE, '#ba0021', '#ba0021', '#003263', { numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#ba0021', '#ba0021', '#003263', { numberFont: 'serif', nameFont: 'rounded' }),
-      alt: kit('#ba0021', '#ffffff', '#ffffff', '#003263', { numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#ba0021', '#ba0021', '#003263', { numberFont: 'tuscan' }),
+      away: kit(GRAY, '#ba0021', '#ba0021', '#003263', { numberFont: 'tuscan' }),
+      alt: kit('#ba0021', '#ffffff', '#ffffff', '#003263', { numberFont: 'tuscan' }),
       note: 'red alternate added; its lettering colors ?',
     },
   ],
@@ -108,23 +127,23 @@ export const UNIFORM_ERAS: UniformTable = {
   '110': [
     {
       from: 2000, to: 2008,
-      home: kit(WHITE, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      alt: kit('#000000', '#df4601', '#df4601', '#ffffff', { stripe: '#df4601', nameFont: 'rounded' }),
+      home: kit(WHITE, '#000000', '#000000', '#df4601', { }),
+      away: kit(GRAY, '#000000', '#000000', '#df4601', { }),
+      alt: kit('#000000', '#df4601', '#df4601', '#ffffff', { stripe: '#df4601' }),
       note: 'road read "Orioles" through 2008; black alternate with orange sleeve piping',
     },
     {
       from: 2009, to: 2011,
-      home: kit(WHITE, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      alt: kit('#000000', '#df4601', '#df4601', '#ffffff', { stripe: '#df4601', nameFont: 'rounded' }),
+      home: kit(WHITE, '#000000', '#000000', '#df4601', { }),
+      away: kit(GRAY, '#000000', '#000000', '#df4601', { }),
+      alt: kit('#000000', '#df4601', '#df4601', '#ffffff', { stripe: '#df4601' }),
       note: '"Baltimore" returns on the road; road letter colors ?',
     },
     {
       from: 2012,
-      home: kit(WHITE, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#000000', '#000000', '#df4601', { nameFont: 'rounded' }),
-      alt: kit('#df4601', '#000000', '#000000', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#000000', '#000000', '#df4601', { }),
+      away: kit(GRAY, '#000000', '#000000', '#df4601', { }),
+      alt: kit('#df4601', '#000000', '#000000', '#ffffff', { }),
       note: 'cartoon bird returns; orange Saturday alternate (the black Friday alt, orange script and sleeve piping, is worn more)',
     },
   ],
@@ -133,28 +152,28 @@ export const UNIFORM_ERAS: UniformTable = {
   '111': [
     {
       from: 2000, to: 2002,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'tuscan' }),
     },
     {
       from: 2003, to: 2008,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340', numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'tuscan' }),
+      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340', numberFont: 'tuscan' }),
       note: 'red home alternate (blue piping) added',
     },
     {
       from: 2009, to: 2013,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#bd3039', { numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#bd3039', { numberFont: 'tuscan' }),
+      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'tuscan' }),
       note: 'road lettering navy; red alt loses piping; a navy road alt (BOSTON red outlined white) also ran 2009-2024',
     },
     {
       from: 2014,
-      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'serif', nameFont: 'rounded' }),
-      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'serif', nameFont: 'rounded' }),
+      home: kit(WHITE, '#bd3039', '#bd3039', '#0c2340', { names: false, piping: '#bd3039', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#bd3039', '#bd3039', '#0c2340', { numberFont: 'tuscan' }),
+      alt: kit('#bd3039', '#0c2340', '#0c2340', '#ffffff', { numberFont: 'tuscan' }),
       note: 'road lettering back to red',
     },
   ],
@@ -163,7 +182,7 @@ export const UNIFORM_ERAS: UniformTable = {
     {
       from: 2000,
       home: kit(WHITE, '#cc3433', '#0e3386', '#cc3433', { pinstripe: '#0e3386' }),
-      away: kit(GRAY, '#0e3386', '#cc3433', '#ffffff', { nameFont: 'serif' }),
+      away: kit(GRAY, '#0e3386', '#cc3433', '#ffffff', { }),
       alt: kit('#0e3386', '#cc3433', '#cc3433', '#ffffff'),
       note: 'navy-pinstriped home with the bullseye (red CUBS), blue numbers trimmed red; road "Chicago" blue, red numbers trimmed white; blue alt red lettering trimmed white',
     },
@@ -179,9 +198,9 @@ export const UNIFORM_ERAS: UniformTable = {
     },
     {
       from: 2007,
-      home: kit(WHITE, '#c6011f', '#c6011f', '#000000', { piping: '#c6011f', numberFont: 'varsity', nameFont: 'serif' }),
-      away: kit(GRAY, '#c6011f', '#c6011f', '#000000', { stripe: '#c6011f', stripe2: '#ffffff', numberFont: 'varsity', nameFont: 'serif' }),
-      alt: kit('#c6011f', '#ffffff', '#ffffff', '#000000', { piping: '#ffffff', stripe: '#ffffff', numberFont: 'varsity', nameFont: 'serif' }),
+      home: kit(WHITE, '#c6011f', '#c6011f', '#000000', { piping: '#c6011f', numberFont: 'varsity' }),
+      away: kit(GRAY, '#c6011f', '#c6011f', '#000000', { stripe: '#c6011f', stripe2: '#ffffff', numberFont: 'varsity' }),
+      alt: kit('#c6011f', '#ffffff', '#ffffff', '#000000', { piping: '#ffffff', stripe: '#ffffff', numberFont: 'varsity' }),
       note: 'sleeved, early-1900s lettering: red placket piping at home, red-and-white sleeve trim on the road, white piping on the red alt',
     },
   ],
@@ -189,16 +208,16 @@ export const UNIFORM_ERAS: UniformTable = {
   '114': [
     {
       from: 2000, to: 2001,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340', nameFont: 'rounded' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340', nameFont: 'rounded' }),
-      alt: kit('#0c2340', '#e31937', '#e31937', '#ffffff', { piping: '#e31937', stripe: '#e31937', nameFont: 'rounded' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340' }),
+      alt: kit('#0c2340', '#e31937', '#e31937', '#ffffff', { piping: '#e31937', stripe: '#e31937' }),
       note: 'Indians navy/red, navy piping; home script color before 2002 ?',
     },
     {
       from: 2002, to: 2021,
-      home: kit(WHITE, '#e31937', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340', nameFont: 'rounded' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340', nameFont: 'rounded' }),
-      alt: kit('#0c2340', '#e31937', '#e31937', '#ffffff', { piping: '#e31937', stripe: '#e31937', nameFont: 'rounded' }),
+      home: kit(WHITE, '#e31937', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#e31937', { piping: '#0c2340', stripe: '#0c2340' }),
+      alt: kit('#0c2340', '#e31937', '#e31937', '#ffffff', { piping: '#e31937', stripe: '#e31937' }),
       note: 'red "Indians" script with navy trim at home, navy piping throughout (2008 and 2012 tweaks to the outlines); sleeve piping navy ?',
     },
     {
@@ -213,14 +232,14 @@ export const UNIFORM_ERAS: UniformTable = {
   '115': [
     {
       from: 2000, to: 2011,
-      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#33006f', placket: 'vest', under: '#000000', nameFont: 'serif' }),
+      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#33006f', placket: 'vest', under: '#000000' }),
       away: kit(GRAY, '#33006f', '#33006f', '#ffffff', { pinstripe: '#33006f' }),
       alt: kit('#33006f', '#000000', '#000000', '#ffffff'),
       note: 'purple-pinstriped home vest over a black undershirt (sleeved years ?), purple-pinstriped road; purple alt (a black vest alt 2005-21 too)',
     },
     {
       from: 2012,
-      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#33006f', nameFont: 'serif' }),
+      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#33006f' }),
       away: kit(GRAY, '#33006f', '#33006f', '#ffffff', { piping: '#33006f' }),
       alt: kit('#33006f', '#000000', '#000000', '#ffffff'),
       note: 'sleeves back; road loses its pinstripes for purple piping',
@@ -231,15 +250,15 @@ export const UNIFORM_ERAS: UniformTable = {
   '116': [
     {
       from: 2000, to: 2025,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340', nameFont: 'serif' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340', nameFont: 'rounded' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340' }),
       note: 'Old English D at home, navy "Detroit" (orange/white trim) on the road; both navy piping',
     },
     {
       from: 2026,
-      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340', nameFont: 'serif' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340', nameFont: 'rounded' }),
-      alt: kit('#fa4616', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340', nameFont: 'rounded' }),
+      home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, piping: '#0c2340' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#fa4616', { piping: '#0c2340' }),
+      alt: kit('#fa4616', '#0c2340', '#0c2340', '#ffffff', { piping: '#0c2340' }),
       note: 'orange Friday home alternate added (navy road alt too); alt piping ?',
     },
   ],
@@ -247,9 +266,9 @@ export const UNIFORM_ERAS: UniformTable = {
   '117': [
     {
       from: 2000, to: 2012,
-      home: kit(WHITE, '#000000', '#9a3324', '#000000', { pinstripe: '#000000', numberFont: 'serif' }),
-      away: kit(GRAY, '#9a3324', '#000000', '#9a3324', { numberFont: 'serif' }),
-      alt: kit('#9a3324', '#d4c19c', '#d4c19c', '#000000', { numberFont: 'serif' }),
+      home: kit(WHITE, '#000000', '#9a3324', '#000000', { pinstripe: '#000000', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#9a3324', '#000000', '#9a3324', { numberFont: 'tuscan' }),
+      alt: kit('#9a3324', '#d4c19c', '#d4c19c', '#000000', { numberFont: 'tuscan' }),
       note: 'brick/black/sand, black pinstripes at home; black alt to ~2001 then brick red; number trims ?',
     },
     {
@@ -264,50 +283,50 @@ export const UNIFORM_ERAS: UniformTable = {
   '118': [
     {
       from: 2000, to: 2001,
-      home: kit(WHITE, '#004687', '#004687', '#004687', { piping: '#004687', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#ffffff', { nameFont: 'rounded' }),
-      alt: kit('#004687', '#ffffff', '#ffffff', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#004687', { piping: '#004687' }),
+      away: kit(GRAY, '#004687', '#004687', '#ffffff', { }),
+      alt: kit('#004687', '#ffffff', '#ffffff', '#ffffff', { }),
       note: 'royal blue; home neck piping ?',
     },
     {
       from: 2002, to: 2002,
-      home: kit(WHITE, '#004687', '#004687', '#000000', { numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#000000', { numberFont: 'varsity', nameFont: 'rounded' }),
-      alt: kit('#000000', '#004687', '#004687', '#ffffff', { numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#000000', { numberFont: 'varsity' }),
+      away: kit(GRAY, '#004687', '#004687', '#000000', { numberFont: 'varsity' }),
+      alt: kit('#000000', '#004687', '#004687', '#ffffff', { numberFont: 'varsity' }),
       note: 'black drop shadows, black alternate',
     },
     {
       from: 2003, to: 2005,
-      home: kit(WHITE, '#004687', '#004687', '#000000', { placket: 'vest', under: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#000000', { numberFont: 'varsity', nameFont: 'rounded' }),
-      alt: kit('#000000', '#004687', '#004687', '#ffffff', { numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#000000', { placket: 'vest', under: '#004687', numberFont: 'varsity' }),
+      away: kit(GRAY, '#004687', '#004687', '#000000', { numberFont: 'varsity' }),
+      alt: kit('#000000', '#004687', '#004687', '#ffffff', { numberFont: 'varsity' }),
       note: 'sleeveless home vest over a blue undershirt; road vest too ?',
     },
     {
       from: 2006, to: 2007,
-      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
+      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
       note: 'sleeved again with royal blue arm piping; no alt until the powder blue of 2008',
     },
     {
       from: 2008, to: 2011,
-      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      alt: kit('#7ab2dd', '#004687', '#004687', '#ffffff', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
+      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
+      alt: kit('#7ab2dd', '#004687', '#004687', '#ffffff', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
       note: 'powder blue alt: blue "Royals" and numbers trimmed white',
     },
     {
       from: 2012, to: 2021,
-      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
-      alt: kit('#7ab2dd', '#ffffff', '#ffffff', '#004687', { piping: '#004687', stripe: '#004687', numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
+      away: kit(GRAY, '#004687', '#004687', '#000000', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
+      alt: kit('#7ab2dd', '#ffffff', '#ffffff', '#004687', { piping: '#004687', stripe: '#004687', numberFont: 'varsity' }),
       note: 'powder alt colors reversed (white trimmed blue); black drop shadows to 2019; gold trim on the 2017-21 white alt only',
     },
     {
       from: 2022,
-      home: kit(WHITE, '#004687', '#004687', '#004687', { piping: '#004687', stripe: '#004687', nameFont: 'rounded' }),
+      home: kit(WHITE, '#004687', '#004687', '#004687', { piping: '#004687', stripe: '#004687' }),
       away: kit(GRAY, '#004687', '#004687', '#004687', { piping: '#004687', stripe: '#004687' }),
-      alt: kit('#7ab2dd', '#ffffff', '#ffffff', '#ffffff', { piping: '#ffffff', stripe: '#ffffff', nameFont: 'rounded' }),
+      alt: kit('#7ab2dd', '#ffffff', '#ffffff', '#ffffff', { piping: '#ffffff', stripe: '#ffffff' }),
       note: 'outlines dropped, one thicker blue sleeve stripe; block "KANSAS CITY" road; powder alt piping ?',
     },
   ],
@@ -315,15 +334,15 @@ export const UNIFORM_ERAS: UniformTable = {
   '119': [
     {
       from: 2000, to: 2025,
-      home: kit(WHITE, '#005a9c', '#ef3e42', '#ef3e42', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#005a9c', '#ef3e42', '#ef3e42', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#005a9c', '#ef3e42', '#ef3e42', { }),
+      away: kit(GRAY, '#005a9c', '#ef3e42', '#ef3e42', { }),
       note: 'Dodger blue script, red front numbers (blue on the back)',
     },
     {
       from: 2026,
-      home: kit(WHITE, '#005a9c', '#ef3e42', '#ef3e42', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#005a9c', '#ef3e42', '#ef3e42', { nameFont: 'rounded' }),
-      alt: kit('#005a9c', '#ffffff', '#ef3e42', '#c4ced4', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#005a9c', '#ef3e42', '#ef3e42', { }),
+      away: kit(GRAY, '#005a9c', '#ef3e42', '#ef3e42', { }),
+      alt: kit('#005a9c', '#ffffff', '#ef3e42', '#c4ced4', { }),
       note: 'blue road alternate: white "Dodgers" script, red front number trimmed gray, white back numbers',
     },
   ],
@@ -332,49 +351,49 @@ export const UNIFORM_ERAS: UniformTable = {
   '120': [
     {
       from: 2000, to: 2004,
-      home: kit(WHITE, '#003087', '#003087', '#e4002b', { pinstripe: '#003087', nameFont: 'rounded' }),
-      away: kit(GRAY, '#e4002b', '#e4002b', '#003087', { nameFont: 'rounded' }),
-      alt: kit('#003087', '#ffffff', '#ffffff', '#e4002b', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003087', '#003087', '#e4002b', { pinstripe: '#003087' }),
+      away: kit(GRAY, '#e4002b', '#e4002b', '#003087', { }),
+      alt: kit('#003087', '#ffffff', '#ffffff', '#e4002b', { }),
       note: 'Expos: royal-blue-pinstriped home, red "Montreal" road; number colors and the blue alternate ?',
     },
     {
       from: 2005, to: 2008,
-      home: kit(WHITE, '#ab0003', '#ab0003', '#c9a95a', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#ab0003', '#ab0003', '#c9a95a', { }),
       away: kit(GRAY, '#14225a', '#14225a', '#c9a95a'),
       alt: kit('#ab0003', '#ffffff', '#14225a', '#ffffff'),
       note: 'Nationals: gold bevels; red "DC" alternate from 2006',
     },
     {
       from: 2009, to: 2010,
-      home: kit(WHITE, '#ab0003', '#ab0003', '#c9a95a', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#ab0003', '#ab0003', '#c9a95a', { }),
+      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { }),
       alt: kit('#ab0003', '#ffffff', '#ffffff', '#14225a'),
       note: 'red script road lettering, curly W red alternate',
     },
     {
       from: 2011, to: 2021,
       home: kit(WHITE, '#ab0003', '#ab0003', '#14225a', { piping: '#ab0003', stripe: '#ab0003', stripe2: '#14225a' }),
-      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { nameFont: 'rounded' }),
+      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { }),
       alt: kit('#ab0003', '#ffffff', '#ffffff', '#14225a', { piping: '#ffffff', stripe: '#ffffff', stripe2: '#14225a' }),
       note: 'gold gone; curly W home with red-and-blue placket piping and sleeve trim, red alt with white-and-blue; road piping ?',
     },
     {
       from: 2022, to: 2023,
-      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { }),
+      away: kit(GRAY, '#ab0003', '#ab0003', '#14225a', { }),
       alt: kit('#ab0003', '#ffffff', '#ffffff', '#14225a', { piping: '#ffffff', stripe: '#ffffff', stripe2: '#14225a' }),
       note: 'navy script "Nationals" white becomes the primary home',
     },
     {
       from: 2024, to: 2024,
-      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { }),
       away: kit('#14225a', '#ffffff', '#ffffff', '#ab0003'),
-      alt: kit('#14225a', '#ffffff', '#ab0003', '#ffffff', { nameFont: 'rounded' }),
+      alt: kit('#14225a', '#ffffff', '#ab0003', '#ffffff', { }),
       note: 'navy block "WASHINGTON" road (the gray the secondary road); navy script alt',
     },
     {
       from: 2025,
-      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#14225a', '#14225a', '#ab0003', { }),
       away: kit('#14225a', '#ffffff', '#ffffff', '#ab0003'),
       alt: kit('#ab0003', '#ffffff', '#ffffff', '#14225a'),
       note: 'red curly W alt returns without piping',
@@ -384,22 +403,22 @@ export const UNIFORM_ERAS: UniformTable = {
   '121': [
     {
       from: 2000, to: 2011,
-      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72', numberFont: 'varsity', nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { numberFont: 'varsity', nameFont: 'rounded' }),
-      alt: kit('#000000', '#002d72', '#002d72', '#ff5910', { numberFont: 'varsity', nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72', numberFont: 'varsity' }),
+      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { numberFont: 'varsity' }),
+      alt: kit('#000000', '#002d72', '#002d72', '#ff5910', { numberFont: 'varsity' }),
       note: 'royal blue pinstripes at home, black drop shadows, black alternate (home and road); alt lettering colors ?',
     },
     {
       from: 2012, to: 2012,
-      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72', nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72' }),
+      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { }),
       note: 'black dropped (the black jersey kept and worn twice); no regular alt',
     },
     {
       from: 2013,
-      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72', nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { nameFont: 'rounded' }),
-      alt: kit('#002d72', '#ff5910', '#ff5910', '#ffffff', { piping: '#ff5910', stripe: '#ff5910', nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d72', '#002d72', '#ff5910', { pinstripe: '#002d72' }),
+      away: kit(GRAY, '#002d72', '#002d72', '#ff5910', { }),
+      alt: kit('#002d72', '#ff5910', '#ff5910', '#ffffff', { piping: '#ff5910', stripe: '#ff5910' }),
       note: 'blue alternates from 2013: the home one orange "Mets" script and numbers outlined white, orange placket and sleeve piping (road version gray "NEW YORK")',
     },
   ],
@@ -407,30 +426,30 @@ export const UNIFORM_ERAS: UniformTable = {
   '133': [
     {
       from: 2000, to: 2013,
-      home: kit(WHITE, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      alt: kit('#003831', '#efb21e', '#efb21e', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003831', '#003831', '#efb21e', { }),
+      away: kit(GRAY, '#003831', '#003831', '#efb21e', { }),
+      alt: kit('#003831', '#efb21e', '#efb21e', '#ffffff', { }),
       note: 'green/gold; green alt with gold lettering (gold alternates also worn) ?',
     },
     {
       from: 2014, to: 2017,
-      home: kit(WHITE, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      alt: kit('#003831', '#ffffff', '#ffffff', '#efb21e', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003831', '#003831', '#efb21e', { }),
+      away: kit(GRAY, '#003831', '#003831', '#efb21e', { }),
+      alt: kit('#003831', '#ffffff', '#ffffff', '#efb21e', { }),
       note: 'green alt: white "A\'s" with gold trim',
     },
     {
       from: 2018, to: 2024,
-      home: kit(WHITE, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      alt: kit('#00843d', '#ffffff', '#ffffff', '#efb21e', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003831', '#003831', '#efb21e', { }),
+      away: kit(GRAY, '#003831', '#003831', '#efb21e', { }),
+      alt: kit('#00843d', '#ffffff', '#ffffff', '#efb21e', { }),
       note: 'kelly green alt: white "Oakland" with gold trim',
     },
     {
       from: 2025,
-      home: kit(WHITE, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#003831', '#003831', '#efb21e', { nameFont: 'rounded' }),
-      alt: kit('#003831', '#efb21e', '#efb21e', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003831', '#003831', '#efb21e', { }),
+      away: kit(GRAY, '#003831', '#003831', '#efb21e', { }),
+      alt: kit('#003831', '#efb21e', '#efb21e', '#ffffff', { }),
       note: 'Sacramento: the road reads "Athletics" (green, gold trim), as the home script has since 2023',
     },
   ],
@@ -439,7 +458,7 @@ export const UNIFORM_ERAS: UniformTable = {
     {
       from: 2000, to: 2000,
       home: kit(WHITE, '#000000', '#000000', '#fdb827'),
-      away: kit(GRAY, '#000000', '#000000', '#fdb827', { nameFont: 'rounded' }),
+      away: kit(GRAY, '#000000', '#000000', '#fdb827', { }),
       alt: kit('#000000', '#fdb827', '#fdb827', '#c8102e'),
       note: 'last year of the 1997 set with red accents and script "Pittsburgh" road; alt ?',
     },
@@ -460,7 +479,7 @@ export const UNIFORM_ERAS: UniformTable = {
     {
       from: 2020,
       home: kit(WHITE, '#000000', '#000000', '#fdb827'),
-      away: kit(GRAY, '#000000', '#000000', '#fdb827', { nameFont: 'rounded' }),
+      away: kit(GRAY, '#000000', '#000000', '#fdb827', { }),
       alt: kit('#000000', '#fdb827', '#fdb827', '#ffffff'),
       note: 'script "Pittsburgh" road returns, black road alternate',
     },
@@ -469,30 +488,30 @@ export const UNIFORM_ERAS: UniformTable = {
   '135': [
     {
       from: 2000, to: 2000,
-      home: kit(WHITE, '#002d62', '#002d62', '#f37021', { pinstripe: '#002d62', nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d62', '#002d62', '#f37021', { nameFont: 'rounded' }),
-      alt: kit('#002d62', '#ffffff', '#f37021', '#ffffff', { piping: '#ffffff', stripe: '#ffffff', nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d62', '#002d62', '#f37021', { pinstripe: '#002d62' }),
+      away: kit(GRAY, '#002d62', '#002d62', '#f37021', { }),
+      alt: kit('#002d62', '#ffffff', '#f37021', '#ffffff', { piping: '#ffffff', stripe: '#ffffff' }),
       note: 'navy/orange; the home still navy-pinstriped; alt lettering ?',
     },
     {
       from: 2001, to: 2003,
-      home: kit(WHITE, '#002d62', '#002d62', '#f37021', { piping: '#002d62', nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d62', '#002d62', '#f37021', { nameFont: 'rounded' }),
-      alt: kit('#002d62', '#ffffff', '#f37021', '#ffffff', { piping: '#ffffff', stripe: '#ffffff', nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d62', '#002d62', '#f37021', { piping: '#002d62' }),
+      away: kit(GRAY, '#002d62', '#002d62', '#f37021', { }),
+      alt: kit('#002d62', '#ffffff', '#f37021', '#ffffff', { piping: '#ffffff', stripe: '#ffffff' }),
       note: 'plain white home with navy piping',
     },
     {
       from: 2004, to: 2010,
-      home: kit(WHITE, '#002d62', '#002d62', '#cdbf9f', { nameFont: 'rounded' }),
-      away: kit('#cdbf9f', '#002d62', '#002d62', '#ffffff', { nameFont: 'rounded' }),
-      alt: kit('#002d62', '#cdbf9f', '#cdbf9f', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d62', '#002d62', '#cdbf9f', { }),
+      away: kit('#cdbf9f', '#002d62', '#002d62', '#ffffff', { }),
+      alt: kit('#002d62', '#cdbf9f', '#cdbf9f', '#ffffff', { }),
       note: 'navy/sand, sand road jersey',
     },
     {
       from: 2011, to: 2011,
-      home: kit(WHITE, '#002d62', '#002d62', '#cdbf9f', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#002d62', '#002d62', '#cdbf9f', { nameFont: 'rounded' }),
-      alt: kit('#002d62', '#cdbf9f', '#cdbf9f', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#002d62', '#002d62', '#cdbf9f', { }),
+      away: kit(GRAY, '#002d62', '#002d62', '#cdbf9f', { }),
+      alt: kit('#002d62', '#cdbf9f', '#cdbf9f', '#ffffff', { }),
       note: 'road goes gray',
     },
     {
@@ -511,9 +530,9 @@ export const UNIFORM_ERAS: UniformTable = {
     },
     {
       from: 2020,
-      home: kit(WHITE, '#2f241d', '#2f241d', '#ffc425', { pinstripe: '#2f241d', nameFont: 'rounded' }),
-      away: kit('#c9bb9b', '#2f241d', '#2f241d', '#ffc425', { pinstripe: '#2f241d', nameFont: 'rounded' }),
-      alt: kit('#2f241d', '#ffc425', '#ffc425', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#2f241d', '#2f241d', '#ffc425', { pinstripe: '#2f241d' }),
+      away: kit('#c9bb9b', '#2f241d', '#2f241d', '#ffc425', { pinstripe: '#2f241d' }),
+      alt: kit('#2f241d', '#ffc425', '#ffc425', '#ffffff', { }),
       note: 'brown/gold: brown pinstripes on the white home and the sand road',
     },
   ],
@@ -521,30 +540,30 @@ export const UNIFORM_ERAS: UniformTable = {
   '136': [
     {
       from: 2000, to: 2002,
-      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { piping: '#c4ced4', nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { piping: '#c4ced4' }),
       note: 'navy/Northwest green/silver; navy alternate with silver piping',
     },
     {
       from: 2003, to: 2011,
-      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { }),
       note: 'the navy alt loses its piping',
     },
     {
       from: 2012, to: 2022,
-      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      away: kit(GRAY, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      alt: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { }),
       note: 'the navy "Seattle" alt stays the usual alt (silver, green trim); a Northwest green select-Saturday alt from 2012; silver inline from 2015',
     },
     {
       from: 2023,
-      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { nameFont: 'serif' }),
-      away: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { nameFont: 'serif' }),
-      alt: kit('#005c5c', '#c4ced4', '#c4ced4', '#0c2c56', { nameFont: 'serif' }),
+      home: kit(WHITE, '#0c2c56', '#0c2c56', '#005c5c', { }),
+      away: kit('#0c2c56', '#c4ced4', '#c4ced4', '#005c5c', { }),
+      alt: kit('#005c5c', '#c4ced4', '#c4ced4', '#0c2c56', { }),
       note: 'navy replaces gray as the standard road jersey; its letter colors ?',
     },
   ],
@@ -552,29 +571,29 @@ export const UNIFORM_ERAS: UniformTable = {
   '137': [
     {
       from: 2000, to: 2002,
-      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'serif', nameFont: 'serif' }),
-      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#000000', '#fd5a1e', '#fd5a1e', '#ffffff', { numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'tuscan' }),
+      alt: kit('#000000', '#fd5a1e', '#fd5a1e', '#ffffff', { numberFont: 'tuscan' }),
       note: 'cream home with black piping; black alt worn 2001-02',
     },
     {
       from: 2003, to: 2009,
-      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'serif', nameFont: 'serif' }),
-      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'tuscan' }),
       note: 'no regular colored alt',
     },
     {
       from: 2010, to: 2011,
-      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'serif', nameFont: 'serif' }),
-      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#fd5a1e', '#000000', '#000000', CREAM, { numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { numberFont: 'tuscan' }),
+      alt: kit('#fd5a1e', '#000000', '#000000', CREAM, { numberFont: 'tuscan' }),
       note: 'orange Friday alternate',
     },
     {
       from: 2012,
-      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'serif', nameFont: 'serif' }),
-      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { piping: '#000000', stripe: '#000000', numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#fd5a1e', '#000000', '#000000', CREAM, { piping: '#000000', stripe: '#000000', numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(CREAM, '#000000', '#000000', '#fd5a1e', { piping: '#000000', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#000000', '#000000', '#fd5a1e', { piping: '#000000', stripe: '#000000', numberFont: 'tuscan' }),
+      alt: kit('#fd5a1e', '#000000', '#000000', CREAM, { piping: '#000000', stripe: '#000000', numberFont: 'tuscan' }),
       note: 'black piping on the road gray and (from 2014) the orange alt; a black road alt (orange SF, orange piping) back from 2015',
     },
   ],
@@ -582,15 +601,15 @@ export const UNIFORM_ERAS: UniformTable = {
   '138': [
     {
       from: 2000, to: 2012,
-      home: kit(WHITE, '#c41e3a', '#c41e3a', '#0c2340', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#c41e3a', '#c41e3a', '#0c2340', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#c41e3a', '#c41e3a', '#0c2340', { }),
+      away: kit(GRAY, '#c41e3a', '#c41e3a', '#0c2340', { }),
       note: 'birds on the bat home and road; no regular colored alt',
     },
     {
       from: 2013,
-      home: kit(WHITE, '#c41e3a', '#c41e3a', '#0c2340', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#c41e3a', '#c41e3a', '#0c2340', { nameFont: 'rounded' }),
-      alt: kit(CREAM, '#c41e3a', '#c41e3a', '#0c2340', { piping: '#c41e3a', stripe: '#c41e3a', nameFont: 'rounded' }),
+      home: kit(WHITE, '#c41e3a', '#c41e3a', '#0c2340', { }),
+      away: kit(GRAY, '#c41e3a', '#c41e3a', '#0c2340', { }),
+      alt: kit(CREAM, '#c41e3a', '#c41e3a', '#0c2340', { piping: '#c41e3a', stripe: '#c41e3a' }),
       note: 'cream Saturday "St. Louis" alternate with red placket and sleeve trim; a powder blue Saturday road alt (red birds on bat, red piping) from 2019',
     },
   ],
@@ -636,9 +655,9 @@ export const UNIFORM_ERAS: UniformTable = {
   '140': [
     {
       from: 2000, to: 2000,
-      home: kit(WHITE, '#c0111f', '#c0111f', '#003278', { piping: '#c0111f', stripe: '#c0111f', nameFont: 'rounded' }),
-      away: kit(GRAY, '#003278', '#003278', '#ffffff', { stripe: '#c0111f', nameFont: 'rounded' }),
-      alt: kit('#003278', '#ffffff', '#ffffff', '#c0111f', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#c0111f', '#c0111f', '#003278', { piping: '#c0111f', stripe: '#c0111f' }),
+      away: kit(GRAY, '#003278', '#003278', '#ffffff', { stripe: '#c0111f' }),
+      alt: kit('#003278', '#ffffff', '#ffffff', '#c0111f', { }),
       note: 'red-led 1994 set (red piping), road letters blue in 2000, new blue alt',
     },
     {
@@ -664,7 +683,7 @@ export const UNIFORM_ERAS: UniformTable = {
     },
     {
       from: 2020,
-      home: kit(WHITE, '#003278', '#003278', '#c0111f', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#003278', '#003278', '#c0111f', { }),
       away: kit(GRAY, '#003278', '#003278', '#c0111f'),
       alt: kit('#003278', '#ffffff', '#ffffff', '#c0111f'),
       note: 'script "Rangers" home; powder blue alt too; red retired 2023',
@@ -720,23 +739,23 @@ export const UNIFORM_ERAS: UniformTable = {
   '142': [
     {
       from: 2000, to: 2009,
-      home: kit(WHITE, '#002b5c', '#002b5c', '#d31145', { pinstripe: '#002b5c', numberFont: 'serif', nameFont: 'serif' }),
-      away: kit(GRAY, '#d31145', '#d31145', '#002b5c', { pinstripe: '#002b5c', numberFont: 'serif', nameFont: 'serif' }),
-      alt: kit('#002b5c', '#d31145', '#d31145', '#ffffff', { numberFont: 'serif', nameFont: 'serif' }),
+      home: kit(WHITE, '#002b5c', '#002b5c', '#d31145', { pinstripe: '#002b5c', numberFont: 'tuscan' }),
+      away: kit(GRAY, '#d31145', '#d31145', '#002b5c', { pinstripe: '#002b5c', numberFont: 'tuscan' }),
+      alt: kit('#002b5c', '#d31145', '#d31145', '#ffffff', { numberFont: 'tuscan' }),
       note: 'pinstripes home and road; red block "Minnesota"; navy alternate',
     },
     {
       from: 2010, to: 2022,
-      home: kit(WHITE, '#002b5c', '#002b5c', '#d31145', { pinstripe: '#002b5c', nameFont: 'rounded' }),
-      away: kit(GRAY, '#d31145', '#d31145', '#002b5c', { nameFont: 'rounded' }),
-      alt: kit('#002b5c', '#d31145', '#d31145', '#ffffff', { piping: '#d31145', nameFont: 'rounded' }),
+      home: kit(WHITE, '#002b5c', '#002b5c', '#d31145', { pinstripe: '#002b5c' }),
+      away: kit(GRAY, '#d31145', '#d31145', '#002b5c', { }),
+      alt: kit('#002b5c', '#d31145', '#d31145', '#ffffff', { piping: '#d31145' }),
       note: 'Target Field: the pinstriped home stays, the road gray goes plain with an underlined red script; gold drop shadows at home from 2015',
     },
     {
       from: 2023,
-      home: kit(WHITE, '#002b5c', '#d31145', '#002b5c', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#002b5c', '#d31145', '#002b5c', { }),
       away: kit(GRAY, '#002b5c', '#d31145', '#002b5c', { pinstripe: '#002b5c' }),
-      alt: kit('#002b5c', '#ffffff', '#d31145', '#ffffff', { nameFont: 'rounded' }),
+      alt: kit('#002b5c', '#ffffff', '#d31145', '#ffffff', { }),
       note: 'redesign: plain home with the red/navy "Twins" script (navy chest number, red back numbers), navy "MINNESOTA" on a navy-pinstriped road gray',
     },
   ],
@@ -744,22 +763,22 @@ export const UNIFORM_ERAS: UniformTable = {
   '143': [
     {
       from: 2000, to: 2007,
-      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828', nameFont: 'rounded' }),
-      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828' }),
+      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { }),
       note: 'red pinstripes at home, "Phillies" home and road',
     },
     {
       from: 2008, to: 2017,
-      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828', nameFont: 'rounded' }),
-      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { nameFont: 'rounded' }),
-      alt: kit(CREAM, '#e81828', '#e81828', '#002d72', { piping: '#002d72', nameFont: 'rounded' }),
+      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828' }),
+      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { }),
+      alt: kit(CREAM, '#e81828', '#e81828', '#002d72', { piping: '#002d72' }),
       note: 'cream day-game alternate: red lettering, blue collar and placket piping',
     },
     {
       from: 2018,
-      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828', nameFont: 'rounded' }),
-      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { nameFont: 'rounded' }),
-      alt: kit('#6cace4', '#6f263d', '#6f263d', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#e81828', '#e81828', '#002d72', { pinstripe: '#e81828' }),
+      away: kit(GRAY, '#e81828', '#e81828', '#002d72', { }),
+      alt: kit('#6cace4', '#6f263d', '#6f263d', '#ffffff', { }),
       note: 'powder blue Thursday alternate (the 1973-88 road: maroon script and numbers trimmed white) replaces the cream',
     },
   ],
@@ -768,15 +787,15 @@ export const UNIFORM_ERAS: UniformTable = {
   '144': [
     {
       from: 2000, to: 2004,
-      home: kit(WHITE, '#ce1141', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141', nameFont: 'rounded' }),
-      away: kit(GRAY, '#13274f', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141', nameFont: 'rounded' }),
+      home: kit(WHITE, '#ce1141', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141' }),
+      away: kit(GRAY, '#13274f', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141' }),
       note: 'no regular colored alt before 2005',
     },
     {
       from: 2005,
-      home: kit(WHITE, '#ce1141', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141', nameFont: 'rounded' }),
-      away: kit(GRAY, '#13274f', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141', nameFont: 'rounded' }),
-      alt: kit('#ce1141', '#ffffff', '#13274f', '#ffffff', { piping: '#13274f', stripe: '#13274f', stripe2: '#ffffff', nameFont: 'rounded' }),
+      home: kit(WHITE, '#ce1141', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141' }),
+      away: kit(GRAY, '#13274f', '#13274f', '#ce1141', { piping: '#13274f', stripe: '#13274f', stripe2: '#ce1141' }),
+      alt: kit('#ce1141', '#ffffff', '#13274f', '#ffffff', { piping: '#13274f', stripe: '#13274f', stripe2: '#ffffff' }),
       note: 'red Sunday/Friday alternate (navy/white piping) from 2005; its lettering ?',
     },
   ],
@@ -784,9 +803,9 @@ export const UNIFORM_ERAS: UniformTable = {
   '145': [
     {
       from: 2000,
-      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#000000', nameFont: 'serif' }),
-      away: kit(GRAY, '#000000', '#000000', '#ffffff', { stripe: '#000000', stripe2: '#ffffff', nameFont: 'serif' }),
-      alt: kit('#000000', '#ffffff', '#ffffff', '#c4ced4', { nameFont: 'serif' }),
+      home: kit(WHITE, '#000000', '#000000', '#c4ced4', { pinstripe: '#000000' }),
+      away: kit(GRAY, '#000000', '#000000', '#ffffff', { stripe: '#000000', stripe2: '#ffffff' }),
+      alt: kit('#000000', '#ffffff', '#ffffff', '#c4ced4', { }),
       note: 'black-pinstriped "SOX" home, "CHICAGO" road with black-and-white sleeve piping, black alt; trims ?',
     },
   ],
@@ -794,16 +813,16 @@ export const UNIFORM_ERAS: UniformTable = {
   '146': [
     {
       from: 2000, to: 2002,
-      home: kit(WHITE, '#00a3ad', '#000000', '#00a3ad', { pinstripe: '#00a3ad', nameFont: 'rounded' }),
-      away: kit(GRAY, '#00a3ad', '#000000', '#00a3ad', { nameFont: 'rounded' }),
-      alt: kit('#000000', '#00a3ad', '#00a3ad', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#00a3ad', '#000000', '#00a3ad', { pinstripe: '#00a3ad' }),
+      away: kit(GRAY, '#00a3ad', '#000000', '#00a3ad', { }),
+      alt: kit('#000000', '#00a3ad', '#00a3ad', '#ffffff', { }),
       note: 'Florida: teal pinstripes, teal script with black; alt (black) ?',
     },
     {
       from: 2003, to: 2011,
-      home: kit(WHITE, '#000000', '#000000', '#00a3ad', { pinstripe: '#000000', placket: 'vest', under: '#000000', nameFont: 'rounded' }),
-      away: kit(GRAY, '#000000', '#000000', '#00a3ad', { nameFont: 'rounded' }),
-      alt: kit('#000000', '#c4ced4', '#c4ced4', '#00a3ad', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#000000', '#000000', '#00a3ad', { pinstripe: '#000000', placket: 'vest', under: '#000000' }),
+      away: kit(GRAY, '#000000', '#000000', '#00a3ad', { }),
+      alt: kit('#000000', '#c4ced4', '#c4ced4', '#00a3ad', { }),
       note: 'black-led with teal/silver: black-pinstriped home vest over a black undershirt (vest years ?); road "Marlins" from 2010',
     },
     {
@@ -834,20 +853,20 @@ export const UNIFORM_ERAS: UniformTable = {
     {
       from: 2000, to: 2023,
       home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#ffffff', { names: false, stripe: '#0c2340', stripe2: '#ffffff', nameFont: 'serif' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#ffffff', { names: false, stripe: '#0c2340', stripe2: '#ffffff' }),
       note: 'navy pinstripes and the interlocking NY at home; road "NEW YORK" and numbers navy outlined white, navy-white-navy cuff stripes; no alternate',
     },
     {
       from: 2024, to: 2025,
       home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false, nameFont: 'serif' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false }),
       note: 'road outlines and sleeve trim removed: solid navy lettering on the gray',
     },
     {
       from: 2026,
       home: kit(WHITE, '#0c2340', '#0c2340', '#0c2340', { names: false, pinstripe: '#0c2340' }),
-      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false, nameFont: 'serif' }),
-      alt: kit('#0c2340', '#ffffff', '#ffffff', '#ffffff', { nameFont: 'serif' }),
+      away: kit(GRAY, '#0c2340', '#0c2340', '#0c2340', { names: false }),
+      alt: kit('#0c2340', '#ffffff', '#ffffff', '#ffffff', { }),
       note: 'navy road tops designated the official alternate for 2026 (not yet worn in a regular-season game at the source\'s writing)',
     },
   ],
@@ -855,34 +874,37 @@ export const UNIFORM_ERAS: UniformTable = {
   '158': [
     {
       from: 2000, to: 2015,
-      home: kit(WHITE, '#0a2351', '#0a2351', '#b6922e', { pinstripe: '#0a2351', nameFont: 'rounded' }),
-      away: kit(GRAY, '#0a2351', '#0a2351', '#b6922e', { nameFont: 'rounded' }),
-      alt: kit('#0a2351', '#b6922e', '#b6922e', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#0a2351', '#0a2351', '#b6922e', { pinstripe: '#0a2351' }),
+      away: kit(GRAY, '#0a2351', '#0a2351', '#b6922e', { }),
+      alt: kit('#0a2351', '#b6922e', '#b6922e', '#ffffff', { }),
       note: 'script "Brewers" on a navy-pinstriped home, navy/metallic gold; navy alt ("Milwaukee" road alt 2010-15)',
     },
     {
       from: 2016, to: 2019,
-      home: kit(WHITE, '#0a2351', '#0a2351', '#b6922e', { pinstripe: '#0a2351', nameFont: 'rounded' }),
-      away: kit(GRAY, '#0a2351', '#0a2351', '#b6922e', { nameFont: 'rounded' }),
-      alt: kit('#0a2351', '#ffc52f', '#ffc52f', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(WHITE, '#0a2351', '#0a2351', '#b6922e', { pinstripe: '#0a2351' }),
+      away: kit(GRAY, '#0a2351', '#0a2351', '#b6922e', { }),
+      alt: kit('#0a2351', '#ffc52f', '#ffc52f', '#ffffff', { }),
       note: 'the navy alt switches to yellow trim in place of metallic gold',
     },
     {
       from: 2020, to: 2025,
-      home: kit(CREAM, '#12284b', '#12284b', '#ffc52f', { nameFont: 'rounded' }),
-      away: kit(GRAY, '#12284b', '#12284b', '#ffc52f', { nameFont: 'rounded' }),
-      alt: kit('#12284b', '#ffc52f', '#ffc52f', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(CREAM, '#12284b', '#12284b', '#ffc52f', { }),
+      away: kit(GRAY, '#12284b', '#12284b', '#ffc52f', { }),
+      alt: kit('#12284b', '#ffc52f', '#ffc52f', '#ffffff', { }),
       note: '"Glove Story" ball-in-glove set, cream home (a navy-pinstriped white alt too); alt lettering ?',
     },
     {
       from: 2026,
-      home: kit(CREAM, '#12284b', '#12284b', '#ffc52f', { nameFont: 'rounded' }),
-      away: kit('#9ac0e2', '#12284b', '#12284b', '#ffc52f', { nameFont: 'rounded' }),
-      alt: kit('#12284b', '#ffc52f', '#ffc52f', '#ffffff', { nameFont: 'rounded' }),
+      home: kit(CREAM, '#12284b', '#12284b', '#ffc52f', { }),
+      away: kit('#9ac0e2', '#12284b', '#12284b', '#ffc52f', { }),
+      alt: kit('#12284b', '#ffc52f', '#ffc52f', '#ffffff', { }),
       note: 'powder blue road top (gray pants); its letter colors ?',
     },
   ],
-};
+  },
+  FACES,
+  'varsity',
+);
 
 // (helmets: the NFL's alone)
 export const HELMET_ERAS: HelmetTable = {};

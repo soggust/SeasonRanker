@@ -23,7 +23,7 @@
 // the 2026-10 audit's reference notes (scratchpad splash-round2/audit-nba/refs). Details the sources don't
 // state (a trim color, which wordmark sat on which jersey) are from memory of the sets and carry a '?' in
 // the era's note.
-import type { KitColors, HelmetTable, UniformTable } from '@ranker/engine/uniform-eras';
+import { KitColors, HelmetTable, UniformTable, type FaceTable, withFaces } from '@ranker/engine/uniform-eras';
 
 const WHITE = '#f3f2ee';
 const BLACK = '#111111';
@@ -50,7 +50,27 @@ function k(body: string, num: string, outline: string, name: string, stripe?: st
   return kit;
 }
 
-export const UNIFORM_ERAS: UniformTable = {
+// The lettering (libs/ranker/src/engine/uniform-eras.ts withFaces): the collegiate block of the Lakers, Bulls
+// and Celtics, the wide block of the Knicks, Warriors, 76ers, Cavaliers and Pistons, the Kings' varsity, the
+// rounded faces of the Bucks, Nuggets, Magic and Hornets; every other kit keeps the face its era says.
+const FACES: FaceTable = {
+  LAL: 'college',
+  CHI: 'college',
+  BOS: 'college',
+  NYK: 'wide',
+  GSW: 'wide',
+  PHI: 'wide',
+  CLE: 'wide',
+  DET: 'wide',
+  SAC: 'varsity',
+  MIL: 'rounded',
+  DEN: 'rounded',
+  ORL: 'rounded',
+  CHO: 'rounded',
+};
+
+export const UNIFORM_ERAS: UniformTable = withFaces(
+  {
   // Atlanta Hawks. Wikipedia "Atlanta Hawks" (Logos and uniforms): red/black/yellow to 2007 (yellow alternate
   // 2004-05 to 2006-07); navy primary with red trim 2007-08 to 2014-15 (red alternate from 2009-10); Torch Red /
   // Volt Green / Granite Gray from 2015-16 (white home, gray road, red alternate); red/black/yellow (1978-82
@@ -304,9 +324,9 @@ export const UNIFORM_ERAS: UniformTable = {
     },
     {
       from: 2018, to: 2022,
-      home: k(WHITE, '#6f263d', '#ffb81c', '#6f263d', '#6f263d', '#ffb81c', { numberFont: 'serif' }),
-      away: k('#6f263d', '#041e42', '#ffb81c', '#ffb81c', '#ffb81c', '#041e42', { numberFont: 'serif' }),
-      alt: k(BLACK, '#6f263d', '#ffb81c', '#ffb81c', '#ffb81c', undefined, { numberFont: 'serif', pinstripe: '#333333' }),
+      home: k(WHITE, '#6f263d', '#ffb81c', '#6f263d', '#6f263d', '#ffb81c', { numberFont: 'varsity' }),
+      away: k('#6f263d', '#041e42', '#ffb81c', '#ffb81c', '#ffb81c', '#041e42', { numberFont: 'varsity' }),
+      alt: k(BLACK, '#6f263d', '#ffb81c', '#ffb81c', '#ffb81c', undefined, { numberFont: 'varsity', pinstripe: '#333333' }),
       note: 'Icon: gold "Cleveland" and names over navy numbers trimmed gold; Statement: wine numbers trimmed gold, gold names, dark-gray pinstripes',
     },
     {
@@ -1296,7 +1316,9 @@ export const UNIFORM_ERAS: UniformTable = {
       note: 'navy alternate ("The District of Columbia" from 2020, red stars and stripes 2025)',
     },
   ],
-};
+  },
+  FACES,
+);
 
 // The collar's style where a kit didn't say: a V-neck for the eras that ended with the adidas years, round for
 // the ones that reach Nike's 2017-18 sets

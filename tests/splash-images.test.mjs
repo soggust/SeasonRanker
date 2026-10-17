@@ -3,7 +3,7 @@
 // the manifest says; every entry is a registry prop (or one of its variants: the NBA's two conference trophies,
 // the four jersey bases); a piece finds its photo by its prop id and words, and a prop without one falls back to
 // its vector; the real-height scale holds across drawn and photographed props; the jersey bases' anchors land
-// inside the jersey's drawing space.
+// inside the jersey's drawing space, flat; every jersey face has its file and its metrics.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
@@ -22,7 +22,7 @@ const loadTs = async (file) => {
   fs.rmSync(o, { force: true });
   return m;
 };
-const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, propImage, propHref, jerseyAnchors, textBaseArt, homography } = await loadTs('splash.images.ts');
+const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, GEAR_BASES, FACES, FACE_IDS, propImage, propHref, jerseyAnchors, textBaseArt, numberSize, nameSize } = await loadTs('splash.images.ts');
 const { PROPS } = await loadTs('splash.props.ts');
 const { buildScene } = await loadTs('splash.scene.ts');
 
@@ -105,10 +105,13 @@ test('the scene hands each piece its prop id, sized on the real-height scale, ph
   assert.equal(propImage(afc.id, afc.lines[0]), 'nfl-afc-trophy');
   // (the hero at the shelf's max, the conference trophy at its real share of it: 16 over 22)
   assert.equal(lombardi.h, 222);
-  // (beside the hero its footprint is capped both ways: the Hunt trophy, 0.924 wide for its height, stands no
-  // wider than 0.85 of the Lombardi's 0.406 x 22")
-  assert.equal(afc.h, Math.round(Math.min(16, 0.85 * 22, (0.85 * 22 * PROP_IMAGES['nfl-lombardi']) / PROP_IMAGES['nfl-afc-trophy']) * (222 / 22)));
-  assert.ok(afc.h < lombardi.h * 0.5);
+  // (beside the hero it is capped by height, 0.85 of the Lombardi's 22", and by area, 0.6 of the Lombardi's
+  // footprint: the Hunt trophy, 0.924 wide for its height, stands 11.3" to the Lombardi's 22, not the 8" a
+  // width cap gave it)
+  const area = 22 * 22 * PROP_IMAGES['nfl-lombardi'];
+  assert.equal(afc.h, Math.round(Math.min(16, 0.85 * 22, Math.sqrt((0.6 * area) / PROP_IMAGES['nfl-afc-trophy'])) * (222 / 22)));
+  assert.ok(afc.h > lombardi.h * 0.45 && afc.h < lombardi.h * 0.6, `${afc.h} beside ${lombardi.h}`);
+  assert.ok(afc.h * afc.h * PROP_IMAGES['nfl-afc-trophy'] <= lombardi.h * lombardi.h * PROP_IMAGES['nfl-lombardi'] * 0.61, 'the area cap holds');
   // (a plaque has no photo: its piece draws the vector)
   const plaque = s.items.find((p) => p.t === 'roundel' || p.t === 'banner');
   if (plaque) assert.equal(propImage(plaque.id), undefined);
@@ -129,70 +132,99 @@ test('the registry holds to reality: a ball is smaller than a cap, a cap than a 
   assert.ok(inch('golf-ball') < inch('sunscreen') && inch('sunscreen') < inch('golf-bag'));
 });
 
-test('a jersey base lands in the drawing space: the collar at 10, the hem at 142, the body round x 60, the photo inside the viewBox', () => {
-  for (const cut of ['football', 'basketball', 'hockey', 'baseball']) {
+test('a jersey base lands in the drawing space flat: the collar at 10, the photo inside the viewBox, the number box centred on the torso, the sleeves clear of the body, nothing leaning', () => {
+  const inside = (b, img, what) => assert.ok(b.x >= img.x - 0.01 && b.y >= img.y - 0.01 && b.x + b.w <= img.x + img.w + 0.01 && b.y + b.h <= img.y + img.h + 0.01, what);
+  for (const cut of Object.keys(JERSEY_BASES)) {
     const a = jerseyAnchors(cut);
     assert.ok(a, cut);
-    const b = JERSEY_BASES[cut];
-    assert.ok(Math.abs(a.img.y + b.top * a.img.h - 10) < 0.05, `${cut}: collar`);
-    assert.ok(Math.abs(a.hemY - 142) < 0.05, `${cut}: hem`);
-    assert.ok(a.img.x >= -4.5 && a.img.x + a.img.w <= 124.5, `${cut}: ${a.img.x}..${a.img.x + a.img.w} across`);
-    assert.ok(a.img.y >= -18, `${cut}: ${a.img.y} up`);
-    assert.ok(a.bodyX[0] < 60 && a.bodyX[1] > 60, `${cut}: body ${a.bodyX}`);
-    assert.ok(Math.abs(a.num.x - (a.bodyX[0] + a.bodyX[1]) / 2) < 0.02, `${cut}: number centered on the body`);
-    assert.ok(a.num.size > 36 && a.num.size < 62, `${cut}: number ${a.num.size}`);
-    assert.ok(a.nameK > 0.7 && a.nameK < 1.3, `${cut}: name ${a.nameK}`);
-    assert.ok(a.pins.length > 3 && a.pins.every((x) => x > a.bodyX[0] && x < a.bodyX[1]), `${cut}: pinstripes on the body`);
-    assert.match(a.neck, /^M-?\d/, `${cut}: neck`);
-    // (a fraction path is resolved by number pairs: never the one-number H and V)
-    for (const d of [a.neck, a.yoke, a.armholes, ...(a.under ?? [])]) if (d) assert.doesNotMatch(d, /[HV]/, `${cut}: a fraction path with H or V`);
-    if (a.cuffs) for (const c of a.cuffs) assert.ok(Math.abs(Math.hypot(c.dx, c.dy) - 1) < 0.02, `${cut}: cuff direction`);
+    assert.equal(a.img.y, 10, `${cut}: the collar's top at 10`);
+    const [vx, , vw] = a.vb.split(' ').map(Number);
+    assert.ok(a.img.x >= vx - 0.01 && a.img.x + a.img.w <= vx + vw + 0.01 && a.img.y + a.img.h <= 146.01, `${cut}: inside the viewBox ${a.vb} ${JSON.stringify(a.img)}`);
+    assert.ok(a.img.w > vw - 2 || Math.abs(a.img.h - 132) < 0.05, `${cut}: fits the width or the height`);
+    assert.ok(Math.abs((a.bodyX[0] + a.bodyX[1]) / 2 - 60) < 0.6, `${cut}: the body round x 60`);
+    // the number box: centred on the torso, inside it, from about 22% to 62% of the body's height
+    const cx = (a.bodyX[0] + a.bodyX[1]) / 2;
+    assert.ok(Math.abs(a.num.x + a.num.w / 2 - cx) < 0.02, `${cut}: number centred`);
+    assert.ok(a.num.x > a.bodyX[0] && a.num.x + a.num.w < a.bodyX[1], `${cut}: number inside the torso`);
+    assert.ok(a.num.y > a.img.y + 0.15 * a.bodyH && a.num.y + a.num.h < a.img.y + 0.7 * a.bodyH, `${cut}: number box ${a.num.y} ${a.num.h}`);
+    inside(a.num, a.img, `${cut}: number inside the photo`);
+    // the name's arc between the collar and the number, inside the torso
+    const [, nx, ny] = a.nameArc.match(/^M([-\d.]+) ([-\d.]+)/).map(Number);
+    assert.ok(ny < a.num.y && ny > a.img.y + 0.1 * a.bodyH, `${cut}: name over the number`);
+    assert.ok(nx > a.bodyX[0] && a.nameRun < a.bodyW, `${cut}: name inside the torso`);
+    // the hem band region at the bottom of the torso, under the number
+    assert.ok(a.hemH > 0 && a.hemY - a.hemH > a.num.y + a.num.h && a.hemY <= a.img.y + a.img.h + 0.01, `${cut}: hem region`);
+    // the sleeves (where the cut has them) clear of the torso, each cuff at its outer end; TV numbers on them
+    for (const s of a.sleeves ?? []) {
+      assert.ok(s.dir > 0 ? s.x + s.w <= a.bodyX[0] + 0.5 : s.x >= a.bodyX[1] - 0.5, `${cut}: sleeve clear of the body`);
+      assert.ok(s.dir > 0 ? s.cuff < s.x + s.w / 2 : s.cuff > s.x + s.w / 2, `${cut}: the cuff at the sleeve's outer end`);
+    }
+    for (const t of a.tv ?? []) {
+      assert.ok(t.x + t.w < a.bodyX[0] || t.x > a.bodyX[1], `${cut}: TV number on a sleeve`);
+      inside(t, a.img, `${cut}: TV number inside the photo`);
+    }
+    for (const p of a.panels ?? []) inside(p, a.img, `${cut}: panel inside the photo`);
+    // (nothing leans: no transform on any anchor)
+    const json = JSON.stringify(a);
+    assert.ok(!json.includes('rotate') && !json.includes('matrix') && !json.includes('skew'), `${cut}: flat`);
   }
   assert.equal(jerseyAnchors('cricket'), null);
-  // (every base is a back: no placket, wordmark or front number; the sleeves' bands are clipped to each sleeve)
+  // (every base is a back: no placket, wordmark or front number; the vest's undershirt; the sweater's yoke)
   assert.equal(jerseyAnchors('baseball').placket, undefined);
   assert.equal(jerseyAnchors('baseball').markArc, undefined);
-  for (const cut of ['football', 'baseball', 'hockey']) {
-    const a = jerseyAnchors(cut);
-    assert.equal(a.sleeves.length, 2, `${cut}: two sleeves`);
-    // (the left sleeve's clip stays left of the body's center, the right one right of it)
-    const xs = (d) => [...d.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map((m) => +m[1]);
-    assert.ok(Math.max(...xs(a.sleeves[0])) < 60 && Math.min(...xs(a.sleeves[1])) > 60, `${cut}: sleeves clear of the body's center`);
+  assert.equal(jerseyAnchors('baseball').under.length, 2);
+  assert.ok(jerseyAnchors('hockey').sleeves.length === 2 && jerseyAnchors('hockey').yoke);
+  assert.equal(jerseyAnchors('football').tv.length, 2);
+  assert.ok(jerseyAnchors('basketball').armholes && !jerseyAnchors('basketball').sleeves);
+  // (the sweater, its sleeves spread, fits the width and stands short; the tank fits the height)
+  assert.ok(jerseyAnchors('hockey').img.w > 150 && jerseyAnchors('hockey').img.h < 90 && jerseyAnchors('hockey').vb === '-18 -18 156 164');
+  assert.equal(jerseyAnchors('football').vb, '-4 -18 128 164');
+  assert.ok(Math.abs(jerseyAnchors('basketball').img.h - 132) < 0.05);
+  // (the helmet's decal and stripe inside the photo)
+  const d = GEAR_BASES.helmet.decal;
+  assert.ok(d.x > 0.4 && d.x + d.w < 1 && d.y > 0 && d.y + d.h < 1 && d.h > 0.3 && d.h < 0.42);
+  // (every text base's boxes, marks, logo and paper inside its photo)
+  for (const [t, b] of Object.entries({ ...TEXT_BASES, card: INFO_CARD })) {
+    for (const bx of [...b.boxes, ...(b.marks ?? []), ...(b.logo ? [b.logo] : []), ...(b.paper ? [b.paper] : []), ...(b.play ? [b.play] : [])]) {
+      assert.ok(bx.x >= 0 && bx.y >= 0 && bx.x + bx.w <= 1.001 && bx.y + bx.h <= 1.001, `${t}: box inside the photo ${JSON.stringify(bx)}`);
+    }
+    assert.equal(b.plane, undefined, `${t}: flat`);
   }
-  assert.ok(jerseyAnchors('hockey').arms.length === 2);
-  assert.ok(jerseyAnchors('football').tv && jerseyAnchors('football').cuffs.length === 2);
 });
 
-test('the projective map lands the flat box on its quad: each corner, and a parallelogram keeps no perspective', () => {
-  const q = [[10, 20], [110, 10], [120, 80], [5, 90]];
-  const m = homography(100, 50, q).match(/matrix3d\(([^)]+)\)/)[1].split(',').map(Number);
-  const map = (x, y) => {
-    const X = m[0] * x + m[4] * y + m[12], Y = m[1] * x + m[5] * y + m[13], W = m[3] * x + m[7] * y + 1;
-    return [X / W, Y / W];
-  };
-  for (const [[sx, sy], [qx, qy]] of [[[0, 0], q[0]], [[100, 0], q[1]], [[100, 50], q[2]], [[0, 50], q[3]]]) {
-    const [X, Y] = map(sx, sy);
-    assert.ok(Math.abs(X - qx) < 0.01 && Math.abs(Y - qy) < 0.01, `${sx},${sy} -> ${X},${Y} not ${qx},${qy}`);
+test('the jersey faces: every face has its file, its metrics and its @font-face; a number is sized so two digits fill the box whatever the face; a name shrinks to its run', () => {
+  const dir = path.join(ROOT, 'libs/ranker/src/assets/fonts/jersey');
+  const css = fs.readFileSync(path.join(dir, 'jersey.css'), 'utf8');
+  for (const id of FACE_IDS) {
+    assert.ok(fs.existsSync(path.join(dir, id + '.woff2')), id);
+    assert.ok(css.includes(`font-family: "J-${id}"`) && css.includes(`url(${id}.woff2)`), `${id} in jersey.css`);
+    const f = FACES[id];
+    assert.ok(f.capH > 0.3 && f.capH < 1 && f.w88 > 0.4 && f.w88 < 1.5 && f.cap > 0.3 && f.capL > 0.3, id);
+    const size = numberSize(id, 40, 30);
+    assert.ok(Math.min(Math.abs(size * f.capH - 30), Math.abs(size * f.w88 - 40)) < 0.05, `${id}: fills the box one way`);
+    assert.ok(size * f.capH <= 30.05 && size * f.w88 <= 40.05, `${id}: never over the box`);
   }
-  const flat = homography(100, 50, [[0, 0], [100, 5], [100, 55], [0, 50]]).match(/matrix3d\(([^)]+)\)/)[1].split(',').map(Number);
-  assert.ok(Math.abs(flat[3]) < 1e-6 && Math.abs(flat[7]) < 1e-6);
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.woff2')).map((f) => f.replace('.woff2', ''));
+  assert.deepEqual(files.sort(), [...FACE_IDS].sort(), 'no stray face file');
+  assert.ok(fs.existsSync(path.join(dir, 'SOURCES.md')));
+  // (a name: its capitals a given height, smaller for a long one; an unknown face reads as the block)
+  assert.ok(nameSize('block', 'SMITH', 60, 6) > nameSize('block', 'ROETHLISBERGER', 60, 6));
+  assert.ok(Math.abs(nameSize('block', 'SMITH', 60, 6) * FACES.block.capL - 6) < 0.05);
+  assert.equal(numberSize(undefined, 40, 30), numberSize('block', 40, 30));
 });
 
-test('words on a face the photo shows turned or tilted ride its plane; the paper carries its printed labels and marks', () => {
+test('the paper carries its words flat, its printed labels and its marks', () => {
   // (the boarding pass: its band and the labels, the passenger, FROM and TO, the stub's barcode and the stamp,
-  // every one carrying the pass's plane; the plane's tilt is small and down to the right)
+  // every one flat on the paper)
   const pass = textBaseArt('pass', 'boarding-pass', ['Jacksonville Jaguars', 'JAX', 'CUN', 'Jan 5, 2025', '4-13']);
   assert.ok(pass);
   const labels = pass.texts.map((t) => t.text);
   for (const l of ['Season Ranker Air', 'Boarding Pass', 'Passenger', 'Jacksonville Jaguars', 'From', 'JAX', 'To', 'CUN', 'Departs', 'Jan 5, 2025', 'Seat', '4-13', 'Cancún']) assert.ok(labels.includes(l), l);
-  for (const t of pass.texts) assert.match(t.transform, /^matrix\(/, t.text);
-  const m = pass.texts[0].transform.match(/^matrix\(([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)/).slice(1).map(Number);
-  // (the top edge falls a little to the right, the ends stand nearly upright: a parallelogram, measured)
-  assert.ok(m[0] > 0.99 && m[1] > 0.03 && m[1] < 0.1 && m[2] >= 0 && m[2] < 0.1 && m[3] > 0.95, `pass plane ${m}`);
+  for (const t of pass.texts) assert.equal(t.transform, null, t.text);
   assert.deepEqual(pass.marks.map((x) => x.kind), ['plane', 'barcode', 'stamp']);
   assert.ok(pass.marks[1].rects.length > 20 && pass.marks[1].rects.every((r) => r.h > r.w));
   assert.equal(pass.marks[2].text, 'Eliminated');
-  // (the ticket stub lies flat: no plane; the round in print, the game and the score in the mono, FINAL
+  // (the ticket stub: the round in print, the game and the score in the mono, FINAL
   // printed, a barcode down the stub)
   const stub = textBaseArt('stub', 'ticket-stub', ['Divisional Round', 'Texans at KC', 'Jan 18, 2025', '14–23']);
   assert.ok(stub.texts.every((t) => t.transform === null));
@@ -223,27 +255,24 @@ test('a piece on a blank base: its words land in their boxes, sized to fit, neve
   assert.equal(one.imgs.length, 1);
   assert.equal(two.imgs.length, 2);
   assert.ok(two.w > one.w * 1.9);
-  // (the plate is a keystoned face: each plaque's words ride their own projected layer, a matrix3d with
-  // perspective terms, and the second layer sits a plaque to the right of the first)
-  assert.equal(two.overlays.length, 2);
-  assert.equal(two.overlays.flatMap((o) => o.texts).length, 4);
-  assert.equal(two.texts.length, 0);
+  // (the plate lies flat: each plaque's words sit in its own box, the second plaque's a plaque to the right)
+  assert.equal(two.texts.length, 4);
   assert.equal(two.logos.length, 2);
-  for (const o of two.overlays) assert.match(o.m3d, /^matrix3d\(/);
-  const tx = (m) => m.match(/matrix3d\(([^)]+)\)/)[1].split(',').map(Number);
-  assert.ok(Math.abs(tx(two.overlays[0].m3d)[3]) > 1e-5 || Math.abs(tx(two.overlays[0].m3d)[7]) > 1e-5, 'a keystone has perspective terms');
-  assert.ok(tx(two.overlays[1].m3d)[12] > tx(two.overlays[0].m3d)[12] + 100, 'the second plaque to the right');
-  for (const t of two.overlays.flatMap((o) => o.texts)) assert.ok(t.size > 0 && t.size <= 11, t.text);
+  const iw = PROP_IMAGES['plaque-wood'] * 100;
+  assert.equal(two.texts.filter((t) => t.x > iw).length, 2, 'two lines on the second plaque');
+  for (const t of two.texts) assert.ok(t.size > 0 && t.size <= 11 && t.transform === null, t.text);
   // (a long line gets smaller, not wider than its box)
   const long = textBaseArt('plaque', 'season-plaque', ['A very long season label indeed', '12-5']);
-  const lt = long.overlays[0].texts;
+  const lt = long.texts;
   assert.ok(lt[0].size < lt[1].size);
   const box = TEXT_BASES['plaque'].boxes[0];
   // (the size is kept to two places, so the fit may run over by that rounding times the letters)
-  assert.ok(lt[0].size * lt[0].text.length * 0.84 <= box.w * long.overlays[0].w + 0.005 * lt[0].text.length);
+  assert.ok(lt[0].size * lt[0].text.length * 0.84 <= box.w * iw + 0.005 * lt[0].text.length);
   // (a line that would set too small is left to the shelf's caption)
   const tiny = textBaseArt('plaque', 'season-plaque', ['2024', '12-5'], 0.84, undefined, 20);
-  assert.equal(tiny.overlays[0].texts.length, 0);
+  assert.equal(tiny.texts.length, 0);
+  // (the framed mark lies on a paper under the mat's cut window)
+  assert.equal(textBaseArt('frame', 'team-frame', []).papers.length, 1);
   // (by the prop's id first: a won round's plaque is the round one)
   assert.equal(textBaseArt('plaque', 'round-plaque', ['Wild Card', 'W 31-17']).key, 'plaque-round');
   assert.equal(textBaseArt('plaque', 'season-plaque', ['2024', '12-5']).key, 'plaque-wood');
