@@ -435,7 +435,12 @@ $team-logo-size: 22px;
     font-weight: sport.$lit-label-weight !important;
   }
   position: relative;
+  @include lit-rule;
+}
 
+// The lit row of dots alone, along the bottom of a positioned element (a lit tab's; the position bar's open
+// family runs one under its whole group)
+@mixin lit-rule {
   &::after {
     background: radial-gradient(var(--scoreboard-led) 1px, transparent 1.3px) 0 100% / 4px 4px;
     bottom: 0;

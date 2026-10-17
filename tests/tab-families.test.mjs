@@ -17,6 +17,7 @@ const engines = {};
 const engineFor = async (sport) => (engines[sport] ??= await loadEngine(sport, { entry: ENTRY }));
 const styles = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/styles/components/app.component.scss'), 'utf8');
 const template = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/app.component.html'), 'utf8');
+const variables = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/styles/_variables.scss'), 'utf8');
 
 test('nfl: the bar is TM · OFF · DEF · ST · HC, every member in one family, its family lit for it', async () => {
   const { SPORT, POSITIONS, mainTabs, litTab, familyOf, barCells, subTabs } = await engineFor('nfl');
@@ -99,16 +100,35 @@ test('the bar: no sub-row on phones, the sub-row only on the tablet widths, the 
   // (the room it takes is only given on those widths)
   assert.match(styles, /@media \(min-width: v\.bp\(phone-up\)\) and \(max-width: #\{v\.bp\(medium\) - 1px\}\) \{\s*main \.content\.with-sub-row \{\s*--position-bar-space: 86px;/);
   assert.doesNotMatch(styles, /--position-bar-space: 100px/, 'no desktop room for a sub-row');
-  // The accordion: the open family's caption and members show from medium, the members unfolding only for
-  // those who haven't asked for less motion; a shut family's chevron turns when open
+  // The accordion: the open family's members show from medium, unfolding only for those who haven't asked for
+  // less motion (the one motion in the bar)
   assert.match(styles, /@keyframes family-open/);
   assert.match(styles, /\.member \{[\s\S]*?@media \(prefers-reduced-motion: no-preference\) \{\s*animation: family-open 0\.2s/);
-  assert.match(styles, /&\[aria-expanded='true'\] \.chevron \{\s*rotate: 90deg;/);
+  // No chevrons anywhere in the bar, and nothing styles a shut family apart from a plain tab: the only rule on
+  // button.family is the lit one for the open family's tab on the sub-row widths
+  assert.doesNotMatch(template, /chevron/i, 'no chevron element');
+  assert.doesNotMatch(styles, /chevron/i, 'no chevron style');
+  assert.doesNotMatch(template, /family-caption/, 'no caption: the family tab itself labels the open group');
+  const familyRules = [...styles.matchAll(/button\.family\b[^{]*\{/g)].map((m) => m[0]);
+  assert.deepEqual(familyRules, ["button.family[aria-expanded='true'] {"], 'a shut family styled as a plain tab');
+  assert.match(styles, /@media \(min-width: v\.bp\(phone-up\)\) and \(max-width: #\{v\.bp\(medium\) - 1px\}\) \{\s*button\.family\[aria-expanded='true'\] \{\s*@include v\.lit-tab;/);
+  // The open family is one group: a wrapper holding the family's tab (the label) and then its members, one lit
+  // rule (the lit tab's dots) under the whole group, a hairline at each end, the showing member's own rule out
+  // of the way so the dots run as one row
+  assert.match(
+    template,
+    /<span class="family-group" role="presentation">\s*<button[^>]*class="family open"\s+aria-expanded="true"[\s\S]*?<\/button>\s*@for \(member of cell\.members[\s\S]*?class="member"[\s\S]*?<\/button>\s*\}\s*<\/span>/,
+  );
+  assert.match(styles, /@include v\.up\(medium\) \{[\s\S]*?\.family-group \{\s*@include v\.lit-rule;\s*border-inline: 1px solid v\.\$panel-edge;[\s\S]*?button\.active::after \{\s*display: none;/);
+  assert.match(variables, /@mixin lit-dots \{[\s\S]*?@include lit-rule;\s*\}/, 'the lit tab draws its rule with the same mixin');
+  assert.match(styles, /\.family-group \{[\s\S]*?&::after \{\s*animation: none;/, 'the unfold is the one motion: the group rule does not ignite');
+  // (the members are ordinary tabs: no smaller type, no dimming)
+  const member = styles.slice(styles.indexOf('.member {', styles.indexOf('.family-group {')), styles.indexOf('@include v.up(desktop)'));
+  assert.doesNotMatch(member, /font-size|opacity/, 'members at the tabs\' size');
   // The template: one tab list, the shut families aria-expanded="false", the members tabs
   assert.match(template, /<nav class="position-bar"[^>]*role="tablist"/);
   assert.match(template, /class="family"\s+aria-expanded="false"/);
   assert.match(template, /class="member"[\s\S]*?role="tab"|role="tab"\s+class="member"/);
-  assert.match(template, /class="family-caption"/);
   // (phones: the native select only; the sub-row, where it renders, is its own tab list named for its family)
   assert.match(template, /<select\s+class="position-select"/);
   assert.match(template, /<nav class="position-sub-row" role="tablist" \[attr\.aria-label\]="subRowLabel\(position\)">/);

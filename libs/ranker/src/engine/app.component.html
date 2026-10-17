@@ -94,48 +94,47 @@
     @if (position) {
       <skill-rankings class="rankings" [position]="position">
         <!-- Position tabs: shown between the rankings' button bar and the grid, as wide as the grid. One row, an
-             accordion (tab-families.ts): a family of tabs (the NFL's Offense, Defense, Special Teams) is one tab
-             with a chevron while it's shut, and the showing tab's family is open in place, a short caption then
-             its members as tabs, the showing one lit. Narrow tablets, where the open family doesn't fit the row:
-             the family's tab alone, lit, with its members on the sub-row under the bar (the styles pick by width) -->
+             accordion (tab-families.ts): a family of tabs (the NFL's Offense, Defense, Special Teams) is a tab
+             like any other while it's shut, and the showing tab's family is open in place as one group: its own
+             tab the group's label, then its members as ordinary tabs, one lit rule under the whole group and the
+             showing member lit. Narrow tablets, where the open family doesn't fit the row: the family's tab alone,
+             lit, with its members on the sub-row under the bar (the styles pick by width) -->
         <nav class="position-bar" [class.has-sub-row]="inFamily(position)" role="tablist" aria-label="Position">
           @for (cell of barCells(position); track cell.tab) {
             @switch (cell.kind) {
               @case ('open') {
-                <!-- (the open family: its caption, then its members; its own tab stands in on the sub-row widths) -->
-                <button
-                  type="button"
-                  role="tab"
-                  class="family active family-tab open"
-                  aria-expanded="true"
-                  [attr.aria-selected]="true"
-                  [attr.aria-label]="cell.label"
-                  (click)="openFamily(cell.tab)"
-                >
-                  <span class="full">{{ positionNames[cell.tab] }}</span>
-                  <span class="short">{{ cell.tab }}</span>
-                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <span class="family-caption" [attr.aria-label]="cell.label">
-                  <span class="full">{{ positionNames[cell.tab] }}</span>
-                  <span class="short">{{ cell.tab }}</span>
-                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
-                </span>
-                @for (member of cell.members; track member.tab; let i = $index) {
+                <!-- (the open family, one group: its tab as the label, then its members, the lit rule under all of
+                     them and a hairline at each end; on the sub-row widths its tab stands alone, lit) -->
+                <span class="family-group" role="presentation">
                   <button
                     type="button"
                     role="tab"
-                    class="member"
-                    [style.--i]="i"
-                    [class.active]="member.tab === position"
-                    [attr.aria-selected]="member.tab === position"
-                    (click)="selectPosition(member.tab)"
+                    class="family open"
+                    aria-expanded="true"
+                    [attr.aria-selected]="false"
+                    [attr.aria-label]="cell.label"
+                    (click)="openFamily(cell.tab)"
                   >
-                    {{ member.name }}
+                    <span class="full">{{ positionNames[cell.tab] }}</span>
+                    <span class="short">{{ cell.tab }}</span>
                   </button>
-                }
+                  @for (member of cell.members; track member.tab; let i = $index) {
+                    <button
+                      type="button"
+                      role="tab"
+                      class="member"
+                      [style.--i]="i"
+                      [class.active]="member.tab === position"
+                      [attr.aria-selected]="member.tab === position"
+                      (click)="selectPosition(member.tab)"
+                    >
+                      {{ member.name }}
+                    </button>
+                  }
+                </span>
               }
               @case ('family') {
+                <!-- (a shut family: a tab like TM's and HC's; a click opens it) -->
                 <button
                   type="button"
                   role="tab"
@@ -147,7 +146,6 @@
                 >
                   <span class="full">{{ positionNames[cell.tab] }}</span>
                   <span class="short">{{ cell.tab }}</span>
-                  <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
                 </button>
               }
               @default {

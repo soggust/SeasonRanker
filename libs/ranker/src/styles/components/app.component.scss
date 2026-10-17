@@ -398,45 +398,25 @@ main {
     display: none;
   }
 
-  // The families (tab-families.ts). A shut family's tab carries a chevron (lightens on a hover, as the site's
-  // folds do; turns when the family opens). Tablets and up, the open family is in the row: its own tab gives
-  // way to a caption, its short name lit but smaller and dimmer than a lit tab (no glow), its chevron turned,
-  // then its members as tabs, the showing one lit. Narrower (a tablet under 900px), the open family's tab
-  // stays on the row, lit, and the members move to the sub-row under it.
-  .chevron {
-    @include v.turn;
-    fill: none;
-    flex: none;
-    height: 14px;
-    margin-left: 0.3em;
-    stroke: rgba(255, 255, 255, 0.45);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 2.4;
-    transition:
-      stroke v.$t-hover,
-      rotate 0.2s v.$ease-out;
-    vertical-align: -2px;
-    width: 14px;
-  }
-
-  button.family {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-
-    &:hover .chevron {
-      stroke: rgba(255, 255, 255, 0.9);
-    }
-
-    &[aria-expanded='true'] .chevron {
-      rotate: 90deg;
-    }
-  }
-
-  .family-caption,
+  // The families (tab-families.ts). A shut family's tab is a tab like any other (TM's, HC's: the same size, type
+  // and hover; nothing on it says it opens). From 900px up the open family is one group in the row: its own tab
+  // the group's label, then its members, every one an ordinary tab, and ONE lit rule (the lit tab's row of dots)
+  // running under the whole group from the label through its last member, a hairline in the panel's rule color
+  // at each end; the showing member alone is lit (LED text and glow), the label and the other members white on
+  // the shared rule. Narrower (a tablet under 900px), the open family's tab stays on the row, lit like any
+  // showing tab, and the members move to the sub-row under it.
   .member {
     display: none;
+  }
+
+  .family-group {
+    display: contents;
+  }
+
+  @media (min-width: v.bp(phone-up)) and (max-width: #{v.bp(medium) - 1px}) {
+    button.family[aria-expanded='true'] {
+      @include v.lit-tab;
+    }
   }
 
   @include v.up(medium) {
@@ -447,44 +427,35 @@ main {
       white-space: nowrap;
     }
 
-    button.family-tab.open {
-      display: none;
-    }
-
-    .family-caption {
-      align-items: center;
-      color: var(--scoreboard-led);
-
-      // (its name as the tabs show it: the abbreviation, the full name on wide screens)
-      .full {
-        display: none;
-      }
-      display: inline-flex;
-      flex: none;
-      font-size: 0.72em;
-      font-weight: 600;
+    .family-group {
+      @include v.lit-rule;
+      border-inline: 1px solid v.$panel-edge;
+      display: flex;
+      flex: 1 1 auto;
       height: 100%;
-      letter-spacing: 1.5px;
-      opacity: 0.75;
-      padding: 0 0.3em 0 0.9em;
-      text-transform: uppercase;
-      white-space: nowrap;
+      position: relative;
 
-      .chevron {
-        rotate: 90deg;
-        stroke: currentColor;
+      button {
+        flex: 1 1 auto;
+      }
+
+      // (the rule doesn't ignite: the members' unfold is the bar's one motion, and a transform animated
+      // under the unfolding group left Chromium's headless renderers with a stale, narrower rule)
+      &::after {
+        animation: none;
+      }
+
+      // (the showing member's own rule gives way to the group's, so the dots run as one row)
+      button.active::after {
+        display: none;
       }
     }
 
     .member {
       display: block;
-      flex: 1 1 auto;
-      font-size: 0.8em;
-      letter-spacing: 1px;
       overflow: hidden;
-      padding: 0 0.6em;
 
-      // (the members unfold from the caption, each a step after the last; none for anyone who's asked for
+      // (the members unfold from the label, each a step after the last; none for anyone who's asked for
       // less motion)
       @media (prefers-reduced-motion: no-preference) {
         animation: family-open 0.2s v.$ease-out backwards;
@@ -504,8 +475,7 @@ main {
   }
 
   @include v.up(wide) {
-    button,
-    .family-caption {
+    button {
       .full {
         display: inline;
       }
@@ -532,9 +502,7 @@ main {
     // (room around it, more under it, so it doesn't crowd the buttons or the grid)
     margin: 4px 0 10px;
 
-    button,
-    button.family,
-    .family-caption {
+    button {
       display: none;
     }
 

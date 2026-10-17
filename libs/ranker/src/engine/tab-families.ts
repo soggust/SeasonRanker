@@ -2,9 +2,10 @@
 // top-row tab whose members open from it), worked out from the sport's config alone so the bar and the tests
 // read them the same way. A sport without families has a bar of its tabs and nothing else here.
 //
-// Desktop and tablet: ONE row, an accordion. A family that isn't open is one tab, its label and a chevron;
-// the open family (the one the showing tab belongs to) expands in place: a short group caption, then its
-// members as ordinary tabs, the showing one lit. Narrower tablets, where eleven cells don't fit: the parent
+// Desktop and tablet: ONE row, an accordion. A family that isn't open is one tab, like any other on the row;
+// the open family (the one the showing tab belongs to) expands in place as one group: its own tab as the
+// group's label, then its members as ordinary tabs, one lit rule under the whole group and the showing member
+// lit. Narrower tablets, where eleven cells don't fit: the parent
 // tabs alone on the row, lit for any member, with the family's members on a sub-row under it (app.component
 // shows one or the other by width). Phones: the native select, in the sport's groups, and no sub-row.
 import type { SportConfig } from '@ranker/engine/sport';
@@ -12,8 +13,8 @@ import type { SportConfig } from '@ranker/engine/sport';
 export type TabFamily = NonNullable<SportConfig['tabFamilies']>[number];
 export type TabGroup = NonNullable<SportConfig['tabGroups']>[number];
 
-// One cell of the accordion row: a plain tab, a collapsed family (a tab with a chevron), or the open family:
-// its caption and its members
+// One cell of the accordion row: a plain tab, a collapsed family (a tab like any other), or the open family:
+// its label and its members
 export type BarCell =
   | { kind: 'tab'; tab: string }
   | { kind: 'family'; tab: string; label: string }

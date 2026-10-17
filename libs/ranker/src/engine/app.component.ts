@@ -201,8 +201,9 @@ export class AppComponent {
   }
 
   // The bar's row (tab-families.ts): its tabs in order, a family (SPORT.tabFamilies: the NFL's Offense,
-  // Defense and Special Teams) one tab with a chevron while it's shut, and the showing tab's family open in
-  // place, its caption then its members as tabs. A sport without families: a plain tab for each of its tabs.
+  // Defense and Special Teams) a tab like any other while it's shut, and the showing tab's family open in
+  // place as one group, its own tab the label then its members as tabs. A sport without families: a plain tab
+  // for each of its tabs.
   barCells(position: Position): BarCell[] {
     return barCells(SPORT.tabFamilies, this.positions, position);
   }
