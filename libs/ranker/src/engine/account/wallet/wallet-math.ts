@@ -4,6 +4,7 @@
 // curve, and the user's record beside the bot's
 import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../bets/desk-model';
 import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../bets/desk-math';
+import { units } from '../../bets/bet-format';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
@@ -601,7 +602,6 @@ export function dayCurve(tally: TallyDoc) {
   const step = CURVE_W / Math.max(1, last);
   const yOf = (v: number) => 110 - ((v - min) / span) * 100;
   const pathOf = (vals: number[]) => vals.map((v, i) => `${i ? 'L' : 'M'}${(i * step).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
-  const units = (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}u`;
   const spots: CurveSpot[] = points.map((p, i) => {
     const day = days[i - 1];
     const row = day ? tally.days[day] : null;

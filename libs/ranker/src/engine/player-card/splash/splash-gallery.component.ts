@@ -4,7 +4,7 @@
 // with his honors), and the NBA's conference trophies beside the O'Brien. Nothing here reads a card or the live
 // data: each scene is built by hand (or by buildScene from a made-up SceneInput) and handed to the splash whole
 // (CardSplash's preset). Loaded lazily: it never rides in the main bundle.
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SPORT } from '@sport/sport';
 import * as teamColors from '@sport/team-colors';
 import { CardSplash, SplashPreset } from './splash.component';
@@ -36,6 +36,8 @@ interface Section {
 @Component({
   selector: 'splash-gallery',
   standalone: true,
+  // (its sections are built once in the constructor and never change: nothing to check after the first paint)
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CardSplash],
   template: `
     <div class="splash-gallery">
