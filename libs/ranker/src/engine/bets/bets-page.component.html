@@ -413,6 +413,10 @@
             }
           </div>
           @if (open.has(r.id)) {
+            <!-- (the open row on its chalkboard (the owner's notes, 2026-10-17): its words from the rows' chevron line; the
+                 read (the headline, the reason, a CHECK's why) and the game's lines side by side, stacked on phones; the
+                 devil's advocate across the whole width under them; then the meta line, where it's played and the weather
+                 on the left, the betting numbers (the edge, the Kelly score, whose analysis) in the bottom-right corner) -->
             <div class="bet-reasons">
               <div class="bet-words">
                 <!-- (Claude's analysis, where the pick has one: its headline above the reason; the same slots as the plain text) -->
@@ -420,9 +424,6 @@
                   <p class="bet-headline">{{ r.headline }}</p>
                 }
                 <p>{{ r.reason }}</p>
-                @if (r.risk) {
-                  <p class="bet-risk"><b>Devil&#39;s advocate:</b> {{ r.risk }}</p>
-                }
                 <!-- (a CHECK's: why the bot didn't bet it, the model's chance against the book's; a role CHECK's, the
                      role changing, neither side bet) -->
                 @if (r.check) {
@@ -439,19 +440,6 @@
                     }
                   </p>
                 }
-                <!-- (the meta line: the sport, the edge in chance points, the Kelly score, where it's played and the
-                     weather then (the wind in amber when it could matter), and whose the analysis is) -->
-                <p class="bet-meta">
-                  <span class="bet-meta-sport">{{ r.sport.toUpperCase() }}</span> ·
-                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The model’s chance less the book’s' : 'The model’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
-                  <span [title]="r.check ? 'The model’s own Kelly score' : 'Its Kelly score: the edge on the price, scaled by what it pays; the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
-                  @if (where(r); as w) { · <span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}
-                  @if (r.by === 'claude') { · <span>Analysis by Claude@if (r.read === 'thin') { (a thin read)}</span>}
-                </p>
-                <!-- (a note to the bot on a CHECK: a signed-in admin's alone (desk-note.component.ts); never a passed one's) -->
-                @if (r.pickId && admin() && r.check && !passed(r)) {
-                  <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check" [resolved]="r.resolved ?? null"></desk-note>
-                }
               </div>
               <!-- (the game's every line, compact, to bet this pick or any other; when the game's chosen its lines are on
                    top instead: this pick's own two sides here) -->
@@ -465,6 +453,21 @@
                 <div class="bet-lines">
                   <game-lines [desk]="desk()" [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)" [only]="r"></game-lines>
                 </div>
+              }
+              @if (r.risk) {
+                <p class="bet-risk"><b>Devil&#39;s advocate:</b> {{ r.risk }}</p>
+              }
+              <div class="bet-meta">
+                <span class="bet-meta-place">@if (where(r); as w) {<span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}</span>
+                <span class="bet-meta-bet">
+                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The model’s chance less the book’s' : 'The model’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
+                  <span [title]="r.check ? 'The model’s own Kelly score' : 'Its Kelly score: the edge on the price, scaled by what it pays; the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
+                  @if (r.by === 'claude') { · <span>Analysis by Claude@if (r.read === 'thin') { (a thin read)}</span>}
+                </span>
+              </div>
+              <!-- (a note to the bot on a CHECK: a signed-in admin's alone (desk-note.component.ts); never a passed one's) -->
+              @if (r.pickId && admin() && r.check && !passed(r)) {
+                <desk-note [pickId]="r.pickId" [sport]="r.sport" [players]="notePlayers(r)" [check]="!!r.check" [resolved]="r.resolved ?? null"></desk-note>
               }
             </div>
           }

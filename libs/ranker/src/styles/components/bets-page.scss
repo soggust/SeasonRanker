@@ -1123,6 +1123,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   flex-wrap: wrap;
   font-family: v.$font-base;
   gap: v.$space-6 v.$space-12;
+  // (52px tall, its pieces on the middle (the owner's note, 2026-10-17); phones 48px)
+  min-height: 52px;
   padding: 12px 16px;
   position: sticky;
   text-align: left;
@@ -1724,7 +1726,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   gap: v.$space-14 v.$space-28;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   margin: 0;
-  padding: 14px 16px 16px;
+  // (its words from the rows' chevron line: the drawn chevron's left edge, the row's 16px, the glyph's 8px in its 30px
+  // column and the stroke's 4px in its box; phones 10 + 4 + 4)
+  padding: 14px 16px 16px 28px;
+
+  // (the devil's advocate, the meta line and an admin's note: the whole width, under the read and the lines)
+  > .bet-risk,
+  > .bet-meta,
+  > desk-note {
+    grid-column: 1 / -1;
+  }
 
   .bet-words {
     display: flex;
@@ -1754,15 +1765,20 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
+  // (the meta line: where it's played and the weather on the left, the betting numbers (the edge, the Kelly score,
+  // whose analysis) in the section's bottom-right corner)
   .bet-meta {
     color: v.$text-faint;
+    display: flex;
+    flex-wrap: wrap;
     font-size: v.$fs-11;
+    gap: v.$space-4 v.$space-16;
+    justify-content: space-between;
     line-height: 1.5;
 
-    // (the sport, first: the closed row's line no longer says it)
-    .bet-meta-sport {
-      font-weight: 800;
-      letter-spacing: 1px;
+    .bet-meta-bet {
+      margin-left: auto;
+      text-align: right;
     }
   }
 
@@ -1906,7 +1922,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   .bet-reasons {
     grid-template-columns: minmax(0, 1fr);
-    padding: 12px 10px;
+    padding: 12px 10px 12px 18px;
+
+    // (stacked: the place, then the betting numbers on the right under it)
+    .bet-meta {
+      flex-direction: column;
+
+      .bet-meta-bet {
+        align-self: flex-end;
+      }
+    }
   }
 }
 
@@ -1982,9 +2007,9 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   .tick-pic {
     display: block;
     flex: none;
-    height: 18px;
+    height: 14px;
     object-fit: contain;
-    width: 18px;
+    width: 14px;
 
     &.face {
       background: rgba(255, 255, 255, 0.08);
@@ -2004,15 +2029,19 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     color: #fff;
   }
 
+  // (the score in the scoreboard LED digits, gold, as the rank tiles')
   .tick-score {
     color: chip.$gold-led;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
+    font-family: v.$font-led;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 0;
     margin-left: -3px;
   }
 
   .tick-state {
     color: v.$grey-light;
+    font-size: v.$fs-11;
   }
 
   &.post .tick-state {
@@ -2591,7 +2620,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   .band-head {
-    min-height: 44px;
+    min-height: 48px;
   }
 
   .bet-price {
