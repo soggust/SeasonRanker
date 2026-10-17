@@ -743,9 +743,8 @@
       </section>
     }
 
-    @let hasBoard = periods().length > 0;
-    @if (hasBoard) {
     <div class="wallet-row">
+      @if (periods().length) {
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
       <section class="wp-panel" aria-label="High rollers">
@@ -783,8 +782,47 @@
           <p class="wp-note">Public players only: you're on it when your bet history is public (<a [href]="privacyHash">Settings › Privacy</a>).@if (b.updatedAt) { {{ b.label }} · updated {{ b.updatedAt | date: 'EEE h:mm a' }}.}</p>
         }
       </section>
+      }
+
+      <!-- The trophy case: collectible chips earned from the bets and the tally (wallet-view.ts trophies), the locked
+           ones greyed with how far along; picking one (a real button) shows what it is and how to earn it -->
+      @let tr = trophies();
+      @let pick = picked();
+      <section class="wp-panel" aria-label="Trophy case">
+        <div class="wp-bar"><h3>The trophy case</h3><span class="wp-bar-note"><b>{{ earnedCount() }}</b> of {{ tr.length }} chips collected</span></div>
+        <div class="trophies">
+          @for (t of tr; track t.key) {
+            <button type="button" class="tcase-btn" [attr.aria-pressed]="t.key === pick?.key" [attr.aria-label]="t.name + ': ' + trophyState(t)" (click)="trophy.set(t.key)">
+              <span class="tchip" [ngClass]="t.key" [class.locked]="!t.earned" [class.sel]="t.key === pick?.key">
+                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="t.icon" /></svg>
+                <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+              </span>
+              <span class="trophy-name" [class.dim]="!t.earned">{{ t.name }}</span>
+              <span class="trophy-state">{{ trophyState(t) }}</span>
+            </button>
+          }
+        </div>
+        @if (pick) {
+          <div class="trophy-detail">
+            <span class="tchip small" [ngClass]="pick.key" [class.locked]="!pick.earned" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="pick.icon" /></svg>
+              <svg class="chip-rim"><rect pathLength="80" /></svg>
+            </span>
+            <div class="trophy-words">
+              <span class="trophy-title">{{ pick.name }}</span>
+              <span class="trophy-how">{{ pick.how }}</span>
+              @if (!pick.earned) {
+                <div class="trophy-bar" aria-hidden="true"><div [style.width.%]="(100 * pick.have) / pick.need"></div></div>
+              }
+            </div>
+            <span class="trophy-status" [class.earned]="pick.earned">{{ trophyState(pick) }}</span>
+          </div>
+        }
+        @if (historyNote()) {
+          <p class="wp-note">Heater, Longshot, Tailgater, Parlay Prince and Iron Stomach read {{ historyNote() }}; Phoenix and the days earned once the whole history's loaded.</p>
+        }
+      </section>
     </div>
-    }
 
     <!-- (the open bets, by game: in play, a result as soon as the score decides it, pending settlement) -->
     @if (open().length) {
