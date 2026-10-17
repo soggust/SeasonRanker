@@ -25,7 +25,7 @@ import { loadSplashFonts } from './splash-fonts';
 
 type Kit = 'home' | 'away' | 'alt';
 // (how long the stage waits for the season's data before drawing without it)
-const WAIT_MS = 1500;
+const WAIT_MS = 600;
 export type Cut = 'football' | 'basketball' | 'baseball' | 'hockey';
 export type FullKit = KitColors & { stripe: string };
 
@@ -122,7 +122,9 @@ export class CardSplash implements OnDestroy {
     if (c.ur) return null;
     const data = this.seasonData(c.season);
     const depth = team && this.current && SPORT.depthChart?.has(c.player, tab, c.season) ? this.cards.depthChart(c) : null;
-    this.waiting = (data === null || depth === 'loading') && !this.waitedOut();
+    // (the wait is for the season's small files alone; a team's depth chart can take a second or more, and a
+    // locker drawn from the roster on hand is redrawn when it lands)
+    this.waiting = data === null && !this.waitedOut();
     if (this.waiting) return null;
     const key = [tab, c.player.gsisId, c.season, data ? 1 : 0, typeof depth === 'object' && depth ? 1 : 0].join('/');
     if (this.built?.key !== key) this.built = { key, scene: buildScene(this.input(team, coach, data, typeof depth === 'object' ? depth : null)) };
