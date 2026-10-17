@@ -83,7 +83,8 @@
 
 <!-- (the open bets, by game: the wallet's panel, and the Bets page's Open Bets tab alone) -->
 <ng-template #openPanel>
-<card-panel class="tab-card group-support" [label]="'Open Bets · ' + tally().atRisk + 'u'" icon="schedule" [expandable]="!only" [startOpen]="true">
+<section class="wp-panel" aria-label="Open bets">
+  <div class="wp-bar"><h3>Open bets</h3><span class="wp-bar-note">{{ tally().atRisk }}u in play</span></div>
   <div class="group-body">
       <!-- (its columns' widths set, as the Algorithm's: model-desk.scss's desk-cols) -->
       <table class="desk-table desk-bets wallet-bets desk-cols wallet-cols-open">
@@ -203,28 +204,30 @@
         </tbody>
       </table>
   </div>
-</card-panel>
+</section>
 </ng-template>
 
 <!-- (the settled history: as the Algorithm's, each sport a row over its games when there's more than one, a game
      with more than one bet a row over them, each folded until opened; the latest game first, the Date column's
      header turning it round. The wallet's panel, and the Bets page's Closed Bets tab alone) -->
 <ng-template #settledPanel>
-<!-- (when the games were: Today, Yesterday, This Month, This Year, All Time, the Algorithm's dropdown on the left
-     over the panel; the count, the groups and their totals follow it) -->
-<div class="desk-filters wallet-range">
-  <span class="desk-chip">
-    <select class="desk-game-select desk-range-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
-      @for (r of ranges; track r.value) {
-        <option [value]="r.value">{{ r.label }}</option>
-      }
-    </select>
-  </span>
-</div>
+<!-- (when the games were: Today, Yesterday, This Month, This Year, All Time, the Algorithm's dropdown in the bar;
+     the count beside it, the groups and their totals follow) -->
+<section class="wp-panel" aria-label="Settled bets">
+  <div class="wp-bar">
+    <h3>Settled</h3>
+    <span class="wp-bar-tools">
+      <span class="wp-bar-note">{{ settledTotal() }} {{ settledTotal() === 1 ? 'bet' : 'bets' }}</span>
+      <select class="wp-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
+        @for (r of ranges; track r.value) {
+          <option [value]="r.value">{{ r.label }}</option>
+        }
+      </select>
+    </span>
+  </div>
 @if (!settledShown().length) {
-  <p class="desk-note wallet-note" role="status">{{ rangeLoading() ? 'Loading…' : 'No settled bets ' + rangeWords(range()) + '.' }}</p>
+  <p class="wp-note" role="status">{{ rangeLoading() ? 'Loading…' : 'No settled bets ' + rangeWords(range()) + '.' }}</p>
 } @else {
-<card-panel class="tab-card group-results" [label]="'Settled · ' + settledTotal()" icon="fact_check" [expandable]="!only">
   <div class="group-body">
     <table class="desk-table desk-bets wallet-bets wallet-settled desk-cols wallet-cols-settled">
       <colgroup>
@@ -359,8 +362,8 @@
       </div>
     }
   </div>
-</card-panel>
 }
+</section>
 </ng-template>
 
 @if (!canUse('bets')) {
@@ -510,8 +513,20 @@
     }
   </section>
   } @else {
-  <section class="model-desk" aria-label="Betting Wallet">
-    <div class="desk-top">
+  <!-- The wallet (docs/wallet-redesign/README.md): the account pages' hero, then panels on the sheet, each under a bar
+       in the wallet's felt green with its title in the sand -->
+  <section class="wallet" aria-label="Betting Wallet">
+    <header class="wallet-hero">
+      @let me = account.profile();
+      <account-avatar [photo]="me?.photo ?? null" [name]="me?.displayName || me?.username || ''" [size]="52"></account-avatar>
+      <div class="hero-text">
+        <h2>Wallet</h2>
+        <span class="hero-user">{{ me?.username }} · play money</span>
+      </div>
+      <a class="hero-link" href="/bets" (click)="toBets()">Place bets</a>
+    </header>
+
+    <div class="model-desk desk-top">
       <header class="desk-head">
         <div class="desk-tiles">
           <div class="desk-tile" title="Play money on hand, the open bets' stakes out of it">
@@ -627,11 +642,12 @@
     @let v = versus();
     @let hasBoard = periods().length > 0;
     @if (v?.from || hasBoard) {
-    <div class="desk-grid" [class.wallet-one]="!(v?.from && hasBoard)">
+    <div class="wallet-row">
       <!-- (you beside the bot: its published picks settled over the same stretch, from your first bet's game on) -->
       @if (v?.from) {
-      <card-panel class="tab-card group-results" label="You vs the Bot" icon="smart_toy">
-        <div class="group-body">
+      <section class="wp-panel" aria-label="You against the bot">
+        <div class="wp-bar"><h3>Heads up</h3></div>
+        <div class="wp-body">
           @if (v) {
             <table class="desk-table wallet-versus">
               <thead>
@@ -655,21 +671,24 @@
             <p class="wallet-fine">Since {{ v.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Bets page's) settled over the same games' days.</p>
           }
         </div>
-      </card-panel>
+      </section>
       }
 
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
       @if (hasBoard) {
-      <card-panel class="tab-card group-box" label="Leaderboard" icon="emoji_events">
-        <div class="group-body">
+      <section class="wp-panel" aria-label="High rollers">
+        <div class="wp-bar">
+          <h3>High rollers</h3>
           @if (periods().length > 1) {
-            <div class="wallet-periods" role="group" aria-label="Period">
+            <div class="wp-seg" role="group" aria-label="Leaderboard period">
               @for (p of periods(); track p.id) {
-                <button type="button" class="app-pill" [class.active]="period() === p.id" [attr.aria-pressed]="period() === p.id" (click)="period.set(p.id)">{{ p.label }}</button>
+                <button type="button" [attr.aria-pressed]="period() === p.id" (click)="period.set(p.id)">{{ p.label }}</button>
               }
             </div>
           }
+        </div>
+        <div class="wp-body">
           @if (board(); as b) {
             <ol class="wallet-leaders">
               @for (r of b.rows; track r.uid; let i = $index) {
@@ -693,7 +712,7 @@
             }
           }
         </div>
-      </card-panel>
+      </section>
       }
     </div>
     }
