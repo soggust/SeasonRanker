@@ -812,12 +812,7 @@ card-panel {
   font-weight: 700;
 }
 
-// (the book the bets are priced at: DraftKings' crown by the Odds header, once; and the small notes under
-// values thin, as the numbers are)
-.desk-crown {
-  @include v.book-crown(13px);
-  margin-left: 4px;
-}
+// (the small notes under values thin, as the numbers are)
 
 .desk-table td small {
   font-weight: 400;

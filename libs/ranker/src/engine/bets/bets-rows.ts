@@ -48,7 +48,7 @@ export interface BetRow {
   // (its chance to win, a whole percent)
   chance?: number;
   pick: string;
-  // (its price at DraftKings, under the pick)
+  // (its price at the book, under the pick)
   odds?: string;
   // (the call it makes: pickKey)
   key: string;

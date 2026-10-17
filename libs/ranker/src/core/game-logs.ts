@@ -432,7 +432,7 @@ export async function espnTeamGameLog(league: string, names: (string | undefined
 }
 
 // ---- the games to come: a team's rest of the season, the nearest with the sportsbook's line (ESPN's scoreboard
-// carries DraftKings' once it's posted, usually the week of the game)
+// carries the book's once it's posted, usually the week of the game)
 
 interface EspnOdds {
   details?: string;

@@ -1,4 +1,4 @@
-<!-- A game's full menu at DraftKings (The Book's game view): a sticky header (the way back to Best bets, the
+<!-- A game's full menu at the book (The Book's game view): a sticky header (the way back to Best bets, the
      matchup, its start and venue, and a key), then collapsible sections, GAME LINES (the spread, the total and the
      moneyline, a row a team), PLAYER PROPS (over and under per player, folded at first) and, for a game the bot
      hasn't priced props on yet, PREVIEW PROPS. Every price is a tile and every price is bettable: its line over its
@@ -141,7 +141,7 @@
   } @else if (loading() && !board) {
     <p class="lines-note" role="status">Reading the board…</p>
   } @else if (!board || (!board.spread && !board.total && !board.ml)) {
-    <p class="lines-note">No DraftKings lines on ESPN's board for this game yet.</p>
+    <p class="lines-note">No lines on ESPN's board for this game yet.</p>
   } @else if (showLines()) {
     @let b = board!;
     <!-- GAME LINES: a row a team (its logo, its name, Away or Home), the spread, the total and the moneyline across;
@@ -198,14 +198,14 @@
     }
   }
 
-  <!-- PREVIEW PROPS (no props of the bot's on the game yet): DraftKings' lines off ESPN, each side at an assumed
+  <!-- PREVIEW PROPS (no props of the bot's on the game yet): the book's lines off ESPN, each side at an assumed
        -110, no band and no Kelly score, folded till it's opened -->
   @if (!compact && showProps() && previewTeams().length) {
     <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'preview', title: 'Preview props', count: previewCount(previewTeams()) }"></ng-container>
     @if (sectionOpen('preview')) {
       <div class="section-body lines-props preview-props" role="list" aria-label="Preview props">
         <p class="preview-note">
-          <b>Preview props</b> · DraftKings' lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
+          <b>Preview props</b> · the book's lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
           No band or Kelly score: the bot hasn't priced them.
           @if (previewWindow; as w) {
             It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
@@ -245,7 +245,7 @@
       </div>
     }
   } @else if (!compact && previewLoading() && !onlyPick()) {
-    <p class="lines-note" role="status">Reading DraftKings' prop lines…</p>
+    <p class="lines-note" role="status">Reading the book's prop lines…</p>
   }
 
   <!-- (a game begun: its prices the last ones) -->

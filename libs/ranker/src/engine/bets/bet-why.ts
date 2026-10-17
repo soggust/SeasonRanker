@@ -137,8 +137,6 @@ export const signedPoints = signedAmount;
 
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 const odds = (a: number) => (a > 0 ? `+${a}` : `${a}`.replace('-', '−'));
-// (a book's: DraftKings', FanDuel's)
-const owner = (book: string) => (book.endsWith('s') ? `${book}'` : `${book}'s`);
 
 // A bet's name in the breakdown: the pick as the row writes it (a prop's player first)
 export function betName(r: BetWhyRow): string {
@@ -149,7 +147,6 @@ export function betName(r: BetWhyRow): string {
 // chance; the chance alone, from a file with no price)
 function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: boolean } {
   const base = r.sureness * 100;
-  const book = r.book ?? 'DraftKings';
   const fair = r.why?.fair ?? r.fair;
   const b = r.why?.b ?? (Number.isFinite(r.price) && r.price ? payout(r.price) : NaN);
   const parts: Omit<BetWhyPart, 'width'>[] = [];
@@ -166,10 +163,10 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
       const from = r.why?.from ?? null;
       const source =
         from === 'even'
-          ? `an even line (${owner(book)} board had no price: −110 assumed)`
+          ? `an even line (the book's board had no price: −110 assumed)`
           : from === 'pinnacle'
-            ? `Pinnacle's line, its two prices with the vig taken out`
-            : `${owner(book)} two prices with the vig taken out`;
+            ? `a sharp book's line, its two prices with the vig taken out`
+            : `the book's two prices with the vig taken out`;
       parts.push({
         key: 'price',
         label: 'The price',

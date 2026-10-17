@@ -60,7 +60,7 @@ export interface ModelBoard {
   games: BoardGame[];
 }
 
-// Every game's DraftKings lines, from ESPN's free scoreboard (the one the bettor reads when it has no Odds API
+// Every game's lines at the book, from ESPN's free scoreboard (the one the bettor reads when it has no Odds API
 // key: espn.mjs linesOf), straight from the browser. A sport's day is asked for once a minute at most; the
 // boards land in one signal (by "sport|event") so every board on the page updates together.
 @Injectable({ providedIn: 'root' })
@@ -152,7 +152,7 @@ export class LinesService {
   }
 
   // ---------------------------------------------------------------------------
-  // Preview props (preview-props.ts): DraftKings' prop lines for a game the bot hasn't priced, off ESPN's core API
+  // Preview props (preview-props.ts): the book's prop lines for a game the bot hasn't priced, off ESPN's core API
   // ---------------------------------------------------------------------------
   // (a game's, by "sport|event": asked for when its board opens without the bot's props, kept five minutes; the
   // teams' rosters and any player found apart kept for the visit)

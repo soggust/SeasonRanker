@@ -44,8 +44,8 @@ package name and some internal task names.
 ESPN (results, rosters, injuries, game logs, lines), nflverse (play-by-play, Next Gen Stats and Pro
 Football Reference's charting, CC BY 4.0; FTN's participation, CC BY-SA 4.0), Wikipedia (All-Pro and Pro
 Bowl lists), Basketball-Reference, the NHL's stats API and MoneyPuck (credited in the NHL About for its
-heat maps), Baseball Savant's Statcast, UFC.com, and for The Book The Odds API: DraftKings' prices (the
-book the board shows) with Pinnacle as the fair-price anchor. Each sport's About has its Credits section;
+heat maps), Baseball Savant's Statcast, UFC.com, and for The Book The Odds API: odds from a major U.S.
+sportsbook (the one the board shows) with a sharp book as the fair-price anchor. Each sport's About has its Credits section;
 the site is an unofficial fan project, not affiliated with any league or team.
 
 ## Layout

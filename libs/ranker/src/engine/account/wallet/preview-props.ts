@@ -1,4 +1,4 @@
-// Preview props: DraftKings' player prop LINES for a game the bot hasn't priced yet, from ESPN's free core API
+// Preview props: the book's player prop LINES for a game the bot hasn't priced yet, from ESPN's free core API
 // (sports.core.api.espn.com .../events/{id}/competitions/{id}/odds/100/propBets: each item a player's stat,
 // its line now (current.target.value) and its opening one (open.target.value), no prices). The Bets page shows
 // them on a game's board until the bot's own board has the game's props (the bettor prices props only inside its
@@ -79,7 +79,7 @@ export interface PropBetItem {
   open?: { target?: { value?: number } };
 }
 
-// A preview prop: a player's stat at DraftKings' main line, with where it opened
+// A preview prop: a player's stat at the book's main line, with where it opened
 export interface PreviewProp {
   athlete: string;
   propType: string;

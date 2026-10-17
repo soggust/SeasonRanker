@@ -133,7 +133,7 @@ export function botSelection(game: { sport: string; event: string; matchup: stri
 }
 const tierOfBand = (b: BoardBand | null | undefined): Tier | null => (b ? tierOf(b as Confidence) : null);
 
-// A game's every line, both sides (the spread, the total, the moneyline) at DraftKings' prices from ESPN's
+// A game's every line, both sides (the spread, the total, the moneyline) at the book's prices from ESPN's
 // board, as a sportsbook lays them out: a row a team, a column a market; under it every player prop the bot
 // priced (its betting board: data/model/board.json, board.mjs), a team's folded till it's opened, a player's
 // stats under his name, over and under. Every price with the bot's band chip (Lock, Love, Like, Pass) and its
@@ -320,7 +320,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   }
 
   // ---------------------------------------------------------------------------
-  // Preview props: DraftKings' prop lines off ESPN for a game the bot hasn't priced props on yet (preview-props.ts),
+  // Preview props: the book's prop lines off ESPN for a game the bot hasn't priced props on yet (preview-props.ts),
   // shown until the bot's board has the game's props, then the bot's instead; bet either side at an assumed -110,
   // no band and no Kelly score (the bot hasn't priced them), and the bot never bets them
   // ---------------------------------------------------------------------------
@@ -387,7 +387,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   previewTitle(r: PreviewPropRow, side: 'over' | 'under'): string {
     const opened = r.open !== null && r.open !== r.line ? ` (it opened at ${r.open})` : '';
-    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · DraftKings' line via ESPN${opened}, no price posted yet; the bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
+    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · the book's line via ESPN${opened}, no price posted yet; the bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
   }
 
   // A preview side clicked: onto the slip at -110 (or off it), tagged preview, never the bot's pick; its line the
@@ -494,7 +494,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   // (a price's hover: what it is, what 10 units win at it, and the bot's word on it)
   priceTitle(price: Price, c: PriceCall): string {
     const words = pickWords(price, this.matchupText);
-    const at = `${words} ${oddsText(price.odds)} at DraftKings`;
+    const at = `${words} ${oddsText(price.odds)} at the book`;
     const bot = c.bot;
     const botWords =
       c.tier === 'check'

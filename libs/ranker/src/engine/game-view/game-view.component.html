@@ -813,7 +813,7 @@
                     }
                     <!-- (the line and how it came out, with the rest of the facts) -->
                     @if (g.line; as line) {
-                      <div class="game-bet"><small>Line{{ line.book ? ' · ' + line.book : '' }}</small><b>{{ line.details }}</b>@if (line.spread) {<i>{{ line.spread }}</i>}</div>
+                      <div class="game-bet"><small>Line</small><b>{{ line.details }}</b>@if (line.spread) {<i>{{ line.spread }}</i>}</div>
                       @if (line.overUnder !== null) {
                         <div class="game-bet"><small>Total</small><b>O/U {{ line.overUnder }}</b>@if (line.total) {<i>{{ line.total }}</i>}</div>
                       }

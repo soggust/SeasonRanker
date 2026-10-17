@@ -108,7 +108,7 @@ export const betValue = (result: (b: ModelBet) => { profit: number } | null, fin
     field,
   );
 
-// (the model's log loss less the market's at the close; the book's own less Pinnacle's as the fair chance)
+// (the model's log loss less the market's at the close; the book's own less the sharp book's as the fair chance)
 export const modelVsMarket = (t: BacktestRow): number | null => less(t.close.logLoss.model, t.close.logLoss.market);
 export const pinnacleEdge = (t: BacktestRow): number | null => less(t.anchors.own, t.anchors.pinnacle);
 

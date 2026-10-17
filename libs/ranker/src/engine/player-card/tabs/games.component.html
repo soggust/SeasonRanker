@@ -196,9 +196,9 @@
   </button>
 </ng-template>
 
-<!-- (an upcoming game's line: DraftKings', via ESPN) -->
+<!-- (an upcoming game's line: the book's, via ESPN) -->
 <ng-template #lineOf let-u>
   @if (u.line) {
-    <span class="log-line" title="DraftKings, via ESPN">{{ u.line }}@if (u.total) { · {{ u.total }}}@if (u.moneyline) { · ML {{ u.moneyline }}}</span>
+    <span class="log-line" title="Sportsbook line, via ESPN">{{ u.line }}@if (u.total) { · {{ u.total }}}@if (u.moneyline) { · ML {{ u.moneyline }}}</span>
   }
 </ng-template>

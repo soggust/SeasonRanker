@@ -1,5 +1,5 @@
 // The play-money wallet's arithmetic, pure (no Angular, no Firebase: tests/wallet.test.mjs runs it under
-// Node): a game's DraftKings lines off ESPN's scoreboard, a bet slip's stakes and payouts, a bet in play
+// Node): a game's lines at the book off ESPN's scoreboard, a bet slip's stakes and payouts, a bet in play
 // settled by the score as the settler will settle it (desk-math's provisional), the wallet's tallies, its
 // curve, and the user's record beside the bot's
 import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../bets/desk-model';
@@ -47,7 +47,7 @@ export interface PlayBet {
   athlete?: string | null;
   player?: string | null;
   statLabel?: string | null;
-  // (a preview prop's: a DraftKings line from ESPN the bot hadn't priced, bet at an assumed -110: preview-props.ts)
+  // (a preview prop's: a line from ESPN's book the bot hadn't priced, bet at an assumed -110: preview-props.ts)
   preview?: boolean;
   // (the wallet's run it was placed in: its reloads at the time)
   run: number;
@@ -107,7 +107,7 @@ export interface BoardTeam {
   score: number | null;
 }
 
-// A game on ESPN's scoreboard, its DraftKings lines (each side's price as it stands now: ESPN's close is the
+// A game on ESPN's scoreboard, its lines at the book (each side's price as it stands now: ESPN's close is the
 // current line until kickoff, its open when there's no other)
 export interface GameBoard {
   sport: string;
@@ -146,7 +146,7 @@ export interface Selection {
   athlete: string | null;
   player: string | null;
   statLabel: string | null;
-  // (a preview prop: its line from ESPN's DraftKings board, its price an assumed -110, none posted)
+  // (a preview prop: its line from ESPN's book, its price an assumed -110, none posted)
   preview?: boolean;
   stake: number;
 }
@@ -190,7 +190,7 @@ export interface EspnEvent {
   }[];
 }
 
-// A scoreboard event as a board: its teams and score, and DraftKings' lines (the bettor's book: espn.mjs
+// A scoreboard event as a board: its teams and score, and the book's lines (the bettor's book, BOOK in leagues.mjs: espn.mjs
 // linesOf reads the same fields), each side's line and price as they stand now
 export function boardOf(sport: string, e: EspnEvent): GameBoard | null {
   const c = e.competitions?.[0];
@@ -407,7 +407,7 @@ export const addChip = (stake: number, chip: number, room: number): number => Ma
 export const bettable = (start: string, state: GameBoard['state'] | undefined, now: number): boolean => (state === undefined || state === 'pre') && Date.parse(start) > now;
 
 // A game on the bettor's own betting board (data/model/board.json, board.mjs's shape: the games not started,
-// each market's two sides with its line and price) as a GameBoard, for a game ESPN's scoreboard has no DraftKings
+// each market's two sides with its line and price) as a GameBoard, for a game ESPN's scoreboard has none of the book's
 // lines on (a UFC bout: the card's board carries each bout's moneyline alone, no spread, no total, no props). The
 // matchup the board's "A @ B" (a fight's the fighters, the first-listed the home); a fighter's picture his ESPN
 // headshot (his id beside his name), a team's none (the page draws its logo by its abbreviation); no scores; its

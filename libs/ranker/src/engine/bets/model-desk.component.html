@@ -10,9 +10,6 @@
       @if (ariaSort(table, key); as dir) {
         <mat-icon aria-hidden="true" [fontIcon]="dir === 'ascending' ? 'arrow_upward' : 'arrow_downward'"></mat-icon>
       }
-      @if (key === 'odds') {
-        <span class="desk-crown" title="DraftKings: every price here is theirs"></span>
-      }
     </button>
   </th>
 </ng-template>
@@ -879,7 +876,7 @@
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btEarly', label: 'ROI early' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btBeat', label: 'Beat the close' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btLoss', label: 'Model vs market' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btAnchor', label: 'Pinnacle edge' }"></ng-container>
+                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btAnchor', label: 'Anchor edge' }"></ng-container>
                 </tr>
               </thead>
               <tbody>
@@ -942,7 +939,7 @@
                 <td>{{ s.params['sigmaT'] }}</td>
                 <td class="desk-test">{{ trustText(s) }}</td>
                 <td>{{ s.history.finals }}</td>
-                <td [title]="help['book']">{{ s.book ?? '-' }}</td>
+                <td [title]="help['book']">{{ s.book ? 'Book' : '-' }}</td>
               </tr>
             }
           </tbody>

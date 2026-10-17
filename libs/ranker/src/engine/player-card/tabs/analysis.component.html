@@ -127,7 +127,7 @@
           <div class="ai-next-head">
             <span class="ai-outlook" [ngClass]="r.nextGame.outlook">{{ r.nextGame.outlook }} matchup</span>
             @if (a.game.line; as line) {
-              <span class="ai-line" [title]="(line.book ?? 'Sportsbook') + ', via ESPN'">
+              <span class="ai-line" title="Sportsbook line, via ESPN">
                 <b>{{ line.line }}</b>
                 @if (line.overUnder) {
                   <span>O/U {{ line.overUnder }}</span>
