@@ -8,7 +8,6 @@
   <button type="button" class="ticket-close" aria-label="Close the ticket" (click)="close()"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
   <header class="ticket-head">
     <span class="ticket-brand">The Book</span>
-    <span class="ticket-sub">Season Ranker · play money</span>
     <span class="ticket-sub">{{ today | date: 'EEE MMM d' }} · {{ wallet.slip().length }} {{ wallet.slip().length === 1 ? 'bet' : 'bets' }}</span>
   </header>
   <hr class="perf" />
@@ -140,7 +139,9 @@
       }
       <button type="button" class="ticket-tear" (click)="wallet.clearSlip()">tear up ticket</button>
       <span class="ticket-barcode" aria-hidden="true"></span>
-      <p class="ticket-fine">Play money. Bets settle from the final score after the game; prices are checked against DraftKings' board.@if (wallet.asParlay()) { A parlay loses on any leg lost; a pushed or void leg drops out, the rest's price paid.}</p>
+      @if (wallet.asParlay()) {
+        <p class="ticket-fine">A parlay loses on any leg lost; a pushed or void leg drops out, the rest's price paid.</p>
+      }
     </footer>
   }
 </aside>

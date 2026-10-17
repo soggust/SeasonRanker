@@ -110,10 +110,9 @@ $page-gutter: 16px;
   }
 }
 
+// (the title's chip: the site's gold, blank: no letters on it (the owner))
 .book-chip {
-  --clay: #1a1a1a;
-  font-size: v.$fs-12;
-  font-weight: 900;
+  --clay: #{chip.$gold-led};
   height: 46px;
   width: 46px;
 }
@@ -912,6 +911,23 @@ $page-gutter: 16px;
     object-fit: cover;
     object-position: 50% 15%;
     width: 100%;
+  }
+
+  // (a fight's circle: the gloves sit under the face; a face ESPN doesn't have hides itself and leaves them)
+  &.mma {
+    position: relative;
+
+    mat-icon {
+      color: v.$text-soft;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+
+    .bet-face {
+      inset: 0;
+      position: absolute;
+    }
   }
 
   &.team {

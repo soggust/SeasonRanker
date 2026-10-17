@@ -9,7 +9,7 @@
        user's player's card: their bankroll, a link to the wallet -->
   <header class="book-head">
     <div class="book-title">
-      <span class="kind-chip still book-chip" aria-hidden="true">SR<svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg></span>
+      <span class="kind-chip still book-chip" aria-hidden="true"><svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg></span>
       <h1>The Book</h1>
     </div>
     <!-- (the views, when there's more than one: the bar) -->
@@ -221,6 +221,14 @@
               <span class="bet-circle player" aria-hidden="true" [style.border-color]="pickColor(r)"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></span>
             } @else if (r.betType === 'total') {
               <span class="bet-circle total" [class.over]="r.side !== 'under'" aria-hidden="true"><mat-icon [fontIcon]="r.side === 'under' ? 'arrow_downward' : 'arrow_upward'"></mat-icon></span>
+            } @else if (r.sport === 'mma') {
+              <!-- (a fight: the fighter's face, the gloves under it for one ESPN has no picture of) -->
+              <span class="bet-circle player mma" aria-hidden="true" [style.border-color]="pickColor(r)">
+                <mat-icon fontIcon="sports_mma"></mat-icon>
+                @if (pickLogo(r); as logo) {
+                  <img class="bet-face" [src]="logo" alt="" (error)="hide($event)" />
+                }
+              </span>
             } @else {
               <span class="bet-circle team" aria-hidden="true" [style.border-color]="pickColor(r)">
                 @if (pickLogo(r); as logo) {
