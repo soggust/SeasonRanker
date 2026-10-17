@@ -63,7 +63,7 @@
        the Algorithm's desk. Nothing on the boards: none -->
   @if (tickerItems.length && view !== 'desk' && view !== 'live') {
     <div class="book-ticker" role="marquee" aria-label="Scores and start times">
-      <div class="ticker-track">
+      <div class="ticker-track" [style.--ticker-items]="tickerItems.length">
         @for (copy of [0, 1]; track copy) {
           <span class="ticker-copy" [attr.aria-hidden]="copy ? 'true' : null">
             @for (t of tickerItems; track t.key) {
@@ -171,7 +171,7 @@
             @for (d of gameMenu; track d.day) {
               <div class="game-day" role="presentation">{{ dayBand(d.day) }}</div>
               @for (s of d.sports; track s.sport) {
-                <!-- (a sport's row: the row chooses the sport (its best bets, every day's); the chevron at its end folds
+                <!-- (a sport's row: the row chooses the sport (its best bets, every day's); the chevron at its start folds
                      its games, Right and Left on the keyboard the same; a busy list opens with every sport folded) -->
                 @let gk = groupKey(d.day, s.sport);
                 <div
@@ -187,6 +187,11 @@
                   (mousemove)="active = gk"
                   (click)="pick(sportChoice(s.sport))"
                 >
+                  <!-- (first, the site's way for a row that opens (the board's band headers): the fold chevron, pointing
+                       right with the games folded, turned down with them shown) -->
+                  <button type="button" class="game-fold" tabindex="-1" [attr.aria-label]="(isOpen(d.day, s.sport) ? 'Hide ' : 'Show ') + s.name + '\'s games'" (click)="toggleGroup(gk); $event.stopPropagation()">
+                    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </button>
                   <!-- (the league's own mark where the site has one (bet-format.ts leagueLogo: ESPN's, the wallet's and the
                        desk's tables' league logos); MMA its gloves) -->
                   @if (leagueMark(s.sport); as mark) {
@@ -200,9 +205,6 @@
                   } @else {
                     <span class="game-lines" title="Lines only: the bot has no pick in it">lines</span>
                   }
-                  <button type="button" class="game-fold" tabindex="-1" [attr.aria-label]="(isOpen(d.day, s.sport) ? 'Hide ' : 'Show ') + s.name + '\'s games'" (click)="toggleGroup(gk); $event.stopPropagation()">
-                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  </button>
                 </div>
                 @for (g of isOpen(d.day, s.sport) ? s.games : []; track g.key) {
                   <div

@@ -521,10 +521,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (a sport's row: 44px, the league's mark (MMA's gloves in gold) and its name in white caps, lifted a touch when
-// lit; no accent in the sport's colour, the owner's note. At its end the fold chevron, a 44px button of its own:
-// down with the games shown, up with them folded)
+// lit; no accent in the sport's colour, the owner's note. At its start the fold chevron, the site's way for a row
+// that opens: a 44px button of its own, right with the games folded, turned down with them shown, lighter on hover)
 .game-sport {
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   height: 44px;
   margin-top: 2px;
 
@@ -538,7 +538,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     display: inline-flex;
     height: 44px;
     justify-content: center;
-    margin: 0 -12px 0 -4px;
+    margin: 0 -10px 0 -12px;
     padding: 0;
     width: 44px;
 
@@ -551,8 +551,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
-  &.folded .game-fold svg {
-    rotate: 180deg;
+  &[aria-expanded="true"] .game-fold svg {
+    rotate: 90deg;
   }
 
   .game-sport-name {
@@ -569,7 +569,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// (a game's row: 40px, taller when its name wraps, indented under its sport; the two faces each in a 22px slot, 8px
+// (a game's row: 40px, taller when its name wraps, indented under its sport (its faces under the league mark); the two faces each in a 22px slot, 8px
 // apart, before the matchup, which wraps to a second line when it's long (a fight's two names) while the start
 // and the count stay on the first line, at the right)
 .game-row {
@@ -578,7 +578,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   height: auto;
   min-height: 40px;
   padding-bottom: 8px;
-  padding-left: 28px;
+  padding-left: 44px;
   padding-top: 8px;
 
   .game-faces {
@@ -1949,7 +1949,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // ---------------------------------------------------------------------------
 // The ticker: a one-line scoreboard strip under the header, its games sliding by forever (the list twice, the
-// track moving half its width over 45 seconds and starting again; still for anyone who's asked for less
+// track moving half its width at about 30px a second, 6 seconds a game (the count set on the track from the
+// template; the owner's note, 2026-10-17: the 45 seconds whole ran by too fast to read), and starting again; still for anyone who's asked for less
 // motion). Each game: the away team's logo (a fighter's round face) and its score in gold, @, the home team's and
 // its score, then its state: FINAL faint, a clock in the win's green, a start time in light grey (the owner's note,
 // 2026-10-17: the logos say the sport). Everything on the strip's middle
@@ -1984,7 +1985,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   // (declared here, not inside a media query: Angular scopes a component's @keyframes name but doesn't
   // rewrite an `animation` set under a nested @media, so the strip pointed at a keyframe that didn't exist
   // and never moved on the live site. Anyone asking for less motion gets it stopped below)
-  animation: ticker-slide 45s linear infinite;
+  animation: ticker-slide 120s linear infinite;
+  animation-duration: calc(var(--ticker-items, 20) * 6s);
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -2055,8 +2057,9 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     font-family: v.$font-led;
     font-size: v.$fs-11;
     font-weight: 700;
-    letter-spacing: 0;
-    margin-left: -3px;
+    // (the digits a touch apart, 6px off the team's name: the owner's note, 2026-10-17)
+    letter-spacing: 1px;
+    margin-left: -2px;
   }
 
   .tick-state {

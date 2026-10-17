@@ -4,6 +4,7 @@
 // Times in Chicago's zone, so a late game lands on its own evening, not the next UTC day. Made-up games, no network.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
@@ -120,4 +121,26 @@ test("a game shows only its priced markets, and a fight's total reads Over 2.5 o
   assert.equal(bets.legWords({ sport: 'mma', market: 'total', pick: 'Under 2.5 rounds' }), 'Under 2.5 rounds');
   assert.equal(bets.legWords({ sport: 'nfl', market: 'total', pick: 'Over 47.5' }), 'Over 47.5');
   assert.equal(bets.legWords({ sport: 'mma', market: 'ml', pick: 'Buckley ML' }), 'Buckley ML');
+});
+
+// A sport's row in the open list (book-page.component.html, book-page.scss; the owner's note, 2026-10-17): the
+// fold chevron first, before the league's mark, as the board's band headers; pointing right with the games
+// folded, turned down when they're shown, a lighter grey on hover, never gold. The row still chooses the sport,
+// the chevron's click alone folds
+test('a sport row in the game list starts with its fold chevron, turned down when open', () => {
+  const root = path.join(import.meta.dirname, '..');
+  const html = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.html'), 'utf8');
+  const scss = fs.readFileSync(path.join(root, 'libs/ranker/src/styles/components/book-page.scss'), 'utf8');
+  const row = html.slice(html.indexOf('class="game-opt game-sport"'), html.indexOf('class="game-opt game-row"'));
+  assert.ok(row.includes('(click)="pick(sportChoice(s.sport))"'), 'the row still chooses the sport');
+  const fold = row.indexOf('class="game-fold"');
+  assert.ok(fold > 0 && fold < row.indexOf('game-icon'), 'the chevron before the league mark');
+  assert.ok(fold < row.indexOf('game-sport-name'));
+  assert.ok(row.slice(fold).includes('(click)="toggleGroup(gk); $event.stopPropagation()"'));
+  assert.ok(row.slice(fold).includes('d="M9 6l6 6-6 6"'), 'the chevron points right');
+  const css = scss.slice(scss.indexOf('.game-sport {'), scss.indexOf('.game-row {'));
+  assert.ok(css.includes('grid-template-columns: auto auto minmax(0, 1fr) auto;'));
+  assert.match(css, /&\[aria-expanded="true"\] \.game-fold svg \{\s*rotate: 90deg;/);
+  const hover = css.match(/&:hover \{\s*color: ([^;]+);/);
+  assert.ok(hover && !/gold|yellow/.test(hover[1]), 'lighter on hover, not gold');
 });
