@@ -103,8 +103,9 @@
           @for (cell of barCells(position); track cell.tab) {
             @switch (cell.kind) {
               @case ('open') {
-                <!-- (the open family, one group: its tab as the label, then its members, the lit rule under all of
-                     them and a hairline at each end; on the sub-row widths its tab stands alone, lit) -->
+                <!-- (the open family, one group: its members, the lit rule under all of them and a hairline at
+                     each end; its own tab is in the markup for the sub-row widths, where it stands alone, lit,
+                     and the styles hide it on the row that holds the members) -->
                 <span class="family-group" role="presentation">
                   <button
                     type="button"

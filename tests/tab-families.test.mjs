@@ -104,13 +104,15 @@ test('the bar: no sub-row on phones, the sub-row only on the tablet widths, the 
   // less motion (the one motion in the bar)
   assert.match(styles, /@keyframes family-open/);
   assert.match(styles, /\.member \{[\s\S]*?@media \(prefers-reduced-motion: no-preference\) \{\s*animation: family-open 0\.2s/);
-  // No chevrons anywhere in the bar, and nothing styles a shut family apart from a plain tab: the only rule on
-  // button.family is the lit one for the open family's tab on the sub-row widths
+  // No chevrons anywhere in the bar, and nothing styles a shut family apart from a plain tab: the only rules on
+  // button.family are the lit one for the open family's tab on the sub-row widths, and the one that hides that
+  // tab inside the open group on the accordion widths (the owner: the members alone are the group)
   assert.doesNotMatch(template, /chevron/i, 'no chevron element');
   assert.doesNotMatch(styles, /chevron/i, 'no chevron style');
-  assert.doesNotMatch(template, /family-caption/, 'no caption: the family tab itself labels the open group');
+  assert.doesNotMatch(template, /family-caption/, 'no caption: the members themselves say what the open group is');
   const familyRules = [...styles.matchAll(/button\.family\b[^{]*\{/g)].map((m) => m[0]);
-  assert.deepEqual(familyRules, ["button.family[aria-expanded='true'] {"], 'a shut family styled as a plain tab');
+  assert.deepEqual(familyRules, ["button.family[aria-expanded='true'] {", 'button.family {'], 'a shut family styled as a plain tab');
+  assert.match(styles, /\.family-group \{[\s\S]*?> button\.family \{\s*display: none;/, "the open family's own tab hidden inside the group");
   assert.match(styles, /@media \(min-width: v\.bp\(phone-up\)\) and \(max-width: #\{v\.bp\(medium\) - 1px\}\) \{\s*button\.family\[aria-expanded='true'\] \{\s*@include v\.lit-tab;/);
   // The open family is one group: a wrapper holding the family's tab (the label) and then its members, one lit
   // rule (the lit tab's dots) under the whole group, a hairline at each end, the showing member's own rule out

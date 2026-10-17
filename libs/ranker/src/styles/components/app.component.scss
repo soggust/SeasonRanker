@@ -399,12 +399,12 @@ main {
   }
 
   // The families (tab-families.ts). A shut family's tab is a tab like any other (TM's, HC's: the same size, type
-  // and hover; nothing on it says it opens). From 900px up the open family is one group in the row: its own tab
-  // the group's label, then its members, every one an ordinary tab, and ONE lit rule (the lit tab's row of dots)
-  // running under the whole group from the label through its last member, a hairline in the panel's rule color
-  // at each end; the showing member alone is lit (LED text and glow), the label and the other members white on
-  // the shared rule. Narrower (a tablet under 900px), the open family's tab stays on the row, lit like any
-  // showing tab, and the members move to the sub-row under it.
+  // and hover; nothing on it says it opens). From 900px up the open family is one group in the row: its members
+  // alone (Team D · Edge · DL · LB · CB · S), every one an ordinary tab, its own tab gone while it's open (the
+  // owner: the members say what the group is), and ONE lit rule (the lit tab's row of dots) running under the
+  // whole group, a hairline in the panel's rule color at each end; the showing member alone is lit (LED text
+  // and glow), the other members white on the shared rule. Narrower (a tablet under 900px), the open family's
+  // tab stays on the row, lit like any showing tab, and the members move to the sub-row under it.
   .member {
     display: none;
   }
@@ -437,6 +437,11 @@ main {
 
       button {
         flex: 1 1 auto;
+      }
+
+      // (the family's own tab steps aside while it's open: the members are the group)
+      > button.family {
+        display: none;
       }
 
       // (the rule doesn't ignite: the members' unfold is the bar's one motion, and a transform animated
