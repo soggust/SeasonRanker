@@ -699,14 +699,11 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // wide screen. From 1000px the page stands still: the board fills what's left of the height and scrolls inside,
 // the right column on its own; narrower, everything stacks and the page scrolls as usual
 // ---------------------------------------------------------------------------
-// (the board column no wider than 880px, the right column its 340 to 390px, the pair centred in any spare room: the
-// owner's note, 2026-10-17)
 .book-work {
   align-items: stretch;
   display: flex;
   flex-wrap: wrap;
   gap: v.$space-24;
-  justify-content: center;
   width: 100%;
 }
 
@@ -715,7 +712,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   flex: 999 1 640px;
   flex-direction: column;
   gap: v.$space-12;
-  max-width: 880px;
   min-width: 0;
 }
 
@@ -920,13 +916,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// The board: a dot-matrix scoreboard in its 1px edge alone (the dark ring and the shadow, "the box effect", gone:
-// the owner's note, 2026-10-17), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
+// The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
+// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
 .board {
-  @include v.scoreboard-panel(v.$radius-lg, none);
+  @include v.scoreboard-panel(v.$radius-lg, (0 0 0 5px v.$panel-dark, 0 0 0 6px v.$panel-edge, 0 10px 30px rgba(0, 0, 0, 0.55)));
   display: flex;
   flex-direction: column;
-  margin: 0;
+  margin: 6px;
   overflow: hidden;
   position: relative;
 }
@@ -1126,7 +1122,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   align-items: center;
   display: grid;
   gap: v.$space-14;
-  grid-template-columns: 30px 46px 34px minmax(0, 1fr) 170px 96px;
+  grid-template-columns: 30px 34px 34px minmax(0, 1fr) 170px 96px;
   padding: 11px 16px;
   transition: background-color v.$t-hover ease;
 
@@ -1163,20 +1159,22 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // The rank: a scoreboard tile with segment digits, like the rankings grid's: the top 10 green, the rest white;
-// a lock's padlock a light chocolate, a CHECK's "?" lavender, each glowing like the digits. A click opens how its
-// score is built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear); the
-// popover open, the tile stays as it is (the meter's open state is the cue: the owner's note, 2026-10-17)
+// a lock's padlock a light chocolate, a CHECK's "?" lavender, each glowing like the digits. No shadow of its own
+// ("the box effect": the owner's note, 2026-10-17) and the circle's size, 34px square, so the tiles and the circles
+// stand in two even columns; two digits, the padlock and the "?" sized to it. A click opens how its score is
+// built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear); the popover
+// open, the tile stays as it is (the meter's open state is the cue)
 .bet-rank {
-  @include v.led-tile;
+  @include v.led-tile(v.$radius-md, none);
   border: 2px solid transparent;
   cursor: pointer;
-  font-size: v.$fs-15;
+  font-size: v.$fs-14;
   font-weight: 700;
-  height: 36px;
+  height: 34px;
   line-height: 1;
   padding: 2px 0 0;
   transition: border-color v.$t-hover ease;
-  width: 46px;
+  width: 34px;
 
   &:hover,
   &:focus-visible {
@@ -1192,7 +1190,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   &.check {
     color: chip.$check-light;
     font-family: v.$font-base;
-    font-size: v.$fs-20;
+    font-size: v.$fs-18;
     padding-top: 0;
     text-shadow: 0 0 8px rgba(chip.$check-light, 0.65);
   }
@@ -1650,7 +1648,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 @include v.down(ai-narrow) {
   .bet-row {
     gap: v.$space-8;
-    grid-template-columns: 22px 40px 30px minmax(0, 1fr) 70px;
+    grid-template-columns: 22px 30px 30px minmax(0, 1fr) 70px;
     padding: 10px;
   }
 
@@ -1659,9 +1657,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   .bet-rank {
-    font-size: v.$fs-13;
-    height: 32px;
-    width: 40px;
+    font-size: v.$fs-12;
+    height: 30px;
+    width: 30px;
+
+    &.check {
+      font-size: v.$fs-16;
+    }
   }
 
   .bet-circle {
