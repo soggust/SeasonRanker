@@ -3,7 +3,8 @@
 The owner signed off on a new look for the Bets page (`/bets`). This is the brief for building it. The two
 design files beside this one are the approved designs as standalone HTML, with every colour, size and layout
 value exact: `Main.dc.html` (desktop, 1440 wide) and `Phone.dc.html` (390 × 844), plus the Live tab's
-`Live.dc.html`, `LiveOpen.dc.html` and `LiveQuiet.dc.html` (section 10). Their markup is a design
+`Live.dc.html`, `LiveOpen.dc.html`, `LiveQuiet.dc.html`, `LivePhone.dc.html` and `LivePhoneOpen.dc.html`
+(section 10). Their markup is a design
 tool's format (`{{holes}}`, `<sc-if>`, `<sc-for>`); read them for values and structure, not as code to paste.
 The sample picks, odds, records and write-ups in them are made up.
 
@@ -340,8 +341,11 @@ are. Add only:
 - **Tag text:** the bet in caps, a dot, then what changed: "J. BROWN O24.5 · 20 pts, needs 5" or "UNDER 221.5 ·
   pace up to 214".
 
-**Phones:** the game cards go one column, the card's header bar wraps (sweat summary on its own line), and the
-modal is the game view's existing phone layout. In it, Your Bets and Game Leaders stack.
+**Phones** (designs: `LivePhone.dc.html` and `LivePhoneOpen.dc.html`, 390 × 844): the phone tab bar reads
+`Board / Live · N / Open · N / Cashed`. The card sits 10px in from the screen edges. Its header bar wraps:
+ON NOW and the All games / My bets pill on the first line, and the sweat summary on its own line under a hairline.
+The game cards go one column. The modal is the game view's existing phone layout (`v.down(phablet)`: small
+logo cards, the board's text wrapping, tabs scrolling sideways). In it, Your Bets and Game Leaders stack.
 
 ### 11. Removed
 

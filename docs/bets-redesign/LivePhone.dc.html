@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Live — The Book</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Nunito:wght@400;500;600;700;800;900&amp;family=DynaPuff:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#0b3322}
+.felt{background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(255,236,200,.1),transparent 70%),radial-gradient(ellipse 120% 90% at 50% 40%,transparent 35%,rgba(0,0,0,.6) 100%),repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px),url("/_blob/ea09a0f17708196482df889c85d5a853") 0 0/512px,url("/_blob/a46d7d38b6096bfd5349709a665ab682") center/cover,radial-gradient(ellipse at 50% 30%,#1d7a4f,#155a3a 55%,#0b3322)}
+.table{background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(255,236,200,.08),transparent 70%),radial-gradient(ellipse 120% 100% at 50% 30%,transparent 50%,rgba(0,0,0,.35) 100%),repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px),url("/_blob/ea09a0f17708196482df889c85d5a853") 0 0/512px,#176240}
+.dots{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212}
+.glow{color:#ebc56c;text-shadow:0 0 6px rgba(235,197,108,.55)}
+.btn{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0}
+.btn:focus-visible{outline:1px solid rgba(255,255,255,.75);outline-offset:2px}
+.posbar button{flex:1;height:100%;font:800 11px/1 Nunito,sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);padding:0 .5em;white-space:nowrap}
+.posbar button:hover:not(.lit){color:#ebc56c}
+.lit{position:relative;box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.2);color:#ebc56c !important;text-shadow:0 0 6px rgba(235,197,108,.55) !important}
+.lit::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:radial-gradient(#ebc56c 1px,transparent 1.3px) 0 100%/4px 4px;filter:drop-shadow(0 0 1.5px #ebc56c);pointer-events:none}
+.kchip{--clay:#555;position:relative;border-radius:50%;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;flex:none;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),transparent 60%),linear-gradient(180deg,transparent 45%,rgba(0,0,0,.22)),var(--clay);border:6px solid var(--clay);box-shadow:inset 0 0 0 2px var(--clay),inset 0 0 0 3px rgba(255,236,196,.45),0 2px 4px rgba(0,0,0,.45);color:#fff;font-family:Nunito,sans-serif}
+.kchip svg{position:absolute;left:-6px;top:-6px;width:calc(100% + 12px);height:calc(100% + 12px);overflow:visible;pointer-events:none}
+.kchip rect{fill:none;x:3px;y:3px;width:calc(100% - 6px);height:calc(100% - 6px);rx:999px;stroke:#f4efe3;stroke-dasharray:5 5;stroke-width:6px}
+.still{filter:none;cursor:default}
+.cardlink{transition:filter .15s,translate .15s}
+.cardlink:hover{filter:brightness(1.15);translate:0 -1px}
+.pcard{background:radial-gradient(ellipse at 85% 0%,rgba(255,226,122,.18),transparent 55%),linear-gradient(135deg,#1d1d1d,#121212 60%,#1a1a1a);border:1px solid transparent;background-clip:padding-box;position:relative}
+.pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.railcard{border:2px solid transparent;border-radius:12px;overflow:hidden;background:linear-gradient(#121212,#121212) padding-box,linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b) border-box;box-shadow:0 4px 12px rgba(0,0,0,.45)}
+.cbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 12px;min-height:0;background:linear-gradient(rgba(63,163,107,.16),rgba(63,163,107,.16)),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border-bottom:1px solid rgba(222,186,106,.55)}
+.tile{background:rgba(255,255,255,.025) !important;border:1px solid #3a3a3a;box-shadow:0 3px 8px rgba(0,0,0,.45);transition:translate .15s,border-color .15s,box-shadow .15s}
+.tile:hover{translate:0 -2px;border-color:rgba(235,197,108,.6);box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.livedot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ee07a;box-shadow:0 0 6px #3ee07a;flex:none}
+@media (prefers-reduced-motion:no-preference){.livedot{animation:blink 1.4s ease-in-out infinite}.rise{animation:rise .22s ease}.fade{animation:fade .22s ease}}
+@keyframes blink{50%{opacity:.35}}
+@keyframes rise{from{opacity:0;translate:-50% calc(-50% + 12px)}}
+@keyframes fade{from{opacity:0}}
+.seg{display:flex;border:1px solid #3a3a3a;border-radius:999px;overflow:hidden;background:#121212}
+.seg button{padding:8px 13px;font:800 10px/1 Nunito,sans-serif;letter-spacing:1.2px;color:#ccc;text-transform:uppercase}
+.seg button[aria-pressed="true"]{background:#ebc56c;color:#1a1a1a}
+.led{display:grid;font-family:DSEG7,Outfit,sans-serif;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.led>span{grid-area:1/1;text-align:right}
+.led .unlit{color:rgba(255,255,255,.06)}
+.chalk{background:radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.05),transparent 40%),radial-gradient(ellipse at 80% 85%,rgba(255,255,255,.035),transparent 45%),repeating-linear-gradient(17deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px),#1f2824}
+.mtabs button{padding:12px 11px;font:500 13px/1 Nunito,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);white-space:nowrap}
+.mtabs button:hover:not(.lit){background:rgba(255,255,255,.06);color:#ebc56c}
+.ccard{border:1px solid #3a3a3a;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.4);padding:10px 14px}
+.chead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 14px;margin-bottom:8px}
+.clabel{color:#fff;font-size:13px;font-weight:800}
+.clabel small{color:rgba(255,255,255,.6);font-size:11px;font-weight:600;margin-left:5px}
+.panel{border-radius:6px;overflow:hidden;border:1px solid rgba(222,186,106,.55);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.pbar{display:flex;align-items:center;gap:8px;padding:12px;font:800 13px/1 Nunito,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#fff;background:linear-gradient(rgba(63,163,107,.16),rgba(63,163,107,.16)),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border-bottom:1px solid rgba(222,186,106,.55)}
+.pico{width:18px;flex:none;text-align:center;font-size:13px;color:#ebc56c}
+.pbody{padding:6px 14px 10px}
+.gplay{display:flex;align-items:baseline;gap:10px;font-size:13px;line-height:1.4;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.gplay:last-child{border-bottom:none}
+.gclock{color:rgba(255,255,255,.6);flex:none;font-size:12px;font-variant-numeric:tabular-nums;font-weight:700;min-width:52px}
+.gtext{flex:1;color:rgba(255,255,255,.8);display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.gscore{color:#ebc56c;flex:none;font-size:12px;font-variant-numeric:tabular-nums;font-weight:900}
+.lead{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.face{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 9px/1 Outfit,sans-serif;color:#fff;background:#2c2c2c}
+.caps{font:800 10px/1 Nunito,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.pill{padding:6px 12px;border:1px solid #3a3a3a;border-radius:999px;background:#121212;font:700 12px/1 Nunito,sans-serif;color:#ccc}
+.pill[aria-pressed="true"]{border-color:#ebc56c;color:#ebc56c;box-shadow:inset 0 0 0 1px rgba(235,197,108,.4)}
+.btable{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.btable th{font:800 10px/1 Nunito,sans-serif;letter-spacing:.8px;color:rgba(255,255,255,.6);text-align:right;padding:8px 6px}
+.btable td{padding:7px 6px;text-align:right;color:rgba(255,255,255,.9);border-top:1px solid rgba(255,255,255,.05)}
+.btable th:first-child,.btable td:first-child{text-align:left}
+.mbody>*{flex:none}
+.scroll{scrollbar-width:thin;scrollbar-color:#d9a520 rgba(0,0,0,.25)}
+</style>
+</helmet>
+<div class="felt" style="min-height: 100vh; box-sizing: border-box; padding: 14px 0 28px; font-family: Nunito, sans-serif; font-size: 13px; color: #fff; display: flex; flex-direction: column; gap: 12px;">
+
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 0 14px;">
+<h1 style="margin: 0; font-family: Outfit, sans-serif; font-weight: 600; font-size: 22px; letter-spacing: 2.5px;" class="glow">THE BOOK</h1>
+<a class="pcard" href="#wallet" aria-label="Bankroll 120.0 units: open your wallet" style="display: flex; align-items: baseline; gap: 8px; padding: 7px 12px; border-radius: 8px; color: #fff; text-decoration: none;">
+<span style="font-size: 9px; font-weight: 800; letter-spacing: 1.2px; color: rgba(255,255,255,.7);">BANKROLL</span>
+<span style="font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600;" class="glow">120.0u</span>
+</a>
+</header>
+<nav class="posbar dots" aria-label="Bets sections" style="margin: 0 14px; height: 40px; display: flex; border: 1px solid #3a3a3a; border-radius: 9.1px; overflow: hidden;">
+<button class="btn">Board</button>
+<button class="btn lit" aria-current="page" style="display: flex; align-items: center; justify-content: center; gap: 6px;"><sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>Live · {{liveCount}}</button>
+<button class="btn">Open · 5</button>
+<button class="btn">Cashed</button>
+</nav>
+
+<section class="railcard" aria-label="{{card.title}}" style="margin: 0 10px;">
+<div class="cbar">
+<h2 style="margin: 0; display: inline-flex; align-items: center; gap: 9px; font: 800 13px/1 Nunito, sans-serif; letter-spacing: 1px; text-transform: uppercase;"><sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{card.title}}</h2>
+<sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}">
+<span style="order: 3; flex-basis: 100%; display: inline-flex; align-items: center; gap: 16px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,.08); font-size: 12px; color: #ccc;">
+<sc-for list="{{sweat}}" as="w" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; {{w.dot}}"></span><b style="color: #fff;">{{w.n}}</b> {{w.t}}</span></sc-for>
+</span>
+</sc-if>
+<span style="flex: 1;"></span>
+<sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><div class="seg" role="group" aria-label="Show"><sc-for list="{{filters}}" as="f" hint-placeholder-count="2"><button class="btn" onClick="{{f.pick}}" aria-pressed="{{f.on}}">{{f.t}}</button></sc-for></div></sc-if>
+<sc-if value="{{quiet}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #ccc;">Nothing on right now. First tip-off at <b class="glow">7:00 PM</b></span></sc-if>
+</div>
+<div class="dots" style="padding: 10px; display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr);">
+<sc-for list="{{games}}" as="g" hint-placeholder-count="5">
+<button class="btn tile dots" onClick="{{g.open}}" aria-label="{{g.aria}}" style="border-radius: 10px; text-align: left; display: flex; flex-direction: column; overflow: hidden;">
+<span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px 0; line-height: 1;">
+<span class="caps">{{g.sport}} · {{g.where}}</span>
+<span style="display: inline-flex; align-items: center; gap: 6px; font: 800 11px/1 Nunito, sans-serif; letter-spacing: 1.2px; {{g.stateTone}}"><sc-if value="{{g.isLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{g.clock}}</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 8px; padding: 10px 14px;">
+<sc-for list="{{g.teams}}" as="t" hint-placeholder-count="2">
+<span style="display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px;">
+<span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 9px/1 Outfit, sans-serif; color: #fff; background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.28), transparent 60%), {{t.c}}; box-shadow: 0 0 0 2px rgba(255,255,255,.15);">{{t.ab}}</span>
+<span style="display: flex; align-items: baseline; gap: 8px; min-width: 0;"><span style="font-family: Outfit, sans-serif; font-size: 16px; font-weight: 600; line-height: 1;">{{t.name}}</span><span style="font-size: 11px; color: rgba(255,255,255,.5);">{{t.rec}}</span></span>
+<span class="led" style="font-size: 22px;"><span class="unlit" aria-hidden="true">{{t.unlit}}</span><span style="{{t.scoreTone}}">{{t.s}}</span></span>
+</span>
+</sc-for>
+</span>
+<sc-if value="{{g.hasSpark}}" hint-placeholder-val="{{true}}">
+<span aria-hidden="true" style="display: block; padding: 0 14px;"><svg viewBox="0 0 300 26" preserveAspectRatio="none" style="display: block; width: 100%; height: 26px;"><line x1="0" y1="13" x2="300" y2="13" stroke="#333" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"></line><path d="{{g.spark}}" fill="none" stroke="#ebc56c" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round" opacity=".85"></path></svg></span>
+</sc-if>
+<sc-if value="{{g.hasLast}}" hint-placeholder-val="{{true}}">
+<span style="display: flex; align-items: center; gap: 8px; margin: 8px 14px 0; padding: 7px 10px; border-radius: 5px; font-size: 12px; line-height: 1.3; {{g.lastStyle}}"><span style="font-variant-numeric: tabular-nums; color: rgba(255,255,255,.55); flex: none;">{{g.lastT}}</span><span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{g.lastText}}</span></span>
+</sc-if>
+<span style="flex: 1;"></span>
+<span style="display: flex; flex-direction: column; margin-top: 10px; border-top: 1px solid rgba(38,38,38,.5);">
+<sc-for list="{{g.bets}}" as="b" hint-placeholder-count="1">
+<span style="display: grid; grid-template-columns: minmax(0, 1fr) 70px auto; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid rgba(29,29,29,.5); background: linear-gradient(90deg, {{b.wash}}, transparent 70%);">
+<span style="font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{b.short}}</span>
+<span aria-hidden="true" style="position: relative; height: 6px; border-radius: 999px; background: #2c2c2c;"><span style="position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; {{b.fill}}"></span><span style="position: absolute; top: -3px; width: 2px; height: 12px; background: #fff; {{b.lineL}}"></span></span>
+<span style="font-size: 9px; font-weight: 900; letter-spacing: .8px; padding: 3px 6px; border-radius: 3px; line-height: 1; {{b.statusStyle}}">{{b.status}}</span>
+</span>
+</sc-for>
+<sc-if value="{{g.noBets}}" hint-placeholder-val="{{false}}"><span style="padding: 9px 14px; font-size: 12px; color: rgba(255,255,255,.6);">{{g.noBetLine}}</span></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+</div>
+
+<sc-if value="{{hasModal}}" hint-placeholder-val="{{false}}">
+<div class="fade" onClick="{{close}}" style="position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(2px); z-index: 20;"></div>
+<div class="chalk rise" role="dialog" aria-modal="true" aria-label="{{m.aria}}" style="position: fixed; z-index: 21; left: 50%; top: 50%; translate: -50% -50%; width: calc(100vw - 16px); height: calc(100vh - 24px); border: 1px solid #3a4440; border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,.65); color: #eee; display: flex; flex-direction: column; overflow: hidden; font-family: Nunito, sans-serif;">
+
+<header style="flex: none; position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; padding: 34px 12px 12px; border-bottom: 1px solid rgba(255,255,255,.1); background: linear-gradient(115deg, rgba(255,255,255,.06), transparent 35%), repeating-linear-gradient(135deg, rgba(255,255,255,.018) 0 2px, transparent 2px 6px), linear-gradient(102deg, {{m.away.hi}} 0%, {{m.away.lo}} 49.6%, rgba(255,255,255,.35) 49.6% 49.9%, {{m.home.lo}} 49.9%, {{m.home.hi}} 100%);">
+<sc-for list="{{m.sides}}" as="sd" hint-placeholder-count="2">
+<div style="order: {{sd.order}}; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0;">
+<span aria-hidden="true" style="width: 69px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 50% 35%, rgba(255,255,255,.3), transparent 65%), {{sd.c}}; box-shadow: inset 0 0 0 3px rgba(255,255,255,.22), 0 6px 14px rgba(0,0,0,.45); font: 700 17px/1 Outfit, sans-serif; letter-spacing: 1px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,.4);">{{sd.ab}}</span>
+<span style="margin-top: 4px; font-family: DynaPuff, cursive; font-size: 17px; text-align: center; line-height: 1.1; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6);">{{sd.name}}</span>
+<span style="font-size: 12px; color: rgba(255,255,255,.75);">{{sd.rec}}</span>
+</div>
+</sc-for>
+<div style="order: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<span style="padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.35); font: 800 10px/1 Nunito, sans-serif; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.85);">{{m.chip}}</span>
+<div class="dots" style="border: 1px solid #3a3a3a; border-radius: 8px; padding: 8px 10px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.5);">
+<span style="display: inline-flex; align-items: center; gap: 7px; font: 800 10px/1 Nunito, sans-serif; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; {{m.stateTone}}"><sc-if value="{{m.isLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{m.state}}</span>
+<span style="display: flex; align-items: center; gap: 12px;">
+<sc-for list="{{m.leds}}" as="l" hint-placeholder-count="2">
+<sc-if value="{{l.isDash}}" hint-placeholder-val="{{false}}"><span style="color: rgba(255,255,255,.4); font-size: 22px;">-</span></sc-if>
+<sc-if value="{{l.isNum}}" hint-placeholder-val="{{true}}"><span class="led" style="font-size: 28px;"><span class="unlit" aria-hidden="true">{{l.unlit}}</span><span style="{{l.tone}}">{{l.s}}</span></span></sc-if>
+</sc-for>
+</span>
+</div>
+<span style="max-width: 150px; text-align: center; font-size: 11px; color: rgba(255,255,255,.8); text-shadow: 0 1px 3px rgba(0,0,0,.5);">{{m.when}}</span>
+</div>
+<button class="btn" onClick="{{close}}" aria-label="Close" title="Close (Esc)" style="position: absolute; top: 12px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,.35); color: #fff; font-size: 18px; line-height: 1;">✕</button>
+</header>
+
+<nav class="mtabs dots" role="tablist" style="flex: none; display: flex; padding: 0 16px; border-bottom: 1px solid #2c2c2c; overflow-x: auto;">
+<sc-for list="{{m.tabs}}" as="tb" hint-placeholder-count="4"><button class="btn {{tb.cls}}" role="tab" aria-selected="{{tb.on}}" onClick="{{tb.pick}}">{{tb.t}}</button></sc-for>
+</nav>
+
+<div class="scroll mbody" style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px 10px 20px; display: flex; flex-direction: column; gap: 12px;">
+
+<sc-if value="{{m.isSummary}}" hint-placeholder-val="{{true}}">
+<div class="ccard dots" style="overflow-x: auto;">
+<table style="width: 100%; border-collapse: collapse;">
+<thead><tr><th style="padding: 6px 8px;"></th><sc-for list="{{m.periods}}" as="p" hint-placeholder-count="4"><th style="padding: 6px 8px; color: rgba(255,255,255,.6); font-size: 11px; font-weight: 800; letter-spacing: 1px;">{{p}}</th></sc-for><th style="padding: 6px 8px; color: rgba(255,255,255,.6); font-size: 11px; font-weight: 800; letter-spacing: 1px; border-left: 1px solid rgba(255,255,255,.12);">T</th></tr></thead>
+<tbody>
+<sc-for list="{{m.lsRows}}" as="r" hint-placeholder-count="2">
+<tr><th style="padding: 6px 8px; text-align: left; min-width: 80px;"><span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: rgba(255,255,255,.9);"><span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font: 700 7px/1 Outfit, sans-serif; color: #fff; background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.25), transparent 60%), {{r.c}};">{{r.ab}}</span>{{r.ab}}</span></th>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4"><td style="padding: 6px 8px; text-align: center; font-family: DSEG7, Outfit, sans-serif; font-size: 16px; {{c.s}}">{{c.t}}</td></sc-for>
+<td style="padding: 6px 8px; text-align: center; font-family: DSEG7, Outfit, sans-serif; font-size: 16px; color: #ebc56c; border-left: 1px solid rgba(255,255,255,.12);">{{r.total}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+
+<div class="ccard dots">
+<div class="chead">
+<span class="clabel">Win probability<small>play by play</small></span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #ccc;"><sc-if value="{{m.isLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{m.wpClock}}</span>
+<span style="display: inline-flex; gap: 12px; font-size: 11px; font-weight: 700; color: #ccc;"><span style="display: inline-flex; align-items: center; gap: 5px;"><i style="width: 10px; height: 10px; border-radius: 2px; background: {{m.home.c}};"></i>{{m.home.ab}}</span><span style="display: inline-flex; align-items: center; gap: 5px;"><i style="width: 10px; height: 10px; border-radius: 2px; background: {{m.away.c}};"></i>{{m.away.ab}}</span></span>
+</div>
+<div style="position: relative; height: 140px;">
+<svg viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true" style="width: 100%; height: 100%; display: block;">
+<defs><clipPath id="wpt"><rect x="0" y="0" width="1000" height="100"></rect></clipPath><clipPath id="wpb"><rect x="0" y="100" width="1000" height="100"></rect></clipPath></defs>
+<line x1="0" y1="100" x2="1000" y2="100" stroke="rgba(255,255,255,.18)" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"></line>
+<path d="{{m.wpFill}}" clip-path="url(#wpt)" fill="{{m.home.c}}" opacity=".5"></path>
+<path d="{{m.wpFill}}" clip-path="url(#wpb)" fill="{{m.away.c}}" opacity=".5"></path>
+<path d="{{m.wpLine}}" fill="none" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+<span style="position: absolute; left: 4px; top: 2px; font-size: 10px; font-weight: 800; color: rgba(255,255,255,.6);">{{m.home.ab}} 100%</span>
+<span style="position: absolute; left: 4px; top: calc(50% - 7px); font-size: 10px; font-weight: 800; color: rgba(255,255,255,.6);">50%</span>
+<span style="position: absolute; left: 4px; bottom: 2px; font-size: 10px; font-weight: 800; color: rgba(255,255,255,.6);">{{m.away.ab}} 100%</span>
+<span aria-hidden="true" style="position: absolute; width: 20px; height: 20px; translate: -50% -50%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 6px/1 Outfit, sans-serif; color: #fff; background: #121212; box-shadow: 0 0 0 2px {{m.penC}}, 0 0 8px rgba(0,0,0,.6); {{m.penPos}}">{{m.penAb}}</span>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start;">
+<section class="panel" aria-label="Your bets">
+<div class="pbar"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span><span style="font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: none; color: #ccc;">{{m.betsSum}}</span></div>
+<div class="dots">
+<sc-for list="{{m.bets}}" as="b" hint-placeholder-count="2">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px 12px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.05);">
+<span style="display: flex; flex-direction: column; gap: 3px; min-width: 0;"><span style="font-size: 14px; font-weight: 800; line-height: 1.2;">{{b.pick}} <span style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,.6);">{{b.odds}}</span></span><span style="font-size: 11px; color: rgba(255,255,255,.6);">{{b.sub}}</span></span>
+<span style="font-size: 10px; font-weight: 900; letter-spacing: 1px; padding: 5px 8px; border-radius: 3px; line-height: 1; {{b.statusStyle}}">{{b.status}}</span>
+<span style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px;">
+<span aria-hidden="true" style="position: relative; height: 8px; border-radius: 999px; background: #2c2c2c;"><span style="position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; {{b.fill}}"></span><sc-if value="{{b.hasProj}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; border: 1px dashed rgba(255,255,255,.5); box-sizing: border-box; {{b.proj}}"></span></sc-if><span style="position: absolute; top: -4px; width: 2px; height: 16px; background: #fff; {{b.lineL}}"></span></span>
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: #ccc;"><span>{{b.left}}</span><span style="font-weight: 700; {{b.rightTone}}">{{b.right}}</span></span>
+</span>
+</div>
+</sc-for>
+<sc-if value="{{m.noBets}}" hint-placeholder-val="{{false}}"><div style="padding: 12px 14px; color: #ccc;">No tickets on this one. The bot’s read: <b style="color: #fff;">{{m.botRead}}</b></div></sc-if>
+</div>
+</section>
+
+
+
+<section class="panel" aria-label="Game leaders">
+<div class="pbar"><span class="pico" aria-hidden="true">★</span>Game Leaders</div>
+<div class="dots pbody" style="display: grid; grid-template-columns: 1fr; gap: 0;">
+<sc-for list="{{m.leaderCols}}" as="col" hint-placeholder-count="2">
+<div><h3 class="caps" style="margin: 8px 0 4px; color: #fff; font-size: 11px;">{{col.team}}</h3>
+<sc-for list="{{col.rows}}" as="l" hint-placeholder-count="3">
+<div class="lead" style="{{l.rowStyle}}"><span class="face" style="box-shadow: 0 0 0 2px {{l.c}};">{{l.ini}}</span><span style="display: flex; flex-direction: column; min-width: 0;"><small class="caps" style="font-size: 10px;">{{l.cat}}</small><b style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{l.name}}<sc-if value="{{l.hasBet}}" hint-placeholder-val="{{false}}"> <span style="margin-left: 4px; font-size: 9px; font-weight: 900; letter-spacing: .8px; padding: 2px 5px; border-radius: 3px; background: #ebc56c; color: #1a1a1a; vertical-align: 2px;">YOUR BET</span></sc-if></b></span><span style="font-size: 12px; font-weight: 700; color: rgba(255,255,255,.9);">{{l.line}}</span></div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+<sc-if value="{{m.hasImportant}}" hint-placeholder-val="{{true}}">
+<section class="panel" aria-label="Important plays">
+<div class="pbar"><span class="pico" aria-hidden="true">✦</span><span style="flex: 1;">Important Plays</span><button class="btn" onClick="{{m.toPlays}}" style="font: 800 11px/1 Nunito, sans-serif; letter-spacing: 1.2px; color: #ebc56c;">ALL PLAYS →</button></div>
+<div class="dots pbody">
+<sc-for list="{{m.important}}" as="p" hint-placeholder-count="5">
+<div class="gplay" style="{{p.wash}}"><span class="gclock">{{p.when}}</span><span class="gtext"><span style="{{p.textTone}}">{{p.text}}</span><sc-if value="{{p.hasTag}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: .3px; line-height: 1; {{p.tagStyle}}"><span aria-hidden="true">{{p.icon}}</span>{{p.tag}}</span></sc-if></span><sc-if value="{{p.hasScore}}" hint-placeholder-val="{{false}}"><span class="gscore">{{p.score}}</span></sc-if></div>
+</sc-for>
+</div>
+</section>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{m.isBox}}" hint-placeholder-val="{{false}}">
+<section class="panel" aria-label="Team stats">
+<div class="pbar"><span class="pico" aria-hidden="true">⇄</span>Team Stats</div>
+<div class="dots" style="padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 11px;">
+<sc-for list="{{m.stats}}" as="st" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 5px;">
+<div style="display: flex; justify-content: space-between; font-size: 13px; line-height: 1;"><b style="font-variant-numeric: tabular-nums;">{{st.a}}</b><span class="caps">{{st.k}}</span><b style="font-variant-numeric: tabular-nums;">{{st.h}}</b></div>
+<div aria-hidden="true" style="display: flex; gap: 3px; height: 6px;"><div style="border-radius: 999px 0 0 999px; {{st.aBar}}"></div><div style="border-radius: 0 999px 999px 0; {{st.hBar}}"></div></div>
+</div>
+</sc-for>
+</div>
+</section>
+<sc-for list="{{m.box}}" as="bx" hint-placeholder-count="2">
+<section class="panel" aria-label="{{bx.team}}">
+<div class="pbar"><span class="pico" aria-hidden="true">☰</span>{{bx.team}}</div>
+<div class="dots" style="padding: 2px 14px 8px;">
+<table class="btable"><thead><tr><sc-for list="{{bx.head}}" as="h" hint-placeholder-count="6"><th>{{h}}</th></sc-for></tr></thead>
+<tbody><sc-for list="{{bx.rows}}" as="r" hint-placeholder-count="5"><tr style="{{r.style}}"><sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6"><td>{{c}}</td></sc-for></tr></sc-for></tbody></table>
+</div>
+</section>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{m.isPlays}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; gap: 8px;"><sc-for list="{{m.pfilters}}" as="f" hint-placeholder-count="3"><button class="btn pill" onClick="{{f.pick}}" aria-pressed="{{f.on}}">{{f.t}}</button></sc-for></div>
+<sc-for list="{{m.groups}}" as="grp" hint-placeholder-count="2">
+<section class="panel" aria-label="{{grp.title}}">
+<div class="pbar"><span class="pico" aria-hidden="true">▾</span>{{grp.title}}</div>
+<div class="dots pbody">
+<sc-for list="{{grp.plays}}" as="p" hint-placeholder-count="5">
+<div class="gplay" style="{{p.wash}}"><span class="gclock">{{p.t}}</span><span class="gtext"><span style="{{p.textTone}}">{{p.text}}</span><sc-if value="{{p.hasTag}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: .3px; line-height: 1; {{p.tagStyle}}"><span aria-hidden="true">{{p.icon}}</span>{{p.tag}}</span></sc-if></span><sc-if value="{{p.hasScore}}" hint-placeholder-val="{{false}}"><span class="gscore">{{p.score}}</span></sc-if></div>
+</sc-for>
+</div>
+</section>
+</sc-for>
+<sc-if value="{{m.noGroups}}" hint-placeholder-val="{{false}}"><p style="margin: 8px 0 0; color: #9a9a9a;">None of your bets have moved yet.</p></sc-if>
+</sc-if>
+
+<sc-if value="{{m.isPreview}}" hint-placeholder-val="{{false}}">
+<div class="ccard dots">
+<div class="chead"><span class="clabel">Matchup Predictor<small>the bot</small></span></div>
+<div style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px;">
+<span style="display: flex; flex-direction: column; align-items: center;"><b style="font-size: 18px;">{{m.predAway}}</b><small class="caps">{{m.away.ab}}</small></span>
+<span style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; gap: 2px;"><i style="{{m.predAwayBar}}"></i><i style="{{m.predHomeBar}}"></i></span>
+<span style="display: flex; flex-direction: column; align-items: center;"><b style="font-size: 18px;">{{m.predHome}}</b><small class="caps">{{m.home.ab}}</small></span>
+</div>
+</div>
+<section class="panel" aria-label="Your bets">
+<div class="pbar"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span></div>
+<div class="dots" style="padding: 12px 14px; color: #ccc; font-size: 13px;">{{m.preBet}}</div>
+</section>
+<section class="panel" aria-label="Season leaders">
+<div class="pbar"><span class="pico" aria-hidden="true">★</span>Season Leaders</div>
+<div class="dots pbody" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;">
+<sc-for list="{{m.leaderCols}}" as="col" hint-placeholder-count="2">
+<div><h3 class="caps" style="margin: 8px 0 4px; color: #fff; font-size: 11px;">{{col.team}}</h3>
+<sc-for list="{{col.rows}}" as="l" hint-placeholder-count="2"><div class="lead"><span class="face" style="box-shadow: 0 0 0 2px {{l.c}};">{{l.ini}}</span><span style="display: flex; flex-direction: column; min-width: 0;"><small class="caps" style="font-size: 10px;">{{l.cat}}</small><b style="font-size: 13px;">{{l.name}}</b></span><span style="font-size: 12px; font-weight: 700;">{{l.line}}</span></div></sc-for>
+</div>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{m.isInfo}}" hint-placeholder-val="{{false}}">
+<section class="panel" aria-label="Game info">
+<div class="pbar"><span class="pico" aria-hidden="true">⌂</span>Game Info</div>
+<div class="dots pbody">
+<sc-for list="{{m.info}}" as="i" hint-placeholder-count="4"><div class="lead" style="grid-template-columns: 140px minmax(0, 1fr);"><span class="caps">{{i.k}}</span><span style="font-size: 13px;">{{i.v}}</span></div></sc-for>
+</div>
+</section>
+</sc-if>
+
+</div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { open: null, tab: 'summary', filter: 'all', show: 'all', quiet: false }; }
+  games() {
+    const T = (ab, name, short, c, hi, lo, rec) => ({ ab, name, short, c, hi, lo, rec });
+    const B = (pick, short, odds, sub, status, good, val, line, min, max, proj, left, right) => ({ pick, short, odds, sub, status, good, val, line, min, max, proj, left, right });
+    return {
+      bos: { sport: 'NBA', state: 'live', clock: '3RD 4:12', stateLong: '3rd Qtr · 4:12', done: 0.66, away: T('BOS', 'Boston Celtics', 'Celtics', '#007a33', '#1f9a55', '#05301a', '4–2'), home: T('NYK', 'New York Knicks', 'Knicks', '#006bb6', '#2a86cc', '#062a4a', '5–1'), as: 73, hs: 69, where: 'MSG', venue: 'Madison Square Garden, New York',
+        line: 'NYK −1.5 · O/U 221.5', tv: 'ESPN', periods: ['1', '2', '3', '4'], ls: [[29, 27], [31, 29], [13, 13], [null, null]], wp: [0.5, 0.46, 0.41, 0.44, 0.38, 0.4, 0.35, 0.37, 0.33, 0.36, 0.31, 0.34, 0.3, 0.27, 0.33, 0.36],
+        bets: [B('Under 221.5', 'Under 221.5', '−108', '1.0u to win 0.93u · LOVE · the bot’s pick', 'WINNING', true, 214.3, 221.5, 180, 240, null, 'On pace for 214', 'Under by 7.2'),
+          B('Jaylen Brown over 24.5 pts', 'J. Brown o24.5 pts', '−115', '1.0u to win 0.87u · YOUR CALL', 'ON PACE', true, 20, 24.5, 0, 32, 27.4, '20 pts · needs 5 more', 'On pace for 27')],
+        leaders: [['BOS', 'Points', 'Jaylen Brown', '20 PTS', true], ['BOS', 'Rebounds', 'Al Horford', '7 REB', false], ['BOS', 'Assists', 'Derrick White', '5 AST', false], ['NYK', 'Points', 'Jalen Brunson', '24 PTS', false], ['NYK', 'Rebounds', 'Karl-Anthony Towns', '11 REB', false], ['NYK', 'Assists', 'Jalen Brunson', '6 AST', false]],
+        stats: [['FG%', '47.8', '44.6'], ['3PT', '13-31', '11-29'], ['REB', '33', '31'], ['AST', '18', '15'], ['TO', '9', '12']],
+        box: { head: ['Player', 'MIN', 'PTS', 'REB', 'AST', 'FG', '3PT'], BOS: [['Jaylen Brown', '26', '20', '5', '2', '7-14', '3-6', true], ['Derrick White', '27', '14', '3', '5', '5-10', '4-8'], ['Payton Pritchard', '19', '11', '2', '3', '4-7', '2-4'], ['Al Horford', '22', '8', '7', '2', '3-6', '2-5'], ['Jrue Holiday', '24', '7', '4', '4', '3-8', '1-4']], NYK: [['Jalen Brunson', '28', '24', '3', '6', '9-17', '3-7'], ['Karl-Anthony Towns', '27', '15', '11', '1', '6-12', '1-4'], ['OG Anunoby', '26', '12', '4', '1', '4-9', '3-6'], ['Mikal Bridges', '27', '10', '3', '3', '4-10', '2-6'], ['Josh Hart', '25', '6', '9', '4', '3-6', '0-1']] },
+        plays: [
+          ['period', '3rd Quarter'],
+          ['play', '4:12', 'NYK', 'Jalen Brunson makes 26-foot pull-up three', '73–69', 'bad', 'UNDER 221.5 · pace up to 214'],
+          ['play', '4:38', 'BOS', 'Jaylen Brown makes driving layup, and-one free throw good', '73–66', 'good', 'J. BROWN O24.5 · 20 pts, needs 5'],
+          ['play', '4:58', 'BOS', 'Payton Pritchard makes 9-foot floater', '70–66', null],
+          ['play', '5:21', 'BOS', 'Celtics timeout', null, null],
+          ['play', '5:21', 'NYK', 'OG Anunoby makes 23-foot corner three (Brunson assists)', '68–66', 'bad', 'UNDER 221.5 · Knicks 6–0 run, pace 212'],
+          ['play', '6:02', 'NYK', 'Mikal Bridges makes 25-foot three', '68–63', null],
+          ['play', '6:44', 'NYK', 'Josh Hart defensive rebound', null, null],
+          ['play', '8:51', 'BOS', 'Jaylen Brown makes 27-foot step-back three', '68–60', 'good', 'J. BROWN O24.5 · 17 pts'],
+          ['play', '9:30', 'NYK', 'Jalen Brunson makes free throw 2 of 2', '65–60', null],
+          ['play', '9:44', 'BOS', 'Jaylen Brown bad pass, stolen by Hart', null, 'bad', 'J. BROWN O24.5 · empty trip'],
+          ['play', '10:05', 'BOS', 'Jaylen Brown makes 16-foot jumper', '65–58', 'good', 'J. BROWN O24.5 · 14 pts'],
+          ['play', '10:48', 'NYK', 'Karl-Anthony Towns makes layup', '63–58', null],
+          ['play', '11:22', 'BOS', 'Derrick White makes 25-foot three', '63–56', null],
+          ['period', '2nd Quarter'],
+          ['play', '0:01', 'NYK', 'Jalen Brunson makes 30-foot three at the buzzer', '60–56', 'bad', 'UNDER 221.5 · pace 232 at the half'],
+          ['play', '0:24', 'BOS', 'Jaylen Brown makes two free throws', '60–53', 'good', 'J. BROWN O24.5 · 11 pts']
+        ] },
+      tor: { sport: 'NHL', state: 'live', clock: '2ND 11:40', stateLong: '2nd · 11:40', done: 0.47, away: T('TOR', 'Toronto Maple Leafs', 'Maple Leafs', '#00205b', '#1d4f9a', '#061633', '3–2–1'), home: T('MTL', 'Montreal Canadiens', 'Canadiens', '#af1e2d', '#c83a48', '#3d0a10', '4–1–0'), as: 2, hs: 1, where: 'Bell Centre', venue: 'Bell Centre, Montreal',
+        line: 'TOR −135 · O/U 6.5', tv: 'Sportsnet', periods: ['1', '2', '3'], ls: [[1, 1], [1, 0], [null, null]], wp: [0.5, 0.42, 0.47, 0.49, 0.43, 0.41, 0.38],
+        bets: [B('Auston Matthews over 3.5 shots', 'Matthews o3.5 SOG', '−125', '1.0u to win 0.80u · LOVE · the bot’s pick', 'NEEDS 2', null, 2, 3.5, 0, 6, 4.4, '2 shots · 9:58 TOI', 'On pace for 4')],
+        leaders: [['TOR', 'Goals', 'Auston Matthews', '1 G · 2 SOG', true], ['TOR', 'Assists', 'William Nylander', '1 A', false], ['MTL', 'Goals', 'Nick Suzuki', '1 G', false], ['MTL', 'Saves', 'Sam Montembeault', '12 SV', false]],
+        stats: [['SOG', '14', '11'], ['FO%', '54', '46'], ['HITS', '12', '17'], ['BLK', '6', '9']],
+        box: { head: ['Player', 'G', 'A', 'SOG', 'TOI'], TOR: [['Auston Matthews', '1', '0', '2', '9:58', true], ['William Nylander', '0', '1', '3', '10:12']], MTL: [['Nick Suzuki', '1', '0', '2', '10:40'], ['Cole Caufield', '0', '1', '3', '10:05']] },
+        plays: [['period', '2nd Period'], ['play', '11:40', 'TOR', 'Auston Matthews shot on goal, saved by Montembeault', null, 'good', 'MATTHEWS O3.5 SOG · 2 shots, needs 2'], ['play', '13:05', 'MTL', 'Nick Suzuki power-play goal (Caufield)', '2–1', null], ['play', '15:30', 'TOR', 'Auston Matthews shot blocked by Guhle', null, 'bad', 'MATTHEWS O3.5 SOG · blocked, doesn’t count'], ['play', '18:12', 'TOR', 'William Nylander goal off the rush', '2–0', null], ['period', '1st Period'], ['play', '6:44', 'TOR', 'Auston Matthews goal, wrist shot (Nylander)', '1–0', 'good', 'MATTHEWS O3.5 SOG · 1 shot']] },
+      mil: { sport: 'NBA', state: 'live', clock: 'END 1ST', stateLong: 'End of 1st', done: 0.25, away: T('MIL', 'Milwaukee Bucks', 'Bucks', '#00471b', '#1f7a3d', '#021a0a', '3–3'), home: T('CLE', 'Cleveland Cavaliers', 'Cavaliers', '#860038', '#a8204f', '#2d0013', '5–1'), as: 31, hs: 26, where: 'Rocket Arena', venue: 'Rocket Arena, Cleveland',
+        line: 'CLE −4.5 · O/U 228.5', tv: 'NBA TV', periods: ['1', '2', '3', '4'], ls: [[31, 26], [null, null], [null, null], [null, null]], wp: [0.5, 0.56, 0.52, 0.47, 0.44, 0.45],
+        bets: [B('Cavaliers −4.5', 'Cavaliers −4.5', '−110', '1.0u to win 0.91u · LIKE · the bot’s pick', 'DOWN 9.5', false, -5, 4.5, -15, 15, null, 'CLE down 5 after one', 'Needs a 10-pt swing')],
+        leaders: [['MIL', 'Points', 'Giannis Antetokounmpo', '12 PTS', false], ['CLE', 'Points', 'Donovan Mitchell', '9 PTS', false]], stats: [['FG%', '56.5', '45.0'], ['3PT', '4-9', '3-11'], ['REB', '13', '9']],
+        box: { head: ['Player', 'PTS', 'REB', 'AST'], MIL: [['Giannis Antetokounmpo', '12', '5', '1']], CLE: [['Donovan Mitchell', '9', '1', '2']] },
+        plays: [['period', '1st Quarter'], ['play', '0:00', 'MIL', 'Giannis Antetokounmpo putback at the buzzer', '31–26', 'bad', 'CAVALIERS −4.5 · down 5']] },
+      edm: { sport: 'NHL', state: 'live', clock: '1ST 8:02', stateLong: '1st · 8:02', done: 0.13, away: T('EDM', 'Edmonton Oilers', 'Oilers', '#041e42', '#1d4b8a', '#020d1e', '2–3–1'), home: T('VGK', 'Vegas Golden Knights', 'Golden Knights', '#b4975a', '#c9ae74', '#3a2f18', '4–2–0'), as: 1, hs: 1, where: 'T-Mobile Arena', venue: 'T-Mobile Arena, Las Vegas',
+        line: 'VGK −120 · O/U 6.5', tv: 'TNT', periods: ['1', '2', '3'], ls: [[1, 1], [null, null], [null, null]], wp: [0.5, 0.44, 0.53, 0.52],
+        bets: [B('Over 6.5', 'Over 6.5', '+100', '1.0u to win 1.0u · LIKE · the bot’s pick', 'ON PACE', true, 2, 6.5, 0, 9, 8.6, '2 goals in 12 min', 'On pace for 8')],
+        leaders: [['EDM', 'Goals', 'Connor McDavid', '1 G', false], ['VGK', 'Goals', 'Jack Eichel', '1 G', false]], stats: [['SOG', '6', '5'], ['FO%', '48', '52']],
+        box: { head: ['Player', 'G', 'A', 'SOG'], EDM: [['Connor McDavid', '1', '0', '3']], VGK: [['Jack Eichel', '1', '0', '2']] },
+        plays: [['period', '1st Period'], ['play', '8:02', 'VGK', 'Jack Eichel goal, snap shot from the slot', '1–1', 'good', 'OVER 6.5 · 2 goals by the 12th minute'], ['play', '3:30', 'EDM', 'Connor McDavid goal on a breakaway', '1–0', 'good', 'OVER 6.5 · 1 goal']] },
+      lal: { sport: 'NBA', state: 'live', clock: '2ND 2:05', stateLong: '2nd Qtr · 2:05', done: 0.48, away: T('LAL', 'Los Angeles Lakers', 'Lakers', '#552583', '#7a45ab', '#1d0b30', '3–3'), home: T('PHX', 'Phoenix Suns', 'Suns', '#e56020', '#f07a3c', '#4a1c06', '2–4'), as: 58, hs: 61, where: 'Footprint Center', venue: 'Footprint Center, Phoenix',
+        line: 'PHX −2.5 · O/U 229.5', tv: 'ESPN', periods: ['1', '2', '3', '4'], ls: [[30, 28], [28, 33], [null, null], [null, null]], wp: [0.5, 0.48, 0.45, 0.5, 0.56, 0.6, 0.58], bets: [], botRead: 'Suns −2.5 is a PASS',
+        leaders: [['LAL', 'Points', 'LeBron James', '15 PTS', false], ['PHX', 'Points', 'Devin Booker', '19 PTS', false]], stats: [['FG%', '51.0', '49.2'], ['3PT', '8-19', '10-24'], ['REB', '20', '24']],
+        box: { head: ['Player', 'PTS', 'REB', 'AST'], LAL: [['LeBron James', '15', '6', '4']], PHX: [['Devin Booker', '19', '2', '4']] },
+        plays: [['period', '2nd Quarter'], ['play', '2:05', 'PHX', 'Devin Booker makes 18-foot pull-up jumper', '58–61', null], ['play', '2:40', 'LAL', 'LeBron James makes driving dunk', '58–59', null]] },
+      den: { sport: 'NBA', state: 'pre', clock: '7:00 PM', away: T('DEN', 'Denver Nuggets', 'Nuggets', '#0e2240', '#2a4a7a', '#050c18', '4–2'), home: T('OKC', 'Oklahoma City Thunder', 'Thunder', '#007ac1', '#2a95d6', '#022a45', '6–0'), where: 'Paycom Center', venue: 'Paycom Center, Oklahoma City', line: 'OKC −5.5 · O/U 226.5', tv: 'ESPN', pred: 0.64, bot: 'Thunder −5.5 · LIKE', bets: [],
+        leaders: [['DEN', 'Points', 'Nikola Jokić', '29.8 PPG', false], ['OKC', 'Points', 'Shai Gilgeous-Alexander', '32.0 PPG', false]] },
+      col: { sport: 'NHL', state: 'pre', clock: '7:00 PM', away: T('COL', 'Colorado Avalanche', 'Avalanche', '#6f263d', '#8f3f58', '#250b14', '4–1–1'), home: T('DAL', 'Dallas Stars', 'Stars', '#006847', '#1f8a65', '#01241a', '3–2–1'), where: 'American Airlines Center', venue: 'American Airlines Center, Dallas', line: 'Lines open 5 PM', tv: 'TNT', pred: 0.48, bot: 'Lines open 5 PM', bets: [],
+        leaders: [['COL', 'Points', 'Nathan MacKinnon', '1.6 P/GP', false], ['DAL', 'Points', 'Jason Robertson', '1.1 P/GP', false]] },
+      gsw: { sport: 'NBA', state: 'pre', clock: '9:00 PM', away: T('GSW', 'Golden State Warriors', 'Warriors', '#1d428a', '#3a64b0', '#08183a', '3–3'), home: T('SAC', 'Sacramento Kings', 'Kings', '#5a2d81', '#7a4aa3', '#1e0c2e', '2–4'), where: 'Golden 1 Center', venue: 'Golden 1 Center, Sacramento', line: 'SAC −1.5 · O/U 233.5', tv: 'NBC', pred: 0.53, bot: 'Under 233.5 · LOVE',
+        bets: [B('Under 233.5', 'Under 233.5', '−110', '1.0u to win 0.91u · LOVE · the bot’s pick', 'PENDING', null, 0, 233.5, 200, 260, null, 'Tips off at 9:00 PM', 'Locked in')],
+        leaders: [['GSW', 'Points', 'Stephen Curry', '27.1 PPG', false], ['SAC', 'Points', 'De’Aaron Fox', '25.4 PPG', false]] }
+    };
+  }
+  renderVals() {
+    const s = this.state, G = this.games();
+    const GRN = '#3ee07a', RED = '#ff7468', GLD = '#ebc56c';
+    const col = (b) => (b.good === true ? GRN : b.good === false ? RED : GLD);
+    const statusStyle = (b) => 'background: ' + col(b) + '26; color: ' + col(b) + '; box-shadow: inset 0 0 0 1px ' + col(b) + '80;';
+    const meter = (b) => { const pct = (v) => Math.max(0, Math.min(100, ((v - b.min) / (b.max - b.min)) * 100)), c = col(b), pending = b.status === 'PENDING';
+      return Object.assign({}, b, { fill: pending ? 'width: 0;' : 'width: ' + pct(b.val).toFixed(1) + '%; background: ' + c + '; box-shadow: 0 0 6px ' + c + '80;', lineL: 'left: calc(' + pct(b.line).toFixed(1) + '% - 1px);',
+        hasProj: b.proj !== null, proj: b.proj !== null ? 'width: ' + pct(b.proj).toFixed(1) + '%;' : '', statusStyle: statusStyle(b), rightTone: 'color: ' + c + ';', wash: c + '14' }); };
+    const tagS = { good: 'background: rgba(62,224,122,.14); color: #3ee07a; box-shadow: inset 0 0 0 1px rgba(62,224,122,.45);', bad: 'background: rgba(255,116,104,.14); color: #ff7468; box-shadow: inset 0 0 0 1px rgba(255,116,104,.45);' };
+    const keys = Object.keys(G);
+    const liveKeys = s.quiet ? [] : keys.filter((k) => G[k].state === 'live');
+    const quiet = liveKeys.length === 0;
+    const pool = quiet ? keys.filter((k) => G[k].state === 'pre') : liveKeys.filter((k) => s.show === 'all' || G[k].bets.length > 0).sort((a, b) => G[b].bets.length - G[a].bets.length);
+    const tile = (k) => {
+      const g = G[k], live = g.state === 'live', pre = g.state === 'pre', lead = pre ? 0 : g.as - g.hs;
+      const lastP = (g.plays || []).find((p) => p[0] === 'play');
+      const bets = g.bets.map(meter);
+      const spark = !pre && g.wp.length > 1 ? g.wp.map((v, i) => (i ? 'L' : 'M') + (i / (g.wp.length - 1) * 300 * g.done).toFixed(1) + ' ' + Math.max(2, Math.min(24, 13 + (v - 0.5) * 42)).toFixed(1)).join(' ') : '';
+      return { sport: g.sport, where: g.where, clock: g.clock, isLive: live, stateTone: live ? 'color: #3ee07a;' : 'color: #ebc56c;',
+        teams: [[g.away, g.as, lead > 0], [g.home, g.hs, lead < 0]].map(([t, sc, up]) => ({ ab: t.ab, c: t.c, name: t.short, rec: t.rec, s: pre ? '' : String(sc), unlit: pre ? '' : '8'.repeat(String(sc).length), scoreTone: up ? 'color: #ebc56c; text-shadow: 0 0 8px rgba(235,197,108,.5);' : 'color: #fff;' })),
+        hasSpark: !!spark, spark, hasLast: !!lastP && !pre, lastT: lastP ? lastP[1] : '', lastText: lastP ? lastP[3] : '',
+        lastStyle: lastP && lastP[5] === 'good' ? 'background: rgba(62,224,122,.12); color: #d9f7e4;' : lastP && lastP[5] === 'bad' ? 'background: rgba(255,116,104,.12); color: #ffe0dc;' : 'background: rgba(255,255,255,.04); color: #ccc;',
+        bets, noBets: bets.length === 0, noBetLine: pre ? 'Bot: ' + g.bot : 'No tickets · bot: ' + (g.botRead || 'pass'),
+        aria: g.away.name + ' at ' + g.home.name + ', ' + g.clock, open: () => this.setState({ open: k, tab: pre ? 'preview' : 'summary', filter: 'all' }) };
+    };
+    const liveBets = liveKeys.flatMap((k) => G[k].bets);
+    const sweat = [[liveBets.filter((b) => b.good === true).length, 'winning', GRN], [liveBets.filter((b) => b.good === null).length, 'close', GLD], [liveBets.filter((b) => b.good === false).length, 'losing', RED]].map(([n, t, c]) => ({ n, t, dot: 'background: ' + c + '; box-shadow: 0 0 6px ' + c + ';' }));
+    const filters = [['all', 'All games'], ['mine', 'My bets']].map(([k, t]) => ({ t, on: s.show === k ? 'true' : 'false', pick: () => this.setState({ show: k }) }));
+    const out = { games: pool.map(tile), card: { title: quiet ? 'Coming up' : 'On now', count: pool.length }, anyLive: !quiet, quiet, sweat, filters, liveCount: liveKeys.length, hasModal: !!s.open, close: () => this.setState({ open: null }) };
+    const empty = { away: {}, home: {}, sides: [], leds: [], tabs: [], periods: [], lsRows: [], bets: [], important: [], leaderCols: [], stats: [], box: [], pfilters: [], groups: [], info: [] };
+    if (!s.open) { out.m = empty; return out; }
+    const g = G[s.open], isLive = g.state === 'live', isPre = g.state === 'pre', lead = isPre ? 0 : g.as - g.hs;
+    const tabDefs = isPre ? [['preview', 'Preview'], ['info', 'Game Info']] : [['summary', 'Summary'], ['box', 'Box Score'], ['plays', 'Plays'], ['info', 'Game Info']];
+    const tab = tabDefs.some(([k]) => k === s.tab) ? s.tab : tabDefs[0][0];
+    const tc = { [g.away.ab]: g.away.c, [g.home.ab]: g.home.c };
+    const m = Object.assign({}, empty, { aria: g.away.name + ' at ' + g.home.name, away: g.away, home: g.home,
+      sides: [[g.away, 0], [g.home, 2]].map(([t, order]) => ({ ab: t.ab, name: t.short, c: t.c, rec: t.rec, order })),
+      chip: g.sport + ' · Regular season', isLive, state: isPre ? (g.tv || 'Upcoming') : g.stateLong, stateTone: isLive ? 'color: #3ee07a; text-shadow: 0 0 8px rgba(62,224,122,.45);' : 'color: #fff;',
+      leds: isPre ? [{ isNum: true, isDash: false, s: g.clock.split(' ')[0], unlit: g.clock.split(' ')[0].replace(/\d/g, '8'), tone: 'color: #ebc56c; text-shadow: 0 0 10px rgba(235,197,108,.6);' }]
+        : [[g.as, lead > 0], null, [g.hs, lead < 0]].map((x) => (x ? { isNum: true, isDash: false, s: String(x[0]), unlit: '8'.repeat(String(x[0]).length), tone: x[1] ? 'color: #ebc56c; text-shadow: 0 0 10px rgba(235,197,108,.6);' : 'color: #fff;' } : { isNum: false, isDash: true })),
+      when: isPre ? 'Today ' + g.clock + ' · ' + g.venue.split(',')[0] : 'Today · ' + g.venue.split(',')[0],
+      tabs: tabDefs.map(([k, t]) => ({ t, cls: tab === k ? 'lit' : '', on: tab === k ? 'true' : 'false', pick: () => this.setState({ tab: k }) })),
+      isSummary: tab === 'summary', isBox: tab === 'box', isPlays: tab === 'plays', isPreview: tab === 'preview', isInfo: tab === 'info' });
+    const lc = {}; (g.leaders || []).forEach(([team, cat, name, line, bet]) => { (lc[team] = lc[team] || []).push({ cat, name, line, hasBet: bet, c: tc[team], ini: name.split(' ').map((w) => w[0]).slice(0, 2).join(''), rowStyle: bet ? 'background: linear-gradient(90deg, rgba(235,197,108,.12), transparent 80%);' : '' }); });
+    m.leaderCols = [g.away, g.home].map((t) => ({ team: t.short, rows: lc[t.ab] || [] }));
+    m.info = [['Venue', g.venue], ['Broadcast', g.tv], ['Line', g.line], ['Status', isPre ? 'Today, ' + g.clock + ' CT' : isLive ? 'In progress · ' + g.stateLong : 'Final']].map(([k, v]) => ({ k, v }));
+    if (isPre) {
+      m.predAway = Math.round((1 - g.pred) * 100) + '%'; m.predHome = Math.round(g.pred * 100) + '%';
+      m.predAwayBar = 'flex: ' + (1 - g.pred) + '; background: ' + g.away.c + ';'; m.predHomeBar = 'flex: ' + g.pred + '; background: ' + g.home.c + ';';
+      m.preBet = g.bets.length ? g.bets[0].pick + ' ' + g.bets[0].odds + ' · ' + g.bets[0].sub + '. Tracks live from tip-off.' : 'None yet. The bot’s read: ' + g.bot;
+      out.m = m; return out;
+    }
+    m.periods = g.periods;
+    m.lsRows = [[g.away, 0, g.as], [g.home, 1, g.hs]].map(([t, i, tot]) => ({ ab: t.ab, c: t.c, total: String(tot), cells: g.ls.map((q) => ({ t: q[i] === null ? '' : String(q[i]), s: 'color: rgba(255,255,255,.9);' })) }));
+    const wp = g.wp, span = 1000 * g.done, X = (i) => (wp.length > 1 ? (i / (wp.length - 1)) * span : 0), Y = (v) => (1 - v) * 200;
+    m.wpLine = wp.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    m.wpFill = m.wpLine + ' L' + X(wp.length - 1).toFixed(1) + ' 100 L0 100 Z';
+    const last = wp[wp.length - 1], leadT = last >= 0.5 ? g.home : g.away;
+    m.penC = leadT.c; m.penAb = leadT.ab; m.penPos = 'left: ' + (X(wp.length - 1) / 10).toFixed(1) + '%; top: ' + (Y(last) / 2).toFixed(1) + '%;';
+    m.wpClock = g.stateLong + ' · ' + g.away.ab + ' ' + g.as + '-' + g.hs;
+    const betsM = g.bets.map(meter), good = betsM.filter((b) => b.good === true).length;
+    m.bets = betsM; m.noBets = betsM.length === 0; m.botRead = g.botRead || ''; m.betsSum = betsM.length ? good + ' of ' + betsM.length + ' on track' : 'None';
+    const short = (title) => { const n = (title.match(/\d/) || ['?'])[0]; return /quarter/i.test(title) ? 'Q' + n : /period/i.test(title) ? 'P' + n : 'OT'; };
+    let cur = '';
+    const rows = [];
+    g.plays.forEach((p) => { if (p[0] === 'period') { cur = p[1]; return; }
+      const [, t, team, text, score, imp, tag] = p;
+      rows.push({ period: cur, t, when: short(cur) + ' ' + t, text, hasScore: !!score, score: score || '', scoring: !!score, mine: !!imp,
+        textTone: score ? 'color: #fff; font-weight: 700;' : 'color: rgba(255,255,255,.8);', hasTag: !!imp, tag: tag || '', icon: imp === 'good' ? '▲' : '▼', tagStyle: imp ? tagS[imp] : '',
+        wash: imp === 'good' ? 'background: linear-gradient(90deg, rgba(62,224,122,.08), transparent 55%); margin: 0 -14px; padding-left: 14px; padding-right: 14px;' : imp === 'bad' ? 'background: linear-gradient(90deg, rgba(255,116,104,.08), transparent 55%); margin: 0 -14px; padding-left: 14px; padding-right: 14px;' : '' }); });
+    m.important = rows.filter((r) => r.scoring || r.mine).slice(0, 6); m.hasImportant = m.important.length > 0;
+    m.toPlays = () => this.setState({ tab: 'plays' });
+    const shownRows = rows.filter((r) => s.filter === 'all' || (s.filter === 'scoring' ? r.scoring : r.mine));
+    const titles = [...new Set(shownRows.map((r) => r.period))];
+    m.groups = titles.map((title) => ({ title, plays: shownRows.filter((r) => r.period === title) })); m.noGroups = m.groups.length === 0;
+    m.pfilters = [['all', 'All Plays'], ['scoring', 'Scoring'], ['mine', 'My Bets']].map(([k, t]) => ({ t, on: s.filter === k ? 'true' : 'false', pick: () => this.setState({ filter: k }) }));
+    m.stats = (g.stats || []).map(([k, a, h]) => { const na = parseFloat(a), nh = parseFloat(h), tot = (na + nh) || 1; return { k, a, h, aBar: 'flex: ' + (na / tot).toFixed(3) + '; background: ' + g.away.c + ';', hBar: 'flex: ' + (nh / tot).toFixed(3) + '; background: ' + g.home.c + ';' }; });
+    m.box = [g.away, g.home].map((t) => ({ team: t.name, head: g.box.head, rows: (g.box[t.ab] || []).map((r) => ({ cells: r.slice(0, g.box.head.length), style: r[g.box.head.length] ? 'background: linear-gradient(90deg, rgba(235,197,108,.14), transparent 80%);' : '' })) }));
+    out.m = m;
+    return out;
+  }
+}
+</script>
+</body>
+</html>
