@@ -212,7 +212,8 @@ The data is the wallet's open bets and the live scores and progress the Open Bet
 score and progress-meter columns). Grouping by game is no longer needed, because each ticket names its game.
 
 **Cashed** (today's Closed Bets tab, `hasClosed()`): the same tickets for settled bets, newest first, under a
-strip with the last 7 days' RECORD, UNITS and STREAK. Each ticket carries a rubber stamp rotated −14°: a 3px
+strip with the last 7 days' RECORD, UNITS and STREAK. Each ticket carries a rubber stamp rotated −14°, set high in the top-right corner (about 16px from the
+top) so it covers the SETTLED tag and the ticket number and time, **never the result line or the totals**: a 3px
 border in `currentColor` over the ticket, multiply blend at about 82%. It reads **CASHED +x U** in `#1d8a4e`,
 **LOST −x U** in `#c62828`, or **PUSH** in `#4a4a4a`. The totals read WON, WOULD HAVE WON or RETURNED, and the
 live line becomes the final score.
