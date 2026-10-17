@@ -8,7 +8,8 @@ import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { Selection, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
-import { SPORT_LINKS } from '@ranker/core/sports';
+import { SITE_SPORTS } from '@ranker/core/sports';
+import { betSports } from './bet-sports';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
@@ -262,8 +263,9 @@ const LINE_CAUSE: Record<string, string> = {
   'line-teammates': 'teammates out',
 };
 
-// (the sports the bettor covers, as the site names them: MMA has no picks or team colors to ask for)
-const BET_SPORTS = SPORT_LINKS.filter((sport) => SPORTS.includes(sport.id));
+// (the sports the bettor covers, as the site names them (bet-sports.ts): MMA, not ready for everyone, for someone
+// who can use the experimental features alone, the Algorithm tab's gate; read when the page opens)
+const betSportsNow = () => betSports(SITE_SPORTS, SPORTS, canUse('experimental'));
 
 @Component({
   selector: 'bets-page',
@@ -356,6 +358,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   rows: BetRow[] | null = null;
   updated: string | null = null;
+  // (the sports whose picks the page read: the site's that the bettor covers, MMA an admin's; the dropdown's names)
+  private betSports = betSportsNow();
   // the filter: all games (the top 40 bets), or one game (its top 15, from all of its bets), by its matchup
   game = '';
   readonly limit = 40;
@@ -394,7 +398,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
         .then((res) => (res.ok ? res.json() : null))
         .catch(() => null);
     // every sport's algorithm picks (each sport's file together, not one after another)
-    const files = await Promise.all(BET_SPORTS.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
+    this.betSports = betSportsNow();
+    const files = await Promise.all(this.betSports.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
     const algoRows: BetRow[] = [];
     const checkRows: BetRow[] = [];
     // (a pick as a row; a CHECK's band its own, its gap and why it wasn't bet kept)
@@ -680,7 +685,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const boards = this.lines.boards();
     const desk = this.desk();
     if (this.menuFor?.list !== list || this.menuFor.boards !== boards || this.menuFor.desk !== desk) {
-      const days = gameMenu([...this.pickedGames(list), ...this.linesOnly()], BET_SPORTS);
+      const days = gameMenu([...this.pickedGames(list), ...this.linesOnly()], this.betSports);
       const games = new Map(days.flatMap((d) => d.sports.flatMap((s) => s.games.map((g) => [g.key, { ...g, icon: s.icon }] as const))));
       this.menuFor = { list, boards, desk, days, games };
     }

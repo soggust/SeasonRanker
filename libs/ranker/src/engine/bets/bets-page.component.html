@@ -125,7 +125,7 @@
               <span class="game-sport"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
               @for (g of s.games; track g.key) {
                 <mat-option [value]="g.key">
-                  <span class="game-label">{{ g.matchup }}</span>
+                  <span class="game-label">{{ g.name }}</span>
                   <span class="game-when">{{ g.time ?? '' }}</span>
                   @if (g.count === null) {
                     <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>

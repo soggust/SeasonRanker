@@ -30,9 +30,11 @@ export interface MenuGame {
   key: string;
   sport: string;
   matchup: string;
+  // (the matchup as it reads: "CLE @ TB"; a fight "A vs B", the first-listed fighter (the matchup's home) first)
+  name: string;
   // ("7:00 PM"; none without a kickoff)
   time: string | null;
-  // ("CLE @ TB · 7:00 PM": the closed dropdown's words, and the option's)
+  // ("CLE @ TB · 7:00 PM" (a fight "A vs B · 9:00 PM"): the closed dropdown's words, and the option's)
   label: string;
   at: number;
   count: number | null;
@@ -52,6 +54,13 @@ export interface MenuDay {
 
 // (the sports' names and order: the site's, sports.json)
 export type MenuSports = { id: string; label: string }[];
+
+// (a fight's matchup is "away @ home" as the bettor keys it, the first-listed fighter the home: it reads "A vs B")
+export function matchupName(sport: string, matchup: string): string {
+  if (sport !== 'mma') return matchup;
+  const [away, home] = matchup.split(' @ ');
+  return home ? `${home} vs ${away}` : matchup;
+}
 
 export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: string): MenuDay[] {
   const order = (sport: string) => {
@@ -78,12 +87,14 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
     const when = kickoff && !isNaN(kickoff.getTime()) ? kickoff : g.date ? new Date(`${g.date}T12:00:00`) : null;
     if (!when || isNaN(when.getTime())) continue;
     const time = kickoff && when === kickoff ? kickoff.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone }) : null;
+    const name = matchupName(g.sport, g.matchup);
     rows.push({
       key: g.key,
       sport: g.sport,
       matchup: g.matchup,
+      name,
       time,
-      label: time ? `${g.matchup} · ${time}` : g.matchup,
+      label: time ? `${name} · ${time}` : name,
       at: when.getTime(),
       count: g.count,
       day: when.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone }),
