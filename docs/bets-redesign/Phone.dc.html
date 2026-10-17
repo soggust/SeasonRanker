@@ -76,7 +76,7 @@ body{margin:0;background:#0b3322}
 </sc-if>
 <sc-if value="{{isBoardView}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 14px;">
-<button class="btn pcard" onClick="{{toggleDd}}" aria-haspopup="listbox" aria-expanded="{{ddOpen}}" style="height: 44px; border-radius: 999px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 14px; color: #fff;">
+<button class="btn pcard" onClick="{{toggleDd}}" aria-haspopup="listbox" aria-expanded="{{ddOpen}}" style="height: 44px; border-radius: 999px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-family: Outfit, sans-serif; font-size: 14px; line-height: 1; color: #fff;">
 <sc-if value="{{gameIcon}}" hint-placeholder-val="{{false}}"><img src="{{gameIcon}}" alt="" style="width: 18px; height: 18px;"></sc-if>
 <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{gameLabel}}</span><span class="glow" style="font-size: 12px;">{{gameCount}}</span>
 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#ebc56c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>

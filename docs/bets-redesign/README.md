@@ -241,6 +241,10 @@ before deleting them.** If they say remove, take out the markup, styles and the 
 drop: the paragraph-long chip key tooltip, the duplicate lines board that showed on top when a game was
 chosen, and the six-material clutter (gunmetal panel, gold rail, blue cloth).
 
+**Vertical centring, everywhere**: every pill, dropdown, tab, chip label and header row centres its contents
+with flex `align-items: center` and `line-height: 1` on the text, never baseline alignment (the ticker, the
+dropdown pills and the Algorithm's PROFIT header row with its legend in particular).
+
 ## Phases (commit and check after each)
 
 1. Felt, header, tabs and the bankroll card.
