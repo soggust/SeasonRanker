@@ -110,8 +110,9 @@ $page-gutter: 16px;
   }
 }
 
-// (the title's chip: the bankroll chip's orange clay, blank: no letters on it (the owner))
-.book-chip {
+// (the title's chip: the bankroll chip's orange clay, blank: no letters on it (the owner). Two classes deep:
+// .kind-chip further down sets --clay #555 for the kind chips and, at one class each, the later rule won)
+.kind-chip.book-chip {
   --clay: #{chip.$lock};
   height: 46px;
   width: 46px;
