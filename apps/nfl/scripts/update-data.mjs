@@ -213,28 +213,36 @@ async function pfrSeasonRows(type, sacksByPfr) {
     });
 }
 
-// The season's nflverse files, read once for every part the run builds (nflversePart picks a part's games)
-// (the player list and the schedule, read once a run: the QB records read them first, scheduleIndex)
+// The season's nflverse files, each read once a run whichever modes and parts ask for it (shared: once): the
+// player list and the schedule (the QB records read them first, scheduleIndex), the play-by-play, the snap
+// counts, PFR's weekly charting by type and a part's player stats, the last four with their moved teams'
+// abbreviations made today's as they land (sameTeamAbbrs). The playoffs' and both's player stats only exist
+// once the playoffs have begun (updatePart waits for them); the regular season's must be there, except for the
+// defensive backfill, which reads what it finds (required).
 const loadPlayers = (shared) => once(shared, 'players', () => getCsvGz(`${NFLVERSE}/players/players.csv.gz`));
 const loadSchedule = (shared) => once(shared, 'schedule', () => getCsv(SCHEDULE_URL));
+const loadPbp = (shared) => once(shared, 'pbp', () => getCsvGz(`${NFLVERSE}/pbp/play_by_play_${SEASON}.csv.gz`).then(sameTeamAbbrs));
+const loadSnaps = (shared) =>
+  once(shared, 'snaps', () => optionalCsvGz(`${NFLVERSE}/snap_counts/snap_counts_${SEASON}.csv.gz`).then(sameTeamAbbrs));
+const loadPfrWeekly = (shared, type) =>
+  once(shared, `pfr-${type}`, () => optionalCsvGz(`${NFLVERSE}/pfr_advstats/advstats_week_${type}_${SEASON}.csv.gz`).then(sameTeamAbbrs));
+const loadPartStats = (shared, part, required = part === 'regular') =>
+  once(shared, `stats-${part}`, () =>
+    (required ? getCsvGz : optionalCsvGz)(`${NFLVERSE}/stats_player/stats_player_${PLAYER_STATS[part]}_${SEASON}.csv.gz`).then(sameTeamAbbrs)
+  );
 
 async function loadNflverse(shared) {
   let [players, pbp, schedule, ngsPass, ngsRush, ngsRec, pfrPass, pfrRush, pfrRec, pfrDef, snaps, ...partStats] =
     await Promise.all([
       loadPlayers(shared),
-      getCsvGz(`${NFLVERSE}/pbp/play_by_play_${SEASON}.csv.gz`),
+      loadPbp(shared),
       loadSchedule(shared),
       ...['passing', 'rushing', 'receiving'].map((type) =>
         optionalCsvGz(`${NFLVERSE}/nextgen_stats/ngs_${type}.csv.gz`)
       ),
-      ...['pass', 'rush', 'rec', 'def'].map((type) =>
-        optionalCsvGz(`${NFLVERSE}/pfr_advstats/advstats_week_${type}_${SEASON}.csv.gz`)
-      ),
-      optionalCsvGz(`${NFLVERSE}/snap_counts/snap_counts_${SEASON}.csv.gz`),
-      // (the playoffs' and both's files only exist once the playoffs have begun: updatePart waits for them)
-      ...PARTS.map((part) =>
-        (part === 'regular' ? getCsvGz : optionalCsvGz)(`${NFLVERSE}/stats_player/stats_player_${PLAYER_STATS[part]}_${SEASON}.csv.gz`)
-      ),
+      ...['pass', 'rush', 'rec', 'def'].map((type) => loadPfrWeekly(shared, type)),
+      loadSnaps(shared),
+      ...PARTS.map((part) => loadPartStats(shared, part)),
     ]);
   // (the weekly files cover any part's games; the season totals standing in for them, the regular season's alone)
   const pfrWeekly = pfrPass.length > 0;
@@ -251,7 +259,8 @@ async function loadNflverse(shared) {
     );
     console.log(`Pro Football Reference: season totals (no weekly files for ${SEASON})`);
   }
-  for (const rows of [pbp, schedule, pfrPass, pfrRush, pfrRec, pfrDef, snaps, ...partStats]) sameTeamAbbrs(rows);
+  // (the loaders' rows already read today's abbreviations; the schedule's and PFR's season totals get them here)
+  for (const rows of [schedule, pfrPass, pfrRush, pfrRec, pfrDef]) sameTeamAbbrs(rows);
 
   return {
     seasonPbp: pbp,
@@ -2064,15 +2073,15 @@ async function main() {
 // and the snap counts (no play-by-play, no ESPN), so a season takes seconds. A part with no ranked file (no
 // playoffs played) gets nothing. A past season's injury flags are its injured-reserve finishers, as updatePart's.
 async function defenseOnly() {
+  const shared = {};
   const [players, pfrDefWeekly, snaps, ...partStats] = await Promise.all([
-    getCsvGz(`${NFLVERSE}/players/players.csv.gz`),
-    optionalCsvGz(`${NFLVERSE}/pfr_advstats/advstats_week_def_${SEASON}.csv.gz`),
-    optionalCsvGz(`${NFLVERSE}/snap_counts/snap_counts_${SEASON}.csv.gz`),
-    ...PARTS.map((part) => optionalCsvGz(`${NFLVERSE}/stats_player/stats_player_${PLAYER_STATS[part]}_${SEASON}.csv.gz`)),
+    loadPlayers(shared),
+    loadPfrWeekly(shared, 'def'),
+    loadSnaps(shared),
+    ...PARTS.map((part) => loadPartStats(shared, part, false)),
   ]);
   const weekly = pfrDefWeekly.length > 0;
-  const pfrDef = weekly ? pfrDefWeekly : await pfrSeasonRows('def', new Map());
-  for (const rows of [pfrDef, snaps, ...partStats]) sameTeamAbbrs(rows);
+  const pfrDef = weekly ? pfrDefWeekly : sameTeamAbbrs(await pfrSeasonRows('def', new Map()));
   const season = {
     playerStatsByPart: Object.fromEntries(PARTS.map((part, i) => [part, partStats[i]])),
     pfrRows: { def: pfrDef, weekly },
@@ -2117,8 +2126,7 @@ async function defenseOnly() {
 // playoffs played) gets nothing.
 async function offenseSpecialOnly() {
   const shared = {};
-  const [pbp, schedule] = await Promise.all([getCsvGz(`${NFLVERSE}/pbp/play_by_play_${SEASON}.csv.gz`), loadSchedule(shared)]);
-  sameTeamAbbrs(pbp);
+  const [pbp, schedule] = await Promise.all([loadPbp(shared), loadSchedule(shared)]);
   sameTeamAbbrs(schedule);
   const byName = (a, b) => a.name.localeCompare(b.name);
   for (const part of PARTS) {
