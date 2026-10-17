@@ -29,6 +29,9 @@
 // is under 1 (a pure-noise term comes in at 0). The rating term is a term like the others. Refit every run
 // (seconds: a Newton fit over ~15,000 rows and 23 terms), so the weights move as the bouts come in.
 //
+// Each row also carries the round totals' terms (totalsTerms: both fighters' numbers together), the bout's length
+// and its method, for fights-totals.mjs, the desk's second market.
+//
 // BACKTEST (backtest): held out, walking forward over the last three years by half-year: each half's rows
 // scored by a model fit on the rows before it alone, against the rating alone and a coin flip, with the
 // calibration by chance bucket. No odds in it (none kept), so it says how the model predicts, not what it
@@ -91,7 +94,7 @@ const clamp = (p) => Math.min(CLAMP[1], Math.max(CLAMP[0], p));
 
 // A fighter's running state (everything before the bout at hand)
 export function freshFighter() {
-  return { n: 0, wins: 0, losses: 0, draws: 0, finishes: 0, koLosses: 0, subLosses: 0, last: null, lbs: null, prevLbs: null, streak: 0, recent: [], secs: 0, ssl: 0, ssa: 0, kd: 0, tdl: 0, tda: 0, sm: 0, ad: 0, oppSecs: 0, oppSsl: 0, oppSsa: 0, oppTdl: 0, oppTda: 0 };
+  return { n: 0, wins: 0, losses: 0, draws: 0, finishes: 0, koWins: 0, subWins: 0, koLosses: 0, subLosses: 0, decisions: 0, timeShare: 0, last: null, lbs: null, prevLbs: null, streak: 0, recent: [], secs: 0, ssl: 0, ssa: 0, kd: 0, tdl: 0, tda: 0, sm: 0, ad: 0, oppSecs: 0, oppSsl: 0, oppSsa: 0, oppTdl: 0, oppTda: 0 };
 }
 
 // A bout's length in seconds (its last round and the clock into it; none kept: the distance)
@@ -151,6 +154,71 @@ export function sideNumbers(s, rating, bio, bioAt, day, lbs) {
     moveDown: lbs && s.lbs && lbs < s.lbs ? 1 : 0,
     record: `${s.wins}-${s.losses}${s.draws ? `-${s.draws}` : ''}`,
     n: s.n,
+    // (the round totals' numbers (totalsTerms): each a share of his bouts, pulled to the UFC's by 3 bouts' worth)
+    koWin: (s.koWins + 3 * TAVG.koWin) / (s.n + 3),
+    subWin: (s.subWins + 3 * TAVG.subWin) / (s.n + 3),
+    koLoss: (s.koLosses + 3 * TAVG.koLoss) / (s.n + 3),
+    subLoss: (s.subLosses + 3 * TAVG.subLoss) / (s.n + 3),
+    dist: (s.decisions + 3 * TAVG.dist) / (s.n + 3),
+    time: (s.timeShare + 3 * TAVG.time) / (s.n + 3),
+    kd15: s.secs >= MIN_SECS ? (s.kd / (s.secs / 60)) * 15 : TAVG.kd15,
+  };
+}
+
+// ROUND TOTALS (fights-totals.mjs: the chance a bout goes past its line of rounds): the terms are both
+// fighters' together (a sum, or the pair's gap), never one's less the other's, so the same bout from either side
+// is the same row. The UFC's shares a fighter's are pulled to (sideNumbers: by 3 bouts' worth)
+export const TAVG = { koWin: 0.2, subWin: 0.1, koLoss: 0.1, subLoss: 0.08, dist: 0.45, time: 0.7, kd15: 0.3 };
+export const TOTAL_TERMS = [
+  ['tDist', "both fighters' bouts gone the distance"],
+  ['tTime', "both fighters' bouts' length (share of the scheduled time)"],
+  ['tKoWin', "both fighters' knockout wins"],
+  ['tSubWin', "both fighters' submission wins"],
+  ['tKoLoss', 'both fighters knocked out (durability)'],
+  ['tSubLoss', 'both fighters submitted'],
+  ['tFinish', "both fighters' finishes of wins"],
+  ['tRecentStop', 'stoppage losses in their last three bouts'],
+  ['tKd', 'knockdowns a 15 minutes, both'],
+  ['tSlpm', 'significant strikes landed a minute, both'],
+  ['tStrDef', 'striking defense, both'],
+  ['tTd', 'takedowns a 15 minutes, both'],
+  ['tSub', 'submission attempts a 15 minutes, both'],
+  ['tGap', 'the rating gap (a mismatch, in log odds)'],
+  ['tAge', 'their ages (per 5 years, both)'],
+  ['tOld', 'years past 34, both'],
+  ['tLayoff', 'layoffs (log days), both'],
+  ['tExp', 'experience (log bouts), both'],
+  ['tLbs', 'the weight class (per 50 pounds)'],
+  ['tHeavy', 'heavyweight'],
+  ['tWomen', "a women's bout"],
+];
+export const TOTAL_KEYS = TOTAL_TERMS.map(([k]) => k);
+
+// A bout's round-totals terms from both sides' numbers (sideNumbers) and its weight (rating.mjs weightOf)
+export function totalsTerms(a, b, { lbs = null, women = false } = {}) {
+  const sum = (k, avg = 0) => (a[k] ?? avg) + (b[k] ?? avg);
+  return {
+    tDist: sum('dist'),
+    tTime: sum('time'),
+    tKoWin: sum('koWin'),
+    tSubWin: sum('subWin'),
+    tKoLoss: sum('koLoss'),
+    tSubLoss: sum('subLoss'),
+    tFinish: sum('finish'),
+    tRecentStop: sum('recentStop'),
+    tKd: sum('kd15'),
+    tSlpm: sum('slpm'),
+    tStrDef: sum('strDef'),
+    tTd: sum('td15'),
+    tSub: sum('sub15'),
+    tGap: Math.abs(logit(clamp(ratingChance(a, b)))),
+    tAge: sum('age', 30) / 5,
+    tOld: sum('old'),
+    tLayoff: sum('layoff'),
+    tExp: sum('exp'),
+    tLbs: Number.isFinite(lbs) && lbs ? (lbs - 170) / 50 : 0,
+    tHeavy: lbs && lbs >= 230 ? 1 : 0,
+    tWomen: women ? 1 : 0,
   };
 }
 
@@ -205,6 +273,10 @@ export function advance(s, o, f, mine, theirs, won, lbs) {
   const result = resultOf(f);
   const finish = f.method === 'KO' || f.method === 'SUB';
   s.n++;
+  // (for the round totals: the bouts that went the distance, and the share of the scheduled time each lasted)
+  const scheduled = (f.rounds || 3) * ROUND_SECS;
+  if (secs >= scheduled || /^(UD|SD|MD|DEC|DRAW)$/.test(f.method ?? '')) s.decisions++;
+  s.timeShare += Number.isFinite(secs) ? Math.min(1, secs / scheduled) : 1;
   if (result === null) {
     if (f.method !== 'NC') s.draws++;
     s.streak = 0;
@@ -212,6 +284,8 @@ export function advance(s, o, f, mine, theirs, won, lbs) {
   } else if (won) {
     s.wins++;
     if (finish) s.finishes++;
+    if (f.method === 'KO') s.koWins++;
+    if (f.method === 'SUB') s.subWins++;
     s.streak = s.streak > 0 ? s.streak + 1 : 1;
     s.recent.push('won');
   } else {
@@ -261,7 +335,9 @@ export function buildRows(fights, cache) {
       const { lbs } = weightOf(f);
       const A = sideNumbers(stateOf(a.id), sa, cache[a.id]?.bio, cache[a.id]?.bioAt, day, lbs);
       const B = sideNumbers(stateOf(b.id), sb, cache[b.id]?.bio, cache[b.id]?.bioAt, day, lbs);
-      rows.push({ id: f.id, date: f.date, league: f.league, rounds: f.rounds ?? 3, a: a.id, b: b.id, x: featuresOf(A, B, { rounds: f.rounds ?? 3 }), y: resultOf(f), ratingP: clamp(ratingChance(A, B)), experienced: A.n > 0 && B.n > 0 });
+      // (the round totals' terms beside it, how long it lasted and how it ended: fights-totals.mjs)
+      const timed = Number.isFinite(f.period) && f.period > 0 && Number.isFinite(f.clock);
+      rows.push({ id: f.id, date: f.date, league: f.league, rounds: f.rounds ?? 3, a: a.id, b: b.id, x: featuresOf(A, B, { rounds: f.rounds ?? 3 }), y: resultOf(f), ratingP: clamp(ratingChance(A, B)), experienced: A.n > 0 && B.n > 0, tx: totalsTerms(A, B, weightOf(f)), secs: timed ? boutSeconds(f) : null, method: f.method ?? null, division: f.division ?? '' });
     },
     onAfter(f, sa, sb) {
       const [a, b] = f.fighters;
@@ -317,11 +393,13 @@ export function fitLogistic(rows, keys = TERM_KEYS, lambda = LAMBDA) {
   const k = keys.length;
   const n = rows.length;
   const scale = keys.map((key) => {
-    const v = rows.reduce((s, r) => s + r.x[key] ** 2, 0) / Math.max(1, n);
+    const v = rows.reduce((s, r) => s + (r.w ?? 1) * r.x[key] ** 2, 0) / Math.max(1, rows.reduce((s, r) => s + (r.w ?? 1), 0));
     return Math.sqrt(v) || 1;
   });
   const X = rows.map((r) => keys.map((key, j) => r.x[key] / scale[j]));
   const y = rows.map((r) => r.y);
+  // (a row's weight: 1, or less where one bout gives several rows, fights-totals.mjs)
+  const wt = rows.map((r) => r.w ?? 1);
   let w = Array(k).fill(0);
   let H = null;
   for (let step = 0; step < STEPS; step++) {
@@ -332,8 +410,8 @@ export function fitLogistic(rows, keys = TERM_KEYS, lambda = LAMBDA) {
       let z = 0;
       for (let j = 0; j < k; j++) z += w[j] * xi[j];
       const p = sigmoid(z);
-      const e = p - y[i];
-      const v = p * (1 - p);
+      const e = (p - y[i]) * wt[i];
+      const v = p * (1 - p) * wt[i];
       for (let j = 0; j < k; j++) {
         grad[j] += e * xi[j];
         const vj = v * xi[j];

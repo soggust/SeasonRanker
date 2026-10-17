@@ -227,8 +227,9 @@ export const LEAGUES = {
   // the untested start with no bets by construction): UFC bouts' moneylines, priced by fights-model.mjs (a
   // logistic model over point-in-time fighter stats and the MMA app's rating, soft terms refit every run) and
   // run by mma-desk.mjs (run.mjs hands a league with fights: true there: no team ratings, context, margins or
-  // props, so no priors or grid). The Odds API's key mma_mixed_martial_arts, h2h alone (its board carries every
-  // promotion's bouts; ESPN's UFC cards are matched to it by both fighters' names, never guessed).
+  // props, so no priors or grid). The Odds API's key mma_mixed_martial_arts, h2h and (from 2026-10-17) the round
+  // totals, fights-totals.mjs, tracked only till 40 are graded with a close (its board carries every promotion's
+  // bouts; ESPN's UFC cards are matched to it by both fighters' names, never guessed).
   //   edge   the model's vig-free chance has to beat the book's fair chance by this to be bet (else tracked)
   //   guard  the moneyline's as elsewhere: the market moving this far against the side since its first price
   //          cuts the bet to the minimum

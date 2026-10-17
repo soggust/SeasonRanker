@@ -125,8 +125,8 @@
       @if (board; as b) {
         <div class="lines-pair">
           @if (m === 'total') {
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.over, label: 'Over ' + (b.total?.over?.line ?? ''), top: 'O ' + (b.total?.over?.line ?? '') }"></ng-container>
-            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.under, label: 'Under ' + (b.total?.under?.line ?? ''), top: 'U ' + (b.total?.under?.line ?? '') }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.over, label: 'Over ' + (b.total?.over?.line ?? '') + totalUnit, top: 'O ' + (b.total?.over?.line ?? '') }"></ng-container>
+            <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.total?.under, label: 'Under ' + (b.total?.under?.line ?? '') + totalUnit, top: 'U ' + (b.total?.under?.line ?? '') }"></ng-container>
           } @else if (m === 'spread') {
             <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.away, label: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null), top: b.away.abbr + ' ' + lineText(b.spread?.away?.line ?? null) }"></ng-container>
             <ng-container *ngTemplateOutlet="priceCell; context: { $implicit: b.spread?.home, label: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null), top: b.home.abbr + ' ' + lineText(b.spread?.home?.line ?? null) }"></ng-container>
@@ -175,7 +175,7 @@
             </div>
             @if (!mlAlone) {
               <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
-              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? ''), top: (side === 'away' ? 'O ' : 'U ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') }"></ng-container></div>
+              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') + totalUnit, top: (side === 'away' ? 'O ' : 'U ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') }"></ng-container></div>
             }
             <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.ml?.away : b.ml?.home, label: team.abbr + ' to win', top: 'ML' }"></ng-container></div>
           </div>

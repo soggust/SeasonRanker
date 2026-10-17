@@ -54,7 +54,7 @@ const BURST = { lines: 2, props: 4 };
 
 // The sports' keys, and the books: the desk's own (its prices are the ones it bets) and Pinnacle (its line, the
 // vig taken out, is the fair chance); for props, the desk's book alone (Pinnacle's props are thin)
-// (mma: one key for every promotion's bouts, h2h alone; mma-desk.mjs asks it for the whole board at once, 1 credit)
+// (mma: one key for every promotion's bouts, h2h and totals; mma-desk.mjs asks it for the whole board at once, 2 credits)
 export const SPORT_KEYS = { nfl: 'americanfootball_nfl', nba: 'basketball_nba', nhl: 'icehockey_nhl', mlb: 'baseball_mlb', mma: 'mma_mixed_martial_arts' };
 export const SHARP = 'pinnacle';
 export const LINE_BOOKS = [BOOK, SHARP];

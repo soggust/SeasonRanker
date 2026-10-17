@@ -17,8 +17,8 @@
 //      bet's CLV; then the grading from the bout's result (a draw or a no contest: void, the stake back)
 //   4. the moneyline's trust refit on the league's graded bets and closes (desk.mjs fitTrust: the starting trust
 //      till 40; the league started 2026-10-16, MMA_START, so no older epoch's bets judge it)
-//   5. the bouts due (leagues.mjs TIMING.mma: inside 72 hours of the start, the last chance 4) priced: one h2h
-//      ask of The Odds API for the whole MMA board (1 credit: one market, one region of books) when any bout is
+//   5. the bouts due (leagues.mjs TIMING.mma: inside 72 hours of the start, the last chance 4) priced: one
+//      ask of The Odds API for the whole MMA board (2 credits: two markets, one region of books) when any bout is
 //      due and the day's allowance has it, each bout matched to the board by both fighters' names (accents and
 //      spacing dropped; a surname-and-initial match accepted only beside the other fighter's exact one; every
 //      unmatched bout logged, never guessed). DraftKings' prices are the ones bet; Pinnacle's pair, the vig out,
@@ -27,7 +27,14 @@
 //      its return is positive: 0.5 to 1 unit while the trust is untested, the TRUST path's 3 beyond; a side with
 //      no edge is tracked (units 0, graded and learned from, never staked); a line moved against the side since
 //      the first price seen by the guard's limit cuts it to the minimum; the model too far from the book (GAP) is
-//      skipped. One bet a bout. Inside the last call with no API price: ESPN BET's line, tracked only
+//      skipped. One bet a bout. Inside the last call with no API price: ESPN BET's line, tracked only.
+//      ROUND TOTALS (2026-10-17, the second market: fights-totals.mjs): the same ask carries totals
+//      (markets=h2h,totals: 2 credits, the books TOTAL_BOOKS, one region), each bout's row priced from the book's
+//      line against Pinnacle's pair at that point (else the least-vig listed book's, else the book's own) by the
+//      totals' own model and trust (trust.total); TRACKED ONLY till TOTAL_LIVE are graded with a close, then the
+//      trust path as the moneyline's. One a bout; a bout whose total isn't posted yet is asked about again after
+//      TOTAL_REST; graded by the bout's length (ESPN's last round and clock: Over 2.5 past 2:30 of the third), a no
+//      contest before the line void. The board carries it as k.total [over, under]
 //   6. the picks (the page's rows: the open edge bets by their Kelly score, published once locked), the state
 //      and the ledger written when changed (--dry: nothing committed touched, a snapshot in .cache/model)
 //   7. the betting board (the owner, 2026-10-17: "I should still be able to place bets on all the fights"): every
@@ -42,12 +49,14 @@ import path from 'node:path';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { BOOK, LEAGUES, TIMING } from './leagues.mjs';
-import { TERMS, backtest, buildModel, fitRows } from './fights-model.mjs';
+import { TERMS, TOTAL_TERMS, backtest, boutSeconds, buildModel, fitRows, totalsTerms } from './fights-model.mjs';
+import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictTotal, settleTotal, totalLinesOf, totalPickFor, totalReasonOf, totalRows } from './fights-totals.mjs';
+import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { BANKROLL, chanceAt, decimal, fairPair, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, scoreParts } from './picks.mjs';
 import { buildBoard, seenUpdate } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
-import { LINE_BOOKS, SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
+import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
 import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
 import { CACHE, DAY, get, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { round } from './ratings.mjs';
@@ -67,6 +76,8 @@ const ODDS_ROUTE = '/sports/mma_mixed_martial_arts/odds';
 const MATCH_WINDOW = 48 * 36e5;
 // (a bout skipped or unpriced waits this long before it's asked about again)
 const REST_FOR = 3 * 36e5;
+// (a round total the book hadn't posted: asked about again after this)
+const TOTAL_REST = 12 * 36e5;
 // (an open bet's last price inside this of the start stands as its close)
 const SEEN_CLOSE = 3 * 36e5;
 // (inside this of the start with no API price, ESPN's board is used, tracked only)
@@ -181,6 +192,9 @@ export function boutsOf(board) {
         away: side(comps[1]),
         final: completed,
         winner,
+        // (how long it lasted: ESPN's last round and the clock into it, for the round totals)
+        period: completed && Number.isFinite(c.status?.period) ? c.status.period : null,
+        clock: completed && Number.isFinite(c.status?.clock) ? c.status.clock : null,
         off: /CANCEL|POSTPONE/i.test(statusName) ? statusName.replace('STATUS_', '').toLowerCase() : null,
       });
     }
@@ -242,13 +256,26 @@ export async function espnOdds(bout) {
 // ---------------------------------------------------------------------------------------------------------
 // Grading
 
-// A bet against its bout: won, lost, or void (a draw, a no contest, the bout off or its fighters changed)
-export function settleBout(bet, bout, now) {
+// A bet's void from its bout's changes, either market's (the bout off or its fighters changed), or null
+export function boutVoid(bet, bout, now) {
   if (!bout) return null;
   const changed = bout.home.id !== bet.fighters.home.id || bout.away.id !== bet.fighters.away.id;
   if (bout.off === 'replaced' || changed) return { status: 'push', profit: 0, void: true, final: 'fighter replaced', why: 'Void: a fighter was replaced' };
   if (bout.off === 'cancelled' || bout.off === 'canceled') return { status: 'push', profit: 0, void: true, final: 'bout cancelled', why: 'Void: bout cancelled' };
   if (bout.off && now - Date.parse(bet.start) > 48 * 36e5) return { status: 'push', profit: 0, void: true, final: `bout ${bout.off}`, why: `Void: bout ${bout.off}, not fought within 48 hours` };
+  return null;
+}
+
+// (a final bout's length in seconds, null where ESPN gave no round: fights-model.mjs boutSeconds)
+export const boutSecs = (bout) => (bout?.final && Number.isFinite(bout.period) && bout.period > 0 ? boutSeconds({ rounds: bout.rounds, period: bout.period, clock: bout.clock }) : null);
+
+// A bet against its bout: won, lost, or void (a draw, a no contest, the bout off or its fighters changed); a
+// round total by the bout's length (fights-totals.mjs settleTotal)
+export function settleBout(bet, bout, now) {
+  if (!bout) return null;
+  const off = boutVoid(bet, bout, now);
+  if (off) return off;
+  if (bet.market === 'total') return settleTotal(bet, bout, boutSecs);
   if (!bout.final) return null;
   const final = `${bout.home.name} vs ${bout.away.name}: ${bout.winner === null ? 'no winner (draw or no contest)' : `${bout[bout.winner].name} won`}`;
   if (bout.winner === null) return { status: 'push', profit: 0, void: true, final, why: 'Void: a draw or a no contest' };
@@ -325,6 +352,29 @@ export function boardSidesOf(lines, chance, trust, src = null) {
     return { s: side, l: null, o: odds, c: round(p, 3), ks, b: gap || !(ev > 0) ? 'low' : edgeLevel(ks, p), ...(src ? { src } : {}) };
   });
 }
+// A bout's round total as the board's two sides [over, under] (as boardSidesOf: the book's price, the trusted chance,
+// Kelly and band at its line). total: fights-totals.mjs totalLinesOf's { line, odds: { over, under }, fair (over's) };
+// over: the model's chance of Over at its line
+export function boardTotalOf(total, over, trust) {
+  const gap = gapGuard('total', over, total.fair);
+  return ['over', 'under'].map((side) => {
+    const fair = side === 'over' ? total.fair : 1 - total.fair;
+    const m = side === 'over' ? over : 1 - over;
+    const odds = total.odds[side];
+    const p = chanceAt('total', fair, m, trust);
+    const ev = p * decimal(odds) - 1;
+    const ks = kellyOf(odds, p);
+    return { s: side, l: total.line, o: odds, c: round(p, 3), ks, b: gap || !(ev > 0) ? 'low' : edgeLevel(ks, p) };
+  });
+}
+// (the last board's round total for a bout: { line, odds, fair }, else null)
+export function boardTotalLinesOf(prev, boutId) {
+  const g = (prev?.games ?? []).find((x) => String(x.id) === String(boutId));
+  const over = g?.k?.total?.find((s) => s.s === 'over');
+  const under = g?.k?.total?.find((s) => s.s === 'under');
+  if (!over?.o || !under?.o || !Number.isFinite(over.l)) return null;
+  return { line: over.l, odds: { over: over.o, under: under.o }, fair: fairPair(over.o, under.o), fairFrom: 'its own prices' };
+}
 // (the last board's DraftKings prices for a bout (its ml sides, neither ESPN BET's): { odds, fair }, else null)
 export function boardLinesOf(prev, boutId) {
   const g = (prev?.games ?? []).find((x) => String(x.id) === String(boutId));
@@ -336,8 +386,10 @@ export function boardLinesOf(prev, boutId) {
 // The board from the bouts coming (not final, not off, not started), each priced from what the run has: lines
 // (by the bout's key: { lines, src }) this run's, else the last board's DraftKings price (boardLinesOf), else
 // nothing (no tile); chance(bout): the model's chance of the home side; trust: the moneyline's; bets: the ledger's
-// (the bot's open side marked, as buildBoard marks it); prev: the last board (a bout no longer coming dropped)
-export function buildMmaBoard({ bouts, lines, chance, trust, bets = [], prev = null, now = new Date() }) {
+// (the bot's open side marked, as buildBoard marks it); prev: the last board (a bout no longer coming dropped). The
+// round total beside it (k.total) the same way: this run's (lines' entry's total), else the last board's; over(bout,
+// day, line): the model's chance of Over (null where it has none at that line); totalTrust: the totals' trust
+export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalTrust = 0, bets = [], prev = null, now = new Date() }) {
   const at = now.toISOString();
   const coming = bouts.filter((b) => !b.final && !b.off && Date.parse(b.start ?? b.date) > now.getTime());
   const ids = new Set(coming.map((b) => String(b.id)));
@@ -345,14 +397,18 @@ export function buildMmaBoard({ bouts, lines, chance, trust, bets = [], prev = n
   for (const bout of coming) {
     const mine = lines?.get?.(bout.key) ?? null;
     const l = mine?.lines ?? boardLinesOf(prev, bout.id);
-    if (!l?.odds?.home || !l?.odds?.away) continue;
+    const t = mine?.total ?? boardTotalLinesOf(prev, bout.id);
     const src = mine ? mine.src ?? null : null;
     const start = bout.start ?? bout.date;
-    const p = chance(bout, Date.parse(start));
-    if (!Number.isFinite(p)) continue;
+    const markets = {};
+    const p = l?.odds?.home && l?.odds?.away ? chance(bout, Date.parse(start)) : null;
+    if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, trust, src);
+    const o = t && over ? over(bout, Date.parse(start), t.line) : null;
+    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, totalTrust);
+    if (!markets.ml && !markets.total) continue;
     // (the fighters as the board's teams: [name, ESPN id, his headshot], the first ESPN lists the home side)
     const game = { date: start, awayAbbr: bout.away.name, homeAbbr: bout.home.name, away: bout.away.id, home: bout.home.id };
-    games.set(String(bout.id), { game, markets: { ml: boardSidesOf(l, p, trust, src) }, at });
+    games.set(String(bout.id), { game, markets, at });
   }
   const kept = prev ? { ...prev, games: (prev.games ?? []).filter((g) => ids.has(String(g.id))) } : null;
   const board = buildBoard(SPORT, { prev: kept, games, bets, checks: [], now });
@@ -422,14 +478,15 @@ export function buildFightPicks(ledger, trust, bouts, now) {
     chance: Math.round(b.p * 100),
     level: levelOf(b, score),
     edge: true,
-    kind: 'moneyline',
-    market: 'Moneyline',
+    // (a round total, once its market is live (fights-totals.mjs TOTAL_LIVE): "Over 2.5 rounds", no fighter)
+    kind: b.market === 'total' ? 'total' : 'moneyline',
+    market: b.market === 'total' ? 'Total' : 'Moneyline',
     pick: b.pick,
     side: b.side,
-    athlete: b.fighters?.[b.side]?.id ?? null,
+    athlete: b.market === 'total' ? null : b.fighters?.[b.side]?.id ?? null,
     team: null,
-    player: b.fighters?.[b.side]?.name ?? null,
-    line: null,
+    player: b.market === 'total' ? null : b.fighters?.[b.side]?.name ?? null,
+    line: b.market === 'total' ? b.line : null,
     odds: b.odds,
     otherOdds: Number.isFinite(b.otherOdds) ? b.otherOdds : null,
     book: b.book ?? 'DraftKings',
@@ -443,7 +500,7 @@ export function buildFightPicks(ledger, trust, bouts, now) {
     matchup: b.matchup,
     teams: [b.fighters.away, b.fighters.home].map((f) => ({ abbr: f.name, logo: headshot(f.id) })),
     where: { city: bouts.get(b.event)?.cardName ?? null, stadium: null, weather: null },
-    reason: reasonOf(b),
+    reason: b.market === 'total' ? totalReasonOf(b) : reasonOf(b),
     by: 'plain',
   }));
   const published = ledger.bets.filter((b) => b.published && !isTracked(b));
@@ -456,7 +513,7 @@ export function buildFightPicks(ledger, trust, bouts, now) {
 }
 
 // The state the desk component reads (desk-model.ts ModelState: a fights league has no teams, no team params)
-export function stateOf(state, { model, bt, trust, ledger, now, lines = null, odds = null }) {
+export function stateOf(state, { model, bt, trust, ledger, now, lines = null, odds = null, totals = null }) {
   const terms = model.fit.terms;
   return {
     ...state,
@@ -477,7 +534,10 @@ export function stateOf(state, { model, bt, trust, ledger, now, lines = null, od
     teams: [],
     record: record(ledger.bets),
     tracked: trackedRecord(ledger.bets),
-    clv: { all: clvSummary(ledger.bets), ml: clvSummary(ledger.bets.filter((b) => b.market === 'ml')) },
+    clv: { all: clvSummary(ledger.bets), ml: clvSummary(ledger.bets.filter((b) => b.market === 'ml')), total: clvSummary(ledger.bets.filter((b) => b.market === 'total')) },
+    // (the round totals (fights-totals.mjs): the fit's terms and base rates, held out against the base rates, and
+    // how near the market is to live (tracked only till TOTAL_LIVE graded with a close))
+    totals: totals ? { terms: totals.terms, base: totals.base, rows: totals.n, from: totals.from, to: totals.to, labels: Object.fromEntries(TOTAL_TERMS), test: bt?.totals ? { line25: bt.totals.line25, all: bt.totals.all, byDivision: bt.totals.byDivision } : null, live: liveCount(ledger.bets) >= TOTAL_LIVE, graded: liveCount(ledger.bets), liveAt: TOTAL_LIVE } : state.totals ?? null,
     lines: lines ?? state.lines ?? null,
     book: BOOK,
     odds: odds ?? state.odds ?? null,
@@ -515,15 +575,27 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const kept = model.fit.terms.filter((t) => t.weight);
   log.log(`${SPORT}: the model fit on ${model.fit.n} bouts (${model.fit.from} to ${model.fit.to}): ${kept.length} of ${TERMS.length} terms at a weight: ${kept.map((t) => `${t.key} ${t.weight}`).join(', ')}`);
   // (the backtest: once a day, the first run of the day, kept in apps/mma/scripts/model/backtest.json)
+  // (the round totals' fit beside it, fights-totals.mjs, on the same rows; its backtest in the same file, totals)
+  const totals = fitTotals(totalRows(model.rows));
+  const tKept = totals.terms.filter((t) => t.weight);
+  log.log(`${SPORT}: round totals fit on ${totals.n} bouts: ${tKept.length} of ${TOTAL_TERMS.length} terms at a weight: ${tKept.map((t) => `${t.key} ${t.weight}`).join(', ')}`);
   let bt = readJson(FILES.backtest, null);
-  if (!bt || bt.at.slice(0, 10) !== at.slice(0, 10)) {
-    bt = backtest(model.rows, { now });
+  if (!bt || bt.at.slice(0, 10) !== at.slice(0, 10) || !bt.totals) {
+    bt = { ...backtest(model.rows, { now }), totals: backtestTotals(model.rows, { now }) };
     if (!dry) {
       mkdirSync(path.dirname(FILES.backtest), { recursive: true });
       writeAtomic(FILES.backtest, JSON.stringify(bt, null, 1));
     }
   }
   log.log(`${SPORT}: held out (${bt.halves[0]?.from} on, ${bt.all.model.n} bouts): model ${bt.all.model.logLoss}, the rating alone ${bt.all.rating.logLoss}, a coin ${bt.all.coin.logLoss}`);
+  const t25 = bt.totals.line25;
+  log.log(`${SPORT}: round totals held out at 2.5 (${t25.model.n} three-round bouts): model ${t25.model.logLoss}, the weight class's base rate ${t25.byClass.logLoss}, the line's ${t25.base.logLoss}`);
+  // (a coming bout's chance of Over a line: both sides' numbers as the moneyline reads them, null off the lines)
+  const overChance = (bout, day, line) => {
+    const pred = model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds });
+    const t = predictTotal(totals, totalsTerms(pred.a, pred.b, weightOf({ division: bout.division })), line, bout.rounds);
+    return t;
+  };
 
   // 2. the cards
   const board = await readBoard(now);
@@ -542,12 +614,14 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const bout = byKey.get(bet.boutKey) ?? byId.get(bet.event);
     if (bout?.off) continue;
     let close = null;
-    if (bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) <= SEEN_CLOSE) close = { line: null, odds: bet.seen.odds, fair: bet.seen.fair, source: 'odds api near the start' };
-    else if (bout) {
+    // (a round total's close: its own last price seen, at the line seen then (ESPN keeps no MMA totals))
+    const seenLine = bet.market === 'total' ? bet.seen?.line ?? bet.line : null;
+    if (bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) <= SEEN_CLOSE) close = { line: seenLine, odds: bet.seen.odds, fair: bet.seen.fair, source: 'odds api near the start' };
+    else if (bout && bet.market !== 'total') {
       const espn = await espnOdds(bout).catch(() => null);
       if (espn) close = { line: null, odds: espn.odds[bet.side], fair: bet.side === 'home' ? espn.fair : 1 - espn.fair, source: `close (${espn.provider})` };
     }
-    if (!close && bet.seen && now.getTime() - Date.parse(bet.start) > 3 * DAY) close = { line: null, odds: bet.seen.odds, fair: bet.seen.fair, source: 'last seen' };
+    if (!close && bet.seen && now.getTime() - Date.parse(bet.start) > 3 * DAY) close = { line: seenLine, odds: bet.seen.odds, fair: bet.seen.fair, source: 'last seen' };
     if (!close) continue;
     bet.close = close;
     bet.clv = clvOf(bet, close, null);
@@ -566,27 +640,48 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
 
   // 4. the trust
   const trust = { ...(state.trust ?? {}) };
-  const evidence = ledger.bets.filter((b) => !b.void && (b.status !== 'open' || b.clv) && b.fairFrom === 'pinnacle' && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START));
+  const evidence = ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && (b.status !== 'open' || b.clv) && b.fairFrom === 'pinnacle' && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START));
   const fitted = fitTrust(evidence, START_TRUST);
   if (trust.ml && trust.ml.trust !== fitted.trust) changelog(state, at, 'moneyline trust in the model', trust.ml.trust, fitted.trust, `best fit to ${fitted.n} graded moneyline bets and ${fitted.clvN} closing lines (log loss ${fitted.logLoss})`);
   trust.ml = fitted;
+  // (the round totals' own: every total row graded or closed, whichever book anchored it (they start 2026-10-17);
+  // tracked only, whatever the fit says, till TOTAL_LIVE are graded with a close)
+  const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv)), START_TRUST);
+  if (trust.total && trust.total.trust !== tFitted.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, tFitted.trust, `best fit to ${tFitted.n} graded round totals and ${tFitted.clvN} closing lines (log loss ${tFitted.logLoss})`);
+  trust.total = tFitted;
+  const totalsLive = liveCount(ledger.bets) >= TOTAL_LIVE;
+  if (totalsLive && !state.totalsLiveAt) {
+    state.totalsLiveAt = at;
+    changelog(state, at, 'round totals staked', 0, 1, `${TOTAL_LIVE} round totals graded with a close: the market leaves tracked only for the trust path`);
+  }
 
   // 5. the bouts due, priced
-  const placedOn = new Set(ledger.bets.filter((b) => b.status === 'open' || b.gradedAt).map((b) => b.boutKey));
-  const openOn = new Map(ledger.bets.filter((b) => b.status === 'open').map((b) => [b.boutKey, b]));
+  // (each market's rows apart: the moneyline's and the round total's, one of each a bout)
+  const rowsOf = (market, pred) => ledger.bets.filter((b) => (b.market ?? 'ml') === market && pred(b));
+  const placedOn = new Set(rowsOf('ml', (b) => b.status === 'open' || b.gradedAt).map((b) => b.boutKey));
+  const openOn = new Map(rowsOf('ml', (b) => b.status === 'open').map((b) => [b.boutKey, b]));
+  const tPlacedOn = new Set(rowsOf('total', (b) => b.status === 'open' || b.gradedAt).map((b) => b.boutKey));
+  const tOpenOn = new Map(rowsOf('total', (b) => b.status === 'open').map((b) => [b.boutKey, b]));
+  // (a row placed: its price read again inside 3 hours of the start, for the close; none yet: due unless resting)
+  const closeDue = (open, b, until) => !!open && until <= SEEN_CLOSE && !(open.seen && Date.parse(b.date) - Date.parse(open.seen.at) <= SEEN_CLOSE);
+  const resting = (k, wait) => !!rest[k] && now.getTime() - Date.parse(rest[k]) < wait;
+  const dueFor = new Map();
   const due = coming.filter((b) => {
     const until = Date.parse(b.date) - now.getTime();
     if (phaseOf(SPORT, 'lines', until, gap) === 'early') return false;
-    const open = openOn.get(b.key);
-    // (a bet placed: its price read again inside 3 hours of the start, for the close)
-    if (placedOn.has(b.key)) return !!open && until <= SEEN_CLOSE && !(open.seen && Date.parse(b.date) - Date.parse(open.seen.at) <= SEEN_CLOSE);
-    return !(rest[b.key] && now.getTime() - Date.parse(rest[b.key]) < REST_FOR);
+    const ml = placedOn.has(b.key) ? closeDue(openOn.get(b.key), b, until) : !resting(b.key, REST_FOR);
+    // (a round total the book hadn't posted waits TOTAL_REST before it's asked about again: the totals post later
+    // than the moneylines, and the ask's for the whole board)
+    const total = tPlacedOn.has(b.key) ? closeDue(tOpenOn.get(b.key), b, until) : !resting(`${b.key}|total`, TOTAL_REST);
+    dueFor.set(b.key, { ml, total });
+    return ml || total;
   });
   let events = null;
   let linesSource = 'none due';
   if (due.length) {
-    if (hasKey() && canSpend('lines', 1)) {
-      events = await call('lines', ODDS_ROUTE, { markets: 'h2h', bookmakers: LINE_BOOKS.join(',') });
+    // (one ask for the whole board, both markets: 2 credits (markets x regions; TOTAL_BOOKS' 7 books are one region))
+    if (hasKey() && canSpend('lines', 2)) {
+      events = await call('lines', ODDS_ROUTE, { markets: 'h2h,totals', bookmakers: TOTAL_BOOKS.join(',') });
       linesSource = Array.isArray(events) ? `The Odds API (${events.length} bouts on the board)` : 'The Odds API: no answer';
     } else linesSource = hasKey() ? "The Odds API: the day's allowance spent" : "ESPN's board inside the last call (no Odds API key, or a dry run without --paid)";
     log.log(`${SPORT}: ${due.length} bouts due; lines: ${linesSource}`);
@@ -595,13 +690,17 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const unmatched = [];
   // (the prices this run read, by the bout's key: the board's (buildMmaBoard), no ask for its sake)
   const linesNow = new Map();
+  // (a bout's entry for the board, its moneyline's or its total's added to what's there)
+  const addLines = (key, add) => linesNow.set(key, { lines: null, src: null, ...(linesNow.get(key) ?? {}), ...add });
   for (const bout of due) {
     const until = Date.parse(bout.date) - now.getTime();
     const open = openOn.get(bout.key);
+    const want = dueFor.get(bout.key);
     let lines = null;
     let apiPrice = false;
+    let m = null;
     if (Array.isArray(events)) {
-      const m = matchBout(bout, events);
+      m = matchBout(bout, events);
       if (m) {
         lines = linesOf(bout, m);
         apiPrice = !!lines;
@@ -610,7 +709,54 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       } else unmatched.push(`${bout.home.name} vs ${bout.away.name} (${bout.cardName})`);
     }
     const start = bout.start ?? bout.date;
-    if (lines) linesNow.set(bout.key, { lines, src: apiPrice ? null : 'espn bet' });
+    if (lines) addLines(bout.key, { lines, src: apiPrice ? null : 'espn bet' });
+    // (the round total, from the same event: an open row's price kept for its close (at its own line only), else
+    // priced and tracked (fights-totals.mjs: tracked only till TOTAL_LIVE graded with a close))
+    const tl = m ? totalLinesOf(m.ev) : null;
+    if (tl) addLines(bout.key, { total: tl });
+    const tOpen = tOpenOn.get(bout.key);
+    if (tOpen) {
+      if (tl && tl.line === tOpen.line) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
+    } else if (want.total && !tPlacedOn.has(bout.key)) {
+      const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
+      const choice = tp ? totalPickFor(tp.p, tl, trust.total.trust, { live: totalsLive, untested: !trust.total.fitted, edge: cfg.edge }) : null;
+      if (!choice || choice.skip) {
+        if (choice?.skip) log.log(`${SPORT}: ${bout.home.name} vs ${bout.away.name} round total skipped: ${choice.skip}`);
+        if (Array.isArray(events)) rest[`${bout.key}|total`] = at;
+      } else {
+        const { pick, other, placed, why } = choice;
+        pending.push({
+          id: `${bout.id}:total:${bout.home.id}-${bout.away.id}`,
+          event: bout.id,
+          boutKey: bout.key,
+          card: bout.card,
+          sport: SPORT,
+          start,
+          placedAt: new Date().toISOString(),
+          matchup: `${bout.away.name} @ ${bout.home.name}`,
+          fighters: { home: bout.home, away: bout.away },
+          market: 'total',
+          side: pick.side,
+          line: tl.line,
+          odds: pick.odds,
+          otherOdds: other.odds,
+          model: round(pick.model, 4),
+          fair: round(pick.fair, 4),
+          p: round(pick.p, 4),
+          ev: round(pick.ev, 4),
+          ...placed,
+          book: 'DraftKings',
+          fairFrom: tl.fairFrom,
+          pick: `${pick.side === 'over' ? 'Over' : 'Under'} ${tl.line} rounds`,
+          context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: trust.total.trust, untested: !trust.total.fitted, live: totalsLive, flags: [], ...(why ? { why } : {}) },
+          seen: { at, line: tl.line, odds: pick.odds, fair: round(pick.fair, 4) },
+          status: 'open',
+          profit: 0,
+        });
+      }
+    }
+    // (the moneyline: only where it's due itself)
+    if (!want.ml) continue;
     // (an open bet: its latest price kept for the close, nothing else)
     if (open) {
       if (lines) open.seen = { at, odds: lines.odds[open.side], fair: open.side === 'home' ? lines.fair : 1 - lines.fair };
@@ -619,7 +765,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     if (!lines && until <= LAST_CALL) {
       const espn = await espnOdds(bout).catch(() => null);
       if (espn) lines = { ...espn, start };
-      if (lines) linesNow.set(bout.key, { lines, src: 'espn bet' });
+      if (lines) addLines(bout.key, { lines, src: 'espn bet' });
     }
     if (!lines) {
       if (Array.isArray(events) || !hasKey()) rest[bout.key] = at;
@@ -692,23 +838,24 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   // 6. the picks, the state, the files
   const boutsById = new Map(bouts.map((b) => [b.id, b]));
   const picks = buildFightPicks(ledger, trust, boutsById, now);
-  const out = stateOf(state, { model, bt, trust, ledger, now, lines: linesSource, odds: hasKey() ? usageSummary() : null });
+  const out = stateOf(state, { model, bt, trust, ledger, now, lines: linesSource, odds: hasKey() ? usageSummary() : null, totals });
   // 7. the betting board: every bout coming, priced from what the run has; a bout with no DraftKings price this run or
   // on the last board takes ESPN BET's line (free, src 'espn bet'), read again each run till a DraftKings price comes
   const prevBoard = readJson(FILES.board, null);
   for (const bout of coming) {
-    if (linesNow.has(bout.key) || boardLinesOf(prevBoard, bout.id)) continue;
+    if (linesNow.get(bout.key)?.lines || boardLinesOf(prevBoard, bout.id)) continue;
     const espn = await espnOdds(bout).catch(() => null);
-    if (espn) linesNow.set(bout.key, { lines: espn, src: 'espn bet' });
+    if (espn) addLines(bout.key, { lines: espn, src: 'espn bet' });
   }
-  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => model.chance(b.home.id, b.away.id, day, { rounds: b.rounds }).p, trust: trust.ml.trust, bets: ledger.bets, prev: prevBoard, now });
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => model.chance(b.home.id, b.away.id, day, { rounds: b.rounds }).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: trust.total.trust, bets: ledger.bets, prev: prevBoard, now });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
-  log.log(`${SPORT}${dry ? ' (dry)' : ''}: board of ${mmaBoard.games.length} bouts (${espnPriced} at ESPN BET's line) of ${coming.length} coming`);
+  const withTotal = mmaBoard.games.filter((g) => g.k.total).length;
+  log.log(`${SPORT}${dry ? ' (dry)' : ''}: board of ${mmaBoard.games.length} bouts (${espnPriced} at ESPN BET's line, ${withTotal} with a round total) of ${coming.length} coming`);
   if (dry) {
     log.log(`${SPORT} (dry): ${picks.picks.length} picks: ${picks.picks.map((p) => `${p.level} ${p.pick} ${p.odds} (${p.score})`).join(' | ') || 'none'}`);
     mkdirSync(CACHE, { recursive: true });
-    writeJson(path.join(CACHE, 'dry-mma.json'), { terms: model.fit.terms, trust, backtest: bt.all, due: due.map((b) => `${b.home.name} vs ${b.away.name}`), unmatched, pending });
+    writeJson(path.join(CACHE, 'dry-mma.json'), { terms: model.fit.terms, totals: { terms: totals.terms, base: totals.base, backtest: bt.totals.line25 }, trust, backtest: bt.all, due: due.map((b) => `${b.home.name} vs ${b.away.name}`), unmatched, pending });
     log.log(`${SPORT} (dry): snapshot in .cache/model/dry-mma.json; nothing committed touched`);
     if (boardOut) {
       const dir = path.resolve(boardOut);

@@ -435,6 +435,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return !b.spread && !b.total;
   }
 
+  // (a total's unit in its words: a fight's round total reads "Over 2.5 rounds")
+  get totalUnit(): string {
+    return this.sport === 'mma' ? ' rounds' : '';
+  }
+
   // (whether a side is a team with a side of the field, Away or Home: a fight's fighters have none)
   get teams(): boolean {
     return this.sport !== 'mma';

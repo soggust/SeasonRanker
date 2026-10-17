@@ -6,8 +6,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { LEAGUES, TIMING } from '../libs/ranker/scripts/model/leagues.mjs';
 import { SPORT_KEYS } from '../libs/ranker/scripts/model/oddsapi.mjs';
-import { boutsOf, buildFightPicks, linesOf, matchBout, mergeBouts, nameKey, nameMatch, pickFor, reasonOf, settleBout } from '../libs/ranker/scripts/model/mma-desk.mjs';
-import { TERM_KEYS, advance, backtest, buildRows, featuresOf, fitLogistic, fitRows, fitSoft, freshFighter, predict, ratesOf, resultOf, sideNumbers } from '../libs/ranker/scripts/model/fights-model.mjs';
+import { boardTotalOf, boutSecs, boutsOf, buildFightPicks, buildMmaBoard, linesOf, matchBout, mergeBouts, nameKey, nameMatch, pickFor, reasonOf, settleBout } from '../libs/ranker/scripts/model/mma-desk.mjs';
+import { TOTAL_BOOKS, TOTAL_LIVE, fitTotals, liveCount, pastLine, predictTotal, totalLinesOf, totalPickFor, totalRows } from '../libs/ranker/scripts/model/fights-totals.mjs';
+import { TERM_KEYS, TOTAL_KEYS, advance, backtest, buildRows, featuresOf, fitLogistic, fitRows, fitSoft, freshFighter, predict, ratesOf, resultOf, sideNumbers } from '../libs/ranker/scripts/model/fights-model.mjs';
 import { isTracked } from '../libs/ranker/scripts/model/desk.mjs';
 
 const H = 36e5;
@@ -301,4 +302,122 @@ test('buildFightPicks: the open edge bets by their Kelly score with the page’s
   assert.match(reason, /the rating/);
   assert.match(reason, /untested/);
   assert.match(reason, /56%/);
+});
+
+// ---------------------------------------------------------------------------------------------------------
+// Round totals (fights-totals.mjs, the MMA desk's second market)
+
+const totals = (key, pairs) => ({ key, markets: [{ key: 'totals', outcomes: pairs.flatMap(([point, over, under]) => [{ name: 'Over', price: over, point }, { name: 'Under', price: under, point }]) }] });
+
+test("totalLinesOf: the book's main point (the pair nearest even), Pinnacle's pair at that point the fair chance, else the listed book with the least vig, else the book's own", () => {
+  const ev = { bookmakers: [totals('draftkings', [[2.5, 1.87, 1.95], [1.5, 1.4, 2.9]]), totals('pinnacle', [[2.5, 1.95, 1.95]]), totals('betus', [[2.5, 1.8, 1.9]])] };
+  const t = totalLinesOf(ev);
+  assert.equal(t.line, 2.5);
+  assert.equal(t.odds.over, -115);
+  assert.equal(t.fairFrom, 'pinnacle');
+  assert.ok(Math.abs(t.fair - 0.5) < 1e-9);
+  // (Pinnacle at another point: the other books' least vig at the book's)
+  const other = totalLinesOf({ bookmakers: [totals('draftkings', [[2.5, 1.87, 1.95]]), totals('pinnacle', [[1.5, 1.5, 2.6]]), totals('betus', [[2.5, 1.8, 1.9]]), totals('coolbet', [[2.5, 1.9, 1.92]])] });
+  assert.equal(other.fairFrom, 'coolbet');
+  const own = totalLinesOf({ bookmakers: [totals('draftkings', [[2.5, 1.87, 1.95]])] });
+  assert.equal(own.fairFrom, 'its own prices');
+  // (a book with one side posted, or none: no total)
+  assert.equal(totalLinesOf({ bookmakers: [{ key: 'draftkings', markets: [{ key: 'totals', outcomes: [{ name: 'Over', price: 1.9, point: 2.5 }] }] }] }), null);
+  assert.equal(totalLinesOf({ bookmakers: [totals('pinnacle', [[2.5, 1.95, 1.95]])] }), null);
+  assert.ok(TOTAL_BOOKS.length <= 10 && TOTAL_BOOKS.includes('draftkings') && TOTAL_BOOKS.includes('pinnacle'));
+});
+
+test('settleBout on a round total: Over 2.5 wins past 2:30 of the third round, a finish at it or before is Under; a no contest before the line voids, after it stands; a draw goes the distance; a replaced fighter voids; tracked pays nothing', () => {
+  const bet = { market: 'total', side: 'over', line: 2.5, odds: -115, units: 1, start: '2026-10-17T21:00Z', fighters: { home: { id: 'h' }, away: { id: 'a' } } };
+  const now = Date.parse('2026-10-18T06:00Z');
+  const fin = (period, clock, winner = 'home') => bout('H', 'A', '2026-10-17T21:00Z', { final: true, winner, period, clock });
+  assert.equal(settleBout(bet, fin(3, 151), now).status, 'won');
+  assert.equal(settleBout(bet, fin(3, 150), now).status, 'lost');
+  assert.equal(settleBout(bet, fin(1, 40), now).status, 'lost');
+  assert.equal(settleBout({ ...bet, side: 'under' }, fin(2, 300), now).status, 'won');
+  assert.equal(settleBout(bet, fin(3, 300), now).profit, 0.87);
+  assert.equal(settleBout(bet, fin(1, 90, null), now).void, true);
+  assert.equal(settleBout(bet, fin(3, 200, null), now).status, 'won');
+  assert.equal(settleBout(bet, fin(3, 300, null), now).status, 'won');
+  assert.equal(settleBout(bet, { ...fin(3, 300), away: { id: 'z', name: 'Z' } }, now).void, true);
+  assert.equal(settleBout(bet, fin(null, null), now), null);
+  assert.equal(settleBout({ ...bet, intent: 'track', units: 0, trackUnits: 0.5 }, fin(3, 300), now).profit, 0);
+  assert.equal(pastLine(751, 2.5), true);
+  assert.equal(pastLine(750, 2.5), false);
+  // (ESPN's finish: the round and the clock, on a final)
+  assert.equal(boutsOf(scoreboard([['10', 'h1', 'a1', { completed: true, winner: 'home' }]]))[0].period, null);
+  const sb = scoreboard([['10', 'h1', 'a1', { completed: true, winner: 'home' }]]);
+  sb.events[0].competitions[0].status.period = 2;
+  sb.events[0].competitions[0].status.clock = 83;
+  assert.equal(boutSecs(boutsOf(sb)[0]), 383);
+});
+
+test('totalPickFor: tracked only till 40 graded with a close, whatever the edge; then an edge bet past the edge, 1u at most untested; past the gap it is skipped', () => {
+  const lines = { line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 };
+  const tracked = totalPickFor(0.6, lines, 0.5, { live: false });
+  assert.equal(tracked.pick.side, 'over');
+  assert.equal(tracked.placed.intent, 'track');
+  assert.equal(tracked.placed.units, 0);
+  assert.match(tracked.why, /tracked only/);
+  const live = totalPickFor(0.56, lines, 0.5, { live: true, untested: true });
+  assert.equal(live.placed.intent, 'edge');
+  assert.ok(live.placed.units <= 1);
+  assert.equal(totalPickFor(0.44, lines, 0.5, { live: true }).pick.side, 'under');
+  assert.ok(totalPickFor(0.9, lines, 0.5, { live: true }).skip);
+  const graded = Array.from({ length: TOTAL_LIVE }, () => ({ market: 'total', status: 'won', clv: { q: 0.5 } }));
+  assert.equal(liveCount(graded), TOTAL_LIVE);
+  assert.equal(liveCount([...graded.slice(1), { market: 'total', status: 'won' }, { market: 'ml', status: 'won', clv: {} }]), TOTAL_LIVE - 1);
+});
+
+test("round totals' fit: every bout once at each of its rounds' lines, weighing 1 in all; a term that predicts the length earns weight, the base rates stay the rows' own; off a line, no chance", () => {
+  const rows = [];
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const zero = Object.fromEntries(TOTAL_KEYS.map((k) => [k, 0]));
+  for (let i = 0; i < 3000; i++) {
+    const time = 1 + rnd() * 0.6;
+    const noise = rnd();
+    const rounds = i % 10 === 0 ? 5 : 3;
+    const secs = Math.min(rounds * 300, Math.round(rnd() * rounds * 300 * (0.5 + (time - 1) * 1.6)) + 60);
+    const d = new Date(Date.UTC(2010, 0, 1) + i * 864e5).toISOString().slice(0, 10);
+    rows.push({ id: `b${i}`, date: d, league: 'ufc', experienced: true, rounds, secs, method: 'KO', division: 'Lightweight', tx: { ...zero, tTime: time, tSlpm: noise } });
+  }
+  const tr = totalRows(rows);
+  assert.equal(tr.filter((r) => r.id === 'b0').length, 4);
+  assert.equal(tr.filter((r) => r.id === 'b1').length, 2);
+  assert.ok(Math.abs(tr.filter((r) => r.id === 'b1').reduce((s, r) => s + r.w, 0) - 1) < 1e-9);
+  // (a no contest, or no length kept: not learned from)
+  assert.equal(totalRows([{ ...rows[1], method: 'NC' }, { ...rows[2], secs: null }]).length, 0);
+  const fit = fitTotals(tr);
+  const t = Object.fromEntries(fit.terms.map((x) => [x.key, x]));
+  assert.ok(t.tTime.weight > 0, `tTime ${t.tTime.weight}`);
+  const p = predictTotal(fit, { ...zero, tTime: 1.5 }, 2.5, 3).p;
+  const q = predictTotal(fit, { ...zero, tTime: 1.05 }, 2.5, 3).p;
+  assert.ok(p > q && p < 0.97 && q > 0.03, `${p} ${q}`);
+  const mid = { ...zero, tTime: 1.3, tSlpm: 0.5 };
+  assert.ok(predictTotal(fit, mid, 1.5, 3).p > predictTotal(fit, mid, 2.5, 3).p);
+  assert.equal(predictTotal(fit, zero, 3.5, 3), null);
+  const at25 = tr.filter((r) => r.line === 2.5 && r.rounds === 3);
+  const mean = at25.reduce((s, r) => s + predictTotal(fit, r.tx, 2.5, 3).p, 0) / at25.length;
+  const actual = at25.reduce((s, r) => s + r.y, 0) / at25.length;
+  assert.ok(Math.abs(mean - actual) < 0.02, `${mean} vs ${actual}`);
+});
+
+test("buildMmaBoard: a bout's round total as k.total, Over then Under at the book's line with the trusted chance, Kelly and band; the last board's total kept where this run asked none", () => {
+  const now = new Date('2026-10-17T12:00:00Z');
+  const b = bout('Home Guy', 'Away Guy', '2026-10-18T02:00:00Z');
+  const lines = new Map([[b.key, { lines: { odds: { home: -150, away: 130 }, fair: 0.58 }, src: null, total: { line: 2.5, odds: { over: -120, under: 100 }, fair: 0.53 } }]]);
+  const board = buildMmaBoard({ bouts: [b], lines, chance: () => 0.6, trust: 0.5, over: (x, day, line) => (line === 2.5 ? 0.58 : null), totalTrust: 0.5, now });
+  const g = board.games[0];
+  assert.deepEqual(g.k.total.map((s) => [s.s, s.l, s.o]), [['over', 2.5, -120], ['under', 2.5, 100]]);
+  for (const s of g.k.total) assert.ok(Number.isFinite(s.c) && Number.isFinite(s.ks) && ['lock', 'high', 'medium', 'low'].includes(s.b));
+  assert.ok(Math.abs(g.k.total[0].c - (0.53 + 0.5 * 0.05)) < 0.002);
+  assert.equal(g.k.ml.length, 2);
+  // (no ask this run: the last board's total stands, at its line)
+  const again = buildMmaBoard({ bouts: [b], lines: new Map(), chance: () => 0.6, trust: 0.5, over: () => 0.58, totalTrust: 0.5, prev: board, now });
+  assert.equal(again.games[0].k.total[0].l, 2.5);
+  // (no model chance at the line: no total tile)
+  const none = buildMmaBoard({ bouts: [b], lines, chance: () => 0.6, trust: 0.5, over: () => null, now });
+  assert.equal(none.games[0].k.total, undefined);
+  assert.equal(boardTotalOf({ line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 }, 0.95, 0.5).every((s) => s.b === 'low'), true);
 });
