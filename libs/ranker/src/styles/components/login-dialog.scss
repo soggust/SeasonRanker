@@ -47,7 +47,7 @@ header {
   border-bottom: 1px solid v.$panel-edge;
   display: flex;
   flex: 0 0 auto;
-  gap: 12px;
+  gap: v.$space-12;
   padding: 14px 14px 14px 20px;
 
   h2 {
@@ -133,14 +133,14 @@ header {
   background: linear-gradient(180deg, var(--app-pewter-deep), var(--app-pewter-ink));
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: v.$space-14;
   overflow-y: auto;
   padding: 18px 22px 22px;
 }
 
 .login-lede {
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 13.5px;
+  color: v.$text-dim;
+  font-size: v.$fs-14;
   line-height: 1.45;
   margin: 0;
   text-align: center;
@@ -152,7 +152,7 @@ header {
 .login-social {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
 }
 
 .social {
@@ -167,9 +167,9 @@ header {
   cursor: pointer;
   display: flex;
   font-family: v.$font-base;
-  font-size: 14.5px;
+  font-size: v.$fs-15;
   font-weight: 700;
-  gap: 12px;
+  gap: v.$space-12;
   height: 46px;
   justify-content: center;
   padding: 0 16px;
@@ -209,11 +209,11 @@ header {
 
 .login-or {
   align-items: center;
-  color: rgba(255, 255, 255, 0.5);
+  color: v.$text-faint;
   display: flex;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 800;
-  gap: 12px;
+  gap: v.$space-12;
   letter-spacing: 1.5px;
   text-transform: uppercase;
 
@@ -227,7 +227,7 @@ header {
 
 .login-tabs {
   display: flex;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: center;
 }
 
@@ -237,7 +237,7 @@ header {
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: v.$space-14;
 }
 
 .login-error,
@@ -245,8 +245,8 @@ header {
   align-items: flex-start;
   border-radius: v.$radius-lg;
   display: flex;
-  font-size: 13px;
-  gap: 8px;
+  font-size: v.$fs-13;
+  gap: v.$space-8;
   line-height: 1.4;
   margin: 0;
   padding: 10px 12px;
@@ -260,7 +260,7 @@ header {
 .login-error {
   background: rgba(v.$bad, 0.12);
   border: 1px solid rgba(v.$bad, 0.45);
-  color: v.$bad-pale;
+  color: v.$bad-soft;
 
   .mat-icon {
     color: v.$bad;
@@ -278,7 +278,7 @@ header {
 }
 
 .login-submit {
-  font-size: 14px;
+  font-size: v.$fs-14;
   margin-top: 4px;
   min-height: 46px;
   width: 100%;

@@ -31,7 +31,15 @@ purpose. Paths are under `libs/ranker/src/styles/` unless they say otherwise.
   `_base.scss`, and the range input under the knob is invisible). Lighting the knob on
   `.mdc-slider__thumb--focused` would close it.
 
-## Contrast (not fixed yet)
+## Contrast (fixed: the white-text ladder and the 10px floor)
+
+Done as suggested below: `_variables.scss` has the ladder, `$text-faint` (60%, the floor), `$text-dim` (70%),
+`$text-soft` (80%), `$text-strong` (90%), and every white text color between 31% and 94% now uses the nearest step
+up or down (35-62% to faint, 65-72% dim, 75-82% soft, 85-90% strong). Text at 30% or less is left: a disabled
+state (exempt) or a decorative mark (the AI chips' separator dot, a watermark). `#777` lettering is `#999`, the
+row's drag grip is at 45%, and nothing is set under `$fs-10` (10px) outside the diagrams (field-map, heat-map)
+and the splash's art, which size their own labels. The audit as it stood:
+
 
 WCAG 1.4.3 Contrast (AA) asks for 4.5:1 for text under about 18px (3:1 for icons, 1.4.11). Much of the
 site's fine print is white at 35-50% on the dark scoreboard, at 9-11.5px. Measured against the flat panel

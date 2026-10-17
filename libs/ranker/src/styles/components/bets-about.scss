@@ -13,7 +13,7 @@
   li {
     align-items: baseline;
     display: flex;
-    gap: 12px;
+    gap: v.$space-12;
     margin-bottom: 10px;
   }
 }
@@ -23,7 +23,7 @@
   border-radius: v.$radius-pill;
   color: #111;
   flex: 0 0 56px;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 900;
   letter-spacing: 0.6px;
   padding: 3px 0;
@@ -58,22 +58,22 @@
   align-items: center;
   background: none;
   border: 0;
-  color: rgba(255, 255, 255, 0.85);
+  color: v.$text-strong;
   cursor: pointer;
   display: flex;
   font: inherit;
-  font-size: 14px;
-  gap: 8px;
+  font-size: v.$fs-14;
+  gap: v.$space-8;
   padding: 8px 10px;
   text-align: left;
   width: 100%;
 
   &.sport {
-    font-size: 15px;
+    font-size: v.$fs-15;
   }
 
   .fold-chevron {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
     flex: none;
     @include v.icon-size(20px);
     transition:
@@ -82,7 +82,7 @@
   }
 
   &:hover .fold-chevron {
-    color: rgba(255, 255, 255, 0.9);
+    color: v.$text-strong;
   }
 
   // (the keyboard's focus: the chevron lightens as on hover, the title white)
@@ -90,7 +90,7 @@
     color: #fff;
 
     .fold-chevron {
-      color: rgba(255, 255, 255, 0.9);
+      color: v.$text-strong;
     }
   }
 
@@ -120,11 +120,11 @@
 
 table {
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-variant-numeric: tabular-nums;
 
   th {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     font-weight: 700;
     text-align: left;
   }
@@ -136,7 +136,7 @@ table {
   }
 
   .out td {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
   }
 
   .up {

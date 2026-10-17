@@ -75,7 +75,7 @@ $gold: chip.$lock-gold;
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
   margin-top: 8vh;
   max-width: 460px;
   padding: 30px 28px 28px;
@@ -89,8 +89,8 @@ $gold: chip.$lock-gold;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    color: v.$text-soft;
+    font-size: v.$fs-14;
     line-height: 1.55;
     margin: 0;
   }
@@ -136,7 +136,7 @@ $gold: chip.$lock-gold;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: v.$space-12;
   justify-content: center;
 }
 
@@ -160,9 +160,9 @@ $gold: chip.$lock-gold;
   color: var(--ink);
   cursor: pointer;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 900;
-  gap: 7px;
+  gap: v.$space-8;
   justify-content: center;
   letter-spacing: 0.06em;
   // (the dropdown's height, so its rim and spots are the same chip)
@@ -251,8 +251,8 @@ $gold: chip.$lock-gold;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 13px;
+    color: v.$text-strong;
+    font-size: v.$fs-13;
     line-height: 1.5;
     margin: 0;
   }
@@ -262,7 +262,7 @@ $gold: chip.$lock-gold;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: v.$space-12;
   justify-content: flex-end;
   margin-top: 10px;
 }
@@ -273,7 +273,7 @@ $gold: chip.$lock-gold;
   border-radius: v.$radius-lg;
   color: #fff;
   font-family: v.$font-base;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 800;
   letter-spacing: 0.1em;
   padding: 9px 10px;
@@ -287,7 +287,7 @@ $gold: chip.$lock-gold;
 
 .wallet-message {
   color: v.$good;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
   margin: 10px 0 0;
   text-align: center;
@@ -297,13 +297,13 @@ $gold: chip.$lock-gold;
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
   padding: 6px 0 4px;
   text-align: center;
 
   p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    color: v.$text-soft;
+    font-size: v.$fs-14;
     margin: 0;
   }
 }
@@ -321,7 +321,7 @@ $gold: chip.$lock-gold;
 }
 
 .wallet-void {
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   font-style: italic;
 }
 
@@ -357,7 +357,7 @@ $gold: chip.$lock-gold;
 .wallet-legs {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 3px;
+  gap: v.$space-4;
   justify-content: flex-end;
   margin-bottom: 3px;
 
@@ -389,8 +389,8 @@ $gold: chip.$lock-gold;
 }
 
 .wallet-fine {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   line-height: 1.45;
   margin: 8px 0 2px;
 }
@@ -403,7 +403,7 @@ $gold: chip.$lock-gold;
   }
 
   td {
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 800;
   }
 }
@@ -412,14 +412,14 @@ $gold: chip.$lock-gold;
 .wallet-periods {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
   margin-bottom: 12px;
 }
 
 .wallet-leaders {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: v.$space-4;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -428,9 +428,9 @@ $gold: chip.$lock-gold;
     align-items: center;
     border-radius: v.$radius-lg;
     display: grid;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-variant-numeric: tabular-nums;
-    gap: 10px;
+    gap: v.$space-10;
     grid-template-columns: 28px 26px minmax(0, 1fr) auto auto 72px;
     padding: 4px 6px;
 
@@ -443,7 +443,7 @@ $gold: chip.$lock-gold;
 
 .leader-rank {
   @include v.led-tile;
-  font-size: 12px;
+  font-size: v.$fs-12;
   height: 24px;
   width: 28px;
 
@@ -457,7 +457,7 @@ $gold: chip.$lock-gold;
 .leader-who {
   align-items: center;
   display: flex;
-  gap: 8px;
+  gap: v.$space-8;
   min-width: 0;
 }
 
@@ -468,9 +468,9 @@ $gold: chip.$lock-gold;
   color: var(--app-text-muted, rgba(255, 255, 255, 0.65));
   display: inline-flex;
   flex: 0 0 auto;
-  font-size: 10.5px;
+  font-size: v.$fs-11;
   font-weight: 800;
-  gap: 3px;
+  gap: v.$space-4;
   letter-spacing: 0.3px;
   padding: 1px 8px;
   white-space: nowrap;
@@ -496,13 +496,13 @@ $gold: chip.$lock-gold;
 
 .leader-record,
 .leader-roi {
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 12px;
+  color: v.$text-dim;
+  font-size: v.$fs-12;
   font-weight: 700;
 }
 
 .leader-profit {
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 900;
   text-align: right;
 }
@@ -545,7 +545,7 @@ $gold: chip.$lock-gold;
 // Phones (in one block, after every rule it overrides)
 @include v.down(small) {
   .wallet-leaders li {
-    gap: 6px;
+    gap: v.$space-6;
     grid-template-columns: 24px 26px minmax(0, 1fr) auto 64px;
   }
 
@@ -568,7 +568,7 @@ $gold: chip.$lock-gold;
   }
 
   .wallet-bets {
-    font-size: 11.5px;
+    font-size: v.$fs-12;
 
     th,
     td {
@@ -604,9 +604,9 @@ $gold: chip.$lock-gold;
     }
 
     .wallet-phone-game {
-      color: rgba(255, 255, 255, 0.5);
+      color: v.$text-faint;
       display: block;
-      font-size: 10.5px;
+      font-size: v.$fs-11;
       font-weight: 700;
       margin: 2px 0 0 36px;
     }

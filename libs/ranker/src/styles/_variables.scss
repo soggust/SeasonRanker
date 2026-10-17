@@ -63,6 +63,53 @@ $font-led: "DSEG7", sans-serif;
 // The page's text size (the body's; the open lists letter at 0.85 of it: _sport-kit.scss)
 $page-font-size: 13px;
 
+// The type scale: every text size the styles set, by its size in px (the half sizes there were, 10.5 to 15.5,
+// went up to the next whole step, and 19, 21 and 25 to the next step up). Nothing under $fs-10, the smallest
+// text (docs/accessibility.md); a diagram's own labels and the splash's lettering (field-map, heat-map,
+// splash.component) size themselves. 12 is the most used, then 11 and 13 (the page's).
+$fs-10: 10px;
+$fs-11: 11px;
+$fs-12: 12px;
+$fs-13: 13px;
+$fs-14: 14px;
+$fs-15: 15px;
+$fs-16: 16px;
+$fs-17: 17px;
+$fs-18: 18px;
+$fs-20: 20px;
+$fs-22: 22px;
+$fs-24: 24px;
+$fs-26: 26px;
+$fs-28: 28px;
+
+// The spacing scale for the gaps between things (gap, row-gap, column-gap): 2px steps up to 16, then 20, 24,
+// 28, 32, 36 and 48 (an odd gap, 3 to 11, went up to the next step; 18, 22 and 26 to 20, 24 and 28). A 1px gap,
+// a hairline's, stays as it is.
+$space-2: 2px;
+$space-4: 4px;
+$space-6: 6px;
+$space-8: 8px;
+$space-10: 10px;
+$space-12: 12px;
+$space-14: 14px;
+$space-16: 16px;
+$space-20: 20px;
+$space-24: 24px;
+$space-28: 28px;
+$space-32: 32px;
+$space-36: 36px;
+$space-48: 48px;
+
+// White lettering on the dark boards, by how much it says: the fine print's floor (60%, about 6.6 to 7:1 on the
+// scoreboard and the pewter wells, where 50% fell under 4.5:1 on the dots: docs/accessibility.md), then dim,
+// soft and strong. Plain white ($lettering) for what matters most. Text never goes under $text-faint; only a
+// disabled control (exempt) or a decorative mark (a separator dot, a watermark) may.
+$lettering: #fff;
+$text-faint: rgba(255, 255, 255, 0.6);
+$text-dim: rgba(255, 255, 255, 0.7);
+$text-soft: rgba(255, 255, 255, 0.8);
+$text-strong: rgba(255, 255, 255, 0.9);
+
 // Breakpoints: a phone (up to $bp-phone, and $bp-phone-up past it), and the width the settings menu
 // sets Format and Display side by side at
 $bp-phone: 575px;
@@ -214,20 +261,17 @@ $caution: #ffcd00;
 // loss)
 $led-won: rgb(80, 207, 80);
 $led-lost: #ff3b30;
-// (the brighter green and the softer red the rank grid, the lists, a bet's reasons, the AI's concerns and the
-// game view's Out tag paint a result in; a pale mint for money won, the wallet's and the Bets page's)
+// A result in lettering, one green and one red: the brighter green and the softer red the rank grid, the lists,
+// a bet's reasons, the AI's concerns and the game view's Out tag paint a result in, money won (the wallet's and
+// the Bets page's), a problem named in a line of text (a roster move's injury, the slip's error, a note's
+// problem) and a message about something gone wrong (a form's error, a list's failure). Each reads on the dark
+// panels (the red about 6.3:1 on $panel-dark). (They were five shades: a mint for money, a lighter red for a
+// problem and a pale red for an error, merged into these two.)
 $good-bright: #3ee07a;
 $bad-soft: #ff7468;
-$good-mint: #6fe39a;
-// (a lighter red for a problem named in a line of text: a roster move's injury, the slip's error, a note's
-// problem)
-$bad-light: #ff8a80;
 // (doubtful, in orange: an injury tag, the Overview's middling flag, a check to watch; and Compare's "different
 // positions")
 $doubtful: #ff9a3c;
-// (a message about something gone wrong, in a pale red that reads on the dark panels: a form's error, a
-// list's failure)
-$bad-pale: #ffb4ae;
 
 // The #1 trophy's gold and its glow (its own: the same yellow as $caution and the NFL's accent, another meaning)
 $trophy-gold: #ffcd00;

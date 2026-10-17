@@ -17,7 +17,7 @@
 .preset-actions {
   display: flex;
   flex: 0 0 auto;
-  gap: 6px;
+  gap: v.$space-6;
 }
 
 // (the menu's buttons, sized for the row: the font is the headline's, _base.scss)
@@ -55,13 +55,13 @@
   align-items: center;
   display: flex;
   flex: 1 0 100%;
-  gap: 8px;
+  gap: v.$space-8;
   justify-content: center;
 }
 
 .preset-update {
-  font-size: 10.5px;
-  gap: 4px;
+  font-size: v.$fs-11;
+  gap: v.$space-4;
   min-height: 26px;
   padding: 0 9px 0 7px;
 
@@ -74,7 +74,7 @@
   color: v.$good;
   flex: 1 0 100%;
   font-family: v.$font-base;
-  font-size: 11.5px;
+  font-size: v.$fs-12;
   font-weight: 700;
   margin: 0;
   text-align: center;

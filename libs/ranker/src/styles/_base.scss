@@ -286,8 +286,8 @@ html body .mat-mdc-select-panel.preset-options {
     .mdc-list-item__primary-text {
       align-items: center;
       display: flex;
-      font-size: 10px !important;
-      gap: 10px;
+      font-size: v.$fs-10 !important;
+      gap: v.$space-10;
       letter-spacing: 1.5px !important;
       opacity: 0.85;
       text-shadow: none;
@@ -361,7 +361,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     span {
       color: #fff !important;
       @include v.heading-input;
-      font-size: 13px !important;
+      font-size: v.$fs-13 !important;
       font-weight: 800 !important;
       text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6) !important;
       text-transform: none !important;
@@ -385,8 +385,8 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     span.game-lines {
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: v.$radius-pill;
-      color: rgba(255, 255, 255, 0.65) !important;
-      font-size: 9px !important;
+      color: v.$text-dim !important;
+      font-size: v.$fs-10 !important;
       font-weight: 800 !important;
       letter-spacing: 0.8px !important;
       margin-left: 4px;
@@ -418,7 +418,7 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
     color: #{chip.$gold-led};
     display: block;
     font-family: v.$font-heading;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 800;
     letter-spacing: 0.5px;
     margin-top: 4px;
@@ -428,12 +428,12 @@ html body .mdc-menu-surface.mat-mdc-select-panel.bets-game-options {
 
   .game-sport {
     align-items: center;
-    color: rgba(255, 255, 255, 0.72);
+    color: v.$text-dim;
     display: flex;
     font-family: v.$font-heading;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 800;
-    gap: 6px;
+    gap: v.$space-6;
     letter-spacing: 1px;
     padding: 6px 16px 0;
     text-transform: uppercase;
@@ -496,9 +496,9 @@ html {
     cursor: default;
     display: flex;
     font-family: v.$font-base;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 800;
-    gap: 8px;
+    gap: v.$space-8;
     letter-spacing: 1.5px;
     margin: 10px 16px 6px;
     padding: 4px 0 7px;
@@ -573,7 +573,7 @@ html {
       color: #fff;
       cursor: pointer;
       display: inline-flex;
-      font-size: 13px;
+      font-size: v.$fs-13;
       font-weight: 700;
       height: 18px;
       justify-content: center;
@@ -595,7 +595,7 @@ html {
     .min-games-value {
       color: var(--scoreboard-led) !important;
       font-family: v.$font-hand !important;
-      font-size: 15px;
+      font-size: v.$fs-15;
       font-weight: 400;
       margin: 0 7px;
       min-width: 14px;
@@ -611,7 +611,7 @@ html {
     width: auto;
 
     .mat-mdc-select-trigger {
-      gap: 2px;
+      gap: v.$space-2;
       height: 24px;
     }
 
@@ -629,7 +629,7 @@ html {
     }
 
     .mat-mdc-select-arrow {
-      color: rgba(255, 255, 255, 0.6) !important;
+      color: v.$text-faint !important;
     }
   }
 

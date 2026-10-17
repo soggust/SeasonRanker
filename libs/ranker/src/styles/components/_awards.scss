@@ -51,7 +51,7 @@ $sweep: glint-sweep 4s ease-in-out 3;
     align-items: center;
     display: flex;
     flex: 0 0 100%;
-    gap: 3px;
+    gap: v.$space-4;
 
     // (gold by default; the sport's theme puts its other awards in silver, bronze or steel)
     .award-badge {
@@ -64,7 +64,7 @@ $sweep: glint-sweep 4s ease-in-out 3;
       color: #3a2800;
       cursor: help;
       font-family: v.$font-base;
-      font-size: 9px;
+      font-size: v.$fs-10;
       font-weight: 900;
       letter-spacing: 0.2px;
       line-height: 1;

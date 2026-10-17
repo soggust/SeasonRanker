@@ -52,7 +52,7 @@ card-panel {
     color: #fff;
     display: flex;
     font-family: v.$font-base;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -67,7 +67,7 @@ card-panel {
       display: flex;
       flex: 1;
       font: inherit;
-      gap: 8px;
+      gap: v.$space-8;
       letter-spacing: inherit;
       min-width: 0;
       padding: 12px;
@@ -102,13 +102,13 @@ card-panel {
     --bar-tint: color-mix(in srgb, var(--group-color) 24%, transparent);
 
     .panel-chevron {
-      color: rgba(255, 255, 255, 0.9);
+      color: v.$text-strong;
     }
   }
 
   // (plain, the FAQ's questions: the label in its own case, a touch larger, without the caps spacing)
   &.panel-plain > .group-bar {
-    font-size: 14px;
+    font-size: v.$fs-14;
     letter-spacing: normal;
     text-transform: none;
   }
@@ -134,7 +134,7 @@ card-panel {
 
   // (right when shut, turned down when open)
   .panel-chevron {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     @include v.icon-size(20px);
     margin: 0 -4px;
   }

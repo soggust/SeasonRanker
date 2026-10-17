@@ -13,7 +13,7 @@
   align-items: center;
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: flex-end;
 }
 
@@ -22,12 +22,12 @@
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: v.$radius-pill;
-  color: rgba(255, 255, 255, 0.75);
+  color: v.$text-soft;
   display: inline-flex;
   font-family: v.$font-base;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 800;
-  gap: 5px;
+  gap: v.$space-6;
   letter-spacing: 0.8px;
   padding: 4px 11px;
   text-transform: uppercase;
@@ -45,7 +45,7 @@
 }
 
 .link.quiet {
-  color: rgba(255, 255, 255, 0.5);
+  color: v.$text-faint;
 
   &:hover:not([disabled]),
   &:focus-visible {
@@ -57,7 +57,7 @@
 .confirm-text {
   color: #fff;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
 }
 
@@ -66,7 +66,7 @@
   color: v.$bad;
   flex-basis: 100%;
   font-family: v.$font-base;
-  font-size: 12px;
+  font-size: v.$fs-12;
   line-height: 1.35;
   text-align: right;
 }

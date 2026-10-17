@@ -69,7 +69,7 @@ $sheet-ground: v.$slate-panel;
   background: none;
   border: none;
   border-radius: $radius;
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   cursor: pointer;
   display: $display;
   height: $size;
@@ -112,7 +112,7 @@ $sheet-ground: v.$slate-panel;
 
 .tapes {
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: repeat(var(--sides), minmax(0, 1fr));
 }
 
@@ -131,7 +131,7 @@ $sheet-ground: v.$slate-panel;
   // the bottom)
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: v.$space-4;
   min-width: 0;
   padding: 14px 12px 9px;
   position: relative;
@@ -165,7 +165,7 @@ $sheet-ground: v.$slate-panel;
 .tape-meta {
   align-items: center;
   display: flex;
-  gap: 8px;
+  gap: v.$space-8;
   margin: 5px 0 8px;
 }
 
@@ -226,7 +226,7 @@ $sheet-ground: v.$slate-panel;
   display: inline-flex;
   flex: none;
   font-family: v.$font-base;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 800;
   height: 22px;
   letter-spacing: 0.8px;
@@ -243,7 +243,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   .mat-mdc-select-trigger {
-    gap: 4px;
+    gap: v.$space-4;
   }
 
   .mat-mdc-select-value {
@@ -274,8 +274,8 @@ $sheet-ground: v.$slate-panel;
 }
 
 .tape-team {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 10.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-11;
   font-weight: 800;
   letter-spacing: 0.5px;
   margin-top: 2px;
@@ -286,7 +286,7 @@ $sheet-ground: v.$slate-panel;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 6px;
+  gap: v.$space-6;
   margin-top: auto;
   padding-top: 8px;
 }
@@ -301,21 +301,21 @@ $sheet-ground: v.$slate-panel;
     $text-shadow: null
   );
   @include v.tone-glow(60%, 8px);
-  font-size: 11px;
+  font-size: v.$fs-11;
   height: 24px;
   min-width: 34px;
   padding: 1.5px 4px 0;
 }
 
 .tape-of {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 700;
 }
 
 .tape-archetype {
   color: var(--side);
-  font-size: 11.5px;
+  font-size: v.$fs-12;
   font-weight: 800;
   line-height: 1.15;
   margin-left: auto;
@@ -330,7 +330,7 @@ $sheet-ground: v.$slate-panel;
   box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   justify-content: center;
   min-height: 110px;
   text-align: center;
@@ -349,7 +349,7 @@ $sheet-ground: v.$slate-panel;
 }
 
 .tape-add-icon {
-  color: rgba(255, 255, 255, 0.45);
+  color: v.$text-faint;
   @include v.icon-size(30px);
 
   &.spin {
@@ -365,8 +365,8 @@ $sheet-ground: v.$slate-panel;
 
 .tape-add-text,
 .tape-none {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   font-weight: 700;
   margin: 0;
 }
@@ -378,14 +378,14 @@ $sheet-ground: v.$slate-panel;
   box-sizing: border-box;
   color: #fff;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
   outline: none;
   padding: 8px 10px;
   width: 100%;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
   }
 
   &:focus {
@@ -462,14 +462,14 @@ $sheet-ground: v.$slate-panel;
 
   b {
     color: #fff;
-    font-size: 15px;
+    font-size: v.$fs-15;
     font-weight: 800;
     @include v.ellipsis;
   }
 
   small {
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 12px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -477,7 +477,7 @@ $sheet-ground: v.$slate-panel;
 
 .compare-status {
   color: var(--scoreboard-led);
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
   margin: 10px 0 0;
   text-shadow: var(--scoreboard-glow);
@@ -514,7 +514,7 @@ $sheet-ground: v.$slate-panel;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
   color: #fff;
   display: inline-block;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 700;
   padding: 6px 14px;
   pointer-events: auto;
@@ -536,14 +536,14 @@ $sheet-ground: v.$slate-panel;
 // ---------------------------------------------------------------------------
 .compare-empty {
   color: v.$grey-mid;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 700;
   margin: 0;
   padding: 28px 0;
   text-align: center;
 
   &.small {
-    font-size: 13px;
+    font-size: v.$fs-13;
     padding: 20px 0 4px;
   }
 }
@@ -554,7 +554,7 @@ $sheet-ground: v.$slate-panel;
   @include v.scoreboard-panel;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   list-style: none;
   margin: 0 0 14px;
   padding: 12px 16px;
@@ -570,11 +570,11 @@ $sheet-ground: v.$slate-panel;
 
   li {
     align-items: baseline;
-    color: rgba(255, 255, 255, 0.8);
+    color: v.$text-soft;
     display: flex;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 600;
-    gap: 8px;
+    gap: v.$space-8;
     line-height: 1.4;
   }
 
@@ -597,9 +597,9 @@ $sheet-ground: v.$slate-panel;
   color: $mixed-orange;
   cursor: help;
   display: inline-flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
-  gap: 5px;
+  gap: v.$space-6;
   left: var(--hero-pad-x);
   letter-spacing: 0.4px;
   margin: 0;
@@ -634,7 +634,7 @@ $sheet-ground: v.$slate-panel;
   border-radius: v.$radius-lg;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   color: #ddd;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 600;
   left: 0;
   letter-spacing: 0;
@@ -658,7 +658,7 @@ $sheet-ground: v.$slate-panel;
   color: $mixed-orange;
   // (the body font, not the name's hand lettering: never bold DynaPuff)
   font-family: v.$font-base;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 0.4px;
   margin-left: 6px;
@@ -677,7 +677,7 @@ $sheet-ground: v.$slate-panel;
 // (the radar on a row of its own, centered; the skill bars under it, two columns of them on a wide card)
 .compare-top {
   display: grid;
-  gap: 16px;
+  gap: v.$space-16;
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -729,11 +729,11 @@ $sheet-ground: v.$slate-panel;
   @include v.scoreboard-panel;
   align-content: center;
   display: grid;
-  gap: 11px;
+  gap: v.$space-12;
   padding: 14px 16px;
 
   @include v.up(medium) {
-    column-gap: 36px;
+    column-gap: v.$space-36;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -741,7 +741,7 @@ $sheet-ground: v.$slate-panel;
 .compare-skill {
   align-items: center;
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: 118px minmax(0, 1fr);
 }
 
@@ -755,14 +755,14 @@ $sheet-ground: v.$slate-panel;
 .compare-bars {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: v.$space-4;
 }
 
 .compare-bar {
   align-items: center;
   cursor: help;
   display: grid;
-  gap: 8px;
+  gap: v.$space-8;
   grid-template-columns: minmax(0, 1fr) 24px;
 
   .compare-track {
@@ -775,7 +775,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   b {
-    color: rgba(255, 255, 255, 0.5);
+    color: v.$text-faint;
     @include v.hand(12px);
     text-align: right;
   }
@@ -807,7 +807,7 @@ $sheet-ground: v.$slate-panel;
   align-items: center;
   box-sizing: border-box;
   display: inline-flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   height: 30px;
   margin-right: 6px;
   padding: 0 10px 0 14px;
@@ -832,7 +832,7 @@ $sheet-ground: v.$slate-panel;
 // (a panel's line on how to read it, over its body)
 .compare-help {
   color: v.$grey-mid;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 600;
   line-height: 1.45;
   margin: 0;
@@ -842,7 +842,7 @@ $sheet-ground: v.$slate-panel;
 // ---- Edges: a column per side, its color down the left
 .compare-edges {
   display: grid;
-  gap: 16px;
+  gap: v.$space-16;
   grid-template-columns: repeat(var(--sides), minmax(0, 1fr));
 }
 
@@ -850,13 +850,13 @@ $sheet-ground: v.$slate-panel;
   border-left: 3px solid var(--side);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   padding: 2px 0 2px 12px;
 }
 
 .compare-edge-who {
   color: var(--side);
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
   letter-spacing: 0.5px;
   margin-bottom: 2px;
@@ -866,12 +866,12 @@ $sheet-ground: v.$slate-panel;
 .compare-edge-item {
   align-items: baseline;
   display: flex;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: space-between;
 
   b {
     color: #eee;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 700;
   }
 
@@ -884,7 +884,7 @@ $sheet-ground: v.$slate-panel;
 
 .compare-edge-none {
   color: v.$grey-dim;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-style: italic;
 }
 
@@ -892,14 +892,14 @@ $sheet-ground: v.$slate-panel;
 .compare-pairs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
 }
 
 .compare-pair {
   align-items: center;
   cursor: help;
   display: grid;
-  gap: 14px;
+  gap: v.$space-14;
   grid-template-columns: minmax(0, 1fr) 180px 48px;
 }
 
@@ -908,7 +908,7 @@ $sheet-ground: v.$slate-panel;
   color: #eee;
   display: flex;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
   gap: 2px 0;
 
@@ -943,14 +943,14 @@ $sheet-ground: v.$slate-panel;
 .compare-stats {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: v.$space-12;
 }
 
 .compare-row {
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: minmax(120px, 1.4fr) repeat(var(--sides), minmax(0, 1fr));
   padding: 5px 2px;
 
@@ -971,9 +971,9 @@ $sheet-ground: v.$slate-panel;
   border-bottom: 2px solid var(--side);
   color: var(--side);
   display: flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
-  gap: 5px;
+  gap: v.$space-6;
   justify-content: flex-end;
   letter-spacing: 0.5px;
   overflow: hidden;
@@ -983,14 +983,14 @@ $sheet-ground: v.$slate-panel;
   white-space: nowrap;
 
   small {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
   }
 }
 
 .compare-wins {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-style: normal;
   margin-right: auto;
   order: -1;
@@ -1008,7 +1008,7 @@ $sheet-ground: v.$slate-panel;
 .compare-label {
   color: v.$grey-light;
   cursor: help;
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   font-weight: 700;
 }
 
@@ -1017,7 +1017,7 @@ $sheet-ground: v.$slate-panel;
   cursor: help;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: v.$space-4;
 
   // (the value over its bar, as wide; a leader's dot at its left end, the value at the right)
   b {
@@ -1025,7 +1025,7 @@ $sheet-ground: v.$slate-panel;
     color: #ddd;
     display: flex;
     @include v.hand(15px);
-    gap: 6px;
+    gap: v.$space-6;
     justify-content: flex-end;
     width: min(100%, 90px);
   }
@@ -1074,7 +1074,7 @@ $sheet-ground: v.$slate-panel;
   .arc-y {
     fill: v.$grey-mid;
     font-family: v.$font-base;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 700;
   }
 
@@ -1151,7 +1151,7 @@ $sheet-ground: v.$slate-panel;
 
 .compare-note {
   color: v.$grey-dim;
-  font-size: 12px;
+  font-size: v.$fs-12;
   margin: 10px 0 0;
   text-align: center;
 }
@@ -1301,7 +1301,7 @@ $sheet-ground: v.$slate-panel;
 // ---------------------------------------------------------------------------
 @media (min-width: v.bp(small-up)) and (max-width: v.bp(tablet-max)) {
   .tapes {
-    gap: 8px;
+    gap: v.$space-8;
   }
 
   .tape {
@@ -1309,7 +1309,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   .tape-name {
-    font-size: 15.5px;
+    font-size: v.$fs-16;
     padding-right: 24px;
   }
 
@@ -1321,7 +1321,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   .tape-team {
-    font-size: 9.5px;
+    font-size: v.$fs-10;
   }
 
   .tape-meta {
@@ -1335,11 +1335,11 @@ $sheet-ground: v.$slate-panel;
 
   .tape-foot {
     flex-wrap: wrap;
-    row-gap: 4px;
+    row-gap: v.$space-4;
   }
 
   .tape-archetype {
-    font-size: 10.5px;
+    font-size: v.$fs-11;
   }
 
   .tape-add {
@@ -1395,7 +1395,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   .compare-row {
-    gap: 8px;
+    gap: v.$space-8;
     grid-template-columns: minmax(84px, 1.2fr) repeat(var(--sides), minmax(0, 1fr));
   }
 }
@@ -1413,7 +1413,7 @@ $sheet-ground: v.$slate-panel;
 
   .compare-chips {
     display: flex;
-    gap: 6px;
+    gap: v.$space-6;
     // (the row's edges at the screen's: a chip scrolls under the fade at either end)
     margin: 0 calc(-1 * var(--hero-pad-x));
     mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent);
@@ -1439,7 +1439,7 @@ $sheet-ground: v.$slate-panel;
     cursor: pointer;
     display: inline-flex;
     flex: none;
-    gap: 6px;
+    gap: v.$space-6;
     height: 34px;
     padding: 0 4px 0 3px;
     transition:
@@ -1506,7 +1506,7 @@ $sheet-ground: v.$slate-panel;
       $text-shadow: null
     );
     @include v.tone-glow(60%, 6px);
-    font-size: 9.5px;
+    font-size: v.$fs-10;
     font-weight: 400;
     height: 24px;
     min-width: 26px;
@@ -1516,7 +1516,7 @@ $sheet-ground: v.$slate-panel;
   .chip-add {
     background: rgba(0, 0, 0, 0.2);
     border: 1px dashed rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
     justify-content: center;
     padding: 0;
     width: 34px;
@@ -1579,9 +1579,9 @@ $sheet-ground: v.$slate-panel;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: v.$radius-pill;
     font-family: v.$font-base;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 800;
-    gap: 3px;
+    gap: v.$space-4;
     height: 28px;
     letter-spacing: 0.5px;
     padding: 0 10px 0 6px;
@@ -1615,7 +1615,7 @@ $sheet-ground: v.$slate-panel;
   }
 
   .tape-search {
-    font-size: 16px;
+    font-size: v.$fs-16;
     padding: 9px 11px;
   }
 
@@ -1627,14 +1627,14 @@ $sheet-ground: v.$slate-panel;
     width: 100%;
 
     button {
-      gap: 10px;
+      gap: v.$space-10;
       padding: 7px 6px;
     }
   }
 
   // (the table's cells tighter, its labels narrower)
   .compare-row {
-    gap: 6px;
+    gap: v.$space-6;
     grid-template-columns: minmax(70px, 1.1fr) repeat(var(--sides), minmax(0, 1fr));
   }
 
@@ -1644,7 +1644,7 @@ $sheet-ground: v.$slate-panel;
 
   // (four names over four narrow columns: smaller, so a long one isn't cut)
   .compare-col-head {
-    font-size: 10px;
+    font-size: v.$fs-10;
     letter-spacing: 0.2px;
   }
 
@@ -1652,7 +1652,7 @@ $sheet-ground: v.$slate-panel;
     padding: 10px 12px;
 
     li {
-      font-size: 12.5px;
+      font-size: v.$fs-13;
     }
   }
 

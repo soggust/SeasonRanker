@@ -31,7 +31,7 @@ $ai-narrow: v.bp(ai-narrow);
 // A small label in grey caps (a table's column heads, a stat's name)
 @mixin caps-label($spacing: 0.6px) {
   color: v.$grey-soft;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 700;
   letter-spacing: $spacing;
   text-transform: uppercase;
@@ -41,7 +41,7 @@ $ai-narrow: v.bp(ai-narrow);
 @mixin ai-badge($pad) {
   border-radius: v.$radius-sm;
   color: #111;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 900;
   letter-spacing: 0.8px;
   padding: $pad;
@@ -55,9 +55,9 @@ $ai-narrow: v.bp(ai-narrow);
   color: #fff;
   display: flex;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 800;
-  gap: 8px;
+  gap: v.$space-8;
   letter-spacing: 1.5px;
   padding-bottom: 7px;
   text-transform: uppercase;
@@ -167,7 +167,7 @@ $ai-narrow: v.bp(ai-narrow);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: grid;
   flex: 0 0 auto;
-  gap: 26px;
+  gap: v.$space-28;
   grid-template-columns: auto 1fr auto;
   isolation: isolate;
   padding: 44px 28px 22px;
@@ -313,7 +313,7 @@ $ai-narrow: v.bp(ai-narrow);
   .player-awards {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: v.$space-6;
     margin-top: 10px;
   }
 }
@@ -325,9 +325,9 @@ $ai-narrow: v.bp(ai-narrow);
   display: flex;
   flex-wrap: wrap;
   font-family: v.$font-base;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
-  gap: 10px;
+  gap: v.$space-10;
   letter-spacing: 2px;
   margin: 0;
   text-shadow: var(--scoreboard-glow);
@@ -346,7 +346,7 @@ $ai-narrow: v.bp(ai-narrow);
   display: inline-flex;
   // (a label, not a button: small bold caps, like the board's own lettering)
   font-family: v.$font-base;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 700;
   letter-spacing: 1px;
   line-height: 1.6;
@@ -368,7 +368,7 @@ $ai-narrow: v.bp(ai-narrow);
 .hero-team {
   color: #fff;
   font-family: v.$font-base;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
   letter-spacing: 0.5px;
   margin: 0;
@@ -400,7 +400,7 @@ $ai-narrow: v.bp(ai-narrow);
     color: transparent;
     filter: drop-shadow(0 0 1.5px color-mix(in srgb, var(--scoreboard-led) 75%, transparent));
     font-family: v.$font-base;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 900;
     letter-spacing: 2px;
     line-height: 1.2;
@@ -438,7 +438,7 @@ $ai-narrow: v.bp(ai-narrow);
 // Previous / next / close, top right
 .card-controls {
   display: flex;
-  gap: 2px;
+  gap: v.$space-2;
   position: absolute;
   right: 10px;
   top: 8px;
@@ -470,7 +470,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   // (Share's icon a size down from the others: the card's and the game view's)
   .card-share .mat-icon {
-    font-size: 18px;
+    font-size: v.$fs-18;
     height: 18px;
     width: 18px;
   }
@@ -495,7 +495,7 @@ $ai-narrow: v.bp(ai-narrow);
     cursor: pointer;
     flex: 0 0 auto;
     font-family: v.$font-base;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 500;
     letter-spacing: 1.5px;
     padding: 12px 18px;
@@ -533,8 +533,8 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   color: v.$grey-mid;
   display: flex;
-  font-size: 13px;
-  gap: 6px;
+  font-size: v.$fs-13;
+  gap: v.$space-6;
   margin: 12px 0 0;
 
   .mat-icon {
@@ -547,7 +547,7 @@ $ai-narrow: v.bp(ai-narrow);
 // ---------------------------------------------------------------------------
 .overview-top {
   display: grid;
-  gap: 16px;
+  gap: v.$space-16;
   grid-template-columns: minmax(0, 1fr) 400px;
 }
 
@@ -571,7 +571,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .overview-blurb {
   color: #eee;
-  font-size: 14px;
+  font-size: v.$fs-14;
   line-height: 1.5;
   margin: 0;
 }
@@ -579,8 +579,8 @@ $ai-narrow: v.bp(ai-narrow);
 // (a card's AI analysis: the archetype's definition under the line, a short summary over the flags)
 .overview-summary {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 13.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-14;
   line-height: 1.5;
   margin: 16px 0 20px;
   padding: 10px 0 0;
@@ -590,7 +590,7 @@ $ai-narrow: v.bp(ai-narrow);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   list-style: none;
   margin: 10px 0 0;
   padding: 10px 0 0;
@@ -605,9 +605,9 @@ $ai-narrow: v.bp(ai-narrow);
     align-items: center;
     color: #ddd;
     display: flex;
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 600;
-    gap: 10px;
+    gap: v.$space-10;
     line-height: 1.3;
 
     .mat-icon {
@@ -694,7 +694,7 @@ $ai-narrow: v.bp(ai-narrow);
     cursor: help;
     fill: #ddd;
     font-family: v.$font-base;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 800;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -706,9 +706,9 @@ $ai-narrow: v.bp(ai-narrow);
   color: v.$grey-soft;
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 700;
-  gap: 14px;
+  gap: v.$space-14;
   justify-content: center;
   margin-top: auto;
   padding-top: 8px;
@@ -717,7 +717,7 @@ $ai-narrow: v.bp(ai-narrow);
   span {
     align-items: center;
     display: flex;
-    gap: 6px;
+    gap: v.$space-6;
   }
 
   .key {
@@ -765,7 +765,7 @@ $ai-narrow: v.bp(ai-narrow);
 // similar seasons last
 .overview-skills {
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -782,7 +782,7 @@ $ai-narrow: v.bp(ai-narrow);
 .skill-head {
   align-items: baseline;
   display: flex;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: space-between;
 }
 
@@ -803,8 +803,8 @@ $ai-narrow: v.bp(ai-narrow);
   color: v.$grey-dim;
   display: flex;
   flex-wrap: wrap;
-  font-size: 11px;
-  gap: 3px 12px;
+  font-size: v.$fs-11;
+  gap: v.$space-4 v.$space-12;
   margin-top: 0.25em;
 
   // The rank, in a muted take on its rank color (the grey mixed in keeps it from shouting)
@@ -821,7 +821,7 @@ $ai-narrow: v.bp(ai-narrow);
 .breakdown .group-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: v.$space-12;
 }
 
 // (the table across the panel and the pie apart at its right, the pie dropping under the table on a narrow
@@ -829,7 +829,7 @@ $ai-narrow: v.bp(ai-narrow);
 .breakdown-main {
   align-items: start;
   display: grid;
-  gap: 20px 48px;
+  gap: v.$space-20 v.$space-48;
   // (the table kept short of the pie; the pie's column takes the rest, the pie centered in it)
   grid-template-columns: minmax(0, 500px) minmax(220px, 1fr);
   margin-top: 14px;
@@ -851,13 +851,13 @@ $ai-narrow: v.bp(ai-narrow);
   cursor: help;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
   margin: 0.5em 0;
 }
 
 .breakdown-lean-head {
   color: #ddd;
-  font-size: 13px;
+  font-size: v.$fs-13;
   line-height: 1.45;
 
   span {
@@ -881,7 +881,7 @@ $ai-narrow: v.bp(ai-narrow);
 .breakdown-lean-bar {
   border-radius: v.$radius-sm;
   display: flex;
-  gap: 2px;
+  gap: v.$space-2;
   height: 20px;
   overflow: hidden;
   position: relative;
@@ -905,7 +905,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   b {
     color: #fff;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 800;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
     white-space: nowrap;
@@ -926,7 +926,7 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   // (the rank first, the role, then each column, kept close)
   grid-template-columns: 34px 64px repeat(var(--bd-cols, 3), minmax(0, 1fr));
   padding: 6px 0;
@@ -984,7 +984,7 @@ $ai-narrow: v.bp(ai-narrow);
 // smaller, so all of them fit across)
 @media (max-width: $bd-narrow) {
   .breakdown-wide .breakdown-row {
-    gap: 5px;
+    gap: v.$space-6;
     grid-template-columns: 34px 30px repeat(var(--bd-cols, 3), minmax(0, 1fr));
 
     > .breakdown-label,
@@ -993,12 +993,12 @@ $ai-narrow: v.bp(ai-narrow);
     }
 
     > .breakdown-cell {
-      font-size: 13px;
+      font-size: v.$fs-13;
     }
   }
 
   .breakdown-wide .breakdown-head > span {
-    font-size: 10px;
+    font-size: v.$fs-10;
     letter-spacing: 0;
   }
 }
@@ -1007,7 +1007,7 @@ $ai-narrow: v.bp(ai-narrow);
 .breakdown-rank {
   @include v.led-tile($radius: 5px, $color: null, $text-shadow: null);
   @include v.tone-glow(60%, 8px);
-  font-size: 11px;
+  font-size: v.$fs-11;
   height: 24px;
   padding-top: 1.5px;
   width: 34px;
@@ -1022,7 +1022,7 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: v.$space-12;
 }
 
 .breakdown-split-title {
@@ -1036,7 +1036,7 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   align-self: stretch;
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: 1fr auto 1fr;
 
   > .breakdown-pie {
@@ -1092,8 +1092,8 @@ $ai-narrow: v.bp(ai-narrow);
   color: #ddd;
   display: flex;
   flex-direction: column;
-  font-size: 12px;
-  gap: 4px;
+  font-size: v.$fs-12;
+  gap: v.$space-4;
   left: 50%;
   line-height: 1.4;
   padding: 8px 11px;
@@ -1125,15 +1125,15 @@ $ai-narrow: v.bp(ai-narrow);
 .breakdown-parts {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   justify-self: end;
 
   .breakdown-part {
     align-items: center;
     cursor: help;
     display: inline-flex;
-    font-size: 12px;
-    gap: 6px;
+    font-size: v.$fs-12;
+    gap: v.$space-6;
   }
 
   b {
@@ -1144,14 +1144,14 @@ $ai-narrow: v.bp(ai-narrow);
 
 .breakdown-note {
   color: v.$grey-dim;
-  font-size: 12px;
+  font-size: v.$fs-12;
   margin: 0;
 }
 
 // Similar seasons: three mini team cards (player standing in each), name, year and match score
 .comps-row {
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   margin-top: 12px;
 }
@@ -1163,7 +1163,7 @@ $ai-narrow: v.bp(ai-narrow);
   cursor: pointer;
   display: flex;
   font-family: inherit;
-  gap: 10px;
+  gap: v.$space-10;
   padding: 10px 12px;
   text-align: left;
   transition: border-color v.$t-hover ease;
@@ -1219,7 +1219,7 @@ $ai-narrow: v.bp(ai-narrow);
   @include v.tone-glow(45%);
 
   small {
-    font-size: 9px;
+    font-size: v.$fs-10;
   }
 }
 
@@ -1260,7 +1260,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .card-stats {
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   margin-top: 12px;
 }
@@ -1269,7 +1269,7 @@ $ai-narrow: v.bp(ai-narrow);
 // list), the list average underneath
 .card-stat {
   @include v.scoreboard-panel;
-  column-gap: 8px;
+  column-gap: v.$space-8;
   display: grid;
   grid-template-areas:
     "name rank"
@@ -1294,7 +1294,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   small {
     color: v.$grey-dim;
-    font-size: 13px;
+    font-size: v.$fs-13;
     text-shadow: none;
   }
 }
@@ -1311,7 +1311,7 @@ $ai-narrow: v.bp(ai-narrow);
 .stat-dots {
   align-items: center;
   display: flex;
-  gap: 4px;
+  gap: v.$space-4;
   height: 32px;
 }
 
@@ -1324,7 +1324,7 @@ $ai-narrow: v.bp(ai-narrow);
   cursor: pointer;
   display: inline-flex;
   font-family: v.$font-base;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 900;
   height: 17px;
   justify-content: center;
@@ -1411,7 +1411,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .stat-avg {
   color: v.$grey-dim;
-  font-size: 11px;
+  font-size: v.$fs-11;
   grid-area: avg;
   min-height: 1em;
 }
@@ -1423,7 +1423,7 @@ $ai-narrow: v.bp(ai-narrow);
 .career-chart {
   align-items: end;
   display: grid;
-  gap: 4px;
+  gap: v.$space-4;
   grid-template-columns: repeat(var(--count), minmax(0, 1fr));
   height: 150px;
   margin: 4px auto 0;
@@ -1502,14 +1502,14 @@ $ai-narrow: v.bp(ai-narrow);
 .season-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
 }
 
 .season-row {
   align-items: center;
   @include v.scoreboard-panel(6px, null);
   color: #fff;
-  column-gap: 14px;
+  column-gap: v.$space-14;
   cursor: pointer;
   display: grid;
   font-family: inherit;
@@ -1540,7 +1540,7 @@ $ai-narrow: v.bp(ai-narrow);
     border-radius: v.$radius-xxs;
     color: v.$grey-light;
     font-family: v.$font-base;
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.5px;
     margin-left: 6px;
@@ -1557,7 +1557,7 @@ $ai-narrow: v.bp(ai-narrow);
 
     small {
       color: v.$grey-dim;
-      font-size: 13px;
+      font-size: v.$fs-13;
       text-shadow: none;
     }
   }
@@ -1568,7 +1568,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   .season-games {
     color: v.$grey-soft;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -1580,7 +1580,7 @@ $ai-narrow: v.bp(ai-narrow);
     --fill: linear-gradient(90deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.85));
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: v.$space-2;
     min-width: 0;
 
     b {
@@ -1602,7 +1602,7 @@ $ai-narrow: v.bp(ai-narrow);
 
     small {
       color: v.$grey-dim;
-      font-size: 10px;
+      font-size: v.$fs-10;
       font-weight: 700;
       letter-spacing: 0.5px;
       @include v.ellipsis;
@@ -1623,7 +1623,7 @@ $ai-narrow: v.bp(ai-narrow);
       b::after {
         content: " ★";
         font-family: v.$font-base;
-        font-size: 13px;
+        font-size: v.$fs-13;
         vertical-align: 2px;
       }
 
@@ -1680,7 +1680,7 @@ $ai-narrow: v.bp(ai-narrow);
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
 }
 
 .history-row {
@@ -1688,7 +1688,7 @@ $ai-narrow: v.bp(ai-narrow);
   background: rgba(0, 0, 0, 0.18);
   border-radius: v.$radius-md;
   display: grid;
-  gap: 14px;
+  gap: v.$space-14;
   grid-template-columns: 30px 1fr auto;
   padding: 8px 12px;
 }
@@ -1697,7 +1697,7 @@ $ai-narrow: v.bp(ai-narrow);
   border-radius: v.$radius-sm;
   color: #111;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 900;
   line-height: 26px;
   text-align: center;
@@ -1719,20 +1719,20 @@ $ai-narrow: v.bp(ai-narrow);
   color: #fff;
   display: flex;
   flex-direction: column;
-  font-size: 15px;
+  font-size: v.$fs-15;
   font-weight: 700;
   min-width: 0;
 
   small {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 500;
   }
 }
 
 .history-detail {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 13px;
+  color: v.$text-strong;
+  font-size: v.$fs-13;
   font-weight: 700;
   text-align: right;
   white-space: nowrap;
@@ -1792,7 +1792,7 @@ $ai-narrow: v.bp(ai-narrow);
   // The hero one compact row (on a phone it's the least of what the card is for): a small team card with
   // the player in it, the name and team, and a small rank tile under the card's buttons
   .card-hero {
-    gap: 12px;
+    gap: v.$space-12;
     grid-template-columns: auto minmax(0, 1fr) auto;
     padding: 14px 12px 12px;
   }
@@ -1808,19 +1808,19 @@ $ai-narrow: v.bp(ai-narrow);
     margin-bottom: 2px;
 
     .season-chip {
-      font-size: 11px;
+      font-size: v.$fs-11;
       padding: 1px 8px;
     }
   }
 
   .hero-text h2 {
-    font-size: 22px;
+    font-size: v.$fs-22;
     line-height: 1.1;
     margin: 2px 0;
   }
 
   .hero-team {
-    font-size: 10.5px;
+    font-size: v.$fs-11;
   }
 
   // (under the back, next and close buttons)
@@ -1831,11 +1831,11 @@ $ai-narrow: v.bp(ai-narrow);
 
     .rank-label,
     .rank-of {
-      font-size: 8px;
+      font-size: v.$fs-10;
     }
 
     .rank-number {
-      font-size: 20px;
+      font-size: v.$fs-20;
     }
   }
 
@@ -1848,7 +1848,7 @@ $ai-narrow: v.bp(ai-narrow);
 
     button {
       flex: 1 0 auto;
-      font-size: 11px;
+      font-size: v.$fs-11;
       letter-spacing: 1px;
       padding: 11px 10px;
     }
@@ -1864,14 +1864,14 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   .overview-archetype {
-    font-size: 26px;
+    font-size: v.$fs-26;
   }
 
   .season-row {
-    column-gap: 10px;
+    column-gap: v.$space-10;
     grid-template-columns: 26px repeat(3, minmax(0, 1fr));
     padding: 8px 10px;
-    row-gap: 8px;
+    row-gap: v.$space-8;
 
     .season-year {
       grid-column: 2;
@@ -1900,7 +1900,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   .arc .arc-rank,
   .arc .arc-year {
-    font-size: 11px;
+    font-size: v.$fs-11;
   }
 }
 
@@ -1931,36 +1931,36 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: v.$space-4 v.$space-14;
   justify-content: space-between;
   margin-bottom: 8px;
 }
 
 .log-chart-label {
   color: #fff;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 800;
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 600;
     margin-left: 5px;
   }
 }
 
 .log-legend {
-  color: rgba(255, 255, 255, 0.65);
+  color: v.$text-dim;
   display: flex;
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 700;
-  gap: 4px 12px;
+  gap: v.$space-4 v.$space-12;
 
   span {
     align-items: center;
     display: inline-flex;
-    gap: 5px;
+    gap: v.$space-6;
   }
 
   i:not(.dot) {
@@ -1999,7 +1999,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .log-bars {
   display: flex;
-  gap: 5px;
+  gap: v.$space-6;
   height: 104px;
   position: relative;
 }
@@ -2035,8 +2035,8 @@ $ai-narrow: v.bp(ai-narrow);
   width: 100%;
 
   b {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 10px;
+    color: v.$text-strong;
+    font-size: v.$fs-10;
     font-weight: 800;
     line-height: 13px;
     order: 1;
@@ -2069,7 +2069,7 @@ $ai-narrow: v.bp(ai-narrow);
 .log-dots {
   display: flex;
   flex-wrap: wrap-reverse;
-  gap: 2px;
+  gap: v.$space-2;
   justify-content: center;
   margin-bottom: 2px;
   order: 0;
@@ -2161,7 +2161,7 @@ $ai-narrow: v.bp(ai-narrow);
   table {
     border-collapse: separate;
     border-spacing: 0;
-    font-size: 12.5px;
+    font-size: v.$fs-13;
     font-variant-numeric: tabular-nums;
     width: 100%;
   }
@@ -2183,8 +2183,8 @@ $ai-narrow: v.bp(ai-narrow);
   thead th,
   tr.log-next-head th {
     background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -2197,9 +2197,9 @@ $ai-narrow: v.bp(ai-narrow);
 
     span {
       border-bottom: 2px solid rgba(255, 255, 255, 0.18);
-      color: rgba(255, 255, 255, 0.8);
+      color: v.$text-soft;
       display: block;
-      font-size: 10.5px;
+      font-size: v.$fs-11;
       padding-bottom: 2px;
       text-align: center;
     }
@@ -2221,7 +2221,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   tbody td {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.88);
+    color: v.$text-strong;
   }
 
   tbody tr:hover td {
@@ -2269,9 +2269,9 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   .log-vs {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
     display: inline-block;
-    font-size: 11px;
+    font-size: v.$fs-11;
     min-width: 16px;
   }
 
@@ -2306,7 +2306,7 @@ $ai-narrow: v.bp(ai-narrow);
     border-radius: v.$radius-xs;
     color: #111;
     display: inline-block;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 900;
     line-height: 17px;
     margin-right: 5px;
@@ -2330,7 +2330,7 @@ $ai-narrow: v.bp(ai-narrow);
   tr.log-section th {
     background: color-mix(in srgb, var(--scoreboard-led) 14%, rgba(0, 0, 0, 0.25));
     color: var(--scoreboard-led);
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 900;
     letter-spacing: 0.08em;
     padding: 6px 8px;
@@ -2351,7 +2351,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   tr.log-next td {
-    color: rgba(255, 255, 255, 0.5);
+    color: v.$text-faint;
   }
 
   // (the games to come get their own header row, like the one at the top)
@@ -2376,12 +2376,12 @@ $ai-narrow: v.bp(ai-narrow);
   tr.log-avg td {
     background: rgba(0, 0, 0, 0.25);
     border-top: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
     font-weight: 800;
 
     &:first-child {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 11px;
+      color: v.$text-faint;
+      font-size: v.$fs-11;
       letter-spacing: 0.04em;
       text-align: left;
       text-transform: uppercase;
@@ -2396,12 +2396,12 @@ $ai-narrow: v.bp(ai-narrow);
 // ---------------------------------------------------------------------------
 // (when it was written, under the last section)
 .ai-meta {
-  color: rgba(255, 255, 255, 0.45);
+  color: v.$text-faint;
   display: flex;
   flex-wrap: wrap;
-  font-size: 9.5px;
+  font-size: v.$fs-10;
   font-weight: 600;
-  gap: 4px 14px;
+  gap: v.$space-4 v.$space-14;
   justify-content: flex-end;
   margin: 12px 0 0;
 }
@@ -2421,8 +2421,8 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .ai-prose p {
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 14.5px;
+  color: v.$text-strong;
+  font-size: v.$fs-15;
   line-height: 1.65;
   margin: 0 0 12px;
 
@@ -2435,7 +2435,7 @@ $ai-narrow: v.bp(ai-narrow);
 .ai-columns {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: v.$space-20;
 }
 
 .ai-points {
@@ -2486,9 +2486,9 @@ $ai-narrow: v.bp(ai-narrow);
     align-items: center;
     color: #fff;
     display: flex;
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 800;
-    gap: 8px;
+    gap: v.$space-8;
     margin: 0 0 4px;
 
     &::before {
@@ -2503,8 +2503,8 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   p {
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 13.5px;
+    color: v.$text-soft;
+    font-size: v.$fs-14;
     line-height: 1.55;
     margin: 0;
   }
@@ -2521,8 +2521,8 @@ $ai-narrow: v.bp(ai-narrow);
     background: none;
     border: none;
     border-radius: 0;
-    font-size: 11.5px;
-    gap: 4px;
+    font-size: v.$fs-12;
+    gap: v.$space-4;
     padding: 0;
 
     & + .ai-chip::before {
@@ -2538,16 +2538,16 @@ $ai-narrow: v.bp(ai-narrow);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: v.$radius-pill;
-  color: rgba(255, 255, 255, 0.8);
+  color: v.$text-soft;
   display: inline-flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 700;
-  gap: 6px;
+  gap: v.$space-6;
   padding: 3px 10px;
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 700;
   }
 
@@ -2568,8 +2568,8 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .ai-trend {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 13.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-14;
   line-height: 1.5;
   margin: 16px 0 0;
 
@@ -2599,7 +2599,7 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: space-between;
 }
 
@@ -2621,34 +2621,34 @@ $ai-narrow: v.bp(ai-narrow);
 
 .ai-line {
   align-items: baseline;
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   display: inline-flex;
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   font-weight: 700;
-  gap: 10px;
+  gap: v.$space-10;
 
   b {
     color: var(--scoreboard-led);
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 900;
   }
 }
 
 // A team's weekly preview: the week's games beside its outlook ("Wed 10/15 @ LAD")
 .ai-week {
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   display: inline-flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 700;
-  gap: 4px 12px;
+  gap: v.$space-4 v.$space-12;
   justify-content: flex-end;
 }
 
 // A season's recap: how it ended, over the story; next season's paragraph under its label
 .ai-finish {
   color: var(--scoreboard-led);
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 800;
   line-height: 1.4;
   margin: 0 0 12px;
@@ -2663,8 +2663,8 @@ $ai-narrow: v.bp(ai-narrow);
   margin-top: 16px;
 
   h4 {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 900;
     letter-spacing: 1px;
     margin: 0 0 6px;
@@ -2683,10 +2683,10 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: flex-start;
   background: color-mix(in srgb, var(--group-color) 10%, transparent);
   border-radius: v.$radius-md;
-  color: rgba(255, 255, 255, 0.85);
+  color: v.$text-strong;
   display: flex;
-  font-size: 13.5px;
-  gap: 8px;
+  font-size: v.$fs-14;
+  gap: v.$space-8;
   line-height: 1.5;
   margin: 14px 0 0;
   padding: 9px 12px;
@@ -2701,7 +2701,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .ai-projections {
   display: grid;
-  gap: 8px;
+  gap: v.$space-8;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   margin-bottom: 14px;
 }
@@ -2732,13 +2732,13 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: v.$space-6;
   margin-top: 14px;
 }
 
 .ai-swing-label {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 900;
   letter-spacing: 1px;
   margin-right: 4px;
@@ -2883,7 +2883,7 @@ $ai-narrow: v.bp(ai-narrow);
   display: flex;
   flex-direction: column;
   font-family: v.$font-base;
-  gap: 3px;
+  gap: v.$space-4;
   padding: 0;
 
   &:hover .depth-head > img,
@@ -2903,7 +2903,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 // the spot, in chalk
 .depth-pos {
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   @include v.hand(10px);
   letter-spacing: 0.6px;
   line-height: 1;
@@ -2935,7 +2935,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   > .depth-initial {
     align-items: center;
-    color: rgba(255, 255, 255, 0.7);
+    color: v.$text-dim;
     display: flex;
     font-weight: 900;
     justify-content: center;
@@ -2955,7 +2955,7 @@ $ai-narrow: v.bp(ai-narrow);
     > .depth-initial {
       border-width: 1px;
       box-shadow: none;
-      font-size: 11px;
+      font-size: v.$fs-11;
     }
   }
 }
@@ -2968,7 +2968,7 @@ $ai-narrow: v.bp(ai-narrow);
   background: #555;
   border-radius: v.$radius-md;
   color: #fff;
-  font-size: 9px;
+  font-size: v.$fs-10;
   font-style: normal;
   font-weight: 900;
   letter-spacing: 0.3px;
@@ -3002,7 +3002,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   &.status-gone {
     background: rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
   }
 }
 
@@ -3035,7 +3035,7 @@ $ai-narrow: v.bp(ai-narrow);
 
 .depth-snaps {
   color: var(--scoreboard-led);
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 800;
   line-height: 1;
 }
@@ -3046,7 +3046,7 @@ $ai-narrow: v.bp(ai-narrow);
   @include v.scoreboard-panel(8px, 0 8px 20px rgba(0, 0, 0, 0.6));
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: v.$space-6;
   left: 50%;
   min-width: 200px;
   padding: 8px 10px 10px;
@@ -3055,8 +3055,8 @@ $ai-narrow: v.bp(ai-narrow);
   transform: translateX(-50%);
 
   > b {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
     letter-spacing: 0.8px;
     text-transform: uppercase;
   }
@@ -3081,8 +3081,8 @@ $ai-narrow: v.bp(ai-narrow);
 .depth-pop-row {
   align-items: center;
   display: grid;
-  font-size: 12px;
-  gap: 8px;
+  font-size: v.$fs-12;
+  gap: v.$space-8;
   grid-template-columns: 16px minmax(0, 1fr) auto auto;
   white-space: nowrap;
 
@@ -3098,8 +3098,8 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   > small {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 700;
     grid-column: 4;
   }
@@ -3107,8 +3107,8 @@ $ai-narrow: v.bp(ai-narrow);
 
 // (whom the one on the chip is in for: the Current knob's next man up)
 .depth-pop-note {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 11px;
+  color: v.$text-dim;
+  font-size: v.$fs-11;
   font-style: italic;
   margin-top: -2px;
 }
@@ -3117,7 +3117,7 @@ $ai-narrow: v.bp(ai-narrow);
 .depth-special-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: v.$space-14;
   justify-content: space-around;
 }
 
@@ -3129,19 +3129,19 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: v.$space-4;
 }
 
 // the starters who've changed: the spot, who it was (struck), who it is
 .depth-change {
   align-items: center;
   display: flex;
-  font-size: 13px;
-  gap: 10px;
+  font-size: v.$fs-13;
+  gap: v.$space-10;
   padding: 5px 0;
 
   s {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
   }
 
   b {
@@ -3157,7 +3157,7 @@ $ai-narrow: v.bp(ai-narrow);
 .depth-change-pos {
   background: rgba(255, 255, 255, 0.08);
   border-radius: v.$radius-sm;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 900;
   min-width: 42px;
   padding: 2px 6px;
@@ -3168,7 +3168,7 @@ $ai-narrow: v.bp(ai-narrow);
 // move in gray)
 .depth-reason {
   border-radius: v.$radius-sm;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 900;
   letter-spacing: 0.4px;
   margin-left: auto;
@@ -3178,7 +3178,7 @@ $ai-narrow: v.bp(ai-narrow);
 
   &.reason-injury {
     background: rgba(v.$bad, 0.2);
-    color: v.$bad-light;
+    color: v.$bad-soft;
   }
 
   &.reason-ir {
@@ -3201,14 +3201,14 @@ $ai-narrow: v.bp(ai-narrow);
   &.reason-moved,
   &.reason-inactive {
     background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
   }
 }
 
 // (and its detail: the injury, where someone moved)
 .depth-change-note {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -3229,15 +3229,15 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: baseline;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: grid;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   padding: 6px 0;
 }
 
 .depth-coach-role {
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   font-weight: 600;
 }
 
@@ -3245,15 +3245,15 @@ $ai-narrow: v.bp(ai-narrow);
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: grid;
-  font-size: 13px;
-  gap: 10px;
+  font-size: v.$fs-13;
+  gap: v.$space-10;
   grid-template-columns: 26px minmax(0, 1fr) 120px 40px 30px 62px;
   padding: 5px 0;
 
   // (no snaps, or off the depth chart now: his name muted)
   &.unused .depth-row-name,
   &.off-chart .depth-row-name {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
   }
 }
 
@@ -3262,8 +3262,8 @@ $ai-narrow: v.bp(ai-narrow);
   @include v.ellipsis;
 
   small {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
     font-weight: 800;
     margin-left: 6px;
   }
@@ -3288,8 +3288,8 @@ $ai-narrow: v.bp(ai-narrow);
 }
 
 .depth-row-games {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 700;
 }
 
@@ -3323,7 +3323,7 @@ $ai-narrow: v.bp(ai-narrow);
   }
 
   .depth-status {
-    font-size: 8px;
+    font-size: v.$fs-10;
     right: -6px;
   }
 
@@ -3373,7 +3373,7 @@ $ai-narrow: v.bp(ai-narrow);
 // ---------------------------------------------------------------------------
 .game-play-filters {
   display: flex;
-  gap: 8px;
+  gap: v.$space-8;
   margin-bottom: 12px;
 }
 
@@ -3382,7 +3382,7 @@ $ai-narrow: v.bp(ai-narrow);
 .game-filter {
   cursor: pointer;
   font: inherit;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
   letter-spacing: 0.5px;
   opacity: 0.72;
@@ -3421,7 +3421,7 @@ $ai-narrow: v.bp(ai-narrow);
   // (small, on a panel's bar: a thinner edge and a closer, finer ring, in step with its size)
   &.small {
     border-width: 1.5px !important;
-    font-size: 10.5px;
+    font-size: v.$fs-11;
     padding: 4px 12px;
 
     &.active {

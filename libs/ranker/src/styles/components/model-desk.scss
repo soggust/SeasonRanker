@@ -41,21 +41,21 @@
 .desk-tiles {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: center;
 }
 
 .desk-tile {
   @include v.led-tile;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$space-2;
   min-width: 86px;
   padding: 6px 12px;
 
   small {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     font-family: v.$font-base;
-    font-size: 9px;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -63,7 +63,7 @@
 
   b {
     font-family: v.$font-base;
-    font-size: 17px;
+    font-size: v.$fs-17;
     font-weight: 900;
   }
 }
@@ -77,8 +77,8 @@
 }
 
 .desk-note {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  color: v.$text-faint;
+  font-size: v.$fs-13;
   margin: 6px 2px;
 }
 
@@ -98,16 +98,16 @@
     align-items: baseline;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 16px;
+    gap: v.$space-4 v.$space-16;
     justify-content: space-between;
   }
 
   .log-chart-label {
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 800;
 
     small {
-      color: rgba(255, 255, 255, 0.5);
+      color: v.$text-faint;
       font-weight: 600;
       margin-left: 6px;
     }
@@ -117,7 +117,7 @@
   .desk-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 14px;
+    gap: v.$space-4 v.$space-14;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -125,12 +125,12 @@
     li {
       --line: var(--total);
       align-items: center;
-      color: rgba(255, 255, 255, 0.7);
+      color: v.$text-dim;
       cursor: help;
       display: flex;
-      font-size: 11px;
+      font-size: v.$fs-11;
       font-weight: 800;
-      gap: 5px;
+      gap: v.$space-6;
       letter-spacing: 0.04em;
     }
 
@@ -300,7 +300,7 @@ card-panel {
     }
 
     .desk-table {
-      font-size: 11.5px;
+      font-size: v.$fs-12;
 
       th,
       td {
@@ -312,7 +312,7 @@ card-panel {
 
 .desk-table {
   border-collapse: collapse;
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   font-variant-numeric: tabular-nums;
   width: 100%;
 
@@ -328,9 +328,9 @@ card-panel {
   }
 
   thead th {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     cursor: help;
-    font-size: 10.5px;
+    font-size: v.$fs-11;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -345,16 +345,16 @@ card-panel {
   }
 
   small {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
     display: block;
-    font-size: 10.5px;
+    font-size: v.$fs-11;
     font-weight: 600;
   }
 }
 
 .desk-test {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 11.5px;
+  color: v.$text-dim;
+  font-size: v.$fs-12;
   white-space: normal !important;
 }
 
@@ -377,7 +377,7 @@ card-panel {
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  gap: 2px;
+  gap: v.$space-2;
   letter-spacing: inherit;
   padding: 0;
   text-transform: inherit;
@@ -407,7 +407,7 @@ card-panel {
   li {
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     display: grid;
-    gap: 2px;
+    gap: v.$space-2;
     padding: 7px 0;
 
     &:first-child {
@@ -416,24 +416,24 @@ card-panel {
   }
 
   small {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 10.5px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
   }
 
   b {
-    font-size: 13px;
+    font-size: v.$fs-13;
   }
 
   span {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
   }
 }
 
 // (the context: each sport's held-out numbers without and with it, then its terms, the ones left out dimmed)
 .desk-context-tests {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
+  color: v.$text-dim;
+  font-size: v.$fs-12;
   list-style: none;
   margin: 0 0 10px;
   padding: 0;
@@ -453,8 +453,8 @@ card-panel {
 
 // (a graded bet's post-mortem: the line saying why, wrapping; a mark when its premise broke, the recap's link)
 .desk-why {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 11.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-12;
   max-width: 420px;
   min-width: 240px;
   text-align: left !important;
@@ -466,7 +466,7 @@ card-panel {
   }
 
   a {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
 
     &:hover {
       color: #fff;
@@ -500,7 +500,7 @@ card-panel {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: v.$space-12;
 }
 
 .desk-chip {
@@ -514,7 +514,7 @@ card-panel {
 .desk-sports {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: flex-end;
   margin-left: auto;
 }
@@ -530,7 +530,7 @@ card-panel {
   }
 
   .sport-label {
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 900;
     letter-spacing: 0.4px;
     line-height: 1;
@@ -538,7 +538,7 @@ card-panel {
   }
 
   .sport-count {
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 800;
     line-height: 1;
     margin-top: 2px;
@@ -550,7 +550,7 @@ card-panel {
     --clay: #9a7b22;
 
     .sport-label {
-      font-size: 12px;
+      font-size: v.$fs-12;
     }
   }
 
@@ -578,7 +578,7 @@ card-panel {
 .desk-game {
   align-items: center;
   display: inline-flex;
-  gap: 4px;
+  gap: v.$space-4;
   white-space: nowrap;
 
   img {
@@ -588,7 +588,7 @@ card-panel {
   }
 
   .desk-at {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
     margin: 0 4px;
   }
 }
@@ -597,7 +597,7 @@ card-panel {
 .desk-pick {
   align-items: center;
   display: inline-flex;
-  gap: 8px;
+  gap: v.$space-8;
   justify-content: flex-start;
 }
 
@@ -656,7 +656,7 @@ card-panel {
     border-color: rgba(255, 255, 255, 0.28);
 
     mat-icon {
-      color: rgba(255, 255, 255, 0.8);
+      color: v.$text-soft;
     }
   }
 }
@@ -675,7 +675,7 @@ card-panel {
   --meter: var(--scoreboard-led);
   align-items: center;
   display: flex;
-  gap: 4px;
+  gap: v.$space-4;
   justify-content: flex-end;
   margin-bottom: 5px;
 
@@ -729,7 +729,7 @@ card-panel {
 
   .pip-extra {
     color: var(--meter);
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 900;
   }
 
@@ -952,7 +952,7 @@ card-panel {
 .desk-game-stack {
   display: inline-flex;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$space-2;
 
   .desk-when {
     margin-top: 0;
@@ -964,14 +964,14 @@ card-panel {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 2px 6px;
+  gap: v.$space-2 v.$space-6;
 }
 
 // (a game's row and a sport's, over their bets: taller, their type a size up, so the lists read by them)
 .desk-table {
   .desk-group,
   .desk-sport-group {
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 700;
 
     > td,
@@ -986,7 +986,7 @@ card-panel {
     }
 
     .desk-group-count {
-      font-size: 13px;
+      font-size: v.$fs-13;
     }
 
     .desk-group-toggle mat-icon {
@@ -1001,7 +1001,7 @@ card-panel {
     }
 
     .desk-sport-name {
-      font-size: 15px;
+      font-size: v.$fs-15;
     }
   }
 }
@@ -1009,7 +1009,7 @@ card-panel {
 .desk-group-toggle {
   background: none;
   border: 0;
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   cursor: pointer;
   display: inline-flex;
   flex: none;
@@ -1041,8 +1041,8 @@ card-panel {
 // (a group's count of bets, and a team's props')
 .desk-table td.desk-group-count,
 .desk-subgroup .desk-group-count {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11.5px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
 }
 
 // (a team's player props under its game: a row of their own, its label in the pick column (the game's picks'
@@ -1057,7 +1057,7 @@ card-panel {
   }
 
   b {
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 800;
   }
 
@@ -1236,7 +1236,7 @@ card-panel {
   }
 
   .desk-tier-pass th {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
   }
 
   .desk-total {
@@ -1282,24 +1282,24 @@ card-panel {
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
+  gap: v.$space-4 v.$space-10;
   margin-bottom: 6px;
 
   b {
-    font-size: 13px;
+    font-size: v.$fs-13;
     letter-spacing: 0.06em;
   }
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
   }
 }
 
 .desk-self-counts {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: v.$space-4;
   list-style: none;
   margin: 0 0 0 auto;
   padding: 0;
@@ -1310,7 +1310,7 @@ card-panel {
   border-radius: v.$radius-pill;
   color: var(--sc-grey);
   flex: none;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 0.06em;
   line-height: 1;
@@ -1363,7 +1363,7 @@ card-panel {
   cursor: pointer;
   display: flex;
   font: inherit;
-  gap: 8px;
+  gap: v.$space-8;
   padding: 7px 4px;
   text-align: left;
   width: 100%;
@@ -1376,51 +1376,51 @@ card-panel {
 
 .desk-self-fold {
   align-items: center;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
-  gap: 6px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
+  gap: v.$space-6;
 
   &:hover {
-    color: rgba(255, 255, 255, 0.8);
+    color: v.$text-soft;
   }
 }
 
 .desk-self-text {
   display: grid;
-  gap: 2px;
+  gap: v.$space-2;
   min-width: 0;
 
   b {
-    font-size: 13px;
+    font-size: v.$fs-13;
   }
 
   span {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 12px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
   }
 }
 
 .desk-self-detail {
-  font-size: 12px;
+  font-size: v.$fs-12;
   padding: 0 4px 10px 30px;
 
   dl {
     display: grid;
-    gap: 3px 10px;
+    gap: v.$space-4 v.$space-10;
     grid-template-columns: auto 1fr;
     margin: 8px 0 0;
   }
 
   dt {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 10.5px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   dd {
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
     margin: 0;
   }
 }
@@ -1430,7 +1430,7 @@ card-panel {
   overflow-x: auto;
 
   .desk-table {
-    font-size: 11.5px;
+    font-size: v.$fs-12;
 
     th,
     td {
@@ -1456,7 +1456,7 @@ card-panel {
 .desk-news-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   list-style: none;
   margin: 8px 0 0;
   padding: 0;

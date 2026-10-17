@@ -105,7 +105,7 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: v.$space-6;
     margin: 1.9em auto 2.1em;
     width: 70%;
 
@@ -163,7 +163,7 @@
 
     .mat-icon {
       @include v.em-icon(1.45em);
-      color: rgba(255, 255, 255, 0.8);
+      color: v.$text-soft;
     }
 
     &:hover .mat-icon {
@@ -211,7 +211,7 @@
 
   // (the slider's invisible touch area reaches up into the label row: the labels sit above it)
   .slider-label {
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 800;
     grid-area: label;
     letter-spacing: 0.5px;
@@ -360,11 +360,11 @@
 
   .group-handle,
   .row-handle {
-    color: rgba(255, 255, 255, 0.35);
+    color: v.$text-faint;
     cursor: grab;
 
     &:hover {
-      color: rgba(255, 255, 255, 0.8);
+      color: v.$text-soft;
     }
   }
 

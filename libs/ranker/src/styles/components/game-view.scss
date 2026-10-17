@@ -20,8 +20,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 // (a fact's label: small, faint, bold caps)
 @mixin game-caps-label {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 10px;
+  color: v.$text-faint;
+  font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -108,7 +108,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   min-width: 0;
 
   &.lost .game-logo-card {
@@ -141,8 +141,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .game-team-record {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 12px;
+  color: v.$text-soft;
+  font-size: v.$fs-12;
   font-weight: 800;
   letter-spacing: 0.5px;
 }
@@ -151,7 +151,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 // (the final on the LED board: the winner's score lit green, the loser's red (the W/L squares' colors);
@@ -167,7 +167,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-scores {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: v.$space-12;
 
   .rank-number {
     --tone: var(--scoreboard-led);
@@ -177,8 +177,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .game-dash {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 24px;
+  color: v.$text-faint;
+  font-size: v.$fs-24;
   font-weight: 900;
 }
 
@@ -187,7 +187,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-when {
   color: #fff;
   font-family: v.$font-base;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 800;
   letter-spacing: 0.5px;
   text-shadow:
@@ -209,26 +209,26 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   th,
   td {
-    color: rgba(255, 255, 255, 0.85);
+    color: v.$text-strong;
     padding: 6px 8px;
     text-align: center;
   }
 
   th {
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 800;
   }
 
   thead th {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     letter-spacing: 1px;
   }
 
   tbody th {
     align-items: center;
     display: flex;
-    gap: 8px;
+    gap: v.$space-8;
     min-width: 80px;
     text-align: left;
 
@@ -241,7 +241,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   td {
     font-family: v.$font-led;
-    font-size: 16px;
+    font-size: v.$fs-16;
     font-weight: 400;
   }
 
@@ -299,8 +299,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .win-prob-edge {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  color: v.$text-faint;
+  font-size: v.$fs-10;
   font-weight: 800;
   left: 4px;
   position: absolute;
@@ -367,7 +367,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   align-self: center;
   display: flex;
-  gap: 6px;
+  gap: v.$space-6;
   height: 18px;
   margin-left: auto;
   visibility: hidden;
@@ -381,7 +381,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .win-prob-when {
   color: #fff;
   font-family: v.$font-base;
-  font-size: 10.5px;
+  font-size: v.$fs-11;
   font-weight: 800;
   letter-spacing: 0.5px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
@@ -392,7 +392,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .win-prob-score {
   color: var(--scoreboard-led);
   font-family: v.$font-led;
-  font-size: 10.5px;
+  font-size: v.$fs-11;
 
   &:empty {
     display: none;
@@ -403,7 +403,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   @include plain-button;
   align-items: center;
   border-radius: 5px;
-  color: rgba(255, 255, 255, 0.7);
+  color: v.$text-dim;
   display: flex;
   height: 18px;
   justify-content: center;
@@ -448,7 +448,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 .game-two {
   display: grid;
-  gap: 4px 28px;
+  gap: v.$space-4 v.$space-28;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -460,7 +460,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   border-bottom: $row-rule;
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: 26px minmax(0, 1fr) auto;
   padding: 6px 0;
 }
@@ -471,22 +471,22 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   min-width: 0;
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
 
   b {
-    font-size: 13px;
+    font-size: v.$fs-13;
     @include v.ellipsis;
   }
 }
 
 .game-leader-line {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 12px;
+  color: v.$text-strong;
+  font-size: v.$fs-12;
   font-weight: 700;
   text-align: right;
 }
@@ -497,8 +497,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: baseline;
   border-bottom: $row-rule;
   display: flex;
-  font-size: 13px;
-  gap: 10px;
+  font-size: v.$fs-13;
+  gap: v.$space-10;
   line-height: 1.4;
   padding: 6px 0;
 
@@ -516,30 +516,30 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .game-play-clock {
-  color: rgba(255, 255, 255, 0.5);
+  color: v.$text-faint;
   flex: none;
-  font-size: 11.5px;
+  font-size: v.$fs-12;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   min-width: 38px;
 }
 
 .game-play-text {
-  color: rgba(255, 255, 255, 0.78);
+  color: v.$text-soft;
   flex: 1;
 }
 
 .game-play-score {
   color: var(--scoreboard-led);
   flex: none;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-variant-numeric: tabular-nums;
   font-weight: 900;
 }
 
 .game-drive-sub {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   font-weight: 700;
   margin: 0 0 6px;
 }
@@ -557,13 +557,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 .game-facts {
   display: grid;
-  gap: 12px 20px;
+  gap: v.$space-12 v.$space-20;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 
   > div {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: v.$space-2;
   }
 
   small {
@@ -572,16 +572,16 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   b {
     color: #fff;
-    font-size: 14px;
+    font-size: v.$fs-14;
 
     &.muted {
-      color: rgba(255, 255, 255, 0.45);
+      color: v.$text-faint;
     }
   }
 
   i {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
     font-style: normal;
     font-weight: 700;
   }
@@ -596,7 +596,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: baseline;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 12px;
+  gap: v.$space-12;
   margin-top: 14px;
   padding-top: 14px;
 
@@ -608,7 +608,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   > span {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: v.$space-6;
   }
 }
 
@@ -618,12 +618,12 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   border-bottom: $row-rule;
   display: grid;
-  gap: 14px;
+  gap: v.$space-14;
   grid-template-columns: 90px minmax(0, 1fr) 90px;
   padding: 6px 0;
 
   > b {
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-variant-numeric: tabular-nums;
 
     &:first-child {
@@ -636,8 +636,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &.head > b {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     letter-spacing: 1px;
   }
 }
@@ -646,11 +646,11 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: v.$space-4;
 
   small {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 11.5px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
     font-weight: 700;
     text-align: center;
   }
@@ -659,7 +659,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-stat-bar {
   border-radius: v.$radius-xs;
   display: flex;
-  gap: 2px;
+  gap: v.$space-2;
   height: 5px;
   overflow: hidden;
   width: 100%;
@@ -686,15 +686,15 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
     white-space: nowrap;
 
     small {
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 10px;
+      color: v.$text-faint;
+      font-size: v.$fs-10;
       font-weight: 800;
       margin-left: 5px;
     }
   }
 
   .dnp {
-    color: rgba(255, 255, 255, 0.45);
+    color: v.$text-faint;
     font-style: italic;
     text-align: left;
   }
@@ -709,7 +709,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   // (inset from the sides like the player card's hero; the board, its chip and date up level with the
   // logos, and less room under them)
   .game-hero {
-    gap: 10px;
+    gap: v.$space-10;
     padding: 34px 14px 10px;
   }
 
@@ -746,7 +746,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .game-scores .rank-number {
-    font-size: 28px;
+    font-size: v.$fs-28;
   }
 
   .game-two {
@@ -764,7 +764,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
   border-bottom: $row-rule;
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: 32px 26px minmax(0, 1fr) auto;
   padding: 8px 0;
 }
@@ -772,7 +772,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 // (the rank on a small LED tile, like the grid's: #1 lit, the rest of the top ten green)
 .game-fantasy-rank {
   @include v.led-tile($radius: 5px);
-  font-size: 11px;
+  font-size: v.$fs-11;
   height: 24px;
   padding-top: 1.5px;
   width: 32px;
@@ -791,18 +791,18 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-fantasy-main {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: v.$space-4;
   min-width: 0;
 
   b {
     align-items: center;
     display: flex;
-    font-size: 13.5px;
-    gap: 6px;
+    font-size: v.$fs-14;
+    gap: v.$space-6;
 
     small {
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 10px;
+      color: v.$text-faint;
+      font-size: v.$fs-10;
       font-weight: 800;
     }
 
@@ -820,8 +820,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   > small {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 11.5px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 600;
   }
 }
@@ -842,7 +842,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .game-fantasy-points {
   color: var(--scoreboard-led);
   font-family: v.$font-led;
-  font-size: 20px;
+  font-size: v.$fs-20;
   min-width: 64px;
   text-align: right;
 
@@ -967,8 +967,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .drive-endzone {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 10px;
+  color: v.$text-faint;
+  font-size: v.$fs-10;
   font-weight: 900;
   letter-spacing: 1px;
   position: absolute;
@@ -1023,8 +1023,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .drive-result {
   background: rgba(20, 24, 22, 0.82);
   border-radius: v.$radius-sm;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  color: v.$text-faint;
+  font-size: v.$fs-10;
   font-weight: 800;
   line-height: 14px;
   padding: 0 5px;
@@ -1044,7 +1044,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 // (passes: the six zones, deep over short, each shaded by its share of the attempts)
 .pass-zones {
   display: grid;
-  gap: 6px;
+  gap: v.$space-6;
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -1055,13 +1055,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: v.$radius-md;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$space-2;
   padding: 12px 8px;
   text-align: center;
 
   small {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -1069,12 +1069,12 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   b {
     color: #fff;
-    font-size: 18px;
+    font-size: v.$fs-18;
   }
 
   span {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 11.5px;
+    color: v.$text-soft;
+    font-size: v.$fs-12;
     font-weight: 700;
   }
 }
@@ -1098,7 +1098,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   background-clip: text;
   color: transparent;
   font-family: v.$font-base;
-  font-size: 15px;
+  font-size: v.$fs-15;
   font-weight: 900;
   letter-spacing: 2px;
 }
@@ -1110,7 +1110,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .predictor-row {
   align-items: center;
   display: grid;
-  gap: 14px;
+  gap: v.$space-14;
   grid-template-columns: auto minmax(0, 1fr) auto;
   padding: 6px 4px 4px;
 }
@@ -1123,13 +1123,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   b {
     color: #fff;
     font-family: v.$font-led;
-    font-size: 22px;
+    font-size: v.$fs-22;
     font-weight: 400;
   }
 
   small {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 800;
     letter-spacing: 1px;
   }
@@ -1150,8 +1150,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   color: #fff;
   display: flex;
   font: inherit;
-  font-size: 13px;
-  gap: 8px;
+  font-size: v.$fs-13;
+  gap: v.$space-8;
   padding: 7px 0;
   text-align: left;
 
@@ -1162,8 +1162,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .log-vs {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     min-width: 16px;
   }
 }
@@ -1171,7 +1171,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 // (a last-five game's score: two LED tiles at the row's end, the team's first)
 .game-form-score {
   display: inline-flex;
-  gap: 4px;
+  gap: v.$space-4;
   margin-left: auto;
 }
 
@@ -1186,7 +1186,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--scoreboard-led);
   flex: none;
   font-family: v.$font-base;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 800;
   letter-spacing: 0.4px;
   min-width: 76px;
@@ -1199,7 +1199,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &:disabled {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     cursor: default;
   }
 }
@@ -1207,13 +1207,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 // (an injured player's status: out red, doubtful orange, questionable gold, the rest grey)
 .game-injury-status {
   border-radius: v.$radius-md;
-  font-size: 10.5px;
+  font-size: v.$fs-11;
   font-weight: 900;
   letter-spacing: 0.4px;
   padding: 3px 7px;
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  color: v.$text-soft;
 
   &.status-out,
   &.status-injured-reserve {
@@ -1238,7 +1238,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   color: #111;
   display: inline-block;
   flex: none;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 900;
   line-height: 17px;
   text-align: center;
@@ -1341,7 +1341,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .arsenal-row {
   border-bottom: $row-rule;
   display: grid;
-  gap: 6px 16px;
+  gap: v.$space-6 v.$space-16;
   grid-template-columns: 180px minmax(0, 1fr);
   padding: 10px 0;
 }
@@ -1352,12 +1352,12 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   grid-row: span 2;
 
   b {
-    font-size: 13.5px;
+    font-size: v.$fs-14;
   }
 
   small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 700;
   }
 }
@@ -1378,15 +1378,15 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 .arsenal-types {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: v.$space-4 v.$space-14;
 
   span {
     align-items: center;
-    color: rgba(255, 255, 255, 0.75);
+    color: v.$text-soft;
     display: inline-flex;
-    font-size: 11.5px;
+    font-size: v.$fs-12;
     font-weight: 700;
-    gap: 5px;
+    gap: v.$space-6;
   }
 
   i {
@@ -1406,8 +1406,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   span {
     background: #2a302e;
     border-radius: v.$radius-sm;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 9.5px;
+    color: v.$text-dim;
+    font-size: v.$fs-10;
     font-weight: 900;
     left: 50%;
     letter-spacing: 1px;
@@ -1426,7 +1426,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   color: inherit;
   display: inline-flex;
   font: inherit;
-  gap: 8px;
+  gap: v.$space-8;
 
   &:hover:not(:disabled) {
     color: var(--scoreboard-led);
@@ -1445,7 +1445,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   &::after {
     content: "▾";
-    font-size: 11px;
+    font-size: v.$fs-11;
     pointer-events: none;
     position: absolute;
     right: 14px;
@@ -1472,8 +1472,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 // (the spray chart's park, bottom left)
 .park-name {
   bottom: 10px;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 800;
   left: 14px;
   letter-spacing: 0.5px;
@@ -1645,9 +1645,9 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: v.$radius-pill;
   color: #fff;
   display: flex;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 800;
-  gap: 4px;
+  gap: v.$space-4;
   left: 50%;
   padding: 8px 16px 8px 10px;
   position: absolute;
@@ -1658,24 +1658,24 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 .game-video-title {
   color: #fff;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 800;
   margin: 10px 2px 0;
 }
 
 .game-clips {
   display: grid;
-  gap: 12px;
+  gap: v.$space-12;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 
 .game-clip {
   @include plain-button;
-  color: rgba(255, 255, 255, 0.85);
+  color: v.$text-strong;
   display: flex;
   flex-direction: column;
   font: inherit;
-  gap: 6px;
+  gap: v.$space-6;
   text-align: left;
 
   .game-clip-thumb {
@@ -1701,7 +1701,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
       background: rgba(0, 0, 0, 0.75);
       border-radius: v.$radius-xs;
       bottom: 4px;
-      font-size: 10px;
+      font-size: v.$fs-10;
       font-weight: 800;
       padding: 1px 4px;
       position: absolute;
@@ -1711,7 +1711,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
   .game-clip-title {
     display: -webkit-box;
-    font-size: 11.5px;
+    font-size: v.$fs-12;
     font-weight: 700;
     line-height: 1.3;
     overflow: hidden;

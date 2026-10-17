@@ -14,13 +14,13 @@
   box-sizing: border-box;
   color: kit.app(text);
   font-family: v.$font-base;
-  font-size: 14.5px;
+  font-size: v.$fs-15;
   line-height: 1.6;
   // (the sheet gives the side and top room: only room under the last section here)
   padding: 0 0 36px;
 
   @include v.down(phone) {
-    font-size: 14px;
+    font-size: v.$fs-14;
     padding-bottom: 24px;
   }
 
@@ -50,7 +50,7 @@
     color: #fff;
     display: flex;
     flex: 1;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 600;
     height: 40px;
     justify-content: center;
@@ -90,7 +90,7 @@ h2 {
 
 .legal-updated {
   color: kit.app(text-muted);
-  font-size: 12px;
+  font-size: v.$fs-12;
   letter-spacing: 0.5px;
   margin: 4px 0 16px;
 }
@@ -98,7 +98,7 @@ h2 {
 .legal-lede {
   border-left: 3px solid var(--scoreboard-led);
   color: #fff;
-  font-size: 15.5px;
+  font-size: v.$fs-16;
   margin: 0 0 8px;
   padding: 2px 0 2px 14px;
 }
@@ -111,7 +111,7 @@ section {
 
 h3 {
   color: var(--scoreboard-led);
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   font-weight: 800;
   letter-spacing: 1.6px;
   margin: 0 0 8px;
