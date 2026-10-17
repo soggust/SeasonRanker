@@ -41,7 +41,7 @@ test('the chip rack breaks the balance greedily, six chips a stack, the legend e
   assert.equal(big.legend[0].count, 50);
 });
 
-test('the runs: each bet’s run, 1,000 plus its settled profit, a bust stamped, the current run NOW', () => {
+test('the runs: each bet’s run, its start plus its settled profit, a bust stamped, the current run NOW', () => {
   const bets = [
     bet({ run: 0, profit: -600, status: 'lost', stake: 600, settledAt: '2026-09-05T00:00:00Z', placedAt: '2026-09-02T00:00:00Z' }),
     bet({ run: 0, profit: -400, status: 'lost', stake: 400, settledAt: '2026-09-09T00:00:00Z' }),
@@ -49,7 +49,8 @@ test('the runs: each bet’s run, 1,000 plus its settled profit, a bust stamped,
     bet({ run: 2, profit: 40, settledAt: '2026-10-05T00:00:00Z', placedAt: '2026-10-04T00:00:00Z' }),
     bet({ run: 2, profit: -20, status: 'lost', stake: 20, settledAt: '2026-10-08T00:00:00Z' }),
   ];
-  const runs = w.runCards(bets, 2, 1015, true);
+  // (a wallet from before 2026-10-17: every run began at 1,000, the current one by the wallet's start)
+  const runs = w.runCards(bets, 2, 1015, true, 1000);
   assert.deepEqual(runs.map((r) => [r.n, r.peak, r.end, r.bust, r.current]), [
     [1, 1000, 0, true, false],
     [2, 1090, 1090, false, false],
@@ -60,15 +61,27 @@ test('the runs: each bet’s run, 1,000 plus its settled profit, a bust stamped,
   assert.equal(runs[2].to, null);
   assert.match(runs[2].spark, /^M0\.0 .* L100\.0 /);
   // (history still paging, an older run's bet among the loaded: the current run alone, its peak known)
-  const partial = w.runCards(bets.slice(2), 2, 1015, false);
+  const partial = w.runCards(bets.slice(2), 2, 1015, false, 1000);
   assert.equal(partial.length, 1);
   assert.equal(partial[0].peak, 1040);
   // (only the current run's bets loaded so far: no peak, no curve)
-  const unknown = w.runCards(bets.slice(3), 2, 1015, false);
+  const unknown = w.runCards(bets.slice(3), 2, 1015, false, 1000);
   assert.equal(unknown[0].peak, null);
   assert.equal(unknown[0].spark, null);
-  // (a fresh wallet: run 1, flat at 1,000)
-  assert.deepEqual(w.runCards([], 0, 1000, true).map((r) => [r.n, r.peak, r.end]), [[1, 1000, 1000]]);
+  assert.deepEqual(runs.map((r) => r.start), [1000, 1000, 1000]);
+  // (a fresh wallet: run 1, flat at 500)
+  assert.equal(w.START, 500);
+  assert.deepEqual(w.runCards([], 0, 500, true).map((r) => [r.n, r.start, r.peak, r.end]), [[1, 500, 500, 500]]);
+  // (an old wallet reloaded after the change: its old run began at 1,000, the runs since at 500)
+  const mixed = [
+    bet({ run: 0, profit: -1000, status: 'lost', stake: 1000, settledAt: '2026-10-12T00:00:00Z', placedAt: '2026-10-11T00:00:00Z' }),
+    bet({ run: 1, profit: 120, settledAt: '2026-10-20T00:00:00Z', placedAt: '2026-10-19T00:00:00Z' }),
+  ];
+  assert.deepEqual(w.runCards(mixed, 2, 500, true).map((r) => [r.n, r.start, r.peak, r.end, r.bust]), [
+    [1, 1000, 1000, 0, true],
+    [2, 500, 620, 620, false],
+    [3, 500, 500, 500, false],
+  ]);
 });
 
 test('Heads Up over all time is the wallet’s versus; a week and 30 days cut the same figures down', () => {
@@ -125,7 +138,7 @@ test('the trophy case: earned from the bets and the tally, locked with how far a
     won({ settledAt: '2026-10-07T00:00:00Z', kind: 'parlay', market: 'parlay', legs: [{ status: 'won' }, { status: 'won' }, { status: 'won' }] }),
   ];
   const tally = { all: { won: 6, lost: 1, push: 0, void: 0, staked: 7, profit: 6 }, days: {} };
-  const runs = [{ n: 1, bust: true, end: 0, current: false, to: '2026-09-19T00:00:00Z' }, { n: 2, bust: false, end: 1090, current: false, to: '2026-10-03T00:00:00Z' }];
+  const runs = [{ n: 1, start: 1000, bust: true, end: 0, current: false, to: '2026-09-19T00:00:00Z' }, { n: 2, start: 1000, bust: false, end: 1090, current: false, to: '2026-10-03T00:00:00Z' }];
   const t = Object.fromEntries(w.trophies(bets, tally, runs, true).map((x) => [x.key, x]));
   assert.ok(!('sharp' in t));
   assert.deepEqual([t.first.earned, t.first.when], [true, '2026-10-01T00:00:00Z']);

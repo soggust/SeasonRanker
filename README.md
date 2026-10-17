@@ -28,7 +28,7 @@ package name and some internal task names.
 - **The Book** (`/bets`, `libs/ranker/src/engine/bets/`): a sportsbook for fun. Best Bets or one game's
   board, every price with its Kelly score and confidence band, the model-vs-book meter, the why popover,
   a ticket (the bet slip; a stub on phones), a sport dropdown and bet-kind chips. **Play money only**:
-  a signed-in account gets a 1,000-unit wallet (`account/wallet/wallet-math.ts` `START`), no real money
+  a signed-in account gets a 500-unit wallet (`account/wallet/wallet-math.ts` `START`), no real money
   ever. The wallet's redesign is a pull request, not live.
 - **The Algorithm** (admin-only desk on The Book): the bettor, `libs/ranker/scripts/model/run.mjs`,
   hourly on GitHub Actions (never run locally without `--dry`), over five leagues: NFL, NBA, NHL and MLB

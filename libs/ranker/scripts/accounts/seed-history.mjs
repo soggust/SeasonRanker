@@ -68,7 +68,7 @@ const walletRef = db.doc(`users/${uid}/wallet/main`);
 const wallet = await walletRef.get();
 const made = Timestamp.fromDate(at(-30));
 if (!wallet.exists) {
-  await walletRef.set({ balance: 1000, start: 1000, resets: 0, createdAt: made, updatedAt: FieldValue.serverTimestamp() });
+  await walletRef.set({ balance: 500, start: 500, resets: 0, createdAt: made, updatedAt: FieldValue.serverTimestamp() });
 } else {
   await walletRef.update({ createdAt: made });
 }

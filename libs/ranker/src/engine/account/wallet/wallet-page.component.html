@@ -192,7 +192,7 @@
           <div class="chips-balance">
             <span class="wp-key">Balance</span>
             <span class="chips-led" title="Play money on hand, the open bets' stakes out of it">{{ wallet.balance() | number: '1.1-2' }}</span>
-            <span class="chips-line">units · started this run at {{ start | number }} · <b [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ runProfit() >= 0 ? '+' : '' }}{{ (runProfit() / start) | percent: '1.1-1' }}</b>@if (currentRun()?.peak; as peak) { · peak {{ peak | number: '1.1-1' }}}</span>
+            <span class="chips-line">units · started this run at {{ wallet.runStart() | number }} · <b [class.up]="runProfit() > 0" [class.down]="runProfit() < 0">{{ runProfit() >= 0 ? '+' : '' }}{{ (runProfit() / wallet.runStart()) | percent: '1.1-1' }}</b>@if (currentRun()?.peak; as peak) { · peak {{ peak | number: '1.1-1' }}}</span>
           </div>
           <div class="chips-open">
             @if (open().length) {
@@ -224,7 +224,7 @@
     </section>
 
     <!-- Rebuy: the site's standard button, Buy back in; the first tap turns it the danger button, Sure?, the second calls the existing reload()
-         (back to 1,000, a new run); a click anywhere else keeps the run. Then the runs as paper tickets, and an
+         (back to 500, a new run); a click anywhere else keeps the run. Then the runs as paper tickets, and an
          admin's Clear history -->
     <section class="wp-panel" aria-label="Rebuy">
       <div class="wp-bar"><h3>Rebuy</h3><span class="wp-bar-note">Play money · no cash in or out, ever</span></div>

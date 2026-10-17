@@ -77,8 +77,8 @@ describe('the wallet from the tally', { skip }, () => {
     const tallySnap = await assertSucceeds(getDoc(doc(db, 'tallies', 'heavy')));
     const page = await assertSucceeds(getDocs(query(collection(db, 'users', 'heavy', 'bets'), where('status', 'in', SETTLED), orderBy('settledAt', 'desc'), limit(w.SETTLED_PAGE))));
     const read = 1 + page.size;
-    assert.ok(read <= 201, `${read} documents read`);
-    assert.equal(page.size, 200);
+    assert.ok(read <= w.SETTLED_PAGE + 1, `${read} documents read`);
+    assert.equal(page.size, w.SETTLED_PAGE);
     const loaded = page.docs.map((d) => ({ ...d.data(), id: d.id, start: d.get('start').toDate().toISOString(), settledAt: d.get('settledAt').toDate().toISOString(), placedAt: d.get('start').toDate().toISOString() }));
 
     // (what every bet adds up to)
@@ -99,9 +99,9 @@ describe('the wallet from the tally', { skip }, () => {
     assert.equal(tiles.staked, real.staked);
     assert.equal(tiles.roi, real.profit / real.staked);
     assert.equal(w.settledCount(tally), 450);
-    // (the page alone would have shown 200: the regression this guards against)
+    // (the page alone would have shown only its one page: the regression this guards against)
     const pageOnly = w.playTally(loaded);
-    assert.equal(pageOnly.won + pageOnly.lost + pageOnly.push + pageOnly.void, 200);
+    assert.equal(pageOnly.won + pageOnly.lost + pageOnly.push + pageOnly.void, w.SETTLED_PAGE);
     // (the chart: all 45 game days, ending at the whole profit; each sport's line adding up to it)
     const c = w.dayCurve(tally);
     assert.equal(c.totals.length, 46);

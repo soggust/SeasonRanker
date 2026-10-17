@@ -43,7 +43,7 @@ type Period = Leaderboard['period'];
 // what's at risk, the profit by game day: all of it, from the settler's tally), the open bets (in play, a result
 // as soon as the score decides it, pending settlement: the settler pays it after the game), the settled history by game, the
 // user's record beside the bot's over the same stretch, and the leaderboards; a parlay one row, opening to its
-// legs (each with its own live column, the parlay "2 of 4 hit"). Reload (back to 1,000, a new run) and Clear
+// legs (each with its own live column, the parlay "2 of 4 hit"). Reload (back to 500, a new run) and Clear
 // history (typed to confirm) at the top.
 // (the bot's ledgers, every sport's, for You vs the Bot: fetched once a visit, however often the wallet opens)
 let ledgerPromise: Promise<ModelBet[]> | null = null;
@@ -273,8 +273,9 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const tally = this.wallet.tally();
     return tally ? versusDays(tally, ledger) : versusBot(this.wallet.bets(), ledger);
   });
-  // (the run's own profit: the balance against 1,000, the open stakes counted back in)
-  readonly runProfit = computed(() => this.wallet.balance() + this.tally().atRisk - START);
+  // (the run's own profit: the balance against what the run began at (the wallet's start: 1,000 for a run begun
+  // before 2026-10-17), the open stakes counted back in)
+  readonly runProfit = computed(() => this.wallet.balance() + this.tally().atRisk - this.wallet.runStart());
 
   // ---------------------------------------------------------------------------
   // The redesign's own pictures (wallet-view.ts: every one read off what the wallet already holds)
@@ -286,7 +287,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (the whole history's loaded: every page in)
   readonly fullHistory = computed(() => this.wallet.settledState() === 'all');
   // (the runs: every one once the history's all here, else the current one)
-  readonly runs = computed(() => runCards(this.wallet.settledBets(), this.wallet.wallet()?.resets ?? 0, this.wallet.balance(), this.fullHistory()));
+  readonly runs = computed(() => runCards(this.wallet.settledBets(), this.wallet.wallet()?.resets ?? 0, this.wallet.balance(), this.fullHistory(), this.wallet.runStart()));
   readonly currentRun = computed(() => this.runs().find((r) => r.current) ?? null);
   // Heads up: versus over a week, 30 days or all time (the same figures as versus: all time from the tally's days
   // and the bot's ledgers; without a tally yet, the bets on hand, all time only)

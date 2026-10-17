@@ -33,7 +33,7 @@ async function seedProfile(uid, visibility = {}) {
   );
 }
 
-const newWallet = () => ({ balance: 1000, start: 1000, resets: 0, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+const newWallet = () => ({ balance: 500, start: 500, resets: 0, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
 const later = (hours = 24) => Timestamp.fromMillis(Date.now() + hours * 36e5);
 const playBet = (over = {}) => ({
   sport: 'nfl',
@@ -89,9 +89,12 @@ function place(db, uid, id, bet = playBet(), take = bet.stake) {
 }
 
 describe('wallet rules', { skip }, () => {
-  test('a wallet is made once, by its owner, at 1,000', async () => {
+  test('a wallet is made once, by its owner, at 500', async () => {
     const db = as('ann');
     await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), { ...newWallet(), balance: 5000 }));
+    // (the old 1,000 start: no more)
+    await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), { ...newWallet(), balance: 1000, start: 1000 }));
+    await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), { ...newWallet(), start: 1000 }));
     await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), { ...newWallet(), resets: 3 }));
     await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), { ...newWallet(), lastBet: 'x' }));
     await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'other'), newWallet()));
@@ -110,14 +113,14 @@ describe('wallet rules', { skip }, () => {
     await assertFails(place(db, 'ann', 'b1', playBet(), 5));
     await assertFails(place(as('bob'), 'ann', 'b1'));
     await assertSucceeds(place(db, 'ann', 'b1'));
-    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 975);
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 475);
     // (another, a moneyline, a total, a prop)
     await assertSucceeds(place(db, 'ann', 'b2', playBet({ market: 'ml', line: null, odds: 145, side: 'away', pick: 'LV ML', stake: 100 })));
     await assertSucceeds(place(db, 'ann', 'b3', playBet({ market: 'total', side: 'over', line: 45.5, pick: 'Over 45.5', stake: 1 })));
     await assertSucceeds(
       place(db, 'ann', 'b4', playBet({ market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '401:prop:saves:2590824', stake: 4 })),
     );
-    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 870);
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 370);
     // (the same bet id twice: the second is an update, never allowed)
     await assertFails(place(db, 'ann', 'b1'));
   });
@@ -126,7 +129,7 @@ describe('wallet rules', { skip }, () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
     const bad = [
-      playBet({ stake: 1001 }),
+      playBet({ stake: 501 }),
       playBet({ stake: 0 }),
       playBet({ stake: 2.25 }),
       playBet({ start: later(-1) }),
@@ -152,7 +155,7 @@ describe('wallet rules', { skip }, () => {
     // (never under 0: a stake bigger than the balance, however it's written)
     // (the band once called Bet: Like now)
     await assertSucceeds(place(db, 'ann', 'a-like', playBet({ tier: 'like', stake: 0.5 })));
-    await assertSucceeds(place(db, 'ann', 'all-in', playBet({ stake: 999.5 })));
+    await assertSucceeds(place(db, 'ann', 'all-in', playBet({ stake: 499.5 })));
     await assertFails(place(db, 'ann', 'more', playBet({ stake: 1 })));
   });
 
@@ -170,7 +173,7 @@ describe('wallet rules', { skip }, () => {
     await assertFails(place(db, 'ann', 'tags', bout({ matchup: '<b> @ <i>' })));
     await assertFails(place(db, 'ann', 'one', bout({ matchup: 'Chelsea Chandler' })));
     await assertFails(place(db, 'ann', 'long', bout({ matchup: `${'A'.repeat(60)} @ B` })));
-    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 970);
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 470);
   });
 
   test("a CHECK's side (its tier check, not the bot's pick: an admin's alone), and a prop's other side with the pick's id in its ref", async () => {
@@ -206,7 +209,7 @@ describe('wallet rules', { skip }, () => {
       leg({ sport: 'nhl', event: '401990001', matchup: 'SEA @ DET', market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: '401990001:prop:saves:2590824', start: later(2) }),
     ];
     await assertSucceeds(place(db, 'ann', 'p1', parlayOf(legs)));
-    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 990);
+    assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 490);
     // (ten legs, each its own game: the most)
     const ten = Array.from({ length: 10 }, (_, i) => leg({ event: String(402000000 + i), odds: -110 }));
     await assertSucceeds(place(db, 'ann', 'p10', parlayOf(ten, { stake: 0.5 })));
@@ -294,18 +297,21 @@ describe('wallet rules', { skip }, () => {
     await assertSucceeds(place(db, 'ann', 'pv-ten', parlayOf(ten, { stake: 1 })));
   });
 
-  test('a reload: back to 1,000, one more reset; nothing else, and no settling from the browser', async () => {
+  test('a reload: back to 500 (its start with it), one more reset; nothing else, and no settling from the browser', async () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
     await assertSucceeds(place(db, 'ann', 'b1', playBet({ stake: 400 })));
     const wallet = doc(db, 'users', 'ann', 'wallet', 'main');
-    await assertFails(updateDoc(wallet, { balance: 1000, resets: increment(2), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
-    await assertFails(updateDoc(wallet, { balance: 2000, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
-    await assertFails(updateDoc(wallet, { balance: 1000, updatedAt: serverTimestamp() }));
-    await assertFails(updateDoc(wallet, { balance: 1000, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp(), start: 5000 }));
-    await assertSucceeds(updateDoc(wallet, { balance: 1000, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+    const reload = (over = {}) => ({ balance: 500, start: 500, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp(), ...over });
+    await assertFails(updateDoc(wallet, reload({ resets: increment(2) })));
+    await assertFails(updateDoc(wallet, reload({ balance: 1000 })));
+    await assertFails(updateDoc(wallet, reload({ balance: 1000, start: 1000 })));
+    await assertFails(updateDoc(wallet, { balance: 500, updatedAt: serverTimestamp() }));
+    await assertFails(updateDoc(wallet, reload({ start: 5000 })));
+    await assertSucceeds(updateDoc(wallet, reload()));
     const after = (await getDoc(wallet)).data();
-    assertBalance({ data: () => after }, 1000);
+    assertBalance({ data: () => after }, 500);
+    if (after.start !== 500) throw new Error(`start ${after.start}`);
     if (after.resets !== 1) throw new Error(`resets ${after.resets}`);
     // (a bet in the new run says so)
     await assertFails(place(db, 'ann', 'b2', playBet({ run: 0 })));
@@ -314,6 +320,25 @@ describe('wallet rules', { skip }, () => {
     await assertFails(updateDoc(doc(db, 'users', 'ann', 'bets', 'b1'), { status: 'won', profit: 363.64 }));
     await assertFails(updateDoc(wallet, { balance: 5000, updatedAt: serverTimestamp() }));
     await assertFails(updateDoc(wallet, { balance: increment(500), lastBet: 'b1', updatedAt: serverTimestamp() }));
+  });
+
+  test('a wallet made at 1,000 before the change: its balance stands, its bets keep its start, a reload takes it to 500', async () => {
+    await env.withSecurityRulesDisabled((ctx) => setDoc(doc(ctx.firestore(), 'users', 'ann', 'wallet', 'main'), { balance: 1000, start: 1000, resets: 0, createdAt: Timestamp.now(), updatedAt: Timestamp.now() }));
+    const db = as('ann');
+    const wallet = doc(db, 'users', 'ann', 'wallet', 'main');
+    await assertSucceeds(place(db, 'ann', 'b1', playBet({ stake: 600 })));
+    assertBalance(await getDoc(wallet), 400);
+    // (a bet can't move the start)
+    const batch = writeBatch(db);
+    batch.set(doc(db, 'users', 'ann', 'bets', 'b2'), playBet());
+    batch.update(wallet, { balance: increment(-25), start: 500, lastBet: 'b2', updatedAt: serverTimestamp() });
+    await assertFails(batch.commit());
+    // (a reload: 500, not the 1,000 it began at)
+    await assertFails(updateDoc(wallet, { balance: 1000, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+    await assertFails(updateDoc(wallet, { balance: 500, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+    await assertSucceeds(updateDoc(wallet, { balance: 500, start: 500, resets: increment(1), resetAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+    const after = (await getDoc(wallet)).data();
+    if (after.balance !== 500 || after.start !== 500 || after.resets !== 1) throw new Error(JSON.stringify(after));
   });
 
   test('who sees the bets: the owner always; others by the open bets and history settings', async () => {

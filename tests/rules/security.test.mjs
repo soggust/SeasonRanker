@@ -82,7 +82,7 @@ describe('security review: play bets', { skip }, () => {
 
   test('an open bet can’t be deleted (a losing one dropped before the settler sees it would launder the record)', async () => {
     const db = as('mallory');
-    await assertSucceeds(setDoc(doc(db, 'users', 'mallory', 'wallet', 'main'), { balance: 1000, start: 1000, resets: 0, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+    await assertSucceeds(setDoc(doc(db, 'users', 'mallory', 'wallet', 'main'), { balance: 500, start: 500, resets: 0, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }));
     const batch = writeBatch(db);
     batch.set(doc(db, 'users', 'mallory', 'bets', 'b1'), bet());
     batch.update(doc(db, 'users', 'mallory', 'wallet', 'main'), { balance: increment(-100), lastBet: 'b1', updatedAt: serverTimestamp() });

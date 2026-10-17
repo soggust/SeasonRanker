@@ -16,8 +16,14 @@ export type { Tier };
 // record's tiles come from the settler's tally, not from these)
 export const SETTLED_PAGE = 50;
 
-// (play money: 1,000 units to start, and again on a reload)
-export const START = 1000;
+// (play money: 500 units to start, and again on a reload. Till 2026-10-17 it was 1,000: the wallets made before
+// then keep their balances and their start (the wallet's start: what its current run began at) till they reload,
+// and a past run whose first bet came before the change began at 1,000)
+export const START = 500;
+export const OLD_START = 1000;
+export const START_CHANGED = '2026-10-17T23:00:00Z';
+export const runBeganAt = (firstPlaced: string | null | undefined): number =>
+  firstPlaced && firstPlaced < START_CHANGED ? OLD_START : START;
 // (the slip's chips, in units; a custom stake is any number of half units up to the balance)
 export const CHIPS = [0.5, 1, 5, 10, 25];
 export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb'];

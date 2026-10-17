@@ -1,5 +1,5 @@
 import { ModelBet } from '../../bets/desk-model';
-import { PlayBet, START, TallyDoc, americanOf, decimalOf, etDay } from './wallet-math';
+import { PlayBet, START, TallyDoc, americanOf, decimalOf, etDay, runBeganAt } from './wallet-math';
 
 // The wallet page's own pictures and figures (docs/wallet-redesign/README.md), every one a client-side reading of
 // what the wallet already holds: the balance as stacks of chips, the runs (each bet's run), You vs the Bot over a
@@ -54,7 +54,8 @@ export function chipStacks(balance: number): { stacks: ChipStack[]; legend: Chip
 }
 
 // ---------------------------------------------------------------------------
-// The runs: each bet's run, the balance across it as 1,000 plus the run's settled profit, bet by bet in the order
+// The runs: each bet's run, the balance across it as its start (the wallet's start for the current run; an
+// older one 1,000 if its first bet came before 2026-10-17, else 500) plus the run's settled profit, bet by bet in the order
 // settled (the dip while a stake's out isn't drawn). Every run only once the whole history's loaded; till then the
 // current one, and its peak only once its bets are all here (an older run's bet among the loaded ones says so)
 // ---------------------------------------------------------------------------
@@ -63,6 +64,8 @@ export interface RunCard {
   from: string | null;
   to: string | null;
   current: boolean;
+  // (what the run began at)
+  start: number;
   // (null: the run's history isn't all loaded)
   peak: number | null;
   end: number;
@@ -79,7 +82,7 @@ export function sparkPath(values: number[]): string {
   return values.map((v, i) => `${i ? 'L' : 'M'}${((i / (values.length - 1)) * 100).toFixed(1)} ${(28 - ((v - mn) / span) * 26).toFixed(1)}`).join(' ');
 }
 
-export function runCards(settled: PlayBet[], current: number, balance: number, full: boolean): RunCard[] {
+export function runCards(settled: PlayBet[], current: number, balance: number, full: boolean, currentStart = START): RunCard[] {
   const byRun = new Map<number, PlayBet[]>();
   for (const b of settled) {
     if (b.status === 'open') continue;
@@ -93,21 +96,23 @@ export function runCards(settled: PlayBet[], current: number, balance: number, f
   const runs = full ? [...new Set([...byRun.keys(), current])].sort((a, b) => a - b) : [current];
   return runs.map((n) => {
     const list = (byRun.get(n) ?? []).slice().sort((a, b) => (a.settledAt ?? a.start).localeCompare(b.settledAt ?? b.start));
-    const values = [START];
-    let sum = START;
+    const isCurrent = n === current;
+    const placed = list.map((b) => b.placedAt).sort();
+    const start = isCurrent ? currentStart : runBeganAt(placed[0]);
+    const values = [start];
+    let sum = start;
     for (const b of list) {
       sum = round2(sum + (b.profit ?? 0));
       values.push(sum);
     }
-    const isCurrent = n === current;
     const complete = isCurrent ? currentComplete : true;
     const end = isCurrent ? balance : sum;
-    const placed = list.map((b) => b.placedAt).sort();
     return {
       n: n + 1,
       from: placed[0] ?? null,
       to: isCurrent ? null : (list.map((b) => b.settledAt ?? b.start).sort().pop() ?? null),
       current: isCurrent,
+      start,
       peak: complete ? Math.max(...values, isCurrent ? balance : -Infinity) : null,
       end,
       bust: !isCurrent && end <= 0,
@@ -291,7 +296,7 @@ export function trophies(bets: PlayBet[], tally: TallyDoc | null, runs: RunCard[
   const longshots = won.filter((b) => (b.kind === 'parlay' ? (b.paidOdds ?? b.odds) : b.odds) >= 300);
   const tails = won.filter((b) => b.botPick && b.kind !== 'parlay');
   const parlays = won.filter((b) => b.kind === 'parlay' && (b.legs ?? []).filter((l) => l.status === 'won').length >= 3);
-  // (a phoenix: a run busted, the one after it finished above 1,000)
+  // (a phoenix: a run busted, the one after it finished above where it began)
   let phoenix = 0;
   let phoenixWhen: string | null = null;
   if (runs) {
@@ -299,7 +304,7 @@ export function trophies(bets: PlayBet[], tally: TallyDoc | null, runs: RunCard[
       if (!runs[i].bust) continue;
       phoenix = Math.max(phoenix, 1);
       const next = runs[i + 1];
-      if (next && !next.current && next.end > START) {
+      if (next && !next.current && next.end > next.start) {
         phoenix = 2;
         phoenixWhen = next.to;
         break;

@@ -11,11 +11,13 @@ export type { LifetimeTally, TallyDoc } from './wallet-math';
 const OPEN_MAX = 200;
 const SETTLED_STATUSES = ['won', 'lost', 'push', 'void'];
 
-// The wallet (users/{uid}/wallet/main): play money, 1,000 units to start
+// The wallet (users/{uid}/wallet/main): play money, 500 units to start
 export interface Wallet {
   balance: number;
+  // (what the current run began at: 500, set again by a reload; 1,000 for a wallet made before 2026-10-17 that
+  // hasn't reloaded since)
   start: number;
-  // (how many times it's been reloaded to 1,000: the run a bet belongs to)
+  // (how many times it's been reloaded: the run a bet belongs to)
   resets: number;
   lastBet?: string;
 }
@@ -167,6 +169,7 @@ export class WalletService {
   // the history's cleared): the wallet's record, profit, ROI and chart, one read however long the history)
   readonly tally = signal<TallyDoc | null>(null);
   readonly balance = computed(() => this.wallet()?.balance ?? START);
+  readonly runStart = computed(() => this.wallet()?.start ?? START);
 
   // The slip
   readonly slip = signal<Selection[]>([]);
@@ -310,7 +313,7 @@ export class WalletService {
   // (each loaded settled bet's document, to page on from)
   private readonly settledCursors = new Map<string, QueryDocumentSnapshot>();
 
-  // A new player's wallet: 1,000 units (once; the rules allow nothing else)
+  // A new player's wallet: 500 units (once; the rules allow nothing else)
   async ensureWallet(): Promise<void> {
     const uid = this.uid;
     if (!uid) throw signedOut();
@@ -469,7 +472,7 @@ export class WalletService {
   // ---------------------------------------------------------------------------
   // The wallet
   // ---------------------------------------------------------------------------
-  // A reload: back to 1,000, a new run (nothing voided: the history stays, open bets still settle and count
+  // A reload: back to 500 (the start with it), a new run (nothing voided: the history stays, open bets still settle and count
   // in the record, their payouts going to the run they were placed in)
   async reload(): Promise<void> {
     const uid = this.uid;
@@ -478,6 +481,7 @@ export class WalletService {
     const [firestore, f] = await firestoreSdk();
     await f.updateDoc(f.doc(firestore, 'users', uid, 'wallet', 'main'), {
       balance: START,
+      start: START,
       resets: f.increment(1),
       resetAt: f.serverTimestamp(),
       updatedAt: f.serverTimestamp(),

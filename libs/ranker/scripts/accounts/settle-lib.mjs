@@ -27,7 +27,7 @@ import { outcomeOf, settle as settleGame, voidOf } from '../model/desk.mjs';
 import { PROP_WAIT, settleProp } from '../model/props.mjs';
 import { boutVoid, nameKey, settleBout } from '../model/mma-desk.mjs';
 
-export const START = 1000;
+export const START = 500;
 export const DAY = 864e5;
 export const TOLERANCE = 10;
 export const WINDOW = 3 * 36e5;

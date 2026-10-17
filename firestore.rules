@@ -302,9 +302,11 @@ service cloud.firestore {
 
     // ---- wallet (phase 2) ----
     // Play money. users/{uid}/wallet/main { balance, start, resets, createdAt, updatedAt, lastBet?, resetAt? }:
-    // made once at 1,000; after that its owner may only (a) take a new bet's stake out, in the same batch as
-    // the bet (lastBet names it; the bet's own rule checks the other half), or (b) reload it to 1,000, one more
-    // reset. Never under 0. Settling (winnings in, results on the bets) is the Admin SDK's: settle.mjs.
+    // made once at 500; after that its owner may only (a) take a new bet's stake out, in the same batch as
+    // the bet (lastBet names it; the bet's own rule checks the other half), or (b) reload it to 500, one more
+    // reset. Never under 0. Settling (winnings in, results on the bets) is the Admin SDK's: settle.mjs. start is
+    // what the current run began at: 500, set again by a reload (a wallet made before 2026-10-17 began at 1,000;
+    // its balance stands, its start 1,000 till it reloads).
     function walletPath(uid) {
       return /databases/$(database)/documents/users/$(uid)/wallet/main;
     }
@@ -322,6 +324,7 @@ service cloud.firestore {
     function placingBet(uid) {
       let next = request.resource.data;
       return next.resets == resource.data.resets
+        && next.start == resource.data.start
         && next.get('resetAt', null) == resource.data.get('resetAt', null)
         && next.lastBet is string
         && next.lastBet != resource.data.get('lastBet', '')
@@ -331,10 +334,11 @@ service cloud.firestore {
         && next.balance >= 0;
     }
 
-    // (a reload: back to 1,000 and one more reset; the bet binding left as it was)
+    // (a reload: back to 500, the start with it, and one more reset; the bet binding left as it was)
     function reloading() {
       let next = request.resource.data;
-      return next.balance == 1000
+      return next.balance == 500
+        && next.start == 500
         && next.resets == resource.data.resets + 1
         && next.resetAt == request.time
         && next.get('lastBet', null) == resource.data.get('lastBet', null);
@@ -347,20 +351,19 @@ service cloud.firestore {
         && walletKeys(request.resource.data)
         && !('lastBet' in request.resource.data)
         && !('resetAt' in request.resource.data)
-        && request.resource.data.balance == 1000
-        && request.resource.data.start == 1000
+        && request.resource.data.balance == 500
+        && request.resource.data.start == 500
         && request.resource.data.resets == 0
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
 
       allow update: if isOwner(uid) && doc == 'main'
         && walletKeys(request.resource.data)
-        && request.resource.data.start == resource.data.start
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.updatedAt == request.time
         && (placingBet(uid) || reloading());
 
-      // (with the account; a wallet made again starts at 1,000, run 1)
+      // (with the account; a wallet made again starts at 500, run 1)
       allow delete: if isOwner(uid);
     }
 
