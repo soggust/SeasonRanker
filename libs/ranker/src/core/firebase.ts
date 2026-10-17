@@ -62,12 +62,21 @@ let appCheckPromise: Promise<void> | null = null;
 // too: reCAPTCHA can't vouch for localhost, so each of its requests counted as "invalid" in the console's
 // metrics and hid how real visitors fare. Without a token they show as unverified, apart from the invalid
 const LIVE_HOSTS = ['www.seasonranker.com', 'seasonranker.com', 'qbranker2026.web.app', 'qbranker2026.firebaseapp.com'];
+function devDebugToken(): string | null {
+  try {
+    return localStorage.getItem('appCheckDebugToken') || null;
+  } catch {
+    return null;
+  }
+}
 function appCheck(firebase: FirebaseApp): Promise<void> {
   if (!APP_CHECK_SITE_KEY || usingEmulators()) return Promise.resolve();
   if (!isDevMode() && !LIVE_HOSTS.includes(location.hostname)) return Promise.resolve();
   appCheckPromise ??= import('firebase/app-check')
     .then((c) => {
-      if (isDevMode()) (self as { FIREBASE_APPCHECK_DEBUG_TOKEN?: boolean | string }).FIREBASE_APPCHECK_DEBUG_TOKEN ??= true;
+      // (development: the debug token registered in the console, kept in this browser's localStorage under
+      // appCheckDebugToken and never in the code; without one the SDK makes one and prints it to register)
+      if (isDevMode()) (self as { FIREBASE_APPCHECK_DEBUG_TOKEN?: boolean | string }).FIREBASE_APPCHECK_DEBUG_TOKEN ??= devDebugToken() ?? true;
       const provider =
         APP_CHECK_PROVIDER === 'enterprise'
           ? new c.ReCaptchaEnterpriseProvider(APP_CHECK_SITE_KEY)
