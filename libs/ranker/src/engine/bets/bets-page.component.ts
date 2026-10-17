@@ -819,8 +819,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const fades = off.filter(({ r }) => this.grade(r) === 'fade').length;
     return { passes: off.length - fades, fades };
   }
-  // (the bands folded shut, and whether the off-the-board rows are unfolded)
-  readonly closedBands = new Set<string>();
+  // (the bands folded shut (the CHECKs start shut: an admin's held bets are a long list, its count on the
+  // band's badge), and whether the off-the-board rows are unfolded)
+  readonly closedBands = new Set<string>(['check']);
   offBoardOpen = false;
   bandOpen(band: string): boolean {
     return !this.closedBands.has(band);

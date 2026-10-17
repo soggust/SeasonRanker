@@ -357,6 +357,10 @@
               <span class="band-chev" aria-hidden="true"><svg class="chev" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
               <svg class="band-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="BAND_ICONS[s.tier]" /></svg>
               <span class="band-name">{{ s.name }}</span>
+              <!-- (a band folded shut says how many it holds, in a small badge in its colour) -->
+              @if (!bandOpen(s.band)) {
+                <span class="band-count" aria-hidden="true">{{ s.rows.length }}</span>
+              }
               <span class="visually-hidden">: {{ s.rows.length }} {{ s.rows.length === 1 ? 'pick' : 'picks' }}</span>
               <span class="band-space"></span>
               @if (bandRecord(s.band); as rec) {

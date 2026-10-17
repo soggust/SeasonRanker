@@ -165,20 +165,35 @@ $page-gutter: 16px;
 }
 
 // (the About button: a round felt chip, the page's About)
+// (the About button: the bankroll card's and the game pill's black-to-gold face with the gold edge, round, the
+// "i" in gold; hover as theirs)
 .bets-info {
-  @include chip.felt-control;
+  @include chip.player-card(v.$radius-round);
   align-items: center;
-  border-radius: v.$radius-round;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  color: chip.$gold-led;
   cursor: pointer;
   display: inline-flex;
   flex: none;
-  height: 30px;
+  height: 44px;
   justify-content: center;
   padding: 0;
-  width: 30px;
+  transition:
+    filter v.$t-hover ease,
+    transform v.$t-hover ease;
+  width: 44px;
+
+  &:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
 
   .mat-icon {
-    @include v.icon-size(18px);
+    @include v.icon-size(20px);
   }
 }
 
@@ -712,6 +727,23 @@ $page-gutter: 16px;
     letter-spacing: 3px;
     text-shadow: 0 0 8px var(--band-glow);
     text-transform: uppercase;
+  }
+
+  // (the folded band's count: a small pill in the band's colour beside its name)
+  .band-count {
+    background: color-mix(in srgb, var(--band-color) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--band-color) 55%, transparent);
+    border-radius: v.$radius-pill;
+    color: var(--band-color);
+    font-family: v.$font-heading;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+    margin-left: v.$space-8;
+    min-width: 22px;
+    padding: 3px 6px;
+    text-align: center;
   }
 
   .band-space {
