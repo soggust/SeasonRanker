@@ -7,6 +7,8 @@
 :root {
   // This sport's chalkboard plays (the grid, card and About backgrounds) and #1 trophy
   --tex-chalk-plays: url("../assets/textures/chalk-plays.svg");
+  // The field's paint under the turf's light, zoomed right in: the sideline, a yard line, its ticks (faint, in the SVG)
+  --tex-field-paint: url("../assets/textures/field-paint.svg");
   --trophy-mask: url("../assets/lombardi.svg");
 }
 
@@ -17,8 +19,13 @@ body {
   background-color: #3d7a24;
   background-image:
     kit.vignette(),
+    var(--tex-field-paint),
     url("/nfl/assets/textures/turf.webp");
-  background-size: cover, 512px;
+  // (the paint at one fixed zoom from the top right, so it reads the same on any screen: the sideline down the
+  // right edge, a yard line across, pieces of a number at the left; a phone sees the sideline end of it)
+  background-position: center, right top, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: cover, 1440px auto, 512px;
 }
 
 // White on leather, as readable as it gets: a firm drop shadow plus a soft dark halo
