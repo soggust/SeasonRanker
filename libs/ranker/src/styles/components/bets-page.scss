@@ -86,7 +86,7 @@ $circle-gap: 12px;
   border-radius: 11px 11px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: space-between;
   margin: -18px -20px 14px;
   padding: 18px 20px 14px;
@@ -99,7 +99,7 @@ $circle-gap: 12px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: flex-end;
   margin: 4px 0;
 }
@@ -109,21 +109,21 @@ $circle-gap: 12px;
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
 }
 
 .kind-chip {
   @include chip.chip;
 
   .kind-label {
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 900;
     letter-spacing: 0.3px;
     line-height: 1;
   }
 
   .kind-count {
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 800;
     line-height: 1;
     margin-top: 2px;
@@ -140,7 +140,7 @@ $circle-gap: 12px;
 
 // The chips' key: an info icon, its list on hover or focus (a tap on a phone)
 .kinds-key {
-  color: rgba(255, 255, 255, 0.5);
+  color: v.$text-faint;
   cursor: help;
   display: inline-flex;
   position: relative;
@@ -166,7 +166,7 @@ $circle-gap: 12px;
   @include v.scoreboard-panel(8px);
   display: none;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   // (it opens leftward: the key sits at the panel's right edge)
   padding: 10px 12px;
   position: absolute;
@@ -176,8 +176,8 @@ $circle-gap: 12px;
   z-index: 5;
 
   span {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 12px;
+    color: v.$text-strong;
+    font-size: v.$fs-12;
     font-weight: 600;
   }
 
@@ -185,7 +185,7 @@ $circle-gap: 12px;
     border-radius: v.$radius-sm;
     color: #fff;
     display: inline-block;
-    font-size: 10.5px;
+    font-size: v.$fs-11;
     font-weight: 900;
     margin-right: 6px;
     min-width: 34px;
@@ -202,15 +202,15 @@ $circle-gap: 12px;
 }
 
 .bets-updated {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   font-weight: 600;
   padding-left: 8px;
 }
 
 // ...and under it, the bankroll: a link to the wallet, its amount lit
 .bets-bankroll {
-  color: rgba(255, 255, 255, 0.7);
+  color: v.$text-dim;
   display: block;
   margin-top: 4px;
   text-decoration: none;
@@ -246,7 +246,7 @@ $circle-gap: 12px;
 .bets-game-face {
   align-items: center;
   display: inline-flex;
-  gap: 6px;
+  gap: v.$space-6;
 
   mat-icon {
     @include v.icon-size(16px);
@@ -254,14 +254,14 @@ $circle-gap: 12px;
 }
 
 .bets-note {
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   margin: 18px 0 4px;
 }
 
 .bets-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   list-style: none;
   margin: 0 -8px 0 0;
   min-height: 0;
@@ -356,7 +356,7 @@ $circle-gap: 12px;
     filter: brightness(1.12);
 
     .bet-chevron {
-      color: rgba(255, 255, 255, 0.85);
+      color: v.$text-strong;
     }
   }
 
@@ -365,7 +365,7 @@ $circle-gap: 12px;
     filter: brightness(1.12);
 
     .bet-chevron {
-      color: rgba(255, 255, 255, 0.85);
+      color: v.$text-strong;
     }
   }
 }
@@ -390,7 +390,7 @@ $circle-gap: 12px;
   border: 2px solid transparent;
   bottom: 0;
   cursor: pointer;
-  font-size: 15px;
+  font-size: v.$fs-15;
   font-weight: 900;
   height: 32px;
   left: $row-pad-left + $chevron-col + $row-gap;
@@ -419,7 +419,7 @@ $circle-gap: 12px;
   &.check {
     color: chip.$check-light;
     font-family: v.$font-base;
-    font-size: 19px;
+    font-size: v.$fs-20;
     padding-top: 0;
     text-shadow: 0 0 8px rgba(chip.$check-light, 0.65);
   }
@@ -469,24 +469,24 @@ $circle-gap: 12px;
 
   small {
     margin-top: 0.5em;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 600;
     @include v.ellipsis;
   }
 }
 
 .bet-game b {
-  font-size: 13px;
+  font-size: v.$fs-13;
 }
 
 // (a pick already bet, still open: its stake in green after the price)
 .bet-placed {
   align-items: center;
-  color: v.$good-mint;
+  color: v.$good-bright;
   display: inline-flex;
   font-weight: 800;
-  gap: 3px;
+  gap: v.$space-4;
   margin-left: 8px;
   vertical-align: middle;
 
@@ -511,7 +511,7 @@ $circle-gap: 12px;
 .bet-game .bet-matchup {
   align-items: center;
   display: flex;
-  gap: 4px;
+  gap: v.$space-4;
 
   img {
     height: 16px;
@@ -527,8 +527,8 @@ $circle-gap: 12px;
 // under it: the kickoff weather and where it's played, the wind in amber when it could matter
 // (when a game's played, under its teams)
 .bet-game .bet-when {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 700;
 }
 
@@ -537,7 +537,7 @@ $circle-gap: 12px;
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 16px;
+  gap: v.$space-6 v.$space-16;
   justify-content: space-between;
   margin-top: 8px;
 }
@@ -547,9 +547,9 @@ $circle-gap: 12px;
   // (the gray of a low chance's "% to win", so it reads on the dark; amber when windy)
   color: color-mix(in srgb, #{v.$neutral} 75%, #fff);
   display: flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 600;
-  gap: 4px;
+  gap: v.$space-4;
 
   .mat-icon {
     @include v.icon-size(14px);
@@ -561,7 +561,7 @@ $circle-gap: 12px;
 }
 
 .bet-chevron {
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   @include v.icon-size(20px);
 }
 
@@ -573,8 +573,8 @@ $circle-gap: 12px;
   padding: 14px 20px 16px;
 
   p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 14px;
+    color: v.$text-strong;
+    font-size: v.$fs-14;
     line-height: 1.6;
     margin: 0;
   }
@@ -582,21 +582,21 @@ $circle-gap: 12px;
   // (Claude's analysis: its headline above the reason, and whose it is under the risk)
   .bet-headline {
     color: #fff;
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 700;
     margin-bottom: 6px;
   }
 
   .bet-caption {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     margin-top: 8px;
   }
 
   // (a desk pick's risk, its devil's advocate: the most likely way it loses, labeled in orange)
   .bet-risk {
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 13px;
+    color: v.$text-soft;
+    font-size: v.$fs-13;
     margin-top: 10px;
 
     b {
@@ -606,18 +606,18 @@ $circle-gap: 12px;
   }
 
   .bet-meta {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 600;
   }
 
   // (a CHECK's why it wasn't bet: its "?" in a lavender disc, the words beside it)
   .bet-check-why {
     align-items: flex-start;
-    color: rgba(255, 255, 255, 0.78);
+    color: v.$text-soft;
     display: flex;
-    font-size: 13px;
-    gap: 8px;
+    font-size: v.$fs-13;
+    gap: v.$space-8;
     margin-top: 10px;
 
     b {
@@ -638,7 +638,7 @@ $circle-gap: 12px;
     border-radius: v.$radius-round;
     display: inline-flex;
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: v.$fs-12;
     height: 18px;
     justify-content: center;
     line-height: 1;
@@ -662,7 +662,7 @@ $circle-gap: 12px;
 @include v.down(ai-narrow) {
   .bet-row {
     grid-template-columns: $chevron-col 42px 50px minmax(0, 1fr);
-    row-gap: 6px;
+    row-gap: v.$space-6;
 
     > .bet-chevron,
     > .bet-rank-slot,
@@ -676,7 +676,7 @@ $circle-gap: 12px;
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 2px 8px;
+    gap: v.$space-2 v.$space-8;
     grid-column: 4;
     text-align: left;
 
@@ -933,7 +933,7 @@ $hub-y: 154px;
   display: flex;
   flex: none;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
   justify-content: center;
   max-width: 100%;
   margin-bottom: 14px;
@@ -942,10 +942,10 @@ $hub-y: 154px;
   button {
     @include chip.felt-control;
     border-radius: v.$radius-pill;
-    color: rgba(255, 255, 255, 0.8);
+    color: v.$text-soft;
     cursor: pointer;
     font: inherit;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 800;
     letter-spacing: 0.5px;
     padding: 6px 16px;
@@ -1084,7 +1084,7 @@ $hub-y: 154px;
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: v.$radius-sm;
     color: v.$grey-light;
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.06em;
     padding: 0 5px;
@@ -1095,13 +1095,13 @@ $hub-y: 154px;
   .why-parts {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: v.$space-4;
     margin-top: 8px;
 
     .why-part {
       align-items: center;
       display: grid;
-      gap: 8px;
+      gap: v.$space-8;
       grid-template-columns: 48px 1fr auto;
     }
 
@@ -1152,7 +1152,7 @@ $hub-y: 154px;
 
     .why-research-head {
       display: flex;
-      gap: 8px;
+      gap: v.$space-8;
       justify-content: space-between;
 
       span {
@@ -1192,7 +1192,7 @@ $hub-y: 154px;
     .research-sources {
       display: flex;
       flex-wrap: wrap;
-      gap: 2px 10px;
+      gap: v.$space-2 v.$space-10;
 
       a {
         color: #9ecbff;

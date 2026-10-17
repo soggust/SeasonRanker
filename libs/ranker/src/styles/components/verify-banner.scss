@@ -14,8 +14,8 @@
   display: flex;
   flex-wrap: wrap;
   font-family: v.$font-base;
-  font-size: 13.5px;
-  gap: 8px 14px;
+  font-size: v.$fs-14;
+  gap: v.$space-8 v.$space-14;
   justify-content: space-between;
   margin: 0 0 16px;
   padding: 10px 14px;
@@ -29,11 +29,11 @@
 .verify-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 .verify-note {
   color: kit.app(text-muted);
   flex-basis: 100%;
-  font-size: 12.5px;
+  font-size: v.$fs-13;
 }

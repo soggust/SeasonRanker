@@ -13,14 +13,14 @@
   border: 1px solid color-mix(in srgb, #{chip.$check} 45%, transparent);
   border-radius: v.$radius-xl;
   background: linear-gradient(180deg, color-mix(in srgb, #{chip.$check} 12%, transparent), color-mix(in srgb, #{chip.$check} 4%, transparent));
-  color: rgba(255, 255, 255, 0.9);
+  color: v.$text-strong;
   font-family: v.$font-base;
-  font-size: 13px;
+  font-size: v.$fs-13;
   padding: 10px 12px;
 }
 
 .note-quiet {
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   margin: 0;
 }
 
@@ -28,7 +28,7 @@
 .note-saved {
   align-items: flex-start;
   display: flex;
-  gap: 8px;
+  gap: v.$space-8;
   line-height: 1.5;
   margin: 0;
 
@@ -55,7 +55,7 @@
   color: chip.$check-light;
   display: flex;
   font-weight: 800;
-  gap: 6px;
+  gap: v.$space-6;
   letter-spacing: 0.02em;
   margin: 0 0 8px;
 
@@ -67,18 +67,18 @@
 .note-fields {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 10px;
+  gap: v.$space-8 v.$space-10;
 }
 
 .note-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: v.$space-4;
   min-width: 0;
 
   > span {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -92,7 +92,7 @@
 
   select {
     @include chip.felt-dropdown;
-    font-size: 12.5px;
+    font-size: v.$fs-13;
     max-width: 100%;
     min-width: 0;
     padding: 8px 32px 8px 14px;
@@ -111,7 +111,7 @@
   padding: 8px 10px;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: v.$text-faint;
   }
 
   // (focused: the edge white, not the page's gold on the felt's gold seam)
@@ -122,7 +122,7 @@
 }
 
 .note-field input {
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   width: 11em;
 }
 
@@ -138,13 +138,13 @@
 .note-actions {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: v.$space-12;
   justify-content: flex-end;
   margin-top: 8px;
 }
 
 .note-problem {
-  color: v.$bad-light;
+  color: v.$bad-soft;
   font-weight: 700;
   margin: 0 auto 0 0;
 }
@@ -154,7 +154,7 @@
   border-radius: v.$radius-pill;
   cursor: pointer;
   font-family: v.$font-base;
-  font-size: 12.5px;
+  font-size: v.$fs-13;
   font-weight: 800;
   padding: 7px 16px;
 
@@ -168,7 +168,7 @@
 @mixin note-quiet-button {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   cursor: pointer;
   font: inherit;
   font-weight: 800;
@@ -185,8 +185,8 @@
   @include note-quiet-button;
   align-items: center;
   display: inline-flex;
-  font-size: 12px;
-  gap: 4px;
+  font-size: v.$fs-12;
+  gap: v.$space-4;
   padding: 2px 0;
 
   mat-icon {

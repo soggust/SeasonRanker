@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   font-family: v.$font-base;
-  gap: 18px;
+  gap: v.$space-20;
   // (the sheet brings the top and side room: app.component's shell, the only place a page shows)
   padding: 0 0 28px;
 }
@@ -40,13 +40,13 @@
   align-items: center;
   @include v.scoreboard-panel(12px, kit.$panel-shadow);
   display: flex;
-  gap: 16px;
+  gap: v.$space-16;
   padding: 16px 20px;
 
   .hero-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: v.$space-2;
     min-width: 0;
   }
 
@@ -55,7 +55,7 @@
     color: #fff;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: v.$space-10;
     @include v.headline(22px);
     margin: 0;
     overflow-wrap: anywhere;
@@ -63,7 +63,7 @@
 
   .hero-user {
     color: var(--scoreboard-led);
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 700;
     text-shadow: var(--scoreboard-glow);
   }
@@ -137,15 +137,15 @@ card-panel.account-panel {
 }
 
 .panel-lede {
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 13px;
+  color: v.$text-dim;
+  font-size: v.$fs-13;
   line-height: 1.45;
   margin: 0 0 14px;
 }
 
 .form-error {
-  color: v.$bad-pale;
-  font-size: 13px;
+  color: v.$bad-soft;
+  font-size: v.$fs-13;
   margin: 0;
 }
 
@@ -154,7 +154,7 @@ card-panel.account-panel {
 // ---------------------------------------------------------------------------
 .profile-grid {
   display: grid;
-  gap: 24px;
+  gap: v.$space-24;
   grid-template-columns: 196px 1fr;
 }
 
@@ -162,7 +162,7 @@ card-panel.account-panel {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: v.$space-12;
   text-align: center;
 }
 
@@ -170,19 +170,19 @@ card-panel.account-panel {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   width: 100%;
 }
 
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: v.$space-16;
   min-width: 0;
 }
 
 .count {
-  color: rgba(255, 255, 255, 0.45);
+  color: v.$text-faint;
   font-weight: 700;
   letter-spacing: 0.5px;
 
@@ -194,7 +194,7 @@ card-panel.account-panel {
 .logo-picker {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: grid;
-  gap: 8px;
+  gap: v.$space-8;
   grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
   max-height: 260px;
   overflow-y: auto;
@@ -205,7 +205,7 @@ card-panel.account-panel {
 .logo-sports {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: v.$space-6;
   grid-column: 1 / -1;
   margin-bottom: 4px;
 
@@ -215,8 +215,8 @@ card-panel.account-panel {
 }
 
 .logo-note {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   grid-column: 1 / -1;
   margin: 0;
 }
@@ -265,7 +265,7 @@ card-panel.account-panel {
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 16px;
+  gap: v.$space-16;
   justify-content: space-between;
   padding: 12px 0;
 
@@ -278,26 +278,26 @@ card-panel.account-panel {
 .privacy-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$space-2;
   min-width: 0;
 }
 
 .privacy-label {
   color: #fff;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 800;
 }
 
 .privacy-hint {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
 }
 
 .privacy-choices {
   align-items: center;
   display: flex;
   flex: 0 0 auto;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 .privacy-status {
@@ -321,7 +321,7 @@ card-panel.account-panel {
   border-top: 1px solid var(--app-line, rgba(255, 255, 255, 0.08));
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   margin-top: 4px;
   padding-top: 14px;
   width: 100%;
@@ -335,7 +335,7 @@ card-panel.account-panel {
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: v.$space-6;
   width: 100%;
 }
 
@@ -347,9 +347,9 @@ card-panel.account-panel {
   box-sizing: border-box;
   color: #fff;
   display: inline-flex;
-  font-size: 11.5px;
+  font-size: v.$fs-12;
   font-weight: 800;
-  gap: 6px;
+  gap: v.$space-6;
   justify-content: center;
   letter-spacing: 1px;
   min-height: 32px;
@@ -365,12 +365,12 @@ card-panel.account-panel {
 .password-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: v.$space-10;
   text-align: left;
   width: 100%;
 
   input[type="password"] {
-    font-size: 14px;
+    font-size: v.$fs-14;
     padding: 8px 10px;
   }
 }
@@ -378,14 +378,14 @@ card-panel.account-panel {
 .password-actions {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: v.$space-12;
   justify-content: flex-end;
 }
 
 // (the email: shown, not edited here)
 .static-value {
   color: #fff;
-  font-size: 15px;
+  font-size: v.$fs-15;
   overflow-wrap: anywhere;
   padding: 2px 0;
 }
@@ -397,7 +397,7 @@ card-panel.account-panel {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: v.$space-14;
   justify-content: space-between;
 }
 
@@ -410,7 +410,7 @@ card-panel.account-panel {
 .foot-save {
   align-items: center;
   display: flex;
-  gap: 14px;
+  gap: v.$space-14;
   margin-left: auto;
 }
 
@@ -419,16 +419,16 @@ card-panel.account-panel {
   border-left: 3px solid v.$bad;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: v.$space-14;
   max-width: 560px;
 
   h3 {
     align-items: center;
     color: v.$bad;
     display: flex;
-    font-size: 15px;
+    font-size: v.$fs-15;
     font-weight: 800;
-    gap: 8px;
+    gap: v.$space-8;
     letter-spacing: 1px;
     margin: 0;
     text-transform: uppercase;
@@ -439,8 +439,8 @@ card-panel.account-panel {
   }
 
   p {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 13px;
+    color: v.$text-soft;
+    font-size: v.$fs-13;
     line-height: 1.45;
     margin: 0;
   }
@@ -457,8 +457,8 @@ card-panel.account-panel {
   align-items: center;
   color: var(--app-text-muted, rgba(255, 255, 255, 0.5));
   display: flex;
-  font-size: 12px;
-  gap: 10px;
+  font-size: v.$fs-12;
+  gap: v.$space-10;
   justify-content: center;
   padding-top: 6px;
 
@@ -492,7 +492,7 @@ card-panel.account-panel {
   }
 
   .account-page {
-    gap: 14px;
+    gap: v.$space-14;
     padding: 0 0 40px;
   }
 
@@ -513,7 +513,7 @@ card-panel.account-panel {
   .privacy-row {
     align-items: flex-start;
     flex-direction: column;
-    gap: 8px;
+    gap: v.$space-8;
   }
 
   .panel-pad {

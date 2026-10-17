@@ -61,7 +61,7 @@ section footer {
   color: #fff;
   display: flex;
   font-weight: 800;
-  gap: 10px;
+  gap: v.$space-10;
   justify-content: flex-start;
   padding-top: 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -113,7 +113,7 @@ section footer {
   .mat-mdc-select.season-select {
     @include bar-panel;
     font-family: v.$font-base;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 500;
     letter-spacing: 1.5px;
     padding: 0 1em;
@@ -160,7 +160,7 @@ section.rankings-wrapper > footer {
 
   .compare-count {
     @include v.led-tile($radius: 9px, $color: var(--scoreboard-led), $text-shadow: var(--scoreboard-glow));
-    font-size: 9px;
+    font-size: v.$fs-10;
     height: 17px;
     min-width: 17px;
     padding: 1px 4px 0;
@@ -187,7 +187,7 @@ section.rankings-wrapper > footer {
   .find-bar {
     @include bar-panel;
     flex: 0 1 320px;
-    gap: 6px;
+    gap: v.$space-6;
     min-width: 0;
     padding: 0 4px 0 10px;
     position: relative;
@@ -213,7 +213,7 @@ section.rankings-wrapper > footer {
     color: #fff;
     flex: 1 1 auto;
     font-family: v.$font-base;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 700;
     margin-left: 2px;
     min-width: 0;
@@ -221,7 +221,7 @@ section.rankings-wrapper > footer {
     padding: 2px 0 1px;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.45);
+      color: v.$text-faint;
     }
 
     // (the browser's own clear X: the bar has its own)
@@ -235,7 +235,7 @@ section.rankings-wrapper > footer {
     background: none;
     border: none;
     border-radius: v.$radius-md;
-    color: rgba(255, 255, 255, 0.7);
+    color: v.$text-dim;
     display: inline-flex;
     flex: 0 0 auto;
     height: 32px;
@@ -275,8 +275,8 @@ section.rankings-wrapper > footer {
   }
 
   .find-none {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 700;
     padding: 12px 14px;
   }
@@ -338,14 +338,14 @@ section.rankings-wrapper > footer {
 
     b {
       color: #fff;
-      font-size: 15px;
+      font-size: v.$fs-15;
       font-weight: 800;
       @include v.ellipsis;
     }
 
     small {
-      color: rgba(255, 255, 255, 0.65);
-      font-size: 12px;
+      color: v.$text-dim;
+      font-size: v.$fs-12;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -579,7 +579,7 @@ section ul li.player.header-row:hover {
 section ul li.player {
   .drag-indicator {
     min-width: 1em;
-    opacity: 0.3;
+    opacity: 0.45;
     padding: 0 0.5em;
     transform: scale(0.75);
 
@@ -629,7 +629,7 @@ section ul li.player {
 
     &:has(.player-awards) {
       flex-wrap: wrap;
-      row-gap: 4px;
+      row-gap: v.$space-4;
     }
   }
 
@@ -648,7 +648,7 @@ section ul li.player {
 
   // (stats catching up with the record: quiet, not alarming)
   .stats-behind-icon {
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
 
     &:hover {
       color: #fff;
@@ -842,7 +842,7 @@ section ul li.player:not(.header-row) {
   .player-name strong {
     color: #fff;
     font-family: v.$font-hand;
-    font-size: 15px;
+    font-size: v.$fs-15;
     font-synthesis: none;
     font-weight: 400;
     letter-spacing: normal;
@@ -928,7 +928,7 @@ section ul li.player {
 
   .collapsed-more {
     color: var(--group-color);
-    font-size: 14px;
+    font-size: v.$fs-14;
     font-weight: 700;
     line-height: 1;
     pointer-events: none;
@@ -992,7 +992,7 @@ section ul li.player {
         border-radius: v.$radius-xxs;
         color: #111;
         font-family: v.$font-base;
-        font-size: 8.5px;
+        font-size: v.$fs-10;
         font-weight: 900;
         height: 13px;
         justify-content: center;
@@ -1234,7 +1234,7 @@ section ul li.player.header-row:hover {
     color: #fff;
     cursor: help;
     font-family: v.$font-base;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 700;
     letter-spacing: 0.25px;
     margin: 0;
@@ -1351,7 +1351,7 @@ section ul li.player.header-row:hover {
 // box's header: "O-Line (Pass)"), sitting 1px low: centered, the small text read as high. In a grade
 // box's header the label sits differently, so there it goes up.
 section ul li.player.header-row div .stat-label .label-tag {
-  font-size: 8px;
+  font-size: v.$fs-10;
   transform: translateY(1px);
   white-space: pre;
 }
@@ -1523,8 +1523,8 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
   color: #fff;
   display: flex;
   font-family: v.$font-base;
-  font-size: 14px;
-  gap: 4px;
+  font-size: v.$fs-14;
+  gap: v.$space-4;
   left: 50%;
   max-width: calc(100vw - 16px);
   opacity: 0;
@@ -1565,7 +1565,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     color: var(--scoreboard-led);
     cursor: pointer;
     font: inherit;
-    font-size: 12px;
+    font-size: v.$fs-12;
     font-weight: 800;
     letter-spacing: 0.6px;
     padding: 4px 12px;
@@ -1583,7 +1583,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
     align-items: center;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.7);
+    color: v.$text-dim;
     cursor: pointer;
     display: flex;
     height: 28px;
@@ -1605,7 +1605,7 @@ section.category-colors ul li.player:not(.header-row):not(.cdk-drag-preview) > .
 
   @include v.down(phone) {
     bottom: 12px;
-    font-size: 13px;
+    font-size: v.$fs-13;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1661,10 +1661,10 @@ section ul li.player:not(.header-row) {
 // The empty list: one line where the rows would be (on the board itself: no row fill or hover; kept to
 // the visible width, and stuck there, since the list scrolls sideways)
 section ul li.empty-list {
-  color: rgba(255, 255, 255, 0.75);
+  color: v.$text-soft;
   display: block;
   font-family: v.$font-base;
-  font-size: 14px;
+  font-size: v.$fs-14;
   left: 0;
   letter-spacing: 2px;
   padding: 48px 16px;
@@ -1796,7 +1796,7 @@ section ul li.player > div.player-info .player-name {
   }
 
   section ul li.player {
-    font-size: 11px;
+    font-size: v.$fs-11;
 
     &.header-row {
       height: 36px;
@@ -1929,7 +1929,7 @@ section ul li.player.past-cut:not(.cdk-drag-preview) {
     color: rgba(v.$neutral, 0.9);
     content: attr(data-cut);
     font-family: v.$font-base;
-    font-size: 8px;
+    font-size: v.$fs-10;
     font-weight: 700;
     left: 0.35em;
     letter-spacing: 1px;
@@ -1956,11 +1956,11 @@ section ul li.show-all {
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: v.$radius-pill;
-    color: rgba(255, 255, 255, 0.8);
+    color: v.$text-soft;
     cursor: pointer;
     display: inline-flex;
     font-family: v.$font-base;
-    font-size: 11px;
+    font-size: v.$fs-11;
     font-weight: 700;
     gap: 0.3em;
     letter-spacing: 1.5px;
@@ -1980,7 +1980,7 @@ section ul li.show-all {
     &:hover,
     &:focus-visible {
       border-color: rgba(255, 255, 255, 0.45);
-      color: rgba(255, 255, 255, 0.9);
+      color: v.$text-strong;
       outline: none;
     }
   }
@@ -2159,8 +2159,8 @@ section ul li.player:not(.header-row) .count.rank-tile.isolate-place {
   display: flex;
   font-family: v.$font-base;
   flex-direction: row;
-  font-size: 12px;
-  gap: 4px;
+  font-size: v.$fs-12;
+  gap: v.$space-4;
   height: 24px;
   margin: 0;
   max-width: 100%;

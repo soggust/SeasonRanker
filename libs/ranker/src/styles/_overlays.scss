@@ -23,7 +23,7 @@
     border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 40%, transparent);
     cursor: default;
     display: flex;
-    gap: 12px;
+    gap: v.$space-12;
     margin: 4px 14px 6px;
     padding: 8px 0 12px;
   }
@@ -43,14 +43,14 @@
   .account-who-name {
     color: #fff;
     font-family: v.$font-base;
-    font-size: 15px;
+    font-size: v.$fs-15;
     font-weight: 800;
   }
 
   .account-who-user {
-    color: rgba(255, 255, 255, 0.6);
+    color: v.$text-faint;
     font-family: v.$font-base;
-    font-size: 12px;
+    font-size: v.$fs-12;
   }
 
   // (the menu in the app's Nunito, not Material's own type)
@@ -91,7 +91,7 @@
   color: var(--scoreboard-led);
   flex: 0 0 auto;
   font-family: v.$font-base;
-  font-size: 10px;
+  font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 1px;
   padding: 2px 8px;
@@ -136,5 +136,5 @@
 // A tracked player's menu (tracker.scss: the page with the pins): its icons lit to read on the dark panel
 // ---------------------------------------------------------------------------
 .tracker-menu .mat-mdc-menu-item:not([disabled]) .mat-icon {
-  color: rgba(255, 255, 255, 0.75);
+  color: v.$text-soft;
 }

@@ -19,7 +19,7 @@ $bar-h: 30px;
 :host(list-view) {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: v.$space-14;
   min-width: 0;
 }
 
@@ -36,14 +36,14 @@ $bar-h: 30px;
   display: flex;
   flex-direction: column;
   font-family: v.$font-base;
-  gap: 16px;
+  gap: v.$space-16;
   // (the sheet brings the top and side room)
   padding: 0 0 28px;
 }
 
 .form-error {
-  color: v.$bad-pale;
-  font-size: 13px;
+  color: v.$bad-soft;
+  font-size: v.$fs-13;
   margin: 0;
 }
 
@@ -55,7 +55,7 @@ $bar-h: 30px;
 .page-crumbs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 // ---------------------------------------------------------------------------
@@ -72,12 +72,12 @@ $bar-h: 30px;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: v.$radius-pill;
-  color: rgba(255, 255, 255, 0.82);
+  color: v.$text-soft;
   display: inline-flex;
   flex: 0 0 auto;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 800;
-  gap: 4px;
+  gap: v.$space-4;
   letter-spacing: 0.4px;
   padding: 2px 9px 2px 6px;
   text-decoration: none;
@@ -105,7 +105,7 @@ $bar-h: 30px;
   }
 
   &.small {
-    font-size: 10px;
+    font-size: v.$fs-10;
     margin-left: auto;
     padding: 1px 7px 1px 5px;
   }
@@ -118,7 +118,7 @@ $bar-h: 30px;
 .sport-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 // The top row of #lists and #community, one family: the filters on the left (the sport pills; the
@@ -128,14 +128,14 @@ $bar-h: 30px;
   // (on the scoreboard, as Track Players' top)
   @include kit.scoreboard-strip;
   display: flex;
-  gap: 10px 14px;
+  gap: v.$space-10 v.$space-14;
 
   .bar-filters {
     align-items: center;
     display: flex;
     flex: 1;
     flex-wrap: wrap;
-    gap: 10px 14px;
+    gap: v.$space-10 v.$space-14;
     min-width: 0;
   }
 
@@ -155,7 +155,7 @@ $bar-h: 30px;
   .bar-link,
   .bar-back {
     flex: 0 0 auto;
-    gap: 6px;
+    gap: v.$space-6;
     height: $bar-h;
     min-height: $bar-h;
 
@@ -177,7 +177,7 @@ $bar-h: 30px;
   border-radius: v.$radius-pill;
   box-sizing: border-box;
   display: inline-flex;
-  gap: 8px;
+  gap: v.$space-8;
   height: $bar-h;
   padding: 0 4px 0 14px;
 
@@ -187,7 +187,7 @@ $bar-h: 30px;
 
   .bar-select-label {
     color: var(--app-text-muted, rgba(255, 255, 255, 0.6));
-    font-size: 10px;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
@@ -200,7 +200,7 @@ $bar-h: 30px;
     color: kit.app(text);
     cursor: pointer;
     font-family: v.$font-base;
-    font-size: 12.5px;
+    font-size: v.$fs-13;
     font-weight: 800;
     height: 100%;
     max-width: 220px;
@@ -216,7 +216,7 @@ $bar-h: 30px;
 
 .list-cards {
   display: grid;
-  gap: 16px;
+  gap: v.$space-16;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   list-style: none;
   margin: 0;
@@ -267,12 +267,12 @@ $bar-h: 30px;
   @include v.scoreboard-face;
   border-bottom: 1px solid #333;
   display: flex;
-  font-size: 11.5px;
-  gap: 8px;
+  font-size: v.$fs-12;
+  gap: v.$space-8;
   padding: 8px 12px;
 
   .card-where {
-    color: rgba(255, 255, 255, 0.8);
+    color: v.$text-soft;
     flex: 1;
     font-weight: 700;
     min-width: 0;
@@ -310,7 +310,7 @@ $bar-h: 30px;
   li {
     align-items: center;
     display: flex;
-    gap: 10px;
+    gap: v.$space-10;
     height: 30px;
     min-width: 0;
   }
@@ -318,7 +318,7 @@ $bar-h: 30px;
   .top-rank {
     @include v.led-tile;
     flex: 0 0 26px;
-    font-size: 11px;
+    font-size: v.$fs-11;
     height: 22px;
     padding-top: 1px;
 
@@ -348,7 +348,7 @@ $bar-h: 30px;
 
   .top-name {
     font-family: v.$font-hand;
-    font-size: 14px;
+    font-size: v.$fs-14;
     @include v.ellipsis;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
   }
@@ -358,10 +358,10 @@ $bar-h: 30px;
   align-items: center;
   background: v.$slate-panel;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   display: flex;
-  font-size: 12px;
-  gap: 6px;
+  font-size: v.$fs-12;
+  gap: v.$space-6;
   padding: 8px 12px;
 }
 
@@ -372,7 +372,7 @@ $bar-h: 30px;
   @include v.scoreboard-panel(12px, kit.$panel-shadow);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   padding: 16px 20px 18px;
 
   h2 {
@@ -388,26 +388,26 @@ $bar-h: 30px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: v.$space-8;
 }
 
 .where-chip {
-  color: rgba(255, 255, 255, 0.85);
+  color: v.$text-strong;
   display: inline-flex;
-  font-size: 12px;
+  font-size: v.$fs-12;
   font-weight: 700;
-  gap: 8px;
+  gap: v.$space-8;
   letter-spacing: 0.3px;
   margin-right: 4px;
 }
 
 .hero-by {
   align-items: center;
-  color: rgba(255, 255, 255, 0.62);
+  color: v.$text-faint;
   display: flex;
   flex-wrap: wrap;
-  font-size: 12.5px;
-  gap: 6px;
+  font-size: v.$fs-13;
+  gap: v.$space-6;
 
   .hero-owner {
     color: #fff;
@@ -424,8 +424,8 @@ $bar-h: 30px;
 
 .hero-note {
   border-left: 3px solid color-mix(in srgb, kit.app(sand) 70%, transparent);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
+  color: v.$text-strong;
+  font-size: v.$fs-14;
   line-height: 1.5;
   margin: 4px 0 0;
   padding: 2px 0 2px 12px;
@@ -436,7 +436,7 @@ $bar-h: 30px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: v.$space-12;
   justify-content: space-between;
 }
 
@@ -445,13 +445,13 @@ $bar-h: 30px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: v.$space-6;
 }
 
 // (a list's actions: Copy link, Edit and Withdraw sand icon buttons, Submit the filled one with its words;
 // Delete the red outline (Settings' Delete account), the same square and corners as the icons)
 .tool-btn {
-  gap: 6px;
+  gap: v.$space-6;
 
   .mat-icon {
     @include v.icon-size(16px);
@@ -491,8 +491,8 @@ $bar-h: 30px;
 .today-note {
   align-items: center;
   @include kit.app-well(10px);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 12.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-13;
   line-height: 1.45;
   margin: 0;
   padding: 8px 12px;
@@ -508,7 +508,7 @@ $bar-h: 30px;
   }
 
   &.bad {
-    color: v.$bad-pale;
+    color: v.$bad-soft;
   }
 }
 
@@ -518,7 +518,7 @@ $bar-h: 30px;
   border-color: color-mix(in srgb, kit.app(sand) 55%, transparent);
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: v.$space-10;
   padding: 8px 12px;
 
   > .mat-icon {
@@ -529,7 +529,7 @@ $bar-h: 30px;
   .reorder-text {
     color: #fff;
     flex: 1;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 700;
     min-width: 140px;
   }
@@ -540,7 +540,7 @@ $bar-h: 30px;
   animation: list-toast-in 0.18s ease;
   bottom: 24px;
   color: #fff;
-  font-size: 13px;
+  font-size: v.$fs-13;
   font-weight: 700;
   left: 50%;
   max-width: calc(100vw - 32px);
@@ -611,8 +611,8 @@ $bar-h: 30px;
   &.header-row {
     @include v.scoreboard-face;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 11px;
+    color: v.$text-strong;
+    font-size: v.$fs-11;
     font-weight: 800;
     height: 40px;
     letter-spacing: 0.6px;
@@ -623,7 +623,7 @@ $bar-h: 30px;
     // (a long label on two lines at most)
     .cell {
       display: -webkit-box;
-      font-size: 10.5px;
+      font-size: v.$fs-11;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       line-height: 1.15;
@@ -683,14 +683,14 @@ $bar-h: 30px;
 }
 
 .grip {
-  color: rgba(255, 255, 255, 0.35);
+  color: v.$text-faint;
   cursor: grab;
   flex: 0 0 auto;
   @include v.icon-size(20px);
   margin-right: 2px;
 
   &:hover {
-    color: rgba(255, 255, 255, 0.85);
+    color: v.$text-strong;
   }
 }
 
@@ -701,7 +701,7 @@ $bar-h: 30px;
 .rank-tile {
   @include v.led-tile;
   flex: 0 0 auto;
-  font-size: 15px;
+  font-size: v.$fs-15;
   font-weight: 900;
   height: 36px;
   margin-right: 14px;
@@ -792,7 +792,7 @@ $bar-h: 30px;
   color: #fff;
   flex: 1;
   font-family: v.$font-hand;
-  font-size: 15px;
+  font-size: v.$fs-15;
   font-synthesis: none;
   font-weight: 400;
   min-width: 0;
@@ -827,26 +827,26 @@ $bar-h: 30px;
 
   .val {
     font-family: v.$font-hand;
-    font-size: 14px;
+    font-size: v.$fs-14;
     white-space: nowrap;
 
     &.faint {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 12.5px;
+      color: v.$text-faint;
+      font-size: v.$fs-13;
     }
 
     .of {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 11px;
+      color: v.$text-faint;
+      font-size: v.$fs-11;
     }
   }
 
   .delta {
     align-items: center;
-    color: rgba(255, 255, 255, 0.55);
+    color: v.$text-faint;
     display: inline-flex;
     font-family: v.$font-base;
-    font-size: 10.5px;
+    font-size: v.$fs-11;
     font-weight: 800;
     line-height: 1;
     white-space: nowrap;
@@ -876,7 +876,7 @@ $bar-h: 30px;
 .community-grid {
   align-items: start;
   display: grid;
-  gap: 16px;
+  gap: v.$space-16;
   grid-template-columns: minmax(0, 1fr) 290px;
 }
 
@@ -888,7 +888,7 @@ $bar-h: 30px;
   border-radius: 10px 10px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: v.$space-4 v.$space-12;
   justify-content: space-between;
   padding: 10px 14px;
 
@@ -896,9 +896,9 @@ $bar-h: 30px;
     align-items: center;
     @include kit.sand-lit;
     display: flex;
-    font-size: 13px;
+    font-size: v.$fs-13;
     font-weight: 900;
-    gap: 7px;
+    gap: v.$space-8;
     letter-spacing: 1.2px;
     margin: 0;
     text-transform: uppercase;
@@ -909,8 +909,8 @@ $bar-h: 30px;
   }
 
   .section-sub {
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 12px;
+    color: v.$text-dim;
+    font-size: v.$fs-12;
     font-weight: 700;
   }
 
@@ -941,8 +941,8 @@ $bar-h: 30px;
 }
 
 .section-foot {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11.5px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   margin: 8px 2px 0;
 }
 
@@ -951,8 +951,8 @@ $bar-h: 30px;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid #333;
     border-radius: 0 0 10px 10px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 13px;
+    color: v.$text-faint;
+    font-size: v.$fs-13;
     margin: 0;
     padding: 14px;
   }
@@ -972,7 +972,7 @@ $bar-h: 30px;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     display: flex;
-    gap: 10px;
+    gap: v.$space-10;
     padding: 8px 0;
 
     &:last-child {
@@ -983,7 +983,7 @@ $bar-h: 30px;
   .maker-rank {
     @include v.led-tile;
     flex: 0 0 24px;
-    font-size: 11px;
+    font-size: v.$fs-11;
     height: 22px;
 
     &.first {
@@ -995,7 +995,7 @@ $bar-h: 30px;
     display: flex;
     flex: 1;
     flex-direction: column;
-    font-size: 13.5px;
+    font-size: v.$fs-14;
     font-weight: 800;
     min-width: 0;
 
@@ -1012,15 +1012,15 @@ $bar-h: 30px;
   }
 
   .maker-lists {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
+    color: v.$text-faint;
+    font-size: v.$fs-11;
     font-weight: 700;
   }
 
   .maker-score {
-    color: rgba(255, 255, 255, 0.7);
+    color: v.$text-dim;
     font-family: v.$font-led;
-    font-size: 13px;
+    font-size: v.$fs-13;
 
     &.pos {
       color: v.$good;
@@ -1061,7 +1061,7 @@ $bar-h: 30px;
 .entry-owner {
   align-items: center;
   display: flex;
-  gap: 6px;
+  gap: v.$space-6;
 
   a {
     color: inherit;
@@ -1082,7 +1082,7 @@ $bar-h: 30px;
   align-items: center;
   display: flex;
   flex: 0 0 auto;
-  gap: 2px;
+  gap: v.$space-2;
   margin: -4px -6px -4px 0;
 }
 
@@ -1091,7 +1091,7 @@ $bar-h: 30px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: v.$radius-md;
-  color: rgba(255, 255, 255, 0.6);
+  color: v.$text-faint;
   cursor: pointer;
   display: flex;
   height: 26px;
@@ -1134,7 +1134,7 @@ $bar-h: 30px;
 
 .vote-score {
   @include v.led-tile;
-  font-size: 12px;
+  font-size: v.$fs-12;
   height: 22px;
   min-width: 30px;
   padding: 1px 4px 0;
@@ -1155,7 +1155,7 @@ $bar-h: 30px;
   border-radius: v.$radius-pill;
   color: kit.app(sand);
   flex: 0 0 auto;
-  font-size: 9.5px;
+  font-size: v.$fs-10;
   font-weight: 900;
   letter-spacing: 0.8px;
   padding: 0 6px;
@@ -1173,7 +1173,7 @@ $bar-h: 30px;
 
 @include v.down(phablet) {
   .lists-page {
-    gap: 12px;
+    gap: v.$space-12;
     padding: 0 0 40px;
   }
 
@@ -1181,7 +1181,7 @@ $bar-h: 30px;
     padding: 14px 14px 16px;
 
     h2 {
-      font-size: 21px;
+      font-size: v.$fs-22;
     }
   }
 
@@ -1215,7 +1215,7 @@ $bar-h: 30px;
   }
 
   .rank-tile {
-    font-size: 12px;
+    font-size: v.$fs-12;
     height: 28px;
     margin-right: 7px;
     width: 30px;
@@ -1231,7 +1231,7 @@ $bar-h: 30px;
   }
 
   .name {
-    font-size: 13px;
+    font-size: v.$fs-13;
   }
 
   .tool-btn:not(.danger-btn) {

@@ -41,18 +41,18 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: v.$space-4 v.$space-12;
   justify-content: space-between;
   margin-bottom: 6px;
 }
 
 .lines-title {
   align-items: center;
-  color: rgba(255, 255, 255, 0.85);
+  color: v.$text-strong;
   display: inline-flex;
-  font-size: 11px;
+  font-size: v.$fs-11;
   font-weight: 900;
-  gap: 6px;
+  gap: v.$space-6;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -62,8 +62,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .lines-when {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11.5px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   font-weight: 700;
 
   &.live {
@@ -72,8 +72,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .lines-note {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 13px;
+  color: v.$text-faint;
+  font-size: v.$fs-13;
   margin: 6px 0;
 }
 
@@ -86,8 +86,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   width: calc(100% + 12px);
 
   thead th {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 10px;
+    color: v.$text-faint;
+    font-size: v.$fs-10;
     font-weight: 800;
     letter-spacing: 0.1em;
     padding: 0;
@@ -113,9 +113,9 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   align-items: center;
   color: #fff;
   display: flex;
-  font-size: 14px;
+  font-size: v.$fs-14;
   font-weight: 900;
-  gap: 6px;
+  gap: v.$space-6;
 
   img {
     height: 22px;
@@ -225,7 +225,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
     --edge: rgba(255, 255, 255, 0.16);
     background: $grey-tile;
     box-shadow: none;
-    color: rgba(255, 255, 255, 0.62);
+    color: v.$text-faint;
     filter: saturate(0.55) brightness(0.78);
 
     &:hover:not([disabled]) {
@@ -236,7 +236,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 
   // (already bet and still open: a check in its corner, so it isn't bet twice by mistake)
   .price-placed {
-    color: v.$good-mint;
+    color: v.$good-bright;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
     // (top left: the bot's chip has the top right)
     left: 3px;
@@ -264,8 +264,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .price-odds {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 12.5px;
+  color: v.$text-soft;
+  font-size: v.$fs-13;
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   line-height: 1.1;
@@ -275,12 +275,12 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 .price .price-odds:first-child,
 .price .price-chip + .price-odds {
   color: #fff;
-  font-size: 15px;
+  font-size: v.$fs-15;
 }
 
 .price-kelly {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 9.5px;
+  color: v.$text-faint;
+  font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
@@ -296,7 +296,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 // (one pick alone, under its row: its market's two sides side by side, no frame of its own)
 .lines-pair {
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: repeat(2, minmax(0, 140px));
 }
 
@@ -312,7 +312,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   border-top: 1px dashed rgba(255, 236, 196, 0.16);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   margin-top: 6px;
   padding-top: 10px;
 }
@@ -328,7 +328,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   cursor: pointer;
   display: flex;
   font-family: v.$font-base;
-  gap: 6px;
+  gap: v.$space-6;
   padding: 4px 2px;
   text-align: left;
   width: 100%;
@@ -340,7 +340,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 
   b {
-    font-size: 13.5px;
+    font-size: v.$fs-14;
     font-weight: 900;
     white-space: nowrap;
   }
@@ -355,7 +355,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .props-chevron {
-  color: rgba(255, 255, 255, 0.55);
+  color: v.$text-faint;
   flex: none;
   transform: rotate(90deg);
   transition:
@@ -369,8 +369,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .props-team-count {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11.5px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   font-weight: 700;
   margin-left: auto;
   white-space: nowrap;
@@ -379,14 +379,14 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 .props-team-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: v.$space-8;
   padding: 8px 0 6px;
 }
 
 .prop {
   align-items: center;
   display: grid;
-  gap: 10px;
+  gap: v.$space-10;
   grid-template-columns: 34px minmax(0, 1fr) 92px 92px;
 
   // (a player's next stat: close under his first)
@@ -419,13 +419,13 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 
   b {
-    font-size: 13.5px;
+    font-size: v.$fs-14;
     font-weight: 900;
   }
 
   small {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
+    color: v.$text-faint;
+    font-size: v.$fs-12;
     font-weight: 700;
   }
 }
@@ -433,19 +433,19 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 // (preview props: DraftKings' lines off ESPN the bot hasn't priced, at an assumed -110; their note, a line's move
 // from its open, and their tiles' "assumed" where the Kelly score would be)
 .preview-note {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
+  color: v.$text-faint;
+  font-size: v.$fs-12;
   line-height: 1.45;
   margin: 0 0 2px;
 
   b {
-    color: rgba(255, 255, 255, 0.9);
+    color: v.$text-strong;
   }
 }
 
 .preview-moved {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-style: normal;
   margin-left: 6px;
 }
@@ -456,8 +456,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 }
 
 .lines-foot {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 11px;
+  color: v.$text-faint;
+  font-size: v.$fs-11;
   font-weight: 600;
   line-height: 1.4;
   margin: 4px 0 0;
@@ -480,8 +480,8 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   }
 
   .lines-team {
-    font-size: 13px;
-    gap: 4px;
+    font-size: v.$fs-13;
+    gap: v.$space-4;
 
     img {
       height: 18px;
@@ -491,7 +491,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
 
   // (a prop's sides narrower, its face smaller)
   .prop {
-    gap: 6px;
+    gap: v.$space-6;
     grid-template-columns: 26px minmax(0, 1fr) 72px 72px;
   }
 
@@ -509,7 +509,7 @@ $grey-tile: linear-gradient(180deg, #3b434b, #2a3036);
   .price-line,
   .price .price-odds:first-child,
   .price .price-chip + .price-odds {
-    font-size: 14px;
+    font-size: v.$fs-14;
   }
 }
 
