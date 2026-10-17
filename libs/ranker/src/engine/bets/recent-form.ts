@@ -4,12 +4,15 @@
 // never fetched for this). The bot's recent form isn't on the page (picks.json carries its season by band alone),
 // so the card is the user's. No Angular here (tested under Node: tests/bets-recent-form.test.mjs)
 import { PlayBet, TallyDoc, etDay } from '../account/wallet/wallet-math';
+import { PlayerRef, betPlayer } from '../player-link';
 
 export interface FormBet {
   // (W, L or P: a win, a loss, a push; a void bet is left out)
   res: 'W' | 'L' | 'P';
   pick: string;
   game: string;
+  // (a prop's player, a fight's fighter: his name links his card, player-link.ts; else none)
+  who: PlayerRef | null;
   // ("+0.91u", "−1.00u", "0.00u")
   units: string;
 }
@@ -59,6 +62,7 @@ export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], 
       res: b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P',
       pick: b.kind === 'parlay' ? `${b.legs?.length ?? 0}-leg parlay` : b.pick,
       game: b.kind === 'parlay' ? 'Parlay' : `${b.sport.toUpperCase()} · ${b.matchup}`,
+      who: b.kind === 'parlay' ? null : betPlayer(b),
       units: unitsText(b.status === 'won' ? (b.profit ?? 0) : b.status === 'lost' ? -b.stake : 0),
     }));
   if (!(won + lost + push) && !last.length) return null;

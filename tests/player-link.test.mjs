@@ -59,6 +59,7 @@ const TEMPLATES = {
   'account/profile/user-profile.component.html': { picks: 1 },
   'game-view/game-view.component.html': { picks: 1 },
   'bets/model-desk.component.html': { faces: 2, names: 2 },
+  'bets/bets-page.component.html': { faces: 2, names: 2, picks: 1 },
 };
 
 test('every listed template links its players: faces, names and picks', () => {

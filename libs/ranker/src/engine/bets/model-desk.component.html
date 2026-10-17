@@ -102,10 +102,10 @@
   } @else if (b.sport === 'mma' && b.market === 'moneyline') {
     @let team = teamsOf(b)[b.side === 'home' ? 1 : 0];
     @let parts = pickParts(b);
-    @let who = { sport: b.sport, name: b.player || parts[0].trim() };
+    @let who = { sport: b.sport, name: b.player || (parts[0] + parts[1]).trim() };
     <span class="desk-pick">
       <a class="desk-badge" [playerLink]="who" playerLinkFace><img [src]="teamLogo(b.sport, team)" alt="" (error)="hide($event)" /></a>
-      <b><a [playerLink]="who">{{ parts[0] }}</a><span class="desk-key" [style.color]="pickColor(b)">{{ parts[1] }}</span></b>
+      <b><a [playerLink]="who">{{ parts[0] }}<span class="desk-key" [style.color]="pickColor(b)">{{ parts[1] }}</span></a></b>
     </span>
   } @else if (b.market === 'total') {
     <span class="desk-pick">

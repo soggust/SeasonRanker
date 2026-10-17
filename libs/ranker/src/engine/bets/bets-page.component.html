@@ -313,23 +313,32 @@
             </div>
             <!-- (the circle: a prop's player's face, a total's arrow, a side's team's logo; a fade, none) -->
             @if (r.betType === 'player' && r.athleteId) {
-              <!-- (a prop's face: a link to the player's card, in a new tab (the card lives in his sport's app); the
-                   owner's ask, 2026-10-17) -->
-              @if (cardHref(r); as href) {
-                <a class="bet-circle player bet-card-link" [href]="href" target="_blank" rel="noopener" [attr.aria-label]="'Open ' + r.player + '\'s card'" [style.border-color]="pickColor(r)" (click)="$event.stopPropagation()"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></a>
+              <!-- (a prop's face: a link to the player's card (player-link.ts: a new tab, the card lives in his sport's
+                   app); the owner's ask, 2026-10-17) -->
+              @if (playerRef(r); as who) {
+                <a class="bet-circle player bet-card-link" [playerLink]="who" playerLinkFace [style.border-color]="pickColor(r)"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></a>
               } @else {
                 <span class="bet-circle player" aria-hidden="true" [style.border-color]="pickColor(r)"><img class="bet-face" [src]="headshot(r)" alt="" (error)="hide($event)" /></span>
               }
             } @else if (r.betType === 'total') {
               <span class="bet-circle total" [class.over]="r.side !== 'under'" aria-hidden="true"><mat-icon [fontIcon]="r.side === 'under' ? 'arrow_downward' : 'arrow_upward'"></mat-icon></span>
             } @else if (r.sport === 'mma') {
-              <!-- (a fight: the fighter's face, the gloves under it for one ESPN has no picture of) -->
-              <span class="bet-circle player mma" aria-hidden="true" [style.border-color]="pickColor(r)">
-                <mat-icon fontIcon="sports_mma"></mat-icon>
-                @if (pickLogo(r); as logo) {
-                  <img class="bet-face" [src]="logo" alt="" (error)="hide($event)" />
-                }
-              </span>
+              <!-- (a fight: the fighter's face, the gloves under it for one ESPN has no picture of; a link to his card) -->
+              @if (playerRef(r); as who) {
+                <a class="bet-circle player mma bet-card-link" [playerLink]="who" playerLinkFace [style.border-color]="pickColor(r)">
+                  <mat-icon fontIcon="sports_mma"></mat-icon>
+                  @if (pickLogo(r); as logo) {
+                    <img class="bet-face" [src]="logo" alt="" (error)="hide($event)" />
+                  }
+                </a>
+              } @else {
+                <span class="bet-circle player mma" aria-hidden="true" [style.border-color]="pickColor(r)">
+                  <mat-icon fontIcon="sports_mma"></mat-icon>
+                  @if (pickLogo(r); as logo) {
+                    <img class="bet-face" [src]="logo" alt="" (error)="hide($event)" />
+                  }
+                </span>
+              }
             } @else {
               <span class="bet-circle team" aria-hidden="true" [style.border-color]="pickColor(r)">
                 @if (pickLogo(r); as logo) {
@@ -346,7 +355,8 @@
                 <small class="bet-sub">{{ insteadText(r.pick) }}</small>
               } @else {
                 @let parts = pickParts(r);
-                <b class="bet-pick">@if (r.betType === 'player' && r.player) {@if (cardHref(r); as href) {<a class="bet-player" [href]="href" target="_blank" rel="noopener" (click)="$event.stopPropagation()">{{ r.player }}</a>} @else {{{ r.player }}}{{ ' ' }}}{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>{{ parts[2] }}</b>
+                <!-- (a prop's player's name, a fight's fighter's: a link to his card, player-link.ts) -->
+                <b class="bet-pick">@if (r.betType === 'player' && r.player) {@if (playerRef(r); as who) {<a class="bet-player" [playerLink]="who">{{ r.player }}</a>} @else {{{ r.player }}}{{ ' ' }}}@if (r.sport === 'mma' && r.betType !== 'player' && playerRef(r); as who) {<a class="bet-player" [playerLink]="who">{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span></a>} @else {{{ parts[0] }}<span class="bet-key" [style.color]="pickColor(r)">{{ parts[1] }}</span>}{{ parts[2] }}</b>
                 <small class="bet-sub">
                   @if (subLine(r); as line) {<span class="bet-sub-game">{{ line.name }}@if (line.when) {<span class="bet-sub-when"> · {{ line.when }}</span>}</span>}
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
@@ -679,7 +689,7 @@
             @for (b of f.last; track $index) {
               <li class="form-bet" [ngClass]="b.res">
                 <span class="form-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
-                <span class="form-words"><b>{{ b.pick }}</b> · {{ b.game }}</span>
+                <span class="form-words"><b><pick-text [pick]="b.pick" [player]="b.who"></pick-text></b> · {{ b.game }}</span>
                 <span class="form-units">{{ b.units }}</span>
               </li>
             }

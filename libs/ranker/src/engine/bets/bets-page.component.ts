@@ -16,7 +16,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot, leagueLogo } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, rowClickToggles, sportRows, sumRecords } from './bets-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './bets-rows';
 // (the rows' types, for the page's other parts: bets-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
@@ -149,6 +149,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
 
   // (a prop's player's card, his sport's app by his name: bets-rows.ts playerCardHref; the face and the name link it)
   readonly cardHref = playerCardHref;
+  readonly playerRef = playerRefOf;
 
   hide(event: Event): void {
     (event.target as HTMLElement).style.visibility = 'hidden';
