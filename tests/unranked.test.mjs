@@ -18,7 +18,7 @@ import { loadEngine, readJson, seasonData, seasonDir, staticDir, unrankedService
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'unranked-entry.ts');
 const NFL = staticDir('nfl');
-const TABS = ['QB', 'RB', 'WR', 'TE', 'K', 'P'];
+const TABS = ['QB', 'RB', 'WR', 'TE', 'K', 'P', 'EDGE', 'DL', 'LB', 'CB', 'S'];
 const PARTS = ['regular', 'post', 'all'];
 const RIDLEY = '00-0034837';
 
@@ -37,6 +37,8 @@ const PLAYED = {
   K: (s) => s.fgAtt + s.patAtt > 0,
   P: (s) => s.punts > 0,
 };
+// (a defender: a snap, a tackle, a pass defended, a sack or an interception)
+for (const tab of ['EDGE', 'DL', 'LB', 'CB', 'S']) PLAYED[tab] = (s) => (s.snaps ?? 0) + s.tackles + s.passesDefended + s.sacks + s.interceptions > 0;
 
 // A part's file (skill-players.json, skill-players.post.json)
 const partFile = (file, part) => (part === 'regular' ? file : file.replace(/\.json$/,`.${part}.json`));

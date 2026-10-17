@@ -80,6 +80,11 @@ function visibleTabs(settings: SportSettings): Position[] {
   return POSITIONS.filter((tab) => SPORT.tabVisible?.(tab, settings) ?? true);
 }
 
+// The family a tab belongs to (SPORT.tabFamilies), its parent included; none for a tab of its own
+function familyOf(tab: string): { parent: string; label: string; names: Record<string, string> } | null {
+  return SPORT.tabFamilies?.find((family) => family.parent === tab || tab in family.names) ?? null;
+}
+
 // The page: the sport bar, the filter menu, the position tabs and the rankings, and About when it's open
 @Component({
   selector: 'app-root',
@@ -197,6 +202,43 @@ export class AppComponent {
 
   get positions(): Position[] {
     return visibleTabs(this.positionService.settings.sport);
+  }
+
+  // The bar's own row: every tab but the ones grouped under another (SPORT.tabFamilies: the NFL's Edge, DL,
+  // LB, CB and S sit in DEF's sub-row, not the bar)
+  get mainTabs(): Position[] {
+    return this.positions.filter((tab) => {
+      const family = familyOf(tab);
+      return !family || family.parent === tab;
+    });
+  }
+
+  // The bar's tab lit for a position: its own, or its family's parent (DEF while a CB list is open)
+  litTab(position: Position): Position {
+    return (familyOf(position)?.parent as Position | undefined) ?? position;
+  }
+
+  // The sub-row under the bar while a family's tab is open: its tabs and their names (none otherwise)
+  subTabs(position: Position): { tab: Position; name: string }[] | null {
+    const family = familyOf(position);
+    if (!family) return null;
+    const shown = this.positions;
+    return Object.entries(family.names)
+      .filter(([tab]) => shown.includes(tab as Position))
+      .map(([tab, name]) => ({ tab: tab as Position, name }));
+  }
+
+  subRowLabel(position: Position): string {
+    return familyOf(position)?.label ?? '';
+  }
+
+  // The phone's dropdown in the sport's groups (SPORT.tabGroups; a tab in no group lists first, ungrouped)
+  get selectGroups(): { label: string | null; tabs: Position[] }[] {
+    const shown = this.positions;
+    const groups = (SPORT.tabGroups ?? []).map((group) => ({ label: group.label, tabs: group.tabs.filter((tab) => shown.includes(tab as Position)) as Position[] }));
+    const grouped = new Set(groups.flatMap((group) => group.tabs));
+    const loose = shown.filter((tab) => !grouped.has(tab));
+    return [...(loose.length ? [{ label: null, tabs: loose }] : []), ...groups.filter((group) => group.tabs.length)];
   }
 
   // Below 1200px the filters are a slide-out menu (menu-open); above, a sidebar that collapses. Both

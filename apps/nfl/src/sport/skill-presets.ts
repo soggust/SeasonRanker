@@ -30,6 +30,36 @@ const WR_TE_ANALYTICS: SkillPresetDef = {
   weights: { epaPerTarget: 100, catchPct: 80, yacOverExp: 75, dropPct: 75, separation: 60, targets: 40 },
 };
 
+// Edge rushers and interior linemen share their three jobs
+const FRONT_PRESETS: SkillPresetDef[] = [
+  {
+    key: 'passRusher',
+    label: 'Pass Rusher',
+    description: 'Getting to the quarterback: sacks, pressures and pressure rate, QB hits and hurries',
+    weights: { sacks: 100, pressures: 90, pressureRate: 80, qbHits: 70, hurries: 60 },
+  },
+  {
+    key: 'runStopper',
+    label: 'Run Stopper',
+    description: 'Holding the line against the run: tackles and TFL, few missed tackles, and the snaps he plays',
+    weights: { tackles: 100, tfl: 100, missedTacklePct: 75, snapPct: 50 },
+  },
+  {
+    key: 'playmaker',
+    label: 'Playmaker',
+    description: 'The plays that turn games: takeaways, forced fumbles, splash plays and defensive TDs',
+    weights: { takeaways: 100, forcedFumbles: 90, splashPlays: 90, defTds: 60 },
+  },
+];
+
+// The ball in his hands: corners' and safeties'
+const BALLHAWK: SkillPresetDef = {
+  key: 'ballhawk',
+  label: 'Ballhawk',
+  description: 'Takes the ball away: interceptions and passes defended, then takeaways',
+  weights: { interceptions: 100, passesDefended: 90, takeaways: 70 },
+};
+
 export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
   // Carried over from the original QB page: each group weight (Support, Advanced) is folded into the
   // sliders it scaled. The combined pairs' parts are set with their parent; Fantasy Pts is 0 outside
@@ -255,6 +285,62 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
       weights: { ptsAllowedPerGame: 100, redZoneTdPct: 100, thirdDownPct: 80 },
     },
     { ...FANTASY, description: 'Fantasy points only (standard D/ST scoring)' },
+  ],
+  // The defensive players: each preset is one job on the defense, no stat from another's (a pass rusher's
+  // has no coverage, a corner's lockdown no tackling); the charted stats (pressures, hurries, pressure
+  // rate, missed tackles, coverage) are empty before 2018, so a preset leaning on them reads those seasons
+  // by what's left of it
+  EDGE: FRONT_PRESETS,
+  DL: FRONT_PRESETS,
+  LB: [
+    {
+      key: 'tackler',
+      label: 'Tackler',
+      description: 'The tackling: tackles and TFL, solo tackles, and few missed tackles',
+      weights: { tackles: 100, tfl: 80, soloTackles: 60, missedTacklePct: 75 },
+    },
+    {
+      key: 'blitzer',
+      label: 'Blitzer',
+      description: 'Sent after the quarterback: sacks, pressures, QB hits and hurries',
+      weights: { sacks: 100, pressures: 90, qbHits: 70, hurries: 60 },
+    },
+    {
+      key: 'coverage',
+      label: 'Coverage',
+      description: 'Holding up in coverage: passer rating, Comp % and Yds / Target allowed, few TDs allowed, then passes defended and INTs',
+      weights: { passerRatingAllowed: 100, compPctAllowed: 80, yardsPerTargetAllowed: 80, tdsAllowed: 60, passesDefended: 70, interceptions: 60 },
+    },
+  ],
+  CB: [
+    {
+      key: 'lockdown',
+      label: 'Lockdown',
+      description: 'Nothing completed on him: Comp %, Yds / Target and passer rating allowed, few TDs allowed',
+      weights: { compPctAllowed: 100, yardsPerTargetAllowed: 100, passerRatingAllowed: 100, tdsAllowed: 70 },
+    },
+    BALLHAWK,
+    {
+      key: 'tackler',
+      label: 'Tackler',
+      description: 'A corner who tackles: tackles and few missed ones, TFL, a token for forced fumbles',
+      weights: { tackles: 100, missedTacklePct: 80, tfl: 60, forcedFumbles: 10 },
+    },
+  ],
+  S: [
+    BALLHAWK,
+    {
+      key: 'enforcer',
+      label: 'Enforcer',
+      description: 'The hitter: tackles, TFL, forced fumbles and few missed tackles',
+      weights: { tackles: 100, tfl: 80, forcedFumbles: 70, missedTacklePct: 75 },
+    },
+    {
+      key: 'coverage',
+      label: 'Coverage',
+      description: 'Holding up in coverage: passer rating, Comp % and Yds / Target allowed, few TDs allowed',
+      weights: { passerRatingAllowed: 100, compPctAllowed: 80, yardsPerTargetAllowed: 80, tdsAllowed: 60 },
+    },
   ],
   OL: [
     {

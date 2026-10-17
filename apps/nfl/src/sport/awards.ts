@@ -278,5 +278,9 @@ export function awardsFor(unit: SkillPlayer, position: SkillPosition, season: nu
     const winners = ([] as string[]).concat(awards[id]);
     if (winners.some((winner) => nameKey(winner) === name)) wins.push(win(id));
   }
+  // (the defensive awards name their winner: his own badge on his tab, Edge, DL, LB, CB or S)
+  for (const id of ['dpoy', 'droy'] as const) {
+    if (nameKey(awards[id][0]) === name) wins.push(win(id));
+  }
   return withAllPro();
 }

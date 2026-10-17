@@ -279,8 +279,13 @@ main {
   }
 
   .content {
-    // The room the position tabs take above the grid (the grid's height subtracts it)
+    // The room the position tabs take above the grid (the grid's height subtracts it); the sub-row under
+    // them (a family of tabs open: the NFL's defensive players) takes its 38px more
     --position-bar-space: 62px;
+
+    &.with-sub-row {
+      --position-bar-space: 100px;
+    }
     // (it can shrink below the grid's width, so the grid scrolls instead of overflowing)
     min-width: 0;
     padding: 1em 2em;
@@ -329,6 +334,10 @@ main {
       --position-bar-space: 48px;
       padding: 0.75em 0 0;
       width: 90%;
+
+      &.with-sub-row {
+        --position-bar-space: 86px;
+      }
     }
 
     &.sidebar-collapsed .sidebar-shell {
@@ -467,6 +476,73 @@ main {
         font-family: sans-serif;
         text-shadow: none;
       }
+    }
+
+    // (the sub-row follows under it: the dropdown keeps its room above, less below)
+    &.has-sub-row {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The sub-row under the bar while a family of tabs is open (the NFL's Team D · Edge · DL · LB · CB · S under
+// DEF): a slimmer dark panel, no gap to the bar above or the grid below, its tabs smaller than the bar's and
+// the one showing lit the same way; a hover lightens, no more
+// ---------------------------------------------------------------------------
+.position-sub-row {
+  align-items: stretch;
+  background: #161616;
+  box-sizing: border-box;
+  display: flex;
+  height: 38px;
+  width: 100%;
+
+  @include v.up(phone-up) {
+    border: 1px solid v.$panel-edge;
+    border-bottom: none;
+    border-top: none;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    color: #ddd;
+    cursor: pointer;
+    flex: 1;
+    font-family: v.$font-base;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    padding: 0 0.6em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    transition:
+      background v.$t-hover ease,
+      color v.$t-hover ease;
+    white-space: nowrap;
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+
+    &.active {
+      @include v.lit-tab;
+    }
+  }
+
+  // Phones: under the dropdown, rounded like it, room under it before the grid
+  @include v.down(phone) {
+    border: 1px solid v.$panel-edge;
+    border-radius: 12px;
+    height: 34px;
+    margin-bottom: 10px;
+
+    button {
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      padding: 0 0.3em;
     }
   }
 }

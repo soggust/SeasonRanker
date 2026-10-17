@@ -12,6 +12,8 @@
 // ESPN). All are written to skill-players.json. Each defense's row also carries vsPos: what it allowed to
 // the offenses' WR1, WR2, WR3, TE1 and RB1, its run or pass funnel and where the targets go against it
 // (defense-vs-position.mjs, from the play-by-play; display only, the card's vs Position).
+// The defensive players (the EDGE, DL, LB, CB and S tabs) come from the same player stats, the snap counts
+// and Pro Football Reference's defensive charting (defensePlayers).
 //
 // Usage: npm run update-data              (the current season, 2026)
 //        SEASON=2025 npm run update-data  (a past season, written to src/StaticData/seasons/2025/;
@@ -21,6 +23,10 @@
 //        UR_ONLY=1                        (only the unranked seasons, skill-players.ur.json and its .post and
 //                                          .all, from nflverse: beside a season's ranked rows as they are;
 //                                          see unrankedRows and unrankedQbs)
+//        DEF_ONLY=1                       (only the defensive player tabs, written into the season's
+//                                          skill-players files and their unranked ones as they are: the
+//                                          backfill of those tabs; no play-by-play, ESPN only for the season
+//                                          being played's injury report; see defenseOnly)
 //
 // Each run writes three parts of the season (the app's Stats From setting): the regular season
 // (skill-players.json, games.json, data-grades.json), the playoffs (skill-players.post.json,
@@ -70,6 +76,7 @@ const SCHEDULE_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/
 // The parts this run builds (see the top), a file's name in a part, and which games a part counts:
 // ESPN's season types (2 the regular season, 3 the playoffs) and nflverse's REG or not
 const UR_ONLY = process.env.UR_ONLY === '1';
+const DEF_ONLY = process.env.DEF_ONLY === '1';
 const PARTS = (process.env.PART ?? 'regular,post,all').split(',').map((part) => part.trim());
 const PART_NAMES = { regular: 'regular season', post: 'playoffs', all: 'regular season and playoffs' };
 for (const part of PARTS) if (!PART_NAMES[part]) throw new Error(`Unknown PART "${part}" (regular, post or all)`);
@@ -180,7 +187,12 @@ const PFR_SEASON_COLUMNS = {
     rushing_yards_after_contact: 'yac', rushing_broken_tackles: 'brk_tkl',
   },
   rec: { pfr_player_id: 'pfr_id', team: 'tm', receiving_drop: 'drop', receiving_broken_tackles: 'brk_tkl' },
-  def: { pfr_player_id: 'pfr_id', team: 'tm', def_pressures: 'prss', def_missed_tackles: 'm_tkl', def_tackles_combined: 'comb' },
+  // (the defensive players' charting too: the coverage line, the blitzes, hurries and knockdowns)
+  def: {
+    pfr_player_id: 'pfr_id', team: 'tm', def_pressures: 'prss', def_missed_tackles: 'm_tkl', def_tackles_combined: 'comb',
+    def_ints: 'int', def_targets: 'tgt', def_completions_allowed: 'cmp', def_yards_allowed: 'yds', def_receiving_td_allowed: 'td',
+    def_times_blitzed: 'bltz', def_times_hurried: 'hrry', def_times_hitqb: 'qbkd', def_sacks: 'sk',
+  },
 };
 
 async function pfrSeasonRows(type, sacksByPfr) {
@@ -235,7 +247,6 @@ async function loadNflverse(shared) {
     console.log(`Pro Football Reference: season totals (no weekly files for ${SEASON})`);
   }
   for (const rows of [pbp, schedule, pfrPass, pfrRush, pfrRec, pfrDef, snaps, ...partStats]) sameTeamAbbrs(rows);
-  const espnIds = players.filter((p) => p.espn_id && p.espn_id !== 'NA');
 
   return {
     seasonPbp: pbp,
@@ -244,14 +255,25 @@ async function loadNflverse(shared) {
     ngsRows: { pass: ngsPass, rush: ngsRush, rec: ngsRec },
     pfrRows: { pass: pfrPass, rush: pfrRush, rec: pfrRec, def: pfrDef, weekly: pfrWeekly },
     snaps,
-    pfrByGsis: new Map(players.filter((p) => p.pfr_id && p.pfr_id !== 'NA').map((p) => [p.gsis_id, p.pfr_id])),
-    // (for defense vs position: each player's position, and snap counts' ids to gsis ids)
-    positionOf: new Map(players.map((p) => [p.gsis_id, p.position])),
-    gsisByPfr: new Map(players.filter((p) => p.pfr_id && p.pfr_id !== 'NA').map((p) => [p.pfr_id, p.gsis_id])),
+    ...playerMaps(players),
     // Everyone who was a head coach in an earlier season (a coach not in here is in his first year)
     pastCoaches: new Set(
       schedule.filter((game) => Number(game.season) < SEASON).flatMap((game) => [game.home_coach, game.away_coach])
     ),
+  };
+}
+
+// The player list's ids and positions, by gsis id (players.csv: every player who ever played)
+function playerMaps(players) {
+  const espnIds = players.filter((p) => p.espn_id && p.espn_id !== 'NA');
+  const pfrIds = players.filter((p) => p.pfr_id && p.pfr_id !== 'NA');
+  return {
+    pfrByGsis: new Map(pfrIds.map((p) => [p.gsis_id, p.pfr_id])),
+    // (for defense vs position: each player's position, and snap counts' ids to gsis ids)
+    positionOf: new Map(players.map((p) => [p.gsis_id, p.position])),
+    // (for the defensive player tabs: Pro Football Focus's position, ED / DI / LB / CB / S, where the list has it)
+    pffPositionOf: new Map(players.map((p) => [p.gsis_id, p.pff_position])),
+    gsisByPfr: new Map(pfrIds.map((p) => [p.pfr_id, p.gsis_id])),
     gsisByEspn: new Map(espnIds.map((p) => [Number(p.espn_id), p.gsis_id])),
     espnByGsis: new Map(espnIds.map((p) => [p.gsis_id, Number(p.espn_id)])),
   };
@@ -330,11 +352,38 @@ function nflversePart(season, part) {
       recTeam: totalsBy(pfrRows(rec), (r) => r.team, ['receiving_broken_tackles']),
     },
     snapShare,
+    defense: defenseInputs(season, part),
     // The part's completed games, with coaches, scores and betting lines
     games: season.schedule.filter(
       (game) => game.season === String(SEASON) && inPart(part, game.game_type) && num(game.result) !== null
     ),
   };
+}
+
+// The defensive players' sources over a part's games, by PFR id: Pro Football Reference's charting of each
+// man (pressures, hurries, knockdowns, missed tackles and the coverage line; 2018 on; the season totals, where
+// they stand in for the weekly files, count a traded player once, by his 2TM line) and his defensive snaps
+// (2012 on: the total, and his average share over the games he was on the field)
+const PFR_DEF_FIELDS = [
+  'def_ints', 'def_targets', 'def_completions_allowed', 'def_yards_allowed', 'def_receiving_td_allowed',
+  'def_times_blitzed', 'def_times_hurried', 'def_times_hitqb', 'def_sacks', 'def_pressures', 'def_tackles_combined', 'def_missed_tackles',
+];
+function defenseInputs(season, part) {
+  const counts = (rows) => rows.filter((r) => inPart(part, r.game_type));
+  let def = season.pfrRows.weekly || part === 'regular' ? counts(season.pfrRows.def) : [];
+  if (!season.pfrRows.weekly) {
+    const traded = new Set(def.filter((r) => /^\d+TM$/.test(r.team)).map((r) => r.pfr_player_id));
+    def = def.filter((r) => !traded.has(r.pfr_player_id) || /^\d+TM$/.test(r.team));
+  }
+  const snaps = new Map();
+  for (const [id, t] of totalsBy(
+    counts(season.snaps).filter((r) => (num(r.defense_snaps) ?? 0) > 0),
+    (r) => r.pfr_player_id,
+    ['defense_snaps', 'defense_pct'],
+  )) {
+    snaps.set(id, { snaps: t.defense_snaps, pct: round(t.defense_pct / t.games, 3) });
+  }
+  return { pfr: totalsBy(def, (r) => r.pfr_player_id, PFR_DEF_FIELDS), snaps };
 }
 
 
@@ -1258,12 +1307,115 @@ function skillPlayers(nflverse) {
   for (const unit of result.DEF) unit.vsPos = vsPos.get(unit.gsisId.replace(/^DEF-/, '')) ?? null;
   // (everyone else who played: the unranked seasons, skill-players.ur.json)
   const unranked = {};
-  for (const [position, players] of Object.entries(positionPlayers(nflverse))) {
-    const listed = listedPlayers(players, SKILL_POSITIONS[position]);
+  for (const [position, players] of Object.entries({ ...positionPlayers(nflverse), ...defensePlayers(nflverse) })) {
+    const listed = listedPlayers(players, SKILL_POSITIONS[position] ?? DEF_TABS[position]);
     result[position] = players.filter((player) => listed.has(player)).sort((a, b) => a.name.localeCompare(b.name));
     unranked[position] = unrankedRows(position, players, new Set(result[position].map((player) => player.gsisId)));
   }
   return { skill: result, unranked };
+}
+
+// ---------------------------------------------------------------------------------------------------
+// The defensive players: the EDGE, DL, LB, CB and S tabs, every defender in the part's player stats, each
+// on one tab a season, by the position he's listed at. Pro Football Focus's position in the player list
+// (pff_position: ED, DI, LB, CB, S) decides where it's known, since it tells a 3-4 outside linebacker
+// (an edge rusher) from an off-ball one, which the roster's "LB" doesn't; otherwise the season's roster
+// position (DE and OLB are edge rushers, DT and NT linemen, LB, ILB and MLB linebackers, CB and DB
+// corners, S, FS, SS and SAF safeties), then the player list's. A roster LB or OLB without a PFF position
+// is an edge rusher when his sacks and QB hits are a pass rusher's share of his tackles (a 2005 Merriman
+// over a Briggs). The ranked list is the tab's most-used (defensive snaps; tackles, passes defended and
+// sacks where the snap counts don't reach, before 2012) plus its leaders, like the offensive tabs; the
+// rest are unranked seasons (unrankedRows).
+// ---------------------------------------------------------------------------------------------------
+const DEF_TABS = {
+  EDGE: { count: 80, usage: defenseUsage, leaders: ['sacks', 'pressures', 'tfl'] },
+  DL: { count: 80, usage: defenseUsage, leaders: ['sacks', 'tackles', 'tfl'] },
+  LB: { count: 80, usage: defenseUsage, leaders: ['tackles', 'sacks'] },
+  CB: { count: 96, usage: defenseUsage, leaders: ['interceptions', 'passesDefended'] },
+  S: { count: 72, usage: defenseUsage, leaders: ['interceptions', 'tackles'] },
+};
+function defenseUsage(s) {
+  return s.snaps ?? s.tackles + s.passesDefended + 2 * s.sacks;
+}
+const PFF_TABS = { ED: 'EDGE', DI: 'DL', LB: 'LB', CB: 'CB', S: 'S' };
+const ROSTER_TABS = { DE: 'EDGE', OLB: 'EDGE', DT: 'DL', NT: 'DL', DL: 'DL', LB: 'LB', ILB: 'LB', MLB: 'LB', CB: 'CB', DB: 'CB', S: 'S', FS: 'S', SS: 'S', SAF: 'S' };
+function defenseTab(row, stats, nflverse) {
+  const pff = PFF_TABS[nflverse.pffPositionOf.get(row.player_id)];
+  if (pff) return pff;
+  const listed = ROSTER_TABS[row.position] ? row.position : nflverse.positionOf.get(row.player_id);
+  const tab = ROSTER_TABS[listed];
+  if (!tab) return null;
+  if (listed === 'LB' || listed === 'OLB') {
+    const rush = stats.sacks + stats.qbHits;
+    return rush >= 3 && rush >= 0.15 * Math.max(stats.tackles, 1) ? 'EDGE' : 'LB';
+  }
+  return tab;
+}
+
+// A defender's season: nflverse's box stats (combined tackles are solo + shared + assisted, as PFR counts
+// them), his defensive snaps and PFR's charting, each null where the season has no source for it
+function defenseStats(n, { pfr, snaps }) {
+  const solo = n('def_tackles_solo');
+  const tackles = solo + n('def_tackles_with_assist') + n('def_tackle_assists');
+  const sacks = n('def_sacks');
+  const interceptions = n('def_interceptions');
+  const forcedFumbles = n('def_fumbles_forced');
+  const passesDefended = n('def_pass_defended');
+  const fumbleRecoveries = n('fumble_recovery_opp');
+  const targets = pfr ? pfr.def_targets : null;
+  const completions = pfr ? pfr.def_completions_allowed : null;
+  const yardsAllowed = pfr ? pfr.def_yards_allowed : null;
+  const tdsAllowed = pfr ? pfr.def_receiving_td_allowed : null;
+  return {
+    tackles,
+    soloTackles: solo,
+    tfl: n('def_tackles_for_loss'),
+    sacks,
+    qbHits: n('def_qb_hits'),
+    forcedFumbles,
+    fumbleRecoveries,
+    interceptions,
+    passesDefended,
+    defTds: n('def_tds'),
+    takeaways: interceptions + fumbleRecoveries,
+    splashPlays: round(sacks + interceptions + forcedFumbles + passesDefended, 1),
+    snaps: snaps?.snaps ?? null,
+    snapPct: snaps?.pct ?? null,
+    pressures: pfr ? pfr.def_pressures : null,
+    hurries: pfr ? pfr.def_times_hurried : null,
+    pressureRate: pfr && snaps?.snaps ? ratio(pfr.def_pressures, snaps.snaps) : null,
+    missedTacklePct: pfr && pfr.def_tackles_combined + pfr.def_missed_tackles > 0 ? ratio(pfr.def_missed_tackles, pfr.def_tackles_combined + pfr.def_missed_tackles) : null,
+    targets,
+    compPctAllowed: targets ? ratio(completions, targets) : null,
+    yardsAllowed,
+    yardsPerTargetAllowed: targets ? ratio(yardsAllowed, targets, 1) : null,
+    tdsAllowed,
+    passerRatingAllowed: targets ? round(passerRating(completions, targets, yardsAllowed, tdsAllowed, pfr.def_ints), 1) : null,
+  };
+}
+
+function defensePlayers(nflverse) {
+  const { playerStats, espnByGsis, pfrByGsis, defense } = nflverse;
+  const out = Object.fromEntries(Object.keys(DEF_TABS).map((tab) => [tab, []]));
+  for (const row of playerStats) {
+    if (!['DL', 'LB', 'DB'].includes(row.position_group) && !ROSTER_TABS[row.position]) continue;
+    const n = (key) => num(row[key]) ?? 0;
+    const icon = TEAM_ICONS[row.recent_team];
+    if (!icon) throw new Error(`Unknown team abbreviation "${row.recent_team}" for ${row.player_display_name}`);
+    const pfrId = pfrByGsis.get(row.player_id);
+    const stats = defenseStats(n, { pfr: defense.pfr.get(pfrId), snaps: defense.snaps.get(pfrId) });
+    const tab = defenseTab(row, stats, nflverse);
+    if (!tab) continue;
+    out[tab].push({
+      id: espnByGsis.get(row.player_id) ?? null,
+      gsisId: row.player_id,
+      name: row.player_display_name,
+      teamLogo: `assets/NFL_Icons/${icon}.png`,
+      games: n('games'),
+      stats,
+    });
+  }
+  return out;
 }
 
 // Unranked (UR) seasons: everyone who played a season at a position (a game with a stat the tab counts:
@@ -1281,6 +1433,9 @@ const PLAYED = {
   K: (s) => s.fgAtt + s.patAtt > 0,
   P: (s) => s.punts > 0,
 };
+// (a defender: a snap, a tackle, a pass defended, a sack or an interception)
+const DEFENDED = (s) => (s.snaps ?? 0) + s.tackles + s.passesDefended + s.sacks + s.interceptions > 0;
+for (const tab of ['EDGE', 'DL', 'LB', 'CB', 'S']) PLAYED[tab] = DEFENDED;
 function unrankedRows(position, players, ranked) {
   return players
     .filter((player) => !ranked.has(player.gsisId) && player.games > 0 && PLAYED[position](player.stats))
@@ -1744,11 +1899,64 @@ function gamePassers(id) {
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
   if (UR_ONLY) return unrankedOnly();
+  if (DEF_ONLY) return defenseOnly();
   const shared = {};
   for (const part of PARTS) {
     const held = await updatePart(part, shared);
     await saveEspnCache();
     if (held && part === 'regular') return;
+  }
+}
+
+// DEF_ONLY: the defensive player tabs alone (defensePlayers), each part's, written into the season's ranked
+// and unranked files as they are (every other tab untouched): the backfill of the tabs over the seasons the
+// site has. It reads only what they need, the player list, the part's player stats, PFR's defensive charting
+// and the snap counts (no play-by-play, no ESPN), so a season takes seconds. A part with no ranked file (no
+// playoffs played) gets nothing. A past season's injury flags are its injured-reserve finishers, as updatePart's.
+async function defenseOnly() {
+  const [players, pfrDefWeekly, snaps, ...partStats] = await Promise.all([
+    getCsvGz(`${NFLVERSE}/players/players.csv.gz`),
+    optionalCsvGz(`${NFLVERSE}/pfr_advstats/advstats_week_def_${SEASON}.csv.gz`),
+    optionalCsvGz(`${NFLVERSE}/snap_counts/snap_counts_${SEASON}.csv.gz`),
+    ...PARTS.map((part) => optionalCsvGz(`${NFLVERSE}/stats_player/stats_player_${PLAYER_STATS[part]}_${SEASON}.csv.gz`)),
+  ]);
+  const weekly = pfrDefWeekly.length > 0;
+  const pfrDef = weekly ? pfrDefWeekly : await pfrSeasonRows('def', new Map());
+  for (const rows of [pfrDef, snaps, ...partStats]) sameTeamAbbrs(rows);
+  const season = {
+    playerStatsByPart: Object.fromEntries(PARTS.map((part, i) => [part, partStats[i]])),
+    pfrRows: { def: pfrDef, weekly },
+    snaps,
+    ...playerMaps(players),
+  };
+  console.log(
+    `Season ${SEASON}: defensive players from nflverse (${pfrDef.length ? `PFR ${weekly ? 'weekly' : 'season'} charting, ` : 'no PFR charting, '}${snaps.length ? 'snap counts' : 'no snap counts'})`,
+  );
+  const injuries = PAST_SEASON ? await seasonEndReserve(season.espnByGsis).catch(() => new Map()) : await espnInjuries().catch(() => null);
+  for (const part of PARTS) {
+    const label = part === 'regular' ? '' : ` (${PART_NAMES[part]})`;
+    const ranked = JSON.parse(await readFile(partFile(SKILL_FILE, part), 'utf8').catch(() => 'null'));
+    if (!ranked || !season.playerStatsByPart[part].length) {
+      console.log(`Season ${SEASON}${label}: no ranked rows${ranked ? ' (no nflverse player stats)' : ''}, the defensive tabs left as they are`);
+      continue;
+    }
+    const unranked = JSON.parse(await readFile(partFile(UR_FILE, part), 'utf8').catch(() => '{}'));
+    const nflverse = { ...season, part, playerStats: season.playerStatsByPart[part], defense: defenseInputs(season, part) };
+    const counts = [];
+    for (const [tab, players] of Object.entries(defensePlayers(nflverse))) {
+      const listed = listedPlayers(players, DEF_TABS[tab]);
+      ranked[tab] = players.filter((player) => listed.has(player)).sort((a, b) => a.name.localeCompare(b.name));
+      unranked[tab] = unrankedRows(tab, players, new Set(ranked[tab].map((player) => player.gsisId)));
+      for (const player of [...ranked[tab], ...unranked[tab]]) {
+        if (!player.id) continue;
+        player.injuryStatus = (injuries ? injuries.get(Number(player.id)) : null) ?? 'Active';
+        player.injured = INJURED_STATUSES.includes(player.injuryStatus);
+      }
+      counts.push(`${ranked[tab].length} ${tab} (+${unranked[tab].length} UR)`);
+    }
+    await writeFile(partFile(SKILL_FILE, part), JSON.stringify(ranked));
+    await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
+    console.log(`Season ${SEASON}${label}: wrote the defensive tabs: ${counts.join(', ')}`);
   }
 }
 
@@ -1771,10 +1979,10 @@ async function unrankedOnly() {
     const nflverse = nflversePart(season, part);
     const unranked = { QB: unrankedQbs(nflverse, rankedQbs(rankedQb), await once(shared, 'knownQbs', knownQbIds)) };
     const moved = [];
-    for (const [position, players] of Object.entries(positionPlayers(nflverse))) {
+    for (const [position, players] of Object.entries({ ...positionPlayers(nflverse), ...defensePlayers(nflverse) })) {
       const ids = new Set((ranked[position] ?? []).map((player) => player.gsisId));
       // (who'd be listed now and isn't: nflverse's numbers changed since the season was built)
-      for (const player of listedPlayers(players, SKILL_POSITIONS[position])) if (!ids.has(player.gsisId)) moved.push(`${player.name} (${position})`);
+      for (const player of listedPlayers(players, SKILL_POSITIONS[position] ?? DEF_TABS[position])) if (!ids.has(player.gsisId)) moved.push(`${player.name} (${position})`);
       unranked[position] = unrankedRows(position, players, ids);
     }
     for (const player of Object.values(unranked).flat()) {
@@ -1970,7 +2178,7 @@ async function updatePart(part, shared) {
         .map((player) => [Number(player.id), player.injuryStatus])
     );
     const hurtSkill = [];
-    for (const pos of ['RB', 'WR', 'TE', 'K', 'P']) {
+    for (const pos of ['RB', 'WR', 'TE', 'K', 'P', ...Object.keys(DEF_TABS)]) {
       for (const player of [...(skillOut[pos] ?? []), ...(unranked?.[pos] ?? [])]) {
         if (!player.id) continue;
         const id = Number(player.id);

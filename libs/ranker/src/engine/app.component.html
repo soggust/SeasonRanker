@@ -87,37 +87,68 @@
   <div class="shade" (click)="closeFilters()"></div>
 
   @let position = position$ | async;
-  <div class="content">
+  @let subTabList = position ? subTabs(position) : null;
+  <div class="content" [class.with-sub-row]="!!subTabList">
 
     <!-- Rankings: every tab is the same config-driven table (see positions.ts) -->
     @if (position) {
       <skill-rankings class="rankings" [position]="position">
-        <!-- Position tabs: shown between the rankings' button bar and the grid, as wide as the grid -->
-        <nav class="position-bar" role="tablist" aria-label="Position">
-          @for (tab of positions; track tab) {
+        <!-- Position tabs: shown between the rankings' button bar and the grid, as wide as the grid. A tab
+             grouped under another (the NFL's defensive players under DEF) isn't on the bar: its family's
+             parent is lit while it's open, and the sub-row under the bar names the family -->
+        <nav class="position-bar" [class.has-sub-row]="!!subTabList" role="tablist" aria-label="Position">
+          @for (tab of mainTabs; track tab) {
             <button
               type="button"
               role="tab"
-              [class.active]="tab === position"
-              [attr.aria-selected]="tab === position"
+              [class.active]="tab === litTab(position)"
+              [attr.aria-selected]="tab === litTab(position)"
               (click)="selectPosition(tab)"
             >
               <span class="full">{{ positionNames[tab] }}</span>
               <span class="short">{{ tab }}</span>
             </button>
           }
-          <!-- Phones: one dropdown instead of eight pills (native, so it opens the phone's own picker) -->
+          <!-- Phones: one dropdown instead of eight pills (native, so it opens the phone's own picker), in the
+               sport's groups where it has them -->
           <select
             class="position-select"
             aria-label="Position"
             [value]="position"
             (change)="selectPosition($any($event.target).value)"
           >
-            @for (tab of positions; track tab) {
-              <option [value]="tab" [selected]="tab === position">{{ positionNames[tab] }}</option>
+            @for (group of selectGroups; track group.label) {
+              @if (group.label) {
+                <optgroup [label]="group.label">
+                  @for (tab of group.tabs; track tab) {
+                    <option [value]="tab" [selected]="tab === position">{{ positionNames[tab] }}</option>
+                  }
+                </optgroup>
+              } @else {
+                @for (tab of group.tabs; track tab) {
+                  <option [value]="tab" [selected]="tab === position">{{ positionNames[tab] }}</option>
+                }
+              }
             }
           </select>
         </nav>
+        <!-- The sub-row: the family's tabs (Team D · Edge · DL · LB · CB · S), a second tab list, slimmer, the one
+             showing lit like the bar's -->
+        @if (subTabList) {
+          <nav class="position-sub-row" role="tablist" [attr.aria-label]="subRowLabel(position)">
+            @for (sub of subTabList; track sub.tab) {
+              <button
+                type="button"
+                role="tab"
+                [class.active]="sub.tab === position"
+                [attr.aria-selected]="sub.tab === position"
+                (click)="selectPosition(sub.tab)"
+              >
+                {{ sub.name }}
+              </button>
+            }
+          </nav>
+        }
       </skill-rankings>
     }
   </div>

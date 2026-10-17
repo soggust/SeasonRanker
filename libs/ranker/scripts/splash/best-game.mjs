@@ -52,6 +52,18 @@ export function nflGame(row, tab) {
     const net = s('pt_net_yards') / att;
     return { value: r1(net), line: parts(plural(att, 'punt'), `${r1(net)} net avg`, s('pt_inside_20') ? `${s('pt_inside_20')} inside 20` : '') };
   }
+  // A defender's game by the lockers' measure (build-splash.mjs: 6 a sack, 8 an interception, 4 a forced fumble,
+  // 1.5 a TFL, 1 a pass defended, 0.5 a solo tackle, 6 a TD): his tackles, then what else he did
+  if (['EDGE', 'DL', 'LB', 'CB', 'S'].includes(tab)) {
+    const [solo, ast, tfl, sk, int, pd, ff, td] = ['def_tackles_solo', 'def_tackle_assists', 'def_tackles_for_loss', 'def_sacks', 'def_interceptions', 'def_pass_defended', 'def_fumbles_forced', 'def_tds'].map(s);
+    const tackles = solo + s('def_tackles_with_assist') + ast;
+    const value = r1(6 * sk + 8 * int + 4 * ff + 1.5 * tfl + pd + 0.5 * solo + 6 * td);
+    if (!value) return null;
+    return {
+      value,
+      line: parts(tackles ? `${tackles} tkl` : '', sk ? `${sk} sack${sk === 1 ? '' : 's'}` : '', tfl ? `${tfl} TFL` : '', int ? `${int} INT` : '', pd ? `${pd} PD` : '', ff ? `${ff} FF` : '', td ? `${td} TD` : ''),
+    };
+  }
   const value = row.fantasy_points_ppr === '' || row.fantasy_points_ppr === 'NA' ? null : r1(n(row.fantasy_points_ppr));
   const [py, ptd, ry, rtd, rec, recy, rectd] = ['passing_yards', 'passing_tds', 'rushing_yards', 'rushing_tds', 'receptions', 'receiving_yards', 'receiving_tds'].map(s);
   let line;

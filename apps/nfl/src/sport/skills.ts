@@ -4,6 +4,23 @@ import { SkillPlayer, SkillPosition } from '@sport/positions';
 // NFL skills and archetypes for the player card (their shapes and the words for them:
 // libs/ranker/src/engine/skills.ts)
 
+// Edge rushers and interior linemen: the rush, the run stop, the tackling, the plays that turn games
+const FRONT_SKILLS: SkillDef[] = [
+  { id: 'rush', name: 'Pass Rush', short: 'Pass Rush', parts: [['sacks', 1], ['pressures', 1], ['qbHits', 1], ['hurries', 1], ['pressureRate', 1]] },
+  { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['tfl', 1], ['tackles', 1]] },
+  { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['missedTacklePct', -1]] },
+  { id: 'playmaking', name: 'Playmaking', short: 'Playmaking', parts: [['takeaways', 1], ['forcedFumbles', 1], ['splashPlays', 1]] },
+  { id: 'workload', name: 'Workload', short: 'Workload', parts: [['snapPct', 1]] },
+];
+// Corners and safeties: the coverage, the ball, the tackling
+const SECONDARY_SKILLS: SkillDef[] = [
+  { id: 'coverage', name: 'Coverage', short: 'Coverage', parts: [['passerRatingAllowed', -1], ['compPctAllowed', -1], ['yardsPerTargetAllowed', -1], ['tdsAllowed', -1]] },
+  { id: 'ballhawk', name: 'Ball Skills', short: 'Ball Skills', parts: [['interceptions', 1], ['passesDefended', 1], ['takeaways', 1]] },
+  { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['tackles', 1], ['missedTacklePct', -1]] },
+  { id: 'runSupport', name: 'Run Support', short: 'Run Support', parts: [['tfl', 1], ['forcedFumbles', 1]] },
+  { id: 'workload', name: 'Workload', short: 'Workload', parts: [['snapPct', 1], ['targets', 1]] },
+];
+
 export const SKILLS: Record<SkillPosition, SkillDef[]> = {
   QB: [
     { id: 'accuracy', name: 'Accuracy', short: 'Accuracy', parts: [['compPct', 1], ['cpoe', 1], ['badThrowPct', -1]] },
@@ -60,6 +77,20 @@ export const SKILLS: Record<SkillPosition, SkillDef[]> = {
     { id: 'thirdDown', name: 'Getting Off the Field', short: '3rd Down', parts: [['thirdDownPct', -1]] },
     { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['missedTacklePct', -1]] },
   ],
+  // The defensive players (the charted parts, pressures, hurries, missed tackles and coverage, are empty
+  // before 2018: a skill with nothing left is skipped for the season)
+  EDGE: FRONT_SKILLS,
+  DL: FRONT_SKILLS,
+  LB: [
+    { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['tackles', 1], ['soloTackles', 1], ['missedTacklePct', -1]] },
+    { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['tfl', 1], ['tackles', 1]] },
+    { id: 'blitz', name: 'Blitzing', short: 'Blitz', parts: [['sacks', 1], ['pressures', 1], ['qbHits', 1], ['hurries', 1]] },
+    { id: 'coverage', name: 'Coverage', short: 'Coverage', parts: [['passerRatingAllowed', -1], ['compPctAllowed', -1], ['yardsPerTargetAllowed', -1], ['passesDefended', 1]] },
+    { id: 'playmaking', name: 'Playmaking', short: 'Playmaking', parts: [['takeaways', 1], ['forcedFumbles', 1], ['splashPlays', 1]] },
+    { id: 'workload', name: 'Workload', short: 'Workload', parts: [['snapPct', 1]] },
+  ],
+  CB: SECONDARY_SKILLS,
+  S: [...SECONDARY_SKILLS, { id: 'blitz', name: 'Blitzing', short: 'Blitz', parts: [['sacks', 1]] }],
   OL: [
     { id: 'pass', name: 'Pass Protection', short: 'Pass Pro', parts: [['sacksAllowed', -1], ['qbHitRate', -1], ['pressureRate', -1], ['sackRate', -1]] },
     { id: 'run', name: 'Run Blocking', short: 'Run Block', parts: [['ypc', 1], ['runEpa', 1], ['runSuccess', 1], ['yardsBeforeContact', 1]] },
@@ -102,6 +133,11 @@ const RECEIVER_MINIMUMS: SkillMinimums = {
   dropPct: count('targets', 2, 'targets'),
   epaPerTarget: count('targets', 2, 'targets'),
 };
+const COVERAGE_MINIMUMS: SkillMinimums = {
+  compPctAllowed: count('targets', 1, 'targets'),
+  yardsPerTargetAllowed: count('targets', 1, 'targets'),
+  passerRatingAllowed: count('targets', 1, 'targets'),
+};
 export const SKILL_MINIMUMS: Partial<Record<SkillPosition, SkillMinimums>> = {
   RB: {
     ypc: count('carries', 3, 'carries'),
@@ -113,6 +149,12 @@ export const SKILL_MINIMUMS: Partial<Record<SkillPosition, SkillMinimums>> = {
   WR: RECEIVER_MINIMUMS,
   TE: RECEIVER_MINIMUMS,
   K: { fgPct: count('fgAtt', 1, 'FG attempts'), patPct: count('patAtt', 1, 'XP attempts') },
+  // (a defender's coverage rates with a target a game behind them, his pressure rate 10 snaps a game)
+  LB: { ...COVERAGE_MINIMUMS, pressureRate: count('snaps', 10, 'snaps') },
+  CB: COVERAGE_MINIMUMS,
+  S: COVERAGE_MINIMUMS,
+  EDGE: { pressureRate: count('snaps', 10, 'snaps') },
+  DL: { pressureRate: count('snaps', 10, 'snaps') },
 };
 
 // Stats only skills read (skills.ts SkillDerived): a receiver's touchdowns however he scored them, a
@@ -176,6 +218,16 @@ export const GARBAGE_TIME_STAT: Partial<Record<SkillPosition, [key: string, word
 };
 
 // Archetypes, most specific first: the first whose test passes names the card
+const FRONT_ARCHETYPES = (lead: string): Archetype[] => [
+  { name: 'Sack Artist', test: (s) => s['rush'] >= 0.85 && s['playmaking'] >= 0.6 },
+  { name: 'Pass-Rush Specialist', test: (s) => s['rush'] >= 0.8 && s['runStop'] <= 0.45 },
+  { name: 'Run Stuffer', test: (s) => s['runStop'] >= 0.8 && s['rush'] <= 0.45 },
+  { name: 'Complete Defender', test: (s) => s['rush'] >= 0.7 && s['runStop'] >= 0.7 && s['tackling'] >= 0.6 },
+  { name: 'Turnover Machine', test: (s) => s['playmaking'] >= 0.85 },
+  { name: 'Every-Down Workhorse', test: (s) => s['workload'] >= 0.85 },
+  { name: `Rotational ${lead}`, test: (s) => s['workload'] <= 0.3 },
+  { name: `Featured ${lead}`, test: (_, o) => o >= 0.75 },
+];
 const RECEIVER_ARCHETYPES = (lead: string): Archetype[] => [
   { name: `Alpha ${lead}`, test: (s) => s['role'] >= 0.85 && s['production'] >= 0.8 },
   { name: 'Deep Threat', test: (s) => s['deep'] >= 0.8 && s['production'] >= 0.5 },
@@ -233,6 +285,34 @@ export const ARCHETYPES: Record<SkillPosition, Archetype[]> = {
     { name: "Bend Don't Break", test: (s) => s['scoring'] >= 0.7 && s['overall'] <= 0.5 },
     { name: 'Leaky Defense', test: (s) => s['overall'] <= 0.2 },
   ],
+  EDGE: FRONT_ARCHETYPES('Edge Rusher'),
+  DL: FRONT_ARCHETYPES('Lineman'),
+  LB: [
+    { name: 'Tackling Machine', test: (s) => s['tackling'] >= 0.85 && s['runStop'] >= 0.7 },
+    { name: 'Blitz Weapon', test: (s) => s['blitz'] >= 0.85 },
+    { name: 'Coverage Linebacker', test: (s) => s['coverage'] >= 0.8 && s['blitz'] <= 0.5 },
+    { name: 'Turnover Machine', test: (s) => s['playmaking'] >= 0.85 },
+    { name: 'Three-Down Linebacker', test: (s) => s['workload'] >= 0.8 && s['coverage'] >= 0.6 && s['tackling'] >= 0.6 },
+    { name: 'Run Thumper', test: (s) => s['runStop'] >= 0.8 && s['coverage'] <= 0.4 },
+    { name: 'Missed-Tackle Risk', test: (s) => s['tackling'] <= 0.15 && s['workload'] >= 0.5 },
+  ],
+  CB: [
+    { name: 'Shutdown Corner', test: (s) => s['coverage'] >= 0.85 && s['ballhawk'] >= 0.5 },
+    { name: 'Ballhawk', test: (s) => s['ballhawk'] >= 0.85 },
+    { name: 'Sticky Cover Man', test: (s) => s['coverage'] >= 0.8 },
+    { name: 'Physical Corner', test: (s) => s['tackling'] >= 0.8 && s['runSupport'] >= 0.6 },
+    { name: 'Gambler', test: (s) => s['ballhawk'] >= 0.7 && s['coverage'] <= 0.35 },
+    { name: 'Targeted Often', test: (s) => s['workload'] >= 0.85 && s['coverage'] <= 0.5 },
+    { name: 'Burned Corner', test: (s) => s['coverage'] <= 0.15 },
+  ],
+  S: [
+    { name: 'Center Fielder', test: (s) => s['coverage'] >= 0.8 && s['ballhawk'] >= 0.7 },
+    { name: 'Ballhawk', test: (s) => s['ballhawk'] >= 0.85 },
+    { name: 'Enforcer', test: (s) => s['tackling'] >= 0.8 && s['runSupport'] >= 0.7 },
+    { name: 'Box Safety', test: (s) => s['runSupport'] >= 0.75 && s['coverage'] <= 0.5 },
+    { name: 'Do-It-All Safety', test: (s) => s['coverage'] >= 0.65 && s['tackling'] >= 0.65 && s['ballhawk'] >= 0.65 },
+    { name: 'Liability in Coverage', test: (s) => s['coverage'] <= 0.15 },
+  ],
   OL: [
     { name: 'Fortress', test: (s) => s['pass'] >= 0.8 && s['run'] >= 0.8 },
     { name: 'Pass-Pro Wall', test: (s) => s['pass'] >= 0.8 },
@@ -278,6 +358,11 @@ export function fallbackArchetype(position: SkillPosition, overall: number, _pla
     K: 'Kicker',
     P: 'Punter',
     DEF: 'Defense',
+    EDGE: 'Edge Rusher',
+    DL: 'Lineman',
+    LB: 'Linebacker',
+    CB: 'Corner',
+    S: 'Safety',
     OL: 'Line',
     HC: 'Head Coach',
   };

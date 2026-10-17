@@ -398,6 +398,14 @@ export interface SportConfig {
   rowShown?: (player: SkillPlayer, settings: SportSettings) => boolean;
   // A tab the sport's settings can hide (MMA's women's divisions, until switched on)
   tabVisible?: (position: string, settings: SportSettings) => boolean;
+  // Tabs grouped under one of the bar's (the NFL's Edge, DL, LB, CB and S under DEF): the bar keeps the
+  // parent alone, lit while any of the family is open, and a slimmer sub-row under it shows the family (its
+  // names, in order, the parent's among them: "Team D") while one of them is open. label: the sub-row's name
+  // for screen readers ("Defense position")
+  tabFamilies?: { parent: string; label: string; names: Record<string, string> }[];
+  // The phone's dropdown in named groups (the NFL's Offense / Defense / Special Teams / Team): a tab in
+  // none of them lists at the top, ungrouped
+  tabGroups?: { label: string; tabs: string[] }[];
   // The card's Game Log tab: whether a row has one for a season (that season's games only),
   // and loading it when the tab opens
   gameLog?: {

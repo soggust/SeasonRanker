@@ -3,13 +3,17 @@ import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
 
-export type Position = 'TM' | 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'K' | 'P' | 'DEF' | 'HC';
+export type Position = 'TM' | 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'K' | 'P' | 'DEF' | 'EDGE' | 'DL' | 'LB' | 'CB' | 'S' | 'HC';
 // Every tab uses the same config-driven table, sidebar and scoring below (TM rows are teams, built in
 // the app from the head coach rows; OL rows are team offensive lines, DEF rows team defenses and HC
-// rows head coaches)
+// rows head coaches; EDGE, DL, LB, CB and S rows are the defensive players, by the position they're
+// listed at that season)
 export type SkillPosition = Position;
 
-export const POSITIONS: Position[] = ['TM', 'QB', 'RB', 'WR', 'TE', 'OL', 'K', 'P', 'DEF', 'HC'];
+export const POSITIONS: Position[] = ['TM', 'QB', 'RB', 'WR', 'TE', 'OL', 'K', 'P', 'DEF', 'EDGE', 'DL', 'LB', 'CB', 'S', 'HC'];
+
+// The defensive player tabs: under DEF in the position bar (its sub-row, with Team D: sport.ts tabFamilies)
+export const DEF_PLAYER_TABS: Position[] = ['EDGE', 'DL', 'LB', 'CB', 'S'];
 
 // Keys of the stats object in skill-players.json
 export type SkillStatKey =
@@ -124,7 +128,28 @@ export type SkillStatKey =
   | 'yardsPerGame'
   | 'yardsAllowedPerGame'
   | 'stEpaPerGame'
-  | 'topPerGame';
+  | 'topPerGame'
+  // Defensive players (nflverse box stats; snaps from the snap counts, 2012 on; pressures, hurries, missed
+  // tackles and the coverage "allowed" stats from Pro Football Reference's charting, 2018 on)
+  | 'tackles'
+  | 'soloTackles'
+  | 'tfl'
+  | 'qbHits'
+  | 'pressures'
+  | 'hurries'
+  | 'forcedFumbles'
+  | 'fumbleRecoveries'
+  | 'interceptions'
+  | 'passesDefended'
+  | 'defTds'
+  | 'snaps'
+  | 'snapPct'
+  | 'compPctAllowed'
+  | 'yardsAllowed'
+  | 'yardsPerTargetAllowed'
+  | 'tdsAllowed'
+  | 'passerRatingAllowed'
+  | 'splashPlays';
 
 // Columns computed in the app: fantasy points in the chosen scoring, and team support grades
 export type SkillColumnKey =
@@ -167,7 +192,9 @@ export const STAT_BASIS_LABELS: Record<StatBasis, string> = {
 };
 
 // A full season's games, for the 17-Game Pace (every tab)
-export const PACE_GAMES: Record<Position, number> = { TM: 17, QB: 17, RB: 17, WR: 17, TE: 17, OL: 17, K: 17, P: 17, DEF: 17, HC: 17 };
+export const PACE_GAMES: Record<Position, number> = {
+  TM: 17, QB: 17, RB: 17, WR: 17, TE: 17, OL: 17, K: 17, P: 17, DEF: 17, EDGE: 17, DL: 17, LB: 17, CB: 17, S: 17, HC: 17,
+};
 
 export const RANK_BASIS_LABELS: Record<RankBasis, string> = {
   points: 'Points',
@@ -339,6 +366,25 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   shortYardagePct: 'Short-Yardage Run Conversion Rate',
   linePenaltiesPerGame: 'Blocking Penalties per Game',
   timeToThrow: 'QB Time to Throw (Seconds)',
+  tackles: 'Combined Tackles',
+  soloTackles: 'Solo Tackles',
+  tfl: 'Tackles for Loss',
+  qbHits: 'Quarterback Hits',
+  pressures: 'Pressures',
+  hurries: 'Quarterback Hurries',
+  forcedFumbles: 'Forced Fumbles',
+  fumbleRecoveries: 'Fumble Recoveries',
+  interceptions: 'Interceptions',
+  passesDefended: 'Passes Defended',
+  defTds: 'Defensive Touchdowns',
+  snaps: 'Defensive Snaps',
+  snapPct: 'Defensive Snap Percentage',
+  compPctAllowed: 'Completion Percentage Allowed in Coverage',
+  yardsAllowed: 'Receiving Yards Allowed in Coverage',
+  yardsPerTargetAllowed: 'Yards Allowed per Target',
+  tdsAllowed: 'Touchdowns Allowed in Coverage',
+  passerRatingAllowed: 'Passer Rating Allowed When Targeted',
+  splashPlays: 'Splash Plays (Sacks + Interceptions + Forced Fumbles + Passes Defended)',
 };
 
 // Short labels for volume stats when Stat Base is on Per Game (yards read as YPG, points as PPG)
@@ -371,6 +417,21 @@ export const PER_GAME_LABELS: Partial<Record<SkillColumnKey, string>> = {
   sacks: 'Sacks / Game',
   takeaways: 'TOs / Game',
   sacksAllowed: 'Sacks / Game',
+  tackles: 'Tackles / Game',
+  soloTackles: 'Solo / Game',
+  tfl: 'TFL / Game',
+  qbHits: 'QB Hits / Game',
+  pressures: 'Pressures / Game',
+  hurries: 'Hurries / Game',
+  forcedFumbles: 'FF / Game',
+  fumbleRecoveries: 'FR / Game',
+  interceptions: 'INTs / Game',
+  passesDefended: 'PD / Game',
+  defTds: 'Def TDs / Game',
+  snaps: 'Snaps / Game',
+  yardsAllowed: 'Yds Allowed / Game',
+  tdsAllowed: 'TDs Allowed / Game',
+  splashPlays: 'Splash / Game',
 };
 
 export type SkillWeights = Partial<Record<SkillColumnKey, number>>;
@@ -736,6 +797,174 @@ const TEAM_STATS: SkillStat[] = [
   { ...COACHING_STAT, support: false },
 ];
 
+// ---------------------------------------------------------------------------
+// Defensive players (Edge, DL, LB, CB, S): nflverse's box stats for everyone (tackles, sacks, QB hits,
+// takeaways), the snap counts from 2012 and Pro Football Reference's charting from 2018 (pressures,
+// hurries, missed tackles, and what he allowed as the nearest defender in coverage). A season before a
+// stat was recorded has its column hidden (every row empty); a player PFR has no line for in a season it
+// charts scores as average on its stats, not as the worst (missingIsAverage)
+// ---------------------------------------------------------------------------
+const PFR_NOTE = 'as Pro Football Reference charts them (2018 on)';
+const DEF_SNAPS_STAT: SkillStat = {
+  key: 'snaps',
+  label: 'Snaps',
+  description: 'Defensive snaps played (2012 on; for context, not part of the ranking)',
+  kind: 'volume',
+  format: 'int',
+  infoOnly: true,
+};
+const DEF_SNAP_PCT_STAT: SkillStat = {
+  key: 'snapPct',
+  label: 'Snap %',
+  description: "Average share of the defense's snaps he was on the field for (2012 on)",
+  kind: 'efficiency',
+  format: 'pct',
+  missingIsAverage: true,
+};
+const TACKLES_STAT: SkillStat = { key: 'tackles', label: 'Tackles', description: 'Combined tackles, solo and assisted', kind: 'volume', format: 'int' };
+const SOLO_TACKLES_STAT: SkillStat = { key: 'soloTackles', label: 'Solo Tkl', description: 'Solo tackles', kind: 'volume', format: 'int' };
+const TFL_STAT: SkillStat = { key: 'tfl', label: 'TFL', description: 'Tackles for loss', kind: 'volume', format: 'int' };
+const DEF_SACKS_STAT: SkillStat = { key: 'sacks', label: 'Sacks', description: 'Sacks (a shared sack counts a half)', kind: 'volume', format: 'dec1' };
+const QB_HITS_STAT: SkillStat = { key: 'qbHits', label: 'QB Hits', description: 'Hits on the quarterback, sacks included (from the play-by-play)', kind: 'volume', format: 'int' };
+const PRESSURES_STAT: SkillStat = {
+  key: 'pressures',
+  label: 'Pressures',
+  description: `Sacks, QB hits and hurries, ${PFR_NOTE}`,
+  kind: 'volume',
+  format: 'int',
+  missingIsAverage: true,
+};
+const HURRIES_STAT: SkillStat = { key: 'hurries', label: 'Hurries', description: `Quarterback hurries, ${PFR_NOTE}`, kind: 'volume', format: 'int', missingIsAverage: true };
+const DEF_PRESSURE_RATE_STAT: SkillStat = {
+  key: 'pressureRate',
+  label: 'Pressure %',
+  description:
+    "Pressures per defensive snap (Pro Football Reference doesn't publish pass-rush snaps, so every snap he played counts; 2018 on)",
+  kind: 'efficiency',
+  format: 'pct',
+  missingIsAverage: true,
+};
+const FORCED_FUMBLES_STAT: SkillStat = { key: 'forcedFumbles', label: 'Forced Fum', description: 'Forced fumbles', kind: 'volume', format: 'int' };
+const INTERCEPTIONS_STAT: SkillStat = { key: 'interceptions', label: 'INTs', description: 'Interceptions', kind: 'volume', format: 'int' };
+const PASSES_DEFENDED_STAT: SkillStat = { key: 'passesDefended', label: 'Pass Def', description: 'Passes defended', kind: 'volume', format: 'int' };
+const DEF_TDS_STAT: SkillStat = { key: 'defTds', label: 'Def TDs', description: 'Defensive touchdowns (interception and fumble returns)', kind: 'volume', format: 'int' };
+const DEF_TAKEAWAYS_STAT: SkillStat = { key: 'takeaways', label: 'Takeaways', description: 'Interceptions + opponent fumbles recovered', kind: 'volume', format: 'int' };
+const SPLASH_PLAYS_STAT: SkillStat = {
+  key: 'splashPlays',
+  label: 'Splash Plays',
+  description: 'Sacks + interceptions + forced fumbles + passes defended',
+  kind: 'volume',
+  format: 'dec1',
+};
+const DEF_MISSED_TACKLE_STAT: SkillStat = {
+  key: 'missedTacklePct',
+  label: 'Missed Tkl %',
+  description: `Missed tackles per tackle attempt, ${PFR_NOTE} (lower is better)`,
+  kind: 'efficiency',
+  format: 'pct',
+  negative: true,
+  missingIsAverage: true,
+};
+// Coverage: what he allowed as the nearest defender on the throws PFR charts to him (targets are his
+// coverage workload: a slider to zero if it shouldn't count)
+const COVERAGE_TARGETS_STAT: SkillStat = {
+  key: 'targets',
+  label: 'Targets',
+  description: `Throws at the receiver he was covering, ${PFR_NOTE}: his coverage workload`,
+  kind: 'volume',
+  format: 'int',
+  missingIsAverage: true,
+};
+const COMP_PCT_ALLOWED_STAT: SkillStat = {
+  key: 'compPctAllowed',
+  label: 'Comp % Allowed',
+  description: `Completions per target in his coverage, ${PFR_NOTE} (lower is better)`,
+  kind: 'efficiency',
+  format: 'pct',
+  negative: true,
+  missingIsAverage: true,
+};
+const YARDS_ALLOWED_STAT: SkillStat = {
+  key: 'yardsAllowed',
+  label: 'Yds Allowed',
+  description: `Receiving yards allowed in his coverage, ${PFR_NOTE} (lower is better)`,
+  kind: 'volume',
+  format: 'int',
+  negative: true,
+  missingIsAverage: true,
+};
+const YARDS_PER_TARGET_ALLOWED_STAT: SkillStat = {
+  key: 'yardsPerTargetAllowed',
+  label: 'Yds / Target',
+  description: `Yards allowed per target in his coverage, ${PFR_NOTE} (lower is better)`,
+  kind: 'efficiency',
+  format: 'dec1',
+  negative: true,
+  missingIsAverage: true,
+};
+const TDS_ALLOWED_STAT: SkillStat = {
+  key: 'tdsAllowed',
+  label: 'TDs Allowed',
+  description: `Touchdowns allowed in his coverage, ${PFR_NOTE} (lower is better)`,
+  kind: 'volume',
+  format: 'int',
+  negative: true,
+  missingIsAverage: true,
+};
+const RATING_ALLOWED_STAT: SkillStat = {
+  key: 'passerRatingAllowed',
+  label: 'Rating Allowed',
+  description: `Passer rating on throws into his coverage, ${PFR_NOTE} (lower is better)`,
+  kind: 'efficiency',
+  format: 'dec1',
+  negative: true,
+  missingIsAverage: true,
+};
+const COVERAGE_STATS: SkillStat[] = [
+  COVERAGE_TARGETS_STAT,
+  COMP_PCT_ALLOWED_STAT,
+  YARDS_ALLOWED_STAT,
+  YARDS_PER_TARGET_ALLOWED_STAT,
+  TDS_ALLOWED_STAT,
+  RATING_ALLOWED_STAT,
+];
+
+// Edge rushers and interior linemen: the pass rush and the run stop, then the plays that turn games
+const FRONT_STATS: SkillStat[] = [
+  GAMES_STAT,
+  DEF_SNAPS_STAT,
+  DEF_SACKS_STAT,
+  TFL_STAT,
+  TACKLES_STAT,
+  QB_HITS_STAT,
+  FORCED_FUMBLES_STAT,
+  DEF_TAKEAWAYS_STAT,
+  SPLASH_PLAYS_STAT,
+  DEF_TDS_STAT,
+  PRESSURES_STAT,
+  HURRIES_STAT,
+  DEF_PRESSURE_RATE_STAT,
+  DEF_MISSED_TACKLE_STAT,
+  DEF_SNAP_PCT_STAT,
+];
+
+// Corners and safeties: the ball and the receiver first, then the tackling
+const SECONDARY_STATS: SkillStat[] = [
+  GAMES_STAT,
+  DEF_SNAPS_STAT,
+  INTERCEPTIONS_STAT,
+  PASSES_DEFENDED_STAT,
+  TACKLES_STAT,
+  TFL_STAT,
+  FORCED_FUMBLES_STAT,
+  DEF_TAKEAWAYS_STAT,
+  SPLASH_PLAYS_STAT,
+  DEF_TDS_STAT,
+  ...COVERAGE_STATS,
+  DEF_MISSED_TACKLE_STAT,
+  DEF_SNAP_PCT_STAT,
+];
+
 export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   TM: TEAM_STATS,
   // Record, Recent and ESPN box stats; play-by-play and charting stats (nflverse) in Advanced
@@ -1085,6 +1314,32 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
     QB_PLAY_STAT,
     COACHING_STAT,
   ],
+  EDGE: FRONT_STATS,
+  DL: FRONT_STATS,
+  // Linebackers do everything: the tackling, the blitz, the coverage and the takeaways
+  LB: [
+    GAMES_STAT,
+    DEF_SNAPS_STAT,
+    TACKLES_STAT,
+    SOLO_TACKLES_STAT,
+    TFL_STAT,
+    DEF_SACKS_STAT,
+    QB_HITS_STAT,
+    INTERCEPTIONS_STAT,
+    PASSES_DEFENDED_STAT,
+    FORCED_FUMBLES_STAT,
+    DEF_TAKEAWAYS_STAT,
+    SPLASH_PLAYS_STAT,
+    DEF_TDS_STAT,
+    PRESSURES_STAT,
+    HURRIES_STAT,
+    ...COVERAGE_STATS,
+    DEF_MISSED_TACKLE_STAT,
+    DEF_SNAP_PCT_STAT,
+  ],
+  CB: SECONDARY_STATS,
+  // (a safety's sacks too: the blitz off the edge)
+  S: [...SECONDARY_STATS.slice(0, 6), SOLO_TACKLES_STAT, DEF_SACKS_STAT, ...SECONDARY_STATS.slice(6)],
   // Lower is better for everything "allowed", and for stuffs and penalties
   OL: [
     GAMES_STAT,
@@ -1336,6 +1591,15 @@ const ADVANCED_STATS = new Set<SkillColumnKey>([
   'runSuccess',
   'timeToThrow',
   'netEpa',
+  // (the defensive players' charted and snap-count stats; their coverage targets stay a basic count)
+  'pressures',
+  'hurries',
+  'snapPct',
+  'compPctAllowed',
+  'yardsAllowed',
+  'yardsPerTargetAllowed',
+  'tdsAllowed',
+  'passerRatingAllowed',
   // Fantasy points close out each Advanced Stats group
   'fantasy',
 ]);

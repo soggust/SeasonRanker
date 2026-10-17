@@ -119,6 +119,38 @@ for (const sport of SPORTS) {
   });
 }
 
+// The NFL's defensive player tabs (EDGE, DL, LB, CB, S: update-data.mjs defensePlayers, backfilled to 2000): in
+// every season's ranked and unranked files, each part's, shaped like the offensive player tabs' rows (an ESPN id
+// for the headshot where nflverse has one, the gsis id, games, the stats block) and no one on two of them a season
+test('nfl: the defensive player tabs are in every season and part, shaped like the other player tabs', () => {
+  const DEF_TABS = ['EDGE', 'DL', 'LB', 'CB', 'S'];
+  for (const dir of seasonDirs('nfl')) {
+    const where = label('nfl', dir);
+    for (const name of ['skill-players.json', 'skill-players.post.json', 'skill-players.all.json']) {
+      const file = path.join(dir, name);
+      if (!fs.existsSync(file)) continue;
+      const rows = readJson(file);
+      const urFile = path.join(dir, name.replace('skill-players', 'skill-players.ur'));
+      const ur = fs.existsSync(urFile) ? readJson(urFile) : {};
+      const seen = new Set();
+      for (const tab of DEF_TABS) {
+        assert.ok(Array.isArray(rows[tab]) && rows[tab].length > 0, `${where} ${name}: no ${tab} rows`);
+        for (const row of [...rows[tab], ...(ur[tab] ?? [])]) {
+          assert.ok(typeof row.gsisId === 'string' && row.gsisId.startsWith('00-'), `${where} ${name} ${tab}: ${row.name} gsisId`);
+          assert.ok(row.id === null || Number.isInteger(row.id), `${where} ${name} ${tab}: ${row.name} id`);
+          assert.ok(Number.isInteger(row.games) && row.games > 0, `${where} ${name} ${tab}: ${row.name} games`);
+          assert.ok(row.stats && typeof row.stats.tackles === 'number' && typeof row.stats.sacks === 'number', `${where} ${name} ${tab}: ${row.name} stats`);
+          assert.ok(!seen.has(row.gsisId), `${where} ${name}: ${row.name} on two defensive tabs`);
+          seen.add(row.gsisId);
+        }
+        // (the ranked rows have headshots to show: nearly every one has an ESPN id)
+        const withId = rows[tab].filter((row) => row.id).length;
+        assert.ok(withId >= rows[tab].length * 0.9, `${where} ${name} ${tab}: only ${withId} of ${rows[tab].length} rows have an ESPN id`);
+      }
+    }
+  }
+});
+
 // The model desk (libs/ranker/scripts/model/run.mjs writes these): only the fields the desk and its page
 // rely on are required, so the model can add more
 const STATUSES = new Set(['open', 'won', 'lost', 'push']);

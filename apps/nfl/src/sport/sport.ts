@@ -1,6 +1,7 @@
 import type { CardFlag, FlagContext, GameLogChart, SportConfig } from '@ranker/engine/sport';
 import { espnGameLog, espnTeamGameLog } from '@ranker/core/game-logs';
 import {
+  DEF_PLAYER_TABS,
   FANTASY_SCORING_LABELS,
   FantasyScoring,
   RANK_BASIS_LABELS,
@@ -114,6 +115,7 @@ const headshot = espnHeadshot('nfl');
 // A row's logo file name (the team's nickname: "Ravens"); the rows with their team's games as their log
 const logoName = (p: { teamLogo?: string | null }) => p.teamLogo?.match(/([^/]+)\.\w+$/)?.[1];
 const TEAM_LOGS = ['TM', 'DEF', 'OL', 'HC'];
+const PLAYER_LOGS = ['QB', 'RB', 'WR', 'TE', 'K', 'P'];
 // The Game Log's chart: each game's total yards (passing and rushing, or from scrimmage), one plain bar
 const TOTAL_YARDS = { label: 'Total yards', stack: ['Passing YDS', 'Rushing YDS', 'Receiving YDS'], combine: true };
 const YARDS_CHART: Record<string, GameLogChart | undefined> = { QB: TOTAL_YARDS, RB: TOTAL_YARDS, WR: TOTAL_YARDS, TE: TOTAL_YARDS };
@@ -137,6 +139,11 @@ export const SPORT: SportConfig = {
     K: 'Kicker',
     P: 'Punter',
     DEF: 'Defense',
+    EDGE: 'Edge Rusher',
+    DL: 'Defensive Lineman',
+    LB: 'Linebacker',
+    CB: 'Cornerback',
+    S: 'Safety',
     HC: 'Head Coach',
   },
   tabNames: {
@@ -149,8 +156,22 @@ export const SPORT: SportConfig = {
     K: 'Kickers',
     P: 'Punters',
     DEF: 'Defenses',
+    EDGE: 'Edge Rushers',
+    DL: 'Defensive Linemen',
+    LB: 'Linebackers',
+    CB: 'Cornerbacks',
+    S: 'Safeties',
     HC: 'Head Coaches',
   },
+  // The defensive players under DEF in the bar: its sub-row, Team D (the defenses) first; and the phone's
+  // dropdown in groups
+  tabFamilies: [{ parent: 'DEF', label: 'Defense position', names: { DEF: 'Team D', EDGE: 'Edge', DL: 'DL', LB: 'LB', CB: 'CB', S: 'S' } }],
+  tabGroups: [
+    { label: 'Offense', tabs: ['QB', 'RB', 'WR', 'TE', 'OL'] },
+    { label: 'Defense', tabs: ['DEF', 'EDGE', 'DL', 'LB', 'CB', 'S'] },
+    { label: 'Special Teams', tabs: ['K', 'P'] },
+    { label: 'Team', tabs: ['TM', 'HC'] },
+  ],
   coachTab: 'HC',
   teamTabs: ['TM', 'DEF', 'OL'],
   // (the QBs' rows go by ESPN's id, "QB-<id>": the same man's rows on the other tabs by that headshot id,
@@ -195,12 +216,14 @@ export const SPORT: SportConfig = {
   // charting his total yards
   gameLog: {
     league: 'football/nfl',
-    has: (player, position) => TEAM_LOGS.includes(position) || (['QB', 'RB', 'WR', 'TE', 'K', 'P'].includes(position) && Number(player.id) > 0),
+    has: (player, position) => TEAM_LOGS.includes(position) || ([...PLAYER_LOGS, ...DEF_PLAYER_TABS].includes(position) && Number(player.id) > 0),
     load: (player, position, season) =>
       TEAM_LOGS.includes(position)
         ? espnTeamGameLog('football/nfl', [player.name, logoName(player)], season, 4)
         : espnGameLog('football/nfl', player.id!, season, {
-            label: (group, label) => (['LNG', 'SACK', 'FUM', 'FF', 'KB'].includes(label) ? null : label),
+            // (a defender's log keeps his sacks and forced fumbles; the longest gains go for everyone)
+            label: (group, label) =>
+              ['LNG', 'KB'].includes(label) || (!(DEF_PLAYER_TABS as string[]).includes(position) && ['SACK', 'FUM', 'FF'].includes(label)) ? null : label,
             chart: YARDS_CHART[position],
             fumblesLost: YARDS_CHART[position] ? 'Rushing' : undefined,
           }),
