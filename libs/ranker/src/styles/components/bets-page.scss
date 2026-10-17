@@ -1604,12 +1604,20 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // game's lines beside it. It unfolds down from its row
 // (the open row's content starts where the pick's words do: the row's padding, the lead cell, the circle and their
 // gaps; no gutter past that: the owner's note, 2026-10-17)
+// ("just to see", the owner's note (2026-10-17), a commit of its own: the open row's content on the Live tab's
+// chalkboard, the chalked betting art (--tex-chalk-bets) over the chalk dust on the slate, inset within the row
+// with 6px corners and a thin lighter chalk edge, its words chalk-white; the collapsed row as it is)
 .bet-reasons {
   animation: bet-unfold 0.24s v.$ease-out;
+  background: var(--tex-chalk-bets) 50% 35% / 1400px 720px no-repeat, v.$chalk-dust;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
   display: grid;
   gap: v.$space-14 v.$space-28;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  padding: 0 16px 16px 142px;
+  margin: 0 16px 14px 142px;
+  padding: 14px 16px 16px;
 
   .bet-words {
     display: flex;
@@ -1618,7 +1626,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   p {
-    color: v.$text-strong;
+    color: #eef1ea;
     font-size: v.$fs-13;
     line-height: 1.55;
     margin: 0;
@@ -1783,7 +1791,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   .bet-reasons {
     grid-template-columns: minmax(0, 1fr);
-    padding: 0 10px 14px;
+    margin: 0 10px 12px;
+    padding: 12px;
   }
 }
 
