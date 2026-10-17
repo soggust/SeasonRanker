@@ -24,6 +24,14 @@ export interface MenuGameIn {
   start: string | null;
   date?: string | null;
   count: number | null;
+  // (the two teams as the matchup names them, away then home, each with its logo's address when the page has
+  // one (a fighter's his headshot); none known, the row shows the name alone)
+  teams?: MenuTeam[];
+}
+
+export interface MenuTeam {
+  abbr: string;
+  logo: string | null;
 }
 
 export interface MenuGame {
@@ -38,6 +46,8 @@ export interface MenuGame {
   label: string;
   at: number;
   count: number | null;
+  // (the two faces before the name, in the name's order: a fight's first-listed fighter first)
+  faces: MenuTeam[];
 }
 
 export interface MenuSport {
@@ -88,6 +98,7 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
     if (!when || isNaN(when.getTime())) continue;
     const time = kickoff && when === kickoff ? kickoff.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone }) : null;
     const name = matchupName(g.sport, g.matchup);
+    const teams = g.teams ?? [];
     rows.push({
       key: g.key,
       sport: g.sport,
@@ -97,6 +108,7 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
       label: time ? `${name} · ${time}` : name,
       at: when.getTime(),
       count: g.count,
+      faces: g.sport === 'mma' ? [...teams].reverse() : teams,
       day: when.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone }),
     });
   }
@@ -139,4 +151,51 @@ export function gameLine(sport: string, matchup: string, kickoff: string | null 
   const t = kickoff ? new Date(kickoff) : null;
   const when = t && !isNaN(t.getTime()) ? t.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone }).replace(',', '') : null;
   return { name, when, text: when ? `${name} · ${when}` : name };
+}
+
+// (a day's caption on its band: "Saturday, Oct 17" as "SATURDAY · OCT 17")
+export function dayBand(day: string): string {
+  return day.replace(', ', ' · ').toUpperCase();
+}
+
+// The list's choices in the order they're laid out (the keyboard's path through them): Best bets · every game
+// (''), then under each day each sport's heading (sportChoice) and its games' keys. A sport's heading is on the
+// list once each day it has a game, each the same choice
+export function menuValues(days: MenuDay[]): string[] {
+  return ['', ...days.flatMap((d) => d.sports.flatMap((s) => [sportChoice(s.sport), ...s.games.map((g) => g.key)]))];
+}
+
+// A key pressed with the list open, the lit choice `active`: the arrows walk the list (held at its ends), Home
+// and End jump to them, PageUp and PageDown move eight, Enter and Space take the lit choice, Escape and Tab
+// shut the list (Tab going on its way); any other key, nothing
+export type MenuKeyAction = { kind: 'move'; value: string } | { kind: 'choose' } | { kind: 'close' } | null;
+export function menuKey(key: string, values: string[], active: string): MenuKeyAction {
+  if (key === 'Escape' || key === 'Tab') return { kind: 'close' };
+  if (!values.length) return null;
+  const at = Math.max(0, values.indexOf(active));
+  const to = (i: number): MenuKeyAction => ({ kind: 'move', value: values[Math.min(values.length - 1, Math.max(0, i))] });
+  switch (key) {
+    case 'ArrowDown':
+      return to(at + 1);
+    case 'ArrowUp':
+      return to(at - 1);
+    case 'Home':
+      return to(0);
+    case 'End':
+      return to(values.length - 1);
+    case 'PageDown':
+      return to(at + 8);
+    case 'PageUp':
+      return to(at - 8);
+    case 'Enter':
+    case ' ':
+      return { kind: 'choose' };
+    default:
+      return null;
+  }
+}
+
+// (an option's element id, for aria-activedescendant: the value's letters and digits alone; Best bets' "all")
+export function menuOptionId(value: string): string {
+  return `bets-game-opt-${value.replace(/[^A-Za-z0-9]+/g, '-') || 'all'}`;
 }

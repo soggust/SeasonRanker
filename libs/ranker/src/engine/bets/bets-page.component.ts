@@ -21,7 +21,8 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSp
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { MenuDay, MenuGame, MenuGameIn, chosenSport, gameLine, gameMenu, sportChoice, sportFace } from './game-menu';
+import { MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, gameLine, gameMenu, menuKey, menuOptionId, menuValues, sportChoice, sportFace } from './game-menu';
+import { teamLook } from '../team-look';
 
 // The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -166,6 +167,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const open = () => !!(this.why || this.checkWhy);
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k'), (event) => this.clickOff(event));
     quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
+    // (the game list open: a click anywhere off it and its pill shuts it, the same quiet way)
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.menuOpen && !(event.target as Element | null)?.closest('.bets-game-wrap'), () => this.closeMenu(false));
   }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
   readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;
@@ -390,7 +393,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     for (const g of this.lines.boards().values()) {
       const picked = this.boards.get(`${g.sport}|${g.matchup}`);
       if (g.state !== 'pre' || (picked?.event === g.event && this.boardPicks(picked).length) || !(g.spread || g.total || g.ml)) continue;
-      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null });
+      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)) });
     }
     return out;
   }
@@ -536,7 +539,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     for (const r of rows) {
       if (!r.game) continue;
       const key = this.gameKey(r);
-      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0 };
+      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)) };
       if (r.check) game.count++;
       else if (game.bets < this.gameLimit) {
         game.bets++;
@@ -559,8 +562,73 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The dropdown's value: the chosen game's key, else the chosen sport (game-menu.ts sportChoice), else Best
   // bets (''); and what it chose: a sport's heading, a game, or Best bets · every game (both filters off)
   readonly sportChoice = sportChoice;
+  readonly dayBand = dayBand;
+  readonly optId = menuOptionId;
   get choice(): string {
     return this.game || (this.sport ? sportChoice(this.sport) : '');
+  }
+
+  // The dropdown's open list, the page's own (a listbox under the pill, not Material's overlay): Best bets ·
+  // every game first, then each day on a band, under it each sport's heading (its icon, name and count) and its
+  // games (the two teams' faces, the matchup, its start and its count). Open, the list has the focus and
+  // aria-activedescendant names the lit choice; the arrows walk it, Enter takes it, Escape shuts it (game-menu.ts
+  // menuKey); a click anywhere off it shuts it too (the constructor's listener). Shut, the pill takes the focus
+  // back when the keyboard shut it
+  menuOpen = false;
+  active = '';
+  @ViewChild('gamePill') gamePill?: ElementRef<HTMLElement>;
+  @ViewChild('gameList') gameList?: ElementRef<HTMLElement>;
+  toggleMenu(): void {
+    if (this.menuOpen) this.closeMenu(false);
+    else this.openMenu();
+  }
+  openMenu(): void {
+    this.menuOpen = true;
+    this.active = this.choice;
+    // (the list is in the DOM on the next check: then the focus and the lit row into view)
+    setTimeout(() => {
+      this.gameList?.nativeElement.focus({ preventScroll: true });
+      this.showActive();
+    });
+  }
+  closeMenu(refocus: boolean): void {
+    if (!this.menuOpen) return;
+    this.menuOpen = false;
+    if (refocus) this.gamePill?.nativeElement.focus({ preventScroll: true });
+  }
+  // (the pill's keys: the arrows open the list (Enter and Space click it); Escape with the list open shuts it)
+  pillKey(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!this.menuOpen) this.openMenu();
+      else this.gameList?.nativeElement.focus({ preventScroll: true });
+    }
+  }
+  listKey(event: KeyboardEvent): void {
+    const action = menuKey(event.key, menuValues(this.gameMenu), this.active);
+    if (!action) return;
+    if (event.key !== 'Tab') event.preventDefault();
+    // (Escape here alone: the board's own Escape (the why popover's) stays out of it)
+    event.stopPropagation();
+    if (action.kind === 'move') {
+      this.active = action.value;
+      this.showActive();
+    } else if (action.kind === 'choose') this.pick(this.active, true);
+    else this.closeMenu(event.key === 'Escape');
+  }
+  // (a choice taken from the list, by a click or Enter: chosen, the list shut)
+  pick(value: string, refocus = false): void {
+    this.choose(value);
+    this.closeMenu(refocus);
+  }
+  private showActive(): void {
+    document.getElementById(menuOptionId(this.active))?.scrollIntoView({ block: 'nearest' });
+  }
+  // (a team's face in the list: its logo's address under its sport's site (a full address as it is: ESPN's, a
+  // fighter's headshot), or the site's own logo for its abbreviation when the board has none)
+  private menuTeam(sport: string, abbr: string, logo: string | null): MenuTeam {
+    const own = logo ?? teamLook(sport, abbr).logo;
+    return { abbr, logo: !own ? null : /^https?:/.test(own) ? own : `/${sport}/${own}` };
   }
   choose(value: string): void {
     const sport = chosenSport(value);

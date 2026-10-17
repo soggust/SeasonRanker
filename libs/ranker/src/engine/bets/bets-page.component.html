@@ -96,16 +96,19 @@
          (the pill "NFL · best bets"); Best bets · every game clears it. When the sheet was updated, and whose odds,
          on its hover) -->
     @if (gameMenu.length) {
-      <mat-select
-        class="bets-game"
-        panelClass="bets-game-options"
-        [panelWidth]="null"
-        aria-label="Game or sport"
-        [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · DraftKings odds' : null"
-        [value]="choice"
-        (valueChange)="choose($event)"
-      >
-        <mat-select-trigger>
+      <div class="bets-game-wrap" [class.open]="menuOpen">
+        <button
+          #gamePill
+          type="button"
+          class="bets-game"
+          aria-haspopup="listbox"
+          aria-label="Game or sport"
+          [attr.aria-expanded]="menuOpen"
+          [attr.aria-controls]="menuOpen ? 'bets-game-list' : null"
+          [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · DraftKings odds' : null"
+          (click)="toggleMenu()"
+          (keydown)="pillKey($event)"
+        >
           <span class="bets-game-face">
             @if (chosenGame; as g) {
               <mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>
@@ -121,34 +124,88 @@
             }
             <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
-        </mat-select-trigger>
-        <mat-option value="" class="game-all"><span class="game-label">Best bets · every game</span><span class="game-count">{{ bestCount }}</span></mat-option>
-        @for (d of gameMenu; track d.day) {
-          @for (s of d.sports; track s.sport; let first = $first) {
-            <!-- (a group a sport's day: the day's header over its first sport, the others' day read out only; the
-                 sport's heading an option of its own (the same one under every day): its best bets, every day's,
-                 with how many) -->
-            <mat-optgroup label="" [class.day-first]="first">
-              <span class="game-day" [class.visually-hidden]="!first">{{ d.day }}<span class="visually-hidden">, </span></span>
-              <mat-option [value]="sportChoice(s.sport)" class="game-sport" [title]="'Every ' + s.name + ' pick, every day'">
-                <span class="game-sport-name"><mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>{{ s.name }}</span>
-                <span class="game-count">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
-              </mat-option>
-              @for (g of s.games; track g.key) {
-                <mat-option [value]="g.key">
-                  <span class="game-label">{{ g.name }}</span>
-                  <span class="game-when">{{ g.time ?? '' }}</span>
-                  @if (g.count === null) {
-                    <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
+        </button>
+        <!-- The open list, a listbox of the page's own (the keyboard and the click-off in bets-page.component.ts):
+             Best bets · every game on top with its count, then each day on a gold dot-matrix band, under it each
+             sport as a row of its own (its icon, its name, its count; a choice: that sport's best bets, every
+             day's, with a left accent in its colour), under that its games indented (the two teams' faces, the
+             matchup (a fight "A vs B"), the start in the ticket's mono, the count of picks in a small pill or a
+             quiet "lines" with nothing picked). The lit row (the pointer's or the arrows') washed; the chosen one
+             in gold with the lit dots along its foot -->
+        @if (menuOpen) {
+          <div #gameList id="bets-game-list" class="bets-game-list" role="listbox" tabindex="-1" aria-label="Game or sport" [attr.aria-activedescendant]="optId(active)" (keydown)="listKey($event)">
+            <div
+              class="game-opt game-all"
+              role="option"
+              [id]="optId('')"
+              [attr.aria-selected]="choice === ''"
+              [class.active]="active === ''"
+              [class.chosen]="choice === ''"
+              (mouseenter)="active = ''"
+              (click)="pick('')"
+            >
+              <mat-icon class="game-icon" aria-hidden="true" fontIcon="emoji_events"></mat-icon>
+              <span class="game-label">Best bets · every game</span>
+              <span class="game-pill">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
+            </div>
+            @for (d of gameMenu; track d.day) {
+              <div class="game-day" role="presentation">{{ dayBand(d.day) }}</div>
+              @for (s of d.sports; track s.sport) {
+                <div
+                  class="game-opt game-sport"
+                  [ngClass]="'sport-' + s.sport"
+                  role="option"
+                  [id]="optId(sportChoice(s.sport))"
+                  [attr.aria-selected]="choice === sportChoice(s.sport)"
+                  [class.active]="active === sportChoice(s.sport)"
+                  [class.chosen]="choice === sportChoice(s.sport)"
+                  [title]="'Every ' + s.name + ' pick, every day'"
+                  (mouseenter)="active = sportChoice(s.sport)"
+                  (click)="pick(sportChoice(s.sport))"
+                >
+                  <mat-icon class="game-icon" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
+                  <span class="game-sport-name">{{ s.name }}</span>
+                  @if (sportCount(s.sport)) {
+                    <span class="game-pill">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
                   } @else {
-                    <span class="game-count">{{ g.count }} {{ g.count === 1 ? 'pick' : 'picks' }}</span>
+                    <span class="game-lines" title="Lines only: the bot has no pick in it">lines</span>
                   }
-                </mat-option>
+                </div>
+                @for (g of s.games; track g.key) {
+                  <div
+                    class="game-opt game-row"
+                    role="option"
+                    [id]="optId(g.key)"
+                    [attr.aria-selected]="choice === g.key"
+                    [class.active]="active === g.key"
+                    [class.chosen]="choice === g.key"
+                    [class.lines]="g.count === null"
+                    (mouseenter)="active = g.key"
+                    (click)="pick(g.key)"
+                  >
+                    <span class="game-faces" aria-hidden="true">
+                      @for (f of g.faces; track $index) {
+                        @if (f.logo) {
+                          <img class="game-face" [src]="f.logo" alt="" loading="lazy" />
+                        } @else {
+                          <span class="game-face game-face-abbr">{{ f.abbr.slice(0, 3) }}</span>
+                        }
+                      }
+                    </span>
+                    <span class="game-label">{{ g.name }}</span>
+                    <span class="game-when">{{ g.time ?? '' }}</span>
+                    @if (g.count === null) {
+                      <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
+                    } @else {
+                      <span class="game-pill small">{{ g.count }} {{ g.count === 1 ? 'pick' : 'picks' }}</span>
+                    }
+                  </div>
+                }
               }
-            </mat-optgroup>
-          }
+            }
+          </div>
         }
-      </mat-select>
+      </div>
     }
     <!-- The filter chips: a type of bet each, in its own chip color; on, only those (none: all); what the label
          means on its hover -->

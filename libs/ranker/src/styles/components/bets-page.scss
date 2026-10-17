@@ -82,7 +82,8 @@ $page-gutter: 16px;
 .book-title {
   align-items: center;
   display: flex;
-  gap: v.$space-12;
+  // (more air between the chip and the title: the owner's note, 2026-10-17)
+  gap: v.$space-20;
 
   h1 {
     @include glow;
@@ -302,11 +303,14 @@ $page-gutter: 16px;
   justify-content: space-between;
 }
 
+// (the ticket's mono, for the list's start times)
+$font-mono: "IBM Plex Mono", "Courier New", monospace;
+
 // The game dropdown: a player's card pill (the bankroll card's black fade in its gold rail), 44px tall, the
-// sport's icon, the game or Best bets, the count of picks lit, and a gold caret that turns while it's open; its
-// open list is in the overlay, styled in _base.scss (bets-game-options). A Material select: its own lettering
-// (heading-input) and the caret's hiding are _base.scss's too
+// sport's icon, the game or Best bets, the count of picks lit, and a gold caret that turns while it's open; a
+// button of the page's own, its open list the listbox under it (.bets-game-list, below)
 .bets-game {
+  border: none;
   @include chip.player-card(v.$radius-pill);
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
@@ -338,6 +342,254 @@ $page-gutter: 16px;
     rotate: 180deg;
   }
 }
+
+// The game dropdown's open list: the page's own listbox under the pill (bets-page.component.html), the bankroll
+// card's black fade in a gold edge, 420px tall at most with a gold scrollbar. Best bets · every game on top (a
+// trophy, its count), each day a gold dot-matrix band, each sport a 44px row (its icon and name in gold caps, a
+// left accent in its league's colour, its count in a pill, lifted on hover), its games 40px rows indented under it
+// (the two teams' faces, the matchup, the start in the ticket's mono, a small count pill or a faint "lines"). The
+// lit row (the pointer's or the arrows') a faint light; the chosen one washed gold, its words gold, the lit dots
+// along its foot. A phone's the full width under the pill
+.bets-game-wrap {
+  display: inline-flex;
+  max-width: calc(100vw - 2 * #{$page-gutter});
+  position: relative;
+
+  &.open {
+    z-index: 40;
+  }
+}
+
+.bets-game-list {
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.14), transparent 45%),
+    linear-gradient(160deg, #1d1d1d, #121212 60%, #1a1a1a);
+  border: 1px solid #b38a3c;
+  border-radius: v.$radius-xl;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  left: 0;
+  max-height: 420px;
+  max-width: calc(100vw - 32px);
+  min-width: 380px;
+  outline: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 6px 0 8px;
+  position: absolute;
+  top: calc(100% + 8px);
+  width: max-content;
+  @include chip.gold-scrollbar;
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px rgba(chip.$gold-led, 0.5),
+      0 12px 30px rgba(0, 0, 0, 0.6);
+  }
+}
+
+// (a day's band: gold caps on the board's dots, a gold hairline over and under)
+.game-day {
+  @include glow;
+  background:
+    linear-gradient(90deg, rgba(chip.$gold-led, 0.16), transparent 70%),
+    var(--scoreboard-dots),
+    #121212;
+  border-bottom: 1px solid rgba(chip.$gold-led, 0.22);
+  border-top: 1px solid rgba(chip.$gold-led, 0.22);
+  font-family: v.$font-base;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  padding: 6px 12px 5px;
+  text-transform: uppercase;
+}
+
+.game-opt {
+  align-items: center;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  font-family: v.$font-heading;
+  gap: v.$space-10;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0 12px;
+  position: relative;
+  transition:
+    background v.$t-hover ease,
+    transform v.$t-hover ease;
+  user-select: none;
+
+  .game-icon {
+    @include v.icon-size(20px);
+    color: chip.$gold-led;
+  }
+
+  .game-label {
+    @include v.ellipsis;
+    font-size: v.$fs-13;
+    font-weight: 500;
+  }
+
+  // (the count: the band's small pill, in gold)
+  .game-pill {
+    --band-color: #{chip.$gold-led};
+    background: color-mix(in srgb, var(--band-color) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--band-color) 55%, transparent);
+    border-radius: v.$radius-pill;
+    color: var(--band-color);
+    font-family: v.$font-heading;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 22px;
+    padding: 3px 7px;
+    text-align: center;
+    white-space: nowrap;
+
+    &.small {
+      font-size: v.$fs-10;
+      padding: 2px 6px;
+    }
+  }
+
+  .game-when,
+  .game-lines {
+    color: v.$grey-light;
+    font-family: $font-mono;
+    font-size: v.$fs-11;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .game-lines {
+    color: v.$text-faint;
+    text-align: right;
+  }
+
+  // (lit: the pointer's or the arrows' row)
+  &.active {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  // (the one chosen: washed gold, its words gold, the lit dots along its foot)
+  &.chosen {
+    @include v.lit-rule;
+    background: rgba(chip.$gold-led, 0.12);
+
+    .game-label,
+    .game-sport-name {
+      @include glow;
+    }
+  }
+}
+
+// (Best bets · every game: 44px, a trophy, its words in the larger type)
+.game-all {
+  height: 44px;
+
+  .game-label {
+    font-size: v.$fs-14;
+  }
+}
+
+// (a sport's row: 44px, its icon and name in gold caps, the accent down its left in its league's colour (MMA
+// the house's gold), lifted a touch when lit)
+.game-sport {
+  --sport-accent: #{chip.$gold-led};
+  box-shadow: inset 3px 0 0 var(--sport-accent);
+  height: 44px;
+  margin-top: 2px;
+
+  .game-icon {
+    color: var(--sport-accent);
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--sport-accent) 60%, transparent));
+  }
+
+  .game-sport-name {
+    @include glow;
+    font-size: v.$fs-14;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  &.active {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--sport-accent) 30%, transparent), rgba(255, 255, 255, 0.09) 65%);
+    transform: translateY(-1px);
+  }
+
+  @each $sport, $line in chip.$sport-line {
+    &.sport-#{$sport} {
+      --sport-accent: #{$line};
+    }
+  }
+}
+
+// (a game's row: 40px, indented under its sport, the two faces before the matchup)
+.game-row {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  height: 40px;
+  padding-left: 28px;
+
+  .game-faces {
+    align-items: center;
+    display: inline-flex;
+    flex: none;
+    height: 24px;
+  }
+
+  .game-face {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: 24px;
+    object-fit: contain;
+    padding: 2px;
+    width: 24px;
+
+    & + .game-face {
+      margin-left: -5px;
+    }
+  }
+
+  // (no logo: the three letters, small)
+  .game-face-abbr {
+    align-items: center;
+    color: v.$grey-light;
+    display: inline-flex;
+    font-family: v.$font-base;
+    font-size: 8px;
+    font-weight: 800;
+    justify-content: center;
+    letter-spacing: 0;
+    padding: 0;
+  }
+
+  // (the count's column one width, so the times line up down the list)
+  .game-pill,
+  .game-lines {
+    box-sizing: border-box;
+    min-width: 56px;
+    text-align: center;
+  }
+
+  // (lines only, nothing picked: greyed)
+  &.lines {
+    .game-label {
+      color: v.$text-faint;
+      font-weight: 400;
+    }
+
+    .game-faces {
+      opacity: 0.6;
+    }
+  }
+}
+
 
 .bets-game-face {
   align-items: center;
@@ -1978,9 +2230,17 @@ $page-gutter: 16px;
     gap: v.$space-8;
   }
 
+  .bets-game-wrap,
   .bets-game {
     max-width: none;
     width: 100%;
+  }
+
+  // (the list the full width under the pill)
+  .bets-game-list {
+    min-width: 0;
+    right: 0;
+    width: auto;
   }
 
   .bets-kinds {

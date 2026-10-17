@@ -85,3 +85,65 @@ test("gameLine: a closed row's line is the game and its start alone, no sport, n
   assert.deepEqual(bets.gameLine('nfl', 'KC @ BUF', null, TZ), { name: 'KC @ BUF', when: null, text: 'KC @ BUF' });
   assert.deepEqual(bets.gameLine('nfl', 'KC @ BUF', 'not a date', TZ).when, null);
 });
+
+// The dropdown's open list, the page's own listbox (game-menu.ts menuValues, menuKey, dayBand, menuOptionId): the
+// choices in their laid-out order, the keys that walk, take and shut it, a day's band, the options' ids, and the
+// two faces before a game's name (a fight's first-listed fighter first)
+const menuGame = (sport, matchup, start, count = null, teams) => ({ key: `${sport}|${matchup}`, sport, matchup, start, count, teams });
+const MENU = bets.gameMenu(
+  [
+    menuGame('nhl', 'CAR @ WPG', '2026-10-17T19:30:00Z', 1, [{ abbr: 'CAR', logo: '/nhl/assets/NHL_Icons/CAR.svg' }, { abbr: 'WPG', logo: null }]),
+    menuGame('nhl', 'VAN @ TB', '2026-10-17T20:00:00Z'),
+    menuGame('nfl', 'NYJ @ NE', '2026-10-18T17:00:00Z', 2),
+    menuGame('mma', 'B @ A', '2026-10-18T01:00:00Z', null, [{ abbr: 'B', logo: 'https://a.espncdn.com/b.png' }, { abbr: 'A', logo: 'https://a.espncdn.com/a.png' }]),
+  ],
+  SPORTS,
+  TZ,
+);
+
+test('menuValues: Best bets first, then each day its sports (the heading before its games) in the list\'s order', () => {
+  assert.deepEqual(bets.menuValues(MENU), ['', 'sport:nhl', 'nhl|CAR @ WPG', 'nhl|VAN @ TB', 'sport:mma', 'mma|B @ A', 'sport:nfl', 'nfl|NYJ @ NE']);
+  assert.deepEqual(bets.menuValues([]), ['']);
+});
+
+test('menuKey: the arrows walk the list and hold at its ends, Home/End and PageUp/PageDown jump, Enter and Space take, Escape and Tab shut', () => {
+  const values = bets.menuValues(MENU);
+  assert.deepEqual(bets.menuKey('ArrowDown', values, ''), { kind: 'move', value: 'sport:nhl' });
+  assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|CAR @ WPG'), { kind: 'move', value: 'nhl|VAN @ TB' });
+  assert.deepEqual(bets.menuKey('ArrowUp', values, 'sport:nhl'), { kind: 'move', value: '' });
+  // (held at the ends, no wrap)
+  assert.deepEqual(bets.menuKey('ArrowUp', values, ''), { kind: 'move', value: '' });
+  assert.deepEqual(bets.menuKey('ArrowDown', values, 'nfl|NYJ @ NE'), { kind: 'move', value: 'nfl|NYJ @ NE' });
+  assert.deepEqual(bets.menuKey('End', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
+  assert.deepEqual(bets.menuKey('Home', values, 'sport:mma'), { kind: 'move', value: '' });
+  assert.deepEqual(bets.menuKey('PageDown', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
+  assert.deepEqual(bets.menuKey('PageUp', values, 'nfl|NYJ @ NE'), { kind: 'move', value: '' });
+  // (a lit choice gone from the list (a game dropped): the walk starts from the top)
+  assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|gone'), { kind: 'move', value: 'sport:nhl' });
+  assert.deepEqual(bets.menuKey('Enter', values, 'sport:nhl'), { kind: 'choose' });
+  assert.deepEqual(bets.menuKey(' ', values, 'sport:nhl'), { kind: 'choose' });
+  assert.deepEqual(bets.menuKey('Escape', values, 'sport:nhl'), { kind: 'close' });
+  assert.deepEqual(bets.menuKey('Tab', values, ''), { kind: 'close' });
+  assert.deepEqual(bets.menuKey('Escape', [], ''), { kind: 'close' });
+  // (any other key: nothing)
+  assert.equal(bets.menuKey('a', values, ''), null);
+  assert.equal(bets.menuKey('ArrowDown', [], ''), null);
+});
+
+test("dayBand and menuOptionId: a day's caption on its band; an option's id from its value, letters and digits alone", () => {
+  assert.equal(bets.dayBand('Saturday, Oct 17'), 'SATURDAY · OCT 17');
+  assert.equal(bets.dayBand(MENU[0].day), 'SATURDAY · OCT 17');
+  assert.equal(bets.menuOptionId(''), 'bets-game-opt-all');
+  assert.equal(bets.menuOptionId('sport:nhl'), 'bets-game-opt-sport-nhl');
+  assert.equal(bets.menuOptionId('mlb|CLE @ TB|401700123'), 'bets-game-opt-mlb-CLE-TB-401700123');
+  assert.notEqual(bets.menuOptionId('nhl|CAR @ WPG'), bets.menuOptionId('nhl|CAR @ WPG|401'));
+});
+
+test("faces: a game's two teams before its name in the name's order, a fight's first-listed fighter first; none given, none", () => {
+  const nhl = MENU[0].sports.find((s) => s.sport === 'nhl').games;
+  assert.deepEqual(nhl[0].faces, [{ abbr: 'CAR', logo: '/nhl/assets/NHL_Icons/CAR.svg' }, { abbr: 'WPG', logo: null }]);
+  assert.deepEqual(nhl[1].faces, []);
+  const fight = MENU[0].sports.find((s) => s.sport === 'mma').games[0];
+  assert.equal(fight.name, 'A vs B');
+  assert.deepEqual(fight.faces.map((f) => f.abbr), ['A', 'B']);
+});
