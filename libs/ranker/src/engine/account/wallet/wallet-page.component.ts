@@ -35,7 +35,7 @@ import {
   versusBot,
   versusDays,
 } from './wallet-math';
-import { HeadsPeriod, HeadsUp, Trophy, botSplit, chipStacks, headsUp, runCards, trophies } from './wallet-view';
+import { HeadsPeriod, HeadsUp, Trophy, botSplit, chipStacks, headsUp, runCards, tells, trophies, wallPicks } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -295,6 +295,13 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   trophyState(t: Trophy): string {
     if (!t.earned) return `${t.have} of ${t.need}`;
     return t.when ? `Earned ${new Date(t.when).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : 'Earned';
+  }
+  // On the wall: the biggest cash and the worst beat among the loaded settled bets; your tells, read off the loaded bets
+  readonly wall = computed(() => wallPicks(this.wallet.settledBets()));
+  readonly tellsList = computed(() => tells(this.wallet.bets()));
+  // (a lost parlay's first leg that missed: its final goes on the ticket)
+  missedLeg(b: PlayBet): PlayBet | null {
+    return this.ticketLegs(b).find((l) => l.status === 'lost') ?? null;
   }
   // (a figure from the loaded history alone, while it's still paging: its caption says how much)
   readonly historyNote = computed(() => (this.fullHistory() ? null : `the last ${this.wallet.settledBets().length} settled bets`));
