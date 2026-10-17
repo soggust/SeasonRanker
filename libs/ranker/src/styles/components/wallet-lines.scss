@@ -17,37 +17,56 @@
   font-family: v.$font-base;
 }
 
-// The header: sticky to the top of the board's scroller, the scoreboard's black under it
+// The header: sticky to the top of the board's scroller, the scoreboard's black under it: the Back button at
+// the left (the Book's player's card face, as the game pill and the About button: the owner's note, 2026-10-17),
+// a gap, then the matchup block, the two sides' pictures and names with the start and venue under them
 .lines-head {
   align-items: center;
   @include v.scoreboard-face;
   border-bottom: 1px solid v.$panel-rule;
   display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-6 v.$space-14;
-  padding: 12px 16px;
+  gap: v.$space-14;
+  padding: 10px 16px;
   position: sticky;
   top: 0;
   z-index: 2;
 }
 
 .lines-back {
-  background: none;
-  border: none;
-  color: chip.$gold-led;
+  @include chip.player-card(v.$radius-pill);
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  color: v.$lettering;
   cursor: pointer;
+  display: inline-flex;
+  flex: none;
   font-family: v.$font-base;
   font-size: v.$fs-12;
   font-weight: 700;
-  padding: 0;
+  gap: v.$space-6;
+  height: 44px;
+  letter-spacing: 0.5px;
+  padding: 0 18px 0 14px;
+  text-transform: uppercase;
+  transition:
+    filter v.$t-hover ease,
+    transform v.$t-hover ease;
 
   &:hover {
-    color: #fff;
+    filter: brightness(1.15);
+    transform: translateY(-1px);
   }
 
-  @include v.focus-lit {
-    color: #fff;
+  &:focus-visible {
+    @include v.focus-ring(2px);
   }
+}
+
+.lines-game {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+  min-width: 0;
 }
 
 .lines-title {
@@ -72,32 +91,6 @@
 
   &.live {
     color: #ffc864;
-  }
-}
-
-.lines-space {
-  flex: 1;
-}
-
-// (the key: a little gold-ringed tile for the bot's pick, K for the score)
-.lines-key {
-  align-items: center;
-  color: v.$text-dim;
-  display: inline-flex;
-  font-size: v.$fs-11;
-  gap: v.$space-6;
-
-  .key-ring {
-    border-radius: v.$radius-xs;
-    box-shadow: 0 0 0 1.5px chip.$gold-led;
-    display: inline-block;
-    height: 10px;
-    width: 14px;
-  }
-
-  b {
-    color: v.$good-bright;
-    font-family: v.$font-heading;
   }
 }
 
@@ -170,11 +163,16 @@
   padding: 12px 16px 16px 60px;
 }
 
-// The game lines: a grid, the team's column then three markets; the heads over them
+// The game lines: a grid, the team's column then three markets; the heads over them (a fight's moneyline alone:
+// the one market's column)
 .lines-grid {
   display: grid;
   gap: v.$space-8;
   grid-template-columns: minmax(160px, 1.3fr) repeat(3, minmax(0, 1fr));
+
+  &.ml-only {
+    grid-template-columns: minmax(160px, 1.3fr) minmax(0, 1fr);
+  }
 
   .grid-heads,
   .grid-row {
@@ -524,6 +522,10 @@
   .lines-grid {
     gap: v.$space-4;
     grid-template-columns: 40px repeat(3, minmax(0, 1fr));
+
+    &.ml-only {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
   }
 
   .grid-head {
@@ -571,16 +573,16 @@
 
 // (phones: the sections' bodies to the edge, a row's team or player over its tiles)
 @include v.down(ai-narrow) {
+  // (the header stacked: the Back button over the matchup block)
   .lines-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: v.$space-8;
     padding: 10px 12px;
   }
 
   .lines-title {
     font-size: v.$fs-16;
-  }
-
-  .lines-key {
-    display: none;
   }
 
   .section-head {
@@ -621,6 +623,10 @@
       .grid-team {
         grid-column: 1 / -1;
       }
+    }
+
+    &.ml-only .grid-row {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 

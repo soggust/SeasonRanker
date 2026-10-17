@@ -1042,11 +1042,42 @@ $page-gutter: 16px;
 }
 
 // The model-vs-book meter: the model's chance in green on the left, the book's faint on the right, then a 6px
-// track with a green fill to the model's and a white tick at the book's
+// track with a green fill to the model's and a white tick at the book's. A button (the owner's note, 2026-10-17):
+// it opens the why popover as the rank tile does; hovered or open, the book's words lighten and the track is rimmed
 .bet-meter {
+  background: none;
+  border: none;
+  border-radius: v.$radius-sm;
+  color: inherit;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
+  font: inherit;
   gap: v.$space-6;
+  padding: 0;
+  text-align: left;
+  transition: filter v.$t-hover ease;
+
+  &:hover,
+  &.open {
+    filter: brightness(1.2);
+
+    .meter-book {
+      color: v.$text-soft;
+    }
+
+    .meter-track {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+    }
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  &.none {
+    cursor: default;
+  }
 
   .meter-words {
     display: flex;

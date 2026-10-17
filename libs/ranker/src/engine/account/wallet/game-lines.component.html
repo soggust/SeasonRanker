@@ -95,24 +95,26 @@
 
 <section class="lines" [class.closed]="!open" [class.only]="!!onlyPick()" [class.compact]="compact" [attr.aria-label]="(onlyPick() ? 'This bet: ' : 'All lines: ') + matchupText">
   @if (!onlyPick() && !compact) {
+    <!-- (the Back button, then the matchup block: the two sides' pictures and the matchup, under them its start
+         and venue (a game begun, its score and clock); no key (the owner's note, 2026-10-17)) -->
     <header class="lines-head">
-      <button type="button" class="lines-back" (click)="back.emit()">← Best bets</button>
-      <span class="lines-title">
-        @if (board; as b) {<img [src]="logo(b.away.abbr)" alt="" (error)="hideImage($event)" />}
-        {{ matchupText }}
-        @if (board; as b) {<img [src]="logo(b.home.abbr)" alt="" (error)="hideImage($event)" />}
-      </span>
-      @if (board; as b) {
-        @if (b.state === 'pre') {
-          <span class="lines-when">{{ b.start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
+      <button type="button" class="lines-back" (click)="back.emit()"><span aria-hidden="true">←</span> Back</button>
+      <div class="lines-game">
+        <span class="lines-title">
+          @if (board; as b) {<img [src]="pic(b.away)" alt="" (error)="hideImage($event)" />}
+          {{ titleText }}
+          @if (board; as b) {<img [src]="pic(b.home)" alt="" (error)="hideImage($event)" />}
+        </span>
+        @if (board; as b) {
+          @if (b.state === 'pre') {
+            <span class="lines-when">{{ b.start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
+          } @else {
+            <span class="lines-when live">{{ b.away.abbr }} {{ b.away.score ?? '' }} · {{ b.home.abbr }} {{ b.home.score ?? '' }} · {{ b.detail }} · betting closed</span>
+          }
         } @else {
-          <span class="lines-when live">{{ b.away.abbr }} {{ b.away.score ?? '' }} · {{ b.home.abbr }} {{ b.home.score ?? '' }} · {{ b.detail }} · betting closed</span>
+          <span class="lines-when">{{ start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
         }
-      } @else {
-        <span class="lines-when">{{ start | date: 'EEE MMM d · h:mm a' }}@if (venue) { · {{ venue }}}</span>
-      }
-      <span class="lines-space"></span>
-      <span class="lines-key"><i class="key-ring" aria-hidden="true"></i>the bot’s pick · <b>K</b> = Kelly score, tap it for the math</span>
+      </div>
     </header>
   }
 
@@ -142,27 +144,33 @@
     <p class="lines-note">No DraftKings lines on ESPN's board for this game yet.</p>
   } @else if (showLines()) {
     @let b = board!;
-    <!-- GAME LINES: a row a team (its logo, its name, Away or Home), the spread, the total and the moneyline across -->
+    <!-- GAME LINES: a row a team (its logo, its name, Away or Home), the spread, the total and the moneyline across;
+         a game with the moneyline alone (a fight: the two fighters), the moneyline column alone -->
+    @let mlAlone = mlOnly(b);
     @if (!compact) {
       <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'lines', title: 'Game lines', count: linesCount(b) + ' bets' }"></ng-container>
     }
     @if (compact || sectionOpen('lines')) {
-      <div class="section-body lines-grid" role="table" aria-label="Game lines">
+      <div class="section-body lines-grid" [class.ml-only]="mlAlone" role="table" aria-label="Game lines">
         <div class="grid-heads" role="row">
-          <span class="grid-head" role="columnheader"><span class="visually-hidden">Team</span></span>
-          <span class="grid-head" role="columnheader">Spread</span>
-          <span class="grid-head" role="columnheader">Total</span>
+          <span class="grid-head" role="columnheader"><span class="visually-hidden">{{ teams ? 'Team' : 'Fighter' }}</span></span>
+          @if (!mlAlone) {
+            <span class="grid-head" role="columnheader">Spread</span>
+            <span class="grid-head" role="columnheader">Total</span>
+          }
           <span class="grid-head" role="columnheader">{{ compact ? 'Money' : 'Moneyline' }}</span>
         </div>
         @for (side of ['away', 'home']; track side) {
           @let team = side === 'away' ? b.away : b.home;
           <div class="grid-row" role="row">
             <div class="grid-team" role="rowheader">
-              <span class="disc team" aria-hidden="true" [style.border-color]="teamColor(team.abbr)"><img [src]="logo(team.abbr)" alt="" (error)="hideImage($event)" /></span>
-              <span class="team-words"><b>{{ compact ? team.abbr : team.name || team.abbr }}</b>@if (!compact) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
+              <span class="disc team" [class.player]="!teams" aria-hidden="true" [style.border-color]="teamColor(team.abbr)"><img [class.disc-face]="!teams" [src]="pic(team)" alt="" (error)="hideImage($event)" /></span>
+              <span class="team-words"><b>{{ compact ? team.abbr : team.name || team.abbr }}</b>@if (!compact && teams) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
             </div>
-            <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
-            <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? ''), top: (side === 'away' ? 'O ' : 'U ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') }"></ng-container></div>
+            @if (!mlAlone) {
+              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
+              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? ''), top: (side === 'away' ? 'O ' : 'U ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') }"></ng-container></div>
+            }
             <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.ml?.away : b.ml?.home, label: team.abbr + ' to win', top: 'ML' }"></ng-container></div>
           </div>
         }

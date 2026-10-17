@@ -406,6 +406,61 @@ export const addChip = (stake: number, chip: number, room: number): number => Ma
 // (whether a game can still be bet: not begun, and its start not passed)
 export const bettable = (start: string, state: GameBoard['state'] | undefined, now: number): boolean => (state === undefined || state === 'pre') && Date.parse(start) > now;
 
+// A game on the bettor's own betting board (data/model/board.json, board.mjs's shape: the games not started,
+// each market's two sides with its line and price) as a GameBoard, for a game ESPN's scoreboard has no DraftKings
+// lines on (a UFC bout: the card's board carries each bout's moneyline alone, no spread, no total, no props). The
+// matchup the board's "A @ B" (a fight's the fighters, the first-listed the home); a fighter's picture his ESPN
+// headshot (his id beside his name), a team's none (the page draws its logo by its abbreviation); no scores; its
+// state by the clock (the board drops a game once it starts, but it's rewritten hourly). A market with neither
+// side priced is left out; a game with no market at all, null. The bands and Kelly scores come from the same
+// game through game-lines' call, as any board's do
+export interface ModelBoardSideIn {
+  s: string;
+  l: number | null;
+  o: number;
+}
+export interface ModelBoardGameIn {
+  id: string;
+  start: string;
+  m: string;
+  a: [string, string];
+  h: [string, string];
+  k: { spread?: ModelBoardSideIn[]; total?: ModelBoardSideIn[]; ml?: ModelBoardSideIn[] };
+}
+export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number): GameBoard | null {
+  const fight = sport === 'mma';
+  const team = ([abbr, id]: [string, string]): BoardTeam => ({ abbr, name: abbr, logo: fight && id ? `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png` : null, score: null });
+  const price = (market: PlayMarket, side: string, sides: ModelBoardSideIn[] | undefined): Price => {
+    const s = sides?.find((x) => x.s === side);
+    return { market, side, line: market === 'ml' ? null : (s?.l ?? null), odds: s && Number.isFinite(s.o) ? s.o : null };
+  };
+  const pair = (market: PlayMarket, a: string, b: string, sides: ModelBoardSideIn[] | undefined): [Price, Price] | null => {
+    const x = price(market, a, sides);
+    const y = price(market, b, sides);
+    return (x.odds || y.odds) && (market === 'ml' || (x.line !== null && y.line !== null)) ? [x, y] : null;
+  };
+  const spread = pair('spread', 'away', 'home', g.k?.spread);
+  const total = pair('total', 'over', 'under', g.k?.total);
+  const ml = pair('ml', 'away', 'home', g.k?.ml);
+  if (!spread && !total && !ml) return null;
+  const started = !(Date.parse(g.start) > now);
+  return {
+    sport,
+    event: String(g.id),
+    matchup: g.m,
+    start: g.start,
+    state: started ? 'in' : 'pre',
+    detail: started ? 'Started' : '',
+    final: false,
+    away: team(g.a),
+    home: team(g.h),
+    book: 'DraftKings',
+    spread: spread ? { away: spread[0], home: spread[1] } : null,
+    total: total ? { over: total[0], under: total[1] } : null,
+    ml: ml ? { away: ml[0], home: ml[1] } : null,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // In play: settled by the score as the settler will (desk-math's provisional)
 // ---------------------------------------------------------------------------

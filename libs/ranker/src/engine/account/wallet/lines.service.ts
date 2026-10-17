@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { ESPN_LEAGUES } from '../../bets/desk-math';
 import { SummaryBox, liveStat } from '../../bets/live-props';
-import { EspnEvent, GameBoard, boardOf, espnDay } from './wallet-math';
+import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
@@ -67,12 +67,29 @@ export interface ModelBoard {
 export class LinesService {
   private readonly days = new Map<string, { at: number; load: Promise<GameBoard[]> }>();
   private readonly all = signal(new Map<string, GameBoard>());
-  readonly boards = this.all.asReadonly();
   // (each sport's day as last loaded: when, for the board's "as of")
   readonly loadedAt = signal<number | null>(null);
   // (each sport's betting board: asked for once on a page's visit, again after five minutes at most)
   private readonly models = new Map<string, { at: number; load: Promise<ModelBoard | null> }>();
   private readonly modelAll = signal(new Map<string, ModelBoard>());
+  // The boards, by "sport|event": ESPN's scoreboard's, and under them the games on the bettor's own betting boards
+  // that ESPN has no board for (a UFC bout: ESPN's scoreboard is the card, not the bout; the bettor's board.json
+  // carries each bout's moneyline), each as a GameBoard of its lines (wallet-math modelGameBoard), so the game
+  // view, the dropdown and the ticker take them as any game's. Made again when either changes
+  readonly boards = computed<Map<string, GameBoard>>(() => {
+    const espn = this.all();
+    const out = new Map(espn);
+    const now = Date.now();
+    for (const [sport, board] of this.modelAll()) {
+      for (const g of board.games) {
+        const key = `${sport}|${g.id}`;
+        if (out.has(key)) continue;
+        const b = modelGameBoard(sport, g, now);
+        if (b) out.set(key, b);
+      }
+    }
+    return out;
+  });
 
   // A game on its sport's betting board, as last loaded (none: not on it, begun, or not loaded yet)
   modelGame(sport: string, event: string): BoardGame | undefined {
@@ -95,7 +112,7 @@ export class LinesService {
   }
 
   board(sport: string, event: string): GameBoard | undefined {
-    return this.all().get(`${sport}|${event}`);
+    return this.boards().get(`${sport}|${event}`);
   }
 
   // A sport's games on a day (ESPN's day: US Eastern), fresh within the last minute

@@ -6,7 +6,8 @@ import { pickTeamColor } from '../../bets/pick-style';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
 import { WalletService } from './wallet.service';
-import { GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
+import { BoardTeam, GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
+import { matchupName } from '../../bets/game-menu';
 
 // The bot's pick as the Bets page has it (its BetRow, as far as the board reads it)
 export interface BotPick {
@@ -335,7 +336,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   // not begun, no props of the bot's)
   private async loadPreview(): Promise<void> {
     const b = this.board;
-    if (this.closed || !this.previewWanted() || !b || b.state !== 'pre' || !this.open) return;
+    // (a sport the bot prices no props for (a fight): none to preview)
+    if (this.closed || !PROPS_WINDOW_HOURS[this.sport] || !this.previewWanted() || !b || b.state !== 'pre' || !this.open) return;
     if (this.preview() === null) this.previewLoading.set(true);
     try {
       const rows = await this.lines.previewProps(this.sport, this.event, { away: b.away.abbr, home: b.home.abbr });
@@ -422,8 +424,30 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return this.board?.matchup ?? this.matchup;
   }
 
+  // (the header's words: the matchup as it reads, a fight "A vs B" (game-menu.ts matchupName); the bets' words
+  // keep the board's "away @ home")
+  get titleText(): string {
+    return matchupName(this.sport, this.matchupText);
+  }
+
+  // (a game with the moneyline alone, a fight's: the grid is the two sides' tiles, no spread or total column)
+  mlOnly(b: GameBoard): boolean {
+    return !b.spread && !b.total;
+  }
+
+  // (whether a side is a team with a side of the field, Away or Home: a fight's fighters have none)
+  get teams(): boolean {
+    return this.sport !== 'mma';
+  }
+
   logo(abbr: string): string {
     return teamLogo(this.sport, abbr);
+  }
+
+  // (a side's picture: a team's logo by its abbreviation; a fighter's headshot, the board's (wallet-math
+  // modelGameBoard))
+  pic(t: BoardTeam): string {
+    return this.sport === 'mma' && t.logo ? t.logo : this.logo(t.abbr);
   }
 
   face(r: PropRow): string {

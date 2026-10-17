@@ -164,7 +164,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const zone = inject(NgZone);
     const destroyRef = inject(DestroyRef);
     const open = () => !!(this.why || this.checkWhy);
-    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .tile-k'), (event) => this.clickOff(event));
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k'), (event) => this.clickOff(event));
     quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
   }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
@@ -347,6 +347,9 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const now = Date.now();
     const days = [now, now + 24 * 3600e3].map((t) => new Date(t).toISOString());
     void this.lines.games([...this.boards.values(), ...SPORTS.flatMap((sport) => days.map((start) => ({ sport, start })))]);
+    // (and each sport's own betting board: the games ESPN has no board for (a UFC card's bouts) come from it,
+    // into the dropdown and the ticker with the rest: lines.service boards)
+    for (const s of this.betSports) void this.lines.model(s.id);
   }
 
   // The ticker under the header: every game on the boards the page has already read (ESPN's scoreboards for
@@ -817,7 +820,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // screen changing size: the first two listened for outside Angular, quietListener, so with nothing open
   // neither sets off change detection)
   clickOff(event: MouseEvent): void {
-    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .tile-k')) this.closeWhy();
+    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k')) this.closeWhy();
   }
 
   @HostListener('window:resize')

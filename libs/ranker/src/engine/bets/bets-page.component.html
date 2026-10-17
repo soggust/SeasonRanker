@@ -267,15 +267,26 @@
                 }
               }
             </div>
-            <!-- (the model against the book: the model's chance filling a track, the book's a white tick on it) -->
+            <!-- (the model against the book: the model's chance filling a track, the book's a white tick on it; a
+                 button, the same why popover the rank tile opens (the owner's note, 2026-10-17); the rank tile still
+                 opens it too, and a row without a meter has the tile alone) -->
             @if (meter(r); as m) {
-              <div class="bet-meter" [attr.title]="'The model: ' + m.model + '% to win' + (m.book !== null ? ' · the book’s price says ' + m.book + '%' : '')">
-                <div class="meter-words"><span class="meter-model">Model {{ m.model }}%</span>@if (m.book !== null) {<span class="meter-book">Book {{ m.book }}%</span>}</div>
-                <div class="meter-track" aria-hidden="true">
+              <button
+                type="button"
+                class="bet-meter"
+                [class.open]="why?.id === r.id || checkWhy?.id === r.id"
+                aria-haspopup="dialog"
+                [attr.aria-expanded]="why?.id === r.id || checkWhy?.id === r.id"
+                [attr.aria-label]="'Why: the model’s ' + m.model + '% against the book’s ' + (m.book !== null ? m.book + '%' : 'price')"
+                [attr.title]="'The model: ' + m.model + '% to win' + (m.book !== null ? ' · the book’s price says ' + m.book + '%' : '') + ' · tap for the math'"
+                (click)="toggleWhy(i, $event)"
+              >
+                <span class="meter-words"><span class="meter-model">Model {{ m.model }}%</span>@if (m.book !== null) {<span class="meter-book">Book {{ m.book }}%</span>}</span>
+                <span class="meter-track" aria-hidden="true">
                   <i class="meter-fill" [style.width.%]="m.model"></i>
                   @if (m.book !== null) {<i class="meter-tick" [style.left]="'calc(' + m.book + '% - 1px)'"></i>}
-                </div>
-              </div>
+                </span>
+              </button>
             } @else {
               <span class="bet-meter none" aria-hidden="true"></span>
             }
