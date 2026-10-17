@@ -14,7 +14,7 @@ import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { americanOdds, headshot } from './bet-format';
-import { BetWhy, BetWhyRow, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
+import { BetWhy, BetWhyRow, BetWhyVs, Confidence, PickWhy, betScoreText, betWhy, confidenceOf, kellyOf, signedPoints } from './bet-why';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { MenuDay, MenuGame, MenuGameIn, gameMenu } from './game-menu';
@@ -38,6 +38,22 @@ type GameBoardPicks = { sport: string; event: string; start: string; matchup: st
 
 // (the game dropdown's chosen game, for its closed face: its words and its sport's icon)
 type ChosenGame = MenuGame & { icon: string };
+
+// (the why popover's own look: the bet's game, its price, the model against the book, the sentence on its place,
+// a pass's reason)
+interface WhyGame {
+  sport: string;
+  matchup: string;
+  start: string | null;
+}
+interface WhyLook {
+  game: WhyGame | null;
+  odds: string | null;
+  model: number | null;
+  book: number | null;
+  sentence: string;
+  reason: string | null;
+}
 
 // (one game on the ticker: the sport, the teams and their scores (none before it starts), its state, and its
 // clock or final as words, or its start when it hasn't begun)
@@ -321,8 +337,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const zone = inject(NgZone);
     const destroyRef = inject(DestroyRef);
     const open = () => !!(this.why || this.checkWhy);
-    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank'), (event) => this.clickOff(event));
-    quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('bets-list'), () => this.closeWhy(), { capture: true, passive: true });
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .tile-k'), (event) => this.clickOff(event));
+    quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
   }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
   readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;
@@ -756,7 +772,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // Why a bet ranks where it does: its rank tile clicked (or Enter / Space on it) opens how its score is
   // built (bet-why.ts), as the grid's rank tile does
   // ---------------------------------------------------------------------------
-  why: (BetWhy & { at: PopoverAt; sheet: boolean }) | null = null;
+  why: (BetWhy & { at: PopoverAt; sheet: boolean; look: WhyLook }) | null = null;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
   private whyTile: HTMLElement | null = null;
   readonly signedPoints = signedPoints;
@@ -767,6 +783,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   checkWhy: {
     id: number;
     name: string;
+    game: WhyGame | null;
     at: PopoverAt;
     sheet: boolean;
     kelly: number | null;
@@ -845,9 +862,37 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const confidence: Confidence | null = at.tier === 'lock' ? 'lock' : at.tier === 'check' ? 'check' : at.tier === 'love' ? 'high' : at.tier === 'like' ? 'medium' : at.tier === 'pass' ? 'low' : null;
     const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0 };
     this.checkWhy = null;
-    this.why = { ...betWhy([row], 0), at: popoverAt(tile, 420), sheet: phoneSheet() };
+    const w = betWhy([row], 0);
+    this.why = { ...w, at: popoverAt(tile, 420), sheet: phoneSheet(), look: this.whyLook(w, row, at.game) };
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  // The popover's own look (The Book): the bet's game, its price, the model against the book, a sentence on its
+  // place beside its neighbors (a pass's or a fade's, why it isn't bet), all from what betWhy and the row already
+  // hold
+  private whyGame(r: BetRow): WhyGame | null {
+    return r.game ? { sport: r.sport.toUpperCase(), matchup: r.game.matchup, start: r.game.kickoff ?? null } : null;
+  }
+  private whyLook(w: BetWhy, r: BetWhyRow & { price?: number; chance?: number; fair?: number; strength?: string; reason?: string; pick: string }, game: WhyGame | null): WhyLook {
+    const m = this.meter({ chance: r.chance, price: r.price, fair: r.fair } as BetRow);
+    const below = w.vs.find((v) => v.above);
+    const over = w.vs.find((v) => !v.above);
+    const driver = (v: BetWhyVs) => (v.drivers[0] ? ` on ${v.drivers[0].label.charAt(0).toLowerCase()}${v.drivers[0].label.slice(1)}` : '');
+    let sentence: string;
+    if (w.noEdge) sentence = `${w.levelText}: the bot tracks it, it doesn't bet it.`;
+    else if (w.place === 'Lock') sentence = `A lock, above the ranks: a Kelly of 5 or more on a 55% chance.${below ? ` It sits over ${below.name} (${below.place}) by ${signedPoints(below.diff)}${driver(below)}.` : ''}`;
+    else if (w.of <= 1 && !below && !over) sentence = `The one bet on this board.`;
+    else sentence = `Ranked ${w.place} of ${w.of} on the board.${below ? ` It edges ${below.place} (${below.name}) by ${signedPoints(below.diff)}${driver(below)}.` : over ? ` ${over.place} (${over.name}) sits over it by ${signedPoints(-over.diff)}${driver(over)}.` : ''}`;
+    const pass = w.noEdge || r.strength === 'fade';
+    return {
+      game,
+      odds: Number.isFinite(r.price) ? americanOdds(r.price!) : null,
+      model: m?.model ?? null,
+      book: m?.book ?? null,
+      sentence,
+      reason: pass && r.reason ? (r.strength === 'fade' ? insteadText(r.pick) : r.reason) : null,
+    };
   }
 
   // (where the chosen game is played, for the game view's header: its picks' venue, where they carry one)
@@ -879,6 +924,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       this.checkWhy = {
         id: row.id,
         name: row.pick,
+        game: this.whyGame(row),
         at,
         sheet,
         kelly: this.checkKelly(row),
@@ -894,7 +940,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       };
     } else {
       this.checkWhy = null;
-      this.why = { ...betWhy(rows, index), at, sheet };
+      const w = betWhy(rows, index);
+      this.why = { ...w, at, sheet, look: this.whyLook(w, row, this.whyGame(row)) };
     }
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
@@ -912,7 +959,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // screen changing size: the first two listened for outside Angular, quietListener, so with nothing open
   // neither sets off change detection)
   clickOff(event: MouseEvent): void {
-    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank')) this.closeWhy();
+    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .tile-k')) this.closeWhy();
   }
 
   @HostListener('window:resize')

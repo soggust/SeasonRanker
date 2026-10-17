@@ -384,30 +384,29 @@
     }
     </div>
 
-    <!-- How a bet's Kelly score is built (its rank tile clicked): the price and the model's lean, adding up to
-         the score the list went by; its chance, its
-         confidence and its expected return; then the bets beside it -->
+    <!-- How the sausage is made: a bet's Kelly score, its rank tile (or a price's K button) clicked, on one panel at
+         the board's top right (a sheet along the bottom on phones): the score big on an LED tile, the bet and its
+         game, the score's parts as bars (green adding, red taking away), the model against the book and the expected
+         return, its place beside its neighbors in one sentence (a pass's, why it isn't bet), and a line of fine
+         print. A CHECK's "?": the same panel with the model's own Kelly, the model against the book, the gap, why it
+         isn't bet and its news research -->
     @if (checkWhy; as c) {
       <div
         class="bet-why"
-        [class.above]="c.at.top === null"
         [class.sheet]="c.sheet"
         role="dialog"
         tabindex="-1"
         [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
-        [style.--why-top.px]="c.at.top"
-        [style.--why-bottom.px]="c.at.bottom"
-        [style.--why-left.px]="c.at.left"
-        [style.--why-room.px]="c.at.room"
       >
-        <div class="why-head">
-          <p class="why-title">
-            <span class="why-score" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price">Model Kelly <b [class.neg]="(c.kelly ?? 0) <= 0">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</b></span>
-            <span class="why-place">{{ c.passed ? 'PASSED' : 'CHECK' }}</span>
-          </p>
+        <div class="why-top">
+          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
+          <div class="why-head">
+            <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · model Kelly</span>
+            <span class="why-name">{{ c.name }}</span>
+            @if (c.game; as g) {<span class="why-game">{{ g.sport }} · {{ g.matchup }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
+          </div>
           <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
         </div>
-        <p class="why-name">{{ c.name }}</p>
         <div class="why-facts">
           @if (c.model !== null) {
             <p><span>Model's chance</span> <b>{{ c.model }}%</b></p>
@@ -427,10 +426,10 @@
           <p><span>Not bet</span> <b>{{ c.cause }}</b></p>
         </div>
         @if (c.passed) {
-          <p class="why-foot"><b>Passed:</b> {{ c.passed }}. No longer a CHECK; still graded at the price it was shown at.</p>
+          <p class="why-note"><b>Passed:</b> {{ c.passed }}. No longer a CHECK; still graded at the price it was shown at.</p>
         }
         @if (c.reason) {
-          <p class="why-foot">{{ c.reason }}</p>
+          <p class="why-note">{{ c.reason }}</p>
         }
         <!-- (its news research, where it has one: research.mjs, Claude reading the news for the gap; a label only) -->
         @if (c.research; as rs) {
@@ -452,78 +451,62 @@
                 }
               </p>
             }
-            <p class="why-foot">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}. A label only: the bot never bets on it{{ rs.applied ? '; a note put it into the injury report' : '' }}.</p>
+            <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}. A label only: the bot never bets on it{{ rs.applied ? '; a note put it into the injury report' : '' }}.</p>
           </div>
         }
-        <p class="why-foot">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
+        <p class="why-fine">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
       </div>
     }
     @if (why; as w) {
       <div
         #whyPop
         class="bet-why"
-        [class.above]="w.at.top === null"
         [class.sheet]="w.sheet"
         role="dialog"
         tabindex="-1"
         [attr.aria-label]="'How ' + w.name + '’s score is built: ' + w.place"
-        [style.--why-top.px]="w.at.top"
-        [style.--why-bottom.px]="w.at.bottom"
-        [style.--why-left.px]="w.at.left"
-        [style.--why-room.px]="w.at.room"
       >
-        <div class="why-head">
-          <p class="why-title">
-            <span class="why-score">Kelly <b [class.neg]="w.score <= 0">{{ betScoreText(w.score) }}</b></span>
-            <span class="why-place">{{ w.place === 'Lock' ? 'Lock' : w.place + ' of ' + w.of }}</span>
-            @if (w.noEdge) {
-              <span class="why-pass">No edge</span>
-            }
-          </p>
+        <div class="why-top">
+          <span class="why-led" [ngClass]="w.score >= 0.5 ? 'good' : w.score > 0 ? 'flat' : 'bad'" [title]="w.levelTitle">{{ betScoreText(w.score) }}</span>
+          <div class="why-head">
+            <span class="why-kicker">Kelly score@if (w.noEdge) { · no edge}</span>
+            <span class="why-name">{{ w.name }}@if (w.look.odds) {{{ ' ' }}<span class="why-odds">{{ w.look.odds }}</span>}</span>
+            @if (w.look.game; as g) {<span class="why-game">{{ g.sport }} · {{ g.matchup }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
+          </div>
           <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
         </div>
-        <p class="why-name">{{ w.name }}</p>
+        <!-- (the score's parts: a bar each, green adding and red taking away, the largest the full width) -->
         <div class="why-parts" role="list">
           @for (part of w.parts; track part.key) {
             <div role="listitem" class="why-part" [class.hurts]="part.amount < 0" [title]="part.title">
+              <span class="why-label">{{ part.label }}@if (part.value) {{{ ' ' }}<em>{{ part.value }}</em>}</span>
               <span class="why-bar" aria-hidden="true"><i [style.width.%]="part.width"></i></span>
-              <span class="why-stat">{{ part.label }} @if (part.value) {<em>{{ part.value }}</em>}</span>
               <span class="why-amount">{{ signedPoints(part.amount) }}</span>
             </div>
           }
         </div>
-        <!-- (its chance to win, its confidence, and its price's expected return and stake) -->
-        <div class="why-facts">
-          @if (w.chanceText) {
-            <p [title]="w.chanceTitle"><span>Chance to win</span> <b>{{ w.chanceText }}</b></p>
-          }
-          <p [title]="w.levelTitle"><span>Confidence</span> <b [ngClass]="w.level">{{ w.levelText }}</b></p>
-          @if (w.edgeText) {
-            <p [title]="w.edgeTitle"><span>Expected return</span> <b><span class="why-return" [class.up]="w.edgeUp" [class.down]="!w.edgeUp">{{ w.edgeReturn }}</span>{{ w.edgeText }}</b></p>
-          }
-        </div>
-        @if (w.vs.length) {
-          <div class="why-vs">
-            @for (vs of w.vs; track vs.rank) {
-              <p>
-                <span class="why-vs-head" [title]="vs.title"
-                  >vs <b>{{ vs.name }}</b> ({{ vs.place }}): <span class="why-amount" [class.hurts]="vs.diff < 0">{{ signedPoints(vs.diff) }}</span></span
-                >
-                @if (vs.drivers.length) {
-                  <span class="why-drivers">
-                    @for (d of vs.drivers; track $index) {
-                      <span [title]="d.title">{{ d.label }} <span [class.hurts]="d.amount < 0" class="why-amount">{{ signedPoints(d.amount) }}</span></span>
-                    }
-                  </span>
-                }
-              </p>
+        <!-- (the model against the book, and what a unit's expected to return at the price) -->
+        @if (w.look.model !== null) {
+          <div class="why-meter" [title]="w.chanceTitle">
+            <div class="meter-words"><span class="meter-model">Model {{ w.look.model }}% to win</span>@if (w.look.book !== null) {<span class="meter-book">Book {{ w.look.book }}%</span>}</div>
+            <div class="meter-track" aria-hidden="true">
+              <i class="meter-fill" [style.width.%]="w.look.model"></i>
+              @if (w.look.book !== null) {<i class="meter-tick" [style.left]="'calc(' + w.look.book + '% - 1px)'"></i>}
+            </div>
+            @if (w.edgeReturn) {
+              <span class="why-return" [title]="w.edgeTitle">Expected return <b [class.up]="w.edgeUp" [class.down]="!w.edgeUp">{{ w.edgeReturn }}</b> a unit{{ w.edgeText ? w.edgeText.replace(' a unit', '') : '' }}</span>
             }
           </div>
         }
+        <!-- (its place beside its neighbors, in a sentence; a pass's or a fade's, why) -->
+        <p class="why-note">{{ w.look.sentence }}</p>
+        @if (w.look.reason) {
+          <p class="why-note why-reason">{{ w.look.reason }}</p>
+        }
         @if (w.partial) {
-          <p class="why-foot">The score is its chance to win, in points (this pick's file has no price to weigh it by)</p>
+          <p class="why-fine">The score is its chance to win, in points (this pick's file has no price to weigh it by)</p>
         } @else {
-          <p class="why-foot">Kelly: how much of a bankroll the edge is worth at this price, the edge on the price scaled by what it pays (in points; 0 or under, no edge)</p>
+          <p class="why-fine">Kelly: how much of a bankroll the edge is worth at this price, the edge on the price scaled by what it pays (in points; 0 or under, no edge). The list runs by it; the bot bets from any edge</p>
         }
       </div>
     }

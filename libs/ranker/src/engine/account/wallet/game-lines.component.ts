@@ -46,6 +46,7 @@ export interface PriceWhy {
   words: string;
   market: PlayMarket;
   side: string;
+  game: { sport: string; matchup: string; start: string | null } | null;
 }
 
 // (one side of a prop on the board: its price, the bot's Kelly score and band on it, the bot's side or not)
@@ -221,8 +222,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     if (g && team === String(g.h[1])) return g.h[0];
     return /^d+$/.test(team) ? '' : team;
   }
-  askWhy(at: PriceWhy, event: Event): void {
-    this.why.emit({ at, event });
+  askWhy(at: Omit<PriceWhy, 'game'>, event: Event): void {
+    this.why.emit({ at: { ...at, game: { sport: this.sport.toUpperCase(), matchup: this.matchupText, start: this.board?.start ?? this.start ?? null } }, event });
   }
 
   private readonly botPicks = signal<BotPick[]>([]);
