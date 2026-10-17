@@ -242,31 +242,28 @@ card-panel {
   padding: 12px 22px;
 }
 
-// (two panels a row on a wide screen, one on a narrower: By Sport's eight columns need about 460px)
+// (the top pair, By Sport and By Confidence: two panels a row on a wide screen, one on a narrower (By Sport's
+// eight columns need about 460px); the other breakdowns (desk-wide: Calibration, By Stake, the tracked markets,
+// the self-check, the news signals) under them one each, the full width, with the same tables)
 .desk-grid {
   align-items: start;
   display: grid;
   gap: 0 12px;
   grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr));
 
-  // (By Sport across the top, centered, a panel's width; By Market and By Stake side by side under it;
-  // Calibration centered under them)
-  .desk-wide {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: min(100%, 760px);
-  }
-
   // (each panel its own height: one folded beside an open one stays a bar; a panel's body fills it, the
   // sport's edges, the NFL's end zone, all the way down: card-panel.scss, the body being the panel's own)
   card-panel {
     display: flex;
     flex-direction: column;
+  }
+}
 
-    // (a table wider than its half of the row scrolls sideways rather than running past the edge)
-    .group-body {
-      overflow-x: auto;
-    }
+.desk-grid,
+.desk-wide {
+  // (a table wider than its half of the row, or than a phone, scrolls sideways rather than running past the edge)
+  .group-body {
+    overflow-x: auto;
   }
 
   // (the breakdowns' columns a little closer, a long name (MLB Total Bases) on two lines)
@@ -283,7 +280,7 @@ card-panel {
 }
 
 // (on a phone the desk and its panels' bodies come in closer to their edges, the breakdowns a size smaller
-// and their columns closer still: By Market's and By Stake's six columns fit across)
+// and their columns closer still: By Stake's six columns fit across)
 @include v.down(small) {
   .model-desk {
     padding: 0 10px 12px;
@@ -294,7 +291,8 @@ card-panel {
     padding: 16px 10px 14px;
   }
 
-  .desk-grid {
+  .desk-grid,
+  .desk-wide {
     .group-body {
       padding: 10px;
     }
@@ -1705,7 +1703,8 @@ card-panel {
     }
   }
 
-  // The panels: two columns on a wide screen, 14px apart; their tables with small caps heads and tabular numbers
+  // The panels: the top pair in two columns on a wide screen, 14px apart, the rest one each the full width; their
+  // tables with small caps heads and tabular numbers
   card-panel {
     margin-top: 14px;
   }
@@ -1713,10 +1712,6 @@ card-panel {
   .desk-grid {
     gap: 0 14px;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-
-    .desk-wide {
-      width: 100%;
-    }
   }
 
   .desk-table {

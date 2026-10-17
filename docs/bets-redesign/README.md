@@ -234,8 +234,10 @@ the model desk's own.**
 - **The profit curve** on a board panel: one line per sport in `$sport-line`, the total in gold over a soft
   gold area, a dashed zero line, and the legend with each sport's units.
 - **The panels** become collapsible board panels with the gold header bar (chevron, title, and a one-line
-  summary on the right) in a two-column grid. By Confidence, Calibration, By Market and Self-checks start
-  open; the rest start closed. Tables get 10px caps heads and tabular numbers. Self-check statuses are word
+  summary on the right). The owner's order (2026-10-17): By Sport and By Confidence side by side at the top
+  (stacked on a phone), then Open Bets, those three open to begin with; then, full width and folded, Latest
+  Results, Calibration, By Stake, Tracked, Self-check, News signals, CHECKs, What It's Changed, Context,
+  Backtest, Model Settings, In Play. By Market is gone. Tables get 10px caps heads and tabular numbers. Self-check statuses are word
   tags (OK green, WATCH orange, FAIL red), never colour alone.
 
 ### 10. Removed

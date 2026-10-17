@@ -565,6 +565,29 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
   assert.deepEqual(missing, []);
 });
 
+test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confidence paired at the top, Open Bets under them, those three open to begin with, the rest folded, By Market gone", () => {
+  const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/bets/model-desk.component.html'), 'utf8');
+  const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
+    label: m[1].match(/\blabel="([^"]+)"/)?.[1] ?? m[1].match(/\[label\]="([^"]+)"/)?.[1],
+    open: /\[startOpen\]="true"/.test(m[1]),
+    wide: /\bdesk-wide\b/.test(m[1]),
+    at: m.index,
+  }));
+  assert.deepEqual(
+    panels.map((p) => p.label),
+    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'selfTitle', 'News signals', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Model Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
+  );
+  assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ['By Sport', 'By Confidence', 'Open Bets']);
+  // (the two-column grid holds the top pair alone: its own closing div is the first at the grid's indent after it)
+  const grid = html.indexOf('<div class="desk-grid">');
+  const gridEnd = html.indexOf('\n    </div>', grid);
+  assert.ok(grid > 0 && gridEnd > grid);
+  assert.deepEqual(panels.filter((p) => p.at > grid && p.at < gridEnd).map((p) => p.label), ['By Sport', 'By Confidence']);
+  // (the breakdowns under it keep the grid's tables (desk-wide); the bets' lists and the rest have their own)
+  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ['Calibration', 'By Stake', 'trackedTitle', 'selfTitle', 'News signals']);
+  assert.ok(!html.includes('By Market'));
+});
+
 // ---------------------------------------------------------------------------
 // The public picks (picks.mjs) and the leagues' setup
 // ---------------------------------------------------------------------------
