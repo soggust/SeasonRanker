@@ -244,7 +244,7 @@ $grey: #7a7a7a;
     border-color v.$t-hover ease,
     box-shadow v.$t-hover ease;
 
-  &:hover {
+  &:hover:not(.fight) {
     border-color: rgba($close, 0.6);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
     translate: 0 -2px;
@@ -252,6 +252,11 @@ $grey: #7a7a7a;
 
   @include v.focus-lit {
     border-color: $close;
+  }
+
+  // (a UFC bout: no modal to open, so no button, no lift)
+  &.fight {
+    cursor: default;
   }
 }
 
@@ -326,6 +331,14 @@ $grey: #7a7a7a;
   &.white-logo img {
     @include v.white-lettering;
   }
+
+  // (a fighter: his headshot filling the round chip, face up)
+  &.face img {
+    height: 30px;
+    object-fit: cover;
+    object-position: top;
+    width: 30px;
+  }
 }
 
 .game-name {
@@ -347,6 +360,19 @@ $grey: #7a7a7a;
   color: v.$text-faint;
   flex: none;
   font-size: v.$fs-11;
+}
+
+// (a fighter's win, where a team's score would be: a small gold tag)
+.game-win {
+  border: 1px solid rgba($close, 0.6);
+  border-radius: v.$radius-sm;
+  color: $close;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+  padding: 3px 6px;
+  text-transform: uppercase;
 }
 
 // (the score on LED digits, the unlit eights behind; the leader's in gold)

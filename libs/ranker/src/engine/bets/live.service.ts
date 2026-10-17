@@ -6,6 +6,7 @@ import { ESPN_LEAGUES, SPORTS } from './desk-math';
 import { loadGame } from '../game-view/game';
 import type { GameView } from '../game-view/game.model';
 import { todayGames } from './live-games';
+import { EspnMmaScoreboard, LiveBout, mmaBouts, tonightBouts } from './live-mma';
 import { betsByGame } from './live-view';
 
 // The Live tab's data, nothing the page doesn't already load: today's games off ESPN's scoreboards (lines.service,
@@ -15,8 +16,12 @@ import { betsByGame } from './live-view';
 // thirty seconds (lines.games with a shorter age: its day cache is left as it is), and so are those summaries;
 // nothing while it doesn't.
 const BEAT = 30_000;
-// (the sports with a scoreboard: a UFC card's bouts have none)
+// (the sports with a scoreboard of games: a UFC card's is one event with its bouts inside, read apart (live-mma.ts):
+// ESPN's same MMA scoreboard, its current card, asked for on the same beat)
 export const LIVE_SPORTS = SPORTS.filter((s) => s !== 'mma');
+const MMA_SCOREBOARD = `https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES['mma']}/scoreboard`;
+// (a board game on the Live tab: a team game, or a bout with its fight's facts)
+export type LiveGame = GameBoard & { fight?: LiveBout['fight'] };
 
 @Injectable({ providedIn: 'root' })
 export class LiveService {
@@ -25,8 +30,24 @@ export class LiveService {
   // (the clock the lists go by: set on each beat, so today's games follow the day as it turns)
   private readonly now = signal(Date.now());
 
-  // Today's games: under way first, then today's still to come, the finished last
-  readonly games = computed<GameBoard[]>(() => todayGames(this.lines.boards().values(), this.now(), LIVE_SPORTS));
+  // (the UFC card as ESPN's scoreboard last said it)
+  private readonly mma = signal<EspnMmaScoreboard | null>(null);
+  // Tonight's bouts, each a board of its own (the bettor's board lending each its matchup and start)
+  readonly bouts = computed<LiveBout[]>(() => {
+    const boards = this.lines.boards();
+    const model = new Map<string, GameBoard>();
+    for (const g of boards.values()) if (g.sport === 'mma') model.set(g.event, g);
+    return tonightBouts(mmaBouts(this.mma(), model), this.now());
+  });
+  // Today's games: under way first, then today's still to come, the finished last; the night's bouts among them
+  // (a bout on ESPN's card standing in for the bettor's board's game of the same id)
+  readonly games = computed<LiveGame[]>(() => {
+    const bouts = this.bouts();
+    const ids = new Set(bouts.map((b) => b.event));
+    const order = { in: 0, pre: 1, post: 2 };
+    const teams = todayGames([...this.lines.boards().values()].filter((g) => g.sport !== 'mma' || !ids.has(g.event)), this.now(), SPORTS);
+    return [...teams, ...bouts].sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start) || a.matchup.localeCompare(b.matchup));
+  });
   // (how many are on now: the tab's count)
   readonly liveCount = computed(() => this.games().filter((g) => g.state === 'in').length);
   // (whether the day has games on or still to come: the tab shows)
@@ -68,7 +89,8 @@ export class LiveService {
       const active = new Set(games.filter((g) => g.state !== 'post').map((g) => g.sport));
       const sports = games.length ? LIVE_SPORTS.filter((s) => active.has(s)) : LIVE_SPORTS;
       const start = new Date(now).toISOString();
-      await this.lines.games(sports.map((sport) => ({ sport, start })), BEAT - 5_000);
+      const fights = !games.length || !this.mma() || games.some((g) => g.sport === 'mma' && g.state !== 'post');
+      await Promise.all([this.lines.games(sports.map((sport) => ({ sport, start })), BEAT - 5_000), fights ? this.readCard() : null]);
       this.now.set(Date.now());
       await this.readSummaries();
     } finally {
@@ -76,9 +98,19 @@ export class LiveService {
     }
   }
 
+  // (ESPN's current UFC card; one that won't load keeps the last)
+  private async readCard(): Promise<void> {
+    try {
+      const res = await fetch(MMA_SCOREBOARD);
+      if (res.ok) this.mma.set((await res.json()) as EspnMmaScoreboard);
+    } catch {
+      // (kept as it was)
+    }
+  }
+
   private async readSummaries(): Promise<void> {
     const bets = this.betsByGame();
-    const live = this.games().filter((g) => g.state === 'in' && bets.has(`${g.sport}|${g.event}`) && ESPN_LEAGUES[g.sport]);
+    const live = this.games().filter((g) => g.state === 'in' && g.sport !== 'mma' && bets.has(`${g.sport}|${g.event}`) && ESPN_LEAGUES[g.sport]);
     const next = new Map<string, GameView>();
     await Promise.all(
       live.map(async (g) => {

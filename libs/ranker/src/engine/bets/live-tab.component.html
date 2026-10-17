@@ -30,54 +30,12 @@
 
   <div class="live-board" [class.one]="cards.length === 1">
     @for (c of cards; track c.key) {
-      <button type="button" class="live-game" [class.live]="c.live" [attr.aria-label]="c.aria" (click)="open(c)">
-        <span class="game-top">
-          <span class="game-caps">{{ c.sport.toUpperCase() }}@if (c.where) { · {{ c.where }}}</span>
-          <span class="game-clock" [class.live]="c.live">@if (c.live) {<i class="live-dot on" aria-hidden="true"></i>}{{ c.clock }}</span>
-        </span>
-        <span class="game-teams">
-          @for (t of c.teams; track t.abbr) {
-            <span class="game-team">
-              <span class="mini-gem game-gem" [style]="t.chip" [class.white-logo]="t.whiteLogo" aria-hidden="true">
-                @if (t.logo) {
-                  <img [src]="t.logo" alt="" loading="lazy" (error)="fallback($event, t.espnLogo)" />
-                }
-              </span>
-              <span class="game-name"><span class="game-name-word">{{ t.name }}</span>@if (t.record) {<span class="game-record">{{ t.record }}</span>}</span>
-              @if (t.score !== '') {
-                <span class="game-led" [class.lead]="t.lead"><span class="led-unlit" aria-hidden="true">{{ t.unlit }}</span><span class="led-lit">{{ t.score }}</span></span>
-              }
-            </span>
-          }
-        </span>
-        @if (c.spark) {
-          <span class="game-spark" aria-hidden="true">
-            <svg viewBox="0 0 300 26" preserveAspectRatio="none"><line x1="0" y1="13" x2="300" y2="13" vector-effect="non-scaling-stroke" /><path [attr.d]="c.spark" vector-effect="non-scaling-stroke" /></svg>
-          </span>
-        }
-        @if (c.last; as last) {
-          <span class="game-last" [class.good]="last.tone === 'good'" [class.bad]="last.tone === 'bad'">
-            @if (last.clock) {<span class="last-clock">{{ last.clock }}</span>}
-            <span class="last-text">{{ last.text }}</span>
-          </span>
-        }
-        <span class="game-space"></span>
-        <span class="game-bets">
-          @for (b of c.bets; track b.key) {
-            <span class="game-bet" [ngClass]="b.w.tone">
-              <span class="bet-short">{{ b.short }}</span>
-              <span class="bet-meter" aria-hidden="true">
-                <i class="bet-fill" [style.width.%]="b.w.fill"></i>
-                <i class="bet-tick" [style.left]="'calc(' + b.w.tick + '% - 1px)'"></i>
-              </span>
-              <span class="bet-status">{{ b.w.status }}</span>
-            </span>
-          }
-          @if (c.noBets) {
-            <span class="game-nobets">{{ c.noBets }}</span>
-          }
-        </span>
-      </button>
+      @if (c.fight) {
+        <!-- (a UFC bout: no modal for it (ESPN has no summary of a bout the game view reads), so not a button) -->
+        <div class="live-game fight" [class.live]="c.live" role="group" [attr.aria-label]="c.aria"><ng-container *ngTemplateOutlet="game; context: { $implicit: c }"></ng-container></div>
+      } @else {
+        <button type="button" class="live-game" [class.live]="c.live" [attr.aria-label]="c.aria" (click)="open(c)"><ng-container *ngTemplateOutlet="game; context: { $implicit: c }"></ng-container></button>
+      }
     } @empty {
       <p class="live-empty">
         @if (state === 'live') {
@@ -91,3 +49,57 @@
     }
   </div>
 </section>
+
+<!-- A game's card inside: its top line (the league, the place or a bout's weight class, the clock), the two sides,
+     the sparkline and last play, the bets on it -->
+<ng-template #game let-c>
+    <span class="game-top">
+      <span class="game-caps">{{ c.sport.toUpperCase() }}@if (c.where) { · {{ c.where }}}</span>
+      <span class="game-clock" [class.live]="c.live">@if (c.live) {<i class="live-dot on" aria-hidden="true"></i>}{{ c.clock }}</span>
+    </span>
+    <span class="game-teams">
+      @for (t of c.teams; track t.abbr) {
+        <span class="game-team">
+          <span class="mini-gem game-gem" [style]="t.chip" [class.white-logo]="t.whiteLogo" aria-hidden="true">
+            @if (t.logo) {
+              <img [src]="t.logo" alt="" loading="lazy" (error)="fallback($event, t.espnLogo)" />
+            }
+          </span>
+          <span class="game-name"><span class="game-name-word">{{ t.name }}</span>@if (t.record) {<span class="game-record">{{ t.record }}</span>}</span>
+          @if (t.win) {
+            <span class="game-win">Win</span>
+          }
+          @if (t.score !== '') {
+            <span class="game-led" [class.lead]="t.lead"><span class="led-unlit" aria-hidden="true">{{ t.unlit }}</span><span class="led-lit">{{ t.score }}</span></span>
+          }
+        </span>
+      }
+    </span>
+    @if (c.spark) {
+      <span class="game-spark" aria-hidden="true">
+        <svg viewBox="0 0 300 26" preserveAspectRatio="none"><line x1="0" y1="13" x2="300" y2="13" vector-effect="non-scaling-stroke" /><path [attr.d]="c.spark" vector-effect="non-scaling-stroke" /></svg>
+      </span>
+    }
+    @if (c.last; as last) {
+      <span class="game-last" [class.good]="last.tone === 'good'" [class.bad]="last.tone === 'bad'">
+        @if (last.clock) {<span class="last-clock">{{ last.clock }}</span>}
+        <span class="last-text">{{ last.text }}</span>
+      </span>
+    }
+    <span class="game-space"></span>
+    <span class="game-bets">
+      @for (b of c.bets; track b.key) {
+        <span class="game-bet" [ngClass]="b.w.tone">
+          <span class="bet-short">{{ b.short }}</span>
+          <span class="bet-meter" aria-hidden="true">
+            <i class="bet-fill" [style.width.%]="b.w.fill"></i>
+            <i class="bet-tick" [style.left]="'calc(' + b.w.tick + '% - 1px)'"></i>
+          </span>
+          <span class="bet-status">{{ b.w.status }}</span>
+        </span>
+      }
+      @if (c.noBets) {
+        <span class="game-nobets">{{ c.noBets }}</span>
+      }
+    </span>
+</ng-template>

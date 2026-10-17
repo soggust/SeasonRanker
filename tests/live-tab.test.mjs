@@ -3,6 +3,7 @@
 // watched on a live game (live-bets.ts): its status and tone, its meter, its captions, and the sweat summary
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
@@ -200,4 +201,70 @@ test('a side watched: covering, down, level; the sweat summary and the panel’s
   assert.deepEqual(sweatOf(watches), { winning: 2, close: 1, losing: 1 });
   assert.equal(onTrackWords(watches), '2 of 4 on track');
   assert.equal(onTrackWords([]), 'None');
+});
+
+// A UFC card: ESPN's MMA scoreboard is one event with the bouts as its competitions (live-mma.ts), each bout a
+// board of its own by the competition's id, in mixed states (support/espn-mma-scoreboard.json)
+const { mmaBouts, fightWords, fightWatch, fightRounds, fightMethod, tonightBouts, livePool, fightNight } = live;
+const CARD = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'support', 'espn-mma-scoreboard.json'), 'utf8'));
+
+test('a UFC card read into its bouts: fighters, headshots, states, the board lending matchup and start', () => {
+  const face = (id) => `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png`;
+  const model = new Map([['401914039', { matchup: 'Steven Koslow @ Chad Anheliger', start: '2026-10-17T22:00:00Z', away: { abbr: 'Steven Koslow', name: 'Steven Koslow', logo: face('5119740'), score: null }, home: { abbr: 'Chad Anheliger', name: 'Chad Anheliger', logo: face('4816062'), score: null } }]]);
+  const bouts = mmaBouts(CARD, model);
+  assert.equal(bouts.length, 5);
+  const [sub, ko, dec, on, next] = bouts;
+  assert.deepEqual([sub.event, on.event, next.event], ['401919643', '401908373', '401914039']);
+  assert.deepEqual(bouts.map((b) => b.state), ['post', 'post', 'post', 'in', 'pre']);
+  // (ordered 1 the home, as the bettor's board has it; the headshot by the fighter's id)
+  assert.equal(on.matchup, 'Chelsea Chandler @ Melissa Croden');
+  assert.equal(on.home.logo, face('4947922'));
+  assert.equal(next.start, '2026-10-17T22:00:00Z');
+  assert.equal(next.away.logo, face('5119740'));
+  assert.equal(sub.fight.winner, 'away');
+  assert.deepEqual(sub.fight.records, ['17-4-0', '9-2-0']);
+  assert.equal(on.fight.weight, 'W Bantamweight');
+  // (the clock's words: live, the finishes, a decision, a bout to come by its start)
+  assert.equal(fightWords(on, NOW), 'R2 3:14');
+  assert.equal(fightWords(sub, NOW), 'SUB R3 4:19');
+  assert.equal(fightWords(ko, NOW), 'TKO R1 2:05');
+  assert.equal(fightWords(dec, NOW), 'SPLIT DEC');
+  assert.match(fightWords(next, NOW), /^\d{1,2}:00\s[AP]M$/);
+  assert.equal(fightMethod([{ type: { text: 'Winner KO' } }]), 'KO');
+  assert.equal(fightMethod([{ type: { text: 'Round Start' } }]), null);
+  // (rounds gone: R2 3:14 is 1.65; a decision the distance)
+  assert.ok(Math.abs(fightRounds(on) - (1 + 194 / 300)) < 1e-9);
+  assert.equal(fightRounds(dec), 3);
+  // (the Live board: a card under way shows every bout of it; between bouts it's still on)
+  assert.equal(fightNight(bouts), true);
+  assert.equal(fightNight(bouts.filter((b) => b.state !== 'in')), true);
+  assert.equal(cardState(bouts.filter((b) => b.state !== 'in')).state, 'live');
+  assert.equal(livePool(bouts).length, 5);
+  assert.equal(tonightBouts(bouts, NOW).length, 5);
+  // (a card days old, nothing of it on, is gone)
+  assert.equal(tonightBouts(bouts.filter((b) => b.state !== 'in'), Date.parse('2026-10-20T23:00:00Z')).length, 0);
+});
+
+test('a bet on a bout watched: moneyline live and final, round totals decided as the rounds go', () => {
+  const [sub, ko, dec, on, next] = mmaBouts(CARD);
+  const fbet = (over) => bet({ sport: 'mma', market: 'ml', line: null, side: 'home', pick: 'Melissa Croden ML', matchup: 'Chelsea Chandler @ Melissa Croden', ...over });
+  const watch = fightWatch(fbet(), on, NOW);
+  assert.equal(watch.status, 'LIVE');
+  assert.equal(watch.left, 'R2 3:14');
+  assert.equal(watch.right, 'Croden fighting');
+  assert.equal(fightWatch(fbet({ side: 'away' }), sub, NOW).status, 'WON');
+  assert.equal(fightWatch(fbet({ side: 'home' }), sub, NOW).status, 'LOST');
+  assert.equal(fightWatch(fbet({ side: 'home' }), sub, NOW).right, 'You wins');
+  assert.equal(fightWatch(fbet({ start: '2026-10-18T02:00:00Z' }), next, NOW).status, 'PENDING');
+  const total = (side, line = 2.5) => bet({ sport: 'mma', market: 'total', side, line, pick: `${side === 'over' ? 'Over' : 'Under'} ${line}` });
+  // (R2 3:14: under 2.5 holding, over needing time; under 1.5 already lost, over 1.5 won)
+  assert.equal(fightWatch(total('under'), on, NOW).status, 'HOLDING');
+  assert.equal(fightWatch(total('over'), on, NOW).status, 'NEEDS TIME');
+  assert.equal(fightWatch(total('under', 1.5), on, NOW).status, 'LOST');
+  assert.equal(fightWatch(total('over', 1.5), on, NOW).status, 'WON');
+  // (a first-round TKO: the under won; a submission at R3 4:19 and a decision: the over 2.5 won)
+  assert.equal(fightWatch(total('under'), ko, NOW).status, 'WON');
+  assert.equal(fightWatch(total('over'), ko, NOW).status, 'LOST');
+  assert.equal(fightWatch(total('over'), sub, NOW).status, 'WON');
+  assert.equal(fightWatch(total('over'), dec, NOW).status, 'WON');
 });

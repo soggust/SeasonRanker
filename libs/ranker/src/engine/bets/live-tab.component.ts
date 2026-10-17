@@ -11,9 +11,10 @@ import { walkPlays } from './bet-impact';
 import type { GameInfo } from './bets-rows';
 import { ESPN_LEAGUES } from './desk-math';
 import { BetWatch, betWatch, shortPick, sweatOf } from './live-bets';
-import { boardShare, botRead, cardState, clockWords, shortTeam, sparkPath, startWords } from './live-games';
+import { boardShare, botRead, cardState, clockWords, livePool, shortTeam, sparkPath, startWords } from './live-games';
+import { LiveBout, fightWatch, fightWords } from './live-mma';
 import { impactBetOf, impactPlaysOf, propNowOf } from './live-view';
-import { LiveService } from './live.service';
+import { LiveGame, LiveService } from './live.service';
 import type { Confidence } from './tiers';
 
 // (the board's picks on a game, as the Bets page holds them (bets-page.component GameBoardPicks): its bets alone)
@@ -33,6 +34,8 @@ interface LiveTeam {
   unlit: string;
   lead: boolean;
   record: string | null;
+  // (a fighter who won his bout: the WIN tag where a team's score would be)
+  win?: boolean;
 }
 
 interface LiveBetRow {
@@ -51,6 +54,8 @@ interface LiveCard {
   where: string | null;
   clock: string;
   live: boolean;
+  // (a UFC bout: no modal to open (ESPN has no summary of a bout the game view can read), so not a button)
+  fight: boolean;
   teams: [LiveTeam, LiveTeam];
   spark: string | null;
   last: { clock: string | null; text: string; tone: 'good' | 'bad' | null } | null;
@@ -135,7 +140,7 @@ export class LiveTabComponent implements OnInit, OnDestroy {
     const f = this.cardsFor;
     if (f && f.games === games && f.bets === bets && f.summaries === summaries && f.show === this.show && f.boards === this.boards) return f.cards;
     const state = cardState(games).state;
-    const pool = state === 'live' ? games.filter((g) => g.state === 'in') : state === 'upcoming' ? games.filter((g) => g.state === 'pre') : [];
+    const pool = livePool(games);
     const mine = (g: GameBoard) => (bets.get(`${g.sport}|${g.event}`)?.length ?? 0) > 0;
     const shown = this.show === 'mine' && state === 'live' ? pool.filter(mine) : pool;
     const cards = shown
@@ -145,7 +150,8 @@ export class LiveTabComponent implements OnInit, OnDestroy {
     return cards;
   }
 
-  private card(g: GameBoard, bets: PlayBet[], summary: GameView | undefined): LiveCard {
+  private card(g: LiveGame, bets: PlayBet[], summary: GameView | undefined): LiveCard {
+    if (g.fight) return this.bout(g as LiveBout, bets);
     const live = g.state === 'in';
     const share = boardShare(g);
     const read = { as: g.away.score ?? 0, hs: g.home.score ?? 0, state: g.state, final: g.final, share, away: g.away.abbr, home: g.home.abbr };
@@ -184,6 +190,7 @@ export class LiveTabComponent implements OnInit, OnDestroy {
       where: summary?.venue?.name ?? info?.stadium ?? info?.city ?? null,
       clock: clockWords(g),
       live,
+      fight: false,
       teams: [team(g.away, 'away'), team(g.home, 'home')],
       spark,
       last,
@@ -193,8 +200,41 @@ export class LiveTabComponent implements OnInit, OnDestroy {
     };
   }
 
+  // A UFC bout's card: the two fighters (names, the board's headshots, records; the winner's WIN tag once it's over),
+  // the bout's state (its start, "R2 3:14", how it ended "KO R1 2:05"), the user's bets on it and the bot's read;
+  // no LED score, sparkline or last play (no score, no win probability, no summary)
+  private bout(g: LiveBout, bets: PlayBet[]): LiveCard {
+    const f = g.fight;
+    const live = g.state === 'in';
+    const clock = fightWords(g);
+    const side = (t: GameBoard['away'], which: 'away' | 'home'): LiveTeam => {
+      const win = g.state === 'post' && f.winner === which;
+      return { abbr: t.abbr || t.name, name: t.name, logo: t.logo, espnLogo: null, chip: {}, whiteLogo: false, score: '', unlit: '', lead: false, record: f.records[which === 'away' ? 0 : 1], win };
+    };
+    const rows: LiveBetRow[] = bets.map((b) => ({ key: b.id, short: shortPick(b), w: fightWatch(b, g) }));
+    const read = botRead(this.boards.get(`mma|${g.matchup}`)?.betPicks ?? []);
+    const noBets = rows.length || !read ? null : g.state === 'pre' ? `Bot: ${read}` : `No tickets · bot: ${read}`;
+    return {
+      key: `mma|${g.event}`,
+      sport: 'mma',
+      event: g.event,
+      league: ESPN_LEAGUES['mma'],
+      where: f.weight,
+      clock,
+      live,
+      fight: true,
+      teams: [side(g.away, 'away'), side(g.home, 'home')],
+      spark: null,
+      last: null,
+      bets: rows,
+      noBets,
+      aria: `${g.away.name} against ${g.home.name}${f.weight ? `, ${f.weight}` : ''}, ${clock}`,
+    };
+  }
+
   // A card clicked: the game's modal (the existing game view, by ESPN's league for its sport)
   open(c: LiveCard): void {
+    if (c.fight) return;
     void this.games.open({ event: c.event }, null, c.league);
   }
 

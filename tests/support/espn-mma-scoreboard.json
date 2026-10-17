@@ -1,0 +1,61 @@
+{
+  "events": [
+    {
+      "id": "600060773",
+      "name": "UFC Fight Night: Buckley vs. Malott",
+      "shortName": "UFC Fight Night",
+      "date": "2026-10-17T21:00Z",
+      "competitions": [
+        {
+          "id": "401919643", "date": "2026-10-17T21:00Z", "startDate": "2026-10-17T21:00Z", "type": { "id": "970", "abbreviation": "Bantamweight" },
+          "format": { "regulation": { "periods": 3 } },
+          "competitors": [
+            { "id": "5044361", "type": "athlete", "order": 2, "winner": true, "athlete": { "fullName": "SuYoung You", "displayName": "SuYoung You", "shortName": "S. You" }, "records": [{ "name": "overall", "type": "total", "summary": "17-4-0" }] },
+            { "id": "5282412", "type": "athlete", "order": 1, "winner": false, "athlete": { "fullName": "Cody Chovancek", "displayName": "Cody Chovancek", "shortName": "C. Chovancek" }, "records": [{ "name": "overall", "type": "total", "summary": "9-2-0" }] }
+          ],
+          "status": { "clock": 259, "displayClock": "4:19", "period": 3, "type": { "id": "3", "name": "STATUS_FINAL", "state": "post", "completed": true, "detail": "Final", "shortDetail": "Final" } },
+          "details": [{ "type": { "id": "20", "text": "Unofficial Winner Submission" } }, { "type": { "id": "23", "text": "Results" } }, { "type": { "id": "19", "text": "Fight Over" } }]
+        },
+        {
+          "id": "401919650", "date": "2026-10-17T21:00Z", "startDate": "2026-10-17T21:00Z", "type": { "abbreviation": "Lightweight" },
+          "format": { "regulation": { "periods": 3 } },
+          "competitors": [
+            { "id": "100", "order": 1, "winner": true, "athlete": { "displayName": "Ana Home" } },
+            { "id": "200", "order": 2, "winner": false, "athlete": { "displayName": "Bea Away" } }
+          ],
+          "status": { "clock": 125, "displayClock": "2:05", "period": 1, "type": { "name": "STATUS_FINAL", "state": "post", "completed": true, "shortDetail": "Final" } },
+          "details": [{ "type": { "text": "Unofficial Winner KO/TKO" } }]
+        },
+        {
+          "id": "401919651", "date": "2026-10-17T21:00Z", "startDate": "2026-10-17T21:00Z", "type": { "abbreviation": "Flyweight" },
+          "format": { "regulation": { "periods": 3 } },
+          "competitors": [
+            { "id": "300", "order": 1, "winner": false, "athlete": { "displayName": "Cal Home" } },
+            { "id": "400", "order": 2, "winner": true, "athlete": { "displayName": "Dee Away" } }
+          ],
+          "status": { "clock": 300, "displayClock": "5:00", "period": 3, "type": { "name": "STATUS_FINAL", "state": "post", "completed": true, "shortDetail": "Final" } },
+          "details": [{ "type": { "text": "Unofficial Winner Decision - Split" } }]
+        },
+        {
+          "id": "401908373", "date": "2026-10-17T21:00Z", "startDate": "2026-10-17T21:00Z", "type": { "id": "1003", "abbreviation": "W Bantamweight" },
+          "format": { "regulation": { "periods": 3 } },
+          "competitors": [
+            { "id": "4319785", "type": "athlete", "order": 2, "winner": false, "athlete": { "fullName": "Chelsea Chandler", "displayName": "Chelsea Chandler", "shortName": "C. Chandler" } },
+            { "id": "4947922", "type": "athlete", "order": 1, "winner": false, "athlete": { "fullName": "Melissa Croden", "displayName": "Melissa Croden", "shortName": "M. Croden" } }
+          ],
+          "status": { "clock": 194, "displayClock": "3:14", "period": 2, "type": { "id": "2", "name": "STATUS_IN_PROGRESS", "state": "in", "completed": false, "detail": "R2, 3:14", "shortDetail": "R2, 3:14" } },
+          "details": [{ "type": { "text": "Round Start" } }]
+        },
+        {
+          "id": "401914039", "date": "2026-10-17T21:00Z", "startDate": "2026-10-17T21:00Z", "type": { "id": "970", "abbreviation": "Bantamweight" },
+          "format": { "regulation": { "periods": 3 } },
+          "competitors": [
+            { "id": "4816062", "type": "athlete", "order": 1, "winner": false, "athlete": { "fullName": "Chad Anheliger", "displayName": "Chad Anheliger" } },
+            { "id": "5119740", "type": "athlete", "order": 2, "winner": false, "athlete": { "fullName": "Steven Koslow", "displayName": "Steven Koslow" } }
+          ],
+          "status": { "clock": 0, "displayClock": "-", "period": 0, "type": { "id": "1", "name": "STATUS_SCHEDULED", "state": "pre", "completed": false, "detail": "Sat, October 17th at 5:00 PM EDT", "shortDetail": "10/17 - 5:00 PM EDT" } }
+        }
+      ]
+    }
+  ]
+}

@@ -154,8 +154,8 @@ export function boardLabel(sport: string, state: GameState, period: number | nul
 const ordinalWord = (n: number): string => `${n}${n === 1 ? 'ST' : n === 2 ? 'ND' : n === 3 ? 'RD' : 'TH'}`;
 
 // Today's games off the boards the page holds: every game under way, and the ones on ESPN's day today (US
-// Eastern) still to come or over; the bettor's own board's games (a UFC bout, no scoreboard) left out, as any
-// game ESPN has no scoreboard for. Under way first, then to come by their start, the finished last
+// Eastern) still to come or over; a game off the bettor's own board once begun ("Started": no scoreboard read for
+// it) left out (a UFC bout's scoreboard is read apart: live-mma.ts). Under way first, then to come by their start, the finished last
 export function todayGames<T extends LiveGameIn>(boards: Iterable<T>, now: number, sports: readonly string[]): T[] {
   const today = espnDay(now);
   const order = { in: 0, pre: 1, post: 2 };
@@ -167,9 +167,25 @@ export function todayGames<T extends LiveGameIn>(boards: Iterable<T>, now: numbe
 // The card's state from today's games: games on now, none on but some to come, or none left at all; and the
 // first start still to come (for "First tip-off at")
 export function cardState(games: LiveGameIn[]): { state: 'live' | 'upcoming' | 'done'; firstStart: string | null } {
-  const live = games.some((g) => g.state === 'in');
+  const live = games.some((g) => g.state === 'in') || fightNight(games);
   const pre = games.filter((g) => g.state === 'pre').sort((a, b) => a.start.localeCompare(b.start));
   return { state: live ? 'live' : pre.length ? 'upcoming' : 'done', firstStart: pre[0]?.start ?? null };
+}
+
+// (a UFC card under way: a bout on, or one over and another to come (the card on between bouts as during one))
+export function fightNight(games: LiveGameIn[]): boolean {
+  const mma = games.filter((g) => g.sport === 'mma');
+  return mma.some((g) => g.state === 'in') || (mma.some((g) => g.state === 'post') && mma.some((g) => g.state === 'pre'));
+}
+
+// The games the card shows: those on now, and while a UFC card's on every bout of it (over, on, to come: the
+// night's card in one place); nothing on, today's still to come; none left, none
+export function livePool<T extends LiveGameIn>(games: T[]): T[] {
+  const state = cardState(games).state;
+  if (state === 'upcoming') return games.filter((g) => g.state === 'pre');
+  if (state === 'done') return [];
+  const night = fightNight(games);
+  return games.filter((g) => g.state === 'in' || (night && g.sport === 'mma'));
 }
 
 // The win-probability sparkline: the home team's chance after each play (0-1) as a path across a 300 by 26

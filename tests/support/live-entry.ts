@@ -3,3 +3,4 @@
 export * from '../../libs/ranker/src/engine/bets/live-games';
 export * from '../../libs/ranker/src/engine/bets/live-bets';
 export * from '../../libs/ranker/src/engine/bets/bet-impact';
+export * from '../../libs/ranker/src/engine/bets/live-mma';
