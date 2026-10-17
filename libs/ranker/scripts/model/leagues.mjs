@@ -134,7 +134,16 @@ export const GAME_CAP = 5;
 // (rbOutPass), the weeks 5-8 (midSeason), the backup's rushing (backupRun, on carries' ctx at weight 0), the MLB
 // starter's home or away (homeBat, a half lost). The game lines gated by their CLV (desk.mjs lineGate): the NHL's
 // tracked only at -0.0345 over 185. Set to the push time.
-export const MODEL_EPOCH = '2026-10-17T06:18:00Z';
+// 2026-10-17 later, the owner's tolerance on a term's own rows (project.mjs ownBias): a late term judged on the rows
+// it's on may run their bias further by at most OWN_TOL (0.05) of the stat's unit where its held-out gain is OWN_TOL_GAIN
+// (4) floors or more, and within it comes in soft, never hard. Replayed on the day's history, one term flips: the same
+// absence (ab) on NFL carries, +0.0014 held out, its own 925 rows -0.587 to -0.612 carries a game, in at its soft
+// weight (z 2.46, a half under 1.5: held to 0.25x of 0.25; Emanuel Wilson's carries read his games in the lead's
+// absence). Every other own-rows fail stands: the NFL's run past the tolerance or under the gain (rushing yards' ab
+// -2.62 to -2.82, ij 0.29 to -4.62; receiving yards' c_qb1Out 1.45 to -1.87; the NBA's rebounds' c_b2bB 0.09 to 0.39,
+// assists' -0.03 to 0.06 under the floor), and the NHL's and MLB's late terms are judged on the whole stat. Set to the
+// push time.
+export const MODEL_EPOCH = '2026-10-17T08:30:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

@@ -810,7 +810,8 @@ const ROUND_C_GRID = {
 // so one night can't swing it; (c) only the late terms the search tries (softable: a context flag or a blend
 // that's off at 0 and grows smoothly from it) are ever soft; the ones off the search for a leak or look-ahead
 // (mk, the market's view; vl, vcM, ps, cs) never, nor ones whose off isn't 0 of a size (ex, ep, od, rp, ij, ro,
-// sn) or not one of the whole stat's (its own rows' bias, the fifths, a side's: SOFT_FAILS); (d) a term the gate
+// sn) or not one of the whole stat's (its own rows' bias past the owner's tolerance (ownBias below: within it, a soft
+// fail), the fifths, a side's: SOFT_FAILS); (d) a term the gate
 // keeps is in at its size as before (a soft term with strong evidence: weight 1); (e) a weight over SOFT_CAP only where
 // each half of the held-out games shows it alone, z SOFT_HALF_Z or more in both (the skeptic's review, 2026-10-15:
 // with the outcomes shuffled within each season, 14 NFL refits of receiving yards and rush+rec yards, a pure-noise
@@ -829,7 +830,28 @@ const SOFT_NEVER = new Set(['c_olOut', 'c_rb1Out', 'c_aheadOut', 'c_oppOut', 'c_
 const SOFT_ON = new Set(['sp', 'pl', 'sk', 'rx', 'sl', 'ot', 'ab', 'nt', 'tr', 'po']);
 // (the form keys a soft term's size may carry, as taken, unscaled)
 const SOFT_FORMS = { tr: ['tf'], po: ['pg'] };
-const SOFT_FAILS = new Set(['gain', 'bias', "all players' bias", "the other players' bias", "the rest's bias", "the eligible rest's bias"]);
+const SOFT_FAILS = new Set(['gain', 'bias', "all players' bias", "the other players' bias", "the rest's bias", "the eligible rest's bias", 'its own bias within tolerance']);
+// A term's own rows' bias (a flag or a share term judged on the rows it's on: SUBGROUP) must be smaller with it, as
+// before; or, the owner's tolerance (2026-10-17, the Emanuel Wilson case: ab on carries +0.0014 held out, four times
+// the floor, its own 925 rows' bias -0.587 to -0.612 carries a game, left out on that alone), no larger by more than
+// OWN_TOL of the stat's own unit (0.05 carries on carries, 0.05 yards on yards, 0.05 points on points: the bias is a
+// game's, projected less actual) where the term's held-out gain is OWN_TOL_GAIN times its floor (MIN_GAIN) or more.
+// Within it the term is never in hard: the fail is one of its own kind the soft stage takes ('its own bias within
+// tolerance', SOFT_FAILS), so the term comes in at its soft weight on its held-out evidence, judged again each fit
+// (a term whose own rows run a little further under for a gain that size is worth a shrunk weight, not all of it).
+// Under the gain, or past the tolerance, 'its own bias' as before: left out, never soft. Here, out of fitStat, so
+// tests/model-own-bias-tolerance can drive it
+export const OWN_TOL = 0.05;
+export const OWN_TOL_GAIN = 4;
+// (o and t: the rows it's on without and with the term (biasOf); raw: its held-out gain, unrounded; floor: its
+// MIN_GAIN. null passes; 'not measured' under SUBGROUP_N rows; 'within tolerance'; 'larger')
+export function ownBias(o, t, raw, floor, n = SUBGROUP_N) {
+  if ((o?.n ?? 0) < n) return 'not measured';
+  const [ob, tb] = [Math.abs(biasRawOf(o)), Math.abs(biasRawOf(t))];
+  if ((tb === 0 && ob === 0) || tb < ob) return null;
+  if (Number.isFinite(raw) && Number.isFinite(floor) && raw >= OWN_TOL_GAIN * floor && tb <= ob + OWN_TOL) return 'within tolerance';
+  return 'larger';
+}
 export const softable = (key) => !SOFT_NEVER.has(key) && (key.startsWith('c_') || SOFT_ON.has(key));
 // (a late term the gate left out, soft-eligible: softable, its size as taken one of its own (and its form), every
 // fail one the joint check judges again)
@@ -929,9 +951,10 @@ const CARRY = ['pl'];
 // its held-out evidence instead of all or nothing, which it couldn't in 2026-10-12's search. ro and ot stay out.
 // Replayed 2026-10-17: on carries 0.25, +0.0014 held out (four times the floor) but its own 925 rows' bias -0.587
 // to -0.612 carries a game, and "its own bias" isn't a fail the soft stage takes (SOFT_FAILS): left out; rushing
-// yards 0 gain, its own bias larger too; not taken on the receiving stats. The owner's call whether a term's own
-// rows may run a little further under for a gain that size (a tolerance on its own rows as the rest has, or its own
-// bias among SOFT_FAILS); as it stands the rule holds and Wilson's carries read his season's share)
+// yards 0 gain, its own bias larger too; not taken on the receiving stats. The owner's call, 2026-10-17: a term's own
+// rows may run further under by OWN_TOL of the stat's unit for a gain of OWN_TOL_GAIN floors (ownBias), and within it
+// the term comes in soft, never hard: ab on carries at its soft weight, Wilson's carries read his games in the lead's
+// absence by that much)
 const SHARE = ['ab'];
 // (the carryover's last season games read (pl: his last PL_N, where last season had PL_MIN or more), and his
 // last five's games (rx: this season's under RX_MIN))
@@ -2807,9 +2830,9 @@ export function fitStat(stat, rows, env) {
     if (key === 'sp' && raw < 0) fails.push("the whole stat's log loss");
     if (sub) {
       const [o, t] = [off.parts, tried.parts];
-      const [ob, tb] = [biasRawOf(o?.on), biasRawOf(t?.on)];
-      const on = (o?.on?.n ?? 0) < SUBGROUP_N ? 'not measured' : tb === 0 && ob === 0 ? null : Math.abs(tb) < Math.abs(ob) ? null : 'larger';
-      if (on) fails.push(on === 'larger' ? 'its own bias' : 'its own bias not measured');
+      // (its own rows' bias smaller; or within OWN_TOL for a gain of OWN_TOL_GAIN floors, a soft fail: ownBias above)
+      const on = ownBias(o?.on, t?.on, raw, MIN_GAIN[key]);
+      if (on) fails.push(on === 'larger' ? 'its own bias' : on === 'within tolerance' ? 'its own bias within tolerance' : 'its own bias not measured');
       // (and its own rows' eligible players', the ones a book posts props for, no larger the same way: a term
       // learned on every player's rows, most of them low-usage, can right those and push the bettable ones the
       // other way (ij on receptions, 2026-10-12: its rows -6.9% to +4.1% actual over projected, the eligible's
