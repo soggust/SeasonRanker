@@ -1122,6 +1122,9 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   .band-icon {
     color: var(--band-color);
     flex: none;
+    // (its left edge the rows' rank tiles' exactly: straight after the chevron's column, the gap taken back (the
+    // owner's note, 2026-10-17; phones the same with their 8px gap))
+    margin-left: calc(-1 * #{v.$space-12});
   }
 
   .band-name {
@@ -1840,8 +1843,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
+  .game-picks {
+    margin: 10px 8px 0;
+  }
+
   .band-head {
     gap: v.$space-8;
+
+    .band-icon {
+      margin-left: calc(-1 * #{v.$space-8});
+    }
     padding: 10px;
 
     .band-chev {
@@ -1885,6 +1896,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 .book-ticker {
   @include v.scoreboard-panel(v.$radius-sm, none);
   align-items: center;
+  // (the board's gold rim, the even-edge way: 1px of chip.$felt-gold on the border box behind the face on the padding
+  // box; the owner's note, 2026-10-17)
+  background:
+    var(--scoreboard-dots) padding-box,
+    linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
+    chip.$felt-gold border-box;
+  border: 1px solid transparent;
   box-sizing: border-box;
   display: flex;
   flex: none;

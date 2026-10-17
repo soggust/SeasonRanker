@@ -1,5 +1,6 @@
 @use "../variables" as v;
 @use "account-kit" as kit;
+@use "../casino-chip" as chip;
 
 // ===========================================================================
 // The page: the sport bar across the top, then the filter menu (a drawer beside the rankings on big
@@ -14,7 +15,13 @@
 .sport-bar {
   align-items: stretch;
   @include v.scoreboard-face;
+  // (a gold hairline along its bottom edge alone, the Book's gold-metal rim (chip.$felt-gold) where a bar spanning
+  // the page has no sides to ring: the owner's note, 2026-10-17; drawn as its bottom border so it doesn't scroll
+  // with the links on the narrowest phones, the bar's height the same (border-box))
+  border-bottom: 1px solid transparent;
+  border-image: chip.$felt-gold 1;
   box-shadow: inset 0 0 1em rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
   display: flex;
   height: var(--sport-bar-height);
   // (a touch more room at the bar's ends: the owner; the links' own padding unchanged)

@@ -698,3 +698,16 @@
     min-height: 44px;
   }
 }
+
+// (phones: an open row's compact board keeps the phone's stacked rows (each side's name over its tiles), its names
+// column of the wider screens not applied, so a fight's two sides stand side by side in even halves and a game's
+// sides one under the other at full width)
+@include v.down(ai-narrow) {
+  .lines.compact .lines-grid {
+    grid-template-columns: minmax(0, 1fr);
+
+    &.ml-only {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

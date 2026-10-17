@@ -380,11 +380,13 @@
             } @else {
               <span class="bet-meter none" aria-hidden="true"></span>
             }
-            <!-- (the price: on felt, "+ TICKET"; on the ticket, solid gold: a click writes it on, or takes it off) -->
+            <!-- (the price: on felt, the odds alone; on the ticket, solid gold with "ON TICKET": a click writes it on, or takes it off) -->
             @if (r.odds && canBet(r)) {
               <button type="button" class="bet-price" [class.on]="onSlip(r)" [attr.aria-pressed]="onSlip(r)" [attr.aria-label]="(onSlip(r) ? 'Take off the ticket: ' : 'Add to the ticket: ') + r.pick + ' at ' + r.odds" (click)="takeRow(r, $event)">
                 <b>{{ r.odds }}</b>
-                <small>{{ onSlip(r) ? 'On ticket' : '+ Ticket' }}</small>
+                @if (onSlip(r)) {
+                  <small>On ticket</small>
+                }
               </button>
             } @else if (r.odds) {
               <span class="bet-price still"><b>{{ r.odds }}</b></span>
