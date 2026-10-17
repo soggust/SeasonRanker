@@ -13,5 +13,6 @@ export * from '../../libs/ranker/src/engine/bets/tiers';
 export * from '../../libs/ranker/src/engine/bets/desk-notes';
 export * from '../../libs/ranker/src/engine/bets/game-menu';
 export * from '../../libs/ranker/src/engine/bets/bet-sports';
+export * from '../../libs/ranker/src/engine/bets/recent-form';
 export { CHECK_CAUSE_LABELS, checkPanelOf } from '../../libs/ranker/src/engine/bets/desk-model';
 export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/src/engine/bets/desk-model';

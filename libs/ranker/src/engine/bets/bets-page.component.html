@@ -516,6 +516,32 @@
        money), and the recent form under it. On a phone the ticket is a stub along the bottom instead -->
   <aside class="book-side" aria-label="Bet ticket and recent form">
     <bet-slip></bet-slip>
+    <!-- Recent form: the user's last seven days (record, units, streak) and their last five settled bets, from the
+         wallet's tally and the history it has on hand; none signed out or with nothing settled -->
+    @if (form; as f) {
+      <section class="recent-form" aria-label="Recent form">
+        <div class="form-head">
+          <h2>Recent form</h2>
+          <span class="form-who">You</span>
+        </div>
+        <div class="form-stats">
+          <div><span class="form-label">Last 7 days</span><span class="form-value">{{ f.record }}</span></div>
+          <div><span class="form-label">Units</span><span class="form-value units" [class.down]="!f.up">{{ f.units }}</span></div>
+          <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
+        </div>
+        @if (f.last.length) {
+          <ol class="form-list">
+            @for (b of f.last; track $index) {
+              <li class="form-bet" [ngClass]="b.res">
+                <span class="form-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
+                <span class="form-words"><b>{{ b.pick }}</b> · {{ b.game }}</span>
+                <span class="form-units">{{ b.units }}</span>
+              </li>
+            }
+          </ol>
+        }
+      </section>
+    }
   </aside>
   </div>
   }

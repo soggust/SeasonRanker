@@ -10,6 +10,7 @@ import { Selection, recordOf, recordText, selectionKey } from '../account/wallet
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { betSports } from './bet-sports';
+import { RecentForm, recentForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
@@ -1074,6 +1075,14 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     const sel = this.rowSelection(r);
     if (!sel || !this.canBet(r)) return;
     this.wallet.toggle(sel);
+  }
+
+  // The recent form card (recent-form.ts): the user's last seven days from the settler's tally the wallet holds,
+  // their streak and their last five settled bets where the history's on hand; none signed out, or with nothing
+  // settled. The bot's recent form isn't on the page: no switch, the card the user's
+  get form(): RecentForm | null {
+    if (!canUse('bets') || !this.wallet.loaded()) return null;
+    return recentForm(this.wallet.tally(), this.wallet.settledBets());
   }
 
   // (the row's one-line read under the pick: Claude's headline where the pick has one, else its reason)

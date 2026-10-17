@@ -475,6 +475,145 @@ $page-gutter: 16px;
   }
 }
 
+// Recent form: a dot-matrix card under the ticket, RECENT FORM in gold, the last seven days' record, units and
+// streak in a row of three, then the last five settled bets, a W/L/P tile each
+.recent-form {
+  @include v.scoreboard-panel(v.$radius-md, none);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: v.$space-12;
+  padding: 14px 16px;
+
+  .form-head {
+    align-items: center;
+    display: flex;
+    gap: v.$space-8;
+    justify-content: space-between;
+
+    h2 {
+      @include glow;
+      font-family: v.$font-heading;
+      font-size: v.$fs-13;
+      font-weight: 600;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
+
+  // (whose: the user's; the bot's recent form isn't on the page, so no switch)
+  .form-who {
+    border: 1px solid v.$panel-edge;
+    border-radius: v.$radius-pill;
+    color: v.$grey-light;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1;
+    padding: 5px 12px;
+    text-transform: uppercase;
+  }
+
+  .form-stats {
+    display: grid;
+    gap: v.$space-8;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: v.$space-4;
+    }
+  }
+
+  .form-label {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .form-value {
+    font-family: v.$font-heading;
+    font-size: v.$fs-20;
+    font-weight: 600;
+    line-height: 1;
+
+    &.units {
+      color: v.$good-bright;
+
+      &.down {
+        color: v.$bad-soft;
+      }
+    }
+
+    &.streak {
+      @include glow;
+    }
+  }
+
+  .form-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-bet {
+    align-items: center;
+    border-top: 1px solid v.$panel-rule;
+    display: grid;
+    font-size: v.$fs-12;
+    gap: v.$space-10;
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    padding: 7px 0;
+
+    .form-res {
+      @include v.led-tile(v.$radius-sm, inset 0 0 6px rgba(0, 0, 0, 0.6));
+      color: v.$grey-light;
+      font-family: v.$font-heading;
+      font-size: v.$fs-12;
+      font-weight: 700;
+      height: 22px;
+    }
+
+    .form-words {
+      color: v.$grey-light;
+      @include v.ellipsis;
+
+      b {
+        color: #fff;
+        font-weight: 700;
+      }
+    }
+
+    .form-units {
+      color: v.$grey-light;
+      font-weight: 700;
+    }
+
+    &.W .form-res,
+    &.W .form-units {
+      color: v.$good-bright;
+    }
+
+    &.L .form-res,
+    &.L .form-units {
+      color: v.$bad-soft;
+    }
+  }
+}
+
+// (a phone: the card under the board)
+@media (max-width: #{v.bp(wide-menu) - 1px}) {
+  .recent-form {
+    margin-top: v.$space-14;
+  }
+}
+
 // The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
 // edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
 .board {
