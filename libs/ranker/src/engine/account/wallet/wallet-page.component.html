@@ -679,44 +679,75 @@
     }
 
     <!-- (every panel shut to start, and one with nothing in it not shown at all) -->
-    @let v = versus();
-    @let hasBoard = periods().length > 0;
-    @if (v?.from || hasBoard) {
-    <div class="wallet-row">
-      <!-- (you beside the bot: its published picks settled over the same stretch, from your first bet's game on) -->
-      @if (v?.from) {
-      <section class="wp-panel" aria-label="You against the bot">
-        <div class="wp-bar"><h3>Heads up</h3></div>
-        <div class="wp-body">
-          @if (v) {
-            <table class="desk-table wallet-versus">
-              <thead>
-                <tr><th></th><th title="Won, lost, pushed">Record</th><th title="Won of those decided">Win %</th><th title="Profit over what was staked: the fair comparison (the bot stakes 0.5 to 3 units a bet)">ROI</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>You</th>
-                  <td>{{ recordText(v.you) }}</td>
-                  <td>{{ pct(v.you.winPct) }}</td>
-                  <td [class.up]="(v.you.roi ?? 0) > 0" [class.down]="(v.you.roi ?? 0) < 0">{{ pct(v.you.roi) }}</td>
-                </tr>
-                <tr>
-                  <th>The bot</th>
-                  <td>{{ recordText(v.bot) }}</td>
-                  <td>{{ pct(v.bot.winPct) }}</td>
-                  <td [class.up]="(v.bot.roi ?? 0) > 0" [class.down]="(v.bot.roi ?? 0) < 0">{{ pct(v.bot.roi) }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="wallet-fine">Since {{ v.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Bets page's) settled over the same games' days.</p>
+    <!-- Heads up: you against the bot as a stadium scoreboard (the wallet's versus: its published picks settled over
+         the same stretch), this week, 30 days or since your first bet; the record and ROI rows under it; then the
+         settled straight bets split by whether they tailed the bot, were your own, or faded it -->
+    @if (heads(); as h) {
+      @let youLead = h.you.profit >= h.bot.profit;
+      @let gap = (h.you.profit - h.bot.profit < 0 ? -(h.you.profit - h.bot.profit) : h.you.profit - h.bot.profit);
+      <section class="wp-panel heads" aria-label="You against the bot">
+        <div class="wp-bar">
+          <h3>Heads up</h3>
+          @if (wallet.tally()) {
+            <div class="wp-seg" role="group" aria-label="Period">
+              @for (p of headsPeriods; track p.id) {
+                <button type="button" [attr.aria-pressed]="headsPeriod() === p.id" (click)="headsPeriod.set(p.id)">{{ p.label }}</button>
+              }
+            </div>
           }
         </div>
+        <div class="heads-board">
+          <div class="heads-side you">
+            <span class="heads-name">You</span>
+            <span class="heads-led" [class.lead]="youLead">{{ h.you.profit >= 0 ? '+' : '' }}{{ h.you.profit | number: '1.1-1' }}</span>
+            <span class="heads-units">Units</span>
+          </div>
+          <div class="heads-mid">
+            <span class="wp-key">{{ periodWords(h.period) }}</span>
+            <span class="heads-lead" [class.up]="youLead">{{ youLead ? 'You lead by ' : 'The bot leads by ' }}{{ gap | number: '1.1-1' }}u</span>
+            <div class="heads-dots" aria-hidden="true">
+              @for (d of h.dots; track $index) {
+                <span [ngClass]="d"></span>
+              }
+            </div>
+            <span class="heads-cap">last 10 days, who won each</span>
+          </div>
+          <div class="heads-side bot">
+            <span class="heads-name">The bot</span>
+            <span class="heads-led" [class.lead]="!youLead">{{ h.bot.profit >= 0 ? '+' : '' }}{{ h.bot.profit | number: '1.1-1' }}</span>
+            <span class="heads-units">Units</span>
+          </div>
+        </div>
+        <div class="heads-rows">
+          <span class="heads-val">{{ recordText(h.you) }}</span>
+          <span class="heads-k" title="Won, lost, pushed">Record</span>
+          <span class="heads-val">{{ recordText(h.bot) }}</span>
+          <span class="heads-val" [class.up]="(h.you.roi ?? 0) > 0" [class.down]="(h.you.roi ?? 0) < 0">{{ pct(h.you.roi) }}</span>
+          <span class="heads-k" title="Profit over what was staked: the fair comparison (the bot stakes 0.5 to 3 units a bet)">ROI</span>
+          <span class="heads-val" [class.up]="(h.bot.roi ?? 0) > 0" [class.down]="(h.bot.roi ?? 0) < 0">{{ pct(h.bot.roi) }}</span>
+        </div>
+        @let sp = split();
+        @if (sp.tail.bets || sp.own.bets || sp.fade.bets) {
+          <div class="heads-strip">
+            @for (cell of [['Tailing the bot', sp.tail], ['Your own calls', sp.own], ['Fading the bot', sp.fade]]; track cell[0]) {
+              @let rec = $any(cell[1]);
+              <div>
+                <span class="wp-key">{{ cell[0] }}</span>
+                <span class="strip-rec">{{ rec.won }}–{{ rec.lost }}@if (rec.push) {–{{ rec.push }}}</span>
+                <b [class.up]="rec.profit > 0" [class.down]="rec.profit < 0">{{ rec.profit > 0 ? '+' : '' }}{{ rec.profit | number: '1.1-1' }}u</b>
+              </div>
+            }
+          </div>
+        }
+        <p class="wallet-fine heads-fine">Since {{ h.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Bets page's) settled over the same games' days.@if (historyNote()) { Tailing, own calls and fading from {{ historyNote() }}.}</p>
       </section>
-      }
+    }
 
+    @let hasBoard = periods().length > 0;
+    @if (hasBoard) {
+    <div class="wallet-row">
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
-      @if (hasBoard) {
       <section class="wp-panel" aria-label="High rollers">
         <div class="wp-bar">
           <h3>High rollers</h3>
@@ -753,7 +784,6 @@
           }
         </div>
       </section>
-      }
     </div>
     }
 

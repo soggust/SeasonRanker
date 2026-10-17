@@ -52,6 +52,10 @@ $bar-tint: rgba(chip.$felt-light, 0.16);
 $bar-line: rgba(chip.$felt-light, 0.4);
 
 .wallet {
+  // (a result's two colors: the desk's .up and .down (model-desk.scss, loaded with this) read them, and set them on
+  // the desk alone; here the Book's brighter green and softer red)
+  --win: #{v.$good-bright};
+  --loss: #{v.$bad-soft};
   color: var(--app-text, #f1ece6);
   display: flex;
   flex-direction: column;
@@ -251,15 +255,6 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
-}
-
-// (a gain and a loss, wherever a figure's a result)
-.wallet .up {
-  color: v.$good-bright;
-}
-
-.wallet .down {
-  color: v.$bad-soft;
 }
 
 // ---------------------------------------------------------------------------
@@ -716,6 +711,174 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   }
 }
 
+// ---------------------------------------------------------------------------
+// Heads up: the scoreboard, YOU and THE BOT in segments either side of the period, the lead, ten dots and a caption;
+// the stat rows on the same three columns; the tailing / own calls / fading strip
+// ---------------------------------------------------------------------------
+$heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
+
+.heads-board {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: $heads-cols;
+}
+
+.heads-side {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+  padding: v.$space-16 v.$space-20;
+
+  &.you {
+    background: linear-gradient(180deg, rgba(kit.$app-sand, 0.08), transparent);
+  }
+}
+
+.heads-name {
+  color: #fff;
+  font-family: v.$font-heading;
+  font-size: v.$fs-13;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+// (the leader's digits glow sand, the other's are white)
+.heads-led {
+  color: #fff;
+  font-family: v.$font-led;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+
+  &.lead {
+    color: kit.app(sand);
+    text-shadow: 0 0 12px rgba(kit.$app-sand, 0.55);
+  }
+}
+
+.heads-units {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.heads-mid {
+  align-items: center;
+  border-left: 1px solid v.$panel-rule;
+  border-right: 1px solid v.$panel-rule;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
+  justify-content: center;
+  padding: v.$space-12 v.$space-16;
+  text-align: center;
+}
+
+.heads-lead {
+  color: #ccc;
+  font-family: v.$font-heading;
+  font-size: v.$fs-18;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  &.up {
+    text-shadow: 0 0 10px rgba(v.$good-bright, 0.4);
+  }
+}
+
+.heads-dots {
+  display: flex;
+  gap: v.$space-4;
+
+  span {
+    background: #555;
+    border-radius: v.$radius-round;
+    height: 6px;
+    width: 6px;
+
+    &.you {
+      background: kit.app(sand);
+      box-shadow: 0 0 5px kit.app(sand);
+    }
+
+    &.none {
+      background: #333;
+    }
+  }
+}
+
+.heads-cap {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+}
+
+.heads-rows {
+  border-top: 1px solid v.$panel-rule;
+  display: grid;
+  grid-template-columns: $heads-cols;
+
+  .heads-val {
+    border-bottom: 1px solid v.$panel-dark;
+    font-family: v.$font-heading;
+    font-size: v.$fs-16;
+    font-weight: 600;
+    padding: v.$space-8 v.$space-20;
+    text-align: center;
+  }
+
+  .heads-k {
+    align-items: center;
+    border-bottom: 1px solid v.$panel-dark;
+    border-left: 1px solid v.$panel-rule;
+    border-right: 1px solid v.$panel-rule;
+    box-sizing: border-box;
+    color: v.$text-faint;
+    display: flex;
+    font-size: v.$fs-10;
+    font-weight: 800;
+    justify-content: center;
+    letter-spacing: 2px;
+    padding: v.$space-8 v.$space-16;
+    text-transform: uppercase;
+  }
+}
+
+.heads-strip {
+  background: v.$panel-rule;
+  border-top: 1px solid v.$panel-rule;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+  > div {
+    align-items: center;
+    background: var(--scoreboard);
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-12;
+    padding: v.$space-12 v.$space-20;
+  }
+
+  .strip-rec {
+    font-family: v.$font-heading;
+    font-size: v.$fs-15;
+    font-weight: 600;
+  }
+
+  b {
+    font-weight: 800;
+  }
+}
+
+.heads-fine {
+  padding: v.$space-10 v.$space-20 v.$space-12;
+}
+
 // A confirmation, under the actions
 .wallet-confirm {
   background: rgba(0, 0, 0, 0.35);
@@ -872,19 +1035,6 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   font-size: v.$fs-11;
   line-height: 1.45;
   margin: 8px 0 2px;
-}
-
-// You vs the bot: two rows, the names on the left
-.wallet-versus {
-  tbody th {
-    font-weight: 900;
-    text-align: left;
-  }
-
-  td {
-    font-size: v.$fs-14;
-    font-weight: 800;
-  }
 }
 
 // The leaderboard's periods: the sport's small pills (the periods with anyone on them)
