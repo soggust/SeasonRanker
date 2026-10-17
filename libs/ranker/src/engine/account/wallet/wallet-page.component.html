@@ -759,30 +759,29 @@
             </div>
           }
         </div>
-        <div class="wp-body">
-          @if (board(); as b) {
-            <ol class="wallet-leaders">
-              @for (r of b.rows; track r.uid; let i = $index) {
-                <li [class.me]="r.uid === account.user()?.uid">
-                  <span class="leader-rank" [class.top]="i < 3">{{ i + 1 }}</span>
-                  <account-avatar [photo]="r.photo ?? null" [name]="r.displayName || r.username" [size]="26"></account-avatar>
-                  <span class="leader-who">
-                    <a class="leader-name" [href]="'/u/' + r.username">&#64;{{ r.username }}</a>
-                    @if (r.reloads) {
-                      <span class="leader-reloads" [title]="'Reloaded to ' + (start | number) + ' units ' + r.reloads + (r.reloads === 1 ? ' time' : ' times') + ': this record is over ' + (r.reloads + 1) + ' bankrolls'"><mat-icon aria-hidden="true" fontIcon="restart_alt"></mat-icon>{{ r.reloads }}<span class="reloads-word"> {{ r.reloads === 1 ? 'reload' : 'reloads' }}</span></span>
-                    }
-                  </span>
-                  <span class="leader-record" title="Won, lost, pushed">{{ recordText(r) }}</span>
-                  <span class="leader-roi" title="Return on what was staked" [class.up]="(r.roi ?? 0) > 0" [class.down]="(r.roi ?? 0) < 0">{{ pct(r.roi) }}</span>
-                  <b class="leader-profit" [class.up]="r.profit > 0" [class.down]="r.profit < 0">{{ units(r.profit) }}</b>
-                </li>
-              }
-            </ol>
-            @if (b.updatedAt) {
-              <p class="wallet-fine">{{ b.label }} · updated {{ b.updatedAt | date: 'EEE h:mm a' }} · you're on it when your bet history is public (<a [href]="privacyHash">Settings › Privacy</a>)</p>
+        <!-- (each row: the rank on a sunk LED tile (#1 in the sand, #2 and #3 green), the avatar, the name with the
+             reloads under it where there are any, units, the record and the return; the signed-in user's row washed
+             in sand with a sand rail on its left) -->
+        @if (board(); as b) {
+          <ol class="rollers">
+            @for (r of b.rows; track r.uid; let i = $index) {
+              <li class="roller" [class.me]="r.uid === account.user()?.uid">
+                <span class="roller-rank" [class.first]="i === 0" [class.top]="i > 0 && i < 3">{{ i + 1 }}</span>
+                <account-avatar [photo]="r.photo ?? null" [name]="r.displayName || r.username" [size]="34"></account-avatar>
+                <span class="roller-who">
+                  <a class="roller-name" [href]="'/u/' + r.username">&#64;{{ r.username }}</a>
+                  @if (r.reloads) {
+                    <span class="roller-sub" [title]="'Reloaded to ' + (start | number) + ' units ' + r.reloads + (r.reloads === 1 ? ' time' : ' times') + ': this record is over ' + (r.reloads + 1) + ' bankrolls'">{{ r.reloads }} {{ r.reloads === 1 ? 'reload' : 'reloads' }}</span>
+                  }
+                </span>
+                <b class="roller-units" [class.up]="r.profit > 0" [class.down]="r.profit < 0">{{ units1(r.profit) }}</b>
+                <span class="roller-rec" title="Won, lost, pushed">{{ recordText(r) }}</span>
+                <span class="roller-roi" title="Return on what was staked" [class.up]="(r.roi ?? 0) > 0" [class.down]="(r.roi ?? 0) < 0">{{ pct(r.roi) }}</span>
+              </li>
             }
-          }
-        </div>
+          </ol>
+          <p class="wp-note">Public players only: you're on it when your bet history is public (<a [href]="privacyHash">Settings › Privacy</a>).@if (b.updatedAt) { {{ b.label }} · updated {{ b.updatedAt | date: 'EEE h:mm a' }}.}</p>
+        }
       </section>
     </div>
     }
