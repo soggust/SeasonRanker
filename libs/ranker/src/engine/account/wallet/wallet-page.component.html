@@ -1,470 +1,31 @@
-<!-- #wallet: the play-money bankroll, as the Algorithm desk shows the bot's: the tiles, the profit curve, the open
-     bets (results as soon as the score decides them, pending settlement), the settled history by game, the
-     record beside the bot's, and the leaderboards -->
+<!-- #wallet: the play-money bankroll: the chips, the rebuy and the runs, the profit curve, heads up with the bot, the
+     leaderboards, the trophy case, the wall, your tells, and the open and settled bets pinned to corkboards (the
+     Book's Open tickets and Cashed tabs draw the same two boards alone) -->
 
-<!-- (a bet's game: each team's logo beside its abbreviation, away @ home; its score in play, or when it starts) -->
-<ng-template #gameCell let-g let-when="when">
-  @let t = teams(g);
-  <span class="desk-game">
-    <img [src]="logo(g.sport, t[0])" alt="" (error)="hideImage($event)" />{{ t[0] }}<span class="desk-at">@</span><img [src]="logo(g.sport, t[1])" alt="" (error)="hideImage($event)" />{{ t[1] }}
-  </span>
-  @let state = gameState(g);
-  @if (state.text) {
-    <small class="desk-when" [class.desk-live]="state.live">{{ state.text }}</small>
-  } @else if (when) {
-    <small class="desk-when">{{ g.start | date: when }}</small>
-  }
-</ng-template>
-
-<!-- (a bet's pick, led by its circle: a prop's player, a total's arrow, a side's team; the bot's pick its chip) -->
-<ng-template #pickCell let-b>
-  <span class="desk-pick">
-    <!-- (a prop's player or a fight's fighter: his face and his name link his card, player-link.ts) -->
-    @let who = betPlayer(b);
-    @if (b.market === 'prop') {
-      <a [playerLink]="who" playerLinkFace><img class="desk-face" [src]="face(b)" alt="" (error)="hideImage($event)" /></a>
-    } @else if (b.market === 'total') {
-      <span class="desk-badge" [class.over]="b.side === 'over'" [class.under]="b.side === 'under'" aria-hidden="true"><mat-icon [fontIcon]="b.side === 'over' ? 'arrow_upward' : 'arrow_downward'"></mat-icon></span>
-    } @else if (who) {
-      <a class="desk-badge" [playerLink]="who" playerLinkFace><img [src]="logo(b.sport, teams(b)[b.side === 'home' ? 1 : 0])" alt="" (error)="hideImage($event)" /></a>
-    } @else {
-      <span class="desk-badge" aria-hidden="true"><img [src]="logo(b.sport, teams(b)[b.side === 'home' ? 1 : 0])" alt="" (error)="hideImage($event)" /></span>
-    }
-    <b><pick-text [pick]="b.pick" [player]="who"></pick-text></b>
-  </span>
-  <!-- (phones: the game under the pick, its own column gone) -->
-  <small class="wallet-phone-game">{{ b.matchup }} · {{ b.start | date: 'EEE MMM d' }}</small>
-</ng-template>
-
-<!-- (the bot's tag on a bet it picked too, in a column of its own: its band, with its Kelly score) -->
-<ng-template #tierCell let-b>
-  @if (b.tier) {
-    <span class="wallet-tier" [ngClass]="b.tier" [title]="b.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : 'The bot’s pick: ' + b.tier + (b.kelly !== null && b.kelly !== undefined ? ', Kelly ' + b.kelly : '')">@if (b.tier === 'lock') {<mat-icon class="tier-lock" aria-hidden="true" fontIcon="lock"></mat-icon>}{{ b.tier }}</span>
-  }
-</ng-template>
-
-<!-- (an open bet's live column, a straight bet's or a parlay leg's) -->
-<ng-template #liveCell let-b>
-  <!-- (its live column, as the Algorithm's In Play: a prop or a total its meter (pips for a short count, a
-       bar with the line notched for yards, saves, outs and a game's total), lit by how it stands, its count
-       against the line; a side where it stands at the score, colored by how far; nothing before it starts) -->
-  @let lv = live().get(b.id);
-  @if (!lv) {
-    <td></td>
-  } @else if (lv.count !== null) {
-    <td class="desk-score" [class.up]="lv.state === 'won'" [class.down]="lv.state === 'lost'" [title]="lv.title">
-      @if (lv.meter; as m) {
-        <span class="desk-meter" [class.won]="lv.state === 'won'" [class.lost]="lv.state === 'lost'" [class.under]="b.side === 'under'" aria-hidden="true">
-          @if (m.pips) {
-            @for (pip of m.pips; track $index) {
-              <span class="pip" [class.active]="pip.on" [class.past]="pip.past" [style.--i]="$index"></span>
-            }
-            @if (m.extra) {
-              <span class="pip-extra">+{{ m.extra }}</span>
-            }
-          } @else {
-            <span class="bar"><span class="fill" [style.width.%]="m.fill"></span><span class="mark" [style.left.%]="m.mark"></span></span>
-          }
-        </span>
-      }
-      <b>{{ lv.text }}</b>
-      <small class="wallet-phone-game">{{ gameState(b).text }}</small>
-    </td>
-  } @else {
-    <!-- (the score under it on phones, where the game's column goes) -->
-    <td class="desk-score" [style.color]="lv.color" [title]="lv.title">{{ lv.text }}<small class="wallet-phone-game">{{ gameState(b).text }}</small></td>
-  }
-</ng-template>
-
-<!-- (a parlay's own badge in the sport column: its legs linked) -->
-<ng-template #parlayBadge>
-  <span class="wallet-parlay-badge" title="Parlay" aria-hidden="true"><mat-icon fontIcon="link"></mat-icon></span>
-</ng-template>
-
-<!-- (the open bets, by game: the wallet's panel, and the Bets page's Open Bets tab alone) -->
-<ng-template #openPanel>
-<section class="wp-panel" aria-label="Open bets">
-  <div class="wp-bar"><h3>Open bets</h3><span class="wp-bar-note">{{ tally().atRisk }}u in play</span></div>
-  <div class="group-body">
-      <!-- (its columns' widths set, as the Algorithm's: model-desk.scss's desk-cols) -->
-      <table class="desk-table desk-bets wallet-bets desk-cols wallet-cols-open">
-        <colgroup>
-          <col class="desk-c-sport" />
-          <col class="desk-c-game" />
-          <col class="desk-c-pick" />
-          <col class="desk-c-bot" />
-          <col class="desk-c-odds" />
-          <col class="desk-c-units" />
-          <col class="desk-c-win" />
-          <col class="desk-c-live" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Sport</th>
-            <th class="desk-left">Game</th>
-            <th class="desk-left">Pick</th>
-            <th class="wallet-bot" title="The bot's pick too: its band">Bot</th>
-            <th>Odds</th>
-            <th>Stake</th>
-            <th title="What it pays on top of the stake if it wins; decided in play, what it came to, pending settlement">To win</th>
-            <th title="Once its game's under way (ESPN, every minute): a prop's or a total's count so far against the line, a side where it stands at the score">Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (g of openGames(); track g.key) {
-            @let many = g.bets.length > 1;
-            @if (many) {
-              <tr class="desk-group">
-                <th><img class="desk-league" [src]="leagueLogo(g.sport)" [alt]="g.sport.toUpperCase()" /></th>
-                <td class="desk-left"><span class="desk-group-game"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g, when: 'EEE h:mm a' }"></ng-container></span></span></td>
-                <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="wallet-phone-game">{{ g.matchup }} · {{ g.start | date: 'EEE MMM d' }}</small></td>
-                <td></td>
-                <td></td>
-                <td>{{ stakeOf(g.bets) }}</td>
-                <td></td>
-                <td></td>
-              </tr>
-            }
-            @for (b of g.bets; track b.id) {
-              @let d = decided().get(b.id);
-              @if (b.kind === 'parlay') {
-                <!-- (a parlay: one row, its first game's time, its price and stake, what it'd win, how many legs hit so far;
-                     opened, its legs, each with its game and its own live column) -->
-                @let pr = progress().get(b.id);
-                @let shutP = !isOpen('parlay|' + b.id);
-                <tr class="desk-group wallet-parlay" [class.shut]="shutP" (click)="toggleOpen('parlay|' + b.id)">
-                  <th><ng-container *ngTemplateOutlet="parlayBadge"></ng-container></th>
-                  <td class="desk-left"><span class="desk-group-game">
-                    <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shutP" [attr.aria-label]="(shutP ? 'Show ' : 'Hide ') + 'the parlay’s ' + b.legs!.length + ' legs'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                    <span class="desk-game-stack"><b class="wallet-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE h:mm a' }}</small></span>
-                  </span></td>
-                  <td class="desk-left"><b>{{ b.pick }}</b><small class="wallet-phone-game">{{ b.legs!.length }} games · from {{ b.start | date: 'EEE MMM d' }}</small></td>
-                  <td class="wallet-bot"></td>
-                  <td>{{ oddsText(b.odds) }}</td>
-                  <td>{{ b.stake }}@if (oldRun(b)) {<small title="Placed before a reload: it settles and counts in your record, its payout stays with that run">run {{ b.run + 1 }}</small>}</td>
-                  @if (d) {
-                    <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash wallet-paid" title="Decided by its legs: the settler pays it once their games are final">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
-                  } @else {
-                    <td class="up wallet-paid">{{ units(betToWin(b)) }}</td>
-                  }
-                  <td class="desk-score wallet-parlay-hits" [class.up]="d?.status === 'won'" [class.down]="d?.status === 'lost'" title="Legs hit so far (graded, or decided by the score)">
-                    @if (pr) {
-                      <span class="wallet-legs" aria-hidden="true">
-                        @for (l of legs().get(b.id) ?? []; track l.id; let i = $index) {
-                          @let st = l.status !== 'open' ? l.status : (decided().get(l.id)?.status ?? null);
-                          <i [class.won]="st === 'won'" [class.lost]="st === 'lost'" [class.out]="st === 'push' || st === 'void'"></i>
-                        }
-                      </span>
-                      <b>{{ pr.text }}</b>
-                    }
-                  </td>
-                </tr>
-                @if (!shutP) {
-                  @for (l of legs().get(b.id) ?? []; track l.id) {
-                    @let ld = l.status !== 'open' ? l : decided().get(l.id);
-                    <tr class="desk-grouped wallet-leg">
-                      <th><img class="desk-league" [src]="leagueLogo(l.sport)" [alt]="l.sport.toUpperCase()" /></th>
-                      <td class="desk-left"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: l, when: 'EEE h:mm a' }"></ng-container></span></td>
-                      <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: l }"></ng-container></td>
-                      <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
-                      <td>{{ oddsText(l.odds) }}</td>
-                      <td></td>
-                      @if (ld) {
-                        <td [class.up]="ld.status === 'won'" [class.down]="ld.status === 'lost'" class="wallet-paid" [title]="l.status !== 'open' ? legResult(l) : 'Decided by the score'"><small>{{ ld.status === 'won' ? 'hit' : ld.status === 'lost' ? 'missed' : ld.status }}{{ l.status === 'open' ? ' · pending' : '' }}</small></td>
-                      } @else {
-                        <td></td>
-                      }
-                      @if (l.status === 'open') {
-                        <ng-container *ngTemplateOutlet="liveCell; context: { $implicit: l }"></ng-container>
-                      } @else {
-                        <td class="desk-score" [class.up]="l.status === 'won'" [class.down]="l.status === 'lost'" [title]="legResult(l)">{{ l.final || l.note || l.status }}</td>
-                      }
-                    </tr>
-                  }
-                }
-              } @else {
-              <tr [class.desk-grouped]="many">
-                <th>@if (!many) {<img class="desk-league" [src]="leagueLogo(b.sport)" [alt]="b.sport.toUpperCase()" />}</th>
-                <!-- (a game's one bet: its game as a game row's, its time or score under its teams) -->
-                <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container></span>}</td>
-                <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
-                <td>{{ oddsText(b.odds) }}</td>
-                <td>{{ b.stake }}@if (oldRun(b)) {<small title="Placed before a reload: it settles and counts in your record, its payout stays with that run">run {{ b.run + 1 }}</small>}</td>
-                @if (d) {
-                  <td [class.up]="d.status === 'won'" [class.down]="d.status === 'lost'" class="desk-flash wallet-paid" title="Decided by the score: the settler pays it after the game">{{ units(d.profit) }}<small>{{ d.status }} · pending settlement</small></td>
-                } @else {
-                  <td class="up wallet-paid">{{ units(toWin(b.stake, b.odds)) }}</td>
-                }
-                <ng-container *ngTemplateOutlet="liveCell; context: { $implicit: b }"></ng-container>
-              </tr>
-              }
-            }
-          }
-        </tbody>
-      </table>
-  </div>
-</section>
-</ng-template>
-
-<!-- (the settled history: as the Algorithm's, each sport a row over its games when there's more than one, a game
-     with more than one bet a row over them, each folded until opened; the latest game first, the Date column's
-     header turning it round. The wallet's panel, and the Bets page's Closed Bets tab alone) -->
-<ng-template #settledPanel>
-<!-- (when the games were: Today, Yesterday, This Month, This Year, All Time, the Algorithm's dropdown in the bar;
-     the count beside it, the groups and their totals follow) -->
-<section class="wp-panel" aria-label="Settled bets">
+<!-- (the open bets as printed tickets pinned to a corkboard, each with a push-pin and its own slight tilt (tilt(),
+     steady per ticket), the live ones first: a panel whose bar carries what's in play, what they'd win, how many are
+     live and how many are decided pending settlement; each leg with its score and clock and how it stands, a prop's
+     thin progress meter, or its start. The wallet's panel, and the Bets page's Open tickets tab alone) -->
+<ng-template #openBoard>
+<section class="wp-panel book-board" aria-label="Open tickets">
   <div class="wp-bar">
-    <h3>Settled</h3>
-    <span class="wp-bar-tools">
-      <span class="wp-bar-note">{{ settledTotal() }} {{ settledTotal() === 1 ? 'bet' : 'bets' }}</span>
-      <select class="wp-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
-        @for (r of ranges; track r.value) {
-          <option [value]="r.value">{{ r.label }}</option>
-        }
-      </select>
-    </span>
-  </div>
-@if (!settledShown().length) {
-  <p class="wp-note" role="status">{{ rangeLoading() ? 'Loading…' : 'No settled bets ' + rangeWords(range()) + '.' }}</p>
-} @else {
-  <div class="group-body">
-    <table class="desk-table desk-bets wallet-bets wallet-settled desk-cols wallet-cols-settled">
-      <colgroup>
-        <col class="desk-c-sport" />
-        <col class="desk-c-game" />
-        <col class="desk-c-date" />
-        <col class="desk-c-pick" />
-        <col class="desk-c-bot" />
-        <col class="desk-c-odds" />
-        <col class="desk-c-units" />
-        <col class="desk-c-result" />
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Sport</th>
-          <th class="desk-left">Game</th>
-          <th [attr.aria-sort]="latestFirst() ? 'descending' : 'ascending'">
-            <button type="button" class="desk-sort sorted" (click)="latestFirst.set(!latestFirst())" [title]="latestFirst() ? 'Latest first: the oldest first instead' : 'Oldest first: the latest first instead'">Date<mat-icon aria-hidden="true" [fontIcon]="latestFirst() ? 'arrow_downward' : 'arrow_upward'"></mat-icon></button>
-          </th>
-          <th class="desk-left">Pick</th>
-          <th class="wallet-bot" title="The bot's pick too: its band">Bot</th>
-          <th>Odds</th>
-          <th>Stake</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (sg of settledSports(); track sg.sport) {
-          @if (sg.header) {
-            @let sportShut = !isOpen('sport|' + sg.sport);
-            <tr class="desk-sport-group" [class.shut]="sportShut" (click)="toggleOpen('sport|' + sg.sport)">
-              <td class="desk-left" colspan="8">
-                <span class="desk-group-game">
-                  <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!sportShut" [attr.aria-label]="(sportShut ? 'Show ' : 'Hide ') + sg.sport.toUpperCase() + ' bets'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                  @if (sg.sport === 'parlay') {<ng-container *ngTemplateOutlet="parlayBadge"></ng-container>} @else {<img class="desk-league" [src]="leagueLogo(sg.sport)" alt="" />}
-                  <b class="desk-sport-name">{{ sportName(sg.sport) }}</b>
-                  <span class="desk-group-count">@if (sg.sport !== 'parlay') {{{ sg.games.length }} {{ sg.games.length === 1 ? 'game' : 'games' }} · }{{ sg.bets }} {{ sg.bets === 1 ? 'bet' : 'bets' }} · <span [class.up]="sg.profit > 0" [class.down]="sg.profit < 0">{{ units(sg.profit) }}</span></span>
-                </span>
-              </td>
-            </tr>
-          }
-          @if (!sg.header || isOpen('sport|' + sg.sport)) {
-            @for (g of sg.games; track g.key) {
-              @let many = g.bets.length > 1;
-              @let shut = many && !isOpen('game|' + g.key);
-              @if (many) {
-                @let won = stakeProfit(g.bets);
-                <tr class="desk-group" [class.shut]="shut" (click)="toggleOpen('game|' + g.key)">
-                  <th>@if (!sg.header) {<img class="desk-league" [src]="leagueLogo(g.sport)" [alt]="g.sport.toUpperCase()" />}</th>
-                  <td class="desk-left"><span class="desk-group-game">
-                    <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' bets on ' + g.matchup"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                    <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g }"></ng-container></span>
-                  </span></td>
-                  <td class="wallet-date">{{ g.start | date: 'MMM d' }}</td>
-                  <td class="desk-left desk-group-count">{{ g.bets.length }} bets<small class="wallet-phone-game">{{ g.matchup }}</small></td>
-                  <td></td>
-                  <td></td>
-                  <td>{{ stakeOf(g.bets) }}</td>
-                  <td [class.up]="won > 0" [class.down]="won < 0">{{ units(won) }}</td>
-                </tr>
-              }
-              @if (!shut) {
-                @for (b of g.bets; track b.id) {
-                  @if (b.kind === 'parlay') {
-                    <!-- (a parlay: one row, its result; opened, its legs, each as it came out) -->
-                    @let shutP = !isOpen('parlay|' + b.id);
-                    <tr class="desk-group wallet-parlay" [class.shut]="shutP" (click)="toggleOpen('parlay|' + b.id)">
-                      <th>@if (!sg.header) {<ng-container *ngTemplateOutlet="parlayBadge"></ng-container>}</th>
-                      <td class="desk-left"><span class="desk-group-game">
-                        <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shutP" [attr.aria-label]="(shutP ? 'Show ' : 'Hide ') + 'the parlay’s ' + b.legs!.length + ' legs'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                        <span class="desk-game-stack"><b class="wallet-parlay-name">Parlay</b><small class="desk-when">{{ b.legs!.length }} games</small></span>
-                      </span></td>
-                      <td class="wallet-date">{{ b.start | date: 'MMM d' }}</td>
-                      <td class="desk-left"><b>{{ b.pick }}</b><small class="wallet-phone-game">{{ b.legs!.length }} games · {{ b.start | date: 'MMM d' }}</small></td>
-                      <td class="wallet-bot"></td>
-                      <td>{{ oddsText(b.odds) }}@if (b.paidOdds !== undefined && b.paidOdds !== b.odds) {<small title="A leg pushed or void dropped out: the rest's price">paid {{ oddsText(b.paidOdds) }}</small>}</td>
-                      <td>{{ b.stake }}</td>
-                      <td [class.up]="b.status === 'won'" [class.down]="b.status === 'lost'" [title]="resultTitle(b)">
-                        @if (b.status === 'void') {
-                          <span class="wallet-void">void</span><small>{{ b.note || b.final || 'stake back' }}</small>
-                        } @else {
-                          {{ units(b.profit ?? 0) }}<small>{{ b.status }}{{ b.final ? ' · ' + b.final : '' }}</small>
-                        }
-                      </td>
-                    </tr>
-                    @if (!shutP) {
-                      @for (l of legs().get(b.id) ?? []; track l.id) {
-                        <tr class="desk-grouped wallet-leg">
-                          <th><img class="desk-league" [src]="leagueLogo(l.sport)" [alt]="l.sport.toUpperCase()" /></th>
-                          <td class="desk-left"><span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: l }"></ng-container></span></td>
-                          <td class="wallet-date">{{ l.start | date: 'MMM d' }}</td>
-                          <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: l }"></ng-container></td>
-                          <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: l }"></ng-container></td>
-                          <td>{{ oddsText(l.odds) }}</td>
-                          <td></td>
-                          <td [class.up]="l.status === 'won'" [class.down]="l.status === 'lost'" [title]="legResult(l)"><small>{{ legResult(l) }}</small></td>
-                        </tr>
-                      }
-                    }
-                  } @else {
-                  <tr [class.desk-grouped]="many">
-                    <th>@if (!many && !sg.header) {<img class="desk-league" [src]="leagueLogo(b.sport)" [alt]="b.sport.toUpperCase()" />}</th>
-                    <td class="desk-left">@if (!many) {<span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b }"></ng-container></span>}</td>
-                    <td class="wallet-date">@if (!many) {{{ b.start | date: 'MMM d' }}}</td>
-                    <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                    <td class="wallet-bot"><ng-container *ngTemplateOutlet="tierCell; context: { $implicit: b }"></ng-container></td>
-                    <td>{{ oddsText(b.odds) }}</td>
-                    <td>{{ b.stake }}</td>
-                    <td [class.up]="b.status === 'won'" [class.down]="b.status === 'lost'" [title]="resultTitle(b)">
-                      @if (b.status === 'void') {
-                        <span class="wallet-void">void</span><small>{{ b.note || b.final || 'stake back' }}</small>
-                      } @else {
-                        {{ units(b.profit ?? 0) }}<small>{{ b.status }}{{ b.final ? ' · ' + b.final : '' }}</small>
-                      }
-                    </td>
-                  </tr>
-                  }
-                }
-              }
-            }
-          }
-        }
-      </tbody>
-    </table>
-    <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all
-         here) -->
-    @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
-      <div class="wallet-more">
-        <button type="button" class="app-btn-outline small" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
-          {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
-        </button>
-      </div>
-    }
-  </div>
-}
-</section>
-</ng-template>
-
-@if (!canUse('bets')) {
-  <coming-soon heading="Betting Wallet" detail="Play-money betting is on its way. Check back soon."></coming-soon>
-} @else {
-<div class="wallet-page" [class.only-open]="!!only">
-  @if (!account.ready()) {
-    <p class="desk-note wallet-note" role="status">Loading…</p>
-  } @else if (!account.user()) {
-    <!-- Signed out: what the wallet is, and the way in -->
-    <section class="model-desk wallet-intro">
-      <div class="wallet-intro-chips" aria-hidden="true"><i class="chip-100"></i><i class="chip-25"></i><i class="chip-5"></i></div>
-      <h2>Play along with the bot</h2>
-      <p>{{ start | number }} play units to start. Bet any game's lines from the Bets page, the bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
-      <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
-    </section>
-  } @else if (only === 'closed') {
-  <!-- The Book's Cashed tab: the settled bets as printed tickets, newest first, under a strip with the last seven
-       days' record, units and streak (recent-form.ts, from the tally and the history on hand); each ticket rubber-
-       stamped CASHED, LOST or PUSH. The date range stays the settled history's (the Algorithm's dropdown) -->
-  <section class="book-tickets" aria-label="Cashed">
-    <div class="tickets-strip">
-      <h2>Cashed</h2>
-      @if (form(); as f) {
-        <span class="strip-stat"><span class="strip-key">Record</span><b>{{ f.record }}</b></span>
-        <span class="strip-stat"><span class="strip-key">Units</span><b [class.up]="f.up" [class.down]="!f.up">{{ f.units }}</b></span>
-        <span class="strip-stat"><span class="strip-key">Streak</span><b class="glow">{{ f.streak }}</b></span>
-      }
-      <span class="strip-space"></span>
-      <select class="book-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
-        @for (r of ranges; track r.value) {
-          <option [value]="r.value">{{ r.label }}</option>
-        }
-      </select>
-      <span class="strip-note">Last 7 days · settled from the final score</span>
-    </div>
-    @if (settledShown().length) {
-      <div class="tickets-scroll">
-        <div class="tickets-grid">
-          @for (b of settledTickets(); track b.id) {
-            @let res = stampOf(b);
-            <article class="ticket" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
-              <div class="ticket-top">
-                <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
-                <span class="ticket-status">Settled</span>
-              </div>
-              <hr class="perf" />
-              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}</span>
-              @for (l of ticketLegs(b); track l.id) {
-                <div class="ticket-leg">
-                  <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
-                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span></span>
-                  <span class="leg-live" [ngClass]="l.status === 'won' ? 'good' : l.status === 'lost' ? 'bad' : 'ink'">{{ finalLine(l) }}</span>
-                </div>
-              }
-              <div class="ticket-sums">
-                <div><span>Risk</span><span>{{ b.stake }}u</span></div>
-                <div><span>{{ res.winLabel }}</span><b>{{ res.win | number: '1.2-2' }}u</b></div>
-                <div class="pays"><span>Pays</span><span>{{ res.pays | number: '1.2-2' }}u</span></div>
-              </div>
-              <span class="ticket-barcode" aria-hidden="true"></span>
-              <span class="ticket-stamp" [ngClass]="res.tone" aria-hidden="true">{{ res.stamp }}</span>
-            </article>
-          }
-        </div>
-        <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all here) -->
-        @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
-          <div class="tickets-more">
-            <button type="button" class="book-more" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
-              {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
-            </button>
-          </div>
-        }
-      </div>
-    } @else if (wallet.settledState() === 'all' || (settled().length && !rangeLoading())) {
-      <p class="tickets-note" role="status">No settled bets {{ rangeWords(range()) }}.</p>
-    } @else {
-      <p class="tickets-note" role="status">Loading…</p>
-    }
-  </section>
-  } @else if (only === 'open') {
-  <!-- The Book's Open tickets tab: the open bets as printed tickets, the live ones first, under a strip with what's
-       in play, what they'd win, how many are live and how many are decided pending settlement; each leg with its
-       score and clock and how it stands (the Open Bets table's live column), a prop's thin progress meter, or its
-       start -->
-  <section class="book-tickets" aria-label="Open tickets">
-    <div class="tickets-strip">
-      <h2>Open tickets</h2>
+    <h3>Open tickets</h3>
+    <span class="wp-bar-tools board-stats">
       <span class="strip-stat"><span class="strip-key">In play</span><b>{{ tally().atRisk | number: '1.0-2' }}u</b></span>
       <span class="strip-stat"><span class="strip-key">To win</span><b class="up">{{ openToWin() | number: '1.2-2' }}u</b></span>
       <span class="strip-stat"><span class="strip-key">Live</span><b class="glow">{{ liveCount() }}</b></span>
       <span class="strip-stat"><span class="strip-key">Pending</span><b>{{ pending().count }}</b></span>
-      <span class="strip-space"></span>
       <span class="strip-note">Scores every minute · settled after the final</span>
-    </div>
-    @if (open().length) {
-      <div class="tickets-scroll">
-        <div class="tickets-grid">
-          @for (b of openTickets(); track b.id) {
-            @let d = decided().get(b.id);
-            @let live = ticketLive(b);
+    </span>
+  </div>
+  @if (open().length) {
+    <div class="cork cork-board">
+      <div class="board-grid">
+        @for (b of openTickets(); track b.id) {
+          @let d = decided().get(b.id);
+          @let live = ticketLive(b);
+          <div class="board-pinned" [style.rotate.deg]="tilt(b)">
+            <span class="pin" aria-hidden="true"></span>
             <article class="ticket" [class.live]="live" [attr.aria-label]="'Ticket ' + ticketNo(b) + (live ? ', live' : '')">
               <div class="ticket-top">
                 <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
@@ -500,18 +61,113 @@
               </div>
               <span class="ticket-barcode" aria-hidden="true"></span>
             </article>
-          }
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (wallet.loaded()) {
+    <div class="tickets-empty">
+      <p><b>No open tickets.</b> Tap a price on the board to write one.</p>
+      <button type="button" class="book-more" (click)="toBets()">The board</button>
+    </div>
+  } @else {
+    <p class="tickets-note" role="status">Loading…</p>
+  }
+</section>
+</ng-template>
+
+<!-- (the settled bets as printed tickets pinned to a corkboard, newest first, each rubber-stamped CASHED, LOST or
+     PUSH: a panel whose bar carries the last seven days' record, units and streak (recent-form.ts) and the settled
+     history's date range (the Algorithm's dropdown); a page at a time, the next on asking. The wallet's panel
+     ("Settled"), and the Bets page's Cashed tab alone) -->
+<ng-template #cashedBoard let-title="title">
+<section class="wp-panel book-board" [attr.aria-label]="title">
+  <div class="wp-bar">
+    <h3>{{ title }}</h3>
+    <span class="wp-bar-tools board-stats">
+      @if (form(); as f) {
+        <span class="strip-stat"><span class="strip-key">Record</span><b>{{ f.record }}</b></span>
+        <span class="strip-stat"><span class="strip-key">Units</span><b [class.up]="f.up" [class.down]="!f.up">{{ f.units }}</b></span>
+        <span class="strip-stat"><span class="strip-key">Streak</span><b class="glow">{{ f.streak }}</b></span>
+        <span class="strip-note">Last 7 days · settled from the final score</span>
+      }
+      <select class="book-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
+        @for (r of ranges; track r.value) {
+          <option [value]="r.value">{{ r.label }}</option>
+        }
+      </select>
+    </span>
+  </div>
+  @if (settledShown().length) {
+    <div class="cork cork-board">
+      <div class="board-grid">
+        @for (b of settledTickets(); track b.id) {
+          @let res = stampOf(b);
+          <div class="board-pinned" [style.rotate.deg]="tilt(b)">
+            <span class="pin" aria-hidden="true"></span>
+            <article class="ticket" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
+              <div class="ticket-top">
+                <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
+                <span class="ticket-status">Settled</span>
+              </div>
+              <hr class="perf" />
+              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}</span>
+              @for (l of ticketLegs(b); track l.id) {
+                <div class="ticket-leg">
+                  <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
+                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span></span>
+                  <span class="leg-live" [ngClass]="l.status === 'won' ? 'good' : l.status === 'lost' ? 'bad' : 'ink'">{{ finalLine(l) }}</span>
+                </div>
+              }
+              <div class="ticket-sums">
+                <div><span>Risk</span><span>{{ b.stake }}u</span></div>
+                <div><span>{{ res.winLabel }}</span><b>{{ res.win | number: '1.2-2' }}u</b></div>
+                <div class="pays"><span>Pays</span><span>{{ res.pays | number: '1.2-2' }}u</span></div>
+              </div>
+              <span class="ticket-barcode" aria-hidden="true"></span>
+              <span class="ticket-stamp" [ngClass]="res.tone" aria-hidden="true">{{ res.stamp }}</span>
+            </article>
+          </div>
+        }
+      </div>
+      <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all here) -->
+      @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
+        <div class="tickets-more">
+          <button type="button" class="book-more" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
+            {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
+          </button>
         </div>
-      </div>
-    } @else if (wallet.loaded()) {
-      <div class="tickets-empty">
-        <p><b>No open tickets.</b> Tap a price on the board to write one.</p>
-        <button type="button" class="book-more" (click)="toBets()">The board</button>
-      </div>
-    } @else {
-      <p class="tickets-note" role="status">Loading…</p>
-    }
-  </section>
+      }
+    </div>
+  } @else if (wallet.settledState() === 'all' || (settled().length && !rangeLoading())) {
+    <p class="tickets-note" role="status">No settled bets {{ rangeWords(range()) }}.</p>
+  } @else {
+    <p class="tickets-note" role="status">Loading…</p>
+  }
+</section>
+</ng-template>
+
+
+@if (!canUse('bets')) {
+  <coming-soon heading="Betting Wallet" detail="Play-money betting is on its way. Check back soon."></coming-soon>
+} @else {
+<div class="wallet-page" [class.only-open]="!!only">
+  @if (!account.ready()) {
+    <p class="desk-note wallet-note" role="status">Loading…</p>
+  } @else if (!account.user()) {
+    <!-- Signed out: what the wallet is, and the way in -->
+    <section class="model-desk wallet-intro">
+      <div class="wallet-intro-chips" aria-hidden="true"><i class="chip-100"></i><i class="chip-25"></i><i class="chip-5"></i></div>
+      <h2>Play along with the bot</h2>
+      <p>{{ start | number }} play units to start. Bet any game's lines from the Bets page, the bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
+      <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
+    </section>
+  } @else if (only === 'closed') {
+  <!-- The Book's Cashed tab: the settled bets' corkboard alone -->
+  <ng-container *ngTemplateOutlet="cashedBoard; context: { title: 'Cashed' }"></ng-container>
+  } @else if (only === 'open') {
+  <!-- The Book's Open tickets tab: the open bets' corkboard alone -->
+  <ng-container *ngTemplateOutlet="openBoard"></ng-container>
   } @else {
   <!-- The wallet (docs/wallet-redesign/README.md): the account pages' hero, then panels on the sheet, each under a bar
        in the wallet's felt green with its title in the sand -->
@@ -891,14 +547,14 @@
       </section>
     }
 
-    <!-- (the open bets, by game: in play, a result as soon as the score decides it, pending settlement) -->
+    <!-- (the open bets pinned to their corkboard, the Open tickets tab's) -->
     @if (open().length) {
-      <ng-container *ngTemplateOutlet="openPanel"></ng-container>
+      <ng-container *ngTemplateOutlet="openBoard"></ng-container>
     }
 
-    <!-- (the settled history, by sport and game, the latest first) -->
+    <!-- (the settled history pinned to its corkboard, the Cashed tab's, a page at a time) -->
     @if (settled().length) {
-      <ng-container *ngTemplateOutlet="settledPanel"></ng-container>
+      <ng-container *ngTemplateOutlet="cashedBoard; context: { title: 'Settled' }"></ng-container>
     }
   </section>
   }

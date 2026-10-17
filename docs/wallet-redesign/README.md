@@ -180,6 +180,11 @@ curve also goes; the runs' sparklines and Heads Up replace it. **Ask the owner b
 and if they say keep, put them back as felt-barred panels at the bottom. The components and data stay
 either way, because the Bets tabs use them.
 
+**Decided (the owner, 2026-10-17):** the tables become corkboards, not removed. The Bets page's Open and Cashed
+tabs and the wallet's open and settled sections are one design: a felt-barred panel whose body is the corkboard
+(cork.svg in a dark wood frame), each ticket pinned to it (a red push-pin, a slight tilt steady per ticket) in a
+responsive grid, a cashed one stamped CASHED, LOST or PUSH. The profit curve stays.
+
 ### 9. Phones (≤575px)
 
 Everything stacks to one column. The rack keeps its stacks but they shrink (chips 56 × 10px). Heads Up becomes

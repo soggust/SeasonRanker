@@ -1746,86 +1746,10 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 }
 
 // ===========================================================================
-// The Book's Open tickets and Cashed tabs (the Bets page's wallet views, only = 'open' | 'closed'): a summary strip
-// on a dot-matrix panel, then the bets as printed tickets (the slip's paper, scalloped edges, IBM Plex Mono) in a
-// grid, one column on phones; a cashed ticket rubber-stamped
+// The printed tickets (the slip's paper, scalloped edges, IBM Plex Mono) the corkboards pin up: the Book's Open
+// tickets and Cashed tabs (the Bets page's wallet views, only = 'open' | 'closed') and the wallet's open and settled
+// bets; a cashed ticket rubber-stamped
 // ===========================================================================
-
-.book-tickets {
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-14;
-  min-height: 0;
-
-  h2 {
-    color: chip.$gold-led;
-    font-family: v.$font-heading;
-    font-size: v.$fs-15;
-    font-weight: 700;
-    letter-spacing: 3px;
-    line-height: 1;
-    margin: 0;
-    text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
-    text-transform: uppercase;
-  }
-
-  .glow {
-    color: chip.$gold-led;
-    text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
-  }
-
-  // (a gain green and a loss red over the strip's own lettering, the gold .glow included: !important outranks the rule
-  // above)
-  .up {
-    color: v.$good-bright !important;
-  }
-
-  .down {
-    color: v.$bad-soft !important;
-  }
-}
-
-// The strip: the title in gold, then the stats, a key in small caps and a value each; a note at the right
-.tickets-strip {
-  @include v.scoreboard-panel(v.$radius-md, none);
-  align-items: center;
-  display: flex;
-  flex: none;
-  flex-wrap: wrap;
-  gap: v.$space-10 v.$space-28;
-  padding: 12px 18px;
-
-  .strip-stat {
-    align-items: baseline;
-    display: flex;
-    gap: v.$space-8;
-
-    b {
-      font-family: v.$font-heading;
-      font-size: v.$fs-16;
-      font-weight: 600;
-      line-height: 1;
-    }
-  }
-
-  .strip-key {
-    color: v.$text-faint;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-
-  .strip-space {
-    flex: 1;
-  }
-
-  .strip-note {
-    color: v.$text-faint;
-    font-size: v.$fs-11;
-  }
-}
 
 // (the date range: a player's card pill, its caret in gold)
 .book-select {
@@ -1866,20 +1790,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
-.tickets-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 6px 6px 24px;
-  @include chip.gold-scrollbar;
-}
 
-.tickets-grid {
-  align-items: start;
-  display: grid;
-  gap: 26px 24px;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-}
 
 .tickets-more {
   display: flex;
@@ -2166,29 +2077,117 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
+// The boards (the Book's Open tickets and Cashed, and the wallet's open and settled bets): a panel under the felt bar,
+// the strip's stats in the bar, its body the wall's corkboard with the tickets pinned up in a grid, each with a
+// push-pin and its own slight tilt; on the Bets page the board scrolls inside the page, its frame staying put
+.book-board {
+  .glow {
+    color: chip.$gold-led;
+    text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+  }
+
+  .up {
+    color: v.$good-bright !important;
+  }
+
+  .down {
+    color: v.$bad-soft !important;
+  }
+
+  .tickets-note,
+  .tickets-empty {
+    padding: 18px 20px;
+  }
+
+  .only-open & {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.board-stats {
+  gap: v.$space-6 v.$space-20;
+
+  .strip-stat {
+    align-items: baseline;
+    display: flex;
+    gap: v.$space-8;
+
+    b {
+      color: #fff;
+      font-family: v.$font-heading;
+      font-size: v.$fs-16;
+      font-weight: 600;
+      line-height: 1;
+    }
+  }
+
+  .strip-key {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .strip-note {
+    color: v.$text-faint;
+    font-size: v.$fs-11;
+  }
+}
+
+// (the frame a border, not the wall's inset shadow, so a scrolling board's tickets pass under it)
+.cork-board {
+  border: 12px solid #3b2616;
+  box-shadow:
+    inset 0 0 0 1px #1c120a,
+    inset 0 18px 22px rgba(0, 0, 0, 0.45);
+  display: block;
+  padding: 40px 32px 34px;
+
+  .only-open & {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    @include chip.gold-scrollbar;
+  }
+}
+
+.board-grid {
+  align-items: start;
+  display: grid;
+  gap: 44px 34px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+
+.board-pinned {
+  min-width: 0;
+  position: relative;
+
+  .ticket {
+    filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.55));
+  }
+}
+
 @keyframes ticket-blink {
   50% {
     opacity: 0.35;
   }
 }
 
-// (phones: one column, the strip's stats closer, the stamp higher)
+// (phones: one column, the board's frame thinner, the stamp higher)
 @include v.down(ai-narrow) {
-  .tickets-strip {
-    gap: v.$space-6 v.$space-16;
-    padding: 10px 12px;
-
-    .strip-note {
-      display: none;
-    }
+  .board-stats .strip-note {
+    display: none;
   }
 
-  .tickets-scroll {
-    padding: 6px 4px 28px;
+  .cork-board {
+    border-width: 8px;
+    padding: 28px 16px 24px;
   }
 
-  .tickets-grid {
-    gap: 22px;
+  .board-grid {
+    gap: 34px;
     grid-template-columns: minmax(0, 1fr);
   }
 
