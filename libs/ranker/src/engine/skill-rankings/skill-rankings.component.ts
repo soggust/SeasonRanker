@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, HostListener, Input, NgZone, OnChanges, ViewChild, inject } from '@angular/core';
 import { quietListener } from '@ranker/core/quiet-listener';
-import { prefetchSplash } from '../player-card/splash/splash-host.component';
+import { prefetchSplash, splashShown } from '../player-card/splash/splash-host.component';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -278,9 +278,11 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.destroyRef.onDestroy(stop);
     // (the card's splash art and type fetched once the grid is up and the page idle: the first card then draws
     // them from the cache, and never on the page's own critical path)
+    // (only while the splash is shown to this visitor: splash-host.component.ts splashShown)
+    const prefetch = () => splashShown() && void prefetchSplash();
     this.zone.runOutsideAngular(() => {
-      if (typeof requestIdleCallback === 'function') requestIdleCallback(() => prefetchSplash(), { timeout: 8000 });
-      else setTimeout(() => prefetchSplash(), 3000);
+      if (typeof requestIdleCallback === 'function') requestIdleCallback(prefetch, { timeout: 8000 });
+      else setTimeout(prefetch, 3000);
     });
     // (a re-rank's rows on screen drawn at once, never an empty row for a frame: rows-in-view.ts)
     this.destroyRef.onDestroy(this.zone.runOutsideAngular(() => drawRowsInView(this.rankingsList.nativeElement)));

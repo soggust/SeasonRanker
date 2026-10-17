@@ -7,9 +7,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, Type, inj
 import { NgComponentOutlet } from '@angular/common';
 import type { PlayerCard } from '../card.model';
 import type { PlayerCards } from '../player-cards';
+import { ADMIN } from '../../account/features';
 import { loadSplashFonts } from './splash-fonts';
 
 let splash: Promise<Type<unknown>> | null = null;
+
+// The splash is held back from everyone but an admin until the owner approves it (2026-10-17): flip SPLASH_LIVE
+// to true to show it to every visitor. Hidden, nothing of it loads (no chunk, no fonts, no prefetch)
+export const SPLASH_LIVE = false;
+export const splashShown = (): boolean => SPLASH_LIVE || ADMIN();
 
 // The splash's chunk and its type, fetched once (the grid calls this when the page is idle; a card's host when
 // it opens)
@@ -22,10 +28,12 @@ export function prefetchSplash(): Promise<Type<unknown>> {
   selector: 'card-splash-host',
   standalone: true,
   imports: [NgComponentOutlet],
-  template: `@if (component; as c) {
-    <ng-container *ngComponentOutlet="c; inputs: { card: card, cards: cards }"></ng-container>
-  } @else if (!card.ur) {
-    <div class="splash-wait" aria-hidden="true"></div>
+  template: `@if (shown) {
+    @if (component; as c) {
+      <ng-container *ngComponentOutlet="c; inputs: { card: card, cards: cards }"></ng-container>
+    } @else if (!card.ur) {
+      <div class="splash-wait" aria-hidden="true"></div>
+    }
   }`,
   // (the placeholder: the splash's box exactly, splash.component.scss .splash: its height and the margins that
   // take it edge to edge under the tabs, on a desktop and on a phone)
@@ -39,9 +47,11 @@ export class CardSplashHost {
   @Input({ required: true }) card!: PlayerCard;
   @Input({ required: true }) cards!: PlayerCards;
   component: Type<unknown> | null = null;
+  readonly shown = splashShown();
   private readonly cdr = inject(ChangeDetectorRef);
 
   constructor() {
+    if (!this.shown) return;
     prefetchSplash().then((c) => {
       // (a frame after the card is up, whether the chunk was cached or just fetched: the card paints, then
       // the splash lands in the next frame)
