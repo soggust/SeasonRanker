@@ -201,10 +201,18 @@ $bar-line: rgba(chip.$felt-light, 0.4);
     letter-spacing: 1px;
     min-height: 28px;
     padding: 0 v.$space-12;
+    position: relative;
     text-transform: uppercase;
     transition:
       background v.$t-fast ease,
       color v.$t-fast ease;
+
+    // (a 44px touch target on a 28px pill)
+    &::after {
+      content: "";
+      inset: -8px 0;
+      position: absolute;
+    }
 
     &:hover {
       color: #fff;
@@ -827,6 +835,11 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   display: grid;
   grid-template-columns: $heads-cols;
 
+  // (a row's three cells sit in the panel's columns; on a phone the row is its own grid, the label over the two)
+  .heads-row {
+    display: contents;
+  }
+
   .heads-val {
     border-bottom: 1px solid v.$panel-dark;
     font-family: v.$font-heading;
@@ -1216,7 +1229,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     position: absolute;
     right: 14px;
     rotate: -12deg;
-    top: 34px;
+    top: 40px;
     white-space: nowrap;
   }
 }
@@ -1560,6 +1573,147 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 // (the game under a pick: phones only, where the game's column goes; over the tables' block smalls)
 .wallet-bets .wallet-phone-game {
   display: none;
+}
+
+// (the bar's link and the open tickets' link: a 44px touch target on a line of text, the layout untouched)
+.wp-bar-link,
+.chips-open a {
+  margin: -12px 0;
+  padding: 12px 0;
+}
+
+// Reduced motion: the chips, rows and pills don't ease (the rim's spots are casino-chip.scss's, still already)
+@media (prefers-reduced-motion: reduce) {
+  .tchip,
+  .rebuy-chip,
+  .roller,
+  .wp-seg button {
+    transition: none;
+  }
+}
+
+// Phones (≤575px): everything one column; the rack keeps its stacks, smaller; Heads Up stacks YOU, the middle and
+// THE BOT with the stat rows two columns under a label; the leaderboard drops its reloads line and the return; the
+// trophy grid three across; the corkboard closer in; the controls at least 44px tall
+@include v.down(phone) {
+  .wallet {
+    gap: v.$space-16;
+  }
+
+  .wp-bar {
+    padding: v.$space-12 v.$space-14;
+  }
+
+  .wp-body {
+    padding: v.$space-14;
+  }
+
+  .wp-note {
+    padding: v.$space-12 v.$space-14;
+  }
+
+  .wp-seg button {
+    min-height: 44px;
+
+    &::after {
+      content: none;
+    }
+  }
+
+  .wp-select {
+    height: 44px;
+  }
+
+  .chips-head,
+  .chips-open {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chip-rack {
+    gap: v.$space-8;
+    height: 140px;
+    padding: 0 v.$space-8;
+  }
+
+  .stack-chip {
+    height: 10px;
+    width: 56px;
+  }
+
+  .heads-board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heads-mid {
+    border-bottom: 1px solid v.$panel-rule;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid v.$panel-rule;
+  }
+
+  .heads-rows {
+    grid-template-columns: minmax(0, 1fr);
+
+    .heads-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .heads-k {
+      border-left: none;
+      border-right: none;
+      grid-column: 1 / -1;
+      grid-row: 1;
+      padding: v.$space-8 v.$space-14 v.$space-4;
+      border-bottom: none;
+    }
+
+    .heads-val {
+      padding: v.$space-4 v.$space-14 v.$space-8;
+    }
+  }
+
+  .heads-strip > div {
+    padding: v.$space-10 v.$space-14;
+  }
+
+  .heads-fine {
+    padding: v.$space-10 v.$space-14 v.$space-12;
+  }
+
+  .roller {
+    gap: v.$space-8;
+    grid-template-columns: 36px 30px minmax(0, 1fr) auto auto;
+    padding: v.$space-8 v.$space-12;
+  }
+
+  .roller-rank {
+    width: 36px;
+  }
+
+  .roller-sub,
+  .roller-roi {
+    display: none;
+  }
+
+  .trophies {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: v.$space-16 v.$space-10 v.$space-12;
+  }
+
+  .trophy-detail {
+    margin: 0 v.$space-10 v.$space-12;
+  }
+
+  .cork {
+    gap: v.$space-24;
+    padding: 30px 22px 26px;
+  }
+
+  .tell {
+    padding: v.$space-12 v.$space-14;
+  }
 }
 
 // Phones (in one block, after every rule it overrides)
