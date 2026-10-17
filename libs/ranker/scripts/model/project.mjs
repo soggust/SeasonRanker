@@ -827,9 +827,9 @@ export const SOFT_DAY = 0.25;
 export const SOFT_CAP = 0.25;
 export const SOFT_HALF_Z = 1.5;
 const SOFT_NEVER = new Set(['c_olOut', 'c_rb1Out', 'c_aheadOut', 'c_oppOut', 'c_oppD', 'c_oppDB', 'c_oppFront']);
-const SOFT_ON = new Set(['sp', 'pl', 'sk', 'rx', 'sl', 'ot', 'ab', 'nt', 'tr', 'po']);
+const SOFT_ON = new Set(['sp', 'pl', 'sk', 'rx', 'sl', 'ot', 'ab', 'nt', 'tr', 'po', 'bq']);
 // (the form keys a soft term's size may carry, as taken, unscaled)
-const SOFT_FORMS = { tr: ['tf'], po: ['pg'] };
+const SOFT_FORMS = { tr: ['tf'], po: ['pg'], bq: ['bqK'] };
 const SOFT_FAILS = new Set(['gain', 'bias', "all players' bias", "the other players' bias", "the rest's bias", "the eligible rest's bias", 'its own bias within tolerance']);
 // A term's own rows' bias (a flag or a share term judged on the rows it's on: SUBGROUP) must be smaller with it, as
 // before; or, the owner's tolerance (2026-10-17, the Emanuel Wilson case: ab on carries +0.0014 held out, four times
@@ -911,7 +911,7 @@ export function softJoint(base, t, prev = base) {
   if (!no(biasRawOf(t?.all), biasRawOf(base?.all))) fails.push("all players' bias");
   return fails;
 }
-const MIN_GAIN = { c_rbOutPass: DRAFT_GAIN, c_backupRun: DRAFT_GAIN, lp: DRAFT_GAIN, vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
+const MIN_GAIN = { c_rbOutPass: DRAFT_GAIN, c_backupRun: DRAFT_GAIN, lp: DRAFT_GAIN, bq: DRAFT_GAIN, vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -982,7 +982,7 @@ const SP_LINE_LAST = 16;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['c_rbOutPass', 'c_backupRun', 'vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp', 'c_olOut', 'c_rbLoad', 'c_lastGame']);
+const SUBGROUP = new Set(['bq', 'c_rbOutPass', 'c_backupRun', 'vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp', 'c_olOut', 'c_rbLoad', 'c_lastGame']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -1126,7 +1126,7 @@ export const squadMkt = (row, env) => {
   return Number.isFinite(v) && v > 0 && env?.avgMkt > 0 ? v / env.avgMkt : null;
 };
 const IJ_TRIES = [0, 0.5, 1].flatMap((ij) => [1, 2].flatMap((ia) => [0, 0.5, 1].filter((ir) => ij || ir).map((ir) => ({ ij, ia, ir }))));
-const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'ep' ? EP.flatMap((ep) => EG_FORMS.map((eg) => ({ ep, eg }))) : key === 'tr' ? TR.flatMap((tr) => TF.map((tf) => ({ tr, tf }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
+const lateTries = (key, stat = {}) => (key === 'vl' ? (stat.vacLearned ?? []).flatMap((vs) => GRID.vc.filter((x) => x).map((vc) => ({ vl: 1, vs, vc }))) : key === 'ps' ? PS : key === 'po' ? PO.flatMap((po) => PG_FORMS.map((pg) => ({ po, pg }))) : key === 'ep' ? EP.flatMap((ep) => EG_FORMS.map((eg) => ({ ep, eg }))) : key === 'tr' ? TR.flatMap((tr) => TF.map((tf) => ({ tr, tf }))) : key === 'sn' ? SN.flatMap((sn) => SR.map((sr) => ({ sn, sr }))) : key === 'vcM' ? GRID.vc.filter((x) => x).map((vc) => ({ vc, vcM: vc })) : key === 'mk' ? MK.flatMap((mk) => GRID.b.map((b) => ({ mk, b }))) : key === 'rp' ? NU.map((nu) => ({ rp: 1, nu })) : key === 'ij' ? IJ_TRIES : key === 'bq' ? BQ.flatMap((bq) => BQ_K.map((bqK) => ({ bq, bqK }))) : key === 'ro' ? [{ ro: 1 }] : (GRID[key] ?? GRID.c).filter((x) => x).map((x) => ({ [key]: x })));
 // (a late term's setting as the log says it: a flag's size, a compound's each part)
 const sizeOf = (key, t) => (key === 'vcM' ? t.vc : Object.keys(t).length === 1 ? t[key] : Object.entries(t).map(([k, v]) => `${k} ${v}`).join('/'));
 const SUBGROUP_N = 100;
@@ -1243,6 +1243,29 @@ export function makeModel(stat, params, env) {
     const last = cur ? { n: t.prevN, sum: t.prevSum } : t?.season === row.season - 1 ? t : null;
     const prior = last?.n >= 8 ? last.sum / last.n : lgT.sum / lgT.n;
     return ((cur?.sum ?? 0) + 4 * prior) / ((cur?.n ?? 0) + 4);
+  };
+  // (the backup quarterback's base (bq, round E 2026-10-17: the CHECK audit's biggest gap, a backup priced from the
+  // few-start starters' pool while his own numbers and his team's never entered): his team's passing attempts a
+  // game (teamPass: its quarterbacks' this season, pulled toward last season's (8 games or more), else the
+  // league's, by 4 games; null till the league has 20 team-games), and his own career rate per pass attempt of the
+  // stat (every game he threw in, relief work included: dbV over dbA), shrunk toward the few-start starters' per-
+  // attempt rate (poolRate: their total over their attempts, every start's where the few-start ones have under
+  // POOL_ATT) by bqK attempts of his own. The made-up part of a few-start starter's prior (under 10 starts) leans
+  // to the team's attempts times his own rate by bq; the rest of the prior is his own starts', as before)
+  const teamPass = new Map();
+  const lgP = { n: 0, sum: 0 };
+  const POOL_ATT = 500;
+  const teamPassOf = (row) => {
+    if (lgP.n < 20) return null;
+    const t = teamPass.get(row.team);
+    const cur = t?.season === row.season ? t : null;
+    const last = cur ? { n: t.prevN, sum: t.prevSum } : t?.season === row.season - 1 ? t : null;
+    const prior = last?.n >= 8 ? last.sum / last.n : lgP.sum / lgP.n;
+    return ((cur?.sum ?? 0) + 4 * prior) / ((cur?.n ?? 0) + 4);
+  };
+  const poolRate = (row) => {
+    const p = pos.get(posKey(row));
+    return p && p.fqa >= POOL_ATT ? p.fqsum / p.fqa : p && p.qa >= POOL_ATT ? p.qsum / p.qa : null;
   };
   const half = (x, season) => (x.season === season ? 1 : x.season === season - 1 ? 0.5 : 0);
   // (the eligible players' average at his position: the prior for a player with no longer run of his own)
@@ -1489,13 +1512,26 @@ export function makeModel(stat, params, env) {
     //           a fill-in whose last game's share (sr) already holds some of it (the joint fit sizes the two
     //           together, on average; the role guard CHECKs these, so mind it before loosening the guard))
     let mode = null;
+    let bqUsed = null;
     let share = null;
     let minLean = null;
     if (params.qs && stat.starts && row.pos === 'QB' && row.qbStart) {
       const longQ = prev.qn + 0.5 * older.qn;
       const longQsum = prev.qsum + 0.5 * older.qsum;
       const draftQ = draftF(row, dr, 'q');
-      const priorQ = longQ >= 10 ? longQsum / longQ : (longQsum + (10 - longQ) * poolStart(row) * draftQ) / 10;
+      let priorQ = longQ >= 10 ? longQsum / longQ : (longQsum + (10 - longQ) * poolStart(row) * draftQ) / 10;
+      // (the backup quarterback's base (bq, above): the made-up part of a few-start starter's prior leans by bq to
+      // his team's attempts a game times his own career rate per attempt, shrunk toward the pool's by bqK attempts)
+      if (params.bq && longQ < 10) {
+        const tAtt = teamPassOf(row);
+        const pr = poolRate(row);
+        if (tAtt !== null && pr !== null) {
+          const ownRate = ((pl.dbV ?? 0) + params.bqK * pr) / ((pl.dbA ?? 0) + params.bqK);
+          const madeUp = (1 - params.bq) * poolStart(row) * draftQ + params.bq * tAtt * ownRate;
+          priorQ = (longQsum + (10 - longQ) * madeUp) / 10;
+          bqUsed = { teamAtt: Math.round(tAtt * 10) / 10, own: Math.round(ownRate * 10000) / 10000, att: pl.dbA ?? 0, pool: Math.round(pr * 10000) / 10000 };
+        }
+      }
       draftUsed = longQ < 10 ? draftQ : 1;
       const rateQ = (cur.qsum + K * priorQ) / (cur.qn + K);
       const recentQ = cur.qrecent.length >= 3 ? avg(cur.qrecent) : rateQ;
@@ -1745,7 +1781,7 @@ export function makeModel(stat, params, env) {
     // (the pull toward the stat's typical projection (sl, middle): none where it's off or rm unknown)
     const slF = middleF(params, raw);
     const mu = Math.max(0.05, (params.scale ?? 1) * raw * slF);
-    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, sp: spKeys ? { cell: spKeys[2], g: spG, f: spF, b0: spB0 } : null, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
+    return { mu, raw, slF, rate, recent, base: baseUsed, same: sameAvg === null ? null : { avg: sameAvg, n: row.sameGames.length, base, vacF: vacF0 }, sameOn, opp, oppA, volume, posOpp, roleOpp, role: myRole ?? null, roleKey: roleKey ?? null, roleUp: upOf(row).roleUp ?? null, ramp: rampF, trendF, back: IJ && isBack(row, ia) ? row.ret : null, funnel: row.funnel ?? null, funnelF, paceF, tgtF, vac: vacNow, vacHist, vacF, minutes: mode === 'minutes' && minLean ? { season: minLean.season * fullMin(stat), recent: minLean.recent * fullMin(stat) } : null, script, ctx, ctxF, prior, own: cur.n ? cur.sum / cur.n : null, games: cur.n, prevGames: prev.n, mode, share, starts: cur.qn, careerStarts: cur.qn + prev.qn + older.qn, K, priorW, bq: bqUsed, sp: spKeys ? { cell: spKeys[2], g: spG, f: spF, b0: spB0 } : null, draft: draftUsed !== 1 || draftY !== 1 ? { pick: dr.pick, factor: draftUsed, ...(draftY !== 1 ? { perTarget: draftY } : {}) } : null };
   };
   return {
     // (a row's projection, its early exit's chance on it (exitQ, exitF; exitMix reads them where ex is on))
@@ -1803,6 +1839,8 @@ export function makeModel(stat, params, env) {
       const sq = stat.team ? new Map() : null;
       // (a receiving stat's team-games: their targets, the day's rows' total, unread where a row's are)
       const games = new Map();
+      // (and every team-game's pass attempts, the backup's base (bq): rolled into teamPass once the day is learned)
+      const passGames = new Map();
       if (stat.perTarget) {
         for (const row of rows) {
           const k = `${row.game}|${row.team}`;
@@ -1885,7 +1923,7 @@ export function makeModel(stat, params, env) {
         }
         // (his seasons: this one, last, and the ones before it (career))
         let p = pl;
-        if (!p) p = { season: row.season, cur: fresh(), prev: zero(), career: zero() };
+        if (!p) p = { season: row.season, cur: fresh(), prev: zero(), career: zero(), dbA: 0, dbV: 0 };
         else if (p.season !== row.season) {
           const consecutive = p.season === row.season - 1;
           const before = addAcc(p.career, p.prev);
@@ -1894,6 +1932,9 @@ export function makeModel(stat, params, env) {
             cur: fresh(),
             prev: consecutive ? { ...addAcc(zero(), p.cur), vac: p.cur.vac, tail: p.cur.tail } : zero(),
             career: consecutive ? before : addAcc(before, p.cur),
+            // (a quarterback's career pass attempts and the stat with them, every season's: the backup's base (bq))
+            dbA: p.dbA ?? 0,
+            dbV: p.dbV ?? 0,
             healthy: p.healthy,
             settled: p.settled,
             // (the team he ended last season with: the start-of-season prior's new team (sp))
@@ -1966,6 +2007,17 @@ export function makeModel(stat, params, env) {
           p.cur.qsum += v;
           p.cur.qrecent = [...p.cur.qrecent, v].slice(-5);
         }
+        // (a quarterback's pass attempts in the game (a start's or relief's) and the stat with them: his career
+        // rate per attempt, the backup's base (bq); and his team's attempts in the game (teamPass, rolled below))
+        const att = row.pos === 'QB' && Number.isFinite(row.s.passAtt) ? Math.max(0, row.s.passAtt) : 0;
+        if (row.pos === 'QB') {
+          p.dbA = (p.dbA ?? 0) + att;
+          p.dbV = (p.dbV ?? 0) + v;
+          const tk = `${row.game}|${row.team}`;
+          const tp = passGames.get(tk) ?? { team: row.team, season: row.season, att: 0 };
+          tp.att += att;
+          passGames.set(tk, tp);
+        }
         // (the work his group was missing in each of his games: what his numbers were made with)
         // (as long as the stat's splits: three a measure of work, matchups.mjs)
         const vacs = row.vacs ?? [0, 0, 0];
@@ -2009,7 +2061,7 @@ export function makeModel(stat, params, env) {
           if (started) add('q', poolStart(row));
           drafts.set(dk, t);
         }
-        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0, tg: 0, ts: 0, by: new Map() };
+        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, qa: 0, fqn: 0, fqsum: 0, fqa: 0, tg: 0, ts: 0, by: new Map() };
         if (row.eligible !== false) {
           q.n++;
           q.sum += v;
@@ -2025,7 +2077,8 @@ export function makeModel(stat, params, env) {
         if (started) {
           q.qn++;
           q.qsum += v;
-          if (startsBefore < 10) (q.fqn++), (q.fqsum += v);
+          q.qa += att;
+          if (startsBefore < 10) (q.fqn++), (q.fqsum += v), (q.fqa += att);
         }
         pos.set(k, q);
       }
@@ -2065,6 +2118,20 @@ export function makeModel(stat, params, env) {
         teams.set(g.team, t);
         lgT.n++;
         lgT.sum += g.sum;
+      }
+      // (the teams' pass attempts a game (the backup's base, bq), the same way; a team-game with no attempts read none)
+      for (const g of passGames.values()) {
+        if (!(g.att > 0)) continue;
+        let t = teamPass.get(g.team);
+        if (!t || t.season !== g.season) {
+          const last = t && t.season === g.season - 1 ? t : null;
+          t = { season: g.season, n: 0, sum: 0, prevN: last?.n ?? 0, prevSum: last?.sum ?? 0 };
+        }
+        t.n++;
+        t.sum += g.att;
+        teamPass.set(g.team, t);
+        lgP.n++;
+        lgP.sum += g.att;
       }
     },
   };
@@ -2268,7 +2335,13 @@ const LP_FLOOR_PLAYERS = 5;
 const RB_OUT_PASS = [-0.05, -0.025, 0.025, 0.05, 0.075, 0.1];
 const BACKUP_RUN = [-0.2, -0.15, -0.1, -0.075, -0.05, 0.05, 0.1];
 const LP = [0.25, 0.5, 0.75, 1];
-const GRID = { ...CARRY_GRID, c_rbOutPass: RB_OUT_PASS, c_backupRun: BACKUP_RUN, lp: LP, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX, ...ROUND_C_GRID };
+// (bq, the backup quarterback's base (round E, 2026-10-17): the made-up part of a few-start starter's prior leans by
+// bq to his team's attempts a game times his own career rate per attempt, that rate shrunk toward the few-start
+// starters' by bqK attempts (50 about a start and a half, 400 about ten starts); off at 0, soft where the gate leaves
+// it out (SOFT_ON), its own rows the few-start starters' (SUBGROUP))
+const BQ = [0.25, 0.5, 0.75, 1];
+const BQ_K = [50, 150, 400];
+const GRID = { ...CARRY_GRID, c_rbOutPass: RB_OUT_PASS, c_backupRun: BACKUP_RUN, lp: LP, bq: BQ, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX, ...ROUND_C_GRID };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -2314,6 +2387,7 @@ const has = (stat, key) =>
   : key === 'sl' ? !!stat.middle
   : key === 'sp' ? !!stat.start
   : key === 'lp' ? !!stat.lowPool
+  : key === 'bq' ? !!stat.starts
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
   : key === 'ep' ? !!stat.plays
@@ -2456,7 +2530,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...(has(stat, 'lp') ? ['lp'] : []), ...[...CARRY, 'sp', 'tr', 'sl', 'ex'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...(has(stat, 'lp') ? ['lp'] : []), ...(has(stat, 'bq') ? ['bq'] : []), ...[...CARRY, 'sp', 'tr', 'sl', 'ex'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -2534,6 +2608,7 @@ export function fitStat(stat, rows, env) {
     if (key === 'ab') return (x) => !!x.p.sameOn;
     if (key === 'sp') return (x) => !!x.p.sp && x.p.games < SP_EARLY;
     if (key === 'ij') return (x) => isBack(x.row, t.ia);
+    if (key === 'bq') return (x) => !!x.p.bq;
     const i = ctxKeys(stat).indexOf(key.slice(2));
     return (x) => (x.p.ctx?.[i] ?? 0) > 0;
   };

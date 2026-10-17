@@ -96,6 +96,7 @@
 //                    graded a cause (state.json checks.learning, by cause and sub-reason)
 //
 //   node libs/ranker/scripts/model/role-backtest.mjs [--state] [--plain] [--from 2021] [--compare <earlier .json>]
+//                    [--stats passYds,passTd: those stats alone (a term judged on a few stats in minutes)]
 //                    [--set key=value[,key=value]: a setting forced on every stat with it after the fit, the lean
 //                    as fit (e.g. c_qb1Out=0: the buckets without a term the fit kept)] [--report: the .md again
 //                    from the .json]
@@ -470,6 +471,15 @@ async function main() {
   // (--plain: the model as it was before the role-aware base, its stats' flags for it taken off)
   const plain = process.argv.includes('--plain');
   if (plain) for (const st of STATS.nfl) delete st.snaps, delete st.starts, delete st.early;
+  // (--stats passYds,passTd: those stats alone fit and measured (a term on the passing stats judged without the
+  // receiving stats' fits, minutes rather than an hour); the rest left out of the tables)
+  const statsAt = process.argv.indexOf('--stats');
+  if (statsAt > 0) {
+    const only = String(process.argv[statsAt + 1] ?? '').split(',').filter(Boolean);
+    const keep = STATS.nfl.filter((st) => only.includes(st.key));
+    if (!keep.length) throw new Error(`--stats wants a list of the NFL stats' keys (${STATS.nfl.map((st) => st.key).join(', ')}), not ${process.argv[statsAt + 1]}`);
+    STATS.nfl.splice(0, STATS.nfl.length, ...keep);
+  }
   const earlier = compareOf();
   const fromAt = process.argv.indexOf('--from');
   const FROM = fromAt > 0 ? Number(process.argv[fromAt + 1]) : 2021;
