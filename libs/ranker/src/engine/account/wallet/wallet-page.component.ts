@@ -35,7 +35,7 @@ import {
   versusBot,
   versusDays,
 } from './wallet-math';
-import { chipStacks, runCards } from './wallet-view';
+import { HeadsPeriod, HeadsUp, botSplit, chipStacks, headsUp, runCards } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -266,6 +266,29 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (the runs: every one once the history's all here, else the current one)
   readonly runs = computed(() => runCards(this.wallet.settledBets(), this.wallet.wallet()?.resets ?? 0, this.wallet.balance(), this.fullHistory()));
   readonly currentRun = computed(() => this.runs().find((r) => r.current) ?? null);
+  // Heads up: versus over a week, 30 days or all time (the same figures as versus: all time from the tally's days
+  // and the bot's ledgers; without a tally yet, the bets on hand, all time only)
+  readonly headsPeriod = signal<HeadsPeriod>('all');
+  readonly headsPeriods: { id: HeadsPeriod; label: string; words: string }[] = [
+    { id: 'week', label: 'Week', words: 'This week' },
+    { id: 'month', label: '30 days', words: 'Last 30 days' },
+    { id: 'all', label: 'All', words: 'Since your first bet' },
+  ];
+  readonly heads = computed<HeadsUp | null>(() => {
+    const ledger = this.ledger();
+    const v = this.versus();
+    if (!ledger || !v?.from) return null;
+    const tally = this.wallet.tally();
+    if (tally) return headsUp(tally, ledger, this.headsPeriod());
+    return { period: 'all', from: v.from, you: v.you, bot: v.bot, dots: Array.from({ length: 10 }, () => 'none' as const) };
+  });
+  periodWords(period: HeadsPeriod): string {
+    return this.headsPeriods.find((p) => p.id === period)?.words ?? '';
+  }
+  // (the settled straight bets tailing the bot, your own, and fading it: the loaded history's)
+  readonly split = computed(() => botSplit(this.wallet.settledBets(), this.ledger() ?? []));
+  // (a figure from the loaded history alone, while it's still paging: its caption says how much)
+  readonly historyNote = computed(() => (this.fullHistory() ? null : `the last ${this.wallet.settledBets().length} settled bets`));
 
   // (a bet decided in play: its result before the settler pays it)
   readonly decided = computed(() => {
