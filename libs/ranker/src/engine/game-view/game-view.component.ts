@@ -6,14 +6,36 @@ import { logoUrl } from '../account/lists/lists-helpers';
 import { ordinal } from '@ranker/core/format';
 import { pitchColor } from './pitch-colors';
 import { HOME, TracedPark, fieldSpot, loadTracedParks, tracedPark, wallPath } from './parks';
-import { GameArsenal, GameChart, GameFantasy, GameMark, GameMoment, GamePitch, GameTeam, GameView } from './game.model';
+import { GameArsenal, GameChart, GameFantasy, GameMark, GameMoment, GamePitch, GamePlay, GameTeam, GameView } from './game.model';
 import { GameWeather } from './venue';
 import { videoPlay, youtubeThumb, youtubeWatch } from './highlights';
 import { lineHead } from './wp-moments';
 import { resultClass } from '../result-class';
 import { PositionService } from '../position.service';
+import { WalletService } from '../account/wallet/wallet.service';
+import { PlayBet, legBets } from '../account/wallet/wallet-math';
+import { BetWatch, betSub, betWatch, onTrackWords } from '../bets/live-bets';
+import { boardLabel } from '../bets/live-games';
+import { PlayAt, betsByGame, gameReadOf, impactBetOf, impactPlaysOf, propNowOf, sportOf } from '../bets/live-view';
+import { PlayImpacts, importantPlays, walkPlays } from '../bets/bet-impact';
 
-import { GameTab, GameViewService } from './game-view.service';
+import { GameTab, GameViewService, nameKey, phoneModal } from './game-view.service';
+
+// (a bet on the game, as the Your Bets panel shows it: the pick and its odds, the stake, band and whose pick it
+// was, and its watch (live-bets.ts): status, meter and captions)
+interface BetRowView {
+  bet: PlayBet;
+  pick: string;
+  odds: string;
+  sub: string;
+  w: BetWatch;
+}
+
+// (a play that scored or moved a bet, for Important Plays and the Plays tab: its tags and its tint)
+interface PlayTags {
+  tags: { impact: 'good' | 'bad'; text: string }[];
+  tone: 'good' | 'bad' | null;
+}
 
 // The game view: a game over the page (in place of a player card it was opened from: the card is set
 // aside, and closing the game brings it back as it was), in the player
@@ -472,9 +494,133 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return rows;
   }
 
-  // The plays the filter leaves (Scoring Only: just the ones that scored)
-  shownPlays(group: GameView['plays'][number]) {
-    return this.games.scoringOnly ? group.plays.filter((p) => p.scoring) : group.plays;
+  // The plays the filter leaves (Scoring: just the ones that scored; My Bets: the ones that moved one of the
+  // user's bets)
+  shownPlays(game: GameView, group: GameView['plays'][number]): GameView['plays'][number]['plays'] {
+    const filter = this.games.playsFilter;
+    if (filter === 'scoring') return group.plays.filter((p) => p.scoring);
+    if (filter === 'mine') return group.plays.filter((p) => !!this.playTags(game, p));
+    return group.plays;
+  }
+
+  // (whether a group has anything to show under the filter)
+  groupShown(game: GameView, group: GameView['plays'][number]): boolean {
+    const filter = this.games.playsFilter;
+    return filter === 'all' || (filter === 'scoring' ? group.scoring : this.shownPlays(game, group).length > 0);
+  }
+
+  // ---------------------------------------------------------------------------
+  // The user's bets on the game (the Bets page's Live tab opens a game they've bet; the wallet's open bets, a
+  // parlay's open legs as bets of their own): the Your Bets panel beside Game Leaders, Important Plays, the My
+  // Bets pill and the tags on the Plays tab, the YOUR BET marks on the leaders and the box score. Nothing here
+  // for a game the user has no bet on: the modal looks as it always did
+  // ---------------------------------------------------------------------------
+  private readonly wallet = inject(WalletService);
+  readonly phone = phoneModal;
+  readonly onTrackWords = onTrackWords;
+
+  // (the bets on this game, kept till the wallet's open bets or the game change)
+  private betsFor: { open: PlayBet[]; id: string; bets: PlayBet[] } | null = null;
+  gameBets(game: GameView): PlayBet[] {
+    const open = this.wallet.openBets();
+    if (this.betsFor?.open !== open || this.betsFor.id !== game.id) {
+      this.betsFor = { open, id: game.id, bets: betsByGame(open, legBets).get(`${sportOf(game.league)}|${game.id}`) ?? [] };
+    }
+    return this.betsFor.bets;
+  }
+
+  hasBets(game: GameView): boolean {
+    return this.gameBets(game).length > 0;
+  }
+
+  // (each bet as its row, watched at this read of the game: kept per game object and bets)
+  private rowsFor: { game: GameView; bets: PlayBet[]; rows: BetRowView[] } | null = null;
+  betRows(game: GameView): BetRowView[] {
+    const bets = this.gameBets(game);
+    if (this.rowsFor?.game !== game || this.rowsFor.bets !== bets) {
+      const read = gameReadOf(game);
+      this.rowsFor = {
+        game,
+        bets,
+        rows: bets.map((b) => ({ bet: b, pick: b.pick, odds: b.odds > 0 ? `+${b.odds}` : String(b.odds), sub: betSub(b), w: betWatch(b, read, propNowOf(b, game)) })),
+      };
+    }
+    return this.rowsFor.rows;
+  }
+
+  // (the share of the game played, for the pace captions: hidden before a tenth of it)
+  paced(game: GameView): boolean {
+    const share = gameReadOf(game).share;
+    return share !== null && share >= 0.1;
+  }
+
+  // (every play read against every bet (bet-impact.ts walkPlays), kept per game object and bets; a prop's count
+  // in the tags the box score's)
+  private walkedFor: { game: GameView; bets: PlayBet[]; walked: PlayImpacts<PlayAt>[]; tags: Map<GamePlay, PlayTags> } | null = null;
+  private walked(game: GameView): { walked: PlayImpacts<PlayAt>[]; tags: Map<GamePlay, PlayTags> } {
+    const bets = this.gameBets(game);
+    if (this.walkedFor?.game !== game || this.walkedFor.bets !== bets) {
+      const walked = bets.length
+        ? walkPlays(impactPlaysOf(game), bets.map((b) => impactBetOf(b, game)), (ib) => (ib.market === 'prop' ? propNowOf({ market: 'prop', propType: ib.propType, athlete: ib.athlete }, game) : null))
+        : [];
+      const tags = new Map<GamePlay, PlayTags>();
+      for (const w of walked) {
+        if (!w.impacts.length) continue;
+        tags.set(w.play.ref, { tags: w.impacts.map((i) => ({ impact: i.impact, text: i.tag })), tone: w.impacts.some((i) => i.impact === 'bad') ? 'bad' : 'good' });
+      }
+      this.walkedFor = { game, bets, walked, tags };
+    }
+    return this.walkedFor;
+  }
+
+  // (a play's tags and tint, where it moved one of the user's bets)
+  playTags(game: GameView, play: GamePlay): PlayTags | null {
+    return this.walked(game).tags.get(play) ?? null;
+  }
+
+  hasTaggedPlays(game: GameView): boolean {
+    return this.walked(game).tags.size > 0;
+  }
+
+  // (the rows' watches, for the panel's "N of M on track")
+  rowWatches(rows: BetRowView[]): BetWatch[] {
+    return rows.map((r) => r.w);
+  }
+
+  // Important Plays: the latest six that scored or moved one of the user's bets, newest first (scoring plays
+  // alone without bets); each with its moment, its text, the score after it, and its tags
+  private importantFor: { game: GameView; bets: PlayBet[]; rows: { play: GamePlay; when: string | null; tags: PlayTags | null }[] } | null = null;
+  important(game: GameView): { play: GamePlay; when: string | null; tags: PlayTags | null }[] {
+    const bets = this.gameBets(game);
+    if (this.importantFor?.game !== game || this.importantFor.bets !== bets) {
+      const plays = impactPlaysOf(game);
+      const list = bets.length ? importantPlays(this.walked(game).walked) : importantPlays(plays.map((play) => ({ play, impacts: [] })));
+      this.importantFor = { game, bets, rows: list.map((w) => ({ play: w.play.ref, when: w.play.when ?? w.play.ref.clock, tags: this.playTags(game, w.play.ref) })) };
+    }
+    return this.importantFor.rows;
+  }
+
+  // (the players the user has a prop on: a gold wash on their box score row, YOUR BET by their name among the
+  // leaders)
+  propPlayers(game: GameView): Set<string> {
+    return new Set(this.gameBets(game).filter((b) => b.market === 'prop' && b.athlete).map((b) => String(b.athlete)));
+  }
+
+  leaderBet(game: GameView, name: string): boolean {
+    const key = nameKey(name);
+    return this.gameBets(game).some((b) => b.market === 'prop' && b.player && nameKey(b.player) === key);
+  }
+
+  // The LED board's label while the game's on: its period and clock ("3RD QTR · 4:12") in green with the live
+  // dot; the status as it was otherwise
+  liveLabel(game: GameView): string | null {
+    return boardLabel(sportOf(game.league), game.state, game.period, game.clock, game.status);
+  }
+
+  // (the Plays tab's pill to the My Bets view, from Important Plays' ALL PLAYS link)
+  toPlays(): void {
+    this.games.tab = 'plays';
+    this.games.player = null;
   }
 
   // (listened for outside Angular, quietListener: with no game open, a key sets off no change detection)

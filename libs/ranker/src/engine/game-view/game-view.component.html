@@ -65,7 +65,13 @@
                 </div>
               } @else {
               <div class="hero-rank game-board">
-                <span class="rank-label">{{ g.status }}</span>
+                <!-- (a game under way: its period and clock in green with the live dot, following the summary's
+                     thirty-second reads; the status as it was otherwise, the final once it's over) -->
+                @if (liveLabel(g); as label) {
+                  <span class="rank-label live"><i class="live-dot" aria-hidden="true"></i>{{ label }}</span>
+                } @else {
+                  <span class="rank-label">{{ g.status }}</span>
+                }
                 <span class="game-scores">
                   <span class="rank-number" [class.won]="g.away.winner" [class.lost]="g.home.winner"
                     ><span class="rank-unlit" aria-hidden="true">{{ '8'.repeat(g.away.score.length) }}</span><span class="rank-lit">{{ g.away.score }}</span></span
@@ -162,21 +168,23 @@
         </div>
       </ng-template>
 
-      <!-- The leaders, each team's in a column: the season's (a preview's) or the game's -->
+      <!-- The leaders, each team's in a column: the season's (a preview's) or the game's. On a phone the panel
+           folds, starting shut; a player the user has a prop on wears YOUR BET by his name, his row washed gold -->
       <ng-template #leaders let-label>
         @if (g.leaders.length) {
-          <card-panel class="tab-card group-box game-leaders" [expandable]="false" [label]="label" icon="military_tech">
+          <card-panel class="tab-card group-box game-leaders" [expandable]="phone()" [startOpen]="false" [label]="label" icon="military_tech">
             <div class="group-body game-two">
               @for (t of g.leaders; track t.side) {
                 @let team = t.side === 'away' ? g.away : g.home;
                 <div class="game-leader-col">
                   <h3 class="depth-unit">{{ team.short }}</h3>
                   @for (l of t.rows; track $index) {
-                    <div class="game-leader">
+                    @let yourBet = leaderBet(g, l.name);
+                    <div class="game-leader" [class.your-bet]="yourBet">
                       <ng-container *ngTemplateOutlet="face; context: { $implicit: l }"></ng-container>
                       <span class="game-leader-main">
                         <small>{{ l.category }}</small>
-                        <b><ng-container *ngTemplateOutlet="who; context: { $implicit: l.name }"></ng-container></b>
+                        <b><ng-container *ngTemplateOutlet="who; context: { $implicit: l.name }"></ng-container>@if (yourBet) {<span class="your-bet-tag">Your bet</span>}</b>
                       </span>
                       <span class="game-leader-line">{{ l.line }}</span>
                     </div>
@@ -206,7 +214,7 @@
             }
             <ng-container *ngTemplateOutlet="leaders; context: { $implicit: 'Season Leaders' }"></ng-container>
             @if (g.form.length) {
-              <card-panel class="tab-card group-advanced game-form" [expandable]="false" label="Last Five" icon="history">
+              <card-panel class="tab-card group-advanced game-form" [expandable]="phone()" [startOpen]="false" label="Last Five" icon="history">
                 <div class="group-body game-two">
                   @for (t of g.form; track t.side) {
                     @let team = t.side === 'away' ? g.away : g.home;
@@ -349,14 +357,79 @@
               </div>
             }
 
-            <ng-container *ngTemplateOutlet="leaders; context: { $implicit: 'Game Leaders' }"></ng-container>
+            <!-- Your Bets (the user's open bets on this game: live-bets.ts betWatch) in one row with Game Leaders, a
+                 two-column grid, Your Bets on the left; without bets, Game Leaders full width as before -->
+            @let rows = betRows(g);
+            @if (rows.length) {
+              <div class="game-summary-row">
+                <card-panel class="tab-card group-box game-your-bets" [startOpen]="true" label="Your Bets" icon="diamond">
+                  <span panel-actions class="your-bets-sum">{{ onTrackWords(rowWatches(rows)) }}</span>
+                  <div class="group-body">
+                    @for (r of rows; track r.bet.id) {
+                      <div class="your-bet" [ngClass]="r.w.tone">
+                        <span class="your-bet-main">
+                          <span class="your-bet-pick">{{ r.pick }} <span class="your-bet-odds">{{ r.odds }}</span></span>
+                          <span class="your-bet-sub">{{ r.sub }}</span>
+                        </span>
+                        <span class="your-bet-status">{{ r.w.status }}</span>
+                        <span class="your-bet-meter-wrap">
+                          <span class="your-bet-meter" aria-hidden="true">
+                            <i class="your-bet-fill" [style.width.%]="r.w.fill"></i>
+                            @if (r.w.proj !== null && r.bet.market === 'prop') {<i class="your-bet-proj" [style.width.%]="r.w.proj"></i>}
+                            <i class="your-bet-tick" [style.left]="'calc(' + r.w.tick + '% - 1px)'"></i>
+                          </span>
+                          <span class="your-bet-captions"><span>{{ r.w.left }}</span><span class="your-bet-right">{{ r.w.right }}</span></span>
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </card-panel>
+                <ng-container *ngTemplateOutlet="leaders; context: { $implicit: 'Game Leaders' }"></ng-container>
+              </div>
+            } @else {
+              <ng-container *ngTemplateOutlet="leaders; context: { $implicit: 'Game Leaders' }"></ng-container>
+            }
 
+            <!-- Important Plays: the latest six plays that scored or moved one of the user's bets, newest first
+                 (bet-impact.ts), each with its moment, the text (bold for a score), the score after it in gold and,
+                 for a bet play, the tag under the text; ALL PLAYS → opens the Plays tab (in the bar; on a phone at
+                 the body's foot, the bar one tap) -->
+            @if (important(g); as plays) {
+              @if (plays.length) {
+                <card-panel class="tab-card group-box game-important" [startOpen]="!phone()" label="Important Plays" icon="bolt">
+                  @if (!phone()) {
+                    <button panel-actions type="button" class="all-plays" (click)="toPlays()">All plays →</button>
+                  }
+                  <div class="group-body">
+                    @for (x of plays; track $index) {
+                      <div class="game-play tagged" [class.scoring]="x.play.scoring" [class.good]="x.tags?.tone === 'good'" [class.bad]="x.tags?.tone === 'bad'" [ngClass]="x.play.side ?? ''">
+                        @if (x.when) {
+                          <span class="game-play-clock">{{ x.when }}</span>
+                        }
+                        <span class="game-play-main">
+                          <span class="game-play-text">{{ x.play.text }}</span>
+                          @for (t of x.tags?.tags ?? []; track $index) {
+                            <span class="game-play-tag" [ngClass]="t.impact"><span aria-hidden="true">{{ t.impact === 'good' ? '▲' : '▼' }}</span>{{ t.text }}</span>
+                          }
+                        </span>
+                        @if (x.play.scoring && x.play.score) {
+                          <span class="game-play-score">{{ x.play.score }}</span>
+                        }
+                      </div>
+                    }
+                    @if (phone()) {
+                      <p class="all-plays-foot"><button type="button" class="all-plays" (click)="toPlays()">All plays →</button></p>
+                    }
+                  </div>
+                </card-panel>
+              }
+            }
           }
 
           <!-- The team stats side by side, then each team's players -->
           @case ('box') {
             @if (g.teamStats.length) {
-              <card-panel class="tab-card group-results game-team-stats" [startOpen]="true" label="Team Stats" icon="compare_arrows" [style.--away-color]="g.away.color" [style.--home-color]="g.home.color">
+              <card-panel class="tab-card group-results game-team-stats" [startOpen]="!phone()" label="Team Stats" icon="compare_arrows" [style.--away-color]="g.away.color" [style.--home-color]="g.home.color">
                 <div class="group-body">
                   <div class="game-stat head">
                     <b>{{ g.away.abbr }}</b><span></span><b>{{ g.home.abbr }}</b>
@@ -378,7 +451,8 @@
             }
             @for (t of g.box; track t.side) {
               @let team = t.side === 'away' ? g.away : g.home;
-              <!-- (each team's players fold, both starting shut) -->
+              <!-- (each team's players fold, both starting shut; a player the user has a prop on, his row washed gold) -->
+              @let propIds = propPlayers(g);
               <card-panel class="tab-card game-box" [label]="team.name" icon="groups">
                 <div class="group-body">
                   @for (grp of t.groups; track $index) {
@@ -397,7 +471,7 @@
                         </thead>
                         <tbody>
                           @for (r of grp.rows; track $index) {
-                            <tr [class.bench-start]="$index > 0 && grp.rows[$index - 1].starter && !r.starter">
+                            <tr [class.bench-start]="$index > 0 && grp.rows[$index - 1].starter && !r.starter" [class.your-bet]="propIds.has(r.id)">
                               <td class="name">
                                 <ng-container *ngTemplateOutlet="who; context: { $implicit: r.name, text: r.short }"></ng-container>
                                 @if (r.position) {
@@ -760,27 +834,33 @@
             </card-panel>
           }
 
-          <!-- Every play: the NFL's by drive (each drive's summary and result), the rest by period -->
+          <!-- Every play: the NFL's by drive (each drive's summary and result), the rest by period; a third pill,
+               My Bets, for the plays that moved one of the user's bets, each tagged and tinted in every view (they
+               stay after the final: the recap keeps the user's story) -->
           @case ('plays') {
             <div class="game-play-filters">
-              <button type="button" class="game-filter" [class.active]="!games.scoringOnly" (click)="games.scoringOnly = false">All Plays</button>
-              <button type="button" class="game-filter" [class.active]="games.scoringOnly" (click)="games.scoringOnly = true">Scoring</button>
+              <button type="button" class="game-filter" [class.active]="games.playsFilter === 'all'" (click)="games.playsFilter = 'all'">All Plays</button>
+              <button type="button" class="game-filter" [class.active]="games.playsFilter === 'scoring'" (click)="games.playsFilter = 'scoring'">Scoring</button>
+              @if (hasBets(g)) {
+                <button type="button" class="game-filter" [class.active]="games.playsFilter === 'mine'" (click)="games.playsFilter = 'mine'">My Bets</button>
+              }
             </div>
             @for (grp of g.plays; track $index; let i = $index) {
-              @if (!games.scoringOnly || grp.scoring) {
+              @if (groupShown(g, grp)) {
                 <card-panel
                   class="tab-card game-plays"
                   [class.group-results]="grp.scoring"
                   [label]="grp.title + (grp.result ? ' · ' + grp.result : '')"
-                  [open]="games.openPlays.has(i) || games.scoringOnly"
+                  [open]="games.openPlays.has(i) || games.playsFilter !== 'all'"
                   (toggled)="games.togglePlays(i)"
                 >
                   <div class="group-body">
                     @if (grp.sub) {
                       <p class="game-drive-sub">{{ grp.sub }}</p>
                     }
-                    @for (p of shownPlays(grp); track $index) {
-                      <div class="game-play" [class.scoring]="p.scoring" [class.with-head]="p.scoring && p.headshot" [ngClass]="p.side ?? ''">
+                    @for (p of shownPlays(g, grp); track $index) {
+                      @let tags = playTags(g, p);
+                      <div class="game-play" [class.scoring]="p.scoring" [class.with-head]="p.scoring && p.headshot" [class.tagged]="!!tags" [class.good]="tags?.tone === 'good'" [class.bad]="tags?.tone === 'bad'" [ngClass]="p.side ?? ''">
                         @if (p.clock) {
                           <span class="game-play-clock">{{ p.clock }}</span>
                         }
@@ -788,7 +868,16 @@
                         @if (p.scoring && p.headshot) {
                           <img class="game-play-head" [src]="p.headshot" alt="" loading="lazy" (error)="p.headshot = null" [class.face-link]="faceLinks(p.scorer)" [title]="faceLinks(p.scorer) ? 'Open ' + p.scorer : ''" (click)="openFace(p.scorer, g)" />
                         }
-                        <span class="game-play-text">{{ p.text }}</span>
+                        @if (tags) {
+                          <span class="game-play-main">
+                            <span class="game-play-text">{{ p.text }}</span>
+                            @for (t of tags.tags; track $index) {
+                              <span class="game-play-tag" [ngClass]="t.impact"><span aria-hidden="true">{{ t.impact === 'good' ? '▲' : '▼' }}</span>{{ t.text }}</span>
+                            }
+                          </span>
+                        } @else {
+                          <span class="game-play-text">{{ p.text }}</span>
+                        }
                         @if (p.scoring && p.score) {
                           <span class="game-play-score">{{ p.score }}</span>
                         }
@@ -799,6 +888,9 @@
               }
             } @empty {
               <p class="card-note">No play-by-play for this game.</p>
+            }
+            @if (games.playsFilter === 'mine' && g.plays.length && !hasTaggedPlays(g)) {
+              <p class="card-note">None of your bets have moved yet.</p>
             }
           }
         }

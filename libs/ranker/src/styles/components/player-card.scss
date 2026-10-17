@@ -488,6 +488,11 @@ $ai-narrow: v.bp(ai-narrow);
   padding: 0 16px;
   scrollbar-width: none;
 
+  // (and on older iOS Safari, which knows only the WebKit property: the bar scrolls by drag or swipe, no bar showing)
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   button {
     background: none;
     border: none;

@@ -16,6 +16,13 @@ export type GameRef =
 
 export type GameTab = 'summary' | 'box' | 'plays' | 'chart' | 'fantasy' | 'highlights' | 'info' | 'preview' | 'injuries' | 'pitches';
 
+// (how often a game under way is read again while its modal's open)
+const LIVE_BEAT = 30_000;
+
+// Phones (the styles' down(phablet), 640px): the modal's panels start shut there, and the Plays tab opens on
+// its latest period
+export const phoneModal = (): boolean => typeof matchMedia === 'function' && matchMedia('(max-width: 640px)').matches;
+
 // Whether a game has a tab (the view's tabsFor; Highlights only once its videos are found)
 export function hasTab(game: GameView, tab: GameTab): boolean {
   if (game.preview) return tab === 'preview' || tab === 'info' || (tab === 'injuries' && game.injuries.length > 0);
@@ -36,9 +43,10 @@ export class GameViewService {
   // the game's highlights (highlights.ts: none until they're found), and the one playing
   videos: GameVideo[] = [];
   video = 0;
-  // (the play groups open on the Plays tab, and its filter)
+  // (the play groups open on the Plays tab, and its filter: every play, the scoring ones, or the ones that moved
+  // one of the user's bets)
   openPlays = new Set<number>();
-  scoringOnly = false;
+  playsFilter: 'all' | 'scoring' | 'mine' = 'all';
   // (the chart's team: both, or one)
   chartSide: 'both' | 'away' | 'home' = 'both';
   // (the chart's or the Pitches tab's player: one, or all of them)
@@ -75,13 +83,14 @@ export class GameViewService {
     if (!league) return;
     this.own = league === SPORT.gameLog?.league;
     const ticket = ++this.opened;
+    this.stopLive();
     this.game = 'loading';
     this.tab = 'summary';
     this.weather = null;
     this.videos = [];
     this.video = 0;
     this.openPlays.clear();
-    this.scoringOnly = false;
+    this.playsFilter = 'all';
     this.chartSide = 'both';
     this.player = null;
     try {
@@ -102,8 +111,11 @@ export class GameViewService {
       }
       // (a game to come opens on its preview)
       this.tab = tab && hasTab(game, tab) ? tab : game.preview ? 'preview' : 'summary';
-      // (the Plays tab's first group open, the rest shut)
-      if (game.plays.length) this.openPlays.add(0);
+      // (the Plays tab's first group open, the rest shut; on a phone the latest period's, the tab's panels starting
+      // shut there)
+      if (game.plays.length) this.openPlays.add(phoneModal() ? game.plays.length - 1 : 0);
+      // (a game under way: its summary read again every thirty seconds while it's open)
+      this.watchLive(league, id, ticket);
       // (no photo of the venue from ESPN: Wikipedia's of it, or of its city)
       if (game.venue && !game.venue.image) {
         const venue = game.venue;
@@ -199,7 +211,40 @@ export class GameViewService {
 
   close(): void {
     this.opened++;
+    this.stopLive();
     this.game = null;
+  }
+
+  // A game under way: its summary read again every thirty seconds while the modal's open (the Bets page's Live
+  // tab's beat), the scores, line score, plays, win probability and box score all following it; the panels keep
+  // their places (the same game object's parts under them, the modal not redrawn); stopped when it closes, another
+  // game opens, or the game goes final. Nothing while the page is out of sight
+  private liveTimer: ReturnType<typeof setInterval> | null = null;
+  private watchLive(league: string, id: string, ticket: number): void {
+    this.stopLive();
+    const g = this.game;
+    if (!g || g === 'loading' || g === 'error' || g.state !== 'in') return;
+    this.liveTimer = setInterval(() => void this.refreshLive(league, id, ticket), LIVE_BEAT);
+  }
+
+  private async refreshLive(league: string, id: string, ticket: number): Promise<void> {
+    if (typeof document !== 'undefined' && document.hidden) return;
+    try {
+      const fresh = await loadGame(league, id);
+      if (ticket !== this.opened) return;
+      const old = this.game;
+      // (the venue's photo found since: kept)
+      if (old && old !== 'loading' && old !== 'error' && fresh.venue && old.venue?.image && !fresh.venue.image) fresh.venue.image = old.venue.image;
+      this.game = fresh;
+      if (fresh.state !== 'in') this.stopLive();
+    } catch {
+      // (a read that failed: the next beat tries again)
+    }
+  }
+
+  private stopLive(): void {
+    if (this.liveTimer) clearInterval(this.liveTimer);
+    this.liveTimer = null;
   }
 
   togglePlays(i: number): void {

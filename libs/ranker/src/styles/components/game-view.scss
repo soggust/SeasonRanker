@@ -1,4 +1,5 @@
 @use "../variables" as v;
+@use "../casino-chip" as chip;
 
 // (a row's hairline under it: the leaders, plays, team stats, fantasy, last five, arsenal)
 $row-rule: 1px solid rgba(255, 255, 255, 0.05);
@@ -1847,3 +1848,296 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
+
+// ---------------------------------------------------------------------------
+// A game under way, and the user's bets on it (the Bets page's Live tab opens them; game-view.component.ts's
+// bet panels): the LED board's live label, Your Bets beside Game Leaders, Important Plays, the tags on the plays
+// that moved a bet, and the YOUR BET marks. Nothing here shows for a game the user has no bet on but the live
+// label. The design: docs/bets-redesign/LiveOpen.dc.html
+// ---------------------------------------------------------------------------
+
+// (the board's label while the game's on: the period and clock in green with the live dot, blinking; still for
+// anyone who's asked for less motion)
+.game-board .rank-label.live {
+  align-items: center;
+  color: v.$good-bright;
+  display: inline-flex;
+  gap: 7px;
+  text-shadow: 0 0 8px rgba(v.$good-bright, 0.45);
+
+  .live-dot {
+    animation: game-live-blink 1.4s ease-in-out infinite;
+    background: v.$good-bright;
+    border-radius: v.$radius-round;
+    box-shadow: 0 0 6px v.$good-bright;
+    display: inline-block;
+    flex: none;
+    height: 7px;
+    width: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-board .rank-label.live .live-dot {
+    animation: none;
+  }
+}
+
+@keyframes game-live-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+// Your Bets and Game Leaders side by side under the win probability; in the half width the leaders stack the
+// away team's over the home team's
+.game-summary-row {
+  align-items: start;
+  display: grid;
+  gap: v.$space-12;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+  .game-two {
+    grid-template-columns: 1fr;
+  }
+
+  > card-panel {
+    margin: 0;
+  }
+}
+
+// ("N of M on track" on the panel's bar, in its own case)
+.your-bets-sum {
+  color: v.$grey-light;
+  font-size: v.$fs-12;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding-right: 6px;
+  text-transform: none;
+}
+
+// A bet's row: the pick and its odds with the stake, band and whose pick it was under it, the status tag at the
+// right of that line, then the meter full width (the fill to where it stands in its tone, a white tick at the
+// line, a prop's dashed outline to its projected finish) and the two captions
+.your-bet {
+  --tone: #{chip.$gold-led};
+  align-items: start;
+  border-bottom: $row-rule;
+  display: grid;
+  gap: v.$space-10 v.$space-12;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 12px 0;
+
+  &.good {
+    --tone: #{v.$good-bright};
+  }
+
+  &.bad {
+    --tone: #{v.$bad-soft};
+  }
+
+  &.wait {
+    --tone: #{v.$grey-mid};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.your-bet-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.your-bet-pick {
+  font-size: v.$fs-14;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.your-bet-odds {
+  color: v.$text-faint;
+  font-size: v.$fs-12;
+  font-weight: 600;
+}
+
+.your-bet-sub {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+}
+
+.your-bet-status {
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+  border-radius: v.$radius-xs;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 50%, transparent);
+  color: var(--tone);
+  font-size: v.$fs-10;
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1;
+  padding: 5px 8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.your-bet-meter-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+  grid-column: 1 / -1;
+}
+
+.your-bet-meter {
+  background: v.$panel-rule;
+  border-radius: v.$radius-pill;
+  display: block;
+  height: 8px;
+  position: relative;
+}
+
+.your-bet-fill {
+  background: var(--tone);
+  border-radius: v.$radius-pill;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--tone) 50%, transparent);
+  display: block;
+  inset: 0 auto 0 0;
+  position: absolute;
+}
+
+.your-bet-proj {
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border-radius: v.$radius-pill;
+  box-sizing: border-box;
+  display: block;
+  inset: 0 auto 0 0;
+  position: absolute;
+}
+
+.your-bet-tick {
+  background: #fff;
+  display: block;
+  height: 16px;
+  position: absolute;
+  top: -4px;
+  width: 2px;
+}
+
+.your-bet-captions {
+  color: v.$grey-light;
+  display: flex;
+  font-size: v.$fs-11;
+  gap: v.$space-8;
+  justify-content: space-between;
+}
+
+.your-bet-right {
+  color: var(--tone);
+  font-weight: 700;
+}
+
+// A play that moved a bet, wherever it shows: its text over the tag (the bet in caps, a dot, what changed; green
+// with ▲ when it helped, red with ▼ when it hurt), the row faintly tinted the same
+.game-play-main {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.game-play.tagged {
+  border-radius: v.$radius-sm;
+
+  &.good {
+    background: linear-gradient(90deg, rgba(v.$good-bright, 0.08), transparent 55%);
+  }
+
+  &.bad {
+    background: linear-gradient(90deg, rgba(v.$bad-soft, 0.08), transparent 55%);
+  }
+}
+
+.game-play-tag {
+  align-items: center;
+  border-radius: v.$radius-sm;
+  display: inline-flex;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  gap: v.$space-6;
+  letter-spacing: 0.3px;
+  line-height: 1;
+  padding: 4px 8px;
+
+  &.good {
+    background: rgba(v.$good-bright, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(v.$good-bright, 0.45);
+    color: v.$good-bright;
+  }
+
+  &.bad {
+    background: rgba(v.$bad-soft, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(v.$bad-soft, 0.45);
+    color: v.$bad-soft;
+  }
+}
+
+// (ALL PLAYS →: to the Plays tab; on the panel's bar, or at the body's foot on a phone)
+.all-plays {
+  background: none;
+  border: none;
+  color: chip.$gold-led;
+  cursor: pointer;
+  font-family: v.$font-base;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  padding: 8px 6px;
+  text-transform: uppercase;
+
+  &:hover {
+    text-shadow: var(--scoreboard-glow);
+  }
+
+  @include v.focus-lit {
+    text-decoration: underline;
+  }
+}
+
+.all-plays-foot {
+  margin: 8px 0 0;
+  text-align: right;
+}
+
+// (a player the user has a prop on: YOUR BET by his name among the leaders, his row washed gold; the same wash on
+// his box score row)
+.game-leader.your-bet {
+  background: linear-gradient(90deg, rgba(chip.$gold-led, 0.12), transparent 80%);
+}
+
+.your-bet-tag {
+  background: chip.$gold-led;
+  border-radius: v.$radius-xs;
+  color: v.$chip-ink;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  margin-left: 4px;
+  padding: 2px 5px;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+
+.game-box-table tr.your-bet {
+  background: linear-gradient(90deg, rgba(chip.$gold-led, 0.14), transparent 80%);
+}
+
+// (phones: Your Bets over Game Leaders)
+@include v.down(phablet) {
+  .game-summary-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
