@@ -138,14 +138,16 @@ The existing **leaderboards** (`board`, `periods`), restyled:
 ### 7. On the wall, then your tells (new, two full-width panels)
 
 **On the wall**: **one** full-width panel with the green bar ("ON THE WALL", and on the right "Your
-biggest cash and your worst beat, taped up for posterity"). Below the bar the panel's body is **a brick wall**, not the scoreboard. It's a muted brick tile:
-`docs/wallet-redesign/brick.svg`, 240 × 112px, dark mortar, bricks in warm browns with a little noise.
-Copy it into the shared assets as a file, not a data URI. Over it go a warm sand light from the top
-(`radial-gradient(ellipse 70% 90% at 50% -10%, rgba(255,214,160,.2), transparent 60%)`), a dark vignette
-at the edges, and an inset shadow under the bar. Both tickets sit side by side on it. There are **no** separate headers per ticket and
+biggest cash and your worst beat, pinned up for posterity"). Below the bar the panel's body is **a corkboard in a dark wood frame**, not the scoreboard. The cork
+is a tile, `docs/wallet-redesign/cork.svg` (220 × 220px, warm cork with speckle), copied into the shared
+assets as a file, not a data URI. Over it go a warm light from the top
+(`radial-gradient(ellipse 70% 90% at 50% -10%, rgba(255,224,180,.16), transparent 60%)`) and a brown
+vignette at the edges. The frame is inset shadows: a 12px `#3b2616` wood band, a 1px `#1c120a` line inside
+it, a faint highlight, and a shadow falling from the top. Padding is 44px 40px 34px. Both tickets sit side by
+side on it. There are **no** separate headers per ticket and
 **no** gold frames. Each ticket is the slip's paper, up to 400px wide, tilted slightly (−1.5° and 1.2°), with
-a deep drop shadow and a strip of **masking tape** across its top centre (88 × 24px, cream at about 75%,
-rotated −3°, ragged ends via `clip-path`). Under each ticket is a caption pill (black at 55%) with a coloured
+a deep drop shadow and a **red push-pin** at its top centre (16px, a lit red ball,
+`radial-gradient(circle at 35% 30%, #ff9b8f, #c62828 50%, #7a1414)`, with a soft shadow down and right). Under each ticket is a caption pill (black at 55%) with a coloured
 dot and a label: BIGGEST CASH in green, WORST BEAT in red.
 
 - **Biggest cash**: the settled bet with the largest profit, stamped CASHED in green.
