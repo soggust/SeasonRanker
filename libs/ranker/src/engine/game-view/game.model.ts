@@ -122,8 +122,17 @@ export interface GameDrive {
 
 export interface GamePlay {
   clock: string | null;
+  // (its period's number, and its moment as the win probability's readout writes it: "Q3 4:12", "P2 11:40",
+  // "Top 6th"; null where ESPN names none)
+  period: number | null;
+  when: string | null;
   text: string;
   score: string | null;
+  // (the score after it, as numbers, when ESPN carries it)
+  awayScore: number | null;
+  homeScore: number | null;
+  // (its participants' ESPN ids, in ESPN's order: the one who did it first, then who helped)
+  athletes: string[];
   scoring: boolean;
   // its team's side: 'away' or 'home' (the tint), when it's known
   side: 'away' | 'home' | null;
@@ -176,6 +185,10 @@ export interface GameView {
   broadcast: string | null;
   // "Final", "Final/OT"
   status: string;
+  // (not begun, under way, or over; and under way, its period and the clock showing, ESPN's)
+  state: 'pre' | 'in' | 'post';
+  period: number | null;
+  clock: string | null;
   // "Week 5", "Wild Card", "World Series - Game 3"
   label: string | null;
   away: GameTeam;

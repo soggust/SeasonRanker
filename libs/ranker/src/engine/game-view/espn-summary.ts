@@ -49,7 +49,7 @@ export interface EspnSummary {
     competitions?: {
       date?: string;
       neutralSite?: boolean;
-      status?: { type?: { detail?: string; shortDetail?: string; description?: string; completed?: boolean; state?: string } };
+      status?: { period?: number; displayClock?: string; type?: { detail?: string; shortDetail?: string; description?: string; completed?: boolean; state?: string } };
       broadcasts?: { media?: { shortName?: string } }[];
       competitors?: {
         homeAway: 'home' | 'away';

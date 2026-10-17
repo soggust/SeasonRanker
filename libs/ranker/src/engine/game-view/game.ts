@@ -15,7 +15,7 @@ import { awayFirst, EspnPlay, EspnSummary, headshotOf, logoOf, numberOf, ownLogo
 import { fantasyPoints } from './fantasy';
 import { gameChart } from './game-chart';
 import { GameBoxGroup, GameLeader, GamePlay, GamePlayGroup, GameTeam, GameTeamStat, GameView } from './game.model';
-import { wpMoments } from './wp-moments';
+import { momentLabel, wpMoments } from './wp-moments';
 import { sideColors, teamLook } from '../team-look';
 
 // The roofed parks and stadiums (no weather): domes and fixed roofs, then the retractable roofs
@@ -224,10 +224,16 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
 
   // The plays
   const baseball = league.includes('baseball');
+  const playoffs = s.header?.season?.type === 3;
   const toPlay = (p: EspnPlay): GamePlay => ({
     clock: baseball ? null : (p.clock?.displayValue ?? null),
+    period: p.period?.number ?? null,
+    when: momentLabel(league, p, playoffs),
     text: p.text ?? '',
     score: p.awayScore !== undefined && p.homeScore !== undefined ? `${p.awayScore}-${p.homeScore}` : null,
+    awayScore: p.awayScore ?? null,
+    homeScore: p.homeScore ?? null,
+    athletes: (p.participants ?? []).map((x) => x.athlete?.id).filter((id): id is string => id !== undefined && id !== null && id !== '').map(String),
     scoring: !!p.scoringPlay,
     side: sideOf(p.team?.id),
     kind: p.type?.text ?? null,
@@ -331,6 +337,9 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
     form,
     broadcast: comp.broadcasts?.[0]?.media?.shortName ?? null,
     status,
+    state: comp.status?.type?.state === 'in' ? 'in' : comp.status?.type?.state === 'post' || played ? 'post' : 'pre',
+    period: comp.status?.period ?? null,
+    clock: comp.status?.displayClock ?? null,
     label,
     away,
     home,
