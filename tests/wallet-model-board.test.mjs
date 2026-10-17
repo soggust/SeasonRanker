@@ -10,7 +10,7 @@ import { loadEngine } from './support/engine.mjs';
 import { boardMarkets, buildBoard } from '../libs/ranker/scripts/model/board.mjs';
 
 const w = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support/wallet-entry.ts'), data: {} });
-const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const NOW = new Date('2026-10-17T20:00:00Z');
 const TZ = 'America/Chicago';
@@ -109,7 +109,7 @@ test('modelGameBoard: a bout begun is under way and not bettable; a team game ke
 
 test("the dropdown: the card's bouts under the card's day as A vs B, early to late, the picked one with its count", () => {
   const boards = board.games.map((g) => w.modelGameBoard('mma', g, NOW.getTime()));
-  // (as the Bets page lists them: the bot's picked bout from its rows, the rest from the boards, lines only)
+  // (as the Book lists them: the bot's picked bout from its rows, the rest from the boards, lines only)
   const picked = { key: 'mma|Mike Malott @ Joaquin Buckley', sport: 'mma', matchup: 'Mike Malott @ Joaquin Buckley', start: '2026-10-18T02:45:00Z', count: 1 };
   const lines = boards.filter((b) => b.event !== '401897388').map((b) => ({ key: `${b.sport}|${b.matchup}|${b.event}`, sport: b.sport, matchup: b.matchup, start: b.start, count: null }));
   const days = bets.gameMenu([picked, ...lines], [{ id: 'nfl', label: 'NFL' }, { id: 'mma', label: 'MMA' }], TZ);

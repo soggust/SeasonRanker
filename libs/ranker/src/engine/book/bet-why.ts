@@ -1,6 +1,6 @@
 import { barWidths, signedAmount } from '../../core/breakdown';
 import { Confidence, tierLabel, unranked } from './tiers';
-// Why a bet ranks where it does on the Bets page (its rank tile clicked): its score split into what makes it,
+// Why a bet ranks where it does on the Book (its rank tile clicked): its score split into what makes it,
 // and what separates it from the bets beside it. The score is its Kelly score (picks.mjs scoreParts): how much
 // of a bankroll its edge is worth at its price, (b·p − (1 − p)) / b, b what a unit pays and p its trusted
 // chance. As p is the book's fair chance plus the model's lean, it splits in two: the price (the book's fair

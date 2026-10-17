@@ -252,7 +252,7 @@ test("the output: keys sorted, numbers to 4 places, written only when more than 
 });
 
 test("the Algorithm tab's Self-check panel: flags, watches and partial ones shown in order, the rest folded under their counts", async () => {
-  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
   const out = canon(selfCheck({ sport: 'nhl', now, ledger: { bets: [...many(40, 14, { side: 'under', p: 0.6, placedAt: at(30) })] }, state: {}, snaps: [] }));
   const [v] = desk.selfCheckPanelOf([out, null], { nhl: 'NHL' });
   assert.equal(v.label, 'NHL');

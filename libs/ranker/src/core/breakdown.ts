@@ -1,5 +1,5 @@
 // The breakdown popovers' shared workings: the grid's rank tile (rank-why.ts) and support grades
-// (grade-why.ts), and the Bets page's rank tile (bet-why.ts). Each is a scoreboard panel hung from what was
+// (grade-why.ts), and the Book's rank tile (bet-why.ts). Each is a scoreboard panel hung from what was
 // clicked: a total on top, its parts as lines below (a bar, a label and value, what it adds), a footnote.
 // Their look is one set of styles (styles/_breakdown.scss); this is how they open, sit and close.
 

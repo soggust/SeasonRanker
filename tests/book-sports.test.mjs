@@ -1,4 +1,4 @@
-// The Bets page's sport list (bet-sports.ts betSports): every sport the bettor covers that the site has, in the
+// The Book's sport list (bet-sports.ts betSports): every sport the bettor covers that the site has, in the
 // site's order; a sport not ready for everyone (devOnly: MMA) only behind the experimental gate (an admin, the dev
 // server), so the owner sees the UFC picks and the public doesn't. And a fight's words in the game dropdown
 // (game-menu.ts matchupName): "A vs B", the first-listed fighter (the matchup's home) first.
@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
-const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const SITE = [
   { id: 'nfl', label: 'NFL', devOnly: false },
@@ -61,7 +61,7 @@ test('gameMenu: a UFC card\'s bouts group under the card\'s day like a game day,
   assert.equal(days[0].sports[0].games[1].matchup, 'Pereira @ Jones');
 });
 
-// The admin flag arriving after the picks (bets-rows.ts): MMA's rows join the page once, the sports already on it
+// The admin flag arriving after the picks (book-rows.ts): MMA's rows join the page once, the sports already on it
 // untouched; the flag gone, MMA's rows go
 const pick = (sport, matchup, pick, score, extra = {}) => ({
   id: `${sport}:${matchup}:${pick}`, sport, score, chance: 60, level: 'high', kind: 'spread', market: 'Spread', pick, line: -3, odds: -110, book: 'DraftKings',

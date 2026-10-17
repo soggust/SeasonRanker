@@ -3,7 +3,7 @@ import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account/account.service';
 import { CheckResolved, DeskNote, NOTE_MAX, NOTE_REASONS, NOTE_STATUSES, NoteForm, NotePlayer, OTHER_PLAYER, formOf, noteAtOf, noteOf, notePrices, noteState, noteText, readNote } from './desk-notes';
 
-// An admin's note on a pick (a CHECK's or a bet's, under its write-up on the Bets page): why the model and the book
+// An admin's note on a pick (a CHECK's or a bet's, under its write-up on the Book): why the model and the book
 // disagree, a reason, a player the pick involves and his status, a line of their own. Saved to Firestore's
 // deskNotes/{pick id} (firestore.rules: admins only, by its writer, at the write's time); the bettor reads them
 // on its next run (libs/ranker/scripts/model/notes.mjs), a player's news an injury override for his game, so

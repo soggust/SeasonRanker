@@ -1,8 +1,8 @@
-// A player's name or face outside the rankings grid and the card (the Bets page's rows, the game modal's
+// A player's name or face outside the rankings grid and the card (the Book's rows, the game modal's
 // lines, the wallet's bets and tickets, the bet slip, the Algorithm's desk, a profile's bets): a link to his
 // card (the owner's ask, 2026-10-17). His sport's own app, with a card host on the page (the rankings: the grid's
 // PlayerCards, setCardOpener): the card opens in place. Anywhere else (another sport's player, or a page with no
-// grid, the Bets page, the wallet): his sport's app in a new tab, by his name and, where the page knows it, his
+// grid, the Book, the wallet): his sport's app in a new tab, by his name and, where the page knows it, his
 // tab (card-link.ts CARD_NAME_PARAM: the app finds him by name, findLinkedCard), "/nfl/?name=Drake+Maye&pos=QB",
 // a fighter's "/mma/?name=Joaquin+Buckley". No Angular here (tested under Node: tests/player-link.test.mjs);
 // the <a playerLink> directive (player-link.directive.ts) renders it.

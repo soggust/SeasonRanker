@@ -6,7 +6,7 @@
 // (a panel's corners; a depth chart's bar and body round theirs inside its 1px border)
 $panel-radius: v.$panel-radius;
 
-// (the Betting Wallet's panels, chip-rimmed as on the Bets page and the Algorithm (below), their bars the felt's
+// (the Betting Wallet's panels, chip-rimmed as on the Book and the Algorithm (below), their bars the felt's
 // green, not each category's color. First in the file, at a class's weight (.wallet-page, the wallet's own column):
 // where a panel's own rule below weighs the same, the panel's wins, as it did over the wallet's own styles)
 .wallet-page card-panel {
@@ -144,9 +144,9 @@ card-panel {
   }
 }
 
-// (The Book's, the Bets page's and the Algorithm's: plain scoreboard panels (the dots, a 1px edge, the small drop
+// (The Book's, the Book's and the Algorithm's: plain scoreboard panels (the dots, a 1px edge, the small drop
 // shadow; not the board's ringed panel), their bars gold, the same from every sport)
-bets-page card-panel,
+book-page card-panel,
 model-desk card-panel {
   @include v.scoreboard-panel(v.$radius-lg);
   --group-color: #{chip.$gold-led};

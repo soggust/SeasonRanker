@@ -4,8 +4,8 @@ import { BANDS } from './bet-why';
 import { AnytimeFit, CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
 import { MARKET_NAMES, SPORTS } from './desk-math';
 
-// The Bets page's About (its header's info button): the shared About frame (about/about-frame.component) with the
-// Bets page's own sections, for everyone: what the page is, the board and its bands (BANDS, bet-why.ts, so the
+// The Book's About (its header's info button): the shared About frame (about/about-frame.component) with the
+// Book's own sections, for everyone: what the page is, the board and its bands (BANDS, bet-why.ts, so the
 // cuts here are the bot's own), the Kelly score, your bets and the write-ups. An admin's (the page's desk():
 // canUse('experimental')) also has the Algorithm: the pipeline in words, and each sport's model as its bettor
 // left it (data/model/state.json, the Algorithm tab's file and types): its context terms, its prop types and
@@ -151,15 +151,15 @@ const signed = (v: number, digits = 2): string => `${v > 0 ? '+' : v < 0 ? '−'
 const EPOCH_FALLBACK = '2026-10-11T22:00:00Z';
 
 @Component({
-  selector: 'bets-about',
-  templateUrl: './bets-about.component.html',
-  styleUrls: ['../../styles/components/about-content.scss', '../../styles/components/bets-about.scss'],
+  selector: 'book-about',
+  templateUrl: './book-about.component.html',
+  styleUrls: ['../../styles/components/about-content.scss', '../../styles/components/book-about.scss'],
   standalone: false,
 })
-export class BetsAboutComponent implements OnInit {
+export class BookAboutComponent implements OnInit {
   // (an admin: the Algorithm sections too)
   @Input() desk = false;
-  // (the CHECK rule as the bettor publishes it (picks.json's checkRule.kelly, the Bets page's read): null till read)
+  // (the CHECK rule as the bettor publishes it (picks.json's checkRule.kelly, the Book's read): null till read)
   @Input() checkKelly: number | null = null;
   checkBarText(): string {
     return this.checkKelly === null ? 'the bar the bot publishes' : `+${(this.checkKelly * 100).toFixed(0)}`;

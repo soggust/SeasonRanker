@@ -10,7 +10,7 @@
 // of the season: the runs after it skip the team and its QBs (analyze.mjs's jobs).
 //
 // No betting angles (2026-10-14, the owner's: every sport's analysis matches, MLB/NBA/NHL's have none; the
-// Bets page has the bets, at live prices). The bet desk that edited the reports' bets into a weekly sheet
+// Book has the bets, at live prices). The bet desk that edited the reports' bets into a weekly sheet
 // (bet-desk.mjs, grade.mjs, ledger.mjs and --desk) is retired, and its scheduled task "QBRanker NFL bet
 // desk" disabled (not deleted).
 //

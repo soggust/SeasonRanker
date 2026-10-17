@@ -25,7 +25,7 @@ package name and some internal task names.
   **Heat Maps** (`libs/ranker/src/engine/heat-map/`: NFL pass zones, field position, down and distance
   and the field map; NBA shot charts; NHL shots, saves and chances by zone; MLB hot zones and fielding;
   MMA striking).
-- **The Book** (`/bets`, `libs/ranker/src/engine/bets/`): a sportsbook for fun. Best Bets or one game's
+- **The Book** (`/book`, `libs/ranker/src/engine/book/`): a sportsbook for fun. Best Bets or one game's
   board, every price with its Kelly score and confidence band, the model-vs-book meter, the why popover,
   a ticket (the bet slip; a stub on phones), a sport dropdown and bet-kind chips. **Play money only**:
   a signed-in account gets a 500-unit wallet (`account/wallet/wallet-math.ts` `START`), no real money

@@ -1,4 +1,4 @@
-// A CHECK's news research for its popover (bets-page.component.ts checkWhy): the finding research.mjs made and
+// A CHECK's news research for its popover (book-page.component.ts checkWhy): the finding research.mjs made and
 // picks.json carries (picks.mjs researchRow), in plain words. A label only: the bot never bets on it.
 
 export interface CheckResearchIn {

@@ -1,5 +1,5 @@
 // Makes an account an admin (or not): the custom claim admin: true on its sign-in token, which the app
-// reads (features.ts: MMA, the Bets page and experimental features) and firestore.rules trusts
+// reads (features.ts: MMA, the Book and experimental features) and firestore.rules trusts
 // (isAdmin()). Only the Admin SDK can set a claim, so no one can make themselves one from the browser.
 //
 //   node libs/ranker/scripts/accounts/set-admin.mjs <email> [--remove]

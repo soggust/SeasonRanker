@@ -145,7 +145,7 @@ function pickFields(f: typeof import('firebase/firestore'), s: Selection): Recor
   return out;
 }
 
-// The signed-in user's wallet and bets (live, from Firestore), and the bet slip: the Bets page's prices
+// The signed-in user's wallet and bets (live, from Firestore), and the bet slip: the Book's prices
 // added to it, a stake on each, placed together. Each bet is its own write with the wallet's balance taken
 // down by its stake in the same batch (firestore.rules binds the two: the wallet's lastBet names the new bet);
 // settling is the settler's (libs/ranker/scripts/accounts/settle.mjs, the Admin SDK), never the browser's.
@@ -154,13 +154,13 @@ export class WalletService {
   readonly wallet = signal<Wallet | null>(null);
   // (whether the wallet's been looked for yet: none yet means a new player, not one still loading)
   readonly loaded = signal(false);
-  // The bets: the open ones live (what the Bets page, the slip and the header need: few, and listened to from
+  // The bets: the open ones live (what the Book, the slip and the header need: few, and listened to from
   // every sport's page), the settled history only once a page asks for it (the wallet, Closed Bets), a page at
   // a time, the latest first; together, the latest placed first. (A listener on the whole history read every
-  // bet ever placed on every Bets page load.)
+  // bet ever placed on every Book load.)
   readonly openBets = signal<PlayBet[]>([]);
   readonly settledBets = signal<PlayBet[]>([]);
-  // (whether there's any settled history, from one document: the Bets page's Closed Bets tab)
+  // (whether there's any settled history, from one document: the Book's Closed Bets tab)
   readonly hasSettled = signal(false);
   // (the history's paging: not asked for yet, loading, more to load, or all of it here)
   readonly settledState = signal<'idle' | 'loading' | 'more' | 'all'>('idle');

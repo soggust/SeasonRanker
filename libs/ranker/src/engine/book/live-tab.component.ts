@@ -8,7 +8,7 @@ import { GameViewService } from '../game-view/game-view.service';
 import type { GameView } from '../game-view/game.model';
 import { teamLook } from '../team-look';
 import { walkPlays } from './bet-impact';
-import type { GameInfo } from './bets-rows';
+import type { GameInfo } from './book-rows';
 import { ESPN_LEAGUES } from './desk-math';
 import { BetWatch, betWatch, shortPick, sweatOf } from './live-bets';
 import { boardShare, botRead, cardState, clockWords, livePool, shortTeam, sparkPath, startWords } from './live-games';
@@ -17,7 +17,7 @@ import { impactBetOf, impactPlaysOf, propNowOf } from './live-view';
 import { LiveGame, LiveService } from './live.service';
 import type { Confidence } from './tiers';
 
-// (the board's picks on a game, as the Bets page holds them (bets-page.component GameBoardPicks): its bets alone)
+// (the board's picks on a game, as the Book holds them (book-page.component GameBoardPicks): its bets alone)
 export interface LivePicks {
   betPicks: { pick: string; confidence: Confidence | null; strength?: string }[];
 }
@@ -64,7 +64,7 @@ interface LiveCard {
   aria: string;
 }
 
-// The Live tab (bets-page.component's Live view): one card, full width, on the chalkboard with the Book's chalked
+// The Live tab (book-page.component's Live view): one card, full width, on the chalkboard with the Book's chalked
 // betting art. Its bar: ON NOW with the blinking live dot (UPCOMING with a steady orange one when nothing's on
 // yet; ALL DONE TONIGHT, grey, when nothing's left), the sweat summary over the user's bets on the live games
 // (winning, close, losing), and the All games / My bets pill. Its body: a card per game on the scoreboard (the
@@ -81,7 +81,7 @@ interface LiveCard {
 export class LiveTabComponent implements OnInit, OnDestroy {
   // (the board's picks by game key, "sport|matchup": the bot's read on a game without the user's bets)
   @Input() boards: Map<string, LivePicks> = new Map();
-  // (each game's venue, by the same key: the picks' (bets-rows GameInfo))
+  // (each game's venue, by the same key: the picks' (book-rows GameInfo))
   @Input() places: Map<string, GameInfo> = new Map();
 
   readonly live = inject(LiveService);
@@ -122,7 +122,7 @@ export class LiveTabComponent implements OnInit, OnDestroy {
 
   // (the My bets filter: for someone who can bet; signed out there's nothing to filter by)
   get canFilter(): boolean {
-    return canUse('bets') && this.wallet.loaded() && !!this.wallet.wallet();
+    return canUse('book') && this.wallet.loaded() && !!this.wallet.wallet();
   }
 
   // The sweat summary: the user's bets on the games under way, how many are winning, close and losing

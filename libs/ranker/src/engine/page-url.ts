@@ -1,7 +1,7 @@
 import SPORTS from '../../../../sports.json';
 
 // The pages every sport shares, at addresses of their own: seasonranker.com/wallet, /lists, /community,
-// /tracker, /friends, /settings, /bets, /privacy, /data-deletion and /u/<username>, not under a sport's
+// /tracker, /friends, /settings, /book, /privacy, /data-deletion and /u/<username>, not under a sport's
 // (/nfl/#wallet). The app still names a page by its old hash ("#wallet", "#u/sam", "#account/privacy",
 // "#community/QB/2026"): pageHash() reads it off the address, pagePath() writes the address for it, and
 // goTo() moves there without a reload (history.pushState, then a hashchange for the pages listening).
@@ -14,8 +14,11 @@ import SPORTS from '../../../../sports.json';
 // the hosting serves those from that sport's own app.
 
 // (the first segment of each page's address; Settings' hash is #account)
-const ROOTS = ['bets', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u'];
+const ROOTS = ['book', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u'];
 const SPORTED = ['community', 'lists', 'tracker'];
+// (a page moved: its old address still lands, on the new one (the Bets page is the Book, 2026-10-17: /bets, an old
+// #bets); the hosting redirects the old address too, firebase.json)
+const MOVED: Record<string, string> = { bets: 'book' };
 const SPORT_IDS = (SPORTS as { id: string }[]).map((s) => s.id);
 
 // (this app's sport: its base href's, /nfl/, whatever address it answers)
@@ -25,6 +28,7 @@ const appSport = (): string => new URL(document.baseURI).pathname.split('/').fil
 // isn't one of these pages (a sport's own, /nfl/)
 export function readPagePath(pathname: string): { hash: string; sport: string | null } | null {
   const parts = pathname.split('/').filter(Boolean);
+  if (Object.hasOwn(MOVED, parts[0] ?? '')) parts[0] = MOVED[parts[0]];
   if (!ROOTS.includes(parts[0])) return null;
   let sport: string | null = null;
   if (SPORTED.includes(parts[0]) && SPORT_IDS.includes(parts[1])) sport = parts.splice(1, 1)[0];
@@ -36,6 +40,7 @@ export function readPagePath(pathname: string): { hash: string; sport: string | 
 export function pagePath(hash: string, sport: string): string {
   const parts = hash.replace(/^#/, '').split('/');
   if (!parts[0]) return `/${sport}/`;
+  if (Object.hasOwn(MOVED, parts[0])) parts[0] = MOVED[parts[0]];
   if (parts[0] === 'account') parts[0] = 'settings';
   // (the lists page itself is everyone's; one list is its sport's)
   if (SPORTED.includes(parts[0]) && (parts[0] !== 'lists' || parts.length > 1)) parts.splice(1, 0, sport);
@@ -57,6 +62,11 @@ let rankingsSearch = typeof location !== 'undefined' && !readPagePath(location.p
 
 // An old link (/nfl/#wallet, /nfl/#u/sam): the page's own address in its place, without a reload
 export function forwardOldLink(): void {
+  const first = location.pathname.split('/').filter(Boolean)[0] ?? '';
+  if (Object.hasOwn(MOVED, first)) {
+    history.replaceState(history.state, '', pagePath(readPagePath(location.pathname)!.hash, appSport()) + location.search);
+    return;
+  }
   if (readPagePath(location.pathname) || !location.hash) return;
   const path = pagePath(location.hash, appSport());
   if (path === `/${appSport()}/` || !readPagePath(path)) return;

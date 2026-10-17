@@ -58,7 +58,7 @@ const OUT = OUT_STATUS;
 const QUESTIONABLE = Q_STATUS;
 
 // (an open bet is priced again on news only this far ahead of its start (a run takes minutes, and a bet taken
-// back that close might not be placed again in time); from then on it's locked, and the Bets page's picks are
+// back that close might not be placed again in time); from then on it's locked, and the Book's picks are
 // published then (picks.mjs), never earlier: a published pick is never one the news could still move)
 export const REPRICE_BY = 20 * 60e3;
 // (the most the last chance stretches to, in hours, however far apart the runs come)

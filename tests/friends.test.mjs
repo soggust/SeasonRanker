@@ -4,6 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 import { loadEngine } from './support/engine.mjs';
 
 const h = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support/friends-entry.ts'), data: {} });
@@ -74,9 +75,20 @@ test('the shared pages: their own addresses, sport-free but for the pages measur
   assert.deepEqual(h.readPagePath('/lists/nfl/u1/abc'), { hash: '#lists/u1/abc', sport: 'nfl' });
   for (const app of ['/nfl/', '/nfl', '/', '/mlb/data/x.json']) assert.equal(h.readPagePath(app), null, app);
   // (every page's address reads back as its hash)
-  for (const hash of ['#bets', '#friends', '#privacy', '#data-deletion', '#u/x', '#lists/a/b', '#tracker/uid', '#community/QB/2025']) {
+  for (const hash of ['#book', '#friends', '#privacy', '#data-deletion', '#u/x', '#lists/a/b', '#tracker/uid', '#community/QB/2025']) {
     assert.equal(h.readPagePath(h.pagePath(hash, 'nfl')).hash, hash);
   }
+});
+
+test('the Bets page moved to the Book: /bets and an old #bets land on /book, its hash #book', () => {
+  assert.deepEqual(h.readPagePath('/book'), { hash: '#book', sport: null });
+  assert.deepEqual(h.readPagePath('/bets'), { hash: '#book', sport: null });
+  assert.equal(h.pagePath('#bets', 'nfl'), '/book');
+  assert.equal(h.pagePath('#book', 'mlb'), '/book');
+  const fb = JSON.parse(readFileSync(new URL('../firebase.json', import.meta.url), 'utf8'));
+  const moved = fb.hosting.redirects.filter((r) => r.destination.startsWith('/book')).map((r) => r.source);
+  assert.deepEqual(moved, ['/bets', '/bets/:rest*', '/@(nfl|mlb|nba|nhl|mma)/bets']);
+  assert.ok(fb.hosting.redirects.every((r) => r.type === 301));
 });
 
 test('the Friends page: requests newest first, friends by name', () => {

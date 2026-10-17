@@ -27,7 +27,7 @@ libs/ranker/
     heat-map/                                       the card's Heat Maps tab and its surfaces
     account/                                        accounts: sign-in, profile, lists, presets, Track
                                                    Players, friends, community, the play-money wallet
-    bets/                                           The Book (/bets): the board, bands, ticket, the
+    book/                                           The Book (/book): the board, bands, ticket, the
                                                    admin's Algorithm desk and the page's About
     position.service.ts                            sliders, settings, orders, the current tab
     stat-reader.ts                                 a season's values as the settings show them,

@@ -19,7 +19,7 @@ $kind-clay: (
 // (the page's side gutter: the dropdown fits inside it on a phone)
 $page-gutter: 16px;
 
-// The Bets page, "The Book": a sportsbook on a card table. The header (the title, the views' bar, the bankroll
+// The Book, "The Book": a sportsbook on a card table. The header (the title, the views' bar, the bankroll
 // card), a ticker of scores and start times, then the board (a dot-matrix scoreboard, a row per pick in its
 // band's section) with the ticket and the recent form down its right.
 
@@ -47,7 +47,7 @@ $page-gutter: 16px;
 
 // The page doesn't scroll (on a wide screen): the header, the ticker and the controls stay put, the board fills
 // the rest of the height and scrolls inside
-.bets-page {
+.book-page {
   box-sizing: border-box;
   color: #fff;
   display: flex;
@@ -123,7 +123,7 @@ $page-gutter: 16px;
 
 // The views (The board, Open, Cashed, an admin's Algorithm): a scoreboard bar like the sport pages' position
 // bar, equal tabs, the one showing lit on the dots
-.bets-views {
+.book-views {
   @include v.scoreboard-panel(v.$tab-r, 0 2px 6px rgba(0, 0, 0, 0.35));
   box-sizing: border-box;
   display: flex;
@@ -172,7 +172,7 @@ $page-gutter: 16px;
 // (the About button: the bankroll card's and the game pill's black-to-gold face with the gold edge, round, the
 // "i" in gold; hover as theirs. It sits at the row's right end, just left of the bankroll card when there is one
 // (signed in), alone at the right without it: the owner's note, 2026-10-17)
-.bets-info {
+.book-info {
   @include chip.player-card(v.$radius-round);
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
@@ -309,8 +309,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // The game dropdown: a player's card pill (the bankroll card's black fade in its gold rail), 44px tall, the
 // sport's icon, the game or Best bets, the count of picks lit, and a gold caret that turns while it's open; a
-// button of the page's own, its open list the listbox under it (.bets-game-list, below)
-.bets-game {
+// button of the page's own, its open list the listbox under it (.book-game-list, below)
+.book-game {
   border: none;
   @include chip.player-card(v.$radius-pill);
   align-items: center;
@@ -339,12 +339,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     @include v.focus-ring(2px);
   }
 
-  &[aria-expanded="true"] .bets-game-caret {
+  &[aria-expanded="true"] .book-game-caret {
     rotate: 180deg;
   }
 }
 
-// The game dropdown's open list: the page's own listbox under the pill (bets-page.component.html), the bankroll
+// The game dropdown's open list: the page's own listbox under the pill (book-page.component.html), the bankroll
 // card's black fade in a gold edge, 420px tall at most with a gold scrollbar. Best bets · every game on top (a
 // gold trophy, white words, its count in a pill; never washed, it's the home choice: the owner's notes), each day a
 // gold dot-matrix band, each sport a 44px row (the league's mark in its own colours (MMA its gloves in gold), its
@@ -353,7 +353,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // fight's two names), the start in the ticket's mono and the small count pill or a faint "lines" on the first
 // line). The lit row (the pointer's or the arrows') a faint light; the chosen sport or game washed gold, its words
 // gold, the lit dots along its foot. A phone's the full width under the pill
-.bets-game-wrap {
+.book-game-wrap {
   display: inline-flex;
   max-width: calc(100vw - 2 * #{$page-gutter});
   position: relative;
@@ -363,7 +363,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-.bets-game-list {
+.book-game-list {
   background:
     radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.14), transparent 45%),
     linear-gradient(160deg, #1d1d1d, #121212 60%, #1a1a1a);
@@ -391,15 +391,16 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// (a day's band: gold caps on the board's dots, a gold hairline over and under)
+// (a day's caption: the LED white at 70% on the panel's own neutral dot-matrix band, no gold (the owner's note,
+// 2026-10-17: the sports' marks and the picked games keep the list's gold))
 .game-day {
-  @include glow;
   background:
-    linear-gradient(90deg, rgba(chip.$gold-led, 0.16), transparent 70%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 70%),
     var(--scoreboard-dots),
     #121212;
-  border-bottom: 1px solid rgba(chip.$gold-led, 0.22);
-  border-top: 1px solid rgba(chip.$gold-led, 0.22);
+  border-bottom: 1px solid v.$panel-rule;
+  border-top: 1px solid v.$panel-rule;
+  color: v.$text-dim;
   font-family: v.$font-base;
   font-size: v.$fs-10;
   font-weight: 800;
@@ -654,7 +655,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 
-.bets-game-face {
+.book-game-face {
   align-items: center;
   display: inline-flex;
   gap: v.$space-10;
@@ -666,7 +667,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     flex: none;
   }
 
-  .bets-game-label {
+  .book-game-label {
     flex: 1;
     min-width: 0;
     text-align: left;
@@ -708,13 +709,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     line-height: 1;
   }
 
-  .bets-game-count {
+  .book-game-count {
     @include glow;
     flex: none;
     font-size: v.$fs-12;
   }
 
-  .bets-game-caret {
+  .book-game-caret {
     color: chip.$gold-led;
     flex: none;
     @include v.turn;
@@ -723,7 +724,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // The filter chips: round casino chips in each type's color (a thick rim with cream spots, an inlay ring), the
 // type's short label and its count; dim until they're on. What the label means is on each one's hover (title)
-.bets-kinds {
+.book-kinds {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -810,7 +811,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     overflow-y: auto;
   }
 
-  .bets-page {
+  .book-page {
     height: auto;
     min-height: 100%;
   }
@@ -845,7 +846,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     display: contents;
   }
 
-  .bets-page.has-ticket .board-scroll {
+  .book-page.has-ticket .board-scroll {
     padding-bottom: 130px;
   }
 }
@@ -1019,12 +1020,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   @include chip.gold-scrollbar;
 }
 
-.bets-note {
+.book-note {
   color: v.$text-faint;
   margin: 18px 16px;
 }
 
-.bets-list,
+.book-list,
 .band-rows {
   list-style: none;
   margin: 0;
@@ -1990,24 +1991,43 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
+// (held still while the pointer's on the strip or a key's in it, moving again on leaving: the owner's note)
+.book-ticker:hover .ticker-track,
+.book-ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
 .ticker-copy {
   align-items: center;
   display: inline-flex;
 }
 
-// (one game: its pieces 8px apart, 36px to the next game: a margin, not a gap, so the two copies are the same
-// width and the slide wraps without a jump)
+// (one game: its pieces 8px apart (a logo 5px from its name), 40px to the next game with a faint dot on the
+// gap's middle: a margin, not a gap, so the two copies are the same width and the slide wraps without a jump)
 .tick {
   align-items: center;
   display: inline-flex;
   gap: v.$space-8;
   line-height: 1;
-  margin-right: 36px;
+  margin-right: 40px;
+  position: relative;
+
+  &::after {
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    content: "";
+    height: 3px;
+    position: absolute;
+    right: -21.5px;
+    top: calc(50% - 1.5px);
+    width: 3px;
+  }
 
   .tick-pic {
     display: block;
     flex: none;
     height: 14px;
+    margin-right: -3px;
     object-fit: contain;
     width: 14px;
 
@@ -2067,8 +2087,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (Open Bets: the wallet's open-bets panel, and the desk, scrolling inside the page)
-.bets-page wallet-page,
-.bets-page.desk-view model-desk {
+.book-page wallet-page,
+.book-page.desk-view model-desk {
   display: block;
   flex: 1;
   min-height: 0;
@@ -2076,7 +2096,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (Open tickets, Cashed and the Algorithm: the page's width, as the board's)
-.bets-page.wallet-view wallet-page {
+.book-page.wallet-view wallet-page {
   display: flex;
   flex-direction: column;
   overflow: visible;
@@ -2483,7 +2503,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // reach past their edges)
 // ---------------------------------------------------------------------------
 @include v.down(ai-narrow) {
-  .bets-page {
+  .book-page {
     gap: v.$space-10;
     padding: 14px 14px 20px;
   }
@@ -2501,7 +2521,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     letter-spacing: 2.5px;
   }
 
-  .bets-views {
+  .book-views {
     flex: 1 1 100%;
     height: 40px;
     max-width: none;
@@ -2541,14 +2561,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     gap: v.$space-8;
   }
 
-  .bets-game-wrap,
-  .bets-game {
+  .book-game-wrap,
+  .book-game {
     max-width: none;
     width: 100%;
   }
 
   // (the list the full width under the pill)
-  .bets-game-list {
+  .book-game-list {
     min-width: 0;
     right: 0;
     width: auto;
@@ -2556,7 +2576,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   // (the chips centred on a phone (the owner's note, 2026-10-17): auto margins on the row's ends, not
   // justify-content: center, so a row too wide for the screen still scrolls from its first chip)
-  .bets-kinds {
+  .book-kinds {
     flex-wrap: nowrap;
     margin: 0 -4px;
     overflow-x: auto;
@@ -2630,7 +2650,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
 // (the Live tab on the views bar: its count's blinking green dot before the word while any game's on (still for
 // anyone who's asked for less motion); the card itself is live-tab.scss's)
-.bets-views .live-view {
+.book-views .live-view {
   align-items: center;
   display: flex;
   gap: 7px;
@@ -2647,12 +2667,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-.bets-views .live-view .live-dot {
+.book-views .live-view .live-dot {
   animation: live-tab-blink 1.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bets-views .live-view .live-dot {
+  .book-views .live-view .live-dot {
     animation: none;
   }
 }

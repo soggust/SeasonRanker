@@ -10,7 +10,7 @@ import { EspnMmaScoreboard, LiveBout, mmaBouts, tonightBouts } from './live-mma'
 import { betsByGame } from './live-view';
 
 // The Live tab's data, nothing the page doesn't already load: today's games off ESPN's scoreboards (lines.service,
-// the boards the Bets page read for its dropdown and ticker), the user's open bets on them (the wallet's), and the
+// the boards the Book read for its dropdown and ticker), the user's open bets on them (the wallet's), and the
 // summaries of the games the user has bets on (the game modal's own read of ESPN's summary: game.ts loadGame), for
 // their sparkline and last play. While the tab shows (start, stop), the scoreboards are asked for again every
 // thirty seconds (lines.games with a shorter age: its day cache is left as it is), and so are those summaries;

@@ -7,7 +7,7 @@
 // Two kinds of report:
 //   preview  while the team's season is on (weekly): who it is, what drives its record, the week ahead,
 //            where the season is heading. No betting angles, as in every sport's
-//            analysis (the NFL's too since 2026-10-14): the Bets page has the bets, at live prices.
+//            analysis (the NFL's too since 2026-10-14): the Book has the bets, at live prices.
 //   recap    once its season is over (eliminated, or the final done): the year in one section. That's
 //            its last report of the season (weekly.mjs runs no more for it).
 //

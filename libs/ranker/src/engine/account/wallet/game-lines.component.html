@@ -159,7 +159,7 @@
             <span class="grid-head" role="columnheader">Spread</span>
           }
           @if (cols.includes('total')) {
-            <span class="grid-head" role="columnheader">Total</span>
+            <span class="grid-head" role="columnheader">{{ sport === 'mma' ? 'Rounds' : 'Total' }}</span>
           }
           @if (cols.includes('ml')) {
             <span class="grid-head" role="columnheader">{{ compact ? 'Money' : 'Moneyline' }}</span>

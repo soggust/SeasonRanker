@@ -7,7 +7,7 @@
 export const SHEET_BELOW = 1000;
 
 // What a tap lands on without minimizing the sheet: the sheet itself, the stub (its Expand opens the sheet), a
-// price on the board (bets-page's .bet-price, game-lines' .tile-price: the click adds the bet and keeps the sheet
+// price on the board (book-page's .bet-price, game-lines' .tile-price: the click adds the bet and keeps the sheet
 // open, as wallet.toggle has always done) and the login dialog it may have opened
 export const KEEPS_SHEET = '.ticket, .ticket-stub, .bet-price, .tile-price, .login-panel';
 

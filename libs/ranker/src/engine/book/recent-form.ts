@@ -2,7 +2,7 @@
 // (tallies/{uid}: each game day's [won, lost, push, staked, profit], US Eastern days), their streak and their last
 // five settled bets from the settled history where the page has it (loaded once the wallet or Cashed asked for it:
 // never fetched for this). The bot's recent form isn't on the page (picks.json carries its season by band alone),
-// so the card is the user's. No Angular here (tested under Node: tests/bets-recent-form.test.mjs)
+// so the card is the user's. No Angular here (tested under Node: tests/book-recent-form.test.mjs)
 import { PlayBet, TallyDoc, etDay } from '../account/wallet/wallet-math';
 import { PlayerRef, betPlayer } from '../player-link';
 

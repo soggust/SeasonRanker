@@ -1,10 +1,10 @@
-<!-- The Bets page's About: the shared frame, its sections for everyone, and an admin's Algorithm and Live Model -->
+<!-- The Book's About: the shared frame, its sections for everyone, and an admin's Algorithm and Live Model -->
 <about-frame heading="About The Book" [sections]="sections" (closed)="closed.emit()" #frame>
   @switch (frame.active) {
     @case ('page') {
       <h3>Play money, real numbers</h3>
       <p>
-        The Book, Season Ranker's Bets page, is a sportsbook for fun. Every account gets a <b>500-unit wallet</b>
+        The Book is Season Ranker's sportsbook for fun. Every account gets a <b>500-unit wallet</b>
         of play money to bet with: no real money goes in or comes out, ever. The lines and prices are real ones,
         from a major U.S. sportsbook, and the picks come from our betting bot, a model that prices every game and prop on its own,
         in the NFL, NBA, NHL and MLB and on UFC fights.

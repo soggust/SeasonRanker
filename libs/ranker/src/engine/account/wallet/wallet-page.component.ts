@@ -1,12 +1,12 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, computed, effect, signal, untracked } from '@angular/core';
-import { ModelBet, Settled } from '../../bets/desk-model';
-import { CURVE_W } from '../../bets/desk-math';
-import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../bets/date-range';
-import { hideImage, leagueLogo, teamLogo, headshot } from '../../bets/bet-format';
+import { ModelBet, Settled } from '../../book/desk-model';
+import { CURVE_W } from '../../book/desk-math';
+import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../book/date-range';
+import { hideImage, leagueLogo, teamLogo, headshot } from '../../book/bet-format';
 import { AccountService } from '../account.service';
 import { ADMIN, canUse } from '../features';
-import { chooseBetsView } from '../../bets/bets-view';
-import { recentForm } from '../../bets/recent-form';
+import { chooseBetsView } from '../../book/book-view';
+import { recentForm } from '../../book/recent-form';
 import { PRIVACY_HASH } from '../account-page.component';
 import { LinesService } from './lines.service';
 import { WalletService } from './wallet.service';
@@ -136,9 +136,9 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (Clear history: an admin's (the token's claim) alone, in development too: stage one with the account menu's
   // "Stage as admin" against the emulators)
   readonly admin = (): boolean => ADMIN();
-  // (the Bets page's Open Bets or Closed Bets tab: those bets alone, no tiles, the rest or the slip)
+  // (the Book's Open Bets or Closed Bets tab: those bets alone, no tiles, the rest or the slip)
   @Input() only: 'open' | 'closed' | null = null;
-  // (a link to the Bets page lands on its Place Bets, not the Algorithm or Open Bets)
+  // (a link to the Book lands on its Place Bets, not the Algorithm or Open Bets)
   readonly toBets = (): void => chooseBetsView('bets');
   // (...and its Open and Cashed tabs: the open tickets, every ticket cashed)
   readonly toOpen = (): void => chooseBetsView('open');

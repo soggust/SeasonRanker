@@ -130,7 +130,7 @@ export function meterOf(b: ModelBet, count: number | null): Meter | null {
   return { pips: null, fill: Math.min(100, (count / span) * 100), mark: (b.line / span) * 100, extra: 0 };
 }
 
-// The live column, shared by the Algorithm's In Play and the Bets page's Open Bets: a bet in play's count,
+// The live column, shared by the Algorithm's In Play and the Book's Open Bets: a bet in play's count,
 // and a side's words and color at the score
 
 // (what an in-play bet's meter counts: a prop's stat so far, a total's points so far; null for the rest,

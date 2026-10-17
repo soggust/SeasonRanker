@@ -31,12 +31,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AboutComponent } from '@sport/about/about.component';
 import { AboutFrameComponent } from './about/about-frame.component';
 import { PositionService } from './position.service';
-import { BetsPageComponent } from './bets/bets-page.component';
+import { BookPageComponent } from './book/book-page.component';
 import { PickTextComponent, PlayerLinkDirective } from './player-link.directive';
-import { BetsAboutComponent } from './bets/bets-about.component';
-import { ModelDeskComponent } from './bets/model-desk.component';
-import { DeskNoteComponent } from './bets/desk-note.component';
-import { LiveTabComponent } from './bets/live-tab.component';
+import { BookAboutComponent } from './book/book-about.component';
+import { ModelDeskComponent } from './book/model-desk.component';
+import { DeskNoteComponent } from './book/desk-note.component';
+import { LiveTabComponent } from './book/live-tab.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
 import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.component';
 
@@ -63,8 +63,8 @@ import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.comp
     PickTextComponent,
     AboutComponent,
     AboutFrameComponent,
-    BetsPageComponent,
-    BetsAboutComponent,
+    BookPageComponent,
+    BookAboutComponent,
     ModelDeskComponent,
     DeskNoteComponent,
     LiveTabComponent,

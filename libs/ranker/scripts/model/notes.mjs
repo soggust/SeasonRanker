@@ -1,5 +1,5 @@
 // The owner's notes on the desk's picks (Firestore's deskNotes/{id}, the id a pick's: a CHECK's mostly, which
-// the Bets page's CHECK rows let an admin explain: desk-note.component.ts): { reason: news | role | weather | suspension | market-wrong |
+// the Book's CHECK rows let an admin explain: desk-note.component.ts): { reason: news | role | weather | suspension | market-wrong |
 // other, player?: ESPN's athlete id, status?: out | questionable | active, team?: ESPN's team id, note?, by, at }.
 //
 //   read     once a process, by Firestore's REST API with the service account the workflow already has

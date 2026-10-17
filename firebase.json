@@ -92,11 +92,11 @@
         "destination": "/mma/index.html"
       },
       {
-        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)",
+        "source": "/@(book|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)",
         "destination": "/nfl/index.html"
       },
       {
-        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)/**",
+        "source": "/@(book|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)/**",
         "destination": "/nfl/index.html"
       }
     ],
@@ -210,7 +210,7 @@
         ]
       },
       {
-        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)",
+        "source": "/@(book|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)",
         "headers": [
           {
             "key": "Cache-Control",
@@ -219,7 +219,7 @@
         ]
       },
       {
-        "source": "/@(bets|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)/**",
+        "source": "/@(book|settings|lists|community|tracker|wallet|friends|privacy|data-deletion|u)/**",
         "headers": [
           {
             "key": "Cache-Control",
@@ -229,6 +229,21 @@
       }
     ],
     "redirects": [
+      {
+        "source": "/bets",
+        "destination": "/book",
+        "type": 301
+      },
+      {
+        "source": "/bets/:rest*",
+        "destination": "/book/:rest",
+        "type": 301
+      },
+      {
+        "source": "/@(nfl|mlb|nba|nhl|mma)/bets",
+        "destination": "/book",
+        "type": 301
+      },
       {
         "source": "/",
         "destination": "/nfl/",

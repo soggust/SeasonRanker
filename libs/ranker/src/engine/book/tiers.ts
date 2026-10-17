@@ -4,7 +4,7 @@
 //
 // CHECK isn't a bet the bot made: a market the model is too far from the book on to bet (picks.mjs checks,
 // checks.mjs), kept for the owner to look into. Its place is between LOCK and LOVE wherever the bands sort; an
-// admin's alone on the Bets page (its own color, its name alone on its badge; a "?" for its rank)
+// admin's alone on the Book (its own color, its name alone on its badge; a "?" for its rank)
 export type Confidence = 'lock' | 'check' | 'high' | 'medium' | 'low';
 export type Tier = 'lock' | 'check' | 'love' | 'like' | 'pass';
 

@@ -36,7 +36,7 @@ $sport-line: (
   }
 }
 
-// A round casino chip (the Bets page's filter chips, the Algorithm's sport chips): its color the --clay it's
+// A round casino chip (the Book's filter chips, the Algorithm's sport chips): its color the --clay it's
 // given, a thick rim with cream spots (an SVG rect's dashes: <svg class="chip-rim"><rect pathLength="80" />),
 // an inlay ring, a little shine; dim until it's on (.active: full color, lifted)
 @mixin chip($size: 58px) {
@@ -153,7 +153,7 @@ $sport-line: (
 }
 
 // ---------------------------------------------------------------------------
-// The card table: a panel on the Bets page, the Algorithm and the wallet on the scoreboard inside a thin
+// The card table: a panel on the Book, the Algorithm and the wallet on the scoreboard inside a thin
 // brushed-gold rail; its bar every sport's panel bar (the scoreboard, tinted with its category color). The felt
 // is the controls' (felt-control, felt-dropdown: the buttons and the dropdowns). (The chip-rimmed panels they replaced were
 // too busy on a page of them.)
@@ -161,7 +161,7 @@ $sport-line: (
 $felt: #155a3a;
 $felt-gold: linear-gradient(135deg, #7a5a1e, #f1d58c 22%, #b38a3c 45%, #f6e2a4 62%, #9c7630 82%, #6e511b);
 $felt-seam: rgba(222, 186, 106, 0.55);
-// (the rail's gold as a light: the Bets page's accent, in place of the sport's scoreboard light)
+// (the rail's gold as a light: the Book's accent, in place of the sport's scoreboard light)
 $gold-led: #ebc56c;
 // (the felt's green lit, for a bar's tint and icon where the panels carry no category of their own)
 $felt-light: #3fa36b;
@@ -259,7 +259,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   }
 }
 
-// The Book's player's card (the Bets page's bankroll card, its game dropdown and the ticket's Place button): a
+// The Book's player's card (the Book's bankroll card, its game dropdown and the ticket's Place button): a
 // black fade with a warm light at its top right, inside a 1px rail of the tables' gold ($felt-gold, drawn on a
 // ::before so the fade keeps its own corners). $radius: its corner (the ::before follows it)
 @mixin player-card-face {
@@ -296,7 +296,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   scrollbar-width: thin;
 }
 
-// ...a dropdown of it (the Bets page's game picker, the Algorithm's): the felt, its caret, a gold edge
+// ...a dropdown of it (the Book's game picker, the Algorithm's): the felt, its caret, a gold edge
 @mixin felt-dropdown($native: true) {
   appearance: none;
   background:
@@ -326,7 +326,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     outline: none;
   }
 
-  // (the keyboard's focus: the edge white; the page's light is the felt's own gold on the Bets page)
+  // (the keyboard's focus: the edge white; the page's light is the felt's own gold on the Book)
   &:focus-visible {
     border-color: #fff;
     outline: none;
@@ -349,7 +349,7 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 }
 
 // ---------------------------------------------------------------------------
-// The bands' tags: LOCK, CHECK, LOVE, LIKE, PASS (and the Bets page's FADE), wherever a bet shows its band: the Bets
+// The bands' tags: LOCK, CHECK, LOVE, LIKE, PASS (and the Book's FADE), wherever a bet shows its band: the Bets
 // rows, the lines' prices, the wallet's Bot column, the slip. One palette, one tag, each place its own size.
 // ---------------------------------------------------------------------------
 // (a lock's chocolate; lighter for its padlock and lettering on the dark; its price tile's edge; the gold of

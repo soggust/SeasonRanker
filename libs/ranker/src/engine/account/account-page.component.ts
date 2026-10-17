@@ -74,7 +74,7 @@ export const PRIVACY_HASH = '#account/privacy';
 export class AccountPageComponent implements OnDestroy {
   // (the bets' rows only where play betting is open: development, or an admin)
   get visibilityKinds() {
-    return canUse('bets') ? VISIBILITY_KINDS : VISIBILITY_KINDS.filter((k) => k.kind !== 'openBets' && k.kind !== 'betHistory');
+    return canUse('book') ? VISIBILITY_KINDS : VISIBILITY_KINDS.filter((k) => k.kind !== 'openBets' && k.kind !== 'betHistory');
   }
   readonly displayNameMax = DISPLAY_NAME_MAX;
   readonly usernameMax = USERNAME_MAX;

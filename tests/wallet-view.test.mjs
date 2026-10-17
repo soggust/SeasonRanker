@@ -195,7 +195,7 @@ test('the wallet: Rebuy and the periods are the standard buttons, not chips', as
 
 // The owner (2026-10-17): the Book's Open tickets and Cashed, and the wallet's open and settled bets, are panels whose
 // body is the corkboard, the tickets pinned to it (a push-pin each, a steady slight tilt); no table is left
-test('the boards: open and settled tickets pinned to a corkboard panel, on the Bets page and in the wallet', async () => {
+test('the boards: open and settled tickets pinned to a corkboard panel, on the Book and in the wallet', async () => {
   const fs = await import('node:fs');
   const root = path.join(import.meta.dirname, '..', 'libs/ranker/src');
   const html = fs.readFileSync(path.join(root, 'engine/account/wallet/wallet-page.component.html'), 'utf8');

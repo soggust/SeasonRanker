@@ -1,4 +1,4 @@
-import { ModelBet } from '../../bets/desk-model';
+import { ModelBet } from '../../book/desk-model';
 import { PlayBet, START, TallyDoc, americanOf, decimalOf, etDay, runBeganAt } from './wallet-math';
 
 // The wallet page's own pictures and figures (docs/wallet-redesign/README.md), every one a client-side reading of

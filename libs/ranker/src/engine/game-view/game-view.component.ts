@@ -14,10 +14,10 @@ import { resultClass } from '../result-class';
 import { PositionService } from '../position.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { PlayBet, legBets } from '../account/wallet/wallet-math';
-import { BetWatch, betSub, betWatch, onTrackWords } from '../bets/live-bets';
-import { boardLabel } from '../bets/live-games';
-import { PlayAt, betsByGame, gameReadOf, impactBetOf, impactPlaysOf, propNowOf, sportOf } from '../bets/live-view';
-import { PlayImpacts, importantPlays, walkPlays } from '../bets/bet-impact';
+import { BetWatch, betSub, betWatch, onTrackWords } from '../book/live-bets';
+import { boardLabel } from '../book/live-games';
+import { PlayAt, betsByGame, gameReadOf, impactBetOf, impactPlaysOf, propNowOf, sportOf } from '../book/live-view';
+import { PlayImpacts, importantPlays, walkPlays } from '../book/bet-impact';
 
 import { GameTab, GameViewService, nameKey, phoneModal } from './game-view.service';
 import { betPlayer } from '../player-link';
@@ -513,7 +513,7 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
   }
 
   // ---------------------------------------------------------------------------
-  // The user's bets on the game (the Bets page's Live tab opens a game they've bet; the wallet's open bets, a
+  // The user's bets on the game (the Book's Live tab opens a game they've bet; the wallet's open bets, a
   // parlay's open legs as bets of their own): the Your Bets panel beside Game Leaders, Important Plays, the My
   // Bets pill and the tags on the Plays tab, the YOUR BET marks on the leaders and the box score. Nothing here
   // for a game the user has no bet on: the modal looks as it always did

@@ -9,9 +9,9 @@
   @for (s of sports; track s.id) {
     <a [href]="'/' + s.id + '/'" [class.active]="s.id === sport && view === 'rankings'" [attr.aria-current]="s.id === sport && view === 'rankings' ? 'page' : null">{{ s.label }}</a>
   }
-  <!-- Every sport's betting angles on one page (/bets): linked in development, and for an admin -->
-  @if (canUse('bets')) {
-    <a href="/bets" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null">Bets</a>
+  <!-- The Book: every sport's betting angles on one page (/book) -->
+  @if (canUse('book')) {
+    <a href="/book" [class.active]="view === 'book'" [attr.aria-current]="view === 'book' ? 'page' : null">Book</a>
   }
   <!-- The far right, flush with the page's edge, each name left of its picture: signed out, Sign in | the
        site's name and its podium; signed in, the user's name and avatar (their menu) in place of the brand -->
@@ -33,8 +33,8 @@
 
 @if (gallery) {
   <splash-gallery-host></splash-gallery-host>
-} @else if (view === 'bets') {
-  <bets-page></bets-page>
+} @else if (view === 'book') {
+  <book-page></book-page>
 } @else if (onSheet) {
   <!-- The account pages (and Privacy, Data deletion): the app's own pewter backdrop and one scoreboard sheet
        filling the screen under the sport bar; the page never scrolls, only the sheet's body (like the grid) -->

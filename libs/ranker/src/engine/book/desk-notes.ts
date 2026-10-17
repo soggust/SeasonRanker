@@ -1,7 +1,7 @@
 import type { ModelBet } from './desk-model';
 import { bandOrder } from './tiers';
 
-// The CHECK band's pure parts (no Angular, no Firestore: tests/bet-why.test.mjs reads them): the Bets page's
+// The CHECK band's pure parts (no Angular, no Firestore: tests/bet-why.test.mjs reads them): the Book's
 // order with CHECKs in it, the owner's note on a pick (Firestore's deskNotes/{id}, the id the pick's; the
 // bettor reads them, libs/ranker/scripts/model/notes.mjs, and a player's news prices his game again), and the
 // CHECKs as the Algorithm's By Confidence tallies them.
@@ -83,7 +83,7 @@ export interface NoteRow {
   playerTeam?: string | null;
 }
 
-// The Bets page's order: by band (LOCK, CHECK, the rest), then the Kelly score (the CHECKs by their gap), then
+// The Book's order: by band (LOCK, CHECK, the rest), then the Kelly score (the CHECKs by their gap), then
 // the start
 export function byBand(a: NoteRow, b: NoteRow): number {
   const band = (r: NoteRow) => Math.min(bandOrder(r.confidence as never), 2);

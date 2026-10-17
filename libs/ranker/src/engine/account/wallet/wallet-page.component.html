@@ -5,7 +5,7 @@
 <!-- (the open bets as printed tickets pinned to a corkboard, each with a push-pin and its own slight tilt (tilt(),
      steady per ticket), the live ones first: a panel whose bar carries what's in play, what they'd win, how many are
      live and how many are decided pending settlement; each leg with its score and clock and how it stands, a prop's
-     thin progress meter, or its start. The wallet's panel, and the Bets page's Open tickets tab alone) -->
+     thin progress meter, or its start. The wallet's panel, and the Book's Open tickets tab alone) -->
 <ng-template #openBoard>
 <section class="wp-panel book-board" aria-label="Open tickets">
   <div class="wp-bar">
@@ -79,7 +79,7 @@
 <!-- (the settled bets as printed tickets pinned to a corkboard, newest first, each rubber-stamped CASHED, LOST or
      PUSH: a panel whose bar carries the last seven days' record, units and streak (recent-form.ts) and the settled
      history's date range (the Algorithm's dropdown); a page at a time, the next on asking. The wallet's panel
-     ("Settled"), and the Bets page's Cashed tab alone) -->
+     ("Settled"), and the Book's Cashed tab alone) -->
 <ng-template #cashedBoard let-title="title">
 <section class="wp-panel book-board" [attr.aria-label]="title">
   <div class="wp-bar">
@@ -148,7 +148,7 @@
 </ng-template>
 
 
-@if (!canUse('bets')) {
+@if (!canUse('book')) {
   <coming-soon heading="Betting Wallet" detail="Play-money betting is on its way. Check back soon."></coming-soon>
 } @else {
 <div class="wallet-page" [class.only-open]="!!only">
@@ -159,7 +159,7 @@
     <section class="model-desk wallet-intro">
       <div class="wallet-intro-chips" aria-hidden="true"><i class="chip-100"></i><i class="chip-25"></i><i class="chip-5"></i></div>
       <h2>Play along with the bot</h2>
-      <p>{{ start | number }} play units to start. Bet any game's lines from the Bets page, the bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
+      <p>{{ start | number }} play units to start. Bet any game's lines from the Book, the bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
       <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
     </section>
   } @else if (only === 'closed') {
@@ -179,7 +179,7 @@
         <h2>Wallet</h2>
         <span class="hero-user">{{ me?.username }} · play money</span>
       </div>
-      <a class="hero-link" href="/bets" (click)="toBets()">Place bets</a>
+      <a class="hero-link" href="/book" (click)="toBets()">Place bets</a>
     </header>
 
     <div class="wallet-row">
@@ -196,7 +196,7 @@
           </div>
           <div class="chips-open">
             @if (open().length) {
-              <a href="/bets" (click)="toOpen()" title="Your open tickets on the Bets page"><b>{{ tally().atRisk | number: '1.1-1' }}u</b> on {{ open().length }} open {{ open().length === 1 ? 'ticket' : 'tickets' }}</a>
+              <a href="/book" (click)="toOpen()" title="Your open tickets on the Book"><b>{{ tally().atRisk | number: '1.1-1' }}u</b> on {{ open().length }} open {{ open().length === 1 ? 'ticket' : 'tickets' }}</a>
               <span>could pay <b class="up">{{ openToWin() | number: '1.1-1' }}u</b></span>
             } @else {
               <span>no open tickets</span>
@@ -293,8 +293,8 @@
 
     @if (wallet.loaded() && !wallet.openBets().length && !wallet.hasSettled()) {
       <div class="wallet-empty">
-        <p><b>Your wallet's ready:</b> {{ start | number }} play units. Open any game's lines on the Bets page and tap a price to bet it.</p>
-        <a class="app-btn-primary" href="/bets" (click)="toBets()">Go to Bets</a>
+        <p><b>Your wallet's ready:</b> {{ start | number }} play units. Open any game's lines on the Book and tap a price to bet it.</p>
+        <a class="app-btn-primary" href="/book" (click)="toBets()">Go to the Book</a>
       </div>
     }
 
@@ -398,7 +398,7 @@
             }
           </div>
         }
-        <p class="wallet-fine heads-fine">Since {{ h.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Bets page's) settled over the same games' days.@if (historyNote()) { Tailing, own calls and fading from {{ historyNote() }}.}</p>
+        <p class="wallet-fine heads-fine">Since {{ h.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Book's) settled over the same games' days.@if (historyNote()) { Tailing, own calls and fading from {{ historyNote() }}.}</p>
       </section>
     }
 
@@ -529,10 +529,10 @@
     }
 
     <!-- Your tells: six habits read off the loaded bets (wallet-view.ts tells), tiles 3 × 2, a result's value green or
-         red; the bar's link goes to the Bets page's Cashed tab -->
+         red; the bar's link goes to the Book's Cashed tab -->
     @if (tellsList().length) {
       <section class="wp-panel" aria-label="Your tells">
-        <div class="wp-bar"><h3>Your tells</h3><a class="wp-bar-link" href="/bets" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
+        <div class="wp-bar"><h3>Your tells</h3><a class="wp-bar-link" href="/book" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
         <div class="tells">
           @for (t of tellsList(); track t.key) {
             <div class="tell">

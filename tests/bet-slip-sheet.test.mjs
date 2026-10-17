@@ -45,8 +45,8 @@ test('the sheet\'s X is a minimize chevron: the sheet down to the stub, the bets
 
 test('a tap outside the open sheet minimizes it on a phone, not on the sheet, the stub, a price or the login', () => {
   const phone = 390;
-  assert.equal(w.tapMinimizes(el('bets-page'), true, phone), true, 'the board behind the sheet');
-  assert.equal(w.tapMinimizes(el('bet-row', 'bets-page'), true, phone), true, 'a row\'s words');
+  assert.equal(w.tapMinimizes(el('book-page'), true, phone), true, 'the board behind the sheet');
+  assert.equal(w.tapMinimizes(el('bet-row', 'book-page'), true, phone), true, 'a row\'s words');
   assert.equal(w.tapMinimizes(null, true, phone), true, 'the document itself');
   assert.equal(w.tapMinimizes({}, true, phone), true, 'a target with no closest');
   assert.equal(w.tapMinimizes(el('leg-remove', 'ticket'), true, phone), false, 'inside the sheet');
@@ -55,16 +55,16 @@ test('a tap outside the open sheet minimizes it on a phone, not on the sheet, th
   assert.equal(w.tapMinimizes(el('tile-price'), true, phone), false, 'a game\'s line tile');
   assert.equal(w.tapMinimizes(el('login-panel'), true, phone), false, 'the login dialog');
   // (minimized already: nothing to do; the docked ticket from 1000px: never)
-  assert.equal(w.tapMinimizes(el('bets-page'), false, phone), false);
-  assert.equal(w.tapMinimizes(el('bets-page'), true, 999), true);
-  assert.equal(w.tapMinimizes(el('bets-page'), true, 1000), false);
-  assert.equal(w.tapMinimizes(el('bets-page'), true, 1440), false);
+  assert.equal(w.tapMinimizes(el('book-page'), false, phone), false);
+  assert.equal(w.tapMinimizes(el('book-page'), true, 999), true);
+  assert.equal(w.tapMinimizes(el('book-page'), true, 1000), false);
+  assert.equal(w.tapMinimizes(el('book-page'), true, 1440), false);
   assert.equal(w.SHEET_BELOW, 1000);
   // (the stylesheet docks the ticket at the same width)
   assert.match(read('libs/ranker/src/styles/_variables.scss'), /\$bp-wide-menu: 1000px;/);
   assert.match(read('libs/ranker/src/styles/components/wallet-slip.scss'), /@media \(max-width: #\{v\.bp\(wide-menu\) - 1px\}\) \{\s*\.ticket \{/);
   // (the price buttons the rule spares are the ones the templates draw)
-  assert.match(read('libs/ranker/src/engine/bets/bets-page.component.html'), /class="bet-price"[^>]*\(click\)="takeRow\(/);
+  assert.match(read('libs/ranker/src/engine/book/book-page.component.html'), /class="bet-price"[^>]*\(click\)="takeRow\(/);
   assert.match(read(`${wallet}/game-lines.component.html`), /class="tile-price"/);
   assert.match(read(`${wallet}/../login-dialog.component.html`), /class="login-panel"/);
 });
@@ -78,6 +78,6 @@ test('the placed note closes on its X or a new price, and the ticket is the Book
   assert.match(ts, /closePlaced\(\): void \{\s*this\.wallet\.placed\.set\(null\)/);
   assert.doesNotMatch(ts, /setTimeout\([^)]*placed/, 'no auto-dismiss');
   assert.doesNotMatch(read(`${wallet}/wallet-page.component.html`), /<bet-slip/);
-  assert.match(read('libs/ranker/src/engine/bets/bets-page.component.html'), /<bet-slip><\/bet-slip>/);
+  assert.match(read('libs/ranker/src/engine/book/book-page.component.html'), /<bet-slip><\/bet-slip>/);
   assert.match(read(`${wallet}/wallet.service.ts`), /toggle\(sel[\s\S]*?this\.placed\.set\(null\);\s*this\.slip\.update/, 'a new price clears the note');
 });

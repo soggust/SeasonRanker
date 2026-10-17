@@ -1,4 +1,4 @@
-// A bet's pick dressed up, the same on the Algorithm desk and the Bets page: its one word that says what the bet
+// A bet's pick dressed up, the same on the Algorithm desk and the Book: its one word that says what the bet
 // is (a prop's or a total's over or under, a side's line or ML), in its team's color (team-look.ts accentSafe:
 // never a green or a red, they're the meters' won and lost; light enough to read on the rows)
 import { teamLook } from '../team-look';

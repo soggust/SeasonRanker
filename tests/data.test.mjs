@@ -242,7 +242,7 @@ for (const sport of SPORTS) {
     }
   });
 
-  // The public Bets page's picks (libs/ranker/scripts/model/picks.mjs): the algorithm's top bets, ranked
+  // The public Book's picks (libs/ranker/scripts/model/picks.mjs): the algorithm's top bets, ranked
   test(`${sport}: model picks are whole and ranked`, () => {
     const picksPath = path.join(dir, 'picks.json');
     if (!fs.existsSync(picksPath)) return;

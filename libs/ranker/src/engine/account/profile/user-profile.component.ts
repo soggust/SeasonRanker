@@ -75,7 +75,7 @@ export class UserProfileComponent {
       const me = this.account.user()?.uid;
       if (me && me !== person.uid && !this.friends.loaded()) return;
       const access = this.access;
-      const key = person.uid + '|' + this.relation + '|' + JSON.stringify(access) + '|' + canUse('bets');
+      const key = person.uid + '|' + this.relation + '|' + JSON.stringify(access) + '|' + canUse('book');
       untracked(() => {
         if (key === this.loadedKey) return;
         this.loadedKey = key;
@@ -143,7 +143,7 @@ export class UserProfileComponent {
     const run = async <T>(target: WritableSignal<Load<T> | null>, kind: VisibilityKind, load: () => Promise<T>) => {
       // (bets only where play betting is open)
       const bets = kind === 'openBets' || kind === 'betHistory';
-      if (access[kind] !== 'shown' || (bets && !canUse('bets'))) {
+      if (access[kind] !== 'shown' || (bets && !canUse('book'))) {
         target.set(null);
         return;
       }
@@ -163,7 +163,7 @@ export class UserProfileComponent {
       run(this.pins, 'tracker', () => loadPins(uid, owner, friend)),
       run(this.openBets, 'openBets', () => loadBets(uid, 'open')),
       run(this.settledBets, 'betHistory', () => loadBets(uid, 'settled')),
-      access.betHistory === 'shown' && canUse('bets')
+      access.betHistory === 'shown' && canUse('book')
         ? loadBalance(uid)
             .then((b) => this.found?.uid === uid && this.balance.set(b))
             .catch(() => undefined)

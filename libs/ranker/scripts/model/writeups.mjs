@@ -1,4 +1,4 @@
-// Claude's analysis for the strong picks (LOCK and LOVE): each one's reason, its risk line (the Bets page's
+// Claude's analysis for the strong picks (LOCK and LOVE): each one's reason, its risk line (the Book's
 // Devil's Advocate) and a headline, written by claude-opus-5-5 from the bet's own fact sheet (writeup.mjs
 // factsOf: everything the model knew when it placed it, worked into plain numbers) and checked by the same
 // grounding rules the plain text passes (writeup.mjs validate). Off the bettor's path: run after it, and
@@ -100,7 +100,7 @@ const PLAN_OUT = { low: 900, medium: 1350, high: 2550, xhigh: 5050, max: 8000 };
 // The prompt, the request, the answer
 
 // (frozen: no timestamps, nothing per run, so it caches; a change here is a PROMPT_V bump)
-export const SYSTEM = `You write the analysis for one bet on SeasonRanker's Bets page. The site's betting model (the Algorithm) prices NFL, NBA, NHL and MLB game lines and player props against DraftKings, and it rated this bet LOVE or LOCK, its top two bands. Readers are sports fans who bet. They see your paragraph under the pick and your risk line under it, labelled "Devil's Advocate".
+export const SYSTEM = `You write the analysis for one bet on SeasonRanker's Book. The site's betting model (the Algorithm) prices NFL, NBA, NHL and MLB game lines and player props against DraftKings, and it rated this bet LOVE or LOCK, its top two bands. Readers are sports fans who bet. They see your paragraph under the pick and your risk line under it, labelled "Devil's Advocate".
 
 You get one FACT SHEET in JSON: everything the model knew when it placed the bet, already worked into plain numbers. The sheet is the whole world for this task. Your own knowledge of these players, teams, injuries, form, history and news is out of date and not allowed, even when you are sure of it.
 

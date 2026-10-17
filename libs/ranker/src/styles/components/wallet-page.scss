@@ -23,14 +23,14 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 @include kit.app-buttons;
 
-// (the desk's panels, chip-rimmed as on the Bets page and the Algorithm, their bars the felt's green:
+// (the desk's panels, chip-rimmed as on the Book and the Algorithm, their bars the felt's green:
 // card-panel.scss, the panels' own styles, .wallet-page card-panel)
 
 .wallet-page {
   // (on the app's sheet, which brings the top and side room: room under the last panel, the slip's to clear)
   padding: 0 0 90px;
 
-  // (the Bets page's Open Bets tab: centered, level with the other tabs' panels, no slip to clear at the foot)
+  // (the Book's Open Bets tab: centered, level with the other tabs' panels, no slip to clear at the foot)
   // (The Book's Open tickets and Cashed: the page's own width, the tickets' column scrolling inside it)
   &.only-open {
     display: flex;
@@ -343,7 +343,7 @@ $bar-line: rgba(chip.$felt-light, 0.4);
     }
   }
 
-  // (the chips' clays, the slip's and the Bets page's: 100s black, 25s green, 5s red, 1s blue, halves grey)
+  // (the chips' clays, the slip's and the Book's: 100s black, 25s green, 5s red, 1s blue, halves grey)
   &.d25 {
     --c: #{chip.$chip-green};
   }
@@ -1288,7 +1288,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
-// (the bot's band beside a pick it made: the Bets page's chip, small)
+// (the bot's band beside a pick it made: the Book's chip, small)
 // (in the Bot column, a cell of its own, centered under its header: a size up from the pick's old tag)
 .wallet-bets .wallet-bot {
   text-align: center;
@@ -1753,7 +1753,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 
 // ===========================================================================
 // The printed tickets (the slip's paper, scalloped edges, IBM Plex Mono) the corkboards pin up: the Book's Open
-// tickets and Cashed tabs (the Bets page's wallet views, only = 'open' | 'closed') and the wallet's open and settled
+// tickets and Cashed tabs (the Book's wallet views, only = 'open' | 'closed') and the wallet's open and settled
 // bets; a cashed ticket rubber-stamped
 // ===========================================================================
 
@@ -2087,7 +2087,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 
 // The boards (the Book's Open tickets and Cashed, and the wallet's open and settled bets): a panel under the felt bar,
 // the strip's stats in the bar, its body the wall's corkboard with the tickets pinned up in a grid, each with a
-// push-pin and its own slight tilt; on the Bets page the board scrolls inside the page, its frame staying put
+// push-pin and its own slight tilt; on the Book the board scrolls inside the page, its frame staying put
 .book-board {
   .glow {
     color: chip.$gold-led;

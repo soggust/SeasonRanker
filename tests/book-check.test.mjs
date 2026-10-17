@@ -1,4 +1,4 @@
-// The CHECK band on the Bets page and the Algorithm (tiers.ts, desk-notes.ts, bet-why.ts): CHECK sorted under
+// The CHECK band on the Book and the Algorithm (tiers.ts, desk-notes.ts, bet-why.ts): CHECK sorted under
 // LOCK and over LOVE everywhere the bands sort, never numbered among the ranks; the owner's note as the form
 // builds it, in the shape firestore.rules validDeskNote and the bettor's notes.mjs read; the CHECKs as By
 // Confidence tallies them (a unit each as if bet, the closed ones out). Made-up picks, no network.
@@ -8,7 +8,7 @@ import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 import { REASONS, NOTE_STATUS, noteOf as deskNoteOf } from '../libs/ranker/scripts/model/notes.mjs';
 
-const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 test('tiers: CHECK between LOCK and LOVE, its own chip, unranked with the locks', () => {
   assert.deepEqual(desk.TIERS.map((t) => t.tier), ['lock', 'check', 'love', 'like', 'pass']);

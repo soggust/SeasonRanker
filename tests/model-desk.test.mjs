@@ -1,4 +1,4 @@
-// The Algorithm desk and the Bets page (libs/ranker/src/engine/bets), their pure parts under Node, and the
+// The Algorithm desk and the Book (libs/ranker/src/engine/book), their pure parts under Node, and the
 // bettor's own pieces they mirror (libs/ranker/scripts/model): a prop's count in play read off a box score
 // the same way the grader reads the final; a pick's colors never a result's green or red; a bet in play settled
 // by the score exactly as the run will grade it; the records, the curve and the sorting; the public picks'
@@ -16,7 +16,7 @@ import { BOOK, LEAGUES, PROP_CAPS } from '../libs/ranker/scripts/model/leagues.m
 import { LINE_BOOKS, SPORT_KEYS } from '../libs/ranker/scripts/model/oddsapi.mjs';
 import { ESPN_PROVIDER } from '../libs/ranker/scripts/model/espn.mjs';
 
-const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 // ---------------------------------------------------------------------------
 // Made-up box scores, ESPN's summary shape
@@ -557,7 +557,7 @@ test('bet-format: odds, percents, units', () => {
 });
 
 test("every hover the desk's template asks for is written (desk-help.ts)", () => {
-  const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/bets/model-desk.component.html'), 'utf8');
+  const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
   const asked = new Set([...html.matchAll(/help\['(\w+)'\]/g)].map((m) => m[1]));
   // (a header with no help of its own falls back to its column's)
   for (const m of html.matchAll(/key: '(\w+)', label: '[^']*'(?:, help: [^}]+)? \}/g)) if (!m[0].includes('help:')) asked.add(m[1]);
@@ -566,7 +566,7 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
 });
 
 test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confidence paired at the top, Open Bets under them, those three open to begin with, the rest folded, By Market gone", () => {
-  const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/bets/model-desk.component.html'), 'utf8');
+  const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
   const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
     label: m[1].match(/\blabel="([^"]+)"/)?.[1] ?? m[1].match(/\[label\]="([^"]+)"/)?.[1],
     open: /\[startOpen\]="true"/.test(m[1]),

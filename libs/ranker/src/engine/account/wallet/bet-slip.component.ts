@@ -4,9 +4,9 @@ import { WalletService } from './wallet.service';
 import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, payout, slipTotals, toWin } from './wallet-math';
 import { Tapped, tapMinimizes } from './slip-sheet';
 import { betPlayer } from '../../player-link';
-import { legWords } from '../../bets/bet-format';
+import { legWords } from '../../book/bet-format';
 
-// The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
+// The bet slip: the prices clicked on the Book, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
 // printed ticket (The Book), docked in the page's right column on a wide screen; on a phone a stub along the
 // bottom with the totals and Place while it's minimized, its Expand raising the ticket as a sheet (slipOpen);

@@ -1,6 +1,6 @@
 // The card's Analysis tab: an AI write-up of a player's season, the coming game and the rest of the season
 // (written by the sport's analysis script, from his numbers only: e.g. apps/nfl/scripts/analysis). No betting
-// angles in any sport: the Bets page has the bets, at live prices (an older NFL report's bets aren't shown).
+// angles in any sport: the Book has the bets, at live prices (an older NFL report's bets aren't shown).
 // The site reads the index of who has one, then a player's file when the tab opens. MLB, NBA and NHL teams
 // have weekly ones (libs/ranker/scripts/analysis): a preview while the season is on (the week ahead in place
 // of the next game), and once it's over a recap of the year, its one section. The NFL's teams and QBs get the
@@ -89,7 +89,7 @@ export async function loadAnalysis(file: string): Promise<PlayerAnalysis> {
 }
 
 // A text's paragraphs (split on blank lines)
-// A fade's line under what it fades (the Bets page's): "Bet TB +9.5 instead"; a bet that already says what to do as
+// A fade's line under what it fades (the Book's): "Bet TB +9.5 instead"; a bet that already says what to do as
 // written ("Fade the 2-per-game pace instead"); "against X" as "Bet against X instead"
 export function insteadText(bet: string): string {
   const text = bet.trim().replace(/\s+instead\.?$/i, '');

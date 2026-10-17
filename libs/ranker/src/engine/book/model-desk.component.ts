@@ -46,7 +46,7 @@ import { pickTeamColor, splitPick } from './pick-style';
 import { DATE_RANGES, DateRange, inRange } from './date-range';
 import type { PlayerRef } from '../player-link';
 
-// The algorithm's admin panel (the Bets page, dev only): the code-only desk's play-money betting
+// The algorithm's admin panel (the Book, dev only): the code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), read from each sport's
 // data/model/ledger.json and state.json. Its bankroll and record, broken down by sport, market and stake,
 // how well its chances match what happened, its bankroll over time, the bets still open, the latest graded,
@@ -164,7 +164,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   bySport: SportTally[] = [];
   byMarket: Tally[] = [];
   byStake: Tally[] = [];
-  // (the record by the Bets page's bands, LOCK to PASS, and all of them)
+  // (the record by the Book's bands, LOCK to PASS, and all of them)
   byConfidence: Tally[] = [];
   confidenceTotal: Tally | null = null;
   // (the bets it saw value in, apart from the ones placed for the data (till TRACKED_FROM): the real record is the edge's)
@@ -419,9 +419,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         return { label: s.label, on: g.on, text: g.on ? `${s.label} lines: bet · ${ev}${g.n < g.min ? ` (under ${g.min}: too few to gate)` : ''}` : `${s.label} lines: tracked only · ${ev}, negative: bet again once it's positive` };
       });
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
-    // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
+    // (by the Book's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
     const band = (b: ModelBet) => confidenceOf(kellyOf(b.p, b.odds) ?? 0, b.p, intentOf(b) === 'edge');
-    // (the Bets page's bands as the desk names them, best first: tiers.ts; CHECK the CHECKs' own, at a unit as if
+    // (the Book's bands as the desk names them, best first: tiers.ts; CHECK the CHECKs' own, at a unit as if
     // bet, under LOCK and out of the total: the gap's (an older one without a cause the gap's) and the role's apart)
     const isRole = (c: ModelBet) => (c as { cause?: string }).cause === 'role';
     this.byConfidence = TIERS.flatMap((t) =>
@@ -648,7 +648,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   // (what an in-play bet's meter counts, and a side's words and color at the score: desk-math.ts, shared with
-  // the Bets page's Open Bets)
+  // the Book's Open Bets)
   countNow(b: ModelBet): number | null {
     return countNowOf(b, this.boardOf(b), this.propNow.get(b.id));
   }

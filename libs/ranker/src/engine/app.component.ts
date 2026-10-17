@@ -12,12 +12,12 @@ import { forwardOldLink, goTo, pageHash, readPagePath, rememberSport } from '@ra
 import { BarCell, barCells, familyOf, familyOpensTo, litTab, selectGroups, subTabs } from '@ranker/engine/tab-families';
 
 // The page showing, by its hash (page-url.ts reads it off the page's own address, /wallet, /u/<username>):
-// the rankings (no hash), the Bets page (#bets), or an account page (#account, #lists, #community, #tracker,
+// the rankings (no hash), the Book (#book), or an account page (#account, #lists, #community, #tracker,
 // #wallet, #friends, #u/<username>: a public profile), or the site's Privacy Policy (#privacy) and Data
 // deletion (#data-deletion) pages, open to anyone
 export type View =
   | 'rankings'
-  | 'bets'
+  | 'book'
   | 'account'
   | 'lists'
   | 'community'
@@ -28,7 +28,7 @@ export type View =
   | 'privacy'
   | 'data-deletion';
 const HASH_VIEWS: Record<string, View> = {
-  bets: 'bets',
+  book: 'book',
   account: 'account',
   lists: 'lists',
   community: 'community',
@@ -64,7 +64,7 @@ function userOf(hash: string): string {
 
 // (each page's name, for the page heading and the tab)
 const VIEW_TITLES: Record<Exclude<View, 'rankings'>, string> = {
-  bets: 'Bets',
+  book: 'Book',
   account: 'Settings',
   lists: 'My Lists',
   community: 'Community',
@@ -98,12 +98,12 @@ export class AppComponent {
   // (the page's name, for its heading: "NFL")
   readonly sportName = SITE_SPORTS.find((s) => s.id === SPORT.id)?.label ?? SPORT.id.toUpperCase();
 
-  // The page in place of the rankings: the Bets page (/bets, from the sport bar's Bets link) or an account
+  // The page in place of the rankings: the Book (/book, from the sport bar's Book link) or an account
   // page (the account menu's). (An old link, /nfl/#wallet, gets the page's own address, /wallet, first.)
   view: View = viewOf((forwardOldLink(), pageHash()));
   readonly canUse = canUse;
 
-  // A link to one of the pages this app shows (href="/lists", "/bets", "/u/name", or an old "#lists"): the
+  // A link to one of the pages this app shows (href="/lists", "/book", "/u/name", or an old "#lists"): the
   // address changes with no reload, which would lose the grid's tab and season and the app's state. A page of
   // another sport's (/community/mlb) loads that sport's app. (Listened for in the constructor: quietListener)
   onPageLink(event: MouseEvent): void {
@@ -142,28 +142,28 @@ export class AppComponent {
     const before = this.view + this.viewUser;
     this.view = viewOf(pageHash());
     this.viewUser = userOf(pageHash());
-    this.markBetsView();
+    this.markBookView();
     // (another page on the sheet: its top, not the last page's scroll)
     if (this.view + this.viewUser !== before && this.sheetBody) this.sheetBody.nativeElement.scrollTop = 0;
   }
 
-  // (the Bets page's gold light over the whole app, the sport bar and the menus too: _base.scss's bets-view; the
+  // (the Book's gold light over the whole app, the sport bar and the menus too: _base.scss's book-view; the
   // account menu in the app's sand only over the sheet's pages: sheet-view)
-  private markBetsView(): void {
-    document.documentElement.classList.toggle('bets-view', this.view === 'bets');
+  private markBookView(): void {
+    document.documentElement.classList.toggle('book-view', this.view === 'book');
     document.documentElement.classList.toggle('sheet-view', this.onSheet);
     // (the browser tab: the sport's own on its rankings (index.html's, "Season Ranker | NFL"), "Season Ranker |
-    // Bets" on the Bets page, and plain "Season Ranker" on the pages every sport shares)
-    document.title = this.view === 'rankings' ? this.sportTitle : this.view === 'bets' ? 'Season Ranker | Bets' : 'Season Ranker';
+    // Book" on the Book, and plain "Season Ranker" on the pages every sport shares)
+    document.title = this.view === 'rankings' ? this.sportTitle : this.view === 'book' ? 'Season Ranker | Book' : 'Season Ranker';
     // (the rankings open: the sport a page's way back returns to)
     if (this.view === 'rankings') rememberSport();
   }
   // (the sport's tab title, as index.html set it before any page changed it)
   private readonly sportTitle = document.title;
 
-  // Every page but the rankings and the Bets page sits on the app's sheet (its scroll container)
+  // Every page but the rankings and the Book sits on the app's sheet (its scroll container)
   get onSheet(): boolean {
-    return this.view !== 'rankings' && this.view !== 'bets';
+    return this.view !== 'rankings' && this.view !== 'book';
   }
   // (the pages with tables and boards get the grid's width; the rest a reading width, the backdrop around it)
   get wideSheet(): boolean {
@@ -253,7 +253,7 @@ export class AppComponent {
     const destroyRef = inject(DestroyRef);
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.pageLinkHash(event) !== null, (event) => this.onPageLink(event));
     quietListener<PointerEvent>(zone, destroyRef, document, 'pointerdown', (event) => this.outsideFilters(event), () => this.closeFilters());
-    this.markBetsView();
+    this.markBookView();
     // A setting that shows new tabs (MMA's women's divisions) opens the first of them; one that
     // hides the open tab goes back to the first tab
     let shown = this.positions;

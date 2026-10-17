@@ -1,4 +1,4 @@
-// The public picks: the algorithm's best bets on the games not started yet, for the site's Bets page
+// The public picks: the algorithm's best bets on the games not started yet, for the site's Book
 // (apps/<sport>/src/StaticData/model/picks.json, written by every run when they change).
 //
 //   which    every bet it's placed on a game not started, a game market's or a prop's (not a guarded one): the
@@ -19,13 +19,13 @@
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 55%
 //            chance), high (2%: LOVE), medium (any edge under that: LIKE), low (PASS: no edge, never a bet)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
-//            and learn from), in their own list (checks, never picks: the Bets page reads every pick as a bet
+//            and learn from), in their own list (checks, never picks: the Book reads every pick as a bet
 //            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
 //            never shown or published, never in the record: the open ones on games not started whose market
 //            wasn't bet after all and whose gap hasn't closed since (closedAt), the shown ones alone (checks.mjs
 //            listedCheck: a shadow never, a passed one for PASSED_SHOWN in its passed state), the biggest model
 //            Kelly first, CHECK_TOP at most; the rule (checkRule: { kelly }, checks.mjs CHECK_RULE) beside them,
-//            the page's words read from it; the Bets page shows them between LOCK and LOVE in their own band (the
+//            the page's words read from it; the Book shows them between LOCK and LOVE in their own band (the
 //            admins' alone, with a note to the bot: tiers.ts, desk-note.component.ts). Each with its gap and why it wasn't bet (checkReason, and said in its reason), its
 //            chance the model's (past the gap the trusted chance is about the book's, the one it disagrees with),
 //            its cause (checkCause: gap, role or news), its model Kelly (modelKelly: the model's chance at its

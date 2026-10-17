@@ -1,4 +1,4 @@
-// The Bets page's game dropdown laid out (game-menu.ts gameMenu): a day each, in it a sport each (its icon once) by
+// The Book's game dropdown laid out (game-menu.ts gameMenu): a day each, in it a sport each (its icon once) by
 // its first game that day, the site's order on a tie, and under each sport its games early to late, ties by
 // matchup; the bot's picked games and the ones with lines alone in the same lists, a game both keeping its count.
 // Times in Chicago's zone, so a late game lands on its own evening, not the next UTC day. Made-up games, no network.
@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
-const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const SPORTS = [
   { id: 'nfl', label: 'NFL' },
@@ -93,11 +93,12 @@ test("gameMenu: a series' games on consecutive days each their own (lines-only k
   assert.deepEqual(shape(bets.gameMenu([game('mlb', 'CLE @ TB', tue), game('mlb', 'CLE @ TB', wed, 2)], SPORTS, TZ)), ['Wednesday, Oct 14: MLB[CLE @ TB · 6:08 PM (2)]']);
 });
 
-// The ticker's sides (bet-format.ts tickerSide; the owner's note, 2026-10-17): a team's logo with its abbreviation
-// as the words for when the logo fails; a fighter's board headshot, round, his last name the words
+// The ticker's sides (bet-format.ts tickerSide; the owner's notes, 2026-10-17): a team's logo and its short name
+// beside it (its abbreviation when the board has no short name); a fighter's board headshot, round, his last name
 test('the ticker shows a team logo or a fighter\'s face, the words behind it', () => {
-  const det = bets.tickerSide('nfl', { abbr: 'DET', name: 'Lions', logo: null });
-  assert.equal(det.label, 'DET');
+  const det = bets.tickerSide('nfl', { abbr: 'DET', name: 'Detroit Lions', short: 'Lions', logo: null });
+  assert.equal(det.label, 'Lions');
+  assert.equal(bets.tickerSide('nhl', { abbr: 'WPG', name: 'Winnipeg Jets', logo: null }).label, 'WPG');
   assert.equal(det.face, false);
   assert.match(det.pic, /teamlogos\/nfl\/500-dark\/det\.png/);
   const shot = 'https://a.espncdn.com/i/headshots/mma/players/full/1.png';
@@ -105,15 +106,15 @@ test('the ticker shows a team logo or a fighter\'s face, the words behind it', (
   assert.deepEqual(bets.tickerSide('mma', { abbr: 'Malott', name: '', logo: null }), { label: 'Malott', pic: null, face: true });
 });
 
-// A game view's columns (bet-format.ts boardColumns) and a fight's round totals in full (totalTop, legWords): the
+// A game view's columns (bet-format.ts boardColumns) and a fight's round totals (totalTop on the tile, legWords on the ticket): the
 // owner's notes, 2026-10-17
-test('a game shows only its priced markets, and a fight\'s total says rounds', () => {
+test("a game shows only its priced markets, and a fight's total reads Over 2.5 on its tile, its rounds on the ticket", () => {
   const p = (odds) => ({ odds });
   assert.deepEqual(bets.boardColumns({ spread: null, total: { over: p(-120), under: p(100) }, ml: { away: p(150), home: p(-170) } }), ['total', 'ml']);
   assert.deepEqual(bets.boardColumns({ spread: { away: p(null), home: p(null) }, total: null, ml: { away: p(150), home: p(-170) } }), ['ml']);
   assert.deepEqual(bets.boardColumns({ spread: { away: p(-110), home: p(-110) }, total: { over: p(-110), under: p(-110) }, ml: { away: p(150), home: p(-170) } }), ['spread', 'total', 'ml']);
-  assert.equal(bets.totalTop('mma', 'over', 2.5), 'Over 2.5 rounds');
-  assert.equal(bets.totalTop('mma', 'under', 1.5), 'Under 1.5 rounds');
+  assert.equal(bets.totalTop('mma', 'over', 2.5), 'Over 2.5');
+  assert.equal(bets.totalTop('mma', 'under', 1.5), 'Under 1.5');
   assert.equal(bets.totalTop('nfl', 'over', 47.5), 'O 47.5');
   assert.equal(bets.legWords({ sport: 'mma', market: 'total', pick: 'Over 2.5' }), 'Over 2.5 rounds');
   assert.equal(bets.legWords({ sport: 'mma', market: 'total', pick: 'Under 2.5 rounds' }), 'Under 2.5 rounds');

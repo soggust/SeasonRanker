@@ -1,9 +1,9 @@
-// The Bets page's game dropdown, laid out: a header for each day (in the viewer's time zone), under it a group
+// The Book's game dropdown, laid out: a header for each day (in the viewer's time zone), under it a group
 // for each sport with a game that day (its icon once, then its name), and under that its every game, the
 // earliest first. The games the bot picked (with how many of its bets each shows) and the ones it has only lines
 // for, together: a game is where it plays, picked or not. The sports in a day by their first game (the day reads
 // early to late), the site's order on a tie; games at the same time by matchup. No Angular here (tested under
-// Node: tests/bets-game-menu.test.mjs).
+// Node: tests/book-game-menu.test.mjs).
 
 // (each sport's icon in the dropdown: Material Icons' own ball, puck or glove)
 export const SPORT_ICONS: Record<string, string> = {
@@ -220,7 +220,7 @@ export function menuKey(key: string, values: string[], active: string): MenuKeyA
 
 // (an option's element id, for aria-activedescendant: the value's letters and digits alone; Best bets' "all")
 export function menuOptionId(value: string): string {
-  return `bets-game-opt-${value.replace(/[^A-Za-z0-9]+/g, '-') || 'all'}`;
+  return `book-game-opt-${value.replace(/[^A-Za-z0-9]+/g, '-') || 'all'}`;
 }
 
 // The dropdown's first row and its pill's words with nothing chosen: "Best Bets", capital B, nothing after it

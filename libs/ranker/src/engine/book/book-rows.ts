@@ -1,8 +1,8 @@
-// The Bets page's rows (bets-page.component.ts): the algorithm's picks file as the page shows it, and one
+// The Book's rows (book-page.component.ts): the algorithm's picks file as the page shows it, and one
 // sport's rows joined to the rows the page already has. The page reads a sport's file when it opens, and again
 // for a sport that comes into its list late: the admin flag (features.ts ADMIN) lands after the picks, and MMA
 // is an admin's alone, so the owner's page learns it should show the UFC picks after it has drawn the rest. No
-// Angular here (tested under Node: tests/bets-sports.test.mjs)
+// Angular here (tested under Node: tests/book-sports.test.mjs)
 import { byBand, CheckResolved } from './desk-notes';
 import { Confidence, PickWhy, confidenceOf, kellyOf } from './bet-why';
 import { americanOdds } from './bet-format';

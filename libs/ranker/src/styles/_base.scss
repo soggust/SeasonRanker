@@ -19,9 +19,9 @@
   src: url("https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2") format("woff2");
 }
 
-// (on the Bets page (app.component's bets-view, on <html> so the menus' overlays have it too): the card
+// (on the Book (app.component's book-view, on <html> so the menus' overlays have it too): the card
 // tables' gold for every sport's light, the sport bar, the menus and the page alike)
-html.bets-view {
+html.book-view {
   --scoreboard-led: #{chip.$gold-led};
   --scoreboard-glow: 0 0 6px #{rgba(chip.$gold-led, 0.55)};
 }
@@ -48,7 +48,7 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   --scoreboard-dots: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.3px) 0 0 / 4px 4px;
 
   // (the page's own light, kept: the account menu takes the app's sand only over the sheet's pages (sheet-view,
-  // app.component), the page's light everywhere else, a sport's or the Bets page's gold)
+  // app.component), the page's light everywhere else, a sport's or the Book's gold)
   --page-led: var(--scoreboard-led);
   --page-glow: var(--scoreboard-glow);
 
@@ -73,7 +73,7 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
   --tex-chalk-noise: url("../assets/textures/chalk-noise.svg");
   // (the Book's chalked betting art: dice, cards, chips, a ticket, the edge; the Live tab's board)
   --tex-chalk-bets: url("../assets/textures/chalk-bets.svg");
-  // (the Bets page's felt: a blackjack table's printing, zoomed in so only its gold lines and betting circles show)
+  // (the Book's felt: a blackjack table's printing, zoomed in so only its gold lines and betting circles show)
   --tex-felt-print: url("../assets/textures/felt-table-print.svg");
 }
 
@@ -182,22 +182,22 @@ about-panel ::-webkit-scrollbar-track {
   background-color: v.$menu-track !important;
 }
 
-// The Bets page's list scrolls in its panel on a felt-blue thumb; the Algorithm desk and Open/Closed Bets (and
+// The Book's list scrolls in its panel on a felt-blue thumb; the Algorithm desk and Open/Closed Bets (and
 // their wide tables, sideways, on a phone) on the page's own: the primary's thumb on the scoreboard track, 10px
-bets-page .bets-list::-webkit-scrollbar,
-bets-page model-desk::-webkit-scrollbar,
-bets-page model-desk ::-webkit-scrollbar,
-bets-page wallet-page::-webkit-scrollbar,
-bets-page wallet-page ::-webkit-scrollbar {
+book-page .book-list::-webkit-scrollbar,
+book-page model-desk::-webkit-scrollbar,
+book-page model-desk ::-webkit-scrollbar,
+book-page wallet-page::-webkit-scrollbar,
+book-page wallet-page ::-webkit-scrollbar {
   height: v.$scrollbar-size;
   width: v.$scrollbar-size;
 }
 
-bets-page .bets-list::-webkit-scrollbar-track {
+book-page .book-list::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.35) !important;
 }
 
-bets-page .bets-list::-webkit-scrollbar-thumb {
+book-page .book-list::-webkit-scrollbar-thumb {
   background: chip.$felt-blue !important;
   background-clip: padding-box !important;
 

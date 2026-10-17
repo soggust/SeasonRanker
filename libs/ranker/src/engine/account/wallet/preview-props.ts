@@ -1,6 +1,6 @@
 // Preview props: the book's player prop LINES for a game the bot hasn't priced yet, from ESPN's free core API
 // (sports.core.api.espn.com .../events/{id}/competitions/{id}/odds/100/propBets: each item a player's stat,
-// its line now (current.target.value) and its opening one (open.target.value), no prices). The Bets page shows
+// its line now (current.target.value) and its opening one (open.target.value), no prices). The Book shows
 // them on a game's board until the bot's own board has the game's props (the bettor prices props only inside its
 // window: PROPS_WINDOW_HOURS), and a user may bet either side at an assumed -110 (PREVIEW_ODDS): the bet carries
 // preview: true, its line locked as the user saw it; the settler (settle-lib.mjs previewProblem, previewLineCheck)

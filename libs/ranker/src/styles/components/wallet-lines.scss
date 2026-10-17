@@ -1,7 +1,7 @@
 @use "../variables" as v;
 @use "../casino-chip" as chip;
 
-// A game's full menu on The Book (the Bets page's game view, and the open row's compact board): a sticky header
+// A game's full menu on The Book (the Book's game view, and the open row's compact board): a sticky header
 // (the way back, the matchup, its start and venue, a key), then collapsible sections, GAME LINES (a row a team,
 // the spread, the total and the moneyline across), PLAYER PROPS and PREVIEW PROPS (a row a player's stat, over and
 // under), every price a tile: its line over its odds on felt, under it a strip with the bot's band tag and its

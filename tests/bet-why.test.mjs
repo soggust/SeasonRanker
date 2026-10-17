@@ -1,4 +1,4 @@
-// The Bets page's order and its rank tile breakdown (bet-why.ts), and the parts picks.mjs writes for it
+// The Book's order and its rank tile breakdown (bet-why.ts), and the parts picks.mjs writes for it
 // (scoreParts): the Kelly score, (b·p − (1 − p)) / b, split into the price (the book's fair chance against the
 // price's break-even) and the model's lean, adding up to it; a heavy favorite with no edge on its price scores 0
 // or under and sorts below a longer price with a real edge; a picks
@@ -11,7 +11,7 @@ import { loadEngine } from './support/engine.mjs';
 import { buildPicks, scoreParts } from '../libs/ranker/scripts/model/picks.mjs';
 import { decimal } from '../libs/ranker/scripts/model/desk.mjs';
 
-const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const close = (a, b, what, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${what}: ${a} vs ${b}`);
 const bet = (over = {}) => ({ id: 'x', sport: 'nfl', start: '2026-10-10T17:00:00Z', matchup: 'TB @ DAL', market: 'spread', side: 'home', line: -3, pick: 'DAL -3', odds: -110, model: 0.6, fair: 0.5, p: 0.535, ev: 0.0214, units: 1, status: 'open', profit: 0, ...over });

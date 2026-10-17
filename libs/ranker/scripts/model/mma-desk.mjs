@@ -2,7 +2,7 @@
 // games, so the team machinery (ratings, context, margins, props) is left aside and the desk's shared parts are
 // reused as they are: the trust path (desk.mjs fitTrust, chanceAt), the staking (stakeFor, placement), the
 // timing (timing.mjs phaseOf, lastChanceOf), The Odds API (oddsapi.mjs, its credits and budget), CLV (clv.mjs),
-// the picks' bands (picks.mjs) and the files the desk component and the Bets page read (ledger.json,
+// the picks' bands (picks.mjs) and the files the desk component and the Book read (ledger.json,
 // state.json, picks.json under apps/mma/src/StaticData/model).
 //
 // Every run:
@@ -40,7 +40,7 @@
 //   7. the betting board (the owner, 2026-10-17: "I should still be able to place bets on all the fights"): every
 //      bout on a card not started, each side's moneyline with the book's price, the model's chance, Kelly score and
 //      band, in board.mjs's shape (buildMmaBoard, the team sports' run.mjs writeBoard), written when it changes
-//      to apps/mma/src/StaticData/model/board.json (the Bets page's game view, lines.service.ts) with the prices
+//      to apps/mma/src/StaticData/model/board.json (the Book's game view, lines.service.ts) with the prices
 //      seen (board-seen.json: the play-money settler's). The prices are what the run already asked (the credit
 //      rule: no ask for the board's sake): this run's Odds API lines where a bout was due, else the last board's
 //      DraftKings price, else ESPN BET's line (free, marked src 'espn bet'). A bout gone from it once it starts,
@@ -334,7 +334,7 @@ export function reasonOf(bet) {
 }
 
 // ---------------------------------------------------------------------------------------------------------
-// The betting board (board.mjs's shape: the Bets page's game view lists every priced bout, the picks only the
+// The betting board (board.mjs's shape: the Book's game view lists every priced bout, the picks only the
 // bot's suggestions). A bout's moneyline as the board's two sides [home, away]: each at the book's price (o), the
 // bot's trusted chance (c: desk.mjs chanceAt, as pickFor prices it), its Kelly score (ks) and band (b: the picks'
 // bands, LIKE at the least with an edge, PASS (low) without one or past the gap guard, as boardMarkets'); src
@@ -443,7 +443,7 @@ function writeIfChanged(file, data, dry) {
 
 // The picks file: the open edge bets on bouts not started, by their Kelly score, TOP at most; each published
 // once locked (REPRICE_BY before the start), its chance, score and band fixed when first shown; the published
-// record by band. The rows as picks.mjs buildPicks makes them, for the Bets page
+// record by band. The rows as picks.mjs buildPicks makes them, for the Book
 export function buildFightPicks(ledger, trust, bouts, now) {
   const locked = (b) => Date.parse(b.start) - now.getTime() <= REPRICE_BY;
   for (const b of ledger.bets) {

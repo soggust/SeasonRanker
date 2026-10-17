@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
-const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 // (Saturday Oct 17, 2026, 3pm Eastern)
 const NOW = Date.parse('2026-10-17T19:00:00Z');

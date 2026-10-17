@@ -391,7 +391,7 @@ test("a research finding goes into the injury report as an owner's note does, fl
 });
 
 test("the Algorithm tab's CHECKs panel: a cause a row (a role's sub-reasons their own), the open ones counted, the advice blind spots first", async () => {
-  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
   const vac = prop({ line: 52 }, { vacF: 1.15 });
   const learning = checkLearning([...Array.from({ length: 12 }, (_, i) => graded({ ...vac, id: `v${i}` }, i < 2 ? 'won' : 'lost')), prop({ cause: 'role', roleReason: 'line', id: 'open' })]);
   const { rows, advice } = desk.checkPanelOf([{ sport: 'nfl', label: 'NFL', checks: { learning } }, { sport: 'nba', label: 'NBA', checks: null }]);

@@ -14,7 +14,7 @@ test('canUse: development alone is not admin; the open features stay open; the c
   f.ADMIN.set(false);
   assert.equal(f.canUse('experimental'), false);
   assert.equal(f.canUse('mma'), true);
-  assert.equal(f.canUse('bets'), true);
+  assert.equal(f.canUse('book'), true);
   f.ADMIN.set(true);
   assert.equal(f.canUse('experimental'), true);
   f.ADMIN.set(false);

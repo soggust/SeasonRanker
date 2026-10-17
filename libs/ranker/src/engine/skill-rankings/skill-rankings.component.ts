@@ -805,7 +805,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   }
 
   // ---------------------------------------------------------------------------
-  // The breakdowns (core/breakdown.ts, one look with the Bets page's): why a row ranks where it does (its
+  // The breakdowns (core/breakdown.ts, one look with the Book's): why a row ranks where it does (its
   // rank tile clicked, or Enter / Space on it), and what makes a support grade (its cell). One open at a time.
   // ---------------------------------------------------------------------------
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;

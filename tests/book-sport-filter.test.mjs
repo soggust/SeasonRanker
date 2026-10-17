@@ -1,4 +1,4 @@
-// The Bets page's sport filter (a sport's heading chosen in the game dropdown: game-menu.ts sportChoice, bets-rows.ts
+// The Book's sport filter (a sport's heading chosen in the game dropdown: game-menu.ts sportChoice, book-rows.ts
 // sportRows and sumRecords) and the closed row's line under its pick (game-menu.ts gameLine): the rows the board
 // keeps, the bands' counts and seasons recomputed from them, the pill's words, and clearing it. Made-up rows, no
 // network; times in Chicago's zone.
@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
-const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const bets = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const SPORTS = [
   { id: 'nfl', label: 'NFL' },
@@ -160,9 +160,9 @@ test('menuKey: the arrows walk the list and hold at its ends, Home/End and PageU
 test("dayBand and menuOptionId: a day's caption on its band; an option's id from its value, letters and digits alone", () => {
   assert.equal(bets.dayBand('Saturday, Oct 17'), 'SATURDAY · OCT 17');
   assert.equal(bets.dayBand(MENU[0].day), 'SATURDAY · OCT 17');
-  assert.equal(bets.menuOptionId(''), 'bets-game-opt-all');
-  assert.equal(bets.menuOptionId('sport:nhl'), 'bets-game-opt-sport-nhl');
-  assert.equal(bets.menuOptionId('mlb|CLE @ TB|401700123'), 'bets-game-opt-mlb-CLE-TB-401700123');
+  assert.equal(bets.menuOptionId(''), 'book-game-opt-all');
+  assert.equal(bets.menuOptionId('sport:nhl'), 'book-game-opt-sport-nhl');
+  assert.equal(bets.menuOptionId('mlb|CLE @ TB|401700123'), 'book-game-opt-mlb-CLE-TB-401700123');
   assert.notEqual(bets.menuOptionId('nhl|CAR @ WPG'), bets.menuOptionId('nhl|CAR @ WPG|401'));
 });
 

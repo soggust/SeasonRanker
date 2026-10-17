@@ -27,7 +27,7 @@
 //      starters, the goalies, the lineups, as the bet saw them against what the run sees now) on games more than
 //      REPRICE_BY from the start: taken back and placed again below with what the model knows now, logged in
 //      the changelog (at most MAX_REPRICES a bet, counted across runs; a part unread this run, its source
-//      failed, isn't a change). A pick the Bets page shows is priced again like any other: it's published only
+//      failed, isn't a change). A pick the Book shows is priced again like any other: it's published only
 //      once it's locked, REPRICE_BY before the start (picks.mjs), so the published record is of the bets as
 //      they stood at the start. (The counts toward MAX_REPRICES of bets taken back and not yet placed again,
 //      the props' asks of The Odds API and the rests live in .cache/model, which the workflow restores only
@@ -62,7 +62,7 @@
 //      file (model/checks.json, read in as ledger.checks: no units, never in the record, the trust fit, the
 //      caps or the CLV) on the model's side, written again while it isn't locked and something material
 //      changed, closed once a run prices its market and the gap guard doesn't skip it, listed in picks.json
-//      apart from the picks (checks: the Bets page shows only the picks), and graded as a bet would be once
+//      apart from the picks (checks: the Book shows only the picks), and graded as a bet would be once
 //      final (4c: checkResult). Only the ones worth a person's look are shown (checks.mjs shadowOf: a role's at
 //      a model Kelly of CHECK_KELLY or more, the news's); the gap's and a small role's a PASS kept as a shadow
 //      (hidden, passAs), graded the same but out of the page, the board's marks, the research, the notes, the
@@ -110,7 +110,7 @@
 // changelog, the teams' ratings, the context's sizes) and ledger.json (every bet, open or graded), each only
 // when something in it changed (a run that learned nothing new commits nothing); and the facts the context is
 // built from, in .cache/model/context-<sport>.json (gitignored: a cache, rebuilt from the sources when lost).
-// The Bets page's admin panel (dev only) reads state and ledger.
+// The Book's admin panel (dev only) reads state and ledger.
 //
 //   node libs/ranker/scripts/model/run.mjs [nfl nba nhl mlb] [--dry [--paid]] [--replace] [--all-sources] [--refit] [--fit-check]
 //   (--dry: no bets placed, nothing committed touched (state, ledger, history, picks), a snapshot of what the model made of the coming games
@@ -334,7 +334,7 @@ async function writeTeams(r) {
   }
 }
 
-// 7. the public picks (picks.mjs): the best bets on games not started, written for the site's Bets page when
+// 7. the public picks (picks.mjs): the best bets on games not started, written for the site's Book when
 // they change; the ones shown marked shown on the ledger, and published once locked (REPRICE_BY before the
 // start), so their record is theirs alone and of the bets as they stood at the start. Each with its write-up
 // (writeup.mjs), kept per bet in writeups.json till its facts change, written from the state as it stands
@@ -1257,7 +1257,7 @@ async function gradeChecks(r) {
 // (--replace: the open bets on games not started yet (more than REPRICE_BY off: one taken back closer might
 // not be placed again in time) taken back, to be priced again with what the model knows now; logged once the
 // new ones are placed. A game not yet in its window (leagues.mjs TIMING) is bet again once it is. A pick the
-// Bets page shows is taken back too: it's published only once locked (picks.mjs), and the ones published
+// Book shows is taken back too: it's published only once locked (picks.mjs), and the ones published
 // before were made shown again (unlock). The games whose props it took back are owed an ask of The Odds API
 // (betProps: the NFL's board has no prices of its own, so without one they'd never be bet again); an NFL
 // game's props are left as they are when today's props allowance can't pay for its ask (propsAffordable)
@@ -1307,7 +1307,7 @@ function propsAffordable(r, bets) {
 // and why (repriced), the changelog the count (saveState). A bet from before the inputs were kept (none on
 // it) stays as it is (--replace prices those again); one priced again MAX_REPRICES times already stays too, and
 // so does an NFL game's props whose ask of The Odds API today's allowance can't pay for (propsAffordable:
-// without it they'd never be bet again). A pick the Bets page shows is priced again like any other (it's
+// without it they'd never be bet again). A pick the Book shows is priced again like any other (it's
 // published only once locked, past REPRICE_BY: picks.mjs). One taken back but not placed again this run is
 // kept across runs (TAKEN_BACK), so its count and what it was reach the bet placed later. --dry: the ones it
 // would price again, logged (a dry run prices every open bet again anyway)

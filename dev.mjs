@@ -28,7 +28,7 @@ const TYPES = {
   '.map': 'application/json',
 };
 
-const SHARED_PAGES = ['bets', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u'];
+const SHARED_PAGES = ['book', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u'];
 
 // Live reload: each page listens on /__reload and reloads when its own app rebuilds (its base href's, so a
 // shared page's address, /wallet, too)

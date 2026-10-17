@@ -3,7 +3,7 @@ import { quietListener } from '@ranker/core/quiet-listener';
 import { tierLabel, tierOf, unranked } from './tiers';
 import { NotePlayer, notePlayers } from './desk-notes';
 import { CheckResearchView, researchView } from './check-research';
-import { BetsView, betsView, chooseBetsView } from './bets-view';
+import { BetsView, betsView, chooseBetsView } from './book-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { Selection, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
@@ -16,16 +16,16 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, americanOdds, headshot, leagueLogo, tickerSide } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './bets-rows';
-// (the rows' types, for the page's other parts: bets-rows.ts)
-export { BET_KINDS, BetKind, BetRow, CheckResearch } from './bets-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
+// (the rows' types, for the page's other parts: book-rows.ts)
+export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace, viewsShown } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
 
-// The Bets page (the sport bar's Bets link, #bets): the algorithm's top picks for every sport (each one's
+// The Book (the sport bar's Book link, /book): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
 // together by their Kelly score (value and likelihood: the edge on the price, scaled by what it pays; a bet
 // without an edge on its price scores 0 or under, sorts last and reads "Pass", its band low). A row opens to
@@ -113,14 +113,14 @@ function storeSport(sport: string): void {
 }
 
 @Component({
-  selector: 'bets-page',
-  // (the page's main content: the Bets page has no <main> of its own around it)
+  selector: 'book-page',
+  // (the page's main content: the Book has no <main> of its own around it)
   host: { role: 'main' },
-  templateUrl: './bets-page.component.html',
-  styleUrls: ['../../styles/components/bets-page.scss'],
+  templateUrl: './book-page.component.html',
+  styleUrls: ['../../styles/components/book-page.scss'],
   standalone: false,
 })
-export class BetsPageComponent implements OnInit, OnDestroy {
+export class BookPageComponent implements OnInit, OnDestroy {
   // (a pick's own color, pick-style.ts: a prop its player's team's, a side the team it took's; a total, none:
   // the board's)
   pickColor(r: BetRow): string | null {
@@ -147,7 +147,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return headshot(r.sport, r.athleteId);
   }
 
-  // (a prop's player's card, his sport's app by his name: bets-rows.ts playerCardHref; the face and the name link it)
+  // (a prop's player's card, his sport's app by his name: book-rows.ts playerCardHref; the face and the name link it)
   readonly cardHref = playerCardHref;
   readonly playerRef = playerRefOf;
 
@@ -173,10 +173,10 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k'), (event) => this.clickOff(event));
     quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
     // (the game list open: a click anywhere off it and its pill shuts it, the same quiet way)
-    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.menuOpen && !(event.target as Element | null)?.closest('.bets-game-wrap'), () => this.closeMenu(false));
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.menuOpen && !(event.target as Element | null)?.closest('.book-game-wrap'), () => this.closeMenu(false));
   }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
-  readonly hasOpen = (): boolean => canUse('bets') && this.wallet.openBets().length > 0;
+  readonly hasOpen = (): boolean => canUse('book') && this.wallet.openBets().length > 0;
   // (Closed Bets: only with bets of the user's settled)
   // (already bet and still open: the stake, so the same bet isn't placed twice by mistake)
   // (by the pick's id and its side: the wallet's openOnPick)
@@ -185,7 +185,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // (the settler's tally, as the wallet's tiles read it: wallet-math recordOf), none before a bet's settled; none
   // at all signed out or before the wallet loads)
   readonly bankroll = (): { balance: number; atRisk: number; open: number; record: string | null; roi: number | null } | null => {
-    if (!canUse('bets') || !this.wallet.loaded() || !this.wallet.wallet()) return null;
+    if (!canUse('book') || !this.wallet.loaded() || !this.wallet.wallet()) return null;
     const open = this.wallet.openBets();
     const t = recordOf(this.wallet.tally(), this.wallet.bets());
     const settled = t.won + t.lost + t.push > 0;
@@ -193,7 +193,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   };
   // (the Open tab's count: the user's bets not yet settled)
   readonly openCount = (): number => this.wallet.openBets().length;
-  readonly hasClosed = (): boolean => canUse('bets') && this.wallet.hasSettled();
+  readonly hasClosed = (): boolean => canUse('book') && this.wallet.hasSettled();
   // (Live: the day's games as they're played (live-tab.component.ts, live.service.ts), the tab there whenever the
   // day has games on or still to come; and while it's the view showing with games on the card at all, so it
   // doesn't vanish under the viewer as the last game ends (ALL DONE TONIGHT). Its count: the games on now)
@@ -201,7 +201,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   readonly hasLive = (): boolean => this.liveTab.hasGames() || (betsView() === 'live' && this.liveTab.games().length > 0);
   readonly liveCount = (): number => this.liveTab.liveCount();
   // (Place Bets first; Open Bets (with the wallet) or the Algorithm (development only) once chosen in this
-  // visit: bets-view.ts)
+  // visit: book-view.ts)
   get view(): BetsView {
     const view = betsView();
     if (view === 'live') return this.hasLive() ? view : 'bets';
@@ -266,7 +266,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // The sports on the page, kept to the list the viewer may see: the admin flag (features.ts ADMIN) lands when
   // Firebase's auth resolves, after the picks have loaded, and MMA is an admin's alone, so the owner's page learns
   // it should show the UFC picks after it has drawn the rest. The flag flipped on: the sports it hasn't read, read
-  // and joined to the rows (bets-rows.ts mergeSportRows: the others' rows kept as they are); off: that sport's
+  // and joined to the rows (book-rows.ts mergeSportRows: the others' rows kept as they are); off: that sport's
   // rows dropped. Each file read once, however many times the flag and the page's own start ask
   private readonly adminWatch = effect(() => {
     ADMIN();
@@ -482,7 +482,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return rows.filter((r) => (r.check ? checks++ < checkLimit : bets++ < limit));
   }
 
-  // The bets in the chosen game; none chosen, the chosen sport's (bets-rows.ts sportRows); neither, all of them.
+  // The bets in the chosen game; none chosen, the chosen sport's (book-rows.ts sportRows); neither, all of them.
   // The chips, the bands, their counts and the off-the-board line all run from these
   get inGame(): BetRow[] {
     const rows = this.listed;
@@ -742,7 +742,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
     return rows.filter((r) => unranked(r.confidence)).length;
   }
 
-  // (a click on the row itself, not one of its controls nor its open content: the chevron's toggle; bets-rows.ts
+  // (a click on the row itself, not one of its controls nor its open content: the chevron's toggle; book-rows.ts
   // rowClickToggles)
   rowClick(id: number, event: MouseEvent): void {
     if (rowClickToggles(event.target as Element | null)) this.toggle(id);
@@ -963,7 +963,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
   // The bands' seasons (each sport's picks.json record.byLevel, the same read as the picks; readFiles), for the
   // band headers: wins, losses, pushes and units, summed over the sports on the board (a sport chosen, its file
-  // alone: bets-rows.ts sumRecords; summed again only when the files or the sport change). A band no file has
+  // alone: book-rows.ts sumRecords; summed again only when the files or the sport change). A band no file has
   // graded has none
   private records = new Map<string, ByLevel | undefined>();
   private sumsFor: { records: unknown; sport: string; sums: Map<string, BandTally> } | null = null;
@@ -1070,7 +1070,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   // their streak and their last five settled bets where the history's on hand; none signed out, or with nothing
   // settled. The bot's recent form isn't on the page: no switch, the card the user's
   get form(): RecentForm | null {
-    if (!canUse('bets') || !this.wallet.loaded()) return null;
+    if (!canUse('book') || !this.wallet.loaded()) return null;
     return recentForm(this.wallet.tally(), this.wallet.settledBets());
   }
 

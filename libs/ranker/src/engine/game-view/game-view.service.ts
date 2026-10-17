@@ -72,13 +72,13 @@ export class GameViewService {
     return this.game && this.game !== 'loading' && this.game !== 'error' && this.current && 'event' in this.current ? this.current.event : null;
   }
 
-  // (whether the game open is this sport's own: another sport's game (the Bets page's Live tab opens any sport's)
+  // (whether the game open is this sport's own: another sport's game (the Book's Live tab opens any sport's)
   // has no team or player cards here to link to)
   private own = true;
   readonly ownGame = (): boolean => this.own;
 
   // tab: the one to open on (a shared link's), when the game has it; else the Summary, or a game to come's Preview.
-  // league: ESPN's, for another sport's game (the Bets page's Live tab: "basketball/nba"); this sport's own otherwise
+  // league: ESPN's, for another sport's game (the Book's Live tab: "basketball/nba"); this sport's own otherwise
   async open(ref: GameRef, tab: GameTab | null = null, league: string | null = SPORT.gameLog?.league ?? null): Promise<void> {
     if (!league) return;
     this.own = league === SPORT.gameLog?.league;
@@ -223,7 +223,7 @@ export class GameViewService {
     this.game = null;
   }
 
-  // A game under way: its summary read again every thirty seconds while the modal's open (the Bets page's Live
+  // A game under way: its summary read again every thirty seconds while the modal's open (the Book's Live
   // tab's beat), the scores, line score, plays, win probability and box score all following it; the panels keep
   // their places (the same game object's parts under them, the modal not redrawn); stopped when it closes, another
   // game opens, or the game goes final. Nothing while the page is out of sight

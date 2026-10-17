@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { ESPN_LEAGUES } from '../../bets/desk-math';
-import { SummaryBox, liveStat } from '../../bets/live-props';
+import { ESPN_LEAGUES } from '../../book/desk-math';
+import { SummaryBox, liveStat } from '../../book/live-props';
 import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
 

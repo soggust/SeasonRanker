@@ -31,9 +31,9 @@ export class AccountMenuComponent {
     { hash: '#account', icon: 'settings', label: 'Settings' },
   ].map((item) => ({ ...item, href: pagePath(item.hash, SPORT.id) }));
 
-  // (the Betting Wallet only where play betting is open: development, or an admin, like the Bets link)
+  // (the Betting Wallet only where play betting is open: development, or an admin, like the Book link)
   get items() {
-    return canUse('bets') ? this.all : this.all.filter((item) => item.hash !== '#wallet');
+    return canUse('book') ? this.all : this.all.filter((item) => item.hash !== '#wallet');
   }
 
   get name(): string {
@@ -75,7 +75,7 @@ export class AccountMenuComponent {
     try {
       await this.account.signOut();
       // (off an account page: back to the rankings)
-      if (pageHash() && pageHash() !== '#bets') goHome();
+      if (pageHash() && pageHash() !== '#book') goHome();
     } catch (error) {
       alert(errorMessage(error));
     }

@@ -1,4 +1,4 @@
-// The play-money wallet: the Bets page's board read off ESPN's scoreboard, the slip's stakes and payouts, a bet
+// The play-money wallet: the Book's board read off ESPN's scoreboard, the slip's stakes and payouts, a bet
 // in play settled by the score as the settler will settle it, the wallet's records and the comparison with the
 // bot (wallet-math.ts); and the settler's own logic (libs/ranker/scripts/accounts/settle-lib.mjs): a bet settled
 // from a final by the bettor's rules, the price check against the board, the tallies and the leaderboards.

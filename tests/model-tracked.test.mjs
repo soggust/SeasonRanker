@@ -12,7 +12,7 @@ import { buildPicks, level, levelOf } from '../libs/ranker/scripts/model/picks.m
 import { canon, selfCheck } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
 
-const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'bets-entry.ts'), data: {} });
+const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const now = new Date('2026-10-12T13:00:00Z');
 const H = 36e5;

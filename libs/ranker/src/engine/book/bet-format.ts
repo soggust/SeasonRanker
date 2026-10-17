@@ -1,4 +1,4 @@
-// How the Bets page and the Algorithm desk write their numbers, and ESPN's pictures they show (pure: tested
+// How the Book and the Algorithm desk write their numbers, and ESPN's pictures they show (pure: tested
 // under Node, tests/model-desk.test.mjs)
 
 // (American odds with their sign: "+150", "-110")
@@ -36,20 +36,21 @@ export function hideImage(event: Event): void {
   else img.style.visibility = 'hidden';
 }
 
-// (one side of a game on the Bets page's ticker: a team's logo (its abbreviation the words, shown when the logo
-// fails), a fighter's round headshot from the board (his last name the words); the owner's note, 2026-10-17)
+// (one side of a game on the Book's ticker: a team's logo and its short name beside it ("Chiefs", ESPN's
+// shortDisplayName, else its abbreviation), a fighter's round headshot from the board and his last name; the
+// owner's notes, 2026-10-17)
 export interface TickerSide {
   label: string;
   pic: string | null;
   face: boolean;
 }
 
-export function tickerSide(sport: string, t: { abbr: string; name: string; logo: string | null }): TickerSide {
+export function tickerSide(sport: string, t: { abbr: string; name: string; short?: string; logo: string | null }): TickerSide {
   if (sport === 'mma') {
     const name = (t.name || t.abbr).trim();
     return { label: name.split(/\s+/).pop() || name, pic: t.logo, face: true };
   }
-  return { label: t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
+  return { label: t.short || t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
 }
 
 // (a game view's market columns: only the markets with a price posted, in the board's order; a fight with round
@@ -64,10 +65,11 @@ export function boardColumns(b: { spread: { away: Side; home: Side } | null; tot
   return cols;
 }
 
-// (a total's tile words: "O 47.5"; a fight's round total in full, "Over 2.5 rounds", as the owner asked)
+// (a total's tile words: "O 47.5"; a fight's round total "Over 2.5", its rounds in the column's head (Rounds), the
+// tile's label and the ticket (the owner's note, 2026-10-17: "rounds" on the tile made the buttons too tall))
 export function totalTop(sport: string, side: string, line: number | null | undefined): string {
   const over = side === 'over';
-  return sport === 'mma' ? `${over ? 'Over' : 'Under'} ${line ?? ''} rounds` : `${over ? 'O' : 'U'} ${line ?? ''}`;
+  return sport === 'mma' ? `${over ? 'Over' : 'Under'} ${line ?? ''}` : `${over ? 'O' : 'U'} ${line ?? ''}`;
 }
 
 // (a bet's words on the ticket: a fight's round total says its rounds, "Over 2.5 rounds"; the stored words as

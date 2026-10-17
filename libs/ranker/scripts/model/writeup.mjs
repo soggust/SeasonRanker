@@ -1,4 +1,4 @@
-// The plain write-ups: every pick's reason and its risk line (the Bets page's expanded row and its "Devil's
+// The plain write-ups: every pick's reason and its risk line (the Book's expanded row and its "Devil's
 // Advocate"), written from the bet's own numbers by rule, free and the same every time. Pure: no I/O, no
 // clock, no locale formatting (the AI runner builds on the same facts and checks its text with the same rules).
 //

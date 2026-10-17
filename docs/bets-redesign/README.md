@@ -1,5 +1,8 @@
 # Bets page redesign: "The Book"
 
+> **Renamed (2026-10-17):** the page is the Book now, at `/book` (`/bets` redirects there); its code is in
+> `libs/ranker/src/engine/book/` (book-page.component, styles/components/book-page.scss). This folder keeps its name.
+
 > **Status (2026-10-17):** built and live on master. The page is The Book: the felt, the views bar (The
 > board · Open · Cashed · Algorithm, drawn only when there's more than the board to show), the bankroll
 > card, the board with its bands and meter, the ticket (a stub on phones). Where the live page and this

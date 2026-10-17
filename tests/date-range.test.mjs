@@ -1,4 +1,4 @@
-// The bet lists' date ranges (libs/ranker/src/engine/bets/date-range.ts), shared by the Algorithm's dropdown and
+// The bet lists' date ranges (libs/ranker/src/engine/book/date-range.ts), shared by the Algorithm's dropdown and
 // a user's Closed Bets: Today, Yesterday, This Month, This Year, All Time by the browser's calendar, and when a
 // newest-first history loaded a page at a time holds the whole range.
 import { test } from 'node:test';

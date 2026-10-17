@@ -165,7 +165,7 @@ export function checkPrice(bet, observations) {
 }
 
 // ---------------------------------------------------------------------------
-// Preview props: DraftKings' prop lines off ESPN's core API for a game the bot hadn't priced yet (the Bets page's
+// Preview props: DraftKings' prop lines off ESPN's core API for a game the bot hadn't priced yet (the Book's
 // preview-props.ts), bet at an assumed -110 (no price posted) with preview: true, the line as the page showed it.
 // No price to check, so the line is: it stands if it's within the lowest and highest main line seen for that
 // player's stat (ESPN's open and its current one when the settler looks, the settler's own looks before the start

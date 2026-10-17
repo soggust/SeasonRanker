@@ -2,19 +2,19 @@
 @use "../casino-chip" as chip;
 
 // ===========================================================================
-// The model desk's admin panel (the Bets page, dev only): a scoreboard header with the bankroll tiles, then
+// The model desk's admin panel (the Book, dev only): a scoreboard header with the bankroll tiles, then
 // the breakdowns in the card's panels, the bankroll curve, the bets
 // ===========================================================================
 
 .model-desk {
-  // (a result's two colors, everywhere on the desk: a win the site's green; a loss the red of the Bets page's
+  // (a result's two colors, everywhere on the desk: a win the site's green; a loss the red of the Book's
   // chips and the slot's knob (their clay, #b0202b), lifted to read on the board)
   --win: #{v.$good};
   --loss: #{v.$led-lost};
   border: 1px solid;
   border-radius: v.$radius-xl;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-  // (the Bets page's gunmetal under the scoreboard band on top)
+  // (the Book's gunmetal under the scoreboard band on top)
   @include v.gunmetal;
   color: #fff;
   margin: 0 auto 18px;
@@ -23,7 +23,7 @@
 }
 
 // The top: the bankroll's tiles, centered, and the game and sport chips under them, on the scoreboard out
-// to the panel's edges (as the Bets page's head)
+// to the panel's edges (as the Book's head)
 .desk-top {
   @include v.scoreboard-face;
   border-bottom: 1px solid color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
@@ -490,9 +490,9 @@ card-panel {
   text-align: center;
 }
 
-// The sport chips under the header (the Bets page's view pills, each with its league's logo): the desk shows
+// The sport chips under the header (the Book's view pills, each with its league's logo): the desk shows
 // one sport, or all
-// (the game dropdown on the left, the sports' chips pushed right, as the Bets page's header)
+// (the game dropdown on the left, the sports' chips pushed right, as the Book's header)
 // (the date range and the game on the left, side by side; the sports' chips pushed right)
 .desk-filters {
   align-items: center;
@@ -1056,7 +1056,7 @@ card-panel {
   border-top-color: rgba(255, 255, 255, 0.03);
 }
 
-// The bet tables' columns (In Play, Open Bets, Latest Results; the Bets page's Open and Closed Bets) set once,
+// The bet tables' columns (In Play, Open Bets, Latest Results; the Book's Open and Closed Bets) set once,
 // by their colgroups, not by what's in them: the same widths with every sport, game and team's props folded or
 // open, so nothing moves sideways on a click. Each wide enough for its header with the sort arrow and its usual
 // content (a game's teams with its time or score under them, the odds, the units, a meter); the pick takes
@@ -1094,7 +1094,7 @@ card-panel {
     }
 
     // (a meter's pips wrapping under one another past the column's width; a note under a value cut short, but
-    // the Bets page's decided bet's, wrapping under its amount)
+    // the Book's decided bet's, wrapping under its amount)
     .desk-meter {
       flex-wrap: wrap;
     }
@@ -1181,7 +1181,7 @@ card-panel {
     width: 250px;
   }
 
-  // (the Bets page's: the bot's band, the settled game's date, a settled bet's result with its final under it)
+  // (the Book's: the bot's band, the settled game's date, a settled bet's result with its final under it)
   .desk-c-bot {
     width: 72px;
   }
@@ -1200,7 +1200,7 @@ card-panel {
   }
 }
 
-// (By Confidence: each band's name in its color, the Bets page's; the total under a firmer line)
+// (By Confidence: each band's name in its color, the Book's; the total under a firmer line)
 .desk-table {
   .desk-tier-lock th {
     color: chip.$lock-light;
@@ -1462,16 +1462,16 @@ card-panel {
 }
 
 // ===========================================================================
-// The Book (the Bets page's Algorithm tab, 2026-10-17): the desk restyled, every panel, number and calculation its
+// The Book (the Book's Algorithm tab, 2026-10-17): the desk restyled, every panel, number and calculation its
 // own. No card of its own on the felt: the six tiles in a row of dot-matrix tiles (a small caps label, the value in
 // the scoreboard's digits, gold for the balance and green for a gain, a note under it); the date-range, since and
 // game selects as the player's card pills; the sport chips the house's casino chips at 50px; the profit curve on a
 // plain scoreboard panel (each sport's line in its color, the total in gold over a soft gold area, a dashed zero
 // line, the legend with each sport's units on the title's line); the panels plain scoreboard panels with gold
 // header bars in a two-column grid (card-panel.scss), their tables with 10px caps heads and tabular numbers, the
-// self-checks' statuses word tags. Scoped to the Bets page: the wallet's own page keeps the desk's look
+// self-checks' statuses word tags. Scoped to the Book: the wallet's own page keeps the desk's look
 // ===========================================================================
-:host-context(bets-page) {
+:host-context(book-page) {
   .model-desk {
     background: none;
     border: none;

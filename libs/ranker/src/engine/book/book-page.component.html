@@ -1,7 +1,7 @@
 <!-- The algorithm's top picks for every sport, one row per bet, the biggest edge first, each with its chance
      to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
      their write-up the disagreement, and a note to the bot -->
-<div class="bets-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'" [class.has-ticket]="wallet.slip().length > 0">
+<div class="book-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'" [class.has-ticket]="wallet.slip().length > 0">
   <!-- The Book's header, one row (it wraps on small screens): the title (a black chip and THE BOOK in the
        tables' gold), the views as a scoreboard bar like the sport pages' position bar (the board to bet, the
        user's open bets and the ones cashed (when they have some), or, an admin's, the code-only model desk's
@@ -14,7 +14,7 @@
     </div>
     <!-- (the views, when there's more than one: the bar) -->
     @if (viewsShown) {
-      <nav class="bets-views" aria-label="View">
+      <nav class="book-views" aria-label="View">
         <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The board</button>
         <!-- (Live: the day's games as they're played, with how many are on now and a blinking dot while any are; just
              Live with none on; there whenever the day has games on or to come) -->
@@ -34,7 +34,7 @@
         }
       </nav>
     }
-    <button type="button" class="bets-info" aria-label="About Bets" title="About Bets" (click)="aboutOpen = true">
+    <button type="button" class="book-info" aria-label="About the Book" title="About the Book" (click)="aboutOpen = true">
       <mat-icon aria-hidden="true" fontIcon="info"></mat-icon>
     </button>
     <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand, what's out, the
@@ -80,17 +80,17 @@
         }
       </div>
     </div>
-    <!-- (a ticker side: its logo, or a fighter's round face, 18px; the words when there's none or it fails) -->
+    <!-- (a ticker side: its logo, or a fighter's round face, 14px, then its name, "Chiefs" or a last name; the name
+         alone when there's no picture or it fails) -->
     <ng-template #tickSide let-s>
       @if (s.pic && !s.failed) {
-        <img class="tick-pic" [class.face]="s.face" [src]="s.pic" [alt]="s.label" [title]="s.label" width="18" height="18" loading="lazy" (error)="tickImgError($event, s)" />
-      } @else {
-        <span class="tick-team">{{ s.label }}</span>
+        <img class="tick-pic" [class.face]="s.face" [src]="s.pic" alt="" width="14" height="14" loading="lazy" (error)="tickImgError($event, s)" />
       }
+      <span class="tick-team">{{ s.label }}</span>
     </ng-template>
   }
   @if (aboutOpen) {
-    <bets-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></bets-about>
+    <book-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></book-about>
   }
   @if (view === 'desk') {
     <model-desk></model-desk>
@@ -115,37 +115,37 @@
          (the pill "NFL · Best Bets"); Best Bets · every game clears it. When the sheet was updated, and whose odds,
          on its hover) -->
     @if (gameMenu.length) {
-      <div class="bets-game-wrap" [class.open]="menuOpen">
+      <div class="book-game-wrap" [class.open]="menuOpen">
         <button
           #gamePill
           type="button"
-          class="bets-game"
+          class="book-game"
           aria-haspopup="listbox"
           aria-label="Game or sport"
           [attr.aria-expanded]="menuOpen"
-          [attr.aria-controls]="menuOpen ? 'bets-game-list' : null"
+          [attr.aria-controls]="menuOpen ? 'book-game-list' : null"
           [title]="updated ? 'Updated ' + (updated | date: 'EEE MMM d, h:mm a') + ' · market odds' : null"
           (click)="toggleMenu()"
           (keydown)="pillKey($event)"
         >
-          <span class="bets-game-face">
+          <span class="book-game-face">
             <!-- (the mark inline in the words, one unit, no icon slot of its own (the owner's note, 2026-10-17): a game's
                  two faces before "CAR @ WPG", a sport's league mark before "NFL · Best Bets", a small gold trophy before
                  Best Bets) -->
             @if (chosenGame; as g) {
-              <span class="bets-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [src]="f.logo" alt="" />}}{{ g.label }}</span>
-              <span class="bets-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
+              <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [src]="f.logo" alt="" />}}{{ g.label }}</span>
+              <span class="book-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
             } @else if (chosenSport; as s) {
-              <span class="bets-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
-              <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
+              <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
+              <span class="book-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="bets-game-label"><mat-icon class="pill-mark best-trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
-              <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
+              <span class="book-game-label"><mat-icon class="pill-mark best-trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
+              <span class="book-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
-            <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <svg class="book-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
         </button>
-        <!-- The open list, a listbox of the page's own (the keyboard and the click-off in bets-page.component.ts):
+        <!-- The open list, a listbox of the page's own (the keyboard and the click-off in book-page.component.ts):
              Best Bets · every game on top with its count, then each day on a gold dot-matrix band, under it each
              sport as a row of its own (its icon, its name, its count; a choice: that sport's best bets, every
              day's, with a left accent in its colour), under that its games indented (the two teams' faces, the
@@ -153,7 +153,7 @@
              quiet "lines" with nothing picked). The lit row (the pointer's or the arrows') washed; the chosen one
              in gold with the lit dots along its foot -->
         @if (menuOpen) {
-          <div #gameList id="bets-game-list" class="bets-game-list" role="listbox" tabindex="-1" aria-label="Game or sport" [attr.aria-activedescendant]="optId(active)" (keydown)="listKey($event)">
+          <div #gameList id="book-game-list" class="book-game-list" role="listbox" tabindex="-1" aria-label="Game or sport" [attr.aria-activedescendant]="optId(active)" (keydown)="listKey($event)">
             <div
               class="game-opt game-all"
               role="option"
@@ -244,7 +244,7 @@
     <!-- The filter chips: a type of bet each, in its own chip color; on, only those (none: all); what the label
          means on its hover -->
     @if (kindChips.length > 1) {
-      <div class="bets-kinds" role="group" aria-label="Bet types">
+      <div class="book-kinds" role="group" aria-label="Bet types">
         @for (k of kindChips; track k.kind) {
           <button
             type="button"
@@ -271,9 +271,9 @@
   <section class="board" aria-label="The board">
     <div class="board-scroll">
     @if (rows === null) {
-      <p class="bets-note">Loading…</p>
+      <p class="book-note">Loading…</p>
     } @else if (!inGame.length && !game) {
-      <p class="bets-note">No @if (chosenSport; as s) {{{ s.name }} }picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
+      <p class="book-note">No @if (chosenSport; as s) {{{ s.name }} }picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
     } @else {
       <!-- One row: the chevron that opens it, its rank tile (a button of its own: how its score is built), its circle
            (a prop's player, a total's arrow, a side's team), the pick with its one line under it, the model-vs-book
@@ -476,7 +476,7 @@
 
       @let locks = lockCount(shown);
       @let n = shown.length;
-      <ol class="bets-list">
+      <ol class="book-list">
         <!-- (a game chosen (the game view; Best Bets as it was): on top a compact bordered section of the bot's picks
              in that game, folded shut with its count showing; under it the game's full menu, every line to bet, open) -->
         @if (game && boardFor(game); as gb) {

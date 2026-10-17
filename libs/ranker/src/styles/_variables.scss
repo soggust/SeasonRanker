@@ -139,7 +139,7 @@ $breakpoints: (
   tablet-max: 1023px,
   laptop: 1199px,
   desktop: 1200px,
-  bets-wide: 1240px,
+  book-wide: 1240px,
   menu-xl: 1500px,
   grid-xl: 1600px,
   wide: 1750px,
@@ -266,7 +266,7 @@ $led-won: rgb(80, 207, 80);
 $led-lost: #ff3b30;
 // A result in lettering, one green and one red: the brighter green and the softer red the rank grid, the lists,
 // a bet's reasons, the AI's concerns and the game view's Out tag paint a result in, money won (the wallet's and
-// the Bets page's), a problem named in a line of text (a roster move's injury, the slip's error, a note's
+// the Book's), a problem named in a line of text (a roster move's injury, the slip's error, a note's
 // problem) and a message about something gone wrong (a form's error, a list's failure). Each reads on the dark
 // panels (the red about 6.3:1 on $panel-dark). (They were five shades: a mint for money, a lighter red for a
 // problem and a pale red for an error, merged into these two.)
@@ -536,7 +536,7 @@ $metal-bronze: (#f3c79a, #c07a3e, #8f5424);
   color: #0f1d2a;
 }
 
-// Dark brushed gunmetal (the Bets page's slot machine, the Algorithm under its scoreboard): a soft sheen
+// Dark brushed gunmetal (the Book's slot machine, the Algorithm under its scoreboard): a soft sheen
 // down the middle, the metal's fine horizontal brushing
 @mixin gunmetal {
   background:

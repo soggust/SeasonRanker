@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, computed, signal } from '@angular/core';
-import { Confidence, tierOf } from '../../bets/tiers';
-import { betScoreText, confidenceOf, kellyOf } from '../../bets/bet-why';
-import { boardColumns, headshot, hideImage, teamLogo, totalTop } from '../../bets/bet-format';
-import { pickTeamColor } from '../../bets/pick-style';
+import { Confidence, tierOf } from '../../book/tiers';
+import { betScoreText, confidenceOf, kellyOf } from '../../book/bet-why';
+import { boardColumns, headshot, hideImage, teamLogo, totalTop } from '../../book/bet-format';
+import { pickTeamColor } from '../../book/pick-style';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
 import { WalletService } from './wallet.service';
 import { BoardTeam, GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
-import { matchupName } from '../../bets/game-menu';
+import { matchupName } from '../../book/game-menu';
 
-// The bot's pick as the Bets page has it (its BetRow, as far as the board reads it)
+// The bot's pick as the Book has it (its BetRow, as far as the board reads it)
 export interface BotPick {
   betType: string;
   side?: string | null;
@@ -103,7 +103,7 @@ export interface PropTeam {
 
 const MARKET_OF: Record<string, PlayMarket> = { spread: 'spread', total: 'total', moneyline: 'ml', player: 'prop' };
 
-// The bot's pick as a bet for the slip, at the bot's own line and price: what the Bets page's row price button
+// The bot's pick as a bet for the slip, at the bot's own line and price: what the Book's row price button
 // hands wallet.toggle, the one slip call the tiles below make (take, takeProp), with the same fields: the pick's
 // band and Kelly score on it, its id as the ref, a prop's player and stat. A CHECK isn't the bot's pick (botPick
 // false, its tier an admin's alone); none without a price, or for a type the slip doesn't take
@@ -488,7 +488,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const side: BoardSide | undefined = this.model()?.k[price.market as 'spread' | 'total' | 'ml']?.find((s) => s.s === price.side && s.l === price.line);
     if (bot) {
       const check = this.isCheck(bot);
-      // (a CHECK's: no Kelly on its button; its "?" popover on the Bets page has the model's)
+      // (a CHECK's: no Kelly on its button; its "?" popover on the Book has the model's)
       return { bot, tier: this.tier(bot), kelly: check ? null : bot.sureness, chance: bot.chance != null ? bot.chance / 100 : (side?.c ?? null) };
     }
     if (!side || price.odds === null) return { bot: null, tier: 'pass', kelly: null, chance: null };

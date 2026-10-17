@@ -2,14 +2,14 @@
 // Node): a game's lines at the book off ESPN's scoreboard, a bet slip's stakes and payouts, a bet in play
 // settled by the score as the settler will settle it (desk-math's provisional), the wallet's tallies, its
 // curve, and the user's record beside the bot's
-import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../bets/desk-model';
-import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../bets/desk-math';
-import { units } from '../../bets/bet-format';
+import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../book/desk-model';
+import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../book/desk-math';
+import { units } from '../../book/bet-format';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
-// (the bot's bands as the Bets page names them: bet-why.ts confidenceOf's lock, high, medium, low)
-import type { Tier } from '../../bets/tiers';
+// (the bot's bands as the Book names them: bet-why.ts confidenceOf's lock, high, medium, low)
+import type { Tier } from '../../book/tiers';
 export type { Tier };
 
 // (the settled history's page: the wallet and Closed Bets read it this many at a time, the latest first; the
@@ -109,6 +109,8 @@ export interface Price {
 export interface BoardTeam {
   abbr: string;
   name: string;
+  // (ESPN's short name, "Chiefs": the ticker's words)
+  short?: string;
   logo: string | null;
   score: number | null;
 }
@@ -184,7 +186,7 @@ export interface EspnEvent {
   id: string;
   date: string;
   competitions?: {
-    competitors?: { homeAway: string; score?: string | number; team?: { abbreviation?: string; displayName?: string; logo?: string } }[];
+    competitors?: { homeAway: string; score?: string | number; team?: { abbreviation?: string; displayName?: string; shortDisplayName?: string; logo?: string } }[];
     status?: { type?: { state?: string; completed?: boolean; name?: string; shortDetail?: string; detail?: string } };
     odds?: {
       provider?: { name?: string };
@@ -212,6 +214,7 @@ export function boardOf(sport: string, e: EspnEvent): GameBoard | null {
     return {
       abbr: t.team?.abbreviation ?? '',
       name: t.team?.displayName ?? t.team?.abbreviation ?? '',
+      short: t.team?.shortDisplayName ?? t.team?.abbreviation ?? '',
       logo: t.team?.logo ?? null,
       score: state !== 'pre' && t.score !== undefined && t.score !== '' && Number.isFinite(score) ? score : null,
     };
@@ -767,7 +770,7 @@ export function playBySport(games: PlayGame[]): PlaySport[] {
 }
 
 // ---------------------------------------------------------------------------
-// You vs the bot: the user's record beside the bot's published picks (the Bets page's) settled over the same
+// You vs the bot: the user's record beside the bot's published picks (the Book's) settled over the same
 // stretch, from the user's first bet's game on. Units differ (the bot stakes 0.5 to 3, a user anything), so
 // the return on what was staked is the fair comparison
 // ---------------------------------------------------------------------------
