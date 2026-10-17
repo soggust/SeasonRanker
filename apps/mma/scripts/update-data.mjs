@@ -228,6 +228,12 @@ async function coreFightStats(id, bouts) {
   return byBout;
 }
 
+// ESPN's display height (6' 5") in inches, or null
+export function heightInches(text) {
+  const m = /(\d+)'\s*(\d+)?/.exec(String(text ?? ''));
+  return m ? +m[1] * 12 + +(m[2] ?? 0) : null;
+}
+
 async function bio(id) {
   const a = (await get(`${COMMON}/${id}`))?.athlete;
   if (!a) return null;
@@ -241,6 +247,9 @@ async function bio(id) {
     headshot: !!a.headshot?.href,
     gym: a.association?.name ?? null,
     reach: num(String(a.displayReach ?? '').replace('"', '')) || null,
+    // (his height in inches, from ESPN's 6' 5": the model desk's fights model reads it (libs/ranker/scripts/model/
+    // fights-model.mjs); a bio read before it was kept has none, till the weekly refresh)
+    height: heightInches(a.displayHeight),
     age: a.age ?? null,
     stance: a.stance?.text ?? null,
     pro: pro['wins-losses-draws'] ?? null,

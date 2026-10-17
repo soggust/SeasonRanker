@@ -14,6 +14,13 @@ on:
     # (GitHub has been dropping most of these: the owner's computer kicks it too, hourly 8:05 AM to 11:05 PM
     # Central when none started in the last 45 minutes: the task "QBRanker desk kick", kick-update.mjs --desk)
     - cron: "17 * * * *"
+    # (MMA, since 2026-10-16 (leagues.mjs mma, mma-desk.mjs): UFC cards fight on Saturdays, mostly 4 to 11 PM
+    # ET, a bout's lines open 72 hours before it and its last chance is 4 hours, so the hourly schedule reaches
+    # every card Wednesday through Saturday afternoon with several runs to spare. Its run is seconds (the fit
+    # over the kept archive, no props), inside the bettor's step. Credits: one h2h ask of The Odds API for the
+    # whole MMA board, 1 credit, on each run with a bout due, so a card costs about as many credits as runs land
+    # in its three days (24 a day at most, 5 or so as GitHub has run it): 50 to 150 a card, 250 to 750 a month
+    # over about 5 cards, out of the 20,000)
     # (and tries aimed at the NFL's inactives: they post about 90 minutes before a kickoff and count only when a
     # run starts between about 90 and 35 minutes before it (the re-price comes after the fits, 20 minutes before
     # the start at the latest: libs/ranker/scripts/model/context.mjs LINEUP_HOURS). GitHub ran the hourly schedule
@@ -147,7 +154,7 @@ jobs:
             [ -e "$mark" ] || continue
             sport=$(basename "$mark")
             rm -f "$mark"
-            case "$sport" in nfl|nba|nhl|mlb) ;; *) continue ;; esac
+            case "$sport" in nfl|nba|nhl|mlb|mma) ;; *) continue ;; esac
             echo "::warning::$sport: its run didn't finish: its files put back as committed, the other sports' kept"
             git checkout -- "apps/$sport/scripts/model" "apps/$sport/src/StaticData/model" || true
             git clean -fdq -- "apps/$sport/scripts/model" "apps/$sport/src/StaticData/model" || true

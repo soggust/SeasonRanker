@@ -3,17 +3,19 @@
 // meters, the calibration, the profit curves and the games' dropdown
 import { Board, CalibrationRow, CurveLine, CurveSpot, GameDay, Intent, Meter, ModelBet, Settled, Tally } from './desk-model';
 
-export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb'];
-export const ESPN_LEAGUES: Record<string, string> = { nfl: 'football/nfl', nba: 'basketball/nba', nhl: 'hockey/nhl', mlb: 'baseball/mlb' };
+// (mma: the fifth league since 2026-10-16, fights not games: UFC moneylines alone (leagues.mjs, mma-desk.mjs); the
+// MMA app is dev-only on the live site, its data ships all the same)
+export const SPORTS = ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
+export const ESPN_LEAGUES: Record<string, string> = { nfl: 'football/nfl', nba: 'basketball/nba', nhl: 'hockey/nhl', mlb: 'baseball/mlb', mma: 'mma/ufc' };
 export const MARKET_NAMES: Record<string, string> = { spread: 'Spread', total: 'Total', ml: 'Moneyline', prop: 'Props' };
 // (the stakes it bets: 0.5 at no edge up to 3, by half units: desk.mjs stakeFor)
 export const STAKES = [0.5, 1, 1.5, 2, 2.5, 3];
 // (play money: 1,000 to start, and 1,000 more whenever the balance would go under 0: desk.mjs BANKROLL)
 export const BANKROLL = 1000;
 // (each sport's scoring unit, for a context term's size and a total's count)
-export const UNIT_WORDS: Record<string, string> = { nfl: 'pts', nba: 'pts', nhl: 'goals', mlb: 'runs' };
+export const UNIT_WORDS: Record<string, string> = { nfl: 'pts', nba: 'pts', nhl: 'goals', mlb: 'runs', mma: 'log odds' };
 // (how far ahead or behind a side has to be for its score's color to run all the way, by sport)
-export const EDGE_FULL: Record<string, number> = { nfl: 14, nba: 12, nhl: 2, mlb: 3 };
+export const EDGE_FULL: Record<string, number> = { nfl: 14, nba: 12, nhl: 2, mlb: 3, mma: 1 };
 // (the props a bar measures whatever their line: yards, a goalie's saves, a pitcher's outs; a short count is pips)
 export const BAR_STATS = new Set(['passYds', 'rushYds', 'recYds', 'rushRecYds', 'saves', 'outs']);
 

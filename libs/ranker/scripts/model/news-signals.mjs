@@ -196,6 +196,8 @@ async function defaultClient(env) {
 // off. state: { calls } shared by the sports of a run (MAX_CALLS); files: { log, page } (the tests')
 export async function newsSignals(sport, { now = new Date(), env = process.env, dry = false, budget = null, client = null, teams = null, fetchJson = get, files = null, state = { calls: 0 }, log = console } = {}) {
   if (env.NEWS_SIGNALS !== '1') return null;
+  // (a fights league (leagues.mjs mma): no teams, no team news to read)
+  if (LEAGUES[sport]?.fights) return null;
   if (!dry && !env.ANTHROPIC_API_KEY) {
     log.log?.(`${sport}: news signals on but no ANTHROPIC_API_KEY: skipped`);
     return null;

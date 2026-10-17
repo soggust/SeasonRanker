@@ -151,6 +151,9 @@ export const TIMING = {
   nba: { lines: 6, props: 6, lastChance: 3 },
   nhl: { lines: 10, props: 10, lastChance: 3 },
   mlb: { lines: 6, props: 6, lastChance: 2.5 },
+  // (MMA: a bout's lines open 72 hours before it (the weigh-in is the day before: a fighter pulled or replaced
+  // voids the bet rather than moving it, mma-desk.mjs), the last chance 4; no props on this plan)
+  mma: { lines: 72, props: 72, lastChance: 4 },
 };
 
 export const LEAGUES = {
@@ -187,5 +190,21 @@ export const LEAGUES = {
     guard: { spread: null, total: 1, ml: 0.06 },
     priors: { k: 0.025, hfa: 0.15, revert: 0.7, kO: 0.02, sigma: 4.2, sigmaT: 4.4, avg: 4.5 },
     grid: { k: [0.01, 0.018, 0.025, 0.035, 0.05], hfa: [0.05, 0.15, 0.25, 0.35], revert: [0.5, 0.7, 0.85], kO: [0.008, 0.015, 0.025, 0.04] },
+  },
+  // MMA (joined 2026-10-16: the fifth league, fights not games; MODEL_EPOCH not bumped for it, its trust starts at
+  // the untested start with no bets by construction): UFC bouts' moneylines, priced by fights-model.mjs (a
+  // logistic model over point-in-time fighter stats and the MMA app's rating, soft terms refit every run) and
+  // run by mma-desk.mjs (run.mjs hands a league with fights: true there: no team ratings, context, margins or
+  // props, so no priors or grid). The Odds API's key mma_mixed_martial_arts, h2h alone (its board carries every
+  // promotion's bouts; ESPN's UFC cards are matched to it by both fighters' names, never guessed).
+  //   edge   the model's vig-free chance has to beat the book's fair chance by this to be bet (else tracked)
+  //   guard  the moneyline's as elsewhere: the market moving this far against the side since its first price
+  //          cuts the bet to the minimum
+  mma: {
+    league: 'mma/ufc',
+    label: 'MMA',
+    fights: true,
+    edge: 0.03,
+    guard: { spread: null, total: null, ml: 0.06 },
   },
 };

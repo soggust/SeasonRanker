@@ -657,12 +657,19 @@ test("leagues: DraftKings is the book everywhere, each league's setup whole, the
     assert.equal(cfg.league, desk.ESPN_LEAGUES[sport], `${sport}'s ESPN path`);
     assert.ok(SPORT_KEYS[sport], `${sport}'s Odds API key`);
     assert.ok(desk.UNIT_WORDS[sport]);
+    for (const market of ['spread', 'total', 'ml']) assert.ok(market in cfg.guard, `${sport} guard.${market}`);
+    // (a fights league (MMA): no team ratings, so no priors, grid or context; its own edge threshold, and the
+    // moneyline's guard)
+    if (cfg.fights) {
+      assert.ok(cfg.edge > 0 && cfg.edge < 0.1, `${sport} edge`);
+      assert.ok(cfg.guard.ml > 0, `${sport} guard.ml`);
+      continue;
+    }
     for (const key of ['k', 'hfa', 'revert', 'kO', 'sigma', 'sigmaT', 'avg']) assert.ok(Number.isFinite(cfg.priors[key]), `${sport} priors.${key}`);
     for (const [key, values] of Object.entries(cfg.grid)) {
       assert.ok(key in cfg.priors, `${sport} grid.${key} has no prior`);
       assert.ok(values.length && values.every((v, i) => i === 0 || v > values[i - 1]), `${sport} grid.${key} not rising`);
     }
-    for (const market of ['spread', 'total', 'ml']) assert.ok(market in cfg.guard, `${sport} guard.${market}`);
     assert.ok(cfg.context.restCap > 0);
   }
   assert.ok(PROP_CAPS.untested.maxUnits <= PROP_CAPS.tested.maxUnits && PROP_CAPS.tested.maxUnits <= 3);

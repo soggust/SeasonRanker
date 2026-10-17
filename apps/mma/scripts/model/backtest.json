@@ -1,0 +1,221 @@
+{
+ "at": "2026-10-17T05:05:05.760Z",
+ "halves": [
+  {
+   "from": "2023-11-01",
+   "to": "2024-05-01",
+   "train": 9628,
+   "model": {
+    "n": 320,
+    "logLoss": 0.6194,
+    "acc": 0.6406
+   },
+   "rating": {
+    "n": 320,
+    "logLoss": 0.6343,
+    "acc": 0.6125
+   },
+   "coin": {
+    "n": 320,
+    "logLoss": 0.6931,
+    "acc": 0.7844
+   },
+   "kept": 9
+  },
+  {
+   "from": "2024-05-01",
+   "to": "2024-11-01",
+   "train": 9948,
+   "model": {
+    "n": 363,
+    "logLoss": 0.6253,
+    "acc": 0.6419
+   },
+   "rating": {
+    "n": 363,
+    "logLoss": 0.6552,
+    "acc": 0.6143
+   },
+   "coin": {
+    "n": 363,
+    "logLoss": 0.6931,
+    "acc": 0.7769
+   },
+   "kept": 11
+  },
+  {
+   "from": "2024-11-01",
+   "to": "2025-05-01",
+   "train": 10311,
+   "model": {
+    "n": 268,
+    "logLoss": 0.6157,
+    "acc": 0.6455
+   },
+   "rating": {
+    "n": 268,
+    "logLoss": 0.6545,
+    "acc": 0.5933
+   },
+   "coin": {
+    "n": 268,
+    "logLoss": 0.6931,
+    "acc": 0.7929
+   },
+   "kept": 10
+  },
+  {
+   "from": "2025-05-01",
+   "to": "2025-11-01",
+   "train": 10579,
+   "model": {
+    "n": 333,
+    "logLoss": 0.6277,
+    "acc": 0.6607
+   },
+   "rating": {
+    "n": 333,
+    "logLoss": 0.6442,
+    "acc": 0.6216
+   },
+   "coin": {
+    "n": 333,
+    "logLoss": 0.6931,
+    "acc": 0.7613
+   },
+   "kept": 10
+  },
+  {
+   "from": "2025-11-01",
+   "to": "2026-05-01",
+   "train": 10912,
+   "model": {
+    "n": 265,
+    "logLoss": 0.6037,
+    "acc": 0.6906
+   },
+   "rating": {
+    "n": 265,
+    "logLoss": 0.6652,
+    "acc": 0.6038
+   },
+   "coin": {
+    "n": 265,
+    "logLoss": 0.6931,
+    "acc": 0.7925
+   },
+   "kept": 11
+  },
+  {
+   "from": "2026-05-01",
+   "to": "2026-11-01",
+   "train": 11177,
+   "model": {
+    "n": 311,
+    "logLoss": 0.629,
+    "acc": 0.672
+   },
+   "rating": {
+    "n": 311,
+    "logLoss": 0.672,
+    "acc": 0.5804
+   },
+   "coin": {
+    "n": 311,
+    "logLoss": 0.6931,
+    "acc": 0.7717
+   },
+   "kept": 10
+  }
+ ],
+ "all": {
+  "model": {
+   "n": 1860,
+   "logLoss": 0.6209,
+   "acc": 0.6575
+  },
+  "rating": {
+   "n": 1860,
+   "logLoss": 0.6538,
+   "acc": 0.6051
+  },
+  "coin": {
+   "n": 1860,
+   "logLoss": 0.6931,
+   "acc": 0.779
+  }
+ },
+ "calibration": [
+  {
+   "from": 0,
+   "to": 0.1,
+   "n": 6,
+   "mean": 0.0758,
+   "actual": 0
+  },
+  {
+   "from": 0.1,
+   "to": 0.2,
+   "n": 79,
+   "mean": 0.1644,
+   "actual": 0.1392
+  },
+  {
+   "from": 0.2,
+   "to": 0.3,
+   "n": 231,
+   "mean": 0.2571,
+   "actual": 0.2294
+  },
+  {
+   "from": 0.3,
+   "to": 0.4,
+   "n": 334,
+   "mean": 0.3533,
+   "actual": 0.2964
+  },
+  {
+   "from": 0.4,
+   "to": 0.5,
+   "n": 443,
+   "mean": 0.451,
+   "actual": 0.4131
+  },
+  {
+   "from": 0.5,
+   "to": 0.6,
+   "n": 373,
+   "mean": 0.5457,
+   "actual": 0.5416
+  },
+  {
+   "from": 0.6,
+   "to": 0.7,
+   "n": 229,
+   "mean": 0.6486,
+   "actual": 0.6245
+  },
+  {
+   "from": 0.7,
+   "to": 0.8,
+   "n": 139,
+   "mean": 0.7413,
+   "actual": 0.7842
+  },
+  {
+   "from": 0.8,
+   "to": 0.9,
+   "n": 23,
+   "mean": 0.8339,
+   "actual": 0.8696
+  },
+  {
+   "from": 0.9,
+   "to": 1,
+   "n": 3,
+   "mean": 0.9061,
+   "actual": 0.6667
+  }
+ ],
+ "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won"
+}

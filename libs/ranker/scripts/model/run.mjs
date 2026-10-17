@@ -153,6 +153,7 @@ import { checkLearning } from './check-learn.mjs';
 import { researchChecks } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
+import { runMma } from './mma-desk.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -2379,7 +2380,11 @@ if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.
     }
     if (marks) writeAtomic(path.join(RUNNING, sport), new Date().toISOString());
     try {
-      await runSport(sport);
+      // (a fights league (leagues.mjs mma): its own run, mma-desk.mjs, on the desk's shared parts; --picks-only
+      // and --replace don't apply to it: its picks are rebuilt every run, and nothing of its is priced again)
+      if (LEAGUES[sport]?.fights) {
+        if (!PICKS_ONLY) await runMma({ dry: DRY, gap: GAP });
+      } else await runSport(sport);
       if (marks) rmSync(path.join(RUNNING, sport), { force: true });
     } catch (err) {
       console.error(`${sport}: ${err.stack ?? err}`);
