@@ -6,7 +6,8 @@ import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './bets-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
-import { recordOf, recordText } from '../account/wallet/wallet-math';
+import { Selection, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
+import { botSelection } from '../account/wallet/game-lines.component';
 import { SPORT_LINKS } from '@ranker/core/sports';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
@@ -232,6 +233,8 @@ interface Picks {
   checks?: Pick[];
   // (the CHECK rule (checks.mjs CHECK_RULE): a role's CHECK only at this model Kelly or more)
   checkRule?: { kelly: number } | null;
+  // (its record on the picks it has graded, by band: the board's band headers read it)
+  record?: { byLevel?: Record<string, { wins?: number; losses?: number; pushes?: number; profit?: number }> } | null;
 }
 
 // A team as the schedule names it (the sportsbook's WSH and LAR are its WAS and LA)
@@ -456,6 +459,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
         if (!this.updated || picks.at > this.updated) this.updated = picks.at;
         // (the CHECK rule as the bettor publishes it: the page's words read from it, never a copy of its own)
         if (Number.isFinite(picks.checkRule?.kelly)) this.checkBar = picks.checkRule!.kelly;
+        // (the bands' seasons, for the board's band headers)
+        this.addRecord(picks.record?.byLevel);
         for (const p of picks.picks ?? []) {
           // (a CHECK left in picks by an older file: picks.mjs keeps them in their own list now; never a bet here)
           if (p.level === 'check') continue;
@@ -882,6 +887,114 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.escape')
   escape(): void {
     this.closeWhy(true);
+  }
+
+  // ---------------------------------------------------------------------------
+  // The board's look (The Book): the rows in their bands' sections, each with its model-vs-book meter and a price
+  // button for the slip; the look's own state, nothing of the list's order or limits
+  // ---------------------------------------------------------------------------
+  // The bands' seasons (picks.json's record.byLevel, every sport's summed: the same read as the picks), for the
+  // band headers: wins, losses, pushes and units. A band no file has graded has none
+  readonly bandRecords = new Map<Confidence, { wins: number; losses: number; pushes: number; profit: number }>();
+  private addRecord(byLevel: Record<string, { wins?: number; losses?: number; pushes?: number; profit?: number } | undefined> | undefined): void {
+    for (const level of ['lock', 'high', 'medium', 'low'] as const) {
+      const r = byLevel?.[level];
+      if (!r) continue;
+      const t = this.bandRecords.get(level) ?? { wins: 0, losses: 0, pushes: 0, profit: 0 };
+      t.wins += r.wins ?? 0;
+      t.losses += r.losses ?? 0;
+      t.pushes += r.pushes ?? 0;
+      t.profit += r.profit ?? 0;
+      this.bandRecords.set(level, t);
+    }
+  }
+  // (a band's season as its header says it: "23–9 · +18.4u"; none till a bet in it is graded)
+  bandRecord(band: Confidence): { record: string; units: string; up: boolean } | null {
+    const t = this.bandRecords.get(band);
+    if (!t || !(t.wins + t.losses + t.pushes)) return null;
+    return { record: `${t.wins}–${t.losses}${t.pushes ? `–${t.pushes}` : ''}`, units: `${t.profit >= 0 ? '+' : '−'}${Math.abs(t.profit).toFixed(1)}u`, up: t.profit >= 0 };
+  }
+
+  // The sections: the rows shown, in their order (the locks, an admin's CHECKs, then the rest by their Kelly score),
+  // grouped by band, LOCK, CHECK, LOVE, LIKE; the passes and fades apart, off the board, one folded line. Each row
+  // keeps its place in the list (i: the rank tile's number and its popover's index)
+  readonly BAND_SECTIONS: readonly { band: Confidence; tier: 'lock' | 'check' | 'love' | 'like'; name: string }[] = [
+    { band: 'lock', tier: 'lock', name: 'Locks' },
+    { band: 'check', tier: 'check', name: 'Checks' },
+    { band: 'high', tier: 'love', name: 'Loves' },
+    { band: 'medium', tier: 'like', name: 'Likes' },
+  ];
+  // (each band's icon on its header, a stroke path: a padlock, a question, a heart, a thumbs-up)
+  readonly BAND_ICONS: Record<string, string> = {
+    lock: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
+    check: 'M12 17h.01M9.6 9.3a2.5 2.5 0 1 1 3.6 2.3c-.8.5-1.2 1-1.2 1.9M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',
+    love: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+    like: 'M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h5a2 2 0 0 1 2 2.3l-1.3 6A2 2 0 0 1 16.7 20H7',
+  };
+  get sections(): { band: Confidence; tier: string; name: string; rows: { r: BetRow; i: number }[] }[] {
+    const shown = this.shown;
+    return this.BAND_SECTIONS.map((s) => ({ ...s, rows: shown.map((r, i) => ({ r, i })).filter(({ r }) => this.grade(r) === s.tier) })).filter((s) => s.rows.length);
+  }
+  get offBoard(): { r: BetRow; i: number }[] {
+    return this.shown.map((r, i) => ({ r, i })).filter(({ r }) => this.grade(r) === 'pass' || this.grade(r) === 'fade');
+  }
+  // (how many passes and fades sit off the board, for its line)
+  get offCounts(): { passes: number; fades: number } {
+    const off = this.offBoard;
+    const fades = off.filter(({ r }) => this.grade(r) === 'fade').length;
+    return { passes: off.length - fades, fades };
+  }
+  // (the bands folded shut, and whether the off-the-board rows are unfolded)
+  readonly closedBands = new Set<string>();
+  offBoardOpen = false;
+  bandOpen(band: string): boolean {
+    return !this.closedBands.has(band);
+  }
+  toggleBand(band: string): void {
+    this.closeWhy();
+    if (!this.closedBands.delete(band)) this.closedBands.add(band);
+  }
+
+  // The model-vs-book meter: the model's chance (the row's, a whole percent) and the book's (its fair chance
+  // without the vig where the file has it, else the price's implied chance); none without the model's
+  meter(r: BetRow): { model: number; book: number | null } | null {
+    if (r.chance === undefined || r.chance === null) return null;
+    const implied = typeof r.price === 'number' && r.price ? (r.price < 0 ? -r.price / (-r.price + 100) : 100 / (r.price + 100)) : null;
+    const book = Number.isFinite(r.fair) ? r.fair! : implied;
+    return { model: r.chance, book: book === null ? null : Math.round(book * 100) };
+  }
+
+  // (the edge in chance points, the model's over the book's, for the open row's meta line)
+  edgePoints(r: BetRow): number | null {
+    const m = this.meter(r);
+    return m && m.book !== null ? m.model - m.book : null;
+  }
+
+  // The row's price button: the pick as a bet for the slip (game-lines' botSelection: the one slip call the lines'
+  // tiles make), on the slip or not, and clicked, onto it or off it (wallet.toggle). A game begun can't be bet
+  // (the list drops it on the minute; till then the button does nothing)
+  private rowSelection(r: BetRow): Omit<Selection, 'key' | 'stake'> | null {
+    const event = r.pickId?.split(':')[0];
+    if (!r.game || !event) return null;
+    return botSelection({ sport: r.sport, event, matchup: r.game.matchup, start: r.game.kickoff ?? r.game.date }, r, this.desk());
+  }
+  onSlip(r: BetRow): boolean {
+    const sel = this.rowSelection(r);
+    return !!sel && this.wallet.slipKeys().has(selectionKey(sel));
+  }
+  canBet(r: BetRow): boolean {
+    return !!this.rowSelection(r) && (!r.game?.kickoff || Date.parse(r.game.kickoff) > Date.now());
+  }
+  takeRow(r: BetRow, event: Event): void {
+    event.stopPropagation();
+    const sel = this.rowSelection(r);
+    if (!sel || !this.canBet(r)) return;
+    this.wallet.toggle(sel);
+  }
+
+  // (the row's one-line read under the pick: Claude's headline where the pick has one, else its reason)
+  blurb(r: BetRow): string {
+    return r.headline ?? r.reason;
   }
 
   // The slot handle: pulled, it swings down and springs back, and as it lands the rows spin in like reels

@@ -16,14 +16,8 @@ $kind-clay: (
   team_stat: #12807e,
 );
 
-// (the page's side gutter; a row's left padding, its chevron's column and the gap between its columns, which
-// place the rank tile over its slot; a pick's circle and the gap beside it, which a phone's game line clears)
+// (the page's side gutter: the dropdown fits inside it on a phone)
 $page-gutter: 16px;
-$row-pad-left: 10px;
-$chevron-col: 20px;
-$row-gap: 12px;
-$circle: 34px;
-$circle-gap: 12px;
 
 // The Bets page, "The Book": a sportsbook on a card table. The header (the title, the views' bar, the bankroll
 // card), a ticker of scores and start times, then the board (a dot-matrix scoreboard, a row per pick in its
@@ -277,23 +271,6 @@ $circle-gap: 12px;
   }
 }
 
-// The panel a slot machine: its top a scoreboard (the header), the rest dark brushed gunmetal, and on
-// wide screens a handle on its right side
-.bets-panel {
-  border: 1px solid;
-  border-radius: 12px;
-  @include v.gunmetal;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 18px 40px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  max-height: 100%;
-  min-height: 0;
-  padding: 18px 20px 20px;
-  position: relative;
-}
-
 // ---------------------------------------------------------------------------
 // The controls row over the board: the game dropdown on the left, the filter chips on the right
 // ---------------------------------------------------------------------------
@@ -414,154 +391,295 @@ $circle-gap: 12px;
   }
 }
 
-.bets-note {
-  color: v.$text-faint;
-  margin: 18px 0 4px;
+// ---------------------------------------------------------------------------
+// The work: the board (with its controls over it) down the middle, the ticket's column down the right on a
+// wide screen. From 1000px the page stands still: the board fills what's left of the height and scrolls inside,
+// the right column on its own; narrower, everything stacks and the page scrolls as usual
+// ---------------------------------------------------------------------------
+.book-work {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-24;
+  width: 100%;
 }
 
-.bets-list {
+.book-main {
+  display: flex;
+  flex: 999 1 640px;
+  flex-direction: column;
+  gap: v.$space-12;
+  min-width: 0;
+}
+
+@include v.up(wide-menu) {
+  .book-work {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .book-main {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .board {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+// (narrower: the page scrolls, the board as tall as its rows)
+@media (max-width: #{v.bp(wide-menu) - 1px}) {
+  :host {
+    overflow-y: auto;
+  }
+
+  .bets-page {
+    height: auto;
+    min-height: 100%;
+  }
+}
+
+// The board: a dot-matrix scoreboard in a dark ring (5px of the raised panel's dark, a hairline of the panel's
+// edge), no title and no column headers; its rows scroll inside it, a gold scrollbar thumb
+.board {
+  @include v.scoreboard-panel(v.$radius-lg, (0 0 0 5px v.$panel-dark, 0 0 0 6px v.$panel-edge, 0 10px 30px rgba(0, 0, 0, 0.55)));
   display: flex;
   flex-direction: column;
-  gap: v.$space-6;
-  list-style: none;
-  margin: 0 -8px 0 0;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 0 8px 0 0;
+  margin: 6px;
+  overflow: hidden;
+  position: relative;
 }
 
-// Each row a panel like the card's Analysis sections: a thin edge and a scoreboard bar tinted by its bet's
-// confidence (green high, yellow medium, gray low), the chevron on the left; open, its reasoning below
-.bet {
-  // (a card table, as the Algorithm's panels: felt in a gold rail; its band on its badge and rank)
-  @include chip.panel(false);
-  // (its confidence color, the row and its open section washed in it)
-  --tint: #{v.$neutral};
-  // (its full height in the scrolling list, never squeezed to fit)
-  flex-shrink: 0;
+.board-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  @include chip.gold-scrollbar;
+}
 
-  // (a lock: chocolate, never the red of a loss)
+.bets-note {
+  color: v.$text-faint;
+  margin: 18px 16px;
+}
+
+.bets-list,
+.band-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// (a game's every line on top when it's chosen: the lines board in the panel's padding; restyled with the game
+// view next)
+.bet-board {
+  border-bottom: 1px solid v.$panel-rule;
+  padding: 12px 16px 14px;
+}
+
+// A band's header: a button that folds its rows, sticky to the top of the scroller while they pass: the
+// chevron in the rows' chevron column, the band's icon and name in its color with a glow, and at the right its
+// season (the record white, the units in the win's green or the loss's red). Its ground a wash of the band's
+// color fading out by 70%, its bottom edge the color at about 45%. The passes and fades' line at the bottom the
+// same button, dim, without a color
+.band-head {
+  align-items: center;
+  background: linear-gradient(90deg, var(--band-wash), transparent 70%), var(--scoreboard-dots), var(--scoreboard);
+  border: none;
+  border-bottom: 1px solid var(--band-edge);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: v.$font-base;
+  gap: v.$space-6 v.$space-12;
+  padding: 12px 16px;
+  position: sticky;
+  text-align: left;
+  top: 0;
+  transition: filter v.$t-hover ease;
+  width: 100%;
+  z-index: 1;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
+  @include v.focus-lit {
+    filter: brightness(1.15);
+
+    .band-chev {
+      color: #fff;
+    }
+  }
+
+  .band-chev {
+    color: var(--band-color);
+    display: flex;
+    flex: none;
+    justify-content: center;
+    width: 30px;
+  }
+
+  // (open: the chevron turned down)
+  &[aria-expanded="true"] .chev {
+    rotate: 90deg;
+  }
+
+  .band-icon {
+    color: var(--band-color);
+    flex: none;
+  }
+
+  .band-name {
+    color: var(--band-color);
+    font-family: v.$font-heading;
+    font-size: v.$fs-16;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px var(--band-glow);
+    text-transform: uppercase;
+  }
+
+  .band-space {
+    flex: 1;
+  }
+
+  .band-record {
+    color: v.$grey-light;
+    font-size: v.$fs-12;
+
+    b {
+      color: #fff;
+    }
+
+    .band-units {
+      color: v.$good-bright;
+
+      &.down {
+        color: v.$bad-soft;
+      }
+    }
+  }
+
+  .off-words {
+    color: v.$text-faint;
+    font-size: v.$fs-12;
+  }
+}
+
+// (a chevron that turns as what it opens opens)
+.chev {
+  @include v.turn;
+}
+
+.band {
+  --band-color: #{v.$text-faint};
+  --band-glow: transparent;
+  --band-wash: transparent;
+  --band-edge: #{v.$panel-rule};
+
   &.lock {
-    --tint: #{$lock};
-    // (its rail chocolate, not the gold)
-    --rail: linear-gradient(135deg, #7a3b10, #e8914a 30%, #{$lock} 55%, #{chip.$lock-light} 75%, #6e3410);
+    --band-color: #{chip.$lock-light};
+    --band-glow: rgba(210, 105, 30, 0.6);
+    --band-wash: rgba(210, 105, 30, 0.28);
+    --band-edge: rgba(210, 105, 30, 0.5);
   }
 
-  // (a CHECK: lavender, the bot questioning the market: a periwinkle rail, its bar washed in a soft lavender sheen)
   &.check {
-    --tint: #{chip.$check};
-    --rail: linear-gradient(135deg, #{chip.$check-deep}, #c9bfff 28%, #{chip.$check} 52%, #e2dcff 72%, #{chip.$check-deep});
+    --band-color: #{chip.$check-light};
+    --band-glow: rgba(169, 156, 240, 0.55);
+    --band-wash: rgba(169, 156, 240, 0.22);
+    --band-edge: rgba(169, 156, 240, 0.45);
+  }
+
+  &.love {
+    --band-color: #{v.$good-bright};
+    --band-glow: rgba(62, 224, 122, 0.5);
+    --band-wash: rgba(29, 138, 78, 0.3);
+    --band-edge: rgba(62, 224, 122, 0.4);
+  }
+
+  &.like {
+    --band-color: #{v.$caution};
+    --band-glow: rgba(255, 205, 0, 0.45);
+    --band-wash: rgba(255, 205, 0, 0.16);
+    --band-edge: rgba(255, 205, 0, 0.35);
+  }
+
+  // (off the board: its header not sticky (it's the last thing), its rows dim)
+  &.off {
+    .band-head {
+      position: static;
+    }
 
     .bet-row {
-      background:
-        linear-gradient(180deg, rgba(chip.$check-light, 0.3), rgba(chip.$check, 0.12) 55%, rgba(chip.$check, 0.07)),
-        radial-gradient(ellipse 70% 120% at 20% 0%, rgba(236, 232, 255, 0.16), transparent 70%),
-        var(--scoreboard-dots),
-        var(--scoreboard);
+      opacity: 0.75;
     }
   }
+}
 
-  &.high {
-    --tint: #{v.$good};
-  }
-
-  // (a Like: its rail's gold softer than a Love's, a little brighter in its lights; its bar lit gold, a sheen
-  // from the top, not a flat yellow (on the dark, that reads brown))
-  &.medium {
-    --tint: #{v.$caution};
-    --rail: linear-gradient(135deg, rgba(150, 114, 40, 0.6), rgba(255, 228, 150, 0.7) 22%, rgba(204, 160, 70, 0.6) 45%, rgba(255, 236, 176, 0.7) 62%, rgba(180, 140, 58, 0.6) 82%, rgba(130, 98, 34, 0.6));
-
-    .bet-row {
-      background:
-        linear-gradient(180deg, rgba(255, 226, 120, 0.3), rgba(255, 205, 0, 0.12) 55%, rgba(255, 205, 0, 0.08)),
-        radial-gradient(ellipse 70% 120% at 20% 0%, rgba(255, 240, 190, 0.16), transparent 70%),
-        var(--scoreboard-dots),
-        var(--scoreboard);
-    }
-  }
-
-  &.open .bet-row {
-    border-bottom: 1px solid chip.$felt-seam;
-  }
-
-  // (a Pass: its rail the gold gone gray and faint, saying less than the bets)
-  &.low {
-    --rail: linear-gradient(135deg, rgba(150, 144, 130, 0.35), rgba(205, 198, 182, 0.42) 30%, rgba(140, 134, 120, 0.35) 60%, rgba(195, 188, 172, 0.42) 80%, rgba(130, 124, 110, 0.35));
-  }
+// One row on the board, under a hairline: a grid of the chevron, the rank tile, the circle, the pick, the meter
+// and the price; a faint gold wash under the pointer
+.bet {
+  border-bottom: 1px solid v.$panel-rule;
 }
 
 .bet-row {
   align-items: center;
-  // (a panel's bar, every sport's: the scoreboard lit in its band's color, a sheen from the top fading down it, as a
-  // Bet's gold; the felt opens under it)
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tint) 28%, transparent), color-mix(in srgb, var(--tint) 12%, transparent) 55%, color-mix(in srgb, var(--tint) 8%, transparent)),
-    radial-gradient(ellipse 70% 120% at 20% 0%, rgba(255, 255, 255, 0.08), transparent 70%),
-    var(--scoreboard-dots),
-    var(--scoreboard);
-  border-radius: 0;
-  border: none;
-  color: #fff;
-  cursor: pointer;
   display: grid;
-  font-family: v.$font-base;
-  gap: $row-gap;
-  grid-template-columns: $chevron-col 42px 58px minmax(0, 1fr) auto;
-  padding: 10px 14px 10px $row-pad-left;
-  text-align: left;
-  width: 100%;
-
-  transition: filter v.$t-hover ease;
+  gap: v.$space-14;
+  grid-template-columns: 30px 46px 34px minmax(0, 1fr) 170px 96px;
+  padding: 11px 16px;
+  transition: background-color v.$t-hover ease;
 
   &:hover {
-    filter: brightness(1.12);
+    background-color: rgba(chip.$gold-led, 0.035);
+  }
+}
 
-    .bet-chevron {
-      color: v.$text-strong;
-    }
+// (the chevron: a button that opens the row's reasoning; lightens under the pointer, turns down open)
+.bet-chevron {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: v.$radius-sm;
+  color: v.$text-faint;
+  cursor: pointer;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  padding: 0;
+  width: 30px;
+
+  &:hover {
+    color: #fff;
   }
 
-  // (the keyboard's focus: lit as on hover; the panel round it would clip a ring)
   @include v.focus-lit {
-    filter: brightness(1.12);
+    color: #fff;
+  }
 
-    .bet-chevron {
-      color: v.$text-strong;
-    }
+  &[aria-expanded="true"] .chev {
+    rotate: 90deg;
   }
 }
 
-// (the row and its rank tile: the tile a button of its own, laid over the row's rank column, its slot)
-.bet-line {
-  position: relative;
-}
-
-.bet-rank-slot {
-  height: 32px;
-}
-
-// the rank: a scoreboard tile with segment digits, like the rankings grid's: the top 10 green, the rest
-// white. A click opens how its score is built; lit like the grid's on hover (the 2px border in the board's
-// light; at rest there but clear, so the tile doesn't change size)
+// The rank: a scoreboard tile with segment digits, like the rankings grid's: the top 10 green, the rest white;
+// a lock's padlock a light chocolate, a CHECK's "?" lavender, each glowing like the digits. A click opens how its
+// score is built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear)
 .bet-rank {
   @include v.led-tile;
-  // (the rank tile spins as its slot's column)
-  --col: 1;
-  // (over the slot: past the row's left padding, the chevron and the gap; centered down the row)
   border: 2px solid transparent;
-  bottom: 0;
   cursor: pointer;
   font-size: v.$fs-15;
-  font-weight: 900;
-  height: 32px;
-  left: $row-pad-left + $chevron-col + $row-gap;
+  font-weight: 700;
+  height: 36px;
   line-height: 1;
-  margin: auto 0;
   padding: 2px 0 0;
-  position: absolute;
-  top: 0;
   transition: border-color v.$t-hover ease;
-  width: 42px;
+  width: 46px;
 
   &:hover,
   &:focus-visible,
@@ -571,12 +689,10 @@ $circle-gap: 12px;
   }
 
   &.top {
-    color: var(--tint-good, #{v.$good-bright});
-    text-shadow: 0 0 8px rgba(v.$good-bright, 0.6);
+    color: v.$good-bright;
+    text-shadow: 0 0 8px rgba(v.$good-bright, 0.5);
   }
 
-  // a CHECK: above the ranks, under the locks: a "?" in the lavender's light, glowing like the digits; a click
-  // opens its popover (the model against the book, the model's Kelly, why it isn't bet), lit on hover like a rank's
   &.check {
     color: chip.$check-light;
     font-family: v.$font-base;
@@ -585,7 +701,6 @@ $circle-gap: 12px;
     text-shadow: 0 0 8px rgba(chip.$check-light, 0.65);
   }
 
-  // a lock: above the ranks, its padlock a light chocolate, glowing like the digits
   &.lock {
     color: chip.$lock-light;
     padding-top: 0;
@@ -598,167 +713,263 @@ $circle-gap: 12px;
   }
 }
 
-// (its band's tag, the row's own size, centered in its column; flat on its color, no shadow under the letters:
-// only Pass, outlined on the row, keeps the row's)
-.bet-grade {
-  @include chip.tier-tag(10.5px, 5px 0 4px, 0.8px);
-  text-align: center;
-  text-shadow: none;
+// The circle: a prop's player's face in a ring of his team's color on the dark, a side's team's logo in its
+// color, a total's arrow (up green, down red)
+.bet-circle {
+  align-items: center;
+  background: v.$panel-rule;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: v.$radius-round;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  overflow: hidden;
+  width: 34px;
 
-  &.pass {
-    text-shadow: inherit;
+  img {
+    height: 22px;
+    object-fit: contain;
+    width: 22px;
   }
 
-  // (a CHECK's "?" before its word, the two centered and a touch tighter: "?CHECK" in the phone's 50px column)
-  &.check {
-    gap: 1px;
-    justify-content: center;
-    letter-spacing: 0.3px;
+  .bet-face {
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+    width: 100%;
+  }
+
+  &.team {
+    background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.25), transparent 60%), v.$panel-rule;
+    border-width: 1.5px;
+  }
+
+  &.total {
+    background: v.$panel-dark;
+    border: 1.5px solid rgba(v.$bad-soft, 0.6);
+
+    .mat-icon {
+      @include v.icon-size(18px);
+      color: v.$bad-soft;
+    }
+
+    &.over {
+      border-color: rgba(v.$good-bright, 0.6);
+
+      .mat-icon {
+        color: v.$good-bright;
+      }
+    }
   }
 }
 
-.bet-main,
-.bet-game {
+// The pick in the headline font, its one word lit; under it the sport, the game, the start and the read in one
+// line that trims to the room
+.bet-main {
   display: flex;
   flex-direction: column;
+  gap: v.$space-2;
   min-width: 0;
 
-  b {
-    font-weight: 900;
+  .bet-pick {
+    font-family: v.$font-heading;
+    font-size: v.$fs-15;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
     @include v.ellipsis;
   }
 
-  small {
-    margin-top: 0.5em;
+  .bet-sub {
     color: v.$text-faint;
-    font-size: v.$fs-12;
-    font-weight: 600;
+    font-size: v.$fs-11;
+    letter-spacing: 0.3px;
     @include v.ellipsis;
+
+    .bet-sub-read {
+      color: v.$grey-light;
+    }
+
+    .bet-sub-meter {
+      display: none;
+
+      b {
+        color: v.$good-bright;
+        font-weight: 700;
+      }
+    }
   }
 }
 
-.bet-game b {
-  font-size: v.$fs-13;
+.bet-key {
+  color: var(--scoreboard-led);
+  font-weight: 700;
 }
 
-// (a pick already bet, still open: its stake in green after the price)
+// (a pick already bet, still open: its stake in green)
 .bet-placed {
   align-items: center;
   color: v.$good-bright;
   display: inline-flex;
+  font-size: v.$fs-11;
   font-weight: 800;
   gap: v.$space-4;
-  margin-left: 8px;
-  vertical-align: middle;
 
   .mat-icon {
     @include v.icon-size(13px);
   }
 }
 
-// the bet itself in the headline font (Outfit)
-.bet-main b {
-  @include v.headline(17px);
-  letter-spacing: 0.2px;
+// The model-vs-book meter: the model's chance in green on the left, the book's faint on the right, then a 6px
+// track with a green fill to the model's and a white tick at the book's
+.bet-meter {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+
+  .meter-words {
+    display: flex;
+    font-family: v.$font-heading;
+    font-size: v.$fs-12;
+    justify-content: space-between;
+  }
+
+  .meter-model {
+    color: v.$good-bright;
+  }
+
+  .meter-book {
+    color: v.$text-faint;
+  }
+
+  .meter-track {
+    background: v.$panel-rule;
+    border-radius: v.$radius-pill;
+    height: 6px;
+    position: relative;
+  }
+
+  .meter-fill {
+    background: v.$good-bright;
+    border-radius: v.$radius-pill;
+    bottom: 0;
+    box-shadow: 0 0 6px rgba(v.$good-bright, 0.45);
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  .meter-tick {
+    background: #fff;
+    height: 12px;
+    position: absolute;
+    top: -3px;
+    width: 2px;
+  }
 }
 
-// the game, pinned to the row's right edge (the matchup and the weather under it both end there)
-.bet-game {
-  align-items: flex-end;
-  text-align: right;
-}
-
-// the matchup: each team's little logo before its abbreviation
-.bet-game .bet-matchup {
+// The price: a 46px button, the odds over "+ TICKET" on felt in a gold seam; on the ticket, solid gold with dark
+// lettering, "ON TICKET", and a gold glow. A click writes the bet on the ticket, or takes it off
+.bet-price {
+  @include chip.felt-control;
   align-items: center;
+  border-radius: v.$radius-md;
+  box-shadow: none;
+  box-sizing: border-box;
+  cursor: pointer;
   display: flex;
-  gap: v.$space-4;
+  flex-direction: column;
+  font-family: v.$font-base;
+  gap: v.$space-2;
+  height: 46px;
+  justify-content: center;
+  padding: 0 4px;
+  text-shadow: none;
+  width: 100%;
 
-  img {
-    height: 16px;
-    object-fit: contain;
-    width: 16px;
+  b {
+    font-family: v.$font-heading;
+    font-size: v.$fs-16;
+    font-weight: 600;
+    line-height: 1;
   }
 
-  .bet-at {
-    margin: 0 2px;
+  small {
+    color: v.$text-soft;
+    font-size: v.$fs-10;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &.on {
+    background: chip.$gold-led;
+    border-color: chip.$gold-led;
+    box-shadow: 0 0 12px rgba(chip.$gold-led, 0.45);
+    color: v.$chip-ink;
+
+    b {
+      font-weight: 700;
+    }
+
+    small {
+      color: v.$chip-ink;
+      font-weight: 800;
+    }
+  }
+
+  // (a price that can't go on the ticket: the odds alone, quiet)
+  &.still {
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+    cursor: default;
+
+    &:hover {
+      filter: none;
+    }
+  }
+
+  &.none {
+    background: none;
+    border: none;
+    box-shadow: none;
   }
 }
 
-// under it: the kickoff weather and where it's played, the wind in amber when it could matter
-// (when a game's played, under its teams)
-.bet-game .bet-when {
-  color: v.$text-faint;
-  font-size: v.$fs-11;
-  font-weight: 700;
-}
-
-// (the open section's foot: its chance to win on the left, where and the weather on the right)
-.bet-reasons .bet-foot {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-6 v.$space-16;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.bet-foot .bet-where {
-  align-items: center;
-  // (the gray of a low chance's "% to win", so it reads on the dark; amber when windy)
-  color: color-mix(in srgb, #{v.$neutral} 75%, #fff);
-  display: flex;
-  font-size: v.$fs-12;
-  font-weight: 600;
-  gap: v.$space-4;
-
-  .mat-icon {
-    @include v.icon-size(14px);
-  }
-
-  &.windy {
-    color: #ffc864;
-  }
-}
-
-.bet-chevron {
-  color: v.$text-faint;
-  @include v.icon-size(20px);
-}
-
-// (open: the table's felt, as every panel's body is (the bet's own, _casino-chip.scss: nothing over it); it
-// unfolds down from its row, as a card panel does)
+// Open: the reasoning under the row, past the rank and the circle: the read, the devil's advocate, a meta line
+// (the edge, the Kelly score, the venue and weather, whose analysis), a note to the bot on an admin's CHECK; the
+// game's lines beside it. It unfolds down from its row
 .bet-reasons {
   animation: bet-unfold 0.24s v.$ease-out;
-  background: none;
-  padding: 14px 20px 16px;
+  display: grid;
+  gap: v.$space-14 v.$space-28;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  padding: 0 16px 16px 168px;
+
+  .bet-words {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-8;
+  }
 
   p {
     color: v.$text-strong;
-    font-size: v.$fs-14;
-    line-height: 1.6;
+    font-size: v.$fs-13;
+    line-height: 1.55;
     margin: 0;
   }
 
-  // (Claude's analysis: its headline above the reason, and whose it is under the risk)
   .bet-headline {
     color: #fff;
-    font-size: v.$fs-14;
     font-weight: 700;
-    margin-bottom: 6px;
   }
 
-  .bet-caption {
-    color: v.$text-faint;
-    font-size: v.$fs-12;
-    margin-top: 8px;
-  }
-
-  // (a desk pick's risk, its devil's advocate: the most likely way it loses, labeled in orange)
+  // (the devil's advocate: the most likely way it loses, labeled in orange)
   .bet-risk {
     color: v.$text-soft;
-    font-size: v.$fs-13;
-    margin-top: 10px;
 
     b {
       color: v.$doubtful;
@@ -768,8 +979,23 @@ $circle-gap: 12px;
 
   .bet-meta {
     color: v.$text-faint;
-    font-size: v.$fs-12;
-    font-weight: 600;
+    font-size: v.$fs-11;
+    line-height: 1.5;
+  }
+
+  .bet-where {
+    align-items: center;
+    display: inline-flex;
+    gap: v.$space-4;
+    vertical-align: bottom;
+
+    .mat-icon {
+      @include v.icon-size(14px);
+    }
+
+    &.windy {
+      color: #ffc864;
+    }
   }
 
   // (a CHECK's why it wasn't bet: its "?" in a lavender disc, the words beside it)
@@ -777,9 +1003,7 @@ $circle-gap: 12px;
     align-items: flex-start;
     color: v.$text-soft;
     display: flex;
-    font-size: v.$fs-13;
     gap: v.$space-8;
-    margin-top: 10px;
 
     b {
       color: chip.$check-light;
@@ -787,87 +1011,108 @@ $circle-gap: 12px;
     }
 
     .bet-check-q {
+      align-items: center;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 60%),
+        #{chip.$check};
+      border-radius: v.$radius-round;
       color: #1f1748;
+      display: inline-flex;
+      flex-shrink: 0;
+      font-size: v.$fs-12;
+      height: 18px;
+      justify-content: center;
+      line-height: 1;
+      margin-top: 1px;
+      width: 18px;
     }
   }
 
-  .bet-check-q {
-    align-items: center;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 60%),
-      #{chip.$check};
-    border-radius: v.$radius-round;
-    display: inline-flex;
-    flex-shrink: 0;
-    font-size: v.$fs-12;
-    height: 18px;
-    justify-content: center;
-    line-height: 1;
-    margin-top: 1px;
-    width: 18px;
-  }
-
-  // ("High Confidence", in its level's color, lightened to read on the dark)
-  .bet-confidence {
-    color: color-mix(in srgb, var(--tint) 75%, #fff);
-    font-weight: 800;
-
-    &::first-letter {
-      text-transform: uppercase;
-    }
+  .bet-lines {
+    align-self: start;
+    min-width: 0;
   }
 }
 
-// (phones and small tablets: the game and its start a second line under the pick, not gone; the chevron, rank and
-// grade down both lines' middle)
+// (phones and small tablets: the phone design's row: the rank tile, the circle, the pick with the model against
+// the book under it, and the price; the chevron narrower before them, the meter folded into the line)
 @include v.down(ai-narrow) {
   .bet-row {
-    grid-template-columns: $chevron-col 42px 50px minmax(0, 1fr);
-    row-gap: v.$space-6;
-
-    > .bet-chevron,
-    > .bet-rank-slot,
-    > .bet-grade {
-      align-self: center;
-      grid-row: span 2;
-    }
+    gap: v.$space-8;
+    grid-template-columns: 22px 40px 30px minmax(0, 1fr) 70px;
+    padding: 10px;
   }
 
-  .bet-game {
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: v.$space-2 v.$space-8;
-    grid-column: 4;
-    text-align: left;
-
-    small {
-      margin-top: 0;
-    }
+  .bet-chevron {
+    width: 22px;
   }
 
-  // (under the pick's words, past its circle)
-  .bet-main.has-circle + .bet-game {
-    padding-left: $circle + $circle-gap;
+  .bet-rank {
+    font-size: v.$fs-13;
+    height: 32px;
+    width: 40px;
   }
-}
 
-// (the narrowest phones: the pick's circle gone (its words say whose it is), the pick and its game the room)
-@include v.down(slim) {
-  .bet-main.has-circle {
-    grid-template-columns: minmax(0, 1fr);
+  .bet-circle {
+    height: 30px;
+    width: 30px;
+  }
 
-    .bet-circle {
+  .bet-main .bet-pick {
+    font-size: v.$fs-14;
+    white-space: normal;
+  }
+
+  .bet-main .bet-sub {
+    .bet-sub-read,
+    .bet-sub-when {
       display: none;
     }
+
+    .bet-sub-meter {
+      display: inline;
+    }
   }
 
-  .bet-main.has-circle + .bet-game {
-    padding-left: 0;
+  .bet-meter {
+    display: none;
+  }
+
+  .bet-price {
+    height: 44px;
+
+    b {
+      font-size: v.$fs-15;
+      font-weight: 700;
+    }
+
+    small {
+      font-size: 9px;
+      font-weight: 800;
+    }
+  }
+
+  .band-head {
+    gap: v.$space-8;
+    padding: 10px;
+
+    .band-chev {
+      width: 22px;
+    }
+
+    .band-name {
+      font-size: v.$fs-14;
+      letter-spacing: 2.5px;
+    }
+
+    .band-record {
+      font-size: v.$fs-11;
+    }
   }
 
   .bet-reasons {
-    padding-left: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 10px 14px;
   }
 }
 
@@ -1188,63 +1433,6 @@ $hub-y: 154px;
 .bets-page.wallet-view,
 .bets-page.desk-view {
   max-width: 1240px;
-}
-
-// A pick led by a circle (a prop's player's headshot, a total's arrow, a side's team's logo) beside its two lines:
-// the pick, its one word that says what the bet is in its team's color (the board's light without one), and its
-// price under it
-.bet-main.has-circle {
-  align-content: center;
-  align-items: center;
-  column-gap: $circle-gap;
-  display: grid;
-  grid-template-columns: auto 1fr;
-
-  .bet-circle {
-    grid-row: span 2;
-  }
-
-  // (a pick alone, no price under it: down its circle's middle)
-  > b:last-child {
-    grid-row: span 2;
-  }
-}
-
-.bet-circle {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: v.$radius-round;
-  display: inline-flex;
-  height: $circle;
-  justify-content: center;
-  width: $circle;
-
-  img {
-    height: 22px;
-    object-fit: contain;
-    width: 22px;
-  }
-
-  .mat-icon {
-    @include v.icon-size(18px);
-    color: #fff;
-  }
-
-  &.over {
-    background: color-mix(in srgb, var(--scoreboard-led) 22%, transparent);
-    border-color: color-mix(in srgb, var(--scoreboard-led) 55%, transparent);
-  }
-}
-
-.bet-face {
-  object-fit: cover;
-  object-position: 50% 15%;
-}
-
-.bet-key {
-  color: var(--scoreboard-led);
-  font-weight: 900;
 }
 
 // ---------------------------------------------------------------------------

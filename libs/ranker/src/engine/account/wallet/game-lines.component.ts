@@ -5,7 +5,7 @@ import { headshot, hideImage, teamLogo } from '../../bets/bet-format';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
 import { WalletService } from './wallet.service';
-import { GameBoard, PlayMarket, Price, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
+import { GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
 
 // The bot's pick as the Bets page has it (its BetRow, as far as the board reads it)
 export interface BotPick {
@@ -86,6 +86,35 @@ export interface PropTeam {
 }
 
 const MARKET_OF: Record<string, PlayMarket> = { spread: 'spread', total: 'total', moneyline: 'ml', player: 'prop' };
+
+// The bot's pick as a bet for the slip, at the bot's own line and price: what the Bets page's row price button
+// hands wallet.toggle, the one slip call the tiles below make (take, takeProp), with the same fields: the pick's
+// band and Kelly score on it, its id as the ref, a prop's player and stat. A CHECK isn't the bot's pick (botPick
+// false, its tier an admin's alone); none without a price, or for a type the slip doesn't take
+export function botSelection(game: { sport: string; event: string; matchup: string; start: string }, p: BotPick, desk: boolean): Omit<Selection, 'key' | 'stake'> | null {
+  const market = MARKET_OF[p.betType];
+  if (!market || !Number.isFinite(p.price) || !p.price) return null;
+  const check = p.confidence === 'check';
+  const prop = market === 'prop';
+  const side = p.side ?? (market === 'total' || prop ? (/^(.*s)?under/i.test(p.pick) ? 'under' : 'over') : '');
+  if (!side || (prop && p.line === null)) return null;
+  return {
+    ...game,
+    market,
+    side,
+    line: p.line ?? null,
+    odds: p.price,
+    pick: p.pick,
+    botPick: !check,
+    tier: check && !desk ? null : p.confidence ? tierOf(p.confidence) : null,
+    kelly: check ? null : Math.round(p.sureness * 1e4) / 100,
+    ref: p.pickId ?? null,
+    propType: prop ? (p.pickId?.split(':')[2] ?? p.market) : null,
+    athlete: prop ? String(p.athleteId ?? '') : null,
+    player: prop ? (p.player ?? null) : null,
+    statLabel: prop ? p.market : null,
+  };
+}
 const tierOfBand = (b: BoardBand | null | undefined): Tier | null => (b ? tierOf(b as Confidence) : null);
 
 // A game's every line, both sides (the spread, the total, the moneyline) at DraftKings' prices from ESPN's
