@@ -128,7 +128,7 @@ export class TabRanker {
     const pool = all.filter((player) => SPORT.playingTime.of(player) >= min);
     const scored = outside.length ? [...all, ...outside] : all;
     const totals = weightedTotals(scored, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths, adjustFor(position, mix));
-    return { totals, counted, weights, ranked: byTotals(all, totals, this.settings.sport) };
+    return { totals, counted, weights, ranked: byTotals(all, totals, this.settings.sport, pool) };
   }
 
   // Rank everyone (RANK_EVERYONE): the UR rows shown below the list. The tab's rows the list's other

@@ -288,17 +288,28 @@ function groupScales<T>(pairs: [T, number][], of: (unit: T) => string): Map<stri
 }
 
 // Best first by their weighted totals, then the sport's head-to-head rule
-export function byTotals<T>(units: T[], totals: Map<T, number>, settings: SportSettings = DEFAULT_SPORT_SETTINGS): T[] {
+// (pool: the rows the scores' spread is read over, the list's ranked pool; without it, every unit's. The MMA
+// head-to-head window is a share of that spread, so rows ranked but left out of the pool (the fighters under
+// Min Games) must not widen it: a near tie would then resolve one way with them scored beside the list and
+// another without them, 2026-10-16's WP4P)
+export function byTotals<T>(units: T[], totals: Map<T, number>, settings: SportSettings = DEFAULT_SPORT_SETTINGS, pool?: T[]): T[] {
   // (head to head only between close scores, when the sport says how close: SPORT.beatGap)
   const gap = SPORT.beatGap?.(settings);
   let close: ((a: T, b: T) => boolean) | undefined;
-  if (gap !== undefined && units.length > 1) {
-    const values = units.map((unit) => totals.get(unit) ?? 0);
+  const basis = pool && pool.length > 1 ? pool : units;
+  if (gap !== undefined && basis.length > 1) {
+    const values = basis.map((unit) => totals.get(unit) ?? 0);
     const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
     const sd = Math.sqrt(values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / values.length);
     close = (a, b) => Math.abs((totals.get(a) ?? 0) - (totals.get(b) ?? 0)) <= gap * sd;
   }
-  return headToHead([...units].sort((a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0)), settings, close);
+  const sorted = [...units].sort((a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0));
+  if (!pool || pool.length < 2) return headToHead(sorted, settings, close);
+  // (head to head among the pool alone: a row outside it sorted between two of the pool's would otherwise
+  // stand between them, and the rule, reaching one row down, would miss the swap; the rows outside it
+  // follow in their score order, as the list shows them, below it)
+  const inPool = new Set(pool);
+  return [...headToHead(sorted.filter((unit) => inPool.has(unit)), settings, close), ...sorted.filter((unit) => !inPool.has(unit))];
 }
 
 // The sport's head-to-head rule (SPORT.beat) over a sorted list: a row below one it beat, within the
