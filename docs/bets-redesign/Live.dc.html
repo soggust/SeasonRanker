@@ -31,8 +31,10 @@ body{margin:0;background:#0b3322}
 .pcard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .railcard{border:2px solid transparent;border-radius:12px;overflow:hidden;background:linear-gradient(#121212,#121212) padding-box,linear-gradient(135deg,#7a5a1e,#f1d58c 22%,#b38a3c 45%,#f6e2a4 62%,#9c7630 82%,#6e511b) border-box;box-shadow:0 4px 12px rgba(0,0,0,.45)}
 .cbar{display:flex;align-items:center;gap:18px;padding:0 16px;min-height:50px;background:linear-gradient(rgba(63,163,107,.16),rgba(63,163,107,.16)),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border-bottom:1px solid rgba(222,186,106,.55)}
-.tile{background:rgba(255,255,255,.025) !important;border:1px solid #3a3a3a;box-shadow:0 3px 8px rgba(0,0,0,.45);transition:translate .15s,border-color .15s,box-shadow .15s}
+.tile{background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212 !important;border:1px solid #3a3a3a;box-shadow:0 3px 8px rgba(0,0,0,.45);transition:translate .15s,border-color .15s,box-shadow .15s}
 .tile:hover{translate:0 -2px;border-color:rgba(235,197,108,.6);box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.dot-up{display:inline-block;width:7px;height:7px;border-radius:50%;background:#e8913a;box-shadow:0 0 6px rgba(232,145,58,.8);flex:none}
+.dot-off{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7a7a7a;flex:none}
 .livedot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ee07a;box-shadow:0 0 6px #3ee07a;flex:none}
 @media (prefers-reduced-motion:no-preference){.livedot{animation:blink 1.4s ease-in-out infinite}.rise{animation:rise .22s ease}.fade{animation:fade .22s ease}}
 @keyframes blink{50%{opacity:.35}}
@@ -44,6 +46,7 @@ body{margin:0;background:#0b3322}
 .led{display:grid;font-family:DSEG7,Outfit,sans-serif;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 .led>span{grid-area:1/1;text-align:right}
 .led .unlit{color:rgba(255,255,255,.06)}
+.chalkbets{background:url("/_blob/f4216cad2331f9c36c184a30c7df8348") 50% 35%/1400px 720px no-repeat,radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.05),transparent 40%),radial-gradient(ellipse at 80% 85%,rgba(255,255,255,.035),transparent 45%),repeating-linear-gradient(17deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px),#1f2824}
 .chalk{background:radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.05),transparent 40%),radial-gradient(ellipse at 80% 85%,rgba(255,255,255,.035),transparent 45%),repeating-linear-gradient(17deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px),#1f2824}
 .mtabs{scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .mtabs::-webkit-scrollbar{display:none}
@@ -84,7 +87,7 @@ body{margin:0;background:#0b3322}
 </div>
 <nav class="posbar dots" aria-label="Bets sections" style="flex: 1 1 420px; max-width: 640px; height: 44px; display: flex; border: 1px solid #3a3a3a; border-radius: 9.1px; box-shadow: 0 2px 6px rgba(0,0,0,.35); overflow: hidden;">
 <button class="btn">The board</button>
-<button class="btn lit" aria-current="page" style="display: flex; align-items: center; justify-content: center; gap: 7px;"><sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>Live · {{liveCount}}</button>
+<button class="btn lit" aria-current="page" style="display: flex; align-items: center; justify-content: center; gap: 7px;"><sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{liveLabel}}</button>
 <button class="btn">Open · 5</button>
 <button class="btn">Cashed</button>
 <button class="btn">Algorithm</button>
@@ -99,7 +102,7 @@ body{margin:0;background:#0b3322}
 
 <section class="railcard" aria-label="{{card.title}}" style="max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box;">
 <div class="cbar">
-<h2 style="margin: 0; display: inline-flex; align-items: center; gap: 9px; font: 800 13px/1 Nunito, sans-serif; letter-spacing: 1px; text-transform: uppercase;"><sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><span class="livedot" aria-hidden="true"></span></sc-if>{{card.title}}</h2>
+<h2 style="margin: 0; display: inline-flex; align-items: center; gap: 9px; font: 800 13px/1 Nunito, sans-serif; letter-spacing: 1px; text-transform: uppercase;"><span class="{{card.dot}}" aria-hidden="true"></span>{{card.title}}</h2>
 <sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}">
 <span style="display: inline-flex; align-items: center; gap: 16px; padding-left: 18px; border-left: 1px solid rgba(255,255,255,.12); font-size: 12px; color: #ccc;">
 <sc-for list="{{sweat}}" as="w" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; {{w.dot}}"></span><b style="color: #fff;">{{w.n}}</b> {{w.t}}</span></sc-for>
@@ -107,9 +110,9 @@ body{margin:0;background:#0b3322}
 </sc-if>
 <span style="flex: 1;"></span>
 <sc-if value="{{anyLive}}" hint-placeholder-val="{{true}}"><div class="seg" role="group" aria-label="Show"><sc-for list="{{filters}}" as="f" hint-placeholder-count="2"><button class="btn" onClick="{{f.pick}}" aria-pressed="{{f.on}}">{{f.t}}</button></sc-for></div></sc-if>
-<sc-if value="{{quiet}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #ccc;">Nothing on right now. First tip-off at <b class="glow">7:00 PM</b></span></sc-if>
+<sc-if value="{{quiet}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #ccc;">{{card.note}}<b class="glow">{{card.noteTime}}</b></span></sc-if>
 </div>
-<div class="dots" style="padding: 18px; display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="chalkbets" style="padding: 18px; display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr));">
 <sc-for list="{{games}}" as="g" hint-placeholder-count="5">
 <button class="btn tile dots" onClick="{{g.open}}" aria-label="{{g.aria}}" style="border-radius: 10px; text-align: left; display: flex; flex-direction: column; overflow: hidden;">
 <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px 0; line-height: 1;">
@@ -432,7 +435,7 @@ class Component extends DCLogic {
     const liveBets = liveKeys.flatMap((k) => G[k].bets);
     const sweat = [[liveBets.filter((b) => b.good === true).length, 'winning', GRN], [liveBets.filter((b) => b.good === null).length, 'close', GLD], [liveBets.filter((b) => b.good === false).length, 'losing', RED]].map(([n, t, c]) => ({ n, t, dot: 'background: ' + c + '; box-shadow: 0 0 6px ' + c + ';' }));
     const filters = [['all', 'All games'], ['mine', 'My bets']].map(([k, t]) => ({ t, on: s.show === k ? 'true' : 'false', pick: () => this.setState({ show: k }) }));
-    const out = { games: pool.map(tile), card: { title: quiet ? 'Coming up' : 'On now', count: pool.length }, anyLive: !quiet, quiet, sweat, filters, liveCount: liveKeys.length, hasModal: !!s.open, close: () => this.setState({ open: null }) };
+    const out = { games: pool.map(tile), card: quiet ? (pool.length ? { title: 'Upcoming', dot: 'dot-up', note: 'Nothing on right now. First tip-off at ', noteTime: '7:00 PM' } : { title: 'All done tonight', dot: 'dot-off', note: 'No games left. Tomorrow’s board opens at ', noteTime: '9:00 AM' }) : { title: 'On now', dot: 'livedot' }, anyLive: !quiet, quiet, sweat, filters, liveCount: liveKeys.length, liveLabel: liveKeys.length ? 'Live · ' + liveKeys.length : 'Live', hasModal: !!s.open, close: () => this.setState({ open: null }) };
     const empty = { away: {}, home: {}, sides: [], leds: [], tabs: [], periods: [], lsRows: [], bets: [], important: [], leaderCols: [], stats: [], box: [], pfilters: [], groups: [], info: [] };
     if (!s.open) { out.m = empty; return out; }
     const g = G[s.open], isLive = g.state === 'live', isPre = g.state === 'pre', lead = isPre ? 0 : g.as - g.hs;
