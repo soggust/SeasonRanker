@@ -686,10 +686,17 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
       object-position: top;
     }
 
-    &.trophy {
+    // (the open list's Best Bets trophy exactly: the same glyph, gold, at the list's proportion (a 20px icon by 14px
+    // words), its own plain weight and spacing; not the global .trophy, the sport's Lombardi mask (the owner's note, 2026-10-17))
+    &.best-trophy {
       color: chip.$gold-led;
-      font-size: 1.15em;
+      font-size: calc(20em / 14);
+      font-weight: 400;
+      height: 1em;
+      letter-spacing: 0;
       overflow: visible;
+      vertical-align: -0.25em;
+      width: 1em;
     }
   }
 
@@ -1059,9 +1066,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   padding: 10px 16px 10px 0;
   text-align: left;
   text-transform: uppercase;
-  justify-self: end;
   transition: filter v.$t-hover ease;
-  width: v.$bet-button;
+  width: 100%;
 
   &:hover {
     filter: brightness(1.15);
@@ -1119,9 +1125,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   position: sticky;
   text-align: left;
   top: 0;
-  justify-self: end;
   transition: filter v.$t-hover ease;
-  width: v.$bet-button;
+  width: 100%;
   z-index: 1;
 
   &:hover {
@@ -1632,9 +1637,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   justify-content: center;
   padding: 0 4px;
   text-shadow: none;
-  justify-self: end;
   transition: filter v.$t-hover ease;
-  width: v.$bet-button;
+  width: 100%;
 
   &:hover:not([disabled]) {
     filter: brightness(1.15);

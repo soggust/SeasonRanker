@@ -139,7 +139,7 @@
               <span class="bets-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
               <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="bets-game-label"><mat-icon class="pill-mark trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
+              <span class="bets-game-label"><mat-icon class="pill-mark best-trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
               <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
             <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -182,7 +182,6 @@
                   [attr.aria-selected]="choice === sportChoice(s.sport)"
                   [attr.aria-expanded]="isOpen(d.day, s.sport)"
                   [class.active]="active === gk"
-                  [class.chosen]="choice === sportChoice(s.sport)"
                   [class.folded]="!isOpen(d.day, s.sport)"
                   [title]="'Every ' + s.name + ' pick, every day'"
                   (mousemove)="active = gk"
