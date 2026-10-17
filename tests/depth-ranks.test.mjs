@@ -82,3 +82,27 @@ test('the gem: digits, the rank column colors, and its hover', () => {
   assert.equal(depthRankTitle({ rank: 3, of: 32 }, 'Quarterbacks', 'in 2024'), 'No. 3 of 32 Quarterbacks in 2024');
   assert.equal(depthRankTitle('ur', 'Running Backs', 'this season'), 'Unranked (UR) among the Running Backs this season: under Min Games, or outside the list');
 });
+
+// Where the gem sits (the owner's call, 2026-10-17: beside the name it clashed with the text): on a headshot
+// circle (a chip's, a special teams item's) overlaid inside the circle as a badge, the name line plain under
+// it; in a text row (a slot's popover, a coach, the full roster) leading the name
+test('the gem sits on the circle as a badge, or leads a text row', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const html = await readFile(path.join(import.meta.dirname, '..', 'libs', 'ranker', 'src', 'engine', 'player-card', 'tabs', 'team.component.html'), 'utf8');
+  const gems = [...html.matchAll(/<ng-container \*ngTemplateOutlet="gem; context: \{([^}]*)\}" \/>/g)].map((m) => m[1]);
+  assert.equal(gems.length, 5, 'the chip, the special teams, a popover row, a coach, a roster row');
+  // (the two circles: the badge inside .depth-head, after the injury flag, the name line after the circle)
+  for (const head of html.match(/<span class="depth-head[^"]*"[^>]*>[\s\S]*?<\/span>\s*<span class="depth-name">/g) ?? []) {
+    assert.match(head, /depth-status[\s\S]*ngTemplateOutlet="gem; context: \{[^}]*badge: true/, 'the gem a badge on the circle, after the flag');
+  }
+  assert.equal(gems.filter((g) => /badge: true/.test(g)).length, 2);
+  assert.ok(!/depth-name-row/.test(html), 'no gem beside the name');
+  // (the text rows: the gem first, then his name)
+  for (const cls of ['depth-pop-name', 'depth-coach-name', 'depth-row-name']) {
+    const row = html.match(new RegExp(`<span class="${cls}">([^]*?)</span>`));
+    assert.ok(row, cls);
+    assert.match(row[1], /^<ng-container \*ngTemplateOutlet="gem; context: \{ link: [^}]*\}" \/>@if \(/, `${cls}: the gem leads the name`);
+  }
+  // (a badge carries the digits alone; a row's gem the "#" too)
+  assert.match(html, /@if \(r !== 'ur' && !badge\) \{<i>#<\/i>\}/);
+});

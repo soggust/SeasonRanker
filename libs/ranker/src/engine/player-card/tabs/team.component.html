@@ -27,13 +27,15 @@
   <!-- A player's rank gem (depth-ranks.ts): where he ranks at his own tab this season under the user's
        settings for it, in the rank column's digits ("#3", UR under Min Games or outside the list), a click
        opening his card; none for a team unit's tab (an O-line's: the line's rank is the line's) or a player
-       the site hasn't got. On a chip (which toggles the slot) it's a span the chip's click tells apart -->
-  <ng-template #gem let-link="link" let-chip="chip">
+       the site hasn't got. On a headshot circle (badge) it sits overlaid on the circle's bottom-left like a
+       status flag, the digits alone; in a text row it leads the name, "#" and all. On a chip (which toggles
+       the slot) it's a span the chip's click tells apart -->
+  <ng-template #gem let-link="link" let-chip="chip" let-badge="badge">
     @if (rank(link); as r) {
       @if (chip) {
-        <span class="depth-rank" [ngClass]="rankClass(r)" [title]="rankTitle(r, link, c.season) + ' · Open his card'">@if (r !== 'ur') {<i>#</i>}{{ rankDigits(r) }}</span>
+        <span class="depth-rank" [class.badge]="badge" [ngClass]="rankClass(r)" [title]="rankTitle(r, link, c.season) + ' · Open his card'">@if (r !== 'ur' && !badge) {<i>#</i>}{{ rankDigits(r) }}</span>
       } @else {
-        <button type="button" class="depth-rank" [ngClass]="rankClass(r)" [title]="rankTitle(r, link, c.season) + ' · Open his card'" (click)="$event.stopPropagation(); openLink(link, c.season)">@if (r !== 'ur') {<i>#</i>}{{ rankDigits(r) }}</button>
+        <button type="button" class="depth-rank" [class.badge]="badge" [ngClass]="rankClass(r)" [title]="rankTitle(r, link, c.season) + ' · Open his card'" (click)="$event.stopPropagation(); openLink(link, c.season)">@if (r !== 'ur' && !badge) {<i>#</i>}{{ rankDigits(r) }}</button>
       }
     }
   </ng-template>
@@ -139,8 +141,9 @@
                 @if (starter?.status; as status) {
                   <span class="depth-status" [ngClass]="'status-' + status.toLowerCase()" [title]="starter!.statusText + (starter!.injury ? ' (' + starter!.injury + ')' : '')">{{ status }}</span>
                 }
+                <ng-container *ngTemplateOutlet="gem; context: { link: starter?.link, chip: true, badge: true }" />
               </span>
-              <span class="depth-name-row"><span class="depth-name">{{ starter?.short ?? 'Open' }}</span><ng-container *ngTemplateOutlet="gem; context: { link: starter?.link, chip: true }" /></span>
+              <span class="depth-name">{{ starter?.short ?? 'Open' }}</span>
               @if (starter?.snaps != null) {
                 <span class="depth-snaps">{{ starter!.snaps | percent: '1.0-0' }}</span>
               }
@@ -155,8 +158,7 @@
                 @for (p of slot.depth; track $index) {
                   <span class="depth-pop-row" [title]="at.inFor && $index === at.depth ? at.note : ''">
                     <i>{{ $index + 1 }}</i>
-                    @if (p.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + p.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ p.name }}</button>} @else {<span>{{ p.name }}</span>}
-                    <ng-container *ngTemplateOutlet="gem; context: { link: p.link }" />
+                    <span class="depth-pop-name"><ng-container *ngTemplateOutlet="gem; context: { link: p.link }" />@if (p.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + p.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ p.name }}</button>} @else {<span>{{ p.name }}</span>}</span>
                     @if (p.status) {
                       <em [ngClass]="'status-' + p.status.toLowerCase()">{{ p.status }}</em>
                     }
@@ -193,8 +195,9 @@
               @if (sp?.status; as status) {
                 <span class="depth-status" [ngClass]="'status-' + status.toLowerCase()" [title]="sp!.statusText + (sp!.injury ? ' (' + sp!.injury + ')' : '')">{{ status }}</span>
               }
+              <ng-container *ngTemplateOutlet="gem; context: { link: sp?.link, badge: true }" />
             </span>
-            <span class="depth-name-row"><span class="depth-name">{{ sp?.short ?? 'Open' }}</span><ng-container *ngTemplateOutlet="gem; context: { link: sp?.link }" /></span>
+            <span class="depth-name">{{ sp?.short ?? 'Open' }}</span>
             <!-- (his usage: a second unit's minutes, a specialist's snaps) -->
             @if (sp?.snaps != null) {
               <span class="depth-snaps">{{ sp!.snaps | percent: '1.0-0' }}</span>
@@ -214,7 +217,7 @@
           @for (co of g.rows; track $index) {
             <div class="depth-coach">
               <span class="depth-coach-role">{{ co.role }}</span>
-              <span class="depth-coach-name">@if (co.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + co.name" (click)="cards.openLinked(link, c.season)">{{ co.name }}</button>} @else {<span>{{ co.name }}</span>}<ng-container *ngTemplateOutlet="gem; context: { link: co.link }" /></span>
+              <span class="depth-coach-name"><ng-container *ngTemplateOutlet="gem; context: { link: co.link }" />@if (co.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + co.name" (click)="cards.openLinked(link, c.season)">{{ co.name }}</button>} @else {<span>{{ co.name }}</span>}</span>
             </div>
           }
         }
@@ -261,7 +264,7 @@
                 <span class="depth-initial">{{ p.name[0] }}</span>
               }
             </span>
-            <span class="depth-row-name">@if (p.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + p.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ p.name }}</button>} @else {<span>{{ p.name }}</span>}<ng-container *ngTemplateOutlet="gem; context: { link: p.link }" /><small>{{ p.pos }}</small></span>
+            <span class="depth-row-name"><ng-container *ngTemplateOutlet="gem; context: { link: p.link }" />@if (p.link; as link) {<button type="button" class="depth-link" [title]="'Open ' + p.name" (click)="$event.stopPropagation(); cards.openLinked(link, c.season)">{{ p.name }}</button>} @else {<span>{{ p.name }}</span>}<small>{{ p.pos }}</small></span>
             <span class="depth-bar" [title]="p.name + ': ' + (p.snaps != null ? (p.snaps | percent: '1.0-0') + ' of the playing time' : 'no playing time yet') + ' · ' + p.games + ' G'"><i [style.width.%]="(p.snaps ?? 0) * 100"></i></span>
             <span class="depth-row-pct">{{ p.snaps != null ? (p.snaps | percent: '1.0-0') : '—' }}</span>
             <span class="depth-row-games">{{ p.games }}G</span>

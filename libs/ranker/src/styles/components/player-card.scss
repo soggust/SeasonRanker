@@ -3033,18 +3033,9 @@ $ai-narrow: v.bp(ai-narrow);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-// the name with his rank gem beside it (a chip's, a special teams item's)
-.depth-name-row {
-  align-items: center;
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-  max-width: 100%;
-  min-width: 0;
-}
-
 // a player's rank at his own tab (depth-ranks.ts): a small gem in the rank column's segment digits, green in
-// the top ten, red in the bottom ten, UR grey; a click opens his card, so it lightens on hover
+// the top ten, red in the bottom ten, UR grey; a click opens his card, so it lightens on hover. In a text row
+// (a popover's, the roster's, a coach's) it leads the name; on a headshot circle it's the badge below
 .depth-rank {
   // (a faint ring so the tile reads on the field)
   @include v.led-tile($radius: 3px, $shadow: (inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 0 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.5)), $display: inline-flex);
@@ -3090,10 +3081,54 @@ $ai-narrow: v.bp(ai-narrow);
   &:focus-visible {
     filter: brightness(1.3);
   }
+
+  // Overlaid on a headshot circle's bottom-left like a status badge (the owner's call: beside the name it
+  // clashed with the text): about 40% of the circle across, its centre near (15%, 85%) of the circle, the
+  // circle's own ring colour as its rim so it reads as part of the badge, above the photo and clear of the
+  // injury flag at the top-right; the digits alone, no "#" (the room is the circle's). It grows rightward for
+  // a second digit; the circle's sizes (46, 38, the phone's 30) each set its height, the digits never under 9px
+  &.badge {
+    border: 1.5px solid var(--team-accent, var(--scoreboard-led));
+    border-radius: 5px;
+    bottom: -5%;
+    box-shadow:
+      inset 0 0 3px rgba(0, 0, 0, 0.7),
+      0 1px 3px rgba(0, 0, 0, 0.6);
+    height: 40%;
+    left: -5%;
+    min-width: 40%;
+    padding: 1px 3px 0;
+    position: absolute;
+    z-index: 2;
+
+    &.unranked {
+      font-size: 9px;
+    }
+  }
+}
+
+.depth-head.small > .depth-rank.badge {
+  font-size: 9px;
+  padding: 1px 2px 0;
 }
 
 .depth-row-name .depth-rank {
-  margin-left: 6px;
+  margin-right: 6px;
+}
+
+// a popover row's name, his gem leading it
+.depth-pop-name {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+
+  > span,
+  > .depth-link {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .depth-coach-name {
@@ -3153,8 +3188,8 @@ $ai-narrow: v.bp(ai-narrow);
   display: grid;
   font-size: v.$fs-12;
   gap: v.$space-8;
-  // (the depth, the name, his rank gem, his flag, his share: each in its column, with or without the others)
-  grid-template-columns: 16px minmax(0, 1fr) auto auto auto;
+  // (the depth, the name with his gem leading it, his flag, his share: each in its column, with or without the others)
+  grid-template-columns: 16px minmax(0, 1fr) auto auto;
   white-space: nowrap;
 
   > i {
@@ -3163,27 +3198,15 @@ $ai-narrow: v.bp(ai-narrow);
     font-weight: 900;
   }
 
-  // (a long name cut short, never over his gem)
-  > span,
-  > .depth-link {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  > .depth-rank {
-    grid-column: 3;
-  }
-
   > em {
-    grid-column: 4;
+    grid-column: 3;
   }
 
   > small {
     color: v.$text-faint;
     font-size: v.$fs-11;
     font-weight: 700;
-    grid-column: 5;
+    grid-column: 4;
   }
 }
 
@@ -3407,6 +3430,20 @@ $ai-narrow: v.bp(ai-narrow);
   .depth-status {
     font-size: v.$fs-10;
     right: -6px;
+  }
+
+  // (the 30px circle's gem: 13px tall so its digits hold at 9px, a thinner rim)
+  .depth-head > .depth-rank.badge {
+    border-radius: 4px;
+    border-width: 1px;
+    font-size: 9px;
+    height: 13px;
+    min-width: 13px;
+    padding: 1px 2px 0;
+
+    &.unranked {
+      font-size: 8px;
+    }
   }
 
   .depth-pop {
