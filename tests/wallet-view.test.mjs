@@ -192,7 +192,7 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
     assert.match(b, /<section class="wp-panel book-board"/, name);
     assert.match(b, /<div class="wp-bar">\s*<h3>/, name);
     assert.match(b, /<div class="cork cork-board">/, name);
-    assert.match(b, /<div class="board-pinned" \[style\.rotate\.deg\]="tilt\(b\)">\s*<span class="pin" aria-hidden="true"><\/span>\s*<article class="ticket"/, name);
+    assert.match(b, /<div class="board-pinned" \[style\.rotate\.deg\]="tilt\(b\)">\s*<span class="pin" aria-hidden="true" \[style\.--pin\]="pinColor\(b\)"><\/span>\s*<article class="ticket"/, name);
     assert.match(b, /<pick-text \[pick\]="l\.pick" \[player\]="betPlayer\(l\)">/, name);
   }
   assert.match(board('openBoard'), /ticket-status live[\s\S]*leg-meter[\s\S]*pending settlement/);
@@ -208,7 +208,9 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
 test('tilt: steady per ticket, within a few degrees', async () => {
   const src = (await import('node:fs')).readFileSync(path.join(import.meta.dirname, '..', 'libs/ranker/src/engine/account/wallet/wallet-page.component.ts'), 'utf8');
   const body = src.match(/tilt\(b: \{ id: string \}\): number \{([\s\S]*?)\n  \}/)[1];
-  const tilt = new Function('b', body);
+  // (the tilt and the pin colour read the ticket id's hash, pinHash, a module function beside the component)
+  const pinHash = new Function('id', src.match(/function pinHash\(id: string\): number \{([\s\S]*?)\n\}/)[1]);
+  const tilt = new Function('pinHash', 'b', body).bind(null, pinHash);
   const ids = Array.from({ length: 200 }, (_, i) => 'bet' + i);
   for (const id of ids) {
     const t = tilt({ id });
@@ -216,4 +218,10 @@ test('tilt: steady per ticket, within a few degrees', async () => {
     assert.ok(Math.abs(t) <= 2.4, `${id}: ${t}`);
   }
   assert.ok(new Set(ids.map((id) => tilt({ id }))).size > 10, 'the tickets lean different ways');
+  // (the pins: a colour each from the set, steady per ticket, several colours across the board)
+  const colors = JSON.parse(src.match(/const PIN_COLORS = (\[[^\]]*\])/)[1].replace(/'/g, '"'));
+  const pinBody = src.match(/pinColor\(b: \{ id: string \}\): string \{([\s\S]*?)\n  \}/)[1];
+  const pinColor = new Function('pinHash', 'PIN_COLORS', 'b', pinBody).bind(null, pinHash, colors);
+  for (const id of ids) assert.ok(colors.includes(pinColor({ id })), id);
+  assert.ok(new Set(ids.map((id) => pinColor({ id }))).size >= 5, 'pins of several colours');
 });
