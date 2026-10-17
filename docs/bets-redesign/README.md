@@ -180,8 +180,9 @@ drawer, and restyled as a **printed bet ticket**:
   lettering**, "tear up ticket" (clear all), a decorative barcode and the fine print
 
 Phones: a ticket stub docked at the bottom ("TICKET · N BETS", risk, win and pays, and the place button). Its
-"review" opens today's bottom-sheet slip with the same restyle. Sign-in, errors and placing all stay as they
-are.
+"Expand" (a chevron up) raises today's bottom-sheet slip with the same restyle; the sheet's chevron down, Escape
+or a tap outside the sheet minimize it back to the stub, the bets kept. Sign-in, errors and placing all stay as
+they are.
 
 ### 8. Recent form (under the ticket)
 

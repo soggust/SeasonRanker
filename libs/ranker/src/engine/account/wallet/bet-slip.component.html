@@ -1,11 +1,12 @@
 <!-- The bet slip as a printed ticket (The Book): cream thermal paper with scalloped edges, docked in the right
      column on a wide screen; on a phone a stub along the bottom ("TICKET · N BETS", the risk, the win and the pays,
-     Place) whose "review" opens the ticket as a sheet. Each bet in caps with its game line and the bot's band tag
+     Place) whose Expand raises the ticket as a sheet; the sheet's chevron, Escape or a tap outside it minimize it
+     back to the stub, the bets kept. Each bet in caps with its game line and the bot's band tag
      (or YOUR CALL), its odds, a remove, RISK and WIN with the stake chips and "clear"; with 2 or more, Straight or
      Parlay (a parlay its legs listed, one stake at their combined price); the totals, Place, "tear up ticket", a
      barcode and the fine print. Play money: signed out, it asks for a sign-in first -->
 <aside #panel class="ticket" [class.open]="wallet.slipOpen()" [attr.role]="wallet.slipOpen() ? 'dialog' : 'region'" aria-label="Bet ticket" tabindex="-1">
-  <button type="button" class="ticket-close" aria-label="Close the ticket" (click)="close()"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
+  <button type="button" class="ticket-close" aria-label="Minimize the ticket" (click)="minimize()"><mat-icon aria-hidden="true" fontIcon="expand_more"></mat-icon></button>
   <header class="ticket-head">
     <span class="ticket-brand">The Book</span>
     <span class="ticket-sub">{{ today | date: 'EEE MMM d' }} · {{ wallet.slip().length }} {{ wallet.slip().length === 1 ? 'bet' : 'bets' }}</span>
@@ -146,12 +147,12 @@
   }
 </aside>
 
-<!-- (a phone: the stub along the bottom while the ticket's shut, with bets on it (or the last placing's word)) -->
+<!-- (a phone: the stub along the bottom while the ticket's minimized, with bets on it (or the last placing's word)) -->
 @if (!wallet.slipOpen() && (wallet.slip().length || wallet.placed()?.placed)) {
   <div class="ticket-stub" role="region" aria-label="Bet ticket">
     <div class="stub-top">
       <span class="stub-title">Ticket · {{ wallet.slip().length }} {{ wallet.slip().length === 1 ? 'bet' : 'bets' }}</span>
-      <button type="button" class="stub-review" (click)="wallet.slipOpen.set(true)">review</button>
+      <button type="button" class="stub-review" aria-label="Expand the ticket" (click)="expand()">Expand<mat-icon aria-hidden="true" fontIcon="expand_less"></mat-icon></button>
     </div>
     @if (wallet.slip().length) {
       <div class="stub-sums"><span>Risk {{ totals.stake }}u</span><span>Win <b>{{ totals.toWin | number: '1.2-2' }}u</b></span><span>Pays {{ totals.payout | number: '1.2-2' }}u</span></div>

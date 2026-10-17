@@ -2,13 +2,16 @@ import { Component, ElementRef, HostListener, ViewChild, effect } from '@angular
 import { AccountService } from '../account.service';
 import { WalletService } from './wallet.service';
 import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, payout, slipTotals, toWin } from './wallet-math';
+import { Tapped, tapMinimizes } from './slip-sheet';
 
 // The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
 // printed ticket (The Book), docked in the page's right column on a wide screen; on a phone a stub along the
-// bottom with the totals and Place while it's shut, and a sheet when it's opened (slipOpen). With 2 selections or more, Straight or Parlay: a parlay the selections as one
-// bet (2 to 10 legs, one a game: no same-game parlays), one stake at their combined price. Play money only:
-// signed out, it asks for a sign-in first.
+// bottom with the totals and Place while it's minimized, its Expand raising the ticket as a sheet (slipOpen);
+// the sheet's chevron, Escape or a tap outside it minimize it back to the stub, the bets kept (slip-sheet.ts).
+// With 2 selections or more, Straight or Parlay: a parlay the selections as one bet (2 to 10 legs, one a game:
+// no same-game parlays), one stake at their combined price. Play money only: signed out, it asks for a sign-in
+// first.
 @Component({
   selector: 'bet-slip',
   templateUrl: './bet-slip.component.html',
@@ -80,8 +83,13 @@ export class BetSlipComponent {
     return this.wallet.slip().some((s) => s.stake > 0 && this.wallet.problem(s));
   }
 
-  close(): void {
+  // (the phone's sheet down to the stub; the bets stay on the ticket)
+  minimize(): void {
     this.wallet.slipOpen.set(false);
+  }
+
+  expand(): void {
+    this.wallet.slipOpen.set(true);
   }
 
   // (the failure the last placing had on a bet still on the slip)
@@ -105,6 +113,13 @@ export class BetSlipComponent {
 
   @HostListener('document:keydown.escape')
   escape(): void {
-    if (this.wallet.slipOpen() && !this.account.loginOpen()) this.close();
+    if (this.wallet.slipOpen() && !this.account.loginOpen()) this.minimize();
+  }
+
+  // (a tap outside the open sheet on a phone minimizes it: not one on the sheet, the stub, a price being added
+  // or the login; the width read at the tap, as the stylesheet docks the ticket from 1000px)
+  @HostListener('document:pointerdown', ['$event'])
+  tapped(event: { target: EventTarget | null }, width = window.innerWidth): void {
+    if (tapMinimizes(event.target as Tapped, this.wallet.slipOpen() && !this.account.loginOpen(), width)) this.minimize();
   }
 }

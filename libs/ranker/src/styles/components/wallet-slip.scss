@@ -42,7 +42,7 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
     margin: 0;
   }
 
-  // (phones only: the sheet's close)
+  // (phones only: the sheet's minimize)
   .ticket-close {
     display: none;
   }
@@ -517,7 +517,7 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // Phones and tablets under the docking width: the ticket is a sheet along the bottom of the screen when it's
-// open (shut, it isn't there), the stub along the bottom while it's shut
+// open (minimized, it isn't there), the stub along the bottom while it's minimized
 @media (max-width: #{v.bp(wide-menu) - 1px}) {
   .ticket {
     bottom: 0;
@@ -596,17 +596,26 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
       text-transform: uppercase;
     }
 
+    // (Expand, with a chevron up: it raises the sheet)
     .stub-review {
+      align-items: center;
       background: none;
       border: none;
       color: $ink-soft;
       cursor: pointer;
+      display: inline-flex;
       font-family: inherit;
       font-size: v.$fs-11;
+      gap: 2px;
+      letter-spacing: 1px;
       min-height: 44px;
       margin: -14px -8px -14px 0;
       padding: 0 8px;
-      text-decoration: underline;
+      text-transform: uppercase;
+
+      mat-icon {
+        @include v.icon-size(18px);
+      }
 
       &:hover {
         color: $ink;
