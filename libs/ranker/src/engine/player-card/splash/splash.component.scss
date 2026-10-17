@@ -1752,11 +1752,14 @@ card-splash {
   .sp-art > svg.sp-jersey {
     --jh: 178px;
 
-    // (a football jersey's sleeves run to the edges of its picture, with the TV numbers on them: it is never
-    // wider than the stall's opening, so a cuff and its number are not cut by the wall. The sweater, its
-    // sleeves spread wide, keeps its size and tucks its sleeves behind the walls, as before)
+    // (a football jersey's sleeves run to the edges of its picture, with the TV numbers on them: it keeps
+    // clear of the stall's walls, so a cuff and its number are never cut by them. The opening is the stall
+    // less two walls (its own and the next stall's, each 10px * --s, the frames overlapping), and the jersey
+    // stays 4px off each; a desktop stall is far wider than the jersey, so this bites only on a phone's 76px
+    // stall, where at 100% the picture filled the opening edge to edge with the numbers under the wood. The
+    // sweater, its sleeves spread wide, keeps its size and tucks its sleeves behind the walls, as before)
     &.cut-football {
-      max-width: 100%;
+      max-width: calc(100% - 20px * var(--s) - 8px);
     }
   }
 

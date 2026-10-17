@@ -7,6 +7,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -22,7 +23,7 @@ const loadTs = async (file) => {
   fs.rmSync(o, { force: true });
   return m;
 };
-const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, GEAR_BASES, FACES, FACE_IDS, propImage, propHref, jerseyAnchors, textBaseArt, numberSize, nameSize } = await loadTs('splash.images.ts');
+const { PROP_IMAGES, TINTED, JERSEY_BASES, TEXT_BASES, BASE_KEYS, INFO_CARD, GEAR_BASES, FACES, FACE_IDS, PROPS_VERSION, FONTS_VERSION, propImage, propHref, jerseyAnchors, textBaseArt, numberSize, nameSize } = await loadTs('splash.images.ts');
 const { PROPS } = await loadTs('splash.props.ts');
 const { buildScene } = await loadTs('splash.scene.ts');
 
@@ -88,8 +89,25 @@ test('a piece finds its photo by its prop id (the NBA conference trophy by its c
   assert.equal(propImage('jersey-football'), undefined);
   assert.equal(propImage('plaque-wood'), undefined, "a blank base is never a prop's own photo");
   assert.equal(propImage(undefined), undefined);
-  assert.equal(propHref('puck', false), 'assets/props/puck-400.webp');
-  assert.equal(propHref('puck', true), 'assets/props/puck-800.webp');
+  assert.equal(propHref('puck', false), `assets/props/puck-400.webp?v=${PROPS_VERSION}`);
+  assert.equal(propHref('puck', true), `assets/props/puck-800.webp?v=${PROPS_VERSION}`);
+});
+
+// (the site caches an asset for a day and a stylesheet for a year under its name: a redone file under the same
+// name is drawn stale, stretched into its new box, unless the version on the URL changes with it)
+test('the props and fonts versions are the folders’ content hash: a changed file needs its bump', () => {
+  const hashOf = (dir, keep) => {
+    const h = crypto.createHash('sha256');
+    for (const f of fs.readdirSync(dir).filter(keep).sort()) {
+      h.update(f);
+      h.update(fs.readFileSync(path.join(dir, f)));
+    }
+    return h.digest('hex').slice(0, 8);
+  };
+  const props = hashOf(ASSETS, (f) => f.endsWith('.webp'));
+  const fonts = `${hashOf(path.join(ROOT, 'libs/ranker/src/assets/fonts/jersey'), (f) => /\.(css|woff2)$/.test(f))}-${hashOf(path.join(ROOT, 'libs/ranker/src/assets/fonts/splash'), (f) => /\.(css|woff2)$/.test(f))}`;
+  assert.equal(PROPS_VERSION, props, `assets/props changed: set PROPS_VERSION = '${props}' in splash.images.ts`);
+  assert.equal(FONTS_VERSION, fonts, `assets/fonts changed: set FONTS_VERSION = '${fonts}' in splash.images.ts`);
 });
 
 test('the scene hands each piece its prop id, sized on the real-height scale, photo or not', () => {

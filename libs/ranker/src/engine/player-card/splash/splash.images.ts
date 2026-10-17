@@ -15,6 +15,16 @@
 //                 the slot from this before the image loads, so nothing shifts
 //   propImage()   the image a piece draws, by its prop id and its words
 //   propHref()    the file: the 400 on phones and ordinary screens, the 800 on a dense desktop screen
+//   PROPS_VERSION, FONTS_VERSION: the files' content hash, carried on their URLs. The site caches an asset for
+//                 a day and a stylesheet for a year (firebase.json), and the props and faces keep their names
+//                 when they're redone, so without it a browser draws the OLD picture stretched into the new
+//                 picture's box (2026-10-17: the flat bases replaced the hanger shots under the same names,
+//                 and the owner saw squashed jerseys for a day). tests/splash-images.test.mjs recomputes both
+//                 from the folders and fails when a file changed and the constant didn't: bump it with the
+//                 value the test prints
+
+export const PROPS_VERSION = 'bd205fc6';
+export const FONTS_VERSION = '0c760a15-a76d2da3';
 
 export const PROP_IMAGES: Record<string, number> = {
   'nfl-lombardi': 0.406,
@@ -92,7 +102,7 @@ export function propImage(id: string | undefined, line0 = ''): string | undefine
 }
 
 export function propHref(key: string, hi: boolean): string {
-  return `assets/props/${key}-${hi ? 800 : 400}.webp`;
+  return `assets/props/${key}-${hi ? 800 : 400}.webp?v=${PROPS_VERSION}`;
 }
 
 // A dense desktop screen gets the 800s; phones and ordinary screens the 400s (decided once)
