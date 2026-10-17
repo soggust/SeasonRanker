@@ -347,7 +347,19 @@ ON NOW and the All games / My bets pill on the first line, and the sweat summary
 The game cards go one column. The modal is the game view's existing phone layout (`v.down(phablet)`: small
 logo cards, the board's text wrapping, tabs scrolling sideways). The tab bar scrolls by drag or swipe with
 **no visible scrollbar**. `.card-tabs` already has `scrollbar-width: none`; add `&::-webkit-scrollbar { display: none; }`
-beside it so older iOS Safari hides it too. In it, Your Bets and Game Leaders stack.
+beside it so older iOS Safari hides it too.
+
+**Phones: panels start collapsed.** On phones (`v.down(phablet)`), the game modal's `card-panel`s start closed and
+open on a tap of their bar (the chevron turns), so the tab shows its headings first. The exceptions are:
+- **Your Bets** starts open.
+- On the Plays tab, the **latest period** starts open.
+- **Game Info** starts open, since it is the only panel on its tab.
+
+Everything else starts closed: Game Leaders, Important Plays, Team Stats, each team's box score, older periods,
+Season Leaders. The line score and the win probability chart are not panels and stay as they are. Use
+`card-panel`'s existing open/expandable inputs; don't build a new collapsible. Move the **ALL PLAYS →** link from
+Important Plays' bar into the bottom of its body, so the bar is a single tap target. The open/closed choice
+resets each time a game is opened. Desktop is unchanged: everything starts open. In it, Your Bets and Game Leaders stack.
 
 ### 11. Removed
 

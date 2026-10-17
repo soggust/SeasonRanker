@@ -55,6 +55,9 @@ body{margin:0;background:#0b3322}
 .clabel small{color:rgba(255,255,255,.6);font-size:11px;font-weight:600;margin-left:5px}
 .panel{border-radius:6px;overflow:hidden;border:1px solid rgba(222,186,106,.55);box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .pbar{display:flex;align-items:center;gap:8px;padding:12px;font:800 13px/1 Nunito,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#fff;background:linear-gradient(rgba(63,163,107,.16),rgba(63,163,107,.16)),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.3px) 0 0/4px 4px,#121212;border-bottom:1px solid rgba(222,186,106,.55)}
+.pbar .chev{margin-left:auto;color:#ebc56c;font-size:12px;transition:rotate .15s}
+.pbar[aria-expanded="false"] .chev{rotate:-90deg}
+.pbar[aria-expanded="false"]{border-bottom-color:transparent}
 .pico{width:18px;flex:none;text-align:center;font-size:13px;color:#ebc56c}
 .pbody{padding:6px 14px 10px}
 .gplay{display:flex;align-items:baseline;gap:10px;font-size:13px;line-height:1.4;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
@@ -213,7 +216,8 @@ body{margin:0;background:#0b3322}
 
 <div style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start;">
 <section class="panel" aria-label="Your bets">
-<div class="pbar"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span><span style="font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: none; color: #ccc;">{{m.betsSum}}</span></div>
+<button class="btn pbar" onClick="{{m.tg.bets}}" aria-expanded="{{m.op.bets}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span><span style="font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: none; color: #ccc;">{{m.betsSum}}</span><span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.bets}}" hint-placeholder-val="{{true}}">
 <div class="dots">
 <sc-for list="{{m.bets}}" as="b" hint-placeholder-count="2">
 <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px 12px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.05);">
@@ -227,12 +231,14 @@ body{margin:0;background:#0b3322}
 </sc-for>
 <sc-if value="{{m.noBets}}" hint-placeholder-val="{{false}}"><div style="padding: 12px 14px; color: #ccc;">No tickets on this one. The bot’s read: <b style="color: #fff;">{{m.botRead}}</b></div></sc-if>
 </div>
+</sc-if>
 </section>
 
 
 
 <section class="panel" aria-label="Game leaders">
-<div class="pbar"><span class="pico" aria-hidden="true">★</span>Game Leaders</div>
+<button class="btn pbar" onClick="{{m.tg.leaders}}" aria-expanded="{{m.op.leaders}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">★</span>Game Leaders<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.leaders}}" hint-placeholder-val="{{true}}">
 <div class="dots pbody" style="display: grid; grid-template-columns: 1fr; gap: 0;">
 <sc-for list="{{m.leaderCols}}" as="col" hint-placeholder-count="2">
 <div><h3 class="caps" style="margin: 8px 0 4px; color: #fff; font-size: 11px;">{{col.team}}</h3>
@@ -242,23 +248,28 @@ body{margin:0;background:#0b3322}
 </div>
 </sc-for>
 </div>
+</sc-if>
 </section>
 </div>
 <sc-if value="{{m.hasImportant}}" hint-placeholder-val="{{true}}">
 <section class="panel" aria-label="Important plays">
-<div class="pbar"><span class="pico" aria-hidden="true">✦</span><span style="flex: 1;">Important Plays</span><button class="btn" onClick="{{m.toPlays}}" style="font: 800 11px/1 Nunito, sans-serif; letter-spacing: 1.2px; color: #ebc56c;">ALL PLAYS →</button></div>
+<button class="btn pbar" onClick="{{m.tg.important}}" aria-expanded="{{m.op.important}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">✦</span><span style="flex: 1;">Important Plays</span><span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.important}}" hint-placeholder-val="{{true}}">
 <div class="dots pbody">
 <sc-for list="{{m.important}}" as="p" hint-placeholder-count="5">
 <div class="gplay" style="{{p.wash}}"><span class="gclock">{{p.when}}</span><span class="gtext"><span style="{{p.textTone}}">{{p.text}}</span><sc-if value="{{p.hasTag}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: .3px; line-height: 1; {{p.tagStyle}}"><span aria-hidden="true">{{p.icon}}</span>{{p.tag}}</span></sc-if></span><sc-if value="{{p.hasScore}}" hint-placeholder-val="{{false}}"><span class="gscore">{{p.score}}</span></sc-if></div>
 </sc-for>
 </div>
+<div class="dots" style="padding: 0 14px 12px; text-align: right;"><button class="btn" onClick="{{m.toPlays}}" style="font: 800 11px/1 Nunito, sans-serif; letter-spacing: 1.2px; color: #ebc56c;">ALL PLAYS →</button></div>
+</sc-if>
 </section>
 </sc-if>
 </sc-if>
 
 <sc-if value="{{m.isBox}}" hint-placeholder-val="{{false}}">
 <section class="panel" aria-label="Team stats">
-<div class="pbar"><span class="pico" aria-hidden="true">⇄</span>Team Stats</div>
+<button class="btn pbar" onClick="{{m.tg.stats}}" aria-expanded="{{m.op.stats}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">⇄</span>Team Stats<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.stats}}" hint-placeholder-val="{{true}}">
 <div class="dots" style="padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 11px;">
 <sc-for list="{{m.stats}}" as="st" hint-placeholder-count="5">
 <div style="display: flex; flex-direction: column; gap: 5px;">
@@ -267,14 +278,17 @@ body{margin:0;background:#0b3322}
 </div>
 </sc-for>
 </div>
+</sc-if>
 </section>
 <sc-for list="{{m.box}}" as="bx" hint-placeholder-count="2">
 <section class="panel" aria-label="{{bx.team}}">
-<div class="pbar"><span class="pico" aria-hidden="true">☰</span>{{bx.team}}</div>
+<button class="btn pbar" onClick="{{bx.tog}}" aria-expanded="{{bx.open}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">☰</span>{{bx.team}}<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{bx.open}}" hint-placeholder-val="{{true}}">
 <div class="dots" style="padding: 2px 14px 8px;">
 <table class="btable"><thead><tr><sc-for list="{{bx.head}}" as="h" hint-placeholder-count="6"><th>{{h}}</th></sc-for></tr></thead>
 <tbody><sc-for list="{{bx.rows}}" as="r" hint-placeholder-count="5"><tr style="{{r.style}}"><sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6"><td>{{c}}</td></sc-for></tr></sc-for></tbody></table>
 </div>
+</sc-if>
 </section>
 </sc-for>
 </sc-if>
@@ -283,12 +297,14 @@ body{margin:0;background:#0b3322}
 <div style="display: flex; gap: 8px;"><sc-for list="{{m.pfilters}}" as="f" hint-placeholder-count="3"><button class="btn pill" onClick="{{f.pick}}" aria-pressed="{{f.on}}">{{f.t}}</button></sc-for></div>
 <sc-for list="{{m.groups}}" as="grp" hint-placeholder-count="2">
 <section class="panel" aria-label="{{grp.title}}">
-<div class="pbar"><span class="pico" aria-hidden="true">▾</span>{{grp.title}}</div>
+<button class="btn pbar" onClick="{{grp.tog}}" aria-expanded="{{grp.open}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">▤</span>{{grp.title}}<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{grp.open}}" hint-placeholder-val="{{true}}">
 <div class="dots pbody">
 <sc-for list="{{grp.plays}}" as="p" hint-placeholder-count="5">
 <div class="gplay" style="{{p.wash}}"><span class="gclock">{{p.t}}</span><span class="gtext"><span style="{{p.textTone}}">{{p.text}}</span><sc-if value="{{p.hasTag}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: .3px; line-height: 1; {{p.tagStyle}}"><span aria-hidden="true">{{p.icon}}</span>{{p.tag}}</span></sc-if></span><sc-if value="{{p.hasScore}}" hint-placeholder-val="{{false}}"><span class="gscore">{{p.score}}</span></sc-if></div>
 </sc-for>
 </div>
+</sc-if>
 </section>
 </sc-for>
 <sc-if value="{{m.noGroups}}" hint-placeholder-val="{{false}}"><p style="margin: 8px 0 0; color: #9a9a9a;">None of your bets have moved yet.</p></sc-if>
@@ -304,11 +320,14 @@ body{margin:0;background:#0b3322}
 </div>
 </div>
 <section class="panel" aria-label="Your bets">
-<div class="pbar"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span></div>
+<button class="btn pbar" onClick="{{m.tg.bets}}" aria-expanded="{{m.op.bets}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">◆</span><span style="flex: 1;">Your Bets</span><span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.bets}}" hint-placeholder-val="{{true}}">
 <div class="dots" style="padding: 12px 14px; color: #ccc; font-size: 13px;">{{m.preBet}}</div>
+</sc-if>
 </section>
 <section class="panel" aria-label="Season leaders">
-<div class="pbar"><span class="pico" aria-hidden="true">★</span>Season Leaders</div>
+<button class="btn pbar" onClick="{{m.tg.season}}" aria-expanded="{{m.op.season}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">★</span>Season Leaders<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.season}}" hint-placeholder-val="{{true}}">
 <div class="dots pbody" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;">
 <sc-for list="{{m.leaderCols}}" as="col" hint-placeholder-count="2">
 <div><h3 class="caps" style="margin: 8px 0 4px; color: #fff; font-size: 11px;">{{col.team}}</h3>
@@ -316,15 +335,18 @@ body{margin:0;background:#0b3322}
 </div>
 </sc-for>
 </div>
+</sc-if>
 </section>
 </sc-if>
 
 <sc-if value="{{m.isInfo}}" hint-placeholder-val="{{false}}">
 <section class="panel" aria-label="Game info">
-<div class="pbar"><span class="pico" aria-hidden="true">⌂</span>Game Info</div>
+<button class="btn pbar" onClick="{{m.tg.info}}" aria-expanded="{{m.op.info}}" style="width: 100%; text-align: left;"><span class="pico" aria-hidden="true">⌂</span>Game Info<span class="chev" aria-hidden="true">▾</span></button>
+<sc-if value="{{m.op.info}}" hint-placeholder-val="{{true}}">
 <div class="dots pbody">
 <sc-for list="{{m.info}}" as="i" hint-placeholder-count="4"><div class="lead" style="grid-template-columns: 140px minmax(0, 1fr);"><span class="caps">{{i.k}}</span><span style="font-size: 13px;">{{i.v}}</span></div></sc-for>
 </div>
+</sc-if>
 </section>
 </sc-if>
 
@@ -334,7 +356,7 @@ body{margin:0;background:#0b3322}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { open: null, tab: 'summary', filter: 'all', show: 'all', quiet: false }; }
+  constructor(props) { super(props); this.state = { open: null, tab: 'summary', filter: 'all', show: 'all', quiet: false, op: {} }; }
   games() {
     const T = (ab, name, short, c, hi, lo, rec) => ({ ab, name, short, c, hi, lo, rec });
     const B = (pick, short, odds, sub, status, good, val, line, min, max, proj, left, right) => ({ pick, short, odds, sub, status, good, val, line, min, max, proj, left, right });
@@ -421,7 +443,7 @@ class Component extends DCLogic {
         hasSpark: !!spark, spark, hasLast: !!lastP && !pre, lastT: lastP ? lastP[1] : '', lastText: lastP ? lastP[3] : '',
         lastStyle: lastP && lastP[5] === 'good' ? 'background: rgba(62,224,122,.12); color: #d9f7e4;' : lastP && lastP[5] === 'bad' ? 'background: rgba(255,116,104,.12); color: #ffe0dc;' : 'background: rgba(255,255,255,.04); color: #ccc;',
         bets, noBets: bets.length === 0, noBetLine: pre ? 'Bot: ' + g.bot : 'No tickets · bot: ' + (g.botRead || 'pass'),
-        aria: g.away.name + ' at ' + g.home.name + ', ' + g.clock, open: () => this.setState({ open: k, tab: pre ? 'preview' : 'summary', filter: 'all' }) };
+        aria: g.away.name + ' at ' + g.home.name + ', ' + g.clock, open: () => this.setState({ open: k, tab: pre ? 'preview' : 'summary', filter: 'all', op: {} }) };
     };
     const liveBets = liveKeys.flatMap((k) => G[k].bets);
     const sweat = [[liveBets.filter((b) => b.good === true).length, 'winning', GRN], [liveBets.filter((b) => b.good === null).length, 'close', GLD], [liveBets.filter((b) => b.good === false).length, 'losing', RED]].map(([n, t, c]) => ({ n, t, dot: 'background: ' + c + '; box-shadow: 0 0 6px ' + c + ';' }));
@@ -429,6 +451,8 @@ class Component extends DCLogic {
     const out = { games: pool.map(tile), card: { title: quiet ? 'Coming up' : 'On now', count: pool.length }, anyLive: !quiet, quiet, sweat, filters, liveCount: liveKeys.length, hasModal: !!s.open, close: () => this.setState({ open: null }) };
     const empty = { away: {}, home: {}, sides: [], leds: [], tabs: [], periods: [], lsRows: [], bets: [], important: [], leaderCols: [], stats: [], box: [], pfilters: [], groups: [], info: [] };
     if (!s.open) { out.m = empty; return out; }
+    const DEF = { bets: true, info: true }, isOpen = (k, d) => (k in s.op ? s.op[k] : d);
+    const tog = (k, d) => () => this.setState({ op: Object.assign({}, s.op, { [k]: !isOpen(k, d) }) });
     const g = G[s.open], isLive = g.state === 'live', isPre = g.state === 'pre', lead = isPre ? 0 : g.as - g.hs;
     const tabDefs = isPre ? [['preview', 'Preview'], ['info', 'Game Info']] : [['summary', 'Summary'], ['box', 'Box Score'], ['plays', 'Plays'], ['info', 'Game Info']];
     const tab = tabDefs.some(([k]) => k === s.tab) ? s.tab : tabDefs[0][0];
@@ -441,6 +465,8 @@ class Component extends DCLogic {
       when: isPre ? 'Today ' + g.clock + ' · ' + g.venue.split(',')[0] : 'Today · ' + g.venue.split(',')[0],
       tabs: tabDefs.map(([k, t]) => ({ t, cls: tab === k ? 'lit' : '', on: tab === k ? 'true' : 'false', pick: () => this.setState({ tab: k }) })),
       isSummary: tab === 'summary', isBox: tab === 'box', isPlays: tab === 'plays', isPreview: tab === 'preview', isInfo: tab === 'info' });
+    m.op = {}; m.tg = {};
+    ['bets', 'important', 'leaders', 'stats', 'season', 'info'].forEach((k) => { m.op[k] = isOpen(k, !!DEF[k]) ? true : false; m.tg[k] = tog(k, !!DEF[k]); });
     const lc = {}; (g.leaders || []).forEach(([team, cat, name, line, bet]) => { (lc[team] = lc[team] || []).push({ cat, name, line, hasBet: bet, c: tc[team], ini: name.split(' ').map((w) => w[0]).slice(0, 2).join(''), rowStyle: bet ? 'background: linear-gradient(90deg, rgba(235,197,108,.12), transparent 80%);' : '' }); });
     m.leaderCols = [g.away, g.home].map((t) => ({ team: t.short, rows: lc[t.ab] || [] }));
     m.info = [['Venue', g.venue], ['Broadcast', g.tv], ['Line', g.line], ['Status', isPre ? 'Today, ' + g.clock + ' CT' : isLive ? 'In progress · ' + g.stateLong : 'Final']].map(([k, v]) => ({ k, v }));
@@ -472,10 +498,10 @@ class Component extends DCLogic {
     m.toPlays = () => this.setState({ tab: 'plays' });
     const shownRows = rows.filter((r) => s.filter === 'all' || (s.filter === 'scoring' ? r.scoring : r.mine));
     const titles = [...new Set(shownRows.map((r) => r.period))];
-    m.groups = titles.map((title) => ({ title, plays: shownRows.filter((r) => r.period === title) })); m.noGroups = m.groups.length === 0;
+    m.groups = titles.map((title, i) => ({ title, plays: shownRows.filter((r) => r.period === title), open: isOpen('g:' + title, i === 0) ? true : false, tog: tog('g:' + title, i === 0) })); m.noGroups = m.groups.length === 0;
     m.pfilters = [['all', 'All Plays'], ['scoring', 'Scoring'], ['mine', 'My Bets']].map(([k, t]) => ({ t, on: s.filter === k ? 'true' : 'false', pick: () => this.setState({ filter: k }) }));
     m.stats = (g.stats || []).map(([k, a, h]) => { const na = parseFloat(a), nh = parseFloat(h), tot = (na + nh) || 1; return { k, a, h, aBar: 'flex: ' + (na / tot).toFixed(3) + '; background: ' + g.away.c + ';', hBar: 'flex: ' + (nh / tot).toFixed(3) + '; background: ' + g.home.c + ';' }; });
-    m.box = [g.away, g.home].map((t) => ({ team: t.name, head: g.box.head, rows: (g.box[t.ab] || []).map((r) => ({ cells: r.slice(0, g.box.head.length), style: r[g.box.head.length] ? 'background: linear-gradient(90deg, rgba(235,197,108,.14), transparent 80%);' : '' })) }));
+    m.box = [g.away, g.home].map((t) => ({ open: isOpen('box:' + t.ab, false) ? true : false, tog: tog('box:' + t.ab, false), team: t.name, head: g.box.head, rows: (g.box[t.ab] || []).map((r) => ({ cells: r.slice(0, g.box.head.length), style: r[g.box.head.length] ? 'background: linear-gradient(90deg, rgba(235,197,108,.14), transparent 80%);' : '' })) }));
     out.m = m;
     return out;
   }
