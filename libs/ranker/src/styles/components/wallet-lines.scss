@@ -168,10 +168,15 @@
 .lines-grid {
   display: grid;
   gap: v.$space-8;
-  grid-template-columns: minmax(160px, 1.3fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(160px, 1fr) repeat(3, v.$bet-button);
 
   &.ml-only {
-    grid-template-columns: minmax(160px, 1.3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(160px, 1fr) v.$bet-button;
+  }
+
+  // (two markets priced: a fight's round total and moneyline)
+  &.two-col {
+    grid-template-columns: minmax(160px, 1fr) repeat(2, v.$bet-button);
   }
 
   .grid-heads,
@@ -307,10 +312,12 @@
   }
 
   .tile-top {
+    // (a fight's round total in full wraps under itself: "Over 2.5 / rounds")
     font-family: v.$font-heading;
     font-size: v.$fs-14;
     font-weight: 600;
     line-height: 1.1;
+    text-align: center;
   }
 
   // (the odds in gold, the line over them white)
@@ -354,7 +361,8 @@
   display: flex;
   gap: v.$space-4;
   justify-content: space-between;
-  padding: 4px 6px;
+  // (tight enough for a band tag and a K of -26.23 in the tile's fixed width)
+  padding: 4px 3px;
 }
 
 .tile-tag {
@@ -381,10 +389,13 @@
   color: v.$grey-light;
   cursor: pointer;
   font-family: v.$font-heading;
-  font-size: v.$fs-11;
+  font-size: v.$fs-10;
   font-weight: 700;
   line-height: 1.3;
-  padding: 2px 6px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 2px 4px;
+  text-overflow: ellipsis;
   white-space: nowrap;
 
   &.good {
@@ -427,7 +438,7 @@
     font-family: v.$font-heading;
     font-size: v.$fs-10;
     gap: v.$space-8;
-    grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(160px, 1fr) repeat(2, v.$bet-button);
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;
@@ -438,7 +449,7 @@
   align-items: center;
   display: grid;
   gap: v.$space-8;
-  grid-template-columns: minmax(160px, 1.3fr) repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(160px, 1fr) repeat(2, v.$bet-button);
 }
 
 .prop-who {
@@ -504,7 +515,8 @@
 .lines-pair {
   display: grid;
   gap: v.$space-10;
-  grid-template-columns: repeat(2, minmax(0, 140px));
+  grid-template-columns: repeat(2, v.$bet-button);
+  justify-content: end;
   padding: 4px 0;
 }
 
@@ -523,10 +535,14 @@
   // sharing the rest; a moneyline alone no wider than a tile needs: the owner's bug report, 2026-10-17)
   .lines-grid {
     gap: v.$space-4;
-    grid-template-columns: minmax(40px, max-content) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(40px, 1fr) repeat(3, v.$bet-button);
 
     &.ml-only {
-      grid-template-columns: minmax(40px, max-content) minmax(0, 160px);
+      grid-template-columns: minmax(40px, 1fr) v.$bet-button;
+    }
+
+    &.two-col {
+      grid-template-columns: minmax(40px, 1fr) repeat(2, v.$bet-button);
     }
   }
 
@@ -620,15 +636,20 @@
     .grid-row {
       display: grid;
       gap: v.$space-6;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, v.$bet-button);
+      justify-content: end;
 
       .grid-team {
         grid-column: 1 / -1;
       }
     }
 
+    &.two-col .grid-row {
+      grid-template-columns: repeat(2, v.$bet-button);
+    }
+
     &.ml-only .grid-row {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: v.$bet-button;
     }
   }
 
@@ -637,7 +658,8 @@
   }
 
   .prop {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, v.$bet-button);
+    justify-content: end;
 
     .prop-who {
       grid-column: 1 / -1;

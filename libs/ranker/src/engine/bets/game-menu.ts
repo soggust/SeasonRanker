@@ -149,9 +149,9 @@ export function groupOf(days: MenuDay[], key: string): string | null {
   for (const d of days) for (const s of d.sports) if (s.games.some((g) => g.key === key)) return groupKey(d.day, s.sport);
   return null;
 }
-// (the closed dropdown's words with a sport chosen: "NFL · best bets")
+// (the closed dropdown's words with a sport chosen: "NFL · Best Bets", both capitals as everywhere)
 export function sportFace(sport: string, sports: MenuSports): string {
-  return `${sports.find((s) => s.id === sport)?.label ?? sport.toUpperCase()} · best bets`;
+  return `${sports.find((s) => s.id === sport)?.label ?? sport.toUpperCase()} · ${BEST_BETS_LABEL}`;
 }
 
 // A collapsed row's line under its pick: the game and its start, "NYJ @ NE · Sun 12:00 PM" (a fight "A vs B ·

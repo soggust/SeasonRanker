@@ -68,3 +68,16 @@ test('a tap outside the open sheet minimizes it on a phone, not on the sheet, th
   assert.match(read(`${wallet}/game-lines.component.html`), /class="tile-price"/);
   assert.match(read(`${wallet}/../login-dialog.component.html`), /class="login-panel"/);
 });
+
+// The placed note (the owner's bugs, 2026-10-17: it never went away, so no more bets; the ticket looked out of
+// place on the wallet page): a close X (aria-label Close) clears it, a new price clears it (wallet.toggle), no
+// timer; the ticket isn't on the wallet page at all, the Book's alone.
+test('the placed note closes on its X or a new price, and the ticket is the Book\'s alone', () => {
+  const notes = html.match(/placed\. <a href="\/wallet">See them in your wallet<\/a><button type="button" class="ticket-close" aria-label="Close" title="Close" \(click\)="closePlaced\(\)">/g) ?? [];
+  assert.equal(notes.length, 2, 'the ticket\'s note and the stub\'s');
+  assert.match(ts, /closePlaced\(\): void \{\s*this\.wallet\.placed\.set\(null\)/);
+  assert.doesNotMatch(ts, /setTimeout\([^)]*placed/, 'no auto-dismiss');
+  assert.doesNotMatch(read(`${wallet}/wallet-page.component.html`), /<bet-slip/);
+  assert.match(read('libs/ranker/src/engine/bets/bets-page.component.html'), /<bet-slip><\/bet-slip>/);
+  assert.match(read(`${wallet}/wallet.service.ts`), /toggle\(sel[\s\S]*?this\.placed\.set\(null\);\s*this\.slip\.update/, 'a new price clears the note');
+});

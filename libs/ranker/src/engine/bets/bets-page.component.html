@@ -68,10 +68,10 @@
           <span class="ticker-copy" [attr.aria-hidden]="copy ? 'true' : null">
             @for (t of tickerItems; track t.key) {
               <span class="tick" [ngClass]="t.state">
-                <span class="tick-sport">{{ t.sport }}</span>
-                <span class="tick-team">{{ t.away }}</span>
+                <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.away }"></ng-container>
                 @if (t.awayScore !== null) {<b class="tick-score">{{ t.awayScore }}</b>}
-                <span class="tick-team">{{ t.home }}</span>
+                <span class="tick-at" aria-hidden="true">@</span>
+                <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.home }"></ng-container>
                 @if (t.homeScore !== null) {<b class="tick-score">{{ t.homeScore }}</b>}
                 <span class="tick-state">{{ t.text ?? (t.start | date: 'h:mm a') }}</span>
               </span>
@@ -80,6 +80,14 @@
         }
       </div>
     </div>
+    <!-- (a ticker side: its logo, or a fighter's round face, 18px; the words when there's none or it fails) -->
+    <ng-template #tickSide let-s>
+      @if (s.pic && !s.failed) {
+        <img class="tick-pic" [class.face]="s.face" [src]="s.pic" [alt]="s.label" [title]="s.label" width="18" height="18" loading="lazy" (error)="tickImgError($event, s)" />
+      } @else {
+        <span class="tick-team">{{ s.label }}</span>
+      }
+    </ng-template>
   }
   @if (aboutOpen) {
     <bets-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></bets-about>
@@ -101,10 +109,10 @@
   <div class="book-main">
   <!-- The controls row over the board: the game dropdown on the left, the filter chips on the right -->
   <div class="book-controls">
-    <!-- (the game dropdown, a player's card pill: Best bets, then each day's games under their sport's heading, early to
+    <!-- (the game dropdown, a player's card pill: Best Bets, then each day's games under their sport's heading, early to
          late, the ones with bets with how many, the rest their lines only (game-menu.ts); there whenever there's a
          game to bet, picked or not. A sport's heading is a choice of its own: that sport's best bets, every day's
-         (the pill "NFL · best bets"); Best bets · every game clears it. When the sheet was updated, and whose odds,
+         (the pill "NFL · Best Bets"); Best Bets · every game clears it. When the sheet was updated, and whose odds,
          on its hover) -->
     @if (gameMenu.length) {
       <div class="bets-game-wrap" [class.open]="menuOpen">
@@ -121,23 +129,24 @@
           (keydown)="pillKey($event)"
         >
           <span class="bets-game-face">
+            <!-- (the mark inline in the words, one unit, no icon slot of its own (the owner's note, 2026-10-17): a game's
+                 two faces before "CAR @ WPG", a sport's league mark before "NFL · Best Bets", a small gold trophy before
+                 Best Bets) -->
             @if (chosenGame; as g) {
-              <mat-icon aria-hidden="true" [fontIcon]="g.icon"></mat-icon>
-              <span class="bets-game-label">{{ g.label }}</span>
+              <span class="bets-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [src]="f.logo" alt="" />}}{{ g.label }}</span>
               <span class="bets-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
             } @else if (chosenSport; as s) {
-              <mat-icon aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
-              <span class="bets-game-label">{{ s.label }}</span>
+              <span class="bets-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
               <span class="bets-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="bets-game-label">{{ bestBetsLabel }}</span>
+              <span class="bets-game-label"><mat-icon class="pill-mark trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
               <span class="bets-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
             <svg class="bets-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
         </button>
         <!-- The open list, a listbox of the page's own (the keyboard and the click-off in bets-page.component.ts):
-             Best bets · every game on top with its count, then each day on a gold dot-matrix band, under it each
+             Best Bets · every game on top with its count, then each day on a gold dot-matrix band, under it each
              sport as a row of its own (its icon, its name, its count; a choice: that sport's best bets, every
              day's, with a left accent in its colour), under that its games indented (the two teams' faces, the
              matchup (a fight "A vs B"), the start in the ticket's mono, the count of picks in a small pill or a
@@ -256,7 +265,7 @@
     }
   </div>
 
-  <!-- The board: a dot-matrix scoreboard, the only thing that scrolls on a wide screen. Best bets: one section per
+  <!-- The board: a dot-matrix scoreboard, the only thing that scrolls on a wide screen. Best Bets: one section per
        band (LOCK, an admin's CHECK, LOVE, LIKE), its header a button that folds it, sticky to the top of the
        scroller while its rows pass; the passes and fades off the board in one dim line at the bottom, unfolded to
        rows the same way. A game chosen: its every line on top, its picks under them -->

@@ -71,10 +71,10 @@ test("sportChoice: the dropdown's value for a sport, read back; a game's key and
   assert.equal(bets.chosenSport('mlb|CLE @ TB|401700123'), null);
   // (Best bets · every game: '' is no sport, the page's clearing of both filters)
   assert.equal(bets.chosenSport(''), null);
-  assert.equal(bets.sportFace('nfl', SPORTS), 'NFL · best bets');
-  assert.equal(bets.sportFace('nhl', SPORTS), 'NHL · best bets');
+  assert.equal(bets.sportFace('nfl', SPORTS), 'NFL · Best Bets');
+  assert.equal(bets.sportFace('nhl', SPORTS), 'NHL · Best Bets');
   // (a sport the site has no name for: its id in caps)
-  assert.equal(bets.sportFace('mma', SPORTS), 'MMA · best bets');
+  assert.equal(bets.sportFace('mma', SPORTS), 'MMA · Best Bets');
 });
 
 test("gameLine: a closed row's line is the game and its start alone, no sport, no reason; a fight reads A vs B; no kickoff, the game alone", () => {

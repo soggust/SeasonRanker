@@ -35,3 +35,43 @@ export function hideImage(event: Event): void {
   if (img.src.includes('/500-dark/')) img.src = img.src.replace('/500-dark/', '/500/');
   else img.style.visibility = 'hidden';
 }
+
+// (one side of a game on the Bets page's ticker: a team's logo (its abbreviation the words, shown when the logo
+// fails), a fighter's round headshot from the board (his last name the words); the owner's note, 2026-10-17)
+export interface TickerSide {
+  label: string;
+  pic: string | null;
+  face: boolean;
+}
+
+export function tickerSide(sport: string, t: { abbr: string; name: string; logo: string | null }): TickerSide {
+  if (sport === 'mma') {
+    const name = (t.name || t.abbr).trim();
+    return { label: name.split(/\s+/).pop() || name, pic: t.logo, face: true };
+  }
+  return { label: t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
+}
+
+// (a game view's market columns: only the markets with a price posted, in the board's order; a fight with round
+// totals but no spread shows Total and Moneyline, no empty Spread column: the owner's note, 2026-10-17)
+type Side = { odds: number | null } | null | undefined;
+export function boardColumns(b: { spread: { away: Side; home: Side } | null; total: { over: Side; under: Side } | null; ml: { away: Side; home: Side } | null }): ('spread' | 'total' | 'ml')[] {
+  const priced = (...s: Side[]): boolean => s.some((x) => x?.odds != null);
+  const cols: ('spread' | 'total' | 'ml')[] = [];
+  if (b.spread && priced(b.spread.away, b.spread.home)) cols.push('spread');
+  if (b.total && priced(b.total.over, b.total.under)) cols.push('total');
+  if (b.ml && priced(b.ml.away, b.ml.home)) cols.push('ml');
+  return cols;
+}
+
+// (a total's tile words: "O 47.5"; a fight's round total in full, "Over 2.5 rounds", as the owner asked)
+export function totalTop(sport: string, side: string, line: number | null | undefined): string {
+  const over = side === 'over';
+  return sport === 'mma' ? `${over ? 'Over' : 'Under'} ${line ?? ''} rounds` : `${over ? 'O' : 'U'} ${line ?? ''}`;
+}
+
+// (a bet's words on the ticket: a fight's round total says its rounds, "Over 2.5 rounds"; the stored words as
+// they are)
+export function legWords(s: { sport: string; market: string; pick: string }): string {
+  return s.sport === 'mma' && s.market === 'total' && !/rounds?$/i.test(s.pick) ? `${s.pick} rounds` : s.pick;
+}

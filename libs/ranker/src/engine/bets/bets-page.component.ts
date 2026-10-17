@@ -14,7 +14,7 @@ import { RecentForm, recentForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
-import { americanOdds, headshot, leagueLogo } from './bet-format';
+import { TickerSide, americanOdds, headshot, leagueLogo, tickerSide } from './bet-format';
 import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './bets-rows';
 // (the rows' types, for the page's other parts: bets-rows.ts)
@@ -61,13 +61,13 @@ interface WhyLook {
   reason: string | null;
 }
 
-// (one game on the ticker: the sport, the teams and their scores (none before it starts), its state, and its
-// clock or final as words, or its start when it hasn't begun)
+// (one game on the ticker: the two sides (a logo or a fighter's face, the words if it fails: failed), their scores
+// (none before it starts), its state, and its clock or final as words, or its start when it hasn't begun)
+type TickerTeam = TickerSide & { failed?: boolean };
 interface TickerItem {
   key: string;
-  sport: string;
-  away: string;
-  home: string;
+  away: TickerTeam;
+  home: TickerTeam;
   awayScore: number | null;
   homeScore: number | null;
   state: 'pre' | 'in' | 'post';
@@ -380,9 +380,8 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       const games = [...boards.values()].filter((g) => g.away.abbr && g.home.abbr && (!sport || g.sport === sport)).sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start));
       const items = games.slice(0, 30).map((g): TickerItem => ({
         key: `${g.sport}|${g.event}`,
-        sport: g.sport.toUpperCase(),
-        away: g.away.abbr,
-        home: g.home.abbr,
+        away: tickerSide(g.sport, g.away),
+        home: tickerSide(g.sport, g.home),
         awayScore: g.state === 'pre' ? null : g.away.score,
         homeScore: g.state === 'pre' ? null : g.home.score,
         state: g.state,
@@ -454,6 +453,13 @@ export class BetsPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.closed = true;
     if (this.ticker) clearInterval(this.ticker);
+  }
+
+  // (a ticker logo ESPN hasn't: the dark one falls back to the plain one, then the side's words take its place)
+  tickImgError(event: Event, side: TickerTeam): void {
+    const img = event.target as HTMLImageElement;
+    if (img.src.includes('/500-dark/')) img.src = img.src.replace('/500-dark/', '/500/');
+    else side.failed = true;
   }
 
   // A team logo's address: a path under the sport's own site, or a full address as it is
@@ -681,7 +687,7 @@ export class BetsPageComponent implements OnInit, OnDestroy {
       this.chooseGame('');
     }
   }
-  // (the closed dropdown's words with a sport chosen: "NFL · best bets", with its icon)
+  // (the closed dropdown's words with a sport chosen: "NFL · Best Bets", with its icon (MMA's; the leagues their mark))
   get chosenSport(): { label: string; icon: string; name: string } | null {
     if (!this.sport) return null;
     const s = this.menu().days.flatMap((d) => d.sports).find((x) => x.sport === this.sport);

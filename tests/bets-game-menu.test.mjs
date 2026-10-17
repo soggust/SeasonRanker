@@ -92,3 +92,31 @@ test("gameMenu: a series' games on consecutive days each their own (lines-only k
   assert.deepEqual(shape(bets.gameMenu([game('mlb', 'CLE @ TB', wed), game('mlb', 'CLE @ TB', tue)], SPORTS, TZ)), ['Tuesday, Oct 13: MLB[CLE @ TB · 6:08 PM lines]']);
   assert.deepEqual(shape(bets.gameMenu([game('mlb', 'CLE @ TB', tue), game('mlb', 'CLE @ TB', wed, 2)], SPORTS, TZ)), ['Wednesday, Oct 14: MLB[CLE @ TB · 6:08 PM (2)]']);
 });
+
+// The ticker's sides (bet-format.ts tickerSide; the owner's note, 2026-10-17): a team's logo with its abbreviation
+// as the words for when the logo fails; a fighter's board headshot, round, his last name the words
+test('the ticker shows a team logo or a fighter\'s face, the words behind it', () => {
+  const det = bets.tickerSide('nfl', { abbr: 'DET', name: 'Lions', logo: null });
+  assert.equal(det.label, 'DET');
+  assert.equal(det.face, false);
+  assert.match(det.pic, /teamlogos\/nfl\/500-dark\/det\.png/);
+  const shot = 'https://a.espncdn.com/i/headshots/mma/players/full/1.png';
+  assert.deepEqual(bets.tickerSide('mma', { abbr: 'Joaquin Buckley', name: 'Joaquin Buckley', logo: shot }), { label: 'Buckley', pic: shot, face: true });
+  assert.deepEqual(bets.tickerSide('mma', { abbr: 'Malott', name: '', logo: null }), { label: 'Malott', pic: null, face: true });
+});
+
+// A game view's columns (bet-format.ts boardColumns) and a fight's round totals in full (totalTop, legWords): the
+// owner's notes, 2026-10-17
+test('a game shows only its priced markets, and a fight\'s total says rounds', () => {
+  const p = (odds) => ({ odds });
+  assert.deepEqual(bets.boardColumns({ spread: null, total: { over: p(-120), under: p(100) }, ml: { away: p(150), home: p(-170) } }), ['total', 'ml']);
+  assert.deepEqual(bets.boardColumns({ spread: { away: p(null), home: p(null) }, total: null, ml: { away: p(150), home: p(-170) } }), ['ml']);
+  assert.deepEqual(bets.boardColumns({ spread: { away: p(-110), home: p(-110) }, total: { over: p(-110), under: p(-110) }, ml: { away: p(150), home: p(-170) } }), ['spread', 'total', 'ml']);
+  assert.equal(bets.totalTop('mma', 'over', 2.5), 'Over 2.5 rounds');
+  assert.equal(bets.totalTop('mma', 'under', 1.5), 'Under 1.5 rounds');
+  assert.equal(bets.totalTop('nfl', 'over', 47.5), 'O 47.5');
+  assert.equal(bets.legWords({ sport: 'mma', market: 'total', pick: 'Over 2.5' }), 'Over 2.5 rounds');
+  assert.equal(bets.legWords({ sport: 'mma', market: 'total', pick: 'Under 2.5 rounds' }), 'Under 2.5 rounds');
+  assert.equal(bets.legWords({ sport: 'nfl', market: 'total', pick: 'Over 47.5' }), 'Over 47.5');
+  assert.equal(bets.legWords({ sport: 'mma', market: 'ml', pick: 'Buckley ML' }), 'Buckley ML');
+});

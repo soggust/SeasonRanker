@@ -4,6 +4,7 @@ import { WalletService } from './wallet.service';
 import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, payout, slipTotals, toWin } from './wallet-math';
 import { Tapped, tapMinimizes } from './slip-sheet';
 import { betPlayer } from '../../player-link';
+import { legWords } from '../../bets/bet-format';
 
 // The bet slip: the prices clicked on the Bets page, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
@@ -22,6 +23,8 @@ import { betPlayer } from '../../player-link';
 export class BetSlipComponent {
   // (a bet's player: his name and face link his card, player-link.ts)
   readonly betPlayer = betPlayer;
+  // (a bet's words: a fight's round total says its rounds)
+  readonly legWords = legWords;
   // (the bankroll a new player starts with)
   readonly start = START;
   readonly chips = CHIPS;
@@ -84,6 +87,12 @@ export class BetSlipComponent {
   get problems(): boolean {
     if (this.wallet.asParlay()) return !!this.wallet.parlayIssue();
     return this.wallet.slip().some((s) => s.stake > 0 && this.wallet.problem(s));
+  }
+
+  // (the placed note's close X (the owner's bug, 2026-10-17: it never went away): the ticket back to empty, as a
+  // new price added does (wallet.toggle))
+  closePlaced(): void {
+    this.wallet.placed.set(null);
   }
 
   // (the phone's sheet down to the stub; the bets stay on the ticket)

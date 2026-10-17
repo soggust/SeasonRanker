@@ -38,7 +38,7 @@
         <li class="leg" [class.bot]="s.botPick">
           <div class="leg-top">
             <div class="leg-words">
-              <b class="leg-pick"><pick-text [pick]="s.pick" [player]="betPlayer(s)"></pick-text></b>
+              <b class="leg-pick"><pick-text [pick]="legWords(s)" [player]="betPlayer(s)"></pick-text></b>
               <small class="leg-game">{{ s.sport.toUpperCase() }} · {{ s.matchup }} · {{ s.start | date: 'EEE h:mm a' }} · <span class="leg-tag" [ngClass]="s.tier ?? 'yours'" [title]="s.tier === 'check' ? 'The bot’s CHECK: a market it questioned, not a bet it made' : s.tier ? 'The bot’s pick: ' + s.tier + (s.kelly !== null ? ', Kelly ' + s.kelly : '') : 'Your own call: not one of the bot’s picks'">{{ s.tier ?? 'your call' }}</span>@if (s.preview) { · <span class="leg-assumed" title="A preview prop: the book's line via ESPN with no price posted yet, so -110 is assumed; graded at this line">assumed</span>}</small>
             </div>
             <span class="leg-odds">{{ oddsText(s.odds) }}</span>
@@ -109,7 +109,7 @@
     }
   } @else if (wallet.placed()?.placed; as n) {
     <p class="ticket-done" role="status">
-      <mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a>
+      <mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a><button type="button" class="ticket-close" aria-label="Close" title="Close" (click)="closePlaced()"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
     </p>
   } @else {
     <p class="ticket-empty">No bets yet.<br />Tap a price on the board to write it on the ticket.</p>
@@ -172,7 +172,7 @@
         <button type="button" class="ticket-place" (click)="account.openLogin()">Sign in to place</button>
       }
     } @else if (wallet.placed()?.placed; as n) {
-      <p class="ticket-done" role="status"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a></p>
+      <p class="ticket-done" role="status"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ n }} bet{{ n > 1 ? 's' : '' }} placed. <a href="/wallet">See them in your wallet</a><button type="button" class="ticket-close" aria-label="Close" title="Close" (click)="closePlaced()"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></p>
     }
   </div>
 }

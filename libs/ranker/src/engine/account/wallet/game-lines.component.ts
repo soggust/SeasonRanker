@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, computed, signal } from '@angular/core';
 import { Confidence, tierOf } from '../../bets/tiers';
 import { betScoreText, confidenceOf, kellyOf } from '../../bets/bet-why';
-import { headshot, hideImage, teamLogo } from '../../bets/bet-format';
+import { boardColumns, headshot, hideImage, teamLogo, totalTop } from '../../bets/bet-format';
 import { pickTeamColor } from '../../bets/pick-style';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
@@ -430,9 +430,12 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return matchupName(this.sport, this.matchupText);
   }
 
-  // (a game with the moneyline alone, a fight's: the grid is the two sides' tiles, no spread or total column)
-  mlOnly(b: GameBoard): boolean {
-    return !b.spread && !b.total;
+  // (the grid's market columns: those with a price posted (bet-format.ts boardColumns); a fight's moneyline alone,
+  // or its round total and moneyline, no empty column)
+  readonly boardColumns = boardColumns;
+  // (a total's tile words: "O 47.5", a fight's "Over 2.5 rounds")
+  totalTop(side: string, line: number | null | undefined): string {
+    return totalTop(this.sport, side, line);
   }
 
   // (a total's unit in its words: a fight's round total reads "Over 2.5 rounds")
