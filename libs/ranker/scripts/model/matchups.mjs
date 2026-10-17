@@ -643,6 +643,20 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
   // read the logs alone: a benching or an unlisted inactive too, more than half its rows, at par, where the
   // listed ones ran 12% under on receiving yards (the role backtest's qb1Out table))
   const QB_LEAD = 15;
+  // (a quarterback's team's lead quarterback by the work (the most passes a game, QB_LEAD or more): the id, null
+  // with none; and whether he's a backup to it: a quarterback with the ball (threw: the history's QB_BACKUP_ATT
+  // passes or more; live, the one priced) who isn't the lead. 1 or 0)
+  const QB_BACKUP_ATT = 10;
+  const leadQbOf = (teamId, season) => {
+    let lead = null;
+    for (const [id, x] of workOf(teamId, season).p) if (x.pos === 'QB' && x.cur && x.v >= QB_LEAD && (!lead || x.v > lead.v)) lead = { id, v: x.v };
+    return lead;
+  };
+  const qbBackupOf = (teamId, season, pid, pos, threw) => {
+    if (POS(pos) !== 'QB' || !threw) return 0;
+    const lead = leadQbOf(teamId, season);
+    return lead && String(lead.id) !== String(pid) ? 1 : 0;
+  };
   const qb1Out = (teamId, season, pid, pos, missOf) => {
     if (!POS(pos) || POS(pos) === 'QB') return { v: 0, miss: 0 };
     let lead = null;
@@ -886,6 +900,9 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
         r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
         r.vac = Math.max(...r.vacs);
         r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        // (a quarterback who threw this game and isn't his team's lead by the work (qbBackup, round D: the backup's
+        // own rushing, props.mjs CTX backupRun); the lead's own 0)
+        r.qbBackup = qbBackupOf(g.team, g.season, r.pid, r.pos, (r.s?.passAtt ?? 0) >= QB_BACKUP_ATT);
         // (the lead quarterback missing as live play sees it where the history has the game's report (listed: his
         // team's Out and Doubtful, and its reserve list for one not in the game); without one, not in the logs)
         const seen = listed ? listed(g.game, g.team) : null;
@@ -1057,7 +1074,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
       const p = POS(pos);
       // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
-      return { oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { qbBackup: qbBackupOf(teamId, season, pid, pos, true), oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the role guard's absence already seen (props.mjs settledAbsenceOf): the regulars at his position surely
     // missing tonight (missOf over 0, recent work 1.5 a game or more: vacated's), and his games this season for

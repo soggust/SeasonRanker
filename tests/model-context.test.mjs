@@ -19,11 +19,14 @@ test('ctxKeys: one name or a list', () => {
   // (the lead back out: measured and on no stat's (props.mjs), receptions' held out at the rounding's floor)
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rec')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out', 'qbDeep']);
   assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('rb1Out')));
-  // (the midseason flag: measured and on no stat's (props.mjs CTX midSeason))
+  // (the midseason flag and the lead back out on his quarterback's volume (rbOutPass): measured (round D, 2026-10-17)
+  // and on no stat's ctx; a backup quarterback's own rushing (backupRun) on carries alone)
   assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('midSeason')));
+  assert.ok(STATS.nfl.every((s) => !ctxKeys(s).includes('rbOutPass')));
+  assert.deepEqual(STATS.nfl.filter((s) => ctxKeys(s).includes('backupRun')).map((s) => s.key), ['rushAtt']);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'passAtt')), ['wind', 'cold', 'precip', 'newCoach', 'lastGame']);
   assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'passInt')), ['wind', 'cold', 'precip', 'newCoach', 'mSpread']);
-  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rushAtt')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out']);
+  assert.deepEqual(ctxKeys(STATS.nfl.find((s) => s.key === 'rushAtt')), ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out', 'backupRun']);
 });
 
 test("ctxFactor: each term its own size; an old state's single c is the first term's; unknown values no effect", () => {

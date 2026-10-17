@@ -112,6 +112,20 @@ export interface ModelState {
   calib?: LiveCalib | null;
   // (the model's latest major change, leagues.mjs MODEL_EPOCH: the trust fit only on bets since; the desk's record since it by default)
   epoch?: string | null;
+  // (the game lines gated by their CLV, desk.mjs lineGate: on, the sport's spreads, moneylines and totals are bet;
+  // off, tracked only till its CLV over its last `window` graded line bets is positive again)
+  lineGate?: LineGate | null;
+}
+
+export interface LineGate {
+  on: boolean;
+  n: number;
+  ev: number | null;
+  prob: number | null;
+  beat: number | null;
+  min: number;
+  window: number;
+  why: string;
 }
 
 // (one spot's live calibration (a stat, a side, a line class): its graded rows since the epoch, its shift on the

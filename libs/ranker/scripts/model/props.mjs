@@ -516,6 +516,13 @@ const SKATER = (r) => r.pos !== 'G' && r.s.toi > 0;
 // one's bias larger) or the gain (attempts -0.0007, completions -0.0002, receptions 0), not taken on passing
 // yards, rushing yards and carries. On interceptions' ctx alone (CTX.mSpread kept for a measure on demand))
 const PASSING = ['wind', 'cold', 'precip', 'newCoach'];
+// (round D, 2026-10-17, the owner's backlog (memory desk-backlog), each a late flag on its own rows, soft where the
+// hard gate leaves it out (project.mjs SUBGROUP, softable), measured on the day's history and kept only on held-out
+// evidence. The lead back out on his quarterback's volume (CTX rbOutPass, 0 to 1 on the quarterback's rows; the owner's
+// Hurts under 31.5 attempts with the Eagles' back out): not taken on the fit window on passing yards or attempts;
+// on completions 0.025, -0.0001 held out with its 157 rows' bias 0.72 to 1.17 over: off every stat's ctx, kept for
+// later work. The starters' weeks 5-8 (CTX midSeason): not taken on the fit window on receiving yards or receptions:
+// off their ctx as before. A backup quarterback's own rushing (CTX backupRun, matchups.mjs qbBackup): below, RUSHING)
 const INT_CTX = [...PASSING, 'mSpread'];
 // (a regular above him at his position out tonight (aheadOut, matchups.mjs: one with more recent healthy work
 // than his, out, doubtful, on IR or off the roster; in the history not in the game's logs): the next man up's
@@ -560,6 +567,11 @@ const CARRYING = ['backupQb', 'wind', 'precip', 'newCoach', 'qb1Out'];
 // receiving yards' ctx again it took -0.4, +0.0008, but +0.0005 overshooting its rows on [0.4, 0.8] and +0.0003
 // on [0.2, 0.55]: not steady past the floor, kept off it)
 const CATCHING = [...CARRYING, 'qbDeep'];
+// (carries: the carrying flags and a backup quarterback's own rushing (backupRun, round D): on carries +0.1 (his 300
+// rows' bias -0.34 to -0.01 carries a game: the backups ran MORE than projected, not less as the CHECK had it), held out
+// +0.0003 but under the floor unrounded, soft z 1.11 with a half lost: weight 0 for now, judged again each fit as the
+// season's backups come in. On rushing yards +0.1 -0.0001 (its rows -2.8 to -1.4 yards): off that ctx)
+const RUSHING = [...CARRYING, 'backupRun'];
 // (rush+rec yards' own: qb1Out off (re-checked 2026-10-15, above: its keep not steady across held-out windows),
 // qbDeep on)
 const RUSH_REC = CATCHING.filter((k) => k !== 'qb1Out');
@@ -904,7 +916,15 @@ const RC_PASS = [...PASSING, 'lastGame'];
 // +0.0004, bias -0.0452 to -0.044) but not on the others (+0.0001; -0.0004 at 0.02): a floor-level keep that didn't
 // hold, off the ctx. CTX keeps rzPassM and rzGap for a measure on demand)
 const RZ_PASS = [...PASSING, 'rzPass'];
-const RC_K = [...PITCHER_CTX, 'lineupK'];
+// (round D, 2026-10-17: the starter's home or away (homeBat: 1 at home, -1 away) on his strikeouts and outs. Home
+// starters beat their projection by about 0.2 strikeouts and away ones fall short by the same (2026-10-14: +0.0013 on
+// strikeouts, +0.0004 on outs, both sides' bias halved, the whole stat's larger: left out by the hard gate). Under
+// the soft terms it would come in at a shrunk weight on that evidence where it holds; MLB is off-season, so it's fit on
+// 2025's history (round D, 2026-10-17): strikeouts 0.02 +0.0013 held out, bias 0.0101 to 0.0114, soft z 1.66 but the
+// first half of its lines -0.0007 against the second's +0.0032 (a half lost): weight 0; outs 0.01 +0.0004, z 0.58: 0.
+// Left on their ctx (the MLB fit is seconds) to be judged again when spring's games come in)
+const RC_K = [...PITCHER_CTX, 'lineupK', 'homeBat'];
+const RC_OUTS = [...PITCHER_CTX, 'homeBat'];
 // (the park and air re-checked, 2026-10-14 (the owner's doubt of round C): the round's park terms were sound in
 // their data (Coors +13%, Petco -9%; the wind toward center from StatsAPI's report, so out and in by the park's
 // own orientation; a closed roof none) but measured each alone against a projection that already carries part of
@@ -930,7 +950,7 @@ export const STATS = {
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: RZ_PASS, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...START, ...TEAM }),
-    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
+    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: RUSHING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT, ...START }),
     stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: RUSH_REC, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...START, ...TEAM_NORM }),
@@ -943,13 +963,15 @@ export const STATS = {
     stat('pra', 'Pts+Reb+Ast', /Points.*Rebounds.*Assists/i, { played: MIN, ctx: PRA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
   ],
   nhl: [
-    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: NHL_SOG_CTX, ...NHL_VAC, ...NHL_MINUTES, ...TEAM }),
-    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: NHL_PTS_CTX, ...NHL_VAC }),
+    stat('sog', 'Shots', /^Total Shots on Goal/, { played: SKATER, ctx: NHL_SOG_CTX, lowPool: true, ...NHL_VAC, ...NHL_MINUTES, ...TEAM }),
+    // (lowPool: the low-usage prior (project.mjs lp) for skaters under the eligible pool (a third-pair defenseman's
+// points): his prior leaning to the pool's floor, judged on those rows alone)
+    stat('pts', 'Points', /^Total Points$/, { played: SKATER, ctx: NHL_PTS_CTX, lowPool: true, ...NHL_VAC }),
     stat('saves', 'Saves', /^Total Saves/, { played: (r) => r.pos === 'G' && r.started, script: 'opp', ctx: SAVES_CTX, goalie: true }),
   ],
   mlb: [
     stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_K, pitcher: true }),
-    stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: PITCHER_CTX, pitcher: true }),
+    stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_OUTS, pitcher: true }),
     stat('hits', 'Hits', /^Total Hits$/, { played: BATTED, ctx: BATTER_CTX, ...MIDDLE }),
     stat('tb', 'Total Bases', /^Total Bases$/, { played: BATTED, ctx: RC_TB }),
   ],
@@ -1120,6 +1142,11 @@ export const CTX = {
   // history; a questionable one by his chance of missing it, playchance.mjs): a pass-catcher's receptions, a
   // back's own 0)
   rb1Out: (info, home, pts, row) => (Number.isFinite(row?.rb1Out) ? row.rb1Out : 0),
+  // (the same for his quarterback's own passing volume (round D): the quarterback's rows alone, 0 to 1)
+  rbOutPass: (info, home, pts, row) => (row?.pos === 'QB' && Number.isFinite(row?.rb1Out) ? row.rb1Out : 0),
+  // (a backup quarterback's own rushing (round D): he's his team's passer and not its lead quarterback by the work
+  // (matchups.mjs qbBackup: the history's by the game's passes, live by the lead's absence); 0 or 1)
+  backupRun: (info, home, pts, row) => (row?.pos === 'QB' && row?.qbBackup ? 1 : 0),
   // (his team's lead quarterback out (matchups.mjs qb1Out: out, doubtful or on IR, gone from the roster, or not in
   // the game's logs in the history; a questionable one by his chance of missing it), times the share of his
   // games this season the starter played in: a back's and a pass-catcher's, a quarterback's 0)

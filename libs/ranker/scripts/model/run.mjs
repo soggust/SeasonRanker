@@ -144,7 +144,7 @@ import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, lineGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
@@ -1415,6 +1415,10 @@ function stampOf(r, id, gameId) {
 // a change before the start prices it again (repriceOpen)
 function betGames(r) {
   const { sport, cfg, params, trust, at } = r;
+  // (the sport's game lines gated by its CLV (desk.mjs lineGate): off, every line this run is tracked, not bet;
+  // read once a run from the ledger as graded above, kept for the state and the Algorithm tab)
+  r.lineGate = lineGate(r.ledger?.bets ?? [], sport);
+  if (!r.lineGate.on) console.log(`${sport}: the game lines tracked only this run: ${r.lineGate.why}`);
   const held = new Map();
   r.pending = [];
   // (this run's CHECKs, game markets' and props': recordChecks; and the markets it priced that the gap guard
@@ -1561,7 +1565,9 @@ function betGames(r) {
       // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
       // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,
       // tracked, not bet: desk.mjs placement)
-      const placed = placement(pick.ev > 0 && !noPrice, units);
+      // (and never while the sport's lines are gated by their CLV (r.lineGate): tracked, the gate's word on the row)
+      if (!r.lineGate?.on) guard = { ...(guard ?? {}), why: [guard?.why, `lines tracked only: ${r.lineGate.why}`].filter(Boolean).join('; ') };
+      const placed = placement(pick.ev > 0 && !noPrice && !!r.lineGate?.on, units);
       const bet = {
         id,
         event: game.id,
@@ -2254,6 +2260,8 @@ function saveState(r) {
     record: record(ledger.bets),
     // (the markets tracked, not bet (desk.mjs TRACK: no edge), at a unit each, as if bet: never in the record)
     tracked: trackedRecord(ledger.bets),
+    // (the game lines' CLV gate (desk.mjs lineGate): whether this sport's lines are bet or tracked only, and why)
+    lineGate: lineGate(ledger.bets, r.sport),
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)
     // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)

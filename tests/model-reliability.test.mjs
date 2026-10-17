@@ -62,6 +62,7 @@ test('project.mjs: no floor gate compares a rounded gain', () => {
   const src = fs.readFileSync(new URL('../libs/ranker/scripts/model/project.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(src, /gains(\.\w+|\[key\])\s*>=\s*(MIN_GAIN|DRAFT_GAIN)/);
   assert.match(src, /\(key === 'sp' \? spRaw : raw\) >= MIN_GAIN\[key\]/);
-  for (const k of ["dp", "hl"]) assert.ok(src.includes(`gains.${k} = Math.round(raw * 10000) / 10000`), k);
+  // (round D: the gain shown through r4, judged on raw; tests/model-gate-rounding checks every path)
+  for (const k of ["dp", "hl"]) assert.ok(src.includes(`gains.${k} = r4(raw)`), k);
   assert.match(src, /csRaw >= DRAFT_GAIN/);
 });

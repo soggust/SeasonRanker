@@ -474,9 +474,14 @@
       <!-- (the markets tracked, not bet since Oct 13, 2026 (desk-math.ts TRACKED_FROM: no edge, or a guard cut them): graded and learned from like
            bets, never in the record, the bankroll or the lists above; their record by sport, a unit each as if bet;
            folded to begin with) -->
-      @if (trackedBySport.length) {
+      @if (trackedBySport.length || lineGates.length) {
       <card-panel class="tab-card group-advanced" [label]="trackedTitle" icon="visibility" [startOpen]="false">
         <div class="group-body">
+          <!-- (the game lines' CLV gate by sport: bet, or tracked only while the sport's closing-line value over its
+               last 200 graded line bets is negative; state.json's lineGate, desk.mjs lineGate) -->
+          @for (g of lineGates; track g.label) {
+            <p class="desk-note" [class.down]="!g.on" [title]="help['lineGate']">{{ g.text }}</p>
+          }
           <table class="desk-table" [title]="help['tracked']">
             <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'tracked' }"></ng-container></thead>
             <tbody>

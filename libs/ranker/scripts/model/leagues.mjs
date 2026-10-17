@@ -123,7 +123,18 @@ export const GAME_CAP = 5;
 // 2026-10-15 audit: the late terms' floor (MIN_GAIN, DRAFT_GAIN: 0.0003) and the draft prior's, the recency
 // weight's and the recalibration by side's judged on the unrounded held-out gain (project.mjs fitStat). Rounded to 4
 // places first, a gain of 0.00025 read 0.0003 and passed (NFL receiving yards' nt at z 0.57). Set to the push time.
-export const MODEL_EPOCH = '2026-10-15T20:23:00Z';
+// 2026-10-17 round D: every number a fit's gate compares read unrounded (project.mjs llOf, biasRawOf, gainOf: the
+// gains, the biases, the splits, the sides, the low lines', the rookies', the dispersion growth's and the optional
+// terms' keep; the check's log loss was still rounded to 4 places under the gain, and a bias tie passed): replayed,
+// NFL carries' pl in (0.0003 on the nose), passing TDs' and MLB strikeouts' rk in (gains that rounded to 0), NHL
+// points' c_teamShots (soft 0.25) out and shots' tr in. The NHL's low-usage prior (lp: a skater under the eligible
+// pool's prior leaning to the pool's floor; shots 0.75, points 0.5, their rows' held-out log loss 0.5743 to 0.5706
+// and 0.5095 to 0.5027). The same absence (ab) back in the search, soft (left out so far: carries +0.0014 held out
+// but its own rows' bias -0.59 to -0.61). Measured and left out: the lead back out on the quarterback's volume
+// (rbOutPass), the weeks 5-8 (midSeason), the backup's rushing (backupRun, on carries' ctx at weight 0), the MLB
+// starter's home or away (homeBat, a half lost). The game lines gated by their CLV (desk.mjs lineGate): the NHL's
+// tracked only at -0.0345 over 185. Set to the push time.
+export const MODEL_EPOCH = '2026-10-17T06:18:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

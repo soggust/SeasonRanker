@@ -38,6 +38,14 @@ on:
         description: Re-price the open bets on games not started yet
         type: boolean
         default: false
+      reason:
+        # (why this run was started, logged and nothing else: the owner's PC kicks the desk ahead of game windows
+        # (apps/nfl/scripts/kick-update.mjs --desk-games, the scheduled task "QBRanker desk kick games": NBA fives
+        # post about 30 minutes before the tip, NFL inactives 90 before the kickoff) and says which window; a kick by
+        # hand says why. The concurrency group below queues a kick behind a running run, never cancels one)
+        description: Why this run was started (logged)
+        type: string
+        default: ""
 
 # (one desk run at a time: a run that comes due while one is going waits; a second one due meanwhile
 # replaces the waiting one, which is fine, as each run does all that's due. Its own group, not the data
@@ -77,6 +85,13 @@ jobs:
       picks: ${{ steps.commit.outputs.picks }}
 
     steps:
+      # (a kicked run says why it was started: the dispatch input reason, the owner's PC's game-window kicks)
+      - name: Why this run
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.reason != '' }}
+        env:
+          REASON: ${{ inputs.reason }}
+        run: echo "Started by hand or by a kick: $REASON"
+
       - name: Checkout repository
         uses: actions/checkout@v7
         # (the branch as it is when the job starts, not the commit it was queued at: a run that waited behind

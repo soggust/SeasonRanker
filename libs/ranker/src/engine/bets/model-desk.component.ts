@@ -137,6 +137,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private tracked: ModelBet[] = [];
   trackedBySport: Tally[] = [];
   trackedTotal: Tally | null = null;
+  // (the game lines' CLV gate by sport (state.json's lineGate, desk.mjs lineGate): bet, or tracked only and why)
+  lineGates: { label: string; on: boolean; text: string }[] = [];
 
   // (the bets by when the bot placed them, the dropdown left of the game's: the algorithm changes, so today's
   // bets are today's logic; Today on every visit. The record, tiles, chart and results follow it; the bets
@@ -408,6 +410,14 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const anytime = tally('NFL · Anytime TD', tracked.filter((b) => b.propType === 'anyTd'));
     if (anytime.bets || anytime.open) this.trackedBySport.push(anytime);
     this.trackedTotal = this.trackedBySport.length > 1 ? tally('Total', tracked) : null;
+    // (the game lines' CLV gate, a line a sport on show: "NFL lines: bet · CLV +0.012 over 31 graded" or "tracked only")
+    this.lineGates = this.states
+      .filter((s) => s.lineGate)
+      .map((s) => {
+        const g = s.lineGate!;
+        const ev = g.ev === null ? 'no CLV read yet' : `CLV ${g.ev >= 0 ? '+' : ''}${g.ev.toFixed(4)} a unit over the last ${g.n} graded line bets`;
+        return { label: s.label, on: g.on, text: g.on ? `${s.label} lines: bet · ${ev}${g.n < g.min ? ` (under ${g.min}: too few to gate)` : ''}` : `${s.label} lines: tracked only · ${ev}, negative: bet again once it's positive` };
+      });
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
     // (by the Bets page's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)
     const band = (b: ModelBet) => confidenceOf(kellyOf(b.p, b.odds) ?? 0, b.p, intentOf(b) === 'edge');

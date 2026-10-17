@@ -696,3 +696,24 @@ export function record(bets) {
 // The tracked rows' own record (TRACK: not bet), at a unit each as if they had been: what they'd have made,
 // apart from the record (state.json's tracked; the Algorithm tab's Tracked panel)
 export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => learnView({ ...b, trackUnits: 1 })));
+
+// The game lines gated by CLV (round D, 2026-10-17, the owner's #5): a sport's spreads, moneylines and totals are
+// tracked, not bet (TRACK), while its closing-line value over its last LINE_GATE_N graded line bets is negative,
+// and bet again once it's positive. The CLV read is each bet's ev (clv.mjs: its expected return at the closing
+// chance and its own price; the Algorithm tab's CLV column), averaged; the tracked rows count as evidence like the
+// bets (the same line and price, graded the same), which is what lets a gated sport earn its way back. Props are
+// never gated here (their own guards). Fewer than LINE_GATE_MIN graded with a close read: too few to judge, the
+// lines bet as before (the trust's own minimum). { on, n, ev, prob, beat, min, window }: state.json's lineGate,
+// the Algorithm tab's Tracked panel
+export const LINE_GATE_N = 200;
+export const LINE_GATE_MIN = 40;
+export function lineGate(bets, sport) {
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev));
+  const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
+  const n = last.length;
+  const mean = (k) => (n ? round(last.reduce((t, b) => t + (b.clv[k] ?? 0), 0) / n, 4) : null);
+  const ev = mean('ev');
+  const beat = n ? round(last.filter((b) => b.clv.beat).length / n, 4) : null;
+  const on = n < LINE_GATE_MIN || ev >= 0;
+  return { on, n, ev, prob: mean('prob'), beat, min: LINE_GATE_MIN, window: LINE_GATE_N, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close: under ${LINE_GATE_MIN}, the lines bet as before` : `CLV ${ev >= 0 ? '+' : ''}${ev} over the last ${n} graded line bets: the lines bet`) : `CLV ${ev} over the last ${n} graded line bets: the lines tracked, not bet, till it's positive` };
+}

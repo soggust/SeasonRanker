@@ -885,11 +885,11 @@ export function softJoint(base, t, prev = base) {
   if (!(Number.isFinite(a) && Number.isFinite(b))) fails.push('log loss not measured');
   else if (!(a < b)) fails.push('log loss');
   const no = (x, y) => Number.isFinite(x) && Number.isFinite(y) && Math.abs(x) <= Math.abs(y);
-  if (!no(t?.check?.bias, base?.check?.bias)) fails.push('bias');
-  if (!no(t?.all?.bias, base?.all?.bias)) fails.push("all players' bias");
+  if (!no(biasRawOf(t?.check), biasRawOf(base?.check))) fails.push('bias');
+  if (!no(biasRawOf(t?.all), biasRawOf(base?.all))) fails.push("all players' bias");
   return fails;
 }
-const MIN_GAIN = { vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
+const MIN_GAIN = { c_rbOutPass: DRAFT_GAIN, c_backupRun: DRAFT_GAIN, lp: DRAFT_GAIN, vl: DRAFT_GAIN, sn: DRAFT_GAIN, ps: DRAFT_GAIN, po: DRAFT_GAIN, ep: DRAFT_GAIN, vcM: DRAFT_GAIN, c_blowS: DRAFT_GAIN, c_blowB: DRAFT_GAIN, c_newStart: DRAFT_GAIN, c_newCoach: DRAFT_GAIN, c_qb1Out: DRAFT_GAIN, c_qbDeep: DRAFT_GAIN, c_ppShare: 0.0001, rp: DRAFT_GAIN, nt: DRAFT_GAIN, ij: DRAFT_GAIN, ro: DRAFT_GAIN, ab: DRAFT_GAIN, c_aheadOut: DRAFT_GAIN, ot: DRAFT_GAIN, sk: DRAFT_GAIN, rx: DRAFT_GAIN, pl: DRAFT_GAIN, sp: DRAFT_GAIN, sl: DRAFT_GAIN, mk: DRAFT_GAIN, c_mSpread: DRAFT_GAIN, c_b2b: DRAFT_GAIN, c_oppB2b: DRAFT_GAIN, c_b2bS: DRAFT_GAIN, c_b2bB: DRAFT_GAIN, c_ppLean: DRAFT_GAIN, c_teamShots: DRAFT_GAIN, c_mTotal: DRAFT_GAIN, od: DRAFT_GAIN, c_oppOut: DRAFT_GAIN, c_oppD: DRAFT_GAIN, c_oppDB: DRAFT_GAIN, c_oppFront: DRAFT_GAIN, ex: DRAFT_GAIN, tr: DRAFT_GAIN, ...Object.fromEntries(ROUND_C.map((k) => [k, DRAFT_GAIN])) };
 // (the defense tables' recency (od, audit #15): a table's sums times 1 - od at each new game of its side, so
 // its latest games count most (0: the season's sums as before); tried late on the whole stat's strict gate, and
 // where the opponent's power is 0 on every group (nothing reads the tables) with a at OD_A, the tables' recency
@@ -921,7 +921,18 @@ const CARRY = ['pl'];
 // they were tried on and searched for nothing every hourly run (the five stats' fit 837s to 994s locally; ab
 // alone 721s to 786s on the dry run): kept in the code for role-backtest.mjs --set to force (back in this list
 // to try them again); the flag c_aheadOut off every stat's ctx (props.mjs CARRYING))
-const SHARE = [];
+// (round D, 2026-10-17, the Emanuel Wilson case: ab back in the search. A back who stepped into the lead's job
+// (the lead out two games, 20 carries in each) was projected at his season's snap share leaning to his last
+// game's (sr), his backup weeks in the blend: 16 to 17 carries against lines at 20. The same absence (ab: his
+// games with the same regulars out, AB_MIN of them, his average there in place of his base) is the term that
+// reads those games alone, and it's soft (SOFT_ON): left out on the hard gate, it comes in at a shrunk weight on
+// its held-out evidence instead of all or nothing, which it couldn't in 2026-10-12's search. ro and ot stay out.
+// Replayed 2026-10-17: on carries 0.25, +0.0014 held out (four times the floor) but its own 925 rows' bias -0.587
+// to -0.612 carries a game, and "its own bias" isn't a fail the soft stage takes (SOFT_FAILS): left out; rushing
+// yards 0 gain, its own bias larger too; not taken on the receiving stats. The owner's call whether a term's own
+// rows may run a little further under for a gain that size (a tolerance on its own rows as the rest has, or its own
+// bias among SOFT_FAILS); as it stands the rule holds and Wilson's carries read his season's share)
+const SHARE = ['ab'];
 // (the carryover's last season games read (pl: his last PL_N, where last season had PL_MIN or more), and his
 // last five's games (rx: this season's under RX_MIN))
 const PL_N = 8;
@@ -948,7 +959,7 @@ const SP_LINE_LAST = 16;
 // moves them a little); ppShare, on every skater, judged on the whole stat's as before. The next man up's rows
 // are the ones whose role moves up with the missing out of the order, the injury return's his 1st to RAMP-th
 // games back from an absence of ia games or more)
-const SUBGROUP = new Set(['vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp', 'c_olOut', 'c_rbLoad', 'c_lastGame']);
+const SUBGROUP = new Set(['c_rbOutPass', 'c_backupRun', 'vl', 'c_newCoach', 'c_qb1Out', 'c_qbDeep', 'c_midSeason', 'c_aheadOut', 'rp', 'nt', 'ij', 'ab', 'c_b2b', 'c_oppB2b', 'c_b2bS', 'c_b2bB', 'c_blowS', 'c_blowB', 'c_newStart', 'c_oppD', 'c_oppDB', 'c_oppFront', 'sp', 'c_olOut', 'c_rbLoad', 'c_lastGame']);
 // (a signed context term, about 0 over the whole stat (the lines' spread, c_mSpread: each game a favorite and
 // an underdog, their errors cancelling in the whole stat's bias): judged on the whole stat's gate and on each
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
@@ -1109,8 +1120,24 @@ const biasOf = (list) => {
   if (!list.length) return null;
   const mu = list.reduce((t, x) => t + x.p.mu, 0);
   const v = list.reduce((t, x) => t + x.v, 0);
-  return { n: list.length, bias: Math.round(((mu - v) / list.length) * 10000) / 10000, mean: Math.round((v / list.length) * 1000) / 1000, ratio: mu ? Math.round((v / mu - 1) * 10000) / 10000 : null };
+  const out = { n: list.length, bias: Math.round(((mu - v) / list.length) * 10000) / 10000, mean: Math.round((v / list.length) * 1000) / 1000, ratio: mu ? Math.round((v / mu - 1) * 10000) / 10000 : null };
+  // (the unrounded bias, not enumerable: the gates compare it (rawOf), the state saves the rounded one)
+  Object.defineProperty(out, 'biasRaw', { value: (mu - v) / list.length, enumerable: false });
+  return out;
 };
+// The gates' reads of a check's or a split's numbers, unrounded (round D, 2026-10-17: every held-out number the
+// fit's gates compare is kept to 4 places for the logs and the state, and the compares read those: a gain of
+// 0.00025 read as two log losses 4 places apart passed the 0.0003 floor, a bias larger by under 0.00005 read "no
+// larger". The unrounded values ride along, not enumerable (check's llRaw, biasRaw, maeRaw; biasOf's biasRaw; a
+// sub-check's llRaw), and every compare reads them through these; a value without its raw (an older saved
+// check) falls back to the rounded one). The reported gains stay rounded to 4 places (r4)
+export const llOf = (c) => (c && c.llRaw !== undefined ? c.llRaw : (c?.logLoss ?? null));
+export const biasRawOf = (b) => (b && b.biasRaw !== undefined ? b.biasRaw : (b?.bias ?? null));
+const maeOf = (c) => (c && c.maeRaw !== undefined ? c.maeRaw : (c?.mae ?? null));
+// (a term's held-out gain: the log loss without it less with it, each unrounded; a side not measured counts 0, as
+// the gates always read it)
+export const gainOf = (off, tried) => (llOf(off) ?? 0) - (llOf(tried) ?? 0);
+const r4 = (x) => (x === null || x === undefined ? null : Math.round(x * 10000) / 10000);
 // (the same absence (ab): his games with the same regulars out it takes)
 const AB_MIN = 2;
 const DRAFT_LINES = 100;
@@ -1199,6 +1226,22 @@ export function makeModel(stat, params, env) {
   const pool = (row) => {
     const p = pos.get(posKey(row));
     return p && p.n >= 20 ? p.sum / p.n : (env.mean ?? 1);
+  };
+  // (the pool's floor (lp): the lowest season rate among the eligible players at his position this season with
+  // LP_FLOOR_N games or more; null under LP_FLOOR_PLAYERS of them (the season's first weeks: no floor, his prior as
+  // it was))
+  const poolFloor = (row) => {
+    const p = pos.get(posKey(row));
+    if (!p?.by) return null;
+    let floor = null;
+    let seen = 0;
+    for (const o of p.by.values()) {
+      if (o.season !== row.season || o.n < LP_FLOOR_N) continue;
+      seen++;
+      const r = o.sum / o.n;
+      if (floor === null || r < floor) floor = r;
+    }
+    return seen >= LP_FLOOR_PLAYERS ? floor : null;
   };
   // (the eligible players' per-snap rate at his position (their total over their snap shares' total), and the
   // starting quarterbacks' average a start: null till there are 20 games' worth)
@@ -1375,6 +1418,17 @@ export function makeModel(stat, params, env) {
     const dr = draftOf(row);
     const draftG = draftF(row, dr, 'g');
     let prior = longN >= 10 ? (prev.sum + 0.5 * older.sum) / longN : pool(row) * draftG;
+    // (the low-usage prior (lp, round D 2026-10-17, the owner's backlog: the NHL's Jiricek under 0.5 points,
+    // projected 0.1 against a market near 0.35): a player under the eligible pool (row.eligible false: not among
+    // his team's top six forwards or top two defensemen) has a prior of his own run alone, and the fit's lean and
+    // recalibration never see his rows, so his projection rests on that run however thin. His prior leans by lp
+    // toward the pool's floor (poolFloor: the lowest season rate among the eligible players at his position with
+    // LP_FLOOR_N games or more, this season), the least a man in the pool produces: a second-pair defenseman is
+    // shrunk toward the pool's floor, not its average. Judged on the rows it moves alone (the non-eligible held-out
+    // rows' log loss at their medians and their bias: fitStat's lp gate); the eligible players' projections are
+    // exactly as before, so the stat's own check can't move)
+    const lpFloor = params.lp && row.eligible === false && has(stat, 'lp') ? poolFloor(row) : null;
+    if (lpFloor !== null) prior = (1 - params.lp) * prior + params.lp * lpFloor;
     // (the draft's factor in the base used (the per-game prior's, a start's or a snap's where that base is the
     // one taken, and a target's apart), each only where its own prior is the position's: what the board shows)
     let draftUsed = longN < 10 ? draftG : 1;
@@ -1932,10 +1986,14 @@ export function makeModel(stat, params, env) {
           if (started) add('q', poolStart(row));
           drafts.set(dk, t);
         }
-        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0, tg: 0, ts: 0 };
+        const q = pos.get(k) ?? { n: 0, sum: 0, sh: 0, ss: 0, qn: 0, qsum: 0, fqn: 0, fqsum: 0, tg: 0, ts: 0, by: new Map() };
         if (row.eligible !== false) {
           q.n++;
           q.sum += v;
+          // (each eligible player's own season run, for the pool's floor (lp: poolFloor); a new season starts his over)
+          const own = q.by.get(row.pid);
+          if (own && own.season === row.season) (own.n++), (own.sum += v);
+          else q.by.set(row.pid, { season: row.season, n: 1, sum: v });
           if (sh !== null) (q.sh += sh), (q.ss += v);
           if (tg?.ok && tg.sum > 0) (q.tg += row.s.targets), (q.ts += v);
         }
@@ -2176,7 +2234,18 @@ const OPP_D = [-0.1, 0.1, 0.2, 0.4];
 const OPP_DEF = [-0.03, 0.03, 0.06, 0.1];
 // (the early exit's sizes tried (ex): times the short game's chance learned)
 const EX = [0.5, 1, 1.5, 2, 3, 4];
-const GRID = { ...CARRY_GRID, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX, ...ROUND_C_GRID };
+// (round D, 2026-10-17, the owner's backlog, each a late flag on its own rows (SUBGROUP), soft where the gate
+// leaves it out: c_rbOutPass, his team's lead back out, on a quarterback's passing stats (props.mjs CTX rbOutPass:
+// the same reading as rb1Out, 0 to 1, the quarterback's rows alone; the backs' and receivers' rb1Out stays as it
+// was), either way; c_backupRun, a backup quarterback's own rushing (CTX backupRun: he's his team's passer and
+// not its lead quarterback by the work, matchups.mjs qbBackup), the role backtest's +6% to +12% over the
+// projection the reason for the negative sizes; lp, the low-usage prior (below: has, poolFloor), 0.25 to 1)
+const LP_FLOOR_N = 5;
+const LP_FLOOR_PLAYERS = 5;
+const RB_OUT_PASS = [-0.05, -0.025, 0.025, 0.05, 0.075, 0.1];
+const BACKUP_RUN = [-0.2, -0.15, -0.1, -0.075, -0.05, 0.05, 0.1];
+const LP = [0.25, 0.5, 0.75, 1];
+const GRID = { ...CARRY_GRID, c_rbOutPass: RB_OUT_PASS, c_backupRun: BACKUP_RUN, lp: LP, sp: SP, sl: SL, ot: [0.25, 0.5, 0.75, 1], ab: [0.25, 0.5, 0.75, 1], nt: [0.5, 0.75, 1], c_aheadOut: AHEAD_OUT, aPos: [0, 0.25, 0.5, 0.75, 1], kd: [0, 0.1, 0.25, 0.5], dp: [0, 0.5, 1], qs: [0, 0.5, 1], K: [2, 4, 8, 16, 32], w: [0, 0.2, 0.4, 0.6], a: [0, 0.5, 1], b: [-0.5, 0, 0.5, 1, 1.5], c: [-0.3, -0.15, -0.07, 0, 0.07, 0.15, 0.3], roleK: [Infinity, 32, 16, 8, 4, 2], fun: [0, 1, 2, 4, 8], pc: [0, 0.5, 1, 1.5], tg: [0, 0.5, 1], vc: [0, 0.25, 0.5, 0.75, 1, 1.25], c_oppShots: POWER, c_slot: POWER, c_leash: POWER, c_precip: [-0.04, -0.02, -0.01, 0, 0.01, 0.02], c_oppGoalie: [-0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2], c_rb1Out: RB1_OUT, c_newCoach: COACH, c_qb1Out: QB1_OUT, c_qbDeep: QB_DEEP, c_ppShare: PP_SHARE, c_mSpread: M_SPREAD, c_b2b: B2B, c_oppB2b: B2B, c_b2bS: B2B, c_b2bB: B2B, c_blowS: B2B, c_blowB: B2B, c_newStart: NEW_START, c_ppLean: PP_LEAN, c_teamShots: TEAM_SHOTS, c_mTotal: M_TOTAL, c_oppOut: OPP_OUT, c_oppD: OPP_D, c_oppDB: OPP_DEF, c_oppFront: OPP_DEF, ex: EX, ...ROUND_C_GRID };
 // (the vacated work's split, by index into matchups.mjs's: in proportion, flatter, equally, for each measure
 // of work the stat has (vacSplits: 3 a measure); searched with vc)
 const splitsOf = (stat) => Array.from({ length: stat.vacSplits ?? 3 }, (_, i) => i);
@@ -2221,6 +2290,7 @@ const has = (stat, key) =>
   : key === 'rx' || key === 'pl' ? !!stat.carry
   : key === 'sl' ? !!stat.middle
   : key === 'sp' ? !!stat.start
+  : key === 'lp' ? !!stat.lowPool
   : key === 'ps' ? !!stat.positions
   : key === 'po' ? !!stat.pace
   : key === 'ep' ? !!stat.plays
@@ -2344,7 +2414,10 @@ export function fitStat(stat, rows, env) {
       lines++;
     }
     const b = biasOf(list);
-    return { n: list.length, lines, logLoss: lines ? Math.round((ll / lines) * 10000) / 10000 : null, bias: b?.bias ?? null, ratio: b?.ratio ?? null };
+    const out = { n: list.length, lines, logLoss: lines ? Math.round((ll / lines) * 10000) / 10000 : null, bias: b?.bias ?? null, ratio: b?.ratio ?? null };
+    Object.defineProperty(out, 'llRaw', { value: lines ? ll / lines : null, enumerable: false });
+    Object.defineProperty(out, 'biasRaw', { value: biasRawOf(b), enumerable: false });
+    return out;
   };
   // (the betting lines' terms (mk, c_mSpread) only where the history has the lines (fitCtxs, env.mktN: the rows
   // with them); without, nothing to fit, the stat as before)
@@ -2360,7 +2433,7 @@ export function fitStat(stat, rows, env) {
   const share = (list) => list.filter((k) => SHARE.includes(k) && has(stat, k));
   // (the learned split (vl) first: after the minutes base (the NBA's), before the next man up's and the rest
   // that read the work missing)
-  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...[...CARRY, 'sp', 'tr', 'sl', 'ex'].filter((k) => has(stat, k))];
+  const late = [...(stat.minutes ? (TRY_VCM && stat.vacated ? ['sn', 'vcM'] : ['sn']) : []), ...(has(stat, 'vl') ? ['vl'] : []), ...[...(TRY_PS ? ['ps'] : []), 'po', 'ep'].filter((k) => has(stat, k)), ...(has(stat, 'od') ? ['od'] : []), ...(TRY_MK && env.mktN > 0 ? ['mk'] : []), ...ctxs.filter((k) => MIN_GAIN[k] !== undefined && !AFTER_RP.includes(k)), ...['rp', 'nt', 'ij'].filter((k) => has(stat, k)), ...share(['ro', 'ab']), ...ctxs.filter((k) => AFTER_RP.includes(k)), ...share(['ot']), ...(has(stat, 'lp') ? ['lp'] : []), ...[...CARRY, 'sp', 'tr', 'sl', 'ex'].filter((k) => has(stat, k))];
   const optional = [...Object.keys(OPTIONAL).filter((k) => k !== 'dp' && has(stat, k) && !(k === 'sn' && stat.minutes)), ...aPos, ...ctxs.filter((k) => !late.includes(k))];
   const keys = ['K', 'w', 'a', 'b', ...optional];
   const allOff = Object.fromEntries(optional.map((k) => [k, offOf(k)]));
@@ -2468,7 +2541,7 @@ export function fitStat(stat, rows, env) {
       const a = allOf(o);
       parts = { ...(parts ?? {}), sides: sides.map((f) => biasOf(a.filter(f))) };
     }
-    return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, nonElig: biasOf(allOf(o).filter((x) => x.row.eligible === false)), parts, early: has(stat, 'sp') ? earlyOf(o, pc) : null };
+    return { cal, calSide, check: check(o.filter((x) => x.win === 2 && x.row.eligible !== false), pc), young, all, nonElig: biasOf(allOf(o).filter((x) => x.row.eligible === false)), nonEligCheck: has(stat, 'lp') ? check(allOf(o).filter((x) => x.row.eligible === false), pc) : null, parts, early: has(stat, 'sp') ? earlyOf(o, pc) : null };
   };
   let current = heldOut(params);
   const gains = {};
@@ -2478,8 +2551,10 @@ export function fitStat(stat, rows, env) {
       continue;
     }
     const without = heldOut({ ...params, [key]: offOf(key) });
-    gains[key] = Math.round(((without.check?.logLoss ?? 0) - (current.check?.logLoss ?? 0)) * 10000) / 10000;
-    if (gains[key] <= 0) {
+    // (judged unrounded (gainOf), shown to 4 places)
+    const raw = gainOf(without.check, current.check);
+    gains[key] = r4(raw);
+    if (!(raw > 0)) {
       params = { ...params, [key]: offOf(key), cal: without.cal };
       current = without;
     }
@@ -2502,7 +2577,7 @@ export function fitStat(stat, rows, env) {
         const tryP = { ...params, a: aBest.a };
         tryP.scale = scaleOf(tryP);
         const tried = heldOut(tryP);
-        if ((tried.check?.logLoss ?? Infinity) <= (nextCheck.check?.logLoss ?? Infinity)) (next = tryP), (nextCheck = tried);
+        if ((llOf(tried.check) ?? Infinity) <= (llOf(nextCheck.check) ?? Infinity)) (next = tryP), (nextCheck = tried);
       }
     }
     params = { ...next, cal: nextCheck.cal };
@@ -2511,8 +2586,9 @@ export function fitStat(stat, rows, env) {
   // (the dispersion's growth, the same way: the plain negative binomial unless the held-out games say so)
   if (params.rk) {
     const without = heldOut({ ...params, ...plain });
-    gains.rk = Math.round(((without.check?.logLoss ?? 0) - (current.check?.logLoss ?? 0)) * 10000) / 10000;
-    if (gains.rk <= 0) (params = { ...params, ...plain }), (current = without);
+    const raw = gainOf(without.check, current.check);
+    gains.rk = r4(raw);
+    if (!(raw > 0)) (params = { ...params, ...plain }), (current = without);
   } else gains.rk = null;
   // (the context flags with a floor (MIN_GAIN: a new head coach's first games, a 0-or-1 flag on a few hundred
   // team-games), tried on top of the rest as fit and left as they are, as the draft's prior below: each size
@@ -2679,10 +2755,12 @@ export function fitStat(stat, rows, env) {
         if (sc.ll > sBest.ll) (sBest = sc), (v = x);
       }
     } else {
-      s0 = scoreOf(replayStat(stat, sorted, params, env, cuts).out, 1, shape);
+      // (the low-usage prior (lp) searched on the fit window's non-eligible rows alone: the ones it moves)
+      const rowsOf = key === 'lp' ? (o) => o.filter((x) => x.row.eligible === false) : (o) => o;
+      s0 = scoreOf(rowsOf(replayStat(stat, sorted, params, env, cuts).out), 1, shape);
       sBest = s0;
       for (const x of key === 'od' ? odTries(params) : lateTries(key, stat)) {
-        const sc = scoreOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out, 1, shape);
+        const sc = scoreOf(rowsOf(replayStat(stat, sorted, { ...params, ...x }, env, cuts).out), 1, shape);
         if (sc.ll > sBest.ll) (sBest = sc), (v = x);
       }
       // (the NBA's pace: the opponent's power a fit again with it on the fit window (the tables learn past the
@@ -2713,32 +2791,34 @@ export function fitStat(stat, rows, env) {
     const tried = heldOut(tryP, sub, sides, given);
     // (the gain judged unrounded, shown to 4 places: rounded first, a held-out gain of 0.00025 read 0.0003 and
     // passed the floor (NFL receiving yards' nt, at z 0.57, 2026-10-15))
-    const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
-    gains[key] = Math.round(raw * 10000) / 10000;
+    // (the low-usage prior's gain (lp) is the non-eligible rows' own: the eligible players' check can't move)
+    const raw = key === 'lp' ? gainOf(off.nonEligCheck, tried.nonEligCheck) : gainOf(off.check, tried.check);
+    gains[key] = r4(raw);
     // (the start-of-season prior's gain is its early games' (sp: the check's own lines need 3 of this season's
     // games, so it barely sees them): their log loss at the early lines without it less with it, SUBGROUP_N lines
     // each or not measured; the whole stat's held-out log loss no worse beside it)
-    const whole = gains[key];
-    const spRaw = off.early?.lines >= SUBGROUP_N && tried.early?.lines >= SUBGROUP_N ? off.early.logLoss - tried.early.logLoss : null;
-    if (key === 'sp') gains.sp = spRaw === null ? null : Math.round(spRaw * 10000) / 10000;
+    const spRaw = off.early?.lines >= SUBGROUP_N && tried.early?.lines >= SUBGROUP_N ? gainOf(off.early, tried.early) : null;
+    if (key === 'sp') gains.sp = r4(spRaw);
+    // (every compare below on the unrounded numbers: biasRawOf, llOf)
     const fine = (a, b, tol = 0) => (!Number.isFinite(a) || !Number.isFinite(b) ? 'not measured' : Math.abs(a) <= Math.abs(b) + tol ? null : 'larger');
     const fails = [];
-    if (key === 'sp' && gains.sp === null) fails.push('its early lines not measured');
+    if (key === 'sp' && spRaw === null) fails.push('its early lines not measured');
     else if (!((key === 'sp' ? spRaw : raw) >= MIN_GAIN[key])) fails.push('gain');
-    if (key === 'sp' && whole < 0) fails.push("the whole stat's log loss");
+    if (key === 'sp' && raw < 0) fails.push("the whole stat's log loss");
     if (sub) {
       const [o, t] = [off.parts, tried.parts];
-      const on = (o?.on?.n ?? 0) < SUBGROUP_N ? 'not measured' : t.on.bias === 0 && o.on.bias === 0 ? null : Math.abs(t.on.bias) < Math.abs(o.on.bias) ? null : 'larger';
+      const [ob, tb] = [biasRawOf(o?.on), biasRawOf(t?.on)];
+      const on = (o?.on?.n ?? 0) < SUBGROUP_N ? 'not measured' : tb === 0 && ob === 0 ? null : Math.abs(tb) < Math.abs(ob) ? null : 'larger';
       if (on) fails.push(on === 'larger' ? 'its own bias' : 'its own bias not measured');
       // (and its own rows' eligible players', the ones a book posts props for, no larger the same way: a term
       // learned on every player's rows, most of them low-usage, can right those and push the bettable ones the
       // other way (ij on receptions, 2026-10-12: its rows -6.9% to +4.1% actual over projected, the eligible's
       // -1.5% to +10.1%); fewer than SUBGROUP_ELIG_N of them: not measured, left out)
-      const oe = (o?.onElig?.n ?? 0) < SUBGROUP_ELIG_N ? 'not measured' : fine(t?.onElig?.bias, o?.onElig?.bias, SUBGROUP_TOL * (o?.onElig?.mean ?? 0));
+      const oe = (o?.onElig?.n ?? 0) < SUBGROUP_ELIG_N ? 'not measured' : fine(biasRawOf(t?.onElig), biasRawOf(o?.onElig), SUBGROUP_TOL * (o?.onElig?.mean ?? 0));
       if (oe) fails.push(oe === 'larger' ? "its own eligible rows' bias" : "its own eligible rows' bias not measured");
-      const rb = fine(t?.rest?.bias, o?.rest?.bias, SUBGROUP_TOL * (o?.rest?.mean ?? 0));
+      const rb = fine(biasRawOf(t?.rest), biasRawOf(o?.rest), SUBGROUP_TOL * (o?.rest?.mean ?? 0));
       if (rb) fails.push(rb === 'larger' ? "the rest's bias" : "the rest's bias not measured");
-      const re = fine(t?.restElig?.bias, o?.restElig?.bias, SUBGROUP_TOL * (o?.restElig?.mean ?? 0));
+      const re = fine(biasRawOf(t?.restElig), biasRawOf(o?.restElig), SUBGROUP_TOL * (o?.restElig?.mean ?? 0));
       if (re) fails.push(re === 'larger' ? "the eligible rest's bias" : "the eligible rest's bias not measured");
     } else {
       // (a base on every row (WHOLE_TOL: the NBA's minutes) moves the whole stat's lean, refit on the fit window,
@@ -2752,15 +2832,20 @@ export function fitStat(stat, rows, env) {
       const teamWhole = key === 'tr' && !!stat.teamWhole;
       const wholeTol = WHOLE_TOL.has(key) || teamWhole;
       if (wholeTol) wholeBase ??= off.check ?? null;
-      const eb = wholeTol ? fine(tried.check?.bias, wholeBase?.bias, SUBGROUP_TOL * (wholeBase?.mean ?? 0)) : fine(tried.check?.bias, off.check?.bias);
+      const eb = wholeTol ? fine(biasRawOf(tried.check), biasRawOf(wholeBase), SUBGROUP_TOL * (wholeBase?.mean ?? 0)) : fine(biasRawOf(tried.check), biasRawOf(off.check));
       if (eb) fails.push(eb === 'larger' ? 'bias' : 'bias not measured');
       // (every player's bias in its two parts where the pooled one cancels (teamWhole): the eligible players' (eb
       // above) and the rest's (nonElig), the rest's no larger; pooled, a term that shrank both could read larger, the
       // eligible players' under no longer cancelling the rest's over (NBA points 2026-10-14: -0.2658 to -0.2423 and
       // +0.9938 to +0.9694, pooled 0.0595 to 0.0707))
       const splitAll = teamWhole;
-      const ab = splitAll ? fine(tried.nonElig?.bias, off.nonElig?.bias) : fine(tried.all?.bias, off.all?.bias);
+      const ab = splitAll ? fine(biasRawOf(tried.nonElig), biasRawOf(off.nonElig)) : fine(biasRawOf(tried.all), biasRawOf(off.all));
       if (ab) fails.push(ab === 'larger' ? (splitAll ? "the other players' bias" : "all players' bias") : "all players' bias not measured");
+      // (the low-usage prior's own rows (lp): the non-eligible players' bias no larger, SUBGROUP_N of them or not measured)
+      if (key === 'lp') {
+        const lb = (off.nonElig?.n ?? 0) < SUBGROUP_N ? 'not measured' : fine(biasRawOf(tried.nonElig), biasRawOf(off.nonElig));
+        if (lb) fails.push(lb === 'larger' ? "the other players' bias" : "the other players' bias not measured");
+      }
       // (the pull toward the middle's own point: the held-out fifths by projection missing less (each one's
       // actual over projected, off 0, summed), the eligible players')
       // (the early exit's own point: the low lines' held-out log loss (LOW_LINE or under) no worse, where each
@@ -2771,12 +2856,13 @@ export function fitStat(stat, rows, env) {
       // whole stat's gain and the low lines' could pass with those rows miscalibrated))
       if (key === 'ex') {
         const [a, b] = [tried.check?.low, off.check?.low];
-        if (a?.lines >= CS_MIN && b?.lines >= CS_MIN && a.logLoss > b.logLoss) fails.push("the low lines' log loss");
+        if (a?.lines >= CS_MIN && b?.lines >= CS_MIN && llOf(a) > llOf(b)) fails.push("the low lines' log loss");
         const [h1, h0] = [tried.check?.high, off.check?.high];
         if (!(h1?.lines >= SUBGROUP_N && h0?.lines >= SUBGROUP_N)) fails.push('the high rows not measured');
         else {
-          if (h1.logLoss > h0.logLoss) fails.push("the high rows' log loss");
-          if (Math.abs(h1.said - h1.was) > Math.abs(h0.said - h0.was)) fails.push("the high rows' over said");
+          if (llOf(h1) > llOf(h0)) fails.push("the high rows' log loss");
+          const miss = (h) => Math.abs((h.saidRaw ?? h.said) - (h.wasRaw ?? h.was));
+          if (miss(h1) > miss(h0)) fails.push("the high rows' over said");
         }
       }
       if (key === 'sl') {
@@ -2788,16 +2874,16 @@ export function fitStat(stat, rows, env) {
       if (sides) {
         ['the favorites', 'the underdogs'].forEach((name, j) => {
           const [o, t] = [off.parts?.sides?.[j], tried.parts?.sides?.[j]];
-          const r = (o?.n ?? 0) < SUBGROUP_N ? 'not measured' : fine(t?.bias, o?.bias);
+          const r = (o?.n ?? 0) < SUBGROUP_N ? 'not measured' : fine(biasRawOf(t), biasRawOf(o));
           if (r) fails.push(r === 'larger' ? `${name}' bias` : `${name}' bias not measured`);
         });
       }
     }
-    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(key === 'tr' ? { nonElig: [off.nonElig?.bias ?? null, tried.nonElig?.bias ?? null] } : {}), ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}) };
+    floors[key] = { size: sizeOf(key, v), fails, bias: [off.check?.bias ?? null, tried.check?.bias ?? null], allBias: [off.all?.bias ?? null, tried.all?.bias ?? null], ...(key === 'tr' ? { nonElig: [off.nonElig?.bias ?? null, tried.nonElig?.bias ?? null] } : {}), ...(sub ? { on: [off.parts?.on ?? null, tried.parts?.on ?? null], onElig: [off.parts?.onElig ?? null, tried.parts?.onElig ?? null], rest: [off.parts?.rest?.bias ?? null, tried.parts?.rest?.bias ?? null] } : {}), ...(sides ? { sides: [0, 1].map((j) => [off.parts?.sides?.[j] ?? null, tried.parts?.sides?.[j] ?? null]) } : {}), ...(key === 'sl' ? { fifths: [off.check?.fifths ?? null, tried.check?.fifths ?? null], exact: slExact } : {}), ...(key === 'ex' ? { low: [off.check?.low ?? null, tried.check?.low ?? null], high: [off.check?.high ?? null, tried.check?.high ?? null], logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], r: [s0.r, sBest.r], ...exitRead(given), seconds: Math.round((Date.now() - exT0) / 100) / 10 } : {}), ...(key === 'sp' ? { early: [off.early, tried.early], whole: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], held: spHeld, fit: spFit, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'ep' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(key === 'tr' ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null], gap: trGap, seconds: Math.round((Date.now() - spT0) / 100) / 10 } : {}), ...(ROUND_C.includes(key) ? { logLoss: [off.check?.logLoss ?? null, tried.check?.logLoss ?? null] } : {}), ...(key === 'lp' ? { logLoss: [off.nonEligCheck?.logLoss ?? null, tried.nonEligCheck?.logLoss ?? null], lines: [off.nonEligCheck?.lines ?? null, tried.nonEligCheck?.lines ?? null], nonElig: [off.nonElig ?? null, tried.nonElig ?? null] } : {}) };
     if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
     if (!softable(key)) continue;
     if (!fails.length) softHard.push(key);
-    else if (gains[key] > 0 && softEligible(key, v, fails)) softCands.push({ key, v, sw: softWeight(off.check?.lossBy, tried.check?.lossBy) });
+    else if (raw > 0 && softEligible(key, v, fails)) softCands.push({ key, v, sw: softWeight(off.check?.lossBy, tried.check?.lossBy) });
     else if (!fails.every((f) => SOFT_FAILS.has(f))) softOut.add(key);
   }
   // (the soft terms (SOFT_Z above): each candidate's target weight from its evidence, this run's moved toward it
@@ -2867,28 +2953,29 @@ export function fitStat(stat, rows, env) {
       const tryP = { ...params, dp: draftTaken, r: dBest.r };
       tryP.scale = scaleOf(tryP);
       const tried = heldOut(tryP);
-      const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
-      gains.dp = Math.round(raw * 10000) / 10000;
+      // (every compare unrounded: gainOf, biasRawOf, llOf, maeOf)
+      const raw = gainOf(off.check, tried.check);
+      gains.dp = r4(raw);
       const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
       const fails = [];
       if (!(raw >= DRAFT_GAIN)) fails.push('gain');
-      if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
-      if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
+      if (!no(biasRawOf(tried.check), biasRawOf(off.check))) fails.push('bias');
+      if (!no(biasRawOf(tried.all), biasRawOf(off.all))) fails.push("all players' bias");
       ['rookies', 'first two'].forEach((name, y) => {
         const a = tried.young?.[y];
         const b = off.young?.[y];
         if (!(a?.lines >= DRAFT_LINES && b?.lines >= DRAFT_LINES)) fails.push(`${name} too few`);
         else {
-          if (a.logLoss > b.logLoss) fails.push(`${name}' log loss`);
-          if (!no(a.bias, b.bias)) fails.push(`${name}' bias`);
+          if (llOf(a) > llOf(b)) fails.push(`${name}' log loss`);
+          if (!no(biasRawOf(a), biasRawOf(b))) fails.push(`${name}' bias`);
         }
       });
       const ea = tried.young?.[2];
       const eb = off.young?.[2];
       if (!(ea?.n >= DRAFT_EARLY && eb?.n >= DRAFT_EARLY)) fails.push('early games too few');
       else {
-        if (!no(ea.bias, eb.bias)) fails.push('early bias');
-        if (ea.mae > eb.mae) fails.push('early error');
+        if (!no(biasRawOf(ea), biasRawOf(eb))) fails.push('early bias');
+        if (maeOf(ea) > maeOf(eb)) fails.push('early error');
       }
       if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
       // (its own check, the gate's own numbers: without it and at the size the search took, each at its own
@@ -2963,12 +3050,12 @@ export function fitStat(stat, rows, env) {
       tried = heldOut(tryP, null, null, scaled(k), { wOf: w, all: true });
       ks = [k0, k];
       rs = [r0, r];
-      const raw = (off.check?.logLoss ?? 0) - (tried.check?.logLoss ?? 0);
-      gains.hl = Math.round(raw * 10000) / 10000;
+      const raw = gainOf(off.check, tried.check);
+      gains.hl = r4(raw);
       const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
       if (!(raw >= DRAFT_GAIN)) fails.push('gain');
-      if (!no(tried.check?.bias, off.check?.bias)) fails.push('bias');
-      if (!no(tried.all?.bias, off.all?.bias)) fails.push("all players' bias");
+      if (!no(biasRawOf(tried.check), biasRawOf(off.check))) fails.push('bias');
+      if (!no(biasRawOf(tried.all), biasRawOf(off.all))) fails.push("all players' bias");
       if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
     }
     floors.hl = { size: hl || null, fails, inner, bias: [off?.check?.bias ?? null, tried?.check?.bias ?? null], allBias: [off?.all?.bias ?? null, tried?.all?.bias ?? null], logLoss: [off?.check?.logLoss ?? null, tried?.check?.logLoss ?? null], scale: ks, r: rs, seconds: Math.round((Date.now() - hlT0) / 100) / 10 };
@@ -2984,8 +3071,8 @@ export function fitStat(stat, rows, env) {
   if (!TRY_CS) floors.cs = { size: null, fails: ['not tried'], bias: [current.check?.bias ?? null, null], allBias: [current.all?.bias ?? null, null], bySide: [current.check?.bySide ?? null, null], skew: [current.check?.skew ?? null, null] };
   else {
     const sided = heldOut({ ...params, cs: 1 });
-    const csRaw = sided.calSide ? (current.check?.logLoss ?? 0) - (sided.check?.logLoss ?? 0) : null;
-    gains.cs = csRaw === null ? null : Math.round(csRaw * 10000) / 10000;
+    const csRaw = sided.calSide ? gainOf(current.check, sided.check) : null;
+    gains.cs = r4(csRaw);
     const fails = [];
     if (!sided.calSide) fails.push('too few lines');
     else {
@@ -2994,7 +3081,7 @@ export function fitStat(stat, rows, env) {
         const [a, b] = [sided.check?.bySide?.[i], current.check?.bySide?.[i]];
         const name = i ? 'over the line' : 'under the line';
         if (!(a?.lines >= CS_MIN && b?.lines >= CS_MIN)) fails.push(name + ' not measured');
-        else if (a.logLoss > b.logLoss) fails.push(name + "'s log loss");
+        else if (llOf(a) > llOf(b)) fails.push(name + "'s log loss");
       });
     }
     floors.cs = { size: sided.calSide ? JSON.stringify(sided.calSide) : null, fails, bias: [current.check?.bias ?? null, sided.check?.bias ?? null], allBias: [current.all?.bias ?? null, sided.all?.bias ?? null], bySide: [current.check?.bySide ?? null, sided.check?.bySide ?? null], skew: [current.check?.skew ?? null, sided.check?.skew ?? null] };
@@ -3145,6 +3232,16 @@ function check(list, params) {
   // saves them)
   Object.defineProperty(out, 'lossBy', { value: lossBy, enumerable: false });
   Object.defineProperty(out, 'llRaw', { value: nLine ? ll / nLine : null, enumerable: false });
+  // (and the bias, the error, each side's, the low lines' and the high rows' log loss unrounded the same way: the
+  // gates read them (llOf, biasRawOf), never the 4-place numbers above)
+  const hide = (o, k, v) => Object.defineProperty(o, k, { value: v, enumerable: false });
+  hide(out, 'biasRaw', (sumMu - sumV) / list.length);
+  hide(out, 'maeRaw', mae / list.length);
+  out.bySide.forEach((s, i) => hide(s, 'llRaw', side[i].lines ? side[i].ll / side[i].lines : null));
+  hide(out.low, 'llRaw', low.lines ? low.ll / low.lines : null);
+  hide(out.high, 'llRaw', high.lines ? high.ll / high.lines : null);
+  hide(out.high, 'saidRaw', high.lines ? high.said / high.lines : null);
+  hide(out.high, 'wasRaw', high.lines ? high.was / high.lines : null);
   return out;
 }
 
