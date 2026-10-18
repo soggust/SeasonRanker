@@ -518,7 +518,7 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   // new, today's DeVonta Smith again. No last game read (none in the history), nothing from the list either:
   // ESPN's injury report lists each game's inactives itself, Out, within minutes of the posting (2026-10-18:
   // every posted side's, coach's decisions too), so the list adds only what the report hasn't caught up to)
-  const prevs = await pool(asks, 4, ({ game, team }, i) => {
+  const prevs = await pool(asks, 4, async ({ game, team }, i) => {
     if (!got[i]?.inactive?.length && !got[i]?.starters && !(sport === 'nhl' && got[i])) return null;
     const prev = lastGameOf(history, team, Date.parse(game.date));
     return prev ? gameRoster(cfg.league, prev, team, sport, false) : null;

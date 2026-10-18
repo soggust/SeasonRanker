@@ -335,3 +335,12 @@ test('freshStarters: the NBA’s five the last game’s before the lineups are o
   assert.deepEqual(freshStarters(five(1, 2, 3, 4, 5), five(1, 2, 3, 4, 5), 30 * 60e3), ['1', '2', '3', '4', '5']);
   assert.equal(freshStarters({ inactive: [], starters: null }, five(1, 2, 3, 4, 5), 30 * 60e3), null);
 });
+
+// sources.mjs pool: a callback that returns a plain value (null, a number) and not a promise is taken as its
+// result, never thrown on (2026-10-18: "Cannot read properties of null (reading 'catch')" skipped the NHL's
+// game-day rosters every run, a side with nothing to ask returning null)
+test('pool: a callback returning a plain value or throwing synchronously', async () => {
+  const { pool } = await import('../libs/ranker/scripts/model/sources.mjs');
+  const out = await pool([1, 2, 3, 4], 2, (x) => (x === 1 ? null : x === 2 ? Promise.resolve(20) : x === 3 ? 30 : (() => { throw new Error('boom'); })()));
+  assert.deepEqual(out, [null, 20, 30, null]);
+});

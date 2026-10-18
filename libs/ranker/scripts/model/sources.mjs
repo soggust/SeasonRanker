@@ -40,7 +40,7 @@ export async function pool(items, size, fn) {
   const worker = async () => {
     while (next < items.length) {
       const i = next++;
-      out[i] = await fn(items[i], i).catch((err) => {
+      out[i] = await Promise.resolve().then(() => fn(items[i], i)).catch((err) => {
         failed++;
         first ??= err;
         return null;
