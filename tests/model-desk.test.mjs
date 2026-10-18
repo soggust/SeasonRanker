@@ -480,6 +480,38 @@ test("gameDaysOf: the games with bets open or graded in the last 3 days, by day,
   assert.deepEqual(games.map((g) => [g.event, g.count]), [['1', 2], ['2', 1]]);
   assert.match(games[1].label, /^NHL · PHI @ OTT · /);
   assert.equal(desk.gameDaysOf([bet({ event: '2', sport: 'nhl' })], 'nfl', now).length, 0);
+  // (a fight in the dropdown reads as the Book's: "A vs B", the first-listed fighter (the matchup's home) first)
+  const fight = desk.gameDaysOf([bet({ event: '9', sport: 'mma', matchup: 'Mike Malott @ Joaquin Buckley', start: '2026-10-09T23:00:00Z' })], 'mma', now);
+  assert.match(fight[0].games[0].label, /^Joaquin Buckley vs Mike Malott · /);
+});
+
+// A fight's rows on the desk (bet-format.ts; the owner's note, 2026-10-17): its league the gloves, not a logo
+// ESPN doesn't have; its game "A vs B" with each fighter's ESPN headshot by the ledger's ids (no picture, the
+// gloves stand in, his name from the matchup); the moneyline's circle the fighter it took
+test("a fight on the desk: the gloves for its league, 'A vs B' with the fighters' faces, the pick's face", () => {
+  assert.equal(desk.deskLeagueLogo('mma'), null);
+  assert.equal(desk.deskLeagueLogo('nhl'), desk.leagueLogo('nhl'));
+  const shot = (id) => `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png`;
+  assert.equal(desk.fighterHeadshot('4232775'), shot('4232775'));
+  assert.equal(desk.fighterHeadshot(undefined), null);
+  assert.equal(desk.fighterHeadshot(''), null);
+  const b = bet({ sport: 'mma', market: 'ml', side: 'home', matchup: 'Mike Malott @ Joaquin Buckley', pick: 'Joaquin Buckley', fighters: { home: { id: '3915414', name: 'Joaquin Buckley' }, away: { id: '4036164', name: 'Mike Malott' } } });
+  assert.deepEqual(desk.fightSides(b), [
+    { name: 'Joaquin Buckley', pic: shot('3915414') },
+    { name: 'Mike Malott', pic: shot('4036164') },
+  ]);
+  assert.deepEqual(desk.fightPick(b), { name: 'Joaquin Buckley', pic: shot('3915414') });
+  assert.deepEqual(desk.fightPick({ ...b, side: 'away' }), { name: 'Mike Malott', pic: shot('4036164') });
+  // (an older bet without its fighters: the names off the matchup, no faces)
+  const bare = bet({ sport: 'mma', market: 'ml', side: 'away', matchup: 'Nate Landwehr @ Mandel Nallo' });
+  assert.deepEqual(desk.fightSides(bare), [
+    { name: 'Mandel Nallo', pic: null },
+    { name: 'Nate Landwehr', pic: null },
+  ]);
+  assert.deepEqual(desk.fightPick(bare), { name: 'Nate Landwehr', pic: null });
+  // (every fight in the MMA ledger has both fighters' ids, so every row gets its faces)
+  const ledger = JSON.parse(fs.readFileSync(path.join(ROOT, 'apps/mma/src/StaticData/model/ledger.json'), 'utf8'));
+  for (const x of ledger.bets ?? []) for (const f of desk.fightSides(x)) assert.ok(f.name && f.pic, `${x.id}: ${f.name}`);
 });
 
 test("the desk's stakes and bankroll are the bettor's (desk.mjs)", () => {

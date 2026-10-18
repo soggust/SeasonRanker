@@ -2,6 +2,7 @@
 // Node): its records, a bet's payout, a bet in play settled by the score as the run will grade it, the
 // meters, the calibration, the profit curves and the games' dropdown
 import { Board, CalibrationRow, CurveLine, CurveSpot, GameDay, Intent, Meter, ModelBet, Settled, Tally } from './desk-model';
+import { matchupName } from './game-menu';
 
 // (mma: the fifth league since 2026-10-16, fights not games: UFC moneylines alone (leagues.mjs, mma-desk.mjs); the
 // MMA app is dev-only on the live site, its data ships all the same)
@@ -275,7 +276,7 @@ export function gameDaysOf(bets: ModelBet[], sport: string | null, now: number):
   const games = new Map<string, { event: string; label: string; count: number; start: string; sport: string }>();
   for (const b of bets) {
     if (!b.event || (sport && b.sport !== sport) || !(b.status === 'open' || Date.parse(b.gradedAt ?? b.start) >= recent)) continue;
-    const g = games.get(b.event) ?? { event: b.event, label: b.matchup, count: 0, start: b.start, sport: b.sport };
+    const g = games.get(b.event) ?? { event: b.event, label: matchupName(b.sport, b.matchup), count: 0, start: b.start, sport: b.sport };
     g.count++;
     games.set(b.event, g);
   }

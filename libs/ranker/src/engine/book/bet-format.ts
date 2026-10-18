@@ -28,6 +28,36 @@ export const headshot = (sport: string, athlete: string | number | null | undefi
 // (a league's logo)
 export const leagueLogo = (sport: string): string => `https://a.espncdn.com/i/teamlogos/leagues/500/${sport}.png`;
 
+// (a league's mark on the desk: the four leagues' ESPN logos; a UFC fight has none (ESPN's leagues/500/mma.png
+// doesn't exist), so null, and the desk draws the gloves the Book's dropdown uses (sports_mma))
+export const deskLeagueLogo = (sport: string): string | null => (sport === 'mma' ? null : leagueLogo(sport));
+
+// (a fighter's ESPN headshot by his id, as the Book's board carries it (picks.json teams[].logo); none without one)
+export const fighterHeadshot = (id: string | number | null | undefined): string | null =>
+  id === null || id === undefined || id === '' ? null : `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png`;
+
+// A fight on the desk (the owner's note, 2026-10-17): the bettor keys it "away @ home", the home the first-listed
+// fighter, so it reads "A vs B" as the Book's does (game-menu.ts matchupName), each fighter with his face (the
+// ledger's fighters, by ESPN id; an older bet without them, his name alone, the gloves standing in)
+export interface FightSide {
+  name: string;
+  pic: string | null;
+}
+type Fighter = { id?: string | number; name?: string };
+type FightBet = { matchup: string; fighters?: { home?: Fighter; away?: Fighter } };
+
+function fightSide(b: FightBet, side: 'home' | 'away'): FightSide {
+  const [away, home] = b.matchup.split(' @ ');
+  const f = b.fighters?.[side];
+  return { name: (f?.name || (side === 'home' ? home : away) || '').trim(), pic: fighterHeadshot(f?.id) };
+}
+
+// (its two fighters in reading order: the home first, "vs", then the away)
+export const fightSides = (b: FightBet): [FightSide, FightSide] => [fightSide(b, 'home'), fightSide(b, 'away')];
+
+// (the fighter a moneyline took)
+export const fightPick = (b: FightBet & { side?: string }): FightSide => fightSide(b, b.side === 'home' ? 'home' : 'away');
+
 // (an image ESPN doesn't have: a dark-background logo falls back to the plain one, anything else steps out of
 // the way, keeping its space)
 export function hideImage(event: Event): void {

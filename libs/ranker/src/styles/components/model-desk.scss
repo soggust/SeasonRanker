@@ -591,6 +591,83 @@ card-panel {
   }
 }
 
+// (a fight's game: "A vs B", each fighter's face beside his name, wrapping to a second line at the second
+// fighter (a name too long for the column wraps itself) rather than running over the column)
+.desk-game.desk-fight {
+  flex-wrap: wrap;
+  gap: v.$space-2 v.$space-4;
+  white-space: normal;
+
+  .desk-fighter {
+    align-items: center;
+    display: inline-flex;
+    gap: v.$space-4;
+    min-width: 0;
+  }
+
+  .desk-at {
+    margin: 0 0 0 2px;
+  }
+}
+
+// (a fighter's face in a circle, the gloves under it: ESPN's headshot covers them, one it doesn't have hides
+// itself (hideImage) and leaves them, as the Book's board circles do)
+.desk-fight-face {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: v.$radius-round;
+  display: inline-flex;
+  flex: none;
+  height: 22px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 22px;
+
+  mat-icon {
+    @include v.icon-size(14px);
+    color: v.$text-soft;
+  }
+
+  img {
+    border-radius: v.$radius-round;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    object-position: 50% 15%;
+    position: absolute;
+    width: 100%;
+  }
+
+  // (the pick's circle: the badge's size, the gloves a size up)
+  &.desk-badge {
+    height: 30px;
+    width: 30px;
+
+    mat-icon {
+      @include v.icon-size(18px);
+      color: v.$text-soft;
+    }
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+}
+
+// (a fight's league mark: the gloves where the four leagues show ESPN's logo)
+mat-icon.desk-gloves {
+  @include v.icon-size(22px);
+  color: v.$text-soft;
+}
+
+.desk-sport mat-icon.desk-gloves {
+  @include v.icon-size(26px);
+}
+
 // (a prop's pick: the player's headshot in a circle, his name a link to his ESPN page)
 .desk-pick {
   align-items: center;
@@ -968,6 +1045,17 @@ card-panel {
       width: 24px;
     }
 
+    // (a fight's faces the same size up, the picture filling its circle)
+    .desk-fight-face {
+      height: 26px;
+      width: 26px;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
     .desk-group-count {
       font-size: v.$fs-13;
     }
@@ -1112,10 +1200,10 @@ card-panel {
   // (Latest Results, ten columns, fitting a 1400px window: its game's date shorter than a time, its why, final
   // and chance narrower (a long final cut short, its whole on hover), the pick the rest)
   .desk-cols-recent {
-    min-width: 1150px;
+    min-width: 1170px;
 
     .desk-c-game {
-      width: 170px;
+      width: 190px;
     }
 
     .desk-c-why {
@@ -1137,7 +1225,7 @@ card-panel {
   }
 
   .desk-c-game {
-    width: 204px;
+    width: 228px;
   }
 
   .desk-c-odds {

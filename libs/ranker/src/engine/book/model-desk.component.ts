@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { TIERS } from './tiers';
-import { americanOdds, headshot, hideImage, leagueLogo, num, pct, signed, teamLogo, units } from './bet-format';
+import { americanOdds, deskLeagueLogo, fightPick, fightSides, headshot, hideImage, num, pct, signed, teamLogo, units } from './bet-format';
+import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
 import { DESK_HELP } from './desk-help';
 import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
@@ -378,7 +379,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (a self-check's example bet in words: its pick and game, where the desk has it; else its id)
   selfExample(id: string): string {
     const b = this.allBets.find((x) => x.id === id) ?? this.allTracked.find((x) => x.id === id) ?? this.allChecks.find((x) => x.id === id);
-    return b ? `${b.pick} · ${b.matchup}${b.status !== 'open' ? ` · ${b.status}` : ''}` : id;
+    return b ? `${b.pick} · ${matchupName(b.sport, b.matchup)}${b.status !== 'open' ? ` · ${b.status}` : ''}` : id;
   }
 
   // (the Tracked panel's name: how many on show, how many of them open)
@@ -735,7 +736,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   teamLogo = teamLogo;
-  leagueLogo = leagueLogo;
+  leagueLogo = deskLeagueLogo;
+  fightSides = fightSides;
+  fightPick = fightPick;
+  matchupName = matchupName;
   hide = hideImage;
 
   // (a prop's player: his ESPN headshot, and his card in his sport's app (player-link.ts: ?card= his ESPN id

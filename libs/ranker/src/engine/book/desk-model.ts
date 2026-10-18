@@ -15,6 +15,8 @@ export interface ModelBet {
   placedAt: string;
   gradedAt?: string;
   matchup: string;
+  // (a fight's: its two fighters by ESPN id, the home the first-listed (mma-desk.mjs))
+  fighters?: { home?: { id?: string; name?: string }; away?: { id?: string; name?: string } };
   market: Market;
   // (a prop's: its type, the player, his projection; its price the desk's estimate)
   propType?: string;
