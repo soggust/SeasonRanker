@@ -637,8 +637,16 @@ export const researchPriced = (call) => !!call && (call.act === 'bet' || (call.a
 //            CHECK kept for an old one); the book taking it down, passed
 //   pass     a real reason no input carries (a role alone, another reason with no status): passed, its words kept
 //   check    only while it waits: the news it needs, or the ask its price is owed this run
+// The same for one its CHECK guard no longer holds alone but that can't be bet as it is (x.hard: the words of a
+// skip that makes no CHECK: the role with a juiced price it can't know (props.mjs "no price, and his line far
+// from his usual"), a long shot, the skew), or one with no price of the book's (priced false, The Odds API to
+// hand): never left a CHECK with no word on it (2026-10-18: Ted Hurst III Over 12.5 Rec Yds, Mayfield out on the
+// report already, the qb1-out role guard with no price, a CHECK every run, never decided). The ask owed waits as
+// above, no price to be had passes, and a hard skip stands: passed with its words
 export function researchDecision(call, x, trust = 0.5, { keyed = false, priced = true, fresh = false, asksLeft = true, stored = null, waiting = [] } = {}) {
-  if (!call || !x?.guarded || x.shadow) return null;
+  if (!call || !x || x.shadow) return null;
+  const hard = !x.guarded && x.hard ? String(x.hard) : null;
+  if (!x.guarded && !hard && !(keyed && !priced && call.act !== 'pass')) return null;
   if (call.act === 'pass') return { as: 'pass', p: null, ev: null, why: call.why };
   if (!researchPriced(call)) return null;
   if (call.act === 'bet' && call.side && x.side !== call.side) return null;
@@ -649,6 +657,8 @@ export function researchDecision(call, x, trust = 0.5, { keyed = false, priced =
   const noPrice = !priced && keyed;
   if (noPrice && !fresh && asksLeft) return { as: 'check', p, ev, why: "still a CHECK this run: no price of the book's yet, its props owed an ask" };
   if (noPrice || stored === 'pulled') return { as: 'pass', p, ev, why: `passed: the book has no price for it now (${noPrice ? 'not on its board' : 'taken down'})` };
+  // (a skip no research answers (a juiced price it can't know, a long shot, the skew): passed with its words)
+  if (hard) return { as: 'pass', p, ev, why: `passed: ${hard} (a skip the research's ${call.act === 'bet' ? 'finding' : 'input'} doesn't answer), out of the CHECKs` };
   const at = stored === 'stale' ? ' (at its stored price: none newer to be had this run)' : '';
   if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
   return { as: 'pass', p, ev, why: `no edge (${words})${at}: passed, out of the CHECKs` };

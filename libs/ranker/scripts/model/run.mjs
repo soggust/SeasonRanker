@@ -2007,6 +2007,8 @@ async function betProps(r) {
       const openChecks = openChecksOf(game);
       // (why a noted one wasn't re-priced, where the run can tell: holdNoted once the game's done)
       const heldWhy = new Map();
+      // (the open CHECKs whose research the run decided on, or held with its words, this run: researchDecision)
+      const researchSeen = new Set();
       if (!board_.length && !openChecks.length) continue;
       const times = asked[game.id] ?? 0;
       const open = ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && b.status === 'open');
@@ -2156,10 +2158,19 @@ async function betProps(r) {
           const call = r.researchCalls?.get(id);
           if (!call || !(researchPriced(call) || call.act === 'pass')) continue;
           const guarded = !!x.guard?.skip && CHECK_KINDS.has(x.guard?.kind);
-          const shadow = guarded && !!shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced, trust: x.trust, line: x.prop.line });
+          const shadowed = guarded ? shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced, trust: x.trust, line: x.prop.line }) : null;
+          const shadow = !!shadowed;
+          // (a skip that makes no CHECK (the role with a juiced price it can't know, a long shot, the skew): its
+          // words, so the research's CHECK is passed on them, never held a CHECK with none (researchDecision))
+          const hard = x.guard?.skip && !guarded ? (x.guard.why ?? 'skipped') : null;
           const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
           const stored = storedBet(x.prop.stored, hasKey(), r.now);
-          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow }, bucketTrustOf(trust, `prop:${x.prop.stat.key}`, x.prop.line), { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
+          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow, hard }, bucketTrustOf(trust, `prop:${x.prop.stat.key}`, x.prop.line), { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
+          // (still a CHECK this run (the news it waits on, the ask its price is owed), or a shadow the CHECK bar
+          // passes (checkOf, below): the words on its research's call, so it's never a CHECK with no word on it)
+          if (d || shadow) researchSeen.add(id);
+          if (d?.as === 'check') r.researchCalls.set(id, { ...call, why: `${d.why}; ${call.why}` });
+          else if (shadow && call.act !== 'pass') r.researchCalls.set(id, { ...call, why: `passed: ${shadowed.why} (the research's ${call.act === 'bet' ? 'finding' : 'input'} in, under the CHECK bar); ${call.why}` });
           // (a prop the research cleared with no CHECK guard firing now: priced by the usual rules, as before)
           const input = call.act === 'pass' ? null : call.act === 'bet' ? 'finding: nothing explains the gap' : (call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`);
           if (!d && (call.act !== 'adjust' || guarded)) continue;
@@ -2215,6 +2226,15 @@ async function betProps(r) {
       // (a noted open CHECK this game's run didn't re-price: why, kept on it (resolveChecks' held))
       for (const c of openChecks) if (!heldWhy.has(c.id)) heldWhy.set(c.id, Date.parse(game.date) - Date.now() < 5 * 60e3 ? 'its game about to start' : "not on the board, and no price of the book's kept");
       for (const c of openChecks) holdNoted([c], heldWhy.get(c.id));
+      // (an open CHECK the research answered (nothing explains the gap, or the reason in the inputs) that this run
+      // neither decided nor held with its own words (researchDecision): why it's still a CHECK, on its research's
+      // call, so an 'adjust' is never a CHECK with no word on it (not on the board this run, waiting on the news)
+      for (const c of openChecks) {
+        const call = r.researchCalls?.get(c.id);
+        if (!researchPriced(call) || call.decided || researchSeen.has(c.id) || r.unchecked?.has(c.id)) continue;
+        const made = (r.checks ?? []).find((m) => m.id === c.id);
+        r.researchCalls.set(c.id, { ...call, why: `still a CHECK this run: ${made ? `its ${made.cause} guard (${made.reason})` : heldWhy.get(c.id)}; ${call.why}` });
+      }
       // (the dry snapshot's: each prop's mean, line and chance over, the work missing and its factor, the guard's kind
       // and role, its side)
       for (const x of priced) r.snapshot.projections[`${game.id}:${x.prop.stat.key}:${x.prop.athlete.id}`] = [x.projection.mean, x.prop.line, x.projection.pOver, x.projection.vac, x.projection.vacF, x.guard?.kind ?? null, x.guard?.role ?? null, x.side];
