@@ -2848,7 +2848,7 @@
 {"id":"401873001","date":"2026-10-18T17:00Z","season":2026,"type":2,"home":"17","away":"20","homeAbbr":"NE","awayAbbr":"NYJ","neutral":false,"final":true,"hs":26,"as":19,"venue":"Foxborough|MA|USA","indoor":false},
 {"id":"401873000","date":"2026-10-18T17:00Z","season":2026,"type":2,"home":"19","away":"18","homeAbbr":"NYG","awayAbbr":"NO","neutral":false,"final":true,"hs":27,"as":34,"venue":"East Rutherford|NJ|USA","indoor":false},
 {"id":"401873002","date":"2026-10-18T17:00Z","season":2026,"type":2,"home":"27","away":"23","homeAbbr":"TB","awayAbbr":"PIT","neutral":false,"final":true,"hs":19,"as":26,"venue":"Tampa|FL|USA","indoor":false},
-{"id":"401873004","date":"2026-10-18T20:05Z","season":2026,"type":2,"home":"14","away":"22","homeAbbr":"LAR","awayAbbr":"ARI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Inglewood|CA|USA","indoor":false},
+{"id":"401873004","date":"2026-10-18T20:05Z","season":2026,"type":2,"home":"14","away":"22","homeAbbr":"LAR","awayAbbr":"ARI","neutral":false,"final":true,"hs":16,"as":18,"venue":"Inglewood|CA|USA","indoor":false},
 {"id":"401873005","date":"2026-10-18T20:25Z","season":2026,"type":2,"home":"13","away":"2","homeAbbr":"LV","awayAbbr":"BUF","neutral":false,"final":false,"hs":null,"as":null,"venue":"Las Vegas|NV|USA","indoor":true},
 {"id":"401873006","date":"2026-10-18T20:25Z","season":2026,"type":2,"home":"12","away":"24","homeAbbr":"KC","awayAbbr":"LAC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Kansas City|MO|USA","indoor":false},
 {"id":"401873007","date":"2026-10-19T00:20Z","season":2026,"type":2,"home":"9","away":"6","homeAbbr":"GB","awayAbbr":"DAL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Green Bay|WI|USA","indoor":false},

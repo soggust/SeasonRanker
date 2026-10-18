@@ -54,7 +54,9 @@
   "50189567": "2026-10-16",
   "50189936": "2026-10-17",
   "50192399": "2026-10-16",
-  "50193214": "2026-10-17"
+  "50193214": "2026-10-17",
+  "50206303": "2026-10-18",
+  "50206858": "2026-10-18"
  },
  "signals": [
   {
@@ -130,6 +132,21 @@
    "confidence": 0.3,
    "story": "50192399",
    "headline": "Maple Leafs acquire Aatu Räty, send Jacob Quillan, Brandon Buhr to Canucks",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50206858|28|3020225|return",
+   "day": "2026-10-18",
+   "at": "2026-10-18T02:48:49.000Z",
+   "team": "28",
+   "abbr": "WPG",
+   "athlete": "3020225",
+   "player": "Connor Hellebuyck",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50206858",
+   "headline": "Still awaiting trade, Connor Hellebuyck could rejoin Jets when suspension ends",
    "model": "claude-haiku-5-5"
   }
  ]
