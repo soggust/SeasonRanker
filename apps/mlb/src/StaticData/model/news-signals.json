@@ -1,29 +1,6 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "33499",
-   "player": "Shawn Armstrong",
-   "kind": "role",
-   "direction": "none",
-   "confidence": 0.9,
-   "headline": "Guardians to open with Armstrong; Rays start Martinez in ALCS Game 4",
-   "at": "2026-10-16T16:18:37.000Z"
-  },
-  {
-   "team": "30",
-   "abbr": "TB",
-   "athlete": "33372",
-   "player": "Nick Martinez",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Guardians to open with Armstrong; Rays start Martinez in ALCS Game 4",
-   "at": "2026-10-16T16:18:37.000Z"
-  }
- ],
- "at": "2026-10-17T20:23:28.041Z"
+ "signals": [],
+ "at": "2026-10-18T17:48:54.064Z"
 }
