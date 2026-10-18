@@ -35,3 +35,7 @@ export function bandOrder(band: Confidence | Tier | null | undefined): number {
 
 // (the bands above the ranks, unnumbered: a LOCK, and a CHECK, which isn't ranked as a bet)
 export const unranked = (band: Confidence | null | undefined): boolean => band === 'lock' || band === 'check';
+
+// (a favorable bet: a LOCK, LOVE or LIKE; never a CHECK (an admin's held bet), a pass or a fade. Best Bets with
+// none of them says so in one line: book-page.component.html .board-empty)
+export const favorableGrade = (grade: string | null | undefined): boolean => grade === 'lock' || grade === 'love' || grade === 'like';

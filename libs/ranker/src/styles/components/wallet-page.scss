@@ -1178,9 +1178,11 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 
   .wall-brand {
+    // (the title in the page logo's Outfit, the rest of the ticket in IBM Plex Mono: the owner's note, 2026-10-17)
+    font-family: v.$font-heading;
     font-size: v.$fs-12;
     font-weight: 700;
-    letter-spacing: 2.5px;
+    letter-spacing: 2px;
   }
 
   .wall-no {
@@ -1922,9 +1924,11 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     gap: v.$space-2;
 
     span {
+      // (the title in the page logo's Outfit, the rest of the ticket in IBM Plex Mono: the owner's note, 2026-10-17)
+      font-family: v.$font-heading;
       font-size: v.$fs-13;
       font-weight: 700;
-      letter-spacing: 2.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 

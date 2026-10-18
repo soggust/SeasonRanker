@@ -1,7 +1,7 @@
 import { Component, DestroyRef, ElementRef, HostListener, Injector, NgZone, OnDestroy, OnInit, ViewChild, afterNextRender, effect, inject, untracked } from '@angular/core';
 import { TicketGrow } from './ticket-grow';
 import { quietListener } from '@ranker/core/quiet-listener';
-import { tierLabel, tierOf, unranked } from './tiers';
+import { favorableGrade, tierLabel, tierOf, unranked } from './tiers';
 import { NotePlayer, notePlayers } from './desk-notes';
 import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './book-view';
@@ -1024,8 +1024,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
   }
 
   // The sections: the rows shown, in their order (the locks, an admin's CHECKs, then the rest by their Kelly score),
-  // grouped by band, LOCK, CHECK, LOVE, LIKE; the passes and fades apart, off the board, one folded line. Each row
-  // keeps its place in the list (i: the rank tile's number and its popover's index)
+  // grouped by band, LOCK, CHECK, LOVE, LIKE; the passes and fades not on Best Bets at all (a game's own lines tag
+  // them: game-lines' PASS / FADE). Each row keeps its place in the list (i: the rank tile's number and its popover's
+  // index)
   readonly BAND_SECTIONS: readonly { band: Confidence; tier: 'lock' | 'check' | 'love' | 'like'; name: string }[] = [
     { band: 'lock', tier: 'lock', name: 'Locks' },
     { band: 'check', tier: 'check', name: 'Checks' },
@@ -1043,19 +1044,18 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const shown = this.shown;
     return this.BAND_SECTIONS.map((s) => ({ ...s, rows: shown.map((r, i) => ({ r, i })).filter(({ r }) => this.grade(r) === s.tier) })).filter((s) => s.rows.length);
   }
-  get offBoard(): { r: BetRow; i: number }[] {
-    return this.shown.map((r, i) => ({ r, i })).filter(({ r }) => this.grade(r) === 'pass' || this.grade(r) === 'fade');
+  // (whether anything favorable is on the board: a LOCK, LOVE or LIKE, an admin's CHECKs not counted; none, Best
+  // Bets says so in one line, the CHECKs under it)
+  get favorable(): boolean {
+    return this.shown.some((r) => favorableGrade(this.grade(r)));
   }
-  // (how many passes and fades sit off the board, for its line)
-  get offCounts(): { passes: number; fades: number } {
-    const off = this.offBoard;
-    const fades = off.filter(({ r }) => this.grade(r) === 'fade').length;
-    return { passes: off.length - fades, fades };
+  // (how many picks the bands hold: a chosen game's picks header)
+  get sectionCount(): number {
+    return this.sections.reduce((n, s) => n + s.rows.length, 0);
   }
-  // (the bands folded shut (the CHECKs start shut: an admin's held bets are a long list, its count on the
-  // band's badge), and whether the off-the-board rows are unfolded)
+  // (the bands folded shut: the CHECKs start shut (an admin's held bets are a long list, its count on the band's
+  // badge))
   readonly closedBands = new Set<string>(['check']);
-  offBoardOpen = false;
   // (a chosen game's picks: its own bordered section above the game's menu, folded shut each time a game is chosen,
   // its header saying how many)
   gamePicksOpen = false;

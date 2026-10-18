@@ -270,14 +270,18 @@
 
   <!-- The board: a dot-matrix scoreboard, the only thing that scrolls on a wide screen. Best Bets: one section per
        band (LOCK, an admin's CHECK, LOVE, LIKE), its header a button that folds it, sticky to the top of the
-       scroller while its rows pass; the passes and fades off the board in one dim line at the bottom, unfolded to
-       rows the same way. A game chosen: its every line on top, its picks under them -->
+       scroller while its rows pass; nothing favorable (no LOCK, LOVE or LIKE), one line saying so (an admin's CHECKs
+       under it). The passes and fades aren't on it: a game's own lines tag them (game-lines' PASS / FADE). A game
+       chosen: its every line on top, its picks under them -->
   <section class="board" aria-label="The board">
     <div class="board-scroll">
     @if (rows === null) {
       <p class="book-note">Loading…</p>
     } @else if (!inGame.length && !game) {
-      <p class="book-note">No @if (chosenSport; as s) {{{ s.name }} }picks right now: the algorithm posts its best bets as the coming games' lines come in.@if (gameMenu.length) { Pick a game above to bet its lines.}</p>
+      <div class="board-empty" role="status">
+        <p class="empty-title">No favorable bets right now</p>
+        <p class="empty-sub">The bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
+      </div>
     } @else {
       <!-- One row: the chevron that opens it, its rank tile (a button of its own: how its score is built), its circle
            (a prop's player, a total's arrow, a side's team), the pick with its one line under it, the model-vs-book
@@ -484,11 +488,11 @@
         <!-- (a game chosen (the game view; Best Bets as it was): on top a compact bordered section of the bot's picks
              in that game, folded shut with its count showing; under it the game's full menu, every line to bet, open) -->
         @if (game && boardFor(game); as gb) {
-          @if (sections.length || offBoard.length) {
+          @if (sections.length) {
             <li class="game-picks" [class.open]="gamePicksOpen">
               <button type="button" class="game-picks-head" [attr.aria-expanded]="gamePicksOpen" (click)="gamePicksOpen = !gamePicksOpen; closeWhy()">
                 <span class="band-chev" aria-hidden="true"><svg class="chev" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-                <span class="game-picks-name">{{ gamePicksHead(n) }}</span>
+                <span class="game-picks-name">{{ gamePicksHead(sectionCount) }}</span>
               </button>
               @if (gamePicksOpen) {
                 <ol class="game-picks-rows">
@@ -504,6 +508,12 @@
             }
           </li>
         } @else {
+          @if (!favorable) {
+            <li class="board-empty" role="status">
+              <p class="empty-title">No favorable bets right now</p>
+              <p class="empty-sub">The bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
+            </li>
+          }
           <ng-container *ngTemplateOutlet="bandList; context: { locks: locks, n: n }"></ng-container>
         }
       </ol>
@@ -528,22 +538,6 @@
             @if (bandOpen(s.band)) {
               <ol class="band-rows">
                 @for (x of s.rows; track x.r.id) {
-                  <ng-container *ngTemplateOutlet="betRow; context: { $implicit: x.r, i: x.i, locks: locks, n: n }"></ng-container>
-                }
-              </ol>
-            }
-          </li>
-        }
-        <!-- (off the board: the passes (no edge on the price) and fades, folded in one dim line) -->
-        @if (offBoard.length) {
-          <li class="band off">
-            <button type="button" class="band-head" [attr.aria-expanded]="offBoardOpen" (click)="offBoardOpen = !offBoardOpen">
-              <span class="band-chev" aria-hidden="true"><svg class="chev" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-              <span class="off-words">Off the board: @if (offCounts.passes) {{{ offCounts.passes }} {{ offCounts.passes === 1 ? 'pass' : 'passes' }}}@if (offCounts.passes && offCounts.fades) { and }@if (offCounts.fades) {{{ offCounts.fades }} {{ offCounts.fades === 1 ? 'fade' : 'fades' }}} where the model sees no edge</span>
-            </button>
-            @if (offBoardOpen) {
-              <ol class="band-rows">
-                @for (x of offBoard; track x.r.id) {
                   <ng-container *ngTemplateOutlet="betRow; context: { $implicit: x.r, i: x.i, locks: locks, n: n }"></ng-container>
                 }
               </ol>

@@ -1100,6 +1100,32 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   margin: 18px 16px;
 }
 
+// (Best Bets with nothing favorable on it (no LOCK, LOVE or LIKE; an admin's CHECKs still under it): one line in the
+// board's middle, muted white on the dot-matrix face, a smaller line under it)
+.board-empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 56px 24px;
+  text-align: center;
+
+  .empty-title {
+    color: rgba(255, 255, 255, 0.72);
+    font-family: v.$font-heading;
+    font-size: v.$fs-16;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .empty-sub {
+    color: v.$text-faint;
+    font-size: v.$fs-13;
+    margin: 0;
+    max-width: 420px;
+  }
+}
+
 .book-list,
 .band-rows {
   list-style: none;
@@ -1290,10 +1316,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     }
   }
 
-  .off-words {
-    color: v.$text-faint;
-    font-size: v.$fs-12;
-  }
 }
 
 // (a chevron that turns as what it opens opens)
@@ -1335,16 +1357,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     --band-edge: rgba(255, 205, 0, 0.35);
   }
 
-  // (off the board: its header not sticky (it's the last thing), its rows dim)
-  &.off {
-    .band-head {
-      position: static;
-    }
-
-    .bet-row {
-      opacity: 0.75;
-    }
-  }
 }
 
 // One row on the board, under a hairline: a grid of the chevron, the rank tile, the circle, the pick, the meter
@@ -2035,15 +2047,17 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // 2026-10-17: the logos say the sport). Everything on the strip's middle
 // ---------------------------------------------------------------------------
 .book-ticker {
-  @include v.scoreboard-panel(v.$radius-sm, none);
+  @include v.scoreboard-panel(0, none);
   align-items: center;
   // (the board's gold rim, the even-edge way: 1px of chip.$felt-gold on the border box behind the face on the padding
-  // box; the owner's note, 2026-10-17)
+  // box, along the top and bottom only, the ends square: the strip a band (the owner's notes, 2026-10-17))
   background:
     var(--scoreboard-dots) padding-box,
     linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
     chip.$felt-gold border-box;
-  border: 1px solid transparent;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px 0;
   box-sizing: border-box;
   display: flex;
   flex: none;
