@@ -1,0 +1,41 @@
+{
+ "commit": "9123930",
+ "boards": [
+  {
+   "file": "Main.dc.html",
+   "path": "/book/",
+   "size": 8646,
+   "errors": [],
+   "w": 1440,
+   "h": 900,
+   "title": "The Book \u2014 desktop"
+  },
+  {
+   "file": "Phone.dc.html",
+   "path": "/book/",
+   "size": 8643,
+   "errors": [],
+   "w": 390,
+   "h": 844,
+   "title": "The Book \u2014 phone"
+  },
+  {
+   "file": "Wallet.dc.html",
+   "path": "/wallet/",
+   "size": 8646,
+   "errors": [],
+   "w": 1440,
+   "h": 900,
+   "title": "Wallet \u2014 desktop"
+  },
+  {
+   "file": "WalletPhone.dc.html",
+   "path": "/wallet/",
+   "size": 8643,
+   "errors": [],
+   "w": 390,
+   "h": 844,
+   "title": "Wallet \u2014 phone"
+  }
+ ]
+}
