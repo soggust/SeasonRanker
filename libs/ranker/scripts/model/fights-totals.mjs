@@ -73,27 +73,27 @@ export function totalRows(rows) {
 }
 
 // (a row's terms for the fit: its intercept's dummy, the totals' terms centred on the training rows' means)
-const design = (r, means) => {
+const design = (r, means, tkeys = TOTAL_KEYS) => {
   const x = Object.fromEntries(BASE_KEYS.map((k) => [k, 0]));
   x[baseKey(r.line, r.rounds)] = 1;
-  for (const k of TOTAL_KEYS) x[k] = (r.tx[k] ?? 0) - means[k];
+  for (const k of tkeys) x[k] = (r.tx[k] ?? 0) - means[k];
   return x;
 };
 
 // The soft fit (see the header) over totalRows
-export function fitTotals(trows) {
+export function fitTotals(trows, tkeys = TOTAL_KEYS) {
   const sorted = [...trows].sort((a, b) => a.date.localeCompare(b.date));
   const wsum = sorted.reduce((s, r) => s + r.w, 0) || 1;
-  const means = Object.fromEntries(TOTAL_KEYS.map((k) => [k, round(sorted.reduce((s, r) => s + r.w * (r.tx[k] ?? 0), 0) / wsum, 5)]));
-  const rows = sorted.map((r) => ({ ...r, x: design(r, means) }));
-  const keys = [...BASE_KEYS, ...TOTAL_KEYS];
+  const means = Object.fromEntries(tkeys.map((k) => [k, round(sorted.reduce((s, r) => s + r.w * (r.tx[k] ?? 0), 0) / wsum, 5)]));
+  const rows = sorted.map((r) => ({ ...r, x: design(r, means, tkeys) }));
+  const keys = [...BASE_KEYS, ...tkeys];
   const full = fitLogistic(rows, keys);
   // (the halves by bout, not by row: a bout's lines in one half)
   const ids = [...new Set(rows.map((r) => r.id))];
   const cut = new Set(ids.slice(0, Math.floor(ids.length / 2)));
   const h1 = fitLogistic(rows.filter((r) => cut.has(r.id)), keys);
   const h2 = fitLogistic(rows.filter((r) => !cut.has(r.id)), keys);
-  const terms = TOTAL_KEYS.map((key) => {
+  const terms = tkeys.map((key) => {
     const j = keys.indexOf(key);
     const agree = Math.sign(h1.w[j]) === Math.sign(h2.w[j]) && Math.sign(h1.w[j]) === Math.sign(full.w[j]) && full.w[j] !== 0;
     const z = agree ? Math.min(Math.abs(h1.z[j]), Math.abs(h2.z[j])) : 0;
@@ -141,7 +141,7 @@ export function predictTotal(fit, tx, line, rounds) {
 }
 
 // The held-out backtest (see the header): the last three years by half-year
-export function backtestTotals(rows, { now = new Date(), years = 3 } = {}) {
+export function backtestTotals(rows, { now = new Date(), years = 3, keys = TOTAL_KEYS } = {}) {
   const all = totalRows(rows);
   const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
   const halves = [];
@@ -155,7 +155,7 @@ export function backtestTotals(rows, { now = new Date(), years = 3 } = {}) {
     const train = all.filter((r) => r.date < f);
     const test = all.filter((r) => r.date >= f && r.date < t);
     if (!test.length || train.length < 1000) continue;
-    const fit = fitTotals(train);
+    const fit = fitTotals(train, keys);
     // (the base rates on the same rows: the line's, and the line's in the division pulled to it by 30 bouts)
     const lineRate = new Map();
     const classRate = new Map();

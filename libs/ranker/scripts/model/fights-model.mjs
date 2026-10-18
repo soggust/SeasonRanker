@@ -23,6 +23,24 @@
 // history to fit on (ESPN keeps neither; this plan buys no historical odds), so they're kept on each live bet
 // (seen.open; the bout's changes) for a later fit and move no price now.
 //
+// THE VENUE AND FORM ROUND (2026-10-17, the owner: home advantage "matters slightly, like most sports: include it
+// and let history set its weight", and whatever else serious MMA modelers weigh). Each bout keeps its venue and
+// both fighters' countries now (apps/mma/scripts/fights.mjs; the venue terms' inputs in fights-venue.mjs). Sixteen
+// candidates (CANDIDATES) were fit soft and walked forward over 2023-10..2026-10 (1,874 held-out bouts, the base's
+// log loss 0.6222), singly and by family; the kept ones are in TERMS (their weights refit every run, soft):
+//   home (his own country, a crowd in: -0.0001), homeEmpty (the same with no crowd, the Apex and the closed-door
+//   months: 0.0000, kept beside home so the crowd's part is apart), travel (-0.0001; the home family together
+//   -0.0002), form (his last three against his career: -0.0009), beatQ (the ratings of the last three men he
+//   beat: -0.0005), firstFive (his first five-rounder: -0.0001); together -0.0010. Each at 0 on the full fit
+//   today (the halves disagree or are under z 1): the history says home is small (a home fighter with a crowd
+//   won 50.8% where the rating said 50.7%, over 3,175 bouts; 52.0% against 50.5% in the decisions, 49.7% against
+//   50.9% in the finishes: the judges' part, as the literature finds, too small to hold yet), so it comes in as
+//   history earns it.
+//   Left out (held out no better, or worse): ageWeight (+0.0022), rust (18 months out, +0.0005), bigDebut
+//   (+0.0001), finMom (finishes in the last three, +0.0001), shift (time zones), altHome (at altitude), apexTd
+//   (wrestling in the small cage), southpaw, quick (under six weeks), homeJudges (home by the pair's decision
+//   share): all 0.0000 or worse. They're still computed on each row (candidatesOf) for the next round's test.
+//
 // SOFT TERMS (the owner's rule: a term is never on or off, its weight is earned): the full fit's weight for
 // each term is shrunk by its held-out evidence, 1 - 1/z^2 where z is the smaller of its two half-fits' z
 // scores (the training rows split in two by date), and nothing where the halves disagree on its sign or either
@@ -44,6 +62,7 @@ import { fileURLToPath } from 'node:url';
 import { keptFights } from '../../../../apps/mma/scripts/fights.mjs';
 import { PARAMS, rate, weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { round } from './ratings.mjs';
+import { emptyOn, placeOf, venueSide } from './fights-venue.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const MMA_CACHE = path.join(ROOT, 'apps/mma/scripts/cache.json');
@@ -85,6 +104,13 @@ export const TERMS = [
   ['moveUp', 'moving up in weight'],
   ['moveDown', 'moving down in weight'],
   ['five', 'a five-round bout (the rating over 25 minutes)'],
+  // (the venue and form round, 2026-10-17: see the header)
+  ['home', 'fighting in his own country (a crowd in)'],
+  ['homeEmpty', 'fighting in his own country, no crowd'],
+  ['travel', 'the distance travelled (thousand km)'],
+  ['form', 'his last three bouts against his career'],
+  ['beatQ', 'the ratings of the last three men he beat'],
+  ['firstFive', 'his first five-round bout'],
 ];
 export const TERM_KEYS = TERMS.map(([k]) => k);
 
@@ -94,7 +120,7 @@ const clamp = (p) => Math.min(CLAMP[1], Math.max(CLAMP[0], p));
 
 // A fighter's running state (everything before the bout at hand)
 export function freshFighter() {
-  return { n: 0, wins: 0, losses: 0, draws: 0, finishes: 0, koWins: 0, subWins: 0, koLosses: 0, subLosses: 0, decisions: 0, timeShare: 0, last: null, lbs: null, prevLbs: null, streak: 0, recent: [], secs: 0, ssl: 0, ssa: 0, kd: 0, tdl: 0, tda: 0, sm: 0, ad: 0, oppSecs: 0, oppSsl: 0, oppSsa: 0, oppTdl: 0, oppTda: 0 };
+  return { n: 0, wins: 0, losses: 0, draws: 0, finishes: 0, koWins: 0, subWins: 0, koLosses: 0, subLosses: 0, decisions: 0, timeShare: 0, last: null, lbs: null, prevLbs: null, streak: 0, recent: [], secs: 0, ssl: 0, ssa: 0, kd: 0, tdl: 0, tda: 0, sm: 0, ad: 0, oppSecs: 0, oppSsl: 0, oppSsa: 0, oppTdl: 0, oppTda: 0, five: 0, big: 0, recentFin: [], beaten: [] };
 }
 
 // A bout's length in seconds (its last round and the clock into it; none kept: the distance)
@@ -133,12 +159,25 @@ export function ageOn(bio, bioAt, day) {
 }
 
 // One side's numbers for a bout on a day: its running state, rating (r, rd) and bio
-export function sideNumbers(s, rating, bio, bioAt, day, lbs) {
+export function sideNumbers(s, rating, bio, bioAt, day, lbs, { country = null, place = null } = {}) {
   const rates = ratesOf(s);
   const layoffDays = s.last === null ? 365 : Math.max(0, (day - s.last) / 864e5);
   const age = ageOn(bio, bioAt, day);
+  const won3 = s.recent.filter((x) => x === 'won').length;
   return {
     ...rates,
+    // (the venue: his own country, the distance and the time zones from it (fights-venue.mjs))
+    ...venueSide(country ?? bio?.country ?? null, place),
+    stance: bio?.stance ?? null,
+    // (form: his last three bouts' win share less his career's; finishing momentum: finishes won of his last three)
+    form: s.n >= 4 ? won3 / s.recent.length - s.wins / s.n : 0,
+    finMom: (s.recentFin ?? []).reduce((a, b) => a + b, 0),
+    // (the quality of his last three wins: the ratings going in of the men he beat, against the start)
+    beatQ: s.beaten?.length ? s.beaten.reduce((a, b) => a + b, 0) / s.beaten.length - PARAMS.start : null,
+    firstFive: s.five === 0 ? 1 : 0,
+    bigDebut: (s.big ?? 0) === 0 ? 1 : 0,
+    rust: layoffDays > 540 && s.last !== null ? 1 : 0,
+    quick: layoffDays < 42 && s.last !== null ? 1 : 0,
     r: rating.r,
     rd: rating.rd,
     age,
@@ -191,13 +230,40 @@ export const TOTAL_TERMS = [
   ['tLbs', 'the weight class (per 50 pounds)'],
   ['tHeavy', 'heavyweight'],
   ['tWomen', "a women's bout"],
+  // (the venue round, 2026-10-17: walked forward over the same three years (4,194 bouts at each line, the base
+  // 0.6290): tHome -0.0001, tFirstFive -0.0001 together; left out: tApex, tAlt, tEmpty (0.0000 as a family),
+  // tTravel and tShift (+0.0001), tDebut (0.0000), tFinMom (+0.0001))
+  ['tHome', 'one fighter at home, the other not'],
+  ['tFirstFive', 'first five-round bouts, both'],
 ];
 export const TOTAL_KEYS = TOTAL_TERMS.map(([k]) => k);
+// (the round totals' candidates, 2026-10-17, as the moneyline's CANDIDATES)
+export const TOTAL_CANDIDATES = [
+  ['tApex', 'the small cage (the Apex)'],
+  ['tAlt', 'the venue at altitude (km above 1,000 m)'],
+  ['tEmpty', 'no crowd (the Apex, the closed-door months)'],
+  ['tTravel', 'the distance travelled, both (thousand km)'],
+  ['tShift', 'time zones crossed, both (per 3)'],
+  ['tHome', 'one fighter at home, the other not'],
+  ['tFirstFive', 'first five-round bouts, both'],
+  ['tDebut', 'big-promotion debuts, both'],
+  ['tFinMom', 'finishes won of their last three bouts, both'],
+];
 
 // A bout's round-totals terms from both sides' numbers (sideNumbers) and its weight (rating.mjs weightOf)
-export function totalsTerms(a, b, { lbs = null, women = false } = {}) {
+export function totalsTerms(a, b, { lbs = null, women = false, place = null, date = null, rounds = 3 } = {}) {
   const sum = (k, avg = 0) => (a[k] ?? avg) + (b[k] ?? avg);
   return {
+    // (the candidates, 2026-10-17: the venue's, and the first five-rounders and big-promotion debuts)
+    tApex: place?.apex ? 1 : 0,
+    tAlt: place?.alt > 1000 ? (place.alt - 1000) / 1000 : 0,
+    tEmpty: place && date && emptyOn(date, place) ? 1 : 0,
+    tTravel: sum('travel', 0),
+    tShift: sum('shift', 0) / 3,
+    tHome: Math.abs((a.home ?? 0) - (b.home ?? 0)),
+    tFirstFive: rounds >= 5 ? sum('firstFive') : 0,
+    tDebut: sum('bigDebut'),
+    tFinMom: sum('finMom'),
     tDist: sum('dist'),
     tTime: sum('time'),
     tKoWin: sum('koWin'),
@@ -228,7 +294,7 @@ const g = (rd) => 1 / Math.sqrt(1 + (3 * Q * Q * rd * rd) / (Math.PI * Math.PI))
 export const ratingChance = (a, b) => 1 / (1 + 10 ** ((-g(Math.sqrt(a.rd ** 2 + b.rd ** 2)) * (a.r - b.r)) / 400));
 
 // The terms for A against B (each A's less B's; a pair with a side unknown at 0: the term says nothing)
-export function featuresOf(a, b, { rounds = 3 } = {}) {
+export function featuresOf(a, b, { rounds = 3, place = null, date = null, lbs = null } = {}) {
   const diff = (k) => (a[k] === null || b[k] === null || a[k] === undefined || b[k] === undefined ? 0 : a[k] - b[k]);
   const ratingLogit = logit(clamp(ratingChance(a, b)));
   const wrestler = (x) => Math.max(0, x.td15 - 1.5) / 1.5;
@@ -257,6 +323,54 @@ export function featuresOf(a, b, { rounds = 3 } = {}) {
     moveUp: diff('moveUp'),
     moveDown: diff('moveDown'),
     five: rounds >= 5 ? ratingLogit : 0,
+    ...candidatesOf(a, b, { rounds, place, date, lbs, diff }),
+  };
+}
+
+// The candidate terms (2026-10-17, the owner's home-advantage ask and the audit of what MMA's modelers weigh;
+// each fit soft and kept only where it held out: CANDIDATES, KEPT). Each is A's less B's, 0 where a side is unknown
+export const CANDIDATES = [
+  ['home', 'fighting in his own country (a crowd in)'],
+  ['homeEmpty', 'fighting in his own country, no crowd (the Apex, the closed-door months)'],
+  ['homeJudges', "his own country's crowd before the judges (the home term by the pair's share of bouts gone the distance)"],
+  ['travel', 'the distance travelled (thousand km)'],
+  ['shift', 'time zones crossed (per 3)'],
+  ['altHome', 'his own country at altitude (km above 1,000 m)'],
+  ['apexTd', 'takedowns a 15 minutes in the small cage (the Apex)'],
+  ['firstFive', 'his first five-round bout'],
+  ['bigDebut', 'his first bout in a big promotion'],
+  ['form', 'his last three bouts against his career (win share)'],
+  ['finMom', 'finishes won of his last three bouts'],
+  ['beatQ', 'the ratings of the last three men he beat (per 100)'],
+  ['ageWeight', 'age by weight class (the age gap, more at the lighter weights)'],
+  ['southpaw', 'a southpaw against an orthodox fighter'],
+  ['rust', 'a layoff of 18 months or more'],
+  ['quick', 'a quick turnaround (under 6 weeks)'],
+];
+export const CANDIDATE_KEYS = CANDIDATES.map(([k]) => k);
+
+function candidatesOf(a, b, { rounds, place, date, lbs, diff }) {
+  const empty = !!place && !!date && emptyOn(date, place);
+  const home = diff('home');
+  const altKm = place?.alt > 1000 ? (place.alt - 1000) / 1000 : 0;
+  const lefty = (x, y) => (/south/i.test(x.stance ?? '') && /orth/i.test(y.stance ?? '') ? 1 : 0);
+  return {
+    home: empty ? 0 : home,
+    homeEmpty: empty ? home : 0,
+    homeJudges: empty ? 0 : (home * (a.dist + b.dist)) / 2,
+    travel: diff('travel'),
+    shift: diff('shift') / 3,
+    altHome: altKm * home,
+    apexTd: place?.apex ? diff('td15') : 0,
+    firstFive: rounds >= 5 ? diff('firstFive') : 0,
+    bigDebut: diff('bigDebut'),
+    form: diff('form'),
+    finMom: diff('finMom'),
+    beatQ: diff('beatQ') / 100,
+    ageWeight: Number.isFinite(lbs) && lbs ? ((diff('age') / 5) * (205 - Math.min(lbs, 265))) / 60 : 0,
+    southpaw: lefty(a, b) - lefty(b, a),
+    rust: diff('rust'),
+    quick: diff('quick'),
   };
 }
 
@@ -268,7 +382,7 @@ export function resultOf(f) {
 }
 
 // After a bout: both states moved on (the stats the cache has for each side, [ssl, ssa, kd, tdl, tda, sm, ad, rv])
-export function advance(s, o, f, mine, theirs, won, lbs) {
+export function advance(s, o, f, mine, theirs, won, lbs, oppR = null) {
   const secs = boutSeconds(f);
   const result = resultOf(f);
   const finish = f.method === 'KO' || f.method === 'SUB';
@@ -296,6 +410,12 @@ export function advance(s, o, f, mine, theirs, won, lbs) {
     s.recent.push(finish ? 'stopped' : 'lost');
   }
   s.recent = s.recent.slice(-3);
+  // (the candidates' running numbers: five-rounders and big-promotion bouts fought, his last three bouts' finishes
+  // won, the ratings going in of the last three he beat)
+  if ((f.rounds ?? 3) >= 5) s.five++;
+  if (FIT_LEAGUES.has(f.league)) s.big++;
+  s.recentFin = [...(s.recentFin ?? []), result !== null && won && finish ? 1 : 0].slice(-3);
+  if (result !== null && won && Number.isFinite(oppR)) s.beaten = [...(s.beaten ?? []), oppR].slice(-3);
   if (mine) {
     s.secs += secs;
     s.ssl += mine[0];
@@ -327,17 +447,21 @@ export function buildRows(fights, cache) {
   const states = new Map();
   const ratingNow = new Map();
   const rows = [];
+  // (each bout's ratings going in, for the quality of a fighter's wins)
+  const pre = new Map();
   const stateOf = (id) => states.get(id) ?? states.set(id, freshFighter()).get(id);
   rate(fights, PARAMS, {
     onBefore(f, sa, sb) {
       const [a, b] = f.fighters;
       const day = Date.parse(f.date);
       const { lbs } = weightOf(f);
-      const A = sideNumbers(stateOf(a.id), sa, cache[a.id]?.bio, cache[a.id]?.bioAt, day, lbs);
-      const B = sideNumbers(stateOf(b.id), sb, cache[b.id]?.bio, cache[b.id]?.bioAt, day, lbs);
+      const place = placeOf(f.venue);
+      const A = sideNumbers(stateOf(a.id), sa, cache[a.id]?.bio, cache[a.id]?.bioAt, day, lbs, { country: a.country, place });
+      const B = sideNumbers(stateOf(b.id), sb, cache[b.id]?.bio, cache[b.id]?.bioAt, day, lbs, { country: b.country, place });
+      pre.set(f.id, [sa.r, sb.r]);
       // (the round totals' terms beside it, how long it lasted and how it ended: fights-totals.mjs)
       const timed = Number.isFinite(f.period) && f.period > 0 && Number.isFinite(f.clock);
-      rows.push({ id: f.id, date: f.date, league: f.league, rounds: f.rounds ?? 3, a: a.id, b: b.id, x: featuresOf(A, B, { rounds: f.rounds ?? 3 }), y: resultOf(f), ratingP: clamp(ratingChance(A, B)), experienced: A.n > 0 && B.n > 0, tx: totalsTerms(A, B, weightOf(f)), secs: timed ? boutSeconds(f) : null, method: f.method ?? null, division: f.division ?? '' });
+      rows.push({ id: f.id, date: f.date, league: f.league, rounds: f.rounds ?? 3, a: a.id, b: b.id, x: featuresOf(A, B, { rounds: f.rounds ?? 3, place, date: f.date, lbs }), y: resultOf(f), ratingP: clamp(ratingChance(A, B)), experienced: A.n > 0 && B.n > 0, tx: totalsTerms(A, B, { ...weightOf(f), place, date: f.date, rounds: f.rounds ?? 3 }), secs: timed ? boutSeconds(f) : null, method: f.method ?? null, division: f.division ?? '' });
     },
     onAfter(f, sa, sb) {
       const [a, b] = f.fighters;
@@ -345,8 +469,10 @@ export function buildRows(fights, cache) {
       const mine = cache[a.id]?.stats?.[f.id] ?? null;
       const theirs = cache[b.id]?.stats?.[f.id] ?? null;
       const result = resultOf(f);
-      advance(stateOf(a.id), stateOf(b.id), f, mine, theirs, result === 1, lbs);
-      advance(stateOf(b.id), stateOf(a.id), f, theirs, mine, result === 0, lbs);
+      const [ra, rb] = pre.get(f.id) ?? [null, null];
+      pre.delete(f.id);
+      advance(stateOf(a.id), stateOf(b.id), f, mine, theirs, result === 1, lbs, rb);
+      advance(stateOf(b.id), stateOf(a.id), f, theirs, mine, result === 0, lbs, ra);
       ratingNow.set(a.id, { r: sa.r, rd: sa.rd, last: sa.last });
       ratingNow.set(b.id, { r: sb.r, rd: sb.rd, last: sb.last });
     },
@@ -479,7 +605,7 @@ export function score(rows, pOf) {
 }
 
 // The held-out backtest (see the header): the last three years by half-year, each fit on the rows before it
-export function backtest(rows, { now = new Date(), years = 3 } = {}) {
+export function backtest(rows, { now = new Date(), years = 3, keys = TERM_KEYS } = {}) {
   const all = fitRows(rows);
   const halves = [];
   const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
@@ -496,7 +622,7 @@ export function backtest(rows, { now = new Date(), years = 3 } = {}) {
     const train = all.filter((r) => r.date < from);
     const test = all.filter((r) => r.date >= from && r.date < to);
     if (!test.length || train.length < 500) continue;
-    const fit = fitSoft(train);
+    const fit = fitSoft(train, keys);
     for (const r of test) held.push({ ...r, p: predict(fit, r.x).p });
     out.push({ from, to, train: train.length, model: score(test, (r) => predict(fit, r.x).p), rating: score(test, (r) => r.ratingP), coin: score(test, () => 0.5), kept: fit.terms.filter((t) => t.weight).length });
   }
@@ -523,16 +649,18 @@ export async function buildModel({ now = new Date() } = {}) {
   const { rows, states, ratingNow } = buildRows(fights, cache);
   const fit = fitSoft(fitRows(rows));
   // (a coming bout's chance: both sides' numbers as of its day)
-  const chance = (aId, bId, day, { rounds = 3, lbs = null } = {}) => {
-    const side = (id) => {
+  // (venue: ESPN's for the bout (fights.mjs venueOf); countries: each side's flag on the card, else his bio's)
+  const chance = (aId, bId, day, { rounds = 3, lbs = null, venue = null, countries = [null, null] } = {}) => {
+    const place = placeOf(venue);
+    const side = (id, country) => {
       const s = states.get(id) ?? freshFighter();
       const r0 = ratingNow.get(id) ?? { r: PARAMS.start + (PARAMS.leagueLift.ufc ?? 0), rd: PARAMS.rd0, last: null };
       const rd = r0.last === null ? r0.rd : Math.min(PARAMS.rd0, Math.sqrt(r0.rd ** 2 + (PARAMS.rdPerYear ** 2 * Math.max(0, day - r0.last)) / 31557600000));
-      return sideNumbers(s, { r: r0.r, rd }, cache[id]?.bio, cache[id]?.bioAt, day, lbs);
+      return sideNumbers(s, { r: r0.r, rd }, cache[id]?.bio, cache[id]?.bioAt, day, lbs, { country, place });
     };
-    const A = side(aId);
-    const B = side(bId);
-    const x = featuresOf(A, B, { rounds });
+    const A = side(aId, countries[0]);
+    const B = side(bId, countries[1]);
+    const x = featuresOf(A, B, { rounds, place, date: new Date(day).toISOString().slice(0, 10), lbs });
     return { ...predict(fit, x), x, a: A, b: B, ratingP: round(clamp(ratingChance(A, B)), 4) };
   };
   return { fit, rows, fights: fights.length, chance, cache };

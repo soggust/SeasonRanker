@@ -6,7 +6,11 @@
 // submission, unanimous / split / majority decision, draw...) is fetched once, when the fight is first seen.
 //
 // A fight: { id, league, event, date, division, rounds (scheduled), period, clock (seconds into the last
-// round), method, fighters: [{ id, name, winner }, ...] }
+// round), method, slot (its place on the card from the top: 0 the main event, 1 the co-main...), venue ({ name,
+// city, state, country }: ESPN's venue for the bout, else its event's; null where ESPN has none), fighters:
+// [{ id, name, winner, country (ESPN's flag for him on the scoreboard: his citizenship) }, ...] }
+// (venue, slot and country from 2026-10-17, for the fights model's home and travel terms: the whole archive
+// refetched once for them, its methods kept)
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
@@ -72,6 +76,14 @@ async function readJson(file, fallback) {
   }
 }
 
+// ESPN's venue ({ fullName, address: { city, state, country } }) as kept, or null
+export function venueOf(v) {
+  if (!v) return null;
+  const a = v.address ?? {};
+  const out = { name: v.fullName ?? null, city: a.city ?? null, state: a.state ?? null, country: a.country ?? null };
+  return out.name || out.city || out.country ? out : null;
+}
+
 // A year of a promotion's fights from its scoreboard (methods filled in from what's kept, or fetched)
 async function yearOf(league, year, kept) {
   const board = await get(`${SITE}/${league}/scoreboard?dates=${year}&limit=1000`);
@@ -79,7 +91,8 @@ async function yearOf(league, year, kept) {
   const out = [];
   const pending = [];
   for (const event of board?.events ?? []) {
-    for (const c of event.competitions ?? []) {
+    const comps = event.competitions ?? [];
+    for (const [i, c] of comps.entries()) {
       if (!c.status?.type?.completed || c.competitors?.length !== 2) continue;
       const fight = {
         id: c.id,
@@ -92,7 +105,9 @@ async function yearOf(league, year, kept) {
         period: c.status.period ?? null,
         clock: c.status.clock ?? null,
         method: known.get(c.id)?.method ?? null,
-        fighters: c.competitors.map((p) => ({ id: String(p.id), name: p.athlete?.displayName ?? '', winner: !!p.winner })),
+        slot: comps.length - 1 - i,
+        venue: venueOf(c.venue ?? event.venues?.[0]),
+        fighters: c.competitors.map((p) => ({ id: String(p.id), name: p.athlete?.displayName ?? '', winner: !!p.winner, country: p.athlete?.flag?.alt ?? null })),
       };
       if (!fight.method) pending.push(fight);
       out.push(fight);
@@ -128,7 +143,7 @@ export async function allFights({ refresh = 1, log = console.log } = {}) {
     for (let year = first; year <= (last ?? thisYear); year++) {
       const file = path.join(DIR, league, `${year}.json`);
       const kept = await readJson(file, null);
-      const stale = !kept || year > thisYear - refresh || kept.some((f) => !f.method || f.method === '?');
+      const stale = !kept || year > thisYear - refresh || kept.some((f) => !f.method || f.method === '?' || !('venue' in f));
       const rows = stale ? await yearOf(league, year, kept ?? []) : kept;
       if (stale) {
         await mkdir(path.dirname(file), { recursive: true });

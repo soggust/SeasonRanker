@@ -16,7 +16,7 @@
 //      the start, else ESPN's board after the bout: ESPN BET's line, the only one ESPN keeps for MMA) and each
 //      bet's CLV; then the grading from the bout's result (a draw or a no contest: void, the stake back)
 //   4. the moneyline's trust refit on the league's graded bets and closes (desk.mjs fitTrust: the starting trust
-//      till 40; the league started 2026-10-16, MMA_START, so no older epoch's bets judge it)
+//      till 40; the league started 2026-10-16, its epoch MMA_START (2026-10-18 now), so no older epoch's bets judge it)
 //   5. the bouts due (leagues.mjs TIMING.mma: inside 72 hours of the start, the last chance 4) priced: one
 //      ask of The Odds API for the whole MMA board (2 credits: two markets, one region of books) when any bout is
 //      due and the day's allowance has it, each bout matched to the board by both fighters' names (accents and
@@ -52,6 +52,8 @@ import { BOOK, LEAGUES, TIMING } from './leagues.mjs';
 import { TERMS, TOTAL_TERMS, backtest, boutSeconds, buildModel, fitRows, totalsTerms } from './fights-model.mjs';
 import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictTotal, settleTotal, totalLinesOf, totalPickFor, totalReasonOf, totalRows } from './fights-totals.mjs';
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
+import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
+import { placeOf } from './fights-venue.mjs';
 import { BANKROLL, chanceAt, decimal, fairPair, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
 import { buildBoard, seenUpdate } from './board.mjs';
@@ -64,7 +66,10 @@ import { round } from './ratings.mjs';
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
 // (the league's start on the desk: its trust is fit on the bets since, which is all of them)
-export const MMA_START = '2026-10-16T00:00:00Z';
+// (bumped 2026-10-18, the venue and form round (fights-model.mjs: home, travel, form...; the live chance now
+// reads each bout's weight, venue and countries): its projections changed, so its trust restarts; MODEL_EPOCH,
+// the other sports', isn't touched)
+export const MMA_START = '2026-10-18T02:00:00Z';
 const START_TRUST = 0.5;
 const EV_SCALE = 0.08;
 // (the most an untested market stakes a bout)
@@ -177,7 +182,8 @@ export function boutsOf(board) {
     for (const c of e.competitions ?? []) {
       const comps = [...(c.competitors ?? [])].sort((x, y) => (x.order ?? 0) - (y.order ?? 0));
       if (comps.length !== 2) continue;
-      const side = (p) => ({ id: String(p.id), name: p.athlete?.displayName ?? p.name ?? '' });
+      // (his country: ESPN's flag for him, the fights model's home and travel terms)
+      const side = (p) => ({ id: String(p.id), name: p.athlete?.displayName ?? p.name ?? '', country: p.athlete?.flag?.alt ?? null });
       const statusName = c.status?.type?.name ?? '';
       const completed = !!c.status?.type?.completed;
       const winner = completed ? (comps[0].winner ? 'home' : comps[1].winner ? 'away' : null) : null;
@@ -188,6 +194,7 @@ export function boutsOf(board) {
         date: c.date ?? e.date,
         division: c.type?.abbreviation ?? c.type?.text ?? '',
         rounds: c.format?.regulation?.periods ?? 3,
+        venue: venueOf(c.venue ?? e.venues?.[0]),
         home: side(comps[0]),
         away: side(comps[1]),
         final: completed,
@@ -267,6 +274,9 @@ export function boutVoid(bet, bout, now) {
 }
 
 // (a final bout's length in seconds, null where ESPN gave no round: fights-model.mjs boutSeconds)
+// The model's chance for a bout (fights-model.mjs buildModel chance): its rounds, weight, venue and both countries
+export const boutChance = (model, bout, day) => model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds, lbs: weightOf({ division: bout.division }).lbs, venue: bout.venue ?? null, countries: [bout.home.country ?? null, bout.away.country ?? null] });
+
 export const boutSecs = (bout) => (bout?.final && Number.isFinite(bout.period) && bout.period > 0 ? boutSeconds({ rounds: bout.rounds, period: bout.period, clock: bout.clock }) : null);
 
 // A bet against its bout: won, lost, or void (a draw, a no contest, the bout off or its fighters changed); a
@@ -592,8 +602,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   log.log(`${SPORT}: round totals held out at 2.5 (${t25.model.n} three-round bouts): model ${t25.model.logLoss}, the weight class's base rate ${t25.byClass.logLoss}, the line's ${t25.base.logLoss}`);
   // (a coming bout's chance of Over a line: both sides' numbers as the moneyline reads them, null off the lines)
   const overChance = (bout, day, line) => {
-    const pred = model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds });
-    const t = predictTotal(totals, totalsTerms(pred.a, pred.b, weightOf({ division: bout.division })), line, bout.rounds);
+    const pred = boutChance(model, bout, day);
+    const t = predictTotal(totals, totalsTerms(pred.a, pred.b, { ...weightOf({ division: bout.division }), place: placeOf(bout.venue), date: new Date(day).toISOString().slice(0, 10), rounds: bout.rounds }), line, bout.rounds);
     return t;
   };
 
@@ -646,7 +656,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   trust.ml = fitted;
   // (the round totals' own: every total row graded or closed, whichever book anchored it (they start 2026-10-17);
   // tracked only, whatever the fit says, till TOTAL_LIVE are graded with a close)
-  const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv)), START_TRUST);
+  const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START)), START_TRUST);
   if (trust.total && trust.total.trust !== tFitted.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, tFitted.trust, `best fit to ${tFitted.n} graded round totals and ${tFitted.clvN} closing lines (log loss ${tFitted.logLoss})`);
   trust.total = tFitted;
   const totalsLive = liveCount(ledger.bets) >= TOTAL_LIVE;
@@ -772,7 +782,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       continue;
     }
     const day = Date.parse(start);
-    const pred = model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds });
+    const pred = boutChance(model, bout, day);
     // (the first price seen on the bout: the guard's reference, and the opening line kept for a later fit)
     state.opens ??= {};
     state.opens[bout.key] ??= { at, fair: round(lines.fair, 4), odds: lines.odds };
@@ -847,7 +857,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const espn = await espnOdds(bout).catch(() => null);
     if (espn) addLines(bout.key, { lines: espn, src: 'espn bet' });
   }
-  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => model.chance(b.home.id, b.away.id, day, { rounds: b.rounds }).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: trust.total.trust, bets: ledger.bets, prev: prevBoard, now });
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: trust.total.trust, bets: ledger.bets, prev: prevBoard, now });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
   const withTotal = mmaBoard.games.filter((g) => g.k.total).length;

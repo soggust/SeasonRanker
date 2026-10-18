@@ -421,3 +421,76 @@ test("buildMmaBoard: a bout's round total as k.total, Over then Under at the boo
   assert.equal(none.games[0].k.total, undefined);
   assert.equal(boardTotalOf({ line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 }, 0.95, 0.5).every((s) => s.b === 'low'), true);
 });
+
+// The venue and form round (2026-10-17: fights-venue.mjs, fights.mjs venueOf, the new terms' inputs)
+test("venueOf / placeOf: ESPN's venue kept as name, city, state, country; a kept city's own place and height, a namesake abroad at its country's centre; the Apex known; a US state stands for a missing country", async () => {
+  const { venueOf } = await import('../apps/mma/scripts/fights.mjs');
+  const { placeOf, countryKey } = await import('../libs/ranker/scripts/model/fights-venue.mjs');
+  assert.deepEqual(venueOf({ id: '6176', fullName: 'Meta APEX', address: { city: 'Las Vegas', state: 'NV', country: 'USA' }, indoor: true }), { name: 'Meta APEX', city: 'Las Vegas', state: 'NV', country: 'USA' });
+  assert.equal(venueOf(null), null);
+  assert.equal(venueOf({ address: {} }), null);
+  const apex = placeOf({ name: 'Meta APEX', city: 'Las Vegas', state: 'NV', country: 'USA' });
+  assert.equal(apex.apex, true);
+  assert.equal(apex.country, 'USA');
+  const mexico = placeOf({ name: 'Mexico City Arena', city: 'Mexico City', state: null, country: 'Mexico' });
+  assert.equal(mexico.alt, 2240);
+  assert.equal(mexico.apex, false);
+  // (Birmingham, Alabama is not Birmingham, England: the USA's centre, low)
+  const bham = placeOf({ name: 'x', city: 'Birmingham', state: 'AL', country: 'USA' });
+  assert.ok(bham.at[1] < -60);
+  assert.equal(placeOf({ name: 'x', city: 'Fairfax', state: 'VA', country: null }).country, 'USA');
+  assert.equal(countryKey('Korea'), 'South Korea');
+  assert.equal(countryKey('default'), null);
+});
+
+test('venueSide / features: a fighter in his own country is home, the traveller is not; travel is the great-circle distance, zones the short way round; the home term goes to homeEmpty at the Apex and in the closed-door months; antisymmetric', async () => {
+  const { kkm, placeOf, venueSide, zones, emptyOn } = await import('../libs/ranker/scripts/model/fights-venue.mjs');
+  const rio = placeOf({ name: 'Farmasi Arena', city: 'Rio De Janeiro', country: 'Brazil' });
+  const br = venueSide('Brazil', rio);
+  const us = venueSide('USA', rio);
+  assert.equal(br.home, 1);
+  assert.equal(us.home, 0);
+  assert.ok(br.travel < 1 && us.travel > 6 && us.travel < 9, `${br.travel} ${us.travel}`);
+  assert.deepEqual(venueSide('default', rio), { home: null, travel: null, shift: null });
+  assert.ok(Math.abs(kkm([51.5, -0.13], [40.75, -73.99]) - 5.57) < 0.05);
+  assert.equal(zones(170, -170), 20 / 15);
+  assert.equal(emptyOn('2020-07-11', placeOf({ name: 'Etihad Arena', city: 'Abu Dhabi', country: 'United Arab Emirates' })), true);
+  assert.equal(emptyOn('2024-07-11', rio), false);
+  const cache = { X: { bio: { age: 30, country: 'Brazil' }, bioAt: Date.parse('2025-01-01') }, Y: { bio: { age: 30, country: 'USA' }, bioAt: Date.parse('2025-01-01') } };
+  const day = Date.parse('2025-01-11');
+  const sX = sideNumbers(freshFighter(), { r: 1500, rd: 100 }, cache.X.bio, cache.X.bioAt, day, 155, { country: null, place: rio });
+  const sY = sideNumbers(freshFighter(), { r: 1500, rd: 100 }, cache.Y.bio, cache.Y.bioAt, day, 155, { country: 'USA', place: rio });
+  const xy = featuresOf(sX, sY, { place: rio, date: '2025-01-11', lbs: 155 });
+  const yx = featuresOf(sY, sX, { place: rio, date: '2025-01-11', lbs: 155 });
+  assert.equal(xy.home, 1);
+  assert.equal(xy.homeEmpty, 0);
+  assert.ok(xy.travel < -6);
+  for (const k of TERM_KEYS) assert.ok(Math.abs(xy[k] + yx[k]) < 1e-9, k);
+  const apex = placeOf({ name: 'Meta APEX', city: 'Las Vegas', state: 'NV', country: 'USA' });
+  const aX = sideNumbers(freshFighter(), { r: 1500, rd: 100 }, cache.X.bio, cache.X.bioAt, day, 155, { place: apex });
+  const aY = sideNumbers(freshFighter(), { r: 1500, rd: 100 }, cache.Y.bio, cache.Y.bioAt, day, 155, { place: apex });
+  const at = featuresOf(aY, aX, { place: apex, date: '2025-01-11' });
+  assert.equal(at.home, 0);
+  assert.equal(at.homeEmpty, 1);
+});
+
+test("form, the quality of his wins, a first five-rounder: from the bouts before alone (advance keeps the ratings of the men he beat, his five-rounders)", () => {
+  const s = freshFighter();
+  const f = (id, won, rounds = 3) => ({ id, date: '2025-01-01', league: 'ufc', rounds, method: 'UD', fighters: [{ id: 'X', winner: won }, { id: 'Y', winner: !won }] });
+  advance(s, freshFighter(), f('1', true), null, null, true, 155, 1700);
+  advance(s, freshFighter(), f('2', false, 5), null, null, false, 155, 1600);
+  assert.equal(s.five, 1);
+  assert.deepEqual(s.beaten, [1700]);
+  const n = sideNumbers(s, { r: 1500, rd: 100 }, null, null, Date.parse('2025-03-01'), 155);
+  assert.equal(n.firstFive, 0);
+  assert.equal(n.beatQ, 1700 - 1500);
+  assert.equal(sideNumbers(freshFighter(), { r: 1500, rd: 100 }, null, null, Date.parse('2025-03-01'), 155).firstFive, 1);
+});
+
+test("boutsOf: a bout carries ESPN's venue and each fighter's country", () => {
+  const board = { events: [{ id: 'e1', name: 'UFC X', date: '2026-10-18T00:00Z', venues: [{ fullName: 'Rogers Place', address: { city: 'Edmonton', state: 'AB', country: 'Canada' } }], competitions: [{ id: 'c1', date: '2026-10-18T03:00Z', type: { abbreviation: 'Lightweight' }, format: { regulation: { periods: 3 } }, status: { type: { name: 'STATUS_SCHEDULED', completed: false } }, competitors: [{ id: '1', order: 1, athlete: { displayName: 'A B', flag: { alt: 'Canada' } } }, { id: '2', order: 2, athlete: { displayName: 'C D', flag: { alt: 'Brazil' } } }] }] }] };
+  const [b] = boutsOf(board);
+  assert.deepEqual(b.venue, { name: 'Rogers Place', city: 'Edmonton', state: 'AB', country: 'Canada' });
+  assert.equal(b.home.country, 'Canada');
+  assert.equal(b.away.country, 'Brazil');
+});
