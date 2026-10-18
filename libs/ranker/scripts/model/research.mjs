@@ -48,12 +48,22 @@
 //            already held as the model's input. Either way priced at the trust, not the book's pin past the GAP
 //            (researchDecision): an edge bet, none passed, out of the CHECKs. A real reason no input can carry (a
 //            role with no player's status, another with none) passed, its reason kept. (b) 'bet': nothing explains it
-//            (explains false, confidence high or medium (the owner's, 2026-10-18: "no real reason"), with sources): the model's side bet at RESEARCH_UNITS at most
-//            (researchBet, a LIKE at most), a role, news or gap CHECK whose game hasn't started. (c) 'check':
-//            it can't tell (low confidence, conflicting sources, a real but unclear reason): a CHECK. A failed call
+//            (explains false at any confidence, with sources: the owner's, 2026-10-18, "no real reason", and "when
+//            you can't find info like Corum, at a certain point we have to just say we like it"): the model's side
+//            bet (researchBet), a role, news or gap CHECK whose game hasn't started; at RESEARCH_UNITS, a LIKE at
+//            most, till the research earns its level (researchLevelOf). (c) 'check': it can't tell (a real reason
+//            found at low confidence, unsized; a real but unclear reason): a CHECK. A failed call
 //            (cut short, or its search failed: hollow, searchFailed) is no verdict: never kept, asked again first
-//   gated    researchGateOf: each kind of research bet (bet, adjusted) off by itself, back to a label only, once
-//            RESEARCH_GATE_N (40) of them graded with a close are negative in units, every sport together
+//   gated    researchGateOf: each kind of research bet (bet, adjusted) at the practice stake by itself (desk.mjs
+//            practiceGates: never off), once RESEARCH_GATE_N (40) of them graded with a close are negative in units,
+//            every sport together
+//   levels   researchLevelOf: the research's level, earned on its own scorecard (research bets and research-adjusted,
+//            every sport's, graded since MODEL_EPOCH), as check-learn's graded causes graduate a role (props.mjs
+//            roleGateOf): under RESEARCH_LEVEL_N (40) graded, the practice stake (RESEARCH_UNITS) and a LIKE at most;
+//            at 40 or more with the record over its break-even and the CLV 0 or better, earned: its Kelly stake and
+//            its level (LOVE and LOCK possible); below that, the practice stake still, never off. Read again every
+//            run, so a level lost goes back to practice by itself. The trust its chance is priced at stays the prop
+//            type's fitted one (self-tuning), its lean held inside the GAP either way
 //   feeds    feedCheck: a reason found tagged with whether this run's own feeds held it (the injury report, the
 //            teammates out the projection saw, the news flags, the weather): inOurFeeds true (we had it, the
 //            projection didn't use it: a model gap) or false (a missing source), with the feed; tallied in
@@ -224,13 +234,16 @@ function verdictFields(o) {
 
 // A finding's verdict (see above): 'adjust' (a real reason: into the inputs where one takes it), 'bet' (confident
 // there is none), 'check' (it can't tell). A finding without the verdict's fields (an older one), 'check'
-// (2026-10-18, the owner's: medium confidence that nothing explains it is the "no real reason" outcome too, not a
-// can't-tell: the model's side at the practice stake, priced at the trust, an edge bet, none passed. Low stays a
-// CHECK; a hollow one (a failed search) is no verdict at all, asked again)
+// (2026-10-18, the owner's: medium or low confidence that nothing explains it is the "no real reason" outcome too,
+// not a can't-tell: the model's side priced at the trust, an edge bet, none passed. A low answer naming a real
+// reason stays a CHECK; a hollow one (a failed search) is no verdict at all, asked again)
 export function verdictOf(rs) {
   if (!rs || typeof rs !== 'object' || rs.problem || hollow(rs)) return 'check';
   if (rs.explains === true && rs.category !== 'market' && (rs.confidence === 'high' || rs.confidence === 'medium')) return 'adjust';
-  if (rs.explains === false && (rs.confidence === 'high' || rs.confidence === 'medium') && (rs.sources?.length ?? 0) > 0) return 'bet';
+  // (2026-10-18, the owner's: "when you can't find info like Corum, at a certain point we have to just say we like
+  // it": a real answer (its searches ran and it read sources, not hollow) that found nothing is the same outcome at
+  // low confidence too. Only a low answer that names a real reason it can't size stays a CHECK)
+  if (rs.explains === false && (rs.sources?.length ?? 0) > 0) return 'bet';
   return 'check';
 }
 
@@ -588,17 +601,19 @@ const r4 = (v) => Math.round(v * 1e4) / 1e4;
 // What the research says the desk does with a CHECK this run: { act: 'adjust' | 'bet' | 'check', why, units? }.
 // rs: its research (the CHECK's own by default); gate: researchGateOf's. An 'adjust' is the run's to carry out
 // (researchNote: a status into the game's report, where one takes it); a 'bet' the model's side at RESEARCH_UNITS
-export function researchCall(c, rs = c?.research, { now = new Date(), gate = null } = {}) {
+export function researchCall(c, rs = c?.research, { now = new Date(), gate = null, level = null } = {}) {
   const v = verdictOf(rs);
   if (v === 'check') return { act: 'check', why: rs ? (hollow(rs) ? 'the research call failed (its search did): asked again, no verdict' : `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})`) : 'not researched' };
   const kind = v === 'adjust' ? 'adjusted' : 'bet';
   if (gate?.[kind] && !gate[kind].on) return { act: 'check', why: gate[kind].why };
+  // (the level earned (researchLevelOf) and this kind's gate not at practice: its Kelly stake and its level)
+  const earned = researchEarned(level, gate, kind) ? { earned: true } : {};
   if (!(Date.parse(c?.start ?? '') > now.getTime())) return { act: 'check', why: 'its game has started' };
   if (v === 'bet') {
     if (!RESEARCH_CAUSES.has(c?.cause ?? 'gap')) return { act: 'check', why: `a ${c?.cause} CHECK: not one a research bet comes from` };
-    return { act: 'bet', units: RESEARCH_UNITS, confidence: rs.confidence, why: `research found no real-world reason for the gap (${rs.confidence} confidence): ${rs.summary || 'nothing found'}` };
+    return { act: 'bet', ...(earned.earned ? earned : { units: RESEARCH_UNITS }), confidence: rs.confidence, why: `research found no real-world reason for the gap (${rs.confidence} confidence): ${rs.summary || 'nothing found'}` };
   }
-  return { act: 'adjust', why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
+  return { act: 'adjust', ...earned, why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
 }
 
 // (a call that clears its CHECK to be priced: a 'bet' (nothing explains the gap) or an 'adjust' whose reason the
@@ -635,7 +650,7 @@ export function researchDecision(call, x, trust = 0.5, { keyed = false, priced =
   if (noPrice && !fresh && asksLeft) return { as: 'check', p, ev, why: "still a CHECK this run: no price of the book's yet, its props owed an ask" };
   if (noPrice || stored === 'pulled') return { as: 'pass', p, ev, why: `passed: the book has no price for it now (${noPrice ? 'not on its board' : 'taken down'})` };
   const at = stored === 'stale' ? ' (at its stored price: none newer to be had this run)' : '';
-  if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet at ${RESEARCH_UNITS}u at most (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
+  if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
   return { as: 'pass', p, ev, why: `no edge (${words})${at}: passed, out of the CHECKs` };
 }
 
@@ -654,6 +669,32 @@ export function researchGateOf(bets = []) {
   }
   return out;
 }
+
+// The research's level (see above): { earned, n, won, lost, push, hitRate, breakEven, withClose, clv, min, why }.
+// bets: every sport's, since MODEL_EPOCH (the caller's); a research bet, or a research-adjusted one on its CHECK's
+// own market, graded (a void out). Earned at RESEARCH_LEVEL_N graded or more, the hit rate over the break-even of
+// their prices (1 over each decided one's decimal price, averaged) and the mean CLV of the ones with a close 0 or
+// better (none with a close: not earned). Never an off switch: not earned is the practice stake
+export const RESEARCH_LEVEL_N = 40;
+export function researchLevelOf(bets = []) {
+  const graded = (bets ?? []).filter((b) => (b?.researchBet || (b?.researchAdjusted && b.researchAdjusted.own !== false)) && !b.void && ['won', 'lost', 'push'].includes(b.status));
+  const won = graded.filter((b) => b.status === 'won').length;
+  const lost = graded.filter((b) => b.status === 'lost').length;
+  const decided = graded.filter((b) => b.status !== 'push');
+  const hitRate = decided.length ? r4(won / decided.length) : null;
+  const breakEven = decided.length ? r4(decided.reduce((t, b) => t + 1 / decimal(Number.isFinite(b.odds) && b.odds ? b.odds : -110), 0) / decided.length) : null;
+  const closed = graded.filter((b) => Number.isFinite(b.clv?.ev));
+  const clv = closed.length ? r4(closed.reduce((t, b) => t + b.clv.ev, 0) / closed.length) : null;
+  const n = graded.length;
+  const push = n - won - lost;
+  const earned = n >= RESEARCH_LEVEL_N && hitRate !== null && breakEven !== null && hitRate > breakEven && clv !== null && clv >= 0;
+  const rec = `${n} graded ${won}-${lost}${push ? `-${push}` : ''}${hitRate === null ? '' : ` (${Math.round(hitRate * 100)}%, break-even ${Math.round(breakEven * 100)}%)`}, CLV ${clv === null ? 'none closed' : `${clv >= 0 ? '+' : ''}${clv}`}`;
+  const practice = `research bets at the practice stake (${RESEARCH_UNITS}u, a LIKE at most)`;
+  const why = earned ? `research bets at their Kelly stake and level: ${rec}` : n < RESEARCH_LEVEL_N ? `${practice}: ${rec}, under ${RESEARCH_LEVEL_N}` : `${practice}: ${rec}, not over break-even with the CLV 0 or better`;
+  return { earned, n, won, lost, push, hitRate, breakEven, withClose: closed.length, clv, min: RESEARCH_LEVEL_N, why };
+}
+// (a kind of research bet staked at its Kelly and its level: the level earned, and its own gate not at practice)
+export const researchEarned = (level, gate, kind) => !!level?.earned && !gate?.[kind]?.practice && gate?.[kind]?.on !== false;
 
 // Whether this run's own feeds held the reason a finding found (rs: its research, explains true; c: its CHECK;
 // live: its game's live facts, the injury report, the news flags, the weather): { inOurFeeds, feed, feeds? }, or
@@ -705,7 +746,7 @@ export const causeKey = (c) => (c?.diagnosis?.cause === 'role' || (!c?.diagnosis
 // held them (by category and cause, by feed), and each reason found lately (REASONS_KEPT days: the self-check's
 // repeat reasons). bets: this sport's ledger's; checks: its CHECKs; gate: researchGateOf's
 export const REASONS_KEPT = 28;
-export function researchCard(bets = [], checks = [], gate = null, now = new Date()) {
+export function researchCard(bets = [], checks = [], gate = null, now = new Date(), level = null) {
   const rb = (bets ?? []).filter((b) => b?.researchBet);
   const ra = (bets ?? []).filter((b) => b?.researchAdjusted && b.researchAdjusted.own !== false);
   const rg = (bets ?? []).filter((b) => b?.researchAdjusted?.own === false);
@@ -734,6 +775,7 @@ export function researchCard(bets = [], checks = [], gate = null, now = new Date
   const sortKeys = (o) => Object.fromEntries(Object.entries(o).sort());
   return {
     gate,
+    ...(level ? { level } : {}),
     bets: { ...betTally(rb), byCategory: Object.fromEntries(byCat(rb, (b) => b.researchBet?.category ?? 'market').map(([k, l]) => [k, betTally(l)])) },
     adjusted: { ...betTally(ra), byCategory: Object.fromEntries(byCat(ra, (b) => b.researchAdjusted?.category ?? 'other').map(([k, l]) => [k, betTally(l)])) },
     sameGame: betTally(rg),

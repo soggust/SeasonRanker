@@ -92,8 +92,9 @@
 //      --dry), every open CHECK researched in the news (research.mjs, under its own caps, ai-budget.mjs
 //      researchBudget, $5 a day and $80 a month, 90 seconds a request and 3 minutes a run), its finding the
 //      CHECK's judgment call: a real reason put into the game's inputs for this run and the market priced again
-//      (researchAdjusted), none at all the model's side bet (researchBet), both at 0.5u at most, a LIKE at most;
-//      can't tell, a CHECK. The teams' news
+//      (researchAdjusted), none at all (at any confidence, with sources) the model's side bet (researchBet), both
+//      at 0.5u at most, a LIKE at most, till the research earns its level (researchLevelOf: 40 graded since the
+//      epoch over break-even with the CLV 0 or better: its Kelly stake and level); can't tell, a CHECK. The teams' news
 //      (news.mjs: ESPN's free per-team feed, once a UTC day a team, a game's two teams every 3 hours from 36
 //      before it, cached; no AI): a story on a change of play-caller, coordinator or head coach, or a benching,
 //      flags its team's unit for its next 2 games, an owner's note with no player (reason news) its team for
@@ -146,13 +147,13 @@ import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchDecision, researchGateOf, researchInputs, researchPriced, verdictOf } from './research.mjs';
+import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -657,12 +658,17 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
     }
   }
   // (the research gate a practice cap, never an off switch, on the bets since the epoch: desk.mjs practiceGates)
-  r.researchGate = practiceGates(researchGateOf(bets.filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH))));
+  const since = bets.filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH));
+  r.researchGate = practiceGates(researchGateOf(since));
   for (const [k, g] of Object.entries(r.researchGate)) if (g.practice) console.log(`${r.sport}: research ${k}: ${g.why}`);
+  // (the level the research has earned on its own scorecard since the epoch, every sport's (research.mjs
+  // researchLevelOf): its Kelly stake and level once earned, the practice stake till then, never off)
+  r.researchLevel = researchLevelOf(since);
+  console.log(`${r.sport}: research level: ${r.researchLevel.why}`);
   const by = { adjust: 0, bet: 0, check: 0 };
   for (const c of mine) {
     const rs = found(c);
-    let call = researchCall(c, rs, { now: r.now, gate: r.researchGate });
+    let call = researchCall(c, rs, { now: r.now, gate: r.researchGate, level: r.researchLevel });
     if (call.act === 'adjust') {
       const game = r.upcoming?.find((u) => String(u.game.id) === String(c.event))?.game ?? null;
       const rosters = new Map();
@@ -1776,7 +1782,8 @@ function researchTag(r, b) {
     if (b.units > RESEARCH_UNITS) b.units = RESEARCH_UNITS;
     if (Number.isFinite(b.trackUnits) && b.trackUnits > RESEARCH_UNITS) b.trackUnits = RESEARCH_UNITS;
   };
-  if (b.researchBet || b.researchAdjusted) return hold();
+  // (one placed with the research's level earned keeps its Kelly stake: research.mjs researchLevelOf)
+  if (b.researchBet || b.researchAdjusted) return b.researchBet?.earned || b.researchAdjusted?.earned ? undefined : hold();
   const moved = r.researchEvents?.get(String(b.event));
   if (!moved?.length) return;
   // (own: the researched CHECK's own market, the scorecard's and the gate's; the game's other markets priced with it
@@ -1784,6 +1791,10 @@ function researchTag(r, b) {
   const own = moved.find((m) => m.id === b.id);
   b.researchAdjusted = { checks: moved.map((m) => m.id), own: !!own, input: moved.map((m) => `${m.name} ${m.status}`).join('; '), category: (own ?? moved[0]).category ?? 'other' };
   b.context = { ...(b.context ?? {}), research: `priced with the research's ${b.researchAdjusted.input} (this run's injury report)` };
+  if (researchEarned(r.researchLevel, r.researchGate, 'adjusted')) {
+    b.researchAdjusted.earned = true;
+    return;
+  }
   hold();
 }
 
@@ -2133,8 +2144,10 @@ async function betProps(r) {
             r.researchCalls.set(id, { ...call, decided: true, why: call.act === 'pass' ? call.why : `${now}; ${call.why}` });
           }
           if (d?.as === 'bet') {
-            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) } };
-            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: the ${x.guard.kind} guard's CHECK priced at the market's trust${stored === 'stale' ? ', at its stored price' : ''}` }, units: RESEARCH_UNITS, ...tag }, exp });
+            // (its level earned (research.mjs researchLevelOf): its Kelly stake at the cleared chance, else RESEARCH_UNITS)
+            const earned = call.earned ? { earned: true } : {};
+            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, ...earned } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}), ...earned } };
+            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: the ${x.guard.kind} guard's CHECK priced at the market's trust${stored === 'stale' ? ', at its stored price' : ''}` }, units: call.earned ? stakeFor(d.ev, EV_SCALE, x.odds) : RESEARCH_UNITS, ...tag }, exp });
           }
           const before = (ledger.checks ?? []).find((c) => c.id === id);
           const p = d?.p ?? round(x.p, 4);
@@ -2210,7 +2223,9 @@ async function betProps(r) {
     const gate = r.propGate?.[x.prop.stat.key] ?? null;
     const practice = !!gate && !gate.on;
     if (practice) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} ${gate.why}`].filter(Boolean).join('; ') };
-    if (x.guard) x.units = PRACTICE_UNITS;
+    // (a research bet whose level is earned (research.mjs researchLevelOf) keeps its Kelly stake under its own
+    // guard's word; the stat's CLV gate still holds it to practice, gatedPlacement)
+    if (x.guard && !(x.researchBet?.earned || x.researchAdjusted?.earned)) x.units = PRACTICE_UNITS;
     const mine = [...ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && !b.void && b.id !== id && (!DRY || b.published)), ...pendingProps(game.id)].filter((b) => !edge || !isTracked(b));
     if (r.placed.has(id) && !DRY) continue;
     const caps = capsOf(x.prop.stat.key);
@@ -2451,7 +2466,7 @@ function recordChecks(r) {
 // reasons found by whether our feeds held them; and what it moved this run. A failure leaves none)
 function researchOf(r, ledger) {
   try {
-    const card = researchCard(ledger.bets ?? [], ledger.checks ?? [], r.researchGate ?? practiceGates(researchGateOf((ledger.bets ?? []).filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH)))), r.now);
+    const card = researchCard(ledger.bets ?? [], ledger.checks ?? [], r.researchGate ?? practiceGates(researchGateOf((ledger.bets ?? []).filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH)))), r.now, r.researchLevel ?? null);
     const t = (x) => `${x.won}-${x.lost}${x.push ? `-${x.push}` : ''} ${x.units >= 0 ? '+' : ''}${x.units}u${x.clv === null ? '' : `, CLV ${x.clv}`}`;
     if (card.researched) console.log(`${r.sport}: research scorecard: ${card.researched} CHECKs researched; research bets ${t(card.bets)} (${card.bets.open} open); research-adjusted ${t(card.adjusted)} (${card.adjusted.open} open); reasons in our feeds ${Object.values(card.feeds.inOurFeeds).reduce((a, b) => a + b, 0)}, missing ${Object.values(card.feeds.missing).reduce((a, b) => a + b, 0)}`);
     return { ...card, moved: (r.researchMoved ?? []).slice(0, 40) };

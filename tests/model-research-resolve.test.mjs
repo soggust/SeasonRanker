@@ -52,7 +52,7 @@ test('medium confidence that nothing explains the gap: the model side at 0.5u, p
   assert.equal(researchCall(check({ start: '2026-10-18T12:00:00Z' }), penix, { now }).act, 'check');
 });
 
-test('a call whose search failed is hollow: never a verdict, said so; a genuine low finding stays a CHECK, not hollow', () => {
+test('a call whose search failed is hollow: never a verdict, said so; a genuine low finding is not hollow', () => {
   for (const summary of failed) {
     const f = { ...penix, summary, status: 'unknown', confidence: 'low', sources: summary.includes('Love') ? ['https://www.packers.com/news/2025'] : [] };
     assert.ok(searchFailed(f), summary);
@@ -64,8 +64,8 @@ test('a call whose search failed is hollow: never a verdict, said so; a genuine 
   }
   assert.ok(!searchFailed(penix));
   assert.ok(!hollow(corumLow));
-  assert.equal(verdictOf(corumLow), 'check');
-  assert.match(researchCall(check(), corumLow, { now }).why, /can't tell \(low confidence\)/);
+  // (a real answer that found nothing at low confidence: the owner's "we have to just say we like it", below)
+  assert.equal(verdictOf(corumLow), 'bet');
   // (a reason found is never hollow, whatever it says of the search)
   assert.ok(!hollow({ ...penix, explains: true, category: 'injury', summary: failed[0] }));
 });

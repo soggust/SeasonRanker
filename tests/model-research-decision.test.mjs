@@ -76,9 +76,9 @@ test("(b) a real reason no input carries (a role alone, another reason with no s
   assert.equal(researchDecision({ act: 'pass', why: 'x' }, { ...allen, shadow: true }, 0.5), null);
 });
 
-test("(c) the research can't tell (a low check verdict): not the research's to decide, a CHECK", () => {
+test("(c) the research can't tell (a real reason found at low confidence, unsized): not the research's to decide, a CHECK", () => {
   const c = { id: 'g:prop:rushYds:1', side: 'under', start: '2026-10-18T17:00Z', cause: 'role' };
-  const call = researchCall(c, { player: 'Cam Ward', status: 'active', reason: 'none', explains: false, category: 'market', confidence: 'low', sources: src }, { now });
+  const call = researchCall(c, { player: 'Cam Ward', status: 'active', reason: 'role', explains: true, category: 'role', confidence: 'low', sources: src }, { now });
   assert.equal(call.act, 'check');
   assert.equal(researchPriced(call), false);
   assert.equal(researchDecision(call, allen, 0.5), null);

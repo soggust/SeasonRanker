@@ -42,9 +42,9 @@ test('findingOf and verdictOf: a real reason adjusts, confident nothing bets, an
   // (nothing found: a bet only when sure, with sources; its category market whatever it said)
   const none = f({ status: 'active', explains: false, category: 'injury', confidence: 'high' });
   assert.deepEqual([none.category, verdictOf(none)], ['market', 'bet']);
-  // (medium that nothing explains it: the "no real reason" outcome, a bet too (2026-10-18); low a CHECK)
+  // (medium or low that nothing explains it, with sources: the "no real reason" outcome, a bet too (2026-10-18))
   assert.equal(verdictOf(f({ explains: false, confidence: 'medium' })), 'bet');
-  assert.equal(verdictOf(f({ explains: false, confidence: 'low' })), 'check');
+  assert.equal(verdictOf(f({ explains: false, confidence: 'low' })), 'bet');
   assert.equal(verdictOf(f({ explains: false, confidence: 'high', sources: [] })), 'check');
   // (no verdict's fields, an older finding, or one cut short: a CHECK)
   assert.equal(verdictOf(f({})), 'check');
@@ -83,7 +83,7 @@ test('researchChecks with a mock client: each finding with its verdict, kept on 
   const client = mockClient([
     answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', explains: true, category: 'injury', confidence: 'high', summary: 'Godwin out.', sources: ['https://a.b/1'] }),
     answer({ player: 'Mike Evans', status: 'active', reason: 'none', explains: false, category: 'market', confidence: 'high', summary: 'Nothing found.', sources: ['https://a.b/2'] }),
-    answer({ player: null, status: 'unknown', reason: 'none', explains: false, category: 'market', confidence: 'low', summary: 'Thin.', sources: ['https://a.b/3'] }),
+    answer({ player: 'Mike Evans', status: 'active', reason: 'role', explains: true, category: 'role', confidence: 'low', summary: 'Thin.', sources: ['https://a.b/3'] }),
   ]);
   const lines = [];
   const report = new Map([['27', [{ id: '4241', name: 'Chris Godwin' }]]]);
@@ -93,7 +93,7 @@ test('researchChecks with a mock client: each finding with its verdict, kept on 
   assert.equal(found.get('a').athlete, '4241');
   assert.match(client.asked[0].system, /"explains": true \| false/);
   assert.ok(lines.some((l) => /verdict adjust \(injury, high confidence\)/.test(l)));
-  assert.ok(lines.some((l) => /verdict check \(market, low confidence\)/.test(l)));
+  assert.ok(lines.some((l) => /verdict check \(role, low confidence\)/.test(l)));
 });
 
 test("an adjust's status into the game's report as an owner's note is: doubtful as the report words it, limited as questionable", async () => {
