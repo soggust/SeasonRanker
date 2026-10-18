@@ -155,7 +155,7 @@ import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
-import { checkLearning, loosenings } from './check-learn.mjs';
+import { checkLearning, loosenings, reopened } from './check-learn.mjs';
 import { patternBook, patternKey, preResolve, ruleFinding, unitOf } from './check-patterns.mjs';
 import { readSeeds } from './check-seeds.mjs';
 import { RESEARCH_UNITS, causeKey, callChecks, feedCheck, hollow, unplacedCall, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
@@ -2055,7 +2055,7 @@ async function betProps(r) {
   // CLV gate by stat (desk.mjs propGate): a stat whose closing-line value over its last 200 graded is negative is
   // tracked, not bet, till it's positive. Each kept for the state and the Algorithm tab)
   try {
-    r.roleGate = roleGateOf(checkLearning(ledger.checks ?? []));
+    r.roleGate = roleGateOf(checkLearning((ledger.checks ?? []).map(reopened)));
   } catch (err) {
     console.warn(`${sport}: the role gate skipped (${err.message}): every role cause a CHECK`);
     r.roleGate = null;

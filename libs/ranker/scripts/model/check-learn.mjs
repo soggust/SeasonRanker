@@ -396,3 +396,9 @@ export function loosenings(learning, prev = {}, base = ROLE) {
   }
   return { weights, role, causes, applied };
 }
+
+// A CHECK as a record reads it, closed or not (the loss review's B13, 2026-10-18): checkLearning reads the open ones
+// (a closed one is out of the CHECKs), but a cause's record (props.mjs roleGateOf, which bets a role cause on it) is
+// every graded CHECK it made, the ones closed since among them: without them it read a survivor set (the NFL's
+// group-out 35-31 and bet at +0.005u a unit; with its closed ones 36-35, -0.039u, under break-even)
+export const reopened = (c) => (c?.closedAt ? { ...c, closedAt: null } : c);
