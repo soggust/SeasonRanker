@@ -48,6 +48,63 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
+// (the body between the head and the foot: in the ticket's flow as it always was, except on a wide screen with
+// bets on the ticket, below)
+.ticket-body {
+  display: contents;
+}
+
+// A wide screen: the ticket docked in the right column under the recent form while it's empty; with a bet on it
+// (.full) it takes the column's full height over the form (the page's book-side gives its host the room), a flex
+// column: the head pinned at the top, the bets scrolling in the body with the Book's gold scrollbar, the foot (the
+// totals, Place, tear up, the fine print) pinned at the bottom; the scalloped edges stay at its top and bottom.
+// It rises into place once, as the first bet lands (none with reduced motion, below)
+@include v.up(wide-menu) {
+  :host {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ticket.full {
+    animation: ticket-full 240ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    flex: 1 1 auto;
+    min-height: 0;
+
+    > .ticket-head,
+    > .perf,
+    > .ticket-foot {
+      flex: none;
+    }
+
+    // (the side padding pulled back with a negative margin: the chips' lift and the stake box's focus ring have
+    // room inside the scroller, the bets' edges where they were)
+    .ticket-body {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: v.$space-12;
+      margin: -4px -10px;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 4px 10px;
+      @include chip.gold-scrollbar;
+    }
+  }
+}
+
+@keyframes ticket-full {
+  from {
+    opacity: 0.6;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .ticket-head {
   align-items: center;
   display: flex;
@@ -94,6 +151,9 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
   border: 1.5px solid $ink;
   border-radius: v.$radius-xs;
   display: flex;
+  // (its own height: in the ticket's scrolling column (the phone's sheet, the full ticket's body) its overflow would
+  // otherwise let it shrink to a sliver)
+  flex: none;
   overflow: hidden;
 
   button {
@@ -679,6 +739,10 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ticket.full {
+    animation: none;
+  }
+
   .stake-chip {
     transition: none;
 

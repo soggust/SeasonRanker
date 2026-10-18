@@ -817,8 +817,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// The right column: the ticket and the recent form, 390px, scrolling on its own on a wide screen if it's taller
-// than the screen. Its 4px side padding keeps the cards' shadows inside its scroller; the column is that much
+// The right column: the recent form and the ticket under it, 390px, scrolling on its own on a wide screen if it's
+// taller than the screen. Its 4px side padding keeps the cards' shadows inside its scroller; the column is that much
 // wider and pulled 4px past the row's right edge, so the ticket's own edge is the header's
 .book-side {
   box-sizing: border-box;
@@ -837,6 +837,23 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     overflow-y: auto;
     @include chip.gold-scrollbar;
   }
+
+  // (a bet on the ticket: the ticket takes the column's full height over the recent form, its own bets scrolling
+  // inside it (wallet-slip.scss .ticket.full), the column itself still; the form's back once the ticket's empty)
+  .book-page.has-ticket {
+    .book-side {
+      overflow: hidden;
+    }
+
+    .recent-form {
+      display: none;
+    }
+
+    bet-slip {
+      flex: 1 1 0;
+      min-height: 0;
+    }
+  }
 }
 
 // (under the docking width the column is no column: the ticket is the phone's stub along the bottom and its sheet,
@@ -851,7 +868,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// Recent form: a dot-matrix card under the ticket, RECENT FORM in gold, the last seven days' record, units and
+// Recent form: a dot-matrix card over the ticket, RECENT FORM in gold, the last seven days' record, units and
 // streak in a row of three, then the last five settled bets, a W/L/P tile each
 .recent-form {
   @include v.scoreboard-panel(v.$radius-md, none);

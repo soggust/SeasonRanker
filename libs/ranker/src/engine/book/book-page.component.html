@@ -689,10 +689,11 @@
     }
   </section>
   </div>
-  <!-- The right column: the ticket (the bet slip: the prices clicked on the board, staked and placed with play
-       money), and the recent form under it. On a phone the ticket is a stub along the bottom instead -->
-  <aside class="book-side" aria-label="Bet ticket and recent form">
-    <bet-slip></bet-slip>
+  <!-- The right column: the recent form on top and the ticket (the bet slip: the prices clicked on the board,
+       staked and placed with play money) under it; once the ticket has a bet it takes the whole column, over the
+       recent form, which is back when the ticket's emptied or placed (the owner, 2026-10-17). On a phone the ticket
+       is a stub along the bottom instead -->
+  <aside class="book-side" aria-label="Recent form and bet ticket">
     <!-- Recent form: the last seven days (record, units, streak) and the last five settled bets, the user's (the
          wallet's tally and the history it has on hand) or the bot's (the picks files' recent blocks), a You / The
          Bot switch between them; shown when either has its form, the side without one saying so -->
@@ -727,6 +728,7 @@
         }
       </section>
     }
+    <bet-slip></bet-slip>
   </aside>
   </div>
   }

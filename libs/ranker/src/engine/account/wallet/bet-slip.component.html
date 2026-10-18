@@ -1,11 +1,12 @@
 <!-- The bet slip as a printed ticket (The Book): cream thermal paper with scalloped edges, docked in the right
-     column on a wide screen; on a phone a stub along the bottom ("TICKET · N BETS", the risk, the win and the pays,
+     column on a wide screen (under the recent form while it's empty; with a bet on it, the column's full height
+     over the form, its bets scrolling between the pinned head and foot); on a phone a stub along the bottom ("TICKET · N BETS", the risk, the win and the pays,
      Place) whose Expand raises the ticket as a sheet; the sheet's chevron, Escape or a tap outside it minimize it
      back to the stub, the bets kept. Each bet in caps with its game line and the bot's band tag
      (or YOUR CALL), its odds, a remove, RISK and WIN with the stake chips and "clear"; with 2 or more, Straight or
      Parlay (a parlay its legs listed, one stake at their combined price); the totals, Place, "tear up ticket", a
      barcode and the fine print. Play money: signed out, it asks for a sign-in first -->
-<aside #panel class="ticket" [class.open]="wallet.slipOpen()" [attr.role]="wallet.slipOpen() ? 'dialog' : 'region'" aria-label="Bet ticket" tabindex="-1">
+<aside #panel class="ticket" [class.full]="wallet.slip().length > 0" [class.open]="wallet.slipOpen()" [attr.role]="wallet.slipOpen() ? 'dialog' : 'region'" aria-label="Bet ticket" tabindex="-1">
   <button type="button" class="ticket-close" aria-label="Minimize the ticket" (click)="minimize()"><mat-icon aria-hidden="true" fontIcon="expand_more"></mat-icon></button>
   <header class="ticket-head">
     <span class="ticket-brand">The Book</span>
@@ -13,6 +14,9 @@
   </header>
   <hr class="perf" />
 
+  <!-- (the body between the head and the foot: on a wide screen, the ticket full height with bets on it, it's the
+       part that scrolls, the head and the foot pinned) -->
+  <div class="ticket-body">
   <!-- (signed out with an empty ticket: the play-money line and Sign in; with bets on it, the place button below
        the totals is the one Sign in) -->
   @if (!account.signedIn() && !wallet.slip().length) {
@@ -114,6 +118,7 @@
   } @else {
     <p class="ticket-empty">No bets yet.<br />Tap a price on the board to write it on the ticket.</p>
   }
+  </div>
 
   @if (wallet.slip().length) {
     <hr class="perf" />
