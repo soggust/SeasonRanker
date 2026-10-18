@@ -14,7 +14,7 @@ import base64, functools, http.server, json, mimetypes, os, re, socketserver, sy
 
 from playwright.sync_api import sync_playwright
 
-ROOT, FIXTURE, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
+ROOT, FIXTURE, OUT = (os.path.abspath(a) for a in sys.argv[1:4])
 SPORTS = [s['id'] for s in json.load(open(os.path.join(ROOT, 'sports.json')))]
 SHARED = ['book', 'settings', 'lists', 'community', 'tracker', 'wallet', 'friends', 'privacy', 'data-deletion', 'u']
 BUILD = os.path.join(ROOT, 'dist/capture')
@@ -129,7 +129,12 @@ def main():
             errors = []
             page.on('pageerror', lambda e: errors.append(str(e)[:200]))
             page.goto(origin + path, wait_until='networkidle', timeout=90000)
-            page.wait_for_timeout(2500)
+            # (the app booted: its loading panel gone; then a moment for the data to land)
+            try:
+                page.wait_for_function("() => document.querySelector('app-root') && !document.querySelector('.app-loading')", timeout=60000)
+            except Exception:
+                errors.append('the app never finished loading (its loading panel is still up)')
+            page.wait_for_timeout(4000)
             # (no motion in the frozen copy: every animation at its end)
             page.add_style_tag(content='*,*::before,*::after{animation-play-state:paused!important;transition:none!important}')
             snap = page.evaluate(SNAPSHOT)
