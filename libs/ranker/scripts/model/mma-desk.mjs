@@ -220,11 +220,16 @@ async function readBoard(now) {
 // The bouts kept, brought up to the board: a kept bout gone from a card the board still lists is off
 // (cancelled); one whose fighters changed is off (replaced) and the new pairing kept beside it under its own
 // key. Returns the kept list
+// (ESPN's order of a bout's two fighters can swap between reads: the same pair the other way round is the same bout,
+// turned back to the order it was kept in (orientBout), so its key, its bets' sides and their grading stay its own;
+// read as a new pairing it would put the kept one off as replaced, its bets void, and price the bout again)
 export function mergeBouts(kept, board, now) {
   const byKey = new Map(kept.map((b) => [b.key, b]));
   const cards = new Set(board.map((b) => b.card));
   const seen = new Set();
-  for (const b of board) {
+  for (let b of board) {
+    const swapped = byKey.get(`${b.id}:${b.away.id}-${b.home.id}`);
+    if (!byKey.has(`${b.id}:${b.home.id}-${b.away.id}`) && swapped) b = orientBout(b, swapped);
     const key = `${b.id}:${b.home.id}-${b.away.id}`;
     seen.add(key);
     const was = byKey.get(key);
@@ -264,9 +269,19 @@ export async function espnOdds(bout) {
 // ---------------------------------------------------------------------------------------------------------
 // Grading
 
+// A bout turned to another's order of the same two fighters (a kept bout's, a bet's fighters: { home, away } by
+// ESPN id): its sides and its winner swapped where its home is their away; else as it was. The sides are matched
+// by id, never by place
+export function orientBout(bout, to) {
+  if (!bout || !to?.home?.id || !to?.away?.id) return bout;
+  if (String(bout.home?.id) !== String(to.away.id) || String(bout.away?.id) !== String(to.home.id)) return bout;
+  return { ...bout, home: bout.away, away: bout.home, winner: bout.winner === 'home' ? 'away' : bout.winner === 'away' ? 'home' : bout.winner };
+}
+
 // A bet's void from its bout's changes, either market's (the bout off or its fighters changed), or null
 export function boutVoid(bet, bout, now) {
   if (!bout) return null;
+  bout = orientBout(bout, bet.fighters);
   const changed = bout.home.id !== bet.fighters.home.id || bout.away.id !== bet.fighters.away.id;
   if (bout.off === 'replaced' || changed) return { status: 'push', profit: 0, void: true, final: 'fighter replaced', why: 'Void: a fighter was replaced' };
   if (bout.off === 'cancelled' || bout.off === 'canceled') return { status: 'push', profit: 0, void: true, final: 'bout cancelled', why: 'Void: bout cancelled' };
@@ -284,6 +299,8 @@ export const boutSecs = (bout) => (bout?.final && Number.isFinite(bout.period) &
 // round total by the bout's length (fights-totals.mjs settleTotal)
 export function settleBout(bet, bout, now) {
   if (!bout) return null;
+  // (by the bet's fighters' ids: a bout read with its fighters the other way round graded on the bet's own side)
+  bout = orientBout(bout, bet.fighters);
   const off = boutVoid(bet, bout, now);
   if (off) return off;
   if (bet.market === 'total') return settleTotal(bet, bout, boutSecs);

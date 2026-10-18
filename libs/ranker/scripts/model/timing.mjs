@@ -131,6 +131,9 @@ export function newsMissing(sport, live, { kind = 'lines', home = null, pitcher 
   const l = live ?? {};
   if (sport === 'nhl') {
     if (!l.home?.id || !l.away?.id) out.push('the probable goalies not listed');
+    // (the sources split on a side's goalie, neither confirmed (context.mjs goalieOf): priced on the blend of the
+    // two, but the word usually comes after the morning skate, so it's waited for till the last chance)
+    else if (l.home.split || l.away.split) out.push('the starting goalies unsettled (the sources split)');
   }
   if (sport === 'mlb') {
     const sp = [l.hp, l.ap];
@@ -153,8 +156,9 @@ export function newsMissing(sport, live, { kind = 'lines', home = null, pitcher 
 const hash = (s) => (s === null || s === undefined ? null : s === '' || s === '-' ? s : createHash('sha1').update(s).digest('hex').slice(0, 8));
 
 // (the work that makes a game count toward a regular's or a starter's place: the NFL's 10 offensive snaps or 3
-// passes, carries and targets; the NBA's 12 minutes)
-const WORKED = { nfl: (s) => (s.snaps ?? 0) >= 10 || (s.passAtt ?? 0) + (s.rushAtt ?? 0) + (s.targets ?? 0) >= 3, nba: (s) => (s.min ?? 0) >= 12 };
+// passes, carries and targets; the NBA's 12 minutes; the NHL's 5 minutes on ice: a skater dressed, so a regular
+// scratched the report doesn't list (a healthy scratch) is put out, putInactives)
+const WORKED = { nfl: (s) => (s.snaps ?? 0) >= 10 || (s.passAtt ?? 0) + (s.rushAtt ?? 0) + (s.targets ?? 0) >= 3, nba: (s) => (s.min ?? 0) >= 12, nhl: (s) => (s.toi ?? 0) >= 5 };
 export const LINEUP_GAMES = 4;
 // (the games of the game's own season a team needs before its regulars and usual five are read: fewer, an
 // opener, and they'd be last season's last weeks (rest, tanking, the ones traded away still on the old team))
@@ -165,7 +169,7 @@ const FIVE = 5;
 // Each player's place now (see above): Map of pid -> { team, pos, name, regular, starter, season, teamGames },
 // from each team's latest season in the rows and its last LINEUP_GAMES games there (a team with one game: that
 // one); season, teamGames: his team's season in the rows and its games there; starter null where none of the
-// team's last games' rows has a start flag (unknown, not nobody). The NFL and NBA only (null otherwise)
+// team's last games' rows has a start flag (unknown, not nobody). The NFL, NBA and NHL only (null otherwise)
 export function lineupNow(rows, sport) {
   const worked = WORKED[sport];
   if (!worked || !rows?.length) return null;
@@ -323,9 +327,9 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
       const list = all ? all.filter((p) => !p.inactive || p.was !== undefined) : null;
       parts[`out:${s}`] = list ? list.filter((p) => OUT.test(p.status)).map(key).sort().join(',') : null;
       parts[`q:${s}`] = list ? list.filter((p) => !OUT.test(p.status) && QUESTIONABLE.test(p.status)).map(key).sort().join(',') : null;
-      // (the NFL's and NBA's regulars the report doesn't list, posted inactive (run.mjs inactivesNow), once the
-      // side's posted (l.gameRosters); null before. The props' alone: PROPS_ONLY)
-      if (sport === 'nfl' || sport === 'nba') {
+      // (the NFL's and NBA's regulars the report doesn't list, posted inactive (run.mjs inactivesNow; the NHL's
+      // healthy scratches), once the side's posted (l.gameRosters); null before. The props' alone: PROPS_ONLY)
+      if (sport === 'nfl' || sport === 'nba' || sport === 'nhl') {
         const posted = l.gameRosters instanceof Map ? l.gameRosters.get(String(team)) : null;
         parts[`ina:${s}`] = all && posted ? all.filter((p) => p.inactive && p.was === undefined).map(key).sort().join(',') : null;
       }
@@ -359,7 +363,9 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
     ]) {
       const g = l[where];
       if (g?.id) names[g.id] = g.name;
-      parts[`g:${s}`] = g?.id ? `${g.id}${/confirmed/i.test(g.status ?? '') ? ' confirmed' : ''}` : '-';
+      // (a side the sources split on: both, so its settling is news)
+      if (g?.alt?.id) names[g.alt.id] = g.alt.name;
+      parts[`g:${s}`] = g?.id ? `${g.id}${/^confirmed$/i.test(g.status ?? '') ? ' confirmed' : ''}${g.split ? ` or ${g.alt?.id ?? String(g.alt?.name ?? '?').replace(/\s+/g, '_')}` : ''}` : '-';
     }
   }
   if (sport === 'mlb') {
@@ -420,8 +426,9 @@ export function inputChanges(was, now, { game = null, before = null, names = {},
     } else if (kind === 'qb') detail = now.parts[key];
     else if (scratched) detail = 'none named now';
     else if (kind === 'g' || kind === 'sp') {
-      const [id, conf] = String(now.parts[key]).split(' ');
-      detail = `${names[id] ?? id}${conf ? ' confirmed' : ''}`;
+      const [id, ...more] = String(now.parts[key]).split(' ');
+      const alt = more.includes('or') ? more[more.indexOf('or') + 1] : null;
+      detail = `${names[id] ?? id}${more.includes('confirmed') ? ' confirmed' : ''}${alt ? ` or ${names[alt] ?? alt}` : ''}`;
     } else if (kind === 'lu') detail = then === '-' || then === null ? 'posted' : 'changed';
     else if (kind === 'ina' || kind === 'st') detail = now.parts[key] ? now.parts[key].split(',').map((x) => names[x] ?? x).join(', ') : 'none now';
     else if (kind === 'news') detail = now.parts[key] ? now.parts[key].split(',').map((x) => x.split(':')[0]).join(', ') : 'cleared';

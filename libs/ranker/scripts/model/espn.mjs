@@ -223,6 +223,39 @@ export function rosterOf(body, min = 40) {
 export async function roster(league, id, min = 40) {
   return rosterOf(await json(`${ESPN}/${league}/teams/${id}/roster`), min);
 }
+export async function teamRosterBody(league, id) {
+  return json(`${ESPN}/${league}/teams/${id}/roster`);
+}
+
+// A team's roster's own injury listings (each athlete's latest: ESPN's id, name, position, status, date), in the
+// injury report's form; [] with none, null when the roster can't be had. For a team the league's report leaves out
+// (2026-10-18: Columbus, missing from ESPN's NHL report entirely, its roster listing Provorov on injured reserve):
+// context.mjs fallbackInjuries
+export function rosterInjuriesOf(body) {
+  if (!Array.isArray(body?.athletes)) return null;
+  const out = [];
+  for (const g of body.athletes) {
+    for (const a of Array.isArray(g?.items) ? g.items : [g]) {
+      const i = a?.injuries?.[0];
+      if (a?.id && i?.status) out.push({ id: String(a.id), name: a.displayName ?? a.fullName ?? '', pos: a.position?.abbreviation ?? '', status: String(i.status), tag: null, date: typeof i.date === 'string' ? i.date : null });
+    }
+  }
+  return out;
+}
+// (a name's key across sources: accents, a suffix, case and everything but letters dropped)
+export const nameKey = (name) =>
+  String(name ?? '')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/\b(jr|sr|ii|iii|iv)\b\.?/g, '')
+    .replace(/[^a-z]/g, '');
+// (the roster's players by name key, for a name another source gives: Map of key -> { id, name, pos })
+export function rosterNamesOf(body) {
+  const out = new Map();
+  for (const g of body?.athletes ?? []) for (const a of Array.isArray(g?.items) ? g.items : [g]) if (a?.id) out.set(nameKey(a.displayName ?? a.fullName), { id: String(a.id), name: a.displayName ?? a.fullName ?? '', pos: a.position?.abbreviation ?? '' });
+  return out;
+}
 
 // A side's game-day roster as the team posts it (ESPN's core API: the competition's competitor roster), or null
 // before it's posted. ESPN makes it near the start (a coming NFL game's is a 404 two days out) and marks the
@@ -234,8 +267,13 @@ export async function roster(league, id, min = 40) {
 // posting could have (POSTED_MAX: the NFL's more than 12 or a quarter of the list, where the finals seen show 4
 // to 9 a side; the NBA's more than 8 or half the list: a flag defaulted on before the game, say) is read as not
 // posted, logged, never as the whole team out
-export const POSTED_MIN = { nfl: 40, nba: 8 };
-export const POSTED_MAX = { nfl: { n: 12, share: 0.25 }, nba: { n: 8, share: 0.5 } };
+// The NHL's: a final's roster lists the 20 dressed and the healthy scratches, each with ESPN's scratched flag
+// (2026-10-17 NYR @ CBJ: 22 listed, Soucy and Voronkov scratched: true); a coming game's, before its lineup's in,
+// lists the whole roster with no flag at all (2026-10-18 CBJ's 26, MIN's 27, five hours out). So it's posted only
+// once its entries carry the flag (one scratched or not, any), its scratches the inactive ones; dressed: the ones
+// flagged not scratched (20 in a lineup: 18 skaters, two goalies), context.mjs freshScratches reads the count
+export const POSTED_MIN = { nfl: 40, nba: 8, nhl: 18 };
+export const POSTED_MAX = { nfl: { n: 12, share: 0.25 }, nba: { n: 8, share: 0.5 }, nhl: { n: 8, share: 0.35 } };
 // (cap false: the count left unjudged, the list's size kept (n). A coming game's list carries its team's last
 // game's names too (2026-10-18 TEN's 12: 9 of them the last game's), so the count a posting could have is
 // judged on the names new on it (context.mjs gameRosters: freshInactives, then postedMax), and a final's, read
@@ -247,17 +285,21 @@ export const postedMax = (sport, inactive, n) => {
 export function gameRosterOf(body, sport, cap = true) {
   const list = Array.isArray(body?.entries) ? body.entries : [];
   if (list.length < (POSTED_MIN[sport] ?? 1)) return null;
-  let inactive = list.filter((e) => e?.didNotPlay === true && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
+  const nhl = sport === 'nhl';
+  if (nhl && !list.some((e) => typeof e?.scratched === 'boolean')) return null;
+  const out = nhl ? (e) => e?.scratched === true : (e) => e?.didNotPlay === true;
+  let inactive = list.filter((e) => out(e) && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
   if (cap && postedMax(sport, inactive.length, list.length)) {
     console.warn(`${sport}: a game-day roster with ${inactive.length} of ${list.length} marked inactive, more than any posting: read as not posted`);
     inactive = [];
   }
   const st = list.filter((e) => e?.starter === true && e.playerId).map((e) => String(e.playerId));
   const starters = sport === 'nba' && st.length === 5 ? st : null;
-  if (!inactive.length && !starters) return null;
+  // (the NHL's posted with no one scratched kept: a posting all the same, so the last game's list reads empty, not unread)
+  if (!inactive.length && !starters && !nhl) return null;
   // (ids: every player on it, the dressed and the inactive: a questionable one on IR, designated to return and not
   // activated, isn't on it, so isn't read as playing for being off the inactives, timing.mjs putInactives)
-  return { inactive, starters, n: list.length, ids: list.filter((e) => e?.playerId).map((e) => String(e.playerId)) };
+  return { inactive, starters, n: list.length, ids: list.filter((e) => e?.playerId).map((e) => String(e.playerId)), ...(nhl ? { dressed: list.filter((e) => e?.scratched === false).length } : {}) };
 }
 export async function gameRoster(league, event, team, sport, cap = true) {
   const [sp, lg] = league.split('/');

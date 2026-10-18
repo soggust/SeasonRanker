@@ -14,7 +14,8 @@
 // expected, last change), baseball.mjs (the air, the bullpens, the umpire's zone), teamstats.mjs (the
 // ranker's own numbers); this file gathers and weaves them in with the rest.
 
-import { gameRoster, goaliesInOrder, injuries, postedMax, summary, teamNames, teamSchedule, gameOf } from './espn.mjs';
+import { gameRoster, goaliesInOrder, injuries, nameKey, postedMax, rosterInjuriesOf, rosterNamesOf, summary, teamNames, teamRosterBody, teamSchedule, gameOf } from './espn.mjs';
+import { lineCombinations, startingGoalies } from './dailyfaceoff.mjs';
 import { RANKER_TERMS, rankerOf } from './teamstats.mjs';
 import { term } from './terms.mjs';
 import { Q_STATUS, putInactives } from './timing.mjs';
@@ -234,13 +235,12 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
         read = s.report;
         if (s.stale.length) console.log(`nfl: injury report: ${s.stale.length} listings from before the teams' last games taken off it: ${s.stale.map((x) => `${x.name} (${x.status} ${x.date?.slice(5, 10)})`).join(', ')}`);
       }
+      // (the NHL's: a coming game's team the report leaves out entirely (2026-10-18 Columbus) listed from its own
+      // roster's injuries and DailyFaceoff's off ice: fallbackInjuries. Any failure: that team as before, unlisted)
+      if (sport === 'nhl') read = await fallbackInjuries(cfg, upcoming, read, facts).catch((err) => (console.warn(`nhl: injury fallback skipped (${err.message})`), read));
       for (const l of live.values()) (l.injuries = read), delete l.injuriesFailed;
     });
   }
-  // (the NFL's and NBA's game-day rosters, a game within LINEUP_HOURS of its start: its inactives, when posted,
-  // into its own injury report (the listed ones here, the regulars unlisted once the rows are read: run.mjs),
-  // the NBA's starting five kept (l.gameRosters). Unposted, or failed: nothing, the report as it was)
-  if ((sport === 'nfl' || sport === 'nba') && live.size) await step('inactives', () => gameRosters(sport, cfg, upcoming, live, history));
   if (sport === 'nhl') {
     // (the probable starting goalies ESPN lists for each coming game: confirmed or expected)
     for (const { game, event } of upcoming) {
@@ -250,7 +250,15 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
         if (p?.athlete?.id) live.get(game.id)[c.homeAway === 'home' ? 'home' : 'away'] = { id: String(p.athlete.id), name: p.athlete.displayName, status: p.status?.type ?? '' };
       }
     }
+    // (and DailyFaceoff's, weighed against ESPN's: a confirmed starter from either beats an expected one; two
+    // unconfirmed ones that differ are both kept, the goalie read as either (goalieOf). Failed: ESPN's alone)
+    if (live.size) await step('goalies', () => goaliesBoth(cfg, upcoming, live, facts));
   }
+  // (the NFL's, NBA's and NHL's game-day rosters, a game within LINEUP_HOURS of its start: its inactives (the
+  // NHL's healthy scratches), when posted, into its own injury report (the listed ones here, the regulars unlisted
+  // once the rows are read: run.mjs), the NBA's starting five kept (l.gameRosters). Unposted, or failed: nothing,
+  // the report as it was)
+  if ((sport === 'nfl' || sport === 'nba' || sport === 'nhl') && live.size) await step('inactives', () => gameRosters(sport, cfg, upcoming, live, history));
   if (sport === 'nfl') await step('forecasts', () => nflForecasts(upcoming, facts, live));
   return live;
 }
@@ -266,8 +274,10 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
 // 20 before at the latest, the run's NBA part 15 in). GitHub runs the hourly schedule about five times a day,
 // not 24 (2026-10-11 and 12: 01:00, 07:11, 14:02, 18:53, 22:53; 02:23, 10:47, 20:17), so a window is caught
 // when a run happens to land in it; the Sunday and night-game triggers in .github/workflows/model-desk.yml
-// add tries, and repriceOpen logs how many minutes before the lock each posted game's re-price came)
-export const LINEUP_HOURS = { nfl: 2.5, nba: 2 };
+// add tries, and repriceOpen logs how many minutes before the lock each posted game's re-price came). The NHL's
+// healthy scratches: ESPN's game roster carries its scratched flags once the lineup's in (a final's has them; a
+// coming game's five hours out none), when before the puck drop not yet seen live, so asked from 2.5 hours
+export const LINEUP_HOURS = { nfl: 2.5, nba: 2, nhl: 2.5 };
 
 // Each coming game's posted game-day rosters (espn.mjs gameRoster) on its live facts (l.gameRosters: Map of team id
 // -> { inactive, starters }, the sides posted), its listed inactives put into its injury report (putInactives)
@@ -347,6 +357,143 @@ export function freshStarters(posted, prev, until) {
   return five.length === s.size && five.every((id) => s.has(String(id))) ? null : five;
 }
 
+// The NHL's healthy scratches on a coming game's roster (espn.mjs gameRosterOf: its scratched flags), with the
+// NFL's carry-over guard (freshInactives) and the NBA's early one (freshStarters): ESPN's game roster has carried a
+// team's last game's flags before the game's own post (the NFL's, 2026-10-18), and a team's scratches are often the
+// same night to night, so a list read earlier than SCRATCH_EARLY that's the last game's own, or with the last game's
+// unread, isn't posted yet (the injury report alone, as before any post); one unlike it is tonight's. A lineup
+// dresses 20 (18 skaters, two goalies; 19 a cap-strapped night): a list leaving fewer or more dressed isn't one
+// lineup (the last game's flags on top of tonight's, say), so only the names new on it since the last game count
+// (freshInactives: carried ones, and all with the last game's unread, left to the report). until: ms to the puck
+// drop. -> the posting with its inactive list as read, or null (not posted)
+export const SCRATCH_EARLY = 60 * 60e3;
+export const DRESSED = { min: 19, max: 20 };
+export function freshScratches(posted, prev, until) {
+  if (!posted) return null;
+  const whole = posted.dressed >= DRESSED.min && posted.dressed <= DRESSED.max;
+  if (!whole) {
+    const fresh = freshInactives(posted, prev);
+    return fresh.inactive.length ? fresh : null;
+  }
+  if (until <= SCRATCH_EARLY) return posted;
+  if (!prev) return null;
+  const was = new Set((prev.inactive ?? []).map((x) => String(x.id)));
+  const now = posted.inactive ?? [];
+  return now.length === was.size && now.every((x) => was.has(String(x.id))) ? null : posted;
+}
+
+// An NHL side's starting goalie from ESPN's probable (espn: { id, name, status: confirmed or expected }) and
+// DailyFaceoff's (dfo: { id (ESPN's, found by name on the team's roster; null not found), name, strength:
+// confirmed, likely or unconfirmed }), either missing. A confirmed starter from either beats an expected one; the
+// two naming the same goalie, him (confirmed if either says so). Two that differ, neither confirmed (2026-10-18
+// CGY: ESPN expected Wolf, DailyFaceoff unconfirmed Cooley), aren't settled by a coin: both are kept, the side's
+// goalie read as either (alt; share: the named one's chance by each source's word, GOALIE_WORD: DailyFaceoff's
+// Likely over ESPN's expected over its own projection, ties ESPN's), the game model's goalie term the blend of the
+// two (context nhl), a saves prop on either flagged at the minimum stake and waiting for the news till the last
+// chance (props.mjs statusOf, timing.mjs newsMissing). Both confirmed, differing (not seen): the same, at a half.
+// -> { id, name, status, from, alt?, share?, split? } or null
+export const GOALIE_WORD = { espn: { expected: 1 }, dfo: { likely: 1.5, unconfirmed: 1 } };
+export function goalieOf(espn, dfo) {
+  const e = espn?.id ? { id: String(espn.id), name: espn.name ?? '', confirmed: /^confirmed$/i.test(espn.status ?? ''), w: GOALIE_WORD.espn.expected, from: 'espn' } : null;
+  const d = dfo?.name ? { id: dfo.id ? String(dfo.id) : null, name: dfo.name, confirmed: dfo.strength === 'confirmed', w: GOALIE_WORD.dfo[dfo.strength] ?? 1, from: 'dailyfaceoff' } : null;
+  const as = (x, confirmed, more = {}) => ({ id: x.id, name: x.name, status: confirmed ? 'confirmed' : 'expected', from: x.from, ...more });
+  if (e && d && (e.id === d.id || nameKey(e.name) === nameKey(d.name))) return as(e, e.confirmed || d.confirmed, { from: 'both' });
+  if (!d?.id && !e) return null;
+  if (!e) return as(d, d.confirmed);
+  if (!d) return as(e, e.confirmed);
+  if (e.confirmed !== d.confirmed) return e.confirmed ? as(e, true) : d.id ? as(d, true) : as(e, false, { split: true, alt: { id: null, name: d.name }, share: 0.5 });
+  const [one, two] = d.w > e.w && d.id ? [d, e] : [e, d];
+  const share = Math.round((one.confirmed ? 0.5 : one.w / (one.w + two.w)) * 100) / 100;
+  return as(one, false, { split: true, alt: { id: two.id, name: two.name }, share });
+}
+
+// Both sources' goalies on each coming NHL game's live facts (l.home, l.away: goalieOf), DailyFaceoff's starting
+// goalies page for each US Eastern day with a game, its goalie found on ESPN's team roster by name where it isn't
+// ESPN's own. A day's page not had: ESPN's alone that day
+export async function goaliesBoth(cfg, upcoming, live, facts) {
+  const days = [...new Set(upcoming.map(({ game }) => etDay(game.date)))];
+  const pages = new Map(await Promise.all(days.map(async (d) => [d, await startingGoalies(d).catch(() => null)])));
+  if (![...pages.values()].some(Boolean)) throw new Error("DailyFaceoff's starting goalies not read");
+  const teamName = (id) => facts.teams?.find((t) => String(t.id) === String(id))?.name ?? null;
+  const rosters = new Map();
+  const idOf = async (team, name) => {
+    if (!rosters.has(team)) rosters.set(team, await teamRosterBody(cfg.league, team).then(rosterNamesOf).catch(() => new Map()));
+    return rosters.get(team).get(nameKey(name))?.id ?? null;
+  };
+  const said = [];
+  for (const { game } of upcoming) {
+    const l = live.get(game.id);
+    const page = pages.get(etDay(game.date));
+    if (!l || !page) continue;
+    const [hn, an] = [teamName(game.home), teamName(game.away)].map(nameKey);
+    const g = page.find((x) => nameKey(x.home.team) === hn && nameKey(x.away.team) === an && Math.abs(Date.parse(x.start) - Date.parse(game.date)) < 12 * 36e5);
+    if (!g) continue;
+    for (const [where, team, abbr] of [['home', game.home, game.homeAbbr], ['away', game.away, game.awayAbbr]]) {
+      const d = g[where];
+      if (!d?.name) continue;
+      const e = l[where] ?? null;
+      const id = e && nameKey(e.name) === nameKey(d.name) ? e.id : await idOf(String(team), d.name);
+      const both = goalieOf(e, { ...d, id });
+      if (both) l[where] = both;
+      if (both?.split) said.push(`${abbr}: ${both.name} or ${both.alt.name} (ESPN ${e?.name ?? 'none'} ${e?.status ?? ''}, DailyFaceoff ${d.name} ${d.strength}), ${both.name} at ${both.share}`);
+      else if (both && e && both.id !== e.id) said.push(`${abbr}: ${both.name} (DailyFaceoff ${d.strength}) over ESPN's ${e.name} (${e.status})`);
+      else if (both && e && both.status === 'confirmed' && !/^confirmed$/i.test(e.status ?? '')) said.push(`${abbr}: ${both.name} confirmed by DailyFaceoff (ESPN: ${e.status})`);
+    }
+  }
+  console.log(`nhl: goalies: DailyFaceoff read for ${days.filter((d) => pages.get(d)).length} of ${days.length} days${said.length ? `; ${said.join('; ')}` : ''}`);
+}
+
+// The NHL's injury report filled in for a coming game's team it leaves out entirely (2026-10-18: Columbus, absent
+// from ESPN's NHL report though Provorov, Lundestrom and Fabbro were on injured reserve): its listings from ESPN's
+// team roster (each athlete's injuries) and DailyFaceoff's off-ice group on its line combinations page (mergeFallback),
+// in a new report (the one read untouched). The NHL's api-web has no injury data (its roster lists the injured as
+// rostered), so it can't be the fallback. Both unread: the team left unlisted, as before
+export async function fallbackInjuries(cfg, upcoming, report, facts) {
+  const teams = [...new Set(upcoming.flatMap(({ game }) => [String(game.home), String(game.away)]))].filter((t) => !report.has(t));
+  if (!teams.length) return report;
+  const out = new Map(report);
+  const said = [];
+  for (const team of teams) {
+    const name = facts.teams?.find((t) => String(t.id) === team)?.name ?? null;
+    const [body, dfo] = await Promise.all([teamRosterBody(cfg.league, team).catch(() => null), name ? lineCombinations(name).catch(() => null) : null]);
+    const season = upcoming.find(({ game }) => String(game.home) === team || String(game.away) === team)?.game.season;
+    const list = mergeFallback(rosterInjuriesOf(body), dfo, rosterNamesOf(body), Number.isFinite(season) ? Date.UTC(season - 1, 7, 1) : -Infinity);
+    if (!list) {
+      said.push(`${name ?? team}: neither source read, left unlisted`);
+      continue;
+    }
+    out.set(team, list);
+    said.push(`${name ?? team}: ${list.length ? list.map((p) => `${p.name} (${p.status}, ${p.from})`).join(', ') : 'none listed'}`);
+  }
+  console.log(`nhl: injury report: ${teams.length} coming teams missing from it, filled in: ${said.join('; ')}`);
+  return out;
+}
+// (a missing team's listings: ESPN's roster's (rosterList: espn.mjs rosterInjuriesOf, null unread) and DailyFaceoff's
+// off ice (dfo: dailyfaceoff.mjs lineCombinationsOf, null unread), one each, ESPN's first (his id, his date). A roster
+// listing from before the season (since: its start) that DailyFaceoff, read, doesn't carry is left off: last
+// season's, never cleared (2026-10-18 CBJ's Brendan Smith, injured reserve since 2026-01-08, on no lineup or
+// off-ice list). DailyFaceoff's alone found on the roster by name for his ESPN id (none found: by name alone, as
+// the report's own can be). names: espn.mjs rosterNamesOf. -> the list, or null with both unread)
+export function mergeFallback(rosterList, dfo, names, since = -Infinity) {
+  if (!rosterList && !dfo) return null;
+  const off = new Set((dfo?.off ?? []).map((p) => nameKey(p.name)));
+  const out = [];
+  const have = new Set();
+  for (const r of rosterList ?? []) {
+    if (dfo && !off.has(nameKey(r.name)) && Date.parse(r.date ?? '') < since) continue;
+    out.push({ ...r, from: 'espn roster' });
+    have.add(nameKey(r.name));
+  }
+  for (const p of dfo?.off ?? []) {
+    const k = nameKey(p.name);
+    if (have.has(k)) continue;
+    have.add(k);
+    const on = names?.get(k);
+    out.push({ id: on?.id ?? null, name: on?.name ?? p.name, pos: on?.pos ?? p.pos ?? '', status: p.status, tag: null, date: dfo.updated ?? null, from: 'dailyfaceoff' });
+  }
+  return out;
+}
+
 // (a team's last game before this one in the history: its event id, or null)
 export function lastGameOf(history, team, before) {
   let best = null;
@@ -372,14 +519,33 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   // ESPN's injury report lists each game's inactives itself, Out, within minutes of the posting (2026-10-18:
   // every posted side's, coach's decisions too), so the list adds only what the report hasn't caught up to)
   const prevs = await pool(asks, 4, ({ game, team }, i) => {
-    if (!got[i]?.inactive?.length && !got[i]?.starters) return null;
+    if (!got[i]?.inactive?.length && !got[i]?.starters && !(sport === 'nhl' && got[i])) return null;
     const prev = lastGameOf(history, team, Date.parse(game.date));
     return prev ? gameRoster(cfg.league, prev, team, sport, false) : null;
   });
   let carried = 0;
   let unread = 0;
   let early = 0;
+  let held = 0;
   asks.forEach(({ game, team }, i) => {
+    // (the NHL's healthy scratches: the whole list once it's tonight's lineup, freshScratches; the count no
+    // posting could have, read as not posted)
+    if (sport === 'nhl') {
+      if (!got[i]) return;
+      const fresh = freshScratches(got[i], prevs[i], Date.parse(game.date) - now);
+      if (!fresh) {
+        if (got[i].inactive.length) held++;
+        got[i] = null;
+        return;
+      }
+      if (postedMax(sport, fresh.inactive.length, got[i].n ?? 0)) {
+        console.warn(`nhl: a game-day roster with ${fresh.inactive.length} of ${got[i].n} scratched (${game.awayAbbr} @ ${game.homeAbbr}, ${team}), more than any lineup: read as not posted`);
+        got[i] = null;
+        return;
+      }
+      got[i] = fresh.inactive.length ? fresh : null;
+      return;
+    }
     // (the NBA's five, the last game's before the lineups are out: not posted, freshStarters)
     if (got[i]?.starters) {
       const five = freshStarters(got[i], prevs[i], Date.parse(game.date) - now);
@@ -404,6 +570,7 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   if (carried) console.log(`${sport}: game-day rosters: ${carried} names carried over from the teams' last games left to the injury report`);
   if (unread) console.log(`${sport}: game-day rosters: ${unread} sides' last game's list not read: their lists left to the injury report`);
   if (early) console.log(`${sport}: game-day rosters: ${early} sides' starting five the last game's, before the lineups are out: not posted`);
+  if (held) console.log(`nhl: game-day rosters: ${held} sides' scratches the last game's (or it unread) more than ${SCRATCH_EARLY / 60e3} minutes out: not posted yet`);
   let posted = 0;
   asks.forEach(({ game, team }, i) => {
     if (!got[i]) return;
@@ -415,7 +582,8 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   const puts = soon.map(({ game }) => putInactives(live.get(game.id), game));
   const put = puts.flatMap((x) => x.map((y) => `${y.name} (${y.was})`));
   const cleared = puts.flatMap((x) => (x.cleared ?? []).map((y) => `${y.name} (${y.was})`));
-  if (asks.length) console.log(`${sport}: game-day rosters posted for ${posted} of ${asks.length} sides within ${LINEUP_HOURS[sport]}h${put.length ? `; listed and now inactive: ${put.join(', ')}` : ''}${cleared.length ? `; listed, not inactive, so playing: ${cleared.join(', ')}` : ''}`);
+  const scratched = sport === 'nhl' ? asks.flatMap((_, i) => (got[i]?.inactive ?? []).map((x) => x.name)) : [];
+  if (asks.length) console.log(`${sport}: game-day rosters posted for ${posted} of ${asks.length} sides within ${LINEUP_HOURS[sport]}h${scratched.length ? `; scratched: ${scratched.join(', ')}` : ''}${put.length ? `; listed and now inactive: ${put.join(', ')}` : ''}${cleared.length ? `; listed, not inactive, so playing: ${cleared.join(', ')}` : ''}`);
 }
 
 // Every place a game is played, as coordinates (asked once per place, kept; a failed ask is asked again)
@@ -894,6 +1062,8 @@ function statusOf(report, teamId, { id, name }) {
 
 // Starters, per sport: a function of a game that gives its starter terms, what they came from and any
 // worries (flags: a key player questionable, a starter unknown), and learns from it once it's final
+// (one sport's starters read, for the tests: STARTERS[sport](cfg, facts, live))
+export const startersOf = (sport, cfg, facts, live) => STARTERS[sport](cfg, facts, live);
 const STARTERS = {
   // The NFL: whether each side starts its usual quarterback (the one with most of its last 4 starts this season;
   // before its first start, last season's last 4: a team's week 1 is measured against the one it ended with),
@@ -1087,10 +1257,21 @@ const STARTERS = {
       const one = (team, where) => {
         let id = null;
         let name = null;
+        // (the sources split on the goalie (goalieOf: neither confirmed): his quality the blend of the two by the
+        // named one's share, a soft term, not a coin; one of them out, the other alone; flagged)
+        let blend = null;
         if (box && g.final) id = box[where][0]?.[0] ?? null;
         else if (l) {
-          const p = l[where === 'h' ? 'home' : 'away'];
+          let p = l[where === 'h' ? 'home' : 'away'];
           const abbr = where === 'h' ? g.homeAbbr : g.awayAbbr;
+          if (p?.split && p.alt) {
+            const outs = [p.id, p.alt.id].map((x) => !!x && statusOf(l.injuries, team, { id: x }) === 'out');
+            if (outs[0] && !outs[1] && p.alt.id) p = { ...p.alt, status: 'expected' };
+            else if (!outs[0] && !outs[1]) {
+              blend = { alt: p.alt.id ?? null, altName: p.alt.name ?? null, share: Number.isFinite(p.share) ? p.share : 0.5 };
+              flags.push(`goalie unsettled (${abbr}): ${p.name} or ${p.alt.name}, the sources split`);
+            }
+          }
           if (p && statusOf(l.injuries, team, { id: p.id }) !== 'out') ({ id, name } = p);
           // (none named on the second night of a back-to-back: last night's starter rarely goes again, so his
           // backup (or, with none seen, an average goalie: no id); otherwise the last starter)
@@ -1102,10 +1283,11 @@ const STARTERS = {
             flags.push(`no probable goalie (${abbr})`);
           }
         }
-        const q = id ? quality(id, g.season) : 0;
+        const q0 = id ? quality(id, g.season) : 0;
+        const q = blend && id ? Math.round((blend.share * q0 + (1 - blend.share) * (blend.alt ? quality(blend.alt, g.season) : 0)) * 1000) / 1000 : q0;
         const usual = recent.get(team) ?? [];
         const norm = usual.length ? usual.reduce((s, x) => s + quality(x, g.season), 0) / usual.length : q;
-        return { id, name, q, vs: Math.round((q - norm) * 1000) / 1000 };
+        return { id, name: blend && name && blend.altName ? name + ' or ' + blend.altName : name, q, vs: Math.round((q - norm) * 1000) / 1000 };
       };
       const h = box || l ? one(g.home, 'h') : { q: 0, vs: 0 };
       const a = box || l ? one(g.away, 'a') : { q: 0, vs: 0 };

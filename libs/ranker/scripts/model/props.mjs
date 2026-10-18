@@ -2240,6 +2240,13 @@ function statusOf(sport, prop, live, home, game) {
   if (sport === 'nhl' && prop.stat.goalie) {
     const g = live?.[home ? 'home' : 'away'];
     if (!g) return { skip: true, why: 'no probable goalie' };
+    // (the sources split on the side's goalie (context.mjs goalieOf): either one's saves priced, flagged (the
+    // minimum stake: a guard's cut), his chance of starting by the sources' words; the book voids a saves prop
+    // for one who doesn't start)
+    if (g.split && (g.id === a.id || g.alt?.id === a.id)) {
+      const share = g.id === a.id ? g.share : 1 - g.share;
+      return { why: `${a.name} expected, not confirmed: the sources split (${g.name} or ${g.alt.name}), ${a.name} about ${Math.round(share * 100)}% to start` };
+    }
     if (g.id !== a.id) return { skip: true, why: `${a.name} not the probable goalie` };
     if (!/confirmed/i.test(g.status ?? '')) return { why: `${a.name} expected, not confirmed` };
   }
