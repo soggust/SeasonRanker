@@ -855,6 +855,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // streak in a row of three, then the last five settled bets, a W/L/P tile each
 .recent-form {
   @include v.scoreboard-panel(v.$radius-md, none);
+  // (the board's even gold rim: the owner's note, 2026-10-17)
+  @include chip.gold-rim;
   display: flex;
   flex: none;
   flex-direction: column;

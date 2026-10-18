@@ -289,6 +289,23 @@ $felt-nap: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   }
 }
 
+// ...and the Book's even gold rim on a scoreboard panel (the board's, the ticker's): the rail drawn as the border
+// itself, the dot-matrix face on the padding box and 1px of $felt-gold on the border box behind it, no pseudo-element
+// to be clipped, so it's an even 1px all round. Its corner stays the panel's own; a bar's line under it, gold-rim-line
+@mixin gold-rim {
+  background:
+    var(--scoreboard-dots) padding-box,
+    linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
+    $felt-gold border-box;
+  border: 1px solid transparent;
+}
+
+// (a panel's bar's line under it in the same gold, open; none shut)
+@mixin gold-rim-line {
+  border-bottom: 1px solid transparent;
+  border-image: $felt-gold 1;
+}
+
 // ...and the Book's scrollbars (the board, the ticket's column, the dropdown's list, the sheets): thin, a gold
 // thumb on a dark track
 @mixin gold-scrollbar {

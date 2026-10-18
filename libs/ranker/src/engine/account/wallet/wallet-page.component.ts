@@ -35,7 +35,7 @@ import {
   versusBot,
   versusDays,
 } from './wallet-math';
-import { HeadsPeriod, HeadsUp, Trophy, botSplit, chipStacks, headsUp, runCards, tells, trophies, wallPicks } from './wallet-view';
+import { HeadsPeriod, HeadsUp, Trophy, WalletPanel, botSplit, chipStacks, headsUp, panelOpen, runCards, tells, trophies, wallPicks } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -266,6 +266,20 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const next = new Set(this.unfolded());
     if (!next.delete(key)) next.add(key);
     this.unfolded.set(next);
+  }
+
+  // (the wallet's panels: three open from the start, the rest shut (wallet-view.ts panelOpen); on the Book's Open
+  // tickets and Cashed tabs a board stands alone, always open)
+  private readonly flipped = signal(new Set<string>());
+
+  panelShown(panel: WalletPanel): boolean {
+    return !!this.only || panelOpen(panel, this.flipped());
+  }
+
+  togglePanel(panel: WalletPanel): void {
+    const next = new Set(this.flipped());
+    if (!next.delete(panel)) next.add(panel);
+    this.flipped.set(next);
   }
   readonly versus = computed<Versus | null>(() => {
     const ledger = this.ledger();

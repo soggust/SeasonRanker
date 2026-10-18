@@ -406,3 +406,15 @@ export function tells(bets: PlayBet[]): Tell[] {
   }
   return out;
 }
+
+// ---------------------------------------------------------------------------
+// The wallet's panels, open or shut: three open from the start (your chips, the rebuy and its runs, the profit
+// curve), every other one shut until opened (the owner's note, 2026-10-17). A tap turns one the other way; the
+// choice isn't kept past the page, as the site's other panels don't keep theirs
+// ---------------------------------------------------------------------------
+export type WalletPanel = 'chips' | 'rebuy' | 'curve' | 'heads' | 'rollers' | 'trophies' | 'tells' | 'open' | 'settled';
+export const WALLET_PANELS: readonly WalletPanel[] = ['chips', 'rebuy', 'curve', 'heads', 'rollers', 'trophies', 'tells', 'open', 'settled'];
+export const WALLET_OPEN: readonly WalletPanel[] = ['chips', 'rebuy', 'curve'];
+// (open: open from the start, unless turned shut; shut from the start, unless turned open)
+export const panelOpen = (panel: WalletPanel, flipped: ReadonlySet<string> = new Set()): boolean =>
+  WALLET_OPEN.includes(panel) !== flipped.has(panel);

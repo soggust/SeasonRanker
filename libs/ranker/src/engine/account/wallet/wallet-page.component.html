@@ -7,9 +7,13 @@
      live and how many are decided pending settlement; each leg with its score and clock and how it stands, a prop's
      thin progress meter, or its start. The wallet's panel, and the Book's Open tickets tab alone) -->
 <ng-template #openBoard>
-<section class="wp-panel book-board" aria-label="Open tickets">
+<section class="wp-panel book-board" aria-label="Open tickets" [class.shut]="!panelShown('open')">
   <div class="wp-bar">
-    <h3>Open tickets</h3>
+    @if (only) {
+      <h3>Open tickets</h3>
+    } @else {
+      <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('open')" (click)="togglePanel('open')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Open tickets</button></h3>
+    }
     <span class="wp-bar-tools board-stats">
       <span class="strip-stat"><span class="strip-key">In play</span><b>{{ tally().atRisk | number: '1.0-2' }}u</b></span>
       <span class="strip-stat"><span class="strip-key">To win</span><b class="up">{{ openToWin() | number: '1.2-2' }}u</b></span>
@@ -18,7 +22,8 @@
       <span class="strip-note">Scores every minute · settled after the final</span>
     </span>
   </div>
-  @if (open().length) {
+  @if (!panelShown('open')) {
+  } @else if (open().length) {
     <div class="cork cork-board">
       <div class="board-grid">
         @for (b of openTickets(); track b.id) {
@@ -66,8 +71,12 @@
       </div>
     </div>
   } @else if (wallet.loaded()) {
-    <div class="tickets-empty">
-      <p><b>No open tickets.</b> Tap a price on the board to write one.</p>
+    <!-- (nothing open: the empty corkboard, a yellow post-it pinned to it saying so, the way to the board under it) -->
+    <div class="cork cork-board board-empty">
+      <div class="postit-pinned">
+        <span class="pin" aria-hidden="true"></span>
+        <p class="postit" role="status">No open bets</p>
+      </div>
       <button type="button" class="book-more" (click)="toBets()">The board</button>
     </div>
   } @else {
@@ -81,9 +90,13 @@
      history's date range (the Algorithm's dropdown); a page at a time, the next on asking. The wallet's panel
      ("Settled"), and the Book's Cashed tab alone) -->
 <ng-template #cashedBoard let-title="title">
-<section class="wp-panel book-board" [attr.aria-label]="title">
+<section class="wp-panel book-board" [attr.aria-label]="title" [class.shut]="!panelShown('settled')">
   <div class="wp-bar">
-    <h3>{{ title }}</h3>
+    @if (only) {
+      <h3>{{ title }}</h3>
+    } @else {
+      <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('settled')" (click)="togglePanel('settled')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>{{ title }}</button></h3>
+    }
     <span class="wp-bar-tools board-stats">
       @if (form(); as f) {
         <span class="strip-stat"><span class="strip-key">Record</span><b>{{ f.record }}</b></span>
@@ -98,7 +111,8 @@
       </select>
     </span>
   </div>
-  @if (settledShown().length) {
+  @if (!panelShown('settled')) {
+  } @else if (settledShown().length) {
     <div class="cork cork-board">
       <div class="board-grid">
         @for (b of settledTickets(); track b.id) {
@@ -140,7 +154,13 @@
       }
     </div>
   } @else if (wallet.settledState() === 'all' || (settled().length && !rangeLoading())) {
-    <p class="tickets-note" role="status">No settled bets {{ rangeWords(range()) }}.</p>
+    <!-- (nothing settled in the range: the empty corkboard, a yellow post-it pinned to it saying so) -->
+    <div class="cork cork-board board-empty">
+      <div class="postit-pinned">
+        <span class="pin" aria-hidden="true"></span>
+        <p class="postit" role="status">No settled bets {{ rangeWords(range()) }}</p>
+      </div>
+    </div>
   } @else {
     <p class="tickets-note" role="status">Loading…</p>
   }
@@ -177,7 +197,6 @@
       <account-avatar [photo]="me?.photo ?? null" [name]="me?.displayName || me?.username || ''" [size]="52"></account-avatar>
       <div class="hero-text">
         <h2>Wallet</h2>
-        <span class="hero-user">{{ me?.username }} · play money</span>
       </div>
       <a class="hero-link" href="/book" (click)="toBets()">Place bets</a>
     </header>
@@ -333,16 +352,16 @@
       </div>
     }
 
-    <!-- (every panel shut to start, and one with nothing in it not shown at all) -->
+    <!-- (every panel from here on shut to start (wallet-view.ts panelOpen), and one with nothing in it not shown at all) -->
     <!-- Heads up: you against the bot as a stadium scoreboard (the wallet's versus: its published picks settled over
          the same stretch), this week, 30 days or since your first bet; the record and ROI rows under it; then the
          settled straight bets split by whether they tailed the bot, were your own, or faded it -->
     @if (heads(); as h) {
       @let youLead = h.you.profit >= h.bot.profit;
       @let gap = (h.you.profit - h.bot.profit < 0 ? -(h.you.profit - h.bot.profit) : h.you.profit - h.bot.profit);
-      <section class="wp-panel heads" aria-label="You against the bot">
+      <section class="wp-panel heads" aria-label="You against the bot" [class.shut]="!panelShown('heads')">
         <div class="wp-bar">
-          <h3>Heads up</h3>
+          <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('heads')" (click)="togglePanel('heads')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Heads up</button></h3>
           @if (wallet.tally()) {
             <div class="wp-seg" role="group" aria-label="Period">
               @for (p of headsPeriods; track p.id) {
@@ -351,6 +370,7 @@
             </div>
           }
         </div>
+        @if (panelShown('heads')) {
         <div class="heads-board">
           <div class="heads-side you">
             <span class="heads-name">You</span>
@@ -399,6 +419,7 @@
           </div>
         }
         <p class="wallet-fine heads-fine">Since {{ h.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Book's) settled over the same games' days.@if (historyNote()) { Tailing, own calls and fading from {{ historyNote() }}.}</p>
+        }
       </section>
     }
 
@@ -406,9 +427,9 @@
       @if (periods().length) {
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
-      <section class="wp-panel" aria-label="High rollers">
+      <section class="wp-panel" aria-label="High rollers" [class.shut]="!panelShown('rollers')">
         <div class="wp-bar">
-          <h3>High rollers</h3>
+          <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('rollers')" (click)="togglePanel('rollers')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>High rollers</button></h3>
           @if (periods().length > 1) {
             <div class="wp-seg" role="group" aria-label="Leaderboard period">
               @for (p of periods(); track p.id) {
@@ -420,7 +441,8 @@
         <!-- (each row: the rank on a sunk LED tile (#1 in the sand, #2 and #3 green), the avatar, the name with the
              reloads under it where there are any, units, the record and the return; the signed-in user's row washed
              in sand with a sand rail on its left) -->
-        @if (board(); as b) {
+        @if (!panelShown('rollers')) {
+        } @else if (board(); as b) {
           <ol class="rollers">
             @for (r of b.rows; track r.uid; let i = $index) {
               <li class="roller" [class.me]="r.uid === account.user()?.uid">
@@ -447,8 +469,11 @@
            ones greyed with how far along; picking one (a real button) shows what it is and how to earn it -->
       @let tr = trophies();
       @let pick = picked();
-      <section class="wp-panel" aria-label="Trophy case">
-        <div class="wp-bar"><h3>The trophy case</h3><span class="wp-bar-note"><b>{{ earnedCount() }}</b> of {{ tr.length }} chips collected</span></div>
+      <!-- (and under the chips, the wall: the panel holds both, one title; the owner's note, 2026-10-17) -->
+      @let wl = wall();
+      <section class="wp-panel" aria-label="Trophy case" [class.shut]="!panelShown('trophies')">
+        <div class="wp-bar"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('trophies')" (click)="togglePanel('trophies')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>The trophy case</button></h3><span class="wp-bar-note"><b>{{ earnedCount() }}</b> of {{ tr.length }} chips collected</span></div>
+        @if (panelShown('trophies')) {
         <div class="trophies">
           @for (t of tr; track t.key) {
             <button type="button" class="tcase-btn" [attr.aria-pressed]="t.key === pick?.key" [attr.aria-label]="t.name + ': ' + trophyState(t)" (click)="trophy.set(t.key)">
@@ -480,17 +505,12 @@
         @if (historyNote()) {
           <p class="wp-note">Heater, Longshot, Tailgater, Parlay Prince and Iron Stomach read {{ historyNote() }}; Phoenix and the days earned once the whole history's loaded.</p>
         }
-      </section>
-    </div>
-
-    <!-- On the wall: a corkboard in a dark wood frame, the biggest cash and the worst beat pinned up as tickets
-         (wallet-view.ts wallPicks: the settled bet with the largest profit, stamped CASHED; the lost parlay with the
-         most legs hit, else the largest stake lost, stamped BAD BEAT), a caption pill under each; a ticket with
-         nothing to show isn't pinned, and the panel goes when both are empty -->
-    @let wl = wall();
-    @if (wl.biggest || wl.worst) {
-      <section class="wp-panel" aria-label="On the wall">
-        <div class="wp-bar"><h3>On the wall</h3><span class="wp-bar-note">Your biggest cash and your worst beat, pinned up for posterity</span></div>
+        <!-- On the wall, under the chips: a corkboard in a dark wood frame, the biggest cash and the worst beat pinned up
+             as tickets (wallet-view.ts wallPicks: the settled bet with the largest profit, stamped CASHED; the lost parlay
+             with the most legs hit, else the largest stake lost, stamped BAD BEAT), a caption pill under each; a ticket
+             with nothing to show isn't pinned, and the wall goes when both are empty -->
+        @if (wl.biggest || wl.worst) {
+          <div class="wall-head"><span class="wp-key">On the wall</span><span class="wp-bar-note">Your biggest cash and your worst beat, pinned up for posterity</span></div>
         <div class="cork">
           @for (w of [wl.biggest, wl.worst]; track $index) {
             @if (w) {
@@ -525,14 +545,17 @@
             }
           }
         </div>
+        }
+        }
       </section>
-    }
+    </div>
 
     <!-- Your tells: six habits read off the loaded bets (wallet-view.ts tells), tiles 3 × 2, a result's value green or
          red; the bar's link goes to the Book's Cashed tab -->
     @if (tellsList().length) {
-      <section class="wp-panel" aria-label="Your tells">
-        <div class="wp-bar"><h3>Your tells</h3><a class="wp-bar-link" href="/book" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
+      <section class="wp-panel" aria-label="Your tells" [class.shut]="!panelShown('tells')">
+        <div class="wp-bar"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('tells')" (click)="togglePanel('tells')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Your tells</button></h3><a class="wp-bar-link" href="/book" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
+        @if (panelShown('tells')) {
         <div class="tells">
           @for (t of tellsList(); track t.key) {
             <div class="tell">
@@ -543,6 +566,7 @@
         </div>
         @if (historyNote()) {
           <p class="wp-note">Read off {{ historyNote() }} and the open ones.</p>
+        }
         }
       </section>
     }

@@ -21,6 +21,15 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
   display: block;
 }
 
+// (the post-its' marker hand: the splash's Permanent Marker, the same file assets/fonts/splash/faces.css serves)
+@font-face {
+  font-display: swap;
+  font-family: "Permanent Marker";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../../assets/fonts/splash/f8.woff2") format("woff2");
+}
+
 @include kit.app-buttons;
 
 // (the desk's panels, chip-rimmed as on the Book and the Algorithm, their bars the felt's green:
@@ -45,11 +54,10 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 // ===========================================================================
 // The wallet (docs/wallet-redesign/README.md): the account pages' hero, then panels on the sheet in rows, each a
-// scoreboard face under a bar in the wallet's felt green (chip.$felt-light at 16% over the dots, a felt-light line
-// under it), its title in the sand with the sand glow
+// scoreboard face under a bar in the wallet's felt green (chip.$felt-light at 16% over the dots, the board's gold
+// line under it), its title in the sand with the sand glow
 // ===========================================================================
 $bar-tint: rgba(chip.$felt-light, 0.16);
-$bar-line: rgba(chip.$felt-light, 0.4);
 
 .wallet {
   // (a result's two colors: the desk's .up and .down (model-desk.scss, loaded with this) read them, and set them on
@@ -62,7 +70,8 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   gap: v.$space-20;
 }
 
-// Who's signed in and what this is: the avatar ringed in sand, Wallet, the username, and the way to the board
+// Who's signed in and what this is: the avatar ringed in sand, Wallet, and the way to the board (no username or
+// 'play money' under the title: the owner's note, 2026-10-17)
 .wallet-hero {
   align-items: center;
   display: flex;
@@ -89,12 +98,6 @@ $bar-line: rgba(chip.$felt-light, 0.4);
     margin: 0;
   }
 
-  .hero-user {
-    @include kit.sand-lit;
-    font-size: v.$fs-14;
-    font-weight: 700;
-  }
-
   .hero-link {
     @include kit.primary-button;
     margin-left: auto;
@@ -114,9 +117,17 @@ $bar-line: rgba(chip.$felt-light, 0.4);
   }
 }
 
-// A panel: the scoreboard face, its edge, the small drop shadow; its bar, body and notes
+// A panel: the scoreboard face in the board's even 1px gold rim (chip.gold-rim; the owner's note, 2026-10-17), the
+// small drop shadow; its bar, body and notes. Every panel but your chips, the rebuy and the curve folds (wallet-view.ts
+// panelOpen): its title the toggle, the chevron first, lightening on hover (never the sand), its bar's line gone shut
 .wp-panel {
   @include v.scoreboard-panel(v.$radius-xl);
+  @include chip.gold-rim;
+
+  &.shut > .wp-bar {
+    border-bottom-color: transparent;
+    border-image: none;
+  }
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -129,7 +140,7 @@ $bar-line: rgba(chip.$felt-light, 0.4);
     linear-gradient($bar-tint, $bar-tint),
     var(--scoreboard-dots),
     var(--scoreboard);
-  border-bottom: 1px solid $bar-line;
+  @include chip.gold-rim-line;
   display: flex;
   flex-wrap: wrap;
   gap: v.$space-10 v.$space-12;
@@ -145,6 +156,38 @@ $bar-line: rgba(chip.$felt-light, 0.4);
     line-height: 1;
     margin: 0;
     text-transform: uppercase;
+  }
+
+  // (a folding panel's title: the whole title the button, the chevron before it, turned down open)
+  .wp-toggle {
+    align-items: center;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: v.$space-6;
+    letter-spacing: inherit;
+    margin: -6px 0 -6px -6px;
+    padding: 6px;
+    text-shadow: inherit;
+    text-transform: inherit;
+
+    .panel-chevron {
+      color: v.$text-faint;
+      @include v.icon-size(20px);
+      text-shadow: none;
+    }
+
+    &[aria-expanded="true"] .panel-chevron {
+      transform: rotate(90deg);
+    }
+
+    &:hover .panel-chevron,
+    &:focus-visible .panel-chevron {
+      color: v.$text-strong;
+    }
   }
 }
 
@@ -1033,6 +1076,16 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   gap: v.$space-32 v.$space-48;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   padding: 44px 40px 34px;
+}
+
+// (in the trophy case, under the chips: its own heading line, then the cork edge to edge)
+.wall-head {
+  align-items: baseline;
+  border-top: 1px solid rgba(chip.$gold-led, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-6 v.$space-12;
+  padding: v.$space-14 v.$space-20 v.$space-12;
 }
 
 .pinned {
@@ -2161,6 +2214,44 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
+// (an empty board, nothing open or nothing settled in the range: the corkboard all the same, one yellow post-it
+// pinned to it saying so, in the splash's marker hand; the owner's note, 2026-10-17)
+.board-empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-24;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.postit-pinned {
+  position: relative;
+  rotate: -2.5deg;
+}
+
+.postit {
+  align-items: center;
+  aspect-ratio: 1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), transparent 18%),
+    linear-gradient(135deg, #fff38a, #f7e05a 70%, #eccf42);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    6px 14px 18px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  color: #2b2a26;
+  display: flex;
+  font-family: "Permanent Marker", "Comic Sans MS", cursive;
+  font-size: v.$fs-22;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  padding: 26px 20px 20px;
+  text-align: center;
+  width: 210px;
+}
+
 .board-grid {
   align-items: start;
   display: grid;
@@ -2192,6 +2283,15 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   .cork-board {
     border-width: 8px;
     padding: 28px 16px 24px;
+  }
+
+  .board-empty {
+    min-height: 240px;
+  }
+
+  .postit {
+    font-size: v.$fs-18;
+    width: 170px;
   }
 
   .board-grid {

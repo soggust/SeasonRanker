@@ -144,12 +144,22 @@ card-panel {
   }
 }
 
-// (The Book's, the Book's and the Algorithm's: plain scoreboard panels (the dots, a 1px edge, the small drop
-// shadow; not the board's ringed panel), their bars gold, the same from every sport)
+// (The Book's and the Algorithm's: scoreboard panels in the board's even 1px gold rim (chip.gold-rim; the owner's
+// note, 2026-10-17), the small drop shadow, their bars gold with a gold line under an open one, the same from every
+// sport. &:not(.panel-plain) as well, to outweigh the face card-panel sets above)
 book-page card-panel,
 model-desk card-panel {
   @include v.scoreboard-panel(v.$radius-lg);
   --group-color: #{chip.$gold-led};
+
+  &,
+  &:not(.panel-plain) {
+    @include chip.gold-rim;
+  }
+
+  &:not(.closed) > .group-bar {
+    @include chip.gold-rim-line;
+  }
 
   > .group-bar {
     background: linear-gradient(90deg, rgba(chip.$gold-led, 0.1), transparent 60%), var(--scoreboard-dots), var(--scoreboard);

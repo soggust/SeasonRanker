@@ -84,6 +84,8 @@
 
 .desk-curve {
   @include v.scoreboard-panel;
+  // (the board's even gold rim: the owner's note, 2026-10-17)
+  @include chip.gold-rim;
   margin-bottom: 12px;
   padding: 10px 14px;
   // (the lines' colors: the total's the All chip's gold, each sport's its chip's clay lifted to read on the
@@ -1591,6 +1593,7 @@ mat-icon.desk-gloves {
 
   .desk-tile {
     @include v.scoreboard-panel(v.$radius-md);
+    @include chip.gold-rim;
     align-items: flex-start;
     display: flex;
     flex-direction: column;
@@ -1644,7 +1647,9 @@ mat-icon.desk-gloves {
     color: v.$bad-soft !important;
   }
 
-  // The selects as the player's card pills, a gold caret; the sport chips 50px
+  // The selects as the player's card pills, a gold caret, in the board's even 1px gold rim (the gold on the border box
+  // behind the face: a select draws no ::before, so the player card's rail never showed; the owner's note,
+  // 2026-10-17); the sport chips 50px
   .desk-filters {
     gap: v.$space-12 v.$space-20;
   }
@@ -1654,14 +1659,19 @@ mat-icon.desk-gloves {
     background-image:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23ebc56c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
       radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.18), transparent 55%),
-      linear-gradient(135deg, #1d1d1d, #121212 60%, #1a1a1a);
+      linear-gradient(135deg, #1d1d1d, #121212 60%, #1a1a1a),
+      chip.$felt-gold;
+    background-clip: padding-box, padding-box, padding-box, border-box;
+    background-origin: padding-box, padding-box, padding-box, border-box;
     background-position:
       right 14px center,
+      0 0,
       0 0,
       0 0;
     background-repeat: no-repeat;
     background-size:
       14px,
+      auto,
       auto,
       auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
@@ -1729,6 +1739,7 @@ mat-icon.desk-gloves {
   .desk-curve {
     --total: #{chip.$gold-led};
     @include v.scoreboard-panel(v.$radius-lg);
+    @include chip.gold-rim;
     margin: 14px 0 0;
     padding: 14px 16px 12px;
 

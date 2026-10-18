@@ -203,7 +203,10 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
   for (const name of ['openBoard', 'cashedBoard']) {
     const b = board(name);
     assert.match(b, /<section class="wp-panel book-board"/, name);
-    assert.match(b, /<div class="wp-bar">\s*<h3>/, name);
+    // (a plain title alone on the Book; the wallet's folds)
+    assert.match(b, /<div class="wp-bar">\s*@if \(only\) \{\s*<h3>[\s\S]*?\} @else \{\s*<h3><button type="button" class="wp-toggle"/, name);
+    // (empty: the corkboard still, a post-it pinned to it saying so)
+    assert.match(b, /<div class="cork cork-board board-empty">\s*<div class="postit-pinned">\s*<span class="pin" aria-hidden="true"><\/span>\s*<p class="postit" role="status">No (open|settled) bets/, name);
     assert.match(b, /<div class="cork cork-board">/, name);
     assert.match(b, /<div class="board-pinned" \[style\.rotate\.deg\]="tilt\(b\)">\s*<span class="pin" aria-hidden="true" \[style\.--pin\]="pinColor\(b\)"><\/span>\s*<article class="ticket"/, name);
     assert.match(b, /<pick-text \[pick\]="l\.pick" \[player\]="betPlayer\(l\)">/, name);
@@ -216,6 +219,24 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
   assert.equal((html.match(/ngTemplateOutlet="openBoard"/g) ?? []).length, 2);
   assert.doesNotMatch(html, /<table|openPanel|settledPanel/);
   assert.match(html, /class="desk-curve"/, 'the profit curve stays');
+  assert.match(board('cashedBoard'), /No settled bets \{\{ rangeWords\(range\(\)\) \}\}/);
+});
+
+// The owner (2026-10-17): the wallet's header is the title alone (no username, no play money); the wall sits inside
+// the trophy case; the folding panels' titles toggle them, your chips, the rebuy and the curve never folding
+test('the wallet: a plain header, the wall in the trophy case, the panels folding', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(path.join(import.meta.dirname, '..', 'libs/ranker/src/engine/account/wallet/wallet-page.component.html'), 'utf8');
+  const hero = html.match(/<header class="wallet-hero">[\s\S]*?<\/header>/)[0];
+  assert.doesNotMatch(hero, /play money|hero-user|\{\{ me\?\.username/);
+  assert.doesNotMatch(html, /aria-label="On the wall"/);
+  const trophy = html.match(/aria-label="Trophy case"[\s\S]*?<\/section>/)[0];
+  assert.match(trophy, /class="trophies"[\s\S]*On the wall[\s\S]*<div class="cork">/);
+  for (const p of ['heads', 'rollers', 'trophies', 'tells', 'open', 'settled']) {
+    assert.ok(html.includes(`(click)="togglePanel('${p}')"`), p);
+    assert.ok(html.includes(`panelShown('${p}')) {`), p);
+  }
+  assert.doesNotMatch(html, /togglePanel\('(chips|rebuy|curve)'\)/);
 });
 
 test('tilt: steady per ticket, within a few degrees', async () => {
@@ -237,4 +258,12 @@ test('tilt: steady per ticket, within a few degrees', async () => {
   const pinColor = new Function('pinHash', 'PIN_COLORS', 'b', pinBody).bind(null, pinHash, colors);
   for (const id of ids) assert.ok(colors.includes(pinColor({ id })), id);
   assert.ok(new Set(ids.map((id) => pinColor({ id }))).size >= 5, 'pins of several colours');
+});
+
+test('the wallet opens with your chips, the rebuy and the profit curve, every other panel shut', () => {
+  assert.deepEqual(w.WALLET_PANELS.filter((p) => w.panelOpen(p)), ['chips', 'rebuy', 'curve']);
+  for (const p of ['heads', 'rollers', 'trophies', 'tells', 'open', 'settled']) assert.equal(w.panelOpen(p), false, p);
+  // (a tap turns one the other way)
+  assert.equal(w.panelOpen('heads', new Set(['heads'])), true);
+  assert.equal(w.panelOpen('chips', new Set(['chips'])), false);
 });
