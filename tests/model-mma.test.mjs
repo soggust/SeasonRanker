@@ -494,3 +494,18 @@ test("boutsOf: a bout carries ESPN's venue and each fighter's country", () => {
   assert.equal(b.home.country, 'Canada');
   assert.equal(b.away.country, 'Brazil');
 });
+
+test("score (the loss review's B15): a coin's accuracy is a half whoever won, never the second-listed side's share", async () => {
+  const { score } = await import('../libs/ranker/scripts/model/fights-model.mjs');
+  const rows = [...Array.from({ length: 78 }, () => ({ y: 0 })), ...Array.from({ length: 22 }, () => ({ y: 1 }))];
+  assert.equal(score(rows, () => 0.5).acc, 0.5);
+  assert.equal(score(rows, () => 0.3).acc, 0.78);
+  assert.equal(score(rows, () => 0.7).acc, 0.22);
+});
+
+test("knowsNothing (the loss review's B15): a bout with every part of the model 0 is unpriced; any part known, priced", async () => {
+  const { knowsNothing } = await import('../libs/ranker/scripts/model/mma-desk.mjs');
+  assert.equal(knowsNothing({ p: 0.5, parts: { rating: 0, age: 0, reach: 0 } }), true);
+  assert.equal(knowsNothing({ p: 0.52, parts: { rating: 0, age: 0.07, reach: 0 } }), false);
+  assert.equal(knowsNothing({ p: 0.5 }), false);
+});

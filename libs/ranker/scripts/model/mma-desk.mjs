@@ -315,6 +315,10 @@ export function settleBout(bet, bout, now) {
 // ---------------------------------------------------------------------------------------------------------
 // Pricing
 
+// A bout the model knows nothing of (boutChance's pred): every part of it 0, no bouts and no bio for either fighter
+// (the loss review's B15: Faglier and Mahjoub, both 0-0, priced at 0.50 and tracked as the model's chance)
+export const knowsNothing = (pred) => !!pred?.parts && Object.values(pred.parts).every((v) => !v);
+
 // The pick for a bout: the better side at the trusted chance, its stake, and why it's not an edge bet if it
 // isn't. model: the home side's chance; lines: { odds: { home, away }, fair (home) }
 export function pickFor(model, lines, trust, { edge, untested, guard = null, apiPrice = true }) {
@@ -823,6 +827,12 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     }
     const day = Date.parse(start);
     const pred = boutChance(model, bout, day);
+    // (nothing known of either fighter: unpriced, no row; a coin's 0.5 is no chance of the model's own)
+    if (knowsNothing(pred)) {
+      log.log(`${SPORT}: ${bout.home.name} vs ${bout.away.name} unpriced: nothing known of either fighter (every part of the model 0)`);
+      rest[bout.key] = at;
+      continue;
+    }
     // (the first price seen on the bout: the guard's reference, and the opening line kept for a later fit)
     state.opens ??= {};
     state.opens[bout.key] ??= { at, fair: round(lines.fair, 4), odds: lines.odds };

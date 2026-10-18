@@ -598,7 +598,8 @@ export function score(rows, pOf) {
   for (const r of rows) {
     const p = Math.min(0.99, Math.max(0.01, pOf(r)));
     loss += logLoss(p, r.y);
-    right += (p > 0.5) === (r.y === 1) ? 1 : p === 0.5 ? 0.5 : 0;
+    // (a coin's 0.5 half right whatever happened: read first, or every bout the second-listed won counted right)
+    right += p === 0.5 ? 0.5 : (p > 0.5) === (r.y === 1) ? 1 : 0;
     n++;
   }
   return n ? { n, logLoss: round(loss / n, 4), acc: round(right / n, 4) } : { n: 0, logLoss: null, acc: null };
