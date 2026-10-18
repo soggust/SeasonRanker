@@ -123,7 +123,7 @@
 
 // (the keys: .env on this machine, the repo's secrets on GitHub; first, so every module sees them)
 import '../env.mjs';
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
@@ -152,7 +152,7 @@ import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, feedCheck, researchCall, researchCard, researchChecks, researchGateOf, researchInputs, verdictOf } from './research.mjs';
+import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchGateOf, researchInputs, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -670,7 +670,12 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
         const input = got.inputs.map((x) => `${x.name ?? 'a player'} ${x.status} (${x.kind})`).join('; ');
         call = { ...call, note: { player: got.notes[0].player, status: got.notes[0].status, name: got.inputs[0]?.name ?? rs.player ?? null, inputs: got.inputs, input } };
         console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research inputs for ${c.pick ?? c.id}: ${input} (this run's injury report)`);
-      } else call = { act: 'check', why: `${call.why}; no input of the model's takes it (${got.why})` };
+      } else if (got.held) {
+        // (the input the model's already (the report has it): nothing put in, the CHECK decided by its price, betProps)
+        const input = got.inputs.map((x) => `${x.name ?? 'a player'} ${x.status} (${x.kind})`).join('; ');
+        call = { ...call, note: { held: true, name: got.inputs[0]?.name ?? rs.player ?? null, inputs: got.inputs, input } };
+        console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research inputs for ${c.pick ?? c.id}: ${input}: the model's already, priced as it stands`);
+      } else call = { act: 'check', why: `no input of the model's takes it (${got.why}); ${call.why}` };
     }
     r.researchCalls.set(c.id, { ...call, side: c.side, category: rs.category ?? null });
     by[call.act]++;
@@ -715,6 +720,18 @@ async function noteInjuries(r) {
     }
   } catch (err) {
     console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
+  }
+  // (a dry run alone: findings saved from a run's log (CHECK_RESEARCH_FINDINGS, a JSON file of CHECK id -> its
+  // finding), so a run's verdicts can be replayed with no call made and nothing spent)
+  if (DRY && process.env.CHECK_RESEARCH_FINDINGS) {
+    try {
+      const saved = JSON.parse(readFileSync(process.env.CHECK_RESEARCH_FINDINGS, 'utf8'));
+      const ids = new Set(checks.map((c) => c.id));
+      for (const [id, f] of Object.entries(saved)) if (ids.has(id)) r.researchFound.set(id, f);
+      console.log(`${r.sport} (dry): ${r.researchFound.size} CHECK research findings from ${path.basename(process.env.CHECK_RESEARCH_FINDINGS)}`);
+    } catch (err) {
+      console.warn(`${r.sport} (dry): the saved findings not read (${err.message})`);
+    }
   }
   const notes = new Map(r.notes ?? []);
   // (each team's roster once here: the research's players found by name, the notes' teams)
@@ -1752,7 +1769,7 @@ function researchTag(r, b) {
     if (b.units > RESEARCH_UNITS) b.units = RESEARCH_UNITS;
     if (Number.isFinite(b.trackUnits) && b.trackUnits > RESEARCH_UNITS) b.trackUnits = RESEARCH_UNITS;
   };
-  if (b.researchBet) return hold();
+  if (b.researchBet || b.researchAdjusted) return hold();
   const moved = r.researchEvents?.get(String(b.event));
   if (!moved?.length) return;
   // (own: the researched CHECK's own market, the scorecard's and the gate's; the game's other markets priced with it
@@ -2074,15 +2091,37 @@ async function betProps(r) {
         // terms a bet would wait for: a real price, the news it waits for. An open bet taken back to price again
         // (repriceOpen) whose player's role is changing now is one of these: a CHECK, not bet again)
         // (one priced on those terms neither guard skipped: its CHECK closed, checks.mjs closeChecks)
-        // (a CHECK the research put a status into the inputs for: what it moved, its projection and chance
-        // before (as the CHECK stood) and after (this run's), the input changed, and what it is now)
+        // (a CHECK the research put a status into the inputs for, or found one the inputs have already (held):
+        // what it moved, its projection and chance before (as the CHECK stood) and after (this run's), the input,
+        // and what it is now. The reason in the inputs, the price decides it, not the guard that made it a CHECK
+        // (the gap's, the role's, the news's, firing again on the same doubt the research answered): an edge at
+        // the trusted chance bet at RESEARCH_UNITS at most (researchAdjusted), none passed, its CHECK closed with
+        // the reason on it. A hard skip (no price, a long shot, the skew) stands)
+        const decided = new Set();
         for (const x of priced) {
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
           const call = r.researchCalls?.get(id);
           if (call?.act !== 'adjust' || !call.note) continue;
           const before = (ledger.checks ?? []).find((c) => c.id === id);
-          const now = x.guard?.skip ? (CHECK_KINDS.has(x.guard?.kind) ? `still a CHECK (${x.guard.kind})` : `skipped (${x.guard.why})`) : x.ev > 0 ? 'an edge: to bet at 0.5u at most (researchAdjusted)' : 'no edge: passed, its CHECK closed';
-          const moved = { id, input: `${call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`} (the injury report, this run)`, inputs: call.note.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
+          const input = call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`;
+          const ev = `ev ${x.ev > 0 ? '+' : ''}${round(x.ev, 4)} on the ${x.side} at the trusted chance ${round(x.p, 4)}`;
+          let now;
+          if (x.guard?.skip && CHECK_KINDS.has(x.guard?.kind)) {
+            const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
+            const notYet = !x.priced && hasKey() ? 'no price from the book now' : storedBet(x.prop.stored, hasKey(), r.now) ? 'its stored price not one to bet at' : news.length && phase !== 'last' ? `waiting on the news: ${news.join(', ')}` : null;
+            if (notYet) now = `still a CHECK (${x.guard.kind}) this run: ${notYet}`;
+            else if (x.ev > 0) {
+              decided.add(id);
+              const researchAdjusted = { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) };
+              candidates.push({ game, x: { ...x, guard: { why: `the research's ${input}: in the inputs, the ${x.guard.kind} guard's CHECK decided by its price` }, units: RESEARCH_UNITS, researchAdjusted }, exp });
+              now = `an edge (${ev}): bet at ${RESEARCH_UNITS}u at most (researchAdjusted), the ${x.guard.kind} guard's CHECK decided by its price`;
+            } else {
+              decided.add(id);
+              now = `no edge (${ev}): passed, its CHECK closed`;
+            }
+            r.researchCalls.set(id, { ...call, why: `${now}; ${call.why}` });
+          } else now = x.guard?.skip ? `skipped (${x.guard.why})` : x.ev > 0 ? `an edge (${ev}): to bet at ${RESEARCH_UNITS}u at most (researchAdjusted)` : `no edge (${ev}): passed, its CHECK closed`;
+          const moved = { id, input: `${input} (${call.note.held ? "on the injury report already: the model's input as it stood" : 'the injury report, this run'})`, inputs: call.note.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
           (r.researchMoved ??= []).push(moved);
           console.log(`${sport}${DRY ? ' (dry)' : ''}: research moved ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}; ${now}`);
         }
@@ -2101,7 +2140,7 @@ async function betProps(r) {
           const was = openChecks.find((c) => c.id === id);
           const noted = !!was && noteOpen(was, r.notes?.get(id));
           if (was && (x.prop.stored || noted)) r.reEval?.set(id, noted ? 'note' : 'reprice');
-          if (!CHECK_KINDS.has(x.guard?.kind)) {
+          if (!CHECK_KINDS.has(x.guard?.kind) || decided.has(id)) {
             r.unchecked?.add(id);
             continue;
           }
@@ -2168,6 +2207,8 @@ async function betProps(r) {
     const bet = propBet(r, game, x, exp, { id, ...placed, tested });
     if (placed.practice) bet.practice = placed.practice;
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
+    // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
+    if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -2337,7 +2378,9 @@ function recordChecks(r) {
   let researched = 0;
   for (const c of r.ledger.checks ?? []) {
     const found = r.researchFound?.get(c.id);
-    if (found && !c.research) {
+    // (over a hollow one kept (a failed search's answer, asked again: research.mjs researchChecks), the new
+    // finding: else it was never saved, came back from the usage log every run, and its CHECK showed the old one)
+    if (found && found !== c.research && (!c.research || hollow(c.research))) {
       c.research = found;
       researched++;
     }

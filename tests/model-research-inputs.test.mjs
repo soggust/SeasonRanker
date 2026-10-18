@@ -77,13 +77,22 @@ test("a teammate out (the QB): into the report Out, so the missing ones (the vac
   assert.equal(researchInputs(c, finding({ player: 'Darnell Washington', athlete: '4430802', status: 'limited', reason: 'injury', category: 'injury' }), 'nfl', { now, rosters: rosters() }).inputs[0].kind, 'own');
 });
 
-test('a status the report already has (so or worse), a player found nowhere, a stale finding: no input, a CHECK with why', () => {
+test('a status the report already has (so or worse): held, the input the model has already, none put in; a player found nowhere, a stale finding: no input, a CHECK with why', () => {
   const c = check();
   const listed = new Map([['23', [{ id: '4361411', name: 'Pat Freiermuth', status: 'Questionable' }]]]);
   const f = finding({ player: 'Pat Freiermuth', athlete: '4361411', status: 'questionable', reason: 'injury', category: 'injury' });
   const same = researchInputs(c, f, 'nfl', { now, report: listed, rosters: rosters() });
   assert.equal(same.notes.length, 0);
-  assert.match(same.why, /report already has him/);
+  assert.equal(same.held, true);
+  assert.deepEqual(same.inputs, [{ name: 'Pat Freiermuth', status: 'questionable', kind: 'teammate, on the report already' }]);
+  // (the player named off the rosters (injured reserve) found by name on the report; held the same)
+  const ir = new Map([['23', [{ id: '4397136', name: 'Breece Hall', status: 'Out' }]]]);
+  const hall = researchInputs(c, finding({ player: 'Breece Hall', status: 'out', reason: 'injury', category: 'injury' }), 'nfl', { now, report: ir, rosters: rosters() });
+  assert.equal(hall.held, true);
+  assert.equal(hall.inputs[0].status, 'out');
+  // (stale or unsourced: not held, the report's word and no reason)
+  assert.equal(researchInputs(c, { ...f, at: '2026-10-15T00:00:00Z' }, 'nfl', { now, report: listed, rosters: rosters() }).held, undefined);
+  assert.match(researchInputs(c, { ...f, sources: [] }, 'nfl', { now, report: listed, rosters: rosters() }).why, /report already has him/);
   assert.match(researchInputs(c, finding({ player: 'Someone Else', status: 'out', reason: 'injury', category: 'injury' }), 'nfl', { now, rosters: rosters() }).why, /not known by his ESPN id/);
   assert.equal(researchInputs(c, { ...f, at: '2026-10-15T00:00:00Z' }, 'nfl', { now, rosters: rosters() }).notes.length, 0);
   // (no source: none)
@@ -121,7 +130,9 @@ test('a QB named to start: every other QB on his roster Out (not starting), so t
   assert.match(researchInputs(c, f, 'nfl', { now, report: outListed, rosters: rosters() }).why, /report wins/);
   // (the report already has the others out and the starter clear: nothing to put in)
   const settled = new Map([['23', [{ id: '4685720', status: 'Out' }, { id: '4360310', status: 'Out' }]]]);
-  assert.match(researchInputs(c, f, 'nfl', { now, report: settled, rosters: rosters() }).why, /already say so/);
+  const held = researchInputs(c, f, 'nfl', { now, report: settled, rosters: rosters() });
+  assert.equal(held.held, true);
+  assert.match(held.inputs[0].kind, /say so already/);
   // (another sport's: not a QB start)
   assert.equal(researchInputs(c, f, 'nba', { now, rosters: rosters() }).notes.length, 0);
 });

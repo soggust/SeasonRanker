@@ -283,7 +283,8 @@ const startsQb = (rs) => ['lineup', 'role'].some((k) => rs?.reason === k || rs?.
 // What an 'adjust' finding puts into the model's own inputs for its game, this run alone: { notes, inputs, why }.
 // notes: researchNote's shape (each id the CHECK's; its team, position and name kept so applyNotes needn't look
 // them up), for the game's injury report copy; inputs: what each one changes, in words ({ name, status, kind });
-// why: none taken, why. Four ways (the owner's, 2026-10-17: a real reason added to the calculation, not passed):
+// why: none taken, why; held: the input the model's already (the report has it so, or worse; a starter it
+// names already), none put in, the CHECK decided by its price as it stands. Four ways (the owner's, 2026-10-17: a real reason added to the calculation, not passed):
 //   own / teammate / opponent  a player's out, doubtful, questionable or limited status (the CHECK's own player,
 //            a teammate whose absence moves his role, a player on the other side), the player known by his ESPN
 //            id from the finding (the CHECK's own, the report's) or else by name from the game's two rosters;
@@ -302,11 +303,20 @@ export function researchInputs(c, rs, sport, { now = new Date(), report = null, 
   const none = (why) => ({ notes: [], inputs: [], why });
   if (!rs) return none('no finding');
   const who = rs.athlete ? rosterPlayer(rosters, { id: rs.athlete }) : rosterPlayer(rosters, { name: rs.player });
-  const athlete = rs.athlete ? String(rs.athlete) : (who?.id ?? null);
+  // (else by name on the game's injury report: a player on injured reserve is off the roster ESPN lists)
+  const athlete = rs.athlete ? String(rs.athlete) : (who?.id ?? athleteOf(c, rs.player, report));
   const kindOf = (id, team) => (String(id) === String(c.athlete ?? '') ? 'own' : team && c.team && String(team) !== String(c.team) ? 'opponent' : 'teammate');
   if (ADJUST_STATUS.has(rs.status)) {
     if (!athlete) return none(`${rs.player ?? 'the player it names'} not known by his ESPN id (not the CHECK's player, on the report or on the game's rosters)`);
     const n = researchNote(c, { ...rs, athlete }, sport, { now, report });
+    // (the report already has him so or worse, the finding fresh and sourced: the input the model's already, its
+    // projection priced with it; held, so the price decides the CHECK, not the guard again (run.mjs betProps))
+    const listed = n ? null : officialEntry(report, athlete);
+    const at = Date.parse(rs.at ?? '');
+    if (listed && severity(listed.status) >= severity(rs.status) && rs.sources?.length && Number.isFinite(at) && now.getTime() - at <= RESEARCH_TTL_H * 36e5) {
+      const name = who?.name ?? listed.name ?? rs.player ?? null;
+      return { notes: [], inputs: [{ name, status: String(listed.status ?? rs.status).toLowerCase(), kind: `${kindOf(athlete, who?.team ?? [...(report instanceof Map ? report : [])].find(([, l]) => (l ?? []).includes(listed))?.[0])}, on the report already` }], held: true, why: null };
+    }
     if (!n) return none(`${rs.player ?? 'the player'} ${rs.status}: the report already has him so or worse, or newer, or the finding is too old or unsourced (the report's word stands)`);
     const name = who?.name ?? rs.player ?? null;
     return { notes: [{ ...n, ...(who ? { team: who.team, pos: who.pos } : {}), name }], inputs: [{ name, status: rs.status, kind: kindOf(athlete, who?.team) }], why: null };
@@ -332,7 +342,9 @@ export function researchInputs(c, rs, sport, { now = new Date(), report = null, 
         inputs.push({ name: who.name, status: 'active', kind: 'the starter, his listing cleared' });
       }
     }
-    return notes.length ? { notes, inputs, why: null } : none(`${who.name} starting: the report and rosters already say so`);
+    if (notes.length) return { notes, inputs, why: null };
+    // (the report and rosters already say so: the input the model's already, held as above)
+    return { notes: [], inputs: [{ name: who.name, status: 'starting', kind: 'the starter, the report and rosters say so already' }], held: true, why: null };
   }
   if (rs.category === 'role' || rs.reason === 'role') return none("a role change with no player's status: the depth chart only gates a role CHECK, no input moves the projection");
   return none("no player's status the report lacks");
