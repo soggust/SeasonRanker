@@ -117,6 +117,8 @@ export function betFrom(id: string, d: DocumentData): PlayBet {
     profit: d['profit'],
     final: d['final'],
     note: d['note'],
+    // (the settler's: the bot's own call on this market when it was placed, null where its board can't say)
+    ...(d['bot'] !== undefined ? { bot: d['bot'] ?? null } : {}),
     settledAt: d['settledAt'] ? iso(d['settledAt']) : undefined,
   };
 }

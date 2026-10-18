@@ -123,6 +123,12 @@ describe('wallet rules', { skip }, () => {
     assertBalance(await getDoc(doc(db, 'users', 'ann', 'wallet', 'main')), 370);
     // (the same bet id twice: the second is an update, never allowed)
     await assertFails(place(db, 'ann', 'b1'));
+    // (the bot's call on a bet, You vs the Bot's: the settler's alone, never placed with the bet or written on it after)
+    const bot = { side: 'home', line: -3.5, price: -110, units: 1, kelly: 0.02, forced: true, status: 'won', profit: 0.91 };
+    await assertFails(place(db, 'ann', 'b5', playBet({ bot })));
+    await assertFails(place(db, 'ann', 'b6', playBet({ bot: null })));
+    await assertFails(updateDoc(doc(db, 'users', 'ann', 'bets', 'b1'), { bot }));
+    await assertFails(updateDoc(doc(as('bob'), 'users', 'ann', 'bets', 'b1'), { bot }));
   });
 
   test('a bet: open, on a game not begun, a stake in half units no bigger than the balance, its fields as they should be', async () => {

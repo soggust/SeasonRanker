@@ -519,7 +519,10 @@ service cloud.firestore {
         || (resource.data.status != 'open' && canSee(uid, 'betHistory'));
 
       // (with its stake out of the wallet in the same write, in the wallet's current run)
+      // (never with bot: the bot's call on the bet, You vs the Bot's, is the settler's alone; the shapes' hasOnly
+      // leaves it out too)
       allow create: if isOwner(uid)
+        && !('bot' in request.resource.data)
         && ('kind' in request.resource.data ? validParlay(request.resource.data) : validPlayBet(request.resource.data))
         && exists(walletPath(uid))
         && request.resource.data.run == get(walletPath(uid)).data.resets
@@ -528,7 +531,7 @@ service cloud.firestore {
 
       // (settled only by the Admin SDK; a settled one deleted by its owner: Clear history, or the account going.
       // An open bet stays until it's settled, so a losing one can't be dropped before the settler counts it; a
-      // deleted account's open bets are removed by the settler)
+      // deleted account's open bets are removed by the settler; its bot, the bot's call on it, the settler's too)
       allow update: if false;
       allow delete: if isOwner(uid) && resource.data.status != 'open';
     }

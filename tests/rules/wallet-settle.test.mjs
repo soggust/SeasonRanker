@@ -140,6 +140,26 @@ async function seed(uid, { betHistory = 'public', balance = 800, resets = 0, bet
 const quiet = () => undefined;
 
 describe('the settler', { skip }, () => {
+  test('You vs the Bot: the bot’s side when the bet was placed written on it, graded; none from its board, null; a bet settled before, filled once', async () => {
+    const t = (iso) => Date.parse(iso);
+    const botSeen = { nfl: { 401: { 'spread||': [[t('2026-10-10T13:00Z'), t('2026-10-10T14:30Z'), 'away', 3.5, -112, 0.01]] } } };
+    await db.doc('lines/nfl_401').set({ sport: 'nfl', event: '401', snaps: [{ at: '2026-10-10T14:00:00Z', spread: { home: { line: -3.5, odds: -108 }, away: { line: 3.5, odds: -112 } } }] });
+    await seed('vb', {
+      bets: {
+        duel: bet(),
+        early: bet({ market: 'ml', side: 'home', line: null, odds: -190, pick: 'NE ML', placedAt: at('2026-10-10T14:10Z') }),
+        before: { ...bet({ side: 'away', line: 3.5, odds: -112, pick: 'LV +3.5' }), status: 'lost', profit: -100, settledAt: at('2026-10-11T21:00Z') },
+      },
+    });
+    await run({ db, fetchJson, now: NOW, ledgers, botSeen, log: quiet });
+    const duel = (await db.doc('users/vb/bets/duel').get()).data();
+    assert.equal(duel.status, 'won');
+    assert.deepEqual(duel.bot, { side: 'away', line: 3.5, price: -112, units: 1, kelly: 0.01, forced: true, status: 'lost', profit: -1 });
+    assert.equal((await db.doc('users/vb/bets/early').get()).get('bot'), null);
+    // (settled before the bot's call was kept: filled from the same rows, its own side, the same result)
+    assert.equal((await db.doc('users/vb/bets/before').get()).get('bot').status, 'lost');
+  });
+
   test('settles the finals, pays the wallets, voids what must be, and pays nothing twice', async () => {
     await seed('ann', {
       balance: 699,

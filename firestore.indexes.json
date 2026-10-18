@@ -39,6 +39,28 @@
       ]
     },
     {
+      "collectionGroup": "bets",
+      "fieldPath": "settledAt",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
       "collectionGroup": "votes",
       "fieldPath": "voter",
       "indexes": [

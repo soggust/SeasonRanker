@@ -125,7 +125,7 @@
                 <span class="ticket-status">Settled</span>
               </div>
               <hr class="perf" />
-              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}</span>
+              <span class="ticket-kind">{{ b.kind === 'parlay' ? b.legs!.length + '-leg parlay · ' + oddsText(b.paidOdds ?? b.odds) : 'Straight' }}@if (botTag(b); as t) { · <span class="ticket-bot" title="The bot's own call on this market when you placed it">Bot: {{ t === 'same' ? 'same side' : 'other side' }}</span>}</span>
               @for (l of ticketLegs(b); track l.id) {
                 <div class="ticket-leg">
                   <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
@@ -353,56 +353,61 @@
     }
 
     <!-- (every panel from here on shut to start (wallet-view.ts panelOpen), and one with nothing in it not shown at all) -->
-    <!-- Heads up: you against the bot as a stadium scoreboard (the wallet's versus: its published picks settled over
-         the same stretch), this week, 30 days or since your first bet; the record and ROI rows under it; then the
-         settled straight bets split by whether they tailed the bot, were your own, or faded it -->
+    <!-- Heads up: you against the bot as a stadium scoreboard, same game, same bet (wallet-view.ts headsUp: each
+         settled straight bet against the bot's own call on it when it was placed, the settler's), this week, 30
+         days or since your first bet: the points, the record and the duels' units at your stake under it, the
+         agreed bets apart; then the settled straight bets split by whether they tailed the bot, were your own, or
+         faded it -->
     @if (heads(); as h) {
-      @let youLead = h.you.profit >= h.bot.profit;
-      @let gap = (h.you.profit - h.bot.profit < 0 ? -(h.you.profit - h.bot.profit) : h.you.profit - h.bot.profit);
+      @let youLead = h.you.points >= h.bot.points;
+      @let gap = (h.you.points - h.bot.points < 0 ? -(h.you.points - h.bot.points) : h.you.points - h.bot.points);
       <section class="wp-panel heads" aria-label="You against the bot" [class.shut]="!panelShown('heads')">
         <div class="wp-bar wp-bar-fold" (click)="barClick($event, 'heads')">
           <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('heads')" (click)="togglePanel('heads')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Heads up</button></h3>
-          @if (wallet.tally()) {
-            <div class="wp-seg" role="group" aria-label="Period">
-              @for (p of headsPeriods; track p.id) {
-                <button type="button" class="app-pill" [attr.aria-pressed]="headsPeriod() === p.id" (click)="headsPeriod.set(p.id)">{{ p.label }}</button>
-              }
-            </div>
-          }
+          <div class="wp-seg" role="group" aria-label="Period">
+            @for (p of headsPeriods; track p.id) {
+              <button type="button" class="app-pill" [attr.aria-pressed]="headsPeriod() === p.id" (click)="headsPeriod.set(p.id)">{{ p.label }}</button>
+            }
+          </div>
         </div>
         @if (panelShown('heads')) {
         <div class="heads-board">
           <div class="heads-side you">
             <span class="heads-name">You</span>
-            <span class="heads-led" [class.lead]="youLead">{{ h.you.profit >= 0 ? '+' : '' }}{{ h.you.profit | number: '1.1-1' }}</span>
-            <span class="heads-units">Units</span>
+            <span class="heads-led" [class.lead]="youLead && gap > 0">{{ h.you.points | number: '1.0-1' }}</span>
+            <span class="heads-units">Points</span>
           </div>
           <div class="heads-mid">
             <span class="wp-key">{{ periodWords(h.period) }}</span>
-            <span class="heads-lead" [class.up]="youLead">{{ youLead ? 'You lead by ' : 'The bot leads by ' }}{{ gap | number: '1.1-1' }}u</span>
+            <span class="heads-lead" [class.up]="youLead && gap > 0">{{ gap === 0 ? 'All square' : (youLead ? 'You lead by ' : 'The bot leads by ') + (gap | number: '1.0-1') }}</span>
             <div class="heads-dots" aria-hidden="true">
               @for (d of h.dots; track $index) {
                 <span [ngClass]="d"></span>
               }
             </div>
-            <span class="heads-cap">last 10 days, who won each</span>
+            <span class="heads-cap">last 10 bets, who took each</span>
           </div>
           <div class="heads-side bot">
             <span class="heads-name">The bot</span>
-            <span class="heads-led" [class.lead]="!youLead">{{ h.bot.profit >= 0 ? '+' : '' }}{{ h.bot.profit | number: '1.1-1' }}</span>
-            <span class="heads-units">Units</span>
+            <span class="heads-led" [class.lead]="!youLead && gap > 0">{{ h.bot.points | number: '1.0-1' }}</span>
+            <span class="heads-units">Points</span>
           </div>
         </div>
         <div class="heads-rows">
           <div class="heads-row">
-            <span class="heads-val">{{ recordText(h.you) }}</span>
-            <span class="heads-k" title="Won, lost, pushed">Record</span>
-            <span class="heads-val">{{ recordText(h.bot) }}</span>
+            <span class="heads-val">{{ h.you.won }}–{{ h.bot.won }}–{{ h.ties }}</span>
+            <span class="heads-k" title="Won, lost, tied: a duel won is the side that won; a pushed duel or a bet you both took is a tie, half a point each">Record</span>
+            <span class="heads-val">{{ h.bot.won }}–{{ h.you.won }}–{{ h.ties }}</span>
           </div>
           <div class="heads-row">
-            <span class="heads-val" [class.up]="(h.you.roi ?? 0) > 0" [class.down]="(h.you.roi ?? 0) < 0">{{ pct(h.you.roi) }}</span>
-            <span class="heads-k" title="Profit over what was staked: the fair comparison (the bot stakes 0.5 to 3 units a bet)">ROI</span>
-            <span class="heads-val" [class.up]="(h.bot.roi ?? 0) > 0" [class.down]="(h.bot.roi ?? 0) < 0">{{ pct(h.bot.roi) }}</span>
+            <span class="heads-val" [class.up]="h.you.profit > 0" [class.down]="h.you.profit < 0">{{ h.you.profit > 0 ? '+' : '' }}{{ h.you.profit | number: '1.1-1' }}u</span>
+            <span class="heads-k" title="The bets the bot took the other side of, both at your stake">Duels ({{ h.duels }})</span>
+            <span class="heads-val" [class.up]="h.bot.profit > 0" [class.down]="h.bot.profit < 0">{{ h.bot.profit > 0 ? '+' : '' }}{{ h.bot.profit | number: '1.1-1' }}u</span>
+          </div>
+          <div class="heads-row">
+            <span class="heads-val" [class.up]="h.agreed.you > 0" [class.down]="h.agreed.you < 0">{{ h.agreed.you > 0 ? '+' : '' }}{{ h.agreed.you | number: '1.1-1' }}u</span>
+            <span class="heads-k" title="The bets the bot took the same side of: yours at your stake, the bot's at its own (who sized it better)">Agreed ({{ h.agreed.n }})</span>
+            <span class="heads-val" [class.up]="h.agreed.bot > 0" [class.down]="h.agreed.bot < 0">{{ h.agreed.bot > 0 ? '+' : '' }}{{ h.agreed.bot | number: '1.1-1' }}u</span>
           </div>
         </div>
         @let sp = split();
@@ -418,7 +423,7 @@
             }
           </div>
         }
-        <p class="wallet-fine heads-fine">Since {{ h.from | date: 'MMM d' }}: your settled bets, and the bot's published picks (the Book's) settled over the same games' days.@if (historyNote()) { Tailing, own calls and fading from {{ historyNote() }}.}</p>
+        <p class="wallet-fine heads-fine">Same game, same bet: each of your settled straight bets against the bot's own call on that market when you placed it (the side it liked better, at its price, even one it passed on). The other side: a duel, both at your stake. The same side: a tie, its units apart. Parlays, and bets settled before 17 Oct, aren't counted.@if (historyNote()) { From {{ historyNote() }}.}</p>
         }
       </section>
     }

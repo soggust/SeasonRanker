@@ -70,6 +70,22 @@ export interface PlayBet {
   kind?: 'parlay';
   legs?: ParlayLeg[];
   paidOdds?: number;
+  // (a settled straight bet's, the settler's (settle-lib.mjs botPickAt, gradeBot): the bot's own side on the
+  // same market as its board showed it when this was placed (the higher Kelly score, forced when it had no bet
+  // there), at its price and units, graded; null where the board can't say, none on a bet from before)
+  bot?: BotCall | null;
+}
+
+export interface BotCall {
+  side: string;
+  line: number | null;
+  price: number;
+  units: number;
+  kelly: number;
+  forced: boolean;
+  status: 'won' | 'lost' | 'push';
+  // (at its own units and price)
+  profit: number;
 }
 
 // A parlay's leg as users/{uid}/bets/{id} keeps it: what a straight bet is, without the stake, and its result

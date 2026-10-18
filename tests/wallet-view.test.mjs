@@ -84,29 +84,33 @@ test('the runs: each bet’s run, its start plus its settled profit, a bust stam
   ]);
 });
 
-test('Heads Up over all time is the wallet’s versus; a week and 30 days cut the same figures down', () => {
-  const tally = { all: { won: 3, lost: 1, push: 0, void: 0, staked: 4, profit: 1.73 }, days: { '2026-10-01': [1, 0, 0, 1, 0.91], '2026-10-10': [1, 1, 0, 2, -0.09], '2026-10-16': [1, 0, 0, 1, 0.91] } };
-  const ledger = [
-    { status: 'won', start: '2026-10-01T17:00:00Z', units: 1, profit: 0.9, published: true },
-    { status: 'lost', start: '2026-10-10T17:00:00Z', units: 1, profit: -1, published: true },
-    { status: 'won', start: '2026-10-16T17:00:00Z', units: 2, profit: 1.8, published: true },
-    { status: 'won', start: '2026-10-16T17:00:00Z', units: 2, profit: 1.8, published: false },
+test('Heads Up is same game, same bet: duels to the side that won at your stake, agreed bets a tie with their units apart', () => {
+  const call = (side, status, units = 1, price = -110) => ({ side, line: null, price, units, kelly: 0.01, forced: true, status, profit: status === 'won' ? Math.round(((units * 100) / 110) * 100) / 100 : status === 'lost' ? -units : 0 });
+  const bets = [
+    // (a duel won: you home, the bot away, home covers; at your 2u stake both)
+    bet({ side: 'home', stake: 2, odds: -110, status: 'won', profit: 1.82, start: '2026-10-16T17:00:00Z', settledAt: '2026-10-16T21:00:00Z', bot: call('away', 'lost', 1) }),
+    // (a duel lost: the bot's +150 side won, scored at your 1u)
+    bet({ side: 'home', stake: 1, odds: -170, status: 'lost', profit: -1, start: '2026-10-15T17:00:00Z', settledAt: '2026-10-15T21:00:00Z', bot: call('away', 'won', 0.5, 150) }),
+    // (a pushed duel: a tie)
+    bet({ side: 'home', stake: 1, status: 'push', profit: 0, start: '2026-10-14T17:00:00Z', settledAt: '2026-10-14T21:00:00Z', bot: call('away', 'push') }),
+    // (agreed: a tie, your 1u against the bot's 3u)
+    bet({ side: 'away', stake: 1, status: 'won', profit: 0.91, start: '2026-10-01T17:00:00Z', settledAt: '2026-10-01T21:00:00Z', bot: call('away', 'won', 3) }),
+    // (not counted: no board then, a void, a parlay)
+    bet({ status: 'won', profit: 1, bot: null }),
+    bet({ status: 'void', profit: 0, bot: call('home', 'won') }),
+    bet({ kind: 'parlay', status: 'won', profit: 2, bot: call('home', 'won') }),
   ];
-  const all = w.headsUp(tally, ledger, 'all', '2026-10-17');
-  const v = w.versusDays(tally, ledger);
-  assert.deepEqual({ won: all.you.won, lost: all.you.lost, push: all.you.push, roi: all.you.roi, profit: all.you.profit }, { won: v.you.won, lost: v.you.lost, push: v.you.push, roi: v.you.roi, profit: v.you.profit });
-  assert.deepEqual({ won: all.bot.won, lost: all.bot.lost, profit: all.bot.profit, roi: all.bot.roi }, { won: v.bot.won, lost: v.bot.lost, profit: v.bot.profit, roi: v.bot.roi });
-  const week = w.headsUp(tally, ledger, 'week', '2026-10-17');
-  assert.deepEqual([week.you.won, week.you.profit, week.bot.won, week.bot.profit], [1, 0.91, 1, 1.8]);
-  const month = w.headsUp(tally, ledger, 'month', '2026-10-17');
-  assert.deepEqual([month.you.won, month.you.lost, month.bot.lost], [3, 1, 1]);
-  // (the ten dots: the last ten days, who came out ahead; the 16th the bot's, the 10th yours, the rest nobody's)
-  assert.equal(week.dots.length, 10);
-  assert.equal(week.dots[9 - 1], 'bot');
-  assert.equal(week.dots[9 - 7], 'you');
-  assert.equal(week.dots[9], 'none');
-  const none = w.headsUp({ all: tally.all, days: {} }, ledger, 'all');
-  assert.deepEqual([none.from, none.you.won, none.bot.won], [null, 0, 0]);
+  const all = w.headsUp(bets, 'all', '2026-10-17');
+  assert.deepEqual([all.you.won, all.bot.won, all.ties, all.duels], [1, 1, 2, 3]);
+  assert.deepEqual([all.you.points, all.bot.points], [2, 2]);
+  assert.deepEqual([all.you.profit, all.bot.profit], [0.82, -0.5]);
+  assert.deepEqual(all.agreed, { n: 1, you: 0.91, bot: 2.73 });
+  assert.equal(all.from, '2026-10-01T17:00:00Z');
+  assert.deepEqual(all.dots.slice(-4), ['none', 'none', 'bot', 'you']);
+  const week = w.headsUp(bets, 'week', '2026-10-17');
+  assert.deepEqual([week.duels, week.agreed.n, week.you.points, week.bot.points], [3, 0, 1.5, 1.5]);
+  assert.deepEqual([w.botTag(bets[0]), w.botTag(bets[3]), w.botTag(bets[4]), w.botTag(bets[5]), w.botTag(bets[6])], ['other', 'same', null, null, null]);
+  assert.equal(w.headsUp([], 'all').from, null);
 });
 
 test('tailing, own calls and fading the bot', () => {

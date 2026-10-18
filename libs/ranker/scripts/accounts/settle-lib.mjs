@@ -636,3 +636,65 @@ export function leaderboard(entries, from, limit = 50) {
   }
   return rows.sort((a, b) => b.profit - a.profit || (b.roi ?? 0) - (a.roi ?? 0) || a.username.localeCompare(b.username)).slice(0, limit);
 }
+
+// ---------------------------------------------------------------------------
+// You vs the Bot: same game, same bet. Each settled straight bet carries the bot's own call on that market as
+// the board showed it when the bet was placed (bot: { side, line, price, units, kelly, forced, status, profit }),
+// written here by the Admin SDK, never by the browser (firestore.rules: a bet's update is the settler's alone).
+// A parlay carries none: the bot never makes one, and its legs' duels would count one bet many times over.
+// ---------------------------------------------------------------------------
+
+// (a placement's look-back: the newest board row from before it, its last showing at most this long before)
+export const BOT_LOOKBACK = 6 * 36e5;
+// (the desk's stake scale: run.mjs EV_SCALE, desk.mjs stakeFor's)
+const BOT_EV_SCALE = 0.08;
+
+// The bot's side at a bet's placement: from the board's rows for the game (board.mjs botSeenUpdate's: key
+// "market|stat|athlete" -> [from, to, side, line, price, kelly]), the row showing then, else the newest one
+// before it last shown within BOT_LOOKBACK; none, null. Its stake: the bet the bot really had open on that
+// market's side by then at its own units (forced: false), else its Kelly-sized units (desk.mjs stakeFor: 0.5 at
+// no edge or less, up to 3), at most 1 on a prop type or UFC market its trust hasn't cleared (no tested bet on
+// it in the ledger), forced: true. ledgerBets: the bettor's bets on the game
+export function botPickAt(bet, rows, ledgerBets = []) {
+  if (!bet || bet.kind === 'parlay' || !rows || typeof rows !== 'object') return null;
+  const key = bet.market === 'prop' ? `prop|${bet.propType}|${bet.athlete}` : `${bet.market}||`;
+  const list = Array.isArray(rows[key]) ? rows[key] : [];
+  const placed = Date.parse(bet.placedAt);
+  if (!Number.isFinite(placed)) return null;
+  const before = list.filter((r) => Array.isArray(r) && r[0] <= placed).sort((a, b) => a[0] - b[0]);
+  const row = before[before.length - 1];
+  if (!row || placed - row[1] > BOT_LOOKBACK) return null;
+  const [, , side, line, price, kelly] = row;
+  if (!side || !Number.isFinite(price) || !Number.isFinite(kelly)) return null;
+  const sameMarket = (b) => b.market === bet.market && (bet.market !== 'prop' || (b.propType === bet.propType && String(b.athlete) === String(bet.athlete)));
+  const real = (ledgerBets ?? []).find((b) => sameMarket(b) && b.side === side && !b.void && b.intent !== 'track' && b.units > 0 && b.status !== 'void' && Date.parse(b.placedAt) <= placed);
+  if (real) return { side, line: bet.market === 'ml' ? null : (real.line ?? line), price: Number.isFinite(real.odds) ? real.odds : price, units: real.units, kelly: round4(kelly), forced: false };
+  const d = decimalOf(price);
+  const ev = Math.max(0, kelly) * (d - 1);
+  const frac = Math.min(ev / (d - 1), ((ev / d) * (1 + 100 / 110)) / (100 / 110));
+  let units = Math.min(3, Math.max(0.5, Math.round((0.5 + (frac / (BOT_EV_SCALE / (100 / 110))) * 2.5) * 2) / 2));
+  const capped = bet.market === 'prop' || bet.sport === 'mma';
+  if (capped && !(ledgerBets ?? []).some((b) => sameMarket(b) && b.tested)) units = Math.min(units, 1);
+  return { side, line: bet.market === 'ml' ? null : line, price, units, kelly: round4(kelly), forced: true };
+}
+const round4 = (v) => Math.round(v * 1e4) / 1e4;
+
+// The bot's side graded beside the user's settled bet: the user's own result on the same side and line, the
+// other side's mirror at the same line (won for lost, push for push), else its own side and line graded from
+// the game (a moved line: desk.mjs settle, props.mjs settleProp; a UFC bout's moved line, not graded: null).
+// profit: at the bot's units and price. A void bet, or none of the bot's: null
+export function gradeBot(bet, result, bot, { game = null, propValue } = {}) {
+  if (!bot || !result || result.status === 'void') return null;
+  // (the other side of a spread at the same number is the line's negative: away +3.5 against home -3.5)
+  const sameLine = bet.market === 'ml' || (bet.market === 'spread' && bot.side !== bet.side ? bot.line === -bet.line : bot.line === bet.line);
+  const mirror = { won: 'lost', lost: 'won', push: 'push' };
+  let status = null;
+  if (sameLine) status = bot.side === bet.side ? result.status : mirror[result.status] ?? null;
+  else if (bet.sport !== 'mma' && game?.final) {
+    const mine = { ...bet, side: bot.side, line: bot.line, odds: bot.price, units: bot.units };
+    const r = bet.market === 'prop' ? (propValue === undefined || propValue === null ? null : settleProp(mine, propValue)) : settleGame(mine, game);
+    status = r && !r.void && ['won', 'lost', 'push'].includes(r.status) ? r.status : null;
+  }
+  if (!status) return null;
+  return { ...bot, status, profit: status === 'won' ? toWin(bot.units, bot.price) : status === 'lost' ? -bot.units : 0 };
+}

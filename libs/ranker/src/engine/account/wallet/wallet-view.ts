@@ -2,8 +2,8 @@ import { ModelBet } from '../../book/desk-model';
 import { PlayBet, START, TallyDoc, americanOf, decimalOf, etDay, runBeganAt } from './wallet-math';
 
 // The wallet page's own pictures and figures (docs/wallet-redesign/README.md), every one a client-side reading of
-// what the wallet already holds: the balance as stacks of chips, the runs (each bet's run), You vs the Bot over a
-// week or 30 days (the tally's days and the bot's ledgers), the bets tailing, fading or apart from the bot, the
+// what the wallet already holds: the balance as stacks of chips, the runs (each bet's run), You vs the Bot, same
+// game, same bet (the settler's bot call on each settled bet), the bets tailing, fading or apart from the bot, the
 // trophy case, the two tickets on the wall, the tells. Nothing here reads Firestore or changes wallet-math.ts; a
 // figure the loaded history can't settle honestly says so (`partial`) or isn't drawn.
 const round2 = (v: number): number => Math.round(v * 100) / 100;
@@ -122,73 +122,89 @@ export function runCards(settled: PlayBet[], current: number, balance: number, f
 }
 
 // ---------------------------------------------------------------------------
-// Heads up: you against the bot this week, over 30 days, or since your first bet (the wallet's versus, the same
-// figures). Yours from the tally's days, the bot's from its published, settled picks on the same days
+// Heads up: you against the bot, same game, same bet, this week, over 30 days, or since your first bet. Each of
+// your settled straight bets against the bot's own call on that market when you placed it (the settler's bot:
+// its side with the higher Kelly score, forced where it had no bet). Opposite sides: a duel, the point to the
+// side that won (a push a tie), both scored at your stake. The same side: agreed, a tie (half a point each),
+// its units kept apart, yours at your stake against the bot's at its own. A parlay, a void bet, or one the
+// bot's board can't say: not counted. The bot's own record stays on the Algorithm tab
 // ---------------------------------------------------------------------------
 export type HeadsPeriod = 'week' | 'month' | 'all';
 export interface HeadsSide {
+  // (duels won, and the points: a duel won 1, a tie (pushed duel or agreed bet) half)
   won: number;
-  lost: number;
-  push: number;
+  points: number;
+  // (the duels' units, at your stake both)
   profit: number;
-  roi: number | null;
 }
 export interface HeadsUp {
   period: HeadsPeriod;
   from: string | null;
   you: HeadsSide;
   bot: HeadsSide;
-  // (the last ten days, oldest first: who came out ahead each)
+  // (the ties: pushed duels and agreed bets)
+  ties: number;
+  duels: number;
+  agreed: { n: number; you: number; bot: number };
+  // (the last ten bets counted, oldest first: who took each)
   dots: ('you' | 'bot' | 'none')[];
 }
-type LedgerBet = Pick<ModelBet, 'status' | 'start' | 'units' | 'profit'> & { published?: boolean; void?: boolean };
+export type BotTag = 'other' | 'same' | null;
 
-const sideOf = (t: { won: number; lost: number; push: number; staked: number; profit: number }): HeadsSide => ({
-  won: t.won,
-  lost: t.lost,
-  push: t.push,
-  profit: round2(t.profit),
-  roi: t.staked ? round2(t.profit) / t.staked : null,
-});
+// (a settled bet's against the bot: the other side, the same, or not counted)
+export function botTag(b: Pick<PlayBet, 'kind' | 'status' | 'bot' | 'side'>): BotTag {
+  if (b.kind === 'parlay' || !b.bot || b.status === 'void' || b.status === 'open') return null;
+  return b.bot.side === b.side ? 'same' : 'other';
+}
+
+const toWinAt = (stake: number, odds: number): number => round2(odds > 0 ? (stake * odds) / 100 : (stake * 100) / -odds);
 const dayOffset = (day: string, n: number): string => etDay(Date.parse(`${day}T12:00:00Z`) + n * DAY);
 
-export function headsUp(tally: TallyDoc, ledger: LedgerBet[], period: HeadsPeriod, today = etDay(Date.now())): HeadsUp {
-  const active = Object.keys(tally.days)
-    .filter((d) => tally.days[d][0] + tally.days[d][1] + tally.days[d][2] > 0)
-    .sort();
-  const start = period === 'week' ? dayOffset(today, -6) : period === 'month' ? dayOffset(today, -29) : (active[0] ?? null);
-  const you = { won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
-  // (no bet settled yet: nothing on either side, as the wallet's versus has it)
-  if (!start) return { period, from: null, you: sideOf(you), bot: sideOf(you), dots: Array.from({ length: 10 }, () => 'none' as const) };
-  for (const d of active) {
-    if (start && d < start) continue;
-    const [won, lost, push, staked, profit] = tally.days[d];
-    you.won += won;
-    you.lost += lost;
-    you.push += push;
-    you.staked += staked;
-    you.profit += profit;
+export function headsUp(settled: PlayBet[], period: HeadsPeriod, today = etDay(Date.now())): HeadsUp {
+  const start = period === 'week' ? dayOffset(today, -6) : period === 'month' ? dayOffset(today, -29) : null;
+  const bets = settled
+    .filter((b) => botTag(b) && (!start || etDay(b.start) >= start))
+    .sort((x, y) => (x.settledAt ?? x.start).localeCompare(y.settledAt ?? y.start));
+  const you = { won: 0, points: 0, profit: 0 };
+  const bot = { won: 0, points: 0, profit: 0 };
+  const agreed = { n: 0, you: 0, bot: 0 };
+  let ties = 0;
+  let duels = 0;
+  const dots: ('you' | 'bot' | 'none')[] = [];
+  for (const b of bets) {
+    const call = b.bot!;
+    const mine = b.profit ?? 0;
+    if (botTag(b) === 'same') {
+      agreed.n++;
+      agreed.you += mine;
+      agreed.bot += call.profit;
+      ties++;
+      you.points += 0.5;
+      bot.points += 0.5;
+      dots.push('none');
+      continue;
+    }
+    duels++;
+    you.profit += mine;
+    bot.profit += call.status === 'won' ? toWinAt(b.stake, call.price) : call.status === 'lost' ? -b.stake : 0;
+    const winner = b.status === 'won' && call.status !== 'won' ? 'you' : call.status === 'won' && b.status !== 'won' ? 'bot' : null;
+    if (winner === 'you') (you.won++, (you.points += 1));
+    else if (winner === 'bot') (bot.won++, (bot.points += 1));
+    else (ties++, (you.points += 0.5), (bot.points += 0.5));
+    dots.push(winner ?? 'none');
   }
-  const bots = ledger.filter((b) => b.published && !b.void && b.status !== 'open');
-  const bot = { won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
-  const botDays = new Map<string, number>();
-  for (const b of bots) {
-    const d = etDay(b.start);
-    botDays.set(d, round2((botDays.get(d) ?? 0) + b.profit));
-    if (start && d < start) continue;
-    if (b.status === 'won' || b.status === 'lost' || b.status === 'push') bot[b.status]++;
-    bot.staked += b.units;
-    bot.profit += b.profit;
-  }
-  const dots = Array.from({ length: 10 }, (_, i) => dayOffset(today, i - 9)).map((d) => {
-    const mine = tally.days[d]?.[4];
-    const its = botDays.get(d);
-    if (mine === undefined && its === undefined) return 'none' as const;
-    const a = mine ?? 0;
-    const b = its ?? 0;
-    return a > b ? ('you' as const) : b > a ? ('bot' as const) : ('none' as const);
-  });
-  return { period, from: start ? `${start}T12:00:00Z` : null, you: sideOf(you), bot: sideOf(bot), dots };
+  const last = dots.slice(-10);
+  const side = (t: typeof you): HeadsSide => ({ won: t.won, points: t.points, profit: round2(t.profit) });
+  return {
+    period,
+    from: start ? `${start}T12:00:00Z` : bets[0] ? bets[0].start : null,
+    you: side(you),
+    bot: side(bot),
+    ties,
+    duels,
+    agreed: { n: agreed.n, you: round2(agreed.you), bot: round2(agreed.bot) },
+    dots: [...Array.from({ length: 10 - last.length }, () => 'none' as const), ...last],
+  };
 }
 
 // ---------------------------------------------------------------------------

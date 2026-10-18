@@ -166,9 +166,44 @@ export function seenOf(g) {
   return out;
 }
 
+// (the bot's side on each of a game's markets as the board shows it: the side with the higher Kelly score, a
+// negative one too (a side it would pass on), at that side's line and price; key "market|stat|athlete" (stat
+// and athlete empty off a prop) -> [side, line, price, kelly]. A side with no price or score loses to one with)
+export function botSidesOf(g) {
+  const out = {};
+  const better = (a, b) => (!Number.isFinite(b?.[3]) ? a : !Number.isFinite(a?.[3]) ? b : b[3] > a[3] ? b : a);
+  for (const [market, sides] of Object.entries(g.k ?? {})) {
+    const [x, y] = (sides ?? []).filter((s) => Number.isFinite(s.o)).map((s) => [s.s, market === 'ml' ? null : (s.l ?? null), s.o, Number.isFinite(s.ks) ? s.ks : null]);
+    const pick = better(x, y);
+    if (pick && Number.isFinite(pick[3])) out[`${market}||`] = pick;
+  }
+  for (const p of g.p ?? []) {
+    const [x, y] = ['over', 'under'].map((side, i) => (Number.isFinite(p.o?.[i]) ? [side, p.l, p.o[i], Number.isFinite(p.ks?.[i]) ? p.ks[i] : null] : null));
+    const pick = better(x, y);
+    if (pick && Number.isFinite(pick[3])) out[`prop|${p.k}|${p.id}`] = pick;
+  }
+  return out;
+}
+
+// The bot's sides seen (botSidesOf's) kept through the game's life, for You vs the Bot (the play-money settler,
+// settle-lib.mjs botPickAt): each market a list of [from, to, side, line, price, kelly], a new row when the
+// side, line, price or the Kelly score to two places moves, else the last row's to brought up to now
+export function botSeenUpdate(was, g, t) {
+  const out = {};
+  for (const [k, rows] of Object.entries(was && typeof was === 'object' ? was : {})) if (Array.isArray(rows)) out[k] = rows.slice();
+  for (const [k, [side, line, price, kelly]] of Object.entries(botSidesOf(g))) {
+    const rows = (out[k] ??= []);
+    const last = rows[rows.length - 1];
+    const same = last && last[2] === side && last[3] === line && last[4] === price && Math.round(last[5] * 100) === Math.round(kelly * 100);
+    if (same) rows[rows.length - 1] = [last[0], Math.max(last[1], t), ...last.slice(2)];
+    else rows.push([t, t, side, line, price, round(kelly, 4)]);
+  }
+  return out;
+}
+
 // The board seen brought up to date: each game's entries with this board's added, the games a week past their
-// start dropped; an entry shown again its last time now. seen: { sport, games: { [event]: { start, o: { [entry]:
-// [firstAt, lastAt] } } } }
+// start dropped; an entry shown again its last time now; the bot's sides too (botSeenUpdate). seen: { sport,
+// games: { [event]: { start, o: { [entry]: [firstAt, lastAt] }, b: { [market key]: rows } } } }
 export function seenUpdate(seen, board, now = new Date()) {
   const t = now.getTime();
   const games = { ...(seen?.games ?? {}) };
@@ -176,7 +211,7 @@ export function seenUpdate(seen, board, now = new Date()) {
     const was = games[g.id]?.o;
     const o = was && !Array.isArray(was) ? { ...was } : {};
     for (const e of seenOf(g)) o[e] = [o[e]?.[0] ?? t, t];
-    games[g.id] = { start: g.start, o };
+    games[g.id] = { start: g.start, o, b: botSeenUpdate(games[g.id]?.b, g, t) };
   }
   for (const [id, g] of Object.entries(games)) if (!(Date.parse(g.start) > now.getTime() - SEEN_KEEP)) delete games[id];
   return { sport: board.sport, games };

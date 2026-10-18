@@ -31,6 +31,8 @@ import {
   addToTally,
   boardObservations,
   botObservations,
+  botPickAt,
+  gradeBot,
   coreObservations,
   creditOf,
   gradedPick,
@@ -108,6 +110,21 @@ export function readBoards(root = ROOT) {
     try {
       const seen = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'scripts/model/board-seen.json'), 'utf8'));
       out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.o ?? {}]));
+    } catch {
+      out[sport] = {};
+    }
+  }
+  return out;
+}
+
+// (the bot's sides its board showed, each sport's (board.mjs botSeenUpdate: board-seen.json's b): event -> market
+// -> rows, for You vs the Bot (settle-lib.mjs botPickAt); none read, none)
+export function readBotBoards(root = ROOT) {
+  const out = {};
+  for (const sport of SETTLED) {
+    try {
+      const seen = JSON.parse(fs.readFileSync(path.join(root, 'apps', sport, 'scripts/model/board-seen.json'), 'utf8'));
+      out[sport] = Object.fromEntries(Object.entries(seen.games ?? {}).map(([id, g]) => [id, g.b ?? {}]));
     } catch {
       out[sport] = {};
     }
@@ -238,7 +255,7 @@ export async function snapshotLines(db, { fetchJson = get, now = Date.now(), dry
 // ---------------------------------------------------------------------------
 // Settling
 // ---------------------------------------------------------------------------
-export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), mmaKept, dry = false, log = console.log } = {}) {
+export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), botSeen = readBotBoards(), mmaKept, dry = false, log = console.log } = {}) {
   const snap = await db.collectionGroup('bets').where('status', '==', 'open').get();
   const users = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users');
   // (a deleted account's open bets: the browser can't delete an open bet (firestore.rules), so they go here,
@@ -329,8 +346,10 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
       counts.waiting++;
       continue;
     }
+    // (the bot's call on the same market when it was placed, graded beside it: You vs the Bot)
+    const bot = botFor(bet, result, { botSeen, ledgers, game: inputs.game, propValue: inputs.propValue });
     // (filed under the game's own start, not the one the browser wrote)
-    await done(d, bet, result, inputs.game?.date);
+    await done(d, bet, result, inputs.game?.date, { bot });
   }
   // (the parlays: each leg graded as a straight bet is, once its game's begun; a leg graded on an earlier run
   // kept as it was, and a malformed one never looked up (legProblem: settleParlay voids it). One that fails is
@@ -361,6 +380,32 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     log(`preview lines: not read (${error?.message ?? error})`);
   }
   return counts;
+}
+
+// (a straight bet's bot: the bot's side on its market at its placement, graded beside its result (settle-lib.mjs
+// botPickAt, gradeBot); null without a board row for it then, or a void bet)
+export function botFor(bet, result, { botSeen = {}, ledgers = {}, game = null, propValue } = {}) {
+  const rows = botSeen[bet.sport]?.[String(bet.event)];
+  const mine = (ledgers[bet.sport] ?? []).filter((b) => String(b.event) === String(bet.event));
+  return gradeBot(bet, result, botPickAt(bet, rows, mine), { game, propValue });
+}
+
+// The bot's call filled in on the straight bets settled before it was kept (the last BACKFILL_DAYS: the
+// board's rows go a week past a game's start), each once: null where the board can't say. Graded from the
+// bet's own result (a moved line not graded again: null)
+const BACKFILL_DAYS = 8;
+export async function backfillBot(db, { now = Date.now(), botSeen = readBotBoards(), ledgers = readLedgers(), dry = false, log = console.log } = {}) {
+  const snap = await db.collectionGroup('bets').where('settledAt', '>=', Timestamp.fromMillis(now - BACKFILL_DAYS * DAY)).get();
+  const todo = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users' && d.get('kind') !== 'parlay' && d.get('bot') === undefined && ['won', 'lost', 'push', 'void'].includes(d.get('status')));
+  let filled = 0;
+  for (const d of todo) {
+    const bet = { ...d.data(), start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+    const bot = botFor(bet, { status: bet.status }, { botSeen, ledgers });
+    if (bot) filled++;
+    if (!dry) await d.ref.update({ bot });
+  }
+  log(`bot calls: ${todo.length} settled bet${todo.length === 1 ? '' : 's'} looked at, ${filled} with the bot's side${dry ? ' (dry)' : ''}`);
+  return { looked: todo.length, filled };
 }
 
 // (a parlay's legs' results onto its stored legs: each leg's status, final and note, and its game's own start,
@@ -402,7 +447,7 @@ async function removeGone(db, docs, gone, { dry = false, log = console.log } = {
 // alone: settled already). A bet placed before a reload counts in the record; its payout stays with its run,
 // and a bet placed before the wallet was made (deleted and made again) is paid nothing (paysInto). The tally's
 // day is the game's own start when it's known (`start`), not the one the browser wrote on the bet.
-export async function settleOne(db, ref, result, { start = null, legs = null, paidOdds } = {}) {
+export async function settleOne(db, ref, result, { start = null, legs = null, paidOdds, bot } = {}) {
   const uid = ref.parent.parent.id;
   const walletRef = db.doc(`users/${uid}/wallet/main`);
   const tallyRef = db.doc(`tallies/${uid}`);
@@ -418,6 +463,8 @@ export async function settleOne(db, ref, result, { start = null, legs = null, pa
       // (a parlay: its legs' results, and the price it paid at once a leg dropped out)
       ...(legs ? { legs: withResults(bet.get('legs') ?? [], legs) } : {}),
       ...(paidOdds !== undefined ? { paidOdds } : {}),
+      // (a straight bet's: the bot's own call on it, or null where the board can't say)
+      ...(bot !== undefined ? { bot } : {}),
       settledAt: FieldValue.serverTimestamp(),
     });
     const credit = creditOf(data.stake, result);
@@ -503,7 +550,7 @@ export async function boardsDue(db, counts, now = Date.now()) {
 
 // The whole run: settle, then the boards (when they're due), then the lines' snapshots (each part on its own: one
 // failing doesn't stop the others)
-export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, seen, mmaKept, dry = false, log = console.log } = {}) {
+export async function run({ db = getFirestore(adminApp()), fetchJson = get, now = Date.now(), ledgers, seen, botSeen, mmaKept, dry = false, log = console.log } = {}) {
   let failed = false;
   const step = async (name, fn) => {
     try {
@@ -514,7 +561,15 @@ export async function run({ db = getFirestore(adminApp()), fetchJson = get, now 
       return null;
     }
   };
-  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers: ledgers ?? readLedgers(), seen: seen ?? readBoards(), mmaKept, dry, log }));
+  ledgers ??= readLedgers();
+  botSeen ??= readBotBoards();
+  const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers, seen: seen ?? readBoards(), botSeen, mmaKept, dry, log }));
+  // (the bot's call on bets settled before it was kept: its failing (its index still building) fails nothing)
+  try {
+    await backfillBot(db, { now, botSeen, ledgers, dry, log });
+  } catch (error) {
+    log(`bot calls: not filled (${error?.message ?? error})`);
+  }
   const boards = await step('Leaderboards', async () => ((await boardsDue(db, counts, now)) ? writeLeaderboards(db, { now, dry, log }) : null));
   const lines = await step('Lines', () => snapshotLines(db, { fetchJson, now, dry, log }));
   return { counts, boards, lines, failed };

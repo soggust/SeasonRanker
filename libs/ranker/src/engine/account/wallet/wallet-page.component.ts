@@ -18,7 +18,6 @@ import {
   PlayLive,
   SPORTS,
   START,
-  Versus,
   betToWin,
   byGame,
   dayCurve,
@@ -33,10 +32,8 @@ import {
   recordText,
   settledCount,
   toWin,
-  versusBot,
-  versusDays,
 } from './wallet-math';
-import { HeadsPeriod, HeadsUp, Trophy, WalletPanel, botSplit, chipStacks, headsUp, panelOpen, runCards, tells, trophies, wallPicks } from './wallet-view';
+import { HeadsPeriod, HeadsUp, Trophy, WalletPanel, botSplit, botTag, chipStacks, headsUp, panelOpen, runCards, tells, trophies, wallPicks } from './wallet-view';
 
 type Period = Leaderboard['period'];
 
@@ -288,12 +285,6 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   barClick(event: MouseEvent, panel: WalletPanel): void {
     if (!this.only && barClickToggles(event.target as Element | null)) this.togglePanel(panel);
   }
-  readonly versus = computed<Versus | null>(() => {
-    const ledger = this.ledger();
-    if (!ledger) return null;
-    const tally = this.wallet.tally();
-    return tally ? versusDays(tally, ledger) : versusBot(this.wallet.bets(), ledger);
-  });
   // (the run's own profit: the balance against what the run began at (the wallet's start: 1,000 for a run begun
   // before 2026-10-17), the open stakes counted back in)
   readonly runProfit = computed(() => this.wallet.balance() + this.tally().atRisk - this.wallet.runStart());
@@ -310,8 +301,8 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (the runs: every one once the history's all here, else the current one)
   readonly runs = computed(() => runCards(this.wallet.settledBets(), this.wallet.wallet()?.resets ?? 0, this.wallet.balance(), this.fullHistory(), this.wallet.runStart()));
   readonly currentRun = computed(() => this.runs().find((r) => r.current) ?? null);
-  // Heads up: versus over a week, 30 days or all time (the same figures as versus: all time from the tally's days
-  // and the bot's ledgers; without a tally yet, the bets on hand, all time only)
+  // Heads up: same game, same bet, over a week, 30 days or all time (wallet-view.ts headsUp: the loaded settled
+  // bets against the bot's call the settler wrote on each); none counted yet, not shown
   readonly headsPeriod = signal<HeadsPeriod>('all');
   readonly headsPeriods: { id: HeadsPeriod; label: string; words: string }[] = [
     { id: 'week', label: 'Week', words: 'This week' },
@@ -319,13 +310,11 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     { id: 'all', label: 'All', words: 'Since your first bet' },
   ];
   readonly heads = computed<HeadsUp | null>(() => {
-    const ledger = this.ledger();
-    const v = this.versus();
-    if (!ledger || !v?.from) return null;
-    const tally = this.wallet.tally();
-    if (tally) return headsUp(tally, ledger, this.headsPeriod());
-    return { period: 'all', from: v.from, you: v.you, bot: v.bot, dots: Array.from({ length: 10 }, () => 'none' as const) };
+    const settled = this.wallet.settledBets();
+    if (!settled.some((b) => botTag(b))) return null;
+    return headsUp(settled, this.headsPeriod());
   });
+  readonly botTag = botTag;
   periodWords(period: HeadsPeriod): string {
     return this.headsPeriods.find((p) => p.id === period)?.words ?? '';
   }
