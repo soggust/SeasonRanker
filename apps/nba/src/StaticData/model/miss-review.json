@@ -1,0 +1,13 @@
+{
+ "sport": "nba",
+ "days": 7,
+ "reviews": [],
+ "tally": [],
+ "recommendations": [],
+ "count": {
+  "reviewed": 0,
+  "backfill": 0,
+  "usd": 0
+ },
+ "at": "2026-10-18T23:35:08.626Z"
+}

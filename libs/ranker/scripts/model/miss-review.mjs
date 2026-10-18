@@ -611,7 +611,9 @@ export async function missReview(sport, { now = new Date(), env = process.env, d
     const before = ledger.filter((b) => b.gradedAt && b.gradedAt <= kept.cut && slateDay(b) < dailyFrom);
     const days = [...new Set(before.map(slateDay))].sort();
     picks.push(...retryOf(true).map((m) => ({ ...m, day: slateDay(m.row) })));
-    for (const d of days) picks.push(...pickMisses(sport, before.filter((b) => slateDay(b) === d), { skip }).map((m) => ({ ...m, day: d })));
+    // (a day's quota less the misses of it already reviewed: a backfill stopped part way picks up where it was)
+    const had = (d, clv) => kept.reviews.filter((r) => r.backfill && r.slate === d && (r.reason === 'clv') === clv).length;
+    for (const d of days) picks.push(...pickMisses(sport, before.filter((b) => slateDay(b) === d), { skip, perSport: Math.max(0, PER_SPORT - had(d, false)), clvExtra: Math.max(0, CLV_EXTRA - had(d, true)) }).map((m) => ({ ...m, day: d })));
   } else if (!kept.lastDay || (kept.lastDay < today && now.getUTCHours() >= REVIEW_HOUR_UTC) || force) {
     const from = kept.cut ?? new Date(now.getTime() - LOOKBACK_DAYS * DAY).toISOString();
     const fresh = ledger.filter((b) => b.gradedAt && b.gradedAt > from);

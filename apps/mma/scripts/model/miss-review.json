@@ -1,0 +1,75 @@
+{
+ "cut": "2026-10-18T23:35:11.329Z",
+ "lastDay": null,
+ "pending": null,
+ "retry": [],
+ "reviews": [
+  {
+   "id": "401897388:ml:4024714-3165120",
+   "sport": "mma",
+   "day": "2026-10-17",
+   "slate": "2026-10-17",
+   "pick": "Joaquin Buckley",
+   "matchup": "Mike Malott @ Joaquin Buckley",
+   "stat": "Moneylines",
+   "market": "ml",
+   "status": "lost",
+   "result": "Joaquin Buckley vs Mike Malott: Mike Malott won",
+   "reason": "clv",
+   "score": 0.07,
+   "z": null,
+   "conf": 0.5272,
+   "clvLoss": 0.0299,
+   "backfill": true,
+   "cause": "data",
+   "confidence": 0.45,
+   "evidence": "Fightmag lists Buckley at 21-8, but the model had him at 16-8 (Malott 8-2-1), so its rating and streak inputs look years out of date. The price drifted from +114 to +124 against the bet, and Malott KO'd Buckley with a knee in round 2 at home in Edmonton (CBS, Yahoo).",
+   "term": null,
+   "bug": "The fighter records in the context are stale: Buckley 16-8 vs 21-8 actual, and Malott's 8-2-1 also looks old. Rating, streak and per-minute stats were probably built from outdated fight histories.",
+   "sources": [
+    "https://www.fightmag.com/ufc-edmonton-buckley-vs-malott-live-results/",
+    "https://www.cbssports.com/ufc/news/ufc-fight-night-results-live-updates-joaquin-buckley-mike-malott/live/",
+    "https://sports.yahoo.com/articles/ufc-edmonton-joaquin-buckley-vs-120005414.html"
+   ],
+   "at": "2026-10-18T23:37:16.185Z",
+   "cost": 0.09012,
+   "searches": 3,
+   "model": "claude-opus-5-5"
+  },
+  {
+   "id": "401911807:ml:4807973-5296770",
+   "sport": "mma",
+   "day": "2026-10-17",
+   "slate": "2026-10-17",
+   "pick": "Julien LeBlanc",
+   "matchup": "Nick Galanti @ Julien LeBlanc",
+   "stat": "Moneylines",
+   "market": "ml",
+   "status": "lost",
+   "result": "Julien LeBlanc vs Nick Galanti: Nick Galanti won",
+   "reason": "clv",
+   "score": 0,
+   "z": null,
+   "conf": 0.1874,
+   "clvLoss": 0.0213,
+   "backfill": true,
+   "cause": "variance",
+   "confidence": 0.6,
+   "evidence": "Galanti, a heavy -714 favorite, won as expected: he took LeBlanc down right away, took his back and won by face crank at 1:26 of R1 (Sherdog, Yahoo). LeBlanc drifted from +500 to +575, but I found no injury or other news behind the move.",
+   "term": null,
+   "bug": null,
+   "sources": [
+    "https://x.com/sherdogdotcom/status/2111596842437992665",
+    "https://sports.yahoo.com/articles/ufc-edmonton-live-results-highlights-201500855.html",
+    "https://www.sherdog.com/news/news/UFC-Edmonton-Buckley-vs-Malott-playbyplay-results-round-scoring-203257"
+   ],
+   "at": "2026-10-18T23:37:16.185Z",
+   "cost": 0.08761,
+   "searches": 3,
+   "model": "claude-opus-5-5"
+  }
+ ],
+ "backfill": {
+  "pending": null
+ }
+}

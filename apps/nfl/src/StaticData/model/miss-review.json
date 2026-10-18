@@ -77,6 +77,136 @@
    "cause": "variance",
    "confidence": 0.55,
    "evidence": "Pitre and Montgomery being out was on the inactive list, which the model had already repriced on, and the close only moved the total a point, so the inputs were mostly right. Both offenses just hit big passing plays: neither team took a sack, they averaged 7.2 and 6.1 yards per play, and 65 points came on only 10 drives each. Houston's in-game concussion checks (Al-Shaair returned) aren't enough t"
+  },
+  {
+   "day": "2026-10-12",
+   "pick": "Under 54.5",
+   "matchup": "BUF @ LAR",
+   "stat": "Totals",
+   "status": "lost",
+   "result": "BUF 37 @ LAR 34",
+   "reason": "surprise",
+   "score": 1.43,
+   "z": 1.43,
+   "conf": 0.5831,
+   "cause": "variance",
+   "confidence": 0.55,
+   "evidence": "The game was tied 34-34 after regulation (68 points), so it went over 54.5 before OT. The Bills ran for 234 yards at 6.3 a carry and the Rams scored on 5 of 5 red-zone trips (AP/ESPN). The total closing 1 point higher (55.5) is too small to explain a miss this big.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Isaiah Likely Under 4.5 Receptions",
+   "matchup": "NYG @ WSH",
+   "stat": "Receptions",
+   "status": "lost",
+   "result": "Isaiah Likely 11 Receptions",
+   "reason": "surprise",
+   "score": 2.44,
+   "z": 2.44,
+   "conf": 0.6231,
+   "cause": "script",
+   "confidence": 0.45,
+   "evidence": "Giants trailed and rallied in the second half for a 27-27 OT tie (SI says the comeback was 'powered by Likely-Winston duo'). Likely caught 11 of 13 targets for 94 yds and 2 TDs, a career high. Trailing plus overtime pushed volume far above the 3.93 mean, while the script term (0.946) had cut his projection.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Carnell Tate Over 47.5 Rec Yds",
+   "matchup": "HOU @ TEN",
+   "stat": "Rec Yds",
+   "status": "lost",
+   "result": "Carnell Tate 6 Rec Yds",
+   "reason": "surprise",
+   "score": 2.01,
+   "z": -2.01,
+   "conf": 0.5687,
+   "cause": "matchup",
+   "confidence": 0.55,
+   "evidence": "Tate (back) played and drew 5 targets but caught 1 for 6 yds in a 26-3 loss. Houston's defense had 4 sacks and 2 takeaways, and Saleh said its pass rush wrecked the game plan (Yahoo, AP recap).",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "DK Metcalf Over 52.5 Rec Yds",
+   "matchup": "IND @ PIT",
+   "stat": "Rec Yds",
+   "status": "lost",
+   "result": "DK Metcalf 12 Rec Yds",
+   "reason": "surprise",
+   "score": 1.77,
+   "z": -1.77,
+   "conf": 0.6104,
+   "cause": "matchup",
+   "confidence": 0.45,
+   "evidence": "Metcalf caught 3 of 4 targets for 12 yards, a season low in targets (NBC, FOX). He traded jabs with Colts CB Sauce Gardner before kickoff, and Pittsburgh's offense went through Warren (188 total yards) and Freiermuth (2 TDs). I couldn't confirm that Gardner shadowed him.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Brenton Strange Under 3.5 Receptions",
+   "matchup": "PHI @ JAX",
+   "stat": "Receptions",
+   "status": "lost",
+   "result": "Brenton Strange 7 Receptions",
+   "reason": "surprise",
+   "score": 1.73,
+   "z": 1.73,
+   "conf": 0.6377,
+   "cause": "term",
+   "confidence": 0.4,
+   "evidence": "Strange caught 7 for 95 the week before, and the Jaguars said it was his biggest role of the season. He averaged ~3.5 rec/game in 2026 (21 in 5 incl. this game's 7) and 3.8 in 2025. The 0.804 opp discount cut a 3.19 rate to a 2.96 mean, and he caught 7 of 8 targets.",
+   "term": "opp",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Drake Maye Under 1.5 Pass TDs",
+   "matchup": "LV @ NE",
+   "stat": "Pass TDs",
+   "status": "lost",
+   "result": "Drake Maye 4 Pass TDs",
+   "reason": "surprise",
+   "score": 1.67,
+   "z": 1.67,
+   "conf": 0.5394,
+   "cause": "variance",
+   "confidence": 0.55,
+   "evidence": "Maye went 26/34 for 374 yards and 4 TDs in a 45-17 win, even without WR Mack Hollins. I found no role, injury or line change before the game: the line stayed at 1.5 and the model's 1.55 mean was close to the market. A 4-TD game sits in the tail.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Tee Higgins Over 61.5 Rec Yds",
+   "matchup": "CIN @ MIA",
+   "stat": "Rec Yds",
+   "status": "lost",
+   "result": "Tee Higgins 22 Rec Yds",
+   "reason": "clv",
+   "score": 1.44,
+   "z": -1.44,
+   "conf": 0.6048,
+   "cause": "market",
+   "confidence": 0.6,
+   "evidence": "Higgins was questionable with groin and neck injuries (Athlon, SI). The prop dropped from 61.5 to 55.5 before kickoff. He played hurt and caught 2 of 4 targets for 22 yards (RotoWire), while the model still used his full 0.789 snap share and ignored the guard flag.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-11",
+   "pick": "Under 45.5",
+   "matchup": "LV @ NE",
+   "stat": "Totals",
+   "status": "lost",
+   "result": "LV 17 @ NE 45",
+   "reason": "clv",
+   "score": 1.43,
+   "z": 1.43,
+   "conf": 0.5827,
+   "cause": "data",
+   "confidence": 0.5,
+   "evidence": "Near kickoff, Covers had the total at 45–45.5 across books (DK u45.5 -120). FanDuel had 44.5, and 45.5 was the opener. Nothing supports a 51.5 close, so that 6-point move is probably an in-game line. The bet lost when Maye threw 4 TD, ran 1, NE 536 yds, 45-17.",
+   "bug": "The stored close of 51.5 (and the spread moving 5) doesn't match the pregame market, which sat at 45–45.5 at kickoff. It was probably captured from a live/in-game line, which made the CLV look about 1",
+   "backfill": true
   }
  ],
  "tally": [
@@ -84,6 +214,15 @@
    "sport": "nfl",
    "stat": "Receptions",
    "cause": "script",
+   "n": 3,
+   "w": 1.55,
+   "of": 5,
+   "share": 0.16
+  },
+  {
+   "sport": "nfl",
+   "stat": "Totals",
+   "cause": "variance",
    "n": 2,
    "w": 1.1,
    "of": 3,
@@ -91,7 +230,25 @@
   },
   {
    "sport": "nfl",
-   "stat": "Totals",
+   "stat": "Rec Yds",
+   "cause": "matchup",
+   "n": 2,
+   "w": 1,
+   "of": 4,
+   "share": 0.11
+  },
+  {
+   "sport": "nfl",
+   "stat": "Receptions",
+   "cause": "term",
+   "n": 2,
+   "w": 1,
+   "of": 5,
+   "share": 0.1
+  },
+  {
+   "sport": "nfl",
+   "stat": "Pass TDs",
    "cause": "variance",
    "n": 1,
    "w": 0.55,
@@ -101,27 +258,36 @@
   {
    "sport": "nfl",
    "stat": "Rec Yds",
-   "cause": "script",
+   "cause": "market",
    "n": 1,
-   "w": 0.5,
-   "of": 1,
-   "share": 0.08
+   "w": 0.6,
+   "of": 4,
+   "share": 0.07
   },
   {
    "sport": "nfl",
-   "stat": "Receptions",
-   "cause": "term",
+   "stat": "Rec Yds",
+   "cause": "script",
    "n": 1,
-   "w": 0.6,
+   "w": 0.5,
+   "of": 4,
+   "share": 0.06
+  },
+  {
+   "sport": "nfl",
+   "stat": "Totals",
+   "cause": "data",
+   "n": 1,
+   "w": 0.5,
    "of": 3,
-   "share": 0.08
+   "share": 0.06
   }
  ],
  "recommendations": [],
  "count": {
-  "reviewed": 5,
-  "backfill": 0,
-  "usd": 0.5993
+  "reviewed": 13,
+  "backfill": 8,
+  "usd": 1.6166
  },
- "at": "2026-10-18T23:16:54.326Z"
+ "at": "2026-10-18T23:38:48.038Z"
 }

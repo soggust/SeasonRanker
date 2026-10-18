@@ -1,0 +1,66 @@
+{
+ "sport": "mma",
+ "days": 7,
+ "reviews": [
+  {
+   "day": "2026-10-17",
+   "pick": "Joaquin Buckley",
+   "matchup": "Mike Malott @ Joaquin Buckley",
+   "stat": "Moneylines",
+   "status": "lost",
+   "result": "Joaquin Buckley vs Mike Malott: Mike Malott won",
+   "reason": "clv",
+   "score": 0.07,
+   "z": null,
+   "conf": 0.5272,
+   "cause": "data",
+   "confidence": 0.45,
+   "evidence": "Fightmag lists Buckley at 21-8, but the model had him at 16-8 (Malott 8-2-1), so its rating and streak inputs look years out of date. The price drifted from +114 to +124 against the bet, and Malott KO'd Buckley with a knee in round 2 at home in Edmonton (CBS, Yahoo).",
+   "bug": "The fighter records in the context are stale: Buckley 16-8 vs 21-8 actual, and Malott's 8-2-1 also looks old. Rating, streak and per-minute stats were probably built from outdated fight histories.",
+   "backfill": true
+  },
+  {
+   "day": "2026-10-17",
+   "pick": "Julien LeBlanc",
+   "matchup": "Nick Galanti @ Julien LeBlanc",
+   "stat": "Moneylines",
+   "status": "lost",
+   "result": "Julien LeBlanc vs Nick Galanti: Nick Galanti won",
+   "reason": "clv",
+   "score": 0,
+   "z": null,
+   "conf": 0.1874,
+   "cause": "variance",
+   "confidence": 0.6,
+   "evidence": "Galanti, a heavy -714 favorite, won as expected: he took LeBlanc down right away, took his back and won by face crank at 1:26 of R1 (Sherdog, Yahoo). LeBlanc drifted from +500 to +575, but I found no injury or other news behind the move.",
+   "backfill": true
+  }
+ ],
+ "tally": [
+  {
+   "sport": "mma",
+   "stat": "Moneylines",
+   "cause": "variance",
+   "n": 1,
+   "w": 0.6,
+   "of": 2,
+   "share": 0.09
+  },
+  {
+   "sport": "mma",
+   "stat": "Moneylines",
+   "cause": "data",
+   "n": 1,
+   "w": 0.45,
+   "of": 2,
+   "share": 0.06
+  }
+ ],
+ "recommendations": [],
+ "count": {
+  "reviewed": 2,
+  "backfill": 2,
+  "usd": 0.1777
+ },
+ "at": "2026-10-18T23:37:16.185Z"
+}
