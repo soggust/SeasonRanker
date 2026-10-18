@@ -137,3 +137,22 @@ test('WEATHER.nfl: rain only once the archive has filled the history, a forecast
   // (a coming game under a retractable roof that's been open: unknown, marked missing, no game flag)
   assert.deepEqual(w({ id: 'c2', final: false }), { info: { roof: 'retractable', missing: true } });
 });
+
+test("selectTerms (the loss review's B7): a term dropped while a correlated one was in is taken back once that one leaves, where it pays its 1 nat", async () => {
+  const { selectTerms } = await import('../libs/ranker/scripts/model/ratings.mjs');
+  // (a and b carry the same signal (either alone 2 nats, both together 2.2); c is noise. Per game scores over n = 100)
+  const n = 100;
+  const nats = (on) => (on.has('a') || on.has('b') ? 2 : 0) + (on.has('a') && on.has('b') ? 0.2 : 0) + (on.has('c') ? 0.3 : 0);
+  const gates = ['a', 'b', 'c'];
+  const runOf = (off) => ({ score: -nats(new Set(gates.filter((g) => !off.has(g)))) / n, off: [...off] });
+  const off = new Set();
+  const best = selectTerms(gates, off, runOf(off), runOf, n);
+  // (a leaves first (b covers it), then b alone pays 2 nats and stays; c never pays)
+  assert.deepEqual([...off].sort(), ['a', 'c']);
+  assert.ok(Math.abs(best.score - -2 / n) < 1e-12);
+  // (a greedy drop that left both out is undone: the best one back)
+  const both = new Set(['a', 'b', 'c']);
+  selectTerms(gates, both, runOf(both), runOf, n);
+  assert.equal(both.size, 2);
+  assert.ok(!both.has('a') || !both.has('b'));
+});

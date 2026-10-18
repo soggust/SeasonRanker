@@ -194,6 +194,42 @@ function solve(A, b) {
   return M.map((row, i) => (Math.abs(row[i]) < 1e-12 ? 0 : row[n] / row[i]));
 }
 
+// The context terms that pay for themselves (fitContext's): each in (not in off) left out where the held-out games
+// do as well within 1 nat without it, again until none leaves (one leaving can make another not worth its place);
+// then each one out taken back where the held-out games do better by more than 1 nat with it (the loss review's
+// B7, 2026-10-18: a term dropped while a correlated one was in was never asked again once that one left, so the
+// NHL's goalie edge sat out at +1.19 nats over 1,070 games, past the bar it was dropped by), the best taken first,
+// and the leaving asked again after. gates: every gate; off: the Set of gates out (changed in place); best: the
+// current fit ({ score, ... }, lower better); runOf(off): a fit with those out; n: the games a score is per.
+// The best fit, its gates in by off
+export function selectTerms(gates, off, best, runOf, n) {
+  for (let round = 0; round < 4; round++) {
+    for (let changed = true, passes = 0; changed && passes < 4; passes++) {
+      changed = false;
+      for (const gate of gates) {
+        if (off.has(gate)) continue;
+        const without = runOf(new Set([...off, gate]));
+        // (one nat each: a park's set is already held back by its own lambda, fit on the same held-out games)
+        if ((without.score - best.score) * n <= 1) {
+          off.add(gate);
+          best = { ...best, ...without };
+          changed = true;
+        }
+      }
+    }
+    let add = null;
+    for (const gate of gates) {
+      if (!off.has(gate)) continue;
+      const tried = runOf(new Set([...off].filter((g) => g !== gate)));
+      if ((best.score - tried.score) * n > 1 && (!add || tried.score < add.tried.score)) add = { gate, tried };
+    }
+    if (!add) break;
+    off.delete(add.gate);
+    best = { ...best, ...add.tried };
+  }
+  return best;
+}
+
 // The context's fit, on top of the ratings' settings: how hard to pull the terms' sizes toward 0 (lambda, the
 // one whose held-out predictions were best), then which terms earn their place (each left out in turn, and
 // kept only if the held-out games were predicted better with it by more than 1 nat in all: the cost of one
@@ -240,21 +276,8 @@ export function fitContext(games, params, feats, terms) {
     lambdaSet = set.lambdaSet;
     best = set;
   }
-  // (each term must pay for itself on the held-out games, or it's left out)
-  // (again until none leaves: one leaving can make another not worth its place)
-  for (let changed = true, passes = 0; changed && passes < 4; passes++) {
-    changed = false;
-    for (const gate of gates) {
-      if (off.has(gate)) continue;
-      const without = run(best.lambda, new Set([...off, gate]));
-      // (one nat each: a park's set is already held back by its own lambda, fit on the same held-out games)
-      if ((without.score - best.score) * n <= 1) {
-        off.add(gate);
-        best = { ...best, ...without };
-        changed = true;
-      }
-    }
-  }
+  // (each term must pay for itself on the held-out games, or it's left out: selectTerms)
+  best = selectTerms(gates.filter(seenGate), off, best, (o) => run(best.lambda, o), n);
   // (each term's worth: how much worse the held-out games were without it, or better with it, per game)
   const gain = {};
   for (const gate of gates) {
