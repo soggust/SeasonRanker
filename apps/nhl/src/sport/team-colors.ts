@@ -52,4 +52,8 @@ export const ERA_COLORS: Record<string, [string, string]> = {};
 
 // What the rules can't decide, checked by eye, by file (face: a color, or 'primary', the team's own toned
 // for the board)
-export const OVERRIDES: Record<string, TeamLookOverride> = {};
+export const OVERRIDES: Record<string, TeamLookOverride> = {
+  // (the Blues ringed in their blue, lifted to read on the board, not the gold second color: the owner)
+  'STL.svg': { rim: '#4c94dd' },
+  'STL_20082009-20242025.svg': { rim: '#4c94dd' },
+};
