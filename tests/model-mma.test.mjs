@@ -364,7 +364,7 @@ test('totalPickFor: the practice stake (0.5u, an edge still needed) till 40 grad
   assert.ok(live.placed.units <= 1);
   assert.equal(totalPickFor(0.44, lines, 0.5, { live: true }).pick.side, 'under');
   assert.ok(totalPickFor(0.9, lines, 0.5, { live: true }).skip);
-  const graded = Array.from({ length: TOTAL_LIVE }, () => ({ market: 'total', status: 'won', clv: { q: 0.5 } }));
+  const graded = Array.from({ length: TOTAL_LIVE }, () => ({ market: 'total', status: 'won', clv: { q: 0.5, prob: 0 } }));
   assert.equal(liveCount(graded), TOTAL_LIVE);
   assert.equal(liveCount([...graded.slice(1), { market: 'total', status: 'won' }, { market: 'ml', status: 'won', clv: {} }]), TOTAL_LIVE - 1);
 });

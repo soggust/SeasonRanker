@@ -19,7 +19,7 @@ const check = (over = {}) => ({ id: '401872777:prop:receptions:4429096', event: 
 const corum = { player: 'Blake Corum', status: 'unknown', reason: 'none', summary: 'No injury, role or lineup news found for this game. Corum is still Kyren Williams\' backup and caught 3 of 4 targets in Week 5.', sources: src, explains: false, category: 'market', confidence: 'low' };
 const x = { side: 'under', fair: 0.5, model: 0.72, odds: +100, push: 0, guarded: true, shadow: false };
 // (a graded research bet: won or lost at a price, its close)
-const graded = (status, { odds = -110, clv = 0.01, kind = 'researchBet' } = {}) => ({ [kind]: kind === 'researchBet' ? { check: 'x' } : { checks: ['x'], own: true }, status, odds, profit: status === 'won' ? 0.909 : -1, clv: Number.isFinite(clv) ? { ev: clv, beat: clv > 0 } : null });
+const graded = (status, { odds = -110, clv = 0.01, kind = 'researchBet' } = {}) => ({ [kind]: kind === 'researchBet' ? { check: 'x' } : { checks: ['x'], own: true }, status, odds, profit: status === 'won' ? 0.909 : -1, clv: Number.isFinite(clv) ? { ev: clv - 0.045, prob: clv, beat: clv > 0 } : null });
 const record = (won, lost, opts) => [...Array.from({ length: won }, () => graded('won', opts)), ...Array.from({ length: lost }, () => graded('lost', opts))];
 
 test("Corum: a real answer that found nothing at low confidence is a bet verdict, priced at the trust with the lean held at half the GAP", () => {

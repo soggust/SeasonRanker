@@ -135,7 +135,7 @@ import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds
 import { adjust, expect, fit, fitContext, gateOf, replay, round } from './ratings.mjs';
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
-import { closeOf, closingLines, clvOf, clvSummary, propCloseOf } from './clv.mjs';
+import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
 import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
@@ -1279,42 +1279,78 @@ function refitCorrection(r) {
   }
 }
 
-// 3b. each bet's close, once its game has started (the core API keeps it after kickoff), and its CLV
-// (clv.mjs); a close the API never gives (it's failed for 3 days) is taken as the last line a run saw
+// 3b. each bet's close, once its game is final, and its CLV (clv.mjs). Only once it's final: ESPN's close for a
+// game under way can be an in-game line (LV @ NE 2026-10-11 kept +8.5 and 51.5 for a game that closed +3.5 and
+// 45.5; STL @ NSH's total 6.5 +114 for 5.5 -135), and a board read mid-game its in-game rungs; both stay up
+// after the final. The line a run saw (seen) stands in only where it was seen within SEEN_NEAR of the start (a
+// prop's board without prices, the NFL's; a game the API keeps no close for, MLB's); none such 3 days on: no
+// close, the row's CLV left out with its reason. A row valued under an older CLV definition (clv.mjs CLV_V) is
+// valued again: its close read again where it was ESPN's (CLOSE_REREAD games a run at most), else from the
+// close it kept
+export const SEEN_NEAR = 3 * 36e5;
+const CLOSE_REREAD = 150;
 async function captureClose(r) {
   const { sport, cfg, games, params } = r;
+  const dist = { sigma: params.sigma, sigmaT: params.sigmaT, shape: r.shape };
+  const sigmaOf = (b) => (b.market === 'total' ? params.sigmaT : params.sigma);
+  const carryOf = (key) => propCarry(r.props?.[key]?.params ?? null);
+  const now = r.now.getTime();
+  // (its game final; one the games no longer list, 12 hours after its start)
+  const over = (b) => (games.get(b.event) ? !!games.get(b.event).final : now - Date.parse(b.start) > 12 * 36e5);
+  const near = (b) => !!b.seen?.at && Date.parse(b.start) - Date.parse(b.seen.at) < SEEN_NEAR;
+  // (no close: its CLV left out, said why; an old 'last seen' close from hours before the start among them)
+  const noClose = (bet) => ({ pts: null, prob: null, ev: null, q: null, beat: null, result: null, why: bet.seen?.at ? `no close: the last price seen ${round((Date.parse(bet.start) - Date.parse(bet.seen.at)) / 36e5, 1)}h before the start` : 'no close', v: CLV_V });
   // (not a void bet's, nor one on a game called off: no action, so no close)
-  const started = r.ledger.bets.filter((b) => !b.clv && !b.void && !games.get(b.event)?.off && Date.parse(b.start) <= r.now.getTime());
-  const events = [...new Set(started.map((b) => b.event))];
+  const live = r.ledger.bets.filter((b) => !b.void && !games.get(b.event)?.off && Date.parse(b.start) <= now && over(b));
+  const fresh = live.filter((b) => !b.clv);
+  const reread = live.filter((b) => b.clv && b.clv.v !== CLV_V && b.close?.source === 'close');
+  const freshEvents = new Set(fresh.map((b) => b.event));
+  const events = [...freshEvents, ...[...new Set(reread.map((b) => b.event))].filter((id) => !freshEvents.has(id)).slice(0, CLOSE_REREAD)];
   let got = 0;
+  let again = 0;
   for (const id of events) {
-    const mine = started.filter((b) => b.event === id);
+    const mine = [...fresh, ...reread].filter((b) => b.event === id);
     const game = games.get(id);
     try {
       const lines = mine.some((b) => b.market !== 'prop') ? await closingLines(cfg.league, id) : null;
       const props = mine.some((b) => b.market === 'prop') && game ? await board(sport, cfg.league, game) : [];
-      // (the line log: the board and the game's lines read once the game's started, their own src 'c' (linelog.mjs):
-      // a fit reading the log for a pre-game line drops them, as it drops any row from the start on)
-      (r.lineRows ??= []).push(...propRows(id, props, 'c'), ...gameRows(id, lines, 'c'));
+      // (the line log: the board and the game's lines read after the game, their own src 'c' (linelog.mjs): a fit
+      // reading the log for a pre-game line drops them, as it drops any row from the start on)
+      if (mine.some((b) => !b.clv)) (r.lineRows ??= []).push(...propRows(id, props, 'c'), ...gameRows(id, lines, 'c'));
       for (const bet of mine) {
+        const was = bet.clv;
         let close = bet.market === 'prop' ? propCloseOf(bet, props) : closeOf(bet, lines);
         if (close) close.source = 'close';
         // (a prop whose board kept no price (the NFL's): the line and price The Odds API gave near the start)
-        if (bet.market === 'prop' && close && close.odds === null && bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) < 3 * 36e5) close = { ...bet.seen, source: 'odds api near the start' };
-        // (an anytime touchdown, on no board ESPN shows: the Yes The Odds API gave near the start)
-        else if (bet.propType === ANY_KEY && !close && bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) < 3 * 36e5) close = { ...bet.seen, source: 'odds api near the start' };
-        // (none read for 3 days: the last line a run saw; a close read late, the runs having stopped, is kept)
-        else if (!close && bet.seen && r.now.getTime() - Date.parse(bet.start) > 3 * DAY) close = { ...bet.seen, source: 'last seen' };
-        if (!close) continue;
+        if (bet.market === 'prop' && close && close.odds === null && near(bet)) close = { ...bet.seen, source: 'odds api near the start' };
+        // (an anytime touchdown, on no board ESPN shows, or a game ESPN keeps no close for: the same)
+        else if (!close && near(bet)) close = { ...bet.seen, source: 'odds api near the start' };
+        if (!close && was) close = bet.close ?? null;
+        if (!close) {
+          // (none 3 days on: no close, said so, never the last price seen hours before as one)
+          if (now - Date.parse(bet.start) > 3 * DAY) bet.clv = noClose(bet);
+          continue;
+        }
         bet.close = close;
-        bet.clv = clvOf(bet, close, bet.market === 'total' ? params.sigmaT : params.sigma, bet.market === 'prop' ? null : { sigma: params.sigma, sigmaT: params.sigmaT, shape: r.shape });
-        got++;
+        bet.clv = clvOf(bet, close, sigmaOf(bet), bet.market === 'prop' ? null : dist, bet.market === 'prop' ? carryOf(bet.propType) : null);
+        if (was) again++;
+        else got++;
       }
     } catch (err) {
       console.warn(`${sport}: close for ${id} not read (${err.message})`);
     }
   }
-  if (started.length) console.log(`${sport}: closing lines for ${got} of ${started.length} bets on games under way or played`);
+  // (the rest of an older definition's rows, from the close each kept; a prop only with its stat's fit to carry a
+  // moved line: none this run, the next run's)
+  let valued = 0;
+  for (const bet of r.ledger.bets) {
+    if (!bet.close || bet.clv?.v === CLV_V || (bet.market === 'prop' && !r.props) || reread.includes(bet)) continue;
+    if (bet.close.source === 'last seen' && !near(bet)) bet.clv = noClose(bet);
+    else revalueClv(bet, sigmaOf(bet), dist, carryOf);
+    valued++;
+  }
+  if (fresh.length) console.log(`${sport}: closing lines for ${got} of ${fresh.length} bets on games played`);
+  if (again || valued) console.log(`${sport}: CLV valued again (clv.mjs v${CLV_V}): ${again} closes read again, ${valued} from the close kept`);
 }
 
 // 4. the open bets graded against their finals (a prop from its box score: a player who didn't play is no

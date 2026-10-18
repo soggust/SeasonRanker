@@ -260,7 +260,7 @@ export function totalPickFor(over, lines, trust, { live = false, untested = true
 
 // (the totals' evidence count toward going live: graded, won or lost, with a close)
 // (since: the league's start, MMA_START (mma-desk.mjs): an older epoch's rows don't count; null, every row)
-export const liveCount = (bets, since = null) => bets.filter((b) => b.market === 'total' && (b.status === 'won' || b.status === 'lost') && b.clv && (since == null || Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(since))).length;
+export const liveCount = (bets, since = null) => bets.filter((b) => b.market === 'total' && (b.status === 'won' || b.status === 'lost') && Number.isFinite(b.clv?.prob) && (since == null || Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(since))).length;
 
 // A total bet against its bout (its voids as the moneyline's: voidOf, mma-desk.mjs boutVoid): won or lost by
 // how long it lasted (ESPN's last round and the clock into it), void on a no contest before the line

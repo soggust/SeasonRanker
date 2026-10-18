@@ -69,7 +69,8 @@ test('clvOf: points better than the close, its own side\'s way; the closing chan
   assert.equal(over.beat, false);
   const ml = clvOf({ market: 'ml', side: 'home', line: null, odds: 150, fair: 0.4 }, { line: null, odds: 120, fair: 0.44 }, 13.5);
   assert.equal(ml.pts, null);
-  near(ml.prob, 0.04);
+  // (its price, the vig out at the close's margin: 0.4 / (0.4545 / 0.44), against the close's 0.44)
+  near(ml.prob, 0.0528);
   assert.equal(ml.beat, true);
   assert.equal(clvOf({ market: 'ml' }, null, 13.5), null);
 });

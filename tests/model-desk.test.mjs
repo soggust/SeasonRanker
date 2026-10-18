@@ -318,7 +318,8 @@ test('tally: the record, the units, the return on them, the open bets and the cl
   assert.ok(Math.abs(t.roi - -0.64 / 4.5) < 1e-12);
   assert.equal(t.clvN, 3);
   assert.equal(t.clvBeat, 0.5);
-  assert.ok(Math.abs(t.clvEv - 0.01) < 1e-12);
+  // (the mean price CLV, clv.prob; clvEv its old name)
+  assert.ok(Math.abs(t.clvEv - 0.01 / 3) < 1e-12);
   const none = desk.tally('None', []);
   assert.deepEqual([none.roi, none.clvBeat, none.clvEv], [null, null, null]);
   // (a void prop, or a spread on a game called off, no action: out of the record and its stake, as desk.mjs record)

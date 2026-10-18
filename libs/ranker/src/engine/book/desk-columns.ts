@@ -103,7 +103,7 @@ export const betValue = (result: (b: ModelBet) => { profit: number } | null, fin
       result: (b) => result(b)?.profit ?? null,
       final: (b) => finalScore(b),
       why: (b) => b.why ?? null,
-      clv: (b) => (b.clv ? (b.clv.ev ?? b.clv.pts ?? null) : null),
+      clv: (b) => (b.clv ? (b.clv.prob ?? b.clv.pts ?? null) : null),
     },
     field,
   );

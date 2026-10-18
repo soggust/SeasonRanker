@@ -42,15 +42,15 @@ export function atUnit(b: ModelBet): ModelBet {
 export const toWin = (b: Pick<ModelBet, 'odds' | 'units'>): number => (b.odds > 0 ? (b.units * b.odds) / 100 : (b.units * 100) / -b.odds);
 
 // A record of some bets: the graded ones won, lost and pushed, their units and return; the open ones counted;
-// and their closing-line value (the bets with a close, the share of those not tied that beat it, the mean
-// expected return at it)
+// and their closing-line value (the bets with a price CLV, clv.prob: the share of those not tied that beat the
+// close, the mean CLV, the bet's own price against the close's no-vig chance at its line; clvEv keeps its old name)
 export function tally(label: string, bets: ModelBet[]): Tally {
   const t: Tally = { label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null };
-  const closes = bets.map((b) => b.clv).filter((c): c is NonNullable<ModelBet['clv']> => !!c);
-  const decided = closes.filter((c) => c.beat !== null);
+  const closes = bets.map((b) => b.clv).filter((c): c is NonNullable<ModelBet['clv']> => !!c && c.prob !== null && c.prob !== undefined);
+  const decided = closes.filter((c) => c.beat !== null && c.beat !== undefined);
   t.clvN = closes.length;
   t.clvBeat = decided.length ? decided.filter((c) => c.beat).length / decided.length : null;
-  t.clvEv = mean(closes.map((c) => c.ev).filter((v): v is number => v !== null && v !== undefined));
+  t.clvEv = mean(closes.map((c) => c.prob).filter((v): v is number => v !== null && v !== undefined));
   for (const b of bets) {
     if (b.status === 'open') {
       t.open++;

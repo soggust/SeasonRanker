@@ -804,8 +804,8 @@ export function researchLevelOf(bets = []) {
   const decided = graded.filter((b) => b.status !== 'push');
   const hitRate = decided.length ? r4(won / decided.length) : null;
   const breakEven = decided.length ? r4(decided.reduce((t, b) => t + 1 / decimal(Number.isFinite(b.odds) && b.odds ? b.odds : -110), 0) / decided.length) : null;
-  const closed = graded.filter((b) => Number.isFinite(b.clv?.ev));
-  const clv = closed.length ? r4(closed.reduce((t, b) => t + b.clv.ev, 0) / closed.length) : null;
+  const closed = graded.filter((b) => Number.isFinite(b.clv?.prob));
+  const clv = closed.length ? r4(closed.reduce((t, b) => t + b.clv.prob, 0) / closed.length) : null;
   const n = graded.length;
   const push = n - won - lost;
   const earned = n >= RESEARCH_LEVEL_N && hitRate !== null && breakEven !== null && hitRate > breakEven && clv !== null && clv >= 0;
@@ -838,7 +838,7 @@ export function feedCheck(rs, c, live = null) {
 // (a list of bets' tally: graded W-L-P, units, the CLV over the ones with a close, the open ones)
 function betTally(list) {
   const g = list.filter((b) => !b.void && ['won', 'lost', 'push'].includes(b.status));
-  const closed = g.filter((b) => Number.isFinite(b.clv?.ev));
+  const closed = g.filter((b) => Number.isFinite(b.clv?.prob));
   return {
     n: g.length,
     won: g.filter((b) => b.status === 'won').length,
@@ -846,7 +846,7 @@ function betTally(list) {
     push: g.filter((b) => b.status === 'push').length,
     units: r2(g.reduce((t, b) => t + (b.profit ?? 0), 0)),
     withClose: closed.length,
-    clv: closed.length ? r4(closed.reduce((t, b) => t + b.clv.ev, 0) / closed.length) : null,
+    clv: closed.length ? r4(closed.reduce((t, b) => t + b.clv.prob, 0) / closed.length) : null,
     beat: closed.length ? r4(closed.filter((b) => b.clv.beat).length / closed.length) : null,
     open: list.filter((b) => !b.void && b.status === 'open').length,
   };

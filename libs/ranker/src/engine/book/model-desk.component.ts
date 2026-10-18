@@ -805,13 +805,14 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return t.clvN && t.clvEv !== null ? `${t.clvEv >= 0 ? '+' : ''}${(t.clvEv * 100).toFixed(1)}%` : null;
   }
 
-  // (a bet's CLV: the points it beat the close by, else the chance it gained on it)
+  // (a bet's CLV: the chance its price gained on the close's no-vig chance at its line (clv.mjs prob), a moved
+  // line carried to its own; left out (a moved line it couldn't carry, no closing price): the points alone, or none)
   betClv(b: ModelBet): string {
     const c = b.clv;
     if (!c) return '-';
+    if (c.prob !== null && c.prob !== undefined) return `${c.prob >= 0 ? '+' : ''}${(c.prob * 100).toFixed(1)}%`;
     if (c.pts !== null && c.pts !== 0) return `${c.pts > 0 ? '+' : ''}${c.pts} pts`;
-    if (c.prob !== null) return `${c.prob >= 0 ? '+' : ''}${(c.prob * 100).toFixed(1)}%`;
-    return '0';
+    return '-';
   }
 
   trustText(state: ModelState | null): string {

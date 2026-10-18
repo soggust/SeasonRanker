@@ -8,11 +8,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { LINE_GATE_MIN, LINE_GATE_N, PRACTICE_UNITS, gatedPlacement, lineGate, practiceGates, propGate } from '../libs/ranker/scripts/model/desk.mjs';
 import { MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
+import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
 import { levelOf } from '../libs/ranker/scripts/model/picks.mjs';
 import { researchCall, researchGateOf } from '../libs/ranker/scripts/model/research.mjs';
 import { TOTAL_LIVE, liveCount, totalPickFor } from '../libs/ranker/scripts/model/fights-totals.mjs';
 
-const bet = (i, ev, extra = {}) => ({ id: `b${i}`, sport: 'nhl', market: ['spread', 'ml', 'total'][i % 3], status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i)).toISOString(), clv: { ev, prob: ev / 2, beat: ev > 0 }, ...extra });
+const bet = (i, ev, extra = {}) => ({ id: `b${i}`, sport: 'nhl', market: ['spread', 'ml', 'total'][i % 3], status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i)).toISOString(), clv: { ev: ev - 0.045, prob: ev, beat: ev > 0 ? true : ev < 0 ? false : null, v: CLV_V }, ...extra });
 
 test('under the minimum graded: full stakes, said so; props, voids, open rows and other sports never count', () => {
   const bets = [
@@ -36,17 +37,17 @@ test('negative CLV over the window: the practice stake; positive: full stakes; t
   assert.equal(off.on, false);
   assert.equal(off.practice, true);
   assert.equal(off.n, 60);
-  assert.ok(off.ev < 0, `ev ${off.ev}`);
-  assert.equal(off.why, `practice stake: CLV ${off.ev} over 60`);
+  assert.ok(off.prob < 0, `ev ${off.prob}`);
+  assert.equal(off.why, `practice stake: CLV ${off.prob} over 60`);
   const on = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, 0.01)), 'nhl', null);
   assert.equal(on.on, true);
-  assert.equal(on.ev, 0.01);
+  assert.equal(on.prob, 0.01);
   assert.equal(on.beat, 1);
   // (300 graded: the oldest 100 at -0.5 fall out of the window, the last 200 at +0.01 carry it)
   const window = lineGate([...Array.from({ length: 100 }, (_, i) => bet(i, -0.5)), ...Array.from({ length: 200 }, (_, i) => bet(100 + i, 0.01))], 'nhl', null);
   assert.equal(window.n, LINE_GATE_N);
   assert.equal(window.on, true);
-  assert.equal(window.ev, 0.01);
+  assert.equal(window.prob, 0.01);
   const back = lineGate([...Array.from({ length: 250 }, (_, i) => bet(i, -0.1)), ...Array.from({ length: 200 }, (_, i) => bet(250 + i, 0.02))], 'nhl', null);
   assert.equal(back.on, true);
 });
@@ -89,7 +90,7 @@ test('the epoch reset: only bets placed since MODEL_EPOCH count, so a model chan
   assert.equal(h.n, LINE_GATE_MIN);
   assert.equal(h.practice, true);
   // (and MMA's round totals counted since the league's own start)
-  const tot = (at) => ({ market: 'total', status: 'won', clv: { q: 0.5 }, placedAt: at });
+  const tot = (at) => ({ market: 'total', status: 'won', clv: { q: 0.5, prob: 0 }, placedAt: at });
   assert.equal(liveCount([tot(before), tot(after)], MODEL_EPOCH), 1);
   assert.equal(liveCount([tot(before), tot(after)]), 2);
 });
@@ -120,4 +121,24 @@ test('MMA round totals: under TOTAL_LIVE graded with a close, an edge is bet at 
   assert.equal(p.placed.units, PRACTICE_UNITS);
   assert.match(p.placed.practice, new RegExp(`till ${TOTAL_LIVE}`));
   assert.equal(totalPickFor(0.5, lines, 0.5, { live: false }).placed.intent, 'track');
+});
+
+test("round F (the loss review's B6): the gates read the price CLV (prob), never ev at the close, which is about minus the vig; rows of an older CLV definition, or with no CLV (a moved line not carried), aren't read", () => {
+  // (every row at the close's own price: prob 0, ev about the vig: full stakes, not the practice stake)
+  const atClose = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, 0), clv: { ev: -0.0347, prob: 0, beat: null, result: 'tie', v: CLV_V } }));
+  const g = lineGate(atClose, 'nhl', null);
+  assert.equal(g.on, true);
+  assert.equal(g.prob, 0);
+  assert.equal(g.ev, -0.0347);
+  assert.equal(g.beat, null);
+  // (old-definition rows and rows left out don't count)
+  const old = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, -0.05), clv: { ev: -0.09, prob: -0.05, beat: false } }));
+  const out = Array.from({ length: 60 }, (_, i) => ({ ...bet(100 + i, -0.05), clv: { ev: null, prob: null, beat: null, why: 'line moved', v: CLV_V } }));
+  assert.equal(lineGate([...old, ...out], 'nhl', null).n, 0);
+  const props = propGate(atClose.map((b) => ({ ...b, market: 'prop', propType: 'pts' })), 'nhl', null);
+  assert.equal(props.pts.on, true);
+  assert.equal(props.pts.prob, 0);
+  // (a failing gate still only shrinks: an edge bet at 0.5u)
+  const losing = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, -0.01)), 'nhl', null);
+  assert.equal(gatedPlacement(true, 2, losing).units, PRACTICE_UNITS);
 });

@@ -1648,10 +1648,16 @@ export function propsFromBodies(sport, bodies) {
       }
     }
   }
-  // (a player's main line: the one with both sides; the first such)
+  // (a player's main line: of those with both sides, the one nearest even (mainRung's rule; the first such took alt
+  // rungs where the book lists several))
   const main = new Map();
+  const even = (x) => Math.abs(fairPair(x.over, x.under) - 0.5);
+  const best = new Map();
   for (const [key, x] of books.get(BOOK) ?? []) {
-    if (!x.over || !x.under || main.has(`${x.name}|${x.stat}`)) continue;
+    const k = `${x.name}|${x.stat}`;
+    if (x.over && x.under && (!best.has(k) || even(x) < even(best.get(k)[1]))) best.set(k, [key, x]);
+  }
+  for (const [key, x] of best.values()) {
     const pairs = [...books].filter(([k]) => k !== BOOK).map(([, lines]) => lines.get(key)).filter((y) => y?.over && y?.under).map((y) => [y.over, y.under]);
     main.set(`${x.name}|${x.stat}`, { ...x, consensus: consensusOf(pairs, [x.over, x.under], ['over', 'under']) });
   }
@@ -1676,7 +1682,23 @@ export function withApiPrices(board_, api) {
   });
 }
 
-// A game's main-line player props: [{ athlete, stat, line, open, prices }] (every page of the board)
+// A player's main line for a stat from his board items (ESPN's: each { current: { target: { value } }, odds }): of
+// the rungs priced both ways, the one nearest even (its over's fair chance nearest 0.5; the loss review's B3: the
+// most-listed rule took alt rungs, Marner's points under 1.5 at -208 and Connor's over 1.5 at +165 where 0.5 was
+// the main); none priced (the NFL's board), the one listed most, the middle one at a tie.
+// { line, ladder: [{ line, prices }] }, every rung he's listed at
+export function mainRung(list) {
+  const counts = new Map();
+  for (const it of list) counts.set(it.current.target.value, (counts.get(it.current.target.value) ?? 0) + 1);
+  const ladder = [...counts.keys()].sort((a, b) => a - b).map((l) => ({ line: l, prices: pricesOf(list.filter((x) => x.current.target.value === l)) }));
+  const priced = ladder.filter((x) => x.prices).map((x) => ({ x, d: Math.abs(fairPair(x.prices.over, x.prices.under) - 0.5) }));
+  if (priced.length) return { line: priced.sort((a, b) => a.d - b.d || a.x.line - b.x.line)[0].x.line, ladder };
+  const lines = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
+  const top = lines.filter((l) => l[1] === lines[0][1]).map((l) => l[0]);
+  return { line: top[Math.floor((top.length - 1) / 2)], ladder };
+}
+
+// A game's main-line player props: [{ athlete, stat, line, open, prices, ladder }] (every page of the board)
 export async function board(sport, league, game) {
   if (!ESPN_PROVIDER[BOOK]) return [];
   const [kind, lg] = league.split('/');
@@ -1698,12 +1720,8 @@ export async function board(sport, league, game) {
   }
   const out = [];
   await pool([...groups.entries()], 4, async ([key, list]) => {
-    // (the main line: the one the board lists most for him, the middle one at a tie)
-    const counts = new Map();
-    for (const it of list) counts.set(it.current.target.value, (counts.get(it.current.target.value) ?? 0) + 1);
-    const lines = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
-    const top = lines.filter((l) => l[1] === lines[0][1]).map((l) => l[0]);
-    const line = top[Math.floor((top.length - 1) / 2)];
+    // (the main line, mainRung's; the ladder's rungs kept for the close (clv.mjs propCloseOf))
+    const { line, ladder } = mainRung(list);
     const at = list.filter((x) => x.current.target.value === line);
     const it = at[0];
     const who = await athlete(key.split('|')[0], [String(game.home), String(game.away)]);
@@ -1711,7 +1729,7 @@ export async function board(sport, league, game) {
     // (the open price, where the line hasn't moved from its open: each side's odds.american.open, the over's fair
     // chance with the vig out (openFair); a line that moved, or a board without prices (the NFL's), none)
     const openP = at.every((x) => x.open?.target?.value === line) ? pricesOf(at.map((x) => ({ odds: { american: { value: x.odds?.american?.open } } }))) : null;
-    out.push({ athlete: who, stat: STATS[sport].find((s) => s.key === key.split('|')[1]), line, open: it.open?.target?.value ?? null, prices: pricesOf(at), ...(openP ? { openFair: fairPair(openP.over, openP.under) } : {}) });
+    out.push({ athlete: who, stat: STATS[sport].find((s) => s.key === key.split('|')[1]), line, open: it.open?.target?.value ?? null, prices: pricesOf(at), ladder, ...(openP ? { openFair: fairPair(openP.over, openP.under) } : {}) });
   });
   saveAthletes();
   return out;

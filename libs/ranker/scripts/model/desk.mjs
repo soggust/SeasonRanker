@@ -29,6 +29,7 @@ import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
 import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
+import { CLV_V } from './clv.mjs';
 
 // (1,000 to start, so a full slate of bets leaves most of it on hand; the desk rebuys 1,000 whenever its
 // balance would go under 0: the money's play money and every bet is data)
@@ -818,9 +819,11 @@ export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => 
 // it's play money; don't chase a perfect record via confidence, improve the choices"): while a sport's closing-line
 // value over its last LINE_GATE_N graded line bets is negative, its spreads, moneylines and totals are still bet by
 // their normal rules (an edge still needed), each at the minimum (PRACTICE_UNITS, a LIKE at most: picks.mjs
-// levelOf), never turned off; positive again, full stakes per the trust. The CLV read is each bet's ev (clv.mjs:
-// its expected return at the closing chance and its own price; the Algorithm tab's CLV column), averaged; the
-// tracked rows count as evidence like the bets. Only the bets placed since the epoch count (MODEL_EPOCH,
+// levelOf), never turned off; positive again, full stakes per the trust. The CLV read is each bet's prob (clv.mjs
+// clvOf, round F 2026-10-18: its own price against the close's no-vig chance at its line, the vig out of both; it
+// read ev, the return at the close, which is about minus the vig on any fairly priced row, so a market at the close
+// read as losing: NHL lines -0.0347 on prob near 0), averaged over the rows of the current definition (clv.v CLV_V)
+// with one (a moved line not carried is out, never a zero); the tracked rows count as evidence like the bets. Only the bets placed since the epoch count (MODEL_EPOCH,
 // leagues.mjs): an algorithm change resets the gate. Props never gated here (propGate). Fewer than LINE_GATE_MIN
 // graded with a close since the epoch: too few to judge, full stakes. { on, practice, n, ev, prob, beat, min,
 // window, epoch, why }: on is full stakes, practice its opposite; state.json's lineGate, the Algorithm tab's
@@ -831,6 +834,13 @@ export const PRACTICE_UNITS = 0.5;
 // (a bet placed since the epoch; epoch null: every bet)
 const sinceEpoch = (epoch) => (epoch == null ? () => true : (b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(epoch));
 const signed = (ev) => `${ev >= 0 ? '+' : ''}${ev}`;
+// (a row whose CLV the gates read: of the current definition, with a price to compare)
+const clvIn = (b) => b.clv?.v === CLV_V && Number.isFinite(b.clv?.prob);
+// (the share that beat the close of those that didn't tie it)
+const beatOf = (list) => {
+  const d = list.filter((b) => b.clv.beat === true || b.clv.beat === false);
+  return d.length ? round(d.filter((b) => b.clv.beat).length / d.length, 4) : null;
+};
 // The props gated by CLV, by stat (round E, 2026-10-17, the brief's #7: the line gate's twin): a stat's props (its
 // propType, e.g. recYds) bet at the practice stake (PRACTICE_UNITS, by their normal rules, an edge still needed)
 // while the closing-line value of its last LINE_GATE_N graded prop bets with a close since the epoch is negative;
@@ -839,28 +849,30 @@ const signed = (ev) => `${ev >= 0 ? '+' : ''}${ev}`;
 // Algorithm tab's Tracked panel
 export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   const out = {};
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType).filter(sinceEpoch(epoch));
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
   const by = new Map();
   for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
   for (const [stat, list] of by) {
     const last = list.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
     const n = last.length;
     const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
-    const beat = round(last.filter((b) => b.clv.beat).length / n, 4);
-    const on = n < LINE_GATE_MIN || ev >= 0;
-    out[stat] = { on, practice: !on, n, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(ev)} over the last ${n} graded ${stat} props: full stakes`) : `practice stake: CLV ${ev} over ${n}` };
+    const prob = round(last.reduce((t, b) => t + b.clv.prob, 0) / n, 4);
+    const beat = beatOf(last);
+    const on = n < LINE_GATE_MIN || prob >= 0;
+    out[stat] = { on, practice: !on, n, prob, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)} over the last ${n} graded ${stat} props: full stakes`) : `practice stake: CLV ${prob} over ${n}` };
   }
   return out;
 }
 export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev)).filter(sinceEpoch(epoch));
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b)).filter(sinceEpoch(epoch));
   const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
   const n = last.length;
   const mean = (k) => (n ? round(last.reduce((t, b) => t + (b.clv[k] ?? 0), 0) / n, 4) : null);
   const ev = mean('ev');
-  const beat = n ? round(last.filter((b) => b.clv.beat).length / n, 4) : null;
-  const on = n < LINE_GATE_MIN || ev >= 0;
-  return { on, practice: !on, n, ev, prob: mean('prob'), beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(ev)} over the last ${n} graded line bets: full stakes`) : `practice stake: CLV ${ev} over ${n}` };
+  const prob = mean('prob');
+  const beat = n ? beatOf(last) : null;
+  const on = n < LINE_GATE_MIN || prob >= 0;
+  return { on, practice: !on, n, ev, prob, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)} over the last ${n} graded line bets: full stakes`) : `practice stake: CLV ${prob} over ${n}` };
 }
 
 // A new row's placement under a CLV gate (lineGate's, or a stat's propGate): the gate passing (or none), placement's;

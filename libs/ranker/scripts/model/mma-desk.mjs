@@ -250,7 +250,7 @@ export function mergeBouts(kept, board, now) {
 
 // ESPN's own board for a bout (ESPN BET: the one provider ESPN keeps for MMA): each side's moneyline, by the
 // athletes' ids; null without one
-export async function espnOdds(bout) {
+export async function espnOdds(bout, { close = false } = {}) {
   const body = await get(`${CORE}/events/${bout.card}/competitions/${bout.id}/odds?lang=en&region=us`);
   const item = body?.items?.[0];
   if (!item) return null;
@@ -258,7 +258,7 @@ export async function espnOdds(bout) {
     const n = Number(String(v ?? '').replace('+', ''));
     return Number.isFinite(n) && n ? n : null;
   };
-  const read = (o) => ({ id: o?.athlete?.$ref?.match(/athletes\/(\d+)/)?.[1] ?? null, ml: num(o?.current?.moneyLine?.american ?? o?.moneyLine) });
+  const read = (o) => ({ id: o?.athlete?.$ref?.match(/athletes\/(\d+)/)?.[1] ?? null, ml: num(close ? o?.close?.moneyLine?.american : (o?.current?.moneyLine?.american ?? o?.moneyLine)) });
   const sides = [read(item.homeAthleteOdds), read(item.awayAthleteOdds)];
   const home = sides.find((s) => s.id === bout.home.id) ?? sides[0];
   const away = sides.find((s) => s.id === bout.away.id && s !== home) ?? sides.find((s) => s !== home);
@@ -645,8 +645,10 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     // (a round total's close: its own last price seen, at the line seen then (ESPN keeps no MMA totals))
     const seenLine = bet.market === 'total' ? bet.seen?.line ?? bet.line : null;
     if (bet.seen && Date.parse(bet.start) - Date.parse(bet.seen.at) <= SEEN_CLOSE) close = { line: seenLine, odds: bet.seen.odds, fair: bet.seen.fair, source: 'odds api near the start' };
+    // (ESPN's close once the bout is over, never its current, an in-bout line)
+    else if (bout && !bout.final && bet.market !== 'total') continue;
     else if (bout && bet.market !== 'total') {
-      const espn = await espnOdds(bout).catch(() => null);
+      const espn = await espnOdds(bout, { close: true }).catch(() => null);
       if (espn) close = { line: null, odds: espn.odds[bet.side], fair: bet.side === 'home' ? espn.fair : 1 - espn.fair, source: `close (${espn.provider})` };
     }
     if (!close && bet.seen && now.getTime() - Date.parse(bet.start) > 3 * DAY) close = { line: seenLine, odds: bet.seen.odds, fair: bet.seen.fair, source: 'last seen' };
@@ -704,16 +706,22 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const tPlacedOn = new Set(rowsOf('total', (b) => b.status === 'open' || b.gradedAt).map((b) => b.boutKey));
   const tOpenOn = new Map(rowsOf('total', (b) => b.status === 'open').map((b) => [b.boutKey, b]));
   // (a row placed: its price read again inside 3 hours of the start, for the close; none yet: due unless resting)
-  const closeDue = (open, b, until) => !!open && until <= SEEN_CLOSE && !(open.seen && Date.parse(b.date) - Date.parse(open.seen.at) <= SEEN_CLOSE);
+  // (by the bout's own start, not its card's: a card's later bouts start hours after its date, so a price read near
+  // the card's start was never within 3 hours of theirs, and their rows had no close (the loss review's B1: the
+  // round totals of 2026-10-17 none); a bout whose card has started, still to fight, asked about for its close alone)
+  const startOf = (b) => Date.parse(b.start ?? b.date);
+  const closeDue = (open, b) => !!open && startOf(b) - now.getTime() <= SEEN_CLOSE && !(open.seen && startOf(b) - Date.parse(open.seen.at) <= SEEN_CLOSE);
+  const closing = bouts.filter((b) => !b.final && !b.off && !coming.includes(b) && startOf(b) > now.getTime() && (openOn.has(b.key) || tOpenOn.has(b.key)));
   const resting = (k, wait) => !!rest[k] && now.getTime() - Date.parse(rest[k]) < wait;
   const dueFor = new Map();
-  const due = coming.filter((b) => {
+  const due = [...coming, ...closing].filter((b) => {
     const until = Date.parse(b.date) - now.getTime();
-    if (phaseOf(SPORT, 'lines', until, gap) === 'early') return false;
-    const ml = placedOn.has(b.key) ? closeDue(openOn.get(b.key), b, until) : !resting(b.key, REST_FOR);
+    const started = !coming.includes(b);
+    if (!started && phaseOf(SPORT, 'lines', until, gap) === 'early') return false;
+    const ml = placedOn.has(b.key) ? closeDue(openOn.get(b.key), b) : !started && !resting(b.key, REST_FOR);
     // (a round total the book hadn't posted waits TOTAL_REST before it's asked about again: the totals post later
     // than the moneylines, and the ask's for the whole board)
-    const total = tPlacedOn.has(b.key) ? closeDue(tOpenOn.get(b.key), b, until) : !resting(`${b.key}|total`, TOTAL_REST);
+    const total = tPlacedOn.has(b.key) ? closeDue(tOpenOn.get(b.key), b) : !started && !resting(`${b.key}|total`, TOTAL_REST);
     dueFor.set(b.key, { ml, total });
     return ml || total;
   });
@@ -757,7 +765,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     if (tl) addLines(bout.key, { total: tl });
     const tOpen = tOpenOn.get(bout.key);
     if (tOpen) {
-      if (tl && tl.line === tOpen.line) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
+      // (at whatever line the book has now: a moved line's close is carried or left out by clv.mjs, never dropped)
+      if (tl) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
     } else if (want.total && !tPlacedOn.has(bout.key)) {
       const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
       const choice = tp ? totalPickFor(tp.p, tl, bucketTrustOf(trust, 'total', tl.line), { live: totalsLive, untested: !trust.total.fitted, edge: cfg.edge }) : null;

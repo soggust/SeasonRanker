@@ -115,7 +115,7 @@ test("an adjust's status into the game's report as an owner's note is: doubtful 
 });
 
 test('researchGateOf: each kind off by itself once 40 graded with a close are negative in units; a bet without a close not counted', () => {
-  const bet = (key, profit, clv = true) => ({ [key]: { check: 'x' }, status: profit > 0 ? 'won' : 'lost', profit, ...(clv ? { clv: { ev: 0.01, beat: true } } : {}) });
+  const bet = (key, profit, clv = true) => ({ [key]: { check: 'x' }, status: profit > 0 ? 'won' : 'lost', profit, ...(clv ? { clv: { ev: 0.01, prob: 0.01, beat: true } } : {}) });
   assert.equal(RESEARCH_GATE_N, 40);
   const losing = Array.from({ length: 40 }, (_, i) => bet('researchBet', i < 18 ? 0.45 : -0.5));
   const g = researchGateOf(losing);
@@ -148,7 +148,7 @@ test('feedCheck: a reason our feeds held is a model gap (the feed named), one no
 test('researchCard and the learning: the bets and the adjusted tallied apart with their CLV, the verdicts and categories, the feeds by category and cause', () => {
   const at = '2026-10-16T12:00:00Z';
   const bets = [
-    { id: '1', researchBet: { check: 'a', category: 'market' }, status: 'won', profit: 0.45, clv: { ev: 0.02, beat: true } },
+    { id: '1', researchBet: { check: 'a', category: 'market' }, status: 'won', profit: 0.45, clv: { ev: 0.02, prob: 0.02, beat: true } },
     { id: '2', researchBet: { check: 'b', category: 'market' }, status: 'lost', profit: -0.5 },
     { id: '3', researchAdjusted: { checks: ['c'], category: 'injury' }, status: 'open', profit: 0 },
     { id: '4', status: 'won', profit: 1 },

@@ -185,7 +185,7 @@ test("priceProps: the QB-out headline is no news CHECK once the report has the q
 });
 
 test('propGate: a stat whose CLV over its last 200 graded props is negative is bet at the practice stake; positive, or under 40 graded, bet; game markets, voids and other sports never count', () => {
-  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev, beat: ev > 0 }, ...extra });
+  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev: ev - 0.06, prob: ev, beat: ev > 0, v: 2 }, ...extra });
   const bets = [
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(i, 'recYds', -0.03)),
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(100 + i, 'rec', 0.02)),
