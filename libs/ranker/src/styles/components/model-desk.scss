@@ -1551,6 +1551,48 @@ mat-icon.desk-gloves {
   margin-top: 2px;
 }
 
+// (the Miss review panel: the causes tallied as chips, each day's misses as the news rows; a data bug in red)
+.desk-miss-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 8px 0 4px;
+  padding: 0;
+}
+
+.desk-miss-chip {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: v.$radius-pill;
+  font-size: v.$fs-12;
+  padding: 2px 8px;
+
+  small {
+    color: v.$grey-mid;
+    margin-left: 4px;
+  }
+}
+
+.desk-miss-day {
+  color: v.$grey-mid;
+  font-size: v.$fs-12;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  margin: 12px 0 0;
+  text-transform: uppercase;
+}
+
+.desk-miss-cause {
+  color: #ddd;
+  font-weight: 700;
+}
+
+.desk-miss-chip.is-data,
+.desk-miss-cause.is-data,
+.desk-miss-recs .is-bug {
+  color: #ff8a80;
+}
+
 // ===========================================================================
 // The Book (the Book's Algorithm tab, 2026-10-17): the desk restyled, every panel, number and calculation its
 // own. No card of its own on the felt: the six tiles in a row of dot-matrix tiles (a small caps label, the value in

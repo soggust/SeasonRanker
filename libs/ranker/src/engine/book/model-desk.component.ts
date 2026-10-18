@@ -5,6 +5,7 @@ import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
 import { DESK_HELP } from './desk-help';
 import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
+import { MissPanel, MissReviewFile, missPanelOf } from './miss-review';
 import {
   BANKROLL,
   CURVE_W,
@@ -222,6 +223,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   newsSignals: NewsSignalRow[] = [];
   newsSignalsOn = false;
   private allNewsSignals: (NewsSignalsFile | null)[] = [];
+  // (the Miss review panel: the biggest misses' causes, read from the news each day (miss-review.ts); shown once a
+  // sport has the file; its recommendations in the Self-check panel too)
+  missPanel: MissPanel = { days: [], tally: [], recommendations: [], line: '' };
+  missOn = false;
+  private allMisses: (MissReviewFile | null)[] = [];
   private allSelfChecks: (SelfCheckFile | null)[] = [];
   private selfOpen = new Set<string>();
 
@@ -247,7 +253,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (every sport's files asked at once, not each sport's one after another)
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
-        const [ledger, state, checks, selfcheck, news] = await Promise.all([
+        const [ledger, state, checks, selfcheck, news, misses] = await Promise.all([
           getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
           getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
           // (none before the bettor's first CHECK file: no CHECK row)
@@ -256,13 +262,17 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
           getJson<SelfCheckFile>(`/${sport}/data/model/selfcheck.json`, { cache: 'no-cache' }),
           // (none till the news signals run (NEWS_SIGNALS=1): no panel)
           getJson<NewsSignalsFile>(`/${sport}/data/model/news-signals.json`, { cache: 'no-cache' }),
+          // (none till the miss review's first run: no panel)
+          getJson<MissReviewFile>(`/${sport}/data/model/miss-review.json`, { cache: 'no-cache' }),
         ]);
-        return { ledger, state, checks, selfcheck, news };
+        return { ledger, state, checks, selfcheck, news, misses };
       }),
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
     this.allNewsSignals = files.map((f) => f.news);
     this.newsSignalsOn = this.allNewsSignals.some((f) => !!f);
+    this.allMisses = files.map((f) => f.misses);
+    this.missOn = this.allMisses.some((f) => !!f);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
     const split = this.allStates.some((s) => s.practiceSplit);
@@ -499,6 +509,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
     );
     this.newsSignals = newsSignalRows(this.allNewsSignals, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
+    this.missPanel = missPanelOf(this.allMisses, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     this.researchRows = researchPanelOf(this.states);

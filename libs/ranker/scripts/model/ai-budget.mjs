@@ -1,7 +1,8 @@
 // The desk's spend on Claude, capped and logged: every call's real usage and cost kept in a log for every sport, so
-// the caps hold across the hourly runs. Three budgets, each its own log, totals and caps, none counting the
+// the caps hold across the hourly runs. Its budgets, each its own log, totals and caps, none counting the
 // others' spend: the AI write-ups' (writeups.mjs: DAY_CAP, MONTH_CAP below), the CHECKs' research's
-// (research.mjs: researchBudget, RESEARCH_CAPS) and the news signals' (news-signals.mjs: newsBudget, NEWS_CAPS).
+// (research.mjs: researchBudget, RESEARCH_CAPS), the news signals' (news-signals.mjs: newsBudget, NEWS_CAPS) and the
+// daily miss review's (miss-review.mjs: missBudget, MISS_CAPS; its one-off backfill its own, missBackfillBudget).
 //
 //   caps     DAY_CAP ($1.50 a UTC day) and MONTH_CAP ($25 a UTC month), every use together. A call goes only
 //            when its estimate (the most it can cost: its max output, a generous input and its searches)
@@ -70,25 +71,37 @@ const CACHE_DIR = path.resolve(import.meta.dirname, '../../../../.cache/model');
 const SPEND_DIR = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model');
 export const RESEARCH_USAGE = path.join(CACHE_DIR, 'ai-usage-research.json');
 export const RESEARCH_FLOOR = path.join(SPEND_DIR, 'ai-spend-research.json');
-// (the owner's, 2026-10-17: every open CHECK researched, under a hard $5 a UTC day and $80 a UTC month, every
-// sport, whichever binds first): the standing caps, outside every dated window below
-export const RESEARCH_CAPS = { day: 5, month: 80 };
+// (the owner's, 2026-10-17: every open CHECK researched, under a hard cap a UTC day and a UTC month, every sport,
+// whichever binds first: $5 and $80 then; $4 and $55 from 2026-10-18, the miss review's $1 and $25 taken out of
+// them so the spend in all stays the same): the standing caps, outside every dated window below
+export const RESEARCH_CAPS = { day: 4, month: 55 };
 export const NEWS_USAGE = path.join(CACHE_DIR, 'ai-usage-news.json');
 export const NEWS_FLOOR = path.join(SPEND_DIR, 'ai-spend-news.json');
 export const NEWS_CAPS = { day: 0.15, month: 4 };
+// (the daily miss review's, miss-review.mjs: $1 a UTC day and $25 a UTC month standing, the owner's 2026-10-18)
+export const MISS_USAGE = path.join(CACHE_DIR, 'ai-usage-miss.json');
+export const MISS_FLOOR = path.join(SPEND_DIR, 'ai-spend-miss.json');
+export const MISS_CAPS = { day: 1, month: 25 };
+// (its one-off backfill over the graded misses since the ledgers began, the owner's 2026-10-18: a hard $30 for the
+// whole of it, apart from the daily caps, logged in its own spend files)
+export const MISS_BACKFILL_USAGE = path.join(CACHE_DIR, 'ai-usage-miss-backfill.json');
+export const MISS_BACKFILL_FLOOR = path.join(SPEND_DIR, 'ai-spend-miss-backfill.json');
+export const MISS_BACKFILL_CAP = 30;
 
 // The dated windows, the caps' source of truth: inside one ([from, to), UTC) a budget's caps are the window's;
 // outside every one the standing caps above, so a window reverts itself when it ends. The owner's, 2026-10-18,
 // spending expiring API credits through Oct 31: the research $100 the rest of the 18th (his limit for the day),
-// then $10 a day the 19th to the 31st, $100 for the month; the news every team's stories read every run (everyRun,
-// news-signals.mjs) under $1 a day and $10 for the window (all of it October). From 2026-11-01 the standing $5 /
-// $80 and $0.15 / $4, a team's news once a UTC day
+// then $8 a day the 19th to the 31st, $60 for the month (it was $10 and $100: the miss review's $2 a day and $40
+// window taken out of it, the same spend in all); the news every team's stories read every run (everyRun,
+// news-signals.mjs) under $1 a day and $10 for the window (all of it October); the miss review $2 a day and $40 for
+// the window. From 2026-11-01 the standing caps: $4 / $55, $0.15 / $4 (a team's news once a UTC day), $1 / $25
 export const CAP_WINDOWS = {
   research: [
     { from: '2026-10-18T00:00:00Z', to: '2026-10-19T00:00:00Z', day: 100, month: 100 },
-    { from: '2026-10-19T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 10, month: 100 },
+    { from: '2026-10-19T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 8, month: 60 },
   ],
   news: [{ from: '2026-10-18T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 1, month: 10, everyRun: true }],
+  miss: [{ from: '2026-10-18T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 2, month: 40 }],
 };
 
 // (the window of a kind (research, news) that holds now, or null)
@@ -115,7 +128,7 @@ export function capsFrom(env, prefix, caps) {
 }
 
 // The CHECKs' research's budget (research.mjs): its own log and totals, its caps the schedule's at now
-// (CAP_WINDOWS, else $5 a day and $80 a month), which the variables may lower
+// (CAP_WINDOWS, else $4 a day and $55 a month), which the variables may lower
 export const researchBudget = ({ env = process.env, file = RESEARCH_USAGE, floor = RESEARCH_FLOOR, now = new Date(), ...rest } = {}) =>
   aiBudget({ ...rest, now, file, floor, caps: capsFrom(env, 'CHECK_RESEARCH', scheduledCaps('research', now, RESEARCH_CAPS)) });
 
@@ -123,6 +136,24 @@ export const researchBudget = ({ env = process.env, file = RESEARCH_USAGE, floor
 // a day and $4 a month), which the variables may lower
 export const newsBudget = ({ env = process.env, file = NEWS_USAGE, floor = NEWS_FLOOR, now = new Date(), ...rest } = {}) =>
   aiBudget({ ...rest, now, file, floor, caps: capsFrom(env, 'NEWS_SIGNALS', scheduledCaps('news', now, NEWS_CAPS)) });
+
+// The daily miss review's budget (miss-review.mjs): its own log and totals, its caps the schedule's at now (else $1
+// a day and $25 a month), which MISS_REVIEW_DAILY_USD / _MONTHLY_USD may lower
+export const missBudget = ({ env = process.env, file = MISS_USAGE, floor = MISS_FLOOR, now = new Date(), ...rest } = {}) =>
+  aiBudget({ ...rest, now, file, floor, caps: capsFrom(env, 'MISS_REVIEW', scheduledCaps('miss', now, MISS_CAPS)) });
+
+// The miss review's backfill's (miss-review.mjs --backfill): its own log and totals, a hard cap for the whole of it
+// (MISS_BACKFILL_CAP, which cap may lower), counted as its day and its month alike
+export const missBackfillBudget = ({ file = MISS_BACKFILL_USAGE, floor = MISS_BACKFILL_FLOOR, now = new Date(), cap = MISS_BACKFILL_CAP, ...rest } = {}) => {
+  const c = Math.max(0, Math.min(MISS_BACKFILL_CAP, Number.isFinite(cap) ? cap : MISS_BACKFILL_CAP));
+  return aiBudget({ ...rest, now, file, floor, caps: { day: c, month: c } });
+};
+
+// (a Message Batches call's cost: its tokens at half price, its web searches at full)
+export function batchCostOf(usage, model = 'claude-opus-5-5') {
+  const searches = Number.isFinite(usage?.server_tool_use?.web_search_requests) ? usage.server_tool_use.web_search_requests : 0;
+  return (costOf(usage, model) - searches * SEARCH_PRICE) / 2 + searches * SEARCH_PRICE;
+}
 
 // (an entry that measures a call: its usage reported, not a failure, not a carried total)
 const measures = (e) => !!e && e.what !== 'carried' && !e.failed && !!e.usage && typeof e.usage === 'object' && Number.isFinite(e.cost);

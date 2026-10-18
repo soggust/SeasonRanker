@@ -1,0 +1,127 @@
+{
+ "sport": "nfl",
+ "days": 7,
+ "reviews": [
+  {
+   "day": "2026-10-18",
+   "pick": "Juwan Johnson Under 40.5 Rec Yds",
+   "matchup": "NO @ NYG",
+   "stat": "Rec Yds",
+   "status": "won",
+   "result": "Juwan Johnson 0 Rec Yds",
+   "reason": "surprise",
+   "score": 2.95,
+   "z": -2.95,
+   "conf": 0.584,
+   "cause": "script",
+   "confidence": 0.5,
+   "evidence": "The Saints scored 34 points in a row to lead 27-10 after three quarters and 34-10 midway through the fourth, so New Orleans ran a lead-protecting, run-heavy game with Kamara. Johnson was shut out through three quarters and finished 0 catches on 2 targets, against the model's 5.6 (Yahoo, ESPN/Athlon recaps, NBC Rotoworld). I found no injury or role change behind it."
+  },
+  {
+   "day": "2026-10-18",
+   "pick": "Germie Bernard Under 4.5 Receptions",
+   "matchup": "PIT @ TB",
+   "stat": "Receptions",
+   "status": "lost",
+   "result": "Germie Bernard 11 Receptions",
+   "reason": "surprise",
+   "score": 2.6,
+   "z": 2.6,
+   "conf": 0.6767,
+   "cause": "term",
+   "confidence": 0.6,
+   "evidence": "Pittman and Wilson were on IR and Skowronek was inactive, which left rookie Bernard as the WR2 next to DK Metcalf (SteelerNation, Steelers.com). The model knew all three were out, but it still tagged him 'WR4+' and cut his projection with roleFactor 0.667, even though he played 91.7% of snaps the week before. He got 12 targets and caught 11 for 87 yards and a TD as Rodgers threw 49 times in a come",
+   "term": "roleFactor"
+  },
+  {
+   "day": "2026-10-18",
+   "pick": "DK Metcalf Under 3.5 Receptions",
+   "matchup": "PIT @ TB",
+   "stat": "Receptions",
+   "status": "lost",
+   "result": "DK Metcalf 11 Receptions",
+   "reason": "surprise",
+   "score": 2.42,
+   "z": 2.42,
+   "conf": 0.4573,
+   "cause": "script",
+   "confidence": 0.6,
+   "evidence": "Pittsburgh was down 16-3 to Tampa Bay and came back to win 26-19 in overtime. Metcalf got most of his 11 catches on 15 targets during the fourth-quarter and overtime passing comeback, including a 17-yard catch on 3rd-and-16 and a third-down conversion in OT. SI noted he 'vanished' outside the fourth quarter. The model's script factor of 0.933 cut his volume, but the deficit and the extra period di"
+  },
+  {
+   "day": "2026-10-18",
+   "pick": "Rashid Shaheed Under 1.5 Receptions",
+   "matchup": "SEA @ DEN",
+   "stat": "Receptions",
+   "status": "lost",
+   "result": "Rashid Shaheed 5 Receptions",
+   "reason": "surprise",
+   "score": 1.72,
+   "z": 1.72,
+   "conf": 0.4923,
+   "cause": "script",
+   "confidence": 0.5,
+   "evidence": "Shaheed's 8 targets came from Sam Darnold's 51 pass attempts. Seattle couldn't get its running game going in a low-scoring 17-14 game that went to overtime, so the team threw far more than the 44.4 total and normal pace the model assumed (NBC Sports player note). TE Elijah Arroyo also left late in the first half, which opened more targets for the receivers. Shaheed caught 5, against a projection o"
+  },
+  {
+   "day": "2026-10-18",
+   "pick": "Under 42.5",
+   "matchup": "HOU @ JAX",
+   "stat": "Totals",
+   "status": "lost",
+   "result": "HOU 34 @ JAX 31",
+   "reason": "surprise",
+   "score": 1.72,
+   "z": 1.72,
+   "conf": 0.5228,
+   "cause": "variance",
+   "confidence": 0.55,
+   "evidence": "Pitre and Montgomery being out was on the inactive list, which the model had already repriced on, and the close only moved the total a point, so the inputs were mostly right. Both offenses just hit big passing plays: neither team took a sack, they averaged 7.2 and 6.1 yards per play, and 65 points came on only 10 drives each. Houston's in-game concussion checks (Al-Shaair returned) aren't enough t"
+  }
+ ],
+ "tally": [
+  {
+   "sport": "nfl",
+   "stat": "Receptions",
+   "cause": "script",
+   "n": 2,
+   "w": 1.1,
+   "of": 3,
+   "share": 0.14
+  },
+  {
+   "sport": "nfl",
+   "stat": "Totals",
+   "cause": "variance",
+   "n": 1,
+   "w": 0.55,
+   "of": 1,
+   "share": 0.09
+  },
+  {
+   "sport": "nfl",
+   "stat": "Rec Yds",
+   "cause": "script",
+   "n": 1,
+   "w": 0.5,
+   "of": 1,
+   "share": 0.08
+  },
+  {
+   "sport": "nfl",
+   "stat": "Receptions",
+   "cause": "term",
+   "n": 1,
+   "w": 0.6,
+   "of": 3,
+   "share": 0.08
+  }
+ ],
+ "recommendations": [],
+ "count": {
+  "reviewed": 5,
+  "backfill": 0,
+  "usd": 0.5993
+ },
+ "at": "2026-10-18T23:16:54.326Z"
+}

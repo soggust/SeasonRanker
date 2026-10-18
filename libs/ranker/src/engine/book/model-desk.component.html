@@ -696,6 +696,18 @@
         @if (!selfChecks.length) {
           <p class="desk-note">No self-check yet (runs Monday mornings)</p>
         }
+        <!-- (the miss review's recommendations: a cause recurring past its shrunk threshold, a refit candidate; a
+             data one a bug. Advice: nothing changes a weight on its own) -->
+        @if (missPanel.recommendations.length) {
+          <section class="desk-self desk-miss-recs">
+            <header class="desk-self-head"><b>From the miss review</b></header>
+            <ul class="desk-news-list">
+              @for (r of missPanel.recommendations; track r.text) {
+                <li class="desk-news-row" [class.is-bug]="r.bug"><p class="desk-news-what">{{ r.text }}</p></li>
+              }
+            </ul>
+          </section>
+        }
         @for (v of selfChecks; track v.sport) {
           <section class="desk-self">
             <header class="desk-self-head">
@@ -747,6 +759,39 @@
               </li>
             }
           </ul>
+        </div>
+      </card-panel>
+    }
+
+    <!-- Miss review: each day the biggest misses (high confidence lost, the largest projection errors, the worst CLV
+         losers; an in-game injury left out) looked into by Claude with the news around the game
+         (libs/ranker/scripts/model/miss-review.mjs): a cause, how sure, the evidence; the causes tallied by sport and
+         stat. Shown once a sport has the file -->
+    @if (missOn) {
+      <card-panel class="tab-card group-support desk-wide desk-miss-panel" label="Miss review" icon="troubleshoot" [startOpen]="false">
+        <div class="group-body">
+          <p class="desk-note">Why the biggest misses missed: each day's worst surprises looked into with the news around the game, and a cause picked from a fixed list. A cause that keeps coming back becomes a recommendation in the Self-check panel. Advice only: it changes no weight on its own.@if (missPanel.line) { {{ missPanel.line }}.}</p>
+          @if (missPanel.tally.length) {
+            <ul class="desk-miss-tally" aria-label="Causes tallied">
+              @for (c of missPanel.tally; track c.key) {
+                <li [class]="'desk-miss-chip is-' + c.causeId" [title]="c.where + ': ' + c.count + ' reviewed'"><b>{{ c.cause }}</b> {{ c.where }} <small>{{ c.count }}</small></li>
+              }
+            </ul>
+          }
+          @if (!missPanel.days.length) {
+            <p class="desk-note">No misses reviewed lately</p>
+          }
+          @for (d of missPanel.days; track d.day) {
+            <h4 class="desk-miss-day">{{ d.day | date: 'EEE, MMM d' : 'UTC' }}</h4>
+            <ul class="desk-news-list">
+              @for (m of d.rows; track m.key) {
+                <li class="desk-news-row">
+                  <p class="desk-news-what"><b>{{ m.where }}</b> {{ m.pick }} <small>{{ m.result }}</small></p>
+                  <p class="desk-news-headline"><span [class]="'desk-miss-cause is-' + m.causeId">{{ m.cause }}</span> <small>{{ m.sure }}</small>@if (m.backfill) {<small>backfill</small>} {{ m.evidence }}</p>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </card-panel>
     }

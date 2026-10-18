@@ -139,8 +139,9 @@ jobs:
           # (no sport started past this many minutes in: run.mjs)
           DESK_DEADLINE_MIN: "35"
           # (the CHECKs' news research: off unless the variable is 1; under its own caps, ai-budget.mjs
-          # researchBudget: its dated schedule's (CAP_WINDOWS: through 2026-10-31 $100 on the 18th, then $10 a
-          # day, $100 the month; else $5 a UTC day and $80 a UTC month), every sport, whichever binds first;
+          # researchBudget: its dated schedule's (CAP_WINDOWS: through 2026-10-31 $100 on the 18th, then $8 a
+          # day, $60 the month; else $4 a UTC day and $55 a UTC month: the miss review's share taken out of the
+          # $10 / $100 and $5 / $80 they were), every sport, whichever binds first;
           # CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD may lower them, never raise them. Every open CHECK, the
           # biggest model Kelly first, CHECK_RESEARCH_N a sport a day at most (100). Unset, each its default)
           CHECK_RESEARCH: ${{ vars.CHECK_RESEARCH }}
@@ -226,6 +227,34 @@ jobs:
             npm install --prefix .cache/sdk --no-save --no-package-lock --no-audit --no-fund @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: no news signals this run"; exit 0; }
           fi
           node libs/ranker/scripts/model/news-signals.mjs || echo "::warning::the news signals step failed: no signals this run"
+
+      # (the daily miss review, libs/ranker/scripts/model/miss-review.mjs: each sport's biggest misses since its last
+      # review (high confidence lost, the largest projection errors, the worst CLV losers; a broken premise left
+      # out), 5 a sport plus 2 CLV losers, each looked into by claude-opus-5-5 with web search for its cause (a
+      # fixed list), confidence and evidence. Once a UTC day a sport, from 12:00 UTC (after the night's grading):
+      # sent as a Message Batch (half price) one run, read a later one; a run between only looks. Its own caps
+      # (ai-budget.mjs missBudget: $2 a day and $40 through 2026-10-31, then $1 a day and $25 a month;
+      # MISS_REVIEW_DAILY_USD / _MONTHLY_USD may lower them), its log committed with the desk (apps/*/scripts/model/
+      # miss-review.json) and the Algorithm tab's panel (apps/*/src/StaticData/model/miss-review.json). On unless the
+      # repository variable MISS_REVIEW is 0; needs the ANTHROPIC_API_KEY secret. Before the cache is saved (its
+      # calls logged there, a paused turn's history kept there) and never failing the run)
+      - name: Review the biggest misses
+        continue-on-error: true
+        timeout-minutes: 6
+        env:
+          MISS_REVIEW: ${{ vars.MISS_REVIEW || '1' }}
+          ANTHROPIC_API_KEY: ${{ vars.MISS_REVIEW != '0' && secrets.ANTHROPIC_API_KEY || '' }}
+          MISS_REVIEW_DAILY_USD: ${{ vars.MISS_REVIEW_DAILY_USD }}
+          MISS_REVIEW_MONTHLY_USD: ${{ vars.MISS_REVIEW_MONTHLY_USD }}
+        run: |
+          if [ "$MISS_REVIEW" != "1" ] || [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Miss review off (MISS_REVIEW=$MISS_REVIEW, or no ANTHROPIC_API_KEY)"
+            exit 0
+          fi
+          if [ ! -d .cache/sdk/node_modules/@anthropic-ai/sdk ]; then
+            npm install --prefix .cache/sdk --no-save --no-package-lock --no-audit --no-fund @anthropic-ai/sdk@0.131.0 || { echo "::warning::the Anthropic SDK not installed: no miss review this run"; exit 0; }
+          fi
+          node libs/ranker/scripts/model/miss-review.mjs || echo "::warning::the miss review step failed: none this run"
 
       - name: Save the desk's cache
         if: always()
