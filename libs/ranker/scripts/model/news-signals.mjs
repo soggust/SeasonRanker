@@ -10,17 +10,19 @@
 //   on       only with NEWS_SIGNALS=1 and an ANTHROPIC_API_KEY, never on --dry (it says what it would read and
 //            what that would cost at most). Off, no key, the SDK not installed, the budget spent or a log that
 //            can't be read: no signals, nothing else touched (fail safe)
-//   which    every team of each sport's league, a team read once a UTC day (read: its day in the log), 4 feeds
+//   which    every team of each sport's league, a team read once a UTC day (read: its day in the log), or every
+//            run inside an everyRun window (ai-budget.mjs CAP_WINDOWS: through 2026-10-31), 4 feeds
 //            at a time; its stories of the last LOOKBACK_DAYS (3) not read before (seen: by ESPN's story id, kept
 //            SEEN_DAYS (21)); a story tagged to two teams read once. A team is marked read only once all its new
 //            stories are read, so one the caps stopped is read the next run
 //   request  claude-haiku-5-5 at low effort, BATCH (20) stories a call, max_tokens MAX_TOKENS (4,000), the answer
 //            a JSON schema (output_config.format), the client's timeout CALL_TIMEOUT_MS and no SDK retries; at
-//            most MAX_CALLS (12; NEWS_SIGNALS_MAX_CALLS) calls a run, every sport together
+//            most MAX_CALLS (12; WINDOW_MAX_CALLS (40) in an everyRun window; NEWS_SIGNALS_MAX_CALLS) calls a
+//            run, every sport together
 //   capped   ai-budget.mjs newsBudget: its own log (.cache/model/ai-usage-news.json), totals
 //            (apps/nfl/scripts/model/ai-spend-news.json) and caps, apart from the write-ups' and the research's
-//            ($0.15 a UTC day, $4 a UTC month; NEWS_SIGNALS_DAILY_USD and _MONTHLY_USD set them, $0.30 and $6 at
-//            most). A call starts only when its worst case (ESTIMATE: MAX_TOKENS out, WORST_INPUT in: $0.0032)
+//            (the dated schedule's, CAP_WINDOWS: $1 a UTC day and $10 through 2026-10-31, else $0.15 a UTC day
+//            and $4 a UTC month; NEWS_SIGNALS_DAILY_USD and _MONTHLY_USD may lower them). A call starts only when its worst case (ESTIMATE: MAX_TOKENS out, WORST_INPUT in: $0.0032)
 //            fits; its real usage and cost logged ('news-signals'), a failed call at its worst case where it may
 //            have been billed unseen
 //   checked  signalsOf: the answer's JSON alone; each signal's story one of the call's, its team one the story is
@@ -37,7 +39,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { costOf, loadSdk, newsBudget } from './ai-budget.mjs';
+import { costOf, loadSdk, newsBudget, windowAt } from './ai-budget.mjs';
 import { teamNames } from './espn.mjs';
 import { LEAGUES } from './leagues.mjs';
 import { teamStoryOf } from './news.mjs';
@@ -52,6 +54,8 @@ export const MAX_TOKENS = 4000;
 export const WORST_INPUT = 12000;
 export const ESTIMATE = costOf({ input_tokens: WORST_INPUT, output_tokens: MAX_TOKENS }, SIGNALS_MODEL);
 export const MAX_CALLS = 12;
+// (inside an everyRun window (ai-budget.mjs CAP_WINDOWS news): the run's calls at most, every sport together)
+export const WINDOW_MAX_CALLS = 40;
 export const CALL_TIMEOUT_MS = 60_000;
 export const LOOKBACK_DAYS = 3;
 export const SEEN_DAYS = 21;
@@ -214,7 +218,10 @@ export async function newsSignals(sport, { now = new Date(), env = process.env, 
   const list = teams ?? (await teamNames(cfg.league).catch(() => []));
   const abbr = new Map(list.map((x) => [String(x.id), x.abbr ?? String(x.id)]));
   const abbrOf = (id) => abbr.get(String(id)) ?? String(id);
-  const stale = list.filter((x) => kept.read[x.id] !== today);
+  // (inside an everyRun window every team is read every run, its stories still each read once (seen); else a team
+  // once a UTC day)
+  const everyRun = !!windowAt('news', now)?.everyRun;
+  const stale = everyRun ? list : list.filter((x) => kept.read[x.id] !== today);
   // (each stale team's new stories, a story tagged to two teams once)
   const stories = new Map();
   const mine = new Map();
@@ -249,7 +256,7 @@ export async function newsSignals(sport, { now = new Date(), env = process.env, 
       log.warn?.(`${sport}: news signals skipped (the Anthropic SDK not loaded: ${String(err?.message ?? err).slice(0, 100)})`);
       return null;
     }
-    const maxCalls = Math.max(0, Number.parseInt(env.NEWS_SIGNALS_MAX_CALLS ?? '', 10) || MAX_CALLS);
+    const maxCalls = Math.max(0, Number.parseInt(env.NEWS_SIGNALS_MAX_CALLS ?? '', 10) || (everyRun ? WINDOW_MAX_CALLS : MAX_CALLS));
     for (let i = 0; i < queue.length; i += BATCH) {
       const batch = queue.slice(i, i + BATCH);
       if (state.calls >= maxCalls) {

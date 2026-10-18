@@ -21,9 +21,10 @@
 //   measured every call with a reported usage (not a failure, not carried) counted for good in the totals file
 //            (life: { calls, usd, max }), so the real per-call cost is known however long ago the calls were
 //            (the log keeps KEEP_DAYS): the research's trial (research.mjs) ends on it
-//   own caps researchBudget and newsBudget: their caps from the repository variables (capsFrom: CHECK_RESEARCH_
-//            DAILY_USD / _MONTHLY_USD, NEWS_SIGNALS_DAILY_USD / _MONTHLY_USD), each held to its ceiling, so a
-//            typo can't open the spend; unset or unreadable, the defaults
+//   own caps researchBudget and newsBudget: their caps the dated schedule's (CAP_WINDOWS, the standing caps again
+//            once a window ends), which the repository variables (capsFrom: CHECK_RESEARCH_DAILY_USD /
+//            _MONTHLY_USD, NEWS_SIGNALS_DAILY_USD / _MONTHLY_USD) may lower, never raise, so a typo can't open
+//            the spend; unset or unreadable, the schedule's
 
 import { existsSync, readFileSync } from 'node:fs';
 import { writeAtomic } from './sources.mjs';
@@ -64,38 +65,64 @@ export async function loadSdk() {
 export const FLOOR_FILE = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model/ai-spend.json');
 
 // The CHECKs' research's own budget and the news signals': their logs in the workflow's cache, their totals
-// committed beside the write-ups' (the floor, as above), their caps by default and the most a variable may set
+// committed beside the write-ups' (the floor, as above), their standing caps and dated windows (below)
 const CACHE_DIR = path.resolve(import.meta.dirname, '../../../../.cache/model');
 const SPEND_DIR = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model');
 export const RESEARCH_USAGE = path.join(CACHE_DIR, 'ai-usage-research.json');
 export const RESEARCH_FLOOR = path.join(SPEND_DIR, 'ai-spend-research.json');
 // (the owner's, 2026-10-17: every open CHECK researched, under a hard $5 a UTC day and $80 a UTC month, every
-// sport, whichever binds first). The repository variables CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD may set them
-// anywhere up to the ceiling: $100 (the owner's hard limit, 2026-10-17, when he let one day clear the whole backlog)
+// sport, whichever binds first): the standing caps, outside every dated window below
 export const RESEARCH_CAPS = { day: 5, month: 80 };
-export const RESEARCH_CEILING = { day: 100, month: 100 };
 export const NEWS_USAGE = path.join(CACHE_DIR, 'ai-usage-news.json');
 export const NEWS_FLOOR = path.join(SPEND_DIR, 'ai-spend-news.json');
 export const NEWS_CAPS = { day: 0.15, month: 4 };
-export const NEWS_CEILING = { day: 0.3, month: 6 };
 
-// (a budget's caps from the environment: <prefix>_DAILY_USD and <prefix>_MONTHLY_USD, each a number from 0 to its
-// ceiling; unset, empty or not a number, the default)
-export function capsFrom(env, prefix, caps, ceiling) {
-  const one = (v, d, top) => {
-    const n = typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN;
-    return Number.isFinite(n) ? Math.max(0, Math.min(top, n)) : d;
-  };
-  return { day: one(env?.[`${prefix}_DAILY_USD`], caps.day, ceiling.day), month: one(env?.[`${prefix}_MONTHLY_USD`], caps.month, ceiling.month) };
+// The dated windows, the caps' source of truth: inside one ([from, to), UTC) a budget's caps are the window's;
+// outside every one the standing caps above, so a window reverts itself when it ends. The owner's, 2026-10-18,
+// spending expiring API credits through Oct 31: the research $100 the rest of the 18th (his limit for the day),
+// then $10 a day the 19th to the 31st, $100 for the month; the news every team's stories read every run (everyRun,
+// news-signals.mjs) under $1 a day and $10 for the window (all of it October). From 2026-11-01 the standing $5 /
+// $80 and $0.15 / $4, a team's news once a UTC day
+export const CAP_WINDOWS = {
+  research: [
+    { from: '2026-10-18T00:00:00Z', to: '2026-10-19T00:00:00Z', day: 100, month: 100 },
+    { from: '2026-10-19T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 10, month: 100 },
+  ],
+  news: [{ from: '2026-10-18T00:00:00Z', to: '2026-11-01T00:00:00Z', day: 1, month: 10, everyRun: true }],
+};
+
+// (the window of a kind (research, news) that holds now, or null)
+export function windowAt(kind, now = new Date()) {
+  const t = now.getTime();
+  return (CAP_WINDOWS[kind] ?? []).find((w) => t >= Date.parse(w.from) && t < Date.parse(w.to)) ?? null;
 }
 
-// The CHECKs' research's budget (research.mjs): its own log and totals, $5 a day and $80 a month unless the
-// variables lower them (never above)
-export const researchBudget = ({ env = process.env, file = RESEARCH_USAGE, floor = RESEARCH_FLOOR, ...rest } = {}) => aiBudget({ ...rest, file, floor, caps: capsFrom(env, 'CHECK_RESEARCH', RESEARCH_CAPS, RESEARCH_CEILING) });
+// (a kind's caps at now: its window's, else the standing ones)
+export function scheduledCaps(kind, now, standing) {
+  const w = windowAt(kind, now);
+  return w ? { day: w.day, month: w.month } : { day: standing.day, month: standing.month };
+}
 
-// The news signals' budget (news-signals.mjs): its own log and totals, $0.15 a day and $4 a month unless the
-// variables say otherwise ($0.30 and $6 at most)
-export const newsBudget = ({ env = process.env, file = NEWS_USAGE, floor = NEWS_FLOOR, ...rest } = {}) => aiBudget({ ...rest, file, floor, caps: capsFrom(env, 'NEWS_SIGNALS', NEWS_CAPS, NEWS_CEILING) });
+// (a budget's caps from the environment: <prefix>_DAILY_USD and <prefix>_MONTHLY_USD may lower the caps given (the
+// schedule's), never raise them: each the lower of the variable and the cap, and not below 0; unset, empty or not
+// a number, the cap)
+export function capsFrom(env, prefix, caps) {
+  const one = (v, d) => {
+    const n = typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN;
+    return Number.isFinite(n) ? Math.max(0, Math.min(d, n)) : d;
+  };
+  return { day: one(env?.[`${prefix}_DAILY_USD`], caps.day), month: one(env?.[`${prefix}_MONTHLY_USD`], caps.month) };
+}
+
+// The CHECKs' research's budget (research.mjs): its own log and totals, its caps the schedule's at now
+// (CAP_WINDOWS, else $5 a day and $80 a month), which the variables may lower
+export const researchBudget = ({ env = process.env, file = RESEARCH_USAGE, floor = RESEARCH_FLOOR, now = new Date(), ...rest } = {}) =>
+  aiBudget({ ...rest, now, file, floor, caps: capsFrom(env, 'CHECK_RESEARCH', scheduledCaps('research', now, RESEARCH_CAPS)) });
+
+// The news signals' budget (news-signals.mjs): its own log and totals, its caps the schedule's at now (else $0.15
+// a day and $4 a month), which the variables may lower
+export const newsBudget = ({ env = process.env, file = NEWS_USAGE, floor = NEWS_FLOOR, now = new Date(), ...rest } = {}) =>
+  aiBudget({ ...rest, now, file, floor, caps: capsFrom(env, 'NEWS_SIGNALS', scheduledCaps('news', now, NEWS_CAPS)) });
 
 // (an entry that measures a call: its usage reported, not a failure, not a carried total)
 const measures = (e) => !!e && e.what !== 'carried' && !e.failed && !!e.usage && typeof e.usage === 'object' && Number.isFinite(e.cost);

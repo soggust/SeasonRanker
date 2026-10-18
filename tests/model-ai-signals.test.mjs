@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { aiBudget, capsFrom, costOf, newsBudget, NEWS_CAPS, researchBudget, RESEARCH_CAPS } from '../libs/ranker/scripts/model/ai-budget.mjs';
+import { aiBudget, CAP_WINDOWS, capsFrom, costOf, newsBudget, NEWS_CAPS, researchBudget, RESEARCH_CAPS, windowAt } from '../libs/ranker/scripts/model/ai-budget.mjs';
 import { researchChecks, measuredWords, ESTIMATE as RESEARCH_ESTIMATE } from '../libs/ranker/scripts/model/research.mjs';
 import { ESTIMATE, MIN_CONF, newsSignals, pageOf, readLog, signalsOf, SIGNALS_MODEL } from '../libs/ranker/scripts/model/news-signals.mjs';
 import { researchRow } from '../libs/ranker/scripts/model/picks.mjs';
@@ -18,17 +18,16 @@ const now = new Date('2026-10-14T15:00:00Z');
 const quiet = { log: () => {}, warn: () => {} };
 const tmp = (name) => fs.mkdtempSync(path.join(os.tmpdir(), `${name}-`));
 
-test('capsFrom: the defaults unset or unreadable, a variable held to its ceiling and above 0', () => {
-  const ceiling = { day: 1, month: 20 };
-  assert.deepEqual(capsFrom({}, 'X', { day: 0.5, month: 12 }, ceiling), { day: 0.5, month: 12 });
-  assert.deepEqual(capsFrom({ X_DAILY_USD: '', X_MONTHLY_USD: 'lots' }, 'X', { day: 0.5, month: 12 }, ceiling), { day: 0.5, month: 12 });
-  assert.deepEqual(capsFrom({ X_DAILY_USD: '0.25', X_MONTHLY_USD: '8' }, 'X', RESEARCH_CAPS, ceiling), { day: 0.25, month: 8 });
-  assert.deepEqual(capsFrom({ X_DAILY_USD: '50', X_MONTHLY_USD: '-3' }, 'X', RESEARCH_CAPS, ceiling), { day: 1, month: 0 });
-  // (the research's: $5 a day and $80 a month by default, the owner's (2026-10-17); a variable sets them up to the
-  // $100 ceiling, his hard limit)
+test('capsFrom: the caps given unset or unreadable, a variable lowering them (never raising them) and above 0', () => {
+  assert.deepEqual(capsFrom({}, 'X', { day: 0.5, month: 12 }), { day: 0.5, month: 12 });
+  assert.deepEqual(capsFrom({ X_DAILY_USD: '', X_MONTHLY_USD: 'lots' }, 'X', { day: 0.5, month: 12 }), { day: 0.5, month: 12 });
+  assert.deepEqual(capsFrom({ X_DAILY_USD: '0.25', X_MONTHLY_USD: '8' }, 'X', RESEARCH_CAPS), { day: 0.25, month: 8 });
+  assert.deepEqual(capsFrom({ X_DAILY_USD: '50', X_MONTHLY_USD: '-3' }, 'X', RESEARCH_CAPS), { day: 5, month: 0 });
+  // (the research's: $5 a day and $80 a month by default, the owner's (2026-10-17); a variable lowers them, never
+  // raises them)
   assert.deepEqual(RESEARCH_CAPS, { day: 5, month: 80 });
   assert.deepEqual(researchBudget({ env: {}, file: null, floor: null, now }).caps, { day: 5, month: 80 });
-  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '9', CHECK_RESEARCH_MONTHLY_USD: '500' }, file: null, floor: null, now }).caps, { day: 9, month: 100 });
+  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '9', CHECK_RESEARCH_MONTHLY_USD: '500' }, file: null, floor: null, now }).caps, { day: 5, month: 80 });
   assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '2' }, file: null, floor: null, now }).caps, { day: 2, month: 80 });
 });
 
@@ -270,4 +269,56 @@ test('newsSignals fail safe: the caps reached, a failed call or an unreadable lo
   // (the page: the last two days' signals alone)
   const p = pageOf('nfl', { signals: [{ at: '2026-10-14T00:00:00Z', confidence: 1, kind: 'role' }, { at: '2026-10-01T00:00:00Z', confidence: 1, kind: 'role' }] }, now);
   assert.equal(p.signals.length, 1);
+});
+
+test("the dated cap schedule (CAP_WINDOWS): the owner's credit window through Oct 31, reverting itself on Nov 1", () => {
+  const at = (iso) => new Date(iso);
+  const caps = (iso, env = {}) => ({ research: researchBudget({ env, file: null, floor: null, now: at(iso) }).caps, news: newsBudget({ env, file: null, floor: null, now: at(iso) }).caps });
+  // (before the window: the standing caps)
+  assert.deepEqual(caps('2026-10-17T23:59:59Z'), { research: RESEARCH_CAPS, news: NEWS_CAPS });
+  assert.equal(windowAt('news', at('2026-10-17T23:59:59Z')), null);
+  // (the 18th: $100 the research's day and month; the news $1 and $10, every run)
+  assert.deepEqual(caps('2026-10-18T23:59:00Z'), { research: { day: 100, month: 100 }, news: { day: 1, month: 10 } });
+  assert.equal(windowAt('news', at('2026-10-18T23:59:00Z')).everyRun, true);
+  // (the 19th to the 31st: the research $10 a day, $100 the month)
+  assert.deepEqual(caps('2026-10-19T00:00:00Z'), { research: { day: 10, month: 100 }, news: { day: 1, month: 10 } });
+  assert.deepEqual(caps('2026-10-31T23:59:00Z'), { research: { day: 10, month: 100 }, news: { day: 1, month: 10 } });
+  assert.equal(windowAt('news', at('2026-10-31T23:59:59.999Z')).everyRun, true);
+  // (Nov 1: the standing caps again, the news once a day)
+  assert.deepEqual(caps('2026-11-01T00:00:00Z'), { research: { day: 5, month: 80 }, news: { day: 0.15, month: 4 } });
+  assert.equal(windowAt('research', at('2026-11-01T00:00:00Z')), null);
+  assert.equal(windowAt('news', at('2026-11-01T00:00:00Z')), null);
+  // (a variable lowers the schedule's caps, never raises them)
+  assert.deepEqual(caps('2026-10-18T12:00:00Z', { CHECK_RESEARCH_DAILY_USD: '100', CHECK_RESEARCH_MONTHLY_USD: '100' }).research, { day: 100, month: 100 });
+  assert.deepEqual(caps('2026-10-20T12:00:00Z', { CHECK_RESEARCH_DAILY_USD: '100', CHECK_RESEARCH_MONTHLY_USD: '100' }).research, { day: 10, month: 100 });
+  assert.deepEqual(caps('2026-11-01T00:00:00Z', { CHECK_RESEARCH_DAILY_USD: '100', CHECK_RESEARCH_MONTHLY_USD: '100' }).research, { day: 5, month: 80 });
+  assert.deepEqual(caps('2026-10-20T12:00:00Z', { CHECK_RESEARCH_DAILY_USD: '3', NEWS_SIGNALS_DAILY_USD: '0.5' }), { research: { day: 3, month: 100 }, news: { day: 0.5, month: 10 } });
+  // (the windows in order, none overlapping)
+  for (const ws of Object.values(CAP_WINDOWS)) for (let i = 1; i < ws.length; i++) assert.ok(Date.parse(ws[i].from) >= Date.parse(ws[i - 1].to));
+});
+
+test('newsSignals in the everyRun window (through Oct 31): a team read today is read again the next run, each story still once; Nov 1 once a day again', async () => {
+  const dir = tmp('signals-window');
+  const files = { log: path.join(dir, 'log.json'), page: path.join(dir, 'page.json') };
+  const env = { NEWS_SIGNALS: '1', ANTHROPIC_API_KEY: 'test' };
+  const runAt = async (iso, articles, answers) => {
+    const at = new Date(iso);
+    const client = mockClient(answers);
+    let fetched = 0;
+    const fetchJson = async () => (fetched++, { articles });
+    const budget = newsBudget({ env, file: path.join(dir, 'usage.json'), floor: null, now: at });
+    const out = await newsSignals('nfl', { now: at, env, budget, client, teams: [team], fetchJson, files, log: quiet });
+    return { out, fetched, asked: client.asked.length, caps: budget.caps };
+  };
+  const pub = (iso) => ({ published: iso });
+  const a = await runAt('2026-10-31T22:00:00Z', [story('w1', pub('2026-10-31T20:00:00Z'))], [answerOf([])]);
+  assert.deepEqual([a.fetched, a.asked, a.caps.day], [1, 1, 1]);
+  // (an hour later, the same UTC day: the team's feed read again; the old story not asked again, the new one is)
+  const b = await runAt('2026-10-31T23:00:00Z', [story('w1', pub('2026-10-31T20:00:00Z')), story('w2', pub('2026-10-31T22:30:00Z'))], [answerOf([])]);
+  assert.deepEqual([b.fetched, b.asked, b.out.stories], [1, 1, 1]);
+  // (Nov 1: the standing caps, a team once a day)
+  const c = await runAt('2026-11-01T00:00:00Z', [story('n1', pub('2026-10-31T23:30:00Z'))], [answerOf([])]);
+  assert.deepEqual([c.fetched, c.asked, c.caps.day], [1, 1, 0.15]);
+  const d = await runAt('2026-11-01T01:00:00Z', [story('n2', pub('2026-11-01T00:30:00Z'))], []);
+  assert.deepEqual([d.fetched, d.asked], [0, 0]);
 });
