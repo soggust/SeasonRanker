@@ -320,3 +320,18 @@ test('gameRosterOf cap false and postedMax: a list carrying last week’s names 
   assert.equal(postedMax('nfl', 12, 40), true);
   assert.equal(postedMax('mlb', 30, 40), false);
 });
+
+// ESPN's game roster carries the last game's flags before a game's own post; the NBA's lineups are out about 30
+// minutes before the tip: context.mjs freshStarters reads a five earlier than FIVE_EARLY only where it isn't the
+// last game's (or the last game's is unread)
+test('freshStarters: the NBA’s five the last game’s before the lineups are out not posted; a different one, or inside 45 minutes, posted', async () => {
+  const { freshStarters, FIVE_EARLY } = await import('../libs/ranker/scripts/model/context.mjs');
+  assert.equal(FIVE_EARLY, 45 * 60e3);
+  const five = (...ids) => ({ inactive: [], starters: ids.map(String) });
+  const hour = 36e5;
+  assert.equal(freshStarters(five(1, 2, 3, 4, 5), five(5, 4, 3, 2, 1), 1.5 * hour), null);
+  assert.equal(freshStarters(five(1, 2, 3, 4, 5), null, 1.5 * hour), null);
+  assert.deepEqual(freshStarters(five(1, 2, 3, 4, 6), five(1, 2, 3, 4, 5), 1.5 * hour), ['1', '2', '3', '4', '6']);
+  assert.deepEqual(freshStarters(five(1, 2, 3, 4, 5), five(1, 2, 3, 4, 5), 30 * 60e3), ['1', '2', '3', '4', '5']);
+  assert.equal(freshStarters({ inactive: [], starters: null }, five(1, 2, 3, 4, 5), 30 * 60e3), null);
+});

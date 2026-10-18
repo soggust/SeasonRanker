@@ -330,6 +330,23 @@ export function reportPosted(report, team, start) {
   });
 }
 
+// The NBA's starting five on a coming game's roster: the posted one, or null. ESPN's game roster carries the team's
+// last game's flags before the game's own post (the NFL's inactives 2026-10-18: the Eagles' the Jaguars game's to the
+// name, 90 minutes out), and the NBA's lineups are out about 30 minutes before the tip, so a five read earlier than
+// FIVE_EARLY that's the last game's own (or with the last game's unread) isn't posted yet: read, it's the last
+// game's lineup taken for tonight's (a starter missing last night read as benched tonight). A five unlike the last
+// game's is tonight's, posted early. until: ms to the tip
+export const FIVE_EARLY = 45 * 60e3;
+export function freshStarters(posted, prev, until) {
+  const five = posted?.starters;
+  if (!five?.length) return null;
+  if (until <= FIVE_EARLY) return five;
+  const was = prev?.starters;
+  if (!was?.length) return null;
+  const s = new Set(was.map(String));
+  return five.length === s.size && five.every((id) => s.has(String(id))) ? null : five;
+}
+
 // (a team's last game before this one in the history: its event id, or null)
 export function lastGameOf(history, team, before) {
   let best = null;
@@ -355,13 +372,21 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   // ESPN's injury report lists each game's inactives itself, Out, within minutes of the posting (2026-10-18:
   // every posted side's, coach's decisions too), so the list adds only what the report hasn't caught up to)
   const prevs = await pool(asks, 4, ({ game, team }, i) => {
-    if (!got[i]?.inactive?.length) return null;
+    if (!got[i]?.inactive?.length && !got[i]?.starters) return null;
     const prev = lastGameOf(history, team, Date.parse(game.date));
     return prev ? gameRoster(cfg.league, prev, team, sport, false) : null;
   });
   let carried = 0;
   let unread = 0;
+  let early = 0;
   asks.forEach(({ game, team }, i) => {
+    // (the NBA's five, the last game's before the lineups are out: not posted, freshStarters)
+    if (got[i]?.starters) {
+      const five = freshStarters(got[i], prevs[i], Date.parse(game.date) - now);
+      if (!five) early++;
+      got[i] = { ...got[i], starters: five };
+      if (!got[i].inactive.length && !five) got[i] = null;
+    }
     if (!got[i]?.inactive?.length) return;
     if (!prevs[i]) unread++;
     const fresh = freshInactives(got[i], prevs[i]);
@@ -378,6 +403,7 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   });
   if (carried) console.log(`${sport}: game-day rosters: ${carried} names carried over from the teams' last games left to the injury report`);
   if (unread) console.log(`${sport}: game-day rosters: ${unread} sides' last game's list not read: their lists left to the injury report`);
+  if (early) console.log(`${sport}: game-day rosters: ${early} sides' starting five the last game's, before the lineups are out: not posted`);
   let posted = 0;
   asks.forEach(({ game, team }, i) => {
     if (!got[i]) return;
