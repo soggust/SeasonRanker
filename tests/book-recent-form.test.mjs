@@ -167,6 +167,17 @@ test('botForm: a streak cut at the other result in another sport, a losing week,
   assert.equal(bets.botForm([], NOW), null);
 });
 
+test('botForm: the practice picks week on its own line (picks.mjs recentOf practice, desk.mjs PRACTICE_SPLIT), out of the record', () => {
+  const nhl = block({ days: { '2026-10-17': [1, 0, 0, 1, 0.91] }, practice: { won: 1, lost: 2, push: 0, profit: -0.55 }, last: [settledBet('nhl', 'W', '2026-10-17T03:00:00Z')] });
+  const mlb = block({ practice: { won: 1, lost: 0, push: 1, profit: 0.45 } });
+  const f = bets.botForm([nhl, mlb], NOW);
+  assert.equal(f.record, '1–0');
+  assert.equal(f.practice, '2–2–1 · −0.10u');
+  // (practice alone still shows the card, its record 0–0)
+  assert.equal(bets.botForm([mlb], NOW).practice, '1–0–1 · +0.45u');
+  assert.equal(bets.botForm([block({ days: { '2026-10-17': [1, 0, 0, 1, 0.91] }, last: [settledBet('nhl', 'W', '2026-10-17T03:00:00Z')] })], NOW).practice, undefined);
+});
+
 test('formSide: the viewer\'s pick, else theirs once they have any, else the bot\'s; none with neither', () => {
   const some = { record: '1–0', units: '+0.91u', up: true, streak: 'W1', last: [] };
   assert.equal(bets.formSide(null, null, some), 'bot');

@@ -27,6 +27,8 @@ export interface RecentForm {
   // ("W3", "L2"; "–" without a settled bet on hand to count from)
   streak: string;
   last: FormBet[];
+  // (the bot's practice picks' week apart from its record ("3–2 · +0.45u"), where it has any: picks.mjs recentOf)
+  practice?: string;
 }
 
 // One sport's recent block in its picks.json (picks.mjs recentOf): its graded placed bets' last seven US Eastern
@@ -45,6 +47,8 @@ export interface BotRecentBet {
 export interface BotRecent {
   days: Record<string, number[]>;
   week?: { won: number; lost: number; push: number; profit: number };
+  // (its practice picks' week, apart from the record (desk.mjs PRACTICE_SPLIT), where it has any)
+  practice?: { won: number; lost: number; push: number; profit: number };
   streak: string | null;
   streakAt: string[];
   brokeAt: string | null;
@@ -160,9 +164,13 @@ export function botForm(blocks: readonly (BotRecent | null | undefined)[], now: 
       who: betPlayer({ sport: b.sport, market: b.market, player: b.player, pick: b.pick }),
       units: unitsText(b.units),
     }));
-  if (!(won + lost + push) && !last.length) return null;
+  // (the practice picks' week, summed the same way: a line of its own)
+  const pr = { won: 0, lost: 0, push: 0, profit: 0 };
+  for (const b of list) for (const k of ['won', 'lost', 'push', 'profit'] as const) pr[k] += b.practice?.[k] ?? 0;
+  const practice = pr.won + pr.lost + pr.push ? `${pr.won}–${pr.lost}${pr.push ? `–${pr.push}` : ''} · ${unitsText(Math.round(pr.profit * 100) / 100)}` : null;
+  if (!(won + lost + push) && !last.length && !practice) return null;
   profit = Math.round(profit * 100) / 100;
-  return { record: `${won}–${lost}${push ? `–${push}` : ''}`, units: unitsText(profit), up: profit >= 0, streak, last };
+  return { record: `${won}–${lost}${push ? `–${push}` : ''}`, units: unitsText(profit), up: profit >= 0, streak, last, ...(practice ? { practice } : {}) };
 }
 
 // Whose form the card shows: the viewer's pick on the switch where they made one, else theirs once they have any,

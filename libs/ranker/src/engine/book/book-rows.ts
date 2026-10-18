@@ -44,6 +44,8 @@ export interface BetRow {
   read?: string;
   // (its band, picks.mjs: LOCK (5% Kelly and a 55% chance), LOVE (2%), LIKE (any edge), PASS)
   confidence: Confidence | null;
+  // (a slate's practice pick (picks.json's practice): a LIKE whatever its score, its practice tag on the row)
+  practice?: boolean;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
   player?: string | null;
@@ -154,6 +156,8 @@ export interface Pick {
   // its chance to win, a whole percent (the band its level)
   chance: number;
   level: Confidence;
+  // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; a LIKE, tagged)
+  practice?: boolean;
   kind: BetKind;
   market: string;
   pick: string;
@@ -241,7 +245,8 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     ...(p.headline ? { headline: p.headline } : {}),
     ...(p.by ? { by: p.by } : {}),
     ...(p.read ? { read: p.read } : {}),
-    confidence: confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge),
+    confidence: p.practice ? 'medium' : confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge),
+    ...(p.practice ? { practice: true } : {}),
     id: -1,
     key: pickKey(sport, p.matchup, p.kind, p.pick),
     pick: p.pick,

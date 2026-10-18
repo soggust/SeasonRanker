@@ -161,8 +161,13 @@ export const GAME_CAP = 5;
 // each rung pulled toward its sport's and every sport's pooled by its own evidence); the live calibration active
 // (calib.mjs: every graded prop across epochs, sparse spots pooled by line class); the bands and every Kelly shown
 // on the stake's Kelly (desk.mjs stakeKelly: held to -110's scale); a CHECK judged and shown by its cleared Kelly
-// (checks.mjs checkKelly, the bar +1). Set to the push time.
-export const MODEL_EPOCH = '2026-10-18T15:58:00Z';
+// (checks.mjs checkKelly, the bar +1). Set to the push time. 2026-10-18, history sharpens the choice, not the volume (the
+// owner: "it should be using history to make BETTER picks, not stop playing the game altogether"): the props priced at
+// the learned correction (correct.mjs: where the model beats the book's no-vig and where it doesn't, by sport, stat,
+// line bucket, lean, gap, price, home and timing, self-tuned on a time split) in place of the trust's blanket shrink,
+// the trust sizing the stake; each slate plays its best few by edge before the vig at the practice stake (desk.mjs
+// PRACTICE_N), tallied apart (PRACTICE_SPLIT). Set to the push time.
+export const MODEL_EPOCH = '2026-10-18T22:40:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

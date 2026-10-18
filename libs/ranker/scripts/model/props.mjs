@@ -76,7 +76,8 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { calSides } from './calib.mjs';
-import { bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
+import { bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, trustedUnits } from './desk.mjs';
+import { correctSides } from './correct.mjs';
 import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
@@ -1741,7 +1742,7 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
-export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null, roleGate = null, roleLimits = null) {
+export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null, roleGate = null, roleLimits = null, correction = null) {
   const priced = [];
   // (the role guard's settled absences logged, by game and player: once each)
   const settledLogged = new Set();
@@ -1908,10 +1909,17 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const sides = [
       { side: 'over', model: cal.over, raw: pOver, cal: cal.so, fair: book.fairOver, odds: book.over },
       { side: 'under', model: cal.under, raw: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, odds: book.under },
-    ].map((x) => {
-      const p = chanceAt('prop', x.fair, x.model, t);
-      return { ...x, p, ev: (1 - chances.push) * (p * decimal(x.odds) - 1) };
-    });
+    ];
+    // (the learned correction where it's fit (correct.mjs, 2026-10-18): each side's chance the fit's, from the raw
+    // model and the book's no-vig, the calibration inside it (its rows are the raw chances), the lean kept, cut,
+    // or turned over by where the model has beaten the book; the trust no longer shrinks the chance, it sizes the
+    // stake (trustedUnits). None (too few rows): the trusted chance as before)
+    const corr = correctSides(correction, { sport, stat: prop.stat.key, line: prop.line, pOver, fairOver: book.fairOver, overOdds: book.over, underOdds: book.under, home, hours: (Date.parse(game.date) - Date.now()) / 36e5 });
+    for (const x of sides) {
+      x.p = corr ? corr[x.side] : chanceAt('prop', x.fair, x.model, t);
+      x.ev = (1 - chances.push) * (x.p * decimal(x.odds) - 1);
+      x.edge = x.p - x.fair;
+    }
     // (the mean the book's price implies at its line (impliedMean; none at an assumed -110: it says nothing of
     // his role, only that the price is unknown): the role guards' line reasons, a CHECK's, and every priced
     // prop's ratio to the model's (projection.lineRatio: selfcheck.mjs C20)). On the plain shape, never the early
@@ -2031,6 +2039,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const newsFlag = newsDup ? null : newsFlag0;
     const gapSide = gapGuard('prop', sides[0].model, sides[0].fair) || roleChange || newsFlag ? (sides[0].model - sides[0].fair >= 0 ? sides[0] : sides[1]) : null;
     const pick = gapSide ?? (sides[0].ev >= sides[1].ev ? sides[0] : sides[1]);
+    // (the side the correction turned the pick to, against the raw model's: the skew guard reads the model's side,
+    // not one the record chose)
+    const turned = !!corr && !gapSide && pick.model - pick.fair < 0;
     const { side, model, ev, odds, fair, raw: modelRaw, cal: calShift } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
     const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
@@ -2163,7 +2174,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // books': a book's line sits where the book puts it, nearer the projection or farther, so before the guard
     // is ever loosened it's confirmed on the desk's own graded props at the books' lines. Lines under SKEW_MIN_LINE left alone: a small count's skew is real (a 0.5
     // line's under can be the likelier side with the mean above it))
-    else if (skewOnly(side, mu, prop.line)) guard = { skip: true, kind: 'skew', why: `the projection (${round(mu, 1)}) on the other side of the line from the ${side}: its edge only the spread's assumed skew` };
+    else if (!turned && skewOnly(side, mu, prop.line)) guard = { skip: true, kind: 'skew', why: `the projection (${round(mu, 1)}) on the other side of the line from the ${side}: its edge only the spread's assumed skew` };
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
     // likely right)
     else if (prop.prices && fair < 0.25) guard = { skip: true, why: `a long shot (the book's fair chance ${Math.round(fair * 100)}%)` };
@@ -2208,7 +2219,12 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       trust: t,
       p: pTrusted,
       ev,
-      units: guard ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : stakeFor(ev, evScale, odds),
+      units: guard ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : corr ? trustedUnits(stakeFor(ev, evScale, odds), t) : stakeFor(ev, evScale, odds),
+      // (its edge before the vig, the chance over the book's no-vig: the slate's practice picks rank by it (desk.mjs
+      // practiceTop); whether the correction priced it, and turned its side; his side of the game, home or away)
+      edge: pick.edge,
+      ...(corr ? { corrected: true, ...(turned ? { turned: true } : {}), pTrust: chanceAt('prop', fair, model, t) } : {}),
+      home,
       guard,
       ...(roleBet ? { roleBet } : {}),
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)

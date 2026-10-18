@@ -607,7 +607,7 @@ test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confi
   }));
   assert.deepEqual(
     panels.map((p) => p.label),
-    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'selfTitle', 'News signals', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Model Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
+    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'News signals', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Model Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
   );
   assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ['By Sport', 'By Confidence', 'Open Bets']);
   // (the two-column grid holds the top pair alone: its own closing div is the first at the grid's indent after it)
@@ -616,7 +616,7 @@ test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confi
   assert.ok(grid > 0 && gridEnd > grid);
   assert.deepEqual(panels.filter((p) => p.at > grid && p.at < gridEnd).map((p) => p.label), ['By Sport', 'By Confidence']);
   // (the breakdowns under it keep the grid's tables (desk-wide); the bets' lists and the rest have their own)
-  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ['Calibration', 'By Stake', 'trackedTitle', 'selfTitle', 'News signals']);
+  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ['Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'News signals']);
   assert.ok(!html.includes('By Market'));
 });
 

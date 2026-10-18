@@ -58,7 +58,7 @@
 //            bets at their first price whatever the news: unlock turns those back into shown ones)
 
 import { round } from './ratings.mjs';
-import { decimal, intentOf, isTracked, kellyScale, record, stakeKelly } from './desk.mjs';
+import { decimal, inPractice, intentOf, isPracticeTop, isTracked, kellyScale, record, stakeKelly } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
 import { CHECK_RULE, CHECK_TOP, checkKelly, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
@@ -119,8 +119,10 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // researchLevelOf: one placed with it earned (its tag's earned) is banded by its Kelly as any edge, LOVE and LOCK
 // possible, a research bet a LIKE at the least)
 const earnedBet = (b) => !!b.researchBet?.earned;
+// (a slate's practice pick (desk.mjs isPracticeTop: bet for the slate, short of the vig) a LIKE, whatever its score)
 export const levelOf = (b, kelly, p = b.p) =>
   intentOf(b) !== 'edge' ? 'low'
+  : isPracticeTop(b) ? 'medium'
   : earnedBet(b) && !b.practice ? (edgeLevel(kelly, p) === 'low' ? 'medium' : edgeLevel(kelly, p))
   : b.researchBet || b.context?.roleBet ? 'medium'
   : ((b.researchAdjusted && !b.researchAdjusted.earned) || b.practice) && edgeLevel(kelly, p) !== 'low' ? 'medium'
@@ -143,6 +145,7 @@ const WALLET_MARKET = { ml: 'moneyline', prop: 'prop', spread: 'spread', total: 
 export function recentOf(sport, bets, now) {
   const graded = bets
     .filter((b) => !b.void && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.profit))
+    .filter((b) => !inPractice(b))
     .sort((x, y) => String(settledAt(y)).localeCompare(String(settledAt(x))) || String(y.start).localeCompare(String(x.start)) || String(y.id).localeCompare(String(x.id)));
   const t = now.getTime();
   const window = new Set(Array.from({ length: RECENT_DAYS }, (_, i) => etDayOf(t - i * 864e5)));
@@ -178,9 +181,19 @@ export function recentOf(sport, bets, now) {
       at: settledAt(b),
     };
   });
+  // (the slate's practice picks' week on its own line while desk.mjs PRACTICE_SPLIT: the card's Practice line)
+  const practice = { won: 0, lost: 0, push: 0, profit: 0 };
+  for (const b of bets) {
+    if (!inPractice(b) || b.void || !['won', 'lost', 'push'].includes(b.status) || !Number.isFinite(b.profit)) continue;
+    const at = Date.parse(settledAt(b));
+    if (!Number.isFinite(at) || at > t || !window.has(etDayOf(at))) continue;
+    practice[b.status]++;
+    practice.profit = round(practice.profit + b.profit, 2);
+  }
   return {
     days,
     week,
+    ...(practice.won + practice.lost + practice.push ? { practice } : {}),
     streak: decided.length ? `${decided[0].status === 'won' ? 'W' : 'L'}${n}` : null,
     streakAt: decided.slice(0, Math.min(n, STREAK_CAP)).map(settledAt),
     brokeAt: decided[n] ? settledAt(decided[n]) : null,
@@ -326,7 +339,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     delete b.shown;
   }
   // (a tracked row (desk.mjs TRACK: no edge, not bet) never: the page reads every pick as a bet the bot made)
-  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !b.context?.guard && !isTracked(b));
+  // (a slate's practice pick shows whatever its guard's word: it's on the Book as a LIKE with its practice tag)
+  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && (!b.context?.guard || isPracticeTop(b)) && !isTracked(b));
   // (one a bet: a --dry run prices placed bets again in memory)
   const once = [...new Map(open.map((b) => [b.id, b])).values()];
   // (the order: its Kelly score; its edge score kept beside it)
@@ -391,6 +405,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       chance: Math.round((check ? b.model : b.p) * 100),
       level: check ? 'check' : levelOf(b, score),
       edge: intentOf(b) === 'edge',
+      // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; the Book's practice tag)
+      ...(isPracticeTop(b) ? { practice: true } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
       pick: b.pick,

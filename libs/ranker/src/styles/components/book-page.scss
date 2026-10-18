@@ -967,6 +967,14 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     margin: 0;
   }
 
+  // (the bot's practice picks' week, apart from its record: a quiet line under the stats)
+  .form-practice {
+    color: v.$text-faint;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    margin: 0;
+  }
+
   .form-stats {
     display: grid;
     gap: v.$space-8;
@@ -1609,6 +1617,21 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // (a pick already bet, still open: its stake in green)
+// (a slate's practice pick: a small quiet tag under the pick)
+.bet-practice {
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  color: v.$text-faint;
+  display: inline-block;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  padding: 0 v.$space-4;
+  text-transform: uppercase;
+  width: max-content;
+}
+
 .bet-placed {
   align-items: center;
   color: v.$good-bright;

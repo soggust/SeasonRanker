@@ -831,7 +831,8 @@ export function c13(x) {
     const market = b.market === 'prop' ? 'prop' : b.market;
     let why = null;
     if (fin(b.model) && fin(b.fair) && pastGap(market, b.model, b.fair)) why = 'past the gap';
-    else if (b.publishedLevel && fin(trustOf(b)) && fin(b.fair) && fin(b.model) && fin(b.odds)) {
+    // (a prop the learned correction priced (correct.mjs) is never priced again at the trust: its chance is the fit's)
+    else if (b.publishedLevel && !b.corrected && fin(trustOf(b)) && fin(b.fair) && fin(b.model) && fin(b.odds)) {
       const p = chanceAt(market, b.fair, b.model, trustOf(b));
       const level = levelOf(b, scoreParts({ ...b, p }, x.state?.trust).score, p);
       if (level !== b.publishedLevel) why = `published ${BAND_LABELS[b.publishedLevel] ?? b.publishedLevel}, ${BAND_LABELS[level] ?? level} at today's trust`;

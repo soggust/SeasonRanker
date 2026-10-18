@@ -140,6 +140,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private tracked: ModelBet[] = [];
   trackedBySport: Tally[] = [];
   trackedTotal: Tally | null = null;
+  // (the slate's practice picks (desk.mjs PRACTICE_SPLIT, state.json's practiceSplit): bet at 0.5u for the slate, short
+  // of the vig, their own Practice line by sport, out of every record above; with the split off, among the bets)
+  private allPractice: ModelBet[] = [];
+  practiceBySport: Tally[] = [];
+  practiceTotal: Tally | null = null;
   // (the game lines' CLV gate by sport (state.json's lineGate, desk.mjs lineGate): full stakes, or the practice stake and why)
   lineGates: { label: string; on: boolean; text: string }[] = [];
 
@@ -260,8 +265,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.newsSignalsOn = this.allNewsSignals.some((f) => !!f);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
-    this.allBets = rows.filter((b) => !isTracked(b));
+    const split = this.allStates.some((s) => s.practiceSplit);
+    const practice = (b: ModelBet) => split && !!b.topN && !isTracked(b);
+    this.allBets = rows.filter((b) => !isTracked(b) && !practice(b));
     this.allTracked = rows.filter(isTracked);
+    this.allPractice = rows.filter(practice);
     this.epoch = deskEpochOf(this.allStates);
     this.allChecks = files.flatMap((f) => checkBets(Array.isArray(f.checks?.checks) ? f.checks!.checks : []));
     // (a remembered sport with no bets (NBA before its season): every sport instead, not an untouched
@@ -413,6 +421,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const anytime = tally('NFL · Anytime TD', tracked.filter((b) => b.propType === 'anyTd'));
     if (anytime.bets || anytime.open) this.trackedBySport.push(anytime);
     this.trackedTotal = this.trackedBySport.length > 1 ? tally('Total', tracked) : null;
+    // (the practice picks the same way, at their own stakes, in the sport, game and range on show)
+    const practice = this.allPractice.filter((b) => (!this.sport || b.sport === this.sport) && (!this.game || b.event === this.game) && (b.status === 'open' || this.shown(b)));
+    this.practiceBySport = SPORTS.map((sport) => tally(sport.toUpperCase(), practice.filter((b) => b.sport === sport))).filter((t) => t.bets || t.open);
+    this.practiceTotal = this.practiceBySport.length > 1 ? tally('Total', practice) : null;
     // (the game lines' CLV gate, a line a sport on show: "NFL lines: bet · CLV +0.012 over 31 graded" or, negative,
     // "NHL lines: practice stake · CLV -0.0347 over 185": still bet, at 0.5u; only the bets since the model's epoch)
     this.lineGates = this.states

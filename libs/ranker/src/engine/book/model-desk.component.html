@@ -665,6 +665,28 @@
     </card-panel>
     }
 
+    <!-- (the slate's practice picks (desk.mjs PRACTICE_SPLIT): each slate's best few by edge before the vig, bet at 0.5u
+         though short of the vig, so the bot never stops playing; graded and learned from, tallied here, out of the
+         record; folded to begin with) -->
+    @if (practiceBySport.length) {
+    <card-panel class="tab-card group-advanced desk-wide" label="Practice" icon="fitness_center" [startOpen]="false">
+      <div class="group-body">
+        <table class="desk-table">
+          <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'practice' }"></ng-container></thead>
+          <tbody>
+            @for (t of sorted('practice', practiceBySport, tallyValue); track t.label) {
+              <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+            }
+            @if (practiceTotal; as t) {
+              <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
+            }
+          </tbody>
+        </table>
+        <p class="desk-note">Each slate's best few picks by edge before the vig, bet at 0.5u though none clears the vig, so the bot keeps playing and learning: shown on the Book as a LIKE with a practice tag, graded and learned from, kept out of the record above.</p>
+      </div>
+    </card-panel>
+    }
+
     <!-- Self-check -->
     <!-- (the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
          sport's flags, watches and partial checks in plain words, the rest folded under a line of counts;

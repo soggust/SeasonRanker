@@ -147,6 +147,8 @@ import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly
 import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
+import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
+import { PRACTICE_N, PRACTICE_SPLIT, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -283,6 +285,7 @@ async function runSport(sport) {
   await timed(r, refitTrust);
   await timed(r, gradeBets);
   await timed(r, refitCalib);
+  await timed(r, refitCorrection);
   await timed(r, replaceOpen);
   await timed(r, repriceOpen);
   // (the coming games' lines once the run knows which markets are due: The Odds API asked only for those)
@@ -1256,6 +1259,26 @@ function refitCalib(r) {
   }
 }
 
+// 4b''. the props' learned correction (correct.mjs, 2026-10-18): fit on every graded prop, bets and tracked rows,
+// across the epochs and the sports (the other sports' ledgers: line-pool.mjs), self-tuned by a time split on this
+// sport's newest results; the chance the props are priced at (props.mjs priceProps) in place of the line bucket's
+// trust shrink, the trust sizing the stake. Too few rows, or any failure: none this run (the trusted chance, as before)
+function refitCorrection(r) {
+  const { state, at, sport } = r;
+  r.correction = null;
+  try {
+    const rows = corrRows([...(r.ledger?.bets ?? []).map((b) => ({ ...b, sport: b.sport ?? sport })), ...readLinePool(ROOT, '1970-01-01T00:00:00Z', sport)]);
+    const t = tuneCorrection(rows, sport);
+    r.correction = t;
+    const was = state.correction?.chosen ? `${state.correction.chosen.families} at lambda ${state.correction.chosen.lambda}` : 'none';
+    const now = t.chosen ? `${t.chosen.families} at lambda ${t.chosen.lambda}` : 'none';
+    if (was !== now) state.changelog.push({ at, what: 'Props correction', from: was, to: now, why: t.fit ? `self-tuned on ${t.held.n} held-out ${sport} results: log loss ${t.held.loss} (raw model ${t.held.raw}, book ${t.held.book})` : t.why });
+    console.log(`${sport}: props correction: ${correctionText(t, sport)}`);
+  } catch (err) {
+    console.warn(`${sport}: props correction left out this run (${err.message}): the trusted chance`);
+  }
+}
+
 // 3b. each bet's close, once its game has started (the core API keeps it after kickoff), and its CLV
 // (clv.mjs); a close the API never gives (it's failed for 3 days) is taken as the last line a run saw
 async function captureClose(r) {
@@ -2185,7 +2208,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null);
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
       if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
@@ -2342,7 +2365,14 @@ async function betProps(r) {
     }
   }
   const pendingProps = (event) => (r.pending ?? []).map((p) => p.bet).filter((b) => b.event === event && b.market === 'prop');
-  for (const { game, x, exp } of candidates.sort((a, b) => b.x.ev - a.x.ev)) {
+  // (the slate's practice picks (desk.mjs practiceTop, the owner's 2026-10-18: "using history to make BETTER picks,
+  // not stop playing the game altogether"): with the correction pricing the props, each game plays its share of its
+  // slate's PRACTICE_N (slateQuota: the slate the game's US Eastern day, its games the ones coming and the ones bet
+  // that day), the bets clearing the vig first, then the best of the rest with an edge before the vig, each at the
+  // practice stake, a LIKE at most, marked topN; graded and learned from like any bet, tallied apart while
+  // PRACTICE_SPLIT. One a player (his best by edge), the caps below and the gates as ever)
+  const forced = practicePicks(r, candidates);
+  for (const { game, x, exp } of candidates.sort((a, b) => b.x.ev - a.x.ev || (b.x.edge ?? -1) - (a.x.edge ?? -1))) {
     const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
     // (the game's props: placed before (a dry run prices those again, so only the published ones, which a live
     // run keeps, and this run's count) and this run's. An edge bet counts only the bets against its caps (a
@@ -2351,7 +2381,9 @@ async function betProps(r) {
     // (a research bet: the model's side on the research's word, its edge the model's own; a role bet (props.mjs roleBet:
     // its cause's graded CHECKs pay on the model's side) an edge on that record: past the gap its trusted chance is the
     // book's and its ev only the vig, which would track it, never bet)
-    const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet;
+    const topN = !(x.ev > 0) && !x.researchBet && !x.roleBet ? (forced.get(id) ?? null) : null;
+    const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN;
+    if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
     const gate = r.propGate?.[x.prop.stat.key] ?? null;
     const practice = !!gate && !gate.on;
@@ -2392,6 +2424,8 @@ async function betProps(r) {
     const placed = gatedPlacement(edge, x.units, gate);
     const bet = propBet(r, game, x, exp, { id, ...placed, tested });
     if (placed.practice) bet.practice = placed.practice;
+    // (a slate's practice pick: placed at the practice stake for the slate, not for clearing the vig, a LIKE at most)
+    if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the book's no-vig), short of the vig` });
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
@@ -2409,6 +2443,37 @@ async function betProps(r) {
   if (run.priced) console.log(`${sport}: props' lean: the model under the line's even chance on ${run.pUnder ?? 0} of ${run.priced} (${Math.round((100 * (run.pUnder ?? 0)) / run.priced)}%), its projection under the line on ${run.muUnder ?? 0} (${Math.round((100 * (run.muUnder ?? 0)) / run.priced)}%)`);
   if (run.priced) console.log(`${sport}: props priced ${run.priced} in ${run.games} games (${Math.round((100 * run.under) / run.priced)}% under; at even lines ${run.even}, ${Math.round((100 * run.evenUnder) / Math.max(1, run.even))}% under), ${(r.pending ?? []).filter((p) => p.bet.market === 'prop').length} to place`);
   consensusLog(r, 'props');
+}
+
+// The slate's practice picks this run: id -> { rank, quota, slate, edge } (desk.mjs practiceTop), none without the
+// correction (the trusted chance's edges are the old shrink's) or a PRACTICE_N for the sport
+function practicePicks(r, candidates) {
+  const { sport, ledger } = r;
+  const forced = new Map();
+  if (!r.correction?.fit || !PRACTICE_N[sport]) return forced;
+  const slateGames = new Map();
+  const add = (day, id) => slateGames.set(day, new Set([...(slateGames.get(day) ?? []), String(id)]));
+  for (const u of r.upcoming ?? []) add(etDay(u.game.date), u.game.id);
+  for (const b of ledger.bets) if (!b.void && slateGames.has(etDay(b.start))) add(etDay(b.start), b.event);
+  const byGame = new Map();
+  for (const c of candidates) byGame.set(c.game.id, [...(byGame.get(c.game.id) ?? []), c]);
+  for (const [event, list] of byGame) {
+    const game = list[0].game;
+    const quota = slateQuota(PRACTICE_N[sport], slateGames.get(etDay(game.date))?.size ?? 1);
+    const placedOn = ledger.bets.filter((b) => b.event === event && b.market === 'prop' && !b.void && !isTracked(b) && (!DRY || b.published)).length;
+    // (one a player: his best by edge stands for him)
+    const best = new Map();
+    for (const { x } of list) {
+      const k = String(x.prop.athlete.id);
+      if (!best.has(k) || (x.edge ?? -1) > (best.get(k).edge ?? -1)) best.set(k, x);
+    }
+    const idOf = (x) => `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+    const ids = practiceTop([...best.values()].map((x) => ({ id: idOf(x), ev: x.ev, edge: x.edge ?? -1 })), quota, placedOn);
+    let rank = 0;
+    for (const x of [...best.values()].sort((a, b) => (b.edge ?? -1) - (a.edge ?? -1))) if (ids.has(idOf(x))) forced.set(idOf(x), { rank: ++rank, quota, slate: PRACTICE_N[sport], edge: round(x.edge, 4), words: `${x.prop.athlete.name} ${x.side === 'over' ? 'Over' : 'Under'} ${x.prop.line} ${x.prop.stat.label} ${x.odds > 0 ? '+' : ''}${x.odds}${x.turned ? ' (turned from the model)' : ''}` });
+  }
+  if (forced.size) console.log(`${sport}${DRY ? ' (dry)' : ''}: the slate's practice picks: ${forced.size} (${PRACTICE_N[sport]} a slate, at least one a game, at ${PRACTICE_UNITS}u): ${[...forced.values()].map((t) => `${t.words} +${t.edge}`).join(', ')}`);
+  return forced;
 }
 
 // A priced prop (props.mjs priceProps) as the ledger's bet (or, intent 'check', the CHECK's: checks.mjs): its
@@ -2447,6 +2512,11 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     ...(Number.isFinite(x.trust) ? { trust: round(x.trust, 3) } : {}),
     p: round(x.p, 4),
     ev: round(x.ev, 4),
+    // (the learned correction's (correct.mjs): its edge before the vig, whether it turned the model's side, and the
+    // chance the old trust shrink would have priced it at; his side of the game, which the correction learns from)
+    ...(Number.isFinite(x.edge) ? { edge: round(x.edge, 4) } : {}),
+    ...(x.corrected ? { corrected: true, pTrust: round(x.pTrust, 4), ...(x.turned ? { turned: true } : {}) } : {}),
+    ...(typeof x.home === 'boolean' ? { home: x.home } : {}),
     intent,
     units,
     // (a tracked one's: what it would have staked, desk.mjs placement)
@@ -2716,6 +2786,11 @@ function saveState(r) {
       .map(([id, rating]) => ({ id, abbr: abbr.get(id) ?? id, rating: round(rating, 2), off: round(r.teams.o.get(id), 2), def: round(r.teams.d.get(id), 2) }))
       .sort((a, b) => b.rating - a.rating),
     record: record(ledger.bets),
+    // (the slate's practice picks' own line while PRACTICE_SPLIT (desk.mjs): out of the record above and the gates)
+    practiceSplit: PRACTICE_SPLIT,
+    practice: practiceRecord(ledger.bets),
+    // (the props' learned correction this run (correct.mjs): the families and penalty it tuned to, its held-out loss)
+    correction: r.correction?.fit ? { chosen: r.correction.chosen, held: r.correction.held, rows: r.correction.rows, a0: r.correction.fit.a0, b0: r.correction.fit.b0, sd: r.correction.fit.sd } : r.correction ? { why: r.correction.why ?? null } : (state.correction ?? null),
     // (the markets tracked, not bet (desk.mjs TRACK: no edge), at a unit each, as if bet: never in the record)
     tracked: trackedRecord(ledger.bets),
     // (the game lines' CLV gate (desk.mjs lineGate): whether this sport's lines are bet or tracked only, and why)

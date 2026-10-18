@@ -378,6 +378,10 @@
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
                 </small>
+                <!-- (a slate's practice pick: bet at 0.5u for the slate, short of the vig, on its own Practice line) -->
+                @if (r.practice) {
+                  <small class="bet-practice" title="A practice pick: the bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</small>
+                }
                 @if (placedOn(r); as staked) {
                   <small class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</small>
                 }
@@ -709,6 +713,9 @@
             <div><span class="form-label">Units</span><span class="form-value units" [class.down]="!f.up">{{ f.units }}</span></div>
             <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
           </div>
+          @if (f.practice) {
+            <p class="form-practice" title="The bot's practice picks (its best few a slate, short of the vig, at 0.5u): apart from its record">Practice · {{ f.practice }}</p>
+          }
           @if (f.last.length) {
             <ol class="form-list">
               @for (b of f.last; track $index) {

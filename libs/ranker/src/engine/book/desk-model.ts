@@ -41,6 +41,9 @@ export interface ModelBet {
   // (units 0; trackUnits, what it would have staked). Older bets go by their EV)
   intent?: Intent;
   trackUnits?: number;
+  // (a slate's practice pick (desk.mjs isPracticeTop): bet at the practice stake for the slate, short of the vig;
+  // its rank and its game's quota, and its edge before the vig)
+  topN?: { rank: number; quota: number; slate: number; edge: number };
   status: Status;
   // (a prop whose player didn't play: no action, graded a push, out of the record)
   void?: boolean;
@@ -91,6 +94,8 @@ export interface AnytimeFit {
 export interface ModelState {
   sport: string;
   label: string;
+  // (desk.mjs PRACTICE_SPLIT: the slate's practice picks tallied on their own Practice line, out of the record)
+  practiceSplit?: boolean;
   updated: string;
   params: Record<string, number>;
   test: ({ games: number } & TestNumbers) | null;

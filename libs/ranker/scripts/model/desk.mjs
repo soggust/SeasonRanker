@@ -753,17 +753,60 @@ export function bucketTrustOf(trust, key, line, fallback = 0.5) {
 }
 
 // A record: won, lost, pushed, units staked and won, the return on them (a void bet, no action, isn't in it,
-// nor a tracked row: never bet)
-export function record(bets) {
+// nor a tracked row: never bet; nor, while PRACTICE_SPLIT, a slate's practice pick: practice, theirs alone)
+export function record(bets, { practice = false } = {}) {
   const r = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0 };
   for (const b of bets) {
     if (b.status === 'open' || b.void || isTracked(b)) continue;
+    if (inPractice(b) !== practice) continue;
     r.bets++;
     r[b.status === 'won' ? 'won' : b.status === 'lost' ? 'lost' : 'push']++;
     r.staked += b.units;
     r.profit += b.profit;
   }
   return { ...r, staked: round(r.staked, 2), profit: round(r.profit, 2), roi: r.staked ? round(r.profit / r.staked, 4) : null };
+}
+
+// The slate's practice picks (2026-10-18, the owner: "the idea that the bot is going to stop finding picks because of
+// its historical record is a flaw... it should be using history to make BETTER picks, not stop playing the game
+// altogether"). Each slate (a sport's US Eastern day) plays its best candidates by their corrected edge (correct.mjs:
+// the chance over the book's no-vig one, before the vig): every row clearing the vig bet as ever, and the best of
+// the rest with an edge before the vig bet at PRACTICE_UNITS, a LIKE at most, so the slate has about PRACTICE_N
+// (slateQuota: PRACTICE_N over the slate's games, at least one a game). Placed, shown on the Book with a practice
+// tag, graded and learned from like any bet (the correction, the trust, the calibration read them). PRACTICE_SPLIT
+// (the owner's, the same day: "not set on practice bets counting in the real record"): on, they're tallied on their
+// own Practice line (record's practice, picks.mjs recentOf's practice, the Algorithm tab's Practice panel), out of
+// the bot's record, its recent form and the CLV gates, which stay the bets that cleared the vig; off, one record.
+// The one flag: state.json carries it (practiceSplit) for the page
+export const PRACTICE_SPLIT = true;
+export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8 };
+// (a slate's practice pick: placed for the slate, not for clearing the vig)
+export const isPracticeTop = (b) => !!b?.topN;
+// (one kept off the main record: a practice pick while the split's on)
+export const inPractice = (b) => PRACTICE_SPLIT && isPracticeTop(b);
+// (a game's share of its slate's N: N over the slate's games, at least one; each game's its own, so a game whose
+// props open late is never starved by the ones bet before it)
+export const slateQuota = (n, games) => Math.max(1, Math.round((n ?? 0) / Math.max(1, games ?? 1)));
+// The practice picks of one game this run: its candidates ({ id, ev, edge }: edge the corrected chance less the
+// book's no-vig, before the vig) that don't clear the vig but have an edge, best first, as many as the game's quota
+// leaves after what it has played already (placed: its bets standing) and this run's that clear the vig. Their ids
+export function practiceTop(cands, quota, placed = 0) {
+  const need = Math.max(0, quota - placed - cands.filter((c) => c.ev > 0).length);
+  return new Set(
+    cands
+      .filter((c) => !(c.ev > 0) && c.edge > 0)
+      .sort((a, b) => b.edge - a.edge)
+      .slice(0, need)
+      .map((c) => c.id),
+  );
+}
+// (the practice line: the practice picks' record at their stakes; none while the split's off)
+export const practiceRecord = (bets) => (PRACTICE_SPLIT ? record(bets, { practice: true }) : null);
+// (a stake by the trust it has earned: the Kelly stake's units over the minimum kept in proportion to the trust, whole
+// at the desk's full trust (0.5, BUCKET_START.high) or more, by half units: the trust sizes, never decides)
+export function trustedUnits(units, trust) {
+  const k = Math.min(1, Math.max(0, (Number.isFinite(trust) ? trust : 0.5) / 0.5));
+  return Math.max(0.5, Math.round((0.5 + (units - 0.5) * k) * 2) / 2);
 }
 
 // The tracked rows' own record (TRACK: not bet), at a unit each as if they had been: what they'd have made,
@@ -796,7 +839,7 @@ const signed = (ev) => `${ev >= 0 ? '+' : ''}${ev}`;
 // Algorithm tab's Tracked panel
 export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   const out = {};
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType).filter(sinceEpoch(epoch));
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType).filter(sinceEpoch(epoch));
   const by = new Map();
   for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
   for (const [stat, list] of by) {
@@ -810,7 +853,7 @@ export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   return out;
 }
 export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev)).filter(sinceEpoch(epoch));
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev)).filter(sinceEpoch(epoch));
   const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
   const n = last.length;
   const mean = (k) => (n ? round(last.reduce((t, b) => t + (b.clv[k] ?? 0), 0) / n, 4) : null);
