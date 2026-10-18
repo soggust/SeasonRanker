@@ -76,6 +76,49 @@ test('recentForm: none without a tally, or with nothing settled this week and no
   assert.equal(bets.recentForm({ all: tally.all, days: {} }, [], NOW), null);
 });
 
+// The You side as the Book has it (recent-form.ts yourForm over the wallet's state): the Book never pages the
+// history in, so its last five and streak come from the newest few the wallet reads for it (recentSettled)
+const walletState = (over = {}) => ({ signedIn: true, loaded: true, tally, settled: [], recent: [], ...over });
+
+test('yourForm: on the Book (no history paged in) the week from the tally, the streak and last five from the newest few', () => {
+  const recent = [bet('17', 'won'), bet('16', 'won'), bet('15', 'lost'), bet('14', 'push'), bet('13', 'won')];
+  const f = bets.yourForm(walletState({ recent }), NOW);
+  assert.equal(f.record, '4–3–1');
+  assert.equal(f.units, '+1.01u');
+  assert.equal(f.streak, 'W2');
+  assert.deepEqual(f.last.map((b) => b.res), ['W', 'W', 'L', 'P', 'W']);
+});
+
+test('yourForm: a page of the history and the newest few together, each bet once, the latest first', () => {
+  const settled = [bet('16', 'lost'), bet('15', 'lost'), bet('14', 'won')];
+  const recent = [bet('17', 'lost'), bet('16', 'lost'), bet('15', 'lost')];
+  const f = bets.yourForm(walletState({ settled, recent }), NOW);
+  assert.equal(f.streak, 'L3');
+  assert.equal(f.last.length, 4);
+  assert.deepEqual(f.last.map((b) => b.res), ['L', 'L', 'L', 'W']);
+});
+
+test('yourForm: older history still shown on a quiet week; none signed out, before the wallet loads, or with nothing', () => {
+  const quiet = bets.yourForm(walletState({ tally: { all: tally.all, days: {} }, recent: [bet('03', 'won')] }), NOW);
+  assert.equal(quiet.record, '0–0');
+  assert.equal(quiet.last.length, 1);
+  assert.equal(bets.yourForm(walletState({ signedIn: false, recent: [bet('17', 'won')] }), NOW), null);
+  assert.equal(bets.yourForm(walletState({ loaded: false, recent: [bet('17', 'won')] }), NOW), null);
+  assert.equal(bets.yourForm(walletState({ tally: { all: tally.all, days: {} } }), NOW), null);
+});
+
+test('the Book asks the wallet for the newest few (one query of five), the old every-page probe gone', async () => {
+  const fs = await import('node:fs');
+  const root = path.join(import.meta.dirname, '..', 'libs', 'ranker', 'src', 'engine');
+  const service = fs.readFileSync(path.join(root, 'account', 'wallet', 'wallet.service.ts'), 'utf8');
+  const book = fs.readFileSync(path.join(root, 'book', 'book-page.component.ts'), 'utf8');
+  assert.match(service, /const RECENT_N = 5;/);
+  assert.match(service, /loadRecent\(uid: string\)[\s\S]*?f\.limit\(RECENT_N\)[\s\S]*?this\.recentSettled\.set/);
+  assert.doesNotMatch(service, /f\.limit\(1\)/, 'no one-document probe on every page the wallet is on');
+  assert.match(book, /this\.wallet\.wantRecent\(\);/);
+  assert.match(book, /recent: this\.wallet\.recentSettled\(\)/);
+});
+
 // The bot's side (recent-form.ts botForm): the five sports' recent blocks from their picks.json (picks.mjs recentOf)
 // joined: the days summed over the page's own seven Eastern days, the streaks joined across the sports, the newest
 // five settled; and whose side the card opens on (formSide)

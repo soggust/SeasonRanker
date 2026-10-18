@@ -1,7 +1,8 @@
 // The Book's right column on a wide screen (book-page.component.html, bet-slip.component.html, book-page.scss,
 // wallet-slip.scss): the recent form on top and the empty ticket under it; with a bet on the ticket, the ticket
-// takes the column's full height over the form (the form hidden, back once the ticket's emptied), a flex column
-// whose bets scroll in its body between the pinned head and foot, rising in once (none with reduced motion).
+// takes the column's full height over the form (the form out of the flow and faded under it, back once the ticket's
+// emptied), a flex column whose bets scroll in its body between the pinned head and foot, growing there from its
+// empty size and back (ticket-grow.ts; none with reduced motion).
 // Phones keep the stub and the sheet: the body is in the ticket's flow there as it always was.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -34,7 +35,7 @@ const wide = (css, marker) => {
 };
 
 test('the right column: the recent form on top, the ticket under it', () => {
-  const side = page.slice(page.indexOf('<aside class="book-side"'), page.indexOf('</aside>', page.indexOf('<aside class="book-side"')));
+  const side = page.slice(page.indexOf('<aside #side class="book-side"'), page.indexOf('</aside>', page.indexOf('<aside #side class="book-side"')));
   const form = side.indexOf('<section class="recent-form"');
   const ticket = side.indexOf('<bet-slip></bet-slip>');
   assert.ok(form > 0 && ticket > 0, 'both in the column');
@@ -43,10 +44,13 @@ test('the right column: the recent form on top, the ticket under it', () => {
   assert.match(page, /\[class\.has-ticket\]="wallet\.slip\(\)\.length > 0"/);
 });
 
-test('a bet on the ticket: it takes the column, the form hidden, the column still', () => {
+test('a bet on the ticket: it takes the column, the form faded out of the flow under it, the column still', () => {
   const css = wide(pageCss, '.book-page.has-ticket');
   const hasTicket = block(css, '.book-page.has-ticket {');
-  assert.match(block(hasTicket, '.recent-form {'), /display: none/);
+  const form = block(hasTicket, '.recent-form {');
+  for (const rule of [/position: absolute/, /opacity: 0/, /visibility: hidden/, /pointer-events: none/, /visibility 0s 280ms/]) assert.match(form, rule);
+  assert.doesNotMatch(form, /display: none/, 'kept drawn, to fade under the ticket');
+  assert.match(block(css, '.book-side {'), /position: relative/);
   assert.match(block(hasTicket, '.book-side {'), /overflow: hidden/);
   const host = block(hasTicket, 'bet-slip {');
   assert.match(host, /flex: 1 1 0/);
@@ -71,9 +75,33 @@ test('the full ticket: head and foot pinned, the bets scrolling in its body', ()
   const scroller = block(full, '.ticket-body {');
   for (const rule of [/display: flex/, /flex: 1 1 auto/, /min-height: 0/, /overflow-y: auto/, /chip\.gold-scrollbar/]) assert.match(scroller, rule);
   assert.match(block(slipCss, '.ticket-mode {'), /flex: none/, 'the Straight / Parlay switch keeps its height in a scroller');
-  assert.match(full, /animation: ticket-full/, 'it rises in');
-  assert.match(slipCss, /@keyframes ticket-full/);
-  assert.match(block(slipCss, '@media (prefers-reduced-motion: reduce) {'), /\.ticket\.full \{\s*animation: none/);
+  assert.doesNotMatch(slipCss, /ticket-full/, 'the old rise-in gone: the ticket grows instead');
+  assert.match(block(css, ':host(.sizing) .ticket {'), /flex: 1 1 auto/, 'the ticket fills its host as it grows');
+});
+
+// The grow itself (ticket-grow.ts): the host's box played from where it was to where it is, wide screens only,
+// none with reduced motion; measured in the Book's effect (ahead of its view's refresh), played after the render
+test('the ticket grows from its empty box to the full column and back: the frames, and when it plays', async () => {
+  const { loadEngine } = await import('./support/engine.mjs');
+  const g = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
+  const empty = { top: 420, height: 260 };
+  const full = { top: 140, height: 760 };
+  assert.deepEqual(g.growFrames(empty, full), [
+    { transform: 'translateY(280px)', flexGrow: 0, flexShrink: 0, flexBasis: '260px' },
+    { transform: 'none', flexGrow: 0, flexShrink: 0, flexBasis: '760px' },
+  ]);
+  assert.equal(g.growFrames(full, empty)[0].transform, 'translateY(-280px)', 'and back down as it empties');
+  assert.equal(g.TICKET_GROW_MS, 280);
+  assert.equal(g.EASE_OUT, 'cubic-bezier(0.2, 0.8, 0.2, 1)', "the site's ease-out");
+  assert.equal(g.shouldGrow(empty, full, true, false), true);
+  assert.equal(g.shouldGrow(empty, full, true, true), false, 'reduced motion: at once');
+  assert.equal(g.shouldGrow(empty, full, false, false), false, 'phones: the stub as it was');
+  assert.equal(g.shouldGrow(null, full, true, false), false);
+  assert.equal(g.shouldGrow(full, { top: 140.5, height: 760 }, true, false), false, 'nothing moved');
+
+  const ts = read('libs/ranker/src/engine/book/book-page.component.ts');
+  assert.match(ts, /ticketWatch = effect\([\s\S]*?this\.wallet\.slip\(\)\.length > 0[\s\S]*?ticketGrow\.measure\([\s\S]*?afterNextRender\(\(\) => this\.ticketGrow\.grow\(/);
+  assert.match(pageCss, /prefers-reduced-motion: reduce\) \{\s*\.bet-reasons \{[^}]*\}\s*(\/\/[^\n]*\s*)?\.book-side \.recent-form,\s*\.book-page\.has-ticket \.recent-form \{\s*transition: none/);
 });
 
 test('phones unchanged: the full ticket and the column rules are wide-screen only', () => {

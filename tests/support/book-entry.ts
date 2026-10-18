@@ -19,3 +19,4 @@ export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/sr
 export * from '../../libs/ranker/src/engine/book/book-rows';
 export * from '../../libs/ranker/src/engine/player-link';
 export * from '../../libs/ranker/src/engine/fold-bar';
+export * from '../../libs/ranker/src/engine/book/ticket-grow';

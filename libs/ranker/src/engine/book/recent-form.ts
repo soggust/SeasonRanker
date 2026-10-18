@@ -98,6 +98,23 @@ export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], 
   };
 }
 
+// The You side from the wallet's state as the Book has it: none signed out or before the wallet's looked for; the
+// tally's week, and the newest settled from whichever the wallet holds, a page of the history or the newest few
+// (wallet.service recentSettled, read for the Book), the two together where both are on hand, each bet once
+export interface WalletForm {
+  signedIn: boolean;
+  loaded: boolean;
+  tally: TallyDoc | null;
+  settled: readonly PlayBet[];
+  recent: readonly PlayBet[];
+}
+export function yourForm(w: WalletForm, now: number | Date = Date.now()): RecentForm | null {
+  if (!w.signedIn || !w.loaded) return null;
+  const seen = new Set<string>();
+  const bets = [...w.settled, ...w.recent].filter((b) => !seen.has(b.id) && !!seen.add(b.id));
+  return recentForm(w.tally, bets, now);
+}
+
 // The bot's form across the sports (the card's The Bot side): each sport's recent block summed over the same
 // seven Eastern days as the user's (against the page's clock, so an hour-old file's week is still this week), the
 // streaks joined (the newest decided bet's result, counted back through every sport's run of it to the newest bet

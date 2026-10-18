@@ -835,18 +835,43 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   .book-side {
     height: 100%;
     overflow-y: auto;
+    position: relative;
     @include chip.gold-scrollbar;
+
+    // (the ticket over the form as it grows and shrinks (ticket-grow.ts): the column still while it does)
+    &.sizing {
+      overflow: hidden;
+    }
+
+    bet-slip {
+      position: relative;
+      z-index: 1;
+    }
+
+    .recent-form {
+      transition: opacity 280ms v.$ease-out;
+    }
   }
 
   // (a bet on the ticket: the ticket takes the column's full height over the recent form, its own bets scrolling
-  // inside it (wallet-slip.scss .ticket.full), the column itself still; the form's back once the ticket's empty)
+  // inside it (wallet-slip.scss .ticket.full), the column itself still; the form out of the flow where it was,
+  // fading under the ticket as the ticket grows over it (ticket-grow.ts), back when the ticket's empty)
   .book-page.has-ticket {
     .book-side {
       overflow: hidden;
     }
 
     .recent-form {
-      display: none;
+      left: 4px;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 4px;
+      top: 2px;
+      transition:
+        opacity 280ms v.$ease-out,
+        visibility 0s 280ms;
+      visibility: hidden;
     }
 
     bet-slip {
@@ -2578,6 +2603,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 @media (prefers-reduced-motion: reduce) {
   .bet-reasons {
     animation: none;
+  }
+
+  // (the recent form under the ticket: there and gone at once, as the ticket is (ticket-grow.ts))
+  .book-side .recent-form,
+  .book-page.has-ticket .recent-form {
+    transition: none;
   }
 }
 

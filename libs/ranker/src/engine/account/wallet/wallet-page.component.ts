@@ -173,6 +173,8 @@ export class WalletPageComponent implements OnInit, OnDestroy {
       if (!this.account.user()) return;
       untracked(() => {
         if (this.only !== 'open' && this.wallet.settledState() === 'idle') void this.wallet.loadSettled();
+        // (Open Bets: whether there's any history, for its empty state, from the newest few)
+        else if (this.only === 'open') this.wallet.wantRecent();
         if (!this.only && !this.extrasAsked) {
           this.extrasAsked = true;
           void this.loadBoards();

@@ -9,6 +9,8 @@ export type { LifetimeTally, TallyDoc } from './wallet-math';
 // (the open bets listened to: far more than anyone holds at once; the settled history a page at a time,
 // wallet-math's SETTLED_PAGE)
 const OPEN_MAX = 200;
+// (the newest settled read for the Book's recent form card: its last five)
+const RECENT_N = 5;
 const SETTLED_STATUSES = ['won', 'lost', 'push', 'void'];
 
 // The wallet (users/{uid}/wallet/main): play money, 500 units to start
@@ -162,7 +164,11 @@ export class WalletService {
   // bet ever placed on every Book load.)
   readonly openBets = signal<PlayBet[]>([]);
   readonly settledBets = signal<PlayBet[]>([]);
-  // (whether there's any settled history, from one document: the Book's Closed Bets tab)
+  // (the newest few settled, the latest settled first: the Book's recent form card (its last five), read once
+  // the Book or the wallet's Open Bets asks (wantRecent), one query of RECENT_N documents, never on other pages;
+  // a page of the history on hand stands in for it on the Book, recent-form.ts yourForm)
+  readonly recentSettled = signal<PlayBet[]>([]);
+  // (whether there's any settled history: the Book's Closed Bets tab, the wallet's empty state; from that read)
   readonly hasSettled = signal(false);
   // (the history's paging: not asked for yet, loading, more to load, or all of it here)
   readonly settledState = signal<'idle' | 'loading' | 'more' | 'all'>('idle');
@@ -229,6 +235,8 @@ export class WalletService {
     this.openBets.set([]);
     this.settledBets.set([]);
     this.settledCursors.clear();
+    this.recentSettled.set([]);
+    this.recentFor = null;
     this.hasSettled.set(false);
     this.settledState.set('idle');
     this.tally.set(null);
@@ -258,16 +266,39 @@ export class WalletService {
             // (the tally took it in with the bet, in the settler's one transaction)
             void this.loadTally(uid);
             if (this.settledState() !== 'idle') void this.loadSettled(true);
+            else if (this.recentFor === uid) void this.loadRecent(uid);
           }
         },
         (error) => console.error('Bets', error),
       ),
     );
-    // (any history at all: one document)
-    f.getDocs(f.query(this.settledQuery(f, firestore, uid), f.limit(1)))
-      .then((snap) => this.uid === uid && !snap.empty && this.hasSettled.set(true))
-      .catch(() => undefined);
+    // (the newest settled, where a page asked for them before anyone was followed)
+    if (this.recentAsked && this.recentFor !== uid && this.settledState() === 'idle') void this.loadRecent(uid);
     void this.loadTally(uid);
+  }
+
+  // The newest settled bets (recentSettled, hasSettled) for the pages that show them: the Book (its recent form
+  // card, its Closed Bets tab) and the wallet's Open Bets (its empty state). Once a person, and not while the
+  // history's being paged in (it carries them); asked before anyone's followed, read once they are. (It was a
+  // one-document probe on every page with the wallet; the other pages don't show it)
+  private recentAsked = false;
+  private recentFor: string | null = null;
+  wantRecent(): void {
+    this.recentAsked = true;
+    if (this.uid && this.recentFor !== this.uid && this.settledState() === 'idle') void this.loadRecent(this.uid);
+  }
+  private async loadRecent(uid: string): Promise<void> {
+    this.recentFor = uid;
+    const [firestore, f] = await firestoreSdk();
+    if (this.uid !== uid) return;
+    try {
+      const snap = await f.getDocs(f.query(this.settledQuery(f, firestore, uid), f.limit(RECENT_N)));
+      if (this.uid !== uid) return;
+      this.recentSettled.set(snap.docs.map((d) => betFrom(d.id, d.data())));
+      if (!snap.empty) this.hasSettled.set(true);
+    } catch {
+      if (this.uid === uid) this.recentFor = null;
+    }
   }
 
   // (the tally: one document)
@@ -507,6 +538,7 @@ export class WalletService {
       cleared += snap.size;
     }
     this.settledBets.set([]);
+    this.recentSettled.set([]);
     this.settledCursors.clear();
     this.hasSettled.set(false);
     this.settledState.set('all');

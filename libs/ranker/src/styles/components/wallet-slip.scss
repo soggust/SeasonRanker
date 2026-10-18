@@ -58,7 +58,8 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 // (.full) it takes the column's full height over the form (the page's book-side gives its host the room), a flex
 // column: the head pinned at the top, the bets scrolling in the body with the Book's gold scrollbar, the foot (the
 // totals, Place, tear up, the fine print) pinned at the bottom; the scalloped edges stay at its top and bottom.
-// It rises into place once, as the first bet lands (none with reduced motion, below)
+// It grows there from its empty size as the first bet lands, and back as it empties (the Book's ticket-grow.ts:
+// the host sized from one to the other, the ticket filling it while it is (.sizing); none with reduced motion)
 @include v.up(wide-menu) {
   :host {
     display: flex;
@@ -66,7 +67,6 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
   }
 
   .ticket.full {
-    animation: ticket-full 240ms cubic-bezier(0.2, 0.7, 0.3, 1);
     flex: 1 1 auto;
     min-height: 0;
 
@@ -91,17 +91,10 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
       @include chip.gold-scrollbar;
     }
   }
-}
 
-@keyframes ticket-full {
-  from {
-    opacity: 0.6;
-    transform: translateY(32px);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
+  :host(.sizing) .ticket {
+    flex: 1 1 auto;
+    min-height: 0;
   }
 }
 
@@ -739,10 +732,6 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticket.full {
-    animation: none;
-  }
-
   .stake-chip {
     transition: none;
 

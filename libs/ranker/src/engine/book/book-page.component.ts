@@ -1,4 +1,5 @@
-import { Component, DestroyRef, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild, effect, inject, untracked } from '@angular/core';
+import { Component, DestroyRef, ElementRef, HostListener, Injector, NgZone, OnDestroy, OnInit, ViewChild, afterNextRender, effect, inject, untracked } from '@angular/core';
+import { TicketGrow } from './ticket-grow';
 import { quietListener } from '@ranker/core/quiet-listener';
 import { tierLabel, tierOf, unranked } from './tiers';
 import { NotePlayer, notePlayers } from './desk-notes';
@@ -10,7 +11,7 @@ import { Selection, recordOf, recordText, selectionKey } from '../account/wallet
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { betSports } from './bet-sports';
-import { FormSide, RecentForm, botForm, formSide, recentForm } from './recent-form';
+import { FormSide, RecentForm, botForm, formSide, yourForm } from './recent-form';
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
@@ -178,6 +179,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
     quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
     // (the game list open: a click anywhere off it and its pill shuts it, the same quiet way)
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.menuOpen && !(event.target as Element | null)?.closest('.book-game-wrap'), () => this.closeMenu(false));
+    // (the signed-in user's newest settled bets: the recent form card's last five and streak, the Closed Bets tab;
+    // one read of a few once they're followed (a page of the history already on hand stands in))
+    this.wallet.wantRecent();
   }
   // (Open Bets: only with bets of the user's not yet settled; the last one settled, back to Place Bets)
   readonly hasOpen = (): boolean => canUse('book') && this.wallet.openBets().length > 0;
@@ -453,6 +457,23 @@ export class BookPageComponent implements OnInit, OnDestroy {
   private dropGone(): void {
     if (this.game && !this.menu().games.has(this.game)) this.game = '';
   }
+  // (the ticket growing over the recent form as its first bet lands, and back as it empties (ticket-grow.ts): its
+  // box measured here, before the page's has-ticket class lands (a component's effect runs ahead of its view's
+  // refresh), and played out after the render; the first run only notes where it starts)
+  @ViewChild('side') sideCol?: ElementRef<HTMLElement>;
+  private readonly injector = inject(Injector);
+  private readonly ticketGrow = new TicketGrow();
+  private ticketFull: boolean | null = null;
+  private readonly ticketWatch = effect(() => {
+    const full = this.wallet.slip().length > 0;
+    untracked(() => {
+      const was = this.ticketFull;
+      this.ticketFull = full;
+      if (was === null || was === full) return;
+      this.ticketGrow.measure(this.sideCol?.nativeElement);
+      afterNextRender(() => this.ticketGrow.grow(this.sideCol?.nativeElement), { injector: this.injector });
+    });
+  });
   private readonly boardsWatch = effect(() => {
     this.lines.boards();
     untracked(() => this.dropGone());
@@ -1098,8 +1119,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   botForm: RecentForm | null = null;
   formChoice: FormSide | null = null;
   get yourForm(): RecentForm | null {
-    if (!canUse('book') || !this.wallet.loaded()) return null;
-    return recentForm(this.wallet.tally(), this.wallet.settledBets());
+    return yourForm({ signedIn: canUse('book'), loaded: this.wallet.loaded(), tally: this.wallet.tally(), settled: this.wallet.settledBets(), recent: this.wallet.recentSettled() });
   }
   get form(): { side: FormSide; f: RecentForm | null } | null {
     const you = this.yourForm;
