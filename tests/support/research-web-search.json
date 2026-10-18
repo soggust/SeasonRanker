@@ -1,0 +1,287 @@
+{
+ "note": "Recorded 2026-10-17 from claude-opus-5-5 with web_search_20260209 (dynamic filtering) on the CHECK 401872999:prop:passTd:4360423 (Michael Penix Jr. Under 1.5 Pass TDs, CHI @ ATL); trimmed: encrypted fields and page text dropped, 3 results a search kept. broken: max_uses 2 (every search run from code counts; its loop of three failed): the hollow answer. fixed: max_uses 5.",
+ "broken": {
+  "id": "msg_fixture",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-opus-5-5",
+  "stop_reason": "end_turn",
+  "usage": {
+   "input_tokens": 21856,
+   "output_tokens": 642,
+   "server_tool_use": {
+    "web_search_requests": 2,
+    "web_fetch_requests": 0
+   }
+  },
+  "content": [
+   {
+    "type": "thinking",
+    "thinking": "",
+    "signature": "(trimmed)"
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_019YVUeqJXSdTAZJibYWVmKG",
+    "name": "code_execution",
+    "input": {
+     "code": "import json\nfor q in [\"Michael Penix Jr. Falcons Bears\",\"Falcons quarterback Penix October 2026\",\"Falcons Bears injury report week 7\"]:\n    r = await web_search({\"query\": q})\n    for x in r[:6]:\n        print(x.get('title'), x.get('url'), x.get('page_age'))\n        print(x.get('content','')[:300].replace('\\n',' '))\n    print('---')"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01R5Nc61wk5bhYFQJNknJfe2",
+    "name": "web_search",
+    "input": {
+     "query": "Michael Penix Jr. Falcons Bears"
+    }
+   },
+   {
+    "type": "web_search_tool_result",
+    "tool_use_id": "srvtoolu_01R5Nc61wk5bhYFQJNknJfe2",
+    "content": [
+     {
+      "type": "web_search_result",
+      "title": "Falcons Injury Report: Atlanta Makes Final Call on Michael Penix Jr. for Bears - Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/falcons-injury-report-atlanta-makes-174208180.html",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix Jr. (ribs) has no injury designation, will start vs. Bears",
+      "url": "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix on track to start vs. Bears if no setbacks, coach says",
+      "url": "https://www.espn.com/nfl/story/_/id/50182471/falcons-say-michael-penix-track-start-bears",
+      "page_age": "3 days ago",
+      "encrypted_content": "(trimmed)"
+     }
+    ]
+   },
+   {
+    "type": "code_execution_tool_result",
+    "tool_use_id": "srvtoolu_019YVUeqJXSdTAZJibYWVmKG",
+    "content": {
+     "type": "encrypted_code_execution_result",
+     "encrypted_stdout": "(trimmed)"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01KZXrKfKrjDuGVQ2ecd6cvh",
+    "name": "code_execution",
+    "input": {
+     "code": "for q in [\"Michael Penix Jr. Falcons Bears\",\"Falcons quarterback Penix October 2026\",\"Falcons Bears injury report week 7\"]:\n    r = await web_search({\"query\": q})\n    if isinstance(r,str): r=json.loads(r)\n    print(type(r), str(r)[:200] if not isinstance(r,list) else '')\n    for x in (r if isinstance(r,list) else r.get('results',[]))[:6]:\n        if isinstance(x,str): print(x[:300]); continue\n        print(x.get('title'), x.get('url'), x.get('page_age'))\n        print(x.get('content','')[:300].replace('\\n',' '))\n    print('---')"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01AFR3zQfB7HZDuCKxP3EmV1",
+    "name": "web_search",
+    "input": {
+     "query": "Michael Penix Jr. Falcons Bears"
+    }
+   },
+   {
+    "type": "web_search_tool_result",
+    "tool_use_id": "srvtoolu_01AFR3zQfB7HZDuCKxP3EmV1",
+    "content": [
+     {
+      "type": "web_search_result",
+      "title": "Falcons Injury Report: Atlanta Makes Final Call on Michael Penix Jr. for Bears - Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/falcons-injury-report-atlanta-makes-174208180.html",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix Jr. (ribs) has no injury designation, will start vs. Bears",
+      "url": "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix on track to start vs. Bears if no setbacks, coach says",
+      "url": "https://www.espn.com/nfl/story/_/id/50182471/falcons-say-michael-penix-track-start-bears",
+      "page_age": "3 days ago",
+      "encrypted_content": "(trimmed)"
+     }
+    ]
+   },
+   {
+    "type": "code_execution_tool_result",
+    "tool_use_id": "srvtoolu_01KZXrKfKrjDuGVQ2ecd6cvh",
+    "content": {
+     "type": "encrypted_code_execution_result",
+     "encrypted_stdout": "(trimmed)"
+    }
+   },
+   {
+    "type": "thinking",
+    "thinking": "",
+    "signature": "(trimmed)"
+   },
+   {
+    "type": "text",
+    "text": "{\"player\": \"Michael Penix Jr.\", \"status\": \"unknown\", \"reason\": \"none\", \"explains\": false, \"category\": \"other\", \"confidence\": \"low\", \"summary\": \"The news search failed because the tool's usage limit was hit, so I found no reports. I can't confirm the QB change the diagnosis suggests, or any injury or lineup news, behind the book's 47%.\", \"sources\": []}"
+   }
+  ]
+ },
+ "fixed": {
+  "id": "msg_fixture",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-opus-5-5",
+  "stop_reason": "end_turn",
+  "usage": {
+   "input_tokens": 35326,
+   "output_tokens": 1013,
+   "server_tool_use": {
+    "web_search_requests": 2,
+    "web_fetch_requests": 0
+   }
+  },
+  "content": [
+   {
+    "type": "thinking",
+    "thinking": "",
+    "signature": "(trimmed)"
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_015MZvASfjHJTXcwSVyHY5XV",
+    "name": "code_execution",
+    "input": {
+     "code": "import json\nqs=[\"Michael Penix Jr. Falcons Bears week 7 2026\",\"Falcons quarterback starter Bears October 2026\"]\nfor q in qs:\n    r=await web_search({\"query\":q})\n    for x in r[:6]:\n        print(x.get('title'),x.get('url'),x.get('page_age'))\n        print(x.get('content','')[:400].replace('\\n',' '))\n        print('--')\n    print('=====')"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01RRruXEeHsUiZriPmVmwpdg",
+    "name": "web_search",
+    "input": {
+     "query": "Michael Penix Jr. Falcons Bears week 7 2026"
+    }
+   },
+   {
+    "type": "web_search_tool_result",
+    "tool_use_id": "srvtoolu_01RRruXEeHsUiZriPmVmwpdg",
+    "content": [
+     {
+      "type": "web_search_result",
+      "title": "'I’ve Sat Out Enough': Falcons QB Michael Penix Jr. On Track to Start vs. Bears",
+      "url": "https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule",
+      "page_age": "3 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix Jr. (ribs) has no injury designation, will start vs. Bears",
+      "url": "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Michael Penix Jr.",
+      "url": "https://en.wikipedia.org/wiki/Michael_Penix_Jr.",
+      "page_age": null,
+      "encrypted_content": "(trimmed)"
+     }
+    ]
+   },
+   {
+    "type": "code_execution_tool_result",
+    "tool_use_id": "srvtoolu_015MZvASfjHJTXcwSVyHY5XV",
+    "content": {
+     "type": "encrypted_code_execution_result",
+     "encrypted_stdout": "(trimmed)"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01PENAuEwmueMDRyqorZD7aA",
+    "name": "code_execution",
+    "input": {
+     "code": "r=await web_search({\"query\":qs[0]})\nprint(type(r), str(r)[:1500])"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_016J4wm4NYy5cDdP6onsM9oe",
+    "name": "web_search",
+    "input": {
+     "query": "Michael Penix Jr. Falcons Bears week 7 2026"
+    }
+   },
+   {
+    "type": "web_search_tool_result",
+    "tool_use_id": "srvtoolu_016J4wm4NYy5cDdP6onsM9oe",
+    "content": [
+     {
+      "type": "web_search_result",
+      "title": "'I’ve Sat Out Enough': Falcons QB Michael Penix Jr. On Track to Start vs. Bears",
+      "url": "https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule",
+      "page_age": "3 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Falcons QB Michael Penix Jr. (ribs) has no injury designation, will start vs. Bears",
+      "url": "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     },
+     {
+      "type": "web_search_result",
+      "title": "Bears Get Michael Penix Jr. Playing Status Ahead of Falcons Matchup - Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/bears-michael-penix-jr-playing-005244156.html",
+      "page_age": "1 days ago",
+      "encrypted_content": "(trimmed)"
+     }
+    ]
+   },
+   {
+    "type": "code_execution_tool_result",
+    "tool_use_id": "srvtoolu_01PENAuEwmueMDRyqorZD7aA",
+    "content": {
+     "type": "encrypted_code_execution_result",
+     "encrypted_stdout": "(trimmed)"
+    }
+   },
+   {
+    "type": "server_tool_use",
+    "id": "srvtoolu_01KeoQrtk8Srvw8n3XuZtQCv",
+    "name": "code_execution",
+    "input": {
+     "code": "d=json.loads(r)\nfor x in d[:6]:\n    print(x['title'],x['url'],x.get('page_age'));print(x['content'][:1500].replace('\\n',' '));print('--')"
+    }
+   },
+   {
+    "type": "code_execution_tool_result",
+    "tool_use_id": "srvtoolu_01KeoQrtk8Srvw8n3XuZtQCv",
+    "content": {
+     "type": "code_execution_result",
+     "stdout": "'I’ve Sat Out Enough': Falcons QB Michael Penix Jr. On Track to Start vs. Bears https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule 3 days ago\nQuarterback Michael Penix Jr. is on track to start for the Atlanta Falcons in Week 6 against the Chicago Bears. … QB Notebo",
+     "stderr": "",
+     "return_code": 0
+    }
+   },
+   {
+    "type": "thinking",
+    "thinking": "",
+    "signature": "(trimmed)"
+   },
+   {
+    "type": "text",
+    "text": "{\"player\": \"Michael Penix Jr.\", \"status\": \"active\", \"reason\": \"none\", \"explains\": false, \"category\": \"market\", \"confidence\": \"medium\", \"summary\": \"Penix hurt his ribs in Week 5, but he practiced fully, has no injury designation and is cleared to start vs. Chicago. There's no QB change. The book's price looks like a market call on his 3 TDs in 3 starts, not news.\", \"sources\": [\"https://www.espn.com/nfl/story/_/id/50197497/falcons-michael-penix-jr-ribs-cleared-play-vs-bears\", \"https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears\", \"https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule\", \"https://sports.yahoo.com/articles/bears-michael-penix-jr-playing-005244156.html\"]}"
+   }
+  ]
+ }
+}

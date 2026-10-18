@@ -96,7 +96,7 @@ function mockClient(answers) {
 
 // (a role CHECK over the CHECK bar the research may ask about)
 const rcheck = (id, gap = 0.2) => ({ id, event: '401', sport: 'nfl', start: '2026-10-16T17:00:00Z', matchup: 'TB @ DAL', market: 'prop', propType: 'recYds', statLabel: 'Rec Yds', player: 'Mike Evans', athlete: '9', team: '27', side: 'over', line: 40, odds: -110, model: 0.5 + gap, fair: 0.5, gap, cause: 'role', status: 'check' });
-const finding = { stop_reason: 'end_turn', content: [{ type: 'text', text: '{"player":null,"status":"unknown","reason":"none","summary":"","sources":[]}' }], usage: { input_tokens: 15000, output_tokens: 800, server_tool_use: { web_search_requests: 2 } } };
+const finding = { stop_reason: 'end_turn', content: [{ type: 'text', text: '{"player":null,"status":"unknown","reason":"none","summary":"","sources":["https://a.b/n"]}' }], usage: { input_tokens: 15000, output_tokens: 800, server_tool_use: { web_search_requests: 2 } } };
 
 test("every open CHECK researched (the trial over): the biggest model Kelly first, one call each, till the day's cap bites", async () => {
   const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
@@ -116,7 +116,7 @@ test("every open CHECK researched (the trial over): the biggest model Kelly firs
   const costLine = lines.find((l) => /CHECK research cost/.test(l));
   assert.match(costLine, /this call \$0\.0960 \(15,000 in, 800 out, 2 searches\); 3 calls measured: mean \$0\.099, highest \$0\.100; today \$0\.30 of \$5\.00, month \$0\.30 of \$80/);
   assert.ok(!lines.some((l) => /trial/.test(l)));
-  // (the cap bites: $4.50 spent today, room for one worst case ($0.28) and then not another; the biggest go first)
+  // (the cap bites: $4.50 spent today, room for one worst case ($0.31) and then not another; the biggest go first)
   fs.writeFileSync(file, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nba', id: 'x', cost: 4.5, usage: { input_tokens: 1 } }] }));
   const tight = mockClient(Array.from({ length: 8 }, () => ({ ...finding, usage: { input_tokens: 40000, output_tokens: 5000, server_tool_use: { web_search_requests: 2 } } })));
   const some = await researchChecks({ sport: 'nfl', checks, now, env, budget: researchBudget({ env, file, floor: null, now }), client: tight, log: quiet });
@@ -124,13 +124,13 @@ test("every open CHECK researched (the trial over): the biggest model Kelly firs
   assert.deepEqual([...some.keys()], ['c7']);
 });
 
-test("the research's request: Opus 5.5, two searches, 5,000 tokens out; a worst case of $0.28 under the day's $5", async () => {
-  assert.equal(Math.round(RESEARCH_ESTIMATE * 100) / 100, 0.28);
+test("the research's request: Opus 5.5, five searches, 5,000 tokens out; a worst case of $0.31 under the day's $5", async () => {
+  assert.equal(Math.round(RESEARCH_ESTIMATE * 100) / 100, 0.31);
   const client = mockClient([{ ...finding }]);
   const dir = tmp('req');
   await researchChecks({ sport: 'nfl', checks: [rcheck('a')], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: researchBudget({ env: {}, file: path.join(dir, 'log.json'), floor: null, now }), client, log: quiet });
   assert.equal(client.asked[0].max_tokens, 5000);
-  assert.equal(client.asked[0].tools[0].max_uses, 2);
+  assert.equal(client.asked[0].tools[0].max_uses, 5);
 });
 
 test("picks.mjs researchRow: a finding for the page, its fields checked again; the popover's view in plain words", async () => {

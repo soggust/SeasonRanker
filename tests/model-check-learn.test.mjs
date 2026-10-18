@@ -290,8 +290,8 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   const pausing = () => mockClient([{ ...big }, { ...big }, { ...big }]);
   const quiet = { log: () => {}, warn: () => {} };
   const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
-  // ($1.25 spent today: $0.25 left, under a turn's worst case ($0.28): nothing asked)
-  assert.equal(Math.round(ESTIMATE * 100) / 100, 0.28);
+  // ($1.25 spent today: $0.25 left, under a turn's worst case ($0.31): nothing asked)
+  assert.equal(Math.round(ESTIMATE * 100) / 100, 0.31);
   fs.writeFileSync(file, JSON.stringify({ entries: [{ at: now.toISOString(), what: 'other', cost: 1.25 }] }));
   let client = pausing();
   await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'a' })], now, env, budget: aiBudget({ file, now }), client, log: quiet });
@@ -334,7 +334,7 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
       ],
     }),
   );
-  const client = mockClient([answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] }), answer({})]);
+  const client = mockClient([answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: ['https://a.b/n'] }), answer({ sources: ['https://a.b/m'] })]);
   const checks = [rprop({ id: 'a', gap: 0.5 }), rprop({ id: 'b', gap: 0.4 }), rprop({ id: 'c', gap: 0.3 }), rprop({ id: 'd', gap: 0.2 })];
   const found = await researchChecks({ sport: 'nfl', checks, now, env, budget: aiBudget({ file, now }), client, log: quiet });
   // (a's finding back from the log, never asked again; three asked about today already (a, b, c): the quota
@@ -361,7 +361,7 @@ test('researchChecks: off, without a key or on a dry run nothing asked; on, the 
   assert.match(dryLog[0], /would look into 2/);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-'));
   const budget = aiBudget({ file: path.join(dir, 'ai-usage.json'), now });
-  const client = mockClient([answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', summary: 'Out.', sources: ['https://a.b/c'] }), answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] })]);
+  const client = mockClient([answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', summary: 'Out.', sources: ['https://a.b/c'] }), answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: ['https://a.b/n'] })]);
   const report = new Map([['27', [{ id: '4241', name: 'Chris Godwin' }]]]);
   const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test', CHECK_RESEARCH_N: '3' }, budget, client, reportOf: () => report, log: quiet });
   // (b and c, the biggest open model Kellys; one done today already, so two of the three; e locked, d graded)

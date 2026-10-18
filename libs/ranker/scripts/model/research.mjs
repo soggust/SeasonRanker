@@ -26,7 +26,7 @@
 //            (apps/nfl/scripts/model/ai-spend-research.json) and caps, apart from the write-ups' ($5 a UTC day,
 //            $80 a UTC month, every sport, whichever binds first; CHECK_RESEARCH_DAILY_USD and _MONTHLY_USD lower
 //            them, never raise them); a call starts only when a turn's worst case (ESTIMATE: MAX_TOKENS out,
-//            TURN_INPUT in with its searches, MAX_SEARCHES searches: $0.28) fits, and each paused turn is
+//            TURN_INPUT in with its searches, MAX_SEARCHES searches: $0.31) fits, and each paused turn is
 //            continued only when the call's cost so far plus the next turn's worst case (the history re-sent,
 //            more searches) still fits: else it stops there, cut short. Its real usage and cost logged, a line a
 //            call (its dollars, tokens and searches, and every call measured so far: their mean and the highest)
@@ -68,10 +68,13 @@ import { OUT_STATUS, Q_STATUS } from './timing.mjs';
 export const RESEARCH_MODEL = 'claude-opus-5-5';
 export const TOP = 100;
 // (a turn's most: 5,000 tokens out (the thinking counts against it), 40,000 fresh in with its search results,
-// two searches: $0.28; the calls measured so far ran about $0.13; a
-// continued turn's the history re-sent on top: turnEstimate)
+// five searches: $0.31; the calls measured so far ran about $0.13; a continued turn's the history re-sent on top:
+// turnEstimate. Five, not two (2026-10-17): the search tool's dynamic filtering runs its searches from code, a
+// loop of three queries at once, and every one counts toward max_uses; at two, the third hit max_uses_exceeded,
+// the code failed, the model saw none of the results and answered "the search tool hit its usage limit", 0
+// sources, on every CHECK of desk run 39085218876. A search is $0.01; the tokens are the cost)
 export const MAX_TOKENS = 5000;
-export const MAX_SEARCHES = 2;
+export const MAX_SEARCHES = 5;
 export const TURN_INPUT = 40000;
 // (the pauses a long search turn may take before it's left unfinished)
 export const MAX_TURNS = 3;
@@ -113,7 +116,7 @@ export const RESEARCH_CAUSES = new Set(['role', 'news', 'gap']);
 // (the statuses that go into the game's injury report, as notes.mjs NOTE_STATUS words them)
 export const ADJUST_STATUS = new Set(['out', 'doubtful', 'questionable', 'limited']);
 
-const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the book's line or price is far from the model, the book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game.
+const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the book's line or price is far from the model, the book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game. You have ${MAX_SEARCHES} web searches in all, counting each one run from code: plan two or three focused queries (the player and his team this week, the team's injury report or depth chart for this game), not a long list. Base the answer on what the results say, and list the URLs of the results you relied on as sources.
 
 Answer with one JSON object and nothing else:
 {"player": "the full name of the player whose status explains it (the prop's player, or a teammate whose absence or return moves his role)", "status": "out" | "doubtful" | "questionable" | "limited" | "active" | "unknown", "reason": "injury" | "role" | "suspension" | "weather" | "lineup" | "none", "explains": true | false, "category": "injury" | "role" | "suspension" | "weather" | "lineup" | "market" | "other", "confidence": "high" | "medium" | "low", "summary": "one or two plain sentences, at most 240 characters, on what you found", "sources": ["the URLs of the reports you relied on"]}
@@ -144,6 +147,28 @@ export function researchPrompt(c, sport) {
     diagnosis: c.diagnosis ? { cause: c.diagnosis.cause, sub: c.diagnosis.sub ?? null, why: c.diagnosis.why } : null,
   };
   return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the book's number?\n${JSON.stringify(facts)}`;
+}
+
+// (a finding of nothing: no source, no status, no reason found. Never kept: a search that failed answers this way
+// (2026-10-17: "the search tool hit its usage limit"), so it's asked once more, not judged)
+export const hollow = (f) => !!f && typeof f === 'object' && !f.problem && f.status === 'unknown' && f.explains !== true && !(f.sources?.length > 0);
+
+// (the URLs the answer's text blocks cite (web_search_result_location and the like), http(s) alone, in order, once)
+export function citedUrls(content) {
+  const out = [];
+  for (const b of Array.isArray(content) ? content : []) {
+    if (b?.type !== 'text') continue;
+    for (const c of Array.isArray(b.citations) ? b.citations : []) {
+      const u = typeof c?.url === 'string' ? c.url : null;
+      if (u && /^https?:\/\/\S+$/.test(u) && u.length <= 500 && !out.includes(u)) out.push(u);
+    }
+  }
+  return out;
+}
+
+// (the search tool's errors in a reply: a web_search_tool_result whose content is an error object, not a list)
+export function searchErrors(content) {
+  return (Array.isArray(content) ? content : []).filter((b) => b?.type === 'web_search_tool_result' && b.content && !Array.isArray(b.content)).map((b) => String(b.content.error_code ?? 'error'));
 }
 
 // A finding from the answer's text (see above): { player, status, reason, summary, sources }, or an unknown one
@@ -249,7 +274,7 @@ async function defaultClient(env) {
 export const maybeBilled = (err) => !(Number.isFinite(err?.status) && err.status >= 400 && err.status < 500 && err.status !== 408);
 
 // (the stops that cut a call short: asked once more, never kept as a finding)
-const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps)/;
+const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps|nothing found)/;
 
 // One CHECK researched: { finding, usage, cost, turns, retry }. client: the SDK's (or a mock with
 // beta.messages.create); budget: ai-budget.mjs's, each continued turn only while the call's cost so far and the
@@ -296,7 +321,17 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
   }
   // (the text blocks joined as they come: the citations split one reply's text, JSON strings and all)
   const text = msg?.stop_reason === 'end_turn' ? (msg.content ?? []).filter((b) => b.type === 'text').map((b) => b.text).join('') : null;
-  const finding = text ? findingOf(text) : { player: null, status: 'unknown', reason: 'none', summary: '', sources: [], problem: `stopped: ${capped ? 'the AI caps' : (msg?.stop_reason ?? 'no answer')}` };
+  let finding = text ? findingOf(text) : { player: null, status: 'unknown', reason: 'none', summary: '', sources: [], problem: `stopped: ${capped ? 'the AI caps' : (msg?.stop_reason ?? 'no answer')}` };
+  // (the URLs the reply cites, where the JSON's own list left them out: a finding's sources are what it read)
+  if (text && !finding.problem) {
+    const cited = citedUrls(msg.content).filter((u) => !finding.sources.includes(u));
+    if (cited.length) finding = { ...finding, sources: [...finding.sources, ...cited].slice(0, 5) };
+  }
+  // (nothing found, no source: a failed search's answer, asked once more, never kept)
+  if (hollow(finding)) {
+    const errs = [...new Set(searchErrors(msg?.content))];
+    finding = { ...finding, problem: `stopped: nothing found (no sources${errs.length ? `; search errors: ${errs.join(', ')}` : ''})` };
+  }
   // (the caps or the run's deadline: both 'the AI caps', a try cut short)
   return { finding, usage, cost: costOf(usage, RESEARCH_MODEL), turns: Math.min(turns + 1, MAX_TURNS), retry: RETRY.test(finding.problem ?? '') };
 }
@@ -324,9 +359,10 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   const tries = new Map();
   for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
   // (a shadow (checks.mjs shadowOf: a PASS kept to grade) never: no one sees it, so nothing is spent on it)
-  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.research && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
+  // (a hollow finding kept before 2026-10-17's fix (a failed search's answer) is no finding: asked again)
+  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && (!c.research || hollow(c.research)) && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
   for (const c of checks) {
-    const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object');
+    const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object' && !hollow(e.finding));
     if (kept) out.set(c.id, kept.finding);
   }
   if (out.size) log.log?.(`${sport}: ${out.size} CHECK research findings back from the usage log (their run never saved them)`);
@@ -337,7 +373,8 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
     // (asked before: again only when every try was cut short, MAX_TRIES at most)
     .filter((c) => {
       const t = tries.get(c.id) ?? [];
-      return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed);
+      // (a hollow finding logged counts as a try cut short)
+      return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed || hollow(e.finding));
     })
     .sort((a, b) => (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
     .slice(0, room);

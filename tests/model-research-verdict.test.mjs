@@ -12,7 +12,7 @@ import { aiBudget } from '../libs/ranker/scripts/model/ai-budget.mjs';
 import { checkLearning } from '../libs/ranker/scripts/model/check-learn.mjs';
 import { applyNotes, noteWords } from '../libs/ranker/scripts/model/notes.mjs';
 import { levelOf } from '../libs/ranker/scripts/model/picks.mjs';
-import { RESEARCH_GATE_N, RESEARCH_UNITS, feedCheck, findingOf, researchCall, researchCard, researchChecks, researchGateOf, researchNote, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
+import { MAX_SEARCHES, RESEARCH_GATE_N, RESEARCH_UNITS, citedUrls, feedCheck, findingOf, hollow, researchCall, researchCard, researchChecks, researchGateOf, researchNote, researchOne, searchErrors, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
 import { c22 } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { loadEngine } from './support/engine.mjs';
 
@@ -81,7 +81,7 @@ test('researchChecks with a mock client: each finding with its verdict, kept on 
   const client = mockClient([
     answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', explains: true, category: 'injury', confidence: 'high', summary: 'Godwin out.', sources: ['https://a.b/1'] }),
     answer({ player: 'Mike Evans', status: 'active', reason: 'none', explains: false, category: 'market', confidence: 'high', summary: 'Nothing found.', sources: ['https://a.b/2'] }),
-    answer({ player: null, status: 'unknown', reason: 'none', explains: false, category: 'market', confidence: 'low', summary: 'Thin.', sources: [] }),
+    answer({ player: null, status: 'unknown', reason: 'none', explains: false, category: 'market', confidence: 'low', summary: 'Thin.', sources: ['https://a.b/3'] }),
   ]);
   const lines = [];
   const report = new Map([['27', [{ id: '4241', name: 'Chris Godwin' }]]]);
@@ -223,4 +223,92 @@ test("the desk's CHECK panel: the research's bets and adjusted bets with their C
   assert.match(ui.researchView({ verdict: 'bet', act: 'bet' }).verdict, /^Nothing found/);
   assert.equal(ui.researchView({ verdict: 'bet', act: 'bet' }).actWhy, null);
   assert.match(ui.researchView({}).verdict, /^Can.t tell/);
+});
+
+// ---- the web search's answers as the API returns them (tests/support/research-web-search.json: a live call's
+// response, recorded 2026-10-17 and trimmed). Desk run 39085218876's every finding came back "unknown (none), 0
+// sources": the tool's dynamic filtering runs its searches from code, every one counting toward max_uses, and at 2
+// its loop of three failed, so the model saw no results ----
+const recorded = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'support', 'research-web-search.json'), 'utf8'));
+const copy = (m) => JSON.parse(JSON.stringify(m));
+
+test('the research asks with room for the code-run searches: max_uses 5, the system prompt says how many', async () => {
+  const client = mockClient([copy(recorded.fixed)]);
+  await researchOne(client, check(), 'nfl', aiBudget({ now, caps: { day: 5, month: 80 } }));
+  const req = client.asked[0];
+  assert.equal(req.tools[0].type, 'web_search_20260209');
+  assert.equal(req.tools[0].max_uses, MAX_SEARCHES);
+  assert.equal(MAX_SEARCHES, 5);
+  assert.match(req.system, /You have 5 web searches in all, counting each one run from code/);
+  // (the prompt carries the player, the game and its start)
+  assert.match(req.messages[0].content, /"player":"Mike Evans"/);
+  assert.match(req.messages[0].content, /"game":"TB @ DAL"/);
+  assert.match(req.messages[0].content, /"start":"2026-10-18T17:00:00Z"/);
+});
+
+test("the recorded answers: the fixed call's finding has its sources and a real verdict; the broken call's hollow answer is never kept, asked once more", async () => {
+  const ok = await researchOne(mockClient([copy(recorded.fixed)]), check(), 'nfl');
+  assert.equal(ok.retry, false);
+  assert.equal(ok.finding.problem, undefined);
+  assert.equal(ok.finding.player, 'Michael Penix Jr.');
+  assert.equal(ok.finding.status, 'active');
+  assert.equal(ok.finding.sources.length, 4);
+  assert.ok(ok.finding.sources.every((u) => /^https:\/\//.test(u)));
+  assert.equal(ok.finding.explains, false);
+  assert.equal(ok.finding.confidence, 'medium');
+  const bad = await researchOne(mockClient([copy(recorded.broken)]), check(), 'nfl');
+  assert.equal(bad.finding.sources.length, 0);
+  assert.equal(bad.retry, true);
+  assert.match(bad.finding.problem, /^stopped: nothing found/);
+  // (a reply's search error named in the problem)
+  const errored = copy(recorded.broken);
+  errored.content.splice(2, 0, { type: 'web_search_tool_result', tool_use_id: 'x', content: { type: 'web_search_tool_result_error', error_code: 'max_uses_exceeded' } });
+  assert.deepEqual(searchErrors(errored.content), ['max_uses_exceeded']);
+  assert.match((await researchOne(mockClient([errored]), check(), 'nfl')).finding.problem, /search errors: max_uses_exceeded/);
+});
+
+test('sources from the citations: an answer whose JSON lists none but whose text cites results is never a 0-sources finding', async () => {
+  const m = copy(recorded.fixed);
+  const text = m.content.find((b) => b.type === 'text');
+  const o = JSON.parse(text.text.slice(text.text.indexOf('{'), text.text.lastIndexOf('}') + 1));
+  o.sources = [];
+  o.status = 'unknown';
+  const json = JSON.stringify(o);
+  const i = json.indexOf('ribs');
+  // (the reply's text split by its citations, as the API returns a cited answer)
+  const cite = (url) => ({ type: 'web_search_result_location', url, title: 'x', encrypted_index: '(trimmed)', cited_text: 'Penix practiced fully' });
+  m.content.splice(m.content.indexOf(text), 1, { type: 'text', text: json.slice(0, i) }, { type: 'text', text: json.slice(i, i + 4), citations: [cite('https://www.nfl.com/news/a'), cite('https://www.espn.com/b'), cite('https://www.nfl.com/news/a'), cite('javascript:alert(1)')] }, { type: 'text', text: json.slice(i + 4) });
+  assert.deepEqual(citedUrls(m.content), ['https://www.nfl.com/news/a', 'https://www.espn.com/b']);
+  const r = await researchOne(mockClient([m]), check(), 'nfl');
+  assert.deepEqual(r.finding.sources, ['https://www.nfl.com/news/a', 'https://www.espn.com/b']);
+  assert.equal(r.finding.problem, undefined);
+  assert.equal(r.retry, false);
+  assert.ok(!hollow(r.finding));
+});
+
+test("tonight's hollow findings asked again: a CHECK whose research is a hollow one is open, a hollow logged try counts as cut short, two tries at most", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hollow-'));
+  const file = path.join(dir, 'log.json');
+  const at = '2026-10-17T01:48:50.892Z';
+  const old = { at, by: 'claude', model: 'claude-opus-5-5', player: 'Mike Evans', status: 'unknown', reason: 'none', summary: 'The search tool hit its usage limit.', sources: [], explains: false, category: 'market', confidence: 'low' };
+  assert.ok(hollow(old));
+  assert.ok(!hollow({ ...old, sources: ['https://a.b/c'] }));
+  assert.ok(!hollow({ ...old, status: 'active' }));
+  fs.writeFileSync(file, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nfl', id: 'a', cost: 0.12, finding: old }] }));
+  const checks = [check({ id: 'a', research: old }), check({ id: 'b', model: 0.65, research: { ...old, sources: ['https://a.b/c'], status: 'active' } })];
+  const client = mockClient([copy(recorded.fixed)]);
+  const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file, now, caps: { day: 5, month: 80 } }), client, log: quiet });
+  // (a re-asked, its hollow finding not brought back from the log; b's real finding stands)
+  assert.equal(client.asked.length, 1);
+  assert.deepEqual([...found.keys()], ['a']);
+  assert.equal(found.get('a').sources.length, 4);
+  // (a second hollow answer: not kept; then its two tries are spent)
+  const again = mockClient([copy(recorded.broken), copy(recorded.broken)]);
+  const file2 = path.join(dir, 'log2.json');
+  fs.writeFileSync(file2, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nfl', id: 'a', cost: 0.12, finding: old }] }));
+  const b2 = aiBudget({ file: file2, now, caps: { day: 5, month: 80 } });
+  assert.equal((await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: b2, client: again, log: quiet })).size, 0);
+  assert.equal(again.asked.length, 1);
+  await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file: file2, now, caps: { day: 5, month: 80 } }), client: again, log: quiet });
+  assert.equal(again.asked.length, 1);
 });
