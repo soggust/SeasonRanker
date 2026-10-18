@@ -24,10 +24,11 @@ test('capsFrom: the defaults unset or unreadable, a variable held to its ceiling
   assert.deepEqual(capsFrom({ X_DAILY_USD: '', X_MONTHLY_USD: 'lots' }, 'X', { day: 0.5, month: 12 }, ceiling), { day: 0.5, month: 12 });
   assert.deepEqual(capsFrom({ X_DAILY_USD: '0.25', X_MONTHLY_USD: '8' }, 'X', RESEARCH_CAPS, ceiling), { day: 0.25, month: 8 });
   assert.deepEqual(capsFrom({ X_DAILY_USD: '50', X_MONTHLY_USD: '-3' }, 'X', RESEARCH_CAPS, ceiling), { day: 1, month: 0 });
-  // (the research's: $5 a day and $80 a month, the owner's (2026-10-17); a variable lowers them, never raises them)
+  // (the research's: $5 a day and $80 a month by default, the owner's (2026-10-17); a variable sets them up to the
+  // $100 ceiling, his hard limit)
   assert.deepEqual(RESEARCH_CAPS, { day: 5, month: 80 });
   assert.deepEqual(researchBudget({ env: {}, file: null, floor: null, now }).caps, { day: 5, month: 80 });
-  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '9', CHECK_RESEARCH_MONTHLY_USD: '500' }, file: null, floor: null, now }).caps, { day: 5, month: 80 });
+  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '9', CHECK_RESEARCH_MONTHLY_USD: '500' }, file: null, floor: null, now }).caps, { day: 9, month: 100 });
   assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '2' }, file: null, floor: null, now }).caps, { day: 2, month: 80 });
 });
 

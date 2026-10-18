@@ -70,9 +70,10 @@ const SPEND_DIR = path.resolve(import.meta.dirname, '../../../../apps/nfl/script
 export const RESEARCH_USAGE = path.join(CACHE_DIR, 'ai-usage-research.json');
 export const RESEARCH_FLOOR = path.join(SPEND_DIR, 'ai-spend-research.json');
 // (the owner's, 2026-10-17: every open CHECK researched, under a hard $5 a UTC day and $80 a UTC month, every
-// sport, whichever binds first; a variable may lower them, never raise them)
+// sport, whichever binds first). The repository variables CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD may set them
+// anywhere up to the ceiling: $100 (the owner's hard limit, 2026-10-17, when he let one day clear the whole backlog)
 export const RESEARCH_CAPS = { day: 5, month: 80 };
-export const RESEARCH_CEILING = { day: 5, month: 80 };
+export const RESEARCH_CEILING = { day: 100, month: 100 };
 export const NEWS_USAGE = path.join(CACHE_DIR, 'ai-usage-news.json');
 export const NEWS_FLOOR = path.join(SPEND_DIR, 'ai-spend-news.json');
 export const NEWS_CAPS = { day: 0.15, month: 4 };
