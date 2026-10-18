@@ -156,6 +156,7 @@ import { RESEARCH_UNITS, feedCheck, researchCall, researchCard, researchChecks, 
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
+import { CORRECT_WINDOW, officialLookup } from './nhl-official.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -1180,6 +1181,8 @@ async function captureClose(r) {
 // till they're played or 48 hours have gone by (desk.mjs voidOf)
 async function gradeBets(r) {
   const { sport, cfg, games, at } = r;
+  // (an NHL skater's shots and points by the league's own box once it's official, waiting till then: nhl-official.mjs)
+  r.official ??= sport === 'nhl' ? officialLookup({ now: r.now.getTime() }) : null;
   for (const bet of r.ledger.bets) {
     if (bet.status !== 'open') continue;
     const g = games.get(bet.event);
@@ -1203,7 +1206,7 @@ async function gradeBets(r) {
     try {
       const body = await finalSummary(sport, cfg.league, g.id);
       if (!body) continue;
-      const value = await statInFinal(sport, bet, body, r.facts.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete) });
+      const value = await statInFinal(sport, bet, body, r.facts.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete), official: r.official });
       // (a count that can't be read yet waits: the NFL's snap counts a day or so after the game, StatsAPI's box
       // score; past PROP_WAIT, no action)
       if (value === undefined && r.now.getTime() - Date.parse(bet.start) < PROP_WAIT) continue;
@@ -1214,6 +1217,7 @@ async function gradeBets(r) {
       console.warn(`${sport}: prop ${bet.id} not graded (${err.message})`);
     }
   }
+  await officialRegrade(r);
   await gradeChecks(r);
   await statCorrections(r);
   // (the ones just graded, and any graded before there were post-mortems; once, when the rule for a broken
@@ -1232,6 +1236,53 @@ async function gradeBets(r) {
   } catch (err) {
     console.warn(`${sport}: post-mortems skipped (${err.message})`);
   }
+}
+
+// 4a. the league's count again: an NHL shots or points prop graded in the last CORRECT_WINDOW has the league's
+// box read again each run, and a count that's changed grades it again (regraded: what it was graded before):
+// the league's box settles in the hours after the final, and DraftKings grades by it. Once (when OFFICIAL_RULE
+// moves), every one graded before, from ESPN's box: 22 of the 1,577 graded by 2026-10-18 were a shot or a point
+// off (Matthew Knies' Under 1.5 Shots, NYR @ CBJ 2026-10-17: graded on ESPN's 1, the league's 2). Only the
+// league's count grades again (statInFinal opts.officialOnly), never ESPN's; one it can't read stays as it is
+const OFFICIAL_RULE = 1;
+const OFFICIAL_PROPS = ['sog', 'pts'];
+export async function officialRegrade(r, { summaryOf = finalSummary } = {}) {
+  const { sport, cfg, games, at } = r;
+  if (sport !== 'nhl' || !r.official) return;
+  const now = r.now.getTime();
+  const sweep = r.state.officialRule !== OFFICIAL_RULE;
+  const due = r.ledger.bets.filter((b) => b.market === 'prop' && OFFICIAL_PROPS.includes(b.propType) && b.status !== 'open' && !b.void && b.actual != null && (sweep || now - Date.parse(b.gradedAt) < CORRECT_WINDOW));
+  let changed = 0;
+  let missed = 0;
+  for (const id of new Set(due.map((b) => b.event))) {
+    const g = games.get(id);
+    try {
+      const body = g?.final ? await summaryOf(sport, cfg.league, id) : null;
+      if (!body) {
+        missed++;
+        continue;
+      }
+      for (const bet of due.filter((b) => b.event === id)) {
+        const value = await statInFinal(sport, bet, body, null, { official: r.official, officialOnly: true });
+        if (value === undefined || value === null) {
+          missed++;
+          continue;
+        }
+        if (value === bet.actual) continue;
+        const from = { actual: bet.actual, status: bet.status, profit: bet.profit, gradedAt: bet.gradedAt };
+        Object.assign(bet, settleProp(bet, value), { gradedAt: at, regraded: { ...from, why: "the league's official count" } });
+        delete bet.corrected;
+        Object.assign(bet, propPostmortem(sport, bet, g, body, r.rows, DISRUPTED_WEIGHT, await usualRoles(sport, g, r.facts, r.history).catch(() => null)));
+        changed++;
+        console.log(`${sport}: ${bet.pick} graded again by the league's count, ${from.actual} to ${value} (${from.status} to ${bet.status})`);
+      }
+    } catch (err) {
+      missed++;
+      console.warn(`${sport}: the league's count for ${id} not read (${err.message})`);
+    }
+  }
+  if (sweep && !missed) r.state.officialRule = OFFICIAL_RULE;
+  if (due.length) console.log(`${sport}: ${due.length} shots and points props read again by the league's count${sweep ? ' (all of them, once)' : ''}: ${changed} graded again${missed ? `, ${missed} not read` : ''}`);
 }
 
 // 4b. stat corrections: a prop graded on a final's first box score has the summary read once more, a day and a
@@ -1253,7 +1304,7 @@ async function statCorrections(r) {
       if (!got) continue;
       for (const bet of due.filter((b) => b.event === id)) {
         if (got.body) {
-          const value = await statInFinal(sport, bet, got.body, r.facts.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete) });
+          const value = await statInFinal(sport, bet, got.body, r.facts.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete), official: r.official });
           if (value === undefined) continue;
           if (value !== bet.actual) {
             bet.corrected = { actual: value, at };
@@ -1293,7 +1344,7 @@ async function gradeChecks(r) {
       }
       const body = await finalSummary(sport, cfg.league, g.id);
       if (!body) continue;
-      const value = await statInFinal(sport, c, body, r.facts?.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete) });
+      const value = await statInFinal(sport, c, body, r.facts?.games?.[g.id]?.pk, { played: (b) => nflTookSnap(r.facts, g.id, b.player, b.athlete), official: r.official });
       if (value === undefined && r.now.getTime() - Date.parse(c.start) < PROP_WAIT) continue;
       c.checkResult = checkResultOf(value === undefined ? { status: 'push', profit: 0, void: true, actual: null, final: 'stat not read' } : settleProp(atUnit(c), value), at);
       n++;

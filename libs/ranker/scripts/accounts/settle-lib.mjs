@@ -521,6 +521,79 @@ export function paysInto(bet, wallet) {
 // (what goes back in the wallet: the stake and the winnings on a win, the stake on a push or a void)
 export const creditOf = (stake, result) => (result.status === 'won' ? round2(stake + result.profit) : result.status === 'lost' ? 0 : stake);
 
+// ---------------------------------------------------------------------------
+// Corrections: an NHL skater's shots or points prop settled on a count the league's own box doesn't bear out
+// (ESPN's box, read at the final, a shot short: Matthew Knies' Under 1.5 Shots, NYR @ CBJ 2026-10-17, paid on 1,
+// the league's 2) settled again on the league's count (the bettor's graded pick's, which it grades again by the
+// league's box: run.mjs officialRegrade; else the league's box itself), its payout reversed and the new one paid
+// (settle.mjs correctSettled). Only these props; a game's result, a void, any other sport's count stands as
+// settled. CORRECT_DAYS: how far back a settled bet is looked at again
+// ---------------------------------------------------------------------------
+export const CORRECT_DAYS = 14;
+export const CORRECTED_PROPS = ['sog', 'pts'];
+const DECIDED = ['won', 'lost', 'push'];
+export const correctable = (b) => b?.sport === 'nhl' && b.market === 'prop' && CORRECTED_PROPS.includes(b.propType) && b.preview === undefined;
+
+// (a settled prop's result from a count: settlePlayBet's, at the bet's stake and price)
+function propResult(bet, value) {
+  const r = settleProp({ ...bet, units: bet.stake }, value);
+  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final };
+}
+
+// A settled straight prop again at the count now (a number): its new result, or null when it stands (the same
+// status and the same count) or isn't one to correct
+export function correctionOf(bet, value) {
+  if (!correctable(bet) || bet.kind === 'parlay' || !DECIDED.includes(bet.status) || typeof value !== 'number') return null;
+  const r = propResult(bet, value);
+  return r.status === bet.status && r.final === bet.final ? null : r;
+}
+
+// A settled parlay again with its NHL shots and points legs at the counts now (values: by leg, a number, else
+// undefined: that leg stands): { result, legs } when a leg's grade moved, null when none did, or the parlay
+// isn't decided again by its legs as they stand now (a leg still open)
+export function parlayCorrectionOf(parlay, values) {
+  if (parlay?.kind !== 'parlay' || !DECIDED.includes(parlay.status)) return null;
+  let moved = false;
+  const legs = (parlay.legs ?? []).map((l, i) => {
+    if (!correctable(l) || !DECIDED.includes(l.status) || typeof values?.[i] !== 'number') return l;
+    const r = propResult({ ...l, stake: parlay.stake }, values[i]);
+    if (r.status === l.status && r.final === l.final) return l;
+    moved = true;
+    return { ...l, status: r.status, final: r.final };
+  });
+  if (!moved) return null;
+  const result = parlayOutcome(parlay.stake, legs);
+  return result ? { result, legs } : null;
+}
+
+// A tally with a settled bet taken back out (addToTally's inverse: its result's count, stake and profit, on its
+// day and its sport's)
+export function removeFromTally(tally, bet, result) {
+  const all = { won: 0, lost: 0, push: 0, void: 0, staked: 0, profit: 0, ...(tally?.all ?? {}) };
+  const days = { ...(tally?.days ?? {}) };
+  const sports = { ...(tally?.sports ?? {}) };
+  const v = tally ? (tally.v ?? 1) : TALLY_VERSION;
+  if (result.status === 'void') {
+    all.void = Math.max(0, all.void - 1);
+    return { all, days, sports, v };
+  }
+  all[result.status] = Math.max(0, all[result.status] - 1);
+  all.staked = round2(all.staked - bet.stake);
+  all.profit = round2(all.profit - result.profit);
+  const key = etDate(bet.start);
+  if (days[key]) {
+    const d = [...days[key]];
+    const at = ['won', 'lost', 'push'].indexOf(result.status);
+    d[at] = Math.max(0, d[at] - 1);
+    d[3] = round2(d[3] - bet.stake);
+    d[4] = round2(d[4] - result.profit);
+    days[key] = d;
+  }
+  const sport = sportOf(bet);
+  if (sport && sports[key]?.[sport] !== undefined) sports[key] = { ...sports[key], [sport]: round2(sports[key][sport] - result.profit) };
+  return { all, days, sports, v };
+}
+
 // (outcomeOf kept in reach: the bettor's own rule for a result's profit)
 export { outcomeOf };
 

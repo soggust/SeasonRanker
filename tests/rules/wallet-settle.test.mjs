@@ -2,14 +2,15 @@
 // Admin SDK as the Actions job runs it and ESPN stubbed with made-up games: bets settled from the finals and
 // paid into their wallets, a price not on the board voided with its stake back, a run twice paying nothing
 // twice, a bet from before a reload counted but not paid, the leaderboards (public players only), the lines'
-// snapshots, a deleted account's tally dropped, an older tally filled in. `npm run test:rules`; without the
+// snapshots, a deleted account's tally dropped, an older tally filled in, an NHL shots bet settled on ESPN's count
+// settled again on the league's. `npm run test:rules`; without the
 // emulator these skip, and with a host that isn't this machine's they refuse to run (never the live project).
 import { after, before, beforeEach, describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initializeApp, deleteApp } from 'firebase-admin/app';
 import { Timestamp, getFirestore } from 'firebase-admin/firestore';
 import { boardsDue, run } from '../../libs/ranker/scripts/accounts/settle.mjs';
-import { TALLY_VERSION } from '../../libs/ranker/scripts/accounts/settle-lib.mjs';
+import { TALLY_VERSION, addToTally } from '../../libs/ranker/scripts/accounts/settle-lib.mjs';
 
 const host = process.env.FIRESTORE_EMULATOR_HOST;
 const skip = host ? false : 'no Firestore emulator (npm run test:rules)';
@@ -442,5 +443,133 @@ describe('the settler', { skip }, () => {
     const second = await run({ ...opts, now: NOW + 36e5 });
     assert.deepEqual(second.counts, { settled: 0, void: 0, waiting: 0 });
     assert.equal((await db.doc('users/eve/wallet/main').get()).get('balance'), 638.5);
+  });
+});
+
+// An NHL shots bet paid on ESPN's count (Knies 1 shot, Under 1.5 won) that the league's box makes 2: the bettor's
+// pick graded again (its ledger row's actual 2), or, with no pick of the bettor's, the league's box itself
+describe("the settler's corrections", { skip }, () => {
+  const KNIES = '401892527';
+  const kniesSummary = {
+    header: {
+      id: KNIES,
+      season: { year: 2026, type: 2 },
+      competitions: [
+        {
+          date: '2026-10-11T23:00Z',
+          status: { type: { completed: true, state: 'post', name: 'STATUS_FINAL' } },
+          competitors: [
+            { homeAway: 'home', score: '1', team: { id: '29', abbreviation: 'CBJ' } },
+            { homeAway: 'away', score: '0', team: { id: '13', abbreviation: 'NYR' } },
+          ],
+        },
+      ],
+    },
+    boxscore: {
+      players: [
+        {
+          team: { id: '29', abbreviation: 'CBJ' },
+          statistics: [
+            {
+              name: 'forwards',
+              labels: ['TOI', 'G', 'A', 'S'],
+              athletes: [
+                { athlete: { id: '4874919', displayName: 'Matthew Knies', jersey: '89' }, stats: ['21:11', '0', '0', '1'] },
+                { athlete: { id: '7', displayName: 'Kent Johnson', jersey: '91' }, stats: ['18:00', '1', '0', '1'] },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
+  const official = {
+    id: 2026020129,
+    gameState: 'OFF',
+    playerByGameStats: {
+      homeTeam: { forwards: [{ playerId: 1, sweaterNumber: 89, name: { default: 'M. Knies' }, sog: 2, goals: 0, assists: 0 }, { playerId: 2, sweaterNumber: 91, name: { default: 'K. Johnson' }, sog: 3, goals: 1, assists: 0 }], defense: [], goalies: [] },
+      awayTeam: { forwards: [], defense: [], goalies: [] },
+    },
+  };
+  const fj = async (url) => {
+    if (url.includes(`summary?event=${KNIES}`)) return kniesSummary;
+    if (url.endsWith('/score/2026-10-11')) return { games: [{ id: 2026020129, homeTeam: { abbrev: 'CBJ' }, awayTeam: { abbrev: 'NYR' } }] };
+    if (url.endsWith('/gamecenter/2026020129/boxscore')) return official;
+    return fetchJson(url);
+  };
+  const deskPick = { id: `${KNIES}:prop:sog:4874919`, event: KNIES, market: 'prop', side: 'under', propType: 'sog', athlete: '4874919', line: 1.5, odds: 115, status: 'lost', actual: 2, regraded: { actual: 1, status: 'won' } };
+  const nhlBet = (over = {}) => ({
+    ...bet({ sport: 'nhl', event: KNIES, matchup: 'NYR @ CBJ', start: at('2026-10-11T23:00Z'), market: 'prop', side: 'under', line: 1.5, odds: 115, stake: 100, pick: 'Matthew Knies Under 1.5 Shots', propType: 'sog', athlete: '4874919', player: 'Matthew Knies', statLabel: 'Shots' }),
+    status: 'won',
+    profit: 115,
+    final: 'Matthew Knies 1 Shots',
+    settledAt: at('2026-10-12T02:00Z'),
+    ...over,
+  });
+
+  test("a straight bet and a parlay settled again on the league's count: the payout taken back, the tally swapped, once", async () => {
+    const won = nhlBet();
+    // (Johnson's Over 1.5 Shots lost on ESPN's 1, the league's 3, with no pick of the bettor's: by the league's box)
+    const johnson = nhlBet({ athlete: '7', player: 'Kent Johnson', side: 'over', pick: 'Kent Johnson Over 1.5 Shots', odds: -120, stake: 60, status: 'lost', profit: -60, final: 'Kent Johnson 1 Shots' });
+    const parlay = {
+      kind: 'parlay',
+      stake: 10,
+      run: 0,
+      start: at('2026-10-11T17:00Z'),
+      placedAt: at('2026-10-10T15:00Z'),
+      status: 'won',
+      profit: 36.36,
+      final: '2 of 2 hit',
+      settledAt: at('2026-10-12T02:00Z'),
+      legs: [
+        { sport: 'nfl', event: '401', matchup: 'LV @ NE', market: 'spread', side: 'home', line: -3.5, odds: -108, start: at('2026-10-11T17:00Z'), status: 'won', date: '2026-10-11T17:00Z' },
+        { sport: 'nhl', event: KNIES, matchup: 'NYR @ CBJ', market: 'prop', side: 'under', line: 1.5, odds: 115, propType: 'sog', athlete: '4874919', player: 'Matthew Knies', statLabel: 'Shots', start: at('2026-10-11T23:00Z'), status: 'won', final: 'Matthew Knies 1 Shots', date: '2026-10-11T23:00Z' },
+      ],
+    };
+    // (paid: 1000 less the stakes, plus 215 and 46.36 back)
+    await seed('kn', { balance: 1000 - 100 - 60 - 10 + 215 + 46.36, bets: { won, johnson, parlay } });
+    const data = (b) => ({ ...b, start: '2026-10-11T23:00Z' });
+    let tally = addToTally(null, data(won), { status: 'won', profit: 115 });
+    tally = addToTally(tally, data(johnson), { status: 'lost', profit: -60 });
+    tally = addToTally(tally, { ...parlay, start: '2026-10-11T23:00Z' }, { status: 'won', profit: 36.36 });
+    await db.doc('tallies/kn').set(tally);
+    const ledgersNow = { ...ledgers, nhl: [...ledgers.nhl, deskPick] };
+    const out = await run({ db, fetchJson: fj, now: NOW, ledgers: ledgersNow, log: quiet });
+    assert.equal(out.counts.corrected, 3);
+    const w = (await db.doc('users/kn/bets/won').get()).data();
+    assert.equal(w.status, 'lost');
+    assert.equal(w.profit, -100);
+    assert.equal(w.final, 'Matthew Knies 2 Shots');
+    assert.deepEqual(w.corrected, { status: 'won', profit: 115, final: 'Matthew Knies 1 Shots', why: "the league's official count" });
+    const j = (await db.doc('users/kn/bets/johnson').get()).data();
+    assert.equal(j.status, 'won');
+    assert.equal(j.profit, 50);
+    const p = (await db.doc('users/kn/bets/parlay').get()).data();
+    assert.equal(p.status, 'lost');
+    assert.equal(p.legs[1].status, 'lost');
+    assert.equal(p.legs[0].status, 'won');
+    // (215 and 46.36 taken back, Johnson's 110 paid)
+    const balance = (await db.doc('users/kn/wallet/main').get()).get('balance');
+    assert.equal(balance, Math.round((1000 - 100 - 60 - 10 + 110) * 100) / 100);
+    const t = (await db.doc('tallies/kn').get()).data();
+    assert.deepEqual([t.all.won, t.all.lost, t.all.profit], [1, 2, Math.round((-100 + 50 - 10) * 100) / 100]);
+    // (run again: nothing moves)
+    const again = await run({ db, fetchJson: fj, now: NOW + 36e5, ledgers: ledgersNow, log: quiet });
+    assert.equal(again.counts.corrected, undefined);
+    assert.equal((await db.doc('users/kn/wallet/main').get()).get('balance'), balance);
+  });
+
+  test("a count that stands, a dry run, and a wallet that can't give it all back (never below 0)", async () => {
+    await seed('kd', { balance: 50, bets: { won: nhlBet(), same: nhlBet({ line: 2.5, pick: 'Matthew Knies Under 2.5 Shots' }) } });
+    const ledgersNow = { ...ledgers, nhl: [...ledgers.nhl, deskPick] };
+    const dry = await run({ db, fetchJson: fj, now: NOW, ledgers: ledgersNow, dry: true, log: quiet });
+    assert.equal(dry.counts.corrected, 2, 'the Under 2.5: its count moved (its final), its result not');
+    assert.equal((await db.doc('users/kd/bets/won').get()).get('status'), 'won');
+    await run({ db, fetchJson: fj, now: NOW, ledgers: ledgersNow, log: quiet });
+    assert.equal((await db.doc('users/kd/bets/won').get()).get('status'), 'lost');
+    const same = (await db.doc('users/kd/bets/same').get()).data();
+    assert.equal(same.status, 'won');
+    assert.equal(same.final, 'Matthew Knies 2 Shots');
+    assert.equal((await db.doc('users/kd/wallet/main').get()).get('balance'), 0);
   });
 });

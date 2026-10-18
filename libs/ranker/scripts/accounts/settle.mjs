@@ -7,7 +7,9 @@
 // tally (tallies/{uid}, kept here). And each run, the next three days' lines snapshotted (lines/{sport}_{event}),
 // so a bet's price can be checked against the board it was placed from. A UFC bout's bet (sport 'mma', a
 // moneyline or a round total, straight or a parlay's leg) settled from the bout as the MMA desk grades it
-// (settle-lib.mjs settleMmaBet: ESPN's UFC scoreboard and the desk's kept bouts, mmaBouts).
+// (settle-lib.mjs settleMmaBet: ESPN's UFC scoreboard and the desk's kept bouts, mmaBouts). An NHL skater's
+// shots and points by the league's own box (nhl-official.mjs), and one settled on a count the league's box
+// doesn't bear out settled again, its payout reversed and the new one paid (correctSettled).
 //
 //   node libs/ranker/scripts/accounts/settle.mjs [--dry]
 //
@@ -23,9 +25,15 @@ import { FieldValue, Timestamp, getFirestore } from 'firebase-admin/firestore';
 import { get } from '../model/sources.mjs';
 import { gameOf, linesOf } from '../model/espn.mjs';
 import { statInFinal } from '../model/props.mjs';
+import { CORRECT_WINDOW, OFFICIAL_SINCE, officialLookup } from '../model/nhl-official.mjs';
 import { FILES as MMA_FILES, boutsOf, mergeBouts } from '../model/mma-desk.mjs';
 import {
+  CORRECT_DAYS,
   DAY,
+  correctable,
+  correctionOf,
+  parlayCorrectionOf,
+  removeFromTally,
   boutFor,
   TALLY_VERSION,
   addToTally,
@@ -324,12 +332,14 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     if (bet.market === 'prop' && g.game?.final) {
       // (the bettor's graded value for the same pick, else the box score's count)
       const graded = gradedPick(bet, g.mine);
-      propValue = graded ? graded.actual : await statInFinal(bet.sport, bet, g.body, null);
+      propValue = graded ? graded.actual : await statInFinal(bet.sport, bet, g.body, null, bet.sport === 'nhl' ? { official } : {});
       if (propValue === null && !graded && bet.propType === 'tb') propValue = undefined;
     }
     return { game: g.game, observations, propValue, previewLines };
   };
   const counts = { settled: 0, void: 0, waiting: 0 };
+  // (an NHL skater's shots and points by the league's box, waiting till it's official: nhl-official.mjs)
+  const official = officialLookup({ fetchJson, now });
   const done = async (d, bet, result, start, extra) => {
     counts[result.status === 'void' ? 'void' : 'settled']++;
     log(`${bet.sport ?? 'parlay'} ${bet.matchup ?? `${bet.legs.length} legs`} ${bet.pick} ${bet.odds} x${bet.stake}: ${result.status}${result.note ? ` (${result.note})` : ''}`);
@@ -477,6 +487,100 @@ export async function settleOne(db, ref, result, { start = null, legs = null, pa
 }
 
 // ---------------------------------------------------------------------------
+// Corrections (settle-lib.mjs correctionOf): every NHL shots or points prop settled in the last CORRECT_DAYS,
+// straight or a parlay's leg, against the count now: the bettor's graded pick's (graded again by the league's
+// box, run.mjs officialRegrade), else the league's box itself (never ESPN's); one that moved settled again,
+// each in a transaction of its own with its wallet and tally: the old payout taken back and the new one paid
+// (paysInto's rule; a balance never below 0), the old result out of the tally and the new one in, the bet
+// marked corrected (what it was). A bet changed since it was read is left alone, so a run twice corrects once
+// ---------------------------------------------------------------------------
+export async function correctSettled(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), dry = false, log = console.log } = {}) {
+  const snap = await db.collectionGroup('bets').where('settledAt', '>=', Timestamp.fromMillis(now - CORRECT_DAYS * DAY)).get();
+  const docs = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users' && (d.get('kind') === 'parlay' ? (d.get('legs') ?? []).some(correctable) : correctable(d.data())));
+  if (!docs.length) return 0;
+  const official = officialLookup({ fetchJson, now });
+  const games = new Map();
+  // (the bettor's pick's count, else the league's box: read for a bet settled before OFFICIAL_SINCE, on ESPN's
+  // count, or in the last CORRECT_WINDOW, as the bettor reads its own; else it stands)
+  const countOf = async (b, readBox) => {
+    const graded = gradedPick(b, (ledgers.nhl ?? []).filter((x) => String(x.event) === String(b.event)));
+    if (graded) return typeof graded.actual === 'number' ? graded.actual : undefined;
+    if (!readBox) return undefined;
+    const key = String(b.event);
+    if (!games.has(key)) games.set(key, gameAndBox(fetchJson, 'nhl', b.event).catch(() => null));
+    const g = await games.get(key);
+    if (!g?.game?.final || !g.body) return undefined;
+    const v = await statInFinal('nhl', b, g.body, null, { official, officialOnly: true });
+    return typeof v === 'number' ? v : undefined;
+  };
+  let n = 0;
+  for (const d of docs) {
+    try {
+      const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+      const was = { status: bet.status, profit: bet.profit, final: bet.final ?? null };
+      const settled = d.get('settledAt')?.toMillis?.() ?? 0;
+      const readBox = settled < OFFICIAL_SINCE || now - settled < CORRECT_WINDOW;
+      if (bet.kind === 'parlay') {
+        const legs = (bet.legs ?? []).map((l) => ({ ...l, start: iso(l.start) }));
+        const values = await Promise.all(legs.map((l) => (correctable(l) && ['won', 'lost', 'push'].includes(l.status) ? countOf(l, readBox) : undefined)));
+        const c = parlayCorrectionOf({ ...bet, legs }, values);
+        if (!c) continue;
+        log(`corrected: parlay ${legs.length} legs x${bet.stake}: ${was.status} to ${c.result.status} (${c.result.final})${dry ? ' (dry)' : ''}`);
+        if (!dry && !(await correctOne(db, d.ref, c.result, { was, days: [parlayDay(legs), parlayDay(c.legs)], legs: c.legs, ...(Number.isFinite(c.result.odds) ? { paidOdds: c.result.odds } : {}) }))) continue;
+      } else {
+        const value = await countOf(bet, readBox);
+        const r = correctionOf(bet, value);
+        if (!r) continue;
+        // (the bot's call beside it graded again from the new result)
+        const bot = bet.bot ? gradeBot(bet, r, { side: bet.bot.side, line: bet.bot.line, price: bet.bot.price, units: bet.bot.units, kelly: bet.bot.kelly, forced: bet.bot.forced }, { propValue: value }) : undefined;
+        log(`corrected: nhl ${bet.matchup} ${bet.pick} ${bet.odds} x${bet.stake}: ${was.final} ${was.status} to ${r.final} ${r.status}${dry ? ' (dry)' : ''}`);
+        if (!dry && !(await correctOne(db, d.ref, r, { was, ...(bot !== undefined ? { bot } : {}) }))) continue;
+      }
+      n++;
+    } catch (error) {
+      log(`${d.ref.path}: not corrected (${error?.message ?? error})`);
+    }
+  }
+  log(`corrections: ${n} of ${docs.length} settled NHL shots and points bets settled again by the league's count${dry ? ' (dry)' : ''}`);
+  return n;
+}
+
+// One settled bet settled again: its old result (was: { status, profit, final } as it was read; one that's
+// changed since is left alone) for the new one, the wallet's credit moved by the difference, the tally's
+// result swapped (days: the old and the new tally day, a parlay's; else the bet's start)
+export async function correctOne(db, ref, result, { was, days = null, legs = null, paidOdds, bot } = {}) {
+  const uid = ref.parent.parent.id;
+  const walletRef = db.doc(`users/${uid}/wallet/main`);
+  const tallyRef = db.doc(`tallies/${uid}`);
+  return db.runTransaction(async (tx) => {
+    const [bet, wallet, tally] = await tx.getAll(ref, walletRef, tallyRef);
+    if (!bet.exists || bet.get('status') !== was.status || bet.get('profit') !== was.profit || (bet.get('final') ?? null) !== was.final) return false;
+    const start = iso(bet.get('start'));
+    tx.update(ref, {
+      status: result.status,
+      profit: result.profit,
+      ...(result.final ? { final: result.final } : {}),
+      ...(legs ? { legs: withResults(bet.get('legs') ?? [], legs) } : {}),
+      ...(paidOdds !== undefined ? { paidOdds } : {}),
+      ...(bot !== undefined ? { bot } : {}),
+      corrected: { status: was.status, profit: was.profit, final: was.final, why: "the league's official count" },
+      correctedAt: FieldValue.serverTimestamp(),
+    });
+    const stake = bet.get('stake');
+    const delta = round2(creditOf(stake, result) - creditOf(stake, was));
+    if (delta !== 0 && wallet.exists && paysInto(bet.data(), wallet.data())) {
+      tx.update(walletRef, { balance: Math.max(0, round2((wallet.get('balance') ?? 0) + delta)) });
+    }
+    if (tally.exists) {
+      const data = bet.data();
+      const out = removeFromTally(tally.data(), { ...data, start: days?.[0] ?? start }, was);
+      tx.set(tallyRef, { ...addToTally(out, { ...data, start: days?.[1] ?? start }, result), updatedAt: FieldValue.serverTimestamp() });
+    }
+    return true;
+  });
+}
+
+// ---------------------------------------------------------------------------
 // The tallies' one-time fill: a tally from before TALLY_VERSION 2 has no sports (each day's profit by sport, the
 // wallet's chart's lines), so they're made from its owner's settled bets' documents, once, and it's marked 2.
 // Each in a transaction with the tally (a bet settling at the same time waits on it, or it on the bet), its
@@ -541,7 +645,7 @@ export async function writeLeaderboards(db, { now = Date.now(), dry = false, log
 // an account gone, a reload), or the tallies aren't filled in to TALLY_VERSION yet (upgradeTallies: the next run
 // after this one's deployed); else they stand, and every tally, profile and wallet isn't read again each hour
 export async function boardsDue(db, counts, now = Date.now()) {
-  if (!counts || counts.settled + counts.void > 0) return true;
+  if (!counts || counts.settled + counts.void + (counts.corrected ?? 0) > 0) return true;
   const week = await db.doc('leaderboards/week').get();
   if (!week.exists || week.get('tallyVersion') !== TALLY_VERSION) return true;
   const written = week.get('updatedAt')?.toMillis?.() ?? 0;
@@ -564,6 +668,9 @@ export async function run({ db = getFirestore(adminApp()), fetchJson = get, now 
   ledgers ??= readLedgers();
   botSeen ??= readBotBoards();
   const counts = await step('Settling', () => settleOpen(db, { fetchJson, now, ledgers, seen: seen ?? readBoards(), botSeen, mmaKept, dry, log }));
+  // (the NHL shots and points bets settled on a count the league's box doesn't bear out, settled again)
+  const corrected = await step('Corrections', () => correctSettled(db, { fetchJson, now, ledgers, dry, log }));
+  if (counts && corrected) counts.corrected = corrected;
   // (the bot's call on bets settled before it was kept: its failing (its index still building) fails nothing)
   try {
     await backfillBot(db, { now, botSeen, ledgers, dry, log });

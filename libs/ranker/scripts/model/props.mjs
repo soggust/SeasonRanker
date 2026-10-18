@@ -83,6 +83,7 @@ import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
 import { ANYTIME_TD, PROP_BOOKS, SPORT_KEYS, american, anytimeOn, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
+import { officialLine } from './nhl-official.mjs';
 import { BOOK } from './leagues.mjs';
 import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
 import { kindOf, newsOn } from './news.mjs';
@@ -2260,7 +2261,8 @@ function statusOf(sport, prop, live, home, game) {
 // the stat's own table counts 0, not void (an NFL receiver with no targets, a back with no carries: listed in
 // the box score's other tables, or on the field by nflverse's snap counts; only one who never took the field
 // is no action, DraftKings' rule). opts.played(bet): for an NFL player in none of the box score's tables,
-// whether he took a snap (true, false, or null: not known yet)
+// whether he took a snap (true, false, or null: not known yet). opts.official: an NHL skater's shots and points
+// by the league's own box (nhl-official.mjs officialLookup); opts.officialOnly: by it alone, undefined without it
 export async function statInFinal(sport, bet, body, pk, opts = {}) {
   const id = String(bet.athlete);
   // (whether the box score lists him anywhere as having played; and in a batting table, for MLB)
@@ -2289,6 +2291,18 @@ export async function statInFinal(sport, bet, body, pk, opts = {}) {
         // (a saves prop has action only for the goalie who started, pulled or not: a reliever's is no action,
         // DraftKings' rule; the starter by the order they went in, espn.mjs goaliesInOrder)
         if (k === 'saves') return String(goaliesInOrder(s.athletes, body?.article?.story)[0]?.athlete?.id) === id ? num('SV') : null;
+        // (shots and points: the league's own count once its box is official (nhl-official.mjs; opts.official,
+        // its look-up), waiting while it isn't; ESPN's (its S, shots on goal) when the league's can't be had)
+        if (opts.official) {
+          const got = await opts.official(body);
+          if (got?.wait) return undefined;
+          const c = body?.header?.competitions?.[0]?.competitors ?? [];
+          const side = c.find((t) => (p.team?.id != null && String(t.team?.id) === String(p.team.id)) || (p.team?.abbreviation && t.team?.abbreviation === p.team.abbreviation))?.homeAway;
+          const line = got?.box && side ? officialLine(got.box, side === 'home' ? 'h' : 'a', a.athlete) : null;
+          if (line) return k === 'sog' ? line.sog : line.goals + line.assists;
+          // (the league's count or none: a regrade (run.mjs officialRegrade) never goes by ESPN's)
+          if (opts.officialOnly) return undefined;
+        }
         return k === 'sog' ? num('S') : num('G') + num('A');
       }
       if (sport === 'mlb') {
