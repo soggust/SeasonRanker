@@ -1517,7 +1517,7 @@
 {"id":"401892519","date":"2026-10-17T17:00Z","season":2027,"type":2,"home":"23","away":"11","homeAbbr":"WSH","awayAbbr":"NJ","neutral":false,"final":true,"hs":4,"as":2,"venue":"Washington|DC|USA","indoor":true},
 {"id":"401892520","date":"2026-10-17T19:30Z","season":2027,"type":2,"home":"28","away":"7","homeAbbr":"WPG","awayAbbr":"CAR","neutral":false,"final":true,"hs":2,"as":3,"venue":"Winnipeg|MB|Canada","indoor":true},
 {"id":"401892521","date":"2026-10-17T20:00Z","season":2027,"type":2,"home":"20","away":"22","homeAbbr":"TB","awayAbbr":"VAN","neutral":false,"final":true,"hs":4,"as":2,"venue":"Tampa|FL|USA","indoor":true},
-{"id":"401892522","date":"2026-10-17T22:00Z","season":2027,"type":2,"home":"26","away":"124292","homeAbbr":"FLA","awayAbbr":"SEA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Sunrise|FL|USA","indoor":true},
+{"id":"401892522","date":"2026-10-17T22:00Z","season":2027,"type":2,"home":"26","away":"124292","homeAbbr":"FLA","awayAbbr":"SEA","neutral":false,"final":true,"hs":8,"as":3,"venue":"Sunrise|FL|USA","indoor":true},
 {"id":"401892524","date":"2026-10-17T23:00Z","season":2027,"type":2,"home":"10","away":"2","homeAbbr":"MTL","awayAbbr":"BUF","neutral":false,"final":false,"hs":null,"as":null,"venue":"Montreal|QC|Canada","indoor":true},
 {"id":"401892528","date":"2026-10-17T23:00Z","season":2027,"type":2,"home":"4","away":"9","homeAbbr":"CHI","awayAbbr":"DAL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Chicago|IL|USA","indoor":true},
 {"id":"401892527","date":"2026-10-17T23:00Z","season":2027,"type":2,"home":"29","away":"13","homeAbbr":"CBJ","awayAbbr":"NYR","neutral":false,"final":false,"hs":null,"as":null,"venue":"Columbus|OH|USA","indoor":true},
