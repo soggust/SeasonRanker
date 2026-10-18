@@ -2076,8 +2076,10 @@ async function betProps(r) {
     // run keeps, and this run's count) and this run's. An edge bet counts only the bets against its caps (a
     // tracked row stakes nothing: no exposure); a tracked one counts every row, as the action bets did)
     // (a flagged one (a guard's cut) with an edge: bet at the minimum, as the game markets; the owner's)
-    // (a research bet: the model's side on the research's word, its edge the model's own)
-    const edge = x.ev > 0 || !!x.researchBet;
+    // (a research bet: the model's side on the research's word, its edge the model's own; a role bet (props.mjs roleBet:
+    // its cause's graded CHECKs pay on the model's side) an edge on that record: past the gap its trusted chance is the
+    // book's and its ev only the vig, which would track it, never bet)
+    const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet;
     // (the stat's CLV gate (r.propGate): off, tracked, not bet, the gate's word on the row)
     const gate = r.propGate?.[x.prop.stat.key] ?? null;
     if (gate && !gate.on) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} tracked only: ${gate.why}`].filter(Boolean).join('; ') };

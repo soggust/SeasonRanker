@@ -2075,6 +2075,13 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const oppUnknown =
       (sport === 'nhl' && !!f.params.c_oppGoalie && !live?.[home ? 'away' : 'home']?.id) ||
       (sport === 'mlb' && !!f.params.c_oppSp && !live?.[home ? 'ap' : 'hp']);
+    // (the role's risky side with its cause's gate on (roleGateOf): bet, not CHECKed (roleBet, below). The gap guard
+    // doesn't hold it either: the role CHECKs the gate was graded on were made ahead of the gap guard, so they hold
+    // the gapped rows (most of them: a role the book has read and the model hasn't is a gap), and the gap there is
+    // the record's own case. Before, the gate let the role guard by and the gap guard took the row next, a PASS: no
+    // gated cause was ever bet (the 10-17 slate's snap-jump and group-out rows). The guards after the gap's still read)
+    const roleRisky = roleChange ? (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side : false;
+    const roleOn = !!roleChange && roleRisky && !!roleGate?.[roleChange.key]?.on;
     if (status.skip) guard = { skip: true, why: status.why };
     else if (layoff) guard = { skip: true, why: row.restDays >= LAYOFF ? `${a.name}'s first start in ${row.restDays} days: back from a layoff, his pitch count likely held down` : `${a.name}'s first start of the season: back from injury most likely, his pitch count likely held down` };
     else if (snapGap?.share >= 0.25) guard = { skip: true, why: `the snap counts missing for ${snapGap.games} games: the history holds only the players who got the ball` };
@@ -2098,7 +2105,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // bets as any prop would)
     // (a cause the graded CHECKs say pays on the model's side (roleGateOf: ROLE_BET, 40 graded or more): not a CHECK,
     // bet at the untested cap's half (roleBet, below), the other guards still read)
-    else if (roleChange && (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side && !roleGate?.[roleChange.key]?.on) {
+    else if (roleChange && roleRisky && !roleOn) {
       const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
@@ -2114,7 +2121,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // A CHECK (kind 'gap') only when it's the gap alone: one the skips below would take too (a long shot, a
     // line moved twice the limit; a juiced price it can't know is the unpriced skip's, above) is skipped with
     // both their words, no CHECK, so the CHECKs' hit rate is the gap's
-    else if (gapped) {
+    else if (gapped && !roleOn) {
       const also = prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null;
       guard = also ? { skip: true, why: `${gapped.why}; ${also}` } : { ...gapped, kind: 'gap' };
     }
@@ -2153,9 +2160,10 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // none)
     const implied = (guard?.kind === 'gap' || guard?.kind === 'role' || guard?.kind === 'news') && prop.prices ? impliedNow : null;
     // (a role bet (the CHECK bar by cause, roleGateOf): the risky side of a cause whose graded CHECKs pay, bet at most
-    // ROLE_BET_UNITS; its cause and the record it rests on ride on the bet (run.mjs propBet context.roleBet))
-    const riskySide = roleChange ? (roleChange.safe !== undefined ? roleChange.safe : ROLE_SAFE[roleChange.key] ?? null) !== side : false;
-    const roleBet = roleChange && riskySide && roleGate?.[roleChange.key]?.on && !guard?.skip ? { key: roleChange.key, why: roleChange.why, gate: roleGate[roleChange.key].why } : null;
+    // ROLE_BET_UNITS; its cause and the record it rests on ride on the bet (run.mjs propBet context.roleBet). Its edge
+    // is the gate's record, not its trusted chance: past the gap that is the book's, its return only the vig, so
+    // run.mjs places a role bet as an edge whatever its ev)
+    const roleBet = roleOn && !guard?.skip ? { key: roleChange.key, why: roleChange.why, gate: roleGate[roleChange.key].why } : null;
     priced.push({
       prop,
       pid,

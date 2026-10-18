@@ -111,9 +111,11 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // (a role bet (props.mjs roleGateOf: a role cause's risky side bet on its graded CHECKs' record, at the untested cap's
 // half; its context's roleBet) a LIKE at most, whatever its Kelly: the owner's (round E, 2026-10-17), the score there
 // being the model's own number on a role it reads poorly)
+// (a role bet a LIKE under 0 too: past the gap its trusted chance is the book's (its Kelly the vig's), the edge it's
+// bet on its cause's record, and every bet the bot places is a LIKE or better)
 // (and a research bet or a research-adjusted one, research.mjs: a LIKE, the owner's, 2026-10-17; a research bet's a LIKE
 // whatever its score, the research's word its reason)
-export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.researchBet ? 'medium' : (b.context?.roleBet || b.researchAdjusted) && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
+export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.researchBet || b.context?.roleBet ? 'medium' : b.researchAdjusted && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
 
 // The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded
 // placed bets (a tracked row never, an open or void one never), each US Eastern day's [won, lost, push, staked,

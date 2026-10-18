@@ -112,6 +112,49 @@ test("priceProps: a snap-jump's risky side a CHECK with the gate off; with it on
   assert.equal(price(55.5, roleGateOf({ byRole: { 'group-out': { decided: 64, won: 35, lost: 29, hitRate: 35 / 64, breakEven: 0.52, perUnit: 0.036 } } })).guard?.kind, 'role');
 });
 
+test("priceProps: a gated snap-jump past the market gap is bet at ROLE_BET_UNITS at most (the gap guard took it before, a PASS: the 10-17 slate's Jalen Brooks under); a qb1-out row stays a CHECK, gate or no gate", () => {
+  const st = STATS.nfl.find((s) => s.key === 'rushYds');
+  const project = () => ({ mu: 50, rate: 50, recent: 50, base: 50, opp: 1, posOpp: 1, roleOpp: null, role: null, funnel: null, funnelF: 1, paceF: 1, tgtF: 1, vac: 0, vacHist: 0, vacF: 1, games: 4, prevGames: 16 });
+  const usual = [[2026, 40], [2026, 45], [2026, 55], [2026, 60]];
+  const idx = { pid: (a) => a.id, pos: () => 'RB', name: (id) => `N${id}` };
+  const gameRow = { id: 'g', date: '2026-10-19T17:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const prop = (line) => ({ athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line, open: null, prices: { over: -110, under: -110 } });
+  const gateAll = roleGateOf({ byRole: { 'snap-jump': { decided: 43, won: 28, lost: 15, hitRate: 28 / 43, breakEven: 0.528, perUnit: 0.232 }, 'group-out': { decided: 64, won: 35, lost: 29, hitRate: 35 / 64, breakEven: 0.52, perUnit: 0.036 } } });
+  // (qb: whether the usual starter 'q' is on the roster; snap: his snaps, a jump or none)
+  const price = (line, roleGate, { qb = true, snap = null } = {}) => {
+    const rosterSet = new Set(qb ? ['a', 'q'] : ['a']);
+    rosterSet.out = new Map();
+    const live = { injuries: new Map([['1', []]]), rosters: new Map([['1', rosterSet]]) };
+    const matchups = { live: () => ({ vacs: [0, 0, 0], vac: 0, ...(snap ? { snap } : {}) }), qb1: () => ({ id: 'q', v: 30 }), absent: () => new Map(), regulars: () => [] };
+    const fitted = { rushYds: { stat: st, env: { mean: 50, avg: 1 }, model: { project, roleTable: () => [] }, values: new Map([['a', usual]]), matchups, params: { r: 6, a: 1, b: 0, scale: 1 }, snapGap: null } };
+    return priceProps('nfl', gameRow, [prop(line)], fitted, idx, { homePts: 24, awayPts: 21 }, null, live, {}, 0.1, null, null, null, roleGate).priced[0];
+  };
+  const jump = { latest: 0.9, avg: 0.6, n: 3, prev: 0.55 };
+  // (the line far over his mean: the under the model's side, past the gap)
+  const off = price(80.5, null, { snap: jump });
+  assert.equal(off.side, 'under');
+  assert.ok(off.model - off.fair > 0.15, `${off.model} vs ${off.fair}`);
+  assert.equal(off.guard?.kind, 'role');
+  const bet = price(80.5, gateAll, { snap: jump });
+  assert.equal(bet.side, 'under');
+  assert.ok(!bet.guard, JSON.stringify(bet.guard));
+  assert.equal(bet.roleBet?.key, 'snap-jump');
+  assert.ok(bet.units > 0 && bet.units <= ROLE_BET_UNITS, `${bet.units}`);
+  // (no snap jump: the far line's own cause (line), not gated, held as before)
+  const plain = price(80.5, gateAll);
+  assert.ok(plain.guard?.skip);
+  assert.equal(plain.roleBet, undefined);
+  // (his starting quarterback out: qb1-out's risky side the over, a CHECK whatever the other causes' gates say, near
+  // the line or past the gap)
+  for (const line of [45.5, 25.5]) {
+    const qb1 = price(line, gateAll, { qb: false, snap: jump });
+    assert.equal(qb1.side, 'over');
+    assert.equal(qb1.guard?.kind, 'role');
+    assert.equal(qb1.guard.role, 'qb1-out');
+    assert.equal(qb1.roleBet, undefined);
+  }
+});
+
 test("priceProps: the QB-out headline is no news CHECK once the report has the quarterback out (the projection and the role guard carry it); with him not on the report, the news CHECK as before", () => {
   const st = STATS.nfl.find((s) => s.key === 'rushYds');
   const matchups = { live: () => ({ vacs: [0, 0, 0], vac: 0, snap: { latest: 0.7, avg: 0.7, n: 3, prev: 0.7 } }), qb1: () => ({ id: 'q', v: 30 }), absent: () => new Map(), regulars: () => [] };
@@ -169,7 +212,8 @@ test("picks: a role bet's band is a LIKE at most, whatever its Kelly; an ordinar
   assert.equal(levelOf(edge, 0.08, 0.6), 'lock');
   assert.equal(levelOf({ ...edge, context: { roleBet: 'snap-jump: a bigger role' } }, 0.08, 0.6), 'medium');
   assert.equal(levelOf({ ...edge, context: { roleBet: 'snap-jump: a bigger role' } }, 0.03, 0.6), 'medium');
-  assert.equal(levelOf({ ...edge, context: { roleBet: 'snap-jump: a bigger role' } }, -0.01, 0.6), 'low');
+  // (under 0 too: past the gap its trusted chance is the book's, its Kelly the vig's; bet on its cause's record)
+  assert.equal(levelOf({ ...edge, context: { roleBet: 'snap-jump: a bigger role' } }, -0.05, 0.43), 'medium');
   assert.equal(levelOf({ ...edge, intent: 'track' }, 0.08, 0.6), 'low');
 });
 
