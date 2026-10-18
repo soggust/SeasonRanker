@@ -264,17 +264,17 @@ export const LINEUP_HOURS = { nfl: 2.5, nba: 2 };
 
 // Each coming game's posted game-day rosters (espn.mjs gameRoster) on its live facts (l.gameRosters: Map of team id
 // -> { inactive, starters }, the sides posted), its listed inactives put into its injury report (putInactives)
-// (before a game's own inactives post, about 90 minutes before an NFL kickoff, ESPN's game roster for it carries the
-// team's last game's didNotPlay flags: 2026-10-18 the Eagles' at 11:23 ET read L. Johnson, Epps, Greenard, Barkley,
-// Brown, D. Smith, Kendall, the Jaguars game's list to the name, and DeVonta Smith, off the injury report and
-// playing, was put out. A posted list the same as the team's last game's is read as not posted yet (staleRoster);
-// the run after the real one posts reads it)
-export const POSTED_BY_MIN = 80;
-export function staleRoster(posted, prev) {
-  if (!posted?.inactive?.length || !prev?.inactive?.length) return false;
-  const a = new Set(posted.inactive.map((x) => String(x.id)));
-  const b = new Set(prev.inactive.map((x) => String(x.id)));
-  return a.size === b.size && [...a].every((id) => b.has(id));
+// (ESPN's game roster for a coming game carries the team's last game's didNotPlay flags, and keeps them once the
+// game's own inactives post (adding those): 2026-10-18 the Eagles' at 11:23 ET read L. Johnson, Epps, Greenard,
+// Barkley, Brown, D. Smith, Kendall, the Jaguars game's list to the name, and at 11:41 the same seven and M. Carter
+// II, Epenesa, Milton III, Hunt, DeVonta Smith (off the injury report, playing) on it both times. So a game-day list
+// counts only for the names new on it since the team's last game (freshInactives); one carried over keeps its
+// injury report's status (Barkley's Out stays Out), and no last game read, nothing from the list)
+export function freshInactives(posted, prev) {
+  if (!posted) return posted;
+  if (!prev) return { ...posted, inactive: [] };
+  const was = new Set((prev.inactive ?? []).map((x) => String(x.id)));
+  return { ...posted, inactive: (posted.inactive ?? []).filter((x) => !was.has(String(x.id))) };
 }
 // (a team's last game before this one in the history: its event id, or null)
 export function lastGameOf(history, team, before) {
@@ -294,21 +294,20 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
   });
   const asks = soon.flatMap(({ game }) => [game.home, game.away].map((team) => ({ game, team: String(team) })));
   const got = await pool(asks, 4, ({ game, team }) => gameRoster(cfg.league, game.id, team, sport));
-  // (each side's last game's list, asked only where this one reads as posted: the same list, not posted yet)
+  // (each side's last game's list: only the names new since it count, freshInactives)
   const prevs = await pool(asks, 4, ({ game, team }, i) => {
     if (!got[i]?.inactive?.length) return null;
     const prev = lastGameOf(history, team, Date.parse(game.date));
-    return prev ? gameRoster(cfg.league, prev, team, sport) : null;
+    return prev ? gameRoster(cfg.league, prev, team, sport).then((r) => r ?? { inactive: [] }) : null;
   });
-  let stale = 0;
-  // (inside POSTED_BY_MIN of the start the posting is in: a list the same as last week's then is the real one, a
-  // long absence's)
-  asks.forEach(({ game }, i) => {
-    if (Date.parse(game.date) - now < POSTED_BY_MIN * 6e4 || !staleRoster(got[i], prevs[i])) return;
-    stale++;
-    got[i] = got[i].starters ? { inactive: [], starters: got[i].starters } : null;
+  let carried = 0;
+  asks.forEach((_, i) => {
+    if (!got[i]?.inactive?.length) return;
+    const fresh = freshInactives(got[i], prevs[i]);
+    carried += got[i].inactive.length - fresh.inactive.length;
+    got[i] = fresh.inactive.length || fresh.starters ? fresh : null;
   });
-  if (stale) console.log(`${sport}: game-day rosters the same as the team's last game's, read as not posted yet: ${stale} sides`);
+  if (carried) console.log(`${sport}: game-day rosters: ${carried} names carried over from the teams' last games left to the injury report`);
   let posted = 0;
   asks.forEach(({ game, team }, i) => {
     if (!got[i]) return;
