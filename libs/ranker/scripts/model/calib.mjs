@@ -22,15 +22,26 @@
 //   step      a kept spot moves at most CAL_STEP from the shift the last run left (state.calib), so one night's
 //             results can't swing it; one that loses the gate goes to 0 at once
 //
+// 2026-10-18 (the audit: out of sample since 10-08 the raw model said .538 on lines of 1.5 or under for .481, .579 on
+// 2 to 3.5 for .493, and no spot had ever been shifted: each sat under CAL_MIN rows since the epoch). Made active:
+//   rows      every graded prop with a raw chance, across epochs (calibration only: the gates and the trust still
+//             count from MODEL_EPOCH); a run's from (fitCalib from: null, every one)
+//   pooled    a sparse spot borrows from the ones around it, in three rungs each fit on what the rungs above
+//             left (an offset on every row's log-odds: no double counting): every sport's props at the line
+//             class (pool, line-pool.mjs: the other sports' ledgers), the sport's at the class (sport), the spot's
+//             own (spots). Each rung gated, shrunk and stepped as a spot is; a spot's shift the three's sum held
+//             to CAL_CAP, kept where it's not 0; a spot with no rows of its own the two above it
+//   min       CAL_MIN 200 and CAL_HOLD_MIN 60, so a rung with a few hundred rows can speak
+//
 // It moves the model's chance alone: the trust, the guards, the bands and the stakes read the chance as before
 // (a tracked row is never staked, an edge bet stays LIKE or better, a flagged one at the minimum).
 
-export const CAL_MIN = 300;
+export const CAL_MIN = 200;
 export const CAL_K = 600;
 export const CAL_CAP = 0.25;
 export const CAL_STEP = 0.03;
 export const CAL_SPLIT = 0.7;
-export const CAL_HOLD_MIN = 100;
+export const CAL_HOLD_MIN = 60;
 
 // (a line's class: 0.5, 1.5, 2.5 or over 2.5; a whole-number line with the class it sits in)
 export const lineClass = (line) => (line <= 0.5 ? '0.5' : line <= 1.5 ? '1.5' : line <= 2.5 ? '2.5' : '>2.5');
@@ -44,18 +55,18 @@ const r4 = (v) => Math.round(v * 10000) / 10000;
 // A chance moved by a shift on its log-odds (none: as it is)
 export const calAt = (p, shift) => (shift ? sigmoid(logit(p) + shift) : p);
 
-// The graded props a spot fits on: since the epoch (placedAt, else the start), won or lost, not void, with a
-// model chance; each { key, p (its raw chance), y (1 won), t (when its game started) }
-export function calRows(bets, epoch) {
-  const from = Date.parse(epoch);
+// The graded props a spot fits on: since from (placedAt, else the start; null: every one), won or lost, not void,
+// with a model chance; each { key, cls (its line class), p (its raw chance), y (1 won), t (when its game started) }
+export function calRows(bets, from = null) {
+  const since = from == null ? -Infinity : Date.parse(from);
   const out = [];
   for (const b of bets ?? []) {
     if (!b || b.market !== 'prop' || b.void || (b.status !== 'won' && b.status !== 'lost')) continue;
     const at = Date.parse(b.placedAt ?? b.start);
-    if (!(at >= from)) continue;
+    if (!(at >= since)) continue;
     const p = Number.isFinite(b.modelRaw) ? b.modelRaw : b.model;
     if (!Number.isFinite(p) || !Number.isFinite(b.line) || (b.side !== 'over' && b.side !== 'under') || !b.propType) continue;
-    out.push({ key: spotKey(b.propType, b.side, b.line), p, y: b.status === 'won' ? 1 : 0, t: Date.parse(b.start) || at, id: String(b.id ?? '') });
+    out.push({ key: spotKey(b.propType, b.side, b.line), cls: lineClass(b.line), p, y: b.status === 'won' ? 1 : 0, t: Date.parse(b.start) || at, id: String(b.id ?? '') });
   }
   return out;
 }
@@ -65,7 +76,7 @@ export function logLoss(rows, shift = 0) {
   if (!rows.length) return null;
   let ll = 0;
   for (const x of rows) {
-    const q = clip(calAt(x.p, shift));
+    const q = clip(calAt(x.p, shift + (x.o ?? 0)));
     ll -= Math.log(x.y ? q : 1 - q);
   }
   return ll / rows.length;
@@ -79,7 +90,7 @@ export function fitShift(rows) {
     let g = 0;
     let h = 0;
     for (const x of rows) {
-      const q = sigmoid(logit(x.p) + s);
+      const q = sigmoid(logit(x.p) + s + (x.o ?? 0));
       g += q - x.y;
       h += q * (1 - q);
     }
@@ -116,22 +127,43 @@ export function fitSpot(rows, prev = 0) {
   return { ...base, shift: r4(shift), target: r4(target), gain, kept: true, why: null };
 }
 
-// Every spot's from the ledger's bets: { epoch, rows, min, cap, step, spots: { key: fitSpot's } } (prev: the last run's state.calib)
-export function fitCalib(bets, epoch, prev = null) {
-  const rows = calRows(bets, epoch);
+const capped = (s) => Math.max(-CAL_CAP, Math.min(CAL_CAP, s)) || 0;
+const keptShift = (f) => (f?.kept && Number.isFinite(f.shift) ? f.shift : 0);
+const groupBy = (rows, keyOf) => {
   const by = new Map();
-  for (const x of rows) by.set(x.key, [...(by.get(x.key) ?? []), x]);
-  // (a last run's shift from another epoch starts over: the rows it was fit on judged another model)
-  const was = prev?.epoch === epoch ? (prev?.spots ?? {}) : {};
+  for (const x of rows) by.set(keyOf(x), [...(by.get(keyOf(x)) ?? []), x]);
+  return [...by].sort((a, b) => a[0].localeCompare(b[0]));
+};
+
+// Every spot's from the ledger's bets, pooled (see the header): { from, rows, poolRows, min, cap, step, pool: { cls:
+// fitSpot's }, sport: { cls: fitSpot's }, spots: { key: fitSpot's, own (its rung's), shift (the three's sum, held to
+// CAL_CAP), kept (not 0) } }. from: the rows' (null every one); prev: the last run's state.calib (each rung steps
+// from its own last shift, across epochs as the rows are); pool: the other sports' bets (line-pool.mjs)
+export function fitCalib(bets, from = null, prev = null, pool = []) {
+  const rows = calRows(bets, from);
+  const others = calRows(pool, from);
+  const pools = {};
+  for (const [cls, list] of groupBy([...others, ...rows], (x) => x.cls)) pools[cls] = fitSpot(list, prev?.pool?.[cls]?.shift ?? 0);
+  const sport = {};
+  for (const [cls, list] of groupBy(rows, (x) => x.cls)) sport[cls] = fitSpot(list.map((x) => ({ ...x, o: keptShift(pools[cls]) })), prev?.sport?.[cls]?.shift ?? 0);
   const spots = {};
-  for (const [key, list] of [...by].sort((a, b) => a[0].localeCompare(b[0]))) spots[key] = fitSpot(list, was[key]?.shift ?? 0);
-  return { epoch, rows: rows.length, min: CAL_MIN, cap: CAL_CAP, step: CAL_STEP, spots };
+  for (const [key, list] of groupBy(rows, (x) => x.key)) {
+    const cls = list[0].cls;
+    const above = keptShift(pools[cls]) + keptShift(sport[cls]);
+    const f = fitSpot(list.map((x) => ({ ...x, o: above })), prev?.spots?.[key]?.own ?? 0);
+    const total = r4(capped(above + keptShift(f)));
+    spots[key] = { ...f, own: keptShift(f), shift: total, kept: total !== 0, ownKept: f.kept };
+  }
+  return { from, rows: rows.length, poolRows: others.length, min: CAL_MIN, cap: CAL_CAP, step: CAL_STEP, pool: pools, sport, spots };
 }
 
-// (a spot's shift as priced: 0 where it isn't kept, or none)
+// (a spot's shift as priced: its sum (fitCalib), 0 where it isn't kept; a spot with no rows of its own the pool's
+// and the sport's at its line class)
 export const shiftOf = (calib, stat, side, line) => {
   const s = calib?.spots?.[spotKey(stat, side, line)];
-  return s?.kept && Number.isFinite(s.shift) ? s.shift : 0;
+  if (s) return s.kept && Number.isFinite(s.shift) ? s.shift : 0;
+  const cls = lineClass(line);
+  return r4(capped(keptShift(calib?.pool?.[cls]) + keptShift(calib?.sport?.[cls])));
 };
 
 // A prop's two sides' model chances with their spots' shifts: { over, under, so, su }; the two never add to more
@@ -152,8 +184,10 @@ export function calSides(calib, stat, line, pOver, push = 0) {
 // The run log's line: each spot with rows, its n, shift, held-out gain and why it's 0
 export function calibText(c) {
   const spots = Object.entries(c?.spots ?? {});
-  if (!spots.length) return 'no graded props since the epoch';
+  if (!spots.length) return 'no graded props yet';
   const kept = spots.filter(([, s]) => s.kept);
-  const each = spots.map(([k, s]) => `${k} n ${s.n} shift ${s.shift}${s.kept ? ` (target ${s.target}, held-out gain +${s.gain})` : ` (${s.why}${s.gain !== null ? `, gain ${s.gain}` : ''})`}`);
-  return `${c.rows} graded rows since the epoch, ${kept.length} of ${spots.length} spots shifted: ${each.join('; ')}`;
+  const rung = (k, s) => `${k} n ${s.n} shift ${s.shift}${s.kept ? ` (target ${s.target}, held-out gain +${s.gain})` : ` (${s.why}${s.gain !== null ? `, gain ${s.gain}` : ''})`}`;
+  const each = spots.map(([k, s]) => `${k} n ${s.n} shift ${s.shift} (own ${s.own ?? s.shift}${(s.ownKept ?? s.kept) ? `, target ${s.target}, held-out gain +${s.gain}` : `: ${s.why}${s.gain !== null ? `, gain ${s.gain}` : ''}`})`);
+  const pooled = [...Object.entries(c?.pool ?? {}).map(([k, s]) => rung(`all sports ${k}`, s)), ...Object.entries(c?.sport ?? {}).map(([k, s]) => rung(`sport ${k}`, s))];
+  return `${c.rows} graded rows (${c.poolRows ?? 0} more from the other sports), ${kept.length} of ${spots.length} spots shifted; pooled: ${pooled.join('; ') || 'none'}; spots: ${each.join('; ')}`;
 }

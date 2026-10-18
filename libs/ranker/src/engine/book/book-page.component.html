@@ -440,7 +440,7 @@
                     @if (passed(r)) {
                       <span><b>Passed:</b> {{ r.resolved?.why || 'under the CHECK bar now' }}. No longer a CHECK; it's still graded at the price it was shown at.</span>
                     } @else if (r.checkCause === 'role') {
-                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. A big Kelly on the model's own number, but the model's known error in a role change could be making this side; the other side bets as usual.</span>
+                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The model sees value here, but its known error in a role change could be making this side; the other side bets as usual.</span>
                     } @else if (r.checkCause === 'news') {
                       <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the model reads it from the logs.</span>
                     } @else {
@@ -469,7 +469,7 @@
                 <span class="bet-meta-place">@if (where(r); as w) {<span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}</span>
                 <span class="bet-meta-bet">
                   @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The model’s chance less the book’s' : 'The model’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
-                  <span [title]="r.check ? 'The model’s own Kelly score' : 'Its Kelly score: the edge on the price, scaled by what it pays; the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
+                  <span [title]="r.check ? 'Its Kelly with the doubt cleared: the stake’s Kelly at the chance it would be bet at (the model’s own ' + (r.chance ?? '–') + '% leaned only part way)' : 'Its Kelly score: the edge on the price, scaled by what it pays (held to -110’s, as the stake is); the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
                   @if (r.by === 'claude') { · <span>Analysis by Claude@if (r.read === 'thin') { (a thin read)}</span>}
                 </span>
               </div>
@@ -563,9 +563,9 @@
         [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
       >
         <div class="why-top">
-          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="The model's own Kelly score, its chance taken at its word: how far it sits from the price">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
+          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="Its Kelly with the doubt cleared: the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the model's (the model's own chance shows below, as context)">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
           <div class="why-head">
-            <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · model Kelly</span>
+            <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · cleared Kelly</span>
             <span class="why-name">{{ c.name }}</span>
             @if (c.game; as g) {<span class="why-game">{{ g.sport }} · {{ g.matchup }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
           </div>
@@ -628,7 +628,7 @@
             <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}.{{ rs.applied ? ' Its finding was put into this game’s injury report for the bot’s pricing.' : '' }}</p>
           </div>
         }
-        <p class="why-fine">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
+        <p class="why-fine">A CHECK is a market a guard stopped with a cleared Kelly (the stake's, at the chance it would be bet at with its doubt answered) of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): worth a look before it's bet. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
       </div>
     }
     @if (why; as w) {

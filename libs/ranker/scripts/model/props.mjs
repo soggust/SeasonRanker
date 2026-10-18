@@ -76,7 +76,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { calSides } from './calib.mjs';
-import { chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
+import { bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor } from './desk.mjs';
 import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
@@ -1871,7 +1871,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       if (v > prop.line) overs += w;
     }
     const fairOver = (overs + 1) / (n + 2);
-    const t = trust[`prop:${prop.stat.key}`]?.trust ?? 0.5;
+    // (its trust at its line's size: the stat's bucket's, held to the stat's own (desk.mjs bucketTrustOf: a low
+    // line's own record against the book, 2026-10-18))
+    const t = bucketTrustOf(trust, `prop:${prop.stat.key}`, prop.line);
     // (the book's prices where it gave them, its fair chance their vig taken out; else -110 a side, even)
     const book = prop.prices ? { over: prop.prices.over, under: prop.prices.under, fairOver: fairPair(prop.prices.over, prop.prices.under) } : { over: PROP_ODDS, under: PROP_ODDS, fairOver: 0.5 };
     // (each side at the trusted chance, the lean tapered past half of the prop's GAP as a game market's is
@@ -2177,6 +2179,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       odds,
       otherOdds,
       priced: !!prop.prices,
+      // (the trust it was priced at: a CHECK's cleared Kelly reads it, checks.mjs checkKelly)
+      trust: t,
       p: pTrusted,
       ev,
       units: guard ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : stakeFor(ev, evScale, odds),

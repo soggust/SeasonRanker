@@ -164,13 +164,13 @@ const shiftPts = (s: number): string => {
 // (the live calibration in plain words, for the About and the Algorithm tab; null where the state predates it)
 export function calibText(c: LiveCalib | null | undefined): string | null {
   if (!c?.spots) return null;
-  const how = `The bot nudges its own chance on a prop where its graded props show it running hot or cold, one spot at a time (a stat, over or under, the line's size). A spot stays at 0 till ${c.min} props are graded there since the model epoch and the newest of them come out better with the nudge; then it grows slowly with the evidence, at most ${shiftPts(c.cap).slice(1)} of a coin flip, and moves only a little each run.`;
+  const how = `The bot nudges its own chance on a prop where its graded props show it running hot or cold, one spot at a time (a stat, over or under, the line's size). A spot with few graded props borrows from the ones around it: every sport's props at the same line size, then this sport's, then the spot's own, each nudge 0 till ${c.min} props are graded there and the newest of them come out better with it; then it grows slowly with the evidence, at most ${shiftPts(c.cap).slice(1)} of a coin flip in all, and moves only a little each run.`;
   const spots = Object.entries(c.spots);
   const kept = spots.filter(([, s]) => s.kept);
-  if (!spots.length) return `${how} No props graded since the epoch yet: no nudges.`;
+  if (!spots.length) return `${how} No props graded yet: no nudges.`;
   if (!kept.length) {
     const top = [...spots].sort((a, b) => b[1].n - a[1].n)[0];
-    return `${how} ${c.rows.toLocaleString()} props graded since the epoch, none nudged yet (the busiest spot, ${spotWords(top[0])}, has ${top[1].n}).`;
+    return `${how} ${c.rows.toLocaleString()} props graded, none nudged yet (the busiest spot, ${spotWords(top[0])}, has ${top[1].n}).`;
   }
   return `${how} Nudged now: ${kept.map(([k, s]) => `${spotWords(k)} ${shiftPts(s.shift)} at even (${s.n.toLocaleString()} graded)`).join('; ')}.`;
 }

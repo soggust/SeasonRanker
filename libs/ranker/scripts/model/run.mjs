@@ -147,9 +147,10 @@ import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
+import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
@@ -1155,6 +1156,28 @@ function refitTrust(r) {
       { what: `${st.label} props' trust in the projection`, bets: `${st.label} props` },
     );
   }
+  // (each prop type's trust by its line's size (desk.mjs fitBuckets, 2026-10-18): low (1.5 or under), mid (2 to
+  // 3.5), high; each bucket's rung pulled toward its sport's, the sport's toward every sport's pooled (line-pool.mjs),
+  // the pool's toward the bucket's start (low 0.25), each by its own evidence; priced at the rung held to the type's
+  // own trust (bucketTrustOf). Kept on the type's trust (lines), the sport's and the pool's in state.lineTrust; a
+  // rung moved 0.05 or more logged. Any failure: none this run (the bucket's start, held to the type's trust)
+  try {
+    const keyOf = (b) => `prop:${b.propType}`;
+    const keys = [...STATS[r.sport].map((st) => `prop:${st.key}`), ...(r.sport === 'nfl' ? [`prop:${ANY_KEY}`] : [])];
+    const mine = r.ledger.bets.filter((b) => b.market === 'prop' && Number.isFinite(b.line) && evidence(b)).map((b) => timed(b, 'props'));
+    const ladder = fitBuckets([...readLinePool(ROOT, MODEL_EPOCH, r.sport), ...mine], mine, keyOf, keys);
+    for (const k of keys) {
+      const was = trust[k]?.lines ?? {};
+      trust[k] = { ...(trust[k] ?? fitTrust([], START_TRUST)), lines: ladder.keys[k] };
+      for (const [bk, rung] of Object.entries(ladder.keys[k])) {
+        if (was[bk] && Math.abs(was[bk].trust - rung.trust) >= 0.05) state.changelog.push({ at, what: `${k.slice(5)} props' trust at ${bk} lines`, from: was[bk].trust, to: rung.trust, why: `its own fit ${rung.own} on ${rung.n} graded and ${rung.clvN} closes (${rung.eff} games' worth, ${Math.round(rung.weight * 100)}% of it kept), the rest the sport's ${rung.parent}` });
+      }
+    }
+    state.lineTrust = { pool: ladder.pool, sport: ladder.sport };
+    console.log(`${r.sport}: line trust: ${BUCKETS.map((bk) => `${bk} pool ${ladder.pool[bk].trust} (eff ${ladder.pool[bk].eff}), sport ${ladder.sport[bk].trust} (eff ${ladder.sport[bk].eff})`).join('; ')}`);
+  } catch (err) {
+    console.warn(`${r.sport}: line trust left out this run (${err.message})`);
+  }
   r.trust = trust;
 }
 
@@ -1168,13 +1191,15 @@ function refitCalib(r) {
   r.calib = null;
   try {
     // (no time on it: a run that learned nothing new writes the same state)
-    const c = fitCalib(r.ledger?.bets ?? [], MODEL_EPOCH, state.calib ?? null);
-    const was = state.calib?.epoch === MODEL_EPOCH ? (state.calib?.spots ?? {}) : {};
+    // (2026-10-18: every graded prop across epochs, the other sports' pooled where a spot's sparse: calib.mjs; the
+    // gates and the trust still count from the epoch)
+    const c = fitCalib(r.ledger?.bets ?? [], null, state.calib ?? null, readLinePool(ROOT, '1970-01-01T00:00:00Z', sport));
+    const was = state.calib?.spots ?? {};
     for (const [key, s] of Object.entries(c.spots)) {
       const from = was[key]?.kept ? was[key].shift : 0;
       const to = s.kept ? s.shift : 0;
       if (from === to || (Math.abs(to - from) < CAL_CAP / 10 && !!from === !!to)) continue;
-      state.changelog.push({ at, what: `live calibration: ${key}`, from, to, why: s.kept ? `${s.n} graded rows since the epoch; fit on the older ${s.n - s.held}, the newest ${s.held}'s log loss ${s.gain} lower with it (target ${s.target}, at most ${CAL_STEP} a run)` : `${s.n} graded rows: ${s.why}` });
+      state.changelog.push({ at, what: `live calibration: ${key}`, from, to, why: s.kept ? `${s.n} graded rows of its own (own shift ${s.own}${s.ownKept ? `: fit on the older ${s.n - s.held}, the newest ${s.held}'s log loss ${s.gain} lower with it, target ${s.target}` : ''}), the rest pooled from its line class, at most ${CAL_STEP} a rung a run` : `${s.n} graded rows: ${s.why}` });
     }
     r.calib = c;
     console.log(`${sport}: live calibration: ${calibText(c)}`);
@@ -2131,10 +2156,10 @@ async function betProps(r) {
           const call = r.researchCalls?.get(id);
           if (!call || !(researchPriced(call) || call.act === 'pass')) continue;
           const guarded = !!x.guard?.skip && CHECK_KINDS.has(x.guard?.kind);
-          const shadow = guarded && !!shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced });
+          const shadow = guarded && !!shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced, trust: x.trust, line: x.prop.line });
           const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
           const stored = storedBet(x.prop.stored, hasKey(), r.now);
-          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow }, trust[`prop:${x.prop.stat.key}`]?.trust ?? 0.5, { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
+          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow }, bucketTrustOf(trust, `prop:${x.prop.stat.key}`, x.prop.line), { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
           // (a prop the research cleared with no CHECK guard firing now: priced by the usual rules, as before)
           const input = call.act === 'pass' ? null : call.act === 'bet' ? 'finding: nothing explains the gap' : (call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`);
           if (!d && (call.act !== 'adjust' || guarded)) continue;
@@ -2200,7 +2225,7 @@ async function betProps(r) {
         run.muUnder = (run.muUnder ?? 0) + (x.projection.mean < x.prop.line ? 1 : 0);
         if (!CHECK_KINDS.has(x.guard?.kind)) continue;
         // (a shadow's (checks.mjs shadowOf, as recordChecks keeps it) by its passAs)
-        const sh = shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced });
+        const sh = shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced, trust: x.trust, line: x.prop.line });
         const k = `${x.guard.kind === 'role' ? `role:${x.guard.role}` : x.guard.kind === 'news' ? `news:${x.guard.news}` : x.guard.kind}:${x.side}${sh ? `:pass-${sh.passAs}` : ''}`;
         run.checkSides = { ...(run.checkSides ?? {}), [k]: (run.checkSides?.[k] ?? 0) + 1 };
       }
@@ -2298,6 +2323,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     // (its chance before the live calibration and the shift, where one moved it: calib.mjs)
     ...(Number.isFinite(x.modelRaw) ? { modelRaw: round(x.modelRaw, 4), cal: round(x.cal ?? 0, 4) } : {}),
     fair: round(x.fair, 4),
+    // (the trust it was priced at, its line's bucket's: a CHECK's cleared Kelly reads it, checks.mjs checkKelly)
+    ...(Number.isFinite(x.trust) ? { trust: round(x.trust, 3) } : {}),
     p: round(x.p, 4),
     ev: round(x.ev, 4),
     intent,
@@ -2354,7 +2381,7 @@ function anytimeTracked(r, game, prices, board_, exp, live, run) {
   const pts = exp.market ?? [exp.homePts, exp.awayPts];
   const implied = (team) => (team === String(game.home) ? pts[0] : team === String(game.away) ? pts[1] : null);
   const hurt = new Set(teams.flatMap((t) => (live?.injuries?.get(t) ?? []).filter((x) => x.id && OUT_STATUS.test(x.status ?? '')).map((x) => String(x.id))));
-  const { priced, skipped } = priceAnytime({ prices, whoOf, model: fitted.model, season: game.season, implied, out: (pid) => hurt.has(String(pid)), calib: r.calib ?? null, trust: r.trust?.[`prop:${ANY_KEY}`]?.trust ?? 0.5 });
+  const { priced, skipped } = priceAnytime({ prices, whoOf, model: fitted.model, season: game.season, implied, out: (pid) => hurt.has(String(pid)), calib: r.calib ?? null, trust: bucketTrustOf(r.trust, `prop:${ANY_KEY}`, ANY_LINE) });
   let placed = 0;
   for (const x of priced) {
     const id = `${game.id}:prop:${ANY_KEY}:${x.who.pid}`;

@@ -59,10 +59,12 @@ test('boardProp: both prices, each side’s Kelly and band; an unknown side null
   // (a CHECK the run shows (a role's at a model Kelly of +10 or more) its side check; a gap's, or a role's
   // under the bar, a shadow: a PASS, sk)
   // (a shadow's why its sw; at an assumed price (not priced) a role's a shadow, no Kelly to judge it by)
-  const role = { priced: true, guard: { skip: true, kind: 'role', role: 'group-out' }, odds: -115, model: 0.7, fair: 0.5 };
+  // (judged by its cleared Kelly at the trust it was priced at (checks.mjs checkKelly): at a trust of 1, 0.5 + 0.075 at
+  // -115 a +8.4, a CHECK; the model's 52% under the break-even, a shadow)
+  const role = { priced: true, guard: { skip: true, kind: 'role', role: 'group-out' }, odds: -115, model: 0.7, fair: 0.5, trust: 1 };
   const chk = boardProp(prop(-115, -105, role), 'T');
   assert.deepEqual([chk.b, chk.sk, chk.sw], [['check', 'low'], undefined, undefined]);
-  const small = boardProp(prop(-115, -105, { ...role, model: 0.55 }), 'T');
+  const small = boardProp(prop(-115, -105, { ...role, model: 0.52 }), 'T');
   assert.deepEqual([small.b, small.sk, small.sw], [['low', 'low'], 1, 'small']);
   const assumed = boardProp(prop(-115, -105, { ...role, priced: false }), 'T');
   assert.deepEqual([assumed.b, assumed.sk, assumed.sw], [['low', 'low'], 1, 'small']);

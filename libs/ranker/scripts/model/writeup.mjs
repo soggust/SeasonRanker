@@ -44,14 +44,15 @@
 //             stops the picks)
 
 import { createHash } from 'node:crypto';
-import { decimal, GAP, isTracked } from './desk.mjs';
-import { CHECK_KELLY } from './checks.mjs';
+import { decimal, GAP, isTracked, kellyScale } from './desk.mjs';
+import { CHECK_KELLY, checkKelly } from './checks.mjs';
 
 // (the plain text's version: bumped, every open bet's text is written again, free. 2: a prop whose drivers
 // don't give its projection back no longer says nothing moves it. 3: a CHECK led by the model's Kelly and the
 // book's implied mean, a projection near its line to two decimals, the CHECKs' risk said plainly. 4: a news
 // CHECK's risk and one under the CHECK bar (a passed role's) never call its Kelly big)
-export const PLAIN_V = 4;
+// (5, 2026-10-18: a CHECK's headline its cleared Kelly, the score the stake's Kelly)
+export const PLAIN_V = 5;
 export const REASON_MAX = 450;
 export const RISK_MAX = 220;
 
@@ -398,7 +399,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
   // (the price: what a unit pays, the break-even, the book's fair chance, ours, the gap, the parts of the edge)
   const b = fin(bet.odds) ? decimal(bet.odds) - 1 : null;
   const p0 = b ? 1 / (b + 1) : null;
-  const scale = b ? (b + 1) / b : null;
+  // (the stake's Kelly: (b + 1) / b held to -110's, desk.mjs kellyScale, as the picks' score is)
+  const scale = b ? kellyScale(bet.odds) : null;
   const score = b && fin(bet.p) ? (bet.p - p0) * scale : null;
   const priceP = b && fin(bet.fair) ? (bet.fair - p0) * scale : null;
   // (the model's own Kelly: its chance taken at its word, at the price; a CHECK's lead)
@@ -421,6 +423,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
     lossPct: r2(fin(bet.p) ? 100 - bet.p * 100 : NaN),
     edgePts: r2(edgePts ?? NaN),
     modelKellyPct: r2(modelKelly !== null ? modelKelly * 100 : NaN),
+    // (a CHECK's cleared Kelly, the one it's judged and shown by: checks.mjs checkKelly)
+    ...(check ? { checkKellyPct: r2(fin(checkKelly(bet)) ? checkKelly(bet) * 100 : NaN) } : {}),
     gapPts: r2(gap !== null ? Math.abs(gap) * 100 : NaN),
     gapLimitPts: limit ? r2(limit * 100) : undefined,
     pastGapLimit: gap !== null && !!limit && Math.abs(gap) > limit + 1e-9,
@@ -661,15 +665,16 @@ const ROLE_WORDS = {
   'line-teammates': 'teammates are out and the line sits far above his projection, the market reading a bigger role',
 };
 
-// (a CHECK's in place of the price: led by the model's own Kelly ("Would be a +26.80 Kelly bet on the model's
-// own number"), then the two chances, the model's mean against the book's implied one ("model 1.48 vs the
+// (a CHECK's in place of the price: led by its cleared Kelly ("Would be a +1.40 Kelly bet with its doubt cleared",
+// checks.mjs checkKelly: the stake's Kelly at the chance it'd be bet at, never the model's own number, which only
+// shows as its chance), then the two chances, the model's mean against the book's implied one ("model 1.48 vs the
 // book's 2.20 catches"), then why it wasn't bet: the role, the news, or the gap)
 function checkSentence(sheet) {
   const { bet, price, projection: pr } = sheet;
   const who = bet.kind === 'prop' || bet.kind === 'total' ? `the ${bet.side}` : bet.sideWord ?? 'its side';
   const src = price.bookFairFrom === 'Pinnacle' ? 'Pinnacle' : bet.book;
-  const k = price.modelKellyPct;
-  const kelly = fin(k) ? `Would be ${k < 0 ? 'a -' : 'a +'}${rnd(Math.abs(k), 2).toFixed(2)} Kelly bet on the model's own number` : null;
+  const k = price.checkKellyPct;
+  const kelly = fin(k) ? `Would be ${k < 0 ? 'a -' : 'a +'}${rnd(Math.abs(k), 2).toFixed(2)} Kelly bet with its doubt cleared` : null;
   const chances = fin(price.modelPct) && fin(price.bookFairPct) ? `${who} ${fmt.pct(price.modelPct)}% against ${possessive(src)} no-vig ${fmt.pct(price.bookFairPct)}%` : null;
   const means = fin(pr?.mean) && fin(pr?.impliedMean) && fin(bet.line) ? `model ${fmt.near(pr.mean, bet.line)} vs the book's ${fmt.near(pr.impliedMean, bet.line, pr.mean)} ${bet.noun}` : null;
   const lead = kelly ? `${kelly}${chances ? ` (${chances})` : ''}${means ? `; ${means}` : ''}.` : chances ? `The model makes ${chances}${means ? `; ${means}` : ''}.` : '';
@@ -885,7 +890,7 @@ export function plainOf(sheet) {
     // (said plainly: a big Kelly on the model's own number has won at about the book's rate (2026-10, 509 of
     // them at +10 or more), and the gap's CHECKs lost far more than they won). Big only where it is: a role's at
     // the CHECK bar or over (checks.mjs CHECK_KELLY), never a news CHECK's (one at any Kelly)
-    const big = fin(sheet.price?.modelKellyPct) && sheet.price.modelKellyPct >= CHECK_KELLY * 100;
+    const big = fin(sheet.price?.checkKellyPct) && sheet.price.checkKellyPct >= CHECK_KELLY * 100;
     risk = bet.checkCause === 'news' ? "The news on his team is a change the market prices faster than the model reads it from the logs, so the model's own number isn't value by itself." : bet.checkCause === 'role' ? `${big ? 'A big Kelly on the model' : 'The model'}'s own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the model reads it.` : 'A gap that size has more often been the model missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
   } else {
     const g = sheet.game ?? {};

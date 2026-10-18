@@ -486,7 +486,7 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
   // (a shadow (checks.mjs shadowOf: a PASS kept to grade) never: no one sees it, so nothing is spent on it)
   // (a hollow finding kept before 2026-10-17's fix (a failed search's answer) is no finding: asked again)
-  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && (!c.research || hollow(c.research)) && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
+  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && (!c.research || hollow(c.research)) && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed, market: c.market, trust: c.trust, line: c.line });
   for (const c of checks) {
     const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object' && !hollow(e.finding));
     if (kept) out.set(c.id, kept.finding);

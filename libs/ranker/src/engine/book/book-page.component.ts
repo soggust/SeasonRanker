@@ -17,7 +17,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
-import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, kellyOf, signedPoints } from './bet-why';
+import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, clearedKellyOf, signedPoints } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
@@ -833,10 +833,13 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // (the CHECK rule, picks.json's checkRule: a role's CHECK only at this model Kelly or more; null till read)
   checkBar: number | null = null;
 
-  // (a CHECK's model Kelly: its own chance at the price, untrusted: the disagreement's size; picks.json's, else
-  // worked out from its chance and price)
+  // (a CHECK's Kelly, the one it's judged and shown by: its cleared Kelly (checks.mjs checkKelly, 2026-10-18: the
+  // stake's Kelly at the chance it'd be bet at with its doubt answered, never the model's own number); picks.json's,
+  // else worked out from its chances and price at its line's starting trust)
   checkKelly(r: BetRow): number | null {
-    return r.modelKelly ?? kellyOf(r.model, typeof r.price === 'number' ? r.price : null);
+    if (Number.isFinite(r.checkKelly)) return r.checkKelly!;
+    const market = r.betType === 'player' ? 'prop' : r.betType === 'moneyline' ? 'ml' : r.betType;
+    return clearedKellyOf(r.model, r.fair, typeof r.price === 'number' ? r.price : null, market, r.line ?? null);
   }
 
   // (why a CHECK isn't bet, in a few words: its cause)
@@ -862,7 +865,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       const chances = `the model ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
       if (this.passed(r)) return `Passed · no longer a CHECK: ${r.resolved?.why ?? 'under the CHECK bar now'} (${chances})`;
       // (too big to bet blind only where it is: at the bar or over; a news CHECK's held for the news, at any Kelly)
-      const kText = k === null ? 'the model' : `a ${betScoreText(k * 100)} Kelly on the model's own number`;
+      const kText = k === null ? 'the model' : `a ${betScoreText(k * 100)} Kelly with its doubt cleared`;
       const held = r.checkCause === 'news' ? 'held for the news' : k !== null && this.checkBar !== null && k >= this.checkBar ? 'too big to bet blind' : 'kept for a look';
       return `CHECK · ${kText}, ${held}: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
     }

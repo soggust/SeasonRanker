@@ -1,5 +1,5 @@
 // The Book's order and its rank tile breakdown (bet-why.ts), and the parts picks.mjs writes for it
-// (scoreParts): the Kelly score, (b·p − (1 − p)) / b, split into the price (the book's fair chance against the
+// (scoreParts): the Kelly score, the stake's ((p − p0)·(b + 1) / b held to -110's scale, 2026-10-18), split into the price (the book's fair chance against the
 // price's break-even) and the model's lean, adding up to it; a heavy favorite with no edge on its price scores 0
 // or under and sorts below a longer price with a real edge; a picks
 // file from before the Kelly score is worked out from its chances and price, and one with no price shows the
@@ -8,18 +8,37 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
-import { buildPicks, scoreParts } from '../libs/ranker/scripts/model/picks.mjs';
+import { buildPicks, kellyOf, level, scoreParts } from '../libs/ranker/scripts/model/picks.mjs';
 import { decimal } from '../libs/ranker/scripts/model/desk.mjs';
 
 const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 const close = (a, b, what, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${what}: ${a} vs ${b}`);
 const bet = (over = {}) => ({ id: 'x', sport: 'nfl', start: '2026-10-10T17:00:00Z', matchup: 'TB @ DAL', market: 'spread', side: 'home', line: -3, pick: 'DAL -3', odds: -110, model: 0.6, fair: 0.5, p: 0.535, ev: 0.0214, units: 1, status: 'open', profit: 0, ...over });
-// (the Kelly fraction as written: (b·p − (1 − p)) / b)
+// (the stake's Kelly as written: (b·p − (1 − p)) / b, the edge in chance times (b + 1) / b, that scale held to
+// -110's (1 + 110 / 100), so a short price's small lean never reads big)
 const kelly = (p, odds) => {
   const b = decimal(odds) - 1;
-  return (b * p - (1 - p)) / b;
+  return (p - 1 / (b + 1)) * Math.min((b + 1) / b, 2.1);
 };
+
+test("the stake's Kelly: a 3.75-point lean at -260 no LOCK; plus money and -110 as the plain Kelly", () => {
+  // (-260, the book's fair 70% (its break-even 72.2%), the trusted chance 3.75 points over it: the plain Kelly 3.6x
+  // the 1.53-point edge in chance, a +5.5 with a 74% chance, a LOCK; the stake's 2.1x, as -110's, a +3.2, a LOVE)
+  const p = 0.7 + 0.0375;
+  const edge = p - 1 / decimal(-260);
+  const plain = (decimal(-260) * p - 1) / (decimal(-260) - 1);
+  assert.ok(plain > 0.05);
+  assert.equal(level(plain, p), 'lock');
+  close(kelly(p, -260), edge * 2.1, 'held to -110');
+  close(kellyOf(-260, p), edge * 2.1, 'the picks the same', 1e-4);
+  close(desk.kellyOf(p, -260), edge * 2.1, 'the page the same', 1e-4);
+  assert.equal(level(kellyOf(-260, p), p), 'high');
+  assert.equal(desk.confidenceOf(desk.kellyOf(p, -260), p, true), 'high');
+  // (-110 and plus money: the plain Kelly)
+  close(kelly(0.55, -110), (decimal(-110) * 0.55 - 1) / (decimal(-110) - 1), '-110', 1e-12);
+  close(kelly(0.45, 150), (decimal(150) * 0.45 - 1) / (decimal(150) - 1), '+150', 1e-12);
+});
 const now = new Date('2026-10-09T12:00:00Z');
 // (a -250 favorite the model agrees with the book on: no edge; a +150 dog the model likes: a real one)
 const FAV = { id: 'fav', market: 'ml', side: 'home', pick: 'DAL ML', odds: -250, model: 0.7, fair: 0.7, p: 0.7, ev: -0.02, intent: 'action' };

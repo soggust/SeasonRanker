@@ -6,7 +6,8 @@
 //            LIKE or better): a market with no edge is tracked, not bet (desk.mjs TRACK), never a pick, never
 //            in the record. Only a showcase: nothing here feeds the bettor's learning
 //   score    its Kelly score (scoreParts, below: the order): the share of a bankroll its edge is worth at its
-//            price, (b·p − (1 − p)) / b with b what a unit pays and p its trusted chance (the book's fair chance
+//            price, the stake's Kelly (desk.mjs stakeKelly, 2026-10-18: (p − p0)·(b + 1) / b held to -110's
+//            scale, so a short price's small lean can't read as a LOCK), b what a unit pays and p its trusted chance (the book's fair chance
 //            pulled toward the model's by the market's trust). Value and likelihood together: a heavy favorite
 //            at a price with no edge scores 0 or under and sorts last, whatever its chance. Only the page's
 //            order: the bettor's own staking (desk.mjs stakeFor, by the same Kelly fraction) is apart. A big
@@ -57,9 +58,9 @@
 //            bets at their first price whatever the news: unlock turns those back into shown ones)
 
 import { round } from './ratings.mjs';
-import { decimal, intentOf, isTracked, record } from './desk.mjs';
+import { decimal, intentOf, isTracked, kellyScale, record, stakeKelly } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
-import { CHECK_RULE, CHECK_TOP, listedCheck, modelKelly } from './checks.mjs';
+import { CHECK_RULE, CHECK_TOP, checkKelly, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
 import { verdictOf } from './research.mjs';
 
@@ -193,23 +194,25 @@ export function scoreOf(bet, trust) {
   return round(bet.ev * (trust?.[key]?.fitted ? 1 : 0.5), 4);
 }
 
-// (a price's Kelly score at a trusted chance p: (b·p − (1 − p)) / b, b what a unit pays; the picks' order, and
-// every side's on the board, board.mjs)
+// (a price's Kelly score at a trusted chance p: the stake's Kelly (desk.mjs stakeKelly), its edge in chance
+// (p less the break-even) times what the price pays, (b + 1) / b, held to -110's scale: the one the stake is
+// sized on, so a short price's small lean never reads as a big score (2026-10-18). The picks' order and bands,
+// and every side's on the board, board.mjs)
 export function kellyOf(odds, p) {
-  const b = decimal(odds) - 1;
-  return round((p - 1 / (b + 1)) * ((b + 1) / b), 4);
+  return round(stakeKelly(odds, p), 4);
 }
 
 // A bet's Kelly score (the order), and its parts as the page's rank tile shows them: what a unit pays (b) and
 // the price's break-even chance (p0), then the price's part, the book's own fair chance against that
 // break-even (its vig on this side: under 0, or over where the price beats its own fair chance), and the
 // model's lean, the trust times the model's chance less the book's; each scaled by what the price pays,
-// (b + 1) / b, so they add up to the score. The trust read back off the bet's own numbers (the one it was
-// priced at), fitted or the untested start, and where the fair chance came from
+// (b + 1) / b held to -110's (desk.mjs kellyScale, the stake's), so they add up to the score. The trust read back
+// off the bet's own numbers (the one it was priced at), fitted or the untested start, and where the fair chance
+// came from
 export function scoreParts(bet, trust) {
   const b = decimal(bet.odds) - 1;
   const p0 = 1 / (b + 1);
-  const scale = (b + 1) / b;
+  const scale = kellyScale(bet.odds);
   const score = kellyOf(bet.odds, bet.p);
   const price = round((bet.fair - p0) * scale, 4);
   const key = bet.market === 'prop' ? `prop:${bet.propType}` : bet.market;
@@ -356,7 +359,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
   // a while, in its passed state: listedCheck); the biggest model Kelly first, CHECK_TOP at most. Their own list,
   // apart from the picks: the ones the owner should look into)
   const betIds = new Set(open.map((b) => b.id));
-  const mk = (c) => modelKelly(c.odds, c.model) ?? -Infinity;
+  // (by its cleared Kelly, the one it's judged and shown by: checks.mjs checkKelly)
+  const mk = (c) => checkKelly(c) ?? -Infinity;
   const checks = (ledger.checks ?? [])
     .filter((c) => listedCheck(c, now) && !betIds.has(c.id) && Date.parse(c.start) > now.getTime())
     .sort((x, y) => mk(y) - mk(x) || Math.abs(y.gap ?? 0) - Math.abs(x.gap ?? 0) || x.start.localeCompare(y.start))
@@ -415,9 +419,10 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // (a CHECK's: the model's distance from the book, signed for its side, and why it wasn't bet; a role
       // CHECK's cause and sub-reason, a news one's cause and unit: checks.mjs)
       ...(check ? { gap: b.gap, checkReason: b.reason, ...(b.cause === 'role' ? { checkCause: 'role', roleReason: b.roleReason ?? null } : b.cause === 'news' ? { checkCause: 'news', newsUnit: b.newsUnit ?? null } : { checkCause: 'gap' }) } : {}),
-      // (a CHECK's numbers the page leads with: the model's own Kelly, the model's mean and the book's implied one,
-      // his record at the line (context, never a rule))
-      ...(check ? { modelKelly: modelKelly(b.odds, b.model), ...checkNumbers(b) } : {}),
+      // (a CHECK's numbers the page leads with: its cleared Kelly (checkKelly: the stake's Kelly at the chance it'd
+      // be bet at with its doubt answered, the one it's judged by), the model's own Kelly beside it as context
+      // (modelKelly), the model's mean and the book's implied one, his record at the line (context, never a rule))
+      ...(check ? { checkKelly: checkKelly(b), modelKelly: modelKelly(b.odds, b.model), ...checkNumbers(b) } : {}),
       // (a CHECK's news research, where it has one (research.mjs): its finding for the popover, a label only)
       ...(check && b.research ? { research: researchRow(b.research) } : {}),
       // (a CHECK's last re-evaluation, still one (checks.mjs resolveChecks): the page's note to the bot answered

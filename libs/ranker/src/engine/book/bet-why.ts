@@ -97,13 +97,27 @@ export interface BetWhy {
 // (what a unit pays at American odds, the stake not counted: -250 0.4, +150 1.5)
 export const payout = (american: number) => (american > 0 ? american / 100 : 100 / -american);
 
-// A pick's Kelly score (picks.mjs scoreParts' math: the page's own for an older file, which carries the chances
-// and the price but not the score): (p − p0) × (b + 1) / b, p0 = 1 / (b + 1) the price's break-even; null
-// without the chance or the price
+// A pick's Kelly score (picks.mjs kellyOf's math: the page's own for an older file, which carries the chances
+// and the price but not the score): the stake's Kelly, (p − p0) × (b + 1) / b held to -110's scale (desk.mjs
+// stakeKelly, 2026-10-18: a short price's small lean never reads as a big score), p0 = 1 / (b + 1) the price's
+// break-even; null without the chance or the price
+const STAKE_SCALE = 1 + 110 / 100;
 export function kellyOf(p: number | undefined | null, american: number | undefined | null): number | null {
   if (!Number.isFinite(p) || !Number.isFinite(american) || !american) return null;
   const b = payout(american!);
-  return Math.round((p! - 1 / (b + 1)) * ((b + 1) / b) * 1e4) / 1e4;
+  return Math.round((p! - 1 / (b + 1)) * Math.min((b + 1) / b, STAKE_SCALE) * 1e4) / 1e4;
+}
+
+// A CHECK's cleared Kelly for an older file that doesn't carry it (checks.mjs checkKelly's math): the stake's
+// Kelly at the book's fair chance and the model's lean, held to half the market's GAP, at the line's starting
+// trust (desk.mjs BUCKET_START: a prop at 1.5 or under 0.25, 2 to 3.5 0.375, else 0.5); null without the numbers
+const HALF_GAP: Record<string, number> = { spread: 0.06, total: 0.06, ml: 0.075, prop: 0.075 };
+export function clearedKellyOf(model: number | null | undefined, fair: number | null | undefined, american: number | null | undefined, market = 'prop', line: number | null = null): number | null {
+  if (!Number.isFinite(model) || !Number.isFinite(fair)) return null;
+  const t = market !== 'prop' || !Number.isFinite(line) ? 0.5 : line! <= 1.5 ? 0.25 : line! <= 3.5 ? 0.375 : 0.5;
+  const gap = model! - fair!;
+  const half = HALF_GAP[market] ?? 0.075;
+  return kellyOf(fair! + t * Math.sign(gap) * Math.min(Math.abs(gap), half), american);
 }
 
 // A pick's band, its row's color and its chip (picks.mjs BANDS, the same cuts): by its Kelly score, a lock above

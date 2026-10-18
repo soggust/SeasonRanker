@@ -71,6 +71,19 @@ export function stakeFor(ev, evScale, odds = -110) {
   return Math.min(3, Math.max(0.5, Math.round(raw * 2) / 2));
 }
 
+// The stake's Kelly: the fraction stakeFor sizes on, its edge in chance (p less the price's break-even) scaled by
+// what the price pays, (b + 1) / b, held to -110's scale (1 + REF) / REF: the -110-equivalent Kelly. A short
+// price's raw Kelly makes a small lean look big (a 3.75-point lean at -260 read over 5, a LOCK), and the model's
+// errors are in chance, so the picks' score, their bands and every Kelly the pages show are this one (picks.mjs
+// kellyOf), the stake and the band reading the same number (the owner's, 2026-10-18: "make sure small numbers
+// aren't influencing K rating by % or anything crazy"). Plus money's raw Kelly is already under -110's: as it is
+export const STAKE_SCALE = (1 + REF) / REF;
+export function kellyScale(odds) {
+  const b = decimal(Number.isFinite(odds) && odds ? odds : -110) - 1;
+  return Math.min((b + 1) / b, STAKE_SCALE);
+}
+export const stakeKelly = (odds, p) => (p - 1 / decimal(Number.isFinite(odds) && odds ? odds : -110)) * kellyScale(odds);
+
 // The model's lean on a side (its chance less the book's fair chance), tapered: whole to half of the market's
 // GAP, then less and less, nothing at GAP (and past it the market isn't bet)
 export function leanOf(gap, limit) {
@@ -657,7 +670,7 @@ export function voidOf(bet, game, now) {
 // close, never its stake.
 // Until a market has 40 bets with either, the starting trust.
 const RHO = 0.3;
-export function fitTrust(list, start) {
+export function fitTrust(list, start, { min = 40 } = {}) {
   // (a bet past its market's GAP is one the desk would never place (gapGuard): not evidence for its trust)
   const bets = list.filter((b) => !pastGap(b.market, b.model, b.fair));
   const decided = bets.filter((b) => b.status === 'won' || b.status === 'lost');
@@ -670,7 +683,7 @@ export function fitTrust(list, start) {
   for (const b of all) perGame.set(gameOf(b), (perGame.get(gameOf(b)) ?? 0) + 1);
   const share = (b) => 1 / (1 + ((perGame.get(gameOf(b)) ?? 1) - 1) * RHO);
   const eff = round([...all].reduce((s, b) => s + share(b), 0), 1);
-  if (all.size < 40) return { trust: start, n: decided.length, clvN: closed.length, eff, fitted: false };
+  if (all.size < Math.max(1, min)) return { trust: start, n: decided.length, clvN: closed.length, eff, fitted: false };
   // (each piece of evidence's weight: its game's share, halved where the bet has the other kind too)
   const wResult = (b) => (b.weight ?? 1) * (b.tw ?? 1) * share(b) * (isClosed.has(b) ? 0.5 : 1);
   const wClose = (b) => (b.tw ?? 1) * share(b) * (isDecided.has(b) ? 0.5 : 1);
@@ -689,6 +702,54 @@ export function fitTrust(list, start) {
     if (penalized < best.loss) best = { trust: round(t, 2), loss: penalized, raw: loss };
   }
   return { trust: best.trust, n: decided.length, clvN: closed.length, eff, fitted: true, logLoss: round(best.raw / n, 4) };
+}
+
+// The props' trust by the line's size (2026-10-18, the audit: out of sample since 10-08 the raw model said .538 on
+// lines of 1.5 or under and hit .481 against the book's .495, .579 on 2 to 3.5 for .493; the NFL's receptions at
+// 1.5 or under .588 for .429). A count that small is a few events, where the model's spread is least sure, so a
+// low line's trust is its own, fit on its own graded record and closes against the book (fitTrust), never the
+// stat's alone. Bucketed by the line's size, whatever the stat or the sport (a 0.5 line is a 0 against any 1, in
+// hits, goals, threes, blocks or rounds): low 1.5 or under, mid 2 to 3.5, high over 3.5 (yards, points, saves:
+// the stat's own trust). Each bucket's start (BUCKET_START: low 0.25, mid 0.375, high the desk's 0.5) the root of
+// a ladder, each rung pulled toward the one above by its own evidence (soft, never an off switch: shrunkTrust,
+// eff / (eff + TRUST_K) of its own fit kept): every sport's props in the bucket pooled (pool), the sport's
+// (sport), the stat's (its key's). Priced at the stat's bucket's trust, held to the stat's own (bucketTrustOf: the
+// bucket only ever shrinks it). The MMA's round totals by the same buckets (mma-desk.mjs)
+export const BUCKETS = ['low', 'mid', 'high'];
+export const BUCKET_START = { low: 0.25, mid: 0.375, high: 0.5 };
+export const TRUST_K = 40;
+export const lineBucket = (line) => (!Number.isFinite(line) ? 'high' : line <= 1.5 ? 'low' : line <= 3.5 ? 'mid' : 'high');
+export const bucketKey = (key, line) => `${key}@${lineBucket(line)}`;
+// (a rung's trust: its fit on its own evidence (any amount: fitTrust's min 1), kept by eff / (eff + TRUST_K),
+// the rest its parent's)
+export function shrunkTrust(list, parent) {
+  const f = fitTrust(list, parent, { min: 1 });
+  const w = f.eff > 0 ? f.eff / (f.eff + TRUST_K) : 0;
+  return { trust: round(parent + w * (f.trust - parent), 3), parent: round(parent, 3), own: f.trust, n: f.n, clvN: f.clvN, eff: f.eff, weight: round(w, 3), fitted: f.eff >= TRUST_K };
+}
+// The ladder: { pool: { <bucket>: rung }, sport: { <bucket>: rung }, keys: { <key>: { <bucket>: rung } } }. pool:
+// the evidence of every sport's props (and the MMA's totals) placed since the epoch, this sport's among them;
+// mine: this sport's; keyOf(b): a bet's key (prop:<stat>); keys: the keys to fit. A key's rungs ride on its
+// trust (trust[key].lines), the pool's and the sport's in state.lineTrust
+export function fitBuckets(pool, mine, keyOf, keys) {
+  const out = { pool: {}, sport: {}, keys: Object.fromEntries(keys.map((k) => [k, {}])) };
+  for (const bk of BUCKETS) {
+    const inB = (b) => lineBucket(b.line) === bk;
+    const root = shrunkTrust(pool.filter(inB), BUCKET_START[bk]);
+    out.pool[bk] = root;
+    const own = mine.filter(inB);
+    const sport = shrunkTrust(own, root.trust);
+    out.sport[bk] = sport;
+    for (const k of keys) out.keys[k][bk] = shrunkTrust(own.filter((b) => keyOf(b) === k), sport.trust);
+  }
+  return out;
+}
+// A prop's (or a total's) trust at its line: its key's bucket's rung (trust[key].lines), held to the key's own
+// trust; one with no rung (a state from before the buckets) the key's own, held to the bucket's start
+export function bucketTrustOf(trust, key, line, fallback = 0.5) {
+  const own = trust?.[key]?.trust ?? fallback;
+  const rung = trust?.[key]?.lines?.[lineBucket(line)]?.trust;
+  return Math.min(own, Number.isFinite(rung) ? rung : BUCKET_START[lineBucket(line)]);
 }
 
 // A record: won, lost, pushed, units staked and won, the return on them (a void bet, no action, isn't in it,

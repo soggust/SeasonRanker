@@ -86,15 +86,19 @@
 
 import { diagnose } from './check-learn.mjs';
 import { kellyOf } from './picks.mjs';
+import { BUCKET_START, clearedChanceAt, lineBucket } from './desk.mjs';
 import { round } from './ratings.mjs';
 import { REPRICE_BY } from './timing.mjs';
 
-// (the most CHECK picks the page shows a sport, the biggest model Kelly first)
+// (the most CHECK picks the page shows a sport, the biggest cleared Kelly first)
 export const CHECK_TOP = 20;
 
-// (the CHECK bar: a role CHECK only at this model Kelly or more on the model's own side (the owner's +10),
-// published in picks.json (checkRule), the page reading it from there)
-export const CHECK_KELLY = 0.1;
+// (the CHECK bar: a role CHECK only at this cleared Kelly or more on the model's own side (checkKelly), published
+// in picks.json (checkRule), the page reading it from there. Was +10 on the model's own Kelly (the owner's, 10-12);
+// 2026-10-18 judged by the cleared chance's (the audit: a +31.73 Kelly on the model's own number is the raw
+// model's overconfidence, not value), which tops out near +2 (the lean held to half the GAP, at the trust): +1,
+// the old LIKE's bar, kept 178 of the 417 stored role CHECKs, 68-49 graded)
+export const CHECK_KELLY = 0.01;
 export const CHECK_RULE = { kelly: CHECK_KELLY };
 // (how long the page shows a CHECK that turned a shadow, in its passed state)
 export const PASSED_SHOWN = 6 * 3600e3;
@@ -102,21 +106,31 @@ export const PASSED_SHOWN = 6 * 3600e3;
 // (the model's own Kelly on a side: picks.mjs kellyOf at its price and the model's chance, rounded as a CHECK
 // keeps it (4 places), so the board and the run judge the same number; null without either)
 export const modelKelly = (odds, model) => (Number.isFinite(odds) && odds !== 0 && Number.isFinite(model) ? kellyOf(odds, round(model, 4)) : null);
+// A CHECK's Kelly, the one it's judged and shown by (2026-10-18): the stake's Kelly (picks.mjs kellyOf) at the
+// chance it would be bet at if its doubt were answered (desk.mjs clearedChanceAt: the book's fair chance and the
+// model's lean at its trust, held to half the GAP), never the model's own number (modelKelly: context only). The
+// trust its own (trust, kept on it from the run that priced it), else its line's bucket's start (an older
+// CHECK's: desk.mjs BUCKET_START, a game market's the desk's 0.5); null without a price or the chances
+export function checkKelly({ market = 'prop', odds, model, fair, trust, line } = {}) {
+  if (!Number.isFinite(odds) || odds === 0 || !Number.isFinite(model) || !Number.isFinite(fair)) return null;
+  const t = Number.isFinite(trust) ? trust : market === 'prop' ? Math.min(0.5, BUCKET_START[lineBucket(line)]) : 0.5;
+  return kellyOf(odds, round(clearedChanceAt(market, fair, model, t), 4));
+}
 const kellyText = (k) => `${k >= 0 ? '+' : '-'}${Math.abs(k * 100).toFixed(2)}`;
 
 // Whether a guard's skip (cause: causeOf's) is a shadow, not a CHECK the page shows (the rule above): null (a
 // CHECK), else { passAs, why }: 'gap' (the gap's, always), 'small' (a role's under CHECK_KELLY, or with no
 // Kelly to judge it by: an assumed -110's (oddsAssumed) a made-up price, judged as none). odds, model, fair: the
-// model's side's price and chances
-export function shadowOf({ cause, odds, model, fair, oddsAssumed = false }) {
+// model's side's price and chances; market, trust, line: its cleared Kelly's (checkKelly)
+export function shadowOf({ cause, odds, model, fair, oddsAssumed = false, market = 'prop', trust = null, line = null }) {
   if (cause === 'gap') {
     const pts = Number.isFinite(model) && Number.isFinite(fair) ? Math.round(Math.abs(model - fair) * 100) : null;
     return { passAs: 'gap', why: `the model is ${pts === null ? 'far' : `${pts} points`} off the book with nothing to explain it; that is usually the model missing something` };
   }
   if (cause === 'role') {
     if (oddsAssumed) return { passAs: 'small', why: 'no real price to judge it by (an assumed -110): under the CHECK bar' };
-    const k = modelKelly(odds, model);
-    if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no model Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly on the model's own number: under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
+    const k = checkKelly({ market, odds, model, fair, trust, line });
+    if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly with the doubt cleared (the model's own ${Math.round(model * 100)}%): under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
   }
   return null;
 }
@@ -135,7 +149,7 @@ export function rejudgeChecks(checks, now) {
   const out = [];
   for (const c of checks ?? []) {
     if (!c || c.hidden || c.checkResult || c.bet || c.closedAt) continue;
-    const sh = shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed });
+    const sh = shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed, market: c.market, trust: c.trust, line: c.line });
     if (!sh) continue;
     Object.assign(c, { hidden: true, passAs: sh.passAs, passWhy: sh.why, passedAt: now.toISOString(), resolved: { at: now.toISOString(), as: 'passed', why: sh.why } });
     out.push(c);

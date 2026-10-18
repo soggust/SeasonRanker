@@ -48,13 +48,14 @@
 import path from 'node:path';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { BOOK, LEAGUES, TIMING } from './leagues.mjs';
+import { BOOK, LEAGUES, MODEL_EPOCH, TIMING } from './leagues.mjs';
 import { TERMS, TOTAL_TERMS, backtest, boutSeconds, buildModel, fitRows, totalsTerms } from './fights-model.mjs';
 import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictTotal, settleTotal, totalLinesOf, totalPickFor, totalReasonOf, totalRows } from './fights-totals.mjs';
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
-import { BANKROLL, chanceAt, decimal, fairPair, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
+import { BANKROLL, BUCKETS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
+import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
 import { buildBoard, seenUpdate } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
@@ -414,7 +415,7 @@ export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalT
     const p = l?.odds?.home && l?.odds?.away ? chance(bout, Date.parse(start)) : null;
     if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, trust, src);
     const o = t && over ? over(bout, Date.parse(start), t.line) : null;
-    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, totalTrust);
+    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, typeof totalTrust === 'function' ? totalTrust(t.line) : totalTrust);
     if (!markets.ml && !markets.total) continue;
     // (the fighters as the board's teams: [name, ESPN id, his headshot], the first ESPN lists the home side)
     const game = { date: start, awayAbbr: bout.away.name, homeAbbr: bout.home.name, away: bout.away.id, home: bout.home.id };
@@ -659,6 +660,19 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START)), START_TRUST);
   if (trust.total && trust.total.trust !== tFitted.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, tFitted.trust, `best fit to ${tFitted.n} graded round totals and ${tFitted.clvN} closing lines (log loss ${tFitted.logLoss})`);
   trust.total = tFitted;
+  // (the round totals' trust by the line's size, as a prop's (desk.mjs fitBuckets, 2026-10-18): 1.5 rounds or under
+  // low, 2.5 and 3.5 mid, 4.5 high; each bucket's rung pulled toward the MMA's, the MMA's toward every sport's
+  // counted lines pooled (line-pool.mjs), the pool's toward the bucket's start, each by its own evidence; priced at
+  // the rung held to the totals' own trust (bucketTrustOf). Any failure: the bucket's start, held to the trust
+  try {
+    const mine = ledger.bets.filter((b) => b.market === 'total' && Number.isFinite(b.line) && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START));
+    const ladder = fitBuckets([...readLinePool(ROOT, MODEL_EPOCH, 'mma'), ...mine], mine, () => 'total', ['total']);
+    trust.total = { ...tFitted, lines: ladder.keys.total };
+    state.lineTrust = { pool: ladder.pool, sport: ladder.sport };
+    log.log(`${SPORT}: round totals' line trust: ${BUCKETS.map((bk) => `${bk} ${ladder.keys.total[bk].trust} (pool ${ladder.pool[bk].trust}, eff ${ladder.pool[bk].eff})`).join('; ')}`);
+  } catch (err) {
+    log.log(`${SPORT}: round totals' line trust left out this run (${err.message})`);
+  }
   const totalsLive = liveCount(ledger.bets, MMA_START) >= TOTAL_LIVE;
   if (totalsLive && !state.totalsLiveAt) {
     state.totalsLiveAt = at;
@@ -729,7 +743,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       if (tl && tl.line === tOpen.line) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
     } else if (want.total && !tPlacedOn.has(bout.key)) {
       const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
-      const choice = tp ? totalPickFor(tp.p, tl, trust.total.trust, { live: totalsLive, untested: !trust.total.fitted, edge: cfg.edge }) : null;
+      const choice = tp ? totalPickFor(tp.p, tl, bucketTrustOf(trust, 'total', tl.line), { live: totalsLive, untested: !trust.total.fitted, edge: cfg.edge }) : null;
       if (!choice || choice.skip) {
         if (choice?.skip) log.log(`${SPORT}: ${bout.home.name} vs ${bout.away.name} round total skipped: ${choice.skip}`);
         if (Array.isArray(events)) rest[`${bout.key}|total`] = at;
@@ -758,7 +772,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
           book: 'DraftKings',
           fairFrom: tl.fairFrom,
           pick: `${pick.side === 'over' ? 'Over' : 'Under'} ${tl.line} rounds`,
-          context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: trust.total.trust, untested: !trust.total.fitted, live: totalsLive, flags: [], ...(why ? { why } : {}) },
+          context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: bucketTrustOf(trust, 'total', tl.line), untested: !trust.total.fitted, live: totalsLive, flags: [], ...(why ? { why } : {}) },
           seen: { at, line: tl.line, odds: pick.odds, fair: round(pick.fair, 4) },
           status: 'open',
           profit: 0,
@@ -857,7 +871,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const espn = await espnOdds(bout).catch(() => null);
     if (espn) addLines(bout.key, { lines: espn, src: 'espn bet' });
   }
-  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: trust.total.trust, bets: ledger.bets, prev: prevBoard, now });
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line) => bucketTrustOf(trust, 'total', line), bets: ledger.bets, prev: prevBoard, now });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
   const withTotal = mmaBoard.games.filter((g) => g.k.total).length;

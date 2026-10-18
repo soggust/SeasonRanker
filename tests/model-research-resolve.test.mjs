@@ -16,7 +16,7 @@ import { ESTIMATE, PARALLEL, RESEARCH_UNITS, hollow, researchCall, researchCheck
 const now = new Date('2026-10-18T13:00:00Z');
 const quiet = { log: () => {}, warn: () => {} };
 const src = ['https://news.example/a', 'https://news.example/b'];
-const check = (over = {}) => ({ id: '401872999:prop:passTd:4360423', event: '401872999', sport: 'nfl', start: '2026-10-18T17:00:00Z', market: 'prop', propType: 'passTd', player: 'Michael Penix Jr.', athlete: '4360423', team: '1', side: 'under', line: 1.5, odds: -110, model: 0.7, fair: 0.5, gap: 0.2, cause: 'role', status: 'check', projection: { mean: 1.1 }, ...over });
+const check = (over = {}) => ({ id: '401872999:prop:passTd:4360423', event: '401872999', sport: 'nfl', start: '2026-10-18T17:00:00Z', market: 'prop', propType: 'passTd', player: 'Michael Penix Jr.', athlete: '4360423', team: '1', side: 'under', line: 1.5, odds: -110, model: 0.7, fair: 0.5, gap: 0.2, cause: 'role', trust: 1, status: 'check', projection: { mean: 1.1 }, ...over });
 // (the current CHECKs' findings, as picks.json had them)
 const penix = { status: 'active', reason: 'none', player: 'Michael Penix Jr.', summary: 'Penix hurt his ribs in Week 5 but practiced fully all week. He has no injury designation.', sources: src, explains: false, category: 'market', confidence: 'medium' };
 const failed = [

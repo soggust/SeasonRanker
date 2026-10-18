@@ -12,7 +12,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { gapGuard, record, settle } from '../libs/ranker/scripts/model/desk.mjs';
 import { settleProp } from '../libs/ranker/scripts/model/props.mjs';
-import { atUnit, CHECK_KELLY, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelKelly, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
+import { atUnit, CHECK_KELLY, checkKelly, checkLocked, checkOf, checkResultOf, checkSummary, checkTrim, closeChecks, markPlaced, modelKelly, modelSide, TRIM_AFTER, upsertCheck } from '../libs/ranker/scripts/model/checks.mjs';
 import { readLedgers } from '../libs/ranker/scripts/accounts/settle.mjs';
 import { applyNotes, fromValue, keptNote, MAX_PAGES, noteOf, noteWords, publicNote, PUBLIC_NOTE_KEYS, readDeskNotes } from '../libs/ranker/scripts/model/notes.mjs';
 import { ledgerWrites, readChecks } from '../libs/ranker/scripts/model/checks-file.mjs';
@@ -188,8 +188,10 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   assert.deepEqual([c.units, c.edge, c.gap, c.rank, c.chance, c.checkCause], [0, false, 0.3, 1, 80, 'gap']);
   assert.equal(c.modelKelly, modelKelly(-110, 0.8));
   assert.deepEqual(out.checkRule, { kelly: CHECK_KELLY });
-  // (its write-up leads with the model's Kelly, then the chances, then why; the guard's words in checkReason)
-  assert.match(c.reason, /Would be a \+58\.00 Kelly bet on the model's own number \(DAL 80% against DraftKings' no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
+  // (its write-up leads with its cleared Kelly (checks.mjs checkKelly: 50% leaned to 53.75% at the game market's 0.5,
+  // a +2.87 at -110), never the model's own +58.00; then the chances, then why; the guard's words in checkReason)
+  assert.equal(c.checkKelly, checkKelly({ market: 'ml', odds: -110, model: 0.8, fair: 0.5 }));
+  assert.match(c.reason, /Would be a \+2\.87 Kelly bet with its doubt cleared \(DAL 80% against DraftKings' no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
   assert.match(c.reason, /The question: /);
   assert.match(c.risk, /more often been the model missing something than an edge/);
   assert.match(c.checkReason, /too far from the market/);

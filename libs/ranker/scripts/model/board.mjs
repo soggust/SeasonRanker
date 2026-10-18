@@ -75,7 +75,7 @@ export function boardProp(x, at) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
   // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
   // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
-  const shadow = CHECK_KINDS.has(x.guard?.kind) ? shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced }) : null;
+  const shadow = CHECK_KINDS.has(x.guard?.kind) ? shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced, trust: x.trust, line: x.prop?.line }) : null;
   const check = CHECK_KINDS.has(x.guard?.kind) && !shadow;
   const pass = !!x.guard?.skip && !check;
   const prices = x.prop.prices ?? {};

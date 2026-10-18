@@ -86,8 +86,11 @@ export interface BetRow {
   checkCause?: 'gap' | 'role' | 'news' | null;
   roleReason?: string | null;
   newsUnit?: string | null;
-  // (the numbers its popover leads with (picks.json's): the model's own Kelly, the model's mean and the one the
-  // book's price implies, his record at the line (his over share and the weighted games it's from))
+  // (the numbers its popover leads with (picks.json's): its cleared Kelly (checks.mjs checkKelly: the stake's
+  // Kelly at the chance it'd be bet at with its doubt answered, the one it's judged and shown by), the model's own
+  // Kelly (context only), the model's mean and the one the book's price implies, his record at the line (his over
+  // share and the weighted games it's from))
+  checkKelly?: number | null;
   modelKelly?: number | null;
   mean?: number | null;
   implied?: number | null;
@@ -186,6 +189,7 @@ export interface Pick {
   checkCause?: string | null;
   roleReason?: string | null;
   newsUnit?: string | null;
+  checkKelly?: number | null;
   modelKelly?: number | null;
   mean?: number | null;
   implied?: number | null;
@@ -271,6 +275,7 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
           checkCause: p.checkCause === 'role' || p.checkCause === 'news' ? p.checkCause : ('gap' as const),
           roleReason: p.roleReason ?? null,
           newsUnit: p.newsUnit ?? null,
+          checkKelly: Number.isFinite(p.checkKelly) ? p.checkKelly! : null,
           modelKelly: Number.isFinite(p.modelKelly) ? p.modelKelly! : null,
           mean: Number.isFinite(p.mean) ? p.mean! : null,
           implied: Number.isFinite(p.implied) ? p.implied! : null,

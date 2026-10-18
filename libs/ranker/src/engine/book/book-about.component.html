@@ -42,6 +42,9 @@
         The Kelly score is the bot's edge at the price, scaled by what the bet pays. A bet the bot gives a 55% chance
         at even money scores higher than the same 55% at -150, because the first pays more for the same chance.
         It's the share of a bankroll the Kelly formula would stake: 2% means "bet 2% of your bankroll".
+        On a heavy favorite it's held to what the same edge in chance would score at -110, the way the bot stakes it,
+        so a small lean on a short price never reads as a LOCK. Lines of 1.5 or under, and 2 to 3.5, earn their own
+        trust: a count that small is where the model has been most overconfident.
       </p>
       <h4>Where the bot's chance comes from</h4>
       <p>
@@ -123,9 +126,9 @@
 
       <h4>Guards</h4>
       <ul>
-        <li><b>CHECK</b>: a market a guard stopped where the model's own Kelly is {{ checkBarText() }} or more: too big to bet blind, so it's kept for the owner to look into. News on his team (a new play-caller, coordinator or starter) always makes one, whatever the Kelly. It's graded as if bet, never staked.</li>
+        <li><b>CHECK</b>: a market a guard stopped where its Kelly with the doubt cleared (the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the model's, never the model's own number) is {{ checkBarText() }} or more: worth a look before it's bet, so it's kept for the owner to look into. News on his team (a new play-caller, coordinator or starter) always makes one, whatever the Kelly. It's graded as if bet, never staked.</li>
         <li><b>Gap</b>: a market where the model is too far from the book isn't bet. It's a PASS, not a CHECK: a gap that size has mostly been the model missing something, not value. It's still graded privately, to check the rule.</li>
-        <li><b>Role</b>: a player whose role just changed isn't bet on the side the model's known error could be making. It's a CHECK at a model Kelly of {{ checkBarText() }} or more; under that, a PASS graded privately.</li>
+        <li><b>Role</b>: a player whose role just changed isn't bet on the side the model's known error could be making. It's a CHECK at a cleared Kelly of {{ checkBarText() }} or more; under that, a PASS graded privately.</li>
         <li><b>The line as news</b>: in the NBA, NHL and MLB, a line well below his projection (at a line of 1.5 or more) is marked when something known before the game, and not already in the projection, explains it (he's questionable, an unconfirmed goalie, a lineup not posted, a starter's back-to-back, a pitcher's short pitch count). It's only a mark for now: the bet stands or not on the other checks, and the self-check measures the marked ones before they'd ever be held back. A far line with no reason isn't marked: it hasn't done worse than the rest.</li>
         <li><b>His record at the line</b> is shown with every CHECK as context. It isn't a rule: it hasn't told winners from losers.</li>
         <li><b>Skew</b>: a side whose only edge is the spread's own skew (an under with the projection above the line, an over below it) is skipped.</li>

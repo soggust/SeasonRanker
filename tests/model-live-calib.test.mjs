@@ -120,14 +120,46 @@ test('the step: a kept spot moves at most CAL_STEP from the last run, so one nig
   // (near the target: at it, not past it)
   const near = fitSpot(rows, first.target + 0.01);
   assert.equal(near.shift, first.target);
-  // (fitCalib carries the last run's shift by spot; another epoch's starts over from 0)
+  // (fitCalib carries the last run's shift by rung: the pool's, the sport's and the spot's own each a step, the spot
+  // their sum; across epochs too, the rows being every graded prop's (2026-10-18))
   const list = bets(1500, 0.5, 0.36);
   const c1 = fitCalib(list, EPOCH, null);
   const c2 = fitCalib(list, EPOCH, c1);
-  assert.equal(c1.spots['pts|over|0.5'].shift, -CAL_STEP);
-  assert.ok(Math.abs(c2.spots['pts|over|0.5'].shift + 2 * CAL_STEP) < 1e-9);
+  assert.equal(c1.pool['0.5'].shift, -CAL_STEP);
+  assert.equal(c1.sport['0.5'].shift, -CAL_STEP);
+  assert.equal(c1.spots['pts|over|0.5'].own, -CAL_STEP);
+  assert.ok(Math.abs(c1.spots['pts|over|0.5'].shift + 3 * CAL_STEP) < 1e-9);
+  assert.ok(Math.abs(c2.spots['pts|over|0.5'].shift + 6 * CAL_STEP) < 1e-9);
   const c3 = fitCalib(list, EPOCH, { ...c2, epoch: '2026-01-01T00:00:00Z' });
-  assert.equal(c3.spots['pts|over|0.5'].shift, -CAL_STEP);
+  assert.ok(c3.spots['pts|over|0.5'].shift < c2.spots['pts|over|0.5'].shift, 'no restart on another epoch');
+  assert.ok(Math.abs(c3.spots['pts|over|0.5'].shift) <= CAL_CAP + 1e-12);
+});
+
+test('pooled: a sparse spot borrows its line class from every sport and its own sport, its own rung 0 till its rows speak; across epochs', () => {
+  // (50 rows of NFL receptions under 1.5, said 58% and won 43%: too few alone; the other sports' 1.5s, 1,200 of them
+  // said 55% and won 48%: the pool's shift, kept, on the sparse spot too)
+  const mine = bets(50, 0.58, 0.43, { stat: 'rec', side: 'under', line: 1.5, seed: 21 });
+  const others = bets(1200, 0.55, 0.48, { stat: 'sog', side: 'over', line: 1.5, seed: 22, from: 100 });
+  const alone = fitCalib(mine, EPOCH, null);
+  assert.equal(shiftOf(alone, 'rec', 'under', 1.5), 0);
+  const c = fitCalib(mine, null, null, others);
+  assert.equal(c.poolRows, 1200);
+  assert.equal(c.pool['1.5'].kept, true);
+  assert.equal(c.pool['1.5'].shift, -CAL_STEP);
+  assert.equal(c.spots['rec|under|1.5'].ownKept, false);
+  assert.equal(c.spots['rec|under|1.5'].own, 0);
+  assert.equal(c.spots['rec|under|1.5'].shift, -CAL_STEP);
+  assert.equal(shiftOf(c, 'rec', 'under', 1.5), -CAL_STEP);
+  // (a spot with no rows of its own at that class: the pool's and the sport's)
+  assert.equal(shiftOf(c, 'tgt', 'over', 1), -CAL_STEP);
+  // (another class: untouched)
+  assert.equal(shiftOf(c, 'rec', 'under', 4.5), 0);
+  assert.ok(calSides(c, 'rec', 1.5, 0.42).under < 0.58);
+  assert.match(calibText(c), /1200 more from the other sports/);
+  // (across epochs: from null reads a row from before any epoch; a from date leaves it out)
+  const old = { ...mine[0], id: 'old', placedAt: '2025-10-01T00:00:00Z', start: '2025-10-01T00:00:00Z' };
+  assert.equal(calRows([old], null).length, 1);
+  assert.equal(calRows([old], EPOCH).length, 0);
 });
 
 test('applied: the over spot moves the over chance only; both sides never add past 1; a spot not kept moves nothing', () => {

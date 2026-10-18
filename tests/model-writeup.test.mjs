@@ -348,7 +348,7 @@ test("a CHECK's write-up: the disagreement and its question in place of the pric
   const sheet = factsOf(check, { game, sib, state: STATE });
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /^Under 23\.5 saves for Mackenzie Blackwood/);
-  assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet on the model's own number \(the under 70% against DraftKings' no-vig 48%\)/);
+  assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet with its doubt cleared \(the under 70% against DraftKings' no-vig 48%\)/);
   assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the model missing something than value\./);
   assert.match(reason, /The question: is Mackenzie Blackwood confirmed in net/);
   assert.doesNotMatch(reason, /We make/);

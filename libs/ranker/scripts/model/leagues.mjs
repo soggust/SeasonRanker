@@ -154,8 +154,15 @@ export const GAME_CAP = 5;
 // backtest's snap-jump bucket held out: receptions' log loss 2.128 to 2.118 but rushing yards' 4.4405 to 4.4473 and
 // carries' 2.7894 to 2.7905 worse, the whole stats' within 0.0006 either way) kept as fit; the depth chart not a fit
 // input (the history's charts before 2025 unstamped, 2025 on past the fit window); the news signals 6 matched rows
-// since 10-14, logged only. Set to the push time.
-export const MODEL_EPOCH = '2026-10-17T20:30:00Z';
+// since 10-14, logged only. Set to the push time. 2026-10-18, the small-count fixes (the audit: out of sample since
+// 10-08 the raw model said .538 on lines of 1.5 or under for .481 against the book's .495, .579 on 2 to 3.5 for .493;
+// the owner's "make sure small numbers aren't influencing K rating by % or anything crazy"): the props' trust by
+// the line's size in every sport and the MMA's round totals (desk.mjs fitBuckets: low from 0.25, mid from 0.375,
+// each rung pulled toward its sport's and every sport's pooled by its own evidence); the live calibration active
+// (calib.mjs: every graded prop across epochs, sparse spots pooled by line class); the bands and every Kelly shown
+// on the stake's Kelly (desk.mjs stakeKelly: held to -110's scale); a CHECK judged and shown by its cleared Kelly
+// (checks.mjs checkKelly, the bar +1). Set to the push time.
+export const MODEL_EPOCH = '2026-10-18T15:58:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
