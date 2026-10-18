@@ -283,8 +283,10 @@ for (const sport of SPORTS) {
       for (const key of ['id', 'pick', 'matchup', 'reason', 'checkReason']) assert.equal(typeof c[key], 'string', `${at}: ${key}`);
       if (c.risk !== undefined) assert.equal(typeof c.risk, 'string', `${at}: risk`);
       assert.ok(Number.isFinite(c.gap), `${at}: gap ${c.gap}`);
-      const k = Number.isFinite(c.modelKelly) ? c.modelKelly : -Infinity;
-      assert.ok(k <= kelly, `${at}: model Kelly ${c.modelKelly} after ${kelly}`);
+      // (ordered by the cleared Kelly they're judged by since 940fd86a (checkKelly); a file from before it, the model's)
+      const by = (file.checks ?? []).some((x) => 'checkKelly' in x) ? 'checkKelly' : 'modelKelly';
+      const k = Number.isFinite(c[by]) ? c[by] : -Infinity;
+      assert.ok(k <= kelly, `${at}: ${by} ${c[by]} after ${kelly}`);
       kelly = k;
     }
   });
