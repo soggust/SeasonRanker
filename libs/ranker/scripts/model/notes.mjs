@@ -178,16 +178,17 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
       if (ids?.has?.(n.player)) team = t;
     }
     if (!team) continue;
-    const name = listed?.name || check?.player || `athlete ${n.player}`;
+    const name = listed?.name || n.name || check?.player || `athlete ${n.player}`;
     // (the game's own copy: the league's report is one Map every game shares)
     const mine = new Map(report);
     const list = (mine.get(team) ?? []).filter((p) => String(p.id) !== n.player);
     const word = (n.from === 'research' ? RESEARCH_STATUS : NOTE_STATUS)[n.status];
-    if (word) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: word, from: n.from === 'research' ? 'research' : 'owner note' });
+    if (word) list.push({ id: n.player, name, pos: listed?.pos || n.pos || '', status: word, from: n.from === 'research' ? 'research' : 'owner note' });
     mine.set(team, list);
     l.injuries = mine;
     const one = { id: n.id, event: String(game.id), team, player: n.player, name, status: n.status, ...(n.from === 'research' ? { from: 'research' } : {}) };
-    l.ownerNotes = [...(l.ownerNotes ?? []), one];
+    // (the same player and status put in twice (two CHECKs' research on one game) shown once)
+    if (!(l.ownerNotes ?? []).some((o) => o.player === one.player && o.status === one.status && o.from === one.from)) l.ownerNotes = [...(l.ownerNotes ?? []), one];
     applied.push(one);
   }
   return applied;

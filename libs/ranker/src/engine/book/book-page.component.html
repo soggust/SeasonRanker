@@ -615,6 +615,9 @@
             @if (rs.actWhy) {
               <p class="why-fine">{{ rs.actWhy }}</p>
             }
+            @if (rs.moved) {
+              <p class="why-fine">Into the inputs: {{ rs.moved }}</p>
+            }
             @if (rs.sources.length) {
               <p class="research-sources">
                 @for (s of rs.sources; track s.url) {

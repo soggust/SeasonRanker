@@ -152,7 +152,7 @@ import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, feedCheck, researchCall, researchCard, researchChecks, researchGateOf, researchNote, verdictOf } from './research.mjs';
+import { RESEARCH_UNITS, feedCheck, researchCall, researchCard, researchChecks, researchGateOf, researchInputs, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -635,10 +635,13 @@ async function fitTheContext(r) {
 }
 
 // The research's verdict on each open CHECK researched (research.mjs researchCall) into r.researchCalls (id ->
-// { act, why, units?, category, note? }): an 'adjust' whose finding a status takes (researchNote) put among the
-// run's notes (notes: the owner's own on the same CHECK wins), else a CHECK; a 'bet' left to betProps. The gate
-// from every sport's ledger (this one's as read, the others' from their files: researchGateOf)
-function researchCalls(r, checks, notes) {
+// { act, why, units?, category, note? }): an 'adjust' whose finding an input takes (research.mjs researchInputs:
+// the player's own status, a teammate's or an opponent's found by name on the game's rosters, a quarterback
+// named to start) put among the run's notes (notes: the owner's own on the same CHECK wins; a CHECK's second and
+// later inputs keyed apart, their id still the CHECK's), else a CHECK; a 'bet' left to betProps. The gate from
+// every sport's ledger (this one's as read, the others' from their files: researchGateOf). rosterOf(team): the
+// team's roster (espn.mjs roster, its names and positions), read only for an 'adjust'
+async function researchCalls(r, checks, notes, rosterOf = async () => null) {
   const found = (c) => r.researchFound?.get(c.id) ?? c.research ?? null;
   const mine = (checks ?? []).filter((c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.bet && found(c));
   if (!mine.length) return;
@@ -657,11 +660,16 @@ function researchCalls(r, checks, notes) {
     const rs = found(c);
     let call = researchCall(c, rs, { now: r.now, gate: r.researchGate });
     if (call.act === 'adjust') {
-      const note = notes.has(c.id) ? null : researchNote(c, rs, r.sport, { now: r.now, report: r.live?.get(String(c.event))?.injuries ?? null });
-      if (note) {
-        notes.set(c.id, note);
-        call = { ...call, note: { player: note.player, status: note.status, name: rs.player ?? null } };
-      } else call = { act: 'check', why: `${call.why}; no input of the model's takes it${notes.has(c.id) ? " (the owner's note on it wins)" : ' (no player status the report lacks)'}` };
+      const game = r.upcoming?.find((u) => String(u.game.id) === String(c.event))?.game ?? null;
+      const rosters = new Map();
+      if (game && !notes.has(c.id)) for (const t of [game.home, game.away]) rosters.set(String(t), await rosterOf(String(t)).catch(() => null));
+      const got = notes.has(c.id) ? { notes: [], inputs: [], why: "the owner's note on it wins" } : researchInputs(c, rs, r.sport, { now: r.now, report: r.live?.get(String(c.event))?.injuries ?? null, rosters });
+      if (got.notes.length) {
+        got.notes.forEach((n, i) => notes.set(i ? `${c.id}#research:${n.player}` : c.id, n));
+        const input = got.inputs.map((x) => `${x.name ?? 'a player'} ${x.status} (${x.kind})`).join('; ');
+        call = { ...call, note: { player: got.notes[0].player, status: got.notes[0].status, name: got.inputs[0]?.name ?? rs.player ?? null, inputs: got.inputs, input } };
+        console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research inputs for ${c.pick ?? c.id}: ${input} (this run's injury report)`);
+      } else call = { act: 'check', why: `${call.why}; no input of the model's takes it (${got.why})` };
     }
     r.researchCalls.set(c.id, { ...call, side: c.side, category: rs.category ?? null });
     by[call.act]++;
@@ -708,8 +716,14 @@ async function noteInjuries(r) {
     console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
   }
   const notes = new Map(r.notes ?? []);
+  // (each team's roster once here: the research's players found by name, the notes' teams)
+  const rosters = new Map();
+  const rosterOf = async (team) => {
+    if (!rosters.has(String(team))) rosters.set(String(team), await roster(r.cfg.league, team, 1).catch(() => null));
+    return rosters.get(String(team));
+  };
   try {
-    researchCalls(r, checks, notes);
+    await researchCalls(r, checks, notes, rosterOf);
   } catch (err) {
     console.warn(`${r.sport}: the research's verdicts skipped (${err.message}): its CHECKs stay CHECKs`);
     r.researchCalls = new Map();
@@ -718,7 +732,7 @@ async function noteInjuries(r) {
   try {
     // (a shadow's never: checks.mjs shadowOf, a PASS no one sees, owes no ask)
     const propChecks = new Set(checks.filter((c) => c.market === 'prop' && !c.checkResult && !c.hidden).map((c) => c.id));
-    const applied = await applyNotes(r.sport, r.live, r.upcoming, notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
+    const applied = await applyNotes(r.sport, r.live, r.upcoming, notes, { checks, rosterOf });
     for (const x of applied) {
       (x.from === 'research' ? r.researchApplied : r.notesApplied).add(x.id);
       // (a research finding's game: its bets this run researchAdjusted, at 0.5u at most: placeBets researchTag)
@@ -2064,7 +2078,7 @@ async function betProps(r) {
           if (call?.act !== 'adjust' || !call.note) continue;
           const before = (ledger.checks ?? []).find((c) => c.id === id);
           const now = x.guard?.skip ? (CHECK_KINDS.has(x.guard?.kind) ? `still a CHECK (${x.guard.kind})` : `skipped (${x.guard.why})`) : x.ev > 0 ? 'an edge: to bet at 0.5u at most (researchAdjusted)' : 'no edge: passed, its CHECK closed';
-          const moved = { id, input: `${call.note.name ?? call.note.player} ${call.note.status} (the injury report, this run)`, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
+          const moved = { id, input: `${call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`} (the injury report, this run)`, inputs: call.note.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
           (r.researchMoved ??= []).push(moved);
           console.log(`${sport}${DRY ? ' (dry)' : ''}: research moved ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}; ${now}`);
         }
@@ -2327,6 +2341,13 @@ function recordChecks(r) {
     const why = String(call?.why ?? '').slice(0, 300);
     // (written again only when it changed: the file doesn't churn every hour)
     if (c.research && call && (c.research.call?.act !== call.act || c.research.call?.why !== why)) c.research = { ...c.research, call: { act: call.act, why, at: r.now.toISOString() } };
+    // (what it moved, where the research put an input in this run (betProps r.researchMoved): the inputs, the
+    // projection and the model's chance before and after, what it is now; the CHECK's popover shows it)
+    const mv = (r.researchMoved ?? []).find((m) => m.id === c.id);
+    if (c.research && mv) {
+      const moved = { input: mv.input, before: mv.before, after: mv.after, now: mv.now };
+      if (JSON.stringify({ ...(c.research.moved ?? {}), at: undefined }) !== JSON.stringify({ ...moved, at: undefined })) c.research = { ...c.research, moved: { ...moved, at: r.now.toISOString() } };
+    }
     if (c.research && c.research.feeds === undefined && verdictOf(c.research) !== 'check') {
       const f = feedCheck(c.research, c, r.live?.get(String(c.event)) ?? null);
       if (f) c.research = { ...c.research, feeds: f };

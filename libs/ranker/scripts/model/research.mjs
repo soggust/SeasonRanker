@@ -42,8 +42,10 @@
 //            report copy, as an owner's note is, flagged research, never written to a file: the play chance, the
 //            vacated volume, the QB-out flags read it); its market re-projected and re-priced by the usual rules
 //            (an edge bet at RESEARCH_UNITS at most, researchAdjusted, a LIKE at most; none, passed or tracked),
-//            its before and after logged. A reason no input takes (a role, the weather, a lineup with no player's
-//            status, a player the report already has) stays a CHECK. (b) 'bet': confident there is none
+//            its before and after logged. researchInputs maps it: the player's own status, a teammate's or an
+//            opponent's (found by name on the game's rosters when the report hasn't him), a quarterback named to
+//            start (the NFL: the others on his roster not starting, his listing cleared). A reason no input takes
+//            (a role with no player's status, the weather, a player the report already has) stays a CHECK. (b) 'bet': confident there is none
 //            (explains false, confidence high, with sources): the model's side bet at RESEARCH_UNITS at most
 //            (researchBet, a LIKE at most), a role, news or gap CHECK whose game hasn't started. (c) 'check':
 //            it can't tell (low confidence, thin or conflicting sources, a failed or cut-short call): a CHECK
@@ -260,6 +262,80 @@ export function researchNote(c, rs, sport, { now = new Date(), report = null } =
     if (!Number.isFinite(dated) || dated >= at) return null;
   } else if (rs.onReport) return null;
   return { id: c.id, reason: REASON_OF[rs.reason] ?? 'news', player: String(rs.athlete), status: rs.status, team: null, sport, note: null, by: null, at: rs.at ?? null, from: 'research' };
+}
+
+// (a player on one of the game's rosters (rosters: a Map of team id -> espn.mjs rosterOf's Set, its info a Map
+// of id -> { name, pos }), by his ESPN id or else his name: { id, team, name, pos }, or null)
+export function rosterPlayer(rosters, { id = null, name = null } = {}) {
+  const k = nameKey(name);
+  for (const [team, ids] of rosters instanceof Map ? rosters : []) {
+    for (const [pid, x] of ids?.info ?? []) {
+      if (id !== null && id !== undefined ? String(pid) === String(id) : k && nameKey(x?.name) === k) return { id: String(pid), team: String(team), name: x?.name ?? null, pos: x?.pos ?? '' };
+    }
+  }
+  return null;
+}
+
+// (a finding that a quarterback starts: a lineup or role reason, his status active or unknown, the summary
+// saying he starts)
+const startsQb = (rs) => ['lineup', 'role'].some((k) => rs?.reason === k || rs?.category === k) && ['active', 'unknown'].includes(rs?.status) && /\bstart(s|ing|er)?\b|\bQB1\b/i.test(rs?.summary ?? '');
+
+// What an 'adjust' finding puts into the model's own inputs for its game, this run alone: { notes, inputs, why }.
+// notes: researchNote's shape (each id the CHECK's; its team, position and name kept so applyNotes needn't look
+// them up), for the game's injury report copy; inputs: what each one changes, in words ({ name, status, kind });
+// why: none taken, why. Four ways (the owner's, 2026-10-17: a real reason added to the calculation, not passed):
+//   own / teammate / opponent  a player's out, doubtful, questionable or limited status (the CHECK's own player,
+//            a teammate whose absence moves his role, a player on the other side), the player known by his ESPN
+//            id from the finding (the CHECK's own, the report's) or else by name from the game's two rosters;
+//            the report's own rules decide (researchNote). Into the report, so the projection's own terms move
+//            him: the play chance, the vacated volume and the next man up (vacF, nu, rp, ab), qb1Out / qbDeep
+//            for a quarterback, the role guard's inputs
+//   starter  (the NFL) a quarterback confirmed or named to start (startsQb): every other quarterback on his
+//            roster Out for this game (not starting), so the lead quarterback the desk reads (matchups.mjs qb1,
+//            context.mjs starters' usual one) is missing when he isn't the one starting; and the starter, listed
+//            questionable or doubtful on a report dated before the finding, cleared. Never where the report has
+//            the starter out (the report wins)
+//   role     a role change with no player's status: the depth chart only gates a role CHECK (props.mjs
+//            depthRoleOf), no input moves the projection: none, a CHECK
+//   other    market-only, or another reason with no player's status: none, a CHECK
+export function researchInputs(c, rs, sport, { now = new Date(), report = null, rosters = null } = {}) {
+  const none = (why) => ({ notes: [], inputs: [], why });
+  if (!rs) return none('no finding');
+  const who = rs.athlete ? rosterPlayer(rosters, { id: rs.athlete }) : rosterPlayer(rosters, { name: rs.player });
+  const athlete = rs.athlete ? String(rs.athlete) : (who?.id ?? null);
+  const kindOf = (id, team) => (String(id) === String(c.athlete ?? '') ? 'own' : team && c.team && String(team) !== String(c.team) ? 'opponent' : 'teammate');
+  if (ADJUST_STATUS.has(rs.status)) {
+    if (!athlete) return none(`${rs.player ?? 'the player it names'} not known by his ESPN id (not the CHECK's player, on the report or on the game's rosters)`);
+    const n = researchNote(c, { ...rs, athlete }, sport, { now, report });
+    if (!n) return none(`${rs.player ?? 'the player'} ${rs.status}: the report already has him so or worse, or newer, or the finding is too old or unsourced (the report's word stands)`);
+    const name = who?.name ?? rs.player ?? null;
+    return { notes: [{ ...n, ...(who ? { team: who.team, pos: who.pos } : {}), name }], inputs: [{ name, status: rs.status, kind: kindOf(athlete, who?.team) }], why: null };
+  }
+  if (sport === 'nfl' && startsQb(rs) && who?.pos === 'QB') {
+    const listed = officialEntry(report, who.id);
+    if (listed && OUT_STATUS.test(String(listed.status ?? ''))) return none(`${who.name} starting, but the report has him ${listed.status} (the report wins)`);
+    const at = Date.parse(rs.at ?? '');
+    if (!Number.isFinite(at) || now.getTime() - at > RESEARCH_TTL_H * 36e5 || !rs.sources?.length) return none('the finding too old, or without a source');
+    const notes = [];
+    const inputs = [];
+    for (const [pid, x] of rosters?.get(who.team)?.info ?? []) {
+      if (x?.pos !== 'QB' || String(pid) === who.id) continue;
+      const n = researchNote(c, { ...rs, athlete: String(pid), status: 'out', reason: 'lineup', onReport: undefined }, sport, { now, report });
+      if (!n) continue;
+      notes.push({ ...n, team: who.team, pos: 'QB', name: x.name ?? null, starter: who.id });
+      inputs.push({ name: x.name ?? `athlete ${pid}`, status: 'out', kind: `not starting (${who.name} starts)` });
+    }
+    if (listed && severity(listed.status) > 0) {
+      const dated = Date.parse(listed.date ?? '');
+      if (Number.isFinite(dated) && dated < at) {
+        notes.push({ id: c.id, reason: 'news', player: who.id, status: 'active', team: who.team, pos: 'QB', name: who.name, sport, note: null, by: null, at: rs.at, from: 'research', starter: who.id });
+        inputs.push({ name: who.name, status: 'active', kind: 'the starter, his listing cleared' });
+      }
+    }
+    return notes.length ? { notes, inputs, why: null } : none(`${who.name} starting: the report and rosters already say so`);
+  }
+  if (rs.category === 'role' || rs.reason === 'role') return none("a role change with no player's status: the depth chart only gates a role CHECK, no input moves the projection");
+  return none("no player's status the report lacks");
 }
 
 // (the SDK's client, loaded only when research runs; none installed, none)

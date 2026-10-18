@@ -201,10 +201,13 @@ export const ROSTER_OUT_STATUS = /injured reserve|\bIR\b|physically unable|\bPUP
 export function rosterOf(body, min = 40) {
   const ids = new Set();
   const out = new Map();
+  // (each one's name and position: the research's players found by name, research.mjs rosterPlayer)
+  const info = new Map();
   const add = (a, group) => {
     if (!a?.id) return;
     const id = String(a.id);
     ids.add(id);
+    info.set(id, { name: a.displayName ?? a.fullName ?? '', pos: a.position?.abbreviation ?? '' });
     const status = String(a.injuries?.[0]?.status ?? '');
     if (ROSTER_OUT_GROUP.test(group ?? '') || ROSTER_OUT_STATUS.test(status)) out.set(id, { name: a.displayName ?? a.fullName ?? '', pos: a.position?.abbreviation ?? '', status: status || (/suspend/i.test(group ?? '') ? 'Suspension' : 'Injured Reserve') });
   };
@@ -214,6 +217,7 @@ export function rosterOf(body, min = 40) {
   }
   if (ids.size < min) return null;
   ids.out = out;
+  ids.info = info;
   return ids;
 }
 export async function roster(league, id, min = 40) {

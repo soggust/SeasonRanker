@@ -447,6 +447,14 @@ function checkNumbers(c) {
 
 // (a CHECK's research as the page shows it (research.mjs findingOf's fields, checked again): its status, reason,
 // player, summary, its http(s) sources, when it was made and whether it was put into the injury report)
+// (what the research moved, in words: the inputs, the projection and the model's chance before and after, now)
+export function movedWords(m) {
+  const num = (v) => (Number.isFinite(v) ? String(v) : '?');
+  const pct = (v) => (Number.isFinite(v) ? `${Math.round(v * 1000) / 10}%` : '?');
+  const text = `${m.input}: projection ${num(m.before?.mean)} -> ${num(m.after?.mean)}, model ${m.before?.side ?? '?'} ${pct(m.before?.model)} -> ${m.after?.side ?? '?'} ${pct(m.after?.model)}${m.now ? `; ${m.now}` : ''}`;
+  return text.replace(/\s+/g, ' ').trim().slice(0, 400);
+}
+
 export function researchRow(rs) {
   const str = (v, n) => (typeof v === 'string' && v.trim() ? v.replace(/\s+/g, ' ').trim().slice(0, n) : null);
   return {
@@ -463,6 +471,8 @@ export function researchRow(rs) {
     ...(str(rs?.confidence, 10) ? { confidence: str(rs.confidence, 10) } : {}),
     verdict: verdictOf(rs),
     ...(rs?.call?.act ? { act: str(rs.call.act, 10), actWhy: str(rs.call.why, 300) } : {}),
+    // (what the research moved in the inputs, its projection and chance before and after: run.mjs recordChecks)
+    ...(rs?.moved?.input ? { moved: movedWords(rs.moved) } : {}),
     ...(rs?.feeds ? { inOurFeeds: !!rs.feeds.inOurFeeds, feed: str(rs.feeds.feed, 40) } : {}),
   };
 }

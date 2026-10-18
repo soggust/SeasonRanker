@@ -19,6 +19,7 @@ export interface CheckResearchIn {
   actWhy?: string | null;
   inOurFeeds?: boolean;
   feed?: string | null;
+  moved?: string | null;
 }
 
 export interface CheckResearchView {
@@ -45,6 +46,9 @@ export interface CheckResearchView {
   detail: string | null;
   // (whether the bot's own feeds already had the reason: "Our feeds had it (injury report)" / "Not in our feeds")
   feeds: string | null;
+  // (what it put into the model's inputs and how the projection moved: "Kyle Pitts out (teammate) (the injury
+  // report, this run): projection 3.1 -> 3.6, model over 61% -> 55%; no edge: passed"; null where it moved none)
+  moved: string | null;
 }
 
 const STATUS: Record<string, [string, CheckResearchView['tone']]> = {
@@ -105,6 +109,7 @@ export function researchView(rs: CheckResearchIn | null | undefined): CheckResea
     verdictTone: (VERDICT[rs.verdict ?? ''] ?? VERDICT['check'])[1],
     actWhy: rs.act && rs.act !== rs.verdict && typeof rs.actWhy === 'string' && rs.actWhy.trim() ? rs.actWhy.trim() : null,
     detail: rs.category && CATEGORY[rs.category] ? `${CATEGORY[rs.category]}${rs.confidence ? `, ${rs.confidence} confidence` : ''}` : null,
+    moved: typeof rs.moved === 'string' && rs.moved.trim() ? rs.moved.trim() : null,
     feeds: typeof rs.inOurFeeds === 'boolean' ? (rs.inOurFeeds ? `Our feeds had it${rs.feed ? ` (${rs.feed})` : ''}: the model didn't use it` : 'Not in any feed the bot reads') : null,
   };
 }
