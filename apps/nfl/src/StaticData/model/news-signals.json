@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": null,
+   "player": null,
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "McCarthy nearly rallies Giants after Winston benched; Skattebo logs no carries",
+   "at": "2026-10-18T23:21:26.000Z"
+  },
+  {
    "team": "14",
    "abbr": "LAR",
    "athlete": "4259619",
@@ -133,18 +144,7 @@
    "confidence": 0.85,
    "headline": "Broncos' Jonathon Cooper off commissioner exempt list, could return Week 7",
    "at": "2026-10-16T23:56:38.000Z"
-  },
-  {
-   "team": "21",
-   "abbr": "PHI",
-   "athlete": "4241478",
-   "player": "DeVonta Smith",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Eagles' Saquon Barkley ruled out; DeVonta Smith likely to return",
-   "at": "2026-10-16T23:42:25.000Z"
   }
  ],
- "at": "2026-10-18T23:07:20.109Z"
+ "at": "2026-10-18T23:42:35.429Z"
 }

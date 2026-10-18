@@ -202,7 +202,8 @@
   "50213831": "2026-10-18",
   "50213862": "2026-10-18",
   "50213864": "2026-10-18",
-  "50213950": "2026-10-18"
+  "50213950": "2026-10-18",
+  "50214248": "2026-10-18"
  },
  "signals": [
   {
@@ -743,6 +744,21 @@
    "confidence": 0.4,
    "story": "50213342",
    "headline": "Chargers WR Ladd McConkey ruled out with concussion vs. Chiefs",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50214248|19||coaching",
+   "day": "2026-10-18",
+   "at": "2026-10-18T23:21:26.000Z",
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": null,
+   "player": null,
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50214248",
+   "headline": "McCarthy nearly rallies Giants after Winston benched; Skattebo logs no carries",
    "model": "claude-haiku-5-5"
   }
  ]
