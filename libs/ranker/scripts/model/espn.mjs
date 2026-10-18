@@ -236,23 +236,32 @@ export async function roster(league, id, min = 40) {
 // posted, logged, never as the whole team out
 export const POSTED_MIN = { nfl: 40, nba: 8 };
 export const POSTED_MAX = { nfl: { n: 12, share: 0.25 }, nba: { n: 8, share: 0.5 } };
-export function gameRosterOf(body, sport) {
+// (cap false: the count left unjudged, the list's size kept (n). A coming game's list carries its team's last
+// game's names too (2026-10-18 TEN's 12: 9 of them the last game's), so the count a posting could have is
+// judged on the names new on it (context.mjs gameRosters: freshInactives, then postedMax), and a final's, read
+// for its names alone, never)
+export const postedMax = (sport, inactive, n) => {
+  const max = POSTED_MAX[sport];
+  return !!max && (inactive > max.n || inactive > max.share * n);
+};
+export function gameRosterOf(body, sport, cap = true) {
   const list = Array.isArray(body?.entries) ? body.entries : [];
   if (list.length < (POSTED_MIN[sport] ?? 1)) return null;
   let inactive = list.filter((e) => e?.didNotPlay === true && e.playerId).map((e) => ({ id: String(e.playerId), name: String(e.displayName ?? '') }));
-  const max = POSTED_MAX[sport];
-  if (max && (inactive.length > max.n || inactive.length > max.share * list.length)) {
+  if (cap && postedMax(sport, inactive.length, list.length)) {
     console.warn(`${sport}: a game-day roster with ${inactive.length} of ${list.length} marked inactive, more than any posting: read as not posted`);
     inactive = [];
   }
   const st = list.filter((e) => e?.starter === true && e.playerId).map((e) => String(e.playerId));
   const starters = sport === 'nba' && st.length === 5 ? st : null;
   if (!inactive.length && !starters) return null;
-  return { inactive, starters };
+  // (ids: every player on it, the dressed and the inactive: a questionable one on IR, designated to return and not
+  // activated, isn't on it, so isn't read as playing for being off the inactives, timing.mjs putInactives)
+  return { inactive, starters, n: list.length, ids: list.filter((e) => e?.playerId).map((e) => String(e.playerId)) };
 }
-export async function gameRoster(league, event, team, sport) {
+export async function gameRoster(league, event, team, sport, cap = true) {
   const [sp, lg] = league.split('/');
-  return gameRosterOf(await json(`https://sports.core.api.espn.com/v2/sports/${sp}/leagues/${lg}/events/${event}/competitions/${event}/competitors/${team}/roster`), sport);
+  return gameRosterOf(await json(`https://sports.core.api.espn.com/v2/sports/${sp}/leagues/${lg}/events/${event}/competitions/${event}/competitors/${team}/roster`), sport, cap);
 }
 
 // The league's injury report: each team's listed players (ESPN's athlete id, name, position, status, date)
@@ -268,6 +277,9 @@ export async function injuries(league) {
         name: i.athlete?.displayName ?? '',
         pos: i.athlete?.position?.abbreviation ?? '',
         status: i.status ?? '',
+        // (ESPN's tag on it, details.fantasyStatus: INACTIVE on a game's own inactives, which are that game's
+        // alone and stay on the report after it, context.mjs staleReport)
+        tag: i.details?.fantasyStatus?.description ?? null,
         // (when ESPN last updated it: a CHECK's research, older, gives way to it, research.mjs)
         date: typeof i.date === 'string' ? i.date : null,
       })),

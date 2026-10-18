@@ -14,7 +14,7 @@
 // expected, last change), baseball.mjs (the air, the bullpens, the umpire's zone), teamstats.mjs (the
 // ranker's own numbers); this file gathers and weaves them in with the rest.
 
-import { gameRoster, goaliesInOrder, injuries, summary, teamNames, teamSchedule, gameOf } from './espn.mjs';
+import { gameRoster, goaliesInOrder, injuries, postedMax, summary, teamNames, teamSchedule, gameOf } from './espn.mjs';
 import { RANKER_TERMS, rankerOf } from './teamstats.mjs';
 import { term } from './terms.mjs';
 import { Q_STATUS, putInactives } from './timing.mjs';
@@ -227,7 +227,14 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
     await step('injuries', async () => {
       const report = await injuries(cfg.league);
       if (!report || (!report.size && live.size)) throw new Error('no injury report');
-      for (const l of live.values()) (l.injuries = report), delete l.injuriesFailed;
+      // (the NFL's listings for a team's last game, left on the report after it, taken off it: staleReport)
+      let read = report;
+      if (sport === 'nfl') {
+        const s = staleReport(report, history);
+        read = s.report;
+        if (s.stale.length) console.log(`nfl: injury report: ${s.stale.length} listings from before the teams' last games taken off it: ${s.stale.map((x) => `${x.name} (${x.status} ${x.date?.slice(5, 10)})`).join(', ')}`);
+      }
+      for (const l of live.values()) (l.injuries = read), delete l.injuriesFailed;
     });
   }
   // (the NFL's and NBA's game-day rosters, a game within LINEUP_HOURS of its start: its inactives, when posted,
@@ -276,6 +283,53 @@ export function freshInactives(posted, prev) {
   const was = new Set((prev.inactive ?? []).map((x) => String(x.id)));
   return { ...posted, inactive: (posted.inactive ?? []).filter((x) => !was.has(String(x.id))) };
 }
+// The NFL's injury report's listings for a team's last game, still on it after that game: taken off the report (as
+// a player this week's report doesn't list: the roster's IR and the absent regulars' rules read him then). ESPN
+// leaves a game's own inactives (its tag INACTIVE) and its questionable and doubtful ones, an in-game "questionable to return" among them, on the report after the game
+// till the team's next report replaces them, and not always then: 2026-10-18 the Broncos' and Seahawks' Thursday
+// inactives (Surtain, Hufanga, Milroe and the rest) still Out three days on, Te'Cory Couch (BUF) questionable from
+// his 10-04 in-game hamstring, the Dolphins' 10-11 in-game ones the same. A weekly report lists each player again
+// for each game, so a listing from before the last game (its date before that game's start plus STALE_AFTER, the
+// game's own length) is that game's, not this one's. An Out or IR listing stays: a multi-week injury's isn't
+// posted again each week (Tanner Hudson's torn pectoral, out since 10-13). history: the finals (each team's last
+// start before now). -> { report: a new Map, stale: [{ team, name, status, date }] the ones taken off }
+export const STALE_AFTER = 4 * 36e5;
+export function staleReport(report, history, now = Date.now()) {
+  const last = new Map();
+  for (const g of history ?? []) {
+    const t = Date.parse(g.date);
+    if (!(t < now) || g.final === false) continue;
+    for (const team of [String(g.home), String(g.away)]) if (!(last.get(team) >= t)) last.set(team, t);
+  }
+  const stale = [];
+  const out = new Map();
+  for (const [team, list] of report ?? []) {
+    const t = last.get(String(team));
+    out.set(
+      team,
+      (list ?? []).filter((p) => {
+        const d = Date.parse(p.date ?? '');
+        const forOne = p.tag === 'INACTIVE' || /questionable|doubtful/i.test(p.status ?? '');
+        if (t === undefined || !Number.isFinite(d) || !forOne || d >= t + STALE_AFTER || /^active$/i.test(p.status ?? '')) return true;
+        stale.push({ team: String(team), name: p.name, status: p.status, date: p.date });
+        return false;
+      }),
+    );
+  }
+  return { report: out, stale };
+}
+
+// (the NFL's report with a side's own inactives for a game on it: an INACTIVE listing dated inside LINEUP_HOURS
+// before its start)
+export function reportPosted(report, team, start) {
+  const t = Date.parse(start ?? '');
+  if (!(report instanceof Map) || !Number.isFinite(t)) return false;
+  return (report.get(String(team)) ?? []).some((p) => {
+    const d = Date.parse(p.date ?? '');
+    return p.tag === 'INACTIVE' && d <= t && t - d <= LINEUP_HOURS.nfl * 36e5;
+  });
+}
+
 // (a team's last game before this one in the history: its event id, or null)
 export function lastGameOf(history, team, before) {
   let best = null;
@@ -293,21 +347,37 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
     return until > 0 && until <= LINEUP_HOURS[sport] * 36e5;
   });
   const asks = soon.flatMap(({ game }) => [game.home, game.away].map((team) => ({ game, team: String(team) })));
-  const got = await pool(asks, 4, ({ game, team }) => gameRoster(cfg.league, game.id, team, sport));
-  // (each side's last game's list: only the names new since it count, freshInactives)
+  // (uncapped: the count a posting could have judged on the names new on it, below)
+  const got = await pool(asks, 4, ({ game, team }) => gameRoster(cfg.league, game.id, team, sport, false));
+  // (each side's last game's list: only the names new since it count, freshInactives. The last game's list not
+  // had (the ask failed, or none there) is unread, not empty: every name the coming one carries would read as
+  // new, today's DeVonta Smith again. No last game read (none in the history), nothing from the list either:
+  // ESPN's injury report lists each game's inactives itself, Out, within minutes of the posting (2026-10-18:
+  // every posted side's, coach's decisions too), so the list adds only what the report hasn't caught up to)
   const prevs = await pool(asks, 4, ({ game, team }, i) => {
     if (!got[i]?.inactive?.length) return null;
     const prev = lastGameOf(history, team, Date.parse(game.date));
-    return prev ? gameRoster(cfg.league, prev, team, sport).then((r) => r ?? { inactive: [] }) : null;
+    return prev ? gameRoster(cfg.league, prev, team, sport, false) : null;
   });
   let carried = 0;
-  asks.forEach((_, i) => {
+  let unread = 0;
+  asks.forEach(({ game, team }, i) => {
     if (!got[i]?.inactive?.length) return;
+    if (!prevs[i]) unread++;
     const fresh = freshInactives(got[i], prevs[i]);
     carried += got[i].inactive.length - fresh.inactive.length;
+    if (postedMax(sport, fresh.inactive.length, got[i].n ?? 0)) {
+      console.warn(`${sport}: a game-day roster with ${fresh.inactive.length} of ${got[i].n} new inactive (${game.awayAbbr} @ ${game.homeAbbr}, ${team}), more than any posting: read as not posted`);
+      fresh.inactive = [];
+    }
+    // (the NFL's side posted for this game: names new on its list, and its report's own inactives for it, its
+    // INACTIVE listings dated inside LINEUP_HOURS of the start, or three new names: a questionable one left off
+    // the list then plays, putInactives)
+    if (sport === 'nfl' && fresh.inactive.length && (fresh.inactive.length >= 3 || reportPosted(live.get(game.id)?.injuries, team, game.date))) Object.assign(fresh, { posted: true, listed: got[i].inactive.map((x) => x.id) });
     got[i] = fresh.inactive.length || fresh.starters ? fresh : null;
   });
   if (carried) console.log(`${sport}: game-day rosters: ${carried} names carried over from the teams' last games left to the injury report`);
+  if (unread) console.log(`${sport}: game-day rosters: ${unread} sides' last game's list not read: their lists left to the injury report`);
   let posted = 0;
   asks.forEach(({ game, team }, i) => {
     if (!got[i]) return;
@@ -316,8 +386,10 @@ async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.
     (l.gameRosters ??= new Map()).set(team, got[i]);
     posted++;
   });
-  const put = soon.flatMap(({ game }) => putInactives(live.get(game.id), game).map((x) => `${x.name} (${x.was})`));
-  if (asks.length) console.log(`${sport}: game-day rosters posted for ${posted} of ${asks.length} sides within ${LINEUP_HOURS[sport]}h${put.length ? `; listed and now inactive: ${put.join(', ')}` : ''}`);
+  const puts = soon.map(({ game }) => putInactives(live.get(game.id), game));
+  const put = puts.flatMap((x) => x.map((y) => `${y.name} (${y.was})`));
+  const cleared = puts.flatMap((x) => (x.cleared ?? []).map((y) => `${y.name} (${y.was})`));
+  if (asks.length) console.log(`${sport}: game-day rosters posted for ${posted} of ${asks.length} sides within ${LINEUP_HOURS[sport]}h${put.length ? `; listed and now inactive: ${put.join(', ')}` : ''}${cleared.length ? `; listed, not inactive, so playing: ${cleared.join(', ')}` : ''}`);
 }
 
 // Every place a game is played, as coordinates (asked once per place, kept; a failed ask is asked again)

@@ -230,3 +230,93 @@ test('freshInactives and lastGameOf: last week’s names carried over are left t
   assert.equal(lastGameOf(history, '21', Date.parse('2026-10-10T17:00Z')), 'a');
   assert.equal(lastGameOf(history, '99', Date.parse('2026-10-18T17:00Z')), null);
 });
+
+// The NFL's injury report keeps a team's last game's listings after it (2026-10-18: the Broncos' and Seahawks'
+// Thursday inactives still Out three days on, Te'Cory Couch questionable from a 10-04 in-game hamstring): context.mjs
+// staleReport takes a game's own inactives (tag INACTIVE) and its questionable and doubtful ones from before the
+// team's last game (its start plus STALE_AFTER) off the report; an Out or IR one stays (a multi-week injury's
+// isn't posted again each week)
+test('staleReport: the last game’s inactives and questionables taken off the report, a long Out kept, the report untouched', async () => {
+  const { staleReport, STALE_AFTER } = await import('../libs/ranker/scripts/model/context.mjs');
+  assert.equal(STALE_AFTER, 4 * 36e5);
+  const history = [
+    { id: 'a', home: '7', away: '26', date: '2026-10-16T00:15Z', final: true },
+    { id: 'b', home: '7', away: '9', date: '2026-10-25T17:00Z', final: false },
+  ];
+  const p = (id, status, date, tag = null) => ({ id, name: `P${id}`, pos: 'WR', status, tag, date });
+  const report = new Map([
+    ['7', [p('1', 'Out', '2026-10-15T22:49Z', 'INACTIVE'), p('2', 'Questionable', '2026-10-16T01:30Z', 'QUESTIONABLE'), p('3', 'Out', '2026-10-13T15:52Z', 'OUT'), p('4', 'Injured Reserve', '2026-09-01T00:00Z', 'IR'), p('5', 'Questionable', '2026-10-21T20:00Z', 'QUESTIONABLE'), p('6', 'Out', '2026-10-22T20:00Z', 'INACTIVE'), p('8', 'Doubtful', '2026-10-15T20:00Z', 'DOUBTFUL')]],
+    ['9', [p('10', 'Questionable', '2026-10-01T00:00Z')]],
+  ]);
+  const { report: r, stale } = staleReport(report, history, Date.parse('2026-10-24T17:00Z'));
+  const st = (team) => Object.fromEntries(r.get(team).map((x) => [x.id, x.status]));
+  // (1, 2 and 8 the Thursday game's, 2 posted mid-game; 3 and 4 a long injury's; 5 and 6 this week's)
+  assert.deepEqual(st('7'), { 3: 'Out', 4: 'Injured Reserve', 5: 'Questionable', 6: 'Out' });
+  assert.deepEqual(stale.map((x) => x.name), ['P1', 'P2', 'P8']);
+  // (a team with no final in the history: as listed; the report itself untouched)
+  assert.equal(st('9')['10'], 'Questionable');
+  assert.equal(report.get('7')[0].status, 'Out');
+});
+
+// A posted NFL side (names new on its list, and the report's own inactives for the game or three new names):
+// a questionable or doubtful one on none of the list plays (ESPN's report keeps him Questionable through the game)
+test('putInactives: a posted NFL side’s questionable or doubtful players left off its list read as Active; one on the list (new or carried) not', async () => {
+  const { reportPosted } = await import('../libs/ranker/scripts/model/context.mjs');
+  const report = new Map([
+    ['1', [
+      { id: '11', name: 'Q1', pos: 'RB', status: 'Questionable', date: '2026-10-17T00:00Z' },
+      { id: '12', name: 'Q2', pos: 'WR', status: 'Questionable', date: '2026-10-17T00:00Z' },
+      { id: '13', name: 'D1', pos: 'TE', status: 'Doubtful', date: '2026-10-17T00:00Z' },
+      { id: '14', name: 'Q3', pos: 'WR', status: 'Questionable', date: '2026-10-17T00:00Z' },
+      { id: '15', name: 'O1', pos: 'LB', status: 'Out', tag: 'INACTIVE', date: '2026-10-18T15:33Z' },
+      { id: '16', name: 'Q5', pos: 'CB', status: 'Questionable', date: '2026-10-17T00:00Z' },
+    ]],
+    ['2', [{ id: '21', name: 'Q4', pos: 'WR', status: 'Questionable', date: '2026-10-17T00:00Z' }]],
+  ]);
+  assert.equal(reportPosted(report, '1', game.date), true);
+  assert.equal(reportPosted(report, '2', game.date), false);
+  assert.equal(reportPosted(report, '1', '2026-10-19T00:20Z'), false);
+  const l = {
+    injuries: report,
+    gameRosters: new Map([
+      // (12 new on the list; 14 on it carried over: can't be told from a name inactive again, so left as listed)
+      // (16 questionable on IR, designated to return, not activated: not on the game-day roster, left as listed)
+      ['1', { inactive: [{ id: '12', name: 'Q2' }, { id: '15', name: 'O1' }], starters: null, posted: true, listed: ['12', '14', '15'], ids: ['11', '12', '13', '14', '15', '30', '31'] }],
+      // (not posted for this game: nothing cleared)
+      ['2', { inactive: [{ id: '99', name: 'X' }], starters: null }],
+    ]),
+  };
+  const put = putInactives(l, game);
+  const st = (team) => Object.fromEntries(l.injuries.get(team).map((x) => [x.id, x.status]));
+  assert.deepEqual(st('1'), { 11: 'Active (not inactive)', 12: 'Out (inactive)', 13: 'Active (not inactive)', 14: 'Questionable', 15: 'Out', 16: 'Questionable' });
+  assert.deepEqual(st('2'), { 21: 'Questionable' });
+  assert.deepEqual(put.map((x) => x.id), ['12']);
+  assert.deepEqual(put.cleared.map((x) => [x.id, x.was]), [['11', 'Questionable'], ['13', 'Doubtful']]);
+  assert.equal(report.get('1')[0].status, 'Questionable');
+  // (read again: nothing more)
+  assert.deepEqual(putInactives(l, game), []);
+  // (the props and the inputs read him active: no longer questionable)
+  assert.equal(outOf('nfl', l, '1', 'RB').questionable.has('11'), false);
+  const parts = inputsOf('nfl', game, l, null, {}).parts;
+  assert.equal(parts['q:h'], '14,16');
+  // (no game-day roster's ids: nothing cleared)
+  const l2 = { injuries: report, gameRosters: new Map([['1', { inactive: [{ id: '12', name: 'Q2' }], starters: null, posted: true, listed: ['12'] }]]) };
+  assert.equal(putInactives(l2, game).cleared, undefined);
+});
+
+// The count a posting could have judged on the new names alone: a coming game's list carries its last game's
+// (2026-10-18 TEN's 12, 9 of them the last game's), so it's asked uncapped (gameRosterOf cap false) and judged
+// after freshInactives (espn.mjs postedMax)
+test('gameRosterOf cap false and postedMax: a list carrying last week’s names isn’t read as unposted for its size', async () => {
+  const { postedMax } = await import('../libs/ranker/scripts/model/espn.mjs');
+  const thirteen = nflBody(Array.from({ length: 13 }, (_, i) => String(100 + i)));
+  assert.equal(gameRosterOf(thirteen, 'nfl'), null);
+  const r = gameRosterOf(thirteen, 'nfl', false);
+  assert.equal(r.inactive.length, 13);
+  assert.equal(r.n, 53);
+  assert.equal(r.ids.length, 53);
+  assert.equal(postedMax('nfl', 13, 53), true);
+  assert.equal(postedMax('nfl', 6, 53), false);
+  assert.equal(postedMax('nfl', 12, 40), true);
+  assert.equal(postedMax('mlb', 30, 40), false);
+});

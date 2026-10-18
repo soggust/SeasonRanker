@@ -246,6 +246,24 @@ export function putInactives(l, game, players = null) {
       put.push({ team, id: p.id, name: who.name || p.name, was: null });
       changed = true;
     }
+    // (the NFL's side posted for this game (context.mjs gameRosters: posted): a questionable or doubtful one on its
+    // game-day roster (posted.ids) and on none of its inactives (posted.listed: the names new and the ones carried
+    // over, which can't be told from a name inactive again) is active, so he plays: ESPN's report keeps him
+    // Questionable through the game (2026-10-18 Tyjae Spears, TEN, and Ameer Abdullah, JAX, at kickoff). Read as
+    // Active: his chance of playing 1, not the table's. One not on the game-day roster at all (on IR, designated
+    // to return and not activated: the Eagles' Tariq Castro-Fields that day) is left as listed. put.cleared: the
+    // ones cleared)
+    if (posted.posted && Array.isArray(posted.ids)) {
+      const on = new Set([...(posted.listed ?? []), ...posted.inactive.map((p) => p.id)].map(String));
+      const dressed = new Set(posted.ids.map(String));
+      for (let i = 0; i < list.length; i++) {
+        const x = list[i];
+        if (x.inactive || on.has(String(x.id)) || !dressed.has(String(x.id)) || !(QUESTIONABLE.test(x.status ?? '') || /doubtful/i.test(x.status ?? ''))) continue;
+        list[i] = { ...x, status: 'Active (not inactive)', cleared: x.status ?? '' };
+        (put.cleared ??= []).push({ team, id: x.id, name: x.name, was: x.status ?? '' });
+        changed = true;
+      }
+    }
     if (!changed) continue;
     mine ??= new Map(l.injuries);
     mine.set(team, list);
