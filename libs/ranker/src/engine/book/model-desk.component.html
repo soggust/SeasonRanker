@@ -729,7 +729,7 @@
       </card-panel>
     }
 
-    @if (checkCauses.length || checkAdvice.length) {
+    @if (checkCauses.length || checkAdvice.length || researchRows.length) {
       <card-panel class="tab-card group-support" label="CHECKs" icon="fact_check">
         <div class="group-body">
           <!-- (the graded CHECKs by what drove each one's gap (check-learn.mjs diagnose), at a unit each as if bet,
@@ -775,6 +775,38 @@
                     <td [class.up]="c.profit > 0" [class.down]="c.profit < 0">{{ units(c.profit) }}</td>
                     <td>{{ c.perUnit === null ? '-' : units(c.perUnit) }}</td>
                     <td class="desk-left">{{ c.stats || '-' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+          <!-- (the news research's own scorecard (research.mjs researchCard): its bets where it found nothing, its
+               bets priced with what it found, each at 0.5u at most and graded apart, and its verdicts) -->
+          @if (researchRows.length) {
+            <table class="desk-table desk-bets desk-research">
+              <thead>
+                <tr>
+                  @if (!sport) {<th>Sport</th>}
+                  <th class="desk-left">Research</th>
+                  <th>Graded</th>
+                  <th>Record</th>
+                  <th>Units</th>
+                  <th [title]="'The mean closing-line value of the ones graded with a close'">CLV</th>
+                  <th>Open</th>
+                  <th class="desk-left">By category</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (c of researchRows; track c.sport + c.key) {
+                  <tr>
+                    @if (!sport) {<th>{{ c.sport }}</th>}
+                    <td class="desk-left">{{ c.label }}</td>
+                    <td>{{ c.n }}</td>
+                    <td>{{ c.record }}</td>
+                    <td [class.up]="(c.units ?? 0) > 0" [class.down]="(c.units ?? 0) < 0">{{ c.units === null ? '-' : units(c.units) }}</td>
+                    <td [class.up]="(c.clv ?? 0) > 0" [class.down]="(c.clv ?? 0) < 0">{{ c.clv === null ? '-' : pct(c.clv, 1) }}</td>
+                    <td>{{ c.open }}</td>
+                    <td class="desk-left">{{ c.note || '-' }}</td>
                   </tr>
                 }
               </tbody>

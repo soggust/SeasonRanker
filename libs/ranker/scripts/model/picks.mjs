@@ -61,6 +61,7 @@ import { decimal, intentOf, isTracked, record } from './desk.mjs';
 import { REPRICE_BY } from './timing.mjs';
 import { CHECK_RULE, CHECK_TOP, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
+import { verdictOf } from './research.mjs';
 
 // (a bet locked: its game starts within REPRICE_BY, or has started; nothing prices it again from here)
 const locked = (b, now) => Date.parse(b.start) - now.getTime() <= REPRICE_BY;
@@ -110,7 +111,9 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // (a role bet (props.mjs roleGateOf: a role cause's risky side bet on its graded CHECKs' record, at the untested cap's
 // half; its context's roleBet) a LIKE at most, whatever its Kelly: the owner's (round E, 2026-10-17), the score there
 // being the model's own number on a role it reads poorly)
-export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.context?.roleBet && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
+// (and a research bet or a research-adjusted one, research.mjs: a LIKE, the owner's, 2026-10-17; a research bet's a LIKE
+// whatever its score, the research's word its reason)
+export const levelOf = (b, kelly, p = b.p) => (intentOf(b) !== 'edge' ? 'low' : b.researchBet ? 'medium' : (b.context?.roleBet || b.researchAdjusted) && edgeLevel(kelly, p) !== 'low' ? 'medium' : edgeLevel(kelly, p));
 
 // The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded
 // placed bets (a tracked row never, an open or void one never), each US Eastern day's [won, lost, push, staked,
@@ -445,13 +448,20 @@ function checkNumbers(c) {
 export function researchRow(rs) {
   const str = (v, n) => (typeof v === 'string' && v.trim() ? v.replace(/\s+/g, ' ').trim().slice(0, n) : null);
   return {
-    status: ['out', 'questionable', 'active', 'unknown'].includes(rs?.status) ? rs.status : 'unknown',
+    status: ['out', 'doubtful', 'questionable', 'limited', 'active', 'unknown'].includes(rs?.status) ? rs.status : 'unknown',
     reason: str(rs?.reason, 20) ?? 'none',
     player: str(rs?.player, 80),
     summary: str(rs?.summary, 240) ?? '',
     sources: (Array.isArray(rs?.sources) ? rs.sources : []).filter((u) => typeof u === 'string' && /^https?:\/\/\S+$/.test(u) && u.length <= 500).slice(0, 5),
     at: str(rs?.at, 30),
     ...(rs?.applied ? { applied: true } : {}),
+    // (the verdict: research.mjs verdictOf, what the run did with it, whether our feeds held the reason)
+    ...(typeof rs?.explains === 'boolean' ? { explains: rs.explains } : {}),
+    ...(str(rs?.category, 20) ? { category: str(rs.category, 20) } : {}),
+    ...(str(rs?.confidence, 10) ? { confidence: str(rs.confidence, 10) } : {}),
+    verdict: verdictOf(rs),
+    ...(rs?.call?.act ? { act: str(rs.call.act, 10), actWhy: str(rs.call.why, 300) } : {}),
+    ...(rs?.feeds ? { inOurFeeds: !!rs.feeds.inOurFeeds, feed: str(rs.feeds.feed, 40) } : {}),
   };
 }
 

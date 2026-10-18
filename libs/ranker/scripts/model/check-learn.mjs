@@ -278,6 +278,17 @@ export function checkLearning(all = []) {
     openByCause[k] = (openByCause[k] ?? 0) + 1;
   }
   const byRole = group((c, d) => (d.cause === 'role' ? (d.sub ?? 'role') : null));
+  // (the news research's category on each CHECK it looked into (research.mjs: injury, role, suspension, weather,
+  // lineup, market, other), by its cause, a role's with its sub-reason: why the model missed, for a later round to
+  // read; researched counts every one, open or graded, the rest the graded ones' tally. No model change from it)
+  const byCauseResearch = {};
+  for (const c of live) {
+    const cat = c.research?.category;
+    if (!cat) continue;
+    const d = diagnosisOf(c);
+    const k = d.cause === 'role' ? `role:${d.sub ?? 'role'}` : d.cause;
+    ((byCauseResearch[k] ??= {})[cat] ??= []).push(c);
+  }
   const byCauseStat = {};
   for (const [k, t] of Object.entries(group((c, d) => `${d.cause}|${statOf(c)}`))) {
     const [cause, stat] = k.split('|');
@@ -325,6 +336,7 @@ export function checkLearning(all = []) {
     byCause,
     byRole,
     byCauseStat,
+    byCauseResearch: Object.fromEntries(Object.keys(byCauseResearch).sort().map((k) => [k, Object.fromEntries(Object.keys(byCauseResearch[k]).sort().map((cat) => [cat, { researched: byCauseResearch[k][cat].length, ...tallyOf(byCauseResearch[k][cat]) }]))])),
     openByCause: Object.fromEntries(Object.entries(openByCause).sort()),
     byPassAs: Object.fromEntries([...new Set(shadows.map((c) => c.passAs ?? 'hidden'))].sort().map((k) => [k, { ...tallyOf(shadows.filter((c) => (c.passAs ?? 'hidden') === k)), open: shadows.filter((c) => (c.passAs ?? 'hidden') === k && !c.checkResult).length }])),
     recommendations: recs.map(({ score: _s, ...r }, i) => ({ rank: i + 1, ...r })),

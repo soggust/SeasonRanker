@@ -1,5 +1,7 @@
 // A CHECK's news research for its popover (book-page.component.ts checkWhy): the finding research.mjs made and
-// picks.json carries (picks.mjs researchRow), in plain words. A label only: the bot never bets on it.
+// picks.json carries (picks.mjs researchRow), in plain words, with its verdict (research.mjs verdictOf): a real
+// reason put into the model's inputs and the market priced again, nothing found and the model's side bet at half a
+// unit, or can't tell and still a CHECK.
 
 export interface CheckResearchIn {
   status?: string | null;
@@ -9,6 +11,14 @@ export interface CheckResearchIn {
   sources?: unknown;
   at?: string | null;
   applied?: boolean;
+  explains?: boolean;
+  category?: string | null;
+  confidence?: string | null;
+  verdict?: string | null;
+  act?: string | null;
+  actWhy?: string | null;
+  inOurFeeds?: boolean;
+  feed?: string | null;
 }
 
 export interface CheckResearchView {
@@ -25,15 +35,42 @@ export interface CheckResearchView {
   // (when it was made, "Oct 14, 3:05 PM"; null unknown)
   when: string | null;
   applied: boolean;
+  // (the verdict in words: "Reason found: into the model's inputs", "Nothing found: bet at 0.5u", "Can't tell:
+  // still a CHECK"; and its tone)
+  verdict: string;
+  verdictTone: 'bad' | 'caution' | 'good' | 'none';
+  // (what this run did with it, where it says: the run's own words, e.g. why it stayed a CHECK)
+  actWhy: string | null;
+  // (the reason's category and confidence: "Injury / limited, high confidence")
+  detail: string | null;
+  // (whether the bot's own feeds already had the reason: "Our feeds had it (injury report)" / "Not in our feeds")
+  feeds: string | null;
 }
 
 const STATUS: Record<string, [string, CheckResearchView['tone']]> = {
   out: ['Out', 'bad'],
+  doubtful: ['Doubtful', 'bad'],
+  limited: ['Limited', 'caution'],
   questionable: ['Questionable', 'caution'],
   active: ['Active', 'good'],
   unknown: ['Nothing found', 'none'],
 };
-const REASON: Record<string, string> = { injury: 'Injury', role: 'Role change', suspension: 'Suspension', weather: 'Weather' };
+const REASON: Record<string, string> = { injury: 'Injury', role: 'Role change', suspension: 'Suspension', weather: 'Weather', lineup: 'Lineup' };
+// (the verdict's category in words: research.mjs CATEGORIES)
+const CATEGORY: Record<string, string> = {
+  injury: 'Injury / limited',
+  role: 'Role / depth change',
+  suspension: 'Suspension / personal',
+  weather: 'Weather / venue',
+  lineup: 'Lineup / starter news',
+  market: 'Market only',
+  other: 'Other',
+};
+const VERDICT: Record<string, [string, CheckResearchView['verdictTone']]> = {
+  adjust: ["Reason found: put into the model's inputs and priced again", 'caution'],
+  bet: ['Nothing found: the model’s side bet at 0.5u at most', 'good'],
+  check: ['Can’t tell: still a CHECK', 'none'],
+};
 
 // (a source's site: its host less www.; '' where it isn't a URL)
 function hostOf(url: string): string {
@@ -64,5 +101,10 @@ export function researchView(rs: CheckResearchIn | null | undefined): CheckResea
     sources,
     when,
     applied: !!rs.applied,
+    verdict: (VERDICT[rs.verdict ?? ''] ?? VERDICT['check'])[0],
+    verdictTone: (VERDICT[rs.verdict ?? ''] ?? VERDICT['check'])[1],
+    actWhy: rs.act && rs.act !== rs.verdict && typeof rs.actWhy === 'string' && rs.actWhy.trim() ? rs.actWhy.trim() : null,
+    detail: rs.category && CATEGORY[rs.category] ? `${CATEGORY[rs.category]}${rs.confidence ? `, ${rs.confidence} confidence` : ''}` : null,
+    feeds: typeof rs.inOurFeeds === 'boolean' ? (rs.inOurFeeds ? `Our feeds had it${rs.feed ? ` (${rs.feed})` : ''}: the model didn't use it` : 'Not in any feed the bot reads') : null,
   };
 }

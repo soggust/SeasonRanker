@@ -122,7 +122,7 @@ jobs:
       # CHECK_RESEARCH set to 1 (and the ANTHROPIC_API_KEY secret); its SDK installed for it alone into .cache/sdk
       # (ai-budget.mjs loadSdk), apart from the repo's tree so it doesn't reify the whole monorepo, as the bettor
       # runs before the workflow's npm install. Not installed, the research is skipped, never the run. Off,
-      # nothing here runs and nothing is spent. Its findings only label the CHECKs: never a bet)
+      # nothing here runs and nothing is spent. Its finding is the CHECK's judgment call: research.mjs verdictOf)
       - name: Install the Anthropic SDK (CHECK research only)
         if: ${{ vars.CHECK_RESEARCH == '1' }}
         run: |
@@ -139,18 +139,14 @@ jobs:
           # (no sport started past this many minutes in: run.mjs)
           DESK_DEADLINE_MIN: "35"
           # (the CHECKs' news research: off unless the variable is 1; under its own caps, ai-budget.mjs
-          # researchBudget: $0.50 a day and $12 a month unless CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD say
-          # otherwise ($1 and $20 at most). Its trial: 3 CHECKs a day, every sport together, till 15 calls are
-          # measured (CHECK_RESEARCH_TRIAL_N, _TRIAL_CALLS; CHECK_RESEARCH_TRIAL=0 ends it). After it,
-          # CHECK_RESEARCH_N a sport a day (3). Unset, each its default: research.mjs)
+          # researchBudget: $5 a UTC day and $80 a UTC month, every sport, whichever binds first;
+          # CHECK_RESEARCH_DAILY_USD / _MONTHLY_USD may lower them, never raise them. Every open CHECK, the
+          # biggest model Kelly first, CHECK_RESEARCH_N a sport a day at most (100). Unset, each its default)
           CHECK_RESEARCH: ${{ vars.CHECK_RESEARCH }}
           ANTHROPIC_API_KEY: ${{ vars.CHECK_RESEARCH == '1' && secrets.ANTHROPIC_API_KEY || '' }}
           CHECK_RESEARCH_N: ${{ vars.CHECK_RESEARCH_N }}
           CHECK_RESEARCH_DAILY_USD: ${{ vars.CHECK_RESEARCH_DAILY_USD }}
           CHECK_RESEARCH_MONTHLY_USD: ${{ vars.CHECK_RESEARCH_MONTHLY_USD }}
-          CHECK_RESEARCH_TRIAL: ${{ vars.CHECK_RESEARCH_TRIAL }}
-          CHECK_RESEARCH_TRIAL_N: ${{ vars.CHECK_RESEARCH_TRIAL_N }}
-          CHECK_RESEARCH_TRIAL_CALLS: ${{ vars.CHECK_RESEARCH_TRIAL_CALLS }}
           # (The Odds API: real lines and prices, props and history; without it the free ESPN board is used)
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           # (the owner's notes on the picks, Firestore's deskNotes: read only, by its REST API, nothing to install;

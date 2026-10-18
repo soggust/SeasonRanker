@@ -107,7 +107,7 @@ export interface ModelState {
   odds?: OddsUsage | null;
   backtest?: { at: string; snapshots: number; planned: number; markets: Record<string, BacktestMarket> } | null;
   // (the CHECKs' tally and what drives them: checks.mjs checkSummary, check-learn.mjs checkLearning)
-  checks?: { n?: number; open?: number; unreadable?: boolean; learning?: CheckLearning | null } | null;
+  checks?: { n?: number; open?: number; unreadable?: boolean; learning?: CheckLearning | null; research?: ResearchCard | null } | null;
   // (the same-game sizing: desk.mjs sameGameOf)
   sameGame?: SameGame | null;
   // (the props' live calibration: calib.mjs fitCalib)
@@ -257,6 +257,78 @@ export interface CheckLearning {
   // apart from the causes and the advice)
   byPassAs?: Record<string, CheckTally & { open?: number }>;
   recommendations: CheckAdvice[];
+}
+
+// (the CHECKs' news research's own scorecard, state.json's checks.research: research.mjs researchCard)
+export interface ResearchBetTally {
+  n: number;
+  won: number;
+  lost: number;
+  push: number;
+  units: number;
+  withClose: number;
+  clv: number | null;
+  beat: number | null;
+  open: number;
+  byCategory?: Record<string, ResearchBetTally>;
+}
+export interface ResearchCard {
+  gate?: Record<string, { on: boolean; n: number; units: number; why: string }> | null;
+  bets: ResearchBetTally;
+  adjusted: ResearchBetTally;
+  // (the same games' other markets priced with a finding: held and tagged the same, tallied apart)
+  sameGame?: ResearchBetTally;
+  researched: number;
+  verdicts: Record<'adjust' | 'bet' | 'check', { n: number; graded: number; won: number; lost: number; units: number }>;
+  byCategory?: Record<string, { n: number; graded: number; won: number; lost: number; units: number }>;
+  feeds?: { inOurFeeds: Record<string, number>; missing: Record<string, number>; byFeed: Record<string, number> };
+}
+
+// (a row of the CHECKs panel's research table: a sport's research bets, its research-adjusted bets, or the
+// CHECKs it researched by verdict)
+export interface ResearchRow {
+  sport: string;
+  key: string;
+  label: string;
+  n: number;
+  record: string;
+  units: number | null;
+  clv: number | null;
+  open: number;
+  note: string;
+}
+
+// The research table's rows from each sport's state: its two kinds of bet (record, units, CLV, open, the gate's
+// word when it's off), what it decided on the CHECKs it looked into, and the reasons it found by whether our own
+// feeds held them
+export function researchPanelOf(states: ModelState[]): ResearchRow[] {
+  const rows: ResearchRow[] = [];
+  const rec = (t: { won: number; lost: number; push?: number }) => `${t.won}-${t.lost}${t.push ? `-${t.push}` : ''}`;
+  const cats = (o: Record<string, ResearchBetTally> | undefined) =>
+    Object.entries(o ?? {})
+      .map(([k, t]) => `${k} ${rec(t)}`)
+      .join(', ');
+  for (const s of states) {
+    const c = s.checks?.research;
+    if (!c || !c.researched) continue;
+    const off = (k: string) => (c.gate?.[k] && !c.gate[k].on ? c.gate[k].why : '');
+    rows.push({ sport: s.label, key: 'bet', label: 'Research bets (nothing found)', n: c.bets.n, record: rec(c.bets), units: c.bets.units, clv: c.bets.clv, open: c.bets.open, note: off('bet') || cats(c.bets.byCategory) });
+    rows.push({ sport: s.label, key: 'adjusted', label: 'Research-adjusted bets', n: c.adjusted.n, record: rec(c.adjusted), units: c.adjusted.units, clv: c.adjusted.clv, open: c.adjusted.open, note: off('adjusted') || [cats(c.adjusted.byCategory), c.sameGame?.n || c.sameGame?.open ? `same game ${rec(c.sameGame)}${c.sameGame.open ? ` (${c.sameGame.open} open)` : ''}` : ''].filter(Boolean).join('; ') });
+    const v = c.verdicts;
+    const sum = (o: Record<string, number> | undefined) => Object.values(o ?? {}).reduce((a, b) => a + b, 0);
+    rows.push({
+      sport: s.label,
+      key: 'verdicts',
+      label: `CHECKs researched: ${c.researched}`,
+      n: v.adjust.graded + v.bet.graded + v.check.graded,
+      record: '-',
+      units: null,
+      clv: null,
+      open: 0,
+      note: `${v.adjust.n} into the inputs, ${v.bet.n} bet, ${v.check.n} still CHECKs; reasons in our feeds ${sum(c.feeds?.inOurFeeds)}, not ${sum(c.feeds?.missing)}`,
+    });
+  }
+  return rows;
 }
 
 export type Change = { at: string; what: string; from: number; to: number; why: string; sport?: string };

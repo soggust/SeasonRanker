@@ -1,5 +1,5 @@
 // The desk's two AI additions with their own caps (libs/ranker/scripts/model): the CHECKs' research's budget and
-// trial (ai-budget.mjs researchBudget, research.mjs trialOf), and the news signals (news-signals.mjs: Haiku
+// every-CHECK reach (ai-budget.mjs researchBudget, research.mjs researchChecks), and the news signals (news-signals.mjs: Haiku
 // reading the teams' stories for role changes, log only). No live calls: every client is a mock.
 
 import assert from 'node:assert/strict';
@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { aiBudget, capsFrom, costOf, newsBudget, NEWS_CAPS, researchBudget, RESEARCH_CAPS } from '../libs/ranker/scripts/model/ai-budget.mjs';
-import { researchChecks, trialOf, measuredWords, ESTIMATE as RESEARCH_ESTIMATE } from '../libs/ranker/scripts/model/research.mjs';
+import { researchChecks, measuredWords, ESTIMATE as RESEARCH_ESTIMATE } from '../libs/ranker/scripts/model/research.mjs';
 import { ESTIMATE, MIN_CONF, newsSignals, pageOf, readLog, signalsOf, SIGNALS_MODEL } from '../libs/ranker/scripts/model/news-signals.mjs';
 import { researchRow } from '../libs/ranker/scripts/model/picks.mjs';
 import { teamStoryOf } from '../libs/ranker/scripts/model/news.mjs';
@@ -20,10 +20,15 @@ const tmp = (name) => fs.mkdtempSync(path.join(os.tmpdir(), `${name}-`));
 
 test('capsFrom: the defaults unset or unreadable, a variable held to its ceiling and above 0', () => {
   const ceiling = { day: 1, month: 20 };
-  assert.deepEqual(capsFrom({}, 'X', RESEARCH_CAPS, ceiling), { day: 0.5, month: 12 });
-  assert.deepEqual(capsFrom({ X_DAILY_USD: '', X_MONTHLY_USD: 'lots' }, 'X', RESEARCH_CAPS, ceiling), { day: 0.5, month: 12 });
+  assert.deepEqual(capsFrom({}, 'X', { day: 0.5, month: 12 }, ceiling), { day: 0.5, month: 12 });
+  assert.deepEqual(capsFrom({ X_DAILY_USD: '', X_MONTHLY_USD: 'lots' }, 'X', { day: 0.5, month: 12 }, ceiling), { day: 0.5, month: 12 });
   assert.deepEqual(capsFrom({ X_DAILY_USD: '0.25', X_MONTHLY_USD: '8' }, 'X', RESEARCH_CAPS, ceiling), { day: 0.25, month: 8 });
   assert.deepEqual(capsFrom({ X_DAILY_USD: '50', X_MONTHLY_USD: '-3' }, 'X', RESEARCH_CAPS, ceiling), { day: 1, month: 0 });
+  // (the research's: $5 a day and $80 a month, the owner's (2026-10-17); a variable lowers them, never raises them)
+  assert.deepEqual(RESEARCH_CAPS, { day: 5, month: 80 });
+  assert.deepEqual(researchBudget({ env: {}, file: null, floor: null, now }).caps, { day: 5, month: 80 });
+  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '9', CHECK_RESEARCH_MONTHLY_USD: '500' }, file: null, floor: null, now }).caps, { day: 5, month: 80 });
+  assert.deepEqual(researchBudget({ env: { CHECK_RESEARCH_DAILY_USD: '2' }, file: null, floor: null, now }).caps, { day: 2, month: 80 });
 });
 
 test("the research's and the news's budgets: their own logs and caps, apart from the write-ups' (none counts the others')", () => {
@@ -36,16 +41,16 @@ test("the research's and the news's budgets: their own logs and caps, apart from
   assert.equal(aiBudget({ file: writeups, now }).left(), 0);
   const r = researchBudget({ env: {}, file: rfile, floor: null, now });
   assert.deepEqual(r.caps, RESEARCH_CAPS);
-  assert.equal(r.left(), 0.5);
+  assert.equal(r.left(), 5);
   const n = newsBudget({ env: {}, file: nfile, floor: null, now });
   assert.deepEqual(n.caps, NEWS_CAPS);
   assert.equal(n.left(), 0.15);
-  // (the research's day cap: $0.50, the month's $12)
-  r.record({ what: 'check-research', cost: 0.3, usage: { input_tokens: 1 } });
+  // (the research's day cap: $5, the month's $80, whichever binds first)
+  r.record({ what: 'check-research', cost: 4.8, usage: { input_tokens: 1 } });
   r.save();
   assert.equal(Math.round(researchBudget({ env: {}, file: rfile, floor: null, now }).left() * 100) / 100, 0.2);
   assert.equal(researchBudget({ env: {}, file: rfile, floor: null, now }).canSpend(RESEARCH_ESTIMATE), false);
-  fs.writeFileSync(rfile, JSON.stringify({ entries: [{ at: '2026-10-02T00:00:00Z', cost: 11.9 }] }));
+  fs.writeFileSync(rfile, JSON.stringify({ entries: [{ at: '2026-10-02T00:00:00Z', cost: 79.9 }] }));
   assert.equal(researchBudget({ env: {}, file: rfile, floor: null, now }).canSpend(0.2), false);
   // (a variable lowers it)
   assert.equal(newsBudget({ env: { NEWS_SIGNALS_DAILY_USD: '0.05' }, file: nfile, floor: null, now }).left(), 0.05);
@@ -92,38 +97,33 @@ function mockClient(answers) {
 const rcheck = (id, gap = 0.2) => ({ id, event: '401', sport: 'nfl', start: '2026-10-16T17:00:00Z', matchup: 'TB @ DAL', market: 'prop', propType: 'recYds', statLabel: 'Rec Yds', player: 'Mike Evans', athlete: '9', team: '27', side: 'over', line: 40, odds: -110, model: 0.5 + gap, fair: 0.5, gap, cause: 'role', status: 'check' });
 const finding = { stop_reason: 'end_turn', content: [{ type: 'text', text: '{"player":null,"status":"unknown","reason":"none","summary":"","sources":[]}' }], usage: { input_tokens: 15000, output_tokens: 800, server_tool_use: { web_search_requests: 2 } } };
 
-test('the research trial: 3 CHECKs a day, every sport together, till 15 calls are measured; then CHECK_RESEARCH_N a sport', async () => {
+test("every open CHECK researched (the trial over): the biggest model Kelly first, one call each, till the day's cap bites", async () => {
   const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
-  assert.deepEqual(trialOf(env, null), { on: true, perDay: 3, need: 15, calls: 0 });
-  assert.equal(trialOf({ ...env, CHECK_RESEARCH_TRIAL: '0' }, null).on, false);
-  assert.equal(trialOf({ ...env, CHECK_RESEARCH_TRIAL_N: '1', CHECK_RESEARCH_TRIAL_CALLS: '4' }, null).perDay, 1);
-  const dir = tmp('trial');
+  const dir = tmp('every');
   const file = path.join(dir, 'ai-usage-research.json');
-  // (two NBA calls today already: the NFL's room is one, though CHECK_RESEARCH_N would give it 5)
+  // (calls of other sports today: no trial's room any more, every sport researching its own)
   const at = now.toISOString();
   fs.writeFileSync(file, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nba', id: 'x', cost: 0.1, usage: { input_tokens: 1 } }, { at, what: 'check-research', sport: 'nba', id: 'y', cost: 0.1, usage: { input_tokens: 1 } }] }));
-  const checks = [rcheck('a', 0.3), rcheck('b', 0.25), rcheck('c', 0.2)];
-  let client = mockClient([{ ...finding }, { ...finding }, { ...finding }]);
+  const checks = Array.from({ length: 8 }, (_, i) => rcheck(`c${i}`, 0.1 + i * 0.03));
+  const client = mockClient(Array.from({ length: 8 }, () => ({ ...finding })));
   const lines = [];
-  const budget = researchBudget({ env, file, floor: null, now });
-  const found = await researchChecks({ sport: 'nfl', checks, now, env: { ...env, CHECK_RESEARCH_N: '5' }, budget, client, log: { log: (m) => lines.push(m), warn: () => {} } });
-  assert.equal(client.asked.length, 1);
-  assert.deepEqual([...found.keys()], ['a']);
-  // (the per-call cost said plainly: this call's dollars and tokens, every call measured so far)
+  const found = await researchChecks({ sport: 'nfl', checks, now, env, budget: researchBudget({ env, file, floor: null, now }), client, log: { log: (m) => lines.push(m), warn: () => {} } });
+  assert.equal(client.asked.length, 8);
+  assert.equal(found.size, 8);
+  // (the biggest first: the page's order)
+  assert.match(client.asked[0].messages[0].content, /"modelChance":0.81/);
   const costLine = lines.find((l) => /CHECK research cost/.test(l));
-  assert.match(costLine, /this call \$0\.0960 \(15,000 in, 800 out, 2 searches\); 3 calls measured: mean \$0\.099, highest \$0\.100; today \$0\.30 of \$0\.50/);
-  assert.ok(lines.some((l) => /trial: 3 CHECKs a day/.test(l)));
-  // (15 calls measured: the trial over, CHECK_RESEARCH_N a sport (the day's $0.50 still holds it))
-  const many = Array.from({ length: 15 }, (_, i) => ({ at: '2026-10-10T00:00:00Z', what: 'check-research', sport: 'nba', id: `m${i}`, cost: 0.01, usage: { input_tokens: 1 } }));
-  fs.writeFileSync(file, JSON.stringify({ entries: [...many, { at, what: 'check-research', sport: 'nba', id: 'x', cost: 0.01, usage: { input_tokens: 1 } }, { at, what: 'check-research', sport: 'nba', id: 'y', cost: 0.01, usage: { input_tokens: 1 } }, { at, what: 'check-research', sport: 'nba', id: 'z', cost: 0.01, usage: { input_tokens: 1 } }] }));
-  client = mockClient([{ ...finding, usage: { input_tokens: 1000, output_tokens: 100 } }, { ...finding, usage: { input_tokens: 1000, output_tokens: 100 } }]);
-  const after = researchBudget({ env, file, floor: null, now });
-  assert.equal(trialOf(env, after).on, false);
-  await researchChecks({ sport: 'nfl', checks: checks.slice(0, 2), now, env, budget: after, client, log: quiet });
-  assert.equal(client.asked.length, 2);
+  assert.match(costLine, /this call \$0\.0960 \(15,000 in, 800 out, 2 searches\); 3 calls measured: mean \$0\.099, highest \$0\.100; today \$0\.30 of \$5\.00, month \$0\.30 of \$80/);
+  assert.ok(!lines.some((l) => /trial/.test(l)));
+  // (the cap bites: $4.50 spent today, room for one worst case ($0.28) and then not another; the biggest go first)
+  fs.writeFileSync(file, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nba', id: 'x', cost: 4.5, usage: { input_tokens: 1 } }] }));
+  const tight = mockClient(Array.from({ length: 8 }, () => ({ ...finding, usage: { input_tokens: 40000, output_tokens: 5000, server_tool_use: { web_search_requests: 2 } } })));
+  const some = await researchChecks({ sport: 'nfl', checks, now, env, budget: researchBudget({ env, file, floor: null, now }), client: tight, log: quiet });
+  assert.equal(tight.asked.length, 1);
+  assert.deepEqual([...some.keys()], ['c7']);
 });
 
-test("the research's request: Opus 5.5, two searches, 5,000 tokens out; a worst case of $0.28 under the day's $0.50", async () => {
+test("the research's request: Opus 5.5, two searches, 5,000 tokens out; a worst case of $0.28 under the day's $5", async () => {
   assert.equal(Math.round(RESEARCH_ESTIMATE * 100) / 100, 0.28);
   const client = mockClient([{ ...finding }]);
   const dir = tmp('req');
@@ -134,7 +134,7 @@ test("the research's request: Opus 5.5, two searches, 5,000 tokens out; a worst 
 
 test("picks.mjs researchRow: a finding for the page, its fields checked again; the popover's view in plain words", async () => {
   const row = researchRow({ status: 'out', reason: 'injury', player: ' Chris  Godwin ', summary: 'Ruled out Friday.', sources: ['https://www.espn.com/a', 'javascript:alert(1)'], at: '2026-10-14T12:00:00.000Z', cost: 0.12, model: 'x', applied: true });
-  assert.deepEqual(row, { status: 'out', reason: 'injury', player: 'Chris Godwin', summary: 'Ruled out Friday.', sources: ['https://www.espn.com/a'], at: '2026-10-14T12:00:00.000Z', applied: true });
+  assert.deepEqual(row, { status: 'out', reason: 'injury', player: 'Chris Godwin', summary: 'Ruled out Friday.', sources: ['https://www.espn.com/a'], at: '2026-10-14T12:00:00.000Z', applied: true, verdict: 'check' });
   assert.equal(researchRow({ status: 'benched' }).status, 'unknown');
   const ui = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'ai-signals-entry.ts'), data: {} });
   const v = ui.researchView(row);

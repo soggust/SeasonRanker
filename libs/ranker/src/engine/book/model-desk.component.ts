@@ -39,7 +39,7 @@ import {
   tally,
   toWin,
 } from './desk-math';
-import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
+import { Board, CalibrationRow, Change, CheckAdvice, CheckCauseRow, ContextRow, checkPanelOf, ResearchRow, researchPanelOf, CurveLine, CurveSpot, GameDay, Meter, ModelBet, ModelState, OddsUsage, PropRow, PropType, SelfCheckFile, SelfCheckView, selfCheckPanelOf, Settled, SportTally, Tally, BacktestRow, TestNumbers, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { confidenceOf, kellyOf } from './bet-why';
 import { CheckEntry, checkBets } from './desk-notes';
@@ -205,6 +205,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the CHECKs panel: each sport's graded CHECKs by what drove them, and the advice they make: desk-model.ts checkPanelOf)
   checkCauses: CheckCauseRow[] = [];
   checkAdvice: (CheckAdvice & { sport: string })[] = [];
+  // (the CHECKs' news research's own scorecard: desk-model.ts researchPanelOf)
+  researchRows: ResearchRow[] = [];
   backtestRows: BacktestRow[] = [];
   credits: OddsUsage | null = null;
   // (the weekly self-check: each sport's on show, flags first; the checks opened, and the sports whose folded
@@ -486,6 +488,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.newsSignals = newsSignalRows(this.allNewsSignals, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
+    this.researchRows = researchPanelOf(this.states);
     const typeOf = (b: ModelBet) => `${b.sport.toUpperCase()} ${b.statLabel}`;
     const props = where((b) => b.market === 'prop');
     this.byProp = [...new Set(props.map(typeOf))].map((label) => tally(label, props.filter((b) => typeOf(b) === label)));

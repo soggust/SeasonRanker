@@ -601,7 +601,7 @@
         @if (c.reason) {
           <p class="why-note">{{ c.reason }}</p>
         }
-        <!-- (its news research, where it has one: research.mjs, Claude reading the news for the gap; a label only) -->
+        <!-- (its news research, where it has one: research.mjs, Claude reading the news for the gap, and its verdict) -->
         @if (c.research; as rs) {
           <div class="why-research">
             <p class="why-research-head">
@@ -614,6 +614,13 @@
             @if (rs.summary) {
               <p class="research-summary">{{ rs.summary }}</p>
             }
+            <p class="research-verdict" [class]="'research-verdict ' + rs.verdictTone">{{ rs.verdict }}</p>
+            @if (rs.detail || rs.feeds) {
+              <p class="research-who">{{ rs.detail ?? '' }}{{ rs.detail && rs.feeds ? ' · ' : '' }}{{ rs.feeds ?? '' }}</p>
+            }
+            @if (rs.actWhy) {
+              <p class="why-fine">{{ rs.actWhy }}</p>
+            }
             @if (rs.sources.length) {
               <p class="research-sources">
                 @for (s of rs.sources; track s.url) {
@@ -621,7 +628,7 @@
                 }
               </p>
             }
-            <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}. A label only: the bot never bets on it{{ rs.applied ? '; a note put it into the injury report' : '' }}.</p>
+            <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}.{{ rs.applied ? ' Its finding was put into this game’s injury report for the bot’s pricing.' : '' }}</p>
           </div>
         }
         <p class="why-fine">A CHECK is a market a guard stopped with a model Kelly of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): too big to bet blind. It's graded as if bet, so the bot learns whether the market or the model was right.</p>

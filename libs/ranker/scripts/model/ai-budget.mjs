@@ -69,8 +69,10 @@ const CACHE_DIR = path.resolve(import.meta.dirname, '../../../../.cache/model');
 const SPEND_DIR = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model');
 export const RESEARCH_USAGE = path.join(CACHE_DIR, 'ai-usage-research.json');
 export const RESEARCH_FLOOR = path.join(SPEND_DIR, 'ai-spend-research.json');
-export const RESEARCH_CAPS = { day: 0.5, month: 12 };
-export const RESEARCH_CEILING = { day: 1, month: 20 };
+// (the owner's, 2026-10-17: every open CHECK researched, under a hard $5 a UTC day and $80 a UTC month, every
+// sport, whichever binds first; a variable may lower them, never raise them)
+export const RESEARCH_CAPS = { day: 5, month: 80 };
+export const RESEARCH_CEILING = { day: 5, month: 80 };
 export const NEWS_USAGE = path.join(CACHE_DIR, 'ai-usage-news.json');
 export const NEWS_FLOOR = path.join(SPEND_DIR, 'ai-spend-news.json');
 export const NEWS_CAPS = { day: 0.15, month: 4 };
@@ -86,8 +88,8 @@ export function capsFrom(env, prefix, caps, ceiling) {
   return { day: one(env?.[`${prefix}_DAILY_USD`], caps.day, ceiling.day), month: one(env?.[`${prefix}_MONTHLY_USD`], caps.month, ceiling.month) };
 }
 
-// The CHECKs' research's budget (research.mjs): its own log and totals, $0.50 a day and $12 a month unless the
-// variables say otherwise ($1 and $20 at most)
+// The CHECKs' research's budget (research.mjs): its own log and totals, $5 a day and $80 a month unless the
+// variables lower them (never above)
 export const researchBudget = ({ env = process.env, file = RESEARCH_USAGE, floor = RESEARCH_FLOOR, ...rest } = {}) => aiBudget({ ...rest, file, floor, caps: capsFrom(env, 'CHECK_RESEARCH', RESEARCH_CAPS, RESEARCH_CEILING) });
 
 // The news signals' budget (news-signals.mjs): its own log and totals, $0.15 a day and $4 a month unless the

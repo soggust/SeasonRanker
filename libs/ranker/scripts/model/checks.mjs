@@ -377,7 +377,7 @@ export function markPlaced(ledger) {
   for (const c of ledger.checks ?? []) {
     const b = bets.get(c.id);
     if (c.hidden || c.bet || !b || Date.parse(b.placedAt ?? '') < Date.parse(c.firstAt ?? c.placedAt ?? '')) continue;
-    c.bet = { at: b.placedAt, side: b.side, line: b.line, odds: b.odds, units: b.units, intent: b.intent ?? null };
+    c.bet = { at: b.placedAt, side: b.side, line: b.line, odds: b.odds, units: b.units, intent: b.intent ?? null, ...(b.researchBet ? { research: 'bet' } : b.researchAdjusted ? { research: 'adjusted' } : {}) };
     n++;
   }
   return n;

@@ -2471,7 +2471,13 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
       }
     }
 
-    .research-status {
+    // (the verdict: research.mjs verdictOf, in the status's tones)
+    .research-verdict {
+      font-weight: 600;
+    }
+
+    .research-status,
+    .research-verdict {
       color: #fff;
 
       &.bad {

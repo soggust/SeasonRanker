@@ -31,6 +31,9 @@ const PROJECT = 'qbranker2026';
 export const REASONS = ['news', 'role', 'weather', 'suspension', 'market-wrong', 'other'];
 // (a note's status as the injury report words it; active: off the report)
 export const NOTE_STATUS = { out: 'Out', questionable: 'Questionable', active: null };
+// (a research finding's, research.mjs: doubtful as the report words it, limited read as questionable, the play
+// chance's handling)
+export const RESEARCH_STATUS = { ...NOTE_STATUS, doubtful: 'Doubtful', limited: 'Questionable' };
 const TIMEOUT = 15e3;
 // (the notes a run reads a page at a time, 300 a page, every page there is; MAX_PAGES only a guard against a
 // listing that never ends, warned of when it's reached)
@@ -179,7 +182,8 @@ export async function applyNotes(sport, live, upcoming, notes, { checks = [], ro
     // (the game's own copy: the league's report is one Map every game shares)
     const mine = new Map(report);
     const list = (mine.get(team) ?? []).filter((p) => String(p.id) !== n.player);
-    if (NOTE_STATUS[n.status]) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: NOTE_STATUS[n.status], from: n.from === 'research' ? 'research' : 'owner note' });
+    const word = (n.from === 'research' ? RESEARCH_STATUS : NOTE_STATUS)[n.status];
+    if (word) list.push({ id: n.player, name, pos: listed?.pos ?? '', status: word, from: n.from === 'research' ? 'research' : 'owner note' });
     mine.set(team, list);
     l.injuries = mine;
     const one = { id: n.id, event: String(game.id), team, player: n.player, name, status: n.status, ...(n.from === 'research' ? { from: 'research' } : {}) };

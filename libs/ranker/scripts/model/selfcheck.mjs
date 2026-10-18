@@ -82,6 +82,11 @@
 //             C21 the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class)
 //                 shift on the model's chance, its graded rows since the epoch, target and held-out gain; the
 //                 week's graded props of each spot, their raw chances said, as shifted, and won. A report
+//             C22 the research's repeat reasons (state.json's checks.research.reasons, research.mjs researchCard):
+//                 the week's reasons the CHECKs' news research found, grouped by what they were (category and
+//                 status) and whether our own feeds held them (inOurFeeds: known, unused, a model gap; else a
+//                 missing source), ranked by count with the stats they hit: what the next round fixes so the
+//                 same reason stops making CHECKs. A watch at REPEAT_MIN of one reason a week; never applied
 //   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
@@ -138,6 +143,7 @@ export const TITLES = {
   C19: 'Line move and bet timing (all graded)',
   C20: 'Line far from the projection (all graded)',
   C21: 'Live calibration by spot',
+  C22: 'Research repeat reasons',
 };
 
 // ---- helpers ----
@@ -1297,7 +1303,41 @@ export function c21(x) {
     how: "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
   });
 }
-export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21];
+// C22: the research's repeat reasons (see the header): the week's reasons by category, status and feed, ranked
+export const REPEAT_MIN = 3;
+export function c22(x) {
+  const card = x.state?.checks?.research;
+  if (!card) return check('C22', { status: 'partial', headline: 'No research scorecard in the state yet', how: "state.json's checks.research (research.mjs researchCard)", needs: ['state.checks.research (the desk writes it each run)'] });
+  const from = x.now.getTime() - WEEK_DAYS * DAY;
+  const week = (card.reasons ?? []).filter((e) => Date.parse(e.at ?? '') >= from);
+  const groups = new Map();
+  for (const e of week) {
+    const what = `${e.category === 'injury' && e.status ? `${e.status}-status` : e.category}`;
+    const key = `${what} ${e.inOurFeeds ? 'known, unused' : 'not in our feeds'}`;
+    const g = groups.get(key) ?? { key, what, inOurFeeds: !!e.inOurFeeds, feed: e.feed ?? null, n: 0, stats: {}, causes: {}, examples: [] };
+    g.n++;
+    if (e.stat) g.stats[e.stat] = (g.stats[e.stat] ?? 0) + 1;
+    if (e.cause) g.causes[e.cause] = (g.causes[e.cause] ?? 0) + 1;
+    if (g.examples.length < 3) g.examples.push(e.id);
+    groups.set(key, g);
+  }
+  const top = (o) => Object.entries(o).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 3).map(([k]) => k.replace(/^prop:/, ''));
+  const rows = [...groups.values()].sort((a, b) => b.n - a.n || a.key.localeCompare(b.key)).map((g, i) => ({ rank: i + 1, key: g.key, n: g.n, inOurFeeds: g.inOurFeeds, feed: g.feed, stats: top(g.stats).join(', '), causes: top(g.causes).join(', '), text: `${g.key}: ${g.n} this week${Object.keys(g.stats).length ? ` (props: ${top(g.stats).join(', ')})` : ''}` }));
+  const status = !week.length ? 'thin' : rows.some((r) => r.n >= REPEAT_MIN) ? 'watch' : 'info';
+  return check('C22', {
+    status,
+    headline: rows.length ? rows.slice(0, 3).map((r) => r.text).join('; ') : 'No reasons found by the research this week',
+    metric: 'reasons',
+    value: week.length,
+    threshold: `a watch at ${REPEAT_MIN} of one reason a week`,
+    n: week.length,
+    rows: rows.slice(0, WORST * 2),
+    examples: [...groups.values()].flatMap((g) => g.examples).slice(0, WORST),
+    how: "each reason the CHECKs' research found (research.mjs), by what it was and whether our feeds held it: known and unused a model gap, not in our feeds a missing source; ranked, for the next round to fix, never applied",
+  });
+}
+
+export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22];
 
 // The spans: the week (the 7 days to now), the baseline (the 28 before it), recent (the 28 to now)
 export function spansOf(now) {

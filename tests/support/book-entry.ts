@@ -14,7 +14,7 @@ export * from '../../libs/ranker/src/engine/book/desk-notes';
 export * from '../../libs/ranker/src/engine/book/game-menu';
 export * from '../../libs/ranker/src/engine/book/bet-sports';
 export * from '../../libs/ranker/src/engine/book/recent-form';
-export { CHECK_CAUSE_LABELS, checkPanelOf } from '../../libs/ranker/src/engine/book/desk-model';
+export { CHECK_CAUSE_LABELS, checkPanelOf, researchPanelOf } from '../../libs/ranker/src/engine/book/desk-model';
 export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/src/engine/book/desk-model';
 export * from '../../libs/ranker/src/engine/book/book-rows';
 export * from '../../libs/ranker/src/engine/player-link';

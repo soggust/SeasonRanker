@@ -89,9 +89,11 @@
 //      with its numbers), and the graded ones' hit rate and profit by cause turned into ranked
 //      recommendations (checkLearning: a blind spot to fix, a guard that could loosen, recorded, never
 //      applied by the desk) in state.json's checks.learning. With CHECK_RESEARCH=1 and an Anthropic key (never
-//      --dry), the day's biggest CHECKs researched in the news (research.mjs, under its own caps, ai-budget.mjs researchBudget, 90
-//      seconds a request and 3 minutes a run), a finding kept on its CHECK as a label only: never put into the
-//      injury report, the prices or a bet (the owner's note does that, where it's right). The teams' news
+//      --dry), every open CHECK researched in the news (research.mjs, under its own caps, ai-budget.mjs
+//      researchBudget, $5 a day and $80 a month, 90 seconds a request and 3 minutes a run), its finding the
+//      CHECK's judgment call: a real reason put into the game's inputs for this run and the market priced again
+//      (researchAdjusted), none at all the model's side bet (researchBet), both at 0.5u at most, a LIKE at most;
+//      can't tell, a CHECK. The teams' news
 //      (news.mjs: ESPN's free per-team feed, once a UTC day a team, a game's two teams every 3 hours from 36
 //      before it, cached; no AI): a story on a change of play-caller, coordinator or head coach, or a benching,
 //      flags its team's unit for its next 2 games, an owner's note with no player (reason news) its team for
@@ -150,7 +152,7 @@ import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { researchChecks } from './research.mjs';
+import { RESEARCH_UNITS, feedCheck, researchCall, researchCard, researchChecks, researchGateOf, researchNote, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -631,19 +633,59 @@ async function fitTheContext(r) {
   fitTheMargins(r);
 }
 
+// The research's verdict on each open CHECK researched (research.mjs researchCall) into r.researchCalls (id ->
+// { act, why, units?, category, note? }): an 'adjust' whose finding a status takes (researchNote) put among the
+// run's notes (notes: the owner's own on the same CHECK wins), else a CHECK; a 'bet' left to betProps. The gate
+// from every sport's ledger (this one's as read, the others' from their files: researchGateOf)
+function researchCalls(r, checks, notes) {
+  const found = (c) => r.researchFound?.get(c.id) ?? c.research ?? null;
+  const mine = (checks ?? []).filter((c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.bet && found(c));
+  if (!mine.length) return;
+  const bets = [];
+  for (const sport of Object.keys(LEAGUES)) {
+    try {
+      bets.push(...(readKept(path.join(ROOT, 'apps', sport, 'src/StaticData/model/ledger.json'), {}).bets ?? []));
+    } catch {
+      // (a ledger unread: its bets not counted)
+    }
+  }
+  r.researchGate = researchGateOf(bets);
+  for (const [k, g] of Object.entries(r.researchGate)) if (!g.on) console.log(`${r.sport}: research ${k}: ${g.why}`);
+  const by = { adjust: 0, bet: 0, check: 0 };
+  for (const c of mine) {
+    const rs = found(c);
+    let call = researchCall(c, rs, { now: r.now, gate: r.researchGate });
+    if (call.act === 'adjust') {
+      const note = notes.has(c.id) ? null : researchNote(c, rs, r.sport, { now: r.now, report: r.live?.get(String(c.event))?.injuries ?? null });
+      if (note) {
+        notes.set(c.id, note);
+        call = { ...call, note: { player: note.player, status: note.status, name: rs.player ?? null } };
+      } else call = { act: 'check', why: `${call.why}; no input of the model's takes it${notes.has(c.id) ? " (the owner's note on it wins)" : ' (no player status the report lacks)'}` };
+    }
+    r.researchCalls.set(c.id, { ...call, side: c.side, category: rs.category ?? null });
+    by[call.act]++;
+    if (DRY || call.act !== 'check') console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research verdict ${c.pick ?? c.id}: ${call.act}: ${call.why}`);
+  }
+  console.log(`${r.sport}: the research's verdicts on ${mine.length} open CHECKs: ${by.adjust} into the inputs, ${by.bet} bet on the model's side, ${by.check} CHECKs`);
+}
+
 // 2b. the owner's notes (notes.mjs: Firestore's deskNotes, read at the run's start) with a player and his
 // status put into their coming games' injury reports, flagged as an owner's note: the context, the props and
 // the inputs (an open bet on the game priced again: repriceOpen) all see it, so a CHECK can come back as a
 // real bet. A noted game's markets resting since before the note are asked about again (resting), and its
 // props are owed an ask of The Odds API the first run a note is seen (betProps). Any failure: no notes.
-// The CHECKs' news research (research.mjs: CHECK_RESEARCH=1 alone, never --dry) first: the day's biggest
-// CHECKs looked into (r.researchFound, kept on them by recordChecks) as a label only. A finding is never put
-// into the injury report: an LLM reading the web, with no person in the loop, mustn't move the prices or turn a
-// CHECK into a staked bet; the owner's note on the CHECK puts it in where it's right
+// The CHECKs' news research (research.mjs: CHECK_RESEARCH=1 alone, never --dry) first: every open CHECK looked
+// into, the biggest model Kelly first (r.researchFound, kept on them by recordChecks), and each researched one's
+// verdict (research.mjs researchCall, r.researchCalls): a real reason a status takes put into its game's report
+// copy for this run alone as a note is (from 'research'; the owner's own note on the CHECK wins), so its market
+// is re-projected and re-priced (an edge bet at 0.5u at most: researchAdjusted, placeBets); confident there's no
+// reason, the model's side bet (researchBet: betProps); can't tell, or no input takes it, a CHECK. Each kind of
+// research bet off by itself once its record says so (researchGateOf, every sport's ledger read)
 async function noteInjuries(r) {
   r.notesApplied = new Set();
   r.researchApplied = new Set();
   r.researchFound = new Map();
+  r.researchCalls = new Map();
   r.noteAt = new Map();
   r.propNoteAt = new Map();
   let checks = [];
@@ -665,6 +707,12 @@ async function noteInjuries(r) {
     console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
   }
   const notes = new Map(r.notes ?? []);
+  try {
+    researchCalls(r, checks, notes);
+  } catch (err) {
+    console.warn(`${r.sport}: the research's verdicts skipped (${err.message}): its CHECKs stay CHECKs`);
+    r.researchCalls = new Map();
+  }
   if (!notes.size) return;
   try {
     // (a shadow's never: checks.mjs shadowOf, a PASS no one sees, owes no ask)
@@ -672,6 +720,8 @@ async function noteInjuries(r) {
     const applied = await applyNotes(r.sport, r.live, r.upcoming, notes, { checks, rosterOf: (team) => roster(r.cfg.league, team, 1) });
     for (const x of applied) {
       (x.from === 'research' ? r.researchApplied : r.notesApplied).add(x.id);
+      // (a research finding's game: its bets this run researchAdjusted, at 0.5u at most: placeBets researchTag)
+      if (x.from === 'research') (r.researchEvents ??= new Map()).set(String(x.event), [...(r.researchEvents.get(String(x.event)) ?? []), { id: x.id, name: x.name, status: x.status, category: r.researchCalls?.get(x.id)?.category ?? null }]);
       const at = Date.parse(notes.get(x.id)?.at ?? '') || 0;
       r.noteAt.set(x.event, Math.max(r.noteAt.get(x.event) ?? 0, at));
       // (a prop CHECK's note alone owes its game's props an ask: betProps)
@@ -1625,6 +1675,25 @@ const standing = (r, b) => b.status === 'open' && !(DRY && !b.published && Date.
 // props sized jointly (desk.mjs sizeJointly, at the same-game correlations sameGameOf uses: r.sameGame), with its
 // other props this run's and the ones standing on it as placed (a tracked row, staking nothing, not among them;
 // the three steps desk.mjs placeGame). The rests kept
+// (a research bet's stake held to RESEARCH_UNITS; a bet on a game the research put a status into this run
+// (r.researchEvents) tagged researchAdjusted with the input changed and held the same: a LIKE at most, picks.mjs
+// levelOf; tallied apart, research.mjs researchCard)
+function researchTag(r, b) {
+  const hold = () => {
+    if (b.units > RESEARCH_UNITS) b.units = RESEARCH_UNITS;
+    if (Number.isFinite(b.trackUnits) && b.trackUnits > RESEARCH_UNITS) b.trackUnits = RESEARCH_UNITS;
+  };
+  if (b.researchBet) return hold();
+  const moved = r.researchEvents?.get(String(b.event));
+  if (!moved?.length) return;
+  // (own: the researched CHECK's own market, the scorecard's and the gate's; the game's other markets priced with it
+  // held and tagged the same, tallied apart)
+  const own = moved.find((m) => m.id === b.id);
+  b.researchAdjusted = { checks: moved.map((m) => m.id), own: !!own, input: moved.map((m) => `${m.name} ${m.status}`).join('; '), category: (own ?? moved[0]).category ?? 'other' };
+  b.context = { ...(b.context ?? {}), research: `priced with the research's ${b.researchAdjusted.input} (this run's injury report)` };
+  hold();
+}
+
 function placeBets(r) {
   const { sport } = r;
   const pending = r.pending ?? [];
@@ -1644,6 +1713,8 @@ function placeBets(r) {
   const run = r.propRun;
   // (an anytime touchdown row is tracked whatever it says: anytime.mjs trackOnly, never staked)
   for (const x of pending) trackOnly(x.bet);
+  // (a research bet held to its stake, a bet on a game the research put a status into tagged and held the same)
+  for (const x of pending) researchTag(r, x.bet);
   for (const [event, mine] of byGame) {
     const standingNow = r.ledger.bets.filter((b) => b.event === event && standing(r, b) && !ids.has(b.id));
     const plan = placeGame(mine, standingNow, sg.used, GAME_CAP, (b) => !b.published && Date.parse(b.start) - Date.now() > REPRICE_BY);
@@ -1934,6 +2005,18 @@ async function betProps(r) {
         // terms a bet would wait for: a real price, the news it waits for. An open bet taken back to price again
         // (repriceOpen) whose player's role is changing now is one of these: a CHECK, not bet again)
         // (one priced on those terms neither guard skipped: its CHECK closed, checks.mjs closeChecks)
+        // (a CHECK the research put a status into the inputs for: what it moved, its projection and chance
+        // before (as the CHECK stood) and after (this run's), the input changed, and what it is now)
+        for (const x of priced) {
+          const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+          const call = r.researchCalls?.get(id);
+          if (call?.act !== 'adjust' || !call.note) continue;
+          const before = (ledger.checks ?? []).find((c) => c.id === id);
+          const now = x.guard?.skip ? (CHECK_KINDS.has(x.guard?.kind) ? `still a CHECK (${x.guard.kind})` : `skipped (${x.guard.why})`) : x.ev > 0 ? 'an edge: to bet at 0.5u at most (researchAdjusted)' : 'no edge: passed, its CHECK closed';
+          const moved = { id, input: `${call.note.name ?? call.note.player} ${call.note.status} (the injury report, this run)`, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
+          (r.researchMoved ??= []).push(moved);
+          console.log(`${sport}${DRY ? ' (dry)' : ''}: research moved ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}; ${now}`);
+        }
         for (const x of priced) {
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
           if (!x.priced && hasKey()) {
@@ -1954,7 +2037,15 @@ async function betProps(r) {
             continue;
           }
           if (r.placed.has(id) && !DRY) continue;
-          r.checks?.push(checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard));
+          const made = checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard);
+          r.checks?.push(made);
+          // (the research confident nothing explains the gap (research.mjs researchCall 'bet'): the model's side,
+          // the side it researched, bet at 0.5u, under the props' caps as any; never from a stored price that
+          // wouldn't be bet, never a shadow. Apart from the role gate: a cause that gate bets is no CHECK here)
+          const call = r.researchCalls?.get(id);
+          if (call?.act === 'bet' && !made.hidden && made.side === call.side && !storedBet(x.prop.stored, hasKey(), r.now)) {
+            candidates.push({ game, x: { ...x, guard: { why: call.why }, units: RESEARCH_UNITS, researchBet: { check: id, category: 'market', confidence: 'high', why: call.why } }, exp });
+          }
         }
       }
       // (a noted open CHECK this game's run didn't re-price: why, kept on it (resolveChecks' held))
@@ -1985,7 +2076,8 @@ async function betProps(r) {
     // run keeps, and this run's count) and this run's. An edge bet counts only the bets against its caps (a
     // tracked row stakes nothing: no exposure); a tracked one counts every row, as the action bets did)
     // (a flagged one (a guard's cut) with an edge: bet at the minimum, as the game markets; the owner's)
-    const edge = x.ev > 0;
+    // (a research bet: the model's side on the research's word, its edge the model's own)
+    const edge = x.ev > 0 || !!x.researchBet;
     // (the stat's CLV gate (r.propGate): off, tracked, not bet, the gate's word on the row)
     const gate = r.propGate?.[x.prop.stat.key] ?? null;
     if (gate && !gate.on) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} tracked only: ${gate.why}`].filter(Boolean).join('; ') };
@@ -2001,6 +2093,7 @@ async function betProps(r) {
     x.units = Math.min(x.units, caps.maxUnits);
     if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
     const bet = propBet(r, game, x, exp, { id, ...placement(edge && !(gate && !gate.on), x.units), tested });
+    if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -2175,6 +2268,16 @@ function recordChecks(r) {
       researched++;
     }
     if (c.research && r.researchApplied?.has(c.id) && !c.research.applied) c.research = { ...c.research, applied: true };
+    // (its verdict as this run carried it out (research.mjs researchCall), the latest kept; and, a reason found,
+    // whether this run's own feeds held it, judged once (research.mjs feedCheck: the news flags read by now))
+    const call = r.researchCalls?.get(c.id);
+    const why = String(call?.why ?? '').slice(0, 300);
+    // (written again only when it changed: the file doesn't churn every hour)
+    if (c.research && call && (c.research.call?.act !== call.act || c.research.call?.why !== why)) c.research = { ...c.research, call: { act: call.act, why, at: r.now.toISOString() } };
+    if (c.research && c.research.feeds === undefined && verdictOf(c.research) !== 'check') {
+      const f = feedCheck(c.research, c, r.live?.get(String(c.event)) ?? null);
+      if (f) c.research = { ...c.research, feeds: f };
+    }
   }
   if (researched) console.log(`${sport}: ${researched} CHECKs researched (their findings kept on them)`);
   let noted = 0;
@@ -2187,6 +2290,20 @@ function recordChecks(r) {
     noted++;
   }
   if (added || updated || passed || became || closed || noted) console.log(`${sport}: CHECKs and shadows (a guard's skip kept to learn from; checks.mjs shadowOf): ${added} new (this run's: ${(r.checks ?? []).filter((c) => !c.hidden).length} shown, ${(r.checks ?? []).filter((c) => c.hidden).length} shadows), ${updated} written again${passed ? `, ${passed} passed (shown, now shadows: their price frozen)` : ''}${became ? `, ${became} bet after all` : ''}${closed ? `, ${closed} closed (the gap gone)` : ''}${noted ? `, ${noted} owner's notes kept` : ''}`);
+}
+
+// (the research's own scorecard, research.mjs researchCard: its bets and adjusted bets, its verdicts, the
+// reasons found by whether our feeds held them; and what it moved this run. A failure leaves none)
+function researchOf(r, ledger) {
+  try {
+    const card = researchCard(ledger.bets ?? [], ledger.checks ?? [], r.researchGate ?? researchGateOf(ledger.bets ?? []), r.now);
+    const t = (x) => `${x.won}-${x.lost}${x.push ? `-${x.push}` : ''} ${x.units >= 0 ? '+' : ''}${x.units}u${x.clv === null ? '' : `, CLV ${x.clv}`}`;
+    if (card.researched) console.log(`${r.sport}: research scorecard: ${card.researched} CHECKs researched; research bets ${t(card.bets)} (${card.bets.open} open); research-adjusted ${t(card.adjusted)} (${card.adjusted.open} open); reasons in our feeds ${Object.values(card.feeds.inOurFeeds).reduce((a, b) => a + b, 0)}, missing ${Object.values(card.feeds.missing).reduce((a, b) => a + b, 0)}`);
+    return { ...card, moved: (r.researchMoved ?? []).slice(0, 40) };
+  } catch (err) {
+    console.warn(`${r.sport}: the research's scorecard skipped (${err.message})`);
+    return null;
+  }
 }
 
 // (the graded CHECKs' learning, check-learn.mjs: by cause, and its ranked recommendations logged; a failure
@@ -2287,7 +2404,7 @@ function saveState(r) {
     // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)
     // (and what drives them: each graded one's cause, its hit rate and the recommendations they make,
     // check-learn.mjs checkLearning; the Algorithm tab's CHECKs panel and the weekly self-check read it)
-    checks: r.checksUnreadable ? { ...(state.checks ?? {}), unreadable: true } : { ...checkSummary(ledger.checks ?? []), learning: learningOf(r.sport, ledger.checks ?? []) },
+    checks: r.checksUnreadable ? { ...(state.checks ?? {}), unreadable: true } : { ...checkSummary(ledger.checks ?? []), learning: learningOf(r.sport, ledger.checks ?? []), research: researchOf(r, ledger) },
     // (the lines' source this run, and The Odds API's credits)
     lines: r.linesSource,
     backtest: r.backtest,

@@ -208,7 +208,7 @@ test('ai-budget: the real cost from the usage, the day and month caps, an unread
 
 test('findingOf: the JSON alone, its fields checked; athleteOf: his own id or the report\'s; researchNote: out or questionable with a source and an id', () => {
   const f = findingOf('Here: {"player":"Chris Godwin Jr.","status":"out","reason":"injury","summary":"Ruled out Friday.","sources":["https://x.com/a","javascript:alert(1)"]} done');
-  assert.deepEqual(f, { player: 'Chris Godwin Jr.', status: 'out', reason: 'injury', summary: 'Ruled out Friday.', sources: ['https://x.com/a'] });
+  assert.deepEqual(f, { player: 'Chris Godwin Jr.', status: 'out', reason: 'injury', summary: 'Ruled out Friday.', sources: ['https://x.com/a'], explains: null, category: null, confidence: 'low' });
   assert.equal(findingOf('no json').status, 'unknown');
   assert.equal(findingOf('{"status":"benched"}').status, 'unknown');
   const c = prop();
@@ -319,7 +319,8 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-log-'));
   const file = path.join(dir, 'ai-usage.json');
   const quiet = { log: () => {}, warn: () => {} };
-  const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' };
+  // (the quota set to 3 a sport a day, as it was before every CHECK was researched)
+  const env = { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test', CHECK_RESEARCH_N: '3' };
   const at = now.toISOString();
   const kept = { at, by: 'claude', status: 'out', athlete: '4241', sources: ['https://a.b'] };
   fs.writeFileSync(
@@ -355,14 +356,14 @@ test('researchChecks: off, without a key or on a dry run nothing asked; on, the 
   assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: {}, client: none, log: quiet })).size, 0);
   assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1' }, client: none, log: quiet })).size, 0);
   const dryLog = [];
-  assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, dry: true, client: none, log: { log: (m) => dryLog.push(m) } })).size, 0);
+  assert.equal((await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test', CHECK_RESEARCH_N: '3' }, dry: true, client: none, log: { log: (m) => dryLog.push(m) } })).size, 0);
   assert.equal(none.asked.length, 0);
   assert.match(dryLog[0], /would look into 2/);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-'));
   const budget = aiBudget({ file: path.join(dir, 'ai-usage.json'), now });
   const client = mockClient([answer({ player: 'Chris Godwin', status: 'out', reason: 'injury', summary: 'Out.', sources: ['https://a.b/c'] }), answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: [] })]);
   const report = new Map([['27', [{ id: '4241', name: 'Chris Godwin' }]]]);
-  const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget, client, reportOf: () => report, log: quiet });
+  const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test', CHECK_RESEARCH_N: '3' }, budget, client, reportOf: () => report, log: quiet });
   // (b and c, the biggest open model Kellys; one done today already, so two of the three; e locked, d graded)
   assert.deepEqual([...found.keys()], ['b', 'c']);
   assert.equal(found.get('b').athlete, '4241');
