@@ -1,0 +1,76 @@
+name: Design capture
+
+# Nightly pictures of the app for the design canvas: builds the NFL app with a sample signed-in wallet (the
+# capture-only patch from the design-capture branch, never committed here), opens the Book and the wallet at
+# desktop and phone size, and saves each as a design-canvas artboard on the design-boards branch. A nightly
+# Claude task publishes them to the canvas from there. Nothing here deploys or touches master.
+on:
+  schedule:
+    # (07:20 UTC: 2:20am Central, before the Claude task at 2:56)
+    - cron: "20 7 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: design-capture
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    name: Capture the Book and the wallet
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get the capture tools
+        run: |
+          git fetch --depth 1 origin design-capture
+          mkdir -p /tmp/sr-tools
+          for f in patch.py fixture.py capture.py; do git show FETCH_HEAD:tools/design-capture/$f > /tmp/sr-tools/$f; done
+
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Build with the sample wallet
+        run: |
+          python3 /tmp/sr-tools/fixture.py . /tmp/sr-fixture.json
+          python3 /tmp/sr-tools/patch.py .
+          npx ng build nfl --configuration development --output-path dist/capture/nfl
+          git checkout -- libs/ranker/src/engine/account
+
+      - name: Capture
+        run: python3 /tmp/sr-tools/capture.py . /tmp/sr-fixture.json /tmp/sr-boards | tee /tmp/sr-summary.json
+
+      - name: Save to the design-boards branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code origin design-boards >/dev/null; then
+            git fetch --depth 1 origin design-boards
+            git worktree add /tmp/boards-branch FETCH_HEAD
+            git -C /tmp/boards-branch switch -c design-boards
+          else
+            git worktree add --orphan -b design-boards /tmp/boards-branch
+          fi
+          rm -rf /tmp/boards-branch/boards && mkdir -p /tmp/boards-branch/boards
+          cp /tmp/sr-boards/* /tmp/boards-branch/boards/
+          cp /tmp/sr-summary.json /tmp/boards-branch/boards/summary.json
+          cd /tmp/boards-branch
+          git add -A boards
+          git commit -m "Design capture of master@$(git -C "$GITHUB_WORKSPACE" rev-parse --short HEAD)" || exit 0
+          git push origin design-boards
