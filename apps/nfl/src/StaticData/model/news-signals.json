@@ -3,6 +3,83 @@
  "days": 2,
  "signals": [
   {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "4431611",
+   "player": "Caleb Williams",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Sources: Bears plan to start QB Caleb Williams in Week 6 vs. Falcons",
+   "at": "2026-10-17T20:47:43.000Z"
+  },
+  {
+   "team": "17",
+   "abbr": "NE",
+   "athlete": "4047646",
+   "player": "AJ Brown",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Patriots activate WR A.J. Brown for Sunday's game vs. Jets",
+   "at": "2026-10-17T20:14:34.000Z"
+  },
+  {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "4242659",
+   "player": "Dayo Odeyingbo",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Bears CB Kyler Gordon set for 2026 debut after PUP activation",
+   "at": "2026-10-17T19:48:14.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": "2973051",
+   "player": "Taylor Moton",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
+   "at": "2026-10-17T19:23:52.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": "4058925",
+   "player": "Tershawn Wharton",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
+   "at": "2026-10-17T19:23:52.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": "4685350",
+   "player": "Trevor Etienne",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
+   "at": "2026-10-17T19:23:52.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": "4685382",
+   "player": "Omarion Hampton",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Why is Chargers RB Omarion Hampton's snap count decreasing?",
+   "at": "2026-10-17T10:00:01.000Z"
+  },
+  {
    "team": "7",
    "abbr": "DEN",
    "athlete": "4040608",
@@ -89,18 +166,7 @@
    "confidence": 0.9,
    "headline": "Jets rookie WR Omar Cooper Jr. to return vs. Patriots; RB Hall, WR Mitchell out",
    "at": "2026-10-16T18:23:12.000Z"
-  },
-  {
-   "team": "3",
-   "abbr": "CHI",
-   "athlete": "4431611",
-   "player": "Caleb Williams",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.3,
-   "headline": "Bears QB Williams unsure if he's playing, has to still go through protocols",
-   "at": "2026-10-15T23:03:35.000Z"
   }
  ],
- "at": "2026-10-17T20:23:28.041Z"
+ "at": "2026-10-18T00:04:22.565Z"
 }

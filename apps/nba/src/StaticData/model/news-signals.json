@@ -5,14 +5,47 @@
   {
    "team": "20",
    "abbr": "PHI",
-   "athlete": "3059318",
-   "player": "Joel Embiid",
-   "kind": "return",
-   "direction": "up",
+   "athlete": "3904625",
+   "player": "Tacko Fall",
+   "kind": "role",
+   "direction": "none",
    "confidence": 0.3,
-   "headline": "Maxey: Healthy Embiid 'changes everything' for Sixers",
-   "at": "2026-10-15T21:43:26.000Z"
+   "headline": "76ers, needing frontcourt help, convert 7-foot-6 Tacko Fall to two-way contract",
+   "at": "2026-10-17T16:23:33.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "SA",
+   "athlete": "4845367",
+   "player": "Stephon Castle",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Spurs' 3-guard lineup of Fox, Castle, Harper to start opener vs. Thunder",
+   "at": "2026-10-17T14:36:47.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "SA",
+   "athlete": "5037871",
+   "player": "Dylan Harper",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Spurs' 3-guard lineup of Fox, Castle, Harper to start opener vs. Thunder",
+   "at": "2026-10-17T14:36:47.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "SA",
+   "athlete": "4066259",
+   "player": "De'Aaron Fox",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Spurs' 3-guard lineup of Fox, Castle, Harper to start opener vs. Thunder",
+   "at": "2026-10-17T14:36:47.000Z"
   }
  ],
- "at": "2026-10-17T14:07:11.593Z"
+ "at": "2026-10-18T00:04:22.565Z"
 }

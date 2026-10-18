@@ -1,18 +1,6 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [
-  {
-   "team": "21",
-   "abbr": "TOR",
-   "athlete": "4874912",
-   "player": "Aatu Raty",
-   "kind": "role",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "Maple Leafs acquire Aatu Räty, send Jacob Quillan, Brandon Buhr to Canucks",
-   "at": "2026-10-15T23:02:48.000Z"
-  }
- ],
- "at": "2026-10-16T05:53:04.392Z"
+ "signals": [],
+ "at": "2026-10-18T00:04:22.565Z"
 }
