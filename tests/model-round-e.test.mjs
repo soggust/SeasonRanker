@@ -184,7 +184,7 @@ test("priceProps: the QB-out headline is no news CHECK once the report has the q
   assert.equal(priceProps('nfl', gameRow, [{ athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 45.5, open: null, prices: { over: -110, under: -110 } }], fitted, idx, { homePts: 24, awayPts: 21 }, null, { injuries: new Map([['1', out]]), rosters: new Map([['1', rosterSet]]), news: [coach] }, {}, 0.1).priced[0].guard?.kind, 'news');
 });
 
-test('propGate: a stat whose CLV over its last 200 graded props is negative is tracked only; positive, or under 40 graded, bet; game markets, voids and other sports never count', () => {
+test('propGate: a stat whose CLV over its last 200 graded props is negative is bet at the practice stake; positive, or under 40 graded, bet; game markets, voids and other sports never count', () => {
   const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev, beat: ev > 0 }, ...extra });
   const bets = [
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(i, 'recYds', -0.03)),
@@ -195,10 +195,10 @@ test('propGate: a stat whose CLV over its last 200 graded props is negative is t
     bet(302, 'recYds', 0.9, { sport: 'nba' }),
     bet(303, 'recYds', 0.9, { status: 'open' }),
   ];
-  const g = propGate(bets, 'nfl');
+  const g = propGate(bets, 'nfl', null);
   assert.equal(g.recYds.on, false);
   assert.equal(g.recYds.n, LINE_GATE_MIN);
-  assert.match(g.recYds.why, /tracked, not bet/);
+  assert.match(g.recYds.why, /^practice stake: CLV -0.03 over 40$/);
   assert.equal(g.rec.on, true);
   assert.equal(g.passYds.on, true);
   assert.match(g.passYds.why, /under 40/);

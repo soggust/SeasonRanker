@@ -24,10 +24,11 @@
 // Pricing (mma-desk.mjs): the book's line (BOOK's main pair: the point both sides are posted at, the one nearest
 // even if it lists more) against the fair chance of Over at that point: Pinnacle's pair, the vig out, where it
 // posts the same point; else the listed book with the smallest vig at that point (TOTAL_BOOKS); else the book's
-// own. TRACKED ONLY until TOTAL_LIVE bets are graded with a close (desk.mjs fitTrust's evidence), then the trust
-// path, as the moneyline's.
+// own. Bet at the practice stake (desk.mjs PRACTICE_UNITS, an edge still needed) until TOTAL_LIVE bets since the
+// league's start (MMA_START) are graded with a close (desk.mjs fitTrust's evidence), then the trust path, as the
+// moneyline's (the owner's, 2026-10-17: never tracked only, it needs practice and data).
 import { FIT_LEAGUES, TOTAL_KEYS, TOTAL_TERMS, fitLogistic, score } from './fights-model.mjs';
-import { chanceAt, decimal, fairPair, gapGuard, placement, stakeFor } from './desk.mjs';
+import { PRACTICE_UNITS, chanceAt, decimal, fairPair, gapGuard, placement, stakeFor } from './desk.mjs';
 import { BOOK, LEAGUES } from './leagues.mjs';
 import { SHARP, american } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
@@ -40,7 +41,7 @@ const BASE_KEYS = Object.entries(TOTAL_LINES).flatMap(([r, lines]) => lines.map(
 // (the books the ask names (one region's 10 at most, so one region's cost): the book and Pinnacle, and the others
 // that post MMA totals (probed 2026-10-17), any one of them the fair anchor where Pinnacle doesn't post the point)
 export const TOTAL_BOOKS = [BOOK, SHARP, 'williamhill_us', 'betonlineag', 'betus', 'coolbet', 'betanysports'];
-// (tracked only until this many total bets are graded with a close; the edge, the moneyline's)
+// (the practice stake until this many total bets are graded with a close; the edge, the moneyline's)
 export const TOTAL_LIVE = 40;
 const EV_SCALE = 0.08;
 const UNTESTED_MAX = 1;
@@ -236,7 +237,7 @@ export function totalLinesOf(ev) {
 }
 
 // The pick for a bout's total: the better side at the trusted chance. over: the model's chance of Over; lines:
-// totalLinesOf's; live: past TOTAL_LIVE graded with a close (else every row tracked, whatever its edge)
+// totalLinesOf's; live: past TOTAL_LIVE graded with a close (else an edge bet at the practice stake, PRACTICE_UNITS)
 export function totalPickFor(over, lines, trust, { live = false, untested = true, edge = LEAGUES.mma.edge } = {}) {
   const sides = ['over', 'under'].map((side) => {
     const fair = side === 'over' ? lines.fair : 1 - lines.fair;
@@ -250,14 +251,16 @@ export function totalPickFor(over, lines, trust, { live = false, untested = true
   const other = pick === sides[0] ? sides[1] : sides[0];
   const gap = gapGuard('total', pick.model, pick.fair);
   if (gap) return { skip: gap.why, pick, other };
-  const hasEdge = live && pick.ev > 0 && pick.model - pick.fair >= edge;
-  const units = untested ? Math.min(UNTESTED_MAX, pick.units) : pick.units;
-  const why = !live ? `round totals tracked only till ${TOTAL_LIVE} are graded with a close` : pick.ev <= 0 ? 'no edge at the trusted chance' : pick.model - pick.fair < edge ? `the model's lean (${round((pick.model - pick.fair) * 100, 1)} points) under the league's edge (${edge * 100})` : null;
-  return { pick, other, placed: placement(hasEdge, units), flags: [], why };
+  const hasEdge = pick.ev > 0 && pick.model - pick.fair >= edge;
+  const units = !live ? PRACTICE_UNITS : untested ? Math.min(UNTESTED_MAX, pick.units) : pick.units;
+  const practice = !live ? `practice stake: round totals till ${TOTAL_LIVE} are graded with a close` : null;
+  const why = pick.ev <= 0 ? 'no edge at the trusted chance' : pick.model - pick.fair < edge ? `the model's lean (${round((pick.model - pick.fair) * 100, 1)} points) under the league's edge (${edge * 100})` : null;
+  return { pick, other, placed: { ...placement(hasEdge, units), ...(practice && hasEdge ? { practice } : {}) }, flags: [], why: why ?? practice };
 }
 
 // (the totals' evidence count toward going live: graded, won or lost, with a close)
-export const liveCount = (bets) => bets.filter((b) => b.market === 'total' && (b.status === 'won' || b.status === 'lost') && b.clv).length;
+// (since: the league's start, MMA_START (mma-desk.mjs): an older epoch's rows don't count; null, every row)
+export const liveCount = (bets, since = null) => bets.filter((b) => b.market === 'total' && (b.status === 'won' || b.status === 'lost') && b.clv && (since == null || Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(since))).length;
 
 // A total bet against its bout (its voids as the moneyline's: voidOf, mma-desk.mjs boutVoid): won or lost by
 // how long it lasted (ESPN's last round and the clock into it), void on a no contest before the line

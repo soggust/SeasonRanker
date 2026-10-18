@@ -28,6 +28,7 @@
 import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
 import { etDay } from './sources.mjs';
+import { MODEL_EPOCH } from './leagues.mjs';
 
 // (1,000 to start, so a full slate of bets leaves most of it on hand; the desk rebuys 1,000 whenever its
 // balance would go under 0: the money's play money and every bet is data)
@@ -697,24 +698,33 @@ export function record(bets) {
 // apart from the record (state.json's tracked; the Algorithm tab's Tracked panel)
 export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => learnView({ ...b, trackUnits: 1 })));
 
-// The game lines gated by CLV (round D, 2026-10-17, the owner's #5): a sport's spreads, moneylines and totals are
-// tracked, not bet (TRACK), while its closing-line value over its last LINE_GATE_N graded line bets is negative,
-// and bet again once it's positive. The CLV read is each bet's ev (clv.mjs: its expected return at the closing
-// chance and its own price; the Algorithm tab's CLV column), averaged; the tracked rows count as evidence like the
-// bets (the same line and price, graded the same), which is what lets a gated sport earn its way back. Props are
-// never gated here (their own guards). Fewer than LINE_GATE_MIN graded with a close read: too few to judge, the
-// lines bet as before (the trust's own minimum). { on, n, ev, prob, beat, min, window }: state.json's lineGate,
-// the Algorithm tab's Tracked panel
+// The game lines gated by CLV (round D, 2026-10-17, the owner's #5), made a practice stake the same day (the owner:
+// "why would it stop betting? it should reset everything on an algorithm change, and it needs practice and data;
+// it's play money; don't chase a perfect record via confidence, improve the choices"): while a sport's closing-line
+// value over its last LINE_GATE_N graded line bets is negative, its spreads, moneylines and totals are still bet by
+// their normal rules (an edge still needed), each at the minimum (PRACTICE_UNITS, a LIKE at most: picks.mjs
+// levelOf), never turned off; positive again, full stakes per the trust. The CLV read is each bet's ev (clv.mjs:
+// its expected return at the closing chance and its own price; the Algorithm tab's CLV column), averaged; the
+// tracked rows count as evidence like the bets. Only the bets placed since the epoch count (MODEL_EPOCH,
+// leagues.mjs): an algorithm change resets the gate. Props never gated here (propGate). Fewer than LINE_GATE_MIN
+// graded with a close since the epoch: too few to judge, full stakes. { on, practice, n, ev, prob, beat, min,
+// window, epoch, why }: on is full stakes, practice its opposite; state.json's lineGate, the Algorithm tab's
+// Tracked panel
 export const LINE_GATE_N = 200;
 export const LINE_GATE_MIN = 40;
+export const PRACTICE_UNITS = 0.5;
+// (a bet placed since the epoch; epoch null: every bet)
+const sinceEpoch = (epoch) => (epoch == null ? () => true : (b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(epoch));
+const signed = (ev) => `${ev >= 0 ? '+' : ''}${ev}`;
 // The props gated by CLV, by stat (round E, 2026-10-17, the brief's #7: the line gate's twin): a stat's props (its
-// propType, e.g. recYds) are tracked, not bet, while the closing-line value of its last LINE_GATE_N graded prop bets
-// with a close is negative, and bet again once it's positive; under LINE_GATE_MIN graded with a close, too few to
-// judge, bet as before. { [stat]: { on, n, ev, beat, why } } for the stats with any graded prop; a stat not in it
-// isn't gated (none graded). state.json's propGate, the Algorithm tab's Tracked panel
-export function propGate(bets, sport) {
+// propType, e.g. recYds) bet at the practice stake (PRACTICE_UNITS, by their normal rules, an edge still needed)
+// while the closing-line value of its last LINE_GATE_N graded prop bets with a close since the epoch is negative;
+// positive, or under LINE_GATE_MIN since the epoch, full stakes. { [stat]: { on, practice, n, ev, beat, why } } for
+// the stats with any graded prop since the epoch; a stat not in it isn't gated. state.json's propGate, the
+// Algorithm tab's Tracked panel
+export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   const out = {};
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType);
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev) && b.propType).filter(sinceEpoch(epoch));
   const by = new Map();
   for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
   for (const [stat, list] of by) {
@@ -723,17 +733,32 @@ export function propGate(bets, sport) {
     const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
     const beat = round(last.filter((b) => b.clv.beat).length / n, 4);
     const on = n < LINE_GATE_MIN || ev >= 0;
-    out[stat] = { on, n, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close: under ${LINE_GATE_MIN}, bet as before` : `CLV ${ev >= 0 ? '+' : ''}${ev} over the last ${n} graded ${stat} props: bet`) : `CLV ${ev} over the last ${n} graded ${stat} props: tracked, not bet, till it's positive` };
+    out[stat] = { on, practice: !on, n, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(ev)} over the last ${n} graded ${stat} props: full stakes`) : `practice stake: CLV ${ev} over ${n}` };
   }
   return out;
 }
-export function lineGate(bets, sport) {
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev));
+export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.clv?.ev)).filter(sinceEpoch(epoch));
   const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
   const n = last.length;
   const mean = (k) => (n ? round(last.reduce((t, b) => t + (b.clv[k] ?? 0), 0) / n, 4) : null);
   const ev = mean('ev');
   const beat = n ? round(last.filter((b) => b.clv.beat).length / n, 4) : null;
   const on = n < LINE_GATE_MIN || ev >= 0;
-  return { on, n, ev, prob: mean('prob'), beat, min: LINE_GATE_MIN, window: LINE_GATE_N, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close: under ${LINE_GATE_MIN}, the lines bet as before` : `CLV ${ev >= 0 ? '+' : ''}${ev} over the last ${n} graded line bets: the lines bet`) : `CLV ${ev} over the last ${n} graded line bets: the lines tracked, not bet, till it's positive` };
+  return { on, practice: !on, n, ev, prob: mean('prob'), beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(ev)} over the last ${n} graded line bets: full stakes`) : `practice stake: CLV ${ev} over ${n}` };
 }
+
+// A new row's placement under a CLV gate (lineGate's, or a stat's propGate): the gate passing (or none), placement's;
+// failing, the same rule (an edge still bet, none tracked) at PRACTICE_UNITS, the bet marked practice (the gate's why:
+// a LIKE at most, picks.mjs levelOf). Never a tracked row for the gate's sake
+export function gatedPlacement(edge, units, gate) {
+  if (!gate || gate.on) return placement(edge, units);
+  const placed = placement(edge, PRACTICE_UNITS);
+  return placed.intent === 'edge' ? { ...placed, practice: gate.why } : placed;
+}
+
+// A research gate (research.mjs researchGateOf's { bet, adjusted }) as a practice cap, never an off switch: a kind
+// whose record would turn it off stays on, its stake held to PRACTICE_UNITS (the research bets' own cap already,
+// RESEARCH_UNITS: run.mjs researchTag), the why saying so. The bets it reads: the caller's, since the epoch
+export const practiceGates = (gates) =>
+  Object.fromEntries(Object.entries(gates ?? {}).map(([k, g]) => [k, g.on ? { ...g, practice: false } : { ...g, on: true, practice: true, why: `practice stake (${PRACTICE_UNITS}u at most): ${String(g.why).replace(/: off, the research a label only for them$/, '')}` }]));

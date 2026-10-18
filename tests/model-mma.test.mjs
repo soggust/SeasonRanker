@@ -352,13 +352,13 @@ test('settleBout on a round total: Over 2.5 wins past 2:30 of the third round, a
   assert.equal(boutSecs(boutsOf(sb)[0]), 383);
 });
 
-test('totalPickFor: tracked only till 40 graded with a close, whatever the edge; then an edge bet past the edge, 1u at most untested; past the gap it is skipped', () => {
+test('totalPickFor: the practice stake (0.5u, an edge still needed) till 40 graded with a close; then an edge bet past the edge, 1u at most untested; past the gap it is skipped', () => {
   const lines = { line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 };
-  const tracked = totalPickFor(0.6, lines, 0.5, { live: false });
+  const tracked = totalPickFor(0.56, lines, 0.5, { live: false });
   assert.equal(tracked.pick.side, 'over');
-  assert.equal(tracked.placed.intent, 'track');
-  assert.equal(tracked.placed.units, 0);
-  assert.match(tracked.why, /tracked only/);
+  assert.equal(tracked.placed.intent, 'edge');
+  assert.equal(tracked.placed.units, 0.5);
+  assert.match(tracked.why, /practice stake/);
   const live = totalPickFor(0.56, lines, 0.5, { live: true, untested: true });
   assert.equal(live.placed.intent, 'edge');
   assert.ok(live.placed.units <= 1);

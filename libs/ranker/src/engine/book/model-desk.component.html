@@ -644,7 +644,7 @@
     @if (trackedBySport.length || lineGates.length) {
     <card-panel class="tab-card group-advanced desk-wide" [label]="trackedTitle" icon="visibility" [startOpen]="false">
       <div class="group-body">
-        <!-- (the game lines' CLV gate by sport: bet, or tracked only while the sport's closing-line value over its
+        <!-- (the game lines' CLV gate by sport: full stakes, or the practice stake (0.5u) while the sport's closing-line value over its
              last 200 graded line bets is negative; state.json's lineGate, desk.mjs lineGate) -->
         @for (g of lineGates; track g.label) {
           <p class="desk-note" [class.down]="!g.on" [title]="help['lineGate']">{{ g.text }}</p>

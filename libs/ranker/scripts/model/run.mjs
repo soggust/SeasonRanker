@@ -146,7 +146,7 @@ import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly
 import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
-import { BANKROLL, MARKETS, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
@@ -653,8 +653,9 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
       // (a ledger unread: its bets not counted)
     }
   }
-  r.researchGate = researchGateOf(bets);
-  for (const [k, g] of Object.entries(r.researchGate)) if (!g.on) console.log(`${r.sport}: research ${k}: ${g.why}`);
+  // (the research gate a practice cap, never an off switch, on the bets since the epoch: desk.mjs practiceGates)
+  r.researchGate = practiceGates(researchGateOf(bets.filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH))));
+  for (const [k, g] of Object.entries(r.researchGate)) if (g.practice) console.log(`${r.sport}: research ${k}: ${g.why}`);
   const by = { adjust: 0, bet: 0, check: 0 };
   for (const c of mine) {
     const rs = found(c);
@@ -1530,10 +1531,11 @@ function stampOf(r, id, gameId) {
 // a change before the start prices it again (repriceOpen)
 function betGames(r) {
   const { sport, cfg, params, trust, at } = r;
-  // (the sport's game lines gated by its CLV (desk.mjs lineGate): off, every line this run is tracked, not bet;
-  // read once a run from the ledger as graded above, kept for the state and the Algorithm tab)
-  r.lineGate = lineGate(r.ledger?.bets ?? [], sport);
-  if (!r.lineGate.on) console.log(`${sport}: the game lines tracked only this run: ${r.lineGate.why}`);
+  // (the sport's game lines gated by its CLV since the epoch (desk.mjs lineGate): failing, every line this run is
+  // bet by its normal rules at the practice stake, never turned off; read once a run from the ledger as graded
+  // above, kept for the state and the Algorithm tab)
+  r.lineGate = lineGate(r.ledger?.bets ?? [], sport, MODEL_EPOCH);
+  if (!r.lineGate.on) console.log(`${sport}: the game lines at the practice stake this run: ${r.lineGate.why}`);
   const held = new Map();
   r.pending = [];
   // (this run's CHECKs, game markets' and props': recordChecks; and the markets it priced that the gap guard
@@ -1676,13 +1678,15 @@ function betGames(r) {
       // (on ESPN's board with a key to hand: The Odds API's price never came; for the data only)
       const noPrice = hasKey() && !apiLines;
       if (noPrice) guard = { why: [guard?.why, "no Odds API price (ESPN's board)"].filter(Boolean).join('; ') };
-      const units = guard ? 0.5 : pick.units;
+      // (the sport's lines under their CLV gate (r.lineGate): bet as ever, at the practice stake, the gate's word on
+      // the row: a cut, as a guard's, never an off switch (the owner's, 2026-10-17))
+      const practice = !r.lineGate?.on;
+      if (practice) guard = { ...(guard ?? {}), why: [guard?.why, r.lineGate.why].filter(Boolean).join('; ') };
+      const units = guard ? PRACTICE_UNITS : pick.units;
       // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
       // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,
       // tracked, not bet: desk.mjs placement)
-      // (and never while the sport's lines are gated by their CLV (r.lineGate): tracked, the gate's word on the row)
-      if (!r.lineGate?.on) guard = { ...(guard ?? {}), why: [guard?.why, `lines tracked only: ${r.lineGate.why}`].filter(Boolean).join('; ') };
-      const placed = placement(pick.ev > 0 && !noPrice && !!r.lineGate?.on, units);
+      const placed = gatedPlacement(pick.ev > 0 && !noPrice, units, r.lineGate);
       const bet = {
         id,
         event: game.id,
@@ -1861,8 +1865,8 @@ async function betProps(r) {
     r.roleGate = null;
   }
   for (const g of Object.values(r.roleGate ?? {})) if (g.on) console.log(`${sport}: ${g.why}`);
-  r.propGate = propGate(ledger.bets ?? [], sport);
-  for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props tracked only this run: ${g.why}`);
+  r.propGate = propGate(ledger.bets ?? [], sport, MODEL_EPOCH);
+  for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props at the practice stake this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
   if (sport === 'nfl') {
     r.anytimeMarket = { market: ANYTIME_TD.market, ...anytimeOn() };
@@ -2145,10 +2149,11 @@ async function betProps(r) {
     // its cause's graded CHECKs pay on the model's side) an edge on that record: past the gap its trusted chance is the
     // book's and its ev only the vig, which would track it, never bet)
     const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet;
-    // (the stat's CLV gate (r.propGate): off, tracked, not bet, the gate's word on the row)
+    // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
     const gate = r.propGate?.[x.prop.stat.key] ?? null;
-    if (gate && !gate.on) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} tracked only: ${gate.why}`].filter(Boolean).join('; ') };
-    if (x.guard) x.units = 0.5;
+    const practice = !!gate && !gate.on;
+    if (practice) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} ${gate.why}`].filter(Boolean).join('; ') };
+    if (x.guard) x.units = PRACTICE_UNITS;
     const mine = [...ledger.bets.filter((b) => b.event === game.id && b.market === 'prop' && !b.void && b.id !== id && (!DRY || b.published)), ...pendingProps(game.id)].filter((b) => !edge || !isTracked(b));
     if (r.placed.has(id) && !DRY) continue;
     const caps = capsOf(x.prop.stat.key);
@@ -2159,7 +2164,9 @@ async function betProps(r) {
     if (caps.perPlayer !== null && caps.perPlayer !== undefined && mine.filter((b) => String(b.athlete) === String(x.prop.athlete.id)).length >= caps.perPlayer) continue;
     x.units = Math.min(x.units, caps.maxUnits);
     if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
-    const bet = propBet(r, game, x, exp, { id, ...placement(edge && !(gate && !gate.on), x.units), tested });
+    const placed = gatedPlacement(edge, x.units, gate);
+    const bet = propBet(r, game, x, exp, { id, ...placed, tested });
+    if (placed.practice) bet.practice = placed.practice;
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
@@ -2370,7 +2377,7 @@ function recordChecks(r) {
 // reasons found by whether our feeds held them; and what it moved this run. A failure leaves none)
 function researchOf(r, ledger) {
   try {
-    const card = researchCard(ledger.bets ?? [], ledger.checks ?? [], r.researchGate ?? researchGateOf(ledger.bets ?? []), r.now);
+    const card = researchCard(ledger.bets ?? [], ledger.checks ?? [], r.researchGate ?? practiceGates(researchGateOf((ledger.bets ?? []).filter((b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(MODEL_EPOCH)))), r.now);
     const t = (x) => `${x.won}-${x.lost}${x.push ? `-${x.push}` : ''} ${x.units >= 0 ? '+' : ''}${x.units}u${x.clv === null ? '' : `, CLV ${x.clv}`}`;
     if (card.researched) console.log(`${r.sport}: research scorecard: ${card.researched} CHECKs researched; research bets ${t(card.bets)} (${card.bets.open} open); research-adjusted ${t(card.adjusted)} (${card.adjusted.open} open); reasons in our feeds ${Object.values(card.feeds.inOurFeeds).reduce((a, b) => a + b, 0)}, missing ${Object.values(card.feeds.missing).reduce((a, b) => a + b, 0)}`);
     return { ...card, moved: (r.researchMoved ?? []).slice(0, 40) };
@@ -2468,10 +2475,10 @@ function saveState(r) {
     // (the markets tracked, not bet (desk.mjs TRACK: no edge), at a unit each, as if bet: never in the record)
     tracked: trackedRecord(ledger.bets),
     // (the game lines' CLV gate (desk.mjs lineGate): whether this sport's lines are bet or tracked only, and why)
-    lineGate: lineGate(ledger.bets, r.sport),
+    lineGate: lineGate(ledger.bets, r.sport, MODEL_EPOCH),
     // (the props' CLV gate by stat (desk.mjs propGate) and the CHECK bar by cause (props.mjs roleGateOf), as this run
     // read them)
-    propGate: r.propGate ?? propGate(ledger.bets, r.sport),
+    propGate: r.propGate ?? propGate(ledger.bets, r.sport, MODEL_EPOCH),
     roleGate: r.roleGate ?? null,
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)

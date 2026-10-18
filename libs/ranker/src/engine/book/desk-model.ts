@@ -115,7 +115,8 @@ export interface ModelState {
   // (the model's latest major change, leagues.mjs MODEL_EPOCH: the trust fit only on bets since; the desk's record since it by default)
   epoch?: string | null;
   // (the game lines gated by their CLV, desk.mjs lineGate: on, the sport's spreads, moneylines and totals are bet;
-  // off, tracked only till its CLV over its last `window` graded line bets is positive again)
+  // off, bet at the practice stake (0.5u) till its CLV over its last `window` graded line bets since the epoch is
+  // positive again)
   lineGate?: LineGate | null;
 }
 

@@ -547,7 +547,7 @@ export function stateOf(state, { model, bt, trust, ledger, now, lines = null, od
     clv: { all: clvSummary(ledger.bets), ml: clvSummary(ledger.bets.filter((b) => b.market === 'ml')), total: clvSummary(ledger.bets.filter((b) => b.market === 'total')) },
     // (the round totals (fights-totals.mjs): the fit's terms and base rates, held out against the base rates, and
     // how near the market is to live (tracked only till TOTAL_LIVE graded with a close))
-    totals: totals ? { terms: totals.terms, base: totals.base, rows: totals.n, from: totals.from, to: totals.to, labels: Object.fromEntries(TOTAL_TERMS), test: bt?.totals ? { line25: bt.totals.line25, all: bt.totals.all, byDivision: bt.totals.byDivision } : null, live: liveCount(ledger.bets) >= TOTAL_LIVE, graded: liveCount(ledger.bets), liveAt: TOTAL_LIVE } : state.totals ?? null,
+    totals: totals ? { terms: totals.terms, base: totals.base, rows: totals.n, from: totals.from, to: totals.to, labels: Object.fromEntries(TOTAL_TERMS), test: bt?.totals ? { line25: bt.totals.line25, all: bt.totals.all, byDivision: bt.totals.byDivision } : null, live: liveCount(ledger.bets, MMA_START) >= TOTAL_LIVE, graded: liveCount(ledger.bets, MMA_START), liveAt: TOTAL_LIVE } : state.totals ?? null,
     lines: lines ?? state.lines ?? null,
     book: BOOK,
     odds: odds ?? state.odds ?? null,
@@ -659,10 +659,10 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START)), START_TRUST);
   if (trust.total && trust.total.trust !== tFitted.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, tFitted.trust, `best fit to ${tFitted.n} graded round totals and ${tFitted.clvN} closing lines (log loss ${tFitted.logLoss})`);
   trust.total = tFitted;
-  const totalsLive = liveCount(ledger.bets) >= TOTAL_LIVE;
+  const totalsLive = liveCount(ledger.bets, MMA_START) >= TOTAL_LIVE;
   if (totalsLive && !state.totalsLiveAt) {
     state.totalsLiveAt = at;
-    changelog(state, at, 'round totals staked', 0, 1, `${TOTAL_LIVE} round totals graded with a close: the market leaves tracked only for the trust path`);
+    changelog(state, at, 'round totals staked', 0, 1, `${TOTAL_LIVE} round totals graded with a close: the market leaves the practice stake for the trust path`);
   }
 
   // 5. the bouts due, priced
