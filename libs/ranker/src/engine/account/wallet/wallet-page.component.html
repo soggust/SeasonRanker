@@ -8,7 +8,7 @@
      thin progress meter, or its start. The wallet's panel, and the Book's Open tickets tab alone) -->
 <ng-template #openBoard>
 <section class="wp-panel book-board" aria-label="Open tickets" [class.shut]="!panelShown('open')">
-  <div class="wp-bar">
+  <div class="wp-bar" [class.wp-bar-fold]="!only" (click)="barClick($event, 'open')">
     @if (only) {
       <h3>Open tickets</h3>
     } @else {
@@ -91,7 +91,7 @@
      ("Settled"), and the Book's Cashed tab alone) -->
 <ng-template #cashedBoard let-title="title">
 <section class="wp-panel book-board" [attr.aria-label]="title" [class.shut]="!panelShown('settled')">
-  <div class="wp-bar">
+  <div class="wp-bar" [class.wp-bar-fold]="!only" (click)="barClick($event, 'settled')">
     @if (only) {
       <h3>{{ title }}</h3>
     } @else {
@@ -360,7 +360,7 @@
       @let youLead = h.you.profit >= h.bot.profit;
       @let gap = (h.you.profit - h.bot.profit < 0 ? -(h.you.profit - h.bot.profit) : h.you.profit - h.bot.profit);
       <section class="wp-panel heads" aria-label="You against the bot" [class.shut]="!panelShown('heads')">
-        <div class="wp-bar">
+        <div class="wp-bar wp-bar-fold" (click)="barClick($event, 'heads')">
           <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('heads')" (click)="togglePanel('heads')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Heads up</button></h3>
           @if (wallet.tally()) {
             <div class="wp-seg" role="group" aria-label="Period">
@@ -428,7 +428,7 @@
       <!-- (the leaderboards: public players only, by profit; the periods with anyone on them; each row's
            reloads beside it) -->
       <section class="wp-panel" aria-label="High rollers" [class.shut]="!panelShown('rollers')">
-        <div class="wp-bar">
+        <div class="wp-bar wp-bar-fold" (click)="barClick($event, 'rollers')">
           <h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('rollers')" (click)="togglePanel('rollers')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>High rollers</button></h3>
           @if (periods().length > 1) {
             <div class="wp-seg" role="group" aria-label="Leaderboard period">
@@ -472,7 +472,7 @@
       <!-- (and under the chips, the wall: the panel holds both, one title; the owner's note, 2026-10-17) -->
       @let wl = wall();
       <section class="wp-panel" aria-label="Trophy case" [class.shut]="!panelShown('trophies')">
-        <div class="wp-bar"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('trophies')" (click)="togglePanel('trophies')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>The trophy case</button></h3><span class="wp-bar-note"><b>{{ earnedCount() }}</b> of {{ tr.length }} chips collected</span></div>
+        <div class="wp-bar wp-bar-fold" (click)="barClick($event, 'trophies')"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('trophies')" (click)="togglePanel('trophies')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>The trophy case</button></h3><span class="wp-bar-note"><b>{{ earnedCount() }}</b> of {{ tr.length }} chips collected</span></div>
         @if (panelShown('trophies')) {
         <div class="trophies">
           @for (t of tr; track t.key) {
@@ -554,7 +554,7 @@
          red; the bar's link goes to the Book's Cashed tab -->
     @if (tellsList().length) {
       <section class="wp-panel" aria-label="Your tells" [class.shut]="!panelShown('tells')">
-        <div class="wp-bar"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('tells')" (click)="togglePanel('tells')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Your tells</button></h3><a class="wp-bar-link" href="/book" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
+        <div class="wp-bar wp-bar-fold" (click)="barClick($event, 'tells')"><h3><button type="button" class="wp-toggle" [attr.aria-expanded]="panelShown('tells')" (click)="togglePanel('tells')"><mat-icon class="panel-chevron" aria-hidden="true" fontIcon="chevron_right"></mat-icon>Your tells</button></h3><a class="wp-bar-link" href="/book" (click)="toClosed()">Every ticket you’ve cashed →</a></div>
         @if (panelShown('tells')) {
         <div class="tells">
           @for (t of tellsList(); track t.key) {

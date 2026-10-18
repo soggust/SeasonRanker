@@ -204,7 +204,7 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
     const b = board(name);
     assert.match(b, /<section class="wp-panel book-board"/, name);
     // (a plain title alone on the Book; the wallet's folds)
-    assert.match(b, /<div class="wp-bar">\s*@if \(only\) \{\s*<h3>[\s\S]*?\} @else \{\s*<h3><button type="button" class="wp-toggle"/, name);
+    assert.match(b, /<div class="wp-bar" \[class\.wp-bar-fold\]="!only" \(click\)="barClick\(\$event, '(open|settled)'\)">\s*@if \(only\) \{\s*<h3>[\s\S]*?\} @else \{\s*<h3><button type="button" class="wp-toggle"/, name);
     // (empty: the corkboard still, a post-it pinned to it saying so)
     assert.match(b, /<div class="cork cork-board board-empty">\s*<div class="postit-pinned">\s*<span class="pin" aria-hidden="true"><\/span>\s*<p class="postit" role="status">No (open|settled) bets/, name);
     assert.match(b, /<div class="cork cork-board">/, name);

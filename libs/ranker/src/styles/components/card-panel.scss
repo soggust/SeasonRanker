@@ -79,6 +79,15 @@ card-panel {
       cursor: pointer;
     }
 
+    // (a folding one: the whole bar folds it, but the page's controls on its right)
+    &.bar-fold {
+      cursor: pointer;
+
+      > [panel-actions] {
+        cursor: auto;
+      }
+    }
+
     .group-bar-icon {
       color: var(--group-color);
       @include v.icon-size(19px);

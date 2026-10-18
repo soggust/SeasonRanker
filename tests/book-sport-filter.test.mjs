@@ -198,3 +198,20 @@ test("rowClickToggles: a click on the row toggles it, not one on its controls or
   assert.equal(bets.rowClickToggles(null), false);
   for (const k of ['button', 'a', '[role="button"]', 'input', '.bet-reasons']) assert.ok(bets.ROW_CLICK_IGNORES.includes(k), k);
 });
+
+test("barClickToggles: a click anywhere on a folding panel's bar folds it, not one on the bar's own controls", () => {
+  // (a stand-in element inside the given kinds: closest answers whether any of the selector list's parts is among them)
+  const el = (...inside) => ({ closest: (sel) => (sel.split(',').map((s) => s.trim()).some((s) => inside.includes(s)) ? {} : null) });
+  // (the bar itself, its title text, a note or a stat on it: folds)
+  assert.equal(bets.barClickToggles(el()), true);
+  assert.equal(bets.barClickToggles(el('h3')), true);
+  assert.equal(bets.barClickToggles(el('.wp-bar-note')), true);
+  // (its controls: the chevron's own button (it folds on its own click, so the bar's must not fold it back), a link,
+  // a range select, a field, a tab, the page's controls on a card panel's right, a drag grip: never)
+  for (const k of ['button', 'a', 'select', 'input', 'textarea', 'label', '[role="button"]', '[role="tab"]', '[role="switch"]', 'mat-select', '[panel-actions]', '.cdk-drag-handle']) {
+    assert.ok(bets.BAR_CLICK_IGNORES.includes(k), k);
+    assert.equal(bets.barClickToggles(el(k)), false, k);
+  }
+  assert.equal(bets.barClickToggles(null), false);
+  assert.equal(bets.barClickToggles({}), false);
+});

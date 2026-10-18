@@ -189,6 +189,16 @@ $bar-tint: rgba(chip.$felt-light, 0.16);
       color: v.$text-strong;
     }
   }
+
+  // (a folding panel's bar: a click anywhere on it but its own controls folds it (fold-bar.ts; the owner's note,
+  // 2026-10-17), the chevron lightening while the pointer's on it)
+  &.wp-bar-fold {
+    cursor: pointer;
+
+    &:hover .wp-toggle .panel-chevron {
+      color: v.$text-strong;
+    }
+  }
 }
 
 .wp-bar-note {
@@ -1812,21 +1822,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 
 // (the date range: a player's card pill, its caret in gold)
 .book-select {
-  @include chip.player-card(v.$radius-pill);
-  appearance: none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23ebc56c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.18), transparent 55%),
-    linear-gradient(135deg, #1d1d1d, #121212 60%, #1a1a1a);
-  background-position:
-    right 14px center,
-    0 0,
-    0 0;
-  background-repeat: no-repeat;
-  background-size:
-    14px,
-    auto,
-    auto;
+  @include chip.player-card-select;
   color: #fff;
   cursor: pointer;
   font-family: v.$font-heading;
@@ -2242,6 +2238,8 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   box-sizing: border-box;
   color: #2b2a26;
   display: flex;
+  // (its yellow a touch greyer: the owner's note, 2026-10-17)
+  filter: saturate(0.95);
   font-family: "Permanent Marker", "Comic Sans MS", cursive;
   font-size: v.$fs-22;
   justify-content: center;

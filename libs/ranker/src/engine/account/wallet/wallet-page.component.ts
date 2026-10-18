@@ -10,6 +10,7 @@ import { recentForm } from '../../book/recent-form';
 import { PRIVACY_HASH } from '../account-page.component';
 import { LinesService } from './lines.service';
 import { WalletService } from './wallet.service';
+import { barClickToggles } from '../../fold-bar';
 import { betPlayer } from '../../player-link';
 import {
   Leaderboard,
@@ -280,6 +281,12 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     const next = new Set(this.flipped());
     if (!next.delete(panel)) next.add(panel);
     this.flipped.set(next);
+  }
+
+  // (a click anywhere on a folding panel's bar folds it, but not one on the bar's own controls (fold-bar.ts); a
+  // board standing alone on the Book's tab never folds)
+  barClick(event: MouseEvent, panel: WalletPanel): void {
+    if (!this.only && barClickToggles(event.target as Element | null)) this.togglePanel(panel);
   }
   readonly versus = computed<Versus | null>(() => {
     const ledger = this.ledger();

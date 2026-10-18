@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { barClickToggles } from '../fold-bar';
 
 // A panel, every one in the app: a bar with the section's icon and its label, and the panel's content
 // under it. Expandable (the default: the card's Season groups and Analysis sections, the filter menu's
@@ -15,7 +16,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
 @Component({
   selector: 'card-panel',
   template: `
-    <div class="group-bar">
+    <div class="group-bar" [class.bar-fold]="expandable" (click)="barClick($event)">
       @if (expandable) {
         <button type="button" class="panel-toggle" [attr.aria-expanded]="isOpen" (click)="toggle()">
           <mat-icon class="panel-chevron" fontIcon="chevron_right"></mat-icon>
@@ -75,6 +76,12 @@ export class CardPanelComponent {
   // (its own unfolding over: not a chart's or a tile's inside it, which would cut it short)
   unfolded(event: AnimationEvent): void {
     if (event.target === event.currentTarget) this.unfolding = false;
+  }
+
+  // (a click on the bar beside its toggle (its padding, the gap before the page's controls) folds it too, not one on
+  // the page's controls (fold-bar.ts; the owner's note, 2026-10-17)
+  barClick(event: MouseEvent): void {
+    if (this.expandable && barClickToggles(event.target as Element | null)) this.toggle();
   }
 
   toggle(): void {

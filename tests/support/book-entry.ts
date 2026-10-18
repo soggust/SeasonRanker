@@ -18,3 +18,4 @@ export { CHECK_CAUSE_LABELS, checkPanelOf } from '../../libs/ranker/src/engine/b
 export { selfCheckPanelOf, selfCheckCell, weekLabel } from '../../libs/ranker/src/engine/book/desk-model';
 export * from '../../libs/ranker/src/engine/book/book-rows';
 export * from '../../libs/ranker/src/engine/player-link';
+export * from '../../libs/ranker/src/engine/fold-bar';
