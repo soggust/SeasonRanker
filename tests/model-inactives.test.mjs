@@ -208,3 +208,24 @@ test('lineupRoleOf: one not usually starting in the posted five a CHECK on the u
   assert.equal(lineupRoleOf({ pid: '6', usual: null, starters: five }), null);
   assert.equal(lineupRoleOf({ pid: '6', usual: new Set(), starters: five }), null);
 });
+
+// Before a game's inactives post, ESPN's game roster carries the team's last game's didNotPlay flags (2026-10-18:
+// the Eagles' read at 11:23 ET was the Jaguars game's list to the name, DeVonta Smith on it, though he played):
+// context.mjs staleRoster, a list the same as the last game's read as not posted; lastGameOf the team's last game
+test('staleRoster and lastGameOf: last week\'s list carried over is not this week\'s inactives', async () => {
+  const { staleRoster, lastGameOf } = await import('../libs/ranker/scripts/model/context.mjs');
+  const list = (...ids) => ({ inactive: ids.map((id) => ({ id: String(id), name: '' })), starters: null });
+  assert.equal(staleRoster(list(1, 2, 3), list(3, 2, 1)), true);
+  assert.equal(staleRoster(list(1, 2, 3), list(1, 2, 4)), false);
+  assert.equal(staleRoster(list(1, 2), list(1, 2, 3)), false);
+  assert.equal(staleRoster(list(1), null), false);
+  assert.equal(staleRoster(null, list(1)), false);
+  const history = [
+    { id: 'a', home: '21', away: '30', date: '2026-10-04T17:00Z' },
+    { id: 'b', home: '30', away: '21', date: '2026-10-11T13:30Z' },
+    { id: 'c', home: '5', away: '6', date: '2026-10-12T17:00Z' },
+  ];
+  assert.equal(lastGameOf(history, '21', Date.parse('2026-10-18T17:00Z')), 'b');
+  assert.equal(lastGameOf(history, '21', Date.parse('2026-10-10T17:00Z')), 'a');
+  assert.equal(lastGameOf(history, '99', Date.parse('2026-10-18T17:00Z')), null);
+});

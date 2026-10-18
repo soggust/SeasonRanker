@@ -233,7 +233,7 @@ export async function gather(sport, cfg, history, upcoming, facts, want = () => 
   // (the NFL's and NBA's game-day rosters, a game within LINEUP_HOURS of its start: its inactives, when posted,
   // into its own injury report (the listed ones here, the regulars unlisted once the rows are read: run.mjs),
   // the NBA's starting five kept (l.gameRosters). Unposted, or failed: nothing, the report as it was)
-  if ((sport === 'nfl' || sport === 'nba') && live.size) await step('inactives', () => gameRosters(sport, cfg, upcoming, live));
+  if ((sport === 'nfl' || sport === 'nba') && live.size) await step('inactives', () => gameRosters(sport, cfg, upcoming, live, history));
   if (sport === 'nhl') {
     // (the probable starting goalies ESPN lists for each coming game: confirmed or expected)
     for (const { game, event } of upcoming) {
@@ -264,13 +264,51 @@ export const LINEUP_HOURS = { nfl: 2.5, nba: 2 };
 
 // Each coming game's posted game-day rosters (espn.mjs gameRoster) on its live facts (l.gameRosters: Map of team id
 // -> { inactive, starters }, the sides posted), its listed inactives put into its injury report (putInactives)
-async function gameRosters(sport, cfg, upcoming, live, now = Date.now()) {
+// (before a game's own inactives post, about 90 minutes before an NFL kickoff, ESPN's game roster for it carries the
+// team's last game's didNotPlay flags: 2026-10-18 the Eagles' at 11:23 ET read L. Johnson, Epps, Greenard, Barkley,
+// Brown, D. Smith, Kendall, the Jaguars game's list to the name, and DeVonta Smith, off the injury report and
+// playing, was put out. A posted list the same as the team's last game's is read as not posted yet (staleRoster);
+// the run after the real one posts reads it)
+export const POSTED_BY_MIN = 80;
+export function staleRoster(posted, prev) {
+  if (!posted?.inactive?.length || !prev?.inactive?.length) return false;
+  const a = new Set(posted.inactive.map((x) => String(x.id)));
+  const b = new Set(prev.inactive.map((x) => String(x.id)));
+  return a.size === b.size && [...a].every((id) => b.has(id));
+}
+// (a team's last game before this one in the history: its event id, or null)
+export function lastGameOf(history, team, before) {
+  let best = null;
+  for (const g of history ?? []) {
+    if (String(g.home) !== team && String(g.away) !== team) continue;
+    const t = Date.parse(g.date);
+    if (!(t < before)) continue;
+    if (!best || t > best.t) best = { id: String(g.id), t };
+  }
+  return best?.id ?? null;
+}
+async function gameRosters(sport, cfg, upcoming, live, history = [], now = Date.now()) {
   const soon = upcoming.filter(({ game }) => {
     const until = Date.parse(game.date) - now;
     return until > 0 && until <= LINEUP_HOURS[sport] * 36e5;
   });
   const asks = soon.flatMap(({ game }) => [game.home, game.away].map((team) => ({ game, team: String(team) })));
   const got = await pool(asks, 4, ({ game, team }) => gameRoster(cfg.league, game.id, team, sport));
+  // (each side's last game's list, asked only where this one reads as posted: the same list, not posted yet)
+  const prevs = await pool(asks, 4, ({ game, team }, i) => {
+    if (!got[i]?.inactive?.length) return null;
+    const prev = lastGameOf(history, team, Date.parse(game.date));
+    return prev ? gameRoster(cfg.league, prev, team, sport) : null;
+  });
+  let stale = 0;
+  // (inside POSTED_BY_MIN of the start the posting is in: a list the same as last week's then is the real one, a
+  // long absence's)
+  asks.forEach(({ game }, i) => {
+    if (Date.parse(game.date) - now < POSTED_BY_MIN * 6e4 || !staleRoster(got[i], prevs[i])) return;
+    stale++;
+    got[i] = got[i].starters ? { inactive: [], starters: got[i].starters } : null;
+  });
+  if (stale) console.log(`${sport}: game-day rosters the same as the team's last game's, read as not posted yet: ${stale} sides`);
   let posted = 0;
   asks.forEach(({ game, team }, i) => {
     if (!got[i]) return;
