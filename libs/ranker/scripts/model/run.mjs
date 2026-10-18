@@ -147,12 +147,12 @@ import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, mar
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
-import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, resolveChecks, STORED_FRESH, storedBet, upsertCheck, withStoredPrices } from './checks.mjs';
+import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchGateOf, researchInputs, verdictOf } from './research.mjs';
+import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchDecision, researchGateOf, researchInputs, researchPriced, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -360,6 +360,7 @@ function writePicks(r, alone = false) {
   if (r.checksUnreadable) out.checks = (readJson(r.files.picks, null)?.checks ?? []).filter((c) => Date.parse(c?.start) > r.now.getTime());
   if (DRY) {
     console.log(`${r.sport} (dry): ${out.checks.length} CHECKs (their own list), ${out.picks.length} picks: ${out.picks.map((p) => `${p.level} ${p.pick} (${p.score})`).join(' | ')}`);
+    console.log(`${r.sport} (dry): the CHECKs: ${out.checks.map((c) => `${c.pick} (p ${c.p}, ev ${c.ev})`).join(' | ')}`);
     return;
   }
   const changed = writeIfChanged(r.files.picks, out);
@@ -643,7 +644,9 @@ async function fitTheContext(r) {
 // team's roster (espn.mjs roster, its names and positions), read only for an 'adjust'
 async function researchCalls(r, checks, notes, rosterOf = async () => null) {
   const found = (c) => r.researchFound?.get(c.id) ?? c.research ?? null;
-  const mine = (checks ?? []).filter((c) => c && !c.hidden && !c.checkResult && !c.closedAt && !c.bet && found(c));
+  // (and one the research decided and closed on an earlier run (its call decided: passed, or priced and passed):
+  // decided again the same way, so the guard that made it a CHECK doesn't open it again the next run)
+  const mine = (checks ?? []).filter((c) => c && !c.hidden && !c.checkResult && (!c.closedAt || c.research?.call?.decided) && !c.bet && found(c));
   if (!mine.length) return;
   const bets = [];
   for (const sport of Object.keys(LEAGUES)) {
@@ -675,13 +678,17 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
         const input = got.inputs.map((x) => `${x.name ?? 'a player'} ${x.status} (${x.kind})`).join('; ');
         call = { ...call, note: { held: true, name: got.inputs[0]?.name ?? rs.player ?? null, inputs: got.inputs, input } };
         console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research inputs for ${c.pick ?? c.id}: ${input}: the model's already, priced as it stands`);
+      } else if (got.uncarried) {
+        // (a real reason the model lacks and no input of its can carry (a role alone, another reason with no
+        // player's status): passed, out of the CHECKs, the research's reason on it (recordChecks closes it))
+        call = { act: 'pass', decided: true, why: `passed: the research's reason is real and no input of the model's can carry it (${got.why}); ${call.why}` };
       } else call = { act: 'check', why: `no input of the model's takes it (${got.why}); ${call.why}` };
     }
     r.researchCalls.set(c.id, { ...call, side: c.side, category: rs.category ?? null });
-    by[call.act]++;
+    by[call.act] = (by[call.act] ?? 0) + 1;
     if (DRY || call.act !== 'check') console.log(`${r.sport}${DRY ? ' (dry)' : ''}: research verdict ${c.pick ?? c.id}: ${call.act}: ${call.why}`);
   }
-  console.log(`${r.sport}: the research's verdicts on ${mine.length} open CHECKs: ${by.adjust} into the inputs, ${by.bet} bet on the model's side, ${by.check} CHECKs`);
+  console.log(`${r.sport}: the research's verdicts on ${mine.length} open CHECKs: ${by.adjust} into the inputs, ${by.bet} bet on the model's side, ${by.pass ?? 0} passed (a reason no input carries), ${by.check} CHECKs`);
 }
 
 // 2b. the owner's notes (notes.mjs: Firestore's deskNotes, read at the run's start) with a player and his
@@ -1976,6 +1983,15 @@ async function betProps(r) {
         asked[`${game.id}:owed`] = 1;
         write(PROPS_ASKED, asked);
       }
+      // (a CHECK the research cleared to be priced (researchPriced: nothing explains the gap, or the reason in the
+      // inputs) whose stored price is stale or whose line has moved: its game's props owed an ask, once a game, so
+      // it's priced at the book's price now and decided, never left a CHECK for an old price)
+      const staleCleared = hasKey() && openChecks.some((c) => researchPriced(r.researchCalls?.get(c.id)) && (movedNoted.has(c.id) || !storedFresh(priceAtOf(c), r.now)));
+      if (staleCleared && !DRY && !asked[`${game.id}:research-owed`]) {
+        asked[`${game.id}:research-owed`] = 1;
+        asked[`${game.id}:owed`] = 1;
+        write(PROPS_ASKED, asked);
+      }
       // (asked once its props are due, once more near the start for the open ones' last line (the NFL's
       // close), and again when its props were taken back and its board has no prices (owed), at most
       // PROP_ASKS times a game: timing.mjs propAsk)
@@ -2091,42 +2107,49 @@ async function betProps(r) {
         // terms a bet would wait for: a real price, the news it waits for. An open bet taken back to price again
         // (repriceOpen) whose player's role is changing now is one of these: a CHECK, not bet again)
         // (one priced on those terms neither guard skipped: its CHECK closed, checks.mjs closeChecks)
-        // (a CHECK the research put a status into the inputs for, or found one the inputs have already (held):
-        // what it moved, its projection and chance before (as the CHECK stood) and after (this run's), the input,
-        // and what it is now. The reason in the inputs, the price decides it, not the guard that made it a CHECK
-        // (the gap's, the role's, the news's, firing again on the same doubt the research answered): an edge at
-        // the trusted chance bet at RESEARCH_UNITS at most (researchAdjusted), none passed, its CHECK closed with
-        // the reason on it. A hard skip (no price, a long shot, the skew) stands)
+        // (a CHECK the research has decided (research.mjs researchDecision): nothing explains the gap, or the
+        // reason's in the inputs (put in this run, or on the report already), priced at the market's trust, not
+        // the book's own chance the GAP's taper pins it to: an edge bet at RESEARCH_UNITS at most (researchBet or
+        // researchAdjusted, a LIKE at most), none passed; a real reason no input carries passed; either way out of
+        // the CHECKs, the reason on it. One the research can't tell is a CHECK as any (the loop below). A hard skip
+        // (a long shot, the skew, an unknown juiced price) stands. What it moved, its projection and chance before
+        // (as the CHECK stood) and after, and what it is now: r.researchMoved)
         const decided = new Set();
         for (const x of priced) {
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
           const call = r.researchCalls?.get(id);
-          if (call?.act !== 'adjust' || !call.note) continue;
+          if (!call || !(researchPriced(call) || call.act === 'pass')) continue;
+          const guarded = !!x.guard?.skip && CHECK_KINDS.has(x.guard?.kind);
+          const shadow = guarded && !!shadowOf({ cause: causeOf(x.guard), odds: x.odds, model: x.model, fair: x.fair, oddsAssumed: !x.priced });
+          const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
+          const stored = storedBet(x.prop.stored, hasKey(), r.now);
+          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow }, trust[`prop:${x.prop.stat.key}`]?.trust ?? 0.5, { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
+          // (a prop the research cleared with no CHECK guard firing now: priced by the usual rules, as before)
+          const input = call.act === 'pass' ? null : call.act === 'bet' ? 'finding: nothing explains the gap' : (call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`);
+          if (!d && (call.act !== 'adjust' || guarded)) continue;
+          const now = d ? d.why : x.guard?.skip ? `skipped (${x.guard.why})` : x.ev > 0 ? `an edge (ev +${round(x.ev, 4)} on the ${x.side} at ${round(x.p, 4)}): to bet at ${RESEARCH_UNITS}u at most (researchAdjusted)` : `no edge (ev ${round(x.ev, 4)} on the ${x.side} at ${round(x.p, 4)}): passed, its CHECK closed`;
+          if (d && d.as !== 'check') {
+            decided.add(id);
+            r.researchCalls.set(id, { ...call, decided: true, why: call.act === 'pass' ? call.why : `${now}; ${call.why}` });
+          }
+          if (d?.as === 'bet') {
+            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: 'high', why: call.why } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) } };
+            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: the ${x.guard.kind} guard's CHECK priced at the market's trust${stored === 'stale' ? ', at its stored price' : ''}` }, units: RESEARCH_UNITS, ...tag }, exp });
+          }
           const before = (ledger.checks ?? []).find((c) => c.id === id);
-          const input = call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`;
-          const ev = `ev ${x.ev > 0 ? '+' : ''}${round(x.ev, 4)} on the ${x.side} at the trusted chance ${round(x.p, 4)}`;
-          let now;
-          if (x.guard?.skip && CHECK_KINDS.has(x.guard?.kind)) {
-            const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
-            const notYet = !x.priced && hasKey() ? 'no price from the book now' : storedBet(x.prop.stored, hasKey(), r.now) ? 'its stored price not one to bet at' : news.length && phase !== 'last' ? `waiting on the news: ${news.join(', ')}` : null;
-            if (notYet) now = `still a CHECK (${x.guard.kind}) this run: ${notYet}`;
-            else if (x.ev > 0) {
-              decided.add(id);
-              const researchAdjusted = { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) };
-              candidates.push({ game, x: { ...x, guard: { why: `the research's ${input}: in the inputs, the ${x.guard.kind} guard's CHECK decided by its price` }, units: RESEARCH_UNITS, researchAdjusted }, exp });
-              now = `an edge (${ev}): bet at ${RESEARCH_UNITS}u at most (researchAdjusted), the ${x.guard.kind} guard's CHECK decided by its price`;
-            } else {
-              decided.add(id);
-              now = `no edge (${ev}): passed, its CHECK closed`;
-            }
-            r.researchCalls.set(id, { ...call, why: `${now}; ${call.why}` });
-          } else now = x.guard?.skip ? `skipped (${x.guard.why})` : x.ev > 0 ? `an edge (${ev}): to bet at ${RESEARCH_UNITS}u at most (researchAdjusted)` : `no edge (${ev}): passed, its CHECK closed`;
-          const moved = { id, input: `${input} (${call.note.held ? "on the injury report already: the model's input as it stood" : 'the injury report, this run'})`, inputs: call.note.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side }, now };
+          const p = d?.p ?? round(x.p, 4);
+          const ev = d?.ev ?? round(x.ev, 4);
+          const moved = { id, input: input === null ? "none: a reason no input of the model's carries" : call.act === 'bet' ? input : `${input} (${call.note.held ? "on the injury report already: the model's input as it stood" : 'the injury report, this run'})`, inputs: call.note?.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null, p: before?.p ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side, ...(d?.p === null ? {} : { p, ev }) }, now };
           (r.researchMoved ??= []).push(moved);
-          console.log(`${sport}${DRY ? ' (dry)' : ''}: research moved ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}; ${now}`);
+          console.log(`${sport}${DRY ? ' (dry)' : ''}: research ${d?.as ?? 'priced'} ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}${d?.p === null ? '' : `, p ${moved.before.p ?? '?'} -> ${p}, ev ${ev}`}; ${now}`);
         }
         for (const x of priced) {
           const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
+          // (one the research decided above: out of the CHECKs, whatever its price this run)
+          if (decided.has(id)) {
+            r.unchecked?.add(id);
+            continue;
+          }
           if (!x.priced && hasKey()) {
             if (!heldWhy.has(id)) heldWhy.set(id, fresh ? 'the book has no price for it now' : "no price of the book's kept, and its props not asked again this run");
             continue;
@@ -2147,13 +2170,8 @@ async function betProps(r) {
           if (r.placed.has(id) && !DRY) continue;
           const made = checkOf(propBet(r, game, x, exp, { id, intent: 'check', units: 0, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted }), x.guard);
           r.checks?.push(made);
-          // (the research confident nothing explains the gap (research.mjs researchCall 'bet'): the model's side,
-          // the side it researched, bet at 0.5u, under the props' caps as any; never from a stored price that
-          // wouldn't be bet, never a shadow. Apart from the role gate: a cause that gate bets is no CHECK here)
-          const call = r.researchCalls?.get(id);
-          if (call?.act === 'bet' && !made.hidden && made.side === call.side && !storedBet(x.prop.stored, hasKey(), r.now)) {
-            candidates.push({ game, x: { ...x, guard: { why: call.why }, units: RESEARCH_UNITS, researchBet: { check: id, category: 'market', confidence: 'high', why: call.why } }, exp });
-          }
+          // (a research bet (verdict bet: nothing explains the gap) is decided above with the rest the research
+          // cleared, priced at the market's trust; one left here is a CHECK the research didn't decide this run)
         }
       }
       // (a noted open CHECK this game's run didn't re-price: why, kept on it (resolveChecks' held))
@@ -2198,9 +2216,17 @@ async function betProps(r) {
     const caps = capsOf(x.prop.stat.key);
     const tested = caps === PROP_CAPS.tested;
     const inGame = mine.filter((b) => (tested ? true : !b.tested)).length;
-    if ((caps.perGame !== null && inGame >= caps.perGame) || (PER_GAME !== null && mine.length >= PER_GAME)) continue;
+    // (a research-decided one the caps leave out: said so, its CHECK closed all the same, betProps)
+    const capped = (why) => (x.researchBet || x.researchAdjusted) && console.log(`${sport}${DRY ? ' (dry)' : ''}: research bet ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line} not placed: ${why}`);
+    if ((caps.perGame !== null && inGame >= caps.perGame) || (PER_GAME !== null && mine.length >= PER_GAME)) {
+      capped("the game's props cap");
+      continue;
+    }
     // (one a player a game, his best return (the candidates come best first): his props rise and fall together)
-    if (caps.perPlayer !== null && caps.perPlayer !== undefined && mine.filter((b) => String(b.athlete) === String(x.prop.athlete.id)).length >= caps.perPlayer) continue;
+    if (caps.perPlayer !== null && caps.perPlayer !== undefined && mine.filter((b) => String(b.athlete) === String(x.prop.athlete.id)).length >= caps.perPlayer) {
+      capped(`one prop a player a game: ${mine.find((b) => String(b.athlete) === String(x.prop.athlete.id))?.statLabel ?? 'another'} bet on him at a better return`);
+      continue;
+    }
     x.units = Math.min(x.units, caps.maxUnits);
     if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
     const placed = gatedPlacement(edge, x.units, gate);
@@ -2363,7 +2389,10 @@ function recordChecks(r) {
   if (r.checks?.length) console.log(`${sport}: this run's CHECKs by diagnosis: ${Object.entries(diag).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ')}`);
   const became = markPlaced(r.ledger);
   const ids = new Set((r.checks ?? []).map((c) => c.id));
-  const closed = closeChecks(r.ledger, new Set([...(r.unchecked ?? [])].filter((id) => !ids.has(id))), r.now);
+  // (and the ones the research passed (researchCalls 'pass': a real reason no input carries), priced this run or
+  // not: out of the CHECKs, the reason kept on each (its research's call, below))
+  const passedByResearch = [...(r.researchCalls ?? new Map())].filter(([, call]) => call.act === 'pass').map(([id]) => id);
+  const closed = closeChecks(r.ledger, new Set([...(r.unchecked ?? []), ...passedByResearch].filter((id) => !ids.has(id))), r.now);
   // (the open CHECKs evaluated again this run, from their stored prices or on an owner's note (betProps): how
   // each came out kept on it, checks.mjs resolveChecks)
   const resolved = resolveChecks(r.ledger, r.reEval, before, r.now, r.noteHeld);
@@ -2390,7 +2419,9 @@ function recordChecks(r) {
     const call = r.researchCalls?.get(c.id);
     const why = String(call?.why ?? '').slice(0, 300);
     // (written again only when it changed: the file doesn't churn every hour)
-    if (c.research && call && (c.research.call?.act !== call.act || c.research.call?.why !== why)) c.research = { ...c.research, call: { act: call.act, why, at: r.now.toISOString() } };
+    // (decided: the research closed it (priced and bet or passed, or passed for a reason no input carries), so
+    // the next run decides it again rather than its guard opening it as a CHECK: researchCalls)
+    if (c.research && call && (c.research.call?.act !== call.act || c.research.call?.why !== why || !!c.research.call?.decided !== !!call.decided)) c.research = { ...c.research, call: { act: call.act, why, at: r.now.toISOString(), ...(call.decided ? { decided: true } : {}) } };
     // (what it moved, where the research put an input in this run (betProps r.researchMoved): the inputs, the
     // projection and the model's chance before and after, what it is now; the CHECK's popover shows it)
     const mv = (r.researchMoved ?? []).find((m) => m.id === c.id);

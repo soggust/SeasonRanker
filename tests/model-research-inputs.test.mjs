@@ -137,7 +137,7 @@ test('a QB named to start: every other QB on his roster Out (not starting), so t
   assert.equal(researchInputs(c, f, 'nba', { now, rosters: rosters() }).notes.length, 0);
 });
 
-test('a role change with no status, and a market-only or other finding: no input moves the projection, a CHECK', () => {
+test('a role change with no status, and a market-only or other finding: no input moves the projection, uncarried (passed, its reason kept: researchDecision)', () => {
   const c = check();
   const role = researchInputs(c, finding({ player: 'Darnell Washington', athlete: '4430802', status: 'active', reason: 'role', category: 'role', summary: 'Washington promoted to TE1 in two-TE sets.' }), 'nfl', { now, rosters: rosters() });
   assert.equal(role.notes.length, 0);
@@ -145,6 +145,8 @@ test('a role change with no status, and a market-only or other finding: no input
   const other = researchInputs(c, finding({ player: 'Darnell Washington', athlete: '4430802', status: 'active', reason: 'none', category: 'other', summary: 'Big favorites, more late runs.' }), 'nfl', { now, rosters: rosters() });
   assert.equal(other.notes.length, 0);
   assert.match(other.why, /no player's status the report lacks/);
+  assert.equal(role.uncarried, true);
+  assert.equal(other.uncarried, true);
   assert.equal(researchInputs(c, null, 'nfl', { now }).notes.length, 0);
 });
 

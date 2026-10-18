@@ -86,6 +86,17 @@ export function leanOf(gap, limit) {
 // trust is fit on the pricing the desk bets with
 export const chanceAt = (market, fair, model, trust) => fair + trust * leanOf(model - fair, GAP[market]);
 
+// A researched CHECK's chance (run.mjs betProps): the research found nothing to explain the gap, or a reason the
+// model's inputs carry already, so the gap's doubt (the market knowing something the model doesn't) is answered
+// and the taper's nothing past the GAP (the book's own chance, its return only the vig: a pass every time) no
+// longer applies. Priced as a prop inside the GAP is, at the market's trust, its lean held at the most one inside
+// the GAP keeps (half of it, where leanOf's taper starts): shrunk, never the whole gap
+export function clearedChanceAt(market, fair, model, trust) {
+  const half = (GAP[market] ?? 0) / 2;
+  const gap = model - fair;
+  return fair + trust * (half ? Math.sign(gap) * Math.min(Math.abs(gap), half) : gap);
+}
+
 // (a bet the live desk would never place for its model's distance from the book: gapGuard)
 export const pastGap = (market, model, fair) => !!GAP[market] && Math.abs(model - fair) > GAP[market];
 

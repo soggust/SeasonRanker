@@ -44,8 +44,10 @@
 //            (an edge bet at RESEARCH_UNITS at most, researchAdjusted, a LIKE at most; none, passed or tracked),
 //            its before and after logged. researchInputs maps it: the player's own status, a teammate's or an
 //            opponent's (found by name on the game's rosters when the report hasn't him), a quarterback named to
-//            start (the NFL: the others on his roster not starting, his listing cleared). A reason no input takes
-//            (a role with no player's status, the weather, a player the report already has) stays a CHECK. (b) 'bet': confident there is none
+//            start (the NFL: the others on his roster not starting, his listing cleared); one the report has
+//            already held as the model's input. Either way priced at the trust, not the book's pin past the GAP
+//            (researchDecision): an edge bet, none passed, out of the CHECKs. A real reason no input can carry (a
+//            role with no player's status, another with none) passed, its reason kept. (b) 'bet': confident there is none
 //            (explains false, confidence high, with sources): the model's side bet at RESEARCH_UNITS at most
 //            (researchBet, a LIKE at most), a role, news or gap CHECK whose game hasn't started. (c) 'check':
 //            it can't tell (low confidence, thin or conflicting sources, a failed or cut-short call): a CHECK
@@ -66,6 +68,7 @@
 import { checkLocked, modelKelly, shadowOf } from './checks.mjs';
 import { addUsage, costOf, loadSdk } from './ai-budget.mjs';
 import { OUT_STATUS, Q_STATUS } from './timing.mjs';
+import { clearedChanceAt, decimal } from './desk.mjs';
 
 export const RESEARCH_MODEL = 'claude-opus-5-5';
 export const TOP = 100;
@@ -297,17 +300,20 @@ const startsQb = (rs) => ['lineup', 'role'].some((k) => rs?.reason === k || rs?.
 //            questionable or doubtful on a report dated before the finding, cleared. Never where the report has
 //            the starter out (the report wins)
 //   role     a role change with no player's status: the depth chart only gates a role CHECK (props.mjs
-//            depthRoleOf), no input moves the projection: none, a CHECK
-//   other    market-only, or another reason with no player's status: none, a CHECK
+//            depthRoleOf), no input moves the projection: none, uncarried (a real reason the model lacks and no
+//            input can carry: run.mjs researchCalls passes it, out of the CHECKs, the reason on it)
+//   other    market-only, or another reason with no player's status: none, uncarried the same; and a player it
+//            names the desk can't find by his ESPN id. A finding too old or unsourced, or one the report
+//            contradicts, is none but not uncarried: the research can't tell, a CHECK still
 export function researchInputs(c, rs, sport, { now = new Date(), report = null, rosters = null } = {}) {
-  const none = (why) => ({ notes: [], inputs: [], why });
+  const none = (why, uncarried = false) => ({ notes: [], inputs: [], why, ...(uncarried ? { uncarried: true } : {}) });
   if (!rs) return none('no finding');
   const who = rs.athlete ? rosterPlayer(rosters, { id: rs.athlete }) : rosterPlayer(rosters, { name: rs.player });
   // (else by name on the game's injury report: a player on injured reserve is off the roster ESPN lists)
   const athlete = rs.athlete ? String(rs.athlete) : (who?.id ?? athleteOf(c, rs.player, report));
   const kindOf = (id, team) => (String(id) === String(c.athlete ?? '') ? 'own' : team && c.team && String(team) !== String(c.team) ? 'opponent' : 'teammate');
   if (ADJUST_STATUS.has(rs.status)) {
-    if (!athlete) return none(`${rs.player ?? 'the player it names'} not known by his ESPN id (not the CHECK's player, on the report or on the game's rosters)`);
+    if (!athlete) return none(`${rs.player ?? 'the player it names'} not known by his ESPN id (not the CHECK's player, on the report or on the game's rosters)`, true);
     const n = researchNote(c, { ...rs, athlete }, sport, { now, report });
     // (the report already has him so or worse, the finding fresh and sourced: the input the model's already, its
     // projection priced with it; held, so the price decides the CHECK, not the guard again (run.mjs betProps))
@@ -346,8 +352,8 @@ export function researchInputs(c, rs, sport, { now = new Date(), report = null, 
     // (the report and rosters already say so: the input the model's already, held as above)
     return { notes: [], inputs: [{ name: who.name, status: 'starting', kind: 'the starter, the report and rosters say so already' }], held: true, why: null };
   }
-  if (rs.category === 'role' || rs.reason === 'role') return none("a role change with no player's status: the depth chart only gates a role CHECK, no input moves the projection");
-  return none("no player's status the report lacks");
+  if (rs.category === 'role' || rs.reason === 'role') return none("a role change with no player's status: the depth chart only gates a role CHECK, no input moves the projection", true);
+  return none("no player's status the report lacks", true);
 }
 
 // (the SDK's client, loaded only when research runs; none installed, none)
@@ -542,6 +548,44 @@ export function researchCall(c, rs = c?.research, { now = new Date(), gate = nul
     return { act: 'bet', units: RESEARCH_UNITS, why: `research found no real-world reason for the gap (high confidence): ${rs.summary || 'nothing found'}` };
   }
   return { act: 'adjust', why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
+}
+
+// (a call that clears its CHECK to be priced: a 'bet' (nothing explains the gap) or an 'adjust' whose reason the
+// inputs carry (put in this run, or held: on the report already; run.mjs researchCalls' note))
+export const researchPriced = (call) => !!call && (call.act === 'bet' || (call.act === 'adjust' && !!call.note));
+
+// How the desk decides a CHECK the research answered, this run (run.mjs betProps; the owner's, 2026-10-17/18: "if
+// the book has a real reason, add it to the calculation, don't auto pass"; play money, practice and data over a
+// clean record). call: researchCalls' (act 'bet', 'adjust' with its note, 'pass'); x: the prop as priced this run
+// ({ side, fair, model, odds, push, guarded: a CHECK guard's skip (gap, role, news), shadow }); trust: its prop
+// type's; book: { keyed (The Odds API to hand), priced (a price of the book's, its own or a stored one), fresh
+// (asked this run), asksLeft, stored (checks.mjs storedBet's word: null, 'stale', 'pulled'), waiting (the news
+// it waits for, before the last chance) }. Returns null (not the research's to decide: no CHECK guard, a shadow, a
+// research bet on another side than the one it looked into, a can't-tell) or { as, p, ev, why }:
+//   bet / pass (priced)  nothing explains the gap, or the reason's in the inputs: the guard that made it a CHECK
+//            fired on the doubt the research answered, so its trust-0 pin to the book's own chance (desk.mjs leanOf
+//            past the GAP: its return only the vig, a pass every time) no longer applies: priced at the trust as a
+//            prop inside the GAP is (clearedChanceAt), an edge bet ('bet', at RESEARCH_UNITS at most, a LIKE at
+//            most), none passed; either way out of the CHECKs. A stored price too old is priced again first (run.mjs
+//            owes its game an ask); with none newer to be had, the stored one decides it (the last real price, not a
+//            CHECK kept for an old one); the book taking it down, passed
+//   pass     a real reason no input carries (a role alone, another reason with no status): passed, its words kept
+//   check    only while it waits: the news it needs, or the ask its price is owed this run
+export function researchDecision(call, x, trust = 0.5, { keyed = false, priced = true, fresh = false, asksLeft = true, stored = null, waiting = [] } = {}) {
+  if (!call || !x?.guarded || x.shadow) return null;
+  if (call.act === 'pass') return { as: 'pass', p: null, ev: null, why: call.why };
+  if (!researchPriced(call)) return null;
+  if (call.act === 'bet' && call.side && x.side !== call.side) return null;
+  const p = r4(clearedChanceAt('prop', x.fair, x.model, trust));
+  const ev = r4((1 - (x.push ?? 0)) * (p * decimal(x.odds) - 1));
+  const words = `ev ${ev > 0 ? '+' : ''}${ev} on the ${x.side} at ${p} (the trust ${r2(trust)}, its lean held inside the GAP; the book's ${r4(x.fair)})`;
+  if (waiting?.length) return { as: 'check', p, ev, why: `still a CHECK this run: waiting on the news: ${waiting.join(', ')}` };
+  const noPrice = !priced && keyed;
+  if (noPrice && !fresh && asksLeft) return { as: 'check', p, ev, why: "still a CHECK this run: no price of the book's yet, its props owed an ask" };
+  if (noPrice || stored === 'pulled') return { as: 'pass', p, ev, why: `passed: the book has no price for it now (${noPrice ? 'not on its board' : 'taken down'})` };
+  const at = stored === 'stale' ? ' (at its stored price: none newer to be had this run)' : '';
+  if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet at ${RESEARCH_UNITS}u at most (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
+  return { as: 'pass', p, ev, why: `no edge (${words})${at}: passed, out of the CHECKs` };
 }
 
 // The research bets' gate, each kind its own (bet: researchBet, adjusted: researchAdjusted), every sport's bets
