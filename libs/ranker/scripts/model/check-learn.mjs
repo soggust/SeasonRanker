@@ -45,8 +45,9 @@
 //              more) a confirmed blind spot, the market right, named with its evidence and the fix it points
 //              to (FIXES); one under it but not yet clear a lean to watch; one whose interval sits over its
 //              break-even a guard that can loosen, with the threshold change it supports (loosenFor). Never
-//              applied by the desk: a loosening is recorded (ready only with LOOSEN_N graded or more and the
-//              interval's low end LOOSEN_MARGIN over the break-even), for the owner to make by hand
+//              applied by the desk at once: a loosening is ready only with LOOSEN_N graded or more and the
+//              interval's low end LOOSEN_MARGIN over the break-even, and then applied softly (loosenings, below:
+//              a weight shrunk by its evidence, stepped LOOSEN_STEP a run, back down when the record turns)
 
 import { decimal, GAP } from './desk.mjs';
 import { ROLE } from './props.mjs';
@@ -320,7 +321,7 @@ export function checkLearning(all = []) {
         confirmed: ready,
         evidence,
         change: { ...change, ready, applied: false },
-        text: `Guard can loosen: ${label}, the model right (${ev}). Supports ${change.guard} ${change.from} → ${change.to}${ready ? '' : ` (not yet: ${LOOSEN_N} graded and the interval ${Math.round(LOOSEN_MARGIN * 100)} points clear of break-even first)`}; recorded, never applied by the desk`,
+        text: `Guard can loosen: ${label}, the model right (${ev}). Supports ${change.guard} ${change.from} → ${change.to}${ready ? ': ready, applied softly (its weight stepped toward the change each run)' : ` (not yet: ${LOOSEN_N} graded and the interval ${Math.round(LOOSEN_MARGIN * 100)} points clear of break-even first)`}`,
         score: t.profit,
       });
     }
@@ -342,4 +343,56 @@ export function checkLearning(all = []) {
     recommendations: recs.map(({ score: _s, ...r }, i) => ({ rank: i + 1, ...r })),
     thresholds: { minN: MIN_N, loosenN: LOOSEN_N, loosenMargin: LOOSEN_MARGIN },
   };
+}
+
+// ---- the loosenings applied (2026-10-18, the owner's: "apply check-learn's loosenings automatically when their own
+// stated condition is met, as soft changes") ----
+//
+// loosenings(learning, prev): each loosening the recommendations hold, moved a soft step a run toward its target
+// weight w (0: the guard as it was, 1: the whole change loosenFor names): the target 0 till it's ready (LOOSEN_N
+// decided and the interval's low end LOOSEN_MARGIN over the break-even: its own stated condition), then shrunk by
+// its evidence, decided / (decided + LOOSEN_N) x (low end - break-even) / (2 LOOSEN_MARGIN) held to 0..1 (half
+// and half at the bare condition: a quarter of the change), each run's move LOOSEN_STEP at most from the last
+// run's (prev: state.json's checkLoosen.weights), so a loosening whose record turns steps back down by itself.
+// Applied: a role guard's threshold (ROLE: few-starts, group-out, snap-jump, part-time, the line's ratios) at
+// from + (to - from) x w, the role guard reading it (props.mjs roleChangeOf role); any other cause's (the gap's
+// diagnosed causes, a role reason without a threshold, the news) as a pattern's rule (check-patterns.mjs): its
+// open CHECKs priced at the trust (a 'bet' rule) at rate w. Returns { weights, role, causes, applied }: applied
+// each one moved or held over 0, with its words, for the log and the state
+export const LOOSEN_STEP = 0.25;
+const ROLE_KEYS = { 'few-starts': ['fewStarts'], 'group-out': ['vac'], 'snap-jump': ['snapJump'], 'part-time': ['partTime'], line: ['ratioHi', 'ratioLo'] };
+const ROLE_TO = { fewStarts: (v) => Math.max(1, v - 2), vac: (v) => round(v + 0.1, 2), snapJump: (v) => round(v + 0.05, 2), partTime: (v) => round(v - 0.1, 2), ratioHi: (v) => round(v + 0.2, 2), ratioLo: (v) => round(v - 0.1, 2) };
+export function loosenings(learning, prev = {}, base = ROLE) {
+  const recs = (learning?.recommendations ?? []).filter((x) => x.kind === 'loosen');
+  const names = [...new Set([...recs.map((x) => x.cause), ...Object.keys(prev ?? {})])].sort();
+  const weights = {};
+  const role = { ...base };
+  const causes = {};
+  const applied = [];
+  for (const name of names) {
+    const x = recs.find((y) => y.cause === name);
+    const e = x?.evidence;
+    const decided = e ? e.won + e.lost : 0;
+    const ready = !!x?.change?.ready;
+    const target = ready && e?.ci && Number.isFinite(e.breakEven) ? round((decided / (decided + LOOSEN_N)) * Math.max(0, Math.min(1, (e.ci[0] - e.breakEven) / (2 * LOOSEN_MARGIN))), 3) : 0;
+    const was = Number.isFinite(prev?.[name]) ? prev[name] : 0;
+    const w = round(was + Math.max(-LOOSEN_STEP, Math.min(LOOSEN_STEP, target - was)), 3);
+    if (w > 0) weights[name] = w;
+    if (!(w > 0) && !(was > 0)) continue;
+    const [cause, sub] = name.split(':');
+    const keys = cause === 'role' ? ROLE_KEYS[sub] : null;
+    let words;
+    if (keys) {
+      for (const k of keys) {
+        const to = ROLE_TO[k](base[k]);
+        role[k] = k === 'fewStarts' ? Math.round(base[k] + (to - base[k]) * w) : round(base[k] + (to - base[k]) * w, 3);
+      }
+      words = keys.map((k) => `ROLE.${k} ${base[k]} -> ${role[k]}`).join(', ');
+    } else {
+      causes[name] = w;
+      words = `its CHECKs priced at the trust at rate ${Math.round(w * 100)}% (a pattern's rule)`;
+    }
+    applied.push({ cause: name, w, was, target, ready, decided, text: `Loosened ${x?.label ?? name}: ${words} (weight ${was} -> ${w}, target ${target}${ready ? '' : ': not ready, stepping back'})` });
+  }
+  return { weights, role, causes, applied };
 }

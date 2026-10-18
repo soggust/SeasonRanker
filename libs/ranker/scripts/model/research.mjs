@@ -150,7 +150,7 @@ export const RESEARCH_CAUSES = new Set(['role', 'news', 'gap']);
 // (the statuses that go into the game's injury report, as notes.mjs NOTE_STATUS words them)
 export const ADJUST_STATUS = new Set(['out', 'doubtful', 'questionable', 'limited']);
 
-const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the book's line or price is far from the model, the book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game. You have ${MAX_SEARCHES} web searches in all, counting each one run from code: plan two or three focused queries (the player and his team this week, the team's injury report or depth chart for this game), not a long list. Base the answer on what the results say, and list the URLs of the results you relied on as sources.
+export const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the book's line or price is far from the model, the book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game. You have ${MAX_SEARCHES} web searches in all, counting each one run from code: plan two or three focused queries (the player and his team this week, the team's injury report or depth chart for this game), not a long list. Base the answer on what the results say, and list the URLs of the results you relied on as sources.
 
 Answer with one JSON object and nothing else:
 {"player": "the full name of the player whose status explains it (the prop's player, or a teammate whose absence or return moves his role)", "status": "out" | "doubtful" | "questionable" | "limited" | "active" | "unknown", "reason": "injury" | "role" | "suspension" | "weather" | "lineup" | "none", "explains": true | false, "category": "injury" | "role" | "suspension" | "weather" | "lineup" | "market" | "other", "confidence": "high" | "medium" | "low", "summary": "one or two plain sentences, at most 240 characters, on what you found", "sources": ["the URLs of the reports you relied on"]}
@@ -199,7 +199,7 @@ export const SEARCH_FAILED = /\b(hit|reached|exceeded|ran out of)\b[^.]{0,25}\b(
 export const searchFailed = (f) => !!f && typeof f === 'object' && f.explains !== true && SEARCH_FAILED.test(String(f.summary ?? ''));
 // (a finding of nothing: no source, no status, no reason found; or one whose search failed (searchFailed). Never
 // kept as a verdict: a failed call, asked once more (first, ahead of new CHECKs), not judged)
-export const hollow = (f) => !!f && typeof f === 'object' && !f.problem && f.explains !== true && ((f.status === 'unknown' && !(f.sources?.length > 0)) || searchFailed(f));
+export const hollow = (f) => !!f && typeof f === 'object' && !f.problem && f.by !== 'rule' && f.explains !== true && ((f.status === 'unknown' && !(f.sources?.length > 0)) || searchFailed(f));
 
 // (the URLs the answer's text blocks cite (web_search_result_location and the like), http(s) alone, in order, once)
 export function citedUrls(content) {
@@ -262,6 +262,9 @@ function verdictFields(o) {
 // not a can't-tell: the model's side priced at the trust, an edge bet, none passed. A low answer naming a real
 // reason stays a CHECK; a hollow one (a failed search) is no verdict at all, asked again)
 export function verdictOf(rs) {
+  // (a pattern's rule standing in for research (check-patterns.mjs ruleFinding): its act's verdict, a held or a pass
+  // an 'adjust' the run carries out with no input put in (run.mjs researchCalls))
+  if (rs?.by === 'rule') return rs.rule?.act === 'bet' ? 'bet' : ['held', 'pass'].includes(rs.rule?.act) ? 'adjust' : 'check';
   if (!rs || typeof rs !== 'object' || rs.problem || hollow(rs)) return 'check';
   if (rs.explains === true && rs.category !== 'market' && (rs.confidence === 'high' || rs.confidence === 'medium')) return 'adjust';
   // (2026-10-18, the owner's: "when you can't find info like Corum, at a certain point we have to just say we like
@@ -528,7 +531,7 @@ export function retryState(t = []) {
 // player, athlete, summary, sources, cost }); its failures (a Map of CHECK id -> { tries, error, next }: every try
 // of its failed, the last one's error, and what's next: 'ask', 'fallback' or 'done', given up) on it as
 // out.failures, for its CHECK's words (researchCall). reportOf(c): the CHECK's game's injury report (athleteOf)
-export async function researchChecks({ sport, checks = [], now = new Date(), env = process.env, dry = false, budget = null, client = null, reportOf = () => null, log = console, clock = Date.now } = {}) {
+export async function researchChecks({ sport, checks = [], now = new Date(), env = process.env, dry = false, budget = null, client = null, reportOf = () => null, log = console, clock = Date.now, skip = new Set() } = {}) {
   const out = new Map();
   out.failures = new Map();
   if (env.CHECK_RESEARCH !== '1') return out;
@@ -544,13 +547,14 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   for (const e of logged) tries.set(e.id, [...(tries.get(e.id) ?? []), e]);
   // (a shadow (checks.mjs shadowOf: a PASS kept to grade) never: no one sees it, so nothing is spent on it)
   // (a hollow finding kept before 2026-10-17's fix (a failed search's answer) is no finding: asked again)
-  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && (!c.research || hollow(c.research)) && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed, market: c.market, trust: c.trust, line: c.line });
+  // (a pattern's rule's finding no research: one the rule resolves this run (skip) never asked, one it dropped asked)
+  const open = (c) => c && !c.hidden && !c.checkResult && !c.closedAt && !skip.has(c.id) && (!c.research || hollow(c.research) || c.research.by === 'rule') && !shadowOf({ cause: c.cause ?? 'gap', odds: c.odds, model: c.model, fair: c.fair, oddsAssumed: !!c.oddsAssumed, market: c.market, trust: c.trust, line: c.line });
   for (const c of checks) {
     const kept = open(c) && (tries.get(c.id) ?? []).findLast((e) => e.finding && typeof e.finding === 'object' && !hollow(e.finding));
     if (kept) out.set(c.id, kept.finding);
   }
   if (out.size) log.log?.(`${sport}: ${out.size} CHECK research findings back from the usage log (their run never saved them)`);
-  const doneIds = new Set([...logged.filter((e) => e.at.slice(0, 10) === day).map((e) => e.id), ...checks.filter((c) => String(c.research?.at ?? '').slice(0, 10) === day).map((c) => c.id)]);
+  const doneIds = new Set([...logged.filter((e) => e.at.slice(0, 10) === day).map((e) => e.id), ...checks.filter((c) => c.research?.by !== 'rule' && String(c.research?.at ?? '').slice(0, 10) === day).map((c) => c.id)]);
   const room = Math.max(0, top - doneIds.size);
   // (one asked before whose every try failed or was cut short, or whose kept finding is hollow: a re-ask)
   const reAsk = (c) => (tries.get(c.id)?.length ?? 0) > 0 || hollow(c.research);
@@ -686,15 +690,17 @@ export function researchCall(c, rs = c?.research, { now = new Date(), gate = nul
   const v = verdictOf(rs);
   if (v === 'check') return { act: 'check', why: rs || failure ? (failure || hollow(rs) ? failedWords(failure) : `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})`) : 'not researched' };
   const kind = v === 'adjust' ? 'adjusted' : 'bet';
+  // (a pattern's rule's: named on the call and the bet it makes, so its graded results feed the pattern)
+  const rule = rs?.by === 'rule' ? { rule: rs.pattern, ruleAct: rs.rule?.act ?? null } : {};
   if (gate?.[kind] && !gate[kind].on) return { act: 'check', why: gate[kind].why };
   // (the level earned (researchLevelOf) and this kind's gate not at practice: its Kelly stake and its level)
   const earned = researchEarned(level, gate, kind) ? { earned: true } : {};
   if (!(Date.parse(c?.start ?? '') > now.getTime())) return { act: 'check', why: 'its game has started' };
   if (v === 'bet') {
     if (!RESEARCH_CAUSES.has(c?.cause ?? 'gap')) return { act: 'check', why: `a ${c?.cause} CHECK: not one a research bet comes from` };
-    return { act: 'bet', ...(earned.earned ? earned : { units: RESEARCH_UNITS }), confidence: rs.confidence, why: `research found no real-world reason for the gap (${rs.confidence} confidence): ${rs.summary || 'nothing found'}` };
+    return { act: 'bet', ...rule, ...(earned.earned ? earned : { units: RESEARCH_UNITS }), confidence: rs.confidence, why: `research found no real-world reason for the gap (${rs.confidence} confidence): ${rs.summary || 'nothing found'}` };
   }
-  return { act: 'adjust', ...earned, why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
+  return { act: 'adjust', ...rule, ...earned, why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
 }
 
 // (a failed call's words: its last error and what's next)
@@ -816,7 +822,7 @@ export const researchEarned = (level, gate, kind) => !!level?.earned && !gate?.[
 // null where it found no reason. True: we had it and the projection didn't use it (a model gap); false: not in
 // any feed we read (a missing source)
 export function feedCheck(rs, c, live = null) {
-  if (!rs || rs.explains !== true || verdictOf(rs) === 'check') return null;
+  if (!rs || rs.by === 'rule' || rs.explains !== true || verdictOf(rs) === 'check') return null;
   const feeds = [];
   const listed = rs.athlete ? officialEntry(live?.injuries ?? null, rs.athlete) : null;
   if (listed && severity(listed.status) > 0) feeds.push('injury report');
@@ -870,7 +876,9 @@ export function researchCard(bets = [], checks = [], gate = null, now = new Date
     for (const b of list) (out[catOf(b) ?? 'other'] ??= []).push(b);
     return Object.entries(out).sort();
   };
-  const researched = (checks ?? []).filter((c) => c && !c.hidden && c.research);
+  const researched = (checks ?? []).filter((c) => c && !c.hidden && c.research && c.research.by !== 'rule');
+  // (the CHECKs a pattern's rule resolved, no research call (check-patterns.mjs): by its act, the model's side as graded)
+  const ruled = (checks ?? []).filter((c) => c && !c.hidden && c.research?.by === 'rule');
   const verdicts = { adjust: [], bet: [], check: [] };
   for (const c of researched) verdicts[verdictOf(c.research)].push(c);
   const byCategory = {};
@@ -895,6 +903,7 @@ export function researchCard(bets = [], checks = [], gate = null, now = new Date
     adjusted: { ...betTally(ra), byCategory: Object.fromEntries(byCat(ra, (b) => b.researchAdjusted?.category ?? 'other').map(([k, l]) => [k, betTally(l)])) },
     sameGame: betTally(rg),
     researched: researched.length,
+    rule: { ...checkTally(ruled), byAct: Object.fromEntries(['bet', 'held', 'pass'].map((a) => [a, checkTally(ruled.filter((c) => c.research.rule?.act === a))])) },
     verdicts: { adjust: checkTally(verdicts.adjust), bet: checkTally(verdicts.bet), check: checkTally(verdicts.check) },
     byCategory: sortKeys(byCategory),
     feeds: { inOurFeeds: sortKeys(feeds.inOurFeeds), missing: sortKeys(feeds.missing), byFeed: sortKeys(feeds.byFeed) },

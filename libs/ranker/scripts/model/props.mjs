@@ -267,7 +267,7 @@ export function settledAbsenceOf({ vacOut = 0, ab = null } = {}) {
 export function snapSettledOf(snap) {
   return !!snap && Number.isFinite(snap.prev) && snap.latest > 0 && snap.prev >= SETTLED.snap * snap.latest;
 }
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, skips = null, snap = null, mu = null, implied = null, starts = null, rushing = false }) {
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, skips = null, snap = null, mu = null, implied = null, starts = null, rushing = false, role: R = ROLE }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
   // (no usual starter known for his team (no quarterback's passes in its games): any quarterback with a prop is
@@ -284,28 +284,28 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     if (qb1.missing >= 1 && pos !== 'QB') return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
-  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? ROLE.fewStartsRush : ROLE.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
+  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? R.fewStartsRush : R.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
   // (group-out only for an absence new to him: one he's already played through in the role it gives him
   // (settled: settledAbsenceOf) is in his recent numbers and the next-man-up terms, so it's not a CHECK)
   // (each cause it would have been, skipped as not new, pushed on skips ({ key, why }): the caller's log)
-  if (vacOut >= ROLE.vac) {
+  if (vacOut >= R.vac) {
     if (!settled) return { key: 'group-out', why: `a regular at his position out, his cut of the work missing ${pct(vacOut)}% of his own: a bigger role` };
     skips?.push({ key: 'group-out', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names || 'the regular'} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
   }
   // (snap-jump only for a jump new to him: his game before the last at SETTLED.snap of the last's share or more
   // (snapSettledOf) is two games at the new level, in his recent form already)
-  if (snap && snap.n >= 2 && snap.latest > snap.avg + ROLE.snapJump) {
+  if (snap && snap.n >= 2 && snap.latest > snap.avg + R.snapJump) {
     if (!snapSettledOf(snap)) return { key: 'snap-jump', why: `${pct(snap.latest)}% of the snaps in his last game against ${pct(snap.avg)}% this season: a bigger role` };
     skips?.push({ key: 'snap-jump', why: `jump not new: 2 games at the new level already (${pct(snap.prev)}% then ${pct(snap.latest)}% of the snaps, ${pct(snap.avg)}% this season)` });
   }
   // (part-time only where the absence is new to him: settled, he's played through it and took the work)
-  if (snap && snap.n >= 1 && snap.avg < ROLE.partTime && vacOut > 0) {
+  if (snap && snap.n >= 1 && snap.avg < R.partTime && vacOut > 0) {
     if (!settled) return { key: 'part-time', why: `a part-timer (${pct(snap.avg)}% of the snaps this season) with a regular at his position out` };
     skips?.push({ key: 'part-time', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names || 'the regular'} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
   }
   if (Number.isFinite(implied) && mu > 0) {
     const ratio = implied / mu;
-    if (ratio > ROLE.ratioHi || ratio < ROLE.ratioLo) return { key: 'line', safe: ratio > ROLE.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
+    if (ratio > R.ratioHi || ratio < R.ratioLo) return { key: 'line', safe: ratio > R.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
   }
   return null;
 }
@@ -407,7 +407,7 @@ export function lineAlarmOf({ sport, name = null, mu = null, implied = null, lin
 // quarter over the listed starter's, to the top of the site's chart (a snap-heavy blocking tight end over a
 // receiving one), and keeps the chart's own order beside it (slot.listed, the file's listedKept); a chart built
 // before that (no listedKept) isn't read at all, as the order it holds may not be the one measured
-export const DEPTH = { fresh: 3 * 864e5, slots: { TE10: 'TE', RB11: 'RB' }, stats: { TE: ['rec', 'recYds', 'rushRecYds'], RB: ['rushYds', 'rushAtt'] } };
+export const DEPTH = { fresh: 3 * 864e5, slots: { TE10: 'TE', RB11: 'RB', QB9: 'QB' }, stats: { TE: ['rec', 'recYds', 'rushRecYds'], RB: ['rushYds', 'rushAtt'] } };
 // (nflverse's team codes where ESPN's differ: the depth charts' against the games' abbreviations)
 const DEPTH_TEAM = { LA: 'LAR', WAS: 'WSH' };
 // (the charts by player: his ESPN id to each chart he's on: his spot's group, its order (ESPN ids, first the
@@ -456,6 +456,29 @@ export function depthRoleOf({ pos, pid, team, stat, depth, missOf, role, at, now
   if (!chartTop && modelTop) return { key: 'depth', safe: 'under', why: `the model's ${pos}1, behind another ${pos === 'TE' ? 'tight end' : 'back'} on the depth chart tonight: a smaller role than his numbers say` };
   return null;
 }
+
+// The NFL's quarterback change the depth chart already carries (2026-10-18: the research's "missing from our feeds"
+// reasons, the most of them a change at quarterback, "Cooper Rush not starting, Michael Penix Jr. starts", which the
+// site's own chart (readDepth, QB9) listed that morning): the chart's first quarterback not out on the report is
+// another than his team's starter of late (matchups.mjs qb1), and the starter of late on the chart behind him and not
+// on the report at all (the report's word wins: listed, questionable or out, it's the report's). The chart fresh
+// (DEPTH.fresh) and made before the kickoff. { usual, starter, at, why } or null; run.mjs depthQbs puts the starter of
+// late Out (not starting) into the game's report copy, as the research's starter input does (research.mjs
+// researchInputs), so the projection's quarterback flags (qb1Out, qbDeep), the backup's own starts and the role
+// guard read it before a CHECK is made. report: the game's injury report (a Map of team id -> [{ id, status }])
+export function depthQbChangeOf({ depth, team, teamId = null, qb1, report = null, at = null, now = Date.now() }) {
+  if (!qb1 || !team) return null;
+  const c = (depth?.get?.(String(qb1)) ?? []).find((x) => x.team === String(team) && x.group === 'QB');
+  if (!c) return null;
+  const t = Date.parse(c.at);
+  if (!Number.isFinite(t) || now - t > DEPTH.fresh || (Number.isFinite(Date.parse(at)) && t >= Date.parse(at))) return null;
+  const listed = (id) => [...(report instanceof Map ? report : [])].filter(([k]) => !teamId || String(k) === String(teamId)).flatMap(([, l]) => l ?? []).find((p) => String(p.id) === String(id)) ?? null;
+  if (listed(qb1)) return null;
+  const starter = c.order.find((id) => !OUT.test(String(listed(id)?.status ?? '')));
+  if (!starter || starter === String(qb1) || !c.order.includes(String(qb1))) return null;
+  return { usual: String(qb1), starter, at: c.at, why: `the depth chart (${String(c.at).slice(0, 10)}) lists another quarterback first, his team's starter of late behind him` };
+}
+const OUT = /^out|doubtful|injured reserve|suspension/i;
 
 // (the team games the midseason flag covers (CTX midSeason))
 export const MID_SEASON = [5, 8];
@@ -1718,7 +1741,7 @@ export function rowsIndex(sport, rows) {
 // game; live: the game's live facts (injury report, probables, lineups); trust: prop type to trust; play: the
 // NFL's questionable players' chance of playing (playchance.mjs: a table fit on the seasons before), null for
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
-export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null, roleGate = null) {
+export function priceProps(sport, game, props, fitted, idx, exp, info, live, trust, evScale, play = null, players = null, calib = null, roleGate = null, roleLimits = null) {
   const priced = [];
   // (the role guard's settled absences logged, by game and player: once each)
   const settledLogged = new Set();
@@ -1934,6 +1957,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         // (the line's read only at the book's own price: an assumed -110 says nothing of his role, only that the
         // price is unknown)
         implied: impliedNow,
+        // (the role guard's thresholds with check-learn's loosenings applied softly (check-learn.mjs loosenings))
+        role: roleLimits ?? ROLE,
       });
       // (a back projected in the role he steps into (project.mjs rp kept, p.role over his own): his receiving
       // ran high there in the role backtest (2026-10-12, promoted backs' receptions -7.2%, held out -9.3% on

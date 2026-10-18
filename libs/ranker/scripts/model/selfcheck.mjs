@@ -1028,7 +1028,7 @@ export function c17(x) {
     threshold: `advice from ${MIN_N} graded a cause: a confirmed blind spot a flag; a lean to watch or a guard ready to loosen a watch`,
     n: l.graded ?? 0,
     rows: [...rows, ...shadows, ...recs.slice(0, WORST).map((r) => ({ key: `advice:${r.rank}`, kind: r.kind, cause: r.cause, confirmed: r.confirmed, text: r.text }))],
-    how: "the graded CHECKs by what drove their gap (check-learn.mjs), at a unit each as if bet, and the ranked advice: recorded, never applied by the desk",
+    how: "the graded CHECKs by what drove their gap (check-learn.mjs), at a unit each as if bet, and the ranked advice: a loosening applied softly once ready (check-learn.mjs loosenings)",
   });
 }
 

@@ -144,17 +144,19 @@ import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
 import { ROUND_C } from './project.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
-import { API_MARKETS, PER_GAME, PROP_WAIT, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
+import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
-import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
+import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
-import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, callChecks, feedCheck, hollow, unplacedCall, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
+import { checkLearning, loosenings } from './check-learn.mjs';
+import { patternBook, patternKey, preResolve, ruleFinding, unitOf } from './check-patterns.mjs';
+import { readSeeds } from './check-seeds.mjs';
+import { RESEARCH_UNITS, causeKey, callChecks, feedCheck, hollow, unplacedCall, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -645,7 +647,8 @@ async function fitTheContext(r) {
 // every sport's ledger (this one's as read, the others' from their files: researchGateOf). rosterOf(team): the
 // team's roster (espn.mjs roster, its names and positions), read only for an 'adjust'
 async function researchCalls(r, checks, notes, rosterOf = async () => null) {
-  const found = (c) => r.researchFound?.get(c.id) ?? c.research ?? null;
+  // (a pattern's rule dropped this run (r.ruleDropped: its pattern no longer resolves it): no finding, back to research)
+  const found = (c) => r.researchFound?.get(c.id) ?? (r.ruleDropped?.has(c.id) ? null : (c.research ?? null));
   // (and one closed or passed on an earlier run whose research has a call on it, its game to come: research.mjs
   // callChecks)
   const mine = callChecks(checks, found, r.now);
@@ -670,7 +673,12 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
   for (const c of mine) {
     const rs = found(c);
     let call = researchCall(c, rs, { now: r.now, gate: r.researchGate, level: r.researchLevel, failure: r.researchFound?.failures?.get(c.id) ?? null });
-    if (call.act === 'adjust') {
+    if (call.act === 'adjust' && rs.by === 'rule') {
+      // (a pattern's rule (check-patterns.mjs): held, priced at the trust as it stands, no input put in; or passed, a
+      // reason no input carries)
+      call = rs.rule?.act === 'held' ? { ...call, note: { held: true, name: null, inputs: [], input: `the reason in the inputs already (the pattern ${rs.pattern})` } } : { act: 'pass', decided: true, rule: rs.pattern, why: `passed by its pattern's rule: ${rs.summary}` };
+      console.log(`${r.sport}${DRY ? ' (dry)' : ''}: pattern rule for ${c.pick ?? c.id}: ${rs.rule?.act} (${rs.pattern}, rate ${rs.rule?.rate})`);
+    } else if (call.act === 'adjust') {
       const game = r.upcoming?.find((u) => String(u.game.id) === String(c.event))?.game ?? null;
       const rosters = new Map();
       if (game && !notes.has(c.id)) for (const t of [game.home, game.away]) rosters.set(String(t), await rosterOf(String(t)).catch(() => null));
@@ -727,14 +735,54 @@ async function noteInjuries(r) {
   }
   // (and for the notes on a team: teamNews)
   r.noteChecks = checks;
+  // (the CHECKs' patterns first (check-patterns.mjs): an open CHECK of a pattern the research has answered the same
+  // way often enough, its graded record bearing it out, resolved by the pattern's rule at its rate, no research call;
+  // one a rule resolved before whose pattern no longer does, dropped (r.ruleDropped) and researched again. The book
+  // from every CHECK of the sport's researched, the seeded labels too (check-seeds.mjs: past CHECKs' research made
+  // after their games, weighed as the live ones once graded). Free, so on a --dry run too; any failure: none)
+  r.ruleFound = new Map();
+  r.ruleDropped = new Set();
+  // (check-learn's loosenings applied softly (check-learn.mjs loosenings): a role threshold moved toward its change,
+  // another cause's CHECKs priced at the trust at its weight's rate; each run's step from the last run's weights)
+  try {
+    r.loosen = r.checksUnreadable ? null : loosenings(checkLearning(checks), r.state?.checkLoosen?.weights ?? {});
+    for (const x of r.loosen?.applied ?? []) console.log(`${r.sport}${DRY ? ' (dry)' : ''}: ${x.text}`);
+  } catch (err) {
+    console.warn(`${r.sport}: the CHECK loosenings skipped (${err.message})`);
+    r.loosen = null;
+  }
+  try {
+    if (!r.checksUnreadable) {
+      const seeds = readSeeds(r.sport);
+      const book = patternBook([...checks, ...seeds.filter((s) => !checks.some((c) => c.id === s.id && c.research && c.research.by !== 'rule'))]);
+      r.patternBook = book;
+      const ahead = (c) => Date.parse(c.start ?? '') > r.now.getTime();
+      for (const c of checks) {
+        if (c.hidden || c.checkResult || c.closedAt || c.bet || !ahead(c) || checkLocked(c, r.now) || (c.research && c.research.by !== 'rule' && !hollow(c.research))) continue;
+        let pre = preResolve(c, book);
+        // (a loosened cause with no threshold (r.loosen.causes): its CHECKs priced at the trust at its weight's rate)
+        const lw = r.loosen?.causes?.[causeKey(c)];
+        if (!pre && lw > 0 && unitOf(c.id) < lw) pre = { act: 'bet', key: `loosen:${causeKey(c)}`, rate: lw, u: Math.round(unitOf(c.id) * 1000) / 1000, entry: { n: 0, k: 0, record: { won: 0, lost: 0, push: 0, hitRate: null, breakEven: null } }, loosen: true };
+        if (pre) r.ruleFound.set(c.id, c.research?.by === 'rule' && c.research.pattern === pre.key && c.research.rule?.act === pre.act ? c.research : ruleFinding(c, pre, r.now));
+        else if (c.research?.by === 'rule') r.ruleDropped.add(c.id);
+      }
+      const live = [...book.values()].filter((e) => e.rate > 0);
+      console.log(`${r.sport}${DRY ? ' (dry)' : ''}: CHECK patterns: ${book.size} (${seeds.length} seeded labels), ${live.length} resolving by rule${live.length ? ` (${live.map((e) => `${e.key} ${e.top} ${Math.round(e.rate * 100)}%`).join(', ')})` : ''}; ${r.ruleFound.size} open CHECKs resolved with no research call${r.ruleDropped.size ? `, ${r.ruleDropped.size} dropped back to research` : ''}`);
+    }
+  } catch (err) {
+    console.warn(`${r.sport}: the CHECK patterns skipped (${err.message})`);
+    r.ruleFound = new Map();
+    r.ruleDropped = new Set();
+  }
   try {
     if (!r.checksUnreadable) {
       const budget = process.env.CHECK_RESEARCH === '1' ? researchBudget({ now: r.now, dry: DRY }) : null;
-      r.researchFound = await researchChecks({ sport: r.sport, checks, now: r.now, dry: DRY, budget, reportOf: (c) => r.live?.get(String(c.event))?.injuries ?? null });
+      r.researchFound = await researchChecks({ sport: r.sport, checks, now: r.now, dry: DRY, budget, reportOf: (c) => r.live?.get(String(c.event))?.injuries ?? null, skip: new Set(r.ruleFound.keys()) });
     }
   } catch (err) {
     console.warn(`${r.sport}: CHECK research skipped (${err.message})`);
   }
+  for (const [id, f] of r.ruleFound) if (!r.researchFound.has(id)) r.researchFound.set(id, f);
   // (a dry run alone: findings saved from a run's log (CHECK_RESEARCH_FINDINGS, a JSON file of CHECK id -> its
   // finding), so a run's verdicts can be replayed with no call made and nothing spent)
   if (DRY && process.env.CHECK_RESEARCH_FINDINGS) {
@@ -1915,6 +1963,30 @@ function blindOf(r, game) {
 // 6. the props of the coming games inside their window (leagues.mjs TIMING; before it, nothing asked or
 // priced): each main line projected and priced; the ones with an edge bet, the day's best first, under the caps
 // (props.mjs; leagues.mjs PROP_CAPS), each once the news it waits for is in or at the last chance, flagged
+// The NFL's quarterback changes the site's depth chart carries (props.mjs depthQbChangeOf): the starter of late put
+// Out (not starting) into each coming game's injury report copy, as the research's starter input does, so the props
+// are projected and the role guard reads them with the change in: the CHECK a change at quarterback made (qb-change,
+// the research's most common "missing from our feeds" reason) never made of it. Props alone: the game lines were
+// priced before the props' fit knows each team's starter of late
+function depthQbs(r) {
+  const f = Object.values(r.props ?? {}).find((x) => x?.matchups?.qb1);
+  if (!f) return;
+  const depth = (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth')));
+  for (const { game } of r.upcoming ?? []) {
+    const l = r.live?.get(game.id);
+    if (!l || l.injuriesFailed || !(Date.parse(game.date) > r.now.getTime())) continue;
+    for (const [team, abbr] of [[game.home, game.homeAbbr], [game.away, game.awayAbbr]]) {
+      const qb1 = f.matchups.qb1(String(team), game.season);
+      const ch = depthQbChangeOf({ depth, team: abbr, teamId: String(team), qb1: qb1?.id, report: l.injuries, at: game.date, now: r.now.getTime() });
+      if (!ch) continue;
+      const mine = new Map(l.injuries instanceof Map ? l.injuries : []);
+      mine.set(String(team), [...(mine.get(String(team)) ?? []), { id: ch.usual, name: f.idx?.name?.(ch.usual) ?? null, pos: 'QB', status: 'Out', from: 'depth chart' }]);
+      l.injuries = mine;
+      console.log(`${r.sport}${DRY ? ' (dry)' : ''}: depth chart: ${abbr}'s starter of late (${ch.usual}) Out (not starting) for ${game.awayAbbr} @ ${game.homeAbbr}: ${ch.why} (${ch.starter})`);
+    }
+  }
+}
+
 async function betProps(r) {
   const { sport, cfg, state, trust, ledger, at } = r;
   const run = { games: 0, priced: 0, under: 0, even: 0, evenUnder: 0, bet: 0, units: 0 };
@@ -1930,6 +2002,14 @@ async function betProps(r) {
     r.roleGate = null;
   }
   for (const g of Object.values(r.roleGate ?? {})) if (g.on) console.log(`${sport}: ${g.why}`);
+  // (the NFL's quarterback changes the depth chart carries, into the reports before the props are priced: depthQbs)
+  if (sport === 'nfl') {
+    try {
+      depthQbs(r);
+    } catch (err) {
+      console.warn(`${sport}: the depth chart's quarterback changes skipped (${err.message})`);
+    }
+  }
   r.propGate = propGate(ledger.bets ?? [], sport, MODEL_EPOCH);
   for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props at the practice stake this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
@@ -2105,7 +2185,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null);
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
       if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
@@ -2189,7 +2269,8 @@ async function betProps(r) {
           if (d?.as === 'bet') {
             // (its level earned (research.mjs researchLevelOf): its Kelly stake at the cleared chance, else RESEARCH_UNITS)
             const earned = call.earned ? { earned: true } : {};
-            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, ...earned } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}), ...earned } };
+            const rule = call.rule ? { rule: call.rule } : {};
+            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, ...rule, ...earned } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}), ...rule, ...earned } };
             candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: the ${x.guard.kind} guard's CHECK priced at the market's trust${stored === 'stale' ? ', at its stored price' : ''}` }, units: call.earned ? stakeFor(d.ev, EV_SCALE, x.odds) : RESEARCH_UNITS, ...tag }, exp });
           }
           const before = (ledger.checks ?? []).find((c) => c.id === id);
@@ -2490,8 +2571,14 @@ function recordChecks(r) {
     const found = r.researchFound?.get(c.id);
     // (over a hollow one kept (a failed search's answer, asked again: research.mjs researchChecks), the new
     // finding: else it was never saved, came back from the usage log every run, and its CHECK showed the old one)
-    if (found && found !== c.research && (!c.research || hollow(c.research))) {
-      c.research = found;
+    // (a pattern's rule's finding over another rule's, and real research over a rule's; each kept with its pattern
+    // (check-patterns.mjs patternKey, made now while the projection has its teammates out))
+    if (found && found !== c.research && (!c.research || hollow(c.research) || c.research.by === 'rule')) {
+      c.research = found.pattern ? found : { ...found, pattern: patternKey(c) };
+      researched++;
+    } else if (!found && c.research?.by === 'rule' && r.ruleDropped?.has(c.id)) {
+      // (its pattern no longer resolves it, and no research this run: no finding, so the next run asks)
+      delete c.research;
       researched++;
     }
     if (c.research && r.researchApplied?.has(c.id) && !c.research.applied) c.research = { ...c.research, applied: true };
@@ -2576,6 +2663,8 @@ function saveState(r) {
     abbr.set(g.home, g.homeAbbr);
     abbr.set(g.away, g.awayAbbr);
   }
+  // (a CHECK loosening's weight moved this run (check-learn.mjs loosenings): in the changelog)
+  for (const x of r.loosen?.applied ?? []) if (x.w !== x.was) state.changelog.push({ at, what: `CHECK loosening ${x.cause}`, from: x.was, to: x.w, why: x.text });
   const testOf = (t) => ({ games: t.n, maeMargin: round(t.maeMargin), maeTotal: round(t.maeTotal), winHit: round(t.winHit, 4), winLogLoss: round(t.winLogLoss, 4) });
   Object.assign(state, {
     sport,
@@ -2635,6 +2724,10 @@ function saveState(r) {
     // read them)
     propGate: r.propGate ?? propGate(ledger.bets, r.sport, MODEL_EPOCH),
     roleGate: r.roleGate ?? null,
+    // (check-learn's loosenings as applied this run (check-learn.mjs loosenings): the weights the next run steps from)
+    checkLoosen: r.loosen ? { at, weights: r.loosen.weights, role: Object.fromEntries(Object.entries(r.loosen.role).filter(([k, v]) => ROLE[k] !== v)), causes: r.loosen.causes, applied: r.loosen.applied } : (state.checkLoosen ?? null),
+    // (the CHECKs' patterns this run (check-patterns.mjs): each resolving one, its rule and rate)
+    checkPatterns: r.patternBook ? Object.fromEntries([...r.patternBook.values()].filter((e) => e.n).map((e) => [e.key, { n: e.n, top: e.top, k: e.k, low: e.low, record: e.record, rate: e.rate }])) : (state.checkPatterns ?? null),
     // (the CHECKs: too far from the market to bet, graded as if they were: checks.mjs; their hit rate and the
     // owner's notes' reasons, for tuning the gap)
     // (checks.json unreadable: the last good tally kept, flagged, rather than one of this run's alone)
