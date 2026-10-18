@@ -1,3 +1,4 @@
+import { TEAM_SHORT } from './team-short';
 // How the Book and the Algorithm desk write their numbers, and ESPN's pictures they show (pure: tested
 // under Node, tests/model-desk.test.mjs)
 
@@ -80,7 +81,7 @@ export function tickerSide(sport: string, t: { abbr: string; name: string; short
     const name = (t.name || t.abbr).trim();
     return { label: name.split(/\s+/).pop() || name, pic: t.logo, face: true };
   }
-  return { label: t.short || t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
+  return { label: t.short || TEAM_SHORT[sport]?.[t.abbr] || t.abbr, pic: t.abbr ? teamLogo(sport, t.abbr) : null, face: false };
 }
 
 // (a ticker game clicked: a team sport's opens the game view (game-view.service.ts open, by ESPN's league): one

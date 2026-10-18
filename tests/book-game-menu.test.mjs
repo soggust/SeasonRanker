@@ -95,11 +95,17 @@ test("gameMenu: a series' games on consecutive days each their own (lines-only k
 });
 
 // The ticker's sides (bet-format.ts tickerSide; the owner's notes, 2026-10-17): a team's logo and its short name
-// beside it (its abbreviation when the board has no short name); a fighter's board headshot, round, his last name
+// beside it (its nickname by abbreviation when the board has no short name); a fighter's board headshot, round, his last name
 test('the ticker shows a team logo or a fighter\'s face, the words behind it', () => {
   const det = bets.tickerSide('nfl', { abbr: 'DET', name: 'Detroit Lions', short: 'Lions', logo: null });
   assert.equal(det.label, 'Lions');
-  assert.equal(bets.tickerSide('nhl', { abbr: 'WPG', name: 'Winnipeg Jets', logo: null }).label, 'WPG');
+  // (a game known only from the bettor's board carries its abbreviation alone: its nickname from ESPN's teams lists,
+  // every team sport alike; an abbreviation no list has stays as it is)
+  assert.equal(bets.tickerSide('nhl', { abbr: 'WPG', name: 'WPG', logo: null }).label, 'Jets');
+  assert.equal(bets.tickerSide('nba', { abbr: 'BOS', name: 'BOS', logo: null }).label, 'Celtics');
+  assert.equal(bets.tickerSide('mlb', { abbr: 'TB', name: 'TB', logo: null }).label, 'Rays');
+  assert.equal(bets.tickerSide('nfl', { abbr: 'NE', name: 'NE', logo: null }).label, 'Patriots');
+  assert.equal(bets.tickerSide('nba', { abbr: 'ZZZ', name: 'ZZZ', logo: null }).label, 'ZZZ');
   assert.equal(det.face, false);
   assert.match(det.pic, /teamlogos\/nfl\/500-dark\/det\.png/);
   const shot = 'https://a.espncdn.com/i/headshots/mma/players/full/1.png';
