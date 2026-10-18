@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The Book's favicon: a casino chip in the Book's clay (chip.$lock), drawn bold enough to read at 16px:
+       six wide cream edge inserts round the rim, a cream inlay ring, and a gold center with a clay star
+       (app.component.ts sets it while the Book shows) -->
+  <defs>
+    <radialGradient id="clay" cx="38%" cy="32%" r="75%">
+      <stop offset="0" stop-color="#e4823a"/>
+      <stop offset="0.6" stop-color="#d2691e"/>
+      <stop offset="1" stop-color="#a24e12"/>
+    </radialGradient>
+    <radialGradient id="gold" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fbe3a4"/>
+      <stop offset="0.6" stop-color="#ebc56c"/>
+      <stop offset="1" stop-color="#c39a3e"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="url(#clay)"/>
+  <!-- (the six edge inserts: a ring's dashes, the rim (2pi x 26.5 = 166.5) in sixths, about half cream) -->
+  <circle cx="32" cy="32" r="26.5" fill="none" stroke="#f4efe3" stroke-width="9"
+          stroke-dasharray="13.5 14.25" stroke-dashoffset="6.75" transform="rotate(-90 32 32)"/>
+  <circle cx="32" cy="32" r="31" fill="none" stroke="#7a3a0c" stroke-width="1.2"/>
+  <!-- (the face: a darker clay, its cream inlay ring) -->
+  <circle cx="32" cy="32" r="19.5" fill="#b85a17"/>
+  <circle cx="32" cy="32" r="19.5" fill="none" stroke="#ffecc4" stroke-width="2.2"/>
+  <!-- (the gold center, a clay star on it) -->
+  <circle cx="32" cy="32" r="13" fill="url(#gold)" stroke="#8a5a14" stroke-width="1"/>
+  <path d="M32 23.5l2.5 5.6 6.1.6-4.6 4.1 1.4 6-5.4-3.2-5.4 3.2 1.4-6-4.6-4.1 6.1-.6z" fill="#a24e12"/>
+</svg>

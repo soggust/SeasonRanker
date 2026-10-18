@@ -8,6 +8,7 @@ import { SITE_SPORTS } from '@ranker/core/sports';
 import { SportSettings } from '@ranker/engine/sport';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { canUse } from '@ranker/engine/account/features';
+import { applyFavicon } from '@ranker/engine/favicon';
 import { forwardOldLink, goTo, pageHash, readPagePath, rememberSport } from '@ranker/engine/page-url';
 import { BarCell, barCells, familyOf, familyOpensTo, litTab, selectGroups, subTabs } from '@ranker/engine/tab-families';
 
@@ -155,6 +156,8 @@ export class AppComponent {
     // (the browser tab: the sport's own on its rankings (index.html's, "Season Ranker | NFL"), "Season Ranker |
     // Book" on the Book, and plain "Season Ranker" on the pages every sport shares)
     document.title = this.view === 'rankings' ? this.sportTitle : this.view === 'book' ? 'Season Ranker | Book' : 'Season Ranker';
+    // (the tab's icon: the sport's own here, the Book's chip on the Book, the site's mark on the shared pages)
+    applyFavicon(document, this.view);
     // (the rankings open: the sport a page's way back returns to)
     if (this.view === 'rankings') rememberSport();
   }
