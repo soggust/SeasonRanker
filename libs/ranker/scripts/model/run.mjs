@@ -2133,7 +2133,7 @@ async function betProps(r) {
             r.researchCalls.set(id, { ...call, decided: true, why: call.act === 'pass' ? call.why : `${now}; ${call.why}` });
           }
           if (d?.as === 'bet') {
-            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: 'high', why: call.why } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) } };
+            const tag = call.act === 'bet' ? { researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why } } : { researchAdjusted: { checks: [id], own: true, input, category: call.category ?? 'other', ...(call.note.held ? { held: true } : {}) } };
             candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: the ${x.guard.kind} guard's CHECK priced at the market's trust${stored === 'stale' ? ', at its stored price' : ''}` }, units: RESEARCH_UNITS, ...tag }, exp });
           }
           const before = (ledger.checks ?? []).find((c) => c.id === id);

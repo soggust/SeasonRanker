@@ -7,7 +7,7 @@
 //
 //   timed    on the bettor's path (before pricing), so held short: each request 90 seconds at most
 //            (CALL_TIMEOUT_MS) with no SDK retries, and the run's research (every sport together) stops starting
-//            calls or turns RUN_DEADLINE_MS (3 minutes) after its first; a call that fails is logged (failed,
+//            calls or turns RUN_DEADLINE_MS (3 minutes) after its first, PARALLEL (4) calls at once, the soonest game first; a call that fails is logged (failed,
 //            its cost the turns billed so far, or, where it may have been billed unseen (a timeout, a dropped
 //            connection, a server error), a turn's worst case), so it counts toward its CHECK's tries
 //   on        only with CHECK_RESEARCH=1 and an ANTHROPIC_API_KEY, never on a --dry run (nothing spent); off,
@@ -47,10 +47,11 @@
 //            start (the NFL: the others on his roster not starting, his listing cleared); one the report has
 //            already held as the model's input. Either way priced at the trust, not the book's pin past the GAP
 //            (researchDecision): an edge bet, none passed, out of the CHECKs. A real reason no input can carry (a
-//            role with no player's status, another with none) passed, its reason kept. (b) 'bet': confident there is none
-//            (explains false, confidence high, with sources): the model's side bet at RESEARCH_UNITS at most
+//            role with no player's status, another with none) passed, its reason kept. (b) 'bet': nothing explains it
+//            (explains false, confidence high or medium (the owner's, 2026-10-18: "no real reason"), with sources): the model's side bet at RESEARCH_UNITS at most
 //            (researchBet, a LIKE at most), a role, news or gap CHECK whose game hasn't started. (c) 'check':
-//            it can't tell (low confidence, thin or conflicting sources, a failed or cut-short call): a CHECK
+//            it can't tell (low confidence, conflicting sources, a real but unclear reason): a CHECK. A failed call
+//            (cut short, or its search failed: hollow, searchFailed) is no verdict: never kept, asked again first
 //   gated    researchGateOf: each kind of research bet (bet, adjusted) off by itself, back to a label only, once
 //            RESEARCH_GATE_N (40) of them graded with a close are negative in units, every sport together
 //   feeds    feedCheck: a reason found tagged with whether this run's own feeds held it (the injury report, the
@@ -90,6 +91,9 @@ const MAX_TRIES = 2;
 // (a request's most, and the run's research's: on the bettor's path, so short. No SDK retries)
 export const CALL_TIMEOUT_MS = 90_000;
 export const RUN_DEADLINE_MS = 180_000;
+// (the calls run at once inside it: one at a time, a call ran 30 to 90 seconds, so a run asked six or seven and
+// the backlog never cleared)
+export const PARALLEL = 4;
 // (when the run's research stops starting calls: set by its first call, every sport's together)
 let runDeadline = null;
 export const resetDeadline = () => {
@@ -154,9 +158,14 @@ export function researchPrompt(c, sport) {
   return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the book's number?\n${JSON.stringify(facts)}`;
 }
 
-// (a finding of nothing: no source, no status, no reason found. Never kept: a search that failed answers this way
-// (2026-10-17: "the search tool hit its usage limit"), so it's asked once more, not judged)
-export const hollow = (f) => !!f && typeof f === 'object' && !f.problem && f.status === 'unknown' && f.explains !== true && !(f.sources?.length > 0);
+// (an answer that says its own search failed: "I hit the search limit", "the search tool hit its usage limit",
+// "the news search failed (tool limit exceeded)" (desk runs of 2026-10-18 01:05 and 01:48 UTC, max_uses 2 then). A
+// failed call, not a finding: whatever stale sources it lists, it never looked)
+export const SEARCH_FAILED = /\b(hit|reached|exceeded|ran out of)\b[^.]{0,25}\b(search|tool|usage)\b[^.]{0,10}\blimits?\b|\b(search|tool)\b[^.]{0,15}\b(limits? (was |were )?(hit|reached|exceeded)|failed|errored|unavailable)\b|max_uses|too_many_requests/i;
+export const searchFailed = (f) => !!f && typeof f === 'object' && f.explains !== true && SEARCH_FAILED.test(String(f.summary ?? ''));
+// (a finding of nothing: no source, no status, no reason found; or one whose search failed (searchFailed). Never
+// kept as a verdict: a failed call, asked once more (first, ahead of new CHECKs), not judged)
+export const hollow = (f) => !!f && typeof f === 'object' && !f.problem && f.explains !== true && ((f.status === 'unknown' && !(f.sources?.length > 0)) || searchFailed(f));
 
 // (the URLs the answer's text blocks cite (web_search_result_location and the like), http(s) alone, in order, once)
 export function citedUrls(content) {
@@ -215,10 +224,13 @@ function verdictFields(o) {
 
 // A finding's verdict (see above): 'adjust' (a real reason: into the inputs where one takes it), 'bet' (confident
 // there is none), 'check' (it can't tell). A finding without the verdict's fields (an older one), 'check'
+// (2026-10-18, the owner's: medium confidence that nothing explains it is the "no real reason" outcome too, not a
+// can't-tell: the model's side at the practice stake, priced at the trust, an edge bet, none passed. Low stays a
+// CHECK; a hollow one (a failed search) is no verdict at all, asked again)
 export function verdictOf(rs) {
-  if (!rs || typeof rs !== 'object' || rs.problem) return 'check';
+  if (!rs || typeof rs !== 'object' || rs.problem || hollow(rs)) return 'check';
   if (rs.explains === true && rs.category !== 'market' && (rs.confidence === 'high' || rs.confidence === 'medium')) return 'adjust';
-  if (rs.explains === false && rs.confidence === 'high' && (rs.sources?.length ?? 0) > 0) return 'bet';
+  if (rs.explains === false && (rs.confidence === 'high' || rs.confidence === 'medium') && (rs.sources?.length ?? 0) > 0) return 'bet';
   return 'check';
 }
 
@@ -368,7 +380,7 @@ async function defaultClient(env) {
 export const maybeBilled = (err) => !(Number.isFinite(err?.status) && err.status >= 400 && err.status < 500 && err.status !== 408);
 
 // (the stops that cut a call short: asked once more, never kept as a finding)
-const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps|nothing found)/;
+const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps|nothing found|search failed)/;
 
 // One CHECK researched: { finding, usage, cost, turns, retry }. client: the SDK's (or a mock with
 // beta.messages.create); budget: ai-budget.mjs's, each continued turn only while the call's cost so far and the
@@ -379,6 +391,8 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
   let msg = null;
   let turns = 0;
   let capped = false;
+  // (every turn's blocks: a search error in a paused turn counts too)
+  const blocks = [];
   for (; turns < MAX_TURNS; turns++) {
     try {
       msg = await callOnce();
@@ -388,6 +402,7 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
       throw err;
     }
     usage = addUsage(usage, msg?.usage);
+    if (Array.isArray(msg?.content)) blocks.push(...msg.content);
     // (a long search turn paused: continued with what it has so far, if the caps still hold its worst case)
     if (msg?.stop_reason !== 'pause_turn' || turns + 1 >= MAX_TURNS) break;
     const resent = (msg.usage?.input_tokens ?? 0) + (msg.usage?.cache_read_input_tokens ?? 0) + (msg.usage?.cache_creation_input_tokens ?? 0) + (msg.usage?.output_tokens ?? 0);
@@ -421,9 +436,13 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
     const cited = citedUrls(msg.content).filter((u) => !finding.sources.includes(u));
     if (cited.length) finding = { ...finding, sources: [...finding.sources, ...cited].slice(0, 5) };
   }
-  // (nothing found, no source: a failed search's answer, asked once more, never kept)
-  if (hollow(finding)) {
-    const errs = [...new Set(searchErrors(msg?.content))];
+  // (the search tool's own errors (max_uses_exceeded, too_many_requests, unavailable) under an answer that found no
+  // reason, or an answer that says its search failed: a failed call, asked once more, never kept)
+  const errs = [...new Set(searchErrors(blocks))];
+  if (!finding.problem && finding.explains !== true && (errs.length || searchFailed(finding))) {
+    finding = { ...finding, problem: `stopped: search failed (${errs.length ? `search errors: ${errs.join(', ')}` : 'the answer says its search failed'})` };
+  } else if (hollow(finding)) {
+    // (nothing found, no source: a failed search's answer, asked once more, never kept)
     finding = { ...finding, problem: `stopped: nothing found (no sources${errs.length ? `; search errors: ${errs.join(', ')}` : ''})` };
   }
   // (the caps or the run's deadline: both 'the AI caps', a try cut short)
@@ -462,6 +481,8 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   if (out.size) log.log?.(`${sport}: ${out.size} CHECK research findings back from the usage log (their run never saved them)`);
   const doneIds = new Set([...logged.filter((e) => e.at.slice(0, 10) === day).map((e) => e.id), ...checks.filter((c) => String(c.research?.at ?? '').slice(0, 10) === day).map((c) => c.id)]);
   const room = Math.max(0, top - doneIds.size);
+  // (one asked before whose every try failed or was cut short, or whose kept finding is hollow: a re-ask)
+  const reAsk = (c) => (tries.get(c.id)?.length ?? 0) > 0 || hollow(c.research);
   const due = checks
     .filter((c) => open(c) && !out.has(c.id) && !c.bet && !checkLocked(c, now) && Date.parse(c.start) > now.getTime())
     // (asked before: again only when every try was cut short, MAX_TRIES at most)
@@ -470,7 +491,9 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       // (a hollow finding logged counts as a try cut short)
       return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed || hollow(e.finding));
     })
-    .sort((a, b) => (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
+    // (2026-10-18: a failed call asked again ahead of every new CHECK; then the soonest game first, so the run's
+    // deadline leaves the later games, not the ones about to start; the biggest model Kelly breaks a tie)
+    .sort((a, b) => Number(reAsk(b)) - Number(reAsk(a)) || (Date.parse(a.start) - Date.parse(b.start)) || (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
     .slice(0, room);
   if (!due.length) return out;
   if (dry) {
@@ -489,17 +512,47 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   }
   runDeadline ??= clock() + RUN_DEADLINE_MS;
   const deadline = runDeadline;
-  for (const c of due) {
+  // (PARALLEL calls at once inside the deadline, each started only while the caps hold its worst case on top of
+  // the worst cases of the calls still running: the caps bind as they did one call at a time)
+  let reserved = 0;
+  let stopped = false;
+  const running = new Set();
+  const queue = [...due];
+  while (queue.length && !stopped) {
     if (clock() >= deadline) {
       log.log?.(`${sport}: CHECK research stopped at the run's deadline (${RUN_DEADLINE_MS / 1000} seconds)`);
       break;
     }
-    if (!budget.canSpend(ESTIMATE)) {
+    if (running.size >= PARALLEL) {
+      await Promise.race(running);
+      continue;
+    }
+    if (!budget.canSpend(reserved + ESTIMATE)) {
+      // (the caps full of the running calls' worst cases: wait for one, its real cost known, and look again)
+      if (running.size) {
+        await Promise.race(running);
+        continue;
+      }
       log.log?.(`${sport}: CHECK research stopped at the AI caps ($${budget.left().toFixed(2)} left)`);
       break;
     }
+    const c = queue.shift();
+    reserved += ESTIMATE;
+    const p = askOne(c).finally(() => {
+      reserved -= ESTIMATE;
+      running.delete(p);
+    });
+    running.add(p);
+  }
+  await Promise.all(running);
+  budget.save();
+  return out;
+
+  async function askOne(c) {
+    // (a paused turn continued only while the caps hold it on top of the other running calls' worst cases)
+    const mine = { canSpend:(e) => budget.canSpend(e + Math.max(0, reserved - ESTIMATE)) };
     try {
-      const { finding, usage, cost, retry } = await researchOne(client, c, sport, budget, { deadline, clock });
+      const { finding, usage, cost, retry } = await researchOne(client, c, sport, mine, { deadline, clock });
       const report = reportOf(c);
       const athlete = finding.player ? athleteOf(c, finding.player, report) : null;
       const { problem: _p, ...kept } = finding;
@@ -515,7 +568,7 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: ${finding.player ?? 'no one'} ${finding.status} (${finding.reason}), ${finding.sources.length} sources; verdict ${retry ? "none yet" : verdictOf(finding)} (${finding.category ?? "no category"}, ${finding.confidence ?? "low"} confidence)${finding.problem ? ` [${finding.problem}${retry ? ', to be asked once more' : ''}]` : ''}`);
       log.log?.(`${sport}: CHECK research cost: this call $${cost.toFixed(4)} (${tokens}); ${measuredWords(budget)}; today $${budget.spent().day.toFixed(2)} of $${budget.caps?.day?.toFixed(2) ?? '?'}, month $${budget.spent().month.toFixed(2)} of $${budget.caps?.month ?? '?'}`);
       // (a call stopped at the caps: none other started)
-      if (finding.problem === 'stopped: the AI caps') break;
+      if (finding.problem === 'stopped: the AI caps') stopped = true;
     } catch (err) {
       // (every failed try logged, so it counts toward the CHECK's tries: its cost the turns billed before it, and
       // where this turn may have been billed unseen, its worst case on top)
@@ -525,8 +578,6 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       log.warn?.(`${sport}: CHECK research on ${c.id} failed (${String(err?.message ?? err).slice(0, 120)})`);
     }
   }
-  budget.save();
-  return out;
 }
 
 // ---- the verdict on a CHECK, the gate, the feeds and the scorecard (see above) ----
@@ -539,13 +590,13 @@ const r4 = (v) => Math.round(v * 1e4) / 1e4;
 // (researchNote: a status into the game's report, where one takes it); a 'bet' the model's side at RESEARCH_UNITS
 export function researchCall(c, rs = c?.research, { now = new Date(), gate = null } = {}) {
   const v = verdictOf(rs);
-  if (v === 'check') return { act: 'check', why: rs ? `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})` : 'not researched' };
+  if (v === 'check') return { act: 'check', why: rs ? (hollow(rs) ? 'the research call failed (its search did): asked again, no verdict' : `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})`) : 'not researched' };
   const kind = v === 'adjust' ? 'adjusted' : 'bet';
   if (gate?.[kind] && !gate[kind].on) return { act: 'check', why: gate[kind].why };
   if (!(Date.parse(c?.start ?? '') > now.getTime())) return { act: 'check', why: 'its game has started' };
   if (v === 'bet') {
     if (!RESEARCH_CAUSES.has(c?.cause ?? 'gap')) return { act: 'check', why: `a ${c?.cause} CHECK: not one a research bet comes from` };
-    return { act: 'bet', units: RESEARCH_UNITS, why: `research found no real-world reason for the gap (high confidence): ${rs.summary || 'nothing found'}` };
+    return { act: 'bet', units: RESEARCH_UNITS, confidence: rs.confidence, why: `research found no real-world reason for the gap (${rs.confidence} confidence): ${rs.summary || 'nothing found'}` };
   }
   return { act: 'adjust', why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
 }

@@ -42,7 +42,9 @@ test('findingOf and verdictOf: a real reason adjusts, confident nothing bets, an
   // (nothing found: a bet only when sure, with sources; its category market whatever it said)
   const none = f({ status: 'active', explains: false, category: 'injury', confidence: 'high' });
   assert.deepEqual([none.category, verdictOf(none)], ['market', 'bet']);
-  assert.equal(verdictOf(f({ explains: false, confidence: 'medium' })), 'check');
+  // (medium that nothing explains it: the "no real reason" outcome, a bet too (2026-10-18); low a CHECK)
+  assert.equal(verdictOf(f({ explains: false, confidence: 'medium' })), 'bet');
+  assert.equal(verdictOf(f({ explains: false, confidence: 'low' })), 'check');
   assert.equal(verdictOf(f({ explains: false, confidence: 'high', sources: [] })), 'check');
   // (no verdict's fields, an older finding, or one cut short: a CHECK)
   assert.equal(verdictOf(f({})), 'check');
@@ -259,7 +261,8 @@ test("the recorded answers: the fixed call's finding has its sources and a real 
   const bad = await researchOne(mockClient([copy(recorded.broken)]), check(), 'nfl');
   assert.equal(bad.finding.sources.length, 0);
   assert.equal(bad.retry, true);
-  assert.match(bad.finding.problem, /^stopped: nothing found/);
+  // (its answer says the search hit its limit: a failed search, asked once more)
+  assert.match(bad.finding.problem, /^stopped: search failed/);
   // (a reply's search error named in the problem)
   const errored = copy(recorded.broken);
   errored.content.splice(2, 0, { type: 'web_search_tool_result', tool_use_id: 'x', content: { type: 'web_search_tool_result_error', error_code: 'max_uses_exceeded' } });
@@ -292,10 +295,14 @@ test("tonight's hollow findings asked again: a CHECK whose research is a hollow 
   const at = '2026-10-17T01:48:50.892Z';
   const old = { at, by: 'claude', model: 'claude-opus-5-5', player: 'Mike Evans', status: 'unknown', reason: 'none', summary: 'The search tool hit its usage limit.', sources: [], explains: false, category: 'market', confidence: 'low' };
   assert.ok(hollow(old));
-  assert.ok(!hollow({ ...old, sources: ['https://a.b/c'] }));
-  assert.ok(!hollow({ ...old, status: 'active' }));
+  // (one that found nothing with a source or a status, its search fine: a finding; one whose search failed is
+  // hollow whatever it lists)
+  const quiet2 = { ...old, summary: 'No news found.' };
+  assert.ok(!hollow({ ...quiet2, sources: ['https://a.b/c'] }));
+  assert.ok(!hollow({ ...quiet2, status: 'active' }));
+  assert.ok(hollow({ ...old, sources: ['https://a.b/c'], status: 'active' }));
   fs.writeFileSync(file, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nfl', id: 'a', cost: 0.12, finding: old }] }));
-  const checks = [check({ id: 'a', research: old }), check({ id: 'b', model: 0.65, research: { ...old, sources: ['https://a.b/c'], status: 'active' } })];
+  const checks = [check({ id: 'a', research: old }), check({ id: 'b', model: 0.65, research: { ...quiet2, sources: ['https://a.b/c'], status: 'active' } })];
   const client = mockClient([copy(recorded.fixed)]);
   const found = await researchChecks({ sport: 'nfl', checks, now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file, now, caps: { day: 5, month: 80 } }), client, log: quiet });
   // (a re-asked, its hollow finding not brought back from the log; b's real finding stands)

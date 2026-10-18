@@ -303,11 +303,12 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   const budget = aiBudget({ file, now });
   assert.ok(budget.canSpend(ESTIMATE));
   const found = await researchChecks({ sport: 'nfl', checks: [rprop({ id: 'a' }), rprop({ id: 'b', gap: 0.1 })], now, env, budget, client, log: quiet });
-  assert.equal(client.asked.length, 1);
+  // (two at once now (research.mjs PARALLEL): both first turns' worst cases fit together, each cut short)
+  assert.equal(client.asked.length, 2);
   assert.equal(found.size, 0);
   assert.ok(budget.spent().day <= 1.5);
   const log = JSON.parse(fs.readFileSync(file, 'utf8')).entries.filter((e) => e.what === 'check-research');
-  assert.deepEqual(log.map((e) => [e.id, !!e.retry]), [['a', true]]);
+  assert.deepEqual(log.map((e) => [e.id, !!e.retry]).sort(), [['a', true], ['b', true]]);
   // (plenty left: continued to MAX_TURNS, each turn's worst case checked, still a cut-short call)
   client = pausing();
   const roomy = await researchOne(client, rprop(), 'nfl', aiBudget({ now, caps: { day: 10, month: 25 } }));
