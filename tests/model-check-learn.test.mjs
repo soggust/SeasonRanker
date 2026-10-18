@@ -316,7 +316,7 @@ test('researchOne: a paused turn continued only while the caps hold its worst ca
   assert.equal(roomy.retry, true);
 });
 
-test('researchChecks: the quota from the usage log; a finding paid for but never saved back from it; a cut-short CHECK asked once more, no more', async () => {
+test('researchChecks: the quota from the usage log; a finding paid for but never saved back from it; a cut-short CHECK asked once more, then once alone and simpler', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'research-log-'));
   const file = path.join(dir, 'ai-usage.json');
   const quiet = { log: () => {}, warn: () => {} };
@@ -335,7 +335,7 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
       ],
     }),
   );
-  const client = mockClient([answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: ['https://a.b/n'] }), answer({ sources: ['https://a.b/m'] })]);
+  const client = mockClient([answer({ sources: ['https://a.b/c'] }), answer({ player: null, status: 'unknown', reason: 'none', summary: '', sources: ['https://a.b/n'] }), answer({ sources: ['https://a.b/m'] })]);
   const checks = [rprop({ id: 'a', gap: 0.5 }), rprop({ id: 'b', gap: 0.4 }), rprop({ id: 'c', gap: 0.3 }), rprop({ id: 'd', gap: 0.2 })];
   const found = await researchChecks({ sport: 'nfl', checks, now, env, budget: aiBudget({ file, now }), client, log: quiet });
   // (a's finding back from the log, never asked again; three asked about today already (a, b, c): the quota
@@ -343,11 +343,18 @@ test('researchChecks: the quota from the usage log; a finding paid for but never
   assert.deepEqual([...found.keys()], ['a']);
   assert.equal(found.get('a').status, 'out');
   assert.equal(client.asked.length, 0);
-  // (a new day: b asked once more, c not again, d asked)
+  // (a new day: c's two tries spent, its fallback first and alone (3 searches, low effort, the short prompt); then
+  // b asked once more, d asked)
   const tomorrow = new Date(now.getTime() + 864e5);
   const later = await researchChecks({ sport: 'nfl', checks: checks.map((c) => ({ ...c, start: '2026-10-12T17:00:00Z' })), now: tomorrow, env, budget: aiBudget({ file, now: tomorrow }), client, log: quiet });
-  assert.equal(client.asked.length, 2);
-  assert.deepEqual([...later.keys()].sort(), ['a', 'b', 'd']);
+  assert.equal(client.asked.length, 3);
+  assert.equal(client.asked[0].tools[0].max_uses, 3);
+  assert.equal(client.asked[0].output_config.effort, 'low');
+  assert.ok(!client.asked[0].messages[0].content.includes('diagnosis'));
+  assert.equal(client.asked[1].tools[0].max_uses, 5);
+  assert.deepEqual([...later.keys()].sort(), ['a', 'b', 'c', 'd']);
+  // (its fallback logged as one: c not asked again whatever came back)
+  assert.equal(aiBudget({ file, now: tomorrow }).list().filter((e) => e.id === 'c' && e.fallback).length, 1);
 });
 
 test('researchChecks: off, without a key or on a dry run nothing asked; on, the biggest model Kelly first (a gap never), the day\'s quota, the caps, each cost logged', async () => {

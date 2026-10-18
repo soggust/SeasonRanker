@@ -138,8 +138,10 @@ export function shadowOf({ cause, odds, model, fair, oddsAssumed = false, market
 // (a CHECK the page may show: not a shadow; and a shadow that was shown and passed, for PASSED_SHOWN after it)
 export const shownCheck = (c) => !!c && !c.hidden;
 export const passedShowing = (c, now) => !!c?.hidden && c.resolved?.as === 'passed' && now.getTime() - Date.parse(c.passedAt ?? c.resolved.at ?? '') < PASSED_SHOWN;
-// (one the page lists: open (not graded, bet after all or closed), and shown or passed lately)
-export const listedCheck = (c, now) => !!c && !c.checkResult && !c.bet && !c.closedAt && (shownCheck(c) || passedShowing(c, now));
+// (one the page lists: open (not graded, bet after all or closed), and shown or passed lately; never one the
+// research passed (its call decided 'pass': out of the CHECKs, whatever reopened it))
+export const researchPassed = (c) => c?.research?.call?.act === 'pass' && !!c.research.call.decided;
+export const listedCheck = (c, now) => !!c && !c.checkResult && !c.bet && !c.closedAt && !researchPassed(c) && (shownCheck(c) || passedShowing(c, now));
 
 // The rule on the stored CHECKs (a run's own are judged by checkOf; one written before the rule, or one no run
 // prices again, only here): each open one (not graded, bet or closed) shown that shadowOf makes a shadow from its

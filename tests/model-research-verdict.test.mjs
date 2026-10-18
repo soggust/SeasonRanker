@@ -289,7 +289,7 @@ test('sources from the citations: an answer whose JSON lists none but whose text
   assert.ok(!hollow(r.finding));
 });
 
-test("tonight's hollow findings asked again: a CHECK whose research is a hollow one is open, a hollow logged try counts as cut short, two tries at most", async () => {
+test("tonight's hollow findings asked again: a CHECK whose research is a hollow one is open, a hollow logged try counts as cut short, two tries, then one alone and simpler, then given up", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hollow-'));
   const file = path.join(dir, 'log.json');
   const at = '2026-10-17T01:48:50.892Z';
@@ -310,12 +310,25 @@ test("tonight's hollow findings asked again: a CHECK whose research is a hollow 
   assert.deepEqual([...found.keys()], ['a']);
   assert.equal(found.get('a').sources.length, 4);
   // (a second hollow answer: not kept; then its two tries are spent)
-  const again = mockClient([copy(recorded.broken), copy(recorded.broken)]);
+  const again = mockClient([copy(recorded.broken), copy(recorded.broken), copy(recorded.broken)]);
   const file2 = path.join(dir, 'log2.json');
   fs.writeFileSync(file2, JSON.stringify({ entries: [{ at, what: 'check-research', sport: 'nfl', id: 'a', cost: 0.12, finding: old }] }));
   const b2 = aiBudget({ file: file2, now, caps: { day: 5, month: 80 } });
   assert.equal((await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: b2, client: again, log: quiet })).size, 0);
   assert.equal(again.asked.length, 1);
-  await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file: file2, now, caps: { day: 5, month: 80 } }), client: again, log: quiet });
-  assert.equal(again.asked.length, 1);
+  // (two spent: the fallback, alone and simpler, its search errors logged in words; that failing too, given up,
+  // its words saying so with the last error, never "asked again")
+  const third = await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file: file2, now, caps: { day: 5, month: 80 } }), client: again, log: quiet });
+  assert.equal(again.asked.length, 2);
+  assert.equal(again.asked[1].tools[0].max_uses, 3);
+  assert.equal(third.failures.get('a').next, 'fallback');
+  const log2 = aiBudget({ file: file2, now, caps: { day: 5, month: 80 } }).list();
+  assert.ok(log2.at(-1).fallback && /search failed|nothing found/.test(log2.at(-1).error));
+  const fourth = await researchChecks({ sport: 'nfl', checks: [checks[0]], now, env: { CHECK_RESEARCH: '1', ANTHROPIC_API_KEY: 'test' }, budget: aiBudget({ file: file2, now, caps: { day: 5, month: 80 } }), client: again, log: quiet });
+  assert.equal(again.asked.length, 2);
+  const f = fourth.failures.get('a');
+  assert.equal(f.next, 'done');
+  const why = researchCall(checks[0], checks[0].research, { now, failure: f }).why;
+  assert.match(why, /failed on every ask \(3 tries, the simpler one too; last: stopped: (search failed|nothing found)/);
+  assert.match(why, /not asked again/);
 });

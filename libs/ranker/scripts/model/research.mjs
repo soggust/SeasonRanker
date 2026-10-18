@@ -9,7 +9,11 @@
 //            (CALL_TIMEOUT_MS) with no SDK retries, and the run's research (every sport together) stops starting
 //            calls or turns RUN_DEADLINE_MS (3 minutes) after its first, PARALLEL (4) calls at once, the soonest game first; a call that fails is logged (failed,
 //            its cost the turns billed so far, or, where it may have been billed unseen (a timeout, a dropped
-//            connection, a server error), a turn's worst case), so it counts toward its CHECK's tries
+//            connection, a server error), a turn's worst case), so it counts toward its CHECK's tries, its error's
+//            own words kept (errorText); none started with under MIN_CALL_MS (45s) left, and a timeout the deadline
+//            brought on (cut) not counted. A CHECK whose MAX_TRIES (2) all failed is asked once more, first, alone
+//            and simpler (3 searches, one at a time, low effort, the short prompt); that failing too, given up, its
+//            words saying so with the last error (researchCall's failure), never "asked again"
 //   on        only with CHECK_RESEARCH=1 and an ANTHROPIC_API_KEY, never on a --dry run (nothing spent); off,
 //            the desk as it was. The SDK (@anthropic-ai/sdk) loaded only when it runs (the workflow installs
 //            it first only when research is on); a client can be given (the tests' mock)
@@ -20,8 +24,8 @@
 //            CHECK asked about today, kept or not) and the CHECKs researched today. (The trial, 3 a day till 15
 //            calls were measured, ended 2026-10-17.) A finding is logged with its call, so a run that failed
 //            after paying for it (its CHECKs never saved) has it back from the log the next run, never asked
-//            again; one cut short (max_tokens, its turns used up, the caps) is asked once more (2 calls a CHECK
-//            at most), never kept as a finding
+//            again; one cut short (max_tokens, its turns used up, the caps) is asked once more (2 tries a CHECK,
+//            then the simpler fallback: see timed), never kept as a finding
 //   capped   ai-budget.mjs researchBudget: its own log (.cache/model/ai-usage-research.json), totals
 //            (apps/nfl/scripts/model/ai-spend-research.json) and caps, apart from the write-ups' ($5 a UTC day,
 //            $80 a UTC month, every sport, whichever binds first; CHECK_RESEARCH_DAILY_USD and _MONTHLY_USD lower
@@ -96,8 +100,19 @@ export const TURN_INPUT = 40000;
 export const MAX_TURNS = 3;
 // (a finding applied to the injury report this long after it's made, no longer)
 export const RESEARCH_TTL_H = 30;
-// (a CHECK asked about this many times at most, a call cut short asked once more)
-const MAX_TRIES = 2;
+// (a CHECK asked about this many times at most, a call cut short asked once more; a try the run's deadline cut
+// (cut: a timeout shorter than CALL_TIMEOUT_MS) not counted. Both failed: one last ask, alone and simpler
+// (FALLBACK: researchOne simple, SIMPLE_SEARCHES), FALLBACKS_PER_RUN a run, before the others; that failed too,
+// given up: no verdict, said so with the last error (failures), never asked again. MAX_ASKS every ask, cut or not)
+export const MAX_TRIES = 2;
+export const MAX_ASKS = 5;
+export const SIMPLE_SEARCHES = 3;
+export const FALLBACKS_PER_RUN = 2;
+// (no call started with less than this left before the run's deadline: one started later timed out at it and
+// was logged as a failed try (2026-10-18: every "Request timed out." of the night's runs, 7 of 7, came at the
+// deadline's second, the last call started; Blake Corum Under 6.5 Rec Yds and MarShawn Lloyd Under 11.5 Carries
+// spent their two tries on one of those and on a max_uses 2 answer, and were never asked again))
+export const MIN_CALL_MS = 45_000;
 // (a request's most, and the run's research's: on the bettor's path, so short. No SDK retries)
 export const CALL_TIMEOUT_MS = 90_000;
 export const RUN_DEADLINE_MS = 180_000;
@@ -145,11 +160,20 @@ status is that player's for this game: out (ruled out, inactive, suspended, on i
 explains: true when you found a real-world reason that accounts for the book's number (category: what it is: injury (or a player limited), role (a role or depth chart change), suspension (or personal), weather (or the venue), lineup (starter or lineup news), other); false when you looked and found nothing that does (category "market": the market alone, no real-world reason).
 confidence: high only when your sources are current (from the last few days before this game) and agree; medium when they are current but thin or partly unclear; low when they are stale, conflicting or you could not tell. With explains false, say high only when current reports on this player, his team's depth chart or lineup, and the conditions say nothing that would move this market.`;
 
+// (the fallback's (a CHECK whose tries all failed: researchOne simple): fewer searches, one at a time, none from
+// code, so the search tool's code loop can't fail it again)
+const SYSTEM_SIMPLE = `${SYSTEM}
+
+This is a second look after the first ones failed: use ${SIMPLE_SEARCHES} web searches at most, run one at a time, never from code: one plain query on the player, his team and this week's news, one on his team's injury report for this game.`;
+
 const fin = (v) => typeof v === 'number' && Number.isFinite(v);
 
-// (the facts sent: the CHECK's market, the model's and the book's numbers, what the diagnosis saw)
-export function researchPrompt(c, sport) {
+// (the facts sent: the CHECK's market, the model's and the book's numbers, what the diagnosis saw; the
+// fallback's, simple, the market and the two chances alone)
+export function researchPrompt(c, sport, { simple = false } = {}) {
   const p = c.projection ?? {};
+  const market = c.market === 'prop' ? `${c.player} ${c.statLabel ?? c.propType} ${c.line}` : `${c.market} ${c.side} ${c.line ?? ''}`.trim();
+  if (simple) return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the book's number?\n${JSON.stringify({ sport, game: c.matchup, start: c.start, market, player: c.player ?? null, modelSide: c.side })}`;
   const facts = {
     sport,
     game: c.matchup,
@@ -392,14 +416,33 @@ async function defaultClient(env) {
 // A request the API turned away (4xx, but a timeout's 408) was not)
 export const maybeBilled = (err) => !(Number.isFinite(err?.status) && err.status >= 400 && err.status < 500 && err.status !== 408);
 
+// (a failed call's error as logged: its HTTP status, the API's error type and its message, 300 characters at most;
+// the SDK's errors carry no key)
+export function errorText(err) {
+  const type = err?.error?.error?.type ?? err?.error?.type ?? (err?.name && err.name !== 'Error' ? err.name : null);
+  return [Number.isFinite(err?.status) ? String(err.status) : null, type, String(err?.message ?? err ?? 'failed')].filter(Boolean).join(' ').replace(/\s+/g, ' ').slice(0, 300);
+}
+// (a timeout's error: the SDK's APIConnectionTimeoutError, "Request timed out.")
+export const timedOut = (err) => err?.name === 'APIConnectionTimeoutError' || /timed? ?out/i.test(String(err?.message ?? ''));
+
+// (a logged try's error in words: its own, or what an older entry's fields say)
+export function tryError(e) {
+  if (!e) return 'no try logged';
+  if (e.error) return e.error;
+  if (e.failed) return 'the call failed';
+  if (e.retry) return 'cut short';
+  if (hollow(e.finding)) return `its search failed ("${String(e.finding.summary ?? '').slice(0, 100)}")`;
+  return 'no answer';
+}
+
 // (the stops that cut a call short: asked once more, never kept as a finding)
 const RETRY = /^stopped: (max_tokens|pause_turn|the AI caps|nothing found|search failed)/;
 
 // One CHECK researched: { finding, usage, cost, turns, retry }. client: the SDK's (or a mock with
 // beta.messages.create); budget: ai-budget.mjs's, each continued turn only while the call's cost so far and the
 // next turn's worst case fit (none: no continuation)
-export async function researchOne(client, c, sport, budget = null, { deadline = Infinity, clock = Date.now } = {}) {
-  const messages = [{ role: 'user', content: researchPrompt(c, sport) }];
+export async function researchOne(client, c, sport, budget = null, { deadline = Infinity, clock = Date.now, simple = false } = {}) {
+  const messages = [{ role: 'user', content: researchPrompt(c, sport, { simple }) }];
   let usage = {};
   let msg = null;
   let turns = 0;
@@ -435,9 +478,9 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
       // (a refusal re-run on the API's own fallback, inside the same call)
       betas: ['server-side-fallback-2026-07-01'],
       fallbacks: 'default',
-      output_config: { effort: 'medium' },
-      system: SYSTEM,
-      tools: [{ type: 'web_search_20260209', name: 'web_search', max_uses: MAX_SEARCHES }],
+      output_config: { effort: simple ? 'low' : 'medium' },
+      system: simple ? SYSTEM_SIMPLE : SYSTEM,
+      tools: [{ type: 'web_search_20260209', name: 'web_search', max_uses: simple ? SIMPLE_SEARCHES : MAX_SEARCHES }],
       messages,
     }, { timeout, maxRetries: 0 });
   }
@@ -469,10 +512,25 @@ export function measuredWords(budget) {
   return `${l.calls} call${l.calls === 1 ? '' : 's'} measured: mean $${l.mean.toFixed(3)}, highest $${l.max.toFixed(3)}`;
 }
 
+// (a logged try that failed: cut short, an error, or a hollow answer)
+const failedTry = (e) => !!(e.retry || e.failed || hollow(e.finding));
+// (a CHECK's logged tries, all failed (none, null): what's next for it: 'ask' (under MAX_TRIES counted, a try the
+// deadline cut not counted), 'fallback' (MAX_TRIES failed, its one simpler ask still to come), 'done' (that
+// failed too, or MAX_ASKS asks: given up)
+export function retryState(t = []) {
+  if (!t.length) return 'ask';
+  if (!t.every(failedTry)) return null;
+  if (t.length >= MAX_ASKS || t.some((e) => e.fallback && !e.cut)) return 'done';
+  return t.filter((e) => !e.cut).length < MAX_TRIES ? 'ask' : 'fallback';
+}
+
 // The day's research (see above): a Map of CHECK id -> its research record ({ at, by, model, status, reason,
-// player, athlete, summary, sources, cost }). reportOf(c): the CHECK's game's injury report (athleteOf)
+// player, athlete, summary, sources, cost }); its failures (a Map of CHECK id -> { tries, error, next }: every try
+// of its failed, the last one's error, and what's next: 'ask', 'fallback' or 'done', given up) on it as
+// out.failures, for its CHECK's words (researchCall). reportOf(c): the CHECK's game's injury report (athleteOf)
 export async function researchChecks({ sport, checks = [], now = new Date(), env = process.env, dry = false, budget = null, client = null, reportOf = () => null, log = console, clock = Date.now } = {}) {
   const out = new Map();
+  out.failures = new Map();
   if (env.CHECK_RESEARCH !== '1') return out;
   if (!env.ANTHROPIC_API_KEY) {
     log.log?.(`${sport}: CHECK research on but no ANTHROPIC_API_KEY: skipped`);
@@ -496,14 +554,19 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   const room = Math.max(0, top - doneIds.size);
   // (one asked before whose every try failed or was cut short, or whose kept finding is hollow: a re-ask)
   const reAsk = (c) => (tries.get(c.id)?.length ?? 0) > 0 || hollow(c.research);
-  const due = checks
-    .filter((c) => open(c) && !out.has(c.id) && !c.bet && !checkLocked(c, now) && Date.parse(c.start) > now.getTime())
-    // (asked before: again only when every try was cut short, MAX_TRIES at most)
-    .filter((c) => {
-      const t = tries.get(c.id) ?? [];
-      // (a hollow finding logged counts as a try cut short)
-      return t.length < MAX_TRIES && t.every((e) => e.retry || e.failed || hollow(e.finding));
-    })
+  const live = checks.filter((c) => open(c) && !out.has(c.id) && !c.bet && !checkLocked(c, now) && Date.parse(c.start) > now.getTime());
+  // (every one whose tries all failed: the last error, and what's next, for its words; the given up said so)
+  for (const c of live) {
+    const t = tries.get(c.id) ?? [];
+    const next = retryState(t);
+    if (t.length && next) out.failures.set(c.id, { tries: t.length, error: tryError(t.at(-1)), next });
+  }
+  const gaveUp = [...out.failures].filter(([, f]) => f.next === 'done');
+  if (gaveUp.length) log.log?.(`${sport}: CHECK research given up on ${gaveUp.length} (every try failed, the simpler one too): ${gaveUp.map(([id, f]) => `${checks.find((c) => c.id === id)?.pick ?? id} (${f.tries} tries, last: ${f.error})`).join(' | ')}`);
+  const due = live
+    // (asked before: again only while its tries are under MAX_TRIES, a hollow finding logged a try cut short; both
+    // failed, once more alone and simpler (fallback); that failed too, not again)
+    .filter((c) => ['ask', 'fallback'].includes(retryState(tries.get(c.id) ?? [])))
     // (2026-10-18: a failed call asked again ahead of every new CHECK; then the soonest game first, so the run's
     // deadline leaves the later games, not the ones about to start; the biggest model Kelly breaks a tie)
     .sort((a, b) => Number(reAsk(b)) - Number(reAsk(a)) || (Date.parse(a.start) - Date.parse(b.start)) || (modelKelly(b.odds, b.model) ?? -9) - (modelKelly(a.odds, a.model) ?? -9))
@@ -525,14 +588,24 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   }
   runDeadline ??= clock() + RUN_DEADLINE_MS;
   const deadline = runDeadline;
+  // (the fallbacks first, one at a time and alone (no calls beside them: nothing shares the rate or the deadline),
+  // FALLBACKS_PER_RUN a run; the rest of them the next run's)
+  const isFallback = (c) => retryState(tries.get(c.id) ?? []) === 'fallback';
+  const fallbacks = due.filter(isFallback).slice(0, FALLBACKS_PER_RUN);
+  for (const c of fallbacks) {
+    if (deadline - clock() < MIN_CALL_MS || !budget.canSpend(ESTIMATE)) break;
+    log.log?.(`${sport}: CHECK research ${c.pick ?? c.id}: its tries all failed (last: ${out.failures.get(c.id)?.error ?? '?'}): asked once more, alone and simpler`);
+    await askOne(c, true);
+  }
   // (PARALLEL calls at once inside the deadline, each started only while the caps hold its worst case on top of
   // the worst cases of the calls still running: the caps bind as they did one call at a time)
   let reserved = 0;
   let stopped = false;
   const running = new Set();
-  const queue = [...due];
+  const queue = due.filter((c) => !isFallback(c));
   while (queue.length && !stopped) {
-    if (clock() >= deadline) {
+    // (none started that the deadline would cut: MIN_CALL_MS)
+    if (deadline - clock() < MIN_CALL_MS) {
       log.log?.(`${sport}: CHECK research stopped at the run's deadline (${RUN_DEADLINE_MS / 1000} seconds)`);
       break;
     }
@@ -561,11 +634,14 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
   budget.save();
   return out;
 
-  async function askOne(c) {
+  async function askOne(c, simple = false) {
     // (a paused turn continued only while the caps hold it on top of the other running calls' worst cases)
     const mine = { canSpend:(e) => budget.canSpend(e + Math.max(0, reserved - ESTIMATE)) };
+    // (the time the call had: less than a request's own, the run's deadline cut it)
+    const room = deadline - clock();
+    const tag = simple ? { fallback: true } : {};
     try {
-      const { finding, usage, cost, retry } = await researchOne(client, c, sport, mine, { deadline, clock });
+      const { finding, usage, cost, retry } = await researchOne(client, c, sport, mine, { deadline, clock, simple });
       const report = reportOf(c);
       const athlete = finding.player ? athleteOf(c, finding.player, report) : null;
       const { problem: _p, ...kept } = finding;
@@ -573,7 +649,7 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
       const listed = athlete ? officialEntry(report, athlete) : null;
       const rec = retry ? null : { at: now.toISOString(), by: 'claude', model: RESEARCH_MODEL, ...kept, athlete, ...(listed ? { onReport: String(listed.status ?? '') || 'listed' } : {}), cost: Math.round(cost * 1e4) / 1e4 };
       // (the finding logged with its call: a run that fails before saving it has it back next time)
-      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage, cost, ...(rec ? { finding: rec } : { retry: true }) });
+      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage, cost, ...tag, ...(rec ? { finding: rec } : { retry: true, error: String(finding.problem ?? 'cut short').slice(0, 300) }) });
       budget.save();
       if (rec) out.set(c.id, rec);
       const n = (v) => (Number.isFinite(v) ? v : 0).toLocaleString('en-US');
@@ -585,10 +661,13 @@ export async function researchChecks({ sport, checks = [], now = new Date(), env
     } catch (err) {
       // (every failed try logged, so it counts toward the CHECK's tries: its cost the turns billed before it, and
       // where this turn may have been billed unseen, its worst case on top)
+      // (its error's own words kept with it; a timeout the run's deadline brought on (cut) not counted a try)
       const billed = err?.usage ? costOf(err.usage, RESEARCH_MODEL) : 0;
-      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage: err?.usage ?? null, cost: billed + (maybeBilled(err) ? ESTIMATE : 0), failed: true });
+      const error = errorText(err);
+      const cut = timedOut(err) && room < CALL_TIMEOUT_MS;
+      budget.record({ what: 'check-research', sport, id: c.id, model: RESEARCH_MODEL, usage: err?.usage ?? null, cost: billed + (maybeBilled(err) ? ESTIMATE : 0), failed: true, error, ...tag, ...(cut ? { cut: true } : {}) });
       budget.save();
-      log.warn?.(`${sport}: CHECK research on ${c.id} failed (${String(err?.message ?? err).slice(0, 120)})`);
+      log.warn?.(`${sport}: CHECK research on ${c.pick ?? c.id} (${c.id}) failed${simple ? ' (the simpler fallback)' : ''}: ${error}${cut ? ` (cut by the run's deadline, ${Math.round(room / 1000)}s left: not counted a try)` : ''}`);
     }
   }
 }
@@ -601,9 +680,11 @@ const r4 = (v) => Math.round(v * 1e4) / 1e4;
 // What the research says the desk does with a CHECK this run: { act: 'adjust' | 'bet' | 'check', why, units? }.
 // rs: its research (the CHECK's own by default); gate: researchGateOf's. An 'adjust' is the run's to carry out
 // (researchNote: a status into the game's report, where one takes it); a 'bet' the model's side at RESEARCH_UNITS
-export function researchCall(c, rs = c?.research, { now = new Date(), gate = null, level = null } = {}) {
+// failure: researchChecks' out.failures entry for it ({ tries, error, next }): a failed call's words say what
+// failed and what's next, never "asked again" of one given up
+export function researchCall(c, rs = c?.research, { now = new Date(), gate = null, level = null, failure = null } = {}) {
   const v = verdictOf(rs);
-  if (v === 'check') return { act: 'check', why: rs ? (hollow(rs) ? 'the research call failed (its search did): asked again, no verdict' : `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})`) : 'not researched' };
+  if (v === 'check') return { act: 'check', why: rs || failure ? (failure || hollow(rs) ? failedWords(failure) : `the research can't tell (${rs.problem ?? `${rs.confidence ?? 'low'} confidence`})`) : 'not researched' };
   const kind = v === 'adjust' ? 'adjusted' : 'bet';
   if (gate?.[kind] && !gate[kind].on) return { act: 'check', why: gate[kind].why };
   // (the level earned (researchLevelOf) and this kind's gate not at practice: its Kelly stake and its level)
@@ -615,6 +696,30 @@ export function researchCall(c, rs = c?.research, { now = new Date(), gate = nul
   }
   return { act: 'adjust', ...earned, why: `research found ${CATEGORIES[rs.category] ?? rs.category} (${rs.confidence} confidence): ${rs.summary || ''}`.trim() };
 }
+
+// (a failed call's words: its last error and what's next)
+export function failedWords(f) {
+  if (!f) return 'the research call failed (its search did): asked again, no verdict';
+  const tries = `${f.tries} ${f.tries === 1 ? 'try' : 'tries'}`;
+  if (f.next === 'done') return `the research failed on every ask (${tries}, the simpler one too; last: ${f.error}): no verdict, not asked again`;
+  if (f.next === 'fallback') return `the research call failed (${tries}; last: ${f.error}): asked once more, alone and simpler, no verdict yet`;
+  return `the research call failed (${tries}; last: ${f.error}): asked again, no verdict yet`;
+}
+
+// (the CHECKs a run's research calls are made on (run.mjs researchCalls): open ones with research (found(c): this
+// run's finding, else its own), and one closed or passed (a shadow) on an earlier run whose research has a call on
+// it, its game still to come: decided again, so the guard that made it a CHECK can't open it again the next run
+// with no word from the research. 2026-10-18: Tyler Higbee Over 32.5 Rec Yds, passed by the research then a
+// shadow, and Blake Corum Under 53.5 Rush+Rec Yds, its research bet left out by the one-prop-a-player cap and
+// closed, both opened again as CHECKs by their role guards with the research never asked, both listed)
+export function callChecks(checks, found = (c) => c?.research ?? null, now = new Date()) {
+  const ahead = (c) => Date.parse(c.start ?? '') > now.getTime();
+  return (checks ?? []).filter((c) => c && !c.checkResult && !c.bet && found(c) && ((!c.hidden && !c.closedAt) || (!!c.research?.call && ahead(c))));
+}
+
+// (a research bet a cap left out (run.mjs betProps' capped, placeBets' game cap): passed with the cap's words,
+// decided, out of the CHECKs; never a closed CHECK whose call still says bet, for its guard to open again)
+export const unplacedCall = (call, why) => ({ ...call, act: 'pass', decided: true, why: `passed: its research bet not placed (${why}), out of the CHECKs; ${call?.why ?? ''}` });
 
 // (a call that clears its CHECK to be priced: a 'bet' (nothing explains the gap) or an 'adjust' whose reason the
 // inputs carry (put in this run, or held: on the report already; run.mjs researchCalls' note))

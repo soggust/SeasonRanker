@@ -154,7 +154,7 @@ import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { checkLearning } from './check-learn.mjs';
-import { RESEARCH_UNITS, feedCheck, hollow, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
+import { RESEARCH_UNITS, callChecks, feedCheck, hollow, unplacedCall, researchCall, researchCard, researchChecks, researchDecision, researchEarned, researchGateOf, researchInputs, researchLevelOf, researchPriced, verdictOf } from './research.mjs';
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
@@ -646,9 +646,9 @@ async function fitTheContext(r) {
 // team's roster (espn.mjs roster, its names and positions), read only for an 'adjust'
 async function researchCalls(r, checks, notes, rosterOf = async () => null) {
   const found = (c) => r.researchFound?.get(c.id) ?? c.research ?? null;
-  // (and one the research decided and closed on an earlier run (its call decided: passed, or priced and passed):
-  // decided again the same way, so the guard that made it a CHECK doesn't open it again the next run)
-  const mine = (checks ?? []).filter((c) => c && !c.hidden && !c.checkResult && (!c.closedAt || c.research?.call?.decided) && !c.bet && found(c));
+  // (and one closed or passed on an earlier run whose research has a call on it, its game to come: research.mjs
+  // callChecks)
+  const mine = callChecks(checks, found, r.now);
   if (!mine.length) return;
   const bets = [];
   for (const sport of Object.keys(LEAGUES)) {
@@ -669,7 +669,7 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
   const by = { adjust: 0, bet: 0, check: 0 };
   for (const c of mine) {
     const rs = found(c);
-    let call = researchCall(c, rs, { now: r.now, gate: r.researchGate, level: r.researchLevel });
+    let call = researchCall(c, rs, { now: r.now, gate: r.researchGate, level: r.researchLevel, failure: r.researchFound?.failures?.get(c.id) ?? null });
     if (call.act === 'adjust') {
       const game = r.upcoming?.find((u) => String(u.game.id) === String(c.event))?.game ?? null;
       const rosters = new Map();
@@ -1869,6 +1869,11 @@ function placeBets(r) {
       // (the market that gave way to this one (betGames, oneSide) free again for a later run)
       const freed = r.gaveWay?.get(b.id);
       if (freed) delete r.rest[freed];
+      // (a research bet the cap left out: its CHECK passed with the cap's words, decided (betProps' capped))
+      for (const id of b.researchBet ? [b.researchBet.check] : (b.researchAdjusted?.checks ?? [])) {
+        const call = r.researchCalls?.get(id);
+        if (call) r.researchCalls.set(id, unplacedCall(call, `the game's ${GAME_CAP}u cap`));
+      }
       if (DRY) console.log(`${sport} (dry) not bet ${b.matchup} ${b.pick}: the game's ${GAME_CAP}u cap (${open}u open on it)`);
     }
     for (const b of plan.kept) {
@@ -2170,7 +2175,9 @@ async function betProps(r) {
           // passes (checkOf, below): the words on its research's call, so it's never a CHECK with no word on it)
           if (d || shadow) researchSeen.add(id);
           if (d?.as === 'check') r.researchCalls.set(id, { ...call, why: `${d.why}; ${call.why}` });
-          else if (shadow && call.act !== 'pass') r.researchCalls.set(id, { ...call, why: `passed: ${shadowed.why} (the research's ${call.act === 'bet' ? 'finding' : 'input'} in, under the CHECK bar); ${call.why}` });
+          // (a shadow's: passed, decided, so its words and its act agree and the list drops it: checks.mjs
+          // researchPassed. 2026-10-18: Blake Corum Under 53.5 Rush+Rec Yds kept act 'bet' under "passed: ...")
+          else if (shadow && call.act !== 'pass') r.researchCalls.set(id, { ...call, act: 'pass', decided: true, why: `passed: ${shadowed.why} (the research's ${call.act === 'bet' ? 'finding' : 'input'} in, under the CHECK bar); ${call.why}` });
           // (a prop the research cleared with no CHECK guard firing now: priced by the usual rules, as before)
           const input = call.act === 'pass' ? null : call.act === 'bet' ? 'finding: nothing explains the gap' : (call.note.input ?? `${call.note.name ?? call.note.player} ${call.note.status}`);
           if (!d && (call.act !== 'adjust' || guarded)) continue;
@@ -2277,7 +2284,16 @@ async function betProps(r) {
     const tested = caps === PROP_CAPS.tested;
     const inGame = mine.filter((b) => (tested ? true : !b.tested)).length;
     // (a research-decided one the caps leave out: said so, its CHECK closed all the same, betProps)
-    const capped = (why) => (x.researchBet || x.researchAdjusted) && console.log(`${sport}${DRY ? ' (dry)' : ''}: research bet ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line} not placed: ${why}`);
+    // (and passed with the cap's words, decided: out of the CHECKs, never a closed CHECK whose call says bet that
+    // its guard opens again the next run)
+    const capped = (why) => {
+      if (!(x.researchBet || x.researchAdjusted)) return;
+      console.log(`${sport}${DRY ? ' (dry)' : ''}: research bet ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line} not placed: ${why}`);
+      const call = r.researchCalls?.get(id);
+      if (call) r.researchCalls.set(id, unplacedCall(call, why));
+      const mv = (r.researchMoved ?? []).find((m) => m.id === id);
+      if (mv) mv.now = unplacedCall({ why: '' }, why).why.replace(/; $/, '');
+    };
     if ((caps.perGame !== null && inGame >= caps.perGame) || (PER_GAME !== null && mine.length >= PER_GAME)) {
       capped("the game's props cap");
       continue;
@@ -2288,7 +2304,10 @@ async function betProps(r) {
       continue;
     }
     x.units = Math.min(x.units, caps.maxUnits);
-    if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) continue;
+    if (!tested && caps.perDay !== null && untestedUnits(dayOf(game.date)) + pendingProps(game.id).filter((b) => !b.tested).reduce((t, b) => t + b.units, 0) + x.units > caps.perDay) {
+      capped("the day's cap on untested props");
+      continue;
+    }
     const placed = gatedPlacement(edge, x.units, gate);
     const bet = propBet(r, game, x, exp, { id, ...placed, tested });
     if (placed.practice) bet.practice = placed.practice;
