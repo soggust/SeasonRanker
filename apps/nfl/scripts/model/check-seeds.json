@@ -1,0 +1,1056 @@
+{
+ "sport": "nfl",
+ "seeds": [
+  {
+   "id": "401872999:prop:rec:4870612",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rec",
+   "pick": "Zachariah Branch Over 1.5 Receptions",
+   "player": "Zachariah Branch",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb1-out",
+   "reason": "his team's starting quarterback (Cooper Rush) out: a backup throwing to him",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb1-out"
+   },
+   "pattern": "role:qb1-out|seen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": 131,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 1.31,
+    "actual": 2,
+    "final": "Zachariah Branch 2 Receptions",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.949Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "The QB1-out idea doesn't hold up. Penix (ribs) practiced fully, had no injury designation and was cleared to play vs. Chicago. I found no pregame news on Branch's role, and 42% vs. 41% is too close to need a reason.",
+    "sources": [
+     "https://www.espn.com/nfl/story/_/id/50197497/falcons-michael-penix-jr-ribs-cleared-play-vs-bears",
+     "https://www.thefalcoholic.com/atlanta-falcons-injuries/97362/falcons-vs-bears-injury-report-c-j-henderson-caleb-williams-michael-penix",
+     "https://sports.yahoo.com/articles/nfl-insider-gives-michael-penixs-190434399.html"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.169,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:recYds:4430807",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "recYds",
+   "pick": "Bijan Robinson Under 29.5 Rec Yds",
+   "player": "Bijan Robinson",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "his team's starter of late (Cooper Rush) not on the board and another quarterback on it: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -114,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 0.877,
+    "actual": 0,
+    "final": "Bijan Robinson 0 Rec Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.964Z",
+    "player": "Bijan Robinson",
+    "status": "active",
+    "reason": "none",
+    "summary": "Robinson wasn't on the injury report. Penix (ribs) had no designation and was set to start, as he had since Week 3, so Atlanta had no QB change. Chicago's DL/LB injuries and Williams' return don't explain a lower receiving line.",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.espn.com/nfl/story/_/id/50197497/falcons-michael-penix-jr-ribs-cleared-play-vs-bears",
+     "https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule",
+     "https://fantasyfootballcalculator.com/players/bijan-robinson/injury",
+     "https://athlonsports.com/nfl/chicago-bears/bears-falcons-bijan-robinson-injuries-montez-sweat"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.125,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872998:total",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "total",
+   "propType": null,
+   "pick": "Over 39.5",
+   "player": null,
+   "team": null,
+   "cause": "gap",
+   "roleReason": null,
+   "reason": "the model's 64% against the book's 50%: too far from the market to trust",
+   "diagnosis": {
+    "cause": "matchup",
+    "sub": "ratings"
+   },
+   "pattern": "matchup|unseen",
+   "projection": {
+    "out": [],
+    "vac": null
+   },
+   "odds": -112,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "final": "CAR 25 @ PHI 14",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.966Z",
+    "player": "Jalen Hurts",
+    "status": "out",
+    "reason": "injury",
+    "summary": "Eagles QB Jalen Hurts (calf blood clot) and RB Saquon Barkley (hamstring) were ruled out, so Tanner McKee starts. That explains the low 39.5 total, which the ratings-based model misses.",
+    "sources": [
+     "https://www.nfl.com/news/eagles-qb-jalen-hurts-out-sunday-panthers-superficial-blood-clot",
+     "https://www.nbcsportsphiladelphia.com/nfl/philadelphia-eagles/eagles-injury-update-week-6-saquon-barkley-devonta-smith-drew-kendall-jalen-hurts/759046/",
+     "https://www.bleedinggreennation.com/philadelphia-eagles-injuries/187148/eagles-panthers-final-injury-report-devonta-smith-will-play-saquon-barkley-out",
+     "https://www.phillyvoice.com/eagles-panthers-week-6-injury-report-analysis-2026-saquon-barkley-devonta-smith-jalyx-hunt/",
+     "https://athlonsports.com/nfl/trending/final-injury-report-for-panthers-eagles-will-jalen-hurts-saquon-barkley-play"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.1024,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:passAtt:4360423",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passAtt",
+   "pick": "Michael Penix Jr. Under 30.5 Pass Att",
+   "player": "Michael Penix Jr.",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "Michael Penix Jr. on the board and his team's starter of late (Cooper Rush) not: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -120,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 33,
+    "final": "Michael Penix Jr. 33 Pass Att",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.976Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Penix hurt his ribs in Week 5 but practiced fully and had no injury designation. He was set to start vs. the Bears, so no QB change was found. Nothing explains a line above his ~29.7 average.",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.atlantafalcons.com/news/michael-penix-jr-expected-to-start-vs-chicago-bears",
+     "https://heavy.com/sports/nfl/chicago-bears/michael-penix-injury-status-falcons-game/",
+     "https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.103,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rec:4430807",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rec",
+   "pick": "Bijan Robinson Under 3.5 Receptions",
+   "player": "Bijan Robinson",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "his team's starter of late (Cooper Rush) not on the board and another quarterback on it: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": 101,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 1.01,
+    "actual": 2,
+    "final": "Bijan Robinson 2 Receptions",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.981Z",
+    "player": "Bijan Robinson",
+    "status": "active",
+    "reason": "none",
+    "summary": "Pre-game reports list Bijan as a normal starter. QB Penix (rib) practiced fully and was active to start, so Atlanta's QB stayed the same. I found nothing to explain the book's slight lean to the over.",
+    "sources": [
+     "https://abcnews.com/Sports/wireStory/bears-qb-caleb-williams-active-expected-start-falcons-137363298",
+     "https://sports.yahoo.com/articles/falcons-vs-bears-live-updates-140129851.html",
+     "https://www.windycitygridiron.com/chicago-bears-game-information/125326/week-6-nfl-game-preview-chicago-bears-vs-atlanta-falcons-2026-michael-penix-caleb-williams-bijan-robinson-drake-london",
+     "https://1049foxsports.iheart.com/content/2026-10-16-bijan-robinson-week-6-preview-vs-the-bears/",
+     "https://www.nbcsports.com/nfl/news/bears-vs-falcons-prediction-odds-expert-picks-qb-matchup-injury-update-betting-trends-and-stats"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.1264,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:total",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "total",
+   "propType": null,
+   "pick": "Under 51.5",
+   "player": null,
+   "team": null,
+   "cause": "gap",
+   "roleReason": null,
+   "reason": "the model's 64% against the book's 51%: too far from the market to trust",
+   "diagnosis": {
+    "cause": "matchup",
+    "sub": "ratings"
+   },
+   "pattern": "matchup|unseen",
+   "projection": {
+    "out": [],
+    "vac": null
+   },
+   "odds": -112,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "final": "CHI 31 @ ATL 23",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.984Z",
+    "player": "Caleb Williams",
+    "status": "active",
+    "reason": "injury",
+    "summary": "Bears QB Caleb Williams returns from a hamstring injury that cost him 3 games, and ESPN reported Oct 17 he'd start. Penix is cleared, and both defenses are short: CB Henderson and Bears LBs Edwards and Elliott are out.",
+    "sources": [
+     "https://www.espn.com/nfl/story/_/id/50201828/sources-bears-plan-start-qb-caleb-williams-vs-falcons",
+     "https://www.nbcsports.com/fantasy/football/player-news/2026-10-17/caleb-williams-cleared-to-return-in-week-6",
+     "https://www.chicagobears.com/news/injury-update-caleb-williams-questionable-for-sunday-s-game-vs-falcons",
+     "https://www.atlantafalcons.com/news/falcons-injury-report-c-j-henderson-ruled-out-of-week-6-matchup-vs-bears",
+     "https://www.bleachernation.com/bears/2026/10/16/falcons-injury-report-3/"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.1619,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rushYds:4241474",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushYds",
+   "pick": "Brian Robinson Jr. Under 34.5 Rush Yds",
+   "player": "Brian Robinson Jr.",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "his team's starter of late (Cooper Rush) not on the board and another quarterback on it: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -114,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 0.877,
+    "actual": 1,
+    "final": "Brian Robinson Jr. 1 Rush Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.988Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Penix (ribs) practiced fully all week and got no designation, and Bears QB Caleb Williams is set to return. No pre-game report changes Robinson's role. The 34.5 line sits at the model's 34.8, so the gap looks like market pricing.",
+    "sources": [
+     "https://www.thefalcoholic.com/atlanta-falcons-injuries/97362/falcons-vs-bears-injury-report-c-j-henderson-caleb-williams-michael-penix",
+     "https://sports.yahoo.com/articles/falcons-final-week-6-injury-181804466.html",
+     "https://sports.yahoo.com/articles/falcons-vs-bears-final-injury-154230122.html"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.2288,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872997:prop:rushAtt:3043078",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushAtt",
+   "pick": "Derrick Henry Over 20.5 Carries",
+   "player": "Derrick Henry",
+   "team": "33",
+   "cause": "role",
+   "roleReason": "qb1-out",
+   "reason": "his team's starting quarterback (Lamar Jackson) out: a backup throwing to him",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb1-out"
+   },
+   "pattern": "role:qb1-out|seen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -125,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 17,
+    "final": "Derrick Henry 17 Carries",
+    "gradedAt": "2026-10-18T20:05:32.252Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.992Z",
+    "player": "Lamar Jackson",
+    "status": "out",
+    "reason": "injury",
+    "summary": "On Oct 16 the Ravens ruled Lamar Jackson out vs. Cleveland with an ankle injury, his second straight missed game. The book's 20.5 sits close to the model's 21.9, so the gap is small and fits a backup-QB, run-heavy plan.",
+    "sources": [
+     "https://www.baltimoreravens.com/news/lamar-jackson-injury-report-ravens-browns-sidelined-matt-hibner-broderick-washington"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.061,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872997:prop:passTd:4035671",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passTd",
+   "pick": "Tyler Huntley Under 1.5 Pass TDs",
+   "player": "Tyler Huntley",
+   "team": "33",
+   "cause": "role",
+   "roleReason": "snap-jump",
+   "reason": "100% of the snaps in his last game against 74% this season: a bigger role",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "snap-jump"
+   },
+   "pattern": "role:snap-jump|seen",
+   "projection": {
+    "out": [
+     "Lamar Jackson"
+    ],
+    "vac": 0
+   },
+   "odds": -244,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 0.41,
+    "actual": 1,
+    "final": "Tyler Huntley 1 Pass TDs",
+    "gradedAt": "2026-10-18T20:05:32.252Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.995Z",
+    "player": "Lamar Jackson",
+    "status": "out",
+    "reason": "injury",
+    "summary": "On Friday the Ravens ruled Lamar Jackson (left ankle sprain) out for a second straight week, so Tyler Huntley starts at Cleveland. The book prices a full starter's workload, while the model's 0.72 TD rate comes from backup-heavy game logs.",
+    "sources": [
+     "https://www.espn.com/nfl/story/_/id/50197342/ravens-rule-qb-jackson-huntley-start-browns",
+     "https://www.nfl.com/news/ravens-qb-lamar-jackson-ankle-out-sunday-vs-browns-tyler-huntley-to-start-again",
+     "https://www.cbssports.com/fantasy/football/news/ravens-tyler-huntley-starting-vs-cleveland/",
+     "https://www.espn.com/contributor/jamison-hensley/7d7201748dfcb"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.0841,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rushAtt:4430807",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushAtt",
+   "pick": "Bijan Robinson Over 18.5 Carries",
+   "player": "Bijan Robinson",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb1-out",
+   "reason": "his team's starting quarterback (Cooper Rush) out: a backup throwing to him",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb1-out"
+   },
+   "pattern": "role:qb1-out|seen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -116,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 9,
+    "final": "Bijan Robinson 9 Carries",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:48.999Z",
+    "player": "Bijan Robinson",
+    "status": "active",
+    "reason": "none",
+    "summary": "The model's qb1-out guess doesn't hold. Penix (ribs) practiced fully, had no injury designation and was set to start. Robinson practiced fully all week and wasn't on the injury report. The 2-point gap is just the market.",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.thefalcoholic.com/atlanta-falcons-injuries/97362/falcons-vs-bears-injury-report-c-j-henderson-caleb-williams-michael-penix",
+     "https://www.cbssports.com/nfl/news/michael-penix-jr-injury-update-falcons-vs-bears/",
+     "https://www.draftsharks.com/fantasy/injury-history/bijan-robinson/13541",
+     "https://www.si.com/nfl/bears/onsi/bears-injury-week-4-stop-bijan-robinson"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "high",
+    "cost": 0.1639,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rushAtt:4241474",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushAtt",
+   "pick": "Brian Robinson Jr. Under 7.5 Carries",
+   "player": "Brian Robinson Jr.",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "his team's starter of late (Cooper Rush) not on the board and another quarterback on it: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": 111,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 1.11,
+    "actual": 2,
+    "final": "Brian Robinson Jr. 2 Carries",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.005Z",
+    "player": "Brian Robinson Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Robinson had no injury tag. QB Penix (ribs) practiced fully, got no designation and was set to start, so there was no real QB change. Only CB Henderson was ruled out. The 2-point gap looks like market noise.",
+    "sources": [
+     "https://www.ajc.com/sports/2026/10/atlanta-falcons-injury-report-week-6/",
+     "https://sports.yahoo.com/articles/falcons-final-week-6-injury-181804466.html",
+     "https://www.atlantafalcons.com/news/falcons-injury-report-c-j-henderson-ruled-out-of-week-6-matchup-vs-bears",
+     "https://www.atlantafalcons.com/news/falcons-injury-report-michael-penix-jr-chicago-bears",
+     "https://www.fantasypros.com/nfl/players/brian-robinson-jr.php"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.1842,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:passTd:4431611",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passTd",
+   "pick": "Caleb Williams Under 1.5 Pass TDs",
+   "player": "Caleb Williams",
+   "team": "3",
+   "cause": "gap",
+   "roleReason": null,
+   "reason": "the model's 56% against the book's 41%: too far from the market to trust",
+   "diagnosis": {
+    "cause": "dispersion",
+    "sub": "under"
+   },
+   "pattern": "dispersion|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": 131,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 1.31,
+    "actual": 1,
+    "final": "Caleb Williams 1 Pass TDs",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.008Z",
+    "player": "Caleb Williams",
+    "status": "questionable",
+    "reason": "injury",
+    "summary": "Williams tore his hamstring Sept. 20 and missed 3 games. He practiced fully but was listed questionable for ATL; Schefter said he was expected to start. The re-injury and limited-role risk fits a lower over price on 1.5 pass TDs.",
+    "sources": [
+     "https://www.nfl.com/news/bears-qb-caleb-williams-hamstring-questionable-to-play-falcons",
+     "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/bears-qb-caleb-williams-questionable-to-play-vs-falcons",
+     "https://www.nbcsports.com/fantasy/football/player-news/2026-10-16/caleb-williams-hamstring-officially-questionable",
+     "https://www.rotowire.com/football/headlines/caleb-williams-injury-on-track-to-start-sunday-642917",
+     "https://www.chicagobears.com/news/injury-update-caleb-williams-questionable-for-sunday-s-game-vs-falcons"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "medium",
+    "cost": 0.1228,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rushYds:4426386",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushYds",
+   "pick": "Roschon Johnson Under 21.5 Rush Yds",
+   "player": "Roschon Johnson",
+   "team": "3",
+   "cause": "role",
+   "roleReason": "snap-jump",
+   "reason": "39% of the snaps in his last game against 17% this season: a bigger role",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "snap-jump"
+   },
+   "pattern": "role:snap-jump|seen",
+   "projection": {
+    "out": [
+     "Kyle Monangai"
+    ],
+    "vac": 0.796
+   },
+   "odds": -114,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 51,
+    "final": "Roschon Johnson 51 Rush Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.010Z",
+    "player": "Kyle Monangai",
+    "status": "out",
+    "reason": "injury",
+    "summary": "The Bears ruled out RB Kyle Monangai (turf toe/thumb) for Atlanta, and he was on the inactive list. That leaves Roschon Johnson as the main backup behind D'Andre Swift, which likely explains the higher 21.5 line.",
+    "sources": [
+     "https://www.nbcsports.com/fantasy/football/player-news/2026-10-16/bears-rule-out-kyle-monangai-thumb-toe-in-week-6",
+     "https://athlonsports.com/nfl/trending/bears-hc-ben-johnson-kyle-monangai-injury-update",
+     "https://chicago.suntimes.com/bears/2026/10/14/bears-report-kyle-monangai-still-listed-as-out-on-injury-report",
+     "https://www.windycitygridiron.com/chicago-bears-game-information/125482/bears-falcons-inactives-ozzy-traplio-will-play-tyrique-stevenson-will-not-caleb-williams",
+     "https://rollingout.com/2026/10/18/can-dandre-swift-carry-the-bears-falcons/"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.1218,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:rushRecYds:4430807",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "rushRecYds",
+   "pick": "Bijan Robinson Over 127.5 Rush+Rec Yds",
+   "player": "Bijan Robinson",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb1-out",
+   "reason": "his team's starting quarterback (Cooper Rush) out: a backup throwing to him",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb1-out"
+   },
+   "pattern": "role:qb1-out|seen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -114,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 61,
+    "final": "Bijan Robinson 61 Rush+Rec Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.011Z",
+    "player": "Bijan Robinson",
+    "status": "active",
+    "reason": "none",
+    "summary": "Bijan wasn't on the injury report. QB Penix (ribs) practiced fully and had no designation, so the qb1-out idea doesn't hold. Chicago's Caleb Williams returning and Chicago being road favorites may affect game script, but nothing changed Bij",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.thefalcoholic.com/atlanta-falcons-injuries/97362/falcons-vs-bears-injury-report-c-j-henderson-caleb-williams-michael-penix",
+     "https://www.cbssports.com/nfl/news/michael-penix-jr-injury-update-falcons-vs-bears/",
+     "https://espn.com/nfl/story/_/id/50201828/sources-bears-plan-start-qb-caleb-williams-vs-falcons",
+     "https://www.si.com/nfl/bears/onsi/bears-injury-week-4-stop-bijan-robinson"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.1393,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872998:spread",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "spread",
+   "propType": null,
+   "pick": "PHI +3",
+   "player": null,
+   "team": null,
+   "cause": "gap",
+   "roleReason": null,
+   "reason": "the model's 62% against the book's 49%: too far from the market to trust",
+   "diagnosis": {
+    "cause": "matchup",
+    "sub": "ratings"
+   },
+   "pattern": "matchup|unseen",
+   "projection": {
+    "out": [],
+    "vac": null
+   },
+   "odds": -108,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "final": "CAR 25 @ PHI 14",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.012Z",
+    "player": "Jalen Hurts",
+    "status": "out",
+    "reason": "injury",
+    "summary": "The Eagles ruled QB Jalen Hurts out with a superficial blood clot in his calf, so Tanner McKee starts. Saquon Barkley (hamstring) is also out. That explains why the book only gives PHI about 49% to cover -3.",
+    "sources": [
+     "https://www.nfl.com/news/eagles-qb-jalen-hurts-out-sunday-panthers-superficial-blood-clot",
+     "https://www.bleedinggreennation.com/philadelphia-eagles-injuries/187148/eagles-panthers-final-injury-report-devonta-smith-will-play-saquon-barkley-out",
+     "https://www.nbcsportsphiladelphia.com/nfl/philadelphia-eagles/eagles-injury-update-week-6-saquon-barkley-devonta-smith-drew-kendall-jalen-hurts/759046/",
+     "https://athlonsports.com/nfl/trending/final-injury-report-for-panthers-eagles-will-jalen-hurts-saquon-barkley-play"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.1139,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:passInt:4360423",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passInt",
+   "pick": "Michael Penix Jr. Under 0.5 INTs",
+   "player": "Michael Penix Jr.",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "Michael Penix Jr. on the board and his team's starter of late (Cooper Rush) not: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -127,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 0.787,
+    "actual": 0,
+    "final": "Michael Penix Jr. 0 INTs",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.014Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Penix hurt his ribs in Week 5 but had no injury designation Friday and was set to start vs. Chicago, so there was no QB change. The book's ~53% looks like normal INT pricing against a model built on 3 starts (1 INT).",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.foxsports.com/stories/nfl/michael-penix-jr-injury-update-falcons-schedule",
+     "https://www.atlantafalcons.com/news/michael-penix-jr-expected-to-start-vs-chicago-bears"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.0976,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:passYds:4360423",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passYds",
+   "pick": "Michael Penix Jr. Under 239.5 Pass Yds",
+   "player": "Michael Penix Jr.",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "Michael Penix Jr. on the board and his team's starter of late (Cooper Rush) not: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -112,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "won",
+    "profit": 0.893,
+    "actual": 225,
+    "final": "Michael Penix Jr. 225 Pass Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.019Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Penix (ribs) practiced fully all week, had no injury designation and was cleared to start vs. Chicago, so there was no QB change. Nothing found explains a line above his ~229 rate; Bears CBs Stevenson and Gordon were questionable.",
+    "sources": [
+     "https://www.nfl.com/news/falcons-qb-michael-penix-jr-ribs-has-no-injury-designation-will-start-vs-bears",
+     "https://www.espn.com/nfl/story/_/id/50197497/falcons-michael-penix-jr-ribs-cleared-play-vs-bears",
+     "https://www.windycitygridiron.com/chicago-bears-injuries/125418/chicago-bears-atlanta-falcons-injury-report-caleb-williams-michael-penix-kyler-gordon",
+     "https://www.foxnews.com/outkick-sports/falcons-michael-penix-cleared-face-bears-following-rib-injury-caleb-williams-status-remains-unclear",
+     "https://www.espn.com/nfl/story/_/id/50182471/falcons-say-michael-penix-track-start-bears"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.1494,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872997:prop:passYds:4035671",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passYds",
+   "pick": "Tyler Huntley Under 162.5 Pass Yds",
+   "player": "Tyler Huntley",
+   "team": "33",
+   "cause": "role",
+   "roleReason": "snap-jump",
+   "reason": "100% of the snaps in his last game against 74% this season: a bigger role",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "snap-jump"
+   },
+   "pattern": "role:snap-jump|seen",
+   "projection": {
+    "out": [
+     "Lamar Jackson"
+    ],
+    "vac": 0
+   },
+   "odds": -114,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 165,
+    "final": "Tyler Huntley 165 Pass Yds",
+    "gradedAt": "2026-10-18T20:05:32.252Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.020Z",
+    "player": "Lamar Jackson",
+    "status": "out",
+    "reason": "injury",
+    "summary": "Lamar Jackson (left ankle sprain) missed every practice this week and was ruled out on Friday, so Tyler Huntley makes his second straight start at Cleveland. Jackson is also on the inactive list. The line is set for a full starter's workloa",
+    "sources": [
+     "https://www.espn.com/nfl/story/_/id/50197342/ravens-rule-qb-jackson-huntley-start-browns",
+     "https://www.nfl.com/news/ravens-qb-lamar-jackson-ankle-out-sunday-vs-browns-tyler-huntley-to-start-again",
+     "https://www.cbssports.com/fantasy/football/news/ravens-tyler-huntley-starting-vs-cleveland/",
+     "https://www.espn.com/contributor/jamison-hensley/7d7201748dfcb"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.0836,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872997:prop:passCmp:4035671",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "passCmp",
+   "pick": "Tyler Huntley Under 16.5 Completions",
+   "player": "Tyler Huntley",
+   "team": "33",
+   "cause": "role",
+   "roleReason": "snap-jump",
+   "reason": "100% of the snaps in his last game against 74% this season: a bigger role",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "snap-jump"
+   },
+   "pattern": "role:snap-jump|seen",
+   "projection": {
+    "out": [
+     "Lamar Jackson"
+    ],
+    "vac": 0
+   },
+   "odds": 102,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 19,
+    "final": "Tyler Huntley 19 Completions",
+    "gradedAt": "2026-10-18T20:05:32.252Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.021Z",
+    "player": "Lamar Jackson",
+    "status": "out",
+    "reason": "injury",
+    "summary": "On Friday Ravens coach Jesse Minter ruled Lamar Jackson (ankle) out for a second straight game, so Tyler Huntley starts at Cleveland. The book is pricing a full starter's workload, not the backup games in his logs.",
+    "sources": [
+     "https://www.nfl.com/news/ravens-qb-lamar-jackson-ankle-out-sunday-vs-browns-tyler-huntley-to-start-again",
+     "https://www.espn.com/nfl/player/_/id/4035671/tyler-huntley",
+     "https://sports.yahoo.com/articles/lamar-jackson-return-latest-injury-161328311.html",
+     "https://92q.com/5917901/lamar-jackson-ruled-out-ravens-browns-tyler-huntley/",
+     "https://lindyssports.com/nfl/lamar-jacksons-injury-news-means-ravens-lean-on-huntley-again"
+    ],
+    "explains": true,
+    "category": "injury",
+    "confidence": "high",
+    "cost": 0.0845,
+    "seeded": true
+   }
+  },
+  {
+   "id": "401872999:prop:recYds:4361409",
+   "sport": "nfl",
+   "start": "2026-10-18T17:00Z",
+   "market": "prop",
+   "propType": "recYds",
+   "pick": "Jahan Dotson Under 23.5 Rec Yds",
+   "player": "Jahan Dotson",
+   "team": "1",
+   "cause": "role",
+   "roleReason": "qb-change",
+   "reason": "his team's starter of late (Cooper Rush) not on the board and another quarterback on it: a change at quarterback",
+   "diagnosis": {
+    "cause": "role",
+    "sub": "qb-change"
+   },
+   "pattern": "role:qb-change|unseen",
+   "projection": {
+    "out": [],
+    "vac": 0
+   },
+   "odds": -112,
+   "oddsAssumed": false,
+   "checkResult": {
+    "status": "lost",
+    "profit": -1,
+    "actual": 87,
+    "final": "Jahan Dotson 87 Rec Yds",
+    "gradedAt": "2026-10-18T20:38:44.876Z"
+   },
+   "seed": {
+    "at": "2026-10-18T17:00Z",
+    "by": "claude-batch",
+    "model": "claude-opus-5-5",
+    "labeledAt": "2026-10-18T23:09:49.023Z",
+    "player": "Michael Penix Jr.",
+    "status": "active",
+    "reason": "none",
+    "summary": "Penix hurt his ribs in Week 5, but he practiced fully, came off the injury report and was confirmed to start, so there was no QB change. Nothing pre-game on Dotson's role explains the 23.5 line.",
+    "sources": [
+     "https://www.nbcsports.com/fantasy/football/player-news/2026-10-16/penix-off-injury-report-will-play-vs-bears",
+     "https://sports.yahoo.com/articles/falcons-vs-bears-injury-report-193913696.html",
+     "https://www.thefalcoholic.com/atlanta-falcons-injuries/97362/falcons-vs-bears-injury-report-c-j-henderson-caleb-williams-michael-penix",
+     "https://www.bleachernation.com/bears/2026/10/14/falcons-injury-report/",
+     "https://www.bleachernation.com/bears/2026/10/16/falcons-injury-report-3/"
+    ],
+    "explains": false,
+    "category": "market",
+    "confidence": "medium",
+    "cost": 0.1352,
+    "seeded": true
+   }
+  }
+ ]
+}
