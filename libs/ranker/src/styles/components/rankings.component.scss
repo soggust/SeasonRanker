@@ -916,22 +916,47 @@ section ul li.player {
     margin-left: 1.1em;
   }
 
-  // A collapsed group: only its icon's slot and a "…" after it, a narrow strip (its stats hidden, still
-  // counted); fixed, so every row's strip lines up under the header's
+  // A collapsed group: its icon's slot, then a column as wide as the group's name in the header (measured,
+  // column-fit.ts) and at least a place's tile, each row's place within the group under it (its stats
+  // hidden, still counted); the same width in every row, so the strips line up under the header's
   > .col-group > div.collapsed-strip {
     flex: 0 0 auto;
     max-width: none;
     min-width: 0;
     padding-right: 0.2em;
-    width: 1.1em;
+    width: max(34px, var(--label-w, 0px));
   }
 
-  .collapsed-more {
-    color: var(--group-color);
-    font-size: v.$fs-14;
-    font-weight: 700;
+  // (the place: a small LED tile like the rank's, lit the same, the top 10 green and the bottom 10 red;
+  // a dash in grey when there's none)
+  .group-rank {
+    @include v.led-tile($radius: v.$radius-sm);
+    font-size: v.$fs-13;
+    font-weight: 900;
+    height: 24px;
     line-height: 1;
-    pointer-events: none;
+    min-width: 34px;
+    padding: 1px 4px 0;
+
+    &.rank-top {
+      color: var(--tint-good, #{v.$good-bright});
+      text-shadow: 0 0 6px rgba(v.$good-bright, 0.55);
+    }
+
+    &.rank-bottom {
+      color: v.$bad-soft;
+      text-shadow: 0 0 6px rgba(v.$bad-soft, 0.6);
+    }
+
+    &.none {
+      color: v.$neutral;
+      text-shadow: none;
+    }
+
+    @include v.down(phone) {
+      font-size: v.$fs-11;
+      height: 20px;
+    }
   }
 
   // Recent and the grade boxes: one panel across their columns
@@ -1339,9 +1364,13 @@ section ul li.player.header-row:hover {
       }
     }
 
-    // (a collapsed strip's "…" lights up with its icon)
-    &.collapsed-strip:has(> .group-icon:hover) .collapsed-more,
-    &.collapsed-strip:has(> .group-icon:focus-visible) .collapsed-more {
+    // (a collapsed strip's name, in its group's color, lights up with its icon)
+    &.collapsed-strip > .strip-label {
+      color: var(--group-color);
+    }
+
+    &.collapsed-strip:has(> .group-icon:hover) > .strip-label,
+    &.collapsed-strip:has(> .group-icon:focus-visible) > .strip-label {
       filter: brightness(1.3);
     }
   }

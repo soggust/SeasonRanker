@@ -96,7 +96,8 @@ for (const sport of SPORTS) {
     assert.deepEqual(shared.g, { [second]: [group] });
     assert.deepEqual(Object.keys(shared.sp ?? {}).sort(), (SPORT.settings ?? []).map((s) => s.key).sort());
     assert.deepEqual(shared.o, { [first]: ['row-b', 'row-a'] });
-    assert.deepEqual(shared.c, { [first]: [group] });
+    assert.deepEqual(shared.x, { [first]: [group] });
+    assert.equal(shared.c, undefined);
     assert.deepEqual(shared.k, { [`${first}.box`]: COLUMNS });
     assert.deepEqual(shared.go, { [second]: ['support', 'advanced', 'box', 'results'] });
 

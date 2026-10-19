@@ -1166,6 +1166,37 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return `${group.title}: Click to ${this.isCollapsed(group.id) ? 'Expand' : 'Collapse'}`;
   }
 
+  // A collapsed group's strip: each ranked row's place within the group (what its stats added to the row's
+  // score, TabRanker.groupPlaces), among the list's ranked rows; null (a dash) for a UR row or a group none
+  // of whose stats counted. Worked out once per scoring (the totals change whenever the list is scored again).
+  private groupPlaceCache: { totals: Map<SkillPlayer, number>; reader: StatReader; places: Map<string, Map<SkillPlayer, number>> } | null = null;
+
+  groupPlace(player: SkillPlayer, id: StatGroupId): number | null {
+    if (this.isUr(player)) return null;
+    let cache = this.groupPlaceCache;
+    if (cache?.totals !== this.totals || cache.reader !== this.reader) {
+      const listed = this.ranker.listed(SKILL_UNITS, this.season, this.position);
+      const places = this.ranker.groupPlaces(this.reader, listed, this.position, SKILL_UNITS, this.rankedAll);
+      cache = this.groupPlaceCache = { totals: this.totals, reader: this.reader, places };
+    }
+    return cache.places.get(id)?.get(player) ?? null;
+  }
+
+  // (lit like the rank tiles: the top 10 green, the bottom 10 red)
+  groupPlaceClass(place: number | null): string {
+    if (place === null) return 'group-rank none';
+    if (place <= 10) return 'group-rank rank-top';
+    if (place > this.rankedAll.length - 10) return 'group-rank rank-bottom';
+    return 'group-rank';
+  }
+
+  groupRankTitle(group: { title: string }): string {
+    return `Rank within ${group.title}`;
+  }
+
+  // (the strip's width: its header's label, measured like a column's: column-fit.ts)
+  readonly stripWidth = (group: SkillStatGroup) => columnWidth(`strip-${group.id}`);
+
   // Games in a row's record its stats don't cover yet (the data's statsBehind; the current season only)
   statsBehind(player: SkillPlayer): number {
     return this.season === CURRENT_SEASON ? ((player as { statsBehind?: number }).statsBehind ?? 0) : 0;

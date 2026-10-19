@@ -21,10 +21,11 @@ export interface GridForDraft {
 }
 
 // The columns a list keeps: every stat column showing (not a collapsed group's, nor the Recent dots), as
-// the grid labels them
+// the grid labels them. Every group collapsed (as the grid starts): every group's, so a list never saves
+// with no columns
 export function gridColumns(grid: GridForDraft): { stat: SkillStat; column: SnapshotColumn }[] {
-  return grid.visibleGroups
-    .filter((group) => !grid.isCollapsed(group.id))
+  const open = grid.visibleGroups.filter((group) => !grid.isCollapsed(group.id));
+  return (open.length ? open : grid.visibleGroups)
     .flatMap((group) => group.stats)
     .filter((stat) => stat.format !== 'recent')
     .map((stat) => ({ stat, column: { key: stat.key, label: grid.reader.label(stat), format: stat.format ?? '', lower: !!stat.negative } }));

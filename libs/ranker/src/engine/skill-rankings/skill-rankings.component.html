@@ -33,9 +33,9 @@
             <!-- Each group's icon sits in the slot at the start of its first cell; hover shows the group's name,
                  a click collapses the group to a strip of just the icon (and opens it again) -->
             @if (isCollapsed(group.id)) {
-              <div class="collapsed-strip">
-                <!-- (the "…": there's more to open) -->
-                <span class="collapsed-more" aria-hidden="true">…</span>
+              <!-- (its name in full, over each row's place within the group; measured like a column's label) -->
+              <div class="collapsed-strip" [attr.data-col]="'strip-' + group.id" [style.--label-w]="stripWidth(group)">
+                <p class="stat-label strip-label" [title]="groupRankTitle(group)">{{ group.title }}</p>
                 <mat-icon class="group-icon" aria-hidden="false" [fontIcon]="group.icon" [title]="collapseTitle(group)" activate [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"></mat-icon>
               </div>
             } @else if (group.id === 'support') {
@@ -200,8 +200,12 @@
           @for (group of groups; track group.id) {
             <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
               @if (isCollapsed(group.id)) {
-                <!-- A collapsed group: its line and an empty strip -->
-                <div class="collapsed-strip"></div>
+                <!-- A collapsed group: its line and the row's place within the group, on a small LED tile
+                     (a dash: a UR row, or none of the group's stats counted). Only a look: the order stays. -->
+                @let place = groupPlace(player, group.id);
+                <div class="collapsed-strip" [style.--label-w]="stripWidth(group)">
+                  <span [ngClass]="groupPlaceClass(place)" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ place ?? '-' }}</span>
+                </div>
               } @else if (group.id === 'support') {
                 <!-- Support grades share a dark box -->
                 <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">

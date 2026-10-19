@@ -129,10 +129,12 @@ function linkedCompare(): SharedCompare | null {
 }
 
 // A grid's look for a shared link (PositionService.layout): tab -> row ids in their dragged order,
-// tab -> collapsed group ids, "TAB.group" -> column keys, tab -> the sidebar's group order
+// tab -> the group ids opened (every group starts collapsed), "TAB.group" -> column keys, tab -> the
+// sidebar's group order (collapsed: an older link's collapsed group ids, read only)
 export interface GridLayout {
   orders: Record<string, string[]>;
-  collapsed: Record<string, string[]>;
+  expanded: Record<string, string[]>;
+  collapsed?: Record<string, string[]>;
   columns: Record<string, string[]>;
   groups: Record<string, StatGroupId[]>;
 }
@@ -523,25 +525,32 @@ export class PositionService {
     this.skillHiddenSubject.next(next);
   }
 
-  // Stat groups collapsed to a strip in the grid (their group icon clicked): out of sight, still counted
-  private collapsedGroups: Partial<Record<SkillPosition, Partial<Record<StatGroupId, boolean>>>> = {};
+  // Stat groups collapsed to a strip in the grid, each row's place within the group in it: out of sight,
+  // still counted. Every group starts collapsed, on every tab (the owner, 2026-10-19); the ones opened (their
+  // group icon clicked) are the only ones kept (true here: opened)
+  private expandedGroups: Partial<Record<SkillPosition, Partial<Record<StatGroupId, boolean>>>> = {};
 
   isGroupCollapsed(position: SkillPosition, id: StatGroupId): boolean {
-    return !!this.collapsedGroups[position]?.[id];
+    return !this.expandedGroups[position]?.[id];
   }
 
   toggleGroupCollapsed(position: SkillPosition, id: StatGroupId): void {
-    this.collapsedGroups = { ...this.collapsedGroups, [position]: { ...this.collapsedGroups[position], [id]: !this.isGroupCollapsed(position, id) } };
+    this.setGroupExpanded(position, id, this.isGroupCollapsed(position, id));
+  }
+
+  private setGroupExpanded(position: SkillPosition, id: StatGroupId, open: boolean): void {
+    const { [id]: _, ...rest } = this.expandedGroups[position] ?? {};
+    this.expandedGroups = { ...this.expandedGroups, [position]: open ? { ...rest, [id]: true } : rest };
   }
 
   // How the grid looks beyond its settings, for a shared link (share.ts): each tab's hand-dragged order,
-  // its collapsed groups, the dragged columns and the sidebar's card order
+  // its opened groups, the dragged columns and the sidebar's card order
   get layout(): GridLayout {
     const orders = Object.entries(this.unitOrdersSubject.value).filter(([, order]) => order?.manual);
     return {
       orders: Object.fromEntries(orders.map(([position, order]) => [position, order!.ids])),
-      collapsed: Object.fromEntries(
-        Object.entries(this.collapsedGroups).map(([position, groups]) => [position, Object.keys(groups ?? {}).filter((id) => groups?.[id as StatGroupId])]),
+      expanded: Object.fromEntries(
+        Object.entries(this.expandedGroups).map(([position, groups]) => [position, Object.keys(groups ?? {}).filter((id) => groups?.[id as StatGroupId])]),
       ),
       columns: { ...this.columnOrders },
       groups: { ...this.groupOrders } as Record<string, StatGroupId[]>,
@@ -551,9 +560,9 @@ export class PositionService {
   // ...and a shared link's, put in place (before the tabs first draw)
   applyLayout(layout: Partial<GridLayout>): void {
     for (const [position, ids] of Object.entries(layout.orders ?? {})) this.setUnitOrder(position as SkillPosition, ids, true);
-    for (const [position, ids] of Object.entries(layout.collapsed ?? {})) {
-      this.collapsedGroups = { ...this.collapsedGroups, [position]: Object.fromEntries(ids.map((id) => [id, true])) };
-    }
+    // (an older link's collapsed groups: collapsed, as every group is until opened)
+    for (const [position, ids] of Object.entries(layout.collapsed ?? {})) for (const id of ids) this.setGroupExpanded(position as SkillPosition, id as StatGroupId, false);
+    for (const [position, ids] of Object.entries(layout.expanded ?? {})) for (const id of ids) this.setGroupExpanded(position as SkillPosition, id as StatGroupId, true);
     this.columnOrders = { ...this.columnOrders, ...layout.columns };
     this.groupOrders = { ...this.groupOrders, ...layout.groups };
   }

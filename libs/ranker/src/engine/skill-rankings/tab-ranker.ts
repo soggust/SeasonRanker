@@ -6,6 +6,7 @@ import { byTotals, combinedFor, combinedStats, combinedWeights, weightedTotals }
 import { StatReader } from '@ranker/engine/stat-reader';
 import { RANK_EVERYONE, hasMin, minCount, seasonLength } from '@ranker/engine/playing-time';
 import { adjustFor } from '@ranker/engine/pooled-tabs';
+import { groupRanks } from './group-ranks';
 
 // The table's own tab: its stats, groups, switched-off groups and sliders (kept by the grid, which
 // listens for their changes)
@@ -129,6 +130,24 @@ export class TabRanker {
     const scored = outside.length ? [...all, ...outside] : all;
     const totals = weightedTotals(scored, counted, weights, (player, stat) => reader.value(player, stat), undefined, this.settings.sport, pool, parts, strengths, adjustFor(position, mix));
     return { totals, counted, weights, ranked: byTotals(all, totals, this.settings.sport, pool) };
+  }
+
+  // Each shown group's places (a collapsed group's strip): the rows among ranked by what the group's stats
+  // added to their scores, from the same scoring as the list (scores' parts), so it's the group's own share
+  // of the overall score with the same sliders and normalization. A group none of whose stats counted
+  // (sliders at 0, switched off) has none. Only a look: the list's order isn't touched.
+  groupPlaces(
+    reader: StatReader,
+    players: SkillPlayer[],
+    position: SkillPosition,
+    rows: Record<string, SkillPlayer[]>,
+    among: SkillPlayer[],
+  ): Map<string, Map<SkillPlayer, number>> {
+    const parts = new Map<SkillPlayer, Map<string, number>>();
+    const strengths = new Map<string, number>();
+    const { counted } = this.scores(reader, players, position, rows, parts, strengths);
+    const groupOf = new Map(counted.filter((stat) => (strengths.get(stat.key) ?? 0) > 0).map((stat) => [stat.key as string, statGroup(stat) as string]));
+    return groupRanks(among, parts, groupOf);
   }
 
   // Rank everyone (RANK_EVERYONE): the UR rows shown below the list. The tab's rows the list's other

@@ -18,9 +18,11 @@ interface Shared {
   // the settings menu's settings that differ, and the sport's own
   s?: Partial<Omit<RankerSettings, 'sport'>>;
   sp?: Record<string, string | boolean>;
-  // the grid as it looks (PositionService.layout): each tab's hand-dragged order, collapsed groups,
-  // dragged columns ("QB.box") and the sidebar's card order
+  // the grid as it looks (PositionService.layout): each tab's hand-dragged order, opened groups (x; c, an
+  // older link's collapsed ones from when groups started open, still read), dragged columns ("QB.box") and
+  // the sidebar's card order
   o?: Record<string, string[]>;
+  x?: Record<string, string[]>;
   c?: Record<string, string[]>;
   k?: Record<string, string[]>;
   go?: Record<string, string[]>;
@@ -64,10 +66,10 @@ export function shareLink(service: PositionService, defaults: RankerSettings): s
     return kept.length ? Object.fromEntries(kept) : undefined;
   };
   shared.o = some(layout.orders);
-  shared.c = some(layout.collapsed);
+  shared.x = some(layout.expanded);
   shared.k = some(layout.columns);
   shared.go = some(layout.groups);
-  for (const key of ['o', 'c', 'k', 'go'] as const) if (!shared[key]) delete shared[key];
+  for (const key of ['o', 'x', 'k', 'go'] as const) if (!shared[key]) delete shared[key];
 
   const url = new URL(location.href);
   url.hash = '';
@@ -125,6 +127,7 @@ export function applySharedLink(service: PositionService, defaults: RankerSettin
     ) as Record<string, string[]>;
   service.applyLayout({
     orders: lists(shared.o),
+    expanded: lists(shared.x),
     collapsed: lists(shared.c),
     columns: lists(shared.k, (key) => key.split('.')[0]),
     groups: lists(shared.go) as Record<string, StatGroupId[]>,
