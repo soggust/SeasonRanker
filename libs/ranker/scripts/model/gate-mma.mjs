@@ -146,7 +146,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
     const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;
-    const base = { event: String(m.fight.id), sport: SPORT, kind, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
+    const base = { event: String(m.fight.id), sport: SPORT, kind, names: Array.isArray(m.fight.fighters) ? m.fight.fighters.map((f) => f?.name ?? null) : null, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
     // (the moneyline: the API's a its first side, b its second; ESPN's first fighter is a unless crossed)
     const h2h = dk.h2h?.[0];
     if (h2h && fin(h2h.a) && fin(h2h.b)) {
@@ -275,7 +275,8 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   const notes = [];
   const say = (s) => (notes.push(s), log(`${SPORT}: ${s}`));
   const V = {};
-  for (const [k, n] of [['leagues', 'leagues'], ['desk', 'desk'], ['fightsModel', 'fights-model'], ['fightsTotals', 'fights-totals'], ['mmaDesk', 'mma-desk']]) V[k] = await load(dir, n);
+  // (picks, replay: the bands and the replayed record (replay-record.mjs); a version from before them has none)
+  for (const [k, n] of [['leagues', 'leagues'], ['desk', 'desk'], ['fightsModel', 'fights-model'], ['fightsTotals', 'fights-totals'], ['mmaDesk', 'mma-desk'], ['picks', 'picks'], ['replay', 'replay-record']]) V[k] = await load(dir, n);
   if (!V.fightsModel || !V.fightsTotals) throw new Error(`${dir}: no fights model (fights-model.mjs, fights-totals.mjs)`);
   const fights = (await keptFights()).filter((f) => f.date <= now.toISOString().slice(0, 10));
   const { cache } = V.fightsModel.loadKept();
@@ -349,12 +350,21 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     openByBand: Object.fromEntries(MARKETS.map((m) => [m, Object.fromEntries(BANDS.map((band) => [band, vsBook([...histRows.open, ...histRows.close].filter((x) => x.market === m && x.band === band))]))])),
     beat: beatClose(histRows.open, { n: practiceN, practice: V.desk.PRACTICE_UNITS ?? 0.5 }),
   };
+  // (the replayed record (replay-record.mjs): the bouts this version would have bet over the priced history before
+  // MMA_START, each at its lead band's price as the archive has it)
+  let replay = null;
+  if (V.replay?.replayRecord && histRows.close.length) {
+    const names = (x) => ({ home: x.names?.[0] ?? 'Fighter A', away: x.names?.[1] ?? 'Fighter B', matchup: `${x.names?.[0] ?? 'Fighter A'} vs ${x.names?.[1] ?? 'Fighter B'}` });
+    replay = V.replay.replayRecord(V, SPORT, { open: histRows.open, close: histRows.close }, { events: null, names, epoch: V.mmaDesk?.MMA_START ?? V.leagues?.MODEL_EPOCH ?? null });
+    say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u on ${replay.n.bets} bets (${replay.flags.timing.open} at the open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks`);
+  }
   return {
     sport: SPORT,
     notes,
     current,
     code: null,
     epoch: V.mmaDesk?.MMA_START ?? V.leagues?.MODEL_EPOCH ?? null,
+    replay,
     proj: { bouts, totals },
     bet: { props: { saved: [], replay: null }, lines: { saved: lines, replay: lines.length ? lines : null }, history: { saved: [], replay: slim([...histRows.open]) } },
     vsBook: vs,

@@ -263,6 +263,15 @@ for (const sport of SPORTS) {
     assert.ok(isDate(file.at), 'picks.json: at');
     assert.ok(Array.isArray(file.picks), 'picks.json: no picks list');
     if (file.record) for (const key of ['overall', 'byLevel']) assert.ok(file.record[key], `picks.json: record.${key}`);
+    // (the Bot's history (D47): the replayed record joined to the live bets since the epoch, this calendar year's by
+    // band for the band headers, the live part alone, the replay's part with its flags, the caveat; a file written
+    // before it carries none)
+    if (file.record?.year) {
+      assert.ok(Number.isInteger(file.record.year.year) && file.record.year.byLevel && file.record.year.overall, 'picks.json: record.year');
+      assert.ok(file.record.live?.overall && file.record.live.byLevel, 'picks.json: record.live');
+      if (file.record.replay) assert.ok(file.record.replay.flags?.timing && file.record.replay.through && typeof file.record.caveat === 'string', 'picks.json: record.replay');
+      for (const l of ['lock', 'high', 'medium', 'low']) assert.ok(file.record.byLevel[l] && Number.isFinite(file.record.byLevel[l].wins), `picks.json: record.byLevel.${l}`);
+    }
     const KINDS = new Set(['spread', 'total', 'team_total', 'moneyline', 'player', 'team_stat']);
     // (the bands, by the Kelly score: a lock above them all; picks.mjs BANDS. Never a CHECK: the page reads
     // every pick as a bet the bot made, so they're in their own list, checks)

@@ -68,10 +68,11 @@ test('recentOf: nothing graded, an empty block', () => {
 });
 
 test('buildPicks and buildFightPicks write the recent block into picks.json', () => {
-  const out = buildPicks('nfl', structuredClone(ledger), {}, new Map(), NOW);
+  // (replay: null: the live ledger alone, whatever replay-record.json the checkout has)
+  const out = buildPicks('nfl', structuredClone(ledger), {}, new Map(), NOW, { replay: null });
   assert.equal(out.recent.streak, 'W2');
   assert.equal(out.recent.last.length, 5);
   const fight = { ...bet('won', '2026-10-17T03:00:00Z'), sport: 'mma', market: 'ml', side: 'home', matchup: 'Smith vs Jones', pick: 'Jones', fighters: { away: { name: 'Smith', id: 1 }, home: { name: 'Jones', id: 2 } } };
-  const mma = buildFightPicks({ bets: [fight] }, {}, new Map(), NOW);
+  const mma = buildFightPicks({ bets: [fight] }, {}, new Map(), NOW, { replay: null });
   assert.deepEqual(mma.recent.last.map((b) => [b.sport, b.market, b.player, b.res]), [['mma', 'moneyline', 'Jones', 'W']]);
 });

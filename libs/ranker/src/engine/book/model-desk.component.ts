@@ -7,6 +7,7 @@ import { DESK_HELP } from './desk-help';
 import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
 import { MissPanel, MissReviewFile, missPanelOf } from './miss-review';
 import { SCORE_H, SCORE_W, ScoreChart, ScorecardFile, scorecardPanelOf } from './scorecard';
+import { BotHistory, ReplayRecordFile, botHistoryOf, dayLabel, recordText } from './replay-history';
 import {
   BANKROLL,
   CURVE_W,
@@ -236,6 +237,15 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   readonly scoreW = SCORE_W;
   readonly scoreH = SCORE_H;
   private allScorecards: (ScorecardFile | null)[] = [];
+  // (the Bot's history (replay-history.ts): each sport's replayed record (replay-record.json, gate.mjs --record:
+  // today's algorithm over the priced history before its epoch) joined to the live ledger's bets since; the panel
+  // at the top. Shown once a sport has the file; the tiles under it stay the live desk's own)
+  history: BotHistory | null = null;
+  historyOn = false;
+  private allReplays: (ReplayRecordFile | null)[] = [];
+  private allLedgerBets: ModelBet[] = [];
+  readonly recordText = recordText;
+  readonly dayLabel = dayLabel;
   private allSelfChecks: (SelfCheckFile | null)[] = [];
   private selfOpen = new Set<string>();
 
@@ -261,7 +271,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (every sport's files asked at once, not each sport's one after another)
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
-        const [ledger, state, checks, selfcheck, news, misses, scorecard] = await Promise.all([
+        const [ledger, state, checks, selfcheck, news, misses, scorecard, replay] = await Promise.all([
           getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
           getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
           // (none before the bettor's first CHECK file: no CHECK row)
@@ -274,8 +284,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
           getJson<MissReviewFile>(`/${sport}/data/model/miss-review.json`, { cache: 'no-cache' }),
           // (none till the replay gate records a version (gate.mjs --record): no panel)
           getJson<ScorecardFile>(`/${sport}/data/model/scorecard.json`, { cache: 'no-cache' }),
+          // (none till the gate records a version with the replayed record: the live desk alone)
+          getJson<ReplayRecordFile>(`/${sport}/data/model/replay-record.json`, { cache: 'no-cache' }),
         ]);
-        return { ledger, state, checks, selfcheck, news, misses, scorecard };
+        return { ledger, state, checks, selfcheck, news, misses, scorecard, replay };
       }),
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
@@ -285,8 +297,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.missOn = this.allMisses.some((f) => !!f);
     this.allScorecards = files.map((f) => f.scorecard);
     this.scorecardOn = this.allScorecards.some((f) => !!f?.entries?.length);
+    this.allReplays = files.map((f) => f.replay);
+    this.historyOn = this.allReplays.some((f) => !!f?.overall);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
+    this.allLedgerBets = rows;
     const split = this.allStates.some((s) => s.practiceSplit);
     const practice = (b: ModelBet) => split && !!b.topN && !isTracked(b);
     this.allBets = rows.filter((b) => !isTracked(b) && !practice(b));
@@ -526,6 +541,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       this.allScorecards.filter((f) => !!f && (!this.sport || f.sport === this.sport)),
       Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
     );
+    // (the Bot's history: the sport on show's, or every sport's summed; the game and date filters never cut it)
+    this.history = this.historyOn ? botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label]))) : null;
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     this.researchRows = researchPanelOf(this.states);

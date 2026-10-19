@@ -608,16 +608,17 @@ test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confi
   }));
   assert.deepEqual(
     panels.map((p) => p.label),
-    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
+    // (The Bot's history first (the owner, 2026-10-19): the replayed record joined to the live bets since, above the grid)
+    ["The Bot's history", 'By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
   );
-  assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ['By Sport', 'By Confidence', 'Open Bets']);
+  assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ["The Bot's history", 'By Sport', 'By Confidence', 'Open Bets']);
   // (the two-column grid holds the top pair alone: its own closing div is the first at the grid's indent after it)
   const grid = html.indexOf('<div class="desk-grid">');
   const gridEnd = html.indexOf('\n    </div>', grid);
   assert.ok(grid > 0 && gridEnd > grid);
   assert.deepEqual(panels.filter((p) => p.at > grid && p.at < gridEnd).map((p) => p.label), ['By Sport', 'By Confidence']);
   // (the breakdowns under it keep the grid's tables (desk-wide); the bets' lists and the rest have their own)
-  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ['Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review']);
+  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ["The Bot's history", 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review']);
   assert.ok(!html.includes('By Market'));
 });
 
@@ -652,7 +653,8 @@ test('buildPicks: the open bets not started, likeliest first, every one (D27), e
     bet({ id: 'void', start: '2026-10-01T17:00:00Z', status: 'push', void: true, published: true, publishedLevel: 'low' }),
   ];
   const ledger = { bets };
-  const out = buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now);
+  // (replay: null: the live ledger alone, whatever replay-record.json the checkout has)
+  const out = buildPicks('nfl', ledger, { spread: { fitted: true } }, new Map(), now, { replay: null });
   // (by Kelly: the 70% favorite at -300 has no edge on its price and sorts last, its chance notwithstanding)
   assert.deepEqual(out.picks.map((p) => [p.id, p.level, p.chance]), [['hi', 'lock', 64], ['mid', 'high', 54], ['fav', 'low', 70]]);
   assert.equal(out.picks[2].edge, false);

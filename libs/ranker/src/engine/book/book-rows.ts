@@ -224,8 +224,10 @@ export interface Picks {
   checks?: Pick[];
   // (the CHECK rule (checks.mjs CHECK_RULE): a role's CHECK only at this model Kelly or more)
   checkRule?: { kelly: number } | null;
-  // (its record on the picks it has graded, by band: the board's band headers read it)
-  record?: { byLevel?: ByLevel } | null;
+  // (its record, by band: the replayed record (today's Bot over the priced history before its latest version) joined
+  // to its real bets since (picks.mjs recordBlocks, replay-record.mjs mergeRecord); year this calendar year's, the
+  // board's band headers' "This year"; caveat the honesty line, their hover)
+  record?: { byLevel?: ByLevel; year?: { year: number; byLevel?: ByLevel } | null; caveat?: string | null } | null;
   // (its recent form on its graded placed bets: the Recent form card's The Bot side, recent-form.ts botForm)
   recent?: BotRecent | null;
 }

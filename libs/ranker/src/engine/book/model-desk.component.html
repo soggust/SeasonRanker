@@ -200,6 +200,10 @@
           <b [class.up]="(overall.clvBeat ?? 0) > 0.5" [class.down]="overall.clvBeat !== null && overall.clvBeat < 0.5">{{ overall.clvN ? pct(overall.clvBeat === null ? null : ticked(overall.clvBeat), 0) : '-' }}</b>
         </div>
       </div>
+      <!-- (with the replayed history on the panel below, the tiles are the live desk's own: what the Bot actually did) -->
+      @if (historyOn) {
+        <p class="desk-live-caption" [title]="help['historyLive']">Live desk · what the Bot actually did, in the range on show. Its full history, replayed and live, is the panel below.</p>
+      }
     }
   </header>
 
@@ -302,6 +306,132 @@
       </div>
     }
 
+    <!-- The Bot's history (the owner, 2026-10-19: the history is what today's Bot would have done): each sport's
+         replayed record (replay-record.json, written by gate.mjs --record: today's algorithm over the whole priced
+         history before its latest version, at its own placement, bands and stakes) joined to its real bets on the
+         games since (replay-history.ts botHistoryOf). The record, by band, by sport, by market, each sport's seasons
+         and the last 20 bets in the Recent form's style; the live desk's own part since the version as a secondary
+         line, the tiles above it staying what the Bot actually did. Shown once a sport has the file -->
+    @if (historyOn && history; as h) {
+      <card-panel class="tab-card group-results desk-wide desk-history-panel" label="The Bot's history" icon="history" [startOpen]="true">
+        <div class="group-body">
+          <div class="desk-tiles desk-history-tiles">
+            <div class="desk-tile" [title]="help['historyRecord']">
+              <small>Record</small>
+              <b>{{ recordText(h.overall) }}</b>
+            </div>
+            <div class="desk-tile" [title]="help['historyProfit']">
+              <small>Units</small>
+              <b [class.up]="h.overall.profit > 0" [class.down]="h.overall.profit < 0">{{ units(h.overall.profit) }}</b>
+            </div>
+            <div class="desk-tile" [title]="help['roi']">
+              <small>ROI</small>
+              <b [class.up]="(h.overall.roi ?? 0) > 0" [class.down]="(h.overall.roi ?? 0) < 0">{{ pct(h.overall.roi) }}</b>
+            </div>
+            <div class="desk-tile" [title]="help['historyBeat']">
+              <small>Beat the close</small>
+              <b [class.up]="(h.overall.clvBeat ?? 0) > 0.5" [class.down]="h.overall.clvBeat !== null && h.overall.clvBeat < 0.5">{{ h.overall.clvN ? pct(h.overall.clvBeat, 0) : '-' }}<small>{{ h.overall.clvN }} with a close</small></b>
+            </div>
+            <div class="desk-tile" [title]="help['historyPractice']">
+              <small>Practice</small>
+              <b>{{ recordText(h.practice) }}<small [class.up]="h.practice.profit > 0" [class.down]="h.practice.profit < 0">{{ units(h.practice.profit) }}</small></b>
+            </div>
+            <div class="desk-tile" [title]="help['historyLive']">
+              <small>Live since this version</small>
+              <b>{{ recordText(h.live) }}<small [class.up]="h.live.profit > 0" [class.down]="h.live.profit < 0">{{ units(h.live.profit) }}</small></b>
+            </div>
+          </div>
+          <p class="desk-note desk-history-caveat" [title]="help['historyCaveat']">{{ h.caveat }}</p>
+          <div class="desk-history-grid">
+            <table class="desk-table desk-history-table" aria-label="By band">
+              <thead>
+                <tr><th>Band</th><th>Record</th><th>Profit</th><th>ROI</th><th>Beat close</th></tr>
+              </thead>
+              <tbody>
+                @for (t of h.byBand; track t.label) {
+                  <tr>
+                    <th>{{ t.label }}</th>
+                    <td>{{ recordText(t) }}</td>
+                    <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
+                    <td>{{ pct(t.roi) }}</td>
+                    <td>{{ t.clvN ? pct(t.clvBeat, 0) : '-' }}</td>
+                  </tr>
+                }
+                <tr class="desk-history-practice">
+                  <th>Practice</th>
+                  <td>{{ recordText(h.practice) }}</td>
+                  <td [class.up]="h.practice.profit > 0" [class.down]="h.practice.profit < 0">{{ units(h.practice.profit) }}</td>
+                  <td>{{ pct(h.practice.roi) }}</td>
+                  <td>{{ h.practice.clvN ? pct(h.practice.clvBeat, 0) : '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="desk-table desk-history-table" aria-label="By sport and market">
+              <thead>
+                <tr><th></th><th>Record</th><th>Profit</th><th>ROI</th><th>Beat close</th></tr>
+              </thead>
+              <tbody>
+                @for (t of h.bySport; track t.label) {
+                  <tr>
+                    <th>{{ t.label }}</th>
+                    <td>{{ recordText(t) }}</td>
+                    <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
+                    <td>{{ pct(t.roi) }}</td>
+                    <td>{{ t.clvN ? pct(t.clvBeat, 0) : '-' }}</td>
+                  </tr>
+                }
+                @for (t of h.byMarket; track t.label) {
+                  <tr class="desk-history-market">
+                    <th>{{ t.label }}</th>
+                    <td>{{ recordText(t) }}</td>
+                    <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
+                    <td>{{ pct(t.roi) }}</td>
+                    <td>{{ t.clvN ? pct(t.clvBeat, 0) : '-' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <!-- (each sport's seasons: the replay's, this season's live bets on its newest row; a season's lines priced
+               by the ratings alone (no props in the desk's cache) says so) -->
+          <div class="desk-history-seasons">
+            @for (s of h.sports; track s.sport) {
+              @if (s.seasons.length) {
+                <table class="desk-table desk-history-table" [attr.aria-label]="s.label + ' by season'">
+                  <thead>
+                    <tr><th>{{ s.label }} season</th><th>Record</th><th>Profit</th><th>ROI</th><th>Context</th></tr>
+                  </thead>
+                  <tbody>
+                    @for (t of s.seasons; track t.season) {
+                      <tr>
+                        <th>{{ t.season }}</th>
+                        <td>{{ recordText(t) }}</td>
+                        <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
+                        <td>{{ pct(t.roi) }}</td>
+                        <td [title]="t.context === 'full' ? 'Props and lines, with the context' : 'Lines by the ratings alone: no props in the desk\'s cache for this season'">{{ t.context === 'full' ? 'full' : 'ratings only' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+            }
+          </div>
+          <!-- (the last 20, newest settled first, the Recent form's style: a replayed bet says where it was placed) -->
+          @if (h.last.length) {
+            <ol class="desk-history-strip" aria-label="The last 20 bets">
+              @for (b of h.last; track $index) {
+                <li class="desk-history-bet" [ngClass]="b.res" [class.is-practice]="b.practice">
+                  <span class="desk-history-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
+                  <span class="desk-history-words"><b>{{ b.pick }}</b> <small>{{ b.price }}</small> · {{ b.game }}</span>
+                  <span class="desk-history-tag" [title]="b.replayed ? 'Replayed: what today\'s Bot would have bet, at the ' + b.timing : 'A bet the Bot placed'">{{ b.practice ? 'Practice' : b.band }}{{ b.replayed ? ' · replayed at the ' + b.timing : '' }}</span>
+                  <span class="desk-history-units">{{ b.units }}</span>
+                </li>
+              }
+            </ol>
+          }
+        </div>
+      </card-panel>
+    }
     <div class="desk-grid">
       <!-- (the owner's order (2026-10-17): By Sport and By Confidence side by side across the top, both open to begin
            with (one above the other on a phone); then Open Bets, open, the full width; then the rest folded, one each the

@@ -261,7 +261,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const V = {};
   // (anchor: the anchored projection (anchor.mjs, D33); a version from before it has none, its own chances priced)
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk']) V[n === 'lineup-risk' ? 'lineupRisk' : n] = await load(dir, n);
+  // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
+  // a version from before them has no replayed record)
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -461,12 +463,33 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     propsBySeason: vsBookBySeason(histProps.close),
     linesByMarket: Object.fromEntries(MARKETS.map((m) => [m, vsBook(histLines.close.filter((x) => x.market === m))])),
   };
+  // (the replayed record (replay-record.mjs): what this version would have bet over the whole priced history before
+  // its epoch, at the Bot's own placement, bands and stakes; what --record writes for the Bot's history)
+  let replay = null;
+  if (V.replay?.replayRecord && histLines.close.length + histProps.close.length) {
+    const gameBy = new Map(histGames.map((g) => [String(g.id), g]));
+    const evBy = new Map();
+    for (const e of hist.events.values()) if (e.id) evBy.set(String(e.id), e);
+    const nick = (s) => (s ? String(s).split(' ').pop() : null);
+    const names = (x) => {
+      const g = gameBy.get(String(x.event));
+      const e = evBy.get(String(x.event));
+      const home = g?.homeAbbr || nick(e?.homeName) || 'Home';
+      const away = g?.awayAbbr || nick(e?.awayName) || 'Away';
+      return { home, away, matchup: `${away} @ ${home}` };
+    };
+    const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
+    for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
+    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale });
+    say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
+  }
   return {
     sport,
     notes,
     current,
     code: codeOf(dir),
     epoch: V.leagues.MODEL_EPOCH ?? null,
+    replay,
     proj: { games, props: propsProj },
     bet: { props: { saved: propsSaved, replay: propsReplay }, lines: { saved: linesSaved, replay: linesReplay }, history: { saved: [], replay: slim([...histLines.open, ...histProps.open]) } },
     vsBook: vs,
@@ -729,6 +752,14 @@ function recordScore(version, sport, score, frozen) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/lineup-risk.json');
     writeFileSync(out, `${JSON.stringify({ ...score.risk, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
     console.log(`${sport}: the lineup risk by stat written (${path.relative(ROOT, out)}): ${Object.entries(score.risk.stats).map(([k, v]) => `${k} ${v.kept ?? 'none'}`).join(', ')}`);
+  }
+  // (the replayed record (replay-record.mjs: the Bot's history): what this version would have bet over the priced
+  // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
+  if (score.replay) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit }, null, 1)}\n`);
+    const r = score.replay;
+    console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
   }
   const hrows = score.bet?.history?.replay ?? [];
   if (hrows.length) {

@@ -52,13 +52,17 @@
 //            first shown, publishedP and publishedKelly), and published once it's locked: REPRICE_BY before its
 //            start (timing.mjs), when the news can no longer price it again, or the first run after the start
 //            if the runs skipped that. The record is of the published ones only, overall and by band, not of
-//            every bet the desk made. Till then a shown bet is the desk's like any other: the news (or --replace)
+//            every bet the desk made; since 2026-10-19 (DECISIONS.md D47) it is the Bot's history: the replayed
+//            record (replay-record.mjs, today's algorithm over the priced history before the epoch) joined to the
+//            live ledger's published bets on the games since (recordBlocks: record, recent). Till then a shown bet is the desk's like any other: the news (or --replace)
 //            prices it again, and the page shows the new one; one that falls out of the top before it's locked
 //            loses its shown mark. (Published used to be set the run a bet was first shown, which froze the best
 //            bets at their first price whatever the news: unlock turns those back into shown ones)
 
+import path from 'node:path';
 import { round } from './ratings.mjs';
-import { decimal, inPractice, intentOf, isPracticeTop, isTracked, kellyScale, record, stakeKelly } from './desk.mjs';
+import { decimal, inPractice, intentOf, isPracticeTop, isTracked, kellyScale, practiceRecord, record, stakeKelly } from './desk.mjs';
+import { liveSince, mergeRecent, mergeRecord, readReplay } from './replay-record.mjs';
 import { REPRICE_BY } from './timing.mjs';
 import { CHECK_RULE, CHECK_TOP, checkKelly, listedCheck, modelKelly } from './checks.mjs';
 import { applyWriteups, plainFor, sibOf } from './writeup.mjs';
@@ -474,9 +478,28 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     const bets = new Set(ledger.bets.map((b) => b.id));
     for (const id of Object.keys(writeups.items)) if (!live.has(id) && !(extra.keepChecks && !bets.has(id))) delete writeups.items[id];
   }
+  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, ...recordBlocks(sport, ledger, now, extra), picks, checks: checkRows };
+}
+
+const ROOT = path.resolve(import.meta.dirname, '../../../..');
+// The Bot's history for the page: its record and its recent form (the owner, 2026-10-19: the history is what today's
+// Bot would have done). The replayed record (replay-record.mjs: today's algorithm over the priced history before its
+// epoch, written by gate.mjs --record) joined to the live ledger's published bets on the games from the epoch on
+// (the same algorithm, so they are the replay going forward); with no replay file the live ledger alone, as before.
+// record: graded (the live ledger's), overall, byLevel (lock, high, medium; low the live ledger's older action bets),
+// practice (its own line, desk.mjs PRACTICE_SPLIT), byMarket, year (this calendar year's: the Book's band headers'
+// "This year"), live (the live part alone, from the epoch), replay (the replay's part and its honesty flags), caveat.
+// recent: recentOf over the live part, the replay's days, streak and last bets joined (mergeRecent). extra.replay
+// a file given (the tests); a tracked row never in either
+export function recordBlocks(sport, ledger, now, extra = {}) {
+  const replay = extra.replay !== undefined ? extra.replay : readReplay(extra.root ?? ROOT, sport);
   const published = ledger.bets.filter((b) => b.published && !isTracked(b));
-  const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport, at: now.toISOString(), bands: BANDS, top: TOP, checkRule: CHECK_RULE, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, recent: recentOf(sport, ledger.bets, now), picks, checks: checkRows };
+  const epoch = replay?.epoch ?? extra.epoch ?? null;
+  const live = replay ? ledger.bets.filter((b) => liveSince(b, epoch)) : ledger.bets;
+  return {
+    record: mergeRecord(replay, published, { epoch, now: now.getTime(), record, levelOf: (b) => b.publishedLevel, practiceOf: practiceRecord }),
+    recent: mergeRecent(replay, recentOf(sport, live, now), { now: now.getTime(), days: RECENT_DAYS, last: RECENT_LAST }),
+  };
 }
 
 // (a prop CHECK's numbers for the page: the model's mean, the book's implied one, his record at the line (his
@@ -523,8 +546,9 @@ export function researchRow(rs) {
   };
 }
 
-// (a record as the page's: wins, losses, pushes, the win share; a void bet, no action, isn't counted)
-function tally(bets) {
+// (a record as the page's: wins, losses, pushes, the win share; a void bet, no action, isn't counted. The page's
+// blocks come from recordBlocks (replay-record.mjs mergeRecord) in the same shape)
+export function tally(bets) {
   const r = record(bets);
   return { wins: r.won, losses: r.lost, pushes: r.push, winPct: r.won + r.lost ? round(r.won / (r.won + r.lost), 4) : null, profit: r.profit };
 }

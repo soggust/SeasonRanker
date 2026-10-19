@@ -503,7 +503,7 @@
               <span class="visually-hidden">: {{ s.rows.length }} {{ s.rows.length === 1 ? 'pick' : 'picks' }}</span>
               <span class="band-space"></span>
               @if (bandRecord(s.band); as rec) {
-                <span class="band-record" title="The Bot's record on this band's picks this season, every sport's, and the units it made or lost">This season <b>{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
+                <span class="band-record" [title]="bandRecordTitle">This year <b>{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
               }
             </button>
             @if (bandOpen(s.band)) {

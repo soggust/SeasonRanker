@@ -1976,3 +1976,128 @@ mat-icon.desk-gloves {
     }
   }
 }
+
+// ---------------------------------------------------------------------------
+// The Bot's history panel (replay-history.ts): the record tiles, the caveat, the by-band and by-sport tables side
+// by side, each sport's seasons, and the last 20 bets in the Recent form's style (a replayed bet tagged with where
+// it was placed, a practice pick dimmed)
+// ---------------------------------------------------------------------------
+.desk-history-panel {
+  .desk-history-tiles {
+    margin-bottom: v.$space-10;
+  }
+
+  .desk-history-caveat {
+    font-size: v.$fs-11;
+  }
+
+  .desk-history-grid,
+  .desk-history-seasons {
+    display: grid;
+    gap: v.$space-10;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin-bottom: v.$space-10;
+  }
+
+  .desk-history-table {
+    width: 100%;
+
+    th:first-child {
+      text-align: left;
+    }
+
+    .desk-history-practice th,
+    .desk-history-practice td,
+    .desk-history-market th,
+    .desk-history-market td {
+      color: v.$text-faint;
+    }
+  }
+
+  .desk-history-strip {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .desk-history-bet {
+    align-items: center;
+    border-top: 1px solid v.$panel-rule;
+    display: grid;
+    font-size: v.$fs-12;
+    gap: v.$space-10;
+    grid-template-columns: 26px minmax(0, 1fr) auto auto;
+    padding: 4px 0;
+
+    &.is-practice {
+      opacity: 0.7;
+    }
+
+    .desk-history-res {
+      @include v.led-tile(v.$radius-sm, inset 0 0 6px rgba(0, 0, 0, 0.6));
+      color: v.$grey-light;
+      font-family: v.$font-heading;
+      font-size: v.$fs-12;
+      font-weight: 700;
+      height: 22px;
+      text-align: center;
+    }
+
+    .desk-history-words {
+      color: v.$grey-light;
+      @include v.ellipsis;
+
+      b {
+        color: #fff;
+        font-weight: 700;
+      }
+
+      small {
+        color: v.$text-faint;
+      }
+    }
+
+    .desk-history-tag {
+      color: v.$text-faint;
+      font-size: v.$fs-10;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .desk-history-units {
+      color: v.$grey-light;
+      font-weight: 700;
+    }
+
+    &.W .desk-history-res,
+    &.W .desk-history-units {
+      color: v.$good-bright;
+    }
+
+    &.L .desk-history-res,
+    &.L .desk-history-units {
+      color: v.$bad-soft;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .desk-history-bet {
+      grid-template-columns: 26px minmax(0, 1fr) auto;
+
+      .desk-history-tag {
+        display: none;
+      }
+    }
+  }
+}
+
+.desk-live-caption {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+  margin: v.$space-6 0 0;
+  text-align: center;
+}

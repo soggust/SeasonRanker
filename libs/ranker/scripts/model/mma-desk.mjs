@@ -74,7 +74,7 @@ import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
-import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
+import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
@@ -638,7 +638,7 @@ function writeIfChanged(file, data, dry) {
 // The picks file: the open edge bets on bouts not started, by their Kelly score, every one (D27); each published
 // once locked (REPRICE_BY before the start), its chance, score and band fixed when first shown; the published
 // record by band. The rows as picks.mjs buildPicks makes them, for the Book
-export function buildFightPicks(ledger, trust, bouts, now) {
+export function buildFightPicks(ledger, trust, bouts, now, extra = {}) {
   const locked = (b) => Date.parse(b.start) - now.getTime() <= REPRICE_BY;
   for (const b of ledger.bets) {
     if (b.shown && !b.published && locked(b)) {
@@ -696,13 +696,9 @@ export function buildFightPicks(ledger, trust, bouts, now) {
     reason: b.market === 'total' ? totalReasonOf(b) : reasonOf(b),
     by: 'plain',
   }));
-  const published = ledger.bets.filter((b) => b.published && !isTracked(b));
-  const tally = (list) => {
-    const r = record(list);
-    return { bets: r.bets, won: r.won, lost: r.lost, push: r.push, staked: r.staked, profit: r.profit, roi: r.roi, open: list.filter((b) => b.status === 'open').length };
-  };
-  const byLevel = Object.fromEntries(['lock', 'high', 'medium', 'low'].map((l) => [l, tally(published.filter((b) => b.publishedLevel === l))]));
-  return { sport: SPORT, at: now.toISOString(), bands: BANDS, top: TOP, record: { graded: published.filter((b) => b.status !== 'open').length, overall: tally(published), byLevel }, recent: recentOf(SPORT, ledger.bets, now), picks, checks: [] };
+  // (the record and the recent form: the replayed record before MMA_START joined to the live ledger since, picks.mjs
+  // recordBlocks, in the page's shape (wins, losses, pushes, profit: the Book's band headers read it))
+  return { sport: SPORT, at: now.toISOString(), bands: BANDS, top: TOP, ...recordBlocks(SPORT, ledger, now, { epoch: MMA_START, ...extra }), picks, checks: [] };
 }
 
 // The state the desk component reads (desk-model.ts ModelState: a fights league has no teams, no team params)

@@ -144,7 +144,7 @@ test('picks: a tracked row is never a pick nor in the record; every pick a LIKE 
     { ...base, id: 'tracked', start: future, p: 0.5, ev: -0.045, units: 0, trackUnits: 0.5, intent: 'track', market: 'total' },
     { ...base, id: 'done', start: '2026-10-01T17:00:00Z', status: 'won', profit: 0.45, units: 0, intent: 'track', published: true, publishedLevel: 'low' },
   ];
-  const out = buildPicks('nfl', { bets }, {}, new Map(), new Date('2026-10-12T12:00:00Z'));
+  const out = buildPicks('nfl', { bets }, {}, new Map(), new Date('2026-10-12T12:00:00Z'), { replay: null });
   assert.deepEqual(out.picks.map((p) => p.id), ['big', 'small']);
   assert.deepEqual(out.picks.map((p) => p.level), ['lock', 'medium']);
   assert.equal(out.record.overall.wins, 0);

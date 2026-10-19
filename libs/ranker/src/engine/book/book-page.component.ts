@@ -372,8 +372,16 @@ export class BookPageComponent implements OnInit, OnDestroy {
     for (const [sport, picks] of this.files) {
       if (!picks?.picks?.length && !picks?.checks?.length) continue;
       if (!this.updated || picks.at > this.updated) this.updated = picks.at;
-      this.records.set(sport, picks.record?.byLevel);
+      // (this calendar year's by band (picks.mjs recordBlocks: the replayed record joined to the real bets since the
+      // Bot's latest version); an older file's all-time byLevel)
+      this.records.set(sport, picks.record?.year?.byLevel ?? picks.record?.byLevel);
+      if (picks.record?.caveat) this.recordCaveat = picks.record.caveat;
     }
+  }
+  // (the band headers' hover: what the record is, with the honesty line the bettor wrote)
+  recordCaveat: string | null = null;
+  get bandRecordTitle(): string {
+    return `The Bot's record on this band's picks this calendar year, every sport's, and the units it made or lost.${this.recordCaveat ? ` ${this.recordCaveat}` : ''}`;
   }
 
   // Play betting: each game's every line (<game-lines>, ESPN's DraftKings board, the bot's picks lit), its
