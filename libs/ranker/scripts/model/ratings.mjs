@@ -81,7 +81,43 @@ function learn(state, game, exp, params) {
 // (ridge). So a game is only ever predicted with sizes learned from games before it, and a term that explains
 // nothing stays near 0. ctx.off: terms left out.
 // onGame: told each final's expectation before it's learned from (the props' game script)
-export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
+// (the replay prices a game as of a moment too (asOf, DECISIONS.md D48): the version supports it)
+export const REPLAY_AS_OF = true;
+// A game's terms as of a moment (DECISIONS.md D48): each day-of term (context.mjs featurize's dayOf) whose fact wasn't
+// known yet at that moment read at its value before (the prior game's, the no-probable rule's, none); with the latest
+// of the facts it did read (factsAt, null for none). A game's terms with no dayOf: as they are
+export function featsAt(f, at) {
+  if (!f?.dayOf) return { m: f.m, t: f.t, factsAt: null };
+  const m = [...f.m];
+  const t = [...f.t];
+  let factsAt = null;
+  for (const [on, x] of [['m', m], ['t', t]])
+    for (const [i, early, known] of f.dayOf[on] ?? []) {
+      if (!(at >= known)) x[i] = early;
+      else factsAt = Math.max(factsAt ?? -Infinity, known);
+    }
+  return { m, t, factsAt };
+}
+
+// (a team's numbers going into a game without touching the state: team()'s, its new season's revert applied aside)
+function peekTeam(state, id, season, params) {
+  if (!state.r.has(id)) return { r: 0, o: 0, d: 0 };
+  const k = season && state.season.get(id) !== season ? params.revert : 1;
+  return { r: state.r.get(id) * k, o: state.o.get(id) * k, d: state.d.get(id) * k };
+}
+function peekExpect(state, game, params) {
+  const h = peekTeam(state, game.home, game.season, params);
+  const a = peekTeam(state, game.away, game.season, params);
+  const edge = game.neutral ? 0 : params.hfa;
+  return { margin: h.r - a.r + edge, total: 2 * state.avg + h.o - a.d + a.o - h.d, homePts: state.avg + h.o - a.d + edge / 2, awayPts: state.avg + a.o - h.d - edge / 2 };
+}
+
+// asOf (DECISIONS.md D48, the replay's placement with no look-ahead): { at: Map game id -> [moments (ms)], on(g, at,
+// exp), gameHours }: each final's expectation as of each moment asked, from the state after the finals that were over
+// by then (a final's result known its start plus gameHours, 4 by default) and the terms as of it (featsAt), the term
+// sizes as last solved; exp.factsAt the latest fact it read (a result's end, a day-of fact), never after the moment.
+// Read aside: the replay's own state and order are untouched
+export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null, asOf = null) {
   const state = start(params);
   const fitM = ctx ? online(ctx, 'm') : null;
   const fitT = ctx ? online(ctx, 't') : null;
@@ -96,7 +132,34 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
   let winHits = 0;
   const dyn = ctx ? dynamicTerms(ctx.terms) : [];
   const namedT = ctx ? namedIdx(ctx.terms, 't') : [];
+  // (the moments asked, oldest first; each answered just before the first final not over by then is learned)
+  const endH = (asOf?.gameHours ?? 4) * 36e5;
+  const byId = new Map(finals.map((g) => [String(g.id), g]));
+  const asks = [];
+  if (asOf?.at) for (const [id, list] of asOf.at) if (byId.has(String(id))) for (const at of list) if (Number.isFinite(at)) asks.push([at, byId.get(String(id))]);
+  asks.sort((x, y) => x[0] - y[0]);
+  let ask = 0;
+  let lastEnd = null;
+  const answer = (until) => {
+    while (ask < asks.length && asks[ask][0] <= until) {
+      const [at, g] = asks[ask++];
+      const base = peekExpect(state, g, params);
+      const f = ctx?.feats.get(g.id);
+      let exp = base;
+      let factsAt = lastEnd;
+      if (f) {
+        const x = featsAt(f, at);
+        const fx = { m: x.m === f.m ? [...f.m] : x.m, t: x.t === f.t ? [...f.t] : x.t };
+        if (dyn.length) setDynamic(dyn, fx, base);
+        exp = adjust(base, fitM.peek(fx.m), fitT.peek(fx.t));
+        exp.namedT = namedT.length ? fitT.part(fx.t, namedT) : 0;
+        if (x.factsAt !== null) factsAt = Math.max(factsAt ?? -Infinity, x.factsAt);
+      } else if (ctx) exp = { ...base, namedT: 0 };
+      asOf.on(g, at, { ...exp, factsAt });
+    }
+  };
   finals.forEach((g, i) => {
+    if (asks.length) answer(Date.parse(g.date) + endH);
     const base = expect(state, g, params);
     const f = ctx?.feats.get(g.id);
     if (f && dyn.length) setDynamic(dyn, f, base);
@@ -120,11 +183,13 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
       n++;
     }
     learn(state, g, exp, params);
+    lastEnd = Math.max(lastEnd ?? -Infinity, Date.parse(g.date) + endH);
     if (f) {
       fitM.add(f.m, g.hs - g.as - base.margin);
       fitT.add(f.t, g.hs + g.as - base.total);
     }
   });
+  if (asks.length) answer(Infinity);
   if (ctx) state.weights = { m: fitM.weights(), t: fitT.weights() };
   return {
     state,
@@ -165,6 +230,7 @@ function online(ctx, on) {
   const every = k > 16 ? Math.ceil(k / 10) : 1;
   let w = new Array(k).fill(0);
   let pending = 0;
+  let aside = null;
   const live = (x) => {
     const nz = [];
     for (let i = 0; i < k; i++) if (x[i] && !off[i]) nz.push(i);
@@ -177,6 +243,15 @@ function online(ctx, on) {
       for (const i of live(x)) s += x[i] * w[i];
       return s;
     },
+    // (a prediction at the sizes predict would use now, solved aside (kept till the next add) so the replay's own
+    // solves are untouched: the replay's asOf reads aside)
+    peek(x) {
+      if (pending >= every && !aside) aside = solve(A, b);
+      const u = pending >= every ? aside : w;
+      let s = 0;
+      for (const i of live(x)) s += x[i] * u[i];
+      return s;
+    },
     add(x, y) {
       const nz = live(x);
       if (!nz.length) return;
@@ -185,6 +260,7 @@ function online(ctx, on) {
         for (const j of nz) A[i][j] += x[i] * x[j];
       }
       pending++;
+      aside = null;
     },
     weights() {
       if (pending) (w = solve(A, b)), (pending = 0);

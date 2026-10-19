@@ -56,6 +56,10 @@ export const BANDS = ['early', 'mid', 'late'];
 export const priceKey = (market, band) => (band === 'early' ? `${market}Open` : market);
 export const leadBand = (hours) => (!fin(hours) ? 'late' : hours >= LEAD_BANDS.early ? 'early' : hours >= LEAD_BANDS.mid ? 'mid' : 'late');
 export const PERIOD_MONTHS = 6;
+// (a fit's bouts over by its period's first day plus this; a fighter's own bout over by its day plus this: the cards
+// end past midnight UTC, Saturday nights in the Americas)
+export const FIT_KNOWN_H = 8;
+export const BOUT_KNOWN_H = 32;
 export const LAYER_A_FROM = '2018-01-01';
 // (the fit's rows at the least before a period is scored)
 const MIN_TRAIN = 500;
@@ -100,13 +104,18 @@ export function walkForward(V, rows, { from = LAYER_A_FROM, now = new Date(), lo
   const tAll = FT.totalRows(rows);
   const out = new Map();
   const periods = [];
+  // (each bout's chance by the period's fit and by the one before it: an open seen before its period began (a bout
+  // early in a half-year, its line out a month before) reads the fit that was standing then (DECISIONS.md D48))
+  let prev = null;
+  const chanceBy = (fit, tfit, r, f) => ({ p: FM.predict(fit, r.x).p, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds, r.division)?.p ?? null : null), period: f });
   for (const { from: f, to } of periodsOf(from, now)) {
     const train = all.filter((r) => r.date < f);
     const inP = rows.filter((r) => r.date >= f && r.date < to);
     if (!inP.length || train.length < MIN_TRAIN) continue;
     const fit = FM.fitSoft(train);
     const tfit = FT.fitTotals(tAll.filter((r) => r.date < f));
-    for (const r of inP) out.set(r.id, { p: FM.predict(fit, r.x).p, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds, r.division)?.p ?? null : null), period: f });
+    for (const r of inP) out.set(r.id, { ...chanceBy(fit, tfit, r, f), prev: prev ? chanceBy(prev.fit, prev.tfit, r, prev.f) : null });
+    prev = { fit, tfit, f };
     periods.push({ from: f, to, train: train.length, bouts: inP.length, kept: fit.terms.filter((t) => t.weight).length });
     log(`fit before ${f}: ${train.length} bouts, ${inP.length} scored`);
   }
@@ -130,40 +139,69 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     ((m[l.book] ??= {})[l.market] ??= []).push(l);
   }
   const out = [];
+  // (DECISIONS.md D48, no look-ahead by timestamp: a row's price read the fit's bouts (those dated before its period
+  // began, over by that day's end: FIT_KNOWN_H past its midnight) and both fighters' own bouts before this one (each
+  // over by BOUT_KNOWN_H past its day's midnight); an open seen before its period's fit read the one before it
+  // (walkForward's prev). factsAt the latest of them: an open whose price read later facts is never bet there)
+  const lastBout = new Map();
+  for (const r of [...rows].sort((a, b) => a.date.localeCompare(b.date))) for (const id of [r.a, r.b]) (lastBout.get(String(id)) ?? lastBout.set(String(id), []).get(String(id))).push(r.date);
+  const before = (id, day) => {
+    const list = lastBout.get(String(id)) ?? [];
+    let d = null;
+    for (const x of list) {
+      if (x < day) d = x;
+      else break;
+    }
+    return d;
+  };
+  const seenBy = (x, ts) => !!x && fin(Date.parse(x.ts)) && Date.parse(x.ts) <= Date.parse(ts);
+  const dayEnd = (d, h) => (d ? Date.parse(`${d}T00:00:00Z`) + h * 36e5 : null);
   for (const [k, books] of by) {
     const [oid, kind] = k.split('|');
     const m = matched.get(oid);
     const e = hist.events.get(oid);
     if (!m || !e) continue;
     const r = byFight.get(m.fight.id);
-    const c = chances.get(m.fight.id);
-    if (!r || !c) continue;
+    const c0 = chances.get(m.fight.id);
+    if (!r || !c0) continue;
     const dk = books.dk;
     if (!dk) continue;
     const start = Date.parse(e.t);
     const ts = Date.parse(Object.values(dk)[0][0].ts);
+    const fitAt = (x) => dayEnd(x.period, FIT_KNOWN_H);
+    const c = fin(ts) && c0.prev && ts < fitAt(c0) ? c0.prev : c0;
+    const fighters = Math.max(dayEnd(before(r.a, r.date), BOUT_KNOWN_H) ?? -Infinity, dayEnd(before(r.b, r.date), BOUT_KNOWN_H) ?? -Infinity);
+    const factsAt = Math.max(fitAt(c), fighters);
     if (kind === 'c' && start - ts > CLOSE_MAX) continue;
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
     const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;
-    const base = { event: String(m.fight.id), sport: SPORT, kind, names: Array.isArray(m.fight.fighters) ? m.fight.fighters.map((f) => f?.name ?? null) : null, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
+    const base = { factsAt: fin(factsAt) ? factsAt : null, event: String(m.fight.id), sport: SPORT, kind, names: Array.isArray(m.fight.fighters) ? m.fight.fighters.map((f) => f?.name ?? null) : null, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
+    // (each market's own snapshot: a book's first sighting is by market, so a row's time, lead and band are its own)
+    const timeOf = (x) => {
+      const at = Date.parse(x.ts);
+      if (!fin(at)) return {};
+      const ld = (start - at) / 36e5;
+      return { at, lead: Math.round(ld * 10) / 10, band: kind === 'c' ? 'late' : leadBand(ld) };
+    };
     // (the moneyline: the API's a its first side, b its second; ESPN's first fighter is a unless crossed)
     const h2h = dk.h2h?.[0];
     if (h2h && fin(h2h.a) && fin(h2h.b)) {
       const mine = m.crossed ? h2h.b : h2h.a;
       const theirs = m.crossed ? h2h.a : h2h.b;
-      const pin = books.pin?.h2h?.[0];
+      // (Pinnacle's only where seen by DraftKings' own snapshot (D48: each book's open is its own first sighting))
+      const pin = seenBy(books.pin?.h2h?.[0], h2h.ts) ? books.pin.h2h[0] : null;
       const fair = pin && fin(pin.a) && fin(pin.b) ? devig(m.crossed ? pin.b : pin.a, m.crossed ? pin.a : pin.b) : devig(mine, theirs);
-      if (fin(c.p)) out.push({ ...base, id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, raw: Math.min(0.999, Math.max(0.001, c.p)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
+      if (fin(c.p)) out.push({ ...base, ...timeOf(h2h), id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, raw: Math.min(0.999, Math.max(0.001, c.p)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
     // (the round total: the book's main line, the one nearest even where it posts several)
     const tots = (dk.totals ?? []).filter((x) => fin(x.line) && fin(x.a) && fin(x.b));
     if (tots.length) {
       const t = [...tots].sort((x, y) => Math.abs(devig(x.a, x.b) - 0.5) - Math.abs(devig(y.a, y.b) - 0.5))[0];
-      const pin = (books.pin?.totals ?? []).find((x) => x.line === t.line && fin(x.a) && fin(x.b));
+      const pin = (books.pin?.totals ?? []).find((x) => x.line === t.line && fin(x.a) && fin(x.b) && seenBy(x, t.ts));
       const fair = pin ? devig(pin.a, pin.b) : devig(t.a, t.b);
       const raw = c.over(t.line, r.rounds);
-      if (fin(raw)) out.push({ ...base, id: `h:${m.fight.id}:total:${kind}`, key: `h:${m.fight.id}:total`, market: 'total', stat: 'total', line: t.line, f: fair, raw: Math.min(0.999, Math.max(0.001, raw)), y: pastLineOf(r, t.line), overOdds: t.a, underOdds: t.b, fairFrom: pin ? 'pinnacle' : 'dk' });
+      if (fin(raw)) out.push({ ...base, ...timeOf(t), id: `h:${m.fight.id}:total:${kind}`, key: `h:${m.fight.id}:total`, market: 'total', stat: 'total', line: t.line, f: fair, raw: Math.min(0.999, Math.max(0.001, raw)), y: pastLineOf(r, t.line), overOdds: t.a, underOdds: t.b, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
   }
   const priced = finishByLead(V, out);
@@ -188,8 +226,9 @@ export function finishByLead(V, rows, { start = 0.5 } = {}) {
   // (each row fit and priced by its band's key: the early band untapered, priceKey)
   const keyed = rows.map((x) => ({ ...x, market: priceKey(x.market, x.band) }));
   const trust = walkTrust(keyed, (x) => `${x.market}@${x.band}`, V.desk.fitTrust, () => start);
+  // (an open at the trust as of its own snapshot: the months before the snapshot's, no result after it (D48))
   for (const [i, x] of rows.entries()) {
-    const t = trust.get(keyed[i]) ?? start;
+    const t = x.kind === 'o' && fin(x.at) ? trust.at(`${priceKey(x.market, x.band)}@${x.band}`, x.at) : (trust.get(keyed[i]) ?? start);
     const ctx = { sport: x.sport, market: priceKey(x.market, x.band), stat: x.stat, line: x.line, side: 'over', f: x.f, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: null, season: x.season };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(x.market, x.band), x.f, x.raw, t, ctx)));
     x.trust = t;

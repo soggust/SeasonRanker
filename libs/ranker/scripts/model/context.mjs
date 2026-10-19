@@ -161,6 +161,39 @@ export const TERMS = {
   ],
 };
 
+// The day-of facts (DECISIONS.md D48, no look-ahead in the replay): the terms whose value for a final comes from what
+// happened on the day (who played, who started in goal or on the mound, the posted lineups, the weather at the start,
+// the crew), each with the hours before the start its fact is known (DAY_OF_LEAD: the inactives 30 minutes before a
+// tip, a goalie at the warmups, a starter or lineup card an hour before, the weather at the hour, a crew the morning
+// of). A price taken before that (an open, a close posted early) reads the term at what was known then (featurize's
+// dayOf: the prior game's absentees for the NBA's missing production, the no-probable rule's goalie for the NHL, none
+// for the rest, the term's 0); ratings.mjs featsAt swaps them in. The rest of a game's terms come from the schedule and
+// the games before it (known once both sides' previous game is over)
+export const DAY_OF_LEAD = { inactives: 0.5, goalies: 0.5, probables: 1, lineups: 1, starters: 1.5, weather: 0.5, officials: 6 };
+const REFS = { refTotal: ['officials'], refHome: ['officials'], refWhistle: ['officials'] };
+export const DAY_OF_TERMS = {
+  nfl: { qb: ['starters'], qbT: ['starters'], olChanges: ['starters'], cold: ['weather'], wind: ['weather'], precip: ['weather'], snow: ['weather'], crosswind: ['weather'], ...REFS },
+  nba: { out: ['inactives'], outT: ['inactives'], ...REFS },
+  nhl: { goalie: ['goalies'], goalieT: ['goalies'], goalieX: ['goalies'], ...REFS },
+  mlb: { pitcher: ['probables'], pitcherT: ['probables'], platoon: ['lineups', 'probables'], platoonT: ['lineups', 'probables'], 'parkL:': ['lineups', 'probables'], 'parkLT:': ['lineups', 'probables'], temp: ['weather'], windOut: ['weather'], rain: ['weather'], airThin: ['weather'], ...REFS, refZoneX: ['officials', 'probables'] },
+};
+// (a term's day-of facts, [] for none: by its key, a park's lean by its prefix)
+export function dayOfFacts(sport, key) {
+  const t = DAY_OF_TERMS[sport] ?? {};
+  if (t[key]) return t[key];
+  const i = key.indexOf(':');
+  return i > 0 ? (t[key.slice(0, i + 1)] ?? []) : [];
+}
+// (when a term's facts are all known for a game starting at t: the latest-posted of them)
+export const dayOfKnownAt = (facts, t) => (facts.length ? t - Math.min(...facts.map((f) => DAY_OF_LEAD[f])) * 36e5 : null);
+// (the earliest a game's day-of facts could be known for a sport, hours before the start: a prop's projection reads
+// the game's context whole (props.mjs, the info and the expected points), so a prop priced earlier than this read
+// facts it couldn't have had)
+export const dayOfMinLead = (sport) => {
+  const facts = [...new Set(Object.values(DAY_OF_TERMS[sport] ?? {}).flat())];
+  return facts.length ? Math.min(...facts.map((f) => DAY_OF_LEAD[f])) : null;
+};
+
 // (questionable: timing.mjs's pattern, the props' too; out: theirs and MLB's injured list)
 const QUESTIONABLE = Q_STATUS;
 const OUT = /^out|doubtful|injured reserve|il$|-il|suspension/i;
@@ -1064,9 +1097,24 @@ export function featurize(sport, cfg, games, facts, live) {
       ...(s?.terms ?? {}),
       ...(w?.terms ?? {}),
     };
+    // (the day-of terms at what was known before their facts were posted (DAY_OF_TERMS): the starters' and the
+    // hockey module's own fallback where they give one, else none; each entry [index, that value, when known])
+    const before = { ...(x2?.early ?? {}), ...(s?.early ?? {}) };
+    const dayOf = (list) => {
+      const out = [];
+      list.forEach((x, i) => {
+        const facts = dayOfFacts(sport, x.key);
+        if (!facts.length) return;
+        const full = v[x.key] ?? 0;
+        const early = before[x.key] ?? 0;
+        if (full !== early) out.push([i, early, dayOfKnownAt(facts, t)]);
+      });
+      return out;
+    };
     out.set(g.id, {
       m: mTerms.map((x) => v[x.key] ?? 0),
       t: tTerms.map((x) => v[x.key] ?? 0),
+      dayOf: { m: dayOf(mTerms), t: dayOf(tTerms) },
       info: { rest: [h.rest, a.rest], b2b: [h.b2b, a.b2b], miles: [h.miles, a.miles], ...(s?.info ? { starters: s.info } : {}), ...(w?.info ? { weather: w.info } : {}), ...(r ? { ranker: r.info } : {}), ...(lu?.info ? { lineups: lu.info } : {}), ...(x2?.info ? { more: x2.info } : {}), ...(o?.info ? { officials: o.info } : {}), schedule: { dense: [h.dense3 + h.dense4, a.dense3 + a.dense4], east: [h.east, a.east], climb: [h.climb, a.climb], tzHome: [h.tzHome, a.tzHome], tzMove: [h.tzMove, a.tzMove], clock: [h.late - h.early, a.late - a.early], last: [h.letdown - h.bounce, a.letdown - a.bounce], in7: [h.in7, a.in7], trip: a.trip, stand: h.stand }, flags: [...(s?.flags ?? []), ...(x2?.flags ?? []), ...(w?.flags ?? [])] },
     });
     // (each side's game kept for its next: when and where, its margin once final (the schedule terms' last result),
@@ -1305,12 +1353,16 @@ const STARTERS = {
             break;
           }
         }
-        return { out: Math.round(out * 10) / 10, players: names.length };
+        // (what was known before the inactives (DAY_OF_TERMS): the regulars who missed the team's last game)
+        const n = played.get(team) ?? 0;
+        const early = regs.reduce((s, r) => s + (players.get(r.id).last < n ? r.eff : 0), 0);
+        return { out: Math.round(out * 10) / 10, players: names.length, early: Math.round(early * 10) / 10 };
       };
-      const h = box || l ? missing(g.home, 'h') : { out: 0, players: 0 };
-      const a = box || l ? missing(g.away, 'a') : { out: 0, players: 0 };
+      const h = box || l ? missing(g.home, 'h') : { out: 0, players: 0, early: 0 };
+      const a = box || l ? missing(g.away, 'a') : { out: 0, players: 0, early: 0 };
       return {
         terms: { out: (a.out - h.out) / 10, outT: (a.out + h.out) / 10 },
+        early: { out: (a.early - h.early) / 10, outT: (a.early + h.early) / 10 },
         info: { missing: [h.out, a.out], playersOut: [h.players, a.players] },
         flags,
         learn: () => {
@@ -1396,12 +1448,18 @@ const STARTERS = {
         const q = blend && id ? Math.round((blend.share * q0 + (1 - blend.share) * (blend.alt ? quality(blend.alt, g.season) : 0)) * 1000) / 1000 : q0;
         const usual = recent.get(team) ?? [];
         const norm = usual.length ? usual.reduce((s, x) => s + quality(x, g.season), 0) / usual.length : q;
-        return { id, name: blend && name && blend.altName ? name + ' or ' + blend.altName : name, q, vs: Math.round((q - norm) * 1000) / 1000 };
+        // (what was known before the goalies (DAY_OF_TERMS): the no-probable rule above, the last starter, his
+        // backup on the second night of a back-to-back)
+        const eid = sched.b2b?.[where === 'h' ? 0 : 1] ? backupOf(team) : (lastStarter.get(team) ?? null);
+        const eq = eid ? quality(eid, g.season) : 0;
+        const enorm = usual.length ? norm : eq;
+        return { id, name: blend && name && blend.altName ? name + ' or ' + blend.altName : name, q, vs: Math.round((q - norm) * 1000) / 1000, early: Math.round((eq - enorm) * 1000) / 1000 };
       };
-      const h = box || l ? one(g.home, 'h') : { q: 0, vs: 0 };
-      const a = box || l ? one(g.away, 'a') : { q: 0, vs: 0 };
+      const h = box || l ? one(g.home, 'h') : { q: 0, vs: 0, early: 0 };
+      const a = box || l ? one(g.away, 'a') : { q: 0, vs: 0, early: 0 };
       return {
         terms: { goalie: h.vs - a.vs, goalieT: h.vs + a.vs },
+        early: { goalie: h.early - a.early, goalieT: h.early + a.early },
         info: { home: h.name ?? h.id ?? null, away: a.name ?? a.id ?? null, saved: [h.q, a.q], vsUsual: [h.vs, a.vs] },
         flags,
         learn: () => {

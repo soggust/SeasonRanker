@@ -79,10 +79,16 @@ export function historyLineBets(events, lines, games) {
     const start = Date.parse(e.t);
     const ts = Date.parse(Object.values(dk)[0].ts);
     if (kind === 'c' && start - ts > CLOSE_MAX) continue;
+    // (DECISIONS.md D48, no look-ahead: each book's open is its own first sighting and its close its own last, so
+    // Pinnacle's can come after DraftKings' (measured 2026-10-19: in 10 to 28% of the daily sports' opens, a median
+    // of hours later, the NFL's two thirds, days): its price is the fair only where it was seen by DraftKings' own
+    // snapshot, else DraftKings' own no-vig; a moneyline reads the spread's frame only where the spread was posted by
+    // then (else it isn't priced at that snapshot))
+    const seenBy = (x, ts) => fin(Date.parse(x?.ts)) && Date.parse(x.ts) <= Date.parse(ts);
     const fairOf = (market) => {
       const d = dk[market];
       const p = books.pin?.[market];
-      if (p && p.line === d.line && fin(p.a) && fin(p.b)) return devig(p.a, p.b);
+      if (p && p.line === d.line && fin(p.a) && fin(p.b) && seenBy(p, d.ts)) return devig(p.a, p.b);
       return devig(d.a, d.b);
     };
     const spread = dk.spreads && fin(dk.spreads.a) && fin(dk.spreads.b) ? { line: dk.spreads.line, fair: fairOf('spreads') } : null;
@@ -90,7 +96,7 @@ export function historyLineBets(events, lines, games) {
       if (!MARKET[mk] || !fin(d.a) || !fin(d.b)) continue;
       const market = MARKET[mk];
       if (market !== 'ml' && !fin(d.line)) continue;
-      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : 'close', kind, market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), anchor: 'pinnacle', ...(market === 'ml' && spread ? { spreadHome: spread } : {}), start: e.t, season: g.season, at: d.ts });
+      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : 'close', kind, market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), anchor: 'pinnacle', ...(market === 'ml' ? { spreadHome: spread && seenBy(dk.spreads, d.ts) ? spread : false } : {}), start: e.t, season: g.season, at: d.ts });
     }
   }
   return out;
@@ -118,10 +124,29 @@ export function historyPropIndex(events, props, marketStat) {
 // (a trust for each row, walk-forward by month: keyOf(row) its group, fit on the rows of the months before only
 // (desk.mjs fitTrust, the result and the close's chance), from start(key) with none; rows in the over frame { p raw,
 // f, y, q, event, t })
+// The map also answers at(k, t): k's trust as of the month of t, from the rows of the months before it (a row priced
+// before its game's month, an open, reads the trust as of its own snapshot: no result after it, DECISIONS.md D48)
 export function walkTrust(rows, keyOf, fitTrust, start) {
   const months = [...new Set(rows.map((x) => new Date(x.t).toISOString().slice(0, 7)))].sort();
   const out = new Map();
-  const asBet = (x) => ({ market: x.market, model: x.raw, fair: x.f, event: x.event, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), ...(fin(x.named) ? { named: x.named } : {}) });
+  const monthOf = (t) => new Date(t).toISOString().slice(0, 7);
+  // (each key's rows by their month, for at(k, t))
+  const byKey = new Map();
+  for (const x of rows) {
+    const k = keyOf(x);
+    (byKey.get(k) ?? byKey.set(k, []).get(k)).push(x);
+  }
+  const memo = new Map();
+  out.at = (k, t) => {
+    const m = monthOf(t);
+    const id = `${k}|${m}`;
+    if (memo.has(id)) return memo.get(id);
+    const list = (byKey.get(k) ?? []).filter((x) => monthOf(x.t) < m).map(asBet);
+    const v = list.length ? fitTrust(list, start(k)).trust : start(k);
+    memo.set(id, v);
+    return v;
+  };
+  function asBet(x) { return ({ market: x.market, model: x.raw, fair: x.f, event: x.event, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), ...(fin(x.named) ? { named: x.named } : {}) }); }
   const sorted = [...rows].sort((a, b) => a.t - b.t);
   const prior = new Map();
   let i = 0;
@@ -173,9 +198,29 @@ export function vsBookBySeason(rows) {
 
 // The lines' history rows for a version: V (its modules), the sport, params and shape (its margins), expOf (game id
 // -> its expectation), the games (extended), the history. { open: rows, close: rows }
-export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, current) {
+// (DECISIONS.md D48, no look-ahead: expAtOf(id, at) the game's expectation as of the row's own snapshot (the ratings
+// from the finals over by then, the day-of terms at what was known then; ratings.mjs replay's asOf), its factsAt the
+// latest fact it read; where it can't say (a version from before it), the game's own expectation, stamped with
+// factsOf(id), the latest fact that one read. Each row carries its factsAt; whole counts the rows at the game's own)
+export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, current, { expAtOf = null, factsOf = null } = {}) {
   const bets = historyLineBets(hist.events, hist.lines, games);
-  const priced = V.backtest.repriced(bets, (b) => expOf(b.event), params, shape);
+  const factsAt = new Map();
+  let whole = 0;
+  const expFor = (b) => {
+    const at = Date.parse(b.at);
+    const e = expAtOf && fin(at) ? expAtOf(b.event, at) : null;
+    if (e) {
+      factsAt.set(`${b.id}|${b.kind}`, e.factsAt ?? null);
+      return e;
+    }
+    const w = expOf(b.event);
+    if (w) {
+      whole++;
+      factsAt.set(`${b.id}|${b.kind}`, factsOf?.(b.event) ?? Date.parse(b.start));
+    }
+    return w;
+  };
+  const priced = V.backtest.repriced(bets, expFor, params, shape);
   const byGame = new Map(games.map((g) => [String(g.id), g]));
   const rows = [];
   for (const b of priced) {
@@ -183,11 +228,11 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const s = V.desk.settle(b, g);
     if (s.void) continue;
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
-    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, ...(fin(b.named) ? { named: b.named } : {}) });
+    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.kind}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, ...(fin(b.named) ? { named: b.named } : {}) });
   }
   // (a version with the totals rule (D44, desk.mjs trustStart): its totals' trust walks forward from 0, the named
   // terms' shift on each row at full weight)
-  return finish(V, rows, (x) => x.market, (k) => V.desk.trustStart?.(k, 0.5) ?? 0.5, 'lines');
+  return { ...finish(V, rows, (x) => x.market, (k) => V.desk.trustStart?.(k, 0.5) ?? 0.5, 'lines'), whole };
 }
 
 // (the open rows' close chance at the same line (q), the close rows' open chance at it (fo: the move to date, known
@@ -209,9 +254,10 @@ export function finish(V, rows, keyOf, start, kind) {
   const modelOf = (x) => (fin(x.anch) ? x.anch : x.raw);
   const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x) })), keyOf, V.desk.fitTrust, start);
   const trustOf = new Map([...trust].map(([x, t]) => [x.id, t]));
-  // (an open row at its close row's trust: the same game's month)
+  // (a close row at its own month's trust; an open row at the trust as of its own snapshot (the months before the
+  // snapshot's: no result after it), its game's close row's where it has no snapshot time)
   for (const x of rows) {
-    const t = trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x));
+    const t = x.kind === 'o' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
     const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
     x.trust = t;
@@ -226,7 +272,11 @@ export function finish(V, rows, keyOf, start, kind) {
 // at the pull fit walk-forward by season: a season's rows read the fit on the close rows of the seasons before it
 // (the first season 0: the bot's own number). { open, close, anchor: { all (the fit on every season: what
 // --record writes for the live desk), bySeason (each season's fit as read), current (the newest season's) } }
-export function propHistoryRows(V, sport, index, matches, current) {
+// (factsLead (DECISIONS.md D48): hours before the start the game's day-of facts are known at the earliest (context.mjs
+// dayOfMinLead); the player game's projection reads the game's context whole (its info, its expected points), so each
+// row's factsAt is the start less it: a row priced before then read facts it couldn't have had, and the replay never
+// bets it there)
+export function propHistoryRows(V, sport, index, matches, current, { factsLead = null } = {}) {
   const rows = [];
   for (const m of matches) {
     const h = index.get(`${m.stat}|${nameKey(m.name)}|${m.game}`);
@@ -238,7 +288,7 @@ export function propHistoryRows(V, sport, index, matches, current) {
       if (!fin(raw)) continue;
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
-      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m });
+      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m });
     }
   }
   let anchor = null;

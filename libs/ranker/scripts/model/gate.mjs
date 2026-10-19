@@ -292,8 +292,23 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     facts = {};
     say('no context facts in the cache (.cache/model): the ratings alone');
   }
+  // (each archived line's game priced as of its own snapshot too (DECISIONS.md D48, no look-ahead): the ratings from
+  // the finals over by then, the day-of terms at what was known then; ratings.mjs replay's asOf. A version from before
+  // it has none: its rows read the game's own expectation, stamped with the game's facts)
+  const hist = loadHistory(sport);
+  const asked = new Map();
+  for (const l of hist.lines) {
+    if (l.kind !== 'o' && l.kind !== 'c') continue;
+    const e = hist.events.get(l.oid);
+    const at = Date.parse(l.ts);
+    if (!e?.id || !fin(at)) continue;
+    (asked.get(String(e.id)) ?? asked.set(String(e.id), new Set()).get(String(e.id))).add(at);
+  }
+  const askAt = new Map([...asked].map(([id, s]) => [id, [...s]]));
+  const expAt = new Map();
+  const asOfInto = (into) => (V.ratings.REPLAY_AS_OF ? { at: askAt, gameHours: 4, on: (g, at, e) => into.set(`${g.id}|${at}`, e) } : null);
   const expAll = new Map();
-  V.ratings.replay(history, params, 0, ctxFit?.ctx ?? null, (g, e) => expAll.set(g.id, e));
+  V.ratings.replay(history, params, 0, ctxFit?.ctx ?? null, (g, e) => expAll.set(g.id, e), asOfInto(expAt));
   let shape = null;
   try {
     const mg = V.margins.fitMargins(sport, history, expAll, params.sigma);
@@ -343,15 +358,40 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (layer b, the priced history (gate-history.mjs, odds-history.mjs): every archived open and close since 2020,
   // the games games.json doesn't keep replayed by the ratings from the history's own ESPN games (their context
   // none), games.json's at the desk's own expectation)
-  const hist = loadHistory(sport);
   let histLines = { open: [], close: [] };
   let histGames = history;
   if (hist.events.size) {
     histGames = extendedGames(history, hist.events);
     const expExt = new Map();
-    if (histGames.length > history.length) V.ratings.replay(histGames, params, 0, ctxFit?.ctx ?? null, (g, e) => expExt.set(String(g.id), e));
+    const expAtExt = new Map();
+    if (histGames.length > history.length) V.ratings.replay(histGames, params, 0, ctxFit?.ctx ?? null, (g, e) => expExt.set(String(g.id), e), asOfInto(expAtExt));
     const expOf = (id) => expAll.get(id) ?? expAll.get(String(id)) ?? expExt.get(String(id)) ?? null;
-    histLines = lineHistoryRows(V, sport, params, shape, expOf, histGames, hist, current);
+    // (a game's expectation as of a snapshot: games.json's replay first, as expOf; null where the version can't say)
+    const inAll = (id) => expAll.has(id) || expAll.has(String(id)) || expAll.has(Number(id));
+    const expAtOf = V.ratings.REPLAY_AS_OF ? (id, at) => (inAll(id) ? expAt : expAtExt).get(`${id}|${at}`) ?? null : null;
+    const gameAt = new Map(histGames.map((g) => [String(g.id), g]));
+    const finalStarts = histGames.filter((g) => g.final).map((g) => Date.parse(g.date)).sort((a, b) => a - b);
+    const lastEndBefore = (t) => {
+      let lo = 0;
+      let hi = finalStarts.length;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (finalStarts[mid] < t) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo ? finalStarts[lo - 1] + 4 * 36e5 : null;
+    };
+    // (the latest day-of fact of a game's whole terms: what a row priced at the game's own expectation read)
+    const factsOf = (id) => {
+      const f = ctxFit?.ctx?.feats.get(id) ?? ctxFit?.ctx?.feats.get(Number(id)) ?? ctxFit?.ctx?.feats.get(String(id));
+      const all = [...(f?.dayOf?.m ?? []), ...(f?.dayOf?.t ?? [])].map((x) => x[2]);
+      const g = gameAt.get(String(id));
+      const ends = g ? lastEndBefore(Date.parse(g.date)) : null;
+      const top = Math.max(...all, ends ?? -Infinity);
+      return fin(top) ? top : null;
+    };
+    histLines = lineHistoryRows(V, sport, params, shape, expOf, histGames, hist, current, { expAtOf, factsOf });
+    say(`history lines as of their snapshots: ${expAtOf ? `${histLines.close.length + histLines.open.length - histLines.whole} priced as of their own time, ${histLines.whole} at the game's own expectation` : "none (the version's ratings replay has no asOf): every row at the game's own expectation, stamped with its facts"}`);
     say(`history lines: ${histLines.close.length} closes and ${histLines.open.length} opens priced (${new Set(histLines.close.map((x) => x.season)).size} seasons; ${histGames.length - history.length} games past games.json's replayed from the history's)`);
   } else say('history: none committed (odds-history.mjs)');
 
@@ -437,7 +477,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const savedM = (b) => (fin(b.modelRaw) ? b.modelRaw : b.model);
   // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
-  const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current) : { open: [], close: [], anchor: null };
+  const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
   if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}${histProps.risk && V.lineupRisk?.riskText ? `; the lineup risk by stat: ${V.lineupRisk.riskText(histProps.risk)}` : ''}`);
   for (const [id, { b, mu, params: fp, mix }] of ledgerMatches) {
     const fairOver = b.side === 'over' ? b.fair : 1 - b.fair;

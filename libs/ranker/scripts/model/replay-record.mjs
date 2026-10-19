@@ -20,6 +20,12 @@
 //   price      DraftKings' snapshot nearest the placement (the archive's open or close), never a shopped price;
 //              the stake desk.mjs stakeFor at the state's evScale, a suspect return (EV_SUSPECT) held to the
 //              practice stake; the band picks.mjs edgeLevel on the Kelly at the chance it was bet at
+//   facts      no look-ahead by timestamp (DECISIONS.md D48): each row carries factsAt, the latest fact its price read
+//              (a result's end, a day-of fact: the inactives, a goalie, a starter, a lineup, the weather, the crew;
+//              gate-history.mjs prices each line as of its own snapshot, ratings.mjs replay's asOf, the day-of terms at
+//              what was known then). A row whose factsAt is after its snapshot is never bet there: an open falls to
+//              the close, a close (or a row with no snapshot time) isn't bet or picked. Every bet keeps its factsAt
+//              and the file counts the bets past their placement (flags.facts.late: 0, tests/model-replay-record)
 //   not seen   the live desk's gates (line and prop CLV gates shrink stakes on the ledger since the epoch), its
 //              CHECKs, research and news: the replay bets at the model's own number
 //   file       apps/<sport>/src/StaticData/model/replay-record.json, written only by gate.mjs --record (a shipped
@@ -72,6 +78,12 @@ export function addBet(t, b) {
   return t;
 }
 const finishTally = (t) => ({ ...t, beat: t.beatN ? r4(t.beat / t.beatN) : null });
+
+// (DECISIONS.md D48: a row's price read only facts from before its snapshot: no factsAt stamp (nothing day-of read,
+// a version from before the stamps), or one at or before its time)
+export const knownAt = (x) => !fin(x.factsAt) || (fin(x.at) && x.factsAt <= x.at);
+// (the bets whose price read a fact dated after their placement: none, ever (the timestamp test))
+export const lateFacts = (bets) => bets.filter((b) => fin(b.factsAt) && !(fin(b.at) && b.factsAt <= b.at));
 const tallyOf = (bets) => finishTally(bets.reduce(addBet, emptyTally()));
 
 // (the clean-open test from the history's events: a row's open is clean when its snapshot came after both teams'
@@ -188,7 +200,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const survival = V.lineupRisk?.survivalAt ?? (() => 0);
   const bets = [];
   const passes = [];
-  const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0 };
+  const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   for (const k of keys) {
     const o = opens.get(k);
@@ -201,7 +213,10 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const isClean = clean(o);
       if (isClean) flags.openClean++;
       if (inWindow) flags.openInWindow++;
-      if (isClean && inWindow) {
+      // (an open whose price read a fact posted after it (D48): never bet there, the close instead)
+      const isKnown = knownAt(o);
+      if (isClean && inWindow && !isKnown) flags.openHeld++;
+      if (isClean && inWindow && isKnown) {
         // (the open's chance held to the surviving share of its lean: MMA's priced by its band already)
         const s = sport === 'mma' ? 1 : survival(risk.entryFor(o.season, o.stat, isLine(o)), hours, { last: timing.lastChance ?? 3 });
         const p = s < 1 ? o.f + Math.min(1, Math.max(0, s)) * (o.p - o.f) : o.p;
@@ -209,11 +224,13 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         if (sd.ev > 0) placed = { x: o, sd, timing: 'open', s, close: c ?? null };
       }
     }
-    if (!placed && c) {
+    // (a close, or a lone open, whose price read a fact posted after it: neither bet nor picked (D48))
+    if (!placed && c && !knownAt(c)) flags.closeHeld++;
+    else if (!placed && c) {
       const sd = sideOf(V, c, c.p);
       if (sd.ev > 0) placed = { x: c, sd, timing: 'close', s: 1, close: null };
       else passes.push({ x: c, sd });
-    } else if (!placed && o) {
+    } else if (!placed && o && knownAt(o)) {
       passes.push({ x: o, sd: sideOf(V, o, o.p) });
     }
     if (placed) {
@@ -255,7 +272,7 @@ function betOf(x, sd, { units, band, practice, timing, beat, names, survival }) 
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
   const profit = res === 'W' ? r2(units * (dec(sd.odds) - 1)) : res === 'L' ? -units : 0;
   const w = wordsOf(x, sd.over, names);
-  return { id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
+  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
 }
 
 // The file's content from the replayed bets (practice picks among them, flagged) and the rows that passed
@@ -293,7 +310,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
   const decided = graded.filter((b) => b.res !== 'P');
   let n = 0;
   while (n < decided.length && decided[n].res === decided[0].res) n++;
-  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, survival: b.survival, at: new Date(b.at).toISOString(), start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
+  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, survival: b.survival, at: new Date(b.at).toISOString(), factsAt: fin(b.factsAt) ? new Date(b.factsAt).toISOString() : null, start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
   const all = tallyOf(real);
   return {
     v: REPLAY_V,
@@ -319,6 +336,9 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     last: [...bets].sort(order).slice(0, REPLAY_LAST).map(entry),
     flags: {
       timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow },
+      // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
+      // to the close and the closes left unbet because their price read a fact posted after them)
+      facts: { stamped: bets.filter((b) => fin(b.factsAt)).length, late: lateFacts(bets).length, openHeld: flags.openHeld ?? 0, closeHeld: flags.closeHeld ?? 0 },
       // (MMA's bouts are priced by the fights model whole: every season full)
       context: sport === 'mma' ? { full: [...seasonsAll].sort(), ratingsOnly: [] } : { full: [...seasonsAll].filter((s) => seasonsWithProps.has(s)).sort(), ratingsOnly: [...seasonsAll].filter((s) => !seasonsWithProps.has(s)).sort() },
       price: PRICE_NOTE,

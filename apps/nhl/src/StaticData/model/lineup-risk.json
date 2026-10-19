@@ -1,54 +1,54 @@
 {
  "v": 1,
- "at": "2026-10-19T17:53:54.004Z",
+ "at": "2026-10-19T20:17:23.449Z",
  "rows": 37731,
  "pooled": {
-  "n": 1428,
+  "n": 1432,
   "rows": 37731,
-  "keptRaw": 0.9529,
-  "kept": 0.9529,
+  "keptRaw": 0.9455,
+  "kept": 0.9455,
   "moved": 0.028,
   "lead": 12.072,
   "edgeOpen": 0.0157,
-  "edgeClose": 0.015,
+  "edgeClose": 0.0148,
   "ok": true
  },
  "stats": {
   "pts": {
-   "n": 783,
+   "n": 790,
    "rows": 20003,
-   "keptRaw": 0.9656,
-   "kept": 0.9656,
+   "keptRaw": 0.9598,
+   "kept": 0.9598,
    "moved": 0.012,
    "lead": 12.072,
    "edgeOpen": 0.0145,
-   "edgeClose": 0.014,
+   "edgeClose": 0.0139,
    "from": "own"
   },
   "saves": {
-   "n": 45,
+   "n": 34,
    "rows": 141,
-   "keptRaw": 0.9529,
-   "kept": 0.9529,
+   "keptRaw": 0.9455,
+   "kept": 0.9455,
    "moved": 0.092,
    "lead": 12.069,
-   "edgeOpen": 0.0142,
-   "edgeClose": 0.0117,
+   "edgeOpen": 0.0139,
+   "edgeClose": 0.0111,
    "from": "pooled"
   },
   "sog": {
-   "n": 600,
+   "n": 608,
    "rows": 17587,
-   "keptRaw": 0.9469,
-   "kept": 0.9469,
+   "keptRaw": 0.9363,
+   "kept": 0.9363,
    "moved": 0.045,
    "lead": 12.072,
-   "edgeOpen": 0.0174,
-   "edgeClose": 0.0165,
+   "edgeOpen": 0.0173,
+   "edgeClose": 0.0162,
    "from": "own"
   }
  },
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "3675f828"
+ "commit": "f16287fc"
 }

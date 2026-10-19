@@ -107,6 +107,8 @@ export function hockeyOf(facts, live) {
     const expShots = [(shH.sf * shA.sa) / lgShots.avg, (shA.sf * shH.sa) / lgShots.avg];
     return {
       terms: { xgEdge: h.edge - a.edge, xgT: h.sum + a.sum, goalieX: gh - ga, lastChange: (sh + sa - 2 * lg.share) * 10 },
+      // (what was known before the goalies (context.mjs DAY_OF_TERMS): each side's last starter)
+      early: { goalieX: vsUsual((recent.get(g.home) ?? []).at(-1) ?? null, g.home) - vsUsual((recent.get(g.away) ?? []).at(-1) ?? null, g.away) },
       info: { xg: [r3(h.edge), r3(a.edge)], gsaxVsUsual: [r3(gh), r3(ga)], topThree: [r3(sh), r3(sa)], shots: expShots.map((x) => Math.round(x * 10) / 10), shotsAvg: Math.round(lgShots.avg * 10) / 10 },
       learn: () => {
         if (!f) return;

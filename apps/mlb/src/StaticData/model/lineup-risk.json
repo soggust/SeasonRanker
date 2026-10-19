@@ -1,24 +1,24 @@
 {
  "v": 1,
- "at": "2026-10-19T17:55:26.595Z",
+ "at": "2026-10-19T20:19:21.333Z",
  "rows": 117594,
  "pooled": {
-  "n": 12553,
+  "n": 12617,
   "rows": 117594,
-  "keptRaw": 0.8761,
-  "kept": 0.8761,
+  "keptRaw": 0.8716,
+  "kept": 0.8716,
   "moved": 0.084,
   "lead": 12.028,
   "edgeOpen": 0.0147,
-  "edgeClose": 0.0129,
+  "edgeClose": 0.0128,
   "ok": true
  },
  "stats": {
   "hits": {
-   "n": 3519,
+   "n": 3551,
    "rows": 66514,
-   "keptRaw": 0.6787,
-   "kept": 0.6787,
+   "keptRaw": 0.6729,
+   "kept": 0.6729,
    "moved": 0.067,
    "lead": 12.026,
    "edgeOpen": 0.0136,
@@ -26,20 +26,20 @@
    "from": "own"
   },
   "k": {
-   "n": 456,
+   "n": 458,
    "rows": 7684,
-   "keptRaw": 0.7962,
-   "kept": 0.7962,
+   "keptRaw": 0.7919,
+   "kept": 0.7919,
    "moved": 0.256,
    "lead": 12.026,
    "edgeOpen": 0.0194,
-   "edgeClose": 0.0154,
+   "edgeClose": 0.0153,
    "from": "own"
   },
   "outs": {
    "n": 640,
    "rows": 6361,
-   "keptRaw": 1.0239,
+   "keptRaw": 1.0238,
    "kept": 1,
    "moved": 0.273,
    "lead": 12.025,
@@ -48,18 +48,18 @@
    "from": "own"
   },
   "tb": {
-   "n": 7938,
+   "n": 7968,
    "rows": 37035,
-   "keptRaw": 0.9493,
-   "kept": 0.9493,
+   "keptRaw": 0.9456,
+   "kept": 0.9456,
    "moved": 0.046,
    "lead": 12.032,
    "edgeOpen": 0.0146,
-   "edgeClose": 0.0139,
+   "edgeClose": 0.0138,
    "from": "own"
   }
  },
  "sport": "mlb",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "3675f828"
+ "commit": "f16287fc"
 }
