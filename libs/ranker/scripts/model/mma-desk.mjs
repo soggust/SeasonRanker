@@ -74,7 +74,7 @@ import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
-import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
+import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
@@ -670,6 +670,9 @@ export function buildFightPicks(ledger, trust, bouts, now, extra = {}) {
     score,
     chance: Math.round(b.p * 100),
     level: levelOf(b, score),
+    // (the rule's cap on its band, picks.mjs capOf (picks.json cap): a suspect early-band price a LIKE at its Kelly's
+    // LOVE, so the page's row (book-rows.ts rowOf) bands it as the desk does)
+    ...(capOf(b) ? { cap: capOf(b) } : {}),
     edge: true,
     // (a round total, once its market is live (fights-totals.mjs TOTAL_LIVE): "Over 2.5 rounds", no fighter)
     kind: b.market === 'total' ? 'total' : 'moneyline',
