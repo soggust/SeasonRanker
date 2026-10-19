@@ -95,11 +95,15 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
   let winLoss = 0;
   let winHits = 0;
   const dyn = ctx ? dynamicTerms(ctx.terms) : [];
+  const namedT = ctx ? namedIdx(ctx.terms, 't') : [];
   finals.forEach((g, i) => {
     const base = expect(state, g, params);
     const f = ctx?.feats.get(g.id);
     if (f && dyn.length) setDynamic(dyn, f, base);
     const exp = f ? adjust(base, fitM.predict(f.m), fitT.predict(f.t)) : base;
+    // (the named terms' part of the total's shift (D39): what a totals bet is earned by; 0 with no context)
+    if (f && namedT.length) exp.namedT = fitT.part(f.t, namedT);
+    else if (ctx) exp.namedT = 0;
     onGame?.(g, exp);
     if (i >= from) {
       const m = g.hs - g.as - exp.margin;
@@ -186,8 +190,20 @@ function online(ctx, on) {
       if (pending) (w = solve(A, b)), (pending = 0);
       return w.map((v, i) => (off[i] ? 0 : v));
     },
+    // (the part of a prediction the terms in idx carry, at the weights predict last used: no solve, so it reads
+    // exactly what predict read for the same game)
+    part(x, idx) {
+      let s = 0;
+      const nz = new Set(live(x));
+      for (const i of idx) if (nz.has(i)) s += x[i] * w[i];
+      return s;
+    },
   };
 }
+
+// (the named terms on the total (DECISIONS.md D39): the soft schedule terms (context.mjs SCHEDULE_TERMS, D34), the ones
+// that earn a totals bet; their indexes among a side's terms)
+export const namedIdx = (terms, on = 't') => (terms?.[on] ?? []).map((t, i) => (t.soft ? i : -1)).filter((i) => i >= 0);
 
 // (a small linear system, by elimination)
 function solve(A, b) {

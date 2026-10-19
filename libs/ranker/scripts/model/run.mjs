@@ -135,7 +135,7 @@ import { morningPrices, withSnapshot } from './suggest.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
-import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, replay, round, setDynamic } from './ratings.mjs';
+import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, namedIdx, replay, round, setDynamic } from './ratings.mjs';
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
@@ -152,6 +152,7 @@ import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } f
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
+import { TRUST_START } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -930,7 +931,9 @@ function expectFor(r, game) {
   if (f) setDynamic(dynamicTerms(r.feats.terms), f, base);
   const adjM = f && r.weights ? f.m.reduce((s, v, i) => s + v * r.weights.m[i], 0) : 0;
   const adjT = f && r.weights ? f.t.reduce((s, v, i) => s + v * r.weights.t[i], 0) : 0;
-  return { exp: adjust(base, adjM, adjT), f, adjM, adjT };
+  // (the named terms' part of the total's shift (D39): the soft schedule terms, what a totals bet is earned by)
+  const namedT = f && r.weights ? namedIdx(r.feats.terms, 't').reduce((s, i) => s + (f.t[i] ?? 0) * (r.weights.t[i] ?? 0), 0) : 0;
+  return { exp: { ...adjust(base, adjM, adjT), namedT: r.feats ? namedT : null }, f, adjM, adjT };
 }
 
 // 2c. the props: every player's game lines, and each prop type's projection fit and checked on them
@@ -1164,8 +1167,8 @@ function logContext(r) {
 function refitTrust(r) {
   const { state, at } = r;
   const trust = { ...(state.trust ?? {}) };
-  const refit = (key, bets, words) => {
-    const t = fitTrust(bets, START_TRUST);
+  const refit = (key, bets, words, start = START_TRUST) => {
+    const t = fitTrust(bets, start);
     if (trust[key] && trust[key].trust !== t.trust) state.changelog.push({ at, what: words.what, from: trust[key].trust, to: t.trust, why: `best fit to ${t.n} graded ${words.bets} and ${t.clvN} closing lines, ${t.eff} games' worth (log loss ${t.logLoss})` });
     trust[key] = t;
   };
@@ -1203,8 +1206,12 @@ function refitTrust(r) {
     .filter((b) => sharp(b) && evidence(b))
     .map((b) => timed(b, 'lines'));
   for (const market of MARKETS) {
-    refit(market, [...backtest.filter((b) => b.market === market), ...live.filter((b) => b.market === market)], { what: `${market} trust in the Bot`, bets: `${market} bets (backtest and live)` });
-    trust[market].backtest = (r.backtestBets ?? []).filter((b) => b.market === market).length;
+    // (the totals (D39): the trust starts at 0 by rule and climbs only on the Bot's own graded totals since the epoch,
+    // never on the backtest's closes: the Bot's totals lean is noise at the close in every sport, so only held-out
+    // evidence of its own earns it a weight; the named terms (the soft schedule terms) price a total meanwhile)
+    const evidenceOf = market === 'total' ? live.filter((b) => b.market === market) : [...backtest.filter((b) => b.market === market), ...live.filter((b) => b.market === market)];
+    refit(market, evidenceOf, { what: `${market} trust in the Bot`, bets: market === 'total' ? 'total bets (live, since the epoch)' : `${market} bets (backtest and live)` }, market === 'total' ? TRUST_START.total : START_TRUST);
+    trust[market].backtest = market === 'total' ? 0 : (r.backtestBets ?? []).filter((b) => b.market === market).length;
   }
   // (start 0.5, refit once 40 of its bets are graded)
   for (const st of STATS[r.sport]) {
@@ -1879,6 +1886,8 @@ function betGames(r) {
         odds: pick.odds,
         model: round(pick.model, 4),
         fair: round(pick.fair, 4),
+        // (a total's named terms' shift on its side (D39): the part of its chance the trust doesn't shrink)
+        ...(Number.isFinite(pick.named) ? { named: round(pick.named, 4) } : {}),
         p: round(pick.p, 4),
         ev: round(pick.ev, 4),
         // (edge: it sees value, bet; track: no edge (or a guard cut it), not bet, units 0, graded and learned

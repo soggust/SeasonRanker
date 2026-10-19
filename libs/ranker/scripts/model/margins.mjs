@@ -101,6 +101,16 @@ function split(d, x) {
 // A side's win share of the two that aren't a push (what the book's two fair chances price)
 export const cond = (c) => (c.win + c.lose > 0 ? c.win / (c.win + c.lose) : 0.5);
 
+// A total's chances split (DECISIONS.md D39): c the base's (the Bot's total less the named terms' shift, exp.namedT:
+// the soft schedule terms' part, ratings.mjs namedIdx) at the line, named the named terms' shift as a chance at the
+// line (the over's; 0 where they move nothing), null with no context read (exp.namedT not a number)
+export function totalSplit(exp, line, sigmaT) {
+  const namedT = Number.isFinite(exp?.namedT) ? exp.namedT : null;
+  const c = totalChances(namedT === null ? exp.total : exp.total - namedT, line, sigmaT);
+  const named = namedT === null ? null : Math.round((cond(totalChances(line + namedT, line, sigmaT)) - 0.5) * 1e4) / 1e4;
+  return { c, named };
+}
+
 // The home side's chances at its spread line (it covers when its margin plus its line is over 0); the away
 // side's are the same with the margin and its own line (the shape is the same both ways)
 export const spreadChances = (margin, line, sigma, shape) => split(marginDist(margin, sigma, shape), -line);

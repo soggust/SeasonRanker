@@ -29,7 +29,7 @@ import path from 'node:path';
 import { CACHE, DAY, isoSecond as iso, readJson, writeJson } from './sources.mjs';
 import { HISTORY_BUDGET, LINE_BOOKS, SPORT_KEYS, call, canSpend, linesFromEvent, matchNearest } from './oddsapi.mjs';
 import { chanceAt, choose, fitTrust, pastGap, price, settle, stakeFor } from './desk.mjs';
-import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
+import { cond, mlModel, spreadChances, totalChances, totalSplit } from './margins.mjs';
 import { clvOf } from './clv.mjs';
 import { idOf } from './teamstats.mjs';
 import { round } from './ratings.mjs';
@@ -229,12 +229,16 @@ export function repriced(bets, expOf, params, shape = null) {
     if (!exp || !Number.isFinite(b.fair)) continue;
     let c;
     let q;
+    let named = null;
     if (b.market === 'spread') {
       c = spreadChances(b.side === 'home' ? exp.margin : -exp.margin, b.line, params.sigma, shape);
       q = cond(c);
     } else if (b.market === 'total') {
-      c = totalChances(exp.total, b.line, params.sigmaT);
+      // (D39: the base's chance and the named terms' shift, as desk.mjs price splits them)
+      const t = totalSplit(exp, b.line, params.sigmaT);
+      c = t.c;
       q = b.side === 'over' ? cond(c) : 1 - cond(c);
+      if (t.named !== null) named = b.side === 'over' ? t.named : -t.named;
     } else {
       const s = spreads.get(key(b));
       const spreadHome = b.spreadHome ?? (s && Number.isFinite(s.line) && Number.isFinite(s.fair) ? { line: s.side === 'home' ? s.line : -s.line, fair: s.side === 'home' ? s.fair : 1 - s.fair } : null);
@@ -242,7 +246,7 @@ export function repriced(bets, expOf, params, shape = null) {
       c = mlModel(exp.margin, params.sigma, shape, b.side === 'home' ? b.fair : 1 - b.fair, spreadHome);
       q = b.side === 'home' ? cond(c) : 1 - cond(c);
     }
-    out.push({ ...b, model: round(q, 4), push: round(c.push, 4) });
+    out.push({ ...b, model: round(q, 4), push: round(c.push, 4), ...(named === null ? {} : { named }) });
   }
   return out;
 }

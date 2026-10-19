@@ -319,14 +319,17 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // version's margins at its line (backtest.mjs repriced), at the trust fit on the backtest's closes)
   const bt = readJson(path.join(ROOT, 'apps', sport, 'scripts/model/backtest.json'), { bets: [] }).bets ?? [];
   const btRep = V.backtest.repriced(bt.filter((b) => b.anchor === 'pinnacle'), expAll, params, shape).map((b) => ({ ...b, sport }));
-  const trust = Object.fromEntries(MARKETS.map((m) => [m, V.desk.fitTrust(V.backtest.trustBets(btRep.filter((b) => b.market === m)), 0.5).trust]));
+  // (the totals' trust (D39, a version with trustStart): from 0, on the ledger's own graded totals alone, never the
+  // backtest's closes, as the live desk fits it; the rest on the backtest's closes from 0.5 as before)
+  const ledgerTotals = (ledgerOf(sport).bets ?? []).filter((b) => b.market === 'total' && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && fin(b.model) && Date.parse(b.placedAt ?? b.start) >= Date.parse(V.leagues.MODEL_EPOCH ?? PROP_FROM));
+  const trust = Object.fromEntries(MARKETS.map((m) => [m, m === 'total' && V.desk.trustStart ? V.desk.fitTrust(ledgerTotals, V.desk.trustStart('total')).trust : V.desk.fitTrust(V.backtest.trustBets(btRep.filter((b) => b.market === m)), 0.5).trust]));
   const evScale = fin(state.evScale) ? state.evScale : 0.08;
   const ledgerLines = (ledgerOf(sport).bets ?? []).filter((b) => MARKETS.includes(b.market) && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && Date.parse(b.start) >= Date.parse(PROP_FROM)).map((b) => ({ ...b, sport }));
   const linesAt = (list, expOf) =>
     V.backtest
       .repriced(list, expOf, params, shape)
       .map((b) => {
-        const p = V.desk.chanceAt(b.market, b.fair, b.model, trust[b.market] ?? 0.5);
+        const p = V.desk.chanceAt(b.market, b.fair, b.model, trust[b.market] ?? 0.5, fin(b.named) ? { named: b.named } : null);
         const x = lineRow({ ...b, when: b.when ?? null }, p);
         return { ...x, stake: stakesOf(V, x, evScale), src: b.when ? 'backtest' : 'ledger' };
       })

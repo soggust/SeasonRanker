@@ -26,7 +26,7 @@
 // bankroll, the caps, the same-game exposure or the picks (record, capGame, makeRoom, sizeJointly; picks.mjs).
 
 import { round } from './ratings.mjs';
-import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
+import { cond, mlModel, spreadChances, totalChances, totalSplit } from './margins.mjs';
 import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
 import { CLV_V } from './clv.mjs';
@@ -107,13 +107,18 @@ export function leanOf(gap, limit) {
 // too). The one chance choose bets with and fitTrust and the backtest score, so the
 // trust is fit on the pricing the desk bets with.
 // With a ctx (the row: its sport, stat, line, side, the Book's two prices, the start and the bet's moment) and the
-// residual model on (residual.mjs residOn: RESID_PRICING, on since the owner's O3 of 2026-10-19; RESID_OFF=1 the
-// gate's champion; DECISIONS.md D32), the model's soft blend of this chance with its corrected one: this chance is
-// the current price the blend starts from, the ctx's raw (the anchored chance, before the calibration and the
-// trust) the lean the model reads, so nothing is counted twice. Off, or with no ctx or no model, this chance as it is
+// residual model's flag on (residual.mjs residOn: RESID_ON=1, the gate's challenger; DECISIONS.md D32), the model's
+// soft blend of this chance with its corrected one; off, or with no ctx or no model, this chance as it is
+// (the trust's start by market (D39): a total's 0, climbing only on the Bot's own graded totals since the epoch
+// (run.mjs refitTrust); the rest the desk's 0.5. A total's chance carries the named terms' shift (ctx.named: the
+// soft schedule terms' part of the Bot's total at the Book's line, D34) at full weight, since their ridge already
+// sizes them, and the rest of its lean at the trust)
+export const TRUST_START = { total: 0 };
+export const trustStart = (market, fallback = 0.5) => TRUST_START[market] ?? fallback;
 export const chanceAt = (market, fair, model, trust, ctx = null) => {
-  const p = fair + trust * leanOf(model - fair, GAP[market]);
-  if (!ctx) return p;
+  const named = Number.isFinite(ctx?.named) ? ctx.named : 0;
+  const p = Math.min(0.995, Math.max(0.005, fair + named + trust * leanOf(model - fair, GAP[market])));
+  if (!ctx || Object.keys(ctx).every((k) => k === 'named')) return p;
   const r = hookChance({ ...ctx, market: ctx.market ?? market, f: ctx.f ?? fair, raw: ctx.raw ?? model }, p);
   return r ? r.p : p;
 };
@@ -168,8 +173,11 @@ export function price(game, exp, lines, params, shape = null) {
     );
   }
   if (total.line !== null && total.over && total.under) {
-    const c = totalChances(exp.total, total.line, params.sigmaT);
-    both('total', { side: 'over', line: total.line, odds: total.over, model: cond(c), push: c.push }, { side: 'under', line: total.line, odds: total.under, model: 1 - cond(c), push: c.push }, fairOf('total', total.over, total.under));
+    // (D39: the Bot's total less its named terms is the model the trust reads (0 by rule till its own record earns
+    // it), and the named terms' shift at the Book's line rides on each side at full weight (named: the over's,
+    // the under's its negative); with no context the plain total as before)
+    const t = totalSplit(exp, total.line, params.sigmaT);
+    both('total', { side: 'over', line: total.line, odds: total.over, model: cond(t.c), push: t.c.push, ...(t.named === null ? {} : { named: t.named }) }, { side: 'under', line: total.line, odds: total.under, model: 1 - cond(t.c), push: t.c.push, ...(t.named === null ? {} : { named: -t.named }) }, fairOf('total', total.over, total.under));
   }
   if (ml.home && ml.away) {
     // (off the spread market where it has one: margins.mjs mlModel. Without one (no spread line or price on
@@ -184,20 +192,12 @@ export function price(game, exp, lines, params, shape = null) {
   return out;
 }
 
-// A game market's side as the residual model's ctx (residual.mjs hookChance, D32): the game's ctx ({ sport, t (the
-// start), at (now), hours }) with the market, the side's line, its fair chance and model chance (the side's own;
-// the hook mirrors an away or under side), and the two prices as the home's or over's and the away's or under's.
-// None without a game ctx (the backtest, the self-check: the trust's chance alone)
-export const sideCtx = (market, s, ctx) => (ctx ? { ...ctx, market: market.market, stat: market.market, line: s.line ?? null, side: s.side, f: s.fair, raw: s.model, overOdds: market.sides[0].odds, underOdds: market.sides[1].odds, home: null } : null);
-
 // The bet a market gets: the side with the better expected return at the desk's trust in the model (every
 // market gets one; the lean tapered by leanOf: chanceAt), staked by its Kelly fraction; the other side's, scored
-// the same, beside it (other: oneSide). A moneyline the spread didn't anchor leans nothing: the book's chance.
-// ctx: the game's, for the residual model (sideCtx; run.mjs betGames passes it, so the live lines are priced as
-// the gate's history replay prices them)
-export function choose(market, trust, evScale, ctx = null) {
+// the same, beside it (other: oneSide). A moneyline the spread didn't anchor leans nothing: the book's chance
+export function choose(market, trust, evScale) {
   const scored = market.sides.map((s) => {
-    const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust, sideCtx(market, s, ctx));
+    const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust, Number.isFinite(s.named) ? { named: s.named } : null);
     // (a push gives the stake back: only the rest of the chance is won or lost)
     const ev0 = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
     // (the sanity guard: an ev past EV_SUSPECT held to the bar, the practice stake, and the row marked)
@@ -722,7 +722,7 @@ export function fitTrust(list, start, { min = 40 } = {}) {
   for (let t = 0; t <= 1.0001; t += 0.05) {
     let loss = 0;
     // (the chance the desk would bet with at this trust: the lean tapered as choose tapers it, chanceAt)
-    const pOf = (b) => Math.min(0.995, Math.max(0.005, chanceAt(b.market, b.fair, b.model, t)));
+    const pOf = (b) => Math.min(0.995, Math.max(0.005, chanceAt(b.market, b.fair, b.model, t, Number.isFinite(b.named) ? { named: b.named } : null)));
     for (const b of decided) loss -= wResult(b) * Math.log(b.status === 'won' ? pOf(b) : 1 - pOf(b));
     // (the closing chance as a soft result: best matched by a chance equal to it)
     for (const b of closed) loss -= wClose(b) * (b.clv.q * Math.log(pOf(b)) + (1 - b.clv.q) * Math.log(1 - pOf(b)));

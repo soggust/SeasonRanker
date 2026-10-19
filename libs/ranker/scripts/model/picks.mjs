@@ -443,6 +443,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // (its score's parts, for the rank tile's breakdown: price + lean is the score)
       why,
       start: b.start,
+      // (when the bet was placed (the Book agent's ask, 2026-10-19): a bet row can say "Bet at -109, 2:05 PM")
+      ...(b.placedAt ? { placedAt: b.placedAt } : {}),
       matchup: b.matchup,
       teams: [away, home].map((abbr) => ({ abbr, logo: logo(sport, abbr) })),
       where: whereOf(b, g),
