@@ -609,6 +609,8 @@ test("D34 the game model's schedule terms are soft: every one from the schedule 
   // only; nothing but ratings.mjs sets a context term's size)
   for (const f of ['miss-review.mjs', 'calib.mjs', 'correct.mjs', 'check-learn.mjs', 'selfcheck.mjs', 'desk.mjs']) assert.ok(!/lambdaSoft|SCHEDULE_TERMS|fitContext/.test(src(f)), `${f} leaves the game context's terms alone`);
   assert.ok(src('DECISIONS.md').includes('### D34.'));
+});
+
 test('D35 the season-start vacancy: a regular gone since last season vacates his work net of the ones brought in; the newcomer is in the pool at the work he brings; a departure with no arrival vacates in full', async () => {
   const { nflMatchups } = await import('../libs/ranker/scripts/model/matchups.mjs');
   // (a 32-team league's 2025: each team a lead back (15 carries, 3 targets), a second back (4 and 1), a receiver,
