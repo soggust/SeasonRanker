@@ -91,8 +91,8 @@ export const SPORT = 'mma';
 // (bumped 2026-10-19, the history round (D36): the trust is fit on the priced history pooled with the live bets, so
 // the price moved (the untested start of 0.5 to the history's fit) and the league's bets restart on it)
 export const MMA_START = '2026-10-19T17:00:00Z';
-// (the history's rows weigh this many rows' worth at most in the trust fit, the live bets whole: about a year of
-// closes, so a season of live bets can move the trust the history set)
+// (the history's rows weigh this many rows' worth at most in the trust fit, a lead band at a time (D37), the live bets
+// whole: about a year of a band's rows, so a season of live bets can move the trust the history set)
 export const PRIOR_ROWS = 400;
 const START_TRUST = 0.5;
 const EV_SCALE = 0.08;
@@ -557,10 +557,17 @@ export function readHistoryRows(file = FILES.historyRows, { priorRows = PRIOR_RO
   if (!kept?.rows?.length) return null;
   const current = Number.isFinite(kept.current) ? kept.current : new Date().getUTCFullYear();
   const bets = unpackRows(kept.rows, current);
-  const sum = bets.reduce((t, b) => t + (b.tw ?? 1), 0);
-  const k = sum > priorRows ? priorRows / sum : 1;
-  for (const b of bets) b.tw = round((b.tw ?? 1) * k, 4);
-  return { bets, at: kept.at ?? null, commit: kept.commit ?? null, weight: round(sum * k, 1), n: bets.length };
+  // (the cap a market and a band: each band's rows are their own evidence (fitMmaTrust), so each is capped on its own)
+  let weight = 0;
+  for (const market of ['ml', 'total'])
+    for (const band of LEAD_BAND_KEYS) {
+      const mine = bets.filter((b) => b.market === market && b.band === band);
+      const sum = mine.reduce((t, b) => t + (b.tw ?? 1), 0);
+      const k = sum > priorRows ? priorRows / sum : 1;
+      for (const b of mine) b.tw = round((b.tw ?? 1) * k, 4);
+      weight += sum * k;
+    }
+  return { bets, at: kept.at ?? null, commit: kept.commit ?? null, weight: round(weight, 1), n: bets.length };
 }
 
 // The trust of both markets from the live bets since the epoch and the history's rows pooled (see the header's 4):

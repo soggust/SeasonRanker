@@ -34,7 +34,7 @@ const fileOf = (bets, current = 2026) => {
   return file;
 };
 
-test("readHistoryRows: the gate's rows back as bets, weighted by season and capped at PRIOR_ROWS rows' worth; none without the file", () => {
+test("readHistoryRows: the gate's rows back as bets, weighted by season and capped at PRIOR_ROWS rows' worth a market and a band; none without the file", () => {
   const bets = [...rowsOf({ n: 500 }), ...rowsOf({ n: 500, season: 2025, seed: 6 })];
   const h = readHistoryRows(fileOf(bets));
   assert.equal(h.n, 1000);
@@ -50,6 +50,11 @@ test("readHistoryRows: the gate's rows back as bets, weighted by season and capp
   const small = readHistoryRows(fileOf(rowsOf({ n: 50 })));
   assert.equal(small.weight, 50);
   assert.equal(small.bets[0].tw, 1);
+  // (two bands: each capped on its own, so a thin band isn't starved by a fat one)
+  const two = readHistoryRows(fileOf([...rowsOf({ n: 1000, lead: 400 }), ...rowsOf({ n: 100, lead: 10, seed: 8 })]));
+  assert.equal(two.weight, PRIOR_ROWS + 100);
+  assert.equal(two.bets.find((b) => b.band === 'late').tw, 1);
+  assert.ok(Math.abs(two.bets.find((b) => b.band === 'early').tw - PRIOR_ROWS / 1000) < 1e-3);
   assert.equal(readHistoryRows(path.join(tmpdir(), 'no-such-file.json')), null);
   assert.ok(PRIOR_ROWS >= 100 && PRIOR_ROWS <= 1000);
 });
