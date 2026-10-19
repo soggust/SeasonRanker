@@ -212,6 +212,12 @@ test('D15 the slot machine is gone for good', () => {
   }
 });
 
+test('D26 users read "the bot", never "the model": the Book\'s page text and the Claude write-ups\' prompt', () => {
+  const page = fs.readFileSync(path.resolve(import.meta.dirname, '../libs/ranker/src/engine/book/book-page.component.html'), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  assert.doesNotMatch(page, /\b[Tt]he model\b|\bModel(['’]s)? /, 'book-page: the bot');
+  assert.match(src('writeups.mjs'), /Call the betting side the bot \(the bot projects, the bot's chance\), never the model\./);
+});
+
 test("D16 a stale inactive list is ignored: only the names new since the team's last game count", () => {
   const prev = { inactive: [{ id: '1' }, { id: '2' }] };
   assert.deepEqual(freshInactives({ inactive: [{ id: '1' }, { id: '2' }] }, prev).inactive, []);

@@ -1259,10 +1259,10 @@ export function c20(x) {
     const against = pick((r) => r.band !== 'near' && r.b.side === LINE_AGAINST[r.band]);
     const near = pick((r) => r.band === 'near');
     for (const [label, l] of [
-      ['far over, the model against it', pick((r) => r.band === 'hi' && r.b.side === 'under')],
-      ['far over, the model with it', pick((r) => r.band === 'hi' && r.b.side !== 'under')],
-      ['far under, the model against it', pick((r) => r.band === 'lo' && r.b.side === 'over')],
-      ['far under, the model with it', pick((r) => r.band === 'lo' && r.b.side !== 'over')],
+      ['far over, the bot against it', pick((r) => r.band === 'hi' && r.b.side === 'under')],
+      ['far over, the bot with it', pick((r) => r.band === 'hi' && r.b.side !== 'under')],
+      ['far under, the bot against it', pick((r) => r.band === 'lo' && r.b.side === 'over')],
+      ['far under, the bot with it', pick((r) => r.band === 'lo' && r.b.side !== 'over')],
       ['near the projection', near],
     ]) {
       if (l.length) rows.push(rowOf(`${src}: line ${label}`, l));
@@ -1272,19 +1272,19 @@ export function c20(x) {
     if (src === 'CHECKs') continue;
     const [a, r, al] = [overBook(against), overBook(near), overBook(alarm)];
     const z = zBetween(a, r);
-    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the model against it, did worse against the book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the model against it, did better against the book than the near ones (z ${round(z, 2)})`);
+    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the bot against it, did worse against the book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the bot against it, did better against the book than the near ones (z ${round(z, 2)})`);
     const zA = zBetween(al, r);
     if (al.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && zA <= -MOVE_Z) advice.push(`the props bet with the line alarm's label (a far line with its cause) did worse against the book than the near ones (z ${round(zA, 2)}): the alarm could be a role CHECK (props.mjs lineAlarmOf)`);
   }
   return check('C20', {
     status: advice.length ? 'watch' : n < MOVE_MIN ? 'thin' : 'info',
-    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the model bet against, or the line alarm's, and the near ones` : "No graded props at the book's price yet",
+    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the bot bet against, or the line alarm's, and the near ones` : "No graded props at the book's price yet",
     metric: 'graded props',
     value: n,
-    threshold: `a watch when the props bet against a line far from the projection (its implied mean ${ROLE.zHi} or more SDs of the count over the model's, or ${ROLE.zLo} under) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the props bet against a line far from the projection (its implied mean ${ROLE.zHi} or more SDs of the count over the bot's, or ${ROLE.zLo} under) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
+    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the bot's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
   });
 }
 // C21: the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class) graded rows

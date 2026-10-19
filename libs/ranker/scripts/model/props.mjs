@@ -204,7 +204,7 @@ export function roleGateOf(learning) {
     const n = t?.decided ?? 0;
     const pays = n >= ROLE_BET_N && Number.isFinite(t?.perUnit) && t.perUnit > 0 && Number.isFinite(t?.hitRate) && Number.isFinite(t?.breakEven) && t.hitRate > t.breakEven;
     const rec = t ? `${t.won}-${t.lost} (${Math.round((t.hitRate ?? 0) * 100)}%, ${t.perUnit >= 0 ? '+' : ''}${t.perUnit}u a unit, break-even ${Math.round((t.breakEven ?? 0) * 100)}%)` : 'none graded';
-    out[key] = { on: pays, n, hitRate: t?.hitRate ?? null, breakEven: t?.breakEven ?? null, perUnit: t?.perUnit ?? null, why: pays ? `${key} bet on the model's side at the untested cap: ${n} graded CHECKs ${rec}` : n < ROLE_BET_N ? `${key} a CHECK: ${n} graded, under ${ROLE_BET_N}` : `${key} a CHECK: ${n} graded ${rec}, the model's side not paying` };
+    out[key] = { on: pays, n, hitRate: t?.hitRate ?? null, breakEven: t?.breakEven ?? null, perUnit: t?.perUnit ?? null, why: pays ? `${key} bet on the bot's side at the untested cap: ${n} graded CHECKs ${rec}` : n < ROLE_BET_N ? `${key} a CHECK: ${n} graded, under ${ROLE_BET_N}` : `${key} a CHECK: ${n} graded ${rec}, the bot's side not paying` };
   }
   return out;
 }
@@ -232,7 +232,7 @@ export function minutesBackOf({ name = null, mode, minutes, vac, vacHist }) {
 // rest, n 124, -17.9%), so the jump alone is the CHECK
 export function iceJumpOf({ name = null, mode, minutes }) {
   if (mode !== 'minutes' || !minutes || !(minutes.season > 0) || !(minutes.recent >= MIN_BACK.jump * minutes.season)) return null;
-  return { key: 'ice-jump', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes on ice over his last three against ${round(minutes.season, 1)} this season: the model leans to the jump and has run high there` };
+  return { key: 'ice-jump', safe: 'under', why: `${name || 'he'} at ${round(minutes.recent, 1)} minutes on ice over his last three against ${round(minutes.season, 1)} this season: the bot leans to the jump and has run high there` };
 }
 // The NBA's posted starting five (context.mjs gather: espn.mjs gameRoster, about 30 minutes before the tip) against
 // his team's usual one by starts (timing.mjs usualStarters: started half its last four games or more, the five
@@ -298,7 +298,7 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     if (qb1.missing >= 1 && pos !== 'QB') return { key: 'qb1-out', why: `his team's starting quarterback (${usual}) out: a backup throwing to him` };
     if (change) return { key: 'qb-change', why: `his team's starter of late (${usual}) not on the board and another quarterback on it: a change at quarterback` };
   }
-  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? R.fewStartsRush : R.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the model reads poorly` };
+  if (pos === 'QB' && Number.isFinite(starts) && starts < (rushing ? R.fewStartsRush : R.fewStarts)) return { key: 'few-starts', safe: rushing ? 'over' : 'under', why: `${who} with ${starts} start${starts === 1 ? '' : 's'} before tonight: a new starter's ${rushing ? 'rushing' : 'passing'} the bot reads poorly` };
   // (group-out only for an absence new to him: one he's already played through in the role it gives him
   // (settled: settledAbsenceOf) is in his recent numbers and the next-man-up terms, so it's not a CHECK)
   // (each cause it would have been, skipped as not new, pushed on skips ({ key, why }): the caller's log)
@@ -319,7 +319,7 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
   }
   if (Number.isFinite(implied) && mu > 0) {
     const z = lineZ(implied, mu, r);
-    if (z > R.zHi || z < R.zLo) return { key: 'line', safe: z > R.zHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
+    if (z > R.zHi || z < R.zLo) return { key: 'line', safe: z > R.zHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the bot's ${round(mu, 1)}: the market reading a role the bot hasn't seen` };
   }
   return null;
 }
@@ -395,7 +395,7 @@ export function lineAlarmOf({ sport, name = null, mu = null, r = null, implied =
     else if (long || rest === 'late') cause = { key: 'line-pitch-count', fact: long ? `${who} back from a long rest` : `${who}'s first start of the season, late`, reads: 'a pitch count' };
   }
   if (!cause) return null;
-  return { key: cause.key, safe: 'under', ratio: round(implied / mu, 3), z: round(lineZ(implied, mu, r), 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading ${cause.reads}, which the projection doesn't size` };
+  return { key: cause.key, safe: 'under', ratio: round(implied / mu, 3), z: round(lineZ(implied, mu, r), 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the bot's ${round(mu, 1)}: the market reading ${cause.reads}, which the projection doesn't size` };
 }
 
 // The NFL's depth chart as a pre-game role input, live only: each team's chart now (the site's StaticData/depth,
@@ -468,8 +468,8 @@ export function depthRoleOf({ pos, pid, team, stat, depth, missOf, role, at, now
   const first = c.order.find((id) => id === String(pid) || !(Number(missOf?.(id)) >= 1));
   const chartTop = first === String(pid);
   const modelTop = role === `${pos}1`;
-  if (chartTop && !modelTop) return { key: 'depth', safe: 'over', why: `the depth chart's ${pos}1 tonight, the model's ${role}: a bigger role than his numbers say` };
-  if (!chartTop && modelTop) return { key: 'depth', safe: 'under', why: `the model's ${pos}1, behind another ${pos === 'TE' ? 'tight end' : 'back'} on the depth chart tonight: a smaller role than his numbers say` };
+  if (chartTop && !modelTop) return { key: 'depth', safe: 'over', why: `the depth chart's ${pos}1 tonight, the bot's ${role}: a bigger role than his numbers say` };
+  if (!chartTop && modelTop) return { key: 'depth', safe: 'under', why: `the bot's ${pos}1, behind another ${pos === 'TE' ? 'tight end' : 'back'} on the depth chart tonight: a smaller role than his numbers say` };
   return null;
 }
 
@@ -2189,8 +2189,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
-    else if (vacUnsized && vacNow > vacThen) guard = { skip: true, why: `teammates out (${out.names.join(', ') || 'off the roster'}): a role change the model can't size` };
-    else if (vacUnsized) guard = { skip: true, why: "teammates back from an absence that fed his recent numbers: a smaller role the model can't size" };
+    else if (vacUnsized && vacNow > vacThen) guard = { skip: true, why: `teammates out (${out.names.join(', ') || 'off the roster'}): a role change the bot can't size` };
+    else if (vacUnsized) guard = { skip: true, why: "teammates back from an absence that fed his recent numbers: a smaller role the bot can't size" };
     // (no price from the book (the NFL's board without The Odds API's) where -110 can't be its price: his line
     // far from his usual (over it in under 40% or over 60% of his games), or a 0.5 line (one he clears most
     // games, or a touchdown's: priced long either way). Ahead of the gap guard, so the gap's CHECKs are only

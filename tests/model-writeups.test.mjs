@@ -164,7 +164,7 @@ test('a good answer: written, the pick patched in place (its headline, its read)
   const e = data.writeups.items[p.id];
   assert.equal(e.ai.status, 'ok');
   assert.equal(e.ai.hash, e.plain.hash);
-  assert.equal(e.ai.v, 1);
+  assert.equal(e.ai.v, 2);
   assert.equal(e.ai.effort, 'high');
   assert.equal(e.ai.sheet.bet.band, 'LOCK');
   const [logged] = budget.list();

@@ -21,11 +21,11 @@ import { bandOrder } from './tiers';
 // (the reasons an admin can give, in the order the form lists them: notes.mjs REASONS)
 export type NoteReason = 'news' | 'role' | 'weather' | 'suspension' | 'market-wrong' | 'other';
 export const NOTE_REASONS: readonly { value: NoteReason; label: string }[] = [
-  { value: 'news', label: 'News the model missed' },
+  { value: 'news', label: 'News the bot missed' },
   { value: 'role', label: 'Role or depth change' },
   { value: 'weather', label: 'Weather' },
   { value: 'suspension', label: 'Suspension' },
-  { value: 'market-wrong', label: "Market is wrong, model's right" },
+  { value: 'market-wrong', label: "Market is wrong, bot's right" },
   { value: 'other', label: 'Other' },
 ];
 

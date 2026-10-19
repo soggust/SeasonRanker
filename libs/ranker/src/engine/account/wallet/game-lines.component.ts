@@ -506,7 +506,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const bot = c.bot;
     const botWords =
       c.tier === 'check'
-        ? ` · The bot's CHECK: a big Kelly on the model's own number that a guard stopped (a role changing, news on his team), kept for a look, not bet${bot?.chance != null ? ` (the model: ${bot.chance}%)` : ''}`
+        ? ` · The bot's CHECK: a big Kelly on its own number that a guard stopped (a role changing, news on his team), kept for a look, not bet${bot?.chance != null ? ` (the bot: ${bot.chance}%)` : ''}`
         : bot
         ? ` · The bot's pick: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(bot.sureness)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
         : c.kelly !== null
@@ -605,7 +605,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
         : r.check
         ? ' · The other side of the bot’s CHECK'
         : s.tier
-        ? ` · ${s.bot ? 'The bot’s pick' : 'The bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the model is too far off the book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
+        ? ` · ${s.bot ? 'The bot’s pick' : 'The bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the bot is too far off the book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
         : '';
     return `${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }

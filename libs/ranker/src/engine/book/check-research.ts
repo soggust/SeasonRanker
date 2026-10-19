@@ -71,8 +71,8 @@ const CATEGORY: Record<string, string> = {
   other: 'Other',
 };
 const VERDICT: Record<string, [string, CheckResearchView['verdictTone']]> = {
-  adjust: ["Reason found: put into the model's inputs and priced again", 'caution'],
-  bet: ['Nothing found: the model’s side bet at 0.5u at most', 'good'],
+  adjust: ["Reason found: put into the bot's inputs and priced again", 'caution'],
+  bet: ['Nothing found: the bot’s side bet at 0.5u at most', 'good'],
   check: ['Can’t tell: still a CHECK', 'none'],
 };
 
@@ -110,6 +110,6 @@ export function researchView(rs: CheckResearchIn | null | undefined): CheckResea
     actWhy: rs.act && rs.act !== rs.verdict && typeof rs.actWhy === 'string' && rs.actWhy.trim() ? rs.actWhy.trim() : null,
     detail: rs.category && CATEGORY[rs.category] ? `${CATEGORY[rs.category]}${rs.confidence ? `, ${rs.confidence} confidence` : ''}` : null,
     moved: typeof rs.moved === 'string' && rs.moved.trim() ? rs.moved.trim() : null,
-    feeds: typeof rs.inOurFeeds === 'boolean' ? (rs.inOurFeeds ? `Our feeds had it${rs.feed ? ` (${rs.feed})` : ''}: the model didn't use it` : 'Not in any feed the bot reads') : null,
+    feeds: typeof rs.inOurFeeds === 'boolean' ? (rs.inOurFeeds ? `Our feeds had it${rs.feed ? ` (${rs.feed})` : ''}: the bot didn't use it` : 'Not in any feed the bot reads') : null,
   };
 }

@@ -318,7 +318,7 @@
                 <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'roi', label: 'ROI' }"></ng-container>
                 <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'open', label: 'Open' }"></ng-container>
                 <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'clv', label: 'CLV' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'test', label: 'Model test' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'test', label: 'Bot test' }"></ng-container>
                 @if (overall.bets) {
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'disrupted', label: 'Disrupted' }"></ng-container>
                 }
@@ -748,7 +748,7 @@
     @if (scorecardOn) {
       <card-panel class="tab-card group-support desk-wide desk-score-panel" label="Scorecard" icon="query_stats" [startOpen]="false">
         <div class="group-body">
-          <p class="desk-note">Every version of the model replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the book's own log loss, in nats per 100 rows (above the dashed line it beats the book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
+          <p class="desk-note">Every version of the bot replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the book's own log loss, in nats per 100 rows (above the dashed line it beats the book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
           @if (!scorecards.length) {
             <p class="desk-note">No version scored for this sport yet</p>
           }
@@ -1046,7 +1046,7 @@
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btClose', label: 'ROI at close' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btEarly', label: 'ROI early' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btBeat', label: 'Beat the close' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btLoss', label: 'Model vs market' }"></ng-container>
+                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btLoss', label: 'Bot vs market' }"></ng-container>
                   <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btAnchor', label: 'Anchor edge' }"></ng-container>
                 </tr>
               </thead>
@@ -1079,7 +1079,7 @@
       </card-panel>
     }
 
-    <card-panel class="tab-card group-box" label="Model Settings" icon="settings_suggest">
+    <card-panel class="tab-card group-box" label="Bot Settings" icon="settings_suggest">
       <div class="group-body">
         <!-- (each sport's fitted settings and how much each market trusts the model; hover a header for what
              it means) -->
@@ -1093,7 +1093,7 @@
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'kO', label: 'Scoring rate' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigma', label: 'Margin spread' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigmaT', label: 'Total spread' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'trust', label: 'Trust in the model' }"></ng-container>
+              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'trust', label: 'Trust in the bot' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'history', label: 'Games' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'book', label: 'Book' }"></ng-container>
             </tr>

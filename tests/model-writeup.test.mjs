@@ -39,19 +39,19 @@ const sheetOf = (id, extra = {}) => {
 test('the four samples: their plain reason and risk, word for word, each passing the grounding checks', () => {
   const want = {
     '401872990:prop:recYds': {
-      reason: "Over 8.5 receiving yards for Cole Kmet: the model projects 19.5, 11 over the line. His blended rate is 17.9 a game (4 games this season, 18 last season); the fit scaling every player's receiving yards up (+16.6% here) pushes it up to the projection. We make the over 64%; at -115 it needs 53%, and DraftKings' no-vig price says 51%, so the edge is the projection, at half weight while Rec Yds props are untested.",
-      risk: "The model is 26.5 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "Over 8.5 receiving yards for Cole Kmet: the bot projects 19.5, 11 over the line. His blended rate is 17.9 a game (4 games this season, 18 last season); the fit scaling every player's receiving yards up (+16.6% here) pushes it up to the projection. We make the over 64%; at -115 it needs 53%, and DraftKings' no-vig price says 51%, so the edge is the projection, at half weight while Rec Yds props are untested.",
+      risk: "The bot is 26.5 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401892478:prop:saves': {
-      reason: "Under 23.5 saves for Mackenzie Blackwood: the model projects 20.9, 2.6 under the line. His blended rate is 23 a game (3 starts this season, 37 last season), 22.7 over his last 5; the game script, with TOR expected to score 2.4 (-5% here), brings it down to the projection. We make the under 59%; at -105 it needs 51%, and DraftKings' no-vig price says 48%, so the edge is the projection, at half weight while Saves props are untested.",
-      risk: "The model is 21.6 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "Under 23.5 saves for Mackenzie Blackwood: the bot projects 20.9, 2.6 under the line. His blended rate is 23 a game (3 starts this season, 37 last season), 22.7 over his last 5; the game script, with TOR expected to score 2.4 (-5% here), brings it down to the projection. We make the under 59%; at -105 it needs 51%, and DraftKings' no-vig price says 48%, so the edge is the projection, at half weight while Saves props are untested.",
+      risk: "The bot is 21.6 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401891805:spread': {
-      reason: "MIN +1.5: the model has MIN winning 3.4 to 2.9, so it loses only if FLA wins by 2 or more. We make MIN 70.3% to cover; at -217 it needs 68.5%, and DraftKings' no-vig price says 65.7%, so the edge is the model's read of the game, with the desk leaning only part of the way toward it. Jesper Wallstedt vs Jacob Markstrom in net, a term the model counts. The situational factors barely move it.",
-      risk: "The model is 13.2 points from the market, past the 12-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "MIN +1.5: the bot has MIN winning 3.4 to 2.9, so it loses only if FLA wins by 2 or more. We make MIN 70.3% to cover; at -217 it needs 68.5%, and DraftKings' no-vig price says 65.7%, so the edge is the bot's read of the game, with the desk leaning only part of the way toward it. Jesper Wallstedt vs Jacob Markstrom in net, a term the bot counts. The situational factors barely move it.",
+      risk: "The bot is 13.2 points from the market, past the 12-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401907994:prop:k': {
-      reason: "Over 4.5 strikeouts for Sean Burke: the model projects 5.2, 0.7 over the line. His blended rate is 5.6 a game (24 starts this season, 21 last season); CLE's lineup, which strikes out less than usual (-5.6% here), brings it down to the projection. We make the over 54.1%; at -101 it needs 50.2%, and DraftKings' no-vig price says 47.4%, so the edge is the projection, at half weight while Strikeouts props are untested.",
+      reason: "Over 4.5 strikeouts for Sean Burke: the bot projects 5.2, 0.7 over the line. His blended rate is 5.6 a game (24 starts this season, 21 last season); CLE's lineup, which strikes out less than usual (-5.6% here), brings it down to the projection. We make the over 54.1%; at -101 it needs 50.2%, and DraftKings' no-vig price says 47.4%, so the edge is the projection, at half weight while Strikeouts props are untested.",
       risk: "When this was priced, the game's own lines were held (a starting pitcher not announced).",
     },
   };
@@ -329,7 +329,7 @@ test('buildPicks: each pick its plain reason and risk (by plain), kept in writeu
   const live = buildPicks('nfl', pickLedger(), {}, GAMES, NOW, { state: STATE }).picks.find((x) => x.id === p.id);
   assert.equal(live.reason, frozen.reason);
   // (the old text kept a release, to diff against)
-  assert.match(legacyReasonOf(kmetBet(), sample('401872990').game), /^Model 77% vs the book 51%/);
+  assert.match(legacyReasonOf(kmetBet(), sample('401872990').game), /^Bot 77% vs the book 51%/);
 });
 
 test("applyWriteups: Claude's analysis only for the facts it was written from (its hash), else the plain text", () => {
@@ -349,10 +349,10 @@ test("a CHECK's write-up: the disagreement and its question in place of the pric
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /^Under 23\.5 saves for Mackenzie Blackwood/);
   assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet with its doubt cleared \(the under 70% against DraftKings' no-vig 48%\)/);
-  assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the model missing something than value\./);
+  assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the bot missing something than value\./);
   assert.match(reason, /The question: is Mackenzie Blackwood confirmed in net/);
   assert.doesNotMatch(reason, /We make/);
-  assert.match(risk, /^A gap that size has more often been the model missing something/);
+  assert.match(risk, /^A gap that size has more often been the bot missing something/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
 });
 

@@ -625,11 +625,11 @@ function priceSentence(sheet) {
   // since fallen; a market with no edge is tracked, not bet, since 2026-10-13, and gets no write-up)
   if (price.edgeFrom === 'none') edge = ', so the edge at this price is a sliver: the smallest bet the desk makes';
   else {
-    const from = { projection: bet.kind === 'prop' ? 'the projection' : "the model's read of the game", price: 'the price itself', both: bet.kind === 'prop' ? 'the projection and a soft price' : 'the model and a soft price' }[price.edgeFrom];
+    const from = { projection: bet.kind === 'prop' ? 'the projection' : "the bot's read of the game", price: 'the price itself', both: bet.kind === 'prop' ? 'the projection and a soft price' : 'the bot\'s read and a soft price' }[price.edgeFrom];
     let trust = '';
     const label = bet.kind === 'prop' ? `${bet.statLabel ?? bet.noun} props` : `${bet.sport.toUpperCase()} ${MARKET_WORD[bet.kind] ?? 'bets'}`;
     if (price.untested) trust = bet.kind === 'prop' ? `, at half weight while ${label} are untested` : `, at its starting weight while ${label} are untested`;
-    else if (price.trust === 0) trust = `; we give the model no weight on ${label} yet, so this is a price play`;
+    else if (price.trust === 0) trust = `; the bot gives its own read no weight on ${label} yet, so this is a price play`;
     else if (fin(price.trust) && price.trust > 0 && price.trust < 1 && price.edgeFrom !== 'price') trust = ', with the desk leaning only part of the way toward it';
     edge = `, so the edge is ${from}${trust}`;
   }
@@ -642,19 +642,19 @@ const ROLE_WORDS = {
   'backup-qb': "he is not his team's usual starting quarterback",
   'qb1-out': "his team's starting quarterback is out",
   'qb-change': 'his team is changing quarterbacks',
-  'few-starts': 'he has made few starts, and the model reads a new starter poorly',
+  'few-starts': 'he has made few starts, and the bot reads a new starter poorly',
   'group-out': 'a regular at his position is out and a big share of that work is his to take',
   'snap-jump': 'his snaps jumped in his last game',
   'part-time': 'he is a part-timer with a regular at his position out',
-  line: 'the line sits far from his projection, the market reading a role the model has not seen',
-  depth: "the depth chart ranks him differently than the model's role from his season's work does",
+  line: 'the line sits far from his projection, the market reading a role the bot has not seen',
+  depth: "the depth chart ranks him differently than the bot's role from his season's work does",
   // (the NBA: his minutes jump made with teammates out, they're back, props.mjs minutesBackOf)
   'minutes-back': 'his minutes jumped while teammates were out, and they are back',
   // (the NBA: tonight's posted starting five against his role by his minutes, props.mjs lineupRoleOf)
   'lineup-start': "he is in tonight's starting five, not one of his team's usual starters",
   'lineup-bench': "he is not in tonight's starting five, one of his team's usual starters",
   // (the NHL: his time on ice jumped over his last three games, the ice-time base leaning to it, props.mjs iceJumpOf)
-  'ice-jump': 'his time on ice jumped over his last three games, and the model has run high after a jump like that',
+  'ice-jump': 'his time on ice jumped over his last three games, and the bot has run high after a jump like that',
   // (outside the NFL: a far line with a cause known before the game, props.mjs lineAlarmOf)
   'line-questionable': 'he is questionable and the line sits far below his projection, the market reading a minutes cap or an early exit',
   'line-goalie': 'he is expected in goal but not confirmed and the line sits far below his projection, the market reading the other goalie starting',
@@ -676,15 +676,15 @@ function checkSentence(sheet) {
   const k = price.checkKellyPct;
   const kelly = fin(k) ? `Would be ${k < 0 ? 'a -' : 'a +'}${rnd(Math.abs(k), 2).toFixed(2)} Kelly bet with its doubt cleared` : null;
   const chances = fin(price.modelPct) && fin(price.bookFairPct) ? `${who} ${fmt.pct(price.modelPct)}% against ${possessive(src)} no-vig ${fmt.pct(price.bookFairPct)}%` : null;
-  const means = fin(pr?.mean) && fin(pr?.impliedMean) && fin(bet.line) ? `model ${fmt.near(pr.mean, bet.line)} vs the book's ${fmt.near(pr.impliedMean, bet.line, pr.mean)} ${bet.noun}` : null;
-  const lead = kelly ? `${kelly}${chances ? ` (${chances})` : ''}${means ? `; ${means}` : ''}.` : chances ? `The model makes ${chances}${means ? `; ${means}` : ''}.` : '';
+  const means = fin(pr?.mean) && fin(pr?.impliedMean) && fin(bet.line) ? `the bot's ${fmt.near(pr.mean, bet.line)} vs the book's ${fmt.near(pr.impliedMean, bet.line, pr.mean)} ${bet.noun}` : null;
+  const lead = kelly ? `${kelly}${chances ? ` (${chances})` : ''}${means ? `; ${means}` : ''}.` : chances ? `The bot makes ${chances}${means ? `; ${means}` : ''}.` : '';
   let why;
-  if (bet.checkCause === 'news') why = `Not bet either way: the news on his team's ${bet.newsUnit ?? 'unit'} (${bet.checkReason ?? 'a change'}) is a change the model can't read from the logs yet.`;
+  if (bet.checkCause === 'news') why = `Not bet either way: the news on his team's ${bet.newsUnit ?? 'unit'} (${bet.checkReason ?? 'a change'}) is a change the bot can't read from the logs yet.`;
   else if (bet.checkCause === 'role') why = `Not bet on this side: ${ROLE_WORDS[bet.roleReason] ?? 'his role is changing'}, the side a role change's known error could be making.`;
-  else if (!fin(price.gapPts)) why = 'Not bet: the model is too far from the market to trust.';
+  else if (!fin(price.gapPts)) why = 'Not bet: the bot is too far from the market to trust.';
   else {
     const gap = fmt.pct(price.gapPts, 1);
-    why = `Not bet: ${an(gap)} ${gap}-point gap with nothing to explain it is more often the model missing something than value.`;
+    why = `Not bet: ${an(gap)} ${gap}-point gap with nothing to explain it is more often the bot missing something than value.`;
   }
   return join(lead, why);
 }
@@ -698,13 +698,13 @@ function checkQuestion(sheet) {
     if (pr?.questionable?.length) return `The question: is ${listOf(pr.questionable.slice(0, 2))} playing, and does the market know his share of the work better?`;
     if (bet.stat === 'saves') return `The question: is ${bet.player ?? 'he'} confirmed in net, and what does the market see in the shots he'll face?`;
     if (bet.sport === 'mlb' && PITCHER.has(bet.stat)) return `The question: is ${bet.player ?? 'he'} on a normal pitch count, or does the market know of a limit?`;
-    return 'The question: what does the market know that the model has not seen, a role change, a lineup or late news?';
+    return 'The question: what does the market know that the bot has not seen, a role change, a lineup or late news?';
   }
   const s = game?.starters;
   if (bet.sport === 'nhl' && s?.away && s?.home) return `The question: are ${s.away} and ${s.home} confirmed in net?`;
   if (bet.sport === 'mlb' && s?.away && s?.home) return `The question: are ${s.away} and ${s.home} confirmed on the mound?`;
-  if (bet.sport === 'nfl' && s?.away && s?.home) return `The question: are ${s.away} and ${s.home} both starting, or is there news on the lines the model has not seen?`;
-  return 'The question: what does the market know that the model has not seen?';
+  if (bet.sport === 'nfl' && s?.away && s?.home) return `The question: are ${s.away} and ${s.home} both starting, or is there news on the lines the bot has not seen?`;
+  return 'The question: what does the market know that the bot has not seen?';
 }
 
 // (the pick as the board wrote it, else its side and line; " at" its price where it has one)
@@ -726,13 +726,13 @@ function propHook(sheet, seed, check = false) {
     const close = Math.abs(pr.mean - bet.line) <= Math.max(0.5, 0.1 * Math.abs(bet.line));
     const likelier = fin(pr.sideChancePct) ? pr.sideChancePct >= 50 : close;
     if (!likelier) return `${He} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${over ? 'under' : 'over'} his line, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'would be a play' : 'is a bet'} on the price, not the likelier result.`;
-    if (close) return `${He} projects right around the line (${fmt.near(pr.mean, bet.line)}), but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
-    return `${He} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${over ? 'under' : 'over'} his line, but the model still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    if (close) return `${He} projects right around the line (${fmt.near(pr.mean, bet.line)}), but the bot still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
+    return `${He} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${over ? 'under' : 'over'} his line, but the bot still makes the ${bet.side} ${fmt.line(bet.line)} the likelier result.`;
   }
   const ratio = bet.line > 0 ? pr.mean / bet.line : Infinity;
   const word = over ? (ratio >= 2 ? 'more than double his line' : ratio >= 1.15 ? 'comfortably over his line' : 'a bit over his line') : ratio <= 0.5 ? 'less than half his line' : ratio <= 0.85 ? 'comfortably under his line' : 'just under his line';
   if (seed & 1 && bet.player) return `${bet.player} projects for ${fmt.near(pr.mean, bet.line)} ${bet.noun}, ${word}, so the ${bet.side} ${fmt.line(bet.line)} ${check ? 'is the side' : 'is the bet'}.`;
-  return `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}: the model projects ${fmt.near(pr.mean, bet.line)}, ${fmt.near(pr.lineDiffAbs, bet.line, pr.mean)} ${over ? 'over' : 'under'} the line.`;
+  return `${Side} ${fmt.line(bet.line)} ${bet.noun}${forHim}: the bot projects ${fmt.near(pr.mean, bet.line)}, ${fmt.near(pr.lineDiffAbs, bet.line, pr.mean)} ${over ? 'over' : 'under'} the line.`;
 }
 
 // (a prop's build: his blended rate, his games, his recent form where it's counted, then the drivers)
@@ -751,7 +751,7 @@ function propBuild(sheet, { d2 = true, last = true } = {}) {
   const head = `His ${fin(pr.blendedRate) ? 'blended rate' : 'rate'} is ${fmt.num(rate)} a game${games}${recent}`;
   // (the drivers not giving the projection back: none named, and none said to be still; only the gap)
   if (!sheet.driversOk) {
-    if (!fin(pr.mean) || fmt.num(pr.mean) === fmt.num(rate)) return `${head}, about where the model projects him.`;
+    if (!fin(pr.mean) || fmt.num(pr.mean) === fmt.num(rate)) return `${head}, about where the bot projects him.`;
     return `${head}; the matchup and the game's context take it to ${fmt.near(pr.mean, bet.line)}.`;
   }
   const ds = (sheet.drivers ?? []).slice().sort((a, b) => Math.abs(b.appliedPct) - Math.abs(a.appliedPct) || a.name.localeCompare(b.name)).slice(0, d2 ? 2 : 1);
@@ -778,14 +778,14 @@ function rulesOf(sheet) {
   const over = bet.side === 'over';
   const guard = game?.guard ?? (game?.flags?.length ? game.flags[0] : null);
   const r = {};
-  if (price.pastGapLimit && fin(price.gapPts) && fin(price.gapLimitPts)) r.gap = `the model is ${fmt.pct(price.gapPts, 1)} points from the market, past the ${fmt.pct(price.gapLimitPts)}-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.`;
+  if (price.pastGapLimit && fin(price.gapPts) && fin(price.gapLimitPts)) r.gap = `the bot is ${fmt.pct(price.gapPts, 1)} points from the market, past the ${fmt.pct(price.gapLimitPts)}-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.`;
   if (bet.kind === 'prop' && guard) r.c1 = `when this was priced, the game's own lines were held (${guard}).`;
   const lb = sheet.lineBeforeBet;
   if (lb?.againstBet) r.c2 = `the line had already moved from ${fmt.line(lb.open)} to ${fmt.line(lb.atBet)} before the bet.`;
   if (pr && fin(pr.recent) && fin(bet.line) && pr.recentWeightPct === 0 && (over ? pr.recent < bet.line : pr.recent > bet.line)) r.c3 = `his last 5 averaged ${fmt.num(pr.recent)}, the other side of the line, and the fit gives that no weight.`;
   const against = (sheet.drivers ?? []).filter((d) => (over ? d.appliedPct <= -3 : d.appliedPct >= 3)).sort((a, b) => Math.abs(b.appliedPct) - Math.abs(a.appliedPct))[0];
   if (against) r.c4 = over ? `${against.what} takes ${fmt.pct(Math.abs(against.appliedPct), 1)}% off.` : `${against.what} adds ${fmt.pct(Math.abs(against.appliedPct), 1)}%.`;
-  if (pr?.questionable?.length) r.c5 = `${listOf(pr.questionable.slice(0, 2))} ${pr.questionable.length > 1 ? 'were' : 'was'} questionable when it was priced${pr.questionable.length === 1 && fin(pr.questionablePlayPct?.[pr.questionable[0]]) ? ` (the model's chance he plays: ${pr.questionablePlayPct[pr.questionable[0]]}%)` : ''}.`;
+  if (pr?.questionable?.length) r.c5 = `${listOf(pr.questionable.slice(0, 2))} ${pr.questionable.length > 1 ? 'were' : 'was'} questionable when it was priced${pr.questionable.length === 1 && fin(pr.questionablePlayPct?.[pr.questionable[0]]) ? ` (the bot's chance he plays: ${pr.questionablePlayPct[pr.questionable[0]]}%)` : ''}.`;
   if (pr && fin(pr.gamesThisSeason) && pr.gamesThisSeason <= 3) r.c6 = pr.gamesThisSeason === 0 ? `no ${bet.gamesNoun} yet this season.` : `only ${pr.gamesThisSeason} ${pr.gamesThisSeason === 1 ? bet.gamesNoun.replace(/s$/, '') : bet.gamesNoun} this season.`;
   if (fin(price.edgePts) && price.edgePts > 0 && price.edgePts < 2) r.c7 = `the cushion over break-even is thin (${P(sheet, 'betPct')}% against ${P(sheet, 'breakEvenPct')}%).`;
   if (pr?.history && fin(pr.history.sideSharePct) && pr.history.sideSharePct < 45 && fin(bet.line)) r.hist = `only ${fmt.pct(pr.history.sideSharePct)}% of his weighted games landed on this side of ${fmt.line(bet.line)}.`;
@@ -800,13 +800,13 @@ function gameHook(sheet) {
   if (!sc || !bet.away || !bet.home || !fin(sc[bet.away]) || !fin(sc[bet.home])) return `${pickOf(bet)}${atOdds(bet)}.`;
   const a = fmt.num(sc[bet.away]);
   const h = fmt.num(sc[bet.home]);
-  if (bet.kind === 'total') return `${cap1(bet.side)} ${fmt.line(bet.line)}: the model expects ${fmt.num(game.expTotal)} (${bet.away} ${a}, ${bet.home} ${h}).`;
+  if (bet.kind === 'total') return `${cap1(bet.side)} ${fmt.line(bet.line)}: the bot expects ${fmt.num(game.expTotal)} (${bet.away} ${a}, ${bet.home} ${h}).`;
   const team = bet.sideWord;
   const other = team === bet.home ? bet.away : bet.home;
-  if (bet.kind === 'ml' || !fin(bet.line) || bet.line === 0 || !team) return `${team ?? pickOf(bet)} to win: the model has it ${bet.away} ${a}, ${bet.home} ${h}.`;
+  if (bet.kind === 'ml' || !fin(bet.line) || bet.line === 0 || !team) return `${team ?? pickOf(bet)} to win: the bot has it ${bet.away} ${a}, ${bet.home} ${h}.`;
   const mine = sc[team];
   const theirs = sc[other];
-  const head = fmt.num(mine) === fmt.num(theirs) ? `${pickOf(bet)}: the model has it level at ${fmt.num(mine)} each` : `${pickOf(bet)}: the model has ${team} ${mine > theirs ? 'winning' : 'losing'} ${fmt.num(mine)} to ${fmt.num(theirs)}`;
+  const head = fmt.num(mine) === fmt.num(theirs) ? `${pickOf(bet)}: the bot has it level at ${fmt.num(mine)} each` : `${pickOf(bet)}: the bot has ${team} ${mine > theirs ? 'winning' : 'losing'} ${fmt.num(mine)} to ${fmt.num(theirs)}`;
   const margin = rnd(Math.abs(mine - theirs), 2);
   if (bet.line > 0) {
     if (mine >= theirs) return `${head}, so it loses only if ${other} wins by ${game.lossAt} or more.`;
@@ -819,7 +819,7 @@ function gameHook(sheet) {
 // (a game line's context: at most two facts, each said counted where its term is kept, then the net)
 function gameContext(sheet, n = 2, net = true) {
   const { bet, game } = sheet;
-  const facts = (game?.situation ?? []).slice(0, n).map((f) => `${f.text}${f.counted ? ', a term the model counts' : ''}`);
+  const facts = (game?.situation ?? []).slice(0, n).map((f) => `${f.text}${f.counted ? ', a term the bot counts' : ''}`);
   const out = [];
   if (facts.length) out.push(`${cap1(facts.join('; '))}.`);
   if (net && game) {
@@ -891,7 +891,7 @@ export function plainOf(sheet) {
     // them at +10 or more), and the gap's CHECKs lost far more than they won). Big only where it is: a role's at
     // the CHECK bar or over (checks.mjs CHECK_KELLY), never a news CHECK's (one at any Kelly)
     const big = fin(sheet.price?.checkKellyPct) && sheet.price.checkKellyPct >= CHECK_KELLY * 100;
-    risk = bet.checkCause === 'news' ? "The news on his team is a change the market prices faster than the model reads it from the logs, so the model's own number isn't value by itself." : bet.checkCause === 'role' ? `${big ? 'A big Kelly on the model' : 'The model'}'s own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the model reads it.` : 'A gap that size has more often been the model missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
+    risk = bet.checkCause === 'news' ? "The news on his team is a change the market prices faster than the bot reads it from the logs, so the bot's own number isn't value by itself." : bet.checkCause === 'role' ? `${big ? 'A big Kelly on the bot' : 'The bot'}'s own number isn't value by itself: such numbers have won at about the book's rate, and a role change is news the market prices faster than the bot reads it.` : 'A gap that size has more often been the bot missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
   } else {
     const g = sheet.game ?? {};
     const order =
@@ -901,7 +901,7 @@ export function plainOf(sheet) {
             rules.gap,
             bet.odds <= -200 && fin(price.winsToRepayLoss) && fin(price.edgePts) ? `at ${fmt.odds(bet.odds)} one loss takes ${fmt.pct(price.winsToRepayLoss, 2)} wins to repay${price.edgePts > 0 ? `; the edge is ${fmt.pct(price.edgePts, 1)} points` : ', and it has no edge at this price'}.` : null,
             g.flags?.length ? `it was priced with a worry on the game: ${g.flags[0]}.` : null,
-            bet.sport === 'nfl' && g.weather?.forecast && fin(bet.hoursBeforeStart) && bet.hoursBeforeStart > 72 && (g.keptTerms ?? []).some((t) => /wind|precip|cold|snow/i.test(t.key)) ? 'it was priced off a forecast more than 3 days out, and the model counts the weather.' : null,
+            bet.sport === 'nfl' && g.weather?.forecast && fin(bet.hoursBeforeStart) && bet.hoursBeforeStart > 72 && (g.keptTerms ?? []).some((t) => /wind|precip|cold|snow/i.test(t.key)) ? 'it was priced off a forecast more than 3 days out, and the bot counts the weather.' : null,
             g.cap ? `its stake was capped (${g.cap}).` : g.oneSide ? `its side was set by the game's other market (${g.oneSide}).` : null,
             rules.c7,
             rules.generic,

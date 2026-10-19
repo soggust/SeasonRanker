@@ -193,7 +193,7 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   assert.equal(c.checkKelly, checkKelly({ market: 'ml', odds: -110, model: 0.8, fair: 0.5 }));
   assert.match(c.reason, /Would be a \+2\.87 Kelly bet with its doubt cleared \(DAL 80% against DraftKings' no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
   assert.match(c.reason, /The question: /);
-  assert.match(c.risk, /more often been the model missing something than an edge/);
+  assert.match(c.risk, /more often been the bot missing something than an edge/);
   assert.match(c.checkReason, /too far from the market/);
   assert.equal(out.picks.find((p) => p.id === 'prop').otherOdds, -120);
   assert.equal(out.picks.find((p) => p.id === 'love').otherOdds, null);

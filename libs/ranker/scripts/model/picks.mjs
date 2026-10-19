@@ -252,7 +252,7 @@ export function legacyReasonOf(bet, game) {
   const c = bet.context ?? {};
   const out = [];
   const anchor = bet.fairFrom === 'pinnacle' ? "Pinnacle's line" : 'the book';
-  out.push(bet.oddsAssumed ? `Model ${pct(bet.model)} vs an even line (${bet.book ?? 'DraftKings'}, -110 assumed: its board had no price).` : `Model ${pct(bet.model)} vs ${anchor} ${pct(bet.fair)} (${bet.book ?? 'DraftKings'} ${odds(bet.odds)}).`);
+  out.push(bet.oddsAssumed ? `Bot ${pct(bet.model)} vs an even line (${bet.book ?? 'DraftKings'}, -110 assumed: its board had no price).` : `Bot ${pct(bet.model)} vs ${anchor} ${pct(bet.fair)} (${bet.book ?? 'DraftKings'} ${odds(bet.odds)}).`);
   if (bet.market === 'prop' && bet.projection) {
     const p = bet.projection;
     out.push(`Projects ${p.mean} ${bet.statLabel.toLowerCase()} against a line of ${bet.line}${p.games ? ` (${p.rate} a game this season)` : ''}.`);

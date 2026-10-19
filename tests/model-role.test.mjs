@@ -254,7 +254,7 @@ test("a role CHECK's write-up: the role it's kept for, its question and risk, pa
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /Not bet on this side: a regular at his position is out/);
   assert.match(reason, /The question: how much of the work is his now/);
-  assert.match(risk, /^A big Kelly on the model's own number isn't value by itself/);
+  assert.match(risk, /^A big Kelly on the bot's own number isn't value by itself/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
   // (the hash: a role CHECK's differs from the same pick's gap CHECK; a bet's as it was)
   const asGap = { ...check, cause: 'gap', roleReason: undefined };

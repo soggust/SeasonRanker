@@ -781,7 +781,7 @@ export function researchDecision(call, x, trust = 0.5, { keyed = false, priced =
     const cev = Number.isFinite(corrected?.ev) ? r4(corrected.ev) : ev;
     const cw = `ev ${cev > 0 ? '+' : ''}${cev} on the ${x.side} at ${cp} (${Number.isFinite(corrected?.p) ? 'the corrected chance' : 'the trusted chance, no correction this run'}; the book's ${r4(x.fair)})`;
     if (cev > 0) return { as: 'bet', p: cp, ev: cev, why: `found nothing on a small line, its corrected chance clearing the vig (${cw})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (researchBet), out of the CHECKs` };
-    return { as: 'practice', p: cp, ev: cev, why: `found nothing on a small line, short of the vig (${cw})${at}: the model's side as a practice pick (0.5u, D25), out of the CHECKs` };
+    return { as: 'practice', p: cp, ev: cev, why: `found nothing on a small line, short of the vig (${cw})${at}: the bot's side as a practice pick (0.5u, D25), out of the CHECKs` };
   }
   if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
   return { as: 'pass', p, ev, why: `no edge (${words})${at}: passed, out of the CHECKs` };

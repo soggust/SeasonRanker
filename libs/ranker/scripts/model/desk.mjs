@@ -126,7 +126,7 @@ export const pastGap = (market, model, fair) => !!GAP[market] && Math.abs(model 
 export function gapGuard(market, model, fair) {
   const limit = GAP[market];
   if (!limit || !Number.isFinite(model) || !Number.isFinite(fair) || Math.abs(model - fair) <= limit) return null;
-  return { skip: true, kind: 'gap', why: `the model's ${Math.round(model * 100)}% against the book's ${Math.round(fair * 100)}%: too far from the market to trust` };
+  return { skip: true, kind: 'gap', why: `the bot's ${Math.round(model * 100)}% against the book's ${Math.round(fair * 100)}%: too far from the market to trust` };
 }
 
 // Each market's two sides, priced: the line, the price, the model's chance (a push left out: margins.mjs cond)

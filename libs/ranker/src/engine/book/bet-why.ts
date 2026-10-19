@@ -197,15 +197,15 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
       const fitted = r.why ? (r.why.fitted ? ' (fitted on its graded bets and closing lines)' : ' (the untested start: not enough graded bets yet)') : '';
       const math =
         Number.isFinite(model) && trust !== null
-          ? `Trust ${trust.toFixed(2)}${fitted} × the model's ${pct(model!)} less the book's ${pct(fair!)} (${signedPoints((model! - fair!) * 100)}) = ${signedPoints(leanChance * 100)} chance points`
+          ? `Trust ${trust.toFixed(2)}${fitted} × the bot's ${pct(model!)} less the book's ${pct(fair!)} (${signedPoints((model! - fair!) * 100)}) = ${signedPoints(leanChance * 100)} chance points`
           : null;
       parts.push({
         key: 'lean',
-        label: "Model's lean",
-        value: Number.isFinite(model) ? `model ${pct(model!)}` : '',
+        label: "Bot's lean",
+        value: Number.isFinite(model) ? `bot ${pct(model!)}` : '',
         amount: lean,
         title: [
-          "The model's lean: how far its own chance pulls the book's, by the trust it has earned in this market (0 the book's chance alone, 1 the model's alone)",
+          "The bot's lean: how far its own chance pulls the book's, by the trust it has earned in this market (0 the book's chance alone, 1 the bot's alone)",
           math,
           `× ${scale.toFixed(2)} for what it pays = ${signedPoints(lean)} to the score`,
         ]
@@ -228,7 +228,7 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
       label: 'Chance to win',
       value: Number.isFinite(r.chance) ? `${r.chance}%` : '',
       amount: base,
-      title: `Its chance to win, the model's and the book's together\n${signedPoints(base)} to the score (this pick's file has no price to weigh it by)`,
+      title: `Its chance to win, the bot's and the book's together\n${signedPoints(base)} to the score (this pick's file has no price to weigh it by)`,
     });
   }
   return { parts, partial };
@@ -245,7 +245,7 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
 
   // Its chance to win: the trusted one, the book's fair chance moved toward the model's
   const chance = Number.isFinite(row.p) ? pct(row.p!) : Number.isFinite(row.chance) ? `${row.chance}%` : null;
-  const chanceTitle = "Its chance to win: the book's fair chance moved toward the model's by the trust the model has earned in that market. The score weighs it against the price";
+  const chanceTitle = "Its chance to win: the book's fair chance moved toward the bot's by the trust the bot has earned in that market. The score weighs it against the price";
 
   // Its band: its Kelly score's with an edge on the price; low without one, whatever its chance
   const level = row.confidence ?? 'low';

@@ -241,6 +241,14 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Rule:** a "found nothing" verdict (D6) on a line of 1.5 or under (the low trust bucket) is priced at its corrected chance where the correction is on, else at the trusted chance (the correction is off since the gate's verdict, D18). Clearing the vig, it is a real research bet. Otherwise it bets the model's side as a 0.5u practice pick (`topN`, a LIKE at most, tallied apart while `PRACTICE_SPLIT`). Larger lines are as D5 and D6.
 - **Code:** `research.mjs` `researchDecision` (`low`, `corrected`, as `practice`), `run.mjs` `betProps` (`researchPractice`).
 
+### D26. Users read "the bot", never "the model"
+- **Date:** 2026-10-19.
+- **Owner:** the Book used "model" and "the bot" interchangeably; "the bot" is the standard everywhere users read it.
+- **Rule:** every word that reaches the page calls the bettor "the bot": "the bot's lean", "Bot vs Book", "the bot's chance", "its" where it reads better. That covers the Book, its popovers and About, the Algorithm tab's labels and tooltips, the wallet's You vs Bot, the game view, and the text the bettor writes into user-facing fields (picks.json reasons and risks, CHECK reasons and research verdicts, the plain write-ups, the self-check's rows). The Claude write-ups' prompt says so too (`PROMPT_V` 2; older analyses keep their words till rewritten).
+  - Kept as names of a technical part, not the bot itself: "the game model", the fight model, the anytime TD's "plain model" and "red zone's model", the "model epoch", the "Live Model" admin tab, "Model term" (a miss-review cause), "model files", the "raw model" log loss, GitHub's Model Desk workflow, Claude as "an AI model", and nflverse's model.
+  - Code identifiers, file names, JSON fields (`model`, `modelPct`, data/model) and comments are unchanged.
+- **Code:** `libs/ranker/src/engine/book/`, `account/wallet/game-lines.component.ts`, `writeup.mjs`, `writeups.mjs` `SYSTEM`, `picks.mjs` `legacyReasonOf`, `checks.mjs`, `desk.mjs` `gapGuard`, `props.mjs`, `research.mjs`, `run.mjs`, `selfcheck.mjs`.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

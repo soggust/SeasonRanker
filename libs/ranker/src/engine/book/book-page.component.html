@@ -397,11 +397,11 @@
                 [class.open]="why?.id === r.id || checkWhy?.id === r.id"
                 aria-haspopup="dialog"
                 [attr.aria-expanded]="why?.id === r.id || checkWhy?.id === r.id"
-                [attr.aria-label]="'Why: the model’s ' + m.model + '% against the book’s ' + (m.book !== null ? m.book + '%' : 'price')"
-                [attr.title]="'The model: ' + m.model + '% to win' + (m.book !== null ? ' · the book’s price says ' + m.book + '%' : '') + ' · tap for the math'"
+                [attr.aria-label]="'Why: the bot’s ' + m.model + '% against the book’s ' + (m.book !== null ? m.book + '%' : 'price')"
+                [attr.title]="'The bot: ' + m.model + '% to win' + (m.book !== null ? ' · the book’s price says ' + m.book + '%' : '') + ' · tap for the math'"
                 (click)="toggleWhy(i, $event)"
               >
-                <span class="meter-words"><span class="meter-model">Model {{ m.model }}%</span>@if (m.book !== null) {<span class="meter-book">Book {{ m.book }}%</span>}</span>
+                <span class="meter-words"><span class="meter-model">Bot {{ m.model }}%</span>@if (m.book !== null) {<span class="meter-book">Book {{ m.book }}%</span>}</span>
                 <span class="meter-track" aria-hidden="true">
                   <i class="meter-fill" [style.width.%]="m.model"></i>
                   @if (m.book !== null) {<i class="meter-tick" [style.left]="'calc(' + m.book + '% - 1px)'"></i>}
@@ -444,9 +444,9 @@
                     @if (passed(r)) {
                       <span><b>Passed:</b> {{ r.resolved?.why || 'under the CHECK bar now' }}. No longer a CHECK; it's still graded at the price it was shown at.</span>
                     } @else if (r.checkCause === 'role') {
-                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The model sees value here, but its known error in a role change could be making this side; the other side bets as usual.</span>
+                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The bot sees value here, but its known error in a role change could be making this side; the other side bets as usual.</span>
                     } @else if (r.checkCause === 'news') {
-                      <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the model reads it from the logs.</span>
+                      <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the bot reads it from the logs.</span>
                     } @else {
                       <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
                     }
@@ -472,8 +472,8 @@
               <div class="bet-meta">
                 <span class="bet-meta-place">@if (where(r); as w) {<span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}</span>
                 <span class="bet-meta-bet">
-                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The model’s chance less the book’s' : 'The model’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
-                  <span [title]="r.check ? 'Its Kelly with the doubt cleared: the stake’s Kelly at the chance it would be bet at (the model’s own ' + (r.chance ?? '–') + '% leaned only part way)' : 'Its Kelly score: the edge on the price, scaled by what it pays (held to -110’s, as the stake is); the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
+                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The bot’s chance less the book’s' : 'The bot’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
+                  <span [title]="r.check ? 'Its Kelly with the doubt cleared: the stake’s Kelly at the chance it would be bet at (the bot’s own ' + (r.chance ?? '–') + '% leaned only part way)' : 'Its Kelly score: the edge on the price, scaled by what it pays (held to -110’s, as the stake is); the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
                   @if (r.by === 'claude') { · <span>Analysis by Claude@if (r.read === 'thin') { (a thin read)}</span>}
                 </span>
               </div>
@@ -567,7 +567,7 @@
         [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
       >
         <div class="why-top">
-          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="Its Kelly with the doubt cleared: the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the model's (the model's own chance shows below, as context)">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
+          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="Its Kelly with the doubt cleared: the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the bot's (the bot's own chance shows below, as context)">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
           <div class="why-head">
             <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · cleared Kelly</span>
             <span class="why-name">{{ c.name }}</span>
@@ -577,7 +577,7 @@
         </div>
         <div class="why-facts">
           @if (c.model !== null) {
-            <p><span>Model's chance</span> <b>{{ c.model }}%</b></p>
+            <p><span>Bot's chance</span> <b>{{ c.model }}%</b></p>
           }
           @if (c.fair !== null) {
             <p><span>Book's chance (no vig)</span> <b>{{ c.fair }}%</b></p>
@@ -586,7 +586,7 @@
             <p><span>Gap</span> <b>{{ c.gap }} points</b></p>
           }
           @if (c.means) {
-            <p title="The model's projection against the mean the book's price implies at this line"><span>Model vs book mean</span> <b>{{ c.means }}</b></p>
+            <p title="The bot's projection against the mean the book's price implies at this line"><span>Bot vs book mean</span> <b>{{ c.means }}</b></p>
           }
           @if (c.record) {
             <p title="His own record at this line (this season, and last season's at half weight): context, never a rule"><span>His record at the line</span> <b>{{ c.record }}</b></p>
@@ -632,7 +632,7 @@
             <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}.{{ rs.applied ? ' Its finding was put into this game’s injury report for the bot’s pricing.' : '' }}</p>
           </div>
         }
-        <p class="why-fine">A CHECK is a market a guard stopped with a cleared Kelly (the stake's, at the chance it would be bet at with its doubt answered) of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): worth a look before it's bet. It's graded as if bet, so the bot learns whether the market or the model was right.</p>
+        <p class="why-fine">A CHECK is a market a guard stopped with a cleared Kelly (the stake's, at the chance it would be bet at with its doubt answered) of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): worth a look before it's bet. It's graded as if bet, so the bot learns whether the market or its own number was right.</p>
       </div>
     }
     @if (why; as w) {
@@ -666,7 +666,7 @@
         <!-- (the model against the book, and what a unit's expected to return at the price) -->
         @if (w.look.model !== null) {
           <div class="why-meter" [title]="w.chanceTitle">
-            <div class="meter-words"><span class="meter-model">Model {{ w.look.model }}% to win</span>@if (w.look.book !== null) {<span class="meter-book">Book {{ w.look.book }}%</span>}</div>
+            <div class="meter-words"><span class="meter-model">Bot {{ w.look.model }}% to win</span>@if (w.look.book !== null) {<span class="meter-book">Book {{ w.look.book }}%</span>}</div>
             <div class="meter-track" aria-hidden="true">
               <i class="meter-fill" [style.width.%]="w.look.model"></i>
               @if (w.look.book !== null) {<i class="meter-tick" [style.left]="'calc(' + w.look.book + '% - 1px)'"></i>}

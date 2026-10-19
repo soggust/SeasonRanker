@@ -338,9 +338,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // sports share (desk-math.ts epochShared; a league that started later keeps its own, which the chip's title
   // lists with every sport's date). Each sport's bets are still judged by its own epoch)
   get epochText(): string {
-    if (!this.epoch) return 'Since this model';
+    if (!this.epoch) return 'Since this version';
     const at = (this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch);
-    return at ? `Since this model (${epochLabel(at)})` : 'Since this model';
+    return at ? `Since this version (${epochLabel(at)})` : 'Since this version';
   }
 
   get epochTitle(): string {
@@ -454,7 +454,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       .map((s) => {
         const g = s.lineGate!;
         const ev = g.ev === null ? 'no CLV read yet' : `CLV ${g.ev >= 0 ? '+' : ''}${g.ev.toFixed(4)} a unit over the last ${g.n} graded line bets`;
-        return { label: s.label, on: g.on, text: g.on ? `${s.label} lines: bet · ${ev}${g.n < g.min ? ` (under ${g.min}: too few to gate)` : ''}` : `${s.label} lines: practice stake · CLV ${g.ev?.toFixed(4)} over ${g.n} since the model's change: bet at 0.5u till it's positive` };
+        return { label: s.label, on: g.on, text: g.on ? `${s.label} lines: bet · ${ev}${g.n < g.min ? ` (under ${g.min}: too few to gate)` : ''}` : `${s.label} lines: practice stake · CLV ${g.ev?.toFixed(4)} over ${g.n} since the bot's last change: bet at 0.5u till it's positive` };
       });
     this.byStake = STAKES.map((u) => tally(`${u}u`, where((b) => b.units === u))).filter((t) => t.bets || t.open);
     // (by the Book's bands: each bet's Kelly score and chance when placed, bet-why.ts confidenceOf)

@@ -608,7 +608,7 @@ test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confi
   }));
   assert.deepEqual(
     panels.map((p) => p.label),
-    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Model Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
+    ['By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
   );
   assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ['By Sport', 'By Confidence', 'Open Bets']);
   // (the two-column grid holds the top pair alone: its own closing div is the first at the grid's indent after it)
