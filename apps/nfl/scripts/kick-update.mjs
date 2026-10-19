@@ -8,7 +8,9 @@
 //                                                    nhl, nba or mlb; the same task kicks each in turn)
 //   node apps/nfl/scripts/kick-update.mjs --desk   (the bettor, model-desk.yml: the task "QBRanker desk kick",
 //                                                    hourly through the day; skipped when one started in the
-//                                                    last 45 minutes, as its own hourly schedule would have)
+//                                                    last 45 minutes, as its own hourly schedule would have;
+//                                                    disabled 2026-10-19 for "SeasonRanker desk kick",
+//                                                    scripts/desk-kick.ps1: hourly at :12 around the clock)
 //   node apps/nfl/scripts/kick-update.mjs --desk-games
 //                                                   (the bettor ahead of a game window (round D, 2026-10-17): the
 //                                                    task "QBRanker desk kick games", Central time every day 5:30 to

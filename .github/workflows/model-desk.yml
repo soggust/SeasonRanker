@@ -8,12 +8,18 @@ on:
     # morning. The Odds API's credits stay within oddsapi.mjs's daily allowance however often it runs. Between them they reach every game before it starts (NFL early
     # and London kickoffs, MLB day games, the night's NBA, NHL and MLB) to bet it, and every game after it
     # starts to read its close and grade it (clv.mjs: ESPN keeps the close after kickoff, so the close is never
-    # missed, only read later). At :17, off the top of the hour when GitHub's queue is longest. Each run grades
+    # missed, only read later). Off the top of the hour, when GitHub's queue is longest. Each run grades
     # what finished, refits the ratings, the context and the trust, and bets every market (and the props) of
     # every game in the next two days it hasn't bet yet (libs/ranker/scripts/model/run.mjs). Code only: free.
-    # (GitHub has been dropping most of these: the owner's computer kicks it too, hourly 8:05 AM to 11:05 PM
-    # Central when none started in the last 45 minutes: the task "QBRanker desk kick", kick-update.mjs --desk)
-    - cron: "17 * * * *"
+    # (GitHub has been dropping most of these: measured 2026-10-12 to 10-19, the schedule fired 5.7 times a day,
+    # a median 4.0 hours apart, the worst gap 10.3 hours. So two tries an hour, at :07 and :37 (off :00, :15, :30
+    # and :45, where GitHub's queue is longest and most of its drops are); the concurrency group below keeps them
+    # to one run at a time, and a run with nothing due is a few minutes. The owner's computer kicks it too:
+    # the task "SeasonRanker desk kick", hourly at :12 around the clock while he's logged on, dispatches it when no
+    # run started in the last 50 minutes (scripts/desk-kick.ps1, log .cache/desk-kick.log). An always-on kicker,
+    # if wanted: README.md's "Kicking the desk")
+    - cron: "7 * * * *"
+    - cron: "37 * * * *"
     # (MMA, since 2026-10-16 (leagues.mjs mma, mma-desk.mjs): UFC cards fight on Saturdays, mostly 4 to 11 PM
     # ET, a bout's lines open 72 hours before it and its last chance is 4 hours, so the hourly schedule reaches
     # every card Wednesday through Saturday afternoon with several runs to spare. Its run is seconds (the fit
@@ -48,7 +54,8 @@ on:
         default: ""
 
 # (one desk run at a time: a run that comes due while one is going waits; a second one due meanwhile
-# replaces the waiting one, which is fine, as each run does all that's due. Its own group, not the data
+# replaces the waiting one, which is fine, as each run does all that's due. So a kicked run and a scheduled
+# one never run side by side: at most one runs and one waits. Its own group, not the data
 # updates': GitHub keeps one waiting run a group, so in a shared group a desk run could cancel a waiting
 # data update. Its commit rebases onto whatever they've pushed meanwhile.)
 concurrency:

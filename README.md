@@ -107,3 +107,24 @@ scripts/new-sport.mjs   `npm run new-sport`: scaffolds a sport
 | `node apps/<sport>/scripts/build-splash.mjs [season|all]` | NFL, MLB, NBA, NHL: the Overview splash's data for a season (the current one by default): how each team's season ended (`outcomes.json`), each player's number (`numbers.json`) and best game (`best-games.<TAB>.json`), MLB's milestones (`milestones.json`); the uniform and helmet tables are apps/<sport>/src/sport/uniform-eras.ts and apps/nfl/src/sport/helmets.ts |
 | `npm run mma:update-data` | MMA: every fight since 1997 in ten promotions from ESPN (archived by year in `apps/mma/scripts/fights/`; later runs fetch only the current year), the rating and career points (`rating.mjs`), each listed fighter's bio and stats (cached in `apps/mma/scripts/cache.json`), and the champions and rankings from UFC.com. `node apps/mma/scripts/backtest.mjs [--tune]` checks and tunes the rating on past fights |
 | `node libs/ranker/scripts/model/run.mjs --dry` | The Algorithm bettor, a dry run (it prices and picks, writes nothing). The real run is GitHub's hourly `model-desk.yml` only |
+
+## Kicking the desk
+
+GitHub's free `schedule` trigger fires the bettor's workflow (`model-desk.yml`) late or not at all: in
+the week to 2026-10-19 it ran about 5.7 times a day, a median 4 hours apart, once 10 hours apart. So the
+workflow asks twice an hour (:07 and :37), its `model-desk` concurrency group keeps that to one run at a
+time, and the owner's PC backs it up: the Windows task **SeasonRanker desk kick** runs
+`scripts/desk-kick.ps1` hourly at :12 while he's logged on and dispatches the desk through his own `gh`
+sign-in when no run started in the last 50 minutes (`-DryRun` says what it would do; `-Register`
+recreates the task; log `.cache/desk-kick.log`).
+
+**Optional, not set up: an always-on kicker.** The PC is off some nights. A Cloudflare Worker with a cron
+trigger (say `12 * * * *`, free plan) can do the same from the cloud: list the last runs
+(`GET /repos/{owner}/{repo}/actions/workflows/model-desk.yml/runs?per_page=5`) and, when none started in
+the last 50 minutes, dispatch one (`POST .../actions/workflows/model-desk.yml/dispatches` with
+`{"ref":"master"}`; no inputs needed). It needs a **fine-grained GitHub token** scoped to this repository
+only, with **Actions: read and write** and nothing else (Metadata: read comes with it), stored as a Worker
+secret (`wrangler secret put GH_TOKEN`), never in the Worker's code or this repo. Security note: that
+token then lives in Cloudflare; anyone with the Cloudflare account can start (or cancel) this repo's
+workflows with it, though not read its secrets or push code. Give it an expiry and revoke it on GitHub if
+the Cloudflare account is ever in doubt. The owner decides whether it's worth it.
