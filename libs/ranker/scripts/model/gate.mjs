@@ -757,7 +757,7 @@ function recordScore(version, sport, score, frozen) {
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
   if (score.replay) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
-    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit }, null, 1)}\n`);
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit, note: decisionNote() }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
   }
@@ -768,6 +768,14 @@ function recordScore(version, sport, score, frozen) {
     writeFileSync(out, `${JSON.stringify({ at: entry.at, epoch: score.epoch, commit: entry.commit, n: h.n, tested: h.tested, leaks: h.leaks, trends: h.trends, status: h.status, headline: h.headline, rows: h.rows.filter((x) => x.kind === 'leak').slice(0, 12) }, null, 1)}\n`);
     console.log(`${sport}: the priced history's leak hunt: ${h.leaks} leaks of ${h.tested} segments on ${h.n} rows (${path.relative(ROOT, out)})`);
   }
+}
+
+// (what changed in the version, in a line, for the Algorithm tab's build: DECISIONS.md's latest entry's heading,
+// "D47. The Bot's history is the replayed record: ..."; none without the file)
+export function decisionNote(file = path.join(MODEL, 'DECISIONS.md')) {
+  if (!existsSync(file)) return null;
+  const heads = [...readFileSync(file, 'utf8').matchAll(/^### (D\d+\. .+?)\s*$/gm)].map((m) => m[1]);
+  return heads.length ? heads[heads.length - 1] : null;
 }
 
 async function main() {

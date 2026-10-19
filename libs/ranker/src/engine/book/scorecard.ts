@@ -91,7 +91,7 @@ const dayOf = (iso: string | null | undefined) => (iso ? iso.slice(0, 10) : '?')
 export function pointTitle(e: ScoreEntry, layer: 'props' | 'lines', key: 'frozen' | 'rolling'): string {
   const s = e[key]?.[layer] ?? null;
   const set = key === 'frozen' ? 'frozen benchmark' : `last 28 days${s?.from ? ` (from ${s.from})` : ''}`;
-  return `${e.commit ?? e.label ?? 'version'} (epoch ${dayOf(e.epoch)}): ${set}, ${s?.n ?? 0} ${layer}: edge over the Book ${signed(edgeOf(s))} nats per 100, top picks' CLV ${s && fin(s.clv) ? signed(s.clv * 100, 1) + '%' : '-'}, hit ${pctOf(s?.hit)}`;
+  return `${e.commit ?? e.label ?? 'version'} (epoch ${dayOf(e.epoch)}): ${set}, ${(s?.n ?? 0).toLocaleString('en-US')} ${layer}: edge over the Book ${signed(edgeOf(s))} nats per 100, top picks' CLV ${s && fin(s.clv) ? signed(s.clv * 100, 1) + '%' : '-'}, hit ${pctOf(s?.hit)}`;
 }
 
 // Each sport's chart from its scorecard file: the props' where it has any, else the game lines'; none without

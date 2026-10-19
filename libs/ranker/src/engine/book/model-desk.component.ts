@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { TIERS } from './tiers';
-import { americanOdds, deskLeagueLogo, fightPick, fightSides, headshot, hideImage, num, pct, signed, teamLogo, units } from './bet-format';
+import { americanOdds, compactCount, compactRecord, countTip, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, num, pct, signed, teamLogo, units } from './bet-format';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
 import { DESK_HELP } from './desk-help';
 import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
 import { MissPanel, MissReviewFile, missPanelOf } from './miss-review';
 import { SCORE_H, SCORE_W, ScoreChart, ScorecardFile, scorecardPanelOf } from './scorecard';
-import { BotHistory, ReplayRecordFile, botHistoryOf, dayLabel, recordText } from './replay-history';
+import { BotHistory, HistoryRow, ReplayRecordFile, botHistoryOf, buildLabel, buildOf, dayLabel, emptyRow, recordText } from './replay-history';
 import {
   BANKROLL,
   CURVE_W,
@@ -245,6 +245,17 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private allReplays: (ReplayRecordFile | null)[] = [];
   private allLedgerBets: ModelBet[] = [];
   readonly recordText = recordText;
+  readonly recordTip = recordTip;
+  readonly compactCount = compactCount;
+  readonly countTip = countTip;
+  readonly buildLabel = buildLabel;
+  // (the five on show (the owner, 2026-10-19: "pare it down"): the build, by sport, by confidence, the open bets and
+  // the last 20 closed, all on the history; the rest under the hood, folded)
+  hoodOpen = false;
+  // (By Confidence's rows, PASS to LOCK with the practice picks between, the history's)
+  bandRows: HistoryRow[] = [];
+  // (the build at the top: the version's epoch, its commit and what changed: replay-history.ts buildOf)
+  buildInfo: { at: string | null; commit: string | null; note: string | null; through: string | null } = { at: null, commit: null, note: null, through: null };
   readonly dayLabel = dayLabel;
   private allSelfChecks: (SelfCheckFile | null)[] = [];
   private selfOpen = new Set<string>();
@@ -542,7 +553,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
     );
     // (the Bot's history: the sport on show's, or every sport's summed; the game and date filters never cut it)
-    this.history = this.historyOn ? botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label]))) : null;
+    // (with no replay file yet, the live ledger alone: the same panels, the same shape)
+    const h = botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])));
+    this.history = h;
+    const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
+    this.bandRows = [histBand('PASS'), h.practice, histBand('LIKE'), histBand('LOVE'), histBand('LOCK')];
+    this.buildInfo = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null);
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     this.researchRows = researchPanelOf(this.states);
@@ -626,6 +642,16 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   // (a tile's number as it ticks: a count whole, anything else as it goes)
+  // (the Record tile's as it ticks, compact: "6.2k–2.2k–41")
+  tickedRecord(): string {
+    return compactRecord({ won: this.ticked(this.overall.won, true), lost: this.ticked(this.overall.lost, true), push: this.ticked(this.overall.push, true) });
+  }
+
+  // (a count with its words, exact: "1,204 with a close")
+  countWith(n: number): string {
+    return `${n.toLocaleString('en-US')} with a close`;
+  }
+
   ticked(v: number, whole = false): number {
     const x = v * this.tick;
     return whole ? Math.round(x) : x;

@@ -2101,3 +2101,119 @@ mat-icon.desk-gloves {
   margin: v.$space-6 0 0;
   text-align: center;
 }
+
+// ---------------------------------------------------------------------------
+// The build at the top (the owner, 2026-10-19: the version's time, its commit and what changed, in one line,
+// wrapping on a phone), the live desk's line under By Sport, and Under the hood: one folded section at the
+// bottom holding the rest (its chevron lightens on hover, never yellow)
+// ---------------------------------------------------------------------------
+.desk-build-line {
+  align-items: baseline;
+  color: v.$grey-light;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: v.$fs-12;
+  gap: v.$space-6 v.$space-10;
+  justify-content: center;
+  margin: 0;
+  max-width: 100%;
+  text-align: center;
+
+  b {
+    color: #fff;
+    font-family: v.$font-heading;
+    font-size: v.$fs-14;
+  }
+}
+
+.desk-build-tag {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.desk-build-commit {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+}
+
+.desk-build-note {
+  max-width: 100%;
+  min-width: 0;
+  @include v.ellipsis;
+}
+
+.desk-live-line {
+  font-size: v.$fs-11;
+  margin: v.$space-6 0 0;
+}
+
+.desk-history-panel .desk-total th,
+.desk-history-panel .desk-total td {
+  border-top: 1px solid v.$panel-rule;
+  font-weight: 700;
+}
+
+.desk-hood {
+  margin-top: v.$space-12;
+}
+
+.desk-hood-toggle {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-top: 1px solid v.$panel-rule;
+  color: v.$text-faint;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font: inherit;
+  gap: v.$space-6 v.$space-10;
+  padding: v.$space-10 0;
+  text-align: left;
+  transition: color v.$t-hover;
+  width: 100%;
+
+  span {
+    font-family: v.$font-heading;
+    font-size: v.$fs-14;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  small {
+    font-size: v.$fs-11;
+  }
+
+  mat-icon {
+    @include v.icon-size(20px);
+    transition: transform v.$t-hover;
+  }
+
+  .desk-hood.open & mat-icon {
+    transform: rotate(90deg);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    outline: none;
+  }
+}
+
+.desk-hood-body {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-12;
+
+  > .desk-tiles {
+    margin: 0 0 v.$space-6;
+  }
+}
+
+.desk-hood-filters {
+  justify-content: center;
+}

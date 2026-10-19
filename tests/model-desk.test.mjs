@@ -598,28 +598,36 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
   assert.deepEqual(missing, []);
 });
 
-test("the desk's panels in the owner's order (2026-10-17): By Sport and By Confidence paired at the top, Open Bets under them, those three open to begin with, the rest folded, By Market gone", () => {
+test("the desk pared to five (the owner, 2026-10-19): the build, By Sport and By Confidence paired, Open Bets (In Play with it), Recently closed, all open; everything else under one folded Under the hood", () => {
   const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
+  const hood = html.indexOf('<section class="desk-hood"');
+  assert.ok(hood > 0);
   const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
     label: m[1].match(/\blabel="([^"]+)"/)?.[1] ?? m[1].match(/\[label\]="([^"]+)"/)?.[1],
     open: /\[startOpen\]="true"/.test(m[1]),
-    wide: /\bdesk-wide\b/.test(m[1]),
+    hood: m.index > hood,
     at: m.index,
   }));
+  // (the build line before every panel)
+  assert.ok(html.indexOf('desk-build-line') < panels[0].at);
   assert.deepEqual(
-    panels.map((p) => p.label),
-    // (The Bot's history first (the owner, 2026-10-19): the replayed record joined to the live bets since, above the grid)
-    ["The Bot's history", 'By Sport', 'By Confidence', 'Open Bets', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings', "'In Play · ' + liveRisk.toFixed(1) + 'u'"],
+    panels.filter((p) => !p.hood).map((p) => p.label),
+    ['By Sport', 'By Confidence', 'Open Bets', "'In Play · ' + liveRisk.toFixed(1) + 'u'", 'Recently closed'],
   );
-  assert.deepEqual(panels.filter((p) => p.open).map((p) => p.label), ["The Bot's history", 'By Sport', 'By Confidence', 'Open Bets']);
-  // (the two-column grid holds the top pair alone: its own closing div is the first at the grid's indent after it)
+  assert.deepEqual(panels.filter((p) => !p.hood && !p.open).map((p) => p.label), ["'In Play · ' + liveRisk.toFixed(1) + 'u'"]);
+  // (under the hood, folded to begin with and drawn only once opened; nothing the loops or the owner's asks read is gone)
+  assert.match(html.slice(hood), /@if \(hoodOpen\)/);
+  assert.deepEqual(
+    panels.filter((p) => p.hood).map((p) => p.label),
+    ['Live desk by sport', 'Live desk by confidence', 'History by market and season', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings'],
+  );
+  assert.ok(panels.filter((p) => p.hood).every((p) => !p.open));
+  // (the five read the history (replay-history.ts botHistoryOf): the top grid's tables are its rows)
   const grid = html.indexOf('<div class="desk-grid">');
   const gridEnd = html.indexOf('\n    </div>', grid);
-  assert.ok(grid > 0 && gridEnd > grid);
   assert.deepEqual(panels.filter((p) => p.at > grid && p.at < gridEnd).map((p) => p.label), ['By Sport', 'By Confidence']);
-  // (the breakdowns under it keep the grid's tables (desk-wide); the bets' lists and the rest have their own)
-  assert.deepEqual(panels.filter((p) => p.wide).map((p) => p.label), ["The Bot's history", 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review']);
-  assert.ok(!html.includes('By Market'));
+  assert.ok(html.slice(grid, gridEnd).includes('h.bySport') && html.slice(grid, gridEnd).includes('bandRows'));
+  assert.ok(!html.includes("The Bot's history\"") && !html.includes('By Market'));
 });
 
 // ---------------------------------------------------------------------------

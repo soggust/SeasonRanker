@@ -6,6 +6,7 @@
 // forward). No Angular here (tested under Node: tests/book-replay-history.test.mjs)
 import { ModelBet, Tally } from './desk-model';
 import { isTracked } from './desk-math';
+import { compactRecord } from './bet-format';
 
 const fin = Number.isFinite;
 
@@ -54,6 +55,8 @@ export interface ReplayRecordFile {
   sport: string;
   epoch: string | null;
   commit?: string | null;
+  // (what changed in the version, in a line: DECISIONS.md's latest entry when gate.mjs --record wrote the file)
+  note?: string | null;
   at: string;
   from: string | null;
   through: string | null;
@@ -264,8 +267,24 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
   };
 }
 
-// ("1,750–1,769–10")
-export const recordText = (r: { won: number; lost: number; push: number }): string => `${r.won.toLocaleString('en-US')}–${r.lost.toLocaleString('en-US')}${r.push ? `–${r.push.toLocaleString('en-US')}` : ''}`;
+// ("1.8k–1.8k–10": compact from 1,000, bet-format.ts compactRecord; the exact one its hover, recordTip)
+export const recordText = (r: { won: number; lost: number; push?: number }): string => compactRecord(r);
+
+// The build at the top of the Algorithm tab: the version's epoch (MODEL_EPOCH as the replay recorded it; the desk's
+// state's, at, without a file), the commit the replay was
+// written from and what changed, from the sport on show's replay file (every sport's: the newest written); the
+// replay's last game. None of it without a file but the epoch
+export function buildOf(files: (ReplayRecordFile | null | undefined)[], sport: string | null, at: string | null): { at: string | null; commit: string | null; note: string | null; through: string | null } {
+  const list = files.filter((f): f is ReplayRecordFile => !!f && f.v === 1 && (!sport || f.sport === sport)).sort((a, b) => (b.at ?? '').localeCompare(a.at ?? ''));
+  const f = list[0] ?? null;
+  return { at: f?.epoch ?? at ?? null, commit: f?.commit ? String(f.commit).slice(0, 8) : null, note: f?.note ?? null, through: list.map((x) => x.through).filter((x): x is string => !!x).sort().pop() ?? null };
+}
+
+// (the build's time: "Oct 19, 2026, 12:15 PM CDT", the desk's own time zone)
+export function buildLabel(at: string | null | undefined): string {
+  if (!at || !fin(Date.parse(at))) return 'Unknown';
+  return new Date(at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago', timeZoneName: 'short' });
+}
 // (the epoch's day for the panel: "Oct 19, 2026")
 export function dayLabel(at: string | null | undefined): string | null {
   if (!at || !fin(Date.parse(at))) return null;

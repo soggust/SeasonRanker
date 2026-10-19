@@ -6,6 +6,7 @@
 // across the sports. No Angular here (tested under Node: tests/book-recent-form.test.mjs)
 import { PlayBet, TallyDoc, etDay } from '../account/wallet/wallet-math';
 import { PlayerRef, betPlayer } from '../player-link';
+import { compactRecord, recordTip } from './bet-format';
 
 export interface FormBet {
   // (W, L or P: a win, a loss, a push; a void bet is left out)
@@ -19,8 +20,10 @@ export interface FormBet {
 }
 
 export interface RecentForm {
-  // ("6–3", with pushes "6–3–1")
+  // ("6–3", with pushes "6–3–1"; compact from 1,000: "6.2k–2.2k", bet-format.ts compactRecord)
   record: string;
+  // (the exact record on hover, where the compact one shortened it)
+  recordFull?: string;
   // ("+4.2u")
   units: string;
   up: boolean;
@@ -57,6 +60,12 @@ export interface BotRecent {
 
 // (the bot's settled bets' one order, the list's and the streak's: newest first, a tie by pick)
 const formOrder = (a: BotRecentBet, b: BotRecentBet): number => b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick);
+
+// (the exact record, only where the compact one shortened it)
+const fullOf = (r: { won: number; lost: number; push: number }): { recordFull?: string } => {
+  const tip = recordTip(r);
+  return tip ? { recordFull: tip } : {};
+};
 
 const unitsText = (v: number): string => (v === 0 ? '0.00u' : `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}u`);
 
@@ -97,7 +106,8 @@ export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], 
     }));
   if (!(won + lost + push) && !last.length) return null;
   return {
-    record: `${won}–${lost}${push ? `–${push}` : ''}`,
+    record: compactRecord({ won, lost, push }),
+    ...fullOf({ won, lost, push }),
     units: unitsText(Math.round(profit * 100) / 100),
     up: profit >= 0,
     streak,
@@ -185,10 +195,10 @@ export function botForm(blocks: readonly (BotRecent | null | undefined)[], now: 
   // (the practice picks' week, summed the same way: a line of its own)
   const pr = { won: 0, lost: 0, push: 0, profit: 0 };
   for (const b of list) for (const k of ['won', 'lost', 'push', 'profit'] as const) pr[k] += b.practice?.[k] ?? 0;
-  const practice = pr.won + pr.lost + pr.push ? `${pr.won}–${pr.lost}${pr.push ? `–${pr.push}` : ''} · ${unitsText(Math.round(pr.profit * 100) / 100)}` : null;
+  const practice = pr.won + pr.lost + pr.push ? `${compactRecord(pr)} · ${unitsText(Math.round(pr.profit * 100) / 100)}` : null;
   if (!(won + lost + push) && !last.length && !practice) return null;
   profit = Math.round(profit * 100) / 100;
-  return { record: `${won}–${lost}${push ? `–${push}` : ''}`, units: unitsText(profit), up: profit >= 0, streak, last, ...(practice ? { practice } : {}) };
+  return { record: compactRecord({ won, lost, push }), ...fullOf({ won, lost, push }), units: unitsText(profit), up: profit >= 0, streak, last, ...(practice ? { practice } : {}) };
 }
 
 // Whose form the card shows: the viewer's pick on the switch where they made one, else theirs once they have any,

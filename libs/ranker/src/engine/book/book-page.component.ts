@@ -15,7 +15,7 @@ import { FormSide, RecentForm, botForm, formSide, yourForm } from './recent-form
 import { ADMIN, canUse } from '../account/features';
 import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
-import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
+import { TickerSide, TickerTarget, americanOdds, compactRecord, recordTip, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
 import { BetWhy, BetWhyRow, Confidence, PRACTICE_UNITS, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, edgeLine, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
@@ -1176,10 +1176,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     return this.sumsFor.sums;
   }
   // (a band's season as its header says it: "23–9 · +18.4u"; none till a bet in it is graded)
-  bandRecord(band: Confidence): { record: string; units: string; up: boolean } | null {
+  bandRecord(band: Confidence): { record: string; full: string | null; units: string; up: boolean } | null {
     const t = this.bandRecords.get(band);
     if (!t || !(t.wins + t.losses + t.pushes)) return null;
-    return { record: `${t.wins}–${t.losses}${t.pushes ? `–${t.pushes}` : ''}`, units: `${t.profit >= 0 ? '+' : '−'}${Math.abs(t.profit).toFixed(1)}u`, up: t.profit >= 0 };
+    const r = { won: t.wins, lost: t.losses, push: t.pushes };
+    return { record: compactRecord(r), full: recordTip(r), units: `${t.profit >= 0 ? '+' : '−'}${Math.abs(t.profit).toFixed(1)}u`, up: t.profit >= 0 };
   }
 
   // The sections: the rows shown, in their order (the locks, an admin's CHECKs, then the rest by their Kelly score),

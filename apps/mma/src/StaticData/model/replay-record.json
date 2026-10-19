@@ -1593,5 +1593,6 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "3675f828"
+ "commit": "3675f828",
+ "note": "D47. The Bot's history is the replayed record: today's algorithm over the priced history, plus its real bets since the epoch"
 }

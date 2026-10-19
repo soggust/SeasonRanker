@@ -11,6 +11,27 @@ export const pct = (v: number | null | undefined, digits = 1): string => (v === 
 // (units won or lost, signed: "+1.82u")
 export const units = (v: number): string => `${v >= 0 ? '+' : ''}${v.toFixed(2)}u`;
 
+// A count the Bot's record shows, compact once it reaches 1,000 (the owner, 2026-10-19: the replayed history's
+// thousands broke the Algorithm tab's layout): under 1,000 as it is, then one decimal and a k ("6.2k"), from
+// 10,000 a whole k ("12k"); the exact figure goes in the hover (recordTip, countTip). Units keep their own format
+export function compactCount(n: number): string {
+  const a = Math.abs(n);
+  if (a < 1000) return String(n);
+  const sign = n < 0 ? '-' : '';
+  // (9,950 and up would round to "10.0k": a whole k from there)
+  return a < 9950 ? `${sign}${(a / 1000).toFixed(1)}k` : `${sign}${Math.round(a / 1000)}k`;
+}
+type Rec = { won: number; lost: number; push?: number };
+const recParts = (r: Rec): number[] => [r.won, r.lost, ...(r.push ? [r.push] : [])];
+// (a W-L(-P), the push only when there is one, each part compact on its own: "6.2k–2.2k–41"; sep the separator)
+export const compactRecord = (r: Rec, sep = '–'): string => recParts(r).map(compactCount).join(sep);
+// (the same with every figure exact: "6,198–2,205–41")
+export const fullRecord = (r: Rec, sep = '–'): string => recParts(r).map((v) => v.toLocaleString('en-US')).join(sep);
+// (a compact record's hover: the exact one; none where nothing was shortened)
+export const recordTip = (r: Rec, sep = '–'): string | null => (recParts(r).some((v) => Math.abs(v) >= 1000) ? fullRecord(r, sep) : null);
+// (a compact count's hover the same way: "120,857"; none under 1,000)
+export const countTip = (n: number): string | null => (Math.abs(n) >= 1000 ? n.toLocaleString('en-US') : null);
+
 // (a size with its sign: "+0.4")
 export const signed = (v: number): string => `${v > 0 ? '+' : ''}${v}`;
 

@@ -1,6 +1,7 @@
 // The Algorithm desk's data, as the bettor writes it (libs/ranker/scripts/model/run.mjs): each sport's
 // data/model/ledger.json (its bets) and state.json (its settings, its trust, its context, its props, its
 // backtest), and the shapes the desk builds from them
+import { compactRecord } from './bet-format';
 
 export type Market = 'spread' | 'total' | 'ml' | 'prop';
 export type Status = 'open' | 'won' | 'lost' | 'push';
@@ -309,7 +310,7 @@ export interface ResearchRow {
 // feeds held them
 export function researchPanelOf(states: ModelState[]): ResearchRow[] {
   const rows: ResearchRow[] = [];
-  const rec = (t: { won: number; lost: number; push?: number }) => `${t.won}-${t.lost}${t.push ? `-${t.push}` : ''}`;
+  const rec = (t: { won: number; lost: number; push?: number }) => compactRecord(t, '-');
   const cats = (o: Record<string, ResearchBetTally> | undefined) =>
     Object.entries(o ?? {})
       .map(([k, t]) => `${k} ${rec(t)}`)

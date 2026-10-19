@@ -503,7 +503,7 @@
               <span class="visually-hidden">: {{ s.rows.length }} {{ s.rows.length === 1 ? 'pick' : 'picks' }}</span>
               <span class="band-space"></span>
               @if (bandRecord(s.band); as rec) {
-                <span class="band-record" [title]="bandRecordTitle">This year <b>{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
+                <span class="band-record" [title]="bandRecordTitle">This year <b [attr.title]="rec.full">{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
               }
             </button>
             @if (bandOpen(s.band)) {
@@ -700,7 +700,7 @@
         </div>
         @if (card.f; as f) {
           <div class="form-stats">
-            <div><span class="form-label">Last 7 days</span><span class="form-value">{{ f.record }}</span></div>
+            <div><span class="form-label">Last 7 days</span><span class="form-value" [attr.title]="f.recordFull ?? null">{{ f.record }}</span></div>
             <div><span class="form-label">Units</span><span class="form-value units" [class.down]="!f.up">{{ f.units }}</span></div>
             <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
           </div>
