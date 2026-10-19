@@ -99,7 +99,6 @@ test('botHistoryOf: the replay before the epoch plus the live bets on games sinc
   assert.match(none.caveat, /No replayed record yet/);
   assert.equal(none.overall.won, 3, 'every live bet, there being no epoch to split at (the practice pick and the tracked row apart)');
   assert.equal(book.recordText(h.overall), '34–27–2');
-  assert.equal(book.dayLabel(EPOCH), 'Oct 19, 2026');
 });
 
 test('the shipped replay-record.json files (gate.mjs --record): the file\'s shape, the bands summing to the record, nothing from the epoch on, every last bet placed before its start', () => {

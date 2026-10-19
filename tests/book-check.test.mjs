@@ -106,25 +106,6 @@ test('readNote, noteText, formOf: a saved note read back, in words, and into the
   assert.deepEqual(desk.formOf({ ...n, player: '3139477' }, players), { reason: 'news', player: desk.OTHER_PLAYER, athlete: '3139477', status: 'out', note: 'ruled out' });
 });
 
-test("checkBets and tally: the CHECKs at a unit as if bet, open till graded, a void one and the closed ones out of the record", () => {
-  const base = { sport: 'nfl', start: '2026-10-11T17:00Z', placedAt: '2026-10-10T12:00Z', matchup: 'PHI @ JAX', market: 'spread', units: 0, status: 'check', profit: 0 };
-  const checks = [
-    { ...base, id: 'a', firstAt: '2026-10-09T12:00Z', checkResult: { status: 'won', profit: 0.909, gradedAt: 'x' } },
-    { ...base, id: 'b', checkResult: { status: 'lost', profit: -1, gradedAt: 'x' } },
-    { ...base, id: 'c' },
-    { ...base, id: 'd', checkResult: { status: 'push', profit: 0, void: true, gradedAt: 'x' } },
-    { ...base, id: 'e', closedAt: '2026-10-10T13:00Z', checkResult: { status: 'won', profit: 0.9, gradedAt: 'x' } },
-  ];
-  const bets = desk.checkBets(checks);
-  assert.deepEqual(bets.map((b) => b.id), ['a', 'b', 'c', 'd']);
-  assert.equal(bets[0].placedAt, '2026-10-09T12:00Z', 'placed when first recorded');
-  assert.ok(bets.every((b) => b.units === 1));
-  const t = desk.tally('CHECK', bets);
-  assert.deepEqual([t.won, t.lost, t.push, t.open, t.bets], [1, 1, 0, 1, 2]);
-  assert.ok(Math.abs(t.profit - -0.091) < 1e-9);
-  assert.deepEqual(desk.checkBets(null), []);
-});
-
 test("noteState: a CHECK's note 'Noted' (pending) till a re-evaluation after it (picks.json's resolved), then still a CHECK; noteAtOf reads Firestore's time", () => {
   const at = Date.parse('2026-10-11T14:30:00Z');
   assert.equal(desk.noteState(at, null), 'pending');

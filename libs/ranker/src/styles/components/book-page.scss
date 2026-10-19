@@ -2317,13 +2317,22 @@ mat-icon.gloves {
   }
 }
 
-// (Open Bets: the wallet's open-bets panel, and the desk, scrolling inside the page)
-.book-page wallet-page,
-.book-page.desk-view model-desk {
+// (Open Bets: the wallet's open-bets panel, scrolling inside the page)
+.book-page wallet-page {
   display: block;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+// (the Algorithm: its own board scrolls inside it (model-desk.scss .desk-scroll), its host never does: the
+// scrollbar on a panel you can see, not on an invisible box; the owner's note, 2026-10-19)
+.book-page.desk-view model-desk {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 // (Open tickets, Cashed and the Algorithm: the page's width, as the board's)

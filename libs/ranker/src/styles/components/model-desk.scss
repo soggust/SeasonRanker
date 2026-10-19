@@ -2,8 +2,8 @@
 @use "../casino-chip" as chip;
 
 // ===========================================================================
-// The model desk's admin panel (the Book, dev only): a scoreboard header with the bankroll tiles, then
-// the breakdowns in the card's panels, the bankroll curve, the bets
+// The model desk's admin panel (the Book, admins only): the build line and the sport chips, then one board of
+// the history's breakdowns and the bets in the card's panels (the wallet's pages share its tables and curve)
 // ===========================================================================
 
 .model-desk {
@@ -30,42 +30,6 @@
   border-radius: 9px 9px 0 0;
   margin: 0 -18px 16px;
   padding: 16px 18px 14px;
-}
-
-.desk-head {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 14px;
-}
-
-.desk-tiles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-10;
-  justify-content: center;
-}
-
-.desk-tile {
-  @include v.led-tile;
-  flex-direction: column;
-  gap: v.$space-2;
-  min-width: 86px;
-  padding: 6px 12px;
-
-  small {
-    color: v.$text-faint;
-    font-family: v.$font-base;
-    font-size: v.$fs-10;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  b {
-    font-family: v.$font-base;
-    font-size: v.$fs-17;
-    font-weight: 900;
-  }
 }
 
 .up {
@@ -352,12 +316,6 @@ card-panel {
   }
 }
 
-.desk-test {
-  color: v.$text-dim;
-  font-size: v.$fs-12;
-  white-space: normal !important;
-}
-
 .desk-bets td {
   text-align: right;
 }
@@ -399,118 +357,7 @@ card-panel {
   }
 }
 
-.desk-changes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    display: grid;
-    gap: v.$space-2;
-    padding: 7px 0;
-
-    &:first-child {
-      border-top: none;
-    }
-  }
-
-  small {
-    color: v.$text-faint;
-    font-size: v.$fs-11;
-  }
-
-  b {
-    font-size: v.$fs-13;
-  }
-
-  span {
-    color: v.$text-dim;
-    font-size: v.$fs-12;
-  }
-}
-
-// (the context: each sport's held-out numbers without and with it, then its terms, the ones left out dimmed)
-.desk-context-tests {
-  color: v.$text-dim;
-  font-size: v.$fs-12;
-  list-style: none;
-  margin: 0 0 10px;
-  padding: 0;
-
-  li {
-    padding: 2px 0;
-  }
-
-  b {
-    color: #fff;
-  }
-}
-
-.desk-off {
-  opacity: 0.45;
-}
-
-// (a graded bet's post-mortem: the line saying why, wrapping; a mark when its premise broke, the recap's link)
-.desk-why {
-  color: v.$text-soft;
-  font-size: v.$fs-12;
-  max-width: 420px;
-  min-width: 240px;
-  text-align: left !important;
-  white-space: normal !important;
-
-  mat-icon {
-    @include v.icon-size(14px);
-    vertical-align: -2px;
-  }
-
-  a {
-    color: v.$text-faint;
-
-    &:hover {
-      color: #fff;
-    }
-  }
-}
-
-.desk-broke {
-  color: var(--loss);
-}
-
-// (a second table in a panel: the props by type under the markets, the edge and action under the stakes, the
-// props' projections under the terms)
-.desk-sub {
-  margin-top: 14px;
-}
-
-// (a tile's second line under its number: the open bets' count under what they stake)
-.desk-tile b small {
-  display: block;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-align: center;
-}
-
-// The sport chips under the header (the Book's view pills, each with its league's logo): the desk shows
-// one sport, or all
-// (the game dropdown on the left, the sports' chips pushed right, as the Book's header)
-// (the date range and the game on the left, side by side; the sports' chips pushed right)
-.desk-filters {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-12;
-}
-
-.desk-chip {
-  display: inline-flex;
-}
-
-.desk-game-select {
-  @include chip.felt-dropdown;
-}
-
+// (the sport chips, the Book's view pills each with its league's logo: one sport on show, or all)
 .desk-sports {
   display: flex;
   flex-wrap: wrap;
@@ -863,9 +710,6 @@ mat-icon.desk-gloves {
 }
 
 .desk-table td.desk-left,
-.desk-table td.desk-why,
-.desk-table td.desk-test,
-.desk-changes,
 .desk-note {
   font-family: v.$font-heading;
   font-weight: 500;
@@ -885,15 +729,6 @@ mat-icon.desk-gloves {
 
 .desk-table td small {
   font-weight: 400;
-}
-
-// (a tile's run of results under its record: green on a winning run, red on a losing one)
-.desk-tile .desk-streak {
-  color: var(--loss);
-
-  &.hot {
-    color: var(--win);
-  }
 }
 
 // ===========================================================================
@@ -982,16 +817,6 @@ mat-icon.desk-gloves {
   .desk-meter .pip.active,
   .desk-table td.desk-flash {
     animation: none;
-  }
-}
-
-// (a breakdown's tables in step: the same fixed columns, so a panel's two (the markets over the props by type,
-// the stakes over the edge's) line up, label for label)
-.desk-table:has(> .desk-tally-head) {
-  table-layout: fixed;
-
-  th:first-child {
-    width: 30%;
   }
 }
 
@@ -1199,28 +1024,6 @@ mat-icon.desk-gloves {
     }
   }
 
-  // (Latest Results, ten columns, fitting a 1400px window: its game's date shorter than a time, its why, final
-  // and chance narrower (a long final cut short, its whole on hover), the pick the rest)
-  .desk-cols-recent {
-    min-width: 1170px;
-
-    .desk-c-game {
-      width: 190px;
-    }
-
-    .desk-c-why {
-      width: 180px;
-    }
-
-    .desk-c-final {
-      width: 140px;
-    }
-
-    .desk-c-chance {
-      width: 84px;
-    }
-  }
-
   // (the sport's header with its sort arrow)
   .desk-c-sport {
     width: 78px;
@@ -1254,34 +1057,8 @@ mat-icon.desk-gloves {
     width: 80px;
   }
 
-  .desk-c-ev,
-  .desk-c-clv {
+  .desk-c-ev {
     width: 68px;
-  }
-
-  .desk-c-final {
-    width: 170px;
-  }
-
-  .desk-c-result {
-    width: 100px;
-  }
-
-  .desk-c-why {
-    width: 250px;
-  }
-
-  // (the Book's: the bot's band, the settled game's date, a settled bet's result with its final under it)
-  .desk-c-bot {
-    width: 72px;
-  }
-
-  .desk-c-date {
-    width: 76px;
-  }
-
-  .wallet-cols-settled .desk-c-result {
-    width: 150px;
   }
 
   // (no sorting there: the sport's header without an arrow)
@@ -1294,10 +1071,6 @@ mat-icon.desk-gloves {
 .desk-table {
   .desk-tier-lock th {
     color: chip.$lock-light;
-  }
-
-  .desk-tier-check th {
-    color: chip.$check-light;
   }
 
   .desk-tier-love th {
@@ -1335,41 +1108,9 @@ mat-icon.desk-gloves {
   }
 }
 
-// (the Scorecard: a small chart a sport, a point per version, in the sport's chip line color; the frozen benchmark
-// solid, the last 28 days dashed and fainter; the zero line even, as the profit curve's)
-.desk-score-panel {
-  @each $sport, $line in chip.$sport-line {
-    --line-#{$sport}: #{$line};
-  }
-}
-
-.desk-score-grid {
-  display: grid;
-  gap: v.$space-10 v.$space-16;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-}
-
 .desk-score {
   --line: #f2c54b;
   min-width: 0;
-
-  .desk-score-head {
-    align-items: baseline;
-    display: flex;
-    flex-wrap: wrap;
-    gap: v.$space-4 v.$space-10;
-
-    b {
-      font-size: v.$fs-13;
-      font-weight: 800;
-    }
-
-    small {
-      color: v.$text-faint;
-      font-size: v.$fs-11;
-      font-weight: 600;
-    }
-  }
 
   svg {
     display: block;
@@ -1384,412 +1125,70 @@ mat-icon.desk-gloves {
     stroke-dasharray: 4 4;
     vector-effect: non-scaling-stroke;
   }
-
-  .desk-score-line {
-    fill: none;
-    stroke: var(--line);
-    stroke-linejoin: round;
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-
-    &.is-rolling {
-      opacity: 0.7;
-      stroke-dasharray: 5 4;
-      stroke-width: 1.5;
-    }
-  }
-
-  // (a version: a dot that stays round however the chart stretches; its numbers on the hover)
-  .desk-score-dot {
-    cursor: help;
-    stroke: var(--line);
-    stroke-linecap: round;
-    stroke-width: 7px;
-    vector-effect: non-scaling-stroke;
-
-    &.is-rolling {
-      opacity: 0.7;
-      stroke-width: 5px;
-    }
-
-    &:hover {
-      filter: drop-shadow(0 0 3px var(--line));
-    }
-  }
-
-  .desk-score-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: v.$space-4 v.$space-14;
-    list-style: none;
-    margin: 4px 0 0;
-    padding: 0;
-
-    li {
-      align-items: center;
-      color: v.$text-dim;
-      display: flex;
-      font-size: v.$fs-11;
-      font-weight: 800;
-      gap: v.$space-6;
-      letter-spacing: 0.04em;
-    }
-
-    i {
-      background: var(--line);
-      border-radius: v.$radius-xxs;
-      height: 3px;
-      width: 14px;
-    }
-
-    .is-rolling i {
-      background: repeating-linear-gradient(90deg, var(--line) 0 5px, transparent 5px 8px);
-      opacity: 0.7;
-    }
-  }
-}
-
-// (the weekly self-check: each sport's counts as chips, its checks a row each, flags first; a flag the desk's
-// loss red, a watch orange, ok muted, thin, partial and info grey. A row's chevron lightens on hover, never
-// yellow)
-.desk-self-panel {
-  --sc-flag: var(--loss);
-  --sc-watch: #{v.$doubtful};
-  --sc-muted: rgba(255, 255, 255, 0.55);
-  --sc-grey: rgba(255, 255, 255, 0.38);
-}
-
-.desk-self + .desk-self {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 10px;
-  padding-top: 10px;
-}
-
-.desk-self-head {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-4 v.$space-10;
-  margin-bottom: 6px;
-
-  b {
-    font-size: v.$fs-13;
-    letter-spacing: 0.06em;
-  }
-
-  small {
-    color: v.$text-faint;
-    font-size: v.$fs-11;
-  }
-}
-
-.desk-self-counts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: v.$space-4;
-  list-style: none;
-  margin: 0 0 0 auto;
-  padding: 0;
-}
-
-.desk-self-chip {
-  border: 1px solid currentColor;
-  border-radius: v.$radius-pill;
-  color: var(--sc-grey);
-  flex: none;
-  font-size: v.$fs-10;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  padding: 3px 7px;
-  text-transform: uppercase;
-
-  &.is-flag {
-    background: color-mix(in srgb, var(--sc-flag) 18%, transparent);
-    color: var(--sc-flag);
-  }
-
-  &.is-watch {
-    background: color-mix(in srgb, var(--sc-watch) 14%, transparent);
-    color: var(--sc-watch);
-  }
-
-  &.is-ok {
-    color: var(--sc-muted);
-  }
-}
-
-.desk-self-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.desk-self-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-
-  &:first-child {
-    border-top: none;
-  }
-
-  &.is-flag {
-    box-shadow: inset 2px 0 0 var(--sc-flag);
-  }
-
-  &.is-watch {
-    box-shadow: inset 2px 0 0 var(--sc-watch);
-  }
-}
-
-.desk-self-line,
-.desk-self-fold {
-  align-items: flex-start;
-  background: none;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  display: flex;
-  font: inherit;
-  gap: v.$space-8;
-  padding: 7px 4px;
-  text-align: left;
-  width: 100%;
-
-  &:hover .desk-group-toggle,
-  &:focus-visible .desk-group-toggle {
-    color: #fff;
-  }
-}
-
-.desk-self-fold {
-  align-items: center;
-  color: v.$text-faint;
-  font-size: v.$fs-12;
-  gap: v.$space-6;
-
-  &:hover {
-    color: v.$text-soft;
-  }
-}
-
-.desk-self-text {
-  display: grid;
-  gap: v.$space-2;
-  min-width: 0;
-
-  b {
-    font-size: v.$fs-13;
-  }
-
-  span {
-    color: v.$text-dim;
-    font-size: v.$fs-12;
-  }
-}
-
-.desk-self-detail {
-  font-size: v.$fs-12;
-  padding: 0 4px 10px 30px;
-
-  dl {
-    display: grid;
-    gap: v.$space-4 v.$space-10;
-    grid-template-columns: auto 1fr;
-    margin: 8px 0 0;
-  }
-
-  dt {
-    color: v.$text-faint;
-    font-size: v.$fs-11;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  dd {
-    color: v.$text-soft;
-    margin: 0;
-  }
-}
-
-// (a check's rows: a small table that scrolls sideways on a phone rather than running past the edge)
-.desk-self-table {
-  overflow-x: auto;
-
-  .desk-table {
-    font-size: v.$fs-12;
-
-    th,
-    td {
-      padding: 4px 6px;
-      white-space: nowrap;
-    }
-  }
-}
-
-.desk-self-examples {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-@include v.down(small) {
-  .desk-self-detail {
-    padding-left: 8px;
-  }
-}
-
-// The News signals panel (news-signals.ts): a row a signal, its team and what changed, the headline under it
-.desk-news-list {
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-8;
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-}
-
-.desk-news-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 6px;
-
-  small {
-    color: v.$grey-mid;
-    margin-left: 6px;
-  }
-}
-
-.desk-news-headline {
-  color: #aaa;
-  font-size: 0.9em;
-  margin-top: 2px;
-}
-
-// (the Miss review panel: the causes tallied as chips, each day's misses as the news rows; a data bug in red)
-.desk-miss-tally {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  list-style: none;
-  margin: 8px 0 4px;
-  padding: 0;
-}
-
-.desk-miss-chip {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: v.$radius-pill;
-  font-size: v.$fs-12;
-  padding: 2px 8px;
-
-  small {
-    color: v.$grey-mid;
-    margin-left: 4px;
-  }
-}
-
-.desk-miss-day {
-  color: v.$grey-mid;
-  font-size: v.$fs-12;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  margin: 12px 0 0;
-  text-transform: uppercase;
-}
-
-.desk-miss-cause {
-  color: #ddd;
-  font-weight: 700;
-}
-
-.desk-miss-chip.is-data,
-.desk-miss-cause.is-data,
-.desk-miss-recs .is-bug {
-  color: #ff8a80;
 }
 
 // ===========================================================================
-// The Book (the Book's Algorithm tab, 2026-10-17): the desk restyled, every panel, number and calculation its
-// own. No card of its own on the felt: the six tiles in a row of dot-matrix tiles (a small caps label, the value in
-// the scoreboard's digits, gold for the balance and green for a gain, a note under it); the date-range, since and
-// game selects as the player's card pills; the sport chips the house's casino chips at 50px; the profit curve on a
-// plain scoreboard panel (each sport's line in its color, the total in gold over a soft gold area, a dashed zero
-// line, the legend with each sport's units on the title's line); the panels plain scoreboard panels with gold
-// header bars in a two-column grid (card-panel.scss), their tables with 10px caps heads and tabular numbers, the
-// self-checks' statuses word tags. Scoped to the Book: the wallet's own page keeps the desk's look
+// The Book (the Book's Algorithm tab, and the wallet's pages on it, which load these styles too): no card of its
+// own on the felt. The Algorithm: the build's time and the sport chips (the house's casino chips at 50px) on one
+// line, then one board in the Book's gold rail scrolling inside it (the owner, 2026-10-19), its panels plain
+// scoreboard panels with gold header bars (card-panel.scss), their tables with 10px caps heads and tabular numbers.
+// The wallet's: the profit curve on a plain scoreboard panel (each sport's line in its color, the total in gold over
+// a soft gold area, a dashed zero line). Scoped to the Book: the wallet's own page keeps the desk's look
 // ===========================================================================
 :host-context(book-page) {
+  // (the tab fills the page under the Book's head: the build line on top, the board taking the rest, scrolling
+  // inside its own gold edge; book-page.scss keeps the host from scrolling)
   .model-desk {
     background: none;
     border: none;
     box-shadow: none;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     margin: 0;
     max-width: none;
-    padding: 0 4px 24px;
+    min-height: 0;
+    padding: 0 4px 12px;
   }
 
   .desk-top {
     background: none;
     border: none;
     border-radius: 0;
-    margin: 0 0 14px;
+    flex: none;
+    margin: 0 0 10px;
     padding: 0;
   }
 
-  .desk-head {
-    display: block;
-    margin-bottom: 14px;
-  }
-
-  // The six tiles in a row
-  .desk-tiles {
-    display: grid;
-    gap: v.$space-10;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-
-  .desk-tile {
-    @include v.scoreboard-panel(v.$radius-md);
-    @include chip.gold-rim;
-    align-items: flex-start;
+  // (the board: one scoreboard panel in the Book's gold rail, as the Book's own board; its panels scroll inside it
+  // on a gold thumb, the rail staying put)
+  .desk-board {
+    @include v.scoreboard-panel(v.$radius-lg, none);
+    background:
+      var(--scoreboard-dots) padding-box,
+      linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
+      chip.$felt-gold border-box;
+    border: 1px solid transparent;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: v.$space-4;
-    min-width: 0;
-    padding: 10px 12px;
-    text-shadow: none;
+    min-height: 0;
+    overflow: hidden;
+  }
 
-    > small {
-      color: v.$text-faint;
-      font-size: v.$fs-10;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-    }
+  .desk-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 14px 14px;
+    @include chip.gold-scrollbar;
+  }
 
-    b {
-      align-items: baseline;
-      display: flex;
-      flex-wrap: wrap;
-      font-family: v.$font-led;
-      font-size: v.$fs-20;
-      font-weight: 700;
-      gap: v.$space-2 v.$space-8;
-      line-height: 1.2;
-
-      // (the note under the number: the open bets' count, a pending profit, the streak)
-      small {
-        color: v.$grey-light;
-        font-family: v.$font-base;
-        font-size: v.$fs-11;
-        font-weight: 600;
-        letter-spacing: 0;
-        text-transform: none;
-      }
-    }
-
-    // (the balance in gold)
-    &:first-child b {
-      color: chip.$gold-led;
-      text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+  // (on a phone the board a little closer to its edge; narrower than the wide menu the page scrolls and the board is
+  // as tall as its panels, as the Book's own board is there)
+  @include v.down(small) {
+    .desk-scroll {
+      padding: 0 8px 10px;
     }
   }
 
@@ -1801,41 +1200,6 @@ mat-icon.desk-gloves {
 
   .down {
     color: v.$bad-soft !important;
-  }
-
-  // The selects as the player's card pills, a gold caret, in the board's even 1px gold rim (the gold on the border box
-  // behind the face: a select draws no ::before, so the player card's rail never showed; the owner's note,
-  // 2026-10-17); the sport chips 50px
-  .desk-filters {
-    gap: v.$space-12 v.$space-20;
-  }
-
-  .desk-game-select {
-    @include chip.player-card-select;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
-    font-family: v.$font-heading;
-    font-size: v.$fs-13;
-    font-weight: 500;
-    height: 40px;
-    line-height: 1;
-    min-width: 0;
-    padding: 0 36px 0 16px;
-    text-shadow: none;
-
-    &:hover,
-    &:focus {
-      filter: brightness(1.18);
-    }
-
-    option,
-    optgroup {
-      background: #1a1a1a;
-      color: #fff;
-    }
-
-    optgroup {
-      color: chip.$gold-led;
-    }
   }
 
   .desk-sports {
@@ -1869,6 +1233,25 @@ mat-icon.desk-gloves {
 
     &.all {
       --clay: #9a7b22;
+    }
+  }
+
+  // (on a phone the six chips a size smaller, kept to one row under the build)
+  @include v.down(small) {
+    .desk-sports {
+      gap: v.$space-6;
+      justify-content: flex-start;
+      margin-left: 0;
+    }
+
+    .desk-sport {
+      height: 42px;
+      width: 42px;
+
+      img {
+        height: 18px;
+        width: 18px;
+      }
     }
   }
 
@@ -1949,32 +1332,6 @@ mat-icon.desk-gloves {
       font-variant-numeric: tabular-nums;
     }
   }
-
-  // The self-checks' statuses: word tags, OK green, WATCH orange, FLAG red, never color alone
-  .desk-self-chip {
-    border-radius: v.$radius-xs;
-    font-size: v.$fs-10;
-    font-weight: 900;
-    letter-spacing: 0.8px;
-    padding: 2px 6px;
-    text-transform: uppercase;
-
-    &.is-ok {
-      border-color: v.$good-bright;
-      color: v.$good-bright;
-    }
-
-    &.is-watch {
-      border-color: v.$doubtful;
-      color: v.$doubtful;
-    }
-
-    &.is-flag {
-      background: none;
-      border-color: v.$bad-soft;
-      color: v.$bad-soft;
-    }
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1983,34 +1340,11 @@ mat-icon.desk-gloves {
 // it was placed, a practice pick dimmed)
 // ---------------------------------------------------------------------------
 .desk-history-panel {
-  .desk-history-tiles {
-    margin-bottom: v.$space-10;
-  }
-
-  .desk-history-caveat {
-    font-size: v.$fs-11;
-  }
-
-  .desk-history-grid,
-  .desk-history-seasons {
-    display: grid;
-    gap: v.$space-10;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    margin-bottom: v.$space-10;
-  }
-
   .desk-history-table {
     width: 100%;
 
     th:first-child {
       text-align: left;
-    }
-
-    .desk-history-practice th,
-    .desk-history-practice td,
-    .desk-history-market th,
-    .desk-history-market td {
-      color: v.$text-faint;
     }
   }
 
@@ -2022,14 +1356,17 @@ mat-icon.desk-gloves {
     padding: 0;
   }
 
+  // (a closed bet: its result tile, its league's mark, the pick with its game muted under it, and the bet itself
+  // grouped on the right, apart from the pick: its band in the Book's colour, the price, the stake and what it came
+  // to; on a phone the bet drops under the pick)
   .desk-history-bet {
     align-items: center;
     border-top: 1px solid v.$panel-rule;
     display: grid;
     font-size: v.$fs-12;
-    gap: v.$space-10;
-    grid-template-columns: 26px minmax(0, 1fr) auto auto;
-    padding: 4px 0;
+    gap: v.$space-4 v.$space-10;
+    grid-template-columns: 26px 22px minmax(0, 1fr) auto;
+    padding: 6px 0;
 
     &.is-practice {
       opacity: 0.7;
@@ -2046,8 +1383,15 @@ mat-icon.desk-gloves {
     }
 
     .desk-history-words {
-      color: v.$grey-light;
-      @include v.ellipsis;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+      min-width: 0;
+
+      b,
+      small {
+        @include v.ellipsis;
+      }
 
       b {
         color: #fff;
@@ -2056,16 +1400,27 @@ mat-icon.desk-gloves {
 
       small {
         color: v.$text-faint;
+        font-size: v.$fs-11;
       }
     }
 
-    .desk-history-tag {
-      color: v.$text-faint;
-      font-size: v.$fs-10;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      white-space: nowrap;
+    .desk-history-replay {
+      opacity: 0.8;
+    }
+
+    .desk-history-bet-info {
+      align-items: center;
+      display: grid;
+      font-variant-numeric: tabular-nums;
+      gap: v.$space-12;
+      grid-template-columns: 74px 44px 38px 54px;
+      justify-items: end;
+      margin-left: v.$space-12;
+    }
+
+    .desk-history-price,
+    .desk-history-stake {
+      color: v.$grey-light;
     }
 
     .desk-history-units {
@@ -2084,29 +1439,90 @@ mat-icon.desk-gloves {
     }
   }
 
-  @media (max-width: 575px) {
+  @include v.down(small) {
     .desk-history-bet {
-      grid-template-columns: 26px minmax(0, 1fr) auto;
+      grid-template-columns: 26px 22px minmax(0, 1fr);
 
-      .desk-history-tag {
-        display: none;
+      .desk-history-bet-info {
+        grid-column: 3;
+        grid-template-columns: auto auto auto 1fr;
+        justify-items: start;
+        margin-left: 0;
+
+        .desk-history-units {
+          justify-self: end;
+        }
       }
     }
   }
 }
 
-.desk-live-caption {
-  color: v.$text-faint;
-  font-size: v.$fs-11;
-  margin: v.$space-6 0 0;
-  text-align: center;
+// (a band's tag, the Book's pill: its colour on a wash of it; Practice muted, PASS faint)
+.desk-history-tag {
+  --band-color: #{v.$text-faint};
+  background: color-mix(in srgb, var(--band-color) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--band-color) 50%, transparent);
+  border-radius: v.$radius-pill;
+  color: var(--band-color);
+  font-size: v.$fs-10;
+  font-weight: 800;
+  justify-self: start;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 3px 7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &.lock {
+    --band-color: #{chip.$lock-light};
+  }
+
+  &.love {
+    --band-color: #{v.$good-bright};
+  }
+
+  &.like {
+    --band-color: #{v.$caution};
+  }
+
+  &.practice {
+    --band-color: #{v.$grey-light};
+    opacity: 0.75;
+  }
+}
+
+// (a league's mark in place of its name: By Sport's rows, a closed bet's)
+.desk-history-league {
+  display: inline-flex;
+
+  .desk-league {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+// (By Confidence's practice picks: the row muted, as a practice pick in Recently closed, apart from PASS's faint name)
+.desk-history-table .desk-tier-practice {
+  opacity: 0.6;
+
+  th {
+    color: v.$grey-light;
+    font-style: italic;
+  }
 }
 
 // ---------------------------------------------------------------------------
-// The build at the top (the owner, 2026-10-19: the version's time, its commit and what changed, in one line,
-// wrapping on a phone), the live desk's line under By Sport, and Under the hood: one folded section at the
-// bottom holding the rest (its chevron lightens on hover, never yellow)
+// The build's time and the sport chips on one line (the owner, 2026-10-19): the build on the left, the chips on
+// the right; on a phone the chips wrap under it. The live desk's line under By Sport
 // ---------------------------------------------------------------------------
+.desk-bar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-10 v.$space-20;
+  justify-content: space-between;
+}
+
 .desk-build-line {
   align-items: baseline;
   color: v.$grey-light;
@@ -2114,10 +1530,8 @@ mat-icon.desk-gloves {
   flex-wrap: wrap;
   font-size: v.$fs-12;
   gap: v.$space-6 v.$space-10;
-  justify-content: center;
   margin: 0;
-  max-width: 100%;
-  text-align: center;
+  min-height: 1em;
 
   b {
     color: #fff;
@@ -2134,17 +1548,6 @@ mat-icon.desk-gloves {
   text-transform: uppercase;
 }
 
-.desk-build-commit {
-  color: v.$text-faint;
-  font-size: v.$fs-11;
-}
-
-.desk-build-note {
-  max-width: 100%;
-  min-width: 0;
-  @include v.ellipsis;
-}
-
 .desk-live-line {
   font-size: v.$fs-11;
   margin: v.$space-6 0 0;
@@ -2156,64 +1559,3 @@ mat-icon.desk-gloves {
   font-weight: 700;
 }
 
-.desk-hood {
-  margin-top: v.$space-12;
-}
-
-.desk-hood-toggle {
-  align-items: center;
-  background: none;
-  border: 0;
-  border-top: 1px solid v.$panel-rule;
-  color: v.$text-faint;
-  cursor: pointer;
-  display: flex;
-  flex-wrap: wrap;
-  font: inherit;
-  gap: v.$space-6 v.$space-10;
-  padding: v.$space-10 0;
-  text-align: left;
-  transition: color v.$t-hover;
-  width: 100%;
-
-  span {
-    font-family: v.$font-heading;
-    font-size: v.$fs-14;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  small {
-    font-size: v.$fs-11;
-  }
-
-  mat-icon {
-    @include v.icon-size(20px);
-    transition: transform v.$t-hover;
-  }
-
-  .desk-hood.open & mat-icon {
-    transform: rotate(90deg);
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: #fff;
-    outline: none;
-  }
-}
-
-.desk-hood-body {
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-12;
-
-  > .desk-tiles {
-    margin: 0 0 v.$space-6;
-  }
-}
-
-.desk-hood-filters {
-  justify-content: center;
-}

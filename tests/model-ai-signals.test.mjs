@@ -145,15 +145,6 @@ test("picks.mjs researchRow: a finding for the page, its fields checked again; t
   assert.equal(v.applied, true);
   assert.equal(ui.researchView({ status: 'unknown', sources: [] }).status, 'Nothing found');
   assert.equal(ui.researchView(null), null);
-  // (the Algorithm tab's News signals rows: the newest first, the sport chosen alone)
-  const files = [
-    { sport: 'nfl', signals: [{ team: '20', abbr: 'NYJ', player: 'Breece Hall', kind: 'role', direction: 'up', confidence: 0.8, headline: 'Hall to get more carries', at: '2026-10-14T10:00:00Z' }] },
-    { sport: 'nba', signals: [{ team: '1', abbr: 'ATL', player: 'Coach X', kind: 'coaching', direction: 'none', confidence: 0.9, headline: 'Hawks fire coach', at: '2026-10-14T12:00:00Z' }, { team: '1', kind: 'nonsense', direction: 'up', confidence: 1, headline: 'x', at: '2026-10-14T12:00:00Z' }] },
-    null,
-  ];
-  const rows = ui.newsSignalRows(files, { nfl: 'NFL', nba: 'NBA' });
-  assert.deepEqual(rows.map((r) => [r.where, r.what, r.sure]), [['NBA · ATL', 'Coach X: coaching change', '90% sure'], ['NFL · NYJ', 'Breece Hall: role change, more work', '80% sure']]);
-  assert.equal(ui.newsSignalRows(files, {}, 'nfl').length, 1);
 });
 
 // (ESPN's team stories: one on a role, one a recap, one league-wide)

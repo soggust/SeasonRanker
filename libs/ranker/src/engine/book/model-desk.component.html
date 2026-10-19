@@ -1,6 +1,6 @@
-<!-- The algorithm's admin panel (dev only): its bankroll and record up top, then the breakdowns, the bankroll
-     over time, the bets open, the latest graded, the changes it's made to itself, and its settings. Every
-     column sorts (a click on its header; again, the other way) and explains itself on hover. -->
+<!-- The algorithm's admin panel (admins only): the build and the sport chips on one line, then one board of the Bot's
+     history by sport and by confidence, the bets open and in play, and the last 20 closed. Open Bets' and In Play's
+     columns sort (a click on its header; again, the other way); every column explains itself on hover. -->
 
 <!-- (a column's header: its name, sorting its table, its explanation on hover) -->
 <ng-template #th let-table let-key="key" let-label="label" let-help="help">
@@ -12,67 +12,6 @@
       }
     </button>
   </th>
-</ng-template>
-
-<!-- (a self-check's row: its status chip, its title and headline; a chevron opens its rows, threshold, how it's
-     measured, the bot fields it needs and the bets it names) -->
-<ng-template #selfRow let-c let-v="view">
-  <li class="desk-self-row" [class]="'desk-self-row is-' + c.status" [class.shut]="!selfShown(c.key)">
-    <button type="button" class="desk-self-line" [attr.aria-expanded]="selfShown(c.key)" (click)="toggleSelf(c.key)" [title]="help['self' + c.id]">
-      <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>
-      <span class="desk-self-chip" [class]="'desk-self-chip is-' + c.status">{{ c.status }}</span>
-      <span class="desk-self-text"><b>{{ c.title }}</b><span>{{ c.headline }}</span></span>
-    </button>
-    @if (selfShown(c.key)) {
-      <div class="desk-self-detail">
-        @if (c.cells.length) {
-          <div class="desk-self-table">
-            <table class="desk-table">
-              <thead>
-                <tr>
-                  @for (k of c.columns; track k) {<th>{{ k }}</th>}
-                </tr>
-              </thead>
-              <tbody>
-                @for (r of c.cells; track $index) {
-                  <tr>
-                    @for (cell of r; track $index) {<td>{{ cell }}</td>}
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        }
-        <dl>
-          @if (c.threshold) {<dt>Threshold</dt><dd>{{ c.threshold }}</dd>}
-          @if (c.how) {<dt>How</dt><dd>{{ c.how }}</dd>}
-          @if (c.tested) {<dt>Tested</dt><dd>{{ c.tested }} cells (the worst listed)</dd>}
-          @if (c.needs) {<dt>Needs</dt><dd>{{ c.needs.join('; ') }}</dd>}
-          @if (c.examples.length) {
-            <dt>Bets</dt>
-            <dd>
-              <ul class="desk-self-examples">
-                @for (id of c.examples; track id) {<li [title]="id">{{ selfExample(id) }}</li>}
-              </ul>
-            </dd>
-          }
-        </dl>
-        <!-- (the write-ups' check: 3 of the week's Claude analyses in full, for a person to read) -->
-        @if (c.id === 'C15' && v.sample.length) {
-          <ul class="desk-changes">
-            @for (x of v.sample; track x.id) {
-              <li>
-                <small>{{ selfExample(x.id) }}</small>
-                @if (x.headline) {<b>{{ x.headline }}</b>}
-                <span>{{ x.reason }}</span>
-                <span>Risk: {{ x.risk }}</span>
-              </li>
-            }
-          </ul>
-        }
-      </div>
-    }
-  </li>
 </ng-template>
 
 <!-- (a bet's league: its ESPN logo; a fight's, the gloves the Book's dropdown shows (ESPN has no UFC league
@@ -147,33 +86,11 @@
   }
 </ng-template>
 
-<!-- (a breakdown's columns) -->
-<ng-template #tallyHead let-table>
-  <tr>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'label', label: '', help: 'Sort by name' }"></ng-container>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'record', label: 'Record' }"></ng-container>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'profit', label: 'Profit' }"></ng-container>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'roi', label: 'ROI' }"></ng-container>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'open', label: 'Open' }"></ng-container>
-    <ng-container *ngTemplateOutlet="th; context: { $implicit: table, key: 'clv', label: 'CLV' }"></ng-container>
-  </tr>
-</ng-template>
-<ng-template #tallyRow let-t>
-  <th>{{ t.label }}</th>
-  <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
-  <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
-  <td>{{ pct(t.roi) }}</td>
-  <td>{{ t.open }}</td>
-  <!-- (the share that beat the close, the mean expected return at it under it: two short lines keep the panels'
-       tables in) -->
-  <td [class.up]="(t.clvBeat ?? 0) > 0.5" [class.down]="t.clvBeat !== null && t.clvBeat < 0.5">{{ clvBeatText(t) }}@if (clvEvText(t); as ev) {<small>{{ ev }}</small>}</td>
-</ng-template>
-
 <!-- (a history row: its record compact (bet-format.ts compactRecord, the exact one on hover), units, return and the
      share that beat the close) -->
 <ng-template #histRow let-t let-total="total">
   <tr [class.desk-total]="total" [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()">
-    <th>{{ t.label }}</th>
+    <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ t.label }} }</th>
     <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
@@ -182,43 +99,36 @@
 </ng-template>
 
 <section class="model-desk" aria-label="Algorithm">
-  <!-- (the owner, 2026-10-19: "pare it down". Five on show, every record on the Bot's history (replay-history.ts
-       botHistoryOf, D47: today's algorithm replayed over the priced history before its epoch, plus its real bets
-       since): the build at the top, By Sport and By Confidence, the bets open now, the last 20 closed. Everything
-       else, the live desk's own bankroll, filters and readouts, folded under one Under the hood at the bottom) -->
+  <!-- (the owner, 2026-10-19: every record on the Bot's history (replay-history.ts botHistoryOf: today's algorithm
+       replayed over the priced history before its epoch, plus its real bets since). The build's time and the sport
+       chips on one line; under them one board, its own scroll: By Sport and By Confidence open, the bets open now,
+       those in play and the last 20 closed shut till opened) -->
   <div class="desk-top">
-  <header class="desk-head desk-build" aria-label="Build">
-    @if (!loading) {
-      <!-- (the version on show: its epoch (MODEL_EPOCH, when its trust restarted), the commit the replay was
-           written from, and what changed: DECISIONS.md's latest entry, which gate.mjs --record writes in the file) -->
+    <div class="desk-bar">
+      <!-- (the version on show: its epoch, MODEL_EPOCH as the replay recorded it; each sport's on hover) -->
       <p class="desk-build-line" [title]="epochTitle">
-        <span class="desk-build-tag">Build</span>
-        <b>{{ buildLabel(buildInfo.at) }}</b>
-        @if (buildInfo.commit) {<code class="desk-build-commit">{{ buildInfo.commit }}</code>}
-        @if (buildInfo.note) {<span class="desk-build-note" [title]="buildInfo.note">{{ buildInfo.note }}</span>}
+        @if (!loading) {<span class="desk-build-tag">Build</span><b>{{ buildLabel(buildAt) }}</b>}
       </p>
-    }
-  </header>
-
-  <!-- (the sport on show: every panel follows it, the history's included) -->
-  <div class="desk-filters">
-  <div class="desk-sports" role="group" aria-label="Sport">
-    <button type="button" class="desk-sport all" [class.active]="!sport" [attr.aria-pressed]="!sport" title="Every sport" (click)="setSport(null)">
-      <span class="sport-label">All</span>
-      <span class="sport-count">{{ openCount(null) }}</span>
-      <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
-    </button>
-    @for (s of sports; track s) {
-      <button type="button" class="desk-sport" [ngClass]="s" [class.active]="sport === s" [attr.aria-pressed]="sport === s" [title]="s.toUpperCase() + ': ' + openCount(s) + ' open bets'" [attr.aria-label]="s.toUpperCase() + ', ' + openCount(s) + ' open bets'" (click)="setSport(s)">
-        @if (leagueLogo(s); as logo) {<img [src]="logo" alt="" />} @else {<mat-icon class="desk-gloves" aria-hidden="true" fontIcon="sports_mma"></mat-icon>}
-        <span class="sport-count">{{ openCount(s) }}</span>
-        <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
-      </button>
-    }
-  </div>
-  </div>
+      <!-- (the sport on show: every panel follows it, the history's included) -->
+      <div class="desk-sports" role="group" aria-label="Sport">
+        <button type="button" class="desk-sport all" [class.active]="!sport" [attr.aria-pressed]="!sport" title="Every sport" (click)="setSport(null)">
+          <span class="sport-label">All</span>
+          <span class="sport-count">{{ openCount(null) }}</span>
+          <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+        </button>
+        @for (s of sports; track s) {
+          <button type="button" class="desk-sport" [ngClass]="s" [class.active]="sport === s" [attr.aria-pressed]="sport === s" [title]="s.toUpperCase() + ': ' + openCount(s) + ' open bets'" [attr.aria-label]="s.toUpperCase() + ', ' + openCount(s) + ' open bets'" (click)="setSport(s)">
+            @if (leagueLogo(s); as logo) {<img [src]="logo" alt="" />} @else {<mat-icon class="desk-gloves" aria-hidden="true" fontIcon="sports_mma"></mat-icon>}
+            <span class="sport-count">{{ openCount(s) }}</span>
+            <svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg>
+          </button>
+        }
+      </div>
+    </div>
   </div>
 
+  <div class="desk-board">
+  <div class="desk-scroll">
   @if (loading) {
     <p class="desk-note" role="status">Loading…</p>
   } @else if (!states.length) {
@@ -227,9 +137,9 @@
   } @else {
     @if (history; as h) {
     <div class="desk-grid">
-      <!-- (By Sport: each sport's record on the history, all of them under; the live desk's part since this version
-           a line under it (the admin's)) -->
-      <card-panel class="tab-card group-results desk-history-panel" label="By Sport" icon="sports" [startOpen]="true" [hint]="h.caveat">
+      <!-- (By Sport: each sport's record on the history, its league's mark for its name, all of them under; the live
+           desk's part since this version a line under it) -->
+      <card-panel class="tab-card group-results desk-history-panel" label="By Sport" icon="sports" [open]="panelOpen('sport')" (toggled)="togglePanel('sport')" [hint]="h.caveat">
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
@@ -248,9 +158,9 @@
         </div>
       </card-panel>
 
-      <!-- (By Confidence: the Book's bands on the history, PASS to LOCK, the practice picks (each slate's best few short
-           of the vig, at 0.5u) between PASS and LIKE, out of the total) -->
-      <card-panel class="tab-card group-results desk-history-panel" label="By Confidence" icon="local_fire_department" [startOpen]="true" [hint]="h.caveat">
+      <!-- (By Confidence: the Book's bands on the history, LOCK at the top to PASS at the bottom, the practice picks
+           (each slate's best few short of the vig, at 0.5u) muted between LIKE and PASS, the total under them) -->
+      <card-panel class="tab-card group-results desk-history-panel" label="By Confidence" icon="local_fire_department" [open]="panelOpen('confidence')" (toggled)="togglePanel('confidence')" [hint]="h.caveat">
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
@@ -269,7 +179,7 @@
     }
 
     @if (open.length) {
-      <card-panel class="tab-card group-results" label="Open Bets" icon="schedule" [startOpen]="true">
+      <card-panel class="tab-card group-results" label="Open Bets" icon="schedule" [open]="panelOpen('open')" (toggled)="togglePanel('open')">
         <div class="group-body">
           <table class="desk-table desk-bets desk-cols desk-cols-open">
             <colgroup>
@@ -371,7 +281,7 @@
 
     <!-- (the bets on games under way: the score and clock from ESPN, every minute) -->
     @if (live.length) {
-      <card-panel class="tab-card group-support" [label]="'In Play · ' + liveRisk.toFixed(1) + 'u'" icon="sports_score">
+      <card-panel class="tab-card group-support" [label]="'In Play · ' + liveRisk.toFixed(1) + 'u'" icon="sports_score" [open]="panelOpen('live')" (toggled)="togglePanel('live')">
         <div class="group-body">
           <!-- (its columns' widths set, the same whatever's folded: desk-cols) -->
           <table class="desk-table desk-bets desk-cols desk-cols-live">
@@ -501,898 +411,34 @@
       </card-panel>
     }
 
-    <!-- (Recently closed: the last 20 settled on the history, newest first: a replayed bet says where it was placed,
-         a practice pick dimmed) -->
+    <!-- (Recently closed: the last 20 settled on the history, newest first: the result, the league's mark, the pick
+         with its game muted under it, then the bet: its band in the Book's colour, the price, the stake and what it
+         came to; a replayed bet a small muted "replay", a practice pick dimmed) -->
     @if (history?.last?.length) {
-      <card-panel class="tab-card group-results desk-wide desk-history-panel" label="Recently closed" icon="history" [startOpen]="true" [hint]="history!.caveat">
+      <card-panel class="tab-card group-results desk-wide desk-history-panel" label="Recently closed" icon="history" [open]="panelOpen('closed')" (toggled)="togglePanel('closed')" [hint]="history!.caveat">
         <div class="group-body">
           <ol class="desk-history-strip" aria-label="The last 20 bets">
             @for (b of history!.last; track $index) {
               <li class="desk-history-bet" [ngClass]="b.res" [class.is-practice]="b.practice">
                 <span class="desk-history-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
-                <span class="desk-history-words"><b>{{ b.pick }}</b> <small>{{ b.price }}</small> · {{ b.game }}</span>
-                <span class="desk-history-tag" [title]="b.replayed ? 'Replayed: what today\'s Bot would have bet, at the ' + b.timing : 'A bet the Bot placed'">{{ b.practice ? 'Practice' : b.band }}{{ b.replayed ? ' · replayed at the ' + b.timing : '' }}</span>
-                <span class="desk-history-units">{{ b.units }}</span>
+                <span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container></span>
+                <span class="desk-history-words">
+                  <b>{{ b.pick }}</b>
+                  <small>{{ matchupName(b.sport, b.matchup) }}@if (b.replayed) {<span class="desk-history-replay" [title]="'Replayed: what today\'s Bot would have bet, from the replay of history priced at the ' + (b.timing === 'close' ? 'closing line' : 'opening line')"> · replay</span>}</small>
+                </span>
+                <span class="desk-history-bet-info">
+                  <span class="desk-history-tag" [ngClass]="bandClass(b)">{{ b.practice ? 'Practice' : b.band }}</span>
+                  <span class="desk-history-price" title="Price">{{ b.price }}</span>
+                  <span class="desk-history-stake" title="Stake">{{ b.stake }}u</span>
+                  <span class="desk-history-units" title="Result">{{ b.units }}</span>
+                </span>
               </li>
             }
           </ol>
         </div>
       </card-panel>
     }
-
-    <!-- Under the hood: everything else, folded to begin with (admin only, as the whole tab): the live desk's
-         bankroll tiles, its date, version and game filters (they cut only what's in here), the profit curve, the live
-         desk's own breakdowns, the history by market and season, Latest Results, Calibration, By Stake, Tracked,
-         Practice, the self-check, Scorecard, News signals, Miss review, CHECKs, What It's Changed, Context, Backtest
-         and its credits, Bot Settings -->
-    <section class="desk-hood" [class.open]="hoodOpen" aria-label="Under the hood">
-      <button type="button" class="desk-hood-toggle" [attr.aria-expanded]="hoodOpen" (click)="hoodOpen = !hoodOpen">
-        <mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon>
-        <span>Under the hood</span>
-        <small>the live desk's bankroll and filters, its own breakdowns, the checks, the scorecard, the settings</small>
-      </button>
-      @if (hoodOpen) {
-      <div class="desk-hood-body">
-      <div class="desk-filters desk-hood-filters">
-  <!-- (the bets' games by date, as Closed Bets: Today, Yesterday, This Month, This Year, All Time; the game dropdown lists that range's) -->
-  <span class="desk-chip">
-    <select class="desk-game-select desk-range-select" aria-label="Date range" [ngModel]="range" (ngModelChange)="setRange($event)">
-      @for (r of ranges; track r.value) {
-        <option [value]="r.value">{{ r.label }}</option>
-      }
-    </select>
-  </span>
-  <!-- (the record since the model's latest change (its epoch: when its trust restarted), the default, or all time;
-       the bets still open always shown) -->
-  <span class="desk-chip" [title]="epochTitle">
-    <select class="desk-game-select desk-range-select" aria-label="Results since" [title]="epochTitle" [ngModel]="sinceModel" (ngModelChange)="setSince($event)">
-      <option [ngValue]="true">{{ epochText }}</option>
-      <option [ngValue]="false">All time</option>
-    </select>
-  </span>
-  <span class="desk-chip">
-    <select class="desk-game-select" aria-label="Game" [ngModel]="game" (ngModelChange)="setGame($event)">
-      <option value="">All Games</option>
-      @for (d of gameDays; track d.day) {
-        <optgroup [label]="d.day">
-          @for (g of d.games; track g.event) {
-            <option [value]="g.event">{{ g.label }} ({{ g.count }})</option>
-          }
-        </optgroup>
-      }
-    </select>
-  </span>
-      </div>
-      <div class="desk-tiles">
-        <div class="desk-tile" [title]="help['available'] + ' (bankroll ' + balance.toFixed(2) + 'u' + (rebuys ? ', ' + rebuys + ' rebuy' + (rebuys > 1 ? 's' : '') : '') + ')'">
-          <small>Balance</small>
-          <b [class.up]="account.profit > 0" [class.down]="account.profit < 0">{{ ticked(available).toFixed(2) }}u</b>
-        </div>
-        <div class="desk-tile" [title]="help['record']">
-          <small>Record</small>
-          <b [attr.title]="recordTip(overall)">{{ tickedRecord() }}@if (streak) {<small class="desk-streak" [class.hot]="streak[0] === 'W'" [title]="help['streak']">{{ streak }}</small>}</b>
-        </div>
-        <div class="desk-tile" [title]="help['profit']">
-          <small>Profit</small>
-          <b [class.up]="overall.profit > 0" [class.down]="overall.profit < 0">{{ units(ticked(overall.profit)) }}@if (pending.count) {<small [title]="pending.count + ' bets decided since the last run, graded officially on the next'">{{ units(pending.profit) }} pending</small>}</b>
-        </div>
-        <div class="desk-tile" [title]="help['roi']">
-          <small>ROI</small>
-          <b [class.up]="(overall.roi ?? 0) > 0" [class.down]="(overall.roi ?? 0) < 0">{{ pct(overall.roi === null ? null : ticked(overall.roi)) }}</b>
-        </div>
-        <div class="desk-tile" [title]="help['atRisk']">
-          <small>At risk</small>
-          <b>{{ ticked(atRisk).toFixed(1) }}u<small>{{ compactCount(overall.open) }} bets</small></b>
-        </div>
-        <div class="desk-tile" [title]="help['clv']">
-          <small>Beat the close</small>
-          <b [class.up]="(overall.clvBeat ?? 0) > 0.5" [class.down]="overall.clvBeat !== null && overall.clvBeat < 0.5">{{ overall.clvN ? pct(overall.clvBeat === null ? null : ticked(overall.clvBeat), 0) : '-' }}</b>
-        </div>
-      </div>
-
-    <!-- (the profit after each graded bet, all of it and each sport's, in units from 0) -->
-    @if (overall.bets) {
-      <div class="desk-curve" [style.--total]="curveSolo ? 'var(--line-' + curveSolo + ')' : null">
-        <div class="desk-curve-head">
-          <span class="log-chart-label">Profit<small>after each graded bet · {{ curveRange.min.toFixed(1) }}u to {{ curveRange.max.toFixed(1) }}u</small></span>
-          <!-- (each line's color and its profit now: the total's first, then each sport's) -->
-          <ul class="desk-legend">
-            <li class="total" [title]="'Profit on every graded bet' + (curveSolo ? ' (' + curveSolo.toUpperCase() + ')' : '') + ': bankroll ' + (bankroll + curveProfit).toFixed(2) + 'u'">
-              <i></i>{{ curveSolo ? curveSolo.toUpperCase() : 'All' }}<b [class.up]="curveProfit > 0" [class.down]="curveProfit < 0">{{ units(curveProfit) }}</b>
-            </li>
-            @for (l of curveLines; track l.sport) {
-              <li [style.--line]="'var(--line-' + l.sport + ')'" [title]="'Profit on the ' + l.sport.toUpperCase() + ' bets graded'">
-                <i></i>{{ l.sport.toUpperCase() }}<b [class.up]="l.profit > 0" [class.down]="l.profit < 0">{{ units(l.profit) }}</b>
-              </li>
-            }
-          </ul>
-        </div>
-        <svg viewBox="0 0 600 120" preserveAspectRatio="none" role="img" [attr.aria-label]="'Profit after ' + overall.bets + ' graded bets: ' + units(curveProfit)">
-          <line class="desk-start" x1="0" [attr.x2]="curveWidth" [attr.y1]="curveZeroY" [attr.y2]="curveZeroY" />
-          <!-- (each sport's line under the total's, thinner, drawn in with it) -->
-          @for (l of curveLines; track l.path) {
-            <path class="desk-line desk-sport-line" [style.--line]="'var(--line-' + l.sport + ')'" [attr.d]="l.path" />
-          }
-          <!-- (the total's line and the wash between it and 0, drawn in left to right whenever it changes; the
-               profit now a dot at its end, breathing) -->
-          @for (d of [curve]; track d) {
-            <path class="desk-area" [attr.d]="d + ' L' + curveWidth + ',' + curveZeroY + ' L0,' + curveZeroY + ' Z'" />
-            <path class="desk-line" [attr.d]="d" />
-            @if (curveEnd; as end) {
-              <line class="desk-now" [attr.x1]="end.px" [attr.x2]="end.px" [attr.y1]="end.y" [attr.y2]="end.y" />
-            }
-          }
-          <!-- (a strip per point: the profit after that bet, the bet, and each sport's so far, on hover; its dot
-               shows on the total's line) -->
-          @for (s of curveSpots; track $index) {
-            <g class="desk-spot">
-              <rect [attr.x]="s.x" y="0" [attr.width]="s.w" height="120" />
-              <line [attr.x1]="s.px" [attr.x2]="s.px" [attr.y1]="s.y" [attr.y2]="s.y" />
-              <title>{{ s.title }}</title>
-            </g>
-          }
-        </svg>
-      </div>
-    }
-
-    <div class="desk-grid">
-      <!-- (the owner's order (2026-10-17): By Sport and By Confidence side by side across the top, both open to begin
-           with (one above the other on a phone); then Open Bets, open, the full width; then the rest folded, one each the
-           full width: Latest Results, Calibration, By Stake, the tracked markets, the self-check, the news signals, the
-           CHECKs, what it's changed, Context, Backtest, Model Settings, and the bets in play) -->
-      <card-panel class="tab-card group-results" label="Live desk by sport" icon="sports" [startOpen]="false">
-        <div class="group-body">
-          <table class="desk-table">
-            <thead>
-              <tr>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'label', label: '', help: 'Sort by sport' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'record', label: 'Record' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'profit', label: 'Profit' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'roi', label: 'ROI' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'open', label: 'Open' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'clv', label: 'CLV' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'test', label: 'Bot test' }"></ng-container>
-                @if (overall.bets) {
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'sport', key: 'disrupted', label: 'Disrupted' }"></ng-container>
-                }
-              </tr>
-            </thead>
-            <tbody>
-              @for (t of sorted('sport', bySport, sportValue); track t.label) {
-                <tr>
-                  <ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container>
-                  <td class="desk-test">
-                    @if (t.state?.test; as test) {
-                      winners {{ pct(test.winHit) }} · margin ±{{ test.maeMargin }} · total ±{{ test.maeTotal }}
-                    }
-                  </td>
-                  @if (overall.bets) {
-                    <td [title]="help['disrupted']">{{ t.state?.postmortem?.disrupted ?? '-' }}</td>
-                  }
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </card-panel>
-
-      <!-- (its record by the Book's bands: each bet's Kelly score and chance when it was placed, a lock, LOVE,
-           LIKE or PASS (no edge, or a small one); and all of them, the total under. CHECK under LOCK: the markets it
-           questioned, at a unit as if bet, not in the total) -->
-      @if (byConfidence.length) {
-      <card-panel class="tab-card group-results" label="Live desk by confidence" icon="local_fire_department" [startOpen]="false">
-        <div class="group-body">
-          <table class="desk-table">
-            <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'confidence' }"></ng-container></thead>
-            <tbody>
-              @for (t of sorted('confidence', byConfidence, tallyValue); track t.label) {
-                <tr [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()" [attr.title]="t.label === 'CHECK' ? help['checkBand'] : t.label === 'CHECK ROLE' ? help['checkRoleBand'] : null"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-              }
-              @if (confidenceTotal; as t) {
-                <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </card-panel>
-      }
-
-    </div>
-
-    <!-- (the history by market and by each sport's seasons: the replay's, this season's live bets on its newest row; a
-         season whose lines were priced by the ratings alone (no props in the desk's cache) says so) -->
-    @if (history; as h) {
-      <card-panel class="tab-card group-advanced desk-wide desk-history-panel" label="History by market and season" icon="calendar_month" [startOpen]="false" [hint]="h.caveat">
-        <div class="group-body">
-          <p class="desk-note desk-history-caveat">{{ h.caveat }}</p>
-          <div class="desk-history-seasons">
-            <table class="desk-table desk-history-table" aria-label="By market">
-              <thead>
-                <tr><th>Market</th><th>Record</th><th>Units</th><th>ROI</th><th>Beat close</th></tr>
-              </thead>
-              <tbody>
-                @for (t of h.byMarket; track t.label) {
-                  <ng-container *ngTemplateOutlet="histRow; context: { $implicit: t }"></ng-container>
-                }
-              </tbody>
-            </table>
-            @for (s of h.sports; track s.sport) {
-              @if (s.seasons.length) {
-                <table class="desk-table desk-history-table" [attr.aria-label]="s.label + ' by season'">
-                  <thead>
-                    <tr><th>{{ s.label }} season</th><th>Record</th><th>Units</th><th>ROI</th><th>Context</th></tr>
-                  </thead>
-                  <tbody>
-                    @for (t of s.seasons; track t.season) {
-                      <tr>
-                        <th>{{ t.season }}</th>
-                        <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
-                        <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
-                        <td>{{ pct(t.roi) }}</td>
-                        <td [title]="t.context === 'full' ? 'Props and lines, with the context' : 'Lines by the ratings alone: no props in the desk\'s cache for this season'">{{ t.context === 'full' ? 'full' : 'ratings only' }}</td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              }
-            }
-          </div>
-        </div>
-      </card-panel>
-    }
-
-    @if (recent.length) {
-      <card-panel class="tab-card group-advanced" label="Latest Results" icon="history">
-        <div class="group-body">
-          <table class="desk-table desk-bets desk-cols desk-cols-recent">
-            <colgroup>
-              @if (!sport) {<col class="desk-c-sport" />}
-              <col class="desk-c-game" />
-              <col class="desk-c-pick" />
-              <col class="desk-c-odds" />
-              <col class="desk-c-units" />
-              <col class="desk-c-chance" />
-              <col class="desk-c-final" />
-              <col class="desk-c-result" />
-              <col class="desk-c-clv" />
-              <col class="desk-c-why" />
-            </colgroup>
-            <thead>
-              <tr>
-                @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'sport', label: 'Sport' }"></ng-container>}
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'start', label: 'Game', help: 'The game and when it was played' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'pick', label: 'Pick' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'odds', label: 'Odds' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'units', label: 'Units' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'p', label: 'Its chance' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'final', label: 'Final' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'result', label: 'Result' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'clv', label: 'CLV', help: help['betClv'] }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'recent', key: 'why', label: 'Why' }"></ng-container>
-              </tr>
-            </thead>
-            <tbody>
-              @for (sg of gamesOf('recent', recent); track sg.sport) {
-              @if (sg.header) {
-                <!-- (every sport listed: each sport once, its games under it, folded or not) -->
-                @let sportShut = !sportOpen('recent', sg);
-                <tr class="desk-sport-group" [class.shut]="sportShut" (click)="toggleSport('recent', sg)">
-                  <td class="desk-left" colspan="10">
-                    <span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!sportShut" [attr.aria-label]="(sportShut ? 'Show ' : 'Hide ') + sg.sport.toUpperCase() + ' bets'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: sg.sport }"></ng-container>
-                      <b class="desk-sport-name">{{ sg.sport.toUpperCase() }}</b>
-                      <span class="desk-group-count">{{ sg.groups.length }} {{ sg.groups.length === 1 ? 'game' : 'games' }} · {{ sg.picks }} {{ sg.picks === 1 ? 'pick' : 'picks' }} · {{ sg.units }}u</span>
-                    </span>
-                  </td>
-                </tr>
-              }
-              @if (sportOpen('recent', sg)) {
-              @for (g of sg.groups; track g.key) {
-                @let many = g.bets.length > 1;
-                @let shut = !groupOpen('recent', g);
-                @if (many) {
-                  <!-- (a game with more than one bet: once, its picks under it, folded or not) -->
-                  <tr class="desk-group" [class.shut]="shut" (click)="toggleGroup('recent', g)">
-                    @if (!sport) {<th>@if (!sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: g.bets[0].sport, titled: true }"></ng-container>}</th>}
-                    <td class="desk-left"><span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + matchupName(g.bets[0].sport, g.bets[0].matchup)"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'MMM d' }"></ng-container></span>
-                    </span></td>
-                    <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
-                    <td></td>
-                    <td>{{ groupUnits(g) }}</td>
-                    <td></td>
-                    <td [title]="groupFinal(g)">{{ groupFinal(g) }}</td>
-                    @let won = groupProfit(g);
-                    <td [class.up]="(won ?? 0) > 0" [class.down]="(won ?? 0) < 0">{{ won === null ? '' : units(won) }}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                }
-                @if (!shut) {
-                @for (sec of sectionsOf(g); track sec.key) {
-                @if (sec.props && many) {
-                  <!-- (a team's player props: a row of their own, folded till it's opened) -->
-                  <tr class="desk-subgroup" [class.shut]="!propsShown('recent', sec)" (click)="toggleProps('recent', sec)">
-                    @if (!sport) {<th></th>}
-                    <td></td>
-                    <td class="desk-left" colspan="8"><span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('recent', sec)" [attr.aria-label]="(propsShown('recent', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <b>{{ sec.team }} Player Props</b>
-                      <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
-                    </span></td>
-                  </tr>
-                }
-                @if (!sec.props || !many || propsShown('recent', sec)) {
-                @for (b of sec.bets; track b.id) {
-                <tr [class.desk-grouped]="many">
-                  @if (!sport) {<th>@if (!many && !sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container>}</th>}
-                  <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'MMM d' }"></ng-container>}</td>
-                  <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                  <td [title]="help['betBook']">{{ odds(b.odds) }}</td>
-                  @let r = result(b);
-                  <td [class.up]="r?.status === 'won'" [class.down]="r?.status === 'lost'">{{ b.units }}</td>
-                  <td>{{ pct(b.p) }}</td>
-                  <td [title]="finalScore(b)">{{ finalScore(b) }}</td>
-                  <td [class.up]="(r?.profit ?? 0) > 0" [class.down]="(r?.profit ?? 0) < 0" [title]="b.status === 'open' ? 'From the final score; graded officially on the next run' : ''">{{ r ? r.status + ' ' + units(r.profit) : 'final' }}</td>
-                  <td [class.up]="b.clv?.beat === true" [class.down]="b.clv?.beat === false">{{ betClv(b) }}</td>
-                  <td class="desk-why" [title]="recapText(b)">
-                    @if (broke(b)) {
-                      <mat-icon class="desk-broke" fontIcon="healing" role="img" aria-hidden="false" aria-label="Premise broke in the game"></mat-icon>
-                    }
-                    {{ b.why ?? '-' }}
-                    @if (b.recap?.link; as link) {
-                      <a [href]="link" target="_blank" rel="noopener" aria-label="ESPN recap"><mat-icon aria-hidden="true" fontIcon="open_in_new"></mat-icon></a>
-                    }
-                  </td>
-                </tr>
-              }
-                }
-                }
-                }
-              }
-              }
-              }
-            </tbody>
-          </table>
-        </div>
-      </card-panel>
-    }
-
-    <!-- (the chance it gave its picks against how often they won: close together is honest; once there are
-         graded bets; the tracked rows' too, graded like bets) -->
-    @if (calibration.length) {
-    <card-panel class="tab-card group-support desk-wide" label="Calibration" icon="tune" [startOpen]="false">
-      <div class="group-body">
-          <table class="desk-table">
-            <thead>
-              <tr>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'label', label: 'Its chance', help: help['calibLabel'] }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'n', label: 'Graded', help: help['calibN'] }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'said', label: 'Said' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'calib', key: 'was', label: 'Won' }"></ng-container>
-              </tr>
-            </thead>
-            <tbody>
-              @for (c of sorted('calib', calibration, calibrationValue); track c.label) {
-                <tr [title]="'Bets it gave ' + c.label + ': won ' + pct(c.was) + ' of ' + c.n + ' (it said ' + pct(c.said) + ')'">
-                  <th>{{ c.label }}</th>
-                  <td [attr.title]="countTip(c.n)">{{ compactCount(c.n) }}</td>
-                  <td>{{ pct(c.said) }}</td>
-                  <td [class.up]="c.was > c.said + 0.03" [class.down]="c.was < c.said - 0.03">{{ pct(c.was) }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-      </div>
-    </card-panel>
-    }
-
-    <card-panel class="tab-card group-advanced desk-wide" label="By Stake" icon="toll" [startOpen]="false">
-      <div class="group-body">
-        <!-- (whether the bigger stakes, the bigger edges, do better: the staking working) -->
-        <table class="desk-table">
-          <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'stake' }"></ng-container></thead>
-          <tbody>
-            @for (t of sorted('stake', byStake, tallyValue); track t.label) {
-              <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-          </tbody>
-        </table>
-        <!-- (the bets it saw value in apart from the ones placed only for the data: the edge's is the real record) -->
-        <table class="desk-table desk-sub" [title]="help['intent']">
-          <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'intent' }"></ng-container></thead>
-          <tbody>
-            @for (t of sorted('intent', byIntent, tallyValue); track t.label) {
-              <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </card-panel>
-
-    <!-- (the markets tracked, not bet since Oct 13, 2026 (desk-math.ts TRACKED_FROM: no edge, or a guard cut them): graded and learned from like
-         bets, never in the record, the bankroll or the lists above; their record by sport, a unit each as if bet;
-         folded to begin with) -->
-    @if (trackedBySport.length || lineGates.length) {
-    <card-panel class="tab-card group-advanced desk-wide" [label]="trackedTitle" icon="visibility" [startOpen]="false">
-      <div class="group-body">
-        <!-- (the game lines' CLV gate by sport: full stakes, or the practice stake (0.5u) while the sport's closing-line value over its
-             last 200 graded line bets is negative; state.json's lineGate, desk.mjs lineGate) -->
-        @for (g of lineGates; track g.label) {
-          <p class="desk-note" [class.down]="!g.on" [title]="help['lineGate']">{{ g.text }}</p>
-        }
-        <table class="desk-table" [title]="help['tracked']">
-          <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'tracked' }"></ng-container></thead>
-          <tbody>
-            @for (t of sorted('tracked', trackedBySport, tallyValue); track t.label) {
-              <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-            @if (trackedTotal; as t) {
-              <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-          </tbody>
-        </table>
-        <p class="desk-note">No edge, so not bet: graded at a unit each as if it had been, for the data the Bot learns from (since Oct 13, 2026; before it, no-edge markets were bet at 0.5u as action bets, still on the record).</p>
-      </div>
-    </card-panel>
-    }
-
-    <!-- (the slate's practice picks (desk.mjs PRACTICE_SPLIT): each slate's best few by edge before the vig, bet at 0.5u
-         though short of the vig, so the bot never stops playing; graded and learned from, tallied here, out of the
-         record; folded to begin with) -->
-    @if (practiceBySport.length) {
-    <card-panel class="tab-card group-advanced desk-wide" label="Practice" icon="fitness_center" [startOpen]="false">
-      <div class="group-body">
-        <table class="desk-table">
-          <thead class="desk-tally-head"><ng-container *ngTemplateOutlet="tallyHead; context: { $implicit: 'practice' }"></ng-container></thead>
-          <tbody>
-            @for (t of sorted('practice', practiceBySport, tallyValue); track t.label) {
-              <tr><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-            @if (practiceTotal; as t) {
-              <tr class="desk-total"><ng-container *ngTemplateOutlet="tallyRow; context: { $implicit: t }"></ng-container></tr>
-            }
-          </tbody>
-        </table>
-        <p class="desk-note">Each slate's best few picks by edge before the vig, bet at 0.5u though none clears the vig, so the Bot keeps playing and learning: shown on the Book as a LIKE with a practice tag, graded and learned from, kept out of the record above.</p>
-      </div>
-    </card-panel>
-    }
-
-    <!-- Self-check -->
-    <!-- (the weekly self-check (libs/ranker/scripts/model/selfcheck.mjs, Monday mornings, free): each
-         sport's flags, watches and partial checks in plain words, the rest folded under a line of counts;
-         the panel folded to begin with) -->
-    <card-panel class="tab-card group-support desk-wide desk-self-panel" [label]="selfTitle" icon="health_and_safety" [startOpen]="false">
-      <div class="group-body">
-        @if (!selfChecks.length) {
-          <p class="desk-note">No self-check yet (runs Monday mornings)</p>
-        }
-        <!-- (the miss review's recommendations: a cause recurring past its shrunk threshold, a refit candidate; a
-             data one a bug. Advice: nothing changes a weight on its own) -->
-        @if (missPanel.recommendations.length) {
-          <section class="desk-self desk-miss-recs">
-            <header class="desk-self-head"><b>From the miss review</b></header>
-            <ul class="desk-news-list">
-              @for (r of missPanel.recommendations; track r.text) {
-                <li class="desk-news-row" [class.is-bug]="r.bug"><p class="desk-news-what">{{ r.text }}</p></li>
-              }
-            </ul>
-          </section>
-        }
-        @for (v of selfChecks; track v.sport) {
-          <section class="desk-self">
-            <header class="desk-self-head">
-              <b>{{ v.label }}</b>
-              <small [title]="'Run ' + (v.at | date: 'MMM d, h:mm a')">week of {{ v.week }}</small>
-              <ul class="desk-self-counts">
-                @for (n of v.counts; track n.status) {
-                  <li class="desk-self-chip" [class]="'desk-self-chip is-' + n.status" [title]="help['self_' + n.status]">{{ n.n }} {{ n.status }}</li>
-                }
-              </ul>
-            </header>
-            <ul class="desk-self-list">
-              @for (c of v.shown; track c.key) {
-                <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
-              }
-            </ul>
-            @if (v.folded.length) {
-              <button type="button" class="desk-self-fold" [class.shut]="!selfShown(v.sport + ':folded')" [attr.aria-expanded]="selfShown(v.sport + ':folded')" (click)="toggleSelf(v.sport + ':folded')">
-                <span class="desk-group-toggle" aria-hidden="true"><mat-icon fontIcon="chevron_right"></mat-icon></span>{{ v.foldedLine }}
-              </button>
-              @if (selfShown(v.sport + ':folded')) {
-                <ul class="desk-self-list">
-                  @for (c of v.folded; track c.key) {
-                    <ng-container *ngTemplateOutlet="selfRow; context: { $implicit: c, view: v }"></ng-container>
-                  }
-                </ul>
-              }
-            }
-          </section>
-        }
-      </div>
-    </card-panel>
-
-    <!-- Scorecard: each version of the model scored by the replay gate (libs/ranker/scripts/model/gate.mjs --record):
-         a small chart a sport, a point per version, oldest on the left: the edge over the book's own log loss in nats
-         per 100 rows (above the dashed 0 the model better than the book) on the frozen benchmark and the last 28
-         days; the top picks' CLV and hit rate on the hover. Shown once a sport has the file -->
-    @if (scorecardOn) {
-      <card-panel class="tab-card group-support desk-wide desk-score-panel" label="Scorecard" icon="query_stats" [startOpen]="false">
-        <div class="group-body">
-          <p class="desk-note">Every version of the Bot replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the Book's own log loss, in nats per 100 rows (above the dashed line it beats the Book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
-          @if (!scorecards.length) {
-            <p class="desk-note">No version scored for this sport yet</p>
-          }
-          <div class="desk-score-grid">
-            @for (c of scorecards; track c.sport) {
-              <section class="desk-score" [style.--line]="'var(--line-' + c.sport + ')'">
-                <header class="desk-score-head">
-                  <b>{{ c.label }}</b>
-                  <small>{{ c.layer === 'props' ? 'props' : 'game lines' }} · {{ c.versions }} version{{ c.versions === 1 ? '' : 's' }} · {{ c.min.toFixed(2) }} to {{ c.max.toFixed(2) }}</small>
-                </header>
-                <svg [attr.viewBox]="'0 0 ' + scoreW + ' ' + scoreH" preserveAspectRatio="none" role="img" [attr.aria-label]="c.label + ' scorecard: ' + c.latest">
-                  <line class="desk-start" x1="0" [attr.x2]="scoreW" [attr.y1]="c.zeroY" [attr.y2]="c.zeroY" />
-                  @for (s of c.series; track s.key) {
-                    <path class="desk-score-line" [class.is-rolling]="s.key === 'rolling'" [attr.d]="s.path" />
-                    @for (p of s.points; track $index) {
-                      <line class="desk-score-dot" [class.is-rolling]="s.key === 'rolling'" [attr.x1]="p.x" [attr.x2]="p.x" [attr.y1]="p.y" [attr.y2]="p.y"><title>{{ p.title }}</title></line>
-                    }
-                  }
-                </svg>
-                <ul class="desk-legend desk-score-legend">
-                  <li><i></i>Frozen benchmark</li>
-                  <li class="is-rolling"><i></i>Last 28 days</li>
-                </ul>
-                <p class="desk-note">{{ c.latest }}</p>
-              </section>
-            }
-          </div>
-        </div>
-      </card-panel>
-    }
-
-    <!-- News signals: the teams' news read once a day for role changes
-         (libs/ranker/scripts/model/news-signals.mjs, a small Claude model), the last two days'; log only: they
-         move no price till a fit shows they help. Shown once a sport has the file (NEWS_SIGNALS on) -->
-    @if (newsSignalsOn) {
-      <card-panel class="tab-card group-support desk-wide desk-news-panel" label="News signals" icon="feed" [startOpen]="false">
-        <div class="group-body">
-          <p class="desk-note">Role changes read from each team's news in the last two days: a starter named, a benching, a restriction, a new role, a coaching change, a return. Logged only: they don't move a price or a bet until a test shows they help.</p>
-          @if (!newsSignals.length) {
-            <p class="desk-note">No role changes in the news lately</p>
-          }
-          <ul class="desk-news-list">
-            @for (s of newsSignals; track s.key) {
-              <li class="desk-news-row">
-                <p class="desk-news-what"><b>{{ s.where }}</b> {{ s.what }} <small>{{ s.sure }}</small></p>
-                <p class="desk-news-headline">{{ s.headline }} <small>{{ s.at | date: 'MMM d, h:mm a' }}</small></p>
-              </li>
-            }
-          </ul>
-        </div>
-      </card-panel>
-    }
-
-    <!-- Miss review: each day the biggest misses (high confidence lost, the largest projection errors, the worst CLV
-         losers; an in-game injury left out) looked into by Claude with the news around the game
-         (libs/ranker/scripts/model/miss-review.mjs): a cause, how sure, the evidence; the causes tallied by sport and
-         stat. Shown once a sport has the file -->
-    @if (missOn) {
-      <card-panel class="tab-card group-support desk-wide desk-miss-panel" label="Miss review" icon="troubleshoot" [startOpen]="false">
-        <div class="group-body">
-          <p class="desk-note">Why the biggest misses missed: each day's worst surprises looked into with the news around the game, and a cause picked from a fixed list. A cause that keeps coming back becomes a recommendation in the Self-check panel. Advice only: it changes no weight on its own.@if (missPanel.line) { {{ missPanel.line }}.}</p>
-          @if (missPanel.tally.length) {
-            <ul class="desk-miss-tally" aria-label="Causes tallied">
-              @for (c of missPanel.tally; track c.key) {
-                <li [class]="'desk-miss-chip is-' + c.causeId" [title]="c.where + ': ' + c.count + ' reviewed'"><b>{{ c.cause }}</b> {{ c.where }} <small>{{ c.count }}</small></li>
-              }
-            </ul>
-          }
-          @if (!missPanel.days.length) {
-            <p class="desk-note">No misses reviewed lately</p>
-          }
-          @for (d of missPanel.days; track d.day) {
-            <h4 class="desk-miss-day">{{ d.day | date: 'EEE, MMM d' : 'UTC' }}</h4>
-            <ul class="desk-news-list">
-              @for (m of d.rows; track m.key) {
-                <li class="desk-news-row">
-                  <p class="desk-news-what"><b>{{ m.where }}</b> {{ m.pick }} <small>{{ m.result }}</small></p>
-                  <p class="desk-news-headline"><span [class]="'desk-miss-cause is-' + m.causeId">{{ m.cause }}</span> <small>{{ m.sure }}</small>@if (m.backfill) {<small>backfill</small>} {{ m.evidence }}</p>
-                </li>
-              }
-            </ul>
-          }
-        </div>
-      </card-panel>
-    }
-
-    @if (checkCauses.length || checkAdvice.length || researchRows.length) {
-      <card-panel class="tab-card group-support" label="CHECKs" icon="fact_check">
-        <div class="group-body">
-          <!-- (the graded CHECKs by what drove each one's gap (check-learn.mjs diagnose), at a unit each as if bet,
-               and the advice they make: a blind spot where the market keeps being right, a guard that can loosen
-               where the model does; recorded, never applied by the desk) -->
-          @if (checkAdvice.length) {
-            <ol class="desk-changes desk-check-advice">
-              @for (a of checkAdvice; track a.sport + a.cause + a.kind) {
-                <li>
-                  <small>{{ a.sport }} · {{ a.kind === 'blind-spot' ? 'Blind spot' : a.kind === 'loosen' ? 'Guard can loosen' : 'Watch' }}{{ a.confirmed ? '' : ' (not yet clear)' }}</small>
-                  <b>{{ a.label }}: {{ recordText(a.evidence) }}, {{ pct(a.evidence.hitRate, 0) }} against {{ pct(a.evidence.breakEven, 0) }} to break even</b>
-                  <span>{{ a.text }}</span>
-                </li>
-              }
-            </ol>
-          }
-          @if (checkCauses.length) {
-            <table class="desk-table desk-bets">
-              <thead>
-                <tr>
-                  @if (!sport) {<th>Sport</th>}
-                  <th class="desk-left">Cause</th>
-                  <th>Open</th>
-                  <th>Graded</th>
-                  <th>Record</th>
-                  <th [title]="'The hit rate and its 95% interval'">Hit rate</th>
-                  <th [title]="'The hit rate their prices needed to break even'">Break-even</th>
-                  <th>Profit</th>
-                  <th>Per CHECK</th>
-                  <th class="desk-left">Stats</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (c of checkCauses; track c.sport + c.key) {
-                  <tr>
-                    @if (!sport) {<th>{{ c.sport }}</th>}
-                    <td class="desk-left">{{ c.label }}</td>
-                    <td>{{ c.open }}</td>
-                    <td [attr.title]="countTip(c.n)">{{ compactCount(c.n) }}</td>
-                    <td [attr.title]="recordTip(c)">{{ recordText(c) }}</td>
-                    <td [class.up]="!!c.ci && c.breakEven !== null && c.ci[0] > c.breakEven" [class.down]="!!c.ci && c.breakEven !== null && c.ci[1] < c.breakEven">{{ pct(c.hitRate, 0) }}@if (c.ci) {<small> {{ pct(c.ci[0], 0) }}-{{ pct(c.ci[1], 0) }}</small>}</td>
-                    <td>{{ pct(c.breakEven, 0) }}</td>
-                    <td [class.up]="c.profit > 0" [class.down]="c.profit < 0">{{ units(c.profit) }}</td>
-                    <td>{{ c.perUnit === null ? '-' : units(c.perUnit) }}</td>
-                    <td class="desk-left">{{ c.stats || '-' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-          <!-- (the news research's own scorecard (research.mjs researchCard): its bets where it found nothing, its
-               bets priced with what it found, each at 0.5u at most and graded apart, and its verdicts) -->
-          @if (researchRows.length) {
-            <table class="desk-table desk-bets desk-research">
-              <thead>
-                <tr>
-                  @if (!sport) {<th>Sport</th>}
-                  <th class="desk-left">Research</th>
-                  <th>Graded</th>
-                  <th>Record</th>
-                  <th>Units</th>
-                  <th [title]="'The mean closing-line value of the ones graded with a close'">CLV</th>
-                  <th>Open</th>
-                  <th class="desk-left">By category</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (c of researchRows; track c.sport + c.key) {
-                  <tr>
-                    @if (!sport) {<th>{{ c.sport }}</th>}
-                    <td class="desk-left">{{ c.label }}</td>
-                    <td [attr.title]="countTip(c.n)">{{ compactCount(c.n) }}</td>
-                    <td>{{ c.record }}</td>
-                    <td [class.up]="(c.units ?? 0) > 0" [class.down]="(c.units ?? 0) < 0">{{ c.units === null ? '-' : units(c.units) }}</td>
-                    <td [class.up]="(c.clv ?? 0) > 0" [class.down]="(c.clv ?? 0) < 0">{{ c.clv === null ? '-' : pct(c.clv, 1) }}</td>
-                    <td>{{ c.open }}</td>
-                    <td class="desk-left">{{ c.note || '-' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-        </div>
-      </card-panel>
-    }
-
-    @if (changes.length) {
-      <card-panel class="tab-card group-support" label="What It's Changed" icon="auto_fix_high">
-        <div class="group-body">
-          <ul class="desk-changes">
-            @for (c of changes; track c.at + c.what + c.sport) {
-              <li>
-                <small>{{ c.at | date: 'MMM d, h:mm a' }} · {{ c.sport }}</small>
-                <b>{{ c.what }}: {{ c.from }} → {{ c.to }}</b>
-                <span>{{ c.why }}</span>
-              </li>
-            }
-          </ul>
-        </div>
-      </card-panel>
-    }
-
-    @if (contextRows.length || propRows.length) {
-      <card-panel class="tab-card group-results" label="Context" icon="insights">
-        <div class="group-body">
-          <!-- (what it weighs beyond the ratings, each term's size fit on the history: the held-out numbers
-               without and with them, then every term, the ones left out dimmed) -->
-          @if (contextRows.length) {
-            <ul class="desk-context-tests">
-              @for (c of contextTests; track c.label) {
-                <li [title]="help['test']">
-                  <b>{{ c.label }}</b> on {{ c.games }} unseen games: winners {{ pct(c.before.winHit) }} → {{ pct(c.after.winHit) }} · margin ±{{ c.before.maeMargin }} → {{ c.after.maeMargin }} · total ±{{ c.before.maeTotal }} → {{ c.after.maeTotal }}
-                </li>
-              }
-            </ul>
-            <table class="desk-table desk-bets">
-              <thead>
-                <tr>
-                  @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'sport', label: 'Sport' }"></ng-container>}
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'term', label: 'Term' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'on', label: 'Moves' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'size', label: 'Size' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'kept', label: 'Kept' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'games', label: 'Games' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'context', key: 'gain', label: 'Held-out gain' }"></ng-container>
-                </tr>
-              </thead>
-              <tbody>
-                @for (t of sorted('context', contextRows, contextValue); track t.sport + t.key) {
-                  <tr [class.desk-off]="!t.kept">
-                    @if (!sport) {<th><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></th>}
-                    <td class="desk-left" [title]="t.unit">{{ t.label }}</td>
-                    <td>{{ t.on }}</td>
-                    <td>{{ t.kept ? signed(t.size) + ' ' + t.unitWord : '0' }}</td>
-                    <td>{{ t.kept ? 'yes' : 'no' }}</td>
-                    <td>{{ t.games }}</td>
-                    <td [class.up]="(t.gain ?? 0) > 0 && t.kept" [class.down]="(t.gain ?? 0) < 0">{{ t.gain === null ? '-' : signed(t.gain) + '%' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-          <!-- (the props: each type's projection, fit on the history and checked on its last 30%) -->
-          @if (propRows.length) {
-            <table class="desk-table desk-bets desk-sub">
-              <thead>
-                <tr>
-                  @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'sport', label: 'Sport' }"></ng-container>}
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'prop', label: 'Prop' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'rows', label: 'Games' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'mae', label: 'Miss (vs avg)' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'overLine', label: 'Over a line (vs own)' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'sideHit', label: 'Side right' }"></ng-container>
-                  <th [title]="help['propSettings']">Settings</th>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'props', key: 'propTrust', label: 'Trust' }"></ng-container>
-                </tr>
-              </thead>
-              <tbody>
-                @for (t of sorted('props', propRows, propValue); track t.sport + t.key) {
-                  <tr>
-                    @if (!sport) {<th><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></th>}
-                    <td class="desk-left">{{ t.label }}</td>
-                    <td>{{ t.rows }}</td>
-                    <td>{{ t.check?.mae ?? '-' }} ({{ t.check?.maeBase ?? '-' }})</td>
-                    <td [class.up]="(t.check?.logLoss ?? 1) < (t.check?.logLossBase ?? 0)">{{ t.check?.logLoss ?? '-' }} ({{ t.check?.logLossBase ?? '-' }})</td>
-                    <td>{{ pct(t.check?.sideHit ?? null) }}</td>
-                    <td class="desk-test">
-                      K {{ t.params.K }} · recent {{ t.params.w }} · opp {{ t.params.a }} · script {{ t.params.b }} · ctx {{ t.params.c }} · r {{ t.params.r }}
-                      @if (matchupText(t); as m) {
-                        <small [title]="help['matchups']">{{ m }}</small>
-                      }
-                    </td>
-                    <td>{{ t.trust?.trust ?? 0.5 }}{{ t.trust?.fitted ? '' : '*' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-          <!-- (the NFL's questionable players' chance of playing: what a questionable teammate counts as) -->
-          @for (p of playChances; track p.sport) {
-            <p class="desk-test"><small>{{ p.sport }}: {{ p.text }}</small></p>
-          }
-          <!-- (the same-game sizing: the props' correlation in a game, fit and replayed) -->
-          @for (g of sameGames; track g.sport) {
-            <p class="desk-test"><small>{{ g.sport }} same-game sizing: {{ g.text }}</small></p>
-          }
-          <!-- (the props' live calibration: each spot's nudge to the model's chance, fit on the graded props) -->
-          @for (c of calibs; track c.sport) {
-            <p class="desk-test"><small>{{ c.sport }} live calibration: {{ c.text }}</small></p>
-          }
-        </div>
-      </card-panel>
-    }
-
-    @if (backtestRows.length || credits) {
-      <card-panel class="tab-card group-advanced" label="Backtest" icon="history_edu">
-        <div class="group-body">
-          <!-- (the model against the real lines of games it had already seen: each market's trust fitted on the
-               closing bets, and how the early bets did against the close) -->
-          @if (backtestRows.length) {
-            <table class="desk-table desk-bets">
-              <thead>
-                <tr>
-                  @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'sport', label: 'Sport' }"></ng-container>}
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'market', label: 'Market' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btBets', label: 'Games' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btTrust', label: 'Trust' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btClose', label: 'ROI at close' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btEarly', label: 'ROI early' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btBeat', label: 'Beat the close' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btLoss', label: 'Bot vs market' }"></ng-container>
-                  <ng-container *ngTemplateOutlet="th; context: { $implicit: 'backtest', key: 'btAnchor', label: 'Anchor edge' }"></ng-container>
-                </tr>
-              </thead>
-              <tbody>
-                @for (t of sorted('backtest', backtestRows, backtestValue); track t.sport + t.market) {
-                  <tr>
-                    @if (!sport) {<th><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></th>}
-                    <td class="desk-left">{{ marketName(t.market) }}</td>
-                    <td [attr.title]="countTip(t.bets)">{{ compactCount(t.bets) }}</td>
-                    <td>{{ t.trust.trust }}</td>
-                    <td [class.up]="(t.close.every.roi ?? 0) > 0" [class.down]="(t.close.every.roi ?? 0) < 0">{{ pct(t.close.every.roi) }}</td>
-                    <td [class.up]="(t.early.every.roi ?? 0) > 0" [class.down]="(t.early.every.roi ?? 0) < 0">{{ pct(t.early.every.roi) }}</td>
-                    <td>{{ pct(t.early.clv.beat, 0) }}</td>
-                    <td>{{ num(modelVsMarket(t)) }}</td>
-                    <td>{{ num(pinnacleEdge(t), 4) }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-          @if (credits; as c) {
-            <!-- (The Odds API's credits this cycle) -->
-            <ul class="desk-context-tests desk-sub" [title]="help['credits']">
-              <li><b>Odds API credits</b> {{ creditsUsed(c) }} used of {{ c.monthly }} · {{ c.remaining }} left · cycle ends {{ c.cycleEnd | date: 'MMM d' }} ({{ c.daysLeft }} days)</li>
-              <li>this cycle: lines {{ c.spent['lines'] ?? 0 }} · props {{ c.spent['props'] ?? 0 }} · backtest {{ c.spent['history'] ?? 0 }} of {{ c.historyBudget }} · reserve {{ c.reserve }}</li>
-              <li>today's allowance: lines {{ c.today['lines'] ?? 0 }} of {{ c.allowance['lines'] }} · props {{ c.today['props'] ?? 0 }} of {{ c.allowance['props'] }}</li>
-            </ul>
-          }
-        </div>
-      </card-panel>
-    }
-
-    <card-panel class="tab-card group-box" label="Bot Settings" icon="settings_suggest">
-      <div class="group-body">
-        <!-- (each sport's fitted settings and how much each market trusts the model; hover a header for what
-             it means) -->
-        <table class="desk-table">
-          <thead>
-            <tr>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'label', label: '', help: 'Sort by sport' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'k', label: 'Learning rate' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'hfa', label: 'Home edge' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'revert', label: 'Carryover' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'kO', label: 'Scoring rate' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigma', label: 'Margin spread' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigmaT', label: 'Total spread' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'trust', label: 'Trust in the Bot' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'history', label: 'Games' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'book', label: 'Book' }"></ng-container>
-            </tr>
-          </thead>
-          <tbody>
-            @for (s of sorted('settings', states, stateValue); track s.sport) {
-              <tr>
-                <th>{{ s.label }}</th>
-                <td>{{ s.params['k'] }}</td>
-                <td>{{ s.params['hfa'] }}</td>
-                <td>{{ s.params['revert'] }}</td>
-                <td>{{ s.params['kO'] }}</td>
-                <td>{{ s.params['sigma'] }}</td>
-                <td>{{ s.params['sigmaT'] }}</td>
-                <td class="desk-test">{{ trustText(s) }}</td>
-                <td>{{ s.history.finals }}</td>
-                <td [title]="help['book']">{{ s.book ? 'Book' : '-' }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </card-panel>
-      </div>
-      }
-    </section>
   }
+  </div>
+  </div>
 </section>

@@ -301,32 +301,3 @@ test('self-check: C23 the leak hunt runs with the others and reads whole', () =>
   assert.ok(Array.isArray(c.rows));
   assert.ok(Number.isFinite(c.n) && Number.isFinite(c.tested));
 });
-
-// ---- the Algorithm tab's Scorecard (scorecard.ts) ----
-
-test("scorecard panel: a chart a sport, a point per version, the edge's sign turned so up beats the Book", async () => {
-  const desk_ = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
-  const n = (gap, clv = 0.01) => ({ n: 100, gap, clv, hit: 0.55 });
-  const file = {
-    v: 1,
-    sport: 'nhl',
-    entries: [
-      { sport: 'nhl', epoch: '2026-10-18T05:00:00Z', commit: 'aaa', at: 'x', frozen: { props: n(0.002) }, rolling: { props: n(0.001) } },
-      { sport: 'nhl', epoch: '2026-10-19T00:19:00Z', commit: 'bbb', at: 'y', frozen: { props: n(-0.003) }, rolling: { props: null } },
-    ],
-  };
-  const charts = desk_.scorecardPanelOf([file, null, { v: 1, sport: 'mlb', entries: [] }], { nhl: 'NHL' });
-  assert.equal(charts.length, 1);
-  const c = charts[0];
-  assert.equal(c.label, 'NHL');
-  assert.equal(c.layer, 'props');
-  assert.equal(c.versions, 2);
-  const [fz, roll] = c.series;
-  assert.equal(fz.points.length, 2);
-  assert.equal(roll.points.length, 1, 'a version with no rolling numbers: no point');
-  assert.ok(fz.points[1].y < fz.points[0].y, 'the better version higher on the chart');
-  assert.ok(fz.points[1].y < c.zeroY && fz.points[0].y > c.zeroY, 'above the zero line beats the Book');
-  assert.match(fz.points[1].title, /bbb/);
-  assert.match(fz.path, /^M[\d.]+,[\d.]+ L/);
-  assert.match(c.latest, /bbb: frozen \+0\.30/);
-});

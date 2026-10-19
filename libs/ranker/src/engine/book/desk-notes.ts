@@ -216,22 +216,3 @@ export interface CheckEntry extends Partial<ModelBet> {
   hidden?: boolean;
   passAs?: string;
 }
-
-// The CHECKs at a unit, as bets for the desk's tally: graded ones with what they'd have done, the rest open; the
-// closed ones (their gap closed before the lock: checkSummary's apart) and the shadows (hidden: PASSes) left out
-export function checkBets(checks: readonly CheckEntry[] | null | undefined): ModelBet[] {
-  return (checks ?? [])
-    .filter((c) => c && c.id && !c.closedAt && !c.hidden)
-    .map((c) => {
-      const r = c.checkResult;
-      return {
-        ...(c as ModelBet),
-        placedAt: c.firstAt ?? c.placedAt,
-        units: 1,
-        status: r ? r.status : 'open',
-        profit: r ? (r.profit ?? 0) : 0,
-        void: !!r?.void,
-        clv: null,
-      };
-    });
-}

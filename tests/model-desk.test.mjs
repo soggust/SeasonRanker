@@ -327,29 +327,6 @@ test('tally: the record, the units, the return on them, the open bets and the cl
   assert.deepEqual([voided.bets, voided.push, voided.staked, voided.roi], [3, 1, 4.5, t.roi]);
 });
 
-test('rebuysFor: 1,000 more each time the open stakes would take the balance under 0', () => {
-  assert.equal(desk.rebuysFor(1000, -200, 700), 0);
-  assert.equal(desk.rebuysFor(1000, -900, 150), 1);
-  assert.equal(desk.rebuysFor(1000, -2500, 10), 2);
-});
-
-test('calibrationOf: 5-point bands (the ends gathered), a broken premise counting for its weight', () => {
-  const rows = desk.calibrationOf([
-    bet({ status: 'won', p: 0.52 }),
-    bet({ status: 'lost', p: 0.54 }),
-    bet({ status: 'won', p: 0.12 }),
-    bet({ status: 'lost', p: 0.97, weight: 0.3 }),
-    bet({ status: 'won', p: 0.9 }),
-    bet({ status: 'push', p: 0.5 }),
-    bet({ status: 'open', p: 0.5 }),
-  ]);
-  assert.deepEqual(rows.map((r) => r.label), ['30-35%', '50-55%', '85-90%']);
-  assert.deepEqual(rows.map((r) => r.n), [1, 2, 2]);
-  assert.equal(rows[1].was, 0.5);
-  assert.ok(Math.abs(rows[2].was - 1 / 1.3) < 1e-12);
-  assert.ok(Math.abs(rows[2].said - (0.3 * 0.97 + 0.9) / 1.3) < 1e-12);
-});
-
 test('the profit curve: from 0 through each graded bet, its range (0 in it), its last point the profit now', () => {
   const graded = desk.gradedOrder([
     bet({ id: 'b', status: 'lost', profit: -2, gradedAt: '2026-10-02T00:00:00Z' }),
@@ -456,36 +433,6 @@ test('the profit curve with one sport on show (the chips): no lines of its own, 
   assert.doesNotMatch(c.spots[1].title, / · /);
 });
 
-test('streakOf: the run of the latest results, pushes skipped', () => {
-  const s = (...list) => desk.streakOf(list.map((status) => bet({ status })));
-  assert.equal(s(), null);
-  assert.equal(s('lost', 'won', 'won', 'push', 'won'), 'W3');
-  assert.equal(s('won', 'lost', 'lost'), 'L2');
-  assert.equal(s('push'), null);
-});
-
-test("gameDaysOf: the games with bets open or graded in the last 3 days, by day, each with its count", () => {
-  const now = Date.parse('2026-10-09T12:00:00Z');
-  const days = desk.gameDaysOf(
-    [
-      bet({ event: '1', start: '2026-10-09T23:00:00Z' }),
-      bet({ event: '1', start: '2026-10-09T23:00:00Z', market: 'total' }),
-      bet({ event: '2', sport: 'nhl', matchup: 'PHI @ OTT', start: '2026-10-09T23:30:00Z' }),
-      bet({ event: '3', status: 'won', start: '2026-09-20T17:00:00Z', gradedAt: '2026-09-21T00:00:00Z' }),
-      bet({ event: undefined }),
-    ],
-    null,
-    now,
-  );
-  const games = days.flatMap((d) => d.games);
-  assert.deepEqual(games.map((g) => [g.event, g.count]), [['1', 2], ['2', 1]]);
-  assert.match(games[1].label, /^NHL · PHI @ OTT · /);
-  assert.equal(desk.gameDaysOf([bet({ event: '2', sport: 'nhl' })], 'nfl', now).length, 0);
-  // (a fight in the dropdown reads as the Book's: "A vs B", the first-listed fighter (the matchup's home) first)
-  const fight = desk.gameDaysOf([bet({ event: '9', sport: 'mma', matchup: 'Mike Malott @ Joaquin Buckley', start: '2026-10-09T23:00:00Z' })], 'mma', now);
-  assert.match(fight[0].games[0].label, /^Joaquin Buckley vs Mike Malott · /);
-});
-
 // A fight's rows on the desk (bet-format.ts; the owner's note, 2026-10-17): its league the gloves, not a logo
 // ESPN doesn't have; its game "A vs B" with each fighter's ESPN headshot by the ledger's ids (no picture, the
 // gloves stand in, his name from the matchup); the moneyline's circle the fighter it took
@@ -561,11 +508,8 @@ test('TableSorts: the same rows in the same order the same list (kept for the te
   assert.deepEqual(sorts.sorted('t', more, value).map((r) => r.n), [2, 5, 9]);
 });
 
-test("the column readers: a tally's record by its share won, a bet's CLV by its EV, an unknown column none", () => {
+test("the column readers: a bet's CLV by its EV, an unknown column none", () => {
   const t = desk.tally('x', [bet({ status: 'won', profit: 1 }), bet({ status: 'lost', profit: -1 }), bet({ status: 'lost', profit: -1 })]);
-  assert.ok(Math.abs(desk.tallyValue(t, 'record') - 1 / 3) < 1e-12);
-  assert.equal(desk.tallyValue(t, 'nope'), null);
-  assert.equal(desk.tallyValue(t, 'toString'), null);
   const read = desk.betValue(() => ({ profit: 2 }), () => 'F');
   const b = bet({ clv: { pts: 1.5, prob: null, ev: null, beat: true } });
   assert.equal(read(b, 'clv'), 1.5);
@@ -598,36 +542,41 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
   assert.deepEqual(missing, []);
 });
 
-test("the desk pared to five (the owner, 2026-10-19): the build, By Sport and By Confidence paired, Open Bets (In Play with it), Recently closed, all open; everything else under one folded Under the hood", () => {
+test("the Algorithm tab (the owner, 2026-10-19): the build's time and the chips on one line, one scrolling board, By Sport and By Confidence open, Open Bets, In Play and Recently closed shut, no Under the hood", () => {
   const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
-  const hood = html.indexOf('<section class="desk-hood"');
-  assert.ok(hood > 0);
+  const ts = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.ts'), 'utf8');
   const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
     label: m[1].match(/\blabel="([^"]+)"/)?.[1] ?? m[1].match(/\[label\]="([^"]+)"/)?.[1],
-    open: /\[startOpen\]="true"/.test(m[1]),
-    hood: m.index > hood,
+    key: m[1].match(/\[open\]="panelOpen\('(\w+)'\)"/)?.[1] ?? null,
+    toggles: /\(toggled\)="togglePanel\('(\w+)'\)"/.test(m[1]),
     at: m.index,
   }));
-  // (the build line before every panel)
-  assert.ok(html.indexOf('desk-build-line') < panels[0].at);
   assert.deepEqual(
-    panels.filter((p) => !p.hood).map((p) => p.label),
-    ['By Sport', 'By Confidence', 'Open Bets', "'In Play · ' + liveRisk.toFixed(1) + 'u'", 'Recently closed'],
+    panels.map((p) => [p.label, p.key, p.toggles]),
+    [
+      ['By Sport', 'sport', true],
+      ['By Confidence', 'confidence', true],
+      ['Open Bets', 'open', true],
+      ["'In Play · ' + liveRisk.toFixed(1) + 'u'", 'live', true],
+      ['Recently closed', 'closed', true],
+    ],
   );
-  assert.deepEqual(panels.filter((p) => !p.hood && !p.open).map((p) => p.label), ["'In Play · ' + liveRisk.toFixed(1) + 'u'"]);
-  // (under the hood, folded to begin with and drawn only once opened; nothing the loops or the owner's asks read is gone)
-  assert.match(html.slice(hood), /@if \(hoodOpen\)/);
-  assert.deepEqual(
-    panels.filter((p) => p.hood).map((p) => p.label),
-    ['Live desk by sport', 'Live desk by confidence', 'History by market and season', 'Latest Results', 'Calibration', 'By Stake', 'trackedTitle', 'Practice', 'selfTitle', 'Scorecard', 'News signals', 'Miss review', 'CHECKs', "What It's Changed", 'Context', 'Backtest', 'Bot Settings'],
-  );
-  assert.ok(panels.filter((p) => p.hood).every((p) => !p.open));
-  // (the five read the history (replay-history.ts botHistoryOf): the top grid's tables are its rows)
-  const grid = html.indexOf('<div class="desk-grid">');
-  const gridEnd = html.indexOf('\n    </div>', grid);
-  assert.deepEqual(panels.filter((p) => p.at > grid && p.at < gridEnd).map((p) => p.label), ['By Sport', 'By Confidence']);
-  assert.ok(html.slice(grid, gridEnd).includes('h.bySport') && html.slice(grid, gridEnd).includes('bandRows'));
-  assert.ok(!html.includes("The Bot's history\"") && !html.includes('By Market'));
+  // (open from the start: the two breakdowns alone; a tap the other way, kept)
+  assert.deepEqual(['sport', 'confidence', 'open', 'live', 'closed'].map((k) => desk.deskPanelOpen(k)), [true, true, false, false, false]);
+  assert.deepEqual(['sport', 'open'].map((k) => desk.deskPanelOpen(k, new Set(['sport', 'open']))), [false, true]);
+  // (the build's time and the chips in one bar, before the board; no commit, no note; every panel inside the board)
+  const bar = html.indexOf('<div class="desk-bar">');
+  const board = html.indexOf('<div class="desk-board">');
+  assert.ok(bar > 0 && bar < html.indexOf('desk-build-line') && html.indexOf('desk-sports') < board);
+  assert.ok(panels.every((p) => p.at > board));
+  assert.doesNotMatch(html, /buildInfo\.(commit|note)|desk-hood|hoodOpen|Under the hood/);
+  assert.doesNotMatch(ts, /hoodOpen|selfcheck\.json|scorecard\.json|news-signals\.json|miss-review\.json/);
+  // (By Confidence: LOCK at the top, PASS at the bottom, the practice picks between LIKE and PASS)
+  assert.match(ts, /this\.bandRows = \[histBand\('LOCK'\), histBand\('LOVE'\), histBand\('LIKE'\), h\.practice, histBand\('PASS'\)\]/);
+  // (By Sport's rows and the closed bets by their league's mark; a closed bet's band in its colour, no "replayed at the")
+  assert.match(html, /@if \(t\.sport\) \{<span class="desk-history-league">/);
+  assert.match(html, /class="desk-history-tag" \[ngClass\]="bandClass\(b\)"/);
+  assert.doesNotMatch(html, /replayed at the/);
 });
 
 // ---------------------------------------------------------------------------

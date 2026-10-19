@@ -251,31 +251,6 @@ test("the output: keys sorted, numbers to 4 places, written only when more than 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test("the Algorithm tab's Self-check panel: flags, watches and partial ones shown in order, the rest folded under their counts", async () => {
-  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
-  const out = canon(selfCheck({ sport: 'nhl', now, ledger: { bets: [...many(40, 14, { side: 'under', p: 0.6, placedAt: at(30) })] }, state: {}, snaps: [] }));
-  const [v] = desk.selfCheckPanelOf([out, null], { nhl: 'NHL' });
-  assert.equal(v.label, 'NHL');
-  assert.equal(v.week, 'Oct 5-12');
-  assert.ok(v.shown.length >= 1);
-  assert.equal(v.shown[0].status, 'flag');
-  assert.ok(v.shown.every((c) => ['flag', 'watch', 'partial'].includes(c.status)));
-  assert.ok(v.folded.every((c) => !['flag', 'watch', 'partial'].includes(c.status)));
-  assert.match(v.foldedLine, /too thin/);
-  const c4row = v.shown.find((c) => c.id === 'C4');
-  assert.equal(c4row.key, 'nhl:C4');
-  assert.ok(c4row.columns.includes('z'));
-  assert.equal(c4row.cells[0].length, c4row.columns.length);
-  assert.equal(desk.weekLabel('2026-09-28', '2026-10-04'), 'Sep 28-Oct 4');
-  assert.equal(desk.selfCheckCell('share', 0.4567), '45.7%');
-  assert.equal(desk.selfCheckCell('overBook', -0.1116), '-11.2%');
-  assert.equal(desk.selfCheckCell('clvProb', 0.004), '0.40%');
-  assert.equal(desk.selfCheckCell('clvSe', 0.0011), '0.11%');
-  assert.equal(desk.selfCheckCell('n', 12), '12');
-  assert.equal(desk.selfCheckCell('dogs', { n: 3, z: -1.234 }), 'n 3 · z -1.23');
-  assert.equal(desk.selfCheckCell('x', null), '-');
-});
-
 test("C19: a line's move its side's way; the bets moved against doing worse against the Book a watch to cut them, and too few a report", () => {
   // (an over's line down a point is against it; under the prop guard's limit (12% of 10.5): not past it)
   assert.deepEqual(moveWayOf({ market: 'prop', side: 'over', line: 9.5, context: { move: { open: 10.5, now: 9.5 } } }, 'nfl'), { way: 'against', pts: 1, past: false });

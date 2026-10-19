@@ -1,8 +1,7 @@
 // The Algorithm desk's arithmetic, pure (no Angular, no fetching: tests/model-desk.test.mjs runs it under
 // Node): its records, a bet's payout, a bet in play settled by the score as the run will grade it, the
-// meters, the calibration, the profit curves and the games' dropdown
-import { Board, CalibrationRow, CurveLine, CurveSpot, GameDay, Intent, Meter, ModelBet, Settled, Tally } from './desk-model';
-import { matchupName } from './game-menu';
+// meters and the profit curves
+import { Board, CurveLine, CurveSpot, Intent, Meter, ModelBet, Settled, Tally } from './desk-model';
 
 // (mma: the fifth league since 2026-10-16, fights not games: UFC moneylines alone (leagues.mjs, mma-desk.mjs); the
 // MMA app is dev-only on the live site, its data ships all the same)
@@ -20,7 +19,6 @@ export const EDGE_FULL: Record<string, number> = { nfl: 14, nba: 12, nhl: 2, mlb
 // (the props a bar measures whatever their line: yards, a goalie's saves, a pitcher's outs; a short count is pips)
 export const BAR_STATS = new Set(['passYds', 'rushYds', 'recYds', 'rushRecYds', 'saves', 'outs']);
 
-const DAY = 864e5;
 const mean = (list: number[]): number | null => (list.length ? list.reduce((s, v) => s + v, 0) / list.length : null);
 
 // (an older bet without its intent: an edge if its EV was over 0; postmortem.mjs intentOf)
@@ -173,27 +171,6 @@ export function edgeColorOf(b: ModelBet, game: Board | undefined): string | null
   return `color-mix(in srgb, ${edge > 0 ? 'var(--win)' : 'var(--loss)'} ${share}%, #fff)`;
 }
 
-// How often the sides it gave each chance actually won: by its chance, five points wide (30% and under in the
-// first band, 85% and over in the last); a bet whose premise broke in the game counts for its weight
-export function calibrationOf(bets: ModelBet[]): CalibrationRow[] {
-  const buckets = new Map<number, ModelBet[]>();
-  for (const b of bets) {
-    if (b.status !== 'won' && b.status !== 'lost') continue;
-    const at = Math.min(0.85, Math.max(0.3, Math.floor(b.p * 20) / 20));
-    buckets.set(at, [...(buckets.get(at) ?? []), b]);
-  }
-  const weight = (b: ModelBet) => b.weight ?? 1;
-  const sum = (list: ModelBet[], f: (b: ModelBet) => number) => list.reduce((s, b) => s + f(b), 0);
-  return [...buckets.entries()]
-    .sort((a, b) => a[0] - b[0])
-    .map(([at, list]) => ({
-      label: `${Math.round(at * 100)}-${Math.round(at * 100) + 5}%`,
-      n: list.length,
-      said: sum(list, (b) => weight(b) * b.p) / sum(list, weight),
-      was: sum(list, (b) => (b.status === 'won' ? weight(b) : 0)) / sum(list, weight),
-    }));
-}
-
 // (the bets graded, in grading order)
 export const gradedOrder = (bets: ModelBet[]): ModelBet[] =>
   bets.filter((b) => b.status !== 'open').sort((a, b) => (a.gradedAt ?? a.start).localeCompare(b.gradedAt ?? b.start) || a.start.localeCompare(b.start));
@@ -247,48 +224,6 @@ export function profitCurves(graded: ModelBet[], start: number, units: (v: numbe
     // (the one sport whose bets these all are, if so: the total is its line)
     solo: sports.length === 1 ? sports[0] : null,
   };
-}
-
-// (how many times it's rebought: 1,000 each time the balance would go under 0 with the open stakes out)
-export function rebuysFor(bankroll: number, profit: number, atRisk: number): number {
-  const short = atRisk - (bankroll + profit);
-  return short > 0 ? Math.ceil(short / bankroll) : 0;
-}
-
-// The current run of results, the latest graded back (pushes skipped): "W3", "L2"; null before any
-export function streakOf(graded: ModelBet[]): string | null {
-  let kind: 'won' | 'lost' | null = null;
-  let n = 0;
-  for (let i = graded.length - 1; i >= 0; i--) {
-    const s = graded[i].status;
-    if (s !== 'won' && s !== 'lost') continue;
-    if (kind && s !== kind) break;
-    kind = s;
-    n++;
-  }
-  return kind ? `${kind === 'won' ? 'W' : 'L'}${n}` : null;
-}
-
-// The games' dropdown: a sport's games (every sport's, the sport named) with bets open, in play or graded in the
-// last 3 days, by day (soonest first), each with its bet count
-export function gameDaysOf(bets: ModelBet[], sport: string | null, now: number): GameDay[] {
-  const recent = now - 3 * DAY;
-  const games = new Map<string, { event: string; label: string; count: number; start: string; sport: string }>();
-  for (const b of bets) {
-    if (!b.event || (sport && b.sport !== sport) || !(b.status === 'open' || Date.parse(b.gradedAt ?? b.start) >= recent)) continue;
-    const g = games.get(b.event) ?? { event: b.event, label: matchupName(b.sport, b.matchup), count: 0, start: b.start, sport: b.sport };
-    g.count++;
-    games.set(b.event, g);
-  }
-  const days = new Map<string, GameDay>();
-  for (const g of [...games.values()].sort((a, b) => a.start.localeCompare(b.start))) {
-    const day = new Date(g.start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-    const time = new Date(g.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    const entry = days.get(day) ?? { day, games: [] };
-    entry.games.push({ event: g.event, label: `${sport ? '' : g.sport.toUpperCase() + ' · '}${g.label} · ${time}`, count: g.count });
-    days.set(day, entry);
-  }
-  return [...days.values()];
 }
 
 // The model's epoch (leagues.mjs MODEL_EPOCH, each sport's state.json epoch: its latest major change, when its
@@ -349,3 +284,9 @@ export function epochLabel(at: string): string {
   if (Number.isNaN(d.getTime())) return '';
   return `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
 }
+
+// (the board's panels, open or shut: By Sport and By Confidence open from the start, Open Bets, In Play and
+// Recently closed shut (the owner, 2026-10-19))
+export type DeskPanel = 'sport' | 'confidence' | 'open' | 'live' | 'closed';
+export const DESK_PANELS_OPEN: readonly DeskPanel[] = ['sport', 'confidence'];
+export const deskPanelOpen = (panel: DeskPanel, flipped: ReadonlySet<string> = new Set()): boolean => DESK_PANELS_OPEN.includes(panel) !== flipped.has(panel);

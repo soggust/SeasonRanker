@@ -199,22 +199,7 @@ test("the self-check's C22: the week's reasons grouped and ranked, known-unused 
   assert.equal(c22({ now, state: { checks: { research: { reasons: [] } } } }).status, 'thin');
 });
 
-test("the desk's CHECK panel: the research's bets and adjusted bets with their CLV, its verdicts; the popover's verdict in words", async () => {
-  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
-  const tally = (o) => ({ n: 0, won: 0, lost: 0, push: 0, units: 0, withClose: 0, clv: null, beat: null, open: 0, ...o });
-  const research = {
-    gate: { bet: { on: true, n: 2, units: 0, why: 'on' }, adjusted: { on: false, n: 40, units: -3, why: 'research-adjusted bets -3u over 40 graded with a close: off' } },
-    bets: tally({ n: 2, won: 1, lost: 1, units: -0.05, withClose: 1, clv: 0.02, open: 1, byCategory: { market: tally({ won: 1, lost: 1 }) } }),
-    adjusted: tally({ n: 40, won: 15, lost: 25, units: -3 }),
-    researched: 5,
-    verdicts: { adjust: { n: 2, graded: 1, won: 0, lost: 1, units: -1 }, bet: { n: 2, graded: 1, won: 1, lost: 0, units: 0.9 }, check: { n: 1, graded: 0, won: 0, lost: 0, units: 0 } },
-    feeds: { inOurFeeds: { 'injury|role:snap-jump': 1 }, missing: { 'role|gap': 2 }, byFeed: {} },
-  };
-  const rows = desk.researchPanelOf([{ sport: 'nfl', label: 'NFL', checks: { research } }, { sport: 'nba', label: 'NBA', checks: { research: { ...research, researched: 0 } } }]);
-  assert.deepEqual(rows.map((r) => [r.key, r.record, r.units, r.clv]), [['bet', '1-1', -0.05, 0.02], ['adjusted', '15-25', -3, null], ['verdicts', '-', null, null]]);
-  assert.equal(rows[0].note, 'market 1-1');
-  assert.match(rows[1].note, /off/);
-  assert.equal(rows[2].note, '2 into the inputs, 2 bet, 1 still CHECKs; reasons in our feeds 1, not 2');
+test("the CHECK popover's research verdict in words", async () => {
   const ui = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'ai-signals-entry.ts'), data: {} });
   const v = ui.researchView({ status: 'doubtful', verdict: 'adjust', act: 'check', actWhy: "no input of the model's takes it", category: 'injury', confidence: 'high', inOurFeeds: true, feed: 'injury report', sources: [] });
   assert.equal(v.status, 'Doubtful');

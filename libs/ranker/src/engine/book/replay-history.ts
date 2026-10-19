@@ -77,11 +77,16 @@ export interface HistoryRow extends Tally {
   // (the replay's part and the live part, so a row can say what each gave)
   replayed: number;
   live: number;
+  // (By Sport's rows: the sport, for its league mark)
+  sport?: string;
 }
 export interface HistoryStripBet {
   res: 'W' | 'L' | 'P';
   pick: string;
   game: string;
+  // (the matchup alone, "BUF @ KC", and the stake in units)
+  matchup: string;
+  stake: number;
   sport: string;
   band: string;
   practice: boolean;
@@ -228,7 +233,7 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
       addLive(pr, b);
       addLive(practice, b);
     }
-    bySport.push(done(row));
+    bySport.push({ ...done(row), sport: s });
     // (the sport's seasons: the replay's, the live bets on the newest season's row by its year)
     const seasons = (f?.bySeason ?? []).map((se) => {
       const r = emptyRow(String(se.season));
@@ -246,8 +251,8 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
   const strip: HistoryStripBet[] = [
     ...live
       .filter((b) => !b.void && ['won', 'lost', 'push'].includes(b.status))
-      .map((b) => ({ res: (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P') as 'W' | 'L' | 'P', pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: b.gradedAt ?? b.start })),
-    ...[...replays.values()].flatMap((f) => (f.last ?? []).map((b) => ({ res: b.res, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
+      .map((b) => ({ res: (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P') as 'W' | 'L' | 'P', pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: b.gradedAt ?? b.start })),
+    ...[...replays.values()].flatMap((f) => (f.last ?? []).map((b) => ({ res: b.res, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
   ]
     .sort((a, b) => b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick))
     .slice(0, last);
@@ -284,9 +289,4 @@ export function buildOf(files: (ReplayRecordFile | null | undefined)[], sport: s
 export function buildLabel(at: string | null | undefined): string {
   if (!at || !fin(Date.parse(at))) return 'Unknown';
   return new Date(at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago', timeZoneName: 'short' });
-}
-// (the epoch's day for the panel: "Oct 19, 2026")
-export function dayLabel(at: string | null | undefined): string | null {
-  if (!at || !fin(Date.parse(at))) return null;
-  return new Date(at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
 }

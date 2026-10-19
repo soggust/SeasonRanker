@@ -402,14 +402,3 @@ test("a research finding goes into the injury report as an owner's note does, fl
   assert.deepEqual(noteWords(live.get('401')), ['Research: Chris Godwin out']);
 });
 
-test("the Algorithm tab's CHECKs panel: a cause a row (a role's sub-reasons their own), the open ones counted, the advice blind spots first", async () => {
-  const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
-  const vac = prop({ line: 52 }, { vacF: 1.15 });
-  const learning = checkLearning([...Array.from({ length: 12 }, (_, i) => graded({ ...vac, id: `v${i}` }, i < 2 ? 'won' : 'lost')), prop({ cause: 'role', roleReason: 'line', id: 'open' })]);
-  const { rows, advice } = desk.checkPanelOf([{ sport: 'nfl', label: 'NFL', checks: { learning } }, { sport: 'nba', label: 'NBA', checks: null }]);
-  assert.deepEqual(rows.map((r) => [r.key, r.label, r.n, r.open]), [['vacated-fade', 'Vacated work', 12, 0], ['role:line', 'Role change (line)', 0, 1]]);
-  assert.equal(rows[0].stats, 'recYds 2-10');
-  assert.equal(advice.length, 1);
-  assert.equal(advice[0].kind, 'blind-spot');
-  assert.equal(advice[0].sport, 'NFL');
-});

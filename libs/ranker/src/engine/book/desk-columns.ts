@@ -1,6 +1,6 @@
 // The Algorithm desk's sorting: a click on a column's header sorts its table by it (again: the other way), each
 // table keeping its own; each table's rows read by column (a column with no value of its own sorts as none)
-import { BacktestRow, CalibrationRow, ContextRow, ModelBet, ModelState, PropRow, SportTally, Tally } from './desk-model';
+import { ModelBet } from './desk-model';
 
 export type Dir = 1 | -1;
 export type Column<T> = (row: T) => unknown;
@@ -57,38 +57,6 @@ export const reader =
 // (a row's own field by name)
 const field = <T>(row: T, key: string): unknown => (row as Record<string, unknown>)[key];
 
-// (a difference of two, or none if either is missing)
-const less = (a: number | null, b: number | null): number | null => (a !== null && b !== null ? a - b : null);
-
-export const tallyValue = reader<Tally>({
-  label: (t) => t.label,
-  record: (t) => (t.won + t.lost ? t.won / (t.won + t.lost) : null),
-  profit: (t) => t.profit,
-  roi: (t) => t.roi,
-  open: (t) => t.open,
-  clv: (t) => t.clvBeat,
-});
-
-export const sportValue = reader<SportTally>(
-  {
-    test: (t) => t.state?.test?.winHit ?? null,
-    disrupted: (t) => t.state?.postmortem?.disrupted ?? null,
-  },
-  tallyValue,
-);
-
-export const calibrationValue = reader<CalibrationRow>({ label: (c) => c.said }, field);
-
-export const stateValue = reader<ModelState>(
-  {
-    label: (s) => s.label,
-    history: (s) => s.history.finals,
-    trust: (s) => s.trust['spread']?.trust ?? null,
-    book: (s) => s.book ?? null,
-  },
-  (s, key) => s.params[key],
-);
-
 // (a bet's columns: its result and final score as the desk has them, graded or in play)
 export const betValue = (result: (b: ModelBet) => { profit: number } | null, finalScore: (b: ModelBet) => string) =>
   reader<ModelBet>(
@@ -107,42 +75,6 @@ export const betValue = (result: (b: ModelBet) => { profit: number } | null, fin
     },
     field,
   );
-
-// (the model's log loss less the market's at the close; the book's own less the sharp book's as the fair chance)
-export const modelVsMarket = (t: BacktestRow): number | null => less(t.close.logLoss.model, t.close.logLoss.market);
-export const pinnacleEdge = (t: BacktestRow): number | null => less(t.anchors.own, t.anchors.pinnacle);
-
-export const backtestValue = reader<BacktestRow>({
-  sport: (t) => t.sport,
-  market: (t) => t.market,
-  btBets: (t) => t.bets,
-  btTrust: (t) => t.trust.trust,
-  btClose: (t) => t.close.every.roi,
-  btEarly: (t) => t.early.every.roi,
-  btBeat: (t) => t.early.clv.beat,
-  btLoss: modelVsMarket,
-  btAnchor: pinnacleEdge,
-});
-
-export const propValue = reader<PropRow>({
-  sport: (t) => t.sport,
-  prop: (t) => t.label,
-  rows: (t) => t.rows,
-  mae: (t) => (t.check && t.check.maeBase ? t.check.mae / t.check.maeBase : null),
-  overLine: (t) => t.check?.logLoss ?? null,
-  sideHit: (t) => t.check?.sideHit ?? null,
-  propTrust: (t) => t.trust?.trust ?? null,
-});
-
-export const contextValue = reader<ContextRow>({
-  sport: (t) => t.sport,
-  term: (t) => t.label,
-  on: (t) => t.on,
-  size: (t) => Math.abs(t.size),
-  kept: (t) => (t.kept ? 1 : 0),
-  games: (t) => t.games,
-  gain: (t) => t.gain,
-});
 
 // A bet list by game: each game once, its bets under it, in the order the table's sort put them (a game where
 // its first bet falls)
