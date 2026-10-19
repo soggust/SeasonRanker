@@ -260,7 +260,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
   const V = {};
   // (anchor: the anchored projection (anchor.mjs, D33); a version from before it has none, its own chances priced)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor']) V[n] = await load(dir, n);
+  // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D37); none before it)
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk']) V[n === 'lineup-risk' ? 'lineupRisk' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];

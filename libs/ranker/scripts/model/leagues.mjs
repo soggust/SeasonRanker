@@ -195,12 +195,12 @@ export const GAME_CAP = 5;
 // gate SHIP with the NFL's projections -0.0013 a row inside the noise. Measured and held the same round: the anchor on
 // MLB's pitchers alone (a no-op in the price: the shape is wrong, not the mean) and a history-fitted trust prior for
 // the game lines (already at 0). Set to the push time.
-// 2026-10-19, the residual model on (DECISIONS.md D32, the owner resolving O3 over the gate's close-leg HOLD, D22's
-// exception): every priced prop and game line is the soft blend of the trusted chance and the residual model's
-// corrected one (residual.mjs, the Book's error learned on the priced history: the Bot's lean where it has been right,
-// the Book's over-shade), live on the props and the lines (props.mjs priceProps, desk.mjs choose, the board). Set to
-// the push time.
-export const MODEL_EPOCH = '2026-10-19T15:05:00Z';
+// 2026-10-19, the usage round (DECISIONS.md D37, the owner's decision that morning): the windows open the day before for
+// every sport but MMA (TIMING 26 hours), the Bot picks its own time to bet inside them (the lineup risk: before the news
+// is in a lean is held to the share that survives to the close for its stat, bet only where that clears the price), a
+// fresh quote bought only to bet, the morning snapshot pricing suggestions alone. A selection change: the trust and the
+// gates restart. Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T16:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
@@ -223,11 +223,17 @@ export const MODEL_EPOCH = '2026-10-19T15:05:00Z';
 // hourly schedule about five times a day, so that's when one happens to land there (the Sunday and night-game
 // triggers in .github/workflows/model-desk.yml add tries). The NBA's starters, about 30 minutes before a tip,
 // are almost never in time for a re-price
+// (2026-10-19, the owner (DECISIONS.md D37): the windows open the day before for every sport but MMA, so the Book can
+// show every market as a suggestion a day ahead, every hourly run. Inside the window the Bot picks its own time to bet:
+// before the news is in, a prop's lean is held to the share that survives to the close for its stat (lineup-risk.mjs)
+// and is bet only if that still clears the price; else it waits for the lineups, inactives, goalies or probables,
+// and at the last chance bets with what's known. A fresh quote of The Odds API is bought only when the Bot is about
+// to bet (run.mjs betProps); the early hours price off the free board and the morning snapshot (suggest.mjs))
 export const TIMING = {
   nfl: { lines: 26, props: 26, lastChance: 3 },
-  nba: { lines: 6, props: 6, lastChance: 3 },
-  nhl: { lines: 10, props: 10, lastChance: 3 },
-  mlb: { lines: 6, props: 6, lastChance: 2.5 },
+  nba: { lines: 26, props: 26, lastChance: 3 },
+  nhl: { lines: 26, props: 26, lastChance: 3 },
+  mlb: { lines: 26, props: 26, lastChance: 2.5 },
   // (MMA: a bout's lines open 72 hours before it (the weigh-in is the day before: a fighter pulled or replaced
   // voids the bet rather than moving it, mma-desk.mjs), the last chance 4; no props on this plan)
   mma: { lines: 72, props: 72, lastChance: 4 },

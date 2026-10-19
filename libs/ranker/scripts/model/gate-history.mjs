@@ -265,7 +265,23 @@ export function propHistoryRows(V, sport, index, matches, current) {
   for (const x of rows) delete x.m;
   const B = V.desk.BUCKET_START ?? { low: 0.25, mid: 0.375, high: 0.5 };
   const bucket = V.desk.lineBucket ?? ((l) => (l <= 1.5 ? 'low' : l <= 3.5 ? 'mid' : 'high'));
-  return { ...finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props'), anchor };
+  const done = finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props');
+  // (the lineup risk (lineup-risk.mjs, D37): each player game's open against its close on the Bot's own side at the
+  // open, both at the priced chance (the trust's, the anchor's where the version has it): the share of its edge that
+  // survived to the close, by stat; what --record writes for the live desk. A version without the module has none)
+  let risk = null;
+  if (V.lineupRisk?.fitLineupRisk) {
+    const closeBy = new Map(done.close.map((x) => [x.key, x]));
+    const pairs = [];
+    for (const o of done.open) {
+      const c = closeBy.get(o.key);
+      if (!c || !fin(o.p) || !fin(c.p) || !fin(o.f) || !fin(c.f)) continue;
+      const side = o.p >= o.f ? 1 : -1;
+      pairs.push({ stat: o.stat, eo: side * (o.p - o.f), ec: side * (c.p - c.f), moved: o.line !== c.line || Math.abs(c.f - o.f) >= (V.lineupRisk.MOVED_PTS ?? 0.05), lead: fin(o.at) ? (o.t - o.at) / 36e5 : null });
+    }
+    risk = V.lineupRisk.fitLineupRisk(pairs, { at: new Date().toISOString() });
+  }
+  return { ...done, anchor, risk };
 }
 
 // The history a sport has, loaded once: { events, lines, props } (odds-history.mjs readHistory)

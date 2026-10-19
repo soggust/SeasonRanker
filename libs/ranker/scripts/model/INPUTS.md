@@ -141,10 +141,19 @@ The Odds API's archive, bought once on the 5M-credit month: every NFL, NBA, NHL,
 | Data | Status | Where it goes |
 |---|---|---|
 | Archived opens and closes, lines and props | **not useful** as a pricing input | Never a price the bettor bets at (D30: only a price quoted in the current run). It is the gate's priced history (layer b `history`, `gate-history.mjs`) and the leak hunt's (C23). |
-| The morning snapshot | **not useful** as a pricing input | The same: history, learning and the gate only. |
-| The line's move to date (the open's no-vig against the price at the bet's moment) | **in the residual model** (D32, on since 2026-10-19: the owner's O3) | Read only up to the bet's own moment: a row priced at the close reads the open-to-close move, one priced at the open reads none (`residual.mjs` features `mv`). Never the close for a bet placed before it. |
+| The morning snapshot | **not useful** as a pricing input; **in** for the board's suggestions (D37) | Never a bet's, a tracked row's or a stored CHECK's price (D30). Since 2026-10-19 (D37) it prices the NFL's suggestions on board.json where the Book's free board has no prices (`suggest.mjs`, the one reader outside the gate), and a surviving edge on one buys the fresh quote the Bot then bets at. |
+| The line's move to date (the open's no-vig against the price at the bet's moment) | **in the residual model** (D31, a candidate behind `RESID_ON`) | Read only up to the bet's own moment: a row priced at the close reads the open-to-close move, one priced at the open reads none (`residual.mjs` features `mv`). Never the close for a bet placed before it. |
 | The priced history as training rows for the residual model (every open and close, the Bot's replayed chance, the result) | **in the residual model** (D31) | `residual-train.mjs` replays it as the gate does; monthly snapshots fit only on rows settled before each month (`residual.mjs` fitWalk, snapshotFor), so a row is never priced by a fit that saw it. Still never a price the bettor bets at (D30). |
 | The live line's implied mean as the projection's anchor (D33, 2026-10-19) | **in** (the current run's price, never the history's) | `anchor.mjs`: the bot's mean pulled toward the mean the board's line and price imply, by a per-stat weight fit walk-forward on the priced history (the history fits the weight, the live board gives the mean). 0 where the bot's own number beats the book's out of sample. Measured on the history: the bot's disagreement with the close is 75% to 90% noise (the slope of the result on it .10 to .25 by sport); anchored, NFL props go from a tie with the book to -0.0012 better at the close, NBA -0.0003, NHL and MLB ties. The pull by stat is in `apps/<sport>/src/StaticData/model/anchor.json` and on the scorecard. |
+
+## The lineup risk (2026-10-19, DECISIONS.md D37)
+
+The priced history's opens against their closes, per sport and stat: how often the line or the price moved by the close (the usage changed) and the share of the Bot's edge at the open still there at the close. Fit by `gate.mjs --record` to `apps/<sport>/src/StaticData/model/lineup-risk.json`, blended with the Bot's own early bets' record since the epoch, read by the desk to decide when to bet inside the window.
+
+| Data | Status | Where it goes |
+|---|---|---|
+| The line's and price's move from the open to the close, by stat | **in** (`lineup-risk.mjs` `fitLineupRisk`: `moved`, `kept`) | The survival the Bot holds an early lean to (`run.mjs` `riskOf`); never a price. |
+| The ledger's early bets' CLV by hours before the start | **in** (`ledgerRisk`) | The self-tuning blend on the history's survival, soft (`riskAt`). |
 
 ## The schedule's situations (2026-10-19, the misses round; DECISIONS.md D34)
 

@@ -130,6 +130,8 @@ import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
+import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
+import { morningPrices, withSnapshot } from './suggest.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
@@ -2108,6 +2110,28 @@ async function betProps(r) {
   const STORED_HOURS = STORED_FRESH / 36e5;
   const idx = rowsIndex(sport, r.rows);
   const candidates = [];
+  // (the lineup risk (lineup-risk.mjs, DECISIONS.md D37): each stat's survival of the Bot's edge from the early price to
+  // the close, fit by the gate on the priced history (lineup-risk.json, read, never fit here), and the Bot's own record
+  // since the epoch by stat and hours before the start (ledgerRisk: the self-tuning part). Before the news is in, a
+  // row's lean is held to the surviving share at these hours and bet only if that still clears the price (riskOf))
+  r.lineupRisk ??= readLineupRisk(ROOT, sport);
+  r.riskLive ??= ledgerRisk(ledger.bets, { epoch: MODEL_EPOCH });
+  if (!r.riskLogged) {
+    r.riskLogged = true;
+    console.log(`${sport}: the lineup risk by stat: ${riskText(r.lineupRisk)}`);
+  }
+  // (a priced row's survival now: the hours to the start, the news it waits for in (the NHL's goalies, MLB's starters
+  // and lineups: timing.mjs newsMissing; the NFL and NBA have none, their curve runs to the last chance), its chance
+  // and return at the surviving lean: { hours, s, p, ev, newsIn, hist, live })
+  const riskOf = (game, x, phase) => {
+    const hours = (Date.parse(game.date) - r.now.getTime()) / 36e5;
+    const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
+    const newsIn = phase === 'last' || ((sport === 'nhl' || sport === 'mlb') && !news.length);
+    const rk = riskAt(r.lineupRisk, r.riskLive, x.prop.stat.key, hours, { last: lastChanceOf(sport, r.gap), newsIn });
+    const p = rk.s < 1 ? riskChance(x.fair, x.p, rk.s) : x.p;
+    const ev = rk.s < 1 ? (1 - (x.projection?.push ?? 0)) * (p * decimal(x.odds) - 1) : x.ev;
+    return { hours, s: rk.s, p, ev, newsIn, hist: rk.hist, live: rk.live };
+  };
   // (the caps: a prop type not yet tested (its trust unfit) stakes little; the day is the game's US Eastern date,
   // daylight saving and all)
   const dayOf = etDay;
@@ -2206,7 +2230,15 @@ async function betProps(r) {
       let fresh = false;
       // (the anytime touchdown's prices this ask (NFL, props.mjs apiProps' anytime): tracked rows, anytimeTracked)
       let anyApi = null;
-      if (why && u.lines.oddsEvent && !DRY) {
+      // (the morning snapshot's prices where the board has none of its own (the NFL's): the day's suggestions, never a
+      // bet (suggest.mjs, D30); read once a game a run)
+      const snap = !boardPriced && !DRY ? morningPrices(sport, game, r.now.getTime()) : null;
+      // (the first ask deferred (D37: a fresh quote only when the Bot is about to bet): with a free price to price the
+      // suggestions off (the Book's board, or the snapshot) and the last chance not yet here, the game's props are
+      // priced first; the ask comes only where a row's surviving lean clears the free price (askNow below), else the
+      // run shows the suggestions and spends nothing. An owed ask, the near one and the last chance ask as before)
+      const defer = why === 'first' && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && (boardPriced || (snap?.size ?? 0) > 0);
+      const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
         const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null, anytime: sport === 'nfl' && !!r.anytimeMarket?.on });
@@ -2234,7 +2266,9 @@ async function betProps(r) {
             if (p) b.seen = { at: r.at, line: p.line, odds: b.side === 'over' ? p.prices.over : p.prices.under, fair: b.side === 'over' ? fairPair(p.prices.over, p.prices.under) : fairPair(p.prices.under, p.prices.over) };
           }
         }
-      }
+        return !!api;
+      };
+      if (why && u.lines.oddsEvent && !DRY && !defer) await askNow();
       // (no fresh price from The Odds API this run: its open CHECKs priced from their stored prices, where the
       // line is still the board's (checks.mjs withStoredPrices), so each is evaluated again: still a CHECK,
       // closed, or bet. The Odds API asked, the props it didn't price stay unpriced: the book took them down)
@@ -2244,6 +2278,11 @@ async function betProps(r) {
         for (const id of sp.moved) heldWhy.set(id, 'its line moved on the board, no fresh price for the new one yet');
         run.stored = (run.stored ?? 0) + sp.used.size;
         run.storedMoved = (run.storedMoved ?? 0) + sp.moved.size;
+      }
+      // (then the snapshot's on the rows still unpriced: suggestions)
+      if (!fresh && snap?.size) {
+        board_ = withSnapshot(board_, snap);
+        run.snapshot = (run.snapshot ?? 0) + board_.filter((p) => p.snapshot).length;
       }
       if (!board_.length) {
         holdNoted(openChecks, "not on the board, and no price of the Book's kept");
@@ -2262,7 +2301,26 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null, r.anchor ?? null);
+      const priceNow = () => priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null, r.anchor ?? null);
+      let { priced, bets } = priceNow();
+      // (the deferred first ask (D37): a row's surviving lean clears the free or snapshot price, so the Bot is about to
+      // bet: the fresh quote bought now and the game priced again on it; none clears, the suggestions stand and the
+      // credits are kept)
+      if (defer) {
+        const want = bets.some((x) => x.priced && !x.guard?.skip && riskOf(game, x, phase).ev > 0);
+        if (want && (await askNow())) {
+          ({ priced, bets } = priceNow());
+          run.askedToBet = (run.askedToBet ?? 0) + 1;
+        } else run.deferred = (run.deferred ?? 0) + 1;
+      }
+      // (the suggestions (D37): each priced row's side with an edge at the latest known price, at the surviving lean
+      // before the news is in; on the board (board.mjs sug))
+      for (const x of priced) {
+        if (!x.priced || x.guard?.skip) continue;
+        const rk = riskOf(game, x, phase);
+        const e = rk.p - x.fair;
+        if (e > 0) x.sug = { s: x.side, e: round(e, 4), h: round(rk.hours, 1), k: rk.s, src: x.prop.snapshot ? 'snapshot' : x.prop.source === 'the odds api' ? 'api' : 'espn' };
+      }
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
       if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
@@ -2309,6 +2367,24 @@ async function betProps(r) {
             continue;
           }
           if (news.length) Object.assign(x, { guard: { why: [x.guard?.why, `bet at the last chance before the news: ${news.join(', ')}`].filter(Boolean).join('; ') }, units: 0.5 });
+          // (a snapshot's price is a suggestion's, never a bet's (D30, suggest.mjs))
+          if (x.prop.snapshot) {
+            run.snapshotHeld = (run.snapshotHeld ?? 0) + 1;
+            continue;
+          }
+          // (the Bot's own time to bet (D37): before the news is in, the lean held to the share that survives to the
+          // close for its stat at these hours; an edge there is bet now at that chance (the bet carries early: its
+          // hours, the survival and the full lean), none is held for a later run: not tracked (a tracked row would
+          // block the bet), a suggestion on the board where the full lean has one)
+          const rk = riskOf(game, x, phase);
+          if (rk.s < 1) {
+            if (!(rk.ev > 0)) {
+              run.heldRisk = (run.heldRisk ?? 0) + 1;
+              continue;
+            }
+            Object.assign(x, { p: round(rk.p, 4), ev: round(rk.ev, 4), early: { hours: round(rk.hours, 1), s: rk.s, pFull: round(x.p, 4), evFull: round(x.ev, 4), hist: rk.hist, ...(rk.live ? { live: rk.live } : {}) } });
+            run.early = (run.early ?? 0) + 1;
+          }
           candidates.push({ game, x, exp });
         }
         // (one skipped for the model's distance from the book alone, or for his role changing (an NFL prop's:
@@ -2506,6 +2582,7 @@ async function betProps(r) {
   if (run.anytime) console.log(`${sport}: anytime TD priced ${run.anytime.priced} in ${run.anytime.games} games, ${run.anytime.placed} new tracked rows (never staked)${run.anytime.unmatched ? `; ${run.anytime.unmatched} names not matched` : ''}${run.anytime.out ? `; ${run.anytime.out} listed out` : ''}`);
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
+  if (run.heldRisk || run.early || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D37): ${run.early ?? 0} bet early at the surviving lean, ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: `role changes (CHECKs at a model Kelly of +${Math.round(CHECK_KELLY * 100)} or more, else shadows)`, news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)', moved: 'the line moved twice the limit, his projection not with it' }[k] ?? 'by the other guards'}`).join(', ')}`);
@@ -2606,6 +2683,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     // checks.mjs withStoredPrices) the ask that gave it; a CHECK keeps it, so a later run knows how old it is)
     ...(x.prop.stored ? { priceAt: x.prop.stored.at } : intent === 'check' && x.prop.source === 'the odds api' ? { priceAt: new Date().toISOString() } : {}),
     projection: x.projection,
+    // (an early bet (D37): the hours before the start it was placed, the survival its lean was held to, the full lean)
+    ...(x.early ? { early: x.early } : {}),
     tested,
     context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(x.roleBet ? { roleBet: `${x.roleBet.key}: ${x.roleBet.why}; ${x.roleBet.gate}` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
     status: 'open',

@@ -16,7 +16,7 @@ export const PREVIEW_ODDS = -110;
 
 // (the bettor's props window, in hours before the start: leagues.mjs TIMING's props, kept in step by
 // tests/preview-props.test.mjs)
-export const PROPS_WINDOW_HOURS: Record<string, number> = { nfl: 26, nba: 6, nhl: 10, mlb: 6 };
+export const PROPS_WINDOW_HOURS: Record<string, number> = { nfl: 26, nba: 26, nhl: 26, mlb: 26 };
 
 export interface PreviewStat {
   key: string;

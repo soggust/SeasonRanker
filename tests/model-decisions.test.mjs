@@ -481,7 +481,9 @@ test('D30 every bet at the price offered the moment it is placed: never a stored
   assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, true, now), 'stale');
   assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, false, now), 'stale', 'no key: no fresher');
   // (the history and the morning snapshot are for history, learning and the gate only: nothing that prices or
-  // places a bet reads them)
+  // places a bet reads them. Since D37 (2026-10-19) suggest.mjs reads the morning snapshot for the board's
+  // suggestions alone, and a row priced from it is never bet, tracked or a CHECK's stored price:
+  // tests/model-lineup-risk.test.mjs pins run.mjs's hold)
   const dir = path.join(import.meta.dirname, '../libs/ranker/scripts/model');
   for (const f of ['run.mjs', 'desk.mjs', 'props.mjs', 'checks.mjs', 'picks.mjs', 'board.mjs', 'mma-desk.mjs', 'fights-totals.mjs', 'research.mjs', 'timing.mjs', 'anytime.mjs', 'clv.mjs', 'backtest.mjs']) {
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
