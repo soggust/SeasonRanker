@@ -85,7 +85,7 @@ export function walkForward(V, rows, { from = LAYER_A_FROM, now = new Date(), lo
     if (!inP.length || train.length < MIN_TRAIN) continue;
     const fit = FM.fitSoft(train);
     const tfit = FT.fitTotals(tAll.filter((r) => r.date < f));
-    for (const r of inP) out.set(r.id, { p: FM.predict(fit, r.x).p, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds)?.p ?? null : null), period: f });
+    for (const r of inP) out.set(r.id, { p: FM.predict(fit, r.x).p, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds, r.division)?.p ?? null : null), period: f });
     periods.push({ from: f, to, train: train.length, bouts: inP.length, kept: fit.terms.filter((t) => t.weight).length });
     log(`fit before ${f}: ${train.length} bouts, ${inP.length} scored`);
   }

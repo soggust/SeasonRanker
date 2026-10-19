@@ -736,7 +736,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   // (a coming bout's chance of Over a line: both sides' numbers as the moneyline reads them, null off the lines)
   const overChance = (bout, day, line) => {
     const pred = boutChance(model, bout, day);
-    const t = predictTotal(totals, totalsTerms(pred.a, pred.b, { ...weightOf({ division: bout.division }), place: placeOf(bout.venue), date: new Date(day).toISOString().slice(0, 10), rounds: bout.rounds }), line, bout.rounds);
+    const t = predictTotal(totals, totalsTerms(pred.a, pred.b, { ...weightOf({ division: bout.division }), place: placeOf(bout.venue), date: new Date(day).toISOString().slice(0, 10), rounds: bout.rounds }), line, bout.rounds, bout.division);
     return t;
   };
 

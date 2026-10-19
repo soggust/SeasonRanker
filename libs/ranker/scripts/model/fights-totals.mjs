@@ -27,7 +27,7 @@
 // own. Bet at the practice stake (desk.mjs PRACTICE_UNITS, an edge still needed) until TOTAL_LIVE bets since the
 // league's start (MMA_START) are graded with a close (desk.mjs fitTrust's evidence), then the trust path, as the
 // moneyline's (the owner's, 2026-10-17: never tracked only, it needs practice and data).
-import { FIT_LEAGUES, TOTAL_KEYS, TOTAL_TERMS, fitLogistic, score } from './fights-model.mjs';
+import { FIT_LEAGUES, TOTAL_KEYS, TOTAL_TERMS, fitLogistic, recencyWeights, score } from './fights-model.mjs';
 import { PRACTICE_UNITS, chanceAt, decimal, fairPair, gapGuard, placement, stakeFor } from './desk.mjs';
 import { BOOK, LEAGUES } from './leagues.mjs';
 import { SHARP, american } from './oddsapi.mjs';
@@ -43,6 +43,19 @@ const BASE_KEYS = Object.entries(TOTAL_LINES).flatMap(([r, lines]) => lines.map(
 export const TOTAL_BOOKS = [BOOK, SHARP, 'williamhill_us', 'betonlineag', 'betus', 'coolbet', 'betanysports'];
 // (the practice stake until this many total bets are graded with a close; the edge, the moneyline's)
 export const TOTAL_LIVE = 40;
+// THE WEIGHT CLASS'S BASE (the loss review's H10, the history round 2026-10-19): each weight class's own offset on the
+// line's base rate, fit on the training rows with the soft terms in place and pulled to 0 by CLASS_K bouts' worth (a
+// ridge: a thin class stays at the line's base), so a division that finishes more (or less) than the terms say
+// carries it. A candidate behind TOTAL_CLASS=1 for the gate; CLASS_K the pull. MEASURED AND HELD 2026-10-19 (the gate,
+// walk-forward 2018 on): the round totals' log loss -0.0016 a row in the deciding years (0.6376 to 0.6360, 95% -0.0056
+// to +0.0026: a tie), the older years +0.0013; the history's top picks' CLV better beyond noise (+0.053, -0.0825 to
+// -0.0294); the closes' raw 0.6811 against 0.6827; but the desk's own 4 graded round totals worse (+0.001 a row beyond
+// their tiny noise), a HOLD by the rule. With a recency half-life beside it (TOTAL_HL=2) the totals' layer was +0.0204
+// worse (the soft rule starved, as the moneyline's). Re-run the gate once the ledger has a few cards of totals
+export const CLASS_OFFSETS = process.env.TOTAL_CLASS === '1';
+export const CLASS_K = 30;
+// (the totals' recency: the moneyline's half-life, fights-model.mjs RECENCY_HL, or its own TOTAL_HL)
+const TOTAL_HL = process.env.TOTAL_HL === undefined || process.env.TOTAL_HL === '' ? undefined : Number(process.env.TOTAL_HL) || null;
 const EV_SCALE = 0.08;
 const UNTESTED_MAX = 1;
 const CLAMP = [0.03, 0.97];
@@ -83,7 +96,7 @@ const design = (r, means, tkeys = TOTAL_KEYS) => {
 
 // The soft fit (see the header) over totalRows
 export function fitTotals(trows, tkeys = TOTAL_KEYS) {
-  const sorted = [...trows].sort((a, b) => a.date.localeCompare(b.date));
+  const sorted = recencyWeights([...trows].sort((a, b) => a.date.localeCompare(b.date)), TOTAL_HL);
   const wsum = sorted.reduce((s, r) => s + r.w, 0) || 1;
   const means = Object.fromEntries(tkeys.map((k) => [k, round(sorted.reduce((s, r) => s + r.w * (r.tx[k] ?? 0), 0) / wsum, 5)]));
   const rows = sorted.map((r) => ({ ...r, x: design(r, means, tkeys) }));
@@ -123,13 +136,42 @@ export function fitTotals(trows, tkeys = TOTAL_KEYS) {
     }
     base[bk] = round(b, 5);
   }
-  return { terms, means, base, n: ids.length, rows: rows.length, from: sorted[0]?.date ?? null, to: sorted.at(-1)?.date ?? null };
+  // (the weight classes' offsets on the base, each a ridge-shrunk logit shift over its rows at the fit's chances)
+  const classOffset = {};
+  if (CLASS_OFFSETS) {
+    const byClass = new Map();
+    for (const r of rows) {
+      const b = base[baseKey(r.line, r.rounds)];
+      if (!Number.isFinite(b)) continue;
+      (byClass.get(r.division) ?? byClass.set(r.division, []).get(r.division)).push([b + offset(r), r.y, r.w]);
+    }
+    const lambda = CLASS_K * 0.22;
+    for (const [division, list] of byClass) {
+      let d = 0;
+      for (let i = 0; i < 25; i++) {
+        let g = -lambda * d;
+        let h = lambda;
+        for (const [z, y, w] of list) {
+          const p = sigmoid(z + d);
+          g += w * (y - p);
+          h += w * p * (1 - p);
+        }
+        const step = g / (h || 1);
+        d += step;
+        if (Math.abs(step) < 1e-8) break;
+      }
+      classOffset[division] = round(d, 5);
+    }
+  }
+  return { terms, means, base, ...(CLASS_OFFSETS ? { classOffset } : {}), n: ids.length, rows: rows.length, from: sorted[0]?.date ?? null, to: sorted.at(-1)?.date ?? null };
 }
 
-// The fit's chance a bout goes past a line (null where the line isn't one its rounds carry), and each term's part
-export function predictTotal(fit, tx, line, rounds) {
-  const b = fit.base[baseKey(line, rounds)];
-  if (!Number.isFinite(b)) return null;
+// The fit's chance a bout goes past a line (null where the line isn't one its rounds carry), and each term's part;
+// division: the bout's weight class, for the class's offset where the fit has them (classOffset; none: the line's base)
+export function predictTotal(fit, tx, line, rounds, division = null) {
+  const b0 = fit.base[baseKey(line, rounds)];
+  if (!Number.isFinite(b0)) return null;
+  const b = b0 + (fit.classOffset?.[classOf(division)] ?? 0);
   let z = b;
   const parts = {};
   for (const t of fit.terms) {
@@ -176,7 +218,7 @@ export function backtestTotals(rows, { now = new Date(), years = 3, keys = TOTAL
       const [y, n] = classRate.get(`${baseKey(r.line, r.rounds)}|${r.division}`) ?? [0, 0];
       return (y + 30 * lineP(r)) / (n + 30);
     };
-    const scored = test.map((r) => ({ ...r, p: predictTotal(fit, r.tx, r.line, r.rounds)?.p ?? lineP(r), lineP: lineP(r), classP: classP(r) }));
+    const scored = test.map((r) => ({ ...r, p: predictTotal(fit, r.tx, r.line, r.rounds, r.division)?.p ?? lineP(r), lineP: lineP(r), classP: classP(r) }));
     held.push(...scored);
     const at25 = scored.filter((r) => r.line === 2.5 && r.rounds === 3);
     halves.push({ from: f, to: t, train: fit.n, bouts: new Set(test.map((r) => r.id)).size, kept: fit.terms.filter((x) => x.weight).length, line25: { model: score(at25, (r) => r.p), byClass: score(at25, (r) => r.classP), base: score(at25, (r) => r.lineP) } });

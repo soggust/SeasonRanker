@@ -79,6 +79,35 @@ const LAMBDA = 1;
 const STEPS = 30;
 // (a chance never past these: a fight is never sure)
 export const CLAMP = [0.03, 0.97];
+// RECENCY (the history round, 2026-10-19; the owner's rule: recent seasons count more). The fit's rows are weighted by
+// their age, halving every RECENCY_HL years (null: flat, as before), so the terms' weights follow the sport as it is.
+// A candidate behind FIGHT_HL (years) for the gate (gate.mjs --candidate env:FIGHT_HL=2); the constant is what ships.
+// MEASURED AND HELD (the gate, 2026-10-19, walk-forward 2018 on): a half-life of 2 years made the bouts' log loss
+// worse by +0.0277 a row (0.6241 to 0.6518; 4 years +0.0052, a tie; 1 year the coin: 0.6931), because the soft rule
+// reads each half-fit's z and the weights cut the halves' effective rows, zeroing terms. So the half-life stays null:
+// a recency that doesn't starve the soft fit (weights in the full fit alone, or a longer window) is the next try
+const envNum = (k, d) => (process.env[k] === undefined || process.env[k] === '' ? d : Number(process.env[k]) || null);
+export const RECENCY_HL = envNum('FIGHT_HL', null);
+// (the first-listed term (the loss review's H11): 1 on every row, so the fit learns whether ESPN's first fighter
+// wins more or less than his numbers say; a candidate behind FIGHT_CORNER=1. MEASURED AND HELD 2026-10-19: there is
+// no first-listed bias in the walk-forward chances (2018 on, 6,078 fit rows: ESPN's first fighter wins 0.4666, the
+// model's mean for him 0.4691; where he's the model's dog 0.3562 against 0.3592, the favorite 0.6195 against 0.6212;
+// on the history's 1,968 closes 0.450 against 0.455), the term fit at nothing and the gate read a tie (+0.0003): the
+// review's +3.9 points was a full fit's read, not the walk-forward's)
+export const CORNER = process.env.FIGHT_CORNER === '1';
+// (the rating's deviation (the loss review's H21): the gap in how sure the rating is of each (rdGap), and the rating
+// term scaled by how unsure it is of both (ratingRd); a candidate behind FIGHT_RD=1. MEASURED AND HELD 2026-10-19:
+// the deciding years +0.0030 a row (a tie), the older ones +0.0053 worse beyond noise, the history's closes 0.6231
+// against 0.6214: nothing to ship. The rating alone's walk-forward log loss by half-year 2018 to 2026 runs 0.63 to
+// 0.70 with no trend (2024H1 0.633, 2026H1 0.656), the model's 0.61 to 0.67)
+export const RATING_RD = process.env.FIGHT_RD === '1';
+// (each row's weight by its age at the newest row, halving every hl years; 1 with no half-life)
+export function recencyWeights(rows, hl = RECENCY_HL) {
+  if (!hl || !rows.length) return rows;
+  const newest = rows.reduce((a, r) => (a > r.date ? a : r.date), rows[0].date);
+  const t0 = Date.parse(newest);
+  return rows.map((r) => ({ ...r, w: (r.w ?? 1) * Math.pow(0.5, (t0 - Date.parse(r.date)) / YEAR / hl) }));
+}
 
 export const TERMS = [
   ['rating', 'the rating (its own chance, in log odds)'],
@@ -111,6 +140,8 @@ export const TERMS = [
   ['form', 'his last three bouts against his career'],
   ['beatQ', 'the ratings of the last three men he beat'],
   ['firstFive', 'his first five-round bout'],
+  ...(CORNER ? [['corner', 'listed first by ESPN (the first-listed bias)']] : []),
+  ...(RATING_RD ? [['rdGap', "the rating's deviation, his less the other's (per 100)"], ['ratingRd', "the rating where it's unsure of both (its log odds by the deviations' mean over 150)"]] : []),
 ];
 export const TERM_KEYS = TERMS.map(([k]) => k);
 
@@ -323,6 +354,8 @@ export function featuresOf(a, b, { rounds = 3, place = null, date = null, lbs = 
     moveUp: diff('moveUp'),
     moveDown: diff('moveDown'),
     five: rounds >= 5 ? ratingLogit : 0,
+    ...(CORNER ? { corner: 1 } : {}),
+    ...(RATING_RD ? { rdGap: diff('rd') / 100, ratingRd: (ratingLogit * ((a.rd + b.rd) / 2 - 150)) / 150 } : {}),
     ...candidatesOf(a, b, { rounds, place, date, lbs, diff }),
   };
 }
@@ -563,7 +596,7 @@ export function fitLogistic(rows, keys = TERM_KEYS, lambda = LAMBDA) {
 
 // The soft fit: the full fit's weights, each shrunk by its halves' evidence (see the header)
 export function fitSoft(rows, keys = TERM_KEYS) {
-  const sorted = [...rows].sort((a, b) => a.date.localeCompare(b.date));
+  const sorted = recencyWeights([...rows].sort((a, b) => a.date.localeCompare(b.date)));
   const full = fitLogistic(sorted, keys);
   const mid = Math.floor(sorted.length / 2);
   const h1 = fitLogistic(sorted.slice(0, mid), keys);
