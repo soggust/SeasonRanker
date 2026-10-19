@@ -3,6 +3,7 @@
 // (apps/<sport>/src/theme/_sport-global.scss), which can override the tokens below.
 // ===========================================================================
 @use "sass:color";
+@use "sass:map";
 @use "sass:math";
 @use "sport-settings" as sport;
 @use "theme";
@@ -87,15 +88,26 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
 
 // Column-group colors, shared by the filter panels, the grid chips, the column markers and the card's
 // panels: worked out from the sport's accent (sport-settings $accent), so each sport's sit in its own
-// palette. Their hues are spread evenly around the wheel, a quarter turn apart, starting a sixth of a turn
-// past the accent (so none lands on it); their saturation and lightness follow the accent's, kept lively
-// (never washed out, even from a soft accent) and in a range that reads on the dark panels
+// palette. Six slots (a group's tone, StatGroup.tone): the first four a quarter turn apart around the wheel,
+// starting a sixth of a turn past the accent (so none lands on it), the last two halfway between the first
+// and second and the third and fourth; slot 0 is Results and slot 3 Support in every sport. Their saturation
+// and lightness follow the accent's, kept lively (never washed out, even from a soft accent) and in a
+// range that reads on the dark panels. (.group-results and the other named classes: the first four slots
+// by their old names, for the card panels that still wear them.)
 $-accent-hue: color.channel(sport.$accent, "hue", $space: hsl);
 $-category-saturation: math.clamp(55%, color.channel(sport.$accent, "saturation", $space: hsl) * 0.6, 60%);
 $-category-lightness: math.clamp(61%, color.channel(sport.$accent, "lightness", $space: hsl), 69%);
 
-@function -category($quarter) {
-  @return hsl($-accent-hue + 60deg + $quarter * 90deg, $-category-saturation, $-category-lightness);
+$-category-turns: (0: 0deg, 1: 90deg, 2: 180deg, 3: 270deg, 4: 45deg, 5: 225deg);
+
+@function -category($slot) {
+  @return hsl($-accent-hue + 60deg + map.get($-category-turns, $slot), $-category-saturation, $-category-lightness);
+}
+
+@each $slot, $turn in $-category-turns {
+  .group-#{$slot} {
+    --group-color: #{-category($slot)};
+  }
 }
 
 .group-results {

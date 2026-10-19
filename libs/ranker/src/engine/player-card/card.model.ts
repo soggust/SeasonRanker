@@ -12,8 +12,9 @@ export type CardTab = 'overview' | 'analysis' | 'stats' | 'seasons' | 'history' 
 // A stat's value, where it ranks in the list and how that compares
 export interface CardStat {
   key: string;
-  // Its stat group (the tile's sideline color)
+  // Its stat group, and the group's color slot (the tile's sideline color)
   group: string;
+  tone: number;
   label: string;
   name: string;
   display: string;
@@ -150,7 +151,7 @@ export interface PlayerCard {
   rank: number;
   of: number;
   awards: AwardWin[];
-  groups: { id: string; title: string; icon: string; stats: CardStat[] }[];
+  groups: { id: string; title: string; icon: string; tone: number; stats: CardStat[] }[];
   overview: CardOverview;
   // The sport's breakdown panel on the Overview (the NFL defense's vs Position), when the row has one
   breakdown: CardBreakdown | null;

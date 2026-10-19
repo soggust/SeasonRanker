@@ -4,6 +4,7 @@
 // Opening the link applies them, then takes ?list= out of the address (from then on the list is yours to
 // change). No accounts: the link is the whole of it.
 import { POSITIONS, SkillPosition, StatGroupId, presetWeights } from '@sport/positions';
+import { applyHiddenGroup } from '@ranker/engine/legacy-groups';
 import { DEFAULT_SPORT_SETTINGS } from '@ranker/engine/unit-scoring';
 import type { PositionService, RankerSettings } from '@ranker/engine/position.service';
 
@@ -103,8 +104,9 @@ export function applySharedLink(service: PositionService, defaults: RankerSettin
     const [position, stat] = key.split('.');
     if (tabs.has(position) && stat) service.setStatHidden(position as SkillPosition, stat, true);
   }
+  // (a group by its id; a retired id's stats one by one, legacy-groups.ts)
   for (const [position, ids] of Object.entries(shared.g ?? {})) {
-    if (tabs.has(position)) for (const id of ids) service.setSkillGroupHidden(position as SkillPosition, id as StatGroupId, true);
+    if (tabs.has(position)) for (const id of ids) applyHiddenGroup(service, position as SkillPosition, id);
   }
   // (only settings the site has, of the same kind as their defaults)
   const known = <T extends object>(values: Record<string, unknown> | undefined, base: T): Partial<T> =>

@@ -347,7 +347,7 @@
                 }
               </div>
               @for (g of v.groups; track g.id) {
-                <card-panel class="tab-card compare-group" [ngClass]="'group-' + g.id" [label]="g.title" [icon]="g.icon" [startOpen]="true">
+                <card-panel class="tab-card compare-group" [ngClass]="'group-' + g.tone" [label]="g.title" [icon]="g.icon" [startOpen]="true">
                   <div class="group-body">
                     @for (row of g.rows; track row.key) {
                       <div class="compare-row">

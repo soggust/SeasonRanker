@@ -64,6 +64,7 @@ for (const sport of SPORTS) {
     }
     a.setStatHidden(first, SKILL_STATS[first][0].key, true);
     const group = skillGroups(second)[0].id;
+    const reversed = skillGroups(second).map((g) => g.id).reverse();
     a.setSkillGroupHidden(second, group, true);
     const settingChanges = {
       minShare: 50,
@@ -77,8 +78,8 @@ for (const sport of SPORTS) {
     a.setUnitOrder(first, ['row-b', 'row-a'], true);
     a.toggleGroupCollapsed(first, group);
     // (unicode, and runs of ? and ~, whose base64 has / and +: the link must carry them URL-safe)
-    a.setColumnOrder(`${first}.box`, COLUMNS);
-    a.setGroupOrder(second, ['support', 'advanced', 'box', 'results']);
+    a.setColumnOrder(`${first}.${group}`, COLUMNS);
+    a.setGroupOrder(second, reversed);
 
     const link = new URL(a.shareLink());
     const code = link.searchParams.get('list');
@@ -98,8 +99,8 @@ for (const sport of SPORTS) {
     assert.deepEqual(shared.o, { [first]: ['row-b', 'row-a'] });
     assert.deepEqual(shared.x, { [first]: [group] });
     assert.equal(shared.c, undefined);
-    assert.deepEqual(shared.k, { [`${first}.box`]: COLUMNS });
-    assert.deepEqual(shared.go, { [second]: ['support', 'advanced', 'box', 'results'] });
+    assert.deepEqual(shared.k, { [`${first}.${group}`]: COLUMNS });
+    assert.deepEqual(shared.go, { [second]: reversed });
 
     // Opened: the same list, and ?list= gone from the address (the rest of it kept)
     setAddress(link.href);

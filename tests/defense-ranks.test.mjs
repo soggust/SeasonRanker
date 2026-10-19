@@ -70,7 +70,7 @@ test('Pass D / Run D Rank: ties share, nulls get none, by points (touchdowns) or
   // In Results, each a slider (the owner's call: sorted by best pass or run D, weighted like any stat)
   for (const key of ['defRank', 'passDefRank', 'runDefRank']) {
     assert.ok(!stat(key).infoOnly && stat(key).format === 'rank' && stat(key).negative, `${key}: a scored rank, lower better`);
-    assert.equal(statGroup(stat(key)), 'results', `${key}: not in Results`);
+    assert.equal(statGroup(stat(key), 'DEF'), 'results', `${key}: not in Results`);
   }
   assert.equal(SPORT.statLabel(stat('passDefRank'), { rankBasis: 'points' }, 'DEF'), 'Pass D Rank (TDs)');
   assert.equal(SPORT.statLabel(stat('runDefRank'), { rankBasis: 'yards' }, 'DEF'), 'Run D Rank (Yds)');

@@ -1,6 +1,6 @@
 <!-- One stat: value, rank in the list, a bar for where that sits, the list average -->
 <ng-template #statTile let-s>
-  <div class="card-stat" [ngClass]="'group-' + s.group" [title]="s.name" [style.--pct]="s.pct ?? 0" [style.--tone]="rankTone(s.pct)">
+  <div class="card-stat" [ngClass]="'group-' + s.tone" [title]="s.name" [style.--pct]="s.pct ?? 0" [style.--tone]="rankTone(s.pct)">
     <span class="stat-name">{{ s.label }}</span>
     <span class="stat-rank">
       @if (s.rank !== null) {
@@ -37,7 +37,7 @@
 <!-- Each group a panel (card-panel), open until it's folded shut -->
 @for (group of c.groups; track group.id) {
   <card-panel
-    [ngClass]="'group-' + group.id"
+    [ngClass]="'group-' + group.tone"
     [label]="group.title"
     [icon]="group.icon"
     [open]="!cards.closedGroups.has(group.id)"

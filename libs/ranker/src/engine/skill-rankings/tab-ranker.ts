@@ -118,7 +118,7 @@ export class TabRanker {
     const { stats, hidden } = this.tab(position);
     const combined = this.settings.combineStats;
     const counted = (combined ? this.combine(stats, position).stats : stats).filter(
-      (stat) => !stat.positionAdjust && !hidden[statGroup(stat)] && !this.statHidden(stat.key, position) && !reader.recentOff(stat),
+      (stat) => !stat.positionAdjust && !hidden[statGroup(stat, position)] && !this.statHidden(stat.key, position) && !reader.recentOff(stat),
     );
     const mix = this.mixWeights(position);
     const weights = combinedWeights(position, mix, combined);
@@ -146,7 +146,7 @@ export class TabRanker {
     const parts = new Map<SkillPlayer, Map<string, number>>();
     const strengths = new Map<string, number>();
     const { counted } = this.scores(reader, players, position, rows, parts, strengths);
-    const groupOf = new Map(counted.filter((stat) => (strengths.get(stat.key) ?? 0) > 0).map((stat) => [stat.key as string, statGroup(stat) as string]));
+    const groupOf = new Map(counted.filter((stat) => (strengths.get(stat.key) ?? 0) > 0).map((stat) => [stat.key as string, statGroup(stat, position)]));
     return groupRanks(among, parts, groupOf);
   }
 

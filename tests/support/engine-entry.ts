@@ -27,4 +27,5 @@ export { defaultMin, hasMin, minCount, seasonLength } from '@ranker/engine/playi
 export { shareLink, applySharedLink, compareCode, readCompareCode } from '@ranker/engine/share';
 export { CARD_PARAM, cardLink, cardTabOf, findLinkedCard, gameLink, gameTabOf, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
 export { SPORT } from '@sport/sport';
-export { POSITIONS, SKILL_STATS, presetWeights, skillGroups, statGroup } from '@sport/positions';
+export { GROUPS, LEGACY_GROUPS, POSITIONS, SKILL_STATS, headlineStats, presetWeights, skillGroups, statGroup } from '@sport/positions';
+export { applyHiddenGroup, isGroupId, legacyGroupKeys } from '@ranker/engine/legacy-groups';

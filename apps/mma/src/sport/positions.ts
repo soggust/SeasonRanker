@@ -1,4 +1,5 @@
 import type { SportSettings, StatBasis, StatDef, StatGroup, StatGroupId } from '@ranker/engine/sport';
+import { type GroupDef, groupOfKey, resolveGroups } from '@ranker/engine/stat-groups';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -259,51 +260,43 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 }
 
 // ---------------------------------------------------------------------------
-// Stat groups: Results, Striking (the basic group) and Grappling (the advanced group's place)
+// Stat groups (categories): every division's, in the grid's order, each group its stats in column order
+// (stat-groups.ts resolves them; a key a tab lacks, the pound-for-pound tabs' Peak Rank, is skipped). Only
+// a look: where a column sits, the strip's name, icon and color, and what the sidebar's eye on the group
+// switches off together. The ranking reads the sliders alone.
 // ---------------------------------------------------------------------------
-export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
-  { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Striking', icon: 'sports_mma' },
-  { id: 'advanced', title: 'Grappling', icon: 'sports_kabaddi' },
-  { id: 'support', title: 'Context', icon: 'insights' },
+type Group = GroupDef<SkillColumnKey>;
+const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
+
+const DIVISION_GROUPS: Group[] = [
+  group('results', 'Results', 'emoji_events', 0, ['winPct', 'recent', 'officialRank', 'peakRank', 'titleDefenses', 'titleWins', 'rating', 'careerPoints', 'peakRating', 'bestWin', 'qualityWins', 'streak', 'finishRate']),
+  group('box', 'Striking', 'sports_mma', 1, ['slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'strDiff', 'kdAgainst']),
+  group('advanced', 'Grappling', 'sports_kabaddi', 2, ['td15', 'tdAcc', 'tdDef', 'sub15', 'adv15']),
+  // (the context stats share the dark box the other sports' support grades use)
+  group('support', 'Context', 'insights', 3, ['oppRating', 'koShare', 'fightTime', 'age', 'reach'], true),
 ];
 
-const RESULTS_STATS = new Set<SkillColumnKey>([
-  'winPct',
-  'recent',
-  'officialRank',
-  'peakRank',
-  'rating',
-  'careerPoints',
-  'peakRating',
-  'bestWin',
-  'qualityWins',
-  'titleWins',
-  'titleDefenses',
-  'streak',
-  'finishRate',
-]);
-const STRIKING_STATS = new Set<SkillColumnKey>(['slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'strDiff', 'kdAgainst']);
-const GRAPPLING_STATS = new Set<SkillColumnKey>(['td15', 'tdAcc', 'tdDef', 'sub15', 'adv15']);
+export const GROUPS: Record<SkillPosition, Group[]> = Object.fromEntries(POSITIONS.map((p) => [p, DIVISION_GROUPS])) as Record<SkillPosition, Group[]>;
 
-export function statGroup(stat: SkillStat): StatGroupId {
-  if (RESULTS_STATS.has(stat.key)) return 'results';
-  if (STRIKING_STATS.has(stat.key)) return 'box';
-  if (GRAPPLING_STATS.has(stat.key)) return 'advanced';
-  return 'support';
+// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
+// hid one hides those stats one by one, so it ranks as its author saw it)
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
+
+export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
+  return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
 }
 
-// The card's headline stats (no Seasons tab for MMA: kept for the engine)
-export function headlineStats(position: SkillPosition, count = 3): SkillStat[] {
-  return SKILL_STATS[position].filter((stat) => statGroup(stat) === 'box').slice(0, count);
+// The card's headline stats (no Seasons tab for MMA: kept for the engine), pinned
+const HEADLINE: SkillColumnKey[] = ['slpm', 'strAcc', 'sapm'];
+
+export function headlineStats(position: SkillPosition): SkillStat[] {
+  const stats = SKILL_STATS[position];
+  return HEADLINE.map((key) => stats.find((stat) => stat.key === key)).filter((stat): stat is SkillStat => !!stat);
 }
 
 export type SkillStatGroup = StatGroup<SkillStat>;
 
-// A division's groups, in the standard order
+// A division's groups with their stats
 export function skillGroups(position: SkillPosition): SkillStatGroup[] {
-  return STAT_GROUP_INFO.map((info) => ({
-    ...info,
-    stats: SKILL_STATS[position].filter((stat) => statGroup(stat) === info.id),
-  })).filter((group) => group.stats.length);
+  return resolveGroups(GROUPS[position], SKILL_STATS[position]);
 }

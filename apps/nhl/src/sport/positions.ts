@@ -1,4 +1,5 @@
 import { POSITION_ADJUST_STAT, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
+import { type GroupDef, groupOfKey, resolveGroups } from '@ranker/engine/stat-groups';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -343,61 +344,71 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 }
 
 // ---------------------------------------------------------------------------
-// Stat groups: the same groups (and colors) as the other sports
+// Stat groups (categories): each tab's, in the grid's order, each group its stats in column order
+// (stat-groups.ts resolves them; a key a tab lacks, a winger's Faceoff %, is skipped). Only a look: where
+// a column sits, the strip's name, icon and color, and what the sidebar's eye on the group switches off
+// together. The ranking reads the sliders alone.
 // ---------------------------------------------------------------------------
-export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
-  { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Basic', icon: 'bar_chart' },
-  { id: 'advanced', title: 'Advanced', icon: 'insights' },
-  { id: 'support', title: 'Support', icon: 'groups' },
+type Group = GroupDef<SkillColumnKey>;
+const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
+
+const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_events', 0, keys);
+const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
+const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
+const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+
+const SKATER_GROUPS: Group[] = [
+  results(['games', 'toi', 'winPct']),
+  basic(['goals', 'assists', 'points', 'plusMinus', 'ppPoints', 'shots', 'shootingPct', 'gwg', 'hits', 'blocks', 'takeaways', 'giveaways', 'pim', 'faceoffPct']),
+  advanced(['gameScore', 'xgfPct', 'xgfRel', 'cfPct', 'ixg', 'goalsAboveX', 'hdShots']),
+  support(['linemates', 'coaching']),
 ];
 
-const RESULTS_STATS = new Set<SkillColumnKey>(['games', 'toi', 'gamesStarted', 'winPct',
-  'recent', 'playoffWins']);
+export const GROUPS: Record<SkillPosition, Group[]> = {
+  TM: [
+    results(['games', 'winPct', 'recent', 'playoffWins']),
+    basic(['goalDiff', 'offRank', 'defRank', 'ppPct', 'pkPct']),
+    advanced(['xgfPct', 'cfPct', 'gsaxTeam', 'ptsOver', 'pdo']),
+    support(['forwards', 'blueline', 'goaltending']),
+  ],
+  TOP: SKATER_GROUPS,
+  C: SKATER_GROUPS,
+  LW: SKATER_GROUPS,
+  RW: SKATER_GROUPS,
+  D: SKATER_GROUPS,
+  G: [results(['games', 'gamesStarted', 'winPct']), basic(['savePct', 'gaa', 'shutouts', 'saves']), advanced(['gsax', 'gsaxPer60', 'hdSavePct']), support(['defense', 'coaching'])],
+  HC: [results(['games', 'winPct', 'playoffWins']), basic(['offRank', 'defRank']), advanced(['lift', 'ptsOver'])],
+};
 
-// (Game Score and GSAx lead them: each position's all-in-one value number)
-const ADVANCED_STATS = new Set<SkillColumnKey>([
-  'gameScore',
-  'xgfPct',
-  'xgfRel',
-  'cfPct',
-  'ixg',
-  'goalsAboveX',
-  'hdShots',
-  'gsax',
-  'gsaxPer60',
-  'hdSavePct',
-  'lift',
-  'ptsOver',
-  'pdo',
-  'gsaxTeam',
-]);
+// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
+// hid one hides those stats one by one, so it ranks as its author saw it)
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
 
-// (the Teams tab's roster grades sit where the support grades do, under "Roster")
-const ROSTER_STATS = new Set<SkillColumnKey>(['forwards', 'blueline', 'goaltending']);
-
-export function statGroup(stat: SkillStat): StatGroupId {
-  if (stat.support || ROSTER_STATS.has(stat.key)) return 'support';
-  if (RESULTS_STATS.has(stat.key)) return 'results';
-  if (ADVANCED_STATS.has(stat.key)) return 'advanced';
-  return 'box';
+export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
+  return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
 }
 
-// A position's headline stats for the player card's Seasons tab: its first few basic stats (goals,
-// assists, points; a goalie's save percentage, goals-against average and shutouts)
-export function headlineStats(position: SkillPosition, count = 3): SkillStat[] {
-  return SKILL_STATS[position]
-    .filter((stat) => statGroup(stat) === 'box' && !stat.infoOnly && !stat.positionAdjust && stat.format !== 'record' && stat.format !== 'grade')
-    .slice(0, count);
+// A position's headline stats for the player card's Seasons tab (goals, assists, points; a goalie's save
+// percentage, goals-against average and shutouts), pinned: build-comps.mjs writes them into the careers files
+const HEADLINE: Record<SkillPosition, SkillColumnKey[]> = {
+  TM: ['goalDiff', 'offRank', 'defRank'],
+  TOP: ['goals', 'assists', 'points'],
+  C: ['goals', 'assists', 'points'],
+  LW: ['goals', 'assists', 'points'],
+  RW: ['goals', 'assists', 'points'],
+  D: ['goals', 'assists', 'points'],
+  G: ['savePct', 'gaa', 'shutouts'],
+  HC: ['offRank', 'defRank'],
+};
+
+export function headlineStats(position: SkillPosition): SkillStat[] {
+  const stats = SKILL_STATS[position];
+  return HEADLINE[position].map((key) => stats.find((stat) => stat.key === key)).filter((stat): stat is SkillStat => !!stat);
 }
 
 export type SkillStatGroup = StatGroup<SkillStat>;
 
-// A position's groups, in the standard order, leaving out groups it has no stats for
+// A position's groups with their stats, leaving out groups it has no stats for
 export function skillGroups(position: SkillPosition): SkillStatGroup[] {
-  return STAT_GROUP_INFO.map((info) => ({
-    ...info,
-    title: info.title,
-    stats: SKILL_STATS[position].filter((stat) => !stat.positionAdjust && statGroup(stat) === info.id),
-  })).filter((group) => group.stats.length);
+  return resolveGroups(GROUPS[position], SKILL_STATS[position]);
 }

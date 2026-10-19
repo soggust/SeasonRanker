@@ -720,7 +720,7 @@ $app-cracks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' w
   --group-color: #{app(sand)};
 
   // (the wallet's aside: its panels the Book's card tables, _casino-chip.scss)
-  :is(.group-results, .group-box, .group-advanced, .group-support, card-panel):not(wallet-page *) {
+  :is(.group-0, .group-1, .group-2, .group-3, .group-4, .group-5, .group-results, .group-box, .group-advanced, .group-support, card-panel):not(wallet-page *) {
     --group-color: #{app(sand)} !important;
   }
 

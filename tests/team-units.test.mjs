@@ -55,7 +55,7 @@ test('nfl: OFF and ST are team tabs with their names, pace, stats and presets, e
       // (a rank is read, lower the better, in Results; a league rank isn't a stat to double up on)
       if (stat.format === 'rank') {
         assert.ok(stat.negative && stat.key in RANK_METRICS, `${tab} ${stat.key}: a rank from RANK_METRICS`);
-        assert.equal(statGroup(stat), 'results');
+        assert.equal(statGroup(stat, tab), 'results');
       }
     }
   }

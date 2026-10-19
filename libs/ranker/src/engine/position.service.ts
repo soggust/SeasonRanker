@@ -21,6 +21,7 @@ import {
   SkillWeights,
   StatGroupId,
   presetWeights,
+  skillGroups,
 } from '@sport/positions';
 
 // Groups switched off with the sidebar eye, per position (every group is on at each page load)
@@ -388,21 +389,27 @@ export class PositionService {
     this.statHiddenSubject.next(next);
   }
 
-  // Order of the stat groups (categories) per tab, changed by dragging the sidebar cards
+  // Order of the stat groups (categories) per tab, changed by dragging the sidebar cards (the tab's own
+  // order until then)
   private groupOrders: Partial<Record<Position, StatGroupId[]>> = {};
 
   groupOrder(position: Position): StatGroupId[] {
-    return this.groupOrders[position] ?? ['results', 'box', 'advanced', 'support'];
+    return this.groupOrders[position] ?? skillGroups(position as SkillPosition).map((group) => group.id);
   }
 
   setGroupOrder(position: Position, order: StatGroupId[]): void {
     this.groupOrders = { ...this.groupOrders, [position]: order };
   }
 
-  // A tab's groups in that order
+  // A tab's groups in that order; a group the order doesn't name (an older link's, from before the tab had
+  // it) follows the named ones, in the tab's own order
   orderedGroups(position: Position, groups: SkillStatGroup[]): SkillStatGroup[] {
     const order = this.groupOrder(position);
-    return [...groups].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    const place = (id: StatGroupId) => {
+      const i = order.indexOf(id);
+      return i < 0 ? order.length + groups.findIndex((group) => group.id === id) : i;
+    };
+    return [...groups].sort((a, b) => place(a.id) - place(b.id));
   }
 
   // Column order within each stat group, per tab ("SS.box", "SP.advanced"...), changed by dragging

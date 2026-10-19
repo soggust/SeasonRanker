@@ -88,13 +88,19 @@ export const POSITION_ADJUST_STAT: StatDef<'posAdj'> = {
   positionAdjust: true,
 };
 
-// The grid's four stat groups (each sport names and colors them), and a group with its stats
-export type StatGroupId = 'results' | 'box' | 'advanced' | 'support';
+// The grid's stat groups (categories): each sport names, colors and fills its own per tab (its positions.ts
+// GROUPS table, resolved by stat-groups.ts), and a group with its stats. An id is the sport's own word
+// ("results", "scoring", "support"...), kept stable: share links, saved presets and tracker pins name a
+// hidden group by it (legacy-groups.ts maps the retired ones). tone: its color slot, 0-5 (_base.scss
+// .group-<tone>; Results sits at 0 and Support at 3 in every sport). box: drawn as the dark grades box.
+export type StatGroupId = string;
 
 export interface StatGroup<Stat extends StatDef = StatDef> {
   id: StatGroupId;
   title: string;
   icon: string;
+  tone: number;
+  box?: boolean;
   stats: Stat[];
 }
 

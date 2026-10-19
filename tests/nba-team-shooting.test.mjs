@@ -102,7 +102,7 @@ test('nba team shooting: the TM tab lists them, lower-is-better against, DEFAULT
     const stat = stats.find((s) => s.key === key);
     assert.ok(stat && stat.label && stat.description && !stat.infoOnly, `${key}: on the tab`);
     assert.equal(Boolean(stat.negative), AGAINST.includes(key), `${key}: direction`);
-    assert.ok(['box', 'advanced'].includes(statGroup(stat)), `${key}: in Basic or Advanced`);
+    assert.ok(['box', 'advanced'].includes(statGroup(stat, 'TM')), `${key}: in Basic or Advanced`);
     assert.equal(presetWeights('TM', 'default')[key], 50, `${key}: DEFAULT 50`);
     for (const preset of SKILL_PRESETS.TM) if (!(key in preset.weights)) assert.equal(presetWeights('TM', preset.key)[key], 0, `${preset.key} ${key}: 0`);
   }

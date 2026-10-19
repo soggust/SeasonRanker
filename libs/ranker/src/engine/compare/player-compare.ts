@@ -181,7 +181,7 @@ export interface CompareView {
   // How alike each pair's skill shapes are (0-100)
   pairs: { a: number; b: number; alike: number }[];
   // The grid's columns, group by group (every side's tab's)
-  groups: { id: string; title: string; icon: string; rows: CompareRow[] }[];
+  groups: { id: string; title: string; icon: string; tone: number; rows: CompareRow[] }[];
   // The columns each side leads outright, and how many had a leader
   wins: number[];
   contested: number;
@@ -619,12 +619,12 @@ export class PlayerCompare {
 
   // Every side's tab's columns as its grid shows them (the Recent squares aside), merged: the groups in
   // the order they first come, each with every column any side shows, and each side's own stat for it
-  private columns(): { id: string; title: string; icon: string; stats: { key: string; of: (SkillStat | null)[] }[] }[] {
+  private columns(): { id: string; title: string; icon: string; tone: number; stats: { key: string; of: (SkillStat | null)[] }[] }[] {
     const out: ReturnType<PlayerCompare['columns']> = [];
     this.sides.forEach((side, i) => {
       for (const group of this.host.shownGroups(side.reader, side.position)) {
         let merged = out.find((g) => g.id === group.id);
-        if (!merged) out.push((merged = { id: group.id, title: group.title, icon: group.icon, stats: [] }));
+        if (!merged) out.push((merged = { id: group.id, title: group.title, icon: group.icon, tone: group.tone, stats: [] }));
         for (const stat of group.stats) {
           if (stat.format === 'recent') continue;
           // (one column when its key and its name are the same: a back's Total Yds aren't a receiver's)

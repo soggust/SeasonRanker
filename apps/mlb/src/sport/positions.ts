@@ -1,4 +1,5 @@
 import { POSITION_ADJUST_STAT, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
+import { type GroupDef, groupOfKey, resolveGroups } from '@ranker/engine/stat-groups';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -399,71 +400,88 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 }
 
 // ---------------------------------------------------------------------------
-// Stat groups: the same groups (and colors) as the NFL app
+// Stat groups (categories): each tab's, in the grid's order, each group its stats in column order
+// (stat-groups.ts resolves them; a key a tab lacks, the DH's fielding, is skipped). Only a look: where a
+// column sits, the strip's name, icon and color, and what the sidebar's eye on the group switches off
+// together. The ranking reads the sliders alone.
 // ---------------------------------------------------------------------------
-export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
-  { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Basic', icon: 'bar_chart' },
-  { id: 'advanced', title: 'Advanced', icon: 'insights' },
-  { id: 'support', title: 'Support', icon: 'groups' },
+type Group = GroupDef<SkillColumnKey>;
+const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
+
+const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_events', 0, keys);
+const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
+const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
+const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+
+// (hitters' walk and strikeout rates are basic stats; pitchers' are advanced)
+const HITTER_GROUPS: Group[] = [
+  results(['games', 'pa']),
+  basic(['avg', 'homeRuns', 'rbi', 'runs', 'stolenBases', 'obp', 'slg', 'bbPct', 'kPct', 'rangeFactor', 'fieldingPct']),
+  advanced(['war', 'wrcPlus', 'xwoba', 'barrelPct', 'hardHitPct', 'sprintSpeed', 'oaa', 'defRuns', 'bsr']),
+  support(['lineup', 'park']),
 ];
 
-const RESULTS_STATS = new Set<SkillColumnKey>(['games', 'pa', 'winPct',
-  'recent', 'saves', 'holds', 'playoffWins']);
+export const GROUPS: Record<SkillPosition, Group[]> = {
+  TM: [
+    results(['winPct', 'recent', 'playoffWins']),
+    basic(['runDiff', 'offRank', 'defRank', 'ops', 'era']),
+    advanced(['fieldingRuns', 'pythDiff', 'parkFactor']),
+    support(['hitters', 'rotation', 'bullpen']),
+  ],
+  TOP: HITTER_GROUPS,
+  C: HITTER_GROUPS,
+  '1B': HITTER_GROUPS,
+  '2B': HITTER_GROUPS,
+  '3B': HITTER_GROUPS,
+  SS: HITTER_GROUPS,
+  OF: HITTER_GROUPS,
+  DH: HITTER_GROUPS,
+  SP: [
+    results(['games', 'winPct']),
+    basic(['era', 'ip', 'strikeOuts', 'whip', 'hr9', 'fieldingPct']),
+    advanced(['war', 'fip', 'xfip', 'xera', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'hardHitAllowed', 'barrelAllowed']),
+    support(['defense', 'park']),
+  ],
+  RP: [
+    results(['games', 'saves', 'holds']),
+    basic(['era', 'ip', 'strikeOuts', 'whip']),
+    advanced(['war', 'fip', 'xfip', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'xwobaAllowed', 'hardHitAllowed']),
+    support(['defense', 'park']),
+  ],
+};
 
-// (the Teams tab's roster grades sit where the support grades do, under "Roster")
-const ROSTER_STATS = new Set<SkillColumnKey>(['hitters', 'rotation', 'bullpen']);
+// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
+// hid one hides those stats one by one, so it ranks as its author saw it)
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
 
-// (WAR leads them: the all-in-one value number, built on the rest)
-const ADVANCED_STATS = new Set<SkillColumnKey>([
-  'war',
-  'wrcPlus',
-  'xwoba',
-  'barrelPct',
-  'hardHitPct',
-  'sprintSpeed',
-  'defRuns',
-  'oaa',
-  'bsr',
-  'fip',
-  'xfip',
-  'xera',
-  'kPct',
-  'bbPct',
-  'kbbPct',
-  'whiffPct',
-  'xwobaAllowed',
-  'hardHitAllowed',
-  'barrelAllowed',
-  'fieldingRuns',
-  'pythDiff',
-  'parkFactor',
-]);
-
-// Hitters' walk and strikeout rates are basic stats; pitchers' are advanced
-export function statGroup(stat: SkillStat): StatGroupId {
-  if (stat.support || ROSTER_STATS.has(stat.key)) return 'support';
-  if (RESULTS_STATS.has(stat.key)) return 'results';
-  if (ADVANCED_STATS.has(stat.key) && !(HITTER_STATS.includes(stat) && (stat.key === 'kPct' || stat.key === 'bbPct'))) {
-    return 'advanced';
-  }
-  return 'box';
+export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
+  return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
 }
 
-// A position's headline stats for the player card's Seasons tab: its first few basic stats
-export function headlineStats(position: SkillPosition, count = 3): SkillStat[] {
-  return SKILL_STATS[position]
-    .filter((stat) => statGroup(stat) === 'box' && !stat.infoOnly && !stat.positionAdjust && stat.format !== 'record' && stat.format !== 'grade')
-    .slice(0, count);
+// A position's headline stats for the player card's Seasons tab, pinned: build-comps.mjs writes them into
+// the careers files
+const HEADLINE: Record<SkillPosition, SkillColumnKey[]> = {
+  TM: ['runDiff', 'offRank', 'defRank'],
+  TOP: ['avg', 'homeRuns', 'rbi'],
+  C: ['avg', 'homeRuns', 'rbi'],
+  '1B': ['avg', 'homeRuns', 'rbi'],
+  '2B': ['avg', 'homeRuns', 'rbi'],
+  '3B': ['avg', 'homeRuns', 'rbi'],
+  SS: ['avg', 'homeRuns', 'rbi'],
+  OF: ['avg', 'homeRuns', 'rbi'],
+  DH: ['avg', 'homeRuns', 'rbi'],
+  SP: ['era', 'ip', 'strikeOuts'],
+  RP: ['era', 'ip', 'strikeOuts'],
+};
+
+export function headlineStats(position: SkillPosition): SkillStat[] {
+  const stats = SKILL_STATS[position];
+  return HEADLINE[position].map((key) => stats.find((stat) => stat.key === key)).filter((stat): stat is SkillStat => !!stat);
 }
 
 export type SkillStatGroup = StatGroup<SkillStat>;
 
-// A position's groups, in the standard order, leaving out groups it has no stats for
+// A position's groups with their stats, leaving out groups it has no stats for
 export function skillGroups(position: SkillPosition): SkillStatGroup[] {
-  return STAT_GROUP_INFO.map((info) => ({
-    ...info,
-    title: info.title,
-    stats: SKILL_STATS[position].filter((stat) => !stat.positionAdjust && statGroup(stat) === info.id),
-  })).filter((group) => group.stats.length);
+  return resolveGroups(GROUPS[position], SKILL_STATS[position]);
 }

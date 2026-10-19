@@ -68,11 +68,11 @@ test("nfl QB: each group's places follow its share of the score, move with the s
   const parts = new Map();
   const strengths = new Map();
   const { counted } = ranker.scores(reader, listed, 'QB', SKILL_UNITS, parts, strengths);
-  const groups = new Set(counted.filter((s) => strengths.get(s.key) > 0).map((s) => statGroup(s)));
+  const groups = new Set(counted.filter((s) => strengths.get(s.key) > 0).map((s) => statGroup(s, 'QB')));
   assert.ok(groups.size >= 2, 'more than one group counted');
   assert.deepEqual(new Set(places.keys()), groups);
   for (const group of groups) {
-    const keys = counted.filter((s) => statGroup(s) === group).map((s) => s.key);
+    const keys = counted.filter((s) => statGroup(s, 'QB') === group).map((s) => s.key);
     const share = (row) => keys.reduce((sum, key) => sum + (parts.get(row)?.get(key) ?? 0), 0);
     const own = places.get(group);
     assert.equal(own.size, ranked.length);
@@ -92,7 +92,7 @@ test("nfl QB: each group's places follow its share of the score, move with the s
 
   // A group's sliders all at 0: no places (the dash); the other groups' places unchanged
   const [off, ...rest] = [...groups];
-  const offKeys = SKILL_STATS.QB.filter((s) => statGroup(s) === off).map((s) => s.key);
+  const offKeys = SKILL_STATS.QB.filter((s) => statGroup(s, 'QB') === off).map((s) => s.key);
   const zeroed = harness(engine, { ...base, ...Object.fromEntries(offKeys.map((k) => [k, 0])) });
   assert.equal(zeroed.places.get(off), undefined);
   for (const group of rest) {
@@ -103,9 +103,9 @@ test("nfl QB: each group's places follow its share of the score, move with the s
   }
 
   // The sliders within a group move its places: one stat at 100 and the rest at 0 ranks by that stat alone
-  const group = [...groups].find((g) => counted.filter((s) => statGroup(s) === g && strengths.get(s.key) > 0).length >= 2);
+  const group = [...groups].find((g) => counted.filter((s) => statGroup(s, 'QB') === g && strengths.get(s.key) > 0).length >= 2);
   assert.ok(group, 'a group with two stats counted');
-  const inGroup = counted.filter((s) => statGroup(s) === group && strengths.get(s.key) > 0).map((s) => s.key);
+  const inGroup = counted.filter((s) => statGroup(s, 'QB') === group && strengths.get(s.key) > 0).map((s) => s.key);
   const solo = inGroup[0];
   const only = harness(engine, { ...base, ...Object.fromEntries(inGroup.map((k) => [k, k === solo ? 100 : 0])) });
   const soloParts = new Map();

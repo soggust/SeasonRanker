@@ -4,6 +4,7 @@
 // for the grid (the same filters and ranking: tab-ranker.ts), so the numbers are the ones the compare view
 // shows. Also what pins it: the snapshot taken here is the baseline.
 import { SKILL_STATS, SkillPlayer, SkillPosition, SkillStatGroup, SkillWeights, StatGroupId, POSITIONS, presetWeights } from '@sport/positions';
+import { isGroupId, legacyGroupKeys } from '@ranker/engine/legacy-groups';
 import { SPORT } from '@sport/sport';
 import { SEASONS, dataSeason } from '@ranker/engine/data';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, emptyIn } from '@ranker/engine/unit-scoring';
@@ -30,7 +31,16 @@ function linkedState(code: string | null) {
   const weights = record(shared['w']);
   const hiddenStats: Record<string, boolean> = {};
   for (const key of Array.isArray(shared['h']) ? shared['h'] : []) if (typeof key === 'string' && tabs.has(key.split('.')[0])) hiddenStats[key] = true;
-  const groups = record(shared['g']);
+  // (a hidden group by its id; one by a retired id hides its stats of that day one by one, legacy-groups.ts)
+  const groups: Record<string, string[]> = {};
+  for (const [position, ids] of Object.entries(record(shared['g']))) {
+    if (!tabs.has(position) || !Array.isArray(ids)) continue;
+    for (const id of ids) {
+      if (typeof id !== 'string') continue;
+      if (isGroupId(position as SkillPosition, id)) (groups[position] ??= []).push(id);
+      else for (const key of legacyGroupKeys(position as SkillPosition, id) ?? []) hiddenStats[`${position}.${key}`] = true;
+    }
+  }
   const known = <T extends object>(values: Record<string, unknown>, base: T): Partial<T> =>
     Object.fromEntries(
       Object.entries(values).filter(([key, value]) => {
@@ -49,10 +59,7 @@ function linkedState(code: string | null) {
     const sliders = Object.fromEntries(Object.entries(own).filter(([, v]) => typeof v === 'number' && v >= 0 && v <= 100));
     return { ...presetWeights(position, 'default'), ...sliders } as SkillWeights;
   };
-  const hiddenGroups = (position: SkillPosition): Partial<Record<StatGroupId, boolean>> => {
-    const ids = groups[position];
-    return Array.isArray(ids) ? Object.fromEntries(ids.filter((id) => typeof id === 'string').map((id) => [id, true])) : {};
-  };
+  const hiddenGroups = (position: SkillPosition): Partial<Record<StatGroupId, boolean>> => Object.fromEntries((groups[position] ?? []).map((id) => [id, true]));
   return { settings, weightsOf, hiddenStats, hiddenGroups };
 }
 

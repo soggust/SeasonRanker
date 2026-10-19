@@ -688,12 +688,13 @@ export class PlayerCards {
         id: group.id,
         title: group.title,
         icon: group.icon,
+        tone: group.tone,
         // (another season's card leaves out the values from other tabs, which are the table's season's, and
         // a display-only stat that season doesn't have: Time of Possession before it was kept)
         stats: group.stats
           .filter((stat) => !context || !SPORT.tableSeasonOnly?.(stat))
           .filter((stat) => !stat.infoOnly || Number.isFinite(reader.value(player, stat)))
-          .map((stat) => this.cardStat(reader, player, stat, list, group.id))
+          .map((stat) => this.cardStat(reader, player, stat, list, group))
           .map((stat) => (ur ? { ...stat, rank: null, tied: false, pct: null, tint: null } : stat)),
       }))
       .filter((group) => group.stats.length);
@@ -729,7 +730,7 @@ export class PlayerCards {
     };
   }
 
-  private cardStat(reader: StatReader, player: SkillPlayer, stat: SkillStat, list: SkillPlayer[], group: string): CardStat {
+  private cardStat(reader: StatReader, player: SkillPlayer, stat: SkillStat, list: SkillPlayer[], group: { id: string; tone: number }): CardStat {
     // Lower is better for ranks and stats that count against a player (support grades read higher is
     // better: a better lineup is a better lineup)
     const lowerBetter = stat.format === 'rank' || (!!stat.negative && !stat.support);
@@ -740,7 +741,8 @@ export class PlayerCards {
     const of = values.length;
     return {
       key: stat.key,
-      group,
+      group: group.id,
+      tone: group.tone,
       label: reader.label(stat),
       name: reader.name(stat),
       display: reader.format(player, stat),

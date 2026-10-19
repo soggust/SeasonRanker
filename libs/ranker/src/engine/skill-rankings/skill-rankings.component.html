@@ -31,7 +31,7 @@
           }
         </div>
         @for (group of groups; track group.id) {
-          <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
+          <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)">
             <!-- Collapsed, a group is its own column alone: the chevron and the group's icon in the slot at its start
                  (a click opens the group again), its name (a click sorts the rows by their rank within it, as a stat's
                  header does) and each row's rank within the group under it. Open, the group is its stat columns alone,
@@ -43,7 +43,7 @@
                 <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
                 <p class="stat-label" [title]="labelTitle(gs, gcan)" [attr.role]="gcan ? 'button' : null" [attr.tabindex]="gcan ? 0 : null" [attr.aria-pressed]="gcan ? isolatedKey === gs.key : null" [attr.aria-label]="gcan ? isoLabel(gs) : null" (keydown.enter)="isolate(gs, $event)" (keydown.space)="isolate(gs, $event)">{{ group.title }}</p>@if (isolatedKey === gs.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
               </div>
-            } @else if (group.id === 'support') {
+            } @else if (group.box) {
               <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
                 <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
                 @for (stat of group.stats; track stat.key) {
@@ -81,7 +81,7 @@
         <!-- The grid's closing line: an empty cell after the last group, in its color, drawn like a group's
              opening line (each sport's own: the NFL's hash marks, MLB's chalk...) -->
         @if (groups.length) {
-          <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
+          <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].tone"><div></div></div>
         }
       </li>
       <!-- Nobody listed (every row filtered out by the settings) -->
@@ -213,7 +213,7 @@
           </div>
 
           @for (group of groups; track group.id) {
-            <div class="col-group" [ngClass]="'group-' + group.id" [class.collapsed]="isCollapsed(group.id)">
+            <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)">
               @if (isCollapsed(group.id)) {
                 <!-- A collapsed group: its own column alone, the row's rank within the group, a plain value like any
                      cell's, tinted like one (a dash: a UR row, or none of the group's stats counted). Only a look. -->
@@ -225,7 +225,7 @@
                   <p [style.color]="groupPlaceColor(place, group.id)">{{ place ?? '-' }}</p>
                   <p class="stat-label" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ group.title }}</p>
                 </div>
-              } @else if (group.id === 'support') {
+              } @else if (group.box) {
                 <!-- Support grades share a dark box -->
                 <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
                   <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
@@ -324,7 +324,7 @@
             </div>
           }
           @if (groups.length) {
-            <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].id"><div></div></div>
+            <div class="col-group group-end" [ngClass]="'group-' + groups[groups.length - 1].tone"><div></div></div>
           }
         </li>
       }

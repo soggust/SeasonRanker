@@ -1,4 +1,5 @@
 import { type SportSettings, type StatBasis, type StatDef, type StatGroup, type StatGroupId } from '@ranker/engine/sport';
+import { type GroupDef, groupOfKey, resolveGroups } from '@ranker/engine/stat-groups';
 import { SKILL_PRESETS } from '@sport/skill-presets';
 
 export type { StatBasis, StatGroupId } from '@ranker/engine/sport';
@@ -1673,129 +1674,146 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 }
 
 // ---------------------------------------------------------------------------
-// Stat groups: the same four groups (and colors) the QB page uses
+// Stat groups (categories): each tab's, in the grid's order, each group its stats in column order
+// (stat-groups.ts resolves them). Only a look: where a column sits, the strip's name, icon and color, and
+// what the sidebar's eye on the group switches off together. The ranking reads the sliders alone.
 // ---------------------------------------------------------------------------
-export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
-  { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Basic', icon: 'bar_chart' },
-  { id: 'advanced', title: 'Advanced', icon: 'insights' },
-  { id: 'support', title: 'Support', icon: 'groups' },
+type Group = GroupDef<SkillColumnKey>;
+const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
+
+const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_events', 0, keys);
+const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
+const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
+const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+
+const RECEIVER_GROUPS: Group[] = [
+  results(['games']),
+  basic(['receptions', 'targets', 'targetShare', 'recYards', 'rushYards', 'yac', 'recTds', 'rushTds', 'fumbles', 'drops']),
+  advanced(['epaPerTarget', 'catchPct', 'separation', 'yacOverExp', 'dropPct', 'adot', 'airYardsShare', 'snapShare', 'runBlockEpa', 'fantasy']),
+  support(['qbPlay']),
 ];
+const RUSHER_GROUPS: Group[] = [
+  results(['games']),
+  basic(['snaps', 'sacks', 'tfl', 'tackles', 'qbHits', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds']),
+  advanced(['pressures', 'hurries', 'pressureRate', 'missedTacklePct', 'snapPct']),
+];
+const COVERAGE_ADVANCED: SkillColumnKey[] = ['compPctAllowed', 'yardsAllowed', 'yardsPerTargetAllowed', 'tdsAllowed', 'passerRatingAllowed', 'missedTacklePct', 'snapPct'];
 
-const RESULTS_STATS = new Set<SkillColumnKey>([
-  'games',
-  'winPct',
-  'recent',
-  'topPerGame',
-  'winsOverExpected',
-  'atsPct',
-  'offRank',
-  'defRank',
-  'passDefRank',
-  'runDefRank',
-  'passOffRank',
-  'rushOffRank',
-  'stRank',
-]);
+export const GROUPS: Record<SkillPosition, Group[]> = {
+  TM: [
+    results(['winPct', 'recent', 'offRank', 'defRank', 'topPerGame']),
+    basic(['pointDiffPerGame', 'turnoverDiffPerGame']),
+    advanced(['netEpa', 'offEpa', 'defEpaAllowed', 'stEpaPerGame', 'oneScoreWinPct']),
+    support(['qbPlay', 'rbPlay', 'weapons', 'oline', 'defense', 'coaching']),
+  ],
+  OFF: [
+    results(['games', 'topPerGame', 'offRank', 'passOffRank', 'rushOffRank']),
+    basic(['playsPerGame', 'ptsPerGame', 'yardsPerGame', 'passYdsPerGame', 'rushYdsPerGame', 'redZoneTdPct', 'thirdDownPct', 'giveaways', 'sacksAllowed']),
+    advanced(['epaPerPlay', 'passEpa', 'rushEpa', 'successRate']),
+    support(['defense', 'coaching']),
+  ],
+  QB: [
+    results(['winPct', 'recent']),
+    basic(['passYards', 'ypa', 'compPct', 'rushYards', 'passTds', 'rushTds', 'ints', 'fumbles', 'rating']),
+    advanced(['epaPerPlay', 'successRate', 'cpoe', 'pressureToSack', 'badThrowPct', 'timeToThrow', 'adot', 'aggressiveness', 'fantasy']),
+    support(['weapons', 'oline', 'defense', 'coaching', 'responsibility']),
+  ],
+  RB: [
+    results(['games']),
+    basic(['carries', 'rushYards', 'ypc', 'receptions', 'targets', 'recYards', 'rushTds', 'recTds', 'fumbles', 'drops', 'firstDowns']),
+    advanced(['epaPerCarry', 'epaPerTarget', 'ryoePerAtt', 'yacoPerCarry', 'brokenTackles', 'snapShare', 'passProPct', 'fantasy']),
+    support(['qbPlay', 'oline']),
+  ],
+  WR: RECEIVER_GROUPS,
+  TE: RECEIVER_GROUPS,
+  OL: [
+    results(['games']),
+    basic(['sacksAllowed', 'ypc', 'stuffRate', 'shortYardagePct', 'linePenaltiesPerGame']),
+    advanced(['qbHitRate', 'runEpa', 'runSuccess', 'pressureRate', 'sackRate', 'yardsBeforeContact', 'timeToThrow']),
+    support(['qbPlay', 'rbPlay', 'coaching']),
+  ],
+  DEF: [
+    results(['games', 'topPerGame', 'defRank', 'passDefRank', 'runDefRank']),
+    basic(['sacks', 'takeaways', 'ptsAllowedPerGame', 'thirdDownPct', 'redZoneTdPct']),
+    advanced(['epaAllowed', 'passEpaAllowed', 'rushEpaAllowed', 'successAllowed', 'pressureRate', 'qbHitRate', 'missedTacklePct', 'fantasy']),
+    support(['qbPlay', 'coaching']),
+  ],
+  EDGE: RUSHER_GROUPS,
+  DL: RUSHER_GROUPS,
+  LB: [
+    results(['games']),
+    basic(['snaps', 'tackles', 'soloTackles', 'tfl', 'sacks', 'qbHits', 'interceptions', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
+    advanced(['pressures', 'hurries', ...COVERAGE_ADVANCED]),
+  ],
+  CB: [
+    results(['games']),
+    basic(['snaps', 'interceptions', 'passesDefended', 'tackles', 'tfl', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
+    advanced(COVERAGE_ADVANCED),
+  ],
+  S: [
+    results(['games']),
+    basic(['snaps', 'interceptions', 'passesDefended', 'tackles', 'tfl', 'soloTackles', 'sacks', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
+    advanced(COVERAGE_ADVANCED),
+  ],
+  ST: [
+    results(['games', 'stRank']),
+    basic(['fgMade', 'fgPct', 'patPct', 'netAvg', 'inside20Pct', 'kickReturnAvg', 'puntReturnAvg', 'returnTds', 'oppReturnAvg', 'blocksMade', 'kicksBlocked']),
+    advanced(['stEpaPerPlay', 'fgEpa', 'puntEpa', 'returnEpa', 'kickoffEpa']),
+    support(['coaching']),
+  ],
+  K: [results(['games']), basic(['fgMade', 'fgAtt', 'fgPct', 'fg50', 'fgLong', 'patPct']), advanced(['epaPerKick', 'fgOverExp', 'fantasy'])],
+  P: [results(['games']), basic(['punts', 'grossAvg', 'netAvg', 'inside20', 'inside20Pct', 'touchbacks', 'fairCatchPct']), advanced(['epaPerPunt'])],
+  HC: [
+    results(['winPct', 'winsOverExpected', 'atsPct', 'offRank', 'defRank']),
+    basic(['penaltiesPerGame']),
+    advanced(['stEpaPerGame', 'oneScoreWinPct', 'fourthDownGoPct']),
+    support(['qbPlay', 'weapons', 'oline', 'defense']),
+  ],
+};
 
-const ADVANCED_STATS = new Set<SkillColumnKey>([
-  'offEpa',
-  'defEpaAllowed',
-  'stEpaPerGame',
-  'oneScoreWinPct',
-  'epaPerPlay',
-  'successRate',
-  'cpoe',
-  'pressureToSack',
-  'badThrowPct',
-  'aggressiveness',
-  'fourthDownGoPct',
-  'epaPerCarry',
-  'ryoePerAtt',
-  'yacoPerCarry',
-  'brokenTackles',
-  'snapShare',
-  'epaPerTarget',
-  'catchPct',
-  'separation',
-  'yacOverExp',
-  'adot',
-  'airYardsShare',
-  'dropPct',
-  'runBlockEpa',
-  'passProPct',
-  'epaPerKick',
-  'fgOverExp',
-  'epaPerPunt',
-  'epaAllowed',
-  'passEpaAllowed',
-  'rushEpaAllowed',
-  'successAllowed',
-  'pressureRate',
-  'qbHitRate',
-  'missedTacklePct',
-  'sackRate',
-  'yardsBeforeContact',
-  'runEpa',
-  'runSuccess',
-  'timeToThrow',
-  'netEpa',
-  // (the defensive players' charted and snap-count stats; their coverage targets stay a basic count)
-  'pressures',
-  'hurries',
-  'snapPct',
-  'compPctAllowed',
-  'yardsAllowed',
-  'yardsPerTargetAllowed',
-  'tdsAllowed',
-  'passerRatingAllowed',
-  // (the team offenses' and special teams' EPA)
-  'passEpa',
-  'rushEpa',
-  'stEpaPerPlay',
-  'kickoffEpa',
-  'puntEpa',
-  'fgEpa',
-  'returnEpa',
-  // Fantasy points close out each Advanced Stats group
-  'fantasy',
-]);
+// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
+// hid one hides those stats one by one, so it ranks as its author saw it)
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
 
-// Support grades go in Support; everything not listed as results or advanced is a basic stat
-// (the Teams tab's grades sit where the support grades do, under "Roster")
-const ROSTER_STATS = new Set<SkillColumnKey>(['qbPlay', 'rbPlay', 'weapons', 'oline', 'defense', 'coaching']);
-
-export function statGroup(stat: SkillStat): StatGroupId {
-  if (stat.support || ROSTER_STATS.has(stat.key)) return 'support';
-  if (RESULTS_STATS.has(stat.key)) return 'results';
-  if (ADVANCED_STATS.has(stat.key)) return 'advanced';
-  return 'box';
+// A stat's group on a tab (a combined column, Total Yds: its parts')
+export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
+  const defs = GROUPS[position];
+  const own = groupOfKey(defs, stat.key);
+  if (own) return own;
+  const pair = COMBINED_STATS.find(({ stat: total }) => total.key === stat.key);
+  return (pair && groupOfKey(defs, pair.parts[0])) ?? defs[0].id;
 }
 
-// A position's headline stats for the player card's Seasons tab: its first few basic stats, as
-// numbers (not grades, records or ranks)
-export function headlineStats(position: SkillPosition, count = 3): SkillStat[] {
-  return SKILL_STATS[position]
-    .filter(
-      (stat) =>
-        statGroup(stat) === 'box' &&
-        !stat.infoOnly &&
-        stat.key !== 'fantasy' &&
-        !['grade', 'record', 'recent', 'rank'].includes(stat.format) &&
-        !combinedFor(position).some(({ stat: total }) => total.key === stat.key),
-    )
-    .slice(0, count);
+// A position's headline stats for the player card's Seasons tab (build-comps.mjs writes them into the
+// careers files, so they're pinned here: never a grade, record, rank or display-only count)
+const HEADLINE: Record<SkillPosition, SkillColumnKey[]> = {
+  TM: ['pointDiffPerGame', 'turnoverDiffPerGame'],
+  OFF: ['ptsPerGame', 'yardsPerGame', 'passYdsPerGame'],
+  QB: ['passYards', 'ypa', 'compPct'],
+  RB: ['carries', 'rushYards', 'ypc'],
+  WR: ['receptions', 'targets', 'targetShare'],
+  TE: ['receptions', 'targets', 'targetShare'],
+  OL: ['sacksAllowed', 'ypc', 'stuffRate'],
+  DEF: ['sacks', 'takeaways', 'ptsAllowedPerGame'],
+  EDGE: ['sacks', 'tfl', 'tackles'],
+  DL: ['sacks', 'tfl', 'tackles'],
+  LB: ['tackles', 'soloTackles', 'tfl'],
+  CB: ['interceptions', 'passesDefended', 'tackles'],
+  S: ['interceptions', 'passesDefended', 'tackles'],
+  ST: ['fgMade', 'fgPct', 'patPct'],
+  K: ['fgMade', 'fgPct', 'fg50'],
+  P: ['punts', 'grossAvg', 'netAvg'],
+  HC: ['penaltiesPerGame'],
+};
+
+export function headlineStats(position: SkillPosition): SkillStat[] {
+  const stats = SKILL_STATS[position];
+  return HEADLINE[position].map((key) => stats.find((stat) => stat.key === key)).filter((stat): stat is SkillStat => !!stat);
 }
 
 export type SkillStatGroup = StatGroup<SkillStat>;
 
-// A position's groups, in the standard order, leaving out groups it has no stats for
+// A position's groups with their stats, leaving out groups it has no stats for
 export function skillGroups(position: SkillPosition): SkillStatGroup[] {
-  return STAT_GROUP_INFO.map((info) => {
-    const stats = SKILL_STATS[position].filter((stat) => statGroup(stat) === info.id);
-    // Fantasy points always come last in their group
-    const fantasy = stats.filter((stat) => stat.key === 'fantasy');
-    const title = info.title;
-    return { ...info, title, stats: [...stats.filter((stat) => stat.key !== 'fantasy'), ...fantasy] };
-  }).filter((group) => group.stats.length);
+  return resolveGroups(GROUPS[position], SKILL_STATS[position]);
 }

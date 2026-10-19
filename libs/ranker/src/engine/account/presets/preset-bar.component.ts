@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { PositionService } from '@ranker/engine/position.service';
 import { SkillPosition, SkillWeights, StatGroupId, presetWeights, skillGroups } from '@sport/positions';
+import { applyHiddenGroup } from '@ranker/engine/legacy-groups';
 import { AccountService } from '../account.service';
 import { errorMessage } from '../account-helpers';
 import { PRESET_NAME_MAX, PresetSettings, USER_PRESET, UserPreset, presetNameProblem, presetSettings, samePreset } from '../lists/lists-helpers';
@@ -164,6 +165,8 @@ export class PresetBarComponent implements OnChanges {
     for (const group of skillGroups(tab)) {
       if (!!this.positions.skillHiddenGroups(tab)[group.id] !== off.has(group.id)) this.positions.setSkillGroupHidden(tab, group.id as StatGroupId, off.has(group.id));
     }
+    // (a group the tab no longer has, saved under its old id: its stats of that day, one by one)
+    for (const id of off) if (!skillGroups(tab).some((group) => group.id === id)) applyHiddenGroup(this.positions, tab, id);
     this.activeIds[tab] = id;
     this.applied.emit(weights);
   }
