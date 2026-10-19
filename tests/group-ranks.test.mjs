@@ -252,9 +252,10 @@ test('the grid template: a group\'s rank column only while it is collapsed, none
     const above = lines.slice(0, i).reverse().find((l) => /^\s*(@if|\} @else)/.test(l));
     assert.equal(above.trim(), '@if (isCollapsed(group.id)) {', `line ${i + 1} under "${above.trim()}"`);
   }
-  // (each collapsed branch closes before the open ones, which read no group rank)
-  for (const branch of html.split(/\} @else if \(group\.id === 'support'\) \{/).slice(1)) {
-    const open = branch.split(/\n\s*\}\n\s*<\/div>\n/)[0];
-    assert.ok(!/groupPlace|group-rank-col/.test(open), 'an open group reads a rank');
-  }
+  // (and nothing that reads a group's rank or its column outside that branch: an open group draws none)
+  lines.forEach((l, i) => {
+    if (!/groupPlace|groupStat\(|group-rank-col/.test(l)) return;
+    const above = lines.slice(0, i).reverse().find((x) => /^\s*(@if|\} @else)/.test(x));
+    assert.equal(above.trim(), '@if (isCollapsed(group.id)) {', `line ${i + 1} reads a rank under "${above.trim()}"`);
+  });
 });

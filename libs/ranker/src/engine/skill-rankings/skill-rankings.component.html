@@ -220,12 +220,16 @@
                 @let gs = groupStat(group);
                 @let place = groupPlace(player, group.id);
                 <div class="group-rank-col" [class.isolated]="isolatedKey === gs.key" [style.--label-w]="columnWidth(gs)">
+                  <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
+                  <span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>
                   <p [style.color]="groupPlaceColor(place, group.id)">{{ place ?? '-' }}</p>
                   <p class="stat-label" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ group.title }}</p>
                 </div>
               } @else if (group.id === 'support') {
                 <!-- Support grades share a dark box -->
                 <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
+                  <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
+                  <span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>
                   @for (stat of group.stats; track stat.key) {
                     @if (stat.format === 'grade' && r.value(player, stat) !== null) {
                       <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
@@ -255,11 +259,12 @@
                   }
                 </div>
               } @else {
-                @for (stat of group.stats; track stat.key) {
+                @for (stat of group.stats; track stat.key; let first = $first) {
                   @if (stat.format === 'recent') {
                     <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
                          played yet. The pointer resting on them loads the team's scores for their hovers -->
                     <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
                       <div class="last-five" [class.many]="manyRecent" [recentPrime]="player" [recentSeason]="season">
                         <div>
                           @for (result of r.lastFive(player); track $index) {
@@ -283,12 +288,14 @@
                   } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
                     <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value"><span class="trophy rank-champ" title="Champion"></span></p>
                       <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                     </div>
                   } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
                     <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value" [style.color]="r.valueColor(player, stat)"
                         ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
                       >
@@ -297,6 +304,7 @@
                   } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
                     <!-- Show Ranks: the value's place in the list, styled like a rank column -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
                         ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
                       >
@@ -304,6 +312,7 @@
                     </div>
                   } @else {
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
+                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
                       <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
                       <p class="stat-label" [title]="valueTitle(player, stat)">
                         {{ r.label(stat) }}

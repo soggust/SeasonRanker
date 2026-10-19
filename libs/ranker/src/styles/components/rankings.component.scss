@@ -935,6 +935,11 @@ section ul li.player {
     width: max(3.5em, var(--label-w, 0px));
   }
 
+  // (its ranks and the header's name both from the left of the column, after the chevron's slot)
+  > .col-group > div.group-rank-col {
+    align-items: flex-start;
+  }
+
   // (sorted by its group: the strip down the ranks alone, not the chevron's slot)
   > .col-group > div.group-rank-col.isolated {
     background-clip: content-box !important;
@@ -2363,4 +2368,27 @@ section ul li.player.header-row > div.player-info p.stat-label.score-head {
   .score-sort {
     @include v.icon-size(12px);
   }
+}
+
+// The group's line down each row (its sideline, each sport's own look) is a control too: a click collapses or
+// opens the group as its chevron does, a pointer and the line lit brighter under it. A strip over the line,
+// the row's height, in the group's first cell; for the pointer only (the header's chevron is the keyboard's)
+section ul li.player:not(.header-row) > .col-group > div:has(> .group-line) {
+  position: relative;
+}
+
+section ul li.player:not(.header-row) .group-line {
+  cursor: pointer;
+  height: var(--row-h, 100%);
+  left: calc(-0.5em - 7px);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  z-index: 2;
+}
+
+section ul li.player:not(.header-row) > .col-group > div:has(> .group-line:hover)::before {
+  filter: brightness(1.6);
+  opacity: 0.9 !important;
 }

@@ -1188,6 +1188,13 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     if (this.isolatedKey && !this.shownStat(this.isolatedKey)) this.endIsolation();
   }
 
+  // The group's line down a row clicked: the group collapses or opens, as its chevron does (the chevron stays
+  // the keyboard's control); not the row's own click (Compare's pick) nor anything in the cell under it
+  lineToggle(id: StatGroupId, event: Event): void {
+    event.preventDefault();
+    this.toggleCollapsed(id, event);
+  }
+
   collapseTitle(group: { id: StatGroupId; title: string }): string {
     return `${group.title}: Click to ${this.isCollapsed(group.id) ? 'Expand' : 'Collapse'}`;
   }
