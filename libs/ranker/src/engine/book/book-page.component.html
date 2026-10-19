@@ -99,7 +99,7 @@
   } @else if (view === 'live') {
     <!-- (Live: one card, the day's games as they're played; the bot's read on a game from the board's picks, each
          game's venue from the picks' places) -->
-    <live-tab [boards]="boards" [places]="places"></live-tab>
+    <live-tab [boards]="liveBoards" [places]="places"></live-tab>
   } @else if (view === 'open') {
     <wallet-page only="open"></wallet-page>
   } @else if (view === 'closed') {
@@ -378,9 +378,25 @@
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
                 </small>
-                <!-- (a slate's practice pick: bet at 0.5u for the slate, short of the vig, on its own Practice line) -->
-                @if (r.practice) {
-                  <small class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</small>
+                <!-- (its tags in one line: a slate's practice pick (bet at 0.5u for the slate, short of the vig, on its own
+                     Practice line), else a suggestion's "suggested" (a side on the board with an edge at the latest price,
+                     not one of the Bot's bets: suggestions.ts); a bet's locked price and when, "Bet at −109 · 2:05 PM";
+                     "moved" where the live price on its button isn't the one the Bot locked) -->
+                @let locked = lockedText(r);
+                @if (r.practice || r.suggested || locked || r.moved) {
+                  <small class="bet-tags">
+                    @if (r.practice) {
+                      <span class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</span>
+                    } @else if (r.suggested) {
+                      <span class="bet-practice bet-suggested" title="A suggestion: the Bot's chance has an edge at the latest price. Not one of the Bot's bets (it bets on its own clock); its band moves as the price does">suggested</span>
+                    }
+                    @if (locked) {
+                      <span class="bet-locked" title="The price the Bot locked when it bet this, and when; the button has the latest price">{{ locked }}</span>
+                    }
+                    @if (r.moved) {
+                      <span class="bet-moved" [attr.title]="movedTitle(r)">moved</span>
+                    }
+                  </small>
                 }
                 @if (placedOn(r); as staked) {
                   <small class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</small>
@@ -412,14 +428,14 @@
             }
             <!-- (the price: on felt, the odds alone; on the ticket, solid gold with "ON TICKET": a click writes it on, or takes it off) -->
             @if (r.odds && canBet(r)) {
-              <button type="button" class="bet-price" [class.on]="onSlip(r)" [attr.aria-pressed]="onSlip(r)" [attr.aria-label]="(onSlip(r) ? 'Take off the ticket: ' : 'Add to the ticket: ') + r.pick + ' at ' + r.odds" (click)="takeRow(r, $event)">
-                <b>{{ r.odds }}</b>
+              <button type="button" class="bet-price" [class.on]="onSlip(r)" [attr.aria-pressed]="onSlip(r)" [attr.aria-label]="(onSlip(r) ? 'Take off the ticket: ' : 'Add to the ticket: ') + r.pick + ' at ' + priceText(r)" [attr.title]="r.liveFrom ? (r.liveFrom === 'espn' ? 'The latest price at the Book' : 'The latest price on the Bot’s board') : null" (click)="takeRow(r, $event)">
+                <b>{{ priceText(r) }}</b>
                 @if (onSlip(r)) {
                   <small>On ticket</small>
                 }
               </button>
             } @else if (r.odds) {
-              <span class="bet-price still"><b>{{ r.odds }}</b></span>
+              <span class="bet-price still"><b>{{ priceText(r) }}</b></span>
             } @else {
               <span class="bet-price none" aria-hidden="true"></span>
             }
@@ -455,13 +471,13 @@
               </div>
               <!-- (the game's every line, compact, to bet this pick or any other; when the game's chosen its lines are on
                    top instead: this pick's own two sides here) -->
-              @if (!game && boards.get(gameKey(r)); as gb) {
+              @if (!game && boardFor(gameKey(r)); as gb) {
                 <div class="bet-lines">
                   @for (one of [gb]; track one.sport + '|' + one.event) {
                     <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)" [compact]="true"></game-lines>
                   }
                 </div>
-              } @else if (game && boards.get(gameKey(r)); as gb) {
+              } @else if (game && boardFor(gameKey(r)); as gb) {
                 <div class="bet-lines">
                   <game-lines [desk]="desk()" [sport]="gb.sport" [event]="gb.event" [start]="gb.start" [matchup]="gb.matchup" [picks]="boardPicks(gb)" [only]="r"></game-lines>
                 </div>
@@ -692,7 +708,7 @@
                 <span class="wi-price" aria-live="polite">{{ q.odds }}</span>
                 <button type="button" class="wi-btn" aria-label="A longer price" (click)="nudgePrice(1, $event)">+</button>
               </div>
-              <span class="wi-own">@if (q.moved) {the Bot's {{ q.own }}} @else {the Bot's price}</span>
+              <span class="wi-own">@if (q.moved) {{{ whyLatest ? 'the latest' : "the Bot's" }} {{ q.own }}} @else {{{ whyLatest ? 'the latest price' : "the Bot's price" }}}</span>
             </div>
             <dl class="wi-grid">
               <div><dt>Break-even</dt><dd>{{ q.breakEven }}</dd></div>

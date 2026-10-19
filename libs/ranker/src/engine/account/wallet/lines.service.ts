@@ -28,6 +28,9 @@ export interface BoardSide {
   // (a guard's pass: its reason in words (board.mjs skipReason, DECISIONS.md D31: no silent skip))
   sr?: string;
   bot?: 'bet' | 'check';
+  // (the desk's word on it as a suggestion, where the board carries one: false or 0 keeps it off the Book's
+  // suggestions, 'practice' (or { practice: true }) tags it practice: suggestions.ts sugOf)
+  sug?: unknown;
 }
 export interface BoardProp {
   n: string;
@@ -49,6 +52,8 @@ export interface BoardProp {
   sr?: string;
   bot?: string;
   bk?: 'bet' | 'check';
+  // (the desk's word on it as a suggestion, as a game side's: suggestions.ts sugOf)
+  sug?: unknown;
 }
 export interface BoardGame {
   id: string;
@@ -58,6 +63,8 @@ export interface BoardGame {
   h: [string, string];
   k: { spread?: BoardSide[]; total?: BoardSide[]; ml?: BoardSide[] };
   p?: BoardProp[];
+  // (when its game lines were last priced)
+  at?: string;
 }
 export interface ModelBoard {
   sport: string;
@@ -77,6 +84,8 @@ export class LinesService {
   // (each sport's betting board: asked for once on a page's visit, again after five minutes at most)
   private readonly models = new Map<string, { at: number; load: Promise<ModelBoard | null> }>();
   private readonly modelAll = signal(new Map<string, ModelBoard>());
+  // (the betting boards as last loaded, by sport: the Book's suggestions read them, suggestions.ts)
+  readonly modelBoards = this.modelAll.asReadonly();
   // The boards, by "sport|event": ESPN's scoreboard's, and under them the games on the bettor's own betting boards
   // that ESPN has no board for (a UFC bout: ESPN's scoreboard is the card, not the bout; the bettor's board.json
   // carries each bout's moneyline), each as a GameBoard of its lines (wallet-math modelGameBoard), so the game

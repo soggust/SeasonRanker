@@ -1635,6 +1635,38 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   width: max-content;
 }
 
+// (the row's tags in one line under the pick: practice or suggested, a bet's locked price and when, moved)
+.bet-tags {
+  align-items: center;
+  color: v.$text-faint;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: v.$fs-10;
+  gap: v.$space-2 v.$space-6;
+  line-height: 1.4;
+  min-width: 0;
+}
+
+// (a suggestion: the practice tag's quiet outline, in the board's LED gold)
+.bet-suggested {
+  color: var(--scoreboard-led);
+  opacity: 0.85;
+}
+
+// (a bet's locked price and when: "Bet at −109 · 2:05 PM")
+.bet-locked {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+// (the live price isn't the one the Bot locked: a tiny note)
+.bet-moved {
+  color: v.$text-dim;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
 .bet-placed {
   align-items: center;
   color: v.$good-bright;

@@ -26,6 +26,10 @@ import { pickTeamColor, splitPick } from './pick-style';
 import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace, viewsShown } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
+import { QuoteSources, joinSuggestions, lockedText, movedTitle, quoteOf, suggestionsOf, withLive } from './suggestions';
+import type { LivePicks } from './live-tab.component';
+import type { ModelBoard } from '../account/wallet/lines.service';
+import type { GameBoard } from '../account/wallet/wallet-math';
 
 // The Book (the sport bar's Book link, /book): the algorithm's top picks for every sport (each one's
 // data/model/picks.json, written by every run of the model desk: libs/ranker/scripts/model/picks.mjs), ranked
@@ -286,7 +290,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     await this.syncSports();
     // (the started games dropped each minute: the picks file is only rewritten hourly. Not if the page closed while
     // its files loaded: nothing would stop it)
-    if (!this.closed) this.ticker = setInterval(() => this.dropStarted(), 60_000);
+    if (!this.closed)
+      this.ticker = setInterval(() => {
+        this.refreshPrices();
+        this.dropStarted();
+      }, 60_000);
   }
 
   // The sports on the page, kept to the list the viewer may see: the admin flag (features.ts ADMIN) lands when
@@ -395,6 +403,16 @@ export class BookPageComponent implements OnInit, OnDestroy {
     for (const s of this.betSports) void this.lines.model(s.id);
   }
 
+  // (the prices again, for the live re-pricing: ESPN's scoreboards for today, tomorrow and the boards' games (a
+  // minute's cache), each sport's betting board (five minutes'))
+  private refreshPrices(): void {
+    const now = Date.now();
+    const days = [now, now + 24 * 3600e3].map((t) => new Date(t).toISOString());
+    const games = [...this.lines.modelBoards()].flatMap(([sport, b]) => (b.games ?? []).map((g) => ({ sport, start: g.start })));
+    void this.lines.games([...games, ...this.betSports.flatMap((s) => days.map((start) => ({ sport: s.id, start })))]);
+    for (const s of this.betSports) void this.lines.model(s.id);
+  }
+
   // The ticker under the header: every game on the boards the page has already read (ESPN's scoreboards for
   // today and tomorrow, lines.games above: nothing fetched for it), finals first, then the games under way with
   // their clock, then the ones to come with their start; a sport chosen, its games alone; built again only when
@@ -431,9 +449,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // its own game)
   private linesOnly(): MenuGameIn[] {
     const out: MenuGameIn[] = [];
+    // (a game with a suggestion on it is a picked one: its rows count it)
+    const suggested = new Set(this.listed.filter((r) => r.suggested).map((r) => `${r.sport}|${r.pickId?.split(':')[0]}`));
     for (const g of this.lines.boards().values()) {
       const picked = this.boards.get(`${g.sport}|${g.matchup}`);
-      if (g.state !== 'pre' || (picked?.event === g.event && this.boardPicks(picked).length) || !(g.spread || g.total || g.ml)) continue;
+      if (g.state !== 'pre' || (picked?.event === g.event && this.boardPicks(picked).length) || suggested.has(`${g.sport}|${g.event}`) || !(g.spread || g.total || g.ml)) continue;
       out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)) });
     }
     return out;
@@ -448,6 +468,13 @@ export class BookPageComponent implements OnInit, OnDestroy {
   boardFor(key: string): GameBoardPicks | null {
     const known = this.boards.get(key);
     if (known) return known;
+    // (a game with suggestions alone: its board from its rows, no bets of the Bot's on it)
+    const row = this.listed.find((r) => r.suggested && r.game && this.gameKey(r) === key);
+    if (row?.game && row.pickId) {
+      const board = { sport: row.sport, event: row.pickId.split(':')[0], start: row.game.kickoff ?? row.game.date, matchup: row.game.matchup, picks: [], betPicks: [] };
+      this.boards.set(key, board);
+      return board;
+    }
     for (const g of this.lines.boards().values()) {
       if (linesKey(g) === key) {
         const board = { sport: g.sport, event: g.event, start: g.start, matchup: g.matchup, picks: [], betPicks: [] };
@@ -464,6 +491,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   private closed = false;
   private dropStarted(): void {
     const now = Date.now();
+    this.minute++;
     const open = (this.rows ?? []).filter((r) => !r.game?.kickoff || Date.parse(r.game.kickoff) > now);
     if (!this.rows || open.length !== this.rows.length) this.rows = open;
     this.dropGone();
@@ -554,14 +582,58 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
   // The rows this viewer sees: an admin's every one, the CHECKs among them; anyone else's the bets alone (kept till
   // the rows or the admin flag change: the flag can arrive after the picks)
-  private listedFor: { rows: BetRow[] | null; desk: boolean; list: BetRow[] } | null = null;
+  // The Bot's bets with their live prices beside the locked ones, and the suggestions (suggestions.ts: every side
+  // on the sports' boards with an edge at the latest price, priced again as the prices move), one list in the
+  // board's order; worked again when the rows, the boards, the betting boards, the admin flag or the minute change
+  private listedFor: { rows: BetRow[] | null; desk: boolean; boards: unknown; models: unknown; at: number | null; minute: number; list: BetRow[] } | null = null;
   get listed(): BetRow[] {
     const desk = this.desk();
-    if (this.listedFor?.rows !== this.rows || this.listedFor?.desk !== desk) {
-      const rows = this.rows ?? [];
-      this.listedFor = { rows: this.rows, desk, list: desk ? rows : rows.filter((r) => !r.check) };
+    const boards = this.lines.boards();
+    const models = this.lines.modelBoards();
+    const at = this.lines.loadedAt();
+    const f = this.listedFor;
+    if (!f || f.rows !== this.rows || f.desk !== desk || f.boards !== boards || f.models !== models || f.at !== at || f.minute !== this.minute) {
+      const rows = this.rows === null ? [] : this.withSuggestions(this.rows, boards, models, at);
+      this.listedFor = { rows: this.rows, desk, boards, models, at, minute: this.minute, list: desk ? rows : rows.filter((r) => !r.check) };
     }
-    return this.listedFor.list;
+    return this.listedFor!.list;
+  }
+  // (each suggestion's id, by its market's side: kept for the visit, so an open row stays open as its price moves;
+  // well past the picks' own ids)
+  private readonly suggestionIds = new Map<string, number>();
+  private suggestionId(key: string): number {
+    let id = this.suggestionIds.get(key);
+    if (id === undefined) this.suggestionIds.set(key, (id = 1_000_000 + this.suggestionIds.size));
+    return id;
+  }
+  // (the minute, ticked by dropStarted: a suggestion whose game has begun goes with it)
+  private minute = 0;
+  private withSuggestions(rows: BetRow[], boards: Map<string, GameBoard>, models: Map<string, ModelBoard>, at: number | null): BetRow[] {
+    const now = Date.now();
+    const sources = (sport: string, event: string): QuoteSources => {
+      const board = models.get(sport);
+      return { espn: boards.get(`${sport}|${event}`) ?? null, espnAt: at, model: board?.games.find((g) => g.id === event) ?? null, modelAt: board?.at ?? null };
+    };
+    const bets = rows.map((r) => (r.check || !r.pickId ? r : withLive(r, quoteOf(r, sources(r.sport, r.pickId.split(':')[0])))));
+    const suggested = [...models].flatMap(([sport, board]) => (this.loaded.has(sport) ? suggestionsOf(sport, board, now, (g) => sources(sport, g.id)) : []));
+    return joinSuggestions(bets, suggested, (key) => this.suggestionId(key));
+  }
+  // (the Live tab's read on each game: the Bot's bets, and the suggestions on it, by "sport|matchup")
+  private liveFor: { list: BetRow[]; map: Map<string, LivePicks> } | null = null;
+  get liveBoards(): Map<string, LivePicks> {
+    const list = this.listed;
+    if (this.liveFor?.list !== list) {
+      const map = new Map<string, LivePicks>();
+      for (const r of list) {
+        if (r.check) continue;
+        const key = this.gameKey(r);
+        const g = map.get(key) ?? { betPicks: [], suggestions: [] };
+        (r.suggested ? g.suggestions! : g.betPicks).push(r);
+        map.set(key, g);
+      }
+      this.liveFor = { list, map };
+    }
+    return this.liveFor.map;
   }
 
   // (a CHECK's note's players: its own first, then its game's on the picks; kept per row)
@@ -823,6 +895,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // (the popover's what-if price: the price it's at and its numbers there, worked again on each nudge; the page's
   // alone, nothing saved, no bet changed: bet-why.ts priceAt and flipsAt)
   whatIf: WhatIfView | null = null;
+  // (the what-if's own price a suggestion's latest one, not a price the Bot took)
+  whyLatest = false;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
   private whyTile: HTMLElement | null = null;
   readonly signedPoints = signedPoints;
@@ -891,7 +965,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       return `CHECK · ${kText}, ${held}: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
     }
     const place = unranked(r.confidence) ? tierLabel(r.confidence!) : `#${i + 1 - locks} of ${n - locks}`;
-    return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}`;
+    return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}${r.suggested ? ' · suggested at the latest price' : ''}`;
   }
 
   // A price's K score button on the game view: the bot's pick, its own popover (its row's, as the rank tile opens
@@ -917,6 +991,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     this.checkWhy = null;
     const w = betWhy([row], 0);
     const wi = whatIfOf(row, !!at.bot);
+    this.whyLatest = false;
     // (a guard's pass (the board's sr, DECISIONS.md D31: no silent skip): the popover says the bot passes and why, not
     // its rank)
     const look = this.whyLook(w, row, at.game);
@@ -997,8 +1072,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     } else {
       this.checkWhy = null;
       const w = betWhy(rows, index);
-      const wi = whatIfOf(row);
-      this.why = { ...w, at, sheet, look: this.whyLook(w, row, this.whyGame(row)), wi };
+      // (a suggestion's what-if a price the Bot didn't take: its band the price's alone)
+      const wi = whatIfOf(row, !row.suggested);
+      this.whyLatest = !!row.suggested;
+      const look = this.whyLook(w, row, this.whyGame(row));
+      this.why = { ...w, at, sheet, look: row.suggested ? { ...look, reason: "Suggested at the latest price, not one of the Bot's bets: its band moves as the price does." } : look, wi };
       this.priceTo(wi?.odds ?? null);
     }
     this.whyTile = tile;
@@ -1158,8 +1236,19 @@ export class BookPageComponent implements OnInit, OnDestroy {
   private rowSelection(r: BetRow): Omit<Selection, 'key' | 'stake'> | null {
     const event = r.pickId?.split(':')[0];
     if (!r.game || !event) return null;
-    return botSelection({ sport: r.sport, event, matchup: r.game.matchup, start: r.game.kickoff ?? r.game.date }, r, this.desk());
+    // (at the live price where the page has one: the Bot's locked price may be gone)
+    const at = Number.isFinite(r.livePrice) && r.livePrice ? { ...r, price: r.livePrice } : r;
+    return botSelection({ sport: r.sport, event, matchup: r.game.matchup, start: r.game.kickoff ?? r.game.date }, at, this.desk());
   }
+  // (the price the row's button shows: the live one where the page has it, else the row's own)
+  priceText(r: BetRow): string | undefined {
+    return Number.isFinite(r.livePrice) && r.livePrice ? americanOdds(r.livePrice) : r.odds;
+  }
+  // (a bet's locked price and when, "Bet at −109 · 2:05 PM"; a moved one's hover)
+  lockedText(r: BetRow): string | null {
+    return r.suggested || r.check ? null : lockedText(r);
+  }
+  readonly movedTitle = movedTitle;
   onSlip(r: BetRow): boolean {
     const sel = this.rowSelection(r);
     return !!sel && this.wallet.slipKeys().has(selectionKey(sel));

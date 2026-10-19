@@ -11,15 +11,17 @@ import { walkPlays } from './bet-impact';
 import type { GameInfo } from './book-rows';
 import { ESPN_LEAGUES } from './desk-math';
 import { BetWatch, betWatch, shortPick, shortPickParts, sweatOf, withHurt } from './live-bets';
-import { boardShare, botRead, cardState, clockWords, livePool, shortTeam, sparkPath, startWords } from './live-games';
+import { boardShare, cardState, clockWords, livePool, shortTeam, sparkPath, splitRead, startWords } from './live-games';
 import { LiveBout, fightWatch, fightWords } from './live-mma';
 import { betPickColor, hurtOf, impactBetOf, impactPlaysOf, propNowOf } from './live-view';
 import { LiveGame, LiveService } from './live.service';
 import type { Confidence } from './tiers';
 
-// (the board's picks on a game, as the Book holds them (book-page.component GameBoardPicks): its bets alone)
+// (the board's picks on a game, as the Book holds them (book-page.component liveBoards): its bets, and its
+// suggestions at the latest price (suggestions.ts))
 export interface LivePicks {
-  betPicks: { pick: string; confidence: Confidence | null; strength?: string }[];
+  betPicks: { pick: string; confidence: Confidence | null; strength?: string; odds?: string }[];
+  suggestions?: { pick: string; confidence: Confidence | null; odds?: string }[];
 }
 
 interface LiveTeam {
@@ -188,8 +190,8 @@ export class LiveTabComponent implements OnInit, OnDestroy {
       }
       spark = summary.winProbability ? sparkPath(summary.winProbability, share) || null : null;
     }
-    const picks = this.boards.get(`${g.sport}|${g.matchup}`)?.betPicks ?? [];
-    const read2 = botRead(picks);
+    const on = this.boards.get(`${g.sport}|${g.matchup}`);
+    const read2 = splitRead(on?.betPicks ?? [], on?.suggestions ?? []);
     // (the bot's read when it has one; nothing at all when it has no pick (the owner: no "Bot: no pick" line))
     const noBets = rows.length || !read2 ? null : g.state === 'pre' ? `Bot: ${read2}` : `No tickets · bot: ${read2}`;
     const info = this.places.get(`${g.sport}|${g.matchup}`);
@@ -223,7 +225,8 @@ export class LiveTabComponent implements OnInit, OnDestroy {
       return { abbr: t.abbr || t.name, name: t.name, logo: t.logo, espnLogo: null, chip: {}, whiteLogo: false, score: '', unlit: '', lead: false, record: f.records[which === 'away' ? 0 : 1], win };
     };
     const rows: LiveBetRow[] = bets.map((b) => ({ key: b.id, short: shortPick(b), w: fightWatch(b, g) }));
-    const read = botRead(this.boards.get(`mma|${g.matchup}`)?.betPicks ?? []);
+    const mine = this.boards.get(`mma|${g.matchup}`);
+    const read = splitRead(mine?.betPicks ?? [], mine?.suggestions ?? []);
     const noBets = rows.length || !read ? null : g.state === 'pre' ? `Bot: ${read}` : `No tickets · bot: ${read}`;
     return {
       key: `mma|${g.event}`,

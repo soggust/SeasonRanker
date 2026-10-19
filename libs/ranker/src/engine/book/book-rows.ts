@@ -101,6 +101,16 @@ export interface BetRow {
   resolved?: CheckResolved | null;
   // (its news research, where it has one (picks.json's: research.mjs, a label only))
   research?: CheckResearch | null;
+  // (a SUGGESTION, not a bet the Bot made (suggestions.ts, the owner's, 2026-10-19): a side on its sport's board
+  // (board.json) with an edge at the latest price, its band worked again from the Bot's chance at that price)
+  suggested?: boolean;
+  // (the latest price the page has for its side: ESPN's for a game line where it's the fresher, else the board's;
+  // where it came from; a bet's moved where it differs from the price the Bot locked (price))
+  livePrice?: number | null;
+  liveFrom?: 'espn' | 'board' | null;
+  moved?: boolean;
+  // (when the Bot placed it, where the picks file says: its "Bet at −109 · 2:05 PM")
+  placedAt?: string | null;
 }
 
 // A CHECK's news research (picks.json's research: research.mjs findingOf, picks.mjs researchRow): what Claude found
@@ -158,6 +168,8 @@ export interface Pick {
   level: Confidence;
   // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; a LIKE, tagged)
   practice?: boolean;
+  // (when the Bot placed it: files that don't carry it, none)
+  placedAt?: string | null;
   kind: BetKind;
   market: string;
   pick: string;
@@ -270,6 +282,7 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     why: p.why ?? null,
     line: p.line,
     pickId: p.id,
+    ...(p.placedAt ? { placedAt: p.placedAt } : {}),
     ...(check
       ? {
           check: true,

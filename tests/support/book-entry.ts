@@ -21,3 +21,4 @@ export * from '../../libs/ranker/src/engine/player-link';
 export * from '../../libs/ranker/src/engine/fold-bar';
 export * from '../../libs/ranker/src/engine/book/ticket-grow';
 export { SCORE_H, SCORE_W, edgeOf, pointTitle, scorecardPanelOf } from '../../libs/ranker/src/engine/book/scorecard';
+export * from '../../libs/ranker/src/engine/book/suggestions';
