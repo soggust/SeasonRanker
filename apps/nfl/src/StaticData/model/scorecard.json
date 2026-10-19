@@ -337,6 +337,73 @@
     "games": 7.9782,
     "props": 3.6251
    }
+  },
+  {
+   "sport": "nfl",
+   "epoch": "2026-10-19T04:56:00Z",
+   "commit": "464e7284",
+   "commitAt": "2026-10-18T23:58:29-05:00",
+   "label": "worktree",
+   "at": "2026-10-19T05:00:49.645Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 389,
+     "gap": 0.0007,
+     "closeGap": 0.0001,
+     "clv": 0.0607,
+     "hit": 0.3774,
+     "picks": 53,
+     "units": -7.5165,
+     "edgeUnits": -26,
+     "edgeN": 105
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1755,
+     "gap": -0.0001,
+     "closeGap": -0.0004,
+     "clv": 0.0382,
+     "hit": 0.4556,
+     "picks": 362,
+     "units": -8.6851,
+     "edgeUnits": 3.8192,
+     "edgeN": 90
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 465,
+     "gap": 0.0007,
+     "closeGap": 0,
+     "clv": 0.0558,
+     "hit": 0.3962,
+     "picks": 53,
+     "units": -6.4565,
+     "edgeUnits": -28,
+     "edgeN": 141,
+     "from": "2026-09-21"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 56,
+     "gap": 0.0004,
+     "closeGap": 0,
+     "clv": -0.0367,
+     "hit": 0.3,
+     "picks": 20,
+     "units": -4.6196,
+     "edgeUnits": -1,
+     "edgeN": 2,
+     "from": "2026-09-21"
+    }
+   },
+   "proj": {
+    "games": 7.9773,
+    "props": 3.6248
+   }
   }
  ]
 }
