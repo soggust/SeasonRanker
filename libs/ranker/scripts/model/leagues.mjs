@@ -200,7 +200,7 @@ export const GAME_CAP = 5;
 // corrected one (residual.mjs, the Book's error learned on the priced history: the Bot's lean where it has been right,
 // the Book's over-shade), live on the props and the lines (props.mjs priceProps, desk.mjs choose, the board). Set to
 // the push time.
-export const MODEL_EPOCH = '2026-10-19T15:30:00Z';
+export const MODEL_EPOCH = '2026-10-19T15:05:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
