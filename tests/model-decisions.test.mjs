@@ -556,7 +556,10 @@ test('D32 the residual model, on since the owner\'s O3: every live path passes t
   assert.match(src('desk.mjs'), /chanceAt\(market\.market, s\.fair, s\.model, trust, sideCtx\(market, s, ctx\)\)/);
   assert.match(src('run.mjs'), /choose\(market, trust\[market\.market\]\?\.trust \?\? START_TRUST, EV_SCALE, rctx\)/);
   assert.match(src('board.mjs'), /chanceAt\(m\.market, s\.fair, s\.model, trustOf\(m\.market\), sideCtx\(m, s, ctx\)\)/);
-  assert.match(src('desk.mjs'), /const pOf = \(b\) => Math\.min\(0\.995, Math\.max\(0\.005, chanceAt\(b\.market, b\.fair, b\.model, t\)\)\);/, 'fitTrust reads the current price, never the blend');
+  // (a total's named terms' shift rides in as a named-only ctx (D39), which chanceAt reads before the hook: still the
+  // current price, never the blend; tests/model-totals.test.mjs pins the chance)
+  assert.match(src('desk.mjs'), /const pOf = \(b\) => Math\.min\(0\.995, Math\.max\(0\.005, chanceAt\(b\.market, b\.fair, b\.model, t, Number\.isFinite\(b\.named\) \? \{ named: b\.named \} : null\)\)\);/, 'fitTrust reads the current price, never the blend');
+  assert.match(src('desk.mjs'), /if \(!ctx \|\| Object\.keys\(ctx\)\.every\(\(k\) => k === 'named'\)\) return p;/, 'a named-only ctx never reaches the blend');
   assert.match(src('backtest.mjs'), /const pOf = \(b\) => chanceAt\(b\.market, b\.fair, b\.model, trust\);/);
   assert.match(src('residual-train.mjs'), /^process\.env\.RESID_OFF = '1';/m, 'the collector prices its current price with the blend off');
   // (the epoch restarted on it, D4)

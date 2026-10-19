@@ -96,7 +96,7 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { g
     const pass = (!!gapped && !checkSide) || !!off;
     const sr = off ? skipReason({ why: off }) : pass ? skipReason(gapped) : null;
     out[m.market] = m.sides.map((s) => {
-      const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), Number.isFinite(s.named) ? { named: s.named } : null);
+      const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), sideCtx(m, s, ctx));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
       return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap: capped.cap }), ...(sr ? { sr } : {}), ...(pass ? {} : capped), ...consensusOf(consensus?.[m.market], s.side, s0.side) };

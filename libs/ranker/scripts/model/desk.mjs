@@ -107,8 +107,10 @@ export function leanOf(gap, limit) {
 // too). The one chance choose bets with and fitTrust and the backtest score, so the
 // trust is fit on the pricing the desk bets with.
 // With a ctx (the row: its sport, stat, line, side, the Book's two prices, the start and the bet's moment) and the
-// residual model's flag on (residual.mjs residOn: RESID_ON=1, the gate's challenger; DECISIONS.md D32), the model's
-// soft blend of this chance with its corrected one; off, or with no ctx or no model, this chance as it is
+// residual model on (residual.mjs residOn: RESID_PRICING, on since the owner's O3 of 2026-10-19; RESID_OFF=1 the
+// gate's champion; DECISIONS.md D32), the model's soft blend of this chance with its corrected one: this chance is
+// the current price the blend starts from, the ctx's raw (the anchored chance, before the calibration and the
+// trust) the lean the model reads, so nothing is counted twice. Off, or with no ctx or no model, this chance as it is
 // (the trust's start by market (D39): a total's 0, climbing only on the Bot's own graded totals since the epoch
 // (run.mjs refitTrust); the rest the desk's 0.5. A total's chance carries the named terms' shift (ctx.named: the
 // soft schedule terms' part of the Bot's total at the Book's line, D34) at full weight, since their ridge already
@@ -192,12 +194,25 @@ export function price(game, exp, lines, params, shape = null) {
   return out;
 }
 
+// A game market's side as the residual model's ctx (residual.mjs hookChance, D32): the game's ctx ({ sport, t (the
+// start), at (now), hours }) with the market, the side's line, its fair chance and model chance (the side's own;
+// the hook mirrors an away or under side), and the two prices as the home's or over's and the away's or under's.
+// None without a game ctx (the backtest, the self-check: the trust's chance alone). With a total's named terms'
+// shift (D39, s.named) that rides along either way: chanceAt reads it before the hook
+export const sideCtx = (market, s, ctx) => {
+  const base = ctx ? { ...ctx, market: market.market, stat: market.market, line: s.line ?? null, side: s.side, f: s.fair, raw: s.model, overOdds: market.sides[0].odds, underOdds: market.sides[1].odds, home: null } : null;
+  if (!Number.isFinite(s.named)) return base;
+  return { ...(base ?? {}), named: s.named };
+};
+
 // The bet a market gets: the side with the better expected return at the desk's trust in the model (every
 // market gets one; the lean tapered by leanOf: chanceAt), staked by its Kelly fraction; the other side's, scored
-// the same, beside it (other: oneSide). A moneyline the spread didn't anchor leans nothing: the book's chance
-export function choose(market, trust, evScale) {
+// the same, beside it (other: oneSide). A moneyline the spread didn't anchor leans nothing: the book's chance.
+// ctx: the game's, for the residual model (sideCtx; run.mjs betGames passes it, so the live lines are priced as
+// the gate's history replay prices them)
+export function choose(market, trust, evScale, ctx = null) {
   const scored = market.sides.map((s) => {
-    const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust, Number.isFinite(s.named) ? { named: s.named } : null);
+    const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust, sideCtx(market, s, ctx));
     // (a push gives the stake back: only the rest of the chance is won or lost)
     const ev0 = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
     // (the sanity guard: an ev past EV_SUSPECT held to the bar, the practice stake, and the row marked)
