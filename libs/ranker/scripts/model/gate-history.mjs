@@ -145,9 +145,10 @@ export function walkTrust(rows, keyOf, fitTrust, start) {
   return out;
 }
 
-// A version against the book on rows ({ p (priced over), raw, f, y, w, event }): the log loss on the results, the
-// version's (priced and raw) and the book's no-vig, recency-weighted (w), paired by row and clustered by game:
-// { n, model, raw, book, gap (model less book, under 0 better), lo, hi (its 95%), rawGap, verdict }
+// A version against the book on rows ({ p (priced over), raw (the bot's own), anch (the anchored chance, D33,
+// where the version has it), f, y, w, event }): the log loss on the results, the version's (priced, raw and
+// anchored) and the book's no-vig, recency-weighted (w), paired by row and clustered by game: { n, model, raw,
+// anch, book, gap (model less book, under 0 better), lo, hi (its 95%), rawGap, anchGap, verdict }
 export function vsBook(rows) {
   const dec = rows.filter((x) => (x.y === 0 || x.y === 1) && (x.w ?? 1) > 0);
   if (!dec.length) return null;
@@ -158,7 +159,9 @@ export function vsBook(rows) {
   const m = bootDiff(pm.clusters, { boot: 400 });
   const r = bootDiff(pr.clusters, { boot: 400 });
   if (!m) return null;
-  return { n: pm.n, games: m.n, model: m.b, raw: r?.b ?? null, book: m.a, gap: m.diff, lo: m.lo, hi: m.hi, rawGap: r?.diff ?? null, verdict: m.hi < 0 ? 'better' : m.lo > 0 ? 'worse' : 'tie' };
+  const anchored = dec.some((x) => fin(x.anch));
+  const a = anchored ? bootDiff(pairRows(book, at((x) => (fin(x.anch) ? x.anch : x.raw))).clusters, { boot: 400 }) : null;
+  return { n: pm.n, games: m.n, model: m.b, raw: r?.b ?? null, anch: a?.b ?? null, book: m.a, gap: m.diff, lo: m.lo, hi: m.hi, rawGap: r?.diff ?? null, anchGap: a?.diff ?? null, verdict: m.hi < 0 ? 'better' : m.lo > 0 ? 'worse' : 'tie' };
 }
 
 // (rows by season, each against the book: the seasons' table)
@@ -198,19 +201,28 @@ function finish(V, rows, keyOf, start, kind) {
     else x.fo = other.f;
   }
   const closeRows = rows.filter((x) => x.kind === 'c');
-  const trust = walkTrust(closeRows, keyOf, V.desk.fitTrust, start);
+  // (the model the trust reads and prices: the anchored chance where the version has it (anch, D33), else the
+  // bot's own (raw))
+  const modelOf = (x) => (fin(x.anch) ? x.anch : x.raw);
+  const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x) })), keyOf, V.desk.fitTrust, start);
+  const trustOf = new Map([...trust].map(([x, t]) => [x.id, t]));
   // (an open row at its close row's trust: the same game's month)
   for (const x of rows) {
-    const t = trust.get(x.kind === 'c' ? x : close.get(x.key)) ?? start(keyOf(x));
-    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season };
-    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, x.raw, t, ctx)));
+    const t = trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x));
+    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season };
+    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
     x.trust = t;
   }
   return { open: rows.filter((x) => x.kind === 'o'), close: closeRows };
 }
 
-// The props' history rows: the replay's player games (each { stat, name, game, v (what he did), over (the version's
-// raw over chance at a line: fn) }) matched to the history's index. { open, close }
+// The props' history rows: the replay's player games (each { stat, name, game, pid, v (what he did), mu (the
+// version's projection), params, mix (its shape), over (its own over chance at a line: fn) }) matched to the
+// history's index. Each row's raw is the bot's own chance (the version's recalibrated projection at the line);
+// where the version has the anchor (anchor.mjs, D33) its anch is the anchored chance, the one the trust prices,
+// at the pull fit walk-forward by season: a season's rows read the fit on the close rows of the seasons before it
+// (the first season 0: the bot's own number). { open, close, anchor: { all (the fit on every season: what
+// --record writes for the live desk), bySeason (each season's fit as read), current (the newest season's) } }
 export function propHistoryRows(V, sport, index, matches, current) {
   const rows = [];
   for (const m of matches) {
@@ -223,16 +235,40 @@ export function propHistoryRows(V, sport, index, matches, current) {
       if (!fin(raw)) continue;
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
-      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w });
+      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m });
     }
   }
+  let anchor = null;
+  // (a version with the anchor fits it on every sport (the readout); it prices only the sports it's on for
+  // (anchor.mjs anchorOn: the gate's verdict by sport), the rest at the bot's own chance)
+  const priceIt = !!V.anchor?.anchorOn?.(sport);
+  if (V.anchor?.fitAnchor && V.project?.impliedMean) {
+    // (each row's implied mean at its own line and fair, once)
+    for (const x of rows) x.im = fin(x.m.mu) && x.m.params ? V.project.impliedMean(x.line, x.f, x.m.params, x.m.mix) : null;
+    const fitRows = (list) => list.filter((x) => x.kind === 'c' && fin(x.im) && x.im > 0).map((x) => ({ stat: x.stat, mu: x.m.mu, im: x.im, line: x.line, params: x.m.params, mix: x.m.mix, y: x.y, w: x.w }));
+    const seasons = [...new Set(rows.map((x) => x.season))].sort((a, b) => a - b);
+    const bySeason = {};
+    for (const s of seasons) {
+      const before = rows.filter((x) => x.season < s);
+      const fit = before.length ? V.anchor.fitAnchor(fitRows(before), { at: `before ${s}` }) : null;
+      bySeason[s] = fit;
+      for (const x of rows) {
+        if (x.season !== s) continue;
+        const c = priceIt && fin(x.im) && x.im > 0 ? V.anchor.anchoredChances(x.line, x.m.mu, x.m.params, x.m.mix, x.f, V.anchor.anchorEntry(fit, x.stat)) : null;
+        x.anch = c ? Math.min(0.999, Math.max(0.001, c.over)) : x.raw;
+        x.pull = c ? c.pull : 0;
+      }
+    }
+    anchor = { all: { ...V.anchor.fitAnchor(fitRows(rows)), on: priceIt }, bySeason, current: bySeason[seasons[seasons.length - 1]] ?? null, on: priceIt };
+  }
+  for (const x of rows) delete x.m;
   const B = V.desk.BUCKET_START ?? { low: 0.25, mid: 0.375, high: 0.5 };
   const bucket = V.desk.lineBucket ?? ((l) => (l <= 1.5 ? 'low' : l <= 3.5 ? 'mid' : 'high'));
-  return finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props');
+  return { ...finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props'), anchor };
 }
 
 // The history a sport has, loaded once: { events, lines, props } (odds-history.mjs readHistory)
 export const loadHistory = (sport) => readHistory(sport);
 
 // (rows slimmed for the score file: what betCompare and vsBook read)
-export const slim = (rows) => rows.map((x) => ({ id: x.id, event: x.event, sport: x.sport, stat: x.stat, line: x.line, day: x.day, t: x.t, season: x.season, f: r4(x.f), p: r4(x.p), raw: r4(x.raw), y: x.y, q: x.q === null ? null : r4(x.q), overOdds: x.overOdds, underOdds: x.underOdds, w: r4(x.w) }));
+export const slim = (rows) => rows.map((x) => ({ id: x.id, event: x.event, sport: x.sport, stat: x.stat, line: x.line, day: x.day, t: x.t, season: x.season, f: r4(x.f), p: r4(x.p), raw: r4(x.raw), ...(fin(x.anch) ? { anch: r4(x.anch), pull: r4(x.pull) } : {}), y: x.y, q: x.q === null ? null : r4(x.q), overOdds: x.overOdds, underOdds: x.underOdds, w: r4(x.w) }));

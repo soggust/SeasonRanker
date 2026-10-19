@@ -103,7 +103,7 @@ export function resolveVersion(spec) {
 }
 
 // (a version's code by part, as hashes: what changed between two)
-const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs'], live: ['run.mjs', 'timing.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'] };
+const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'] };
 export function codeOf(dir) {
   const out = {};
   for (const [part, files] of Object.entries(PARTS)) {
@@ -255,7 +255,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const notes = [];
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
   const V = {};
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct']) V[n] = await load(dir, n);
+  // (anchor: the anchored projection (anchor.mjs, D33); a version from before it has none, its own chances priced)
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor']) V[n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -350,6 +351,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const mineProps = priced.filter((b) => b.sport === sport);
   let propsProj = null;
   const replayM = new Map();
+  const ledgerMatches = new Map();
   // (the history's props by player game, and the replay's games matched to them)
   const histIndex = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {}))) : new Map();
   const histMatches = [];
@@ -393,7 +395,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const mix = V.project.exitMix(f.params, x.p);
             if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
               const mu = x.p.mu;
-              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
             }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {
@@ -406,15 +408,12 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
               if (x.row.eligible !== false) eligible++;
             }
             const b = want.get(`${st.key}|${x.row.pid}|${x.row.game}`) ?? want.get(`${st.key}|${x.row.pid}|${etDay(Date.parse(x.row.date))}`) ?? want.get(`${st.key}|${x.row.pid}|${x.row.date.slice(0, 10)}`);
-            if (b && !replayM.has(String(b.id))) {
-              const c = V.project.lineChances(b.line, x.p.mu, f.params, mix);
-              const pOver = c.over;
-              if (fin(pOver)) replayM.set(String(b.id), b.side === 'over' ? pOver : 1 - pOver);
-            }
+            // (the ledger's row's replayed chance: priced below, once the history's anchor is fit (D33))
+            if (b && !ledgerMatches.has(String(b.id))) ledgerMatches.set(String(b.id), { b, mu: x.p.mu, params: f.params, mix });
           }
         });
         propsProj = { stats: stats.map((s) => s.key), ...out };
-        say(`props: ${out.loss.length} player games projected (${eligible} eligible) in ${Math.round((Date.now() - t0) / 1000)}s under ${refit ? 'a fresh search' : `the saved fit of ${saved.fit.at}`}; ${replayM.size} of ${mineProps.length} priced props matched to their replayed game`);
+        say(`props: ${out.loss.length} player games projected (${eligible} eligible) in ${Math.round((Date.now() - t0) / 1000)}s under ${refit ? 'a fresh search' : `the saved fit of ${saved.fit.at}`}; ${ledgerMatches.size} of ${mineProps.length} priced props matched to their replayed game`);
       }
     } catch (err) {
       say(`props' projections left out (${String(err?.stack ?? err).slice(0, 300)})`);
@@ -426,6 +425,16 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // the NFL's anytime touchdowns, an MLB playoff game the logs don't have, at its saved chance either way, so both
   // versions read it the same); the other sports' rows at their saved chances, training only)
   const savedM = (b) => (fin(b.modelRaw) ? b.modelRaw : b.model);
+  // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
+  // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
+  const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current) : { open: [], close: [], anchor: null };
+  if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}`);
+  for (const [id, { b, mu, params: fp, mix }] of ledgerMatches) {
+    const fairOver = b.side === 'over' ? b.fair : 1 - b.fair;
+    const a = V.anchor && histProps.anchor?.on ? V.anchor.anchoredChances(b.line, mu, fp, mix, fairOver, V.anchor.anchorEntry(histProps.anchor.current, b.propType)) : null;
+    const pOver = a ? a.over : V.project.lineChances(b.line, mu, fp, mix).over;
+    if (fin(pOver)) replayM.set(id, b.side === 'over' ? pOver : 1 - pOver);
+  }
   const priceWith = (mOf, label) => {
     const pOver = pricePropsWalk(V, sport, priced, mOf, { log: (s) => say(`${label}: ${s}`) });
     return mineProps.filter((b) => pOver.has(String(b.id))).map((b) => {
@@ -436,8 +445,6 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const propsSaved = mineProps.length ? priceWith(savedM, 'saved chances') : [];
   const propsReplay = mineProps.length && replayM.size ? priceWith((b) => (b.sport === sport ? (replayM.get(String(b.id)) ?? savedM(b)) : savedM(b)), 'replayed chances') : null;
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? { nfl: 15, nhl: 6, mlb: 3, nba: 8 }[sport];
-  const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current) : { open: [], close: [] };
-  if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay`);
   // (the version against the book at the close, every season recency-weighted, and season by season)
   const vs = {
     lines: vsBook(histLines.close),
@@ -455,6 +462,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     proj: { games, props: propsProj },
     bet: { props: { saved: propsSaved, replay: propsReplay }, lines: { saved: linesSaved, replay: linesReplay }, history: { saved: [], replay: slim([...histLines.open, ...histProps.open]) } },
     vsBook: vs,
+    // (the anchor (D33): the fit on every season to date (all: what --record writes for the live desk), each
+    // season's as the replay read it (bySeason), the newest season's (current))
+    anchor: histProps.anchor ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
   };
 }
@@ -557,6 +567,9 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
   }
   // (the priced history against the book at the close: every season recency-weighted, and by season)
   if (score.vsBook) out.history = score.vsBook;
+  // (the anchor's pull by stat (D33): the fit on every season to date, the readout the owner watches fall as the
+  // bot's own numbers improve; 0 a stat priced at the bot's own number)
+  if (score.anchor?.all?.stats) out.anchor = Object.fromEntries(Object.entries(score.anchor.all.stats).map(([k, v]) => [k, { pull: v.pull, d: v.d, n: v.n, gain: v.gain }]));
   // (layer a's deciding seasons' mean loss a row: games, props)
   const pr = projRows(score);
   const projMean = (rows) => {
@@ -618,7 +631,7 @@ export function tableOf(c) {
     lines.push("  the candidate against the Book at the history's closes (log loss on the results, recency-weighted; lower better):");
     for (const k of ['lines', 'props']) {
       const x = vb[k];
-      if (x) lines.push(`    ${k.padEnd(6)} model ${x.model} (raw ${x.raw}) / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows, ${x.games} games)`);
+      if (x) lines.push(`    ${k.padEnd(6)} model ${x.model} (raw ${x.raw}${fin(x.anch) ? `, anchored ${x.anch}` : ''}) / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows, ${x.games} games)`);
     }
   }
   return lines.join('\n');
@@ -649,6 +662,13 @@ function recordScore(version, sport, score, frozen) {
   writeFileSync(file, `${JSON.stringify(next, null, 1)}\n`);
   console.log(`${sport}: scorecard entry for ${version.label} (epoch ${score.epoch}) written: ${path.relative(ROOT, file)}`);
   // (the leak hunt on the priced history, every season: the weekly self-check's C23 reports it beside the ledger's)
+  // (the anchor's fit on every season to date (D33): what the live desk reads, apps/<sport>/src/StaticData/model/
+  // anchor.json; a version without the anchor leaves the file as it is)
+  if (score.anchor?.all) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/anchor.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.anchor.all, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
+    console.log(`${sport}: the anchor's pull by stat written (${path.relative(ROOT, out)}${score.anchor.all.on === false ? ', the readout only: the anchor is off for this sport' : ''}): ${Object.entries(score.anchor.all.stats).map(([k, v]) => `${k} ${v.pull}`).join(', ')}`);
+  }
   const hrows = score.bet?.history?.replay ?? [];
   if (hrows.length) {
     const h = huntLeaks(historyLeakBets(hrows), { sport });

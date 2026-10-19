@@ -181,7 +181,10 @@ export const GAME_CAP = 5;
 // published (ngs.mjs), a passer's aggressiveness on his attempts, an efficient back's yards over expected on his
 // carries, yards after the catch over expected on receptions (soft), the NBA's shot zones on points (on the ctx, not
 // taken yet); the replay gate SHIP (NFL props better beyond noise, the rest tied). Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T04:56:00Z';
+// 2026-10-19, the sharpen round (DECISIONS.md D33): the anchored projection (anchor.mjs: the bot's mean pulled toward
+// the book's implied mean by a per-stat weight the priced history sets, 0 the bot's own number, the trust free to
+// reach 1); the season-start vacancy fix measured and held by the gate (D33's note). Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T07:30:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

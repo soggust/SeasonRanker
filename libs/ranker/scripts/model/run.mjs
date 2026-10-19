@@ -129,6 +129,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
+import { anchorText, readAnchor } from './anchor.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
@@ -1241,6 +1242,11 @@ function refitTrust(r) {
 // changelog. Any failure: none this run (fail safe: the chances as without it)
 function refitCalib(r) {
   const { state, at, sport } = r;
+  // (the anchored projection's pull by stat (anchor.mjs, D33): read from the committed fit the gate records on the
+  // priced history (anchor.json), never fit here: the ledger's rows since the epoch are a few hundred against the
+  // history's tens of thousands, and a weight re-fit hourly on them would drift)
+  r.anchor = readAnchor(ROOT, sport);
+  console.log(`${sport}: the anchor's pull by stat: ${anchorText(r.anchor)}`);
   r.calib = null;
   try {
     // (no time on it: a run that learned nothing new writes the same state)
@@ -2250,7 +2256,7 @@ async function betProps(r) {
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
-      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null);
+      const { priced, bets } = priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null, r.anchor ?? null);
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
       if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;

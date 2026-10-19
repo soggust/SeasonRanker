@@ -26,6 +26,9 @@ export interface ScoreEntry {
   frozen: { props?: ScoreNumbers | null; lines?: ScoreNumbers | null };
   rolling: { props?: ScoreNumbers | null; lines?: ScoreNumbers | null };
   proj?: { games: number | null; props: number | null };
+  // (the anchored projection's pull toward the book's implied mean by stat (anchor.mjs, D33): 0 the bot's own
+  // number, 1 the book's; the readout the owner watches fall as the bot's numbers improve)
+  anchor?: Record<string, { pull: number; d?: number; n?: number; gain?: number | null }>;
 }
 
 export interface ScorecardFile {
@@ -58,6 +61,19 @@ export interface ScoreChart {
   max: number;
   series: ScoreSeries[];
   latest: string;
+  // (the latest version's pull toward the book by stat, in words; null where the version has no anchor)
+  anchor: string | null;
+}
+
+// The anchor's readout: each stat's pull toward the book's number (0 the bot's own number, 1 the book's), the
+// asymmetry where it has one (its over-the-book side's extra), sorted by pull, highest first
+export function anchorText(a: ScoreEntry['anchor'] | null | undefined): string | null {
+  if (!a || typeof a !== 'object') return null;
+  const parts = Object.entries(a)
+    .filter(([, v]) => v && fin(v.pull))
+    .sort((x, y) => y[1].pull - x[1].pull)
+    .map(([k, v]) => `${k} ${v.pull.toFixed(2)}${fin(v.d) && v.d ? ` (${v.d > 0 ? '+' : ''}${v.d.toFixed(2)} over the Book)` : ''}`);
+  return parts.length ? `pull toward the Book by stat (0 the Bot's own number): ${parts.join(', ')}` : null;
 }
 
 export const SCORE_W = 300;
@@ -113,7 +129,8 @@ export function scorecardPanelOf(files: (ScorecardFile | null)[], labels: Record
       min: Math.round(min * 100) / 100,
       max: Math.round(max * 100) / 100,
       series,
-      latest: `${last.commit ?? last.label ?? 'latest'}: frozen ${signed(edgeOf(fz))} (CLV ${fz && fin(fz.clv) ? signed(fz.clv * 100, 1) + '%' : '-'}, hit ${pctOf(fz?.hit)}), last 28 days ${signed(edgeOf(rl))} (CLV ${rl && fin(rl.clv) ? signed(rl.clv * 100, 1) + '%' : '-'}, hit ${pctOf(rl?.hit)})`,
+      latest: `${last.commit ?? last.label ?? 'latest'}: frozen ${signed(edgeOf(fz))} (CLV ${fz && fin(fz.clv) ? signed(fz.clv * 100, 1) + '%' : '-'}, hit ${pctOf(fz?.hit)}), last 28 days ${signed(edgeOf(rl))} (CLV ${rl && fin(rl.clv) ? signed(rl.clv * 100, 1) + '%' : '-'}, hit ${pctOf(rl?.hit)})${anchorText(last.anchor) ? `; ${anchorText(last.anchor)}` : ''}`,
+      anchor: anchorText(last.anchor),
     });
   }
   return out;

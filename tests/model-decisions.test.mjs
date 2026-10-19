@@ -304,7 +304,9 @@ test('D18 the correction is shrunk by its evidence: the penalty from 20, no term
 test('D18 the correction fits the raw chance and prices from the raw chance: no double count with the calibration; the trust only sizes', () => {
   const rows = corrRows([{ id: 'a', market: 'prop', propType: 'rec', side: 'over', line: 1.5, model: 0.6, modelRaw: 0.55, fair: 0.5, status: 'won', start: '2026-10-10T00:00:00Z' }]);
   assert.equal(rows[0].m, 0.55);
-  assert.match(src('props.mjs'), /correctSides\(correction, \{[^}]*\bpOver,/, 'priceProps passes the raw over');
+  // (the raw over is the anchored chance since D33 (pA): the correction and the calibration read the one raw)
+  assert.match(src('props.mjs'), /correctSides\(correction, \{[^}]*\bpOver: pA,/, 'priceProps passes the raw (anchored) over');
+  assert.match(src('props.mjs'), /calSides\(calib, prop\.stat\.key, prop\.line, pA,/, 'the calibration shifts the same raw');
   assert.equal(trustedUnits(3, 0), 0.5, 'no trust: the minimum, never 0');
   assert.equal(trustedUnits(3, 0.5), 3);
 });
@@ -509,4 +511,45 @@ test('D32 the residual model: a candidate behind RESID_ON, the price unchanged w
   // (the rules written down with it)
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D32.'));
+});
+test('D33 the anchored projection: the pull toward the book is evidence-set, shrunk toward 0 (the bot number), never toward the book; 0 where the bot is ahead; the trust may reach 1; the desk never fits it', async () => {
+  const A = await import('../libs/ranker/scripts/model/anchor.mjs');
+  const { nbOver } = await import('../libs/ranker/scripts/model/project.mjs');
+  const { rng } = await import('../libs/ranker/scripts/model/gate-score.mjs');
+  // (a history where the bot is nearer the truth than the book: pull 0; one where the book is: positive)
+  const u = rng(3);
+  const normal = () => Math.sqrt(-2 * Math.log(1 - u())) * Math.cos(2 * Math.PI * u());
+  const rows = (botSd, bookSd) => Array.from({ length: 8000 }, () => {
+    const truth = 6 * Math.exp(0.3 * normal());
+    const mu = truth * Math.exp(botSd * normal());
+    const im = truth * Math.exp(bookSd * normal());
+    const line = Math.floor(im) + 0.5;
+    // (the result drawn from the truth's own chance over the line, a coin at it)
+    const y = u() < nbOver(line, truth, 10) ? 1 : 0;
+    return { stat: 'x', mu, im, line, params: { r: 10, rk: 0 }, mix: null, y, w: 1 };
+  });
+  const ahead = A.fitStatAnchor(rows(0, 0.15));
+  assert.equal(ahead.pull, 0, 'the bot ahead: no pull toward the book');
+  const behind = A.fitStatAnchor(rows(0.2, 0));
+  assert.ok(behind.pull > 0 && behind.pull <= (behind.n / (behind.n + A.ANCHOR_K)) * behind.own + 1e-3, 'the book ahead: a pull, shrunk toward 0 by the rows worth');
+  assert.equal(A.fitStatAnchor(rows(0.2, 0).slice(0, A.ANCHOR_MIN - 1)).pull, 0, 'too few rows: the bot number');
+  assert.equal(A.PULL_GRID[A.PULL_GRID.length - 1], 1, 'no cap short of 1');
+  assert.equal(A.pullOf(null, 5, 6), 0, 'no fit: the bot number');
+  assert.equal(A.anchoredMean(5, 6, 0), 5);
+  // (the trust can reach 1: the grid and the bucket hold nothing back)
+  assert.ok(/t <= 1\.0001/.test(src('desk.mjs')), 'fitTrust grid reaches 1');
+  assert.equal(bucketTrustOf({ 'prop:x': { trust: 1, lines: { high: { trust: 1 } } } }, 'prop:x', 7.5), 1);
+  // (the desk reads the fit and never makes it; the pull is written by the gate; the raw stays beside it)
+  assert.ok(!/fitAnchor|fitStatAnchor/.test(src('run.mjs')), 'run.mjs never fits the anchor');
+  assert.ok(/readAnchor/.test(src('run.mjs')) && /anchoredChances/.test(src('props.mjs')), 'the desk reads the fit and prices the anchored chance');
+  assert.ok(/anchor\.json/.test(src('gate.mjs')) && /fitAnchor/.test(src('gate-history.mjs')), 'the gate fits and writes it');
+  assert.ok(/modelPure/.test(src('props.mjs')), 'the bot own chance stays on the row');
+});
+
+test('D33 the anchor prices the sports the gate passed (NFL, NBA, NHL) and not MLB, whose pull is recorded for the readout only', async () => {
+  const A = await import('../libs/ranker/scripts/model/anchor.mjs');
+  assert.deepEqual([...A.ANCHOR_SPORTS].sort(), ['nba', 'nfl', 'nhl']);
+  assert.equal(A.anchorOn('mlb'), false);
+  assert.equal(A.readAnchor(path.resolve(import.meta.dirname, '..'), 'mlb'), null, 'the desk reads no MLB anchor');
+  assert.ok(/anchorOn/.test(src('gate-history.mjs')), 'the gate prices only the sports the anchor is on for');
 });
