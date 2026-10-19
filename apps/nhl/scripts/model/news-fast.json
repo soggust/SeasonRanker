@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-19T18:17:18.476Z",
-  "dailyfaceoff.bsky.social": "2026-10-19T20:06:26.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-19T22:14:37.000Z",
   "dfotoronto.bsky.social": "2026-10-19T20:15:23.000Z",
   "marklazerus.bsky.social": "2026-10-19T18:41:45.720Z"
  },
@@ -163,6 +163,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Flyers place Owen Tippett on injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myb473vvfj2g|owentippett|out|status",
+   "at": "2026-10-19T21:53:08.000Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myb473vvfj2g",
+   "player": "Owen Tippett",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers place Owen Tippett on injured reserve #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }

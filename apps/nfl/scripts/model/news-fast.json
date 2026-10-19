@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-19T21:02:15.876Z",
+  "adamscheftermirror.bsky.social": "2026-10-19T21:52:14.717Z",
   "rapsheet.bsky.social": "2026-10-19T21:11:23.769Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
   "insidenflnews.bsky.social": "2026-10-19T20:58:31.294Z",
-  "nflnewsposter.bsky.social": "2026-10-19T21:01:14.565Z",
+  "nflnewsposter.bsky.social": "2026-10-19T22:39:06.160Z",
   "rotoworld-fb.bsky.social": "2026-10-19T21:00:36.000Z",
-  "rotowirenfl.bsky.social": "2026-10-19T20:58:40.000Z"
+  "rotowirenfl.bsky.social": "2026-10-19T21:32:23.000Z"
  },
  "claims": [
   {
@@ -1231,6 +1231,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Bad to worse: Rams star WR Davante Adams, who sustained a hamstring injury in last night’s loss to the Cardinals, is out 6-10 weeks."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myb2z6gnrn2z|davanteadams|out|status",
+   "at": "2026-10-19T21:31:56.000Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myb2z6gnrn2z",
+   "player": "Davante Adams",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Davante Adams: Set for hamstring surgery, eyeing post-bye return \n\n https://www.rotowire.com/football/player/davante-adams-9455"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myb3cjrqxf26|davanteadams|out|status",
+   "at": "2026-10-19T21:37:10.021Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myb3cjrqxf26",
+   "player": "Davante Adams",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "More about the Rams suffering multiple significant injuries, including to WR Davante Adams, who now is out 6-10 weeks:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myb42ug6n2px|davanteadams|out|status",
+   "at": "2026-10-19T21:50:46.588Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myb42ug6n2px",
+   "player": "Davante Adams",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Fowler] Rams WR Davante Adams will undergo a procedure to repair his ruptured hamstring via renowned Dr Neal ElAttrache, per source.\n\nAdams hopes to return on the front end of the 6-10 week timeframe"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myb6rboasc2s|blakegrupe|out|status",
+   "at": "2026-10-19T22:39:06.160Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myb6rboasc2s",
+   "player": "Blake Grupe",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Garafolo] Rams are working out veteran kickers Brandon McManus and Matt Prater tomorrow, sources say. Over three decades of NFL experience combined between the two as Sean McVay & Co. look for a repl"
   }
  ]
 }

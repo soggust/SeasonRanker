@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4047365",
+   "player": "Josh Jacobs",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "LaFleur enthused Packers RB Jacobs, 'an elite-level back,' might play Sunday",
+   "at": "2026-10-19T22:21:38.000Z"
+  },
+  {
    "team": "19",
    "abbr": "NYG",
    "athlete": "2969939",
@@ -201,5 +212,5 @@
    "at": "2026-10-18T16:47:32.000Z"
   }
  ],
- "at": "2026-10-19T21:15:18.875Z"
+ "at": "2026-10-19T22:41:38.820Z"
 }

@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-19T21:13:23.000Z",
-  "insidenbanews.bsky.social": "2026-10-19T20:59:07.366Z",
+  "rotowirenba.bsky.social": "2026-10-19T22:37:10.000Z",
+  "insidenbanews.bsky.social": "2026-10-19T21:19:45.218Z",
   "shamsbot.bsky.social": "2026-10-19T21:07:36.000Z"
  },
  "claims": [
@@ -187,6 +187,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Adem Bona: Questionable for Tuesday \n\n https://www.rotowire.com/basketball/player/adem-bona-6287"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myb5j5gxmy24|casonwallace|active|status",
+   "at": "2026-10-19T22:16:39.000Z",
+   "seen": "2026-10-19T22:41:38.820Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myb5j5gxmy24",
+   "player": "Cason Wallace",
+   "team": "OKC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Cason Wallace: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
   }
  ]
 }

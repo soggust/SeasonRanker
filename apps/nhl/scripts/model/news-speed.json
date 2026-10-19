@@ -111,6 +111,11 @@
    "sleeper": {
     "seen": "2026-10-19T21:13:52.043Z",
     "own": "2026-10-19T18:00:47.853Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T20:06:23.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flyers place Owen Tippett on injured reserve"
    }
   },
   "401892536|camyork|out": {
@@ -127,6 +132,11 @@
    "sleeper": {
     "seen": "2026-10-19T21:13:52.043Z",
     "own": "2026-10-18T19:35:44.215Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T13:04:44.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flyers place Cam York on injured reserve #nhl #nhlhoc"
    }
   },
   "401892536|tysonfoerster|q": {
@@ -263,6 +273,11 @@
    "sleeper": {
     "seen": "2026-10-19T21:13:52.043Z",
     "own": "2026-10-19T14:20:47.141Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T17:13:58.000Z",
+    "why": "@dfotoronto.bsky.social: Leafs lineup notes: William Nylander misses morning ska"
    }
   },
   "401892537|johntavares|out": {
@@ -895,6 +910,11 @@
    "espn": {
     "seen": "2026-10-19T21:13:52.043Z",
     "own": "2026-10-19T14:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T17:13:58.000Z",
+    "why": "@dfotoronto.bsky.social: Leafs lineup notes: William Nylander misses morning ska"
    }
   },
   "401892543|johntavares|out": {
@@ -1595,6 +1615,30 @@
    "espn": {
     "seen": "2026-10-19T21:13:52.043Z",
     "own": "2026-09-28T19:18:00.000Z"
+   }
+  },
+  "401892541|maccelli|out": {
+   "game": "401892541",
+   "start": "2026-10-20T23:00Z",
+   "team": "12",
+   "name": "Maccelli",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T17:21:03.000Z",
+    "why": "@dailyfaceoff.bsky.social: Islanders’ Maccelli, Ritchie to miss time with lower-"
+   }
+  },
+  "401892541|ritchie|out": {
+   "game": "401892541",
+   "start": "2026-10-20T23:00Z",
+   "team": "12",
+   "name": "Ritchie",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-19T21:15:18.875Z",
+    "own": "2026-10-19T17:21:03.000Z",
+    "why": "@dailyfaceoff.bsky.social: Islanders’ Maccelli, Ritchie to miss time with lower-"
    }
   }
  }
