@@ -70,6 +70,10 @@ const readRange = (): DateRange => {
   }
 };
 
+// (the Cashed board's tickets: a page drawn at a time, at most a window of them on the board at once)
+export const TICKET_PAGE = 24;
+export const TICKET_WINDOW = 96;
+
 // (a game this close to its start, or under way, has its score looked up each minute)
 const NEAR = 15 * 60e3;
 
@@ -184,12 +188,15 @@ export class WalletPageComponent implements OnInit, OnDestroy {
     });
   }
   private extrasAsked = false;
-  // (a date range picked: the history's next page, and the next, until the range is all here; not again on a
-  // page that brought nothing (a failed one: Show more tries it then))
+  // (the Cashed board's drawn tickets reaching past the history on hand: its next page, and the next, until the
+  // board's window is filled or (a date range) the range is all here; never the whole history for its own sake;
+  // not again on a page that brought nothing (a failed one: Show more tries it then))
   private autoPaged = -1;
   private readonly rangePages = effect(() => {
     if (this.only === 'open' || !this.account.user()) return;
-    if (this.wallet.settledState() !== 'more' || !this.rangeLoading()) return;
+    if (this.wallet.settledState() !== 'more') return;
+    if (this.range() !== 'all' && !this.rangeLoading()) return;
+    if (this.settledShown().length >= this.ticketEnd()) return;
     const n = this.wallet.settledBets().length;
     if (n === this.autoPaged) return;
     this.autoPaged = n;
@@ -534,8 +541,58 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // (what the open bets would win together, the decided ones at what they came to)
   readonly openToWin = computed(() => Math.round(this.open().reduce((t, b) => t + (this.decided().get(b.id)?.profit ?? betToWin(b)), 0) * 100) / 100);
   readonly liveCount = computed(() => this.open().filter((b) => this.ticketLive(b)).length);
-  // (the strip's last seven days on Cashed: recent-form.ts, from the tally and the history on hand)
-  readonly form = computed(() => recentForm(this.wallet.tally(), this.wallet.settledBets()));
+  // (the Cashed bar's record, units and streak over the dropdown's date range: recent-form.ts, from the tally (All
+  // Time its lifetime record, the wallet's tiles' own) and the history on hand. It read the last seven days under
+  // an "All Time" dropdown until 2026-10-19, the owner reading it as the all-time record)
+  readonly form = computed(() => recentForm(this.wallet.tally(), this.wallet.settledBets(), Date.now(), this.range()));
+  readonly rangeLabel = (range: DateRange): string => DATE_RANGES.find((r) => r.value === range)?.label ?? '';
+
+  // The Cashed board a page of tickets at a time (the owner, 2026-10-19: thousands pinned at once could crash a
+  // phone): TICKET_PAGE drawn to start, Show more pinning the next page under them (the history's next Firestore
+  // page fetched only once the drawn ones need it: rangePages), at most TICKET_WINDOW on the board: past that the
+  // oldest page comes down off the top, Newer putting it back (and taking the far end down), so the DOM stays
+  // flat however deep the history goes. A new date range starts at its top again
+  readonly ticketStart = signal(0);
+  readonly ticketEnd = signal(TICKET_PAGE);
+  readonly ticketsDrawn = computed(() => this.settledTickets().slice(this.ticketStart(), this.ticketEnd()));
+  // (more to draw: tickets on hand past the window, or the history's next page still to come for the range)
+  readonly ticketsMore = computed(
+    () =>
+      this.ticketEnd() < this.settledTickets().length ||
+      ((this.range() === 'all' || this.rangeLoading()) && (this.wallet.settledState() === 'more' || this.wallet.settledState() === 'loading')),
+  );
+  private readonly rangeReset = effect(() => {
+    this.range();
+    untracked(() => {
+      this.ticketStart.set(0);
+      this.ticketEnd.set(TICKET_PAGE);
+    });
+  });
+
+  // (Show more / Newer: the window moved a page, the button pressed kept where it was on the screen (a page taken
+  // down above it would otherwise pull it up; scroll anchoring does this too where the browser has it))
+  moreTickets(event: Event): void {
+    const end = this.ticketEnd() + TICKET_PAGE;
+    // (a page that failed before is asked for again)
+    this.autoPaged = -1;
+    this.moveWindow(event, Math.max(this.ticketStart(), end - TICKET_WINDOW), end);
+  }
+  newerTickets(event: Event): void {
+    const start = Math.max(0, this.ticketStart() - TICKET_PAGE);
+    this.moveWindow(event, start, Math.min(this.ticketEnd(), start + TICKET_WINDOW));
+  }
+  private moveWindow(event: Event, start: number, end: number): void {
+    const el = event.currentTarget as HTMLElement | null;
+    const before = el?.getBoundingClientRect().top ?? null;
+    this.ticketStart.set(start);
+    this.ticketEnd.set(end);
+    if (el && before !== null)
+      requestAnimationFrame(() => {
+        if (!el.isConnected) return;
+        const moved = el.getBoundingClientRect().top - before;
+        if (Math.abs(moved) > 1) window.scrollBy(0, moved);
+      });
+  }
   // (a ticket's number: the tail of its id, as the settler names it)
   ticketNo(b: PlayBet): string {
     return b.id.slice(-6).toUpperCase();

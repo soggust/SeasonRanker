@@ -71,6 +71,19 @@ test('recentForm: a losing streak, a parlay named by its legs, and a quiet week 
   assert.equal(f.last[0].game, 'Parlay');
 });
 
+// (the Cashed bar's: its dropdown's date range, All Time the tally's lifetime record (the wallet's tiles' own),
+// not the week's under an "All Time" dropdown, which the owner read as the all-time record, 2026-10-19)
+test('recentForm: over a date range, All Time the lifetime record, This Month the month\'s game days', () => {
+  const all = bets.recentForm(tally, [], NOW, 'all');
+  assert.equal(all.record, '40–30–2');
+  assert.equal(all.units, '+12.00u');
+  const month = bets.recentForm(tally, [], NOW, 'month');
+  assert.equal(month.record, '9–3–1');
+  assert.equal(month.units, '+6.01u');
+  assert.equal(bets.recentForm(tally, [], NOW, 'year').record, '9–3–1');
+  assert.equal(bets.recentForm(tally, [], NOW, 'week').record, '4–3–1');
+});
+
 test('recentForm: none without a tally, or with nothing settled this week and nothing on hand', () => {
   assert.equal(bets.recentForm(null, [bet('17', 'won')], NOW), null);
   assert.equal(bets.recentForm({ all: tally.all, days: {} }, [], NOW), null);

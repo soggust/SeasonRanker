@@ -7,7 +7,7 @@ import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './book-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
-import { Selection, modelGameOf, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
+import { Selection, modelGameOf, selectionKey } from '../account/wallet/wallet-math';
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { betSports } from './bet-sports';
@@ -214,15 +214,13 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // (already bet and still open: the stake, so the same bet isn't placed twice by mistake)
   // (by the pick's id and its side: the wallet's openOnPick)
   readonly placedOn = (r: BetRow): number => (r.pickId ? (this.wallet.openOnPick().get(`${r.pickId}|${r.side}`) ?? 0) : 0);
-  // (the signed-in user's play money: on hand, and what's out on open bets; their settled record and its return
-  // (the settler's tally, as the wallet's tiles read it: wallet-math recordOf), none before a bet's settled; none
-  // at all signed out or before the wallet loads)
-  readonly bankroll = (): { balance: number; atRisk: number; open: number; record: string | null; roi: number | null } | null => {
+  // (the signed-in user's play money: on hand, and what's out on open bets; none at all signed out or before the
+  // wallet loads. No record on it (the owner, 2026-10-19: its lifetime record, the tally's, read against the
+  // Cashed bar's last seven days and looked wrong; the record is the wallet's and the Cashed bar's, by date range))
+  readonly bankroll = (): { balance: number; atRisk: number; open: number } | null => {
     if (!canUse('book') || !this.wallet.loaded() || !this.wallet.wallet()) return null;
     const open = this.wallet.openBets();
-    const t = recordOf(this.wallet.tally(), this.wallet.bets());
-    const settled = t.won + t.lost + t.push > 0;
-    return { balance: this.wallet.balance(), atRisk: open.reduce((t, b) => t + b.stake, 0), open: open.length, record: settled ? recordText(t) : null, roi: settled ? t.roi : null };
+    return { balance: this.wallet.balance(), atRisk: open.reduce((t, b) => t + b.stake, 0), open: open.length };
   };
   // (the Open tab's count: the user's bets not yet settled)
   readonly openCount = (): number => this.wallet.openBets().length;

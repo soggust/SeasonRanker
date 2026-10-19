@@ -216,7 +216,10 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
     assert.match(b, /<pick-text \[pick\]="l\.pick" \[player\]="betPlayer\(l\)">/, name);
   }
   assert.match(board('openBoard'), /ticket-status live[\s\S]*leg-meter[\s\S]*pending settlement/);
-  assert.match(board('cashedBoard'), /class="ticket-stamp" \[ngClass\]="res\.tone"[\s\S]*wallet\.loadSettled\(\)/);
+  // (the Cashed board a page of tickets at a time, a window of them drawn, Newer over and Show more under: the
+  // owner, 2026-10-19, thousands of tickets at once could crash a phone)
+  assert.match(board('cashedBoard'), /\(click\)="newerTickets\(\$event\)"[\s\S]*@for \(b of ticketsDrawn\(\); track b\.id\)[\s\S]*class="ticket-stamp" \[ngClass\]="res\.tone"[\s\S]*@if \(ticketsMore\(\)\)[\s\S]*\(click\)="moreTickets\(\$event\)"/);
+  assert.doesNotMatch(board('cashedBoard'), /settledTickets\(\); track/);
   assert.match(html, /only === 'closed'\) \{[\s\S]*?ngTemplateOutlet="cashedBoard; context: \{ title: 'Cashed' \}"/);
   assert.match(html, /only === 'open'\) \{[\s\S]*?ngTemplateOutlet="openBoard"/);
   assert.match(html, /ngTemplateOutlet="cashedBoard; context: \{ title: 'Settled' \}"/);

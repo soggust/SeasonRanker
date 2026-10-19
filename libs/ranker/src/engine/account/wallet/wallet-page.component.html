@@ -86,8 +86,9 @@
 </ng-template>
 
 <!-- (the settled bets as printed tickets pinned to a corkboard, newest first, each rubber-stamped CASHED, LOST or
-     PUSH: a panel whose bar carries the last seven days' record, units and streak (recent-form.ts) and the settled
-     history's date range (the Algorithm's dropdown); a page at a time, the next on asking. The wallet's panel
+     PUSH: a panel whose bar carries the date range's record, units and streak (recent-form.ts) and the settled
+     history's date range (the Algorithm's dropdown); a page of tickets at a time, at most a window of them on the
+     board (Show more under them, Newer over them once the oldest page has come down: ticketsDrawn). The wallet's panel
      ("Settled"), and the Book's Cashed tab alone) -->
 <ng-template #cashedBoard let-title="title">
 <section class="wp-panel book-board" [attr.aria-label]="title" [class.shut]="!panelShown('settled')">
@@ -99,10 +100,10 @@
     }
     <span class="wp-bar-tools board-stats">
       @if (form(); as f) {
-        <span class="strip-stat"><span class="strip-key">Record</span><b>{{ f.record }}</b></span>
+        <span class="strip-stat"><span class="strip-key">Record</span><b [attr.title]="f.recordFull ?? null">{{ f.record }}</b></span>
         <span class="strip-stat"><span class="strip-key">Units</span><b [class.up]="f.up" [class.down]="!f.up">{{ f.units }}</b></span>
         <span class="strip-stat"><span class="strip-key">Streak</span><b class="glow">{{ f.streak }}</b></span>
-        <span class="strip-note">Last 7 days · settled from the final score</span>
+        <span class="strip-note">{{ rangeLabel(range()) }} · settled from the final score</span>
       }
       <select class="book-select" aria-label="Date range" [ngModel]="range()" (ngModelChange)="setRange($event)">
         @for (r of ranges; track r.value) {
@@ -114,8 +115,14 @@
   @if (!panelShown('settled')) {
   } @else if (settledShown().length) {
     <div class="cork cork-board">
+      @if (ticketStart() > 0) {
+        <div class="tickets-more tickets-newer">
+          <button type="button" class="book-more" (click)="newerTickets($event)">Newer</button>
+          <span class="tickets-count">Tickets {{ ticketStart() + 1 | number }}–{{ ticketStart() + ticketsDrawn().length | number }}</span>
+        </div>
+      }
       <div class="board-grid">
-        @for (b of settledTickets(); track b.id) {
+        @for (b of ticketsDrawn(); track b.id) {
           @let res = stampOf(b);
           <div class="board-pinned" [style.rotate.deg]="tilt(b)">
             <span class="pin" aria-hidden="true" [style.--pin]="pinColor(b)"></span>
@@ -144,12 +151,16 @@
           </div>
         }
       </div>
-      <!-- (the history a page at a time: the next one on asking; a date range's pages on their own, until it's all here) -->
-      @if ((range() === 'all' && (wallet.settledState() === 'more' || wallet.settledState() === 'loading')) || rangeLoading()) {
+      <!-- (the next page of tickets on asking, the history's next Firestore page fetched when they need it) -->
+      @if (ticketsMore()) {
+        @let waiting = wallet.settledState() === 'loading' && ticketEnd() >= settledTickets().length;
         <div class="tickets-more">
-          <button type="button" class="book-more" [disabled]="wallet.settledState() === 'loading'" (click)="wallet.loadSettled()">
-            {{ wallet.settledState() === 'loading' ? 'Loading…' : 'Show more' }}
+          <button type="button" class="book-more" [disabled]="waiting" (click)="moreTickets($event)">
+            {{ waiting ? 'Loading…' : 'Show more' }}
           </button>
+          @if (ticketStart() > 0) {
+            <span class="tickets-count">Tickets {{ ticketStart() + 1 | number }}–{{ ticketStart() + ticketsDrawn().length | number }}</span>
+          }
         </div>
       }
     </div>

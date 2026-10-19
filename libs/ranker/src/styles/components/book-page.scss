@@ -288,20 +288,6 @@ $page-gutter: 16px;
     font-weight: 600;
     line-height: 1.1;
   }
-
-  .bankroll-record {
-    color: v.$grey-light;
-    font-size: v.$fs-12;
-    white-space: nowrap;
-
-    b {
-      color: v.$good-bright;
-
-      &.down {
-        color: v.$bad-soft;
-      }
-    }
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -2899,8 +2885,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     width: auto;
 
     .bankroll-chip,
-    .bankroll-play,
-    .bankroll-record {
+    .bankroll-play {
       display: none;
     }
 

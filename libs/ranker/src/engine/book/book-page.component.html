@@ -37,8 +37,8 @@
     <button type="button" class="book-info" aria-label="About the Book" title="About the Book" (click)="aboutOpen = true">
       <mat-icon aria-hidden="true" fontIcon="info"></mat-icon>
     </button>
-    <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand, what's out, the
-         record and its return; the whole card the way to the wallet. None signed out: bankroll() is null) -->
+    <!-- (the user's own bankroll, not the bot's record (that's the Algorithm's): what's on hand and what's out (no
+         record: the wallet's and the Cashed bar's, by date range); the whole card the way to the wallet. None signed out: bankroll() is null) -->
     @if (bankroll(); as b) {
       <a class="bankroll pcard" href="/wallet" [attr.aria-label]="'Bankroll ' + (b.balance | number: '1.0-1') + ' units: open your wallet'" title="Your Betting Wallet">
         <span class="kind-chip still bankroll-chip" aria-hidden="true"><svg class="chip-rim" aria-hidden="true"><rect pathLength="80" /></svg></span>
@@ -50,9 +50,6 @@
         </span>
         <span class="bankroll-main">
           <span class="bankroll-balance">{{ b.balance | number: '1.0-1' }}u</span>
-          @if (b.record) {
-            <span class="bankroll-record">{{ b.record }}@if (b.roi !== null) { · <b [class.down]="b.roi < 0">{{ b.roi >= 0 ? '+' : '' }}{{ b.roi * 100 | number: '1.1-1' }}%</b>}</span>
-          }
         </span>
       </a>
     }

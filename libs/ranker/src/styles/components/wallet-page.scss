@@ -1850,9 +1850,25 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 
 
 .tickets-more {
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
   justify-content: center;
   padding: 20px 0 0;
+
+  // (Newer, over the board once its oldest page has come down)
+  &.tickets-newer {
+    padding: 0 0 20px;
+  }
+}
+
+// (which tickets are pinned up, on a windowed board: "Tickets 97–192")
+.tickets-count {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: v.$fs-12;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .book-more {

@@ -7,6 +7,7 @@
 import { PlayBet, TallyDoc, etDay } from '../account/wallet/wallet-math';
 import { PlayerRef, betPlayer } from '../player-link';
 import { compactRecord, recordTip } from './bet-format';
+import { DateRange, inRange } from './date-range';
 
 export interface FormBet {
   // (W, L or P: a win, a loss, a push; a void bet is left out)
@@ -69,22 +70,31 @@ const fullOf = (r: { won: number; lost: number; push: number }): { recordFull?: 
 
 const unitsText = (v: number): string => (v === 0 ? '0.00u' : `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}u`);
 
-// (the user's form: none without a tally, or with no bet settled in the last seven days and none on hand)
-export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], now: number | Date = Date.now()): RecentForm | null {
+// (the user's form: none without a tally, or with no bet settled in the window and none on hand. The window: the
+// last seven days (the Book's form card), or a date range (the Cashed bar's, its dropdown's: All Time the
+// tally's lifetime record, the same one the wallet's tiles read; a range's days by the tally's game days, each
+// day's date read on the local calendar as the range is))
+export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], now: number | Date = Date.now(), range: DateRange | 'week' = 'week'): RecentForm | null {
   if (!tally) return null;
   const t = typeof now === 'number' ? now : now.getTime();
   let won = 0;
   let lost = 0;
   let push = 0;
   let profit = 0;
-  for (let i = 0; i < 7; i++) {
-    const day = tally.days[etDay(t - i * 864e5)];
-    if (!day) continue;
-    won += day[0];
-    lost += day[1];
-    push += day[2];
-    profit += day[4];
-  }
+  const add = (day: readonly number[] | undefined) => {
+    if (!day) return;
+    won += day[0] ?? 0;
+    lost += day[1] ?? 0;
+    push += day[2] ?? 0;
+    profit += day[4] ?? 0;
+  };
+  if (range === 'all') add([tally.all.won, tally.all.lost, tally.all.push, tally.all.staked, tally.all.profit]);
+  else if (range === 'week') for (let i = 0; i < 7; i++) add(tally.days[etDay(t - i * 864e5)]);
+  else
+    for (const [key, day] of Object.entries(tally.days)) {
+      const [y, m, d] = key.split('-').map(Number);
+      if (inRange(range, new Date(y, m - 1, d, 12), new Date(t))) add(day);
+    }
   // (the settled bets, the latest settled first, pushes and voids aside for the streak)
   const graded = [...settled].filter((b) => b.status !== 'open').sort((a, b) => (b.settledAt ?? b.start).localeCompare(a.settledAt ?? a.start));
   let streak = '–';
