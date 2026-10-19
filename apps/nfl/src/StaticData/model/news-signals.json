@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": null,
+   "player": "Chris Ballard",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Colts fire GM Chris Ballard after home loss to Titans, cite 'necessary' change",
+   "at": "2026-10-19T14:11:54.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "14012",
+   "player": "Andy Dalton",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Sources: Falcons to sign QB Andy Dalton, release QB Cooper Rush",
+   "at": "2026-10-19T14:09:44.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "2972515",
+   "player": "Cooper Rush",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Sources: Falcons to sign QB Andy Dalton, release QB Cooper Rush",
+   "at": "2026-10-19T14:09:44.000Z"
+  },
+  {
    "team": "3",
    "abbr": "CHI",
    "athlete": "4361093",
@@ -135,5 +168,5 @@
    "at": "2026-10-17T19:23:52.000Z"
   }
  ],
- "at": "2026-10-19T11:24:25.432Z"
+ "at": "2026-10-19T14:17:26.425Z"
 }

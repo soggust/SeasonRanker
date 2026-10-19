@@ -116,6 +116,7 @@
   "50177416": "2026-10-14",
   "50177580": "2026-10-14",
   "50177761": "2026-10-14",
+  "50179455": "2026-10-19",
   "50179851": "2026-10-18",
   "50180676": "2026-10-14",
   "50181398": "2026-10-14",
@@ -219,7 +220,10 @@
   "50215919": "2026-10-19",
   "50215969": "2026-10-19",
   "50216042": "2026-10-19",
-  "50216409": "2026-10-19"
+  "50216409": "2026-10-19",
+  "50217832": "2026-10-19",
+  "50218030": "2026-10-19",
+  "50218249": "2026-10-19"
  },
  "signals": [
   {
@@ -790,6 +794,51 @@
    "confidence": 0.9,
    "story": "50212900",
    "headline": "Bears' Kyler Gordon returns with vengeance, answers critics",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50218030|11|chrisballard|coaching",
+   "day": "2026-10-19",
+   "at": "2026-10-19T14:11:54.000Z",
+   "team": "11",
+   "abbr": "IND",
+   "athlete": null,
+   "player": "Chris Ballard",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50218030",
+   "headline": "Colts fire GM Chris Ballard after home loss to Titans, cite 'necessary' change",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50218249|1|14012|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T14:09:44.000Z",
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "14012",
+   "player": "Andy Dalton",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50218249",
+   "headline": "Sources: Falcons to sign QB Andy Dalton, release QB Cooper Rush",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50218249|1|2972515|benched",
+   "day": "2026-10-19",
+   "at": "2026-10-19T14:09:44.000Z",
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "2972515",
+   "player": "Cooper Rush",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "story": "50218249",
+   "headline": "Sources: Falcons to sign QB Andy Dalton, release QB Cooper Rush",
    "model": "claude-haiku-5-5"
   }
  ]
