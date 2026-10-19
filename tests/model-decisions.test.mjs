@@ -609,4 +609,47 @@ test("D34 the game model's schedule terms are soft: every one from the schedule 
   // only; nothing but ratings.mjs sets a context term's size)
   for (const f of ['miss-review.mjs', 'calib.mjs', 'correct.mjs', 'check-learn.mjs', 'selfcheck.mjs', 'desk.mjs']) assert.ok(!/lambdaSoft|SCHEDULE_TERMS|fitContext/.test(src(f)), `${f} leaves the game context's terms alone`);
   assert.ok(src('DECISIONS.md').includes('### D34.'));
+test('D35 the season-start vacancy: a regular gone since last season vacates his work net of the ones brought in; the newcomer is in the pool at the work he brings; a departure with no arrival vacates in full', async () => {
+  const { nflMatchups } = await import('../libs/ranker/scripts/model/matchups.mjs');
+  // (a 32-team league's 2025: each team a lead back (15 carries, 3 targets), a second back (4 and 1), a receiver,
+  // a tight end and a quarterback; 2026 not yet played)
+  const date = (season, d) => new Date(Date.UTC(season, 8, 1) + d * 864e5).toISOString().slice(0, 10);
+  const rows = [];
+  const add = (season, d, team, opp, home, pid, pos, targets, rushAtt, passAtt = 0) => rows.push({ pid, pos, date: date(season, d), season, team, opp, game: `g${season}_${d}_${team < opp ? team : opp}`, home, s: { targets, rushAtt, passAtt, snaps: 50 } });
+  for (let d = 1; d <= 6; d++)
+    for (let i = 0; i < 16; i++)
+      for (const [team, opp, home] of [[`T${2 * i}`, `T${2 * i + 1}`, true], [`T${2 * i + 1}`, `T${2 * i}`, false]]) {
+        add(2025, d, team, opp, home, `${team}rb1`, 'RB', 3, 15);
+        add(2025, d, team, opp, home, `${team}rb2`, 'RB', 1, 4);
+        add(2025, d, team, opp, home, `${team}wr1`, 'WR', 8, 0);
+        add(2025, d, team, opp, home, `${team}te1`, 'TE', 4, 0);
+        add(2025, d, team, opp, home, `${team}qb`, 'QB', 0, 2, 30);
+      }
+  const lg = nflMatchups(rows, null, {});
+  // (T0's lead back left in the offseason)
+  const missOf = (id) => (id === 'T0rb1' ? 1 : 0);
+  const vac = (pid, extra) => lg.live(pid, 'T0', 'T1', 'RB', 2026, missOf, extra).vacs[0];
+  // (no roster read: his work vacates to the second back alone, the week-1 overshoot at the cap, as before)
+  assert.equal(vac('T0rb2'), 3);
+  // (T1's second back signed: in the pool at the work he brings, the departed's work netted against it; the
+  // second back's cut is real (the role player's signal) but no longer the cap, and the newcomer's is the same cut
+  // (the split in proportion))
+  const present = new Map([['T0rb2', 'RB'], ['T1rb2', 'RB'], ['T0wr1', 'WR'], ['T0te1', 'TE'], ['T0qb', 'QB']]);
+  const pooled = vac('T0rb2', { present });
+  assert.ok(pooled > 1 && pooled < 1.5, `the second back with a newcomer in the pool: ${pooled}`);
+  assert.equal(vac('T1rb2', { present }), pooled, 'the newcomer takes the same cut over his own work');
+  // (a lead back signed in his place: like for like, nothing vacates)
+  assert.equal(vac('T0rb2', { present: new Map([['T0rb2', 'RB'], ['T1rb1', 'RB']]) }), 0);
+  // (a rookie with a prop on the board counts as an arrival at the floor; a roster's back with no history and no
+  // prop isn't one)
+  const rookie = vac('T0rb2', { present: new Map([...present, ['T0rook', 'RB']]), board: new Set(['T0rook']) });
+  assert.ok(rookie < pooled && rookie > 1, `a rookie on the board nets a little: ${rookie}`);
+  assert.equal(vac('T0rb2', { present: new Map([...present, ['T0rook', 'RB']]) }), pooled, "a roster's back who won't play isn't an arrival");
+  // (this season's absences are untouched: a regular hurt in-season vacates as before, newcomer or not)
+  assert.ok(/x\.cur \? \(gone \+= m \* x\.v\) : \(dep \+= m \* x\.v\)/.test(src('matchups.mjs')));
+  // (the history passes the game's players, the desk the roster and the board)
+  assert.ok(/vacated\(g\.team, g\.season, r\.pid, r\.pos, \(id\) => \(playing\.has\(id\) \? 0 : 1\), present\)/.test(src('matchups.mjs')));
+  assert.ok(/present, board: onBoard/.test(src('props.mjs')));
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D35.'));
 });

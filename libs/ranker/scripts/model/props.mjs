@@ -1909,7 +1909,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     }
     // (and the other side's players missing it (the opponent's key defenders out, audit #15: oppMissOf)
     const oppMiss = oppMissOf(sport, live, row.opp);
-    const extra = { live, game, home, pitcher: !!prop.stat.pitcher, oppMiss };
+    // (and his team's roster by position, with the game's board: the newcomers in the work's pool (matchups.mjs
+    // vacated's present, D35: a regular gone since last season netted against the ones brought in); no roster
+    // read, none)
+    const present = roster?.info instanceof Map ? new Map([...roster.info].map(([id, x]) => [id, x.pos])) : null;
+    const extra = { live, game, home, pitcher: !!prop.stat.pitcher, oppMiss, present, board: onBoard };
     if (f.matchups) Object.assign(row, f.matchups.live(pid, row.team, row.opp, row.pos, game.season, missOf(qMiss), extra));
     const p = f.model.project(row);
     if (!p) continue;

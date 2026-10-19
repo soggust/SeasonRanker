@@ -471,7 +471,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
       // (his games out counted again from the new season's first: two games rested or hurt at the end of the
       // last aren't an absence in the next one's first week (absent); the fade's the same, one not yet played
       // for the team this season (cur false) fading game by game whatever his count)
-      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, hv: (v.hv ?? v.v) * 0.5, t: (v.t ?? 0) * 0.5, c: (v.c ?? 0) * 0.5, gone: 0, cur: false }]) : []) };
+      w = { season, p: new Map(last ? [...last.p].map(([k, v]) => [k, { pos: v.pos, v: v.v * 0.5, hv: (v.hv ?? v.v) * 0.5, t: (v.t ?? 0) * 0.5, c: (v.c ?? 0) * 0.5, gone: 0, cur: false, arr: 0 }]) : []) };
       work.set(id, w);
     }
     return w;
@@ -502,19 +502,55 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
   const NONE = [...SPLITS.map(() => 0), 0];
   const absorb = absorbTable(ABSORB_NFL);
   const clamp01 = (m) => Math.min(1, Math.max(0, Number(m) || 0));
-  const vacated = (teamId, season, pid, pos, missOf) => {
+  // (the season-start vacancy, done right (DECISIONS.md D35, 2026-10-19): a regular gone since last season (cur
+  // false, carried at half) still vacates his work (a role player's signal where no one was brought in: the plain
+  // "a departed regular vacates nothing" made the price-free projections worse beyond noise, D33's note), but
+  // netted against the work the team brought in to replace him: each arrival's incoming work (incoming: his
+  // recent work on his last team, at half across a season; a rookie's or an unknown's NEW_MIN), faded game by
+  // game as the departed's is (arr), and a newcomer present tonight with no work for this team yet (present: the
+  // game's players in the history, the roster's at bet time) in the pool at that work. So a team that lost two
+  // backs and signed one vacates the difference, shared among the ones here, the newcomer among them; one that
+  // lost a back and signed none vacates his work in full, as before. This season's absences (cur) are untouched)
+  const NEW_MIN = 0.5;
+  const lastWork = new Map();
+  const incoming = (id, season) => {
+    const l = lastWork.get(id) ?? lastWork.get(String(id));
+    if (!l) return 0;
+    return l.season === season ? l.v : l.season === season - 1 ? l.v * 0.5 : 0;
+  };
+  const vacated = (teamId, season, pid, pos, missOf, present = null) => {
     const p = POS(pos);
     if (!p || p === 'QB') return NONE;
     const w = workOf(teamId, season);
     let gone = 0;
+    let dep = 0;
+    let arrived = 0;
     const here = [];
     for (const [id, x] of w.p) {
-      if (x.pos !== p || x.v < 0.5 || String(id) === String(pid)) continue;
+      if (x.pos !== p || String(id) === String(pid)) continue;
       const m = clamp01(missOf(id));
-      if (m > 0 && x.v >= 1.5) gone += m * x.v;
+      if (m < 1 && x.arr > 0) arrived += (1 - m) * x.arr;
+      if (x.v < 0.5) continue;
+      if (m > 0 && x.v >= 1.5) x.cur ? (gone += m * x.v) : (dep += m * x.v);
       if (m < 1) here.push([x.v, 1 - m]);
     }
-    const own = Math.max(w.p.get(pid)?.v ?? 0, 0.5);
+    // (the newcomers present with no work for this team yet: in the pool at their incoming work, and arrivals)
+    if (present) {
+      for (const [id, q] of present) {
+        if (POS(q) !== p || String(id) === String(pid) || w.p.has(id) || w.p.has(String(id))) continue;
+        const m = clamp01(missOf(id));
+        if (m >= 1) continue;
+        const v = Math.max(incoming(id, season), NEW_MIN);
+        here.push([v, 1 - m]);
+        arrived += (1 - m) * v;
+      }
+    }
+    const mine = w.p.get(pid);
+    const own = Math.max(mine?.v ?? incoming(pid, season), 0.5);
+    // (his own arrival nets too: one new to the team is a replacement brought in)
+    if (!mine) arrived += own;
+    else if (mine.arr > 0) arrived += mine.arr;
+    gone += Math.max(0, dep - arrived);
     const splits = gone
       ? SPLITS.map((g) => {
           const all = here.reduce((t, [v, k]) => t + k * Math.pow(v, g), Math.pow(own, g));
@@ -880,6 +916,8 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
     // (the day's rows, from what was known before it)
     for (const g of batch) {
       const playing = new Set(g.rows.map((r) => r.pid));
+      // (the game's players, by position: the newcomers among them in the work's pool (vacated's present))
+      const present = new Map(g.rows.map((r) => [r.pid, r.pos]));
       const dOut = defOut.get(`${g.game}|${g.opp}`);
       // (the game's snap counts read: without them one missing from its logs may have played with no stat, so
       // none is promoted over him; the same rows' logs that say who's playing, not their numbers)
@@ -897,7 +935,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
         r.funnel = d.funnel;
         r.pace = d.pace;
         r.tgt = d.tgt;
-        r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1));
+        r.vacs = vacated(g.team, g.season, r.pid, r.pos, (id) => (playing.has(id) ? 0 : 1), present);
         r.vac = Math.max(...r.vacs);
         r.rb1Out = rb1Out(g.team, g.season, r.pos, (id) => (playing.has(id) ? 0 : 1));
         // (a quarterback who threw this game and isn't his team's lead by the work (qbBackup, round D: the backup's
@@ -1010,7 +1048,9 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
         if (r.ret) rets.set(r.pid, { season: g.season, team: g.team, ...r.ret });
         else rets.delete(r.pid);
         played.add(r.pid);
-        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), hv: touches(r, p), t: r.s.targets ?? 0, c: r.s.rushAtt ?? 0, gone: 0, cur: true };
+        // (one new to the team's work: an arrival, at the work he brings (incoming; a rookie's NEW_MIN), netted
+        // against the regulars gone since last season (vacated) and faded as they are)
+        const x = w.p.get(r.pid) ?? { pos: p, v: touches(r, p), hv: touches(r, p), t: r.s.targets ?? 0, c: r.s.rushAtt ?? 0, gone: 0, cur: true, arr: Math.max(incoming(r.pid, g.season), NEW_MIN) };
         x.pos = p;
         x.v += (touches(r, p) - x.v) * WORK_RATE;
         x.t = (x.t ?? 0) + ((r.s.targets ?? 0) - (x.t ?? 0)) * WORK_RATE;
@@ -1024,6 +1064,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
         x.unread = false;
         x.cur = true;
         w.p.set(r.pid, x);
+        lastWork.set(r.pid, { season: g.season, v: x.v, pos: p });
         const h = games_.get(r.pid);
         const mine = h && h.season === g.season ? h : { season: g.season, games: [] };
         // (and the game, its work and whether it's organic, for the trend: no regular at his position missing,
@@ -1033,6 +1074,9 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
       }
       // (and a game missed without the snap counts makes his absence unread, returnOf)
       for (const [id, x] of w.p) {
+        // (an arrival's incoming work fades with the game, as a departed regular's does: the two net against each
+        // other at the same age)
+        if (x.arr > 0) x.arr = x.arr * (1 - WORK_RATE) < 0.05 ? 0 : x.arr * (1 - WORK_RATE);
         if (played.has(id)) continue;
         x.gone = (x.gone ?? 0) + 1;
         if (!snapsRead) x.unread = true;
@@ -1069,7 +1113,11 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
     // or a set of the ones out: the work they leave)
     live: (pid, teamId, oppId, pos, season, missing = null, extra = {}) => {
       const missOf = typeof missing === 'function' ? missing : missing instanceof Set ? (id) => (missing.has(String(id)) ? 1 : 0) : () => 0;
-      const vacs = vacated(teamId, season, pid, pos, missOf);
+      // (the team's players tonight (extra.present: the roster, by position; props.mjs), the newcomers among them
+      // in the work's pool where they've played somewhere in a season or have a prop on the board (extra.board):
+      // a roster's fourth back who won't play isn't an arrival)
+      const present = extra?.present instanceof Map ? new Map([...extra.present].filter(([id]) => incoming(id, season) > 0 || extra.board?.has?.(String(id)))) : null;
+      const vacs = vacated(teamId, season, pid, pos, missOf, present);
       const past = vacPast(pid, season, pos);
       const snap = snapOf(pid, season);
       const q1 = qb1Out(teamId, season, pid, pos, missOf);

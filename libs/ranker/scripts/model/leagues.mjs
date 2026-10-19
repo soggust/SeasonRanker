@@ -190,7 +190,12 @@ export const GAME_CAP = 5;
 // the margin and the total), games in the last 7 nights, the long road trip, the home stand's opener, altitude on the
 // total, the lopsided matchup on the total (the model's own expected margin); the replay gate SHIP (NFL game lines'
 // top picks' CLV better beyond noise, every other layer tied). Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T09:00:00Z';
+// 2026-10-19, the sharpen round's second push (DECISIONS.md D35): the season-start vacancy done right (matchups.mjs: a
+// regular gone since last season vacates his work net of the work the team brought in, the newcomer in the pool), the
+// gate SHIP with the NFL's projections -0.0013 a row inside the noise. Measured and held the same round: the anchor on
+// MLB's pitchers alone (a no-op in the price: the shape is wrong, not the mean) and a history-fitted trust prior for
+// the game lines (already at 0). Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T10:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
