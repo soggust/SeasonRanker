@@ -1,0 +1,76 @@
+{
+ "v": 1,
+ "at": "2026-10-19T15:08:52.754Z",
+ "rows": 56068,
+ "pooled": {
+  "n": 7073,
+  "rows": 56068,
+  "keptRaw": 0.7171,
+  "kept": 0.7171,
+  "moved": 0.424,
+  "lead": 12.066,
+  "edgeOpen": 0.0172,
+  "edgeClose": 0.0123,
+  "ok": true
+ },
+ "stats": {
+  "ast": {
+   "n": 2330,
+   "rows": 9017,
+   "keptRaw": 0.6917,
+   "kept": 0.6917,
+   "moved": 0.368,
+   "lead": 12.066,
+   "edgeOpen": 0.0173,
+   "edgeClose": 0.0119,
+   "from": "own"
+  },
+  "fg3": {
+   "n": 2514,
+   "rows": 10493,
+   "keptRaw": 0.7732,
+   "kept": 0.7732,
+   "moved": 0.212,
+   "lead": 12.066,
+   "edgeOpen": 0.0191,
+   "edgeClose": 0.0147,
+   "from": "own"
+  },
+  "pra": {
+   "n": 997,
+   "rows": 9296,
+   "keptRaw": 0.6582,
+   "kept": 0.6582,
+   "moved": 0.62,
+   "lead": 12.066,
+   "edgeOpen": 0.013,
+   "edgeClose": 0.0085,
+   "from": "own"
+  },
+  "pts": {
+   "n": 242,
+   "rows": 14181,
+   "keptRaw": 0.7171,
+   "kept": 0.7171,
+   "moved": 0.532,
+   "lead": 12.066,
+   "edgeOpen": 0.0238,
+   "edgeClose": 0.0157,
+   "from": "pooled"
+  },
+  "reb": {
+   "n": 990,
+   "rows": 13081,
+   "keptRaw": 0.6763,
+   "kept": 0.6763,
+   "moved": 0.375,
+   "lead": 12.066,
+   "edgeOpen": 0.0147,
+   "edgeClose": 0.0099,
+   "from": "own"
+  }
+ },
+ "sport": "nba",
+ "epoch": "2026-10-19T16:00:00Z",
+ "commit": "3c9e1f9b"
+}

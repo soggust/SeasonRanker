@@ -1,0 +1,54 @@
+{
+ "v": 1,
+ "at": "2026-10-19T15:07:52.452Z",
+ "rows": 37731,
+ "pooled": {
+  "n": 1438,
+  "rows": 37731,
+  "keptRaw": 0.9527,
+  "kept": 0.9527,
+  "moved": 0.028,
+  "lead": 12.072,
+  "edgeOpen": 0.0157,
+  "edgeClose": 0.015,
+  "ok": true
+ },
+ "stats": {
+  "pts": {
+   "n": 783,
+   "rows": 20003,
+   "keptRaw": 0.9656,
+   "kept": 0.9656,
+   "moved": 0.012,
+   "lead": 12.072,
+   "edgeOpen": 0.0145,
+   "edgeClose": 0.014,
+   "from": "own"
+  },
+  "saves": {
+   "n": 58,
+   "rows": 141,
+   "keptRaw": 0.9527,
+   "kept": 0.9527,
+   "moved": 0.092,
+   "lead": 12.069,
+   "edgeOpen": 0.0146,
+   "edgeClose": 0.0126,
+   "from": "pooled"
+  },
+  "sog": {
+   "n": 597,
+   "rows": 17587,
+   "keptRaw": 0.9464,
+   "kept": 0.9464,
+   "moved": 0.045,
+   "lead": 12.072,
+   "edgeOpen": 0.0175,
+   "edgeClose": 0.0165,
+   "from": "own"
+  }
+ },
+ "sport": "nhl",
+ "epoch": "2026-10-19T16:00:00Z",
+ "commit": "3c9e1f9b"
+}
