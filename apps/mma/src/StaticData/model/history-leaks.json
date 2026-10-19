@@ -1,12 +1,29 @@
 {
- "at": "2026-10-19T15:41:47.999Z",
+ "at": "2026-10-19T16:43:38.805Z",
  "epoch": "2026-10-19T17:00:00Z",
- "commit": "35c04947",
+ "commit": "0446c12c",
  "n": 4564,
  "tested": 10,
- "leaks": 0,
+ "leaks": 1,
  "trends": 0,
- "status": "ok",
- "headline": "10 segments tested on 4564 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
- "rows": []
+ "status": "watch",
+ "headline": "side: under losing 0.13 nats per 100 rows to the Book, shrunk (n 506, z -2.44)",
+ "rows": [
+  {
+   "rank": 1,
+   "kind": "leak",
+   "segment": "side: under",
+   "n": 506,
+   "games": 506,
+   "loss": 0.1318,
+   "raw": 0.1578,
+   "z": -2.4377,
+   "clv": null,
+   "week": null,
+   "p": 0.0074,
+   "atRisk": 0,
+   "causes": null,
+   "fix": "the lean to the under (correct.mjs dir terms; the projection's bias by side); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)"
+  }
+ ]
 }
