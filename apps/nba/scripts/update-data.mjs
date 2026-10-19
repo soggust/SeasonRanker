@@ -33,6 +33,7 @@ import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { BOX_DIR, boxFile, updateBoxes } from './box-scores.mjs';
 import { FIRST_SEASON as FIRST_SHOTS, shotFile, updateShots, writeHeat } from './shot-zones.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
+import { addBoxes, teamBox, teamShooting } from './team-shooting.mjs';
 
 const CURRENT_SEASON = 2026;
 const FIRST_SEASON = 2001;
@@ -240,7 +241,8 @@ async function injuries() {
 
 // Teams: name, record, pace (possessions per 48 minutes), ratings (points per 100 possessions), the
 // wins their point differential implies, and the totals both are worked out from (points scored and
-// allowed, minutes on the floor / 5)
+// allowed, minutes on the floor / 5); and its box score totals and its opponents', for its shooting,
+// rebounding and turnovers (team-shooting.mjs)
 function teamTable(html) {
   const totals = new Map(table(html, 'totals-team').map((row) => [row._id, row]));
   const opponents = new Map(table(html, 'totals-opponent').map((row) => [row._id, row]));
@@ -259,6 +261,7 @@ function teamTable(html) {
       pts: num(totals.get(row._id)?.pts),
       oppPts: num(opponents.get(row._id)?.opp_pts),
       minutes: num(totals.get(row._id)?.mp) === null ? null : num(totals.get(row._id).mp) / 5,
+      box: teamBox(totals.get(row._id), opponents.get(row._id)),
     });
   }
   return teams;
@@ -419,7 +422,7 @@ function combineTeams(regular, post) {
     const losses = r.losses + p.losses;
     const known = parts.every((t) => t.pts !== null && t.oppPts !== null && t.ortg && t.minutes);
     if (!known) {
-      out.set(code, { ...r, wins, losses, pace: null, ortg: null, drtg: null, net: null, pythWins: null });
+      out.set(code, { ...r, wins, losses, pace: null, ortg: null, drtg: null, net: null, pythWins: null, box: addBoxes(r.box, p.box) });
       continue;
     }
     const pts = r.pts + p.pts;
@@ -439,6 +442,7 @@ function combineTeams(regular, post) {
       pts,
       oppPts,
       minutes: sum(parts, (t) => t.minutes),
+      box: addBoxes(r.box, p.box),
     });
   }
   return out;
@@ -666,6 +670,8 @@ async function buildPart(season, part, src, { champion, runnerUp, coachRows, coy
         lift: lift.get(code) ?? null,
         // (his share of the team's wins over what its point differential implies)
         pythDiff: team && team.pythWins !== null && team.wins + team.losses ? round(((team.wins - team.pythWins) * g) / (team.wins + team.losses), 1) : null,
+        // (the team's shooting, rebounding and turnovers, its whole season's or playoffs': team-shooting.mjs)
+        ...teamShooting(team?.box),
       },
       awards,
     });

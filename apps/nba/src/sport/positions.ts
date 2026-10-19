@@ -59,6 +59,17 @@ export type SkillStatKey =
   | 'pace'
   | 'lift'
   | 'pythDiff'
+  // Teams: shooting, rebounding and ball security (with tsPct, fg3Pct, trbPct and tovPct above; the
+  // team's own, on its coaches' rows: scripts/team-shooting.mjs)
+  | 'efgPct'
+  | 'fg3aRate'
+  | 'ftRate'
+  | 'oppEfgPct'
+  | 'oppFg3Pct'
+  | 'orbPct'
+  | 'drbPct'
+  | 'rebPerGame'
+  | 'oppTovPct'
   // Teams: roster grades from the position tabs' rankings (engine/roster-grades)
   | 'backcourt'
   | 'wings'
@@ -148,6 +159,15 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   pace: 'Pace (possessions per 48 minutes)',
   lift: 'Coaching Lift (net rating over the roster\'s talent)',
   pythDiff: 'Wins over Point Differential',
+  efgPct: 'Effective Field Goal Percentage',
+  fg3aRate: '3-Point Attempt Rate',
+  ftRate: 'Free Throw Rate',
+  oppEfgPct: "Opponents' Effective Field Goal Percentage",
+  oppFg3Pct: "Opponents' 3-Point Percentage",
+  orbPct: 'Offensive Rebound Percentage',
+  drbPct: 'Defensive Rebound Percentage',
+  rebPerGame: 'Rebounds per Game',
+  oppTovPct: "Opponents' Turnover Percentage",
   backcourt: 'Backcourt (point and shooting guards, by your rankings)',
   wings: 'Wings (small forwards, by your rankings)',
   frontcourt: 'Frontcourt (power forwards and centers, by your rankings)',
@@ -225,7 +245,8 @@ const NBA_STATS: SkillStat[] = [
 ];
 
 // Teams: the season (record, playoff wins, net rating and the offense's and defense's ranks), wins
-// against the point differential (luck in close games), and the roster by your own rankings of its
+// against the point differential (luck in close games), its shooting, rebounding and ball security at
+// both ends (Basketball-Reference's formulas from the box score totals), and the roster by your own rankings of its
 // players at each spot, weighted by their minutes (engine/roster-grades)
 const TEAM_STATS: SkillStat[] = [
   { key: 'games', label: 'Games', description: 'Games played (for context; not part of the ranking)', kind: 'efficiency', format: 'int', infoOnly: true },
@@ -237,6 +258,21 @@ const TEAM_STATS: SkillStat[] = [
   { key: 'defRank', label: 'Def Rank', name: 'Defense Rank', description: "The defense's league rank by defensive rating, points allowed per 100 possessions", kind: 'efficiency', format: 'rank', negative: true },
   { key: 'pythDiff', label: 'W vs Pt Diff', name: 'Wins over Point Differential', description: 'Wins beyond what the point differential implies: close games, which mostly even out (luck as much as clutch)', kind: 'efficiency', format: 'dec1' },
   { key: 'pace', label: 'Pace', description: 'Possessions per 48 minutes (for context; not part of the ranking)', kind: 'efficiency', format: 'dec1', infoOnly: true },
+  // Shooting, rebounding and ball security, Basketball-Reference's way, from the team's box score totals
+  // and its opponents' (scripts/team-shooting.mjs)
+  { key: 'efgPct', label: 'eFG %', description: 'Field goals made per attempt, a made 3 counting half again', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'tsPct', label: 'TS %', description: 'Scoring efficiency counting 3s and free throws: points per shooting possession', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'fg3Pct', label: '3P %', description: '3-pointers made per attempt', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'fg3aRate', label: '3PA Rate', description: 'Share of its shots taken from 3 (3-point attempts per field goal attempt)', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'ftRate', label: 'FT Rate', description: 'Free throw attempts per field goal attempt: getting to the line', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'oppEfgPct', label: 'Opp eFG %', description: "Its opponents' effective field goal percentage: the defense (lower is better)", kind: 'efficiency', format: 'pctPoints', negative: true },
+  { key: 'oppFg3Pct', label: 'Opp 3P %', description: "Its opponents' 3-point percentage (lower is better)", kind: 'efficiency', format: 'pctPoints', negative: true },
+  { key: 'orbPct', label: 'ORB %', description: 'Its own misses it rebounded: offensive rebounds over the offensive rebounds there were', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'drbPct', label: 'DRB %', description: "Its opponents' misses it rebounded: defensive rebounds over the defensive rebounds there were", kind: 'efficiency', format: 'pctPoints' },
+  { key: 'trbPct', label: 'REB %', description: 'Every rebound in its games it grabbed: its rebounds over both teams\'', kind: 'efficiency', format: 'pctPoints' },
+  { key: 'rebPerGame', label: 'RPG', description: 'Rebounds per game', kind: 'efficiency', format: 'dec1' },
+  { key: 'tovPct', label: 'TOV %', description: 'Turnovers per 100 plays (lower is better)', kind: 'efficiency', format: 'pctPoints', negative: true },
+  { key: 'oppTovPct', label: 'Opp TOV %', description: "Its opponents' turnovers per 100 plays: turnovers the defense forced", kind: 'efficiency', format: 'pctPoints' },
   { key: 'backcourt', label: 'Backcourt', description: 'Its point and shooting guards, by your rankings on those tabs, weighted by their minutes (A+ is the best)', kind: 'efficiency', format: 'grade' },
   { key: 'wings', label: 'Wings', description: 'Its small forwards, by your rankings on that tab, weighted by their minutes', kind: 'efficiency', format: 'grade' },
   { key: 'frontcourt', label: 'Frontcourt', description: 'Its power forwards and centers, by your rankings on those tabs, weighted by their minutes', kind: 'efficiency', format: 'grade' },
@@ -312,6 +348,14 @@ const ADVANCED_STATS = new Set<SkillColumnKey>([
   'blkPct',
   'lift',
   'pythDiff',
+  // (the Teams tab's shooting and rebounding rates; 3P %, Opp 3P % and RPG sit in Basic)
+  'efgPct',
+  'fg3aRate',
+  'ftRate',
+  'oppEfgPct',
+  'orbPct',
+  'drbPct',
+  'oppTovPct',
 ]);
 
 // (the Teams tab's roster grades sit where the support grades do, under "Roster")
