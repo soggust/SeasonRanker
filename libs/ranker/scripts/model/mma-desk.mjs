@@ -15,8 +15,18 @@
 //   3. the close for the bets on bouts under way or done (the desk's own last Odds API price inside 3 hours of
 //      the start, else ESPN's board after the bout: ESPN BET's line, the only one ESPN keeps for MMA) and each
 //      bet's CLV; then the grading from the bout's result (a draw or a no contest: void, the stake back)
-//   4. the moneyline's trust refit on the league's graded bets and closes (desk.mjs fitTrust: the starting trust
-//      till 40; the league started 2026-10-16, its epoch MMA_START (2026-10-18 now), so no older epoch's bets judge it)
+//   4. the moneyline's and the round totals' trust refit on the league's graded bets and closes since its epoch
+//      (MMA_START) POOLED WITH THE PRICED HISTORY (2026-10-19, DECISIONS.md D36: the owner, "Do we not have historical
+//      bet data on MMA?"): the gate's record writes every open and close of the history the fight model priced
+//      walk-forward (gate-mma.mjs trustBets, apps/mma/scripts/model/history-rows.json: the Bot's chance, the Book's
+//      no-vig, the result, the close) and the trust it fits on them (trust-prior.json). The desk reads the rows as
+//      bets of its own (fitMmaTrust: desk.mjs fitTrust over both, the history's rows recency-weighted by season and
+//      capped at PRIOR_ROWS rows' worth so the live bets can move the fit, the live rows at a weight of 1), so the
+//      trust is fitted from the first run (no "40 graded" wait where the history has them) and the practice cap on
+//      an untested market lifts only where the history says the model earned it (a trust over 0: an edge at the
+//      trusted chance), staying where it hasn't (trust 0: the Book's chance, no edge, the card's practice picks
+//      alone). Free to rise: the fit's grid reaches 1 and the live rows weigh whole. The desk never writes either
+//      file (the gate's --record does, D22); without them the fit is the live bets' alone, as before
 //   5. the bouts due (leagues.mjs TIMING.mma: inside 72 hours of the start, the last chance 4) priced: one
 //      ask of The Odds API for the whole MMA board (2 credits: two markets, one region of books) when any bout is
 //      due and the day's allowance has it, each bout matched to the board by both fighters' names (accents and
@@ -54,6 +64,7 @@ import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictT
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
+import { unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
@@ -70,7 +81,12 @@ export const SPORT = 'mma';
 // (bumped 2026-10-18, the venue and form round (fights-model.mjs: home, travel, form...; the live chance now
 // reads each bout's weight, venue and countries): its projections changed, so its trust restarts; MODEL_EPOCH,
 // the other sports', isn't touched)
-export const MMA_START = '2026-10-18T02:00:00Z';
+// (bumped 2026-10-19, the history round (D36): the trust is fit on the priced history pooled with the live bets, so
+// the price moved (the untested start of 0.5 to the history's fit) and the league's bets restart on it)
+export const MMA_START = '2026-10-19T17:00:00Z';
+// (the history's rows weigh this many rows' worth at most in the trust fit, the live bets whole: about a year of
+// closes, so a season of live bets can move the trust the history set)
+export const PRIOR_ROWS = 400;
 const START_TRUST = 0.5;
 const EV_SCALE = 0.08;
 // (the most an untested market stakes a bout)
@@ -101,6 +117,9 @@ export const FILES = {
   picks: path.join(ROOT, 'apps/mma/src/StaticData/model/picks.json'),
   board: path.join(ROOT, 'apps/mma/src/StaticData/model/board.json'),
   boardSeen: path.join(ROOT, 'apps/mma/scripts/model/board-seen.json'),
+  // (the gate's record, read here and never written: the priced history's rows and the trust fit on them, D36)
+  historyRows: path.join(ROOT, 'apps/mma/scripts/model/history-rows.json'),
+  trustPrior: path.join(ROOT, 'apps/mma/src/StaticData/model/trust-prior.json'),
   rest: path.join(CACHE, 'lines-rest-mma.json'),
 };
 
@@ -330,7 +349,11 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
     const ev = p * decimal(odds) - 1;
     return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
-  const pick = sides[0].ev >= sides[1].ev ? sides[0] : sides[1];
+  // (the better side by its return at the trusted chance; neither with a return (a trust at 0 prices both at the
+  // Book's), the side the model leans to, so a tracked row and a practice pick are the model's side, never the
+  // cheaper vig's (the loss review's B10: an anti-model side feeding the trust and CLV as the model's))
+  const better = sides[0].ev > 0 || sides[1].ev > 0 ? sides[0].ev >= sides[1].ev : sides[0].model - sides[0].fair >= sides[1].model - sides[1].fair;
+  const pick = better ? sides[0] : sides[1];
   const other = pick === sides[0] ? sides[1] : sides[0];
   const gap = gapGuard('ml', pick.model, pick.fair);
   if (gap) return { skip: gap.why, pick, other };
@@ -364,7 +387,8 @@ export function mainCardOf(bouts, card) {
 // The MMA's practice picks (DECISIONS.md D2, O2 closed 2026-10-18: no sport goes to zero bets). Each card plays about
 // PRACTICE_N.mma: every bout clearing the vig bets as ever; of the rest with a DraftKings price and an edge before the
 // vig (the trusted chance over the book's no-vig: the same fallback the props use without the correction), each
-// main-card bout plays its side, and the best of the prelims by edge fill the card to PRACTICE_N.mma. rows: this
+// main-card bout plays its side, and the best of the prelims by edge fill the card to PRACTICE_N.mma (the edge the
+// model's own chance over the Book's no-vig, before the trust: D36). rows: this
 // run's new moneyline rows ({ id, boutKey, card, intent, p, fair, priced }); placed: the card's standing moneyline
 // bets (not tracked, not void). Each at PRACTICE_UNITS, a LIKE at most, marked topN; tallied apart while
 // PRACTICE_SPLIT. id -> { rank, quota, slate, edge, main }
@@ -374,7 +398,9 @@ export function mmaPracticePicks(rows, bouts, placed = [], n = PRACTICE_N.mma) {
   for (const b of rows) byCard.set(String(b.card), [...(byCard.get(String(b.card)) ?? []), b]);
   for (const [card, list] of byCard) {
     const main = mainCardOf(bouts, card);
-    const cands = list.filter((b) => isTracked(b) && b.priced !== false).map((b) => ({ id: b.id, ev: -1, edge: b.p - b.fair, main: main.has(b.boutKey) }));
+    // (the edge before the vig: the model's own chance over the Book's no-vig (D36: at a history trust of 0 the trusted
+    // chance is the Book's and would pick nothing; the practice stake is the practice of the Bot's own leans))
+    const cands = list.filter((b) => isTracked(b) && b.priced !== false).map((b) => ({ id: b.id, ev: -1, edge: b.model - b.fair, main: main.has(b.boutKey) }));
     const standing = placed.filter((b) => String(b.card) === String(card)).length + list.filter((b) => !isTracked(b)).length;
     const mains = cands.filter((c) => c.main && c.edge > 0).sort((a, b) => b.edge - a.edge);
     const prelims = practiceTop(cands.filter((c) => !c.main), n, standing + mains.length);
@@ -495,6 +521,48 @@ export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalT
 // ---------------------------------------------------------------------------------------------------------
 // The run
 
+// The priced history's rows as the desk's own bets (gate-mma.mjs packRows, written by gate.mjs --record; D36): each
+// a market, the Bot's walk-forward chance, the Book's no-vig, the result and the close, weighted by its season
+// (unpackRows' tw) and the whole capped at PRIOR_ROWS rows' worth. { bets, at, commit, weight, n } or null without
+// the file (the live bets alone then)
+export function readHistoryRows(file = FILES.historyRows, { priorRows = PRIOR_ROWS } = {}) {
+  const kept = readKept(file, null);
+  if (!kept?.rows?.length) return null;
+  const current = Number.isFinite(kept.current) ? kept.current : new Date().getUTCFullYear();
+  const bets = unpackRows(kept.rows, current);
+  const sum = bets.reduce((t, b) => t + (b.tw ?? 1), 0);
+  const k = sum > priorRows ? priorRows / sum : 1;
+  for (const b of bets) b.tw = round((b.tw ?? 1) * k, 4);
+  return { bets, at: kept.at ?? null, commit: kept.commit ?? null, weight: round(sum * k, 1), n: bets.length };
+}
+
+// The trust of both markets from the live bets since the epoch and the history's rows pooled (see the header's 4):
+// { ml, total (desk.mjs fitTrust's, with history: the rows and weight behind each), ladder (the totals' rungs by the
+// line's size, fitBuckets, or null), totalsGraded (the round totals graded with a close, live and history), totalsLive
+// (TOTAL_LIVE reached) }. hist: readHistoryRows' (null: the live bets alone); pool: the line pool's rows
+export function fitMmaTrust(ledger, hist, { pool = [], epoch = MMA_START, start = START_TRUST } = {}) {
+  const since = (b) => Date.parse(b.placedAt ?? b.start) >= Date.parse(epoch);
+  const live = (market) => ledger.bets.filter((b) => (b.market ?? 'ml') === market && !b.void && (b.status !== 'open' || b.clv) && since(b));
+  const mlLive = live('ml').filter((b) => b.fairFrom === 'pinnacle');
+  const tLive = live('total');
+  const hb = (market) => (hist?.bets ?? []).filter((b) => b.market === market);
+  const withHistory = (f, rows) => ({ ...f, history: { rows: rows.length, weight: round(rows.reduce((t, b) => t + (b.tw ?? 1), 0), 1), at: hist?.at ?? null, commit: hist?.commit ?? null } });
+  const ml = withHistory(fitTrust([...hb('ml'), ...mlLive], start), hb('ml'));
+  const tRows = hb('total');
+  let total = withHistory(fitTrust([...tRows, ...tLive], start), tRows);
+  let ladder = null;
+  try {
+    const mine = [...tLive.filter((b) => Number.isFinite(b.line)), ...tRows.filter((b) => Number.isFinite(b.line))];
+    ladder = fitBuckets([...pool, ...mine], mine, () => 'total', ['total']);
+    total = { ...total, lines: ladder.keys.total };
+  } catch {
+    ladder = null;
+  }
+  const histClosed = tRows.filter((b) => (b.status === 'won' || b.status === 'lost') && Number.isFinite(b.clv?.q)).length;
+  const totalsGraded = liveCount(ledger.bets, epoch) + histClosed;
+  return { ml, total, ladder, totalsGraded, totalsLive: totalsGraded >= TOTAL_LIVE, live: { ml: mlLive.length, total: tLive.length } };
+}
+
 function changelog(state, at, what, from, to, why) {
   state.changelog ??= [];
   state.changelog.push({ at, what, from, to, why });
@@ -582,7 +650,7 @@ export function buildFightPicks(ledger, trust, bouts, now) {
 }
 
 // The state the desk component reads (desk-model.ts ModelState: a fights league has no teams, no team params)
-export function stateOf(state, { model, bt, trust, ledger, now, lines = null, odds = null, totals = null }) {
+export function stateOf(state, { model, bt, trust, ledger, now, lines = null, odds = null, totals = null, totalsGraded = null, prior = null }) {
   const terms = model.fit.terms;
   return {
     ...state,
@@ -609,7 +677,10 @@ export function stateOf(state, { model, bt, trust, ledger, now, lines = null, od
     clv: { all: clvSummary(ledger.bets), ml: clvSummary(ledger.bets.filter((b) => b.market === 'ml')), total: clvSummary(ledger.bets.filter((b) => b.market === 'total')) },
     // (the round totals (fights-totals.mjs): the fit's terms and base rates, held out against the base rates, and
     // how near the market is to live (tracked only till TOTAL_LIVE graded with a close))
-    totals: totals ? { terms: totals.terms, base: totals.base, rows: totals.n, from: totals.from, to: totals.to, labels: Object.fromEntries(TOTAL_TERMS), test: bt?.totals ? { line25: bt.totals.line25, all: bt.totals.all, byDivision: bt.totals.byDivision } : null, live: liveCount(ledger.bets, MMA_START) >= TOTAL_LIVE, graded: liveCount(ledger.bets, MMA_START), liveAt: TOTAL_LIVE } : state.totals ?? null,
+    totals: totals ? { terms: totals.terms, base: totals.base, rows: totals.n, from: totals.from, to: totals.to, labels: Object.fromEntries(TOTAL_TERMS), test: bt?.totals ? { line25: bt.totals.line25, all: bt.totals.all, byDivision: bt.totals.byDivision } : null, live: (totalsGraded ?? liveCount(ledger.bets, MMA_START)) >= TOTAL_LIVE, graded: totalsGraded ?? liveCount(ledger.bets, MMA_START), liveAt: TOTAL_LIVE } : state.totals ?? null,
+    // (the priced history's trust prior as the gate recorded it (trust-prior.json, D36): the page's readout of what
+    // the history says of the model by market, and the match rate)
+    historyTrust: prior ? { at: prior.at ?? null, commit: prior.commit ?? null, ml: prior.ml ?? null, total: prior.total ?? null, match: prior.match ?? null } : state.historyTrust ?? null,
     lines: lines ?? state.lines ?? null,
     book: BOOK,
     odds: odds ?? state.odds ?? null,
@@ -712,34 +783,30 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   }
   if (closes || graded) log.log(`${SPORT}: ${closes} closes read, ${graded} bets graded`);
 
-  // 4. the trust
+  // 4. the trust: the live bets since the epoch pooled with the priced history's rows (fitMmaTrust, D36)
   const trust = { ...(state.trust ?? {}) };
-  const evidence = ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && (b.status !== 'open' || b.clv) && b.fairFrom === 'pinnacle' && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START));
-  const fitted = fitTrust(evidence, START_TRUST);
-  if (trust.ml && trust.ml.trust !== fitted.trust) changelog(state, at, 'moneyline trust in the model', trust.ml.trust, fitted.trust, `best fit to ${fitted.n} graded moneyline bets and ${fitted.clvN} closing lines (log loss ${fitted.logLoss})`);
-  trust.ml = fitted;
-  // (the round totals' own: every total row graded or closed, whichever book anchored it (they start 2026-10-17);
-  // tracked only, whatever the fit says, till TOTAL_LIVE are graded with a close)
-  const tFitted = fitTrust(ledger.bets.filter((b) => b.market === 'total' && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START)), START_TRUST);
-  if (trust.total && trust.total.trust !== tFitted.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, tFitted.trust, `best fit to ${tFitted.n} graded round totals and ${tFitted.clvN} closing lines (log loss ${tFitted.logLoss})`);
-  trust.total = tFitted;
+  const hist = readHistoryRows();
+  const fit = fitMmaTrust(ledger, hist, { pool: readLinePool(ROOT, MODEL_EPOCH, 'mma') });
+  const evidenceOf = (f, what) => `best fit to ${f.n} graded ${what} and ${f.clvN} closing lines (log loss ${f.logLoss}${f.history?.rows ? `; the priced history's ${f.history.rows} rows at ${f.history.weight} rows' worth, the gate's record ${String(f.history.at ?? '').slice(0, 10)}` : ''})`;
+  if (trust.ml && trust.ml.trust !== fit.ml.trust) changelog(state, at, 'moneyline trust in the model', trust.ml.trust, fit.ml.trust, evidenceOf(fit.ml, 'moneyline bets'));
+  trust.ml = fit.ml;
+  // (the round totals' own: every total row graded or closed, whichever book anchored it (they start 2026-10-17),
+  // and the history's; staked once TOTAL_LIVE are graded with a close, the history's counted)
+  if (trust.total && trust.total.trust !== fit.total.trust) changelog(state, at, 'round totals trust in the model', trust.total.trust, fit.total.trust, evidenceOf(fit.total, 'round totals'));
+  trust.total = fit.total;
   // (the round totals' trust by the line's size, as a prop's (desk.mjs fitBuckets, 2026-10-18): 1.5 rounds or under
   // low, 2.5 and 3.5 mid, 4.5 high; each bucket's rung pulled toward the MMA's, the MMA's toward every sport's
   // counted lines pooled (line-pool.mjs), the pool's toward the bucket's start, each by its own evidence; priced at
   // the rung held to the totals' own trust (bucketTrustOf). Any failure: the bucket's start, held to the trust
-  try {
-    const mine = ledger.bets.filter((b) => b.market === 'total' && Number.isFinite(b.line) && !b.void && (b.status !== 'open' || b.clv) && Date.parse(b.placedAt ?? b.start) >= Date.parse(MMA_START));
-    const ladder = fitBuckets([...readLinePool(ROOT, MODEL_EPOCH, 'mma'), ...mine], mine, () => 'total', ['total']);
-    trust.total = { ...tFitted, lines: ladder.keys.total };
-    state.lineTrust = { pool: ladder.pool, sport: ladder.sport };
-    log.log(`${SPORT}: round totals' line trust: ${BUCKETS.map((bk) => `${bk} ${ladder.keys.total[bk].trust} (pool ${ladder.pool[bk].trust}, eff ${ladder.pool[bk].eff})`).join('; ')}`);
-  } catch (err) {
-    log.log(`${SPORT}: round totals' line trust left out this run (${err.message})`);
-  }
-  const totalsLive = liveCount(ledger.bets, MMA_START) >= TOTAL_LIVE;
+  if (fit.ladder) {
+    state.lineTrust = { pool: fit.ladder.pool, sport: fit.ladder.sport };
+    log.log(`${SPORT}: round totals' line trust: ${BUCKETS.map((bk) => `${bk} ${fit.ladder.keys.total[bk].trust} (pool ${fit.ladder.pool[bk].trust}, eff ${fit.ladder.pool[bk].eff})`).join('; ')}`);
+  } else log.log(`${SPORT}: round totals' line trust left out this run`);
+  log.log(`${SPORT}: trust ml ${trust.ml.trust}${trust.ml.fitted ? '' : ' (untested)'}, totals ${trust.total.trust}${trust.total.fitted ? '' : ' (untested)'}: ${fit.live.ml} live moneyline rows and ${fit.live.total} totals since the epoch${hist ? `, the history's ${hist.n} rows at ${hist.weight} rows' worth (the gate's record of ${String(hist.at ?? '').slice(0, 10)}, ${hist.commit})` : ', no history rows (the gate has not recorded them)'}`);
+  const totalsLive = fit.totalsLive;
   if (totalsLive && !state.totalsLiveAt) {
     state.totalsLiveAt = at;
-    changelog(state, at, 'round totals staked', 0, 1, `${TOTAL_LIVE} round totals graded with a close: the market leaves the practice stake for the trust path`);
+    changelog(state, at, 'round totals staked', 0, 1, `${TOTAL_LIVE} round totals graded with a close (${fit.totalsGraded}, the history's counted): the market leaves the practice stake for the trust path`);
   }
 
   // 5. the bouts due, priced
@@ -951,7 +1018,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   // 6. the picks, the state, the files
   const boutsById = new Map(bouts.map((b) => [b.id, b]));
   const picks = buildFightPicks(ledger, trust, boutsById, now);
-  const out = stateOf(state, { model, bt, trust, ledger, now, lines: linesSource, odds: hasKey() ? usageSummary() : null, totals });
+  const out = stateOf(state, { model, bt, trust, ledger, now, lines: linesSource, odds: hasKey() ? usageSummary() : null, totals, totalsGraded: fit.totalsGraded, prior: readKept(FILES.trustPrior, null) });
   // 7. the betting board: every bout coming, priced from what the run has; a bout with no DraftKings price this run or
   // on the last board takes ESPN BET's line (free, src 'espn bet'), read again each run till a DraftKings price comes
   const prevBoard = readJson(FILES.board, null);

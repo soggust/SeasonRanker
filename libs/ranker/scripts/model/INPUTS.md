@@ -119,6 +119,7 @@ Gains are held-out log loss per line, without minus with. Above 0 is better. The
 | Rankings and status | UFC.com, PFL | **in another form** | Rankings follow the record the rating already reads. |
 | Career rates and heat maps (`skill-players.json`, `heat-maps.<div>.json`) | derived from the bouts, career totals | **in another form** | Built from the same bouts, which the model reads as of each bout's date. |
 | Champions (Wikipedia) | static | **not useful** | Display. |
+| The priced history: every bout's moneyline and round total at the open and the close since 2020-06 (`apps/mma/scripts/model/odds-history`) | The Odds API's archive, per bout, matched to the fights archive by the fighters' names and the day (`fights-history.mjs`: 98.1% of the bouts priced to the bell) | **in** (the gate and the trust, never a price: D30) | The gate's MMA layer b (`gate-mma.mjs`, DECISIONS.md D36) and the live desk's trust prior (`mma-desk.mjs` `fitMmaTrust`: the history's rows pooled with the live bets). Measured 2026-10-19 at the close: the Bot's own number 0.6214 against the Book's 0.5804 on moneylines, 0.6827 against 0.6585 on round totals; the history's trust 0.05 and 0. |
 
 ## The AI analyses
 
@@ -180,6 +181,6 @@ Every game with a close in the odds history, joined to the schedule, the lines a
 | NBA | 13 | 5 | 2 | 1 | 3 | 2 (one is no AI analysis) |
 | NHL | 13 | 5 | 0 | 4 | 3 | 1 |
 | MLB | 9 | 3 | 0 | 4 (one held by the gate) | 1 | 1 |
-| MMA | 6 | 3 | 0 | 0 | 2 | 1 |
+| MMA | 7 | 4 | 0 | 0 | 2 | 1 |
 
 "New" counts terms that are kept or still on the ctx for the gate. The NBA's two are on the ctx and not yet taken.
