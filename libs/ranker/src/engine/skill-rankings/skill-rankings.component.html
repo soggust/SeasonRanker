@@ -31,7 +31,7 @@
           }
         </div>
         @for (group of groups; track group.id) {
-          <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
+          <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.single]="!isCollapsible(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
             <!-- Collapsed, a group is its own column alone: the chevron and the group's icon in the slot at its start
                  (a click opens the group again), its name (a click sorts the rows by their rank within it, as a stat's
                  header does) and each row's rank within the group under it. Open, the group is its stat columns alone,
@@ -220,7 +220,7 @@
           </div>
 
           @for (group of groups; track group.id) {
-            <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
+            <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.single]="!isCollapsible(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
               @if (isCollapsed(group.id)) {
                 <!-- A collapsed group: its own column alone, the row's rank within the group, a plain value like any
                      cell's, tinted like one (a dash: a UR row, or none of the group's stats counted). Only a look. -->

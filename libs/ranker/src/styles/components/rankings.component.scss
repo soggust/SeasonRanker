@@ -908,13 +908,54 @@ section ul li.player {
 
     // Every row reserves the slot for the group's chevron and icon and a little room after the last column,
     // so the columns stay aligned under their headers; an extra gap between groups
+    // (the slot: the chevron and icon's button, 41px, set in 0.25em)
     &:first-child {
       margin-left: 0.6em;
-      padding-left: 44px;
+      padding-left: calc(0.25em + 41px);
     }
 
     &:last-child {
       padding-right: 0.9em;
+    }
+  }
+
+  // An open group's first column, and a one-stat group's (never collapsible): as wide as its slot and its
+  // label, its label right after the icon with the collapsed columns' gap, nothing extra (the owner,
+  // 2026-10-19); the same width in every row (its label's, measured: column-fit.ts)
+  > .col-group:not(.collapsed) > div:first-child:not(.box) {
+    flex: 0 0 auto;
+    min-width: 0;
+    padding-left: calc(0.25em + 46px);
+    width: max(2.5em, var(--label-w, 0px));
+  }
+
+  > .col-group.single > div:first-child:not(.box) {
+    padding-left: calc(0.25em + 26px);
+    width: max(2.5em, var(--label-w, 0px));
+  }
+
+  // (an open box of grades: its first grade's column right after the slot, as wide as its label)
+  > .col-group:not(.collapsed) > div.box:first-child {
+    padding-left: calc(0.25em + 46px);
+
+    > div:first-of-type {
+      flex: 0 0 auto;
+      min-width: 0;
+      width: max(2.5em, var(--label-w, 0px));
+    }
+  }
+
+  // (a one-stat box of grades: its slot and its one grade's width)
+  > .col-group.single > div.box:first-child {
+    flex: 0 0 auto;
+    min-width: 0 !important;
+    padding-left: calc(0.25em + 26px);
+    width: auto;
+
+    > div {
+      flex: 0 0 auto;
+      min-width: max(2.5em, var(--label-w, 0px));
+      width: max(2.5em, var(--label-w, 0px));
     }
   }
 
@@ -1321,7 +1362,7 @@ section ul li.player.header-row:hover {
       gap: 0;
       height: 32px;
       justify-content: flex-start;
-      left: 0;
+      left: 0.25em;
       min-width: 40px;
       padding: 0 2px 0 2px;
       position: absolute;
@@ -2421,6 +2462,7 @@ section ul li.player:not(.header-row) > .col-group > div:has(> .group-line:hover
 // line down the rows is only a line
 section ul li.header-row > .col-group > div > .group-toggle.single {
   cursor: default;
+  min-width: 0;
   pointer-events: none;
 }
 
