@@ -205,7 +205,7 @@ export const GAME_CAP = 5;
 // is in a lean is held to the share that survives to the close for its stat, bet only where that clears the price), a
 // fresh quote bought only to bet, the morning snapshot pricing suggestions alone. A selection change: the trust and the
 // gates restart. Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T16:00:00Z';
+export const MODEL_EPOCH = '2026-10-19T16:36:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
