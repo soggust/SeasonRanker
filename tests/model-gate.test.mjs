@@ -190,8 +190,13 @@ test("gate: the props' walk-forward pricing never reads its own day or a later o
     if (b.start.slice(0, 10) <= lastDay) assert.equal(p2.get(id), p, `${id}: priced off its own day's results`);
   }
   // (a version from before the correction (no correct.mjs): the trust's shrink, each chance between the book's and
-  // the model's)
+  // the model's. The residual blend (residual.mjs, on since 2026-10-19) may land past the model's chance by design,
+  // so it is off for this check, as the gate's champion runs it: RESID_OFF)
+  const wasOff = process.env.RESID_OFF;
+  process.env.RESID_OFF = '1';
   const p3 = pricePropsWalk({ correct: null, desk }, 'nhl', all, mOf);
+  if (wasOff === undefined) delete process.env.RESID_OFF;
+  else process.env.RESID_OFF = wasOff;
   for (const b of all.filter((x) => x.sport === 'nhl')) {
     const o = b.side === 'over';
     const f = o ? b.fair : 1 - b.fair;

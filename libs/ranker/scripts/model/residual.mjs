@@ -30,9 +30,18 @@
 //             ahead: a Bot whose disagreements have been right shows as a larger learned edge (b on d grows past
 //             the current trust, the blend lands past the current price), a Bot whose disagreements have been
 //             noise shows as "no edge" (b near 0). Pinned in tests/model-residual.test.mjs (the owner's condition)
-//   where     behind a flag (RESID_PRICING, RESID_ON=1 or RESID_OFF=1 for one run) as the gate's challenger
-//             (desk.mjs chanceAt's ctx), the model files apps/<sport>/src/StaticData/model/residual.json written
-//             by residual-train.mjs with a hold-out guard (guardOk) so a bad refit can't ship
+//   where     RESID_PRICING (on since 2026-10-19: the owner resolved O3 on the results, CLV and hit evidence, over
+//             the gate's close-leg HOLD; DECISIONS.md D32, D22's exception); RESID_OFF=1 prices one run without it
+//             (the gate's champion), RESID_ON=1 one run with it whatever the flag. The hook is desk.mjs chanceAt's
+//             ctx: the live props (props.mjs priceProps), the game lines (desk.mjs choose, the board's sides), the
+//             gate's history replay and its ledger replay all pass it. The model files
+//             apps/<sport>/src/StaticData/model/residual.json are written by residual-train.mjs (weekly) with a
+//             hold-out guard (guardOk) so a bad refit can't ship
+//   order     a prop's chance is built once, in this order, each step reading one input and never its own output:
+//             the bot's own number -> the anchor (anchor.mjs, D33: the raw this model's lean d reads) -> the live
+//             calibration -> the trust (chanceAt's p: the current price) -> this blend (p and the corrected chance).
+//             The trust fit and the calibration never read the blended chance; the weekly refit reads the priced
+//             history, never the ledger. No step counts twice (tests/model-decisions.test.mjs D32)
 //
 // Plain JavaScript, no dependency. Nothing here imports the desk (desk.mjs imports this).
 
@@ -41,9 +50,12 @@ import path from 'node:path';
 import { seasonWeight } from './gate-score.mjs';
 
 export const MODEL_V = 1;
-// (whether the residual blend prices the rows: the gate's verdict; RESID_ON=1 or RESID_OFF=1 in the environment
-// overrides it for one run, the gate's champion and challenger)
-export const RESID_PRICING = false;
+// (whether the residual blend prices the rows. True since 2026-10-19: the gate HELD it on the close leg alone
+// (NFL +.0005, NBA +.0001, intervals of no width) while the results log loss, the top picks' CLV and the live hit
+// rates beat the Book; the owner overrode the close leg (O3: "whatever gets us closer to winning more"), the
+// exception written into D22. RESID_ON=1 or RESID_OFF=1 in the environment overrides it for one run, the gate's
+// challenger and champion)
+export const RESID_PRICING = true;
 export const residOn = () => (process.env.RESID_OFF === '1' ? false : process.env.RESID_ON === '1' ? true : RESID_PRICING);
 // (a row is settled, and can teach a snapshot, SETTLE_MS after its start)
 export const SETTLE_MS = 12 * 36e5;

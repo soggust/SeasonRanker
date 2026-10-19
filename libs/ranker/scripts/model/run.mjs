@@ -1732,8 +1732,10 @@ function betGames(r) {
     const news = newsMissing(sport, r.live?.get(game.id), { kind: 'lines' });
     const notYet = phase === 'early' ? 'not in its window yet' : news.length && phase !== 'last' ? `waiting for the news: ${news.join(', ')}` : null;
     const priced = price(game, exp, lines, params, r.shape);
+    // (the game as the residual model's ctx (desk.mjs sideCtx, residual.mjs; D32): its start, the bet's moment now)
+    const rctx = { sport, t: Date.parse(game.date), at: Date.now(), hours: until / 36e5 };
     // (every market priced, both sides, on the betting board: writeBoard)
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus), at });
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
@@ -1751,7 +1753,7 @@ function betGames(r) {
         held.set(hold, (held.get(hold) ?? 0) + 1);
         continue;
       }
-      picks.push({ market: market.market, id, pick: choose(market, trust[market.market]?.trust ?? START_TRUST, EV_SCALE) });
+      picks.push({ market: market.market, id, pick: choose(market, trust[market.market]?.trust ?? START_TRUST, EV_SCALE, rctx) });
     }
     // (the guards: the model too far from the book skips the market (desk.mjs gapGuard: the market knowing
     // something it doesn't); a line that's moved a lot against its side since it opened (less what the context
@@ -2584,6 +2586,9 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     // chance the old trust shrink would have priced it at; his side of the game, which the correction learns from)
     ...(Number.isFinite(x.edge) ? { edge: round(x.edge, 4) } : {}),
     ...(x.corrected ? { corrected: true, pTrust: round(x.pTrust, 4), ...(x.turned ? { turned: true } : {}) } : {}),
+    // (the residual model's blend priced it (residual.mjs, D32): the trusted chance it blended from, so the move it
+    // made on this bet is on the record)
+    ...(x.resid ? { resid: true, pTrust: round(x.pTrust, 4) } : {}),
     ...(typeof x.home === 'boolean' ? { home: x.home } : {}),
     intent,
     units,

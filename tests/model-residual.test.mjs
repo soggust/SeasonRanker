@@ -2,8 +2,8 @@
 // rows: no network, no cache. The features read nothing from the result; the fit recovers a planted shift and shrinks
 // noise to nothing; the running reads and the snapshots never look ahead (a planted leak the earlier snapshot can't
 // know); the owner's rule (a Bot that's ahead shows as a bigger learned edge, never pulled toward the Book; a Bot
-// that's noise reads "no edge"); the blend soft and stepped; the hold-out guard; the desk's hook off by default and
-// the frame flipped for an under.
+// that's noise reads "no edge"); the blend soft and stepped; the hold-out guard; the desk's hook on by default (the
+// owner's O3, 2026-10-19), off for a run by RESID_OFF, and the frame flipped for an under.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
@@ -303,15 +303,15 @@ test('the hold-out guard refuses a refit worse than the shipped file on most sha
 
 // ---- the desk's hook ----
 
-test('the hook is off by default (RESID_PRICING false, the gate\'s verdict), the environment turns it on for a run, and it never throws', () => {
-  assert.equal(RESID_PRICING, false);
+test('the hook is on by default (RESID_PRICING true since the owner\'s O3, 2026-10-19), the environment turns it off for a run, and it never throws', () => {
+  assert.equal(RESID_PRICING, true);
   const was = { on: process.env.RESID_ON, off: process.env.RESID_OFF };
   delete process.env.RESID_ON;
   delete process.env.RESID_OFF;
-  assert.equal(residOn(), false);
-  process.env.RESID_ON = '1';
   assert.equal(residOn(), true);
   process.env.RESID_OFF = '1';
+  assert.equal(residOn(), false, 'RESID_OFF prices a run without it (the gate\'s champion)');
+  process.env.RESID_ON = '1';
   assert.equal(residOn(), false, 'RESID_OFF wins');
   delete process.env.RESID_OFF;
   delete process.env.RESID_ON;

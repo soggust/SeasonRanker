@@ -26,7 +26,7 @@ import {
 import { BOOK, MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
 import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
 import { PROMPT_V } from '../libs/ranker/scripts/model/writeups.mjs';
-import { BET_DECIDE, ERAS, gateVerdict, seasonWeight, sportVerdict } from '../libs/ranker/scripts/model/gate-score.mjs';
+import { BET_DECIDE, CLOSE_LEG_TOL, ERAS, gateVerdict, ownerException, seasonWeight, sportVerdict } from '../libs/ranker/scripts/model/gate-score.mjs';
 import { CHECKS as SELF_CHECKS } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/model/calib.mjs';
 import { CORR_PRICING, LAMBDAS, MOVE_MAX, SEG_MIN, capMove, corrRows, moveCap, oneSe } from '../libs/ranker/scripts/model/correct.mjs';
@@ -379,6 +379,39 @@ test('D22 every change faces the gate: a layer worse beyond noise holds it, the 
   assert.ok(fs.existsSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate.mjs')));
 });
 
+test('D22 the owner\'s exception (O3, 2026-10-19): only the close leg worse by at most 0.0005 with results and CLV better beyond noise; the verdict stays HOLD', () => {
+  assert.equal(CLOSE_LEG_TOL, 0.0005, 'the tolerance is pinned: widening it is a decision');
+  const tie = { verdict: 'tie', diff: 0, lo: -0.01, hi: 0.01 };
+  const better = { verdict: 'better', diff: -0.0006, lo: -0.0009, hi: -0.0004 };
+  const betterClv = { verdict: 'better', diff: 0.01, lo: 0.0035, hi: 0.0162 };
+  const closeWorse = (diff) => ({ verdict: 'worse', diff, lo: diff - 0.0001, hi: diff + 0.0001 });
+  // (the D32 pattern: NFL's close +0.0005 and NBA's +0.0001 worse, NBA's results and CLV better, NHL's CLV better,
+  // the projections tied)
+  const d32 = {
+    nfl: sportVerdict({ proj: { props: { decide: tie } }, bet: { props: { ll: tie, close: closeWorse(0.0005), topClv: tie } } }),
+    nba: sportVerdict({ proj: { props: { decide: tie } }, bet: { props: { ll: better, close: closeWorse(0.0001), topClv: betterClv } } }),
+    nhl: sportVerdict({ bet: { props: { ll: tie, close: tie, topClv: betterClv } } }),
+    mlb: sportVerdict({ bet: { props: { ll: tie, close: tie, topClv: tie } } }),
+  };
+  const v = gateVerdict(d32);
+  assert.equal(v.verdict, 'HOLD', 'the exception never turns a HOLD into a SHIP by itself');
+  assert.equal(v.exception.eligible, true);
+  assert.ok(v.exception.why.some((w) => w.includes('results log loss better')) && v.exception.why.some((w) => w.includes("CLV better")));
+  // (each condition on its own closes it)
+  const withNfl = (bet) => ({ ...d32, nfl: sportVerdict({ proj: { props: { decide: tie } }, bet: { props: bet } }) });
+  assert.equal(gateVerdict(withNfl({ ll: tie, close: closeWorse(0.0006), topClv: tie })).exception.eligible, false, 'the close leg past the tolerance');
+  assert.equal(gateVerdict(withNfl({ ll: closeWorse(0.0001), close: closeWorse(0.0005), topClv: tie })).exception.eligible, false, 'a results leg worse anywhere');
+  assert.equal(gateVerdict(withNfl({ ll: tie, close: closeWorse(0.0005), topClv: { verdict: 'worse', diff: -0.002, lo: -0.003, hi: -0.001 } })).exception.eligible, false, 'a CLV leg worse anywhere');
+  assert.equal(gateVerdict({ ...d32, nfl: sportVerdict({ proj: { props: { decide: { verdict: 'worse', diff: 0.01, lo: 0.001, hi: 0.02 } } }, bet: { props: { ll: tie, close: closeWorse(0.0005), topClv: tie } } }) }).exception.eligible, false, 'a projection layer worse');
+  assert.equal(gateVerdict({ ...d32, nba: sportVerdict({ bet: { props: { ll: tie, close: closeWorse(0.0001), topClv: betterClv } } }) }).exception.eligible, false, 'results better nowhere');
+  assert.equal(gateVerdict({ ...d32, nba: sportVerdict({ bet: { props: { ll: better, close: closeWorse(0.0001), topClv: tie } } }), nhl: sportVerdict({ bet: { props: { ll: tie, close: tie, topClv: tie } } }) }).exception.eligible, false, 'CLV better nowhere');
+  assert.equal(ownerException({ nfl: sportVerdict({ bet: { props: { ll: better, close: tie, topClv: betterClv } } }) }).eligible, false, 'nothing worse: no exception needed (a SHIP)');
+  assert.equal(gateVerdict({ nfl: sportVerdict({ bet: { props: { ll: better, close: tie, topClv: betterClv } } }) }).exception, undefined, 'a SHIP carries none');
+  // (the rule written down with it)
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('CLOSE_LEG_TOL') && decisions.includes('OWNER MAY SHIP'));
+});
+
 test('D27 every bet the bot placed is a pick: a guard’s 0.5u cut one and a practice one too, past TOP too', async () => {
   const { buildPicks, TOP } = await import('../libs/ranker/scripts/model/picks.mjs');
   const now = new Date('2026-10-18T12:00:00Z');
@@ -476,23 +509,54 @@ test("D31 no silent skip: a line move the projection followed is priced, and eve
   assert.ok(gapped.total.every((s) => s.b === 'low' && /too far from the market/.test(s.sr)));
 });
 
-test('D32 the residual model: a candidate behind RESID_ON, the price unchanged with it off; it predicts the Book\'s error and never pulls an ahead Bot toward the Book; no look-ahead; a soft blend; the guard', async () => {
+test('D32 the residual model, on since the owner\'s O3: every live path passes the ctx, the blend sits once on the trusted chance and reads the anchored raw, RESID_OFF gives the current price back; it predicts the Book\'s error and never pulls an ahead Bot toward the Book; no look-ahead; a soft blend; the guard', async () => {
   const R = await import('../libs/ranker/scripts/model/residual.mjs');
   const desk = await import('../libs/ranker/scripts/model/desk.mjs');
-  // (off: the gate's verdict; the flag for one run only)
-  assert.equal(R.RESID_PRICING, false);
+  // (on: the owner's override of 2026-10-19 (O3), over the gate's close-leg HOLD by D22's exception; RESID_OFF=1
+  // prices one run without it, the gate's champion. Never both the correction and the residual)
+  assert.equal(R.RESID_PRICING, true);
+  assert.ok(!(CORR_PRICING && R.RESID_PRICING), 'the correction and the residual are never both on');
   const was = { on: process.env.RESID_ON, off: process.env.RESID_OFF };
   delete process.env.RESID_ON;
   delete process.env.RESID_OFF;
-  assert.equal(R.residOn(), false);
-  // (with the flag off a ctx changes nothing: the price is the trusted chance)
-  const ctx = { sport: 'nhl', market: 'prop', stat: 'shots', line: 2.5, side: 'over', f: 0.5, raw: 0.6, overOdds: -110, underOdds: -110, t: Date.now() + 36e5, at: Date.now() };
-  assert.equal(desk.chanceAt('prop', 0.5, 0.6, 0.4, ctx), desk.chanceAt('prop', 0.5, 0.6, 0.4));
-  process.env.RESID_ON = '1';
   assert.equal(R.residOn(), true);
-  delete process.env.RESID_ON;
+  // (the live chance with a ctx is the hook's blend of the four-argument chance (the current price: anchor, then
+  // the calibration, then the trust) with the corrected one, on the shipped NHL file; the lean the model reads is
+  // the ctx's raw (the anchored chance), not the calibrated model chance, so nothing is counted twice)
+  const ctx = { sport: 'nhl', market: 'prop', stat: 'shots', line: 2.5, side: 'over', f: 0.5, raw: 0.6, overOdds: -110, underOdds: -110, t: Date.now() + 36e5, at: Date.now(), home: true, hours: 1 };
+  const pCur = desk.chanceAt('prop', 0.5, 0.62, 0.4);
+  const p = desk.chanceAt('prop', 0.5, 0.62, 0.4, ctx);
+  const h = R.hookChance(ctx, pCur);
+  assert.ok(h && Number.isFinite(h.p), 'the shipped NHL file prices the row');
+  assert.ok(Math.abs(p - h.p) < 1e-12, 'the live chance is the hook\'s blend of the current price');
+  assert.ok(Math.abs(p - R.blendChance(pCur, h.pRes, h.weight)) < 1e-12, 'blended once, on the logit scale, at the file\'s weight');
+  assert.notEqual(desk.chanceAt('prop', 0.5, 0.62, 0.4, { ...ctx, raw: 0.7 }), p, 'a different anchored raw moves the chance');
+  // (a different calibrated chance with the same raw moves it only through the current price)
+  const pCur2 = desk.chanceAt('prop', 0.5, 0.58, 0.4);
+  assert.ok(Math.abs(desk.chanceAt('prop', 0.5, 0.58, 0.4, ctx) - R.hookChance(ctx, pCur2).p) < 1e-12);
+  // (RESID_OFF: the current price back; a sport with no file: the current price)
+  process.env.RESID_OFF = '1';
+  assert.equal(R.residOn(), false);
+  assert.equal(desk.chanceAt('prop', 0.5, 0.62, 0.4, ctx), pCur);
+  delete process.env.RESID_OFF;
+  assert.equal(desk.chanceAt('prop', 0.5, 0.62, 0.4, { ...ctx, sport: 'zzz' }), pCur);
   if (was.on !== undefined) process.env.RESID_ON = was.on;
   if (was.off !== undefined) process.env.RESID_OFF = was.off;
+  // (every live path passes the ctx: the props with the anchored raw and only where the Book priced the prop; the
+  // game lines through choose and the board; the trust fit and the backtest never (four arguments: the current
+  // price the blend sits on); the weekly collector with the blend off in its process)
+  assert.match(src('props.mjs'), /chanceAt\('prop', x\.fair, x\.model, t, rctx && \{ \.\.\.rctx, side: x\.side, f: x\.fair, raw: x\.raw \}\)/, 'priceProps passes the side\'s ctx with its raw');
+  assert.match(src('props.mjs'), /const rctx = prop\.prices && residOn\(\) \?/, 'only a prop the Book priced');
+  assert.match(src('props.mjs'), /\{ side: 'over', model: cal\.over, raw: pA,/, 'the raw is the anchored chance');
+  assert.match(src('desk.mjs'), /export function choose\(market, trust, evScale, ctx = null\)/);
+  assert.match(src('desk.mjs'), /chanceAt\(market\.market, s\.fair, s\.model, trust, sideCtx\(market, s, ctx\)\)/);
+  assert.match(src('run.mjs'), /choose\(market, trust\[market\.market\]\?\.trust \?\? START_TRUST, EV_SCALE, rctx\)/);
+  assert.match(src('board.mjs'), /chanceAt\(m\.market, s\.fair, s\.model, trustOf\(m\.market\), sideCtx\(m, s, ctx\)\)/);
+  assert.match(src('desk.mjs'), /const pOf = \(b\) => Math\.min\(0\.995, Math\.max\(0\.005, chanceAt\(b\.market, b\.fair, b\.model, t\)\)\);/, 'fitTrust reads the current price, never the blend');
+  assert.match(src('backtest.mjs'), /const pOf = \(b\) => chanceAt\(b\.market, b\.fair, b\.model, trust\);/);
+  assert.match(src('residual-train.mjs'), /^process\.env\.RESID_OFF = '1';/m, 'the collector prices its current price with the blend off');
+  // (the epoch restarted on it, D4)
+  assert.ok(MODEL_EPOCH > '2026-10-19T10:00:00Z', 'MODEL_EPOCH bumped past the anchor round\'s');
   // (the blend soft: never 0 or 1 by a switch, a step of BLEND_STEP at most a refit, from the current price)
   assert.equal(R.BLEND_START, 0);
   assert.ok(R.BLEND_STEP <= 0.25);

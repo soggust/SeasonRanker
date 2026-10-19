@@ -35,7 +35,7 @@
 // with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
-import { chanceAt, decimal, gapGuard, isTracked } from './desk.mjs';
+import { chanceAt, decimal, gapGuard, isTracked, sideCtx } from './desk.mjs';
 import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
 import { edgeLevel, kellyOf } from './picks.mjs';
 
@@ -50,8 +50,9 @@ const bandOf = (kelly, p, ev, { check = false, pass = false } = {}) => (check ? 
 
 // A game's markets as the board's (desk.mjs price's: each market's two sides, the model's chance and the book's
 // fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust;
-// consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side
-export function boardMarkets(markets, trustOf, consensus = null) {
+// consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side;
+// ctx: the game's, for the residual model (desk.mjs sideCtx, D32), so the board shows the chance the desk bets at
+export function boardMarkets(markets, trustOf, consensus = null, ctx = null) {
   const out = {};
   for (const m of markets ?? []) {
     const [s0] = m.sides;
@@ -62,7 +63,7 @@ export function boardMarkets(markets, trustOf, consensus = null) {
     const checkSide = gapped && !shadowOf({ cause: 'gap', odds: mine.odds, model: mine.model, fair: mine.fair }) ? mine.side : null;
     const pass = !!gapped && !checkSide;
     out[m.market] = m.sides.map((s) => {
-      const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market));
+      const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), sideCtx(m, s, ctx));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
       return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }), ...(pass ? { sr: skipReason(gapped) } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side) };

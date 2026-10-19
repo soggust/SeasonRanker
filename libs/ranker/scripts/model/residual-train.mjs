@@ -37,6 +37,10 @@ import { MODEL_V, binLoss, fitWalk, guardOk, modelFile, monthKey, residualChance
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const CACHE = path.join(ROOT, '.cache/model/residual');
+// (the collector's "current price" (pcur: the trust's chance the blend sits on) is priced with the residual blend off
+// in this process, whatever RESID_PRICING says: the blend's weight is fit against the price it sits on, never on top
+// of itself (DECISIONS.md D32's loops; tests/model-decisions.test.mjs D32))
+process.env.RESID_OFF = '1';
 export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb'];
 const fin = Number.isFinite;
 const readJson = (f, fb) => {

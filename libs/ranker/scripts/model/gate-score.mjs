@@ -326,17 +326,20 @@ export function betCompare(rowsA, rowsB, { n = 6, practice = 0.5, stakeOf = () =
   return out;
 }
 
-// One sport's verdict from its layers: { pass, beats, why[] }. proj: { games?, props? } (projCompare's), bet: {
-// props?, lines? } (betCompare's). A layer with no rows says nothing; a sanity set worse beyond noise a flag only
+// One sport's verdict from its layers: { pass, beats, why[], flags[], measures[] }. proj: { games?, props? }
+// (projCompare's), bet: { props?, lines? } (betCompare's). A layer with no rows says nothing; a sanity set worse
+// beyond noise a flag only. measures: every deciding measure read ({ layer, m ('proj' or BET_DECIDE's), verdict,
+// diff, lo, hi }), for the owner's exception (ownerException)
 export function sportVerdict({ proj = {}, bet = {} }) {
   const why = [];
   const flags = [];
+  const measures = [];
   let pass = true;
   let beats = false;
   let any = false;
   for (const [layer, c] of Object.entries(proj)) {
     if (!c) continue;
-    if (c.decide?.verdict && c.decide.verdict !== 'n/a') any = true;
+    if (c.decide?.verdict && c.decide.verdict !== 'n/a') (any = true), measures.push({ layer, m: 'proj', verdict: c.decide.verdict, diff: c.decide.diff, lo: c.decide.lo, hi: c.decide.hi });
     if (c.decide?.verdict === 'worse') (pass = false), why.push(`${layer} projections worse beyond noise (${c.decide.diff > 0 ? '+' : ''}${c.decide.diff} a row, 95% ${c.decide.lo} to ${c.decide.hi})`);
     if (c.decide?.verdict === 'better') beats = true;
     if (c.sanity?.verdict === 'worse') flags.push(`${layer} projections' older seasons worse (${c.sanity.diff}): a flag, not deciding`);
@@ -347,20 +350,52 @@ export function sportVerdict({ proj = {}, bet = {} }) {
       const v = c[m]?.verdict;
       if (!v || v === 'n/a') continue;
       any = true;
+      measures.push({ layer, m, verdict: v, diff: c[m].diff, lo: c[m].lo, hi: c[m].hi });
       if (v === 'worse') (pass = false), why.push(`${layer} ${m} worse beyond noise (${c[m].diff > 0 ? '+' : ''}${c[m].diff}, 95% ${c[m].lo} to ${c[m].hi})`);
       if (v === 'better') beats = true;
     }
   }
-  return { pass, beats: pass && beats, any, why, flags };
+  return { pass, beats: pass && beats, any, why, flags, measures };
+}
+
+// The owner's exception to the rule (DECISIONS.md D22, the owner resolving O3 on 2026-10-19): the close leg alone
+// can't see a bias the Book's close shares (the residual model corrects the Book's over-shade, which the close
+// carries too, so a measure against the close penalizes the correction by construction). A HOLD is one the owner
+// may ship over when, across the sports: the results log loss (ll) and the top picks' CLV (topClv) are each better
+// beyond noise somewhere and worse nowhere; no projection layer is worse; and every measure worse beyond noise is
+// the close log loss by at most CLOSE_LEG_TOL a row. The gate never ships on it: the verdict stays HOLD and says
+// so; the owner decides and the override is written into DECISIONS.md with the evidence. { eligible, why[] }
+export const CLOSE_LEG_TOL = 0.0005;
+export function ownerException(bySport) {
+  const ms = Object.entries(bySport ?? {}).flatMap(([sport, v]) => (v?.measures ?? []).map((m) => ({ sport, ...m })));
+  if (!ms.length) return { eligible: false, why: ['no measures'] };
+  const why = [];
+  const worse = ms.filter((m) => m.verdict === 'worse');
+  const bad = worse.filter((m) => m.m !== 'close' || !(fin(m.diff) && m.diff <= CLOSE_LEG_TOL));
+  for (const m of bad) why.push(`${m.sport} ${m.layer} ${m.m === 'proj' ? 'projections' : m.m} worse beyond noise (${m.diff > 0 ? '+' : ''}${m.diff}): ${m.m === 'close' ? `past the close leg's ${CLOSE_LEG_TOL}` : 'not the close leg'}`);
+  const llBetter = ms.filter((m) => m.m === 'll' && m.verdict === 'better');
+  const clvBetter = ms.filter((m) => m.m === 'topClv' && m.verdict === 'better');
+  if (!llBetter.length) why.push('the results log loss beats nowhere beyond noise');
+  if (!clvBetter.length) why.push("the top picks' CLV beats nowhere beyond noise");
+  if (!worse.length) why.push('nothing is worse: no exception needed');
+  if (why.length) return { eligible: false, why };
+  return {
+    eligible: true,
+    why: [
+      `results log loss better beyond noise in ${llBetter.map((m) => `${m.sport} ${m.layer} (${m.diff})`).join(', ')}`,
+      `top picks' CLV better beyond noise in ${clvBetter.map((m) => `${m.sport} ${m.layer} (+${m.diff})`).join(', ')}`,
+      `only the close leg worse, by at most ${CLOSE_LEG_TOL}: ${worse.map((m) => `${m.sport} ${m.layer} +${m.diff}`).join(', ')}`,
+    ],
+  };
 }
 
 // The whole gate's verdict over the sports: SHIP (every sport passes; BEATS where one is better beyond noise and
-// none worse), HOLD (one fails), or NO DATA
+// none worse), HOLD (one fails; exception: whether the owner may ship over it, ownerException), or NO DATA
 export function gateVerdict(bySport) {
   const sports = Object.entries(bySport).filter(([, v]) => v?.any);
   if (!sports.length) return { verdict: 'NO DATA', why: ['no sport had rows both versions scored'] };
   const failed = sports.filter(([, v]) => !v.pass);
-  if (failed.length) return { verdict: 'HOLD', why: failed.flatMap(([s, v]) => v.why.map((w) => `${s}: ${w}`)) };
+  if (failed.length) return { verdict: 'HOLD', why: failed.flatMap(([s, v]) => v.why.map((w) => `${s}: ${w}`)), exception: ownerException(bySport) };
   const better = sports.filter(([, v]) => v.beats).map(([s]) => s);
   return { verdict: 'SHIP', beats: better, why: better.length ? [`better beyond noise in ${better.join(', ')}; no layer worse`] : ['ties everywhere: no layer worse'] };
 }

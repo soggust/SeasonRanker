@@ -195,7 +195,12 @@ export const GAME_CAP = 5;
 // gate SHIP with the NFL's projections -0.0013 a row inside the noise. Measured and held the same round: the anchor on
 // MLB's pitchers alone (a no-op in the price: the shape is wrong, not the mean) and a history-fitted trust prior for
 // the game lines (already at 0). Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T10:00:00Z';
+// 2026-10-19, the residual model on (DECISIONS.md D32, the owner resolving O3 over the gate's close-leg HOLD, D22's
+// exception): every priced prop and game line is the soft blend of the trusted chance and the residual model's
+// corrected one (residual.mjs, the Book's error learned on the priced history: the Bot's lean where it has been right,
+// the Book's over-shade), live on the props and the lines (props.mjs priceProps, desk.mjs choose, the board). Set to
+// the push time.
+export const MODEL_EPOCH = '2026-10-19T15:30:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

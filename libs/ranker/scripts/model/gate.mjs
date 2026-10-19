@@ -735,6 +735,7 @@ async function main() {
   const verdict = gateVerdict(Object.fromEntries(Object.entries(results).map(([s, c]) => [s, c.verdict])));
   console.log(`\n${report.join('\n\n')}\n`);
   console.log(`VERDICT: ${verdict.verdict}: ${verdict.why.join('; ')}`);
+  if (verdict.exception?.eligible) console.log(`OWNER MAY SHIP (D22's exception, the close leg alone): ${verdict.exception.why.join('; ')}`);
   console.log(`(deciding: layer a's current and last ${2} seasons inside each sport's rule era; layer b's ${BET_DECIDE.join(', ')}; worse beyond noise = the 95% bootstrap interval wholly worse)`);
   if (val('--json')) writeFileSync(val('--json'), JSON.stringify({ champion: champion.label, candidate: candidate.label, changed, verdict, results }, null, 1));
   if (verdict.verdict === 'HOLD') process.exitCode = 2;

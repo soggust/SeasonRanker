@@ -78,6 +78,7 @@ import path from 'node:path';
 import { calSides } from './calib.mjs';
 import { anchorEntry, anchoredChances } from './anchor.mjs';
 import { EV_SUSPECT, bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
+import { residOn } from './residual.mjs';
 import { correctSides } from './correct.mjs';
 import { FEEDS, SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
@@ -2011,8 +2012,16 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // or turned over by where the model has beaten the book; the trust no longer shrinks the chance, it sizes the
     // stake (trustedUnits). None (too few rows): the trusted chance as before)
     const corr = correctSides(correction, { sport, stat: prop.stat.key, line: prop.line, pOver: pA, fairOver: book.fairOver, overOdds: book.over, underOdds: book.under, home, hours: (Date.parse(game.date) - Date.now()) / 36e5 });
+    // (the row as the residual model's ctx (residual.mjs hookChance; DECISIONS.md D32, on since the owner's O3 of
+    // 2026-10-19): the side's own fair chance and its raw, the anchored chance pA, the one the model was fit on in
+    // the priced history and the one the gate's replay hands it (the calibration and the trust stay outside the
+    // lean it reads; the blend sits on the trusted chance, once), the Book's two prices, the start and the bet's
+    // moment now. Only where the Book priced it: an assumed -110 is no price of the Book's to correct)
+    const rctx = prop.prices && residOn() ? { sport, market: 'prop', stat: prop.stat.key, line: prop.line, overOdds: book.over, underOdds: book.under, t: Date.parse(game.date), at: Date.now(), home, hours: (Date.parse(game.date) - Date.now()) / 36e5 } : null;
     for (const x of sides) {
-      x.p = corr ? corr[x.side] : chanceAt('prop', x.fair, x.model, t);
+      x.p = corr ? corr[x.side] : chanceAt('prop', x.fair, x.model, t, rctx && { ...rctx, side: x.side, f: x.fair, raw: x.raw });
+      // (the trusted chance before the residual blend, kept beside it: the board and the report read the move)
+      x.pTrust = corr || !rctx ? null : chanceAt('prop', x.fair, x.model, t);
       x.ev = (1 - pushA) * (x.p * decimal(x.odds) - 1);
       x.edge = x.p - x.fair;
     }
@@ -2335,6 +2344,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // practiceTop); whether the correction priced it, and turned its side; his side of the game, home or away)
       edge: pick.edge,
       ...(corr ? { corrected: true, ...(turned ? { turned: true } : {}), pTrust: chanceAt('prop', fair, model, t) } : {}),
+      // (the residual model priced it (D32): the trusted chance it blended from, so the move it made is read)
+      ...(!corr && Number.isFinite(pick.pTrust) && Math.abs(pick.pTrust - pick.p) > 1e-9 ? { resid: true, pTrust: round(pick.pTrust, 4) } : {}),
       home,
       guard,
       ...(roleBet ? { roleBet } : {}),
