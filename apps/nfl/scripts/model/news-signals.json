@@ -225,7 +225,13 @@
   "50218030": "2026-10-19",
   "50218249": "2026-10-19",
   "50218378": "2026-10-19",
-  "50219601": "2026-10-19"
+  "50218623": "2026-10-19",
+  "50219601": "2026-10-19",
+  "50219637": "2026-10-19",
+  "50219761": "2026-10-19",
+  "50219961": "2026-10-19",
+  "50220069": "2026-10-19",
+  "50220546": "2026-10-19"
  },
  "signals": [
   {
@@ -841,6 +847,66 @@
    "confidence": 0.6,
    "story": "50218249",
    "headline": "Sources: Falcons to sign QB Andy Dalton, release QB Cooper Rush",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50220546|2|4034953|benched",
+   "day": "2026-10-19",
+   "at": "2026-10-19T19:13:56.000Z",
+   "team": "2",
+   "abbr": "BUF",
+   "athlete": "4034953",
+   "player": "CJ Gardner-Johnson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "story": "50220546",
+   "headline": "NFL suspends Bills' C.J. Gardner-Johnson for one game for spitting",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50219961|27|3052587|return",
+   "day": "2026-10-19",
+   "at": "2026-10-19T18:14:12.000Z",
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50219961",
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50219961|27|4596472|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T18:14:12.000Z",
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "4596472",
+   "player": "Jalon Daniels",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50219961",
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50219961|27|3052587|benched",
+   "day": "2026-10-19",
+   "at": "2026-10-19T18:14:12.000Z",
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "story": "50219961",
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
    "model": "claude-haiku-5-5"
   }
  ]

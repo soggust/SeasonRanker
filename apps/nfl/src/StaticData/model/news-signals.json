@@ -3,6 +3,50 @@
  "days": 2,
  "signals": [
   {
+   "team": "2",
+   "abbr": "BUF",
+   "athlete": "4034953",
+   "player": "CJ Gardner-Johnson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "NFL suspends Bills' C.J. Gardner-Johnson for one game for spitting",
+   "at": "2026-10-19T19:13:56.000Z"
+  },
+  {
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "at": "2026-10-19T18:14:12.000Z"
+  },
+  {
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "4596472",
+   "player": "Jalon Daniels",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "at": "2026-10-19T18:14:12.000Z"
+  },
+  {
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "at": "2026-10-19T18:14:12.000Z"
+  },
+  {
    "team": "11",
    "abbr": "IND",
    "athlete": null,
@@ -133,40 +177,7 @@
    "confidence": 0.8,
    "headline": "Bears CB Kyler Gordon set for 2026 debut after PUP activation",
    "at": "2026-10-17T19:48:14.000Z"
-  },
-  {
-   "team": "29",
-   "abbr": "CAR",
-   "athlete": "2973051",
-   "player": "Taylor Moton",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
-   "at": "2026-10-17T19:23:52.000Z"
-  },
-  {
-   "team": "29",
-   "abbr": "CAR",
-   "athlete": "4058925",
-   "player": "Tershawn Wharton",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
-   "at": "2026-10-17T19:23:52.000Z"
-  },
-  {
-   "team": "29",
-   "abbr": "CAR",
-   "athlete": "4685350",
-   "player": "Trevor Etienne",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
-   "at": "2026-10-17T19:23:52.000Z"
   }
  ],
- "at": "2026-10-19T14:17:26.425Z"
+ "at": "2026-10-19T19:29:13.362Z"
 }

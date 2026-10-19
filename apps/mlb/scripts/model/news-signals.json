@@ -80,7 +80,9 @@
   "50214010": "2026-10-19",
   "50214985": "2026-10-19",
   "50216130": "2026-10-19",
-  "50218251": "2026-10-19"
+  "50218251": "2026-10-19",
+  "50219371": "2026-10-19",
+  "50219596": "2026-10-19"
  },
  "signals": [
   {
@@ -216,6 +218,36 @@
    "confidence": 0.9,
    "story": "50196788",
    "headline": "Guardians to open with Armstrong; Rays start Martinez in ALCS Game 4",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50219596|5|33499|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T17:42:15.000Z",
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "33499",
+   "player": "Shawn Armstrong",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "story": "50219596",
+   "headline": "Guardians using bullpen for Game 6, line up Williams for potential Game 7",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50219596|5|4345076|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T17:42:15.000Z",
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4345076",
+   "player": "Gavin Williams",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.3,
+   "story": "50219596",
+   "headline": "Guardians using bullpen for Game 6, line up Williams for potential Game 7",
    "model": "claude-haiku-5-5"
   }
  ]

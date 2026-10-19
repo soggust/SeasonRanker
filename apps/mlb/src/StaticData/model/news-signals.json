@@ -1,6 +1,29 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [],
- "at": "2026-10-18T17:48:54.064Z"
+ "signals": [
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "33499",
+   "player": "Shawn Armstrong",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Guardians using bullpen for Game 6, line up Williams for potential Game 7",
+   "at": "2026-10-19T17:42:15.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4345076",
+   "player": "Gavin Williams",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Guardians using bullpen for Game 6, line up Williams for potential Game 7",
+   "at": "2026-10-19T17:42:15.000Z"
+  }
+ ],
+ "at": "2026-10-19T19:29:13.362Z"
 }
