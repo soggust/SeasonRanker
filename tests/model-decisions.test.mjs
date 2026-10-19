@@ -789,3 +789,45 @@ test('D46 a suggestion never shows a band the Bot could not give the row: the de
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D46.'));
 });
+
+test('D50 the NBA season start: an unread allocation at its running mean, not 1; the work missing 1 till the team has played; no role till five are ranked', async () => {
+  const { trOpenOf, trNormBuf, trNormOf, OPEN_TR, OPEN_VAC } = await import('../libs/ranker/scripts/model/project.mjs');
+  const { nbaMatchups } = await import('../libs/ranker/scripts/model/matchups.mjs');
+  assert.ok(OPEN_TR && OPEN_VAC);
+  const opener = { opener: true };
+  const params = { tr: 0.25, tf: 2, trOpen: 1.031 };
+  // (the replay: the read factors' running mean before the day; none read yet, 1, never the fit's own (no look-ahead))
+  const nb = trNormBuf();
+  for (let d = 1; d <= 3; d++) for (let i = 0; i < 10; i++) trNormOf(nb, `2025-11-0${d}`, Math.log(1.03), 3000);
+  assert.ok(Math.abs(trOpenOf(params, nb, false, opener) - 1.03) < 1e-9);
+  assert.equal(trOpenOf(params, undefined, false, opener), 1);
+  // (live: the history's latest, as fitStat writes it; a stat not marked, a mean-preserving one, or tr off: 1)
+  assert.equal(trOpenOf(params, null, true, opener), 1.031);
+  assert.equal(trOpenOf(params, nb, false, {}), 1);
+  assert.equal(trOpenOf({ ...params, trn: 3000 }, nb, false, opener), 1);
+  assert.equal(trOpenOf({ ...params, tr: 0 }, nb, false, opener), 1);
+  // (the NBA's stats carry the mark, the live price reads it, the work missing's rule keys on the team's season)
+  assert.ok(/const NBA_TEAM = \{ \.\.\.TEAM, teamWhole: true, opener: true \};/.test(src('props.mjs')));
+  assert.ok(/trOpenOf\(f\.params, null, true, f\.stat\)/.test(src('props.mjs')));
+  assert.ok(/const teamNew = OPEN_VAC && stat\.opener && stat\.team && rosters\.get\(String\(row\.team\)\)\?\.season !== row\.season;/.test(src('project.mjs')));
+  assert.ok(/params\.trOpen = /.test(src('project.mjs')));
+  // (roles: a team's second and third games read none, not every player B; from five ranked on, the top five S)
+  const rows = [];
+  for (let d = 1; d <= 5; d++)
+    for (const [team, opp, home] of [['A', 'B', true], ['B', 'A', false]])
+      for (let k = 0; k < 8; k++) rows.push({ pid: `${team}${k}`, pos: 'G', date: `2025-10-${String(20 + d).padStart(2, '0')}`, season: 2026, team, opp, game: `g${d}`, home, s: { min: 40 - 4 * k, pts: 20 - 2 * k, reb: 4, ast: 3, fg3: 1 } });
+  nbaMatchups(rows, {});
+  const roleAt = (d, pid) => rows.find((r) => r.game === `g${d}` && r.pid === pid).role;
+  for (const d of [1, 2, 3]) assert.equal(roleAt(d, 'A0'), null, `game ${d}: no role yet`);
+  assert.equal(roleAt(4, 'A0'), 'S');
+  assert.equal(roleAt(4, 'A7'), 'B');
+  // (the board's assists and rebounds alone, never ESPN's "Total Assists and Rebounds" combination)
+  const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
+  const nbaStat = (name) => STATS.nba.find((st) => st.match.test(name))?.key ?? null;
+  assert.equal(nbaStat('Total Assists'), 'ast');
+  assert.equal(nbaStat('Total Rebounds'), 'reb');
+  assert.equal(nbaStat('Total Assists and Rebounds'), null);
+  assert.equal(nbaStat('Total Points, Rebounds, and Assists'), 'pra');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D50.'));
+});

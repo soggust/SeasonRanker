@@ -59,14 +59,15 @@ test("the write-up names a back-to-back when it moved the projection most", () =
 test("the NBA's known role: none for a player not ranked himself, the history's rest the night of not counted out", () => {
   const mins = { a: 36, b: 34, c: 32, d: 30, e: 28, f: 20, g: 12 };
   const row = (pid, d, min = mins[pid]) => ({ pid, name: pid, pos: 'G', date: `2025-11-0${d}T00:00Z`, season: 2026, team: '1', opp: '2', game: `g${d}`, home: true, s: { min, pts: min / 2, ast: 2, reb: 3, fga: min / 3, fta: 2 } });
-  // (after one game: no one ranked, so no role known, though roleK's reads B)
+  // (after one game: no one ranked, so no role known, and roleK's none either (DECISIONS.md D50: it read every
+  // player B, the stars priced against the bench's table))
   const one = Object.keys(mins).map((pid) => row(pid, 1));
   const m1 = nbaMatchups(one);
   const star = m1.live('a', '1', '2', 'G', 2026, () => 0);
-  assert.equal(star.role, 'B');
+  assert.equal(star.role, null);
   assert.equal(star.roleKnown, null);
   assert.equal(CTX.b2bB({ b2b: [1, 0] }, true, null, star), 0);
-  // (games 2 and 3 in the history: every row's role B, none known)
+  // (games 2 and 3 in the history: no row's role, none known (D50))
   const rows = [];
   for (let d = 1; d <= 4; d++) for (const pid of Object.keys(mins)) rows.push(row(pid, d));
   // (game 5: a rests and c is out, both played game 4: f starts by the box score, the bench by what's known;
@@ -75,7 +76,7 @@ test("the NBA's known role: none for a player not ranked himself, the history's 
   for (const pid of ['a', 'b', 'd', 'e', 'f', 'g']) rows.push(row(pid, 6));
   nbaMatchups(rows);
   const at = (pid, d) => rows.find((r) => r.pid === pid && r.game === `g${d}`);
-  assert.equal(at('a', 3).role, 'B');
+  assert.equal(at('a', 3).role, null);
   assert.equal(at('a', 3).roleKnown, null);
   assert.equal(at('a', 4).roleKnown, 'S');
   // (game 5: a and c out, neither out the game before: f a starter by the box score, the bench by what's known)

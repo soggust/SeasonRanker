@@ -1487,13 +1487,17 @@ export function nbaMatchups(rows, { learned = false } = {}) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6], absorb: { ...ABSORB_NBA, learned } });
   // (known: only a role he's ranked in (roleKnown), null for a player under three games or with fewer than
-  // five ranked; else B for one not ranked, as roleK has always read it)
+  // five ranked; else B for one not ranked, as roleK has always read it). Either way none till five of his team's
+  // players have three games this season (D50): before, a team's second and third games read every player B (no
+  // one ranked yet, so no one in the top five), the stars priced against the bench's table (points' role table
+  // 0.937 in 2025-26's games 1-2, its actual over the projection 1.146)
   const roleOf = (pid, teamId, season, out = () => false, known = false) => {
     const t = team.get(teamId);
     if (!t || t.season !== season) return null;
     const avg = [...t.p.entries()].filter(([id, x]) => x.n >= 3 && (String(id) === String(pid) || !out(id))).map(([id, x]) => [id, x.min / x.n]).sort((a, b) => b[1] - a[1]);
     const at = avg.findIndex(([id]) => id === pid);
-    if (known && (at < 0 || avg.length < 5)) return null;
+    if (avg.length < 5) return null;
+    if (known && at < 0) return null;
     return at < 0 ? 'B' : at < 5 ? 'S' : 'B';
   };
   // (whether he started his team's game before this season (the box's starter flag: 1 or 0; 0 where he's played

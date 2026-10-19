@@ -1170,6 +1170,34 @@ export function squadF(params, sq) {
   const t = T * (sq.m > 0 ? Math.pow(sq.m, TF_MKT[params.tf] ?? 0) : 1);
   return Math.pow(Math.min(TR_CAP, Math.max(1 / TR_CAP, t / sq.S)), params.tr);
 }
+// (whether a row's allocation is read: his team's S and T both known)
+export const squadRead = (params, sq) => !!sq && sq.S > 0 && (params.tf === 4 ? sq.T0 : sq.T) > 0;
+// The NBA's season start (D50; a stat marked opener, props.mjs NBA_TEAM). A team's first games of a season read
+// neither its allocation (S and T unread till TR_MIN games: the factor 1) nor its work missing (no regular of this
+// season yet: the work missing tonight 0, against last season's in his rate's games), and the lean (scale) was fit
+// with both in at their usual size: the allocation lifts the NBA's rows about 3% on average (1.024 to 1.035 by
+// stat, 2025-26), so an unread one at 1 put every opener about 3% under the level the lean was fit at, and the
+// work missing's 0 tonight against last season's another 2% to 4% (vacF 0.962 to 0.979 on 2025-26's openers,
+// 1.003 to 1.005 the rest of the season). Measured on 2025-26 with 2024-25 behind it (the history deepened by a
+// season for the measure alone): the openers' actual over the projection 1.044 (points 1.093), the Bot's chance
+// under even on 68% of the closes against 64% the rest of the season.
+//   OPEN_TR   an unread allocation (a non-mean-preserving one, trn off) at its running mean, the geometric mean of
+//             the factors read over the last TR_NORM rows before the day (trSeen); live, the history's latest
+//             (params.trOpen, written by fitStat); a mean-preserving one (trn) stays at 1, its mean is 1
+//   OPEN_VAC  the work missing's factor 1 till his team has a game this season (none of its regulars known yet)
+export const OPEN_TR = true;
+export const OPEN_VAC = true;
+export function trOpenOf(params, nb, live = false, stat = null) {
+  if (!OPEN_TR || !stat?.opener || !params?.tr || params.trn) return 1;
+  return live ? (params.trOpen ?? 1) : nb ? trNowOf(nb, TR_NORM) : 1;
+}
+// (the history's running mean of the read factors under a fit's settings, live's trOpen: one replay of the rows)
+export function trOpenFit(stat, rows, params, env) {
+  const sorted = [...rows].sort((a, b) => a.date.localeCompare(b.date));
+  if (!sorted.length) return 1;
+  const d0 = sorted[0].date.slice(0, 10);
+  return Math.round(trNowOf(replayStat(stat, sorted, params, env, [d0, d0]).model.trSeen, TR_NORM) * 10000) / 10000;
+}
 // (the betting lines' implied points for a row's side over their average (tf 2 and 3), null without them)
 export const squadMkt = (row, env) => {
   const v = row?.mkt?.[row.home ? 0 : 1];
@@ -1805,7 +1833,9 @@ export function makeModel(stat, params, env) {
     // minutes read, the season's (rateVac) and the last three's at the lean's weight (minLean), blended in by sn
     // as the base is)
     if (mode === 'minutes' && minLean) vacHist = (1 - params.sn) * vacHist + params.sn * ((1 - minLean.lean) * rateVac + minLean.lean * minLean.vac);
-    const vacF0 = stat.vacated && params.vc ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
+    // (D50: none of his team's games this season learned yet, its regulars unknown: the factor 1, OPEN_VAC)
+    const teamNew = OPEN_VAC && stat.opener && stat.team && rosters.get(String(row.team))?.season !== row.season;
+    const vacF0 = stat.vacated && params.vc && !teamNew ? Math.pow((1 + vacNow) / (1 + vacHist), params.vc) : 1;
     // (the same absence (ab, the NFL's backs and pass-catchers: stat.snaps; 0 off, kept only where the held-out
     // games are better): with regulars at his position out tonight and AB_MIN of his games this season or more
     // with every one of them out then too (matchups.mjs sameGames), his base, the work missing's factor on it,
@@ -2227,7 +2257,7 @@ export function squadBase(mates, inOf) {
 // the row (p.squad, with sum: the ones who played summed, the log's gap), and each projection times squadF (1 where
 // it's off; the projection before it on p.preTr, the pull toward the middle's search's). batch: the day's rows,
 // every one who played)
-function squadUp(list, batch, params, env, m) {
+function squadUp(list, batch, params, env, m, stat = null) {
   const by = new Map();
   for (const x of list) {
     const k = x.row.game + '|' + x.row.team;
@@ -2236,6 +2266,8 @@ function squadUp(list, batch, params, env, m) {
   }
   const played = new Set(batch.map((r) => r.game + '|' + r.team + '|' + r.pid));
   const scale = params.scale ?? 1;
+  // (D50: the factor for a team whose allocation can't be read yet, the read ones' running mean before the day)
+  const unread = trOpenOf(params, m.trSeen, false, stat);
   for (const [k, xs] of by) {
     const row = xs[0].row;
     const mates = m.squadMates(row.team, row.season);
@@ -2249,6 +2281,8 @@ function squadUp(list, batch, params, env, m) {
       x.p.squad = { S: squadSum(mates, x.row.pid, x.p.mu / scale, inOf, base), T, T0, m: mk, sum };
       let f = squadF(params, x.p.squad);
       if (params.trn && f !== 1) f /= trNormOf((m.trNorm ??= trNormBuf()), row.date.slice(0, 10), Math.log(f), params.trn);
+      if (params.tr && !params.trn && squadRead(params, x.p.squad)) trNormOf((m.trSeen ??= trNormBuf()), row.date.slice(0, 10), Math.log(f), TR_NORM);
+      else if (params.tr && !squadRead(params, x.p.squad)) f = unread;
       if (f !== 1) (x.p.preTr = x.p.mu), (x.p.mu = Math.max(0.05, x.p.mu * f));
     }
   }
@@ -2272,7 +2306,7 @@ export function replayStat(stat, rows, params, env, cuts) {
         const p = m.project(row);
         if (p) list.push({ row, p, v: Math.max(0, Math.round(row.s[stat.key])), win });
       }
-      if (stat.team && (params.tr || params.trRead)) squadUp(list, batch, params, env, m);
+      if (stat.team && (params.tr || params.trRead)) squadUp(list, batch, params, env, m, stat);
       for (const x of list) out.push(x);
     }
     m.learn(batch);
@@ -3316,6 +3350,8 @@ export function fitStat(stat, rows, env) {
   const finalRun = replayStat(stat, sorted, params, env, cuts);
   // (the mean-preserving allocation's latest mean, live's (params.trn: trNow))
   if (params.trn && params.tr) params.trNow = Math.round(trNowOf(finalRun.model.trNorm, params.trn) * 10000) / 10000;
+  // (D50: the allocation's running mean as the history leaves it, live's for a team's first games (trOpen))
+  if (OPEN_TR && stat.opener && params.tr && !params.trn) params.trOpen = Math.round(trNowOf(finalRun.model.trSeen, TR_NORM) * 10000) / 10000;
   const final = finalRun.out;
   // (the start-of-season prior's table as the history leaves it (sp: learned whether or not it's kept), for the
   // log)
