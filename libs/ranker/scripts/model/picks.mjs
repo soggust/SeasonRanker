@@ -429,6 +429,9 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       player: b.player ?? null,
       line: b.line,
       odds: b.odds,
+      // (a prop's usage (usage.mjs, DECISIONS.md D36): the work the projection reads for him tonight, one inspectable
+      // number with its parts, as the bet carries it (projection.usage); the popover can show it)
+      ...(b.market === 'prop' && b.projection?.usage ? { usage: b.projection.usage } : {}),
       // (the other side's price, a prop's (the page shows both sides); none where it isn't known)
       otherOdds: Number.isFinite(b.otherOdds) ? b.otherOdds : null,
       book: b.book ?? 'DraftKings',
