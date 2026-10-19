@@ -111,7 +111,7 @@ export function leanOf(gap, limit) {
 // gate's champion; DECISIONS.md D32), the model's soft blend of this chance with its corrected one: this chance is
 // the current price the blend starts from, the ctx's raw (the anchored chance, before the calibration and the
 // trust) the lean the model reads, so nothing is counted twice. Off, or with no ctx or no model, this chance as it is
-// (the trust's start by market (D39): a total's 0, climbing only on the Bot's own graded totals since the epoch
+// (the trust's start by market (D44): a total's 0, climbing only on the Bot's own graded totals since the epoch
 // (run.mjs refitTrust); the rest the desk's 0.5. A total's chance carries the named terms' shift (ctx.named: the
 // soft schedule terms' part of the Bot's total at the Book's line, D34) at full weight, since their ridge already
 // sizes them, and the rest of its lean at the trust)
@@ -175,7 +175,7 @@ export function price(game, exp, lines, params, shape = null) {
     );
   }
   if (total.line !== null && total.over && total.under) {
-    // (D39: the Bot's total less its named terms is the model the trust reads (0 by rule till its own record earns
+    // (D44: the Bot's total less its named terms is the model the trust reads (0 by rule till its own record earns
     // it), and the named terms' shift at the Book's line rides on each side at full weight (named: the over's,
     // the under's its negative); with no context the plain total as before)
     const t = totalSplit(exp, total.line, params.sigmaT);
@@ -198,7 +198,7 @@ export function price(game, exp, lines, params, shape = null) {
 // start), at (now), hours }) with the market, the side's line, its fair chance and model chance (the side's own;
 // the hook mirrors an away or under side), and the two prices as the home's or over's and the away's or under's.
 // None without a game ctx (the backtest, the self-check: the trust's chance alone). With a total's named terms'
-// shift (D39, s.named) that rides along either way: chanceAt reads it before the hook
+// shift (D44, s.named) that rides along either way: chanceAt reads it before the hook
 export const sideCtx = (market, s, ctx) => {
   const base = ctx ? { ...ctx, market: market.market, stat: market.market, line: s.line ?? null, side: s.side, f: s.fair, raw: s.model, overOdds: market.sides[0].odds, underOdds: market.sides[1].odds, home: null } : null;
   if (!Number.isFinite(s.named)) return base;

@@ -117,7 +117,7 @@ test('priceProps: a questionable teammate missing by his chance (the play table)
   assert.equal(seen[0], 0.5);
 });
 
-test("choosePlayTable: a side (the quarterbacks') not beating the flat half held out read at half; practice kept and read live (D40)", () => {
+test("choosePlayTable: a side (the quarterbacks') not beating the flat half held out read at half; practice kept and read live (D45)", () => {
   const rows = [];
   for (let season = 2016; season <= 2025; season++) {
     // (the rest: 75% whatever the practice; quarterbacks: their share falling season by season, 80% to 20%)
@@ -133,7 +133,7 @@ test("choosePlayTable: a side (the quarterbacks') not beating the flat half held
   assert.ok(t.check.sides.other.loss < t.check.flat);
   assert.equal(t.chance({ pos: 'QB', gone: 0 }), 0.5);
   assert.notEqual(t.chance({ pos: 'WR', gone: 0 }), 0.5);
-  // (practice: a level read live since D40, kept on its held-out gain)
+  // (practice: a level read live since D45, kept on its held-out gain)
   const practice = t.check.tried.find((x) => x.level === 'practice');
   assert.equal(practice.unread, undefined);
   assert.equal(practice.kept, true);
@@ -195,7 +195,7 @@ test("priceProps: the questionable guard over his position's regulars alone (a q
   assert.equal(missChance(sure, { pos: 'LB', gone: null }), 0.5);
 });
 
-test("D40 the practice days read live: the week's rows by ESPN id, another week's and an unknown player's left out; the level is in PLAY_LEVELS and no longer unread", () => {
+test("D45 the practice days read live: the week's rows by ESPN id, another week's and an unknown player's left out; the level is in PLAY_LEVELS and no longer unread", () => {
   assert.deepEqual(PLAY_LEVELS, ['qb', 'gone', 'practice']);
   assert.deepEqual(PLAY_UNREAD, []);
   const espnOf = new Map([['00-1', '123'], ['00-2', '456']]);
@@ -205,7 +205,7 @@ test("D40 the practice days read live: the week's rows by ESPN id, another week'
   assert.equal(practiceFrom(null, espnOf, 7).size, 0);
 });
 
-test('D40 the missing-prop signal: the rates by report status group, none without them; the constants', () => {
+test('D45 the missing-prop signal: the rates by report status group, none without them; the constants', () => {
   const rates = { none: { missing: 0.28, listed: 0.08 }, q: { missing: 0.45, listed: 0.27 } };
   assert.equal(boardMissChance(rates, 'none'), 0.28);
   assert.equal(boardMissChance(rates, 'q'), 0.45);
@@ -216,7 +216,7 @@ test('D40 the missing-prop signal: the rates by report status group, none withou
   assert.equal(PLAY_MISSING_MIN, 2);
 });
 
-test("D40 priceProps: a regular with no prop on the board while two teammates at his position have one misses by the rate (not on the report: none's; questionable: q's); a guard's fixed view as it was; nothing without the rates", async () => {
+test("D45 priceProps: a regular with no prop on the board while two teammates at his position have one misses by the rate (not on the report: none's; questionable: q's); a guard's fixed view as it was; nothing without the rates", async () => {
   const { priceProps, STATS } = await import('../libs/ranker/scripts/model/props.mjs');
   const st = STATS.nfl.find((s) => s.key === 'recYds');
   const seen = [];

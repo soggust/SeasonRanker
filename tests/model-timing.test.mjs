@@ -23,7 +23,7 @@ test('phaseOf: early before the window, open in it, last inside the last chance'
   assert.equal(phaseOf('nfl', 'lines', 48 * H), 'early');
   assert.equal(phaseOf('nfl', 'lines', 20 * H), 'open');
   assert.equal(phaseOf('nfl', 'props', 2 * H), 'last');
-  // (D37: the windows open the day before for every sport but MMA)
+  // (D42: the windows open the day before for every sport but MMA)
   assert.equal(phaseOf('nba', 'props', 27 * H), 'early');
   assert.equal(phaseOf('nba', 'props', 25 * H), 'open');
   assert.equal(phaseOf('nhl', 'props', 25 * H), 'open');
@@ -38,7 +38,7 @@ test('cadenceOf / phaseOf: runs coming further apart than the last chance stretc
   const gap = cadenceOf(at([0, 8.7, 19.7, 23.6, 29.4, 36, 41.3, 45.2, 48.5]));
   assert.ok(Math.abs(gap - 5.55) < 1e-9);
   assert.ok(Math.abs(lastChanceOf('mlb', gap) - 8.325) < 1e-9);
-  // (an MLB game 7 hours off: inside its window (D37: 26 hours), and with the runs that far apart the next one likely
+  // (an MLB game 7 hours off: inside its window (D42: 26 hours), and with the runs that far apart the next one likely
   // comes after its start, so it's the last chance)
   assert.equal(phaseOf('mlb', 'lines', 7 * H), 'open');
   assert.equal(phaseOf('mlb', 'lines', 7 * H, gap), 'last');

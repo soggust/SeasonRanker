@@ -481,7 +481,7 @@ test('D30 every bet at the price offered the moment it is placed: never a stored
   assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, true, now), 'stale');
   assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, false, now), 'stale', 'no key: no fresher');
   // (the history and the morning snapshot are for history, learning and the gate only: nothing that prices or
-  // places a bet reads them. Since D37 (2026-10-19) suggest.mjs reads the morning snapshot for the board's
+  // places a bet reads them. Since D42 (2026-10-19) suggest.mjs reads the morning snapshot for the board's
   // suggestions alone, and a row priced from it is never bet, tracked or a CHECK's stored price:
   // tests/model-lineup-risk.test.mjs pins run.mjs's hold)
   const dir = path.join(import.meta.dirname, '../libs/ranker/scripts/model');
@@ -556,7 +556,7 @@ test('D32 the residual model, on since the owner\'s O3: every live path passes t
   assert.match(src('desk.mjs'), /chanceAt\(market\.market, s\.fair, s\.model, trust, sideCtx\(market, s, ctx\)\)/);
   assert.match(src('run.mjs'), /choose\(market, trust\[market\.market\]\?\.trust \?\? START_TRUST, EV_SCALE, rctx\)/);
   assert.match(src('board.mjs'), /chanceAt\(m\.market, s\.fair, s\.model, trustOf\(m\.market\), sideCtx\(m, s, ctx\)\)/);
-  // (a total's named terms' shift rides in as a named-only ctx (D39), which chanceAt reads before the hook: still the
+  // (a total's named terms' shift rides in as a named-only ctx (D44), which chanceAt reads before the hook: still the
   // current price, never the blend; tests/model-totals.test.mjs pins the chance)
   assert.match(src('desk.mjs'), /const pOf = \(b\) => Math\.min\(0\.995, Math\.max\(0\.005, chanceAt\(b\.market, b\.fair, b\.model, t, Number\.isFinite\(b\.named\) \? \{ named: b\.named \} : null\)\)\);/, 'fitTrust reads the current price, never the blend');
   assert.match(src('desk.mjs'), /if \(!ctx \|\| Object\.keys\(ctx\)\.every\(\(k\) => k === 'named'\)\) return p;/, 'a named-only ctx never reaches the blend');

@@ -1,4 +1,4 @@
-// The reflected count (libs/ranker/scripts/model/project.mjs flip; DECISIONS.md D38): a left-skewed stat (a
+// The reflected count (libs/ranker/scripts/model/project.mjs flip; DECISIONS.md D43): a left-skewed stat (a
 // starter's outs) shaped as M - k at mean M - mu, the fit trying the stat's caps (props.mjs STATS flip) and keeping
 // one only where the held-out games are better with it, as the dispersion's growth (rk) is kept.
 import { test } from 'node:test';
@@ -10,7 +10,7 @@ import { STATS } from '../libs/ranker/scripts/model/props.mjs';
 
 const pmf = (params, mu, M = 60) => Array.from({ length: M + 1 }, (_, k) => Math.exp(chanceLog(k, mu, params)));
 
-test('D38 the reflected count: a proper distribution under its cap, left-skewed (the median at or above the mean), more mass over the line than the plain shape at the same mean', () => {
+test('D43 the reflected count: a proper distribution under its cap, left-skewed (the median at or above the mean), more mass over the line than the plain shape at the same mean', () => {
   const flip = { r: 16, rk: 0, flip: 24 };
   const plain = { r: 16, rk: 0 };
   const p = pmf(flip, 16, 24);
@@ -41,7 +41,7 @@ test('D38 the reflected count: a proper distribution under its cap, left-skewed 
   assert.ok(im < 24 && Math.abs(lineChances(15.5, im, flip).over - 0.5) < 1e-6, `implied ${im}`);
 });
 
-test('D38 the outs stat tries its caps and strikeouts stay plain; the fit gates the cap held out like rk', () => {
+test('D43 the outs stat tries its caps and strikeouts stay plain; the fit gates the cap held out like rk', () => {
   const outs = STATS.mlb.find((s) => s.key === 'outs');
   const k = STATS.mlb.find((s) => s.key === 'k');
   assert.deepEqual(outs.flip, [21, 24, 27]);
@@ -51,5 +51,5 @@ test('D38 the outs stat tries its caps and strikeouts stay plain; the fit gates 
   assert.ok(/for \(const flip of Array\.isArray\(stat\.flip\) \? stat\.flip : \[\]\)/.test(src), 'the caps tried in the shape search');
   assert.ok(/if \(params\.flip\) \{\s*const without = heldOut\(\{ \.\.\.params, \.\.\.plain \}\);\s*const raw = gainOf\(without\.check, current\.check\);\s*gains\.flip = r4\(raw\);\s*if \(!\(raw > 0\)\)/.test(src), 'kept only where the held-out games are better');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D38.'));
+  assert.ok(decisions.includes('### D43.'));
 });

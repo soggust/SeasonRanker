@@ -1,4 +1,4 @@
-// The usage on a prop's row (libs/ranker/scripts/model/usage.mjs, DECISIONS.md D36: usage first, rate second): one
+// The usage on a prop's row (libs/ranker/scripts/model/usage.mjs, DECISIONS.md D41: usage first, rate second): one
 // inspectable object per row made from the projection's own parts, on the projection, the ledger's bet and
 // picks.json. Nothing is fit or stepped here: the fitted base's usage is the usage shown, so the price and the
 // readout can't disagree.
@@ -11,7 +11,7 @@ import { PA_BY_SLOT, paAt } from '../libs/ranker/scripts/model/matchups.mjs';
 
 const src = (f) => fs.readFileSync(path.resolve('libs/ranker/scripts/model', f), 'utf8');
 
-test('D36 the NFL: the snap share the base reads is the usage, his targets beside it; a quarterback his starts; the per-game base says so', () => {
+test('D41 the NFL: the snap share the base reads is the usage, his targets beside it; a quarterback his starts; the per-game base says so', () => {
   const u = usageOf('nfl', { snaps: true }, { mode: 'snaps', share: 0.72, volume: { targets: 7.1, share: 0.22, team: 32 }, roleUp: 'RB1' }, { snap: { latest: 0.8, avg: 0.7, n: 5 } });
   assert.equal(u.kind, 'snaps');
   assert.equal(u.unit, UNITS.snaps);
@@ -32,7 +32,7 @@ test('D36 the NFL: the snap share the base reads is the usage, his targets besid
   assert.equal(g.typical, 0.55);
 });
 
-test('D36 the NBA and NHL: minutes and time on ice from the minutes-first base, the power play beside the ice time', () => {
+test('D41 the NBA and NHL: minutes and time on ice from the minutes-first base, the power play beside the ice time', () => {
   const nba = usageOf('nba', { minutes: 48 }, { mode: 'minutes', share: 0.6, minutes: { season: 30, recent: 27 }, role: 'S' }, { startLast: 1 });
   assert.equal(nba.kind, 'minutes');
   assert.equal(nba.expected, 28.8);
@@ -52,7 +52,7 @@ test('D36 the NBA and NHL: minutes and time on ice from the minutes-first base, 
   assert.equal(g.kind, 'starts');
 });
 
-test('D36 MLB: a batter at his lineup slot gets the slot\'s plate appearances, a starter his expected outs on a strikeouts row too', () => {
+test('D41 MLB: a batter at his lineup slot gets the slot\'s plate appearances, a starter his expected outs on a strikeouts row too', () => {
   const b = usageOf('mlb', { key: 'hits' }, {}, { slot: 3, paX: 0.05, start: true });
   assert.equal(b.kind, 'pa');
   assert.equal(b.expected, paAt(3));
@@ -71,12 +71,12 @@ test('D36 MLB: a batter at his lineup slot gets the slot\'s plate appearances, a
   assert.equal(USAGE_V, 1);
 });
 
-test('D36 the usage rides on the projection, the ledger\'s bet and picks.json; a strikeouts row reads the outs model', () => {
+test('D41 the usage rides on the projection, the ledger\'s bet and picks.json; a strikeouts row reads the outs model', () => {
   const props = src('props.mjs');
   assert.ok(/const usage = usageOf\(sport, f\.stat, p, row, \{ outs: sport === 'mlb' && prop\.stat\.pitcher \? \(prop\.stat\.key === 'outs' \? mu : pitcherOuts\(fitted\.outs, row, info, pts, home\)\) : null \}\)/.test(props));
   assert.ok(/\.\.\.\(usage \? \{ usage \} : \{\}\), pOver: round\(pOver, 4\)/.test(props), 'the projection carries it');
   assert.ok(/projection: x\.projection/.test(src('run.mjs')), "the bet carries the projection");
   assert.ok(/b\.market === 'prop' && b\.projection\?\.usage \? \{ usage: b\.projection\.usage \}/.test(src('picks.mjs')), 'picks.json carries it');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D36.'));
+  assert.ok(decisions.includes('### D41.'));
 });

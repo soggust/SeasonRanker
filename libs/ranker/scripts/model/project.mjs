@@ -673,7 +673,7 @@ const mixParts = (mu, mix) => {
   const full = mu / (1 - mix.q * (1 - mix.f));
   return [[1 - mix.q, full], [mix.q, Math.max(1e-3, full * mix.f)]];
 };
-// The reflected count (flip, DECISIONS.md D38, 2026-10-19): a left-skewed stat (a starter's outs: a hook ends the
+// The reflected count (flip, DECISIONS.md D43, 2026-10-19): a left-skewed stat (a starter's outs: a hook ends the
 // start early, so the long tail runs toward 0 and the mass sits near a cap; the median above the mean) is shaped
 // as M - k at mean M - mu, a negative binomial on the outs still to get, M the stat's cap (props.mjs STATS flip:
 // the grid the fit tries, kept only where the held-out games are better with it, as rk is). The plain negative
@@ -2631,7 +2631,7 @@ export function fitStat(stat, rows, env) {
     const s = scoreOf(firstOut, 1, { rk, rm });
     if (s.ll > shapeLl) (shapeLl = s.ll), (shape = { r: s.r, rk });
   }
-  // (the reflected count (flip, D38): a left-skewed stat's cap, each tried at its own best r and growth on the fit
+  // (the reflected count (flip, D43): a left-skewed stat's cap, each tried at its own best r and growth on the fit
   // window; kept below only if the held-out games are better with it, as rk is)
   for (const flip of Array.isArray(stat.flip) ? stat.flip : [])
     for (const rk of [0, ...RK]) {
@@ -2745,7 +2745,7 @@ export function fitStat(stat, rows, env) {
     current = nextCheck;
   }
   // (the dispersion's growth, the same way: the plain negative binomial unless the held-out games say so)
-  // (and the reflected count (flip, D38) the same way, judged first as a package with the growth it was picked with:
+  // (and the reflected count (flip, D43) the same way, judged first as a package with the growth it was picked with:
   // not better held out than the plain shape, both go)
   if (params.flip) {
     const without = heldOut({ ...params, ...plain });

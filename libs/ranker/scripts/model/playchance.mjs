@@ -45,7 +45,7 @@ export const PLAY_K = 25;
 export const PLAY_FLOOR = 0.003;
 export const PLAY_HELD = 3;
 export const PLAY_MIN = 1000;
-// (practice read live since D40 (2026-10-19): the week's practice status from nflverse's injuries file, the one the
+// (practice read live since D45 (2026-10-19): the week's practice status from nflverse's injuries file, the one the
 // table was fit on (the final practice of the week, which is the one posted by the time the window opens, 26 hours
 // before the kickoff, PLAY_FINAL); measured +0.0203 held out 2023-2025, the largest level)
 export const PLAY_LEVELS = ['qb', 'gone', 'practice'];
@@ -268,7 +268,7 @@ export async function nflPlayChance(from, current) {
   return table;
 }
 
-// The week's practice status by ESPN id (D40): nflverse's injuries rows (the current season's file, read again every
+// The week's practice status by ESPN id (D45): nflverse's injuries rows (the current season's file, read again every
 // 12 hours: its practice_status is the latest practice posted) for the week given, through the players file's gsis
 // to ESPN ids. practiceFrom: the pure part (rows: { week, gsis_id, practice_status }; espnOf: gsis -> ESPN id)
 export function practiceFrom(rows, espnOf, week) {
@@ -291,7 +291,7 @@ export async function nflPractice(season, week) {
 }
 
 // A regular's chance of missing the game when his props are missing from the board while teammates' are listed
-// (board-miss.mjs nflBoardMiss's rates, D40): by his report status group ('q' questionable, else 'none'); null
+// (board-miss.mjs nflBoardMiss's rates, D45): by his report status group ('q' questionable, else 'none'); null
 // without the rates
 export function boardMissChance(rates, status, missing = true) {
   const g = rates?.[status === 'q' ? 'q' : 'none'];

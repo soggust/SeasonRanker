@@ -1,4 +1,4 @@
-// The missing-prop signal (DECISIONS.md D40, the forum round's idea 4, 2026-10-19): a regular whose props aren't on the
+// The missing-prop signal (DECISIONS.md D45, the forum round's idea 4, 2026-10-19): a regular whose props aren't on the
 // board while his teammates' at the position are is an injury or role signal the report hasn't caught up with. Measured
 // on the NFL's priced history (the 48-hour opens, 2023 on, against nflverse's snap counts): a regular with props in 3 of
 // his team's last 4 games in a market and none at the open while 2 or more teammates had one was out, or under a

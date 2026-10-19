@@ -234,7 +234,7 @@ export function repriced(bets, expOf, params, shape = null) {
       c = spreadChances(b.side === 'home' ? exp.margin : -exp.margin, b.line, params.sigma, shape);
       q = cond(c);
     } else if (b.market === 'total') {
-      // (D39: the base's chance and the named terms' shift, as desk.mjs price splits them)
+      // (D44: the base's chance and the named terms' shift, as desk.mjs price splits them)
       const t = totalSplit(exp, b.line, params.sigmaT);
       c = t.c;
       q = b.side === 'over' ? cond(c) : 1 - cond(c);

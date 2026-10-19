@@ -1,5 +1,5 @@
 // The Bot's own time to bet (libs/ranker/scripts/model/lineup-risk.mjs, suggest.mjs, leagues.mjs TIMING; DECISIONS.md
-// D37): the windows open the day before for every sport but MMA; before the news is in a prop's lean is held to the
+// D42): the windows open the day before for every sport but MMA; before the news is in a prop's lean is held to the
 // share that survived to the close for its stat (fit on the priced history, blended with the Bot's own record), and
 // it is bet early only where that still clears the price; a fresh quote is bought only when the Bot is about to bet;
 // the morning snapshot prices suggestions and never a bet.
@@ -14,7 +14,7 @@ import { nameKey } from '../libs/ranker/scripts/model/espn.mjs';
 
 const src = (f) => fs.readFileSync(path.resolve('libs/ranker/scripts/model', f), 'utf8');
 
-test('D37 the windows open the day before for every sport but MMA', () => {
+test('D42 the windows open the day before for every sport but MMA', () => {
   for (const s of ['nfl', 'nba', 'nhl', 'mlb']) {
     assert.equal(TIMING[s].lines, 26, `${s} lines`);
     assert.equal(TIMING[s].props, 26, `${s} props`);
@@ -22,7 +22,7 @@ test('D37 the windows open the day before for every sport but MMA', () => {
   assert.equal(TIMING.mma.lines, 72);
 });
 
-test('D37 the survival: 1 inside the last chance or with the news in, the fit at the open lead, a line between, 0 with no fit', () => {
+test('D42 the survival: 1 inside the last chance or with the news in, the fit at the open lead, a line between, 0 with no fit', () => {
   const e = { kept: 0.4, lead: 12 };
   assert.equal(survivalAt(e, 2, { last: 3 }), 1);
   assert.equal(survivalAt(e, 20, { last: 3, newsIn: true }), 1);
@@ -35,7 +35,7 @@ test('D37 the survival: 1 inside the last chance or with the news in, the fit at
   assert.equal(survivalAt({ kept: 0.5, lead: 1 }, 5, { last: 3 }), 0.5);
 });
 
-test('D37 the fit: the share of the open edge still there at the close, on the rows the Bot would have bet; pooled under RISK_MIN; held to 0 and 1', () => {
+test('D42 the fit: the share of the open edge still there at the close, on the rows the Bot would have bet; pooled under RISK_MIN; held to 0 and 1', () => {
   const pairs = [];
   for (let i = 0; i < 400; i++) pairs.push({ stat: 'pts', eo: 0.04, ec: 0.02, moved: i % 2 === 0, lead: 12 });
   for (let i = 0; i < 400; i++) pairs.push({ stat: 'pts', eo: 0.005, ec: -0.1, moved: false, lead: 12 });
@@ -62,7 +62,7 @@ test('D37 the fit: the share of the open edge still there at the close, on the r
   assert.ok(riskText(fit).includes('pts 0.5'));
 });
 
-test('D37 self-tuning: the Bot\'s own record by stat and hour bucket blends into the history\'s survival by its rows\' worth, soft', () => {
+test('D42 self-tuning: the Bot\'s own record by stat and hour bucket blends into the history\'s survival by its rows\' worth, soft', () => {
   assert.deepEqual(HOUR_BUCKETS.slice(0, 5), [2, 4, 8, 14, 27]);
   assert.equal(bucketOf(1), 0);
   assert.equal(bucketOf(10), 3);
@@ -86,7 +86,7 @@ test('D37 self-tuning: the Bot\'s own record by stat and hour bucket blends into
   assert.equal(readLineupRisk(path.resolve('.'), 'none'), null);
 });
 
-test('D37 the snapshot prices a suggestion, never a bet: rows marked, a moved line left unpriced, nothing with no file', () => {
+test('D42 the snapshot prices a suggestion, never a bet: rows marked, a moved line left unpriced, nothing with no file', () => {
   const snap = new Map([[`pts|${nameKey('J. Doe')}`, { line: 20.5, over: -115, under: -105, at: 't' }], [`reb|${nameKey('J. Doe')}`, { line: 8.5, over: -110, under: -110, at: 't' }]]);
   const board_ = [{ athlete: { name: 'J. Doe' }, stat: { key: 'pts' }, line: 20.5, prices: null }, { athlete: { name: 'J. Doe' }, stat: { key: 'reb' }, line: 9.5, prices: null }, { athlete: { name: 'J. Doe' }, stat: { key: 'ast' }, line: 5.5, prices: { over: -120, under: 100 } }];
   const out = withSnapshot(board_, snap);
@@ -108,5 +108,5 @@ test('D37 the snapshot prices a suggestion, never a bet: rows marked, a moved li
   assert.ok(!/odds-history/.test(run), 'run.mjs reads the snapshot through suggest.mjs alone');
   assert.ok(/\.\.\.\(x\.sug \? \{ sug: x\.sug \} : \{\}\)/.test(src('board.mjs')), 'the board carries the suggestion');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D37.'));
+  assert.ok(decisions.includes('### D42.'));
 });

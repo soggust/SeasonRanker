@@ -1,4 +1,4 @@
-// The totals (DECISIONS.md D39): the Bot's own totals lean is noise at the close in every sport, so a total's trust
+// The totals (DECISIONS.md D44): the Bot's own totals lean is noise at the close in every sport, so a total's trust
 // starts at 0 by rule and climbs only on the Bot's own graded totals since the epoch, and a total is bet only where
 // the named terms (the soft schedule terms, D34) earn it: their shift rides on the Book's fair at full weight,
 // the rest of the lean at the trust.
@@ -15,14 +15,14 @@ const src = (f) => fs.readFileSync(path.resolve('libs/ranker/scripts/model', f),
 const lines = { spread: { home: { line: -2.5, odds: -110 }, away: { line: 2.5, odds: -110 } }, total: { line: 46.5, over: -110, under: -110 }, ml: { home: -140, away: 120 } };
 const params = { sigma: 13, sigmaT: 10 };
 
-test('D39 a total starts at trust 0; the other markets at the desk\'s 0.5', () => {
+test('D44 a total starts at trust 0; the other markets at the desk\'s 0.5', () => {
   assert.deepEqual(TRUST_START, { total: 0 });
   assert.equal(trustStart('total'), 0);
   assert.equal(trustStart('spread'), 0.5);
   assert.equal(trustStart('ml', 0.4), 0.4);
 });
 
-test('D39 the split: the base is the Bot\'s total less the named terms, the named shift a chance at the line; none without a context', () => {
+test('D44 the split: the base is the Bot\'s total less the named terms, the named shift a chance at the line; none without a context', () => {
   const exp = { margin: 2, total: 48, homePts: 25, awayPts: 23, namedT: 1.2 };
   const t = totalSplit(exp, 46.5, 10);
   assert.ok(Math.abs(cond(t.c) - cond(totalChances(46.8, 46.5, 10))) < 1e-12, 'the base at 48 - 1.2');
@@ -39,7 +39,7 @@ test('D39 the split: the base is the Bot\'s total less the named terms, the name
   assert.deepEqual(namedIdx({ t: [{ key: 'a' }, { key: 'b', soft: true }, { key: 'c', soft: true }] }), [1, 2]);
 });
 
-test('D39 the chance: at trust 0 the Book\'s fair plus the named shift alone, the base\'s lean at the trust on top; the backtest\'s rows carry the shift', () => {
+test('D44 the chance: at trust 0 the Book\'s fair plus the named shift alone, the base\'s lean at the trust on top; the backtest\'s rows carry the shift', () => {
   const p0 = chanceAt('total', 0.5, 0.56, 0, { named: 0.03 });
   assert.ok(Math.abs(p0 - 0.53) < 1e-12, `trust 0: ${p0}`);
   const p1 = chanceAt('total', 0.5, 0.56, 1, { named: 0.03 });
@@ -52,7 +52,7 @@ test('D39 the chance: at trust 0 the Book\'s fair plus the named shift alone, th
   assert.equal(repriced([{ event: '1', market: 'total', side: 'over', line: 46.5, fair: 0.5, odds: -110 }], () => ({ total: 48, margin: 2 }), params)[0].named, undefined);
 });
 
-test('D39 the live fit: a total\'s trust from the Bot\'s own graded totals since the epoch alone, from 0; the gate and the history the same; the bet carries its shift', () => {
+test('D44 the live fit: a total\'s trust from the Bot\'s own graded totals since the epoch alone, from 0; the gate and the history the same; the bet carries its shift', () => {
   const run = src('run.mjs');
   assert.ok(/const evidenceOf = market === 'total' \? live\.filter\(\(b\) => b\.market === market\) : \[\.\.\.backtest\.filter/.test(run), 'never the backtest for a total');
   assert.ok(/market === 'total' \? TRUST_START\.total : START_TRUST\)/.test(run));
@@ -63,5 +63,5 @@ test('D39 the live fit: a total\'s trust from the Bot\'s own graded totals since
   assert.ok(/\(k\) => V\.desk\.trustStart\?\.\(k, 0\.5\) \?\? 0\.5, 'lines'/.test(src('gate-history.mjs')));
   assert.ok(/chanceAt\(b\.market, b\.fair, b\.model, t, Number\.isFinite\(b\.named\) \? \{ named: b\.named \} : null\)/.test(src('desk.mjs')), 'the trust fit prices the shift the same way');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D39.'));
+  assert.ok(decisions.includes('### D44.'));
 });

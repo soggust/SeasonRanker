@@ -1,4 +1,4 @@
-// The usage on a prop's row (DECISIONS.md D36, the owner, 2026-10-19: "usage first, rate second"): one inspectable
+// The usage on a prop's row (DECISIONS.md D41, the owner, 2026-10-19: "usage first, rate second"): one inspectable
 // number for how much work the player is expected to get tonight, before the rate that turns it into the stat.
 // The Bot's disagreement with the Book is 75-90% noise, concentrated where the Book's close knows roles, injuries,
 // lineups and leashes (D33), so the usage is read off the projection as a first-class value on every row, in the

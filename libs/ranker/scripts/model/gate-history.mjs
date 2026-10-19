@@ -185,7 +185,7 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
     rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, ...(fin(b.named) ? { named: b.named } : {}) });
   }
-  // (a version with the totals rule (D39, desk.mjs trustStart): its totals' trust walks forward from 0, the named
+  // (a version with the totals rule (D44, desk.mjs trustStart): its totals' trust walks forward from 0, the named
   // terms' shift on each row at full weight)
   return finish(V, rows, (x) => x.market, (k) => V.desk.trustStart?.(k, 0.5) ?? 0.5, 'lines');
 }
@@ -268,7 +268,7 @@ export function propHistoryRows(V, sport, index, matches, current) {
   const B = V.desk.BUCKET_START ?? { low: 0.25, mid: 0.375, high: 0.5 };
   const bucket = V.desk.lineBucket ?? ((l) => (l <= 1.5 ? 'low' : l <= 3.5 ? 'mid' : 'high'));
   const done = finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props');
-  // (the lineup risk (lineup-risk.mjs, D37): each player game's open against its close on the Bot's own side at the
+  // (the lineup risk (lineup-risk.mjs, D42): each player game's open against its close on the Bot's own side at the
   // open, both at the priced chance (the trust's, the anchor's where the version has it): the share of its edge that
   // survived to the close, by stat; what --record writes for the live desk. A version without the module has none)
   let risk = null;

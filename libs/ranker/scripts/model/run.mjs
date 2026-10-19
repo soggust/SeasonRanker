@@ -932,7 +932,7 @@ function expectFor(r, game) {
   if (f) setDynamic(dynamicTerms(r.feats.terms), f, base);
   const adjM = f && r.weights ? f.m.reduce((s, v, i) => s + v * r.weights.m[i], 0) : 0;
   const adjT = f && r.weights ? f.t.reduce((s, v, i) => s + v * r.weights.t[i], 0) : 0;
-  // (the named terms' part of the total's shift (D39): the soft schedule terms, what a totals bet is earned by)
+  // (the named terms' part of the total's shift (D44): the soft schedule terms, what a totals bet is earned by)
   const namedT = f && r.weights ? namedIdx(r.feats.terms, 't').reduce((s, i) => s + (f.t[i] ?? 0) * (r.weights.t[i] ?? 0), 0) : 0;
   return { exp: { ...adjust(base, adjM, adjT), namedT: r.feats ? namedT : null }, f, adjM, adjT };
 }
@@ -1018,7 +1018,7 @@ async function fitTheProps(r) {
     // history, last season's reports are in the table all the same))
     const nflNow = r.now.getUTCMonth() >= 2 ? r.now.getUTCFullYear() : r.now.getUTCFullYear() - 1;
     r.playChance = sport === 'nfl' ? await nflPlayChance(cfg.deepen ?? 2016, Math.max(nflNow, ...history.map((g) => g.season))) : null;
-    // (the missing-prop rates (board-miss.mjs, D40): the history's opens against the snap counts, read once a run)
+    // (the missing-prop rates (board-miss.mjs, D45): the history's opens against the snap counts, read once a run)
     r.boardMiss = sport === 'nfl' ? await nflBoardMiss(2023, Math.max(nflNow, ...history.map((g) => g.season))).catch((err) => (console.warn(`nfl: the missing-prop rates not read (${err.message})`), null)) : null;
     if (r.boardMiss) console.log(`${sport}: the missing-prop signal: ${boardMissText(r.boardMiss)}`);
     if (r.playChance) {
@@ -1210,7 +1210,7 @@ function refitTrust(r) {
     .filter((b) => sharp(b) && evidence(b))
     .map((b) => timed(b, 'lines'));
   for (const market of MARKETS) {
-    // (the totals (D39): the trust starts at 0 by rule and climbs only on the Bot's own graded totals since the epoch,
+    // (the totals (D44): the trust starts at 0 by rule and climbs only on the Bot's own graded totals since the epoch,
     // never on the backtest's closes: the Bot's totals lean is noise at the close in every sport, so only held-out
     // evidence of its own earns it a weight; the named terms (the soft schedule terms) price a total meanwhile)
     const evidenceOf = market === 'total' ? live.filter((b) => b.market === market) : [...backtest.filter((b) => b.market === market), ...live.filter((b) => b.market === market)];
@@ -1890,7 +1890,7 @@ function betGames(r) {
         odds: pick.odds,
         model: round(pick.model, 4),
         fair: round(pick.fair, 4),
-        // (a total's named terms' shift on its side (D39): the part of its chance the trust doesn't shrink)
+        // (a total's named terms' shift on its side (D44): the part of its chance the trust doesn't shrink)
         ...(Number.isFinite(pick.named) ? { named: round(pick.named, 4) } : {}),
         p: round(pick.p, 4),
         ev: round(pick.ev, 4),
@@ -2123,7 +2123,7 @@ async function betProps(r) {
   const STORED_HOURS = STORED_FRESH / 36e5;
   const idx = rowsIndex(sport, r.rows);
   const candidates = [];
-  // (the lineup risk (lineup-risk.mjs, DECISIONS.md D37): each stat's survival of the Bot's edge from the early price to
+  // (the lineup risk (lineup-risk.mjs, DECISIONS.md D42): each stat's survival of the Bot's edge from the early price to
   // the close, fit by the gate on the priced history (lineup-risk.json, read, never fit here), and the Bot's own record
   // since the epoch by stat and hours before the start (ledgerRisk: the self-tuning part). Before the news is in, a
   // row's lean is held to the surviving share at these hours and bet only if that still clears the price (riskOf))
@@ -2183,7 +2183,7 @@ async function betProps(r) {
     if (!rosters.has(String(team))) rosters.set(String(team), await roster(cfg.league, team, ROSTER_MIN[sport] ?? 40).catch(() => null));
     return rosters.get(String(team));
   };
-  // (the week's practice status, the NFL's, read once a week a run (D40): the game's week from nflverse's schedule)
+  // (the week's practice status, the NFL's, read once a week a run (D45): the game's week from nflverse's schedule)
   const practiceWeeks = new Map();
   const practiceFor = async (game) => {
     if (sport !== 'nfl') return null;
@@ -2256,7 +2256,7 @@ async function betProps(r) {
       // (the morning snapshot's prices where the board has none of its own (the NFL's): the day's suggestions, never a
       // bet (suggest.mjs, D30); read once a game a run)
       const snap = !boardPriced && !DRY ? morningPrices(sport, game, r.now.getTime()) : null;
-      // (the first ask deferred (D37: a fresh quote only when the Bot is about to bet): with a free price to price the
+      // (the first ask deferred (D42: a fresh quote only when the Bot is about to bet): with a free price to price the
       // suggestions off (the Book's board, or the snapshot) and the last chance not yet here, the game's props are
       // priced first; the ask comes only where a row's surviving lean clears the free price (askNow below), else the
       // run shows the suggestions and spends nothing. An owed ask, the near one and the last chance ask as before)
@@ -2321,14 +2321,14 @@ async function betProps(r) {
       const exp = { ...exp0, market: marketPts(u.lines?.total?.line, homeMargin), marketSpread: homeMargin, marketTotal: Number.isFinite(u.lines?.total?.line) ? u.lines.total.line : null };
       const live0 = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       // (the NFL's depth charts now, the site's (props.mjs readDepth: the role guard's depth CHECK), read once a run)
-      // (the NFL's: the week's practice status by player (playchance.mjs nflPractice, D40: the table's practice level,
+      // (the NFL's: the week's practice status by player (playchance.mjs nflPractice, D45: the table's practice level,
       // read live) and the missing-prop rates (r.boardMiss) ride on the game's live facts for the price)
       const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))), practice: await practiceFor(game), boardMiss: r.boardMiss ?? null } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
       const priceNow = () => priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null, r.anchor ?? null);
       let { priced, bets } = priceNow();
-      // (the deferred first ask (D37): a row's surviving lean clears the free or snapshot price, so the Bot is about to
+      // (the deferred first ask (D42): a row's surviving lean clears the free or snapshot price, so the Bot is about to
       // bet: the fresh quote bought now and the game priced again on it; none clears, the suggestions stand and the
       // credits are kept)
       if (defer) {
@@ -2338,7 +2338,7 @@ async function betProps(r) {
           run.askedToBet = (run.askedToBet ?? 0) + 1;
         } else run.deferred = (run.deferred ?? 0) + 1;
       }
-      // (the suggestions (D37): each priced row's side with an edge at the latest known price, at the surviving lean
+      // (the suggestions (D42): each priced row's side with an edge at the latest known price, at the surviving lean
       // before the news is in; on the board (board.mjs sug))
       for (const x of priced) {
         if (!x.priced || x.guard?.skip) continue;
@@ -2397,7 +2397,7 @@ async function betProps(r) {
             run.snapshotHeld = (run.snapshotHeld ?? 0) + 1;
             continue;
           }
-          // (the Bot's own time to bet (D37): before the news is in, the lean held to the share that survives to the
+          // (the Bot's own time to bet (D42): before the news is in, the lean held to the share that survives to the
           // close for its stat at these hours; an edge there is bet now at that chance (the bet carries early: its
           // hours, the survival and the full lean), none is held for a later run: not tracked (a tracked row would
           // block the bet), a suggestion on the board where the full lean has one)
@@ -2607,7 +2607,7 @@ async function betProps(r) {
   if (run.anytime) console.log(`${sport}: anytime TD priced ${run.anytime.priced} in ${run.anytime.games} games, ${run.anytime.placed} new tracked rows (never staked)${run.anytime.unmatched ? `; ${run.anytime.unmatched} names not matched` : ''}${run.anytime.out ? `; ${run.anytime.out} listed out` : ''}`);
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
-  if (run.heldRisk || run.early || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D37): ${run.early ?? 0} bet early at the surviving lean, ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
+  if (run.heldRisk || run.early || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D42): ${run.early ?? 0} bet early at the surviving lean, ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: `role changes (CHECKs at a model Kelly of +${Math.round(CHECK_KELLY * 100)} or more, else shadows)`, news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)', moved: 'the line moved twice the limit, his projection not with it' }[k] ?? 'by the other guards'}`).join(', ')}`);
@@ -2708,7 +2708,7 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     // checks.mjs withStoredPrices) the ask that gave it; a CHECK keeps it, so a later run knows how old it is)
     ...(x.prop.stored ? { priceAt: x.prop.stored.at } : intent === 'check' && x.prop.source === 'the odds api' ? { priceAt: new Date().toISOString() } : {}),
     projection: x.projection,
-    // (an early bet (D37): the hours before the start it was placed, the survival its lean was held to, the full lean)
+    // (an early bet (D42): the hours before the start it was placed, the survival its lean was held to, the full lean)
     ...(x.early ? { early: x.early } : {}),
     tested,
     context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(x.roleBet ? { roleBet: `${x.roleBet.key}: ${x.roleBet.why}; ${x.roleBet.gate}` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },

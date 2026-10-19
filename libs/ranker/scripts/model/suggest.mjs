@@ -1,4 +1,4 @@
-// The morning snapshot as a suggestion's price (DECISIONS.md D37, the owner, 2026-10-19): with the windows open a
+// The morning snapshot as a suggestion's price (DECISIONS.md D42, the owner, 2026-10-19): with the windows open a
 // day ahead, the board shows every market as a suggestion from then on, every hourly run, and the Bot buys a fresh
 // quote only when it is about to bet. Where the Book's free board carries prices (ESPN's NBA, NHL and MLB boards)
 // the suggestions are priced off it; where it carries none (the NFL's), the day's morning snapshot (odds-history.mjs

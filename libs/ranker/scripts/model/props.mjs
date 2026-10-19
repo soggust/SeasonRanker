@@ -1083,7 +1083,7 @@ export const STATS = {
   ],
   mlb: [
     stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_K, pitcher: true }),
-    // (flip: the reflected count's caps the fit tries (project.mjs chanceLog, D38): a start's outs are left-skewed (a hook
+    // (flip: the reflected count's caps the fit tries (project.mjs chanceLog, D43): a start's outs are left-skewed (a hook
     // ends it early, a long start sits near the cap), so M - outs is shaped; strikeouts stay plain (their count's shape is
     // right, measured 2026-10-19: the plain log loss on the counts 2.187 against 2.28 to 2.49 reflected))
     stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_OUTS, pitcher: true, flip: [21, 24, 27] }),
@@ -1833,7 +1833,7 @@ export function rowsIndex(sport, rows) {
 // every questionable one at half (run.mjs passes none before the final injury report: playchance.mjs playAt)
 // (an MLB starter's expected outs from the outs model on the same row (its matchups' live fields are the pitcher's
 // own: his leash, rest, the lineup he faces), as priceProps makes a mean before the team allocation (MLB has none):
-// the usage behind a strikeouts row (usage.mjs, D36); null with no outs fit or no projection)
+// the usage behind a strikeouts row (usage.mjs, D41); null with no outs fit or no projection)
 function pitcherOuts(f, row, info, pts, home) {
   if (!f?.model || !row) return null;
   const p = f.model.project(row);
@@ -1851,7 +1851,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
   // role guard: a change at quarterback))
   const onBoard = new Set();
-  // (each listed player's team, for the missing-prop read below (D40): a regular at the position with no prop while
+  // (each listed player's team, for the missing-prop read below (D45): a regular at the position with no prop while
   // PLAY_MISSING_MIN teammates there have one)
   const boardTeam = new Map();
   const boardQbs = new Map();
@@ -1916,11 +1916,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const qMiss = (id) => {
       if (!play || sport !== 'nfl') return 0.5;
       const p = idx.pos(id) ?? idx.pos(String(id)) ?? qPos.get(String(id));
-      // (his practice status this week where the live read has it (playchance.mjs nflPractice, D40): the table's
+      // (his practice status this week where the live read has it (playchance.mjs nflPractice, D45): the table's
       // practice level)
       return missChance(play, { pos: p, gone: f.matchups?.goneOf?.(row.team, game.season, id) ?? null, regular: isReg(id, p), practice: live?.practice?.get?.(String(id)) ?? null });
     };
-    // (the missing-prop signal (D40, board-miss.mjs): a regular at the position with no prop on this game's board while
+    // (the missing-prop signal (D45, board-miss.mjs): a regular at the position with no prop on this game's board while
     // PLAY_MISSING_MIN teammates at his position group have one, the NFL's, with the rates read: his chance of missing
     // the game by his report status (none, questionable) in place of 0 or the table's; a guard's fixed view (q a
     // number) as it was. Logged once a game and player)
@@ -1934,7 +1934,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       const bm = missing ? boardMissChance(live.boardMiss, out.questionable.has(sid) ? 'q' : 'none', true) : null;
       if (bm !== null && !settledLogged.has(`${game.id}:${sid}:board`)) {
         settledLogged.add(`${game.id}:${sid}:board`);
-        console.log(`${sport}: ${idx.name?.(id) ?? sid} (${p}) has no prop on the board while ${listedMates(row.team, p)} teammates at the position do: ${Math.round(bm * 100)}% to miss ${game.awayAbbr} @ ${game.homeAbbr} (${out.questionable.has(sid) ? 'questionable' : 'not on the report'}; D40)`);
+        console.log(`${sport}: ${idx.name?.(id) ?? sid} (${p}) has no prop on the board while ${listedMates(row.team, p)} teammates at the position do: ${Math.round(bm * 100)}% to miss ${game.awayAbbr} @ ${game.homeAbbr} (${out.questionable.has(sid) ? 'questionable' : 'not on the report'}; D45)`);
       }
       if (out.questionable.has(sid)) return typeof q === 'function' ? (bm ?? q(id)) : q;
       if (bm !== null) return typeof q === 'function' ? bm : q;
@@ -1991,7 +1991,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (mean-preserving where the fit is (project.mjs trn): over the history's latest mean of the factor, trNow)
     const sqF = sqF0 !== 1 && f.params.trn ? sqF0 / (f.params.trNow ?? 1) : sqF0;
     const mu = Math.max(0.05, mu0 * sqF);
-    // (the usage on the row (usage.mjs, DECISIONS.md D36: usage first, rate second): the work the projection reads
+    // (the usage on the row (usage.mjs, DECISIONS.md D41: usage first, rate second): the work the projection reads
     // for him tonight as one inspectable number, from the parts it was made with (the snap share, the targets, the
     // minutes, the time on ice, the lineup slot's plate appearances); an MLB starter's expected outs from the outs
     // model on the same row (a strikeouts row's usage is his start's length). On the projection, the ledger's bet

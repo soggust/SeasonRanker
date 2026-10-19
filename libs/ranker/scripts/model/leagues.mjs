@@ -200,7 +200,7 @@ export const GAME_CAP = 5;
 // corrected one (residual.mjs, the Book's error learned on the priced history: the Bot's lean where it has been right,
 // the Book's over-shade), live on the props and the lines (props.mjs priceProps, desk.mjs choose, the board). Set to
 // the push time.
-// 2026-10-19, the usage round (DECISIONS.md D37, the owner's decision that morning): the windows open the day before for
+// 2026-10-19, the usage round (DECISIONS.md D42, the owner's decision that morning): the windows open the day before for
 // every sport but MMA (TIMING 26 hours), the Bot picks its own time to bet inside them (the lineup risk: before the news
 // is in a lean is held to the share that survives to the close for its stat, bet only where that clears the price), a
 // fresh quote bought only to bet, the morning snapshot pricing suggestions alone. A selection change: the trust and the
@@ -228,7 +228,7 @@ export const MODEL_EPOCH = '2026-10-19T16:00:00Z';
 // hourly schedule about five times a day, so that's when one happens to land there (the Sunday and night-game
 // triggers in .github/workflows/model-desk.yml add tries). The NBA's starters, about 30 minutes before a tip,
 // are almost never in time for a re-price
-// (2026-10-19, the owner (DECISIONS.md D37): the windows open the day before for every sport but MMA, so the Book can
+// (2026-10-19, the owner (DECISIONS.md D42): the windows open the day before for every sport but MMA, so the Book can
 // show every market as a suggestion a day ahead, every hourly run. Inside the window the Bot picks its own time to bet:
 // before the news is in, a prop's lean is held to the share that survives to the close for its stat (lineup-risk.mjs)
 // and is bet only if that still clears the price; else it waits for the lineups, inactives, goalies or probables,

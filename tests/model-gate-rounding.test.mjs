@@ -54,7 +54,7 @@ test('every gate in fitStat reads the raw numbers: the five floors through gainO
   assert.equal((body.match(/if \(!\(raw >= DRAFT_GAIN\)\) fails\.push\('gain'\)/g) ?? []).length, 2);
   assert.match(body, /const csRaw = sided\.calSide \? gainOf\(current\.check, sided\.check\) : null;/);
   assert.match(body, /if \(!\(csRaw >= DRAFT_GAIN\)\) fails\.push\('gain'\)/);
-  // (the optional terms', the reflected count's (flip, D38) and the dispersion growth's keep: the raw gain over 0)
+  // (the optional terms', the reflected count's (flip, D43) and the dispersion growth's keep: the raw gain over 0)
   assert.equal((body.match(/const raw = gainOf\(without\.check, current\.check\);/g) ?? []).length, 3);
   // (no compare left on a rounded log loss or bias)
   assert.doesNotMatch(body, /\.logLoss \?\? 0\) - \(/, 'a gain from rounded log losses');

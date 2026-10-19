@@ -101,7 +101,7 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
     const f = ctx?.feats.get(g.id);
     if (f && dyn.length) setDynamic(dyn, f, base);
     const exp = f ? adjust(base, fitM.predict(f.m), fitT.predict(f.t)) : base;
-    // (the named terms' part of the total's shift (D39): what a totals bet is earned by; 0 with no context)
+    // (the named terms' part of the total's shift (D44): what a totals bet is earned by; 0 with no context)
     if (f && namedT.length) exp.namedT = fitT.part(f.t, namedT);
     else if (ctx) exp.namedT = 0;
     onGame?.(g, exp);
@@ -201,7 +201,7 @@ function online(ctx, on) {
   };
 }
 
-// (the named terms on the total (DECISIONS.md D39): the soft schedule terms (context.mjs SCHEDULE_TERMS, D34), the ones
+// (the named terms on the total (DECISIONS.md D44): the soft schedule terms (context.mjs SCHEDULE_TERMS, D34), the ones
 // that earn a totals bet; their indexes among a side's terms)
 export const namedIdx = (terms, on = 't') => (terms?.[on] ?? []).map((t, i) => (t.soft ? i : -1)).filter((i) => i >= 0);
 

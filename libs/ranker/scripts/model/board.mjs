@@ -31,7 +31,7 @@
 //             DECISIONS.md D31: no silent skip), at: when priced, bot and bk: the side the bot has open and
 //             'bet' or 'check', fc and cn: the other books' consensus fair chance over and how many books, dv:
 //             the side ('over' or 'under') the book's price beats it on by OUTLIER or more (as the game markets'),
-//             sug: the Bot's suggestion at the latest known price (DECISIONS.md D37: the windows open a day ahead
+//             sug: the Bot's suggestion at the latest known price (DECISIONS.md D42: the windows open a day ahead
 //             and the Bot picks its own time to bet): { s: the side it sees an edge on, e: its edge in points of
 //             chance over the Book's fair at that price (the full lean once the news is in or at the last chance,
 //             before that the share the lineup risk lets survive), h: hours to the start when priced, k: the
@@ -153,7 +153,7 @@ export function boardProp(x, at, { gate = null } = {}) {
     ...(pass ? { sr: skipReason(x.guard) } : {}),
     ...(over.c.cap || under.c.cap ? { cap: [over.c.cap ?? null, under.c.cap ?? null], ...(cr ? { cr } : {}) } : {}),
     ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
-    // (the suggestion (D37): the side the Bot sees an edge on at the latest known price, run.mjs betProps)
+    // (the suggestion (D42): the side the Bot sees an edge on at the latest known price, run.mjs betProps)
     ...(x.sug ? { sug: x.sug } : {}),
     at,
   };

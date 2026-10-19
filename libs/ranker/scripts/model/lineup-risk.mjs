@@ -1,4 +1,4 @@
-// The lineup risk (DECISIONS.md D37, the owner, 2026-10-19): the Bot picks its own time to bet inside the window.
+// The lineup risk (DECISIONS.md D42, the owner, 2026-10-19): the Bot picks its own time to bet inside the window.
 // An early bet faces the news the Book's close will know and the Bot reads late or never (a lineup, an inactive, a
 // goalie, a probable, a leash): the usage behind the stat changes between the early price and the lock, and the
 // Book moves with it. So before the news is in, a prop's lean is held to the share of it that has survived to the

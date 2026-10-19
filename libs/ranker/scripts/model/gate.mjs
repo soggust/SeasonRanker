@@ -260,7 +260,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
   const V = {};
   // (anchor: the anchored projection (anchor.mjs, D33); a version from before it has none, its own chances priced)
-  // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D37); none before it)
+  // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk']) V[n === 'lineup-risk' ? 'lineupRisk' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
@@ -319,7 +319,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // version's margins at its line (backtest.mjs repriced), at the trust fit on the backtest's closes)
   const bt = readJson(path.join(ROOT, 'apps', sport, 'scripts/model/backtest.json'), { bets: [] }).bets ?? [];
   const btRep = V.backtest.repriced(bt.filter((b) => b.anchor === 'pinnacle'), expAll, params, shape).map((b) => ({ ...b, sport }));
-  // (the totals' trust (D39, a version with trustStart): from 0, on the ledger's own graded totals alone, never the
+  // (the totals' trust (D44, a version with trustStart): from 0, on the ledger's own graded totals alone, never the
   // backtest's closes, as the live desk fits it; the rest on the backtest's closes from 0.5 as before)
   const ledgerTotals = (ledgerOf(sport).bets ?? []).filter((b) => b.market === 'total' && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && fin(b.model) && Date.parse(b.placedAt ?? b.start) >= Date.parse(V.leagues.MODEL_EPOCH ?? PROP_FROM));
   const trust = Object.fromEntries(MARKETS.map((m) => [m, m === 'total' && V.desk.trustStart ? V.desk.fitTrust(ledgerTotals, V.desk.trustStart('total')).trust : V.desk.fitTrust(V.backtest.trustBets(btRep.filter((b) => b.market === m)), 0.5).trust]));
@@ -473,7 +473,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     // (the anchor (D33): the fit on every season to date (all: what --record writes for the live desk), each
     // season's as the replay read it (bySeason), the newest season's (current))
     anchor: histProps.anchor ?? null,
-    // (the lineup risk (D37): each stat's survival of the Bot's edge from the open to the close, what --record writes)
+    // (the lineup risk (D42): each stat's survival of the Bot's edge from the open to the close, what --record writes)
     risk: histProps.risk ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
   };
@@ -705,7 +705,7 @@ function recordScore(version, sport, score, frozen) {
     writeFileSync(rowsOut, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, n: rows.length, rows })}\n`);
     console.log(`${sport}: the history's trust prior written (${path.relative(ROOT, out)}: ${Object.entries(prior).filter(([k]) => k !== 'periods' && k !== 'match').map(([k, v]) => `${k} ${v.trust} on ${v.rows} rows`).join(', ')}; ${rows.length} rows in ${path.relative(ROOT, rowsOut)})`);
   }
-  // (the lineup risk's fit on the priced history (D37): what the live desk reads, apps/<sport>/src/StaticData/model/
+  // (the lineup risk's fit on the priced history (D42): what the live desk reads, apps/<sport>/src/StaticData/model/
   // lineup-risk.json; a version without it leaves the file as it is)
   if (score.risk?.stats) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/lineup-risk.json');
