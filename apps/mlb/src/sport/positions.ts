@@ -404,28 +404,41 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // (stat-groups.ts resolves them; a key a tab lacks, the DH's fielding, is skipped). Only a look: where a
 // column sits, the strip's name, icon and color, and what the sidebar's eye on the group switches off
 // together. The ranking reads the sliders alone.
+//
+// A hitter's profile (the owner, 2026-10-19): Results | Contact | Power | Speed | Fielding | Support. Results
+// is the bottom line of his season (WAR, wRC+, xwOBA, the runs he scored and drove in), Contact putting the
+// ball in play and getting on base (AVG, OBP, the walk and strikeout rates), Power (HR, SLG, barrels,
+// hard-hit), Speed (SB, sprint speed, BsR), Fielding (Def Runs, OAA, FLD %, RF/9; none for the DH, the
+// value numbers only on the Top tab). Starters and relievers alike: Results | Prevention | Stuff | Support,
+// Prevention the runs kept off the board (ERA, WHIP, FIP, xFIP, xERA, the contact allowed: HR / 9, hard-hit
+// and barrel rates; a starter's FLD % last), Stuff the swing-and-miss and command numbers. A team: Results |
+// Offense | Pitching | Fielding | Support (the team stats don't tell the rotation from the bullpen; Fielding
+// Runs is a fielding stat, so it has its strip). Tones (colors): Results 0, Support 3, the profile strips
+// 1, 2, 4, 5 in order.
 // ---------------------------------------------------------------------------
 type Group = GroupDef<SkillColumnKey>;
 const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
 
 const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_events', 0, keys);
-const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
-const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
 const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+const prevention = (keys: SkillColumnKey[]) => group('prevention', 'Prevention', 'shield', 1, keys);
+const stuff = (keys: SkillColumnKey[]) => group('stuff', 'Stuff', 'bolt', 2, keys);
 
-// (hitters' walk and strikeout rates are basic stats; pitchers' are advanced)
 const HITTER_GROUPS: Group[] = [
-  results(['games', 'pa']),
-  basic(['avg', 'homeRuns', 'rbi', 'runs', 'stolenBases', 'obp', 'slg', 'bbPct', 'kPct', 'rangeFactor', 'fieldingPct']),
-  advanced(['war', 'wrcPlus', 'xwoba', 'barrelPct', 'hardHitPct', 'sprintSpeed', 'oaa', 'defRuns', 'bsr']),
+  results(['games', 'pa', 'war', 'wrcPlus', 'xwoba', 'runs', 'rbi']),
+  group('contact', 'Contact', 'gps_fixed', 1, ['avg', 'obp', 'bbPct', 'kPct']),
+  group('power', 'Power', 'fitness_center', 2, ['homeRuns', 'slg', 'barrelPct', 'hardHitPct']),
+  group('speed', 'Speed', 'directions_run', 4, ['stolenBases', 'sprintSpeed', 'bsr']),
+  group('fielding', 'Fielding', 'back_hand', 5, ['defRuns', 'oaa', 'fieldingPct', 'rangeFactor']),
   support(['lineup', 'park']),
 ];
 
 export const GROUPS: Record<SkillPosition, Group[]> = {
   TM: [
-    results(['winPct', 'recent', 'playoffWins']),
-    basic(['runDiff', 'offRank', 'defRank', 'ops', 'era']),
-    advanced(['fieldingRuns', 'pythDiff', 'parkFactor']),
+    results(['winPct', 'recent', 'playoffWins', 'runDiff', 'pythDiff', 'parkFactor']),
+    group('offense', 'Offense', 'bolt', 1, ['offRank', 'ops']),
+    group('pitching', 'Pitching', 'sports_baseball', 2, ['defRank', 'era']),
+    group('fielding', 'Fielding', 'back_hand', 4, ['fieldingRuns']),
     support(['hitters', 'rotation', 'bullpen']),
   ],
   TOP: HITTER_GROUPS,
@@ -437,22 +450,40 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   OF: HITTER_GROUPS,
   DH: HITTER_GROUPS,
   SP: [
-    results(['games', 'winPct']),
-    basic(['era', 'ip', 'strikeOuts', 'whip', 'hr9', 'fieldingPct']),
-    advanced(['war', 'fip', 'xfip', 'xera', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'hardHitAllowed', 'barrelAllowed']),
+    results(['games', 'war', 'winPct', 'ip']),
+    prevention(['era', 'whip', 'fip', 'xfip', 'xera', 'hr9', 'hardHitAllowed', 'barrelAllowed', 'fieldingPct']),
+    stuff(['strikeOuts', 'kPct', 'whiffPct', 'bbPct', 'kbbPct']),
     support(['defense', 'park']),
   ],
   RP: [
-    results(['games', 'saves', 'holds']),
-    basic(['era', 'ip', 'strikeOuts', 'whip']),
-    advanced(['war', 'fip', 'xfip', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'xwobaAllowed', 'hardHitAllowed']),
+    results(['games', 'war', 'saves', 'holds', 'ip']),
+    prevention(['era', 'whip', 'fip', 'xfip', 'xwobaAllowed', 'hardHitAllowed']),
+    stuff(['strikeOuts', 'kPct', 'whiffPct', 'bbPct', 'kbbPct']),
     support(['defense', 'park']),
   ],
 };
 
-// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
-// hid one hides those stats one by one, so it ranks as its author saw it)
-export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
+// The groups every tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin
+// that hid one hides those stats one by one, so it ranks as its author saw it): Basic and Advanced, as they
+// were on 2026-10-19 (hitters' walk and strikeout rates were basic, pitchers' advanced)
+const HITTER_LEGACY: Record<string, SkillColumnKey[]> = {
+  box: ['avg', 'homeRuns', 'rbi', 'runs', 'stolenBases', 'obp', 'slg', 'bbPct', 'kPct', 'rangeFactor', 'fieldingPct'],
+  advanced: ['war', 'wrcPlus', 'xwoba', 'barrelPct', 'hardHitPct', 'sprintSpeed', 'oaa', 'defRuns', 'bsr'],
+};
+const drop = (keys: SkillColumnKey[], gone: SkillColumnKey[]) => keys.filter((key) => !gone.includes(key));
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {
+  TM: { box: ['runDiff', 'offRank', 'defRank', 'ops', 'era'], advanced: ['fieldingRuns', 'pythDiff', 'parkFactor'] },
+  TOP: { box: drop(HITTER_LEGACY['box'], ['fieldingPct', 'rangeFactor']), advanced: HITTER_LEGACY['advanced'] },
+  C: HITTER_LEGACY,
+  '1B': HITTER_LEGACY,
+  '2B': HITTER_LEGACY,
+  '3B': HITTER_LEGACY,
+  SS: HITTER_LEGACY,
+  OF: HITTER_LEGACY,
+  DH: { box: drop(HITTER_LEGACY['box'], ['fieldingPct', 'rangeFactor']), advanced: drop(HITTER_LEGACY['advanced'], ['oaa', 'defRuns']) },
+  SP: { box: ['era', 'ip', 'strikeOuts', 'whip', 'hr9', 'fieldingPct'], advanced: ['war', 'fip', 'xfip', 'xera', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'hardHitAllowed', 'barrelAllowed'] },
+  RP: { box: ['era', 'ip', 'strikeOuts', 'whip'], advanced: ['war', 'fip', 'xfip', 'kPct', 'bbPct', 'kbbPct', 'whiffPct', 'xwobaAllowed', 'hardHitAllowed'] },
+};
 
 export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
   return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
