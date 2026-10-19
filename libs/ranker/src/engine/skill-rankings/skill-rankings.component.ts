@@ -42,6 +42,7 @@ import { TabRanker } from './tab-ranker';
 import { groupOfKey, groupSortValue, groupStat } from './group-sort';
 import { groupRankTint } from './group-ranks';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
+import { ScoreBar, maxScoreOf, scoreBar } from './score-bar';
 import { scoreClass } from '@ranker/engine/result-class';
 import { Breakdown, barWidths } from '@ranker/core/breakdown';
 import { GradePart, GradeWhy, gradeText } from '@ranker/engine/grade-why';
@@ -965,6 +966,17 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   // The score as the list went by: "1.23"
   readonly scoreText = scoreText;
+
+  // The Score column (score-bar.ts): a row's score to one place over its bar, the bar against the best in the
+  // list. The best is worked out once per scoring (the totals change whenever the sliders score the list again);
+  // a row the list didn't score (a UR row) has none
+  private maxScoreCache: { totals: Map<SkillPlayer, number>; max: number } | null = null;
+  scoreCell(player: SkillPlayer): ScoreBar | null {
+    const total = this.totals.get(player);
+    if (total === undefined || this.isUr(player)) return null;
+    if (this.maxScoreCache?.totals !== this.totals) this.maxScoreCache = { totals: this.totals, max: maxScoreOf(this.totals.values()) };
+    return scoreBar(total, this.maxScoreCache.max);
+  }
 
   // ---------------------------------------------------------------------------
   // Compare: rows picked in the grid, then the button

@@ -23,6 +23,12 @@ $bar-tiles: ".filter-toggle, .settings-toggle, .copy-toggle, .share-toggle, .com
 // A hovered row's light wash (the column band's too: column-highlight.directive.ts)
 $row-wash: rgba(255, 255, 255, 0.07);
 
+// The Score column (the owner's spec, 2026-10-19): 100px between the rank tile and the team card, inside the name
+// column, which grows by it and the room after it so the names keep theirs
+$score-col: 100px;
+$score-gap: 1em;
+$score-add: calc(#{$score-col} + #{$score-gap});
+
 @mixin bar-panel {
   align-items: center;
   @include v.scoreboard-panel(8px, 1px 1px 1px rgba(0, 0, 0, 0.6));
@@ -612,8 +618,8 @@ section ul li.player {
     flex-direction: row;
     height: 4em;
     justify-content: flex-start;
-    min-width: 23em;
-    width: 23em;
+    min-width: calc(23em + #{$score-add});
+    width: calc(23em + #{$score-add});
   }
 
   // The name fills the rest of the name column, awards on their own line under it
@@ -671,10 +677,10 @@ section ul li.player {
 }
 
 section.spread ul li.player > div.player-info {
-  flex: 0 0 23em;
+  flex: 0 0 calc(23em + #{$score-add});
 
   @include v.up(grid-xl) {
-    flex-basis: 29em;
+    flex-basis: calc(29em + #{$score-add});
   }
 }
 
@@ -1261,15 +1267,15 @@ section ul li.player.header-row:hover {
 
     p.stat-label {
       cursor: default;
-      margin: 0 0 0 145px;
+      margin: 0 0 0 calc(145px + #{$score-add});
       transform: translateX(-50%);
 
       @include v.down(laptop) {
-        margin-left: 129px;
+        margin-left: calc(129px + #{$score-add});
       }
 
       @include v.down(phone) {
-        margin-left: 106px;
+        margin-left: calc(106px + #{$score-add});
       }
     }
   }
@@ -1738,7 +1744,7 @@ section ul.scrolled-x li.player > div.player-info {
     left: calc(-0.5em - var(--pin-left));
     position: absolute;
     top: -0.25em;
-    width: calc(12em + var(--pin-left));
+    width: calc(12em + #{$score-add} + var(--pin-left));
     z-index: -1;
   }
 
@@ -1837,8 +1843,8 @@ section ul li.player > div.player-info .player-name {
 
     // (the grid scrolls sideways here anyway: the name column takes the room for a whole name)
     div.player-info {
-      min-width: 30em;
-      width: 30em;
+      min-width: calc(30em + #{$score-add});
+      width: calc(30em + #{$score-add});
     }
 
     div .player-name strong {
@@ -2289,5 +2295,78 @@ section ul.scrolled-x li.player.header-row > div.player-info .isolate-chip {
   from {
     opacity: 0;
     transform: translateY(-4px);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The Score column (the owner's spec, 2026-10-19): between the rank tile and the team card, in the name column
+// (so it's pinned with them scrolled sideways), each cell the score to one place in the hand over a 6px bar
+// filling the cell, the bar the score against the best in the list (score-bar.ts). Its fill is lit like the
+// Book's meters (the bet meter's fill: a soft glow in its color); those have no sweep on first paint, so
+// neither does this. A change of score (the sliders) slides the fill to its new width.
+// ---------------------------------------------------------------------------
+section ul li.player:not(.header-row) .score-cell {
+  align-items: stretch;
+  display: flex;
+  flex: 0 0 $score-col;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+  margin-right: $score-gap;
+  width: $score-col;
+
+  .score-value {
+    color: v.$text-strong;
+    font-family: v.$font-hand;
+    font-size: 12px;
+    font-synthesis: none;
+    font-weight: 400;
+    line-height: 1;
+    text-align: left;
+  }
+
+  .score-track {
+    background: #2c2c2c;
+    border-radius: 3px;
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .score-fill {
+    background: var(--scoreboard-led);
+    border-radius: 3px;
+    box-shadow: 0 0 6px color-mix(in srgb, var(--scoreboard-led) 45%, transparent);
+    display: block;
+    height: 100%;
+    transition: width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+// (its label, over the cells: from where they start (the rank tile and its margin, 1.25em at the tile's 1.15em),
+// the sort's arrow after it; the name column's own label moves over by the column)
+section ul:not(.scrolled-x) li.player.header-row > div.player-info {
+  position: relative;
+}
+
+section ul li.player.header-row > div.player-info p.stat-label.score-head {
+  align-items: center;
+  display: flex;
+  gap: 1px;
+  left: calc(46px + 1.4375em);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: $score-col;
+
+  .score-sort {
+    @include v.icon-size(12px);
   }
 }

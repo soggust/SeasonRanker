@@ -25,6 +25,8 @@
               </button>
             </span>
           } @else {
+            <!-- (the Score column's label, over its cells: the rows are sorted by it, so its arrow) -->
+            <p class="stat-label score-head" title="The score the list is sorted by: each stat's standard score times its slider, added up; the bar against the best in the list">Score<mat-icon class="score-sort" aria-hidden="true" fontIcon="arrow_downward"></mat-icon></p>
             <p class="stat-label header-name">{{ rowHeader }}</p>
           }
         </div>
@@ -134,6 +136,16 @@
             >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
               ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
           >
+            <!-- The Score column: the row's score to one place over its bar, the bar against the best in the list
+                 (score-bar.ts; a UR row, unscored, has an empty cell) -->
+            <span class="score-cell">
+              @if (scoreCell(player); as sc) {
+                <span class="score-value" aria-hidden="true">{{ sc.text }}</span>
+                <span class="score-track" role="meter" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="sc.now" [attr.aria-label]="sc.label"
+                  ><i class="score-fill" [style.width.%]="sc.pct"></i
+                ></span>
+              }
+            </span>
             <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
             <span class="badge-slot card-target" aria-hidden="true" [class.with-photo]="headshot(player)" (click)="openCard(player)"
               ><span class="team-badge" [class.white-logo]="teamLook(player).whiteLogo"
