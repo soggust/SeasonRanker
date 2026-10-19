@@ -1,0 +1,27 @@
+{
+  "about": "The Bluesky accounts the desk reads for injury and role news (fastnews.mjs, news-signals.mjs postSignals; DECISIONS.md D49). Each one checked on 2026-10-19 through the public AppView (app.bsky.actor.getProfile and app.bsky.feed.getAuthorFeed): it exists, posted in the last week, and its posts carry injury or lineup news (posts: of its last 100, the share in the last 7 days naming a status or an injury). A mirror is an account that reposts the reporter's own posts from elsewhere, marked so. Add one only after the same check.",
+  "verified": "2026-10-19",
+  "sports": {
+    "nfl": [
+      { "handle": "adamscheftermirror.bsky.social", "who": "Adam Schefter (ESPN), a mirror", "kind": "insider", "week": "100 posts, 43 on injuries" },
+      { "handle": "rapsheet.bsky.social", "who": "Ian Rapoport (NFL Network)", "kind": "insider", "week": "38 posts, 20 on injuries" },
+      { "handle": "nflnewsposter.bsky.social", "who": "NFL News Poster: the insiders' posts relayed, each tagged with its reporter", "kind": "relay", "week": "84 posts, 49 on injuries" },
+      { "handle": "nflnewsreposterbot.bsky.social", "who": "NFL News Reposter Bot: Pelissero's, Garafolo's and Russini's posts relayed", "kind": "relay", "week": "3 posts, 1 on injuries" },
+      { "handle": "insidenflnews.bsky.social", "who": "NFL Daily News: transactions and injury moves", "kind": "aggregator", "week": "57 posts, 22 on injuries" },
+      { "handle": "rotoworld-fb.bsky.social", "who": "Rotoworld Football (NBC Sports): player news", "kind": "aggregator", "week": "100 posts, 24 on injuries" },
+      { "handle": "rotowirenfl.bsky.social", "who": "RotoWire Fantasy Football: player news", "kind": "aggregator", "week": "100 posts, 17 on injuries" }
+    ],
+    "nba": [
+      { "handle": "shamsbot.bsky.social", "who": "Shams Charania (ESPN), a mirror", "kind": "insider", "week": "17 posts, 5 on injuries" },
+      { "handle": "rotowirenba.bsky.social", "who": "RotoWire NBA: player news, the statuses game by game", "kind": "aggregator", "week": "100 posts, 24 on injuries" },
+      { "handle": "insidenbanews.bsky.social", "who": "NBA Daily News: the insiders' news relayed", "kind": "relay", "week": "8 posts, 2 on injuries" }
+    ],
+    "nhl": [
+      { "handle": "dailyfaceoff.bsky.social", "who": "DailyFaceoff: lines, goalies and injuries", "kind": "aggregator", "week": "100 posts, 28 on injuries" },
+      { "handle": "dfotoronto.bsky.social", "who": "DailyFaceoff Toronto: the Leafs' lineup notes", "kind": "beat", "week": "99 posts, 13 on injuries" },
+      { "handle": "notfriedgehnic.bsky.social", "who": "Elliotte Friedman (Sportsnet), a mirror", "kind": "insider", "week": "24 posts, 1 on injuries" },
+      { "handle": "johnston-bot.bsky.social", "who": "Chris Johnston (The Athletic), a mirror", "kind": "insider", "week": "8 posts, 2 on injuries" },
+      { "handle": "marklazerus.bsky.social", "who": "Mark Lazerus (The Athletic), the Blackhawks' beat", "kind": "beat", "week": "45 posts, 6 on injuries" }
+    ]
+  }
+}

@@ -226,7 +226,9 @@ jobs:
 
       # (the teams' news read for role signals, libs/ranker/scripts/model/news-signals.mjs: only with the
       # repository variable NEWS_SIGNALS set to 1 and the ANTHROPIC_API_KEY secret; claude-haiku-5-5, a team once
-      # a day (every run through 2026-10-31, ai-budget.mjs CAP_WINDOWS), each story once. Log only: the signals move no price, stake or CHECK (a later fit tests them). Its
+      # a day (every run through 2026-10-31, ai-budget.mjs CAP_WINDOWS), each story once. Log only: the signals move no price, stake or CHECK (a later fit tests them).
+      # And the curated Bluesky reporters (news-handles.json, DECISIONS.md D49), each run: their posts read into status claims
+      # (apps/*/scripts/model/news-fast.json), which the bettor puts into the injury reports the next run. Its
       # own caps (ai-budget.mjs newsBudget: $1 a day and $10 through 2026-10-31, then $0.15 a day and $4 a month;
       # NEWS_SIGNALS_DAILY_USD / _MONTHLY_USD may lower them), its log committed with the desk (apps/*/scripts/model/
       # news-signals.json) and the Algorithm tab's summary (apps/*/src/StaticData/model/news-signals.json).

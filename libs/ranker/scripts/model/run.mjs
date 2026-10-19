@@ -160,6 +160,7 @@ import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
+import { FAST_EARN_N, FAST_TIMING, fastEarned, fastFor, fastNotes, readClaims, sleeperPlayers, speedFile, speedUpdate, withSleeperPractice } from './fastnews.mjs';
 import { checkLearning, loosenings, reopened } from './check-learn.mjs';
 import { patternBook, patternKey, preResolve, ruleFinding, unitOf } from './check-patterns.mjs';
 import { readSeeds } from './check-seeds.mjs';
@@ -625,6 +626,8 @@ async function fitTheContext(r) {
     await noteInjuries(r);
     // (the teams' news, and the owner's notes on a team: their flags on the coming games)
     await teamNews(r);
+    // (the news-speed input, D49: Sleeper's statuses and the reporters' claims, into the reports before the context reads them)
+    await fastNews(r);
     const { nfl: _rows, ...kept } = r.facts;
     write(r.files.context, kept);
     r.feats = featurize(sport, cfg, history, r.facts, r.live);
@@ -833,6 +836,42 @@ async function noteInjuries(r) {
     if (applied.length) console.log(`${r.sport}: notes put into the injury reports: ${applied.map((x) => `${x.name} ${x.status}${x.from === 'research' ? ' (research)' : " (owner's note)"}`).join(', ')}`);
   } catch (err) {
     console.warn(`${r.sport}: owner's notes not applied (${err.message})`);
+  }
+}
+
+// 2b. the news-speed input (fastnews.mjs, DECISIONS.md D49): Sleeper's players dump (pulled once a UTC day) and the
+// reporters' claims (news-fast.json, read off Bluesky by news-signals.mjs postSignals the run before), each status
+// for a coming game's side posted inside its window and before now put into that game's report copy where it is
+// worse than ESPN's own entry and newer than it (fastNotes), so the context, the props, the play chance and the
+// re-price of an open bet (repriceOpen) read it; the timing's fast news (r.live's fastNews, betProps riskOf). And
+// the speed log (news-speed.json, committed; never on --dry): each listed player's first sight by source. Any
+// failure: the reports as ESPN's
+async function fastNews(r) {
+  r.fastApplied = [];
+  r.sleeper = null;
+  if (!['nfl', 'nba', 'nhl'].includes(r.sport) || !r.live?.size) return;
+  try {
+    r.sleeper = await sleeperPlayers(r.sport, { now: r.now });
+    const claims = readClaims(r.sport);
+    const rosters = new Map();
+    const rosterOf = async (team) => {
+      if (!rosters.has(String(team))) rosters.set(String(team), await roster(r.cfg.league, team, 1).catch(() => null));
+      return rosters.get(String(team));
+    };
+    r.fastRosters = rosters;
+    r.fastApplied = await fastNotes(r.sport, r.live, r.upcoming, { sleeper: r.sleeper, claims, now: r.now.getTime(), rosterOf });
+    const by = (src) => r.fastApplied.filter((x) => x.source === src).length;
+    const dump = r.sleeper ? `of ${r.sleeper.at}${r.sleeper.pulled ? ' (pulled this run)' : ''}, ${r.sleeper.rows.length} players` : 'not had';
+    const which = r.fastApplied.slice(0, 12).map((x) => `${x.name} ${x.status}${x.was ? ` (ESPN ${x.was})` : ' (ESPN unlisted)'} by ${x.source}`).join(', ');
+    console.log(`${r.sport}${DRY ? ' (dry)' : ''}: the news-speed input: Sleeper's dump ${dump}, ${claims.length} reporters' claims; ahead of ESPN's report: ${r.fastApplied.length} (Sleeper ${by('sleeper')}, Bluesky ${by('bluesky')})${which ? `: ${which}` : ''}`);
+    if (!DRY) {
+      const file = speedFile(r.sport);
+      const before = readJson(file, { entries: {} });
+      const after = speedUpdate(before, r.sport, { upcoming: r.upcoming, live: r.live, sleeper: r.sleeper, claims, now: r.now.getTime() });
+      if (JSON.stringify(before.entries ?? {}) !== JSON.stringify(after.entries)) writeAtomic(file, `${JSON.stringify(after, null, 1)}\n`);
+    }
+  } catch (err) {
+    console.warn(`${r.sport}: the news-speed input skipped (${err.message})`);
   }
 }
 
@@ -2159,11 +2198,13 @@ async function betProps(r) {
   const riskOf = (game, x, phase) => {
     const hours = (Date.parse(game.date) - r.now.getTime()) / 36e5;
     const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
-    const newsIn = phase === 'last' || ((sport === 'nhl' || sport === 'mlb') && !news.length);
+    // (fast news on his side (D49: a status ahead of ESPN's report, posted FRESH_H hours ago at most): the news is in hand)
+    const fast = FAST_TIMING.has(sport) && phase !== 'last' ? (fastFor(r.live.get(game.id), x.prop.athlete.team, r.now.getTime())[0] ?? null) : null;
+    const newsIn = phase === 'last' || ((sport === 'nhl' || sport === 'mlb') && !news.length) || !!fast;
     const rk = riskAt(r.lineupRisk, r.riskLive, x.prop.stat.key, hours, { last: lastChanceOf(sport, r.gap), newsIn });
     const p = rk.s < 1 ? riskChance(x.fair, x.p, rk.s) : x.p;
     const ev = rk.s < 1 ? (1 - (x.projection?.push ?? 0)) * (p * decimal(x.odds) - 1) : x.ev;
-    return { hours, s: rk.s, p, ev, newsIn, hist: rk.hist, live: rk.live };
+    return { hours, s: rk.s, p, ev, newsIn, hist: rk.hist, live: rk.live, fast };
   };
   // (the caps: a prop type not yet tested (its trust unfit) stakes little; the day is the game's US Eastern date,
   // daylight saving and all)
@@ -2183,6 +2224,8 @@ async function betProps(r) {
   // game's last ask (:dk, the only ones the other books are asked for on the next: oddsapi.mjs propAsks). The
   // games never asked go first, so the re-asks don't spend the allowance their first asks need)
   const asked = read(PROPS_ASKED, {});
+  // (whether the early bets on fast news have earned their stake, D49: fastEarned)
+  r.fastEarn = fastEarned(ledger.bets, { epoch: MODEL_EPOCH });
   if (!DRY) {
     const owe = new Set([...(r.replacedProps ?? []), ...[...(r.takenBack?.values() ?? [])].filter((x) => x.bet.market === 'prop').map((x) => x.bet.event)]);
     // (a game with an owner's note on a prop CHECK not seen before: its props asked for again, priced on it;
@@ -2211,7 +2254,10 @@ async function betProps(r) {
     if (!Number.isFinite(week)) return null;
     const k = `${game.season}|${week}`;
     if (!practiceWeeks.has(k)) practiceWeeks.set(k, await nflPractice(game.season, week).catch(() => new Map()));
-    return practiceWeeks.get(k);
+    // (Sleeper's practice where nflverse's file has none for him, D49: matched on the game's rosters)
+    if (!r.sleeper) return practiceWeeks.get(k);
+    const rosters = new Map([[String(game.homeAbbr), await rosterOf(game.home)], [String(game.awayAbbr), await rosterOf(game.away)]]);
+    return withSleeperPractice(practiceWeeks.get(k), r.sleeper, game, { now: r.now.getTime(), rosters });
   };
   const firstAsks = [...r.upcoming].sort((a, b) => Number((asked[a.game.id] ?? 0) > 0) - Number((asked[b.game.id] ?? 0) > 0));
   for (const u of firstAsks) {
@@ -2365,6 +2411,8 @@ async function betProps(r) {
         const rk = riskOf(game, x, phase);
         const e = rk.p - x.fair;
         if (e > 0) x.sug = { s: x.side, e: round(e, 4), h: round(rk.hours, 1), k: rk.s, src: x.prop.snapshot ? 'snapshot' : x.prop.source === 'the odds api' ? 'api' : 'espn' };
+        // (a row the Bot would bet early on fast news, at the practice stake till earned (D49): the board's cap says so, D46)
+        if (rk.fast && !r.fastEarn?.earned && riskAt(r.lineupRisk, r.riskLive, x.prop.stat.key, rk.hours, { last: lastChanceOf(sport, r.gap) }).s < 1) x.fastCap = true;
       }
       // (--dry: the game's first few priced rows as the Bot reads them: the projection, the usage it rests on, its chance
       // in full and held to the lineup risk, and whether it would bet now or wait: a check of a cold start (the NBA's
@@ -2385,7 +2433,7 @@ async function betProps(r) {
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
       const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
-      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: r.propGate?.[x.prop.stat.key] ?? null })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null) })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;
@@ -2443,6 +2491,15 @@ async function betProps(r) {
             }
             Object.assign(x, { p: round(rk.p, 4), ev: round(rk.ev, 4), early: { hours: round(rk.hours, 1), s: rk.s, pFull: round(x.p, 4), evFull: round(x.ev, 4), hist: rk.hist, ...(rk.live ? { live: rk.live } : {}) } });
             run.early = (run.early ?? 0) + 1;
+          } else if (rk.fast) {
+            // (bet early on fast news (D49): the news in hand before the Book's report, at the full lean where the
+            // history would have held it; marked for the record, at the practice stake till those bets' CLV earns
+            // more: fastEarned)
+            const held = riskAt(r.lineupRisk, r.riskLive, x.prop.stat.key, rk.hours, { last: lastChanceOf(sport, r.gap) });
+            if (held.s < 1) {
+              x.early = { hours: round(rk.hours, 1), s: 1, pFull: round(x.p, 4), evFull: round(x.ev, 4), hist: held.hist, fast: { player: rk.fast.player, name: rk.fast.name, status: rk.fast.status, source: rk.fast.source, at: rk.fast.at } };
+              run.fastEarly = (run.fastEarly ?? 0) + 1;
+            }
           }
           candidates.push({ game, x, exp });
         }
@@ -2631,6 +2688,8 @@ async function betProps(r) {
     // (the sanity guard (desk.mjs suspectOf, D23): an ev past the bar at the practice stake, a LIKE at most, marked)
     if (x.suspect) Object.assign(bet, { suspect: x.suspect, ...(placed.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${x.suspect.why}` } : {}) });
     if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? (topN.slate === 'research' ? `practice: the research found nothing on a small line, its chance short of the vig (D25): the model's side (${topN.edge >= 0 ? '+' : ''}${round(topN.edge * 100, 1)} points over the Book's no-vig)` : `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the Book's no-vig), short of the vig`) });
+    // (an early bet on fast news (D49): the practice stake, a LIKE at most, till those bets' CLV earns more)
+    if (x.early?.fast && placed.intent === 'edge' && !r.fastEarn?.earned) Object.assign(bet, { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `practice: bet early on fast news (${x.early.fast.name} ${x.early.fast.status} by ${x.early.fast.source}, before ESPN's report), till those bets beat the close (${r.fastEarn?.n ?? 0} of ${FAST_EARN_N} graded)` });
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
@@ -2641,7 +2700,7 @@ async function betProps(r) {
   if (run.anytime) console.log(`${sport}: anytime TD priced ${run.anytime.priced} in ${run.anytime.games} games, ${run.anytime.placed} new tracked rows (never staked)${run.anytime.unmatched ? `; ${run.anytime.unmatched} names not matched` : ''}${run.anytime.out ? `; ${run.anytime.out} listed out` : ''}`);
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
-  if (run.heldRisk || run.early || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D42): ${run.early ?? 0} bet early at the surviving lean, ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
+  if (run.heldRisk || run.early || run.fastEarly || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D42): ${run.early ?? 0} bet early at the surviving lean, ${run.fastEarly ?? 0} on fast news (D49), ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: `role changes (CHECKs at a model Kelly of +${Math.round(CHECK_KELLY * 100)} or more, else shadows)`, news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)', moved: 'the line moved twice the limit, his projection not with it' }[k] ?? 'by the other guards'}`).join(', ')}`);

@@ -123,6 +123,18 @@ Gains are held-out log loss per line, without minus with. Above 0 is better. The
 | Champions (Wikipedia) | static | **not useful** | Display. |
 | The priced history: every bout's moneyline and round total at the open and the close since 2020-06 (`apps/mma/scripts/model/odds-history`) | The Odds API's archive, per bout, matched to the fights archive by the fighters' names and the day (`fights-history.mjs`: 98.1% of the bouts priced to the bell) | **in** (the gate and the trust, never a price: D30) | The gate's MMA layer b (`gate-mma.mjs`, DECISIONS.md D36) and the live desk's trust prior (`mma-desk.mjs` `fitMmaTrust`: the history's rows pooled with the live bets). Measured 2026-10-19 at the close: the Bot's own number 0.6214 against the Book's 0.5804 on moneylines, 0.6827 against 0.6585 on round totals; the history's trust 0.05 and 0. By lead band (D37): two weeks or more out the Bot beats the opening moneyline 0.6389 to 0.6797 (trust 0.75 untapered, the top picks' CLV +0.288), so the desk bets MMA early. |
 
+## The news-speed input (2026-10-19, DECISIONS.md D49)
+
+Free sources that carry injury news before ESPN's report, put into the report where they're worse than its entry and newer than it, so every input above that reads the report reads them. None has a history, so the replay can't see them: the live speed log measures them (`news-speed.mjs`).
+
+| Data | Source and grain | Bettor | Reason or measure |
+|---|---|---|---|
+| Sleeper's injury statuses (Out, IR, PUP, Sus, Doubtful, Questionable, DTD) with `news_updated` | `api.sleeper.app/v1/players/<nfl\|nba\|nhl>`, the whole dump, pulled once a UTC day (`fastnews.mjs sleeperPlayers`) | **new** (NFL, NBA, NHL) | Into the coming games' reports (`fastNotes`): the statuses, the play chance, the vacated work and usage, the missing-prop group, the re-price of an open bet. Measured the week of 2026-10-19: it had 124 of the NFL's 157 status changes before their games (ESPN's report 36 dated before the start), but against ESPN where both had one it was 0.1 hours behind (n 31; NHL n 25 the same): its worth is coverage, not speed, and the once-a-day pull lags further. |
+| Sleeper's practice participation | the same dump | **new** (NFL) | The play table's practice level (D45) where nflverse's file has none for the player (`withSleeperPractice`, inside the week). |
+| Sleeper's depth-chart order | the same dump | **kept, not read** | Kept in the compact dump (`depth`) for a later held-out test against the site's depth charts (`depthRoleOf`). |
+| Sleeper's trending adds and drops | `/v1/players/<sport>/trending/<add\|drop>` | **not useful** | No status on them; a surge is the news after it's out. |
+| The reporters' posts on Bluesky (insiders and their mirrors, injury services, DailyFaceoff, a beat writer) | the public AppView, each desk run, the accounts in `news-handles.json` (15); claims by `news-signals.mjs postSignals` (claude-haiku-5-5, the news signals' caps) in `news-fast.json` | **new** (NFL, NBA, NHL) | Structured claims only (player, team, status, kind, confidence), into the reports as Sleeper's. Measured the same week: first on 54 of the NFL's 58 it had, 0.8 hours ahead of ESPN's report where both had it (n 11), 5.4 hours ahead of the Book's move on the two timed; NHL 3 hours behind ESPN (n 3). An NFL or NBA side with fast news (12 hours) is bet at the full lean (D42), at the practice stake till those bets' CLV earns more. |
+
 ## The AI analyses
 
 - **What exists.** The NFL's weekly reports (teams and QBs, Claude, `apps/nfl/scripts/analysis`) carried structured betting angles until 2026-10-14. That day the owner dropped the angles and retired the analysis bet desk (ef5869e0).
