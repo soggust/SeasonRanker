@@ -2,7 +2,7 @@
 // 2026-10-18: history sharpens the choice, not the volume
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { corrRows, correctSides, correctionReport, fitCorrection, tuneCorrection, FAMILIES, CORR_MIN } from '../libs/ranker/scripts/model/correct.mjs';
+import { corrRows, correctSides, correctionReport, fitCorrection, tuneCorrection, FAMILIES, CORR_MIN, CORR_PRICING } from '../libs/ranker/scripts/model/correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, inPractice, isPracticeTop, practiceRecord, practiceTop, propGate, lineGate, record, slateQuota, trustedUnits } from '../libs/ranker/scripts/model/desk.mjs';
 import { levelOf, recentOf } from '../libs/ranker/scripts/model/picks.mjs';
 
@@ -41,6 +41,10 @@ test('a segment proven bad is corrected past the book (its side turned over), no
 });
 
 test('the correction self-tunes and stays near the book where the model has nothing on it', () => {
+  // (the correction is off for pricing (CORR_PRICING false: the gate held it, D18); its fit tested as the candidate it is)
+  assert.equal(CORR_PRICING, false);
+  assert.equal(tuneCorrection(corrRows(bets('nhl', 'sog', 0, 600, 3)), 'nhl').fit, null, 'off: the trusted chance');
+  process.env.CORR_ON = '1';
   const list = bets('nhl', 'sog', 0, 600, 3);
   const t = tuneCorrection(corrRows(list), 'nhl');
   assert.ok(t.fit, 'fit');
@@ -51,6 +55,7 @@ test('the correction self-tunes and stays near the book where the model has noth
   const rep = correctionReport(corrRows([...list, ...bets('nhl', 'goals', 1, 600, 5)]), 'nhl', 6);
   for (const k of ['corrected', 'simple', 'raw', 'book', 'current']) assert.ok(Number.isFinite(rep.loss[k]), k);
   assert.ok(rep.top.corrected.n > 0);
+  delete process.env.CORR_ON;
 });
 
 test("a sport whose model loses still places its top N: every candidate short of the vig, the best by edge before it bet at practice", () => {

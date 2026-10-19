@@ -7,7 +7,7 @@
 //                role                      a role CHECK (props.mjs roleChangeOf), its sub-reason its roleReason
 //                unpriced                  priced at an assumed -110 (no book price): the book's chance an even
 //                                          guess, the gap against no real price
-//                missing-starter-not-seen  the line MISSING_RATIO or more off his projection and off his recent
+//                missing-starter-not-seen  the line MISSING_Z SDs or more off his projection and off his recent
 //                                          form too, nothing missing seen around him: the market higher (sub
 //                                          teammate-out: a teammate's work the model didn't see go), or lower
 //                                          (sub own-status: he himself limited, the model reading him as usual)
@@ -50,7 +50,7 @@
 //              a weight shrunk by its evidence, stepped LOOSEN_STEP a run, back down when the record turns)
 
 import { decimal, GAP } from './desk.mjs';
-import { ROLE } from './props.mjs';
+import { ROLE, lineZ } from './props.mjs';
 import { round } from './ratings.mjs';
 import { driversOf } from './writeup.mjs';
 
@@ -70,7 +70,11 @@ export const CAUSE_LABELS = {
   unknown: 'Unknown',
 };
 // (the rules' thresholds)
-export const DIAG = { MISSING_RATIO: 1.25, RECENT_RATIO: 1.15, VAC_STEP: 0.08, EARLY_GAMES: 3, EARLY_MAX: 8, PRIOR_W: 0.5, RECENT_NEAR: 0.1, RATE_FAR: 0.15, DRIVER_MIN: 0.08, NEAR: 0.12, NEAR_PTS: 2, ADJ_PTS: 1.5 };
+// (the line's gaps to his projection, recent form and rate in SDs of his count (lineZ's: never a ratio, DECISIONS.md
+// D24, 2026-10-18): MISSING_Z, RECENT_Z, RECENT_NEAR, RATE_FAR and NEAR read as the ratios 1.25x, 1.15x, 0.1, 0.15
+// and 0.12 they replaced did at the middle counts (a 4-catch receiver's, a 60-yard back's), and no longer call a
+// 0.5 line's small count far)
+export const DIAG = { MISSING_Z: 0.45, RECENT_Z: 0.27, VAC_STEP: 0.08, EARLY_GAMES: 3, EARLY_MAX: 8, PRIOR_W: 0.5, RECENT_NEAR: 0.18, RATE_FAR: 0.28, DRIVER_MIN: 0.08, NEAR: 0.22, NEAR_PTS: 2, ADJ_PTS: 1.5 };
 // (the learning's: the graded a cause needs before it's advised on, a loosening's before it's ready, and the
 // margin the interval's low end must clear the break-even by)
 export const MIN_N = 10;
@@ -90,6 +94,8 @@ function diagnoseProp(c) {
   const dir = c.side === 'under' ? -1 : 1;
   const line = c.line;
   const ratio = (x) => (fin(line) && fin(x) && x > 0 ? line / x : null);
+  // (the line's gap to a mean in SDs of the count there, at the projection's dispersion: props.mjs lineZ)
+  const zTo = (x) => (fin(line) && fin(x) && x > 0 ? lineZ(line, x, fin(p.r) ? p.r : null) : null);
   const priorW = fin(p.priorW) ? p.priorW : null;
   const n = {
     line: fin(line) ? line : null,
@@ -99,6 +105,9 @@ function diagnoseProp(c) {
     lineMean: r3(ratio(p.mean)),
     lineRate: r3(ratio(p.rate)),
     lineRecent: r3(ratio(p.recent)),
+    zMean: r3(zTo(p.mean)),
+    zRate: r3(zTo(p.rate)),
+    zRecent: r3(zTo(p.recent)),
     vac: fin(p.vac) ? p.vac : null,
     vacHist: fin(p.vacHist) ? p.vacHist : null,
     vacF: fin(p.vacF) ? p.vacF : null,
@@ -113,22 +122,22 @@ function diagnoseProp(c) {
   if (c.cause === 'role') tags.push({ cause: 'role', sub: c.roleReason ?? 'role', why: `his role changing (${c.roleReason ?? 'role'}): the book reprices a role on the news, the model on the logs` });
   if (c.oddsAssumed) tags.push({ cause: 'unpriced', why: 'priced at an assumed -110: the book’s chance an even guess, so the gap is against no real price' });
   const seen = (fin(p.vac) && p.vac >= 0.05) || has(p.out);
-  const lm = n.lineMean;
-  const lr = n.lineRecent ?? lm;
+  const lm = n.zMean;
+  const lr = n.zRecent ?? lm;
   if (fin(lm) && !seen) {
-    if (dir < 0 && lm >= DIAG.MISSING_RATIO && lr >= DIAG.RECENT_RATIO) tags.push({ cause: 'missing-starter-not-seen', sub: 'teammate-out', why: `the line ${lm}x his projection and ${lr}x his recent form with no one missing seen around him: a teammate's work the model hasn't seen go` });
-    if (dir > 0 && lm <= 1 / DIAG.MISSING_RATIO && lr <= 1 / DIAG.RECENT_RATIO) tags.push({ cause: 'missing-starter-not-seen', sub: 'own-status', why: `the line ${lm}x his projection and ${lr}x his recent form: the market sees him limited, the model as usual` });
+    if (dir < 0 && lm >= DIAG.MISSING_Z && lr >= DIAG.RECENT_Z) tags.push({ cause: 'missing-starter-not-seen', sub: 'teammate-out', why: `the line ${lm} SDs over his projection and ${lr} over his recent form with no one missing seen around him: a teammate's work the model hasn't seen go` });
+    if (dir > 0 && lm <= -DIAG.MISSING_Z && lr <= -DIAG.RECENT_Z) tags.push({ cause: 'missing-starter-not-seen', sub: 'own-status', why: `the line ${-lm} SDs under his projection and ${-lr} under his recent form: the market sees him limited, the model as usual` });
   }
   if (fin(p.vacF) && Math.abs(p.vacF - 1) >= DIAG.VAC_STEP && (p.vacF - 1) * dir > 0) tags.push({ cause: 'vacated-fade', sub: p.vacF > 1 ? 'boost' : 'fade', why: `the vacated term's ${p.vacF} (the missing work's cut ${p.vac ?? '?'} now against ${p.vacHist ?? '?'} in his games) moves him toward the model's side` });
   if (fin(p.games) && p.games <= DIAG.EARLY_MAX) {
     const g = `${p.games} game${p.games === 1 ? '' : 's'} this season`;
-    const lc = n.lineRecent;
-    const lt = n.lineRate;
+    const lc = n.zRecent;
+    const lt = n.zRate;
     // (the prior pulling toward the model's side: his blended rate past his own form this season, toward it)
     const pulls = !fin(p.recent) || (p.rate - p.recent) * dir > 0;
     if (pulls && priorW !== null && priorW >= DIAG.PRIOR_W) tags.push({ cause: 'early-season-prior', sub: 'prior-weight', why: `${g}, the prior ${Math.round(priorW * 100)}% of his rate: last season's or his position's numbers carry him` });
     else if (pulls && priorW === null && p.games <= DIAG.EARLY_GAMES) tags.push({ cause: 'early-season-prior', sub: 'few-games', why: `${g}: last season's or his position's numbers carry him` });
-    else if (fin(lc) && fin(lt) && Math.abs(lc - 1) <= DIAG.RECENT_NEAR && Math.abs(lt - 1) >= DIAG.RATE_FAR && (p.rate - line) * dir > 0) tags.push({ cause: 'early-season-prior', sub: 'recent-at-line', why: `${g}: his recent form at the line (${lc}x), his blended rate off it (${lt}x): the prior holds him where the market has moved on` });
+    else if (fin(lc) && fin(lt) && Math.abs(lc) <= DIAG.RECENT_NEAR && Math.abs(lt) >= DIAG.RATE_FAR && (p.rate - line) * dir > 0) tags.push({ cause: 'early-season-prior', sub: 'recent-at-line', why: `${g}: his recent form at the line (${lc} SDs), his blended rate off it (${lt} SDs): the prior holds him where the market has moved on` });
   }
   const d = driversOf(c);
   const toward = d.steps
@@ -136,7 +145,7 @@ function diagnoseProp(c) {
     .sort((a, b) => Math.abs(Math.log(b.factor)) - Math.abs(Math.log(a.factor)));
   for (const s of toward) if (!tags.some((t) => t.cause === DRIVER_CAUSE[s.name])) tags.push({ cause: DRIVER_CAUSE[s.name], sub: s.name, why: `the ${s.name} step moves him ${s.appliedPct > 0 ? '+' : ''}${s.appliedPct}% toward the model's side` });
   if (toward.length) n.driver = { name: toward[0].name, pct: toward[0].appliedPct };
-  if (fin(lm) && Math.abs(lm - 1) < DIAG.NEAR) tags.push({ cause: 'dispersion', sub: dir > 0 ? 'over' : 'under', why: `his projection within ${Math.round(DIAG.NEAR * 100)}% of the line: the gap is the spread's shape${fin(p.r) ? ` (r ${p.r})` : ''}, not the mean` });
+  if (fin(lm) && Math.abs(lm) < DIAG.NEAR) tags.push({ cause: 'dispersion', sub: dir > 0 ? 'over' : 'under', why: `his projection within ${DIAG.NEAR} SDs of the line: the gap is the spread's shape${fin(p.r) ? ` (r ${p.r})` : ''}, not the mean` });
   if (fin(p.r)) n.r = p.r;
   return { n, tags };
 }
@@ -230,7 +239,7 @@ export function loosenFor(cause, sub = null, market = 'prop') {
       'group-out': { guard: 'ROLE.vac', from: ROLE.vac, to: round(ROLE.vac + 0.1, 2) },
       'snap-jump': { guard: 'ROLE.snapJump', from: ROLE.snapJump, to: round(ROLE.snapJump + 0.05, 2) },
       'part-time': { guard: 'ROLE.partTime', from: ROLE.partTime, to: round(ROLE.partTime - 0.1, 2) },
-      line: { guard: 'ROLE.ratioHi / ROLE.ratioLo', from: `${ROLE.ratioHi} / ${ROLE.ratioLo}`, to: `${round(ROLE.ratioHi + 0.2, 2)} / ${round(ROLE.ratioLo - 0.1, 2)}` },
+      line: { guard: 'ROLE.zHi / ROLE.zLo', from: `${ROLE.zHi} / ${ROLE.zLo}`, to: `${round(ROLE.zHi + 0.3, 2)} / ${round(ROLE.zLo - 0.2, 2)}` },
     }[sub];
     return role ?? { guard: `the role guard's ${sub ?? 'role'} CHECK`, from: 'a CHECK', to: 'priced and bet as any prop' };
   }
@@ -360,8 +369,8 @@ export function checkLearning(all = []) {
 // open CHECKs priced at the trust (a 'bet' rule) at rate w. Returns { weights, role, causes, applied }: applied
 // each one moved or held over 0, with its words, for the log and the state
 export const LOOSEN_STEP = 0.25;
-const ROLE_KEYS = { 'few-starts': ['fewStarts'], 'group-out': ['vac'], 'snap-jump': ['snapJump'], 'part-time': ['partTime'], line: ['ratioHi', 'ratioLo'] };
-const ROLE_TO = { fewStarts: (v) => Math.max(1, v - 2), vac: (v) => round(v + 0.1, 2), snapJump: (v) => round(v + 0.05, 2), partTime: (v) => round(v - 0.1, 2), ratioHi: (v) => round(v + 0.2, 2), ratioLo: (v) => round(v - 0.1, 2) };
+const ROLE_KEYS = { 'few-starts': ['fewStarts'], 'group-out': ['vac'], 'snap-jump': ['snapJump'], 'part-time': ['partTime'], line: ['zHi', 'zLo'] };
+const ROLE_TO = { fewStarts: (v) => Math.max(1, v - 2), vac: (v) => round(v + 0.1, 2), snapJump: (v) => round(v + 0.05, 2), partTime: (v) => round(v - 0.1, 2), zHi: (v) => round(v + 0.3, 2), zLo: (v) => round(v - 0.2, 2) };
 export function loosenings(learning, prev = {}, base = ROLE) {
   const recs = (learning?.recommendations ?? []).filter((x) => x.kind === 'loosen');
   const names = [...new Set([...recs.map((x) => x.cause), ...Object.keys(prev ?? {})])].sort();

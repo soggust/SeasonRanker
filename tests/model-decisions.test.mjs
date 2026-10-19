@@ -28,7 +28,10 @@ import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
 import { BET_DECIDE, ERAS, gateVerdict, seasonWeight, sportVerdict } from '../libs/ranker/scripts/model/gate-score.mjs';
 import { CHECKS as SELF_CHECKS } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/model/calib.mjs';
-import { corrRows } from '../libs/ranker/scripts/model/correct.mjs';
+import { CORR_PRICING, LAMBDAS, MOVE_MAX, SEG_MIN, capMove, corrRows, moveCap, oneSe } from '../libs/ranker/scripts/model/correct.mjs';
+import { mainCardOf, mmaPracticePicks } from '../libs/ranker/scripts/model/mma-desk.mjs';
+import { EV_SUSPECT, choose, suspectOf } from '../libs/ranker/scripts/model/desk.mjs';
+import { ROLE, farOf, lineZ } from '../libs/ranker/scripts/model/props.mjs';
 import { RESEARCH_LEVEL_N, hollow, researchDecision, researchGateOf, researchLevelOf, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
 import { CAP_WINDOWS, MISS_CAPS, NEWS_CAPS, RESEARCH_CAPS, DAY_CAP, MONTH_CAP, capsFrom, scheduledCaps } from '../libs/ranker/scripts/model/ai-budget.mjs';
 import { MAX_RATE, preResolve } from '../libs/ranker/scripts/model/check-patterns.mjs';
@@ -69,7 +72,16 @@ test('D1 gates shrink, never stop: a failing CLV gate bets an edge at the practi
 });
 
 test('D2 every slate is played: a sport whose record loses still places its top N by edge before the vig', () => {
-  for (const s of ['nfl', 'nhl', 'mlb', 'nba']) assert.ok(PRACTICE_N[s] > 0, `${s} has a practice N`);
+  for (const s of ['nfl', 'nhl', 'mlb', 'nba', 'mma']) assert.ok(PRACTICE_N[s] > 0, `${s} has a practice N`);
+  // (the MMA's, O2 closed 2026-10-18: each main-card bout with an edge before the vig plays, the prelims fill the
+  // card to PRACTICE_N.mma; at the practice stake, marked topN)
+  const bouts = [['m1', 18], ['m2', 18], ['p1', 16], ['p2', 16], ['p3', 16]].map(([id, h]) => ({ id, key: id, card: 'c', date: `2026-10-24T${h}:00Z` }));
+  assert.deepEqual([...mainCardOf(bouts, 'c')], ['m1', 'm2']);
+  const row = (k, edge, priced = true) => ({ id: `${k}:ml`, boutKey: k, card: 'c', intent: 'track', p: 0.5 + edge, fair: 0.5, ...(priced ? {} : { priced: false }) });
+  const picked = mmaPracticePicks([row('m1', 0.01), row('m2', -0.01), row('p1', 0.03), row('p2', 0.02), row('p3', 0.04, false)], bouts);
+  assert.deepEqual([...picked.keys()].sort(), ['m1:ml', 'p1:ml', 'p2:ml']);
+  assert.equal(picked.get('m1:ml').main, true);
+  assert.match(src('mma-desk.mjs'), /mmaPracticePicks\(mlNew, bouts/);
   // (none clears the vig; each has an edge before it: the best N play, whatever the sport's record)
   const cands = Array.from({ length: 10 }, (_, i) => ({ id: `p${i}`, ev: -0.03, edge: 0.05 - i * 0.004 }));
   assert.equal(practiceTop(cands, 4).size, 4);
@@ -218,6 +230,22 @@ test('D17 small counts never read big: a low line trusts no more than its bucket
   assert.ok(stakeKelly(-260, p) < raw);
 });
 
+test('D18 the correction is shrunk by its evidence: the penalty from 20, no term under SEG_MIN rows, its move capped, the one-SE rule toward more shrinkage (the 2026-10-18 audit)', () => {
+  // (the gate held the correction against the trust pricing (2026-10-18): off, a candidate behind CORR_ON=1)
+  assert.equal(CORR_PRICING, false);
+  assert.equal(Math.min(...LAMBDAS), 20);
+  assert.deepEqual(LAMBDAS, [...LAMBDAS].sort((a, b) => b - a), 'most shrunk first');
+  assert.equal(SEG_MIN, 30);
+  // (4 graded rows move a prop at most about 2.6 points off even; the model's own lean is never exceeded)
+  assert.ok(moveCap(4) < 0.12 && moveCap(400) > 0.4 && moveCap(1e6) <= MOVE_MAX);
+  assert.equal(capMove(1, 0.2, 1e6), 0.2);
+  assert.equal(capMove(-1, 0.2, 0), -moveCap(0), 'turned, held to its cap');
+  // (the one-SE rule: a more shrunk candidate within a standard error of the best is taken, one clearly worse isn't)
+  const best = [0.6, 0.7, 0.5, 0.65, 0.6];
+  assert.equal(oneSe([best.map((v, i) => v + (i % 2 ? 0.02 : -0.01)), best]), 0);
+  assert.equal(oneSe([best.map((v) => v + 0.2), best]), 1);
+});
+
 test('D18 the correction fits the raw chance and prices from the raw chance: no double count with the calibration; the trust only sizes', () => {
   const rows = corrRows([{ id: 'a', market: 'prop', propType: 'rec', side: 'over', line: 1.5, model: 0.6, modelRaw: 0.55, fair: 0.5, status: 'won', start: '2026-10-10T00:00:00Z' }]);
   assert.equal(rows[0].m, 0.55);
@@ -239,6 +267,40 @@ test('D20 role bets: never under 40 graded CHECKs of a cause', () => {
   const t = { decided: 39, won: 30, lost: 9, hitRate: 0.77, breakEven: 0.52, perUnit: 0.4 };
   assert.equal(roleGateOf({ byRole: { 'snap-jump': t } })['snap-jump'].on, false);
   assert.equal(roleGateOf({ byRole: { 'snap-jump': { ...t, decided: 40 } } })['snap-jump'].on, true);
+});
+
+test('D23 the sanity guard: an ev past EV_SUSPECT is logged as suspect, held to the bar and the practice stake, a LIKE at most', () => {
+  assert.equal(EV_SUSPECT, 0.15);
+  assert.equal(suspectOf(0.14), null);
+  assert.ok(suspectOf(0.39));
+  assert.ok(suspectOf(-0.2));
+  const c = choose({ market: 'total', sides: [{ side: 'over', line: 44.5, odds: 200, model: 0.42, fair: 0.36 }, { side: 'under', line: 44.5, odds: -250, model: 0.58, fair: 0.64 }] }, 1, 0.08);
+  assert.ok(c.suspect && c.ev === EV_SUSPECT && c.units === PRACTICE_UNITS);
+  assert.equal(levelOf({ intent: 'edge', suspect: { ev: 0.39 } }, 0.2, 0.7), 'medium');
+  assert.match(src('props.mjs'), /SUSPECT PRICE/);
+  assert.match(src('run.mjs'), /if \(x\.suspect\) Object\.assign\(bet/);
+  assert.match(src('mma-desk.mjs'), /SUSPECT PRICE/);
+});
+
+test('D24 gaps are scale-aware: SDs of the count or probability points, never a ratio of the means', () => {
+  // (the owner's two: 0.6 against 1.0 at 0.5, 8 catches against 14 at 10.5)
+  assert.ok(Math.abs(lineZ(1.0, 0.6, 1000)) < 0.6);
+  assert.ok(lineZ(14, 8, 20) > 1.7);
+  assert.equal(farOf(1.0, 0.6, 1000), null);
+  assert.equal(farOf(14, 8, 20), 'hi');
+  assert.equal(ROLE.ratioHi, undefined);
+  assert.equal(ROLE.ratioLo, undefined);
+  assert.ok(Number.isFinite(ROLE.zHi) && Number.isFinite(ROLE.zLo));
+  for (const f of ['props.mjs', 'check-learn.mjs', 'selfcheck.mjs']) assert.doesNotMatch(src(f), /ratioHi|ratioLo|MISSING_RATIO|RECENT_RATIO/, f);
+});
+
+test('D25 research found nothing on a small line: its corrected chance decides, else a practice pick (O1, 2026-10-18)', () => {
+  assert.equal(researchDecision({ act: 'bet', side: 'over' }, guarded, 0.25, { low: true, corrected: { p: 0.5, ev: -0.045 } }).as, 'practice');
+  assert.equal(researchDecision({ act: 'bet', side: 'over' }, guarded, 0.25, { low: true, corrected: { p: 0.56, ev: 0.07 } }).as, 'bet');
+  // (a bigger line as D6)
+  assert.equal(researchDecision({ act: 'bet', side: 'over' }, guarded, 0.5).as, 'bet');
+  assert.match(src('run.mjs'), /d\?\.as === 'practice'/);
+  assert.match(src('run.mjs'), /const topN = x\.researchPractice \?\?/);
 });
 
 test('D21 bands and the book: DraftKings alone; LIKE any edge, LOVE 2%, LOCK 5% at 55%', () => {

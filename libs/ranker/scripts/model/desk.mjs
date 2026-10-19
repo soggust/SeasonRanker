@@ -64,6 +64,13 @@ export const GAP = { spread: 0.12, total: 0.12, ml: 0.15, prop: 0.15 };
 // noise would buy the most (the shorter price stakes no less than -110 for the same return, and no more for the
 // same edge in chance)
 const REF = 100 / 110;
+// The sanity guard (the 2026-10-18 audit: a --dry run priced Christian McCaffrey Under 14.5 carries at ev +0.39). No
+// sane price has an expected return past EV_SUSPECT either way: such a row is a bug or a fit gone wrong until shown
+// otherwise. It's logged loudly as suspect, its ev held to the bar and its stake to the practice stake, a LIKE at most
+// (picks.mjs levelOf reads suspect): never bet at size, never turned off (D1). DECISIONS.md D23
+export const EV_SUSPECT = 0.15;
+export const suspectOf = (ev, why = '') => (Number.isFinite(ev) && Math.abs(ev) > EV_SUSPECT ? { ev: Math.round(ev * 10000) / 10000, why: `ev ${ev > 0 ? '+' : ''}${Math.round(ev * 1000) / 1000} past the ${EV_SUSPECT} bar${why ? `: ${why}` : ''}: held to the bar and the practice stake` } : null);
+
 export function stakeFor(ev, evScale, odds = -110) {
   const d = decimal(Number.isFinite(odds) && odds ? odds : -110);
   const e = Math.max(0, ev);
@@ -173,8 +180,11 @@ export function choose(market, trust, evScale) {
   const scored = market.sides.map((s) => {
     const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust);
     // (a push gives the stake back: only the rest of the chance is won or lost)
-    const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
-    return { ...s, p, ev, units: stakeFor(ev, evScale, s.odds) };
+    const ev0 = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
+    // (the sanity guard: an ev past EV_SUSPECT held to the bar, the practice stake, and the row marked)
+    const suspect = suspectOf(ev0, `${market.market} ${s.side}${s.line !== null && s.line !== undefined ? ` ${s.line}` : ''} at ${s.odds}: p ${Math.round(p * 10000) / 10000}, the book's no-vig ${Math.round(s.fair * 10000) / 10000}`);
+    if (suspect) return { ...s, p, ev: Math.sign(ev0) * EV_SUSPECT, units: PRACTICE_UNITS, suspect };
+    return { ...s, p, ev: ev0, units: stakeFor(ev0, evScale, s.odds) };
   });
   const [a, b] = scored;
   const pick = a.ev >= b.ev ? a : b;
@@ -780,7 +790,7 @@ export function record(bets, { practice = false } = {}) {
 // the bot's record, its recent form and the CLV gates, which stay the bets that cleared the vig; off, one record.
 // The one flag: state.json carries it (practiceSplit) for the page
 export const PRACTICE_SPLIT = true;
-export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8 };
+export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8, mma: 3 };
 // (a slate's practice pick: placed for the slate, not for clearing the vig)
 export const isPracticeTop = (b) => !!b?.topN;
 // (one kept off the main record: a practice pick while the split's on)

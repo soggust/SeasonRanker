@@ -76,7 +76,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { calSides } from './calib.mjs';
-import { bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, trustedUnits } from './desk.mjs';
+import { EV_SUSPECT, bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
 import { correctSides } from './correct.mjs';
 import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
@@ -149,8 +149,9 @@ export function restGuard(restDays, debut, date) {
 //               his game before was at the new level too (snapSettledOf below)
 //   part-time   a part-timer (his season's snap share under ROLE.partTime) with a regular at his position missing;
 //               not where the absence is settled
-//   line        the line's projection (impliedMean: the mean its price implies) over ROLE.ratioHi or under
-//               ROLE.ratioLo times the model's: the market reading a role the model hasn't seen
+//   line        the line's projection (impliedMean: the mean its price implies) ROLE.zHi or more of his count's
+//               spreads over the model's, or ROLE.zLo under it (lineZ: in SDs of the count distribution, never a
+//               ratio; DECISIONS.md D24): the market reading a role the model hasn't seen
 //   depth       (none of the above) the depth chart's starter at his spot the model's role has lower, or the
 //               model's top man the chart has behind (depthRoleOf below: a tight end's receiving, a back's
 //               rushing; live only), its safe side the chart's
@@ -162,7 +163,19 @@ export function restGuard(restDays, debut, date) {
 // a quarterback's starts before tonight (null: unknown), rushing: a rushing prop
 // (matchups.mjs); mu: the projection; implied: the line's (null where the book gave no price: an assumed -110
 // says nothing of his role)
-export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, ratioHi: 1.6, ratioLo: 0.6, fewStarts: 6, fewStartsRush: 16 };
+// (zHi, zLo: the line's gap in SDs, lineZ; the ratios 1.6 and 0.6 they replaced (2026-10-18, the owner: "a guy
+// projected for .6 but the book thinks ~1 is huge %-wise but clearly not as different as projected 8 catches vs
+// 14") read the same at the middle counts, a 4-catch receiver's or a 60-yard back's (1.6x is about +1.1 to +1.2
+// SDs there, 0.6x about -0.75), and no longer flag the small counts a ratio blows up)
+export const ROLE = { vac: 0.3, snapJump: 0.1, partTime: 0.5, zHi: 1.15, zLo: -0.75, fewStarts: 6, fewStartsRush: 16 };
+// The book's implied mean against the model's in SDs of the model's count distribution (the negative binomial at its
+// dispersion r: var = mu + mu^2 / r; Poisson without one): scale-aware, so 0.6 against 1.0 is +0.5 and 8 against 14
+// about +1.8 (r 20), where both ratios read about 1.7. Null where either is missing
+export function lineZ(implied, mu, r = null) {
+  if (!Number.isFinite(implied) || !(mu > 0)) return null;
+  const v = mu + (Number.isFinite(r) && r > 0 ? (mu * mu) / r : 0);
+  return (implied - mu) / Math.sqrt(v);
+}
 // (each reason's safe side: the one the model's known error there makes conservative, by the role backtest
 // (2026-10-11): a role growing (group-out, snap-jump, part-time, a backup's or a new starter's rushing) the
 // model projects low, so an over it still takes is safe and its under is the risk; a backup throwing to him
@@ -268,7 +281,7 @@ export function settledAbsenceOf({ vacOut = 0, ab = null } = {}) {
 export function snapSettledOf(snap) {
   return !!snap && Number.isFinite(snap.prev) && snap.latest > 0 && snap.prev >= SETTLED.snap * snap.latest;
 }
-export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, skips = null, snap = null, mu = null, implied = null, starts = null, rushing = false, role: R = ROLE }) {
+export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = null, vacOut = 0, settled = null, skips = null, snap = null, mu = null, r = null, implied = null, starts = null, rushing = false, role: R = ROLE }) {
   const who = name || 'he';
   const pct = (x) => Math.round(x * 100);
   // (no usual starter known for his team (no quarterback's passes in its games): any quarterback with a prop is
@@ -305,18 +318,18 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
     skips?.push({ key: 'part-time', why: `absence not new: ${settled.n} game${settled.n === 1 ? '' : 's'} already without ${settled.names || 'the regular'} (his work ${settled.work} a game there, ${settled.pre} before, ${settled.need} needed)` });
   }
   if (Number.isFinite(implied) && mu > 0) {
-    const ratio = implied / mu;
-    if (ratio > R.ratioHi || ratio < R.ratioLo) return { key: 'line', safe: ratio > R.ratioHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
+    const z = lineZ(implied, mu, r);
+    if (z > R.zHi || z < R.zLo) return { key: 'line', safe: z > R.zHi ? 'over' : 'under', why: `the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading a role the model hasn't seen` };
   }
   return null;
 }
 
 // The book's line as a news alarm outside the NFL (the NBA, NHL, MLB; null: none). A line whose price puts him
-// past ROLE.ratioHi or under ROLE.ratioLo times the model's projection (impliedMean, at the book's own price) is
+// past ROLE.zHi or under ROLE.zLo times the model's projection (impliedMean, at the book's own price) is
 // labeled (projection.lineAlarm: its cause's key and words) on the side against the market's reading only where
 // something known before the game, and not sized by the fit, explains that reading, the late news the logs can't
 // show yet:
-//   low line (under ROLE.ratioLo)
+//   low line (under ROLE.zLo)
 //     line-questionable  he's questionable, day-to-day or a game-time call (statusOf): a minutes cap, an early exit
 //     line-goalie        an NHL goalie expected, not confirmed: the other one may start
 //     line-lineup        an MLB batter whose lineup isn't posted: a rest day, a lower spot
@@ -327,7 +340,7 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
 //     line-pitch-count   an MLB starter's pitch count: his last two starts both under OPENER_PITCHES (an opener, a
 //                        bullpen game) or their pitches under SHORT_LEASH of his usual, where the fit's leash isn't
 //                        kept (c_leash sizes it); a long rest where restSp isn't kept; a late debut (restGuard)
-//   high line (over ROLE.ratioHi): none. Teammates out (or back, a low line) aren't a cause: where the fit sizes
+//   high line (over ROLE.zHi): none. Teammates out (or back, a low line) aren't a cause: where the fit sizes
 //   the work missing (vc kept on a vacated stat) the projection has it, and where it doesn't the unsized
 //   vacancy's skip (priceProps) takes the prop first (the line-teammates and line-back of 2026-10-13, dropped)
 // Only a label, never a cut (the review of 2026-10-13): with the model's side always the one against the market's
@@ -353,15 +366,17 @@ export function roleChangeOf({ name = null, pos, pid, qb1 = null, boardQbs = nul
 export const SHORT_LEASH = Math.log(0.85);
 export const OPENER_PITCHES = 60;
 export const ALARM_MIN = 1.5;
-// (a far line's band outside the NFL ('hi', 'lo' or null): the ratio past ROLE's, at a count from ALARM_MIN)
-export function farOf(ratio, mu, line) {
-  if (!Number.isFinite(ratio) || !(mu > 0) || !Number.isFinite(line) || line < ALARM_MIN || Math.max(mu, ratio * mu) < ALARM_MIN) return null;
-  return ratio > ROLE.ratioHi ? 'hi' : ratio < ROLE.ratioLo ? 'lo' : null;
+// (a far line's band ('hi', 'lo' or null): the implied mean past ROLE's zHi or zLo in SDs of the count (lineZ), every
+// sport the same. ALARM_MIN's floor on the line and the means went with the ratio it was for (2026-10-18, D24): the
+// SDs read a 0.5 line's small count as the small gap it is)
+export function farOf(implied, mu, r = null) {
+  const z = lineZ(implied, mu, r);
+  if (z === null) return null;
+  return z > ROLE.zHi ? 'hi' : z < ROLE.zLo ? 'lo' : null;
 }
-export function lineAlarmOf({ sport, name = null, mu = null, implied = null, line = null, status = null, b2b = 0, roleKnown = null, b2bSized = false, pitcher = false, leash = null, leashSized = false, rest = null, restSized = false, pitches = null }) {
+export function lineAlarmOf({ sport, name = null, mu = null, r = null, implied = null, line = null, status = null, b2b = 0, roleKnown = null, b2bSized = false, pitcher = false, leash = null, leashSized = false, rest = null, restSized = false, pitches = null }) {
   if (sport === 'nfl' || !Number.isFinite(implied) || !(mu > 0)) return null;
-  const ratio = implied / mu;
-  if (farOf(ratio, mu, line) !== 'lo') return null;
+  if (!Number.isFinite(line) || farOf(implied, mu, r) !== 'lo') return null;
   const who = name || 'he';
   const st = String(status?.why ?? '');
   let cause = null;
@@ -380,7 +395,7 @@ export function lineAlarmOf({ sport, name = null, mu = null, implied = null, lin
     else if (long || rest === 'late') cause = { key: 'line-pitch-count', fact: long ? `${who} back from a long rest` : `${who}'s first start of the season, late`, reads: 'a pitch count' };
   }
   if (!cause) return null;
-  return { key: cause.key, safe: 'under', ratio: round(ratio, 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading ${cause.reads}, which the projection doesn't size` };
+  return { key: cause.key, safe: 'under', ratio: round(implied / mu, 3), z: round(lineZ(implied, mu, r), 3), why: `${cause.fact}, and the line's price puts him at ${round(implied, 1)} against the model's ${round(mu, 1)}: the market reading ${cause.reads}, which the projection doesn't size` };
 }
 
 // The NFL's depth chart as a pre-game role input, live only: each team's chart now (the site's StaticData/depth,
@@ -1039,7 +1054,8 @@ export function envFor(sport, st, expPts, info, rows) {
   const vals = rows.filter(st.played).map((r) => r.s[st.key]);
   const mean = vals.length ? vals.reduce((s, x) => s + x, 0) / vals.length : 1;
   const mk = rows.filter((r) => r.mkt).flatMap((r) => r.mkt);
-  const env = { mean, avg, avgMkt: mk.length ? mk.reduce((s, x) => s + x, 0) / mk.length : null, mktN: mk.length / 2, totN: rows.filter((r) => r.mTotal > 0).length };
+  // (sport: the recency fit's rule era, project.mjs ERAS)
+  const env = { sport, mean, avg, avgMkt: mk.length ? mk.reduce((s, x) => s + x, 0) / mk.length : null, mktN: mk.length / 2, totN: rows.filter((r) => r.mTotal > 0).length };
   const keys = ctxKeys(st);
   env.script = (row, params = null) => scriptValue(st, env, info.get(row.game), expPts.get(row.game), row.home, params?.mk ?? 0, row.mkt);
   env.ctx = keys.length ? (row) => ctxValues(keys, info.get(row.game), row.home, expPts.get(row.game), row) : null;
@@ -1977,6 +1993,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
         skips,
         snap: row.snap ?? null,
         mu,
+        r: rAt(f.params, mu),
         // (a quarterback's starts before tonight, all his seasons': a few-start one's a CHECK)
         starts: row.pos === 'QB' ? (p.careerStarts ?? null) : null,
         rushing: /^rush/.test(prop.stat.key),
@@ -2026,6 +2043,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
             sport,
             name: a.name,
             mu,
+            r: rAt(f.params, mu),
             implied: impliedNow,
             line: prop.line,
             status,
@@ -2060,9 +2078,14 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (the side the correction turned the pick to, against the raw model's: the skew guard reads the model's side,
     // not one the record chose)
     const turned = !!corr && !gapSide && pick.model - pick.fair < 0;
-    const { side, model, ev, odds, fair, raw: modelRaw, cal: calShift } = pick;
+    const { side, model, ev: ev0, odds, fair, raw: modelRaw, cal: calShift } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
     const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
+    // (the sanity guard, DECISIONS.md D23: no sane prop has an ev past EV_SUSPECT. One that does is logged loudly,
+    // its ev held to the bar (its rank with it) and its stake to the practice stake, a LIKE at most: never bet at size)
+    const suspect = suspectOf(ev0, `${a.name} ${side} ${prop.line} ${prop.stat.key} (${game.id}): p ${round(pick.p, 4)}, the book's no-vig ${round(fair, 4)}, the model ${round(model, 4)}${corr ? ', corrected' : ''}`);
+    if (suspect) console.warn(`${sport}: SUSPECT PRICE ${suspect.why}`);
+    const ev = suspect ? Math.sign(ev0) * EV_SUSPECT : ev0;
     const pTrusted = pick.p;
     // (the guard: his status (above), his line's move)
     const moved = prop.open !== null ? prop.line - prop.open : 0;
@@ -2237,7 +2260,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       trust: t,
       p: pTrusted,
       ev,
-      units: guard ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : corr ? trustedUnits(stakeFor(ev, evScale, odds), t) : stakeFor(ev, evScale, odds),
+      units: guard || suspect ? 0.5 : roleBet ? Math.min(ROLE_BET_UNITS, stakeFor(ev, evScale, odds)) : corr ? trustedUnits(stakeFor(ev, evScale, odds), t) : stakeFor(ev, evScale, odds),
+      ...(suspect ? { suspect } : {}),
       // (its edge before the vig, the chance over the book's no-vig: the slate's practice picks rank by it (desk.mjs
       // practiceTop); whether the correction priced it, and turned its side; his side of the game, home or away)
       edge: pick.edge,
@@ -2247,7 +2271,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       ...(roleBet ? { roleBet } : {}),
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
       sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
-      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), ...(sqF !== 1 ? { squad: { sum: round(sq.S * (f.params.scale ?? 1), 2), team: round(f.params.tf === 4 ? sq.T0 : sq.T, 2), factor: round(sqF, 3), tr: f.params.tr, tf: f.params.tf } } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), ...(mix ? { exit: { q: round(mix.q, 3), f: round(mix.f, 2) } } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
+      projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), ...(sqF !== 1 ? { squad: { sum: round(sq.S * (f.params.scale ?? 1), 2), team: round(f.params.tf === 4 ? sq.T0 : sq.T, 2), factor: round(sqF, 3), tr: f.params.tr, tf: f.params.tf } } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), ...(mix ? { exit: { q: round(mix.q, 3), f: round(mix.f, 2) } } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3), lineZ: round(lineZ(impliedNow, mu, rAt(f.params, mu)), 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
       // (the line's open and now; where the line hasn't moved and the open price was read (board), the over's
       // fair chance at the open and at the price bet (selfcheck.mjs C19: a price-only move, the NHL's at 0.5 and
       // 1.5 most of all, which the line alone doesn't see))

@@ -51,14 +51,17 @@ test('lineAlarmOf: a far line alone, a high line, a low count, a near line, no p
   assert.equal(lineAlarmOf({ sport: 'nhl', mu: 3, implied: 1.5, line: 1.5 }), null);
   // (a high line has no cause: teammates out or back are the fit's vacancy or the unsized skip's)
   assert.equal(lineAlarmOf({ sport: 'nba', mu: 10, implied: 20, line: 19.5, status: { why: 'A questionable' }, vacNow: 0.5 }), null);
-  // (a low count: a 0.5 line, or both means under ALARM_MIN)
+  // (a low count's gap is small in SDs of the count (farOf, lineZ: D24, never a ratio): 0.5 against 0.2 is -0.42;
+  // 0.6 against 1.0 +0.52 where its ratio 1.67 was far; 8 against 14 +1.8 at r 20, far)
   assert.equal(lineAlarmOf({ sport: 'nhl', mu: 0.5, implied: 0.2, line: 0.5, status: { why: 'A day-to-day' } }), null);
-  assert.equal(farOf(0.5, 1.2, 1.5), null);
-  assert.equal(farOf(0.5, ALARM_MIN, ALARM_MIN), 'lo');
-  assert.equal(farOf(2, 0.88, 1.5), 'hi');
-  assert.equal(farOf(2, 0.3, 0.5), null);
-  // (inside the band: ROLE.ratioLo itself isn't past it)
-  assert.equal(lineAlarmOf({ sport: 'nba', mu: 10, implied: 10 * ROLE.ratioLo, line: 5.5, status: { why: 'A questionable' } }), null);
+  assert.equal(farOf(0.6, 1.2), null);
+  assert.equal(farOf(1.0, 0.6, 1000), null);
+  assert.equal(farOf(14, 8, 20), 'hi');
+  assert.equal(farOf(3, 8, 20), 'lo');
+  assert.equal(farOf(0.6, 0.3), null);
+  assert.equal(ALARM_MIN, 1.5);
+  // (inside the band: ROLE.zLo itself isn't past it)
+  assert.equal(lineAlarmOf({ sport: 'nba', mu: 10, implied: 10 + ROLE.zLo * Math.sqrt(10), line: 5.5, status: { why: 'A questionable' } }), null);
   assert.equal(lineAlarmOf({ sport: 'nba', mu: 10, implied: null, line: 5.5, status: { why: 'A questionable' } }), null);
   assert.equal(lineAlarmOf({ sport: 'nba', mu: 0, implied: 1, line: 5.5, status: { why: 'A questionable' } }), null);
   assert.equal(lineAlarmOf({ sport: 'nba', mu: 10, implied: 5, status: { why: 'A questionable' } }), null);
@@ -141,10 +144,10 @@ test('C20: the far lines bet against the market doing worse than the near ones a
   assert.equal(est.by, 'estimated');
   assert.ok(est.ratio > 2.5 && est.ratio < 3.2);
   assert.equal(lineRatioOf({ market: 'prop', oddsAssumed: true, side: 'under', fair: 0.5, line: 2.5, projection: { mean: 1, lineRatio: 3 } }), null);
-  // (a 0.5 line outside the NFL near, however far its ratio; the NFL's by the ratio alone)
+  // (a 0.5 line near however far its ratio, every sport the same: its gap in SDs of the count (D24))
   const low = prop(2, 'under', true, { line: 0.5, projection: { mean: 0.3, lineRatio: 2 } });
   assert.equal(lineBandOf(lineRatioOf(low), low, 'nhl'), 'near');
-  assert.equal(lineBandOf(lineRatioOf(low), low, 'nfl'), 'hi');
+  assert.equal(lineBandOf(lineRatioOf(low), low, 'nfl'), 'near');
   const bets = [
     ...Array.from({ length: 70 }, (_, i) => prop(2, 'under', i < 20)),
     ...Array.from({ length: 70 }, (_, i) => prop(1, i % 2 ? 'over' : 'under', i < 35)),
@@ -185,7 +188,7 @@ test('priceProps (the NHL): a far low line on a day-to-day player labeled (line-
   assert.equal(hurt.side, 'over');
   assert.equal(hurt.projection.lineAlarm?.key, 'line-questionable');
   assert.match(hurt.projection.lineAlarm.why, /^A day-to-day, and the line's price puts him at /);
-  assert.ok(hurt.projection.lineRatio < ROLE.ratioLo);
+  assert.ok(hurt.projection.lineZ < ROLE.zLo);
   const plain = run(new Map());
   assert.equal(plain.projection.lineAlarm, undefined);
   assert.equal(plain.projection.lineRatio, hurt.projection.lineRatio);

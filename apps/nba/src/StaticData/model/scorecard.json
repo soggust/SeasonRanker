@@ -130,6 +130,38 @@
     "games": 8.4611,
     "props": 2.4746
    }
+  },
+  {
+   "sport": "nba",
+   "epoch": "2026-10-19T03:05:00Z",
+   "commit": "b878cfd6",
+   "commitAt": "2026-10-18T21:59:44-05:00",
+   "label": "worktree",
+   "at": "2026-10-19T03:02:52.458Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": null,
+    "lines": {
+     "mode": "replay",
+     "n": 954,
+     "gap": -0.0001,
+     "closeGap": 0,
+     "clv": -0.0349,
+     "hit": 0.4659,
+     "picks": 88,
+     "units": -5.0265,
+     "edgeUnits": 14.8,
+     "edgeN": 20
+    }
+   },
+   "rolling": {
+    "props": null,
+    "lines": null
+   },
+   "proj": {
+    "games": 8.4611,
+    "props": 2.4746
+   }
   }
  ]
 }

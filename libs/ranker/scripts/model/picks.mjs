@@ -120,12 +120,13 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // possible, a research bet a LIKE at the least)
 const earnedBet = (b) => !!b.researchBet?.earned;
 // (a slate's practice pick (desk.mjs isPracticeTop: bet for the slate, short of the vig) a LIKE, whatever its score)
+// (and a suspect price (desk.mjs suspectOf: an ev past EV_SUSPECT) a LIKE at most, its stake the practice one)
 export const levelOf = (b, kelly, p = b.p) =>
   intentOf(b) !== 'edge' ? 'low'
   : isPracticeTop(b) ? 'medium'
-  : earnedBet(b) && !b.practice ? (edgeLevel(kelly, p) === 'low' ? 'medium' : edgeLevel(kelly, p))
+  : earnedBet(b) && !b.practice && !b.suspect ? (edgeLevel(kelly, p) === 'low' ? 'medium' : edgeLevel(kelly, p))
   : b.researchBet || b.context?.roleBet ? 'medium'
-  : ((b.researchAdjusted && !b.researchAdjusted.earned) || b.practice) && edgeLevel(kelly, p) !== 'low' ? 'medium'
+  : ((b.researchAdjusted && !b.researchAdjusted.earned) || b.practice || b.suspect) && edgeLevel(kelly, p) !== 'low' ? 'medium'
   : edgeLevel(kelly, p);
 
 // The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded

@@ -81,8 +81,11 @@ test('diagnose: the driver that moves him most toward the model\'s side; near th
   assert.notEqual(diagnose(prop({ line: 52 }, { ctxF: 0.85 })).cause, 'context-term');
   assert.equal(diagnose(prop({ side: 'under', line: 52 }, { ctxF: 0.85 })).cause, 'context-term');
   assert.equal(diagnose(prop({ line: 52 })).cause, 'dispersion');
-  assert.equal(diagnose(prop({ line: 43 })).cause, 'unknown');
-  for (const c of [prop({ line: 52 }), prop({ line: 43 })]) assert.ok(CAUSES.includes(diagnose(c).cause));
+  // (near is in SDs of his count (DECISIONS.md D24): at r 2 a 50-yard projection's spread is 36 yards, so 43 is near
+  // (0.19 SDs) where its ratio 0.86 wasn't; 37 (0.36) is not, nor missing (0.45))
+  assert.equal(diagnose(prop({ line: 43 })).cause, 'dispersion');
+  assert.equal(diagnose(prop({ line: 37 })).cause, 'unknown');
+  for (const c of [prop({ line: 52 }), prop({ line: 37 })]) assert.ok(CAUSES.includes(diagnose(c).cause));
 });
 
 test("diagnose: a game market's context adjustment, its distance from the line, else the ratings", () => {

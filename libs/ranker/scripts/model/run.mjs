@@ -148,7 +148,7 @@ import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProp
 import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
-import { PRACTICE_N, PRACTICE_SPLIT, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
+import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -1080,7 +1080,9 @@ async function fitTheProps(r) {
         kept.push(`${k} at ${c.size ?? 0}${c.logLoss ? `: log loss ${c.logLoss[0]} to ${c.logLoss[1]}, bias ${c.bias?.[0]} to ${c.bias?.[1]}, all players' ${c.allBias?.[0]} to ${c.allBias?.[1]}` : ''}${c.on ? `, its rows ${b4(c.on[0])} to ${b4(c.on[1])}, eligible ${b4(c.onElig?.[0])} to ${b4(c.onElig?.[1])}` : ''}${c.sides ? `, sides ${c.sides.map((s) => `${b4(s[0])} to ${b4(s[1])}`).join(' / ')}` : ''}${c.fails?.length ? ` (left out: ${c.fails.join(', ')})` : ' (kept)'}`);
       }
       const hl = f.floors?.hl;
-      if (hl) kept.push(`recency at ${hl.size ?? 0}${Object.keys(hl.inner ?? {}).length ? ` (inside the fit window ${Object.entries(hl.inner).map(([h, v]) => `${h} ${v}`).join(', ')})` : ''}${hl.logLoss?.[0] !== null && hl.logLoss?.[0] !== undefined ? `: log loss ${hl.logLoss[0]} to ${hl.logLoss[1]}, bias ${hl.bias[0]} to ${hl.bias[1]}, all players' ${hl.allBias[0]} to ${hl.allBias[1]}, lean ${hl.scale[0]} to ${hl.scale[1]}, r ${hl.r[0]} to ${hl.r[1]}` : ''}${hl.fails?.length ? ` (left out: ${hl.fails.join(', ')})` : ''}, ${hl.seconds}s`);
+      if (hl) kept.push(`recency at ${hl.size ?? 0}${Object.keys(hl.inner ?? {}).length ? ` (inside the fit window ${Object.entries(hl.inner).map(([h, v]) => `${h} ${v}`).join(', ')})` : ''}${hl.logLoss?.[0] !== null && hl.logLoss?.[0] !== undefined ? `: log loss ${hl.logLoss[0]} to ${hl.logLoss[1]}, bias ${hl.bias[0]} to ${hl.bias[1]}, all players' ${hl.allBias[0]} to ${hl.allBias[1]}, lean ${hl.scale[0]} to ${hl.scale[1]}, r ${hl.r[0]} to ${hl.r[1]}` : ''}${hl.tries?.length > 1 ? ` (stepped softer: ${hl.tries.map((t) => `${t.hl} ${t.gain}${t.fails.length ? ` ${t.fails.join('/')}` : ' kept'}`).join(', ')})` : ''}${hl.fails?.length ? ` (left out: ${hl.fails.join(', ')})` : ''}${hl.live ? `; live from the newest game: lean ${hl.live.scale[0]} to ${hl.live.scale[1]}, r ${hl.live.r[0]} to ${hl.live.r[1]}${hl.live.eraW < 1 ? `, before the break at ${hl.live.eraW}` : ''}` : ''}, ${hl.seconds}s`);
+      const era = f.floors?.era;
+      if (era) kept.push(`rule era ${era.at} at ${era.w}${era.tried ? ` (the newest ${era.val} since it: ${Object.entries(era.tried).map(([w, v]) => `${w} ${v}`).join(', ')})` : ''}${era.fails?.length ? ` (left out: ${era.fails.join(', ')})` : ' (kept)'}`);
       const cs = f.floors?.cs;
       const sides = (x) => (x ? x.map((s) => `${s.logLoss ?? 'n/a'} (${s.lines})`).join(' / ') : 'n/a');
       const skew = (x) => (x?.n ? `${x.n} said ${x.said} won ${x.was}` : 'none');
@@ -1885,6 +1887,10 @@ function betGames(r) {
         // (the inputs it was priced on, and the bet it replaces when priced again on news: repriceOpen)
         ...stampOf(r, id, game.id),
       };
+      if (pick.suspect) {
+        console.warn(`${sport}: SUSPECT PRICE ${game.awayAbbr} @ ${game.homeAbbr} ${pick.suspect.why}`);
+        Object.assign(bet, { suspect: pick.suspect, ...(bet.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${pick.suspect.why}` } : {}) });
+      }
       bet.pick = pickText(bet, game);
       r.pending.push({ bet, game });
       r.placed.add(id);
@@ -2309,7 +2315,8 @@ async function betProps(r) {
           const hard = x.guard?.skip && !guarded ? (x.guard.why ?? 'skipped') : null;
           const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
           const stored = storedBet(x.prop.stored, hasKey(), r.now);
-          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow, hard }, bucketTrustOf(trust, `prop:${x.prop.stat.key}`, x.prop.line), { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news });
+          // (a found-nothing call on a small line decided by its corrected chance, else a practice pick: D25)
+          const d = researchDecision(call, { side: x.side, fair: x.fair, model: x.model, odds: x.odds, push: x.projection?.push ?? 0, guarded, shadow, hard }, bucketTrustOf(trust, `prop:${x.prop.stat.key}`, x.prop.line), { keyed: hasKey(), priced: x.priced, fresh, asksLeft: times < PROP_ASKS, stored, waiting: phase === 'last' ? [] : news, low: lineBucket(x.prop.line) === 'low', corrected: x.corrected ? { p: x.p, ev: x.ev } : null });
           // (still a CHECK this run (the news it waits on, the ask its price is owed), or a shadow the CHECK bar
           // passes (checkOf, below): the words on its research's call, so it's never a CHECK with no word on it)
           if (d || shadow) researchSeen.add(id);
@@ -2324,6 +2331,10 @@ async function betProps(r) {
           if (d && d.as !== 'check') {
             decided.add(id);
             r.researchCalls.set(id, { ...call, decided: true, why: call.act === 'pass' ? call.why : `${now}; ${call.why}` });
+          }
+          if (d?.as === 'practice') {
+            const rule = call.rule ? { rule: call.rule } : {};
+            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: a small line short of the vig, the model's side as practice` }, units: PRACTICE_UNITS, researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, practice: true, ...rule }, researchPractice: { rank: 1, quota: 1, slate: 'research', edge: round(d.p - x.fair, 4) } }, exp });
           }
           if (d?.as === 'bet') {
             // (its level earned (research.mjs researchLevelOf): its Kelly stake at the cleared chance, else RESEARCH_UNITS)
@@ -2417,7 +2428,7 @@ async function betProps(r) {
     // (a research bet: the model's side on the research's word, its edge the model's own; a role bet (props.mjs roleBet:
     // its cause's graded CHECKs pay on the model's side) an edge on that record: past the gap its trusted chance is the
     // book's and its ev only the vig, which would track it, never bet)
-    const topN = !(x.ev > 0) && !x.researchBet && !x.roleBet ? (forced.get(id) ?? null) : null;
+    const topN = x.researchPractice ?? (!(x.ev > 0) && !x.researchBet && !x.roleBet ? (forced.get(id) ?? null) : null);
     const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN;
     if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
@@ -2461,7 +2472,9 @@ async function betProps(r) {
     const bet = propBet(r, game, x, exp, { id, ...placed, tested });
     if (placed.practice) bet.practice = placed.practice;
     // (a slate's practice pick: placed at the practice stake for the slate, not for clearing the vig, a LIKE at most)
-    if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the book's no-vig), short of the vig` });
+    // (the sanity guard (desk.mjs suspectOf, D23): an ev past the bar at the practice stake, a LIKE at most, marked)
+    if (x.suspect) Object.assign(bet, { suspect: x.suspect, ...(placed.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${x.suspect.why}` } : {}) });
+    if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? (topN.slate === 'research' ? `practice: the research found nothing on a small line, its chance short of the vig (D25): the model's side (${topN.edge >= 0 ? '+' : ''}${round(topN.edge * 100, 1)} points over the book's no-vig)` : `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the book's no-vig), short of the vig`) });
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });

@@ -27,9 +27,32 @@
 
 import { lineBucket } from './desk.mjs';
 
+// (whether the correction prices the props: CORR_PRICING, the gate's verdict (DECISIONS.md D18); CORR_OFF=1 or
+// CORR_ON=1 in the environment overrides it for one run, the gate's champion and challenger)
+export const CORR_PRICING = false;
+export const corrOn = () => (process.env.CORR_OFF === '1' ? false : process.env.CORR_ON === '1' ? true : CORR_PRICING);
 export const CORR_MIN = 120;
 export const CORR_SPLIT = 0.7;
-export const LAMBDAS = [2, 6, 20, 60, 200];
+// (the penalties tried, most shrunk first (the 2026-10-18 audit, the NFL's overfit). The floor was 2, and the NFL
+// tuned to it: a segment of 4 rows (rushAtt|high|under) kept a third of its own fit, three nested families of the
+// same 4 rows adding up, and a model already under 14.5 carries was moved further under than the model itself
+// (Christian McCaffrey's under at ev +0.39). A row weighs about p(1-p) = 0.25 in the fit's curvature, so at the
+// floor of 20 a segment keeps about n / (n + 80) of its own fit: 4 rows 5%, 80 rows half)
+export const LAMBDAS = [2000, 600, 200, 60, 20];
+// (a segment with fewer graded rows than SEG_MIN in the fit has no term of its own: its rows read their parents',
+// the sport's and the global, never a fit on a handful)
+export const SEG_MIN = 30;
+// (the model's gap, in its spread's units, held to DN_CAP (about the graded rows' 99th percentile): a lean past what
+// the fit saw is read at the edge of what it saw, never extrapolated along b)
+export const DN_CAP = 2.5;
+// (the corrected chance's move off the book's no-vig, in logits, capped by the evidence behind it: MOVE_MIN with
+// none, toward MOVE_MAX as the row's sport|stat graded rows n grow, by n / (n + MOVE_K). 0.1 is about 2.5 points at
+// even and 0.6 about 15: a stat with 4 graded rows moves at most about 2.6 points, one with 400 about 11. And in the
+// model's own direction never past the model itself: the correction keeps the lean, cuts it or turns it, never
+// makes it bigger than the model said)
+export const MOVE_MIN = 0.1;
+export const MOVE_MAX = 0.6;
+export const MOVE_K = 200;
 const RHO = 0.3;
 const CLIP = 4;
 
@@ -150,9 +173,14 @@ export function fitCorrection(rows, { families = FAMILIES, lambda = 20 } = {}) {
   const use = new Set(families);
   const ds = rows.map((x) => clamp(logit(x.m) - logit(x.f)));
   const sd = Math.sqrt(ds.reduce((s, d) => s + d * d, 0) / Math.max(1, ds.length)) || 1;
+  // (each level's graded rows: one under SEG_MIN gets no term; and each sport|stat's, the move cap's evidence)
+  const count = new Map();
+  for (const x of rows) if (x.yo !== null) for (const k of levelsOf(x)) count.set(k, (count.get(k) ?? 0) + 1);
+  const statN = {};
+  for (const [k, v] of count) if (k.startsWith('sport|stat=')) statN[k.slice('sport|stat='.length)] = v;
   const index = new Map();
   const act = rows.map((x) => {
-    const lv = levelsOf(x).filter((k) => use.has(k.slice(0, k.indexOf('='))));
+    const lv = levelsOf(x).filter((k) => use.has(k.slice(0, k.indexOf('='))) && (count.get(k) ?? 0) >= SEG_MIN);
     return lv.map((k) => {
       if (!index.has(k)) index.set(k, index.size);
       return index.get(k);
@@ -164,7 +192,7 @@ export function fitCorrection(rows, { families = FAMILIES, lambda = 20 } = {}) {
   const theta = new Array(P).fill(0);
   const ev = evidenceOf(rows);
   const off = rows.map((x) => logit(x.f));
-  const dn = ds.map((d) => d / sd);
+  const dn = ds.map((d) => capDn(d / sd));
   for (let it = 0; it < 25; it++) {
     const g = new Array(P).fill(0);
     const H = Array.from({ length: P }, () => new Array(P).fill(0));
@@ -172,8 +200,12 @@ export function fitCorrection(rows, { families = FAMILIES, lambda = 20 } = {}) {
       g[j] += lambda * theta[j];
       H[j][j] += lambda;
     }
-    H[0][0] += 1e-6;
-    H[1][1] += 1e-6;
+    // (the global two: free, or ridge-shrunk at the penalty too with CORR_GLOBAL_RIDGE=1, a candidate the gate tried)
+    const g0 = process.env.CORR_GLOBAL_RIDGE === '1' ? lambda : 1e-6;
+    g[0] += g0 === lambda ? lambda * theta[0] : 0;
+    g[1] += g0 === lambda ? lambda * theta[1] : 0;
+    H[0][0] += g0;
+    H[1][1] += g0;
     for (const e of ev) {
       const i = e.i;
       const d = dn[i];
@@ -205,20 +237,34 @@ export function fitCorrection(rows, { families = FAMILIES, lambda = 20 } = {}) {
   }
   const terms = {};
   for (const [k, i] of index) terms[k] = [r4(theta[2 + 2 * i]), r4(theta[3 + 2 * i])];
-  return { families: [...families], lambda, sd: r4(sd), a0: r4(theta[0]), b0: r4(theta[1]), terms, n: rows.length };
+  return { families: [...families], lambda, sd: r4(sd), a0: r4(theta[0]), b0: r4(theta[1]), terms, statN, n: rows.length };
+}
+
+const capDn = (v) => Math.max(-DN_CAP, Math.min(DN_CAP, v));
+// (the cap on a row's move off the no-vig, in logits, by its sport|stat's graded rows in the fit)
+export const moveCap = (n) => MOVE_MIN + ((MOVE_MAX - MOVE_MIN) * Math.max(0, n ?? 0)) / (Math.max(0, n ?? 0) + MOVE_K);
+// (a move off the no-vig held to its evidence's cap, and in the model's own direction (gap: its logit gap) to the
+// model's own gap)
+export function capMove(move, gap, n) {
+  const cap = moveCap(n);
+  let m = Math.max(-cap, Math.min(cap, move));
+  if (gap >= 0 && m > gap) m = gap;
+  if (gap < 0 && m < gap) m = gap;
+  return m;
 }
 
 // The over's corrected chance of a row in the over's frame (frameOf), at a fit (none: null)
 export function correctedOver(fit, x) {
   if (!fit) return null;
-  const d = clamp(logit(x.m) - logit(x.f)) / (fit.sd || 1);
+  const gap = clamp(logit(x.m) - logit(x.f));
+  const d = capDn(gap / (fit.sd || 1));
   let a = fit.a0;
   let b = fit.b0;
   for (const k of levelsOf(x)) {
     const t = fit.terms[k];
     if (t) (a += t[0]), (b += t[1]);
   }
-  return sigmoid(logit(x.f) + a + b * d);
+  return sigmoid(logit(x.f) + capMove(a + b * d, gap, fit.statN?.[`${x.sport}|${x.stat}`] ?? 0));
 }
 
 // A prop's two sides, corrected: { over, under } (summing to 1: the over's frame is the one chance), or null with no fit
@@ -254,26 +300,56 @@ export function tuneCorrection(rows, sport) {
   // (a sport with few rows of its own (a season just begun) judged on every sport's newest: its terms 0 till its rows
   // speak, the pooled ones its correction)
   const own = rows.filter((x) => x.sport === sport && x.yo !== null).length;
+  if (!corrOn()) return { fit: null, rows: rows.length, why: 'the correction off (CORR_PRICING): the trusted chance' };
   const pooled = own < CORR_MIN;
   if (rows.filter((x) => x.yo !== null).length < CORR_MIN) return { fit: null, rows: rows.length, why: `${own} graded ${sport} props and ${rows.length} in all: under ${CORR_MIN}, the old pricing` };
   const mine = pooled ? rows : rows.filter((x) => x.sport === sport);
   const cut = pooled ? (rows.filter((x) => x.yo !== null)[Math.floor(rows.filter((x) => x.yo !== null).length * CORR_SPLIT)]?.t ?? Infinity) : splitTime(rows, sport);
   const old = rows.filter((x) => x.t < cut);
   const held = mine.filter((x) => x.t >= cut && x.yo !== null);
-  let best = null;
+  // (every candidate, most shrunk first: the simple set before the full one, each from the biggest penalty down)
+  const cands = [];
   for (const [name, families] of [['simple', SIMPLE], ['full', FAMILIES]])
     for (const lambda of LAMBDAS) {
       const f = fitCorrection(old, { families, lambda });
-      const loss = resultLoss(held, (x) => correctedOver(f, x));
-      if (!best || loss < best.loss - 1e-9) best = { name, families, lambda, loss };
+      cands.push({ name, families, lambda, losses: rowLosses(held, (x) => correctedOver(f, x)) });
     }
+  const pickIdx = oneSe(cands.map((c) => c.losses));
+  const best = { ...cands[pickIdx], loss: mean(cands[pickIdx].losses) };
   const fit = fitCorrection(rows, { families: best.families, lambda: best.lambda });
   return {
     fit: { ...fit, set: best.name },
     chosen: { families: best.name, lambda: best.lambda, ...(pooled ? { pooled: true } : {}) },
-    held: { n: held.length, loss: r4(best.loss), raw: r4(resultLoss(held, (x) => x.m)), book: r4(resultLoss(held, (x) => x.f)) },
+    held: { n: held.length, loss: r4(best.loss), raw: r4(resultLoss(held, (x) => x.m)), book: r4(resultLoss(held, (x) => x.f)), lowest: r4(Math.min(...cands.map((c) => mean(c.losses)))) },
     rows: rows.length,
   };
+}
+
+const mean = (a) => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : Infinity);
+// (each decided row's log loss at a chance per row)
+export function rowLosses(rows, pOf) {
+  return rows.filter((x) => x.yo !== null).map((x) => {
+    const p = clip(pOf(x));
+    return -Math.log(x.yo ? p : 1 - p);
+  });
+}
+// The one-standard-error rule toward more shrinkage: of the candidates (their per-row held-out losses on the same
+// rows, ordered most shrunk first), the first whose mean loss is within one standard error of the lowest, the error
+// of its paired difference with the lowest row by row. The index chosen
+export function oneSe(lossLists) {
+  const means = lossLists.map(mean);
+  const lo = means.indexOf(Math.min(...means));
+  for (let i = 0; i < lossLists.length; i++) {
+    const a = lossLists[i];
+    const b = lossLists[lo];
+    const n = Math.min(a.length, b.length);
+    if (!n) return lo;
+    const diffs = a.slice(0, n).map((v, j) => v - b[j]);
+    const m = mean(diffs);
+    const sd = Math.sqrt(diffs.reduce((s, v) => s + (v - m) ** 2, 0) / Math.max(1, n - 1));
+    if (m <= sd / Math.sqrt(n) + 1e-12) return i;
+  }
+  return lo;
 }
 
 // A compact summary for the state and the run log: the chosen set, its penalty, the global terms, the held-out loss

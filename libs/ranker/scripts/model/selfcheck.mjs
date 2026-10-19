@@ -112,7 +112,7 @@ import { CAL_CAP, CAL_MIN, CAL_STEP, calAt, lineClass } from './calib.mjs';
 import { VOID_AFTER, chanceAt, intentOf, learnView, pastGap } from './desk.mjs';
 import { levelOf, scoreParts } from './picks.mjs';
 import { impliedMean } from './project.mjs';
-import { ALARM_MIN, farOf, ROLE } from './props.mjs';
+import { farOf, ROLE } from './props.mjs';
 import { round } from './ratings.mjs';
 import { LEAK_FDR, LEAK_GAMES, LEAK_K, LEAK_N, RISK_DAYS, TREND_Z, huntLeaks } from './leaks.mjs';
 
@@ -1212,7 +1212,7 @@ export function c19(x) {
 // assumed -110 says nothing of where the market puts him): the mean its price implies over the model's (the
 // bet's projection.lineRatio, kept since 2026-10-13, or a CHECK's projection.implied; else estimated from its
 // line, fair chance and the projection's dispersion r, the stat's rk not kept: by 'estimated'; both on the plain
-// shape, never the early exit's mixture: props.mjs impliedNow, review of 6c51e015), past ROLE.ratioHi or under ROLE.ratioLo
+// shape, never the early exit's mixture: props.mjs impliedNow, review of 6c51e015), past ROLE.zHi or under ROLE.zLo
 // (props.mjs, the role guards' line reasons; outside the NFL only at a count from ALARM_MIN: props.mjs farOf, a 0.5
 // line's ratio an ordinary lean, not a far line). A far line alone is bet as any prop, measured no worse than the
 // rest, so the question it keeps asking is whether the far ones with the model against the market's reading do
@@ -1233,11 +1233,12 @@ export function lineRatioOf(b) {
   const imp = impliedMean(b.line, fairOver, { r: pr.r });
   return fin(imp) ? { ratio: imp / pr.mean, by: 'estimated' } : null;
 }
-// (a row's band: 'hi', 'lo' or 'near'; the NFL's by the ratio alone (its role guard's line reason), the others'
-// at a count from ALARM_MIN too (farOf))
+// (a row's band: 'hi', 'lo' or 'near', every sport by the implied mean's gap in SDs of the count (props.mjs farOf,
+// lineZ: never a ratio, DECISIONS.md D24); sport kept for the callers)
 export function lineBandOf(q, b, sport) {
-  if (sport === 'nfl') return q.ratio > ROLE.ratioHi ? 'hi' : q.ratio < ROLE.ratioLo ? 'lo' : 'near';
-  return farOf(q.ratio, b.projection?.mean, b.line) ?? 'near';
+  void sport;
+  const mean = b.projection?.mean;
+  return farOf(q.ratio * mean, mean, b.projection?.r) ?? 'near';
 }
 const alarmed = (b) => !!b.projection?.lineAlarm?.key || /^line-/.test(b.roleReason ?? '');
 export function c20(x) {
@@ -1280,10 +1281,10 @@ export function c20(x) {
     headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the model bet against, or the line alarm's, and the near ones` : "No graded props at the book's price yet",
     metric: 'graded props',
     value: n,
-    threshold: `a watch when the props bet against a line far from the projection (its implied mean over ${ROLE.ratioHi} or under ${ROLE.ratioLo} times the model's; outside the NFL at a line and mean from ${ALARM_MIN}) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the props bet against a line far from the projection (its implied mean ${ROLE.zHi} or more SDs of the count over the model's, or ${ROLE.zLo} under) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (outside the NFL a far line only at a line and a mean from ${ALARM_MIN}: a 0.5 line's ratio is an ordinary lean), the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
+    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the model's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the model's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
   });
 }
 // C21: the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class) graded rows

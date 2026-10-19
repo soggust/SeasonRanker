@@ -34,7 +34,7 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
   - `desk.mjs`: `PRACTICE_N`, `slateQuota`, `practiceTop`
   - `run.mjs`: `practicePicks`, and `betProps` (`topN`)
 - **2026-10-18 audit fix:** `practicePicks` returned nothing whenever the correction had no fit, for example when its fit threw. Now the trusted chance's edges rank the picks then, so the slate is still played.
-- **Gap, not built:** MMA has no `PRACTICE_N`. Its bouts bet on an edge alone, and the rest are tracked. On 10-17 and 10-18 it placed 1 and 2 bets. See "Open for the owner".
+- **MMA (O2 closed 2026-10-18):** `PRACTICE_N.mma` is 3 a card. Every bout clearing the vig bets as before. Of the rest with a DraftKings price and an edge before the vig (the trusted chance over the no-vig, the same fallback as the props without the correction), each main-card bout plays its side, and the best prelims fill the card to 3. Main card: the card's bouts at its last ESPN start time. Each is a 0.5u practice pick, `topN`, tallied apart. Code: `mma-desk.mjs` `mainCardOf`, `mmaPracticePicks`.
 
 ### D3. PRACTICE_SPLIT: practice picks are tallied apart
 - **Date:** 2026-10-18 (a454c624).
@@ -159,14 +159,25 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
   - A CHECK is judged by its cleared Kelly, with a bar of +1 (`checkKelly`).
 - **Code:** `desk.mjs` (`lineBucket`, `fitBuckets`, `bucketTrustOf`, `stakeKelly`), `picks.mjs` `kellyOf`, `checks.mjs` `checkKelly`.
 
-### D18. The learned correction prices the props; the trust sizes, never decides
-- **Date:** 2026-10-18 (a454c624).
-- **Rule:** one fit covers every graded prop: bets, tracked and practice rows, across epochs and sports. It learns where the model beats the book's no-vig and where it doesn't, by segment (sport, stat, bucket, lean, gap, price, home, timing). It is ridge-shrunk, and its penalty and families are self-tuned on a time split.
+### D18. The learned correction: a candidate behind a flag; the props are priced at the trust (the gate's verdict)
+- **Date:** 2026-10-18 (a454c624; the gate's verdict the same night).
+- **Verdict (gate.mjs, D22, 2026-10-18):** the correction loses to the trust pricing it replaced, so `CORR_PRICING` is false. The props are priced at the trust-shrunk chance again (`chanceAt` at the line bucket's trust, D17, with the stake-Kelly bands). Everything else from a454c624 stays: every slate played, the top-N practice picks (ranked by the trusted chance's edge before the vig, D2's fallback), `PRACTICE_SPLIT`. `CORR_ON=1` turns the correction on for one run, as the gate's challenger.
+  - a454c624's correction against the trust (the gate agent's run): close log loss worse beyond noise in the NFL, NHL and MLB, results tied.
+  - The shrunk correction below, against the trust: NHL close log loss +0.0015 worse (95% +0.0010 to +0.0020) and top picks' CLV -0.024 worse (-0.037 to -0.011); MLB close +0.0004 worse (+0.0002 to +0.0006); NFL tied (close 0.4622 both, results 0.5150 against 0.5157). With the global terms shrunk too (`CORR_GLOBAL_RIDGE=1`): NHL close still +0.0005 worse (+0.0003 to +0.0007), MLB and NFL tied. HOLD both ways.
+  - The trust pricing (this version) against origin/master's correction: SHIP. Props close log loss better in the NFL (0.4666 to 0.4622, 95% -0.0086 to -0.0018), NHL (0.6724 to 0.6699, -0.0031 to -0.0018) and MLB (0.6798 to 0.6774, -0.0058 to -0.0002); results log loss tied; MLB top picks' CLV better (+0.013).
+  - Out of sample (fit on each sport's earlier 70%, judged on its later 30%, `correctionReport`), log loss of the shrunk correction against a454c624's: NFL 0.4644 against 0.4650 (raw 0.4959, book 0.4651); NHL 0.6683 against 0.6684 (raw 0.6759, book 0.6680); MLB 0.7026 both (raw 0.7110, book 0.6982). It tracks the book, a little better than it in the NFL and no better elsewhere.
+- **Rule, while it's on:** one fit covers every graded prop: bets, tracked and practice rows, across epochs and sports. It learns where the model beats the book's no-vig and where it doesn't, by segment (sport, stat, bucket, lean, gap, price, home, timing). It is ridge-shrunk, and its penalty and families are self-tuned on a time split.
   - A segment that loses moves toward the book, or past it.
   - The live calibration sits inside it (it fits the raw chances), never stacked on it. Audited 2026-10-18: `priceProps` passes the raw `pOver` to `correctSides`, and `corrRows` reads `modelRaw`, so there is no double count.
   - The trust sizes the stake (`trustedUnits`, never under 0.5u). It never decides whether a row plays.
   - Under `CORR_MIN` (120) rows, the old trusted chance is used.
-- **Code:** `correct.mjs`, `props.mjs` `priceProps`, `run.mjs` `refitCorrection`, `desk.mjs` `trustedUnits`.
+  - **Shrunk by its evidence (the 2026-10-18 audit).** The NFL had tuned to the penalty grid's floor (2). A 4-row segment (rushAtt high under) then kept a third of its own fit, three nested families of the same rows adding up. A dry run priced Christian McCaffrey Under 14.5 carries at ev +0.39. Now:
+    - `LAMBDAS` 2000 down to 20, never lower. At 20 a segment keeps about n / (n + 80) of its own fit.
+    - A segment under `SEG_MIN` (30) graded rows has no term. It reads its parents' terms.
+    - The gap feature is held to `DN_CAP` (2.5 spreads), so it can't extrapolate.
+    - The move off the no-vig is capped by the stat's graded rows: `moveCap(n)` = 0.1 + 0.5 · n / (n + 200) logits, about 2.6 points at 4 rows and 11 at 400. In the model's own direction it never goes past the model.
+    - The penalty and the family set use the one-standard-error rule toward more shrinkage (`oneSe`): the most shrunk candidate within one SE of the lowest held-out loss, paired row by row.
+- **Code:** `correct.mjs` (`LAMBDAS`, `SEG_MIN`, `DN_CAP`, `moveCap`, `capMove`, `oneSe`), `props.mjs` `priceProps`, `run.mjs` `refitCorrection`, `desk.mjs` `trustedUnits`.
 
 ### D19. Research earns its level
 - **Date:** 2026-10-18 (b811fff6).
@@ -210,6 +221,26 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Limits:** the props' layer needs the desk's cache (`.cache/model`: players' games and the saved fit; a dry run fills it). Both versions replay under the saved fit's settings unless `--refit`, which a change to the fit's search itself needs (the NFL's is about 27 minutes a version). Live-only code (news, CHECKs, timing, ladder rungs) can't be replayed. The gate says so and reads it as a tie.
 - **Code:** `gate.mjs`, `gate-score.mjs`, `leaks.mjs`, `selfcheck.mjs` `c23`, `libs/ranker/src/engine/book/scorecard.ts`. Tests: `tests/model-gate.test.mjs`.
 
+### D23. No sane price has an ev past 0.15: such a row is suspect, never bet at size
+- **Date:** 2026-10-18 (the audit's McCaffrey row, ev +0.39).
+- **Rule:** a priced row whose ev passes `EV_SUSPECT` (0.15) either way is logged loudly (`SUSPECT PRICE`) and marked `suspect`. Its ev is held to the bar, so it can't outrank the rest. It stakes the practice 0.5u and is a LIKE at most. It is still placed if it has an edge (D1: a cap, never an off switch).
+- **Covers:** props, game lines, MMA moneylines.
+- **Code:** `desk.mjs` (`EV_SUSPECT`, `suspectOf`, `choose`), `props.mjs` `priceProps`, `run.mjs` (`betProps`, the game markets), `mma-desk.mjs` `pickFor`, `picks.mjs` `levelOf`.
+
+### D24. Model-vs-book gaps are scale-aware, never ratios
+- **Date:** 2026-10-18.
+- **Owner:** "a guy projected for .6 but the book thinks ~1 is huge %-wise but clearly not as different as projected 8 catches vs 14."
+- **Rule:** a gap between the model and the book is read in probability points (the model's chance less the book's no-vig) or in SDs of the count distribution (`lineZ`: the implied mean less the model's, over sqrt(mu + mu²/r)). It is never read as a ratio of the means.
+  - The role guard's far line (`ROLE.zHi` 1.15, `zLo` -0.75), the line alarm and C20's bands (`farOf`), and the CHECK diagnosis (`DIAG.MISSING_Z`, `RECENT_Z`, `RECENT_NEAR`, `RATE_FAR`, `NEAR`) are in SDs. The thresholds read as the old ratios did at middle counts (a 4-catch receiver, a 60-yard back).
+  - Already scale-aware, left alone: the gap guard and the lean taper (`GAP`, `leanOf`: points), the correction's gap feature (logits and points), the miss review's surprise (`countZ`: SDs of the count), and research's "far" (the CHECKs those guards make).
+  - The owner's examples: 0.6 against 1.0 at 0.5 is +0.52 SDs, so it is not a far line (its ratio 1.67 was). It is still past the gap guard at about 18 points, so it is a PASS shadow, not a role CHECK. 8 against 14 at 10.5 is +1.8 SDs at r 20, a far line as before, and about 55 points past the gap.
+- **Code:** `props.mjs` (`lineZ`, `ROLE`, `roleChangeOf`, `farOf`, `lineAlarmOf`), `check-learn.mjs` (`DIAG`, `diagnoseProp`, the line loosening), `selfcheck.mjs` `lineBandOf`.
+
+### D25. Research found nothing on a small line: a practice pick unless the corrected chance clears the vig
+- **Date:** 2026-10-18 (the owner, resolving O1).
+- **Rule:** a "found nothing" verdict (D6) on a line of 1.5 or under (the low trust bucket) is priced at its corrected chance where the correction is on, else at the trusted chance (the correction is off since the gate's verdict, D18). Clearing the vig, it is a real research bet. Otherwise it bets the model's side as a 0.5u practice pick (`topN`, a LIKE at most, tallied apart while `PRACTICE_SPLIT`). Larger lines are as D5 and D6.
+- **Code:** `research.mjs` `researchDecision` (`low`, `corrected`, as `practice`), `run.mjs` `betProps` (`researchPractice`).
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.
@@ -218,7 +249,7 @@ Each loop below runs by itself. For each one: what it changes, how often, what i
 |---|---|---|---|---|
 | Trust fit (`desk.mjs` `fitTrust`, `fitBuckets`; `run.mjs` `refitTrust`) | `state.trust` and line buckets: stake size, the CHECK bar's cleared chance, research pricing | every run | bets and tracked rows since `MODEL_EPOCH` (practice included), results and close `q`, the backtest | read pre-epoch rows; decide whether a prop plays (D18) |
 | Live calibration (`calib.mjs`; `run.mjs` `refitCalib`) | `state.calib`: shifts on the model chance (guards, CHECKs, research pricing, the trusted fallback) | every run, at most `CAL_STEP` a UTC day | every graded prop's raw chance (`modelRaw`) across epochs, other sports pooled | fit on its own shifted chance; stack under the correction; jump to 0 |
-| Learned correction (`correct.mjs`; `run.mjs` `refitCorrection`) | each prop's priced chance `p`, and the `topN` ranking | every run | every graded prop (bets, tracked, practice), raw chance, no-vig, result, close `q` (CLV v2 carried to the bet's line) | read the calibrated chance; let the trust shrink on top |
+| Learned correction (`correct.mjs`; `run.mjs` `refitCorrection`), off since the gate's verdict (D18, `CORR_PRICING`) | each prop's priced chance `p`, and the `topN` ranking, when on | every run | every graded prop (bets, tracked, practice), raw chance, no-vig, result, close `q` (CLV v2 carried to the bet's line) | read the calibrated chance; let the trust shrink on top |
 | CHECK learning (`check-learn.mjs`) | role thresholds (soft weights, 0.25 a run), cause bet rules, `ROLE_BET` gates | every run | every graded CHECK, closed ones too for the gates | act under 40 decided; apply a loosening before its interval clears |
 | CHECK patterns (`check-patterns.mjs`) | resolves open CHECKs by rule (cost 0) | every run, free, `--dry` too | researched CHECKs, `check-seeds.json` | count its own rule resolutions; go past `MAX_RATE`; skip the gates or caps (D11) |
 | CHECK research (`research.mjs`) | verdicts, injury report inputs (`researchInputs`), research bets | hourly with `CHECK_RESEARCH=1`, under `CAP_WINDOWS` | open CHECKs, the injury report, rosters, web search | store a failed search (D7); raise a cap; run on `--dry` (saved findings replay only) |
@@ -238,17 +269,21 @@ Each loop below runs by itself. For each one: what it changes, how often, what i
   - The last 5 games' form weight runs from 0 to 0.4.
   - The defense tables count this season 1, last season 0.5, older seasons 0.
 - **The fitted settings themselves** (each stat's K, form weight, scale, dispersion, calibration and context terms) are fit flat over their window. The NFL's window is roughly 2019 to 2023 and is held out on 2023 to 2026; the other sports' window is two seasons. The recency half-life `hl` (`HL` 3/2/1 seasons) is tried on every stat, but only NFL passing yards kept it (3 seasons).
+- **Since 2026-10-18 (the owner: recent seasons count more, rule eras respected), every stat's fit (`project.mjs` `fitStat`) tries:**
+  - A half-life by season, `HL` 8, 4, 3, 2 or 1, picked inside the fit window. Held out, the best is tried first. If it fails, the fit steps softer to the longer half-lives that also beat none inside, `HL_TRIES` (3) in all. The gate is the same as before (`DRAFT_GAIN`, no larger bias).
+  - A rule-era weight (`ERAS`: NFL 2024-09-01, the kickoff; MLB 2023-03-30, the pitch clock and shift ban), at `ERA_W` 0.5 or 0.25 on the games before the break. It is judged where the fit and held-out windows have 200 or more games on each side: fit on the games before the newest half of those since the break, scored on that half, kept with `DRAFT_GAIN` a game or more (`floors.era`).
+  - Either kept, the lean and r are fit again from the newest game over both windows by those weights (`floors.hl.live`). None kept, the settings are as fit.
+- **Measured 2026-10-18 (the NFL's dry-run refit):** no stat kept a half-life. Passing yards' 3 failed its bias test, and the rest failed on gain. The era weight 0.25 was kept on passing yards (+0.0003 a game), attempts (+0.0003), completions (+0.0007), carries (+0.0096) and rush+rec yards (+0.0004). Their live lean went 0.978 to 0.974, 0.994 to 0.983, 0.996 to 0.982, 0.979 to 0.986 (carries' r 4 to 6) and 0.988 to 1.002. Passing TDs, interceptions, rushing yards, receiving yards and receptions stayed flat. MLB's two-season window is all after its break, and the NBA and NHL have none, so none of them has an era to weigh. No NHL, MLB or NBA stat took a half-life either.
+- **The gate (D22, `--refit`, against origin/master):** NFL props layer a, deciding seasons, 3.6264 to 3.6251 (95% -0.0021 to -0.0006, better); older seasons tied. NHL, MLB and NBA layer a tied (NHL 1.4963 both, NBA 2.4747 both). SHIP.
 - **No fit uses 25-year-old seasons.** The NFL's history starts in 2016 and the others' at the last season.
 - **Gaps:**
-  - The fitted settings are flat over 2019 to 2023 for the NFL.
-  - The fits have no rule-era split; the gate's layer a has one (D22).
+  - Only the lean and r are refit live by recency. K, the form weight, the context terms and the calibration are still fit flat over the fit window.
   - The prior lumps older seasons at 0.5.
   - The MMA fit, the calibration and the correction weight all their rows flat. The last two only have rows since 2026-10-08.
 
 ## Open for the owner
 
-- **O1.** Research "we like it" (D6) against small-count trust (D17), at low lines. Research decisions are priced at the trust with the lean held at half the GAP. At a low line's trust of 0.25 that adds at most 1.9 points, under -110's 2.4-point vig. So a "found nothing" verdict on a 1.5-or-under line at a standard price can't show an edge, and it is passed. Since a454c624 the regular props don't use the trust to decide (D18), but research decisions still do. The NFL's research calls so far show 27 edge bets against 2 no-edge passes, so it has rarely bitten yet. Options:
-  1. Keep it (the trust decides research rows).
-  2. Price research rows with the correction.
-  3. A "found nothing" row with no edge becomes a 0.5u practice pick (D2).
-- **O2.** MMA has no practice top N (D2). Its cards bet edges alone.
+None. Resolved 2026-10-18:
+
+- **O1** (research "we like it" against the small-count trust): the owner chose a practice pick, then the corrected chance. See D25.
+- **O2** (MMA had no practice top N): built. See D2.

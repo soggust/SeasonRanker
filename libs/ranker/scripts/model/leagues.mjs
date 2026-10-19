@@ -172,7 +172,12 @@ export const GAME_CAP = 5;
 // the props' main line the rung nearest even (props.mjs mainRung: the alt rungs it took were priced and bet), the
 // context terms taken back where they pay (ratings.mjs selectTerms: the NHL's goalie edge), the role gate on every
 // graded CHECK (check-learn.mjs reopened), an MMA bout known nothing of unpriced. Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T00:19:00Z';
+// 2026-10-19, the gate's verdict on the correction (DECISIONS.md D18): the props priced at the trust again
+// (correct.mjs CORR_PRICING false, the correction a candidate behind CORR_ON=1, shrunk by its evidence); the
+// sanity guard (desk.mjs EV_SUSPECT, D23); the far-line and diagnosis gaps in SDs, never ratios (props.mjs lineZ,
+// D24); research's found-nothing on a small line a practice pick (D25); the MMA's practice picks a card (D2); the
+// rule era's weight in the props' fits (project.mjs ERAS). Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T03:05:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

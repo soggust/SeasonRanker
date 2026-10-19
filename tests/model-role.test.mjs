@@ -180,7 +180,7 @@ test("the role backtest's tables: by the team's game (its week where missing), b
 });
 
 test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap jump, a part-timer, a far line', () => {
-  const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, implied: 50 };
+  const base = { name: 'X', pos: 'WR', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 }, vacOut: 0, snap: { latest: 0.8, avg: 0.78, n: 4 }, mu: 50, r: 4, implied: 50 };
   assert.equal(roleChangeOf(base), null);
   // (a backup starting for a starter who's out: his passing read from his starts, his rushing still a CHECK)
   assert.equal(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Y', missing: 1 } }), null);
@@ -194,9 +194,14 @@ test('roleChangeOf: a backup quarterback, the starter out, a regular out, a snap
   assert.equal(roleChangeOf({ ...base, snap: { latest: 0.9, avg: 0.75, n: 1 } }), null);
   assert.equal(roleChangeOf({ ...base, snap: { latest: 0.4, avg: 0.4, n: 3 }, vacOut: 0.1 }).key, 'part-time');
   assert.equal(roleChangeOf({ ...base, snap: { latest: 0.4, avg: 0.4, n: 3 } }), null);
+  // (the far line in SDs of his count (lineZ, D24): at 50 yards and r 4 the spread is 26 yards, so 81 is +1.19, 29
+  // -0.81 and 79 +1.12, the ratios' 1.62, 0.58 and 1.58 as before; a 0.5 line's 0.6 against 1.0 isn't far, 8
+  // catches against 14 is)
   assert.equal(roleChangeOf({ ...base, implied: 81 }).key, 'line');
   assert.equal(roleChangeOf({ ...base, implied: 29 }).key, 'line');
   assert.equal(roleChangeOf({ ...base, implied: 79 }), null);
+  assert.equal(roleChangeOf({ ...base, mu: 0.6, r: 1000, implied: 1.0 }), null);
+  assert.equal(roleChangeOf({ ...base, mu: 8, r: 20, implied: 14 }).key, 'line');
   assert.match(roleChangeOf({ ...base, pos: 'QB', qb1: { id: 'y', name: 'Lamar Jackson', missing: 1 }, rushing: true }).why, /Lamar Jackson, out/);
 });
 
@@ -374,7 +379,8 @@ test('roleChangeOf: each reason names its safe side (the model\'s known error th
   const qb = { name: 'X', pos: 'QB', pid: 'x', qb1: { id: 'x', name: 'X', missing: 0 } };
   assert.equal(roleChangeOf({ ...qb, starts: 2, rushing: true }).safe, 'over');
   assert.equal(roleChangeOf({ ...qb, starts: 2 }).safe, 'under');
-  const wr = { name: 'W', pos: 'WR', pid: 'w', qb1: { id: 'q', name: 'Q', missing: 0 }, mu: 50 };
-  assert.equal(roleChangeOf({ ...wr, implied: 50 * ROLE.ratioHi + 1 }).safe, 'over');
-  assert.equal(roleChangeOf({ ...wr, implied: 50 * ROLE.ratioLo - 1 }).safe, 'under');
+  const wr = { name: 'W', pos: 'WR', pid: 'w', qb1: { id: 'q', name: 'Q', missing: 0 }, mu: 50, r: 4 };
+  const sd = Math.sqrt(50 + 2500 / 4);
+  assert.equal(roleChangeOf({ ...wr, implied: 50 + (ROLE.zHi + 0.05) * sd }).safe, 'over');
+  assert.equal(roleChangeOf({ ...wr, implied: 50 + (ROLE.zLo - 0.05) * sd }).safe, 'under');
 });

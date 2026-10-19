@@ -2235,7 +2235,13 @@ const R = [0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 6, 8, 10, 16, 30, 60, 150];
 // (the recency weight's half-lives tried, in seasons (hl: fitStat), a season a year of days; the share of the fit
 // window its pick fits on, the rest scoring it; TRY_HL false: not tried, every stat as before)
 export const TRY_HL = true;
-export const HL = [3, 2, 1];
+export const HL = [8, 4, 3, 2, 1];
+// (the held-out tries a stat's half-life gets, the best inside first, then softer: fitStat)
+export const HL_TRIES = 3;
+// (each sport's rule era (2026-10-18, the owner's): the NFL's dynamic kickoff (2024), MLB's pitch clock and shift ban
+// (2023); none for the NBA's and NHL's two-season windows. The weights tried on the games before it: ERA_W)
+export const ERAS = { nfl: '2024-09-01', mlb: '2023-03-30', nba: null, nhl: null };
+export const ERA_W = [0.5, 0.25];
 export const INNER_FIT = 0.7;
 const YEAR_MS = 365.25 * 864e5;
 // (the dispersion's growth with the projection tried: rAt)
@@ -3098,7 +3104,9 @@ export function fitStat(stat, rows, env) {
     const fitE = o1.filter((x) => x.win === 1 && x.row.eligible !== false);
     const fitL = scored(o1, 1);
     const tOf = (x) => Date.parse(x.row.date.slice(0, 10));
-    const wAt = (hl, ref) => (hl ? (x) => 0.5 ** (Math.max(0, ref - tOf(x)) / (hl * YEAR_MS)) : null);
+    // (the sport's rule era (ERAS): its games before the break weighed ew, 1 none)
+    const eraT = Date.parse(ERAS[env?.sport] ?? '') || null;
+    const wAt = (hl, ref, ew = 1) => (hl || ew < 1 ? (x) => (hl ? 0.5 ** (Math.max(0, ref - tOf(x)) / (hl * YEAR_MS)) : 1) * (eraT && ew < 1 && tOf(x) < eraT ? ew : 1) : null);
     const leanOf = (list, w) => {
       const sMu = list.reduce((t, x) => t + (w ? w(x) : 1) * x.p.mu, 0);
       return sMu > 0 ? Math.round((list.reduce((t, x) => t + (w ? w(x) : 1) * x.v, 0) / sMu) * 1000) / 1000 : 1;
@@ -3122,41 +3130,96 @@ export function fitStat(stat, rows, env) {
     const innerFitE = fitE.filter((x) => tOf(x) < mid);
     const innerVal = fitL.filter((x) => tOf(x) >= mid);
     const inner = {};
-    let hl = 0;
+    // (the half-lives better than none inside the fit window, the best first)
+    let better = [];
     if (innerFit.length >= 200 && innerVal.length >= 100 && innerFitE.length) {
       for (const h of [0, ...HL]) {
         const w = wAt(h, mid);
         const k = leanOf(innerFitE, w);
         inner[h] = Math.round((llOf(innerVal, k, rOf(innerFit, k, w), null) / innerVal.length) * 1e5) / 1e5;
-        if (h && inner[h] > inner[hl]) hl = h;
       }
+      better = HL.filter((h) => inner[h] > inner[0]).sort((a, b) => inner[b] - inner[a]);
     }
-    const fails = [];
+    // (soft, the owner's D8: the best inside first; one the held-out games don't bear out steps to the softer ones,
+    // the longer half-lives that also beat none inside, softest last, HL_TRIES in all: a small drift kept at a long
+    // half-life, never all or nothing)
+    const tries = better.length ? [better[0], ...better.filter((h) => h > better[0]).sort((a, b) => a - b)].slice(0, HL_TRIES) : [];
+    let fails = [];
     let off = null;
     let tried = null;
     let ks = [null, null];
     let rs = [null, null];
-    if (!hl) fails.push(Object.keys(inner).length ? 'not taken inside the fit window' : 'too few games to try');
+    let hl = 0;
+    const stepped = [];
+    if (!tries.length) fails.push(Object.keys(inner).length ? 'not taken inside the fit window' : 'too few games to try');
     else {
       const k0 = leanOf(fitE, null);
       const r0 = rOf(fitL, k0, null);
       off = heldOut({ ...params, scale: k0, r: r0 }, null, null, scaled(k0), { all: true });
-      const w = wAt(hl, Date.parse(cuts[1]));
-      const k = leanOf(fitE, w);
-      const r = rOf(fitL, k, w);
-      const tryP = { ...params, scale: k, r, hl };
-      tried = heldOut(tryP, null, null, scaled(k), { wOf: w, all: true });
-      ks = [k0, k];
-      rs = [r0, r];
-      const raw = gainOf(off.check, tried.check);
-      gains.hl = r4(raw);
-      const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
-      if (!(raw >= DRAFT_GAIN)) fails.push('gain');
-      if (!no(biasRawOf(tried.check), biasRawOf(off.check))) fails.push('bias');
-      if (!no(biasRawOf(tried.all), biasRawOf(off.all))) fails.push("all players' bias");
-      if (!fails.length) (params = { ...tryP, cal: tried.cal }), (current = tried);
+      for (const h of tries) {
+        const w = wAt(h, Date.parse(cuts[1]));
+        const k = leanOf(fitE, w);
+        const r = rOf(fitL, k, w);
+        const tryP = { ...params, scale: k, r, hl: h };
+        tried = heldOut(tryP, null, null, scaled(k), { wOf: w, all: true });
+        ks = [k0, k];
+        rs = [r0, r];
+        const raw = gainOf(off.check, tried.check);
+        gains.hl = r4(raw);
+        const no = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a) <= Math.abs(b);
+        fails = [];
+        if (!(raw >= DRAFT_GAIN)) fails.push('gain');
+        if (!no(biasRawOf(tried.check), biasRawOf(off.check))) fails.push('bias');
+        if (!no(biasRawOf(tried.all), biasRawOf(off.all))) fails.push("all players' bias");
+        stepped.push({ hl: h, gain: r4(raw), fails: [...fails] });
+        if (!fails.length) {
+          (params = { ...tryP, cal: tried.cal }), (current = tried);
+          hl = h;
+          break;
+        }
+      }
     }
-    floors.hl = { size: hl || null, fails, inner, bias: [off?.check?.bias ?? null, tried?.check?.bias ?? null], allBias: [off?.all?.bias ?? null, tried?.all?.bias ?? null], logLoss: [off?.check?.logLoss ?? null, tried?.check?.logLoss ?? null], scale: ks, r: rs, seconds: Math.round((Date.now() - hlT0) / 100) / 10 };
+    floors.hl = { size: hl || null, fails, inner, tries: stepped, bias: [off?.check?.bias ?? null, tried?.check?.bias ?? null], allBias: [off?.all?.bias ?? null, tried?.all?.bias ?? null], logLoss: [off?.check?.logLoss ?? null, tried?.check?.logLoss ?? null], scale: ks, r: rs, seconds: Math.round((Date.now() - hlT0) / 100) / 10 };
+    // (the rule era (ERAS: the NFL's 2024 kickoff, MLB's 2023 pitch clock and shift ban), judged where the history
+    // has games on both sides of the break: the fit and held-out windows' games before the newest half of the ones
+    // since the break fit at each era weight (ERA_W: the games before the break at that share, with the half-life
+    // kept), that newest half scored unweighted; kept with DRAFT_GAIN a game or more over none (floors.era))
+    const both = o1.filter((x) => x.win >= 1);
+    const bothE = both.filter((x) => x.row.eligible !== false);
+    const bothL = bothE.length >= 200 ? bothE : both;
+    let eraW = 1;
+    if (eraT) {
+      const post = bothL.filter((x) => tOf(x) >= eraT);
+      const pre = bothL.filter((x) => tOf(x) < eraT);
+      if (post.length >= 200 && pre.length >= 200) {
+        const pd = post.map(tOf).sort((a, b) => a - b);
+        const cutE = pd[Math.floor(pd.length * 0.5)];
+        const eFit = bothL.filter((x) => tOf(x) < cutE);
+        const eFitE = bothE.filter((x) => tOf(x) < cutE);
+        const eVal = bothL.filter((x) => tOf(x) >= cutE);
+        const score = (ew) => {
+          const w = wAt(hl, cutE, ew);
+          const k = leanOf(eFitE, w);
+          return Math.round((llOf(eVal, k, rOf(eFit, k, w), null) / eVal.length) * 1e5) / 1e5;
+        };
+        const byW = { 1: score(1) };
+        for (const ew of ERA_W) byW[ew] = score(ew);
+        const best = ERA_W.filter((ew) => byW[ew] - byW[1] >= DRAFT_GAIN).sort((a, b) => byW[b] - byW[a])[0];
+        if (best) eraW = best;
+        floors.era = { at: ERAS[env.sport], w: eraW, tried: byW, val: eVal.length, fails: best ? [] : ['gain'] };
+      } else floors.era = { at: ERAS[env.sport], w: 1, fails: ['too few games on a side of the break'] };
+    }
+    // (live: a kept half-life or era weight read from the newest game, the lean and r fit again by it on the fit and
+    // held-out windows both, so the recent seasons count most in the settings the props are priced with; none kept,
+    // the settings as fit)
+    if (hl || eraW < 1) {
+      const newest = Math.max(...both.map(tOf));
+      const w = wAt(hl, newest, eraW);
+      const k = leanOf(bothE, w);
+      const r = rOf(bothL, k, w);
+      floors.hl.live = { scale: [params.scale ?? null, k], r: [params.r ?? null, r], eraW };
+      params = { ...params, scale: k, r, ...(eraW < 1 ? { eraW } : {}) };
+    }
   }
   params.cal = current.cal;
   // (the recalibration by side (cs), tried last: each side of the projection (a line under it, one at it or

@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { CAL_CAP, CAL_HOLD_MIN, CAL_K, CAL_MIN, CAL_SPLIT, CAL_STEP, calAt, calRows, calSides, calibText, fitCalib, fitShift, fitSpot, lineClass, logLoss, shiftOf, shrinkOf, shrunk, spotKey } from '../libs/ranker/scripts/model/calib.mjs';
 import { c21, TITLES } from '../libs/ranker/scripts/model/selfcheck.mjs';
-import { HL, TRY_HL, fitStat } from '../libs/ranker/scripts/model/project.mjs';
+import { ERAS, ERA_W, HL, HL_TRIES, TRY_HL, fitStat } from '../libs/ranker/scripts/model/project.mjs';
 
 const EPOCH = '2026-10-14T06:00:00Z';
 const T0 = Date.parse(EPOCH);
@@ -203,9 +203,10 @@ test("the self-check's C21: each spot's shift and rows, the week's said against 
   assert.match(c.headline, /pts\|over\|0\.5/);
 });
 
-test('the recency weight: tried on every stat, its half-lives 3, 2, 1 seasons; kept only with a held-out gain of DRAFT_GAIN (0.0003) or more and no larger bias, else the stat as without it', () => {
+test('the recency weight: tried on every stat, its half-lives 8, 4, 3, 2, 1 seasons, softer ones on a failed held-out try; kept only with a held-out gain of DRAFT_GAIN (0.0003) or more and no larger bias, else the stat as without it; kept, live from the newest game', () => {
   assert.equal(TRY_HL, true);
-  assert.deepEqual(HL, [3, 2, 1]);
+  assert.deepEqual(HL, [8, 4, 3, 2, 1]);
+  assert.equal(HL_TRIES, 3);
   // (three seasons, every player's level rising each season: the league's drift)
   const day = (season, g) => new Date(Date.UTC(season, 8, 1 + g * 7)).toISOString().replace('.000Z', 'Z');
   const r = rng(17);
@@ -220,14 +221,48 @@ test('the recency weight: tried on every stat, its half-lives 3, 2, 1 seasons; k
   assert.ok(fit.floors.hl);
   const h = fit.floors.hl;
   assert.ok(Number.isFinite(h.seconds));
+  assert.ok(h.tries.length <= HL_TRIES);
+  // (the tries step softer: each after the first a longer half-life)
+  for (let i = 2; i < h.tries.length; i++) assert.ok(h.tries[i].hl > h.tries[i - 1].hl);
   if (fit.params.hl) {
     assert.ok(HL.includes(fit.params.hl));
+    assert.equal(h.size, fit.params.hl);
     assert.ok(fit.gains.hl >= 0.0003);
     assert.ok(Math.abs(h.bias[1]) <= Math.abs(h.bias[0]));
     assert.ok(Math.abs(h.allBias[1]) <= Math.abs(h.allBias[0]));
-    assert.equal(fit.params.scale, h.scale[1]);
+    // (live: the lean and r fit again from the newest game on both windows, the drift's last level: up here)
+    assert.ok(h.live);
+    assert.equal(fit.params.scale, h.live.scale[1]);
+    assert.ok(h.live.scale[1] >= h.scale[1]);
   } else {
     assert.ok(h.fails.length > 0);
     assert.equal(fit.params.hl, undefined);
   }
+});
+
+test("the rule era (ERAS): judged where the history has games on both sides of the break, each sport's own, the games before it weighed at ERA_W or 1", () => {
+  assert.deepEqual(ERAS, { nfl: '2024-09-01', mlb: '2023-03-30', nba: null, nhl: null });
+  assert.deepEqual(ERA_W, [0.5, 0.25]);
+  // (five NFL seasons, the level flat before the 2024 break and a step up after it: the old era's games mislead)
+  const day = (season, g) => new Date(Date.UTC(season, 8, 8 + g * 7)).toISOString().replace('.000Z', 'Z');
+  const r = rng(29);
+  const rows = [];
+  for (let i = 0; i < 30; i++) {
+    for (const [season, lvl] of [[2021, 4], [2022, 4], [2023, 4], [2024, 5.5], [2025, 5.5]]) {
+      for (let g = 0; g < 16; g++) rows.push({ pid: `p${i}`, pos: 'WR', season, date: day(season, g), opp: `o${g % 4}`, team: `t${i % 8}`, game: `p${i}-${season}-${g}`, eligible: true, s: { rec: Math.max(0, Math.round(lvl + (r() - 0.5) * 4)) } });
+    }
+  }
+  rows.sort((a, b) => a.date.localeCompare(b.date));
+  const fit = fitStat({ key: 'rec' }, rows, { sport: 'nfl' });
+  const e = fit.floors.era;
+  assert.ok(e, 'the era judged');
+  assert.equal(e.at, '2024-09-01');
+  assert.ok([1, ...ERA_W].includes(e.w));
+  if (e.w < 1) {
+    assert.equal(fit.params.eraW, e.w);
+    assert.equal(fit.floors.hl.live.eraW, e.w);
+  }
+  // (no era for a sport without one; none read without the sport)
+  assert.equal(fitStat({ key: 'rec' }, rows, { sport: 'nba' }).floors.era, undefined);
+  assert.equal(fitStat({ key: 'rec' }, rows, {}).floors.era, undefined);
 });

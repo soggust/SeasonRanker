@@ -54,7 +54,7 @@ import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictT
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
-import { BANKROLL, BUCKETS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, record, stakeFor, trackedRecord } from './desk.mjs';
+import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
 import { buildBoard, seenUpdate } from './board.mjs';
@@ -341,9 +341,47 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
     flags.push(guard);
     units = 0.5;
   }
+  // (the sanity guard, desk.mjs suspectOf (D23): an ev past EV_SUSPECT at the practice stake, flagged loudly)
+  const suspect = suspectOf(pick.ev, `p ${Math.round(pick.p * 10000) / 10000}, the book's no-vig ${Math.round(pick.fair * 10000) / 10000}`);
+  if (suspect) {
+    flags.push(`suspect: ${suspect.why}`);
+    units = 0.5;
+    console.warn(`mma: SUSPECT PRICE ${pick.side} at ${pick.odds}: ${suspect.why}`);
+  }
   if (!apiPrice) flags.push("no Odds API price (ESPN's board)");
   const why = !apiPrice ? "no Odds API price: ESPN's board, tracked" : pick.ev <= 0 ? 'no edge at the trusted chance' : pick.model - pick.fair < edge ? `the model's lean (${round((pick.model - pick.fair) * 100, 1)} points) under the league's edge (${edge * 100})` : null;
-  return { pick, other, placed: placement(hasEdge, units), flags, why };
+  return { pick, other, placed: placement(hasEdge, units), flags, why, ...(suspect ? { suspect } : {}) };
+}
+
+// A card's main card: its bouts at the card's last start time (ESPN dates a card's segments, the prelims' earlier), the
+// ones not off. The bout keys
+export function mainCardOf(bouts, card) {
+  const mine = (bouts ?? []).filter((b) => String(b.card) === String(card) && !b.off);
+  const last = Math.max(...mine.map((b) => Date.parse(b.date) || 0));
+  return new Set(mine.filter((b) => (Date.parse(b.date) || 0) === last).map((b) => b.key ?? b.id));
+}
+
+// The MMA's practice picks (DECISIONS.md D2, O2 closed 2026-10-18: no sport goes to zero bets). Each card plays about
+// PRACTICE_N.mma: every bout clearing the vig bets as ever; of the rest with a DraftKings price and an edge before the
+// vig (the trusted chance over the book's no-vig: the same fallback the props use without the correction), each
+// main-card bout plays its side, and the best of the prelims by edge fill the card to PRACTICE_N.mma. rows: this
+// run's new moneyline rows ({ id, boutKey, card, intent, p, fair, priced }); placed: the card's standing moneyline
+// bets (not tracked, not void). Each at PRACTICE_UNITS, a LIKE at most, marked topN; tallied apart while
+// PRACTICE_SPLIT. id -> { rank, quota, slate, edge, main }
+export function mmaPracticePicks(rows, bouts, placed = [], n = PRACTICE_N.mma) {
+  const out = new Map();
+  const byCard = new Map();
+  for (const b of rows) byCard.set(String(b.card), [...(byCard.get(String(b.card)) ?? []), b]);
+  for (const [card, list] of byCard) {
+    const main = mainCardOf(bouts, card);
+    const cands = list.filter((b) => isTracked(b) && b.priced !== false).map((b) => ({ id: b.id, ev: -1, edge: b.p - b.fair, main: main.has(b.boutKey) }));
+    const standing = placed.filter((b) => String(b.card) === String(card)).length + list.filter((b) => !isTracked(b)).length;
+    const mains = cands.filter((c) => c.main && c.edge > 0).sort((a, b) => b.edge - a.edge);
+    const prelims = practiceTop(cands.filter((c) => !c.main), n, standing + mains.length);
+    const picked = [...mains, ...cands.filter((c) => prelims.has(c.id))].sort((a, b) => b.edge - a.edge);
+    picked.forEach((c, i) => out.set(c.id, { rank: i + 1, quota: n, slate: n, edge: Math.round(c.edge * 10000) / 10000, ...(c.main ? { main: true } : {}) }));
+  }
+  return out;
 }
 
 // A bet's plain write-up from its own numbers: the model's chance against the book's, the terms that carried
@@ -565,6 +603,9 @@ export function stateOf(state, { model, bt, trust, ledger, now, lines = null, od
     history: { games: model.rows.length, finals: fitRows(model.rows).length, from: model.rows[0]?.date ?? null },
     teams: [],
     record: record(ledger.bets),
+    // (the cards' practice picks' own line while PRACTICE_SPLIT (desk.mjs, mmaPracticePicks): out of the record above)
+    practiceSplit: PRACTICE_SPLIT,
+    practice: practiceRecord(ledger.bets),
     tracked: trackedRecord(ledger.bets),
     clv: { all: clvSummary(ledger.bets), ml: clvSummary(ledger.bets.filter((b) => b.market === 'ml')), total: clvSummary(ledger.bets.filter((b) => b.market === 'total')) },
     // (the round totals (fights-totals.mjs): the fit's terms and base rates, held out against the base rates, and
@@ -876,6 +917,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       p: round(pick.p, 4),
       ev: round(pick.ev, 4),
       ...placed,
+      ...(final.suspect ? { suspect: final.suspect, ...(placed.intent === 'edge' ? { practice: `suspect: ${final.suspect.why}` } : {}) } : {}),
+      ...(apiPrice ? {} : { priced: false }),
       book: 'DraftKings',
       fairFrom: lines.fairFrom,
       pick: pick.side === 'home' ? bout.home.name : bout.away.name,
@@ -887,6 +930,17 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     pending.push(bet);
   }
   if (unmatched.length) log.warn(`${SPORT}: ${unmatched.length} due bouts not on The Odds API's board by name (not guessed): ${unmatched.join('; ')}`);
+  // (the card's practice picks (mmaPracticePicks, D2): the main card's bouts and the best prelims short of the vig
+  // with an edge before it, at the practice stake, marked topN)
+  const mlNew = pending.filter((b) => b.market === 'ml');
+  const forced = mmaPracticePicks(mlNew, bouts, ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && !isTracked(b) && b.card));
+  for (const b of mlNew) {
+    const t = forced.get(b.id);
+    if (!t) continue;
+    delete b.trackUnits;
+    Object.assign(b, { intent: 'edge', units: PRACTICE_UNITS, topN: t, practice: `practice: its card's #${t.rank} of ${t.quota}${t.main ? ' (main card)' : ''} by edge before the vig (+${Math.round(t.edge * 1000) / 10} points over the book's no-vig), short of the vig` });
+  }
+  if (forced.size) log.log(`${SPORT}${dry ? ' (dry)' : ''}: the card's practice picks: ${forced.size} (${PRACTICE_N.mma} a card, every main-card bout with an edge before the vig, at ${PRACTICE_UNITS}u): ${mlNew.filter((b) => forced.has(b.id)).map((b) => `${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} +${forced.get(b.id).edge}`).join(', ')}`);
   for (const b of pending) {
     log.log(`${SPORT}${dry ? ' (dry)' : ''}: ${isTracked(b) ? 'tracked ' : ''}${b.matchup}: ${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} ${isTracked(b) ? `0u (${b.trackUnits}u as an action bet; ${b.context.why})` : `${b.units}u ${levelOf(b, kellyOf(b.odds, b.p), b.p)}`} model ${b.model} fair ${b.fair} (${b.fairFrom}) p ${b.p} ev ${b.ev}${b.context.flags.length ? ` [${b.context.flags.join('; ')}]` : ''}`);
     ledger.bets.push(b);
