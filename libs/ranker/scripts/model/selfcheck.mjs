@@ -1550,7 +1550,9 @@ async function main() {
   const now = at >= 0 ? new Date(args[at + 1]) : new Date();
   if (Number.isNaN(now.getTime())) throw new Error(`--now: not a date (${args[at + 1]})`);
   const named = args.filter((a, i) => !a.startsWith('--') && !(at >= 0 && i === at + 1));
-  const sports = named.length ? named : ['nfl', 'nba', 'nhl', 'mlb'];
+  // (MMA since 2026-10-19: its ledger and the gate's history leak hunt (history-leaks.json), the checks that read
+  // a fights league's rows)
+  const sports = named.length ? named : ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
   for (const sport of sports) {
     try {
       const input = readSport(sport, now);

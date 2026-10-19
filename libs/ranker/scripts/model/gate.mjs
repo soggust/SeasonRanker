@@ -47,11 +47,13 @@ import { createHash } from 'node:crypto';
 import { BET_DECIDE, betCompare, betSummary, binLoss, dec, gateVerdict, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
+import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
 const GATE = path.join(ROOT, '.cache/gate');
-export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb'];
+// (MMA since 2026-10-19: the fights league scored by gate-mma.mjs on the archive and its priced history)
+export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb', 'mma'];
 export const ROLLING_DAYS = 28;
 export const FROZEN_FILE = path.join(MODEL, 'gate-frozen.json');
 const PROP_FROM = '2026-10-08T00:00:00Z';
@@ -103,7 +105,7 @@ export function resolveVersion(spec) {
 }
 
 // (a version's code by part, as hashes: what changed between two)
-const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'] };
+const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'], mma: ['fights-model.mjs', 'fights-totals.mjs', 'fights-venue.mjs', 'mma-desk.mjs'] };
 export function codeOf(dir) {
   const out = {};
   for (const [part, files] of Object.entries(PARTS)) {
@@ -252,6 +254,8 @@ function stakesOf(V, x, evScale) {
 // One version's scores for a sport: { sport, notes, current, proj: { games, props }, bet: { props: { saved, replay },
 // lines: { saved, replay } }, meta }
 export async function scoreVersion(dir, sport, { refit = false, propsLayer = true, log = console.log } = {}) {
+  // (the fights league: its own scoring, gate-mma.mjs, on the archive's bouts and the MMA priced history)
+  if (sport === 'mma') return { ...(await scoreMma(dir, { log })), code: codeOf(dir) };
   const notes = [];
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
   const V = {};
@@ -484,7 +488,9 @@ export function projRows(score) {
       props.push({ k: `${st}|${p.pid[i]}|${p.game[i] || p.day[i]}`, c: `${st}|${p.day[i]}`, season: p.season[i], v: p.loss[i] });
     }
   }
-  return { games, props };
+  // (the MMA's layers (gate-mma.mjs): each bout's moneyline, each bout's round totals at its lines)
+  const one = (list) => (list ? list.map(([id, day, season, l]) => ({ k: id, c: day, season, v: l })) : null);
+  return { games, props, bouts: one(score.proj?.bouts), totals: one(score.proj?.totals) };
 }
 
 // (the games' CRPS, margin and total summed: reported, never deciding)
@@ -507,6 +513,8 @@ export function compareScores(sport, a, b, opts = {}) {
   const proj = {
     games: pa.games.length && pb.games.length ? projCompare(sport, pa.games, pb.games, current, opts) : null,
     props: pa.props?.length && pb.props?.length ? projCompare(sport, pa.props, pb.props, current, opts) : null,
+    ...(pa.bouts?.length && pb.bouts?.length ? { bouts: projCompare(sport, pa.bouts, pb.bouts, current, opts) } : {}),
+    ...(pa.totals?.length && pb.totals?.length ? { totals: projCompare(sport, pa.totals, pb.totals, current, opts) } : {}),
   };
   const n = a.meta?.practiceN ?? 6;
   const practice = a.meta?.practiceUnits ?? 0.5;
@@ -583,7 +591,10 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
     }
     return w > 0 ? r4(s / w) : null;
   };
-  out.proj = { games: projMean(pr.games), props: projMean(pr.props) };
+  out.proj = { games: projMean(pr.games), props: projMean(pr.props), ...(pr.bouts ? { bouts: projMean(pr.bouts) } : {}), ...(pr.totals ? { totals: projMean(pr.totals) } : {}) };
+  // (the MMA's by-market table (gate-mma.mjs): raw, priced and the Book at the close and the open; and its history trust)
+  if (score.sport === 'mma' && score.vsBook?.linesByMarket) out.markets = { close: score.vsBook.linesByMarket, open: score.vsBook.openByMarket ?? null };
+  if (score.trustPrior) out.trust = Object.fromEntries(Object.entries(score.trustPrior).filter(([k]) => k !== 'rows' && k !== 'periods').map(([k, v]) => [k, k === 'match' ? v : { trust: v.trust, n: v.n, clvN: v.clvN, eff: v.eff, fitted: v.fitted }]));
   return out;
 }
 
@@ -612,6 +623,8 @@ export function tableOf(c) {
   row('a: games CRPS (reported)', c.info?.crps?.decide);
   row('a: props, deciding', c.proj.props?.decide);
   row('a: props, older (sanity)', c.proj.props?.sanity);
+  if (c.proj.bouts) row('a: bouts (ML), deciding', c.proj.bouts.decide), row('a: bouts, older (sanity)', c.proj.bouts.sanity);
+  if (c.proj.totals) row('a: round totals, deciding', c.proj.totals.decide), row('a: round totals, older', c.proj.totals.sanity);
   for (const layer of ['props', 'lines', 'history']) {
     const b = c.bet[layer];
     if (!b) {
@@ -633,6 +646,13 @@ export function tableOf(c) {
       const x = vb[k];
       if (x) lines.push(`    ${k.padEnd(6)} model ${x.model} (raw ${x.raw}${fin(x.anch) ? `, anchored ${x.anch}` : ''}) / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows, ${x.games} games)`);
     }
+    // (the MMA's by market, the open beside the close)
+    if (c.sport === 'mma')
+      for (const m of MMA_MARKETS) {
+        const x = vb.linesByMarket?.[m];
+        const o = vb.openByMarket?.[m];
+        if (x) lines.push(`    ${m.padEnd(6)} close: raw ${x.raw} / priced ${x.model} / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows)${o ? `; open: raw ${o.raw} / priced ${o.model} / book ${o.book}: ${sgn(o.gap)} ${o.verdict}` : ''}`);
+      }
   }
   return lines.join('\n');
 }
@@ -668,6 +688,16 @@ function recordScore(version, sport, score, frozen) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/anchor.json');
     writeFileSync(out, `${JSON.stringify({ ...score.anchor.all, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
     console.log(`${sport}: the anchor's pull by stat written (${path.relative(ROOT, out)}${score.anchor.all.on === false ? ', the readout only: the anchor is off for this sport' : ''}): ${Object.entries(score.anchor.all.stats).map(([k, v]) => `${k} ${v.pull}`).join(', ')}`);
+  }
+  // (the MMA's history prior (gate-mma.mjs trustPrior, DECISIONS.md D36): each market's trust fit on the priced history,
+  // what the live desk reads (mma-desk.mjs readTrustPrior), and the rows it pools with its own bets)
+  if (score.trustPrior) {
+    const { rows, ...prior } = score.trustPrior;
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/trust-prior.json');
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, ...prior }, null, 1)}\n`);
+    const rowsOut = path.join(ROOT, 'apps', sport, 'scripts/model/history-rows.json');
+    writeFileSync(rowsOut, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, n: rows.length, rows })}\n`);
+    console.log(`${sport}: the history's trust prior written (${path.relative(ROOT, out)}: ${Object.entries(prior).filter(([k]) => k !== 'periods' && k !== 'match').map(([k, v]) => `${k} ${v.trust} on ${v.rows} rows`).join(', ')}; ${rows.length} rows in ${path.relative(ROOT, rowsOut)})`);
   }
   const hrows = score.bet?.history?.replay ?? [];
   if (hrows.length) {

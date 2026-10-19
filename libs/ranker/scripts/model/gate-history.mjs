@@ -191,7 +191,8 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
 // (the open rows' close chance at the same line (q), the close rows' open chance at it (fo: the move to date, known
 // at the close), the trust walk-forward on the close rows, each row priced: desk.mjs chanceAt with the row as its
 // ctx (a version with the residual model's hook, residual.mjs, reads it; an older chanceAt ignores a fifth argument))
-function finish(V, rows, keyOf, start, kind) {
+// (exported for the MMA's rows, gate-mma.mjs, which prices its moneylines and round totals the same way)
+export function finish(V, rows, keyOf, start, kind) {
   const close = new Map(rows.filter((x) => x.kind === 'c').map((x) => [x.key, x]));
   const open = new Map(rows.filter((x) => x.kind === 'o').map((x) => [x.key, x]));
   for (const x of rows) {
