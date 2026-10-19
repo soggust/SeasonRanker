@@ -452,6 +452,14 @@ export interface ModelBoardGameIn {
   h: [string, string];
   k: { spread?: ModelBoardSideIn[]; total?: ModelBoardSideIn[]; ml?: ModelBoardSideIn[] };
 }
+// A game on a sport's betting board by its ESPN id, matched as text (board.json writes ids as strings, an event can
+// reach the page as a number): the game view's props (game-lines model), so a board game with priced props is never
+// missed and shown as the preview's -110 assumed instead
+export function modelGameOf<G extends { id: string | number }>(games: readonly G[] | null | undefined, event: string | number): G | undefined {
+  const id = String(event);
+  return (games ?? []).find((g) => String(g.id) === id);
+}
+
 export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number): GameBoard | null {
   const fight = sport === 'mma';
   const team = ([abbr, id]: [string, string]): BoardTeam => ({ abbr, name: abbr, logo: fight && id ? `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png` : null, score: null });

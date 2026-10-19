@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { ESPN_LEAGUES } from '../../book/desk-math';
 import { SummaryBox, liveStat } from '../../book/live-props';
-import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard } from './wallet-math';
+import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
@@ -114,7 +114,7 @@ export class LinesService {
 
   // A game on its sport's betting board, as last loaded (none: not on it, begun, or not loaded yet)
   modelGame(sport: string, event: string): BoardGame | undefined {
-    return this.modelAll().get(sport)?.games.find((g) => g.id === event);
+    return modelGameOf(this.modelAll().get(sport)?.games, event);
   }
 
   // A sport's betting board (the bettor writes it hourly: kept five minutes)

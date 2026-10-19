@@ -7,7 +7,7 @@ import { CheckResearchView, researchView } from './check-research';
 import { BetsView, betsView, chooseBetsView } from './book-view';
 import { LinesService } from '../account/wallet/lines.service';
 import { WalletService } from '../account/wallet/wallet.service';
-import { Selection, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
+import { Selection, modelGameOf, recordOf, recordText, selectionKey } from '../account/wallet/wallet-math';
 import { PriceWhy, botSelection } from '../account/wallet/game-lines.component';
 import { SITE_SPORTS } from '@ranker/core/sports';
 import { betSports } from './bet-sports';
@@ -23,7 +23,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRo
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, menuKey, menuOptionId, menuValues, sportChoice, sportFace, viewsShown } from './game-menu';
+import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, lockedText, movedTitle, quoteOf, suggestionsOf, withLive } from './suggestions';
@@ -458,11 +458,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // its own game)
   private linesOnly(): MenuGameIn[] {
     const out: MenuGameIn[] = [];
-    // (a game with a suggestion on it is a picked one: its rows count it)
-    const suggested = new Set(this.listed.filter((r) => r.suggested).map((r) => `${r.sport}|${r.pickId?.split(':')[0]}`));
-    for (const g of this.lines.boards().values()) {
-      const picked = this.boards.get(`${g.sport}|${g.matchup}`);
-      if (g.state !== 'pre' || (picked?.event === g.event && this.boardPicks(picked).length) || suggested.has(`${g.sport}|${g.event}`) || !(g.spread || g.total || g.ml)) continue;
+    // (a game with a row on show on it, a bet or a suggestion, is a picked one: its rows count it (pickedGames).
+    // Only a row on show: a game whose picks the list hides (a practice pick with no edge) is here by its lines,
+    // never gone from the dropdown (game-menu.ts linesOnlyGames))
+    for (const g of linesOnlyGames(this.lines.boards().values(), shownEvents(this.listed))) {
       out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)) });
     }
     return out;
@@ -622,7 +621,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const now = Date.now();
     const sources = (sport: string, event: string): QuoteSources => {
       const board = models.get(sport);
-      return { espn: boards.get(`${sport}|${event}`) ?? null, espnAt: at, model: board?.games.find((g) => g.id === event) ?? null, modelAt: board?.at ?? null };
+      return { espn: boards.get(`${sport}|${event}`) ?? null, espnAt: at, model: modelGameOf(board?.games, event) ?? null, modelAt: board?.at ?? null };
     };
     const bets = rows.map((r) => (r.check || !r.pickId ? r : withLive(r, quoteOf(r, sources(r.sport, r.pickId.split(':')[0])))));
     const suggested = [...models].flatMap(([sport, board]) => (this.loaded.has(sport) ? suggestionsOf(sport, board, now, (g) => sources(sport, g.id)) : []));

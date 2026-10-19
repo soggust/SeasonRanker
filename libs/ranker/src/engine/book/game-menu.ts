@@ -128,6 +128,27 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
   return days;
 }
 
+// The games the dropdown lists by their lines alone: on a board, not begun, with a line posted, and no row on the
+// page's list (listed: the rows on show, after the practice filter, and the CHECKs an admin alone sees) on that
+// game, by "sport|event" (a row's event is its pickId's first part). A game counts as picked only through a row
+// on show: one whose only picks the list hides (a practice pick with no edge at the live price, book-rows.ts
+// bookShows) is listed by its lines, never dropped from the dropdown (the owner, 2026-10-19: tonight's NHL games
+// gone from it while the Bot's practice picks on them were hidden)
+export interface LinesGameIn {
+  sport: string;
+  event: string;
+  state: 'pre' | 'in' | 'post';
+  spread: unknown;
+  total: unknown;
+  ml: unknown;
+}
+export function shownEvents(rows: readonly { sport: string; pickId?: string | null }[]): Set<string> {
+  return new Set(rows.filter((r) => r.pickId).map((r) => `${r.sport}|${r.pickId!.split(':')[0]}`));
+}
+export function linesOnlyGames<G extends LinesGameIn>(boards: Iterable<G>, shown: ReadonlySet<string>): G[] {
+  return [...boards].filter((g) => g.state === 'pre' && !!(g.spread || g.total || g.ml) && !shown.has(`${g.sport}|${g.event}`));
+}
+
 // A sport chosen in the dropdown instead of a game (its heading, selectable): the board is that sport's best
 // bets, every day's. Its value in the select, "sport:nfl", beside the games' keys and Best bets' ''
 const SPORT_CHOICE = 'sport:';
