@@ -676,15 +676,37 @@
             }
           </div>
         }
-        <!-- (its place beside its neighbors, in a sentence; a pass's or a fade's, why) -->
+        <!-- (its place, in a sentence; a pass's or a fade's, why) -->
         <p class="why-note">{{ w.look.sentence }}</p>
         @if (w.look.reason) {
           <p class="why-note why-reason">{{ w.look.reason }}</p>
         }
-        @if (w.partial) {
-          <p class="why-fine">The score is its chance to win, in points (this pick's file has no price to weigh it by)</p>
-        } @else {
-          <p class="why-fine">Kelly: how much of a bankroll the edge is worth at this price, the edge on the price scaled by what it pays (in points; 0 or under, no edge). The list runs by it; the bot bets from any edge</p>
+        <!-- (the what-if price: a stepper up and down the books' ladder, the numbers worked again at it, the bot's
+             chance held; the page's alone, nothing saved) -->
+        @if (whatIf; as q) {
+          <div class="why-whatif" role="group" aria-label="What if the price moved">
+            <div class="wi-top">
+              <span class="wi-kicker">What if</span>
+              <div class="wi-step">
+                <button type="button" class="wi-btn" aria-label="A shorter price" (click)="nudgePrice(-1)">−</button>
+                <span class="wi-price" aria-live="polite">{{ q.odds }}</span>
+                <button type="button" class="wi-btn" aria-label="A longer price" (click)="nudgePrice(1)">+</button>
+              </div>
+              <span class="wi-own">@if (q.moved) {the bot's {{ q.own }} · <button type="button" class="wi-reset" (click)="resetPrice()">reset</button>} @else {the bot's price}</span>
+            </div>
+            <dl class="wi-grid">
+              <div><dt>Break-even</dt><dd>{{ q.breakEven }}</dd></div>
+              <div><dt>Edge</dt><dd [class.up]="q.at.edge > 0" [class.down]="q.at.edge < 0">{{ q.edge }} pts</dd></div>
+              <div><dt>EV</dt><dd [class.up]="q.at.ev > 0" [class.down]="q.at.ev < 0">{{ q.ev }}</dd></div>
+              <div><dt>Kelly</dt><dd>{{ q.kelly }}</dd></div>
+              <div><dt>Band</dt><dd><span class="wi-tag" [ngClass]="q.tier">{{ q.band }}</span></dd></div>
+              <div><dt>Stake</dt><dd>{{ q.stake }}</dd></div>
+            </dl>
+            @if (q.flips.length) {
+              <p class="wi-flips">@for (f of q.flips; track f.dir) {<span [class.better]="f.dir === 'better'">{{ f.text }}</span>}</p>
+            }
+            <p class="why-fine">{{ q.caption }}@if (q.held) {{{ ' ' + q.held }}}</p>
+          </div>
         }
       </div>
     }

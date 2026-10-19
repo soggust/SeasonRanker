@@ -17,7 +17,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
-import { BetWhy, BetWhyRow, BetWhyVs, Confidence, betScoreText, betWhy, clearedKellyOf, signedPoints } from './bet-why';
+import { BetWhy, BetWhyRow, Confidence, PriceAt, PriceFlip, WhatIfBase, betScoreText, betWhy, clearedKellyOf, flipsAt, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
@@ -54,6 +54,24 @@ interface WhyGame {
   matchup: string;
   start: string | null;
 }
+// (the what-if price's view: its numbers said, the flip points, the caption)
+interface WhatIfView {
+  at: PriceAt;
+  odds: string;
+  own: string;
+  moved: boolean;
+  breakEven: string;
+  edge: string;
+  ev: string;
+  kelly: string;
+  tier: string;
+  band: string;
+  stake: string;
+  flips: PriceFlip[];
+  caption: string;
+  held: string | null;
+}
+
 interface WhyLook {
   game: WhyGame | null;
   odds: string | null;
@@ -801,7 +819,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // Why a bet ranks where it does: its rank tile clicked (or Enter / Space on it) opens how its score is
   // built (bet-why.ts), as the grid's rank tile does
   // ---------------------------------------------------------------------------
-  why: (BetWhy & { at: PopoverAt; sheet: boolean; look: WhyLook }) | null = null;
+  why: (BetWhy & { at: PopoverAt; sheet: boolean; look: WhyLook; wi: WhatIfBase | null }) | null = null;
+  // (the popover's what-if price: the price it's at and its numbers there, worked again on each nudge; the page's
+  // alone, nothing saved, no bet changed: bet-why.ts priceAt and flipsAt)
+  whatIf: WhatIfView | null = null;
   @ViewChild('whyPop') whyPop?: ElementRef<HTMLElement>;
   private whyTile: HTMLElement | null = null;
   readonly signedPoints = signedPoints;
@@ -895,7 +916,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0 };
     this.checkWhy = null;
     const w = betWhy([row], 0);
-    this.why = { ...w, at: popoverAt(tile, 420), sheet: phoneSheet(), look: this.whyLook(w, row, at.game) };
+    const wi = whatIfOf(row, !!at.bot);
+    this.why = { ...w, at: popoverAt(tile, 420), sheet: phoneSheet(), look: this.whyLook(w, row, at.game), wi };
+    this.priceTo(wi?.odds ?? null);
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
   }
@@ -908,14 +931,12 @@ export class BookPageComponent implements OnInit, OnDestroy {
   }
   private whyLook(w: BetWhy, r: BetWhyRow & { price?: number; chance?: number; fair?: number; strength?: string; reason?: string; pick: string }, game: WhyGame | null): WhyLook {
     const m = this.meter({ chance: r.chance, price: r.price, fair: r.fair } as BetRow);
-    const below = w.vs.find((v) => v.above);
-    const over = w.vs.find((v) => !v.above);
-    const driver = (v: BetWhyVs) => (v.drivers[0] ? ` on ${v.drivers[0].label.charAt(0).toLowerCase()}${v.drivers[0].label.slice(1)}` : '');
+    // (its place alone: the comparison with its neighbors dropped, the owner's, 2026-10-19: keep it lean)
     let sentence: string;
     if (w.noEdge) sentence = `${w.levelText}: the bot tracks it, it doesn't bet it.`;
-    else if (w.place === 'Lock') sentence = `A lock, above the ranks: a Kelly of 5 or more on a 55% chance.${below ? ` It sits over ${below.name} (${below.place}) by ${signedPoints(below.diff)}${driver(below)}.` : ''}`;
-    else if (w.of <= 1 && !below && !over) sentence = `The one bet on this board.`;
-    else sentence = `Ranked ${w.place} of ${w.of} on the board.${below ? ` It edges ${below.place} (${below.name}) by ${signedPoints(below.diff)}${driver(below)}.` : over ? ` ${over.place} (${over.name}) sits over it by ${signedPoints(-over.diff)}${driver(over)}.` : ''}`;
+    else if (w.place === 'Lock') sentence = 'A lock, above the ranks.';
+    else if (w.of <= 1) sentence = 'The one bet on this board.';
+    else sentence = `Ranked ${w.place} of ${w.of} on the board.`;
     const pass = w.noEdge || r.strength === 'fade';
     return {
       game,
@@ -973,15 +994,52 @@ export class BookPageComponent implements OnInit, OnDestroy {
     } else {
       this.checkWhy = null;
       const w = betWhy(rows, index);
-      this.why = { ...w, at, sheet, look: this.whyLook(w, row, this.whyGame(row)) };
+      const wi = whatIfOf(row);
+      this.why = { ...w, at, sheet, look: this.whyLook(w, row, this.whyGame(row)), wi };
+      this.priceTo(wi?.odds ?? null);
     }
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
   }
 
+  // The what-if price: a step up the books' ladder (+1, a price that pays more) or down, or back to the bot's own
+  nudgePrice(dir: 1 | -1): void {
+    if (this.whatIf) this.priceTo(stepPrice(this.whatIf.at.odds, dir));
+  }
+  resetPrice(): void {
+    this.priceTo(this.why?.wi?.odds ?? null);
+  }
+  private priceTo(odds: number | null): void {
+    const base = this.why?.wi;
+    if (!base || odds === null) {
+      this.whatIf = null;
+      return;
+    }
+    const at = priceAt(base, odds);
+    const flips = flipsAt(base, odds);
+    const sign = (v: number) => (v >= 0 ? '+' : '−');
+    this.whatIf = {
+      at,
+      odds: americanOdds(at.odds).replace('-', '−'),
+      own: americanOdds(base.odds).replace('-', '−'),
+      moved: at.odds !== base.odds,
+      breakEven: `${(at.breakEven * 100).toFixed(1)}%`,
+      edge: `${sign(at.edge)}${Math.abs(at.edge * 100).toFixed(1)}`,
+      ev: `${sign(at.ev)}${Math.abs(at.ev * 100).toFixed(1)}%`,
+      kelly: betScoreText(at.kelly * 100),
+      tier: tierOf(at.level) ?? 'pass',
+      band: tierLabel(at.level).toUpperCase(),
+      stake: at.units === null ? 'no bet' : `${at.units}u`,
+      flips: [flips.better, flips.worse].filter((f): f is PriceFlip => !!f),
+      caption: whatIfCaption(base),
+      held: at.units === null ? null : base.unitsCap !== null ? `Stake held to ${base.unitsCap}u, as the bot's was.` : base.cap === 'medium' ? "Held to LIKE, as the bot's pick is." : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake.' : null,
+    };
+  }
+
   closeWhy(refocus = false): void {
     if (!this.why && !this.checkWhy) return;
     this.why = null;
+    this.whatIf = null;
     this.checkWhy = null;
     if (refocus) this.whyTile?.focus({ preventScroll: true });
     this.whyTile = null;

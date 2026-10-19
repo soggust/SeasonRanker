@@ -329,3 +329,159 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
     partial,
   };
 }
+
+// ---------------------------------------------------------------------------
+// The what-if price (the owner, 2026-10-19: "it would be nasty if we could modify the price even slightly to see
+// how it affects the score"): the K-score popover's stepper nudges the price and every number is worked again at
+// it, the bot's chance held where it is. The bettor's own math (desk.mjs stakeKelly, stakeFor, suspectOf; picks.mjs
+// edgeLevel, levelOf's caps), nothing new; nothing saved, no bet changed
+// ---------------------------------------------------------------------------
+const REF = 100 / 110;
+// (desk.mjs: the edge scale every sport's desk stakes on, the sanity bar on an expected return, the practice stake)
+export const EV_SCALE = 0.08;
+export const EV_SUSPECT = 0.15;
+export const PRACTICE_UNITS = 0.5;
+const decimalOf = (american: number) => 1 + payout(american);
+
+// (desk.mjs stakeFor: 0.5 at no edge up to 3 at the edge scale, by half units, a short price held to -110's)
+export function stakeFor(ev: number, american = -110, evScale = EV_SCALE): number {
+  const d = decimalOf(Number.isFinite(american) && american ? american : -110);
+  const e = Math.max(0, ev);
+  const frac = Math.min(e / (d - 1), ((e / d) * (1 + REF)) / REF);
+  const raw = 0.5 + (frac / (evScale / REF)) * 2.5;
+  return Math.min(3, Math.max(0.5, Math.round(raw * 2) / 2));
+}
+
+// The books' ladder of prices: by 5 cents to 200 either side of even, by 10 to 500, by 25 to 1000, by 50 to 10000
+// (-100 and +100 the same price: +100 the one kept), in order of what they pay
+const LADDER_MAX = 10000;
+const LADDER: number[] = (() => {
+  const mags: number[] = [];
+  for (let m = 100; m <= LADDER_MAX; m += m < 200 ? 5 : m < 500 ? 10 : m < 1000 ? 25 : 50) mags.push(m);
+  return [...mags.filter((m) => m > 100).map((m) => -m).reverse(), ...mags];
+})();
+// (a price as a whole number, -100 said +100, held to the ladder's ends)
+const normal = (american: number) => {
+  const a = Math.round(american);
+  return a > -101 && a < 100 ? 100 : Math.max(-LADDER_MAX, Math.min(LADDER_MAX, a));
+};
+
+// The next price on the ladder: up (+1) a price that pays more (−110 → −105 → +100 → +105), down (−1) one that
+// pays less; a price off the ladder (−118) to the ladder's next either way (−115 up, −120 down). At an end, itself
+export function stepPrice(american: number, dir: 1 | -1): number {
+  const d = decimalOf(normal(american));
+  if (dir > 0) return LADDER.find((a) => decimalOf(a) > d + 1e-12) ?? normal(american);
+  for (let i = LADDER.length - 1; i >= 0; i--) if (decimalOf(LADDER[i]) < d - 1e-12) return LADDER[i];
+  return normal(american);
+}
+
+// (the next whole price, a cent either way: −101 up is +100, +100 down is −101)
+export function nextCent(american: number, dir: 1 | -1): number {
+  const a = normal(american);
+  if (dir > 0) return a === -101 ? 100 : a + 1;
+  return a === 100 ? -101 : a - 1;
+}
+
+// What's held while the price moves: the bot's chance (its trusted one, p), whether it's a bet the bot placed (its
+// band LIKE at the least with an edge to the rounding's reach: picks.mjs edgeLevel), the band and stake a rule held
+// it to at its own price (a practice, role or research pick a LIKE at most: picks.mjs levelOf; a guard's stake cap:
+// the bot's units under what its edge would stake), and the share of the return a push leaves (a line that can land
+// on the number: ev × (1 − push), its ev against the plain return at its price)
+export interface WhatIfBase {
+  odds: number;
+  p: number;
+  bet: boolean;
+  // (a LIKE a rule holds it to at every price: picks.mjs levelOf's practice, role and research picks)
+  cap: Confidence | null;
+  unitsCap: number | null;
+  win: number;
+  // (the trusted chance's makings, for the caption: the bot's own chance, the book's no-vig, the trust)
+  blend: { model: number; fair: number; trust: number } | null;
+}
+
+// A price's numbers at the held chance: the break-even, the edge in chance, the expected return a unit, the Kelly
+// score (the stake's, rounded as picks.mjs kellyOf), its band, and its stake (none on a PASS: never bet)
+export interface PriceAt {
+  odds: number;
+  breakEven: number;
+  edge: number;
+  ev: number;
+  kelly: number;
+  level: Confidence;
+  units: number | null;
+  suspect: boolean;
+}
+
+export function priceAt(base: WhatIfBase, american: number): PriceAt {
+  const odds = normal(american);
+  const d = decimalOf(odds);
+  const ev = base.win * (base.p * d - 1);
+  const kelly = kellyOf(base.p, odds) ?? 0;
+  const suspect = Math.abs(ev) > EV_SUSPECT;
+  let level = confidenceOf(kelly, base.p, base.bet ? true : undefined);
+  // (a rule's LIKE, held; the sanity guard's: a LIKE at most)
+  if (base.cap === 'medium' || (suspect && (level === 'lock' || level === 'high'))) level = 'medium';
+  let units: number | null = null;
+  if (level !== 'low') {
+    units = suspect ? PRACTICE_UNITS : stakeFor(ev, odds);
+    if (base.unitsCap !== null) units = Math.min(units, base.unitsCap);
+  }
+  return { odds, breakEven: 1 / d, edge: base.p - 1 / d, ev, kelly, level, units, suspect };
+}
+
+// Where the band changes, the whole cents walked from the price: the first price up with another band ("LOVE from
+// −105 or better"), and the last price down with this one, past which it's another ("PASS past −125"); none
+// inside the ladder's ends
+export interface PriceFlip {
+  dir: 'better' | 'worse';
+  level: Confidence;
+  odds: number;
+  text: string;
+}
+export function flipsAt(base: WhatIfBase, american: number): { better: PriceFlip | null; worse: PriceFlip | null } {
+  const from = normal(american);
+  const here = priceAt(base, from).level;
+  const walk = (dir: 1 | -1): PriceFlip | null => {
+    let last = from;
+    while (Math.abs(last) < LADDER_MAX) {
+      const a = nextCent(last, dir);
+      const level = priceAt(base, a).level;
+      if (level !== here) {
+        return dir > 0
+          ? { dir: 'better', level, odds: a, text: `${tierLabel(level).toUpperCase()} from ${odds(a)}${priceAt(base, a).suspect && !priceAt(base, last).suspect ? ' (the sanity bar: a return over 15%)' : ' or better'}` }
+          : { dir: 'worse', level, odds: last, text: `${tierLabel(level).toUpperCase()} past ${odds(last)}` };
+      }
+      last = a;
+    }
+    return null;
+  };
+  return { better: walk(1), worse: walk(-1) };
+}
+
+// The held numbers for a row with a chance and a price (none without them), from what the page's row carries;
+// placed: a pick the bot bet (a board price it didn't take: false)
+export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
+  const p = Number.isFinite(r.p) ? r.p! : Number.isFinite(r.chance) ? r.chance! / 100 : NaN;
+  if (!(p > 0 && p < 1) || !Number.isFinite(r.price) || !r.price) return null;
+  const odds = normal(r.price!);
+  const bet = placed && r.edge !== false && (r.confidence === 'lock' || r.confidence === 'high' || r.confidence === 'medium');
+  const plain = p * decimalOf(odds) - 1;
+  const ratio = Number.isFinite(r.ev) && Math.abs(plain) > 1e-3 ? r.ev! / plain : 1;
+  const win = ratio > 0.5 && ratio <= 1 + 1e-6 ? Math.min(1, ratio) : 1;
+  const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null };
+  const at = priceAt(base, odds);
+  // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
+  if (bet && r.confidence === 'medium' && at.level !== 'medium') base.cap = 'medium';
+  if (bet && Number.isFinite(r.units) && at.units !== null && r.units! < at.units) base.unitsCap = r.units!;
+  const fair = r.why?.fair ?? r.fair;
+  const trust = r.why?.trust;
+  if (Number.isFinite(r.model) && Number.isFinite(fair) && Number.isFinite(trust)) base.blend = { model: r.model!, fair: fair!, trust: trust! };
+  return base;
+}
+
+// The caption under the what-if: the chance held, and where it comes from when it's a blend
+export function whatIfCaption(base: WhatIfBase): string {
+  const held = `The bot's chance held at ${pct(base.p)}`;
+  if (!base.blend) return `${held}. A what-if only: nothing saved, no bet changed.`;
+  return `${held}: its own ${pct(base.blend.model)} blended with the book's no-vig ${pct(base.blend.fair)} at trust ${base.blend.trust.toFixed(2)}, kept fixed for this what-if. Nothing saved, no bet changed.`;
+}

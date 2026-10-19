@@ -2512,6 +2512,143 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     line-height: 1.45;
   }
 
+  // The what-if price: a stepper on the player card's black-to-gold face (the About button's, the bankroll's), the
+  // numbers at the price in a compact grid of six, three across, the flip points, the caption
+  .why-whatif {
+    border-top: 1px solid v.$panel-edge;
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-8;
+    padding-top: v.$space-12;
+  }
+
+  .wi-top {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-8;
+  }
+
+  .wi-kicker {
+    color: chip.$gold-led;
+    font-size: v.$fs-11;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .wi-step {
+    @include chip.player-card(v.$radius-pill);
+    align-items: center;
+    display: inline-flex;
+    height: 32px;
+  }
+
+  .wi-btn {
+    background: none;
+    border: 0;
+    border-radius: v.$radius-pill;
+    color: v.$lettering;
+    cursor: pointer;
+    font-family: v.$font-base;
+    font-size: 18px;
+    font-weight: 700;
+    height: 32px;
+    line-height: 1;
+    padding: 0;
+    position: relative;
+    transition: background-color v.$t-hover ease;
+    width: 36px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus-visible {
+      @include v.focus-ring(2px);
+    }
+  }
+
+  .wi-price {
+    color: #fff;
+    font-size: v.$fs-14;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    min-width: 46px;
+    text-align: center;
+  }
+
+  .wi-own {
+    color: v.$text-faint;
+    font-size: v.$fs-11;
+    margin-left: auto;
+  }
+
+  .wi-reset {
+    background: none;
+    border: 0;
+    color: chip.$gold-led;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+
+    &:hover {
+      filter: brightness(1.25);
+    }
+  }
+
+  .wi-grid {
+    display: grid;
+    gap: v.$space-4 v.$space-8;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    dt {
+      color: v.$text-faint;
+      font-size: v.$fs-11;
+    }
+
+    dd {
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      margin: 0;
+
+      &.up {
+        color: v.$good-bright;
+      }
+
+      &.down {
+        color: v.$bad-soft;
+      }
+    }
+  }
+
+  .wi-tag {
+    @include chip.tier-tag(10px);
+    align-self: flex-start;
+    display: inline-block;
+  }
+
+  .wi-flips {
+    color: v.$text-soft;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: v.$fs-11;
+    gap: v.$space-4 v.$space-12;
+
+    .better {
+      color: v.$text-strong;
+    }
+  }
+
   // A CHECK's facts, a line each
   .why-facts {
     display: flex;
