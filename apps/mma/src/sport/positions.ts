@@ -264,23 +264,36 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // (stat-groups.ts resolves them; a key a tab lacks, the pound-for-pound tabs' Peak Rank, is skipped). Only
 // a look: where a column sits, the strip's name, icon and color, and what the sidebar's eye on the group
 // switches off together. The ranking reads the sliders alone.
+//
+// A fighter's profile (the owner, 2026-10-19): Results | Competition | Finishing | Striking | Grappling.
+// Results is his record, rank, rating and streak (his age with them, for context); Competition whom he's
+// beaten (belts, best win, quality wins, the strength of his schedule); Finishing whether he finishes (Finish
+// %, with the KO share and the average fight time it informs); Striking and Grappling his game (his reach
+// with the striking). No Support: MMA has no grades, and the context stats sit with what they inform, so
+// there's no dark box. Tones (colors): Results 0, the profile strips 1, 2, 4, 5 in order.
 // ---------------------------------------------------------------------------
 type Group = GroupDef<SkillColumnKey>;
-const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
+const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[]): Group => ({ id, title, icon, tone, keys });
 
 const DIVISION_GROUPS: Group[] = [
-  group('results', 'Results', 'emoji_events', 0, ['winPct', 'recent', 'officialRank', 'peakRank', 'titleDefenses', 'titleWins', 'rating', 'careerPoints', 'peakRating', 'bestWin', 'qualityWins', 'streak', 'finishRate']),
-  group('box', 'Striking', 'sports_mma', 1, ['slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'strDiff', 'kdAgainst']),
-  group('advanced', 'Grappling', 'sports_kabaddi', 2, ['td15', 'tdAcc', 'tdDef', 'sub15', 'adv15']),
-  // (the context stats share the dark box the other sports' support grades use)
-  group('support', 'Context', 'insights', 3, ['oppRating', 'koShare', 'fightTime', 'age', 'reach'], true),
+  group('results', 'Results', 'emoji_events', 0, ['winPct', 'recent', 'streak', 'officialRank', 'peakRank', 'rating', 'peakRating', 'careerPoints', 'age']),
+  group('competition', 'Competition', 'military_tech', 1, ['titleWins', 'titleDefenses', 'bestWin', 'qualityWins', 'oppRating']),
+  group('finishing', 'Finishing', 'sports_score', 2, ['finishRate', 'koShare', 'fightTime']),
+  group('striking', 'Striking', 'sports_mma', 4, ['strDiff', 'slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'kdAgainst', 'reach']),
+  group('grappling', 'Grappling', 'sports_kabaddi', 5, ['td15', 'tdAcc', 'tdDef', 'sub15', 'adv15']),
 ];
 
 export const GROUPS: Record<SkillPosition, Group[]> = Object.fromEntries(POSITIONS.map((p) => [p, DIVISION_GROUPS])) as Record<SkillPosition, Group[]>;
 
-// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
-// hid one hides those stats one by one, so it ranks as its author saw it)
-export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
+// The groups every division retired, each its stats of the day it went (legacy-groups.ts: a link, preset or
+// pin that hid one hides those stats one by one, so it ranks as its author saw it): Striking ("box"),
+// Grappling ("advanced") and Context ("support"), as they were on 2026-10-19
+const DIVISION_LEGACY: Record<string, SkillColumnKey[]> = {
+  box: ['slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'strDiff', 'kdAgainst'],
+  advanced: ['td15', 'tdAcc', 'tdDef', 'sub15', 'adv15'],
+  support: ['oppRating', 'koShare', 'fightTime', 'age', 'reach'],
+};
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = Object.fromEntries(POSITIONS.map((p) => [p, DIVISION_LEGACY]));
 
 export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
   return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
