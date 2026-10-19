@@ -79,7 +79,9 @@ test('D2 every slate is played: a sport whose record loses still places its top 
   // card to PRACTICE_N.mma; at the practice stake, marked topN)
   const bouts = [['m1', 18], ['m2', 18], ['p1', 16], ['p2', 16], ['p3', 16]].map(([id, h]) => ({ id, key: id, card: 'c', date: `2026-10-24T${h}:00Z` }));
   assert.deepEqual([...mainCardOf(bouts, 'c')], ['m1', 'm2']);
-  const row = (k, edge, priced = true) => ({ id: `${k}:ml`, boutKey: k, card: 'c', intent: 'track', p: 0.5 + edge, fair: 0.5, ...(priced ? {} : { priced: false }) });
+  // (the edge before the vig is the Bot's own chance (model) over the Book's no-vig, D36: at a history trust of 0 the
+  // trusted chance p is the Book's)
+  const row = (k, edge, priced = true) => ({ id: `${k}:ml`, boutKey: k, card: 'c', intent: 'track', model: 0.5 + edge, p: 0.5, fair: 0.5, ...(priced ? {} : { priced: false }) });
   const picked = mmaPracticePicks([row('m1', 0.01), row('m2', -0.01), row('p1', 0.03), row('p2', 0.02), row('p3', 0.04, false)], bouts);
   assert.deepEqual([...picked.keys()].sort(), ['m1:ml', 'p1:ml', 'p2:ml']);
   assert.equal(picked.get('m1:ml').main, true);
