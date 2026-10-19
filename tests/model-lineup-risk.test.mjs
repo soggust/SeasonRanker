@@ -19,7 +19,8 @@ test('D42 the windows open the day before for every sport but MMA', () => {
     assert.equal(TIMING[s].lines, 26, `${s} lines`);
     assert.equal(TIMING[s].props, 26, `${s} props`);
   }
-  assert.equal(TIMING.mma.lines, 72);
+  // (MMA's window is four weeks since the open round (D37): its edge lives two weeks or more out, not the day before)
+  assert.equal(TIMING.mma.lines, 672);
 });
 
 test('D42 the survival: 1 inside the last chance or with the news in, the fit at the open lead, a line between, 0 with no fit', () => {
