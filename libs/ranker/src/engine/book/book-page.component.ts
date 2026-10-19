@@ -17,7 +17,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
-import { BetWhy, BetWhyRow, Confidence, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
+import { BetWhy, BetWhyRow, Confidence, PRACTICE_UNITS, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, edgeLine, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
@@ -66,6 +66,9 @@ interface WhatIfView {
   moved: boolean;
   breakEven: string;
   edge: string;
+  // (the edge in plain words at the price: "Edge +1.3 pts: the Bot 55.8% vs 54.5% to break even at −120 · Kelly 2.6%
+  // of bankroll", bet-why.ts edgeLine)
+  edgeLine: string;
   ev: string;
   kelly: string;
   tier: string;
@@ -988,7 +991,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     }
     const tile = event.currentTarget as HTMLElement;
     const confidence: Confidence | null = at.tier === 'lock' ? 'lock' : at.tier === 'check' ? 'check' : at.tier === 'love' ? 'high' : at.tier === 'like' ? 'medium' : at.tier === 'pass' ? 'low' : null;
-    const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0 };
+    const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0, ...(at.cap === 'medium' ? { cap: at.cap } : {}) };
     this.checkWhy = null;
     const w = betWhy([row], 0);
     const wi = whatIfOf(row, !!at.bot);
@@ -1106,6 +1109,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       moved: at.odds !== base.odds,
       breakEven: `${(at.breakEven * 100).toFixed(1)}%`,
       edge: `${sign(at.edge)}${Math.abs(at.edge * 100).toFixed(1)}`,
+      edgeLine: edgeLine(base.p, at),
       ev: `${sign(at.ev)}${Math.abs(at.ev * 100).toFixed(1)}%`,
       kelly: betScoreText(at.kelly * 100),
       tier: tierOf(at.level) ?? 'pass',
@@ -1113,7 +1117,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       stake: at.units === null ? 'no bet' : `${at.units}u`,
       flips,
       caption: whatIfCaption(base),
-      held: at.units === null ? null : base.unitsCap !== null ? `Held to ${base.unitsCap}u, the Bot's own stake` : base.cap === 'medium' ? "Held to LIKE, as the Bot's pick is" : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake' : null,
+      held: at.units === null ? null : base.unitsCap !== null ? `Held to ${base.unitsCap}u, the Bot's own stake` : base.cap === 'medium' ? "Held to LIKE, as the Bot's pick is" : base.most === 'medium' && at.units === PRACTICE_UNITS && !at.suspect ? 'A LIKE at most at the practice stake: the desk caps this side (a gate at practice, a role or research pick)' : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake' : null,
     };
   }
 

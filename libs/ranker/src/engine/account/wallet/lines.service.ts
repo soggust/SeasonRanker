@@ -31,6 +31,10 @@ export interface BoardSide {
   // (the desk's word on it as a suggestion, where the board carries one: false or 0 keeps it off the Book's
   // suggestions, 'practice' (or { practice: true }) tags it practice: suggestions.ts sugOf)
   sug?: unknown;
+  // (the desk's cap on it: 'medium' where any bet on it would be a LIKE at most whatever its price (a gate's practice
+  // stake, a role or research pick: picks.mjs capOf), cr its why; the band at any price held to it (DECISIONS.md D36))
+  cap?: 'medium';
+  cr?: string;
 }
 export interface BoardProp {
   n: string;
@@ -54,6 +58,9 @@ export interface BoardProp {
   bk?: 'bet' | 'check';
   // (the desk's word on it as a suggestion, as a game side's: suggestions.ts sugOf)
   sug?: unknown;
+  // (the desk's cap on each side, [over's, under's], as a game side's cap; cr its why (D36))
+  cap?: ['medium' | null, 'medium' | null];
+  cr?: string;
 }
 export interface BoardGame {
   id: string;

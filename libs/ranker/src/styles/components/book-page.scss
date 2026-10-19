@@ -2559,6 +2559,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     color: v.$text-soft;
   }
 
+  .why-edge {
+    font-variant-numeric: tabular-nums;
+  }
+
   .why-fine {
     color: v.$text-faint;
     font-size: v.$fs-11;

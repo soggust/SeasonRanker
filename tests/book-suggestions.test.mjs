@@ -186,3 +186,34 @@ test('splitRead: the Live tab reads the Bot\'s bet with its locked price, else i
   assert.equal(splitRead([{ pick: 'SF -7.5', confidence: 'low' }], []), 'pass');
   assert.equal(splitRead([], []), null);
 });
+
+test('a side the desk caps (board.json cap, DECISIONS.md D36): a LIKE at most at the practice stake at every price, a PASS still with no edge; the what-if held the same', () => {
+  const g = game();
+  g.k.spread[1] = { ...g.k.spread[1], cap: 'medium', cr: 'the lines at the practice stake' };
+  g.p[0] = { ...g.p[0], cap: ['medium', null], cr: 'rushYds at the practice stake' };
+  const rows = suggestionsOf('nfl', board(g), NOW, () => ({}));
+  const [spread, prop] = rows;
+  assert.equal(spread.confidence, 'medium');
+  assert.equal(spread.cap, 'medium');
+  assert.equal(spread.capWhy, 'the lines at the practice stake');
+  assert.equal(spread.units, 0.5);
+  assert.equal(prop.confidence, 'medium');
+  // (at a price with no edge it's gone, as any suggestion)
+  assert.equal(repriced(spread, -150), null);
+  // (the what-if never above LIKE at a better price, PASS at a worse one)
+  const wi = book.whatIfOf(spread, false);
+  assert.equal(wi.most, 'medium');
+  assert.equal(book.priceAt(wi, 150).level, 'medium');
+  assert.equal(book.priceAt(wi, 150).units, 0.5);
+  assert.equal(book.priceAt(wi, -150).level, 'low');
+  // (uncapped, the same side a LOVE)
+  assert.equal(suggestionsOf('nfl', board(), NOW, () => ({}))[0].confidence, 'high');
+});
+
+test('the K popover says the edge in points at its price (bet-why.ts edgeLine): Volkov at −120', () => {
+  const base = { odds: -120, p: 0.558, bet: false, cap: null, unitsCap: null, win: 1, blend: null };
+  const at = book.priceAt(base, -120);
+  assert.equal(book.edgeLine(0.558, at), 'Edge +1.3 pts: the Bot 55.8% vs 54.5% to break even at −120 · Kelly 2.6% of bankroll');
+  assert.equal(at.level, 'high');
+  assert.ok(book.edgeLine(0.5, book.priceAt({ ...base, p: 0.5 }, -120)).startsWith('Edge −4.5 pts'));
+});

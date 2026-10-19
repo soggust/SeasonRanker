@@ -68,7 +68,7 @@ import { unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
-import { buildBoard, seenUpdate } from './board.mjs';
+import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
 import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
@@ -435,9 +435,13 @@ export function reasonOf(bet) {
 // bot's trusted chance (c: desk.mjs chanceAt, as pickFor prices it), its Kelly score (ks) and band (b: the picks'
 // bands, LIKE at the least with an edge, PASS (low) without one or past the gap guard, as boardMarkets'); src
 // 'espn bet' where the price is ESPN BET's line (no DraftKings price asked or kept), else none (DraftKings').
-// lines: { odds: { home, away }, fair (the home side's) }; chance: the model's chance of the home side
-export function boardSidesOf(lines, chance, trust, src = null) {
+// lines: { odds: { home, away }, fair (the home side's) }; chance: the model's chance of the home side. Held to what
+// the desk would give the row (DECISIONS.md D36, board.mjs bandOf): ESPN BET's line a PASS saying so (the desk bets
+// only at the Book's price: pickFor apiPrice, tracked); a side whose lean (the model's chance less the Book's no-vig)
+// is under the league's edge (cfg.edge: pickFor tracks it, a card's practice pick at most) capped LIKE (cap, cr)
+export function boardSidesOf(lines, chance, trust, src = null, { edge = null } = {}) {
   const gap = gapGuard('ml', chance, lines.fair);
+  const off = src === 'espn bet' ? skipReason({ why: "ESPN BET's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" }) : null;
   return ['home', 'away'].map((side) => {
     const fair = side === 'home' ? lines.fair : 1 - lines.fair;
     const m = side === 'home' ? chance : 1 - chance;
@@ -445,13 +449,16 @@ export function boardSidesOf(lines, chance, trust, src = null) {
     const p = chanceAt('ml', fair, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
-    return { s: side, l: null, o: odds, c: round(p, 3), ks, b: gap || !(ev > 0) ? 'low' : edgeLevel(ks, p), ...(src ? { src } : {}) };
+    const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u` } : {};
+    const pass = !!gap || !!off;
+    return { s: side, l: null, o: odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: short.cap }), ...(off ? { sr: off } : {}), ...(pass ? {} : short), ...(src ? { src } : {}) };
   });
 }
 // A bout's round total as the board's two sides [over, under] (as boardSidesOf: the book's price, the trusted chance,
 // Kelly and band at its line). total: fights-totals.mjs totalLinesOf's { line, odds: { over, under }, fair (over's) };
-// over: the model's chance of Over at its line
-export function boardTotalOf(total, over, trust) {
+// over: the model's chance of Over at its line. live: false till TOTAL_LIVE are graded (totalPickFor: the practice
+// stake, capped LIKE); edge: the league's (a lean under it is tracked, never bet: a PASS saying so) (D36)
+export function boardTotalOf(total, over, trust, { live = true, edge = null } = {}) {
   const gap = gapGuard('total', over, total.fair);
   return ['over', 'under'].map((side) => {
     const fair = side === 'over' ? total.fair : 1 - total.fair;
@@ -460,7 +467,10 @@ export function boardTotalOf(total, over, trust) {
     const p = chanceAt('total', fair, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
-    return { s: side, l: total.line, o: odds, c: round(p, 3), ks, b: gap || !(ev > 0) ? 'low' : edgeLevel(ks, p) };
+    const short = Number.isFinite(edge) && ev > 0 && m - fair < edge ? skipReason({ why: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): tracked, not bet` }) : null;
+    const capped = live ? {} : { cap: 'medium', cr: `practice stake: round totals till ${TOTAL_LIVE} are graded with a close` };
+    const pass = !!gap || !!short;
+    return { s: side, l: total.line, o: odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: capped.cap }), ...(short && !gap ? { sr: short } : {}), ...(pass ? {} : capped) };
   });
 }
 // (the last board's round total for a bout: { line, odds, fair }, else null)
@@ -485,7 +495,8 @@ export function boardLinesOf(prev, boutId) {
 // (the bot's open side marked, as buildBoard marks it); prev: the last board (a bout no longer coming dropped). The
 // round total beside it (k.total) the same way: this run's (lines' entry's total), else the last board's; over(bout,
 // day, line): the model's chance of Over (null where it has none at that line); totalTrust: the totals' trust
-export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalTrust = 0, bets = [], prev = null, now = new Date() }) {
+// edge: the league's (cfg.edge), totalsLive: the round totals past TOTAL_LIVE (both the desk's caps, D36; none given, none)
+export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalTrust = 0, bets = [], prev = null, now = new Date(), edge = null, totalsLive = true }) {
   const at = now.toISOString();
   const coming = bouts.filter((b) => !b.final && !b.off && Date.parse(b.start ?? b.date) > now.getTime());
   const ids = new Set(coming.map((b) => String(b.id)));
@@ -498,9 +509,9 @@ export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalT
     const start = bout.start ?? bout.date;
     const markets = {};
     const p = l?.odds?.home && l?.odds?.away ? chance(bout, Date.parse(start)) : null;
-    if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, trust, src);
+    if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, trust, src, { edge });
     const o = t && over ? over(bout, Date.parse(start), t.line) : null;
-    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, typeof totalTrust === 'function' ? totalTrust(t.line) : totalTrust);
+    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, typeof totalTrust === 'function' ? totalTrust(t.line) : totalTrust, { live: totalsLive, edge });
     if (!markets.ml && !markets.total) continue;
     // (the fighters as the board's teams: [name, ESPN id, his headshot], the first ESPN lists the home side)
     const game = { date: start, awayAbbr: bout.away.name, homeAbbr: bout.home.name, away: bout.away.id, home: bout.home.id };
@@ -1027,7 +1038,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const espn = await espnOdds(bout).catch(() => null);
     if (espn) addLines(bout.key, { lines: espn, src: 'espn bet' });
   }
-  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line) => bucketTrustOf(trust, 'total', line), bets: ledger.bets, prev: prevBoard, now });
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line) => bucketTrustOf(trust, 'total', line), bets: ledger.bets, prev: prevBoard, now, edge: cfg.edge, totalsLive });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
   const withTotal = mmaBoard.games.filter((g) => g.k.total).length;

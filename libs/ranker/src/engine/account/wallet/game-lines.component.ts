@@ -36,6 +36,8 @@ export interface PriceCall {
   chance: number | null;
   // (a guard's pass: its reason, the board's (sr))
   reason?: string | null;
+  // (the desk's cap on the side, the board's (cap, DECISIONS.md D36): a LIKE at most at every price)
+  cap?: 'medium' | null;
 }
 
 // (a price's K score button clicked: what the page needs to open the why popover for it: the bot's pick where it's
@@ -52,6 +54,8 @@ export interface PriceWhy {
   game: { sport: string; matchup: string; start: string | null } | null;
   // (a guard's pass: why the bot passes it (board.mjs sr, D31), the popover's reason)
   reason?: string | null;
+  // (the desk's cap on the side (board.json cap, D36): the popover's what-if held to it)
+  cap?: 'medium' | null;
 }
 
 // (one side of a prop on the board: its price, the bot's Kelly score and band on it, the bot's side or not)
@@ -61,6 +65,8 @@ export interface PropSide {
   kelly: number | null;
   tier: Tier | null;
   bot: boolean;
+  // (the desk's cap on the side, the board's (cap, D36))
+  cap?: 'medium' | null;
 }
 
 // (a prop on the board: a player's stat at its line, over and under; pick the bot's on it, where it made one)
@@ -500,10 +506,13 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     if (!side || price.odds === null) return { bot: null, tier: 'pass', kelly: null, chance: null };
     if (side.b === 'check' && !this.desk) return { bot: null, tier: 'pass', kelly: null, chance: side.c };
     const reason = side.sr ?? null;
-    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c, reason };
+    const cap = side.cap ?? null;
+    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c, reason, cap };
     const kelly = kellyOf(side.c, price.odds) ?? side.ks;
-    const band = side.b === 'low' && (side.ks > 0 || reason) ? 'low' : confidenceOf(kelly, side.c, true);
-    return { bot: null, tier: tierOf(band), kelly, chance: side.c, reason };
+    const raw = side.b === 'low' && (side.ks > 0 || reason) ? 'low' : confidenceOf(kelly, side.c, true);
+    // (the desk's cap held at the live price too: a LIKE at most, D36)
+    const band = cap === 'medium' && (raw === 'lock' || raw === 'high') ? 'medium' : raw;
+    return { bot: null, tier: tierOf(band), kelly, chance: side.c, reason, cap };
   }
 
   // (a price's hover: what it is, what 10 units win at it, and the bot's word on it)
@@ -548,7 +557,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       if (!(bot && pick) && x.b[i] === 'check' && hidden) return { side, odds: x.o[i], kelly: null, tier: 'pass', bot: false };
       const tier = bot && pick ? this.tier(pick) : tierOfBand(x.b[i]);
       const kelly = tier === 'check' ? null : bot && pick && !check ? pick.sureness : x.ks[i];
-      return { side, odds: x.o[i], kelly, tier, bot };
+      return { side, odds: x.o[i], kelly, tier, bot, ...(x.cap?.[i] ? { cap: x.cap[i] } : {}) };
     });
     return {
       key: this.rowKey(x.id, x.k),

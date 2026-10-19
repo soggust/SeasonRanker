@@ -721,3 +721,56 @@ test('D35 the season-start vacancy: a regular gone since last season vacates his
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D35.'));
 });
+
+test('D36 a suggestion never shows a band the Bot could not give the row: the desk caps on board.json (cap, cr), the same rule as levelOf; the bands themselves unchanged', async () => {
+  const { BANDS, capBand, capOf, edgeLevel, levelOf } = await import('../libs/ranker/scripts/model/picks.mjs');
+  const { bandOf, boardMarkets, boardProp, sideCap } = await import('../libs/ranker/scripts/model/board.mjs');
+  const { boardSidesOf, boardTotalOf } = await import('../libs/ranker/scripts/model/mma-desk.mjs');
+  // (the owner, 2026-10-19: "a LOVE at 2.0 is fine": the bands stay where D21 put them)
+  assert.deepEqual(BANDS, { lock: 0.05, lockChance: 0.55, high: 0.02, medium: 0 });
+  // (capOf is levelOf's cap: for every edge bet with an edge, levelOf is the Kelly's band held to capOf)
+  const marks = [{}, { practice: 'gate' }, { suspect: { ev: 0.2 } }, { topN: { rank: 1 } }, { researchBet: { earned: false } }, { researchBet: { earned: true } }, { researchBet: { earned: true }, practice: 'gate' }, { researchAdjusted: { earned: false } }, { researchAdjusted: { earned: true } }, { context: { roleBet: { key: 'r' } } }];
+  for (const m of marks) for (const [k, p] of [[0.01, 0.5], [0.03, 0.52], [0.08, 0.6]]) {
+    const b = { intent: 'edge', ev: 0.05, p, ...m };
+    assert.equal(levelOf(b, k, p), capBand(edgeLevel(k, p), capOf(b)), JSON.stringify({ m, k }));
+  }
+  assert.equal(capBand('lock', 'medium'), 'medium');
+  assert.equal(capBand('low', 'medium'), 'low');
+  assert.equal(capBand('check', 'medium'), 'check');
+  assert.deepEqual(sideCap({}), {});
+  // (a suspect price a LIKE at most on the board, D23)
+  assert.equal(bandOf(0.2, 0.7, 0.2), 'medium');
+  // (the lines' CLV gate at practice: every side capped LIKE, its why on it; the gate passing, none)
+  const ml = [{ market: 'ml', sides: [{ side: 'home', odds: -110, model: 0.545, fair: 0.5 }, { side: 'away', odds: -110, model: 0.455, fair: 0.5 }] }];
+  const free = boardMarkets(ml, () => 1, null, null, { gate: { on: true } }).ml[0];
+  assert.equal(free.b, 'high');
+  assert.equal(free.cap, undefined);
+  const gated = boardMarkets(ml, () => 1, null, null, { gate: { on: false, why: 'CLV under 0 since the epoch' } }).ml;
+  assert.equal(gated[0].b, 'medium');
+  assert.equal(gated[0].cap, 'medium');
+  assert.ok(gated[0].cr.includes('CLV'));
+  // (a price the desk wouldn't bet at all (ESPN's line): a PASS saying why, D31)
+  const off = boardMarkets(ml, () => 0.5, null, null, { off: "ESPN's line" }).ml;
+  assert.ok(off.every((s) => s.b === 'low' && s.sr === "ESPN's line" && !s.cap));
+  // (a prop's stat gate at practice: both sides capped)
+  const x = { prop: { athlete: { name: 'A', id: 1, team: 2 }, stat: { key: 'pts', label: 'Pts' }, line: 20.5, prices: { over: -110, under: -110 } }, sides: [{ side: 'over', p: 0.58, ev: 0.107 }, { side: 'under', p: 0.42, ev: -0.2 }], side: 'over' };
+  assert.equal(boardProp(x, 'now').b[0], 'lock');
+  const px = boardProp(x, 'now', { gate: { on: false, why: 'at the practice stake' } });
+  assert.deepEqual(px.cap, ['medium', 'medium']);
+  assert.equal(px.b[0], 'medium');
+  // (MMA: ESPN BET's line a PASS (the desk only tracks it); a lean under the league's edge a LIKE at most; the round
+  // totals under TOTAL_LIVE a LIKE at most)
+  const lines = { odds: { home: -120, away: 100 }, fair: 0.5217 };
+  const espn = boardSidesOf(lines, 0.5992, 0.5, 'espn bet', { edge: 0.03 });
+  assert.ok(espn.every((s) => s.b === 'low' && s.sr));
+  const dk = boardSidesOf(lines, 0.5992, 0.5, null, { edge: 0.03 });
+  assert.equal(dk[0].b, 'high');
+  const small = boardSidesOf({ odds: { home: 150, away: -170 }, fair: 0.38 }, 0.405, 1, null, { edge: 0.03 });
+  assert.equal(small[0].cap, 'medium');
+  assert.notEqual(small[0].b, 'high');
+  const tot = boardTotalOf({ line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 }, 0.56, 1, { live: false, edge: 0.03 });
+  assert.equal(tot[0].cap, 'medium');
+  assert.equal(tot[0].b, 'medium');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D36.'));
+});

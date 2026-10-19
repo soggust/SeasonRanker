@@ -46,6 +46,9 @@ export interface BetRow {
   confidence: Confidence | null;
   // (a slate's practice pick (picks.json's practice): a LIKE whatever its score, its practice tag on the row)
   practice?: boolean;
+  // (a suggestion the desk caps (board.json cap, DECISIONS.md D36): a LIKE at most at every price, capWhy its why)
+  cap?: 'medium' | null;
+  capWhy?: string;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
   player?: string | null;

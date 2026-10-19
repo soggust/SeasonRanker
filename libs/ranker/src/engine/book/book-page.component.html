@@ -677,6 +677,10 @@
             }
           </div>
         }
+        <!-- (the edge in plain words at the what-if's price, so a small edge's band reads plainly: bet-why.ts edgeLine) -->
+        @if (whatIf; as q) {
+          <p class="why-note why-edge">{{ q.edgeLine }}</p>
+        }
         <!-- (its place, in a sentence; a pass's or a fade's, why) -->
         <p class="why-note">{{ w.look.sentence }}</p>
         @if (w.look.reason) {

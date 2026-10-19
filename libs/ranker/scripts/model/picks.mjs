@@ -128,6 +128,19 @@ export const levelOf = (b, kelly, p = b.p) =>
   : b.researchBet || b.context?.roleBet ? 'medium'
   : ((b.researchAdjusted && !b.researchAdjusted.earned) || b.practice || b.suspect) && edgeLevel(kelly, p) !== 'low' ? 'medium'
   : edgeLevel(kelly, p);
+// (the cap levelOf puts on an edge bet whatever its Kelly, from the same marks: 'medium' (a LIKE at most) for a
+// slate's practice pick, a practice stake (a gate's, a suspect price's), a role bet, and a research bet or a
+// research-adjusted one not yet earned; null where its band is its Kelly's. The board carries it per side
+// (board.mjs cap), so the Book's suggestions and the what-if never show a band the Bot couldn't give the row:
+// DECISIONS.md D36. levelOf(b, k, p) is capBand(edgeLevel(k, p), capOf(b)) for every edge bet with an edge)
+export const capOf = (b) =>
+  isPracticeTop(b) ? 'medium'
+  : earnedBet(b) && !b.practice && !b.suspect ? null
+  : b.researchBet || b.context?.roleBet || (b.researchAdjusted && !b.researchAdjusted.earned) || b.practice || b.suspect ? 'medium'
+  : null;
+const RANK = { low: 0, medium: 1, high: 2, lock: 3 };
+// (a band held to a cap: the lower of the two; a CHECK, or no cap, as it is)
+export const capBand = (band, cap) => (cap && band in RANK && cap in RANK && RANK[cap] < RANK[band] ? cap : band);
 
 // The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded
 // placed bets (a tracked row never, an open or void one never), each US Eastern day's [won, lost, push, staked,

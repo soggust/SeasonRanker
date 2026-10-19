@@ -1734,8 +1734,10 @@ function betGames(r) {
     const priced = price(game, exp, lines, params, r.shape);
     // (the game as the residual model's ctx (desk.mjs sideCtx, residual.mjs; D32): its start, the bet's moment now)
     const rctx = { sport, t: Date.parse(game.date), at: Date.now(), hours: until / 36e5 };
-    // (every market priced, both sides, on the betting board: writeBoard)
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx), at });
+    // (every market priced, both sides, on the betting board: writeBoard; held to the desk's caps, D36: the lines'
+    // CLV gate's LIKE, and a PASS saying so where the desk bets only at The Odds API's price and this is ESPN's)
+    const off = hasKey() && !apiLines ? "ESPN's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" : null;
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off }), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
@@ -2267,7 +2269,7 @@ async function betProps(r) {
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
       const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
-      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at)), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: r.propGate?.[x.prop.stat.key] ?? null })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;

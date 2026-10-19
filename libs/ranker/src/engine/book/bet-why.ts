@@ -42,6 +42,10 @@ export interface BetWhyRow {
   price?: number;
   book?: string;
   why?: PickWhy | null;
+  // (a practice pick's tag, and the desk's cap on a board side (board.json cap, DECISIONS.md D36): a LIKE at most at
+  // every price, its stake the practice one)
+  practice?: boolean;
+  cap?: 'medium' | null;
 }
 
 // One ingredient: what it added to the score, its bar against the largest, its hover
@@ -393,6 +397,9 @@ export interface WhatIfBase {
   bet: boolean;
   // (a LIKE a rule holds it to at every price: picks.mjs levelOf's practice, role and research picks)
   cap: Confidence | null;
+  // (a ceiling: the desk's cap on a side it hasn't bet (board.json cap, D36; a practice side): a LIKE at most, a PASS
+  // still where the price has no edge)
+  most?: Confidence | null;
   unitsCap: number | null;
   win: number;
   // (the trusted chance's makings, for the caption: the bot's own chance, the book's no-vig, the trust)
@@ -419,11 +426,11 @@ export function priceAt(base: WhatIfBase, american: number): PriceAt {
   const kelly = kellyOf(base.p, odds) ?? 0;
   const suspect = Math.abs(ev) > EV_SUSPECT;
   let level = confidenceOf(kelly, base.p, base.bet ? true : undefined);
-  // (a rule's LIKE, held; the sanity guard's: a LIKE at most)
-  if (base.cap === 'medium' || (suspect && (level === 'lock' || level === 'high'))) level = 'medium';
+  // (a rule's LIKE, held; the desk's cap and the sanity guard's: a LIKE at most)
+  if (base.cap === 'medium' || ((suspect || base.most === 'medium') && (level === 'lock' || level === 'high'))) level = 'medium';
   let units: number | null = null;
   if (level !== 'low') {
-    units = suspect ? PRACTICE_UNITS : stakeFor(ev, odds);
+    units = suspect || base.most === 'medium' ? PRACTICE_UNITS : stakeFor(ev, odds);
     if (base.unitsCap !== null) units = Math.min(units, base.unitsCap);
   }
   return { odds, breakEven: 1 / d, edge: base.p - 1 / d, ev, kelly, level, units, suspect };
@@ -494,10 +501,21 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
   // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
   if (bet && r.confidence === 'medium' && at.level !== 'medium') base.cap = 'medium';
   if (bet && Number.isFinite(r.units) && at.units !== null && r.units! < at.units) base.unitsCap = r.units!;
+  // (the desk's cap on a side, or a practice side, it hasn't bet at this price: a LIKE at most at every price, D36)
+  if (!base.cap && (r.cap === 'medium' || r.practice)) base.most = 'medium';
   const fair = r.why?.fair ?? r.fair;
   const trust = r.why?.trust;
   if (Number.isFinite(r.model) && Number.isFinite(fair) && Number.isFinite(trust)) base.blend = { model: r.model!, fair: fair!, trust: trust! };
   return base;
+}
+
+// The edge in plain words, at a price (the owner, 2026-10-19: so a reader sees why a small edge still clears its
+// band): "Edge +1.3 pts: the Bot 55.8% vs 54.5% to break even at −120 · Kelly 2.6% of bankroll", the what-if's own
+// numbers (priceAt) at the held chance
+export function edgeLine(p: number, at: Pick<PriceAt, 'odds' | 'breakEven' | 'edge' | 'kelly'>): string {
+  const one = (v: number) => (Math.round(v * 1000) / 10).toFixed(1);
+  const signed = (v: number) => `${v < 0 ? '−' : '+'}${one(Math.abs(v))}`;
+  return `Edge ${signed(at.edge)} pts: the Bot ${one(p)}% vs ${one(at.breakEven)}% to break even at ${odds(at.odds)} · Kelly ${at.kelly < 0 ? '−' : ''}${one(Math.abs(at.kelly))}% of bankroll`;
 }
 
 // The caption under the what-if: the chance held, and where it comes from when it's a blend

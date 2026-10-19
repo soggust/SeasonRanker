@@ -17,8 +17,12 @@
 //             both sides PASS; sr its reason, D31), bot: 'bet' or 'check' where the bot has that side open (its ledger); fc: the
 //             other books' consensus fair chance of that side at the book's line and cn how many books (none
 //             without a consensus: oddsapi.mjs consensusOf), dv: 1 where the book's price beats it by OUTLIER
-//             or more (the data's: nothing is priced off it) }
-//     p       its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
+//             or more (the data's: nothing is priced off it), cap: 'medium' where the desk holds any bet on that
+//             side to a LIKE at most whatever its price (cr: why, the desk's words: sideCap below, picks.mjs
+//             capOf; the lines' CLV gate at the practice stake), so the Book's suggestions and the what-if never
+//             show a band the Bot couldn't give it (DECISIONS.md D36). A suspect price's LIKE (desk.mjs
+//             EV_SUSPECT, D23) is the price's: in b here, worked again by the page at any other price }
+//     p      its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
@@ -26,7 +30,13 @@
 //             ('gap' or 'small', why it's a PASS), sr: every skip's reason in words (skipReason: the guard's why,
 //             DECISIONS.md D31: no silent skip), at: when priced, bot and bk: the side the bot has open and
 //             'bet' or 'check', fc and cn: the other books' consensus fair chance over and how many books, dv:
-//             the side ('over' or 'under') the book's price beats it on by OUTLIER or more (as the game markets') }
+//             the side ('over' or 'under') the book's price beats it on by OUTLIER or more (as the game markets'),
+//             cap: [over's, under's] the desk's cap as a game side's (the stat's CLV gate at the practice stake on
+//             both, a role bet's on its own side; null none) and cr its why, there only where a side has one }
+//
+// A side the desk wouldn't bet at the board's price at all (boardMarkets off: a price not the Book's own, ESPN's
+// line where the desk asks The Odds API, tracked only) is a PASS with its reason (sr): never a band the Bot
+// couldn't give (D36).
 //
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
 // market, side, line and price each game's board has shown, kept a week past its start, so the play-money
@@ -35,9 +45,9 @@
 // with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
-import { chanceAt, decimal, gapGuard, isTracked, sideCtx } from './desk.mjs';
+import { EV_SUSPECT, chanceAt, decimal, gapGuard, isTracked, sideCtx } from './desk.mjs';
 import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
-import { edgeLevel, kellyOf } from './picks.mjs';
+import { capBand, capOf, edgeLevel, kellyOf } from './picks.mjs';
 
 // (a game's seen prices kept this long past its start: past the settler's longest wait, props.mjs PROP_WAIT)
 export const SEEN_KEEP = 8 * 864e5;
@@ -45,14 +55,29 @@ export const SEEN_KEEP = 8 * 864e5;
 // (a game market's side's consensus (c: its market's, the first side's fair: oddsapi.mjs consensusOf): fc, cn, dv)
 const consensusOf = (c, side, first) => (Number.isFinite(c?.fair) ? { fc: round(side === first ? c.fair : 1 - c.fair, 4), cn: c.n, ...(c.outlier === side ? { dv: 1 } : {}) } : {});
 
-// (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's, LIKE at the least)
-const bandOf = (kelly, p, ev, { check = false, pass = false } = {}) => (check ? 'check' : pass || !(ev > 0) ? 'low' : edgeLevel(kelly, p));
+// (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's, LIKE at the
+// least, held to the desk's cap (picks.mjs capBand) and a suspect price's LIKE (desk.mjs EV_SUSPECT, D23))
+export const bandOf = (kelly, p, ev, { check = false, pass = false, cap = null } = {}) =>
+  check ? 'check' : pass || !(ev > 0) ? 'low' : capBand(edgeLevel(kelly, p), Math.abs(ev) > EV_SUSPECT ? 'medium' : cap);
+
+// The desk's cap on a side from the marks a bet on it would carry (picks.mjs capOf: a gate's practice stake, a role
+// bet, a research pick not earned): the board's { cap, cr } where there is one (DECISIONS.md D36), else {}
+export function sideCap(marks) {
+  const cap = marks ? capOf(marks) : null;
+  if (!cap) return {};
+  const role = marks.context?.roleBet;
+  const why = [marks.practice, role ? `a role bet (${role.why ?? role.key ?? 'its cause'}): a LIKE at most` : null].find((v) => typeof v === 'string' && v.trim());
+  return { cap, ...(why ? { cr: skipReason({ why }) } : {}) };
+}
 
 // A game's markets as the board's (desk.mjs price's: each market's two sides, the model's chance and the book's
 // fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust;
 // consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side;
-// ctx: the game's, for the residual model (desk.mjs sideCtx, D32), so the board shows the chance the desk bets at
-export function boardMarkets(markets, trustOf, consensus = null, ctx = null) {
+// ctx: the game's, for the residual model (desk.mjs sideCtx, D32), so the board shows the chance the desk bets at.
+// gate: the lines' CLV gate (desk.mjs lineGate's; off, every side at the practice stake: cap LIKE); off: why the desk
+// wouldn't bet these prices at all (not the Book's own: ESPN's line), every side a PASS saying so (D31, D36)
+export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null } = {}) {
+  const capped = gate && gate.on === false ? sideCap({ practice: String(gate.why || 'the game lines at the practice stake') }) : {};
   const out = {};
   for (const m of markets ?? []) {
     const [s0] = m.sides;
@@ -61,12 +86,13 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null) {
     const gapped = gapGuard(m.market, s0.model, s0.fair);
     const mine = s0.model - s0.fair >= 0 ? s0 : m.sides[1];
     const checkSide = gapped && !shadowOf({ cause: 'gap', odds: mine.odds, model: mine.model, fair: mine.fair }) ? mine.side : null;
-    const pass = !!gapped && !checkSide;
+    const pass = (!!gapped && !checkSide) || !!off;
+    const sr = off ? skipReason({ why: off }) : pass ? skipReason(gapped) : null;
     out[m.market] = m.sides.map((s) => {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), sideCtx(m, s, ctx));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }), ...(pass ? { sr: skipReason(gapped) } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap: capped.cap }), ...(sr ? { sr } : {}), ...(pass ? {} : capped), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
     });
   }
   return out;
@@ -81,8 +107,9 @@ export const skipReason = (guard) => {
   return why.length > SR_MAX ? `${why.slice(0, SR_MAX - 1).trimEnd()}…` : why;
 };
 
-// A priced prop (props.mjs priceProps's) as the board's, at its book price (none: null)
-export function boardProp(x, at) {
+// A priced prop (props.mjs priceProps's) as the board's, at its book price (none: null); gate: its stat's CLV gate
+// (desk.mjs propGate's; off, both sides at the practice stake: cap LIKE), and a role bet's cap on its own side
+export function boardProp(x, at, { gate = null } = {}) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
   // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
   // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
@@ -90,15 +117,19 @@ export function boardProp(x, at) {
   const check = CHECK_KINDS.has(x.guard?.kind) && !shadow;
   const pass = !!x.guard?.skip && !check;
   const prices = x.prop.prices ?? {};
+  const gated = gate && gate.on === false ? `${x.prop.stat.key} ${gate.why || 'at the practice stake'}` : null;
+  const capOn = (k) => (pass ? {} : sideCap({ practice: gated, context: x.roleBet && x.side === k ? { roleBet: x.roleBet } : null }));
   const side = (k) => {
     const s = by[k];
     const o = Number.isFinite(prices[k]) ? prices[k] : null;
-    if (!s || o === null) return { o, ks: null, b: null };
+    const c = capOn(k);
+    if (!s || o === null) return { o, ks: null, b: null, c };
     const ks = kellyOf(o, s.p);
-    return { o, ks, b: bandOf(ks, s.p, s.ev, { check: check && x.side === k, pass }) };
+    return { o, ks, b: bandOf(ks, s.p, s.ev, { check: check && x.side === k, pass, cap: c.cap }), c };
   };
   const over = side('over');
   const under = side('under');
+  const cr = over.c.cr ?? under.c.cr;
   return {
     n: x.prop.athlete.name,
     id: String(x.prop.athlete.id),
@@ -113,6 +144,7 @@ export function boardProp(x, at) {
     ...(pass ? { sk: 1 } : {}),
     ...(pass && shadow ? { sw: shadow.passAs } : {}),
     ...(pass ? { sr: skipReason(x.guard) } : {}),
+    ...(over.c.cap || under.c.cap ? { cap: [over.c.cap ?? null, under.c.cap ?? null], ...(cr ? { cr } : {}) } : {}),
     ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
     at,
   };

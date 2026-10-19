@@ -202,7 +202,7 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Dates:** 2026-10-09 to 10-13.
 - **Rule:**
   - `BOOK = 'draftkings'` only. The owner rejected best-price shopping, and Pinnacle de-vigged is the fair anchor.
-  - LIKE is any edge, LOVE is 2% Kelly, LOCK is 5% plus a 55% chance (9cb65c47).
+  - LIKE is any edge, LOVE is 2% Kelly, LOCK is 5% plus a 55% chance (9cb65c47). Kept by the owner on 2026-10-19 ("a LOVE at 2.0 is fine"); the caps on them are D36's.
   - Every placed bet is a LIKE or better. No-edge rows are tracked: never staked, never on the record, still learned from (2026-10-13).
   - A flagged pick with an edge bets at the minimum (d9879f0d).
   - Stakes run 0.5 to 3u.
@@ -411,6 +411,19 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 | MLB | total | 0 since 2022 | .6926 / .6926 | -.03 to +.02 |
 
 - **Verdict: HOLD, nothing to ship.** The live trust already sits where the history puts it: every sport's `state.trust` has spreads, totals and moneylines at 0 to 0.15 (fit on the backtest's Pinnacle closes and the live bets since the epoch, D17's grid reaching 1 either way), and the priced chance ties the Book at the close in every market but NHL totals, where the walk-forward trust of 0.3 is worth +0.0001 in the seasons it was earned and costs 0.0008 to 0.0033 in 2026-27 as the lean turned against it. A history prior would move the first months of 2020-21 (the sanity set) and nothing the desk prices now. The totals lean is noise at the close, as the deep dive said; the fit already reads it so.
+
+### D36. A suggestion never shows a band the Bot couldn't give the row; the bands stay
+- **Date:** 2026-10-19.
+- **Owner:** on a Book suggestion, Alexander Volkov ML at −120 (the Bot 55.8%, break-even 54.5%) shown as a LOVE: "Why is this a LOVE? The edge seems super small." Then: "a LOVE at 2.0 is fine."
+- **Rule:**
+  - The bands stay as D21 has them (`BANDS`: LOVE at a 2% Kelly score, LOCK at 5% with a 55% chance, LIKE any edge). No floors on the edge in points.
+  - A side on the board (board.json) carries the desk's cap: `cap: 'medium'` (a LIKE at most, whatever its price) and `cr` its why, wherever a bet on it would be capped by `levelOf`: the lines' CLV gate or a stat's at the practice stake, a role bet's side, MMA's round totals under `TOTAL_LIVE`, an MMA side whose lean is under the league's edge (a card's practice pick at most). `picks.mjs capOf` is `levelOf`'s cap: for every edge bet with an edge, `levelOf` is `capBand(edgeLevel, capOf)`.
+  - A price the desk wouldn't bet at all (ESPN's line or ESPN BET's where the desk bets only at the Book's own price: tracked only) is a PASS on the board, with its reason (`sr`, D31). So it is never a suggestion.
+  - The board's own band `b` is held to the cap and to a suspect price's LIKE (D23). The page holds every band it works again to the same: the Book's suggestions (`suggestions.ts repriced`, a LIKE at the practice stake at most), the game view's tiles at a live price (`game-lines.component.ts call`) and the K popover's what-if (`bet-why.ts whatIfOf`: `most`, a ceiling, a PASS still at a price with no edge).
+  - The K popover says the edge in points plainly at its price (`bet-why.ts edgeLine`): "Edge +1.3 pts: the Bot 55.8% vs 54.5% to break even at −120 · Kelly 2.6% of bankroll". The Kelly score's -110 scale makes a 1.3-point edge a 2.6% Kelly, which clears LOVE at 2%.
+- **Volkov's row (dry run, 2026-10-19):** the fight model 59.9% (the rating alone 67.0%; Volkov 27-11, Kuniev 4-1 on ESPN), the Book's no-vig 52.2% (ESPN BET's −120 / +100), the lean 7.7 points (just past half the ml GAP, tapered to 7.3), the trust 0.5 (untested: no graded MMA moneylines since the start), blended 55.8%, break-even 54.5%, the edge 1.3 points, Kelly 2.64%. The chance is sane: half the model's lean, as the untested trust says. It was a LOVE by the bands; it is a PASS now, since its price is ESPN BET's, which the desk only tracks.
+- **Code:** `picks.mjs` (`capOf`, `capBand`), `board.mjs` (`bandOf`, `sideCap`, `boardMarkets` gate and off, `boardProp` gate), `run.mjs` (the board's gate and off), `mma-desk.mjs` (`boardSidesOf`, `boardTotalOf`, `buildMmaBoard` edge and totalsLive), `suggestions.ts`, `bet-why.ts` (`whatIfOf`, `priceAt`, `edgeLine`), `game-lines.component.ts`, `book-page.component.ts`.
+- **Never:** a suggestion, a tile or a what-if above the band the desk would give that side at that price.
 
 ## Loops
 

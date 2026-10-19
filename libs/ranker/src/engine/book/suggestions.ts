@@ -98,8 +98,9 @@ export function suggestionReason(chance: number, odds: number): string {
 const sign = (odds: number) => americanOdds(odds).replace('-', '−');
 
 // A suggestion at a price: its band, Kelly score, expected return and stake worked again from the Bot's chance
-// (whatIfOf over the row, a price the Bot didn't take; priceAt at the new price), a practice side held a LIKE;
-// no edge there (PASS), none
+// (whatIfOf over the row, a price the Bot didn't take; priceAt at the new price), a practice side held a LIKE, and
+// one the desk caps (board.json cap: a gate's practice stake, a role pick; DECISIONS.md D36) a LIKE at most at the
+// practice stake, never a band the Bot couldn't give it; no edge there (PASS), none
 export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'board'): BetRow | null {
   const base = whatIfOf({ ...row, confidence: null, ev: undefined, units: undefined }, false);
   if (!base) return null;
@@ -152,7 +153,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
         const pick = market === 'total' ? `${s.s === 'over' ? 'Over' : 'Under'} ${s.l}` : market === 'spread' ? `${team} ${lineText(s.l)}` : `${team} ML`;
         const kind = KIND[market];
         push({
-          ...base(sport, g, game, s.c, s.o, sugOf(s.sug) === 'practice'),
+          ...base(sport, g, game, s.c, s.o, sugOf(s.sug) === 'practice', s.cap ?? null, s.cr),
           market: LABEL[market],
           pick,
           key: pickKey(sport, g.m, kind, pick),
@@ -171,7 +172,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
         if (!priced(o) || !open(x.b[i], x.ks[i], x.sr, x.bk, x.sug)) return;
         const pick = `${x.n} ${side === 'over' ? 'Over' : 'Under'} ${x.l} ${x.lb}`;
         push({
-          ...base(sport, g, game, i ? 1 - x.c! : x.c!, o, sugOf(x.sug) === 'practice'),
+          ...base(sport, g, game, i ? 1 - x.c! : x.c!, o, sugOf(x.sug) === 'practice', x.cap?.[i] ?? null, x.cr),
           market: x.lb,
           pick,
           key: pickKey(sport, g.m, 'player', pick),
@@ -190,7 +191,8 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
 }
 
 // (what every suggestion row has: its game, the Bot's chance, the board's price till it's priced again)
-function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean) {
+// (cap, why: the desk's cap on the side, board.json's cap and cr)
+function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean, cap: 'medium' | null = null, why?: string) {
   return {
     id: -1,
     sport,
@@ -199,6 +201,7 @@ function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odd
     reason: '',
     confidence: null,
     ...(practice ? { practice: true } : {}),
+    ...(cap === 'medium' ? { cap, ...(why ? { capWhy: why } : {}) } : {}),
     sureness: 0,
     chance: Math.round(p * 100),
     p,
