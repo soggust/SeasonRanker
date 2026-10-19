@@ -180,25 +180,30 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const s = V.desk.settle(b, g);
     if (s.void) continue;
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
-    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w });
+    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w });
   }
   return finish(V, rows, (x) => x.market, () => 0.5, 'lines');
 }
 
-// (the open rows' close chance at the same line, the trust walk-forward on the close rows, each row priced)
+// (the open rows' close chance at the same line (q), the close rows' open chance at it (fo: the move to date, known
+// at the close), the trust walk-forward on the close rows, each row priced: desk.mjs chanceAt with the row as its
+// ctx (a version with the residual model's hook, residual.mjs, reads it; an older chanceAt ignores a fifth argument))
 function finish(V, rows, keyOf, start, kind) {
   const close = new Map(rows.filter((x) => x.kind === 'c').map((x) => [x.key, x]));
+  const open = new Map(rows.filter((x) => x.kind === 'o').map((x) => [x.key, x]));
   for (const x of rows) {
-    if (x.kind !== 'o') continue;
-    const c = close.get(x.key);
-    if (c && (c.line === x.line || (c.line === null && x.line === null))) x.q = c.f;
+    const other = x.kind === 'o' ? close.get(x.key) : open.get(x.key);
+    if (!other || !(other.line === x.line || (other.line === null && x.line === null))) continue;
+    if (x.kind === 'o') x.q = other.f;
+    else x.fo = other.f;
   }
   const closeRows = rows.filter((x) => x.kind === 'c');
   const trust = walkTrust(closeRows, keyOf, V.desk.fitTrust, start);
   // (an open row at its close row's trust: the same game's month)
   for (const x of rows) {
     const t = trust.get(x.kind === 'c' ? x : close.get(x.key)) ?? start(keyOf(x));
-    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, x.raw, t)));
+    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season };
+    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, x.raw, t, ctx)));
     x.trust = t;
   }
   return { open: rows.filter((x) => x.kind === 'o'), close: closeRows };
@@ -218,7 +223,7 @@ export function propHistoryRows(V, sport, index, matches, current) {
       if (!fin(raw)) continue;
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
-      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w });
+      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w });
     }
   }
   const B = V.desk.BUCKET_START ?? { low: 0.25, mid: 0.375, high: 0.5 };

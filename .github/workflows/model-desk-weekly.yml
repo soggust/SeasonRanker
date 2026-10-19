@@ -24,7 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
-    timeout-minutes: 20
+    # (the self-check takes a minute; the residual refit replays the four sports' history, about 15 more)
+    timeout-minutes: 45
 
     steps:
       # (the whole history: C9 reads the day's last state.json for 35 days, C16 the model files' last commit)
@@ -54,6 +55,14 @@ jobs:
       - name: Run the self-check
         run: node libs/ranker/scripts/model/selfcheck.mjs
 
+      # (the residual model's weekly refit (residual-train.mjs; DECISIONS.md D32): the priced history replayed from
+      # the desk's cache the restore brought (the saved fit, the context facts), fit into monthly snapshots and
+      # written to apps/<sport>/src/StaticData/model/residual.json behind its hold-out guard (a refit worse than the
+      # Book or the shipped file is held at the current price). Failing soft: without the cache a sport is skipped
+      # and the job goes on. The files are the gate's challenger (RESID_ON); the flag off, they price nothing)
+      - name: Refit the residual model
+        run: node --max-old-space-size=6144 libs/ranker/scripts/model/residual-train.mjs --collect --write || echo "the residual refit skipped"
+
       # (npm install, not npm ci, as the desk's run does: the lock put back. The data test needs it (esbuild),
       # and so does the build)
       - name: Install dependencies
@@ -66,12 +75,13 @@ jobs:
       - name: Check the self-check's data
         run: node --test tests/data.test.mjs
 
-      # (only the self-check's files, each written only when something but its time changed, so a quiet week
-      # commits nothing; a desk run may have pushed meanwhile: rebase and try again, three times)
+      # (only the self-check's files and the residual model's, each written only when something but its time
+      # changed, so a quiet week commits nothing; a desk run may have pushed meanwhile: rebase and try again,
+      # three times)
       - name: Commit the self-check
         id: commit
         run: |
-          git add apps/*/src/StaticData/model/selfcheck.json
+          git add apps/*/src/StaticData/model/selfcheck.json apps/*/src/StaticData/model/residual.json
           if git diff --cached --quiet; then
             echo "Nothing new"
             echo "changed=false" >> "$GITHUB_OUTPUT"

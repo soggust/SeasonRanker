@@ -30,6 +30,7 @@ import { cond, mlModel, spreadChances, totalChances } from './margins.mjs';
 import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
 import { CLV_V } from './clv.mjs';
+import { hookChance } from './residual.mjs';
 
 // (1,000 to start, so a full slate of bets leaves most of it on hand; the desk rebuys 1,000 whenever its
 // balance would go under 0: the money's play money and every bet is data)
@@ -104,8 +105,16 @@ export function leanOf(gap, limit) {
 
 // A side's chance at a trust: the book's fair chance and the model's lean, tapered by its market's GAP (a prop's
 // too). The one chance choose bets with and fitTrust and the backtest score, so the
-// trust is fit on the pricing the desk bets with
-export const chanceAt = (market, fair, model, trust) => fair + trust * leanOf(model - fair, GAP[market]);
+// trust is fit on the pricing the desk bets with.
+// With a ctx (the row: its sport, stat, line, side, the Book's two prices, the start and the bet's moment) and the
+// residual model's flag on (residual.mjs residOn: RESID_ON=1, the gate's challenger; DECISIONS.md D32), the model's
+// soft blend of this chance with its corrected one; off, or with no ctx or no model, this chance as it is
+export const chanceAt = (market, fair, model, trust, ctx = null) => {
+  const p = fair + trust * leanOf(model - fair, GAP[market]);
+  if (!ctx) return p;
+  const r = hookChance({ ...ctx, market: ctx.market ?? market, f: ctx.f ?? fair, raw: ctx.raw ?? model }, p);
+  return r ? r.p : p;
+};
 
 // A researched CHECK's chance (run.mjs betProps): the research found nothing to explain the gap, or a reason the
 // model's inputs carry already, so the gap's doubt (the market knowing something the model doesn't) is answered

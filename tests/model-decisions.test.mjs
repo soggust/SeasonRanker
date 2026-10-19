@@ -473,3 +473,40 @@ test("D31 no silent skip: a line move the projection followed is priced, and eve
   const gapped = boardMarkets([{ market: 'total', sides: [{ side: 'over', line: 45.5, odds: -110, model: 0.85, fair: 0.5 }, { side: 'under', line: 45.5, odds: -110, model: 0.15, fair: 0.5 }] }], () => 1);
   assert.ok(gapped.total.every((s) => s.b === 'low' && /too far from the market/.test(s.sr)));
 });
+
+test('D32 the residual model: a candidate behind RESID_ON, the price unchanged with it off; it predicts the Book\'s error and never pulls an ahead Bot toward the Book; no look-ahead; a soft blend; the guard', async () => {
+  const R = await import('../libs/ranker/scripts/model/residual.mjs');
+  const desk = await import('../libs/ranker/scripts/model/desk.mjs');
+  // (off: the gate's verdict; the flag for one run only)
+  assert.equal(R.RESID_PRICING, false);
+  const was = { on: process.env.RESID_ON, off: process.env.RESID_OFF };
+  delete process.env.RESID_ON;
+  delete process.env.RESID_OFF;
+  assert.equal(R.residOn(), false);
+  // (with the flag off a ctx changes nothing: the price is the trusted chance)
+  const ctx = { sport: 'nhl', market: 'prop', stat: 'shots', line: 2.5, side: 'over', f: 0.5, raw: 0.6, overOdds: -110, underOdds: -110, t: Date.now() + 36e5, at: Date.now() };
+  assert.equal(desk.chanceAt('prop', 0.5, 0.6, 0.4, ctx), desk.chanceAt('prop', 0.5, 0.6, 0.4));
+  process.env.RESID_ON = '1';
+  assert.equal(R.residOn(), true);
+  delete process.env.RESID_ON;
+  if (was.on !== undefined) process.env.RESID_ON = was.on;
+  if (was.off !== undefined) process.env.RESID_OFF = was.off;
+  // (the blend soft: never 0 or 1 by a switch, a step of BLEND_STEP at most a refit, from the current price)
+  assert.equal(R.BLEND_START, 0);
+  assert.ok(R.BLEND_STEP <= 0.25);
+  assert.ok(Math.abs(R.blendChance(0.52, 0.6, 0) - 0.52) < 1e-9 && Math.abs(R.blendChance(0.52, 0.6, 1) - 0.6) < 1e-9);
+  // (the model predicts the Book's error off the Book's own logit: a lean term is the Bot's disagreement, the shift
+  // adds to it, so a Bot that's ahead reads as a larger edge, never a pull toward the Book: the lean terms named)
+  assert.ok(R.isLeanTerm('d') && R.isLeanTerm('d*stat:shots') && !R.isLeanTerm('home'));
+  // (no look-ahead: a snapshot is read only from the moment it last learned)
+  const model = { v: R.MODEL_V, snapshots: [{ cutoff: '2026-02', to: 200, parts: {} }, { cutoff: '2026-03', to: 300, parts: {} }] };
+  assert.equal(R.snapshotFor(model, 250).cutoff, '2026-02');
+  assert.equal(R.snapshotFor(model, 100), null);
+  assert.ok(R.SETTLE_MS >= 6 * 36e5);
+  // (the guard: a refit worse than the Book on its newest months is held at the current price, never shipped)
+  const bad = Object.fromEntries(['2026-01', '2026-02', '2026-03'].map((m) => [m, { props: { n: 1000, resid: 0.7, cur: 0.69, book: 0.69 } }]));
+  assert.ok(!R.guardOk(bad, null).ok);
+  // (the rules written down with it)
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D32.'));
+});

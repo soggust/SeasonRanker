@@ -219,7 +219,10 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
         const x = V.correct.frameOf({ sport: b.sport, stat: b.propType, line: b.line, side: b.side, model: b.modelRaw, fair: b.fair, odds: b.odds, otherOdds: b.otherOdds, home: b.home, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 });
         pOver = V.correct.correctedOver(fit, x);
       } else {
-        const ps = V.desk.chanceAt('prop', b.fair, b.modelRaw, trustAt(b));
+        // (the row as the residual model's ctx (residual.mjs; a version with desk.mjs chanceAt's hook reads it, an
+        // older chanceAt ignores it): the side's frame, the bet's moment)
+        const ctx = { sport: b.sport, market: 'prop', stat: b.propType, line: b.line, side: b.side, f: b.fair, raw: b.modelRaw, overOdds: b.side === 'over' ? b.odds : b.otherOdds, underOdds: b.side === 'over' ? b.otherOdds : b.odds, t: Date.parse(b.start), at: Date.parse(b.placedAt ?? b.start), home: b.home ?? null, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 };
+        const ps = V.desk.chanceAt('prop', b.fair, b.modelRaw, trustAt(b), ctx);
         pOver = b.side === 'over' ? ps : 1 - ps;
       }
       if (fin(pOver)) out.set(String(b.id), Math.min(0.999, Math.max(0.001, pOver)));
@@ -390,7 +393,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const mix = V.project.exitMix(f.params, x.p);
             if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
               const mu = x.p.mu;
-              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
             }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {
