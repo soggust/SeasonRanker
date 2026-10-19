@@ -1,12 +1,12 @@
 {
- "at": "2026-10-19T07:10:48.133Z",
- "epoch": "2026-10-19T04:56:00Z",
- "commit": "6457e467",
+ "at": "2026-10-19T08:20:25.376Z",
+ "epoch": "2026-10-19T07:30:00Z",
+ "commit": "d7c97d73",
  "n": 33198,
  "tested": 61,
  "leaks": 0,
- "trends": 2,
- "status": "watch",
- "headline": "stat+line: rushAtt high line losing more this week (0.61 this week, 0.03 before (-2.5 se) nats per 100 rows); stat: rushAtt losing more this week (0.54 this week, 0.02 before (-2.2 se) nats per 100 rows)",
+ "trends": 0,
+ "status": "ok",
+ "headline": "61 segments tested on 33198 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
  "rows": []
 }
