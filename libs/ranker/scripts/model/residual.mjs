@@ -56,6 +56,12 @@ export const MODEL_V = 1;
 // exception written into D22. RESID_ON=1 or RESID_OFF=1 in the environment overrides it for one run, the gate's
 // challenger and champion)
 export const RESID_PRICING = true;
+// (which kinds the blend prices: the props only (the owner's O4, 2026-10-19 afternoon: the lines part put NHL spreads
+// and dogs and NBA totals on the leak list and read +0.0010 worse against the Book at the NHL's closes, and the Bot's
+// game-line bets lose at the close anyway); a game line (ml, spread, total) prices as before the model, the trust's
+// chance alone. The lines part is still fit and reported by residual-train.mjs so it can be judged again; it prices
+// nothing until this says so, through the gate)
+export const RESID_KINDS = { props: true, lines: false };
 export const residOn = () => (process.env.RESID_OFF === '1' ? false : process.env.RESID_ON === '1' ? true : RESID_PRICING);
 // (a row is settled, and can teach a snapshot, SETTLE_MS after its start)
 export const SETTLE_MS = 12 * 36e5;
@@ -848,6 +854,8 @@ export function hookChance(ctx, pCur, { on = residOn, model = null } = {}) {
     if (!m) return null;
     const flip = ctx.side === 'under' || ctx.side === 'away';
     const row = { ...ctx, market: ctx.market ?? 'prop', at: fin(ctx.at) ? ctx.at : Date.now(), f: flip ? 1 - ctx.f : ctx.f, raw: flip ? 1 - ctx.raw : ctx.raw, fo: flip && fin(ctx.fo) ? 1 - ctx.fo : ctx.fo };
+    // (a kind the blend doesn't price (RESID_KINDS: the game lines, O4): the current price stands)
+    if (!RESID_KINDS[kindOf(row)]) return null;
     const r = residualChance(m, row, flip && fin(pCur) ? 1 - pCur : pCur);
     if (!r || !fin(r.p)) return null;
     return flip ? { ...r, p: 1 - r.p, pRes: 1 - r.pRes, g: -r.g, lean: -r.lean, shade: -r.shade } : r;

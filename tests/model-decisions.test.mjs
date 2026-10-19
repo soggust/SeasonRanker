@@ -538,6 +538,16 @@ test('D32 the residual model, on since the owner\'s O3: every live path passes t
   // (a different calibrated chance with the same raw moves it only through the current price)
   const pCur2 = desk.chanceAt('prop', 0.5, 0.58, 0.4);
   assert.ok(Math.abs(desk.chanceAt('prop', 0.5, 0.58, 0.4, ctx) - R.hookChance(ctx, pCur2).p) < 1e-12);
+  // (the props only (the owner's O4): a game line's ctx is declined by the hook, so the lines price as before the
+  // model, the trust's chance alone, on the shipped NHL file too; choose and the board pass the ctx and get it back)
+  assert.deepEqual(R.RESID_KINDS, { props: true, lines: false });
+  for (const [market, side, line] of [['spread', 'home', -1.5], ['spread', 'away', 1.5], ['total', 'over', 6.5], ['total', 'under', 6.5], ['ml', 'home', null], ['ml', 'away', null]]) {
+    const lctx = { ...ctx, market, stat: market, line, side };
+    assert.equal(R.hookChance(lctx, 0.52), null, `${market} ${side}: the hook declines a game line`);
+    assert.equal(desk.chanceAt(market, 0.5, 0.56, 0.3, lctx), desk.chanceAt(market, 0.5, 0.56, 0.3), `${market} ${side}: the trust's chance alone`);
+  }
+  const game = { market: 'spread', sides: [{ side: 'home', line: -1.5, odds: -110, model: 0.56, fair: 0.5 }, { side: 'away', line: 1.5, odds: -110, model: 0.44, fair: 0.5 }] };
+  assert.equal(desk.choose(game, 0.3, 0.08, { sport: 'nhl', t: Date.now() + 36e5, at: Date.now(), hours: 1 }).p, desk.choose(game, 0.3, 0.08).p, 'choose with the game ctx prices as without it');
   // (RESID_OFF: the current price back; a sport with no file: the current price)
   process.env.RESID_OFF = '1';
   assert.equal(R.residOn(), false);

@@ -10,6 +10,7 @@ import {
   BLEND_START,
   BLEND_STEP,
   D_CAP,
+  RESID_KINDS,
   RESID_MIN,
   RESID_PRICING,
   SETTLE_MS,
@@ -332,6 +333,11 @@ test('the hook prices a row by the model and flips the frame for an under', () =
   const under = hookChance({ ...ctx, side: 'under', f: 0.5, raw: 0.38 }, 0.464, { on: () => true, model });
   assert.ok(under && Math.abs(under.p - (1 - over.p)) < 1e-9, 'the under is the over\'s mirror');
   assert.ok(Number.isFinite(over.conf) && over.conf >= 0 && over.conf <= 1);
+  // (a game line never: the props only, RESID_KINDS (the owner's O4))
+  assert.deepEqual(RESID_KINDS, { props: true, lines: false });
+  assert.equal(hookChance({ ...ctx, market: 'spread', stat: 'spread', line: -1.5, side: 'home' }, 0.536, { on: () => true, model }), null, 'a spread prices as before the model');
+  assert.equal(hookChance({ ...ctx, market: 'total', stat: 'total', line: 6.5, side: 'over' }, 0.536, { on: () => true, model }), null);
+  assert.equal(hookChance({ ...ctx, market: 'ml', stat: 'ml', line: null, side: 'away' }, 0.464, { on: () => true, model }), null);
 });
 
 test('the season phase reads only the season\'s first start', () => {

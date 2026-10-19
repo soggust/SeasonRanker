@@ -581,6 +581,18 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
   }
   // (the priced history against the book at the close: every season recency-weighted, and by season)
   if (score.vsBook) out.history = score.vsBook;
+  // (the priced history's top picks (the open rows, each slate's top n at the practice stake): their CLV, hit and
+  // units, the leg the gate decides on, all rows as the gate reads them and the props and lines apart. The owner
+  // watches MLB's props' CLV leg here (DECISIONS.md D32, O4): a later version's record shows whether it tied)
+  const hist = score.bet?.history?.replay ?? [];
+  if (hist.length) {
+    const picksOf = (rows) => {
+      if (!rows.length) return null;
+      const s = betSummary(rows, { n, practice, stakeOf: stakeOfRow });
+      return { n: s.rows, clv: s.top.clv, hit: s.top.hit, picks: s.top.n, units: s.top.units };
+    };
+    out.historyPicks = { all: picksOf(hist), props: picksOf(hist.filter((x) => x.market === 'prop')), lines: picksOf(hist.filter((x) => x.market !== 'prop')) };
+  }
   // (the anchor's pull by stat (D33): the fit on every season to date, the readout the owner watches fall as the
   // bot's own numbers improve; 0 a stat priced at the bot's own number)
   if (score.anchor?.all?.stats) out.anchor = Object.fromEntries(Object.entries(score.anchor.all.stats).map(([k, v]) => [k, { pull: v.pull, d: v.d, n: v.n, gain: v.gain }]));
