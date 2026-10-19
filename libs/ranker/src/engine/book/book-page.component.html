@@ -283,9 +283,9 @@
         <p class="empty-sub">The Bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
       </div>
     } @else {
-      <!-- One row: the chevron that opens it, its rank tile (a button of its own: how its score is built), its circle
+      <!-- One row: the chevron that opens it, its rank tile (plain: its place), its circle
            (a prop's player, a total's arrow, a side's team), the pick with its one line under it, the model-vs-book
-           meter, and its price, a button that writes it on the ticket. Open, its reasoning under the row -->
+           meter (a button: how its score is built), and its price, a button that writes it on the ticket. Open, its reasoning under the row -->
       <ng-template #betRow let-r let-i="i" let-locks="locks" let-n="n">
         <li class="bet" [ngClass]="level(r)" [class.open]="open.has(r.id)" [class.fade]="r.strength === 'fade'" [style.--i]="i">
           <div class="bet-row" (click)="rowClick(r.id, $event)">
@@ -294,37 +294,24 @@
             <button type="button" class="bet-chevron" (click)="toggle(r.id)" [attr.aria-expanded]="open.has(r.id)" [attr.aria-label]="'Why ' + r.pick">
               <svg class="chev" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </button>
-            <!-- The rank tile (a lock's a lock, above the ranks; the first bet under them #1): a click (or Enter / Space)
-                 opens how its score is built; its hover, its place, its Kelly score and its chance. A CHECK's a "?", no
-                 rank (it isn't a bet): a click opens why it isn't bet and the model's Kelly -->
+            <!-- The rank tile (a lock's a lock, above the ranks; the first bet under them #1): plain (the owner's note,
+                 2026-10-19: the bar opens the popover, never the rank); its hover, its place, its Kelly score and its
+                 chance. A CHECK's a "?", no rank (it isn't a bet); its meter opens why it isn't bet -->
             @if (r.check) {
-              <button
-                type="button"
-                class="bet-rank check"
-                aria-haspopup="dialog"
-                [attr.aria-expanded]="checkWhy?.id === r.id"
-                aria-label="CHECK: why it isn't bet"
-                title="A CHECK: why it isn't bet"
-                (click)="toggleWhy(i, $event)"
-              >?</button>
+              <span class="bet-rank check" title="A CHECK: why it isn't bet"><span aria-hidden="true">?</span><span class="visually-hidden">CHECK</span></span>
             } @else {
-              <button
-                type="button"
+              <span
                 class="bet-rank"
                 [class.top]="i - locks < 10 && grade(r) !== 'pass'"
                 [class.lock]="r.confidence === 'lock'"
-                aria-haspopup="dialog"
-                [attr.aria-expanded]="why?.id === r.id"
-                [attr.aria-label]="(r.confidence === 'lock' ? 'Lock' : '#' + (i + 1 - locks)) + ': how its score is built'"
                 [title]="rankTitle(r, i, n, locks)"
-                (click)="toggleWhy(i, $event)"
               >
                 @if (r.confidence === 'lock') {
-                  <mat-icon fontIcon="lock"></mat-icon>
+                  <mat-icon fontIcon="lock" aria-hidden="true"></mat-icon><span class="visually-hidden">Lock</span>
                 } @else {
                   {{ i + 1 - locks }}
                 }
-              </button>
+              </span>
             }
             </div>
             <!-- (the circle: a prop's player's face, a total's arrow, a side's team's logo; a fade, none) -->
@@ -404,8 +391,8 @@
               }
             </div>
             <!-- (the model against the book: the model's chance filling a track, the book's a white tick on it; a
-                 button, the same why popover the rank tile opens (the owner's note, 2026-10-17); the rank tile still
-                 opens it too, and a row without a meter has the tile alone) -->
+                 button, the why popover, hung from it (the owner's notes, 2026-10-17 and 2026-10-19: the bar opens it,
+                 never the rank tile); phones: under the pick, the price and the tiles beside both lines) -->
             @if (meter(r); as m) {
               <button
                 type="button"

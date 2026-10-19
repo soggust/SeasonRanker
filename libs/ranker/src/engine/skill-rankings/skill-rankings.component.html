@@ -123,31 +123,40 @@
             class="player-info"
             [style]="teamLook(player).chip"
           >
-            <!-- The rank tile: a click (or Enter / Space) opens why it ranks here -->
+            <!-- The rank tile: plain, its place (its hover says it); the Score bar beside it opens why it ranks here -->
             <span
               [ngClass]="ur ? 'count unranked' : isoStat ? 'count isolate-place' : rankClasses(n)"
               class="rank-tile"
-              [class.open]="why?.id === player.gsisId"
-              role="button"
-              tabindex="0"
-              aria-haspopup="dialog"
-              [attr.aria-expanded]="why?.id === player.gsisId"
-              [attr.aria-label]="ur ? player.name + ': unranked (UR)' : (isoStat ? (isoAt === null ? 'No value' : '#' + isoAt) + ' by ' + reader.name(isoStat) + ', #' + (n + 1) + ' overall' : '#' + (n + 1)) + ': why ' + player.name + ' ranks here'"
               [title]="rankTitle(player, n, i)"
-              (click)="toggleWhy(player, n, $event)"
-              (keydown.enter)="toggleWhy(player, n, $event)"
-              (keydown.space)="toggleWhy(player, n, $event)"
             >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
               ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
           >
             <!-- The Score column: the row's score to one place over its bar, the bar against the best in the list
-                 (score-bar.ts; a UR row, unscored, has an empty cell) -->
-            <span class="score-cell">
-              @if (scoreCell(player); as sc) {
+                 (score-bar.ts). A button (the owner's note, 2026-10-19): a click (or Enter / Space) opens why it ranks
+                 here, hung from the bar; lit on hover like the Book's Bot-vs-Book meter. A UR row, unscored: a dash
+                 over an empty track, opening what UR means -->
+            @let sc = scoreCell(player);
+            <span
+              class="score-cell"
+              [class.open]="why?.id === player.gsisId"
+              [class.unscored]="!sc"
+              role="button"
+              tabindex="0"
+              aria-haspopup="dialog"
+              [attr.aria-expanded]="why?.id === player.gsisId"
+              [attr.aria-label]="(sc ? sc.label : 'Unranked (UR)') + ': why ' + player.name + (ur ? ' is unranked' : ' ranks #' + (n + 1))"
+              (click)="toggleWhy(player, n, $event)"
+              (keydown.enter)="toggleWhy(player, n, $event)"
+              (keydown.space)="toggleWhy(player, n, $event)"
+            >
+              @if (sc) {
                 <span class="score-value" aria-hidden="true">{{ sc.text }}</span>
                 <span class="score-track" role="meter" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="sc.now" [attr.aria-label]="sc.label"
                   ><i class="score-fill" [style.width.%]="sc.pct"></i
                 ></span>
+              } @else {
+                <span class="score-value" aria-hidden="true">–</span>
+                <span class="score-track" aria-hidden="true"></span>
               }
             </span>
             <!-- The team card, with the player's headshot standing in it (teams and units: just the logo) -->
@@ -338,7 +347,7 @@
     </ng-container>
   </ul>
 
-  <!-- Why a row ranks where it does (its rank tile clicked): its score split by stat, each stat's standard
+  <!-- Why a row ranks where it does (its Score bar clicked): its score split by stat, each stat's standard
        score times its slider, adding up to the score the list went by; then the rows beside it -->
   @if (why; as w) {
     <div

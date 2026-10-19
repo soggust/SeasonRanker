@@ -1428,28 +1428,22 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // The rank: a scoreboard tile with segment digits, like the rankings grid's: the top 10 green, the rest white;
 // a lock's padlock a light chocolate, a CHECK's "?" lavender, each glowing like the digits. No shadow of its own
 // ("the box effect": the owner's note, 2026-10-17) and the circle's size, 34px square, so the tiles and the circles
-// stand in two even columns; two digits, the padlock and the "?" sized to it. A click opens how its score is
-// built; lit on hover like the grid's (the 2px border in the board's light, at rest there but clear); the popover
-// open, the tile stays as it is (the meter's open state is the cue)
+// stand in two even columns; two digits, the padlock and the "?" sized to it. Plain (the owner's note,
+// 2026-10-19): the meter opens how its score is built, never the rank
 .bet-rank {
   @include v.led-tile(v.$radius-md, none);
+  align-items: center;
   border: none;
-  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-flex;
   flex: none;
   font-size: v.$fs-14;
   font-weight: 700;
   height: 34px;
   line-height: 1;
+  justify-content: center;
   padding: 2px 0 0;
-  transition: outline-color v.$t-hover ease;
   width: 34px;
-
-  // (lit: a 2px line in the board's light inside its edge, no border kept for it)
-  &:hover,
-  &:focus-visible {
-    outline: 2px solid var(--scoreboard-led);
-    outline-offset: -2px;
-  }
 
   &.top {
     color: v.$good-bright;
@@ -2020,14 +2014,46 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     .bet-sub-when {
       display: none;
     }
+  }
 
-    .bet-sub-meter {
-      display: inline;
+  // (the meter, the popover's button (the owner's note, 2026-10-19: the bar opens it, never the rank), under the
+  // pick in its column; the tiles, the circle and the price beside both lines)
+  .bet-row {
+    row-gap: v.$space-6;
+  }
+
+  .bet-row > .bet-lead {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .bet-row > .bet-circle {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .bet-row > .bet-main {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .bet-row > .bet-meter {
+    gap: v.$space-4;
+    grid-column: 3;
+    grid-row: 2;
+
+    &.none {
+      display: none;
+    }
+
+    .meter-words {
+      font-size: v.$fs-11;
     }
   }
 
-  .bet-meter {
-    display: none;
+  .bet-row > .bet-price {
+    grid-column: 4;
+    grid-row: 1 / span 2;
   }
 
   .bet-price {
@@ -2927,18 +2953,18 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     margin: 4px;
   }
 
-  // (the touch targets: the row's chevron as tall as the row, the rank tile's and the band header's reach past
+  // (the touch targets: the row's chevron as tall as the row, the meter's and the band header's reach past
   // their edges)
   .bet-chevron {
     height: 44px;
   }
 
-  .bet-rank {
+  .bet-meter {
     position: relative;
 
     &::before {
       content: "";
-      inset: -6px -4px;
+      inset: -4px -2px -8px;
       position: absolute;
     }
   }

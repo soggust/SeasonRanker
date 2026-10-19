@@ -860,7 +860,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     const empty: RankWhy = { id: player.gsisId, name: player.name, rank: 0, of: this.playerList.length, score: 0, scoreRank: 0, manual: false, movedByHeadToHead: false, parts: [], vs: [] };
     // (the list's own scoring, each stat's share kept: the same rows, sliders and filters as sortPlayers)
     const why = ur ? empty : this.rankedWhy(index);
-    // (hung under the tile, or over it when there's more room above: its list of stats scrolls)
+    // (hung under the Score bar, or over it when there's more room above: its list of stats scrolls)
     this.rankPop.open({ ...why, ur }, event.currentTarget as HTMLElement);
   }
 
@@ -944,7 +944,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // detection is the one that moves the page between its phone and wide layouts, app.component's menuOpen)
   clickOff(event: MouseEvent): void {
     const target = event.target as Element | null;
-    if (this.why && !target?.closest('.rank-why, .rank-tile')) this.rankPop.close();
+    if (this.why && !target?.closest('.rank-why, .score-cell')) this.rankPop.close();
     if (this.gradeWhy && !target?.closest('.grade-why, .grade-tile')) this.gradePopover.close();
     // (and the search, folded back into its button: what's typed is kept for the next time)
     if (this.finding && !target?.closest('.find-bar, .compare-toggle')) this.finding = false;
@@ -976,7 +976,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // click that ends a text selection): picked, or unpicked
   pickRow(player: SkillPlayer, event: MouseEvent): void {
     const target = event.target as Element | null;
-    if (target?.closest('.card-target, .rank-tile, .grade-tile, .last-five, .drag-indicator, .group-icon, button, a')) return;
+    if (target?.closest('.card-target, .score-cell, .grade-tile, .last-five, .drag-indicator, .group-icon, button, a')) return;
     if (Date.now() - this.dragEnded < 300 || getSelection()?.toString()) return;
     this.togglePick(player, event.currentTarget as HTMLElement);
   }

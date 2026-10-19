@@ -1872,25 +1872,16 @@ section ul li.player > div.player-info .player-name {
 }
 
 // ---------------------------------------------------------------------------
-// Why a row ranks where it does: the rank tile clicked opens its breakdown on a scoreboard panel, hung
-// from the tile (phones: a sheet along the bottom of the screen)
+// Why a row ranks where it does: the Score bar clicked opens its breakdown on a scoreboard panel, hung
+// from the bar (phones: a sheet along the bottom of the screen). The rank tile is plain (the owner's note,
+// 2026-10-19: the bar opens the popover, never the rank), as in the Book
 // ---------------------------------------------------------------------------
-// (lit like the name and its team card on hover: the badge's 2px border in the board's light; at rest the
-// border is there but clear, so the tile doesn't change size)
+// (its 2px edge kept clear, so an isolated place's dashed edge doesn't change its size)
 section ul li.player:not(.header-row) .count.rank-tile {
   border: 2px solid transparent;
-  cursor: pointer;
-  transition: border-color v.$t-hover ease;
-
-  &:hover,
-  &:focus-visible,
-  &.open {
-    border-color: var(--scoreboard-led);
-    outline: none;
-  }
 }
 
-// The breakdowns: why a row ranks where it does (its rank tile clicked), and what makes a support grade (its
+// The breakdowns: why a row ranks where it does (its Score bar clicked), and what makes a support grade (its
 // cell clicked). One look, the Book's too (_breakdown.scss): the total on top, the parts a line each
 // in one grid (the bar, the value, the label and its place, what it adds), the rows beside it or the facts
 // under a line, a footnote
@@ -2187,18 +2178,10 @@ section ul li.player.header-row:hover {
   }
 }
 
-// A row's place by the stat: white digits in a dashed edge of the board's light (solid on hover, as any tile)
+// A row's place by the stat: white digits in a dashed edge of the board's light
 section ul li.player:not(.header-row) .count.rank-tile.isolate-place {
   border-color: color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
   border-style: dashed;
-
-  &:hover,
-  &:focus-visible,
-  &.open {
-    border-color: var(--scoreboard-led);
-    border-style: solid;
-    outline: none;
-  }
 }
 
 // The chip: what it's sorted by and an X back (phones have no Esc), in the header's name cell in place of
@@ -2322,6 +2305,34 @@ section ul li.player:not(.header-row) .score-cell {
   margin-right: $score-gap;
   width: $score-col;
 
+  // (a button: hovered, focused or open it says so as the Book's Bot-vs-Book meter does: the score goes white,
+  // the track brightens and a glow in the board's light sits under it)
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+
+  &:hover,
+  &:focus-visible,
+  &.open {
+    .score-value {
+      color: #fff;
+    }
+
+    .score-track {
+      box-shadow: 0 2px 6px color-mix(in srgb, var(--scoreboard-led) 60%, transparent);
+      filter: brightness(1.2);
+    }
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--scoreboard-led);
+  }
+
+  // (a UR row's: a faint dash over the empty track)
+  &.unscored .score-value {
+    color: v.$text-faint;
+  }
+
   .score-value {
     color: v.$text-strong;
     font-family: v.$font-hand;
@@ -2330,6 +2341,7 @@ section ul li.player:not(.header-row) .score-cell {
     font-weight: 400;
     line-height: 1;
     text-align: left;
+    transition: color v.$t-hover ease;
   }
 
   .score-track {
@@ -2339,6 +2351,9 @@ section ul li.player:not(.header-row) .score-cell {
     height: 6px;
     overflow: hidden;
     position: relative;
+    transition:
+      box-shadow v.$t-hover ease,
+      filter v.$t-hover ease;
     width: 100%;
   }
 

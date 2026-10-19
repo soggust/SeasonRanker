@@ -197,7 +197,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const zone = inject(NgZone);
     const destroyRef = inject(DestroyRef);
     const open = () => !!(this.why || this.checkWhy);
-    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k'), (event) => this.clickOff(event));
+    quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => open() && !(event.target as Element | null)?.closest('.bet-why, .bet-meter, .tile-k'), (event) => this.clickOff(event));
     quietListener(zone, destroyRef, document, 'scroll', (event) => open() && !!(event.target as Element | null)?.classList?.contains('board-scroll'), () => this.closeWhy(), { capture: true, passive: true });
     // (the game list open: a click anywhere off it and its pill shuts it, the same quiet way)
     quietListener<MouseEvent>(zone, destroyRef, document, 'click', (event) => this.menuOpen && !(event.target as Element | null)?.closest('.book-game-wrap'), () => this.closeMenu(false));
@@ -968,7 +968,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     return `${place} · Kelly ${betScoreText(r.sureness * 100)}${r.chance != null ? ` · ${r.chance}% to win` : ''}${r.suggested ? ' · suggested at the latest price' : ''}`;
   }
 
-  // A price's K score button on the game view: the bot's pick, its own popover (its row's, as the rank tile opens
+  // A price's K score button on the game view: the bot's pick, its own popover (its row's, as its meter opens
   // it); any other price, the popover built from what the board has on it (bet-why.ts betWhy over the one bet: its
   // Kelly score, its chance and its price; no neighbors, no parts beyond the edge on the price)
   priceWhy(at: PriceWhy, event: Event): void {
@@ -1043,7 +1043,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       return;
     }
     const tile = event.currentTarget as HTMLElement;
-    // (hung under the tile, or over it when there's more room above; inside the screen's edges, no taller
+    // (hung under the meter, or over it when there's more room above; inside the screen's edges, no taller
     // than the room it has; phones: a sheet along the bottom: the breakdowns' shared placing, core/breakdown.ts)
     const at = popoverAt(tile, 420);
     const sheet = phoneSheet();
@@ -1129,7 +1129,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // screen changing size: the first two listened for outside Angular, quietListener, so with nothing open
   // neither sets off change detection)
   clickOff(event: MouseEvent): void {
-    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-rank, .bet-meter, .tile-k')) this.closeWhy();
+    if ((this.why || this.checkWhy) && !(event.target as Element | null)?.closest('.bet-why, .bet-meter, .tile-k')) this.closeWhy();
   }
 
   @HostListener('window:resize')
