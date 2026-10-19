@@ -26,7 +26,14 @@
 //      an untested market lifts only where the history says the model earned it (a trust over 0: an edge at the
 //      trusted chance), staying where it hasn't (trust 0: the Book's chance, no edge, the card's practice picks
 //      alone). Free to rise: the fit's grid reaches 1 and the live rows weigh whole. The desk never writes either
-//      file (the gate's --record does, D22); without them the fit is the live bets' alone, as before
+//      file (the gate's --record does, D22); without them the fit is the live bets' alone, as before.
+//      BY LEAD BAND (the open round, 2026-10-19, D37; the owner's rule: the Bot picks its own time to bet): the
+//      history's rows carry how far out they were priced, and the trust is fit a band (gate-mma.mjs leadBand: early
+//      two weeks or more out, mid 48 hours to two weeks, late inside 48 hours and the close), the live bets by their
+//      own lead. A bout is priced at the trust of its lead at the moment of the ask (trustFor), so the desk bets the
+//      early line where the history says the Bot beats it (two weeks out: trust 0.25 to 0.3) and sits at the Book's
+//      chance near the bell (trust 0). The window is four weeks (leagues.mjs TIMING.mma) and ESPN's cards are read
+//      four weeks ahead (AHEAD_DAYS) for it
 //   5. the bouts due (leagues.mjs TIMING.mma: inside 72 hours of the start, the last chance 4) priced: one
 //      ask of The Odds API for the whole MMA board (2 credits: two markets, one region of books) when any bout is
 //      due and the day's allowance has it, each bout matched to the board by both fighters' names (accents and
@@ -64,7 +71,7 @@ import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictT
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
-import { unpackRows } from './gate-mma.mjs';
+import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, edgeLevel, kellyOf, levelOf, recentOf, scoreParts } from './picks.mjs';
@@ -106,7 +113,11 @@ const SEEN_CLOSE = 3 * 36e5;
 const LAST_CALL = 2 * 36e5;
 // (the board's days: finals behind, cards ahead)
 const BACK_DAYS = 3;
-const AHEAD_DAYS = 5;
+// (four weeks ahead since the open round (D37): the Bot's edge lives at the books' early lines, two weeks or more out)
+const AHEAD_DAYS = 28;
+// (a bout ESPN lists that The Odds API doesn't carry yet, this far out: asked about again after a day, not 3 hours)
+const FAR_H = 14 * 24;
+const REST_FAR = 24 * 36e5;
 export const headshot = (id) => `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png`;
 
 export const FILES = {
@@ -232,7 +243,7 @@ export function boutsOf(board) {
 async function readBoard(now) {
   const from = ymd(now.getTime() - BACK_DAYS * DAY);
   const to = ymd(now.getTime() + AHEAD_DAYS * DAY);
-  const body = await get(`${SITE}/scoreboard?dates=${from}-${to}&limit=100`);
+  const body = await get(`${SITE}/scoreboard?dates=${from}-${to}&limit=400`);
   return body ? boutsOf(body) : null;
 }
 
@@ -340,12 +351,13 @@ export const knowsNothing = (pred) => !!pred?.parts && Object.values(pred.parts)
 
 // The pick for a bout: the better side at the trusted chance, its stake, and why it's not an edge bet if it
 // isn't. model: the home side's chance; lines: { odds: { home, away }, fair (home) }
-export function pickFor(model, lines, trust, { edge, untested, guard = null, apiPrice = true }) {
+// key: the pricing key (gate-mma.mjs priceKey: 'ml', or 'mlOpen' at the early band, untapered and never gapped)
+export function pickFor(model, lines, trust, { edge, untested, guard = null, apiPrice = true, key = 'ml' }) {
   const sides = ['home', 'away'].map((side) => {
     const fair = side === 'home' ? lines.fair : 1 - lines.fair;
     const m = side === 'home' ? model : 1 - model;
     const odds = lines.odds[side];
-    const p = chanceAt('ml', fair, m, trust);
+    const p = chanceAt(key, fair, m, trust);
     const ev = p * decimal(odds) - 1;
     return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
@@ -355,7 +367,7 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
   const better = sides[0].ev > 0 || sides[1].ev > 0 ? sides[0].ev >= sides[1].ev : sides[0].model - sides[0].fair >= sides[1].model - sides[1].fair;
   const pick = better ? sides[0] : sides[1];
   const other = pick === sides[0] ? sides[1] : sides[0];
-  const gap = gapGuard('ml', pick.model, pick.fair);
+  const gap = gapGuard(key, pick.model, pick.fair);
   if (gap) return { skip: gap.why, pick, other };
   const hasEdge = pick.ev > 0 && pick.model - pick.fair >= edge && apiPrice;
   let units = untested ? Math.min(UNTESTED_MAX, pick.units) : pick.units;
@@ -439,14 +451,15 @@ export function reasonOf(bet) {
 // the desk would give the row (DECISIONS.md D36, board.mjs bandOf): ESPN BET's line a PASS saying so (the desk bets
 // only at the Book's price: pickFor apiPrice, tracked); a side whose lean (the model's chance less the Book's no-vig)
 // is under the league's edge (cfg.edge: pickFor tracks it, a card's practice pick at most) capped LIKE (cap, cr)
-export function boardSidesOf(lines, chance, trust, src = null, { edge = null } = {}) {
-  const gap = gapGuard('ml', chance, lines.fair);
+// key: the pricing key (gate-mma.mjs priceKey: 'ml', or 'mlOpen' at the early band, untapered and never gapped; D47)
+export function boardSidesOf(lines, chance, trust, src = null, { edge = null, key = 'ml' } = {}) {
+  const gap = gapGuard(key, chance, lines.fair);
   const off = src === 'espn bet' ? skipReason({ why: "ESPN BET's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" }) : null;
   return ['home', 'away'].map((side) => {
     const fair = side === 'home' ? lines.fair : 1 - lines.fair;
     const m = side === 'home' ? chance : 1 - chance;
     const odds = lines.odds[side];
-    const p = chanceAt('ml', fair, m, trust);
+    const p = chanceAt(key, fair, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
     const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u` } : {};
@@ -458,13 +471,14 @@ export function boardSidesOf(lines, chance, trust, src = null, { edge = null } =
 // Kelly and band at its line). total: fights-totals.mjs totalLinesOf's { line, odds: { over, under }, fair (over's) };
 // over: the model's chance of Over at its line. live: false till TOTAL_LIVE are graded (totalPickFor: the practice
 // stake, capped LIKE); edge: the league's (a lean under it is tracked, never bet: a PASS saying so) (D36)
-export function boardTotalOf(total, over, trust, { live = true, edge = null } = {}) {
-  const gap = gapGuard('total', over, total.fair);
+// key: the pricing key ('total', or 'totalOpen' at the early band; D47)
+export function boardTotalOf(total, over, trust, { live = true, edge = null, key = 'total' } = {}) {
+  const gap = gapGuard(key, over, total.fair);
   return ['over', 'under'].map((side) => {
     const fair = side === 'over' ? total.fair : 1 - total.fair;
     const m = side === 'over' ? over : 1 - over;
     const odds = total.odds[side];
-    const p = chanceAt('total', fair, m, trust);
+    const p = chanceAt(key, fair, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
     const short = Number.isFinite(edge) && ev > 0 && m - fair < edge ? skipReason({ why: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): tracked, not bet` }) : null;
@@ -491,7 +505,8 @@ export function boardLinesOf(prev, boutId) {
 }
 // The board from the bouts coming (not final, not off, not started), each priced from what the run has: lines
 // (by the bout's key: { lines, src }) this run's, else the last board's DraftKings price (boardLinesOf), else
-// nothing (no tile); chance(bout): the model's chance of the home side; trust: the moneyline's; bets: the ledger's
+// nothing (no tile); chance(bout): the model's chance of the home side; trust: the moneyline's (a number, or a
+// function of the bout and its start: the trust of its lead band, trustFor); bets: the ledger's
 // (the bot's open side marked, as buildBoard marks it); prev: the last board (a bout no longer coming dropped). The
 // round total beside it (k.total) the same way: this run's (lines' entry's total), else the last board's; over(bout,
 // day, line): the model's chance of Over (null where it has none at that line); totalTrust: the totals' trust
@@ -509,9 +524,10 @@ export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalT
     const start = bout.start ?? bout.date;
     const markets = {};
     const p = l?.odds?.home && l?.odds?.away ? chance(bout, Date.parse(start)) : null;
-    if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, trust, src, { edge });
+    const band = leadBand((Date.parse(start) - now.getTime()) / 36e5);
+    if (Number.isFinite(p)) markets.ml = boardSidesOf(l, p, typeof trust === 'function' ? trust(bout, Date.parse(start)) : trust, src, { edge, key: priceKey('ml', band) });
     const o = t && over ? over(bout, Date.parse(start), t.line) : null;
-    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, typeof totalTrust === 'function' ? totalTrust(t.line) : totalTrust, { live: totalsLive, edge });
+    if (Number.isFinite(o)) markets.total = boardTotalOf(t, o, typeof totalTrust === 'function' ? totalTrust(t.line, Date.parse(start)) : totalTrust, { live: totalsLive, edge, key: priceKey('total', band) });
     if (!markets.ml && !markets.total) continue;
     // (the fighters as the board's teams: [name, ESPN id, his headshot], the first ESPN lists the home side)
     const game = { date: start, awayAbbr: bout.away.name, homeAbbr: bout.home.name, away: bout.away.id, home: bout.home.id };
@@ -558,9 +574,17 @@ export function fitMmaTrust(ledger, hist, { pool = [], epoch = MMA_START, start 
   const tLive = live('total');
   const hb = (market) => (hist?.bets ?? []).filter((b) => b.market === market);
   const withHistory = (f, rows) => ({ ...f, history: { rows: rows.length, weight: round(rows.reduce((t, b) => t + (b.tw ?? 1), 0), 1), at: hist?.at ?? null, commit: hist?.commit ?? null } });
-  const ml = withHistory(fitTrust([...hb('ml'), ...mlLive], start), hb('ml'));
+  // (a live bet's band by its own lead: the start less the moment it was placed)
+  const bandOf = (b) => b.band ?? leadBand((Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5);
+  // (each band's fit on its own rows, the history's and the live's; the market's own line the late band's (the
+  // close's), with the bands beside it)
+  const byBand = (rows, liveRows) => {
+    const bands = Object.fromEntries(LEAD_BAND_KEYS.map((band) => [band, withHistory(fitTrust([...rows.filter((b) => bandOf(b) === band), ...liveRows.filter((b) => bandOf(b) === band)].map((b) => ({ ...b, market: priceKey(b.market, band) })), start), rows.filter((b) => bandOf(b) === band))]));
+    return { ...bands.late, bands, history: withHistory({}, rows).history };
+  };
+  const ml = byBand(hb('ml'), mlLive);
   const tRows = hb('total');
-  let total = withHistory(fitTrust([...tRows, ...tLive], start), tRows);
+  let total = byBand(tRows, tLive);
   let ladder = null;
   try {
     const mine = [...tLive.filter((b) => Number.isFinite(b.line)), ...tRows.filter((b) => Number.isFinite(b.line))];
@@ -573,6 +597,20 @@ export function fitMmaTrust(ledger, hist, { pool = [], epoch = MMA_START, start 
   const totalsGraded = liveCount(ledger.bets, epoch) + histClosed;
   return { ml, total, ladder, totalsGraded, totalsLive: totalsGraded >= TOTAL_LIVE, live: { ml: mlLive.length, total: tLive.length } };
 }
+
+// A market's trust at a moment: its band's by the lead (hours before the start), held to the rung by the line's size
+// for a total (bucketTrustOf); a trust with no bands (a state from before them) its own
+export function trustFor(trust, market, lead, line = null) {
+  const t = trust?.[market];
+  const band = leadBand(lead);
+  const own = Number.isFinite(t?.bands?.[band]?.trust) ? t.bands[band].trust : t?.trust ?? START_TRUST;
+  if (market !== 'total') return own;
+  const rung = t?.lines?.[lineBucketOf(line)]?.trust;
+  return Math.min(own, Number.isFinite(rung) ? rung : own);
+}
+const lineBucketOf = (line) => (!Number.isFinite(line) ? 'high' : line <= 1.5 ? 'low' : line <= 3.5 ? 'mid' : 'high');
+// (whether a market's trust at a lead is fitted: its band's)
+export const fittedFor = (trust, market, lead) => !!(trust?.[market]?.bands?.[leadBand(lead)]?.fitted ?? trust?.[market]?.fitted);
 
 function changelog(state, at, what, from, to, why) {
   state.changelog ??= [];
@@ -813,7 +851,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     state.lineTrust = { pool: fit.ladder.pool, sport: fit.ladder.sport };
     log.log(`${SPORT}: round totals' line trust: ${BUCKETS.map((bk) => `${bk} ${fit.ladder.keys.total[bk].trust} (pool ${fit.ladder.pool[bk].trust}, eff ${fit.ladder.pool[bk].eff})`).join('; ')}`);
   } else log.log(`${SPORT}: round totals' line trust left out this run`);
-  log.log(`${SPORT}: trust ml ${trust.ml.trust}${trust.ml.fitted ? '' : ' (untested)'}, totals ${trust.total.trust}${trust.total.fitted ? '' : ' (untested)'}: ${fit.live.ml} live moneyline rows and ${fit.live.total} totals since the epoch${hist ? `, the history's ${hist.n} rows at ${hist.weight} rows' worth (the gate's record of ${String(hist.at ?? '').slice(0, 10)}, ${hist.commit})` : ', no history rows (the gate has not recorded them)'}`);
+  log.log(`${SPORT}: trust by lead band, ml ${LEAD_BAND_KEYS.map((b) => `${b} ${trust.ml.bands?.[b]?.trust ?? '-'}`).join(' / ')}, totals ${LEAD_BAND_KEYS.map((b) => `${b} ${trust.total.bands?.[b]?.trust ?? '-'}`).join(' / ')}: ${fit.live.ml} live moneyline rows and ${fit.live.total} totals since the epoch${hist ? `, the history's ${hist.n} rows at ${hist.weight} rows' worth (the gate's record of ${String(hist.at ?? '').slice(0, 10)}, ${hist.commit})` : ', no history rows (the gate has not recorded them)'}`);
   const totalsLive = fit.totalsLive;
   if (totalsLive && !state.totalsLiveAt) {
     state.totalsLiveAt = at;
@@ -877,7 +915,11 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
         apiPrice = !!lines;
         // (the API's bout time is the bout's own; ESPN's is the card's)
         if (lines?.start && Math.abs(Date.parse(lines.start) - Date.parse(bout.date)) < MATCH_WINDOW) bout.start = lines.start;
-      } else unmatched.push(`${bout.home.name} vs ${bout.away.name} (${bout.cardName})`);
+      } else {
+        unmatched.push(`${bout.home.name} vs ${bout.away.name} (${bout.cardName})`);
+        // (a bout two weeks or more out the API doesn't list yet: a day's rest, not 3 hours: the ask is for the board)
+        if (until >= FAR_H * 36e5) rest[bout.key] = new Date(now.getTime() + REST_FAR - REST_FOR).toISOString();
+      }
     }
     const start = bout.start ?? bout.date;
     if (lines) addLines(bout.key, { lines, src: apiPrice ? null : 'espn bet' });
@@ -891,7 +933,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       if (tl) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
     } else if (want.total && !tPlacedOn.has(bout.key)) {
       const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
-      const choice = tp ? totalPickFor(tp.p, tl, bucketTrustOf(trust, 'total', tl.line), { live: totalsLive, untested: !trust.total.fitted, edge: cfg.edge }) : null;
+      const tLead = (Date.parse(start) - now.getTime()) / 36e5;
+      const choice = tp ? totalPickFor(tp.p, tl, trustFor(trust, 'total', tLead, tl.line), { live: totalsLive, untested: !fittedFor(trust, 'total', tLead), edge: cfg.edge, key: priceKey('total', leadBand(tLead)) }) : null;
       if (!choice || choice.skip) {
         if (choice?.skip) log.log(`${SPORT}: ${bout.home.name} vs ${bout.away.name} round total skipped: ${choice.skip}`);
         if (Array.isArray(events)) rest[`${bout.key}|total`] = at;
@@ -920,7 +963,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
           book: 'DraftKings',
           fairFrom: tl.fairFrom,
           pick: `${pick.side === 'over' ? 'Over' : 'Under'} ${tl.line} rounds`,
-          context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: bucketTrustOf(trust, 'total', tl.line), untested: !trust.total.fitted, live: totalsLive, flags: [], ...(why ? { why } : {}) },
+          context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: trustFor(trust, 'total', tLead, tl.line), band: leadBand(tLead), untested: !fittedFor(trust, 'total', tLead), live: totalsLive, flags: [], ...(why ? { why } : {}) },
           seen: { at, line: tl.line, odds: pick.odds, fair: round(pick.fair, 4) },
           status: 'open',
           profit: 0,
@@ -955,10 +998,14 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     state.opens ??= {};
     state.opens[bout.key] ??= { at, fair: round(lines.fair, 4), odds: lines.odds };
     const openFair = state.opens[bout.key].fair;
-    const untested = !trust.ml.fitted;
+    // (the trust of this moment's lead band (D37): the early line where the Bot beats it, the Book's chance near the bell)
+    const lead = (day - now.getTime()) / 36e5;
+    const tMl = trustFor(trust, 'ml', lead);
+    const mlKey = priceKey('ml', leadBand(lead));
+    const untested = !fittedFor(trust, 'ml', lead);
     const sideOf = (s) => (s === 'home' ? 1 : -1);
     let guard = null;
-    const choice = pickFor(pred.p, lines, trust.ml.trust, { edge: cfg.edge, untested, apiPrice });
+    const choice = pickFor(pred.p, lines, tMl, { edge: cfg.edge, untested, apiPrice, key: mlKey });
     if (choice.skip) {
       log.log(`${SPORT}: ${bout.home.name} vs ${bout.away.name} skipped: ${choice.skip}`);
       rest[bout.key] = at;
@@ -967,7 +1014,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     // (the market's move against the pick since the first price seen, in its side's fair chance)
     const move = round(sideOf(choice.pick.side) * (openFair - lines.fair), 4);
     if (cfg.guard.ml && move <= -cfg.guard.ml) guard = `line moved ${move} against it since it opened`;
-    const final = guard ? pickFor(pred.p, lines, trust.ml.trust, { edge: cfg.edge, untested, apiPrice, guard }) : choice;
+    const final = guard ? pickFor(pred.p, lines, tMl, { edge: cfg.edge, untested, apiPrice, guard, key: mlKey }) : choice;
     const { pick, other, placed, flags, why } = final;
     const notice = bout.firstSeen && Date.parse(start) - Date.parse(bout.firstSeen) < 21 * DAY && bouts.some((b) => b.id === bout.id && b.off === 'replaced') ? 'short notice: a replacement inside 21 days' : null;
     if (notice) flags.push(notice);
@@ -999,7 +1046,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       book: 'DraftKings',
       fairFrom: lines.fairFrom,
       pick: pick.side === 'home' ? bout.home.name : bout.away.name,
-      context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: pred.parts, ratingP: pred.ratingP, trust: trust.ml.trust, untested, flags, move, ...(guard ? { guard } : {}), ...(why ? { why } : {}), records: { home: pred.a.record, away: pred.b.record } },
+      context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: pred.parts, ratingP: pred.ratingP, trust: tMl, band: leadBand(lead), lead: round(lead, 1), untested, flags, move, ...(guard ? { guard } : {}), ...(why ? { why } : {}), records: { home: pred.a.record, away: pred.b.record } },
       seen: { at, odds: pick.odds, fair: round(pick.fair, 4), open: state.opens[bout.key] },
       status: 'open',
       profit: 0,
@@ -1038,7 +1085,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const espn = await espnOdds(bout).catch(() => null);
     if (espn) addLines(bout.key, { lines: espn, src: 'espn bet' });
   }
-  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: trust.ml.trust, over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line) => bucketTrustOf(trust, 'total', line), bets: ledger.bets, prev: prevBoard, now, edge: cfg.edge, totalsLive });
+  const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: (b, day) => trustFor(trust, 'ml', (day - now.getTime()) / 36e5), over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line, day) => trustFor(trust, 'total', (day - now.getTime()) / 36e5, line), bets: ledger.bets, prev: prevBoard, now, edge: cfg.edge, totalsLive });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
   const withTotal = mmaBoard.games.filter((g) => g.k.total).length;

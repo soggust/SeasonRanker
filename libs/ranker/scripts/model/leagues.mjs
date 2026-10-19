@@ -239,9 +239,11 @@ export const TIMING = {
   nba: { lines: 26, props: 26, lastChance: 3 },
   nhl: { lines: 26, props: 26, lastChance: 3 },
   mlb: { lines: 26, props: 26, lastChance: 2.5 },
-  // (MMA: a bout's lines open 72 hours before it (the weigh-in is the day before: a fighter pulled or replaced
-  // voids the bet rather than moving it, mma-desk.mjs), the last chance 4; no props on this plan)
-  mma: { lines: 72, props: 72, lastChance: 4 },
+  // (MMA: a bout's lines open four weeks before it (the open round, 2026-10-19, DECISIONS.md D47: the Bot's edge on
+  // the moneyline lives two weeks or more out, where the Book's opening line is soft, and is gone inside 48 hours; a
+  // fighter pulled or replaced voids the bet rather than moving it, mma-desk.mjs; was 72 hours), the last chance 4;
+  // no props on this plan)
+  mma: { lines: 672, props: 672, lastChance: 4 },
 };
 
 export const LEAGUES = {

@@ -5,7 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DAY_WINDOW, closedEvents, editDistance, matchHistory, matchReport, nameScore, surnameOf, tokensOf } from '../libs/ranker/scripts/model/fights-history.mjs';
-import { PERIOD_MONTHS, historyRows, ledgerRows, packRows, periodsOf, trustBets, trustPrior, unpackRows, walkForward } from '../libs/ranker/scripts/model/gate-mma.mjs';
+import { LEAD_BANDS, PERIOD_MONTHS, beatClose, historyRows, leadBand, ledgerRows, packRows, periodsOf, priceKey, trustBets, trustPrior, unpackRows, walkForward } from '../libs/ranker/scripts/model/gate-mma.mjs';
 import * as fightsModel from '../libs/ranker/scripts/model/fights-model.mjs';
 import * as fightsTotals from '../libs/ranker/scripts/model/fights-totals.mjs';
 import * as desk from '../libs/ranker/scripts/model/desk.mjs';
@@ -187,16 +187,22 @@ test("historyRows: the moneyline framed on ESPN's first fighter whichever side t
   assert.equal(t1r.y, 0);
   assert.equal(t2r.y, 1, 'the distance is over 2.5');
   assert.equal(t2r.fairFrom, 'pinnacle');
-  // (every row priced: a chance, a trust)
+  // (every row priced: a chance, a trust; its lead and band: the open a week and a half out is mid, the close late)
   for (const x of [...h.open, ...h.close]) {
     assert.ok(x.p > 0 && x.p < 1, 'priced');
     assert.ok(Number.isFinite(x.trust));
+    assert.ok(['early', 'mid', 'late'].includes(x.band), x.band);
   }
+  assert.equal(ml1o.band, 'mid');
+  assert.equal(ml1.band, 'late');
+  assert.ok(Math.abs(ml1o.lead - (Date.parse(t1) - Date.parse('2019-02-20T14:00:00Z')) / 36e5) < 0.2);
+  const bc = beatClose(h.open);
+  assert.ok(bc.ml && 'early' in bc.ml && 'mid' in bc.ml && 'late' in bc.ml);
   assert.equal(h.report.matched, 2);
 });
 
 test("the history's trust: the rows as the trust fit reads a bet, recency-weighted; packed and unpacked the same; fitted once the rows reach the fit's minimum, the starting trust under it", () => {
-  const row = (i, market, kind, season) => ({ id: `h:${i}:${market}:${kind}`, key: `h:${i}:${market}`, event: `${i}`, market, kind, line: market === 'total' ? 2.5 : null, raw: 0.55, f: 0.5, y: i % 2, q: 0.52, t: Date.parse(`${season}-06-01T00:00:00Z`), season });
+  const row = (i, market, kind, season, lead = kind === 'c' ? 1 : 400) => ({ id: `h:${i}:${market}:${kind}`, key: `h:${i}:${market}`, event: `${i}`, market, kind, line: market === 'total' ? 2.5 : null, raw: 0.55, f: 0.5, y: i % 2, q: 0.52, t: Date.parse(`${season}-06-01T00:00:00Z`), season, lead, band: kind === 'c' ? 'late' : leadBand(lead) });
   const open = Array.from({ length: 30 }, (_, i) => row(i, 'ml', 'o', 2026));
   const close = [...Array.from({ length: 30 }, (_, i) => row(i, 'ml', 'c', 2025)), row(99, 'total', 'c', 2026)];
   const bets = trustBets(open, close, 2026);
@@ -206,8 +212,10 @@ test("the history's trust: the rows as the trust fit reads a bet, recency-weight
   assert.equal(bets[0].status, 'lost');
   assert.equal(bets[1].status, 'won');
   assert.equal(bets[0].clv.q, 0.52);
+  assert.equal(bets[0].band, 'early', 'an open 400 hours out');
+  assert.equal(bets.find((b) => b.kind === 'c').band, 'late');
   const packed = packRows(bets);
-  assert.equal(packed[0].length, 10);
+  assert.equal(packed[0].length, 11, 'the lead packed with the row');
   const back = unpackRows(packed, 2026);
   assert.equal(back.length, bets.length);
   for (const [i, b] of back.entries()) {
@@ -216,13 +224,30 @@ test("the history's trust: the rows as the trust fit reads a bet, recency-weight
     assert.equal(b.clv.q, bets[i].clv.q);
     assert.equal(b.tw, bets[i].tw);
     assert.equal(b.model, bets[i].model);
+    assert.equal(b.band, bets[i].band);
+    assert.equal(b.lead, bets[i].lead);
   }
   const prior = trustPrior(V, bets);
-  assert.equal(prior.ml.fitted, true, '60 moneyline rows: fitted');
   assert.equal(prior.ml.rows, 60);
-  assert.ok(prior.ml.trust >= 0 && prior.ml.trust <= 1);
-  assert.equal(prior.total.fitted, false, 'one total row: the start');
-  assert.equal(prior.total.trust, 0.5);
+  // (a fit a band: 30 early opens, 30 late closes; the market's own line the late band's)
+  assert.equal(prior.ml.bands.early.rows, 30);
+  assert.equal(prior.ml.bands.late.rows, 30);
+  assert.equal(prior.ml.bands.mid.rows, 0);
+  assert.equal(prior.ml.bands.mid.fitted, false);
+  assert.equal(prior.ml.trust, prior.ml.bands.late.trust);
+  assert.ok(prior.ml.all.fitted, '60 rows in all: fitted');
+  assert.equal(prior.total.bands.late.rows, 1);
+  assert.equal(prior.total.bands.late.trust, 0.5, 'one total row: the start');
+  // (the bands and the pricing key: the early band untapered, the rest the market's own)
+  assert.equal(leadBand(400), 'early');
+  assert.equal(leadBand(LEAD_BANDS.early), 'early');
+  assert.equal(leadBand(100), 'mid');
+  assert.equal(leadBand(47), 'late');
+  assert.equal(leadBand(null), 'late');
+  assert.equal(priceKey('ml', 'early'), 'mlOpen');
+  assert.equal(priceKey('ml', 'mid'), 'ml');
+  assert.equal(priceKey('total', 'late'), 'total');
+  assert.equal(desk.GAP?.mlOpen, undefined, 'no gap for the early key: untapered, never skipped');
 });
 
 test("ledgerRows: the desk's graded bets priced at the version's chance of the bet's own fighter and the history's trust as of its month", () => {
@@ -235,7 +260,9 @@ test("ledgerRows: the desk's graded bets priced at the version's chance of the b
   };
   // (the archive lists bout 10 with B first: the version's chance for B is its first fighter's)
   const chanceOf = (b) => (b.market === 'total' ? (b.side === 'over' ? 0.3 : 0.7) : b.fighters[b.side].id === 'B' ? 0.5 : null);
-  const rows = ledgerRows(V, ledger, (market) => (market === 'ml' ? 0.2 : 0), { chanceOf });
+  const leads = [];
+  const rows = ledgerRows(V, ledger, (market, t, line, lead) => (leads.push(lead), market === 'ml' ? 0.2 : 0), { chanceOf });
+  assert.ok(leads.every((l) => Number.isFinite(l)), "the trust asked at each bet's lead");
   assert.equal(rows.length, 2, 'the row before the window is out');
   const [r1, r2] = rows;
   assert.equal(r1.raw, 0.5);

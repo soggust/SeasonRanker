@@ -599,8 +599,8 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
   };
   out.proj = { games: projMean(pr.games), props: projMean(pr.props), ...(pr.bouts ? { bouts: projMean(pr.bouts) } : {}), ...(pr.totals ? { totals: projMean(pr.totals) } : {}) };
   // (the MMA's by-market table (gate-mma.mjs): raw, priced and the Book at the close and the open; and its history trust)
-  if (score.sport === 'mma' && score.vsBook?.linesByMarket) out.markets = { close: score.vsBook.linesByMarket, open: score.vsBook.openByMarket ?? null };
-  if (score.trustPrior) out.trust = Object.fromEntries(Object.entries(score.trustPrior).filter(([k]) => k !== 'rows' && k !== 'periods').map(([k, v]) => [k, k === 'match' ? v : { trust: v.trust, n: v.n, clvN: v.clvN, eff: v.eff, fitted: v.fitted }]));
+  if (score.sport === 'mma' && score.vsBook?.linesByMarket) out.markets = { close: score.vsBook.linesByMarket, open: score.vsBook.openByMarket ?? null, byBand: score.vsBook.openByBand ?? null, beat: score.vsBook.beat ?? null };
+  if (score.trustPrior) out.trust = Object.fromEntries(Object.entries(score.trustPrior).filter(([k]) => k !== 'rows' && k !== 'periods').map(([k, v]) => [k, k === 'match' ? v : { trust: v.trust, n: v.n, clvN: v.clvN, eff: v.eff, fitted: v.fitted, ...(v.bands ? { bands: Object.fromEntries(Object.entries(v.bands).map(([b, f]) => [b, { trust: f.trust, rows: f.rows, fitted: f.fitted }])) } : {}) }]));
   return out;
 }
 
@@ -658,6 +658,10 @@ export function tableOf(c) {
         const x = vb.linesByMarket?.[m];
         const o = vb.openByMarket?.[m];
         if (x) lines.push(`    ${m.padEnd(6)} close: raw ${x.raw} / priced ${x.model} / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows)${o ? `; open: raw ${o.raw} / priced ${o.model} / book ${o.book}: ${sgn(o.gap)} ${o.verdict}` : ''}`);
+        for (const [band, y] of Object.entries(vb.openByBand?.[m] ?? {})) {
+          const bc = vb.beat?.[m]?.[band];
+          if (y) lines.push(`      ${band.padEnd(6)} raw ${y.raw} / priced ${y.model} / book ${y.book}: ${sgn(y.gap)} [${sgn(y.lo)}, ${sgn(y.hi)}] ${y.verdict} (${y.n} rows)${bc ? `; top picks ${bc.picks}: beat the close ${pct(bc.beat)}, CLV ${sgn(bc.clv, 3)}, hit ${pct(bc.hit)}, ${sgn(bc.units, 1)}u` : ''}`);
+        }
       }
   }
   return lines.join('\n');

@@ -20,20 +20,41 @@
 //             close, by market (the report's Raw / Priced / Book table)
 //   ledger    the desk's own graded bets (apps/mma/src/StaticData/model/ledger.json) priced at the version's chance
 //             and the history's trust as of their month: the scorecard's frozen and rolling sets
-//   trust     the history's own fit of each market's trust (fitTrust on its open rows, recency-weighted by season:
-//             the history prior the live desk reads, mma-desk.mjs; written by gate.mjs --record to
-//             apps/mma/src/StaticData/model/trust-prior.json with the rows to apps/mma/scripts/model/history-rows.json)
+//   trust     BY LEAD BAND (the open round, 2026-10-19, DECISIONS.md D37: the owner's rule, the Bot picks its own time to
+//             bet). The history's opens are the API's first sighting, a day to a month out, and the Bot's edge lives in
+//             the early ones: measured on 3,052 open moneylines, two weeks or more out the Bot's own number beats the
+//             Book's line 0.6389 to 0.6797 (the trust fit 0.25 to 0.3, the top picks' CLV +0.080, 54.5% beating the
+//             close), 2 to 14 days out it ties or trails (trust 0), inside 48 hours the Book is far ahead (0.6715 to
+//             0.5856), the close sharper still (0.6214 to 0.5804). So each priced row's trust is fit walk-forward by
+//             month on the rows of its own lead band (leadBand: early two weeks or more out, mid 48 hours to two weeks,
+//             late inside 48 hours and the close), the prior the live desk reads is one fit a band (trustPrior: the
+//             rows carry their lead), and the desk prices a bout at the trust of its lead at the moment of the ask
+//             (mma-desk.mjs trustFor). Written by gate.mjs --record to apps/mma/src/StaticData/model/trust-prior.json
+//             with the rows to apps/mma/scripts/model/history-rows.json
 import path from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { keptFights } from '../../../../apps/mma/scripts/fights.mjs';
-import { binLoss, r4, seasonWeight } from './gate-score.mjs';
-import { CLOSE_MAX, devig, finish, loadHistory, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
+import { binLoss, gradeSide, r4, seasonWeight, topPicks } from './gate-score.mjs';
+import { CLOSE_MAX, devig, finish, loadHistory, slim, vsBook, vsBookBySeason, walkTrust } from './gate-history.mjs';
 import { closedEvents, matchHistory, matchReport } from './fights-history.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
 export const MARKETS = ['ml', 'total'];
+// (the lead bands, hours before the start: early two weeks or more out, mid 48 hours to two weeks, late inside 48
+// hours (the close among them))
+export const LEAD_BANDS = { early: 336, mid: 48 };
+export const BANDS = ['early', 'mid', 'late'];
+// The pricing key of a market at a band (desk.mjs chanceAt, gapGuard and fitTrust read it for the taper and the gap):
+// the early band's is the market's own name with "Open", a key desk.mjs GAP has no limit for, so the lean is whole
+// and nothing is skipped as too far from the market. Measured 2026-10-19 on the 1,250 early moneylines: tapered, the
+// trust fit 0.25 and the priced chance 0.6792 against the Book's 0.6797 (the lean past half the gap is cut, and 406
+// of the rows sit past the gap itself, where the Bot's side wins 55.7% and its CLV is +0.455); untapered, the trust
+// fit 0.75, the priced chance 0.6365, the top picks' CLV +0.288 and 58.6% beating the close. The early line is soft
+// and the Bot's big disagreements with it are right; the mid and late bands keep the taper and the gap
+export const priceKey = (market, band) => (band === 'early' ? `${market}Open` : market);
+export const leadBand = (hours) => (!fin(hours) ? 'late' : hours >= LEAD_BANDS.early ? 'early' : hours >= LEAD_BANDS.mid ? 'mid' : 'late');
 export const PERIOD_MONTHS = 6;
 export const LAYER_A_FROM = '2018-01-01';
 // (the fit's rows at the least before a period is scored)
@@ -124,7 +145,8 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     if (kind === 'c' && start - ts > CLOSE_MAX) continue;
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
-    const base = { event: String(m.fight.id), sport: SPORT, kind, day: etDay(start), t: start, at: fin(ts) ? ts : null, season, w, q: null };
+    const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;
+    const base = { event: String(m.fight.id), sport: SPORT, kind, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
     // (the moneyline: the API's a its first side, b its second; ESPN's first fighter is a unless crossed)
     const h2h = dk.h2h?.[0];
     if (h2h && fin(h2h.a) && fin(h2h.b)) {
@@ -144,8 +166,35 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
       if (fin(raw)) out.push({ ...base, id: `h:${m.fight.id}:total:${kind}`, key: `h:${m.fight.id}:total`, market: 'total', stat: 'total', line: t.line, f: fair, raw: Math.min(0.999, Math.max(0.001, raw)), y: pastLineOf(r, t.line), overOdds: t.a, underOdds: t.b, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
   }
-  const priced = finish(V, out, (x) => x.market, () => 0.5, 'lines');
+  const priced = finishByLead(V, out);
   return { ...priced, report: matchReport(hist.events, matched, unmatched, fights ?? [], closed), matched };
+}
+
+// The rows priced, each at the trust of its own lead band fit walk-forward by month on the band's rows before (the
+// open rows' close chance at the same line as q, the close rows' open as fo, as gate-history.mjs finish links them;
+// desk.mjs chanceAt with the row as its ctx). { open, close }
+export function finishByLead(V, rows, { start = 0.5 } = {}) {
+  // (the harness's champion for the bands themselves: MMA_LEAD_BANDS=0 prices every row at one trust a market fit on
+  // the closes, as the team sports' history is (gate-history.mjs finish): gate.mjs --champion env:MMA_LEAD_BANDS=0)
+  if (process.env.MMA_LEAD_BANDS === '0') return finish(V, rows, (x) => x.market, () => start, 'lines');
+  const close = new Map(rows.filter((x) => x.kind === 'c').map((x) => [x.key, x]));
+  const open = new Map(rows.filter((x) => x.kind === 'o').map((x) => [x.key, x]));
+  for (const x of rows) {
+    const other = x.kind === 'o' ? close.get(x.key) : open.get(x.key);
+    if (!other || !(other.line === x.line || (other.line === null && x.line === null))) continue;
+    if (x.kind === 'o') x.q = other.f;
+    else x.fo = other.f;
+  }
+  // (each row fit and priced by its band's key: the early band untapered, priceKey)
+  const keyed = rows.map((x) => ({ ...x, market: priceKey(x.market, x.band) }));
+  const trust = walkTrust(keyed, (x) => `${x.market}@${x.band}`, V.desk.fitTrust, () => start);
+  for (const [i, x] of rows.entries()) {
+    const t = trust.get(keyed[i]) ?? start;
+    const ctx = { sport: x.sport, market: priceKey(x.market, x.band), stat: x.stat, line: x.line, side: 'over', f: x.f, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: null, season: x.season };
+    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(x.market, x.band), x.f, x.raw, t, ctx)));
+    x.trust = t;
+  }
+  return { open: rows.filter((x) => x.kind === 'o'), close: rows.filter((x) => x.kind === 'c') };
 }
 
 // The ledger's graded moneylines and round totals as the gate's rows, each priced by the version's chance at the trust
@@ -160,8 +209,8 @@ export function ledgerRows(V, ledger, trustOf, { from = '2026-10-08T00:00:00Z', 
     if (!decided && !fin(b.clv?.q)) continue;
     const market = b.market ?? 'ml';
     const m = chanceOf(b) ?? b.model;
-    const t = trustOf(market, Date.parse(b.start), b.line);
-    const p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(market, b.fair, m, t)));
+    const t = trustOf(market, Date.parse(b.start), b.line, (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5);
+    const p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(market, leadBand((Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5)), b.fair, m, t)));
     out.push({ id: String(b.id), event: String(b.event ?? b.id), sport: SPORT, stat: market, line: b.line ?? null, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), f: b.fair, p, raw: m, y: b.status === 'won' ? 1 : b.status === 'lost' ? 0 : null, q: fin(b.clv?.q) ? b.clv.q : null, overOdds: b.odds, underOdds: fin(b.otherOdds) ? b.otherOdds : null, units: fin(b.units) ? b.units : 0, intent: b.intent ?? null, src: 'ledger', trust: t });
   }
   return out;
@@ -177,7 +226,7 @@ export function trustBets(open, close, current) {
   const rows = [...open, ...close];
   return rows
     .filter((x) => x.y === 0 || x.y === 1 || fin(x.q))
-    .map((x) => ({ id: x.id, event: x.event, market: x.market, line: x.line, model: x.raw, fair: x.f, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), start: new Date(x.t).toISOString(), season: x.season, kind: x.kind, tw: seasonWeight(SPORT, x.season, current).w }));
+    .map((x) => ({ id: x.id, event: x.event, market: x.market, line: x.line, model: x.raw, fair: x.f, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), start: new Date(x.t).toISOString(), season: x.season, kind: x.kind, lead: x.lead ?? null, band: x.band ?? leadBand(x.lead), tw: seasonWeight(SPORT, x.season, current).w }));
 }
 
 // The history prior for the live desk (mma-desk.mjs readTrustPrior): each market's trust fit on the history's rows,
@@ -185,19 +234,40 @@ export function trustBets(open, close, current) {
 // need the pool: the desk fits them with the rows, this is the readout)
 export function trustPrior(V, bets, { start = 0.5 } = {}) {
   const out = {};
+  const fitOf = (mine) => {
+    const f = V.desk.fitTrust(mine, start);
+    return { trust: f.trust, n: f.n, clvN: f.clvN, eff: f.eff, fitted: f.fitted, logLoss: f.logLoss ?? null, rows: mine.length, from: mine.length ? mine.reduce((a, b) => (a < b.start ? a : b.start), mine[0].start).slice(0, 10) : null, to: mine.length ? mine.reduce((a, b) => (a > b.start ? a : b.start), mine[0].start).slice(0, 10) : null };
+  };
   for (const market of MARKETS) {
     const mine = bets.filter((b) => b.market === market);
-    const f = V.desk.fitTrust(mine, start);
-    out[market] = { trust: f.trust, n: f.n, clvN: f.clvN, eff: f.eff, fitted: f.fitted, logLoss: f.logLoss ?? null, rows: mine.length, from: mine.length ? mine.reduce((a, b) => (a < b.start ? a : b.start), mine[0].start).slice(0, 10) : null, to: mine.length ? mine.reduce((a, b) => (a > b.start ? a : b.start), mine[0].start).slice(0, 10) : null };
+    // (the market's own line is the late band's (the close's: what the desk prices at the bell); each band its fit)
+    const bands = Object.fromEntries(BANDS.map((band) => [band, fitOf(mine.filter((b) => (b.band ?? leadBand(b.lead)) === band).map((b) => ({ ...b, market: priceKey(market, band) })))]));
+    out[market] = { ...bands.late, rows: mine.length, all: fitOf(mine), bands };
   }
   return out;
 }
 
 // (the history's rows, compact, for the desk's pooled trust fit: [market, event, start, season, line, model, fair, y,
 // q, kind]; back to bets with rowsToBets)
-export const packRows = (bets) => bets.map((b) => [b.market, b.event, b.start, b.season, b.line ?? null, r4(b.model), r4(b.fair), b.status === 'won' ? 1 : b.status === 'lost' ? 0 : null, fin(b.clv?.q) ? r4(b.clv.q) : null, b.kind ?? null]);
+export const packRows = (bets) => bets.map((b) => [b.market, b.event, b.start, b.season, b.line ?? null, r4(b.model), r4(b.fair), b.status === 'won' ? 1 : b.status === 'lost' ? 0 : null, fin(b.clv?.q) ? r4(b.clv.q) : null, b.kind ?? null, fin(b.lead) ? Math.round(b.lead * 10) / 10 : null]);
 export const unpackRows = (packed, current) =>
-  (packed ?? []).map(([market, event, start, season, line, model, fair, y, q, kind]) => ({ id: `${event}:${market}:${kind ?? 'o'}`, event, market, line, model, fair, status: y === 1 ? 'won' : y === 0 ? 'lost' : 'push', ...(fin(q) ? { clv: { q } } : {}), start, season, kind, tw: seasonWeight(SPORT, season, current).w }));
+  (packed ?? []).map(([market, event, start, season, line, model, fair, y, q, kind, lead]) => ({ id: `${event}:${market}:${kind ?? 'o'}`, event, market, line, model, fair, status: y === 1 ? 'won' : y === 0 ? 'lost' : 'push', ...(fin(q) ? { clv: { q } } : {}), start, season, kind, lead: fin(lead) ? lead : kind === 'c' ? 1 : null, band: fin(lead) ? leadBand(lead) : kind === 'c' ? 'late' : 'mid', tw: seasonWeight(SPORT, season, current).w }));
+
+// The open rows' top picks (3 a card, as the desk's practice picks) against the open-to-close move: how many beat the
+// close (their CLV over 0), their mean CLV, their units at the practice stake and hit; all and by lead band. The
+// owner's measure for betting early (D37)
+export function beatClose(open, { n = 3, practice = 0.5 } = {}) {
+  const sum = (rows) => {
+    const picks = topPicks(rows, n).map((s) => ({ ...s, g: gradeSide(s.x, s.side) }));
+    const q = picks.filter((s) => fin(s.g.clv));
+    const d = picks.filter((s) => s.g.won !== null);
+    if (!picks.length) return null;
+    return { picks: picks.length, beat: q.length ? r4(q.filter((s) => s.g.clv > 0).length / q.length) : null, clv: q.length ? r4(q.reduce((t, s) => t + s.g.clv, 0) / q.length) : null, hit: d.length ? r4(d.filter((s) => s.g.won).length / d.length) : null, units: r4(d.reduce((t, s) => t + practice * s.g.profit, 0)) };
+  };
+  const out = {};
+  for (const m of MARKETS) out[m] = { all: sum(open.filter((x) => x.market === m)), ...Object.fromEntries(BANDS.map((band) => [band, sum(open.filter((x) => x.market === m && x.band === band))])) };
+  return out;
+}
 
 // One version's MMA score: the same shape as gate.mjs scoreVersion's, with proj.bouts and proj.totals in place of games
 // and props, bet.lines the ledger's, bet.history the priced history's, vsBook by market, and the trust prior
@@ -241,11 +311,12 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   // (the trust: walk-forward on the rows (finish), and the prior on all of them)
   const tb = trustBets(histRows.open, histRows.close, current);
   const prior = trustPrior(V, tb);
-  say(`the history's trust: ${MARKETS.map((m) => `${m} ${prior[m].trust} (${prior[m].n} graded, ${prior[m].clvN} closes, eff ${prior[m].eff})`).join('; ')}`);
+  say(`the history's trust by lead band: ${MARKETS.map((m) => `${m} ${BANDS.map((band) => `${band} ${prior[m].bands[band].trust} (${prior[m].bands[band].rows} rows)`).join(', ')}`).join('; ')}`);
   // (the ledger: the desk's own rows at the history's trust as of their month (the newest month's where after it))
-  const trustAt = (market, t, line) => {
-    const mine = histRows.close.filter((x) => x.market === market && x.t <= t && fin(x.trust));
-    if (!mine.length) return prior[market]?.trust ?? 0.5;
+  const trustAt = (market, t, line, lead) => {
+    const band = leadBand(lead);
+    const mine = [...histRows.open, ...histRows.close].filter((x) => x.market === market && x.band === band && x.t <= t && fin(x.trust));
+    if (!mine.length) return prior[market]?.bands?.[band]?.trust ?? 0.5;
     return mine.reduce((a, b) => (a.t > b.t ? a : b)).trust;
   };
   const ledger = readJson(path.join(ROOT, 'apps', SPORT, 'src/StaticData/model/ledger.json'), { bets: [] });
@@ -273,8 +344,10 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     props: null,
     linesBySeason: vsBookBySeason(histRows.close),
     linesByMarket: Object.fromEntries(MARKETS.map((m) => [m, vsBook(histRows.close.filter((x) => x.market === m))])),
-    // (the open too: what the desk bets at)
+    // (the open too: what the desk bets at; and by lead band)
     openByMarket: Object.fromEntries(MARKETS.map((m) => [m, vsBook(histRows.open.filter((x) => x.market === m))])),
+    openByBand: Object.fromEntries(MARKETS.map((m) => [m, Object.fromEntries(BANDS.map((band) => [band, vsBook([...histRows.open, ...histRows.close].filter((x) => x.market === m && x.band === band))]))])),
+    beat: beatClose(histRows.open, { n: practiceN, practice: V.desk.PRACTICE_UNITS ?? 0.5 }),
   };
   return {
     sport: SPORT,
@@ -287,6 +360,6 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     vsBook: vs,
     anchor: null,
     trustPrior: { ...prior, rows: packRows(tb), periods, match: histRows.report ? { total: histRows.report.total, matched: histRows.report.matched, closed: histRows.report.closed, closedMatched: histRows.report.closedMatched, rate: histRows.report.rate, closedRate: histRows.report.closedRate } : null },
-    meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust: Object.fromEntries(MARKETS.map((m) => [m, prior[m].trust])), matched: chances.size, priced: lines.length },
+    meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust: Object.fromEntries(MARKETS.map((m) => [m, Object.fromEntries(BANDS.map((band) => [band, prior[m].bands[band].trust]))])), matched: chances.size, priced: lines.length },
   };
 }

@@ -14,11 +14,11 @@ import { isTracked } from '../libs/ranker/scripts/model/desk.mjs';
 const H = 36e5;
 const NOW = new Date('2026-10-15T12:00:00Z');
 
-test('leagues: mma is a fights league with its Odds API key, a 72-hour window and a 4-hour last chance', () => {
+test('leagues: mma is a fights league with its Odds API key, a four-week window (the open round, D37) and a 4-hour last chance', () => {
   assert.equal(LEAGUES.mma.fights, true);
   assert.equal(LEAGUES.mma.league, 'mma/ufc');
   assert.equal(SPORT_KEYS.mma, 'mma_mixed_martial_arts');
-  assert.deepEqual(TIMING.mma, { lines: 72, props: 72, lastChance: 4 });
+  assert.deepEqual(TIMING.mma, { lines: 672, props: 672, lastChance: 4 });
   assert.ok(LEAGUES.mma.edge > 0 && LEAGUES.mma.guard.ml > 0);
 });
 

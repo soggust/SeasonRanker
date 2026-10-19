@@ -280,18 +280,19 @@ export function totalLinesOf(ev) {
 
 // The pick for a bout's total: the better side at the trusted chance. over: the model's chance of Over; lines:
 // totalLinesOf's; live: past TOTAL_LIVE graded with a close (else an edge bet at the practice stake, PRACTICE_UNITS)
-export function totalPickFor(over, lines, trust, { live = false, untested = true, edge = LEAGUES.mma.edge } = {}) {
+// key: the pricing key (gate-mma.mjs priceKey: 'total', or 'totalOpen' at the early band, untapered and never gapped)
+export function totalPickFor(over, lines, trust, { live = false, untested = true, edge = LEAGUES.mma.edge, key = 'total' } = {}) {
   const sides = ['over', 'under'].map((side) => {
     const fair = side === 'over' ? lines.fair : 1 - lines.fair;
     const m = side === 'over' ? over : 1 - over;
     const odds = lines.odds[side];
-    const p = chanceAt('total', fair, m, trust);
+    const p = chanceAt(key, fair, m, trust);
     const ev = p * decimal(odds) - 1;
     return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
   const pick = sides[0].ev >= sides[1].ev ? sides[0] : sides[1];
   const other = pick === sides[0] ? sides[1] : sides[0];
-  const gap = gapGuard('total', pick.model, pick.fair);
+  const gap = gapGuard(key, pick.model, pick.fair);
   if (gap) return { skip: gap.why, pick, other };
   const hasEdge = pick.ev > 0 && pick.model - pick.fair >= edge;
   const units = !live ? PRACTICE_UNITS : untested ? Math.min(UNTESTED_MAX, pick.units) : pick.units;
