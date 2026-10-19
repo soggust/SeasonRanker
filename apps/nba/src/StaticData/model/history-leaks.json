@@ -1,12 +1,29 @@
 {
- "at": "2026-10-19T10:00:49.221Z",
- "epoch": "2026-10-19T10:00:00Z",
- "commit": "82208313",
+ "at": "2026-10-19T14:13:05.490Z",
+ "epoch": "2026-10-19T15:30:00Z",
+ "commit": "525bb4e5",
  "n": 80240,
  "tested": 46,
- "leaks": 0,
+ "leaks": 1,
  "trends": 0,
- "status": "ok",
- "headline": "46 segments tested on 80240 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
- "rows": []
+ "status": "watch",
+ "headline": "stat: Totals losing 0.04 nats per 100 rows to the Book, shrunk (n 7829, z -2.92)",
+ "rows": [
+  {
+   "rank": 1,
+   "kind": "leak",
+   "segment": "stat: Totals",
+   "n": 7829,
+   "games": 7829,
+   "loss": 0.0378,
+   "raw": 0.0383,
+   "z": -2.9207,
+   "clv": null,
+   "week": null,
+   "p": 0.0017,
+   "atRisk": 0,
+   "causes": null,
+   "fix": "the projection or the correction for Totals: its own bias (project.mjs fitStat) or the correction's sport|stat term (correct.mjs); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)"
+  }
+ ]
 }
