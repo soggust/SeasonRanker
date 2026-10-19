@@ -99,3 +99,22 @@ test('a board prop with prices is found and never falls to the preview\'s assume
   const bp = fs.readFileSync(path.join(dir, 'book/book-page.component.ts'), 'utf8');
   assert.match(bp, /linesOnlyGames\(this\.lines\.boards\(\)\.values\(\), shownEvents\(this\.listed\)\)/);
 });
+
+test("a game's props the Bot hasn't priced yet read 'not priced yet · opens <time>': no price, no Kelly score, nothing to take, never 'assumed'", () => {
+  // (the owner, 2026-10-19: tomorrow's NHL props at "-110 assumed" read as a bug)
+  const dir = path.join(import.meta.dirname, '../libs/ranker/src/engine/account/wallet');
+  const html = fs.readFileSync(path.join(dir, 'game-lines.component.html'), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  const i = html.indexOf("'preview'");
+  const preview = html.slice(i, html.indexOf('previewLoading()', i));
+  assert.ok(i > 0 && preview.length > 200);
+  assert.doesNotMatch(html, /assumed/i);
+  assert.doesNotMatch(preview, /takePreview|tile-k|previewOdds|<button/);
+  assert.match(preview, /not priced yet/);
+  assert.match(preview, /previewOpens\(\)/);
+  const ts = fs.readFileSync(path.join(dir, 'game-lines.component.ts'), 'utf8');
+  assert.match(ts, /Not priced yet · opens \$\{openText\(at\)\}/);
+  for (const f of ['wallet-page.component.html', 'bet-slip.component.html']) {
+    const t = fs.readFileSync(path.join(dir, f), 'utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/class="[^"]*"/g, '');
+    assert.doesNotMatch(t, /assumed/i, f);
+  }
+});

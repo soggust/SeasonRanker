@@ -212,19 +212,14 @@
     }
   }
 
-  <!-- PREVIEW PROPS (no props of the bot's on the game yet): the book's lines off ESPN, each side at an assumed
-       -110, no band and no Kelly score, folded till it's opened -->
+  <!-- PROPS NOT PRICED YET (no props of the bot's on the game yet): the book's lines off ESPN, shown for what's coming,
+       no price, no band, no Kelly score and nothing to take till the Bot prices them (its window: previewWindow), folded
+       till it's opened (the owner, 2026-10-19: "-110 assumed" read as a bug) -->
   @if (!compact && showProps() && previewTeams().length) {
-    <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'preview', title: 'Preview props', count: previewCount(previewTeams()) }"></ng-container>
+    <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'preview', title: 'Props · not priced yet', count: previewCount(previewTeams()) }"></ng-container>
     @if (sectionOpen('preview')) {
-      <div class="section-body lines-props preview-props" role="list" aria-label="Preview props">
-        <p class="preview-note">
-          <b>Preview props</b> · the Book's lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
-          No band or Kelly score: the Bot hasn't priced them.
-          @if (previewWindow; as w) {
-            It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
-          }
-        </p>
+      <div class="section-body lines-props preview-props" role="list" aria-label="Props not priced yet">
+        <p class="preview-note">{{ previewOpens() }}</p>
         <div class="props-heads" aria-hidden="true"><span></span><span>Over</span><span>Under</span></div>
         @for (team of previewTeams(); track team.id) {
           @for (r of team.rows; track r.key) {
@@ -234,23 +229,12 @@
                 <span class="prop-words"><b><a [playerLink]="{ sport, name: r.player }">{{ r.player }}</a></b><small>{{ r.team }}{{ r.team ? ' · ' : '' }}{{ r.label }} {{ r.line }}@if (r.moved) {<i class="preview-moved" [title]="'Opened at ' + r.open">{{ r.moved }}</i>}</small></span>
               </div>
               @for (sd of previewSides; track sd) {
-                <div class="tile preview" [class.on]="wallet.slipKeys().has(previewKey(r, sd))" [class.shut]="!open">
-                  <button
-                    type="button"
-                    class="tile-price"
-                    [attr.aria-pressed]="wallet.slipKeys().has(previewKey(r, sd))"
-                    [attr.aria-label]="previewWords(r, sd) + ' ' + oddsText(previewOdds) + ', assumed price'"
-                    [title]="previewTitle(r, sd)"
-                    [disabled]="!open"
-                    (click)="takePreview(r, sd)"
-                  >
-                    @if (wallet.openStakes().get(previewKey(r, sd)); as staked) {
-                      <mat-icon class="tile-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
-                    }
-                    <b class="tile-top">{{ sd === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
-                    <span class="tile-odds">{{ oddsText(previewOdds) }}</span>
-                  </button>
-                  <div class="tile-foot"><span class="tile-assumed">assumed</span></div>
+                <div class="tile preview unpriced" [attr.aria-label]="previewWords(r, sd) + ', not priced yet'" [title]="previewTitle(r, sd)">
+                  @if (wallet.openStakes().get(previewKey(r, sd)); as staked) {
+                    <mat-icon class="tile-placed" [title]="'You have ' + staked + 'u on this'" fontIcon="check_circle"></mat-icon>
+                  }
+                  <b class="tile-top">{{ sd === 'over' ? 'O ' : 'U ' }}{{ r.line }}</b>
+                  <span class="tile-unpriced">not priced yet</span>
                 </div>
               }
             </div>

@@ -46,7 +46,7 @@
                 @let ll = legLine(l);
                 <div class="ticket-leg">
                   <div class="leg-line"><span class="leg-pick"><pick-text [pick]="l.pick" [player]="betPlayer(l)"></pick-text></span><span class="leg-odds">{{ oddsText(l.odds) }}</span></div>
-                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span>@if (l.preview) { · assumed}</span>
+                  <span class="leg-game">{{ l.sport.toUpperCase() }} · {{ l.matchup }} · <span class="leg-tag">{{ l.tier ?? 'your call' }}</span>@if (l.preview) { · preview line}</span>
                   @if (ll.meter !== null) {
                     <span class="leg-meter" aria-hidden="true"><i [style.width.%]="ll.meter"></i></span>
                   }

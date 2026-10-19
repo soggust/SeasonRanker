@@ -337,17 +337,21 @@ export function fitDiffs(a, b, stats, statRowsOf, max = 10) {
 
 // (a sport's refit, in seconds on GitHub, where no saved fit has timed one (2026-10-14's runs))
 export const FIT_SECONDS = { nfl: 1600, nba: 550, nhl: 350, mlb: 100 };
-// What a sport's run does with its props' fit: 'reuse' the saved one, 'refit', or 'wait' (no props this run: a
-// fit it can't reuse and no time left for it). The first refit of a run always goes ahead; after that, one that
-// would take the run's refitting past FIT_BUDGET (its time the saved fit's own, else FIT_SECONDS) waits: a stale
-// fit reused one more run, a missing or outdated one with no props priced, never a fit it can't trust. spent: the
-// run's ms refitting so far
+// What a sport's run does with its props' fit: 'reuse' the saved one, 'refit', 'suggest' (the saved fit's choices
+// under code they weren't searched with: the suggestions priced off it, never a bet) or 'wait' (no props this run: no
+// fit at all and no time left for one). The first refit of a run always goes ahead; after that, one that would take
+// the run's refitting past FIT_BUDGET (its time the saved fit's own, else FIT_SECONDS) waits: a stale fit reused one
+// more run, an outdated one (the fit's code or MODEL_EPOCH changed) pricing the Book's suggestions alone till its
+// refit, a missing one with no props priced. (2026-10-19: every push to the fit's code made the NFL's 30-minute
+// refit spend the budget and left the NBA's, NHL's and MLB's boards with no props at all, run after run: the owner
+// saw no NBA or MLB props on the night of the ALCS.) spent: the run's ms refitting so far
 export function fitPlan(saved, due, { sport, spent = 0, budget = FIT_BUDGET }) {
   if (!due.refit) return "reuse";
   const guess =
     (Number.isFinite(saved?.fit?.seconds)
       ? saved.fit.seconds
       : (FIT_SECONDS[sport] ?? 600)) * 1000;
-  if (spent > 0 && spent + guess > budget) return due.must ? "wait" : "reuse";
+  if (spent > 0 && spent + guess > budget)
+    return !due.must ? "reuse" : saved?.fit?.fits ? "suggest" : "wait";
   return "refit";
 }

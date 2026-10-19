@@ -967,12 +967,25 @@ async function fitTheProps(r) {
       console.warn(`::warning::${sport}: no props this run: their fit (${due.why}) waits for the next run, ${Math.round(FIT_SPENT / 1000)}s already spent refitting this one`);
       return;
     }
-    const reuse = plan === 'reuse' ? saved.fit.fits : null;
+    // ('suggest': the saved fit's choices rebuilt under the new code, for the Book's suggestions alone (fitPlan): the
+    // Bot bets nothing off it, buys no quote and takes no open bet back (r.propsSuggestOnly); one that can't be
+    // rebuilt under the new code, no props this run as before)
+    r.propsSuggestOnly = plan === 'suggest';
+    const reuse = plan === 'reuse' || plan === 'suggest' ? saved.fit.fits : null;
     const totals = sport === 'nhl' ? boxTotals('nhl') : null;
     const t1 = Date.now();
-    r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, totals, listed, soft, reuse);
+    try {
+      r.props = fitProps(sport, r.rows, r.expPts, info, r.facts, market, totals, listed, soft, reuse);
+    } catch (err) {
+      if (!r.propsSuggestOnly) throw err;
+      r.props = null;
+      r.propsSuggestOnly = false;
+      console.warn(`::warning::${sport}: no props this run: the saved fit (${due.why}) can't be rebuilt under the new code (${String(err?.message ?? err).slice(0, 120)}); its refit waits for the next run, ${Math.round(FIT_SPENT / 1000)}s already spent refitting this one`);
+      return;
+    }
     const fitMs = Date.now() - t1;
-    if (reuse) r.propFit = { at: saved.fit.at, day: saved.fit.day, code: saved.fit.code };
+    if (r.propsSuggestOnly) console.warn(`::warning::${sport}: props priced for the suggestions alone this run: the saved fit (${due.why}) rebuilt under the new code, its refit waits for the next run (${Math.round(FIT_SPENT / 1000)}s already spent refitting this one); no prop bet placed or taken back`);
+    if (reuse) r.propFit = { at: saved.fit.at, day: saved.fit.day, code: saved.fit.code, ...(r.propsSuggestOnly ? { suggestOnly: true } : {}) };
     else {
       FIT_SPENT += fitMs;
       r.propFit = { at: r.at, day: fitDay(r.now), code: fitCode() };
@@ -1666,6 +1679,13 @@ function repriceOpen(r) {
     [...r.takenBack.values()].map((x) => x.bet).filter((b) => b.market === 'prop' && !owedAlready[`${b.event}:owed`]),
   );
   for (const [id, x] of r.takenBack) if (x.bet.market === 'prop' && keepProps.has(x.bet.event)) r.takenBack.delete(id);
+  // (the props priced for the suggestions alone this run (fitPlan 'suggest'): the open ones left as they are, never taken
+  // back by a run that can't place them again)
+  if (r.propsSuggestOnly) {
+    const kept = [...r.takenBack].filter(([, x]) => x.bet.market === 'prop');
+    for (const [id] of kept) r.takenBack.delete(id);
+    if (kept.length) console.log(`${sport}: ${kept.length} open props' inputs changed, left as they are (the props priced for the suggestions alone this run)`);
+  }
   if (keepProps.size) console.log(`${sport}: props' inputs changed in ${keepProps.size} games, left as they are (today's Odds API props allowance can't pay to ask for them again)`);
   if (capped) console.log(`${sport}: ${capped} open bets' inputs changed, left as they are (priced again ${MAX_REPRICES} times already)`);
   if (published) console.log(`${sport}: ${published} open bets' inputs changed, left as they are (published: locked)`);
@@ -2260,7 +2280,7 @@ async function betProps(r) {
       // suggestions off (the Book's board, or the snapshot) and the last chance not yet here, the game's props are
       // priced first; the ask comes only where a row's surviving lean clears the free price (askNow below), else the
       // run shows the suggestions and spends nothing. An owed ask, the near one and the last chance ask as before)
-      const defer = why === 'first' && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && (boardPriced || (snap?.size ?? 0) > 0);
+      const defer = why === 'first' && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && !r.propsSuggestOnly && (boardPriced || (snap?.size ?? 0) > 0);
       const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
@@ -2291,7 +2311,7 @@ async function betProps(r) {
         }
         return !!api;
       };
-      if (why && u.lines.oddsEvent && !DRY && !defer) await askNow();
+      if (why && u.lines.oddsEvent && !DRY && !defer && !r.propsSuggestOnly) await askNow();
       // (no fresh price from The Odds API this run: its open CHECKs priced from their stored prices, where the
       // line is still the board's (checks.mjs withStoredPrices), so each is evaluated again: still a CHECK,
       // closed, or bet. The Odds API asked, the props it didn't price stay unpriced: the book took them down)
@@ -2346,8 +2366,21 @@ async function betProps(r) {
         const e = rk.p - x.fair;
         if (e > 0) x.sug = { s: x.side, e: round(e, 4), h: round(rk.hours, 1), k: rk.s, src: x.prop.snapshot ? 'snapshot' : x.prop.source === 'the odds api' ? 'api' : 'espn' };
       }
+      // (--dry: the game's first few priced rows as the Bot reads them: the projection, the usage it rests on, its chance
+      // in full and held to the lineup risk, and whether it would bet now or wait: a check of a cold start (the NBA's
+      // opening night) or a board just priced)
+      if (DRY) {
+        const said = priced.filter((x) => x.priced && !x.guard?.skip).slice(0, 3).map((x) => {
+          const rk = riskOf(game, x, phase);
+          const u = x.projection?.usage;
+          const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });
+          const now = r.propsSuggestOnly ? 'suggestion only' : news.length && phase !== 'last' ? `waits (${news.join(', ')})` : rk.s < 1 ? (rk.ev > 0 ? 'bets early at the surviving lean' : 'waits (no edge at the surviving lean)') : x.ev > 0 ? 'bets' : 'no edge';
+          return `${x.prop.athlete.name} ${x.prop.stat.label} ${x.side} ${x.prop.line} (${x.odds}): projection ${round(x.projection?.mean, 2)}, usage ${u ? `${u.expected ?? '-'} ${u.unit ?? u.kind ?? ''}` : 'n/a'}, chance ${round(x.p, 3)} (fair ${round(x.fair, 3)}, held ${round(rk.p, 3)} at survival ${rk.s}, ${round(rk.hours, 1)}h out): ${now}`;
+        });
+        if (said.length) console.log(`${sport} (dry): ${game.away}@${game.home} ${game.date}: ${said.join(' | ')}`);
+      }
       // (the NFL's anytime touchdowns this ask priced, tracked only: anytimeTracked)
-      if (anyApi && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
+      if (anyApi && !r.propsSuggestOnly && Date.parse(game.date) - Date.now() >= 5 * 60e3) anytimeTracked(r, game, anyApi, board_, exp, live, run);
       run.priced += priced.length;
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
@@ -2365,7 +2398,8 @@ async function betProps(r) {
       // (and none on a game starting within five minutes by the clock now)
       // (each waits for the news it lacks (timing.mjs newsMissing: an MLB batter's lineup, the starters, the
       // NHL's goalies) till the last chance, then goes with what's known, flagged at the minimum)
-      if (Date.parse(game.date) - Date.now() >= 5 * 60e3) {
+      // (the props priced for the suggestions alone this run (fitPlan 'suggest'): nothing bet, no CHECK made or decided)
+      if (Date.parse(game.date) - Date.now() >= 5 * 60e3 && !r.propsSuggestOnly) {
         for (const x of bets) {
           if (!x.priced && hasKey()) continue;
           // (priced from its CHECK's stored price (withStoredPrices): never bet, a stored price being an earlier

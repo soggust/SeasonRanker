@@ -204,6 +204,12 @@ test("the run's refit budget: its first refit always; then a stale fit that won'
     }),
     "wait",
   );
+  // (an outdated fit (the code or MODEL_EPOCH changed) past the budget: its choices price the suggestions alone, never
+  // nothing at all (2026-10-19: the NFL's refit left the other three boards with no props, run after run))
+  const code = { refit: true, must: true, why: "the fit's code or MODEL_EPOCH changed" };
+  assert.equal(fitPlan({ fit: { seconds: 200, fits: { k: {} } } }, code, { sport: "mlb", spent: 1820e3 }), "suggest");
+  assert.equal(fitPlan({ fit: { seconds: 200, fits: { k: {} } } }, code, { sport: "mlb", spent: 0 }), "refit");
+  assert.equal(fitPlan({ fit: null, why: "no saved fit" }, code, { sport: "mlb", spent: 1820e3 }), "wait");
   // (no time of its own: the sport's guess)
   assert.equal(
     fitPlan({ fit: {} }, stale, {

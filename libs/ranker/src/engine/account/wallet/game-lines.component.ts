@@ -9,6 +9,10 @@ import { WalletService } from './wallet.service';
 import { BoardTeam, GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
 import { matchupName } from '../../book/game-menu';
 
+// (when a game's props window opens, in the reader's time: "Tue 1:00 PM")
+const openText = (t: number): string =>
+  new Date(t).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' }).replace(',', '');
+
 // The bot's pick as the Book has it (its BetRow, as far as the board reads it)
 export interface BotPick {
   betType: string;
@@ -333,8 +337,9 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   // ---------------------------------------------------------------------------
   // Preview props: the book's prop lines off ESPN for a game the bot hasn't priced props on yet (preview-props.ts),
-  // shown until the bot's board has the game's props, then the bot's instead; bet either side at an assumed -110,
-  // no band and no Kelly score (the bot hasn't priced them), and the bot never bets them
+  // shown until the bot's board has the game's props, then the bot's instead: "not priced yet", with the time its
+  // window opens; no price, no band, no Kelly score and nothing to take (the owner, 2026-10-19: the "-110 assumed"
+  // tiles read as a bug). A preview bet taken before stays on the wallet and is graded as before
   // ---------------------------------------------------------------------------
   readonly preview = signal<PreviewRow[] | null>(null);
   readonly previewLoading = signal(false);
@@ -384,6 +389,15 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return hours && Number.isFinite(start) ? { hours, at: new Date(start - hours * 36e5).toISOString() } : null;
   }
 
+  // (the note over them: when the Bot's window opens, or, opened already, that its next run prices them)
+  previewOpens(): string {
+    const w = this.previewWindow;
+    const at = w ? Date.parse(w.at) : NaN;
+    if (!w || !Number.isFinite(at)) return 'Not priced yet: the Book’s lines via ESPN, no prices, bands or Kelly scores till the Bot prices them.';
+    if (at > this.now()) return `Not priced yet · opens ${openText(at)} (${w.hours} hours before the start). The Book’s lines via ESPN till then; the Bot’s prices, bands and Kelly scores replace them.`;
+    return 'Not priced yet · its window is open: the Bot’s next hourly run prices them, with their bands and Kelly scores.';
+  }
+
   previewFace(r: PreviewPropRow): string {
     return headshot(this.sport, r.athlete);
   }
@@ -399,7 +413,10 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   previewTitle(r: PreviewPropRow, side: 'over' | 'under'): string {
     const opened = r.open !== null && r.open !== r.line ? ` (it opened at ${r.open})` : '';
-    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · the Book's line via ESPN${opened}, no price posted yet; the Bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
+    const w = this.previewWindow;
+    const at = w ? Date.parse(w.at) : NaN;
+    const opens = Number.isFinite(at) && at > this.now() ? ` · opens ${openText(at)}` : '';
+    return `${this.previewWords(r, side)} · not priced yet${opens} · the Book's line via ESPN${opened}`;
   }
 
   // A preview side clicked: onto the slip at -110 (or off it), tagged preview, never the bot's pick; its line the
