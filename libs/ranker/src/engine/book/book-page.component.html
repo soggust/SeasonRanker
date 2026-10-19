@@ -1,7 +1,7 @@
 <!-- The algorithm's top picks for every sport, one row per bet, the biggest edge first, each with its chance
      to win; a row opens to its reasoning. An admin's list has the CHECKs too, under the LOCKs: a "?" for a rank,
      their write-up the disagreement, and a note to the bot -->
-<div class="book-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'" [class.has-ticket]="wallet.slip().length > 0">
+<div class="book-page" [class.desk-view]="view === 'desk'" [class.wallet-view]="view === 'open' || view === 'closed'" [class.has-ticket]="wallet.slip().length > 0" [class.ticker-on]="tickerShown">
   <!-- The Book's header, one row (it wraps on small screens): the title (a black chip and THE BOOK in the
        tables' gold), the views as a scoreboard bar like the sport pages' position bar (the board to bet, the
        user's open bets and the ones cashed (when they have some), or, an admin's, the code-only model desk's
@@ -57,40 +57,6 @@
       </a>
     }
   </header>
-  <!-- The ticker: a scoreboard strip of every game on the boards the page has read, scrolling sideways forever
-       (the list twice, the second copy for the screen reader's sake hidden): finals, the games under way with
-       their clock, then the ones to come with their start. On the board, the open tickets and the cashed ones, not
-       the Algorithm's desk. Nothing on the boards: none. Each game a button (its whole stretch between the dots):
-       its game view, or a UFC bout chosen in the dropdown (openTick); the second copy's clickable too, out of the
-       tab order as it's out of the screen reader's -->
-  @if (tickerItems.length && view !== 'desk' && view !== 'live') {
-    <div class="book-ticker" role="marquee" aria-label="Scores and start times">
-      <div class="ticker-track" [style.--ticker-items]="tickerItems.length">
-        @for (copy of [0, 1]; track copy) {
-          <span class="ticker-copy" [attr.aria-hidden]="copy ? 'true' : null">
-            @for (t of tickerItems; track t.key) {
-              <button type="button" class="tick" [ngClass]="t.state" [attr.aria-label]="t.aria" [attr.tabindex]="copy ? -1 : null" (click)="openTick(t)">
-                <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.away }"></ng-container>
-                @if (t.awayScore !== null) {<b class="tick-score">{{ t.awayScore }}</b>}
-                <span class="tick-at" aria-hidden="true">@</span>
-                <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.home }"></ng-container>
-                @if (t.homeScore !== null) {<b class="tick-score">{{ t.homeScore }}</b>}
-                <span class="tick-state">{{ t.text ?? (t.start | date: 'h:mm a') }}</span>
-              </button>
-            }
-          </span>
-        }
-      </div>
-    </div>
-    <!-- (a ticker side: its logo, or a fighter's round face, 14px, then its name, "Chiefs" or a last name; the name
-         alone when there's no picture or it fails) -->
-    <ng-template #tickSide let-s>
-      @if (s.pic && !s.failed) {
-        <img class="tick-pic" [class.face]="s.face" [src]="s.pic" alt="" width="14" height="14" loading="lazy" (error)="tickImgError($event, s)" />
-      }
-      <span class="tick-team">{{ s.label }}</span>
-    </ng-template>
-  }
   @if (aboutOpen) {
     <book-about [desk]="desk()" [checkKelly]="checkBar" (closed)="aboutOpen = false"></book-about>
   }
@@ -762,6 +728,42 @@
   </div>
   }
 </div>
+<!-- The ticker: the page's footer, a scoreboard strip of every game on the boards the page has read along the
+     bottom of the screen, edge to edge as the sport bar is along the top (the owner's note, 2026-10-19: out from
+     under the header, no longer the content column's width), scrolling sideways forever
+     (the list twice, the second copy for the screen reader's sake hidden): finals, the games under way with
+     their clock, then the ones to come with their start. On the board, the open tickets and the cashed ones, not
+     the Algorithm's desk. Nothing on the boards: none. Each game a button (its whole stretch between the dots):
+     its game view, or a UFC bout chosen in the dropdown (openTick); the second copy's clickable too, out of the
+     tab order as it's out of the screen reader's -->
+@if (tickerShown) {
+  <div class="book-ticker" role="marquee" aria-label="Scores and start times">
+    <div class="ticker-track" [style.--ticker-items]="tickerItems.length">
+      @for (copy of [0, 1]; track copy) {
+        <span class="ticker-copy" [attr.aria-hidden]="copy ? 'true' : null">
+          @for (t of tickerItems; track t.key) {
+            <button type="button" class="tick" [ngClass]="t.state" [attr.aria-label]="t.aria" [attr.tabindex]="copy ? -1 : null" (click)="openTick(t)">
+              <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.away }"></ng-container>
+              @if (t.awayScore !== null) {<b class="tick-score">{{ t.awayScore }}</b>}
+              <span class="tick-at" aria-hidden="true">@</span>
+              <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.home }"></ng-container>
+              @if (t.homeScore !== null) {<b class="tick-score">{{ t.homeScore }}</b>}
+              <span class="tick-state">{{ t.text ?? (t.start | date: 'h:mm a') }}</span>
+            </button>
+          }
+        </span>
+      }
+    </div>
+  </div>
+  <!-- (a ticker side: its logo, or a fighter's round face, 14px, then its name, "Chiefs" or a last name; the name
+       alone when there's no picture or it fails) -->
+  <ng-template #tickSide let-s>
+    @if (s.pic && !s.failed) {
+      <img class="tick-pic" [class.face]="s.face" [src]="s.pic" alt="" width="14" height="14" loading="lazy" (error)="tickImgError($event, s)" />
+    }
+    <span class="tick-team">{{ s.label }}</span>
+  </ng-template>
+}
 <!-- The game modal (the existing game view, over the page): a game opened from the Live tab's cards, this sport's
      or another's (game-view.service.ts open's league); the rankings mount their own, with a share link -->
 <game-view></game-view>

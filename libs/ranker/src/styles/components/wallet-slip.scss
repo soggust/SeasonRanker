@@ -11,6 +11,8 @@ $paper: linear-gradient(180deg, #f4efe3, #ece5d4);
 $ink: #1a1a1a;
 $ink-soft: #4a4a4a;
 $ink-faint: rgba(26, 26, 26, 0.35);
+// (the dark oxblood of a pick's name, the pinned tickets' too: the legs' picks and "tear up ticket")
+$ink-pick: #7a1f14;
 $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 :host {
@@ -209,7 +211,7 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
   // (the pick in the same dark oxblood as the pinned tickets')
   .leg-pick {
-    color: #7a1f14;
+    color: $ink-pick;
     font-size: v.$fs-13;
     font-weight: 700;
     text-transform: uppercase;
@@ -562,14 +564,16 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
+// (bold, in the body's Nunito and the picks' oxblood (the owner's note, 2026-10-19); hovered or focused, the ink)
 .ticket-tear {
   align-self: center;
   background: none;
   border: none;
-  color: $ink-soft;
+  color: $ink-pick;
   cursor: pointer;
-  font-family: inherit;
+  font-family: v.$font-base;
   font-size: v.$fs-11;
+  font-weight: 700;
   padding: 4px;
   text-decoration: underline;
 
@@ -605,9 +609,10 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
 // Phones and tablets under the docking width: the ticket is a sheet along the bottom of the screen when it's
 // open (minimized, it isn't there), the stub along the bottom while it's minimized
+// (both standing on the Book's ticker when it's there: --book-foot, book-page.scss)
 @media (max-width: #{v.bp(wide-menu) - 1px}) {
   .ticket {
-    bottom: 0;
+    bottom: var(--book-foot, 0px);
     display: none;
     filter: drop-shadow(0 -6px 14px rgba(0, 0, 0, 0.5));
     left: 0;
@@ -651,7 +656,7 @@ $font-ticket: "IBM Plex Mono", "Courier New", monospace;
 
   .ticket-stub {
     background: $paper;
-    bottom: 0;
+    bottom: var(--book-foot, 0px);
     box-sizing: border-box;
     color: $ink;
     display: flex;

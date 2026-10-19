@@ -416,7 +416,13 @@ export class BookPageComponent implements OnInit, OnDestroy {
     for (const s of this.betSports) void this.lines.model(s.id);
   }
 
-  // The ticker under the header: every game on the boards the page has already read (ESPN's scoreboards for
+  // (the ticker shown along the page's foot: games on the boards, on any view but the desk's and Live's; the page's
+  // ticker-on class lifts the phone stub of the ticket over it, book-page.scss --book-foot)
+  get tickerShown(): boolean {
+    return this.view !== 'desk' && this.view !== 'live' && this.tickerItems.length > 0;
+  }
+
+  // The ticker along the page's foot: every game on the boards the page has already read (ESPN's scoreboards for
   // today and tomorrow, lines.games above: nothing fetched for it), finals first, then the games under way with
   // their clock, then the ones to come with their start; a sport chosen, its games alone; built again only when
   // the boards or the sport change. Empty, the strip hides

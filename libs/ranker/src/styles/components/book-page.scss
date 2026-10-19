@@ -20,8 +20,8 @@ $kind-clay: (
 $page-gutter: 16px;
 
 // The Book, "The Book": a sportsbook on a card table. The header (the title, the views' bar, the bankroll
-// card), a ticker of scores and start times, then the board (a dot-matrix scoreboard, a row per pick in its
-// band's section) with the ticket and the recent form down its right.
+// card), then the board (a dot-matrix scoreboard, a row per pick in its band's section) with the ticket and the
+// recent form down its right, and along the foot of the screen a ticker of scores and start times.
 
 // The page on a card-room table: green felt (a tight crosshatch weave and a fine fiber over a soft mottle, a
 // warm light pooled in the middle, the edges falling off into shadow)
@@ -40,12 +40,14 @@ $page-gutter: 16px;
     radial-gradient(ellipse at 50% 30%, #1d7a4f, #155a3a 55%, #0b3322);
   // (the mottle stretched over the whole table, so it never repeats; the fiber's tile seamless)
   background-size: auto, auto, auto, auto, 512px, cover, cover, auto;
-  display: block;
+  // (a column: the page, then the ticker along the foot, the screen's full width as the sport bar along the top)
+  display: flex;
+  flex-direction: column;
   height: calc(100% - var(--sport-bar-height));
   overflow: hidden;
 }
 
-// The page doesn't scroll (on a wide screen): the header, the ticker and the controls stay put, the board fills
+// The page doesn't scroll (on a wide screen): the header, the controls and the ticker stay put, the board fills
 // the rest of the height and scrolls inside
 .book-page {
   box-sizing: border-box;
@@ -55,9 +57,12 @@ $page-gutter: 16px;
   font-family: v.$font-base;
   font-size: v.$fs-13;
   gap: v.$space-14;
-  height: 100%;
+  // (the height the ticker leaves: a zero basis, so the board's rows never push the ticker off the screen)
+  flex: 1 1 0;
   margin: 0 auto;
   max-width: 1400px;
+  min-height: 0;
+  width: 100%;
   padding: 18px clamp(16px, 3vw, 36px) 20px;
 }
 
@@ -767,9 +772,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 // wide screen. From 1000px the page stands still: the board fills what's left of the height and scrolls inside,
 // the right column on its own; narrower, everything stacks and the page scrolls as usual
 // ---------------------------------------------------------------------------
-// (the page's content edges in one line, the owner's note (2026-10-17): the board's panel flush with the title chip
-// and the ticker's left edge, the ticket flush with the header's right edge (the bankroll card, the About button)
-// and the ticker's; the board takes the room between (flex 1 1 auto), the ticket column its fixed width, the gap
+// (the page's content edges in one line, the owner's note (2026-10-17): the board's panel flush with the title chip,
+// the ticket flush with the header's right edge (the bankroll card, the About button); the board takes the room between (flex 1 1 auto), the ticket column its fixed width, the gap
 // between them 30px (the board's ring sits in it, so what shows is as it was))
 .book-work {
   align-items: stretch;
@@ -812,8 +816,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   .book-page {
-    height: auto;
-    min-height: 100%;
+    flex: 1 0 auto;
   }
 }
 
@@ -1066,10 +1069,17 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// (a phone: the card under the board)
+// (a tablet: the card under the board; a phone (the phone design's width): none, the owner's note (2026-10-19):
+// the record, the units, the streak and the last five didn't fit it)
 @media (max-width: #{v.bp(wide-menu) - 1px}) {
   .recent-form {
     margin-top: v.$space-14;
+  }
+}
+
+@include v.down(ai-narrow) {
+  .recent-form {
+    display: none;
   }
 }
 
@@ -2116,7 +2126,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // ---------------------------------------------------------------------------
-// The ticker: a one-line scoreboard strip under the header, its games sliding by forever (the list twice, the
+// The ticker: the page's footer, a one-line scoreboard strip along the bottom of the screen, edge to edge as the
+// sport bar is along the top (the owner's note, 2026-10-19), its games sliding by forever (the list twice, the
 // track moving half its width at about 30px a second, 6 seconds a game (the count set on the track from the
 // template; the owner's note, 2026-10-17: the 45 seconds whole ran by too fast to read), and starting again; still for anyone who's asked for less
 // motion). Each game: the away team's logo (a fighter's round face) and its score in gold, @, the home team's and
@@ -2136,14 +2147,27 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   border-style: solid;
   border-width: 1px 0;
   box-sizing: border-box;
+  bottom: 0;
   display: flex;
   flex: none;
   font-family: v.$font-heading;
   font-size: v.$fs-12;
-  height: 30px;
+  // (an iPhone's home bar under it: the strip that much taller, its games above it)
+  height: calc(30px + env(safe-area-inset-bottom));
   letter-spacing: 1px;
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  // (under the docking width the page scrolls: the strip held at the screen's foot all the same, as the sport bar
+  // stays at its top, over the board; under the ticket's stub and sheet, which sit on it (--book-foot))
+  position: sticky;
   width: 100%;
+  z-index: 2;
+}
+
+// (the ticket's stub and sheet under the docking width stand on the ticker, not over it (wallet-slip.scss); no
+// strip on a phone, so nothing to stand on)
+.book-page.ticker-on {
+  --book-foot: calc(30px + env(safe-area-inset-bottom));
 }
 
 .ticker-track {
@@ -2278,6 +2302,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 @include v.down(ai-narrow) {
   .book-ticker {
     display: none;
+  }
+
+  .book-page.ticker-on {
+    --book-foot: 0px;
   }
 }
 
