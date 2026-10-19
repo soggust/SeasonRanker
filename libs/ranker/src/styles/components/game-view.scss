@@ -2161,33 +2161,6 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
-// (ALL PLAYS →: to the Plays tab; on the panel's bar, or at the body's foot on a phone)
-.all-plays {
-  background: none;
-  border: none;
-  color: chip.$gold-led;
-  cursor: pointer;
-  font-family: v.$font-base;
-  font-size: v.$fs-11;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  padding: 8px 6px;
-  text-transform: uppercase;
-
-  &:hover {
-    text-shadow: var(--scoreboard-glow);
-  }
-
-  @include v.focus-lit {
-    text-decoration: underline;
-  }
-}
-
-.all-plays-foot {
-  margin: 8px 0 0;
-  text-align: right;
-}
-
 // (a player the user has a prop on: his box score row washed gold; Game Leaders marks none, Your Bets beside it
 // says so)
 .game-box-table tr.bet-lit {

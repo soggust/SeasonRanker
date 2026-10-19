@@ -640,12 +640,6 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return boardLabel(sportOf(game.league), game.state, game.period, game.clock, game.status);
   }
 
-  // (the Plays tab's pill to the My Bets view, from Important Plays' ALL PLAYS link)
-  toPlays(): void {
-    this.games.tab = 'plays';
-    this.games.player = null;
-  }
-
   // (listened for outside Angular, quietListener: with no game open, a key sets off no change detection)
   keys(event: KeyboardEvent): void {
     if (event.key !== 'Escape' || !this.games.game) return;

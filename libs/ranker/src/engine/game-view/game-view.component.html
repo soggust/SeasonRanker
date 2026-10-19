@@ -413,14 +413,11 @@
 
             <!-- Important Plays: the latest six plays that scored or moved one of the user's bets, newest first
                  (bet-impact.ts), each with its moment, the text (bold for a score), the score after it in gold and,
-                 for a bet play, the tag under the text; ALL PLAYS → opens the Plays tab (in the bar; on a phone at
-                 the body's foot, the bar one tap) -->
+                 for a bet play, the tag under the text. Shut at first on every screen, opened by its bar like the
+                 others; no link to the Plays tab, the nav above has it (the owner, 2026-10-18) -->
             @if (important(g); as plays) {
               @if (plays.length) {
-                <card-panel class="tab-card group-box game-important" [startOpen]="!phone()" label="Important Plays" icon="bolt">
-                  @if (!phone()) {
-                    <button panel-actions type="button" class="all-plays" (click)="toPlays()">All plays →</button>
-                  }
+                <card-panel class="tab-card group-box game-important" [startOpen]="false" label="Important Plays" icon="bolt">
                   <div class="group-body">
                     @for (x of plays; track $index) {
                       <div class="game-play tagged" [class.scoring]="x.play.scoring" [class.good]="x.tags?.tone === 'good'" [class.bad]="x.tags?.tone === 'bad'" [ngClass]="x.play.side ?? ''">
@@ -437,9 +434,6 @@
                           <span class="game-play-score">{{ x.play.score }}</span>
                         }
                       </div>
-                    }
-                    @if (phone()) {
-                      <p class="all-plays-foot"><button type="button" class="all-plays" (click)="toPlays()">All plays →</button></p>
                     }
                   </div>
                 </card-panel>
