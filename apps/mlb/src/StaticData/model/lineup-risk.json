@@ -1,16 +1,16 @@
 {
  "v": 1,
- "at": "2026-10-19T20:19:21.333Z",
+ "at": "2026-10-19T22:56:54.946Z",
  "rows": 117594,
  "pooled": {
-  "n": 12617,
+  "n": 12563,
   "rows": 117594,
-  "keptRaw": 0.8716,
-  "kept": 0.8716,
+  "keptRaw": 0.8666,
+  "kept": 0.8666,
   "moved": 0.084,
   "lead": 12.028,
   "edgeOpen": 0.0147,
-  "edgeClose": 0.0128,
+  "edgeClose": 0.0127,
   "ok": true
  },
  "stats": {
@@ -37,14 +37,14 @@
    "from": "own"
   },
   "outs": {
-   "n": 640,
+   "n": 586,
    "rows": 6361,
-   "keptRaw": 1.0238,
-   "kept": 1,
+   "keptRaw": 0.948,
+   "kept": 0.948,
    "moved": 0.273,
    "lead": 12.025,
-   "edgeOpen": 0.0176,
-   "edgeClose": 0.018,
+   "edgeOpen": 0.0175,
+   "edgeClose": 0.0166,
    "from": "own"
   },
   "tb": {
@@ -61,5 +61,5 @@
  },
  "sport": "mlb",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "f16287fc"
+ "commit": "f49645cf"
 }
