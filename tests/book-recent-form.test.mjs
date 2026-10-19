@@ -186,3 +186,24 @@ test('formSide: the viewer\'s pick, else theirs once they have any, else the bot
   assert.equal(bets.formSide('you', null, some), 'you');
   assert.equal(bets.formSide(null, null, null), null);
 });
+
+// The bot's streak starts at the list's first bet (the owner's note, 2026-10-19: "L0" over a list led by Emmett
+// Johnson's loss, a win and a loss settled at the same moment): one order, newest first and a tie by pick
+test('botForm: bets settled together, the streak the list\'s first bet\'s, never a zero run', () => {
+  const at = '2026-10-17T03:20:00Z';
+  const nfl = block({
+    streak: 'W1',
+    streakAt: [at],
+    brokeAt: at,
+    last: [
+      settledBet('nfl', 'W', at, { pick: 'Kenneth Walker III Over 90.5 Rush Yds' }),
+      settledBet('nfl', 'L', at, { pick: 'Emmett Johnson Over 13.5 Rush Yds' }),
+      settledBet('nfl', 'L', '2026-10-17T03:10:00Z', { pick: 'Justin Herbert Under 24.5 Rush Yds' }),
+    ],
+  });
+  const f = bets.botForm([nfl], NOW);
+  assert.equal(f.last[0].pick, 'Emmett Johnson Over 13.5 Rush Yds');
+  assert.equal(f.last[0].res, 'L');
+  assert.equal(f.streak, 'L1');
+  assert.ok(!/^[WL]0$/.test(f.streak));
+});

@@ -55,6 +55,9 @@ export interface BotRecent {
   last: BotRecentBet[];
 }
 
+// (the bot's settled bets' one order, the list's and the streak's: newest first, a tie by pick)
+const formOrder = (a: BotRecentBet, b: BotRecentBet): number => b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick);
+
 const unitsText = (v: number): string => (v === 0 ? '0.00u' : `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}u`);
 
 // (the user's form: none without a tally, or with no bet settled in the last seven days and none on hand)
@@ -139,23 +142,38 @@ export function botForm(blocks: readonly (BotRecent | null | undefined)[], now: 
       push += day[2] ?? 0;
       profit += day[4] ?? 0;
     }
-  // (the streak: its result the newest decided bet's; cut at the newest bet of the other result in any sport)
-  const runs = list.filter((b) => /^[WL]\d+$/.test(b.streak ?? '') && b.streakAt?.length);
+  // (the newest settled across the sports, in the one order the list and the streak share: newest first, bets
+  // settled at the same moment by pick, so the streak always starts at the list's first bet: the owner's note,
+  // 2026-10-19, an "L0" over a list led by a loss when a win and a loss settled together)
+  const merged = list.flatMap((b) => b.last ?? []).sort(formOrder);
+  // (the streak: the run from the list's first decided bet, pushes skipped; a run that reaches past the bets on
+  // hand is counted on from the sports' own runs (cut at the newest bet of the other result in any sport), never
+  // under the run the list shows)
   let streak = '–';
-  if (runs.length) {
-    const lead = runs.reduce((a, b) => (b.streakAt[0] > a.streakAt[0] ? b : a));
-    const res = lead.streak![0];
-    let cut = '';
-    for (const b of runs) {
-      const other = b.streak![0] === res ? b.brokeAt : b.streakAt[0];
-      if (other && other > cut) cut = other;
+  const shown = merged.filter((b) => b.res !== 'P');
+  if (shown.length) {
+    const res = shown[0].res;
+    let seen = 0;
+    while (seen < shown.length && shown[seen].res === res) seen++;
+    let n = seen;
+    if (seen === shown.length) {
+      const runs = list.filter((b) => /^[WL]\d+$/.test(b.streak ?? '') && b.streakAt?.length);
+      let cut = '';
+      for (const b of runs) {
+        const other = b.streak![0] === res ? b.brokeAt : b.streakAt[0];
+        if (other && other > cut) cut = other;
+      }
+      n = Math.max(seen, runs.filter((b) => b.streak![0] === res).reduce((sum, b) => sum + b.streakAt.filter((at) => at > cut).length, 0));
     }
-    const n = runs.filter((b) => b.streak![0] === res).reduce((sum, b) => sum + b.streakAt.filter((at) => at > cut).length, 0);
     streak = `${res}${n}`;
+  } else {
+    const runs = list.filter((b) => /^[WL]\d+$/.test(b.streak ?? '') && b.streakAt?.length);
+    if (runs.length) {
+      const lead = runs.reduce((a, b) => (b.streakAt[0] > a.streakAt[0] ? b : a));
+      streak = `${lead.streak![0]}${Math.max(1, lead.streakAt.length)}`;
+    }
   }
-  const last: FormBet[] = list
-    .flatMap((b) => b.last ?? [])
-    .sort((a, b) => b.at.localeCompare(a.at))
+  const last: FormBet[] = merged
     .slice(0, 5)
     .map((b) => ({
       res: b.res,
