@@ -347,8 +347,8 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // ---------------------------------------------------------------------------
 export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
   { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Basic Stats', icon: 'bar_chart' },
-  { id: 'advanced', title: 'Advanced Stats', icon: 'insights' },
+  { id: 'box', title: 'Basic', icon: 'bar_chart' },
+  { id: 'advanced', title: 'Advanced', icon: 'insights' },
   { id: 'support', title: 'Support', icon: 'groups' },
 ];
 
@@ -397,7 +397,7 @@ export type SkillStatGroup = StatGroup<SkillStat>;
 export function skillGroups(position: SkillPosition): SkillStatGroup[] {
   return STAT_GROUP_INFO.map((info) => ({
     ...info,
-    title: position === 'TM' && info.id === 'support' ? 'Roster' : info.title,
+    title: info.title,
     stats: SKILL_STATS[position].filter((stat) => !stat.positionAdjust && statGroup(stat) === info.id),
   })).filter((group) => group.stats.length);
 }

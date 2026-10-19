@@ -285,7 +285,7 @@ export const SPORT: SportConfig = {
     {
       key: 'rankBasis',
       label: 'Rank Base',
-      title: "Click to switch what the rank columns rank on: points per game or yards per game. The head coaches' Off Rank and Def Rank, the offenses' Off Rank, Pass O Rank and Run O Rank and the defenses' Def Rank, Pass D Rank and Run D Rank (the pass and run ranks by touchdowns for Points: points aren't split by pass and run). The special teams' ST Rank goes by their EPA per play either way. EPA per play has its own columns in Advanced Stats",
+      title: "Click to switch what the rank columns rank on: points per game or yards per game. The head coaches' Off Rank and Def Rank, the offenses' Off Rank, Pass O Rank and Run O Rank and the defenses' Def Rank, Pass D Rank and Run D Rank (the pass and run ranks by touchdowns for Points: points aren't split by pass and run). The special teams' ST Rank goes by their EPA per play either way. EPA per play has its own columns in Advanced",
       options: RANK_BASIS_LABELS,
       default: 'points',
       slot: 'formatTop',

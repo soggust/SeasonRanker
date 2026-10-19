@@ -1677,8 +1677,8 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // ---------------------------------------------------------------------------
 export const STAT_GROUP_INFO: { id: StatGroupId; title: string; icon: string }[] = [
   { id: 'results', title: 'Results', icon: 'emoji_events' },
-  { id: 'box', title: 'Basic Stats', icon: 'bar_chart' },
-  { id: 'advanced', title: 'Advanced Stats', icon: 'insights' },
+  { id: 'box', title: 'Basic', icon: 'bar_chart' },
+  { id: 'advanced', title: 'Advanced', icon: 'insights' },
   { id: 'support', title: 'Support', icon: 'groups' },
 ];
 
@@ -1795,7 +1795,7 @@ export function skillGroups(position: SkillPosition): SkillStatGroup[] {
     const stats = SKILL_STATS[position].filter((stat) => statGroup(stat) === info.id);
     // Fantasy points always come last in their group
     const fantasy = stats.filter((stat) => stat.key === 'fantasy');
-    const title = position === 'TM' && info.id === 'support' ? 'Roster' : info.title;
+    const title = info.title;
     return { ...info, title, stats: [...stats.filter((stat) => stat.key !== 'fantasy'), ...fantasy] };
   }).filter((group) => group.stats.length);
 }

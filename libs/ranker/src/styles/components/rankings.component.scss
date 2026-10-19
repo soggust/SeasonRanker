@@ -1918,6 +1918,12 @@ section ul li.player:not(.header-row) .count.rank-tile {
 section ul li.player .support-box .grade-tile {
   cursor: pointer;
 
+  // (the label overlay that covers the tile carries the pointer too: the row's labels are cursor: default, and
+  // the tile's hover lands on it, so the grade read as unclickable: the owner's note, 2026-10-19)
+  .stat-label {
+    cursor: pointer;
+  }
+
   > p[style*="color"] {
     transition: box-shadow v.$t-hover ease;
   }
