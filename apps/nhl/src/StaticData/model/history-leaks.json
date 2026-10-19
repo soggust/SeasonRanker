@@ -1,45 +1,12 @@
 {
- "at": "2026-10-19T14:12:20.731Z",
- "epoch": "2026-10-19T15:30:00Z",
- "commit": "525bb4e5",
+ "at": "2026-10-19T14:17:02.938Z",
+ "epoch": "2026-10-19T10:00:00Z",
+ "commit": "8adb4114",
  "n": 59851,
  "tested": 30,
- "leaks": 2,
+ "leaks": 0,
  "trends": 0,
- "status": "watch",
- "headline": "stat: Spreads losing 0.11 nats per 100 rows to the Book, shrunk (n 7024, z -2.57); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 14473, z -2.50)",
- "rows": [
-  {
-   "rank": 1,
-   "kind": "leak",
-   "segment": "stat: Spreads",
-   "n": 7024,
-   "games": 7024,
-   "loss": 0.106,
-   "raw": 0.1076,
-   "z": -2.5716,
-   "clv": null,
-   "week": "0.00 this week, 0.11 before",
-   "p": 0.0051,
-   "atRisk": 0,
-   "causes": null,
-   "fix": "the projection or the correction for Spreads: its own bias (project.mjs fitStat) or the correction's sport|stat term (correct.mjs); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)"
-  },
-  {
-   "rank": 2,
-   "kind": "leak",
-   "segment": "price: dog",
-   "n": 14473,
-   "games": 5444,
-   "loss": 0.0388,
-   "raw": 0.039,
-   "z": -2.4969,
-   "clv": null,
-   "week": "-0.01 this week, 0.04 before",
-   "p": 0.0063,
-   "atRisk": 0,
-   "causes": null,
-   "fix": "the dog prices (correct.mjs price term; the Book's no-vig at that price, fairPair); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)"
-  }
- ]
+ "status": "ok",
+ "headline": "30 segments tested on 59851 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
+ "rows": []
 }
